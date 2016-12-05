@@ -24,7 +24,7 @@
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "license": "GPL-2.0",
   "bugs": {
-    "url": "https://github.com/SenseNet/sn-client-js/issues"
+    "url": "https://github.com/SenseNet/sn-redux/issues"
   },
   "homepage": "https://sensenet.com",
   "dependencies": {
