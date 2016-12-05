@@ -63,10 +63,8 @@ export module Store {
         else {
             middlewareArray = [...middlewares, epicMiddleware];
         }
-        if (process.env.NODE_ENV !== 'production') {
-            const loggerMiddleware = (createLogger as any)();
-            middlewareArray.push(loggerMiddleware);
-        }
+        const loggerMiddleware = (createLogger as any)();
+        middlewareArray.push(loggerMiddleware);
         if (typeof persistedState !== 'undefined') {
             return createStore(
                 rootReducer,
