@@ -1,0 +1,80 @@
+{
+  "name": "sn-redux",
+  "version": "0.0.0-development",
+  "description": "A set of redux actions, reducers and redux-ovbservable epics for Sense/Net ECM",
+  "main": "dist/sn-redux.js",
+  "scripts": {
+    "commit": "git-cz",
+    "gulp": "gulp",
+    "test": "istanbul cover _mocha -- -R spec dist/test/*Tests.js",
+    "check-coverage": "istanbul check-coverage ",
+    "report-coverage": "cat ./coverage/lcov.info | codecov",
+    "semantic-release": "semantic-release pre && semantic-release post"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SenseNet/sn-redux.git"
+  },
+  "keywords": [
+    "sensenet",
+    "ecm",
+    "redux",
+    "crud"
+  ],
+  "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/SenseNet/sn-client-js/issues"
+  },
+  "homepage": "https://sensenet.com",
+  "dependencies": {
+    "@reactivex/rxjs": "5.0.0-rc.4",
+    "normalizr": "2.2.1",
+    "redux": "3.6.0",
+    "redux-observable": "0.12.2",
+    "sn-client-js": "1.0.0-beta.0"
+  },
+  "devDependencies": {
+    "@reactivex/rxjs": "5.0.0-rc.4",
+    "@types/chai": "3.4.34",
+    "@types/mocha": "2.2.33",
+    "@types/nock": "8.2.0",
+    "@types/normalizr": "2.0.17",
+    "@types/orchestrator": "0.0.30",
+    "@types/redux": "3.6.31",
+    "@types/redux-logger": "2.6.32",
+    "@types/redux-mock-store": "0.0.7",
+    "@types/sinon": "1.16.32",
+    "chai": "3.5.0",
+    "codecov.io": "0.1.6",
+    "commitizen": "2.8.6",
+    "cz-conventional-changelog": "1.2.0",
+    "del": "2.2.2",
+    "gulp": "3.9.1",
+    "gulp-istanbul": "1.1.1",
+    "gulp-mocha": "3.0.1",
+    "gulp-sourcemaps": "1.9.1",
+    "gulp-tslint": "7.0.1",
+    "gulp-typedoc": "2.0.1",
+    "gulp-typescript": "3.1.3",
+    "isomorphic-fetch": "2.2.1",
+    "mocha": "3.2.0",
+    "nock": "9.0.2",
+    "normalizr": "2.2.1",
+    "redux": "3.6.0",
+    "redux-logger": "2.7.4",
+    "redux-mock-store": "1.2.1",
+    "redux-observable": "0.12.2",
+    "remap-istanbul": "0.7.0",
+    "semantic-release": "^6.3.2",
+    "sinon": "1.17.6",
+    "sn-client-js": "1.0.2-beta.2",
+    "tslint": "4.0.2",
+    "typedoc": "0.5.1",
+    "typescript": "2.0.10"
+  },
+  "czConfig": {
+    "path": "node_modules/cz-conventional-changelog"
+  },
+  "typings": "./src/sn.redux.d.ts"
+}

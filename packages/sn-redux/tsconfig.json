@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "removeComments": true,
+        "noImplicitAny": false,
+        "target": "es2015",
+        "module": "commonjs",
+        "sourceMap": true,
+        "declaration": false,
+        "preserveConstEnums": true,
+        "experimentalDecorators": true,
+        "typeRoots": [
+            "./node_modules/@types"
+        ]
+    },
+    "exclude": [
+        "node_modules",
+        "dist"
+    ],
+    "compileOnSave": false,
+    "files": [
+        "src/sn-redux.ts"
+    ]
+}

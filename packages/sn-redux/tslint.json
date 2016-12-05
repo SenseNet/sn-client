@@ -1,0 +1,10 @@
+{
+    "variable-name": false,
+    "quotemark": [
+        true,
+        "single",
+        "double",
+        "avoid-escape"
+    ],
+    "max-file-line-count": false
+}
