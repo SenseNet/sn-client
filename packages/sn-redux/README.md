@@ -145,9 +145,17 @@ dispatch(Actions.CreateContent(parentPath, content))
 
 ## Documentation
 
-* [API Reference](http://download.sensenet.com/aniko/sn7/sn-redux)
+* [API Reference](http://www.sensenet.com/documentation/sn-redux/index.html)
 * [About OData REST API in Sense/Net ECM](http://wiki.sensenet.com/OData_REST_API)
 * [About Built-in OData Actions and Function in Sense/Net ECM](http://wiki.sensenet.com/Built-in_OData_actions_and_functions)
+
+## Influences
+
+* [Redux](http://redux.js.org/)
+* [Getting started with Redux](https://egghead.io/courses/getting-started-with-redux) - Awesome course from the creator of Redux, Dan Abramov.
+* [Building React Applications with Idiomatic Redux](https://egghead.io/courses/building-react-applications-with-idiomatic-redux) - Another great course of Dan Abramov about building apps with Redux.
+* [rxjs](http://reactivex.io/rxjs/)
+* [redux-observable](https://redux-observable.js.org/)
 
 ## Example applications
 * Using Raw Javascript and HTML (TODO)
