@@ -1,6 +1,6 @@
 {
   "name": "sn-redux",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.3",
   "description": "A set of redux actions, reducers and redux-ovbservable epics for Sense/Net ECM",
   "main": "dist/sn-redux.js",
   "scripts": {
@@ -29,10 +29,15 @@
   "homepage": "https://sensenet.com",
   "dependencies": {
     "@reactivex/rxjs": "5.0.0-rc.4",
+    "@types/isomorphic-fetch": "0.0.31",
+    "@types/normalizr": "2.0.17",
+    "@types/redux": "3.6.31",
+    "@types/redux-logger": "2.6.32",
     "isomorphic-fetch": "2.2.1",
     "rxjs": "5.0.0-rc.4",
     "normalizr": "2.2.1",
     "redux": "3.6.0",
+    "redux-logger": "2.7.4",
     "redux-observable": "0.12.2",
     "sn-client-js": "1.0.2-beta.3",
     "ts-json-properties": "1.1.1"
@@ -40,12 +45,10 @@
   "devDependencies": {
     "@reactivex/rxjs": "5.0.0-rc.4",
     "@types/chai": "3.4.34",
+    "@types/isomorphic-fetch": "0.0.31",
     "@types/mocha": "2.2.33",
     "@types/nock": "8.2.0",
-    "@types/normalizr": "2.0.17",
     "@types/orchestrator": "0.0.30",
-    "@types/redux": "3.6.31",
-    "@types/redux-logger": "2.6.32",
     "@types/redux-mock-store": "0.0.7",
     "@types/sinon": "1.16.32",
     "chai": "3.5.0",
@@ -65,7 +68,6 @@
     "nock": "9.0.2",
     "normalizr": "2.2.1",
     "redux": "3.6.0",
-    "redux-logger": "2.7.4",
     "redux-mock-store": "1.2.1",
     "redux-observable": "0.12.2",
     "remap-istanbul": "0.7.0",
