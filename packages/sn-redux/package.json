@@ -29,6 +29,7 @@
   "homepage": "https://sensenet.com",
   "dependencies": {
     "@reactivex/rxjs": "5.0.0-rc.4",
+    "rxjs": "5.0.0-rc.4",
     "normalizr": "2.2.1",
     "redux": "3.6.0",
     "redux-observable": "0.12.2",
@@ -66,6 +67,7 @@
     "redux-mock-store": "1.2.1",
     "redux-observable": "0.12.2",
     "remap-istanbul": "0.7.0",
+    "rxjs": "5.0.0-rc.4",
     "semantic-release": "^6.3.2",
     "sinon": "1.17.6",
     "sn-client-js": "1.0.2-beta.3",
