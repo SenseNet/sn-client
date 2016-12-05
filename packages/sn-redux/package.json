@@ -32,7 +32,7 @@
     "normalizr": "2.2.1",
     "redux": "3.6.0",
     "redux-observable": "0.12.2",
-    "sn-client-js": "1.0.0-beta.0"
+    "sn-client-js": "1.0.2-beta.2"
   },
   "devDependencies": {
     "@reactivex/rxjs": "5.0.0-rc.4",
