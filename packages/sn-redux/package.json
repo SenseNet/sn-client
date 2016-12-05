@@ -69,6 +69,7 @@
     "semantic-release": "^6.3.2",
     "sinon": "1.17.6",
     "sn-client-js": "1.0.2-beta.2",
+    "ts-json-properties": "1.1.1",
     "tslint": "4.0.2",
     "typedoc": "0.5.1",
     "typescript": "2.0.10"
