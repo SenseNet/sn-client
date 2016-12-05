@@ -14,10 +14,10 @@ and Functions](http://wiki.sensenet.com/Built-in_OData_actions_and_functions).
 
 sn-redux gives you an standard set of:
 
-** action types: e.g. ADD_CONTENT_SUCCESS
-** actions: e.g. updateContentSuccess, updateContentFailure
-** reducers: for the action types above e.g. updateContentSuccess
-** epics: for streams of actions that are related to the same process e.g. createContentEpic
+* action types: e.g. ADD_CONTENT_SUCCESS
+* actions: e.g. updateContentSuccess, updateContentFailure
+* reducers: for the action types above e.g. updateContentSuccess
+* epics: for streams of actions that are related to the same process e.g. createContentEpic
 
 ## Installation on an existing Sense/Net portal
 
