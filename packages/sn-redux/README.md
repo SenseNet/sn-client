@@ -3,7 +3,7 @@
 [![Gitter chat](https://img.shields.io/gitter/room/SenseNet/sn-redux.svg?style=flat)](https://gitter.im/SenseNet/sn-redux)
 [![Build status](https://img.shields.io/travis/SenseNet/sn-redux.svg?style=flat)](https://travis-ci.org/SenseNet/sn-redux)
 [![Coverage](https://img.shields.io/codecov/c/github/SenseNet/sn-redux.svg?style=flat)](https://codecov.io/gh/SenseNet/sn-redux)
-[![NPM version](https://img.shields.io/npm/v/sn-redux.svg?style=flat)](https://www.npmjs.com/package/sn-redux)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ca48bc7efa8549f091aa598e17ccc742)](https://www.codacy.com/app/herflis33/sn-redux?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SenseNet/sn-redux&amp;utm_campaign=Badge_Grade)[![NPM version](https://img.shields.io/npm/v/sn-redux.svg?style=flat)](https://www.npmjs.com/package/sn-redux)
 [![NPM downloads](https://img.shields.io/npm/dt/sn-redux.svg?style=flat)](https://www.npmjs.com/package/sn-redux)
 [![License](https://img.shields.io/github/license/SenseNet/sn-redux.svg?style=flat)](https://github.com/SenseNet/sn-redux/LICENSE.txt)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg?style=flat)](https://github.com/semantic-release/semantic-release)
