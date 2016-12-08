@@ -11,6 +11,7 @@
         ],
         "no-duplicate-variable": true,
         "no-eval": true,
+        "no-internal-module": true,
         "no-trailing-whitespace": true,
         "no-var-keyword": true,
         "variable-name": false,
@@ -18,12 +19,6 @@
             true,
             "check-open-brace",
             "check-whitespace"
-        ],
-        "quotemark": [
-            true,
-            "single",
-            "double",
-            "avoid-escape"
         ],
         "semicolon": false,
         "triple-equals": [
@@ -62,10 +57,6 @@
             true,
             "check-open-brace",
             "check-whitespace"
-        ],
-        "quotemark": [
-            true,
-            "double"
         ],
         "semicolon": false,
         "triple-equals": [

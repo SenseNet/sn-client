@@ -45,7 +45,7 @@ export module Epics {
             .mergeMap(action => {
                 let params = `${action.filter}`;
                 return SN.ODataApiActionObservables.FetchContent(action.path, params)
-                    .map((response) => Actions.ReceiveContent(response, params))
+                    .map((response) => Actions.ReceiveContent(response.response, params))
                     .catch(error => Rx.Observable.of(Actions.ReceiveContentFailure(params, error)))
             }
             );

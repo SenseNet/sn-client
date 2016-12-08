@@ -8,6 +8,12 @@ const SN = require('sn-client-js');
 const Epics_1 = require('../src/Epics');
 const expect = Chai.expect;
 describe('Epics', () => {
+    let window = {
+        'siteUrl': 'https://daily.demo.sensenet.com'
+    };
+    beforeEach(() => {
+        window['siteUrl'] = "https://daily.demo.sensenet.com";
+    });
     describe('fetchContent Epic', () => {
         let store;
         const epicMiddleware = redux_observable_1.createEpicMiddleware(Epics_1.Epics.fetchContentEpic);

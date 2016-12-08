@@ -1,5 +1,3 @@
-
-// build chain dependencies
 const gulp = require('gulp');
 const ts = require('gulp-typescript');
 const mocha = require('gulp-mocha');
@@ -81,11 +79,11 @@ gulp.task("typedoc", function () {
             target: "es2015",
             includeDeclarations: false,
             out: "./documentation",
-            name: "sn-client-js",
+            name: "sn-redux",
             theme: "default",
             ignoreCompilerErrors: true,
             version: true,
-            readme: "sn-client-js/README.md",
+            readme: "sn-redux/README.md",
             excludeExternals: true,
             excludePrivate: true,
             includes: "docs"

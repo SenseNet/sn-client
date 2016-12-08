@@ -50,14 +50,12 @@ To install the latest stable version
 npm install --save sn-redux
 ```
 
-Check the ```properties.json``` file in your app's root and change to url to the url of your Sense/Net ECM instance:
+Set your Sense/Net portal's url with SetSiteUrl method
 
 ```
-{
-    "sensenet": {
-        "url": "https://mysite.com"
-    }
-}
+import { SetSiteUrl } from 'sn-client-js';
+
+SetSiteUrl('https://daily.demo.sensenet.com');
 ```
 
 So that you can set the url of your Sense/Net portal that you want to communicate with. To enable your external app to send request against your Sense/Net portal change
@@ -145,9 +143,11 @@ dispatch(Actions.CreateContent(parentPath, content))
 
 ## Documentation
 
-* [API Reference](http://www.sensenet.com/documentation/sn-redux/index.html)
+* [sn-redux API Reference](http://www.sensenet.com/documentation/sn-redux/index.html)
+* [sn-client-js API reference](http://www.sensenet.com/documentation/sn-client-js/index.html)
 * [About OData REST API in Sense/Net ECM](http://wiki.sensenet.com/OData_REST_API)
 * [About Built-in OData Actions and Function in Sense/Net ECM](http://wiki.sensenet.com/Built-in_OData_actions_and_functions)
+* [Todo App with React, Redux and Sense/Net ECM](http://www.sensenet.com/documentation/sn-react-todoapp/index.html)
 
 ## Influences
 

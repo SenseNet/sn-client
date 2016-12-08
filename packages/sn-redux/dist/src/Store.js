@@ -15,10 +15,8 @@ var Store;
         else {
             middlewareArray = [...middlewares, epicMiddleware];
         }
-        if (process.env.NODE_ENV !== 'production') {
-            const loggerMiddleware = createLogger();
-            middlewareArray.push(loggerMiddleware);
-        }
+        const loggerMiddleware = createLogger();
+        middlewareArray.push(loggerMiddleware);
         if (typeof persistedState !== 'undefined') {
             return redux_1.createStore(rootReducer, persistedState, redux_1.applyMiddleware(...middlewareArray));
         }

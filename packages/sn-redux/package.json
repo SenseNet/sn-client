@@ -1,6 +1,6 @@
 {
   "name": "sn-redux",
-  "version": "1.0.0-beta.3",
+  "version": "1.0.0-beta.4",
   "description": "A set of redux actions, reducers and redux-ovbservable epics for Sense/Net ECM",
   "main": "dist/sn-redux.js",
   "scripts": {
@@ -39,7 +39,7 @@
     "redux": "3.6.0",
     "redux-logger": "2.7.4",
     "redux-observable": "0.12.2",
-    "sn-client-js": "1.0.2-beta.3",
+    "sn-client-js": "1.0.2-beta.5",
     "ts-json-properties": "1.1.1"
   },
   "devDependencies": {
@@ -74,7 +74,7 @@
     "rxjs": "5.0.0-rc.4",
     "semantic-release": "^6.3.2",
     "sinon": "1.17.6",
-    "sn-client-js": "1.0.2-beta.3",
+    "sn-client-js": "1.0.2-beta.5",
     "tslint": "4.0.2",
     "typedoc": "0.5.1",
     "typescript": "2.0.10"
