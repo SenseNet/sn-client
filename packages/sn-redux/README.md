@@ -10,10 +10,10 @@
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg?style=flat)](https://github.com/semantic-release/semantic-release)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat)](http://commitizen.github.io/cz-cli/)
 
-sn-redux is a convention driven way of building SenseNet applications using Redux. It contains all the action types, actions and reducers for [built-in SenseNet Actions 
+sn-redux is a convention driven way of building Sense/Net applications using Redux. It contains all the action types, actions and reducers for [built-in Sense/Net Actions 
 and Functions](http://wiki.sensenet.com/Built-in_OData_actions_and_functions).
 
-sn-redux gives you an standard set of:
+sn-redux gives you a standard set of:
 
 * action types: e.g. ADD_CONTENT_SUCCESS
 * actions: e.g. updateContentSuccess, updateContentFailure
