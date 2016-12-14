@@ -54,10 +54,16 @@ export module Store {
      * );
      * ```
      */
-    export const configureStore = (rootReducer: any = Reducers.snApp, rootEpic: any = Epics.rootEpic, middlewares?: Array<any>, persistedState?: Object) => {
-        const epicMiddleware = createEpicMiddleware(rootEpic);
+    export const configureStore = (rootReducer: any = Reducers.snApp, rootEpic?: any, middlewares?: Array<any>, persistedState?: Object) => {
+        let epicMiddleware;
+        if (typeof rootEpic === 'undefined' || rootEpic === null) {
+            epicMiddleware = createEpicMiddleware(Epics.rootEpic);
+        }
+        else {
+            epicMiddleware = createEpicMiddleware(rootEpic);
+        }
         let middlewareArray = [];
-        if (typeof middlewares === 'undefined') {
+        if (typeof middlewares === 'undefined' || middlewares === null) {
             middlewareArray.push(epicMiddleware);
         }
         else {

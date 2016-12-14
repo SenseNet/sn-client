@@ -6,10 +6,16 @@ const Epics_1 = require('./Epics');
 const Reducers_1 = require('./Reducers');
 var Store;
 (function (Store) {
-    Store.configureStore = (rootReducer = Reducers_1.Reducers.snApp, rootEpic = Epics_1.Epics.rootEpic, middlewares, persistedState) => {
-        const epicMiddleware = redux_observable_1.createEpicMiddleware(rootEpic);
+    Store.configureStore = (rootReducer = Reducers_1.Reducers.snApp, rootEpic, middlewares, persistedState) => {
+        let epicMiddleware;
+        if (typeof rootEpic === 'undefined' || rootEpic === null) {
+            epicMiddleware = redux_observable_1.createEpicMiddleware(Epics_1.Epics.rootEpic);
+        }
+        else {
+            epicMiddleware = redux_observable_1.createEpicMiddleware(rootEpic);
+        }
         let middlewareArray = [];
-        if (typeof middlewares === 'undefined') {
+        if (typeof middlewares === 'undefined' || middlewares === null) {
             middlewareArray.push(epicMiddleware);
         }
         else {
