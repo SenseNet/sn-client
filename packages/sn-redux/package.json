@@ -28,11 +28,6 @@
   },
   "homepage": "https://sensenet.com",
   "dependencies": {
-    "@reactivex/rxjs": "5.0.0-rc.4",
-    "@types/isomorphic-fetch": "0.0.31",
-    "@types/normalizr": "2.0.17",
-    "@types/redux": "3.6.31",
-    "@types/redux-logger": "2.6.32",
     "isomorphic-fetch": "2.2.1",
     "rxjs": "5.0.0-rc.4",
     "normalizr": "2.2.1",
