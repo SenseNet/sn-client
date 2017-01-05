@@ -44,7 +44,7 @@ export module Reducers {
     switch (action.type) {
       case 'FETCH_CONTENT_SUCCESS':
         return action.response.result;
-      case 'ADD_CONTENT_SUCCESS':
+      case 'CREATE_CONTENT_SUCCESS':
         return [...state, action.response.result];
       case 'DELETE_CONTENT_SUCCESS':
         return [...state.slice(0, action.index), ...state.slice(action.index + 1)]
