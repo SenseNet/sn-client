@@ -43,9 +43,9 @@ describe('ids reducer', () => {
         }))
             .to.be.deep.equal([5145, 5146]);
     });
-    it('should handle ADD_CONTENT_SUCCESS', () => {
+    it('should handle CREATE_CONTENT_SUCCESS', () => {
         expect(Reducers_1.Reducers.ids([], {
-            type: 'ADD_CONTENT_SUCCESS',
+            type: 'CREATE_CONTENT_SUCCESS',
             response: {
                 entities: {
                     collection: {

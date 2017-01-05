@@ -15,7 +15,7 @@ and Functions](http://wiki.sensenet.com/Built-in_OData_actions_and_functions).
 
 sn-redux gives you a standard set of:
 
-* action types: e.g. ADD_CONTENT_SUCCESS
+* action types: e.g. CREATE_CONTENT_SUCCESS
 * actions: e.g. updateContentSuccess, updateContentFailure
 * reducers: for the action types above e.g. updateContentSuccess
 * epics: for streams of actions that are related to the same process e.g. createContentEpic
