@@ -20,7 +20,7 @@ export module Reducers {
    * @returns {Object} state. Returns the next state based on the action.
    */
   export const byId = (state = {}, action) => {
-    if (action.response) {
+    if (action.response && action.type !== 'USER_LOGIN_SUCCESS') {
       return (<any>Object).assign({}, state, action.response.entities.collection);
     }
     switch (action.type) {
@@ -120,6 +120,49 @@ export module Reducers {
     }
   }
 
+  const userInitialState = {
+    data: null,
+    isLoading: false,
+    isAuthenticated: false,
+    errorMessage: ''
+  }
+  /**
+   * Reducer to handle Actions on the user Object in the state. It becomes the current state and an action as arguments,
+   * creates a new state based on the previous state and the action and returns it as the next state. If the Action doesn't affect the state the returned state will
+   * be the current state itself.
+   * @param {Object} [state={}] Represents the current state.
+   * @param {Object} action Represents an action that is called.
+   * @returns {Object} state. Returns the next state based on the action.
+   */
+  export const user = (state = userInitialState, action) => {
+    switch (action.type) {
+      case 'USER_LOGIN_REQUEST':
+      case 'USER_LOGOUT_REQUEST':
+        return { ...userInitialState, isLoading: true, isAuthenticated: false }
+      case 'USER_LOGIN_SUCCESS':
+        return {
+          data: {
+            userName: action.response.LoginName,
+            fullName: action.response.FullName
+          },
+          isLoading: false,
+          isAuthenticated: true
+        }
+      case 'USER_LOGOUT_SUCCESS':
+        return userInitialState
+      case 'USER_LOGIN_FAILURE':
+        return {
+          ...userInitialState, isLoading: false, errorMessage: action.message, isAuthenticated: false
+        }
+      case 'USER_LOGOUT_FAILURE':
+        return {
+          ...userInitialState, isLoading: false, errorMessage: action.message, isAuthenticated: true
+        }
+      default:
+        return state
+    }
+  }
+
   /**
    * Reducer combining ```byId``` object, ```ids``` array, isFetching and errorMessage into a single object which means ```collection``` will be a top object in the state.
    */
@@ -127,7 +170,8 @@ export module Reducers {
     byId,
     ids,
     isFetching,
-    errorMessage
+    errorMessage,
+    user
   })
   /**
    * Reducer to hold the collection object and represent a root reducer of a SenseNet Redux application store. If you want to add your custom Reducers to the store, create your own
@@ -164,4 +208,15 @@ export module Reducers {
 
     return state.errorMessage
   };
+
+  export const getAuthenticationStatus = (state) => {
+    const user = state.user;
+    return user.isAuthenticated;
+  }
+
+  export const getAuthenticationError = (state) => {
+    const user = state.user;
+    return user.errorMessage;
+  }
+
 }

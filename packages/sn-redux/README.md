@@ -63,6 +63,14 @@ So that you can set the url of your Sense/Net portal that you want to communicat
 your ```Portal.settings```. For further information about cross-origin resource sharing in Sense/Net check [this](http://wiki.sensenet.com/Cross-origin_resource_sharing#Origin_check)
 article.
 
+Check your Sense/Net portal's web.config and if the ```ODataServiceToken``` is set, use the ```SetServiceToken()``` method to set the same service token on client side.
+
+```
+import { SetServiceToken } from 'sn-client-js';
+
+SetServiceToken('myservicetoken');
+```
+
 ## Import
 
 ### CommonJS
@@ -160,11 +168,11 @@ dispatch(Actions.CreateContent(parentPath, content))
 
 ## Example applications
 * Using Raw Javascript and HTML (TODO)
-* [Using React](http://download.sensenet.com/aniko/sn7/examples/react/index.html)
-* Using Angular (TODO)
+* [Using React](https://github.com/SenseNet/sn-react-redux-todo-app)
+* [Using Angular](https://github.com/blaskodaniel/sn-angular-redux-todo-app)
 * [Using Angular2](https://github.com/SenseNet/sn-angular2-redux-todo-app)
-* [Using Vue](https://github.com/SenseNet/sn-vue-redux-todo-app)
-* Using Aurelia (TODO)
+* [Using Vue.js](https://github.com/SenseNet/sn-vue-redux-todo-app)
+* [Using Aurelia](https://github.com/B3zo0/sn7-aurelia-redux-todo-app)
 * Using Ember (TODO)
 * Using Polymer (TODO)
 * Using React Native (TODO)

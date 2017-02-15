@@ -221,6 +221,32 @@ export module Epics {
             })
     }
     /**
+         * Epic to login a user to a Sense/Net portal. It is related to three redux actions, returns ```LoginUser``` action and sends the response to the
+         * ```LoginUserSuccess``` action if the ajax request ended successfully or catches the error if the request failed and sends the error message to the ```LoginUserFailure``` action.
+         */
+    export const userLoginEpic = (action$, store) => {
+        return action$.ofType('USER_LOGIN_REQUEST')
+            .mergeMap(action => {
+                const Action = new SN.ODataApi.CustomAction({ name: 'Login', path: '/Root', isAction: true, requiredParams: ['username', 'password'], noCache: true });
+                return SN.ODataApiActionObservables.Login(Action, { data: { 'username': action.userName, 'password': action.password } })
+                    .map(Actions.UserLoginSuccess)
+                    .catch(error => Rx.Observable.of(Actions.UserLoginFailure(error)))
+            })
+    }
+    /**
+         * Epic to logout a user from a Sense/Net portal. It is related to three redux actions, returns ```LogoutUser``` action and sends the response to the
+         * ```LogoutUserSuccess``` action if the ajax request ended successfully or catches the error if the request failed and sends the error message to the ```LogoutUserFailure``` action.
+         */
+    export const userLogoutEpic = (action$, store) => {
+        return action$.ofType('USER_LOGOUT_REQUEST')
+            .mergeMap(action => {
+                const Action = new SN.ODataApi.CustomAction({ name: 'Logout', path: '/Root', isAction: true, noCache: true });
+                return SN.ODataApiActionObservables.Logout(Action, {})
+                    .map(Actions.UserLogoutSuccess)
+                    .catch(error => Rx.Observable.of(Actions.UserLogoutFailure(error)))
+            })
+    }
+    /**
      * sn-redux root Epic, the main Epic combination that is used on a default Sense/Net application. Contains Epics related to CRUD operations and thr other built-in Sense/Net
      * [OData Actions and Function](http://wiki.sensenet.com/Built-in_OData_actions_and_functions).
      */
@@ -237,6 +263,8 @@ export module Epics {
         rejectContentEpic,
         undocheckoutContentEpic,
         forceundocheckoutContentEpic,
-        restoreversionContentEpic
+        restoreversionContentEpic,
+        userLoginEpic,
+        userLogoutEpic
     );
 }

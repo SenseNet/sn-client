@@ -1,9 +1,17 @@
 "use strict";
-const redux_1 = require('redux');
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+const redux_1 = require("redux");
 var Reducers;
 (function (Reducers) {
     Reducers.byId = (state = {}, action) => {
-        if (action.response) {
+        if (action.response && action.type !== 'USER_LOGIN_SUCCESS') {
             return Object.assign({}, state, action.response.entities.collection);
         }
         switch (action.type) {
@@ -82,11 +90,42 @@ var Reducers;
                 return state;
         }
     };
+    const userInitialState = {
+        data: null,
+        isLoading: false,
+        isAuthenticated: false,
+        errorMessage: ''
+    };
+    Reducers.user = (state = userInitialState, action) => {
+        switch (action.type) {
+            case 'USER_LOGIN_REQUEST':
+            case 'USER_LOGOUT_REQUEST':
+                return __assign({}, userInitialState, { isLoading: true, isAuthenticated: false });
+            case 'USER_LOGIN_SUCCESS':
+                return {
+                    data: {
+                        userName: action.response.LoginName,
+                        fullName: action.response.FullName
+                    },
+                    isLoading: false,
+                    isAuthenticated: true
+                };
+            case 'USER_LOGOUT_SUCCESS':
+                return userInitialState;
+            case 'USER_LOGIN_FAILURE':
+                return __assign({}, userInitialState, { isLoading: false, errorMessage: action.message, isAuthenticated: false });
+            case 'USER_LOGOUT_FAILURE':
+                return __assign({}, userInitialState, { isLoading: false, errorMessage: action.message, isAuthenticated: true });
+            default:
+                return state;
+        }
+    };
     Reducers.collection = redux_1.combineReducers({
         byId: Reducers.byId,
         ids: Reducers.ids,
         isFetching: Reducers.isFetching,
-        errorMessage: Reducers.errorMessage
+        errorMessage: Reducers.errorMessage,
+        user: Reducers.user
     });
     Reducers.snApp = redux_1.combineReducers({
         collection: Reducers.collection
@@ -96,6 +135,14 @@ var Reducers;
     Reducers.getFetching = (state) => state.isFetching;
     Reducers.getError = (state) => {
         return state.errorMessage;
+    };
+    Reducers.getAuthenticationStatus = (state) => {
+        const user = state.user;
+        return user.isAuthenticated;
+    };
+    Reducers.getAuthenticationError = (state) => {
+        const user = state.user;
+        return user.errorMessage;
     };
 })(Reducers = exports.Reducers || (exports.Reducers = {}));
 

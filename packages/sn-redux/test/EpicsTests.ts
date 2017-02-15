@@ -10,11 +10,11 @@ const expect = Chai.expect;
 
 describe('Epics', () => {
     let window = {
-        'siteUrl' : 'https://daily.demo.sensenet.com'
+        'siteUrl': 'https://daily.demo.sensenet.com'
     }
     beforeEach(() => {
-            window['siteUrl'] = "https://daily.demo.sensenet.com";
-        })
+        window['siteUrl'] = "https://daily.demo.sensenet.com";
+    })
     describe('fetchContent Epic', () => {
         let store;
         const epicMiddleware = createEpicMiddleware(Epics.fetchContentEpic);
@@ -367,11 +367,67 @@ describe('Epics', () => {
             expect(store.getActions()).to.be.deep.eq(
                 [{
                     type: 'RESTOREVERSION_CONTENT_REQUEST',
-                    id: 111, 
+                    id: 111,
                     version: 'A.1.0'
                 },
                 {
                     type: 'RESTOREVERSION_CONTENT_FAILURE',
+                    message: 'XMLHttpRequest is not supported by your browser'
+                }]);
+        })
+    });
+    describe('login Epic', () => {
+        let store;
+        const epicMiddleware = createEpicMiddleware(Epics.userLoginEpic);
+        const mockStore = configureMockStore([epicMiddleware]);
+
+        before(() => {
+            store = mockStore();
+        });
+
+        after(() => {
+            nock.cleanAll();
+            epicMiddleware.replaceEpic(Epics.userLoginEpic);
+        });
+        it('handles the error', () => {
+            store.dispatch({ type: 'USER_LOGIN_REQUEST', id: 111, username: 'alba', password: 'alba' });
+            expect(store.getActions()).to.be.deep.eq(
+                [{
+                    type: 'USER_LOGIN_REQUEST',
+                    id: 111,
+                    username: 'alba',
+                    password: 'alba'
+                },
+                {
+                    type: 'USER_LOGIN_FAILURE',
+                    message: 'XMLHttpRequest is not supported by your browser'
+                }]);
+        })
+    });
+    describe('logout Epic', () => {
+        let store;
+        const epicMiddleware = createEpicMiddleware(Epics.userLogoutEpic);
+        const mockStore = configureMockStore([epicMiddleware]);
+
+        before(() => {
+            store = mockStore();
+        });
+
+        after(() => {
+            nock.cleanAll();
+            epicMiddleware.replaceEpic(Epics.userLogoutEpic);
+        });
+        it('handles the error', () => {
+            store.dispatch({ type: 'USER_LOGOUT_REQUEST', id: 111, username: 'alba', password: 'alba' });
+            expect(store.getActions()).to.be.deep.eq(
+                [{
+                    type: 'USER_LOGOUT_REQUEST',
+                    id: 111,
+                    username: 'alba',
+                    password: 'alba'
+                },
+                {
+                    type: 'USER_LOGOUT_FAILURE',
                     message: 'XMLHttpRequest is not supported by your browser'
                 }]);
         })

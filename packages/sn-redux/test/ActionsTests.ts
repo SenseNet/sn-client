@@ -418,4 +418,59 @@ describe('Actions', () => {
             expect(Actions.RestoreVersionFailure({ message: 'error' })).to.deep.equal(expectedAction)
         });
     });
+    describe('UserLogin', () => {
+        it('should create an action to a user login request', () => {
+            const expectedAction = {
+                type: 'USER_LOGIN_REQUEST',
+                userName: 'alba',
+                password: 'alba'
+            }
+            expect(Actions.UserLogin('alba', 'alba')).to.deep.equal(expectedAction)
+        });
+        it('should create an action to a user login success', () => {
+            const expectedAction = {
+                type: 'USER_LOGIN_SUCCESS',
+                response: {
+                    Name: 'alba',
+                    DisplayName: 'Alba Monday'
+                }
+            }
+            expect(Actions.UserLoginSuccess({ response: { d: { Name: 'alba', DisplayName: 'Alba Monday' } } })).to.deep.equal(expectedAction)
+        });
+        it('should create an action to a user login failure', () => {
+            const expectedAction = {
+                type: 'USER_LOGIN_FAILURE',
+                message: 'error'
+            }
+            expect(Actions.UserLoginFailure({ message: 'error' })).to.deep.equal(expectedAction)
+        });
+        it('should create an action to a user login failure with the proper message when 403', () => {
+            const expectedAction = {
+                type: 'USER_LOGIN_FAILURE',
+                message: 'The username or the password is not valid!'
+            }
+            expect(Actions.UserLoginFailure({ message: 'The username or the password is not valid!', status: 403 })).to.deep.equal(expectedAction)
+        });
+    });
+    describe('UserLogout', () => {
+        it('should create an action to a user logout request', () => {
+            const expectedAction = {
+                type: 'USER_LOGOUT_REQUEST'
+            }
+            expect(Actions.UserLogout()).to.deep.equal(expectedAction)
+        });
+        it('should create an action to a user logout success', () => {
+            const expectedAction = {
+                type: 'USER_LOGOUT_SUCCESS'
+            }
+            expect(Actions.UserLogoutSuccess({})).to.deep.equal(expectedAction)
+        });
+        it('should create an action to a user logout failure', () => {
+            const expectedAction = {
+                type: 'USER_LOGOUT_FAILURE',
+                message: 'error'
+            }
+            expect(Actions.UserLogoutFailure({ message: 'error' })).to.deep.equal(expectedAction)
+        });
+    });
 });

@@ -1,6 +1,6 @@
 "use strict";
-const Reducers_1 = require('../src/Reducers');
-const Chai = require('chai');
+const Reducers_1 = require("../src/Reducers");
+const Chai = require("chai");
 const expect = Chai.expect;
 describe('byId reducer', () => {
     it('should return the initial state', () => {
@@ -82,6 +82,73 @@ describe('isFetching reducer', () => {
     });
     it('should handle FETCH_CONTENT_FAILURE', () => {
         expect(Reducers_1.Reducers.isFetching(true, { type: 'FETCH_CONTENT_FAILURE' })).to.be.eq(false);
+    });
+});
+describe('user reducer', () => {
+    const userInitialState = {
+        data: null,
+        isLoading: false,
+        isAuthenticated: false,
+        errorMessage: ''
+    };
+    const user = {
+        data: {
+            userName: 'alba',
+            fullName: 'Alba Monday'
+        }
+    };
+    it('should return the initial state', () => {
+        expect(Reducers_1.Reducers.user(undefined, {})).to.be.deep.equal(userInitialState);
+    });
+    it('should handle USER_LOGIN_REQUEST', () => {
+        expect(Reducers_1.Reducers.user(userInitialState, { type: 'USER_LOGIN_REQUEST' })).to.be.deep.equal({
+            data: null,
+            isLoading: true,
+            errorMessage: '',
+            isAuthenticated: false
+        });
+    });
+    it('should handle USER_LOGIN_SUCCESS', () => {
+        expect(Reducers_1.Reducers.user(userInitialState, { type: 'USER_LOGIN_SUCCESS', response: { LoginName: 'alba', FullName: 'Alba Monday' } })).to.be.deep.equal({
+            data: {
+                userName: 'alba',
+                fullName: 'Alba Monday'
+            },
+            isLoading: false,
+            isAuthenticated: true
+        });
+    });
+    it('should handle USER_LOGIN_FAILURE', () => {
+        expect(Reducers_1.Reducers.user(userInitialState, { type: 'USER_LOGIN_FAILURE', message: 'aaa' })).to.be.deep.equal({
+            data: null,
+            isLoading: false,
+            errorMessage: 'aaa',
+            isAuthenticated: false
+        });
+    });
+    it('should handle USER_LOGOUT_REQUEST', () => {
+        expect(Reducers_1.Reducers.user(userInitialState, { type: 'USER_LOGOUT_REQUEST' })).to.be.deep.equal({
+            data: null,
+            isLoading: true,
+            errorMessage: '',
+            isAuthenticated: false
+        });
+    });
+    it('should handle USER_LOGOUT_SUCCESS', () => {
+        expect(Reducers_1.Reducers.user(userInitialState, { type: 'USER_LOGOUT_SUCCESS' })).to.be.deep.equal({
+            data: null,
+            isLoading: false,
+            errorMessage: '',
+            isAuthenticated: false
+        });
+    });
+    it('should handle USER_LOGOUT_FAILURE', () => {
+        expect(Reducers_1.Reducers.user(userInitialState, { type: 'USER_LOGOUT_FAILURE', message: 'aaa' })).to.be.deep.equal({
+            data: null,
+            isLoading: false,
+            errorMessage: 'aaa',
+            isAuthenticated: true
+        });
     });
 });
 describe('errorMessage reducer', () => {
@@ -247,6 +314,26 @@ describe('getError', () => {
     };
     it('should return the value of errorMessage from the current state', () => {
         expect(Reducers_1.Reducers.getError(state)).to.be.eq('error');
+    });
+});
+describe('getAuthenticationStatus', () => {
+    const state = {
+        user: {
+            isAuthenticated: true
+        }
+    };
+    it('should return true if the user is authenticated state', () => {
+        expect(Reducers_1.Reducers.getAuthenticationStatus(state)).to.be.eq(true);
+    });
+});
+describe('getAuthenticationError', () => {
+    const state = {
+        user: {
+            errorMessage: 'error'
+        }
+    };
+    it('should return the value of errorMessage from the current state', () => {
+        expect(Reducers_1.Reducers.getAuthenticationError(state)).to.be.eq('error');
     });
 });
 

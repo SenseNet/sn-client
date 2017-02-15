@@ -476,4 +476,59 @@ export module Actions {
         type: 'RESTOREVERSION_CONTENT_FAILURE',
         message: error.message
     })
+
+    /**
+      * Action creator for login a user to a Sense/Net portal.
+      * @param userName {string} Login name of the user.
+      * @param password {string} Password of the user.
+      * @returns {Object} Returns a redux action with the properties userName and password.
+    */
+    export const UserLogin = (userName: string, password: string) => ({
+        type: 'USER_LOGIN_REQUEST',
+        userName,
+        password
+    })
+    /**
+      * Action creator for the step when a User is logged in successfully.
+      * @param response {any} JSON response of the ajax request.
+      * @returns {Object} Returns a redux action with the user as a response.
+    */
+    export const UserLoginSuccess = (response: any) => ({
+        type: 'USER_LOGIN_SUCCESS',
+        response: response.response.d
+    })
+    /**
+     * Action creator for the step when login of a user is failed.
+     * @param error {any} The catched error object.
+     * @returns {Object} Returns a redux action with the properties type and the error message. 
+    */
+    export const UserLoginFailure = (error: any) => ({
+        type: 'USER_LOGIN_FAILURE',
+        message: (error.status === 403) ? 'The username or the password is not valid!' : error.message
+    })
+
+    /**
+      * Action creator for logout a user from a Sense/Net portal.
+      * @returns {Object} Returns a redux action.
+    */
+    export const UserLogout = () => ({
+        type: 'USER_LOGOUT_REQUEST'
+    })
+    /**
+      * Action creator for the step when a user is logged out successfully.
+      * @param response {any} JSON response of the ajax request.
+      * @returns {Object} Returns a redux action with a response.
+    */
+    export const UserLogoutSuccess = (response: any) => ({
+        type: 'USER_LOGOUT_SUCCESS'
+    })
+    /**
+     * Action creator for the step when logging out of a user is failed.
+     * @param error {any} The catched error object.
+     * @returns {Object} Returns a redux action with the properties type and the error message. 
+    */
+    export const UserLogoutFailure = (error: any) => ({
+        type: 'USER_LOGOUT_FAILURE',
+        message: error.message
+    })
 }

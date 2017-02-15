@@ -1,11 +1,11 @@
 "use strict";
-require('rxjs');
-const nock = require('nock');
-const Chai = require('chai');
-const redux_mock_store_1 = require('redux-mock-store');
-const redux_observable_1 = require('redux-observable');
-const SN = require('sn-client-js');
-const Epics_1 = require('../src/Epics');
+require("rxjs");
+const nock = require("nock");
+const Chai = require("chai");
+const redux_mock_store_1 = require("redux-mock-store");
+const redux_observable_1 = require("redux-observable");
+const SN = require("sn-client-js");
+const Epics_1 = require("../src/Epics");
 const expect = Chai.expect;
 describe('Epics', () => {
     let window = {
@@ -331,6 +331,56 @@ describe('Epics', () => {
                 },
                 {
                     type: 'RESTOREVERSION_CONTENT_FAILURE',
+                    message: 'XMLHttpRequest is not supported by your browser'
+                }]);
+        });
+    });
+    describe('login Epic', () => {
+        let store;
+        const epicMiddleware = redux_observable_1.createEpicMiddleware(Epics_1.Epics.userLoginEpic);
+        const mockStore = redux_mock_store_1.default([epicMiddleware]);
+        before(() => {
+            store = mockStore();
+        });
+        after(() => {
+            nock.cleanAll();
+            epicMiddleware.replaceEpic(Epics_1.Epics.userLoginEpic);
+        });
+        it('handles the error', () => {
+            store.dispatch({ type: 'USER_LOGIN_REQUEST', id: 111, username: 'alba', password: 'alba' });
+            expect(store.getActions()).to.be.deep.eq([{
+                    type: 'USER_LOGIN_REQUEST',
+                    id: 111,
+                    username: 'alba',
+                    password: 'alba'
+                },
+                {
+                    type: 'USER_LOGIN_FAILURE',
+                    message: 'XMLHttpRequest is not supported by your browser'
+                }]);
+        });
+    });
+    describe('logout Epic', () => {
+        let store;
+        const epicMiddleware = redux_observable_1.createEpicMiddleware(Epics_1.Epics.userLogoutEpic);
+        const mockStore = redux_mock_store_1.default([epicMiddleware]);
+        before(() => {
+            store = mockStore();
+        });
+        after(() => {
+            nock.cleanAll();
+            epicMiddleware.replaceEpic(Epics_1.Epics.userLogoutEpic);
+        });
+        it('handles the error', () => {
+            store.dispatch({ type: 'USER_LOGOUT_REQUEST', id: 111, username: 'alba', password: 'alba' });
+            expect(store.getActions()).to.be.deep.eq([{
+                    type: 'USER_LOGOUT_REQUEST',
+                    id: 111,
+                    username: 'alba',
+                    password: 'alba'
+                },
+                {
+                    type: 'USER_LOGOUT_FAILURE',
                     message: 'XMLHttpRequest is not supported by your browser'
                 }]);
         });

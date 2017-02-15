@@ -1,7 +1,7 @@
 "use strict";
-const normalizr_1 = require('normalizr');
-const Schema_1 = require('./Schema');
-const SN = require('sn-client-js');
+const normalizr_1 = require("normalizr");
+const Schema_1 = require("./Schema");
+const SN = require("sn-client-js");
 var Actions;
 (function (Actions) {
     Actions.RequestContent = (path, options = {}) => ({
@@ -158,6 +158,29 @@ var Actions;
     });
     Actions.RestoreVersionFailure = (error) => ({
         type: 'RESTOREVERSION_CONTENT_FAILURE',
+        message: error.message
+    });
+    Actions.UserLogin = (userName, password) => ({
+        type: 'USER_LOGIN_REQUEST',
+        userName,
+        password
+    });
+    Actions.UserLoginSuccess = (response) => ({
+        type: 'USER_LOGIN_SUCCESS',
+        response: response.response.d
+    });
+    Actions.UserLoginFailure = (error) => ({
+        type: 'USER_LOGIN_FAILURE',
+        message: (error.status === 403) ? 'The username or the password is not valid!' : error.message
+    });
+    Actions.UserLogout = () => ({
+        type: 'USER_LOGOUT_REQUEST'
+    });
+    Actions.UserLogoutSuccess = (response) => ({
+        type: 'USER_LOGOUT_SUCCESS'
+    });
+    Actions.UserLogoutFailure = (error) => ({
+        type: 'USER_LOGOUT_FAILURE',
         message: error.message
     });
 })(Actions = exports.Actions || (exports.Actions = {}));

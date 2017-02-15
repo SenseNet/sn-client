@@ -1,9 +1,9 @@
 "use strict";
-const redux_observable_1 = require('redux-observable');
-const Rx = require('@reactivex/rxjs');
-const SN = require('sn-client-js');
-const Actions_1 = require('./Actions');
-const Reducers_1 = require('./Reducers');
+const redux_observable_1 = require("redux-observable");
+const Rx = require("@reactivex/rxjs");
+const SN = require("sn-client-js");
+const Actions_1 = require("./Actions");
+const Reducers_1 = require("./Reducers");
 const { ajax } = Rx.Observable;
 var Epics;
 (function (Epics) {
@@ -137,7 +137,25 @@ var Epics;
                 .catch(error => Rx.Observable.of(Actions_1.Actions.RestoreVersionFailure(error)));
         });
     };
-    Epics.rootEpic = redux_observable_1.combineEpics(Epics.fetchContentEpic, Epics.createContentEpic, Epics.updateContentEpic, Epics.deleteContentEpic, Epics.deleteBatchEpic, Epics.checkoutContentEpic, Epics.checkinContentEpic, Epics.publishContentEpic, Epics.approveContentEpic, Epics.rejectContentEpic, Epics.undocheckoutContentEpic, Epics.forceundocheckoutContentEpic, Epics.restoreversionContentEpic);
+    Epics.userLoginEpic = (action$, store) => {
+        return action$.ofType('USER_LOGIN_REQUEST')
+            .mergeMap(action => {
+            const Action = new SN.ODataApi.CustomAction({ name: 'Login', path: '/Root', isAction: true, requiredParams: ['username', 'password'], noCache: true });
+            return SN.ODataApiActionObservables.Login(Action, { data: { 'username': action.userName, 'password': action.password } })
+                .map(Actions_1.Actions.UserLoginSuccess)
+                .catch(error => Rx.Observable.of(Actions_1.Actions.UserLoginFailure(error)));
+        });
+    };
+    Epics.userLogoutEpic = (action$, store) => {
+        return action$.ofType('USER_LOGOUT_REQUEST')
+            .mergeMap(action => {
+            const Action = new SN.ODataApi.CustomAction({ name: 'Logout', path: '/Root', isAction: true, noCache: true });
+            return SN.ODataApiActionObservables.Logout(Action, {})
+                .map(Actions_1.Actions.UserLogoutSuccess)
+                .catch(error => Rx.Observable.of(Actions_1.Actions.UserLogoutFailure(error)));
+        });
+    };
+    Epics.rootEpic = redux_observable_1.combineEpics(Epics.fetchContentEpic, Epics.createContentEpic, Epics.updateContentEpic, Epics.deleteContentEpic, Epics.deleteBatchEpic, Epics.checkoutContentEpic, Epics.checkinContentEpic, Epics.publishContentEpic, Epics.approveContentEpic, Epics.rejectContentEpic, Epics.undocheckoutContentEpic, Epics.forceundocheckoutContentEpic, Epics.restoreversionContentEpic, Epics.userLoginEpic, Epics.userLogoutEpic);
 })(Epics = exports.Epics || (exports.Epics = {}));
 
 //# sourceMappingURL=Epics.js.map
