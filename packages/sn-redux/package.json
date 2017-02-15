@@ -34,7 +34,7 @@
     "redux": "3.6.0",
     "redux-logger": "2.8.1",
     "redux-observable": "0.13.0",
-    "sn-client-js": "1.0.2-beta.5",
+    "sn-client-js": "1.1.0-beta.1",
     "ts-json-properties": "1.1.2"
   },
   "devDependencies": {
@@ -69,7 +69,7 @@
     "rxjs": "5.1.0",
     "semantic-release": "^6.3.2",
     "sinon": "1.17.7",
-    "sn-client-js": "1.0.2-beta.5",
+    "sn-client-js": "1.1.0-beta.1",
     "tslint": "4.4.2",
     "typedoc": "0.5.5",
     "typescript": "2.1.5"
