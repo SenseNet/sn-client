@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const SN = require("sn-client-js");
 const Actions_1 = require("../src/Actions");
 const Chai = require("chai");

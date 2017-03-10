@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const normalizr_1 = require("normalizr");
 const Schema_1 = require("./Schema");
 const SN = require("sn-client-js");

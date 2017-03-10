@@ -1,9 +1,10 @@
 "use strict";
-const redux_1 = require('redux');
-const createLogger = require('redux-logger');
-const redux_observable_1 = require('redux-observable');
-const Epics_1 = require('./Epics');
-const Reducers_1 = require('./Reducers');
+Object.defineProperty(exports, "__esModule", { value: true });
+const redux_1 = require("redux");
+const createLogger = require("redux-logger");
+const redux_observable_1 = require("redux-observable");
+const Epics_1 = require("./Epics");
+const Reducers_1 = require("./Reducers");
 var Store;
 (function (Store) {
     Store.configureStore = (rootReducer = Reducers_1.Reducers.snApp, rootEpic, middlewares, persistedState) => {

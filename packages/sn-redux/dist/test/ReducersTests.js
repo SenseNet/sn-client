@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const Reducers_1 = require("../src/Reducers");
 const Chai = require("chai");
 const expect = Chai.expect;

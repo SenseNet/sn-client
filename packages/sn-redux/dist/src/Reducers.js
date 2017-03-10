@@ -1,12 +1,5 @@
 "use strict";
-var __assign = (this && this.__assign) || Object.assign || function(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-            t[p] = s[p];
-    }
-    return t;
-};
+Object.defineProperty(exports, "__esModule", { value: true });
 const redux_1 = require("redux");
 var Reducers;
 (function (Reducers) {
@@ -100,7 +93,7 @@ var Reducers;
         switch (action.type) {
             case 'USER_LOGIN_REQUEST':
             case 'USER_LOGOUT_REQUEST':
-                return __assign({}, userInitialState, { isLoading: true, isAuthenticated: false });
+                return Object.assign({}, userInitialState, { isLoading: true, isAuthenticated: false });
             case 'USER_LOGIN_SUCCESS':
                 return {
                     data: {
@@ -113,9 +106,9 @@ var Reducers;
             case 'USER_LOGOUT_SUCCESS':
                 return userInitialState;
             case 'USER_LOGIN_FAILURE':
-                return __assign({}, userInitialState, { isLoading: false, errorMessage: action.message, isAuthenticated: false });
+                return Object.assign({}, userInitialState, { isLoading: false, errorMessage: action.message, isAuthenticated: false });
             case 'USER_LOGOUT_FAILURE':
-                return __assign({}, userInitialState, { isLoading: false, errorMessage: action.message, isAuthenticated: true });
+                return Object.assign({}, userInitialState, { isLoading: false, errorMessage: action.message, isAuthenticated: true });
             default:
                 return state;
         }

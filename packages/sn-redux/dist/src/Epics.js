@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const redux_observable_1 = require("redux-observable");
 const Rx = require("@reactivex/rxjs");
 const SN = require("sn-client-js");

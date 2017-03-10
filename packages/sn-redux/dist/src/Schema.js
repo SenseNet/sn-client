@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const normalizr_1 = require("normalizr");
 var Schemas;
 (function (Schemas) {

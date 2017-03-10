@@ -91,4 +91,4 @@ gulp.task("typedoc", function () {
 });
 
 gulp.task('test', ['test:cover']);
-gulp.task('default', ['build:lint', 'build', 'test', 'typedoc']);
+gulp.task('default', ['build:lint', 'build', 'test']);
