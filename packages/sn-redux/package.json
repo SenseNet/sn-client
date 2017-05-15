@@ -1,16 +1,31 @@
 {
   "name": "sn-redux",
-  "version": "1.1.0-beta.2",
+  "version": "2.0.0-RC.1",
   "description": "A set of redux actions, reducers and redux-ovbservable epics for Sense/Net ECM",
-  "main": "dist/sn-redux.js",
+  "main": "dist/src/sn-redux.js",
   "scripts": {
+    "lint": "node tslint --project ./tsconfig.json",
+    "clean": "rimraf dist",
+    "precommit": "npm run lint",
     "commit": "git-cz",
     "gulp": "gulp",
-    "test": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec dist/test/*Tests.js",
+    "pretest": "npm run build",
+    "test": "nyc mocha dist/test/index.js",
     "check-coverage": "istanbul check-coverage ",
     "report-coverage": "cat ./coverage/lcov.info | codecov",
-    "semantic-release": "semantic-release pre && semantic-release post"
+    "prebuild": "npm run lint && npm run clean",
+    "build": "tsc",
+    "typedoc:md": "gulp typedoc:md",
+    "typedoc:html": "gulp typedoc",
+    "semantic-release": "semantic-release pre && semantic-release post",
+    "publish:development": "npm publish --tag development"
   },
+  "files": [
+    "dist",
+    "src",
+    "test",
+    "documentation"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/SenseNet/sn-redux.git"
@@ -26,51 +41,56 @@
   "bugs": {
     "url": "https://github.com/SenseNet/sn-redux/issues"
   },
+  "nyc": {
+    "cache": true,
+    "include": "dist/src/**/*.*",
+    "exclude": "dist/src/**/sn-redux.js",
+    "all": true,
+    "reporter": [
+      "lcov",
+      "text-summary",
+      "json"
+    ]
+  },
   "homepage": "https://sensenet.com",
   "dependencies": {
-    "isomorphic-fetch": "2.2.1",
-    "rxjs": "5.2.0",
-    "normalizr": "3.2.2",
+    "@reactivex/rxjs": "^5.3.1",
+    "normalizr": "^3.2.2",
+    "nyc": "^10.3.0",
     "redux": "3.6.0",
     "redux-logger": "2.8.2",
-    "redux-observable": "0.14.1",
-	"sn-client-js": "1.1.1-beta.1",
-    "ts-json-properties": "1.1.4"
+    "redux-observable": "^0.14.1",
+    "redux-thunk": "^2.2.0",
+    "rimraf": "^2.6.1",
+    "rxjs": "^5.3.1",
+    "sn-client-js": "^2.0.0-RC.1"
   },
   "devDependencies": {
-    "@reactivex/rxjs": "5.2.0",
     "@types/chai": "3.4.35",
     "@types/mocha": "2.2.39",
     "@types/nock": "8.2.1",
     "@types/orchestrator": "0.0.30",
     "@types/redux-mock-store": "0.0.7",
-    "@types/sinon": "1.16.35",
     "chai": "3.5.0",
     "codecov.io": "0.1.6",
     "commitizen": "2.9.6",
     "cz-conventional-changelog": "2.0.0",
     "del": "2.2.2",
     "gulp": "3.9.1",
-    "gulp-istanbul": "1.1.1",
-    "gulp-mocha": "3.0.1",
-    "gulp-sourcemaps": "2.4.1",
-    "gulp-tslint": "7.1.0",
+    "gulp-rename": "^1.2.2",
     "gulp-typedoc": "2.0.2",
-    "gulp-typescript": "3.1.5",
-    "isomorphic-fetch": "2.2.1",
-    "mocha": "3.2.0",
+    "mocha": "3.3.0",
     "nock": "9.0.9",
     "normalizr": "3.2.2",
-    "redux": "3.6.0",
-    "redux-mock-store": "1.2.2",
+    "redux": "^3.6.0",
+    "redux-mock-store": "1.2.3",
     "redux-observable": "0.14.1",
-    "remap-istanbul": "0.9.1",
-    "rxjs": "5.2.0",
     "semantic-release": "^6.3.2",
-    "sinon": "1.17.7",
-    "tslint": "4.5.1",
-    "typedoc": "0.5.7",
-    "typescript": "2.2.1"
+    "tslint": "5.2.0",
+    "typedoc": "0.6.0",
+    "typedoc-md-theme": "^1.0.1",
+    "typedoc-plugin-external-module-name": "^1.0.9",
+    "typescript": "2.3.2"
   },
   "czConfig": {
     "path": "node_modules/cz-conventional-changelog"

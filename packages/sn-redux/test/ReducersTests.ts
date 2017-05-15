@@ -2,6 +2,7 @@
 import { Reducers } from '../src/Reducers';
 import { Actions } from '../src/Actions';
 import * as Chai from 'chai';
+import { Authentication } from "sn-client-js";
 const expect = Chai.expect;
 
 describe('byId reducer', () => {
@@ -95,79 +96,54 @@ describe('isFetching reducer', () => {
 
 describe('user reducer', () => {
     const userInitialState = {
-        data: null,
-        isLoading: false,
-        isAuthenticated: false,
+        loginState: Authentication.LoginState.Pending,
         errorMessage: ''
     };
-    const user = {
-        data: {
-            userName: 'alba',
-            fullName: 'Alba Monday'
-        }
-    }
     it('should return the initial state', () => {
         expect(Reducers.user(undefined, {})).to.be.deep.equal(userInitialState);
     });
     it('should handle USER_LOGIN_REQUEST', () => {
         expect(Reducers.user(userInitialState, { type: 'USER_LOGIN_REQUEST' })).to.be.deep.equal(
-            {
-                data: null,
-                isLoading: true,
-                errorMessage: '',
-                isAuthenticated: false
-            }
-        );
+        {
+            loginState: Authentication.LoginState.Pending,
+            errorMessage: ''
+        });
     });
     it('should handle USER_LOGIN_SUCCESS', () => {
-        expect(Reducers.user(userInitialState, { type: 'USER_LOGIN_SUCCESS', response: { LoginName: 'alba', FullName: 'Alba Monday' } })).to.be.deep.equal(
+        expect(Reducers.user(userInitialState, { type: 'USER_LOGIN_SUCCESS', response: true })).to.be.deep.equal(
             {
-                data: {
-                    userName: 'alba',
-                    fullName: 'Alba Monday'
-                },
-                isLoading: false,
-                isAuthenticated: true
+                loginState: Authentication.LoginState.Authenticated,
             }
         );
     });
     it('should handle USER_LOGIN_FAILURE', () => {
         expect(Reducers.user(userInitialState, { type: 'USER_LOGIN_FAILURE', message: 'aaa' })).to.be.deep.equal(
             {
-                data: null,
-                isLoading: false,
+                loginState: Authentication.LoginState.Unauthenticated,
                 errorMessage: 'aaa',
-                isAuthenticated: false
             }
         );
     });
     it('should handle USER_LOGOUT_REQUEST', () => {
         expect(Reducers.user(userInitialState, { type: 'USER_LOGOUT_REQUEST' })).to.be.deep.equal(
             {
-                data: null,
-                isLoading: true,
+                loginState: Authentication.LoginState.Pending,
                 errorMessage: '',
-                isAuthenticated: false
             }
         );
     });
     it('should handle USER_LOGOUT_SUCCESS', () => {
         expect(Reducers.user(userInitialState, { type: 'USER_LOGOUT_SUCCESS' })).to.be.deep.equal(
             {
-                data: null,
-                isLoading: false,
-                errorMessage: '',
-                isAuthenticated: false
+                loginState: Authentication.LoginState.Unauthenticated,
             }
         );
     });
     it('should handle USER_LOGOUT_FAILURE', () => {
         expect(Reducers.user(userInitialState, { type: 'USER_LOGOUT_FAILURE', message: 'aaa' })).to.be.deep.equal(
             {
-                data: null,
-                isLoading: false,
+                loginState: Authentication.LoginState.Unauthenticated,
                 errorMessage: 'aaa',
-                isAuthenticated: true
             }
         );
     });
@@ -348,11 +324,11 @@ describe('getError', () => {
 describe('getAuthenticationStatus', () => {
     const state = {
         user: {
-            isAuthenticated: true
+            loginState: Authentication.LoginState.Authenticated
         }
     }
     it('should return true if the user is authenticated state', () => {
-        expect(Reducers.getAuthenticationStatus(state)).to.be.eq(true);
+        expect(Reducers.getAuthenticationStatus(state)).to.be.eq(Authentication.LoginState.Authenticated);
     });
 });
 

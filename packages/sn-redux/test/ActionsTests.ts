@@ -1,7 +1,8 @@
 ///<reference path="../node_modules/@types/mocha/index.d.ts"/>
-import * as SN from 'sn-client-js';
+import { ContentTypes } from 'sn-client-js';
 import { Actions } from '../src/Actions'
 import * as Chai from 'chai';
+import { Content, Mocks, IContentOptions } from "sn-client-js";
 const expect = Chai.expect;
 
 describe('Actions', () => {
@@ -11,36 +12,42 @@ describe('Actions', () => {
             const expectedAction = {
                 type: 'FETCH_CONTENT_REQUEST',
                 path: '/workspaces/project',
-                filter: "?$select=Id,Type&metadata=no"
+                options: {},
+                contentType: Content
             }
-            expect(Actions.RequestContent(path, {})).to.deep.equal(expectedAction)
+            expect(Actions.RequestContent(path, {}, Content)).to.deep.equal(expectedAction)
         });
         it('should create an action to receive content', () => {
             const expectedAction = {
                 type: 'FETCH_CONTENT_SUCCESS',
                 response: { entities: {}, result: [] },
-                filter: "?$select=Id,Type&metadata=no"
+                params: "?$select=Id,Type&metadata=no"
             }
-            expect(Actions.ReceiveContent({ d: { results: [] } }, '?$select=Id,Type&metadata=no')).to.deep.equal(expectedAction)
+            expect(Actions.ReceiveContent({ d: { results: [], __count: 0 } }, '?$select=Id,Type&metadata=no')).to.deep.equal(expectedAction)
         });
         it('should create an action to content fetch request failure', () => {
             const expectedAction = {
                 type: 'FETCH_CONTENT_FAILURE',
                 message: 'error',
-                filter: "?$select=Id,Type&metadata=no"
+                params: "?$select=Id,Type&metadata=no"
             }
             expect(Actions.ReceiveContentFailure('?$select=Id,Type&metadata=no', { message: 'error' })).to.deep.equal(expectedAction)
         });
     });
     describe('CreateContent', () => {
-        const content = SN.Content.Create('Article', { DisplayName: 'My content', Id: 123 })
+        const content = {
+            Id: 123,
+            Name: 'My Content',
+            DueDate: null,
+        };
         it('should create an action to a create content request', () => {
             const expectedAction = {
                 type: 'CREATE_CONTENT_REQUEST',
                 path: '/workspaces/project',
-                content: content
-            }
-            expect(Actions.CreateContent(path, content)).to.deep.equal(expectedAction)
+                content,
+                contentType: ContentTypes.Task,
+            };
+            expect(Actions.CreateContent(path, ContentTypes.Task, content as any)).to.deep.equal(expectedAction)
         });
         it('should create an action to create content success', () => {
             const expectedAction = {
@@ -57,7 +64,7 @@ describe('Actions', () => {
                     result: 123
                 }
             }
-            expect(Actions.CreateContentSuccess({ response: { d: { DisplayName: 'My content', Id: 123 } } })).to.deep.equal(expectedAction)
+            expect(Actions.CreateContentSuccess({ d: { DisplayName: 'My content', Id: 123 } })).to.deep.equal(expectedAction)
         });
         it('should create an action to content creation failure', () => {
             const expectedAction = {
@@ -72,9 +79,12 @@ describe('Actions', () => {
             const expectedAction = {
                 type: 'UPDATE_CONTENT_REQUEST',
                 id: 123,
-                fields: { Index: 2 }
+                fields: { Index: 2 },
+                contentType: ContentTypes.Task
             }
-            expect(Actions.UpdateContent(123, { Index: 2 })).to.deep.equal(expectedAction)
+            expect(Actions.UpdateContent(123, ContentTypes.Task, {
+                Index: 2
+            })).to.deep.equal(expectedAction)
         });
         it('should create an action to update content success', () => {
             const expectedAction = {
@@ -430,12 +440,9 @@ describe('Actions', () => {
         it('should create an action to a user login success', () => {
             const expectedAction = {
                 type: 'USER_LOGIN_SUCCESS',
-                response: {
-                    Name: 'alba',
-                    DisplayName: 'Alba Monday'
-                }
+                response: true
             }
-            expect(Actions.UserLoginSuccess({ response: { d: { Name: 'alba', DisplayName: 'Alba Monday' } } })).to.deep.equal(expectedAction)
+            expect(Actions.UserLoginSuccess(true)).to.deep.equal(expectedAction)
         });
         it('should create an action to a user login failure', () => {
             const expectedAction = {

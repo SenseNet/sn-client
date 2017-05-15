@@ -1,23 +1,24 @@
-///<reference path="../node_modules/@types/mocha/index.d.ts"/>
-import 'rxjs';
-import * as nock from 'nock';
 import * as Chai from 'chai';
 import configureMockStore from 'redux-mock-store';
 import { createEpicMiddleware } from 'redux-observable';
-import * as SN from 'sn-client-js';
+import { Mocks, ContentTypes, HttpProviders, Authentication, ODataApi, Content } from 'sn-client-js';
 import { Epics } from '../src/Epics'
 const expect = Chai.expect;
+import 'rxjs';
 
 describe('Epics', () => {
-    let window = {
-        'siteUrl': 'https://daily.demo.sensenet.com'
-    }
+
+    let repo: Mocks.MockRepository = new Mocks.MockRepository();
+    (repo.Authentication as Mocks.MockAuthService).stateSubject.next(Authentication.LoginState.Authenticated);
+    (repo.httpProviderRef as Mocks.MockHttpProvider).UseTimeout = false;
+
     beforeEach(() => {
-        window['siteUrl'] = "https://daily.demo.sensenet.com";
+        (repo.httpProviderRef as Mocks.MockHttpProvider).setError({message: 'XMLHttpRequest is not supported by your browser'});
+
     })
     describe('fetchContent Epic', () => {
         let store;
-        const epicMiddleware = createEpicMiddleware(Epics.fetchContentEpic);
+        const epicMiddleware = createEpicMiddleware(Epics.fetchContentEpic, {dependencies: {repository: repo}});
         const mockStore = configureMockStore([epicMiddleware]);
 
         before(() => {
@@ -25,26 +26,26 @@ describe('Epics', () => {
         });
 
         after(() => {
-            nock.cleanAll();
             epicMiddleware.replaceEpic(Epics.fetchContentEpic);
         });
         it('handles the error', () => {
-            store.dispatch({ type: 'FETCH_CONTENT_REQUEST', path: '/workspaces/Project' });
+            store.dispatch({ type: 'FETCH_CONTENT_REQUEST', path: '/workspaces/Project', options: {} });
             expect(store.getActions()).to.be.deep.eq(
                 [{
                     type: 'FETCH_CONTENT_REQUEST',
-                    path: '/workspaces/Project'
+                    path: '/workspaces/Project',
+                    options: {}
                 },
                 {
                     type: 'FETCH_CONTENT_FAILURE',
-                    filter: 'undefined',
+                    params: new ODataApi.ODataParams({select: ["Id", "Type"]}),
                     message: 'XMLHttpRequest is not supported by your browser'
                 }]);
         })
     });
     describe('createContent Epic', () => {
         let store;
-        const epicMiddleware = createEpicMiddleware(Epics.createContentEpic);
+        const epicMiddleware = createEpicMiddleware(Epics.createContentEpic, {dependencies: {repository: repo}});
         const mockStore = configureMockStore([epicMiddleware]);
 
         before(() => {
@@ -52,17 +53,20 @@ describe('Epics', () => {
         });
 
         after(() => {
-            nock.cleanAll();
             epicMiddleware.replaceEpic(Epics.createContentEpic);
         });
         it('handles the error', () => {
-            const content = SN.Content.Create('Article', { DisplayName: 'My article' })
-            store.dispatch({ type: 'CREATE_CONTENT_REQUEST', path: '/workspaces/Project', content });
+            const content = new ContentTypes.Task({
+                Name: 'My Task',
+                DueDate: null
+            }, repo)['options'];
+            store.dispatch({ type: 'CREATE_CONTENT_REQUEST', path: '/workspaces/Project', content, contentType: Content });
             expect(store.getActions()).to.be.deep.eq(
                 [{
                     type: 'CREATE_CONTENT_REQUEST',
                     path: '/workspaces/Project',
-                    content
+                    content,
+                    contentType: Content
                 },
                 {
                     type: 'CREATE_CONTENT_FAILURE',
@@ -72,7 +76,7 @@ describe('Epics', () => {
     });
     describe('updateContent Epic', () => {
         let store;
-        const epicMiddleware = createEpicMiddleware(Epics.updateContentEpic);
+        const epicMiddleware = createEpicMiddleware(Epics.updateContentEpic, {dependencies: {repository: repo}});
         const mockStore = configureMockStore([epicMiddleware]);
 
         before(() => {
@@ -80,7 +84,6 @@ describe('Epics', () => {
         });
 
         after(() => {
-            nock.cleanAll();
             epicMiddleware.replaceEpic(Epics.updateContentEpic);
         });
         it('handles the error', () => {
@@ -100,7 +103,7 @@ describe('Epics', () => {
     });
     describe('deleteContent Epic', () => {
         let store;
-        const epicMiddleware = createEpicMiddleware(Epics.deleteContentEpic);
+        const epicMiddleware = createEpicMiddleware(Epics.deleteContentEpic, {dependencies: {repository: repo}});
         const mockStore = configureMockStore([epicMiddleware]);
 
         before(() => {
@@ -108,7 +111,6 @@ describe('Epics', () => {
         });
 
         after(() => {
-            nock.cleanAll();
             epicMiddleware.replaceEpic(Epics.deleteContentEpic);
         });
         it('handles the error', () => {
@@ -127,7 +129,7 @@ describe('Epics', () => {
     });
     describe('deleteBatch Epic', () => {
         let store;
-        const epicMiddleware = createEpicMiddleware(Epics.deleteBatchEpic);
+        const epicMiddleware = createEpicMiddleware(Epics.deleteBatchEpic, {dependencies: {repository: repo}});
         const mockStore = configureMockStore([epicMiddleware]);
 
         before(() => {
@@ -135,7 +137,6 @@ describe('Epics', () => {
         });
 
         after(() => {
-            nock.cleanAll();
             epicMiddleware.replaceEpic(Epics.deleteBatchEpic);
         });
         it('handles the error', () => {
@@ -155,7 +156,7 @@ describe('Epics', () => {
     });
     describe('checkoutContent Epic', () => {
         let store;
-        const epicMiddleware = createEpicMiddleware(Epics.checkoutContentEpic);
+        const epicMiddleware = createEpicMiddleware(Epics.checkoutContentEpic, {dependencies: {repository: repo}});
         const mockStore = configureMockStore([epicMiddleware]);
 
         before(() => {
@@ -163,25 +164,25 @@ describe('Epics', () => {
         });
 
         after(() => {
-            nock.cleanAll();
             epicMiddleware.replaceEpic(Epics.checkoutContentEpic);
         });
         it('handles the error', () => {
+            (repo.httpProviderRef as Mocks.MockHttpProvider).setError({message: 'Checkout Content failed'});
             store.dispatch({ type: 'CHECKOUT_CONTENT_REQUEST', id: 111 });
-            expect(store.getActions()).to.be.deep.eq(
-                [{
-                    type: 'CHECKOUT_CONTENT_REQUEST',
-                    id: 111
-                },
-                {
-                    type: 'CHECKOUT_CONTENT_FAILURE',
-                    message: 'XMLHttpRequest is not supported by your browser'
-                }]);
+                expect(store.getActions()).to.be.deep.eq(
+                    [{
+                        type: 'CHECKOUT_CONTENT_REQUEST',
+                        id: 111
+                    },
+                    {
+                        type: 'CHECKOUT_CONTENT_FAILURE',
+                        message: 'Checkout Content failed'
+                    }]);
         })
     });
     describe('checkinContent Epic', () => {
         let store;
-        const epicMiddleware = createEpicMiddleware(Epics.checkinContentEpic);
+        const epicMiddleware = createEpicMiddleware(Epics.checkinContentEpic, {dependencies: {repository: repo}});
         const mockStore = configureMockStore([epicMiddleware]);
 
         before(() => {
@@ -189,26 +190,28 @@ describe('Epics', () => {
         });
 
         after(() => {
-            nock.cleanAll();
             epicMiddleware.replaceEpic(Epics.checkinContentEpic);
         });
         it('handles the error', () => {
+
+            (repo.httpProviderRef as Mocks.MockHttpProvider).setError({message: 'Checkin Content failed'});
+
             store.dispatch({ type: 'CHECKIN_CONTENT_REQUEST', id: 111, checkinComment: 'comment' });
-            expect(store.getActions()).to.be.deep.eq(
-                [{
-                    type: 'CHECKIN_CONTENT_REQUEST',
-                    id: 111,
-                    checkinComment: 'comment'
-                },
-                {
-                    type: 'CHECKIN_CONTENT_FAILURE',
-                    message: 'XMLHttpRequest is not supported by your browser'
-                }]);
+                expect(store.getActions()).to.be.deep.eq(
+                    [{
+                        type: 'CHECKIN_CONTENT_REQUEST',
+                        id: 111,
+                        checkinComment: 'comment'
+                    },
+                    {
+                        type: 'CHECKIN_CONTENT_FAILURE',
+                        message: 'Checkin Content failed'
+                    }]);
         })
     });
     describe('publishContent Epic', () => {
         let store;
-        const epicMiddleware = createEpicMiddleware(Epics.publishContentEpic);
+        const epicMiddleware = createEpicMiddleware(Epics.publishContentEpic, {dependencies: {repository: repo}});
         const mockStore = configureMockStore([epicMiddleware]);
 
         before(() => {
@@ -216,25 +219,26 @@ describe('Epics', () => {
         });
 
         after(() => {
-            nock.cleanAll();
             epicMiddleware.replaceEpic(Epics.publishContentEpic);
         });
         it('handles the error', () => {
+            (repo.httpProviderRef as Mocks.MockHttpProvider).setError({message: 'Publish Content failed'});
             store.dispatch({ type: 'PUBLISH_CONTENT_REQUEST', id: 111 });
-            expect(store.getActions()).to.be.deep.eq(
-                [{
-                    type: 'PUBLISH_CONTENT_REQUEST',
-                    id: 111
-                },
-                {
-                    type: 'PUBLISH_CONTENT_FAILURE',
-                    message: 'XMLHttpRequest is not supported by your browser'
-                }]);
+
+                expect(store.getActions()).to.be.deep.eq(
+                    [{
+                        type: 'PUBLISH_CONTENT_REQUEST',
+                        id: 111
+                    },
+                    {
+                        type: 'PUBLISH_CONTENT_FAILURE',
+                        message: 'Publish Content failed'
+                    }]);
         })
     });
     describe('approveContent Epic', () => {
         let store;
-        const epicMiddleware = createEpicMiddleware(Epics.approveContentEpic);
+        const epicMiddleware = createEpicMiddleware(Epics.approveContentEpic, {dependencies: {repository: repo}});
         const mockStore = configureMockStore([epicMiddleware]);
 
         before(() => {
@@ -242,25 +246,25 @@ describe('Epics', () => {
         });
 
         after(() => {
-            nock.cleanAll();
             epicMiddleware.replaceEpic(Epics.approveContentEpic);
         });
         it('handles the error', () => {
+            (repo.httpProviderRef as Mocks.MockHttpProvider).setError({message: 'Approve Content failed'});
             store.dispatch({ type: 'APPROVE_CONTENT_REQUEST', id: 111 });
-            expect(store.getActions()).to.be.deep.eq(
-                [{
-                    type: 'APPROVE_CONTENT_REQUEST',
-                    id: 111
-                },
-                {
-                    type: 'APPROVE_CONTENT_FAILURE',
-                    message: 'XMLHttpRequest is not supported by your browser'
-                }]);
+                expect(store.getActions()).to.be.deep.eq(
+                    [{
+                        type: 'APPROVE_CONTENT_REQUEST',
+                        id: 111
+                    },
+                    {
+                        type: 'APPROVE_CONTENT_FAILURE',
+                        message: 'Approve Content failed'
+                    }]);
         })
     });
     describe('rejectContent Epic', () => {
         let store;
-        const epicMiddleware = createEpicMiddleware(Epics.rejectContentEpic);
+        const epicMiddleware = createEpicMiddleware(Epics.rejectContentEpic, {dependencies: {repository: repo}});
         const mockStore = configureMockStore([epicMiddleware]);
 
         beforeEach(() => {
@@ -268,38 +272,26 @@ describe('Epics', () => {
         });
 
         afterEach(() => {
-            nock.cleanAll();
             epicMiddleware.replaceEpic(Epics.rejectContentEpic);
         });
         it('handles the error', () => {
+            (repo.httpProviderRef as Mocks.MockHttpProvider).setError({message: 'Reject Content failed'});
             store.dispatch({ type: 'REJECT_CONTENT_REQUEST', id: 111, rejectReason: 'reason' });
-            expect(store.getActions()).to.be.deep.eq(
-                [{
-                    type: 'REJECT_CONTENT_REQUEST',
-                    id: 111,
-                    rejectReason: 'reason'
-                },
-                {
-                    type: 'REJECT_CONTENT_FAILURE',
-                    message: 'XMLHttpRequest is not supported by your browser'
-                }]);
+                expect(store.getActions()).to.be.deep.eq(
+                    [{
+                        type: 'REJECT_CONTENT_REQUEST',
+                        id: 111,
+                        rejectReason: 'reason'
+                    },
+                    {
+                        type: 'REJECT_CONTENT_FAILURE',
+                        message: 'Reject Content failed'
+                    }]);
         });
-        it('handles the error', () => {
-            store.dispatch({ type: 'REJECT_CONTENT_REQUEST', id: 111 });
-            expect(store.getActions()).to.be.deep.eq(
-                [{
-                    type: 'REJECT_CONTENT_REQUEST',
-                    id: 111
-                },
-                {
-                    type: 'REJECT_CONTENT_FAILURE',
-                    message: 'XMLHttpRequest is not supported by your browser'
-                }]);
-        })
     });
     describe('undocheckoutContent Epic', () => {
         let store;
-        const epicMiddleware = createEpicMiddleware(Epics.undocheckoutContentEpic);
+        const epicMiddleware = createEpicMiddleware(Epics.undocheckoutContentEpic, {dependencies: {repository: repo}});
         const mockStore = configureMockStore([epicMiddleware]);
 
         before(() => {
@@ -307,10 +299,10 @@ describe('Epics', () => {
         });
 
         after(() => {
-            nock.cleanAll();
             epicMiddleware.replaceEpic(Epics.undocheckoutContentEpic);
         });
         it('handles the error', () => {
+            (repo.httpProviderRef as Mocks.MockHttpProvider).setError({message: 'Undo Checkout failed'});
             store.dispatch({ type: 'UNDOCHECKOUT_CONTENT_REQUEST', id: 111 });
             expect(store.getActions()).to.be.deep.eq(
                 [{
@@ -319,13 +311,13 @@ describe('Epics', () => {
                 },
                 {
                     type: 'UNDOCHECKOUT_CONTENT_FAILURE',
-                    message: 'XMLHttpRequest is not supported by your browser'
+                    message: 'Undo Checkout failed'
                 }]);
         })
     });
     describe('forceundocheckoutContent Epic', () => {
         let store;
-        const epicMiddleware = createEpicMiddleware(Epics.forceundocheckoutContentEpic);
+        const epicMiddleware = createEpicMiddleware(Epics.forceundocheckoutContentEpic, {dependencies: {repository: repo}});
         const mockStore = configureMockStore([epicMiddleware]);
 
         before(() => {
@@ -333,25 +325,25 @@ describe('Epics', () => {
         });
 
         after(() => {
-            nock.cleanAll();
             epicMiddleware.replaceEpic(Epics.forceundocheckoutContentEpic);
         });
         it('handles the error', () => {
+            (repo.httpProviderRef as Mocks.MockHttpProvider).setError({message: 'ForceUndoCheckout failed'});
             store.dispatch({ type: 'FORCEUNDOCHECKOUT_CONTENT_REQUEST', id: 111 });
-            expect(store.getActions()).to.be.deep.eq(
-                [{
-                    type: 'FORCEUNDOCHECKOUT_CONTENT_REQUEST',
-                    id: 111
-                },
-                {
-                    type: 'FORCEUNDOCHECKOUT_CONTENT_FAILURE',
-                    message: 'XMLHttpRequest is not supported by your browser'
-                }]);
+                expect(store.getActions()).to.be.deep.eq(
+                    [{
+                        type: 'FORCEUNDOCHECKOUT_CONTENT_REQUEST',
+                        id: 111
+                    },
+                    {
+                        type: 'FORCEUNDOCHECKOUT_CONTENT_FAILURE',
+                        message: 'ForceUndoCheckout failed'
+                    }]);
         })
     });
     describe('restoreVersion Epic', () => {
         let store;
-        const epicMiddleware = createEpicMiddleware(Epics.restoreversionContentEpic);
+        const epicMiddleware = createEpicMiddleware(Epics.restoreversionContentEpic, {dependencies: {repository: repo}});
         const mockStore = configureMockStore([epicMiddleware]);
 
         before(() => {
@@ -359,26 +351,26 @@ describe('Epics', () => {
         });
 
         after(() => {
-            nock.cleanAll();
             epicMiddleware.replaceEpic(Epics.restoreversionContentEpic);
         });
         it('handles the error', () => {
+            (repo.httpProviderRef as Mocks.MockHttpProvider).setError({message: 'Restore failed'});
             store.dispatch({ type: 'RESTOREVERSION_CONTENT_REQUEST', id: 111, version: 'A.1.0' });
-            expect(store.getActions()).to.be.deep.eq(
-                [{
-                    type: 'RESTOREVERSION_CONTENT_REQUEST',
-                    id: 111,
-                    version: 'A.1.0'
-                },
-                {
-                    type: 'RESTOREVERSION_CONTENT_FAILURE',
-                    message: 'XMLHttpRequest is not supported by your browser'
-                }]);
-        })
+                expect(store.getActions()).to.be.deep.eq(
+                    [{
+                        type: 'RESTOREVERSION_CONTENT_REQUEST',
+                        id: 111,
+                        version: 'A.1.0'
+                    },
+                    {
+                        type: 'RESTOREVERSION_CONTENT_FAILURE',
+                        message: 'Restore failed'
+                    }]);
+        });
     });
     describe('login Epic', () => {
         let store;
-        const epicMiddleware = createEpicMiddleware(Epics.userLoginEpic);
+        const epicMiddleware = createEpicMiddleware(Epics.userLoginEpic, {dependencies: {repository: repo}});
         const mockStore = configureMockStore([epicMiddleware]);
 
         before(() => {
@@ -386,7 +378,6 @@ describe('Epics', () => {
         });
 
         after(() => {
-            nock.cleanAll();
             epicMiddleware.replaceEpic(Epics.userLoginEpic);
         });
         it('handles the error', () => {
@@ -400,13 +391,13 @@ describe('Epics', () => {
                 },
                 {
                     type: 'USER_LOGIN_FAILURE',
-                    message: 'XMLHttpRequest is not supported by your browser'
+                    message: 'Failed to log in.'
                 }]);
         })
     });
     describe('logout Epic', () => {
         let store;
-        const epicMiddleware = createEpicMiddleware(Epics.userLogoutEpic);
+        const epicMiddleware = createEpicMiddleware(Epics.userLogoutEpic, {dependencies: {repository: repo}});
         const mockStore = configureMockStore([epicMiddleware]);
 
         before(() => {
@@ -414,7 +405,6 @@ describe('Epics', () => {
         });
 
         after(() => {
-            nock.cleanAll();
             epicMiddleware.replaceEpic(Epics.userLogoutEpic);
         });
         it('handles the error', () => {
@@ -427,8 +417,7 @@ describe('Epics', () => {
                     password: 'alba'
                 },
                 {
-                    type: 'USER_LOGOUT_FAILURE',
-                    message: 'XMLHttpRequest is not supported by your browser'
+                    type: 'USER_LOGOUT_SUCCESS'
                 }]);
         })
     });

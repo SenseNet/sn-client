@@ -51,24 +51,35 @@ To install the latest stable version
 npm install --save sn-redux
 ```
 
-Set your Sense/Net portal's url with SetSiteUrl method
+Create your sense NET portal Repository to use. You can configure your Store to use this repository, when calling Store.ConfigureStore
+
+```ts
+import { Repository } from 'sn-client-js';
+
+let repository = new Repository.SnRepository({
+  RepositoryUrl: 'http://path-to-your-portal.com',
+});
+
+const store = Store.configureStore(
+    myRootReducer,
+    myRootEpic,                   // If not set, the default will be 'Epics.rootEpic'
+    [middleware1, middleware2],   // If not set, only the epicMiddleware will be used
+    persistedState,               // Optional
+    repository                    // Optional. If not provided, a Repository with default values will be used
+    );
+
 
 ```
-import { SetSiteUrl } from 'sn-client-js';
 
-SetSiteUrl('https://daily.demo.sensenet.com');
-```
+To enable your external app to send request against your Sense/Net portal change your ```Portal.settings```. For further information about cross-origin resource sharing in Sense/Net check [this](http://wiki.sensenet.com/Cross-origin_resource_sharing#Origin_check) article.
 
-So that you can set the url of your Sense/Net portal that you want to communicate with. To enable your external app to send request against your Sense/Net portal change
-your ```Portal.settings```. For further information about cross-origin resource sharing in Sense/Net check [this](http://wiki.sensenet.com/Cross-origin_resource_sharing#Origin_check)
-article.
+Check your Sense/Net portal's web.config and if the ```ODataServiceToken``` is set, you can pass to your Repository as a config value on client side.
 
-Check your Sense/Net portal's web.config and if the ```ODataServiceToken``` is set, use the ```SetServiceToken()``` method to set the same service token on client side.
-
-```
-import { SetServiceToken } from 'sn-client-js';
-
-SetServiceToken('myservicetoken');
+```ts
+let repository = new Repository.SnRepository({
+  RepositoryUrl: 'http://path-to-your-portal.com',
+  ODataToken: 'MyODataServiceToken'
+});
 ```
 
 ## Import
@@ -94,22 +105,17 @@ store.dispatch(Actions.Delete(123, false));
 Building the project, running all the unit tests and the ts linter and get the code coverage report, use:
 
 ```
-gulp
+npm run build
 ```
 
 ## Running tests
 
-To execute all unit tests, use:
+To execute all unit tests and generate coverage reports, use:
 
 ```
-gulp test
+npm t
 ```
 
-## Generatings code coverage report
-
-```
-gulp test:coverage
-```
 
 ## Examples
 

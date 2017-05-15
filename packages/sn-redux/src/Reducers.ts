@@ -1,11 +1,12 @@
 import { normalize } from 'normalizr';
 import { combineReducers } from 'redux';
+import { Authentication } from "sn-client-js";
 
 /**
  * Module for defining Redux reducers.
- * 
+ *
  * _Actions describe the fact that something happened, but don't specify how the application's state changes in response. This is the job of a reducer._
- * 
+ *
  * Following module contains the reducers of sn-redux, some 'reducer groups' and the root reducer which could be passed to the store creator function. Using a root reduces means
  * that you define which combination of reducers will be used and eventually defines which type of actions can be called on the store.
  */
@@ -121,9 +122,7 @@ export module Reducers {
   }
 
   const userInitialState = {
-    data: null,
-    isLoading: false,
-    isAuthenticated: false,
+    loginState: Authentication.LoginState.Pending,
     errorMessage: ''
   }
   /**
@@ -138,25 +137,22 @@ export module Reducers {
     switch (action.type) {
       case 'USER_LOGIN_REQUEST':
       case 'USER_LOGOUT_REQUEST':
-        return { ...userInitialState, isLoading: true, isAuthenticated: false }
+        return { ...userInitialState, loginState: Authentication.LoginState.Pending }
       case 'USER_LOGIN_SUCCESS':
         return {
-          data: {
-            userName: action.response.LoginName,
-            fullName: action.response.FullName
-          },
-          isLoading: false,
-          isAuthenticated: true
+          loginState: Authentication.LoginState.Authenticated
         }
       case 'USER_LOGOUT_SUCCESS':
-        return userInitialState
+        return {
+          loginState: Authentication.LoginState.Unauthenticated
+        }
       case 'USER_LOGIN_FAILURE':
         return {
-          ...userInitialState, isLoading: false, errorMessage: action.message, isAuthenticated: false
+          ...userInitialState, errorMessage: action.message, loginState: Authentication.LoginState.Unauthenticated
         }
       case 'USER_LOGOUT_FAILURE':
         return {
-          ...userInitialState, isLoading: false, errorMessage: action.message, isAuthenticated: true
+          ...userInitialState, errorMessage: action.message, loginState: Authentication.LoginState.Unauthenticated
         }
       default:
         return state
@@ -210,8 +206,7 @@ export module Reducers {
   };
 
   export const getAuthenticationStatus = (state) => {
-    const user = state.user;
-    return user.isAuthenticated;
+    return state.user.loginState as Authentication.LoginState;
   }
 
   export const getAuthenticationError = (state) => {
