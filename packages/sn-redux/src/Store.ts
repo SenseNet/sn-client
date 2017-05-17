@@ -79,7 +79,7 @@ export module Store {
         }
         const loggerMiddleware = (createLogger as any)();
         middlewareArray.push(loggerMiddleware);
-        if (typeof persistedState !== 'undefined') {
+        if (persistedState && typeof persistedState !== 'undefined') {
             return createStore(
                 rootReducer,
                 persistedState,
