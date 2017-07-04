@@ -9,8 +9,10 @@
 [![License](https://img.shields.io/github/license/SenseNet/sn-redux.svg?style=flat)](https://github.com/SenseNet/sn-redux/LICENSE.txt)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg?style=flat)](https://github.com/semantic-release/semantic-release)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat)](http://commitizen.github.io/cz-cli/)
+[![Greenkeeper badge](https://badges.greenkeeper.io/SenseNet/sn-redux.svg)](https://greenkeeper.io/)
 
-sn-redux is a convention driven way of building Sense/Net applications using Redux. It contains all the action types, actions and reducers for [built-in Sense/Net Actions 
+
+sn-redux is a convention driven way of building sensenet ECM applications using Redux. It contains all the action types, actions and reducers for [built-in sensenet Actions 
 and Functions](http://wiki.sensenet.com/Built-in_OData_actions_and_functions).
 
 sn-redux gives you a standard set of:
@@ -20,7 +22,7 @@ sn-redux gives you a standard set of:
 * reducers: for the action types above e.g. updateContentSuccess
 * epics: for streams of actions that are related to the same process e.g. createContentEpic
 
-## Installation on an existing Sense/Net portal
+## Installation on an existing sensenet ECM portal
 
 Get the latest stable version with npm
 
@@ -51,7 +53,7 @@ To install the latest stable version
 npm install --save sn-redux
 ```
 
-Create your sense NET portal Repository to use. You can configure your Store to use this repository, when calling Store.ConfigureStore
+Create your sensenet ECM portal Repository to use. You can configure your Store to use this repository, when calling Store.ConfigureStore
 
 ```ts
 import { Repository } from 'sn-client-js';
@@ -71,9 +73,9 @@ const store = Store.configureStore(
 
 ```
 
-To enable your external app to send request against your Sense/Net portal change your ```Portal.settings```. For further information about cross-origin resource sharing in Sense/Net check [this](http://wiki.sensenet.com/Cross-origin_resource_sharing#Origin_check) article.
+To enable your external app to send request against your sensenet ECM portal change your ```Portal.settings```. For further information about cross-origin resource sharing in Sense/Net check [this](http://wiki.sensenet.com/Cross-origin_resource_sharing#Origin_check) article.
 
-Check your Sense/Net portal's web.config and if the ```ODataServiceToken``` is set, you can pass to your Repository as a config value on client side.
+Check your sensenet ECM portal's web.config and if the ```ODataServiceToken``` is set, you can pass to your Repository as a config value on client side.
 
 ```ts
 let repository = new Repository.SnRepository({
