@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware } from 'redux';
-import * as createLogger from 'redux-logger'
+import { createLogger } from 'redux-logger'
 import { createEpicMiddleware } from 'redux-observable';
 import { Epics } from './Epics';
 import { Reducers } from './Reducers';
@@ -77,7 +77,7 @@ export module Store {
         else {
             middlewareArray = [...middlewares, epicMiddleware];
         }
-        const loggerMiddleware = (createLogger as any)();
+        const loggerMiddleware = createLogger();
         middlewareArray.push(loggerMiddleware);
         if (persistedState && typeof persistedState !== 'undefined') {
             return createStore(

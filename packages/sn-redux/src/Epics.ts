@@ -63,7 +63,7 @@ export module Epics {
     export function createContentEpic(action$, store, dependencies?: { repository: Repository }) {
         return action$.ofType('CREATE_CONTENT_REQUEST')
             .mergeMap(action => {
-                return dependencies.repository.Content.Create(action.path, action.content, action.contentType)
+                return dependencies.repository.Content.Post(action.path, action.content, action.contentType)
                     .map(Actions.CreateContentSuccess)
                     .catch(error => Observable.of(Actions.CreateContentFailure(error)))
             })

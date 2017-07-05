@@ -10,6 +10,7 @@
         "preserveConstEnums": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
+        "skipLibCheck": true,
         "outDir": "./dist"
     },
     "exclude": [
