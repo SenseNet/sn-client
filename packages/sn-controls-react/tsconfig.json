@@ -1,0 +1,32 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es5",
+        "lib": [
+            "es6",
+            "dom"
+        ],
+        "sourceMap": true,
+        "declaration": false,
+        "allowJs": true,
+        "jsx": "react",
+        "moduleResolution": "node",
+        "outDir": "./dist",
+        "noImplicitAny": false,
+        "preserveConstEnums": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "removeComments": true
+    },
+    "exclude": [
+        "node_modules",
+        "documentation"
+    ],
+    "files": [
+        "src/index.ts",
+        "test/index.ts"
+    ],
+    "types": [
+        "typePatches"
+    ]
+}
