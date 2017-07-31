@@ -1,6 +1,6 @@
 import { normalize } from 'normalizr';
 import { combineReducers } from 'redux';
-import { Authentication } from "sn-client-js";
+import { Authentication } from 'sn-client-js';
 
 /**
  * Module for defining Redux reducers.

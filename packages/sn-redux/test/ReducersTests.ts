@@ -2,7 +2,7 @@
 import { Reducers } from '../src/Reducers';
 import { Actions } from '../src/Actions';
 import * as Chai from 'chai';
-import { Authentication } from "sn-client-js";
+import { Authentication } from 'sn-client-js';
 const expect = Chai.expect;
 
 describe('byId reducer', () => {
@@ -44,7 +44,7 @@ describe('ids reducer', () => {
                         }
                     }
                 },
-                filter: "?$select=Id,Type&metadata=no"
+                filter: '?$select=Id,Type&metadata=no'
             }))
             .to.be.deep.equal([5145, 5146]);
     });
@@ -63,7 +63,7 @@ describe('ids reducer', () => {
                     },
                     result: 123
                 },
-                filter: "?$select=Id,Type&metadata=no"
+                filter: '?$select=Id,Type&metadata=no'
             }))
             .to.be.deep.equal([123]);
     });

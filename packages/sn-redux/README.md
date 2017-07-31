@@ -72,7 +72,7 @@ const store = Store.configureStore(
 
 ```
 
-To enable your external app to send request against your sensenet ECM portal change your ```Portal.settings```. For further information about cross-origin resource sharing in Sense/Net check [this](http://wiki.sensenet.com/Cross-origin_resource_sharing#Origin_check) article.
+To enable your external app to send request against your sensenet ECM portal change your ```Portal.settings```. For further information about cross-origin resource sharing in sensenet ECM check [this](http://wiki.sensenet.com/Cross-origin_resource_sharing#Origin_check) article.
 
 Check your sensenet ECM portal's web.config and if the ```ODataServiceToken``` is set, you can pass to your Repository as a config value on client side.
 
@@ -161,9 +161,9 @@ dispatch(Actions.CreateContent(parentPath, content))
 
 * [sn-redux API Reference](http://www.sensenet.com/documentation/sn-redux/index.html)
 * [sn-client-js API reference](http://www.sensenet.com/documentation/sn-client-js/index.html)
-* [About OData REST API in Sense/Net ECM](http://wiki.sensenet.com/OData_REST_API)
-* [About Built-in OData Actions and Function in Sense/Net ECM](http://wiki.sensenet.com/Built-in_OData_actions_and_functions)
-* [Todo App with React, Redux and Sense/Net ECM](http://www.sensenet.com/documentation/sn-react-todoapp/index.html)
+* [About OData REST API in sensenet ECM](http://wiki.sensenet.com/OData_REST_API)
+* [About Built-in OData Actions and Function in sensenet ECM](http://wiki.sensenet.com/Built-in_OData_actions_and_functions)
+* [Todo App with React, Redux and sensenet ECM](http://www.sensenet.com/documentation/sn-react-todoapp/index.html)
 
 ## Influences
 
@@ -174,12 +174,8 @@ dispatch(Actions.CreateContent(parentPath, content))
 * [redux-observable](https://redux-observable.js.org/)
 
 ## Example applications
-* Using Raw Javascript and HTML (TODO)
 * [Using React](https://github.com/SenseNet/sn-react-redux-todo-app)
 * [Using Angular](https://github.com/blaskodaniel/sn-angular-redux-todo-app)
 * [Using Angular2](https://github.com/SenseNet/sn-angular2-redux-todo-app)
 * [Using Vue.js](https://github.com/SenseNet/sn-vue-redux-todo-app)
 * [Using Aurelia](https://github.com/B3zo0/sn7-aurelia-redux-todo-app)
-* Using Ember (TODO)
-* Using Polymer (TODO)
-* Using React Native (TODO)

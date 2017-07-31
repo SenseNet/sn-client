@@ -1,12 +1,12 @@
 ///<reference path="../node_modules/@types/mocha/index.d.ts"/>
-import { ContentTypes } from 'sn-client-js';
 import { Actions } from '../src/Actions'
 import * as Chai from 'chai';
-import { Content, Mocks, IContentOptions } from "sn-client-js";
+import { Content, Mocks, IContentOptions, ContentTypes, Repository } from 'sn-client-js';
 const expect = Chai.expect;
 
 describe('Actions', () => {
     const path = '/workspaces/project';
+    let repo: Mocks.MockRepository = new Mocks.MockRepository();
     describe('FetchContent', () => {
         it('should create an action to a fetch content request', () => {
             const expectedAction = {
@@ -17,21 +17,145 @@ describe('Actions', () => {
             }
             expect(Actions.RequestContent(path, {}, Content)).to.deep.equal(expectedAction)
         });
+        it('should create an action to a fetch content request', () => {
+            const expectedAction = {
+                type: 'FETCH_CONTENT_REQUEST',
+                path: '/workspaces/project',
+                options: {},
+                contentType: undefined
+            }
+            expect(Actions.RequestContent(path)).to.deep.equal(expectedAction)
+        });
         it('should create an action to receive content', () => {
             const expectedAction = {
                 type: 'FETCH_CONTENT_SUCCESS',
                 response: { entities: {}, result: [] },
-                params: "?$select=Id,Type&metadata=no"
+                params: '?$select=Id,Type&metadata=no'
             }
-            expect(Actions.ReceiveContent({ d: { results: [], __count: 0 } }, '?$select=Id,Type&metadata=no')).to.deep.equal(expectedAction)
+            expect(Actions.ReceiveContent([], '?$select=Id,Type&metadata=no')).to.deep.equal(expectedAction)
         });
         it('should create an action to content fetch request failure', () => {
             const expectedAction = {
                 type: 'FETCH_CONTENT_FAILURE',
                 message: 'error',
-                params: "?$select=Id,Type&metadata=no"
+                params: '?$select=Id,Type&metadata=no'
             }
             expect(Actions.ReceiveContentFailure('?$select=Id,Type&metadata=no', { message: 'error' })).to.deep.equal(expectedAction)
+        });
+    });
+    describe('LoadContent', () => {
+        it('should create an action to a load content request', () => {
+            const expectedAction = {
+                type: 'LOAD_CONTENT_REQUEST',
+                id: 123,
+                options: {},
+                contentType: ContentTypes.Task
+            }
+            expect(Actions.LoadContent(123, {}, ContentTypes.Task)).to.deep.equal(expectedAction)
+        });
+        it('should create an action to a load content request', () => {
+            const expectedAction = {
+                type: 'LOAD_CONTENT_REQUEST',
+                id: 123,
+                options: {},
+                contentType: undefined
+            }
+            expect(Actions.LoadContent(123)).to.deep.equal(expectedAction)
+        });
+        it('should create an action to receive a loaded content', () => {
+            const expectedAction = {
+                type: 'LOAD_CONTENT_SUCCESS',
+                params: {},
+                response: {
+                    entities: {
+                        collection: {
+                            123: repo.HandleLoadedContent({
+                                DisplayName: 'My content',
+                                Id: 123
+                            })
+                        }
+                    },
+                    result: 123
+                }
+            }
+            expect(Actions.ReceiveLoadedContent(
+                repo.HandleLoadedContent({ DisplayName: 'My content', Id: 123 }),
+                {})).to.deep.equal(expectedAction)
+        });
+
+        it('should create an action to content reload request failure', () => {
+            const expectedAction = {
+                type: 'LOAD_CONTENT_FAILURE',
+                message: 'error',
+                params: '?$select=Id,Type&metadata=no'
+            }
+            expect(Actions.ReceiveLoadedContentFailure('?$select=Id,Type&metadata=no', { message: 'error' })).to.deep.equal(expectedAction)
+        });
+    });
+    describe('ReloadContent', () => {
+        it('should create an action to a reload content request', () => {
+            const expectedAction = {
+                type: 'RELOAD_CONTENT_REQUEST',
+                actionName: 'edit'
+            }
+            expect(Actions.ReloadContent('edit')).to.deep.equal(expectedAction)
+        });
+        it('should create an action to receive the reloaded content', () => {
+            const expectedAction = {
+                type: 'RELOAD_CONTENT_SUCCESS',
+                response: {
+                    entities: {
+                        collection: {
+                            123: repo.HandleLoadedContent({
+                                DisplayName: 'My content',
+                                Id: 123
+                            })
+                        }
+                    },
+                    result: 123
+                }
+            }
+            expect(Actions.ReceiveReloadedContent(repo.HandleLoadedContent({ DisplayName: 'My content', Id: 123 }))).to.deep.equal(expectedAction)
+        });
+        it('should create an action to content load request failure', () => {
+            const expectedAction = {
+                type: 'RELOAD_CONTENT_FAILURE',
+                message: 'error'
+            }
+            expect(Actions.ReceiveReloadedContentFailure({ message: 'error' })).to.deep.equal(expectedAction)
+        });
+    });
+    describe('ReloadContentFields', () => {
+        it('should create an action to a reload fields of a content request', () => {
+            const expectedAction = {
+                type: 'RELOAD_CONTENTFIELDS_REQUEST',
+                fields: []
+            }
+            expect(Actions.ReloadContentFields()).to.deep.equal(expectedAction)
+        });
+        it('should create an action to receive the reloaded fields of a content', () => {
+            const expectedAction = {
+                type: 'RELOAD_CONTENTFIELDS_SUCCESS',
+                response: {
+                    entities: {
+                        collection: {
+                            123: repo.HandleLoadedContent({
+                                DisplayName: 'My content',
+                                Id: 123
+                            })
+                        }
+                    },
+                    result: 123
+                }
+            }
+            expect(Actions.ReceiveReloadedContentFields(repo.HandleLoadedContent({ DisplayName: 'My content', Id: 123 }))).to.deep.equal(expectedAction)
+        });
+        it('should create an action to content load request failure', () => {
+            const expectedAction = {
+                type: 'RELOAD_CONTENTFIELDS_FAILURE',
+                message: 'error'
+            }
+            expect(Actions.ReceiveReloadedContentFieldsFailure({ message: 'error' })).to.deep.equal(expectedAction)
         });
     });
     describe('CreateContent', () => {
@@ -40,14 +164,13 @@ describe('Actions', () => {
             Name: 'My Content',
             DueDate: null,
         };
+
         it('should create an action to a create content request', () => {
             const expectedAction = {
                 type: 'CREATE_CONTENT_REQUEST',
-                path: '/workspaces/project',
-                content,
-                contentType: ContentTypes.Task,
+                content
             };
-            expect(Actions.CreateContent(path, ContentTypes.Task, content as any)).to.deep.equal(expectedAction)
+            expect(Actions.CreateContent(content as any)).to.deep.equal(expectedAction)
         });
         it('should create an action to create content success', () => {
             const expectedAction = {
@@ -55,16 +178,16 @@ describe('Actions', () => {
                 response: {
                     entities: {
                         collection: {
-                            123: {
+                            123: repo.HandleLoadedContent({
                                 DisplayName: 'My content',
                                 Id: 123
-                            }
+                            })
                         }
                     },
                     result: 123
                 }
             }
-            expect(Actions.CreateContentSuccess({ d: { DisplayName: 'My content', Id: 123 } })).to.deep.equal(expectedAction)
+            expect(Actions.CreateContentSuccess(repo.HandleLoadedContent({ DisplayName: 'My content', Id: 123 }))).to.deep.equal(expectedAction)
         });
         it('should create an action to content creation failure', () => {
             const expectedAction = {
@@ -78,11 +201,9 @@ describe('Actions', () => {
         it('should create an action to an update content request', () => {
             const expectedAction = {
                 type: 'UPDATE_CONTENT_REQUEST',
-                id: 123,
-                fields: { Index: 2 },
-                contentType: ContentTypes.Task
+                content: { Index: 2 }
             }
-            expect(Actions.UpdateContent(123, ContentTypes.Task, {
+            expect(Actions.UpdateContent({
                 Index: 2
             })).to.deep.equal(expectedAction)
         });
@@ -92,16 +213,16 @@ describe('Actions', () => {
                 response: {
                     entities: {
                         collection: {
-                            123: {
-                                DisplayName: "My content",
+                            123: repo.HandleLoadedContent({
+                                DisplayName: 'My content',
                                 Id: 123,
                                 Index: 2
-                            }
+                            })
                         }
                     }, result: 123
                 }
             }
-            expect(Actions.UpdateContentSuccess({ response: { d: { DisplayName: 'My content', Id: 123, Index: 2 } } })).to.deep.equal(expectedAction)
+            expect(Actions.UpdateContentSuccess(repo.HandleLoadedContent({ DisplayName: 'My content', Id: 123, Index: 2 }))).to.deep.equal(expectedAction)
         });
         it('should create an action to content update request failure', () => {
             const expectedAction = {
@@ -119,6 +240,14 @@ describe('Actions', () => {
                 permanently: false
             }
             expect(Actions.Delete(123, false)).to.deep.equal(expectedAction)
+        });
+        it('should create an action to a delete content request', () => {
+            const expectedAction = {
+                type: 'DELETE_CONTENT_REQUEST',
+                id: 123,
+                permanently: false
+            }
+            expect(Actions.Delete(123)).to.deep.equal(expectedAction)
         });
         it('should create an action to delete content success', () => {
             const expectedAction = {
@@ -145,6 +274,15 @@ describe('Actions', () => {
                 permanently: false
             }
             expect(Actions.DeleteBatch(path, ['1', '2', '3'], false)).to.deep.equal(expectedAction)
+        });
+        it('should create an action to a delete content request', () => {
+            const expectedAction = {
+                type: 'DELETE_BATCH_REQUEST',
+                path: path,
+                ids: ['1', '2', '3'],
+                permanently: false
+            }
+            expect(Actions.DeleteBatch(path, ['1', '2', '3'])).to.deep.equal(expectedAction)
         });
         it('should create an action to delete content success', () => {
             const expectedAction = {
@@ -176,7 +314,7 @@ describe('Actions', () => {
                     entities: {
                         collection: {
                             123: {
-                                DisplayName: "My content",
+                                DisplayName: 'My content',
                                 Id: 123,
                                 Index: 2
                             }
@@ -203,6 +341,14 @@ describe('Actions', () => {
             }
             expect(Actions.CheckIn(123, 'comment')).to.deep.equal(expectedAction)
         });
+        it('should create an action to a checkin content request', () => {
+            const expectedAction = {
+                type: 'CHECKIN_CONTENT_REQUEST',
+                id: 123,
+                checkInComment: ''
+            }
+            expect(Actions.CheckIn(123)).to.deep.equal(expectedAction)
+        });
         it('should create an action to checkin content success', () => {
             const expectedAction = {
                 type: 'CHECKIN_CONTENT_SUCCESS',
@@ -210,7 +356,7 @@ describe('Actions', () => {
                     entities: {
                         collection: {
                             123: {
-                                DisplayName: "My content",
+                                DisplayName: 'My content',
                                 Id: 123,
                                 Index: 2
                             }
@@ -243,7 +389,7 @@ describe('Actions', () => {
                     entities: {
                         collection: {
                             123: {
-                                DisplayName: "My content",
+                                DisplayName: 'My content',
                                 Id: 123,
                                 Index: 2
                             }
@@ -276,7 +422,7 @@ describe('Actions', () => {
                     entities: {
                         collection: {
                             123: {
-                                DisplayName: "My content",
+                                DisplayName: 'My content',
                                 Id: 123,
                                 Index: 2
                             }
@@ -303,6 +449,14 @@ describe('Actions', () => {
             }
             expect(Actions.Reject(123, 'reason')).to.deep.equal(expectedAction)
         });
+        it('should create an action to an reject content request', () => {
+            const expectedAction = {
+                type: 'REJECT_CONTENT_REQUEST',
+                id: 123,
+                rejectReason: ''
+            }
+            expect(Actions.Reject(123)).to.deep.equal(expectedAction)
+        });
         it('should create an action to reject content success', () => {
             const expectedAction = {
                 type: 'REJECT_CONTENT_SUCCESS',
@@ -310,7 +464,7 @@ describe('Actions', () => {
                     entities: {
                         collection: {
                             123: {
-                                DisplayName: "My content",
+                                DisplayName: 'My content',
                                 Id: 123,
                                 Index: 2
                             }
@@ -343,7 +497,7 @@ describe('Actions', () => {
                     entities: {
                         collection: {
                             123: {
-                                DisplayName: "My content",
+                                DisplayName: 'My content',
                                 Id: 123,
                                 Index: 2
                             }
@@ -376,7 +530,7 @@ describe('Actions', () => {
                     entities: {
                         collection: {
                             123: {
-                                DisplayName: "My content",
+                                DisplayName: 'My content',
                                 Id: 123,
                                 Index: 2
                             }
@@ -410,7 +564,7 @@ describe('Actions', () => {
                     entities: {
                         collection: {
                             123: {
-                                DisplayName: "My content",
+                                DisplayName: 'My content',
                                 Id: 123,
                                 Index: 2
                             }
@@ -478,6 +632,14 @@ describe('Actions', () => {
                 message: 'error'
             }
             expect(Actions.UserLogoutFailure({ message: 'error' })).to.deep.equal(expectedAction)
+        });
+    });
+    describe('CheckLoginState', () => {
+        it('should return the current authentication state', () => {
+            const expectedAction = {
+                type: 'CHECK_LOGIN_STATE_REQUEST'
+            }
+            expect(Actions.CheckLoginState()).to.deep.equal(expectedAction)
         });
     });
 });

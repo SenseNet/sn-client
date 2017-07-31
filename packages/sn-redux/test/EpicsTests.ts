@@ -38,7 +38,88 @@ describe('Epics', () => {
                 },
                 {
                     type: 'FETCH_CONTENT_FAILURE',
-                    params: new ODataApi.ODataParams({select: ["Id", "Type"]}),
+                    params: new ODataApi.ODataParams({select: ['Id', 'Type']}),
+                    message: 'XMLHttpRequest is not supported by your browser'
+                }]);
+        })
+    });
+    describe('loadContent Epic', () => {
+        let store;
+        const epicMiddleware = createEpicMiddleware(Epics.loadContentEpic, {dependencies: {repository: repo}});
+        const mockStore = configureMockStore([epicMiddleware]);
+
+        before(() => {
+            store = mockStore();
+        });
+
+        after(() => {
+            epicMiddleware.replaceEpic(Epics.fetchContentEpic);
+        });
+        it('handles the error', () => {
+            store.dispatch({ type: 'LOAD_CONTENT_REQUEST', path: '/workspaces/Project', options: {} });
+            expect(store.getActions()).to.be.deep.eq(
+                [{
+                    type: 'LOAD_CONTENT_REQUEST',
+                    path: '/workspaces/Project',
+                    options: {}
+                },
+                {
+                    type: 'LOAD_CONTENT_FAILURE',
+                    params: new ODataApi.ODataParams({select: ['Id', 'Type']}),
+                    message: 'XMLHttpRequest is not supported by your browser'
+                }]);
+        })
+    });
+    describe('reloadContent Epic', () => {
+        let store;
+        const epicMiddleware = createEpicMiddleware(Epics.reloadContentEpic, {dependencies: {repository: repo}});
+        const mockStore = configureMockStore([epicMiddleware]);
+
+        before(() => {
+            store = mockStore();
+        });
+
+        after(() => {
+            epicMiddleware.replaceEpic(Epics.fetchContentEpic);
+        });
+        it('handles the error', () => {
+            store.dispatch({ type: 'RELOAD_CONTENT_REQUEST', path: '/workspaces/Project', options: {} });
+            expect(store.getActions()).to.be.deep.eq(
+                [{
+                    type: 'RELOAD_CONTENT_REQUEST',
+                    path: '/workspaces/Project',
+                    options: {}
+                },
+                {
+                    type: 'RELOAD_CONTENT_FAILURE',
+                    params: new ODataApi.ODataParams({select: ['Id', 'Type']}),
+                    message: 'XMLHttpRequest is not supported by your browser'
+                }]);
+        })
+    });
+    describe('reloadContentFields Epic', () => {
+        let store;
+        const epicMiddleware = createEpicMiddleware(Epics.reloadContentFieldsEpic, {dependencies: {repository: repo}});
+        const mockStore = configureMockStore([epicMiddleware]);
+
+        before(() => {
+            store = mockStore();
+        });
+
+        after(() => {
+            epicMiddleware.replaceEpic(Epics.fetchContentEpic);
+        });
+        it('handles the error', () => {
+            store.dispatch({ type: 'RELOAD_CONTENTFIELDS_REQUEST', path: '/workspaces/Project', options: {} });
+            expect(store.getActions()).to.be.deep.eq(
+                [{
+                    type: 'RELOAD_CONTENTFIELDS_REQUEST',
+                    path: '/workspaces/Project',
+                    options: {}
+                },
+                {
+                    type: 'RELOAD_CONTENTFIELDS_FAILURE',
+                    params: new ODataApi.ODataParams({select: ['Id', 'Type']}),
                     message: 'XMLHttpRequest is not supported by your browser'
                 }]);
         })
@@ -418,6 +499,26 @@ describe('Epics', () => {
                 },
                 {
                     type: 'USER_LOGOUT_SUCCESS'
+                }]);
+        })
+    });
+    describe('checkLoginState Epic', () => {
+        let store;
+        const epicMiddleware = createEpicMiddleware(Epics.checkLoginStateEpic, {dependencies: {repository: repo}});
+        const mockStore = configureMockStore([epicMiddleware]);
+
+        before(() => {
+            store = mockStore();
+        });
+
+        after(() => {
+            epicMiddleware.replaceEpic(Epics.userLoginEpic);
+        });
+        it('handles the error', () => {
+            store.dispatch({ type: 'CHECK_LOGIN_STATE_REQUEST' });
+            expect(store.getActions()).to.be.deep.eq(
+                [{
+                    type: 'CHECK_LOGIN_STATE_REQUEST',
                 }]);
         })
     });
