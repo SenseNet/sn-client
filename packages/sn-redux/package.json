@@ -86,7 +86,7 @@
     "redux-observable": "^0.14.1",
     "semantic-release": "^6.3.6",
     "tslint": "^5.2.0",
-    "typedoc": "^0.7.1",
+    "typedoc": "^0.8.0",
     "typedoc-md-theme": "^1.0.1",
     "typedoc-plugin-external-module-name": "^1.0.9",
     "typescript": "^2.4.1"
