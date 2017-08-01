@@ -60,7 +60,7 @@
     "@types/chai": "^4.0.1",
     "@types/mocha": "^2.2.41",
     "@types/node": "^8.0.6",
-    "@types/react": "^15.0.25",
+    "@types/react": "^16.0.0",
     "@types/react-dom": "^15.5.0",
     "@types/react-redux": "^4.4.42",
     "@types/react-tap-event-plugin": "0.0.30",
