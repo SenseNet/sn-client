@@ -50,6 +50,7 @@
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject",
     "lint": "node tslint --project ./tsconfig.json",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "report-coverage": "cat ./coverage/lcov.info | codecov"
   }
 }
