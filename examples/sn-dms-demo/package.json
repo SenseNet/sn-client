@@ -1,0 +1,55 @@
+{
+  "name": "sn-dms-demo",
+  "version": "0.1.0-development",
+  "description": "Document Management Demo upon sensenet ECM",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SenseNet/sn-dms-demo.git"
+  },
+  "keywords": [
+    "sensenet",
+    "ecm",
+    "documentmanagement",
+    "MVP",
+    "react",
+    "reactjs"
+  ],
+  "author": "SenseNet",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/SenseNet/sn-dms-demo/issues"
+  },
+  "homepage": "https://sensenet.com",
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "dependencies": {
+    "@types/jest": "^20.0.6",
+    "@types/node": "^8.0.19",
+    "@types/react": "^16.0.0",
+    "@types/react-dom": "^15.5.2",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "sn-client-cli": "^1.0.0-RC.3",
+    "sn-client-js": "^2.1.0",
+    "sn-controls-react": "^1.0.0-beta.1",
+    "sn-redux": "^2.1.0"
+  },
+  "devDependencies": {
+    "codecov.io": "^0.1.6",
+    "commitizen": "^2.9.6",
+    "cz-conventional-changelog": "^2.0.0",
+    "react-scripts-ts": "2.5.0"
+  },
+  "scripts": {
+    "start": "react-scripts-ts start",
+    "build": "react-scripts-ts build",
+    "test": "react-scripts-ts test --env=jsdom",
+    "eject": "react-scripts-ts eject",
+    "lint": "node tslint --project ./tsconfig.json",
+    "commit": "git-cz"
+  }
+}

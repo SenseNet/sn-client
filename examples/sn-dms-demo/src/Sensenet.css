@@ -1,0 +1,18 @@
+.Sensenet {
+  text-align: center;
+}
+
+.Sensenet-logo {
+  height: 80px;
+}
+
+.Sensenet-header {
+  background-color: #fff;
+  height: 150px;
+  padding: 20px;
+  color: #444;
+}
+
+.Sensenet-intro {
+  font-size: large;
+}
