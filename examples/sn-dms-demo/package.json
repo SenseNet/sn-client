@@ -42,7 +42,7 @@
     "codecov.io": "^0.1.6",
     "commitizen": "^2.9.6",
     "cz-conventional-changelog": "^2.0.0",
-    "react-scripts-ts": "2.5.0"
+    "react-scripts-ts": "2.6.0"
   },
   "scripts": {
     "start": "react-scripts-ts start",
