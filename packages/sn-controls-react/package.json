@@ -97,7 +97,7 @@
     "redux": "^3.6.0",
     "rimraf": "^2.6.1",
     "sn-client-js": "^2.0.0",
-    "sn-redux": "^2.0.0",
+    "sn-redux": "^3.0.0",
     "source-map-loader": "^0.2.1",
     "style-loader": "0.18.2",
     "sw-precache-webpack-plugin": "^0.11.3",
