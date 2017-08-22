@@ -36,7 +36,7 @@
     "sn-client-cli": "^1.0.0-RC.3",
     "sn-client-js": "^2.1.0",
     "sn-controls-react": "^1.0.0-beta.1",
-    "sn-redux": "^2.1.0"
+    "sn-redux": "^3.0.0"
   },
   "devDependencies": {
     "codecov.io": "^0.1.6",
