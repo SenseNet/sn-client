@@ -17,7 +17,7 @@ describe('Store', () => {
     middlewareArray.push(epicMiddleware);
     middlewareArray.push(loggerMiddleware);
     const store = createStore(
-        Reducers.snApp,
+        Reducers.sensenet,
         {},
         applyMiddleware(...middlewareArray)
     )
@@ -25,18 +25,18 @@ describe('Store', () => {
         expect(typeof Store.configureStore()).to.be.equal(typeof store)
     });
     it('should return a redux store', () => {
-        expect(typeof Store.configureStore(Reducers.snApp)).to.be.equal(typeof store)
+        expect(typeof Store.configureStore(Reducers.sensenet)).to.be.equal(typeof store)
     });
     it('should return a redux store', () => {
-        expect(typeof Store.configureStore(Reducers.snApp, null, null, {})).to.be.equal(typeof store)
+        expect(typeof Store.configureStore(Reducers.sensenet, null, null, {})).to.be.equal(typeof store)
     });
     it('should return a redux store', () => {
-        expect(typeof Store.configureStore(Reducers.snApp, Epics.rootEpic)).to.be.equal(typeof store)
+        expect(typeof Store.configureStore(Reducers.sensenet, Epics.rootEpic)).to.be.equal(typeof store)
     });
     it('should return a redux store', () => {
-        expect(typeof Store.configureStore(Reducers.snApp, null, [])).to.be.equal(typeof store)
+        expect(typeof Store.configureStore(Reducers.sensenet, null, [])).to.be.equal(typeof store)
     });
     it('should return a redux store', () => {
-        expect(typeof Store.configureStore(Reducers.snApp, null, null, {}, repository)).to.be.equal(typeof store)
+        expect(typeof Store.configureStore(Reducers.sensenet, null, null, {}, repository)).to.be.equal(typeof store)
     });
 });

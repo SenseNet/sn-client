@@ -11,17 +11,17 @@ import { schema } from 'normalizr';
  *
  * Read more about normalizr [here](https://github.com/paularmstrong/normalizr)
  *
- * Since everything is a Content in SenseNet we're working with Content and collection of Content in most of the cases. So the sn-redux Schemas module defines the two
+ * Since everything is a Content in sensenet ECM we're working with Content and collection of Content in most of the cases. So the sn-redux Schemas module defines the two
  * neccessarry main schema, content and arrayofContent to work with. This two schemas help you to normalize your JSON responses so that you can create a pure and flexible
  * client-side datasource.
  *
- * Example of normalizing the JSON response of a SenseNet OData Action for fetching Content as arrayOfContent schema which will create a collection object.
+ * Example of normalizing the JSON response of a SenseNet OData Action for fetching Content as arrayOfContent schema which will create an entities object.
  * ```ts
- * export const receiveContent = (response: any, filter: string) =>
+ * export const receiveContent = (response: Content[], params: string) =>
  *  ({
  *      type: 'FETCH_CONTENT_SUCCESS',
- *      response: normalize(response.d.results, Schemas.arrayOfContent),
- *      filter
+ *      response: normalize(response, Schemas.arrayOfContent),
+ *      params
  *  })
  * ```
  *
@@ -29,10 +29,10 @@ import { schema } from 'normalizr';
  *
  * Example of normalizing the JSON response of a SenseNet OData Action for creating Content as content schema.
  * ```ts
- * export const createContentSuccess = (response: any) =>
+ * export const createContentSuccess = (response: Content) =>
  *  ({
  *      type: 'CREATE_CONTENT_SUCCESS',
- *      response: normalize(response.response.d, Schemas.content)
+ *      response: normalize(response, Schemas.content)
  *  });
  * ```
  *
@@ -42,13 +42,13 @@ export module Schemas {
     /**
      * Schema of a Content.
      *
-     * It represents an item in the collection Object of the sn-redux store. The items are identified by the attribute 'Id'.
+     * It represents an item in the entities Object of the sn-redux store. The items are identified by the attribute 'Id'.
      */
-    export const content = new schema.Entity('collection', {}, { idAttribute: 'Id' });
+    export const content = new schema.Entity('entities', {}, { idAttribute: 'Id' });
     /**
      * Schema of a Collection.
      *
-     * It represents the top object of the sn-redux store. It's a parent element of the Content items so it is defined as array of items with the schema content.
+     * It represents the ```children``` object of the sn-redux store. It's a parent element of the Content items so it is defined as array of items with the schema content.
      */
     export const arrayOfContent = new schema.Array(content);
 }

@@ -40,8 +40,14 @@ If you want to use the module types you can find them in the src folder. Import 
 
 ```
 import { Actions } from 'sn-redux';
+import { Content, ContentTypes, Repository } 'sn-client-js';
 
-store.dispatch(Actions.Delete(123, false));
+let repository = new Repository.SnRepository({
+  RepositoryUrl: 'http://path-to-your-portal.com',
+});
+
+const content = Content.Create({ Id: 123 }, ContentTypes.Task, repository);
+store.dispatch(Actions.Delete(content, false));
 ```
 
 ## Installation into an external app with node and npm
@@ -88,8 +94,16 @@ let repository = new Repository.SnRepository({
 ### CommonJS
 
 ```
+var Content = require('sn-client-js').Content;
+var Repository = require('sn-client-js').Repository;
+var ContentTypes = require('sn-client-js').ContentTypes;
 var Actions = require('sn-redux').Actions;
 
+let repository = new Repository.SnRepository({
+  RepositoryUrl: 'http://path-to-your-portal.com',
+});
+
+var content = Content.Create({ Id: 123 }, ContentTypes.Task, repository);
 store.dispatch(Actions.Delete(123, false));
 ```
 
@@ -97,8 +111,14 @@ store.dispatch(Actions.Delete(123, false));
 
 ```
 import { Actions } 'sn-redux';
+import { Content, ContentTypes, Repository } 'sn-client-js';
 
-store.dispatch(Actions.Delete(123, false));
+let repository = new Repository.SnRepository({
+  RepositoryUrl: 'http://path-to-your-portal.com',
+});
+
+const content = Content.Create({ Id: 123 }, ContentTypes.Task, repository);
+store.dispatch(Actions.Delete(content, false));
 ```
 
 ## Building sn-redux
@@ -126,9 +146,9 @@ npm t
 import { combineReducers } from 'redux';
 import { Reducers } from  'sn-redux';
 
-const collection = Reducers.collection;
+const sensenet = Reducers.sensenet;
 const myReducer = combineReducers({
-  collection,
+  sensenet,
   listByFilter
 });
 
@@ -138,23 +158,37 @@ const myReducer = combineReducers({
 
 ```
 import { Store } from  'sn-redux';
+import { Repository } from 'sn-client-js';
 
-const store = Store.configureStore(myReducer);
+let repository = new Repository.SnRepository({
+  RepositoryUrl: 'http://path-to-your-portal.com',
+});
+
+const store = Store.configureStore(
+    myRootReducer,
+    myRootEpic,                   // If not set, the default will be 'Epics.rootEpic'
+    [middleware1, middleware2],   // If not set, only the epicMiddleware will be used
+    persistedState,               // Optional
+    repository                    // Optional. If not provided, a Repository with default values will be used
+    );
 ```
 
 #### Using built-in actions
 
 ```
-import { Content } from 'sn-client-js';
+import { Content, Repository, ContentTypes } from 'sn-client-js';
 import { Actions } from 'sn-redux';
 
-const parentPath = '/workspaces/Project/budapestprojectworkspace/tasks';
-const content = new Content({
-          Type: 'Task',
-          DisplayName: 'My first task'
-      });
+let repository = new Repository.SnRepository({
+  RepositoryUrl: 'http://path-to-your-portal.com',
+});
 
-dispatch(Actions.CreateContent(parentPath, content))
+const parentPath = '/workspaces/Project/budapestprojectworkspace/tasks';
+const content = Content.Create({
+          DisplayName: 'My first task'
+      }, ContentTypes.Task, repository);
+
+dispatch(Actions.CreateContent(content))
 ```
 
 ## Documentation

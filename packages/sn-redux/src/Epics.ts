@@ -36,18 +36,39 @@ import { Repository, Content, Collection, ODataApi, Authentication } from 'sn-cl
 
 export module Epics {
     /**
+     * Epic for initialize a sensenet Redux store. It checks the InitSensenetStore Action and calls the necessary ones snycronously. Loads the current content,
+     * checks the login state with CheckLoginState, fetch the children items with RequestContent and loads the current content related actions with
+     * LoadContentActions.
+     */
+    export const initSensenetStoreEpic = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
+        return action$.ofType('INIT_SENSENET_STORE')
+            .mergeMap(action => {
+                dependencies.repository.GetCurrentUser().subscribe(user => {
+                    store.dispatch(Actions.UserChanged(user))
+                })
+                store.dispatch(Actions.CheckLoginState())
+                return dependencies.repository.Load(action.path, action.options)
+                    .map((response) => {
+                        store.dispatch(Actions.RequestContent(action.path, action.options))
+                        return Actions.ReceiveLoadedContent(response, action.options)
+                    })
+                    .catch(error => {
+                        return Observable.of(Actions.ReceiveLoadedContentFailure(action.options, error))
+                    })
+            })
+    }
+    /**
      * Epic for fetching content from the Content Repository. It is related to three redux actions, returns the ```RequestContent``` action and sends the JSON response to the
      * ```ReceiveContent``` action if the ajax request ended successfully or catches the error if the request failed and sends the error message to the ```ReceiveContentFailure``` action.
      */
     export const fetchContentEpic = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
         return action$.ofType('FETCH_CONTENT_REQUEST')
             .mergeMap(action => {
-                let params = new ODataApi.ODataParams(action.options || {});
                 let collection = new Collection.Collection([], dependencies.repository, action.contentType);
-                return collection.Read(action.path, params)
-                    .map((response) => Actions.ReceiveContent(response, params))
+                return collection.Read(action.path, action.options)
+                    .map((response) => Actions.ReceiveContent(response, action.options))
                     .catch(error => {
-                        return Observable.of(Actions.ReceiveContentFailure(params, error))
+                        return Observable.of(Actions.ReceiveContentFailure(action.options, error))
                     })
             }
             );
@@ -59,14 +80,28 @@ export module Epics {
     export const loadContentEpic = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
         return action$.ofType('LOAD_CONTENT_REQUEST')
             .mergeMap(action => {
-                let params = new ODataApi.ODataParams(action.options || {});
-                return dependencies.repository.Load(action.id, params)
-                    .map((response) => Actions.ReceiveLoadedContent(response, params))
+                return dependencies.repository.Load(action.id, action.options)
+                    .map((response) => {
+                        store.dispatch(Actions.LoadContentActions(response, action.scenario))
+                        return Actions.ReceiveLoadedContent(response, action.options)
+                    })
                     .catch(error => {
-                        return Observable.of(Actions.ReceiveLoadedContentFailure(params, error))
+                        return Observable.of(Actions.ReceiveLoadedContentFailure(action.options, error))
                     })
             }
             );
+    }
+    /**
+     * Epic for loading Actions of a content from the Content Repository. It is related to three redux actions, returns the ```LoadContentActions``` action and sends the JSON response to the
+     * ```ReceiveContentActions``` action if the ajax request ended successfully or catches the error if the request failed and sends the error message to the ```ReceiveContentActionsFailure``` action.
+     */
+    export const loadContentActionsEpic = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
+        return action$.ofType('LOAD_CONTENT_ACTIONS')
+            .mergeMap(action => {
+                return action.content.Actions(action.scenario)
+                    .map(Actions.ReceiveContentActions)
+                    .catch(error => Observable.of(Actions.ReceiveContentActionsFailure(error)))
+            })
     }
     /**
      * Epic for reloading content from the Content Repository. It is related to three redux actions, returns the ```ReloadContent``` action and sends the JSON response to the
@@ -142,22 +177,15 @@ export module Epics {
      * Epic to delete multiple Content from the Content Repository. It is related to three redux actions, returns ```DeleteBatch``` action and sends the response to the
      * ```DeleteBatchSuccess``` action if the ajax request ended successfully or catches the error if the request failed and sends the error message to the ```DeleteBatchFailure``` action.
      */
-    export const deleteBatchEpic = (action$, store) => {
+    export const deleteBatchEpic = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
         return action$.ofType('DELETE_BATCH_REQUEST')
             .mergeMap(action => {
-                return action.content.CreateCustomAction(
-                    { name: 'DeleteBatch', path: action.path, isAction: true, requiredParams: ['paths'] },
-                    { data: { 'paths': action.ids, 'permanently': action.permanently } })
+                let collection = new Collection.Collection([], dependencies.repository, action.contentType);
+                return collection.Remove(action.ids, false)
                     .map((response) => {
                         const state = store.getState();
                         const ids = Reducers.getIds(state.collection);
-                        let indexes = [];
-                        for (let i = 0; i < ids.length; i++) {
-                            if (action.ids.indexOf(ids[i]) > -1) {
-                                indexes.push(i);
-                            }
-                        }
-                        return Actions.DeleteBatchSuccess(indexes);
+                        return Actions.DeleteBatchSuccess(ids);
                     })
                     .catch(error => Observable.of(Actions.DeleteBatchFailure(error)))
             })
@@ -169,7 +197,7 @@ export module Epics {
     export const checkoutContentEpic = (action$, store) => {
         return action$.ofType('CHECKOUT_CONTENT_REQUEST')
             .mergeMap(action => {
-                return action.content.CreateCustomAction({ name: 'CheckOut', id: action.id, isAction: true })
+                return action.content.Checkout()
                     .map(Actions.CheckOutSuccess)
                     .catch(error => Observable.of(Actions.CheckOutFailure(error)))
             })
@@ -182,10 +210,7 @@ export module Epics {
     export const checkinContentEpic = (action$, store) => {
         return action$.ofType('CHECKIN_CONTENT_REQUEST')
             .mergeMap(action => {
-                return action.content.Content.CreateCustomAction(
-                    { name: 'CheckIn', id: action.id, isAction: true, params: ['checkInComment'] },
-                    { data: { 'checkInComments': action.checkInComment } }
-                )
+                return action.content.CheckIn(action.checkinComment)
                     .map(Actions.CheckInSuccess)
                     .catch(error => Observable.of(Actions.CheckInFailure(error)))
             })
@@ -197,7 +222,7 @@ export module Epics {
     export const publishContentEpic = (action$, store) => {
         return action$.ofType('PUBLISH_CONTENT_REQUEST')
             .mergeMap(action => {
-                return action.content.Content.CreateCustomAction({ name: 'Publish', id: action.id, isAction: true })
+                return action.content.Publish()
                     .map(Actions.PublishSuccess)
                     .catch(error => Observable.of(Actions.PublishFailure(error)))
             })
@@ -209,7 +234,7 @@ export module Epics {
     export const approveContentEpic = (action$, store) => {
         return action$.ofType('APPROVE_CONTENT_REQUEST')
             .mergeMap(action => {
-                return action.content.Content.CreateCustomAction({ name: 'Approve', id: action.id, isAction: true })
+                return action.content.Approve()
                     .map(Actions.ApproveSuccess)
                     .catch(error => Observable.of(Actions.ApproveFailure(error)))
             })
@@ -221,10 +246,7 @@ export module Epics {
     export const rejectContentEpic = (action$, store) => {
         return action$.ofType('REJECT_CONTENT_REQUEST')
             .mergeMap(action => {
-                return action.content.Content.CreateCustomAction(
-                    { name: 'Reject', id: action.id, isAction: true, params: ['rejectReason'] },
-                    { data: { 'rejectReason': action.rejectReason ? action.rejectReason : '' } }
-                )
+                return action.content.Reject(action.rejectReason)
                     .map(Actions.RejectSuccess)
                     .catch(error => Observable.of(Actions.RejectFailure(error)))
             })
@@ -236,7 +258,7 @@ export module Epics {
     export const undocheckoutContentEpic = (action$, store) => {
         return action$.ofType('UNDOCHECKOUT_CONTENT_REQUEST')
             .mergeMap(action => {
-                return action.content.Content.CreateCustomAction({ name: 'UndoCheckout', id: action.id, isAction: true })
+                return action.content.UndoCheckout()
                     .map(Actions.UndoCheckoutSuccess)
                     .catch(error => Observable.of(Actions.UndoCheckoutFailure(error)))
             })
@@ -248,7 +270,7 @@ export module Epics {
     export const forceundocheckoutContentEpic = (action$, store) => {
         return action$.ofType('FORCEUNDOCHECKOUT_CONTENT_REQUEST')
             .mergeMap(action => {
-                return action.content.Content.CreateCustomAction({ name: 'ForceUndoCheckout', id: action.id, isAction: true })
+                return action.content.ForceUndoCheckout()
                     .map(Actions.ForceUndoCheckoutSuccess)
                     .catch(error => Observable.of(Actions.ForceUndoCheckoutFailure(error)))
             })
@@ -260,9 +282,7 @@ export module Epics {
     export const restoreversionContentEpic = (action$, store) => {
         return action$.ofType('RESTOREVERSION_CONTENT_REQUEST')
             .mergeMap(action => {
-                return action.content.Content.CreateCustomAction(
-                    { name: 'RestoreVersion', id: action.id, isAction: true, params: ['version'] },
-                    { data: { 'version': action.version } })
+                return action.content.RestoreVersion(action.version)
                     .map(Actions.RestoreVersionSuccess)
                     .catch(error => Observable.of(Actions.RestoreVersionFailure(error)))
             })
@@ -277,7 +297,10 @@ export module Epics {
                 return dependencies.repository.Authentication.State.skipWhile(state => state === Authentication.LoginState.Pending)
                     .first()
                     .map(result => {
-                        return result
+                        return result === Authentication.LoginState.Authenticated ?
+                            Actions.UserLoginSuccess(result)
+                            :
+                            Actions.UserLoginFailure({ message: 'Failed to log in.' });
                     })
             })
     }
@@ -316,7 +339,10 @@ export module Epics {
      * [OData Actions and Function](http://wiki.sensenet.com/Built-in_OData_actions_and_functions).
      */
     export const rootEpic = combineEpics(
+        initSensenetStoreEpic,
         fetchContentEpic,
+        loadContentEpic,
+        loadContentActionsEpic,
         createContentEpic,
         updateContentEpic,
         deleteContentEpic,
@@ -329,8 +355,9 @@ export module Epics {
         undocheckoutContentEpic,
         forceundocheckoutContentEpic,
         restoreversionContentEpic,
-        checkLoginStateEpic,
         userLoginEpic,
-        userLogoutEpic
+        userLogoutEpic,
+        checkLoginStateEpic
     );
 }
+

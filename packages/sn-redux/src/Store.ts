@@ -3,6 +3,7 @@ import { createLogger } from 'redux-logger'
 import { createEpicMiddleware } from 'redux-observable';
 import { Epics } from './Epics';
 import { Reducers } from './Reducers';
+import { Actions } from './Actions';
 import { Repository } from 'sn-client-js';
 
 /**
@@ -36,7 +37,7 @@ export module Store {
 
     /**
      * Method to create a Redux store that holds the application state.
-     * @param {any} [rootReducer=Reducers.snApp] Root reducer of your application.
+     * @param {any} [rootReducer=Reducers.sensenet] Root reducer of your application.
      * @param {Repository.BaseRepository<any,any>} The sensenet Repository
      * @param {any} [rootEpic=Epics.rootEpic] Root epic of your application.
      * @param {Array<any>=} middlewares Array of middlewares.
@@ -49,7 +50,10 @@ export module Store {
      * import { myRootReducer } from '../myApp/Reducers'
      * import { myRootEpic } from '../myApp/Epics'
      *
-     * const store = Store.configureStore(myRootReducer, myRootEpic, [Authentication]);
+     * const repository = new Repository.SnRepository({
+     *  RepositoryUrl: 'https://sn-services/'
+     * });
+     * const store = Store.configureStore(myRootReducer, myRootEpic, [Authentication], {}, repository);
      *
      * ReactDOM.render(
      * <Root store={store} />,
@@ -57,7 +61,7 @@ export module Store {
      * );
      * ```
      */
-    export const configureStore = (rootReducer: any = Reducers.snApp, rootEpic?: any, middlewares?: Array<any>, persistedState?: Object, repository?: Repository.BaseRepository<any, any>) => {
+    export const configureStore = (rootReducer: any = Reducers.sensenet, rootEpic?: any, middlewares?: Array<any>, persistedState?: Object, repository?: Repository.BaseRepository<any, any>) => {
         let epicMiddleware;
 
         if (!repository) {
@@ -79,6 +83,7 @@ export module Store {
         }
         const loggerMiddleware = createLogger();
         middlewareArray.push(loggerMiddleware);
+
         if (persistedState && typeof persistedState !== 'undefined') {
             return createStore(
                 rootReducer,
