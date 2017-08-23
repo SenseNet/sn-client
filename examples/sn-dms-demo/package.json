@@ -27,16 +27,21 @@
     }
   },
   "dependencies": {
-    "@types/jest": "^20.0.6",
-    "@types/node": "^8.0.19",
-    "@types/react": "^16.0.0",
-    "@types/react-dom": "^15.5.2",
+    "@types/jest": "^20.0.7",
+    "@types/node": "^8.0.24",
+    "@types/react": "^16.0.3",
+    "@types/react-dom": "^15.5.4",
+    "@types/redux-logger": "^3.0.1",
+    "lodash": "^4.17.4",
+    "material-design-icons": "^3.0.1",
+    "material-ui": "^1.0.0-beta.6",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "sn-client-cli": "^1.0.0-RC.3",
-    "sn-client-js": "^2.1.0",
+    "react-redux": "^5.0.6",
+    "sn-client-js": "^2.3.0",
     "sn-controls-react": "^1.0.0-beta.1",
-    "sn-redux": "^3.0.0"
+    "sn-redux": "^3.0.0",
+    "typeface-roboto": "0.0.35"
   },
   "devDependencies": {
     "codecov.io": "^0.1.6",
