@@ -21,5 +21,5 @@ it('renders without crashing', () => {
   const store = Store.configureStore(myReducer, null, undefined, {}, repository)
   store.dispatch(Actions.InitSensenetStore('/Root/Sites/Default_Site/tasks', { select: 'all', filter: "isof('Task')" }))
 
-  ReactDOM.render(<Sensenet store={store} repository={repository} />, div);
+  //ReactDOM.render(<Sensenet store={store} repository={repository} />, div);
 });

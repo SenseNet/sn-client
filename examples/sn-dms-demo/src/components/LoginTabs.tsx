@@ -26,6 +26,8 @@ const styles = {
     }
 }
 
+import { resources } from '../assets/resources'
+
 function TabContainer(props) {
     return (
         <div style={{ padding: 20 }}>
@@ -57,13 +59,13 @@ class LoginTabs extends React.Component<{}, { value }> {
                             centered>
                             <Tab
                                 key='login'
-                                label='Login'
+                                label={resources.LOGIN_TAB_TEXT}
                                 style={styles.tabLink}
                                 component={Link}
                                 to='/login' />
                             <Tab
                                 key='registration'
-                                label='Registration'
+                                label={resources.REGISTER_TAB_TEXT}
                                 style={styles.tabLink}
                                 component={Link}
                                 to='/registration' />

@@ -1,11 +1,15 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import {
+  BrowserRouter as Router
+} from 'react-router-dom'
 import Sensenet from './Sensenet';
 import { combineReducers } from 'redux'
 import { Repository } from 'sn-client-js'
 import { Store, Actions, Reducers } from 'sn-redux'
 import registerServiceWorker from './registerServiceWorker';
 import { Provider } from 'react-redux';
+
 import './index.css';
 import 'rxjs'
 
@@ -15,18 +19,20 @@ const myReducer = combineReducers({
 });
 
 const repository = new Repository.SnRepository({
-  RepositoryUrl: 'https://sn-services/'
+  RepositoryUrl: 'https://dmsservice.demo.sensenet.com/'
 });
 
 
 const store = Store.configureStore(myReducer, null, undefined, {}, repository)
-store.dispatch(Actions.InitSensenetStore('/Root/Sites/Default_Site/tasks', { select: 'all', filter: "isof('Task')" }))
+store.dispatch(Actions.InitSensenetStore('/Root/Sites/Default_Site', { select: 'all' }))
 
 
 ReactDOM.render(
 
   <Provider store={store}>
+    <Router>
     <Sensenet store={store} repository={repository} />
+    </Router>
   </Provider>,
   document.getElementById('root') as HTMLElement
 );
