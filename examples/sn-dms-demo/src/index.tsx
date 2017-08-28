@@ -19,7 +19,7 @@ const myReducer = combineReducers({
 });
 
 const repository = new Repository.SnRepository({
-  RepositoryUrl: 'https://dmsservice.demo.sensenet.com/'
+  RepositoryUrl: process.env.REACT_APP_SERVICE_URL || 'https://sn-local'
 });
 
 
