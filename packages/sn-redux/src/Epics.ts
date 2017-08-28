@@ -300,7 +300,7 @@ export module Epics {
                         return result === Authentication.LoginState.Authenticated ?
                             Actions.UserLoginSuccess(result)
                             :
-                            Actions.UserLoginFailure({ message: 'Failed to log in.' });
+                            Actions.UserLoginFailure({ message: null });
                     })
             })
     }

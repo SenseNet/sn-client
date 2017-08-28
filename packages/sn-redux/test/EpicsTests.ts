@@ -600,7 +600,7 @@ describe('Epics', () => {
             store.dispatch({ type: 'CHECK_LOGIN_STATE_REQUEST' });
             expect(store.getActions()).to.be.deep.eq([
                 { type: 'CHECK_LOGIN_STATE_REQUEST' },
-                { type: 'USER_LOGIN_FAILURE', message: 'Failed to log in.' }]);
+                { type: 'USER_LOGIN_FAILURE', message: null }]);
         })
     });
 });
