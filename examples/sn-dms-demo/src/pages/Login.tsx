@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux';
 import { Reducers } from 'sn-redux'
+import { DMSReducers } from '../Reducers'
 import LoginTabs from '../components/LoginTabs'
 import { WelcomeMessage } from '../components/WelcomeMessage'
 import Button from 'material-ui/Button';
@@ -39,7 +40,8 @@ import { resources } from '../assets/resources'
 interface ILoginProps {
   login,
   params,
-  loginError
+  loginError,
+  savedEmail
 }
 
 interface ILoginState {
@@ -210,7 +212,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
               <FormControl>
                 <FormHelperText error>{this.props.loginError && this.props.loginError.length ? resources.WRONG_USERNAME_OR_PASSWORD : ''}</FormHelperText>
               </FormControl>
-              <Button type='submit' color='primary' style={styles.button} disabled={this.buttonIsDisabled()}>{resources.LOGIN_BUTTON_TEXT}</Button>
+              <Button type='submit' color='primary' style={styles.button} disabled={this.buttonIsDisabled() ? true : false}>{resources.LOGIN_BUTTON_TEXT}</Button>
             </form>
           </MuiThemeProvider>
         </div>
@@ -221,7 +223,8 @@ class Login extends React.Component<ILoginProps, ILoginState> {
 
 const mapStateToProps = (state, match) => {
   return {
-    loginError: Reducers.getAuthenticationError(state.sensenet)
+    loginError: Reducers.getAuthenticationError(state.sensenet),
+    savedEmail: DMSReducers.getRegisteredEmail(state.register)
   }
 }
 

@@ -10,4 +10,11 @@ export const resources = {
     LOGIN_TAB_TEXT: 'Login',
     REGISTER_TAB_TEXT: 'Register',
     WELCOME_MESSAGE: 'Welcome to the sensenet ECM Document Management System Experiment! We are thrilled to have you here. Please log in, or register!',
+    REGISTRATION_BUTTON_TEXT: 'Register',
+    EMAIL_INPUT_FORMAT_PLACEHOLDER: 'example@domain.com',
+    CONFIRM_PASSWORD_INPUT_LABEL: 'Confirm password',
+    PASSWORD_SHOULD_BE_VALID: 'Password needs to contain at least 8 characters, needs to contain numbers, capitals and special characters!',
+    PASSWORDS_SHOULD_MATCH: 'Passwords should match!',
+    USER_IS_ALREADY_REGISTERED: 'The email address you have entered is already registered!',
+    CAPTCHA_ERROR: 'Please complete the captcha!'
 }

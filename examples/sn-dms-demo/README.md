@@ -22,6 +22,10 @@ $ npm install
 $ npm start
 ```
 
+Please set the following enviroment variables:
+- REACT_APP_SERVICE_URL: url of the site that has at least [sensenet services](https://github.com/SenseNet/sensenet) installed (default value is ```https://sn-local``` so if you have a site installed locally with this url, you have nothing to do with this).
+- REACT_APP_RECAPTCHA_KEY: [Google ReCAPTCHA](https://www.google.com/recaptcha/intro/) sitekey. Without this registration won't work.
+
 ## Running Tests
 
 ```
