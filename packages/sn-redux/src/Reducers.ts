@@ -122,13 +122,43 @@ export module Reducers {
         }
     }
     /**
+       * Reducer to handle Actions on the userAvatarPath property in the user object.
+       * @param {Object} [state=''] Represents the current state.
+       * @param {Object} action Represents an action that is called.
+       * @returns {Object} state. Returns the next state based on the action.
+       */
+    export const userAvatarPath = (state = '', action) => {
+        switch (action.type) {
+            case 'USER_CHANGED':
+                return action.user.ImageData ? action.user.ImageData.__mediaresource.media_src : ''
+            default:
+                return state
+        }
+    }
+
+    /**
    * Reducer combining userName, fullName and userLanguage into a single object, ```user```.
    */
     const user = combineReducers({
         userName,
         fullName,
-        userLanguage
+        userLanguage,
+        userAvatarPath
     })
+    /**
+       * Reducer to handle Actions on the repostory property in the user object.
+       * @param {Object} [state=null] Represents the current state.
+       * @param {Object} action Represents an action that is called.
+       * @returns {Object} state. Returns the next state based on the action.
+       */
+    export const repository = (state = null, action) => {
+        switch (action.type) {
+            case 'LOAD_REPOSITORY':
+                return action.repository
+            default:
+                return state
+        }
+    }
     /**
    * Reducer combining country, language, loginState, error and user into a single object, ```session```.
    */
@@ -137,7 +167,8 @@ export module Reducers {
         language,
         loginState,
         error: loginError,
-        user
+        user,
+        repository
     })
     /**
        * Reducer to handle Actions on the ids array in the children object.
@@ -590,5 +621,9 @@ export module Reducers {
 
     export const getAuthenticationError = (state) => {
         return state.session.error;
+    }
+
+    export const getRepositoryUrl = (state) => {
+        return state.session.repository.RepositoryUrl;
     }
 }
