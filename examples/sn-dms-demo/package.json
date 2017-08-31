@@ -23,7 +23,7 @@
   "homepage": "https://sensenet.com",
   "config": {
     "commitizen": {
-      "path": "cz-conventional-changelog"
+      "path": "sensenet-kfi-cz-conventional-changelog"
     }
   },
   "dependencies": {
@@ -48,20 +48,23 @@
     "lodash": "^4.17.4",
     "material-design-icons": "^3.0.1",
     "material-ui": "^1.0.0-beta.6",
+    "material-ui-icons": "^1.0.0-beta.5",
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "3.0.0",
     "postcss-loader": "2.0.5",
     "promise": "7.1.1",
     "react": "^15.6.1",
+    "react-addons-css-transition-group": "^15.6.0",
     "react-async-script": "^0.9.1",
     "react-dev-utils": "^3.0.1",
     "react-dom": "^15.6.1",
     "react-error-overlay": "^1.0.8",
     "react-google-recaptcha": "^0.8.1",
     "react-redux": "^5.0.6",
+    "sensenet-kfi-cz-conventional-changelog": "^1.0.0",
     "sn-client-js": "^2.3.0",
     "sn-controls-react": "^1.0.0-beta.1",
-    "sn-redux": "^3.0.1",
+    "sn-redux": "^3.1.1",
     "source-map-loader": "^0.2.1",
     "style-loader": "0.18.2",
     "sw-precache-webpack-plugin": "0.11.3",

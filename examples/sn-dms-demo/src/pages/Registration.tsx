@@ -9,24 +9,11 @@ import Input from 'material-ui/Input';
 import InputLabel from 'material-ui/Input/InputLabel';
 import FormControl from 'material-ui/Form/FormControl';
 import FormHelperText from 'material-ui/Form/FormHelperText';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import createMuiTheme from 'material-ui/styles/theme'
 import { CircularProgress } from 'material-ui/Progress';
 import { withRouter } from 'react-router-dom'
 import GoogleReCaptcha from '../components/GoogleReCaptcha'
 
 const logo = require('../assets/logo.png');
-
-import lightBlue from 'material-ui/colors/lightBlue'
-import pink from 'material-ui/colors/pink'
-import createPalette from 'material-ui/styles/palette'
-
-const muiTheme = createMuiTheme({
-  palette: createPalette({
-    primary: lightBlue,
-    accent: pink
-  })
-})
 
 const styles = {
   button: {
@@ -230,7 +217,7 @@ class Registration extends React.Component<IRegistrationProps, IRegistrationStat
   }
   render() {
     return (
-      <div>
+      <div className='Sensenet'>
         <div className='Sensenet-header'>
           <img src={logo} className='Sensenet-logo' alt='logo' />
         </div>
@@ -239,77 +226,74 @@ class Registration extends React.Component<IRegistrationProps, IRegistrationStat
         <WelcomeMessage />
 
         <div>
-          <MuiThemeProvider theme={muiTheme}>
-            <div>
-              {this.props.isRegistered ? this.props.history.push('/login') : false}
-              {this.props.inProgress ? <div style={styles.progress}><CircularProgress color='accent' /></div> : ''}
-              <form onSubmit={e => {
-                e.preventDefault()
-                this.formSubmit(e)
-              }}>
-                <FormControl
-                  error={this.state.emailError || (this.props.registrationError && this.props.registrationError.length) > 0 ? true : false}
+          <div>
+            {this.props.isRegistered ? this.props.history.push('/login') : false}
+            {this.props.inProgress ? <div style={styles.progress}><CircularProgress color='accent' /></div> : ''}
+            <form onSubmit={e => {
+              e.preventDefault()
+              this.formSubmit(e)
+            }}>
+              <FormControl
+                error={this.state.emailError || (this.props.registrationError && this.props.registrationError.length) > 0 ? true : false}
+                fullWidth
+                required
+                style={styles.formControl}>
+                <InputLabel htmlFor='email'>{resources.EMAIL_INPUT_LABEL}</InputLabel>
+                <Input
+                  id='email'
+                  onBlur={(event) => this.handleEmailBlur(event)}
+                  onChange={(event) => this.handleEmailChange(event)}
                   fullWidth
-                  required
-                  style={styles.formControl}>
-                  <InputLabel htmlFor='email'>{resources.EMAIL_INPUT_LABEL}</InputLabel>
-                  <Input
-                    id='email'
-                    onBlur={(event) => this.handleEmailBlur(event)}
-                    onChange={(event) => this.handleEmailChange(event)}
-                    fullWidth
-                    autoFocus
-                    placeholder={resources.EMAIL_INPUT_FORMAT_PLACEHOLDER} />
-                  <FormHelperText>{this.state.emailErrorMessage}</FormHelperText>
-                </FormControl>
-                <FormControl
-                  error={this.state.passwordError ? true : false}
+                  autoFocus
+                  placeholder={resources.EMAIL_INPUT_FORMAT_PLACEHOLDER} />
+                <FormHelperText>{this.state.emailErrorMessage}</FormHelperText>
+              </FormControl>
+              <FormControl
+                error={this.state.passwordError ? true : false}
+                fullWidth
+                required
+                style={styles.formControl}>
+                <InputLabel htmlFor='password'>{resources.PASSWORD_INPUT_LABEL}</InputLabel>
+                <Input
+                  type='password'
+                  id='password'
+                  onBlur={(event) => this.handlePasswordBlur(event)}
+                  onChange={(event) => this.handlePasswordChange(event)}
                   fullWidth
-                  required
-                  style={styles.formControl}>
-                  <InputLabel htmlFor='password'>{resources.PASSWORD_INPUT_LABEL}</InputLabel>
-                  <Input
-                    type='password'
-                    id='password'
-                    onBlur={(event) => this.handlePasswordBlur(event)}
-                    onChange={(event) => this.handlePasswordChange(event)}
-                    fullWidth
-                    placeholder={resources.PASSWORD_INPUT_PLACEHOLDER} />
-                  <FormHelperText>{this.state.passwordErrorMessage}</FormHelperText>
-                </FormControl>
-                <FormControl
-                  error={this.state.confirmPasswordError ? true : false}
+                  placeholder={resources.PASSWORD_INPUT_PLACEHOLDER} />
+                <FormHelperText>{this.state.passwordErrorMessage}</FormHelperText>
+              </FormControl>
+              <FormControl
+                error={this.state.confirmPasswordError ? true : false}
+                fullWidth
+                required
+                style={styles.formControl}>
+                <InputLabel htmlFor='password'>{resources.CONFIRM_PASSWORD_INPUT_LABEL}</InputLabel>
+                <Input
+                  type='password'
+                  id='confirmpassword'
+                  onBlur={(event) => this.handleConfirmPasswordBlur(event)}
+                  onChange={(event) => this.handleConfirmPasswordChange(event)}
                   fullWidth
-                  required
-                  style={styles.formControl}>
-                  <InputLabel htmlFor='password'>{resources.CONFIRM_PASSWORD_INPUT_LABEL}</InputLabel>
-                  <Input
-                    type='password'
-                    id='confirmpassword'
-                    onBlur={(event) => this.handleConfirmPasswordBlur(event)}
-                    onChange={(event) => this.handleConfirmPasswordChange(event)}
-                    fullWidth
-                    placeholder={resources.PASSWORD_INPUT_PLACEHOLDER} />
-                  <FormHelperText>{this.state.confirmPasswordErrorMessage}</FormHelperText>
-                </FormControl>
-                <FormControl>
-                  <GoogleReCaptcha verify={this.props.verify} />
-                  <FormHelperText error>{this.state.captchaError && this.state.captchaErrorMessage.length > 0 ? this.state.captchaErrorMessage : ''}</FormHelperText>
-                </FormControl>
-                <FormControl>
-                  <FormHelperText error>{this.props.registrationError && this.props.registrationError.length > 0 ? this.props.registrationError : ''}</FormHelperText>
-                </FormControl>
-                <Button
-                  type='submit'
-                  color='primary'
-                  style={styles.button}
-                //TODO: disabled button
-                //disabled={this.buttonIsDisabled ? true : false}
-                >
-                  {resources.REGISTRATION_BUTTON_TEXT}</Button>
-              </form>
-            </div>
-          </MuiThemeProvider>
+                  placeholder={resources.PASSWORD_INPUT_PLACEHOLDER} />
+                <FormHelperText>{this.state.confirmPasswordErrorMessage}</FormHelperText>
+              </FormControl>
+              <FormControl>
+                <GoogleReCaptcha verify={this.props.verify} />
+                <FormHelperText error>{this.state.captchaError && this.state.captchaErrorMessage.length > 0 ? this.state.captchaErrorMessage : ''}</FormHelperText>
+              </FormControl>
+              <FormControl>
+                <FormHelperText error>{this.props.registrationError && this.props.registrationError.length > 0 ? this.props.registrationError : ''}</FormHelperText>
+              </FormControl>
+              <Button
+                type='submit'
+                color='primary'
+                style={styles.button}
+                disabled={this.state.isButtonDisabled}
+              >
+                {resources.REGISTRATION_BUTTON_TEXT}</Button>
+            </form>
+          </div>
         </div>
       </div>
     )

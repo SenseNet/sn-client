@@ -10,16 +10,33 @@ import {
   withRouter
 } from 'react-router-dom'
 import { Reducers, Actions } from 'sn-redux'
-import { Dashboard } from './pages/Dashboard'
+import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import Registration from './pages/Registration'
 import { DMSActions } from './Actions'
+import { DMSReducers } from './Reducers'
+
+
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import createMuiTheme from 'material-ui/styles/theme'
+import lightBlue from 'material-ui/colors/lightBlue'
+import pink from 'material-ui/colors/pink'
+import yellow from 'material-ui/colors/yellow'
+import createPalette from 'material-ui/styles/palette'
+
+const muiTheme = createMuiTheme({
+  palette: createPalette({
+    primary: lightBlue,
+    accent: pink
+  })
+})
 
 interface ISensenetProps {
   store,
   repository,
   history,
   loginState,
+  loggedinUser,
   loginError: string,
   registrationError: string,
   loginClick: Function,
@@ -44,28 +61,40 @@ class Sensenet extends React.Component<ISensenetProps, { isAuthenticated: boolea
 
   render() {
     return (
-      <div className='Sensenet'>
-        <Route
-          exact
-          path='/'
-          render={routerProps => {
-            const status = this.props.loginState === 1;
-            return status ?
-              <Redirect key='login' to='/login' />
-              : <Dashboard {...routerProps} />;
-          }}
-        />
-        <Route
-          path='/login'
-          render={routerProps => {
-            const status = this.props.loginState === 1;
-            return status ?
-              <Login login={this.props.loginClick} params={{ error: this.props.loginError }} />
-              : <Redirect key='dashboard' to='/' />
-          }}
-        />
-        <Route path='/registration' render={() => <Registration registration={this.props.registrationClick} history={history} verify={this.props.recaptchaCallback} />} />
-      </div>
+
+      <MuiThemeProvider theme={muiTheme}>
+        <div className='root'>
+          <Route
+            exact
+            path='/'
+            render={routerProps => {
+              const status = this.props.loginState === 1;
+              return status ?
+                <Redirect key='login' to='/login' />
+                : <Dashboard {...routerProps} />;
+            }}
+          />
+          <Route
+            path='/login'
+            render={routerProps => {
+              const status = this.props.loginState === 1;
+              return status ?
+                <Login login={this.props.loginClick} params={{ error: this.props.loginError }} />
+                : <Redirect key='dashboard' to='/' />
+            }}
+          />
+          <Route
+            path='/registration'
+            render={() => <Registration registration={this.props.registrationClick} history={history} verify={this.props.recaptchaCallback} />} />
+          <Route path='/:id'
+            render={routerProps => {
+              const status = this.props.loginState === 1;
+              return status ?
+                <Redirect key='login' to='/login' />
+                : <Dashboard {...routerProps} />;
+            }} />
+        </div>
+      </MuiThemeProvider>
     );
   }
 }

@@ -79,4 +79,8 @@ export module DMSReducers {
     export const captchaIsVerified = (state) => {
         return state.captcha
     }
+
+    export const getAuthenticatedUser = (state) => {
+        return state.session.user
+    }
 }
