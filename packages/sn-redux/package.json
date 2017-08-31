@@ -61,7 +61,8 @@
     "redux-logger": "^3.0.6",
     "redux-observable": "^0.16.0",
     "rimraf": "^2.6.1",
-    "rxjs": "^5.4.3"
+    "rxjs": "^5.4.3",
+    "sensenet-kfi-cz-conventional-changelog": "^1.0.0"
   },
   "devDependencies": {
     "@types/chai": "^4.0.4",
@@ -92,7 +93,7 @@
     "typescript": "^2.4.2"
   },
   "czConfig": {
-    "path": "node_modules/cz-conventional-changelog"
+    "path": "node_modules/sensenet-kfi-cz-conventional-changelog"
   },
   "typings": "./src/sn-redux.d.ts"
 }
