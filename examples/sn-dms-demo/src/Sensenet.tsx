@@ -4,7 +4,6 @@ import { styles } from './SensenetStyles'
 import 'typeface-roboto'
 import { connect } from 'react-redux';
 import {
-  BrowserRouter as Router,
   Route,
   Redirect,
   withRouter
@@ -70,7 +69,7 @@ class Sensenet extends React.Component<ISensenetProps, { isAuthenticated: boolea
             render={routerProps => {
               const status = this.props.loginState === 1;
               return status ?
-                <Redirect key='login' to='/login' />
+                <Redirect key='login' to='/#/login' />
                 : <Dashboard {...routerProps} />;
             }}
           />
@@ -80,17 +79,17 @@ class Sensenet extends React.Component<ISensenetProps, { isAuthenticated: boolea
               const status = this.props.loginState === 1;
               return status ?
                 <Login login={this.props.loginClick} params={{ error: this.props.loginError }} />
-                : <Redirect key='dashboard' to='/' />
+                : <Redirect key='dashboard' to='/#/' />
             }}
           />
           <Route
             path='/registration'
             render={() => <Registration registration={this.props.registrationClick} history={history} verify={this.props.recaptchaCallback} />} />
-          <Route path='/:id'
+          <Route path='/#/:id'
             render={routerProps => {
               const status = this.props.loginState === 1;
               return status ?
-                <Redirect key='login' to='/login' />
+                <Redirect key='login' to='/#/login' />
                 : <Dashboard {...routerProps} />;
             }} />
         </div>

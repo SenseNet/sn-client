@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {
-  BrowserRouter as Router
+  HashRouter as Router
 } from 'react-router-dom'
 import Sensenet from './Sensenet';
 import { combineReducers } from 'redux'
@@ -24,9 +24,10 @@ const myReducer = combineReducers({
 });
 
 const repository = new Repository.SnRepository({
-  RepositoryUrl: process.env.REACT_APP_SERVICE_URL || 'https://sn-local'
+  RepositoryUrl: process.env.REACT_APP_SERVICE_URL || 'https://sn-local',
 });
 
+repository.Config
 
 const store = Store.configureStore(myReducer, DMSEpics.rootEpic, undefined, {}, repository)
 store.dispatch(Actions.InitSensenetStore('/Root/Sites/Default_Site', { select: 'all' }))
@@ -35,7 +36,7 @@ store.dispatch(Actions.InitSensenetStore('/Root/Sites/Default_Site', { select: '
 ReactDOM.render(
 
   <Provider store={store}>
-    <Router>
+    <Router basename='/'>
     <Sensenet store={store} repository={repository} history={history} />
     </Router>
   </Provider>,
