@@ -47,7 +47,7 @@
     "jest": "20.0.3",
     "lodash": "^4.17.4",
     "material-design-icons": "^3.0.1",
-    "material-ui": "^1.0.0-beta.6",
+    "material-ui": "1.0.0-beta.6",
     "material-ui-icons": "^1.0.0-beta.5",
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "3.0.0",
