@@ -87,6 +87,18 @@ describe('Reducers', () => {
         });
     })
 
+    describe('userAvatarPath reducer', () => {
+        it('should return the initial state', () => {
+            expect(Reducers.userAvatarPath(undefined, {})).to.be.deep.equal('');
+        });
+        it('should return the initial state', () => {
+            expect(Reducers.userAvatarPath(undefined, { type: 'USER_CHANGED', user: { DisplayName: 'Alba Monday' } })).to.be.deep.equal('');
+        });
+        it('should return the logged-in users avatars path', () => {
+            expect(Reducers.userAvatarPath(undefined, { type: 'USER_CHANGED', user: { ImageData: { __mediaresource: { media_src: 'Alba Monday' } } } })).to.be.deep.equal('Alba Monday');
+        });
+    })
+
     describe('ids reducer', () => {
         it('should return the initial state', () => {
             expect(Reducers.ids(undefined, {})).to.be.deep.equal([]);
@@ -631,6 +643,16 @@ describe('Reducers', () => {
         });
     });
 
+    describe('repository reducer', () => {
+        it('should return the initial state', () => {
+            expect(Reducers.repository(undefined, {})).to.be.deep.equal(null);
+        });
+        it('should return the repository config', () => {
+            let repo: Mocks.MockRepository = new Mocks.MockRepository();
+            expect(Reducers.repository(null, { type: 'LOAD_REPOSITORY', repository: repo.Config })).to.be.deep.equal(repo.Config);
+        });
+    })
+
     describe('getIds', () => {
         const state = {
             ids: [5145, 5146]
@@ -680,6 +702,18 @@ describe('Reducers', () => {
         }
         it('should return the value of errorMessage from the current state', () => {
             expect(Reducers.getAuthenticationError(state)).to.be.eq('error');
+        });
+    });
+    describe('getRepositoryUrl', () => {
+        const state = {
+            session: {
+                repository: {
+                    RepositoryUrl: 'https://dmsservice.demo.sensenet.com'
+                }
+            }
+        }
+        it('should return the value of RepositoryUrl from the current state', () => {
+            expect(Reducers.getRepositoryUrl(state)).to.be.eq('https://dmsservice.demo.sensenet.com');
         });
     });
 });
