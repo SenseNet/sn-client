@@ -535,4 +535,13 @@ describe('Actions', () => {
             expect(Actions.UserChanged(user)).to.deep.equal(expectedAction)
         });
     });
+    describe('LoadRepository', () => {
+        it('should return the repository load action', () => {
+            const expectedAction = {
+                type: 'LOAD_REPOSITORY',
+                repository: repo
+            }
+            expect(Actions.LoadRepository(repo)).to.deep.equal(expectedAction)
+        });
+    });
 });
