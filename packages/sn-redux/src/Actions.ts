@@ -684,4 +684,13 @@ export module Actions {
         type: 'USER_LOGOUT_FAILURE',
         message: error.message
     })
+    /**
+      * Action creator for load repository config.
+      * @param repositoryConfig {any} The repository config object.
+      * @returns {Object} Returns a redux action.
+    */
+    export const LoadRepository = (repositoryConfig) => ({
+        type: 'LOAD_REPOSITORY',
+        repository: repositoryConfig
+    })
 }
