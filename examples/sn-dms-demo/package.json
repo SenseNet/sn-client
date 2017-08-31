@@ -59,6 +59,7 @@
     "react-dev-utils": "^3.0.1",
     "react-dom": "^15.6.1",
     "react-error-overlay": "^1.0.8",
+    "react-router-dom": "^4.2.2",
     "react-tap-event-plugin": "2.0.1",
     "react-google-recaptcha": "^0.8.1",
     "react-redux": "^5.0.6",
