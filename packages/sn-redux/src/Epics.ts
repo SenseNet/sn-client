@@ -47,6 +47,7 @@ export module Epics {
                     store.dispatch(Actions.UserChanged(user))
                 })
                 store.dispatch(Actions.CheckLoginState())
+                store.dispatch(Actions.LoadRepository(dependencies.repository.Config))
                 return dependencies.repository.Load(action.path, action.options)
                     .map((response) => {
                         store.dispatch(Actions.RequestContent(action.path, action.options))
