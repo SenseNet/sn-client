@@ -56,7 +56,7 @@
     "react": "^15.6.1",
     "react-addons-css-transition-group": "^15.6.0",
     "react-async-script": "^0.9.1",
-    "react-dev-utils": "^3.0.1",
+    "react-dev-utils": "^4.0.1",
     "react-dom": "^15.6.1",
     "react-error-overlay": "^2.0.1",
     "react-router-dom": "^4.2.2",
