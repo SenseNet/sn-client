@@ -40,7 +40,9 @@ import { resources } from '../assets/resources'
 interface ILoginProps {
   login,
   params,
-  loginError
+  loginError,
+  clear,
+  isRegistered
 }
 
 interface ILoginState {
@@ -162,6 +164,12 @@ class Login extends React.Component<ILoginProps, ILoginState> {
     return this.state.isButtonDisabled;
   }
 
+  componentDidMount() {
+    this.props.isRegistered ?
+      this.props.clear() :
+      false
+  }
+
   render() {
     return (
       <div className='Sensenet'>
@@ -222,7 +230,8 @@ class Login extends React.Component<ILoginProps, ILoginState> {
 
 const mapStateToProps = (state, match) => {
   return {
-    loginError: Reducers.getAuthenticationError(state.sensenet)
+    loginError: Reducers.getAuthenticationError(state.sensenet),
+    isRegistered: DMSReducers.registrationIsDone
   }
 }
 

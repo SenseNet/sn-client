@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux';
 import { Reducers } from 'sn-redux'
+import { DMSActions } from '../Actions'
 import { DMSReducers } from '../Reducers'
 import LoginTabs from '../components/LoginTabs'
 import { WelcomeMessage } from '../components/WelcomeMessage'
@@ -94,7 +95,8 @@ class Registration extends React.Component<IRegistrationProps, IRegistrationStat
       this.setState({
         email: e.target.value,
         emailErrorMessage: '',
-        emailError: false
+        emailError: false,
+        isButtonDisabled: false
       })
     }
     else {
@@ -106,7 +108,8 @@ class Registration extends React.Component<IRegistrationProps, IRegistrationStat
   }
   handleEmailChange(e) {
     this.setState({
-      email: e.target.value
+      email: e.target.value,
+      isButtonDisabled: false
     })
   }
   validateEmail(text) {
@@ -118,7 +121,8 @@ class Registration extends React.Component<IRegistrationProps, IRegistrationStat
       this.setState({
         password: e.target.value,
         passwordErrorMessage: '',
-        passwordError: false
+        passwordError: false,
+        isButtonDisabled: false
       })
     }
     else {
@@ -130,11 +134,13 @@ class Registration extends React.Component<IRegistrationProps, IRegistrationStat
   }
   handlePasswordChange(e) {
     this.setState({
-      password: e.target.value
+      password: e.target.value,
+      isButtonDisabled: false
     })
   }
   validatePassword(text) {
-    const re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
+
+    const re = /^([a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]*[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]){3}[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]*$/;
     return re.test(text);
   }
   handleConfirmPasswordBlur(e) {
@@ -142,7 +148,8 @@ class Registration extends React.Component<IRegistrationProps, IRegistrationStat
       this.setState({
         confirmpassword: e.target.value,
         confirmPasswordErrorMessage: '',
-        confirmPasswordError: false
+        confirmPasswordError: false,
+        isButtonDisabled: false
       })
     }
     else if (!this.validatePassword(e.target.value)) {
@@ -161,7 +168,8 @@ class Registration extends React.Component<IRegistrationProps, IRegistrationStat
   handleConfirmPasswordChange(e) {
     if (this.validatePassword(e.target.value) && this.confirmPasswords(e.target.value, this.state.password)) {
       this.setState({
-        confirmpassword: e.target.value
+        confirmpassword: e.target.value,
+        isButtonDisabled: false
       })
     }
   }
@@ -227,8 +235,11 @@ class Registration extends React.Component<IRegistrationProps, IRegistrationStat
 
         <div>
           <div>
-            {this.props.isRegistered ? this.props.history.push('/login') : false}
-            {this.props.inProgress ? <div style={styles.progress}><CircularProgress color='accent' /></div> : ''}
+            {this.props.isRegistered ?
+              this.props.history.push('/login') :
+              false}
+            {
+              this.props.inProgress ? <div style={styles.progress}><CircularProgress color='accent' /></div> : ''}
             <form onSubmit={e => {
               e.preventDefault()
               this.formSubmit(e)
@@ -309,4 +320,5 @@ const mapStateToProps = (state, match) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, {})(Registration))
+export default withRouter(connect(mapStateToProps, {
+})(Registration))

@@ -14,4 +14,7 @@ export module DMSActions {
     export const VerifyCaptchaSuccess = (response: any) => ({
         type: 'VERIFY_CAPTCHA_SUCCESS'
     })
+    export const ClearRegistration = () => ({
+        type: 'CLEAR_USER_REGISTRATION'
+    })
 }
