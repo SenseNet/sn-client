@@ -219,7 +219,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
               <FormControl>
                 <FormHelperText error>{this.props.loginError && this.props.loginError.length ? resources.WRONG_USERNAME_OR_PASSWORD : ''}</FormHelperText>
               </FormControl>
-              <Button type='submit' color='primary' style={styles.button} disabled={this.state.isButtonDisabled}>{resources.LOGIN_BUTTON_TEXT}</Button>
+              <Button type='submit' color='primary' style={styles.button} disabled={this.props.loginError === null && this.state.isButtonDisabled}>{resources.LOGIN_BUTTON_TEXT}</Button>
             </form>
           </MuiThemeProvider>
         </div>
