@@ -5,7 +5,7 @@ import Avatar from 'material-ui/Avatar';
 
 const styles = {
     avatar: {
-        margin: 10,
+        margin: '10px 0',
         background: '#fff'
     },
 };

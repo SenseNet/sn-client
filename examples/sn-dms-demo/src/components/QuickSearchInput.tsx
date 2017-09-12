@@ -11,14 +11,16 @@ const styles = {
         width: 0,
     },
     searchButton: {
-        color: '#fff'
+        color: '#fff',
+        verticalAlign: 'middle'
     },
     icon: {
         width: 40,
         height: 40,
         padding: 5,
         top: 0,
-        color: '#fff'
+        color: '#fff',
+        verticalAlign: 'middle'
     }
 }
 
