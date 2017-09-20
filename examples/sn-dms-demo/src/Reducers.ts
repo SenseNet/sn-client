@@ -62,6 +62,39 @@ export module DMSReducers {
         captcha
     })
 
+    export const actions = (state = [], action) => {
+        switch (action.type) {
+            case 'REQUEST_CONTENT_ACTIONS_SUCCESS':
+                return action.response
+            default:
+                return state
+        }
+    }
+
+    export const open = (state = false, action) => {
+        switch (action.type) {
+            case 'TRIGGER_ACTIONMENU':
+                return action.open || !state
+            default:
+                return state
+        }
+    }
+
+    export const element = (state = null, action) => {
+        switch (action.type) {
+            case 'TRIGGER_ACTIONMENU':
+                return action.element
+            default:
+                return state
+        }
+    }
+
+    export const actionmenu = combineReducers({
+        actions,
+        open,
+        element
+    })
+
     export const getRegistrationError = (state) => {
         return state.registrationError;
     }
@@ -82,5 +115,21 @@ export module DMSReducers {
     }
     export const getAuthenticatedUser = (state) => {
         return state.session.user
+    }
+
+    export const getChildrenItems = (state) => {
+        return state.children.entities
+    }
+
+    export const getCurrentContentPath = (state) => {
+        return state.Path
+    }
+
+    export const actionmenuIsOpen = (state) => {
+        return state.open
+    }
+
+    export const getActionMenuAnchor = (state) => {
+        return state.element
     }
 }

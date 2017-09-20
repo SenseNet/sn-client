@@ -17,4 +17,9 @@ export module DMSActions {
     export const ClearRegistration = () => ({
         type: 'CLEAR_USER_REGISTRATION'
     })
+    export const TriggerActionMenu = (element, open?: boolean) => ({
+        type: 'TRIGGER_ACTIONMENU',
+        open,
+        element
+    })
 }
