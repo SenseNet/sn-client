@@ -46,8 +46,7 @@
     "jest": "21.1.0",
     "lodash": "^4.17.4",
     "material-design-icons": "^3.0.1",
-    "material-ui": "1.0.0-beta.6",
-    "material-ui-icons": "^1.0.0-beta.5",
+    "material-ui-icons": "^1.0.0-beta.10",
     "moment": "^2.18.1",
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "3.2.0",
@@ -87,6 +86,7 @@
     "codecov.io": "^0.1.6",
     "commitizen": "^2.9.6",
     "cz-conventional-changelog": "^2.0.0",
+    "material-ui": "^1.0.0-beta.11",
     "webpack": "^3.5.5"
   },
   "scripts": {

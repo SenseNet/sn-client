@@ -1,21 +1,21 @@
 import * as React from 'react'
 import {
-    Link
+    Redirect,
+    withRouter
 } from 'react-router-dom'
 import AppBar from 'material-ui/AppBar';
 import Tabs, { Tab } from 'material-ui/Tabs';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import createMuiTheme from 'material-ui/styles/theme'
+import createMuiTheme from 'material-ui/styles/createMuiTheme';
 
 import blue from 'material-ui/colors/blue'
 import pink from 'material-ui/colors/pink'
-import createPalette from 'material-ui/styles/palette'
 
 const muiTheme = createMuiTheme({
-    palette: createPalette({
+    palette: {
         primary: blue,
-        accent: pink
-    })
+        secondary: pink
+    }
 })
 
 const styles = {
@@ -45,6 +45,9 @@ class LoginTabs extends React.Component<{}, { value }> {
     }
     handleChange = (event, value) => {
         this.setState({ value });
+        return value === 0 ?
+            this.context.router.replace('/login') :
+            this.context.router.replace('/redirect');
     };
     render() {
         const { value } = this.state;
@@ -58,17 +61,11 @@ class LoginTabs extends React.Component<{}, { value }> {
                             fullWidth
                             centered>
                             <Tab
-                                key='login'
                                 label={resources.LOGIN_TAB_TEXT}
-                                style={styles.tabLink}
-                                component={Link}
-                                to='/login' />
+                                style={styles.tabLink as any} />
                             <Tab
-                                key='registration'
                                 label={resources.REGISTER_TAB_TEXT}
-                                style={styles.tabLink}
-                                component={Link}
-                                to='/registration' />
+                                style={styles.tabLink as any} />
                         </Tabs>
                     </AppBar>
                 </div>
@@ -76,4 +73,4 @@ class LoginTabs extends React.Component<{}, { value }> {
     }
 }
 
-export default LoginTabs;
+export default withRouter(LoginTabs);

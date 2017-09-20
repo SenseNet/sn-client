@@ -16,7 +16,7 @@ import Table, {
     TableSortLabel,
 } from 'material-ui/Table';
 import Checkbox from 'material-ui/Checkbox';
-import { MoreVert } from 'material-ui-icons/MoreVert';
+import MoreVert from 'material-ui-icons/MoreVert';
 import Icon from 'material-ui/Icon';
 import IconButton from 'material-ui/IconButton';
 import { icons } from '../../assets/icons'
@@ -71,10 +71,10 @@ const styles = {
         opacity: 0
     },
     selectedCheckbox: {
-
+        opacity: 1
     },
     hoveredCheckbox: {
-
+        opacity: 1
     }
 }
 
@@ -208,85 +208,86 @@ class ContentList extends React.Component<TodoListProps, TodoListState> {
     render() {
         return (<div>
             <Table>
-            <ListHead
-                numSelected={this.state.selected.length}
-                order={this.state.order}
-                orderBy={this.state.orderBy}
-                onSelectAllClick={this.handleSelectAllClick}
-                onRequestSort={this.handleRequestSort}
-                count={this.props.ids.length}
-            />
-            <TableBody style={styles.table}>
-                {this.props.currentId && this.props.currentId.length > 0}
-                {this.props.currentId && this.props.currentId.length > 0 ?
-                    <ParentFolderTableRow parentId={this.props.parentId} /> :
-                    <SharedItemsTableRow currentId={this.props.currentId} />
-                }
+                <ListHead
+                    numSelected={this.state.selected.length}
+                    order={this.state.order}
+                    orderBy={this.state.orderBy}
+                    onSelectAllClick={this.handleSelectAllClick}
+                    onRequestSort={this.handleRequestSort}
+                    count={this.props.ids.length}
+                />
+                <TableBody style={styles.table}>
+                    {this.props.currentId && this.props.currentId.length > 0}
+                    {this.props.currentId && this.props.currentId.length > 0 ?
+                        <ParentFolderTableRow parentId={this.props.parentId} /> :
+                        <SharedItemsTableRow currentId={this.props.currentId} />
+                    }
 
-                {this.props.ids.map(n => {
-                    //TODO: selection, action, reducer, meg minden
-                    let content = this.props.children[n];
-                    const isSelected = this.isSelected(content.Id);
-                    const isHovered = this.isHovered(content.Id);
-                    return (
-                        <TableRow
-                            hover
-                            onKeyDown={event => this.handleKeyDown(event, content.Id)}
-                            role='checkbox'
-                            aria-checked={isSelected}
-                            tabIndex='-1'
-                            key={content.Id}
-                            onMouseEnter={event => this.handleRowMouseEnter(event, content.Id)}
-                            onMouseLeave={event => this.handleRowMouseLeave()}
-                            selected={isSelected}
-                            style={isSelected ? styles.selectedRow : null}
-                            onContextMenu={event => this.handleContextMenu(event, content)}
-                        >
-                            <TableCell checkbox style={styles.checkboxButton}>
-                                <Checkbox
-                                    checked={isSelected}
-                                    style={
+                    {this.props.ids.map(n => {
+                        //TODO: selection, action, reducer, meg minden
+                        let content = this.props.children[n];
+                        const isSelected = this.isSelected(content.Id);
+                        const isHovered = this.isHovered(content.Id);
+                        return (
+                            <TableRow
+                                hover
+                                onKeyDown={event => this.handleKeyDown(event, content.Id)}
+                                role='checkbox'
+                                aria-checked={isSelected}
+                                tabIndex={-1}
+                                key={content.Id}
+                                onMouseEnter={event => this.handleRowMouseEnter(event, content.Id)}
+                                onMouseLeave={event => this.handleRowMouseLeave()}
+                                selected={isSelected}
+                                style={isSelected ? styles.selectedRow : null}
+                                onContextMenu={event => this.handleContextMenu(event, content)}
+                            >
+                                <TableCell checkbox style={styles.checkboxButton}>
+                                    <div style={
                                         isSelected ? styles.selectedCheckbox : styles.checkbox &&
-                                            isHovered ? styles.hoveredCheckbox : styles.checkbox}
-                                />
-                            </TableCell>
-                            <TableCell
-                                style={styles.typeIcon}
-                                disablePadding
-                                onClick={event => this.handleRowClick(event, content.Id)}
-                                onDoubleClick={event => this.handleRowDoubleClick(event, content.Id)}>
-                                <Icon color='primary'>{icons[content.Icon]}</Icon>
-                            </TableCell>
-                            <TableCell
-                                style={isHovered ? styles.hoveredDisplayName : styles.displayName}
-                                onClick={event => this.handleRowClick(event, content.Id)}
-                                onDoubleClick={event => this.handleRowDoubleClick(event, content.Id)}>
-                                {content.DisplayName}
-                            </TableCell>
-                            <TableCell
-                                onClick={event => this.handleRowClick(event, content.Id)}
-                                onDoubleClick={event => this.handleRowDoubleClick(event, content.Id)}>
-                                <Moment fromNow>
-                                    {content.ModificationDate}
-                                </Moment>
-                            </TableCell>
-                            <TableCell style={styles.actionMenuButton}>
-                                <IconButton
-                                    aria-label='Menu'
-                                    aria-owns={this.state.actionMenuIsOpen}
-                                    onClick={event => this.handleActionMenuClick(event, content)}
-                                >
-                                    <MoreVert style={
-                                        isHovered ? styles.hoveredIcon : styles.icon &&
-                                            isSelected ? styles.selectedIcon : styles.icon
-                                    } />
-                                </IconButton>
-                            </TableCell>
-                        </TableRow>
-                    );
-                })}
-            </TableBody>
-        </Table>
+                                            isHovered ? styles.hoveredCheckbox : styles.checkbox}>
+                                        <Checkbox
+                                            checked={isSelected}
+                                        />
+                                    </div>
+                                </TableCell>
+                                <TableCell
+                                    style={styles.typeIcon}
+                                    disablePadding
+                                    onClick={event => this.handleRowClick(event, content.Id)}
+                                    onDoubleClick={event => this.handleRowDoubleClick(event, content.Id)}>
+                                    <Icon color='primary'>{icons[content.Icon]}</Icon>
+                                </TableCell>
+                                <TableCell
+                                    style={isHovered ? styles.hoveredDisplayName : styles.displayName as any}
+                                    onClick={event => this.handleRowClick(event, content.Id)}
+                                    onDoubleClick={event => this.handleRowDoubleClick(event, content.Id)}>
+                                    {content.DisplayName}
+                                </TableCell>
+                                <TableCell
+                                    onClick={event => this.handleRowClick(event, content.Id)}
+                                    onDoubleClick={event => this.handleRowDoubleClick(event, content.Id)}>
+                                    <Moment fromNow>
+                                        {content.ModificationDate}
+                                    </Moment>
+                                </TableCell>
+                                <TableCell style={styles.actionMenuButton}>
+                                    <IconButton
+                                        aria-label='Menu'
+                                        aria-owns={this.state.actionMenuIsOpen}
+                                        onClick={event => this.handleActionMenuClick(event, content)}
+                                    >
+                                        <MoreVert style={
+                                            isHovered ? styles.hoveredIcon : styles.icon &&
+                                                isSelected ? styles.selectedIcon : styles.icon
+                                        } />
+                                    </IconButton>
+                                </TableCell>
+                            </TableRow>
+                        );
+                    })}
+                </TableBody>
+            </Table>
             <ActionMenu
                 open={this.state.actionMenuIsOpen}
                 handleRequestClose={this.handleActionMenuClose}

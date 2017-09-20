@@ -52,12 +52,12 @@ export class ParentFolderTableRow extends React.Component<IParentFolderTableRow,
                 hover
                 onClick={event => this.handleClick(event, this.props.parentId)}
                 onKeyDown={event => this.handleKeyDown(event, this.props.parentId)}
-                tabIndex='-1'
+                tabIndex={-1}
                 //key={this.props.parentId}
             >
                 <TableCell checkbox style={styles.checkboxButton}></TableCell>
-                <TableCell style={styles.parentDisplayName} disablePadding>[ ... ]</TableCell>
-                <TableCell style={styles.displayName}></TableCell>
+                <TableCell style={styles.parentDisplayName as any} disablePadding>[ ... ]</TableCell>
+                <TableCell style={styles.displayName as any}></TableCell>
                 <TableCell>aaa{this.props.parentId}</TableCell>
                 <TableCell style={styles.actionMenuButton}></TableCell>
             </TableRow>

@@ -17,17 +17,16 @@ import { DMSReducers } from './Reducers'
 
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import createMuiTheme from 'material-ui/styles/theme'
+import createMuiTheme from 'material-ui/styles/createMuiTheme';
 import lightBlue from 'material-ui/colors/lightBlue'
 import pink from 'material-ui/colors/pink'
 import yellow from 'material-ui/colors/yellow'
-import createPalette from 'material-ui/styles/palette'
 
 const muiTheme = createMuiTheme({
-  palette: createPalette({
+  palette: {
     primary: lightBlue,
-    accent: pink
-  })
+    secondary: pink
+  }
 })
 
 interface ISensenetProps {

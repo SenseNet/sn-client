@@ -49,12 +49,12 @@ export class SharedItemsTableRow extends React.Component<ISharedItemsTableRow, {
                 hover
                 onClick={event => this.handleClick(event, this.props.currentId)}
                 onKeyDown={event => this.handleKeyDown(event, this.props.currentId)}
-                tabIndex='-1'
+                tabIndex={-1}
                 key={this.props.currentId}
             >
                 <TableCell checkbox style={styles.checkboxButton}></TableCell>
                 <TableCell style={styles.typeIcon} disablePadding><Icon color='accent'>{icons.SmartFolder}</Icon></TableCell>
-                <TableCell style={styles.displayName}>Shared items</TableCell>
+                <TableCell style={styles.displayName as any}>Shared items</TableCell>
                 <TableCell></TableCell>
                 <TableCell style={styles.actionMenuButton}></TableCell>
             </TableRow>

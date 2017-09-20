@@ -1,6 +1,6 @@
 import * as React from 'react'
 import IconButton from 'material-ui/IconButton';
-import { Search } from 'material-ui-icons/Search';
+import Search from 'material-ui-icons/Search';
 import TextField from 'material-ui/TextField'
 
 const styles = {

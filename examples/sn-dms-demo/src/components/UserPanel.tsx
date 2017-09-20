@@ -13,12 +13,12 @@ const styles = {
 const defaultAvatar = require('../assets/no-avatar.jpg')
 
 const UserPanel = ({ user, repositoryUrl }) => (
+    <div style={styles.avatar}>
     <Avatar
         alt={user.fullName}
         src={user.userAvatarPath.length > 0 ? repositoryUrl + user.userAvatarPath : defaultAvatar}
-        style={styles.avatar}
-        title={user.fullName}
         aria-label={user.fullName} />
+        </div>
 )
 
 

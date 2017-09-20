@@ -10,19 +10,18 @@ import InputLabel from 'material-ui/Input/InputLabel';
 import FormControl from 'material-ui/Form/FormControl';
 import FormHelperText from 'material-ui/Form/FormHelperText';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import createMuiTheme from 'material-ui/styles/theme'
+import createMuiTheme from 'material-ui/styles/createMuiTheme';
 
 const logo = require('../assets/logo.png');
 
 import lightBlue from 'material-ui/colors/lightBlue'
 import pink from 'material-ui/colors/pink'
-import createPalette from 'material-ui/styles/palette'
 
 const muiTheme = createMuiTheme({
-  palette: createPalette({
+  palette: {
     primary: lightBlue,
-    accent: pink
-  })
+    secondary: pink
+  }
 })
 
 const styles = {
