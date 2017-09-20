@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Button from 'material-ui/Button';
-import AddIcon from 'material-ui-icons/Add';
+import * as AddIcon from 'material-ui-icons/Add';
 
 const styles = {
     actionButton: {

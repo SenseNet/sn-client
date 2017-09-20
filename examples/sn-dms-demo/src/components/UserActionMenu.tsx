@@ -4,7 +4,7 @@ import { Actions } from 'sn-redux'
 import { DMSReducers } from '../Reducers'
 import IconButton from 'material-ui/IconButton';
 import Menu, { MenuItem } from 'material-ui/Menu';
-import ArrowDownIcon from 'material-ui-icons/KeyboardArrowDown';
+import * as ArrowDownIcon from 'material-ui-icons/KeyboardArrowDown';
 import UserPanel from './UserPanel'
 
 interface IUserActionMenu {
