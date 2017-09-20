@@ -16,7 +16,7 @@ import Table, {
     TableSortLabel,
 } from 'material-ui/Table';
 import Checkbox from 'material-ui/Checkbox';
-import * as MenuIcon from 'material-ui-icons/MoreVert';
+import * as MoreVert from 'material-ui-icons/MoreVert';
 import Icon from 'material-ui/Icon';
 import IconButton from 'material-ui/IconButton';
 import { icons } from '../../assets/icons'
@@ -276,7 +276,7 @@ class ContentList extends React.Component<TodoListProps, TodoListState> {
                                     aria-owns={this.state.actionMenuIsOpen}
                                     onClick={event => this.handleActionMenuClick(event, content)}
                                 >
-                                    <MenuIcon style={
+                                    <MoreVert style={
                                         isHovered ? styles.hoveredIcon : styles.icon &&
                                             isSelected ? styles.selectedIcon : styles.icon
                                     } />

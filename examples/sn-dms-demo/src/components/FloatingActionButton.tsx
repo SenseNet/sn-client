@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Button from 'material-ui/Button';
-import * as AddIcon from 'material-ui-icons/Add';
+import * as Add from 'material-ui-icons/Add';
 
 const styles = {
     actionButton: {
@@ -13,6 +13,6 @@ const styles = {
 
 export const FloatingActionButton = () => (
     <Button fab color='accent' aria-label='add' style={styles.actionButton}>
-        <AddIcon />
+        <Add />
     </Button>
 )

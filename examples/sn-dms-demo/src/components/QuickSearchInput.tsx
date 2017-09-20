@@ -1,6 +1,6 @@
 import * as React from 'react'
 import IconButton from 'material-ui/IconButton';
-import * as SearchIcon from 'material-ui-icons/Search';
+import * as Search from 'material-ui-icons/Search';
 import TextField from 'material-ui/TextField'
 
 const styles = {
@@ -34,7 +34,7 @@ const QuickSearchBox = ({ isOpen, onClick, additionalStyles }) => {
                 style={styles.icon}
                 aria-label='Search'
                 onClick={() => onClick()}>
-                <SearchIcon />
+                <Search />
             </IconButton>
         </div>
     )
