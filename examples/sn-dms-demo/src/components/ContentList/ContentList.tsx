@@ -224,7 +224,6 @@ class ContentList extends React.Component<TodoListProps, TodoListState> {
                     }
 
                     {this.props.ids.map(n => {
-                        //TODO: selection, action, reducer, meg minden
                         let content = this.props.children[n];
                         const isSelected = this.isSelected(content.Id);
                         const isHovered = this.isHovered(content.Id);
@@ -242,7 +241,11 @@ class ContentList extends React.Component<TodoListProps, TodoListState> {
                                 style={isSelected ? styles.selectedRow : null}
                                 onContextMenu={event => this.handleContextMenu(event, content)}
                             >
-                                <TableCell checkbox style={styles.checkboxButton}>
+                                <TableCell
+                                    checkbox
+                                    style={styles.checkboxButton}
+                                    onClick={event => this.handleRowClick(event, content.Id)}
+                                    onDoubleClick={event => this.handleRowDoubleClick(event, content.Id)}>
                                     <div style={
                                         isSelected ? styles.selectedCheckbox : styles.checkbox &&
                                             isHovered ? styles.hoveredCheckbox : styles.checkbox}>
