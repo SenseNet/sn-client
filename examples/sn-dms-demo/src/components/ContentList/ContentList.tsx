@@ -16,7 +16,7 @@ import Table, {
     TableSortLabel,
 } from 'material-ui/Table';
 import Checkbox from 'material-ui/Checkbox';
-import * as MoreVert from 'material-ui-icons/MoreVert';
+import { MoreVert } from 'material-ui-icons/MoreVert';
 import Icon from 'material-ui/Icon';
 import IconButton from 'material-ui/IconButton';
 import { icons } from '../../assets/icons'

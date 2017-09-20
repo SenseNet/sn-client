@@ -4,7 +4,7 @@ import { Actions } from 'sn-redux';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import IconButton from 'material-ui/IconButton';
-import * as MenuIcon from 'material-ui-icons/Menu';
+import { MenuIcon } from 'material-ui-icons/Menu';
 import AppBarLogo from '../components/AppBarLogo'
 import { QuickSearch } from '../components/QuickSearch'
 import UserActionMenu from '../components/UserActionMenu'
