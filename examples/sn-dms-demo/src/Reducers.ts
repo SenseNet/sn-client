@@ -89,6 +89,18 @@ export module DMSReducers {
         }
     }
 
+    export const rootId = (state = null, action) => {
+        switch (action.type) {
+            case 'LOAD_CONTENT_SUCCESS':
+                if (!state && action.response.Path.indexOf('Default_Site') === -1)
+                    return action.response.Id
+                else
+                    return state
+            default:
+                return state
+        }
+    }
+
     export const actionmenu = combineReducers({
         actions,
         open,
@@ -131,5 +143,12 @@ export module DMSReducers {
 
     export const getActionMenuAnchor = (state) => {
         return state.element
+    }
+
+    export const getParentId = (state) => {
+        return state.currentcontent.content.ParentId
+    }
+    export const getRootId = (state) => {
+        return state.rootId
     }
 }

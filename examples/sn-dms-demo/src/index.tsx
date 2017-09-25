@@ -19,14 +19,16 @@ import 'rxjs'
 const sensenet = Reducers.sensenet;
 const register = DMSReducers.register;
 const actionmenu = DMSReducers.actionmenu;
+const rootId = DMSReducers.rootId;
 const myReducer = combineReducers({
   sensenet,
   register,
+  rootId,
   actionmenu
 });
 
 const repository = new Repository.SnRepository({
-  RepositoryUrl: process.env.REACT_APP_SERVICE_URL || 'https://sn-local/',
+  RepositoryUrl: process.env.REACT_APP_SERVICE_URL || 'https://sn-local',
   RequiredSelect: ['Id', 'Path', 'Name', 'Type', 'ParentId']
 });
 

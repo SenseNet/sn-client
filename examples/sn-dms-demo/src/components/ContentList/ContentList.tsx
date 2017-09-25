@@ -1,12 +1,12 @@
 
 import * as React from 'react'
 import {
-    Redirect,
     withRouter
 } from 'react-router-dom'
 import * as keycode from 'keycode';
 import { connect } from 'react-redux';
 import { Actions, Reducers } from 'sn-redux'
+import { DMSReducers } from '../../Reducers'
 import { DMSActions } from '../../Actions'
 import Table, {
     TableBody,
@@ -23,7 +23,7 @@ import { icons } from '../../assets/icons'
 import Moment from 'react-moment';
 import { ListHead } from './ListHead'
 import { SharedItemsTableRow } from './SharedItemsTableRow'
-import { ParentFolderTableRow } from './ParentFolderTableRow'
+import ParentFolderTableRow from './ParentFolderTableRow'
 import ActionMenu from '../ActionMenu'
 
 const styles = {
@@ -87,10 +87,10 @@ interface TodoListProps {
     getActions: Function,
     selected: Number[],
     opened: Number,
-    actions,
     triggerActionMenu: Function,
     history,
-    parentId
+    parentId,
+    rootId
 }
 
 interface TodoListState {
@@ -205,6 +205,11 @@ class ContentList extends React.Component<TodoListProps, TodoListState> {
         return this.state.hovered === id
     }
     isOpened(id) { return this.state.opened === id }
+    isChildrenFolder() {
+        let urlArray = location.href.split('/')
+        let id = parseInt(urlArray[urlArray.length - 1]);
+        return !isNaN(id) && isFinite(id) && id !== this.props.rootId;
+    }
     render() {
         return (<div>
             <Table>
@@ -217,9 +222,8 @@ class ContentList extends React.Component<TodoListProps, TodoListState> {
                     count={this.props.ids.length}
                 />
                 <TableBody style={styles.table}>
-                    {this.props.currentId && this.props.currentId.length > 0}
-                    {this.props.currentId && this.props.currentId.length > 0 ?
-                        <ParentFolderTableRow parentId={this.props.parentId} /> :
+                    {this.props.parentId && this.isChildrenFolder() ?
+                        <ParentFolderTableRow parentId={this.props.parentId} history={this.props.history} /> :
                         <SharedItemsTableRow currentId={this.props.currentId} />
                     }
 
@@ -303,7 +307,8 @@ const mapStateToProps = (state, match) => {
     return {
         selected: Reducers.getSelectedContent(state.sensenet),
         ids: Reducers.getIds(state.sensenet.children),
-        opened: Reducers.getOpenedContent(state.sensenet.children)
+        opened: Reducers.getOpenedContent(state.sensenet.children),
+        rootId: DMSReducers.getRootId(state)
     }
 }
 export default withRouter(connect(mapStateToProps, {

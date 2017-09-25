@@ -1,13 +1,13 @@
 import * as React from 'react'
-import Table, {
-    TableBody,
+import {
+    withRouter
+} from 'react-router-dom'
+import { connect } from 'react-redux';
+import { DMSReducers } from '../../Reducers'
+import {
     TableCell,
-    TableHead,
-    TableRow,
-    TableSortLabel,
+    TableRow
 } from 'material-ui/Table';
-import Icon from 'material-ui/Icon';
-import { icons } from '../../assets/icons'
 
 const styles = {
     actionMenuButton: {
@@ -40,12 +40,20 @@ const styles = {
 }
 
 interface IParentFolderTableRow {
-    parentId    
+    history,
+    parentId
 }
 
-export class ParentFolderTableRow extends React.Component<IParentFolderTableRow, {}>{
-    handleClick(e, id){}
-    handleKeyDown(e, id){}
+class ParentFolderTableRow extends React.Component<IParentFolderTableRow, {}>{
+    constructor(props) {
+        super(props)
+        this.handleDoubleClick = this.handleDoubleClick.bind(this);
+    }
+    handleClick(e, id) { }
+    handleKeyDown(e, id) { }
+    handleDoubleClick(e, id) {
+        this.props.history.push(`/${id}`)
+    }
     render() {
         return (
             <TableRow
@@ -53,14 +61,27 @@ export class ParentFolderTableRow extends React.Component<IParentFolderTableRow,
                 onClick={event => this.handleClick(event, this.props.parentId)}
                 onKeyDown={event => this.handleKeyDown(event, this.props.parentId)}
                 tabIndex={-1}
-                //key={this.props.parentId}
+            //key={this.props.parentId}
             >
                 <TableCell checkbox style={styles.checkboxButton}></TableCell>
-                <TableCell style={styles.parentDisplayName as any} disablePadding>[ ... ]</TableCell>
-                <TableCell style={styles.displayName as any}></TableCell>
-                <TableCell>aaa{this.props.parentId}</TableCell>
+                <TableCell style={styles.parentDisplayName as any}
+                    disablePadding
+                    onDoubleClick={event => this.handleDoubleClick(event, this.props.parentId)}>[ ... ]</TableCell>
+                <TableCell style={styles.displayName as any}
+                    onDoubleClick={event => this.handleDoubleClick(event, this.props.parentId)}></TableCell>
+                <TableCell
+                    onDoubleClick={event => this.handleDoubleClick(event, this.props.parentId)}></TableCell>
                 <TableCell style={styles.actionMenuButton}></TableCell>
             </TableRow>
         )
     }
 }
+
+const mapStateToProps = (state, match) => {
+    return {
+        parentId: DMSReducers.getParentId(state.sensenet)
+    }
+}
+
+export default connect(mapStateToProps, {
+})(ParentFolderTableRow)

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { Actions, Reducers } from 'sn-redux'
+import { Reducers } from 'sn-redux'
 import { DMSReducers } from '../Reducers'
 import Menu, { MenuItem } from 'material-ui/Menu';
 import Icon from 'material-ui/Icon';
@@ -40,7 +40,6 @@ class ActionMenu extends React.Component<IActionMenuProps, { open }>{
                     anchorEl={this.props.anchorElement}
                     open={this.props.open}
                     onRequestClose={this.props.handleRequestClose}
-                    modal={false}
                 >
                     {this.props.actions.map(action => {
                         return (

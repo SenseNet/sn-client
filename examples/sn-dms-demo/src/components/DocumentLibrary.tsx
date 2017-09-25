@@ -1,8 +1,9 @@
 import * as React from 'react'
+import {
+    withRouter
+} from 'react-router-dom'
 import { connect } from 'react-redux';
-import { Content } from 'sn-client-js'
 import { DMSReducers } from '../Reducers'
-import { DMSActions } from '../Actions'
 import { Actions, Reducers } from 'sn-redux'
 import { FetchError } from './FetchError'
 import ContentList from './ContentList/ContentList'
@@ -28,11 +29,10 @@ interface IDocumentLibraryProps {
     children,
     ids,
     loggedinUser,
-    loadContent: Function,
     fetchContent: Function,
     errorMessage: string,
     isFetching: boolean,
-    parentId
+    currentId
 }
 
 class DocumentLibrary extends React.Component<IDocumentLibraryProps, { select, id, orderby }>{
@@ -44,44 +44,30 @@ class DocumentLibrary extends React.Component<IDocumentLibraryProps, { select, i
             id: this.props.currentContent.Id
         }
     }
-    componentDidMount() {
-        if (this.props.loggedinUser.userName !== 'Visitor' && this.props.currentContent.Id === 'undefined') {
-            this.fetchData();
-        }
+    componentWillMount() {
+        this.fetchData();
     }
-    componentDidUpdate(prevOps) {
-        console.log(prevOps)
-        if (this.props.loggedinUser.userName !== prevOps.loggedinUser.userName) {
-            this.fetchData()
-        }
+    componentWillReceiveProps(nextProps) {
+        let nextId = Number(nextProps.match.url.replace('/', '')) !== 0 ? Number(nextProps.match.url.replace('/', '')) : undefined
         if (typeof this.props.currentContent.Id !== 'undefined' &&
-            typeof prevOps.currentContent.Id !== 'undefined' &&
-            this.props.currentContent.Id !== prevOps.currentContent.Id) {
-            this.fetchData(this.props.currentContent.Id)
+            typeof nextId !== 'undefined' &&
+            nextId !== this.props.currentContent.Id) {
+            this.fetchData(nextProps.currentContent.Path)
         }
     }
-    fetchData(id?: number) {
+    fetchData(path?: string) {
         let optionObj = {
             select: this.state.select,
             orderby: this.state.orderby
         }
-        const path = id && typeof id !== 'undefined' ?
-            `${this.props.currentContent.Path}` :
-            `/Root/Profiles/Public/${this.props.loggedinUser.userName}/Document_Library`;
-        this.props.fetchContent(path, optionObj);
-        this.setState({
-            id: this.props.currentContent.Id
-        })
-    }
-    loadData(id?: number) {
-        let parentoptionObj = {
-            select: ['Id', 'Path', 'Name', 'DisplayName', 'Type', 'Icon', 'ParentId']
-        }
-        const path = id && typeof id !== 'undefined' ?
-            `${this.props.currentContent.Path}` :
+        const p = path && typeof path !== 'undefined' ?
+            path :
             `/Root/Profiles/Public/${this.props.loggedinUser.userName}/Document_Library`;
 
-        this.props.loadContent(typeof id !== 'undefined' ? id : path, parentoptionObj)
+        this.props.fetchContent(p, optionObj);
+        this.setState({
+            id: this.props.currentId
+        })
     }
 
     render() {
@@ -104,7 +90,7 @@ class DocumentLibrary extends React.Component<IDocumentLibraryProps, { select, i
             return <ContentList
                 children={this.props.children}
                 currentId={this.props.currentContent.Id}
-                parentId={() => this.props.currentContent.ParentId}
+                parentId={this.props.currentContent.ParentId}
             />
         }
         return <div></div>
@@ -122,11 +108,11 @@ const mapStateToProps = (state, match) => {
         ids: Reducers.getIds(state.sensenet.children),
         errorMessage: Reducers.getError(state.sensenet.children),
         isFetching: Reducers.getFetching(state.sensenet.children),
-        currentContent: Reducers.getCurrentContent(state.sensenet)
+        currentContent: Reducers.getCurrentContent(state.sensenet),
+        currentId: Number(match.match.url.replace('/', ''))
     }
 }
 
-export default connect(mapStateToProps, {
-    loadContent: loadContentAction,
+export default withRouter(connect(mapStateToProps, {
     fetchContent: fetchContentAction
-})(DocumentLibrary)
+})(DocumentLibrary))

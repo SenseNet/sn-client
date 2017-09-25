@@ -1,6 +1,5 @@
 import * as React from 'react'
 import {
-    Redirect,
     withRouter
 } from 'react-router-dom'
 import AppBar from 'material-ui/AppBar';
@@ -47,7 +46,7 @@ class LoginTabs extends React.Component<{}, { value }> {
         this.setState({ value });
         return value === 0 ?
             this.context.router.replace('/login') :
-            this.context.router.replace('/redirect');
+            this.context.router.replace('/registration');
     };
     render() {
         const { value } = this.state;
