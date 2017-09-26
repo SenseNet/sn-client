@@ -101,6 +101,37 @@ export module DMSReducers {
         }
     }
 
+    export const currentId = (state = null, action) => {
+        switch (action.type) {
+            case 'SET_CURRENT_ID':
+                return action.id
+            default:
+                return state
+        }
+    }
+
+    export const breadcrumb = (state = [], action) => {
+        switch (action.type) {
+            case 'LOAD_CONTENT_SUCCESS':
+                if (action.response.Path.indexOf('Default_Site') === -1 && state.filter(e => e.id === action.response.Id).length === 0) {
+                    const element = {
+                        name: action.response.DisplayName,
+                        id: action.response.Id,
+                        path: action.response.Path
+                    }
+                    return [...state, element];
+                }
+                else if (state.filter(e => e.id === action.response.Id).length !== 0) {
+                    const index = state.findIndex(e => e.id === action.response.Id)
+                    return [...state.slice(0, index - 1)]
+                }
+                else
+                    return state
+            default:
+                return state
+        }
+    }
+
     export const actionmenu = combineReducers({
         actions,
         open,
@@ -150,5 +181,11 @@ export module DMSReducers {
     }
     export const getRootId = (state) => {
         return state.rootId
+    }
+    export const getBreadCrumbArray = (state) => {
+        return state.breadcrumb
+    }
+    export const getCurrentId = (state) => {
+        return state.currentId
     }
 }

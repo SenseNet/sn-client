@@ -123,6 +123,7 @@ class ContentList extends React.Component<TodoListProps, TodoListState> {
         this.isSelected = this.isSelected.bind(this);
         this.isHovered = this.isHovered.bind(this)
         this.handleContextMenu = this.handleContextMenu.bind(this)
+
     }
     componentDidUpdate(prevOps) {
         if (this.props.children !== prevOps.children) {
@@ -130,8 +131,11 @@ class ContentList extends React.Component<TodoListProps, TodoListState> {
                 data: this.props.children
             })
         }
+        
+        this.handleRowDoubleClick = this.handleRowDoubleClick.bind(this)
+        this.handleRowSingleClick = this.handleRowSingleClick.bind(this)
     }
-    handleRowClick(e, id) {
+    handleRowSingleClick(e, id) {
         this.props.selected.indexOf(id) > -1 ?
             this.props.deselect(id) :
             this.props.select(id)
@@ -248,7 +252,7 @@ class ContentList extends React.Component<TodoListProps, TodoListState> {
                                 <TableCell
                                     checkbox
                                     style={styles.checkboxButton}
-                                    onClick={event => this.handleRowClick(event, content.Id)}
+                                    onClick={event => this.handleRowSingleClick(event, content.Id)}
                                     onDoubleClick={event => this.handleRowDoubleClick(event, content.Id)}>
                                     <div style={
                                         isSelected ? styles.selectedCheckbox : styles.checkbox &&
@@ -261,18 +265,18 @@ class ContentList extends React.Component<TodoListProps, TodoListState> {
                                 <TableCell
                                     style={styles.typeIcon}
                                     disablePadding
-                                    onClick={event => this.handleRowClick(event, content.Id)}
+                                    onClick={event => this.handleRowSingleClick(event, content.Id)}
                                     onDoubleClick={event => this.handleRowDoubleClick(event, content.Id)}>
                                     <Icon color='primary'>{icons[content.Icon]}</Icon>
                                 </TableCell>
                                 <TableCell
                                     style={isHovered ? styles.hoveredDisplayName : styles.displayName as any}
-                                    onClick={event => this.handleRowClick(event, content.Id)}
+                                    onClick={event => this.handleRowSingleClick(event, content.Id)}
                                     onDoubleClick={event => this.handleRowDoubleClick(event, content.Id)}>
                                     {content.DisplayName}
                                 </TableCell>
                                 <TableCell
-                                    onClick={event => this.handleRowClick(event, content.Id)}
+                                    onClick={event => this.handleRowSingleClick(event, content.Id)}
                                     onDoubleClick={event => this.handleRowDoubleClick(event, content.Id)}>
                                     <Moment fromNow>
                                         {content.ModificationDate}

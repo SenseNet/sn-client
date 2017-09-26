@@ -4,6 +4,7 @@ import {
 } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { DMSReducers } from '../Reducers'
+import { DMSActions } from '../Actions'
 import { Actions, Reducers } from 'sn-redux'
 import { FetchError } from './FetchError'
 import ContentList from './ContentList/ContentList'
@@ -32,7 +33,9 @@ interface IDocumentLibraryProps {
     fetchContent: Function,
     errorMessage: string,
     isFetching: boolean,
-    currentId
+    currentId,
+    cId,
+    setCurrentId: Function
 }
 
 class DocumentLibrary extends React.Component<IDocumentLibraryProps, { select, id, orderby }>{
@@ -44,15 +47,19 @@ class DocumentLibrary extends React.Component<IDocumentLibraryProps, { select, i
             id: this.props.currentContent.Id
         }
     }
-    componentWillMount() {
-        this.fetchData();
+    componentDidMount() {
+        if (!this.props.cId)
+            this.fetchData();
     }
     componentWillReceiveProps(nextProps) {
-        let nextId = Number(nextProps.match.url.replace('/', '')) !== 0 ? Number(nextProps.match.url.replace('/', '')) : undefined
-        if (typeof this.props.currentContent.Id !== 'undefined' &&
-            typeof nextId !== 'undefined' &&
-            nextId !== this.props.currentContent.Id) {
+        let nextId = Number(nextProps.match.params.id) !== 0 ? Number(nextProps.match.params.id) : undefined
+        if (
+             this.props.cId &&
+            !isNaN(nextId) &&
+            this.props.currentContent.Path !== nextProps.currentContent.Path
+        ) {
             this.fetchData(nextProps.currentContent.Path)
+            this.props.setCurrentId(nextId)
         }
     }
     fetchData(path?: string) {
@@ -66,7 +73,7 @@ class DocumentLibrary extends React.Component<IDocumentLibraryProps, { select, i
 
         this.props.fetchContent(p, optionObj);
         this.setState({
-            id: this.props.currentId
+            id: this.props.cId
         })
     }
 
@@ -86,14 +93,11 @@ class DocumentLibrary extends React.Component<IDocumentLibraryProps, { select, i
                 />
             )
         }
-        if (this.props.loggedinUser.userName !== 'Visitor') {
-            return <ContentList
-                children={this.props.children}
-                currentId={this.props.currentContent.Id}
-                parentId={this.props.currentContent.ParentId}
-            />
-        }
-        return <div></div>
+        return <ContentList
+            children={this.props.children}
+            currentId={this.props.currentContent.Id}
+            parentId={this.props.currentContent.ParentId}
+        />
     }
 }
 
@@ -109,10 +113,12 @@ const mapStateToProps = (state, match) => {
         errorMessage: Reducers.getError(state.sensenet.children),
         isFetching: Reducers.getFetching(state.sensenet.children),
         currentContent: Reducers.getCurrentContent(state.sensenet),
-        currentId: Number(match.match.url.replace('/', ''))
+        currentId: Number(match.match.url.replace('/', '')),
+        cId: DMSReducers.getCurrentId(state)
     }
 }
 
 export default withRouter(connect(mapStateToProps, {
-    fetchContent: fetchContentAction
+    fetchContent: fetchContentAction,
+    setCurrentId: DMSActions.SetCurrentId
 })(DocumentLibrary))

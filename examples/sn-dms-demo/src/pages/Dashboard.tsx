@@ -2,9 +2,11 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { Actions, Reducers } from 'sn-redux'
 import { DMSReducers } from '../Reducers'
+import { DMSActions } from '../Actions'
 import Header from '../components/Header'
 import { FloatingActionButton } from '../components/FloatingActionButton'
 import DocumentLibrary from '../components/DocumentLibrary'
+import BreadCrumb from '../components/BreadCrumb'
 
 const styles = {
     dashBoarInner: {
@@ -19,7 +21,9 @@ interface IDashboardProps {
     match,
     currentContent,
     loggedinUser,
-    loadContent: Function
+    loadContent: Function,
+    setCurrentId: Function,
+    currentId
 }
 
 class Dashboard extends React.Component<IDashboardProps, { currentId }>{
@@ -30,17 +34,30 @@ class Dashboard extends React.Component<IDashboardProps, { currentId }>{
         }
     }
     componentDidMount() {
-        const id = this.props.match.params.id;
-        this.props.match.params.id && !isNaN(parseFloat(id)) && isFinite(id) ?
-            this.props.loadContent(Number(this.props.match.params.id)) :
-            this.props.loadContent(`/Root/Profiles/Public/${this.props.loggedinUser.userName}/Document_Library`)
+        const id = parseInt(this.props.match.params.id);
+        console.log('idka: ' + id)
+        if (id && !isNaN(id) && isFinite(id)) {
+            this.props.setCurrentId(id)
+        }
+        else {
+            if (this.props.match.params.id !== undefined && this.props.match.params.id !== this.props.currentId) {
+                this.props.setCurrentId(this.props.match.params.id)
+                    && this.props.loadContent(`/Root/Profiles/Public/${this.props.loggedinUser.userName}/Document_Library`)
+            }
+        }
     }
     componentWillReceiveProps(nextProps) {
-        let nextId = Number(nextProps.match.url.replace('/', '')) !== 0 ? Number(nextProps.match.url.replace('/', '')) : undefined
-        if (typeof this.props.currentContent.Id !== 'undefined' &&
-            typeof nextId !== 'undefined' &&
-            nextId !== this.props.currentContent.Id) {
-            this.props.loadContent(nextId)
+        const id = parseInt(nextProps.match.params.id);
+        if (id && !isNaN(id) && isFinite(id)) {
+            this.props.setCurrentId(id)
+        }
+
+        if (nextProps.currentId &&
+            !isNaN(id) &&
+            id === Number(nextProps.currentId) &&
+            this.props.currentId !== nextProps.currentId) {
+            this.props.setCurrentId(id)
+            this.props.loadContent(id)
         }
     }
     render() {
@@ -48,6 +65,7 @@ class Dashboard extends React.Component<IDashboardProps, { currentId }>{
             <div style={styles.root}>
                 <Header />
                 <div style={styles.dashBoarInner}>
+                    <BreadCrumb />
                     <DocumentLibrary parentId={this.props.match.params.id} />
                 </div>
                 <FloatingActionButton />
@@ -59,10 +77,12 @@ class Dashboard extends React.Component<IDashboardProps, { currentId }>{
 const mapStateToProps = (state, match) => {
     return {
         loggedinUser: DMSReducers.getAuthenticatedUser(state.sensenet),
-        currentContent: Reducers.getCurrentContent(state.sensenet)
+        currentContent: Reducers.getCurrentContent(state.sensenet),
+        currentId: DMSReducers.getCurrentId(state)
     }
 }
 
 export default connect(mapStateToProps, {
-    loadContent: Actions.LoadContent
+    loadContent: Actions.LoadContent,
+    setCurrentId: DMSActions.SetCurrentId
 })(Dashboard)

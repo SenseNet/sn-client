@@ -7,5 +7,6 @@ export const icons = {
     rename: 'text_fields',
     copy: 'content_copy',
     move: 'input',
-    delete: 'clear'
+    delete: 'clear',
+    arrowRight: 'keyboard_arrow_right'
 }

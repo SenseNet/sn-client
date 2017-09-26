@@ -22,4 +22,8 @@ export module DMSActions {
         open,
         element
     })
+    export const SetCurrentId = (id) => ({
+        type: 'SET_CURRENT_ID',
+        id
+    })
 }

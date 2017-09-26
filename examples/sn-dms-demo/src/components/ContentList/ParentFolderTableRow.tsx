@@ -83,5 +83,5 @@ const mapStateToProps = (state, match) => {
     }
 }
 
-export default connect(mapStateToProps, {
-})(ParentFolderTableRow)
+export default withRouter(connect(mapStateToProps, {
+})(ParentFolderTableRow))
