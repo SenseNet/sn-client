@@ -21,12 +21,16 @@ const styles = {
         top: 0,
         color: '#fff',
         verticalAlign: 'middle'
+    },
+    animationStyle : {
+        transition: 'width 0.75s cubic-bezier(0.000, 0.795, 0.000, 1.000)'
     }
 }
 
-const QuickSearchBox = ({ isOpen, onClick, additionalStyles }) => {
+const QuickSearchBox = ({ isOpen, onClick }) => {
     let textStyle = isOpen ? styles.open : styles.closed;
-    textStyle = Object.assign(textStyle, additionalStyles ? additionalStyles.text : {}, { color: '#fff' });
+    let additionalStyles = {text: styles.animationStyle, frame: styles.animationStyle}
+    textStyle = { ...textStyle, ...additionalStyles } as any;
     return (
         <div>
             <TextField name='search' style={textStyle} />

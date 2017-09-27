@@ -35,7 +35,6 @@ class Dashboard extends React.Component<IDashboardProps, { currentId }>{
     }
     componentDidMount() {
         const id = parseInt(this.props.match.params.id);
-        console.log('idka: ' + id)
         if (id && !isNaN(id) && isFinite(id)) {
             this.props.setCurrentId(id)
         }
