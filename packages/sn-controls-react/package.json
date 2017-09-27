@@ -121,7 +121,7 @@
     "material-ui-chip-input": "^0.17.0",
     "nyc": "^11.0.3",
     "radium": "^0.19.1",
-    "react": "^15.5.4",
+    "react": "^16.0.0",
     "react-quill": "^1.0.0-rc.3",
     "react-router-dom": "^4.1.1"
   },
