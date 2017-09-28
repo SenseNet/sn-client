@@ -38,12 +38,13 @@ interface IDocumentLibraryProps {
     setCurrentId: Function
 }
 
-class DocumentLibrary extends React.Component<IDocumentLibraryProps, { select, id, orderby }>{
+class DocumentLibrary extends React.Component<IDocumentLibraryProps, { select, id, orderby, filter }>{
     constructor(props) {
         super(props)
         this.state = {
             select: ['Id', 'Path', 'DisplayName', 'ModificationDate', 'Type', 'Icon', 'IsFolder'],
             orderby: ['IsFolder desc', 'DisplayName asc'],
+            filter: "ContentType ne 'SystemFolder'",
             id: this.props.currentContent.Id
         }
     }
@@ -65,7 +66,8 @@ class DocumentLibrary extends React.Component<IDocumentLibraryProps, { select, i
     fetchData(path?: string) {
         let optionObj = {
             select: this.state.select,
-            orderby: this.state.orderby
+            orderby: this.state.orderby,
+            filter: this.state.filter
         }
         const p = path && typeof path !== 'undefined' ?
             path :

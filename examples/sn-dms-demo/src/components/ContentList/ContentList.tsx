@@ -1,8 +1,5 @@
 
 import * as React from 'react'
-import {
-    withRouter
-} from 'react-router-dom'
 import * as keycode from 'keycode';
 import { connect } from 'react-redux';
 import { Actions, Reducers } from 'sn-redux'
@@ -10,120 +7,54 @@ import { DMSReducers } from '../../Reducers'
 import { DMSActions } from '../../Actions'
 import Table, {
     TableBody,
-    TableCell,
     TableHead,
-    TableRow,
     TableSortLabel,
 } from 'material-ui/Table';
-import Checkbox from 'material-ui/Checkbox';
-import MoreVert from 'material-ui-icons/MoreVert';
-import Icon from 'material-ui/Icon';
-import IconButton from 'material-ui/IconButton';
-import { icons } from '../../assets/icons'
-import Moment from 'react-moment';
 import { ListHead } from './ListHead'
+import SimpleTableRow from './SimpleTableRow'
 import { SharedItemsTableRow } from './SharedItemsTableRow'
 import ParentFolderTableRow from './ParentFolderTableRow'
 import ActionMenu from '../ActionMenu'
 
 const styles = {
-    selectedRow: {
-
-    },
-    actionMenuButton: {
-        width: 30,
-        cursor: 'pointer'
-    },
-    checkboxButton: {
-        width: 30,
-        cursor: 'pointer'
-    },
-    typeIcon: {
-        width: 30,
-        lineHeight: '9px'
-    },
     loader: {
         margin: '0 auto'
-    },
-    displayName: {
-        fontWeight: 'bold'
-    },
-    hoveredDisplayName: {
-        fontWeight: 'bold',
-        color: '#03a9f4',
-        textDecoration: 'underline',
-        cursor: 'pointer'
-    },
-    icon: {
-        verticalAlign: 'middle',
-        opacity: 0
-    },
-    selectedIcon: {
-        verticalAlign: 'middle'
-    },
-    hoveredIcon: {
-        verticalAlign: 'middle'
     },
     table: {
         background: '#fff'
     },
-    checkbox: {
-        opacity: 0
-    },
-    selectedCheckbox: {
-        opacity: 1
-    },
-    hoveredCheckbox: {
-        opacity: 1
-    }
 }
 
-interface TodoListProps {
+interface ContentListProps {
     ids,
     children,
     currentId,
-    select: Function,
-    deselect: Function,
-    getActions: Function,
     selected: Number[],
-    opened: Number,
-    triggerActionMenu: Function,
     history,
     parentId,
-    rootId
+    rootId,
+    select: Function,
+    deselect: Function,
 }
 
-interface TodoListState {
-    selected,
+interface ContentListState {
     ids,
     order,
     orderBy,
     data,
-    hovered,
-    opened,
-    actionMenuIsOpen,
-    anchorEl
+    selected
 }
 
-class ContentList extends React.Component<TodoListProps, TodoListState> {
+class ContentList extends React.Component<ContentListProps, ContentListState> {
     constructor(props) {
         super(props)
         this.state = {
-            selected: [],
             order: 'desc',
             orderBy: 'IsFolder',
             data: this.props.children,
-            hovered: null,
             ids: this.props.ids,
-            opened: this.props.opened,
-            actionMenuIsOpen: false,
-            anchorEl: null
+            selected: []
         };
-
-        this.isSelected = this.isSelected.bind(this);
-        this.isHovered = this.isHovered.bind(this)
-        this.handleContextMenu = this.handleContextMenu.bind(this)
-
     }
     componentDidUpdate(prevOps) {
         if (this.props.children !== prevOps.children) {
@@ -131,48 +62,7 @@ class ContentList extends React.Component<TodoListProps, TodoListState> {
                 data: this.props.children
             })
         }
-        
-        this.handleRowDoubleClick = this.handleRowDoubleClick.bind(this)
-        this.handleRowSingleClick = this.handleRowSingleClick.bind(this)
     }
-    handleRowSingleClick(e, id) {
-        this.props.selected.indexOf(id) > -1 ?
-            this.props.deselect(id) :
-            this.props.select(id)
-
-        const { selected } = this.state;
-        const selectedIndex = selected.indexOf(id);
-        let newSelected = [];
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, id);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1),
-            );
-        }
-
-        this.setState({ selected: newSelected });
-    }
-    handleRowDoubleClick(e, id) {
-        this.props.history.push(`/${id}`)
-    }
-    handleContextMenu(e, content) {
-        e.preventDefault()
-        this.props.getActions(content, 'DMSListItem') && this.props.triggerActionMenu(e.currentTarget)
-    }
-    handleActionMenuClick(e, content) {
-        this.props.triggerActionMenu(e.currentTarget)
-        this.props.getActions(content, 'DMSListItem') && this.setState({ anchorEl: e.currentTarget })
-    }
-    handleActionMenuClose = (e) => {
-        this.props.triggerActionMenu(e.currentTarget, false)
-    };
-    handleKeyDown(e, id) { }
     handleRequestSort = (event, property) => {
         const orderBy = property;
         let order = 'desc';
@@ -190,25 +80,12 @@ class ContentList extends React.Component<TodoListProps, TodoListState> {
     handleSelectAllClick = (event, checked) => {
         if (checked) {
             this.setState({ selected: this.props.ids });
+            this.props.ids.map(id => this.props.select(id))
             return;
         }
         this.setState({ selected: [] });
+        this.props.ids.map(id => this.props.deselect(id))
     };
-    handleRowMouseEnter(e, id) {
-        this.setState({
-            hovered: id
-        })
-    }
-    handleRowMouseLeave() {
-        this.setState({
-            hovered: null
-        })
-    }
-    isSelected(id) { return this.state.selected.indexOf(id) !== -1; }
-    isHovered(id) {
-        return this.state.hovered === id
-    }
-    isOpened(id) { return this.state.opened === id }
     isChildrenFolder() {
         let urlArray = location.href.split('/')
         let id = parseInt(urlArray[urlArray.length - 1]);
@@ -233,91 +110,28 @@ class ContentList extends React.Component<TodoListProps, TodoListState> {
 
                     {this.props.ids.map(n => {
                         let content = this.props.children[n];
-                        const isSelected = this.isSelected(content.Id);
-                        const isHovered = this.isHovered(content.Id);
                         return (
-                            <TableRow
-                                hover
-                                onKeyDown={event => this.handleKeyDown(event, content.Id)}
-                                role='checkbox'
-                                aria-checked={isSelected}
-                                tabIndex={-1}
-                                key={content.Id}
-                                onMouseEnter={event => this.handleRowMouseEnter(event, content.Id)}
-                                onMouseLeave={event => this.handleRowMouseLeave()}
-                                selected={isSelected}
-                                style={isSelected ? styles.selectedRow : null}
-                                onContextMenu={event => this.handleContextMenu(event, content)}
-                            >
-                                <TableCell
-                                    checkbox
-                                    style={styles.checkboxButton}
-                                    onClick={event => this.handleRowSingleClick(event, content.Id)}
-                                    onDoubleClick={event => this.handleRowDoubleClick(event, content.Id)}>
-                                    <div style={
-                                        isSelected ? styles.selectedCheckbox : styles.checkbox &&
-                                            isHovered ? styles.hoveredCheckbox : styles.checkbox}>
-                                        <Checkbox
-                                            checked={isSelected}
-                                        />
-                                    </div>
-                                </TableCell>
-                                <TableCell
-                                    style={styles.typeIcon}
-                                    disablePadding
-                                    onClick={event => this.handleRowSingleClick(event, content.Id)}
-                                    onDoubleClick={event => this.handleRowDoubleClick(event, content.Id)}>
-                                    <Icon color='primary'>{icons[content.Icon]}</Icon>
-                                </TableCell>
-                                <TableCell
-                                    style={isHovered ? styles.hoveredDisplayName : styles.displayName as any}
-                                    onClick={event => this.handleRowSingleClick(event, content.Id)}
-                                    onDoubleClick={event => this.handleRowDoubleClick(event, content.Id)}>
-                                    {content.DisplayName}
-                                </TableCell>
-                                <TableCell
-                                    onClick={event => this.handleRowSingleClick(event, content.Id)}
-                                    onDoubleClick={event => this.handleRowDoubleClick(event, content.Id)}>
-                                    <Moment fromNow>
-                                        {content.ModificationDate}
-                                    </Moment>
-                                </TableCell>
-                                <TableCell style={styles.actionMenuButton}>
-                                    <IconButton
-                                        aria-label='Menu'
-                                        aria-owns={this.state.actionMenuIsOpen}
-                                        onClick={event => this.handleActionMenuClick(event, content)}
-                                    >
-                                        <MoreVert style={
-                                            isHovered ? styles.hoveredIcon : styles.icon &&
-                                                isSelected ? styles.selectedIcon : styles.icon
-                                        } />
-                                    </IconButton>
-                                </TableCell>
-                            </TableRow>
+                            <SimpleTableRow content={content} key={content.Id} />
                         );
                     })}
                 </TableBody>
             </Table>
-            <ActionMenu
+            {/* <ActionMenu
                 open={this.state.actionMenuIsOpen}
                 handleRequestClose={this.handleActionMenuClose}
-                anchorEl={this.state.anchorEl} />
+                anchorEl={this.state.anchorEl} /> */}
         </div>)
     }
 }
 
 const mapStateToProps = (state, match) => {
     return {
-        selected: Reducers.getSelectedContent(state.sensenet),
         ids: Reducers.getIds(state.sensenet.children),
-        opened: Reducers.getOpenedContent(state.sensenet.children),
-        rootId: DMSReducers.getRootId(state)
+        rootId: DMSReducers.getRootId(state),
+        selected: Reducers.getSelectedContent(state.sensenet)
     }
 }
-export default withRouter(connect(mapStateToProps, {
+export default connect(mapStateToProps, {
     select: Actions.SelectContent,
     deselect: Actions.DeSelectContent,
-    getActions: Actions.RequestContentActions,
-    triggerActionMenu: DMSActions.TriggerActionMenu
-})(ContentList))
+})(ContentList)
