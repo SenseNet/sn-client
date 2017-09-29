@@ -93,7 +93,7 @@
     "react-dom": "^16.0.0",
     "react-error-overlay": "^2.0.0",
     "react-materialize": "^1.0.1",
-    "react-tap-event-plugin": "^2.0.1",
+    "react-tap-event-plugin": "^3.0.1",
     "redux": "^3.6.0",
     "rimraf": "^2.6.1",
     "sn-client-js": "^2.0.0",
