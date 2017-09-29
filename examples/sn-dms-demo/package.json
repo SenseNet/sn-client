@@ -62,7 +62,7 @@
     "react-moment": "^0.6.5",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
-    "react-tap-event-plugin": "3.0.0",
+    "react-tap-event-plugin": "3.0.1",
     "sensenet-kfi-cz-conventional-changelog": "^1.0.0",
     "sn-client-js": "^2.4.1",
     "sn-redux": "^3.2.1-beta.1",
