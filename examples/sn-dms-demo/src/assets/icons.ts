@@ -8,5 +8,7 @@ export const icons = {
     copy: 'content_copy',
     move: 'input',
     delete: 'clear',
-    arrowRight: 'keyboard_arrow_right'
+    arrowRight: 'keyboard_arrow_right',
+    sharecontent: 'share',
+    starcontent: 'star'
 }

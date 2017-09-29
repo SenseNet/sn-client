@@ -66,6 +66,8 @@ export module DMSReducers {
         switch (action.type) {
             case 'REQUEST_CONTENT_ACTIONS_SUCCESS':
                 return action.response
+            case 'OPEN_ACTIONMENU':
+                return action.actions
             default:
                 return state
         }
@@ -73,17 +75,19 @@ export module DMSReducers {
 
     export const open = (state = false, action) => {
         switch (action.type) {
-            case 'TRIGGER_ACTIONMENU':
-                return action.open || !state
+            case 'OPEN_ACTIONMENU':
+                return true
+            case 'CLOSE_ACTIONMENU':
+                return false
             default:
                 return state
         }
     }
 
-    export const element = (state = null, action) => {
+    export const position = (state = null, action) => {
         switch (action.type) {
-            case 'TRIGGER_ACTIONMENU':
-                return action.element
+            case 'OPEN_ACTIONMENU':
+                return action.position
             default:
                 return state
         }
@@ -135,7 +139,7 @@ export module DMSReducers {
     export const actionmenu = combineReducers({
         actions,
         open,
-        element
+        position
     })
 
     export const getRegistrationError = (state) => {
@@ -172,8 +176,8 @@ export module DMSReducers {
         return state.open
     }
 
-    export const getActionMenuAnchor = (state) => {
-        return state.element
+    export const getActionMenuPosition = (state) => {
+        return state.position
     }
 
     export const getParentId = (state) => {
@@ -187,5 +191,11 @@ export module DMSReducers {
     }
     export const getCurrentId = (state) => {
         return state.currentId
+    }
+    export const getActionsOfAContent = (state) => {
+        return state.Actions
+    }
+    export const getActions = (state) => {
+        return state.actions
     }
 }

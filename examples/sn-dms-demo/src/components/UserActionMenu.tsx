@@ -12,14 +12,14 @@ interface IUserActionMenu {
     logout
 }
 
+import { resources } from '../assets/resources'
+
 const actions = [
     {
         name: 'Logout',
         displayName: resources.LOGOUT,
     }
 ];
-
-import { resources } from '../assets/resources'
 
 const styles = {
     menuIcon: {

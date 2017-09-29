@@ -38,13 +38,15 @@ interface IDocumentLibraryProps {
     setCurrentId: Function
 }
 
-class DocumentLibrary extends React.Component<IDocumentLibraryProps, { select, id, orderby, filter }>{
+class DocumentLibrary extends React.Component<IDocumentLibraryProps, { select, id, orderby, filter, expand, scenario }>{
     constructor(props) {
         super(props)
         this.state = {
-            select: ['Id', 'Path', 'DisplayName', 'ModificationDate', 'Type', 'Icon', 'IsFolder'],
+            select: ['Id', 'Path', 'DisplayName', 'ModificationDate', 'Type', 'Icon', 'IsFolder', 'Actions'],
+            expand: ['Actions'],
             orderby: ['IsFolder desc', 'DisplayName asc'],
             filter: "ContentType ne 'SystemFolder'",
+            scenario: 'DMSListItem',
             id: this.props.currentContent.Id
         }
     }
@@ -55,7 +57,7 @@ class DocumentLibrary extends React.Component<IDocumentLibraryProps, { select, i
     componentWillReceiveProps(nextProps) {
         let nextId = Number(nextProps.match.params.id) !== 0 ? Number(nextProps.match.params.id) : undefined
         if (
-             this.props.cId &&
+            this.props.cId &&
             !isNaN(nextId) &&
             this.props.currentContent.Path !== nextProps.currentContent.Path
         ) {
@@ -66,8 +68,10 @@ class DocumentLibrary extends React.Component<IDocumentLibraryProps, { select, i
     fetchData(path?: string) {
         let optionObj = {
             select: this.state.select,
+            expand: this.state.expand,
             orderby: this.state.orderby,
-            filter: this.state.filter
+            filter: this.state.filter,
+            scenario: this.state.scenario
         }
         const p = path && typeof path !== 'undefined' ?
             path :

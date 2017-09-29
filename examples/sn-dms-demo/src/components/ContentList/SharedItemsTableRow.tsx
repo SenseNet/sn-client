@@ -41,14 +41,22 @@ interface ISharedItemsTableRow {
 }
 
 export class SharedItemsTableRow extends React.Component<ISharedItemsTableRow, {}>{
-    handleClick(e, id){}
-    handleKeyDown(e, id){}
+    constructor(props) {
+        super(props)
+        this.handleContextMenu = this.handleContextMenu.bind(this)
+    }
+    handleClick(e, id) { }
+    handleKeyDown(e, id) { }
+    handleContextMenu(e) {
+        e.preventDefault()
+    }
     render() {
         return (
             <TableRow
                 hover
                 onClick={event => this.handleClick(event, this.props.currentId)}
                 onKeyDown={event => this.handleKeyDown(event, this.props.currentId)}
+                onContextMenu={event => this.handleContextMenu(event)}
                 tabIndex={-1}
                 key={this.props.currentId}
             >

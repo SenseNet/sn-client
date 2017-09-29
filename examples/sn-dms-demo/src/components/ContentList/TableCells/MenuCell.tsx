@@ -5,6 +5,7 @@ import MoreVert from 'material-ui-icons/MoreVert';
 import IconButton from 'material-ui/IconButton';
 import { Actions, Reducers } from 'sn-redux'
 import { DMSActions } from '../../../Actions'
+import { DMSReducers } from '../../../Reducers'
 
 const styles = {
     actionMenuButton: {
@@ -25,23 +26,26 @@ const styles = {
 
 interface IMenuCellProps {
     content,
+    actions,
     isHovered: boolean,
     isSelected: boolean,
-    triggerActionMenu: Function,
-    getActions: Function,
+    openActionMenu: Function,
+    closeActionMenu: Function,
     actionMenuIsOpen: boolean
 }
 interface IMenuCellState {
-    anchorEl
+    anchorTop,
+    anchorLeft
 }
 
 class MenuCell extends React.Component<IMenuCellProps, IMenuCellState>{
     handleActionMenuClick(e, content) {
-        this.props.triggerActionMenu(e.currentTarget)
-        this.props.getActions(content, 'DMSListItem') && this.setState({ anchorEl: e.currentTarget })
+        this.props.closeActionMenu()
+        this.props.openActionMenu(this.props.actions, { top: e.currentTarget.offsetTop, left: e.currentTarget.offsetLeft - e.currentTarget.offsetWidth })
+        this.setState({ anchorTop: e.clientY, anchorLeft: e.clientX })
     }
     handleActionMenuClose = (e) => {
-        this.props.triggerActionMenu(e.currentTarget, false)
+        this.props.closeActionMenu()
     };
     render() {
         const { isSelected, isHovered, content, actionMenuIsOpen } = this.props
@@ -67,11 +71,12 @@ const mapStateToProps = (state, match) => {
     return {
         selected: Reducers.getSelectedContent(state.sensenet),
         opened: Reducers.getOpenedContent(state.sensenet.children),
+        actions: DMSReducers.getActionsOfAContent(state.sensenet.children.entities[match.content.Id])
     }
 }
 export default connect(mapStateToProps, {
     select: Actions.SelectContent,
     deselect: Actions.DeSelectContent,
-    getActions: Actions.RequestContentActions,
-    triggerActionMenu: DMSActions.TriggerActionMenu
+    openActionMenu: DMSActions.OpenActionMenu,
+    closeActionMenu: DMSActions.CloseActionMenu
 })(MenuCell)

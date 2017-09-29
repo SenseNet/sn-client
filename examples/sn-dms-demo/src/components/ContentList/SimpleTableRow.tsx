@@ -42,7 +42,8 @@ interface ISimpleTableRowProps {
     deselect: Function,
     getActions: Function,
     opened: Number,
-    triggerActionMenu: Function,
+    openActionMenu: Function,
+    closeActionMenu: Function,
     history,
     parentId,
     rootId,
@@ -102,7 +103,7 @@ class SimpleTableRow extends React.Component<ISimpleTableRowProps, ISimpleTableR
     }
     handleContextMenu(e, content) {
         e.preventDefault()
-        this.props.getActions(content, 'DMSListItem') && this.props.triggerActionMenu(e.currentTarget)
+        this.props.openActionMenu(content.Actions, { top: e.clientY, left: e.clientX })
     }
     handleKeyDown(e, id) { }
     handleRowMouseEnter(e, id) {
@@ -186,5 +187,6 @@ export default withRouter(connect(mapStateToProps, {
     select: Actions.SelectContent,
     deselect: Actions.DeSelectContent,
     getActions: Actions.RequestContentActions,
-    triggerActionMenu: DMSActions.TriggerActionMenu
+    openActionMenu: DMSActions.OpenActionMenu,
+    closeActionMenu: DMSActions.CloseActionMenu
 })(SimpleTableRow))

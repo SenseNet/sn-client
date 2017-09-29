@@ -116,10 +116,7 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
                     })}
                 </TableBody>
             </Table>
-            {/* <ActionMenu
-                open={this.state.actionMenuIsOpen}
-                handleRequestClose={this.handleActionMenuClose}
-                anchorEl={this.state.anchorEl} /> */}
+            <ActionMenu />
         </div>)
     }
 }
