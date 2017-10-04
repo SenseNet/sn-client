@@ -2,6 +2,8 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { Content } from 'sn-client-js'
 import { Actions, Reducers } from 'sn-redux'
+import { DMSReducers } from '../../../Reducers'
+import { DMSActions } from '../../../Actions'
 import { TableCell } from 'material-ui/Table';
 import TextField from 'material-ui/TextField';
 
@@ -27,11 +29,12 @@ interface IDisplayNameCellProps {
     handleRowDoubleClick: Function,
     handleRowSingleClick: Function,
     rename: Function,
-    currentContent
+    setEdited: Function,
+    currentContent,
+    edited
 }
 
 interface IDisplayNameCellState {
-    clicks,
     oldText,
     newText,
     edited
@@ -42,10 +45,9 @@ class DisplayNameCell extends React.Component<IDisplayNameCellProps, IDisplayNam
         super(props)
 
         this.state = {
-            clicks: 0,
             oldText: this.props.content.DisplayName,
             newText: '',
-            edited: null
+            edited: this.props.edited
         }
 
         this.handleTitleClick = this.handleTitleClick.bind(this)
@@ -56,27 +58,15 @@ class DisplayNameCell extends React.Component<IDisplayNameCellProps, IDisplayNam
     handleTitleClick(e, id) {
         let that = this;
         if (e.target.id !== 'renameInput') {
-            that.setState({
-                clicks: this.state.clicks + 1
-            })
-            if (that.state.clicks === 1) {
-                setTimeout(function () {
-                    if (that.state.clicks === 1) {
-                        that.props.handleRowSingleClick(e, id);
-                    } else {
-                        that.handleTitleLongClick(e, id)
-                    }
-                    that.setState({
-                        clicks: 0
-                    })
-                }, 1000);
-            }
+            e.preventDefault()
+            that.handleTitleLongClick(e, id)
         }
     }
     handleTitleLongClick(e, id) {
         this.setState({
             edited: id
         })
+        this.props.setEdited(id)
     }
     handleTitleChange(e) {
         this.setState({
@@ -108,14 +98,14 @@ class DisplayNameCell extends React.Component<IDisplayNameCellProps, IDisplayNam
             newText: ''
         })
     }
-    isEdited(id) { return this.state.edited === id }
+    isEdited(id) { return this.props.edited === id }
     render() {
         const content = this.props.currentContent
         const isEdited = this.isEdited(content.Id);
         return (
             <TableCell
                 style={this.props.isHovered && !isEdited ? styles.hoveredDisplayName : styles.displayName as any}
-                onClick={event => this.handleTitleClick(event, content.Id)}
+                onClick={event => this.props.handleRowSingleClick(event, content.id)}
                 onDoubleClick={event => this.props.handleRowDoubleClick(event, content.Id)}>
                 {isEdited ?
                     <TextField
@@ -127,20 +117,24 @@ class DisplayNameCell extends React.Component<IDisplayNameCellProps, IDisplayNam
                         onChange={event => this.handleTitleChange(event)}
                         onKeyPress={event => this.handleKeyPress(event)}
                         onBlur={event => this.handleTitleInputBlur(content.Id)} /> :
-                    content.DisplayName}
+                    <span onClick={event => this.handleTitleClick(event, content.Id)}>{content.DisplayName}</span>
+                }
             </TableCell>
         )
     }
 }
 
 const renameContent = Actions.UpdateContent
+const setEdited = DMSActions.SetEditedContentId
 
 const mapStateToProps = (state, match) => {
     return {
-        currentContent: Reducers.getContent(state.sensenet.children.entities, match.content.Id)
+        currentContent: Reducers.getContent(state.sensenet.children.entities, match.content.Id),
+        edited: DMSReducers.getEditedItemId(state),
     }
 }
 
 export default connect(mapStateToProps, {
-    rename: renameContent
+    rename: renameContent,
+    setEdited: setEdited
 })(DisplayNameCell)

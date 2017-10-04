@@ -84,6 +84,15 @@ export module DMSReducers {
         }
     }
 
+    export const id = (state = null, action) => {
+        switch (action.type) {
+            case 'OPEN_ACTIONMENU':
+                return action.id
+            default:
+                return state
+        }
+    }
+
     export const position = (state = null, action) => {
         switch (action.type) {
             case 'OPEN_ACTIONMENU':
@@ -114,6 +123,17 @@ export module DMSReducers {
         }
     }
 
+    export const editedItemId = (state = null, action) => {
+        switch (action.type) {
+            case 'SET_EDITED_ID':
+                return action.id
+            case 'UPDATE_CONTENT_SUCCESS':
+                return null
+            default:
+                return state
+        }
+    }
+
     export const breadcrumb = (state = [], action) => {
         switch (action.type) {
             case 'LOAD_CONTENT_SUCCESS':
@@ -139,7 +159,8 @@ export module DMSReducers {
     export const actionmenu = combineReducers({
         actions,
         open,
-        position
+        position,
+        id
     })
 
     export const getRegistrationError = (state) => {
@@ -197,5 +218,11 @@ export module DMSReducers {
     }
     export const getActions = (state) => {
         return state.actions
+    }
+    export const getEditedItemId = (state) => {
+        return state.editedItemId
+    }
+    export const getItemOnActionMenuIsOpen = (state) => {
+        return state.id
     }
 }

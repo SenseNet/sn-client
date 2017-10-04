@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { Reducers } from 'sn-redux'
+import { Actions, Reducers } from 'sn-redux'
 import { DMSActions } from '../Actions'
 import { DMSReducers } from '../Reducers'
 import Menu, { MenuItem } from 'material-ui/Menu';
@@ -84,9 +84,13 @@ const styles = {
 
 interface IActionMenuProps {
     actions,
+    id,
     isOpen,
     position,
-    close
+    currentContent,
+    close: Function,
+    rename: Function,
+    setEdited: Function
 }
 
 interface IActionMenuState {
@@ -125,6 +129,9 @@ class ActionMenu extends React.Component<IActionMenuProps, IActionMenuState>{
     }
     handleMenuItemClick(e, action) {
         console.log(`${action} is clicked`)
+        if (action === 'Rename') {
+            this.props.setEdited(this.props.id)
+        }
         this.handleActionMenuClose()
     }
     handleActionMenuClose() {
@@ -194,14 +201,20 @@ class ActionMenu extends React.Component<IActionMenuProps, IActionMenuState>{
     }
 }
 
+const renameContent = Actions.UpdateContent
+const setEdited = DMSActions.SetEditedContentId
+
 const mapStateToProps = (state, match) => {
     return {
         actions: DMSReducers.getActions(state.actionmenu),
         isOpen: DMSReducers.actionmenuIsOpen(state.actionmenu),
-        position: DMSReducers.getActionMenuPosition(state.actionmenu)
+        position: DMSReducers.getActionMenuPosition(state.actionmenu),
+        id: DMSReducers.getItemOnActionMenuIsOpen(state.actionmenu)
     }
 }
 
 export default connect(mapStateToProps, {
-    close: DMSActions.CloseActionMenu
+    close: DMSActions.CloseActionMenu,
+    rename: renameContent,
+    setEdited: setEdited
 })(ActionMenu)

@@ -21,9 +21,14 @@ export module DMSActions {
         type: 'SET_CURRENT_ID',
         id
     })
-    export const OpenActionMenu = (actions, position) => ({
+    export const SetEditedContentId = (id) => ({
+        type: 'SET_EDITED_ID',
+        id
+    })
+    export const OpenActionMenu = (actions, id, position) => ({
         type: 'OPEN_ACTIONMENU',
         actions,
+        id,
         position
     })
     export const CloseActionMenu = () => ({

@@ -22,13 +22,15 @@ const actionmenu = DMSReducers.actionmenu;
 const rootId = DMSReducers.rootId;
 const breadcrumb = DMSReducers.breadcrumb;
 const currentId = DMSReducers.currentId;
+const editedItemId = DMSReducers.editedItemId;
 const myReducer = combineReducers({
   sensenet,
   register,
   rootId,
   actionmenu,
   breadcrumb,
-  currentId
+  currentId,
+  editedItemId
 });
 
 const repository = new Repository.SnRepository({
