@@ -34,7 +34,7 @@ export class ListHead extends React.Component<IListHeadProps, {}> {
         return (
             <TableHead>
                 <TableRow>
-                    <TableCell checkbox>
+                    <TableCell padding='checkbox'>
                         <Checkbox
                             indeterminate={numSelected > 0 && numSelected < this.props.count}
                             checked={numSelected === this.props.count}
@@ -46,7 +46,7 @@ export class ListHead extends React.Component<IListHeadProps, {}> {
                             <TableCell
                                 key={column.id}
                                 numeric={column.numeric}
-                                disablePadding={column.disablePadding}
+                                padding={column.disablePadding ? 'none' : 'dense'}
                             >
                                 <TableSortLabel
                                     active={orderBy === column.id}

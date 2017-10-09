@@ -25,7 +25,7 @@ export class IconCell extends React.Component<IIconCellProps, IIconCellState>{
         return (
             <TableCell
                 style={styles.typeIcon}
-                disablePadding
+                padding='none'
                 onClick={event => this.props.handleRowSingleClick(event, id)}
                 onDoubleClick={event => this.props.handleRowDoubleClick(event, id)}>
                 <Icon color='primary'>{icons[icon]}</Icon>

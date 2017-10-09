@@ -63,9 +63,9 @@ class ParentFolderTableRow extends React.Component<IParentFolderTableRow, {}>{
                 tabIndex={-1}
             //key={this.props.parentId}
             >
-                <TableCell checkbox style={styles.checkboxButton}></TableCell>
+                <TableCell padding='checkbox' style={styles.checkboxButton}></TableCell>
                 <TableCell style={styles.parentDisplayName as any}
-                    disablePadding
+                    padding='none'
                     onDoubleClick={event => this.handleDoubleClick(event, this.props.parentId)}>[ ... ]</TableCell>
                 <TableCell style={styles.displayName as any}
                     onDoubleClick={event => this.handleDoubleClick(event, this.props.parentId)}></TableCell>

@@ -47,7 +47,7 @@
     "jest": "21.2.1",
     "lodash": "^4.17.4",
     "material-design-icons": "^3.0.1",
-    "material-ui-icons": "^1.0.0-beta.10",
+    "material-ui-icons": "^1.0.0-beta.15",
     "moment": "^2.18.1",
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "3.2.0",
@@ -94,7 +94,7 @@
     "cz-conventional-changelog": "^2.0.0",
     "enzyme": "^3.1.0",
     "enzyme-adapter-react-16": "^1.0.1",
-    "material-ui": "^1.0.0-beta.11",
+    "material-ui": "^1.0.0-beta.16",
     "react-addons-test-utils": "^15.6.2",
     "react-dnd-text-dragpreview": "^0.2.3",
     "react-test-renderer": "^16.0.0",
@@ -106,7 +106,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom --setupTestFrameworkScriptFile=raf/polyfill",
-    "coverage": "npm test --env=jsdom --setupTestFrameworkScriptFile=raf/polyfill -- --coverage",
+    "check-coverage": "npm test --env=jsdom --setupTestFrameworkScriptFile=raf/polyfill -- --coverage",
     "lint": "node tslint --project ./tsconfig.json",
     "commit": "git-cz",
     "report-coverage": "cat ./coverage/lcov.info | codecov"
@@ -135,8 +135,7 @@
       "json"
     ],
     "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.ts?(x)",
-      "<rootDir>/src/**/?(*.)(spec|test).ts?(x)"
+      "<rootDir>/src/__tests__/**/*.ts?(x)"
     ],
     "testEnvironment": "node",
     "testURL": "http://localhost",

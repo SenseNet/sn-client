@@ -60,8 +60,8 @@ export class SharedItemsTableRow extends React.Component<ISharedItemsTableRow, {
                 tabIndex={-1}
                 key={this.props.currentId}
             >
-                <TableCell checkbox style={styles.checkboxButton}></TableCell>
-                <TableCell style={styles.typeIcon} disablePadding><Icon color='accent'>{icons.SmartFolder}</Icon></TableCell>
+                <TableCell padding='checkbox' style={styles.checkboxButton}></TableCell>
+                <TableCell style={styles.typeIcon} padding='none'><Icon color='accent'>{icons.SmartFolder}</Icon></TableCell>
                 <TableCell style={styles.displayName as any}>Shared items</TableCell>
                 <TableCell></TableCell>
                 <TableCell style={styles.actionMenuButton}></TableCell>

@@ -124,7 +124,7 @@ class SimpleTableRow extends React.Component<ISimpleTableRowProps, ISimpleTableR
                 id={content.Id}
             >
                 <TableCell
-                    checkbox
+                    padding='checkbox'
                     style={styles.checkboxButton}
 
                     onClick={event => this.props.handleRowSingleClick(event, content.Id)}
