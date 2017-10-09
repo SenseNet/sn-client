@@ -7,10 +7,14 @@ import Header from '../components/Header'
 import { FloatingActionButton } from '../components/FloatingActionButton'
 import DocumentLibrary from '../components/DocumentLibrary'
 import BreadCrumb from '../components/BreadCrumb'
+import MediaQuery from 'react-responsive';
 
 const styles = {
-    dashBoarInner: {
+    dashBoardInner: {
         padding: 60
+    },
+    dashBoardInnerMobile: {
+        padding: '60px 0'
     },
     root: {
         background: '#efefef'
@@ -63,10 +67,21 @@ class Dashboard extends React.Component<IDashboardProps, { currentId }>{
         return (
             <div style={styles.root}>
                 <Header />
-                <div style={styles.dashBoarInner}>
-                    <BreadCrumb />
-                    <DocumentLibrary parentId={this.props.match.params.id} />
-                </div>
+                <MediaQuery minDeviceWidth={700}>
+                    {(matches) => {
+                        if (matches) {
+                            return <div style={styles.dashBoardInner}>
+                                <BreadCrumb />
+                                <DocumentLibrary parentId={this.props.match.params.id} />
+                            </div>;
+                        } else {
+                            return <div style={styles.dashBoardInnerMobile}>
+                                <BreadCrumb />
+                                <DocumentLibrary parentId={this.props.match.params.id} />
+                            </div>;
+                        }
+                    }}
+                </MediaQuery>
                 <FloatingActionButton />
             </div>
         )

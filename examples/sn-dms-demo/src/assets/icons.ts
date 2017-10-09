@@ -10,5 +10,6 @@ export const icons = {
     delete: 'clear',
     arrowRight: 'keyboard_arrow_right',
     sharecontent: 'share',
-    starcontent: 'star'
+    starcontent: 'star',
+    edit: 'mode_edit'
 }

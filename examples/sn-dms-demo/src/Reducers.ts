@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { resources } from './assets/resources'
 export module DMSReducers {
-    const email = (state = '', action) => {
+    export const email = (state = '', action) => {
         switch (action.type) {
             case 'USER_REGISTRATION_REQUEST':
                 return action.email
@@ -12,15 +12,15 @@ export module DMSReducers {
                 return state
         }
     }
-    const registrationError = (state = '', action) => {
+    export const registrationError = (state = null, action) => {
         switch (action.type) {
             case 'USER_REGISTRATION_FAILURE':
                 return resources.USER_IS_ALREADY_REGISTERED
             default:
-                return null
+                return state
         }
     }
-    const isRegistering = (state = false, action) => {
+    export const isRegistering = (state = false, action) => {
         switch (action.type) {
             case 'USER_REGISTRATION_REQUEST':
                 return true
@@ -32,7 +32,7 @@ export module DMSReducers {
         }
     }
 
-    const registrationDone = (state = false, action) => {
+    export const registrationDone = (state = false, action) => {
         switch (action.type) {
             case 'USER_REGISTRATION_SUCCESS':
                 return true
@@ -45,7 +45,7 @@ export module DMSReducers {
         }
     }
 
-    const captcha = (state = false, action) => {
+    export const captcha = (state = false, action) => {
         switch (action.type) {
             case 'VERIFY_CAPTCHA_SUCCESS':
                 return true

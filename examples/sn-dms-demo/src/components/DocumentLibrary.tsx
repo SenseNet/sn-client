@@ -11,14 +11,6 @@ import ContentList from './ContentList/ContentList'
 import { CircularProgress } from 'material-ui/Progress';
 
 const styles = {
-    actionMenuButton: {
-        width: 30,
-        cursor: 'pointer'
-    },
-    checkboxButton: {
-        width: 30,
-        cursor: 'pointer'
-    },
     loader: {
         margin: '0 auto'
     }

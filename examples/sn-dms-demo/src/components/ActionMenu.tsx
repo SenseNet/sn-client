@@ -188,7 +188,7 @@ class ActionMenu extends React.Component<IActionMenuProps, IActionMenuState>{
                                 <Icon color='accent' style={styles.actionIcon}>{
                                     action.Icon === 'Application' ?
                                         icons[action.Name.toLowerCase()] :
-                                        icons[action.Icon]
+                                        icons[action.Icon.toLowerCase()]
                                 }</Icon>
                                 {action.DisplayName}
                                 <span style={styles.fixer as any}></span>

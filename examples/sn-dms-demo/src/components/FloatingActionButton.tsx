@@ -5,7 +5,7 @@ import Add from 'material-ui-icons/Add';
 const styles = {
     actionButton: {
         color: '#fff',
-        position: 'absolute',
+        position: 'fixed',
         bottom: 10,
         right: 10
     }

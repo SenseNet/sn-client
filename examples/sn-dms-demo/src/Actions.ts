@@ -4,14 +4,14 @@ export module DMSActions {
         email,
         password
     })
-    export const UserRegistrationSuccess = (response: any) => ({
+    export const UserRegistrationSuccess = () => ({
         type: 'USER_REGISTRATION_SUCCESS'
     })
     export const UserRegistrationFailure = (error: any) => ({
         type: 'USER_REGISTRATION_FAILURE',
         message: error.message
     })
-    export const VerifyCaptchaSuccess = (response: any) => ({
+    export const VerifyCaptchaSuccess = () => ({
         type: 'VERIFY_CAPTCHA_SUCCESS'
     })
     export const ClearRegistration = () => ({

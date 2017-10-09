@@ -101,23 +101,23 @@ class DisplayNameCell extends React.Component<IDisplayNameCellProps, IDisplayNam
     isEdited(id) { return this.props.edited === id }
     render() {
         const content = this.props.currentContent
-        const isEdited = this.isEdited(content.Id);
+        const isEdited = this.isEdited(this.props.content.Id);
         return (
             <TableCell
                 style={this.props.isHovered && !isEdited ? styles.hoveredDisplayName : styles.displayName as any}
                 onClick={event => this.props.handleRowSingleClick(event, content.id)}
-                onDoubleClick={event => this.props.handleRowDoubleClick(event, content.Id)}>
+                onDoubleClick={event => this.props.handleRowDoubleClick(event, this.props.content.Id)}>
                 {isEdited ?
                     <TextField
                         id='renameInput'
                         autoFocus
-                        defaultValue={content.DisplayName}
+                        defaultValue={this.props.content.DisplayName}
                         margin='dense'
                         style={styles.editedTitle as any}
                         onChange={event => this.handleTitleChange(event)}
                         onKeyPress={event => this.handleKeyPress(event)}
-                        onBlur={event => this.handleTitleInputBlur(content.Id)} /> :
-                    <span onClick={event => this.handleTitleClick(event, content.Id)}>{content.DisplayName}</span>
+                        onBlur={event => this.handleTitleInputBlur(this.props.content.Id)} /> :
+                    <span onClick={event => this.handleTitleClick(event, this.props.content.Id)}>{this.props.content.DisplayName}</span>
                 }
             </TableCell>
         )
