@@ -43,6 +43,7 @@ interface ContentListProps {
     selected: number[],
     history,
     parentId: number,
+    edited: number,
     rootId: number,
     isFetching: boolean,
     isLoading: boolean,
@@ -77,8 +78,9 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
         this.handleRowDoubleClick = this.handleRowDoubleClick.bind(this)
         this.handleKeyDown = this.handleKeyDown.bind(this)
     }
+         
     componentDidUpdate(prevOps) {
-        if (this.props.children !== prevOps.children) {
+        if (this.props.edited !== prevOps.edited) {
             this.setState({
                 data: this.props.children
             })
@@ -285,7 +287,8 @@ const mapStateToProps = (state, match) => {
         rootId: DMSReducers.getRootId(state.dms),
         selected: Reducers.getSelectedContent(state.sensenet),
         isFetching: Reducers.getFetching(state.sensenet.children),
-        isLoading: DMSReducers.getLoading(state.dms)
+        isLoading: DMSReducers.getLoading(state.dms),
+        edited: DMSReducers.getEditedItemId(state.dms)
     }
 }
 export default withRouter(connect(mapStateToProps, {
