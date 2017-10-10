@@ -4,7 +4,6 @@ import { Actions } from 'sn-redux'
 import { DMSReducers } from '../Reducers'
 import IconButton from 'material-ui/IconButton';
 import Menu, { MenuItem } from 'material-ui/Menu';
-import ArrowDownIcon from 'material-ui-icons/KeyboardArrowDown';
 import UserPanel from './UserPanel'
 
 interface IUserActionMenu {
@@ -70,7 +69,6 @@ class UserActionMenu extends React.Component<IUserActionMenu, { anchorEl, open, 
                 >
 
                     <UserPanel user={this.props.loggedinUser} />
-                    <ArrowDownIcon style={styles.arrowButton} />
                 </IconButton>
                 <Menu
                     id='long-menu'

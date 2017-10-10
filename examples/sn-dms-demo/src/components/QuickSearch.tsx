@@ -1,4 +1,5 @@
 import * as React from 'react'
+import MediaQuery from 'react-responsive';
 import QuickSearchBox from './QuickSearchInput'
 
 
@@ -16,9 +17,13 @@ export class QuickSearch extends React.Component<{}, { isOpen }>{
     render() {
         return (
             <div>
-                <QuickSearchBox {...this.props}
-                isOpen={this.state.isOpen}
-                onClick={this.onClick} />
+                <MediaQuery minDeviceWidth={700}>
+                    {(matches) => {
+                        return <QuickSearchBox {...this.props}
+                            isOpen={matches ? this.state.isOpen : true}
+                            onClick={this.onClick} />
+                    }}
+                </MediaQuery>
             </div>
         )
     }

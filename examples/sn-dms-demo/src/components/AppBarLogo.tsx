@@ -2,7 +2,8 @@ import * as React from 'react'
 import { withRouter } from 'react-router'
 import {
     Link
-  } from 'react-router-dom'
+} from 'react-router-dom'
+import MediaQuery from 'react-responsive';
 
 const styles = {
     logo: {
@@ -18,6 +19,9 @@ const styles = {
         maHeight: 30,
         verticalAlign: 'middle',
         marginRight: 10
+    },
+    logoText: {
+        display: 'inline-block'
     }
 }
 
@@ -25,7 +29,10 @@ const sensenetLogo = require('../assets/sensenet_white.png')
 
 const AppBarLogo = () => (
     <Link to='/' style={styles.logo} >
-        <img src={sensenetLogo} alt='sensenet' aria-label='sensenet' style={styles.logoImg}  /> sensenet ECM
+        <img src={sensenetLogo} alt='sensenet' aria-label='sensenet' style={styles.logoImg} />
+        <MediaQuery minDeviceWidth={700} style={styles.logoText}>
+            sensenet ECM
+        </MediaQuery>
     </Link>
 )
 

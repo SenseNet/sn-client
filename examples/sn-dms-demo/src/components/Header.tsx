@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { Actions } from 'sn-redux';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
-import IconButton from 'material-ui/IconButton';
-import MenuIcon from 'material-ui-icons/Menu';
 import AppBarLogo from '../components/AppBarLogo'
 import { QuickSearch } from '../components/QuickSearch'
 import UserActionMenu from '../components/UserActionMenu'
@@ -21,9 +19,6 @@ class Header extends React.Component<{}, {}>{
         return (
             <AppBar position='static'>
                 <Toolbar>
-                    <IconButton style={styles.menuIcon} aria-label='Menu'>
-                        <MenuIcon />
-                    </IconButton>
                     <AppBarLogo history />
                     <QuickSearch />
                     <UserActionMenu />
