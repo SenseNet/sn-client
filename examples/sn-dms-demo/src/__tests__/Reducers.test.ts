@@ -150,6 +150,15 @@ describe('editedItemId reducer', () => {
     });
 })
 
+describe('isLoading reducer', () => {
+    it('should return the initial state', () => {
+        expect(DMSReducers.isLoading(undefined, {})).toEqual(false);
+    });
+    it('should return the current state of loading', () => {
+        expect(DMSReducers.isLoading(undefined, { type: 'LOAD_CONTENT_REQUEST' })).toEqual(true);
+    });
+})
+
 describe('breadcrumb reducer', () => {
     it('should return the initial state', () => {
         expect(DMSReducers.breadcrumb(undefined, {})).toEqual([]);
@@ -190,6 +199,15 @@ describe('registrationIsDone', () => {
     }
     it('should return the whether the registration is done or not', () => {
         expect(DMSReducers.registrationIsDone(state)).toEqual(true)
+    })
+})
+
+describe('isLoading', () => {
+    const state = {
+        isLoading: true
+    }
+    it('should return the whether the loading is in progress or not', () => {
+        expect(DMSReducers.getLoading(state)).toEqual(true)
     })
 })
 

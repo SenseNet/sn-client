@@ -156,6 +156,17 @@ export module DMSReducers {
         }
     }
 
+    export const isLoading = (state = false, action) => {
+        switch (action.type) {
+            case 'LOAD_CONTENT_SUCCESS':
+                return false
+            case 'LOAD_CONTENT_REQUEST':
+                return true
+            default:
+                return state
+        }
+    }
+
     export const actionmenu = combineReducers({
         actions,
         open,
@@ -169,7 +180,8 @@ export module DMSReducers {
         editedItemId,
         currentId,
         rootId,
-        register
+        register,
+        isLoading
     })
 
     export const getRegistrationError = (state) => {
@@ -233,5 +245,8 @@ export module DMSReducers {
     }
     export const getItemOnActionMenuIsOpen = (state) => {
         return state.id
+    }
+    export const getLoading = (state) => {
+        return state.isLoading
     }
 }

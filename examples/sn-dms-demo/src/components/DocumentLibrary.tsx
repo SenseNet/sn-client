@@ -8,13 +8,6 @@ import { DMSActions } from '../Actions'
 import { Actions, Reducers } from 'sn-redux'
 import { FetchError } from './FetchError'
 import ContentList from './ContentList/ContentList'
-import { CircularProgress } from 'material-ui/Progress';
-
-const styles = {
-    loader: {
-        margin: '0 auto'
-    }
-}
 
 interface IDocumentLibraryProps {
     currentContent,
@@ -24,7 +17,6 @@ interface IDocumentLibraryProps {
     loggedinUser,
     fetchContent: Function,
     errorMessage: string,
-    isFetching: boolean,
     currentId,
     cId,
     setCurrentId: Function
@@ -76,13 +68,6 @@ class DocumentLibrary extends React.Component<IDocumentLibraryProps, { select, i
     }
 
     render() {
-        if (this.props.isFetching && this.props.children.length > 0) {
-            return (
-                <div style={styles.loader}>
-                    <CircularProgress color='accent' size={50} />
-                </div>
-            )
-        }
         if (this.props.errorMessage && this.props.errorMessage.length > 0) {
             return (
                 <FetchError
@@ -109,7 +94,6 @@ const mapStateToProps = (state, match) => {
         children: DMSReducers.getChildrenItems(state.sensenet),
         ids: Reducers.getIds(state.sensenet.children),
         errorMessage: Reducers.getError(state.sensenet.children),
-        isFetching: Reducers.getFetching(state.sensenet.children),
         currentContent: Reducers.getCurrentContent(state.sensenet),
         currentId: Number(match.match.url.replace('/', '')),
         cId: DMSReducers.getCurrentId(state.dms)

@@ -15,6 +15,7 @@ import Table, {
     TableSortLabel,
 } from 'material-ui/Table';
 import Paper from 'material-ui/Paper';
+import { CircularProgress } from 'material-ui/Progress';
 import { ListHead } from './ListHead'
 import SimpleTableRow from './SimpleTableRow'
 import { SharedItemsTableRow } from './SharedItemsTableRow'
@@ -28,6 +29,10 @@ const styles = {
     },
     tableBody: {
         background: '#fff'
+    },
+    loader: {
+        textAlign: 'center',
+        padding: 60
     }
 }
 
@@ -39,6 +44,8 @@ interface ContentListProps {
     history,
     parentId: number,
     rootId: number,
+    isFetching: boolean,
+    isLoading: boolean,
     select: Function,
     deselect: Function,
     clearSelection: Function,
@@ -247,16 +254,24 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
                             <ParentFolderTableRow parentId={this.props.parentId} history={this.props.history} /> :
                             <SharedItemsTableRow currentId={this.props.currentId} />
                         }
-                        {this.props.ids.map(n => {
-                            let content = this.props.children[n];
-                            return (
-                                <SimpleTableRow
-                                    content={content}
-                                    key={content.Id}
-                                    handleRowDoubleClick={this.handleRowDoubleClick}
-                                    handleRowSingleClick={this.handleRowSingleClick} />
-                            );
-                        })}
+                        {this.props.isFetching || this.props.isLoading ?
+                            <tr>
+                                <td colSpan={5} style={styles.loader}>
+                                    <CircularProgress color='accent' size={50} />
+                                </td>
+                            </tr>
+                            : this.props.ids.map(n => {
+                                let content = this.props.children[n];
+                                return (
+                                    <SimpleTableRow
+                                        content={content}
+                                        key={content.Id}
+                                        handleRowDoubleClick={this.handleRowDoubleClick}
+                                        handleRowSingleClick={this.handleRowSingleClick} />
+                                );
+                            })
+                        }
+
                     </TableBody>
                 </Table>
                 <ActionMenu />
@@ -269,6 +284,8 @@ const mapStateToProps = (state, match) => {
         ids: Reducers.getIds(state.sensenet.children),
         rootId: DMSReducers.getRootId(state.dms),
         selected: Reducers.getSelectedContent(state.sensenet),
+        isFetching: Reducers.getFetching(state.sensenet.children),
+        isLoading: DMSReducers.getLoading(state.dms)
     }
 }
 export default withRouter(connect(mapStateToProps, {
