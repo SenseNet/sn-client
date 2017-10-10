@@ -7,6 +7,7 @@ import Table, {
     TableSortLabel,
 } from 'material-ui/Table';
 import Icon from 'material-ui/Icon';
+import MediaQuery from 'react-responsive';
 import { icons } from '../../assets/icons'
 
 const styles = {
@@ -60,11 +61,25 @@ export class SharedItemsTableRow extends React.Component<ISharedItemsTableRow, {
                 tabIndex={-1}
                 key={this.props.currentId}
             >
-                <TableCell padding='checkbox' style={styles.checkboxButton}></TableCell>
-                <TableCell style={styles.typeIcon} padding='none'><Icon color='accent'>{icons.SmartFolder}</Icon></TableCell>
+                <MediaQuery minDeviceWidth={700}>
+                    <TableCell padding='checkbox' style={styles.checkboxButton}></TableCell>
+                </MediaQuery>
+                <MediaQuery minDeviceWidth={700}>
+                    {(matches) => {
+                        const padding = matches ? 'none' : 'dense';
+                        return <TableCell style={styles.typeIcon} padding={padding}><Icon color='accent'>{icons.SmartFolder}</Icon></TableCell>
+                    }}
+                </MediaQuery>
                 <TableCell style={styles.displayName as any}>Shared items</TableCell>
-                <TableCell></TableCell>
-                <TableCell style={styles.actionMenuButton}></TableCell>
+                <MediaQuery minDeviceWidth={700}>
+                    <TableCell></TableCell>
+                </MediaQuery>
+                <MediaQuery minDeviceWidth={700}>
+                    {(matches) => {
+                        const padding = matches ? 'none' : 'checkbox';
+                        return <TableCell style={styles.actionMenuButton} padding={padding}></TableCell>
+                    }}
+                </MediaQuery>
             </TableRow>
         )
     }

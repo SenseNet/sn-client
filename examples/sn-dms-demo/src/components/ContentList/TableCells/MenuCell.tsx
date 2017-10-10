@@ -6,6 +6,7 @@ import IconButton from 'material-ui/IconButton';
 import { Actions, Reducers } from 'sn-redux'
 import { DMSActions } from '../../../Actions'
 import { DMSReducers } from '../../../Reducers'
+import MediaQuery from 'react-responsive';
 
 const styles = {
     actionMenuButton: {
@@ -50,18 +51,24 @@ class MenuCell extends React.Component<IMenuCellProps, IMenuCellState>{
     render() {
         const { isSelected, isHovered, content, actionMenuIsOpen } = this.props
         return (
-            <TableCell style={styles.actionMenuButton}>
-                <IconButton
-                    aria-label='Menu'
-                    aria-owns={actionMenuIsOpen}
-                    onClick={event => this.handleActionMenuClick(event, content)}
-                >
-                    <MoreVert style={
-                        isHovered ? styles.hoveredIcon : styles.icon &&
-                            isSelected ? styles.selectedIcon : styles.icon
-                    } />
-                </IconButton>
-            </TableCell>
+            <MediaQuery minDeviceWidth={700}>
+                {(matches) => {
+                    const padding = matches ? 'none' : 'checkbox';
+                    return <TableCell style={styles.actionMenuButton}
+                        padding={padding}>
+                        <IconButton
+                            aria-label='Menu'
+                            aria-owns={actionMenuIsOpen}
+                            onClick={event => this.handleActionMenuClick(event, content)}
+                        >
+                            <MoreVert style={
+                                isHovered ? styles.hoveredIcon : styles.icon &&
+                                    isSelected ? styles.selectedIcon : styles.icon
+                            } />
+                        </IconButton>
+                    </TableCell>
+                }}
+            </MediaQuery>
         )
     }
 }

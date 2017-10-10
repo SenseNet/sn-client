@@ -206,10 +206,10 @@ const setEdited = DMSActions.SetEditedContentId
 
 const mapStateToProps = (state, match) => {
     return {
-        actions: DMSReducers.getActions(state.actionmenu),
-        isOpen: DMSReducers.actionmenuIsOpen(state.actionmenu),
-        position: DMSReducers.getActionMenuPosition(state.actionmenu),
-        id: DMSReducers.getItemOnActionMenuIsOpen(state.actionmenu)
+        actions: DMSReducers.getActions(state.dms.actionmenu),
+        isOpen: DMSReducers.actionmenuIsOpen(state.dms.actionmenu),
+        position: DMSReducers.getActionMenuPosition(state.dms.actionmenu),
+        id: DMSReducers.getItemOnActionMenuIsOpen(state.dms.actionmenu)
     }
 }
 

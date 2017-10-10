@@ -65,7 +65,7 @@ class BreadCrumb extends React.Component<{ breadcrumb, history }, {}>{
 const mapStateToProps = (state, match) => {
 
     return {
-        breadcrumb: DMSReducers.getBreadCrumbArray(state),
+        breadcrumb: DMSReducers.getBreadCrumbArray(state.dms),
         currentId: match.match.params.id
     }
 }

@@ -4,6 +4,7 @@ import {
 } from 'react-router-dom'
 import { connect } from 'react-redux';
 import { DMSReducers } from '../../Reducers'
+import MediaQuery from 'react-responsive';
 import {
     TableCell,
     TableRow
@@ -63,15 +64,29 @@ class ParentFolderTableRow extends React.Component<IParentFolderTableRow, {}>{
                 tabIndex={-1}
             //key={this.props.parentId}
             >
-                <TableCell padding='checkbox' style={styles.checkboxButton}></TableCell>
-                <TableCell style={styles.parentDisplayName as any}
-                    padding='none'
-                    onDoubleClick={event => this.handleDoubleClick(event, this.props.parentId)}>[ ... ]</TableCell>
+                <MediaQuery minDeviceWidth={700}>
+                    <TableCell padding='checkbox' style={styles.checkboxButton}></TableCell>
+                </MediaQuery>
+                <MediaQuery minDeviceWidth={700}>
+                    {(matches) => {
+                        const padding = matches ? 'none' : 'dense';
+                        return <TableCell style={styles.parentDisplayName as any}
+                            padding={padding}
+                            onDoubleClick={event => this.handleDoubleClick(event, this.props.parentId)}>[ ... ]</TableCell>
+                    }}
+                </MediaQuery>
                 <TableCell style={styles.displayName as any}
                     onDoubleClick={event => this.handleDoubleClick(event, this.props.parentId)}></TableCell>
-                <TableCell
-                    onDoubleClick={event => this.handleDoubleClick(event, this.props.parentId)}></TableCell>
-                <TableCell style={styles.actionMenuButton}></TableCell>
+                <MediaQuery minDeviceWidth={700}>
+                    <TableCell
+                        onDoubleClick={event => this.handleDoubleClick(event, this.props.parentId)}></TableCell>
+                </MediaQuery>
+                <MediaQuery minDeviceWidth={700}>
+                    {(matches) => {
+                        const padding = matches ? 'none' : 'checkbox';
+                        return <TableCell style={styles.actionMenuButton} padding={padding}></TableCell>
+                    }}
+                </MediaQuery>
             </TableRow>
         )
     }

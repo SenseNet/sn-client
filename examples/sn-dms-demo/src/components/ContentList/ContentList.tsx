@@ -2,6 +2,7 @@
 import * as React from 'react'
 import { Key } from 'ts-keycode-enum';
 import { connect } from 'react-redux';
+import MediaQuery from 'react-responsive';
 import { Actions, Reducers } from 'sn-redux'
 import { DMSReducers } from '../../Reducers'
 import { DMSActions } from '../../Actions'
@@ -230,14 +231,17 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
             <Paper style={styles.paper as any}>
                 <Table
                     onKeyDown={event => this.handleKeyDown(event)}>
-                    <ListHead
-                        numSelected={this.state.selected.length}
-                        order={this.state.order}
-                        orderBy={this.state.orderBy}
-                        onSelectAllClick={this.handleSelectAllClick}
-                        onRequestSort={this.handleRequestSort}
-                        count={this.props.ids.length}
-                    />
+
+                    <MediaQuery minDeviceWidth={700}>
+                        <ListHead
+                            numSelected={this.state.selected.length}
+                            order={this.state.order}
+                            orderBy={this.state.orderBy}
+                            onSelectAllClick={this.handleSelectAllClick}
+                            onRequestSort={this.handleRequestSort}
+                            count={this.props.ids.length}
+                        />
+                    </MediaQuery>
                     <TableBody style={styles.tableBody}>
                         {this.props.parentId && this.isChildrenFolder() ?
                             <ParentFolderTableRow parentId={this.props.parentId} history={this.props.history} /> :
@@ -263,7 +267,7 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
 const mapStateToProps = (state, match) => {
     return {
         ids: Reducers.getIds(state.sensenet.children),
-        rootId: DMSReducers.getRootId(state),
+        rootId: DMSReducers.getRootId(state.dms),
         selected: Reducers.getSelectedContent(state.sensenet),
     }
 }

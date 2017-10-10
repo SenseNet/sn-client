@@ -17,20 +17,10 @@ import './index.css';
 import 'rxjs'
 
 const sensenet = Reducers.sensenet;
-const register = DMSReducers.register;
-const actionmenu = DMSReducers.actionmenu;
-const rootId = DMSReducers.rootId;
-const breadcrumb = DMSReducers.breadcrumb;
-const currentId = DMSReducers.currentId;
-const editedItemId = DMSReducers.editedItemId;
+const dms = DMSReducers.dms;
 const myReducer = combineReducers({
   sensenet,
-  register,
-  rootId,
-  actionmenu,
-  breadcrumb,
-  currentId,
-  editedItemId
+  dms
 });
 
 const repository = new Repository.SnRepository({

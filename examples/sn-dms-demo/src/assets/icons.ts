@@ -11,5 +11,6 @@ export const icons = {
     arrowRight: 'keyboard_arrow_right',
     sharecontent: 'share',
     starcontent: 'star',
-    edit: 'mode_edit'
+    edit: 'mode_edit',
+    tick: 'done'
 }

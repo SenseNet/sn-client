@@ -112,7 +112,7 @@ const mapStateToProps = (state, match) => {
         isFetching: Reducers.getFetching(state.sensenet.children),
         currentContent: Reducers.getCurrentContent(state.sensenet),
         currentId: Number(match.match.url.replace('/', '')),
-        cId: DMSReducers.getCurrentId(state)
+        cId: DMSReducers.getCurrentId(state.dms)
     }
 }
 

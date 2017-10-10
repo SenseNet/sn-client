@@ -14,7 +14,7 @@ const styles = {
         padding: 60
     },
     dashBoardInnerMobile: {
-        padding: '60px 0'
+        padding: '30px 0 0'
     },
     root: {
         background: '#efefef'
@@ -92,7 +92,7 @@ const mapStateToProps = (state, match) => {
     return {
         loggedinUser: DMSReducers.getAuthenticatedUser(state.sensenet),
         currentContent: Reducers.getCurrentContent(state.sensenet),
-        currentId: DMSReducers.getCurrentId(state)
+        currentId: DMSReducers.getCurrentId(state.dms)
     }
 }
 

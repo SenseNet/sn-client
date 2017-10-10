@@ -163,6 +163,15 @@ export module DMSReducers {
         id
     })
 
+    export const dms = combineReducers({
+        actionmenu,
+        breadcrumb,
+        editedItemId,
+        currentId,
+        rootId,
+        register
+    })
+
     export const getRegistrationError = (state) => {
         return state.registrationError;
     }
