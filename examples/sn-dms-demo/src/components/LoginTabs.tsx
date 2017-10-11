@@ -35,18 +35,19 @@ function TabContainer(props) {
     );
 }
 
-class LoginTabs extends React.Component<{}, { value }> {
+class LoginTabs extends React.Component<{ history }, { value }> {
     constructor(props) {
         super(props)
         this.state = {
             value: location.href.indexOf('login') !== -1 ? 0 : 1
         }
+        this.handleChange = this.handleChange.bind(this)
     }
     handleChange = (event, value) => {
         this.setState({ value });
         return value === 0 ?
-            this.context.router.replace('/login') :
-            this.context.router.replace('/registration');
+            this.props.history.push('/login') :
+            this.props.history.push('/registration');
     };
     render() {
         const { value } = this.state;

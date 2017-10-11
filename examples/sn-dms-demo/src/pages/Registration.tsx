@@ -313,10 +313,10 @@ class Registration extends React.Component<IRegistrationProps, IRegistrationStat
 
 const mapStateToProps = (state, match) => {
   return {
-    registrationError: DMSReducers.getRegistrationError(state.register),
-    inProgress: DMSReducers.registrationInProgress(state.register),
-    isRegistered: DMSReducers.registrationIsDone(state.register),
-    isNotARobot: DMSReducers.captchaIsVerified(state.register)
+    registrationError: DMSReducers.getRegistrationError(state.dms.register),
+    inProgress: DMSReducers.registrationInProgress(state.dms.register),
+    isRegistered: DMSReducers.registrationIsDone(state.dms.register),
+    isNotARobot: DMSReducers.captchaIsVerified(state.dms.register)
   }
 }
 

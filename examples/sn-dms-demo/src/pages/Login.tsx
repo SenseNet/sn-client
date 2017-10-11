@@ -11,6 +11,7 @@ import FormControl from 'material-ui/Form/FormControl';
 import FormHelperText from 'material-ui/Form/FormHelperText';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import createMuiTheme from 'material-ui/styles/createMuiTheme';
+import MediaQuery from 'react-responsive';
 
 const logo = require('../assets/logo.png');
 
@@ -31,7 +32,17 @@ const styles = {
   },
   formControl: {
     marginTop: '20px 0px',
-  }
+  },
+  logo: {
+    backgroundColor: '#fff',
+    padding: '60px',
+    color: '#444',
+    textAlign: 'center'
+  },
+  logoMobile: {
+    padding: '50px  0',
+    textAlign: 'center'
+  },
 }
 
 import { resources } from '../assets/resources'
@@ -173,7 +184,11 @@ class Login extends React.Component<ILoginProps, ILoginState> {
     return (
       <div className='Sensenet'>
         <div className='Sensenet-header'>
-          <img src={logo} className='Sensenet-logo' alt='logo' />
+          <MediaQuery minDeviceWidth={700}>
+            {(matches) => {
+              return <img src={logo} width={matches ? '60%' : '50%'} className='Sensenet-logo' style={matches ? styles.logo : styles.logoMobile} alt='logo' />
+            }}
+          </MediaQuery>
         </div>
 
         <LoginTabs />

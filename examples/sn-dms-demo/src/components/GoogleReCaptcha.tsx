@@ -28,7 +28,7 @@ class GoogleReCaptcha extends React.Component<{ verify }, { recaptchaResponse }>
 
 const mapStateToProps = (state, match) => {
     return {
-        isNotARobot: DMSReducers.captchaIsVerified(state.register)
+        isNotARobot: DMSReducers.captchaIsVerified(state.dms.register)
     }
 }
 
