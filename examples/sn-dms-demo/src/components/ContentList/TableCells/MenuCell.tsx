@@ -42,7 +42,7 @@ interface IMenuCellState {
 class MenuCell extends React.Component<IMenuCellProps, IMenuCellState>{
     handleActionMenuClick(e, content) {
         this.props.closeActionMenu()
-        this.props.openActionMenu(this.props.actions, content.Id, { top: e.currentTarget.offsetTop, left: e.currentTarget.offsetLeft - e.currentTarget.offsetWidth })
+        this.props.openActionMenu(this.props.actions, content.Id, content.DisplayName, { top: e.currentTarget.offsetTop, left: e.currentTarget.offsetLeft - e.currentTarget.offsetWidth - 100 })
         this.setState({ anchorTop: e.clientY, anchorLeft: e.clientX })
     }
     handleActionMenuClose = (e) => {

@@ -108,6 +108,15 @@ describe('id reducer', () => {
     });
 })
 
+describe('title reducer', () => {
+    it('should return the initial state', () => {
+        expect(DMSReducers.title(undefined, {})).toEqual('');
+    });
+    it('should return the opened content items id', () => {
+        expect(DMSReducers.title(undefined, { type: 'OPEN_ACTIONMENU', title: 'sample' })).toEqual('sample');
+    });
+})
+
 describe('position reducer', () => {
     it('should return the initial state', () => {
         expect(DMSReducers.position(undefined, {})).toEqual(null);
@@ -381,5 +390,13 @@ describe('getItemOnActionMenuIsOpen', () => {
     }
     it('should return the id of the item on which the actionmenu was opened', () => {
         expect(DMSReducers.getItemOnActionMenuIsOpen(state)).toEqual(123)
+    })
+})
+describe('getItemOnActionMenuIsOpen', () => {
+    const state = {
+        title: 'sample'
+    }
+    it('should return the title of the item on which the actionmenu was opened', () => {
+        expect(DMSReducers.getItemTitleOnActionMenuIsOpen(state)).toEqual('sample')
     })
 })

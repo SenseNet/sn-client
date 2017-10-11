@@ -74,12 +74,13 @@ describe('OpenActionMenu', () => {
             type: 'OPEN_ACTIONMENU',
             actions: ['Move', 'Copy'],
             id: 1,
+            title: 'sample doc',
             position: {
                 top: 2,
                 left: 2
             }
         }
-        expect(DMSActions.OpenActionMenu(['Move', 'Copy'], 1, { top: 2, left: 2 })).toEqual(expectedAction)
+        expect(DMSActions.OpenActionMenu(['Move', 'Copy'], 1, 'sample doc', { top: 2, left: 2 })).toEqual(expectedAction)
     })
 })
 

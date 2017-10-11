@@ -93,6 +93,15 @@ export module DMSReducers {
         }
     }
 
+    export const title = (state = '', action) => {
+        switch (action.type) {
+            case 'OPEN_ACTIONMENU':
+                return action.title
+            default:
+                return state
+        }
+    }
+
     export const position = (state = null, action) => {
         switch (action.type) {
             case 'OPEN_ACTIONMENU':
@@ -171,7 +180,8 @@ export module DMSReducers {
         actions,
         open,
         position,
-        id
+        id,
+        title
     })
 
     export const dms = combineReducers({
@@ -248,5 +258,8 @@ export module DMSReducers {
     }
     export const getLoading = (state) => {
         return state.isLoading
+    }
+    export const getItemTitleOnActionMenuIsOpen = (state) => {
+        return state.title
     }
 }
