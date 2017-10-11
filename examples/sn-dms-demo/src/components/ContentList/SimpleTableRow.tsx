@@ -85,7 +85,7 @@ class SimpleTableRow extends React.Component<ISimpleTableRowProps, ISimpleTableR
 
     handleContextMenu(e, content) {
         e.preventDefault()
-        this.props.openActionMenu(content.Actions, content.Id, { top: e.clientY, left: e.clientX })
+        this.props.openActionMenu(content.Actions, content.Id, content.DisplayName, { top: e.clientY, left: e.clientX })
     }
 
     handleRowMouseEnter(e, id) {
