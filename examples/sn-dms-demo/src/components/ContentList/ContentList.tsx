@@ -130,14 +130,14 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
             const alt = e.altKey ? true : false;
             const shift = e.shiftKey ? true : false;
             const id = Number(e.target.closest('tr').id)
-            const type = this.state.data[id]._type
+            const type = this.props.children[id]._type
             this.setState({
                 active: id
             })
             switch (e.which) {
                 case Key.Space:
                     e.preventDefault()
-                    this.handleRowSingleClick(e, id)
+                    this.handleSimpleSelection(id)
                     break
                 case Key.Enter:
                     e.preventDefault()
@@ -148,7 +148,7 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
                     if (shift) {
                         const upperItemIndex = this.props.ids.indexOf(Number(this.state.active)) - 1
                         upperItemIndex > -1 ?
-                            this.handleRowSingleClick(e, this.props.ids[upperItemIndex]) :
+                            this.handleSimpleSelection(this.props.ids[upperItemIndex]) :
                             null
                     }
                     break
@@ -156,7 +156,7 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
                     if (shift) {
                         const upperItemIndex = this.props.ids.indexOf(Number(this.state.active)) + 1
                         upperItemIndex < this.props.ids.length ?
-                            this.handleRowSingleClick(e, this.props.ids[upperItemIndex]) :
+                            this.handleSimpleSelection(this.props.ids[upperItemIndex]) :
                             null
                     }
                     break
