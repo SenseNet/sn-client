@@ -21,6 +21,7 @@ import SimpleTableRow from './SimpleTableRow'
 import { SharedItemsTableRow } from './SharedItemsTableRow'
 import ParentFolderTableRow from './ParentFolderTableRow'
 import ActionMenu from '../ActionMenu'
+import SelectionBox from '../SelectionBox'
 
 const styles = {
     paper: {
@@ -51,7 +52,10 @@ interface ContentListProps {
     deselect: Function,
     clearSelection: Function,
     delete: Function,
-    deleteBatch: Function
+    deleteBatch: Function,
+    selectionModeOn: Function,
+    selectionModeOff: Function,
+    selectionModeIsOn: boolean
 }
 
 interface ContentListState {
@@ -77,8 +81,9 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
         this.handleRowSingleClick = this.handleRowSingleClick.bind(this)
         this.handleRowDoubleClick = this.handleRowDoubleClick.bind(this)
         this.handleKeyDown = this.handleKeyDown.bind(this)
+        this.handleTap = this.handleTap.bind(this)
     }
-         
+
     componentDidUpdate(prevOps) {
         if (this.props.edited !== prevOps.edited) {
             this.setState({
@@ -86,7 +91,7 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
             })
         }
     }
-    handleRowSingleClick(e, id) {
+    handleRowSingleClick(e, id, m) {
         const { ids, selected } = this.props;
         if (e.shiftKey) {
             e.preventDefault()
@@ -109,7 +114,7 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
             this.handleSimpleSelection(id)
         }
         else {
-            e.target.getAttribute('type') !== 'checkbox' ?
+            e.target.getAttribute('type') !== 'checkbox' && !this.props.selectionModeIsOn ?
                 this.handleSingleSelection(id) :
                 this.handleSimpleSelection(id)
         }
@@ -208,18 +213,7 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
         this.setState({ selected: [id], active: id });
     }
     handleRequestSort = (event, property) => {
-        // const orderBy = property;
-        // let order = 'desc';
-
-        // if (this.state.orderBy === property && this.state.order === 'desc') {
-        //     order = 'asc';
-        // }
-        // console.log(this.state.data)
-        // const data = this.state.data.sort(
-        //     (a, b) => (order === 'desc' ? b[orderBy] > a[orderBy] : a[orderBy] > b[orderBy]),
-        // );
-
-        // this.setState({ data, order, orderBy });
+        // TODO: implement sorting
     };
     handleSelectAllClick = (event, checked) => {
         if (checked) {
@@ -230,6 +224,12 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
         this.setState({ selected: [] });
         this.props.ids.map(id => { this.props.deselect(id) })
     };
+    handleTap(e, id, type) {
+        if (type === 'Folder')
+            this.props.history.push(`/${id}`)
+        else
+            console.log('open preview')
+    }
     isChildrenFolder() {
         let urlArray = location.href.split('/')
         let id = parseInt(urlArray[urlArray.length - 1]);
@@ -237,47 +237,51 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
     }
     render() {
         return (
-            <Paper style={styles.paper as any}>
-                <Table
-                    onKeyDown={event => this.handleKeyDown(event)}>
+            <div>
+                <Paper style={styles.paper as any}>
+                    <Table
+                        onKeyDown={event => this.handleKeyDown(event)}>
 
-                    <MediaQuery minDeviceWidth={700}>
-                        <ListHead
-                            numSelected={this.state.selected.length}
-                            order={this.state.order}
-                            orderBy={this.state.orderBy}
-                            onSelectAllClick={this.handleSelectAllClick}
-                            onRequestSort={this.handleRequestSort}
-                            count={this.props.ids.length}
-                        />
-                    </MediaQuery>
-                    <TableBody style={styles.tableBody}>
-                        {this.props.parentId && this.isChildrenFolder() ?
-                            <ParentFolderTableRow parentId={this.props.parentId} history={this.props.history} /> :
-                            <SharedItemsTableRow currentId={this.props.currentId} />
-                        }
-                        {this.props.isFetching || this.props.isLoading ?
-                            <tr>
-                                <td colSpan={5} style={styles.loader}>
-                                    <CircularProgress color='accent' size={50} />
-                                </td>
-                            </tr>
-                            : this.props.ids.map(n => {
-                                let content = this.props.children[n];
-                                return (
-                                    <SimpleTableRow
-                                        content={content}
-                                        key={content.Id}
-                                        handleRowDoubleClick={this.handleRowDoubleClick}
-                                        handleRowSingleClick={this.handleRowSingleClick} />
-                                );
-                            })
-                        }
+                        <MediaQuery minDeviceWidth={700}>
+                            <ListHead
+                                numSelected={this.state.selected.length}
+                                order={this.state.order}
+                                orderBy={this.state.orderBy}
+                                onSelectAllClick={this.handleSelectAllClick}
+                                onRequestSort={this.handleRequestSort}
+                                count={this.props.ids.length}
+                            />
+                        </MediaQuery>
+                        <TableBody style={styles.tableBody}>
+                            {this.props.parentId && this.isChildrenFolder() ?
+                                <ParentFolderTableRow parentId={this.props.parentId} history={this.props.history} /> :
+                                <SharedItemsTableRow currentId={this.props.currentId} />
+                            }
+                            {this.props.isFetching || this.props.isLoading ?
+                                <tr>
+                                    <td colSpan={5} style={styles.loader}>
+                                        <CircularProgress color='accent' size={50} />
+                                    </td>
+                                </tr>
+                                : this.props.ids.map(n => {
+                                    let content = this.props.children[n];
+                                    return (
+                                        <SimpleTableRow
+                                            content={content}
+                                            key={content.Id}
+                                            handleRowDoubleClick={this.handleRowDoubleClick}
+                                            handleRowSingleClick={this.handleRowSingleClick}
+                                            handleTap={this.handleTap} />
+                                    );
+                                })
+                            }
 
-                    </TableBody>
-                </Table>
-                <ActionMenu />
-            </Paper>)
+                        </TableBody>
+                    </Table>
+                    <ActionMenu />
+                </Paper>
+                <SelectionBox />
+            </div>)
     }
 }
 
@@ -288,7 +292,8 @@ const mapStateToProps = (state, match) => {
         selected: Reducers.getSelectedContent(state.sensenet),
         isFetching: Reducers.getFetching(state.sensenet.children),
         isLoading: DMSReducers.getLoading(state.dms),
-        edited: DMSReducers.getEditedItemId(state.dms)
+        edited: DMSReducers.getEditedItemId(state.dms),
+        selectionModeIsOn: DMSReducers.getIsSelectionModeOn(state.dms)
     }
 }
 export default withRouter(connect(mapStateToProps, {
@@ -296,5 +301,7 @@ export default withRouter(connect(mapStateToProps, {
     deselect: Actions.DeSelectContent,
     clearSelection: Actions.ClearSelection,
     delete: Actions.Delete,
-    deleteBatch: Actions.DeleteBatch
+    deleteBatch: Actions.DeleteBatch,
+    selectionModeOn: DMSActions.SelectionModeOn,
+    selectionModeOff: DMSActions.SelectionModeOff
 })(ContentList))

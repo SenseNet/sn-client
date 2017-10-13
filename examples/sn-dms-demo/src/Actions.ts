@@ -35,4 +35,10 @@ export module DMSActions {
     export const CloseActionMenu = () => ({
         type: 'CLOSE_ACTIONMENU'
     })
+    export const SelectionModeOn = () => ({
+        type: 'SELECTION_MODE_ON'
+    })
+    export const SelectionModeOff = () => ({
+        type: 'SELECTION_MODE_OFF'
+    })
 }

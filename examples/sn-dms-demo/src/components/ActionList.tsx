@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
+import { Actions } from 'sn-redux'
 import { DMSActions } from '../Actions'
 import { DMSReducers } from '../Reducers'
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
@@ -50,24 +51,25 @@ const styles = {
     },
 }
 
-interface IActionListProps { 
+interface IActionListProps {
     actions,
     id,
     setEdited: Function,
     handleActionMenuClose: Function,
     handleMouseDown: Function,
-    handleMouseUp: Function
+    handleMouseUp: Function,
+    clearSelection: Function
 }
 
-interface IActionListState { 
+interface IActionListState {
     hovered
 }
 
 class ActionList extends React.Component<IActionListProps, IActionListState> {
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = {
-            hovered : ''
+            hovered: ''
         }
         this.handleMouseEnter = this.handleMouseEnter.bind(this)
         this.handleMouseLeave = this.handleMouseLeave.bind(this)
@@ -87,11 +89,17 @@ class ActionList extends React.Component<IActionListProps, IActionListState> {
         })
     }
     handleMenuItemClick(e, action) {
-        console.log(`${action} is clicked`)
-        if (action === 'Rename') {
-            this.props.setEdited(this.props.id)
+        switch (action) {
+            case 'Rename':
+                this.props.setEdited(this.props.id)
+                break
+            case 'ClearSelection':
+                this.props.clearSelection()
+            default:
+                console.log(`${action} is clicked`)
+                this.props.handleActionMenuClose()
+                break
         }
-        this.props.handleActionMenuClose()
     }
     render() {
         return <List
@@ -133,5 +141,6 @@ const mapStateToProps = (state, match) => {
 }
 
 export default connect(mapStateToProps, {
-    setEdited: DMSActions.SetEditedContentId
+    setEdited: DMSActions.SetEditedContentId,
+    clearSelection: Actions.ClearSelection
 })(ActionList)

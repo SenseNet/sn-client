@@ -2,6 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { Content } from 'sn-client-js'
 import { Actions, Reducers } from 'sn-redux'
+import MediaQuery from 'react-responsive';
 import { DMSReducers } from '../../../Reducers'
 import { DMSActions } from '../../../Actions'
 import { TableCell } from 'material-ui/Table';
@@ -102,24 +103,29 @@ class DisplayNameCell extends React.Component<IDisplayNameCellProps, IDisplayNam
     render() {
         const content = this.props.currentContent
         const isEdited = this.isEdited(this.props.content.Id);
+        const { handleRowSingleClick, handleRowDoubleClick} = this.props
         return (
-            <TableCell
-                style={this.props.isHovered && !isEdited ? styles.hoveredDisplayName : styles.displayName as any}
-                onClick={event => this.props.handleRowSingleClick(event, content.id)}
-                onDoubleClick={event => this.props.handleRowDoubleClick(event, this.props.content.Id)}>
-                {isEdited ?
-                    <TextField
-                        id='renameInput'
-                        autoFocus
-                        defaultValue={this.props.content.DisplayName}
-                        margin='dense'
-                        style={styles.editedTitle as any}
-                        onChange={event => this.handleTitleChange(event)}
-                        onKeyPress={event => this.handleKeyPress(event)}
-                        onBlur={event => this.handleTitleInputBlur(this.props.content.Id)} /> :
-                    <span onClick={event => this.handleTitleClick(event, this.props.content.Id)}>{this.props.content.DisplayName}</span>
-                }
-            </TableCell>
+            <MediaQuery minDeviceWidth={700}>
+                {(matches) => {
+                    return <TableCell
+                        style={this.props.isHovered && !isEdited ? styles.hoveredDisplayName : styles.displayName as any}
+                        onClick={event => handleRowSingleClick(event, content.id)}
+                        onDoubleClick={event => handleRowDoubleClick(event, this.props.content.Id)}>
+                        {isEdited ?
+                            <TextField
+                                id='renameInput'
+                                autoFocus
+                                defaultValue={this.props.content.DisplayName}
+                                margin='dense'
+                                style={styles.editedTitle as any}
+                                onChange={event => this.handleTitleChange(event)}
+                                onKeyPress={event => this.handleKeyPress(event)}
+                                onBlur={event => this.handleTitleInputBlur(this.props.content.Id)} /> :
+                            <span onClick={event => matches ? this.handleTitleClick(event, this.props.content.Id) : event.preventDefault()}>{this.props.content.DisplayName}</span>
+                        }
+                    </TableCell>
+                }}
+            </MediaQuery>
         )
     }
 }

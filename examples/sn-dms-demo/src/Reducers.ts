@@ -176,6 +176,17 @@ export module DMSReducers {
         }
     }
 
+    export const isSelectionModeOn = (state = false, action) => {
+        switch (action.type) {
+            case 'SELECTION_MODE_ON':
+                return true
+            case 'SELECTION_MODE_OFF':
+                return false
+            default:
+                return state
+        }
+    }
+
     export const actionmenu = combineReducers({
         actions,
         open,
@@ -191,7 +202,8 @@ export module DMSReducers {
         currentId,
         rootId,
         register,
-        isLoading
+        isLoading,
+        isSelectionModeOn
     })
 
     export const getRegistrationError = (state) => {
@@ -261,5 +273,8 @@ export module DMSReducers {
     }
     export const getItemTitleOnActionMenuIsOpen = (state) => {
         return state.title
+    }
+    export const getIsSelectionModeOn = (state) => {
+        return state.isSelectionModeOn
     }
 }

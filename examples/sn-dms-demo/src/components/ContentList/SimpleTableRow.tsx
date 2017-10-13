@@ -47,8 +47,6 @@ const styles = {
 interface ISimpleTableRowProps {
     content,
     ids,
-    select: Function,
-    deselect: Function,
     getActions: Function,
     opened: Number,
     openActionMenu: Function,
@@ -58,7 +56,10 @@ interface ISimpleTableRowProps {
     rootId,
     selected,
     handleRowDoubleClick: Function,
-    handleRowSingleClick: Function
+    handleRowSingleClick: Function,
+    handleTap: Function,
+    selectionModeOn: Function,
+    selectionModeOff: Function
 }
 
 interface ISimpleTableRowState {
@@ -81,6 +82,7 @@ class SimpleTableRow extends React.Component<ISimpleTableRowProps, ISimpleTableR
             anchorEl: null
         }
         this.handleContextMenu = this.handleContextMenu.bind(this)
+        this.handleIconTap = this.handleIconTap.bind(this)
     }
 
     handleContextMenu(e, content) {
@@ -104,8 +106,13 @@ class SimpleTableRow extends React.Component<ISimpleTableRowProps, ISimpleTableR
     isHovered(id) {
         return this.state.hovered === id
     }
+
+    handleIconTap(e, id, type) {
+        this.props.handleRowSingleClick(e, id)
+        this.props.selectionModeOn()
+    }
     render() {
-        const content = this.props.content;
+        const { content, handleRowSingleClick, handleRowDoubleClick, handleTap } = this.props
         const isSelected = this.isSelected(content.Id);
         const isHovered = this.isHovered(content.Id);
         return (
@@ -128,8 +135,8 @@ class SimpleTableRow extends React.Component<ISimpleTableRowProps, ISimpleTableR
                         padding='checkbox'
                         style={styles.checkboxButton}
 
-                        onClick={event => this.props.handleRowSingleClick(event, content.Id)}
-                        onDoubleClick={event => this.props.handleRowDoubleClick(event, content.Id, content._type)}>
+                        onClick={event => handleRowSingleClick(event, content.Id)}
+                        onDoubleClick={event => handleRowDoubleClick(event, content.Id, content._type)}>
                         <div style={
                             isSelected ? styles.selectedCheckbox : styles.checkbox &&
                                 isHovered ? styles.hoveredCheckbox : styles.checkbox}>
@@ -139,17 +146,25 @@ class SimpleTableRow extends React.Component<ISimpleTableRowProps, ISimpleTableR
                         </div>
                     </TableCell>
                 </MediaQuery>
-                <IconCell
-                    id={content.Id}
-                    icon={content.Icon}
-                    selected={isSelected}
-                    handleRowSingleClick={this.props.handleRowSingleClick}
-                    handleRowDoubleClick={event => this.props.handleRowDoubleClick(event, content.Id, content._type)} />
-                <DisplayNameCell
-                    content={content}
-                    isHovered={isHovered}
-                    handleRowSingleClick={event => this.props.handleRowSingleClick(event, content.Id)}
-                    handleRowDoubleClick={event => this.props.handleRowDoubleClick(event, content.Id, content._type)} />
+                <MediaQuery minDeviceWidth={700}>
+                    {(matches) => {
+                        return <IconCell
+                            id={content.Id}
+                            icon={content.Icon}
+                            selected={isSelected}
+                            handleRowSingleClick={event => matches ? handleRowSingleClick(event, content.Id) : this.handleIconTap(event, content.Id, content._type)}
+                            handleRowDoubleClick={event => matches ? handleRowDoubleClick(event, content.Id, content._type) : event.preventDefault()} />
+                    }}
+                </MediaQuery>
+                <MediaQuery minDeviceWidth={700}>
+                    {(matches) => {
+                        return <DisplayNameCell
+                            content={content}
+                            isHovered={isHovered}
+                            handleRowSingleClick={event => matches ? handleRowSingleClick(event, content.Id) : handleTap(event, content.Id, content._type)}
+                            handleRowDoubleClick={event => matches ? handleRowDoubleClick(event, content.Id, content._type) : event.preventDefault()} />
+                    }}
+                </MediaQuery>
                 <MediaQuery minDeviceWidth={700}>
                     <DateCell
                         id={content.Id}
@@ -179,9 +194,9 @@ const mapStateToProps = (state, match) => {
     }
 }
 export default withRouter(connect(mapStateToProps, {
-    select: Actions.SelectContent,
-    deselect: Actions.DeSelectContent,
     getActions: Actions.RequestContentActions,
     openActionMenu: DMSActions.OpenActionMenu,
-    closeActionMenu: DMSActions.CloseActionMenu
+    closeActionMenu: DMSActions.CloseActionMenu,
+    selectionModeOn: DMSActions.SelectionModeOn,
+    selectionModeOff: DMSActions.SelectionModeOff
 })(SimpleTableRow))

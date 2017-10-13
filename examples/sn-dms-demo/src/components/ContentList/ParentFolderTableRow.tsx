@@ -56,38 +56,42 @@ class ParentFolderTableRow extends React.Component<IParentFolderTableRow, {}>{
         this.props.history.push(`/${id}`)
     }
     render() {
+        const { parentId } = this.props
         return (
-            <TableRow
-                hover
-                onClick={event => this.handleClick(event, this.props.parentId)}
-                onKeyDown={event => this.handleKeyDown(event, this.props.parentId)}
-                tabIndex={-1}
-            //key={this.props.parentId}
-            >
-                <MediaQuery minDeviceWidth={700}>
-                    <TableCell padding='checkbox' style={styles.checkboxButton}></TableCell>
-                </MediaQuery>
-                <MediaQuery minDeviceWidth={700}>
-                    {(matches) => {
-                        const padding = matches ? 'none' : 'dense';
-                        return <TableCell style={styles.parentDisplayName as any}
+            <MediaQuery minDeviceWidth={700}>
+                {(matches) => {
+                    const padding = matches ? 'none' : 'dense';
+                    return matches ? <TableRow
+                        hover
+                        onClick={event => matches ? this.handleClick(event, parentId) : this.handleDoubleClick(event, parentId)}
+                        onKeyDown={event => this.handleKeyDown(event, parentId)}
+                        tabIndex={-1}
+                    >
+                        <TableCell padding='checkbox' style={styles.checkboxButton}></TableCell>
+                        <TableCell style={styles.parentDisplayName as any}
                             padding={padding}
-                            onDoubleClick={event => this.handleDoubleClick(event, this.props.parentId)}>[ ... ]</TableCell>
-                    }}
-                </MediaQuery>
-                <TableCell style={styles.displayName as any}
-                    onDoubleClick={event => this.handleDoubleClick(event, this.props.parentId)}></TableCell>
-                <MediaQuery minDeviceWidth={700}>
-                    <TableCell
-                        onDoubleClick={event => this.handleDoubleClick(event, this.props.parentId)}></TableCell>
-                </MediaQuery>
-                <MediaQuery minDeviceWidth={700}>
-                    {(matches) => {
-                        const padding = matches ? 'none' : 'checkbox';
-                        return <TableCell style={styles.actionMenuButton} padding={padding}></TableCell>
-                    }}
-                </MediaQuery>
-            </TableRow>
+                            onDoubleClick={event => this.handleDoubleClick(event, parentId)}>[ ... ]</TableCell>
+                        <TableCell style={styles.displayName as any}
+                            onDoubleClick={event => this.handleDoubleClick(event, parentId)}></TableCell>
+                        <TableCell
+                            onDoubleClick={event => this.handleDoubleClick(event, parentId)}></TableCell>
+                        <TableCell style={styles.actionMenuButton} padding={padding}></TableCell>
+                    </TableRow> :
+                        <TableRow
+                            hover
+                            onClick={event => matches ? this.handleClick(event, parentId) : this.handleDoubleClick(event, parentId)}
+                            onKeyDown={event => this.handleKeyDown(event, parentId)}
+                            tabIndex={-1}
+                        >
+                            <TableCell style={styles.parentDisplayName as any}
+                                padding={padding}
+                                onDoubleClick={event => this.handleDoubleClick(event, parentId)}>[ ... ]</TableCell>
+                            <TableCell
+                                onDoubleClick={event => this.handleDoubleClick(event, parentId)}></TableCell>
+                            <TableCell style={styles.actionMenuButton} padding={padding}></TableCell>
+                        </TableRow>
+                }}
+            </MediaQuery>
         )
     }
 }

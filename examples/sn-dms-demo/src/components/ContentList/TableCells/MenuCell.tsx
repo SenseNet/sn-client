@@ -32,7 +32,8 @@ interface IMenuCellProps {
     isSelected: boolean,
     openActionMenu: Function,
     closeActionMenu: Function,
-    actionMenuIsOpen: boolean
+    actionMenuIsOpen: boolean,
+    selectionModeOn: boolean
 }
 interface IMenuCellState {
     anchorTop,
@@ -49,7 +50,7 @@ class MenuCell extends React.Component<IMenuCellProps, IMenuCellState>{
         this.props.closeActionMenu()
     };
     render() {
-        const { isSelected, isHovered, content, actionMenuIsOpen } = this.props
+        const { isSelected, isHovered, content, actionMenuIsOpen, selectionModeOn } = this.props
         return (
             <MediaQuery minDeviceWidth={700}>
                 {(matches) => {
@@ -62,8 +63,8 @@ class MenuCell extends React.Component<IMenuCellProps, IMenuCellState>{
                             onClick={event => this.handleActionMenuClick(event, content)}
                         >
                             <MoreVert style={
-                                isHovered ? styles.hoveredIcon : styles.icon &&
-                                    isSelected ? styles.selectedIcon : styles.icon
+                                isHovered && !selectionModeOn ? styles.hoveredIcon : styles.icon &&
+                                    isSelected && !selectionModeOn ? styles.selectedIcon : styles.icon
                             } />
                         </IconButton>
                     </TableCell>
@@ -78,12 +79,11 @@ const mapStateToProps = (state, match) => {
     return {
         selected: Reducers.getSelectedContent(state.sensenet),
         opened: Reducers.getOpenedContent(state.sensenet.children),
-        actions: DMSReducers.getActionsOfAContent(state.sensenet.children.entities[match.content.Id])
+        actions: DMSReducers.getActionsOfAContent(state.sensenet.children.entities[match.content.Id]),
+        selectionModeOn: DMSReducers.getIsSelectionModeOn(state.dms)
     }
 }
 export default connect(mapStateToProps, {
-    select: Actions.SelectContent,
-    deselect: Actions.DeSelectContent,
     openActionMenu: DMSActions.OpenActionMenu,
     closeActionMenu: DMSActions.CloseActionMenu
 })(MenuCell)

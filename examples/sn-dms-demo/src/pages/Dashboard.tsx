@@ -27,7 +27,8 @@ interface IDashboardProps {
     loggedinUser,
     loadContent: Function,
     setCurrentId: Function,
-    currentId
+    currentId,
+    selectionModeIsOn: boolean
 }
 
 class Dashboard extends React.Component<IDashboardProps, { currentId }>{
@@ -82,7 +83,7 @@ class Dashboard extends React.Component<IDashboardProps, { currentId }>{
                         }
                     }}
                 </MediaQuery>
-                <FloatingActionButton />
+                {!this.props.selectionModeIsOn ? <FloatingActionButton /> : null}
             </div>
         )
     }
@@ -92,7 +93,8 @@ const mapStateToProps = (state, match) => {
     return {
         loggedinUser: DMSReducers.getAuthenticatedUser(state.sensenet),
         currentContent: Reducers.getCurrentContent(state.sensenet),
-        currentId: DMSReducers.getCurrentId(state.dms)
+        currentId: DMSReducers.getCurrentId(state.dms),
+        selectionModeIsOn: DMSReducers.getIsSelectionModeOn(state.dms)
     }
 }
 

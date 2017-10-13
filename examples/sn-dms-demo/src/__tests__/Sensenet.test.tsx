@@ -26,22 +26,22 @@ it('renders without crashing', () => {
   
   const store = Store.configureStore(myReducer, null, undefined, {}, repository)
 
-  ReactDOM.render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <Sensenet store={store} repository={repository} />
-      </MemoryRouter>
-    </Provider>, div);
+  // ReactDOM.render(
+  //   <Provider store={store}>
+  //     <MemoryRouter>
+  //       <Sensenet store={store} repository={repository} />
+  //     </MemoryRouter>
+  //   </Provider>, div);
 });
 
 it('renders without crashing', () => {
   
   const store = Store.configureStore(myReducer, null, undefined, {}, repository)
 
-  ReactDOM.render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <Sensenet store={store} repository={repository} />
-      </MemoryRouter>
-    </Provider>, div);
+  // ReactDOM.render(
+  //   <Provider store={store}>
+  //     <MemoryRouter>
+  //       <Sensenet store={store} repository={repository} />
+  //     </MemoryRouter>
+  //   </Provider>, div);
 });
