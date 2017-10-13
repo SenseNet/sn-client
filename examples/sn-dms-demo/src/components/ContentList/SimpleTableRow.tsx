@@ -109,7 +109,6 @@ class SimpleTableRow extends React.Component<ISimpleTableRowProps, ISimpleTableR
 
     handleIconTap(e, id, type) {
         this.props.handleRowSingleClick(e, id)
-        this.props.selectionModeOn()
     }
     render() {
         const { content, handleRowSingleClick, handleRowDoubleClick, handleTap } = this.props

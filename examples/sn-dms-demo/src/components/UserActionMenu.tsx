@@ -2,6 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { Actions } from 'sn-redux'
 import { DMSReducers } from '../Reducers'
+import MediaQuery from 'react-responsive';
 import IconButton from 'material-ui/IconButton';
 import Menu, { MenuItem } from 'material-ui/Menu';
 import UserPanel from './UserPanel'
@@ -21,9 +22,16 @@ const actions = [
 ];
 
 const styles = {
+    actionmenuContainer: {
+        flex: 1
+    },
     menuIcon: {
         color: '#fff',
         width: 80
+    },
+    menuIconMobile: {
+        width: 'auto',
+        marginLeft: '16px'
     },
     arrowButton: {
         marginLeft: 0
@@ -59,34 +67,37 @@ class UserActionMenu extends React.Component<IUserActionMenu, { anchorEl, open, 
     };
     render() {
         return (
-            <div>
-                <IconButton
-                    aria-label={resources.OPEN_MENU}
-                    aria-owns={this.state.open ? 'long-menu' : null}
-                    aria-haspopup='true'
-                    onClick={this.handleClick}
-                    style={styles.menuIcon}
-                >
-
-                    <UserPanel user={this.props.loggedinUser} />
-                </IconButton>
-                <Menu
-                    id='long-menu'
-                    anchorEl={this.state.anchorEl}
-                    open={this.state.open}
-                    onRequestClose={this.handleRequestClose}
-                    style={styles.menu}
-                >
-                    {actions.map((action, index) => (
-                        <MenuItem
-                            key={action.name}
-                            selected={index === this.state.selectedIndex}
-                            onClick={event => this.handleMenuItemClick(event, index)}>
-                            {action.displayName}
-                        </MenuItem>
-                    ))}
-                </Menu>
-            </div>
+            <MediaQuery minDeviceWidth={700}>
+                {(matches) => {
+                    return <div style={matches ? null : styles.actionmenuContainer}>
+                        <IconButton
+                            aria-label={resources.OPEN_MENU}
+                            aria-owns={this.state.open ? 'long-menu' : null}
+                            aria-haspopup='true'
+                            onClick={this.handleClick}
+                            style={matches ? styles.menuIcon : { ...styles.menuIcon, ...styles.menuIconMobile }}
+                        >
+                            <UserPanel user={this.props.loggedinUser} />
+                        </IconButton>
+                        <Menu
+                            id='long-menu'
+                            anchorEl={this.state.anchorEl}
+                            open={this.state.open}
+                            onRequestClose={this.handleRequestClose}
+                            style={styles.menu}
+                        >
+                            {actions.map((action, index) => (
+                                <MenuItem
+                                    key={action.name}
+                                    selected={index === this.state.selectedIndex}
+                                    onClick={event => this.handleMenuItemClick(event, index)}>
+                                    {action.displayName}
+                                </MenuItem>
+                            ))}
+                        </Menu>
+                    </div>
+                }}
+            </MediaQuery>
         )
     }
 }

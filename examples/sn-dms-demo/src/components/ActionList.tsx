@@ -91,10 +91,13 @@ class ActionList extends React.Component<IActionListProps, IActionListState> {
     handleMenuItemClick(e, action) {
         switch (action) {
             case 'Rename':
+                this.props.handleActionMenuClose()
                 this.props.setEdited(this.props.id)
                 break
             case 'ClearSelection':
+                this.props.handleActionMenuClose()
                 this.props.clearSelection()
+                break
             default:
                 console.log(`${action} is clicked`)
                 this.props.handleActionMenuClose()

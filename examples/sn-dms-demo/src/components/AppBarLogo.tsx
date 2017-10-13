@@ -14,11 +14,22 @@ const styles = {
         fontFamily: 'roboto',
         marginLeft: 24
     },
+    logoMobile: {
+        flex: 1,
+        marginLeft: 0,
+        width: 30
+    },
     logoImg: {
         maxWidth: 30,
         maHeight: 30,
         verticalAlign: 'middle',
         marginRight: 10
+    },
+    logoImgMobile: {
+        maxWidth: 30,
+        maHeight: 30,
+        verticalAlign: 'middle',
+        marginRight: 0
     },
     logoText: {
         display: 'inline-block'
@@ -28,12 +39,24 @@ const styles = {
 const sensenetLogo = require('../assets/sensenet_white.png')
 
 const AppBarLogo = () => (
-    <Link to='/' style={styles.logo} >
-        <img src={sensenetLogo} alt='sensenet' aria-label='sensenet' style={styles.logoImg} />
-        <MediaQuery minDeviceWidth={700} style={styles.logoText}>
-            sensenet ECM
-        </MediaQuery>
-    </Link>
+    <MediaQuery minDeviceWidth={700}>
+        {(matches) => {
+            if (matches) {
+                return <Link to='/' style={styles.logo} >
+                    <img src={sensenetLogo} alt='sensenet' aria-label='sensenet' style={styles.logoImg} />
+                    <span style={styles.logoText}>
+                        sensenet ECM
+                        </span>
+                </Link>
+            }
+            else {
+                return <Link to='/' style={{...styles.logo, ...styles.logoMobile}} >
+                    <img src={sensenetLogo} alt='sensenet' aria-label='sensenet' style={styles.logoImgMobile} />
+                </Link>
+            }
+        }}
+    </MediaQuery>
+
 )
 
 export default withRouter(AppBarLogo)

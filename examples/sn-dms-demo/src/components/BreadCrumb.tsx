@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import {
     withRouter
 } from 'react-router-dom'
+import MediaQuery from 'react-responsive';
 import { DMSActions } from '../Actions'
 import { DMSReducers } from '../Reducers'
 import AppBar from 'material-ui/AppBar';
@@ -20,7 +21,9 @@ const styles = {
     breadCrumbIcon: {
         marginLeft: 30
     },
-    breadCrumbItemLast: {}
+    breadCrumbIconLeft: {
+        marginRight: 30
+    },
 }
 
 class BreadCrumb extends React.Component<{ breadcrumb, history }, {}>{
@@ -45,17 +48,35 @@ class BreadCrumb extends React.Component<{ breadcrumb, history }, {}>{
         return <div style={styles.breadCrumb}>
             <AppBar position='static'>
                 <Toolbar>
-                    {this.props.breadcrumb.map((n, i) => {
-                        return (
-                            <Button onClick={event => this.handleClick(event, n.id)}
-                                key={n.id}
-                                style={styles.breadCrumbItem}>
-                                {n.name}
-                                {i !== (this.props.breadcrumb.length - 1) ?
-                                    <Icon style={styles.breadCrumbIcon}>{icons.arrowRight}</Icon> :
-                                    ''}
-                            </Button>)
-                    })}
+                    <MediaQuery minDeviceWidth={700}>
+                        {(matches) => {
+                            return this.props.breadcrumb.map((n, i) => {
+                                if (matches) {
+                                    return <Button onClick={event => this.handleClick(event, n.id)}
+                                        key={n.id}
+                                        style={styles.breadCrumbItem}>
+                                        {n.name}
+                                        {i !== (this.props.breadcrumb.length - 1) ?
+                                            <Icon style={styles.breadCrumbIcon}>{icons.arrowRight}</Icon> :
+                                            ''}
+                                    </Button>
+                                }
+                                else if (!matches && i === (this.props.breadcrumb.length - 1)) {
+                                    return <Button onClick={event => this.handleClick(event, n.id)}
+                                        key={n.id}
+                                        style={styles.breadCrumbItem}>
+                                        {this.props.breadcrumb.length > 1 ?
+                                            <Icon style={styles.breadCrumbIconLeft}>{icons.arrowLeft}</Icon> :
+                                            ''}
+                                        {n.name}
+                                    </Button>
+                                }
+                                else {
+                                    return null
+                                }
+                            })
+                        }}
+                    </MediaQuery>
                 </Toolbar>
             </AppBar>
         </div>

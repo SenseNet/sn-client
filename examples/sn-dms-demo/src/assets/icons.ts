@@ -10,6 +10,7 @@ export const icons = {
     delete: 'delete',
     clear: 'clear',
     arrowRight: 'keyboard_arrow_right',
+    arrowLeft: 'keyboard_arrow_left',
     sharecontent: 'share',
     starcontent: 'star',
     edit: 'mode_edit',

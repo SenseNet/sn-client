@@ -181,6 +181,7 @@ export module DMSReducers {
             case 'SELECTION_MODE_ON':
                 return true
             case 'SELECTION_MODE_OFF':
+            case 'CLEAR_SELECTION':
                 return false
             default:
                 return state
