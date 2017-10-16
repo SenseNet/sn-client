@@ -75,7 +75,9 @@ class DisplayNameCell extends React.Component<IDisplayNameCellProps, IDisplayNam
         })
     }
     handleTitleInputBlur(id) {
-        if (this.state.oldText !== this.state.newText) {
+        console.log(this.state.oldText)
+        console.log(this.state.newText)
+        if (this.state.newText !== '' && this.state.oldText !== this.state.newText) {
             this.updateDisplayName()
         }
         else

@@ -35,8 +35,7 @@ interface IActionMenuProps {
     isOpen,
     position,
     currentContent,
-    close: Function,
-    rename: Function
+    close: Function
 }
 
 interface IActionMenuState {
@@ -104,8 +103,6 @@ class ActionMenu extends React.Component<IActionMenuProps, IActionMenuState>{
     }
 }
 
-const renameContent = Actions.UpdateContent
-
 const mapStateToProps = (state, match) => {
     return {
         isOpen: DMSReducers.actionmenuIsOpen(state.dms.actionmenu),
@@ -116,6 +113,5 @@ const mapStateToProps = (state, match) => {
 }
 
 export default connect(mapStateToProps, {
-    close: DMSActions.CloseActionMenu,
-    rename: renameContent
+    close: DMSActions.CloseActionMenu
 })(ActionMenu)

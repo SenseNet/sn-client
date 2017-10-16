@@ -120,7 +120,7 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
             this.handleSimpleSelection(id)
         }
         else {
-            e.target.getAttribute('type') !== 'checkbox' && !this.props.selectionModeIsOn ?
+            e.target.getAttribute('type') !== 'checkbox' && window.innerWidth >= 700 ?
                 this.handleSingleSelection(id) :
                 this.handleSimpleSelection(id)
         }
