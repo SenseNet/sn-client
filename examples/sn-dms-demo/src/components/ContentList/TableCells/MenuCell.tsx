@@ -60,7 +60,7 @@ class MenuCell extends React.Component<IMenuCellProps, IMenuCellState>{
                         <IconButton
                             aria-label='Menu'
                             aria-owns={actionMenuIsOpen}
-                            onClick={event => this.handleActionMenuClick(event, content)}
+                            onClick={event => !selectionModeOn ? this.handleActionMenuClick(event, content) : null}
                         >
                             <MoreVert style={
                                 isHovered && !selectionModeOn ? styles.hoveredIcon : styles.icon &&

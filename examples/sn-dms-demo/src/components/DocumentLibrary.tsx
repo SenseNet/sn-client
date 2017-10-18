@@ -7,6 +7,8 @@ import { DMSReducers } from '../Reducers'
 import { DMSActions } from '../Actions'
 import { Actions, Reducers } from 'sn-redux'
 import { FetchError } from './FetchError'
+import { DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
 import ContentList from './ContentList/ContentList'
 
 interface IDocumentLibraryProps {
@@ -22,6 +24,7 @@ interface IDocumentLibraryProps {
     setCurrentId: Function
 }
 
+@DragDropContext(HTML5Backend)
 class DocumentLibrary extends React.Component<IDocumentLibraryProps, { select, id, orderby, filter, expand, scenario }>{
     constructor(props) {
         super(props)
@@ -77,10 +80,10 @@ class DocumentLibrary extends React.Component<IDocumentLibraryProps, { select, i
             )
         }
         return <ContentList
-            children={this.props.children}
-            currentId={this.props.currentContent.Id}
-            parentId={this.props.currentContent.ParentId}
-        />
+                children={this.props.children}
+                currentId={this.props.currentContent.Id}
+                parentId={this.props.currentContent.ParentId}
+            />
     }
 }
 

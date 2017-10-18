@@ -15,7 +15,8 @@ import Table, {
 import Checkbox from 'material-ui/Checkbox';
 import DisplayNameCell from './TableCells/DisplayNameCell'
 import MenuCell from './TableCells/MenuCell'
-import { IconCell, DateCell } from './TableCells'
+import DateCell from './TableCells/DateCell'
+import { IconCell } from './TableCells'
 
 const styles = {
     selectedRow: {
@@ -59,7 +60,8 @@ interface ISimpleTableRowProps {
     handleRowSingleClick: Function,
     handleTap: Function,
     selectionModeOn: Function,
-    selectionModeOff: Function
+    selectionModeOff: Function,
+    isCopy: boolean
 }
 
 interface ISimpleTableRowState {
@@ -111,7 +113,7 @@ class SimpleTableRow extends React.Component<ISimpleTableRowProps, ISimpleTableR
         this.props.handleRowSingleClick(e, id)
     }
     render() {
-        const { content, handleRowSingleClick, handleRowDoubleClick, handleTap } = this.props
+        const { content, handleRowSingleClick, handleRowDoubleClick, handleTap, isCopy } = this.props
         const isSelected = this.isSelected(content.Id);
         const isHovered = this.isHovered(content.Id);
         return (
@@ -161,15 +163,17 @@ class SimpleTableRow extends React.Component<ISimpleTableRowProps, ISimpleTableR
                             content={content}
                             isHovered={isHovered}
                             handleRowSingleClick={event => matches ? handleRowSingleClick(event, content.Id) : handleTap(event, content.Id, content._type)}
-                            handleRowDoubleClick={event => matches ? handleRowDoubleClick(event, content.Id, content._type) : event.preventDefault()} />
+                            handleRowDoubleClick={event => matches ? handleRowDoubleClick(event, content.Id, content._type) : event.preventDefault()}
+                            isCopy={isCopy} />
                     }}
                 </MediaQuery>
                 <MediaQuery minDeviceWidth={700}>
                     <DateCell
-                        id={content.Id}
+                        content={content}
                         date={content.ModificationDate}
                         handleRowDoubleClick={this.props.handleRowDoubleClick}
-                        handleRowSingleClick={this.props.handleRowSingleClick} />
+                        handleRowSingleClick={this.props.handleRowSingleClick}
+                        isCopy={isCopy} />
                 </MediaQuery>
                 <MediaQuery minDeviceWidth={700}>
                     {(matches) => {

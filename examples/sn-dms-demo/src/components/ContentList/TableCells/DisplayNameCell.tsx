@@ -7,16 +7,22 @@ import { DMSReducers } from '../../../Reducers'
 import { DMSActions } from '../../../Actions'
 import { TableCell } from 'material-ui/Table';
 import TextField from 'material-ui/TextField';
+import { DragSource } from 'react-dnd';
+import { DropTarget } from 'react-dnd'
+import { DragAndDrop } from '../../../DragAndDrop'
 
 const styles = {
     displayName: {
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     hoveredDisplayName: {
         fontWeight: 'bold',
         color: '#03a9f4',
         textDecoration: 'underline',
-        cursor: 'pointer'
+        cursor: 'pointer',
+    },
+    displayNameDiv: {
+        padding: '16px 24px'
     },
     editedTitle: {
         fontWeight: 'normal',
@@ -32,7 +38,16 @@ interface IDisplayNameCellProps {
     rename: Function,
     setEdited: Function,
     currentContent,
-    edited
+    edited,
+    connectDragSource: Function,
+    connectDropTarget: Function,
+    isDragging: boolean,
+    isOver: boolean,
+    canDrop: boolean,
+    onDrop: Function,
+    moveCard: Function,
+    isCopy: boolean,
+    selected
 }
 
 interface IDisplayNameCellState {
@@ -41,6 +56,12 @@ interface IDisplayNameCellState {
     edited
 }
 
+@DropTarget('row', DragAndDrop.rowTarget, (connect, monitor) => ({
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver(),
+    canDrop: monitor.canDrop(),
+}))
+@DragSource('row', DragAndDrop.rowSource, DragAndDrop.collect)
 class DisplayNameCell extends React.Component<IDisplayNameCellProps, IDisplayNameCellState>{
     constructor(props) {
         super(props)
@@ -75,8 +96,6 @@ class DisplayNameCell extends React.Component<IDisplayNameCellProps, IDisplayNam
         })
     }
     handleTitleInputBlur(id) {
-        console.log(this.state.oldText)
-        console.log(this.state.newText)
         if (this.state.newText !== '' && this.state.oldText !== this.state.newText) {
             this.updateDisplayName()
         }
@@ -105,11 +124,14 @@ class DisplayNameCell extends React.Component<IDisplayNameCellProps, IDisplayNam
     render() {
         const content = this.props.currentContent
         const isEdited = this.isEdited(this.props.content.Id);
-        const { handleRowSingleClick, handleRowDoubleClick} = this.props
+        const { handleRowSingleClick, handleRowDoubleClick, isDragging, connectDragSource, canDrop, isOver, connectDropTarget, isCopy } = this.props
+        const id = content.Id
+        const dropEffect = isCopy ? 'copy' : 'move'
         return (
             <MediaQuery minDeviceWidth={700}>
                 {(matches) => {
                     return <TableCell
+                        padding='none'
                         style={this.props.isHovered && !isEdited ? styles.hoveredDisplayName : styles.displayName as any}
                         onClick={event => handleRowSingleClick(event, content.id)}
                         onDoubleClick={event => handleRowDoubleClick(event, this.props.content.Id)}>
@@ -123,7 +145,9 @@ class DisplayNameCell extends React.Component<IDisplayNameCellProps, IDisplayNam
                                 onChange={event => this.handleTitleChange(event)}
                                 onKeyPress={event => this.handleKeyPress(event)}
                                 onBlur={event => this.handleTitleInputBlur(this.props.content.Id)} /> :
-                            <span onClick={event => matches ? this.handleTitleClick(event, this.props.content.Id) : event.preventDefault()}>{this.props.content.DisplayName}</span>
+                            connectDragSource(connectDropTarget(<div
+                                onClick={event => matches ? this.handleTitleClick(event, this.props.content.Id) : event.preventDefault()}
+                                style={styles.displayNameDiv}>{this.props.content.DisplayName}</div>), { dropEffect: dropEffect })
                         }
                     </TableCell>
                 }}
@@ -139,6 +163,7 @@ const mapStateToProps = (state, match) => {
     return {
         currentContent: Reducers.getContent(state.sensenet.children.entities, match.content.Id),
         edited: DMSReducers.getEditedItemId(state.dms),
+        selected: Reducers.getSelectedContent(state.sensenet)
     }
 }
 

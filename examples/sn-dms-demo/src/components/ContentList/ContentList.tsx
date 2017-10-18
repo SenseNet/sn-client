@@ -55,7 +55,7 @@ interface ContentListProps {
     deleteBatch: Function,
     selectionModeOn: Function,
     selectionModeOff: Function,
-    selectionModeIsOn: boolean
+    selectionModeIsOn: boolean,
 }
 
 interface ContentListState {
@@ -64,7 +64,8 @@ interface ContentListState {
     orderBy,
     data,
     selected,
-    active
+    active,
+    copy
 }
 
 class ContentList extends React.Component<ContentListProps, ContentListState> {
@@ -76,11 +77,13 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
             data: this.props.children,
             ids: this.props.ids,
             selected: [],
-            active: null
+            active: null,
+            copy: false
         };
         this.handleRowSingleClick = this.handleRowSingleClick.bind(this)
         this.handleRowDoubleClick = this.handleRowDoubleClick.bind(this)
         this.handleKeyDown = this.handleKeyDown.bind(this)
+        this.handleKeyUp = this.handleKeyUp.bind(this)
         this.handleTap = this.handleTap.bind(this)
     }
 
@@ -132,12 +135,18 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
             console.log('open preview')
     }
     handleKeyDown(e) {
+        const ctrl = e.ctrlKey ? true : false;
+        const alt = e.altKey ? true : false;
+        const shift = e.shiftKey ? true : false;
+
+        if (ctrl)
+            this.setState({
+                copy: true
+            })
+
         if (e.target.getAttribute('type') === 'text')
             return null
         else {
-            const ctrl = e.ctrlKey ? true : false;
-            const alt = e.altKey ? true : false;
-            const shift = e.shiftKey ? true : false;
             const id = Number(e.target.closest('tr').id)
             const type = this.props.children[id]._type
             this.setState({
@@ -187,6 +196,13 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
                     break
             }
         }
+    }
+    handleKeyUp(e) {
+        const ctrl = e.ctrlKey ? true : false;
+        if (!ctrl)
+            this.setState({
+                copy: false
+            })
     }
     handleSimpleSelection(id) {
         this.props.selected.indexOf(id) > -1 ?
@@ -240,52 +256,52 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
         return !isNaN(id) && isFinite(id) && id !== this.props.rootId;
     }
     render() {
-        return (
-            <div>
-                <Paper style={styles.paper as any}>
-                    <Table
-                        onKeyDown={event => this.handleKeyDown(event)}>
+        return <div>
+            <Paper style={styles.paper as any}>
+                <Table
+                    onKeyDown={event => this.handleKeyDown(event)}
+                    onKeyUp={event => this.handleKeyUp(event)}>
+                    <MediaQuery minDeviceWidth={700}>
+                        <ListHead
+                            numSelected={this.state.selected.length}
+                            order={this.state.order}
+                            orderBy={this.state.orderBy}
+                            onSelectAllClick={this.handleSelectAllClick}
+                            onRequestSort={this.handleRequestSort}
+                            count={this.props.ids.length}
+                        />
+                    </MediaQuery>
+                    <TableBody style={styles.tableBody}>
+                        {this.props.parentId && this.isChildrenFolder() ?
+                            <ParentFolderTableRow parentId={this.props.parentId} history={this.props.history} /> :
+                            <SharedItemsTableRow currentId={this.props.currentId} />
+                        }
+                        {this.props.isFetching || this.props.isLoading ?
+                            <tr>
+                                <td colSpan={5} style={styles.loader}>
+                                    <CircularProgress color='accent' size={50} />
+                                </td>
+                            </tr>
+                            : this.props.ids.map(n => {
+                                let content = this.props.children[n];
+                                return (
+                                    <SimpleTableRow
+                                        content={content}
+                                        key={content.Id}
+                                        handleRowDoubleClick={this.handleRowDoubleClick}
+                                        handleRowSingleClick={this.handleRowSingleClick}
+                                        handleTap={this.handleTap}
+                                        isCopy={this.state.copy} />
+                                );
+                            })
+                        }
 
-                        <MediaQuery minDeviceWidth={700}>
-                            <ListHead
-                                numSelected={this.state.selected.length}
-                                order={this.state.order}
-                                orderBy={this.state.orderBy}
-                                onSelectAllClick={this.handleSelectAllClick}
-                                onRequestSort={this.handleRequestSort}
-                                count={this.props.ids.length}
-                            />
-                        </MediaQuery>
-                        <TableBody style={styles.tableBody}>
-                            {this.props.parentId && this.isChildrenFolder() ?
-                                <ParentFolderTableRow parentId={this.props.parentId} history={this.props.history} /> :
-                                <SharedItemsTableRow currentId={this.props.currentId} />
-                            }
-                            {this.props.isFetching || this.props.isLoading ?
-                                <tr>
-                                    <td colSpan={5} style={styles.loader}>
-                                        <CircularProgress color='accent' size={50} />
-                                    </td>
-                                </tr>
-                                : this.props.ids.map(n => {
-                                    let content = this.props.children[n];
-                                    return (
-                                        <SimpleTableRow
-                                            content={content}
-                                            key={content.Id}
-                                            handleRowDoubleClick={this.handleRowDoubleClick}
-                                            handleRowSingleClick={this.handleRowSingleClick}
-                                            handleTap={this.handleTap} />
-                                    );
-                                })
-                            }
-
-                        </TableBody>
-                    </Table>
-                    <ActionMenu />
-                </Paper>
-                <SelectionBox />
-            </div>)
+                    </TableBody>
+                </Table>
+                <ActionMenu />
+            </Paper>
+            <SelectionBox />
+        </div>
     }
 }
 
