@@ -64,7 +64,7 @@
     "react-google-recaptcha": "^0.9.7",
     "react-moment": "^0.6.5",
     "react-redux": "^5.0.6",
-    "react-responsive": "^2.0.0",
+    "react-responsive": "^3.0.0",
     "react-router-dom": "^4.2.2",
     "react-tap-event-plugin": "3.0.2",
     "sensenet-kfi-cz-conventional-changelog": "^1.0.0",
