@@ -30,7 +30,7 @@
     "@types/jest": "^21.1.0",
     "@types/node": "^8.0.44",
     "@types/react": "^16.0.3",
-    "@types/react-dom": "16.0.1",
+    "@types/react-dom": "16.0.2",
     "app-root-path": "^2.0.1",
     "autoprefixer": "7.1.5",
     "case-sensitive-paths-webpack-plugin": "2.1.1",
