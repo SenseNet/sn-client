@@ -6,6 +6,7 @@ import MediaQuery from 'react-responsive';
 import { Actions, Reducers } from 'sn-redux'
 import { DMSReducers } from '../../Reducers'
 import { DMSActions } from '../../Actions'
+import { DropTarget } from 'react-dnd'
 import {
     withRouter
 } from 'react-router-dom'
@@ -22,6 +23,8 @@ import { SharedItemsTableRow } from './SharedItemsTableRow'
 import ParentFolderTableRow from './ParentFolderTableRow'
 import ActionMenu from '../ActionMenu'
 import SelectionBox from '../SelectionBox'
+import { ClickHandlers } from '../../ClickHandlers'
+import { DragAndDrop } from '../../DragAndDrop'
 
 const styles = {
     paper: {
@@ -56,6 +59,11 @@ interface ContentListProps {
     selectionModeOn: Function,
     selectionModeOff: Function,
     selectionModeIsOn: boolean,
+    connectDropTarget: Function,
+    isOver: boolean,
+    canDrop: boolean,
+    onDrop: Function,
+    accepts: string[],
 }
 
 interface ContentListState {
@@ -68,6 +76,11 @@ interface ContentListState {
     copy
 }
 
+@DropTarget(props => props.accepts, DragAndDrop.uploadTarget, (connect, monitor) => ({
+    connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver(),
+    canDrop: monitor.canDrop(),
+}))
 class ContentList extends React.Component<ContentListProps, ContentListState> {
     constructor(props) {
         super(props)
@@ -93,11 +106,20 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
                 data: this.props.children
             })
         }
+        
         if (this.props.selected.length > 0 && !prevOps.selectionModeIsOn) {
             this.props.selectionModeOn()
         }
         else if (this.props.selected.length === 0 && prevOps.selectionModeIsOn) {
             this.props.selectionModeOff()
+        }
+    }
+    componentWillReceiveProps(nextProps) {
+        if (this.props.ids.length !== nextProps.ids.length) {
+            
+            this.setState({
+                data: nextProps.children
+            })
         }
     }
     handleRowSingleClick(e, id, m) {
@@ -256,52 +278,56 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
         return !isNaN(id) && isFinite(id) && id !== this.props.rootId;
     }
     render() {
-        return <div>
-            <Paper style={styles.paper as any}>
-                <Table
-                    onKeyDown={event => this.handleKeyDown(event)}
-                    onKeyUp={event => this.handleKeyUp(event)}>
-                    <MediaQuery minDeviceWidth={700}>
-                        <ListHead
-                            numSelected={this.state.selected.length}
-                            order={this.state.order}
-                            orderBy={this.state.orderBy}
-                            onSelectAllClick={this.handleSelectAllClick}
-                            onRequestSort={this.handleRequestSort}
-                            count={this.props.ids.length}
-                        />
-                    </MediaQuery>
-                    <TableBody style={styles.tableBody}>
-                        {this.props.parentId && this.isChildrenFolder() ?
-                            <ParentFolderTableRow parentId={this.props.parentId} history={this.props.history} /> :
-                            <SharedItemsTableRow currentId={this.props.currentId} />
-                        }
-                        {this.props.isFetching || this.props.isLoading ?
-                            <tr>
-                                <td colSpan={5} style={styles.loader}>
-                                    <CircularProgress color='accent' size={50} />
-                                </td>
-                            </tr>
-                            : this.props.ids.map(n => {
-                                let content = this.props.children[n];
-                                return (
-                                    <SimpleTableRow
-                                        content={content}
-                                        key={content.Id}
-                                        handleRowDoubleClick={this.handleRowDoubleClick}
-                                        handleRowSingleClick={this.handleRowSingleClick}
-                                        handleTap={this.handleTap}
-                                        isCopy={this.state.copy} />
-                                );
-                            })
-                        }
+        const { canDrop, isOver, connectDropTarget } = this.props
+        const isActive = canDrop && isOver
+        return connectDropTarget(
+            <div>
+                <Paper style={styles.paper as any}>
+                    <Table
+                        onKeyDown={event => this.handleKeyDown(event)}
+                        onKeyUp={event => this.handleKeyUp(event)}>
+                        <MediaQuery minDeviceWidth={700}>
+                            <ListHead
+                                numSelected={this.state.selected.length}
+                                order={this.state.order}
+                                orderBy={this.state.orderBy}
+                                onSelectAllClick={this.handleSelectAllClick}
+                                onRequestSort={this.handleRequestSort}
+                                count={this.props.ids.length}
+                            />
+                        </MediaQuery>
+                        <TableBody style={styles.tableBody}>
+                            {this.props.parentId && this.isChildrenFolder() ?
+                                <ParentFolderTableRow parentId={this.props.parentId} history={this.props.history} /> :
+                                <SharedItemsTableRow currentId={this.props.currentId} />
+                            }
+                            {this.props.isFetching || this.props.isLoading ?
+                                <tr>
+                                    <td colSpan={5} style={styles.loader}>
+                                        <CircularProgress color='accent' size={50} />
+                                    </td>
+                                </tr>
+                                : this.props.ids.map(n => {
+                                    let content = this.props.children[n];
 
-                    </TableBody>
-                </Table>
-                <ActionMenu />
-            </Paper>
-            <SelectionBox />
-        </div>
+                                    return typeof content !== 'undefined' ? (
+                                        <SimpleTableRow
+                                            content={content}
+                                            key={content.Id}
+                                            handleRowDoubleClick={this.handleRowDoubleClick}
+                                            handleRowSingleClick={this.handleRowSingleClick}
+                                            handleTap={this.handleTap}
+                                            isCopy={this.state.copy} />
+                                    ) : null
+                                })
+                            }
+
+                        </TableBody>
+                    </Table>
+                    <ActionMenu />
+                </Paper>
+                <SelectionBox />
+            </div>)
     }
 }
 

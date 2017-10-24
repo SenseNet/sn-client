@@ -53,4 +53,15 @@ export module DragAndDrop {
 
         }
     }
+
+    export const uploadTarget = {
+        hover(props, monitor, component) {
+            //console.log(monitor.getItem().files)
+         },
+        drop(props, monitor) {
+            if (props.onDrop) {
+                props.onDrop(props, monitor)
+            }
+        },
+    }
 }
