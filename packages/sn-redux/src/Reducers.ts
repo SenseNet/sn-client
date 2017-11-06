@@ -130,14 +130,13 @@ export module Reducers {
     export const userAvatarPath = (state = '', action) => {
         switch (action.type) {
             case 'USER_CHANGED':
-                return action.user.ImageData ? action.user.ImageData.__mediaresource.media_src : ''
+                return action.user.Avatar ? action.user.Avatar._deferred : ''
             default:
                 return state
         }
     }
-
     /**
-   * Reducer combining userName, fullName and userLanguage into a single object, ```user```.
+   * Reducer combining userName, fullName, userLanguage, userAvatarPath into a single object, ```user```.
    */
     const user = combineReducers({
         userName,
@@ -182,6 +181,11 @@ export module Reducers {
                 return action.response.result;
             case 'CREATE_CONTENT_SUCCESS':
                 return [...state, action.response.result];
+            case 'UPLOAD_CONTENT_SUCCESS':
+                if (state.indexOf(action.response.CreatedContent.Id) === -1)
+                    return [...state, action.response.CreatedContent.Id];
+                else
+                    return state
             case 'DELETE_CONTENT_SUCCESS':
                 return [...state.slice(0, action.index), ...state.slice(action.index + 1)]
             default:
@@ -195,7 +199,13 @@ export module Reducers {
        * @returns {Object} state. Returns the next state based on the action.
        */
     export const entities = (state = {}, action) => {
-        if (action.response && (action.type !== 'USER_LOGIN_SUCCESS' && action.type !== 'LOAD_CONTENT_SUCCESS')) {
+        if (action.response && (
+            action.type !== 'USER_LOGIN_SUCCESS' &&
+            action.type !== 'USER_LOGIN_BUFFER' &&
+            action.type !== 'LOAD_CONTENT_SUCCESS' &&
+            action.type !== 'REQUEST_CONTENT_ACTIONS_SUCCESS' &&
+            action.type !== 'UPDATE_CONTENT_SUCCESS' &&
+            action.type !== 'UPLOAD_CONTENT_SUCCESS')) {
             return (<any>Object).assign({}, state, action.response.entities.entities);
         }
         switch (action.type) {
@@ -203,6 +213,13 @@ export module Reducers {
                 let res = Object.assign({}, state);
                 delete res[action.id];
                 return res;
+            case 'UPDATE_CONTENT_SUCCESS':
+                state[action.response.Id] = action.response
+                return state
+            case 'UPLOAD_CONTENT_SUCCESS':
+                if (typeof state[action.response.CreatedContent.Id] === 'undefined')
+                    state[action.response.CreatedContent.Id] = action.response.CreatedContent
+                return state
             default:
                 return state;
         }
@@ -234,40 +251,17 @@ export module Reducers {
         switch (action.type) {
             case 'FETCH_CONTENT_FAILURE':
                 return action.message;
-            case 'CREATE_CONTENT_FAILURE':
-            case 'UPDATE_CONTENT_FAILURE':
-            case 'DELETE_CONTENT_FAILURE':
-            case 'CHECKIN_CONTENT_FAILURE':
-            case 'CHECKOUT_CONTENT_FAILURE':
-            case 'PUBLISH_CONTENT_FAILURE':
-            case 'APPROVE_CONTENT_FAILURE':
-            case 'REJECT_CONTENT_FAILURE':
-            case 'UNDOCHECKOUT_CONTENT_FAILURE':
-            case 'FORCEUNDOCHECKOUT_CONTENT_FAILURE':
-            case 'RESTOREVERSION_CONTENT_FAILURE':
-            case 'FETCH_CONTENT_REQUEST':
             case 'FETCH_CONTENT_SUCCESS':
-            case 'CREATE_CONTENT_REQUEST':
             case 'CREATE_CONTENT_SUCCESS':
-            case 'UPDATE_CONTENT_REQUEST':
             case 'UPDATE_CONTENT_SUCCESS':
-            case 'DELETE_CONTENT_REQUEST':
             case 'DELETE_CONTENT_SUCCESS':
-            case 'CHECKIN_CONTENT_REQUEST':
             case 'CHECKIN_CONTENT_SUCCESS':
-            case 'CHECKOUT_CONTENT_REQUEST':
             case 'CHECKOUT_CONTENT_SUCCESS':
-            case 'APPROVE_CONTENT_REQUEST':
             case 'APPROVE_CONTENT_SUCCESS':
-            case 'PUBLISH_CONTENT_REQUEST':
             case 'PUBLISH_CONTENT_SUCCESS':
-            case 'REJECT_CONTENT_REQUEST':
             case 'REJECT_CONTENT_SUCCESS':
-            case 'UNDOCHECKOUT_CONTENT_REQUEST':
             case 'UNDOCHECKOUT_CONTENT_SUCCESS':
-            case 'FORCEUNDOCHECKOUT_CONTENT_REQUEST':
             case 'FORCEUNDOCHECKOUT_CONTENT_SUCCESS':
-            case 'RESTOREVERSION_CONTENT_REQUEST':
             case 'RESTOREVERSION_CONTENT_SUCCESS':
                 return null;
             default:
@@ -280,8 +274,13 @@ export module Reducers {
        * @param {Object} action Represents an action that is called.
        * @returns {Object} state. Returns the next state based on the action.
        */
-    export const childrenactions = (state = {}, action) => {
-        return state
+    export const childrenactions = (state = [], action) => {
+        switch (action.type) {
+            case 'REQUEST_CONTENT_ACTIONS_SUCCESS':
+                return action.response
+            default:
+                return state
+        }
     }
     /**
        * Reducer to handle Actions on the top property in the children object.
@@ -343,8 +342,8 @@ export module Reducers {
     export const order = (state = {}, action) => {
         switch (action.type) {
             case 'FETCH_CONTENT_REQUEST':
-                if (action.options.order)
-                    return action.options.order
+                if (action.options.orderby)
+                    return action.options.orderby
                 else
                     return state
             default:
@@ -386,6 +385,20 @@ export module Reducers {
         }
     }
     /**
+     * Reducer to handle Actions on the isOpened property in the children object.
+     * @param {Object} [state={}] Represents the current state.
+     * @param {Object} action Represents an action that is called.
+     * @returns {Object} state. Returns the next state based on the action.
+     */
+    export const isOpened = (state = null, action) => {
+        switch (action.type) {
+            case 'REQUEST_CONTENT_ACTIONS_SUCCESS':
+                return action.id
+            default:
+                return state
+        }
+    }
+    /**
    * Reducer combining ids, entities, isFetching, error, top, skip, query, order, filter and select into a single object, ```children```.
    */
     const children = combineReducers({
@@ -393,13 +406,14 @@ export module Reducers {
         entities,
         isFetching,
         error: childrenerror,
-        // actions: childrenactions,
+        actions: childrenactions,
         top,
         skip,
         query,
         order,
         filter,
-        select
+        select,
+        isOpened
     })
     /**
        * Reducer to handle Actions on the isSaved property in the contentState object.
@@ -575,7 +589,17 @@ export module Reducers {
        * @returns {Object} state. Returns the next state based on the action.
        */
     export const selected = (state = [], action) => {
-        return state;
+        switch (action.type) {
+            case 'SELECT_CONTENT':
+                return [...state, action.id]
+            case 'DESELECT_CONTENT':
+                const index = state.indexOf(action.id)
+                return [...state.slice(0, index), ...state.slice(index + 1)]
+            case 'CLEAR_SELECTION':
+                return []
+            default:
+                return state
+        }
     }
     /**
    * Reducer combining session, children, currentcontent and selected into a single object, ```sensenet``` which will be the top-level one.
@@ -612,7 +636,7 @@ export module Reducers {
      * @returns {string} Returns the error message.
      */
     export const getError = (state: any) => {
-        return state.errorMessage
+        return state.error
     };
 
     export const getAuthenticationStatus = (state) => {
@@ -625,5 +649,21 @@ export module Reducers {
 
     export const getRepositoryUrl = (state) => {
         return state.session.repository.RepositoryUrl;
+    }
+
+    export const getSelectedContent = (state) => {
+        return state.selected
+    }
+
+    export const getOpenedContent = (state) => {
+        return state.isOpened
+    }
+
+    export const getChildrenActions = (state) => {
+        return state.actions
+    }
+
+    export const getCurrentContent = (state) => {
+        return state.currentcontent.content
     }
 }

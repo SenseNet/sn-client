@@ -2,7 +2,7 @@
 import { Reducers } from '../src/Reducers';
 import { Actions } from '../src/Actions';
 import * as Chai from 'chai';
-import { Authentication, Content, ContentTypes, Mocks } from 'sn-client-js';
+import { Authentication, Content, ContentTypes, Mocks, Enums } from 'sn-client-js';
 const expect = Chai.expect;
 describe('Reducers', () => {
     describe('country reducer', () => {
@@ -95,7 +95,7 @@ describe('Reducers', () => {
             expect(Reducers.userAvatarPath(undefined, { type: 'USER_CHANGED', user: { DisplayName: 'Alba Monday' } })).to.be.deep.equal('');
         });
         it('should return the logged-in users avatars path', () => {
-            expect(Reducers.userAvatarPath(undefined, { type: 'USER_CHANGED', user: { ImageData: { __mediaresource: { media_src: 'Alba Monday' } } } })).to.be.deep.equal('Alba Monday');
+            expect(Reducers.userAvatarPath(undefined, { type: 'USER_CHANGED', user: { Avatar: { _deferred: 'Alba Monday' } } })).to.be.deep.equal('Alba Monday');
         });
     })
 
@@ -157,6 +157,32 @@ describe('Reducers', () => {
                 }))
                 .to.be.deep.equal([2, 3]);
         });
+        it('should handle UPDATE_CONTENT_SUCCESS', () => {
+            expect(Reducers.ids(
+                [1, 2, 3],
+                {
+                    type: 'UPLOAD_CONTENT_SUCCESS',
+                    response: {
+                        CreatedContent: {
+                            Id: 4
+                        }
+                    }
+                }))
+                .to.be.deep.equal([1, 2, 3, 4]);
+        });
+        it('should handle UPDATE_CONTENT_SUCCESS with existing id', () => {
+            expect(Reducers.ids(
+                [1, 2, 3],
+                {
+                    type: 'UPLOAD_CONTENT_SUCCESS',
+                    response: {
+                        CreatedContent: {
+                            Id: 3
+                        }
+                    }
+                }))
+                .to.be.deep.equal([1, 2, 3]);
+        });
     });
 
     describe('entities reducer', () => {
@@ -170,6 +196,95 @@ describe('Reducers', () => {
         it('should return a new state with the given response', () => {
             expect(Reducers.entities({}, { response: { entities: { entities: { a: 0, b: 2 } } } }))
                 .to.be.deep.eq({ a: 0, b: 2 });
+        });
+        it('should handle UPDATE_CONTENT_SUCCESS', () => {
+            const entities = {
+                5145: {
+                    Id: 5145,
+                    DisplayName: 'Some Article',
+                    Status: ['Active']
+                },
+                5146: {
+                    Id: 5146,
+                    Displayname: 'Other Article',
+                    Status: ['Completed']
+                }
+            };
+            expect(Reducers.entities(entities, { type: 'UPDATE_CONTENT_SUCCESS', response: { Id: 5145, DisplayName: 'aaa', Status: ['Active'] } })).to.be.deep.equal(
+                {
+                    5145: {
+                        Id: 5145,
+                        DisplayName: 'aaa',
+                        Status: ['Active']
+                    },
+                    5146: {
+                        Id: 5146,
+                        Displayname: 'Other Article',
+                        Status: ['Completed']
+                    }
+                }
+            );
+        });
+        it('should handle UPLOAD_CONTENT_SUCCESS', () => {
+            const entities = {
+                5122: {
+                    Id: 5122,
+                    DisplayName: 'Some Article',
+                    Status: ['Active']
+                },
+                5146: {
+                    Id: 5146,
+                    Displayname: 'Other Article',
+                    Status: ['Completed']
+                }
+            };
+            expect(Reducers.entities(entities, { type: 'UPLOAD_CONTENT_SUCCESS', response: { CreatedContent: { Id: 5145, DisplayName: 'aaa', Status: ['Active'] } } })).to.be.deep.equal(
+                {
+                    5122: {
+                        Id: 5122,
+                        DisplayName: 'Some Article',
+                        Status: ['Active']
+                    },
+                    5146: {
+                        Id: 5146,
+                        Displayname: 'Other Article',
+                        Status: ['Completed']
+                    },
+                    5145: {
+                        Id: 5145,
+                        DisplayName: 'aaa',
+                        Status: ['Active']
+                    },
+                }
+            );
+        });
+        it('should handle UPLOAD_CONTENT_SUCCESS with existing content', () => {
+            const entities = {
+                5122: {
+                    Id: 5122,
+                    DisplayName: 'Some Article',
+                    Status: ['Active']
+                },
+                5146: {
+                    Id: 5146,
+                    Displayname: 'Other Article',
+                    Status: ['Completed']
+                }
+            };
+            expect(Reducers.entities(entities, { type: 'UPLOAD_CONTENT_SUCCESS', response: { CreatedContent: { Id: 5122, DisplayName: 'Some Article', Status: ['Active'] } } })).to.be.deep.equal(
+                {
+                    5122: {
+                        Id: 5122,
+                        DisplayName: 'Some Article',
+                        Status: ['Active']
+                    },
+                    5146: {
+                        Id: 5146,
+                        Displayname: 'Other Article',
+                        Status: ['Completed']
+                    },
+                }
+            );
         });
     });
 
@@ -303,7 +418,18 @@ describe('Reducers', () => {
     });
     describe('childrenactions reducer', () => {
         it('should return the initial state', () => {
-            expect(Reducers.childrenactions(undefined, {})).to.be.deep.equal({});
+            expect(Reducers.childrenactions(undefined, {})).to.be.deep.equal([]);
+        });
+        it('should handle REQUEST_CONTENT_ACTIONS_SUCCESS', () => {
+            const action = {
+                type: 'REQUEST_CONTENT_ACTIONS_SUCCESS',
+                response: [
+                    {
+                        ActionName: 'Rename'
+                    }
+                ]
+            }
+            expect(Reducers.childrenactions(undefined, action)).to.be.deep.equal([{ ActionName: 'Rename' }]);
         });
     });
     describe('top reducer', () => {
@@ -344,7 +470,7 @@ describe('Reducers', () => {
             expect(Reducers.order(undefined, {})).to.be.deep.equal({});
         });
         it('should return "DisplayName desc"', () => {
-            expect(Reducers.order(undefined, { type: 'FETCH_CONTENT_REQUEST', options: { order: 'DisplayName desc' } })).to.be.eq('DisplayName desc');
+            expect(Reducers.order(undefined, { type: 'FETCH_CONTENT_REQUEST', options: { orderby: 'DisplayName desc' } })).to.be.eq('DisplayName desc');
         });
         it('should return initial state', () => {
             expect(Reducers.order(undefined, { type: 'FETCH_CONTENT_REQUEST', options: {} })).to.be.deep.equal({});
@@ -372,6 +498,18 @@ describe('Reducers', () => {
             expect(Reducers.select(undefined, { type: 'FETCH_CONTENT_REQUEST', options: {} })).to.be.deep.equal({});
         });
     });
+    describe('isOpened reducer', () => {
+        it('should return the initial state', () => {
+            expect(Reducers.isOpened(undefined, {})).to.be.eq(null)
+        })
+        it('should return 1', () => {
+            const action = {
+                type: 'REQUEST_CONTENT_ACTIONS_SUCCESS',
+                id: 1
+            }
+            expect(Reducers.isOpened(undefined, action)).to.be.eq(1)
+        })
+    })
     describe('isSaved reducer', () => {
         it('should return the initial state', () => {
             expect(Reducers.isSaved(undefined, {})).to.be.deep.equal(true);
@@ -551,10 +689,10 @@ describe('Reducers', () => {
         it('should return fields of the content', () => {
 
             let repo: Mocks.MockRepository = new Mocks.MockRepository();
-            let content = Content.Create({
+            let content = repo.CreateContent({
                 Path: '/Root/Sites/Default_Site/tasks',
-                Status: 'active' as any
-            }, ContentTypes.Task, repo)
+                Status: Enums.Status.active
+            }, ContentTypes.Task)
             const action = {
                 type: 'LOAD_CONTENT_SUCCESS',
                 response: content
@@ -567,10 +705,10 @@ describe('Reducers', () => {
         it('should return fields of the content', () => {
 
             let repo: Mocks.MockRepository = new Mocks.MockRepository();
-            let content = Content.Create({
+            let content = repo.CreateContent({
                 Path: '/Root/Sites/Default_Site/tasks',
-                Status: 'active' as any
-            }, ContentTypes.Task, repo)
+                Status: Enums.Status.active
+            }, ContentTypes.Task)
             const action = {
                 type: 'RELOAD_CONTENT_SUCCESS',
                 response: content
@@ -587,10 +725,10 @@ describe('Reducers', () => {
         });
         it('should return a content', () => {
             let repo: Mocks.MockRepository = new Mocks.MockRepository();
-            let content = Content.Create({
+            let content = repo.CreateContent({
                 Path: '/Root/Sites/Default_Site/tasks',
-                Status: 'active' as any
-            }, ContentTypes.Task, repo)
+                Status: Enums.Status.active
+            }, ContentTypes.Task)
             const action = {
                 type: 'LOAD_CONTENT_SUCCESS',
                 response: content
@@ -599,10 +737,10 @@ describe('Reducers', () => {
         });
         it('should return a content', () => {
             let repo: Mocks.MockRepository = new Mocks.MockRepository();
-            let content = Content.Create({
+            let content = repo.CreateContent({
                 Path: '/Root/Sites/Default_Site/tasks',
-                Status: 'active' as any
-            }, ContentTypes.Task, repo)
+                Status: Enums.Status.active
+            }, ContentTypes.Task)
             const action = {
                 type: 'RELOAD_CONTENT_SUCCESS',
                 response: content
@@ -614,6 +752,40 @@ describe('Reducers', () => {
         it('should return the initial state', () => {
             expect(Reducers.selected(undefined, {})).to.deep.equal([]);
         });
+        it('should return an array with one item with the id 1', () => {
+            const action = {
+                type: 'SELECT_CONTENT',
+                id: 1
+            }
+            expect(Reducers.selected(undefined, action)).to.deep.equal([1]);
+        })
+        it('should return an array with two items with the id 1 and 2', () => {
+            const action = {
+                type: 'SELECT_CONTENT',
+                id: 2
+            }
+            expect(Reducers.selected([1], action)).to.deep.equal([1, 2]);
+        })
+        it('should return an array with one item with the id 1', () => {
+            const action = {
+                type: 'DESELECT_CONTENT',
+                id: 2
+            }
+            expect(Reducers.selected([1, 2], action)).to.deep.equal([1]);
+        })
+        it('should return an empty array', () => {
+            const action = {
+                type: 'DESELECT_CONTENT',
+                id: 1
+            }
+            expect(Reducers.selected([1], action)).to.deep.equal([]);
+        })
+        it('should return an empty array', () => {
+            const action = {
+                type: 'CLEAR_SELECTION'
+            }
+            expect(Reducers.selected([1], action)).to.deep.equal([]);
+        })
     })
     describe('getContent', () => {
         const state = {
@@ -676,7 +848,7 @@ describe('Reducers', () => {
         const state = {
             ids: [5145, 5146],
             isFetching: false,
-            errorMessage: 'error'
+            error: 'error'
         }
         it('should return the value of errorMessage from the current state', () => {
             expect(Reducers.getError(state)).to.be.eq('error');
@@ -716,4 +888,44 @@ describe('Reducers', () => {
             expect(Reducers.getRepositoryUrl(state)).to.be.eq('https://dmsservice.demo.sensenet.com');
         });
     });
+    describe('getSelectedContent', () => {
+        const state = {
+            selected: [1, 2]
+        }
+        it('should return the value of the selected reducers current state, an array with two items', () => {
+            expect(Reducers.getSelectedContent(state)).to.be.deep.equal([1, 2])
+        })
+    })
+    describe('getOpenedContentId', () => {
+        const state = {
+            isOpened: 1
+        }
+        it('should return 1 as the opened items id', () => {
+            expect(Reducers.getOpenedContent(state)).to.be.eq(1)
+        })
+    })
+    describe('getChildrenActions', () => {
+        const state = {
+            actions: [
+                {
+                    ActionName: 'Rename'
+                }
+            ]
+        }
+        it('should return 1 as the opened items id', () => {
+            expect(Reducers.getChildrenActions(state)).to.be.deep.equal([{ ActionName: 'Rename' }])
+        })
+    })
+    describe('getCurrentContent', () => {
+        const state = {
+            currentcontent: {
+                content: {
+                    DisplayName: 'my content'
+                }
+            }
+        }
+        it('should return the content', () => {
+            expect(Reducers.getCurrentContent(state)).to.be.deep.equal({ DisplayName: 'my content' })
+        })
+    })
 });

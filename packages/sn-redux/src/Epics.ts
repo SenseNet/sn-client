@@ -2,8 +2,9 @@ import { Actions } from './Actions';
 import { Reducers } from './Reducers';
 
 import { ActionsObservable, combineEpics } from 'redux-observable';
-import { Observable } from '@reactivex/rxjs';
-import { Repository, Content, Collection, ODataApi, Authentication } from 'sn-client-js';
+import { Observable } from 'rxjs/Observable';
+import { Repository, Content, ContentTypes, Collection, ODataApi, Authentication } from 'sn-client-js';
+import 'rxjs/add/operator/mergeMap';
 
 /**
  * Module for redux-observable Epics of the sensenet built-in OData actions.
@@ -43,14 +44,24 @@ export module Epics {
     export const initSensenetStoreEpic = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
         return action$.ofType('INIT_SENSENET_STORE')
             .mergeMap(action => {
-                dependencies.repository.GetCurrentUser().subscribe(user => {
-                    store.dispatch(Actions.UserChanged(user))
-                })
-                store.dispatch(Actions.CheckLoginState())
+
                 store.dispatch(Actions.LoadRepository(dependencies.repository.Config))
+                // dependencies.repository.Authentication.State.skipWhile(state => state === Authentication.LoginState.Pending)
+                //     .first()
+                //     .map(result => {
+
+                dependencies.repository.GetCurrentUser().subscribe(user => {
+                    if (user.Name === 'Visitor') {
+                        store.dispatch(Actions.UserLoginFailure({ message: null }))
+                    }
+                    else {
+                        store.dispatch(Actions.UserChanged(user))
+                        store.dispatch(Actions.UserLoginSuccess(user))
+                    }
+                })
+
                 return dependencies.repository.Load(action.path, action.options)
                     .map((response) => {
-                        store.dispatch(Actions.RequestContent(action.path, action.options))
                         return Actions.ReceiveLoadedContent(response, action.options)
                     })
                     .catch(error => {
@@ -83,7 +94,7 @@ export module Epics {
             .mergeMap(action => {
                 return dependencies.repository.Load(action.id, action.options)
                     .map((response) => {
-                        store.dispatch(Actions.LoadContentActions(response, action.scenario))
+                        //store.dispatch(Actions.LoadContentActions(response, action.scenario))
                         return Actions.ReceiveLoadedContent(response, action.options)
                     })
                     .catch(error => {
@@ -99,8 +110,9 @@ export module Epics {
     export const loadContentActionsEpic = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
         return action$.ofType('LOAD_CONTENT_ACTIONS')
             .mergeMap(action => {
-                return action.content.Actions(action.scenario)
-                    .map(Actions.ReceiveContentActions)
+                let c = dependencies.repository.HandleLoadedContent(action.content, ContentTypes.GenericContent);
+                return c.Actions(action.scenario)
+                    .map(result => Actions.ReceiveContentActions(result))
                     .catch(error => Observable.of(Actions.ReceiveContentActionsFailure(error)))
             })
     }
@@ -299,7 +311,7 @@ export module Epics {
                     .first()
                     .map(result => {
                         return result === Authentication.LoginState.Authenticated ?
-                            Actions.UserLoginSuccess(result)
+                            Actions.UserLoginBuffer(true)
                             :
                             Actions.UserLoginFailure({ message: null });
                     })
@@ -314,11 +326,24 @@ export module Epics {
         return action$.ofType('USER_LOGIN_REQUEST')
             .mergeMap(action => {
                 return dependencies.repository.Authentication.Login(action.userName, action.password)
+                    // .combineLatest(dependencies.repository.GetCurrentUser().skipWhile(u => u.Name === 'Visitor'))
+                    // .skipWhile(u => u instanceof ContentTypes.User)
+                    // .first()
                     .map(result => {
                         return result ?
-                            Actions.UserLoginSuccess(result)
+                            Actions.UserLoginBuffer(result)
                             :
                             Actions.UserLoginFailure({ message: 'Failed to log in.' });
+                    })
+                    .catch(error => Observable.of(Actions.UserLoginFailure(error)))
+            })
+    }
+    export const userLoginBufferEpic = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
+        return action$.ofType('USER_LOGIN_BUFFER')
+            .mergeMap(action => {
+                return dependencies.repository.GetCurrentUser().skipWhile(u => u.Name === 'Visitor')
+                    .map(result => {
+                        Actions.UserLoginSuccess(result)
                     })
                     .catch(error => Observable.of(Actions.UserLoginFailure(error)))
             })
@@ -333,6 +358,35 @@ export module Epics {
                 return dependencies.repository.Authentication.Logout()
                     .map(Actions.UserLogoutSuccess)
                     .catch(error => Observable.of(Actions.UserLogoutFailure(error)))
+            })
+    }
+    export const getContentActions = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
+        return action$.ofType('REQUEST_CONTENT_ACTIONS')
+            .mergeMap(action => {
+                let c = dependencies.repository.HandleLoadedContent(action.content, ContentTypes.GenericContent);
+                return c.Actions(action.scenario)
+                    .map(result => Actions.RequestContentActionsSuccess(result, action.content.Id))
+                    .catch(error => Observable.of(Actions.RequestContentActionsFailure(error)))
+            })
+    }
+    /**
+         * Epic to upload a file to the Content Repository. It is related to three redux actions, returns ```UploadContent``` action and sends the response to the
+         * ```UploadSuccess``` action if the ajax request ended successfully or catches the error if the request failed and sends the error message to the ```UploadFailure``` action.
+         */
+    export const uploadFileEpic = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
+        return action$.ofType('UPLOAD_CONTENT_REQUEST')
+            .mergeMap(action => {
+                return action.content.UploadFile({
+                    File: action.file,
+                    ContentType: action.contentType,
+                    OverWrite: action.overwrite,
+                    Body: action.body,
+                    PropertyName: action.propertyName
+                })
+                    .map((response) => {
+                        return Actions.UploadSuccess(response)
+                    })
+                    .catch(error => Observable.of(Actions.UploadFailure(error)))
             })
     }
     /**
@@ -358,7 +412,9 @@ export module Epics {
         restoreversionContentEpic,
         userLoginEpic,
         userLogoutEpic,
-        checkLoginStateEpic
+        checkLoginStateEpic,
+        getContentActions,
+        uploadFileEpic
     );
 }
 
