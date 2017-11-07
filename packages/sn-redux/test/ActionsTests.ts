@@ -1,7 +1,7 @@
 ///<reference path="../node_modules/@types/mocha/index.d.ts"/>
 import { Actions } from '../src/Actions'
 import * as Chai from 'chai';
-import { Mocks, ContentTypes, Repository } from 'sn-client-js';
+import { Mocks, ContentTypes, Repository, ODataApi } from 'sn-client-js';
 const expect = Chai.expect;
 
 describe('Actions', () => {
@@ -248,27 +248,36 @@ describe('Actions', () => {
         it('should create an action to a delete content request', () => {
             const expectedAction = {
                 type: 'DELETE_BATCH_REQUEST',
-                path: path,
-                ids: ['1', '2', '3'],
+                contentItems: {
+                    1: {
+                        DisplaName: 'aaa',
+                        Id: 1
+                    },
+                    2: {
+                        DisplaName: 'bbb',
+                        Id: 2
+                    }
+                },
                 permanently: false
             }
-            expect(Actions.DeleteBatch(path, ['1', '2', '3'], false)).to.deep.equal(expectedAction)
-        });
-        it('should create an action to a delete content request', () => {
-            const expectedAction = {
-                type: 'DELETE_BATCH_REQUEST',
-                path: path,
-                ids: ['1', '2', '3'],
-                permanently: false
-            }
-            expect(Actions.DeleteBatch(path, ['1', '2', '3'])).to.deep.equal(expectedAction)
+            expect(Actions.DeleteBatch({
+                1: {
+                    DisplaName: 'aaa',
+                    Id: 1
+                },
+                2: {
+                    DisplaName: 'bbb',
+                    Id: 2
+                }
+            })).to.deep.equal(expectedAction)
         });
         it('should create an action to delete content success', () => {
+            const response = new ODataApi.ODataBatchResponse()
             const expectedAction = {
                 type: 'DELETE_BATCH_SUCCESS',
-                ids: [0, 1, 2]
+                response: response
             }
-            expect(Actions.DeleteBatchSuccess([0, 1, 2])).to.deep.equal(expectedAction)
+            expect(Actions.DeleteBatchSuccess(response)).to.deep.equal(expectedAction)
         });
         it('should create an action to delete content failure', () => {
             const expectedAction = {
@@ -276,6 +285,87 @@ describe('Actions', () => {
                 message: 'error'
             }
             expect(Actions.DeleteBatchFailure({ message: 'error' })).to.deep.equal(expectedAction)
+        });
+    });
+    describe('CopyBatchContent', () => {
+        it('should create an action to a copy multiple content request', () => {
+            const expectedAction = {
+                type: 'COPY_BATCH_REQUEST',
+                contentItems:
+                {
+                    '1': { DisplaName: 'aaa', Id: 1 },
+                    '2': { DisplaName: 'bbb', Id: 2 }
+                },
+                path: '/workspaces'
+            }
+            expect(Actions.CopyBatch({
+                1: {
+                    DisplaName: 'aaa',
+                    Id: 1
+                },
+                2: {
+                    DisplaName: 'bbb',
+                    Id: 2
+                }
+            }, '/workspaces')).to.deep.equal(expectedAction)
+        });
+        it('should create an action to copy multiple content success', () => {
+            const response = new ODataApi.ODataBatchResponse()
+            const expectedAction = {
+                type: 'COPY_BATCH_SUCCESS',
+                response: response
+            }
+            expect(Actions.CopyBatchSuccess(response)).to.deep.equal(expectedAction)
+        });
+        it('should create an action to copy multiple content failure', () => {
+            const expectedAction = {
+                type: 'COPY_BATCH_FAILURE',
+                message: 'error'
+            }
+            expect(Actions.CopyBatchFailure({ message: 'error' })).to.deep.equal(expectedAction)
+        });
+    });
+    describe('MoveBatchContent', () => {
+        it('should create an action to a move multiple content request', () => {
+            const expectedAction = {
+                type: 'MOVE_BATCH_REQUEST',
+                contentItems: {
+                    1: {
+                        DisplaName: 'aaa',
+                        Id: 1
+                    },
+                    2: {
+                        DisplaName: 'bbb',
+                        Id: 2
+                    }
+                },
+                path: '/workspaces'
+            }
+            expect(Actions.MoveBatch({
+                1: {
+                    DisplaName: 'aaa',
+                    Id: 1
+                },
+                2: {
+                    DisplaName: 'bbb',
+                    Id: 2
+                }
+            }, '/workspaces')).to.deep.equal(expectedAction)
+        });
+        it('should create an action to move multiple content success', () => {
+            const response = new ODataApi.ODataBatchResponse()
+            const expectedAction = {
+                type: 'MOVE_BATCH_SUCCESS',
+                response: response
+            }
+            expect(Actions.MoveBatchSuccess(response)).to.deep.equal(expectedAction)
+        });
+        it('should create an action to move multiple content failure', () => {
+            const expectedAction = {
+                type: 'MOVE_BATCH_FAILURE',
+                message: 'error'
+            }
+            expect(Actions.MoveBatchFailure({ message: 'error' })).to.deep.equal(expectedAction)
         });
     });
     describe('CheckoutContent', () => {
@@ -555,21 +645,23 @@ describe('Actions', () => {
         });
     });
     describe('SelectContent', () => {
+        const content = repo.CreateContent({ DisplayName: 'My content', Id: 1 }, ContentTypes.Task);
         it('should return the select content action', () => {
             const expectedAction = {
                 type: 'SELECT_CONTENT',
-                id: 1
+                content: content
             }
-            expect(Actions.SelectContent(1)).to.deep.equal(expectedAction)
+            expect(Actions.SelectContent(content)).to.deep.equal(expectedAction)
         })
     })
     describe('DeSelectContent', () => {
+        const content = repo.CreateContent({ DisplayName: 'My content', Id: 1 }, ContentTypes.Task);
         it('should return the deselect content action', () => {
             const expectedAction = {
                 type: 'DESELECT_CONTENT',
-                id: 1
+                content: content
             }
-            expect(Actions.DeSelectContent(1)).to.deep.equal(expectedAction)
+            expect(Actions.DeSelectContent(content)).to.deep.equal(expectedAction)
         })
     })
     describe('ClearSelection', () => {

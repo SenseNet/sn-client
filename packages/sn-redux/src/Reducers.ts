@@ -1,4 +1,3 @@
-import { normalize } from 'normalizr';
 import { combineReducers } from 'redux';
 import { Authentication } from 'sn-client-js';
 
@@ -188,6 +187,18 @@ export module Reducers {
                     return state
             case 'DELETE_CONTENT_SUCCESS':
                 return [...state.slice(0, action.index), ...state.slice(action.index + 1)]
+            case 'DELETE_BATCH_SUCCESS':
+            case 'MOVE_BATCH_SUCCESS':
+                if (action.response.d.results.length > 0) {
+                    let newIds = []
+                    let deletedIds = action.response.d.results.map(result => result.Id)
+                    for (let i = 0; i < state.length; i++) {
+                        if (deletedIds.indexOf(state[i]) === -1) {
+                            newIds.push(state[i])
+                        }
+                    }
+                    return newIds
+                }
             default:
                 return state;
         }
@@ -205,7 +216,10 @@ export module Reducers {
             action.type !== 'LOAD_CONTENT_SUCCESS' &&
             action.type !== 'REQUEST_CONTENT_ACTIONS_SUCCESS' &&
             action.type !== 'UPDATE_CONTENT_SUCCESS' &&
-            action.type !== 'UPLOAD_CONTENT_SUCCESS')) {
+            action.type !== 'UPLOAD_CONTENT_SUCCESS' &&
+            action.type !== 'DELETE_BATCH_SUCCESS' &&
+            action.type !== 'COPY_BATCH_SUCCESS' &&
+            action.type !== 'MOVE_BATCH_SUCCESS')) {
             return (<any>Object).assign({}, state, action.response.entities.entities);
         }
         switch (action.type) {
@@ -213,6 +227,11 @@ export module Reducers {
                 let res = Object.assign({}, state);
                 delete res[action.id];
                 return res;
+            case 'DELETE_BATCH_SUCCESS':
+            case 'MOVE_BATCH_SUCCESS':
+                let resource = Object.assign({}, state);
+                action.response.d.results.map(result => delete resource[result.Id])
+                return resource;
             case 'UPDATE_CONTENT_SUCCESS':
                 state[action.response.Id] = action.response
                 return state
@@ -584,16 +603,16 @@ export module Reducers {
     })
     /**
        * Reducer to handle Actions on the selected array.
-       * @param {Object} [state=[]] Represents the current state.
+       * @param {Array} [state=[]] Represents the current state.
        * @param {Object} action Represents an action that is called.
        * @returns {Object} state. Returns the next state based on the action.
        */
-    export const selected = (state = [], action) => {
+    export const selectedIds = (state = [], action) => {
         switch (action.type) {
             case 'SELECT_CONTENT':
-                return [...state, action.id]
+                return [...state, action.content.Id]
             case 'DESELECT_CONTENT':
-                const index = state.indexOf(action.id)
+                const index = state.indexOf(action.content.Id)
                 return [...state.slice(0, index), ...state.slice(index + 1)]
             case 'CLEAR_SELECTION':
                 return []
@@ -601,6 +620,65 @@ export module Reducers {
                 return state
         }
     }
+    export const selectedContentItems = (state = {}, action) => {
+        switch (action.type) {
+            case 'DESELECT_CONTENT':
+                let res = Object.assign({}, state);
+                delete res[action.content.Id];
+                return res;
+            case 'SELECT_CONTENT':
+                let obj = {}
+                obj[action.content.Id] = action.content
+                return (<any>Object).assign({}, state, obj);
+            case 'CLEAR_SELECTION':
+                return {}
+            default:
+                return state;
+        }
+    }
+    export const selected = combineReducers({
+        ids: selectedIds,
+        entities: selectedContentItems
+    })
+    /**
+     * Reducer to handle Actions on the OdataBatchResponse Object.
+     * @param {Array} state Represents the current state.
+     * @param {Object} action Represents an action that is called.
+     * @returns {Object} state. Returns the next state based on the action.
+     */
+    export const OdataBatchResponse = (state = Object, action) => {
+        switch (action.type) {
+            case 'DELETE_BATCH_SUCCESS':
+            case 'COPY_BATCH_SUCCESS':
+            case 'MOVE_BATCH_SUCCESS':
+                return action.response
+            default:
+                return {}
+        }
+    }
+    /**
+     * Reducer to handle Actions on the batchResponseError Object.
+     * @param {string} state Represents the current state.
+     * @param {Object} action Represents an action that is called.
+     * @returns {Object} state. Returns the next state based on the action.
+     */
+    export const batchResponseError = (state = '', action) => {
+        switch (action.type) {
+            case 'DELETE_BATCH_FAILURE':
+            case 'COPY_BATCH_FAILURE':
+            case 'MOVE_BATCH_FAILURE':
+                return action.message
+            default:
+                return ''
+        }
+    }
+    /**
+   * Reducer combining response and error into a single object, ```batchResponses```.
+   */
+    export const batchResponses = combineReducers({
+        response: OdataBatchResponse,
+        error: batchResponseError
+    })
     /**
    * Reducer combining session, children, currentcontent and selected into a single object, ```sensenet``` which will be the top-level one.
    */
@@ -608,7 +686,8 @@ export module Reducers {
         session,
         children,
         currentcontent,
-        selected
+        selected,
+        batchResponses
     })
 
     /**
@@ -651,8 +730,12 @@ export module Reducers {
         return state.session.repository.RepositoryUrl;
     }
 
-    export const getSelectedContent = (state) => {
-        return state.selected
+    export const getSelectedContentIds = (state) => {
+        return state.selected.ids
+    }
+
+    export const getSelectedContentItems = (state) => {
+        return state.selected.entities
     }
 
     export const getOpenedContent = (state) => {

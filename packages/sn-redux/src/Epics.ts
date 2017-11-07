@@ -2,9 +2,10 @@ import { Actions } from './Actions';
 import { Reducers } from './Reducers';
 
 import { ActionsObservable, combineEpics } from 'redux-observable';
-import { Observable } from 'rxjs/Observable';
 import { Repository, Content, ContentTypes, Collection, ODataApi, Authentication } from 'sn-client-js';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/catch'
 
 /**
  * Module for redux-observable Epics of the sensenet built-in OData actions.
@@ -193,14 +194,48 @@ export module Epics {
     export const deleteBatchEpic = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
         return action$.ofType('DELETE_BATCH_REQUEST')
             .mergeMap(action => {
-                let collection = new Collection.Collection([], dependencies.repository, action.contentType);
-                return collection.Remove(action.ids, false)
+                let contentItems = Object.keys(action.contentItems).map(id => { 
+                    return dependencies.repository.HandleLoadedContent(action.contentItems[id], action.contentItems.__contentType); 
+                });
+                return dependencies.repository.DeleteBatch(contentItems, action.permanently)
                     .map((response) => {
-                        const state = store.getState();
-                        const ids = Reducers.getIds(state.collection);
-                        return Actions.DeleteBatchSuccess(ids);
+                        return Actions.DeleteBatchSuccess(response);
                     })
                     .catch(error => Observable.of(Actions.DeleteBatchFailure(error)))
+            })
+    }
+    /**
+     * Epic to copy multiple Content in the Content Repository. It is related to three redux actions, returns ```CopyBatch``` action and sends the response to the
+     * ```CopyBatchSuccess``` action if the ajax request ended successfully or catches the error if the request failed and sends the error message to the ```CopyBatchFailure``` action.
+     */
+    export const copyBatchEpic = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
+        return action$.ofType('COPY_BATCH_REQUEST')
+            .mergeMap(action => {
+                let contentItems = Object.keys(action.contentItems).map(id => { 
+                    return dependencies.repository.HandleLoadedContent(action.contentItems[id], action.contentItems.__contentType); 
+                });
+                return dependencies.repository.CopyBatch(contentItems, action.path)
+                    .map((response) => {
+                        return Actions.CopyBatchSuccess(response);
+                    })
+                    .catch(error => Observable.of(Actions.CopyBatchFailure(error)))
+            })
+    }
+    /**
+     * Epic to move multiple Content in the Content Repository. It is related to three redux actions, returns ```MoveBatch``` action and sends the response to the
+     * ```MoveBatchSuccess``` action if the ajax request ended successfully or catches the error if the request failed and sends the error message to the ```MoveBatchFailure``` action.
+     */
+    export const moveBatchEpic = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
+        return action$.ofType('MOVE_BATCH_REQUEST')
+            .mergeMap(action => {
+                let contentItems = Object.keys(action.contentItems).map(id => { 
+                    return dependencies.repository.HandleLoadedContent(action.contentItems[id], action.contentItems.__contentType); 
+                });
+                return dependencies.repository.MoveBatch(contentItems, action.path)
+                    .map((response) => {
+                        return Actions.MoveBatchSuccess(response);
+                    })
+                    .catch(error => Observable.of(Actions.MoveBatchFailure(error)))
             })
     }
     /**
@@ -402,6 +437,8 @@ export module Epics {
         updateContentEpic,
         deleteContentEpic,
         deleteBatchEpic,
+        copyBatchEpic,
+        moveBatchEpic,
         checkoutContentEpic,
         checkinContentEpic,
         publishContentEpic,

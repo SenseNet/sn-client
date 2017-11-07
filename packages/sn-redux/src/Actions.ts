@@ -1,6 +1,6 @@
 import { normalize } from 'normalizr';
 import { Schemas } from './Schema';
-import { Content, IContent, ODataApi, ODataHelper, Repository, ContentTypes } from 'sn-client-js';
+import { Content, SavedContent, IContent, ODataApi, ContentTypes } from 'sn-client-js';
 
 /**
  * Module that contains the action creators.
@@ -364,25 +364,23 @@ export module Actions {
     })
     /**
       * Action creator for deleting multiple Content from the Content Repository.
-      * @param path {string} Path of parent the Content.
-      * @param ids {string[]} Array of ids of the Content that should be deleted.
+      * @param ids {number[]} Array of ids of the Content that should be deleted.
       * @param permanently {boolean} Defines whether Content must be moved to the Trash or deleted permanently.
       * @returns {Object} Returns a redux action with the properties type, id and permanently.
     */
-    export const DeleteBatch = (path: string, ids: string[], permanently: boolean = false) => ({
+    export const DeleteBatch = (contentItems: Object, permanently: boolean = false) => ({
         type: 'DELETE_BATCH_REQUEST',
-        path,
-        ids,
+        contentItems,
         permanently
     })
     /**
-      * Action creator for the step when multiple Content deleted successfully.
-      * @param indexes {number[]} Array of indexes of the items in the state collection that should be removed.
+      * Action creator for the step when multiple Content was deleted successfully.
+      * @param response {ODataApi.ODataBatchResponse} response object contains the list of successes and/or errors.
       * @returns {Object} Returns a redux action with the properties type and index.
     */
-    export const DeleteBatchSuccess = (ids: number[]) => ({
+    export const DeleteBatchSuccess = (response: ODataApi.ODataBatchResponse) => ({
         type: 'DELETE_BATCH_SUCCESS',
-        ids
+        response
     })
     /**
      * Action creator for the step when deleting multiple Content is failed.
@@ -391,6 +389,64 @@ export module Actions {
     */
     export const DeleteBatchFailure = (error: any) => ({
         type: 'DELETE_BATCH_FAILURE',
+        message: error.message
+    })
+    /**
+      * Action creator for copying multiple Content in the Content Repository.
+      * @param ids {number[]} Array of ids of the Content that should be deleted.
+      * @param permanently {boolean} Defines whether Content must be moved to the Trash or deleted permanently.
+      * @returns {Object} Returns a redux action with the properties type, id and permanently.
+    */
+    export const CopyBatch = (contentItems: Object, path: string) => ({
+        type: 'COPY_BATCH_REQUEST',
+        contentItems,
+        path
+    })
+    /**
+      * Action creator for the step when multiple Content was copied successfully.
+      * @param response {ODataApi.ODataBatchResponse} response object contains the list of successes and/or errors.
+      * @returns {Object} Returns a redux action with the properties type and index.
+    */
+    export const CopyBatchSuccess = (response: ODataApi.ODataBatchResponse) => ({
+        type: 'COPY_BATCH_SUCCESS',
+        response
+    })
+    /**
+     * Action creator for the step when copying multiple Content is failed.
+     * @param error {any} The catched error object.
+     * @returns {Object} Returns a redux action with the properties type and the error message.
+    */
+    export const CopyBatchFailure = (error: any) => ({
+        type: 'COPY_BATCH_FAILURE',
+        message: error.message
+    })
+    /**
+      * Action creator for moving multiple Content in the Content Repository.
+      * @param ids {number[]} Array of ids of the Content that should be deleted.
+      * @param permanently {boolean} Defines whether Content must be moved to the Trash or deleted permanently.
+      * @returns {Object} Returns a redux action with the properties type, id and permanently.
+    */
+    export const MoveBatch = (contentItems = {}, path: string) => ({
+        type: 'MOVE_BATCH_REQUEST',
+        contentItems,
+        path
+    })
+    /**
+      * Action creator for the step when multiple Content was moved successfully.
+      * @param response {ODataApi.ODataBatchResponse} response object contains the list of successes and/or errors.
+      * @returns {Object} Returns a redux action with the properties type and index.
+    */
+    export const MoveBatchSuccess = (response: ODataApi.ODataBatchResponse) => ({
+        type: 'MOVE_BATCH_SUCCESS',
+        response
+    })
+    /**
+     * Action creator for the step when moving multiple Content is failed.
+     * @param error {any} The catched error object.
+     * @returns {Object} Returns a redux action with the properties type and the error message.
+    */
+    export const MoveBatchFailure = (error: any) => ({
+        type: 'MOVE_BATCH_FAILURE',
         message: error.message
     })
     /**
@@ -666,7 +722,7 @@ export module Actions {
      * @param error {any} The catched error object.
      * @returns {Object} Returns a redux action with the properties type and the error message.
     */
-    export const UserLoginFailure = (error: {status?: number, message: string}) => ({
+    export const UserLoginFailure = (error: { status?: number, message: string }) => ({
         type: 'USER_LOGIN_FAILURE',
         message: (error.status === 403) ? 'The username or the password is not valid!' : error.message
     })
@@ -706,20 +762,20 @@ export module Actions {
     /**
      * Action creator for selecting a Content
      * @param id {number} The id of the selected Content
-    * @returns {Object} Returns a redux action.
+     * @returns {Object} Returns a redux action.
      */
-    export const SelectContent = (id) => ({
+    export const SelectContent = (content) => ({
         type: 'SELECT_CONTENT',
-        id
+        content
     })
     /**
      * Action creator for deselecting a Content
      * @param id {number} The id of the deselected Content
     * @returns {Object} Returns a redux action.
      */
-    export const DeSelectContent = (id) => ({
+    export const DeSelectContent = (content) => ({
         type: 'DESELECT_CONTENT',
-        id
+        content
     })/**
     * Action creator for clearing the array of selected content
    * @returns {Object} Returns a redux action.

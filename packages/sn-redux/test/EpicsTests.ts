@@ -277,34 +277,93 @@ describe('Epics', () => {
                 { type: 'DELETE_CONTENT_FAILURE', error: 'error' }]);
         })
     });
-    // describe('deleteBatch Epic', () => {
-    //     before(() => {
-    //         initBefores(Epics.deleteBatchEpic)
-    //     });
+    describe('deleteBatch Epic', () => {
+        before(() => {
+            initBefores(Epics.deleteBatchEpic)
+        });
 
-    //     after(() => {
-    //         epicMiddleware.replaceEpic(Epics.deleteBatchEpic);
-    //     });
-    //     it('handles the error', () => {
-    //         store.dispatch({ type: 'DELETE_BATCH_REQUEST', ids: [1, 2], permanently: false });
-    //         expect(store.getActions()).to.be.deep.eq(
-    //             [{
-    //                 type: 'DELETE_BATCH_REQUEST',
-    //                 ids: [1, 2],
-    //                 permanently: false
-    //             }]);
-    //     })
-    //     it('handles the error', () => {
-    //         store.dispatch({ type: 'DELETE_BATCH_FAILURE', error: 'error' });
-    //         expect(store.getActions()).to.be.deep.eq(
-    //             [{
-    //                 type: 'DELETE_BATCH_REQUEST',
-    //                 ids: [1, 2],
-    //                 permanently: false
-    //             },
-    //             { type: 'DELETE_BATCH_FAILURE', error: 'error' }]);
-    //     })
-    // });
+        after(() => {
+            epicMiddleware.replaceEpic(Epics.deleteBatchEpic);
+        });
+        it('handles the error', () => {
+            store.dispatch({
+                type: 'DELETE_BATCH_REQUEST', contentItems: {
+                    1: {
+                        DisplaName: 'aaa',
+                        Id: 1
+                    },
+                    2: {
+                        DisplaName: 'bbb',
+                        Id: 2
+                    }
+                }, permanently: false
+            });
+            expect(store.getActions()).to.be.deep.eq(
+                [{
+                    type: 'DELETE_BATCH_REQUEST',
+                    contentItems: {
+                        1: {
+                            DisplaName: 'aaa',
+                            Id: 1
+                        },
+                        2: {
+                            DisplaName: 'bbb',
+                            Id: 2
+                        }
+                    },
+                    permanently: false
+                }]);
+        })
+        it('handles the error', () => {
+            store.dispatch({ type: 'DELETE_BATCH_FAILURE', error: 'error' });
+            expect(store.getActions()).to.be.deep.eq(
+                [{
+                    type: 'DELETE_BATCH_REQUEST',
+                    contentItems: {
+                        1: {
+                            DisplaName: 'aaa',
+                            Id: 1
+                        },
+                        2: {
+                            DisplaName: 'bbb',
+                            Id: 2
+                        }
+                    },
+                    permanently: false
+                },
+                { type: 'DELETE_BATCH_FAILURE', error: 'error' }]);
+        })
+    });
+    describe('copyBatch Epic', () => {
+        before(() => {
+            initBefores(Epics.copyBatchEpic)
+        });
+
+        after(() => {
+            epicMiddleware.replaceEpic(Epics.copyBatchEpic);
+        });
+
+        it('handles the error', () => {
+            store.dispatch({ type: 'COPY_BATCH_FAILURE', error: 'error' });
+            expect(store.getActions()).to.be.deep.eq(
+                [{ type: 'COPY_BATCH_FAILURE', error: 'error' }]);
+        })
+    });
+    describe('moveBatch Epic', () => {
+        before(() => {
+            initBefores(Epics.moveBatchEpic)
+        });
+
+        after(() => {
+            epicMiddleware.replaceEpic(Epics.moveBatchEpic);
+        });
+
+        it('handles the error', () => {
+            store.dispatch({ type: 'MOVE_BATCH_FAILURE', error: 'error' });
+            expect(store.getActions()).to.be.deep.eq(
+                [{ type: 'MOVE_BATCH_FAILURE', error: 'error' }]);
+        })
+    });
     describe('checkoutContent Epic', () => {
         before(() => {
             initBefores(Epics.checkoutContentEpic)

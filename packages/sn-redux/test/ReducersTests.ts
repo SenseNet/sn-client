@@ -183,6 +183,56 @@ describe('Reducers', () => {
                 }))
                 .to.be.deep.equal([1, 2, 3]);
         });
+        it('should handle DELETE_BATCH_SUCCESS', () => {
+            expect(Reducers.ids([1, 2, 3], {
+                type: 'DELETE_BATCH_SUCCESS',
+                response: {
+                    'd': {
+                        'results': [
+                            { 'Id': 1 },
+                            { 'Id': 2 }
+                        ],
+                        'errors': []
+                    }
+                }
+            })).to.be.deep.equal([3]);
+        });
+        it('should handle DELETE_BATCH_SUCCESS', () => {
+            expect(Reducers.ids([1, 2, 3], {
+                type: 'DELETE_BATCH_SUCCESS',
+                response: {
+                    'd': {
+                        'results': [],
+                        'errors': []
+                    }
+                }
+            })).to.be.deep.equal([1, 2, 3]);
+        });
+        it('should handle MOVE_BATCH_SUCCESS', () => {
+            expect(Reducers.ids([1, 2, 3], {
+                type: 'MOVE_BATCH_SUCCESS',
+                response: {
+                    'd': {
+                        'results': [
+                            { 'Id': 1 },
+                            { 'Id': 2 }
+                        ],
+                        'errors': []
+                    }
+                }
+            })).to.be.deep.equal([3]);
+        });
+        it('should handle MOVE_BATCH_SUCCESS', () => {
+            expect(Reducers.ids([1, 2, 3], {
+                type: 'MOVE_BATCH_SUCCESS',
+                response: {
+                    'd': {
+                        'results': [],
+                        'errors': []
+                    }
+                }
+            })).to.be.deep.equal([1, 2, 3]);
+        });
     });
 
     describe('entities reducer', () => {
@@ -285,6 +335,37 @@ describe('Reducers', () => {
                     },
                 }
             );
+        });
+        it('should handle DELETE_BATCH_SUCCESS', () => {
+            const entities = {
+                5122: {
+                    Id: 5122,
+                    DisplayName: 'Some Article',
+                    Status: ['Active']
+                },
+                5146: {
+                    Id: 5146,
+                    Displayname: 'Other Article',
+                    Status: ['Completed']
+                }
+            };
+            expect(Reducers.entities(entities, {
+                type: 'DELETE_BATCH_SUCCESS',
+                response: {
+                    'd': {
+                        'results': [
+                            { 'Id': 5122 }
+                        ],
+                        'errors': []
+                    }
+                }
+            })).to.be.deep.equal({
+                5146: {
+                    Id: 5146,
+                    Displayname: 'Other Article',
+                    Status: ['Completed']
+                }
+            });
         });
     });
 
@@ -749,42 +830,253 @@ describe('Reducers', () => {
         });
     })
     describe('selected reducer', () => {
+        let repo: Mocks.MockRepository = new Mocks.MockRepository();
+
         it('should return the initial state', () => {
-            expect(Reducers.selected(undefined, {})).to.deep.equal([]);
+            expect(Reducers.selectedIds(undefined, {})).to.deep.equal([]);
         });
         it('should return an array with one item with the id 1', () => {
+            let content = repo.CreateContent({
+                Path: '/Root/Sites/Default_Site/tasks',
+                Status: Enums.Status.active,
+                Id: 1
+            }, ContentTypes.Task)
             const action = {
                 type: 'SELECT_CONTENT',
-                id: 1
+                content: content
             }
-            expect(Reducers.selected(undefined, action)).to.deep.equal([1]);
+            expect(Reducers.selectedIds(undefined, action)).to.deep.equal([1]);
         })
         it('should return an array with two items with the id 1 and 2', () => {
+            let content = repo.CreateContent({
+                Path: '/Root/Sites/Default_Site/tasks',
+                Status: Enums.Status.active,
+                Id: 2
+            }, ContentTypes.Task)
             const action = {
                 type: 'SELECT_CONTENT',
-                id: 2
+                content: content
             }
-            expect(Reducers.selected([1], action)).to.deep.equal([1, 2]);
+            expect(Reducers.selectedIds([1], action)).to.deep.equal([1, 2]);
         })
         it('should return an array with one item with the id 1', () => {
+            let content = repo.CreateContent({
+                Path: '/Root/Sites/Default_Site/tasks',
+                Status: Enums.Status.active,
+                Id: 2
+            }, ContentTypes.Task)
             const action = {
                 type: 'DESELECT_CONTENT',
-                id: 2
+                content: content
             }
-            expect(Reducers.selected([1, 2], action)).to.deep.equal([1]);
+            expect(Reducers.selectedIds([1, 2], action)).to.deep.equal([1]);
         })
         it('should return an empty array', () => {
+            let content = repo.CreateContent({
+                Path: '/Root/Sites/Default_Site/tasks',
+                Status: Enums.Status.active,
+                Id: 1
+            }, ContentTypes.Task)
             const action = {
                 type: 'DESELECT_CONTENT',
-                id: 1
+                content: content
             }
-            expect(Reducers.selected([1], action)).to.deep.equal([]);
+            expect(Reducers.selectedIds([1], action)).to.deep.equal([]);
         })
         it('should return an empty array', () => {
             const action = {
                 type: 'CLEAR_SELECTION'
             }
-            expect(Reducers.selected([1], action)).to.deep.equal([]);
+            expect(Reducers.selectedIds([1], action)).to.deep.equal([]);
+        })
+    })
+    describe('selectedContent reducer', () => {
+        let repo: Mocks.MockRepository = new Mocks.MockRepository();
+
+        it('should return the initial state', () => {
+            expect(Reducers.selectedContentItems(undefined, {})).to.deep.equal({});
+        });
+        it('should return an object with one children item with the id 1', () => {
+            let content = repo.CreateContent({
+                Path: '/Root/Sites/Default_Site/tasks',
+                Status: Enums.Status.active,
+                Id: 1
+            }, ContentTypes.Task)
+            const action = {
+                type: 'SELECT_CONTENT',
+                content: content
+            }
+            expect(Reducers.selectedContentItems(undefined, action)).to.deep.equal({ 1: content });
+        })
+        it('should return an object with two items with the id 1 and 2', () => {
+            const entities = {
+                1: {
+                    Id: 1,
+                    DisplayName: 'Some Article',
+                    Status: ['Active']
+                }
+            };
+            let content = repo.CreateContent({
+                Path: '/Root/Sites/Default_Site/tasks',
+                Status: Enums.Status.active,
+                Id: 2
+            }, ContentTypes.Task)
+            const action = {
+                type: 'SELECT_CONTENT',
+                content: content
+            }
+            expect(Reducers.selectedContentItems(entities, action)).to.deep.equal(
+                {
+                    1: {
+                        Id: 1,
+                        DisplayName: 'Some Article',
+                        Status: ['Active']
+                    },
+                    2: content
+                }
+            );
+        })
+        it('should return an object with one item with the id 1', () => {
+            const entities = {
+                1: {
+                    Id: 1,
+                    DisplayName: 'Some Article',
+                    Status: ['Active']
+                },
+                2: {
+                    Id: 2,
+                    DisplayName: 'Some Article',
+                    Status: ['Active']
+                }
+            };
+            let content = repo.CreateContent({
+                Path: '/Root/Sites/Default_Site/tasks',
+                Status: Enums.Status.active,
+                Id: 2
+            }, ContentTypes.Task)
+            const action = {
+                type: 'DESELECT_CONTENT',
+                content: content
+            }
+            expect(Reducers.selectedContentItems(entities, action)).to.deep.equal(
+                {
+                    1: {
+                        Id: 1,
+                        DisplayName: 'Some Article',
+                        Status: ['Active']
+                    }
+                }
+            );
+        })
+        it('should return an empty object', () => {
+            const entities = {
+                1: {
+                    Id: 1,
+                    DisplayName: 'Some Article',
+                    Status: ['Active']
+                }
+            };
+            let content = repo.CreateContent({
+                Path: '/Root/Sites/Default_Site/tasks',
+                Status: Enums.Status.active,
+                Id: 1
+            }, ContentTypes.Task)
+            const action = {
+                type: 'DESELECT_CONTENT',
+                content: content
+            }
+            expect(Reducers.selectedContentItems(entities, action)).to.deep.equal({});
+        })
+        it('should return an empty object', () => {
+            const entities = {
+                1: {
+                    Id: 1,
+                    DisplayName: 'Some Article',
+                    Status: ['Active']
+                }
+            };
+            const action = {
+                type: 'CLEAR_SELECTION'
+            }
+            expect(Reducers.selectedContentItems(entities, action)).to.deep.equal({});
+        })
+    })
+    describe('batchResponseError reducer', () => {
+        it('should return the initial state', () => {
+            expect(Reducers.batchResponseError(undefined, {})).to.deep.equal('');
+        });
+        it('should return an error message', () => {
+            const action = {
+                type: 'DELETE_BATCH_FAILURE',
+                message: 'error'
+            }
+            expect(Reducers.batchResponseError(undefined, action)).to.deep.equal('error');
+        })
+        it('should return an error message', () => {
+            const action = {
+                type: 'COPY_BATCH_FAILURE',
+                message: 'error'
+            }
+            expect(Reducers.batchResponseError(undefined, action)).to.deep.equal('error');
+        })
+        it('should return an error message', () => {
+            const action = {
+                type: 'MOVE_BATCH_FAILURE',
+                message: 'error'
+            }
+            expect(Reducers.batchResponseError(undefined, action)).to.deep.equal('error');
+        })
+        it('should return an empty string', () => {
+            const action = {
+                type: 'MOVE_BATCH_SUCCESS',
+                response: {}
+            }
+            expect(Reducers.batchResponseError(undefined, action)).to.deep.equal('');
+        })
+    })
+    describe('OdataBatchResponse reducer', () => {
+        it('should return the initial state', () => {
+            expect(Reducers.OdataBatchResponse(undefined, {})).to.deep.equal({});
+        });
+        it('should return a response object', () => {
+            const action = {
+                type: 'DELETE_BATCH_SUCCESS',
+                response: {
+                    vmi: '1'
+                }
+            }
+            expect(Reducers.OdataBatchResponse(undefined, action)).to.deep.equal({
+                vmi: '1'
+            });
+        })
+        it('should return an error message', () => {
+            const action = {
+                type: 'COPY_BATCH_SUCCESS',
+                response: {
+                    vmi: '1'
+                }
+            }
+            expect(Reducers.OdataBatchResponse(undefined, action)).to.deep.equal({
+                vmi: '1'
+            });
+        })
+        it('should return an error message', () => {
+            const action = {
+                type: 'MOVE_BATCH_SUCCESS',
+                response: {
+                    vmi: '1'
+                }
+            }
+            expect(Reducers.OdataBatchResponse(undefined, action)).to.deep.equal({
+                vmi: '1'
+            });
+        })
+        it('should return an empty string', () => {
+            const action = {
+                type: 'MOVE_BATCH_FAILURE',
+                message: 'error'
+            }
+            expect(Reducers.OdataBatchResponse(undefined, action)).to.deep.equal({});
         })
     })
     describe('getContent', () => {
@@ -888,12 +1180,53 @@ describe('Reducers', () => {
             expect(Reducers.getRepositoryUrl(state)).to.be.eq('https://dmsservice.demo.sensenet.com');
         });
     });
-    describe('getSelectedContent', () => {
+    describe('getSelectedContentIds', () => {
         const state = {
-            selected: [1, 2]
+            selected: {
+                ids: [1, 2],
+                entities: {
+                    1: {
+                        DisplaName: 'aaa',
+                        Id: 1
+                    },
+                    2: {
+                        DisplaName: 'bbb',
+                        Id: 2
+                    }
+                }
+            }
         }
         it('should return the value of the selected reducers current state, an array with two items', () => {
-            expect(Reducers.getSelectedContent(state)).to.be.deep.equal([1, 2])
+            expect(Reducers.getSelectedContentIds(state)).to.be.deep.equal([1, 2])
+        })
+    })
+    describe('getSelectedContentItems', () => {
+        const state = {
+            selected: {
+                ids: [1, 2],
+                entities: {
+                    1: {
+                        DisplaName: 'aaa',
+                        Id: 1
+                    },
+                    2: {
+                        DisplaName: 'bbb',
+                        Id: 2
+                    }
+                }
+            }
+        }
+        it('should return the value of the selected reducers current state, an array with two items', () => {
+            expect(Reducers.getSelectedContentItems(state)).to.be.deep.equal({
+                1: {
+                    DisplaName: 'aaa',
+                    Id: 1
+                },
+                2: {
+                    DisplaName: 'bbb',
+                    Id: 2
+                }
+            })
         })
     })
     describe('getOpenedContentId', () => {
