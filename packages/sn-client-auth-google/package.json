@@ -57,7 +57,7 @@
     "mocha-typescript": "^1.1.12",
     "rimraf": "^2.6.2",
     "sensenet-kfi-cz-conventional-changelog": "^1.0.0",
-    "sn-client-js": "^3.0.0-development.3",
+    "sn-client-js": "^3.0.0-development.5",
     "tslint": "^5.8.0",
     "tslint-consistent-codestyle": "^1.9.0",
     "typedoc": "^0.9.0",
