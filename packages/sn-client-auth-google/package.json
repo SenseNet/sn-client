@@ -1,0 +1,72 @@
+{
+  "name": "sn-client-auth-google",
+  "version": "1.0.0-development.1",
+  "description": "Client-side Google authentication provider for sensenet ECM",
+  "main": "dist/src/index.js",
+  "scripts": {
+    "lint": "./node_modules/.bin/tslint --project tsconfig.json",
+    "clean": "rimraf dist",
+    "precommit": "npm run lint",
+    "commit": "git-cz",
+    "pretest": "npm run build",
+    "test": "nyc mocha -p tsconfig.json dist/test/index.js",
+    "prebuild": "npm run lint && npm run clean",
+    "build": "tsc",
+    "typedoc": "./node_modules/.bin/typedoc --mode modules --tsconfig ./tsconfig.typedoc.json --out documentation --excludePrivate --theme default --readme readme.md ./src",
+    "publish:development": "npm t && npm run typedoc && npm publish --tag development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SenseNet/sn-client-auth-google.git"
+  },
+  "keywords": [
+    "sensenet",
+    "ECM",
+    "document",
+    "management",
+    "Google",
+    "OAuth",
+    "JWT",
+    "Login"
+  ],
+  "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/SenseNet/sn-client-auth-google/issues"
+  },
+  "nyc": {
+    "exclude": [
+      "dist/test/**/*.*",
+      "dist/src/**/I*.js"
+    ],
+    "include": "dist/src/**/*.*",
+    "check-coverage": true,
+    "cache": true,
+    "all": true,
+    "reporter": [
+      "lcov",
+      "text-summary",
+      "json"
+    ]
+  },
+  "homepage": "https://github.com/SenseNet/sn-client-auth-google#readme",
+  "dependencies": {
+    "chai": "^4.1.2",
+    "commitizen": "^2.9.6",
+    "mocha": "^4.0.1",
+    "mocha-typescript": "^1.1.12",
+    "rimraf": "^2.6.2",
+    "sensenet-kfi-cz-conventional-changelog": "^1.0.0",
+    "sn-client-js": "^3.0.0-development.3",
+    "tslint": "^5.8.0",
+    "tslint-consistent-codestyle": "^1.9.0",
+    "typedoc": "^0.9.0",
+    "typescript": "^2.6.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "sensenet-kfi-cz-conventional-changelog"
+    }
+  },
+  "typings": "./dist/src/index.d.ts"
+}
