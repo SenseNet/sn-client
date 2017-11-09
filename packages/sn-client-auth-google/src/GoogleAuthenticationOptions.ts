@@ -1,3 +1,5 @@
 export class GoogleAuthenticationOptions {
-    public ApiKey: string;
+    public RedirectUri: string;
+    public Scope: string[] = ['userinfo.email', 'userinfo.profile'];
+    public ClientId: string;
 }
