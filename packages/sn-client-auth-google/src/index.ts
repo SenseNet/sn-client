@@ -1,3 +1,3 @@
 export * from './GoogleAuthenticationOptions';
-export * from './GoogleAuthenticationService';
+export * from './GoogleOauthProvider';
 export * from './AddGoogleAuth';
