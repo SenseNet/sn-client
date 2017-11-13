@@ -70,5 +70,8 @@
       "path": "sensenet-kfi-cz-conventional-changelog"
     }
   },
-  "typings": "./dist/src/index.d.ts"
+  "typings": "./dist/src/index.d.ts",
+  "devDependencies": {
+    "@types/chai": "^4.0.4"
+  }
 }
