@@ -1,2 +1,3 @@
-export * from './RepositoryExtensionsTests';
+export * from './GoogleAuthenticationOptionsTests';
+export * from './AddGoogleAuthTests';
 export * from './GoogleAuthenticationServiceTests';
