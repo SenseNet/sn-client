@@ -1,10 +1,9 @@
 import * as Chai from 'chai';
 import configureMockStore from 'redux-mock-store';
 import { createEpicMiddleware } from 'redux-observable';
-import { Mocks, ContentTypes, HttpProviders, Authentication, ODataApi, Content } from 'sn-client-js';
+import { Mocks, ContentTypes, Authentication } from 'sn-client-js';
 import { Epics } from '../src/Epics'
 import { Actions } from '../src/Actions'
-import { Store } from '../src/Store'
 const expect = Chai.expect;
 import 'rxjs';
 
@@ -58,7 +57,6 @@ describe('Epics', () => {
             epicMiddleware.replaceEpic(Epics.initSensenetStoreEpic);
         });
         it('handles the error', () => {
-            const user = repo.CreateContent({ Name: 'alba', Id: 123 }, ContentTypes.User);
             store.dispatch({ type: 'INIT_SENSENET_STORE', path: '/workspaces', options: {} });
             expect(store.getActions()).to.be.deep.equal([
                 {
@@ -615,7 +613,6 @@ describe('Epics', () => {
                 { type: 'USER_LOGIN_FAILURE', message: 'Failed to log in.' }]);
         })
         it('handles the loggedin user', () => {
-            const user = repo.CreateContent({ Name: 'alba', Id: 123 }, ContentTypes.User);
             store.dispatch({ type: 'USER_LOGIN_REQUEST', username: 'user', password: 'password' });
             (repo.Authentication as Mocks.MockAuthService).StateSubject.next(Authentication.LoginState.Authenticated);
             expect(store.getActions()).to.be.deep.eq(
@@ -691,7 +688,6 @@ describe('Epics', () => {
                 ]);
         })
         it('handles an error', () => {
-            const user = repo.HandleLoadedContent({ Name: 'alba', Id: 65535, Path: '/Root' }, ContentTypes.User);
             repo.Authentication.StateSubject.next(Authentication.LoginState.Unauthenticated);
             store.dispatch({ type: 'CHECK_LOGIN_STATE_REQUEST' });
             expect(store.getActions()).to.be.deep.eq(
@@ -768,21 +764,6 @@ describe('Epics', () => {
             store.dispatch({ type: 'USER_LOGIN_BUFFER', response: true });
             expect(store.getActions()).to.be.deep.eq(
                 [{ type: 'USER_LOGIN_BUFFER', response: true }]);
-        })
-    })
-
-    describe('uploadContentEpic Epic', () => {
-        before(() => {
-            initBefores(Epics.uploadFileEpic)
-        });
-
-        after(() => {
-            epicMiddleware.replaceEpic(Epics.uploadFileEpic);
-        });
-        it('handles the success', () => {
-            store.dispatch({ type: 'UPLOAD_CONTENT_SUCCESS', response: true });
-            expect(store.getActions()).to.be.deep.eq(
-                [{ type: 'UPLOAD_CONTENT_SUCCESS', response: true }]);
         })
     })
 });

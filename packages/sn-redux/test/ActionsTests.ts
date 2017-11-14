@@ -1,7 +1,7 @@
 ///<reference path="../node_modules/@types/mocha/index.d.ts"/>
 import { Actions } from '../src/Actions'
 import * as Chai from 'chai';
-import { Mocks, ContentTypes, Repository, ODataApi } from 'sn-client-js';
+import { Mocks, ContentTypes, ODataApi } from 'sn-client-js';
 const expect = Chai.expect;
 
 describe('Actions', () => {
@@ -105,7 +105,6 @@ describe('Actions', () => {
             expect(Actions.LoadContentActions(content, 'ListItem')).to.deep.equal(expectedAction)
         });
         it('should create an action to receive a loaded contents actions', () => {
-            const content = repo.CreateContent({ DisplayName: 'My content', Id: 123 }, ContentTypes.Task)
             const expectedAction = {
                 type: 'LOAD_CONTENT_ACTIONS_SUCCESS',
                 actions: ['aa', 'bb']
@@ -679,9 +678,19 @@ describe('Actions', () => {
             const expectedAction = {
                 type: 'REQUEST_CONTENT_ACTIONS',
                 content: content,
-                scenario: 'DMSListItem'
+                scenario: 'DMSListItem',
+                customItems: []
             }
             expect(Actions.RequestContentActions(content, 'DMSListItem')).to.deep.equal(expectedAction)
+        })
+        it('should return the RequestContentActions action', () => {
+            const expectedAction = {
+                type: 'REQUEST_CONTENT_ACTIONS',
+                content: content,
+                scenario: 'DMSListItem',
+                customItems: [{ DisplayName: 'aaa', Name: 'bbb', Icon: 'ccc' }]
+            }
+            expect(Actions.RequestContentActions(content, 'DMSListItem', [{ DisplayName: 'aaa', Name: 'bbb', Icon: 'ccc' }])).to.deep.equal(expectedAction)
         })
         it('should return the RequestContentActionsSuccess action', () => {
             const expectedAction = {

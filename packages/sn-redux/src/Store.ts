@@ -3,7 +3,6 @@ import { createLogger } from 'redux-logger'
 import { createEpicMiddleware } from 'redux-observable';
 import { Epics } from './Epics';
 import { Reducers } from './Reducers';
-import { Actions } from './Actions';
 import { Repository } from 'sn-client-js';
 
 /**

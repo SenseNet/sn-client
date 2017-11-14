@@ -1,8 +1,7 @@
 ///<reference path="../node_modules/@types/mocha/index.d.ts"/>
 import { Reducers } from '../src/Reducers';
-import { Actions } from '../src/Actions';
 import * as Chai from 'chai';
-import { Authentication, Content, ContentTypes, Mocks, Enums } from 'sn-client-js';
+import { Authentication, ContentTypes, Mocks, Enums } from 'sn-client-js';
 const expect = Chai.expect;
 describe('Reducers', () => {
     describe('country reducer', () => {
@@ -1259,6 +1258,36 @@ describe('Reducers', () => {
         }
         it('should return the content', () => {
             expect(Reducers.getCurrentContent(state)).to.be.deep.equal({ DisplayName: 'my content' })
+        })
+    })
+    describe('getChildren', () => {
+        const state = {
+            entities: {
+                5145: {
+                    Id: 5145,
+                    DisplayName: 'Some Article',
+                    Status: ['Active']
+                },
+                5146: {
+                    Id: 5146,
+                    Displayname: 'Other Article',
+                    Status: ['Completed']
+                }
+            }
+        }
+        it('should return the children object', () => {
+            expect(Reducers.getChildren(state)).to.be.deep.equal({
+                5145: {
+                    Id: 5145,
+                    DisplayName: 'Some Article',
+                    Status: ['Active']
+                },
+                5146: {
+                    Id: 5146,
+                    Displayname: 'Other Article',
+                    Status: ['Completed']
+                }
+            })
         })
     })
 });

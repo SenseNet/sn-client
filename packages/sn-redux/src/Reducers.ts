@@ -749,4 +749,7 @@ export module Reducers {
     export const getCurrentContent = (state) => {
         return state.currentcontent.content
     }
+    export const getChildren = (state) => {
+        return state.entities
+    }
 }

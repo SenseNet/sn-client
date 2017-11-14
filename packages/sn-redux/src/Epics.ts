@@ -1,8 +1,8 @@
 import { Actions } from './Actions';
 import { Reducers } from './Reducers';
 
-import { ActionsObservable, combineEpics } from 'redux-observable';
-import { Repository, Content, ContentTypes, Collection, ODataApi, Authentication } from 'sn-client-js';
+import { combineEpics } from 'redux-observable';
+import { Repository, ContentTypes, Collection, Authentication } from 'sn-client-js';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/catch'
@@ -400,7 +400,7 @@ export module Epics {
             .mergeMap(action => {
                 let c = dependencies.repository.HandleLoadedContent(action.content, ContentTypes.GenericContent);
                 return c.Actions(action.scenario)
-                    .map(result => Actions.RequestContentActionsSuccess(result, action.content.Id))
+                    .map(result => Actions.RequestContentActionsSuccess([...result, ...action.customItems], action.content.Id))
                     .catch(error => Observable.of(Actions.RequestContentActionsFailure(error)))
             })
     }
