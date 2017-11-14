@@ -1,6 +1,8 @@
 import { expect } from 'chai';
 import { suite, test } from 'mocha-typescript';
-import { MockRepository } from 'sn-client-js/dist/test/Mocks';
+import { LoginState } from 'sn-client-js/dist/src/Authentication';
+import { MockRepository, MockTokenFactory } from 'sn-client-js/dist/test/Mocks';
+import { setTimeout } from 'timers';
 import { AddGoogleAuth, GoogleAuthenticationOptions, GoogleOauthProvider } from '../src';
 
 @suite('GoogleOauthProvider')
@@ -27,7 +29,6 @@ export class GoogleOauthProviderTests {
             ClientId: ''
         });
         AddGoogleAuth(repo, config);
-        expect(typeof repo.Authentication.GetOauthProvider(GoogleOauthProvider).GetGoogleTokenFromUri).to.be.eq('function');
         const l = { hash: '#id_token=testToken&prop=foo&bar=baz' } as Location;
         const token = repo.Authentication.GetOauthProvider(GoogleOauthProvider).GetGoogleTokenFromUri(l);
         expect(token).to.be.eq('testToken');
@@ -40,10 +41,29 @@ export class GoogleOauthProviderTests {
             ClientId: ''
         });
         AddGoogleAuth(repo, config);
-        expect(typeof repo.Authentication.GetOauthProvider(GoogleOauthProvider).GetGoogleTokenFromUri).to.be.eq('function');
         const l = { hash: '#access_token=testToken&prop=foo&bar=baz' } as Location;
         const token = repo.Authentication.GetOauthProvider(GoogleOauthProvider).GetGoogleTokenFromUri(l);
         expect(token).to.be.eq(null);
+    }
+
+    @test
+    public 'Login(token) should trigger an Ajax request'(done: MochaDone) {
+        const repo = new MockRepository();
+        repo.Authentication.StateSubject.next(LoginState.Unauthenticated);
+        const config = new GoogleAuthenticationOptions({
+            ClientId: ''
+        });
+        AddGoogleAuth(repo, config);
+        repo.HttpProviderRef.AddResponse(MockTokenFactory.CreateValid().toString());
+        repo.Authentication.GetOauthProvider(GoogleOauthProvider)
+            .Login('testGoogleToken');
+
+        setTimeout(() => {
+            expect(repo.HttpProviderRef.RequestLog[0].Options.url).to.be.eq('http://example.origin.com/sn-oauth/login?provider=google');
+            expect(repo.HttpProviderRef.RequestLog[0].Options.body).to.be.eq('{"token":"testGoogleToken"}');
+            done();
+        }, 1);
+
     }
 
 }
