@@ -24,8 +24,8 @@ export class GoogleAuthenticationOptionsTests {
         });
         expect(options).to.be.instanceof(GoogleAuthenticationOptions);
         expect(options.ClientId).to.be.eq(exampleClientId);
-        expect(options.RedirectUri).to.be.eq(exampleOrigin);
-        expect(options.Scope).to.be.deep.eq(['userinfo.email', 'userinfo.profile']);
+        expect(options.RedirectUri).to.be.eq(exampleOrigin + '/');
+        expect(options.Scope).to.be.deep.eq(['email', 'profile']);
     }
 
     @test
