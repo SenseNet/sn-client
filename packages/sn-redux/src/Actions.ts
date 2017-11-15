@@ -727,6 +727,13 @@ export module Actions {
         message: (error.status === 403) ? 'The username or the password is not valid!' : error.message
     })
     /**
+      * Action creator for login a user to a sensenet portal with her google account.
+      * @returns {Object} Returns a redux action.
+    */
+    export const UserLoginGoogle = () => ({
+        type: 'USER_LOGIN_GOOGLE'
+    })
+    /**
       * Action creator for logout a user from a sensenet portal.
       * @returns {Object} Returns a redux action.
     */

@@ -1,8 +1,8 @@
 import { Actions } from './Actions';
 import { Reducers } from './Reducers';
-
 import { combineEpics } from 'redux-observable';
 import { Repository, ContentTypes, Collection, Authentication } from 'sn-client-js';
+import { GoogleOauthProvider } from 'sn-client-auth-google';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/catch'
@@ -194,8 +194,8 @@ export module Epics {
     export const deleteBatchEpic = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
         return action$.ofType('DELETE_BATCH_REQUEST')
             .mergeMap(action => {
-                let contentItems = Object.keys(action.contentItems).map(id => { 
-                    return dependencies.repository.HandleLoadedContent(action.contentItems[id], action.contentItems.__contentType); 
+                let contentItems = Object.keys(action.contentItems).map(id => {
+                    return dependencies.repository.HandleLoadedContent(action.contentItems[id], action.contentItems.__contentType);
                 });
                 return dependencies.repository.DeleteBatch(contentItems, action.permanently)
                     .map((response) => {
@@ -211,8 +211,8 @@ export module Epics {
     export const copyBatchEpic = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
         return action$.ofType('COPY_BATCH_REQUEST')
             .mergeMap(action => {
-                let contentItems = Object.keys(action.contentItems).map(id => { 
-                    return dependencies.repository.HandleLoadedContent(action.contentItems[id], action.contentItems.__contentType); 
+                let contentItems = Object.keys(action.contentItems).map(id => {
+                    return dependencies.repository.HandleLoadedContent(action.contentItems[id], action.contentItems.__contentType);
                 });
                 return dependencies.repository.CopyBatch(contentItems, action.path)
                     .map((response) => {
@@ -228,8 +228,8 @@ export module Epics {
     export const moveBatchEpic = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
         return action$.ofType('MOVE_BATCH_REQUEST')
             .mergeMap(action => {
-                let contentItems = Object.keys(action.contentItems).map(id => { 
-                    return dependencies.repository.HandleLoadedContent(action.contentItems[id], action.contentItems.__contentType); 
+                let contentItems = Object.keys(action.contentItems).map(id => {
+                    return dependencies.repository.HandleLoadedContent(action.contentItems[id], action.contentItems.__contentType);
                 });
                 return dependencies.repository.MoveBatch(contentItems, action.path)
                     .map((response) => {
@@ -361,14 +361,25 @@ export module Epics {
         return action$.ofType('USER_LOGIN_REQUEST')
             .mergeMap(action => {
                 return dependencies.repository.Authentication.Login(action.userName, action.password)
-                    // .combineLatest(dependencies.repository.GetCurrentUser().skipWhile(u => u.Name === 'Visitor'))
-                    // .skipWhile(u => u instanceof ContentTypes.User)
-                    // .first()
                     .map(result => {
                         return result ?
                             Actions.UserLoginBuffer(result)
                             :
                             Actions.UserLoginFailure({ message: 'Failed to log in.' });
+                    })
+                    .catch(error => Observable.of(Actions.UserLoginFailure(error)))
+            })
+    }
+    /**
+     * Epic to login a user to a sensenet portal. It is related to three redux actions, returns ```LoginUser``` action and sends the response to the
+     * ```LoginUserSuccess``` action if the ajax request ended successfully or catches the error if the request failed and sends the error message to the ```LoginUserFailure``` action.
+     */
+    export const userLoginGoogleEpic = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
+        return action$.ofType('USER_LOGIN_GOOGLE')
+            .mergeMap(action => {
+                return Observable.of(dependencies.repository.Authentication.GetOauthProvider(GoogleOauthProvider).Login())
+                    .map(result => {
+                        return Actions.UserLoginBuffer(true)
                     })
                     .catch(error => Observable.of(Actions.UserLoginFailure(error)))
             })
@@ -448,6 +459,7 @@ export module Epics {
         forceundocheckoutContentEpic,
         restoreversionContentEpic,
         userLoginEpic,
+        userLoginGoogleEpic,
         userLogoutEpic,
         checkLoginStateEpic,
         getContentActions,

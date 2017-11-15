@@ -595,6 +595,14 @@ describe('Actions', () => {
             expect(Actions.UserLoginBuffer(true)).to.deep.equal(expectedAction)
         });
     });
+    describe('UserLoginGoogle', () => {
+        it('should create an action to a user login with google', () => {
+            const expectedAction = {
+                type: 'USER_LOGIN_GOOGLE'
+            }
+            expect(Actions.UserLoginGoogle()).to.deep.equal(expectedAction)
+        });
+    });
     describe('UserLogout', () => {
         it('should create an action to a user logout request', () => {
             const expectedAction = {
