@@ -2,7 +2,6 @@ import { expect } from 'chai';
 import { suite, test } from 'mocha-typescript';
 import { LoginState } from 'sn-client-js/dist/src/Authentication';
 import { MockRepository, MockTokenFactory } from 'sn-client-js/dist/test/Mocks';
-import { setTimeout } from 'timers';
 import { AddGoogleAuth, GoogleAuthenticationOptions, GoogleOauthProvider } from '../src';
 
 @suite('GoogleOauthProvider')
@@ -47,7 +46,7 @@ export class GoogleOauthProviderTests {
     }
 
     @test
-    public 'Login(token) should trigger an Ajax request'(done: MochaDone) {
+    public async 'Login(token) should trigger an Ajax request'() {
         const repo = new MockRepository();
         repo.Authentication.StateSubject.next(LoginState.Unauthenticated);
         const config = new GoogleAuthenticationOptions({
@@ -55,15 +54,28 @@ export class GoogleOauthProviderTests {
         });
         AddGoogleAuth(repo, config);
         repo.HttpProviderRef.AddResponse(MockTokenFactory.CreateValid().toString());
-        repo.Authentication.GetOauthProvider(GoogleOauthProvider)
+        await repo.Authentication.GetOauthProvider(GoogleOauthProvider)
             .Login('testGoogleToken');
 
-        setTimeout(() => {
-            expect(repo.HttpProviderRef.RequestLog[0].Options.url).to.be.eq('http://example.origin.com/sn-oauth/login?provider=google');
-            expect(repo.HttpProviderRef.RequestLog[0].Options.body).to.be.eq('{"token":"testGoogleToken"}');
-            done();
-        }, 1);
+        expect(repo.HttpProviderRef.RequestLog[0].Options.url).to.be.eq('http://example.origin.com/sn-oauth/login?provider=google');
+        expect(repo.HttpProviderRef.RequestLog[0].Options.body).to.be.eq('{"token":"testGoogleToken"}');
+    }
 
+    @test
+    public 'Login(token) should throw on Ajax error'(done) {
+        const repo = new MockRepository();
+        repo.Authentication.StateSubject.next(LoginState.Unauthenticated);
+        const config = new GoogleAuthenticationOptions({
+            ClientId: ''
+        });
+        AddGoogleAuth(repo, config);
+        repo.HttpProviderRef.AddError(':(');
+        repo.Authentication.GetOauthProvider(GoogleOauthProvider).Login('testGoogleToken').then(() => {
+            done('Error should be thrown');
+        }).catch((err) => {
+            expect(err).to.be.eq(':(');
+            done();
+        });
     }
 
 }
