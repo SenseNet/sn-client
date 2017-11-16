@@ -79,6 +79,7 @@
   },
   "typings": "./dist/src/index.d.ts",
   "devDependencies": {
-    "@types/chai": "^4.0.4"
+    "@types/chai": "^4.0.4",
+    "jsdom": "^11.3.0"
   }
 }
