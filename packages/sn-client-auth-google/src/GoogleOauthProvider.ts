@@ -82,18 +82,22 @@ export class GoogleOauthProvider implements IOauthProvider {
         });
     }
 
+    private _iframe: HTMLIFrameElement;
+
     /**
      * Tries to retrieve an id_token w/o user interaction
      * @param loginUrl the login Url
      * @returns {Promise<string>} A promise that will be resolved with a token or rejected if cannot get the Token silently.
      */
     private async getTokenSilent(loginUrl: string): Promise<string> {
-        const iframe = window.document.createElement('iframe');
-        iframe.style.display = 'none';
-        iframe.setAttribute('sandbox', 'allow-same-origin');
+
         const token = await new Promise<string>((resolve, reject) => {
-            iframe.onload = async (ev) => {
-                try {
+            if (!this._iframe) {
+                this._iframe = window.document.createElement('iframe');
+                this._iframe.style.display = 'none';
+                this._iframe.setAttribute('sandbox', 'allow-same-origin');
+
+                this._iframe.onload = async (ev) => {
                     let location: Location | undefined;
                     await Retrier.Create(async () => {
                         try {
@@ -103,19 +107,17 @@ export class GoogleOauthProvider implements IOauthProvider {
                             return false;
                         }
                     }).Setup({
-                        TimeoutMs: 1000
+                        TimeoutMs: 500
                     }).Run();
 
                     const iframeToken = location && this.GetGoogleTokenFromUri(location);
                     iframeToken ? resolve(iframeToken) : reject(Error('Token not found'));
-                    window.document.body.removeChild(iframe);
-                } catch (error) {
-                    reject(error);
-                    window.document.body.removeChild(iframe);
-                }
-            };
-            iframe.src = loginUrl;
-            window.document.body.appendChild(iframe);
+                    window.document.body.removeChild(this._iframe);
+                    this._iframe = undefined as any;
+                };
+            }
+            this._iframe.src = loginUrl;
+            window.document.body.appendChild(this._iframe);
         });
 
         return token;

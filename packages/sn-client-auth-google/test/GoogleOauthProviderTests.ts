@@ -4,6 +4,8 @@ import { LoginState } from 'sn-client-js/dist/src/Authentication';
 import { MockRepository, MockTokenFactory } from 'sn-client-js/dist/test/Mocks';
 import { AddGoogleAuth, GoogleAuthenticationOptions, GoogleOauthProvider } from '../src';
 
+import { JSDOM } from 'jsdom';
+
 @suite('GoogleOauthProvider')
 export class GoogleOauthProviderTests {
 
@@ -94,7 +96,7 @@ export class GoogleOauthProviderTests {
     }
 
     @test
-    public 'GetToken() should try to get the token silently'(done: MochaDone) {
+    public 'GetToken() should try to retrieve the token silently'(done: MochaDone) {
         const repo = new MockRepository();
         repo.Authentication.StateSubject.next(LoginState.Unauthenticated);
         const config = new GoogleAuthenticationOptions({
@@ -109,7 +111,7 @@ export class GoogleOauthProviderTests {
     }
 
     @test
-    public 'GetToken() should try to get the token with prompt when failed to create it silently'(done: MochaDone) {
+    public 'GetToken() should try to get the token with prompt when failed to retrieve it silently'(done: MochaDone) {
         const repo = new MockRepository();
         repo.Authentication.StateSubject.next(LoginState.Unauthenticated);
         const config = new GoogleAuthenticationOptions({
@@ -121,6 +123,131 @@ export class GoogleOauthProviderTests {
         // tslint:disable-next-line:no-string-literal
         googleProvider['getTokenFromPrompt'] = () => done();
         googleProvider.Login();
+    }
+
+    @test
+    public 'getTokenSilent() should fail when unable to get the Token from the URL'(done: MochaDone) {
+        const repo = new MockRepository();
+        repo.Authentication.StateSubject.next(LoginState.Unauthenticated);
+        const config = new GoogleAuthenticationOptions({
+            ClientId: '',
+            RedirectUri: 'https://localhost'
+        });
+        AddGoogleAuth(repo, config);
+        (global as any).window = {
+            document: new JSDOM()
+        };
+
+        (window.document as any).createElement = (name: string) => {
+            expect(name).to.be.eq('iframe');
+            return {
+                style: {},
+                setAttribute: (attrName, attrValue) => {
+                    expect(attrName).to.be.eq('sandbox');
+                    expect(attrValue).to.be.eq('allow-same-origin');
+                },
+                onload: null
+            };
+        };
+        (window.document as any).body = {appendChild: (...args) => { /** */ }, removeChild: (...args) => { /** */}};
+        const googleProvider = repo.Authentication.GetOauthProvider(GoogleOauthProvider);
+        // tslint:disable-next-line:no-string-literal
+        googleProvider['getTokenSilent'](googleProvider.GetGoogleLoginUrl()).then((result) => {
+            done('Should have failed');
+        }).catch((err) => {
+            expect(err.message).to.be.eq('Token not found');
+            done();
+        });
+
+        // tslint:disable-next-line:no-string-literal
+        googleProvider['_iframe'].onload({} as any);
+    }
+
+    @test
+    public 'getTokenSilent() should fail when no Token found'(done: MochaDone) {
+        const repo = new MockRepository();
+        repo.Authentication.StateSubject.next(LoginState.Unauthenticated);
+        const config = new GoogleAuthenticationOptions({
+            ClientId: '',
+            RedirectUri: 'https://localhost'
+        });
+        AddGoogleAuth(repo, config);
+        (global as any).window = {
+            document: new JSDOM()
+        };
+
+        (window.document as any).createElement = (name: string) => {
+            expect(name).to.be.eq('iframe');
+            return {
+                style: {},
+                setAttribute: (attrName, attrValue) => {
+                    expect(attrName).to.be.eq('sandbox');
+                    expect(attrValue).to.be.eq('allow-same-origin');
+                },
+                onload: null
+            };
+        };
+        (window.document as any).body = {appendChild: (...args) => { /** */ }, removeChild: (...args) => { /** */}};
+        const googleProvider = repo.Authentication.GetOauthProvider(GoogleOauthProvider);
+        // tslint:disable-next-line:no-string-literal
+        googleProvider['getTokenSilent'](googleProvider.GetGoogleLoginUrl()).then((result) => {
+            done('Should have failed');
+        }).catch((err) => {
+            expect(err.message).to.be.eq('Token not found');
+            done();
+        });
+
+        // tslint:disable-next-line:no-string-literal
+        googleProvider['_iframe'].onload({} as any);
+    }
+
+    @test
+    public 'getTokenSilent() should return token and clean up iframe'(done: MochaDone) {
+
+        const repo = new MockRepository();
+        repo.Authentication.StateSubject.next(LoginState.Unauthenticated);
+        const config = new GoogleAuthenticationOptions({
+            ClientId: '',
+            RedirectUri: 'https://localhost'
+        });
+        AddGoogleAuth(repo, config);
+        (global as any).window = {
+            document: new JSDOM()
+        };
+
+        (window.document as any).createElement = (name: string) => {
+            expect(name).to.be.eq('iframe');
+            return {
+                style: {},
+                setAttribute: (attrName, attrValue) => {
+                    expect(attrName).to.be.eq('sandbox');
+                    expect(attrValue).to.be.eq('allow-same-origin');
+                },
+                onload: null
+            };
+        };
+
+        let hasIframeRemoved = false;
+        (window.document as any).body = {appendChild: (...args) => { /** */ }, removeChild: (...args) => {  hasIframeRemoved = true; }};
+        const googleProvider = repo.Authentication.GetOauthProvider(GoogleOauthProvider);
+        // tslint:disable-next-line:no-string-literal
+        googleProvider['getTokenSilent'](googleProvider.GetGoogleLoginUrl()).then((result) => {
+            // tslint:disable-next-line:no-string-literal
+            expect(googleProvider['_iframe']).to.be.eq(undefined);
+            expect(hasIframeRemoved).to.be.eq(true);
+            done();
+        }).catch((err) => done(err));
+
+        // tslint:disable-next-line:no-string-literal
+        googleProvider['_iframe'].onload({
+            srcElement: {
+                contentDocument: {
+                    location: {
+                        hash: '#id_token=testToken&foo=bar&param2=prop2'
+                    }
+                }
+            }
+        } as any);
     }
 
 }
