@@ -250,4 +250,93 @@ export class GoogleOauthProviderTests {
         } as any);
     }
 
+    @test public 'getTokenFromPrompt should return the valid token object and close popup'(done: MochaDone) {
+        const repo = new MockRepository();
+        repo.Authentication.StateSubject.next(LoginState.Unauthenticated);
+        const config = new GoogleAuthenticationOptions({
+            ClientId: '',
+            RedirectUri: 'https://localhost'
+        });
+        AddGoogleAuth(repo, config);
+        const googleProvider = repo.Authentication.GetOauthProvider(GoogleOauthProvider);
+
+        const popupLocationHref = googleProvider.GetGoogleLoginUrl();
+        let isPopupClosed = false;
+
+        (global as any).window = {
+            open: () => {
+                return {
+                    window: {
+                        location: {
+                            href: popupLocationHref,
+                            hash: '#id_token=testIdToken'
+                        }
+                    },
+                    close: () => {
+                        isPopupClosed = true;
+                    }
+                };
+            }
+        };
+
+        setTimeout(() => {
+            // tslint:disable-next-line:no-string-literal
+            (googleProvider['_popup'] as any).window.location.href = 'https://localhost:8080#acc_token=invalid';
+
+        }, 55);
+
+        setTimeout(() => {
+            // tslint:disable-next-line:no-string-literal
+            (googleProvider['_popup'] as any).window.location.href = 'https://localhost:8080#id_token=testIdToken';
+
+        }, 250);
+        // tslint:disable-next-line:no-string-literal
+        googleProvider['getTokenFromPrompt'](popupLocationHref)
+            .then((token) => {
+                expect(token).to.be.eq('testIdToken');
+                expect(isPopupClosed).to.be.eq(true);
+                done();
+            }).catch((err) => done(err));
+    }
+
+    @test public 'getTokenFromPrompt should fail when a popup has been closed before getting the token'(done: MochaDone) {
+        const repo = new MockRepository();
+        repo.Authentication.StateSubject.next(LoginState.Unauthenticated);
+        const config = new GoogleAuthenticationOptions({
+            ClientId: '',
+            RedirectUri: 'https://localhost'
+        });
+        AddGoogleAuth(repo, config);
+        const googleProvider = repo.Authentication.GetOauthProvider(GoogleOauthProvider);
+
+        const popupLocationHref = googleProvider.GetGoogleLoginUrl();
+
+        (global as any).window = {
+            open: () => {
+                return {
+                    window: {
+                        location: {
+                            href: popupLocationHref,
+                            hash: '#id_token=testIdToken'
+                        }
+                    },
+                    close: () => {
+                        /** */
+                    }
+                };
+            }
+        };
+
+        setTimeout(() => {
+            // tslint:disable-next-line:no-string-literal
+            (googleProvider['_popup'] as any) = null;
+
+        }, 250);
+        // tslint:disable-next-line:no-string-literal
+        googleProvider['getTokenFromPrompt'](popupLocationHref)
+            .then(() => {
+                done('should have failed');
+            }).catch((err) => done());
+    }
+
 }
