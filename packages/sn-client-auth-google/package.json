@@ -1,6 +1,6 @@
 {
   "name": "sn-client-auth-google",
-  "version": "1.0.0-development.1",
+  "version": "1.0.0-rc.1",
   "description": "Client-side Google authentication provider for sensenet ECM",
   "main": "dist/src/index.js",
   "scripts": {
@@ -66,7 +66,7 @@
     "mocha-typescript": "^1.1.12",
     "rimraf": "^2.6.2",
     "sensenet-kfi-cz-conventional-changelog": "^1.0.0",
-    "sn-client-js": "^3.0.0-development.6",
+    "sn-client-js": "^3.0.0-rc.1",
     "tslint": "^5.8.0",
     "tslint-consistent-codestyle": "^1.9.0",
     "typedoc": "^0.9.0",
