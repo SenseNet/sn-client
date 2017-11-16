@@ -5,6 +5,7 @@ import { MockRepository, MockTokenFactory } from 'sn-client-js/dist/test/Mocks';
 import { AddGoogleAuth, GoogleAuthenticationOptions, GoogleOauthProvider } from '../src';
 
 import { JSDOM } from 'jsdom';
+// tslint:disable:no-string-literal
 
 @suite('GoogleOauthProvider')
 export class GoogleOauthProviderTests {
@@ -105,7 +106,6 @@ export class GoogleOauthProviderTests {
         AddGoogleAuth(repo, config);
 
         const googleProvider = repo.Authentication.GetOauthProvider(GoogleOauthProvider);
-        // tslint:disable-next-line:no-string-literal
         googleProvider['getTokenSilent'] = () => done();
         googleProvider.Login();
     }
@@ -120,9 +120,28 @@ export class GoogleOauthProviderTests {
         AddGoogleAuth(repo, config);
 
         const googleProvider = repo.Authentication.GetOauthProvider(GoogleOauthProvider);
-        // tslint:disable-next-line:no-string-literal
         googleProvider['getTokenFromPrompt'] = () => done();
         googleProvider.Login();
+    }
+
+    @test
+    public 'getTokenSilent() should throw if an iframe is already created'(done: MochaDone) {
+        const repo = new MockRepository();
+        repo.Authentication.StateSubject.next(LoginState.Unauthenticated);
+        const config = new GoogleAuthenticationOptions({
+            ClientId: '',
+            RedirectUri: 'https://localhost'
+        });
+        AddGoogleAuth(repo, config);
+        const googleProvider = repo.Authentication.GetOauthProvider(GoogleOauthProvider);
+        googleProvider['_iframe'] = {} as any;
+        googleProvider['getTokenSilent']('').then((res) => {
+            done('Should have fail');
+        }).catch((err) => {
+            expect(err.message).to.be.eq('Getting token already in progress');
+            done();
+        });
+
     }
 
     @test
@@ -151,7 +170,6 @@ export class GoogleOauthProviderTests {
         };
         (window.document as any).body = {appendChild: (...args) => { /** */ }, removeChild: (...args) => { /** */}};
         const googleProvider = repo.Authentication.GetOauthProvider(GoogleOauthProvider);
-        // tslint:disable-next-line:no-string-literal
         googleProvider['getTokenSilent'](googleProvider.GetGoogleLoginUrl()).then((result) => {
             done('Should have failed');
         }).catch((err) => {
@@ -159,7 +177,6 @@ export class GoogleOauthProviderTests {
             done();
         });
 
-        // tslint:disable-next-line:no-string-literal
         googleProvider['_iframe'].onload({} as any);
     }
 
@@ -189,7 +206,6 @@ export class GoogleOauthProviderTests {
         };
         (window.document as any).body = {appendChild: (...args) => { /** */ }, removeChild: (...args) => { /** */}};
         const googleProvider = repo.Authentication.GetOauthProvider(GoogleOauthProvider);
-        // tslint:disable-next-line:no-string-literal
         googleProvider['getTokenSilent'](googleProvider.GetGoogleLoginUrl()).then((result) => {
             done('Should have failed');
         }).catch((err) => {
@@ -197,7 +213,6 @@ export class GoogleOauthProviderTests {
             done();
         });
 
-        // tslint:disable-next-line:no-string-literal
         googleProvider['_iframe'].onload({} as any);
     }
 
@@ -230,15 +245,12 @@ export class GoogleOauthProviderTests {
         let hasIframeRemoved = false;
         (window.document as any).body = {appendChild: (...args) => { /** */ }, removeChild: (...args) => {  hasIframeRemoved = true; }};
         const googleProvider = repo.Authentication.GetOauthProvider(GoogleOauthProvider);
-        // tslint:disable-next-line:no-string-literal
         googleProvider['getTokenSilent'](googleProvider.GetGoogleLoginUrl()).then((result) => {
-            // tslint:disable-next-line:no-string-literal
             expect(googleProvider['_iframe']).to.be.eq(undefined);
             expect(hasIframeRemoved).to.be.eq(true);
             done();
         }).catch((err) => done(err));
 
-        // tslint:disable-next-line:no-string-literal
         googleProvider['_iframe'].onload({
             srcElement: {
                 contentDocument: {
@@ -269,7 +281,7 @@ export class GoogleOauthProviderTests {
                     window: {
                         location: {
                             href: popupLocationHref,
-                            hash: '#id_token=testIdToken'
+                            hash: '#access_token=testIdToken'
                         }
                     },
                     close: () => {
@@ -280,17 +292,15 @@ export class GoogleOauthProviderTests {
         };
 
         setTimeout(() => {
-            // tslint:disable-next-line:no-string-literal
-            (googleProvider['_popup'] as any).window.location.href = 'https://localhost:8080#acc_token=invalid';
+            (googleProvider['_popup'] as any).window.location.href = 'https://localhost:8080#access_token=invalid';
 
-        }, 55);
+        }, 100);
 
         setTimeout(() => {
-            // tslint:disable-next-line:no-string-literal
             (googleProvider['_popup'] as any).window.location.href = 'https://localhost:8080#id_token=testIdToken';
+            (googleProvider['_popup'] as any).window.location.hash = '#id_token=testIdToken';
 
-        }, 250);
-        // tslint:disable-next-line:no-string-literal
+        }, 200);
         googleProvider['getTokenFromPrompt'](popupLocationHref)
             .then((token) => {
                 expect(token).to.be.eq('testIdToken');
@@ -328,11 +338,9 @@ export class GoogleOauthProviderTests {
         };
 
         setTimeout(() => {
-            // tslint:disable-next-line:no-string-literal
             (googleProvider['_popup'] as any) = null;
 
         }, 250);
-        // tslint:disable-next-line:no-string-literal
         googleProvider['getTokenFromPrompt'](popupLocationHref)
             .then(() => {
                 done('should have failed');

@@ -91,31 +91,33 @@ export class GoogleOauthProvider implements IOauthProvider {
      */
     private async getTokenSilent(loginUrl: string): Promise<string> {
 
+        if (this._iframe) {
+            throw Error('Getting token already in progress');
+        }
+
         const token = await new Promise<string>((resolve, reject) => {
-            if (!this._iframe) {
-                this._iframe = window.document.createElement('iframe');
-                this._iframe.style.display = 'none';
-                this._iframe.setAttribute('sandbox', 'allow-same-origin');
+            this._iframe = window.document.createElement('iframe');
+            this._iframe.style.display = 'none';
+            this._iframe.setAttribute('sandbox', 'allow-same-origin');
 
-                this._iframe.onload = async (ev) => {
-                    let location: Location | undefined;
-                    await Retrier.Create(async () => {
-                        try {
-                            location = (ev.srcElement as HTMLIFrameElement).contentDocument.location;
-                            return true;
-                        } catch (error) {
-                            return false;
-                        }
-                    }).Setup({
-                        TimeoutMs: 500
-                    }).Run();
+            this._iframe.onload = async (ev) => {
+                let location: Location | undefined;
+                await Retrier.Create(async () => {
+                    try {
+                        location = (ev.srcElement as HTMLIFrameElement).contentDocument.location;
+                        return true;
+                    } catch (error) {
+                        return false;
+                    }
+                }).Setup({
+                    TimeoutMs: 500
+                }).Run();
 
-                    const iframeToken = location && this.GetGoogleTokenFromUri(location);
-                    iframeToken ? resolve(iframeToken) : reject(Error('Token not found'));
-                    window.document.body.removeChild(this._iframe);
-                    this._iframe = undefined as any;
-                };
-            }
+                const iframeToken = location && this.GetGoogleTokenFromUri(location);
+                iframeToken ? resolve(iframeToken) : reject(Error('Token not found'));
+                window.document.body.removeChild(this._iframe);
+                this._iframe = undefined as any;
+            };
             this._iframe.src = loginUrl;
             window.document.body.appendChild(this._iframe);
         });
