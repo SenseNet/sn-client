@@ -34,17 +34,19 @@ export class GoogleOauthProvider implements IOauthProvider {
      * @param { string? } token If provided, the sensenet Oauth Login endpoint will be called with this token. Otherwise it will try to get it with GetToken()
      * @returns a Promise that will be resolved after the Login request
      */
-    public async Login(token?: string): Promise<any> {
+    public async Login(token?: string): Promise<boolean> {
         if (!token) {
             token = await this.GetToken();
         }
-        const loginResponse = await this._repository.HttpProviderRef.Ajax(Authentication.LoginResponse, {
-            url: joinPaths(this._repository.Config.RepositoryUrl, '/sn-oauth/login?provider=google'),
-            method: 'POST',
-            body: JSON.stringify({ token })
-        }).toPromise();
+        const loginResponse = await new Promise<Authentication.LoginResponse>((resolve, reject) => {
+            this._repository.HttpProviderRef.Ajax(Authentication.LoginResponse, {
+                url: joinPaths(this._repository.Config.RepositoryUrl, '/sn-oauth/login?provider=google'),
+                method: 'POST',
+                body: JSON.stringify({ token })
+            }).subscribe((res) => resolve(res), (err) => reject(err));
+        });
 
-        this._repository.Authentication.HandleAuthenticationResponse(loginResponse);
+        return this._repository.Authentication.HandleAuthenticationResponse(loginResponse);
     }
 
     private _popup: Window | null;
