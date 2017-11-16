@@ -78,4 +78,49 @@ export class GoogleOauthProviderTests {
         });
     }
 
+    @test
+    public 'Login() without specified Token should trigger the GetToken()'(done: MochaDone) {
+        const repo = new MockRepository();
+        repo.Authentication.StateSubject.next(LoginState.Unauthenticated);
+        const config = new GoogleAuthenticationOptions({
+            ClientId: ''
+        });
+        AddGoogleAuth(repo, config);
+
+        const googleProvider = repo.Authentication.GetOauthProvider(GoogleOauthProvider);
+        googleProvider.GetToken = () => done();
+
+        googleProvider.Login();
+    }
+
+    @test
+    public 'GetToken() should try to get the token silently'(done: MochaDone) {
+        const repo = new MockRepository();
+        repo.Authentication.StateSubject.next(LoginState.Unauthenticated);
+        const config = new GoogleAuthenticationOptions({
+            ClientId: ''
+        });
+        AddGoogleAuth(repo, config);
+
+        const googleProvider = repo.Authentication.GetOauthProvider(GoogleOauthProvider);
+        // tslint:disable-next-line:no-string-literal
+        googleProvider['getTokenSilent'] = () => done();
+        googleProvider.Login();
+    }
+
+    @test
+    public 'GetToken() should try to get the token with prompt when failed to create it silently'(done: MochaDone) {
+        const repo = new MockRepository();
+        repo.Authentication.StateSubject.next(LoginState.Unauthenticated);
+        const config = new GoogleAuthenticationOptions({
+            ClientId: ''
+        });
+        AddGoogleAuth(repo, config);
+
+        const googleProvider = repo.Authentication.GetOauthProvider(GoogleOauthProvider);
+        // tslint:disable-next-line:no-string-literal
+        googleProvider['getTokenFromPrompt'] = () => done();
+        googleProvider.Login();
+    }
+
 }
