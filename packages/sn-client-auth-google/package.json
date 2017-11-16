@@ -16,6 +16,13 @@
     "typedoc": "./node_modules/.bin/typedoc --mode modules --tsconfig ./tsconfig.typedoc.json --out documentation --excludePrivate --theme default --readme readme.md ./src",
     "publish:development": "npm t && npm run typedoc && npm publish --tag development"
   },
+  "files": [
+    "dist",
+    "src",
+    "test",
+    "documentation",
+    "coverage"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/SenseNet/sn-client-auth-google.git"
@@ -59,7 +66,7 @@
     "mocha-typescript": "^1.1.12",
     "rimraf": "^2.6.2",
     "sensenet-kfi-cz-conventional-changelog": "^1.0.0",
-    "sn-client-js": "^3.0.0-development.5",
+    "sn-client-js": "^3.0.0-development.6",
     "tslint": "^5.8.0",
     "tslint-consistent-codestyle": "^1.9.0",
     "typedoc": "^0.9.0",
