@@ -25,9 +25,9 @@ export module DMSActions {
         type: 'SET_EDITED_ID',
         id
     })
-    export const OpenActionMenu = (actions, id, title, position) => ({
+    export const OpenActionMenu = (actions, id, title, position, customItems?) => ({
         type: 'OPEN_ACTIONMENU',
-        actions,
+        actions: customItems && customItems.length > 0 ? customItems : actions,
         id,
         title,
         position

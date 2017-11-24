@@ -9,6 +9,7 @@ import {
   withRouter
 } from 'react-router-dom'
 import { Reducers, Actions } from 'sn-redux'
+import { Authentication } from 'sn-client-js'
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import Registration from './pages/Registration'
@@ -33,6 +34,7 @@ interface ISensenetProps {
   repository,
   history,
   loginState,
+  loggedinUser,
   loginError: string,
   registrationError: string,
   login: Function,
@@ -64,7 +66,7 @@ class Sensenet extends React.Component<ISensenetProps, { isAuthenticated: boolea
             exact
             path='/'
             render={routerProps => {
-              const status = this.props.loginState !== 2;
+              const status = this.props.loginState !== Authentication.LoginState.Authenticated;
               return status ?
                 <Redirect key='login' to='/login' />
                 : <Dashboard {...routerProps} />;
@@ -73,7 +75,7 @@ class Sensenet extends React.Component<ISensenetProps, { isAuthenticated: boolea
           <Route
             path='/login'
             render={routerProps => {
-              const status = this.props.loginState !== 2;
+              const status = this.props.loginState !== Authentication.LoginState.Authenticated;
               return status ?
                 <Login login={this.props.login} params={{ error: this.props.loginError }} clear={this.props.clearRegistration} />
                 : <Redirect key='dashboard' to='/' />
@@ -84,7 +86,7 @@ class Sensenet extends React.Component<ISensenetProps, { isAuthenticated: boolea
             render={() => <Registration registration={this.props.registration} history={history} verify={this.props.recaptchaCallback} />} />
           <Route path='/:id'
             render={routerProps => {
-              const status = this.props.loginState !== 2;
+              const status = this.props.loginState !== Authentication.LoginState.Authenticated;
               return status ?
                 <Redirect key='login' to='/login' />
                 : <Dashboard {...routerProps} />;

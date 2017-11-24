@@ -1,12 +1,12 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { Actions } from 'sn-redux'
-import { DMSActions } from '../Actions'
-import { DMSReducers } from '../Reducers'
+import { Actions, Reducers } from 'sn-redux'
+import { DMSActions } from '../../Actions'
+import { DMSReducers } from '../../Reducers'
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 import Icon from 'material-ui/Icon';
 
-import { icons } from '../assets/icons'
+import { icons } from '../../assets/icons'
 
 const styles = {
     actionMenuList: {
@@ -49,16 +49,37 @@ const styles = {
     actionIcon: {
         marginRight: 0
     },
+    fileinput: {
+        display: 'none'
+    },
+    uploadContainer: {
+        width: '100%'
+    },
+    uploadLabel: {
+        display: 'block',
+        width: '100%'
+    },
+    uploadText: {
+        display: 'inline-block',
+        verticalAlign: 'middle'
+    },
+    uploadIcon: {
+        verticalAlign: 'middle'
+    }
 }
 
 interface IActionListProps {
     actions,
     id,
+    selected,
+    currentContent,
     setEdited: Function,
     handleActionMenuClose: Function,
     handleMouseDown: Function,
     handleMouseUp: Function,
-    clearSelection: Function
+    clearSelection: Function,
+    deleteBatch: Function,
+    uploadContent: Function
 }
 
 interface IActionListState {
@@ -98,13 +119,26 @@ class ActionList extends React.Component<IActionListProps, IActionListState> {
                 this.props.handleActionMenuClose()
                 this.props.clearSelection()
                 break
+            case 'DeleteBatch':
+                this.props.handleActionMenuClose()
+                this.props.clearSelection()
+                this.props.deleteBatch(this.props.selected, false)
+                break
             default:
                 console.log(`${action} is clicked`)
                 this.props.handleActionMenuClose()
                 break
         }
     }
+    handleFileUpload(e){
+        const fileList = e.target.files
+        const files = Array.from(fileList)
+        files.map(file => {
+            this.props.uploadContent(this.props.currentContent, file, undefined, undefined, null, undefined, 'DMSListItem')
+        })
+    }
     render() {
+
         return <List
             id='actionMenu'
             role='menu'
@@ -112,6 +146,30 @@ class ActionList extends React.Component<IActionListProps, IActionListState> {
         >
             {this.props.actions.map(action => {
                 const isHovered = this.isHovered(action.Name);
+                let inner = null
+                if (action.Name === 'Upload') {
+                    inner = <div style={styles.uploadContainer}>
+                        <input
+                            style={styles.fileinput}
+                            id='file'
+                            multiple
+                            type='file'
+                            onChange={event => this.handleFileUpload(event)} />
+                        <label htmlFor='file' style={styles.uploadLabel}>
+                            <ListItemIcon style={{ ...styles.actionIcon, ...styles.uploadIcon }}>
+                                <Icon color='accent'>{
+                                    action.Icon === 'Application' ?
+                                        icons[action.Name.toLowerCase()] :
+                                        icons[action.Icon.toLowerCase()]
+                                }</Icon>
+                            </ListItemIcon>
+                            <ListItemText style={styles.uploadText} primary={action.DisplayName} />
+                        </label>
+                    </div>
+                }
+                else {
+                    inner = <ListItemText primary={action.DisplayName} />
+                }
                 return (
                     <ListItem
                         key={action.Name}
@@ -122,14 +180,17 @@ class ActionList extends React.Component<IActionListProps, IActionListState> {
                         onClick={event => this.handleMenuItemClick(event, action.Name)}
                         onMouseDown={event => this.props.handleMouseDown(event)}
                         onMouseUp={event => this.props.handleMouseUp(event)} >
-                        <ListItemIcon style={styles.actionIcon}>
-                            <Icon color='accent'>{
-                                action.Icon === 'Application' ?
-                                    icons[action.Name.toLowerCase()] :
-                                    icons[action.Icon.toLowerCase()]
-                            }</Icon>
-                        </ListItemIcon>
-                        <ListItemText primary={action.DisplayName} />
+
+                        {action.Name !== 'Upload' ?
+                            <ListItemIcon style={styles.actionIcon}>
+                                <Icon color='accent'>{
+                                    action.Icon === 'Application' ?
+                                        icons[action.Name.toLowerCase()] :
+                                        icons[action.Icon.toLowerCase()]
+                                }</Icon>
+                            </ListItemIcon> : null
+                        }
+                        {inner}
                     </ListItem>
                 )
             })}
@@ -139,11 +200,15 @@ class ActionList extends React.Component<IActionListProps, IActionListState> {
 
 const mapStateToProps = (state, match) => {
     return {
-        actions: DMSReducers.getActions(state.dms.actionmenu)
+        actions: DMSReducers.getActions(state.dms.actionmenu),
+        currentContent: Reducers.getCurrentContent(state.sensenet),
+        selected: Reducers.getSelectedContentItems(state.sensenet)
     }
 }
 
 export default connect(mapStateToProps, {
     setEdited: DMSActions.SetEditedContentId,
-    clearSelection: Actions.ClearSelection
+    clearSelection: Actions.ClearSelection,
+    deleteBatch: Actions.DeleteBatch,
+    uploadContent: Actions.UploadRequest
 })(ActionList)

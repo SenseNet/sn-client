@@ -21,9 +21,8 @@ import { ListHead } from './ListHead'
 import SimpleTableRow from './SimpleTableRow'
 import { SharedItemsTableRow } from './SharedItemsTableRow'
 import ParentFolderTableRow from './ParentFolderTableRow'
-import ActionMenu from '../ActionMenu'
+import ActionMenu from '../ActionMenu/ActionMenu'
 import SelectionBox from '../SelectionBox'
-import { ClickHandlers } from '../../ClickHandlers'
 import { DragAndDrop } from '../../DragAndDrop'
 
 const styles = {
@@ -45,6 +44,7 @@ interface ContentListProps {
     children,
     currentId: number,
     selected: number[],
+    selectedContentItems,
     history,
     parentId: number,
     edited: number,
@@ -56,6 +56,8 @@ interface ContentListProps {
     clearSelection: Function,
     delete: Function,
     deleteBatch: Function,
+    copyBatch: Function,
+    moveBatch: Function,
     selectionModeOn: Function,
     selectionModeOff: Function,
     selectionModeIsOn: boolean,
@@ -106,7 +108,7 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
                 data: this.props.children
             })
         }
-        
+
         if (this.props.selected.length > 0 && !prevOps.selectionModeIsOn) {
             this.props.selectionModeOn()
         }
@@ -116,13 +118,13 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
     }
     componentWillReceiveProps(nextProps) {
         if (this.props.ids.length !== nextProps.ids.length) {
-            
+
             this.setState({
                 data: nextProps.children
             })
         }
     }
-    handleRowSingleClick(e, id, m) {
+    handleRowSingleClick(e, content, m) {
         const { ids, selected } = this.props;
         if (e.shiftKey) {
             e.preventDefault()
@@ -131,23 +133,23 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
             if (from < till)
                 ids.map((elId, i) => {
                     if (i > from && i < till + 1) {
-                        this.handleSimpleSelection(elId)
+                        this.handleSimpleSelection(this.props.children[elId])
                     }
                 })
             else
                 for (let i = ids.length - 1; i > -1; i--) {
                     if (i < from && i > till - 1) {
-                        this.handleSimpleSelection(ids[i])
+                        this.handleSimpleSelection(this.props.children[ids[i]])
                     }
                 }
         }
         else if (e.ctrlKey) {
-            this.handleSimpleSelection(id)
+            this.handleSimpleSelection(content.Id)
         }
         else {
             e.target.getAttribute('type') !== 'checkbox' && window.innerWidth >= 700 ?
-                this.handleSingleSelection(id) :
-                this.handleSimpleSelection(id)
+                this.handleSingleSelection(content) :
+                this.handleSimpleSelection(content)
         }
     }
     handleRowDoubleClick(e, id, type) {
@@ -170,52 +172,52 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
             return null
         else {
             const id = Number(e.target.closest('tr').id)
-            const type = this.props.children[id]._type
-            this.setState({
-                active: id
-            })
-            switch (e.which) {
-                case Key.Space:
-                    e.preventDefault()
-                    this.handleSimpleSelection(id)
-                    break
-                case Key.Enter:
-                    e.preventDefault()
-                    console.log('dblclick')
-                    this.handleRowDoubleClick(e, id, type)
-                    break
-                case Key.UpArrow:
-                    if (shift) {
-                        const upperItemIndex = this.props.ids.indexOf(Number(this.state.active)) - 1
-                        upperItemIndex > -1 ?
-                            this.handleSimpleSelection(this.props.ids[upperItemIndex]) :
-                            null
-                    }
-                    break
-                case Key.DownArrow:
-                    if (shift) {
-                        const upperItemIndex = this.props.ids.indexOf(Number(this.state.active)) + 1
-                        upperItemIndex < this.props.ids.length ?
-                            this.handleSimpleSelection(this.props.ids[upperItemIndex]) :
-                            null
-                    }
-                    break
-                case Key.Delete:
-                    const permanent = shift ? true : false;
-                    this.props.selected.length > 1 ?
-                        // this.props.deleteBatch(this.props.selected, permanent) :
-                        // this.props.delete(this.props.selected[0], permanent)
-                        console.log('batch delete & permanently= ' + permanent) :
-                        console.log('delete single element & permanently= ' + permanent)
-                    break
-                case Key.A:
-                    if (ctrl) {
+            if (id !== 0) {
+                const type = this.props.children[id]._type
+                this.setState({
+                    active: id
+                })
+                switch (e.which) {
+                    case Key.Space:
                         e.preventDefault()
-                        this.handleSelectAllClick(e, true)
-                    }
-                    break
-                default:
-                    break
+                        this.handleSimpleSelection(id)
+                        break
+                    case Key.Enter:
+                        e.preventDefault()
+                        this.handleRowDoubleClick(e, id, type)
+                        break
+                    case Key.UpArrow:
+                        if (shift) {
+                            const upperItemIndex = this.props.ids.indexOf(Number(this.state.active)) - 1
+                            upperItemIndex > -1 ?
+                                this.handleSimpleSelection(this.props.ids[upperItemIndex]) :
+                                null
+                        }
+                        break
+                    case Key.DownArrow:
+                        if (shift) {
+                            const upperItemIndex = this.props.ids.indexOf(Number(this.state.active)) + 1
+                            upperItemIndex < this.props.ids.length ?
+                                this.handleSimpleSelection(this.props.ids[upperItemIndex]) :
+                                null
+                        }
+                        break
+                    case Key.Delete:
+                        const permanent = shift ? true : false;
+                        if (this.props.selected.length > 0) {
+                            this.props.deleteBatch(this.props.selectedContentItems, permanent)
+                            this.props.clearSelection()
+                        }
+                        break
+                    case Key.A:
+                        if (ctrl) {
+                            e.preventDefault()
+                            this.handleSelectAllClick(e, true)
+                        }
+                        break
+                    default:
+                        break
+                }
             }
         }
     }
@@ -226,16 +228,16 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
                 copy: false
             })
     }
-    handleSimpleSelection(id) {
-        this.props.selected.indexOf(id) > -1 ?
-            this.props.deselect(id) :
-            this.props.select(id)
+    handleSimpleSelection(content) {
+        this.props.selected.indexOf(content.Id) > -1 ?
+            this.props.deselect(content) :
+            this.props.select(content)
 
         const { selected } = this.state;
-        const selectedIndex = selected.indexOf(id);
+        const selectedIndex = selected.indexOf(content.Id);
         let newSelected = [];
         if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, id);
+            newSelected = newSelected.concat(selected, content.Id);
         } else if (selectedIndex === 0) {
             newSelected = newSelected.concat(selected.slice(1));
         } else if (selectedIndex === selected.length - 1) {
@@ -247,12 +249,12 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
             );
         }
 
-        this.setState({ selected: newSelected, active: id });
+        this.setState({ selected: newSelected, active: content.Id });
     }
-    handleSingleSelection(id) {
+    handleSingleSelection(content) {
         this.props.clearSelection()
-        this.props.select(id)
-        this.setState({ selected: [id], active: id });
+        this.props.select(content)
+        this.setState({ selected: [content.Id], active: content.Id });
     }
     handleRequestSort = (event, property) => {
         // TODO: implement sorting
@@ -260,11 +262,11 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
     handleSelectAllClick = (event, checked) => {
         if (checked) {
             this.setState({ selected: this.props.ids });
-            this.props.ids.map(id => this.props.selected.indexOf(id) > -1 ? null : this.props.select(id))
+            this.props.ids.map(id => this.props.selected.indexOf(id) > -1 ? null : this.props.select(this.props.children[id]))
             return;
         }
         this.setState({ selected: [] });
-        this.props.ids.map(id => { this.props.deselect(id) })
+        this.props.ids.map(id => { this.props.deselect(this.props.children[id]) })
     };
     handleTap(e, id, type) {
         if (type === 'Folder')
@@ -335,7 +337,8 @@ const mapStateToProps = (state, match) => {
     return {
         ids: Reducers.getIds(state.sensenet.children),
         rootId: DMSReducers.getRootId(state.dms),
-        selected: Reducers.getSelectedContent(state.sensenet),
+        selected: Reducers.getSelectedContentIds(state.sensenet),
+        selectedContentItems: Reducers.getSelectedContentItems(state.sensenet),
         isFetching: Reducers.getFetching(state.sensenet.children),
         isLoading: DMSReducers.getLoading(state.dms),
         edited: DMSReducers.getEditedItemId(state.dms),
@@ -348,6 +351,8 @@ export default withRouter(connect(mapStateToProps, {
     clearSelection: Actions.ClearSelection,
     delete: Actions.Delete,
     deleteBatch: Actions.DeleteBatch,
+    copyBatch: Actions.CopyBatch,
+    moveBatch: Actions.MoveBatch,
     selectionModeOn: DMSActions.SelectionModeOn,
     selectionModeOff: DMSActions.SelectionModeOff
 })(ContentList))

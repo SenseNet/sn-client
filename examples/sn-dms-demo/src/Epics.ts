@@ -1,7 +1,7 @@
 import { DMSActions } from './Actions';
 
 import { ActionsObservable, combineEpics } from 'redux-observable';
-import { Observable } from '@reactivex/rxjs';
+import { Observable } from 'rxjs/Observable';
 import { ajax } from 'rxjs/observable/dom/ajax'
 import { Actions, Epics } from 'sn-redux'
 import { Repository, ODataHelper } from 'sn-client-js'

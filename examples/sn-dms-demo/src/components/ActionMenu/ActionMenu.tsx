@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { Actions, Reducers } from 'sn-redux'
-import { DMSActions } from '../Actions'
-import { DMSReducers } from '../Reducers'
+import { DMSActions } from '../../Actions'
+import { DMSReducers } from '../../Reducers'
 import ActionList from './ActionList'
 import MediaQuery from 'react-responsive';
 import Dialog, { DialogTitle } from 'material-ui/Dialog';

@@ -80,7 +80,7 @@ class SelectionBox extends React.Component<ISelectionBoxProps, ISelectionBoxStat
 
 const mapStateToProps = (state, match) => {
     return {
-        selected: Reducers.getSelectedContent(state.sensenet)
+        selected: Reducers.getSelectedContentIds(state.sensenet)
     }
 }
 

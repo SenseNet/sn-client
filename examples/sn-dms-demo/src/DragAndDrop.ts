@@ -24,25 +24,27 @@ export module DragAndDrop {
 
     export const rowTarget = {
         drop(props, monitor, component) {
-            const dragId = monitor.getItem().content.Id
+            const content = monitor.getItem().content;
+            const dragId = content.Id
             const dropId = props.content.Id
-            const selected = component.props.selected
+            const { selected, selectedContentItems } = component.props
 
             if (dragId === dropId) {
                 return
             }
-
             if (selected.length > 0) {
                 if (props.isCopy)
-                    console.log(`You copied ${selected.join()} into ${dropId}!`)
+                    props.copyBatch(selectedContentItems, props.content.Path)
                 if (!props.isCopy)
-                    console.log(`You moved ${selected.join()} into ${dropId}!`)
+                    props.moveBatch(selectedContentItems, props.content.Path)
             }
             else {
+                let obj = {}
+                obj[content.Id] = content
                 if (props.isCopy)
-                    console.log(`You copied ${dragId} into ${dropId}!`)
+                    props.copyBatch(obj, props.content.Path)
                 if (!props.isCopy)
-                    console.log(`You moved ${dragId} into ${dropId}!`)
+                    props.moveBatch(obj, props.content.Path)
             }
         },
         canDrop(props, monitor) {
@@ -57,7 +59,7 @@ export module DragAndDrop {
     export const uploadTarget = {
         hover(props, monitor, component) {
             //console.log(monitor.getItem().files)
-         },
+        },
         drop(props, monitor) {
             if (props.onDrop) {
                 props.onDrop(props, monitor)

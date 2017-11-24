@@ -136,7 +136,7 @@ class SimpleTableRow extends React.Component<ISimpleTableRowProps, ISimpleTableR
                         padding='checkbox'
                         style={styles.checkboxButton}
 
-                        onClick={event => handleRowSingleClick(event, content.Id)}
+                        onClick={event => handleRowSingleClick(event, content)}
                         onDoubleClick={event => handleRowDoubleClick(event, content.Id, content._type)}>
                         <div style={
                             isSelected ? styles.selectedCheckbox : styles.checkbox &&
@@ -153,7 +153,7 @@ class SimpleTableRow extends React.Component<ISimpleTableRowProps, ISimpleTableR
                             id={content.Id}
                             icon={content.Icon}
                             selected={isSelected}
-                            handleRowSingleClick={event => matches ? handleRowSingleClick(event, content.Id) : this.handleIconTap(event, content.Id, content._type)}
+                            handleRowSingleClick={event => matches ? handleRowSingleClick(event, content) : this.handleIconTap(event, content.Id, content._type)}
                             handleRowDoubleClick={event => matches ? handleRowDoubleClick(event, content.Id, content._type) : event.preventDefault()} />
                     }}
                 </MediaQuery>
@@ -162,7 +162,7 @@ class SimpleTableRow extends React.Component<ISimpleTableRowProps, ISimpleTableR
                         return <DisplayNameCell
                             content={content}
                             isHovered={isHovered}
-                            handleRowSingleClick={event => matches ? handleRowSingleClick(event, content.Id) : handleTap(event, content.Id, content._type)}
+                            handleRowSingleClick={event => matches ? handleRowSingleClick(event, content) : handleTap(event, content, content._type)}
                             handleRowDoubleClick={event => matches ? handleRowDoubleClick(event, content.Id, content._type) : event.preventDefault()}
                             isCopy={isCopy} />
                     }}
@@ -191,7 +191,7 @@ class SimpleTableRow extends React.Component<ISimpleTableRowProps, ISimpleTableR
 
 const mapStateToProps = (state, match) => {
     return {
-        selected: Reducers.getSelectedContent(state.sensenet),
+        selected: Reducers.getSelectedContentIds(state.sensenet),
         opened: Reducers.getOpenedContent(state.sensenet.children),
         ids: Reducers.getIds(state.sensenet.children)
     }

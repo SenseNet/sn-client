@@ -4,7 +4,7 @@ import { Actions, Reducers } from 'sn-redux'
 import { DMSReducers } from '../Reducers'
 import { DMSActions } from '../Actions'
 import Header from '../components/Header'
-import { FloatingActionButton } from '../components/FloatingActionButton'
+import FloatingActionButton from '../components/FloatingActionButton'
 import DocumentLibrary from '../components/DocumentLibrary'
 import BreadCrumb from '../components/BreadCrumb'
 import MediaQuery from 'react-responsive';
@@ -65,6 +65,7 @@ class Dashboard extends React.Component<IDashboardProps, { currentId }>{
         }
     }
     render() {
+        const { id } = this.props.match.params
         return (
             <div style={styles.root}>
                 <Header />
@@ -73,17 +74,17 @@ class Dashboard extends React.Component<IDashboardProps, { currentId }>{
                         if (matches) {
                             return <div style={styles.dashBoardInner}>
                                 <BreadCrumb />
-                                <DocumentLibrary parentId={this.props.match.params.id} />
+                                <DocumentLibrary parentId={id} />
                             </div>;
                         } else {
                             return <div style={styles.dashBoardInnerMobile}>
                                 <BreadCrumb />
-                                <DocumentLibrary parentId={this.props.match.params.id} />
+                                <DocumentLibrary parentId={id} />
                             </div>;
                         }
                     }}
                 </MediaQuery>
-                {!this.props.selectionModeIsOn ? <FloatingActionButton /> : null}
+                {!this.props.selectionModeIsOn ? <FloatingActionButton content={this.props.currentContent} /> : null}
             </div>
         )
     }

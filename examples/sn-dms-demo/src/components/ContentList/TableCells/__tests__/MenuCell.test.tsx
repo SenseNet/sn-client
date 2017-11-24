@@ -28,7 +28,7 @@ it('renders without crashing', () => {
             }
         }
     }, repository)
-    const content = Content.Create({ DisplayName: 'My content', Id: 123, Path: '/workspaces' }, ContentTypes.Task, repository);
+    const content = repository.CreateContent({ DisplayName: 'My content', Id: 123, Path: '/workspaces' }, ContentTypes.Task);
     ReactDOM.render(<MenuCell
         store={store}
         content={content}

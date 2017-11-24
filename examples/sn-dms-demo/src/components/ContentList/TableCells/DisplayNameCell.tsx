@@ -47,7 +47,10 @@ interface IDisplayNameCellProps {
     onDrop: Function,
     moveCard: Function,
     isCopy: boolean,
-    selected
+    selected,
+    selectedContentItems,
+    copyBatch: Function,
+    moveBatch: Function
 }
 
 interface IDisplayNameCellState {
@@ -163,11 +166,14 @@ const mapStateToProps = (state, match) => {
     return {
         currentContent: Reducers.getContent(state.sensenet.children.entities, match.content.Id),
         edited: DMSReducers.getEditedItemId(state.dms),
-        selected: Reducers.getSelectedContent(state.sensenet)
+        selected: Reducers.getSelectedContentIds(state.sensenet),
+        selectedContentItems: Reducers.getSelectedContentItems(state.sensenet)
     }
 }
 
 export default connect(mapStateToProps, {
     rename: renameContent,
-    setEdited: setEdited
+    setEdited: setEdited,
+    copyBatch: Actions.CopyBatch,
+    moveBatch: Actions.MoveBatch
 })(DisplayNameCell)

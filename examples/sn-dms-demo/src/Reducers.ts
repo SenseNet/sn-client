@@ -278,4 +278,7 @@ export module DMSReducers {
     export const getIsSelectionModeOn = (state) => {
         return state.isSelectionModeOn
     }
+    export const getAddNewActions = (state) => {
+        state.addnew
+    }
 }

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import Moment from 'react-moment';
 import { connect } from 'react-redux'
-import { Reducers } from 'sn-redux'
+import { Actions, Reducers } from 'sn-redux'
 import { DragSource } from 'react-dnd';
 import { DropTarget } from 'react-dnd'
 import { DragAndDrop } from '../../../DragAndDrop'
@@ -20,8 +20,12 @@ interface IDateCellProps {
     handleRowDoubleClick: Function,
     connectDragSource: Function,
     connectDropTarget: Function,
+    copyBatch: Function,
+    moveBatch: Function,
     isDragging: boolean,
-    isCopy: boolean
+    isCopy: boolean,
+    selected,
+    selectedContentItems
 }
 
 @DropTarget('row', DragAndDrop.rowTarget, (connect, monitor) => ({
@@ -56,8 +60,12 @@ class DateCell extends React.Component<IDateCellProps, {}>{
 
 const mapStateToProps = (state, match) => {
     return {
-        selected: Reducers.getSelectedContent(state.sensenet)
+        selected: Reducers.getSelectedContentIds(state.sensenet),
+        selectedContentItems: Reducers.getSelectedContentItems(state.sensenet)
     }
 }
 
-export default connect(mapStateToProps, {})(DateCell)
+export default connect(mapStateToProps, {
+    copyBatch: Actions.CopyBatch,
+    moveBatch: Actions.MoveBatch
+})(DateCell)

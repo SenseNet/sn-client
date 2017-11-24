@@ -4,6 +4,7 @@ import { Reducers } from 'sn-redux'
 import { DMSReducers } from '../Reducers'
 import LoginTabs from '../components/LoginTabs'
 import { WelcomeMessage } from '../components/WelcomeMessage'
+import { OauthRow } from '../components/OAuthRow'
 import Button from 'material-ui/Button';
 import Input from 'material-ui/Input';
 import InputLabel from 'material-ui/Input/InputLabel';
@@ -236,6 +237,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
               <Button type='submit' color='primary' style={styles.button} disabled={this.props.loginError === null && this.state.isButtonDisabled}>{resources.LOGIN_BUTTON_TEXT}</Button>
             </form>
           </MuiThemeProvider>
+          <OauthRow />
         </div>
       </div>
     )

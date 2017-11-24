@@ -19,7 +19,7 @@ describe('registrationEpic Epic', () => {
         epicMiddleware.replaceEpic(DMSEpics.registrationEpic);
     });
     it('handles success', () => {
-        const content = Content.Create({ DisplayName: 'My content', Id: 123, Path: '/workspaces' }, ContentTypes.Task, repo);
+        const content = repo.CreateContent({ DisplayName: 'My content', Id: 123, Path: '/workspaces' }, ContentTypes.Task);
         store.dispatch({ type: 'USER_REGISTRATION_REQUEST', email: 'alba@sensenet.com', password: 'alba' });
         expect(store.getActions()).toEqual(
             [{

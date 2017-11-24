@@ -14,5 +14,6 @@ export const icons = {
     sharecontent: 'share',
     starcontent: 'star',
     edit: 'mode_edit',
-    tick: 'done'
+    tick: 'done',
+    upload: 'file_upload'
 }

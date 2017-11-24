@@ -84,7 +84,7 @@ class DocumentLibrary extends React.Component<IDocumentLibraryProps, IDocumentLi
             const droppedFiles = monitor.getItem().files
 
             droppedFiles.map(file => {
-               uploadContent(content, file)
+               uploadContent(content, file, undefined, undefined, null, undefined, 'DMSListItem')
             })
 
             this.setState({ droppedFiles })
