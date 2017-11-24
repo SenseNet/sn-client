@@ -19,7 +19,7 @@ import { GoogleAuthenticationOptions } from './index';
  * // an example login method:
  * async Login(){
  *  try {
- *      await this.snService.Authentication.GetOauthProvider(GoogleOauthProvider).Login();
+ *      await myRepository.Authentication.GetOauthProvider(GoogleOauthProvider).Login();
  *      console.log('Logged in');
  *  } catch (error) {
  *     console.warn('Error during login', error);
