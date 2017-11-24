@@ -1,6 +1,6 @@
 {
   "name": "sn-client-auth-google",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0",
   "description": "Client-side Google authentication provider for sensenet ECM",
   "main": "dist/src/index.js",
   "scripts": {
