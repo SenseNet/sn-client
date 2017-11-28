@@ -34,7 +34,7 @@
     "autoprefixer": "7.1.6",
     "case-sensitive-paths-webpack-plugin": "2.1.1",
     "chalk": "2.2.2",
-    "cli-highlight": "1.2.1",
+    "cli-highlight": "1.2.2",
     "css-loader": "0.28.7",
     "dotenv": "4.0.0",
     "extract-text-webpack-plugin": "^3.0.0",
