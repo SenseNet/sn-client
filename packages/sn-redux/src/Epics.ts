@@ -121,10 +121,12 @@ export module Epics {
      * Epic for reloading content from the Content Repository. It is related to three redux actions, returns the ```ReloadContent``` action and sends the JSON response to the
      * ```ReceiveReloadedContent``` action if the ajax request ended successfully or catches the error if the request failed and sends the error message to the ```ReceiveReloadedContentFailure``` action.
      */
-    export const reloadContentEpic = (action$, store) => {
+    export const reloadContentEpic = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
         return action$.ofType('RELOAD_CONTENT_REQUEST')
+
             .mergeMap(action => {
-                return action.content.Reload(action.actionname)
+                let c = dependencies.repository.HandleLoadedContent(action.content, ContentTypes.GenericContent);
+                return c.Reload(action.actionname)
                     .map((response) => Actions.ReceiveReloadedContent(response))
                     .catch(error => {
                         return Observable.of(Actions.ReceiveReloadedContentFailure(error))
@@ -136,10 +138,11 @@ export module Epics {
      * Epic for reloading fields of a content from the Content Repository. It is related to three redux actions, returns the ```ReloadContentFields``` action and sends the JSON response to the
      * ```ReceiveReloadedContentFields``` action if the ajax request ended successfully or catches the error if the request failed and sends the error message to the ```ReceiveReloadedContentFieldsFailure``` action.
      */
-    export const reloadContentFieldsEpic = (action$, store) => {
+    export const reloadContentFieldsEpic = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
         return action$.ofType('RELOAD_CONTENTFIELDS_REQUEST')
             .mergeMap(action => {
-                return action.content.ReloadFields(action.fields)
+                let c = dependencies.repository.HandleLoadedContent(action.content, ContentTypes.GenericContent);
+                return c.ReloadFields(action.fields)
                     .map((response) => Actions.ReceiveReloadedContentFields(response))
                     .catch(error => {
                         return Observable.of(Actions.ReceiveReloadedContentFieldsFailure(error))
@@ -151,10 +154,11 @@ export module Epics {
      * Epic for creating a Content in the Content Repository. It is related to three redux actions, returns ```CreateContent``` action and sends the JSON response to the
      * ```CreateContentSuccess``` action if the ajax request ended successfully or catches the error if the request failed and sends the error message to the ```CreateContentFailure``` action.
      */
-    export const createContentEpic = (action$, store) => {
+    export const createContentEpic = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
         return action$.ofType('CREATE_CONTENT_REQUEST')
             .mergeMap(action => {
-                return action.content.Save()
+                let c = dependencies.repository.HandleLoadedContent(action.content, ContentTypes.GenericContent);
+                return c.Save()
                     .map(Actions.CreateContentSuccess)
                     .catch(error => Observable.of(Actions.CreateContentFailure(error)))
             })
@@ -163,10 +167,17 @@ export module Epics {
      * Epic for updating metadata of a Content in the Content Repository. It is related to three redux actions, returns ```UpdateContent``` action and sends the JSON response to the
      * ```UpdateContentSuccess``` action if the ajax request ended successfully or catches the error if the request failed and sends the error message to the ```UpdateContentFailure``` action.
      */
-    export const updateContentEpic = (action$, store) => {
+    export const updateContentEpic = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
         return action$.ofType('UPDATE_CONTENT_REQUEST')
             .mergeMap(action => {
-                return action.content.Save()
+                let c = dependencies.repository.HandleLoadedContent({Id: action.content.Id, Name: action.content.Name, Path: action.content.Path});                
+                let fields = c.GetFields()
+                for (let field in fields) {
+                    if (fields[field] !== action.content[field]) {
+                        c[field] = action.content[field];
+                    }
+                }
+                return c.Save().share()
                     .map(Actions.UpdateContentSuccess)
                     .catch(error => Observable.of(Actions.UpdateContentFailure(error)))
             })
@@ -175,10 +186,11 @@ export module Epics {
      * Epic to delete a Content from the Content Repository. It is related to three redux actions, returns ```Delete``` action and sends the response to the
      * ```DeleteSuccess``` action if the ajax request ended successfully or catches the error if the request failed and sends the error message to the ```DeleteFailure``` action.
      */
-    export const deleteContentEpic = (action$, store) => {
+    export const deleteContentEpic = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
         return action$.ofType('DELETE_CONTENT_REQUEST')
             .mergeMap(action => {
-                return action.content.Delete(action.content, action.permanently)
+                let c = dependencies.repository.HandleLoadedContent(action.content, ContentTypes.GenericContent);
+                return c.Delete(action.permanently)
                     .map((response) => {
                         const state = store.getState();
                         const ids = Reducers.getIds(state.sensenet.children);
@@ -242,10 +254,11 @@ export module Epics {
      * Epic to checkout a Content in the Content Repository. It is related to three redux actions, returns ```CheckOut``` action and sends the response to the
      * ```CheckOutSuccess``` action if the ajax request ended successfully or catches the error if the request failed and sends the error message to the ```CheckOutFailure``` action.
      */
-    export const checkoutContentEpic = (action$, store) => {
+    export const checkoutContentEpic = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
         return action$.ofType('CHECKOUT_CONTENT_REQUEST')
             .mergeMap(action => {
-                return action.content.Checkout()
+                let c = dependencies.repository.HandleLoadedContent(action.content, ContentTypes.GenericContent);
+                return c.Checkout()
                     .map(Actions.CheckOutSuccess)
                     .catch(error => Observable.of(Actions.CheckOutFailure(error)))
             })
@@ -255,10 +268,11 @@ export module Epics {
          * Epic to checkin a Content in the Content Repository. It is related to three redux actions, returns ```CheckIn``` action and sends the response to the
          * ```CheckInSuccess``` action if the ajax request ended successfully or catches the error if the request failed and sends the error message to the ```CheckInFailure``` action.
          */
-    export const checkinContentEpic = (action$, store) => {
+    export const checkinContentEpic = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
         return action$.ofType('CHECKIN_CONTENT_REQUEST')
             .mergeMap(action => {
-                return action.content.CheckIn(action.checkinComment)
+                let c = dependencies.repository.HandleLoadedContent(action.content, ContentTypes.GenericContent);
+                return c.CheckIn(action.checkinComment)
                     .map(Actions.CheckInSuccess)
                     .catch(error => Observable.of(Actions.CheckInFailure(error)))
             })
@@ -267,10 +281,11 @@ export module Epics {
          * Epic to publish a Content in the Content Repository. It is related to three redux actions, returns ```Publish``` action and sends the response to the
          * ```PublishSuccess``` action if the ajax request ended successfully or catches the error if the request failed and sends the error message to the ```PublishFailure``` action.
          */
-    export const publishContentEpic = (action$, store) => {
+    export const publishContentEpic = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
         return action$.ofType('PUBLISH_CONTENT_REQUEST')
             .mergeMap(action => {
-                return action.content.Publish()
+                let c = dependencies.repository.HandleLoadedContent(action.content, ContentTypes.GenericContent);
+                return c.Publish()
                     .map(Actions.PublishSuccess)
                     .catch(error => Observable.of(Actions.PublishFailure(error)))
             })
@@ -279,10 +294,11 @@ export module Epics {
          * Epic to approve a Content in the Content Repository. It is related to three redux actions, returns ```Approve``` action and sends the response to the
          * ```ApproveSuccess``` action if the ajax request ended successfully or catches the error if the request failed and sends the error message to the ```ApproveFailure``` action.
          */
-    export const approveContentEpic = (action$, store) => {
+    export const approveContentEpic = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
         return action$.ofType('APPROVE_CONTENT_REQUEST')
             .mergeMap(action => {
-                return action.content.Approve()
+                let c = dependencies.repository.HandleLoadedContent(action.content, ContentTypes.GenericContent);
+                return c.Approve()
                     .map(Actions.ApproveSuccess)
                     .catch(error => Observable.of(Actions.ApproveFailure(error)))
             })
@@ -291,10 +307,11 @@ export module Epics {
          * Epic to reject a Content in the Content Repository. It is related to three redux actions, returns ```Reject``` action and sends the response to the
          * ```RejectSuccess``` action if the ajax request ended successfully or catches the error if the request failed and sends the error message to the ```RejectFailure``` action.
          */
-    export const rejectContentEpic = (action$, store) => {
+    export const rejectContentEpic = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
         return action$.ofType('REJECT_CONTENT_REQUEST')
             .mergeMap(action => {
-                return action.content.Reject(action.rejectReason)
+                let c = dependencies.repository.HandleLoadedContent(action.content, ContentTypes.GenericContent);
+                return c.Reject(action.rejectReason)
                     .map(Actions.RejectSuccess)
                     .catch(error => Observable.of(Actions.RejectFailure(error)))
             })
@@ -303,10 +320,11 @@ export module Epics {
          * Epic to undo checkout a Content in the Content Repository. It is related to three redux actions, returns ```UndoCheckout``` action and sends the response to the
          * ```UndoCheckoutSuccess``` action if the ajax request ended successfully or catches the error if the request failed and sends the error message to the ```UndoCheckoutFailure``` action.
          */
-    export const undocheckoutContentEpic = (action$, store) => {
+    export const undocheckoutContentEpic = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
         return action$.ofType('UNDOCHECKOUT_CONTENT_REQUEST')
             .mergeMap(action => {
-                return action.content.UndoCheckout()
+                let c = dependencies.repository.HandleLoadedContent(action.content, ContentTypes.GenericContent);
+                return c.UndoCheckout()
                     .map(Actions.UndoCheckoutSuccess)
                     .catch(error => Observable.of(Actions.UndoCheckoutFailure(error)))
             })
@@ -315,10 +333,11 @@ export module Epics {
          * Epic to force undo checkout a Content in the Content Repository. It is related to three redux actions, returns ```ForceUndoCheckout``` action and sends the response to the
          * ```ForceUndoCheckoutSuccess``` action if the ajax request ended successfully or catches the error if the request failed and sends the error message to the ```ForceUndoCheckoutFailure``` action.
          */
-    export const forceundocheckoutContentEpic = (action$, store) => {
+    export const forceundocheckoutContentEpic = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
         return action$.ofType('FORCEUNDOCHECKOUT_CONTENT_REQUEST')
             .mergeMap(action => {
-                return action.content.ForceUndoCheckout()
+                let c = dependencies.repository.HandleLoadedContent(action.content, ContentTypes.GenericContent);
+                return c.ForceUndoCheckout()
                     .map(Actions.ForceUndoCheckoutSuccess)
                     .catch(error => Observable.of(Actions.ForceUndoCheckoutFailure(error)))
             })
@@ -327,10 +346,11 @@ export module Epics {
          * Epic to restore a version of a Content in the Content Repository. It is related to three redux actions, returns ```RestoreVersion``` action and sends the response to the
          * ```RestoreVersionSuccess``` action if the ajax request ended successfully or catches the error if the request failed and sends the error message to the ```RestoreVersionFailure``` action.
          */
-    export const restoreversionContentEpic = (action$, store) => {
+    export const restoreversionContentEpic = (action$, store, dependencies?: { repository: Repository.BaseRepository }) => {
         return action$.ofType('RESTOREVERSION_CONTENT_REQUEST')
             .mergeMap(action => {
-                return action.content.RestoreVersion(action.version)
+                let c = dependencies.repository.HandleLoadedContent(action.content, ContentTypes.GenericContent);
+                return c.RestoreVersion(action.version)
                     .map(Actions.RestoreVersionSuccess)
                     .catch(error => Observable.of(Actions.RestoreVersionFailure(error)))
             })

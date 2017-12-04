@@ -1,6 +1,6 @@
 {
   "name": "sn-redux",
-  "version": "3.4.0",
+  "version": "3.4.1",
   "description": "A set of redux actions, reducers and redux-ovbservable epics for Sense/Net ECM",
   "main": "dist/src/sn-redux.js",
   "scripts": {
