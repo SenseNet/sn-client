@@ -178,11 +178,11 @@ export module Epics {
     export const deleteContentEpic = (action$, store) => {
         return action$.ofType('DELETE_CONTENT_REQUEST')
             .mergeMap(action => {
-                return action.content.Delete(action.id, action.permanently)
+                return action.content.Delete(action.content, action.permanently)
                     .map((response) => {
                         const state = store.getState();
-                        const ids = Reducers.getIds(state.collection);
-                        return Actions.DeleteSuccess(ids.indexOf(action.id), action.id);
+                        const ids = Reducers.getIds(state.sensenet.children);
+                        return Actions.DeleteSuccess(ids.indexOf(action.content.Id), action.content.Id);
                     })
                     .catch(error => Observable.of(Actions.DeleteFailure(error)))
             })
@@ -361,6 +361,9 @@ export module Epics {
         return action$.ofType('USER_LOGIN_REQUEST')
             .mergeMap(action => {
                 return dependencies.repository.Authentication.Login(action.userName, action.password)
+                    // .combineLatest(dependencies.repository.GetCurrentUser().skipWhile(u => u.Name === 'Visitor'))
+                    // .skipWhile(u => u instanceof ContentTypes.User)
+                    // .first()
                     .map(result => {
                         return result ?
                             Actions.UserLoginBuffer(result)
@@ -427,7 +430,10 @@ export module Epics {
                     ContentType: action.contentType,
                     OverWrite: action.overwrite,
                     Body: action.body,
-                    PropertyName: action.propertyName
+                    PropertyName: action.propertyName,
+                    OdataOptions: {
+                        Scenario: action.scenario
+                    }
                 })
                     .map((response) => {
                         return Actions.UploadSuccess(response)

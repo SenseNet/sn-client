@@ -736,7 +736,8 @@ describe('Actions', () => {
                 overwrite: true,
                 propertyName: 'Binary',
                 contentType: ContentTypes.File,
-                body: null
+                body: null,
+                scenario: 'ListItems'
             }
             expect(Actions.UploadRequest(content, file)).to.deep.equal(expectedAction)
         })
@@ -748,7 +749,8 @@ describe('Actions', () => {
                 file,
                 overwrite: true,
                 propertyName: 'Binary',
-                body: null
+                body: null,
+                scenario: 'ListItems'
             }
             expect(Actions.UploadRequest(content, file, ContentTypes.Folder)).to.deep.equal(expectedAction)
         })
@@ -760,7 +762,8 @@ describe('Actions', () => {
                 file,
                 overwrite: false,
                 propertyName: 'Binary',
-                body: null
+                body: null,
+                scenario: 'ListItems'
             }
             expect(Actions.UploadRequest(content, file, undefined, false)).to.deep.equal(expectedAction)
         })
@@ -772,7 +775,8 @@ describe('Actions', () => {
                 file,
                 overwrite: true,
                 propertyName: 'Avatar',
-                body: null
+                body: null,
+                scenario: 'ListItems'
             }
             expect(Actions.UploadRequest(content, file, undefined, undefined, undefined, 'Avatar')).to.deep.equal(expectedAction)
         })
@@ -784,9 +788,23 @@ describe('Actions', () => {
                 file,
                 overwrite: true,
                 propertyName: 'Binary',
-                body: { vmi: 'aaa' }
+                body: { vmi: 'aaa' },
+                scenario: 'ListItems'
             }
             expect(Actions.UploadRequest(content, file, undefined, undefined, { vmi: 'aaa' })).to.deep.equal(expectedAction)
+        })
+        it('should return the upload content action set content, file and scenario', () => {
+            const expectedAction = {
+                type: 'UPLOAD_CONTENT_REQUEST',
+                content,
+                contentType: ContentTypes.File,
+                file,
+                overwrite: true,
+                propertyName: 'Binary',
+                body: null,
+                scenario: 'DMSListItems'
+            }
+            expect(Actions.UploadRequest(content, file, undefined, undefined,  undefined, null, 'DMSListItems')).to.deep.equal(expectedAction)
         })
         it('should create an action to upload content success', () => {
             const expectedAction = {
