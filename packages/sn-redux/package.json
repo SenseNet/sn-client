@@ -1,6 +1,6 @@
 {
   "name": "sn-redux",
-  "version": "3.4.1",
+  "version": "3.4.2",
   "description": "A set of redux actions, reducers and redux-ovbservable epics for Sense/Net ECM",
   "main": "dist/src/sn-redux.js",
   "scripts": {
@@ -86,7 +86,7 @@
     "redux-observable": "^0.16.0",
     "semantic-release": "^8.0.0",
     "sn-client-auth-google": "^1.0.0",
-    "sn-client-js": "^3.0.0",
+    "sn-client-js": "^3.0.1",
     "tslint": "^5.6.0",
     "typedoc": "^0.9.0",
     "typedoc-md-theme": "^1.0.1",

@@ -112,7 +112,7 @@ export module Epics {
         return action$.ofType('LOAD_CONTENT_ACTIONS')
             .mergeMap(action => {
                 let c = dependencies.repository.HandleLoadedContent(action.content, ContentTypes.GenericContent);
-                return c.Actions(action.scenario)
+                return c.GetActions(action.scenario)
                     .map(result => Actions.ReceiveContentActions(result))
                     .catch(error => Observable.of(Actions.ReceiveContentActionsFailure(error)))
             })
@@ -433,7 +433,7 @@ export module Epics {
         return action$.ofType('REQUEST_CONTENT_ACTIONS')
             .mergeMap(action => {
                 let c = dependencies.repository.HandleLoadedContent(action.content, ContentTypes.GenericContent);
-                return c.Actions(action.scenario)
+                return c.GetActions(action.scenario)
                     .map(result => Actions.RequestContentActionsSuccess([...result, ...action.customItems], action.content.Id))
                     .catch(error => Observable.of(Actions.RequestContentActionsFailure(error)))
             })
