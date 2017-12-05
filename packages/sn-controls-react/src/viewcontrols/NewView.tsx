@@ -92,7 +92,7 @@ export class NewView extends React.Component<INewViewProps, { content, schema, t
                 <form style={styles.container} onSubmit={(e) => {
                     e.preventDefault();
                     if (this.props.onSubmit) {
-                        this.props.onSubmit(this.props.content.Path, this.state.type, this.state.content.GetFields())
+                        this.props.onSubmit(this.state.content)
                     }
                     if (this.props.history) {
                         this.props.history.goBack()

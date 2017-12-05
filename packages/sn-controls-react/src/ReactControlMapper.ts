@@ -5,7 +5,7 @@
  */ 
 
 import * as React from 'react'
-import { ControlMapper, FieldSettings } from 'sn-client-js';
+import { ControlMapper, FieldSettings, Repository } from 'sn-client-js';
 import { ReactClientFieldConfig } from './ReactClientFieldConfig';
 import * as ViewControls from './viewcontrols'
 import * as FieldControls from './fieldcontrols'
@@ -36,11 +36,13 @@ const clientConfigFactory = (fieldSettings: FieldSettings.FieldSetting) => {
     return defaultSetting;
 }
 
+const repository = new Repository.SnRepository();
+
 /**
  * @description A static Control Mapper instance, used to create the mapping between sensenet ECM ContentTypes and FieldSettings and React components.
  */
 
-export const ReactControlMapper = new ControlMapper(React.Component, clientConfigFactory, ViewControls.EditView, FieldControls.ShortText)
+export const ReactControlMapper = new ControlMapper(repository, React.Component, clientConfigFactory, ViewControls.EditView, FieldControls.ShortText)
     .SetupFieldSettingDefault(FieldSettings.NumberFieldSetting, (setting) => {
         return FieldControls.Number;
     })

@@ -13,7 +13,7 @@ import { styles } from './EditViewStyles'
  * Interface for EditView properties
  */
 interface IEditViewProps {
-    content,
+    content: Content,
     history?,
     onSubmit?: Function
 }
@@ -89,7 +89,7 @@ export class EditView extends React.Component<IEditViewProps, { content, schema 
                     (e) => {
                         e.preventDefault();
                         if (this.props.onSubmit) {
-                            this.props.onSubmit(this.props.content.Id, this.props.content.Type, this.state.content.GetChanges())
+                            this.props.onSubmit(this.state.content)
                         }
                         if (this.props.history) {
                             this.props.history.goBack()
