@@ -16,7 +16,6 @@ import Registration from './pages/Registration'
 import { DMSActions } from './Actions'
 import { DMSReducers } from './Reducers'
 
-
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import createMuiTheme from 'material-ui/styles/createMuiTheme';
 import lightBlue from 'material-ui/colors/lightBlue'
@@ -61,34 +60,34 @@ class Sensenet extends React.Component<ISensenetProps, { isAuthenticated: boolea
     return (
 
       <MuiThemeProvider theme={muiTheme}>
-        <div className='root'>
+        <div className="root">
           <Route
             exact
-            path='/'
+            path="/"
             render={routerProps => {
               const status = this.props.loginState !== Authentication.LoginState.Authenticated;
               return status ?
-                <Redirect key='login' to='/login' />
+                <Redirect key="login" to="/login" />
                 : <Dashboard {...routerProps} />;
             }}
           />
           <Route
-            path='/login'
+            path="/login"
             render={routerProps => {
               const status = this.props.loginState !== Authentication.LoginState.Authenticated;
               return status ?
                 <Login login={this.props.login} params={{ error: this.props.loginError }} clear={this.props.clearRegistration} />
-                : <Redirect key='dashboard' to='/' />
+                : <Redirect key="dashboard" to="/" />
             }}
           />
           <Route
-            path='/registration'
+            path="/registration"
             render={() => <Registration registration={this.props.registration} history={history} verify={this.props.recaptchaCallback} />} />
-          <Route path='/:id'
+          <Route path="/:id"
             render={routerProps => {
               const status = this.props.loginState !== Authentication.LoginState.Authenticated;
               return status ?
-                <Redirect key='login' to='/login' />
+                <Redirect key="login" to="/login" />
                 : <Dashboard {...routerProps} />;
             }} />
         </div>

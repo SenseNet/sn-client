@@ -7,7 +7,6 @@ import AppBarLogo from '../components/AppBarLogo'
 import { QuickSearch } from '../components/QuickSearch'
 import UserActionMenu from '../components/UserActionMenu'
 
-
 const styles = {
     menuIcon: {
         color: '#fff'
@@ -17,7 +16,7 @@ const styles = {
 class Header extends React.Component<{}, {}>{
     render() {
         return (
-            <AppBar position='static'>
+            <AppBar position="static">
                 <Toolbar>
                     <AppBarLogo history />
                     <QuickSearch />
@@ -27,6 +26,5 @@ class Header extends React.Component<{}, {}>{
         )
     }
 }
-
 
 export default Header;

@@ -78,8 +78,8 @@ interface ContentListState {
     copy
 }
 
-@DropTarget(props => props.accepts, DragAndDrop.uploadTarget, (connect, monitor) => ({
-    connectDropTarget: connect.dropTarget(),
+@DropTarget(props => props.accepts, DragAndDrop.uploadTarget, (conn, monitor) => ({
+    connectDropTarget: conn.dropTarget(),
     isOver: monitor.isOver(),
     canDrop: monitor.canDrop(),
 }))
@@ -306,7 +306,7 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
                             {this.props.isFetching || this.props.isLoading ?
                                 <tr>
                                     <td colSpan={5} style={styles.loader}>
-                                        <CircularProgress color='accent' size={50} />
+                                        <CircularProgress color="accent" size={50} />
                                     </td>
                                 </tr>
                                 : this.props.ids.map(n => {

@@ -46,8 +46,12 @@ export class SharedItemsTableRow extends React.Component<ISharedItemsTableRow, {
         super(props)
         this.handleContextMenu = this.handleContextMenu.bind(this)
     }
-    handleClick(e, id) { }
-    handleKeyDown(e, id) { }
+    handleClick(e, id) {
+        // TODO
+    }
+    handleKeyDown(e, id) {
+        // TODO
+    }
     handleContextMenu(e) {
         e.preventDefault()
     }
@@ -62,12 +66,12 @@ export class SharedItemsTableRow extends React.Component<ISharedItemsTableRow, {
                 key={this.props.currentId}
             >
                 <MediaQuery minDeviceWidth={700}>
-                    <TableCell padding='checkbox' style={styles.checkboxButton}></TableCell>
+                    <TableCell padding="checkbox" style={styles.checkboxButton}></TableCell>
                 </MediaQuery>
                 <MediaQuery minDeviceWidth={700}>
                     {(matches) => {
                         const padding = matches ? 'none' : 'dense';
-                        return <TableCell style={styles.typeIcon} padding={padding}><Icon color='accent'>{icons.SmartFolder}</Icon></TableCell>
+                        return <TableCell style={styles.typeIcon} padding={padding}><Icon color="accent">{icons.SmartFolder}</Icon></TableCell>
                     }}
                 </MediaQuery>
                 <TableCell style={styles.displayName as any}>Shared items</TableCell>

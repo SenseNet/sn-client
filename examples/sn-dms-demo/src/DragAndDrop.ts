@@ -1,4 +1,3 @@
-
 import * as ReactDOM from 'react-dom'
 
 export module DragAndDrop {
@@ -20,7 +19,6 @@ export module DragAndDrop {
             isDragging: monitor.isDragging(),
         })
     }
-
 
     export const rowTarget = {
         drop(props, monitor, component) {

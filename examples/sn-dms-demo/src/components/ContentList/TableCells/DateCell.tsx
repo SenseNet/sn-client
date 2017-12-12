@@ -28,8 +28,8 @@ interface IDateCellProps {
     selectedContentItems
 }
 
-@DropTarget('row', DragAndDrop.rowTarget, (connect, monitor) => ({
-    connectDropTarget: connect.dropTarget(),
+@DropTarget('row', DragAndDrop.rowTarget, (conn, monitor) => ({
+    connectDropTarget: conn.dropTarget(),
     isOver: monitor.isOver(),
     canDrop: monitor.canDrop(),
 }))
@@ -44,7 +44,7 @@ class DateCell extends React.Component<IDateCellProps, {}>{
         const isVmi = true
         return (
             <TableCell
-                padding='none'
+                padding="none"
                 onClick={event => handleRowSingleClick(event, content.Id)}
                 onDoubleClick={event => handleRowDoubleClick(event, content.Id)}>
                 {!isVmi ? null : connectDragSource(connectDropTarget(<div style={styles.cellPadding}>

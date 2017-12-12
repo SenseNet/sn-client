@@ -237,11 +237,11 @@ class Registration extends React.Component<IRegistrationProps, IRegistrationStat
   }
   render() {
     return (
-      <div className='Sensenet'>
-        <div className='Sensenet-header'>
+      <div className="Sensenet">
+        <div className="Sensenet-header">
           <MediaQuery minDeviceWidth={700}>
             {(matches) => {
-              return <img src={logo} width={matches ? '60%' : '50%'} className='Sensenet-logo' style={matches ? styles.logo : styles.logoMobile} alt='logo' />
+              return <img src={logo} width={matches ? '60%' : '50%'} className="Sensenet-logo" style={matches ? styles.logo : styles.logoMobile} alt="logo" />
             }}
           </MediaQuery>
         </div>
@@ -255,7 +255,7 @@ class Registration extends React.Component<IRegistrationProps, IRegistrationStat
               this.props.history.push('/login') :
               false}
             {
-              this.props.inProgress ? <div style={styles.progress}><CircularProgress color='accent' /></div> : ''}
+              this.props.inProgress ? <div style={styles.progress}><CircularProgress color="accent" /></div> : ''}
             <form onSubmit={e => {
               e.preventDefault()
               this.formSubmit(e)
@@ -265,9 +265,9 @@ class Registration extends React.Component<IRegistrationProps, IRegistrationStat
                 fullWidth
                 required
                 style={styles.formControl}>
-                <InputLabel htmlFor='email'>{resources.EMAIL_INPUT_LABEL}</InputLabel>
+                <InputLabel htmlFor="email">{resources.EMAIL_INPUT_LABEL}</InputLabel>
                 <Input
-                  id='email'
+                  id="email"
                   onBlur={(event) => this.handleEmailBlur(event)}
                   onChange={(event) => this.handleEmailChange(event)}
                   fullWidth
@@ -280,10 +280,10 @@ class Registration extends React.Component<IRegistrationProps, IRegistrationStat
                 fullWidth
                 required
                 style={styles.formControl}>
-                <InputLabel htmlFor='password'>{resources.PASSWORD_INPUT_LABEL}</InputLabel>
+                <InputLabel htmlFor="password">{resources.PASSWORD_INPUT_LABEL}</InputLabel>
                 <Input
-                  type='password'
-                  id='password'
+                  type="password"
+                  id="password"
                   onBlur={(event) => this.handlePasswordBlur(event)}
                   onChange={(event) => this.handlePasswordChange(event)}
                   fullWidth
@@ -295,10 +295,10 @@ class Registration extends React.Component<IRegistrationProps, IRegistrationStat
                 fullWidth
                 required
                 style={styles.formControl}>
-                <InputLabel htmlFor='password'>{resources.CONFIRM_PASSWORD_INPUT_LABEL}</InputLabel>
+                <InputLabel htmlFor="password">{resources.CONFIRM_PASSWORD_INPUT_LABEL}</InputLabel>
                 <Input
-                  type='password'
-                  id='confirmpassword'
+                  type="password"
+                  id="confirmpassword"
                   onBlur={(event) => this.handleConfirmPasswordBlur(event)}
                   onChange={(event) => this.handleConfirmPasswordChange(event)}
                   fullWidth
@@ -313,8 +313,8 @@ class Registration extends React.Component<IRegistrationProps, IRegistrationStat
                 <FormHelperText error>{this.props.registrationError && this.props.registrationError.length > 0 ? this.props.registrationError : ''}</FormHelperText>
               </FormControl>
               <Button
-                type='submit'
-                color='primary'
+                type="submit"
+                color="primary"
                 style={styles.button}
                 disabled={this.state.isButtonDisabled}
               >

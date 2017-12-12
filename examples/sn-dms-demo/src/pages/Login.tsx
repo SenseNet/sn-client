@@ -183,11 +183,11 @@ class Login extends React.Component<ILoginProps, ILoginState> {
 
   render() {
     return (
-      <div className='Sensenet'>
-        <div className='Sensenet-header'>
+      <div className="Sensenet">
+        <div className="Sensenet-header">
           <MediaQuery minDeviceWidth={700}>
             {(matches) => {
-              return <img src={logo} width={matches ? '60%' : '50%'} className='Sensenet-logo' style={matches ? styles.logo : styles.logoMobile} alt='logo' />
+              return <img src={logo} width={matches ? '60%' : '50%'} className="Sensenet-logo" style={matches ? styles.logo : styles.logoMobile} alt="logo" />
             }}
           </MediaQuery>
         </div>
@@ -206,9 +206,9 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                 fullWidth
                 required
                 style={styles.formControl}>
-                <InputLabel htmlFor='email'>{resources.EMAIL_INPUT_LABEL}</InputLabel>
+                <InputLabel htmlFor="email">{resources.EMAIL_INPUT_LABEL}</InputLabel>
                 <Input
-                  id='email'
+                  id="email"
                   onBlur={(event) => this.handleEmailBlur(event)}
                   onChange={(event) => this.handleEmailChange(event)}
                   fullWidth
@@ -221,10 +221,10 @@ class Login extends React.Component<ILoginProps, ILoginState> {
                 fullWidth
                 required
                 style={styles.formControl}>
-                <InputLabel htmlFor='password'>{resources.PASSWORD_INPUT_LABEL}</InputLabel>
+                <InputLabel htmlFor="password">{resources.PASSWORD_INPUT_LABEL}</InputLabel>
                 <Input
-                  type='password'
-                  id='password'
+                  type="password"
+                  id="password"
                   onBlur={(event) => this.handlePasswordBlur(event)}
                   onChange={(event) => this.handlePasswordChange(event)}
                   fullWidth
@@ -234,7 +234,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
               <FormControl>
                 <FormHelperText error>{this.props.loginError && this.props.loginError.length ? resources.WRONG_USERNAME_OR_PASSWORD : ''}</FormHelperText>
               </FormControl>
-              <Button type='submit' color='primary' style={styles.button} disabled={this.props.loginError === null && this.state.isButtonDisabled}>{resources.LOGIN_BUTTON_TEXT}</Button>
+              <Button type="submit" color="primary" style={styles.button} disabled={this.props.loginError === null && this.state.isButtonDisabled}>{resources.LOGIN_BUTTON_TEXT}</Button>
             </form>
           </MuiThemeProvider>
           <OauthRow />

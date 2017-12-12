@@ -45,7 +45,7 @@ class Dashboard extends React.Component<IDashboardProps, { currentId }>{
         }
         else {
             if (this.props.match.params.id !== undefined && this.props.match.params.id !== this.props.currentId) {
-                this.props.setCurrentId(this.props.match.params.id)
+                return this.props.setCurrentId(this.props.match.params.id)
                     && this.props.loadContent(`/Root/Profiles/Public/${this.props.loggedinUser.userName}/Document_Library`)
             }
         }

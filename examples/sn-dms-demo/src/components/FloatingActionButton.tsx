@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { Actions } from 'sn-redux'
 import { DMSActions } from '../Actions'
 import { DMSReducers } from '../Reducers'
+import { Content } from 'sn-client-js'
 import Button from 'material-ui/Button';
 import Add from 'material-ui-icons/Add';
 import ActionMenu from './ActionMenu/ActionMenu'
@@ -21,7 +22,7 @@ const styles = {
 
 interface IFloatingActionButton {
     actionMenuIsOpen: boolean,
-    content,
+    content: Content,
     actions,
     openActionMenu: Function,
     closeActionMenu: Function,
@@ -41,10 +42,10 @@ class FloatingActionButton extends React.Component<IFloatingActionButton, {}> {
     render() {
         const { actionMenuIsOpen } = this.props
         return (
-            <Button fab color='accent' aria-label='add' style={styles.actionButton as any}
+            <Button fab color="accent" aria-label="add" style={styles.actionButton as any}
                 aria-owns={actionMenuIsOpen}
                 onClick={event => this.handleActionMenuClick(event)} >
-                <Add aria-label='Menu' />
+                <Add aria-label="Menu" />
             </Button>
         )
     }

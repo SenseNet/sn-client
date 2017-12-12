@@ -20,7 +20,6 @@ const UserPanel = ({ user, repositoryUrl }) => (
         </div>
 )
 
-
 const mapStateToProps = (state, match) => {
     return {
         repositoryUrl: Reducers.getRepositoryUrl(state.sensenet)

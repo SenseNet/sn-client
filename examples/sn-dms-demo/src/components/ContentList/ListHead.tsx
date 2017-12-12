@@ -34,7 +34,7 @@ export class ListHead extends React.Component<IListHeadProps, {}> {
         return (
             <TableHead>
                 <TableRow>
-                        <TableCell padding='checkbox'>
+                        <TableCell padding="checkbox">
                             <Checkbox
                                 indeterminate={numSelected > 0 && numSelected < this.props.count}
                                 checked={numSelected === this.props.count}

@@ -66,7 +66,7 @@ class SelectionBox extends React.Component<ISelectionBoxProps, ISelectionBoxStat
                 message={`${count} Items selected`}
                 action={
                     <IconButton
-                        aria-label='Menu'
+                        aria-label="Menu"
                         onClick={event => this.handleClick(event)}
                         className={classes.button}
                     >

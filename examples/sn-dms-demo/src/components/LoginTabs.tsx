@@ -54,7 +54,7 @@ class LoginTabs extends React.Component<{ history }, { value }> {
         return (
             <MuiThemeProvider theme={muiTheme}>
                 <div>
-                    <AppBar position='static'>
+                    <AppBar position="static">
                         <Tabs
                             value={value}
                             onChange={this.handleChange}

@@ -37,10 +37,9 @@ AddGoogleAuth(repository, {
 const store = Store.configureStore(myReducer, DMSEpics.rootEpic, undefined, {}, repository)
 store.dispatch(Actions.InitSensenetStore('/Root/Sites/Default_Site', { select: 'all' }))
 
-
 ReactDOM.render(
   <Provider store={store}>
-    <Router basename='/'>
+    <Router basename="/">
       <Sensenet store={store} repository={repository} history={history} />
     </Router>
   </Provider>,

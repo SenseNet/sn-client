@@ -42,16 +42,16 @@ const AppBarLogo = () => (
     <MediaQuery minDeviceWidth={700}>
         {(matches) => {
             if (matches) {
-                return <Link to='/' style={styles.logo} >
-                    <img src={sensenetLogo} alt='sensenet' aria-label='sensenet' style={styles.logoImg} />
+                return <Link to="/" style={styles.logo} >
+                    <img src={sensenetLogo} alt="sensenet" aria-label="sensenet" style={styles.logoImg} />
                     <span style={styles.logoText}>
                         sensenet ECM
                         </span>
                 </Link>
             }
             else {
-                return <Link to='/' style={{...styles.logo, ...styles.logoMobile}} >
-                    <img src={sensenetLogo} alt='sensenet' aria-label='sensenet' style={styles.logoImgMobile} />
+                return <Link to="/" style={{...styles.logo, ...styles.logoMobile}} >
+                    <img src={sensenetLogo} alt="sensenet" aria-label="sensenet" style={styles.logoImgMobile} />
                 </Link>
             }
         }}

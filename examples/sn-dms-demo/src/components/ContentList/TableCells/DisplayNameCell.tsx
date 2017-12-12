@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { Content } from 'sn-client-js'
 import { Actions, Reducers } from 'sn-redux'
 import MediaQuery from 'react-responsive';
 import { DMSReducers } from '../../../Reducers'
@@ -31,7 +30,7 @@ const styles = {
 }
 
 interface IDisplayNameCellProps {
-    content: Content,
+    content,
     isHovered: boolean,
     handleRowDoubleClick: Function,
     handleRowSingleClick: Function,
@@ -56,11 +55,12 @@ interface IDisplayNameCellProps {
 interface IDisplayNameCellState {
     oldText,
     newText,
-    edited
+    edited,
+    displayName
 }
 
-@DropTarget('row', DragAndDrop.rowTarget, (connect, monitor) => ({
-    connectDropTarget: connect.dropTarget(),
+@DropTarget('row', DragAndDrop.rowTarget, (conn, monitor) => ({
+    connectDropTarget: conn.dropTarget(),
     isOver: monitor.isOver(),
     canDrop: monitor.canDrop(),
 }))
@@ -72,11 +72,11 @@ class DisplayNameCell extends React.Component<IDisplayNameCellProps, IDisplayNam
         this.state = {
             oldText: this.props.content.DisplayName,
             newText: '',
-            edited: this.props.edited
+            edited: this.props.edited,
+            displayName: this.props.content.DisplayName
         }
 
         this.handleTitleClick = this.handleTitleClick.bind(this)
-        this.handleTitleLongClick = this.handleTitleLongClick.bind(this)
         this.handleTitleInputBlur = this.handleTitleInputBlur.bind(this)
         this.handleTitleChange = this.handleTitleChange.bind(this)
     }
@@ -84,14 +84,7 @@ class DisplayNameCell extends React.Component<IDisplayNameCellProps, IDisplayNam
         let that = this;
         if (e.target.id !== 'renameInput') {
             e.preventDefault()
-            that.handleTitleLongClick(e, id)
         }
-    }
-    handleTitleLongClick(e, id) {
-        this.setState({
-            edited: id
-        })
-        this.props.setEdited(id)
     }
     handleTitleChange(e) {
         this.setState({
@@ -102,11 +95,13 @@ class DisplayNameCell extends React.Component<IDisplayNameCellProps, IDisplayNam
         if (this.state.newText !== '' && this.state.oldText !== this.state.newText) {
             this.updateDisplayName()
         }
-        else
+        else {
             this.setState({
                 edited: null,
                 newText: ''
             })
+            this.props.setEdited(null)
+        }
     }
     handleKeyPress(e) {
         if (e.key === 'Enter') {
@@ -115,13 +110,15 @@ class DisplayNameCell extends React.Component<IDisplayNameCellProps, IDisplayNam
     }
     updateDisplayName() {
         let c = this.props.currentContent;
-        let updateableContent = c.repository.HandleLoadedContent(c, c._type)
+        let updateableContent = c
         updateableContent.DisplayName = this.state.newText
         this.props.rename(updateableContent)
         this.setState({
             edited: null,
-            newText: ''
+            newText: '',
+            displayName: this.state.newText
         })
+        this.props.setEdited(null)
     }
     isEdited(id) { return this.props.edited === id }
     render() {
@@ -134,23 +131,23 @@ class DisplayNameCell extends React.Component<IDisplayNameCellProps, IDisplayNam
             <MediaQuery minDeviceWidth={700}>
                 {(matches) => {
                     return <TableCell
-                        padding='none'
+                        padding="none"
                         style={this.props.isHovered && !isEdited ? styles.hoveredDisplayName : styles.displayName as any}
                         onClick={event => handleRowSingleClick(event, content.id)}
                         onDoubleClick={event => handleRowDoubleClick(event, this.props.content.Id)}>
                         {isEdited ?
                             <TextField
-                                id='renameInput'
+                                id="renameInput"
                                 autoFocus
                                 defaultValue={this.props.content.DisplayName}
-                                margin='dense'
+                                margin="dense"
                                 style={styles.editedTitle as any}
                                 onChange={event => this.handleTitleChange(event)}
                                 onKeyPress={event => this.handleKeyPress(event)}
                                 onBlur={event => this.handleTitleInputBlur(this.props.content.Id)} /> :
                             connectDragSource(connectDropTarget(<div
                                 onClick={event => matches ? this.handleTitleClick(event, this.props.content.Id) : event.preventDefault()}
-                                style={styles.displayNameDiv}>{this.props.content.DisplayName}</div>), { dropEffect: dropEffect })
+                                style={styles.displayNameDiv}>{this.state.displayName}</div>), { dropEffect: dropEffect })
                         }
                     </TableCell>
                 }}

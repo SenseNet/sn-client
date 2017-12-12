@@ -18,7 +18,7 @@ class GoogleReCaptcha extends React.Component<{ verify }, { recaptchaResponse }>
     render() {
         return (
             <ReCAPTCHA
-                ref='recaptcha'
+                ref="recaptcha"
                 sitekey={process.env.REACT_APP_RECAPTCHA_KEY || '6LcRiy4UAAAAANJjCL8H5c4WG2YeejRuA35e1gcU'}
                 onChange={this.onChange.bind(this)}
             />

@@ -11,7 +11,6 @@ import Toolbar from 'material-ui/Toolbar'
 import Button from 'material-ui/Button'
 import Icon from 'material-ui/Icon';
 
-
 import { icons } from '../assets/icons'
 const styles = {
     breadCrumb: {},
@@ -41,12 +40,9 @@ class BreadCrumb extends React.Component<{ breadcrumb, history }, {}>{
             })
         }
     }
-    isCurrent(id) {
-
-    }
     render() {
         return <div style={styles.breadCrumb}>
-            <AppBar position='static'>
+            <AppBar position="static">
                 <Toolbar>
                     <MediaQuery minDeviceWidth={700}>
                         {(matches) => {

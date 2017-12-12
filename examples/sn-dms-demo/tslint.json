@@ -8,7 +8,13 @@
             "spaces"
         ],
         "no-duplicate-variable": true,
+        "no-unused-variable": true,
+        "no-use-before-declare": true,
+        "no-shadowed-variable": true,
+        "no-consecutive-blank-lines": true,
+        "no-empty": true,
         "no-eval": true,
+        "no-string-literal": true,
         "no-internal-module": false,
         "no-var-keyword": true,
         "one-line": [
@@ -32,7 +38,8 @@
         "quotemark": [
             true,
             "single",
-            "avoid-escape"
+            "avoid-escape",
+            "jsx-double"
         ],
         "variable-name": false,
         "whitespace": [

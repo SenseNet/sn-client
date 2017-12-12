@@ -55,7 +55,7 @@ class MenuCell extends React.Component<IMenuCellProps, IMenuCellState>{
                     return <TableCell style={styles.actionMenuButton}
                         padding={padding}>
                         <IconButton
-                            aria-label='Menu'
+                            aria-label="Menu"
                             aria-owns={actionMenuIsOpen}
                             onClick={event => !selectionModeOn ? this.handleActionMenuClick(event, content) : null}
                         >
@@ -70,7 +70,6 @@ class MenuCell extends React.Component<IMenuCellProps, IMenuCellState>{
         )
     }
 }
-
 
 const mapStateToProps = (state, match) => {
     return {

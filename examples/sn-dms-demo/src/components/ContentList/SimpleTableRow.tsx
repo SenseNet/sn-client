@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { Actions, Reducers } from 'sn-redux'
 import { DMSReducers } from '../../Reducers'
 import { DMSActions } from '../../Actions'
-
 import MediaQuery from 'react-responsive';
 import Table, {
     TableRow,
@@ -48,7 +47,6 @@ const styles = {
 interface ISimpleTableRowProps {
     content,
     ids,
-    getActions: Function,
     opened: Number,
     openActionMenu: Function,
     closeActionMenu: Function,
@@ -120,7 +118,7 @@ class SimpleTableRow extends React.Component<ISimpleTableRowProps, ISimpleTableR
             <TableRow
                 hover
                 //onKeyDown={event => this.handleKeyDown(event, content.Id, content._type)}
-                role='checkbox'
+                role="checkbox"
                 aria-checked={isSelected}
                 tabIndex={-1}
                 onMouseEnter={event => this.handleRowMouseEnter(event, content.Id)}
@@ -133,7 +131,7 @@ class SimpleTableRow extends React.Component<ISimpleTableRowProps, ISimpleTableR
             >
                 <MediaQuery minDeviceWidth={700}>
                     <TableCell
-                        padding='checkbox'
+                        padding="checkbox"
                         style={styles.checkboxButton}
 
                         onClick={event => handleRowSingleClick(event, content)}
@@ -197,7 +195,6 @@ const mapStateToProps = (state, match) => {
     }
 }
 export default withRouter(connect(mapStateToProps, {
-    getActions: Actions.RequestContentActions,
     openActionMenu: DMSActions.OpenActionMenu,
     closeActionMenu: DMSActions.CloseActionMenu,
     selectionModeOn: DMSActions.SelectionModeOn,

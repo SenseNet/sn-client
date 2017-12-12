@@ -5,7 +5,6 @@ import {
 import { connect } from 'react-redux';
 import { DMSReducers } from '../Reducers'
 import { DMSActions } from '../Actions'
-import { Content, ContentTypes } from 'sn-client-js'
 import { Actions, Reducers } from 'sn-redux'
 import { FetchError } from './FetchError'
 import { DragDropContext } from 'react-dnd'
@@ -78,7 +77,7 @@ class DocumentLibrary extends React.Component<IDocumentLibraryProps, IDocumentLi
         })
     }
     handleFileDrop(item, monitor) {
-        const content: Content = this.props.currentContent
+        const content = this.props.currentContent
         const { uploadContent } = this.props
         if (monitor) {
             const droppedFiles = monitor.getItem().files

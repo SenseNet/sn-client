@@ -45,17 +45,17 @@ const QuickSearchBox = ({ isOpen, onClick }) => {
                 textStyle = { ...textStyle, ...additionalStyles } as any;
                 if (matches) {
                     return <div>
-                        <TextField name='search' style={textStyle} />
+                        <TextField name="search" style={textStyle} />
                         <IconButton
                             style={styles.icon}
-                            aria-label='Search'
+                            aria-label="Search"
                             onClick={() => onClick()}>
                             <Search />
                         </IconButton>
                     </div>
                 }
                 else {
-                    return <TextField name='search' placeholder='search' style={textStyle} />
+                    return <TextField name="search" placeholder="search" style={textStyle} />
                 }
             }}
 

@@ -72,14 +72,14 @@ class UserActionMenu extends React.Component<IUserActionMenu, { anchorEl, open, 
                         <IconButton
                             aria-label={resources.OPEN_MENU}
                             aria-owns={this.state.open ? 'long-menu' : null}
-                            aria-haspopup='true'
+                            aria-haspopup="true"
                             onClick={this.handleClick}
                             style={matches ? styles.menuIcon : { ...styles.menuIcon, ...styles.menuIconMobile }}
                         >
                             <UserPanel user={this.props.loggedinUser} />
                         </IconButton>
                         <Menu
-                            id='long-menu'
+                            id="long-menu"
                             anchorEl={this.state.anchorEl}
                             open={this.state.open}
                             onRequestClose={this.handleRequestClose}

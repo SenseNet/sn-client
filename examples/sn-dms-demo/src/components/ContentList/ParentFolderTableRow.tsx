@@ -50,8 +50,12 @@ class ParentFolderTableRow extends React.Component<IParentFolderTableRow, {}>{
         super(props)
         this.handleDoubleClick = this.handleDoubleClick.bind(this);
     }
-    handleClick(e, id) { }
-    handleKeyDown(e, id) { }
+    handleClick(e, id) { 
+        //TODO
+    }
+    handleKeyDown(e, id) { 
+        //TODO
+    }
     handleDoubleClick(e, id) {
         this.props.history.push(`/${id}`)
     }
@@ -67,7 +71,7 @@ class ParentFolderTableRow extends React.Component<IParentFolderTableRow, {}>{
                         onKeyDown={event => this.handleKeyDown(event, parentId)}
                         tabIndex={-1}
                     >
-                        <TableCell padding='checkbox' style={styles.checkboxButton}></TableCell>
+                        <TableCell padding="checkbox" style={styles.checkboxButton}></TableCell>
                         <TableCell style={styles.parentDisplayName as any}
                             padding={padding}
                             onDoubleClick={event => this.handleDoubleClick(event, parentId)}>[ ... ]</TableCell>
