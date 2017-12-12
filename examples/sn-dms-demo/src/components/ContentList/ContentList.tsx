@@ -144,7 +144,7 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
                 }
         }
         else if (e.ctrlKey) {
-            this.handleSimpleSelection(content.Id)
+            this.handleSimpleSelection(content)
         }
         else {
             e.target.getAttribute('type') !== 'checkbox' && window.innerWidth >= 700 ?
@@ -153,8 +153,10 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
         }
     }
     handleRowDoubleClick(e, id, type) {
-        if (type === 'Folder')
+        if (type === 'Folder'){
             this.props.history.push(`/${id}`)
+            this.props.deselect(this.props.children[id])
+        }
         else
             console.log('open preview')
     }
@@ -162,6 +164,7 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
         const ctrl = e.ctrlKey ? true : false;
         const alt = e.altKey ? true : false;
         const shift = e.shiftKey ? true : false;
+        const { children, ids } = this.props
 
         if (ctrl)
             this.setState({
@@ -173,14 +176,14 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
         else {
             const id = Number(e.target.closest('tr').id)
             if (id !== 0) {
-                const type = this.props.children[id]._type
+                const type = children[id]._type
                 this.setState({
                     active: id
                 })
                 switch (e.which) {
                     case Key.Space:
                         e.preventDefault()
-                        this.handleSimpleSelection(id)
+                        this.handleSimpleSelection(children[id])
                         break
                     case Key.Enter:
                         e.preventDefault()
@@ -188,17 +191,17 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
                         break
                     case Key.UpArrow:
                         if (shift) {
-                            const upperItemIndex = this.props.ids.indexOf(Number(this.state.active)) - 1
+                            const upperItemIndex = ids.indexOf(Number(this.state.active)) - 1
                             upperItemIndex > -1 ?
-                                this.handleSimpleSelection(this.props.ids[upperItemIndex]) :
+                                this.handleSimpleSelection(children[ids[upperItemIndex]]) :
                                 null
                         }
                         break
                     case Key.DownArrow:
                         if (shift) {
-                            const upperItemIndex = this.props.ids.indexOf(Number(this.state.active)) + 1
-                            upperItemIndex < this.props.ids.length ?
-                                this.handleSimpleSelection(this.props.ids[upperItemIndex]) :
+                            const upperItemIndex = ids.indexOf(Number(this.state.active)) + 1
+                            upperItemIndex < ids.length ?
+                                this.handleSimpleSelection(children[ids[upperItemIndex]]) :
                                 null
                         }
                         break
@@ -318,7 +321,7 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
                                             key={content.Id}
                                             handleRowDoubleClick={this.handleRowDoubleClick}
                                             handleRowSingleClick={this.handleRowSingleClick}
-                                            handleTap={this.handleTap}
+                                            handleTap={e => this.handleTap(e, content.Id, content._type )}
                                             isCopy={this.state.copy} />
                                     ) : null
                                 })

@@ -142,6 +142,19 @@ export module DMSReducers {
                 return state
         }
     }
+    
+    export const editedFirst = (state = false, action) => {
+        switch (action.type) {
+            case 'SET_EDITED_ID':
+                return action.id ? true : false
+            case 'SET_EDITED_FIRST':
+                return action.edited
+            case 'UPDATE_CONTENT_SUCCESS':
+                return false
+            default:
+                return state
+        }
+    }
 
     export const breadcrumb = (state = [], action) => {
         switch (action.type) {
@@ -200,6 +213,7 @@ export module DMSReducers {
         actionmenu,
         breadcrumb,
         editedItemId,
+        editedFirst,
         currentId,
         rootId,
         register,
@@ -280,5 +294,8 @@ export module DMSReducers {
     }
     export const getAddNewActions = (state) => {
         return state.addnew
+    }
+    export const isEditedFirst = (state) => {
+        return state.editedFirst
     }
 }

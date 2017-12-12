@@ -41,4 +41,8 @@ export module DMSActions {
     export const SelectionModeOff = () => ({
         type: 'SELECTION_MODE_OFF'
     })
+    export const setEditedFirst = (edited) => ({
+        type: 'SET_EDITED_FIRST',
+        edited
+    })
 }

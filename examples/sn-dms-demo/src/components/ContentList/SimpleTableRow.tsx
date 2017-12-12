@@ -101,14 +101,14 @@ class SimpleTableRow extends React.Component<ISimpleTableRowProps, ISimpleTableR
         })
     }
     isSelected(id) {
-        return this.props.selected.indexOf(id) !== -1;
+        return this.props.selected.indexOf(id) > -1;
     }
     isHovered(id) {
         return this.state.hovered === id
     }
 
-    handleIconTap(e, id, type) {
-        this.props.handleRowSingleClick(e, id)
+    handleIconTap(e, content) {
+        this.props.handleRowSingleClick(e, content)
     }
     render() {
         const { content, handleRowSingleClick, handleRowDoubleClick, handleTap, isCopy } = this.props
@@ -151,7 +151,7 @@ class SimpleTableRow extends React.Component<ISimpleTableRowProps, ISimpleTableR
                             id={content.Id}
                             icon={content.Icon}
                             selected={isSelected}
-                            handleRowSingleClick={event => matches ? handleRowSingleClick(event, content) : this.handleIconTap(event, content.Id, content._type)}
+                            handleRowSingleClick={event => matches ? handleRowSingleClick(event, content) : this.handleIconTap(event, content)}
                             handleRowDoubleClick={event => matches ? handleRowDoubleClick(event, content.Id, content._type) : event.preventDefault()} />
                     }}
                 </MediaQuery>

@@ -49,7 +49,9 @@ interface IDisplayNameCellProps {
     selected,
     selectedContentItems,
     copyBatch: Function,
-    moveBatch: Function
+    moveBatch: Function,
+    editedFirst: boolean,
+    setEditedFirst: Function
 }
 
 interface IDisplayNameCellState {
@@ -66,6 +68,7 @@ interface IDisplayNameCellState {
 }))
 @DragSource('row', DragAndDrop.rowSource, DragAndDrop.collect)
 class DisplayNameCell extends React.Component<IDisplayNameCellProps, IDisplayNameCellState>{
+    private input: HTMLInputElement;
     constructor(props) {
         super(props)
 
@@ -91,16 +94,36 @@ class DisplayNameCell extends React.Component<IDisplayNameCellProps, IDisplayNam
             newText: e.target.value
         })
     }
-    handleTitleInputBlur(id) {
-        if (this.state.newText !== '' && this.state.oldText !== this.state.newText) {
-            this.updateDisplayName()
+    handleTitleInputBlur(id, mobile) {
+        if (!mobile) {
+            if (this.state.newText !== '' && this.state.oldText !== this.state.newText) {
+                this.updateDisplayName()
+            }
+            else {
+                this.setState({
+                    edited: null,
+                    newText: ''
+                })
+                this.props.setEdited(null)
+            }
         }
         else {
-            this.setState({
-                edited: null,
-                newText: ''
-            })
-            this.props.setEdited(null)
+            if (this.props.editedFirst) {
+                this.input.focus();
+                this.props.setEditedFirst(false)
+            }
+            else {
+                if (this.state.newText !== '' && this.state.oldText !== this.state.newText) {
+                    this.updateDisplayName()
+                }
+                else {
+                    this.setState({
+                        edited: null,
+                        newText: ''
+                    })
+                    this.props.setEdited(null)
+                }
+            }
         }
     }
     handleKeyPress(e) {
@@ -138,13 +161,15 @@ class DisplayNameCell extends React.Component<IDisplayNameCellProps, IDisplayNam
                         {isEdited ?
                             <TextField
                                 id="renameInput"
-                                autoFocus
+                                autoFocus={isEdited}
                                 defaultValue={this.props.content.DisplayName}
                                 margin="dense"
                                 style={styles.editedTitle as any}
                                 onChange={event => this.handleTitleChange(event)}
                                 onKeyPress={event => this.handleKeyPress(event)}
-                                onBlur={event => this.handleTitleInputBlur(this.props.content.Id)} /> :
+                                onBlur={event => this.handleTitleInputBlur(this.props.content.Id, !matches)}
+                                inputRef={(ref) => this.input = ref}
+                            /> :
                             connectDragSource(connectDropTarget(<div
                                 onClick={event => matches ? this.handleTitleClick(event, this.props.content.Id) : event.preventDefault()}
                                 style={styles.displayNameDiv}>{this.state.displayName}</div>), { dropEffect: dropEffect })
@@ -164,7 +189,8 @@ const mapStateToProps = (state, match) => {
         currentContent: Reducers.getContent(state.sensenet.children.entities, match.content.Id),
         edited: DMSReducers.getEditedItemId(state.dms),
         selected: Reducers.getSelectedContentIds(state.sensenet),
-        selectedContentItems: Reducers.getSelectedContentItems(state.sensenet)
+        selectedContentItems: Reducers.getSelectedContentItems(state.sensenet),
+        editedFirst: DMSReducers.isEditedFirst(state.dms)
     }
 }
 
@@ -172,5 +198,6 @@ export default connect(mapStateToProps, {
     rename: renameContent,
     setEdited: setEdited,
     copyBatch: Actions.CopyBatch,
-    moveBatch: Actions.MoveBatch
+    moveBatch: Actions.MoveBatch,
+    setEditedFirst: DMSActions.setEditedFirst
 })(DisplayNameCell)
