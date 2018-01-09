@@ -120,7 +120,7 @@
     "material-ui": "^0.20.0",
     "material-ui-chip-input": "^0.18.3",
     "nyc": "^11.0.3",
-    "radium": "^0.19.1",
+    "radium": "^0.21.0",
     "react": "^16.0.0",
     "react-quill": "^1.0.0-rc.3",
     "react-router-dom": "^4.1.1"
