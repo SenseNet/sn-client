@@ -37,7 +37,7 @@ export const retrierTests = describe("Retrier", () => {
                     onFail: () => {
                         triggered = true;
                     },
-                    TimeoutMs: 1,
+                    timeoutMs: 1,
                 }).Run();
 
             expect(triggered).to.be.eq(true);
@@ -68,7 +68,7 @@ export const retrierTests = describe("Retrier", () => {
             .Setup({
                 Retries: 3,
                 RetryIntervalMs: 1,
-                TimeoutMs: 1000,
+                timeoutMs: 1000,
             })
             .Run();
 

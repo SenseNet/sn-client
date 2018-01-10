@@ -37,15 +37,16 @@ export class RetrierOptions {
      * The default timeout in millisecs
      */
     public static readonly TIMEOUT_MS_DEFAULT = 1000;
-    private timeoutMs: number;
+    private timeoutMsValue: number;
+
     /**
      * The Timeout interval in milliseconds
      */
-    public get TimeoutMs(): number {
-        return this.timeoutMs !== undefined ? this.timeoutMs : RetrierOptions.TIMEOUT_MS_DEFAULT;
+    public get timeoutMs(): number {
+        return this.timeoutMsValue !== undefined ? this.timeoutMsValue : RetrierOptions.TIMEOUT_MS_DEFAULT;
     }
-    public set TimeoutMs(v: number) {
-        this.timeoutMs = v;
+    public set timeoutMs(v: number) {
+        this.timeoutMsValue = v;
     }
 
     /**
