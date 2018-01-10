@@ -1,0 +1,54 @@
+{
+  "name": "@sensenet/default-content-types",
+  "version": "1.0.0-development.1",
+  "description": "Default content type definitions for sensenet ECM",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "lint": "./node_modules/.bin/tslint --project tsconfig.json",
+    "clean": "rimraf dist",
+    "precommit": "npm run build",
+    "commit": "git-cz",
+    "test": "nyc mocha -p tsconfig.json dist/test/index.js",
+    "prebuild": "npm run lint && npm run clean",
+    "build": "tsc",
+    "typedoc": "typedoc --mode modules --tsconfig ./tsconfig.typedoc.json --out documentation --excludePrivate --theme default --readme readme.md ./src",
+    "publish:development": "npm run build && npm t && npm run typedoc && npm publish --tag development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SenseNet/sn-default-content-types.git"
+  },
+  "keywords": [
+    "sensenet",
+    "ecm",
+    "Content management",
+    "Content types",
+    "Typescript"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "bugs": {
+    "url": "https://github.com/SenseNet/sn-default-content-types/issues"
+  },
+  "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
+  "license": "GPL-2.0",
+  "homepage": "https://sensenet.com",
+  "dependencies": {},
+  "devDependencies": {
+    "rimraf": "^2.6.1",
+    "tslint": "^5.8.0",
+    "tslint-consistent-codestyle": "^1.11.0",
+    "typescript": "^2.6.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "sensenet-kfi-cz-conventional-changelog"
+    }
+  },
+  "typings": "./dist/index.d.ts"
+}
