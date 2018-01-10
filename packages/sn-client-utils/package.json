@@ -1,7 +1,7 @@
 {
   "name": "@sensenet/client-utils",
   "version": "1.0.0-development.1",
-  "description": "Utilities for sensenet ECM",
+  "description": "General sensenet ECM independent client side utilities",
   "main": "dist/index.js",
   "files": [
     "dist",
@@ -21,6 +21,10 @@
     "publish:development": "npm t && npm run typedoc && npm publish --tag development",
     "typedoc": "typedoc --mode file --out documentation src --tsconfig tsconfig.typedoc.json"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SenseNet/sn-client-utils.git"
+  },  
   "keywords": [
     "sensenet",
     "ecm",
@@ -31,6 +35,9 @@
   ],
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/SenseNet/sn-client-utils/issues"
+  },  
   "nyc": {
     "exclude": [
       "temp/test/**/*.*",
