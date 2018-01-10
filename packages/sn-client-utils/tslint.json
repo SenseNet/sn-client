@@ -6,6 +6,9 @@
     "jsRules": {},
     "rules": {
         "member-ordering": false,
+        "object-literal-sort-keys": [
+            false
+        ],
         "no-unused-expression": [
             true,
             "allow-fast-null-checks"
