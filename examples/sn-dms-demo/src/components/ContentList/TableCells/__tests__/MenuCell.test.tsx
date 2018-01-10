@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Store, Actions, Reducers } from 'sn-redux'
-import { Content, ContentTypes, Repository } from 'sn-client-js'
+import { Store, Reducers } from 'sn-redux'
+import { ContentTypes, Repository } from 'sn-client-js'
 import { combineReducers } from 'redux'
 import MenuCell from '../MenuCell';
 import 'rxjs'

@@ -9,7 +9,6 @@ import { DMSReducers } from '../Reducers'
 import { Content } from 'sn-client-js'
 import Button from 'material-ui/Button';
 import Add from 'material-ui-icons/Add';
-import ActionMenu from './ActionMenu/ActionMenu'
 
 const styles = {
     actionButton: {

@@ -6,8 +6,12 @@ it('renders without crashing', () => {
     const div = document.createElement('div');
     ReactDOM.render(<IconCell
         id={1}
-        icon='edit'
+        icon="edit"
         selected={false}
-        handleRowDoubleClick={() => { }}
-        handleRowSingleClick={() => { }} />, div);
+        handleRowDoubleClick={() => { 
+            //
+        }}
+        handleRowSingleClick={() => { 
+            //
+        }} />, div);
 });

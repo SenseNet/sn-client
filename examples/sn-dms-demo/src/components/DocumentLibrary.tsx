@@ -91,7 +91,6 @@ class DocumentLibrary extends React.Component<IDocumentLibraryProps, IDocumentLi
     }
     render() {
         const { FILE } = NativeTypes
-        const { droppedFiles } = this.state
         if (this.props.errorMessage && this.props.errorMessage.length > 0) {
             return (
                 <FetchError
@@ -112,7 +111,6 @@ class DocumentLibrary extends React.Component<IDocumentLibraryProps, IDocumentLi
     }
 }
 
-const loadContentAction = Actions.LoadContent;
 const fetchContentAction = Actions.RequestContent;
 const uploadContentAction = Actions.UploadRequest
 

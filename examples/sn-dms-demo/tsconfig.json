@@ -17,7 +17,7 @@
     "noImplicitAny": false,
     "strictNullChecks": false,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": false,
+    "noUnusedLocals": true,
     "strict": true,
     "removeComments": true,
     "preserveConstEnums": true,

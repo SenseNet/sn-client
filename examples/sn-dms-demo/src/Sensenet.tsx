@@ -1,6 +1,5 @@
 import * as React from 'react';
 import './Sensenet.css';
-import { styles } from './SensenetStyles'
 import 'typeface-roboto'
 import { connect } from 'react-redux';
 import {
@@ -14,13 +13,11 @@ import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import Registration from './pages/Registration'
 import { DMSActions } from './Actions'
-import { DMSReducers } from './Reducers'
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import createMuiTheme from 'material-ui/styles/createMuiTheme';
 import lightBlue from 'material-ui/colors/lightBlue'
 import pink from 'material-ui/colors/pink'
-import yellow from 'material-ui/colors/yellow'
 
 const muiTheme = createMuiTheme({
   palette: {

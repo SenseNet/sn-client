@@ -3,11 +3,10 @@ import {
     withRouter
 } from 'react-router-dom'
 import { connect } from 'react-redux';
-import { Actions, Reducers } from 'sn-redux'
-import { DMSReducers } from '../../Reducers'
+import { Reducers } from 'sn-redux'
 import { DMSActions } from '../../Actions'
 import MediaQuery from 'react-responsive';
-import Table, {
+import {
     TableRow,
     TableCell
 } from 'material-ui/Table';

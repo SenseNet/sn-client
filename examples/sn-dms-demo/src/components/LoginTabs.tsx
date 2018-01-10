@@ -27,14 +27,6 @@ const styles = {
 
 import { resources } from '../assets/resources'
 
-function TabContainer(props) {
-    return (
-        <div style={{ padding: 20 }}>
-            {props.children}
-        </div>
-    );
-}
-
 class LoginTabs extends React.Component<{ history }, { value }> {
     constructor(props) {
         super(props)

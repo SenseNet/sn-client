@@ -4,5 +4,7 @@ import { FetchError } from '../FetchError';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<FetchError message='error' onRetry={() => {}} />, div);
+  ReactDOM.render(<FetchError message="error" onRetry={() => {
+    //
+  }} />, div);
 });

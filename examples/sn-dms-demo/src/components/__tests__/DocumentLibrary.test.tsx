@@ -4,7 +4,7 @@ import {
   MemoryRouter
 } from 'react-router-dom'
 import { Provider } from 'react-redux';
-import { Store, Actions, Reducers } from 'sn-redux'
+import { Store, Reducers } from 'sn-redux'
 import { DMSReducers } from '../../Reducers'
 import { Repository } from 'sn-client-js'
 import { combineReducers } from 'redux'

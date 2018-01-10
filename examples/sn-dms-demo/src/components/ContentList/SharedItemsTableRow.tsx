@@ -1,10 +1,7 @@
 import * as React from 'react'
-import Table, {
-    TableBody,
+import {
     TableCell,
-    TableHead,
-    TableRow,
-    TableSortLabel,
+    TableRow
 } from 'material-ui/Table';
 import Icon from 'material-ui/Icon';
 import MediaQuery from 'react-responsive';

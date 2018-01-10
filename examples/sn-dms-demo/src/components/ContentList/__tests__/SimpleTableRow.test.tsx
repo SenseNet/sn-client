@@ -3,8 +3,8 @@ import * as ReactDOM from 'react-dom';
 import {
   MemoryRouter
 } from 'react-router-dom'
-import { Store, Actions, Reducers } from 'sn-redux'
-import { Repository, Content, ContentTypes } from 'sn-client-js'
+import { Store, Reducers } from 'sn-redux'
+import { Repository, ContentTypes } from 'sn-client-js'
 import { combineReducers } from 'redux'
 import { Provider } from 'react-redux';
 import 'rxjs'

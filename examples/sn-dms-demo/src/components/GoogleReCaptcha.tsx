@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux';
 import ReCAPTCHA from 'react-google-recaptcha'
-import { DMSActions } from '../Actions'
 import { DMSReducers } from '../Reducers'
 
 class GoogleReCaptcha extends React.Component<{ verify }, { recaptchaResponse }>{

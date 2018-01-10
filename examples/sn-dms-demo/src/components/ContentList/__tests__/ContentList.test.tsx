@@ -5,13 +5,13 @@ import {
 } from 'react-router-dom'
 import { Store, Actions, Reducers } from 'sn-redux'
 import { DMSReducers } from '../../../Reducers'
-import { Repository, Content, ContentTypes } from 'sn-client-js'
+import { Repository, ContentTypes } from 'sn-client-js'
 import { combineReducers } from 'redux'
 import { Provider } from 'react-redux';
 import 'rxjs'
 import ContentList from '../ContentList';
 
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import * as sinon from 'sinon'
 
 import * as Enzyme from 'enzyme';

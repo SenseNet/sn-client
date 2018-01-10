@@ -1,7 +1,5 @@
 import * as React from 'react'
 import { connect } from 'react-redux';
-import { Reducers } from 'sn-redux'
-import { DMSActions } from '../Actions'
 import { DMSReducers } from '../Reducers'
 import LoginTabs from '../components/LoginTabs'
 import { WelcomeMessage } from '../components/WelcomeMessage'

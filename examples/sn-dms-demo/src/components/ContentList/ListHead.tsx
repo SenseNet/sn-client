@@ -1,5 +1,5 @@
 import * as React from 'react'
-import Table, {
+import {
     TableCell,
     TableHead,
     TableRow,

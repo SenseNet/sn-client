@@ -1,7 +1,7 @@
 import { DMSEpics } from '../Epics'
 import configureMockStore from 'redux-mock-store';
 import { createEpicMiddleware } from 'redux-observable';
-import { Mocks, Content, ContentTypes } from 'sn-client-js';
+import { Mocks } from 'sn-client-js';
 import 'rxjs';
 
 describe('registrationEpic Epic', () => {
@@ -19,7 +19,6 @@ describe('registrationEpic Epic', () => {
         epicMiddleware.replaceEpic(DMSEpics.registrationEpic);
     });
     it('handles success', () => {
-        const content = repo.CreateContent({ DisplayName: 'My content', Id: 123, Path: '/workspaces' }, ContentTypes.Task);
         store.dispatch({ type: 'USER_REGISTRATION_REQUEST', email: 'alba@sensenet.com', password: 'alba' });
         expect(store.getActions()).toEqual(
             [{

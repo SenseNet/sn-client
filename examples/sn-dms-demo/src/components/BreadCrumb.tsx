@@ -4,7 +4,6 @@ import {
     withRouter
 } from 'react-router-dom'
 import MediaQuery from 'react-responsive';
-import { DMSActions } from '../Actions'
 import { DMSReducers } from '../Reducers'
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar'

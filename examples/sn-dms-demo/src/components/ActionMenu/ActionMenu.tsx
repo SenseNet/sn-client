@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { Actions, Reducers } from 'sn-redux'
 import { DMSActions } from '../../Actions'
 import { DMSReducers } from '../../Reducers'
 import ActionList from './ActionList'
@@ -60,6 +59,7 @@ class ActionMenu extends React.Component<IActionMenuProps, IActionMenuState>{
     }
     handleActionMenuClose() {
         this.props.close()
+        
     }
     handleMouseDown(e) {
         this.setState({
@@ -79,7 +79,7 @@ class ActionMenu extends React.Component<IActionMenuProps, IActionMenuState>{
             this.handleActionMenuClose()
     }
     render() {
-        const { isOpen, position, actions } = this.props
+        const { isOpen, position } = this.props
         const positionStyles = {
             positions: {
                 top: position ? `${position.top}px` : 0,

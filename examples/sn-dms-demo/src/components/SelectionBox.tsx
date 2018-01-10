@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { Reducers } from 'sn-redux'
-import { DMSReducers } from '../Reducers'
 import { DMSActions } from '../Actions'
 import Snackbar, { SnackbarContent } from 'material-ui/Snackbar';
 import MoreVert from 'material-ui-icons/MoreVert';

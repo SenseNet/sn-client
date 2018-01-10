@@ -39,7 +39,7 @@ class DateCell extends React.Component<IDateCellProps, {}>{
         super(props)
     }
     render() {
-        const { content, date, handleRowSingleClick, handleRowDoubleClick, isDragging, connectDragSource, connectDropTarget, isCopy } = this.props
+        const { content, date, handleRowSingleClick, handleRowDoubleClick, connectDragSource, connectDropTarget, isCopy } = this.props
         const dropEffect = isCopy ? 'copy' : 'move'
         const isVmi = true
         return (

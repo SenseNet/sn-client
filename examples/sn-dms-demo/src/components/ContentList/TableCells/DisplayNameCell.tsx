@@ -84,7 +84,6 @@ class DisplayNameCell extends React.Component<IDisplayNameCellProps, IDisplayNam
         this.handleTitleChange = this.handleTitleChange.bind(this)
     }
     handleTitleClick(e, id) {
-        let that = this;
         if (e.target.id !== 'renameInput') {
             e.preventDefault()
         }
@@ -147,8 +146,7 @@ class DisplayNameCell extends React.Component<IDisplayNameCellProps, IDisplayNam
     render() {
         const content = this.props.currentContent
         const isEdited = this.isEdited(this.props.content.Id);
-        const { handleRowSingleClick, handleRowDoubleClick, isDragging, connectDragSource, canDrop, isOver, connectDropTarget, isCopy } = this.props
-        const id = content.Id
+        const { handleRowSingleClick, handleRowDoubleClick, connectDragSource, connectDropTarget, isCopy } = this.props
         const dropEffect = isCopy ? 'copy' : 'move'
         return (
             <MediaQuery minDeviceWidth={700}>

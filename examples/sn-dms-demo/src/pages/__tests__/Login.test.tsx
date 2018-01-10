@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import {
   MemoryRouter
 } from 'react-router-dom'
-import { Store, Actions, Reducers } from 'sn-redux'
+import { Store, Reducers } from 'sn-redux'
 import { Repository } from 'sn-client-js'
 import { combineReducers } from 'redux'
 import 'rxjs'
@@ -33,6 +33,8 @@ it('renders without crashing', () => {
   }, repository)
   ReactDOM.render(
     <MemoryRouter>
-        <Login store={store} clear={() => {}} />  
+        <Login store={store} clear={() => {
+          //
+        }} />  
     </MemoryRouter>, div);
 });

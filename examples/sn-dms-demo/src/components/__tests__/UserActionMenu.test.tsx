@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { Store, Actions, Reducers } from 'sn-redux'
+import { Store, Reducers } from 'sn-redux'
 import { Repository } from 'sn-client-js'
 import { combineReducers } from 'redux'
 import 'rxjs'

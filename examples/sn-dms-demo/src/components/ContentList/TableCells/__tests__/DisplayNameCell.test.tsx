@@ -1,8 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Store, Actions, Reducers } from 'sn-redux'
-import { DMSReducers } from '../../../../Reducers'
-import { Repository, Content, ContentTypes } from 'sn-client-js'
+import { Store, Reducers } from 'sn-redux'
+import { Repository, ContentTypes } from 'sn-client-js'
 import { combineReducers } from 'redux'
 import 'rxjs'
 import DisplayNameCell from '../DisplayNameCell';
@@ -30,6 +29,10 @@ it('renders without crashing', () => {
         store={store}
         content={content}
         isHovered={false}
-        handleRowDoubleClick={() => { }}
-        handleRowSingleClick={() => { }} />, div);
+        handleRowDoubleClick={() => { 
+            //
+        }}
+        handleRowSingleClick={() => {
+            //
+         }} />, div);
 });

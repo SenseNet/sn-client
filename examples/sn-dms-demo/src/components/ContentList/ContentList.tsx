@@ -11,9 +11,7 @@ import {
     withRouter
 } from 'react-router-dom'
 import Table, {
-    TableBody,
-    TableHead,
-    TableSortLabel,
+    TableBody
 } from 'material-ui/Table';
 import Paper from 'material-ui/Paper';
 import { CircularProgress } from 'material-ui/Progress';
@@ -162,7 +160,6 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
     }
     handleKeyDown(e) {
         const ctrl = e.ctrlKey ? true : false;
-        const alt = e.altKey ? true : false;
         const shift = e.shiftKey ? true : false;
         const { children, ids } = this.props
 
@@ -283,8 +280,7 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
         return !isNaN(id) && isFinite(id) && id !== this.props.rootId;
     }
     render() {
-        const { canDrop, isOver, connectDropTarget } = this.props
-        const isActive = canDrop && isOver
+        const { connectDropTarget } = this.props
         return connectDropTarget(
             <div>
                 <Paper style={styles.paper as any}>

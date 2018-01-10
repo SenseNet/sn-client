@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { TableCell } from 'material-ui/Table';
 import MoreVert from 'material-ui-icons/MoreVert';
 import IconButton from 'material-ui/IconButton';
-import { Actions, Reducers } from 'sn-redux'
+import { Reducers } from 'sn-redux'
 import { DMSActions } from '../../../Actions'
 import { DMSReducers } from '../../../Reducers'
 import MediaQuery from 'react-responsive';

@@ -1,8 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { Actions } from 'sn-redux'
-import Button from 'material-ui/Button';
-import FontAwesome from 'react-fontawesome'
 
 const normal = require('../assets/google-signin-buttons/btn_google_signin_dark_normal_web.png');
 const focused = require('../assets/google-signin-buttons/btn_google_signin_dark_focus_web.png');

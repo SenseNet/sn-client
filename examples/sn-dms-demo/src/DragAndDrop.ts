@@ -1,15 +1,9 @@
-import * as ReactDOM from 'react-dom'
-
 export module DragAndDrop {
     export const rowSource = {
         beginDrag(props) {
             return {
                 content: props.content
             }
-        },
-        endDrag(props, monitor) {
-            const item = monitor.getItem().content
-            const dropResult = monitor.getDropResult()
         }
     }
 
@@ -47,10 +41,6 @@ export module DragAndDrop {
         },
         canDrop(props, monitor) {
             return props.content.IsFolder
-        },
-        hover(props, monitor, component) {
-            const canDrop = monitor.canDrop();
-
         }
     }
 
