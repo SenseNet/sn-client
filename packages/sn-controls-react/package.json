@@ -91,7 +91,7 @@
     "react": "^16.1.0",
     "react-dev-utils": "^4.0.0",
     "react-dom": "^16.0.0",
-    "react-error-overlay": "^2.0.0",
+    "react-error-overlay": "^4.0.0",
     "react-materialize": "^1.0.1",
     "react-tap-event-plugin": "^3.0.1",
     "redux": "^3.6.0",
