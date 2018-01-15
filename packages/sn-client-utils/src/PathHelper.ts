@@ -13,6 +13,19 @@ export class PathHelper {
     }
 
     /**
+     * Returns the full path for a content based on its Id or Path
+     * @param {string | number} idOrPath the Id Or Path of the content
+     */
+    public static getContentUrl(idOrPath: string | number): string {
+        const parsed = parseInt(idOrPath as string, 10);
+        if (isNaN(parsed)) {
+            return this.getContentUrlByPath(idOrPath.toString());
+        } else {
+            return this.getContentUrlbyId(parsed);
+        }
+    }
+
+    /**
      * Method that gets the URL that refers to a single item in the Sense/Net Content Repository
      * @param {string} path Path that you want to format.
      * @returns {string} Path in entity format e.g. /workspaces('project') from /workspaces/project

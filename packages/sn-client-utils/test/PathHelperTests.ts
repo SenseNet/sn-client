@@ -20,6 +20,18 @@ export const pathHelperTests = describe("PathHelper", () => {
     });
 
     describe("#getContentUrlbyId()", () => {
+        it("should return by path if the provided value is a path", () => {
+            const url = PathHelper.getContentUrl("/workspace/project");
+            expect(url).to.be.eq("/workspace('project')");
+        });
+
+        it("should return by id if the provided value is id", () => {
+            const contentUrl = PathHelper.getContentUrl(1);
+            expect(contentUrl).to.be.eq("/content(1)");
+        });
+    });
+
+    describe("#getContentUrlbyId()", () => {
         it("should create the path with the correct format", () => {
             const contentUrl = PathHelper.getContentUrlbyId(1);
             expect(contentUrl).to.be.eq("/content(1)");
