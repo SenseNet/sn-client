@@ -2,8 +2,8 @@ import {using} from "@sensenet/client-utils";
 import { expect } from "chai";
 import { Repository } from "../src";
 import { IContent } from "../src/Models/IContent";
-import { IODataCollectionResponse } from "../src/Models/IOdataCollectionResponse";
-import { IODataResponse } from "../src/Models/IOdataResponse";
+import { IODataCollectionResponse } from "../src/Models/IODataCollectionResponse";
+import { IODataResponse } from "../src/Models/IODataResponse";
 import { ConstantContent } from "../src/Repository/ConstantContent";
 
 // tslint:disable:completed-docs
