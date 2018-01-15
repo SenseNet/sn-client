@@ -89,7 +89,7 @@
     "promise": "8.0.1",
     "radium": "^0.19.1",
     "react": "^16.1.0",
-    "react-dev-utils": "^4.0.0",
+    "react-dev-utils": "^5.0.0",
     "react-dom": "^16.0.0",
     "react-error-overlay": "^4.0.0",
     "react-materialize": "^1.0.1",
