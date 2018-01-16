@@ -1,29 +1,22 @@
 import { Repository } from "@sensenet/client-core";
-import * as Chai from "chai";
+import { expect } from "chai";
 import { JwtService } from "../src/JwtService";
-import { LoginResponse } from "../src/LoginResponse";
-import { LoginState } from "../src/LoginState";
-import { TokenPersist } from "../src/TokenPersist";
-import { TokenStore } from "../src/TokenStore";
-import { MockTokenFactory } from "./MockTokenFactory";
 
-const expect = Chai.expect;
+// tslint:disable:completed-docs
 
-// tslint:disable
-
-export const jwtServiceTests = describe("JwtService", ()=>{
+export const jwtServiceTests = describe("JwtService", () => {
     let repo: Repository;
     let jwtService: JwtService;
-    beforeEach(()=>{
-        repo = new Repository({}, async (info: RequestInfo, init?: RequestInit )=>{return {} as any});
+    beforeEach(() => {
+        repo = new Repository({}, (async (info: RequestInfo, init?: RequestInit) => ({} as any)));
         jwtService = new JwtService(repo);
         repo.authentication = jwtService;
     });
 
-    it("can be constructed with session persistance", ()=>{
+    it("can be constructed with session persistance", () => {
         expect(jwtService).to.be.instanceof(JwtService);
-    })
-})
+    });
+});
 
 // @suite("JwtService")
 // export class JwtServiceTests {

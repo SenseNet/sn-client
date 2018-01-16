@@ -7,6 +7,7 @@
     "rules": {
         "max-line-length": false,
         "member-ordering": false,
+        "no-unused-variable": true,
         "object-literal-sort-keys": [
             false
         ],
