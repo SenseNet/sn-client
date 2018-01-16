@@ -5,10 +5,10 @@
 import { ConstantContent, IAuthenticationService, Repository } from "@sensenet/client-core";
 import { ObservableValue, PathHelper } from "@sensenet/client-utils";
 import { User } from "@sensenet/default-content-types";
+import { ILoginResponse } from "./ILoginResponse";
 import { IOauthProvider } from "./IOauthProvider";
-import { LoginResponse } from "./LoginResponse";
+import { IRefreshResponse } from "./IRefreshResponse";
 import { LoginState } from "./LoginState";
-import { RefreshResponse } from "./RefreshResponse";
 import { Token } from "./Token";
 import { TokenPersist } from "./TokenPersist";
 import { TokenStore } from "./TokenStore";
@@ -83,7 +83,7 @@ export class JwtService implements IAuthenticationService {
             }, false);
 
         if (response.ok) {
-            const json: RefreshResponse = await response.json();
+            const json: IRefreshResponse = await response.json();
             this.tokenStore.AccessToken = Token.FromHeadAndPayload(json.access);
             this.state.setValue(LoginState.Authenticated);
         } else {
@@ -105,7 +105,7 @@ export class JwtService implements IAuthenticationService {
      * Updates the state based on a specific sensenet ECM Login Response
      * @param {LoginResponse} response
      */
-    public handleAuthenticationResponse(response: LoginResponse): boolean {
+    public handleAuthenticationResponse(response: ILoginResponse): boolean {
         this.tokenStore.AccessToken = Token.FromHeadAndPayload(response.access);
         this.tokenStore.RefreshToken = Token.FromHeadAndPayload(response.refresh);
         if (this.tokenStore.AccessToken.IsValid()) {
@@ -154,7 +154,7 @@ export class JwtService implements IAuthenticationService {
         );
 
         if (response.ok) {
-            const json: LoginResponse = await response.json();
+            const json: ILoginResponse = await response.json();
             return this.handleAuthenticationResponse(json);
         } else {
             this.state.setValue(LoginState.Unauthenticated);
