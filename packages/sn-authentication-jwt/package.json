@@ -13,13 +13,14 @@
   "scripts": {
     "precommit": "npm run test",
     "commit": "git-cz",
-    "pretest": "tslint --project tsconfig.test.json && rimraf temp && tsc -p tsconfig.test.json",
+    "pretest": "npm run build:test",
     "test": "rimraf coverage && nyc mocha -p tsconfig.test.json ./temp/test/index.js",
     "check-coverage": "istanbul check-coverage ",
     "report-coverage": "cat ./coverage/lcov.info | ./node_modules/.bin/codecov",
     "semantic-release": "semantic-release pre && semantic-release post",
     "prebuild": "tslint --project tsconfig.json",
     "build": "rimraf dist && tsc -p tsconfig.json",
+    "build:test": "tslint --project tsconfig.test.json && rimraf temp && tsc -p tsconfig.test.json",
     "publish:development": "npm run build && npm t && npm run typedoc && npm publish --tag development",
     "typedoc": "typedoc --mode file --out documentation src --tsconfig tsconfig.typedoc.json"
   },

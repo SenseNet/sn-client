@@ -8,6 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "Mocha Tests",
+            "preLaunchTask": "test",
             "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
             "args": [
                 "-u",
