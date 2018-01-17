@@ -61,12 +61,12 @@
     "@sensenet/client-core": "^1.0.0-development.1"
   },
   "devDependencies": {
-    "@types/chai": "4.0.10",
-    "@types/mocha": "2.2.44",
+    "@types/chai": "4.1.0",
+    "@types/mocha": "2.2.46",
     "@types/node": "^9.3.0",
     "chai": "4.1.2",
     "codecov": "^3.0.0",
-    "mocha": "4.0.1",
+    "mocha": "4.1.0",
     "nyc": "^11.0.2",
     "rimraf": "^2.6.1",
     "tslint": "^5.8.0",
