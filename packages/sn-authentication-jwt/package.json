@@ -5,10 +5,7 @@
   "main": "dist/index.js",
   "files": [
     "dist",
-    "src",
-    "test",
-    "documentation",
-    "coverage"
+    "src"
   ],
   "scripts": {
     "precommit": "npm run test",
@@ -24,16 +21,26 @@
     "publish:development": "npm run build && npm t && npm run typedoc && npm publish --tag development",
     "typedoc": "typedoc --mode file --out documentation src --tsconfig tsconfig.typedoc.json"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SenseNet/sn-authentication-jwt.git"
+  },  
   "keywords": [
     "sensenet",
     "ecm",
-    "javascript",
-    "REST",
-    "ajax",
-    "API"
+    "authentication",
+    "JSON web token",
+    "JWT",
+    "Login"
   ],
+  "publishConfig": {
+    "access": "public"
+  },  
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/SenseNet/sn-authentication-jwt/issues"
+  },  
   "nyc": {
     "exclude": [
       "temp/test/**/*.*",
