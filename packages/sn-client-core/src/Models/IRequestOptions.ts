@@ -127,7 +127,7 @@ export interface ICopyOptions {
 /**
  * Options to call an odata action
  */
-export interface IActionOptions<TContext, TBody> {
+export interface IActionOptions<TBody> {
     /**
      * The name of the odata action
      */
@@ -139,7 +139,7 @@ export interface IActionOptions<TContext, TBody> {
     /**
      * The context content for the action
      */
-    context: TContext;
+    contextPath: string;
     /**
      * Additional body parameters
      */

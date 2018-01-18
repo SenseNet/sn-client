@@ -4,6 +4,7 @@
 
 import { IDisposable, ObservableValue } from "@sensenet/client-utils";
 import { User } from "@sensenet/default-content-types";
+import { LoginState } from "./LoginState";
 
 /**
  * Interface that describes how injectable Authentication Services should work
@@ -29,6 +30,12 @@ export interface IAuthenticationService extends IDisposable {
      * @returns {Observable<boolean>} that indicates if logging out was successful
      */
     logout(): Promise<boolean>;
+
+    /**
+     * This observable indicates the current state of the service
+     * @default LoginState.Pending
+     */
+    state: ObservableValue<LoginState>;
 
     // ToDo: Pub/Sub
     currentUser: ObservableValue<User>;

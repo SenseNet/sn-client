@@ -6,6 +6,8 @@ import { IODataBatchResponse } from "../Models/IODataBatchResponse";
 import { IODataCollectionResponse } from "../Models/IODataCollectionResponse";
 import { IODataResponse } from "../Models/IODataResponse";
 import { IActionOptions, ICopyOptions, IDeleteOptions, ILoadCollectionOptions, ILoadOptions, IMoveOptions, IPatchOptions, IPostOptions, IPutOptions } from "../Models/IRequestOptions";
+import { SchemaStore } from "../Schemas/SchemaStore";
+import { ConstantContent } from "./ConstantContent";
 import { ODataUrlBuilder } from "./ODataUrlBuilder";
 import { RepositoryConfiguration } from "./RepositoryConfiguration";
 
@@ -94,8 +96,17 @@ export class Repository implements IDisposable {
      * @param options Post request Options
      */
     public async post<TContentType extends IContent>(options: IPostOptions<TContentType>): Promise<IODataResponse<TContentType>> {
-        /** ToDo: Post content logic */
-        return null as any;
+        const params = ODataUrlBuilder.buildUrlParamString(this.configuration);
+        const path = PathHelper.joinPaths(this.configuration.repositoryUrl, this.configuration.oDataToken, options.parentPath);
+        const response = await this.fetch(`${path}?${params}`, {
+            credentials: "include",
+            method: "POST",
+            body: options.content,
+        });
+        if (!response.ok) {
+            throw Error(response.statusText);
+        }
+        return await response.json();
     }
 
     /**
@@ -103,8 +114,18 @@ export class Repository implements IDisposable {
      * @param options Options for the Patch request
      */
     public async patch<TContentType extends IContent>(options: IPatchOptions<TContentType>): Promise<IODataResponse<TContentType>> {
-        /** ToDo: Post content logic */
-        return null as any;
+        const params = ODataUrlBuilder.buildUrlParamString(this.configuration);
+        const contentPath = PathHelper.getContentUrl(options.idOrPath);
+        const path = PathHelper.joinPaths(this.configuration.repositoryUrl, this.configuration.oDataToken, contentPath);
+        const response = await this.fetch(`${path}?${params}`, {
+            credentials: "include",
+            method: "PATCH",
+            body: options.content,
+        });
+        if (!response.ok) {
+            throw Error(response.statusText);
+        }
+        return await response.json();
     }
 
     /**
@@ -112,8 +133,25 @@ export class Repository implements IDisposable {
      * @param options Options for the Put request
      */
     public async put<TContentType extends IContent>(options: IPutOptions<TContentType>): Promise<IODataResponse<TContentType>> {
-        /** ToDo: Post content logic */
-        return null as any;
+        const params = ODataUrlBuilder.buildUrlParamString(this.configuration);
+        const contentPath = PathHelper.getContentUrl(options.idOrPath);
+        const path = PathHelper.joinPaths(this.configuration.repositoryUrl, this.configuration.oDataToken, contentPath);
+        const response = await this.fetch(`${path}?${params}`, {
+            credentials: "include",
+            method: "PUT",
+            body: options.content,
+        });
+        if (!response.ok) {
+            throw Error(response.statusText);
+        }
+        return await response.json();
+    }
+
+    private createArray<T>(param: T[] | T): T[] {
+        if (!(param instanceof Array)) {
+            return [param];
+        }
+        return param;
     }
 
     /**
@@ -121,8 +159,15 @@ export class Repository implements IDisposable {
      * @param options Options for the Delete request
      */
     public async delete(options: IDeleteOptions): Promise<IODataBatchResponse<IContent>> {
-        /** ToDo: delete logic */
-        return null as any;
+        return await this.executeAction<{}, IODataBatchResponse<IContent>>({
+            contextPath: ConstantContent.PORTAL_ROOT.Path,
+            method: "POST",
+            name: "DeleteBatch",
+            body: {
+                paths: this.createArray(options.idOrPath),
+                permanent: options.permanent,
+            },
+        });
     }
 
     /**
@@ -130,7 +175,15 @@ export class Repository implements IDisposable {
      * @param options Options for the Move request
      */
     public async move(options: IMoveOptions): Promise<IODataBatchResponse<IContent>> {
-        return null as any;
+        return await this.executeAction<{}, IODataBatchResponse<IContent>>({
+            contextPath: ConstantContent.PORTAL_ROOT.Path,
+            method: "POST",
+            name: "MoveBatch",
+            body: {
+                paths: this.createArray(options.idOrPath),
+                targetPath: options.targetPath,
+            },
+        });
     }
 
     /**
@@ -138,21 +191,40 @@ export class Repository implements IDisposable {
      * @param options Options for the Copy request
      */
     public async copy(options: ICopyOptions): Promise<IODataBatchResponse<IContent>> {
-        return null as any;
+        return await this.executeAction<{}, IODataBatchResponse<IContent>>({
+            contextPath: ConstantContent.PORTAL_ROOT.Path,
+            method: "POST",
+            name: "CopyBatch",
+            body: {
+                paths: this.createArray(options.idOrPath),
+                targetPath: options.targetPath,
+            },
+        });
     }
 
     /**
      * Executes a specified custom OData action
      * @param options Options for the Custom Action
      */
-    public async executeAction<TContext, TBodyType, TReturns>(options: IActionOptions<TContext, TBodyType>,
+    public async executeAction<TBodyType, TReturns>(options: IActionOptions<TBodyType>,
     ): Promise<TReturns> {
-        return {} as TReturns;
+        const contextPath = PathHelper.getContentUrl(options.contextPath);
+        const path = PathHelper.joinPaths(this.configuration.repositoryUrl, this.configuration.oDataToken, contextPath, options.name);
+        const response = await this.fetch(`${path}`, {
+            credentials: "include",
+            method: options.method,
+            body: options.body,
+        });
+        if (!response.ok) {
+            throw Error(response.statusText);
+        }
+        return await response.json();
     }
 
     constructor(
         config?: Partial<RepositoryConfiguration>,
         private fetchMethod: GlobalFetch["fetch"] = window && window.fetch && window.fetch.bind(window),
+        public schemas: SchemaStore = new SchemaStore(),
     ) {
         this.configuration = new RepositoryConfiguration(config);
     }

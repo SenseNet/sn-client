@@ -33,6 +33,13 @@ export const repositoryTests = describe("Repository", () => {
         expect(repo).to.be.instanceof(Repository);
     });
 
+    it("Should be constructed with a built-in fetch method", (done: MochaDone) => {
+        global.window.fetch = () => {done(); };
+        const fetchRepo = new Repository();
+        // tslint:disable-next-line:no-string-literal
+        (fetchRepo as any).fetchMethod();
+    });
+
     it("Should be disposed", () => {
         using(new Repository(), (r) => {
             expect(r).to.be.instanceof(Repository);
@@ -57,6 +64,7 @@ export const repositoryTests = describe("Repository", () => {
         describe("#load()", () => {
 
             it("should resolve with an OData response", async () => {
+                (mockResponse as any).ok = true;
                 mockResponse.json = async () => {
                     return {
                         d: ConstantContent.PORTAL_ROOT,
@@ -82,7 +90,7 @@ export const repositoryTests = describe("Repository", () => {
         });
 
         describe("#loadCollection()", () => {
-            it("should return with a promise", () => {
+            it("should resolve with a proper collection response", async () => {
                 (mockResponse as any).ok = true;
                 mockResponse.json = async () => {
                     return {
@@ -95,9 +103,10 @@ export const repositoryTests = describe("Repository", () => {
 
                     } as IODataCollectionResponse<IContent>;
                 };
-                expect(repo.loadCollection({
+                const resp = await repo.loadCollection({
                     path: "Root/Sites/Default_Site",
-                })).to.be.instanceof(Promise);
+                });
+                expect(resp.d.results[0]).to.be.deep.eq(ConstantContent.PORTAL_ROOT);
             });
 
             it("should throw on unsuccessfull request", (done: MochaDone) => {
@@ -109,6 +118,212 @@ export const repositoryTests = describe("Repository", () => {
                 }).catch(() => {
                     done();
                 });
+            });
+        });
+
+        describe("#post()", () => {
+            it("should return with a promise", async () => {
+                (mockResponse as any).ok = true;
+                mockResponse.json = async () => {
+                    return {
+                        d: ConstantContent.PORTAL_ROOT,
+                    } as IODataResponse<IContent>;
+                };
+                const response = await repo.post({
+                    parentPath: "Root/Sites/Default_Site",
+                    content: ConstantContent.PORTAL_ROOT,
+                });
+
+                expect(response.d).to.be.deep.eq(ConstantContent.PORTAL_ROOT);
+            });
+
+            it("should throw on unsuccessfull request", (done: MochaDone) => {
+                (mockResponse as any).ok = false;
+                repo.post({
+                    parentPath: "Root/Sites/Default_Site",
+                    content: ConstantContent.PORTAL_ROOT,
+                }).then(() => {
+                    done("Should throw");
+                }).catch(() => {
+                    done();
+                });
+            });
+        });
+
+        describe("#patch()", () => {
+            it("should return with a promise", async () => {
+                (mockResponse as any).ok = true;
+                mockResponse.json = async () => {
+                    return {
+                        d: ConstantContent.PORTAL_ROOT,
+                    } as IODataResponse<IContent>;
+                };
+                const response = await repo.patch({
+                    idOrPath: "Root/Sites/Default_Site",
+                    content: ConstantContent.PORTAL_ROOT,
+                });
+
+                expect(response.d).to.be.deep.eq(ConstantContent.PORTAL_ROOT);
+            });
+
+            it("should throw on unsuccessfull request", (done: MochaDone) => {
+                (mockResponse as any).ok = false;
+                repo.patch({
+                    idOrPath: "Root/Sites/Default_Site",
+                    content: ConstantContent.PORTAL_ROOT,
+                }).then(() => {
+                    done("Should throw");
+                }).catch(() => {
+                    done();
+                });
+            });
+        });
+
+        describe("#put()", () => {
+            it("should return with a promise", async () => {
+                (mockResponse as any).ok = true;
+                mockResponse.json = async () => {
+                    return {
+                        d: ConstantContent.PORTAL_ROOT,
+                    } as IODataResponse<IContent>;
+                };
+                const response = await repo.put({
+                    idOrPath: "Root/Sites/Default_Site",
+                    content: ConstantContent.PORTAL_ROOT,
+                });
+
+                expect(response.d).to.be.deep.eq(ConstantContent.PORTAL_ROOT);
+            });
+
+            it("should throw on unsuccessfull request", (done: MochaDone) => {
+                (mockResponse as any).ok = false;
+                repo.put({
+                    idOrPath: "Root/Sites/Default_Site",
+                    content: ConstantContent.PORTAL_ROOT,
+                }).then(() => {
+                    done("Should throw");
+                }).catch(() => {
+                    done();
+                });
+            });
+        });
+
+        describe("#delete", () => {
+            it("should resolve on success", async () => {
+                (mockResponse as any).ok = true;
+                mockResponse.json = async () => {
+                    return {
+                        d: {
+                            __count: 1,
+                            results: [
+                                ConstantContent.PORTAL_ROOT,
+                            ],
+                        },
+                    } as IODataCollectionResponse<IContent>;
+                };
+                const response = await repo.delete({
+                    idOrPath: 5,
+                    permanent: true,
+                });
+
+                expect(response.d.results[0]).to.be.deep.eq(ConstantContent.PORTAL_ROOT);
+            });
+
+            it("should resolve with muliple content", async () => {
+                (mockResponse as any).ok = true;
+                mockResponse.json = async () => {
+                    return {
+                        d: {
+                            __count: 1,
+                            results: [
+                                ConstantContent.PORTAL_ROOT,
+                            ],
+                        },
+                    } as IODataCollectionResponse<IContent>;
+                };
+                const response = await repo.delete({
+                    idOrPath: [5, "Root/Examples/ExampleDoc1"],
+                    permanent: true,
+                });
+
+                expect(response.d.results[0]).to.be.deep.eq(ConstantContent.PORTAL_ROOT);
+            });
+
+        });
+
+        describe("#move()", () => {
+            it("should resolve on success", async () => {
+                (mockResponse as any).ok = true;
+                mockResponse.json = async () => {
+                    return {
+                        d: {
+                            __count: 1,
+                            results: [
+                                ConstantContent.PORTAL_ROOT,
+                            ],
+                        },
+                    } as IODataCollectionResponse<IContent>;
+                };
+                const response = await repo.move({
+                    idOrPath: 5,
+                    targetPath: "Root/Example/Folder",
+                });
+
+                expect(response.d.results[0]).to.be.deep.eq(ConstantContent.PORTAL_ROOT);
+            });
+        });
+
+        describe("#copy()", () => {
+            it("should resolve on success", async () => {
+                (mockResponse as any).ok = true;
+                mockResponse.json = async () => {
+                    return {
+                        d: {
+                            __count: 1,
+                            results: [
+                                ConstantContent.PORTAL_ROOT,
+                            ],
+                        },
+                    } as IODataCollectionResponse<IContent>;
+                };
+                const response = await repo.copy({
+                    idOrPath: 5,
+                    targetPath: "Root/Example/Folder",
+                });
+
+                expect(response.d.results[0]).to.be.deep.eq(ConstantContent.PORTAL_ROOT);
+            });
+        });
+
+        describe("#executeAction()", () => {
+            it("should resolve on success", async () => {
+                (mockResponse as any).ok = true;
+                mockResponse.json = async () => {
+                    return {
+                        d: ConstantContent.PORTAL_ROOT,
+                    } as IODataResponse<IContent>;
+                };
+                const response = await repo.executeAction<{}, IODataResponse<IContent>>({
+                    name: "MockAction",
+                    contextPath: "Root/Sites/Default_Site",
+                    method: "GET",
+                    body: {},
+                });
+                expect(response.d).to.be.deep.eq(ConstantContent.PORTAL_ROOT);
+            });
+        });
+
+        it("should throw on unsuccessfull request", (done: MochaDone) => {
+            (mockResponse as any).ok = false;
+            repo.executeAction<{}, IODataResponse<IContent>>({
+                name: "MockAction",
+                contextPath: "Root/Sites/Default_Site",
+                method: "GET",
+                body: {},
+            }).then(() => {
+                done("Should throw");
+            }).catch(() => {
+                done();
             });
         });
     });

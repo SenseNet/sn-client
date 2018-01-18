@@ -2,11 +2,16 @@ import { ObservableValue } from "@sensenet/client-utils/dist/ObservableValue";
 import { User } from "@sensenet/default-content-types";
 import { ConstantContent } from "../Repository/ConstantContent";
 import { IAuthenticationService } from "./IAuthenticationService";
+import { LoginState } from "./LoginState";
 
 /**
  * Default authentication service that bypasses the authentication process
  */
 export class BypassAuthentication implements IAuthenticationService {
+    /**
+     * The current state of the authentication
+     */
+    public state: ObservableValue<LoginState> = new ObservableValue(LoginState.Unknown);
 
     /**
      * Checks for update if neccessary. For BypassAuthentication always resolves immedietly with false
