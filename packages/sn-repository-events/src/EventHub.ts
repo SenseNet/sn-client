@@ -3,7 +3,7 @@ import { ICopyOptions, IDeleteOptions, IPatchOptions, IPostOptions, IPutOptions 
 import { ObservableValue, Trace } from "@sensenet/client-utils";
 import { IDisposable } from "@sensenet/client-utils/dist/Disposable";
 import { ValueObserver } from "@sensenet/client-utils/dist/ValueObserver";
-import { IContentMoved, IContentMoveFailed, ICreated, ICreateFailed, ICustomActionExecuted, ICustomActionFailed, IDeleted, IDeleteFailed, ILoaded, IModificationFailed, IModified } from "./EventModels";
+import { IContentMoved, IContentMoveFailed, ICreated, ICreateFailed, ICustomActionExecuted, ICustomActionFailed, IDeleted, IDeleteFailed, ILoaded, IModificationFailed, IModified } from "./IEventModels";
 
 /**
  * Event hub for sensenet Repository Events
@@ -21,106 +21,61 @@ export class EventHub implements IDisposable {
             // tslint:enable:no-string-literal
         }
     }
-    private readonly onContentCreatedObservableValue = new ObservableValue<ICreated>();
-    private readonly onContentCreateFailedObservableValue = new ObservableValue<ICreateFailed>();
-    private readonly onContentModifiedObservableValue = new ObservableValue<IModified>();
-    private readonly onContentModificationFailedObservableValue = new ObservableValue<IModificationFailed>();
-    private readonly onContentLoadedObservableValue = new ObservableValue<ILoaded>();
-    private readonly onContentDeletedObservableValue = new ObservableValue<IDeleted>();
-    private readonly onContentDeleteFailedObservableValue = new ObservableValue<IDeleteFailed>();
-    private readonly onCustomActionExecutedObservableValue = new ObservableValue<ICustomActionExecuted<IContent>>();
-    private readonly onCustomActionFailedObservableValue = new ObservableValue<ICustomActionFailed<IContent>>();
-    private readonly onContentMovedObservableValue = new ObservableValue<IContentMoved>();
-    private readonly onContentMoveFailedObservableValue = new ObservableValue<IContentMoveFailed>();
-
-    // ToDo
-    // private readonly onUploadProgressObservableValue = new ObservableValue<UploadProgressInfo<IContent>>();
-
-    /**
-     * Method group for triggering Repository events
-     */
-    private trigger = {
-        ContentCreated: (ev: ICreated) => this.onContentCreatedObservableValue.setValue(ev),
-        ContentCreateFailed: (ev: ICreateFailed) => this.onContentCreateFailedObservableValue.setValue(ev),
-
-        ContentModified: (ev: IModified) => this.onContentModifiedObservableValue.setValue(ev),
-        ContentModificationFailed: (ev: IModificationFailed) => this.onContentModificationFailedObservableValue.setValue(ev),
-
-        ContentLoaded: (ev: ILoaded) => this.onContentLoadedObservableValue.setValue(ev),
-
-        ContentDeleted: (ev: IDeleted) => this.onContentDeletedObservableValue.setValue(ev),
-        ContentDeleteFailed: (ev: IDeleteFailed) => this.onContentDeleteFailedObservableValue.setValue(ev),
-
-        CustomActionExecuted: (ev: ICustomActionExecuted<any>) => this.onCustomActionExecutedObservableValue.setValue(ev),
-        CustomActionFailed: (ev: ICustomActionFailed<any>) => this.onCustomActionFailedObservableValue.setValue(ev),
-
-        ContentMoved: (ev: IContentMoved) => this.onContentMovedObservableValue.setValue(ev),
-        ContentMoveFailed: (ev: IContentMoveFailed) => this.onContentMoveFailedObservableValue.setValue(ev),
-
-        // ToDo
-        // UploadProgress: (ev: UploadProgressInfo<any>) => this.onUploadProgressObservableValue.setValue(ev),
-    };
-
     /**
      * Triggered after a succesful Content creation
      */
-    public onContentCreated: (...args: any[]) => ValueObserver<ICreated> = this.onContentCreatedObservableValue.subscribe;
+    public readonly onContentCreated = new ObservableValue<ICreated>();
 
     /**
      * Triggered after Content creation has been failed
      */
-    public onContentCreateFailed = this.onContentCreateFailedObservableValue.subscribe;
-
+    public readonly onContentCreateFailed = new ObservableValue<ICreateFailed>();
     /**
      * Triggered after modifying a Content
      */
-    public onContentModified = this.onContentModifiedObservableValue.subscribe;
 
+    public readonly onContentModified = new ObservableValue<IModified>();
     /**
      * Triggered when failed to modify a Content
      */
-    public onContentModificationFailed = this.onContentModificationFailedObservableValue.subscribe;
+    public readonly onContentModificationFailed = new ObservableValue<IModificationFailed>();
 
     /**
      * Triggered when a Content is loaded from the Repository
      */
-    public onContentLoaded = this.onContentLoadedObservableValue.subscribe;
+    public readonly onContentLoaded = new ObservableValue<ILoaded>();
 
     /**
      * Triggered after deleting a Content
      */
-    public onContentDeleted = this.onContentDeletedObservableValue.subscribe;
+    public readonly onContentDeleted = new ObservableValue<IDeleted>();
 
     /**
      * Triggered after deleting a content has been failed
      */
-    public onContentDeleteFailed = this.onContentDeleteFailedObservableValue.subscribe;
-
-    /**
-     * Triggered after moving a content to another location
-     */
-    public onContentMoved = this.onContentMovedObservableValue.subscribe;
-
-    /**
-     * Triggered after moving a content has been failed
-     */
-    public onContentMoveFailed = this.onContentMoveFailedObservableValue.subscribe;
+    public readonly onContentDeleteFailed = new ObservableValue<IDeleteFailed>();
 
     /**
      * Triggered after a custom OData Action has been executed
      */
-    public onCustomActionExecuted = this.onCustomActionExecutedObservableValue.subscribe;
-
+    public readonly onCustomActionExecuted = new ObservableValue<ICustomActionExecuted<IContent>>();
     /**
      * Triggered after a custom OData Action has been failed
      */
-    public onCustomActionFailed = this.onCustomActionFailedObservableValue.subscribe;
+    public readonly onCustomActionFailed = new ObservableValue<ICustomActionFailed<IContent>>();
 
     /**
-     * Triggered on Upload progress
+     * Triggered after moving a content to another location
      */
-    //  ToDo
-    // public onUploadProgress = this.onUploadProgressObservableValue.subscribe;
+    public readonly onContentMoved = new ObservableValue<IContentMoved>();
+
+    /**
+     * Triggered after moving a content has been failed
+     */
+    public readonly onContentMoveFailed = new ObservableValue<IContentMoveFailed>();
+
+    // ToDo
+    // private readonly onUploadProgressObservableValue = new ObservableValue<UploadProgressInfo<IContent>>();
 
     constructor(private readonly repository: Repository) {
         this.initializeMappings();
@@ -132,17 +87,18 @@ export class EventHub implements IDisposable {
             Trace.method({
                 object: this.repository,
                 method: this.repository.post,
+                isAsync: true,
                 // Post finished to Content Create
                 onFinished: async (finished) => {
                     const response = await finished.returned;
                     const content = response.d;
-                    this.trigger.ContentCreated({
+                    this.onContentCreated.setValue({
                         content: content as IContent,
                     });
                 },
                 // Post errored to content create failed
                 onError: (err) => {
-                    this.trigger.ContentCreateFailed({
+                    this.onContentCreateFailed.setValue({
                         content: (err.arguments[0] as IPostOptions<IContent>).content as IContent,
                         error: err.error,
                     });
@@ -151,17 +107,18 @@ export class EventHub implements IDisposable {
             Trace.method({
                 object: this.repository,
                 method: this.repository.patch,
+                isAsync: true,
                 // Patch finished to ContentModified
                 onFinished: async (finished) => {
                     const response = await finished.returned;
-                    this.trigger.ContentModified({
+                    this.onContentModified.setValue({
                         changes: (finished.arguments[0] as IPatchOptions<IContent>).content as IContent,
                         content: response.d as IContent,
                     });
                 },
                 // Patch error to ContentModificationFailed
                 onError: (error) => {
-                    this.trigger.ContentModificationFailed({
+                    this.onContentModificationFailed.setValue({
                         content: (error.arguments[0] as IPatchOptions<IContent>).content as IContent,
                         error: error.error,
                     });
@@ -170,17 +127,18 @@ export class EventHub implements IDisposable {
             Trace.method({
                 object: this.repository,
                 method: this.repository.put,
+                isAsync: true,
                 // Put finished to ContentModified
                 onFinished: async (finished) => {
                     const response = await finished.returned;
-                    this.trigger.ContentModified({
+                    this.onContentModified.setValue({
                         changes: (finished.arguments[0] as IPutOptions<IContent>).content as IContent,
                         content: response.d as IContent,
                     });
                 },
                 // Patch error to ContentModificationFailed
                 onError: (error) => {
-                    this.trigger.ContentModificationFailed({
+                    this.onContentModificationFailed.setValue({
                         content: (error.arguments[0] as IPutOptions<IContent>).content as IContent,
                         error: error.error,
                     });
@@ -189,12 +147,13 @@ export class EventHub implements IDisposable {
             Trace.method({
                 object: this.repository,
                 method: this.repository.delete,
+                isAsync: true,
                 // handle DeleteBatch finished based on the response value
                 onFinished: async (finished) => {
                     const response = await finished.returned;
                     if (response.d.results.length) {
                         for (const deleted of response.d.results) {
-                            this.trigger.ContentDeleted({
+                            this.onContentDeleted.setValue({
                                 permanently: (finished.arguments[0] as IDeleteOptions).permanent || false,
                                 contentData: deleted as IContent,
                             });
@@ -203,7 +162,7 @@ export class EventHub implements IDisposable {
 
                     if (response.d.errors.length) {
                         for (const failed of response.d.errors) {
-                            this.trigger.ContentDeleteFailed({
+                            this.onContentDeleteFailed.setValue({
                                 permanently: (finished.arguments[0] as IDeleteOptions).permanent || false,
                                 content: failed.content as IContent,
                                 error: failed.error,
@@ -221,7 +180,7 @@ export class EventHub implements IDisposable {
                         return isNaN(v as number) ? {Path: v} : {Id: parseInt(v as string, 10)};
                     });
                     for (const c of contents) {
-                        this.trigger.ContentDeleteFailed({
+                        this.onContentDeleteFailed.setValue({
                             content: c as IContent,
                             permanently: (error.arguments[0] as IDeleteOptions).permanent || false,
                             error: error.error,
@@ -232,12 +191,13 @@ export class EventHub implements IDisposable {
             Trace.method({
                 object: this.repository,
                 method: this.repository.copy,
+                isAsync: true,
                 // handle CopyBatch finished based on the response value
                 onFinished: async (finished) => {
                     const response = await finished.returned;
                     if (response.d.results.length) {
                         for (const copied of response.d.results) {
-                            this.trigger.ContentCreated({
+                            this.onContentCreated.setValue({
                                 content: copied as IContent,
                             });
                         }
@@ -245,7 +205,7 @@ export class EventHub implements IDisposable {
 
                     if (response.d.errors.length) {
                         for (const failed of response.d.errors) {
-                            this.trigger.ContentCreateFailed({
+                            this.onContentCreateFailed.setValue({
                                 content: failed.content as IContent,
                                 error: failed.error,
                             });
@@ -262,7 +222,7 @@ export class EventHub implements IDisposable {
                         return isNaN(v as number) ? {Path: v} : {Id: parseInt(v as string, 10)};
                     });
                     for (const c of contents) {
-                        this.trigger.ContentCreateFailed({
+                        this.onContentCreateFailed.setValue({
                             content: c as IContent,
                             error: error.error,
                         });
@@ -272,12 +232,13 @@ export class EventHub implements IDisposable {
             Trace.method({
                 object: this.repository,
                 method: this.repository.move,
+                isAsync: true,
                 // handle CopyBatch finished based on the response value
                 onFinished: async (finished) => {
                     const response = await finished.returned;
                     if (response.d.results.length) {
                         for (const copied of response.d.results) {
-                            this.trigger.ContentMoved({
+                            this.onContentMoved.setValue({
                                 content: copied as IContent,
                             });
                         }
@@ -285,7 +246,7 @@ export class EventHub implements IDisposable {
 
                     if (response.d.errors.length) {
                         for (const failed of response.d.errors) {
-                            this.trigger.ContentCreateFailed({
+                            this.onContentMoveFailed.setValue({
                                 content: failed.content as IContent,
                                 error: failed.error,
                             });
@@ -302,9 +263,9 @@ export class EventHub implements IDisposable {
                         return isNaN(v as number) ? {Path: v} : {Id: parseInt(v as string, 10)};
                     });
                     for (const c of contents) {
-                        this.trigger.ContentCreateFailed({
+                        this.onContentMoveFailed.setValue({
                             content: c as IContent,
-                            error: error.error,
+                            error,
                         });
                     }
                 },

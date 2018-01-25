@@ -58,7 +58,7 @@
   "homepage": "https://sensenet.com",
   "dependencies": {
     "@sensenet/client-core": "^1.0.0-development.4",
-    "@sensenet/client-utils": "^1.0.0-development.10"
+    "@sensenet/client-utils": "^1.0.0-development.12"
   },
   "devDependencies": {
     "@types/chai": "^4.1.0",

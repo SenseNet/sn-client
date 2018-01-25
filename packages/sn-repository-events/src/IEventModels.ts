@@ -160,19 +160,11 @@ export interface IContentMoved {
  */
 export interface IContentMoveFailed {
     /**
-     * The From path (the original Parent's Path)
-     */
-    from: string;
-    /**
-     * The destination path (the new Parent's Path)
-     */
-    to: string;
-    /**
      * The Content instance that you've tried to move
      */
     content: IContent;
     /**
      * The Error that caused the failure
      */
-    Error: any;
+    error: any;
 }
