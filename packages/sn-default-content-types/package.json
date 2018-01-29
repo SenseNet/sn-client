@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/default-content-types",
-  "version": "1.0.0-development.4",
+  "version": "1.0.0-development.5",
   "description": "Default content type definitions for sensenet ECM",
   "main": "dist/index.js",
   "files": [

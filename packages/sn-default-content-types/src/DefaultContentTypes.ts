@@ -25,8 +25,8 @@ import {
     SavingState, Status, VersioningMode
 } from "./Enums";
 
-export type ContentReferenceField<T> = DeferredObject | T;
-export type ContentListReferenceField<T> = DeferredObject | T[];
+export type ContentReferenceField<T> = DeferredObject | T | number;
+export type ContentListReferenceField<T> = DeferredObject | T[] | number[];
 
 export type BinaryField = MediaResourceObject;
 
