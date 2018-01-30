@@ -139,7 +139,7 @@ export interface IActionOptions<TBody> {
     /**
      * The context content for the action
      */
-    contextPath: string;
+    idOrPath: string | number;
     /**
      * Additional body parameters
      */

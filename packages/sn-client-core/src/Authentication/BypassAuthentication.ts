@@ -1,4 +1,4 @@
-import { ObservableValue } from "@sensenet/client-utils/dist/ObservableValue";
+import { ObservableValue } from "@sensenet/client-utils";
 import { User } from "@sensenet/default-content-types";
 import { ConstantContent } from "../Repository/ConstantContent";
 import { IAuthenticationService } from "./IAuthenticationService";

@@ -53,6 +53,6 @@ export class SchemaStore {
             schema.FieldSettings = [...schema.FieldSettings, ...parentSchema.FieldSettings];
         }
         this.byNameSchemaCache.set(contentTypeName, schema);
-        return schema;
+        return Object.assign({}, schema);
     }
 }

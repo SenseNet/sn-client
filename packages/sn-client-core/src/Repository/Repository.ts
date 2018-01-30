@@ -10,6 +10,7 @@ import { SchemaStore } from "../Schemas/SchemaStore";
 import { ConstantContent } from "./ConstantContent";
 import { ODataUrlBuilder } from "./ODataUrlBuilder";
 import { RepositoryConfiguration } from "./RepositoryConfiguration";
+import { Security } from "./Security";
 
 /**
  * Class that can be used as a main entry point to manipulate a sensenet ECM content repository
@@ -160,7 +161,7 @@ export class Repository implements IDisposable {
      */
     public async delete(options: IDeleteOptions): Promise<IODataBatchResponse<IContent>> {
         return await this.executeAction<{}, IODataBatchResponse<IContent>>({
-            contextPath: ConstantContent.PORTAL_ROOT.Path,
+            idOrPath: ConstantContent.PORTAL_ROOT.Path,
             method: "POST",
             name: "DeleteBatch",
             body: {
@@ -176,7 +177,7 @@ export class Repository implements IDisposable {
      */
     public async move(options: IMoveOptions): Promise<IODataBatchResponse<IContent>> {
         return await this.executeAction<{}, IODataBatchResponse<IContent>>({
-            contextPath: ConstantContent.PORTAL_ROOT.Path,
+            idOrPath: ConstantContent.PORTAL_ROOT.Path,
             method: "POST",
             name: "MoveBatch",
             body: {
@@ -192,7 +193,7 @@ export class Repository implements IDisposable {
      */
     public async copy(options: ICopyOptions): Promise<IODataBatchResponse<IContent>> {
         return await this.executeAction<{}, IODataBatchResponse<IContent>>({
-            contextPath: ConstantContent.PORTAL_ROOT.Path,
+            idOrPath: ConstantContent.PORTAL_ROOT.Path,
             method: "POST",
             name: "CopyBatch",
             body: {
@@ -208,7 +209,7 @@ export class Repository implements IDisposable {
      */
     public async executeAction<TBodyType, TReturns>(options: IActionOptions<TBodyType>,
     ): Promise<TReturns> {
-        const contextPath = PathHelper.getContentUrl(options.contextPath);
+        const contextPath = PathHelper.getContentUrl(options.idOrPath);
         const path = PathHelper.joinPaths(this.configuration.repositoryUrl, this.configuration.oDataToken, contextPath, options.name);
         const response = await this.fetch(`${path}`, {
             credentials: "include",
@@ -220,6 +221,11 @@ export class Repository implements IDisposable {
         }
         return await response.json();
     }
+
+    /**
+     * Shortcut for security- and permission-related custom actions
+     */
+    public security: Security = new Security(this);
 
     constructor(
         config?: Partial<RepositoryConfiguration>,

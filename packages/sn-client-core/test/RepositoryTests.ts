@@ -305,7 +305,7 @@ export const repositoryTests = describe("Repository", () => {
                 };
                 const response = await repo.executeAction<{}, IODataResponse<IContent>>({
                     name: "MockAction",
-                    contextPath: "Root/Sites/Default_Site",
+                    idOrPath: "Root/Sites/Default_Site",
                     method: "GET",
                     body: {},
                 });
@@ -317,7 +317,7 @@ export const repositoryTests = describe("Repository", () => {
             (mockResponse as any).ok = false;
             repo.executeAction<{}, IODataResponse<IContent>>({
                 name: "MockAction",
-                contextPath: "Root/Sites/Default_Site",
+                idOrPath: "Root/Sites/Default_Site",
                 method: "GET",
                 body: {},
             }).then(() => {
