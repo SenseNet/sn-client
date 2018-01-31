@@ -53,6 +53,7 @@ export class Repository implements IDisposable {
         }
         return await this.fetchMethod(info, init || {
             credentials: "include",
+
         });
     }
 
@@ -102,7 +103,7 @@ export class Repository implements IDisposable {
         const response = await this.fetch(`${path}?${params}`, {
             credentials: "include",
             method: "POST",
-            body: options.content,
+            body: JSON.stringify(options.content),
         });
         if (!response.ok) {
             throw Error(response.statusText);
@@ -121,7 +122,7 @@ export class Repository implements IDisposable {
         const response = await this.fetch(`${path}?${params}`, {
             credentials: "include",
             method: "PATCH",
-            body: options.content,
+            body: JSON.stringify(options.content),
         });
         if (!response.ok) {
             throw Error(response.statusText);
@@ -140,7 +141,7 @@ export class Repository implements IDisposable {
         const response = await this.fetch(`${path}?${params}`, {
             credentials: "include",
             method: "PUT",
-            body: options.content,
+            body: JSON.stringify(options.content),
         });
         if (!response.ok) {
             throw Error(response.statusText);
@@ -164,10 +165,10 @@ export class Repository implements IDisposable {
             idOrPath: ConstantContent.PORTAL_ROOT.Path,
             method: "POST",
             name: "DeleteBatch",
-            body: {
+            body: JSON.stringify({
                 paths: this.createArray(options.idOrPath),
                 permanent: options.permanent,
-            },
+            }),
         });
     }
 
@@ -180,10 +181,10 @@ export class Repository implements IDisposable {
             idOrPath: ConstantContent.PORTAL_ROOT.Path,
             method: "POST",
             name: "MoveBatch",
-            body: {
+            body: JSON.stringify({
                 paths: this.createArray(options.idOrPath),
                 targetPath: options.targetPath,
-            },
+            }),
         });
     }
 
@@ -196,10 +197,10 @@ export class Repository implements IDisposable {
             idOrPath: ConstantContent.PORTAL_ROOT.Path,
             method: "POST",
             name: "CopyBatch",
-            body: {
+            body: JSON.stringify({
                 paths: this.createArray(options.idOrPath),
                 targetPath: options.targetPath,
-            },
+            }),
         });
     }
 
@@ -214,7 +215,7 @@ export class Repository implements IDisposable {
         const response = await this.fetch(`${path}`, {
             credentials: "include",
             method: options.method,
-            body: options.body,
+            body: JSON.stringify(options.body),
         });
         if (!response.ok) {
             throw Error(response.statusText);
