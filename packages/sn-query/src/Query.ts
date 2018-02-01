@@ -1,7 +1,3 @@
-/**
- * @module Query
- */ /** */
-
 import { QueryExpression } from "./QueryExpression";
 import { QuerySegment } from "./QuerySegment";
 

@@ -1,7 +1,3 @@
-/**
- * @module Query
- */ /** */
-
 import { Query } from "./Query";
 
 /**
