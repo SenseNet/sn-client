@@ -12,6 +12,7 @@ import { ConstantContent } from "./ConstantContent";
 import { ODataUrlBuilder } from "./ODataUrlBuilder";
 import { RepositoryConfiguration } from "./RepositoryConfiguration";
 import { Security } from "./Security";
+import { Versioning } from "./Versioning";
 
 /**
  * Class that can be used as a main entry point to manipulate a sensenet ECM content repository
@@ -255,6 +256,11 @@ export class Repository implements IDisposable {
      * Shortcut for security- and permission-related custom actions
      */
     public security: Security = new Security(this);
+
+    /**
+     * Shortcut for versioning related custom actions
+     */
+    public versioning: Versioning = new Versioning(this);
 
     constructor(
         config?: Partial<RepositoryConfiguration>,

@@ -186,7 +186,7 @@ export interface IGetParentGroupsOptions<T> {
 }
 
 /**
- * Shortcut for security-related custom content actions
+ * Class that contains shortcuts for security-related custom content actions
  */
 export class Security {
     constructor(private readonly repository: Repository) { }
