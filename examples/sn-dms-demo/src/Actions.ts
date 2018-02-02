@@ -1,3 +1,6 @@
+
+enum MessageMode { error = 'error', warning = 'warning', info = 'info' }
+
 export module DMSActions {
     export const UserRegistration = (email: string, password: string) => ({
         type: 'USER_REGISTRATION_REQUEST',
@@ -44,5 +47,15 @@ export module DMSActions {
     export const setEditedFirst = (edited) => ({
         type: 'SET_EDITED_FIRST',
         edited
+    })
+    export const OpenMessageBar = (mode: MessageMode, content, vertical?, horizontal?) => ({
+        type: 'OPEN_MESSAGE_BAR',
+        mode,
+        content,
+        vertical: vertical || 'bottom',
+        horizontal: horizontal || 'left'
+    })
+    export const CloseMessageBar = () => ({
+        type: 'CLOSE_MESSAGE_BAR'
     })
 }

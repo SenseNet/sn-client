@@ -93,7 +93,7 @@ class ActionMenu extends React.Component<IActionMenuProps, IActionMenuState>{
                         <div style={isOpen ? { ...styles.open, ...positionStyles.positions as any } : styles.actionMenu}>
                             <ActionList handleActionMenuClose={this.handleActionMenuClose} id={this.props.id} handleMouseUp={this.handleMouseUp} handleMouseDown={this.handleMouseDown} />
                         </div> :
-                        <Dialog onRequestClose={this.handleActionMenuClose} open={isOpen}>
+                        <Dialog onClose={this.handleActionMenuClose} open={isOpen}>
                             <DialogTitle>{this.props.title}</DialogTitle>
                             <ActionList handleActionMenuClose={this.handleActionMenuClose} id={this.props.id} handleMouseUp={this.handleMouseUp} handleMouseDown={this.handleMouseDown} />
                         </Dialog>

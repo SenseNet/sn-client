@@ -7,7 +7,8 @@ import Header from '../components/Header'
 import FloatingActionButton from '../components/FloatingActionButton'
 import DocumentLibrary from '../components/DocumentLibrary'
 import BreadCrumb from '../components/BreadCrumb'
-import MediaQuery from 'react-responsive';
+import MediaQuery from 'react-responsive'
+import MessageBar from '../components/MessageBar'
 
 const styles = {
     dashBoardInner: {
@@ -85,6 +86,7 @@ class Dashboard extends React.Component<IDashboardProps, { currentId }>{
                     }}
                 </MediaQuery>
                 {!this.props.selectionModeIsOn ? <FloatingActionButton content={this.props.currentContent} /> : null}
+                <MessageBar />
             </div>
         )
     }

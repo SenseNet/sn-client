@@ -1,5 +1,8 @@
 import { combineReducers } from 'redux';
 import { resources } from './assets/resources'
+
+enum MessageMode { error, warning, info }
+
 export module DMSReducers {
     export const email = (state = '', action) => {
         switch (action.type) {
@@ -209,7 +212,67 @@ export module DMSReducers {
         title
     })
 
+    export const messagebarmode = (state = MessageMode.info, action) => {
+        switch (action.type) {
+            case 'OPEN_MESSAGE_BAR':
+                return action.mode
+            case 'CLOSE_MESSAGE_BAR':
+                return MessageMode.info
+            default:
+                return state
+        }
+    }
+
+    export const messagebarcontent = (state = {}, action) => {
+        switch (action.type) {
+            case 'OPEN_MESSAGE_BAR':
+                return action.content
+            case 'CLOSE_MESSAGE_BAR':
+                return {}
+            default:
+                return state
+        }
+    }
+
+    export const messagebaropen = (state = false, action) => {
+        switch (action.type) {
+            case 'OPEN_MESSAGE_BAR':
+                return true
+            case 'CLOSE_MESSAGE_BAR':
+                return false
+            default:
+                return state
+        }
+    }
+
+    export const vertical = (state = 'bottom', action) => {
+        switch (action.type) {
+            case 'OPEN_MESSAGE_BAR':
+                return action.vertical
+            default:
+                return state
+        }
+    }
+
+    export const horizontal = (state = 'left', action) => {
+        switch (action.type) {
+            case 'OPEN_MESSAGE_BAR':
+                return action.horizontal
+            default:
+                return state
+        }
+    }
+
+    export const messagebar = combineReducers({
+        open: messagebaropen,
+        mode: messagebarmode,
+        content: messagebarcontent,
+        vertical,
+        horizontal
+    })
+
     export const dms = combineReducers({
+        messagebar,
         actionmenu,
         breadcrumb,
         editedItemId,
@@ -297,5 +360,8 @@ export module DMSReducers {
     }
     export const isEditedFirst = (state) => {
         return state.editedFirst
+    }
+    export const getMessageBarProps = (state) => {
+        return state.messagebar
     }
 }

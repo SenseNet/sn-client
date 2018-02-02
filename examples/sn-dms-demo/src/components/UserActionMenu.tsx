@@ -82,7 +82,7 @@ class UserActionMenu extends React.Component<IUserActionMenu, { anchorEl, open, 
                             id="long-menu"
                             anchorEl={this.state.anchorEl}
                             open={this.state.open}
-                            onRequestClose={this.handleRequestClose}
+                            onClose={this.handleRequestClose}
                             style={styles.menu}
                         >
                             {actions.map((action, index) => (
