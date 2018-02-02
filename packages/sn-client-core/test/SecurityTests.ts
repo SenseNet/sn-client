@@ -10,7 +10,7 @@ export const securityTests = describe("Security", () => {
     let repository: Repository;
 
     beforeEach(() => {
-        repository = new Repository({}, async (...args: any[]) => ({ok: true, json: async () => ({})} as any));
+        repository = new Repository({}, async (...args: any[]) => ({ok: true, json: async () => ({}), text: async () => ("")} as any));
         security = new Security(repository);
     });
 
@@ -31,11 +31,11 @@ export const securityTests = describe("Security", () => {
     });
 
     it("Should execute getPermissions", () => {
-        expect(security.getPermissions(1, "root/users/user1")).to.be.instanceof(Promise);
+        expect(security.getPermissionsForIdentity(1, "root/users/user1")).to.be.instanceof(Promise);
     });
 
     it("Should execute getPermissions w/o identity path", () => {
-        expect(security.getPermissions(1)).to.be.instanceof(Promise);
+        expect(security.getAllPermissions(1)).to.be.instanceof(Promise);
     });
 
     it("Should execute hasPermission", () => {
@@ -66,32 +66,58 @@ export const securityTests = describe("Security", () => {
     });
 
     it("Should execute getRelatedIdentities", () => {
-        expect(security.getRelatedIdentities(1, PermissionLevel.Allowed, IdentityKind.All)).to.be.instanceof(Promise);
+        expect(security.getRelatedIdentities({
+            contentIdOrPath: 1,
+            level: PermissionLevel.Allowed,
+            kind: IdentityKind.All,
+        })).to.be.instanceof(Promise);
 
     });
 
     it("Should execute getRelatedPermissions", () => {
-        expect(security.getRelatedPermissions(1, PermissionLevel.Allowed, true, "root/user/member")).to.be.instanceof(Promise);
+        expect(security.getRelatedPermissions({
+            contentIdOrPath: 1,
+            level: PermissionLevel.Allowed,
+            explicitOnly: true,
+            memberPath: "root/user/member",
+        })).to.be.instanceof(Promise);
     });
 
     it("Should execute getRelatedItems", () => {
-        expect(security.getRelatedItems(1, PermissionLevel.Allowed, true, "root/users/member1", [])).to.be.instanceof(Promise);
+        expect(security.getRelatedItems({
+            contentIdOrPath: 1,
+            level: PermissionLevel.Allowed,
+            explicitOnly: true,
+            member: "root/users/member1",
+            permissions: []}),
+        ).to.be.instanceof(Promise);
     });
 
     it("Should execute getRelatedIdentitiesByPermissions", () => {
-        expect(security.getRelatedIdentitiesByPermissions(1, PermissionLevel.Allowed, IdentityKind.All, [])).to.be.instanceof(Promise);
+        expect(security.getRelatedIdentitiesByPermissions({
+            contentIdOrPath: 1,
+            level: PermissionLevel.Allowed,
+            kind: IdentityKind.All,
+            permissions: []})).to.be.instanceof(Promise);
     });
 
     it("Should execute getRelatedItemsOneLevel", () => {
-        expect(security.getRelatedItemsOneLevel(1, PermissionLevel.Allowed, "root/users/member", [])).to.be.instanceof(Promise);
+        expect(security.getRelatedItemsOneLevel({
+            contentIdOrPath: 1,
+            level: PermissionLevel.Allowed,
+            member: "root/users/member",
+            permissions: [],
+        })).to.be.instanceof(Promise);
     });
 
     it("Should execute getAllowedUsers", () => {
-        expect(security.getAllowedUsers(1, [])).to.be.instanceof(Promise);
+        expect(security.getAllowedUsers({
+            contentIdOrPath: 1,
+            permissions: []})).to.be.instanceof(Promise);
     });
 
     it("Should execute getParentGroups", () => {
-        expect(security.getParentGroups(1, true)).to.be.instanceof(Promise);
+        expect(security.getParentGroups({contentIdOrPath: 1, directOnly: true})).to.be.instanceof(Promise);
     });
 
     it("Should execute addMembers", () => {

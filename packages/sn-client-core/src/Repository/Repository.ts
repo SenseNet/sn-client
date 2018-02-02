@@ -59,7 +59,8 @@ export class Repository implements IDisposable {
     }
 
     /**
-     * Loads a content from the content repository
+     * Loads a content from the content repository. If used with a fully qualified content path,
+     * it will be transformed to an item path.
      * @param options Options for the Load request
      */
     public async load<TContentType extends IContent>(options: ILoadOptions<TContentType>): Promise<IODataResponse<TContentType>> {
@@ -234,11 +235,12 @@ export class Repository implements IDisposable {
      * Executes a specified custom OData action
      * @param options Options for the Custom Action
      */
-    public async executeAction<TBodyType, TReturns>(options: IActionOptions<TBodyType>,
+    public async executeAction<TBodyType, TReturns>(options: IActionOptions<TBodyType, any>,
     ): Promise<TReturns> {
         const contextPath = PathHelper.getContentUrl(options.idOrPath);
+        const params = ODataUrlBuilder.buildUrlParamString(this.configuration, options.oDataOptions);
         const path = PathHelper.joinPaths(this.configuration.repositoryUrl, this.configuration.oDataToken, contextPath, options.name);
-        const response = await this.fetch(`${path}`, {
+        const response = await this.fetch(`${path}?${params}`, {
             credentials: "include",
             method: options.method,
             body: JSON.stringify(options.body),

@@ -152,7 +152,7 @@ export interface ICopyOptions {
 /**
  * Options to call an odata action
  */
-export interface IActionOptions<TBody> {
+export interface IActionOptions<TBody, TContentType> {
     /**
      * The name of the odata action
      */
@@ -169,6 +169,11 @@ export interface IActionOptions<TBody> {
      * Additional body parameters
      */
     body: TBody;
+
+    /**
+     * An OData Options object
+     */
+    oDataOptions?: IODataParams<TContentType>;
 }
 
 /**
