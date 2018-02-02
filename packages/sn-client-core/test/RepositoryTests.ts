@@ -1,4 +1,5 @@
-import {using} from "@sensenet/client-utils";
+import { using } from "@sensenet/client-utils";
+import { IActionModel } from "@sensenet/default-content-types";
 import { expect } from "chai";
 import { Repository } from "../src";
 import { IContent } from "../src/Models/IContent";
@@ -34,7 +35,7 @@ export const repositoryTests = describe("Repository", () => {
     });
 
     it("Should be constructed with a built-in fetch method", (done: MochaDone) => {
-        global.window.fetch = () => {done(); };
+        global.window.fetch = () => { done(); };
         const fetchRepo = new Repository();
         // tslint:disable-next-line:no-string-literal
         (fetchRepo as any).fetchMethod();
@@ -55,7 +56,7 @@ export const repositoryTests = describe("Repository", () => {
         it("Should be able to skip awaiting readyState", (done: MochaDone) => {
             repo.awaitReadyState = async () => { done("Shouldn't be called"); };
             // tslint:disable-next-line:no-string-literal
-            repo["fetchMethod"] = (async () => {done(); }) as any;
+            repo["fetchMethod"] = (async () => { done(); }) as any;
             repo.fetch("", undefined, false);
         });
     });
@@ -132,6 +133,7 @@ export const repositoryTests = describe("Repository", () => {
                 const response = await repo.post({
                     parentPath: "Root/Sites/Default_Site",
                     content: ConstantContent.PORTAL_ROOT,
+                    contentType: "Task",
                 });
 
                 expect(response.d).to.be.deep.eq(ConstantContent.PORTAL_ROOT);
@@ -142,6 +144,7 @@ export const repositoryTests = describe("Repository", () => {
                 repo.post({
                     parentPath: "Root/Sites/Default_Site",
                     content: ConstantContent.PORTAL_ROOT,
+                    contentType: "Task",
                 }).then(() => {
                     done("Should throw");
                 }).catch(() => {
@@ -295,6 +298,52 @@ export const repositoryTests = describe("Repository", () => {
             });
         });
 
+        describe("#getActions()", () => {
+            it("should resolve on success", async () => {
+                (mockResponse as any).ok = true;
+                mockResponse.json = async () => {
+                    return {
+                        d: [
+                            {Name: "MockAction"},
+                        ],
+                    } as {d: IActionModel[]};
+                };
+                const response = await repo.getActions({
+                    idOrPath: "Root/Sites/Default_Site",
+                });
+                expect(response.d).to.be.deep.eq([{Name: "MockAction"}]);
+            });
+
+            it("should resolve on success with scenario", async () => {
+                (mockResponse as any).ok = true;
+                mockResponse.json = async () => {
+                    return {
+                        d: [
+                            {Name: "MockAction"},
+                        ],
+                    } as {d: IActionModel[]};
+                };
+                const response = await repo.getActions({
+                    idOrPath: "Root/Sites/Default_Site",
+                    scenario: "example",
+                });
+                expect(response.d).to.be.deep.eq([{Name: "MockAction"}]);
+            });
+
+            it("should throw on unsuccessfull request", (done: MochaDone) => {
+                (mockResponse as any).ok = false;
+                (mockResponse as any).statusText = ":(";
+                repo.getActions({
+                    idOrPath: "Root/Sites/Default_Site",
+                }).then(() => {
+                    done("Should throw");
+                }).catch((err) => {
+                    expect(err.message).to.be.eq(":(");
+                    done();
+                });
+            });
+        });
+
         describe("#executeAction()", () => {
             it("should resolve on success", async () => {
                 (mockResponse as any).ok = true;
@@ -311,19 +360,19 @@ export const repositoryTests = describe("Repository", () => {
                 });
                 expect(response.d).to.be.deep.eq(ConstantContent.PORTAL_ROOT);
             });
-        });
 
-        it("should throw on unsuccessfull request", (done: MochaDone) => {
-            (mockResponse as any).ok = false;
-            repo.executeAction<{}, IODataResponse<IContent>>({
-                name: "MockAction",
-                idOrPath: "Root/Sites/Default_Site",
-                method: "GET",
-                body: {},
-            }).then(() => {
-                done("Should throw");
-            }).catch(() => {
-                done();
+            it("should throw on unsuccessfull request", (done: MochaDone) => {
+                (mockResponse as any).ok = false;
+                repo.executeAction<{}, IODataResponse<IContent>>({
+                    name: "MockAction",
+                    idOrPath: "Root/Sites/Default_Site",
+                    method: "GET",
+                    body: {},
+                }).then(() => {
+                    done("Should throw");
+                }).catch(() => {
+                    done();
+                });
             });
         });
     });

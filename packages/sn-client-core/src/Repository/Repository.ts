@@ -1,11 +1,12 @@
 import { IDisposable, PathHelper } from "@sensenet/client-utils";
+import { IActionModel } from "@sensenet/default-content-types";
 import { BypassAuthentication } from "../Authentication/BypassAuthentication";
 import { IAuthenticationService } from "../Authentication/IAuthenticationService";
 import { IContent } from "../Models/IContent";
 import { IODataBatchResponse } from "../Models/IODataBatchResponse";
 import { IODataCollectionResponse } from "../Models/IODataCollectionResponse";
 import { IODataResponse } from "../Models/IODataResponse";
-import { IActionOptions, ICopyOptions, IDeleteOptions, ILoadCollectionOptions, ILoadOptions, IMoveOptions, IPatchOptions, IPostOptions, IPutOptions } from "../Models/IRequestOptions";
+import { IActionOptions, ICopyOptions, IDeleteOptions, IGetActionOptions, ILoadCollectionOptions, ILoadOptions, IMoveOptions, IPatchOptions, IPostOptions, IPutOptions } from "../Models/IRequestOptions";
 import { SchemaStore } from "../Schemas/SchemaStore";
 import { ConstantContent } from "./ConstantContent";
 import { ODataUrlBuilder } from "./ODataUrlBuilder";
@@ -98,12 +99,16 @@ export class Repository implements IDisposable {
      * @param options Post request Options
      */
     public async post<TContentType extends IContent>(options: IPostOptions<TContentType>): Promise<IODataResponse<TContentType>> {
-        const params = ODataUrlBuilder.buildUrlParamString(this.configuration);
         const path = PathHelper.joinPaths(this.configuration.repositoryUrl, this.configuration.oDataToken, options.parentPath);
+        const params = ODataUrlBuilder.buildUrlParamString(this.configuration, options.oDataOptions);
+        const postBody: Partial<TContentType> & {__ContentType: string, __ContentTemplate?: string} = Object.assign({}, options.content) as any;
+        postBody.__ContentType = options.contentType;
+        postBody.__ContentTemplate = options.contentTemplate;
+
         const response = await this.fetch(`${path}?${params}`, {
             credentials: "include",
             method: "POST",
-            body: JSON.stringify(options.content),
+            body: JSON.stringify(postBody),
         });
         if (!response.ok) {
             throw Error(response.statusText);
@@ -116,9 +121,9 @@ export class Repository implements IDisposable {
      * @param options Options for the Patch request
      */
     public async patch<TContentType extends IContent>(options: IPatchOptions<TContentType>): Promise<IODataResponse<TContentType>> {
-        const params = ODataUrlBuilder.buildUrlParamString(this.configuration);
         const contentPath = PathHelper.getContentUrl(options.idOrPath);
         const path = PathHelper.joinPaths(this.configuration.repositoryUrl, this.configuration.oDataToken, contentPath);
+        const params = ODataUrlBuilder.buildUrlParamString(this.configuration, options.oDataOptions);
         const response = await this.fetch(`${path}?${params}`, {
             credentials: "include",
             method: "PATCH",
@@ -135,9 +140,9 @@ export class Repository implements IDisposable {
      * @param options Options for the Put request
      */
     public async put<TContentType extends IContent>(options: IPutOptions<TContentType>): Promise<IODataResponse<TContentType>> {
-        const params = ODataUrlBuilder.buildUrlParamString(this.configuration);
         const contentPath = PathHelper.getContentUrl(options.idOrPath);
         const path = PathHelper.joinPaths(this.configuration.repositoryUrl, this.configuration.oDataToken, contentPath);
+        const params = ODataUrlBuilder.buildUrlParamString(this.configuration, options.oDataOptions);
         const response = await this.fetch(`${path}?${params}`, {
             credentials: "include",
             method: "PUT",
@@ -202,6 +207,27 @@ export class Repository implements IDisposable {
                 targetPath: options.targetPath,
             }),
         });
+    }
+
+    /**
+     * Retrieves a list of content actions for a specified content
+     * @param options Options for fetching the Custom Actions
+     */
+    public async getActions(options: IGetActionOptions): Promise<{d: IActionModel[]}> {
+        const contextPath = PathHelper.getContentUrl(options.idOrPath);
+        const path = PathHelper.joinPaths(this.configuration.repositoryUrl,
+            this.configuration.oDataToken,
+            contextPath,
+            "Actions",
+            options.scenario ? `$scenario=${options.scenario}` : "");
+        const response = await this.fetch(`${path}`, {
+            credentials: "include",
+            method: "GET",
+        });
+        if (!response.ok) {
+            throw Error(response.statusText);
+        }
+        return await response.json();
     }
 
     /**

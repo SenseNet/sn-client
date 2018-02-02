@@ -95,12 +95,4 @@ export interface IODataParams<T> {
      * Sets the OData metadata parameter. Can be 'full', 'minimal' or 'no'
      */
     metadata?: ODataMetadataType;
-    /**
-     * Sets the OData post data object
-     */
-    data?: any;
-    /**
-     * Sets the OData Scenario parameter
-     */
-    scenario?: string;
 }

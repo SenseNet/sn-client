@@ -43,7 +43,22 @@ export interface IPostOptions<TContentType> {
     /**
      * Content data to post. The content type is required.
      */
-    content: Partial<TContentType> & { Type: string };
+    content: Partial<TContentType>;
+
+    /**
+     * Type name for the content
+     */
+    contentType: string;
+
+    /**
+     * An optional content template
+     */
+    contentTemplate?: string;
+
+    /**
+     * An optional OData Options object
+     */
+    oDataOptions?: IODataParams<TContentType>;
 }
 
 /**
@@ -58,6 +73,11 @@ export interface IPatchOptions<TContentType> {
      * The content data to update
      */
     content: Partial<TContentType>;
+
+    /**
+     * An optional OData Options object
+     */
+    oDataOptions?: IODataParams<TContentType>;
 }
 
 /**
@@ -72,6 +92,11 @@ export interface IPutOptions<TContentType> {
      * The new content data
      */
     content: Partial<TContentType>;
+
+    /**
+     * An optional OData Options object
+     */
+    oDataOptions?: IODataParams<TContentType>;
 }
 
 /**
@@ -144,4 +169,19 @@ export interface IActionOptions<TBody> {
      * Additional body parameters
      */
     body: TBody;
+}
+
+/**
+ * Options for fetching content actions
+ */
+export interface IGetActionOptions {
+    /**
+     * The content Id or path
+     */
+    idOrPath: string | number;
+
+    /**
+     * An optional Scenario parameter
+     */
+    scenario?: string;
 }
