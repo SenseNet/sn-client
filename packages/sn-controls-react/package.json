@@ -92,11 +92,8 @@
     "react-dev-utils": "^5.0.0",
     "react-dom": "^16.0.0",
     "react-error-overlay": "^4.0.0",
-    "react-materialize": "^1.0.1",
-    "react-tap-event-plugin": "^3.0.1",
     "redux": "^3.6.0",
     "rimraf": "^2.6.1",
-    "sn-client-js": "^3.0.0",
     "sn-redux": "^3.4.0",
     "source-map-loader": "^0.2.1",
     "style-loader": "0.20.1",
@@ -122,8 +119,11 @@
     "nyc": "^11.0.3",
     "radium": "^0.21.0",
     "react": "^16.0.0",
+    "react-materialize": "^1.0.1",
     "react-quill": "^1.0.0-rc.3",
-    "react-router-dom": "^4.1.1"
+    "react-router-dom": "^4.1.1",
+    "react-tap-event-plugin": "^3.0.1",
+    "sn-client-js": "^3.0.0"
   },
   "babel": {
     "presets": [
