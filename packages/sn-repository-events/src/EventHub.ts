@@ -177,7 +177,7 @@ export class EventHub implements IDisposable {
                         contentArgs = [contentArgs];
                     }
                     const contents = contentArgs.map((v) => {
-                        return isNaN(v as number) ? {Path: v} : {Id: parseInt(v as string, 10)};
+                        return isNaN(v as number) ? {Path: v} : {Id: parseInt(v as string, 10)} as IContent;
                     });
                     for (const c of contents) {
                         this.onContentDeleteFailed.setValue({
@@ -219,7 +219,7 @@ export class EventHub implements IDisposable {
                         contentArgs = [contentArgs];
                     }
                     const contents = contentArgs.map((v) => {
-                        return isNaN(v as number) ? {Path: v} : {Id: parseInt(v as string, 10)};
+                        return isNaN(v as number) ? {Path: v} : {Id: parseInt(v as string, 10)} as IContent;
                     });
                     for (const c of contents) {
                         this.onContentCreateFailed.setValue({
@@ -260,7 +260,7 @@ export class EventHub implements IDisposable {
                         contentArgs = [contentArgs];
                     }
                     const contents = contentArgs.map((v) => {
-                        return isNaN(v as number) ? {Path: v} : {Id: parseInt(v as string, 10)};
+                        return isNaN(v as number) ? {Path: v} : {Id: parseInt(v as string, 10)} as IContent;
                     });
                     for (const c of contents) {
                         this.onContentMoveFailed.setValue({

@@ -17,7 +17,7 @@
     "semantic-release": "semantic-release pre && semantic-release post",
     "prebuild": "tslint --project tsconfig.json",
     "build": "rimraf dist && tsc -p tsconfig.json",
-    "prepublish": "npm run test && npm run build",    
+    "prepublish": "npm run test && npm run build",
     "publish:development": "npm run build && npm t && npm run typedoc && npm publish --tag development",
     "typedoc": "typedoc --mode file --out documentation src --tsconfig tsconfig.typedoc.json"
   },
@@ -58,19 +58,19 @@
   },
   "homepage": "https://sensenet.com",
   "dependencies": {
-    "@sensenet/client-core": "^1.0.0-development.4",
-    "@sensenet/client-utils": "^1.0.0-development.12"
+    "@sensenet/client-core": "^1.0.0-development.10",
+    "@sensenet/client-utils": "^1.0.0-development.15"
   },
   "devDependencies": {
     "@types/chai": "^4.1.0",
-    "@types/mocha": "^2.2.46",
+    "@types/mocha": "^2.2.48",
     "chai": "4.1.2",
     "codecov": "^3.0.0",
     "mocha": "^4.1.0",
     "nyc": "^11.0.2",
     "rimraf": "^2.6.1",
     "tslint": "^5.8.0",
-    "typescript": "^2.6.2"
+    "typescript": "^2.7.1"
   },
   "config": {
     "commitizen": {

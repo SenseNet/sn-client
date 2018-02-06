@@ -54,6 +54,7 @@ export const eventHubTests = describe("EventHub", () => {
             }) as any;
             repository.post({
                 parentPath: "",
+                contentType: "User",
                 content: mockContent,
             });
         });
@@ -75,6 +76,7 @@ export const eventHubTests = describe("EventHub", () => {
                 try {
                     const response = await repository.post({
                         parentPath: "",
+                        contentType: "User",
                         content: mockContent,
                     });
                 } catch {
