@@ -8,7 +8,7 @@ export class SchemaStore {
     constructor(private schemas: Schema[] = DefaultSchemaStore.map((s) => s)) {
 
     }
-    private byNameSchemaCache: Map<string, Schema>;
+    private byNameSchemaCache: Map<string, Schema> = new Map();
 
     /**
      * Updates the schema information in the store and inv
@@ -35,9 +35,6 @@ export class SchemaStore {
      * @param {string} contentTypeName The name of the content type
      */
     public getSchemaByName(contentTypeName: string) {
-        if (!this.byNameSchemaCache) {
-            this.byNameSchemaCache = new Map<string, Schema>();
-        }
 
         if (this.byNameSchemaCache.has(contentTypeName)) {
             return Object.assign({}, this.byNameSchemaCache.get(contentTypeName)) as Schema;
