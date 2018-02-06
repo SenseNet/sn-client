@@ -17,7 +17,7 @@ export class QuerySegment<TReturns> {
     /**
      * The String value of the current Query expression
      */
-    protected stringValue: string;
+    protected stringValue: string = "";
 
     /**
      * A '.SORT' Content Query segment

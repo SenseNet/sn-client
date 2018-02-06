@@ -4,13 +4,13 @@ import { Query } from "../src";
 // tslint:disable:variable-name
 // tslint:disable:completed-docs
 class Task {
-    public Id: number;
-    public Name: string;
-    public Path: string;
-    public DisplayName: string;
+    public Id!: number;
+    public Name!: string;
+    public Path!: string;
+    public DisplayName!: string;
     public ModificationDate?: string;
-    public Approvable: boolean;
-    public Description: string;
+    public Approvable!: boolean;
+    public Description!: string;
 }
 // tslint:enable:variable-name
 describe("Query", () => {

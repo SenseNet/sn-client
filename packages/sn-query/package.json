@@ -18,14 +18,14 @@
     "semantic-release": "semantic-release pre && semantic-release post",
     "prebuild": "tslint --project tsconfig.json",
     "build": "rimraf dist && tsc -p tsconfig.json",
-    "prepublish": "npm run test && npm run build",    
+    "prepublish": "npm run test && npm run build",
     "publish:development": "npm run build && npm t && npm run typedoc && npm publish --tag development",
     "typedoc": "typedoc --mode file --out documentation src --tsconfig tsconfig.typedoc.json"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/SenseNet/sn-query.git"
-  },  
+  },
   "keywords": [
     "sensenet",
     "ecm",
@@ -35,12 +35,12 @@
   ],
   "publishConfig": {
     "access": "public"
-  },  
+  },
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "license": "GPL-2.0",
   "bugs": {
     "url": "https://github.com/SenseNet/sn-query/issues"
-  },  
+  },
   "nyc": {
     "exclude": [
       "temp/test/**/*.*",
@@ -66,8 +66,8 @@
     "mocha": "4.0.1",
     "nyc": "^11.0.2",
     "rimraf": "^2.6.1",
-    "tslint": "^5.8.0",
-    "typescript": "^2.6.1"
+    "tslint": "^5.9.1",
+    "typescript": "^2.7.1"
   },
   "config": {
     "commitizen": {
