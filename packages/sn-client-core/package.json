@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/client-core",
-  "version": "1.0.0-development.10",
+  "version": "1.0.0-development.12",
   "description": "Core Client packages for sensenet ECM",
   "main": "./dist/index.js",
   "files": [

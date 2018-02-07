@@ -172,10 +172,10 @@ export class Repository implements IDisposable {
             idOrPath: ConstantContent.PORTAL_ROOT.Path,
             method: "POST",
             name: "DeleteBatch",
-            body: JSON.stringify({
+            body: {
                 paths: this.createArray(options.idOrPath),
                 permanent: options.permanent,
-            }),
+            },
         });
     }
 
@@ -188,10 +188,10 @@ export class Repository implements IDisposable {
             idOrPath: ConstantContent.PORTAL_ROOT.Path,
             method: "POST",
             name: "MoveBatch",
-            body: JSON.stringify({
+            body: {
                 paths: this.createArray(options.idOrPath),
                 targetPath: options.targetPath,
-            }),
+            },
         });
     }
 
@@ -204,10 +204,10 @@ export class Repository implements IDisposable {
             idOrPath: ConstantContent.PORTAL_ROOT.Path,
             method: "POST",
             name: "CopyBatch",
-            body: JSON.stringify({
+            body: {
                 paths: this.createArray(options.idOrPath),
                 targetPath: options.targetPath,
-            }),
+            },
         });
     }
 
