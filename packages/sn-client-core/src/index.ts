@@ -1,5 +1,6 @@
 export { BypassAuthentication } from "./Authentication/BypassAuthentication";
 export { Repository } from "./Repository/Repository";
+export { Upload } from "./Repository/Upload";
 export { IAuthenticationService } from "./Authentication/IAuthenticationService";
 export { LoginState } from "./Authentication/LoginState";
 export { ConstantContent } from "./Repository/ConstantContent";

@@ -103,7 +103,7 @@ export class Repository implements IDisposable {
     public async post<TContentType extends IContent>(options: IPostOptions<TContentType>): Promise<IODataResponse<TContentType>> {
         const path = PathHelper.joinPaths(this.configuration.repositoryUrl, this.configuration.oDataToken, options.parentPath);
         const params = ODataUrlBuilder.buildUrlParamString(this.configuration, options.oDataOptions);
-        const postBody: Partial<TContentType> & {__ContentType: string, __ContentTemplate?: string} = Object.assign({}, options.content) as any;
+        const postBody: Partial<TContentType> & { __ContentType: string, __ContentTemplate?: string } = Object.assign({}, options.content) as any;
         postBody.__ContentType = options.contentType;
         postBody.__ContentTemplate = options.contentTemplate;
 
@@ -215,7 +215,7 @@ export class Repository implements IDisposable {
      * Retrieves a list of content actions for a specified content
      * @param options Options for fetching the Custom Actions
      */
-    public async getActions(options: IGetActionOptions): Promise<{d: IActionModel[]}> {
+    public async getActions(options: IGetActionOptions): Promise<{ d: IActionModel[] }> {
         const contextPath = PathHelper.getContentUrl(options.idOrPath);
         const path = PathHelper.joinPaths(this.configuration.repositoryUrl,
             this.configuration.oDataToken,

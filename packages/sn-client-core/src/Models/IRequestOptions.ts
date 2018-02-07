@@ -1,3 +1,4 @@
+import { Repository } from "../index";
 import { IContent } from "./IContent";
 import { IODataParams } from "./IODataParams";
 /**
@@ -189,4 +190,86 @@ export interface IGetActionOptions {
      * An optional Scenario parameter
      */
     scenario?: string;
+}
+
+/**
+ * Options for uploading content
+ */
+export interface IUploadOptions<T> {
+
+    /**
+     * The specified sensenet ECM Repository instance
+     */
+    repository: Repository;
+
+    /**
+     * The name of the content type, e.g.: File
+     */
+    contentTypeName: string;
+    /**
+     * Name of the binary property on the content, e.g.: Binary
+     */
+    binaryPropertyName: string;
+    /**
+     * Enable overwriting a file if already exists
+     */
+    overwrite: boolean;
+    /**
+     * Additional post body options
+     */
+    body?: any;
+
+    /**
+     * Additional OData options
+     */
+    odataOptions?: IODataParams<T>;
+    /**
+     * The path of the parent content
+     */
+    parentPath: string;
+}
+
+/**
+ * Options for uploading a File into the repository
+ */
+export interface IUploadFileOptions<T> extends IUploadOptions<T> {
+    /**
+     * The File instance
+     */
+    file: File;
+
+}
+
+/**
+ * Options for uploading a text as a binary file into the repository
+ */
+export interface IUploadTextOptions<T> extends IUploadOptions<T> {
+    /**
+     * The text to be uploaded
+     */
+    text: string;
+    /**
+     * The name of the File object
+     */
+    fileName: string;
+}
+
+/**
+ * Options for uploading content from a drop event
+ */
+export interface IUploadFromEventOptions<T extends IContent> extends IUploadOptions<T> {
+
+    /**
+     * The path of the parent content item
+     */
+    parentPath: string;
+
+    /**
+     * The DragEvent to work with. File data will be extracted from it's 'dataTransfer' item.
+     */
+    event: DragEvent;
+    /**
+     * Option if folders should be created as well.
+     */
+    createFolders: boolean;
 }
