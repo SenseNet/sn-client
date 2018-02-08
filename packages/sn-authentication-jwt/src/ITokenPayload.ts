@@ -1,9 +1,5 @@
-/**
- * @module Authentication
- */ /** */
-
  /**
-  * This interface represents payload data, as it is recieved from Sense/NET ECM.
+  * This interface represents payload data, as it is recieved from sensenet ECM.
   */
 export interface ITokenPayload {
     /**

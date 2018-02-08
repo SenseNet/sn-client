@@ -1,7 +1,3 @@
-/**
- * @module Authentication
- */ /** */
-
  /**
   * This enum represents how the token will be stored on the client-side.
   */

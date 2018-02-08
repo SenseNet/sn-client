@@ -1,8 +1,4 @@
 /**
- * @module Authentication
- */ /** */
-
-/**
  * This enum shows how the token should be persisted.
  */
 export enum TokenPersist {

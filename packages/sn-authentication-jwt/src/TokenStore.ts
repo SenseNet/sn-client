@@ -1,6 +1,3 @@
-/**
- * @module Authentication
- */ /** */
 import { Token } from "./Token";
 import { TokenPersist } from "./TokenPersist";
 import { TokenStoreType } from "./TokenStoreType";

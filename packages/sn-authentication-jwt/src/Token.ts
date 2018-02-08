@@ -1,6 +1,3 @@
-/**
- * @module Authentication
- */ /** */
 import { ITokenPayload } from "./ITokenPayload";
 
 /**

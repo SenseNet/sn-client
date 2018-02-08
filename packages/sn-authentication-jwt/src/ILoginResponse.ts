@@ -1,11 +1,5 @@
 /**
- * @module Authentication
- */ /** */
-
-// tslint:disable:naming-convention
-
-/**
- * This class represents a plain response body that is returned from Sense/NET ECM in case of a succesfully login.
+ * This class represents a plain response body that is returned from sensenet ECM in case of a succesfully login.
  */
 export interface ILoginResponse {
     /**

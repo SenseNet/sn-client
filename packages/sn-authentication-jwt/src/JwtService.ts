@@ -1,14 +1,10 @@
-/**
- * @module Authentication
- */ /** */
-
-import { ConstantContent, IAuthenticationService, Repository } from "@sensenet/client-core";
+import { ConstantContent, IAuthenticationService, LoginState, Repository } from "@sensenet/client-core";
 import { ObservableValue, PathHelper } from "@sensenet/client-utils";
 import { User } from "@sensenet/default-content-types";
+import { Query } from "@sensenet/query";
 import { ILoginResponse } from "./ILoginResponse";
 import { IOauthProvider } from "./IOauthProvider";
 import { IRefreshResponse } from "./IRefreshResponse";
-import { LoginState } from "./LoginState";
 import { Token } from "./Token";
 import { TokenPersist } from "./TokenPersist";
 import { TokenStore } from "./TokenStore";
@@ -21,10 +17,14 @@ export class JwtService implements IAuthenticationService {
     private readonly jwtTokenKeyTemplate: string = "sn-${siteName}-${tokenName}";
 
     /**
-     * Disposes the service
+     * Disposes the service, the state and currentUser observables
      */
     public dispose() {
-        /** */
+        this.state.dispose();
+        this.currentUser.dispose();
+        for (const provider of this.oauthProviders) {
+            provider.dispose();
+        }
     }
 
     /**
@@ -51,7 +51,7 @@ export class JwtService implements IAuthenticationService {
 
     /**
      * Executed before each Ajax call. If the access token has been expired, but the refresh token is still valid, it triggers the token refreshing call
-     * @returns {Observable<boolean>} An observable with a variable that indicates if there was a refresh triggered.
+     * @returns {Promise<boolean>} Promise with a boolean that indicates if there was a refresh triggered.
      */
     public async checkForUpdate(): Promise<boolean> {
         if (this.tokenStore.AccessToken.IsValid()) {
@@ -68,7 +68,7 @@ export class JwtService implements IAuthenticationService {
 
     /**
      * Executes the token refresh call. Refresh the token in the Token Store and in the Service, updates the HttpService header
-     * @returns {Observable<boolean>} An observable that will be completed with true on a succesfull refresh
+     * @returns {Promise<boolean>} An promise that will be completed with true on a succesfull refresh
      */
     private async execTokenRefresh(): Promise<boolean> {
         const response = await this.repository.fetch(PathHelper.joinPaths(this.repository.configuration.repositoryUrl, "sn-token/refresh"),
@@ -93,11 +93,29 @@ export class JwtService implements IAuthenticationService {
         return true;
     }
 
+    private async updateUser() {
+        const lastUser = this.currentUser.getValue();
+        if (this.state.getValue() === LoginState.Unauthenticated) {
+            this.currentUser.setValue(ConstantContent.VISITOR_USER);
+        } else if (this.state.getValue() === LoginState.Authenticated && this.tokenStore.AccessToken.Username !== `${lastUser.Domain}\\${lastUser.LoginName}`) {
+            const [domain, loginName] = this.tokenStore.AccessToken.Username.split("\\");
+            const response = await this.repository.loadCollection({
+                path: "Root",
+                oDataOptions: {
+                    query: new Query((q) => q.typeIs<User>(User).and.equals("Domain", domain).and.equals("LoginName", loginName)).toString(),
+                },
+            });
+            this.currentUser.setValue(response.d.results[0]);
+        }
+    }
+
     /**
      * @param {BaseRepository} _repository the Repository reference for the Authentication. The service will read its configuration and use its HttpProvider
      * @constructs JwtService
      */
-    constructor(protected readonly repository: Repository) {
+    constructor(public readonly repository: Repository) {
+        this.repository.authentication = this;
+        this.state.subscribe((state) => {this.updateUser(); });
         this.checkForUpdate();
     }
 
@@ -124,7 +142,7 @@ export class JwtService implements IAuthenticationService {
      * The username and password is sent in clear text, always send these kinds of requests through HTTPS.
      * @param username {string} Name of the user.
      * @param password {string} Password of the user.
-     * @returns {Observable} Returns an RxJS observable that you can subscribe of in your code.
+     * @returns {Promise<boolean>} Returns a Promise that will resolved with a boolean value that indicates if the login was successfull.
      * ```
      * let userLogin = service.Login('alba', 'alba');
      * userLogin.subscribe({
@@ -164,13 +182,12 @@ export class JwtService implements IAuthenticationService {
 
     /**
      * Logs out the current user, sets the tokens to 'empty' and sends a Logout request to invalidate all Http only cookies
-     * @returns {Observable<boolean>} An Observable that will be updated with the logout response
+     * @returns {Promise<boolean>} A promise that will resolved with a boolean value that indicates if the logout succeeded.
      */
     public async logout(): Promise<boolean> {
         this.tokenStore.AccessToken = Token.CreateEmpty();
         this.tokenStore.RefreshToken = Token.CreateEmpty();
         this.state.setValue(LoginState.Unauthenticated);
-        this.currentUser.setValue(ConstantContent.VISITOR_USER);
         await this.repository.fetch(PathHelper.joinPaths(this.repository.configuration.repositoryUrl, "sn-token/logout"), {
             method: "POST",
             cache: "no-cache",

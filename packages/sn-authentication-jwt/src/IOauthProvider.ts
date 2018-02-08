@@ -1,11 +1,9 @@
-/**
- * @module Authentication
- */ /** */
+import { IDisposable } from "@sensenet/client-utils/dist/Disposable";
 
 /**
  * Interface that represents a basic structure for an additional OAuth Provider
  */
-export interface IOauthProvider {
+export interface IOauthProvider extends IDisposable {
     /**
      * Method that retrieves the token info
      */
