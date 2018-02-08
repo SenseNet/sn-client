@@ -1,3 +1,3 @@
-export * from './GoogleAuthenticationOptionsTests';
-export * from './AddGoogleAuthTests';
-export * from './GoogleOauthProviderTests';
+export * from "./GoogleAuthenticationOptionsTests";
+export * from "./AddGoogleAuthTests";
+export * from "./GoogleOauthProviderTests";

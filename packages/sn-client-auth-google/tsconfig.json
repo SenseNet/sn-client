@@ -1,8 +1,6 @@
 {
     "compilerOptions": {
         "strict": true,
-        "removeComments": true,
-        "noImplicitAny": false,
         "noUnusedLocals": true,
         "target": "es2015",
         "module": "commonjs",
@@ -12,7 +10,6 @@
         "preserveConstEnums": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "skipLibCheck": true,
         "outDir": "./dist"
     },
     "exclude": [
@@ -21,7 +18,6 @@
     ],
     "compileOnSave": false,
     "files": [
-        "src/index.ts",
-        "test/index.ts"
+        "src/index.ts"
     ]
 }

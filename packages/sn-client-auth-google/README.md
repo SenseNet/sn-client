@@ -7,14 +7,7 @@
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat)](http://commitizen.github.io/cz-cli/)
 [![Greenkeeper badge](https://badges.greenkeeper.io/SenseNet/sn-client-auth-google.svg)](https://greenkeeper.io/)
 
-This package contains a client-side Google Oauth2 authentication provider for sensenet ECM through [sn-client-js](https://www.npmjs.com/package/sn-client-js)
-
-## Installation with node and npm
-
-To install the latest version run
-```
-npm install --save sn-client-js
-```
+This package contains a client-side Google Oauth2 authentication provider for sensenet ECM.
 
 ## Usage
 
@@ -25,16 +18,15 @@ npm install --save sn-client-js
 
 ### Setup
 
-You can set up the Provider after creating your repository singleton with the **AddGoogleAuth** method
+You can set up the Provider after creating your repository singleton with the **addGoogleAuth** method
 ```ts
-import { Repository } from 'sn-client-js'
-import { AddGoogleAuth } from 'sn-client-auth-google';
+import { Repository } from "@sensenet/client-core";
+import { JwtService } from "@sensenet/authentication-jwt";
+import { addGoogleAuth } from '@sensenet/authentication-google';
 
-const myRepository = new Repository.SnRepository();
-
-AddGoogleAuth(myRepository, {
-     ClientId: myGoogleClientId
-});
+const repo = new Repository();
+const jwt = new JwtService(repo);
+const googleOauthProvider = addGoogleAuth(jwt, {clientId: ""});
 ```
 
 
@@ -46,7 +38,7 @@ In your login component, you can use the following snippet. If you don't provide
 // an example login method with an optional idToken:
 async Login(idToken?: string){
  try {
-     await myRepository.Authentication.GetOauthProvider(GoogleOauthProvider).Login(idToken);
+     await googleOauthProvider.Login(idToken);
      console.log('Logged in');
  } catch (error) {
     console.warn('Error during login', error);

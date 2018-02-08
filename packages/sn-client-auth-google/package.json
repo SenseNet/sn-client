@@ -1,27 +1,25 @@
 {
-  "name": "sn-client-auth-google",
-  "version": "1.0.0",
+  "name": "@sensenet/authentication-google",
+  "version": "1.0.0-development.4",
   "description": "Client-side Google authentication provider for sensenet ECM",
-  "main": "dist/src/index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "lint": "./node_modules/.bin/tslint --project tsconfig.json",
-    "clean": "rimraf dist",
-    "precommit": "npm run lint",
+    "precommit": "npm run test",
     "commit": "git-cz",
-    "pretest": "npm run build",
-    "test": "nyc mocha -p tsconfig.json dist/test/index.js",
-    "prebuild": "npm run lint && npm run clean",
-    "build": "tsc",
+    "pretest": "tslint --project tsconfig.test.json && rimraf temp && tsc -p tsconfig.test.json",
+    "test": "rimraf coverage && nyc mocha -p tsconfig.test.json ./temp/test/index.js",
+    "check-coverage": "istanbul check-coverage ",
     "report-coverage": "cat ./coverage/lcov.info | ./node_modules/.bin/codecov",
-    "typedoc": "./node_modules/.bin/typedoc --mode modules --tsconfig ./tsconfig.typedoc.json --out documentation --excludePrivate --theme default --readme readme.md ./src",
-    "publish:development": "npm t && npm run typedoc && npm publish --tag development"
+    "semantic-release": "semantic-release pre && semantic-release post",
+    "prebuild": "tslint --project tsconfig.json",
+    "build": "rimraf dist && tsc -p tsconfig.json",
+    "prepublishOnly": "npm run test && npm run build",    
+    "publish:development": "npm run build && npm t && npm run typedoc && npm publish --tag development",
+    "typedoc": "typedoc --mode file --out documentation src --tsconfig tsconfig.typedoc.json"
   },
   "files": [
     "dist",
-    "src",
-    "test",
-    "documentation",
-    "coverage"
+    "src"
   ],
   "repository": {
     "type": "git",
@@ -37,6 +35,9 @@
     "JWT",
     "Login"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "license": "GPL-2.0",
   "bugs": {
@@ -44,10 +45,10 @@
   },
   "nyc": {
     "exclude": [
-      "dist/test/**/*.*",
-      "dist/src/**/I*.js"
+      "temp/test/**/*.*",
+      "temp/src/**/I*.js"
     ],
-    "include": "dist/src/**/*.*",
+    "include": "temp/src/**/*.*",
     "check-coverage": true,
     "cache": true,
     "all": true,
@@ -59,27 +60,25 @@
   },
   "homepage": "https://github.com/SenseNet/sn-client-auth-google#readme",
   "dependencies": {
-    "chai": "^4.1.2",
-    "codecov": "^3.0.0",
-    "commitizen": "^2.9.6",
-    "mocha": "^4.0.1",
-    "mocha-typescript": "^1.1.12",
-    "rimraf": "^2.6.2",
-    "sensenet-kfi-cz-conventional-changelog": "^1.0.0",
-    "sn-client-js": "^3.0.0",
-    "tslint": "^5.8.0",
-    "tslint-consistent-codestyle": "^1.9.0",
-    "typedoc": "^0.9.0",
-    "typescript": "^2.6.1"
+    "@sensenet/authentication-jwt": "^1.0.0-development.4"
   },
   "config": {
     "commitizen": {
       "path": "sensenet-kfi-cz-conventional-changelog"
     }
   },
-  "typings": "./dist/src/index.d.ts",
+  "typings": "./dist/index.d.ts",
   "devDependencies": {
-    "@types/chai": "^4.0.4",
-    "jsdom": "^11.3.0"
+    "@types/chai": "4.0.10",
+    "@types/jsdom": "^11.0.4",
+    "@types/mocha": "2.2.44",
+    "chai": "^4.1.2",
+    "codecov": "^3.0.0",
+    "jsdom": "^11.6.2",
+    "mocha": "^4.1.0",
+    "nyc": "^11.0.2",
+    "rimraf": "^2.6.2",
+    "tslint": "^5.9.1",
+    "typescript": "^2.7.1"
   }
 }

@@ -1,62 +1,38 @@
 {
-    "rulesDirectory": ["tslint-consistent-codestyle"],
-    "extends": "tslint:recommended",
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
     "rules": {
-        "array-type": false,
-        "no-trailing-whitespace": {
-            "severity": "warn"
-        },
         "member-ordering": false,
-        "ordered-imports": true,
-        "variable-name": false,
-        "max-line-length": false,
-        "max-classes-per-file": false,
-        "no-unused-expression": {
-            "severity": "warn",
-            "options": [
-                "allow-fast-null-checks"
-            ]
-        },
-        "forin": [
+        "object-literal-sort-keys": [
             false
-        ],
-        "no-bitwise": false,
-        "trailing-comma": false,
-        "object-literal-sort-keys": false,
-        "only-arrow-functions": [
-            true
-        ],
-        "triple-equals": [
+        ],        
+        "max-line-length": false,
+        "no-unused-expression": [
             true,
-            "allow-null-check"
+            "allow-fast-null-checks"
         ],
-        "quotemark": [
+        "variable-name": [
             true,
-            "single",
-            "avoid-escape"
+            "ban-keywords",
+            "check-format"
         ],
-        "class-name": {
-            "severity": "warn"
-        },
-        "naming-convention": {
-            "severity": "warn",
-            "options": [
-                true,
-
-                {"type": "method", "filter": "^toJSON$", "format": null},
-                
-                {"type": "method", "modifiers": "private", "leadingUnderscore": "forbid", "format":"camelCase"},
-                {"type": "method", "modifiers": "protected", "leadingUnderscore": "forbid", "format":"camelCase"},
-                {"type": "method", "modifiers": "public", "leadingUnderscore": "forbid", "format":"PascalCase"},
-                {"type": "method", "modifiers": ["public", "static"], "leadingUnderscore": "forbid", "format":["UPPER_CASE", "PascalCase"]},
-
-                {"type": "property", "modifiers": "private", "leadingUnderscore": "require", "format":"camelCase"},
-                {"type": "property", "modifiers": "protected", "leadingUnderscore": "require", "format":"camelCase"},
-                {"type": "property", "modifiers": "public", "leadingUnderscore": "forbid", "format": "PascalCase"},
-                {"type": "property", "modifiers": ["public", "static"], "leadingUnderscore": "forbid", "format":"UPPER_CASE"},
-
-                {"type": "enumMember", "format": "PascalCase"}
-            ]
-        }
-    }
+        "completed-docs": [
+            true,
+            {
+                "classes": { "visibilities": ["exported"] },
+                "enums": { "visibilities": ["exported"] },
+                "enum-members": { "visibilities": ["exported"] },
+                "functions": { "visibilities": ["exported"] },
+                "interfaces": { "visibilities": ["exported"] },
+                "properties": { "privacies": ["public", "protected"] },
+                "methods": { "privacies": ["public", "protected"], "tags": { "content": {}, "existence": ["inheritdoc"] } },
+                "types": { "visibilities": ["exported"] },
+                "variables": { "visibilities": ["exported"] }
+            }
+        ]
+    },
+    "rulesDirectory": []
 }

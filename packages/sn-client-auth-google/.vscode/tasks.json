@@ -5,11 +5,15 @@
     "tasks": [
         {
             "type": "npm",
-            "label": "build",            
             "script": "build",
-            "problemMatcher": [
-                "$tslint5"
-            ]
+            "identifier": "build",
+            "problemMatcher": []
+        },
+        {
+            "type": "npm",
+            "script": "test",
+            "identifier": "test",
+            "problemMatcher": []
         }
     ]
 }

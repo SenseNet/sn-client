@@ -1,20 +1,16 @@
-import * as Chai from 'chai';
-import { suite, test } from 'mocha-typescript';
-import { MockRepository } from 'sn-client-js/dist/test/Mocks';
-import { AddGoogleAuth, GoogleAuthenticationOptions, GoogleOauthProvider } from '../src';
+import { JwtService } from "@sensenet/authentication-jwt";
+import { Repository } from "@sensenet/client-core";
+import { expect } from "chai";
+import {addGoogleAuth} from "../src/AddGoogleAuth";
+import { GoogleOauthProvider } from "../src/GoogleOauthProvider";
 
-const expect = Chai.expect;
+// tslint:disable:completed-docs
 
-@suite('RepositoryExtensions')
-export class AddGoogleAuthTests {
-
-    @test
-    public 'Can be configured on a Repository'() {
-        const repo = new MockRepository();
-        const config = new GoogleAuthenticationOptions({ClientId: ''});
-        AddGoogleAuth(repo, config);
-        expect(repo).to.be.instanceof(MockRepository);
-        expect(repo.Authentication.GetOauthProvider(GoogleOauthProvider)).to.be.instanceof(GoogleOauthProvider);
-    }
-
-}
+export const repositoryExtensionTests = describe("RepositoryExtensions", () => {
+    it("Can be configured on a Repository", () => {
+        const repo = new Repository();
+        const jwt = new JwtService(repo);
+        const googleOauthProvider = addGoogleAuth(jwt, {clientId: ""});
+        expect(googleOauthProvider).to.be.instanceof(GoogleOauthProvider);
+    });
+});
