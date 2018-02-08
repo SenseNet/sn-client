@@ -27,6 +27,6 @@ export class MockDisposable implements IDisposable {
     /**
      * Defines the callback that will be called on dispose
      */
-    public disposeCallback: () => void;
+    public disposeCallback!: () => void;
 
 }

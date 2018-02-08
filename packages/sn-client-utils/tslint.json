@@ -6,6 +6,7 @@
     "jsRules": {},
     "rules": {
         "member-ordering": false,
+        "max-line-length": false,
         "object-literal-sort-keys": [
             false
         ],

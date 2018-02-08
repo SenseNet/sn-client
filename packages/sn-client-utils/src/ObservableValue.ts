@@ -7,8 +7,25 @@ import { ValueObserver } from "./ValueObserver";
 export type ValueChangeCallback<T> = (next: T) => void;
 
 /**
- * Defines an ObservableValue value object. You can set and get its value with it's
- * setValue() and getValue() methods and you can subscribe to value changes with subscribe()
+ * Defines an ObservableValue value object.
+ *
+ * You can set and get its value with it's *setValue()* and *getValue()* methods and you can subscribe to value changes with *subscribe()*
+ *
+ * Usage example:
+ * ```ts
+ * const observableValue = new ObservableValue<number>(0);
+ * const observer = observableValue.subscribe((newValue) => {
+ *    console.log("Value changed:", newValue);
+ * });
+ * // To update the value
+ * observableValue.setValue(Math.random());
+ * // if you want to dispose a single observer
+ * observer.dispose();
+ * // if you want to dispose the whole observableValue with all of its observers:
+ * observableValue.dispose();
+ * ```
+ *
+ * @param T Generic argument to indicate the value type
  */
 export class ObservableValue<T> implements IDisposable {
     /**
@@ -18,7 +35,7 @@ export class ObservableValue<T> implements IDisposable {
         this.observers.clear();
     }
     private observers: Set<ValueObserver<T>> = new Set();
-    private currentValue: T;
+    private currentValue!: T;
 
     /**
      * Subscribes to a value changes

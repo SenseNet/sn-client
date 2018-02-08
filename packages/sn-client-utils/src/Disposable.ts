@@ -6,7 +6,7 @@
  *
  * ```ts
  * class Resource implements IDisposable{
- *       Dispose(){
+ *       dispose(){
  *           // cleanup logics
  *      }
  * }
@@ -39,9 +39,9 @@ export interface IDisposable {
  * @param {IDisposable} resource The resource that is used in the callback and will be disposed afterwards
  * @param {function} callback The callback that will be executed synchrounously before the resource will be disposed
  */
-export const using = <T extends IDisposable>(resource: T, callback: (resource: T) => void) => {
+export const using = <T extends IDisposable, TReturns>(resource: T, callback: (resource: T) => TReturns) => {
     try {
-        callback(resource);
+        return callback(resource);
     } finally {
         resource.dispose();
     }
@@ -52,9 +52,10 @@ export const using = <T extends IDisposable>(resource: T, callback: (resource: T
  * @param {IDisposable} resource The resource that is used in the callback and will be disposed afterwards
  * @param {function} callback The callback that will be executed asynchrounously before the resource will be disposed
  */
-export const usingAsync = async <T extends IDisposable, K>(resource: T, callback: (resource: T) => Promise<K>) => {
+export const usingAsync = async <T extends IDisposable, TReturns>
+    (resource: T, callback: (resource: T) => Promise<TReturns>) => {
     try {
-        await callback(resource);
+        return await callback(resource);
     } finally {
         resource.dispose();
     }

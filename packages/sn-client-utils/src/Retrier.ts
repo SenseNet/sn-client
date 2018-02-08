@@ -1,32 +1,24 @@
-
-/**
- * @module Retrier
- * @preferred
- *
- * @description Module for Retrier.
- *
- */ /** */
-
 import { RetrierOptions } from "./RetrierOptions";
 
 /**
  * Utility class for retrying operations.
+ *
  * Usage example:
  * ```
- *          const methodToRetry: () => Promise<boolean> = async () => {
- *              let hasSucceeded = false;
- *              // ...
- *              // custom logic
- *              // ...
- *              return hasSucceeded;
- *          }
- *          const retrierSuccess = await Retrier.Create(methodToRetry)
- *              .Setup({
- *                  retries: 3,
- *                  retryIntervalMs: 1,
- *                  timeoutMs: 1000
- *              })
- *              .Run();
+ * const methodToRetry: () => Promise<boolean> = async () => {
+ *     let hasSucceeded = false;
+ *     // ...
+ *     // custom logic
+ *     // ...
+ *     return hasSucceeded;
+ * }
+ * const retrierSuccess = await Retrier.create(methodToRetry)
+ *     .setup({
+ *         retries: 3,
+ *         retryIntervalMs: 1,
+ *         timeoutMs: 1000
+ *     })
+ *     .run();
  * ```
  */
 export class Retrier {
@@ -37,7 +29,7 @@ export class Retrier {
      * Factory method for creating a Retrier
      * @param {()=>Promise<boolean>} callback The method that will be invoked on each try
      */
-    public static Create(callback: () => Promise<boolean>) {
+    public static create(callback: () => Promise<boolean>) {
         return new Retrier(callback, new RetrierOptions());
     }
 
@@ -58,7 +50,7 @@ export class Retrier {
      * @throws Error if the Retrier is running.
      * @returns the Retrier instance
      */
-    public Setup(options: Partial<RetrierOptions>) {
+    public setup(options: Partial<RetrierOptions>) {
         if (this.isRunning) {
             throw Error("Retrier already started!");
         }
@@ -71,7 +63,7 @@ export class Retrier {
      * @throws Error if the Retrier is already started.
      * @returns {Promise<boolean>} A boolean value that indicates if the process has been succeeded.
      */
-    public async Run(): Promise<boolean> {
+    public async run(): Promise<boolean> {
 
         if (this.isRunning) {
             throw Error("Retrier already started!");

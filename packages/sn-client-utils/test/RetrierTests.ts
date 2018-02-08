@@ -1,6 +1,5 @@
-import * as Chai from "chai";
+import { expect } from "chai";
 import { Retrier } from "../src";
-const expect = Chai.expect;
 
 /**
  * Retrier tests
@@ -9,10 +8,10 @@ export const retrierTests = describe("Retrier", () => {
     describe("Counter", () => {
         it("Should be able to count to 3", async () => {
             let count = 0;
-            await Retrier.Create(async () => {
+            await Retrier.create(async () => {
                 count = count + 1;
                 return count === 3;
-            }).Run();
+            }).run();
             expect(count).to.be.eq(3);
         });
     });
@@ -20,38 +19,38 @@ export const retrierTests = describe("Retrier", () => {
     describe("events", () => {
         it("should trigger onSuccess on success", async () => {
             let triggered = false;
-            await Retrier.Create(async () => true)
-                .Setup({
+            await Retrier.create(async () => true)
+                .setup({
                     onSuccess: () => {
                         triggered = true;
                     },
-                }).Run();
+                }).run();
 
             expect(triggered).to.be.eq(true);
         });
 
         it("should trigger onTimeout on timeout", async () => {
             let triggered = false;
-            await Retrier.Create(async () => false)
-                .Setup({
+            await Retrier.create(async () => false)
+                .setup({
                     onFail: () => {
                         triggered = true;
                     },
                     timeoutMs: 1,
-                }).Run();
+                }).run();
 
             expect(triggered).to.be.eq(true);
         });
 
         it("should trigger onTry on each try", async () => {
             let triggered = false;
-            await Retrier.Create(async () => true)
-                .Setup({
+            await Retrier.create(async () => true)
+                .setup({
                     onTry: () => {
                         triggered = true;
                     },
                 })
-                .Run();
+                .run();
             expect(triggered).to.be.eq(true);
         });
     });
@@ -64,22 +63,22 @@ export const retrierTests = describe("Retrier", () => {
             // ...
             return hasSucceeded;
         };
-        const retrierSuccess = await Retrier.Create(funcToRetry)
-            .Setup({
+        const retrierSuccess = await Retrier.create(funcToRetry)
+            .setup({
                 Retries: 3,
                 RetryIntervalMs: 1,
                 timeoutMs: 1000,
             })
-            .Run();
+            .run();
 
         expect(retrierSuccess).to.be.eq(false);
     });
 
     it("should throw error when started twice", async () => {
-        const retrier = Retrier.Create(async () => false);
-        const runPromise = retrier.Run();
+        const retrier = Retrier.create(async () => false);
+        const runPromise = retrier.run();
         try {
-            await retrier.Run();
+            await retrier.run();
             throw Error("Should have been failed");
         } catch (error) {
             // ignore
@@ -87,10 +86,10 @@ export const retrierTests = describe("Retrier", () => {
     });
 
     it("should throw an error when trying to set up after started", () => {
-        const retrier = Retrier.Create(async () => false);
-        retrier.Run();
+        const retrier = Retrier.create(async () => false);
+        retrier.run();
         expect(() => {
-            retrier.Setup({
+            retrier.setup({
                 Retries: 2,
             });
         }).to.throw();

@@ -12,6 +12,20 @@ export const disposableTests = describe("Disposable", () => {
         });
     });
 
+    it("Should return a value from a callback", () => {
+        const returned = using(new MockDisposable(), () => {
+            return 1;
+        });
+        expect(returned).to.be.eq(1);
+    });
+
+    it("Should return a value from an async callback", async () => {
+        const returned = await usingAsync(new MockDisposable(), async () => {
+            return 2;
+        });
+        expect(returned).to.be.eq(2);
+    });
+
     describe("isDisposed", () => {
         it("should return a correct value before and after disposition", () => {
             const d = new MockDisposable();
@@ -57,6 +71,7 @@ export const disposableTests = describe("Disposable", () => {
                 /** ignore */
             });
         });
+
     });
 
 });

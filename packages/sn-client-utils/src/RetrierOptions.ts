@@ -22,7 +22,7 @@ export class RetrierOptions {
      * The default interval between retries
      */
     public static readonly RETRY_INTERVAL_MS_DEFAULT = 10;
-    private retryIntervalMs: number;
+    private retryIntervalMs?: number;
     /**
      * The interval between tries in milliseconds
      */
@@ -37,7 +37,7 @@ export class RetrierOptions {
      * The default timeout in millisecs
      */
     public static readonly TIMEOUT_MS_DEFAULT = 1000;
-    private timeoutMsValue: number;
+    private timeoutMsValue?: number;
 
     /**
      * The Timeout interval in milliseconds

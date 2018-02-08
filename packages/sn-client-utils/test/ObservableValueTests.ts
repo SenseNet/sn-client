@@ -30,7 +30,6 @@ export const observableTests = describe("Observable", () => {
                 expect(v.getValue()).to.be.eq(2);
                 done();
             }, false);
-
             v.setValue(1);
             v.setValue(1);
             v.setValue(2);
