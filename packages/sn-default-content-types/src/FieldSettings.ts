@@ -1,8 +1,6 @@
 /**
- * @module FieldSettings
- * @preferred
  *
- * @description Module for FieldSettings.
+ * Module for FieldSettings.
  *
  * FieldSetting object is the implementation of the configuration element in a Sense/Net Content Type Definition.
  * The FieldSetting of a Field contains properties that define the behavior of the Field - for example a Field can be configured as read only or compulsory to fill.
@@ -49,8 +47,8 @@ export function isFieldSettingOfType<T extends FieldSetting>(setting: FieldSetti
 }
 
 export class FieldSetting {
-    public Name: string;
-    public Type: string;
+    public Name!: string;
+    public Type!: string;
     public DisplayName?: string;
     public Description?: string;
     public Icon?: string;

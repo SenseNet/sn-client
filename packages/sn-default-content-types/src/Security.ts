@@ -1,9 +1,3 @@
-/**
- * @module Security
- * @preferred
- * @description    Module for security related stuff
- */ /** */
-
 // tslint:disable:naming-convention
 
 /**
@@ -30,7 +24,7 @@ export enum PermissionLevel {
  * Type to provide an Object with the permission information that has to be set.
  */
 export class PermissionRequestBody {
-    public identity: string;
+    public identity!: string;
     public localOnly?: boolean;
     public RestrictedPreview?: PermissionValues;
     public PreviewWithoutWatermakr?: PermissionValues;
@@ -73,4 +67,6 @@ export enum PermissionValues { undefined = 0, allow = 1, deny = 2 }
 /**
  * Provides metadata about permission inheritance.
  */
-export enum Inheritance { "break", "unbreak" }
+export enum Inheritance {
+    Break = "break",
+    Unbreak = "unbreak" }

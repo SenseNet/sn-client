@@ -1,11 +1,7 @@
 /**
+ * The Content Repository contains many different types of *Content*. *Content* vary in structure and even in function.
  *
- * @module ContentTypes
- * @preferred
- *
- *
- * @description The Content Repository contains many different types of ```Content```. ```Content``` vary in structure and even in function. Different types of content contain different fields,
- * are displayed with different views, and may also implement different business logic. The fields, views and business logic of a content is defined by its type - the Content Type.
+ * Different types of content contain different fields, are displayed with different views, and may also implement different business logic. The fields, views and business logic of a content is defined by its type - the Content Type.
  *
  * Content Types are defined in a type hierarchy: a Content Type may be inherited from another Content Type - thus automatically inheriting its fields.
  *
@@ -24,6 +20,7 @@ import {
     MaritalStatus, MemoType, Priority, QueryType,
     SavingState, Status, VersioningMode
 } from "./Enums";
+import { IActionModel } from "./index";
 
 export type ContentReferenceField<T> = DeferredObject | T | number;
 export type ContentListReferenceField<T> = DeferredObject | T[] | number[];
@@ -35,14 +32,14 @@ export type BinaryField = MediaResourceObject;
  * @class ContentType
  */
 export class ContentType {
-    public Id: number;
+    public Id!: number;
     public ParentId?: number;
     public VersionId?: number;
-    public Name: string;
+    public Name!: string;
     public CreatedById?: number;
     public ModifiedById?: number;
     public Version?: string;
-    public Path: string;
+    public Path!: string;
     public Depth?: number;
     public IsSystemContent?: boolean;
     public HandlerName?: string;
@@ -56,7 +53,7 @@ export class ContentType {
     public ModifiedBy?: ContentReferenceField<GenericContent>;
     public ModificationDate?: string;
     public EnableLifespan?: boolean;
-
+    public Actions?: ContentListReferenceField<IActionModel>;
 }
 
 /**
@@ -64,17 +61,17 @@ export class ContentType {
  * @class GenericContent
  */
 export class GenericContent {
-    public Id: number;
+    public Id!: number;
     public ParentId?: number;
     public OwnerId?: number;
     public Owner?: ContentReferenceField<GenericContent>;
     public VersionId?: number;
     public Icon?: string;
-    public Name: string;
+    public Name!: string;
     public CreatedById?: number;
     public ModifiedById?: number;
     public Version?: string;
-    public Path: string;
+    public Path!: string;
     public Depth?: number;
     public IsSystemContent?: boolean;
     public IsFolder?: boolean;
@@ -115,8 +112,8 @@ export class GenericContent {
     public RejectReason?: string;
     public Workspace?: ContentReferenceField<Workspace>;
     public BrowseUrl?: string;
-    public Type: string;
-
+    public Actions?: ContentListReferenceField<IActionModel>;
+    public Type!: string;
 }
 
 /**
@@ -135,7 +132,7 @@ export class ContentLink extends GenericContent {
  * @extends {@link GenericContent}
  */
 export class File extends GenericContent {
-    public Binary: BinaryField;
+    public Binary!: BinaryField;
     public Size?: number;
     public FullSize?: number;
     public PageCount?: number;

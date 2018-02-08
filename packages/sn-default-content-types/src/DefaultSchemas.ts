@@ -1,7 +1,5 @@
 /**
- * @module Schemas
- * @preferred
- * @description Module for ContentType schemas.
+ * Module for ContentType schemas.
  *
  * A Content Type Definition in Sense/Net is an xml-format configuration file for defining Content Types. The xml configuration (CTD) holds information about the types name and description
  * properties that control how content of this type look and behave (icon, preview generation, indexing), set of fields, etc. This information about the type and its Fields helps us for example
@@ -24,16 +22,16 @@
   * It represents an object that holds the basic information about the Content Type (name, icon, ect.) and an array of its ```FieldSettings``` and their full configuration.
   */
  export class Schema {
-     public ContentTypeName: string;
+     public ContentTypeName!: string;
      public ParentTypeName?: string;
 
-     public Icon: string;
-     public DisplayName: string;
-     public Description: string;
-     public AllowIndexing: boolean;
-     public AllowIncrementalNaming: boolean;
-     public AllowedChildTypes: string[];
-     public FieldSettings: FieldSettings.FieldSetting[];
+     public Icon!: string;
+     public DisplayName!: string;
+     public Description!: string;
+     public AllowIndexing!: boolean;
+     public AllowIncrementalNaming!: boolean;
+     public AllowedChildTypes!: string[];
+     public FieldSettings!: FieldSettings.FieldSetting[];
  }
 
  export const SchemaStore: Schema[] = [

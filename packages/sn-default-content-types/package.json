@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/default-content-types",
-  "version": "1.0.0-development.5",
+  "version": "1.0.0",
   "description": "Default content type definitions for sensenet ECM",
   "main": "dist/index.js",
   "files": [
@@ -12,10 +12,11 @@
     "clean": "rimraf dist",
     "precommit": "npm run build",
     "commit": "git-cz",
-    "test": "nyc mocha -p tsconfig.json dist/test/index.js",
+    "test": "npm run build",
     "prebuild": "npm run lint && npm run clean",
     "build": "tsc",
-    "typedoc": "typedoc --mode modules --tsconfig ./tsconfig.typedoc.json --out documentation --excludePrivate --theme default --readme readme.md ./src",
+    "typedoc": "typedoc --mode modules --out documentation src --tsconfig tsconfig.json --theme c:/Users/%USERNAME%/AppData/Roaming/npm/node_modules/@sensenet/typedoc-theme/sn-theme",
+    "prepublishOnly": "npm run build",
     "publish:development": "npm run build && npm t && npm run typedoc && npm publish --tag development"
   },
   "repository": {
@@ -40,10 +41,10 @@
   "homepage": "https://sensenet.com",
   "dependencies": {},
   "devDependencies": {
-    "rimraf": "^2.6.1",
-    "tslint": "^5.8.0",
-    "tslint-consistent-codestyle": "^1.11.0",
-    "typescript": "^2.6.1"
+    "rimraf": "^2.6.2",
+    "tslint": "^5.9.1",
+    "tslint-consistent-codestyle": "^1.11.1",
+    "typescript": "^2.7.1"
   },
   "config": {
     "commitizen": {
