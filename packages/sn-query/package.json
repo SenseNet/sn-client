@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/query",
-  "version": "1.0.0-development.1",
+  "version": "1.0.0",
   "description": "Client side content query builder package for sensenet ECM",
   "main": "dist/index.js",
   "files": [
