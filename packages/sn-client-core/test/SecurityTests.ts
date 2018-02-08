@@ -19,7 +19,7 @@ export const securityTests = describe("Security", () => {
     });
 
     it("Should execute setPermissionInheritance", () => {
-        expect(security.setPermissionInheritance(1, Inheritance.break)).to.be.instanceof(Promise);
+        expect(security.setPermissionInheritance(1, Inheritance.Break)).to.be.instanceof(Promise);
     });
 
     it("Should execute setPermissions", () => {
