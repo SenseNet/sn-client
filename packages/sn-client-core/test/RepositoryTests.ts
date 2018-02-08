@@ -1,5 +1,5 @@
 import { using } from "@sensenet/client-utils";
-import { IActionModel } from "@sensenet/default-content-types";
+import { IActionModel, User } from "@sensenet/default-content-types";
 import { expect } from "chai";
 import { Repository } from "../src";
 import { IContent } from "../src/Models/IContent";
@@ -12,7 +12,7 @@ declare const global: any;
 global.window = {};
 export const repositoryTests = describe("Repository", () => {
 
-    let repo: Repository;
+    let repository: Repository;
     const mockResponse: Response = {
         ok: true,
         json: async () => ({}),
@@ -23,15 +23,15 @@ export const repositoryTests = describe("Repository", () => {
     };
 
     beforeEach(() => {
-        repo = new Repository(undefined, fetchMock);
+        repository = new Repository(undefined, fetchMock);
     });
 
     afterEach(() => {
-        repo.dispose();
+        repository.dispose();
     });
 
     it("Should be constructed", () => {
-        expect(repo).to.be.instanceof(Repository);
+        expect(repository).to.be.instanceof(Repository);
     });
 
     it("Should be constructed with a built-in fetch method", (done: MochaDone) => {
@@ -49,15 +49,15 @@ export const repositoryTests = describe("Repository", () => {
 
     describe("fetch", () => {
         it("Should await readyState by default", (done: MochaDone) => {
-            repo.awaitReadyState = async () => { done(); };
-            repo.fetch("");
+            repository.awaitReadyState = async () => { done(); };
+            repository.fetch("");
         });
 
         it("Should be able to skip awaiting readyState", (done: MochaDone) => {
-            repo.awaitReadyState = async () => { done("Shouldn't be called"); };
+            repository.awaitReadyState = async () => { done("Shouldn't be called"); };
             // tslint:disable-next-line:no-string-literal
-            repo["fetchMethod"] = (async () => { done(); }) as any;
-            repo.fetch("", undefined, false);
+            repository["fetchMethod"] = (async () => { done(); }) as any;
+            repository.fetch("", undefined, false);
         });
     });
 
@@ -71,7 +71,7 @@ export const repositoryTests = describe("Repository", () => {
                         d: ConstantContent.PORTAL_ROOT,
                     } as IODataResponse<IContent>;
                 };
-                const resp = await repo.load({
+                const resp = await repository.load({
                     idOrPath: 1,
                 });
                 expect(resp.d).to.be.deep.eq(ConstantContent.PORTAL_ROOT);
@@ -79,7 +79,7 @@ export const repositoryTests = describe("Repository", () => {
 
             it("should throw on unsuccessfull request", (done: MochaDone) => {
                 (mockResponse as any).ok = false;
-                repo.load({
+                repository.load({
                     idOrPath: 1,
                 }).then(() => {
                     done("Should throw");
@@ -104,7 +104,7 @@ export const repositoryTests = describe("Repository", () => {
 
                     } as IODataCollectionResponse<IContent>;
                 };
-                const resp = await repo.loadCollection({
+                const resp = await repository.loadCollection({
                     path: "Root/Sites/Default_Site",
                 });
                 expect(resp.d.results[0]).to.be.deep.eq(ConstantContent.PORTAL_ROOT);
@@ -112,7 +112,7 @@ export const repositoryTests = describe("Repository", () => {
 
             it("should throw on unsuccessfull request", (done: MochaDone) => {
                 (mockResponse as any).ok = false;
-                repo.loadCollection({
+                repository.loadCollection({
                     path: "Root/Sites/Default_Site",
                 }).then(() => {
                     done("Should throw");
@@ -130,7 +130,7 @@ export const repositoryTests = describe("Repository", () => {
                         d: ConstantContent.PORTAL_ROOT,
                     } as IODataResponse<IContent>;
                 };
-                const response = await repo.post({
+                const response = await repository.post({
                     parentPath: "Root/Sites/Default_Site",
                     content: ConstantContent.PORTAL_ROOT,
                     contentType: "Task",
@@ -141,7 +141,7 @@ export const repositoryTests = describe("Repository", () => {
 
             it("should throw on unsuccessfull request", (done: MochaDone) => {
                 (mockResponse as any).ok = false;
-                repo.post({
+                repository.post({
                     parentPath: "Root/Sites/Default_Site",
                     content: ConstantContent.PORTAL_ROOT,
                     contentType: "Task",
@@ -161,7 +161,7 @@ export const repositoryTests = describe("Repository", () => {
                         d: ConstantContent.PORTAL_ROOT,
                     } as IODataResponse<IContent>;
                 };
-                const response = await repo.patch({
+                const response = await repository.patch({
                     idOrPath: "Root/Sites/Default_Site",
                     content: ConstantContent.PORTAL_ROOT,
                 });
@@ -171,7 +171,7 @@ export const repositoryTests = describe("Repository", () => {
 
             it("should throw on unsuccessfull request", (done: MochaDone) => {
                 (mockResponse as any).ok = false;
-                repo.patch({
+                repository.patch({
                     idOrPath: "Root/Sites/Default_Site",
                     content: ConstantContent.PORTAL_ROOT,
                 }).then(() => {
@@ -190,7 +190,7 @@ export const repositoryTests = describe("Repository", () => {
                         d: ConstantContent.PORTAL_ROOT,
                     } as IODataResponse<IContent>;
                 };
-                const response = await repo.put({
+                const response = await repository.put({
                     idOrPath: "Root/Sites/Default_Site",
                     content: ConstantContent.PORTAL_ROOT,
                 });
@@ -200,7 +200,7 @@ export const repositoryTests = describe("Repository", () => {
 
             it("should throw on unsuccessfull request", (done: MochaDone) => {
                 (mockResponse as any).ok = false;
-                repo.put({
+                repository.put({
                     idOrPath: "Root/Sites/Default_Site",
                     content: ConstantContent.PORTAL_ROOT,
                 }).then(() => {
@@ -224,7 +224,7 @@ export const repositoryTests = describe("Repository", () => {
                         },
                     } as IODataCollectionResponse<IContent>;
                 };
-                const response = await repo.delete({
+                const response = await repository.delete({
                     idOrPath: 5,
                     permanent: true,
                 });
@@ -244,7 +244,7 @@ export const repositoryTests = describe("Repository", () => {
                         },
                     } as IODataCollectionResponse<IContent>;
                 };
-                const response = await repo.delete({
+                const response = await repository.delete({
                     idOrPath: [5, "Root/Examples/ExampleDoc1"],
                     permanent: true,
                 });
@@ -267,7 +267,7 @@ export const repositoryTests = describe("Repository", () => {
                         },
                     } as IODataCollectionResponse<IContent>;
                 };
-                const response = await repo.move({
+                const response = await repository.move({
                     idOrPath: 5,
                     targetPath: "Root/Example/Folder",
                 });
@@ -289,7 +289,7 @@ export const repositoryTests = describe("Repository", () => {
                         },
                     } as IODataCollectionResponse<IContent>;
                 };
-                const response = await repo.copy({
+                const response = await repository.copy({
                     idOrPath: 5,
                     targetPath: "Root/Example/Folder",
                 });
@@ -308,7 +308,7 @@ export const repositoryTests = describe("Repository", () => {
                         ],
                     } as {d: IActionModel[]};
                 };
-                const response = await repo.getActions({
+                const response = await repository.getActions({
                     idOrPath: "Root/Sites/Default_Site",
                 });
                 expect(response.d).to.be.deep.eq([{Name: "MockAction"}]);
@@ -323,7 +323,7 @@ export const repositoryTests = describe("Repository", () => {
                         ],
                     } as {d: IActionModel[]};
                 };
-                const response = await repo.getActions({
+                const response = await repository.getActions({
                     idOrPath: "Root/Sites/Default_Site",
                     scenario: "example",
                 });
@@ -333,7 +333,7 @@ export const repositoryTests = describe("Repository", () => {
             it("should throw on unsuccessfull request", (done: MochaDone) => {
                 (mockResponse as any).ok = false;
                 (mockResponse as any).statusText = ":(";
-                repo.getActions({
+                repository.getActions({
                     idOrPath: "Root/Sites/Default_Site",
                 }).then(() => {
                     done("Should throw");
@@ -352,7 +352,7 @@ export const repositoryTests = describe("Repository", () => {
                         d: ConstantContent.PORTAL_ROOT,
                     } as IODataResponse<IContent>;
                 };
-                const response = await repo.executeAction<{}, IODataResponse<IContent>>({
+                const response = await repository.executeAction<{}, IODataResponse<IContent>>({
                     name: "MockAction",
                     idOrPath: "Root/Sites/Default_Site",
                     method: "GET",
@@ -363,7 +363,7 @@ export const repositoryTests = describe("Repository", () => {
 
             it("should throw on unsuccessfull request", (done: MochaDone) => {
                 (mockResponse as any).ok = false;
-                repo.executeAction<{}, IODataResponse<IContent>>({
+                repository.executeAction<{}, IODataResponse<IContent>>({
                     name: "MockAction",
                     idOrPath: "Root/Sites/Default_Site",
                     method: "GET",
@@ -375,6 +375,111 @@ export const repositoryTests = describe("Repository", () => {
                 });
             });
         });
+    });
+
+    // tslint:disable
+    /**
+     * If there is an API change and these cases breaks, please update them in the **readme.md** as well.
+     */
+    describe("Readme examples", () => {
+        
+        beforeEach(()=>{
+            (mockResponse as any).ok = true;
+        })
+
+        it("Creating a new Repository", () => {
+            repository = new Repository({
+                repositoryUrl: "https://my-sensenet-site.com",
+                oDataToken: "OData.svc",
+                sessionLifetime: "expiration",
+                defaultSelect: ["DisplayName", "Icon"],
+                requiredSelect: ["Id", "Type", "Path", "Name"],
+                defaultMetadata: "no",
+                defaultInlineCount: "allpages",
+                defaultExpand: [],
+                defaultTop: 1000,
+            });
+        });
+
+        it("Load", async () => {
+            const user = await repository.load<User>({
+                idOrPath: "/Root/IMS/BuiltIn/Portal/Visitor", // you can also load by content Id
+                oDataOptions: {
+                    expand: ["CreatedBy"],
+                    select: "all",
+                },
+            });
+            console.log(user);    // {d: { /*(...retrieved user data)*/ }}
+        });
+
+        it("Load collection", async () => {
+            const portalUsers = await repository.loadCollection<User>({
+                path: "/Root/IMS/BuiltIn/Portal",
+                oDataOptions: {
+                    query: "TypeIs:User",
+                    orderby: ["LoginName"],
+                },
+            });
+            console.log("Count: ", portalUsers.d.__count);
+            console.log("Users: ", portalUsers.d.results);
+        });
+
+        it("POST/PATCH/PUT", async () => {
+            const createdUser = await repository.post<User>({
+                parentPath: "Root/Parent",
+                contentType: "User",
+                content: {
+                    Name: "NewContent",
+                    /** ...additional content data */
+                },
+            });
+            console.log(createdUser);    // {d: { /*(...created user data)*/ }}
+
+            // you can use PUT in the similar way
+            const lockedUser = await repository.patch<User>({
+                idOrPath: "Root/Path/To/User",
+                content: {
+                    Locked: true,
+                },
+            });
+            console.log(lockedUser);    // {d: { /*(...locked user data)*/ }}
+
+        });
+
+        it("Batch operations", async () => {
+            // you can use move in the similar way
+            const copyResult = await repository.copy({
+                idOrPath: [45, "Root/Path/To/Content"],
+                targetPath: "Root/Target/Path",
+            });
+            console.log("Success: ", copyResult.d.results);
+            console.log("Errors: ", copyResult.d.errors);
+
+            const deleteResult = await repository.delete({
+                idOrPath: "Root/Path/To/Content/To/Delete",
+                permanent: true,
+            });
+            console.log("Success: ", deleteResult.d.results);
+            console.log("Errors: ", deleteResult.d.errors);            
+        });
+
+        it("Custom action", async () => {
+            interface ICustomActionBodyType { Name: string; Value: string; }
+            interface ICustomActionReturnType { Result: any; }
+
+            const actionResult = await repository.executeAction<ICustomActionBodyType, ICustomActionReturnType>({
+                idOrPath: "Path/to/content",
+                method: "POST",
+                name: "MyOdataCustomAction",
+                body: {
+                    Name: "foo",
+                    Value: "Bar",
+                },
+            });
+            console.log(actionResult.Result);
+        });
+
+        // tslint:enable
     });
 
 });
