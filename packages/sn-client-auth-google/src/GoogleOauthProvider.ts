@@ -114,16 +114,16 @@ export class GoogleOauthProvider implements IOauthProvider {
 
             this.iframe.onload = async (ev) => {
                 let location: Location | undefined;
-                await Retrier.Create(async () => {
+                await Retrier.create(async () => {
                     try {
                         location = (ev.srcElement as HTMLIFrameElement).contentDocument.location;
                         return true;
                     } catch (error) {
                         return false;
                     }
-                }).Setup({
+                }).setup({
                     timeoutMs: 500,
-                }).Run();
+                }).run();
 
                 const iframeToken = location && this.getGoogleTokenFromUri(location);
                 iframeToken ? resolve(iframeToken) : reject(Error("Token not found"));
