@@ -48,12 +48,12 @@ export class ControlMapper<TControlBaseType, TClientControlSettings> {
 
     /**
      * Maps a specified Control to a Content type
-     * @param content The Content to be mapped
+     * @param contentTypeName The Content type to be mapped
      * @param control The Control for the content
      * @returns {ControlMapper}
      */
-    public mapContentTypeToControl(contentType: { new(...args: any[]): {} }, control: { new(...args: any[]): TControlBaseType }) {
-        this.contentTypeControlMaps.set(contentType.name, control);
+    public mapContentTypeToControl(contentTypeName: string, control: { new(...args: any[]): TControlBaseType }) {
+        this.contentTypeControlMaps.set(contentTypeName, control);
         return this;
     }
 
@@ -62,8 +62,8 @@ export class ControlMapper<TControlBaseType, TClientControlSettings> {
      * @param content The content to get the control for.
      * @returns {TControlBaseType} The mapped control, Default if nothing is mapped.
      */
-    public getControlForContentType<TContentType>(contentType: { new(...args: any[]): TContentType }): { new(...args: any[]): TControlBaseType } {
-        const control = this.contentTypeControlMaps.get(contentType.name) || this.defaultControlType;
+    public getControlForContentType(contentTypeName: string): { new(...args: any[]): TControlBaseType } {
+        const control = this.contentTypeControlMaps.get(contentTypeName) || this.defaultControlType;
         return control as ({ new(...args: any[]): TControlBaseType });
     }
 
@@ -121,16 +121,16 @@ export class ControlMapper<TControlBaseType, TClientControlSettings> {
      * @param actionName The name of the Action (can be 'new' / 'edit' / 'view')
      * @returns The assigned Control constructor or the default Field control
      */
-    public getControlForContentField<TContentType, TField extends keyof TContentType>(
-        contentType: { new(...args: any[]): TContentType },
-        fieldName: TField,
+    public getControlForContentField(
+        contentTypeName: string,
+        fieldName: string,
         actionName: ActionName,
     ): { new(...args: any[]): TControlBaseType } {
 
-        const fieldSetting = this.getTypeSchema(contentType.name, actionName).FieldSettings.filter((s) => s.Name === fieldName)[0];
+        const fieldSetting = this.getTypeSchema(contentTypeName, actionName).FieldSettings.filter((s) => s.Name === fieldName)[0];
 
-        if (this.contentTypeBoundfieldSettings.has(`${contentType.name}-${fieldName}`)) {
-            return (this.contentTypeBoundfieldSettings.get(`${contentType.name}-${fieldName}`) as any)(fieldSetting);
+        if (this.contentTypeBoundfieldSettings.has(`${contentTypeName}-${fieldName}`)) {
+            return (this.contentTypeBoundfieldSettings.get(`${contentTypeName}-${fieldName}`) as any)(fieldSetting);
         } else {
             return this.getControlForFieldSetting(fieldSetting);
         }
@@ -165,15 +165,15 @@ export class ControlMapper<TControlBaseType, TClientControlSettings> {
      * @param actionName The name of the Action (can be 'new' / 'edit' / 'view')
      * @returns the fully created ControlSchema
      */
-    public getFullSchemaForContentType<TContentType, K extends keyof TContentType>(
-        contentType: { new(...args: any[]): TContentType },
+    public getFullSchemaForContentType(
+        contentTypeName: string,
         actionName: ActionName):
         ControlSchema<TControlBaseType, TClientControlSettings> {
-        const schema = this.getTypeSchema(contentType.name, actionName);
+        const schema = this.getTypeSchema(contentTypeName, actionName);
         const mappings = schema.FieldSettings.map((f) => {
             const clientSetting: TClientControlSettings = this.createClientSetting(f);
             const control: { new(...args: any[]): TControlBaseType } =
-                this.getControlForContentField<TContentType, K>(contentType, f.Name as K, actionName);
+                this.getControlForContentField(contentTypeName, f.Name, actionName);
             return {
                 fieldSettings: f,
                 clientSettings: clientSetting,
@@ -182,18 +182,8 @@ export class ControlMapper<TControlBaseType, TClientControlSettings> {
         });
         return {
             schema,
-            contentTypeControl: this.getControlForContentType(contentType),
+            contentTypeControl: this.getControlForContentType(contentTypeName),
             fieldMappings: mappings,
         };
-    }
-
-    /**
-     * Gets the full ControlSchema object for a specific Content
-     * @param contentType The type of the Content (e.g. ContentTypes.Task)
-     * @param actionName The name of the Action (can be 'new' / 'edit' / 'view')
-     * @returns the fully created ControlSchema
-     */
-    public getFullSchemaForContent<TContentType>(content: TContentType, actionName: ActionName) {
-        return this.getFullSchemaForContentType(content.constructor as { new(...args: any[]): TContentType }, actionName);
     }
 }

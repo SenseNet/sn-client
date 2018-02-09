@@ -46,13 +46,13 @@ export const controlMapperTests = describe("ControlMapper", () => {
     });
 
     it("Should return correct Default Control for ContentTypes", () => {
-        const controlType = mapper.getControlForContentType(Task);
+        const controlType = mapper.getControlForContentType("Task");
         expect(controlType).to.be.eq(ExampleDefaultControl);
     });
 
     it("Should return correct explicit defined Control for ContentTypes", () => {
-        mapper.mapContentTypeToControl(Task, ExampleModifiedControl);
-        const controlType = mapper.getControlForContentType(Task);
+        mapper.mapContentTypeToControl("Task", ExampleModifiedControl);
+        const controlType = mapper.getControlForContentType("Task");
         expect(controlType).to.be.eq(ExampleModifiedControl);
     });
 
@@ -80,7 +80,7 @@ export const controlMapperTests = describe("ControlMapper", () => {
     });
 
     it("Should return a correct default control for a specified Content Field", () => {
-        const control = mapper.getControlForContentField(Task, "DisplayName", "new");
+        const control = mapper.getControlForContentField("Task", "DisplayName", "new");
         expect(control).to.be.eq(ExampleDefaultFieldControl);
     });
 
@@ -88,13 +88,13 @@ export const controlMapperTests = describe("ControlMapper", () => {
         mapper.setupFieldSettingDefault(ShortTextFieldSetting, (setting) => {
             return ExampleModifiedControl;
         });
-        const control = mapper.getControlForContentField(Task, "DisplayName", "new");
+        const control = mapper.getControlForContentField("Task", "DisplayName", "new");
         expect(control).to.be.eq(ExampleModifiedControl);
 
-        const controlOther = mapper.getControlForContentField(User, "DisplayName", "new");
+        const controlOther = mapper.getControlForContentField("User", "DisplayName", "new");
         expect(controlOther).to.be.eq(ExampleModifiedControl);
 
-        const controlOtherDateTime = mapper.getControlForContentField(Task, "DueDate", "new");
+        const controlOtherDateTime = mapper.getControlForContentField("Task", "DueDate", "new");
         expect(controlOtherDateTime).to.be.eq(ExampleDefaultFieldControl);
     });
 
@@ -102,10 +102,10 @@ export const controlMapperTests = describe("ControlMapper", () => {
         mapper.setupFieldSettingForControl(Task, "DisplayName", (setting) => {
             return ExampleModifiedControl2;
         });
-        const control = mapper.getControlForContentField(Task, "DisplayName", "new");
+        const control = mapper.getControlForContentField("Task", "DisplayName", "new");
         expect(control).to.be.eq(ExampleModifiedControl2);
 
-        const control2 = mapper.getControlForContentField(User, "DisplayName", "new");
+        const control2 = mapper.getControlForContentField("User", "DisplayName", "new");
         expect(control2).to.be.eq(ExampleDefaultFieldControl);
     });
 
@@ -127,7 +127,7 @@ export const controlMapperTests = describe("ControlMapper", () => {
     });
 
     it("GetAllMappingsForContentTye filtered to View should be able to return all mappings", () => {
-        const fullMapping = mapper.getFullSchemaForContentType(Task, "view").fieldMappings;
+        const fullMapping = mapper.getFullSchemaForContentType("Task", "view").fieldMappings;
         expect(fullMapping.length).to.be.greaterThan(0);
         fullMapping.forEach((m) => {
             expect(m.clientSettings.setting.VisibleBrowse).to.be.not.eq(FieldVisibility.Hide);
@@ -137,7 +137,7 @@ export const controlMapperTests = describe("ControlMapper", () => {
     });
 
     it("GetAllMappingsForContentTye filtered to Edit should be able to return all mappings", () => {
-        const fullMapping = mapper.getFullSchemaForContentType(Task, "edit").fieldMappings;
+        const fullMapping = mapper.getFullSchemaForContentType("Task", "edit").fieldMappings;
         expect(fullMapping.length).to.be.greaterThan(0);
         fullMapping.forEach((m) => {
             expect(m.clientSettings.setting.VisibleEdit).to.be.not.eq(FieldVisibility.Hide);
@@ -147,19 +147,10 @@ export const controlMapperTests = describe("ControlMapper", () => {
     });
 
     it("GetAllMappingsForContentTye filtered to New should be able to return all mappings", () => {
-        const fullMapping = mapper.getFullSchemaForContentType(Task, "new").fieldMappings;
+        const fullMapping = mapper.getFullSchemaForContentType("Task", "new").fieldMappings;
         expect(fullMapping.length).to.be.greaterThan(0);
         fullMapping.forEach((m) => {
             expect(m.clientSettings.setting.VisibleNew).to.be.not.eq(FieldVisibility.Hide);
-            expect(m.clientSettings).to.be.instanceof(ExampleClientSetting);
-            expect(m.controlType).to.be.eq(ExampleDefaultFieldControl);
-        });
-    });
-
-    it("GetFullSchemaForContent filtered to New should be able to return all mappings", () => {
-        const fullMapping = mapper.getFullSchemaForContent({DueDate: "2017-06-27T11:11:11Z", Name: "Task1"}, "new").fieldMappings;
-        expect(fullMapping.length).to.be.greaterThan(0);
-        fullMapping.forEach((m) => {
             expect(m.clientSettings).to.be.instanceof(ExampleClientSetting);
             expect(m.controlType).to.be.eq(ExampleDefaultFieldControl);
         });
