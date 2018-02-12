@@ -68,7 +68,7 @@
     "autoprefixer": "^7.1.1",
     "case-sensitive-paths-webpack-plugin": "^2.1.1",
     "chai": "^4.0.2",
-    "chalk": "2.2.2",
+    "chalk": "2.3.1",
     "cli-highlight": "1.2.3",
     "codecov.io": "^0.1.6",
     "commitizen": "^2.9.6",
