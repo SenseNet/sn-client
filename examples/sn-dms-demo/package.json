@@ -33,7 +33,7 @@
     "app-root-path": "^2.0.1",
     "autoprefixer": "^7.2.0",
     "case-sensitive-paths-webpack-plugin": "2.1.1",
-    "chalk": "2.2.2",
+    "chalk": "2.3.1",
     "cli-highlight": "1.2.3",
     "css-loader": "0.28.9",
     "dotenv": "5.0.0",
