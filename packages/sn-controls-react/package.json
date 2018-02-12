@@ -117,7 +117,7 @@
     "material-ui": "^0.20.0",
     "material-ui-chip-input": "^0.18.3",
     "nyc": "^11.0.3",
-    "radium": "^0.21.0",
+    "radium": "^0.22.0",
     "react": "^16.0.0",
     "react-materialize": "^1.0.1",
     "react-quill": "^1.0.0-rc.3",
