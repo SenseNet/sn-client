@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 /**
- * Properties for main
+ * Properties for the main DocViewer component
  */
 export interface MainProps { compiler: string; framework: string }
 
