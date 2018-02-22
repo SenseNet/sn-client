@@ -1,0 +1,10 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "temp"
+    },
+    "files": [
+        "./src/index.tsx",
+        "./test/index.ts"
+    ]
+}
