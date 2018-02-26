@@ -79,7 +79,7 @@
     "typeface-roboto": "0.0.54",
     "typescript": "~2.6.1",
     "url-loader": "0.6.2",
-    "webpack": "^3.7.1",
+    "webpack": "^4.0.0",
     "webpack-dev-server": "2.11.1",
     "webpack-manifest-plugin": "1.3.2",
     "whatwg-fetch": "2.0.3",
