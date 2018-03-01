@@ -1,5 +1,7 @@
 # sn-redux-promise-middleware
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/SenseNet/sn-redux-promise-middleware.svg)](https://greenkeeper.io/)
+
 [![Build Status](https://travis-ci.org/SenseNet/sn-redux-promise-middleware.svg?branch=master)](https://travis-ci.org/SenseNet/sn-redux-promise-middleware)
 [![codecov](https://codecov.io/gh/SenseNet/sn-redux-promise-middleware/branch/master/graph/badge.svg)](https://codecov.io/gh/SenseNet/sn-redux-promise-middleware)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/e5b6b7367de74af38c153a59d88d56cb)](https://www.codacy.com/app/SenseNet/sn-redux-promise-middleware?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SenseNet/sn-redux-promise-middleware&amp;utm_campaign=Badge_Grade)
