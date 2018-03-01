@@ -1,0 +1,24 @@
+language: node_js
+cache:
+  directories:
+    - node_modules
+notifications:
+  email: false
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/6e79e3e0057a61c8d6be
+    on_success: always  # options: [always|never|change] default: always
+    on_failure: always  # options: [always|never|change] default: always
+    on_start: never     # options: [always|never|change] default: always
+node_js:
+  - '8'  
+  - '9'
+before_script:
+  - npm install -g nyc
+script: 
+  - npm run build && npm run test
+after_success:
+  - npm run report-coverage
+branches:
+  except:
+    - /^v\d+\.\d+\.\d+$/
