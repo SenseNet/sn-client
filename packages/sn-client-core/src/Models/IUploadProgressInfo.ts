@@ -1,3 +1,6 @@
+/**
+ * Defines an upload progress info data model
+ */
 export interface IUploadProgressInfo<T> {
     /**
      * Basic info about the created Content

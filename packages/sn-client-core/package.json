@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/client-core",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Core Client package for sensenet ECM",
   "main": "./dist/index.js",
   "files": [
@@ -54,7 +54,7 @@
     "@sensenet/client-utils": "^1.0.0",
     "@sensenet/default-content-types": "^1.0.0",
     "@sensenet/query": "^1.0.0"
-   },
+  },
   "devDependencies": {
     "@types/chai": "^4.1.2",
     "@types/mocha": "^2.2.48",

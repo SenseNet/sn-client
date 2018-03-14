@@ -7,4 +7,15 @@ export { ConstantContent } from "./Repository/ConstantContent";
 export { IContent } from "./Models/IContent";
 export { IODataCollectionResponse } from "./Models/IODataCollectionResponse";
 export { IODataResponse } from "./Models/IODataResponse";
+
+export * from "./Models/IContent";
+export * from "./Models/IMetadata";
+export * from "./Models/IMetadataAction";
+export * from "./Models/IODataBatchResponse";
+export * from "./Models/IODataCollectionResponse";
+export * from "./Models/IODataParams";
+export * from "./Models/IODataRequestOptions";
+export * from "./Models/IODataResponse";
+export * from "./Models/IRequestOptions";
+export * from "./Models/IUploadProgressInfo";
 export * from "./Models/ISecurityModels";
