@@ -220,9 +220,8 @@ export class Repository implements IDisposable {
         const path = PathHelper.joinPaths(this.configuration.repositoryUrl,
             this.configuration.oDataToken,
             contextPath,
-            "Actions",
-            options.scenario ? `$scenario=${options.scenario}` : "");
-        const response = await this.fetch(`${path}`, {
+            "Actions");
+        const response = await this.fetch(`${path}${options.scenario ? `?scenario=${options.scenario}` : ""}`, {
             credentials: "include",
             method: "GET",
         });
