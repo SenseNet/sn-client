@@ -1,10 +1,10 @@
+import { Actions, Reducers } from '@sensenet/redux'
+import Icon from 'material-ui/Icon'
+import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { Actions, Reducers } from 'sn-redux'
-import { DMSActions } from '../../Actions'
-import { DMSReducers } from '../../Reducers'
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
-import Icon from 'material-ui/Icon';
+import * as DMSActions from '../../Actions'
+import * as DMSReducers from '../../Reducers'
 
 import { icons } from '../../assets/icons'
 
@@ -14,7 +14,7 @@ const styles = {
         padding: '8px 0 8px',
         position: 'relative',
         flex: '1 1 auto',
-        fontSize: '16px'
+        fontSize: '16px',
     },
     actionMenuItem: {
         listStyleType: 'none',
@@ -41,75 +41,75 @@ const styles = {
         userSelect: 'none',
         outline: 'none',
         WebkitAppearance: 'none',
-        WebkitTapHighlightColor: 'rgba(0, 0, 0, 0)'
+        WebkitTapHighlightColor: 'rgba(0, 0, 0, 0)',
     },
     selectedActionMenuItem: {
-        backgroundColor: 'rgba(0, 0, 0, 0.12)'
+        backgroundColor: 'rgba(0, 0, 0, 0.12)',
     },
     actionIcon: {
-        marginRight: 0
+        marginRight: 0,
     },
     fileinput: {
-        display: 'none'
+        display: 'none',
     },
     uploadContainer: {
-        width: '100%'
+        width: '100%',
     },
     uploadLabel: {
         display: 'block',
-        width: '100%'
+        width: '100%',
     },
     uploadText: {
         display: 'inline-block',
-        verticalAlign: 'middle'
+        verticalAlign: 'middle',
     },
     uploadIcon: {
-        verticalAlign: 'middle'
-    }
+        verticalAlign: 'middle',
+    },
 }
 
-interface IActionListProps {
+interface ActionListProps {
     actions,
     id,
     selected,
     currentContent,
-    setEdited: Function,
-    handleActionMenuClose: Function,
-    handleMouseDown: Function,
-    handleMouseUp: Function,
-    clearSelection: Function,
-    deleteBatch: Function,
-    uploadContent: Function
+    setEdited,
+    handleActionMenuClose,
+    handleMouseDown,
+    handleMouseUp,
+    clearSelection,
+    deleteBatch,
+    uploadContent
 }
 
-interface IActionListState {
+interface ActionListState {
     hovered
 }
 
-class ActionList extends React.Component<IActionListProps, IActionListState> {
+class ActionList extends React.Component<ActionListProps, ActionListState> {
     constructor(props) {
         super(props)
         this.state = {
-            hovered: ''
+            hovered: '',
         }
         this.handleMouseEnter = this.handleMouseEnter.bind(this)
         this.handleMouseLeave = this.handleMouseLeave.bind(this)
         this.handleMenuItemClick = this.handleMenuItemClick.bind(this)
     }
-    isHovered(id) {
+    public isHovered(id) {
         return this.state.hovered === id
     }
-    handleMouseEnter(e, name) {
+    public handleMouseEnter(e, name) {
         this.setState({
-            hovered: name
+            hovered: name,
         })
     }
-    handleMouseLeave() {
+    public handleMouseLeave() {
         this.setState({
-            hovered: ''
+            hovered: '',
         })
     }
-    handleMenuItemClick(e, action) {
+    public handleMenuItemClick(e, action) {
         switch (action) {
             case 'Rename':
                 this.props.handleActionMenuClose()
@@ -130,14 +130,14 @@ class ActionList extends React.Component<IActionListProps, IActionListState> {
                 break
         }
     }
-    handleFileUpload(e) {
+    public handleFileUpload(e) {
         const fileList = e.target.files
         const files = Array.from(fileList)
-        files.map(file => {
+        files.map((file) => {
             this.props.uploadContent(this.props.currentContent, file, undefined, undefined, null, undefined, 'DMSListItem')
         })
     }
-    render() {
+    public render() {
 
         return <List
             id="actionMenu"
@@ -145,7 +145,7 @@ class ActionList extends React.Component<IActionListProps, IActionListState> {
             style={styles.actionMenuList as any}
         >
             {this.props.actions.map((action, index) => {
-                const isHovered = this.isHovered(action.Name);
+                const isHovered = this.isHovered(action.Name)
                 let inner = null
                 if (action.Name === 'Upload') {
                     inner = <div style={styles.uploadContainer}>
@@ -154,10 +154,10 @@ class ActionList extends React.Component<IActionListProps, IActionListState> {
                             id="file"
                             multiple
                             type="file"
-                            onChange={event => this.handleFileUpload(event)} />
+                            onChange={(event) => this.handleFileUpload(event)} />
                         <label htmlFor="file" style={styles.uploadLabel}>
                             <ListItemIcon style={{ ...styles.actionIcon, ...styles.uploadIcon }}>
-                                <Icon color="accent">{
+                                <Icon color="secondary">{
                                     action.Icon === 'Application' ?
                                         icons[action.Name.toLowerCase()] :
                                         icons[action.Icon.toLowerCase()]
@@ -166,8 +166,7 @@ class ActionList extends React.Component<IActionListProps, IActionListState> {
                             <ListItemText style={styles.uploadText} primary={action.DisplayName} />
                         </label>
                     </div>
-                }
-                else {
+                } else {
                     inner = <ListItemText primary={action.DisplayName} />
                 }
                 return (
@@ -175,15 +174,15 @@ class ActionList extends React.Component<IActionListProps, IActionListState> {
                         key={`${action.Name}-${index}`}
                         role="menuitem"
                         style={isHovered ? { ...styles.actionMenuItem, ...styles.selectedActionMenuItem } : styles.actionMenuItem as any}
-                        onMouseEnter={event => this.handleMouseEnter(event, action.Name)}
-                        onMouseLeave={event => this.handleMouseLeave()}
-                        onClick={event => this.handleMenuItemClick(event, action.Name)}
-                        onMouseDown={event => this.props.handleMouseDown(event)}
-                        onMouseUp={event => this.props.handleMouseUp(event)} >
+                        onMouseEnter={(event) => this.handleMouseEnter(event, action.Name)}
+                        onMouseLeave={(event) => this.handleMouseLeave()}
+                        onClick={(event) => this.handleMenuItemClick(event, action.Name)}
+                        onMouseDown={(event) => this.props.handleMouseDown(event)}
+                        onMouseUp={(event) => this.props.handleMouseUp(event)} >
 
                         {action.Name !== 'Upload' ?
                             <ListItemIcon style={styles.actionIcon}>
-                                <Icon color="accent">{
+                                <Icon color="secondary">{
                                     action.Icon === 'Application' ?
                                         icons[action.Name.toLowerCase()] :
                                         icons[action.Icon.toLowerCase()]
@@ -202,13 +201,13 @@ const mapStateToProps = (state, match) => {
     return {
         actions: DMSReducers.getActions(state.dms.actionmenu),
         currentContent: Reducers.getCurrentContent(state.sensenet),
-        selected: Reducers.getSelectedContentItems(state.sensenet)
+        selected: Reducers.getSelectedContentIds(state.sensenet),
     }
 }
 
 export default connect(mapStateToProps, {
-    setEdited: DMSActions.SetEditedContentId,
-    clearSelection: Actions.ClearSelection,
-    deleteBatch: Actions.DeleteBatch,
-    uploadContent: Actions.UploadRequest
+    setEdited: DMSActions.setEditedContentId,
+    clearSelection: Actions.clearSelection,
+    deleteBatch: Actions.deleteBatch,
+    uploadContent: Actions.uploadRequest,
 })(ActionList)

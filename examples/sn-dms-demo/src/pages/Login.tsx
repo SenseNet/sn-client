@@ -1,20 +1,21 @@
+import { Reducers } from '@sensenet/redux'
+import Button from 'material-ui/Button'
+import FormControl from 'material-ui/Form/FormControl'
+import FormHelperText from 'material-ui/Form/FormHelperText'
+import Input from 'material-ui/Input'
+import InputLabel from 'material-ui/Input/InputLabel'
+import createMuiTheme from 'material-ui/styles/createMuiTheme'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import * as React from 'react'
-import { connect } from 'react-redux';
-import { Reducers } from 'sn-redux'
-import { DMSReducers } from '../Reducers'
+import { connect } from 'react-redux'
+import MediaQuery from 'react-responsive'
 import LoginTabs from '../components/LoginTabs'
-import { WelcomeMessage } from '../components/WelcomeMessage'
 import { OauthRow } from '../components/OAuthRow'
-import Button from 'material-ui/Button';
-import Input from 'material-ui/Input';
-import InputLabel from 'material-ui/Input/InputLabel';
-import FormControl from 'material-ui/Form/FormControl';
-import FormHelperText from 'material-ui/Form/FormHelperText';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import createMuiTheme from 'material-ui/styles/createMuiTheme';
-import MediaQuery from 'react-responsive';
+import { WelcomeMessage } from '../components/WelcomeMessage'
+import * as DMSReducers from '../Reducers'
 
-const logo = require('../assets/logo.png');
+// tslint:disable-next-line:no-var-requires
+const logo = require('../assets/logo.png')
 
 import lightBlue from 'material-ui/colors/lightBlue'
 import pink from 'material-ui/colors/pink'
@@ -22,14 +23,14 @@ import pink from 'material-ui/colors/pink'
 const muiTheme = createMuiTheme({
   palette: {
     primary: lightBlue,
-    secondary: pink
-  }
+    secondary: pink,
+  },
 })
 
 const styles = {
   button: {
     margin: '10px 0',
-    width: '100%'
+    width: '100%',
   },
   formControl: {
     marginTop: '20px 0px',
@@ -38,17 +39,17 @@ const styles = {
     backgroundColor: '#fff',
     padding: '60px',
     color: '#444',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   logoMobile: {
     padding: '50px  0',
-    textAlign: 'center'
+    textAlign: 'center',
   },
 }
 
 import { resources } from '../assets/resources'
 
-interface ILoginProps {
+interface LoginProps {
   login,
   params,
   loginError,
@@ -56,7 +57,7 @@ interface ILoginProps {
   isRegistered
 }
 
-interface ILoginState {
+interface LoginState {
   email,
   password,
   emailError,
@@ -67,7 +68,7 @@ interface ILoginState {
   isButtonDisabled
 }
 
-class Login extends React.Component<ILoginProps, ILoginState> {
+class Login extends React.Component<LoginProps, LoginState> {
 
   constructor(props) {
     super(props)
@@ -79,109 +80,107 @@ class Login extends React.Component<ILoginProps, ILoginState> {
       emailErrorMessage: '',
       passwordErrorMessage: '',
       formIsValid: false,
-      isButtonDisabled: false
+      isButtonDisabled: false,
     }
 
-    this.handleEmailBlur = this.handleEmailBlur.bind(this);
-    this.handlePasswordBlur = this.handlePasswordBlur.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
-    this.handleEmailChange = this.handleEmailChange.bind(this);
-    this.formSubmit = this.formSubmit.bind(this);
-    this.buttonIsDisabled = this.buttonIsDisabled.bind(this);
+    this.handleEmailBlur = this.handleEmailBlur.bind(this)
+    this.handlePasswordBlur = this.handlePasswordBlur.bind(this)
+    this.handlePasswordChange = this.handlePasswordChange.bind(this)
+    this.handleEmailChange = this.handleEmailChange.bind(this)
+    this.formSubmit = this.formSubmit.bind(this)
+    this.buttonIsDisabled = this.buttonIsDisabled.bind(this)
   }
 
-  handleEmailBlur(e) {
+  public handleEmailBlur(e) {
     if (this.validateEmail(e.target.value)) {
       this.setState({
         email: e.target.value,
         emailErrorMessage: '',
-        emailError: false
+        emailError: false,
       })
-    }
-    else {
+    } else {
       this.setState({
         emailErrorMessage: resources.EMAIL_IS_NOT_VALID_MESSAGE,
-        emailError: true
+        emailError: true,
       })
     }
   }
 
-  handlePasswordBlur(e) {
+  public handlePasswordBlur(e) {
     if (e.target.value.length > 0) {
       this.setState({
         password: e.target.value,
         passwordErrorMessage: '',
-        passwordError: false
+        passwordError: false,
       })
-    }
-    else {
+    } else {
       this.setState({
         passwordErrorMessage: resources.PASSWORD_IS_NOT_VALID_MESSAGE,
-        passwordError: true
+        passwordError: true,
       })
     }
   }
 
-  handleEmailChange(e) {
+  public handleEmailChange(e) {
     this.setState({
-      email: e.target.value
+      email: e.target.value,
     })
   }
 
-  handlePasswordChange(e) {
+  public handlePasswordChange(e) {
     this.setState({
-      password: e.target.value
+      password: e.target.value,
     })
   }
 
-  validateEmail(text) {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(text);
+  public validateEmail(text) {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    return re.test(text)
   }
 
-  valid(e) {
-    let valid = true;
+  public valid(e) {
+    let valid = true
     if (this.state.email === '' || !this.validateEmail(this.state.email)) {
-      valid = false;
+      valid = false
       this.setState({
         emailErrorMessage: resources.EMAIL_IS_NOT_VALID_MESSAGE,
-        emailError: true
+        emailError: true,
       })
     }
     if (this.state.password === '') {
-      valid = false;
+      valid = false
       this.setState({
         passwordErrorMessage: resources.PASSWORD_IS_NOT_VALID_MESSAGE,
-        passwordError: true
+        passwordError: true,
       })
     }
-    return valid;
+    return valid
   }
 
-  formSubmit(e) {
+  public formSubmit(e) {
     if (this.valid(e)) {
       this.props.login(this.state.email, this.state.password)
       this.setState({
-        isButtonDisabled: true
+        isButtonDisabled: true,
       })
     }
   }
 
-  buttonIsDisabled() {
-    if (this.props.loginError && this.props.loginError.length)
+  public buttonIsDisabled() {
+    if (this.props.loginError && this.props.loginError.length) {
       this.setState({
-        isButtonDisabled: false
+        isButtonDisabled: false,
       })
-    return this.state.isButtonDisabled;
+    }
+    return this.state.isButtonDisabled
   }
 
-  componentDidMount() {
-    this.props.isRegistered ?
-      this.props.clear() :
-      false
+  public componentDidMount() {
+    // tslint:disable-next-line:no-unused-expression
+    this.props.isRegistered ? this.props.clear() : false
   }
 
-  render() {
+  public render() {
     return (
       <div className="Sensenet">
         <div className="Sensenet-header">
@@ -197,7 +196,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
 
         <div>
           <MuiThemeProvider theme={muiTheme}>
-            <form onSubmit={e => {
+            <form onSubmit={(e) => {
               e.preventDefault()
               this.formSubmit(e)
             }}>
@@ -247,7 +246,7 @@ class Login extends React.Component<ILoginProps, ILoginState> {
 const mapStateToProps = (state, match) => {
   return {
     loginError: Reducers.getAuthenticationError(state.sensenet),
-    isRegistered: DMSReducers.registrationIsDone
+    isRegistered: DMSReducers.registrationIsDone,
   }
 }
 

@@ -1,95 +1,101 @@
+import { Actions, Reducers } from '@sensenet/redux'
 import * as React from 'react'
-import {
-    withRouter
-} from 'react-router-dom'
-import { connect } from 'react-redux';
-import { DMSReducers } from '../Reducers'
-import { DMSActions } from '../Actions'
-import { Actions, Reducers } from 'sn-redux'
-import { FetchError } from './FetchError'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend, { NativeTypes } from 'react-dnd-html5-backend'
+import { connect } from 'react-redux'
+import {
+    withRouter,
+} from 'react-router-dom'
+import * as DMSActions from '../Actions'
+import * as DMSReducers from '../Reducers'
 import ContentList from './ContentList/ContentList'
+import { FetchError } from './FetchError'
 
-interface IDocumentLibraryProps {
+interface DocumentLibraryProps {
     currentContent,
     path,
     children,
     ids,
     loggedinUser,
-    fetchContent: Function,
+    fetchContent,
     errorMessage: string,
     currentId,
     cId,
-    setCurrentId: Function,
-    uploadContent: Function
+    setCurrentId,
+    uploadContent
 }
 
-interface IDocumentLibraryState {
-    select, id, orderby, filter, expand, scenario, droppedFiles
+interface DocumentLibraryState {
+    select, id, orderby, filter, expand, scenario, droppedFiles, children
 }
 
 @DragDropContext(HTML5Backend)
-class DocumentLibrary extends React.Component<IDocumentLibraryProps, IDocumentLibraryState>{
+class DocumentLibrary extends React.Component<DocumentLibraryProps, DocumentLibraryState> {
     constructor(props) {
         super(props)
         this.state = {
             select: ['Id', 'Path', 'DisplayName', 'ModificationDate', 'Type', 'Icon', 'IsFolder', 'Actions'],
             expand: ['Actions'],
             orderby: ['IsFolder desc', 'DisplayName asc'],
-            filter: "ContentType ne 'SystemFolder'",
+            filter: 'ContentType ne \'SystemFolder\'',
             scenario: 'DMSListItem',
             id: this.props.currentContent.Id,
-            droppedFiles: []
+            droppedFiles: [],
+            children: this.props.children,
         }
         this.handleFileDrop = this.handleFileDrop.bind(this)
     }
-    componentDidMount() {
-        if (!this.props.cId)
-            this.fetchData();
+    public componentDidMount() {
+        if (!this.props.cId) {
+            if (this.props.loggedinUser.userName !== 'Visitor') {
+                this.fetchData(undefined, this.props.loggedinUser.userName)
+            }
+        }
     }
-    componentWillReceiveProps(nextProps) {
-        let nextId = Number(nextProps.match.params.id) !== 0 ? Number(nextProps.match.params.id) : undefined
+    public componentWillReceiveProps(nextProps) {
+        const nextId = Number(nextProps.match.params.id) !== 0 ? Number(nextProps.match.params.id) : undefined
         if (
             this.props.cId &&
             !isNaN(nextId) &&
             this.props.currentContent.Path !== nextProps.currentContent.Path
         ) {
-            this.fetchData(nextProps.currentContent.Path)
+            this.fetchData(nextProps.currentContent.Path, nextProps.loggedinUser.userName)
             this.props.setCurrentId(nextId)
         }
+        if (nextProps.loggedinUser.userName !== this.props.loggedinUser.userName) {
+            this.fetchData(nextProps.currentContent.Path, nextProps.loggedinUser.userName)
+        }
     }
-    fetchData(path?: string) {
-        let optionObj = {
+    public fetchData(path?: string, username?: string) {
+        const optionObj = {
             select: this.state.select,
             expand: this.state.expand,
             orderby: this.state.orderby,
             filter: this.state.filter,
-            scenario: this.state.scenario
+            scenario: this.state.scenario,
         }
         const p = path && typeof path !== 'undefined' ?
             path :
-            `/Root/Profiles/Public/${this.props.loggedinUser.userName}/Document_Library`;
+            `/Root/Profiles/Public/${username}/Document_Library`
 
-        this.props.fetchContent(p, optionObj);
+        this.props.fetchContent(p, optionObj)
         this.setState({
-            id: this.props.cId
+            id: this.props.cId,
+            children: this.props.children,
         })
     }
-    handleFileDrop(item, monitor) {
-        const content = this.props.currentContent
-        const { uploadContent } = this.props
+    public handleFileDrop(item, monitor) {
+        const { uploadContent, currentContent } = this.props
         if (monitor) {
             const droppedFiles = monitor.getItem().files
-
-            droppedFiles.map(file => {
-               uploadContent(content, file, undefined, undefined, null, undefined, 'DMSListItem')
+            droppedFiles.map((file) => {
+                uploadContent(currentContent.Path, file, 'File', undefined, null, undefined)
             })
 
             this.setState({ droppedFiles })
         }
     }
-    render() {
+    public render() {
         const { FILE } = NativeTypes
         if (this.props.errorMessage && this.props.errorMessage.length > 0) {
             return (
@@ -111,8 +117,8 @@ class DocumentLibrary extends React.Component<IDocumentLibraryProps, IDocumentLi
     }
 }
 
-const fetchContentAction = Actions.RequestContent;
-const uploadContentAction = Actions.UploadRequest
+const fetchContentAction = Actions.requestContent
+const uploadContentAction = Actions.uploadRequest
 
 const mapStateToProps = (state, match) => {
     return {
@@ -123,12 +129,12 @@ const mapStateToProps = (state, match) => {
         errorMessage: Reducers.getError(state.sensenet.children),
         currentContent: Reducers.getCurrentContent(state.sensenet),
         currentId: Number(match.match.url.replace('/', '')),
-        cId: DMSReducers.getCurrentId(state.dms)
+        cId: DMSReducers.getCurrentId(state.dms),
     }
 }
 
 export default withRouter(connect(mapStateToProps, {
     fetchContent: fetchContentAction,
-    setCurrentId: DMSActions.SetCurrentId,
-    uploadContent: uploadContentAction
+    setCurrentId: DMSActions.setCurrentId,
+    uploadContent: uploadContentAction,
 })(DocumentLibrary))

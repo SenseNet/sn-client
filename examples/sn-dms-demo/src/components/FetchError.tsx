@@ -1,5 +1,5 @@
-import * as React from 'react';
-import Button from 'material-ui/Button';
+import Button from 'material-ui/Button'
+import * as React from 'react'
 
 export interface FetchErrorProps {
     message: string,
@@ -7,12 +7,12 @@ export interface FetchErrorProps {
 }
 
 export class FetchError extends React.Component<FetchErrorProps, {}> {
-    render() {
+    public render() {
         return (
             <div>
                 <p>Could not fetch content. {this.props.message}</p>
                 <Button  onClick={this.props.onRetry}>Retry</Button>
             </div>
-        );
+        )
     }
 }

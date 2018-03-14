@@ -1,38 +1,41 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { Store, Reducers } from 'sn-redux'
-import { Repository, ContentTypes } from 'sn-client-js'
+import { Repository } from '@sensenet/client-core'
+import { Task } from '@sensenet/default-content-types'
+import { Reducers, Store } from '@sensenet/redux'
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
 import { combineReducers } from 'redux'
-import 'rxjs'
-import DisplayNameCell from '../DisplayNameCell';
+import DisplayNameCell from '../DisplayNameCell'
 
 it('renders without crashing', () => {
-    const div = document.createElement('div');
-    const sensenet = Reducers.sensenet;
+    const div = document.createElement('div')
+    const sensenet = Reducers.sensenet
     const myReducer = combineReducers({ sensenet })
 
-    const repository = new Repository.SnRepository({
-        RepositoryUrl: process.env.REACT_APP_SERVICE_URL || 'https://dmsservice.demo.sensenet.com',
-        RequiredSelect: ['Id', 'Path', 'Name', 'Type', 'ParentId']
-    });
-
-    repository.Config
-    const store = Store.configureStore(myReducer, null, undefined, {
-        sensenet: {
-            currentcontent: {
-                Id: 1
-            }
-        }
-    }, repository)
-    const content = repository.CreateContent({ DisplayName: 'My content', Id: 123, Path: '/workspaces' }, ContentTypes.Task);
+    const repository = new Repository({
+        repositoryUrl: process.env.REACT_APP_SERVICE_URL || 'https://dmsservice.demo.sensenet.com',
+        requiredSelect: ['Id', 'Path', 'Name', 'Type', 'ParentId'] as any,
+    })
+    const options = {
+        repository,
+        rootReducer: myReducer,
+        persistedState: {
+            sensenet: {
+                currentcontent: {
+                    Id: 1,
+                },
+            },
+        },
+    } as Store.CreateStoreOptions
+    const store = Store.createSensenetStore(options)
+    const content = { DisplayName: 'My content', Id: 123, Path: '/workspaces' } as Task
     ReactDOM.render(<DisplayNameCell
         store={store}
         content={content}
         isHovered={false}
-        handleRowDoubleClick={() => { 
+        handleRowDoubleClick={() => {
             //
         }}
         handleRowSingleClick={() => {
             //
-         }} />, div);
-});
+        }} />, div)
+})

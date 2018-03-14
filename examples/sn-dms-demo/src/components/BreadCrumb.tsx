@@ -1,45 +1,45 @@
+import AppBar from 'material-ui/AppBar'
+import Button from 'material-ui/Button'
+import Icon from 'material-ui/Icon'
+import Toolbar from 'material-ui/Toolbar'
 import * as React from 'react'
 import { connect } from 'react-redux'
+import MediaQuery from 'react-responsive'
 import {
-    withRouter
+    withRouter,
 } from 'react-router-dom'
-import MediaQuery from 'react-responsive';
-import { DMSReducers } from '../Reducers'
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar'
-import Button from 'material-ui/Button'
-import Icon from 'material-ui/Icon';
+import * as DMSReducers from '../Reducers'
 
 import { icons } from '../assets/icons'
 const styles = {
     breadCrumb: {},
     breadCrumbItem: {
-        color: '#fff'
+        color: '#fff',
     },
     breadCrumbIcon: {
-        marginLeft: 30
+        marginLeft: 30,
     },
     breadCrumbIconLeft: {
-        marginRight: 30
+        marginRight: 30,
     },
 }
 
-class BreadCrumb extends React.Component<{ breadcrumb, history }, {}>{
+class BreadCrumb extends React.Component<{ breadcrumb, history }, {}> {
     constructor(props) {
         super(props)
-        this.handleClick = this.handleClick.bind(this);
+        this.handleClick = this.handleClick.bind(this)
     }
-    handleClick(e, id) {
+    public handleClick(e, id) {
         this.props.history.push(`/${id}`)
     }
-    componentDidUpdate(prevOps) {
+    public componentDidUpdate(prevOps) {
         if (this.props.breadcrumb !== prevOps.breadcrumb) {
             this.setState({
-                data: this.props.breadcrumb
+                data: this.props.breadcrumb,
             })
         }
     }
-    render() {
+    public render() {
         return <div style={styles.breadCrumb}>
             <AppBar position="static">
                 <Toolbar>
@@ -47,7 +47,7 @@ class BreadCrumb extends React.Component<{ breadcrumb, history }, {}>{
                         {(matches) => {
                             return this.props.breadcrumb.map((n, i) => {
                                 if (matches) {
-                                    return <Button onClick={event => this.handleClick(event, n.id)}
+                                    return <Button onClick={(event) => this.handleClick(event, n.id)}
                                         key={n.id}
                                         style={styles.breadCrumbItem}>
                                         {n.name}
@@ -55,9 +55,8 @@ class BreadCrumb extends React.Component<{ breadcrumb, history }, {}>{
                                             <Icon style={styles.breadCrumbIcon}>{icons.arrowRight}</Icon> :
                                             ''}
                                     </Button>
-                                }
-                                else if (!matches && i === (this.props.breadcrumb.length - 1)) {
-                                    return <Button onClick={event => this.handleClick(event, n.id)}
+                                } else if (!matches && i === (this.props.breadcrumb.length - 1)) {
+                                    return <Button onClick={(event) => this.handleClick(event, n.id)}
                                         key={n.id}
                                         style={styles.breadCrumbItem}>
                                         {this.props.breadcrumb.length > 1 ?
@@ -65,8 +64,7 @@ class BreadCrumb extends React.Component<{ breadcrumb, history }, {}>{
                                             ''}
                                         {n.name}
                                     </Button>
-                                }
-                                else {
+                                } else {
                                     return null
                                 }
                             })
@@ -82,7 +80,7 @@ const mapStateToProps = (state, match) => {
 
     return {
         breadcrumb: DMSReducers.getBreadCrumbArray(state.dms),
-        currentId: match.match.params.id
+        currentId: match.match.params.id,
     }
 }
 

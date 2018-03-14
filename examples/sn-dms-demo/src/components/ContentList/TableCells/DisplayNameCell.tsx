@@ -1,14 +1,14 @@
+import { Actions, Reducers } from '@sensenet/redux'
+import { TableCell } from 'material-ui/Table'
+import TextField from 'material-ui/TextField'
 import * as React from 'react'
-import { connect } from 'react-redux'
-import { Actions, Reducers } from 'sn-redux'
-import MediaQuery from 'react-responsive';
-import { DMSReducers } from '../../../Reducers'
-import { DMSActions } from '../../../Actions'
-import { TableCell } from 'material-ui/Table';
-import TextField from 'material-ui/TextField';
-import { DragSource } from 'react-dnd';
 import { DropTarget } from 'react-dnd'
-import { DragAndDrop } from '../../../DragAndDrop'
+import { DragSource } from 'react-dnd'
+import { connect } from 'react-redux'
+import MediaQuery from 'react-responsive'
+import * as DMSActions from '../../../Actions'
+import * as DragAndDrop from '../../../DragAndDrop'
+import * as DMSReducers from '../../../Reducers'
 
 const styles = {
     displayName: {
@@ -21,40 +21,40 @@ const styles = {
         cursor: 'pointer',
     },
     displayNameDiv: {
-        padding: '16px 24px'
+        padding: '16px 24px',
     },
     editedTitle: {
         fontWeight: 'normal',
-        fontStyle: 'italic'
+        fontStyle: 'italic',
     },
 }
 
-interface IDisplayNameCellProps {
+interface DisplayNameCellProps {
     content,
     isHovered: boolean,
-    handleRowDoubleClick: Function,
-    handleRowSingleClick: Function,
-    rename: Function,
-    setEdited: Function,
+    handleRowDoubleClick,
+    handleRowSingleClick,
+    rename,
+    setEdited,
     currentContent,
     edited,
-    connectDragSource: Function,
-    connectDropTarget: Function,
+    connectDragSource,
+    connectDropTarget,
     isDragging: boolean,
     isOver: boolean,
     canDrop: boolean,
-    onDrop: Function,
-    moveCard: Function,
+    onDrop,
+    moveCard,
     isCopy: boolean,
     selected,
     selectedContentItems,
-    copyBatch: Function,
-    moveBatch: Function,
+    copyBatch,
+    moveBatch,
     editedFirst: boolean,
-    setEditedFirst: Function
+    setEditedFirst
 }
 
-interface IDisplayNameCellState {
+interface DisplayNameCellState {
     oldText,
     newText,
     edited,
@@ -67,8 +67,8 @@ interface IDisplayNameCellState {
     canDrop: monitor.canDrop(),
 }))
 @DragSource('row', DragAndDrop.rowSource, DragAndDrop.collect)
-class DisplayNameCell extends React.Component<IDisplayNameCellProps, IDisplayNameCellState>{
-    private input: HTMLInputElement;
+class DisplayNameCell extends React.Component<DisplayNameCellProps, DisplayNameCellState> {
+    private input: HTMLInputElement
     constructor(props) {
         super(props)
 
@@ -76,76 +76,72 @@ class DisplayNameCell extends React.Component<IDisplayNameCellProps, IDisplayNam
             oldText: this.props.content.DisplayName,
             newText: '',
             edited: this.props.edited,
-            displayName: this.props.content.DisplayName
+            displayName: this.props.content.DisplayName,
         }
 
         this.handleTitleClick = this.handleTitleClick.bind(this)
         this.handleTitleInputBlur = this.handleTitleInputBlur.bind(this)
         this.handleTitleChange = this.handleTitleChange.bind(this)
     }
-    handleTitleClick(e, id) {
+    public handleTitleClick(e, id) {
         if (e.target.id !== 'renameInput') {
             e.preventDefault()
         }
     }
-    handleTitleChange(e) {
+    public handleTitleChange(e) {
         this.setState({
-            newText: e.target.value
+            newText: e.target.value,
         })
     }
-    handleTitleInputBlur(id, mobile) {
+    public handleTitleInputBlur(id, mobile) {
         if (!mobile) {
             if (this.state.newText !== '' && this.state.oldText !== this.state.newText) {
                 this.updateDisplayName()
-            }
-            else {
+            } else {
                 this.setState({
                     edited: null,
-                    newText: ''
+                    newText: '',
                 })
                 this.props.setEdited(null)
             }
-        }
-        else {
+        } else {
             if (this.props.editedFirst) {
-                this.input.focus();
+                this.input.focus()
                 this.props.setEditedFirst(false)
-            }
-            else {
+            } else {
                 if (this.state.newText !== '' && this.state.oldText !== this.state.newText) {
                     this.updateDisplayName()
-                }
-                else {
+                } else {
                     this.setState({
                         edited: null,
-                        newText: ''
+                        newText: '',
                     })
                     this.props.setEdited(null)
                 }
             }
         }
     }
-    handleKeyPress(e) {
+    public handleKeyPress(e) {
         if (e.key === 'Enter') {
             this.updateDisplayName()
         }
     }
-    updateDisplayName() {
-        let c = this.props.currentContent;
-        let updateableContent = c
+    public updateDisplayName() {
+        const c = this.props.currentContent
+        const updateableContent = c
         updateableContent.DisplayName = this.state.newText
-        this.props.rename(updateableContent)
+        this.props.rename(updateableContent.Id, updateableContent)
         this.setState({
             edited: null,
             newText: '',
-            displayName: this.state.newText
+            displayName: this.state.newText,
         })
         this.props.setEdited(null)
     }
-    isEdited(id) { return this.props.edited === id }
-    render() {
+    public isEdited(id) { return this.props.edited === id }
+    public render() {
         const content = this.props.currentContent
-        const isEdited = this.isEdited(this.props.content.Id);
+        const isEdited = this.isEdited(this.props.content.Id)
         const { handleRowSingleClick, handleRowDoubleClick, connectDragSource, connectDropTarget, isCopy } = this.props
         const dropEffect = isCopy ? 'copy' : 'move'
         return (
@@ -154,8 +150,8 @@ class DisplayNameCell extends React.Component<IDisplayNameCellProps, IDisplayNam
                     return <TableCell
                         padding="none"
                         style={this.props.isHovered && !isEdited ? styles.hoveredDisplayName : styles.displayName as any}
-                        onClick={event => handleRowSingleClick(event, content.id)}
-                        onDoubleClick={event => handleRowDoubleClick(event, this.props.content.Id)}>
+                        onClick={(event) => handleRowSingleClick(event, content.id)}
+                        onDoubleClick={(event) => handleRowDoubleClick(event, this.props.content.Id)}>
                         {isEdited ?
                             <TextField
                                 id="renameInput"
@@ -163,14 +159,14 @@ class DisplayNameCell extends React.Component<IDisplayNameCellProps, IDisplayNam
                                 defaultValue={this.props.content.DisplayName}
                                 margin="dense"
                                 style={styles.editedTitle as any}
-                                onChange={event => this.handleTitleChange(event)}
-                                onKeyPress={event => this.handleKeyPress(event)}
-                                onBlur={event => this.handleTitleInputBlur(this.props.content.Id, !matches)}
+                                onChange={(event) => this.handleTitleChange(event)}
+                                onKeyPress={(event) => this.handleKeyPress(event)}
+                                onBlur={(event) => this.handleTitleInputBlur(this.props.content.Id, !matches)}
                                 inputRef={(ref) => this.input = ref}
                             /> :
                             connectDragSource(connectDropTarget(<div
-                                onClick={event => matches ? this.handleTitleClick(event, this.props.content.Id) : event.preventDefault()}
-                                style={styles.displayNameDiv}>{this.state.displayName}</div>), { dropEffect: dropEffect })
+                                onClick={(event) => matches ? this.handleTitleClick(event, this.props.content.Id) : event.preventDefault()}
+                                style={styles.displayNameDiv}>{this.state.displayName}</div>), { dropEffect })
                         }
                     </TableCell>
                 }}
@@ -179,8 +175,8 @@ class DisplayNameCell extends React.Component<IDisplayNameCellProps, IDisplayNam
     }
 }
 
-const renameContent = Actions.UpdateContent
-const setEdited = DMSActions.SetEditedContentId
+const renameContent = Actions.updateContent
+const setEdited = DMSActions.setEditedContentId
 
 const mapStateToProps = (state, match) => {
     return {
@@ -188,14 +184,14 @@ const mapStateToProps = (state, match) => {
         edited: DMSReducers.getEditedItemId(state.dms),
         selected: Reducers.getSelectedContentIds(state.sensenet),
         selectedContentItems: Reducers.getSelectedContentItems(state.sensenet),
-        editedFirst: DMSReducers.isEditedFirst(state.dms)
+        editedFirst: DMSReducers.isEditedFirst(state.dms),
     }
 }
 
 export default connect(mapStateToProps, {
     rename: renameContent,
-    setEdited: setEdited,
-    copyBatch: Actions.CopyBatch,
-    moveBatch: Actions.MoveBatch,
-    setEditedFirst: DMSActions.setEditedFirst
+    setEdited,
+    copyBatch: Actions.copyBatch,
+    moveBatch: Actions.moveBatch,
+    setEditedFirst: DMSActions.setEditedFirst,
 })(DisplayNameCell)

@@ -1,64 +1,64 @@
-import * as React from 'react'
+import Icon from 'material-ui/Icon'
 import {
     TableCell,
-    TableRow
-} from 'material-ui/Table';
-import Icon from 'material-ui/Icon';
-import MediaQuery from 'react-responsive';
+    TableRow,
+} from 'material-ui/Table'
+import * as React from 'react'
+import MediaQuery from 'react-responsive'
 import { icons } from '../../assets/icons'
 
 const styles = {
     actionMenuButton: {
         width: 30,
-        cursor: 'pointer'
+        cursor: 'pointer',
     },
     checkboxButton: {
         width: 30,
-        cursor: 'pointer'
+        cursor: 'pointer',
     },
     typeIcon: {
         width: 30,
-        lineHeight: '9px'
+        lineHeight: '9px',
     },
     loader: {
-        margin: '0 auto'
+        margin: '0 auto',
     },
     displayName: {
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     icon: {
-        verticalAlign: 'middle'
+        verticalAlign: 'middle',
     },
     table: {
-        background: '#fff'
-    }
+        background: '#fff',
+    },
 }
 
-interface ISharedItemsTableRow {
+interface SharedItemsTableRowProps {
     currentId,
 }
 
-export class SharedItemsTableRow extends React.Component<ISharedItemsTableRow, {}>{
+export class SharedItemsTableRow extends React.Component<SharedItemsTableRowProps, {}> {
     constructor(props) {
         super(props)
         this.handleContextMenu = this.handleContextMenu.bind(this)
     }
-    handleClick(e, id) {
+    public handleClick(e, id) {
         // TODO
     }
-    handleKeyDown(e, id) {
+    public handleKeyDown(e, id) {
         // TODO
     }
-    handleContextMenu(e) {
+    public handleContextMenu(e) {
         e.preventDefault()
     }
-    render() {
+    public render() {
         return (
             <TableRow
                 hover
-                onClick={event => this.handleClick(event, this.props.currentId)}
-                onKeyDown={event => this.handleKeyDown(event, this.props.currentId)}
-                onContextMenu={event => this.handleContextMenu(event)}
+                onClick={(event) => this.handleClick(event, this.props.currentId)}
+                onKeyDown={(event) => this.handleKeyDown(event, this.props.currentId)}
+                onContextMenu={(event) => this.handleContextMenu(event)}
                 tabIndex={-1}
                 key={this.props.currentId}
             >
@@ -67,8 +67,8 @@ export class SharedItemsTableRow extends React.Component<ISharedItemsTableRow, {
                 </MediaQuery>
                 <MediaQuery minDeviceWidth={700}>
                     {(matches) => {
-                        const padding = matches ? 'none' : 'dense';
-                        return <TableCell style={styles.typeIcon} padding={padding}><Icon color="accent">{icons.SmartFolder}</Icon></TableCell>
+                        const padding = matches ? 'none' : 'dense'
+                        return <TableCell style={styles.typeIcon} padding={padding}><Icon color="secondary">{icons.SmartFolder}</Icon></TableCell>
                     }}
                 </MediaQuery>
                 <TableCell style={styles.displayName as any}>Shared items</TableCell>
@@ -77,7 +77,7 @@ export class SharedItemsTableRow extends React.Component<ISharedItemsTableRow, {
                 </MediaQuery>
                 <MediaQuery minDeviceWidth={700}>
                     {(matches) => {
-                        const padding = matches ? 'none' : 'checkbox';
+                        const padding = matches ? 'none' : 'checkbox'
                         return <TableCell style={styles.actionMenuButton} padding={padding}></TableCell>
                     }}
                 </MediaQuery>

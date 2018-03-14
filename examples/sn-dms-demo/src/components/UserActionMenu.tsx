@@ -1,13 +1,13 @@
+import { Actions } from '@sensenet/redux'
+import IconButton from 'material-ui/IconButton'
+import Menu, { MenuItem } from 'material-ui/Menu'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { Actions } from 'sn-redux'
-import { DMSReducers } from '../Reducers'
-import MediaQuery from 'react-responsive';
-import IconButton from 'material-ui/IconButton';
-import Menu, { MenuItem } from 'material-ui/Menu';
+import MediaQuery from 'react-responsive'
+import * as DMSReducers from '../Reducers'
 import UserPanel from './UserPanel'
 
-interface IUserActionMenu {
+interface UserActionMenu {
     loggedinUser,
     logout
 }
@@ -18,53 +18,53 @@ const actions = [
     {
         name: 'Logout',
         displayName: resources.LOGOUT,
-    }
-];
+    },
+]
 
 const styles = {
     actionmenuContainer: {
-        flex: 1
+        flex: 1,
     },
     menuIcon: {
         color: '#fff',
-        width: 80
+        width: 80,
     },
     menuIconMobile: {
         width: 'auto',
-        marginLeft: '16px'
+        marginLeft: '16px',
     },
     arrowButton: {
-        marginLeft: 0
+        marginLeft: 0,
     },
     menu: {
-        marginTop: 40
-    }
+        marginTop: 40,
+    },
 }
 
-class UserActionMenu extends React.Component<IUserActionMenu, { anchorEl, open, selectedIndex }>{
+class UserActionMenu extends React.Component<UserActionMenu, { anchorEl, open, selectedIndex }> {
     constructor(props) {
         super(props)
         this.state = {
             anchorEl: null,
             open: false,
-            selectedIndex: 1
+            selectedIndex: 1,
         }
     }
-    handleClick = event => {
-        this.setState({ open: true, anchorEl: event.currentTarget });
-    };
+    public handleClick = (event) => {
+        this.setState({ open: true, anchorEl: event.currentTarget })
+    }
 
-    handleMenuItemClick = (event, index) => {
-        this.setState({ selectedIndex: index, open: false });
-        let actionName = actions[index].name.toLocaleLowerCase();
+    public handleMenuItemClick = (event, index) => {
+        this.setState({ selectedIndex: index, open: false })
+        const actionName = actions[index].name.toLocaleLowerCase()
         const action = this.props[actionName]
         action()
-    };
+    }
 
-    handleRequestClose = () => {
-        this.setState({ open: false });
-    };
-    render() {
+    public handleRequestClose = () => {
+        this.setState({ open: false })
+    }
+    public render() {
         return (
             <MediaQuery minDeviceWidth={700}>
                 {(matches) => {
@@ -89,7 +89,7 @@ class UserActionMenu extends React.Component<IUserActionMenu, { anchorEl, open, 
                                 <MenuItem
                                     key={action.name}
                                     selected={index === this.state.selectedIndex}
-                                    onClick={event => this.handleMenuItemClick(event, index)}>
+                                    onClick={(event) => this.handleMenuItemClick(event, index)}>
                                     {action.displayName}
                                 </MenuItem>
                             ))}
@@ -101,14 +101,14 @@ class UserActionMenu extends React.Component<IUserActionMenu, { anchorEl, open, 
     }
 }
 
-const userLogout = Actions.UserLogout;
+const userLogout = Actions.userLogout
 
 const mapStateToProps = (state, match) => {
     return {
-        loggedinUser: DMSReducers.getAuthenticatedUser(state.sensenet)
+        loggedinUser: DMSReducers.getAuthenticatedUser(state.sensenet),
     }
 }
 
 export default connect(mapStateToProps, {
-    logout: userLogout
-})(UserActionMenu);
+    logout: userLogout,
+})(UserActionMenu)

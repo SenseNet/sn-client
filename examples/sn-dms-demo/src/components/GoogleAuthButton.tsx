@@ -1,25 +1,28 @@
+import { Actions } from '@sensenet/redux'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { Actions } from 'sn-redux'
 
-const normal = require('../assets/google-signin-buttons/btn_google_signin_dark_normal_web.png');
-const focused = require('../assets/google-signin-buttons/btn_google_signin_dark_focus_web.png');
-const pressed = require('../assets/google-signin-buttons/btn_google_signin_dark_pressed_web.png');
+// tslint:disable-next-line:no-var-requires
+const normal = require('../assets/google-signin-buttons/btn_google_signin_dark_normal_web.png')
+// tslint:disable-next-line:no-var-requires
+const focused = require('../assets/google-signin-buttons/btn_google_signin_dark_focus_web.png')
+// tslint:disable-next-line:no-var-requires
+const pressed = require('../assets/google-signin-buttons/btn_google_signin_dark_pressed_web.png')
 
 const styles = {
     googleAuthButton: {
-        cursor: 'pointer'
-    }
+        cursor: 'pointer',
+    },
 }
 
 enum buttonState { normal, focused, pressed }
 
-class GoogleAuthButton extends React.Component<{ login: Function }, { buttonImage: buttonState }>{
+class GoogleAuthButton extends React.Component<{ login }, { buttonImage: buttonState }> {
     constructor(props) {
         super(props)
 
         this.state = {
-            buttonImage: normal
+            buttonImage: normal,
         }
 
         this.handleButtonClick = this.handleButtonClick.bind(this)
@@ -28,40 +31,40 @@ class GoogleAuthButton extends React.Component<{ login: Function }, { buttonImag
         this.handleButtonMouseDown = this.handleButtonMouseDown.bind(this)
         this.handleButtonMouseUp = this.handleButtonMouseUp.bind(this)
     }
-    handleButtonClick(e) {
+    public handleButtonClick(e) {
         this.props.login()
     }
-    handleButtonMouseOver(e) {
+    public handleButtonMouseOver(e) {
         this.setState({
-            buttonImage: focused
+            buttonImage: focused,
         })
     }
-    handleButtonMouseOut(e) {
+    public handleButtonMouseOut(e) {
         this.setState({
-            buttonImage: normal
+            buttonImage: normal,
         })
     }
-    handleButtonMouseDown(e) {
+    public handleButtonMouseDown(e) {
         this.setState({
-            buttonImage: pressed
+            buttonImage: pressed,
         })
     }
-    handleButtonMouseUp(e) {
+    public handleButtonMouseUp(e) {
         this.setState({
-            buttonImage: normal
+            buttonImage: normal,
         })
     }
-    render() {
-        const { buttonImage } = this.state;
+    public render() {
+        const { buttonImage } = this.state
         return (
             <img
                 src={buttonImage as any}
                 style={styles.googleAuthButton}
-                onClick={e => this.handleButtonClick(e)}
-                onMouseOver={e => this.handleButtonMouseOver(e)}
-                onMouseOut={e => this.handleButtonMouseOut(e)}
-                onMouseDown={e => this.handleButtonMouseDown(e)}
-                onMouseUp={e => this.handleButtonMouseUp(e)} />
+                onClick={(e) => this.handleButtonClick(e)}
+                onMouseOver={(e) => this.handleButtonMouseOver(e)}
+                onMouseOut={(e) => this.handleButtonMouseOut(e)}
+                onMouseDown={(e) => this.handleButtonMouseDown(e)}
+                onMouseUp={(e) => this.handleButtonMouseUp(e)} />
         )
     }
 }
@@ -73,5 +76,5 @@ const mapStateToProps = (state, match) => {
 }
 
 export default connect(mapStateToProps, {
-    login: Actions.UserLoginGoogle
+    login: Actions.userLoginGoogle,
 })(GoogleAuthButton)

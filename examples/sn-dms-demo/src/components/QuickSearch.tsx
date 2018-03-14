@@ -1,25 +1,24 @@
 import * as React from 'react'
-import MediaQuery from 'react-responsive';
+import MediaQuery from 'react-responsive'
 import QuickSearchBox from './QuickSearchInput'
 
 const styles = {
     searchContainerMobile: {
-        flex: 5
-    }
+        flex: 5,
+    },
 }
 
-export class QuickSearch extends React.Component<{}, { isOpen }>{
+export class QuickSearch extends React.Component<{}, { isOpen }> {
     constructor(props) {
         super(props)
         this.state = {
-            isOpen: false
+            isOpen: false,
         }
     }
-    onClick = () => {
+    public onClick = () => {
         this.setState({ isOpen: !this.state.isOpen })
     }
-
-    render() {
+    public render() {
         return (
             <MediaQuery minDeviceWidth={700}>
                 {(matches) => {

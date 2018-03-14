@@ -18,5 +18,5 @@ export const resources = {
     USER_IS_ALREADY_REGISTERED: 'The email address you have entered is already registered!',
     CAPTCHA_ERROR: 'Please complete the captcha!',
     OPEN_MENU: 'Open menu',
-    LOGOUT: 'Logout'
+    LOGOUT: 'Logout',
 }

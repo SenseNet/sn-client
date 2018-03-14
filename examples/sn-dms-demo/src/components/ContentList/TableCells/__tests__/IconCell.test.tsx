@@ -1,17 +1,17 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import { IconCell } from '../IconCell';
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
+import { IconCell } from '../IconCell'
 
 it('renders without crashing', () => {
-    const div = document.createElement('div');
+    const div = document.createElement('div')
     ReactDOM.render(<IconCell
         id={1}
         icon="edit"
         selected={false}
-        handleRowDoubleClick={() => { 
+        handleRowDoubleClick={() => {
             //
         }}
-        handleRowSingleClick={() => { 
+        handleRowSingleClick={() => {
             //
-        }} />, div);
-});
+        }} />, div)
+})

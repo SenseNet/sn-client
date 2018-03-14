@@ -1,97 +1,97 @@
-import * as React from 'react'
-import {
-    withRouter
-} from 'react-router-dom'
-import { connect } from 'react-redux';
-import { DMSReducers } from '../../Reducers'
-import MediaQuery from 'react-responsive';
 import {
     TableCell,
-    TableRow
-} from 'material-ui/Table';
+    TableRow,
+} from 'material-ui/Table'
+import * as React from 'react'
+import { connect } from 'react-redux'
+import MediaQuery from 'react-responsive'
+import {
+    withRouter,
+} from 'react-router-dom'
+import * as DMSReducers from '../../Reducers'
 
 const styles = {
     actionMenuButton: {
         width: 30,
-        cursor: 'pointer'
+        cursor: 'pointer',
     },
     checkboxButton: {
         width: 30,
-        cursor: 'pointer'
+        cursor: 'pointer',
     },
     parentDisplayName: {
         width: 30,
         lineHeight: '9px',
         fontFamily: 'roboto',
         fontWeight: 'bold',
-        cursor: 'pointer'
+        cursor: 'pointer',
     },
     loader: {
-        margin: '0 auto'
+        margin: '0 auto',
     },
     displayName: {
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     icon: {
-        verticalAlign: 'middle'
+        verticalAlign: 'middle',
     },
     table: {
-        background: '#fff'
-    }
+        background: '#fff',
+    },
 }
 
-interface IParentFolderTableRow {
+interface ParentFolderTableRowProps {
     history,
     parentId
 }
 
-class ParentFolderTableRow extends React.Component<IParentFolderTableRow, {}>{
+class ParentFolderTableRow extends React.Component<ParentFolderTableRowProps, {}> {
     constructor(props) {
         super(props)
-        this.handleDoubleClick = this.handleDoubleClick.bind(this);
+        this.handleDoubleClick = this.handleDoubleClick.bind(this)
     }
-    handleClick(e, id) { 
-        //TODO
+    public handleClick(e, id) {
+        // TODO
     }
-    handleKeyDown(e, id) { 
-        //TODO
+    public handleKeyDown(e, id) {
+        // TODO
     }
-    handleDoubleClick(e, id) {
+    public handleDoubleClick(e, id) {
         this.props.history.push(`/${id}`)
     }
-    render() {
+    public render() {
         const { parentId } = this.props
         return (
             <MediaQuery minDeviceWidth={700}>
                 {(matches) => {
-                    const padding = matches ? 'none' : 'dense';
+                    const padding = matches ? 'none' : 'dense'
                     return matches ? <TableRow
                         hover
-                        onClick={event => matches ? this.handleClick(event, parentId) : this.handleDoubleClick(event, parentId)}
-                        onKeyDown={event => this.handleKeyDown(event, parentId)}
+                        onClick={(event) => matches ? this.handleClick(event, parentId) : this.handleDoubleClick(event, parentId)}
+                        onKeyDown={(event) => this.handleKeyDown(event, parentId)}
                         tabIndex={-1}
                     >
                         <TableCell padding="checkbox" style={styles.checkboxButton}></TableCell>
                         <TableCell style={styles.parentDisplayName as any}
                             padding={padding}
-                            onDoubleClick={event => this.handleDoubleClick(event, parentId)}>[ ... ]</TableCell>
+                            onDoubleClick={(event) => this.handleDoubleClick(event, parentId)}>[ ... ]</TableCell>
                         <TableCell style={styles.displayName as any}
-                            onDoubleClick={event => this.handleDoubleClick(event, parentId)}></TableCell>
+                            onDoubleClick={(event) => this.handleDoubleClick(event, parentId)}></TableCell>
                         <TableCell
-                            onDoubleClick={event => this.handleDoubleClick(event, parentId)}></TableCell>
+                            onDoubleClick={(event) => this.handleDoubleClick(event, parentId)}></TableCell>
                         <TableCell style={styles.actionMenuButton} padding={padding}></TableCell>
                     </TableRow> :
                         <TableRow
                             hover
-                            onClick={event => matches ? this.handleClick(event, parentId) : this.handleDoubleClick(event, parentId)}
-                            onKeyDown={event => this.handleKeyDown(event, parentId)}
+                            onClick={(event) => matches ? this.handleClick(event, parentId) : this.handleDoubleClick(event, parentId)}
+                            onKeyDown={(event) => this.handleKeyDown(event, parentId)}
                             tabIndex={-1}
                         >
                             <TableCell style={styles.parentDisplayName as any}
                                 padding={padding}
-                                onDoubleClick={event => this.handleDoubleClick(event, parentId)}>[ ... ]</TableCell>
+                                onDoubleClick={(event) => this.handleDoubleClick(event, parentId)}>[ ... ]</TableCell>
                             <TableCell
-                                onDoubleClick={event => this.handleDoubleClick(event, parentId)}></TableCell>
+                                onDoubleClick={(event) => this.handleDoubleClick(event, parentId)}></TableCell>
                             <TableCell style={styles.actionMenuButton} padding={padding}></TableCell>
                         </TableRow>
                 }}
@@ -102,7 +102,7 @@ class ParentFolderTableRow extends React.Component<IParentFolderTableRow, {}>{
 
 const mapStateToProps = (state, match) => {
     return {
-        parentId: DMSReducers.getParentId(state.sensenet)
+        parentId: DMSReducers.getParentId(state.sensenet),
     }
 }
 

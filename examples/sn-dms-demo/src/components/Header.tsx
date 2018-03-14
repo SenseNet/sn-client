@@ -1,12 +1,12 @@
+import AppBar from 'material-ui/AppBar'
+import Toolbar from 'material-ui/Toolbar'
 import * as React from 'react'
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
 import AppBarLogo from '../components/AppBarLogo'
 import { QuickSearch } from '../components/QuickSearch'
 import UserActionMenu from '../components/UserActionMenu'
 
-class Header extends React.Component<{}, {}>{
-    render() {
+class Header extends React.Component<{}, {}> {
+    public render() {
         return (
             <AppBar position="static">
                 <Toolbar>
@@ -19,4 +19,4 @@ class Header extends React.Component<{}, {}>{
     }
 }
 
-export default Header;
+export default Header

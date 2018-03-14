@@ -1,90 +1,43 @@
 {
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
     "rules": {
-        "comment-format": [
-            true
-        ],
-        "indent": [
-            true,
-            "spaces"
-        ],
-        "no-duplicate-variable": true,
-        "no-unused-variable": true,
-        "no-use-before-declare": true,
-        "no-shadowed-variable": true,
-        "no-consecutive-blank-lines": true,
-        "no-empty": true,
-        "no-eval": true,
-        "no-string-literal": true,
-        "no-internal-module": false,
-        "no-var-keyword": true,
-        "one-line": [
-            true,
-            "check-open-brace"
-        ],
-        "triple-equals": [
-            true,
-            "allow-null-check"
-        ],
-        "typedef-whitespace": [
-            true,
-            {
-                "call-signature": "nospace",
-                "index-signature": "nospace",
-                "parameter": "nospace",
-                "property-declaration": "nospace",
-                "variable-declaration": "nospace"
-            }
-        ],
-        "quotemark": [
-            true,
-            "single",
-            "avoid-escape",
-            "jsx-double"
-        ],
-        "variable-name": false,
-        "whitespace": [
-            true,
-            "check-branch",
-            "check-decl",
-            "check-operator",
-            "check-separator",
-            "check-type"
-        ],
-        "max-file-line-count": [
+        "member-ordering": false,
+        "object-literal-sort-keys": [
             false
-        ]
-    },
-    "jsRules": {
-        "indent": [
+        ],        
+        "max-line-length": false,
+        "no-unused-expression": [
             true,
-            "spaces"
-        ],
-        "no-duplicate-variable": true,
-        "no-eval": true,
-        "no-trailing-whitespace": true,
-        "one-line": [
-            true,
-            "check-open-brace",
-            "check-whitespace"
-        ],
-        "semicolon": [
-            false
-        ],
-        "triple-equals": [
-            true,
-            "allow-null-check"
+            "allow-fast-null-checks"
         ],
         "variable-name": [
-            false,
-            "ban-keywords"
-        ],
-        "whitespace": [
             true,
-            "check-branch",
-            "check-decl",
-            "check-operator",
-            "check-separator",
-            "check-type"
-        ]
-    }
+            "ban-keywords",
+            "check-format"
+        ],
+        "completed-docs": [
+            true,
+            {
+                "classes": { "visibilities": ["exported"] },
+                "enums": { "visibilities": ["exported"] },
+                "enum-members": { "visibilities": ["exported"] },
+                "functions": { "visibilities": ["exported"] },
+                "interfaces": { "visibilities": ["exported"] },
+                "properties": { "privacies": ["public", "protected"] },
+                "methods": { "privacies": ["public", "protected"], "tags": { "content": {}, "existence": ["inheritdoc"] } },
+                "types": { "visibilities": ["exported"] },
+                "variables": { "visibilities": ["exported"] }
+            }
+        ],
+        "quotemark": [true, "single", "jsx-double"],
+        "semicolon": [true, "never"],
+        "interface-name": [true, "never-prefix"],
+        "no-console": [false, "log", "error"],
+        "no-unused-variable": [true, {"ignore-pattern": "^_"}]
+    },
+    "rulesDirectory": []
 }

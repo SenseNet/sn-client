@@ -8,9 +8,8 @@
 // import { Repository, Content, ContentTypes } from 'sn-client-js'
 // import { combineReducers } from 'redux'
 // import { Store, Actions, Reducers } from 'sn-redux'
-import 'rxjs'
 
-//const div = document.createElement('div');
+// const div = document.createElement('div');
 
   // const sensenet = Reducers.sensenet;
   // const myReducer = combineReducers({
@@ -22,7 +21,6 @@ import 'rxjs'
   // });
 
 it('renders without crashing', () => {
-  
  // const store = Store.configureStore(myReducer, null, undefined, {}, repository)
 
   // ReactDOM.render(
@@ -31,11 +29,10 @@ it('renders without crashing', () => {
   //       <Sensenet store={store} repository={repository} />
   //     </MemoryRouter>
   //   </Provider>, div);
-});
+})
 
 it('renders without crashing', () => {
-  
-  //const store = Store.configureStore(myReducer, null, undefined, {}, repository)
+  // const store = Store.configureStore(myReducer, null, undefined, {}, repository)
 
   // ReactDOM.render(
   //   <Provider store={store}>
@@ -43,4 +40,4 @@ it('renders without crashing', () => {
   //       <Sensenet store={store} repository={repository} />
   //     </MemoryRouter>
   //   </Provider>, div);
-});
+})

@@ -1,63 +1,62 @@
+import { Reducers } from '@sensenet/redux'
+import MoreVert from 'material-ui-icons/MoreVert'
+import IconButton from 'material-ui/IconButton'
+import { TableCell } from 'material-ui/Table'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { TableCell } from 'material-ui/Table';
-import MoreVert from 'material-ui-icons/MoreVert';
-import IconButton from 'material-ui/IconButton';
-import { Reducers } from 'sn-redux'
-import { DMSActions } from '../../../Actions'
-import { DMSReducers } from '../../../Reducers'
-import MediaQuery from 'react-responsive';
+import MediaQuery from 'react-responsive'
+import * as DMSActions from '../../../Actions'
+import * as DMSReducers from '../../../Reducers'
 
 const styles = {
     actionMenuButton: {
         width: 30,
-        cursor: 'pointer'
+        cursor: 'pointer',
     },
     icon: {
         verticalAlign: 'middle',
-        opacity: 0
+        opacity: 0,
     },
     selectedIcon: {
-        verticalAlign: 'middle'
+        verticalAlign: 'middle',
     },
     hoveredIcon: {
-        verticalAlign: 'middle'
+        verticalAlign: 'middle',
     },
 }
 
-interface IMenuCellProps {
+interface MenuCellProps {
     content,
     actions,
     isHovered: boolean,
     isSelected: boolean,
-    openActionMenu: Function,
-    closeActionMenu: Function,
+    openActionMenu,
+    closeActionMenu,
     actionMenuIsOpen: boolean,
     selectionModeOn: boolean
 }
-interface IMenuCellState {
+interface MenuCellState {
     anchorTop,
     anchorLeft
 }
 
-class MenuCell extends React.Component<IMenuCellProps, IMenuCellState>{
-    handleActionMenuClick(e, content) {
+class MenuCell extends React.Component<MenuCellProps, MenuCellState> {
+    public handleActionMenuClick(e, content) {
         this.props.closeActionMenu()
         this.props.openActionMenu(this.props.actions, content.Id, content.DisplayName, { top: e.currentTarget.offsetTop, left: e.currentTarget.offsetLeft - e.currentTarget.offsetWidth - 100 })
         this.setState({ anchorTop: e.clientY, anchorLeft: e.clientX })
     }
-    render() {
+    public render() {
         const { isSelected, isHovered, content, actionMenuIsOpen, selectionModeOn } = this.props
         return (
             <MediaQuery minDeviceWidth={700}>
                 {(matches) => {
-                    const padding = matches ? 'none' : 'checkbox';
+                    const padding = matches ? 'none' : 'checkbox'
                     return <TableCell style={styles.actionMenuButton}
                         padding={padding}>
                         <IconButton
                             aria-label="Menu"
-                            aria-owns={actionMenuIsOpen}
-                            onClick={event => !selectionModeOn ? this.handleActionMenuClick(event, content) : null}
+                            onClick={(event) => !selectionModeOn ? this.handleActionMenuClick(event, content) : null}
                         >
                             <MoreVert style={
                                 isHovered && !selectionModeOn ? styles.hoveredIcon : styles.icon &&
@@ -80,6 +79,6 @@ const mapStateToProps = (state, match) => {
     }
 }
 export default connect(mapStateToProps, {
-    openActionMenu: DMSActions.OpenActionMenu,
-    closeActionMenu: DMSActions.CloseActionMenu
+    openActionMenu: DMSActions.openActionMenu,
+    closeActionMenu: DMSActions.closeActionMenu,
 })(MenuCell)

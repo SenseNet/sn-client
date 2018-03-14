@@ -1,6 +1,7 @@
 export const icons = {
     File: 'insert_drive_file',
     word: 'insert_drive_file',
+    document: 'insert_drive_file',
     Folder: 'folder',
     SmartFolder: 'folder_shared',
     image: 'photo',
@@ -15,5 +16,5 @@ export const icons = {
     starcontent: 'star',
     edit: 'mode_edit',
     tick: 'done',
-    upload: 'file_upload'
+    upload: 'file_upload',
 }

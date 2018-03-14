@@ -1,49 +1,48 @@
-import * as React from 'react';
-import {
-    withRouter
-} from 'react-router-dom'
+import { GenericContent } from '@sensenet/default-content-types'
+import { Actions } from '@sensenet/redux'
+import Add from 'material-ui-icons/Add'
+import Button from 'material-ui/Button'
+import * as React from 'react'
 import { connect } from 'react-redux'
-import { Actions } from 'sn-redux'
-import { DMSActions } from '../Actions'
-import { DMSReducers } from '../Reducers'
-import { Content } from 'sn-client-js'
-import Button from 'material-ui/Button';
-import Add from 'material-ui-icons/Add';
+import {
+    withRouter,
+} from 'react-router-dom'
+import * as DMSActions from '../Actions'
+import * as DMSReducers from '../Reducers'
 
 const styles = {
     actionButton: {
         color: '#fff',
         position: 'fixed',
         bottom: 10,
-        right: 10
-    }
+        right: 10,
+    },
 }
 
-interface IFloatingActionButton {
+interface FloatingActionButton {
     actionMenuIsOpen: boolean,
-    content: Content,
+    content: GenericContent,
     actions,
-    openActionMenu: Function,
-    closeActionMenu: Function,
-    getActions: Function,
+    openActionMenu,
+    closeActionMenu,
+    getActions,
 }
 
-class FloatingActionButton extends React.Component<IFloatingActionButton, {}> {
+class FloatingActionButton extends React.Component<FloatingActionButton, {}> {
     constructor(props) {
         super(props)
     }
-    handleActionMenuClick(e) {
-        const { content, actions } = this.props;
+    public handleActionMenuClick(e) {
+        const { content, actions } = this.props
         this.props.closeActionMenu()
         this.props.getActions(content, 'New', [{ DisplayName: 'Upload document', Name: 'Upload', Icon: 'upload', CssClass: 'borderTop' }])
         this.props.openActionMenu(actions, content.Id, content.DisplayName, { top: e.clientY - 300, left: e.clientX - 220 })
     }
-    render() {
+    public render() {
         const { actionMenuIsOpen } = this.props
         return (
-            <Button fab color="accent" aria-label="add" style={styles.actionButton as any}
-                aria-owns={actionMenuIsOpen}
-                onClick={event => this.handleActionMenuClick(event)} >
+            <Button variant="fab" color="secondary" aria-label="add" style={styles.actionButton as any}
+                onClick={(event) => this.handleActionMenuClick(event)} >
                 <Add aria-label="Menu" />
             </Button>
         )
@@ -52,11 +51,11 @@ class FloatingActionButton extends React.Component<IFloatingActionButton, {}> {
 
 const mapStateToProps = (state, match) => {
     return {
-        actions: DMSReducers.getActions(state.dms.actionmenu)
+        actions: DMSReducers.getActions(state.dms.actionmenu),
     }
 }
 export default withRouter(connect(mapStateToProps, {
-    openActionMenu: DMSActions.OpenActionMenu,
-    closeActionMenu: DMSActions.CloseActionMenu,
-    getActions: Actions.RequestContentActions,
+    openActionMenu: DMSActions.openActionMenu,
+    closeActionMenu: DMSActions.closeActionMenu,
+    getActions: Actions.loadContentActions,
 })(FloatingActionButton))

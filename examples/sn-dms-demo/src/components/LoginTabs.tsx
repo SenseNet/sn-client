@@ -1,11 +1,11 @@
+import AppBar from 'material-ui/AppBar'
+import createMuiTheme from 'material-ui/styles/createMuiTheme'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import Tabs, { Tab } from 'material-ui/Tabs'
 import * as React from 'react'
 import {
-    withRouter
+    withRouter,
 } from 'react-router-dom'
-import AppBar from 'material-ui/AppBar';
-import Tabs, { Tab } from 'material-ui/Tabs';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import createMuiTheme from 'material-ui/styles/createMuiTheme';
 
 import blue from 'material-ui/colors/blue'
 import pink from 'material-ui/colors/pink'
@@ -13,16 +13,16 @@ import pink from 'material-ui/colors/pink'
 const muiTheme = createMuiTheme({
     palette: {
         primary: blue,
-        secondary: pink
-    }
+        secondary: pink,
+    },
 })
 
 const styles = {
     tabLink: {
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center'
-    }
+        justifyContent: 'center',
+    },
 }
 
 import { resources } from '../assets/resources'
@@ -31,18 +31,18 @@ class LoginTabs extends React.Component<{ history }, { value }> {
     constructor(props) {
         super(props)
         this.state = {
-            value: location.href.indexOf('login') !== -1 ? 0 : 1
+            value: location.href.indexOf('login') !== -1 ? 0 : 1,
         }
         this.handleChange = this.handleChange.bind(this)
     }
-    handleChange = (event, value) => {
-        this.setState({ value });
+    public handleChange = (event, value) => {
+        this.setState({ value })
         return value === 0 ?
             this.props.history.push('/login') :
-            this.props.history.push('/registration');
-    };
-    render() {
-        const { value } = this.state;
+            this.props.history.push('/registration')
+    }
+    public render() {
+        const { value } = this.state
         return (
             <MuiThemeProvider theme={muiTheme}>
                 <div>
@@ -65,4 +65,4 @@ class LoginTabs extends React.Component<{ history }, { value }> {
     }
 }
 
-export default withRouter(LoginTabs);
+export default withRouter(LoginTabs)

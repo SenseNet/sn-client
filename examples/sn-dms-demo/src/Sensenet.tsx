@@ -1,47 +1,47 @@
-import * as React from 'react';
-import './Sensenet.css';
-import 'typeface-roboto'
-import { connect } from 'react-redux';
+import { LoginState } from '@sensenet/client-core'
+import { Actions, Reducers } from '@sensenet/redux'
+import * as React from 'react'
+import { connect } from 'react-redux'
 import {
-  Route,
   Redirect,
-  withRouter
+  Route,
+  withRouter,
 } from 'react-router-dom'
-import { Reducers, Actions } from 'sn-redux'
-import { Authentication } from 'sn-client-js'
+import 'typeface-roboto'
+import * as DMSActions from './Actions'
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import Registration from './pages/Registration'
-import { DMSActions } from './Actions'
+import './Sensenet.css'
 
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import createMuiTheme from 'material-ui/styles/createMuiTheme';
 import lightBlue from 'material-ui/colors/lightBlue'
 import pink from 'material-ui/colors/pink'
+import createMuiTheme from 'material-ui/styles/createMuiTheme'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 const muiTheme = createMuiTheme({
   palette: {
     primary: lightBlue,
-    secondary: pink
-  }
+    secondary: pink,
+  },
 })
 
-interface ISensenetProps {
+interface SensenetProps {
   repository,
   history,
   loginState,
   loggedinUser,
   loginError: string,
   registrationError: string,
-  login: Function,
-  registration: Function,
-  recaptchaCallback: Function,
-  clearRegistration: Function
+  login,
+  registration,
+  recaptchaCallback,
+  clearRegistration
 }
 
-class Sensenet extends React.Component<ISensenetProps, { isAuthenticated: boolean, params, loginError, registrationError }> {
-  public name: string = '';
-  public password: string = '';
+class Sensenet extends React.Component<SensenetProps, { isAuthenticated: boolean, params, loginError, registrationError }> {
+  public name: string = ''
+  public password: string = ''
 
   constructor(props, context) {
     super(props, context)
@@ -50,10 +50,10 @@ class Sensenet extends React.Component<ISensenetProps, { isAuthenticated: boolea
       params: this.props,
       isAuthenticated: false,
       loginError: this.props.loginError || '',
-      registrationError: this.props.loginError || ''
+      registrationError: this.props.loginError || '',
     }
   }
-  render() {
+  public render() {
     return (
 
       <MuiThemeProvider theme={muiTheme}>
@@ -61,35 +61,34 @@ class Sensenet extends React.Component<ISensenetProps, { isAuthenticated: boolea
           <Route
             exact
             path="/"
-            render={routerProps => {
-              const status = this.props.loginState !== Authentication.LoginState.Authenticated;
-              return status ?
-                <Redirect key="login" to="/login" />
-                : <Dashboard {...routerProps} />;
+            render={(routerProps) => {
+              const status = this.props.loginState === LoginState.Unauthenticated
+              return status ? <Redirect key="login" to="/login" /> :
+              <Dashboard {...routerProps} />
             }}
           />
           <Route
             path="/login"
-            render={routerProps => {
-              const status = this.props.loginState !== Authentication.LoginState.Authenticated;
+            render={(routerProps) => {
+              const status = this.props.loginState === LoginState.Authenticated
               return status ?
+                <Redirect key="dashboard" to="/" /> :
                 <Login login={this.props.login} params={{ error: this.props.loginError }} clear={this.props.clearRegistration} />
-                : <Redirect key="dashboard" to="/" />
             }}
           />
           <Route
             path="/registration"
             render={() => <Registration registration={this.props.registration} history={history} verify={this.props.recaptchaCallback} />} />
           <Route path="/:id"
-            render={routerProps => {
-              const status = this.props.loginState !== Authentication.LoginState.Authenticated;
+            render={(routerProps) => {
+              const status = this.props.loginState !== LoginState.Authenticated
               return status ?
                 <Redirect key="login" to="/login" />
-                : <Dashboard {...routerProps} />;
+                : <Dashboard {...routerProps} />
             }} />
         </div>
       </MuiThemeProvider>
-    );
+    )
   }
 }
 
@@ -97,14 +96,14 @@ const mapStateToProps = (state, match) => {
   return {
     loginState: Reducers.getAuthenticationStatus(state.sensenet),
     loginError: Reducers.getAuthenticationError(state.sensenet),
-    registrationError: ''
+    registrationError: '',
   }
 }
 
-const userLogin = Actions.UserLogin;
-const userRegistration = DMSActions.UserRegistration;
-const verifyCaptcha = DMSActions.VerifyCaptchaSuccess;
-const clearReg = DMSActions.ClearRegistration;
+const userLogin = Actions.userLogin
+const userRegistration = DMSActions.userRegistration
+const verifyCaptcha = DMSActions.verifyCaptchaSuccess
+const clearReg = DMSActions.clearRegistration
 
 export default withRouter(connect(
   mapStateToProps,
@@ -112,5 +111,5 @@ export default withRouter(connect(
     login: userLogin,
     registration: userRegistration,
     recaptchaCallback: verifyCaptcha,
-    clearRegistration: clearReg
-  })(Sensenet));
+    clearRegistration: clearReg,
+  })(Sensenet))

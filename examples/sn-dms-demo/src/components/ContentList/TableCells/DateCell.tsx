@@ -1,27 +1,27 @@
+import { Actions, Reducers } from '@sensenet/redux'
+import { TableCell } from 'material-ui/Table'
 import * as React from 'react'
-import Moment from 'react-moment';
-import { connect } from 'react-redux'
-import { Actions, Reducers } from 'sn-redux'
-import { DragSource } from 'react-dnd';
+import { DragSource } from 'react-dnd'
 import { DropTarget } from 'react-dnd'
-import { DragAndDrop } from '../../../DragAndDrop'
-import { TableCell } from 'material-ui/Table';
+import Moment from 'react-moment'
+import { connect } from 'react-redux'
+import * as DragAndDrop from '../../../DragAndDrop'
 
 const styles = {
     cellPadding: {
-        padding: '16px 24px'
-    }
+        padding: '16px 24px',
+    },
 }
 
-interface IDateCellProps {
+interface DateCellProps {
     date,
     content,
-    handleRowSingleClick: Function,
-    handleRowDoubleClick: Function,
-    connectDragSource: Function,
-    connectDropTarget: Function,
-    copyBatch: Function,
-    moveBatch: Function,
+    handleRowSingleClick,
+    handleRowDoubleClick,
+    connectDragSource,
+    connectDropTarget,
+    copyBatch,
+    moveBatch,
     isDragging: boolean,
     isCopy: boolean,
     selected,
@@ -34,25 +34,25 @@ interface IDateCellProps {
     canDrop: monitor.canDrop(),
 }))
 @DragSource('row', DragAndDrop.rowSource, DragAndDrop.collect)
-class DateCell extends React.Component<IDateCellProps, {}>{
+class DateCell extends React.Component<DateCellProps, {}> {
     constructor(props) {
         super(props)
     }
-    render() {
+    public render() {
         const { content, date, handleRowSingleClick, handleRowDoubleClick, connectDragSource, connectDropTarget, isCopy } = this.props
         const dropEffect = isCopy ? 'copy' : 'move'
         const isVmi = true
         return (
             <TableCell
                 padding="none"
-                onClick={event => handleRowSingleClick(event, content.Id)}
-                onDoubleClick={event => handleRowDoubleClick(event, content.Id)}>
+                onClick={(event) => handleRowSingleClick(event, content.Id)}
+                onDoubleClick={(event) => handleRowDoubleClick(event, content.Id)}>
                 {!isVmi ? null : connectDragSource(connectDropTarget(<div style={styles.cellPadding}>
                     <Moment fromNow>
                         {date}
                     </Moment>
-                </div>
-                ), { dropEffect: dropEffect })}
+                </div>,
+                ), { dropEffect })}
             </TableCell>
         )
     }
@@ -61,11 +61,11 @@ class DateCell extends React.Component<IDateCellProps, {}>{
 const mapStateToProps = (state, match) => {
     return {
         selected: Reducers.getSelectedContentIds(state.sensenet),
-        selectedContentItems: Reducers.getSelectedContentItems(state.sensenet)
+        selectedContentItems: Reducers.getSelectedContentItems(state.sensenet),
     }
 }
 
 export default connect(mapStateToProps, {
-    copyBatch: Actions.CopyBatch,
-    moveBatch: Actions.MoveBatch
+    copyBatch: Actions.copyBatch,
+    moveBatch: Actions.moveBatch,
 })(DateCell)

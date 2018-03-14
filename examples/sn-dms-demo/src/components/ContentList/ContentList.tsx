@@ -1,40 +1,40 @@
 
-import * as React from 'react'
-import { Key } from 'ts-keycode-enum';
-import { connect } from 'react-redux';
-import MediaQuery from 'react-responsive';
-import { Actions, Reducers } from 'sn-redux'
-import { DMSReducers } from '../../Reducers'
-import { DMSActions } from '../../Actions'
-import { DropTarget } from 'react-dnd'
-import {
-    withRouter
-} from 'react-router-dom'
+import { Actions, Reducers } from '@sensenet/redux'
+import Paper from 'material-ui/Paper'
+import { CircularProgress } from 'material-ui/Progress'
 import Table, {
-    TableBody
-} from 'material-ui/Table';
-import Paper from 'material-ui/Paper';
-import { CircularProgress } from 'material-ui/Progress';
-import { ListHead } from './ListHead'
-import SimpleTableRow from './SimpleTableRow'
-import { SharedItemsTableRow } from './SharedItemsTableRow'
-import ParentFolderTableRow from './ParentFolderTableRow'
+    TableBody,
+} from 'material-ui/Table'
+import * as React from 'react'
+import { DropTarget } from 'react-dnd'
+import { connect } from 'react-redux'
+import MediaQuery from 'react-responsive'
+import {
+    withRouter,
+} from 'react-router-dom'
+import { Key } from 'ts-keycode-enum'
+import * as DMSActions from '../../Actions'
+import * as DragAndDrop from '../../DragAndDrop'
+import * as DMSReducers from '../../Reducers'
 import ActionMenu from '../ActionMenu/ActionMenu'
 import SelectionBox from '../SelectionBox'
-import { DragAndDrop } from '../../DragAndDrop'
+import { ListHead } from './ListHead'
+import ParentFolderTableRow from './ParentFolderTableRow'
+import { SharedItemsTableRow } from './SharedItemsTableRow'
+import SimpleTableRow from './SimpleTableRow'
 
 const styles = {
     paper: {
         width: '100%',
-        overflow: 'hidden'
+        overflow: 'hidden',
     },
     tableBody: {
-        background: '#fff'
+        background: '#fff',
     },
     loader: {
         textAlign: 'center',
-        padding: 60
-    }
+        padding: 60,
+    },
 }
 
 interface ContentListProps {
@@ -49,20 +49,20 @@ interface ContentListProps {
     rootId: number,
     isFetching: boolean,
     isLoading: boolean,
-    select: Function,
-    deselect: Function,
-    clearSelection: Function,
-    delete: Function,
-    deleteBatch: Function,
-    copyBatch: Function,
-    moveBatch: Function,
-    selectionModeOn: Function,
-    selectionModeOff: Function,
+    select,
+    deselect,
+    clearSelection,
+    deleteContent,
+    deleteBatch,
+    copyBatch,
+    moveBatch,
+    selectionModeOn,
+    selectionModeOff,
     selectionModeIsOn: boolean,
-    connectDropTarget: Function,
+    connectDropTarget,
     isOver: boolean,
     canDrop: boolean,
-    onDrop: Function,
+    onDrop,
     accepts: string[],
 }
 
@@ -76,7 +76,7 @@ interface ContentListState {
     copy
 }
 
-@DropTarget(props => props.accepts, DragAndDrop.uploadTarget, (conn, monitor) => ({
+@DropTarget((props) => props.accepts, DragAndDrop.uploadTarget, (conn, monitor) => ({
     connectDropTarget: conn.dropTarget(),
     isOver: monitor.isOver(),
     canDrop: monitor.canDrop(),
@@ -91,8 +91,8 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
             ids: this.props.ids,
             selected: [],
             active: null,
-            copy: false
-        };
+            copy: false,
+        }
         this.handleRowSingleClick = this.handleRowSingleClick.bind(this)
         this.handleRowDoubleClick = this.handleRowDoubleClick.bind(this)
         this.handleKeyDown = this.handleKeyDown.bind(this)
@@ -100,82 +100,81 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
         this.handleTap = this.handleTap.bind(this)
     }
 
-    componentDidUpdate(prevOps) {
+    public componentDidUpdate(prevOps) {
         if (this.props.edited !== prevOps.edited) {
             this.setState({
-                data: this.props.children
+                data: this.props.children,
             })
         }
 
         if (this.props.selected.length > 0 && !prevOps.selectionModeIsOn) {
             this.props.selectionModeOn()
-        }
-        else if (this.props.selected.length === 0 && prevOps.selectionModeIsOn) {
+        } else if (this.props.selected.length === 0 && prevOps.selectionModeIsOn) {
             this.props.selectionModeOff()
         }
     }
-    componentWillReceiveProps(nextProps) {
+    public componentWillReceiveProps(nextProps) {
         if (this.props.ids.length !== nextProps.ids.length) {
 
             this.setState({
-                data: nextProps.children
+                data: nextProps.children,
             })
         }
     }
-    handleRowSingleClick(e, content, m) {
-        const { ids, selected } = this.props;
+    public handleRowSingleClick(e, content, m) {
+        const { ids, selected } = this.props
         if (e.shiftKey) {
             e.preventDefault()
-            const from = ids.indexOf(selected[selected.length - 1]);
-            const till = ids.indexOf(Number(e.target.closest('tr').id));
-            if (from < till)
+            const from = ids.indexOf(selected[selected.length - 1])
+            const till = ids.indexOf(Number(e.target.closest('tr').id))
+            if (from < till) {
                 ids.map((elId, i) => {
                     if (i > from && i < till + 1) {
                         this.handleSimpleSelection(this.props.children[elId])
                     }
                 })
-            else
+            } else {
                 for (let i = ids.length - 1; i > -1; i--) {
                     if (i < from && i > till - 1) {
                         this.handleSimpleSelection(this.props.children[ids[i]])
                     }
                 }
-        }
-        else if (e.ctrlKey) {
+            }
+        } else if (e.ctrlKey) {
             this.handleSimpleSelection(content)
-        }
-        else {
+        } else {
             e.target.getAttribute('type') !== 'checkbox' && window.innerWidth >= 700 ?
                 this.handleSingleSelection(content) :
                 this.handleSimpleSelection(content)
         }
     }
-    handleRowDoubleClick(e, id, type) {
-        if (type === 'Folder'){
+    public handleRowDoubleClick(e, id, type) {
+        if (type === 'Folder') {
             this.props.history.push(`/${id}`)
             this.props.deselect(this.props.children[id])
-        }
-        else
+        } else {
             console.log('open preview')
+        }
     }
-    handleKeyDown(e) {
-        const ctrl = e.ctrlKey ? true : false;
-        const shift = e.shiftKey ? true : false;
+    public handleKeyDown(e) {
+        const ctrl = e.ctrlKey ? true : false
+        const shift = e.shiftKey ? true : false
         const { children, ids } = this.props
 
-        if (ctrl)
+        if (ctrl) {
             this.setState({
-                copy: true
+                copy: true,
             })
+        }
 
-        if (e.target.getAttribute('type') === 'text')
+        if (e.target.getAttribute('type') === 'text') {
             return null
-        else {
+        } else {
             const id = Number(e.target.closest('tr').id)
             if (id !== 0) {
-                const type = children[id]._type
+                const type = children[id].Type
                 this.setState({
-                    active: id
+                    active: id,
                 })
                 switch (e.which) {
                     case Key.Space:
@@ -191,6 +190,7 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
                             const upperItemIndex = ids.indexOf(Number(this.state.active)) - 1
                             upperItemIndex > -1 ?
                                 this.handleSimpleSelection(children[ids[upperItemIndex]]) :
+                                // tslint:disable-next-line:no-unused-expression
                                 null
                         }
                         break
@@ -199,13 +199,14 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
                             const upperItemIndex = ids.indexOf(Number(this.state.active)) + 1
                             upperItemIndex < ids.length ?
                                 this.handleSimpleSelection(children[ids[upperItemIndex]]) :
+                                // tslint:disable-next-line:no-unused-expression
                                 null
                         }
                         break
                     case Key.Delete:
-                        const permanent = shift ? true : false;
+                        const permanent = shift ? true : false
                         if (this.props.selected.length > 0) {
-                            this.props.deleteBatch(this.props.selectedContentItems, permanent)
+                            this.props.deleteBatch(this.props.selected, permanent)
                             this.props.clearSelection()
                         }
                         break
@@ -221,72 +222,74 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
             }
         }
     }
-    handleKeyUp(e) {
-        const ctrl = e.ctrlKey ? true : false;
-        if (!ctrl)
+    public handleKeyUp(e) {
+        const ctrl = e.ctrlKey ? true : false
+        if (!ctrl) {
             this.setState({
-                copy: false
+                copy: false,
             })
+        }
     }
-    handleSimpleSelection(content) {
+    public handleSimpleSelection(content) {
         this.props.selected.indexOf(content.Id) > -1 ?
             this.props.deselect(content) :
             this.props.select(content)
 
-        const { selected } = this.state;
-        const selectedIndex = selected.indexOf(content.Id);
-        let newSelected = [];
+        const { selected } = this.state
+        const selectedIndex = selected.indexOf(content.Id)
+        let newSelected = []
         if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, content.Id);
+            newSelected = newSelected.concat(selected, content.Id)
         } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
+            newSelected = newSelected.concat(selected.slice(1))
         } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
+            newSelected = newSelected.concat(selected.slice(0, -1))
         } else if (selectedIndex > 0) {
             newSelected = newSelected.concat(
                 selected.slice(0, selectedIndex),
                 selected.slice(selectedIndex + 1),
-            );
+            )
         }
 
-        this.setState({ selected: newSelected, active: content.Id });
+        this.setState({ selected: newSelected, active: content.Id })
     }
-    handleSingleSelection(content) {
+    public handleSingleSelection(content) {
         this.props.clearSelection()
         this.props.select(content)
-        this.setState({ selected: [content.Id], active: content.Id });
+        this.setState({ selected: [content.Id], active: content.Id })
     }
-    handleRequestSort = (event, property) => {
+    public handleRequestSort = (event, property) => {
         // TODO: implement sorting
-    };
-    handleSelectAllClick = (event, checked) => {
+    }
+    public handleSelectAllClick = (event, checked) => {
         if (checked) {
-            this.setState({ selected: this.props.ids });
-            this.props.ids.map(id => this.props.selected.indexOf(id) > -1 ? null : this.props.select(this.props.children[id]))
-            return;
+            this.setState({ selected: this.props.ids })
+            this.props.ids.map((id) => this.props.selected.indexOf(id) > -1 ? null : this.props.select(this.props.children[id]))
+            return
         }
-        this.setState({ selected: [] });
-        this.props.ids.map(id => { this.props.deselect(this.props.children[id]) })
-    };
-    handleTap(e, id, type) {
-        if (type === 'Folder')
+        this.setState({ selected: [] })
+        this.props.ids.map((id) => { this.props.deselect(this.props.children[id]) })
+    }
+    public handleTap(e, id, type) {
+        if (type === 'Folder') {
             this.props.history.push(`/${id}`)
-        else
+        } else {
             console.log('open preview')
+        }
     }
-    isChildrenFolder() {
-        let urlArray = location.href.split('/')
-        let id = parseInt(urlArray[urlArray.length - 1]);
-        return !isNaN(id) && isFinite(id) && id !== this.props.rootId;
+    public isChildrenFolder() {
+        const urlArray = location.href.split('/')
+        const id = parseInt(urlArray[urlArray.length - 1], 10)
+        return !isNaN(id) && isFinite(id) && id !== this.props.rootId
     }
-    render() {
+    public render() {
         const { connectDropTarget } = this.props
         return connectDropTarget(
             <div>
                 <Paper style={styles.paper as any}>
                     <Table
-                        onKeyDown={event => this.handleKeyDown(event)}
-                        onKeyUp={event => this.handleKeyUp(event)}>
+                        onKeyDown={(event) => this.handleKeyDown(event)}
+                        onKeyUp={(event) => this.handleKeyUp(event)}>
                         <MediaQuery minDeviceWidth={700}>
                             <ListHead
                                 numSelected={this.state.selected.length}
@@ -305,19 +308,18 @@ class ContentList extends React.Component<ContentListProps, ContentListState> {
                             {this.props.isFetching || this.props.isLoading ?
                                 <tr>
                                     <td colSpan={5} style={styles.loader}>
-                                        <CircularProgress color="accent" size={50} />
+                                        <CircularProgress color="secondary" size={50} />
                                     </td>
                                 </tr>
-                                : this.props.ids.map(n => {
-                                    let content = this.props.children[n];
-
+                                : this.props.ids.map((n) => {
+                                    const content = this.props.children[n]
                                     return typeof content !== 'undefined' ? (
                                         <SimpleTableRow
                                             content={content}
                                             key={content.Id}
                                             handleRowDoubleClick={this.handleRowDoubleClick}
                                             handleRowSingleClick={this.handleRowSingleClick}
-                                            handleTap={e => this.handleTap(e, content.Id, content._type )}
+                                            handleTap={(e) => this.handleTap(e, content.Id, content.Type )}
                                             isCopy={this.state.copy} />
                                     ) : null
                                 })
@@ -341,17 +343,17 @@ const mapStateToProps = (state, match) => {
         isFetching: Reducers.getFetching(state.sensenet.children),
         isLoading: DMSReducers.getLoading(state.dms),
         edited: DMSReducers.getEditedItemId(state.dms),
-        selectionModeIsOn: DMSReducers.getIsSelectionModeOn(state.dms)
+        selectionModeIsOn: DMSReducers.getIsSelectionModeOn(state.dms),
     }
 }
 export default withRouter(connect(mapStateToProps, {
-    select: Actions.SelectContent,
-    deselect: Actions.DeSelectContent,
-    clearSelection: Actions.ClearSelection,
-    delete: Actions.Delete,
-    deleteBatch: Actions.DeleteBatch,
-    copyBatch: Actions.CopyBatch,
-    moveBatch: Actions.MoveBatch,
-    selectionModeOn: DMSActions.SelectionModeOn,
-    selectionModeOff: DMSActions.SelectionModeOff
+    select: Actions.selectContent,
+    deselect: Actions.deSelectContent,
+    clearSelection: Actions.clearSelection,
+    delete: Actions.deleteContent,
+    deleteBatch: Actions.deleteBatch,
+    copyBatch: Actions.copyBatch,
+    moveBatch: Actions.moveBatch,
+    selectionModeOn: DMSActions.selectionModeOn,
+    selectionModeOff: DMSActions.selectionModeOff,
 })(ContentList))

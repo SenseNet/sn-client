@@ -1,19 +1,19 @@
-import * as React from 'react'
+import Checkbox from 'material-ui/Checkbox'
 import {
     TableCell,
     TableHead,
     TableRow,
     TableSortLabel,
-} from 'material-ui/Table';
-import Checkbox from 'material-ui/Checkbox';
+} from 'material-ui/Table'
+import * as React from 'react'
 
 const columnData = [
     { id: 'Icon', numeric: false, disablePadding: true, label: 'Type' },
     { id: 'DisplayName', numeric: false, disablePadding: false, label: 'Display Name' },
     { id: 'ModificationDate', numeric: false, disablePadding: false, label: 'Last modified' },
-];
+]
 
-interface IListHeadProps {
+interface ListHeadProps {
     numSelected,
     onRequestSort,
     onSelectAllClick,
@@ -22,14 +22,12 @@ interface IListHeadProps {
     count
 }
 
-export class ListHead extends React.Component<IListHeadProps, {}> {
-
-    createSortHandler = property => event => {
-        this.props.onRequestSort(event, property);
-    };
-
-    render() {
-        const { onSelectAllClick, order, orderBy, numSelected } = this.props;
+export class ListHead extends React.Component<ListHeadProps, {}> {
+    public createSortHandler = (property) => (event) => {
+        this.props.onRequestSort(event, property)
+    }
+    public render() {
+        const { onSelectAllClick, order, orderBy, numSelected } = this.props
 
         return (
             <TableHead>
@@ -41,7 +39,7 @@ export class ListHead extends React.Component<IListHeadProps, {}> {
                                 onChange={onSelectAllClick}
                             />
                         </TableCell>
-                    {columnData.map(column => {
+                    {columnData.map((column) => {
                         return (
                             <TableCell
                                 key={column.id}
@@ -56,12 +54,12 @@ export class ListHead extends React.Component<IListHeadProps, {}> {
                                     {column.label}
                                 </TableSortLabel>
                             </TableCell>
-                        );
+                        )
                     }, this)}
                     <TableCell>
                     </TableCell>
                 </TableRow>
             </TableHead>
-        );
+        )
     }
 }

@@ -1,58 +1,56 @@
+import { Reducers } from '@sensenet/redux'
+import MoreVert from 'material-ui-icons/MoreVert'
+import IconButton from 'material-ui/IconButton'
+import Snackbar, { SnackbarContent } from 'material-ui/Snackbar'
+import { withStyles } from 'material-ui/styles'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { Reducers } from 'sn-redux'
-import { DMSActions } from '../Actions'
-import Snackbar, { SnackbarContent } from 'material-ui/Snackbar';
-import MoreVert from 'material-ui-icons/MoreVert';
-import IconButton from 'material-ui/IconButton';
-import { withStyles } from 'material-ui/styles';
+import * as DMSActions from '../Actions'
 
-const styles = theme => ({
+const styles = (theme) => ({
     button: {
       color: '#fff',
     },
-  });
+  })
 
 const batchActions = [
     {
         DisplayName : 'Copy selected',
         Icon: 'copy',
-        Name: 'CopyBatch'
+        Name: 'CopyBatch',
     },
     {
         DisplayName : 'Move selected',
         Icon: 'move',
-        Name: 'MoveBatch'
+        Name: 'MoveBatch',
     },
     {
         DisplayName : 'Delete selected',
         Icon: 'delete',
-        Name: 'DeleteBatch'
+        Name: 'DeleteBatch',
     },
     {
         DisplayName : 'Clear selection',
         Icon: 'clear',
-        Name: 'ClearSelection'
-    }
+        Name: 'ClearSelection',
+    },
 ]
 
-interface ISelectionBoxProps {
+interface SelectionBoxProps {
     selected,
     classes,
-    openActionMenu: Function
-}
-interface ISelectionBoxState {
+    openActionMenu
 }
 
-class SelectionBox extends React.Component<ISelectionBoxProps, ISelectionBoxState> {
+class SelectionBox extends React.Component<SelectionBoxProps, {}> {
     constructor(props) {
         super(props)
     }
-    handleClick(e) { 
+    public handleClick(e) {
         const rect = e.currentTarget.getBoundingClientRect()
         this.props.openActionMenu(batchActions, this.props.selected, `${this.props.selected.length} Items selected`, { top: rect.top - 200, left: rect.left })
     }
-    render() {
+    public render() {
         const { selected, classes } = this.props
         const count = selected.length
         return <Snackbar
@@ -66,7 +64,7 @@ class SelectionBox extends React.Component<ISelectionBoxProps, ISelectionBoxStat
                 action={
                     <IconButton
                         aria-label="Menu"
-                        onClick={event => this.handleClick(event)}
+                        onClick={(event) => this.handleClick(event)}
                         className={classes.button}
                     >
                         <MoreVert  />
@@ -79,10 +77,10 @@ class SelectionBox extends React.Component<ISelectionBoxProps, ISelectionBoxStat
 
 const mapStateToProps = (state, match) => {
     return {
-        selected: Reducers.getSelectedContentIds(state.sensenet)
+        selected: Reducers.getSelectedContentIds(state.sensenet),
     }
 }
 
 export default connect(mapStateToProps, {
-    openActionMenu: DMSActions.OpenActionMenu
+    openActionMenu: DMSActions.openActionMenu,
 })(withStyles(styles)(SelectionBox))
