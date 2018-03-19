@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@sensenet/authentication-google": "^2.0.0",
-    "@sensenet/client-core": "^1.0.0",
+    "@sensenet/client-core": "^1.0.2",
     "@sensenet/redux": "^4.0.0",
     "@sensenet/repository-events": "^1.0.0",
     "@types/jest": "^22.0.1",
@@ -74,7 +74,7 @@
     "ts-loader": "^3.5.0",
     "typeface-roboto": "0.0.54",
     "url-loader": "1.0.1",
-    "webpack-dev-server": "^2.11.1",
+    "webpack-dev-server": "2.11.1",
     "webpack-manifest-plugin": "2.0.0-rc.2",
     "whatwg-fetch": "2.0.3"
   },
@@ -89,7 +89,7 @@
     "tslint": "^5.2.0",
     "tslint-loader": "^3.5.3",
     "typescript": "~2.7.2",
-    "webpack": "^3.11.0"
+    "webpack": "3.11.0"
   },
   "scripts": {
     "start": "node scripts/start.js",
