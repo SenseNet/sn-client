@@ -63,7 +63,7 @@
   },
   "typings": "./dist/index.d.ts",
   "devDependencies": {
-    "@sensenet/client-core": "^1.0.0",
+    "@sensenet/client-core": "^1.0.2",
     "@types/chai": "^4.1.2",
     "@types/jsdom": "^11.0.4",
     "@types/mocha": "^2.2.48",
