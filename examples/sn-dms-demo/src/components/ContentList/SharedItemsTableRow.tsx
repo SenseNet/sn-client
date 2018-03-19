@@ -68,7 +68,7 @@ export class SharedItemsTableRow extends React.Component<SharedItemsTableRowProp
                 <MediaQuery minDeviceWidth={700}>
                     {(matches) => {
                         const padding = matches ? 'none' : 'dense'
-                        return <TableCell style={styles.typeIcon} padding={padding}><Icon color="secondary">{icons.SmartFolder}</Icon></TableCell>
+                        return <TableCell style={styles.typeIcon} padding={padding}><Icon color="secondary">{icons.smartfolder}</Icon></TableCell>
                     }}
                 </MediaQuery>
                 <TableCell style={styles.displayName as any}>Shared items</TableCell>

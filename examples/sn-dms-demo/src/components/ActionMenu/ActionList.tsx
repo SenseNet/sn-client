@@ -19,10 +19,8 @@ const styles = {
     actionMenuItem: {
         listStyleType: 'none',
         color: 'rgba(0, 0, 0, 0.87)',
-        height: '24px',
         overflow: 'hidden',
         fontSize: '13px',
-        boxSizing: 'content-box',
         background: 'none',
         lineHeight: '24px',
         fontWeight: 400,
@@ -145,7 +143,7 @@ class ActionList extends React.Component<ActionListProps, ActionListState> {
             style={styles.actionMenuList as any}
         >
             {this.props.actions.map((action, index) => {
-                const isHovered = this.isHovered(action.Name)
+                const isHovered = this.isHovered(`${action.Name}-${index}`)
                 let inner = null
                 if (action.Name === 'Upload') {
                     inner = <div style={styles.uploadContainer}>
@@ -174,9 +172,9 @@ class ActionList extends React.Component<ActionListProps, ActionListState> {
                         key={`${action.Name}-${index}`}
                         role="menuitem"
                         style={isHovered ? { ...styles.actionMenuItem, ...styles.selectedActionMenuItem } : styles.actionMenuItem as any}
-                        onMouseEnter={(event) => this.handleMouseEnter(event, action.Name)}
+                        onMouseEnter={(event) => this.handleMouseEnter(event, `${action.Name}-${index}`)}
                         onMouseLeave={(event) => this.handleMouseLeave()}
-                        onClick={(event) => this.handleMenuItemClick(event, action.Name)}
+                        onClick={(event) => this.handleMenuItemClick(event, `${action.Name}-${index}`)}
                         onMouseDown={(event) => this.props.handleMouseDown(event)}
                         onMouseUp={(event) => this.props.handleMouseUp(event)} >
 

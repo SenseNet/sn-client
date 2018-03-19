@@ -1,9 +1,11 @@
 export const icons = {
     File: 'insert_drive_file',
     word: 'insert_drive_file',
+    powerpoint: 'insert_drive_file',
     document: 'insert_drive_file',
-    Folder: 'folder',
-    SmartFolder: 'folder_shared',
+    excel: 'insert_drive_file',
+    folder: 'folder',
+    smartfolder: 'folder_shared',
     image: 'photo',
     rename: 'text_fields',
     copy: 'content_copy',
