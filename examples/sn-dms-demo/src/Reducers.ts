@@ -66,8 +66,8 @@ export const register = combineReducers({
 
 export const actions = (state = [], action) => {
     switch (action.type) {
-        case 'REQUEST_CONTENT_ACTIONS_SUCCESS':
-            return action.payload
+        case 'LOAD_CONTENT_ACTIONS_SUCCESS':
+            return action.payload.d.Actions
         case 'OPEN_ACTIONMENU':
             return action.actions
         default:
@@ -162,14 +162,14 @@ export const editedFirst = (state = false, action) => {
 export const breadcrumb = (state = [], action) => {
     switch (action.type) {
         case 'LOAD_CONTENT_SUCCESS':
-            if (action.payload.d.Path.indexOf('Default_Site') === -1 && state.filter((e) => e.id === action.payload.Id).length === 0) {
+            if (action.payload.d.Path.indexOf('Default_Site') === -1 && state.filter((e) => e.id === action.payload.d.Id).length === 0) {
                 const element = {
                     name: action.payload.d.DisplayName,
                     id: action.payload.d.Id,
                     path: action.payload.d.Path,
                 }
                 return [...state, element]
-            } else if (state.filter((e) => e.id === action.payload.d.Id).length !== 0) {
+            } else if (state.filter((e) => e.id === action.payload.d.Id).length > 0) {
                 const index = state.findIndex((e) => e.id === action.payload.d.Id)
                 return [...state.slice(0, index - 1)]
             } else {

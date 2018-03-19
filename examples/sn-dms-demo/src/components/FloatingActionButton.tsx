@@ -35,7 +35,7 @@ class FloatingActionButton extends React.Component<FloatingActionButton, {}> {
     public handleActionMenuClick(e) {
         const { content, actions } = this.props
         this.props.closeActionMenu()
-        this.props.getActions(content, 'New', [{ DisplayName: 'Upload document', Name: 'Upload', Icon: 'upload', CssClass: 'borderTop' }])
+        this.props.getActions(content.Id, 'New', [{ DisplayName: 'Upload document', Name: 'Upload', Icon: 'upload', CssClass: 'borderTop' }])
         this.props.openActionMenu(actions, content.Id, content.DisplayName, { top: e.clientY - 300, left: e.clientX - 220 })
     }
     public render() {

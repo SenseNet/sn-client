@@ -1,13 +1,37 @@
+import { Repository } from '@sensenet/client-core'
+import { promiseMiddleware } from '@sensenet/redux-promise-middleware'
+import * as configureStore from 'redux-mock-store'
 import * as DMSActions from '../Actions'
 
+const registrationMockResponse = {
+    ok: true,
+    status: 200,
+    json: async () => {
+        return {
+            d: {
+                email: 'alba@sensenet.com',
+                password: 'alba',
+            },
+        }
+    },
+} as Response
+
 describe('UserRegistration', () => {
+    // tslint:disable-next-line:variable-name
+    let _store
+    let repo
+    beforeEach(() => {
+        repo = new Repository({ repositoryUrl: 'https://dmsservice.demo.sensenet.com/' }, async () => registrationMockResponse)
+        const mockStore = configureStore([promiseMiddleware(repo)])
+        _store = mockStore({})
+    })
     it('should create an action to request user registration', () => {
         const expectedAction = {
             type: 'USER_REGISTRATION_REQUEST',
             email: 'alba@sensenet.com',
             password: 'alba',
         }
-        expect(DMSActions.userRegistration('alba@sensenet.com', 'alba')).toEqual(expectedAction)
+        expect(DMSActions.userRegistration('alba@sensenet.com', 'alba').type).toEqual('USER_REGISTRATION_REQUEST')
     })
 })
 

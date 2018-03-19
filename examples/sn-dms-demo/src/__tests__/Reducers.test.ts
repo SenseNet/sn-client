@@ -72,17 +72,24 @@ describe('actions reducer', () => {
         expect(DMSReducers.actions(undefined, {})).toEqual([])
     })
     it('should return the actionlist from the response', () => {
-        const actions = [
-            'Move',
-            'Copy',
-        ]
-        expect(DMSReducers.actions(undefined, { type: 'REQUEST_CONTENT_ACTIONS_SUCCESS', response: actions })).toEqual(['Move', 'Copy'])
+        const payload = {
+            d: {
+                Actions: [
+                    'Move',
+                    'Copy',
+                ],
+            },
+        }
+        expect(DMSReducers.actions(undefined, {
+            type: 'LOAD_CONTENT_ACTIONS_SUCCESS', payload,
+        })).toEqual(['Move', 'Copy'])
     })
     it('should return the actionlist from the response', () => {
         const actions = [
             'Move',
             'Copy',
         ]
+
         expect(DMSReducers.actions(undefined, { type: 'OPEN_ACTIONMENU', actions })).toEqual(['Move', 'Copy'])
     })
 })
@@ -131,10 +138,13 @@ describe('rootId reducer', () => {
         expect(DMSReducers.rootId(undefined, {})).toEqual(null)
     })
     it('should return the root id', () => {
-        expect(DMSReducers.rootId(undefined, { type: 'LOAD_CONTENT_SUCCESS', response: { Id: 1, Path: '/login' } })).toEqual(1)
+        expect(DMSReducers.rootId(undefined, {
+            type: 'LOAD_CONTENT_SUCCESS',
+            payload: { d: { Id: 1, Path: '/login' } },
+        })).toEqual(1)
     })
     it('should return null', () => {
-        expect(DMSReducers.rootId(undefined, { type: 'LOAD_CONTENT_SUCCESS', response: { Id: 1, Path: '/Default_Site' } })).toEqual(null)
+        expect(DMSReducers.rootId(undefined, { type: 'LOAD_CONTENT_SUCCESS', payload: { d: { Id: 1, Path: '/Default_Site' } } })).toEqual(null)
     })
 })
 
@@ -182,14 +192,14 @@ describe('breadcrumb reducer', () => {
         expect(DMSReducers.breadcrumb(undefined, {})).toEqual([])
     })
     it('should return null when default_site is a part of the response path', () => {
-        expect(DMSReducers.breadcrumb(undefined, { type: 'LOAD_CONTENT_SUCCESS', response: { Path: '/Default_Site' } })).toEqual([])
+        expect(DMSReducers.breadcrumb(undefined, { type: 'LOAD_CONTENT_SUCCESS', payload: { d: { Path: '/Default_Site' } } })).toEqual([])
     })
     it('should return [aaa]', () => {
-        expect(DMSReducers.breadcrumb(undefined, { type: 'LOAD_CONTENT_SUCCESS', response: { DisplayName: 'aaa', Id: 1, Path: '/aaa' } })).toEqual([{ name: 'aaa', id: 1, path: '/aaa' }])
+        expect(DMSReducers.breadcrumb(undefined, { type: 'LOAD_CONTENT_SUCCESS', payload: { d: { DisplayName: 'aaa', Id: 1, Path: '/aaa' } } })).toEqual([{ name: 'aaa', id: 1, path: '/aaa' }])
     })
     it('should return [aaa, bbb]', () => {
         expect(DMSReducers.breadcrumb(
-            [{ name: 'aaa', id: 1, path: '/aaa' }, { name: 'bbb', id: 2, path: '/bbb' }], { type: 'LOAD_CONTENT_SUCCESS', response: { DisplayName: 'aaa', Id: 1, Path: '/aaa' } })).toEqual([{ name: 'aaa', id: 1, path: '/aaa' }])
+            [{ name: 'aaa', id: 1, path: '/aaa' }, { name: 'bbb', id: 2, path: '/bbb' }], { type: 'LOAD_CONTENT_SUCCESS', payload: { d: { DisplayName: 'aaa', Id: 1, Path: '/aaa' } } })).toEqual([{ name: 'aaa', id: 1, path: '/aaa' }])
     })
 })
 
