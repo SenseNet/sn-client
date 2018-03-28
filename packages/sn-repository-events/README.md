@@ -9,7 +9,7 @@
 [![License](https://img.shields.io/github/license/SenseNet/sn-client-js.svg?style=flat)](https://github.com/sn-repository-events/LICENSE.txt)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat)](http://commitizen.github.io/cz-cli/)
 
-This NPM package contains *event observables* that can be used for tracking sensenet ECM Repository Events.
+This NPM package contains *event observables* that can be used for tracking sensenet repository events.
 
 Usage example:
 
