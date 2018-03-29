@@ -46,7 +46,7 @@ const appBarLogo = () => (
                 return <Link to="/" style={styles.logo} >
                     <img src={sensenetLogo} alt="sensenet" aria-label="sensenet" style={styles.logoImg} />
                     <span style={styles.logoText}>
-                        sensenet ECM
+                        sensenet DMS
                         </span>
                 </Link>
             } else {

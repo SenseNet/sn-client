@@ -1,7 +1,7 @@
 {
   "name": "sn-dms-demo",
   "version": "0.1.0-development",
-  "description": "Document Management Demo upon sensenet ECM",
+  "description": "Document Management Demo upon sensenet",
   "private": false,
   "repository": {
     "type": "git",

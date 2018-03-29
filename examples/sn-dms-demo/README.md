@@ -9,7 +9,7 @@
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat)](http://commitizen.github.io/cz-cli/)
 [![Greenkeeper badge](https://badges.greenkeeper.io/SenseNet/sn-dms-demo.svg)](https://greenkeeper.io/)
 
-sensenet ECM Document Management demo with React.
+sensenet Document Management demo with React.
 
 [![Sense/Net Services](https://img.shields.io/badge/sensenet-7.0.0--beta3%20tested-green.svg)](https://github.com/SenseNet/sensenet/releases/tag/v7.0.0-beta3)
 
