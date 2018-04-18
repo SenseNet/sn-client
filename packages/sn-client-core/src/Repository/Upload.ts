@@ -34,7 +34,7 @@ export interface IUploadResponse {
 }
 
 /**
- * Helper class for uploading content into the sensenet ECM Repository
+ * Helper class for uploading content into the sensenet Repository
  */
 export class Upload {
 
@@ -48,7 +48,7 @@ export class Upload {
     }
 
     /**
-     * Uploads a specified file into a sensenet ECM Repository
+     * Uploads a specified file into a sensenet Repository
      * @param {IUploadFileOptions} options The additional upload options
      */
     public static async file<T extends IContent>(options: IUploadFileOptions<T>): Promise<IUploadResponse> {
@@ -62,7 +62,7 @@ export class Upload {
     /**
      * Returns if a chunked upload is needed for a specified file
      * @param {File} file The File object
-     * @param {Repository} repo The sensenet ECM Repository
+     * @param {Repository} repo The sensenet Repository
      */
     public static isChunkedUploadNeeded(file: File, repo: Repository): boolean {
         return file.size >= repo.configuration.chunkSize;

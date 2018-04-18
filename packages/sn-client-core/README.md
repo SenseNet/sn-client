@@ -9,8 +9,8 @@
 [![License](https://img.shields.io/github/license/SenseNet/sn-client-js.svg?style=flat)](https://github.com/sn-client-core/LICENSE.txt)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat)](http://commitizen.github.io/cz-cli/)
 
-This component lets you work with the [sensenet ECM](https://github.com/SenseNet) Content Repository (create or manage content, execute queries, etc.) by providing a JavaScript client API for the main content operations.
-The library connects to a sensenet ECM portal's [REST API](https://community.sensenet.com/docs/odata-rest-api/), but hides the underlying HTTP requests. You can work with simple load or create Content operations in JavaScript, instead of having to construct ajax requests yourself.
+This component lets you work with the [sensenet](https://github.com/SenseNet) Content Repository (create or manage content, execute queries, etc.) by providing a JavaScript client API for the main content operations.
+The library connects to a sensenet's [REST API](https://community.sensenet.com/docs/odata-rest-api/), but hides the underlying HTTP requests. You can work with simple load or create Content operations in JavaScript, instead of having to construct ajax requests yourself.
 
 > Tested with the following Sense/Net Services version: 
 > 

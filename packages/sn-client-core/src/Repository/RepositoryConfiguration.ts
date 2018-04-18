@@ -2,7 +2,7 @@ import { IContent } from "../Models/IContent";
 import { ODataFieldParameter, ODataMetadataType } from "../Models/IODataParams";
 
 /**
- * Class that contains basic configuration for a sensenet ECM Repository
+ * Class that contains basic configuration for a sensenet Repository
  */
 export class RepositoryConfiguration {
 

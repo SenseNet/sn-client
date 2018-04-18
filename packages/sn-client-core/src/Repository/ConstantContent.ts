@@ -1,7 +1,7 @@
 import {IContent} from "../Models/IContent";
 
 /**
- * Constant content definitions for sensenet ECM
+ * Constant content definitions for sensenet
  */
 export class ConstantContent {
     /**

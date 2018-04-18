@@ -198,7 +198,7 @@ export interface IGetActionOptions {
 export interface IUploadOptions<T> {
 
     /**
-     * The specified sensenet ECM Repository instance
+     * The specified sensenet Repository instance
      */
     repository: Repository;
 

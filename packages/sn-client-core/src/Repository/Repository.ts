@@ -15,7 +15,7 @@ import { Security } from "./Security";
 import { Versioning } from "./Versioning";
 
 /**
- * Class that can be used as a main entry point to manipulate a sensenet ECM content repository
+ * Class that can be used as a main entry point to manipulate a sensenet content repository
  */
 export class Repository implements IDisposable {
     /**
