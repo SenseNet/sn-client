@@ -7,12 +7,12 @@
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat)](http://commitizen.github.io/cz-cli/)
 [![Greenkeeper badge](https://badges.greenkeeper.io/SenseNet/sn-client-auth-google.svg)](https://greenkeeper.io/)
 
-This package contains a client-side Google Oauth2 authentication provider for sensenet ECM.
+This package contains a client-side Google Oauth2 authentication provider for sensenet.
 
 ## Usage
 
 ### Prerequisites
- - sensenet ECM 7.0 with an installed Google OAuth provider
+ - sensenet 7.0 with an installed Google OAuth provider
  - [Google API Console project](https://developers.google.com/identity/sign-in/web/devconsole-project)
  - *(optional)* [Google Platform Library](https://developers.google.com/identity/sign-in/web/sign-in) or another Google OAuth component that can retrieve *id_token*
 
