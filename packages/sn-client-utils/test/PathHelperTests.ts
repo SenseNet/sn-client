@@ -82,6 +82,11 @@ export const pathHelperTests = describe("PathHelper", () => {
             expect(contentUrl).to.be.eq("workspace/('project')");
         });
 
+        it("should return the path itself for reference paths", () => {
+            const contentUrl = PathHelper.getContentUrlByPath("/workspace('project')/Owner");
+            expect(contentUrl).to.be.eq("workspace/('project')/Owner");
+        });
+
         it("should return an error message if the given argument is an empty string", () => {
             expect(() => { PathHelper.getContentUrlByPath(""); })
                 .to.throws();

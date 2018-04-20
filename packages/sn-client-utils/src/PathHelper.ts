@@ -75,8 +75,12 @@ export class PathHelper {
      * @returns {string} Path in entity format e.g. /workspaces('project') from /workspaces/project
      */
     public static getContentUrlByPath(path: string): string {
+        if (!path) {
+            throw Error("Path is empty");
+        }
+
         const segments = this.getSegments(path);
-        if (!this.isItemSegment(segments[segments.length - 1])) {
+        if (!this.isItemPath(path)) {
             segments[segments.length - 1] = `('${segments[segments.length - 1]}')`;
         }
         return segments.join("/");
