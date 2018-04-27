@@ -1,0 +1,7 @@
+export * from './PagerTests'
+export * from './RotateDocumentTests'
+export * from './SaveTests'
+export * from './ToggleRedactionTests'
+export * from './ToggleShapesTests'
+export * from './ToggleWatermarkTests'
+export * from './ZoomModeTests'

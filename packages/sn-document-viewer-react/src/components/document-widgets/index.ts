@@ -1,0 +1,7 @@
+export { PagerWidget } from './Pager'
+export { RotateDocumentWidget } from './RotateDocument'
+export { SaveWidget } from './SaveWidget'
+export { ToggleRedactionWidget } from './ToggleRedaction'
+export { ToggleShapesWidget } from './ToggleShapes'
+export { ToggleWatermarkWidget } from './ToggleWatermark'
+export { ZoomModeWidget } from './ZoomMode'
