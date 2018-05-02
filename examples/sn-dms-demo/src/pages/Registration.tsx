@@ -29,7 +29,7 @@ const styles = {
     position: 'absolute' as any,
     width: 300,
     backgroundColor: 'rgba(255,255,255,0.5)',
-    textAlign: 'center',
+    textAlign: 'center' as any,
     zIndex: 10,
     padding: '120px 0',
   },
@@ -37,11 +37,11 @@ const styles = {
     backgroundColor: '#fff',
     padding: '60px',
     color: '#444',
-    textAlign: 'center',
+    textAlign: 'center' as any,
   },
   logoMobile: {
     padding: '50px  0',
-    textAlign: 'center',
+    textAlign: 'center' as any,
   },
 }
 

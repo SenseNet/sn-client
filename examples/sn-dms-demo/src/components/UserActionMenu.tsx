@@ -30,7 +30,7 @@ const styles = {
         width: 80,
     },
     menuIconMobile: {
-        width: 'auto',
+        width: 'auto' as any,
         marginLeft: '16px',
     },
     arrowButton: {

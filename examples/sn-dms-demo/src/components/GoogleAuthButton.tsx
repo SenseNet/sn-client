@@ -11,7 +11,7 @@ const pressed = require('../assets/google-signin-buttons/btn_google_signin_dark_
 
 const styles = {
     googleAuthButton: {
-        cursor: 'pointer',
+        cursor: 'pointer' as any,
     },
 }
 

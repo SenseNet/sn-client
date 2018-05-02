@@ -19,9 +19,9 @@ const muiTheme = createMuiTheme({
 
 const styles = {
     tabLink: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        display: 'flex' as any,
+        alignItems: 'center' as any,
+        justifyContent: 'center' as any,
     },
 }
 

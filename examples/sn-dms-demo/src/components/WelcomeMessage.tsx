@@ -4,7 +4,7 @@ const style = {
     welcome: {
         fontSize: '13px',
         lineHeight: '20px',
-        textAlign: 'left',
+        textAlign: 'left' as any,
         margin: '20px 10px',
     },
 }

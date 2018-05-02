@@ -39,11 +39,11 @@ const styles = {
     backgroundColor: '#fff',
     padding: '60px',
     color: '#444',
-    textAlign: 'center',
+    textAlign: 'center'  as any,
   },
   logoMobile: {
     padding: '50px  0',
-    textAlign: 'center',
+    textAlign: 'center'  as any,
   },
 }
 
