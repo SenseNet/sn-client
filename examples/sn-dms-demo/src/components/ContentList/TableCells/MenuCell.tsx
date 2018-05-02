@@ -11,17 +11,17 @@ import * as DMSReducers from '../../../Reducers'
 const styles = {
     actionMenuButton: {
         width: 30,
-        cursor: 'pointer',
+        cursor: 'pointer' as any,
     },
     icon: {
-        verticalAlign: 'middle',
+        verticalAlign: 'middle' as any,
         opacity: 0,
     },
     selectedIcon: {
-        verticalAlign: 'middle',
+        verticalAlign: 'middle' as any,
     },
     hoveredIcon: {
-        verticalAlign: 'middle',
+        verticalAlign: 'middle' as any,
     },
 }
 

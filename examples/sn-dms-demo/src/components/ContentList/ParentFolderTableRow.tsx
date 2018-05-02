@@ -13,27 +13,27 @@ import * as DMSReducers from '../../Reducers'
 const styles = {
     actionMenuButton: {
         width: 30,
-        cursor: 'pointer',
+        cursor: 'pointer' as any,
     },
     checkboxButton: {
         width: 30,
-        cursor: 'pointer',
+        cursor: 'pointer' as any,
     },
     parentDisplayName: {
         width: 30,
         lineHeight: '9px',
         fontFamily: 'roboto',
-        fontWeight: 'bold',
-        cursor: 'pointer',
+        fontWeight: 'bold' as any,
+        cursor: 'pointer' as any,
     },
     loader: {
         margin: '0 auto',
     },
     displayName: {
-        fontWeight: 'bold',
+        fontWeight: 'bold' as any,
     },
     icon: {
-        verticalAlign: 'middle',
+        verticalAlign: 'middle' as any,
     },
     table: {
         background: '#fff',

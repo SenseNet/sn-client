@@ -22,7 +22,7 @@ const styles = {
     },
     checkboxButton: {
         width: 30,
-        cursor: 'pointer',
+        cursor: 'pointer' as any,
     },
     checkbox: {
         opacity: 0,
@@ -34,12 +34,12 @@ const styles = {
         opacity: 1,
     },
     row: {
-        WebkitTouchCallout: 'none',
-        WebkitUserSelect: 'none',
-        KhtmlUserSelect: 'none',
-        MozUserSelect: 'none',
-        MsUserSelect: 'none',
-        UserSelect: 'none',
+        WebkitTouchCallout: 'none'as any,
+        WebkitUserSelect: 'none'as any,
+        KhtmlUserSelect: 'none'as any,
+        MozUserSelect: 'none'as any,
+        MsUserSelect: 'none'as any,
+        UserSelect: 'none'as any,
     },
 }
 

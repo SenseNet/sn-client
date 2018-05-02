@@ -12,20 +12,20 @@ import * as DMSReducers from '../../../Reducers'
 
 const styles = {
     displayName: {
-        fontWeight: 'bold',
+        fontWeight: 'bold' as any,
     },
     hoveredDisplayName: {
-        fontWeight: 'bold',
+        fontWeight: 'bold' as any,
         color: '#03a9f4',
-        textDecoration: 'underline',
-        cursor: 'pointer',
+        textDecoration: 'underline' as any,
+        cursor: 'pointer' as any,
     },
     displayNameDiv: {
         padding: '16px 24px',
     },
     editedTitle: {
-        fontWeight: 'normal',
-        fontStyle: 'italic',
+        fontWeight: 'normal' as any,
+        fontStyle: 'italic' as any,
     },
 }
 

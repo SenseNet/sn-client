@@ -10,11 +10,11 @@ import { icons } from '../../assets/icons'
 const styles = {
     actionMenuButton: {
         width: 30,
-        cursor: 'pointer',
+        cursor: 'pointer'as any,
     },
     checkboxButton: {
         width: 30,
-        cursor: 'pointer',
+        cursor: 'pointer'as any,
     },
     typeIcon: {
         width: 30,
@@ -24,10 +24,10 @@ const styles = {
         margin: '0 auto',
     },
     displayName: {
-        fontWeight: 'bold',
+        fontWeight: 'bold'as any,
     },
     icon: {
-        verticalAlign: 'middle',
+        verticalAlign: 'middle'as any,
     },
     table: {
         background: '#fff',

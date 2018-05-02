@@ -26,13 +26,13 @@ import SimpleTableRow from './SimpleTableRow'
 const styles = {
     paper: {
         width: '100%',
-        overflow: 'hidden',
+        overflow: 'hidden' as any,
     },
     tableBody: {
         background: '#fff',
     },
     loader: {
-        textAlign: 'center',
+        textAlign: 'center' as any,
         padding: 60,
     },
 }
