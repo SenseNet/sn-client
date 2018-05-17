@@ -116,7 +116,7 @@ export class GoogleOauthProvider implements IOauthProvider {
                 let location: Location | undefined;
                 await Retrier.create(async () => {
                     try {
-                        location = (ev.srcElement as HTMLIFrameElement).contentDocument.location;
+                        location = ((ev.srcElement as HTMLIFrameElement).contentDocument as Document).location;
                         return true;
                     } catch (error) {
                         return false;

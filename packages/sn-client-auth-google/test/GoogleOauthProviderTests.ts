@@ -1,4 +1,4 @@
-import {JwtService} from "@sensenet/authentication-jwt";
+import { JwtService } from "@sensenet/authentication-jwt";
 import { ILoginResponse } from "@sensenet/authentication-jwt/dist/ILoginResponse";
 import { Repository } from "@sensenet/client-core";
 import { expect } from "chai";
@@ -16,10 +16,10 @@ export const oauthProviderTests = describe("GoogleOauthProvider", () => {
     let oauth: GoogleOauthProvider;
 
     beforeEach(() => {
-        repo = new Repository({}, async () => ({ok: true, json: async () => ({access: "", refresh: ""} as ILoginResponse)} as any));
+        repo = new Repository({}, async () => ({ ok: true, json: async () => ({ access: "", refresh: "" } as ILoginResponse) } as any));
         jwtService = new JwtService(repo);
         repo.authentication = jwtService;
-        oauth = addGoogleAuth(jwtService, {clientId: "", redirectUri: "/"});
+        oauth = addGoogleAuth(jwtService, { clientId: "", redirectUri: "/" });
     });
 
     afterEach(() => {
@@ -59,7 +59,7 @@ export const oauthProviderTests = describe("GoogleOauthProvider", () => {
                 sentArgs = args;
                 return {
                     ok: true,
-                    json: async () => ({access: "", refresh: ""} as ILoginResponse),
+                    json: async () => ({ access: "", refresh: "" } as ILoginResponse),
                 } as any;
             };
             await oauth
@@ -85,20 +85,20 @@ export const oauthProviderTests = describe("GoogleOauthProvider", () => {
         });
 
         it("should trigger the GetToken() without specified Token", (done: MochaDone) => {
-            oauth.getToken = () => done();
+            oauth.getToken = (() => done() as any);
             oauth.login();
         });
     });
 
     describe("#GetToken()", () => {
         it("should try to retrieve the token silently", (done: MochaDone) => {
-            oauth["getTokenSilent"] = () => done();
+            oauth["getTokenSilent"] = (() => done() as any);
             oauth.login();
         });
 
         it("should try to get the token with prompt when failed to retrieve it silently", (done: MochaDone) => {
             oauth["getTokenSilent"] = () => { throw Error(")"); };
-            oauth["getTokenFromPrompt"] = () => done();
+            oauth["getTokenFromPrompt"] = (() => done() as any);
             oauth.login();
         });
     });
@@ -139,7 +139,7 @@ export const oauthProviderTests = describe("GoogleOauthProvider", () => {
                 done();
             });
 
-            oauth["iframe"].onload({} as any);
+            (oauth["iframe"] as any).onload({} as any);
         });
 
         it("should fail when no Token found", (done: MochaDone) => {
@@ -169,7 +169,7 @@ export const oauthProviderTests = describe("GoogleOauthProvider", () => {
                 done();
             });
 
-            oauth["iframe"].onload({} as any);
+            (oauth["iframe"] as any).onload({} as any);
         });
 
         it("getTokenSilent() should return token and clean up iframe", (done: MochaDone) => {
@@ -200,7 +200,7 @@ export const oauthProviderTests = describe("GoogleOauthProvider", () => {
                 done();
             }).catch((err) => done(err));
 
-            oauth["iframe"].onload({
+            (oauth["iframe"] as any).onload({
                 srcElement: {
                     contentDocument: {
                         location: {
@@ -279,7 +279,7 @@ export const oauthProviderTests = describe("GoogleOauthProvider", () => {
                     done("should have failed");
                 }).catch((err) => done());
         },
-    );
+        );
     });
 
 });
