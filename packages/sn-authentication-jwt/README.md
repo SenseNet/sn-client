@@ -11,7 +11,13 @@
 
 This NPM package contains a client-side JWT authentication service implementation for [sensenet ECM](https://github.com/SenseNet/sensenet).
 
-### Setup and usage
+## Installation
+
+```shell
+npm install @sensenet/authentication-jwt
+```
+
+## Setup and usage
 You can use JWT authentication with a [preconfigured](https://community.sensenet.com/docs/web-token-authentication/) sensenet >7.0.0 backend.
 
 Service setup:
