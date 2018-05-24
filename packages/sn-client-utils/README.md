@@ -11,6 +11,13 @@ General sensenet ECM independent client side utilities
 [![License](https://img.shields.io/github/license/SenseNet/sn-client-js.svg?style=flat)](https://github.com/sn-client-utils/LICENSE.txt)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat)](http://commitizen.github.io/cz-cli/)
 
+## Installation
+
+```shell
+npm install @sensenet/client-utils
+```
+
+
 ### Disposable
 
 You can implement *disposable* resources and use them with a *using()* or *usingAsync()* syntax.
