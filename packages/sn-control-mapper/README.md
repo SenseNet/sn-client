@@ -11,7 +11,14 @@
 
 This NPM package contains a control mapping tool for sensenet ECM. This can be used for specifying relations between sensenet ECM schemas and specified UI controls at content and field level and can be used for automatized form generation.
 
-Usage example:
+## Installation
+
+```shell
+npm install @sensenet/control-mapper
+```
+
+## Usage 
+
 ```ts
 
 import { Repository } from "@sensenet/client-core";
