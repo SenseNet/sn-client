@@ -13,650 +13,653 @@
 
 // tslint:disable:naming-convention
 
-import { DeferredObject, MediaResourceObject } from "./ComplexTypes";
-import {
-    ApprovingMode, EnableAutofilters, EnableLifespanFilter, Gender, GroupAttachments,
-    InheritableApprovingMode, InheritableVersioningMode, Language,
-    MaritalStatus, MemoType, Priority, QueryType,
-    SavingState, Status, VersioningMode
-} from "./Enums";
-import { IActionModel } from "./index";
+import * as ComplexTypes from "./ComplexTypes";
+import * as Enums from "./Enums";
+import { IActionModel } from "./IActionModel";
 
-export type ContentReferenceField<T> = DeferredObject | T | number;
-export type ContentListReferenceField<T> = DeferredObject | T[] | number[];
+export type ContentReferenceField<T> = ComplexTypes.DeferredObject | T | number;
+export type ContentListReferenceField<T> = ComplexTypes.DeferredObject | T[] | number[];
 
-export type BinaryField = MediaResourceObject;
+export type BinaryField = ComplexTypes.MediaResourceObject;
 
 /**
- * Class representing a ContentType
- * @class ContentType
+ * A content type is a reusable set of fields you want to apply to certain content.
  */
 export class ContentType {
+     /* A unique ID for the Content. */
     public Id!: number;
+     /* A unique ID for the Content. */
     public ParentId?: number;
     public VersionId?: number;
     public Name!: string;
     public CreatedById?: number;
     public ModifiedById?: number;
+     /* Latest version number. */
     public Version?: string;
+     /* Content type path. */
     public Path!: string;
     public Depth?: number;
+     /* This field is true if content is in a system folder/trash or the content is a system folder/file. */
     public IsSystemContent?: boolean;
+     /* Fully Qualified Name. */
     public HandlerName?: string;
+     /* Name of the parent content type. */
     public ParentTypeName?: string;
+     /* User friendly name of the content type. */
     public DisplayName?: string;
+     /* Longer description of the content type. */
     public Description?: string;
+     /* Content type icon. */
     public Icon?: string;
-    public Binary?: MediaResourceObject;
+     /* The content type definition in XML format. */
+    public Binary?: ComplexTypes.MediaResourceObject;
+     /* Content creator. */
     public CreatedBy?: ContentReferenceField<GenericContent>;
+     /* Content creation date. */
     public CreationDate?: string;
+     /* Content was last modified by the given user. */
     public ModifiedBy?: ContentReferenceField<GenericContent>;
+     /* Content was last modified on the given date. */
     public ModificationDate?: string;
     public EnableLifespan?: boolean;
-    public Actions?: ContentListReferenceField<IActionModel>;
-}
 
-/**
- * Class representing a GenericContent
- * @class GenericContent
- */
-export class GenericContent {
-    public Id!: number;
-    public ParentId?: number;
-    public OwnerId?: number;
-    public Owner?: ContentReferenceField<GenericContent>;
-    public VersionId?: number;
-    public Icon?: string;
-    public Name!: string;
-    public CreatedById?: number;
-    public ModifiedById?: number;
-    public Version?: string;
-    public Path!: string;
-    public Depth?: number;
-    public IsSystemContent?: boolean;
-    public IsFolder?: boolean;
-    public DisplayName?: string;
-    public Description?: string;
-    public Hidden?: boolean;
-    public Index?: number;
-    public EnableLifespan?: boolean;
-    public ValidFrom?: string;
-    public ValidTill?: string;
-    public AllowedChildTypes?: ContentListReferenceField<GenericContent>;
-    public EffectiveAllowedChildTypes?: ContentListReferenceField<GenericContent>;
-    public VersioningMode?: VersioningMode;
-    public InheritableVersioningMode?: InheritableVersioningMode;
-    public CreatedBy?: ContentReferenceField<GenericContent>;
-    public CreationDate?: string;
-    public ModifiedBy?: ContentReferenceField<GenericContent>;
-    public ModificationDate?: string;
-    public ApprovingMode?: ApprovingMode;
-    public InheritableApprovingMode?: InheritableApprovingMode;
-    public Locked?: boolean;
-    public CheckedOutTo?: ContentReferenceField<GenericContent>;
-    public TrashDisabled?: boolean;
-    public SavingState?: SavingState;
-    public ExtensionData?: string;
-    public BrowseApplication?: ContentReferenceField<GenericContent>;
-    public Approvable?: boolean;
-    public IsTaggable?: boolean;
-    public Tags?: string;
-    public IsRateable?: boolean;
-    public RateStr?: string;
-    public RateAvg?: number;
-    public RateCount?: number;
-    public Rate?: string;
-    public Publishable?: boolean;
-    public Versions?: ContentListReferenceField<GenericContent>;
-    public CheckInComments?: string;
-    public RejectReason?: string;
-    public Workspace?: ContentReferenceField<Workspace>;
-    public BrowseUrl?: string;
     public Actions?: ContentListReferenceField<IActionModel>;
     public Type!: string;
 }
-
 /**
- * Class representing a ContentLink
- * @class ContentLink
- * @extends {@link GenericContent}
+ * This type is the base content type of the Sense/Net ECMS.
+ */
+export class GenericContent {
+     /* Unique Id for the content. */
+    public Id!: number;
+     /* Id of the parent content. */
+    public ParentId?: number;
+     /* Id of the owner. */
+    public OwnerId?: number;
+     /* Content owner. */
+    public Owner?: ContentReferenceField<GenericContent>;
+     /* Database row Id of current version. */
+    public VersionId?: number;
+     /* Icon */
+    public Icon?: string;
+     /* Specify a name that will appear in the address bar of the browser. */
+    public Name!: string;
+     /* Id of creator. */
+    public CreatedById?: number;
+     /* Id of last modifier. */
+    public ModifiedById?: number;
+     /* Version number. */
+    public Version?: string;
+     /* Content path in the repository. */
+    public Path!: string;
+     /* Content level in the tree. Root level is 0. */
+    public Depth?: number;
+     /* This field is true if content is in a system folder/trash or the content is a system folder/file. */
+    public IsSystemContent?: boolean;
+     /* This field is true if content can contain other content. */
+    public IsFolder?: boolean;
+     /* Content name. You can set any name you prefer without any restrictions. */
+    public DisplayName?: string;
+     /* Description of the content. */
+    public Description?: string;
+     /* If checked, content will not show up in navigation. */
+    public Hidden?: boolean;
+     /* Content order in navigation. Numbers closer to 0 will appear first. */
+    public Index?: number;
+     /* Specify whether you want to define starting and end date for the validity of this content. */
+    public EnableLifespan?: boolean;
+     /* This content will appear on the date you set if lifespan handling is enabled for this content. */
+    public ValidFrom?: string;
+     /* This content will disappear on the date you set if lifespan handling is enabled for this content. */
+    public ValidTill?: string;
+     /* You can get and set which content types are explicitly allowed to be created under this content. It is a local setting. */
+    public AllowedChildTypes?: ContentListReferenceField<GenericContent>;
+     /* You can get which content types are effective allowed to be created under this content. If there is no local setting, the global setting takes effect. */
+    public EffectiveAllowedChildTypes?: ContentListReferenceField<GenericContent>;
+     /* It shows the versioning mode of the current content. */
+    public VersioningMode?: Enums.VersioningMode;
+     /* Specify whether the system should create a new version whenever you create or modify a content below this content. */
+    public InheritableVersioningMode?: Enums.InheritableVersioningMode;
+     /* Content creator. */
+    public CreatedBy?: ContentReferenceField<GenericContent>;
+     /* Content creation date. */
+    public CreationDate?: string;
+     /* Content was last modified by this user. */
+    public ModifiedBy?: ContentReferenceField<GenericContent>;
+     /* Content was last modified on this date. */
+    public ModificationDate?: string;
+     /* It shows the approval mode of the current content. */
+    public ApprovingMode?: Enums.ApprovingMode;
+     /* Specify whether new or changed content below the current one should remain in a draft state until they have been approved. */
+    public InheritableApprovingMode?: Enums.InheritableApprovingMode;
+     /* It shows whether the content is checked out or not. */
+    public Locked?: boolean;
+     /* The user currently locking the content. */
+    public CheckedOutTo?: ContentReferenceField<GenericContent>;
+     /* You can disable trash for this content and its children. If set, you can not restore deleted content. */
+    public TrashDisabled?: boolean;
+     /* State of multi-step saving. */
+    public SavingState?: Enums.SavingState;
+     /* You can set extra data in this field which is useful when extending a content. */
+    public ExtensionData?: string;
+     /* Set this, if you would like to override the default browse application. */
+    public BrowseApplication?: ContentReferenceField<GenericContent>;
+     /* This fileld is true if the content is in 'pending' state and can be approved by the current user. */
+    public Approvable?: boolean;
+     /* Specify whether you would like to enable tagging capability for this content. */
+    public IsTaggable?: boolean;
+     /* List of tags and creators of them separated by commas. */
+    public Tags?: string;
+     /* Specify whether you would like to enable rating capability for this content. */
+    public IsRateable?: boolean;
+    public RateStr?: string;
+     /* Average rate of the content. */
+    public RateAvg?: number;
+     /* Count of rates. */
+    public RateCount?: number;
+    public Rate?: string;
+     /* This fileld is true if the content can be published by the current user. */
+    public Publishable?: boolean;
+     /* Content version history. */
+    public Versions?: ContentListReferenceField<GenericContent>;
+     /* Comments for a new version. */
+    public CheckInComments?: string;
+     /* The reason why the content was rejected. */
+    public RejectReason?: string;
+     /* The container workspace of the content. */
+    public Workspace?: ContentReferenceField<Workspace>;
+    public BrowseUrl?: string;
+
+    public Actions?: ContentListReferenceField<IActionModel>;
+    public Type!: string;
+}
+/**
+ * A content that propagates most of the Fields of another content.
  */
 export class ContentLink extends GenericContent {
+     /* Set this reference to the Content to link. */
     public Link?: ContentReferenceField<GenericContent>;
 
 }
-
 /**
- * Class representing a File
- * @class File
- * @extends {@link GenericContent}
+ * A type for binary documents, images, etc.
  */
 export class File extends GenericContent {
-    public Binary!: BinaryField;
+     /* The binary content of the document. */
+    public Binary?: ComplexTypes.MediaResourceObject;
+     /* Size of the binary document. */
     public Size?: number;
+     /* The total amount of space the Document occupies, counting all versions. */
     public FullSize?: number;
+     /* Read-only field for storing the number of pages in the document. It is filled by the document preview generator. */
     public PageCount?: number;
     public MimeType?: string;
+     /* Stores data used for document preview (redaction, highlight, annotation shapes). This value can be modified by the document preview plugin. */
     public Shapes?: string;
+     /* Stores data used for document preview (for example page rotation). This value can be modified by the document preview plugin. */
     public PageAttributes?: string;
+     /* The text that is displayed as a watermark on the document preview. The format can be set by modifying the Document Preview settings. */
     public Watermark?: string;
 
 }
-
 /**
- * Class representing a DynamicJsonContent
- * @class DynamicJsonContent
- * @extends {@link File}
  */
 export class DynamicJsonContent extends File {
 
 }
-
 /**
- * Class representing a ExecutableFile
- * @class ExecutableFile
- * @extends {@link File}
+ * Only content of this type can be executed directly (e.g. aspx files).
  */
 export class ExecutableFile extends File {
 
 }
-
 /**
- * Class representing a HtmlTemplate
- * @class HtmlTemplate
- * @extends {@link File}
+ * HTML file containing a template html fragment for various controls, e.g. action links.
  */
 export class HtmlTemplate extends File {
+     /* Shows the contents of the html file as a text. */
     public TemplateText?: string;
 
 }
-
 /**
- * Class representing a Image
- * @class Image
- * @extends {@link File}
+ * A special Document type for storing images.
  */
 export class Image extends File {
+     /* Keywords describing the image. */
     public Keywords?: string;
+     /* Date the photo was taken, if applicable. */
     public DateTaken?: string;
     public Width?: number;
     public Height?: number;
 
 }
-
 /**
- * Class representing a PreviewImage
- * @class PreviewImage
- * @extends {@link Image}
+ * A special content type for storing preview images.
  */
 export class PreviewImage extends Image {
 
 }
-
 /**
- * Class representing a Settings
- * @class Settings
- * @extends {@link File}
+ * Content type for storing application or module settings in text format or in custom fields.
  */
 export class Settings extends File {
+     /* Switching this ON will prevent the creation of local settings with the same name preventing others to gain access to the contents of this settings file through inheritance. */
     public GlobalOnly?: boolean;
 
 }
-
 /**
- * Class representing a IndexingSettings
- * @class IndexingSettings
- * @extends {@link Settings}
  */
 export class IndexingSettings extends Settings {
+     /* Dynamically generated text extractor instance collection. */
     public TextExtractorInstances?: string;
 
 }
-
 /**
- * Class representing a LoggingSettings
- * @class LoggingSettings
- * @extends {@link Settings}
  */
 export class LoggingSettings extends Settings {
 
 }
-
 /**
- * Class representing a PortalSettings
- * @class PortalSettings
- * @extends {@link Settings}
  */
 export class PortalSettings extends Settings {
 
 }
-
 /**
- * Class representing a SystemFile
- * @class SystemFile
- * @extends {@link File}
+ * A special file for internal use in the system.
  */
 export class SystemFile extends File {
 
 }
-
 /**
- * Class representing a Resource
- * @class Resource
- * @extends {@link SystemFile}
+ * String or binary resource used to localize the system. Its format is the same as the internal part of a standard .Net resx file.
  */
 export class Resource extends SystemFile {
+     /* The number of downloads. */
     public Downloads?: number;
 
 }
-
 /**
- * Class representing a Folder
- * @class Folder
- * @extends {@link GenericContent}
+ * Use folders to group content.
  */
 export class Folder extends GenericContent {
 
 }
-
 /**
- * Class representing a ContentList
- * @class ContentList
- * @extends {@link Folder}
+ * Generic Content List type.
  */
 export class ContentList extends Folder {
+     /* XML definition for additional fields. */
     public ContentListDefinition?: string;
+     /* The default View to use. */
     public DefaultView?: string;
-    //  AvailableViews?: ContentListReferenceField<ListView>;
-    //  FieldSettingContents?: ContentListReferenceField<FieldSettingContent>;
-    //  AvailableContentTypeFields?: ContentListReferenceField<FieldSettingContent>;
+     /* Select global content list views here that you want to offer users to choose from. */
+    public AvailableViews?: ContentListReferenceField<GenericContent>;
+    public FieldSettingContents?: ContentListReferenceField<GenericContent>;
+    public AvailableContentTypeFields?: ContentListReferenceField<GenericContent>;
+     /* Emails sent to this address will be imported as Email content into the Document Library. */
     public ListEmail?: string;
+     /* Ctd-ContentListen-USExchangeSubscriptionId-Descriptione */
     public ExchangeSubscriptionId?: string;
+     /* If checked new emails and attachments with the same name will overwrite existing items in list. Otherwise increment suffix is used in the name of new mail items. */
     public OverwriteFiles?: boolean;
-    public GroupAttachments?: GroupAttachments;
+     /* Select the appropriate option to group attachment files under folders or email content or not. */
+    public GroupAttachments?: Enums.GroupAttachments;
+     /* A separate .eml file will be created for every incoming email. */
     public SaveOriginalEmail?: boolean;
+     /* Select the workflow to be executed on every incoming email. */
     public IncomingEmailWorkflow?: ContentReferenceField<GenericContent>;
+     /* If set, only users that are members of any local group are able to send e-mails to this library. */
     public OnlyFromLocalGroups?: boolean;
+     /* A relative path of a folder to store incoming e-mails. */
     public InboxFolder?: string;
+     /* If a Visitor adds content to this list, this user will be set as the creator instead of the Visitor. This prevents visitors see each others' content. */
     public OwnerWhenVisitor?: ContentReferenceField<User>;
 
 }
-
 /**
- * Class representing a Aspect
- * @class Aspect
- * @extends {@link ContentList}
+ * Aspect base type.
  */
 export class Aspect extends ContentList {
+     /* Definition of the extension in XML format. */
     public AspectDefinition?: string;
 
 }
-
 /**
- * Class representing a ItemList
- * @class ItemList
- * @extends {@link ContentList}
+ * Base type for item lists. Choose a type inheriting from this to create list of items.
  */
 export class ItemList extends ContentList {
 
 }
-
 /**
- * Class representing a CustomList
- * @class CustomList
- * @extends {@link ItemList}
+ * Use this type to create custom Lists of content with user-defined columns.
  */
 export class CustomList extends ItemList {
 
 }
-
 /**
- * Class representing a MemoList
- * @class MemoList
- * @extends {@link ItemList}
+ * A List type for storing Memos.
  */
 export class MemoList extends ItemList {
 
 }
-
 /**
- * Class representing a TaskList
- * @class TaskList
- * @extends {@link ItemList}
+ * A List type for storing Tasks.
  */
 export class TaskList extends ItemList {
 
 }
-
 /**
- * Class representing a Library
- * @class Library
- * @extends {@link ContentList}
+ * A base class for special List types for storing documents such as Document Library or Image Library.
  */
 export class Library extends ContentList {
 
 }
-
 /**
- * Class representing a DocumentLibrary
- * @class DocumentLibrary
- * @extends {@link Library}
+ * A special List for storing documents.
  */
 export class DocumentLibrary extends Library {
 
 }
-
 /**
- * Class representing a ImageLibrary
- * @class ImageLibrary
- * @extends {@link Library}
+ * A special List for storing images.
  */
 export class ImageLibrary extends Library {
+     /* Select cover image */
     public CoverImage?: ContentReferenceField<Image>;
 
 }
-
 /**
- * Class representing a Device
- * @class Device
- * @extends {@link Folder}
+ * This content type is for defining different devices to browse the portal from - e.g. tablet or different phone types.
  */
 export class Device extends Folder {
+     /* A regular expression to match the user agent string of the browser. */
     public UserAgentPattern?: string;
 
 }
-
 /**
- * Class representing a Domain
- * @class Domain
- * @extends {@link Folder}
+ * A centrally-managed group of users and/or computers. Sense/Net ECMS has a built-in domain (BuiltIn), but you can syncronyze external LDAP directories as well.
  */
 export class Domain extends Folder {
+     /* GUID of corresponding AD object. */
     public SyncGuid?: string;
+     /* Date of last synchronization. */
     public LastSync?: string;
 
 }
-
 /**
- * Class representing a Domains
- * @class Domains
- * @extends {@link Folder}
+ * This is the container type for Domains. Only a single instance is allowed at /Root/IMS.
  */
 export class Domains extends Folder {
 
 }
-
 /**
- * Class representing a Email
- * @class Email
- * @extends {@link Folder}
+ * Email content type containing attachments as children content.
  */
 export class Email extends Folder {
+     /* Sender name and address. */
     public From?: string;
+     /* Body of email. */
     public Body?: string;
+     /* Date of sending. */
     public Sent?: string;
 
 }
-
 /**
- * Class representing a OrganizationalUnit
- * @class OrganizationalUnit
- * @extends {@link Folder}
+ * Organizational Unit (OU) provides a way of classifying objects located in directories.
  */
 export class OrganizationalUnit extends Folder {
+     /* GUID of corresponding AD object. */
     public SyncGuid?: string;
+     /* Date of last synchronization. */
     public LastSync?: string;
 
 }
-
 /**
- * Class representing a PortalRoot
- * @class PortalRoot
- * @extends {@link Folder}
+ * Sense/Net Content Repository Master node. One installation can have only one Portal Root.
  */
 export class PortalRoot extends Folder {
 
 }
-
 /**
- * Class representing a ProfileDomain
- * @class ProfileDomain
- * @extends {@link Folder}
+ * Container for user profiles.
  */
 export class ProfileDomain extends Folder {
 
 }
-
 /**
- * Class representing a Profiles
- * @class Profiles
- * @extends {@link Folder}
+ * This is the container type for profiles. Only a single instance is allowed at /Root/Profiles.
  */
 export class Profiles extends Folder {
 
 }
-
 /**
- * Class representing a RuntimeContentContainer
- * @class RuntimeContentContainer
- * @extends {@link Folder}
+ * For internal use only.
  */
 export class RuntimeContentContainer extends Folder {
 
 }
-
 /**
- * Class representing a Sites
- * @class Sites
- * @extends {@link Folder}
+ * This is the container type for sites. Only a single instance is allowed at /Root/Sites.
  */
 export class Sites extends Folder {
 
 }
-
 /**
- * Class representing a SmartFolder
- * @class SmartFolder
- * @extends {@link Folder}
+ * Use smart folders to group information (content) by Repository query.
  */
 export class SmartFolder extends Folder {
+     /* Please give a query here that you want to use for collecting the children of this smart folder. */
     public Query?: string;
-    public EnableAutofilters?: EnableAutofilters;
-    public EnableLifespanFilter?: EnableLifespanFilter;
+     /* If autofilters are enabled, system content will be filtered from the query. */
+    public EnableAutofilters?: Enums.EnableAutofilters;
+     /* If lifespan filter is enabled, only valid content will be in the result. */
+    public EnableLifespanFilter?: Enums.EnableLifespanFilter;
 
 }
-
 /**
- * Class representing a SystemFolder
- * @class SystemFolder
- * @extends {@link Folder}
+ * System Folders provide a way to store configuration and logic.
  */
 export class SystemFolder extends Folder {
 
 }
-
 /**
- * Class representing a Resources
- * @class Resources
- * @extends {@link SystemFolder}
+ * This is the container type for resources. Only a single instance is allowed at /Root/Localization.
  */
 export class Resources extends SystemFolder {
 
 }
-
 /**
- * Class representing a TrashBag
- * @class TrashBag
- * @extends {@link Folder}
+ * An atomic container for deleted items stored for undeletion.
  */
 export class TrashBag extends Folder {
+     /* The bag must be kept until this date. */
     public KeepUntil?: string;
+     /* The path where the bag content were deleted from. */
     public OriginalPath?: string;
+     /* Ctd-TrashBagen-USWorkspaceRelativePath-Description */
     public WorkspaceRelativePath?: string;
+     /* Ctd-TrashBagen-USWorkspaceId-Description */
     public WorkspaceId?: number;
+     /* The actual deleted content inside this trash bag. */
     public DeletedContent?: ContentReferenceField<GenericContent>;
 
 }
-
 /**
- * Class representing a Workspace
- * @class Workspace
- * @extends {@link Folder}
+ * Collaborative workspace root.
  */
 export class Workspace extends Folder {
+     /* The person responsible for the project. */
     public Manager?: ContentReferenceField<User>;
     public Deadline?: string;
+     /* This workspace is currently active. */
     public IsActive?: boolean;
-    // WorkspaceSkin?: ContentReferenceField<Skin>;
+    public WorkspaceSkin?: ContentReferenceField<GenericContent>;
+     /* This workspace is currently in a critical status. */
     public IsCritical?: boolean;
+     /* This workspace is configured to contain a wall - this indicates that posts are created under this workspace if Content are shared anywhere below this path. */
     public IsWallContainer?: boolean;
     public IsFollowed?: boolean;
 
 }
-
 /**
- * Class representing a Site
- * @class Site
- * @extends {@link Workspace}
+ * The Site provides a primary entry point to your Portal.
  */
 export class Site extends Workspace {
-    public Language?: Language;
+     /* Please define the default language of this site. */
+    public Language?: Enums.Language;
+     /* Enable this to allow user browser settings override default site language settings. */
     public EnableClientBasedCulture?: boolean;
+     /* Enable this to allow user language settings override default site language settings. */
     public EnableUserBasedCulture?: boolean;
+     /* Select the URLs to associate with this Site. */
     public UrlList?: string;
+     /* If set, the site will use this start page instead of the default. */
     public StartPage?: ContentReferenceField<GenericContent>;
+     /* The login page to display when a user tries to access restricted Content (Forms authentication only). */
     public LoginPage?: ContentReferenceField<GenericContent>;
-    // SiteSkin?: ContentReferenceField<Skin>;
+    public SiteSkin?: ContentReferenceField<GenericContent>;
+     /* If set, content under this site can only be accessed via this site and not via other sites using a Root relative path. */
     public DenyCrossSiteAccess?: boolean;
 
 }
-
 /**
- * Class representing a TrashBin
- * @class TrashBin
- * @extends {@link Workspace}
+ * The system trash bin content type.
  */
 export class TrashBin extends Workspace {
     public MinRetentionTime?: number;
+     /* Set the size quote for the trash bin (Megabytes). */
     public SizeQuota?: number;
+     /* The maximum number of nodes accepted for trash in a single operation. */
     public BagCapacity?: number;
 
 }
-
 /**
- * Class representing a UserProfile
- * @class UserProfile
- * @extends {@link Workspace}
+ * Workspace for handling all information and data for a user.
  */
 export class UserProfile extends Workspace {
     public User?: ContentReferenceField<User>;
 
 }
-
 /**
- * Class representing a Group
- * @class Group
- * @extends {@link GenericContent}
+ * You can categorize users and groups into groups according to any criteria.
  */
 export class Group extends GenericContent {
+     /* The members of this group. */
     public Members?: ContentListReferenceField<User | Group>;
+     /* GUID of corresponding AD object. */
     public SyncGuid?: string;
+     /* Date of last synchronization. */
     public LastSync?: string;
 
 }
-
 /**
- * Class representing a ListItem
- * @class ListItem
- * @extends {@link GenericContent}
+ * Base content type for list items.
  */
 export class ListItem extends GenericContent {
 
 }
-
 /**
- * Class representing a CustomListItem
- * @class CustomListItem
- * @extends {@link ListItem}
+ * Content type for custom listitems.
  */
 export class CustomListItem extends ListItem {
     public WorkflowsRunning?: boolean;
 
 }
-
 /**
- * Class representing a Memo
- * @class Memo
- * @extends {@link ListItem}
+ * A content type for short memos or posts on a subject.
  */
 export class Memo extends ListItem {
+     /* Please set the due date of the memo. */
     public Date?: string;
-    public MemoType?: MemoType;
+     /* Type of the memo. */
+    public MemoType?: Enums.MemoType;
+     /* A list of content this memo pertains to. */
     public SeeAlso?: ContentListReferenceField<GenericContent>;
 
 }
-
 /**
- * Class representing a Task
- * @class Task
- * @extends {@link ListItem}
+ * A content type for defining tasks.
  */
 export class Task extends ListItem {
     public StartDate?: string;
     public DueDate?: string;
+     /* List of internal stakeholders. */
     public AssignedTo?: ContentListReferenceField<User>;
-    public Priority?: Priority;
-    public Status?: Status;
+    public Priority?: Enums.Priority;
+    public Status?: Enums.Status;
+     /* Completion percentage of the task. */
     public TaskCompletion?: number;
+     /* Number of remaining days. */
     public RemainingDays?: number;
     public DueText?: string;
+     /* Css class */
     public DueCssClass?: string;
 
 }
-
 /**
- * Class representing a Query
- * @class Query
- * @extends {@link GenericContent}
+ * Content Type for storing Content Queries
  */
 export class Query extends GenericContent {
+     /* Query text. */
     public Query?: string;
-    public QueryType?: QueryType;
+     /* Public queries are stored under the workspace, private queries are stored under the user profile. */
+    public QueryType?: Enums.QueryType;
 
 }
-
 /**
- * Class representing a User
- * @class User
- * @extends {@link GenericContent}
+ * The basic user type of the Sense/Net ECMS. Use it for intranet and extranet users.
  */
 export class User extends GenericContent {
+     /* The name that the user has to type in on login forms (in some cases along with the domain name). It has to be unique under a domain. */
     public LoginName?: string;
     public JobTitle?: string;
+     /* User account is enabled. */
     public Enabled?: boolean;
+     /* The domain of the user. */
     public Domain?: string;
+     /* The e-mail of the user. */
     public Email?: string;
+     /* Full name of the user (e.g. John Smith). */
     public FullName?: string;
     public ImageRef?: ContentReferenceField<GenericContent>;
-    public ImageData?: MediaResourceObject;
-    public Avatar?: DeferredObject;
+    public ImageData?: ComplexTypes.MediaResourceObject;
+     /* Avatar image of user. */
+    public Avatar?: ComplexTypes.MediaResourceObject;
+     /* User password. */
     public Password?: string;
+     /* GUID of corresponding AD object. */
     public SyncGuid?: string;
+     /* Date of last synchronization. */
     public LastSync?: string;
+     /* Captcha text entered by the user. */
     public Captcha?: string;
+     /* Manager of the user. */
     public Manager?: ContentReferenceField<User>;
+     /* Department of employee. */
     public Department?: string;
+     /* Spoken languages. */
     public Languages?: string;
+     /* Phone number. (e.g. +123456789 or 1234). */
     public Phone?: string;
-    public Gender?: Gender;
-    public MaritalStatus?: MaritalStatus;
+     /* Select one. */
+    public Gender?: Enums.Gender;
+     /* Select one. */
+    public MaritalStatus?: Enums.MaritalStatus;
     public BirthDate?: string;
+     /* List of educations - e.g. high school, university. */
     public Education?: string;
     public TwitterAccount?: string;
+     /* http://www.facebook.com/USERNAME. */
     public FacebookURL?: string;
+     /* http://www.linkedin.com/USERNAME. */
     public LinkedInURL?: string;
-    public Language?: Language;
+     /* Language used to display texts on the site, if it is available. */
+    public Language?: Enums.Language;
+     /* List of workspaces followed by the user. */
     public FollowedWorkspaces?: ContentListReferenceField<Workspace>;
+     /* Path of the user's personal workspace. */
     public ProfilePath?: string;
+     /* Date and time of when the user logged out from all devices. */
+    public LastLoggedOut?: string;
 
 }

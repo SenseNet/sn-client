@@ -1,5 +1,5 @@
 # sn-default-content-types
-Default content type definitions for sensenet ECM
+Default content type definitions for sensenet
 
 ## Installation
 
