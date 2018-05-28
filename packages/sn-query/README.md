@@ -10,7 +10,16 @@ Client side content query builder package for sensenet
 [![License](https://img.shields.io/github/license/SenseNet/sn-query.svg?style=flat)](https://github.com/sn-query/LICENSE.txt)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat)](http://commitizen.github.io/cz-cli/)
 
-The package allows you to create strongly typed content queries that will be evaluated into sensenet queries
+## Installation
+
+```shell
+npm install @sensenet/query
+```
+
+## Usage
+
+The package allows you to create strongly typed content queries that will be evaluated into sensenet ECM queries
+
 Usage example:
 
 ```ts
@@ -32,6 +41,6 @@ const query = new Query((q) =>
     );
 
 console.log(query.toString());
-// "TypeIs:Task AND DisplayName:'Unicorn' AND ModificationDate:{'2017-01-01T00\\:00\\:00' TO '2017-02-01T00\\:00\\:00'} OR (NOT(Approvable:'true') AND NOT(Description:'*alma*')) .SORT:'DisplayName' .TOP:5 .SKIP:10"
+// "TypeIs:Task AND DisplayName:'Unicorn' AND ModificationDate:{'2017-01-01T00\\:00\\:00' TO '2017-02-01T00\\:00\\:00'} OR (NOT(Approvable:'true') AND NOT(Description:'*alma*')) .SORT:DisplayName .TOP:5 .SKIP:10"
 
 ```

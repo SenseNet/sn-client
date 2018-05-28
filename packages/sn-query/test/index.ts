@@ -38,7 +38,7 @@ describe("Query", () => {
         );
 
         expect(query.toString()).to.be
-            .eq("TypeIs:Task AND DisplayName:'Unicorn' AND ModificationDate:{'2017-01-01T00\\:00\\:00' TO '2017-02-01T00\\:00\\:00'} OR (NOT(Approvable:'true') AND NOT(Description:'*alma*')) .SORT:'DisplayName' .TOP:5 .SKIP:10");
+            .eq("TypeIs:Task AND DisplayName:'Unicorn' AND ModificationDate:{'2017-01-01T00\\:00\\:00' TO '2017-02-01T00\\:00\\:00'} OR (NOT(Approvable:'true') AND NOT(Description:'*alma*')) .SORT:DisplayName .TOP:5 .SKIP:10");
     });
 
     describe("Segment syntaxes", () => {
@@ -117,30 +117,30 @@ describe("Query", () => {
 
         it("inner query syntax", () => {
             const queryInstance = new Query((q) => q.equals("DisplayName", "Test")
-            .and
-            .query((inner) =>
-                inner.equals("Index", 1),
+                .and
+                .query((inner) =>
+                    inner.equals("Index", 1),
             ));
             expect(queryInstance.toString()).to.be.eq("DisplayName:'Test' AND (Index:'1')");
         });
 
         it("NOT syntax", () => {
             const queryInstance = new Query((q) => q.equals("DisplayName", "Test")
-            .and
-            .not((inner) =>
-                inner.equals("Index", 1),
+                .and
+                .not((inner) =>
+                    inner.equals("Index", 1),
             ));
             expect(queryInstance.toString()).to.be.eq("DisplayName:'Test' AND NOT(Index:'1')");
         });
 
         it("OrderBy syntax", () => {
             const queryInstance = new Query((q) => q.sort("DisplayName"));
-            expect(queryInstance.toString()).to.be.eq(" .SORT:'DisplayName'");
+            expect(queryInstance.toString()).to.be.eq(" .SORT:DisplayName");
         });
 
         it("OrderBy reserve", () => {
             const queryInstance = new Query((q) => q.sort("DisplayName", true));
-            expect(queryInstance.toString()).to.be.eq(" .REVERSESORT:'DisplayName'");
+            expect(queryInstance.toString()).to.be.eq(" .REVERSESORT:DisplayName");
         });
 
         it("Top syntax", () => {
