@@ -1,13 +1,11 @@
-import {GenericContent, Schema, SchemaStore as DefaultSchemaStore} from "@sensenet/default-content-types";
+import { GenericContent, Schema } from "@sensenet/default-content-types";
 
 /**
  * Class that stores schema information
  */
 export class SchemaStore {
 
-    constructor(private schemas: Schema[] = DefaultSchemaStore.map((s) => s)) {
-
-    }
+    private schemas: Schema[] = [];
     private byNameSchemaCache: Map<string, Schema> = new Map();
 
     /**

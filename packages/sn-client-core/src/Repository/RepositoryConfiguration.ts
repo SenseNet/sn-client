@@ -1,4 +1,4 @@
-import { IContent } from "../Models/IContent";
+import { GenericContent, Schema, SchemaStore } from "@sensenet/default-content-types";
 import { ODataFieldParameter, ODataMetadataType } from "../Models/IODataParams";
 
 /**
@@ -39,12 +39,12 @@ export class RepositoryConfiguration {
     /**
      * This parameter describes what fields should be included in the OData $select statements by default
      */
-    public defaultSelect: ODataFieldParameter<IContent & {DisplayName: string, Description: string, Icon: string}> | "all" = ["DisplayName", "Description", "Icon"];
+    public defaultSelect: ODataFieldParameter<GenericContent> | "all" = ["DisplayName", "Description", "Icon"];
 
     /**
      * This parameter describes what fields should always be included in the OData $select statements
      */
-    public requiredSelect: ODataFieldParameter<IContent> = ["Id", "Path", "Name", "Type"];
+    public requiredSelect: ODataFieldParameter<GenericContent> = ["Id", "Path", "Name", "Type"];
 
     /**
      * This field sets the default OData $metadata value
@@ -59,7 +59,7 @@ export class RepositoryConfiguration {
     /**
      * This field describes what fields should be expanded on every OData request by default
      */
-    public defaultExpand: ODataFieldParameter<IContent> | undefined = undefined;
+    public defaultExpand: ODataFieldParameter<GenericContent> | undefined = undefined;
 
     /**
      * This field sets up a default OData $top parameter
@@ -70,6 +70,11 @@ export class RepositoryConfiguration {
      * Chunk size for chunked uploads, must be equal to BinaryChunkSize setting at the backend
      */
     public chunkSize: number = 10485760;    // 10 mb
+
+    /**
+     * An array of schemas
+     */
+    public schemas: Schema[] = SchemaStore.map((s) => s);
 
     constructor(config?: Partial<RepositoryConfiguration>) {
         config && Object.assign(this, config);

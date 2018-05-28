@@ -1,5 +1,5 @@
 import { IDisposable, PathHelper } from "@sensenet/client-utils";
-import { IActionModel } from "@sensenet/default-content-types";
+import { IActionModel, Schema } from "@sensenet/default-content-types";
 import { BypassAuthentication } from "../Authentication/BypassAuthentication";
 import { IAuthenticationService } from "../Authentication/IAuthenticationService";
 import { IContent } from "../Models/IContent";
@@ -261,11 +261,26 @@ export class Repository implements IDisposable {
      */
     public versioning: Versioning = new Versioning(this);
 
+    /**
+     * Reloads the content schemas from the sensenet backend
+     * @returns {Promise<void>} A promise that will be resolved / rejected based on the action success
+     */
+    public async reloadSchema() {
+        const schemas = await this.executeAction<undefined, Schema[]>({
+            idOrPath: "Root",
+            name: "GetSchema",
+            method: "GET",
+            body: undefined,
+        });
+        this.schemas.setSchemas(schemas);
+    }
+
     constructor(
         config?: Partial<RepositoryConfiguration>,
         private fetchMethod: GlobalFetch["fetch"] = window && window.fetch && window.fetch.bind(window),
         public schemas: SchemaStore = new SchemaStore(),
     ) {
         this.configuration = new RepositoryConfiguration(config);
+        this.schemas.setSchemas(this.configuration.schemas);
     }
 }

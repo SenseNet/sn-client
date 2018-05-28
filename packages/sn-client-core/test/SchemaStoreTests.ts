@@ -1,4 +1,4 @@
-import { Schema, User } from "@sensenet/default-content-types";
+import { Schema, SchemaStore as DefaultSchemaStore, User } from "@sensenet/default-content-types";
 import { expect } from "chai";
 import { SchemaStore } from "../src/Schemas/SchemaStore";
 
@@ -20,6 +20,7 @@ export const schemaStoreTests = describe("SchemaStore", () => {
 
     it("Schemas can be retrieved by Content Type", () => {
         const store = new SchemaStore();
+        store.setSchemas(DefaultSchemaStore);
         const schema = store.getSchema(User);
         // tslint:disable-next-line:no-string-literal
         expect(schema.ContentTypeName).to.be.eq("User");
@@ -27,6 +28,7 @@ export const schemaStoreTests = describe("SchemaStore", () => {
 
     it("Schemas can be retrieved by name", () => {
         const store = new SchemaStore();
+        store.setSchemas(DefaultSchemaStore);
         const schema = store.getSchemaByName("User");
         // tslint:disable-next-line:no-string-literal
         expect(schema.ContentTypeName).to.be.eq("User");
@@ -34,6 +36,7 @@ export const schemaStoreTests = describe("SchemaStore", () => {
 
     it("Schemas can be retrieved by name from cache", () => {
         const store = new SchemaStore();
+        store.setSchemas(DefaultSchemaStore);
         const schema = store.getSchemaByName("User");
         const schema2 = store.getSchemaByName("GenericContent");
         expect(schema.ContentTypeName).to.be.eq("User");
@@ -42,6 +45,7 @@ export const schemaStoreTests = describe("SchemaStore", () => {
 
     it("Should fall back to GenericContent Schema if not found", () => {
         const store = new SchemaStore();
+        store.setSchemas(DefaultSchemaStore);
         const schema = store.getSchemaByName("NotFound");
         expect(schema.ContentTypeName).to.be.eq("GenericContent");
     });

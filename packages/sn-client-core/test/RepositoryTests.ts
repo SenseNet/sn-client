@@ -1,7 +1,7 @@
 import { using } from "@sensenet/client-utils";
 import { IActionModel, User } from "@sensenet/default-content-types";
 import { expect } from "chai";
-import { Repository } from "../src";
+import { IActionOptions, Repository } from "../src";
 import { IContent } from "../src/Models/IContent";
 import { IODataCollectionResponse } from "../src/Models/IODataCollectionResponse";
 import { IODataResponse } from "../src/Models/IODataResponse";
@@ -304,14 +304,14 @@ export const repositoryTests = describe("Repository", () => {
                 mockResponse.json = async () => {
                     return {
                         d: [
-                            {Name: "MockAction"},
+                            { Name: "MockAction" },
                         ],
-                    } as {d: IActionModel[]};
+                    } as { d: IActionModel[] };
                 };
                 const response = await repository.getActions({
                     idOrPath: "Root/Sites/Default_Site",
                 });
-                expect(response.d).to.be.deep.eq([{Name: "MockAction"}]);
+                expect(response.d).to.be.deep.eq([{ Name: "MockAction" }]);
             });
 
             it("should resolve on success with scenario", async () => {
@@ -319,15 +319,15 @@ export const repositoryTests = describe("Repository", () => {
                 mockResponse.json = async () => {
                     return {
                         d: [
-                            {Name: "MockAction"},
+                            { Name: "MockAction" },
                         ],
-                    } as {d: IActionModel[]};
+                    } as { d: IActionModel[] };
                 };
                 const response = await repository.getActions({
                     idOrPath: "Root/Sites/Default_Site",
                     scenario: "example",
                 });
-                expect(response.d).to.be.deep.eq([{Name: "MockAction"}]);
+                expect(response.d).to.be.deep.eq([{ Name: "MockAction" }]);
             });
 
             it("should throw on unsuccessfull request", (done: MochaDone) => {
@@ -382,8 +382,8 @@ export const repositoryTests = describe("Repository", () => {
      * If there is an API change and these cases breaks, please update them in the **readme.md** as well.
      */
     describe("Readme examples", () => {
-        
-        beforeEach(()=>{
+
+        beforeEach(() => {
             (mockResponse as any).ok = true;
         })
 
@@ -460,7 +460,7 @@ export const repositoryTests = describe("Repository", () => {
                 permanent: true,
             });
             console.log("Success: ", deleteResult.d.results);
-            console.log("Errors: ", deleteResult.d.errors);            
+            console.log("Errors: ", deleteResult.d.errors);
         });
 
         it("Custom action", async () => {
@@ -480,6 +480,19 @@ export const repositoryTests = describe("Repository", () => {
         });
 
         // tslint:enable
+    });
+
+    describe("#reloadSchema", () => {
+        it("Should execute the proper custom action", (done) => {
+            repository.executeAction = async (options: IActionOptions<any, any>) => {
+                expect(options.name).to.be.eq("GetSchema");
+                expect(options.idOrPath).to.be.eq("Root");
+                expect(options.method).to.be.eq("GET");
+                done();
+                return {} as any;
+            };
+            repository.reloadSchema();
+        });
     });
 
 });
