@@ -16,6 +16,14 @@ The library connects to a sensenet's [REST API](https://community.sensenet.com/d
 > 
 > [![Sense/Net Services](https://img.shields.io/badge/sensenet-7.0.0%20tested-green.svg)](https://github.com/SenseNet/sensenet/releases/tag/v7.0.0)
 
+## Installation
+
+```shell
+npm install @sensenet/client-core
+```
+
+## Usage
+
 ### Creating a Repository instance
 
 Your main entry point in this library is the Repository object. You can create an Instance by the following way:
