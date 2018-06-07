@@ -1,10 +1,10 @@
 import { ReactClientFieldConfig } from './ReactClientFieldConfig';
-import { ReactControlMapper } from './ReactControlMapper';
+import { reactControlMapper } from './ReactControlMapper';
 import * as FieldControls from './fieldcontrols';
 import * as ViewControls from './viewcontrols';
 
 export {
-    ReactClientFieldConfig, ReactControlMapper
+    ReactClientFieldConfig, reactControlMapper
 };
 
 export * from './fieldcontrols';

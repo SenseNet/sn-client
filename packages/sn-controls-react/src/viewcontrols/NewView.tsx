@@ -1,134 +1,147 @@
 /**
  * @module ViewControls
- * 
+ *
  */ /** */
 import * as React from 'react'
-import { Content } from 'sn-client-js'
-import {
-    CheckboxGroup,
-    DatePicker,
-    DropDownList,
-    Number,
-    RadioButtonGroup,
-    ShortText,
-    TagsInput
-} from '../fieldcontrols'
+import { connect } from 'react-redux'
 
-import { Row, Button, Col } from 'react-materialize'
-import { ReactControlMapper } from '../ReactControlMapper'
+import Button from '@material-ui/core/Button'
+import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
+import { Actions, Reducers } from '@sensenet/redux'
+import { reactControlMapper } from '../ReactControlMapper'
 import { styles } from './NewViewStyles'
 
 /**
  * Interface for NewView properties
  */
-interface INewViewProps {
-    content: Content,
+export interface NewViewProps {
     history?,
-    onSubmit?: Function
+    onSubmit?,
+    repository,
+    fields,
+    changeAction,
+    schema,
+    path
 }
 
 /**
  * View Control for adding a Content, works with a single Content and based on the ReactControlMapper
- * 
+ *
  * Usage:
  * ```html
  *  <NewView content={content} history={history} onSubmit={createSubmitClick} />
  * ```
  */
-export class NewView extends React.Component<INewViewProps, { content, schema, type }> {
+class NewView extends React.Component<NewViewProps, { schema, dataSource }> {
     /**
      * constructor
      * @param {object} props
      */
     constructor(props: any) {
-        super(props);
+        super(props)
         /**
          * @type {object}
          * @property {any} content empty base Content
          */
         this.state = {
-            content: this.props.content,
-            schema: ReactControlMapper.GetFullSchemaForContent(this.props.content as any, 'new'),
-            type: this.props.content.constructor
-        };
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleCancel = this.handleCancel.bind(this);
+            schema: reactControlMapper.getFullSchemaForContentType(this.props.schema.ContentTypeName as any, 'new'),
+            dataSource: [],
+        }
+        this.handleCancel = this.handleCancel.bind(this)
+        this.formIsValid()
     }
     /**
      * handle cancle button click
      */
-    handleCancel() {
+    public handleCancel() {
         if (this.props.history) {
             this.props.history.goBack()
-        }
-        else {
-            window.history.back();
+        } else {
+            window.history.back()
         }
     }
     /**
-     * handle change event on an input
-     * @param {SytheticEvent} event
+     * check if all the required fields are set
      */
-    handleInputChange(event) {
-        const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
-        this.props.content[name] = value;
-
-        this.setState({
-            content: this.props.content
-        });
+    public formIsValid() {
+        let valid = true
+        const { fields } = this.props
+        this.state.schema.fieldMappings.map((setting) => {
+            valid = fields[setting.clientSettings.name] === undefined ? false : true
+        })
+        return valid
     }
     /**
      * render
      * @return {ReactElement} markup
      */
-    render() {
-        const fieldSettings = this.state.schema.FieldMappings;
-        const that = this;
-        const onChangeEvent = this.handleInputChange;
+    public render() {
+        const fieldSettings = this.state.schema.fieldMappings
+        const { fields, onSubmit, history, repository, changeAction, path } = this.props
+        const { schema } = this.state
         return (
-            <Row>
-                <form style={styles.container} onSubmit={(e) => {
-                    e.preventDefault();
-                    if (this.props.onSubmit) {
-                        this.props.onSubmit(this.state.content)
-                    }
-                    if (this.props.history) {
-                        this.props.history.goBack()
-                    }
-                    else {
-                        window.history.back();
+            <form style={styles.container} onSubmit={(e) => {
+                e.preventDefault()
+                if (onSubmit) {
+                    const c = fields
+                    if (this.formIsValid()) {
+                        onSubmit(path, c, schema.schema.ContentTypeName)
                     }
                 }
-                }>
-                    <h4>Create new {this.state.schema.Schema.DisplayName}</h4>
+                if (history) {
+                    history.goBack()
+                } else {
+                    window.history.back()
+                }
+            }
+            }>
+                <Typography variant="headline" gutterBottom>
+                    Create new {schema.schema.DisplayName}
+                </Typography>
+                <Grid container spacing={24}>
                     {
-                        fieldSettings.map(function (e, i) {
-                            return (<Col
-                                s={12}
-                                m={fieldSettings[i].ControlType.name === 'RichTextEditor' ? 12 : 6}
-                                l={fieldSettings[i].ControlType.name === 'RichTextEditor' ? 12 : 6}
-                                key={fieldSettings[i].ClientSettings.name}>
+                        fieldSettings.map((e, i) => {
+                            if (fieldSettings[i].clientSettings['data-typeName'] === 'ReferenceFieldSetting') {
+                                fieldSettings[i].clientSettings['data-repository'] = repository
+                            }
+                            return (<Grid item xs={12} style={{ marginBottom: 16 }}
+                                sm={12}
+                                md={fieldSettings[i].clientSettings['data-typeName'] === 'LongTextFieldSetting' ? 12 : 6}
+                                lg={fieldSettings[i].clientSettings['data-typeName'] === 'LongTextFieldSetting' ? 12 : 6}
+                                xl={fieldSettings[i].clientSettings['data-typeName'] === 'LongTextFieldSetting' ? 12 : 6}
+                                key={fieldSettings[i].clientSettings.name}>
                                 {
                                     React.createElement(
-                                        fieldSettings[i].ControlType,
+                                        fieldSettings[i].controlType,
                                         {
-                                            ...fieldSettings[i].ClientSettings,
-                                            'onChange': onChangeEvent,
-                                            'data-actionName': 'new'
+                                            ...fieldSettings[i].clientSettings,
+                                            'data-actionName': 'new',
+                                            'onChange': changeAction,
                                         })
                                 }
-                            </Col>)
+                            </Grid>)
 
                         })
                     }
-                    <Col s={12} m={12} l={12} style={styles.buttonContainer}>
-                        <Button waves='light' type='submit'>Submit</Button>
-                        <Button waves='light' onClick={this.handleCancel}>Cancel</Button>
-                    </Col >
-                </form>
-            </Row>
+                    <Grid item xs={12} sm={12} md={12} lg={12} xl={12} style={{ textAlign: 'right', marginTop: 20 }}>
+                        <Button type="submit" variant="raised" color="primary" style={{ color: '#fff', marginRight: 20 }}>Submit</Button>
+                        <Button variant="raised" color="secondary">Cancel</Button>
+                    </Grid>
+
+                </Grid>
+            </form>
         )
     }
 }
+
+const mapStateToProps = (state, match) => {
+    return {
+        fields: Reducers.getFields(state.sensenet),
+    }
+}
+
+const newView = connect(mapStateToProps, {
+    changeAction: Actions.changeFieldValue,
+})(NewView)
+export { newView as NewView }

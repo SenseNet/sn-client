@@ -1,19 +1,19 @@
 {
-  "name": "sn-controls-react",
-  "version": "1.0.1-beta.1",
-  "description": "React controls for sensenet ECM",
+  "name": "@sensenet/controls-react",
+  "version": "2.0.0",
+  "description": "React controls for sensenet",
   "scripts": {
-    "lint": "node tslint --project ./tsconfig.json",
-    "clean": "rimraf dist",
+    "precommit": "npm run test",
     "commit": "git-cz",
-    "pretest": "npm run build",
-    "prebuild": "npm run lint && npm run clean",
-    "publish:development": "npm publish --tag development",
-    "styleguide": "styleguidist server",
-    "styleguide:build": "styleguidist build",
-    "build": "tsc",
-    "postbuild": "./node_modules/.bin/cpx \"src/**/*.css\" dist/src",
-    "typedoc": "./node_modules/.bin/typedoc --tsconfig ./tsconfig.typedoc.json --out documentation --excludePrivate --theme default --readme readme.md"
+    "pretest": "tslint --project tsconfig.test.json && rimraf temp && tsc -p tsconfig.test.json",
+    "test": "rimraf coverage && nyc mocha -p tsconfig.test.json ./temp/test/index.js",
+    "check-coverage": "istanbul check-coverage ",
+    "report-coverage": "cat ./coverage/lcov.info | codecov",
+    "prebuild": "tslint --project tsconfig.json",
+    "build": "rimraf dist && tsc -p tsconfig.json && cpx \"src/**/*.css\" dist",
+    "prepublishOnly": "npm run test && npm run build",
+    "publish:development": "npm run build && npm t && npm run typedoc && npm publish --tag development",
+    "typedoc": "typedoc --mode modules --out documentation src --exclude **/index.ts --theme c:/Users/%USERNAME%/AppData/Roaming/npm/node_modules/@sensenet/typedoc-theme/sn-theme"
   },
   "files": [
     "dist",
@@ -37,10 +37,12 @@
   "author": "SenseNet",
   "license": "GPL-2.0",
   "nyc": {
-    "exclude": "dist/test/**/*.*",
-    "include": "dist/src/**/*.*",
-    "check-coverage": true,
     "cache": true,
+    "include": "temp/src/**/*.*",
+    "exclude": [
+      "temp/test/**/*.*",
+      "**/index.js"
+    ],
     "all": true,
     "reporter": [
       "lcov",
@@ -52,86 +54,68 @@
     "url": "https://github.com/SenseNet/sn-controls-react/issues"
   },
   "homepage": "https://sensenet.com",
-  "czConfig": {
-    "path": "node_modules/cz-conventional-changelog"
+  "config": {
+    "commitizen": {
+      "path": "sensenet-kfi-cz-conventional-changelog"
+    }
   },
-  "typings": "./src/sn-controls-react.d.ts",
+  "typings": "./dist/sn-controls-react.d.ts",
+  "dependencies": {
+    "@material-ui/core": "^1.1.0",
+    "@material-ui/icons": "^1.0.0-beta.42",
+    "@sensenet/client-core": "^1.0.2",
+    "@sensenet/control-mapper": "^1.0.0",
+    "@sensenet/redux": "^4.1.0",
+    "date-fns": "^2.0.0-alpha.7",
+    "material-ui-pickers": "^1.0.0-rc.9",
+    "moment": "^2.22.1",
+    "radium": "^0.22.0",
+    "react-number-format": "^3.3.2",
+    "react-quill": "^1.0.0-rc.3",
+    "react-select": "^1.2.1",
+    "react-tap-event-plugin": "^3.0.1"
+  },
   "devDependencies": {
-    "@types/chai": "^4.0.1",
-    "@types/mocha": "^2.2.41",
-    "@types/node": "^9.3.0",
+    "@types/mocha": "^5.2.1",
+    "@types/node": "^10.3.1",
     "@types/react": "^16.0.27",
     "@types/react-dom": "^16.0.0",
-    "@types/react-redux": "^5.0.0",
+    "@types/react-redux": "^6.0.2",
     "@types/react-tap-event-plugin": "0.0.30",
-    "app-root-path": "^2.0.1",
     "autoprefixer": "^8.0.0",
     "case-sensitive-paths-webpack-plugin": "^2.1.1",
-    "chai": "^4.0.2",
-    "chalk": "2.3.1",
-    "cli-highlight": "1.2.3",
+    "chalk": "2.4.1",
     "codecov.io": "^0.1.6",
-    "commitizen": "^2.9.6",
-    "cpx": "^1.5.0",
     "css-loader": "^0.28.4",
-    "cz-conventional-changelog": "^2.0.0",
-    "dotenv": "5.0.0",
+    "dotenv": "6.0.0",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^1.0.0-rc.0",
-    "fs-extra": "5.0.0",
-    "html-webpack-plugin": "2.30.1",
-    "istanbul": "^0.4.5",
+    "fs-extra": "6.0.1",
+    "html-webpack-plugin": "3.2.0",
     "mocha": "^5.0.0",
-    "mocha-typescript": "^1.1.4",
+    "nyc": "^12.0.2",
     "object-assign": "4.1.1",
-    "postcss-flexbugs-fixes": "3.3.0",
+    "postcss-flexbugs-fixes": "3.3.1",
     "postcss-loader": "^2.0.6",
     "promise": "8.0.1",
-    "radium": "^0.21.1",
-    "react": "^16.1.0",
+    "react": "^16.2.0",
     "react-dev-utils": "^5.0.0",
-    "react-dom": "^16.0.0",
-    "react-error-overlay": "^4.0.0",
-    "redux": "^3.6.0",
+    "react-dom": "^16.2.0",
     "rimraf": "^2.6.1",
-    "sn-redux": "^3.4.0",
     "source-map-loader": "^0.2.1",
-    "style-loader": "0.20.1",
+    "style-loader": "^0.20.1",
     "sw-precache-webpack-plugin": "^0.11.3",
-    "ts-loader": "^3.0.0",
+    "ts-loader": "^4.2.0",
     "tslint": "^5.2.0",
-    "tslint-loader": "^3.5.3",
-    "tslint-react": "^3.0.0",
-    "typedoc": "^0.10.0",
-    "typedoc-default-themes": "^0.5.0",
-    "typedoc-plugin-external-module-name": "^1.0.9",
-    "typescript": "^2.4.1",
-    "url-loader": "^0.6.2",
-    "webpack": "^3.0.0",
-    "webpack-dev-server": "^2.5.0",
-    "webpack-manifest-plugin": "1.3.2",
-    "whatwg-fetch": "2.0.3"
-  },
-  "dependencies": {
-    "@reactivex/rxjs": "^5.4.2",
-    "material-ui": "^0.20.0",
-    "material-ui-chip-input": "^0.18.3",
-    "nyc": "^11.0.3",
-    "radium": "^0.22.0",
-    "react": "^16.0.0",
-    "react-materialize": "^1.0.1",
-    "react-quill": "^1.0.0-rc.3",
-    "react-router-dom": "^4.1.1",
-    "react-tap-event-plugin": "^3.0.1",
-    "sn-client-js": "^3.0.0"
+    "typescript": "^2.6.1",
+    "url-loader": "^1.0.1",
+    "webpack": "^4.11.1",
+    "webpack-dev-server": "^3.1.4",
+    "webpack-manifest-plugin": "2.0.3"
   },
   "babel": {
     "presets": [
       "react-app"
     ]
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "main": "dist/src/index.js"
+  }
 }

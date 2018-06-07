@@ -4,6 +4,6 @@ export const styles = {
     browse: {},
     chipContainerStyle: {},
     container: {
-        marginTop: -14
-    }
+        marginTop: -14,
+    },
 }

@@ -1,144 +1,137 @@
 /**
  * @module FieldControls
- * 
+ *
  */ /** */
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
-import { FieldSettings } from 'sn-client-js'
-import { IClientFieldSetting, IReactClientFieldSetting } from '../IClientFieldSetting'
-import { INumberFieldSetting } from './INumberFieldSetting'
-
-import { Input, Icon } from 'react-materialize'
-import { style } from './NumberStyles'
-import './NumberStyles.css';
+import InputAdornment from '@material-ui/core/InputAdornment'
+import TextField from '@material-ui/core/TextField'
 import Radium from 'radium'
+import * as React from 'react'
+import NumberFormat from 'react-number-format'
+import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
+import { ReactNumberFieldSetting } from './NumberFieldSetting'
 
 /**
  * Interface for Number properties
  */
-export interface NumberProps extends IReactClientFieldSetting, IClientFieldSetting, INumberFieldSetting { 
-    onChange: Function
-}
+export interface NumberProps extends ReactClientFieldSettingProps, ReactClientFieldSetting, ReactNumberFieldSetting { }
 
 /**
  * Field control that represents a Number field. Available values will be populated from the FieldSettings.
  */
 @Radium
-export class Number extends React.Component<NumberProps, { value }> {
+export class Number extends React.Component<NumberProps, { value, numberFormat }> {
 
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
-            value: this.props['data-fieldValue'] ? this.setValue(this.props['data-fieldValue']) : this.setValue(this.props['data-defaultValue'])
-        };
+            value: this.props['data-fieldValue'] ? this.setValue(this.props['data-fieldValue']) : this.setValue(this.props['data-defaultValue']),
+            numberFormat: '1320',
+        }
+        this.numberFormatCustom = this.numberFormatCustom.bind(this)
+        this.handleChange = this.handleChange.bind(this)
+    }
+    /**
+     * handle changes
+     * @param {string} name
+     * @param {event} event
+     */
+    public handleChange(event) {
+        this.setState({
+            value: event.target.value,
+        })
+        this.props.onChange(this.props.name, event.target.value)
     }
     /**
      * convert incoming default value string to proper format
      * @param {string} value
      */
-    setValue(value) {
+    public setValue(value) {
         if (value) {
-            return value;
-        }
-        else {
+            return value
+        } else {
             if (this.props['data-defaultValue']) {
                 return this.props['data-defaultValue']
-            }
-            else {
+            } else {
                 return null
             }
         }
     }
 
-    //TODO: integer, decimal+digits
+    // TODO: integer, decimal+digits
     /**
      * returns whether the value is valid or not
      * @param {number} value
      */
-    isValid(value) {
-        return value > this.props.min && value < this.props.max;
+    public isValid(value) {
+        return value > this.props.min && value < this.props.max
     }
     /**
-     * is invoked immediately after a component is mounted. Initialization that requires DOM nodes should go here. 
-     * If you need to load data from a remote endpoint, this is a good place to instantiate the network request. 
-     * Setting state in this method will trigger a re-rendering.
-    */
-    componentDidMount() {
-        if (this.refs[this.props.name]) {
-            let input = ReactDOM.findDOMNode(this.refs[this.props.name]).getElementsByTagName('input')[0];
-            if (this.isValid(input.value)) {
-                input.setAttribute('class', 'validate');
-            }
-        }
+     * format text to predefined number format
+     * @param {any} props
+     */
+    public numberFormatCustom(props) {
+        const { inputRef, onChange, ...other,
+        } = props
+        return (
+            <NumberFormat
+                {...other}
+                ref={inputRef}
+                onValueChange={(values) => {
+                    onChange({
+                        target: {
+                            value: values.value,
+                        },
+                    })
+                }}
+                thousandSeparator
+                prefix="$"
+            />
+        )
     }
     /**
      * render
      * @return {ReactElement} markup
      */
-    render() {
+    public render() {
+        const { value } = this.state
         switch (this.props['data-actionName']) {
             case 'edit':
                 return (
-                    <Input
+                    <TextField
                         name={this.props.name}
-                        ref={this.props.name}
-                        type='number'
-                        label={
-                            this.props.required
-                                ? this.props['data-labelText'] + ' *'
-                                : this.props['data-labelText']
-                        }
+                        label={this.props['data-labelText']}
                         className={this.props.className}
-                        //placeholder={this.props['data-placeHolderText']}
-                        //placeHolderStyle?: object
                         style={this.props.style}
-                        defaultValue={this.state.value}
-                        readOnly={this.props.readOnly}
-                        min={this.props.min}
-                        max={this.props.max}
-                        step={this.props['data-step'] ? this.props['data-step'] : 'any'}
+                        defaultValue={value}
                         required={this.props.required}
                         disabled={this.props.readOnly}
                         error={this.props['data-']}
-                        onChange={this.props.onChange}
-                        validate
-                        s={12}
-                        m={12}
-                        l={12}
-                    >
-                        <Icon className='numbericon'>%</Icon>
-                    </Input>
+                        onChange={(e) => this.props.onChange(this.props.name, e.target.value)}
+                        InputProps={{
+                            startAdornment: this.props['data-isPercentage'] ? <InputAdornment position="start">%</InputAdornment> : null,
+                          }}
+                        id={this.props.name}
+                        fullWidth
+                    />
                 )
             case 'new':
                 return (
-                    <Input
+                    <TextField
                         name={this.props.name}
-                        ref={this.props.name}
-                        type='number'
-                        label={
-                            this.props.required
-                                ? this.props['data-labelText'] + ' *'
-                                : this.props['data-labelText']
-                        }
+                        label={this.props['data-labelText']}
                         className={this.props.className}
-                        //placeholder={this.props['data-placeHolderText']}
-                        //placeHolderStyle?: object
                         style={this.props.style}
-                        defaultValue={this.state.value}
-                        readOnly={this.props.readOnly}
-                        step={this.props['data-step'] ? this.props['data-step'] : 'any'}
-                        min={this.props.min}
-                        max={this.props.max}
+                        defaultValue={value}
                         required={this.props.required}
                         disabled={this.props.readOnly}
-                        onChange={this.props.onChange}
-                        validate
-                        s={12}
-                        m={12}
-                        l={12}
-                    >
-                        <Icon className='numbericon'>%</Icon>
-                    </Input>
+                        error={this.props['data-']}
+                        onChange={(e) => this.props.onChange(this.props.name, e.target.value)}
+                        InputProps={{
+                            startAdornment: this.props['data-isPercentage'] ? <InputAdornment position="start">%</InputAdornment> : null,
+                          }}
+                        id={this.props.name}
+                        fullWidth
+                    />
                 )
             case 'browse':
                 return (

@@ -2,10 +2,9 @@
  * @module FieldControls
  *
  */ /** */
-import { DatePicker as MUIDatePicker } from 'material-ui-pickers'
+import { TimePicker as MUITimePicker } from 'material-ui-pickers'
 import DateFnsUtils from 'material-ui-pickers/utils/date-fns-utils'
 import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider'
-import * as moment from 'moment'
 import * as React from 'react'
 import { Fragment } from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
@@ -14,27 +13,25 @@ import { ReactDateTimeFieldSetting } from '../DateTimeFieldSetting'
 /**
  * Interface for DatePicker properties
  */
-export interface DatePickerProps extends ReactClientFieldSettingProps, ReactClientFieldSetting, ReactDateTimeFieldSetting { }
+export interface TimePickerProps extends ReactClientFieldSettingProps, ReactClientFieldSetting, ReactDateTimeFieldSetting { }
 
 /**
  * Field control that represents a Date field. Available values will be populated from the FieldSettings.
  */
-export class DatePicker extends React.Component<DatePickerProps, { dateValue, value }> {
+export class TimePicker extends React.Component<TimePickerProps, { value }> {
     /**
      * constructor
      * @param {object} props
      */
-    constructor(props: DatePickerProps) {
+    constructor(props: TimePickerProps) {
         super(props)
         /**
          * @type {object}
          * @property {string} value default value
          */
         this.state = {
-            dateValue: props['data-fieldValue'] ? new Date(this.setValue(props['data-fieldValue'])) : new Date(this.setValue(props['data-defaultValue'])),
-            value: props['data-fieldValue'] ? props['data-fieldValue'] : props['data-defaultValue'],
+            value: this.props['data-fieldValue'] ? this.setValue(this.props['data-fieldValue']) : this.setValue(this.props['data-defaultValue']),
         }
-        this.handleDateChange = this.handleDateChange.bind(this)
     }
 
     /**
@@ -56,11 +53,8 @@ export class DatePicker extends React.Component<DatePickerProps, { dateValue, va
      * @param {Date} date
      */
     public handleDateChange = (date) => {
-        this.setState({
-            dateValue: date,
-            value: moment.utc(date),
-        })
-        this.props.onChange(this.props.name, moment.utc(date))
+        this.setState({ value: date })
+        this.props.onChange(this.props.name, date)
     }
     /**
      * render
@@ -74,7 +68,7 @@ export class DatePicker extends React.Component<DatePickerProps, { dateValue, va
                 return (
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <Fragment>
-                            <MUIDatePicker
+                            <MUITimePicker
                                 defaultValue={value}
                                 onChange={this.handleDateChange}
                                 label={this.props['data-labelText']}
@@ -91,7 +85,7 @@ export class DatePicker extends React.Component<DatePickerProps, { dateValue, va
                 return (
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <Fragment>
-                            <MUIDatePicker
+                            <MUITimePicker
                                 defaultValue={value}
                                 onChange={this.handleDateChange}
                                 label={this.props['data-labelText']}

@@ -1,14 +1,10 @@
 {
     "compilerOptions": {
         "module": "commonjs",
-        "target": "es5",
-        "lib": [
-            "es6",
-            "dom"
-        ],
+        "target": "es2015",
         "sourceMap": true,
-        "declaration": false,
-        "allowJs": true,
+        "declaration": true,
+        "allowJs": false,
         "jsx": "react",
         "moduleResolution": "node",
         "outDir": "./dist",
@@ -16,17 +12,22 @@
         "preserveConstEnums": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "removeComments": true
+        "removeComments": true,
+        "forceConsistentCasingInFileNames": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "strictNullChecks": false,
+        "alwaysStrict": false,
+        "suppressImplicitAnyIndexErrors": true,
+        "noUnusedLocals": true,
+        "strict": true,
+        "skipLibCheck": true
     },
     "exclude": [
         "node_modules",
-        "documentation"
+        "dist"
     ],
     "files": [
-        "src/index.ts",
-        "test/index.ts"
-    ],
-    "types": [
-        "typePatches"
+        "src/index.ts"
     ]
 }

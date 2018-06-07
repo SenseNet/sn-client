@@ -1,119 +1,114 @@
 /**
  * @module FieldControls
- * 
+ *
  */ /** */
 import * as React from 'react'
-import { FieldSettings } from 'sn-client-js'
-import { IClientFieldSetting, IReactClientFieldSetting } from '../IClientFieldSetting'
-import { IShortTextFieldSetting } from '../ShortText/IShortTextFieldSetting'
-import { INameFieldSetting } from './INameFieldSetting'
+import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
+import { ReactShortTextFieldSetting } from '../ShortText/ShortTextFieldSetting'
+import { ReactNameFieldSetting } from './NameFieldSetting'
 
-import { styles } from './NameStyles'
-import { Input } from 'react-materialize'
+import { FormControl, FormHelperText } from '@material-ui/core'
+import TextField from '@material-ui/core/TextField'
 import Radium from 'radium'
 
 /**
  * Interface for Name properties
  */
-export interface NameProps extends IReactClientFieldSetting, IClientFieldSetting, IShortTextFieldSetting, INameFieldSetting {
-    onChange: Function
-}
+export interface NameProps extends ReactClientFieldSettingProps, ReactClientFieldSetting, ReactShortTextFieldSetting, ReactNameFieldSetting { }
 
 /**
  * Field control that represents a ShortText field. Available values will be populated from the FieldSettings.
  */
 @Radium
-export class Name extends React.Component<NameProps, { value }> {
+export class Name extends React.Component<NameProps, { value, isValid, error }> {
     /**
      * constructor
      * @param {object} props
      */
     constructor(props) {
-        super(props);
+        super(props)
         /**
          * @type {object}
          * @property {string} value input value
          */
         this.state = {
-            value: this.setValue(this.props['data-fieldValue'])
-        };
+            value: this.setValue(this.props['data-fieldValue']),
+            isValid: this.props.required ? false : true,
+            error: '',
+        }
+
+        this.handleChange = this.handleChange.bind(this)
     }
     /**
      * convert incoming default value string to proper format
      * @param {string} value
      */
-    setValue(value) {
+    public setValue(value) {
         if (value) {
-            return value.replace(/<[^>]*>/g, '');
-        }
-        else {
+            return value.replace(/<[^>]*>/g, '')
+        } else {
             if (this.props['data-defaultValue']) {
                 return this.props['data-defaultValue']
-            }
-            else {
+            } else {
                 return ''
             }
         }
     }
     /**
+     * Handles input changes. Dispatches a redux action to change field value in the state tree.
+     * @param e
+     */
+    public handleChange(e) {
+        const { onChange } = this.props
+        const value = e.target.value
+        this.setState({ value })
+        onChange(this.props.name, value)
+    }
+    /**
      * render
      * @return {ReactElement} markup
      */
-    render() {
+    public render() {
         switch (this.props['data-actionName']) {
             case 'edit':
                 return (
-                    <Input
-                        type='text'
-                        name={this.props.name}
-                        label={
-                            this.props.required
-                                ? this.props['data-labelText'] + ' *'
-                                : this.props['data-labelText']
-                        }
-                        className={this.props.className}
-                        //placeholder={this.props['data-placeHolderText']}
-                        //placeHolderStyle?: object
-                        style={this.props.style}
-                        defaultValue={this.state.value}
-                        readOnly={this.props.readOnly}
-                        min={this.props['data-minLength']}
-                        max={this.props['data-maxLength']}
+                    <FormControl
+                        error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
                         required={this.props.required}
                         disabled={this.props.readOnly}
-                        error={this.props['data-errorText']}
-                        onChange={this.props.onChange}
-                        s={12}
-                        m={12}
-                        l={12}
-                    />
+                        fullWidth>
+                        <TextField
+                            name={this.props.name}
+                            id={this.props.name}
+                            label={this.props['data-labelText']}
+                            className={this.props.className}
+                            placeholder={this.props['data-placeHolderText']}
+                            style={this.props.style}
+                            defaultValue={this.state.value}
+                            onChange={(e) => this.handleChange(e)}
+                        />
+                        <FormHelperText id="name-error-text"><div>Error</div></FormHelperText>
+                    </FormControl>
                 )
             case 'new':
                 return (
-                    <Input
-                        type='text'
-                        name={this.props.name}
-                        label={
-                            this.props.required
-                                ? this.props['data-labelText'] + ' *'
-                                : this.props['data-labelText']
-                        }
-                        className={this.props.className}
-                        //placeholder={this.props['data-placeHolderText']}
-                        //placeHolderStyle?: object
-                        style={this.props.style}
-                        defaultValue={this.props['data-defaultValue']}
-                        readOnly={this.props.readOnly}
-                        min={this.props['data-minLength']}
-                        max={this.props['data-maxLength']}
+                    <FormControl
+                        error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
                         required={this.props.required}
                         disabled={this.props.readOnly}
-                        error={this.props['data-errorText']}
-                        onChange={this.props.onChange}
-                        s={12}
-                        m={12}
-                        l={12}
-                    />
+                        fullWidth>
+                        <TextField
+                            name={this.props.name}
+                            id={this.props.name}
+                            label={this.props['data-labelText']}
+                            className={this.props.className}
+                            placeholder={this.props['data-placeHolderText']}
+                            style={this.props.style}
+                            defaultValue={this.state.value}
+                            onChange={(e) => this.handleChange(e)}
+                        />
+                        <FormHelperText id="name-error-text"><div>Error</div></FormHelperText>
+                    </FormControl>
                 )
             case 'browse':
                 return (

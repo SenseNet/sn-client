@@ -1,13 +1,13 @@
 /**
  * @module FieldControls
- * 
+ *
  */ /** */
-import { IClientFieldSetting } from './IClientFieldSetting'
+import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
  * Interface for LongTextFieldSetting properties
  */
-export interface ILongTextFieldSetting extends IClientFieldSetting {
+export interface ReactLongTextFieldSetting extends ReactClientFieldSetting {
     'data-maxLength'?: number,
     'data-minLength'?: number,
     'data-textType': 'LongText' | 'RichText' | 'AdvancedRichText'

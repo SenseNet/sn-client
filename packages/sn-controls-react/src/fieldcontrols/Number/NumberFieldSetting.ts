@@ -1,13 +1,13 @@
 /**
  * @module FieldControls
- * 
+ *
  */ /** */
-import { IClientFieldSetting } from '../IClientFieldSetting'
+import { ReactClientFieldSetting } from '../ClientFieldSetting'
 
 /**
  * Interface for NumberFieldSetting properties
  */
-export interface INumberFieldSetting extends IClientFieldSetting {
+export interface ReactNumberFieldSetting extends ReactClientFieldSetting {
     max?: number,
     min?: number,
     'data-decimal'?: boolean,

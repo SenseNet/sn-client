@@ -1,13 +1,13 @@
 /**
  * @module FieldControls
- * 
+ *
  */ /** */
-import { IShortTextFieldSetting } from '../ShortText/IShortTextFieldSetting'
+import { ReactShortTextFieldSetting } from '../ShortText/ShortTextFieldSetting'
 
 /**
  * Interface for NameFieldSetting properties
  */
-export interface INameFieldSetting extends IShortTextFieldSetting {
+export interface ReactNameFieldSetting extends ReactShortTextFieldSetting {
     neverOverrideDisplayName?: boolean
     alwaysEditable?: boolean
 }

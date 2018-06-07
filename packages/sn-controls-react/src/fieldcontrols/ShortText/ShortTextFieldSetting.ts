@@ -1,13 +1,13 @@
 /**
  * @module FieldControls
- * 
+ *
  */ /** */
-import { IClientFieldSetting } from '../IClientFieldSetting'
+import { ReactClientFieldSetting } from '../ClientFieldSetting'
 
 /**
  * Interface for ShortTextFieldSetting properties
  */
-export interface IShortTextFieldSetting extends IClientFieldSetting {
+export interface ReactShortTextFieldSetting extends ReactClientFieldSetting {
     'data-maxLength'?: number,
     'data-minLength'?: number,
     'data-regex'?: string

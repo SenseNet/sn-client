@@ -1,12 +1,12 @@
 /**
  * @module FieldControls
- * 
+ *
  */ /** */
-import { IClientFieldSetting } from '../IClientFieldSetting'
+import { ReactClientFieldSetting } from '../ClientFieldSetting'
 
 /**
  * Interface for TagsInputFieldSetting properties
  */
-export interface ITagsInputFieldSetting extends IClientFieldSetting {
+export interface ReactTagsInputFieldSetting extends ReactClientFieldSetting {
     dataSource: any[]
 }

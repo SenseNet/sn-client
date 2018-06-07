@@ -1,13 +1,13 @@
 /**
  * @module FieldControls
- * 
+ *
  */ /** */
-import { IClientFieldSetting } from './IClientFieldSetting'
+import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
  * Interface for DateTimeFieldSetting properties
  */
-export interface IDateTimeFieldSetting extends IClientFieldSetting {
+export interface ReactDateTimeFieldSetting extends ReactClientFieldSetting {
     'data-dateTimeMode'?: 'none'  | 'date' | 'dateAndTime',
     'data-precision'?: 'millisecond' | 'second' | 'minute' | 'hour' | 'day'
 }

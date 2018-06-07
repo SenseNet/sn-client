@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/github/license/SenseNet/sn-controls-react.svg?style=flat)](https://github.com/SenseNet/sn-controls-react/LICENSE.txt)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat)](http://commitizen.github.io/cz-cli/)
 
-Collection of [React](https://facebook.github.io/react/) components for [sensenet ECM](https://www.sensenet.com/) with [React Materialize](https://github.com/react-materialize/react-materialize)
+Collection of [React](https://facebook.github.io/react/) components for [sensenet ECM](https://www.sensenet.com/) with [Material-UI](https://github.com/mui-org/material-ui)
 
 [![Sense/Net Services](https://img.shields.io/badge/sensenet-7.0.0--beta3%20tested-green.svg)](https://github.com/SenseNet/sensenet/releases/tag/v7.0.0-beta3)
 

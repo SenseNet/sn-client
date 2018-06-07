@@ -2,7 +2,7 @@
  * @module FieldControls
  *
  */ /** */
-import { DatePicker as MUIDatePicker } from 'material-ui-pickers'
+import { DateTimePicker as MUIDateTimePicker } from 'material-ui-pickers'
 import DateFnsUtils from 'material-ui-pickers/utils/date-fns-utils'
 import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider'
 import * as moment from 'moment'
@@ -14,17 +14,17 @@ import { ReactDateTimeFieldSetting } from '../DateTimeFieldSetting'
 /**
  * Interface for DatePicker properties
  */
-export interface DatePickerProps extends ReactClientFieldSettingProps, ReactClientFieldSetting, ReactDateTimeFieldSetting { }
+export interface DateTimePickerProps extends ReactClientFieldSettingProps, ReactClientFieldSetting, ReactDateTimeFieldSetting { }
 
 /**
  * Field control that represents a Date field. Available values will be populated from the FieldSettings.
  */
-export class DatePicker extends React.Component<DatePickerProps, { dateValue, value }> {
+export class DateTimePicker extends React.Component<DateTimePickerProps, { value, dateValue }> {
     /**
      * constructor
      * @param {object} props
      */
-    constructor(props: DatePickerProps) {
+    constructor(props: DateTimePickerProps) {
         super(props)
         /**
          * @type {object}
@@ -67,15 +67,15 @@ export class DatePicker extends React.Component<DatePickerProps, { dateValue, va
      * @return {ReactElement} markup
      */
     public render() {
-        const { value } = this.state
+        const { dateValue } = this.state
         const { readOnly, required } = this.props
         switch (this.props['data-actionName']) {
             case 'edit':
                 return (
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <Fragment>
-                            <MUIDatePicker
-                                defaultValue={value}
+                            <MUIDateTimePicker
+                                value={dateValue}
                                 onChange={this.handleDateChange}
                                 label={this.props['data-labelText']}
                                 id={this.props.name}
@@ -91,8 +91,8 @@ export class DatePicker extends React.Component<DatePickerProps, { dateValue, va
                 return (
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <Fragment>
-                            <MUIDatePicker
-                                defaultValue={value}
+                            <MUIDateTimePicker
+                                value={dateValue}
                                 onChange={this.handleDateChange}
                                 label={this.props['data-labelText']}
                                 id={this.props.name}

@@ -1,24 +1,21 @@
 /**
  * @module FieldControls
- * 
+ *
  */ /** */
 import * as React from 'react'
-import { FieldSettings } from 'sn-client-js'
-import { IClientFieldSetting, IReactClientFieldSetting } from '../IClientFieldSetting'
-import { IRichTextEditorFieldSetting } from './IRichTextEditorFieldSetting'
+import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
+import { ReactRichTextEditorFieldSetting } from './RichTextEditorFieldSetting'
 
 import * as ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 
-import { styles } from './RichTextEditorStyles'
-import './RichTextEditorStyles.css'
-import { Input } from 'react-materialize'
 import Radium from 'radium'
+import './RichTextEditorStyles.css'
 
 /**
  * Interface for RichTextEditor properties
  */
-export interface RichTextEditorProps extends IReactClientFieldSetting, IClientFieldSetting, IRichTextEditorFieldSetting { }
+export interface RichTextEditorProps extends ReactClientFieldSettingProps, ReactClientFieldSetting, ReactRichTextEditorFieldSetting { }
 
 /**
  * Field control that represents a LongText field. Available values will be populated from the FieldSettings.
@@ -30,30 +27,28 @@ export class RichTextEditor extends React.Component<RichTextEditorProps, { value
      * @param {object} props
      */
     constructor(props) {
-        super(props);
+        super(props)
         /**
          * @type {object}
          * @property {string} value input value
          */
         this.state = {
-            value: this.setValue(this.props['data-fieldValue'])
-        };
+            value: this.setValue(this.props['data-fieldValue']),
+        }
 
-        this.handleChange = this.handleChange.bind(this);
+        this.handleChange = this.handleChange.bind(this)
     }
     /**
      * returns default value of an input
      * @param {string} value
      */
-    setValue(value) {
+    public setValue(value) {
         if (value) {
-            return value;
-        }
-        else {
+            return value
+        } else {
             if (this.props['data-defaultValue']) {
                 return this.props['data-defaultValue']
-            }
-            else {
+            } else {
                 return ''
             }
         }
@@ -62,14 +57,15 @@ export class RichTextEditor extends React.Component<RichTextEditorProps, { value
      * handle change event on an input
      * @param {SytheticEvent} event
      */
-    handleChange(event) {
-        this.setState({ value: event.target.value });
+    public handleChange(value) {
+        this.setState({ value })
+        this.props.onChange(this.props.name, value)
     }
     /**
      * render
      * @return {ReactElement} markup
      */
-    render() {
+    public render() {
         switch (this.props['data-actionName']) {
             case 'edit':
                 return (
@@ -81,8 +77,8 @@ export class RichTextEditor extends React.Component<RichTextEditorProps, { value
                                 : this.props['data-labelText']
                         }
                         className={this.props.className}
-                        //placeholder={this.props['data-placeHolderText']}
-                        //placeHolderStyle?: object
+                        // placeholder={this.props['data-placeHolderText']}
+                        // placeHolderStyle?: object
                         style={this.props.style}
                         value={this.state.value}
                         readOnly={this.props.readOnly}
@@ -94,6 +90,7 @@ export class RichTextEditor extends React.Component<RichTextEditorProps, { value
                         l={12}
                         modules={modules}
                         formats={formats}
+                        onChange={this.handleChange}
                     />
                 )
             case 'new':
@@ -106,8 +103,8 @@ export class RichTextEditor extends React.Component<RichTextEditorProps, { value
                                 : this.props['data-labelText']
                         }
                         className={this.props.className}
-                        //placeholder={this.props['data-placeHolderText']}
-                        //placeHolderStyle?: object
+                        // placeholder={this.props['data-placeHolderText']}
+                        // placeHolderStyle?: object
                         style={this.props.style}
                         defaultValue={this.props['data-defaultValue']}
                         readOnly={this.props.readOnly}
@@ -119,6 +116,7 @@ export class RichTextEditor extends React.Component<RichTextEditorProps, { value
                         l={12}
                         modules={modules}
                         formats={formats}
+                        onChange={this.handleChange}
                     />
                 )
             case 'browse':
@@ -149,26 +147,26 @@ const modules = {
         ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
         ['blockquote', 'code-block'],
 
-        [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-        [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
-        [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
-        [{ 'direction': 'rtl' }],                         // text direction
+        [{ header: 1 }, { header: 2 }],               // custom button values
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        [{ script: 'sub' }, { script: 'super' }],      // superscript/subscript
+        [{ indent: '-1' }, { indent: '+1' }],          // outdent/indent
+        [{ direction: 'rtl' }],                         // text direction
 
-        [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        [{ size: ['small', false, 'large', 'huge'] }],  // custom dropdown
+        [{ header: [1, 2, 3, 4, 5, 6, false] }],
 
-        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-        [{ 'font': [] }],
-        [{ 'align': [] }],
+        [{ color: [] }, { background: [] }],          // dropdown with defaults from theme
+        [{ font: [] }],
+        [{ align: [] }],
 
-        ['clean']                                         // remove formatting button
-    ]
-};
+        ['clean'],                                       // remove formatting button
+    ],
+}
 
 const formats = [
     'header', 'font', 'size',
     'bold', 'italic', 'underline', 'strike', 'blockquote',
     'list', 'bullet', 'indent',
-    'link', 'image', 'video'
+    'link', 'image', 'video',
 ]

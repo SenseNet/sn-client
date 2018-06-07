@@ -1,25 +1,25 @@
 /**
  * @module FieldControls
- * 
+ *
  */ /** */
- 
 /**
  * Interface for ReactClientFieldSetting properties
  */
-export interface IReactClientFieldSetting {
+export interface ReactClientFieldSettingProps {
     name?: string
     key?: string
     style?: object
     value?: number
     readOnly?: boolean
     required?: boolean
-    className?: string
+    className?: string,
+    onChange
 }
 
 /**
  * Interface for ClientFieldSetting properties
  */
-export interface IClientFieldSetting extends IReactClientFieldSetting {
+export interface ReactClientFieldSetting extends ReactClientFieldSettingProps {
     'data-actionName'?: 'new' | 'edit' | 'browse'
     'data-hintText'?: string
     'data-hintStyle'?: object
@@ -30,5 +30,6 @@ export interface IClientFieldSetting extends IReactClientFieldSetting {
     'data-labelStyle'?: object,
     'data-labelText'?: string,
     'data-errorStyle'?: object,
-    'data-errorText'?: string
+    'data-errorText'?: string,
+    'data-typeName'?: string
 }

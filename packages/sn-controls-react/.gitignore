@@ -60,5 +60,12 @@ typings/
 # build
 dist
 
-#documentation
+node_modules
+coverage
 documentation
+npm-debug.log
+debug.log
+dist
+.nyc_output
+package-lock.json
+temp

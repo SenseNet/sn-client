@@ -1,23 +1,18 @@
 /**
  * @module FieldControls
- * 
+ *
  */ /** */
 import * as React from 'react'
-import { FieldSettings } from 'sn-client-js'
-import { IClientFieldSetting, IReactClientFieldSetting } from '../IClientFieldSetting'
-import { IShortTextFieldSetting } from '../ShortText/IShortTextFieldSetting'
-import { IDisplayNameFieldSetting } from './IDisplayNameFieldSetting'
+import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
+import { ReactDisplayNameFieldSetting } from './DisplayNameFieldSetting'
 
-import { styles } from './DisplayNameStyles'
-import { Input } from 'react-materialize'
+import TextField from '@material-ui/core/TextField'
 import Radium from 'radium'
 
 /**
  * Interface for DisplayName properties
  */
-export interface DisplayNameProps extends IReactClientFieldSetting, IClientFieldSetting, IDisplayNameFieldSetting { 
-    onChange: Function
-}
+export interface DisplayNameProps extends ReactClientFieldSettingProps, ReactClientFieldSetting, ReactDisplayNameFieldSetting { }
 
 /**
  * Field control that represents a ShortText field. Available values will be populated from the FieldSettings.
@@ -29,99 +24,79 @@ export class DisplayName extends React.Component<DisplayNameProps, { value }> {
      * @param {object} props
      */
     constructor(props) {
-        super(props);
+        super(props)
         /**
          * @type {object}
          * @property {string} value input value
          */
         this.state = {
-            value: this.setValue(this.props['data-fieldValue'])
-        };
+            value: this.setValue(this.props['data-fieldValue']),
+        }
 
-        this.handleChange = this.handleChange.bind(this);
+        this.handleChange = this.handleChange.bind(this)
     }
     /**
      * convert incoming default value string to proper format
      * @param {string} value
      */
-    setValue(value) {
+    public setValue(value) {
         if (value) {
-            return value.replace(/<[^>]*>/g, '');
-        }
-        else {
+            return value.replace(/<[^>]*>/g, '')
+        } else {
             if (this.props['data-defaultValue']) {
                 return this.props['data-defaultValue']
-            }
-            else {
+            } else {
                 return ''
             }
         }
     }
     /**
-     * handle change of the input
-     * @param {SytheticEvent} event
+     * Handles input changes. Dispatches a redux action to change field value in the state tree.
+     * @param e
      */
-    handleChange(event) {
-        this.setState({ value: event.target.value });
+    public handleChange(e) {
+        const { name, onChange } = this.props
+        const value = e.target.value
+        onChange(name, value)
     }
     /**
      * render
      * @return {ReactElement} markup
      */
-    render() {
+    public render() {
         switch (this.props['data-actionName']) {
             case 'edit':
                 return (
-                    <Input
-                        type='text'
+                    <TextField
                         name={this.props.name}
-                        label={
-                            this.props.required
-                                ? this.props['data-labelText'] + ' *'
-                                : this.props['data-labelText']
-                        }
+                        id={this.props.name}
+                        label={this.props['data-labelText']}
                         className={this.props.className}
-                        //placeholder={this.props['data-placeHolderText']}
-                        //placeHolderStyle?: object
+                        placeholder={this.props['data-placeHolderText']}
                         style={this.props.style}
                         defaultValue={this.state.value}
-                        readOnly={this.props.readOnly}
-                        min={this.props['data-minLength']}
-                        max={this.props['data-maxLength']}
                         required={this.props.required}
                         disabled={this.props.readOnly}
-                        error={this.props['data-errorText']}
-                        onChange={this.props.onChange}
-                        s={12}
-                        m={12}
-                        l={12}
+                        error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
+                        fullWidth
+                        onChange={(e) => this.handleChange(e)}
                     />
                 )
             case 'new':
                 return (
-                    <Input
-                        type='text'
+                    <TextField
                         name={this.props.name}
-                        label={
-                            this.props.required
-                                ? this.props['data-labelText'] + ' *'
-                                : this.props['data-labelText']
-                        }
+                        id={this.props.name}
+                        label={this.props['data-labelText']}
                         className={this.props.className}
-                        //placeholder={this.props['data-placeHolderText']}
-                        //placeHolderStyle?: object
+                        placeholder={this.props['data-placeHolderText']}
                         style={this.props.style}
                         defaultValue={this.props['data-defaultValue']}
-                        readOnly={this.props.readOnly}
-                        min={this.props['data-minLength']}
-                        max={this.props['data-maxLength']}
                         required={this.props.required}
                         disabled={this.props.readOnly}
-                        error={this.props['data-errorText']}
-                        onChange={this.props.onChange}
-                        s={12}
-                        m={12}
-                        l={12}
+                        error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
+                        fullWidth
+                        onChange={(e) => this.handleChange(e)}
                     />
                 )
             case 'browse':

@@ -1,6 +1,6 @@
 export const styles = {
     hidden: {
-        display: 'none'
+        display: 'none',
     },
-    required: {}
+    required: {},
 }

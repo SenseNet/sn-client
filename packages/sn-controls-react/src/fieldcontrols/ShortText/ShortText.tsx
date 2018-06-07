@@ -1,20 +1,18 @@
 /**
  * @module FieldControls
- * 
+ *
  */ /** */
 import * as React from 'react'
-import { FieldSettings } from 'sn-client-js'
-import { IClientFieldSetting, IReactClientFieldSetting } from '../IClientFieldSetting'
-import { IShortTextFieldSetting } from './IShortTextFieldSetting'
+import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
+import { ReactShortTextFieldSetting } from './ShortTextFieldSetting'
 
-import { styles } from './ShortTextStyles'
-import { Input } from 'react-materialize'
+import TextField from '@material-ui/core/TextField'
 import Radium from 'radium'
 
 /**
  * Interface for ShortText properties
  */
-export interface ShortTextProps extends IReactClientFieldSetting, IClientFieldSetting, IShortTextFieldSetting { }
+export interface ShortTextProps extends ReactClientFieldSettingProps, ReactClientFieldSetting, ReactShortTextFieldSetting { }
 
 /**
  * Field control that represents a ShortText field. Available values will be populated from the FieldSettings.
@@ -26,95 +24,76 @@ export class ShortText extends React.Component<ShortTextProps, { value }> {
      * @param {object} props
      */
     constructor(props) {
-        super(props);
+        super(props)
         /**
          * @type {object}
          * @property {string} value input value
          */
         this.state = {
-            value: this.setValue(this.props['data-fieldValue'])
-        };
-
-        this.handleChange = this.handleChange.bind(this);
+            value: this.setValue(this.props['data-fieldValue']),
+        }
     }
     /**
      * returns default value of an input
      * @param {string} value
      */
-    setValue(value) {
+    public setValue(value) {
         if (value) {
-            return value;
-        }
-        else {
+            return value
+        } else {
             if (this.props['data-defaultValue']) {
                 return this.props['data-defaultValue']
-            }
-            else {
+            } else {
                 return ''
             }
         }
     }
     /**
-     * handle change event on an input
-     * @param {SytheticEvent} event
+     * Handles input changes. Dispatches a redux action to change field value in the state tree.
+     * @param e
      */
-    handleChange(event) {
-        this.setState({ value: event.target.value });
+    public handleChange(e) {
+        const { name, onChange } = this.props
+        const value = e.target.value
+        onChange(name, value)
     }
     /**
      * render
      * @return {ReactElement} markup
      */
-    render() {
+    public render() {
         switch (this.props['data-actionName']) {
             case 'edit':
                 return (
-                    <Input
+                    <TextField
                         name={this.props.name}
-                        type='text'
-                        label={
-                            this.props.required
-                                ? this.props['data-labelText'] + ' *'
-                                : this.props['data-labelText']
-                        }
+                        id={this.props.name}
+                        label={this.props['data-labelText']}
                         className={this.props.className}
-                        //placeholder={this.props['data-placeHolderText']}
-                        //placeHolderStyle?: object
+                        placeholder={this.props['data-placeHolderText']}
                         style={this.props.style}
-                        value={this.state.value}
-                        readOnly={this.props.readOnly}
-                        disabled={this.props.readOnly}
+                        defaultValue={this.state.value}
                         required={this.props.required}
-                        error={this.props['data-errorText']}
-                        s={12}
-                        m={12}
-                        l={12}
-                        onChange={this.handleChange}
+                        disabled={this.props.readOnly}
+                        error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
+                        fullWidth
+                        onChange={(e) => this.handleChange(e)}
                     />
                 )
             case 'new':
                 return (
-                    <Input
+                    <TextField
                         name={this.props.name}
-                        type='text'
-                        label={
-                            this.props.required
-                                ? this.props['data-labelText'] + ' *'
-                                : this.props['data-labelText']
-                        }
+                        id={this.props.name}
+                        label={this.props['data-labelText']}
                         className={this.props.className}
-                        //placeholder={this.props['data-placeHolderText']}
-                        //placeHolderStyle?: object
+                        placeholder={this.props['data-placeHolderText']}
                         style={this.props.style}
-                        value={this.state.value}
-                        readOnly={this.props.readOnly}
-                        disabled={this.props.readOnly}
+                        defaultValue={this.state.value}
                         required={this.props.required}
-                        error={this.props['data-errorText']}
-                        s={12}
-                        m={12}
-                        l={12}
-                        onChange={this.handleChange}
+                        disabled={this.props.readOnly}
+                        error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
+                        fullWidth
                     />
                 )
             case 'browse':

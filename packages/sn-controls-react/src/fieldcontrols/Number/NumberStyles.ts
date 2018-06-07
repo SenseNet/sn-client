@@ -1,5 +1,5 @@
 export const style = {
     symbol: {
-        fontFamily: 'Roboto'
-    }
+        fontFamily: 'Roboto',
+    },
 }

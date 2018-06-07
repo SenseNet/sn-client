@@ -1,34 +1,34 @@
 /**
  * @module ViewControls
- * 
+ *
  *//** */
+import Grid from '@material-ui/core/Grid'
 import * as React from 'react'
-import { ReactControlMapper } from '../ReactControlMapper'
-import { Row, Col } from 'react-materialize'
+import { reactControlMapper } from '../ReactControlMapper'
 import { styles } from './BrowseViewStyles'
 
 /**
  * Interface for BrowseView properties
  */
-interface IBrowseViewProps {
+export interface BrowseViewProps {
     content
 }
 
 /**
  * View Control for browsing a Content, works with a single Content and based on the ReactControlMapper
- * 
+ *
  * Usage:
  * ```html
  *  <BrowseView content={content} />
  * ```
  */
-export class BrowseView extends React.Component<IBrowseViewProps, { content, schema }> {
+export class BrowseView extends React.Component<BrowseViewProps, { content, schema }> {
     /**
      * constructor
      * @param {object} props
      */
     constructor(props: any) {
-        super(props);
+        super(props)
         /**
          * @type {object}
          * @property {any} content selected Content
@@ -36,19 +36,18 @@ export class BrowseView extends React.Component<IBrowseViewProps, { content, sch
          */
         this.state = {
             content: this.props.content,
-            schema: ReactControlMapper.GetFullSchemaForContent(this.props.content as any, 'edit')
-        };
+            schema: reactControlMapper.getFullSchemaForContentType(this.props.content as any, 'edit'),
+        }
     }
     /**
      * returns a value of an input
      * @param {string} name name of the input
      * @return {any} value of the input or null
      */
-    getFieldValue(name) {
+    public getFieldValue(name) {
         if (this.props.content[name]) {
             return this.props.content[name]
-        }
-        else {
+        } else {
             return null
         }
     }
@@ -56,32 +55,32 @@ export class BrowseView extends React.Component<IBrowseViewProps, { content, sch
      * render
      * @return {ReactElement} markup
      */
-    render() {
-        const fieldSettings = this.state.schema.FieldMappings;
-        const that = this;
+    public render() {
+        const fieldSettings = this.state.schema.fieldMappings
+        const that = this
         return (
-            <Row>
+            <Grid container spacing={24}>
                 <div style={styles.container}>
                     <h4>{this.props.content.DisplayName}</h4>
                     {
-                        fieldSettings.map(function (e, i) {
+                        fieldSettings.map((e, i) => {
                             return (
-                                <Col s={12} m={12} l={12} key={fieldSettings[i].ClientSettings.name}>
+                                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                                     {
                                         React.createElement(
-                                            fieldSettings[i].ControlType,
+                                            fieldSettings[i].controlType,
                                             {
-                                                ...fieldSettings[i].ClientSettings,
+                                                ...fieldSettings[i].clientSettings,
                                                 'data-actionName': 'browse',
-                                                'data-fieldValue': that.getFieldValue(fieldSettings[i].ClientSettings.name)
+                                                'data-fieldValue': that.getFieldValue(fieldSettings[i].clientSettings.name),
                                             })
                                     }
-                                </Col>)
+                                </Grid>)
 
                         })
                     }
                 </div>
-            </Row>
+            </Grid>
         )
     }
 }
