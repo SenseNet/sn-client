@@ -1,10 +1,9 @@
 
+import CircularProgress from '@material-ui/core/CircularProgress'
+import Paper from '@material-ui/core/Paper'
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
 import { Actions, Reducers } from '@sensenet/redux'
-import Paper from 'material-ui/Paper'
-import { CircularProgress } from 'material-ui/Progress'
-import Table, {
-    TableBody,
-} from 'material-ui/Table'
 import * as React from 'react'
 import { DropTarget } from 'react-dnd'
 import { connect } from 'react-redux'

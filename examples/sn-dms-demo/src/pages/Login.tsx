@@ -1,11 +1,11 @@
+import Button from '@material-ui/core/Button'
+import FormControl from '@material-ui/core/FormControl'
+import FormHelperText from '@material-ui/core/FormHelperText'
+import InputLabel from '@material-ui/core/InputLabel'
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
+import TextField from '@material-ui/core/TextField'
 import { Reducers } from '@sensenet/redux'
-import Button from 'material-ui/Button'
-import FormControl from 'material-ui/Form/FormControl'
-import FormHelperText from 'material-ui/Form/FormHelperText'
-import Input from 'material-ui/Input'
-import InputLabel from 'material-ui/Input/InputLabel'
-import createMuiTheme from 'material-ui/styles/createMuiTheme'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
@@ -17,8 +17,8 @@ import * as DMSReducers from '../Reducers'
 // tslint:disable-next-line:no-var-requires
 const logo = require('../assets/logo.png')
 
-import lightBlue from 'material-ui/colors/lightBlue'
-import pink from 'material-ui/colors/pink'
+import lightBlue from '@material-ui/core/colors/lightBlue'
+import pink from '@material-ui/core/colors/pink'
 
 const muiTheme = createMuiTheme({
   palette: {
@@ -206,7 +206,7 @@ class Login extends React.Component<LoginProps, LoginState> {
                 required
                 style={styles.formControl}>
                 <InputLabel htmlFor="email">{resources.EMAIL_INPUT_LABEL}</InputLabel>
-                <Input
+                <TextField
                   id="email"
                   onBlur={(event) => this.handleEmailBlur(event)}
                   onChange={(event) => this.handleEmailChange(event)}
@@ -221,7 +221,7 @@ class Login extends React.Component<LoginProps, LoginState> {
                 required
                 style={styles.formControl}>
                 <InputLabel htmlFor="password">{resources.PASSWORD_INPUT_LABEL}</InputLabel>
-                <Input
+                <TextField
                   type="password"
                   id="password"
                   onBlur={(event) => this.handlePasswordBlur(event)}
@@ -236,7 +236,7 @@ class Login extends React.Component<LoginProps, LoginState> {
               <Button type="submit" color="primary" style={styles.button} disabled={this.props.loginError === null && this.state.isButtonDisabled}>{resources.LOGIN_BUTTON_TEXT}</Button>
             </form>
           </MuiThemeProvider>
-          <OauthRow />
+          <OauthRow oAuthProvider={this.props.params.oAuthProvider} />
         </div>
       </div>
     )

@@ -1,7 +1,7 @@
-import CloseIcon from 'material-ui-icons/Close'
-import IconButton from 'material-ui/IconButton'
-import Snackbar from 'material-ui/Snackbar'
-import Fade from 'material-ui/transitions/Fade'
+import Fade from '@material-ui/core/Fade'
+import IconButton from '@material-ui/core/IconButton'
+import Snackbar from '@material-ui/core/Snackbar'
+import CloseIcon from '@material-ui/icons/Close'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import * as DMSActions from '../Actions'
@@ -33,8 +33,8 @@ class MessageBar extends React.Component<MessageBarProps, MessageBarState> {
                 }}
                 open={open}
                 autoHideDuration={6000}
-                transition={Fade}
-                SnackbarContentProps={{
+                TransitionComponent={Fade}
+                ContentProps={{
                     'aria-describedby': 'message-id',
                 }}
                 message={<span id="message-id">{content.message}</span>}

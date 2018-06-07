@@ -30,7 +30,7 @@ it('renders without crashing', () => {
                 },
             },
         },
-    } as Store.CreateStoreOptions
+    } as Store.CreateStoreOptions<any>
     const store = Store.createSensenetStore(options)
     const content = { DisplayName: 'My content', Id: 123, Path: '/workspaces' } as Task
     ReactDOM.render(<MenuCell

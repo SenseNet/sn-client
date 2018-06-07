@@ -1,5 +1,5 @@
+import Avatar from '@material-ui/core/Avatar'
 import { Reducers } from '@sensenet/redux'
-import Avatar from 'material-ui/Avatar'
 import * as React from 'react'
 import { connect } from 'react-redux'
 

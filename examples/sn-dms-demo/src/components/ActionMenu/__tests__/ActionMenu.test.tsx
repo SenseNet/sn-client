@@ -25,7 +25,7 @@ it('renders without crashing', () => {
         actions: [],
       },
     },
-  } as Store.CreateStoreOptions
+  } as Store.CreateStoreOptions<any>
   const store = Store.createSensenetStore(options)
   ReactDOM.render(
     <ActionMenu store={store} />, div)

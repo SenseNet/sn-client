@@ -1,6 +1,6 @@
-import Search from 'material-ui-icons/Search'
-import IconButton from 'material-ui/IconButton'
-import TextField from 'material-ui/TextField'
+import IconButton from '@material-ui/core/IconButton'
+import TextField from '@material-ui/core/TextField'
+import Search from '@material-ui/icons/Search'
 import * as React from 'react'
 import MediaQuery from 'react-responsive'
 

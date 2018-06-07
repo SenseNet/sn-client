@@ -39,7 +39,7 @@ it('renders without crashing', () => {
         registrationError: 'error',
       },
     },
-  } as Store.CreateStoreOptions
+  } as Store.CreateStoreOptions<any>
 
   const store = Store.createSensenetStore(options)
   ReactDOM.render(

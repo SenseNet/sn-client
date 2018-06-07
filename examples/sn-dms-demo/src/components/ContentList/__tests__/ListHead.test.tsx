@@ -1,8 +1,6 @@
+import Checkbox from '@material-ui/core/Checkbox'
+import TableHead from '@material-ui/core/TableHead'
 import { shallow } from 'enzyme'
-import Checkbox from 'material-ui/Checkbox'
-import {
-  TableHead,
-} from 'material-ui/Table'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { ListHead } from '../ListHead'

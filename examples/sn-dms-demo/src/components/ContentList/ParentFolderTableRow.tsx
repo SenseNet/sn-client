@@ -1,7 +1,5 @@
-import {
-    TableCell,
-    TableRow,
-} from 'material-ui/Table'
+import TableCell from '@material-ui/core/TableCell'
+import TableRow from '@material-ui/core/TableRow'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'

@@ -1,6 +1,6 @@
+import TableCell from '@material-ui/core/TableCell'
+import TextField from '@material-ui/core/TextField'
 import { Actions, Reducers } from '@sensenet/redux'
-import { TableCell } from 'material-ui/Table'
-import TextField from 'material-ui/TextField'
 import * as React from 'react'
 import { DropTarget } from 'react-dnd'
 import { DragSource } from 'react-dnd'

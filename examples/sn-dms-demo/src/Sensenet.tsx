@@ -14,10 +14,10 @@ import Login from './pages/Login'
 import Registration from './pages/Registration'
 import './Sensenet.css'
 
-import lightBlue from 'material-ui/colors/lightBlue'
-import pink from 'material-ui/colors/pink'
-import createMuiTheme from 'material-ui/styles/createMuiTheme'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import lightBlue from '@material-ui/core/colors/lightBlue'
+import pink from '@material-ui/core/colors/pink'
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 
 const muiTheme = createMuiTheme({
   palette: {
@@ -36,7 +36,8 @@ interface SensenetProps {
   login,
   registration,
   recaptchaCallback,
-  clearRegistration
+  clearRegistration,
+  oAuthProvider
 }
 
 class Sensenet extends React.Component<SensenetProps, { isAuthenticated: boolean, params, loginError, registrationError }> {
@@ -73,7 +74,7 @@ class Sensenet extends React.Component<SensenetProps, { isAuthenticated: boolean
               const status = this.props.loginState === LoginState.Authenticated
               return status ?
                 <Redirect key="dashboard" to="/" /> :
-                <Login login={this.props.login} params={{ error: this.props.loginError }} clear={this.props.clearRegistration} />
+                <Login login={this.props.login} params={{ error: this.props.loginError, oAuthProvider: this.props.oAuthProvider }} clear={this.props.clearRegistration} />
             }}
           />
           <Route

@@ -26,7 +26,7 @@ it('renders without crashing', () => {
                 captcha: false,
             },
         },
-    } as Store.CreateStoreOptions
+    } as Store.CreateStoreOptions<any>
     const store = Store.createSensenetStore(options)
     ReactDOM.render(
         <GoogleReCaptcha store={store} />, div)

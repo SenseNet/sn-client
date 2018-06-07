@@ -17,7 +17,7 @@ const styles = {
 
 enum buttonState { normal, focused, pressed }
 
-class GoogleAuthButton extends React.Component<{ login }, { buttonImage: buttonState }> {
+class GoogleAuthButton extends React.Component<{ login, oAuthProvider }, { buttonImage: buttonState }> {
     constructor(props) {
         super(props)
 
@@ -32,7 +32,7 @@ class GoogleAuthButton extends React.Component<{ login }, { buttonImage: buttonS
         this.handleButtonMouseUp = this.handleButtonMouseUp.bind(this)
     }
     public handleButtonClick(e) {
-        this.props.login()
+        this.props.login(this.props.oAuthProvider)
     }
     public handleButtonMouseOver(e) {
         this.setState({

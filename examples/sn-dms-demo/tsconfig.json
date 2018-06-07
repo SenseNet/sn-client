@@ -25,10 +25,10 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
-    "types": [
+"types": [
       "jest",
       "node"
-    ]
+    ]    
   },
   "exclude": [
     "node_modules",

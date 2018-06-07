@@ -30,14 +30,12 @@ const repository = new Repository({
   defaultExpand: ['Actions'] as any,
 })
 const jwt = new JwtService(repository)
-addGoogleAuth (jwt, {
-  clientId: '188576321252-ok4dg714hibsrjpt6luaee0u1jc56r7l.apps.googleusercontent.com',
-})
+const googleOauthProvider = addGoogleAuth(jwt, {clientId: '188576321252-cad8ho16mf68imajdvai6e2cpl3iv8ss.apps.googleusercontent.com'})
 
 const options = {
   repository,
   rootReducer: myReducer,
-} as Store.CreateStoreOptions
+} as Store.CreateStoreOptions<any>
 const store = Store.createSensenetStore(options)
 
 const handler = new MessageBoxHandler(repository, store)
@@ -45,7 +43,7 @@ const handler = new MessageBoxHandler(repository, store)
 ReactDOM.render(
   <Provider store={store}>
     <Router basename="/">
-      <Sensenet repository={repository} history={history} />
+      <Sensenet repository={repository} history={history} oAuthProvider={googleOauthProvider} />
     </Router>
   </Provider>,
   document.getElementById('root') as HTMLElement,

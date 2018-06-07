@@ -34,7 +34,7 @@ it('renders without crashing', () => {
         },
       },
     },
-  } as Store.CreateStoreOptions
+  } as Store.CreateStoreOptions<any>
 
   const store = Store.createSensenetStore(options)
   ReactDOM.render(

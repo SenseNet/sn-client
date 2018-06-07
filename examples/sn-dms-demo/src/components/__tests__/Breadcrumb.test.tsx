@@ -30,7 +30,7 @@ it('renders without crashing', () => {
         path: '/Root/Profiles/Public/alba/Document_Library',
       }],
     },
-  } as Store.CreateStoreOptions
+  } as Store.CreateStoreOptions<any>
   const store = Store.createSensenetStore(options)
   ReactDOM.render(
     <MemoryRouter>

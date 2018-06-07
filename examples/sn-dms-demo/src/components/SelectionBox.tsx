@@ -1,8 +1,8 @@
+import IconButton from '@material-ui/core/IconButton'
+import Snackbar from '@material-ui/core/Snackbar'
+import SnackbarContent from '@material-ui/core/SnackbarContent'
+import MoreVert from '@material-ui/icons/MoreVert'
 import { Reducers } from '@sensenet/redux'
-import MoreVert from 'material-ui-icons/MoreVert'
-import IconButton from 'material-ui/IconButton'
-import Snackbar, { SnackbarContent } from 'material-ui/Snackbar'
-import { withStyles } from 'material-ui/styles'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import * as DMSActions from '../Actions'
@@ -51,7 +51,7 @@ class SelectionBox extends React.Component<SelectionBoxProps, {}> {
         this.props.openActionMenu(batchActions, this.props.selected, `${this.props.selected.length} Items selected`, { top: rect.top - 200, left: rect.left })
     }
     public render() {
-        const { selected, classes } = this.props
+        const { selected, classes, ...other } = this.props
         const count = selected.length
         return <Snackbar
             anchorOrigin={{
@@ -63,13 +63,14 @@ class SelectionBox extends React.Component<SelectionBoxProps, {}> {
                 message={`${count} Items selected`}
                 action={
                     <IconButton
-                        aria-label="Menu"
-                        onClick={(event) => this.handleClick(event)}
-                        className={classes.button}
+                      key="menu"
+                      aria-label="Menu"
+                      onClick={(event) => this.handleClick(event)}
+                      color="inherit"
                     >
-                        <MoreVert  />
+                      <MoreVert />
                     </IconButton>
-                }
+                  }
             />
         </Snackbar>
     }
@@ -83,4 +84,4 @@ const mapStateToProps = (state, match) => {
 
 export default connect(mapStateToProps, {
     openActionMenu: DMSActions.openActionMenu,
-})(withStyles(styles)(SelectionBox))
+})(SelectionBox)

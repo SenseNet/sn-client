@@ -1,14 +1,15 @@
-import AppBar from 'material-ui/AppBar'
-import createMuiTheme from 'material-ui/styles/createMuiTheme'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import Tabs, { Tab } from 'material-ui/Tabs'
+import AppBar from '@material-ui/core/AppBar'
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
+import Tab from '@material-ui/core/Tab'
+import Tabs from '@material-ui/core/Tabs'
 import * as React from 'react'
 import {
     withRouter,
 } from 'react-router-dom'
 
-import blue from 'material-ui/colors/blue'
-import pink from 'material-ui/colors/pink'
+import blue from '@material-ui/core/colors/blue'
+import pink from '@material-ui/core/colors/pink'
 
 const muiTheme = createMuiTheme({
     palette: {

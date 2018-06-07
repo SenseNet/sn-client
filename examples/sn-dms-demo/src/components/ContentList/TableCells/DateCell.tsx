@@ -1,5 +1,5 @@
+import TableCell from '@material-ui/core/TableCell'
 import { Actions, Reducers } from '@sensenet/redux'
-import { TableCell } from 'material-ui/Table'
 import * as React from 'react'
 import { DragSource } from 'react-dnd'
 import { DropTarget } from 'react-dnd'

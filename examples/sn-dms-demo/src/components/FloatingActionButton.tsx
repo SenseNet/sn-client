@@ -1,7 +1,7 @@
+import Button from '@material-ui/core/Button'
+import Add from '@material-ui/icons/Add'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Actions } from '@sensenet/redux'
-import Add from 'material-ui-icons/Add'
-import Button from 'material-ui/Button'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import {
