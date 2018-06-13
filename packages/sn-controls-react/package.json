@@ -59,7 +59,7 @@
       "path": "sensenet-kfi-cz-conventional-changelog"
     }
   },
-  "typings": "./dist/sn-controls-react.d.ts",
+  "typings": "./dist/index.d.ts",
   "dependencies": {
     "@material-ui/core": "^1.1.0",
     "@material-ui/icons": "^1.0.0-beta.42",
