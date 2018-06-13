@@ -1,7 +1,8 @@
 {
   "name": "@sensenet/controls-react",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "React controls for sensenet",
+  "main": "dist/index.js",
   "scripts": {
     "precommit": "npm run test",
     "commit": "git-cz",
@@ -54,12 +55,6 @@
     "url": "https://github.com/SenseNet/sn-controls-react/issues"
   },
   "homepage": "https://sensenet.com",
-  "config": {
-    "commitizen": {
-      "path": "sensenet-kfi-cz-conventional-changelog"
-    }
-  },
-  "typings": "./dist/index.d.ts",
   "dependencies": {
     "@material-ui/core": "^1.1.0",
     "@material-ui/icons": "^1.0.0-beta.42",
@@ -113,12 +108,13 @@
     "webpack-dev-server": "^3.1.4",
     "webpack-manifest-plugin": "2.0.3"
   },
-  "babel": {
-    "presets": [
-      "react-app"
-    ]
-  },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "config": {
+    "commitizen": {
+      "path": "sensenet-kfi-cz-conventional-changelog"
+    }
+  },
+  "typings": "./dist/index.d.ts"
 }
