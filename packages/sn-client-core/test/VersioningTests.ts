@@ -3,7 +3,7 @@ import { Repository } from "../src/Repository/Repository";
 import { Versioning } from "../src/Repository/Versioning";
 
 // tslint:disable:completed-docs
-export const versioningTests = describe("Versioning", () => {
+export const versioningTests: Mocha.Suite = describe("Versioning", () => {
 
     let versioning: Versioning;
     let repository: Repository;

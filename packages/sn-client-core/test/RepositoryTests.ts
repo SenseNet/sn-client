@@ -10,7 +10,7 @@ import { ConstantContent } from "../src/Repository/ConstantContent";
 // tslint:disable:completed-docs
 declare const global: any;
 global.window = {};
-export const repositoryTests = describe("Repository", () => {
+export const repositoryTests: Mocha.Suite = describe("Repository", () => {
 
     let repository: Repository;
     const mockResponse: Response = {

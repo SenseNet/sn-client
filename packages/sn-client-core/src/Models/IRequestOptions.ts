@@ -1,6 +1,8 @@
+import { ObservableValue } from "@sensenet/client-utils";
 import { Repository } from "../index";
 import { IContent } from "./IContent";
 import { IODataParams } from "./IODataParams";
+import { IUploadProgressInfo } from "./IUploadProgressInfo";
 /**
  * Defines options for a Load request
  */
@@ -227,6 +229,11 @@ export interface IUploadOptions<T> {
      * The path of the parent content
      */
     parentPath: string;
+
+    /**
+     * Optional observable that will be updated with the upload progress
+     */
+    progressObservable?: ObservableValue<IUploadProgressInfo>;
 }
 
 /**
@@ -270,6 +277,20 @@ export interface IUploadFromEventOptions<T extends IContent> extends IUploadOpti
     event: DragEvent;
     /**
      * Option if folders should be created as well.
+     */
+    createFolders: boolean;
+}
+
+/**
+ * Options for uploading files from a FileList object
+ */
+export interface IUploadFromFileListOptions<T extends IContent> extends IUploadOptions<T> {
+    /**
+     * The FileList object
+     */
+    fileList: FileList;
+    /**
+     * Option to create folders. Files will be uploaded to the root
      */
     createFolders: boolean;
 }

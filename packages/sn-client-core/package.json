@@ -53,18 +53,20 @@
   "dependencies": {
     "@sensenet/client-utils": "^1.0.1",
     "@sensenet/default-content-types": "^1.1.0",
-    "@sensenet/query": "^1.0.1"
+    "@sensenet/query": "^1.0.1",
+    "@types/uuid": "^3.4.3",
+    "uuid": "^3.2.1"
   },
   "devDependencies": {
-    "@types/chai": "^4.1.3",
+    "@types/chai": "^4.1.4",
     "@types/mocha": "^5.0.0",
     "chai": "^4.1.2",
     "codecov": "^3.0.2",
     "mocha": "^5.2.0",
-    "nyc": "^11.8.0",
+    "nyc": "^11.9.0",
     "rimraf": "^2.6.2",
     "tslint": "^5.10.0",
-    "typescript": "^2.8.3"
+    "typescript": "^2.9.2"
   },
   "config": {
     "commitizen": {

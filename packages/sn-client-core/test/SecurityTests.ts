@@ -4,7 +4,7 @@ import { Repository } from "../src/Repository/Repository";
 import { Security } from "../src/Repository/Security";
 
 // tslint:disable:completed-docs
-export const securityTests = describe("Security", () => {
+export const securityTests: Mocha.Suite = describe("Security", () => {
 
     let security: Security;
     let repository: Repository;

@@ -15,7 +15,7 @@ export class ODataUrlBuilder {
                 param = [param];
             }
         }
-        params = params.filter((param) => param && param.length > 0);
+        params = params.filter((param) => param && param.toString().length > 0);
         return [...new Set([].concat.apply([], params))] as ODataFieldParameter<T>;
     }
 

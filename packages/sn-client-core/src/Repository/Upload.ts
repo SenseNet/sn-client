@@ -1,6 +1,7 @@
 import { PathHelper } from "@sensenet/client-utils";
+import { v1 } from "uuid";
 import { IContent } from "../Models/IContent";
-import { IUploadFileOptions, IUploadFromEventOptions, IUploadOptions, IUploadTextOptions } from "../Models/IRequestOptions";
+import { IUploadFileOptions, IUploadFromEventOptions, IUploadFromFileListOptions, IUploadOptions, IUploadTextOptions } from "../Models/IRequestOptions";
 import { Repository } from "../Repository/Repository";
 
 /**
@@ -84,6 +85,14 @@ export class Upload {
     }
 
     private static async uploadNonChunked<T>(options: IUploadFileOptions<T>): Promise<IUploadResponse> {
+        const guid = v1();
+
+        options.progressObservable && options.progressObservable.setValue({
+            guid,
+            file: options.file,
+            completed: false,
+        });
+
         const formData = this.getFormDataFromOptions(options);
         formData.append(options.file.name, options.file);
         const response = await options.repository.fetch(this.getUploadUrl(options), {
@@ -92,13 +101,45 @@ export class Upload {
             body: formData,
         });
         if (!response.ok) {
+            const error = response.json();
+            options.progressObservable && options.progressObservable.setValue({
+                guid,
+                file: options.file,
+                chunkCount: 1,
+                uploadedChunks: 1,
+                completed: true,
+                createdContent: options.progressObservable.getValue().createdContent,
+                error,
+            });
             throw Error(response.statusText);
         }
-        return await response.json();
+
+        const uploadResponse: IUploadResponse = await response.json();
+
+        options.progressObservable && options.progressObservable.setValue({
+            guid,
+            file: options.file,
+            chunkCount: 1,
+            uploadedChunks: 1,
+            completed: true,
+            createdContent: uploadResponse,
+        });
+        return uploadResponse;
     }
 
     private static async uploadChunked<T>(options: IUploadFileOptions<T>) {
         const chunkCount = Math.floor(options.file.size / options.repository.configuration.chunkSize);
+
+        const guid = v1();
+
+        options.progressObservable && options.progressObservable.setValue({
+            guid,
+            file: options.file,
+            completed: false,
+            chunkCount,
+            uploadedChunks: 0,
+        });
+
         const uploadPath = this.getUploadUrl(options);
 
         /** initial chunk data and request */
@@ -147,7 +188,25 @@ export class Upload {
             });
             if (lastResponse.ok) {
                 lastResponseContent = await lastResponse.json();
+                options.progressObservable && options.progressObservable.setValue({
+                    guid,
+                    file: options.file,
+                    chunkCount,
+                    uploadedChunks: i,
+                    completed: i === chunkCount,
+                    createdContent: lastResponseContent,
+                });
             } else {
+                const error = await lastResponse.json();
+                options.progressObservable && options.progressObservable.setValue({
+                    guid,
+                    file: options.file,
+                    chunkCount,
+                    uploadedChunks: i,
+                    completed: i === chunkCount,
+                    createdContent: lastResponseContent,
+                    error,
+                });
                 throw Error(lastResponse.statusText);
             }
         }
@@ -169,8 +228,8 @@ export class Upload {
         });
     }
 
-    private static async webkitDirectoryHandler<T extends IContent>(directory: WebKitDirectoryEntry, contentPath: string, options: IUploadOptions<T>) {
-        const folder =  await options.repository.post({
+    private static async webkitDirectoryHandler<T extends IContent>(directory: WebKitDirectoryEntry, contentPath: string, options: IUploadOptions<T>, readEntries: boolean = true) {
+        const folder = await options.repository.post({
             content: {
                 Name: directory.name,
 
@@ -178,13 +237,15 @@ export class Upload {
             parentPath: contentPath,
             contentType: "Folder",
         });
-        const dirReader = directory.createReader();
-        await new Promise((resolve, reject) => {
-            dirReader.readEntries(async (items) => {
-                await this.webkitItemListHandler<T>(items as any, folder.d.Path, true, options);
-                resolve();
-            }, (err) => reject(err));
-        });
+        if (readEntries) {
+            const dirReader = directory.createReader();
+            await new Promise((resolve, reject) => {
+                dirReader.readEntries(async (items) => {
+                    await this.webkitItemListHandler<T>(items as any, folder.d.Path, true, options);
+                    resolve();
+                }, (err) => reject(err));
+            });
+        }
     }
 
     private static async webkitItemListHandler<T extends IContent>(items: Array<WebKitFileEntry | WebKitDirectoryEntry>, contentPath: string, createFolders: boolean, options: IUploadOptions<T>) {
@@ -220,6 +281,44 @@ export class Upload {
                 }
             });
         }
+    }
 
+    /**
+     * Uploads files (and optionally creates the directory structure) from a file list
+     * @param { IUploadFromFileListOptions } options Options for the Upload request
+     */
+    public static async fromFileList<T extends IContent = IContent>(options: IUploadFromFileListOptions<T>) {
+        if (options.createFolders) {
+            const directories = new Set(Array.from(options.fileList).map((f) => PathHelper.getParentPath(f.webkitRelativePath)));
+            const directoriesBySegments = Array.from(directories).map((d) => PathHelper.getSegments(d));
+            const createdDirectories = new Set<string>();
+            for (const directory of directoriesBySegments) {
+                let currentPath = options.parentPath;
+                for (const segment of directory) {
+                    const pathToCreate = PathHelper.joinPaths(currentPath, segment);
+                    if (!createdDirectories.has(pathToCreate)) {
+                        await this.webkitDirectoryHandler({ name: segment } as WebKitDirectoryEntry, currentPath, options as IUploadOptions<T>, false);
+                    }
+                    createdDirectories.add(pathToCreate);
+                    currentPath = pathToCreate;
+                }
+            }
+
+            await Promise.all(Array.from(options.fileList).map(async (file) => {
+                await this.file({
+                    ...options as IUploadOptions<T>,
+                    parentPath: PathHelper.joinPaths(options.parentPath, PathHelper.getParentPath(file.webkitRelativePath)),
+                    file,
+                });
+            }));
+        } else {
+            const { fileList, createFolders, ...uploadOptions } = options;
+            for (const file of Array.from(options.fileList)) {
+                await this.file({
+                    ...uploadOptions,
+                    file,
+                });
+            }
+        }
     }
 }

@@ -4,7 +4,7 @@ import { RepositoryConfiguration } from "../src/Repository/RepositoryConfigurati
 // tslint:disable:completed-docs
 declare const global: any;
 
-export const repositoryConfigTests = describe("RepositoryConfig", () => {
+export const repositoryConfigTests: Mocha.Suite = describe("RepositoryConfig", () => {
 
     it("Should be constructed without options", () => {
         const c = new RepositoryConfiguration();

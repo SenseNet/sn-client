@@ -6,7 +6,7 @@ import { Repository } from "../src/Repository/Repository";
 
 // tslint:disable:completed-docs
 
-export const oDataUrlBuilderTests = describe("ODataUrlBuilder", () => {
+export const oDataUrlBuilderTests: Mocha.Suite = describe("ODataUrlBuilder", () => {
 
     describe("#buildUrlParamString()", () => {
 

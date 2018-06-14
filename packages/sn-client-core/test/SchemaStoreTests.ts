@@ -5,7 +5,7 @@ import { SchemaStore } from "../src/Schemas/SchemaStore";
 /**
  * Unit tests for SchemaStore
  */
-export const schemaStoreTests = describe("SchemaStore", () => {
+export const schemaStoreTests: Mocha.Suite = describe("SchemaStore", () => {
     it("Should be constructed", () => {
         expect(new SchemaStore()).to.be.instanceof(SchemaStore);
     });

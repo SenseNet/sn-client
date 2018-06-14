@@ -1,5 +1,6 @@
-import { Trace } from "@sensenet/client-utils";
+import { ObservableValue, Trace } from "@sensenet/client-utils";
 import { expect } from "chai";
+import { IUploadProgressInfo } from "../src";
 import { Repository } from "../src/Repository/Repository";
 import { Upload } from "../src/Repository/Upload";
 
@@ -18,7 +19,7 @@ global.FormData = class {
     public append(...args: any[]) { /** */ }
 };
 
-export const uploadTests = describe("Upload", () => {
+export const uploadTests: Mocha.Suite = describe("Upload", () => {
     let repo: Repository;
 
     let mockAnswer: any;
@@ -47,11 +48,11 @@ export const uploadTests = describe("Upload", () => {
 
     describe("#isChunkedUploadNeeded()", () => {
         it("should return true is the file is larger than the chunk size", () => {
-            expect(Upload.isChunkedUploadNeeded({size: 1024} as any, {configuration: {chunkSize: 640}} as any)).to.be.eq(true);
+            expect(Upload.isChunkedUploadNeeded({ size: 1024 } as any, { configuration: { chunkSize: 640 } } as any)).to.be.eq(true);
         });
 
         it("should return false is the file is smaller than the chunk size", () => {
-            expect(Upload.isChunkedUploadNeeded({size: 1024} as any, {configuration: {chunkSize: 2048}} as any)).to.be.eq(false);
+            expect(Upload.isChunkedUploadNeeded({ size: 1024 } as any, { configuration: { chunkSize: 2048 } } as any)).to.be.eq(false);
         });
     });
 
@@ -65,6 +66,7 @@ export const uploadTests = describe("Upload", () => {
                 text: "ExampleText",
                 repository: repo,
                 contentTypeName: "File",
+                progressObservable: new ObservableValue<IUploadProgressInfo>(),
             });
             expect(answer).to.be.deep.eq(mockAnswer);
         });
@@ -79,6 +81,7 @@ export const uploadTests = describe("Upload", () => {
                 text: "ExampleText",
                 repository: repo,
                 contentTypeName: "File",
+                progressObservable: new ObservableValue<IUploadProgressInfo>(),
             }).then(() => {
                 done(Error("Should throw"));
             }).catch((err) => {
@@ -96,9 +99,10 @@ export const uploadTests = describe("Upload", () => {
                 binaryPropertyName: "Binary",
                 overwrite: true,
                 parentPath: "Root/Example",
-                file: {size: 65535000, slice: (...args: any[]) => ""} as any as File,
+                file: { size: 65535000, slice: (...args: any[]) => "" } as any as File,
                 repository: repo,
                 contentTypeName: "File",
+                progressObservable: new ObservableValue<IUploadProgressInfo>(),
             });
             expect(answer).to.be.deep.eq(mockAnswer);
         });
@@ -108,31 +112,33 @@ export const uploadTests = describe("Upload", () => {
             Upload.file({
                 binaryPropertyName: "Binary",
                 overwrite: true,
-                file: {size: 65535000, slice: (...args: any[]) => ""} as any as File,
+                file: { size: 65535000, slice: (...args: any[]) => "" } as any as File,
                 parentPath: "Root/Example",
                 repository: repo,
                 contentTypeName: "File",
+                progressObservable: new ObservableValue<IUploadProgressInfo>(),
             }).then(() => {
                 done(Error("Should throw"));
-            }).catch((err) => {done(); });
+            }).catch((err) => { done(); });
         });
 
         it("Should throw if a chunk has been failed", (done) => {
             let ok: boolean = true;
             repo["fetchMethod"] = async (...args: any[]) => {
                 return {
-                        ok,
-                        text: async () => "",
-                        json: async () => {ok = false; return {}; },
-                    } as any;
+                    ok,
+                    text: async () => "",
+                    json: async () => { ok = false; return {}; },
+                } as any;
             };
             Upload.file({
                 binaryPropertyName: "Binary",
                 overwrite: true,
-                file: {size: 65535000, slice: (...args: any[]) => ""} as any as File,
+                file: { size: 65535000, slice: (...args: any[]) => "" } as any as File,
                 parentPath: "Root/Example",
                 repository: repo,
                 contentTypeName: "File",
+                progressObservable: new ObservableValue<IUploadProgressInfo>(),
             }).then(() => {
                 done(Error("Should throw"));
             }).catch((err) => {
@@ -159,7 +165,7 @@ export const uploadTests = describe("Upload", () => {
             Upload.fromDropEvent({
                 event: {
                     dataTransfer: {
-                        files: [ file, {} ],
+                        files: [file, {}],
                     },
                 } as any,
                 parentPath: "Root/Example",
@@ -168,6 +174,7 @@ export const uploadTests = describe("Upload", () => {
                 binaryPropertyName: "Binary",
                 contentTypeName: "File",
                 overwrite: true,
+                progressObservable: new ObservableValue<IUploadProgressInfo>(),
             });
         });
 
@@ -222,7 +229,7 @@ export const uploadTests = describe("Upload", () => {
                 binaryPropertyName: "Binary",
                 contentTypeName: "File",
                 overwrite: true,
-            }).catch((err) => {done(); });
+            }).catch((err) => { done(); });
         });
 
         it("should trigger a post when the dataTransfer contains folders", (done: MochaDone) => {
@@ -230,8 +237,8 @@ export const uploadTests = describe("Upload", () => {
 
             repo["fetchMethod"] = async () => ({
                 ok: true,
-                json: async () => ({d: {Path: "Root/Example" }}),
-            }as any);
+                json: async () => ({ d: { Path: "Root/Example" } }),
+            } as any);
 
             let postHasCalled = false;
             const uploadTrace = Trace.method({
@@ -268,6 +275,7 @@ export const uploadTests = describe("Upload", () => {
                         ],
                     },
                 } as any,
+                progressObservable: new ObservableValue<IUploadProgressInfo>(),
                 parentPath: "Root/Example",
                 createFolders: true,
                 repository: repo,
@@ -314,6 +322,69 @@ export const uploadTests = describe("Upload", () => {
                 done(Error("Should have failed"));
             }).catch((err) => {
                 done();
+            });
+        });
+    });
+
+    describe("#fromFileList", () => {
+
+        const file = {
+            isFile: true,
+            webkitRelativePath: "/example",
+            file: (cb: (f: File) => void) => { cb(new File(["alma.txt"], "alma")); },
+        };
+        const file2 = {
+            isFile: true,
+            webkitRelativePath: "/example/sub/",
+            file: (cb: (f: File) => void) => { cb(new File(["alma.txt"], "alma")); },
+        };
+        const file3 = {
+            isFile: true,
+            webkitRelativePath: "/example/sub/2",
+            file: (cb: (f: File) => void) => { cb(new File(["alma.txt"], "alma")); },
+        };
+
+        it("should trigger an Upload request when uploading with folders", (done: MochaDone) => {
+            (global as any).window = { webkitRequestFileSystem: () => { /**/ } };
+            const uploadTrace = Trace.method({
+                object: Upload,
+                method: Upload.file,
+                onCalled: (c) => {
+                    uploadTrace.dispose();
+                    done();
+                },
+            });
+
+            Upload.fromFileList({
+                fileList: [file, file2, file3] as any as FileList,
+                parentPath: "Root/Example",
+                createFolders: true,
+                repository: repo,
+                binaryPropertyName: "Binary",
+                contentTypeName: "File",
+                overwrite: true,
+            });
+        });
+
+        it("should trigger an Upload request without folder upload", (done: MochaDone) => {
+            (global as any).window = { webkitRequestFileSystem: () => { /**/ } };
+            const uploadTrace = Trace.method({
+                object: Upload,
+                method: Upload.file,
+                onCalled: (c) => {
+                    uploadTrace.dispose();
+                    done();
+                },
+            });
+
+            Upload.fromFileList({
+                fileList: [file, file2, file3] as any as FileList,
+                parentPath: "Root/Example",
+                createFolders: false,
+                repository: repo,
+                binaryPropertyName: "Binary",
+                contentTypeName: "File",
+                overwrite: true,
             });
         });
     });

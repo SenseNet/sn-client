@@ -3,7 +3,7 @@ import { BypassAuthentication } from "../src";
 
 // tslint:disable:completed-docs
 
-export const bypassAuthTest = describe("BypassAuthentication", () => {
+export const bypassAuthTest: Mocha.Suite = describe("BypassAuthentication", () => {
     it("Should be constructed", () => {
         const auth = new BypassAuthentication();
         expect(auth).to.be.instanceof(BypassAuthentication);
