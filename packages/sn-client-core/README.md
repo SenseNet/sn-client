@@ -12,9 +12,9 @@
 This component lets you work with the [sensenet](https://github.com/SenseNet) Content Repository (create or manage content, execute queries, etc.) by providing a JavaScript client API for the main content operations.
 The library connects to a sensenet's [REST API](https://community.sensenet.com/docs/odata-rest-api/), but hides the underlying HTTP requests. You can work with simple load or create Content operations in JavaScript, instead of having to construct ajax requests yourself.
 
-> Tested with the following Sense/Net Services version: 
+> Tested with the following **sensenet services** version: 
 > 
-> [![Sense/Net Services](https://img.shields.io/badge/sensenet-7.0.0%20tested-green.svg)](https://github.com/SenseNet/sensenet/releases/tag/v7.0.0)
+> [![Sense/Net Services](https://img.shields.io/badge/sensenet-7.1.3%20tested-green.svg)](https://github.com/SenseNet/sensenet/releases/tag/v7.1.3)
 
 ## Installation
 
