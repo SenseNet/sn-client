@@ -7,7 +7,7 @@ import { MockTokenFactory } from "./MockTokenFactory";
 
 // tslint:disable:completed-docs
 // tslint:disable:no-string-literal
-export const jwtServiceTests = describe("JwtService", () => {
+export const jwtServiceTests: Mocha.Suite = describe("JwtService", () => {
     let repo: Repository;
     let jwtService: JwtService;
     beforeEach(() => {

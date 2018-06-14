@@ -7,7 +7,7 @@ import { MockTokenFactory } from "./MockTokenFactory";
 
 // tslint:disable:completed-docs
 
-export const tokenStoreTests = describe("TokenStore", () => {
+export const tokenStoreTests: Mocha.Suite = describe("TokenStore", () => {
 
     let documentInstance: Document;
     let inMemory: TokenStore;

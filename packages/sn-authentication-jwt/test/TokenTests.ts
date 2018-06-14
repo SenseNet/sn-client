@@ -4,7 +4,7 @@ import { MockTokenFactory } from "./MockTokenFactory";
 
 // tslint:disable:completed-docs
 
-export const tokenTests = describe("Token", () => {
+export const tokenTests: Mocha.Suite = describe("Token", () => {
     it("should be constructed", () => {
         const t = MockTokenFactory.CreateValid();
         expect(t).to.be.instanceof(Token);

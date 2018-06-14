@@ -1,4 +1,4 @@
-import { ConstantContent, IAuthenticationService, LoginState, Repository } from "@sensenet/client-core";
+import { ConstantContent, IAuthenticationService, IODataParams, LoginState, Repository } from "@sensenet/client-core";
 import { ObservableValue, PathHelper } from "@sensenet/client-utils";
 import { User } from "@sensenet/default-content-types";
 import { Query } from "@sensenet/query";
@@ -99,9 +99,10 @@ export class JwtService implements IAuthenticationService {
             this.currentUser.setValue(ConstantContent.VISITOR_USER);
         } else if (this.state.getValue() === LoginState.Authenticated && this.tokenStore.AccessToken.Username !== `${lastUser.Domain}\\${lastUser.LoginName}`) {
             const [domain, loginName] = this.tokenStore.AccessToken.Username.split("\\");
-            const response = await this.repository.loadCollection({
+            const response = await this.repository.loadCollection<User>({
                 path: "Root",
                 oDataOptions: {
+                    ...this.userLoadOptions,
                     query: new Query((q) => q.typeIs<User>(User).and.equals("Domain", domain).and.equals("LoginName", loginName)).toString(),
                 },
             });
@@ -113,9 +114,9 @@ export class JwtService implements IAuthenticationService {
      * @param {BaseRepository} _repository the Repository reference for the Authentication. The service will read its configuration and use its HttpProvider
      * @constructs JwtService
      */
-    constructor(public readonly repository: Repository) {
+    constructor(public readonly repository: Repository, private readonly userLoadOptions: IODataParams<User> = { select: "all" }) {
         this.repository.authentication = this;
-        this.state.subscribe((state) => {this.updateUser(); });
+        this.state.subscribe((state) => { this.updateUser(); });
         this.checkForUpdate();
     }
 
