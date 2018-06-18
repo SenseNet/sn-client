@@ -3,7 +3,7 @@ import { isPromise } from '../src/IsPromise'
 
 // tslint:disable:completed-docs
 
-export const isPromiseTest = describe('IsPromise', () => {
+export const isPromiseTest: Mocha.Suite = describe('IsPromise', () => {
     it('Returns true with a Promise as a param', () => {
         const promise = new Promise((resolve, reject) => {
             setTimeout(resolve, 100, 'foo')

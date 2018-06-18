@@ -11,7 +11,7 @@ chai.use(sinonChai)
 
 // tslint:disable:completed-docs
 
-export const suffixesTest = describe('suffixes', () => {
+export const suffixesTest: Mocha.Suite = describe('suffixes', () => {
     it('should contain the given strings', () => {
         expect(suffixes[0]).to.be.eq('LOADING')
         expect(suffixes[1]).to.be.eq('SUCCESS')
@@ -19,7 +19,7 @@ export const suffixesTest = describe('suffixes', () => {
     })
 })
 
-export const promiseMiddlewareTest = describe('PromiseMiddleware', () => {
+export const promiseMiddlewareTest: Mocha.Suite = describe('PromiseMiddleware', () => {
     let store
     let promiseAction
     let loadingAction
