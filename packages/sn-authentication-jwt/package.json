@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/authentication-jwt",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "JWT Authentication service for sensenet ECM",
   "main": "dist/index.js",
   "files": [
@@ -66,8 +66,8 @@
   },
   "devDependencies": {
     "@types/chai": "^4.1.4",
-    "@types/mocha": "^5.0.0",
-    "@types/node": "^10.0.3",
+    "@types/mocha": "^5.2.3",
+    "@types/node": "^10.3.4",
     "chai": "^4.1.2",
     "codecov": "^3.0.2",
     "mocha": "^5.2.0",

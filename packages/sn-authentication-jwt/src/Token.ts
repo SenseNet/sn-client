@@ -64,6 +64,19 @@ export class Token {
     }
 
     /**
+     * awaits the notBefore value
+     */
+    public async AwaitNotBeforeTime() {
+        const now = new Date();
+        const awaitMillis = this.NotBefore.getTime() - now.getTime();
+        if (awaitMillis > 0) {
+            await new Promise((resolve) => {
+                setTimeout(() => resolve(), awaitMillis);
+            });
+        }
+    }
+
+    /**
      * The date when the Token was issued
      */
     public get IssuedDate() {

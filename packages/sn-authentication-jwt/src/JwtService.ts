@@ -54,10 +54,14 @@ export class JwtService implements IAuthenticationService {
      * @returns {Promise<boolean>} Promise with a boolean that indicates if there was a refresh triggered.
      */
     public async checkForUpdate(): Promise<boolean> {
+        const now = new Date();
         if (this.tokenStore.AccessToken.IsValid()) {
-            this.state.setValue(LoginState.Authenticated);
-            return false;
+            if ((this.tokenStore.AccessToken.ExpirationTime.getTime() - this.latencyCompensationMs) > now.getTime()) {
+                this.state.setValue(LoginState.Authenticated);
+                return false;
+            }
         }
+        await this.tokenStore.RefreshToken.AwaitNotBeforeTime();
         if (!this.tokenStore.RefreshToken.IsValid()) {
             this.state.setValue(LoginState.Unauthenticated);
             return false;
@@ -114,7 +118,7 @@ export class JwtService implements IAuthenticationService {
      * @param {BaseRepository} _repository the Repository reference for the Authentication. The service will read its configuration and use its HttpProvider
      * @constructs JwtService
      */
-    constructor(public readonly repository: Repository, private readonly userLoadOptions: IODataParams<User> = { select: "all" }) {
+    constructor(public readonly repository: Repository, private readonly userLoadOptions: IODataParams<User> = { select: "all" }, private readonly latencyCompensationMs: number = 5000) {
         this.repository.authentication = this;
         this.state.subscribe((state) => { this.updateUser(); });
         this.checkForUpdate();

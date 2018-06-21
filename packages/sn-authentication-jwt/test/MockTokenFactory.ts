@@ -3,9 +3,9 @@ import { Token } from "../src/Token";
 
 // tslint:disable
 export class MockTokenFactory {
-    private static getStillValidDate() {
+    private static getStillValidDate(addMs: number = 3000000) {
         const date = new Date();
-        date.setTime(date.getTime() + 3000000);
+        date.setTime(date.getTime() + addMs);
         return date.getTime() / 1000;
     }
 
@@ -35,7 +35,7 @@ export class MockTokenFactory {
         return this.createWithDates(1, this.getStillValidDate());
     }
 
-    public static CreateNotValidYet() {
-        return this.createWithDates(this.getStillValidDate(), this.getStillValidDate());
+    public static CreateNotValidYet(notBefore?: number) {
+        return this.createWithDates(this.getStillValidDate(), this.getStillValidDate(notBefore));
     }
 }

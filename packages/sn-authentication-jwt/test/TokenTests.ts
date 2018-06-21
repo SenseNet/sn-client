@@ -24,4 +24,11 @@ export const tokenTests: Mocha.Suite = describe("Token", () => {
         const t = MockTokenFactory.CreateValid();
         expect(t.IssuedDate).to.be.instanceof(Date);
     });
+
+    it("should be able to await its notBefore time", async () => {
+        const t = MockTokenFactory.CreateNotValidYet(1000);
+        expect(t.IsValid()).to.be.eq(false);
+        await t.AwaitNotBeforeTime();
+        expect(t.IsValid()).to.be.eq(true);
+    });
 });
