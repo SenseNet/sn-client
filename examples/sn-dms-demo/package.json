@@ -70,7 +70,7 @@
     "source-map-loader": "^0.2.1",
     "style-loader": "^0.21.0",
     "sw-precache-webpack-plugin": "0.11.5",
-    "ts-jest": "^22.4.2",
+    "ts-jest": "^23.0.0",
     "ts-keycode-enum": "^1.0.4",
     "ts-loader": "^3.5.0",
     "typeface-roboto": "0.0.54",
