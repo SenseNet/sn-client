@@ -10,7 +10,7 @@ export const securityTests: Mocha.Suite = describe("Security", () => {
     let repository: Repository;
 
     beforeEach(() => {
-        repository = new Repository({}, async (...args: any[]) => ({ok: true, json: async () => ({}), text: async () => ("")} as any));
+        repository = new Repository({}, async (...args: any[]) => ({ ok: true, json: async () => ({}), text: async () => ("") } as any));
         security = new Security(repository);
     });
 
@@ -42,6 +42,10 @@ export const securityTests: Mocha.Suite = describe("Security", () => {
         expect(security.hasPermission(1, ["See"], "root/users/user1")).to.be.instanceof(Promise);
     });
 
+    it("Should execute hasPermission w/o identity path", () => {
+        expect(security.hasPermission(1, ["See"])).to.be.instanceof(Promise);
+    });
+
     it("Should evaulate if hasPermission returns false", async () => {
         // tslint:disable-next-line:no-string-literal
         repository["fetchMethod"] = async () => {
@@ -56,7 +60,7 @@ export const securityTests: Mocha.Suite = describe("Security", () => {
 
     it("Should throw if hasPermission fails", async () => {
         // tslint:disable-next-line:no-string-literal
-        security["repository"]["fetchMethod"] = async () => ({ok: false} as any);
+        security["repository"]["fetchMethod"] = async () => ({ ok: false } as any);
         try {
             await security.hasPermission(1, ["See"], "root/users/user1");
             throw Error("Should throw!");
@@ -89,7 +93,8 @@ export const securityTests: Mocha.Suite = describe("Security", () => {
             level: PermissionLevel.Allowed,
             explicitOnly: true,
             member: "root/users/member1",
-            permissions: []}),
+            permissions: [],
+        }),
         ).to.be.instanceof(Promise);
     });
 
@@ -98,7 +103,8 @@ export const securityTests: Mocha.Suite = describe("Security", () => {
             contentIdOrPath: 1,
             level: PermissionLevel.Allowed,
             kind: IdentityKind.All,
-            permissions: []})).to.be.instanceof(Promise);
+            permissions: [],
+        })).to.be.instanceof(Promise);
     });
 
     it("Should execute getRelatedItemsOneLevel", () => {
@@ -113,11 +119,12 @@ export const securityTests: Mocha.Suite = describe("Security", () => {
     it("Should execute getAllowedUsers", () => {
         expect(security.getAllowedUsers({
             contentIdOrPath: 1,
-            permissions: []})).to.be.instanceof(Promise);
+            permissions: [],
+        })).to.be.instanceof(Promise);
     });
 
     it("Should execute getParentGroups", () => {
-        expect(security.getParentGroups({contentIdOrPath: 1, directOnly: true})).to.be.instanceof(Promise);
+        expect(security.getParentGroups({ contentIdOrPath: 1, directOnly: true })).to.be.instanceof(Promise);
     });
 
     it("Should execute addMembers", () => {

@@ -55,13 +55,13 @@
     "@sensenet/default-content-types": "^1.1.0",
     "@sensenet/query": "^1.0.1",
     "@types/uuid": "^3.4.3",
-    "uuid": "^3.2.1"
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@types/chai": "^4.1.4",
-    "@types/mocha": "^5.0.0",
+    "@types/mocha": "^5.2.4",
     "chai": "^4.1.2",
-    "codecov": "^3.0.2",
+    "codecov": "^3.0.4",
     "mocha": "^5.2.0",
     "nyc": "^12.0.2",
     "rimraf": "^2.6.2",

@@ -270,11 +270,15 @@ export class Security {
             "Custom10" | "Custom11" | "Custom12" | "Custom13" | "Custom14" | "Custom15" | "Custom16" | "Custom17" |
             "Custom18" | "Custom19" | "Custom20" | "Custom21" | "Custom22" | "Custom23" | "Custom24" | "Custom25" |
             "Custom26" | "Custom27" | "Custom28" | "Custom29" | "Custom30" | "Custom31" | "Custom32">,
-                               identityPath: string): Promise<boolean> {
+                               identityPath?: string): Promise<boolean> {
 
         let params = `permissions=${permissions.join(",")}`;
-        params += `&identity=${identityPath}`;
-        const response = await this.repository.fetch(`${PathHelper.getContentUrl(contentIdOrPath)}/HasPermission?${params}`);
+        if (identityPath) {
+            params += `&identity=${identityPath}`;
+        }
+
+        const path = PathHelper.joinPaths(this.repository.configuration.repositoryUrl, this.repository.configuration.oDataToken, PathHelper.getContentUrl(contentIdOrPath));
+        const response = await this.repository.fetch(`${path}/HasPermission?${params}`);
         if (response.ok) {
             return await response.text() === "true" || false;
         } else {
