@@ -11,43 +11,45 @@
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat)](http://commitizen.github.io/cz-cli/)
 [![Greenkeeper badge](https://badges.greenkeeper.io/SenseNet/sn-redux.svg)](https://greenkeeper.io/)
 
-sn-redux is a convention driven way of building sensenet ECM applications using Redux. It contains all the action types, actions and reducers for [built-in sensenet Actions 
-and Functions](http://wiki.sensenet.com/Built-in_OData_actions_and_functions).
+sn-redux is a convention driven way of building sensenet applications using Redux. It contains all the action types, actions and reducers for [built-in sensenet Actions 
+and Functions](https://community.sensenet.com/docs/built-in-odata-actions-and-functions/).
 
 sn-redux gives you a standard set of:
 
 * action types: e.g. CREATE_CONTENT_SUCCESS
 * actions: e.g. updateContentSuccess, updateContentFailure
 * reducers: for the action types above e.g. updateContentSuccess
-* epics: for streams of actions that are related to the same process e.g. createContentEpic
 
-## Installation on an existing sensenet ECM portal
+> Tested with the following sensenet Services version: 
+> 
+> [![sensenet Services](https://img.shields.io/badge/sensenet-7.1.3%20tested-green.svg)](https://github.com/SenseNet/sensenet/releases/tag/v7.0.0)
+
+## Installation on an existing sensenet portal
 
 Get the latest stable version with npm
 
 ```
-npm install --save sn-redux
+npm install --save @sensenet/redux
 ```
 
-or from the [GitHub repository](https://github.com/SenseNet/sn-redux) and place the downloaded source into your project. If you want to use only the transpiled JavaScript
-modules, you can find them in the dist/src folder and import them like
-
-```
-var SN = require('/pathtomodule/sn-redux');
-```
+or from the [GitHub repository](https://github.com/SenseNet/sn-redux) and place the downloaded source into your project. If you want to use only the transpiled 
 
 If you want to use the module types you can find them in the src folder. Import them the following way:
 
 ```
-import { Actions } from 'sn-redux';
-import { Content, ContentTypes, Repository } 'sn-client-js';
+import { Actions } from '@sensenet/redux';
+import { Repository } '@sensenet/client-core';
+import { Task } from '@sensenet/default-content-types';
 
-let repository = new Repository.SnRepository({
+const repository = new Repository({
   RepositoryUrl: 'http://path-to-your-portal.com',
 });
 
-const content = Content.Create({ Id: 123 }, ContentTypes.Task, repository);
-store.dispatch(Actions.Delete(content, false));
+const repository = new Repository({
+  repositoryUrl: 'http://path-to-your-portal.com',
+})
+
+store.dispatch(Actions.deleteContent('/workspaces/MyWorkspace/MyDocs/mydoc.docx', false));
 ```
 
 ## Installation into an external app with node and npm
@@ -55,32 +57,39 @@ store.dispatch(Actions.Delete(content, false));
 To install the latest stable version
 
 ```
-npm install --save sn-redux
+npm install --save @sensenet/redux
 ```
 
-Create your sensenet ECM portal Repository to use. You can configure your Store to use this repository, when calling Store.ConfigureStore
+Create your sensenet portal Repository to use. You can configure your Store to use this repository, when calling Store.ConfigureStore
 
 ```ts
-import { Repository } from 'sn-client-js';
+import { Repository } from '@sensenet/client-core';
+import { Reducers, Store } from '@sensenet/redux';
+import { combineReducers } from 'redux'
 
-let repository = new Repository.SnRepository({
-  RepositoryUrl: 'http://path-to-your-portal.com',
-});
+const sensenet = Reducers.sensenet
 
-const store = Store.configureStore(
-    myRootReducer,
-    myRootEpic,                   // If not set, the default will be 'Epics.rootEpic'
-    [middleware1, middleware2],   // If not set, only the epicMiddleware will be used
-    persistedState,               // Optional
-    repository                    // Optional. If not provided, a Repository with default values will be used
-    );
+const myReducer = combineReducers({
+  sensenet
+})
 
+const repository = new Repository({
+  repositoryUrl: 'http://path-to-your-portal.com',
+})
+
+const options = {
+  repository,
+  rootReducer: myReducer,
+} as Store.CreateStoreOptions
+
+
+const store = Store.createSensenetStore(options)
 
 ```
 
-To enable your external app to send request against your sensenet ECM portal change your ```Portal.settings```. For further information about cross-origin resource sharing in sensenet ECM check [this](http://wiki.sensenet.com/Cross-origin_resource_sharing#Origin_check) article.
+To enable your external app to send request against your sensenet portal change your ```Portal.settings```. For further information about cross-origin resource sharing in sensenet check [this](http://wiki.sensenet.com/Cross-origin_resource_sharing#Origin_check) article.
 
-Check your sensenet ECM portal's web.config and if the ```ODataServiceToken``` is set, you can pass to your Repository as a config value on client side.
+Check your sensenet portal's web.config and if the ```ODataServiceToken``` is set, you can pass to your Repository as a config value on client side.
 
 ```ts
 let repository = new Repository.SnRepository({
@@ -91,34 +100,14 @@ let repository = new Repository.SnRepository({
 
 ## Import
 
-### CommonJS
-
 ```
-var Content = require('sn-client-js').Content;
-var Repository = require('sn-client-js').Repository;
-var ContentTypes = require('sn-client-js').ContentTypes;
-var Actions = require('sn-redux').Actions;
+import { Actions } '@sensenet/redux';
+import { Task } from '@sensenet/default-content-types'
 
-let repository = new Repository.SnRepository({
-  RepositoryUrl: 'http://path-to-your-portal.com',
-});
-
-var content = Content.Create({ Id: 123 }, ContentTypes.Task, repository);
-store.dispatch(Actions.Delete(123, false));
-```
-
-## Typescript
-
-```
-import { Actions } 'sn-redux';
-import { Content, ContentTypes, Repository } 'sn-client-js';
-
-let repository = new Repository.SnRepository({
-  RepositoryUrl: 'http://path-to-your-portal.com',
-});
-
-const content = Content.Create({ Id: 123 }, ContentTypes.Task, repository);
-store.dispatch(Actions.Delete(content, false));
+...
+const content = { Id: 123 } as Task;
+...
+store.dispatch(Actions.DeleteContent(content.Id, false));
 ```
 
 ## Building sn-redux
@@ -144,7 +133,7 @@ npm t
 
 ```
 import { combineReducers } from 'redux';
-import { Reducers } from  'sn-redux';
+import { Reducers } from  '@sensenet/redux';
 
 const sensenet = Reducers.sensenet;
 const myReducer = combineReducers({
@@ -157,59 +146,59 @@ const myReducer = combineReducers({
 #### Creating a store
 
 ```
-import { Store } from  'sn-redux';
-import { Repository } from 'sn-client-js';
+import { Store } from  '@sensenet/redux';
+import { Repository } from '@sensenet/client-core';
 
-let repository = new Repository.SnRepository({
-  RepositoryUrl: 'http://path-to-your-portal.com',
-});
+const repository = new Repository({
+  repositoryUrl: 'http://path-to-your-portal.com',
+})
 
-const store = Store.configureStore(
-    myRootReducer,
-    myRootEpic,                   // If not set, the default will be 'Epics.rootEpic'
-    [middleware1, middleware2],   // If not set, only the epicMiddleware will be used
-    persistedState,               // Optional
-    repository                    // Optional. If not provided, a Repository with default values will be used
-    );
+const options = {
+  repository,
+  rootReducer: myReducer,
+} as Store.CreateStoreOptions
+
+
+const store = Store.createSensenetStore(options)
+
 ```
 
 #### Using built-in actions
 
 ```
-import { Content, Repository, ContentTypes } from 'sn-client-js';
-import { Actions } from 'sn-redux';
+import { Repository } from '@sensenet/client-core';
+import { Task } from '@sensenet/default-content-type'
+import { Actions } from '@sensenet/redux';
 
-let repository = new Repository.SnRepository({
-  RepositoryUrl: 'http://path-to-your-portal.com',
-});
+const repository = new Repository({
+  repositoryUrl: 'http://path-to-your-portal.com',
+})
 
 const parentPath = '/workspaces/Project/budapestprojectworkspace/tasks';
-const content = Content.Create({
+const content = {
+          Id: 123,
           DisplayName: 'My first task'
-      }, ContentTypes.Task, repository);
+      } as Task);
 
-dispatch(Actions.CreateContent(content))
+dispatch(Actions.CreateContent(parentPath, content, 'Task'))
 ```
 
 ## Documentation
 
-* [sn-redux API Reference](http://www.sensenet.com/documentation/sn-redux/index.html)
-* [sn-client-js API reference](http://www.sensenet.com/documentation/sn-client-js/index.html)
-* [About OData REST API in sensenet ECM](http://wiki.sensenet.com/OData_REST_API)
-* [About Built-in OData Actions and Function in sensenet ECM](http://wiki.sensenet.com/Built-in_OData_actions_and_functions)
-* [Todo App with React, Redux and sensenet ECM](http://www.sensenet.com/documentation/sn-react-todoapp/index.html)
+* [sn-redux API Reference](https://community.sensenet.com/api/sn-redux/)
+* [sn-client-core API reference](https://community.sensenet.com/api/@sensenet/client-core/)
+* [sn-redux-promise-middleware API reference](https://community.sensenet.com/api/sn-redux-promise-middleware/)
+* [About OData REST API in sensenet](https://community.sensenet.com/docs/odata-rest-api/)
+* [About Built-in OData Actions and Function in sensenet](https://community.sensenet.com/docs/built-in-odata-actions-and-functions/)
+* [Todo App with React, Redux and sensenet](https://github.com/SenseNet/sn-react-redux-todo-app)
 
 ## Influences
 
 * [Redux](http://redux.js.org/)
 * [Getting started with Redux](https://egghead.io/courses/getting-started-with-redux) - Awesome course from the creator of Redux, Dan Abramov.
 * [Building React Applications with Idiomatic Redux](https://egghead.io/courses/building-react-applications-with-idiomatic-redux) - Another great course of Dan Abramov about building apps with Redux.
-* [rxjs](http://reactivex.io/rxjs/)
-* [redux-observable](https://redux-observable.js.org/)
+* [redux-promise-middleware](https://github.com/pburtchaell/redux-promise-middleware)
 
 ## Example applications
 * [Using React](https://github.com/SenseNet/sn-react-redux-todo-app)
-* [Using Angular](https://github.com/blaskodaniel/sn-angular-redux-todo-app)
-* [Using Angular2](https://github.com/SenseNet/sn-angular2-redux-todo-app)
-* [Using Vue.js](https://github.com/SenseNet/sn-vue-redux-todo-app)
-* [Using Aurelia](https://github.com/B3zo0/sn7-aurelia-redux-todo-app)
+* [Sensenet DMS Demo](https://github.com/SenseNet/sn-dms-demo)
