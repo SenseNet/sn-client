@@ -58,9 +58,9 @@ export class Token {
     /**
      * Indicates if the Token is valid based on it's ExpirationTime and NotBefore values.
      */
-    public IsValid(): boolean {
+    public IsValid(excludeNotBefore: boolean= false): boolean {
         const now = new Date();
-        return this._tokenPayload && this.ExpirationTime > now && this.NotBefore < now;
+        return this._tokenPayload && this.ExpirationTime > now && (excludeNotBefore || this.NotBefore < now);
     }
 
     /**
@@ -68,11 +68,15 @@ export class Token {
      */
     public async AwaitNotBeforeTime() {
         const now = new Date();
-        const awaitMillis = this.NotBefore.getTime() - now.getTime();
-        if (awaitMillis > 0) {
-            await new Promise((resolve) => {
-                setTimeout(() => resolve(), awaitMillis);
-            });
+        // expired tokens shouldn't be awaited
+        if (this._tokenPayload && this.ExpirationTime > now) {
+            const awaitMillis = this.NotBefore.getTime() - now.getTime();
+            // check if NotBefore time already passed
+            if (awaitMillis > 0) {
+                await new Promise((resolve) => {
+                    setTimeout(() => resolve(), awaitMillis);
+                });
+            }
         }
     }
 

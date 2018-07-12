@@ -131,7 +131,7 @@ export class JwtService implements IAuthenticationService {
     public handleAuthenticationResponse(response: ILoginResponse): boolean {
         this.tokenStore.AccessToken = Token.FromHeadAndPayload(response.access);
         this.tokenStore.RefreshToken = Token.FromHeadAndPayload(response.refresh);
-        if (this.tokenStore.AccessToken.IsValid()) {
+        if (this.tokenStore.AccessToken.IsValid(true)) {
             this.state.setValue(LoginState.Authenticated);
             return true;
         }
@@ -178,7 +178,9 @@ export class JwtService implements IAuthenticationService {
 
         if (response.ok) {
             const json: ILoginResponse = await response.json();
-            return this.handleAuthenticationResponse(json);
+            const result = this.handleAuthenticationResponse(json);
+            await this.tokenStore.AccessToken.AwaitNotBeforeTime();
+            return result;
         } else {
             this.state.setValue(LoginState.Unauthenticated);
             return false;

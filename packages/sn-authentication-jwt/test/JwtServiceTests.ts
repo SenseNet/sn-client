@@ -44,12 +44,14 @@ export const jwtServiceTests: Mocha.Suite = describe("JwtService", () => {
         });
 
         it("should return false if AccessToken is valid", async () => {
+            jwtService.currentUser.setValue({Domain: "BuiltIn", LoginName: "Mock"} as any);
             jwtService["tokenStore"].AccessToken = MockTokenFactory.CreateValid();
             const hasRefreshed = await jwtService.checkForUpdate();
             expect(hasRefreshed).to.be.eq(false);
         });
 
         it("should return true and make a request if AccessToken is invalid but RefreshToken is valid", async () => {
+            jwtService.currentUser.setValue({Domain: "BuiltIn", LoginName: "Mock"} as any);
             jwtService["tokenStore"].RefreshToken = MockTokenFactory.CreateValid();
             repo["fetchMethod"] = async () => {
                 return {
@@ -68,6 +70,7 @@ export const jwtServiceTests: Mocha.Suite = describe("JwtService", () => {
     describe("#execTokenRefresh()", () => {
         it("Should set the state to Authenticated in case of success", async () => {
             jwtService["tokenStore"].RefreshToken = MockTokenFactory.CreateValid();
+            jwtService.currentUser.setValue({Domain: "BuiltIn", LoginName: "Mock"} as any);
             repo["fetchMethod"] = async () => {
                 return {
                     ok: true,
@@ -84,6 +87,7 @@ export const jwtServiceTests: Mocha.Suite = describe("JwtService", () => {
 
         it("Should set the state to Unauthenticated in case of request failure", async () => {
             jwtService["tokenStore"].RefreshToken = MockTokenFactory.CreateValid();
+            jwtService.currentUser.setValue({Domain: "BuiltIn", LoginName: "Mock"} as any);
             repo["fetchMethod"] = async () => {
                 return {
                     ok: false,
@@ -109,6 +113,7 @@ export const jwtServiceTests: Mocha.Suite = describe("JwtService", () => {
         });
 
         it("should update status to authenticated if AccessToken is valid", () => {
+            jwtService.currentUser.setValue({Domain: "BuiltIn", LoginName: "Mock"} as any);
             const at = MockTokenFactory.CreateValid().toString();
             const rt =  MockTokenFactory.CreateNotValidYet().toString();
             const success = jwtService.handleAuthenticationResponse({
@@ -120,6 +125,7 @@ export const jwtServiceTests: Mocha.Suite = describe("JwtService", () => {
         });
 
         it("should update status to unauthenticated if AccessToken is invalid", () => {
+            jwtService.currentUser.setValue({Domain: "BuiltIn", LoginName: "Mock"} as any);
             const at = MockTokenFactory.CreateExpired().toString();
             const rt =  MockTokenFactory.CreateNotValidYet().toString();
             const success = jwtService.handleAuthenticationResponse({
