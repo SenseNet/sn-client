@@ -141,7 +141,7 @@ export const createSensenetStore: <T>(options: CreateStoreOptions<T>) => Store<T
 
     repo.authentication.state.subscribe((state) => {
         store.dispatch(Actions.loginStateChanged(state))
-    })
+    }, true)
 
     repo.authentication.currentUser.subscribe((user) => {
         store.dispatch(Actions.userChanged(user))
