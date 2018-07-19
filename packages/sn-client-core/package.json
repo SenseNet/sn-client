@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/client-core",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Core Client package for sensenet",
   "main": "./dist/index.js",
   "files": [
@@ -59,13 +59,13 @@
   },
   "devDependencies": {
     "@types/chai": "^4.1.4",
-    "@types/mocha": "^5.2.4",
+    "@types/mocha": "^5.2.5",
     "chai": "^4.1.2",
     "codecov": "^3.0.4",
     "mocha": "^5.2.0",
     "nyc": "^12.0.2",
     "rimraf": "^2.6.2",
-    "tslint": "^5.10.0",
+    "tslint": "^5.11.0",
     "typescript": "^2.9.2"
   },
   "config": {

@@ -1,4 +1,4 @@
-import { GenericContent, Schema } from "@sensenet/default-content-types";
+import { FieldSetting, GenericContent, Schema } from "@sensenet/default-content-types";
 
 /**
  * Class that stores schema information
@@ -28,6 +28,23 @@ export class SchemaStore {
         return this.getSchemaByName(currentType.name);
     }
 
+    private mergeFieldSettings(currentFieldSettings: FieldSetting[], parentFieldSettings: FieldSetting[]): FieldSetting[] {
+        const currentFieldSettingsMap = new Map<string, FieldSetting>();
+        currentFieldSettings.forEach((s) => currentFieldSettingsMap.set(s.Name, s));
+
+        const parentFieldSettingsMap = new Map<string, FieldSetting>();
+        parentFieldSettings.forEach((s) => parentFieldSettingsMap.set(s.Name, s));
+
+        const keys = new Set([...currentFieldSettingsMap.keys(), ...parentFieldSettingsMap.keys()]);
+
+        return Array.from(keys).map((key) => {
+            return {
+                ...parentFieldSettingsMap.get(key),
+                ...currentFieldSettingsMap.get(key),
+            } as FieldSetting;
+        });
+    }
+
     /**
      * Returns the Content Type Schema for the provided content type name
      * @param {string} contentTypeName The name of the content type
@@ -45,7 +62,7 @@ export class SchemaStore {
         const parentSchema = schema.ParentTypeName && this.getSchemaByName(schema.ParentTypeName);
 
         if (parentSchema) {
-            schema.FieldSettings = [...schema.FieldSettings, ...parentSchema.FieldSettings];
+            schema.FieldSettings = this.mergeFieldSettings(schema.FieldSettings, parentSchema.FieldSettings);
         }
         this.byNameSchemaCache.set(contentTypeName, schema);
         return Object.assign({}, schema);

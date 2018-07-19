@@ -49,4 +49,22 @@ export const schemaStoreTests: Mocha.Suite = describe("SchemaStore", () => {
         const schema = store.getSchemaByName("NotFound");
         expect(schema.ContentTypeName).to.be.eq("GenericContent");
     });
+
+    it("Should be able to merge field settings", () => {
+        // tslint:disable-next-line:no-string-literal
+        const mergeAction = new SchemaStore()["mergeFieldSettings"];
+
+        const result = mergeAction([
+            { Name: "Field", Type: "Example", FieldClassName: "ExampleOverriddenValue" },
+            { Name: "Field2", Type: "Example", FieldClassName: "Example" },
+        ],
+            [
+                { Name: "Field", Type: "Example", FieldClassName: "Example" },
+                { Name: "ParentField", Type: "Example", FieldClassName: "Example" },
+            ]);
+        expect(result).to.be.deep.eq([
+            { Name: "Field", Type: "Example", FieldClassName: "ExampleOverriddenValue" },
+            { Name: "Field2", Type: "Example", FieldClassName: "Example" },
+            { Name: "ParentField", Type: "Example", FieldClassName: "Example" }]);
+    });
 });
