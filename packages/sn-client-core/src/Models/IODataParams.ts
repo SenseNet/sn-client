@@ -2,7 +2,7 @@
  * @module ODataApi
  */ /** */
 
- // tslint:disable:naming-convention
+// tslint:disable:naming-convention
 
 /**
  * Defines an OData field parameter
@@ -95,4 +95,14 @@ export interface IODataParams<T> {
      * Sets the OData metadata parameter. Can be 'full', 'minimal' or 'no'
      */
     metadata?: ODataMetadataType;
+
+    /**
+     * The scenario parameter that can be used in case of action scenario filtering
+     */
+    scenario?: string;
+
+    /**
+     * Defines the content version (e.g. 'V1.0A')
+     */
+    version?: string;
 }
