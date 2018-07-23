@@ -30,7 +30,7 @@
  */
 import { Repository } from '@sensenet/client-core'
 import { promiseMiddleware } from '@sensenet/redux-promise-middleware'
-import { AnyAction, applyMiddleware, compose, createStore, Middleware, Reducer, Store, StoreEnhancer } from 'redux'
+import { applyMiddleware, compose, createStore, Middleware, Reducer, Store, StoreEnhancer } from 'redux'
 import { createLogger } from 'redux-logger'
 import * as Actions from './Actions'
 
@@ -127,7 +127,7 @@ export const createSensenetStore: <T>(options: CreateStoreOptions<T>) => Store<T
     // tslint:disable-next-line:no-string-literal
     const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] && options.devTools ? window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] : compose
 
-    const store = createStore<T, AnyAction, Partial<T>, Partial<T>>(
+    const store = createStore(
         options.rootReducer,
         options.persistedState || {},
         composeEnhancers(

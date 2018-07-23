@@ -5,24 +5,11 @@
 /**
  */
 
-import { ConstantContent, IContent, LoginState, Repository } from '@sensenet/client-core'
+import { ConstantContent, IContent, IODataCollectionResponse, IODataParams, LoginState } from '@sensenet/client-core'
 import { IODataBatchResponse } from '@sensenet/client-core/dist/Models/IODataBatchResponse'
+import { RepositoryConfiguration } from '@sensenet/client-core/dist/Repository/RepositoryConfiguration'
+import { GenericContent, IActionModel, Schema } from '@sensenet/default-content-types'
 import { combineReducers, Reducer } from 'redux'
-
-/**
- * Interface to define state type for select Reducer.
- */
-export interface SelectStateType {
-    ids: number[],
-    entities: object
-}
-/**
- * Interface to define state type for batchResponse Reducer.
- */
-export interface BatchResponseStateType {
-    response: IODataBatchResponse<IContent>,
-    error: any,
-}
 
 /**
  * Reducer to handle Actions on the country property in the session object.
@@ -30,7 +17,7 @@ export interface BatchResponseStateType {
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const country = (state = '', action) => {
+export const country: Reducer<string> = (state = '', action) => {
     return state
 }
 /**
@@ -39,7 +26,7 @@ export const country = (state = '', action) => {
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const language = (state = 'en-US', action) => {
+export const language: Reducer<string> = (state = 'en-US', action) => {
     switch (action.type) {
         case 'USER_CHANGED':
             if (typeof action.user.Language !== 'undefined'
@@ -58,7 +45,7 @@ export const language = (state = 'en-US', action) => {
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const loginState = (state = LoginState.Pending, action) => {
+export const loginState: Reducer<LoginState> = (state = LoginState.Pending, action) => {
     switch (action.type) {
         case 'USER_LOGIN_STATE_CHANGED':
             return action.loginState
@@ -71,7 +58,7 @@ export const loginState = (state = LoginState.Pending, action) => {
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const loginError = (state = '', action) => {
+export const loginError: Reducer<string> = (state = '', action) => {
     switch (action.type) {
         case 'USER_LOGIN_SUCCESS':
             return !action.payload ?
@@ -91,7 +78,7 @@ export const loginError = (state = '', action) => {
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const userName = (state = ConstantContent.VISITOR_USER, action) => {
+export const userName: Reducer<string> = (state = ConstantContent.VISITOR_USER.Name, action) => {
     switch (action.type) {
         case 'USER_CHANGED':
             return action.user.Name
@@ -106,7 +93,7 @@ export const userName = (state = ConstantContent.VISITOR_USER, action) => {
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const fullName = (state = ConstantContent.VISITOR_USER, action) => {
+export const fullName: Reducer<string> = (state = ConstantContent.VISITOR_USER.DisplayName, action) => {
     switch (action.type) {
         case 'USER_CHANGED':
             return action.user.DisplayName
@@ -120,7 +107,7 @@ export const fullName = (state = ConstantContent.VISITOR_USER, action) => {
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const userLanguage = (state = 'en-US', action) => {
+export const userLanguage: Reducer<string> = (state = 'en-US', action) => {
     switch (action.type) {
         case 'USER_CHANGED':
             if (typeof action.user.Language !== 'undefined'
@@ -139,7 +126,7 @@ export const userLanguage = (state = 'en-US', action) => {
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const userAvatarPath = (state = '', action) => {
+export const userAvatarPath: Reducer<string> = (state = '', action) => {
     switch (action.type) {
         case 'USER_CHANGED':
             return action.user.Avatar ? action.user.Avatar._deferred : ''
@@ -162,7 +149,7 @@ const user = combineReducers({
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const repository = (state = null, action: { type: string, repository: Repository }) => {
+export const repository: Reducer<RepositoryConfiguration> = (state = null, action: any) => {
     switch (action.type) {
         case 'LOAD_REPOSITORY':
             return action.repository
@@ -182,12 +169,12 @@ const session = combineReducers({
     repository,
 })
 /**
- * Reducer to handle Actions on the ids array in the children object.
+ * Reducer to handle Actions on the ids array in the currentitems object.
  * @param {number[]} [state=[]] Represents the current state.
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const ids = (state = [], action) => {
+export const ids: Reducer<number[]> = (state = [], action) => {
     switch (action.type) {
         case 'FETCH_CONTENT_SUCCESS':
             return action.payload.result
@@ -218,12 +205,12 @@ export const ids = (state = [], action) => {
     }
 }
 /**
- * Reducer to handle Actions on the entities object in the children object.
+ * Reducer to handle Actions on the entities object in the currentitems object.
  * @param {object} [state={}] Represents the current state.
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const entities = (state = {}, action) => {
+export const entities: Reducer<IODataCollectionResponse<GenericContent> | undefined> = (state = undefined, action) => {
     if (action.payload && (
         action.type !== 'USER_LOGIN_FAILURE' &&
         action.type !== 'USER_LOGIN_BUFFER' &&
@@ -242,33 +229,64 @@ export const entities = (state = {}, action) => {
     }
     switch (action.type) {
         case 'DELETE_CONTENT_SUCCESS':
-            const res = Object.assign({}, state)
-            delete res[action.id]
-            return res
         case 'DELETE_BATCH_SUCCESS':
         case 'MOVE_BATCH_SUCCESS':
-            const resource = Object.assign({}, state)
-            action.payload.d.results.map((result) => delete resource[result.Id])
-            return resource
-        case 'UPDATE_CONTENT_SUCCESS':
-            state[action.payload.Id] = action.payload
-            return state
-        case 'UPLOAD_CONTENT_SUCCESS':
-            if (typeof state[action.payload.Id] === 'undefined') {
-                state[action.payload.Id] = action.payload
+            const deletedIds = action.payload.d.results.map((item) => {
+                return item.Id
+            })
+            return {
+                ...state,
+                d: {
+                    ...state.d,
+                    ...{
+                        __count: state.d.__count - action.payload.d.results.length,
+                        results: state.d.results.filter((item) => deletedIds.indexOf(item.Id) === -1),
+                    },
+                },
             }
-            return state
+        case 'UPDATE_CONTENT_SUCCESS':
+            return {
+                ...state,
+                d: {
+                    ...state.d,
+                    ...{
+                        results: state.d.results.map((c) => {
+                            if (c.Id === action.payload.Id) {
+                                return action.payload
+                            }
+                            return c
+                        }),
+                    },
+                },
+            }
+        case 'CREATE_CONTENT_SUCCESS':
+        case 'UPLOAD_CONTENT_SUCCESS':
+            return {
+                ...state,
+                d: {
+                    ...state.d,
+                    ...{
+                        __count: state.d.results.find((item) => item.Id === action.payload.Id) !== undefined ? state.d.__count : state.d.__count + 1,
+                        results: state.d.results.find((item) => item.Id === action.payload.Id) !== undefined ? state.d.results.map((c) => {
+                            if (c.Id === action.payload.Id) {
+                                return action.payload
+                            }
+                            return c
+                        }) : [action.payload, ...state.d.results],
+                    },
+                },
+            }
         default:
             return state
     }
 }
 /**
- * Reducer to handle Actions on the isFetching property in the children object.
+ * Reducer to handle Actions on the isFetching property in the currentitems object.
  * @param {boolean} [state=false] Represents the current state.
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const isFetching = (state = false, action) => {
+export const isFetching: Reducer<boolean> = (state = false, action) => {
     switch (action.type) {
         case 'FETCH_CONTENT_LOADING':
             return true
@@ -281,12 +299,12 @@ export const isFetching = (state = false, action) => {
     }
 }
 /**
- * Reducer to handle Actions on the childrenerror property in the children object.
+ * Reducer to handle Actions on the childrenerror property in the currentitems object.
  * @param {object} [state=null] Represents the current state.
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const childrenerror = (state = null, action) => {
+export const childrenerror: Reducer<object> = (state = null, action) => {
     switch (action.type) {
         case 'FETCH_CONTENT_FAILURE':
             return action.payload.message
@@ -308,12 +326,12 @@ export const childrenerror = (state = null, action) => {
     }
 }
 /**
- * Reducer to handle Actions on the chidlrenactions object in the children object.
+ * Reducer to handle Actions on the chidlrenactions object in the currentitems object.
  * @param {any[]} [state=[]] Represents the current state.
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const childrenactions = (state = [], action) => {
+export const childrenactions: Reducer<IActionModel[]> = (state = [], action) => {
     switch (action.type) {
         case 'REQUEST_CONTENT_ACTIONS_SUCCESS':
             return action.payload
@@ -322,120 +340,12 @@ export const childrenactions = (state = [], action) => {
     }
 }
 /**
- * Reducer to handle Actions on the top property in the children object.
+ * Reducer to handle Actions on the isOpened property in the currentitems object.
  * @param {object} [state={}] Represents the current state.
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const top = (state = {}, action) => {
-    switch (action.type) {
-        case 'FETCH_CONTENT':
-            if (action.options.top) {
-                return action.options.top
-            } else {
-                return state
-            }
-        default:
-            return state
-    }
-}
-/**
- * Reducer to handle Actions on the skip property in the children object.
- * @param {object} [state={}] Represents the current state.
- * @param {object} action Represents an action that is called.
- * @returns {object} state. Returns the next state based on the action.
- */
-export const skip = (state = {}, action) => {
-    switch (action.type) {
-        case 'FETCH_CONTENT':
-            if (action.options.skip) {
-                return action.options.skip
-            } else {
-                return state
-            }
-        default:
-            return state
-    }
-}
-/**
- * Reducer to handle Actions on the query property in the children object.
- * @param {object} [state={}] Represents the current state.
- * @param {object} action Represents an action that is called.
- * @returns {object} state. Returns the next state based on the action.
- */
-export const query = (state = {}, action) => {
-    switch (action.type) {
-        case 'FETCH_CONTENT':
-            if (action.options.query) {
-                return action.options.query
-            } else {
-                return state
-            }
-        default:
-            return state
-    }
-}
-/**
- * Reducer to handle Actions on the order property in the children object.
- * @param {object} [state={}] Represents the current state.
- * @param {object} action Represents an action that is called.
- * @returns {object} state. Returns the next state based on the action.
- */
-export const order = (state = {}, action) => {
-    switch (action.type) {
-        case 'FETCH_CONTENT':
-            if (action.options.orderby) {
-                return action.options.orderby
-            } else {
-                return state
-            }
-        default:
-            return state
-    }
-}
-/**
- * Reducer to handle Actions on the filter property in the children object.
- * @param {object} [state={}] Represents the current state.
- * @param {object} action Represents an action that is called.
- * @returns {object} state. Returns the next state based on the action.
- */
-export const filter = (state = {}, action) => {
-    switch (action.type) {
-        case 'FETCH_CONTENT':
-            if (action.options.filter) {
-                return action.options.filter
-            } else {
-                return state
-            }
-        default:
-            return state
-    }
-}
-/**
- * Reducer to handle Actions on the select property in the children object.
- * @param {object} [state={}] Represents the current state.
- * @param {object} action Represents an action that is called.
- * @returns {object} state. Returns the next state based on the action.
- */
-export const select = (state = {}, action) => {
-    switch (action.type) {
-        case 'FETCH_CONTENT':
-            if (action.options.select) {
-                return action.options.select
-            } else {
-                return state
-            }
-        default:
-            return state
-    }
-}
-/**
- * Reducer to handle Actions on the isOpened property in the children object.
- * @param {object} [state={}] Represents the current state.
- * @param {object} action Represents an action that is called.
- * @returns {object} state. Returns the next state based on the action.
- */
-export const isOpened = (state = null, action) => {
+export const isOpened: Reducer<boolean> = (state = null, action) => {
     switch (action.type) {
         case 'REQUEST_CONTENT_ACTIONS_SUCCESS':
             return action.id
@@ -444,21 +354,30 @@ export const isOpened = (state = null, action) => {
     }
 }
 /**
- * Reducer combining ids, entities, isFetching, actions, error, top, skip, query, order, filter, select and isOpened into a single object, ```children```.
+ * Reducer to handle Actions on the odata options property in the currentitems object.
+ * @param {object} [state={}] Represents the current state.
+ * @param {object} action Represents an action that is called.
+ * @returns {object} state. Returns the next state based on the action.
  */
-const children = combineReducers({
+export const options: Reducer<IODataParams<GenericContent>> = (state = {}, action) => {
+    switch (action.type) {
+        case 'SET_ODATAOPTIONS':
+            return action.options
+        default:
+            return state
+    }
+}
+/**
+ * Reducer combining ids, entities, isFetching, actions, error, top, skip, query, order, filter, select and isOpened into a single object, ```currentitems```.
+ */
+const currentitems = combineReducers({
     ids,
     entities,
     isFetching,
     actions: childrenactions,
     error: childrenerror,
-    top,
-    skip,
-    query,
-    order,
-    filter,
-    select,
     isOpened,
+    options,
 })
 /**
  * Reducer to handle Actions on the isSaved property in the contentState object.
@@ -466,7 +385,7 @@ const children = combineReducers({
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const isSaved = (state = true, action) => {
+export const isSaved: Reducer<boolean> = (state = true, action) => {
     switch (action.type) {
         case 'CREATE_CONTENT':
         case 'CREATE_CONTENT_FAILURE':
@@ -485,7 +404,7 @@ export const isSaved = (state = true, action) => {
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const isValid = (state = true, action) => {
+export const isValid: Reducer<boolean> = (state = true, action) => {
     return state
 }
 /**
@@ -494,7 +413,7 @@ export const isValid = (state = true, action) => {
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const isDirty = (state = false, action) => {
+export const isDirty: Reducer<boolean> = (state = false, action) => {
     return state
 }
 /**
@@ -503,7 +422,7 @@ export const isDirty = (state = false, action) => {
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const isOperationInProgress = (state = false, action) => {
+export const isOperationInProgress: Reducer<boolean> = (state = false, action) => {
     switch (action.type) {
         case 'CREATE_CONTENT_LOADING':
         case 'UPDATE_CONTENT_LOADING':
@@ -528,7 +447,7 @@ const contentState = combineReducers({
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const contenterror = (state = null, action) => {
+export const contenterror: Reducer<object> = (state = null, action) => {
     switch (action.type) {
         case 'CREATE_CONTENT_FAILURE':
         case 'UPDATE_CONTENT_FAILURE':
@@ -577,7 +496,7 @@ export const contenterror = (state = null, action) => {
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const contentactions = (state = {}, action) => {
+export const contentactions: Reducer<IActionModel[]> = (state = [], action) => {
     switch (action.type) {
         case 'LOAD_CONTENT_ACTIONS_SUCCESS':
             return action.payload.d.Actions
@@ -591,7 +510,7 @@ export const contentactions = (state = {}, action) => {
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const fields = (state = {}, action) => {
+export const fields: Reducer<object> = (state = {}, action) => {
     switch (action.type) {
         case 'LOAD_CONTENT_SUCCESS':
             return {}
@@ -609,7 +528,7 @@ export const fields = (state = {}, action) => {
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const content = (state = {}, action) => {
+export const content: Reducer<IContent | undefined> = (state = undefined, action) => {
     switch (action.type) {
         case 'LOAD_CONTENT_SUCCESS':
             return action.payload.d
@@ -623,7 +542,7 @@ export const content = (state = {}, action) => {
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const schema = (state = {}, action) => {
+export const schema: Reducer<Schema> = (state = undefined, action) => {
     switch (action.type) {
         case 'GET_SCHEMA':
             return action.payload
@@ -648,7 +567,7 @@ const currentcontent = combineReducers({
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const selectedIds = (state = [], action) => {
+export const selectedIds: Reducer<number[]> = (state = [], action) => {
     switch (action.type) {
         case 'SELECT_CONTENT':
             return [...state, action.content.Id]
@@ -667,7 +586,7 @@ export const selectedIds = (state = [], action) => {
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const selectedContentItems = (state = {}, action) => {
+export const selectedContentItems: Reducer<object> = (state = {}, action) => {
     switch (action.type) {
         case 'DESELECT_CONTENT':
             const res = Object.assign({}, state)
@@ -696,7 +615,7 @@ const selected = combineReducers({
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const odataBatchResponse = (state = {}, action) => {
+export const odataBatchResponse: Reducer<IODataBatchResponse<GenericContent> | undefined> = (state = undefined, action) => {
     switch (action.type) {
         case 'DELETE_BATCH_SUCCESS':
         case 'COPY_BATCH_SUCCESS':
@@ -712,7 +631,7 @@ export const odataBatchResponse = (state = {}, action) => {
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const batchResponseError = (state = '', action) => {
+export const batchResponseError: Reducer<string> = (state = '', action) => {
     switch (action.type) {
         case 'DELETE_BATCH_FAILURE':
         case 'COPY_BATCH_FAILURE':
@@ -725,18 +644,18 @@ export const batchResponseError = (state = '', action) => {
 /**
  * Reducer combining response and error into a single object, ```batchResponses```.
  */
-const batchResponses: Reducer<BatchResponseStateType> = combineReducers<BatchResponseStateType>({
+const batchResponses = combineReducers({
     response: odataBatchResponse,
     error: batchResponseError,
 })
 
 /**
- * Reducer combining session, children, currentcontent and selected into a single object, ```sensenet``` which will be the top-level one.
+ * Reducer combining session, currentitems, currentcontent and selected into a single object, ```sensenet``` which will be the top-level one.
  */
 export const sensenet = combineReducers({
     session,
-    children,
     currentcontent,
+    currentitems,
     selected,
     batchResponses,
 })
@@ -816,7 +735,7 @@ export const getOpenedContent = (state) => {
     return state.isOpened
 }
 /**
- * Method to get the list of actions of the children items.
+ * Method to get the list of actions of the currentitems items.
  * @param {object} state Current state object.
  * @returns {any[]} Returns the list of actions.
  */
@@ -832,7 +751,7 @@ export const getCurrentContent = (state) => {
     return state.currentcontent.content
 }
 /**
- * Method to get the children items.
+ * Method to get the currentitems items.
  * @param {object} state Current state object.
  * @returns {object} Returns the content items as an object.
  */

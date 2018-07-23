@@ -1,12 +1,17 @@
-import { LoginState, Repository } from '@sensenet/client-core'
-import { Status, Task } from '@sensenet/default-content-types'
+import { IODataCollectionResponse, IODataParams, LoginState, Repository } from '@sensenet/client-core'
+import { GenericContent, IActionModel, Status, Task } from '@sensenet/default-content-types'
 import * as Chai from 'chai'
 import * as Reducers from '../src/Reducers'
 const expect = Chai.expect
+
+const defaultAction = {
+    type: '',
+}
+
 describe('Reducers', () => {
     describe('country reducer', () => {
         it('should return the initial state', () => {
-            expect(Reducers.country(undefined, {})).to.be.deep.equal('')
+            expect(Reducers.country(undefined, defaultAction)).to.be.deep.equal('')
         })
     })
 
@@ -14,7 +19,7 @@ describe('Reducers', () => {
         const user = { Language: ['hu-HU'] }
         const user2 = {}
         it('should return the initial state', () => {
-            expect(Reducers.language(undefined, {})).to.be.deep.equal('en-US')
+            expect(Reducers.language(undefined, defaultAction)).to.be.deep.equal('en-US')
         })
         it('should return the language set on the user', () => {
             expect(Reducers.language(undefined, { type: 'USER_CHANGED', user })).to.be.deep.equal('hu-HU')
@@ -26,7 +31,7 @@ describe('Reducers', () => {
 
     describe('loginState reducer', () => {
         it('should return the initial state', () => {
-            expect(Reducers.loginState(undefined, {})).to.be.deep.equal(LoginState.Pending)
+            expect(Reducers.loginState(undefined, defaultAction)).to.be.deep.equal(LoginState.Pending)
         })
         it('should return the new state', () => {
             expect(Reducers.loginState(undefined, { type: 'USER_LOGIN_STATE_CHANGED', loginState: LoginState.Authenticated })).to.be.deep.equal(LoginState.Authenticated)
@@ -35,7 +40,7 @@ describe('Reducers', () => {
 
     describe('loginError reducer', () => {
         it('should return the initial state', () => {
-            expect(Reducers.loginError(undefined, {})).to.be.deep.equal(null)
+            expect(Reducers.loginError(undefined, defaultAction)).to.be.deep.equal(null)
         })
         it('should return null', () => {
             expect(Reducers.loginError(undefined, { type: 'USER_LOGIN_SUCCESS', payload: true })).to.be.deep.equal(null)
@@ -53,7 +58,7 @@ describe('Reducers', () => {
 
     describe('userName reducer', () => {
         it('should return the initial state', () => {
-            expect(Reducers.userName(undefined, {}).LoginName).to.be.deep.equal('Visitor')
+            expect(Reducers.userName(undefined, defaultAction)).to.be.deep.equal('Visitor')
         })
         it('should return the logged-in users name', () => {
             expect(Reducers.userName(undefined, { type: 'USER_CHANGED', user: { Name: 'Alba' } })).to.be.deep.equal('Alba')
@@ -62,7 +67,7 @@ describe('Reducers', () => {
 
     describe('fullName reducer', () => {
         it('should return the initial state', () => {
-            expect(Reducers.fullName(undefined, {}).DisplayName).to.be.deep.equal('Visitor')
+            expect(Reducers.fullName(undefined, defaultAction)).to.be.deep.equal('Visitor')
         })
         it('should return the logged-in users full-name', () => {
             expect(Reducers.fullName(undefined, { type: 'USER_CHANGED', user: { DisplayName: 'Alba Monday' } })).to.be.deep.equal('Alba Monday')
@@ -73,7 +78,7 @@ describe('Reducers', () => {
         const user = { Language: ['hu-HU'] }
         const user2 = {}
         it('should return the initial state', () => {
-            expect(Reducers.userLanguage(undefined, {})).to.be.deep.equal('en-US')
+            expect(Reducers.userLanguage(undefined, defaultAction)).to.be.deep.equal('en-US')
         })
         it('should return the language set on the user', () => {
             expect(Reducers.userLanguage(undefined, { type: 'USER_CHANGED', user })).to.be.deep.equal('hu-HU')
@@ -85,7 +90,7 @@ describe('Reducers', () => {
 
     describe('userAvatarPath reducer', () => {
         it('should return the initial state', () => {
-            expect(Reducers.userAvatarPath(undefined, {})).to.be.deep.equal('')
+            expect(Reducers.userAvatarPath(undefined, defaultAction)).to.be.deep.equal('')
         })
         it('should return the initial state', () => {
             expect(Reducers.userAvatarPath(undefined, { type: 'USER_CHANGED', user: { DisplayName: 'Alba Monday' } })).to.be.deep.equal('')
@@ -97,7 +102,7 @@ describe('Reducers', () => {
 
     describe('ids reducer', () => {
         it('should return the initial state', () => {
-            expect(Reducers.ids(undefined, {})).to.be.deep.equal([])
+            expect(Reducers.ids(undefined, defaultAction)).to.be.deep.equal([])
         })
         it('should handle FETCH_CONTENT_SUCCESS', () => {
             expect(Reducers.ids([],
@@ -221,118 +226,310 @@ describe('Reducers', () => {
 
     describe('entities reducer', () => {
         it('should return the initial state', () => {
-            expect(Reducers.entities(undefined, {})).to.be.deep.equal({})
-        })
-        it('should handle DELETE_CONTENT_SUCCESS', () => {
-            const ids = [1, 2, 3]
-            expect(Reducers.entities(ids, { type: 'DELETE_CONTENT_SUCCESS', id: 1 })).to.be.deep.equal({ 0: 1, 2: 3 })
+            expect(Reducers.entities(undefined, defaultAction)).to.be.deep.equal(undefined)
         })
         it('should return a new state with the given response', () => {
-            expect(Reducers.entities({}, { payload: { entities: { entities: { a: 0, b: 2 } } } }))
+            expect(Reducers.entities(undefined, { type: '', payload: { entities: { entities: { a: 0, b: 2 } } } }))
                 .to.be.deep.eq({ a: 0, b: 2 })
         })
         it('should handle UPDATE_CONTENT_SUCCESS', () => {
             const entities = {
-                5145: {
+                d: {
+                    __count: 2,
+                    results: [
+                        {
+                            Id: 5145,
+                            DisplayName: 'Some Article',
+                            Status: Status.active,
+                            Name: 'SomeArtice',
+                            Path: '',
+                            Type: 'Task',
+                        } as Task,
+                        {
+                            Id: 5146,
+                            Displayname: 'Other Article',
+                            Status: Status.completed,
+                            Name: 'OtherArticle',
+                            Path: '',
+                            Type: 'Task',
+                        },
+                    ],
+                },
+            } as IODataCollectionResponse<Task>
+            expect(Reducers.entities(entities, {
+                type: 'UPDATE_CONTENT_SUCCESS', payload: {
                     Id: 5145,
-                    DisplayName: 'Some Article',
-                    Status: ['Active'],
-                },
-                5146: {
-                    Id: 5146,
-                    Displayname: 'Other Article',
-                    Status: ['Completed'],
-                },
-            }
-            expect(Reducers.entities(entities, { type: 'UPDATE_CONTENT_SUCCESS', payload: { Id: 5145, DisplayName: 'aaa', Status: ['Active'] } })).to.be.deep.equal(
+                    DisplayName: 'aaa',
+                    Status: Status.active,
+                } as Task,
+            })).to.be.deep.equal(
                 {
-                    5145: {
-                        Id: 5145,
-                        DisplayName: 'aaa',
-                        Status: ['Active'],
-                    },
-                    5146: {
-                        Id: 5146,
-                        Displayname: 'Other Article',
-                        Status: ['Completed'],
+                    d: {
+                        __count: 2,
+                        results: [{ Id: 5145, DisplayName: 'aaa', Status: 'active' }, {
+                            Id: 5146,
+                            Displayname: 'Other Article',
+                            Status: 'completed',
+                            Name: 'OtherArticle',
+                            Path: '',
+                            Type: 'Task',
+                        }],
                     },
                 },
             )
         })
         it('should handle UPLOAD_CONTENT_SUCCESS', () => {
             const entities = {
-                5122: {
-                    Id: 5122,
-                    DisplayName: 'Some Article',
-                    Status: ['Active'],
+                d: {
+                    __count: 2,
+                    results: [
+                        {
+                            Id: 5122,
+                            DisplayName: 'Some Article',
+                            Status: Status.active,
+                            Name: 'SomeArticle',
+                            Path: '',
+                            Type: 'Task',
+                        } as Task,
+                        {
+                            Id: 5146,
+                            Displayname: 'Other Article',
+                            Status: Status.completed,
+                            Name: 'OtherArticle',
+                            Path: '',
+                            Type: 'Task',
+                        },
+                    ],
                 },
-                5146: {
-                    Id: 5146,
-                    Displayname: 'Other Article',
-                    Status: ['Completed'],
-                },
-            }
-            expect(Reducers.entities(entities, { type: 'UPLOAD_CONTENT_SUCCESS', payload: { Id: 5145, DisplayName: 'aaa', Status: ['Active'] } })).to.be.deep.equal(
+            } as IODataCollectionResponse<Task>
+            expect(Reducers.entities(entities, { type: 'UPLOAD_CONTENT_SUCCESS', payload: { Id: 5145, DisplayName: 'aaa', Status: Status.active } })).to.be.deep.equal(
                 {
-                    5122: {
-                        Id: 5122,
-                        DisplayName: 'Some Article',
-                        Status: ['Active'],
-                    },
-                    5146: {
-                        Id: 5146,
-                        Displayname: 'Other Article',
-                        Status: ['Completed'],
-                    },
-                    5145: {
-                        Id: 5145,
-                        DisplayName: 'aaa',
-                        Status: ['Active'],
+                    d: {
+                        __count: 3,
+                        results: [
+                            {
+                                Id: 5145,
+                                DisplayName: 'aaa',
+                                Status: Status.active,
+                            },
+                            {
+                                Id: 5122,
+                                DisplayName: 'Some Article',
+                                Status: Status.active,
+                                Name: 'SomeArticle',
+                                Path: '',
+                                Type: 'Task',
+                            },
+                            {
+                                Id: 5146,
+                                Displayname: 'Other Article',
+                                Status: Status.completed,
+                                Name: 'OtherArticle',
+                                Path: '',
+                                Type: 'Task',
+                            },
+                        ],
                     },
                 },
             )
         })
         it('should handle UPLOAD_CONTENT_SUCCESS with existing content', () => {
             const entities = {
-                5122: {
+                d: {
+                    __count: 2,
+                    results: [
+                        {
+                            Id: 5122,
+                            DisplayName: 'Some Article',
+                            Status: Status.active,
+                            Name: 'SomeArtice',
+                            Path: '',
+                            Type: 'Task',
+                        } as Task,
+                        {
+                            Id: 5146,
+                            Displayname: 'Other Article',
+                            Status: Status.completed,
+                            Name: 'OtherArticle',
+                            Path: '',
+                            Type: 'Task',
+                        },
+                    ],
+                },
+            } as IODataCollectionResponse<Task>
+            expect(Reducers.entities(entities, {
+                type: 'UPLOAD_CONTENT_SUCCESS', payload: {
                     Id: 5122,
                     DisplayName: 'Some Article',
-                    Status: ['Active'],
+                    Status: Status.active,
+                    Name: 'SomeArticle',
+                    Path: '',
+                    Type: 'Task',
                 },
-                5146: {
-                    Id: 5146,
-                    Displayname: 'Other Article',
-                    Status: ['Completed'],
-                },
-            }
-            expect(Reducers.entities(entities, { type: 'UPLOAD_CONTENT_SUCCESS', payload: { Id: 5122, DisplayName: 'Some Article', Status: ['Active'] } })).to.be.deep.equal(
+            })).to.be.deep.equal(
                 {
-                    5122: {
-                        Id: 5122,
-                        DisplayName: 'Some Article',
-                        Status: ['Active'],
+                    d: {
+                        __count: 2,
+                        results: [
+                            {
+                                Id: 5122,
+                                DisplayName: 'Some Article',
+                                Status: Status.active,
+                                Name: 'SomeArticle',
+                                Path: '',
+                                Type: 'Task',
+                            } as Task,
+                            {
+                                Id: 5146,
+                                Displayname: 'Other Article',
+                                Status: Status.completed,
+                                Name: 'OtherArticle',
+                                Path: '',
+                                Type: 'Task',
+                            },
+                        ],
                     },
-                    5146: {
-                        Id: 5146,
-                        Displayname: 'Other Article',
-                        Status: ['Completed'],
+                },
+            )
+        })
+        it('should handle CREATE_CONTENT_SUCCESS', () => {
+            const entities = {
+                d: {
+                    __count: 2,
+                    results: [
+                        {
+                            Id: 5122,
+                            DisplayName: 'Some Article',
+                            Status: Status.active,
+                            Name: 'SomeArticle',
+                            Path: '',
+                            Type: 'Task',
+                        } as Task,
+                        {
+                            Id: 5146,
+                            Displayname: 'Other Article',
+                            Status: Status.completed,
+                            Name: 'OtherArticle',
+                            Path: '',
+                            Type: 'Task',
+                        },
+                    ],
+                },
+            } as IODataCollectionResponse<Task>
+            expect(Reducers.entities(entities, { type: 'CREATE_CONTENT_SUCCESS', payload: { Id: 5145, DisplayName: 'aaa', Status: Status.active } })).to.be.deep.equal(
+                {
+                    d: {
+                        __count: 3,
+                        results: [
+                            {
+                                Id: 5145,
+                                DisplayName: 'aaa',
+                                Status: Status.active,
+                            },
+                            {
+                                Id: 5122,
+                                DisplayName: 'Some Article',
+                                Status: Status.active,
+                                Name: 'SomeArticle',
+                                Path: '',
+                                Type: 'Task',
+                            },
+                            {
+                                Id: 5146,
+                                Displayname: 'Other Article',
+                                Status: Status.completed,
+                                Name: 'OtherArticle',
+                                Path: '',
+                                Type: 'Task',
+                            },
+                        ],
+                    },
+                },
+            )
+        })
+        it('should handle CREATE_CONTENT_SUCCESS', () => {
+            const entities = {
+                d: {
+                    __count: 2,
+                    results: [
+                        {
+                            Id: 5122,
+                            DisplayName: 'Some Article',
+                            Status: Status.active,
+                            Name: 'SomeArticle',
+                            Path: '',
+                            Type: 'Task',
+                        } as Task,
+                        {
+                            Id: 5146,
+                            Displayname: 'Other Article',
+                            Status: Status.completed,
+                            Name: 'OtherArticle',
+                            Path: '',
+                            Type: 'Task',
+                        },
+                    ],
+                },
+            } as IODataCollectionResponse<Task>
+            expect(Reducers.entities(entities, {
+                type: 'CREATE_CONTENT_SUCCESS', payload: {
+                    Id: 5122,
+                    DisplayName: 'Some Article',
+                    Status: Status.active,
+                    Name: 'SomeArticle',
+                    Path: '',
+                    Type: 'Task',
+                },
+            })).to.be.deep.equal(
+                {
+                    d: {
+                        __count: 2,
+                        results: [
+                            {
+                                Id: 5122,
+                                DisplayName: 'Some Article',
+                                Status: Status.active,
+                                Name: 'SomeArticle',
+                                Path: '',
+                                Type: 'Task',
+                            },
+                            {
+                                Id: 5146,
+                                Displayname: 'Other Article',
+                                Status: Status.completed,
+                                Name: 'OtherArticle',
+                                Path: '',
+                                Type: 'Task',
+                            },
+                        ],
                     },
                 },
             )
         })
         it('should handle DELETE_BATCH_SUCCESS', () => {
             const entities = {
-                5122: {
-                    Id: 5122,
-                    DisplayName: 'Some Article',
-                    Status: ['Active'],
+                d: {
+                    __count: 2,
+                    results: [
+                        {
+                            Id: 5145,
+                            DisplayName: 'Some Article',
+                            Status: Status.active,
+                            Name: 'SomeArtice',
+                            Path: '',
+                            Type: 'Task',
+                        } as Task,
+                        {
+                            Id: 5122,
+                            Displayname: 'Other Article',
+                            Status: Status.completed,
+                            Name: 'OtherArticle',
+                            Path: '',
+                            Type: 'Task',
+                        },
+                    ],
                 },
-                5146: {
-                    Id: 5146,
-                    Displayname: 'Other Article',
-                    Status: ['Completed'],
-                },
-            }
+            } as IODataCollectionResponse<Task>
             expect(Reducers.entities(entities, {
                 type: 'DELETE_BATCH_SUCCESS',
                 payload: {
@@ -344,10 +541,68 @@ describe('Reducers', () => {
                     },
                 },
             })).to.be.deep.equal({
-                5146: {
-                    Id: 5146,
-                    Displayname: 'Other Article',
-                    Status: ['Completed'],
+                d: {
+                    __count: 1,
+                    results: [
+                        {
+                            Id: 5145,
+                            DisplayName: 'Some Article',
+                            Status: Status.active,
+                            Name: 'SomeArtice',
+                            Path: '',
+                            Type: 'Task',
+                        } as Task,
+                    ],
+                },
+            })
+        })
+        it('should handle DELETE_CONTENT_SUCCESS', () => {
+            const entities = {
+                d: {
+                    __count: 2,
+                    results: [
+                        {
+                            Id: 5145,
+                            DisplayName: 'Some Article',
+                            Status: Status.active,
+                            Name: 'SomeArtice',
+                            Path: '',
+                            Type: 'Task',
+                        } as Task,
+                        {
+                            Id: 5122,
+                            Displayname: 'Other Article',
+                            Status: Status.completed,
+                            Name: 'OtherArticle',
+                            Path: '',
+                            Type: 'Task',
+                        },
+                    ],
+                },
+            } as IODataCollectionResponse<Task>
+            expect(Reducers.entities(entities, {
+                type: 'DELETE_CONTENT_SUCCESS',
+                payload: {
+                    d: {
+                        results: [
+                            { Id: 5122 },
+                        ],
+                        errors: [],
+                    },
+                },
+            })).to.be.deep.equal({
+                d: {
+                    __count: 1,
+                    results: [
+                        {
+                            Id: 5145,
+                            DisplayName: 'Some Article',
+                            Status: Status.active,
+                            Name: 'SomeArtice',
+                            Path: '',
+                            Type: 'Task',
+                        } as Task,
+                    ],
                 },
             })
         })
@@ -362,13 +617,13 @@ describe('Reducers', () => {
                         errors: [],
                     },
                 },
-            })).to.be.deep.equal({})
+            })).to.be.deep.equal(undefined)
         })
     })
 
     describe('isFetching reducer', () => {
         it('should return the initial state', () => {
-            expect(Reducers.isFetching(undefined, {})).to.be.eq(false)
+            expect(Reducers.isFetching(undefined, defaultAction)).to.be.eq(false)
         })
         it('should handle FETCH_CONTENT_LOADING', () => {
             expect(Reducers.isFetching(false, { type: 'FETCH_CONTENT_LOADING' })).to.be.eq(true)
@@ -386,7 +641,7 @@ describe('Reducers', () => {
 
     describe('childrenerror reducer', () => {
         it('should return the initial state', () => {
-            expect(Reducers.childrenerror(undefined, {})).to.be.eq(null)
+            expect(Reducers.childrenerror(undefined, defaultAction)).to.be.eq(null)
         })
         it('should handle FETCH_CONTENT_FAILURE', () => {
             expect(Reducers.childrenerror(null, { type: 'FETCH_CONTENT_FAILURE', payload: { message: 'error' } })).to.be.eq('error')
@@ -499,7 +754,7 @@ describe('Reducers', () => {
     })
     describe('childrenactions reducer', () => {
         it('should return the initial state', () => {
-            expect(Reducers.childrenactions(undefined, {})).to.be.deep.equal([])
+            expect(Reducers.childrenactions(undefined, defaultAction)).to.be.deep.equal([])
         })
         it('should handle REQUEST_CONTENT_ACTIONS_SUCCESS', () => {
             const action = {
@@ -513,75 +768,9 @@ describe('Reducers', () => {
             expect(Reducers.childrenactions(undefined, action)).to.be.deep.equal([{ ActionName: 'Rename' }])
         })
     })
-    describe('top reducer', () => {
-        it('should return the initial state', () => {
-            expect(Reducers.top(undefined, {})).to.be.deep.equal({})
-        })
-        it('should return 10', () => {
-            expect(Reducers.top(undefined, { type: 'FETCH_CONTENT', options: { top: 10 } })).to.be.eq(10)
-        })
-        it('should return initial state', () => {
-            expect(Reducers.top(undefined, { type: 'FETCH_CONTENT', options: {} })).to.be.deep.equal({})
-        })
-    })
-    describe('skip reducer', () => {
-        it('should return the initial state', () => {
-            expect(Reducers.skip(undefined, {})).to.be.deep.equal({})
-        })
-        it('should return 10', () => {
-            expect(Reducers.skip(undefined, { type: 'FETCH_CONTENT', options: { skip: 10 } })).to.be.eq(10)
-        })
-        it('should return initial state', () => {
-            expect(Reducers.skip(undefined, { type: 'FETCH_CONTENT', options: {} })).to.be.deep.equal({})
-        })
-    })
-    describe('query reducer', () => {
-        it('should return the initial state', () => {
-            expect(Reducers.query(undefined, {})).to.be.deep.equal({})
-        })
-        it('should return "DisplayName:aaa"', () => {
-            expect(Reducers.query(undefined, { type: 'FETCH_CONTENT', options: { query: 'DisplayName:aaa' } })).to.be.eq('DisplayName:aaa')
-        })
-        it('should return initial state', () => {
-            expect(Reducers.query(undefined, { type: 'FETCH_CONTENT', options: {} })).to.be.deep.equal({})
-        })
-    })
-    describe('order reducer', () => {
-        it('should return the initial state', () => {
-            expect(Reducers.order(undefined, {})).to.be.deep.equal({})
-        })
-        it('should return "DisplayName desc"', () => {
-            expect(Reducers.order(undefined, { type: 'FETCH_CONTENT', options: { orderby: 'DisplayName desc' } })).to.be.eq('DisplayName desc')
-        })
-        it('should return initial state', () => {
-            expect(Reducers.order(undefined, { type: 'FETCH_CONTENT', options: {} })).to.be.deep.equal({})
-        })
-    })
-    describe('filter reducer', () => {
-        it('should return the initial state', () => {
-            expect(Reducers.filter(undefined, {})).to.be.deep.equal({})
-        })
-        it('should return "isOf(Task)"', () => {
-            expect(Reducers.filter(undefined, { type: 'FETCH_CONTENT', options: { filter: 'isOf(Task)' } })).to.be.eq('isOf(Task)')
-        })
-        it('should return initial state', () => {
-            expect(Reducers.filter(undefined, { type: 'FETCH_CONTENT', options: {} })).to.be.deep.equal({})
-        })
-    })
-    describe('select reducer', () => {
-        it('should return the initial state', () => {
-            expect(Reducers.select(undefined, {})).to.be.deep.equal({})
-        })
-        it('should return "isOf(Task)"', () => {
-            expect(Reducers.select(undefined, { type: 'FETCH_CONTENT', options: { select: 'all' } })).to.be.eq('all')
-        })
-        it('should return initial state', () => {
-            expect(Reducers.select(undefined, { type: 'FETCH_CONTENT', options: {} })).to.be.deep.equal({})
-        })
-    })
     describe('isOpened reducer', () => {
         it('should return the initial state', () => {
-            expect(Reducers.isOpened(undefined, {})).to.be.eq(null)
+            expect(Reducers.isOpened(undefined, defaultAction)).to.be.eq(null)
         })
         it('should return 1', () => {
             const action = {
@@ -593,7 +782,7 @@ describe('Reducers', () => {
     })
     describe('isSaved reducer', () => {
         it('should return the initial state', () => {
-            expect(Reducers.isSaved(undefined, {})).to.be.deep.equal(true)
+            expect(Reducers.isSaved(undefined, defaultAction)).to.be.deep.equal(true)
         })
         it('should return false', () => {
             expect(Reducers.isSaved(undefined, { type: 'CREATE_CONTENT' })).to.be.deep.equal(false)
@@ -616,17 +805,17 @@ describe('Reducers', () => {
     })
     describe('isValid reducer', () => {
         it('should return the initial state', () => {
-            expect(Reducers.isValid(undefined, {})).to.be.deep.equal(true)
+            expect(Reducers.isValid(undefined, defaultAction)).to.be.deep.equal(true)
         })
     })
     describe('isDirty reducer', () => {
         it('should return the initial state', () => {
-            expect(Reducers.isDirty(undefined, {})).to.be.deep.equal(false)
+            expect(Reducers.isDirty(undefined, defaultAction)).to.be.deep.equal(false)
         })
     })
     describe('isOperationInProgress reducer', () => {
         it('should return the initial state', () => {
-            expect(Reducers.isOperationInProgress(undefined, {})).to.be.deep.equal(false)
+            expect(Reducers.isOperationInProgress(undefined, defaultAction)).to.be.deep.equal(false)
         })
         it('should return true', () => {
             expect(Reducers.isOperationInProgress(undefined, { type: 'CREATE_CONTENT_LOADING' })).to.be.deep.equal(true)
@@ -640,7 +829,7 @@ describe('Reducers', () => {
     })
     describe('contenterror reducer', () => {
         it('should return the initial state', () => {
-            expect(Reducers.contenterror(undefined, {})).to.be.eq(null)
+            expect(Reducers.contenterror(undefined, defaultAction)).to.be.eq(null)
         })
         it('should handle FETCH_CONTENT_FAILURE', () => {
             expect(Reducers.contenterror(null, { type: 'FETCH_CONTENT_FAILURE', payload: { message: 'error' } })).to.be.eq(null)
@@ -759,20 +948,21 @@ describe('Reducers', () => {
             type: 'LOAD_CONTENT_ACTIONS_SUCCESS',
             payload: {
                 d: {
-                    Actions: ['aaa', 'bbb'],
+                    Actions: [
+                        { Name: 'aaa' } as IActionModel, { Name: 'bbb' } as IActionModel] as IActionModel[],
                 },
             },
         }
         it('should return the initial state', () => {
-            expect(Reducers.contentactions(undefined, {})).to.deep.equal({})
+            expect(Reducers.contentactions(undefined, defaultAction)).to.deep.equal([])
         })
         it('should return an array with actions', () => {
-            expect(Reducers.contentactions(null, action)).to.deep.equal(['aaa', 'bbb'])
+            expect(Reducers.contentactions(null, action)).to.deep.equal([{ Name: 'aaa' }, { Name: 'bbb' }])
         })
     })
     describe('fields reducer', () => {
         it('should return the initial state', () => {
-            expect(Reducers.fields(undefined, {})).to.deep.equal({})
+            expect(Reducers.fields(undefined, defaultAction)).to.deep.equal({})
         })
         it('should return an empty object', () => {
 
@@ -800,7 +990,7 @@ describe('Reducers', () => {
     })
     describe('schema reducer', () => {
         it('should return the initial state', () => {
-            expect(Reducers.schema(undefined, {})).to.deep.equal({})
+            expect(Reducers.schema(undefined, defaultAction)).to.deep.equal(undefined)
         })
         it('should return schema of the given content type', () => {
 
@@ -808,14 +998,14 @@ describe('Reducers', () => {
                 type: 'GET_SCHEMA',
                 payload: { Icon: 'FormItem' },
             }
-            expect(Reducers.schema({}, action)).to.deep.equal({
+            expect(Reducers.schema(undefined, action)).to.deep.equal({
                 Icon: 'FormItem',
             })
         })
     })
     describe('content reducer', () => {
         it('should return the initial state', () => {
-            expect(Reducers.fields(undefined, {})).to.deep.equal({})
+            expect(Reducers.fields(undefined, defaultAction)).to.deep.equal({})
         })
         it('should return a content', () => {
 
@@ -832,7 +1022,7 @@ describe('Reducers', () => {
     })
     describe('selected reducer', () => {
         it('should return the initial state', () => {
-            expect(Reducers.selectedIds(undefined, {})).to.deep.equal([])
+            expect(Reducers.selectedIds(undefined, defaultAction)).to.deep.equal([])
         })
         it('should return an array with one item with the id 1', () => {
             const content = {
@@ -892,9 +1082,9 @@ describe('Reducers', () => {
     describe('selectedContent reducer', () => {
 
         it('should return the initial state', () => {
-            expect(Reducers.selectedContentItems(undefined, {})).to.deep.equal({})
+            expect(Reducers.selectedContentItems(undefined, defaultAction)).to.deep.equal({})
         })
-        it('should return an object with one children item with the id 1', () => {
+        it('should return an object with one currentitems item with the id 1', () => {
             const content = {
                 Path: '/Root/Sites/Default_Site/tasks',
                 Status: Status.active,
@@ -1001,7 +1191,7 @@ describe('Reducers', () => {
     })
     describe('batchResponseError reducer', () => {
         it('should return the initial state', () => {
-            expect(Reducers.batchResponseError(undefined, {})).to.deep.equal('')
+            expect(Reducers.batchResponseError(undefined, defaultAction)).to.deep.equal('')
         })
         it('should return an error message', () => {
             const action = {
@@ -1040,7 +1230,7 @@ describe('Reducers', () => {
     })
     describe('OdataBatchResponse reducer', () => {
         it('should return the initial state', () => {
-            expect(Reducers.odataBatchResponse(undefined, {})).to.deep.equal({})
+            expect(Reducers.odataBatchResponse(undefined, defaultAction)).to.deep.equal({})
         })
         it('should return a response object', () => {
             const action = {
@@ -1081,6 +1271,18 @@ describe('Reducers', () => {
                 message: 'error',
             }
             expect(Reducers.odataBatchResponse(undefined, action)).to.deep.equal({})
+        })
+    })
+    describe('options reducer', () => {
+        it('should return the initial state', () => {
+            expect(Reducers.options(undefined, defaultAction)).to.deep.equal({})
+        })
+        it('should return the given option object', () => {
+            const options = {
+                top: 0,
+                skip: 0,
+            } as IODataParams<GenericContent>
+            expect(Reducers.options(undefined, { type: 'SET_ODATAOPTIONS', options })).to.deep.equal({ top: 0, skip: 0 })
         })
     })
     describe('getContent', () => {
@@ -1281,7 +1483,7 @@ describe('Reducers', () => {
                 },
             },
         }
-        it('should return the children object', () => {
+        it('should return the currentitems object', () => {
             expect(Reducers.getChildren(state)).to.be.deep.equal({
                 5145: {
                     Id: 5145,
