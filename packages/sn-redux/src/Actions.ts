@@ -114,7 +114,7 @@
 import { GoogleOauthProvider } from '@sensenet/authentication-google'
 import { IContent, IODataResponse, LoginState, Repository, Upload } from '@sensenet/client-core'
 import { IODataBatchResponse } from '@sensenet/client-core/dist/Models/IODataBatchResponse'
-import { IODataParams } from '@sensenet/client-core/dist/Models/IODataParams'
+import { IODataParams, ODataFieldParameter } from '@sensenet/client-core/dist/Models/IODataParams'
 import { GenericContent, IActionModel, Schema } from '@sensenet/default-content-types'
 import { normalize } from 'normalizr'
 import * as Schemas from './Schema'
@@ -125,7 +125,7 @@ import * as Schemas from './Schema'
  * @param options {OData.IODataParams<T>} Represents an ODataOptions object based on the IODataOptions interface. Holds the possible url parameters as properties.
  * @returns {Object} Returns normalized data while dispatches the next action based on the response.
  */
-export const requestContent = (path: string, options: IODataParams<GenericContent> & { scenario: string } = { scenario: ''}) => ({
+export const requestContent = (path: string, options: IODataParams<GenericContent> & { scenario: string } = { scenario: '' }) => ({
     type: 'FETCH_CONTENT',
     // tslint:disable:completed-docs
     async payload(repository: Repository) {
@@ -142,11 +142,25 @@ export const requestContent = (path: string, options: IODataParams<GenericConten
  * @param options {OData.IODataParams<T>} Represents an ODataOptions object based on the IODataOptions interface. Holds the possible url parameters as properties.
  * @returns {Object} Returns the Content while dispatches the next action based on the response.
  */
-export const loadContent = <T extends IContent = IContent>(idOrPath: number | string, options: IODataParams<T> = {}) => ({
+export const loadContent = <T extends GenericContent = GenericContent>(idOrPath: number | string, options: IODataParams<T> = {}) => ({
     type: 'LOAD_CONTENT',
     // tslint:disable:completed-docs
     async payload(repository: Repository): Promise<IODataResponse<T>> {
-        const data = await repository.load<T>({ idOrPath, oDataOptions: options })
+        const o = {} as  IODataParams<T>
+        switch (typeof options.expand) {
+            case 'undefined':
+                o.expand = 'Workspace'
+            case 'string':
+                if (options.expand === 'Workspace') {
+                    o.expand = 'Workspace'
+                } else {
+                    o.expand = [options.expand, 'Workspace'] as ODataFieldParameter<T>
+                }
+            default:
+                options.expand !== undefined ? o.expand = [...options.expand as string[], 'Workspace'] as ODataFieldParameter<GenericContent> : o.expand = ['Workspace']
+        }
+        o.select = options.select !== undefined ? [...options.select as string[], 'Workspace'] as ODataFieldParameter<T> : ['Workspace']
+        const data = await repository.load<T>({ idOrPath, oDataOptions: o })
         return data
     },
 })
@@ -546,7 +560,7 @@ export const getSchema = (typeName: string) => ({
  * Action creator for setting the default select, expandm etc. options
  * @param {string} typeName Name of the Content Type.
  */
-export const setDefaultOdataOptions = (options: IODataParams<GenericContent> & { scenario: string } = { scenario: ''}) => ({
+export const setDefaultOdataOptions = (options: IODataParams<GenericContent> & { scenario: string } = { scenario: '' }) => ({
     type: 'SET_ODATAOPTIONS',
     options,
 })

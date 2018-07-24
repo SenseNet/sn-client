@@ -136,10 +136,18 @@ describe('Actions', () => {
             context('Given repository.load() resolves', () => {
                 let data
                 let dataWithoutOptions
+                let dataWithExpandUndefined
+                let dataWithStringExpand
+                let dataWithStringExpandWorkspace
+                let dataWithSelectWorkspace
                 const expectedResult = { d: { Name: 'DefaultSite' } }
                 beforeEach(async () => {
                     data = await Actions.loadContent(path, {}).payload(repo)
                     dataWithoutOptions = await Actions.loadContent(path).payload(repo)
+                    dataWithExpandUndefined = await Actions.loadContent(path, { expand: undefined }).payload(repo)
+                    dataWithStringExpand = await Actions.loadContent(path, { expand: 'Owner' }).payload(repo)
+                    dataWithStringExpandWorkspace = await Actions.loadContent(path, { expand: 'Workspace' }).payload(repo)
+                    dataWithSelectWorkspace = await Actions.loadContent(path, { select: 'Workspace' }).payload(repo)
                 })
                 it('should return a LOAD_CONTENT action', () => {
                     expect(Actions.loadContent(path, {})).to.have.property(
@@ -151,6 +159,33 @@ describe('Actions', () => {
                 })
                 it('should return mockdata without options attribute', async () => {
                     expect(dataWithoutOptions).to.deep.equal(expectedResult)
+                })
+                it('should return mockdata', () => {
+                    expect(dataWithExpandUndefined).to.deep.equal(expectedResult)
+                })
+                it('should return mockdata', () => {
+                    expect(dataWithStringExpand).to.deep.equal(expectedResult)
+                })
+                it('should return mockdata', () => {
+                    expect(dataWithStringExpandWorkspace).to.deep.equal(expectedResult)
+                })
+                it('should return mockdata', () => {
+                    expect(dataWithSelectWorkspace).to.deep.equal(expectedResult)
+                })
+                it('should return LOAD_CONTENT action', () => {
+                    expect(Actions.loadContent(path, { expand: undefined })).to.have.property(
+                        'type', 'LOAD_CONTENT',
+                    )
+                })
+                it('should return LOAD_CONTENT action', () => {
+                    expect(Actions.loadContent(path, { expand: 'Owner' })).to.have.property(
+                        'type', 'LOAD_CONTENT',
+                    )
+                })
+                it('should return LOAD_CONTENT action', () => {
+                    expect(Actions.loadContent(path, { expand: 'Workspace' })).to.have.property(
+                        'type', 'LOAD_CONTENT',
+                    )
                 })
             })
         })

@@ -8,7 +8,7 @@
 import { ConstantContent, IContent, IODataCollectionResponse, IODataParams, LoginState } from '@sensenet/client-core'
 import { IODataBatchResponse } from '@sensenet/client-core/dist/Models/IODataBatchResponse'
 import { RepositoryConfiguration } from '@sensenet/client-core/dist/Repository/RepositoryConfiguration'
-import { GenericContent, IActionModel, Schema } from '@sensenet/default-content-types'
+import { GenericContent, IActionModel, Schema, Workspace } from '@sensenet/default-content-types'
 import { combineReducers, Reducer } from 'redux'
 
 /**
@@ -210,7 +210,7 @@ export const ids: Reducer<number[]> = (state = [], action) => {
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const entities: Reducer<IODataCollectionResponse<GenericContent> | undefined> = (state = undefined, action) => {
+export const entities: Reducer<IODataCollectionResponse<GenericContent>> = (state = null, action) => {
     if (action.payload && (
         action.type !== 'USER_LOGIN_FAILURE' &&
         action.type !== 'USER_LOGIN_BUFFER' &&
@@ -528,7 +528,7 @@ export const fields: Reducer<object> = (state = {}, action) => {
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const content: Reducer<IContent | undefined> = (state = undefined, action) => {
+export const content: Reducer<IContent> = (state = null, action) => {
     switch (action.type) {
         case 'LOAD_CONTENT_SUCCESS':
             return action.payload.d
@@ -542,7 +542,7 @@ export const content: Reducer<IContent | undefined> = (state = undefined, action
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const schema: Reducer<Schema> = (state = undefined, action) => {
+export const schema: Reducer<Schema> = (state = null, action) => {
     switch (action.type) {
         case 'GET_SCHEMA':
             return action.payload
@@ -615,7 +615,7 @@ const selected = combineReducers({
  * @param {object} action Represents an action that is called.
  * @returns {object} state. Returns the next state based on the action.
  */
-export const odataBatchResponse: Reducer<IODataBatchResponse<GenericContent> | undefined> = (state = undefined, action) => {
+export const odataBatchResponse: Reducer<IODataBatchResponse<GenericContent>> = (state = null, action) => {
     switch (action.type) {
         case 'DELETE_BATCH_SUCCESS':
         case 'COPY_BATCH_SUCCESS':
@@ -648,12 +648,26 @@ const batchResponses = combineReducers({
     response: odataBatchResponse,
     error: batchResponseError,
 })
-
+/**
+ * Reducer to handle Actions on the currentworkspace object.
+ * @param {Workspace} state Represents the current state.
+ * @param {object} action Represents an action that is called.
+ * @returns {object} state. Returns the next state based on the action.
+ */
+export const currentworkspace: Reducer<Workspace> = (state = null, action) => {
+    switch (action.type) {
+        case 'LOAD_CONTENT_SUCCESS':
+            return action.payload.d.Workspace
+        default:
+            return state
+    }
+}
 /**
  * Reducer combining session, currentitems, currentcontent and selected into a single object, ```sensenet``` which will be the top-level one.
  */
 export const sensenet = combineReducers({
     session,
+    currentworkspace,
     currentcontent,
     currentitems,
     selected,

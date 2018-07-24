@@ -1,5 +1,5 @@
 import { IODataCollectionResponse, IODataParams, LoginState, Repository } from '@sensenet/client-core'
-import { GenericContent, IActionModel, Status, Task } from '@sensenet/default-content-types'
+import { GenericContent, IActionModel, Status, Task, Workspace } from '@sensenet/default-content-types'
 import * as Chai from 'chai'
 import * as Reducers from '../src/Reducers'
 const expect = Chai.expect
@@ -226,7 +226,7 @@ describe('Reducers', () => {
 
     describe('entities reducer', () => {
         it('should return the initial state', () => {
-            expect(Reducers.entities(undefined, defaultAction)).to.be.deep.equal(undefined)
+            expect(Reducers.entities(undefined, defaultAction)).to.be.deep.equal(null)
         })
         it('should return a new state with the given response', () => {
             expect(Reducers.entities(undefined, { type: '', payload: { entities: { entities: { a: 0, b: 2 } } } }))
@@ -617,7 +617,7 @@ describe('Reducers', () => {
                         errors: [],
                     },
                 },
-            })).to.be.deep.equal(undefined)
+            })).to.be.deep.equal(null)
         })
     })
 
@@ -990,7 +990,7 @@ describe('Reducers', () => {
     })
     describe('schema reducer', () => {
         it('should return the initial state', () => {
-            expect(Reducers.schema(undefined, defaultAction)).to.deep.equal(undefined)
+            expect(Reducers.schema(undefined, defaultAction)).to.deep.equal(null)
         })
         it('should return schema of the given content type', () => {
 
@@ -1283,6 +1283,22 @@ describe('Reducers', () => {
                 skip: 0,
             } as IODataParams<GenericContent>
             expect(Reducers.options(undefined, { type: 'SET_ODATAOPTIONS', options })).to.deep.equal({ top: 0, skip: 0 })
+        })
+    })
+    describe('currentworkspace reducer', () => {
+        it('should return the initial state', () => {
+            expect(Reducers.currentworkspace(undefined, defaultAction)).to.deep.equal(null)
+        })
+        it('should return the given Workspace object', () => {
+            expect(Reducers.currentworkspace(undefined, {
+                type: 'LOAD_CONTENT_SUCCESS', payload: {
+                    d: {
+                        Workspace: {
+                            Id: 1,
+                        } as Workspace,
+                    },
+                },
+            })).to.deep.equal({ Id: 1 })
         })
     })
     describe('getContent', () => {
