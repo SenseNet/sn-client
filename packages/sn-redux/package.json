@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/redux",
-  "version": "4.2.0-development-3",
+  "version": "4.2.0-development-4",
   "description": "A set of redux actions, reducers and redux-ovbservable epics for sensenet",
   "main": "dist/index.js",
   "scripts": {
@@ -16,7 +16,7 @@
     "prebuild": "tslint --project tsconfig.json",
     "build": "rimraf dist && tsc -p tsconfig.json",
     "prepublishOnly": "npm run test && npm run build",
-    "publish:development": "npm run build && npm t && npm run typedoc && npm publish --tag development",
+    "publish:development": "npm run build && npm t && npm publish --tag development",
     "typedoc": "typedoc --mode modules --out documentation src --exclude **/index.ts --theme c:/Users/%USERNAME%/AppData/Roaming/npm/node_modules/@sensenet/typedoc-theme/sn-theme"
   },
   "files": [
