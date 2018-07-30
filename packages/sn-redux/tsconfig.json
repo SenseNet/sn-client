@@ -1,31 +1,24 @@
 {
     "compilerOptions": {
         "sourceMap": true,
-        "target": "es2015",
+        "target": "es2017",
         "module": "commonjs",
         "moduleResolution": "node",
         "forceConsistentCasingInFileNames": true,
-        "noImplicitReturns": true,
-        "noImplicitThis": true,
-        "noImplicitAny": false,
-        "strictNullChecks": false,
-        "alwaysStrict": false,
-        "suppressImplicitAnyIndexErrors": true,
+        "strictNullChecks": true,
         "declaration": true,
-        "noUnusedLocals": false,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
         "strict": true,
-        "removeComments": true,
-        "preserveConstEnums": true,
+        "noImplicitAny": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "skipLibCheck": true,
         "outDir": "./dist"
     },
     "exclude": [
         "node_modules",
         "dist"
     ],
-    "compileOnSave": false,
     "files": [
         "src/index.ts"
     ]

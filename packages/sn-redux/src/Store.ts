@@ -106,7 +106,7 @@ export interface CreateStoreOptions<T> {
  * @returns store {Store} Returns a preconfigured Redux store.
  */
 export const createSensenetStore: <T>(options: CreateStoreOptions<T>) => Store<T> = <T>(options: CreateStoreOptions<T>) => {
-    let middlewareArray = []
+    let middlewareArray: Array<Middleware<any>> = []
     let enhancerArray: Array<StoreEnhancer<any>> = []
     if (typeof options.middlewares === 'undefined' || options.middlewares === null) {
         // middlewareArray.push(epicMiddleware)
@@ -125,7 +125,7 @@ export const createSensenetStore: <T>(options: CreateStoreOptions<T>) => Store<T
     }
 
     // tslint:disable-next-line:no-string-literal
-    const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] && options.devTools ? window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] : compose
+    const composeEnhancers = (window as any)['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] && options.devTools ? (window as any)['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] : compose
 
     const store = createStore(
         options.rootReducer,

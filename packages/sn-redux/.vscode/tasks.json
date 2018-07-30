@@ -12,7 +12,8 @@
             "args": [
                 "run",
                 "build"
-            ]
+            ],
+            "problemMatcher": "$tsc"
         }
     ]
 }
