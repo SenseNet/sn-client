@@ -202,7 +202,7 @@ describe('Actions', () => {
 
         describe('serviceChecks()', () => {
             context('Given repository.getActions() resolves', () => {
-                let data: { d: IActionModel[] }
+                let data: { d: { Actions: IActionModel[] } }
                 const expectedResult = { d: [] }
                 beforeEach(async () => {
                     data = await Actions.loadContentActions(path).payload(repo)

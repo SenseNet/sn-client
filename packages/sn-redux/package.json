@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/redux",
-  "version": "4.2.0-development-4",
+  "version": "5.0.0",
   "description": "A set of redux actions, reducers and redux-ovbservable epics for sensenet",
   "main": "dist/index.js",
   "scripts": {
@@ -61,16 +61,16 @@
   "dependencies": {
     "@sensenet/authentication-google": "^2.0.0",
     "@sensenet/authentication-jwt": "^1.0.4",
-    "@sensenet/client-core": "^1.2.3",
+    "@sensenet/client-core": "^1.2.4",
     "@sensenet/default-content-types": "^1.1.0",
-    "@sensenet/redux-promise-middleware": "^2.0.0-development.2",
+    "@sensenet/redux-promise-middleware": "^2.0.0",
     "redux": "^4.0.0",
     "redux-logger": "^3.0.6"
   },
   "devDependencies": {
     "@types/chai": "^4.1.4",
     "@types/mocha": "^5.2.5",
-    "@types/node": "^10.5.2",
+    "@types/node": "^10.5.4",
     "@types/redux-logger": "^3.0.5",
     "chai": "^4.1.1",
     "codecov": "^3.0.4",
@@ -80,7 +80,7 @@
     "redux-mock-store": "^1.5.3",
     "rimraf": "^2.6.1",
     "tslint": "^5.11.0",
-    "typescript": "^3.0.0-rc"
+    "typescript": "^3.0.1"
   },
   "config": {
     "commitizen": {
