@@ -1,2 +1,4 @@
-export { isPromise } from './IsPromise'
-export { promiseMiddleware } from './PromiseMiddleware'
+export * from './IsPromise'
+export * from './PromiseMiddleware'
+export * from './Types'
+export * from './IsPromiseMiddlewareAction'

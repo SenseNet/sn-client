@@ -8,4 +8,4 @@
  *
  * isPromise(myObject)
  */
-export const isPromise = (obj) => Promise.resolve(obj) === obj
+export const isPromise = (obj: any) => Promise.resolve(obj) === obj
