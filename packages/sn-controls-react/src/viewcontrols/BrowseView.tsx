@@ -11,7 +11,8 @@ import { styles } from './BrowseViewStyles'
  * Interface for BrowseView properties
  */
 export interface BrowseViewProps {
-    content
+    content,
+    repository,
 }
 
 /**
@@ -34,9 +35,10 @@ export class BrowseView extends React.Component<BrowseViewProps, { content, sche
          * @property {any} content selected Content
          * @property {any} schema schema object of the selected Content's Content Type
          */
+        const controlMapper = reactControlMapper(this.props.repository)
         this.state = {
             content: this.props.content,
-            schema: reactControlMapper.getFullSchemaForContentType(this.props.content as any, 'edit'),
+            schema: controlMapper.getFullSchemaForContentType(this.props.content as any, 'edit'),
         }
     }
     /**

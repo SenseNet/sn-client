@@ -4,7 +4,6 @@ export const styles = {
     },
     buttonContainer: {
         textAlign: 'right',
-        marginTop: 20,
     },
     submitButton: {},
     cancelButton: {},

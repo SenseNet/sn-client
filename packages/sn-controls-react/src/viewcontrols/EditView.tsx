@@ -14,10 +14,13 @@ import { styles } from './EditViewStyles'
  */
 export interface EditViewProps {
     content,
-    history?,
     onSubmit?,
     repository,
-    schema,
+    schema?,
+    contentTypeName,
+    columns?: boolean,
+    handleCancel?,
+    submitCallback?,
 }
 
 /**
@@ -25,7 +28,7 @@ export interface EditViewProps {
  *
  * Usage:
  * ```html
- *  <EditView content={selectedContent} history={history} onSubmit={editSubmitClick} />
+ *  <EditView content={selectedContent} onSubmit={editSubmitClick} />
  * ```
  */
 export class EditView extends React.Component<EditViewProps, { content, schema }> {
@@ -45,16 +48,24 @@ export class EditView extends React.Component<EditViewProps, { content, schema }
          * @property {any} content selected Content
          * @property {any} schema schema object of the selected Content's Content Type
          */
+        const controlMapper = reactControlMapper(this.props.repository)
         this.state = {
             content: this.props.content,
-            schema: reactControlMapper.getFullSchemaForContentType(this.props.schema.ContentTypeName as any, 'edit'),
+            schema: controlMapper.getFullSchemaForContentType(this.props.contentTypeName as any, 'edit'),
         }
 
         this.handleInputChange = this.handleInputChange.bind(this)
+        this.handleCancel = this.handleCancel.bind(this)
 
         this.displayName = this.props.content.DisplayName
     }
 
+    /**
+     * handle cancle button click
+     */
+    public handleCancel() {
+        return this.props.handleCancel ? this.props.handleCancel() : null
+    }
     /**
      * handle change event on an input
      * @param {SytheticEvent} event
@@ -88,6 +99,7 @@ export class EditView extends React.Component<EditViewProps, { content, schema }
     public render() {
         const fieldSettings = this.state.schema.fieldMappings
         const that = this
+        const { columns } = that.props
         return (
             <form style={styles.container} onSubmit={
                 (e) => {
@@ -95,11 +107,7 @@ export class EditView extends React.Component<EditViewProps, { content, schema }
                     if (this.props.onSubmit) {
                         this.props.onSubmit(this.state.content)
                     }
-                    if (this.props.history) {
-                        this.props.history.goBack()
-                    } else {
-                        window.history.back()
-                    }
+                    return this.props.submitCallback ? this.props.submitCallback() : null
                 }
             }>
                 <Typography variant="headline" gutterBottom>
@@ -113,9 +121,9 @@ export class EditView extends React.Component<EditViewProps, { content, schema }
                             }
                             return (<Grid item xs={12} style={{ marginBottom: 16 }}
                                 sm={12}
-                                md={fieldSettings[i].clientSettings['data-typeName'] === 'LongTextFieldSetting' ? 12 : 6}
-                                lg={fieldSettings[i].clientSettings['data-typeName'] === 'LongTextFieldSetting' ? 12 : 6}
-                                xl={fieldSettings[i].clientSettings['data-typeName'] === 'LongTextFieldSetting' ? 12 : 6}
+                                md={fieldSettings[i].clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                                lg={fieldSettings[i].clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                                xl={fieldSettings[i].clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
                                 key={fieldSettings[i].clientSettings.name}>
                                 {
                                     React.createElement(
@@ -132,9 +140,9 @@ export class EditView extends React.Component<EditViewProps, { content, schema }
 
                         })
                     }
-                    <Grid item xs={12} sm={12} md={12} lg={12} xl={12} style={{ textAlign: 'right', marginTop: 20 }}>
-                        <Button type="submit" variant="raised" color="primary" style={{ color: '#fff', marginRight: 20 }}>Submit</Button>
-                        <Button variant="raised" color="secondary">Cancel</Button>
+                    <Grid item xs={12} sm={12} md={12} lg={12} xl={12} style={{ textAlign: 'right' }}>
+                        <Button color="default" style={{ marginRight: 20 }} onClick={() => this.handleCancel()}>Cancel</Button>
+                        <Button type="submit" variant="raised" color="secondary">Submit</Button>
                     </Grid>
                 </Grid >
             </form>

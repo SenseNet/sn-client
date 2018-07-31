@@ -21,8 +21,12 @@ export interface NewViewProps {
     repository,
     fields,
     changeAction,
-    schema,
-    path
+    schema?,
+    path,
+    contentTypeName,
+    columns?,
+    handleCancel?,
+    submitCallback?,
 }
 
 /**
@@ -30,7 +34,7 @@ export interface NewViewProps {
  *
  * Usage:
  * ```html
- *  <NewView content={content} history={history} onSubmit={createSubmitClick} />
+ *  <NewView content={content} onSubmit={createSubmitClick} />
  * ```
  */
 class NewView extends React.Component<NewViewProps, { schema, dataSource }> {
@@ -44,8 +48,9 @@ class NewView extends React.Component<NewViewProps, { schema, dataSource }> {
          * @type {object}
          * @property {any} content empty base Content
          */
+        const controlMapper = reactControlMapper(this.props.repository)
         this.state = {
-            schema: reactControlMapper.getFullSchemaForContentType(this.props.schema.ContentTypeName as any, 'new'),
+            schema: controlMapper.getFullSchemaForContentType(this.props.contentTypeName as any, 'new'),
             dataSource: [],
         }
         this.handleCancel = this.handleCancel.bind(this)
@@ -55,11 +60,7 @@ class NewView extends React.Component<NewViewProps, { schema, dataSource }> {
      * handle cancle button click
      */
     public handleCancel() {
-        if (this.props.history) {
-            this.props.history.goBack()
-        } else {
-            window.history.back()
-        }
+        return this.props.handleCancel ? this.props.handleCancel() :  null
     }
     /**
      * check if all the required fields are set
@@ -78,7 +79,7 @@ class NewView extends React.Component<NewViewProps, { schema, dataSource }> {
      */
     public render() {
         const fieldSettings = this.state.schema.fieldMappings
-        const { fields, onSubmit, history, repository, changeAction, path } = this.props
+        const { fields, onSubmit, repository, changeAction, path, columns } = this.props
         const { schema } = this.state
         return (
             <form style={styles.container} onSubmit={(e) => {
@@ -89,15 +90,11 @@ class NewView extends React.Component<NewViewProps, { schema, dataSource }> {
                         onSubmit(path, c, schema.schema.ContentTypeName)
                     }
                 }
-                if (history) {
-                    history.goBack()
-                } else {
-                    window.history.back()
-                }
+                return this.props.submitCallback ? this.props.submitCallback() :  null
             }
             }>
                 <Typography variant="headline" gutterBottom>
-                    Create new {schema.schema.DisplayName}
+                    New {schema.schema.DisplayName}
                 </Typography>
                 <Grid container spacing={24}>
                     {
@@ -107,9 +104,9 @@ class NewView extends React.Component<NewViewProps, { schema, dataSource }> {
                             }
                             return (<Grid item xs={12} style={{ marginBottom: 16 }}
                                 sm={12}
-                                md={fieldSettings[i].clientSettings['data-typeName'] === 'LongTextFieldSetting' ? 12 : 6}
-                                lg={fieldSettings[i].clientSettings['data-typeName'] === 'LongTextFieldSetting' ? 12 : 6}
-                                xl={fieldSettings[i].clientSettings['data-typeName'] === 'LongTextFieldSetting' ? 12 : 6}
+                                md={fieldSettings[i].clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                                lg={fieldSettings[i].clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                                xl={fieldSettings[i].clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
                                 key={fieldSettings[i].clientSettings.name}>
                                 {
                                     React.createElement(
@@ -124,9 +121,9 @@ class NewView extends React.Component<NewViewProps, { schema, dataSource }> {
 
                         })
                     }
-                    <Grid item xs={12} sm={12} md={12} lg={12} xl={12} style={{ textAlign: 'right', marginTop: 20 }}>
-                        <Button type="submit" variant="raised" color="primary" style={{ color: '#fff', marginRight: 20 }}>Submit</Button>
-                        <Button variant="raised" color="secondary">Cancel</Button>
+                    <Grid item xs={12} sm={12} md={12} lg={12} xl={12} style={{ textAlign: 'right' }}>
+                        <Button color="default" style={{ marginRight: 20 }} onClick={() => this.handleCancel()}>Cancel</Button>
+                        <Button type="submit" variant="raised" color="secondary">Submit</Button>
                     </Grid>
 
                 </Grid>

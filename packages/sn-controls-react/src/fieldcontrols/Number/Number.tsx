@@ -70,8 +70,7 @@ export class Number extends React.Component<NumberProps, { value, numberFormat }
      * @param {any} props
      */
     public numberFormatCustom(props) {
-        const { inputRef, onChange, ...other,
-        } = props
+        const { inputRef, onChange, ...other} = props
         return (
             <NumberFormat
                 {...other}

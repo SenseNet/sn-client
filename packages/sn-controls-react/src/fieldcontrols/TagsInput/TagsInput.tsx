@@ -67,7 +67,7 @@ export class TagsInput extends React.Component<TagsInputProps, { label, multiLab
         this.setState({
             [name]: value,
             fieldValue: ids,
-        })
+        } as any)
         this.props.onChange(this.props.name, saveable)
     }
     /**
