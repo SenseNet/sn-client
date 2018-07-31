@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/redux",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "A set of redux actions, reducers and redux-ovbservable epics for sensenet",
   "main": "dist/index.js",
   "scripts": {

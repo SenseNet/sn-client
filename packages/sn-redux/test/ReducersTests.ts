@@ -936,7 +936,7 @@ describe('Reducers', () => {
         it('should return schema of the given content type', () => {
 
             const action = {
-                type: 'GET_SCHEMA',
+                type: 'GET_SCHEMA_SUCCESS',
                 result: { Icon: 'FormItem' },
             }
             expect(Reducers.schema(undefined, action as any)).to.deep.equal({

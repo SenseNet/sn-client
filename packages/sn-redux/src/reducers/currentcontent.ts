@@ -106,7 +106,7 @@ export const content: Reducer<GenericContent | null> = (state = null, action) =>
  */
 export const schema: Reducer<Schema | null, Action & { result: Schema }> = (state = null, action) => {
     switch (action.type) {
-        case 'GET_SCHEMA':
+        case 'GET_SCHEMA_SUCCESS':
             return action.result as Schema
         default:
             return state
