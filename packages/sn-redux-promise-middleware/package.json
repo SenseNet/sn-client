@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/redux-promise-middleware",
-  "version": "2.0.0-development.2",
+  "version": "2.0.0",
   "description": "Redux middleware for async sensenet functions",
   "main": "dist/index.js",
   "scripts": {
