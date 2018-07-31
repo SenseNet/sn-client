@@ -1,7 +1,9 @@
 [![Build Status](https://travis-ci.org/SenseNet/sn-document-viewer-react.svg?branch=master)](https://travis-ci.org/SenseNet/sn-document-viewer-react)
+[![Greenkeeper badge](https://badges.greenkeeper.io/SenseNet/sn-document-viewer-react.svg)](https://greenkeeper.io/)
 
 
-# sn-document-viewer-react
+# @sensenet/document-viewer-react
+
 Document viewer component for sensenet ECM
 
 ## Running the example application
