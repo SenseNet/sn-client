@@ -215,7 +215,7 @@ export class Repository implements IDisposable {
      * Retrieves a list of content actions for a specified content
      * @param options Options for fetching the Custom Actions
      */
-    public async getActions(options: IGetActionOptions): Promise<{ d: IActionModel[] }> {
+    public async getActions(options: IGetActionOptions): Promise<{ d: { Actions: IActionModel[] } }> {
         const contextPath = PathHelper.getContentUrl(options.idOrPath);
         const path = PathHelper.joinPaths(this.configuration.repositoryUrl,
             this.configuration.oDataToken,

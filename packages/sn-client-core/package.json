@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/client-core",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Core Client package for sensenet",
   "main": "./dist/index.js",
   "files": [
