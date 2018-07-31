@@ -1,4 +1,4 @@
-import { Save } from 'material-ui-icons'
+import { Save } from '@material-ui/icons'
 import * as React from 'react'
 import { Provider } from 'react-redux'
 import * as renderer from 'react-test-renderer'
@@ -10,7 +10,7 @@ import { exampleDocumentData, useTestContext, useTestContextWithSettings, useTes
 /**
  * Save widget tests
  */
-export const saveWidgetTests = describe('SaveWidget component', () => {
+export const saveWidgetTests: Mocha.Suite = describe('SaveWidget component', () => {
 
     let c!: renderer.ReactTestRenderer
 

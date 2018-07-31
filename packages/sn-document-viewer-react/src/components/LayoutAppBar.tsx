@@ -1,8 +1,9 @@
-import { AppBar, Toolbar, Typography } from 'material-ui'
+import { AppBar, Toolbar } from '@material-ui/core'
 import React = require('react')
 import { connect } from 'react-redux'
 import { RootReducerType } from '../store'
 
+import { CSSProperties } from 'react'
 import { componentType } from '../services'
 
 /**
@@ -11,7 +12,6 @@ import { componentType } from '../services'
  */
 const mapStateToProps = (state: RootReducerType, ownProps: {}) => {
     return {
-        documentName: state.sensenetDocumentViewer.documentState.document.documentName,
     }
 }
 
@@ -22,18 +22,15 @@ const mapStateToProps = (state: RootReducerType, ownProps: {}) => {
 const mapDispatchToProps = {
 }
 
-class LayoutAppBar extends React.Component<componentType<typeof mapStateToProps, typeof mapDispatchToProps, {}>> {
+class LayoutAppBar extends React.Component<componentType<typeof mapStateToProps, typeof mapDispatchToProps, { style?: CSSProperties }>> {
 
     /**
      * renders the component
      */
     public render() {
         return (
-            <AppBar position="sticky" style={{ position: 'relative', zIndex: 1 }}>
+            <AppBar position="sticky" style={{ position: 'relative', zIndex: 1, ...this.props.style }}>
                 <Toolbar style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Typography variant="title" color="inherit" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        {this.props.documentName}
-                    </Typography>
                     {this.props.children}
                 </Toolbar>
             </AppBar>

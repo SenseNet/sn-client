@@ -9,7 +9,7 @@ import { exampleDocumentData, useTestContext } from '../viewercontext'
 /**
  * PageList Component tests
  */
-export const pageListTests = describe('PageList component', () => {
+export const pageListTests: Mocha.Suite = describe('PageList component', () => {
 
     let c!: renderer.ReactTestRenderer
 
@@ -32,6 +32,7 @@ export const pageListTests = describe('PageList component', () => {
                         tolerance={100}
                         padding={10}
                         images={'preview'}
+                        fitRelativeZoomLevel={0}
                     >
                     </PageList>
                 </Provider>)

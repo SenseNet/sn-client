@@ -9,7 +9,7 @@ import { exampleDocumentData, useTestContext } from '../viewercontext'
 /**
  * Page Component tests
  */
-export const pageTests = describe('Page component', () => {
+export const pageTests: Mocha.Suite = describe('Page component', () => {
 
     let c!: renderer.ReactTestRenderer
 
@@ -32,6 +32,8 @@ export const pageTests = describe('Page component', () => {
                         viewportWidth={1024}
                         viewportHeight={768}
                         showWidgets={true}
+                        margin={8}
+                        fitRelativeZoomLevel={0}
                     >
                     </Page>
                 </Provider>)

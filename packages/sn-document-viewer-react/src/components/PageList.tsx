@@ -1,5 +1,5 @@
+import { Grid } from '@material-ui/core'
 import * as _ from 'lodash'
-import { Grid } from 'material-ui'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { PreviewImageData } from '../models'
@@ -34,6 +34,7 @@ export interface PageListProps {
     elementNamePrefix: string
     zoomMode: ZoomMode
     zoomLevel: number
+    fitRelativeZoomLevel: number
     images: 'preview' | 'thumbnail'
     activePage?: number
     onPageClick: (ev: React.MouseEvent<HTMLElement>, pageIndex: number) => void
@@ -128,7 +129,7 @@ class PageList extends React.Component<componentType<typeof mapStateToProps, typ
                     width: p.Width,
                     height: p.Height,
                     rotation: p.Attributes && p.Attributes.degree || 0,
-                }, props.zoomMode, props.zoomLevel)
+                }, props.zoomMode, props.zoomLevel, props.fitRelativeZoomLevel)
 
             return {
                 ...p,
@@ -155,7 +156,7 @@ class PageList extends React.Component<componentType<typeof mapStateToProps, typ
         }
 
         let marginBottom: number = 0
-        for (let i = pagesToSkip + pagesToTake - 1; i < pages.length; i++) {
+        for (let i = pagesToSkip + pagesToTake - 1; i < pages.length - 1; i++) {
             marginBottom += pages[i].Height + props.padding * 2
         }
 
@@ -179,8 +180,8 @@ class PageList extends React.Component<componentType<typeof mapStateToProps, typ
         }
         if (this.canUpdate && this.viewPort) {
 
-            const newHeight = this.viewPort.clientHeight - 16
-            const newWidth = this.viewPort.clientWidth - 16
+            const newHeight = this.viewPort.clientHeight - this.props.padding * 2
+            const newWidth = this.viewPort.clientWidth - this.props.padding * 2
             if (!this.state || newHeight !== this.state.viewportHeight || newWidth !== this.state.viewportWidth) {
                 this.setState({
                     ...this.state,
@@ -217,8 +218,10 @@ class PageList extends React.Component<componentType<typeof mapStateToProps, typ
                             onClick={(ev) => this.props.onPageClick(ev, value.Index)}
                             zoomMode={this.props.zoomMode}
                             zoomLevel={this.props.zoomLevel}
+                            fitRelativeZoomLevel={this.props.fitRelativeZoomLevel}
                             elementNamePrefix={this.props.elementNamePrefix}
                             image={this.props.images}
+                            margin={this.props.padding}
                         />
                     ))}
                 </div>

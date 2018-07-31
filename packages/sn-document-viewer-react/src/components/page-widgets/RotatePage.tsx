@@ -1,5 +1,5 @@
-import { IconButton } from 'material-ui'
-import { RotateLeft, RotateRight } from 'material-ui-icons'
+import { IconButton } from '@material-ui/core'
+import { RotateLeft, RotateRight } from '@material-ui/icons'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { PreviewImageData } from '../../models'
@@ -36,8 +36,8 @@ export const mapStateToProps = (state: RootReducerType, ownProps: OwnProps) => {
  * @param state the redux state
  */
 export const mapDispatchToProps = {
-        rotateImages,
-        rotateShapesForPages,
+    rotateImages,
+    rotateShapesForPages,
 }
 
 /**

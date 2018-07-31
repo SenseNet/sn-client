@@ -1,20 +1,20 @@
 import * as React from 'react'
 import { Provider } from 'react-redux'
 
+import { TextField } from '@material-ui/core'
+import { FirstPage, LastPage, NavigateBefore, NavigateNext } from '@material-ui/icons'
 import { expect } from 'chai'
-import { TextField } from 'material-ui'
-import { FirstPage, LastPage, NavigateBefore, NavigateNext } from 'material-ui-icons'
 import * as renderer from 'react-test-renderer'
 import { PagerWidget } from '../../../src/components/document-widgets/Pager'
 import { documentReceivedAction } from '../../../src/store/Document'
 import { setActivePages } from '../../../src/store/Viewer'
-import {asyncDelay} from '../../asyncdelayer'
+import { asyncDelay } from '../../asyncdelayer'
 import { exampleDocumentData, useTestContext, useTestContextAsync } from '../../viewercontext'
 
 /**
  * Pager widget tests
  */
-export const pagerWidgetTests = describe('PagerWidget component', () => {
+export const pagerWidgetTests: Mocha.Suite = describe('PagerWidget component', () => {
 
     let c!: renderer.ReactTestRenderer
 
@@ -34,7 +34,7 @@ export const pagerWidgetTests = describe('PagerWidget component', () => {
 
     it('Numeric input should update the store active page', async () => {
         await useTestContextAsync(async (ctx) => {
-            ctx.store.dispatch(documentReceivedAction({...exampleDocumentData, pageCount: 10}))
+            ctx.store.dispatch(documentReceivedAction({ ...exampleDocumentData, pageCount: 10 }))
 
             c = renderer.create(
                 <Provider store={ctx.store}>
@@ -43,25 +43,25 @@ export const pagerWidgetTests = describe('PagerWidget component', () => {
             const textInput = c.root.findByType(TextField)
 
             // in range
-            textInput.props.onChange({currentTarget: {value: 5}})
+            textInput.props.onChange({ currentTarget: { value: 5 } })
             await asyncDelay(300)
             const currentPage = ctx.store.getState().sensenetDocumentViewer.viewer.activePages[0]
             expect(currentPage).to.be.eq(5)
 
             // NaN
-            textInput.props.onChange({currentTarget: {value: 'NotANumber'}})
+            textInput.props.onChange({ currentTarget: { value: 'NotANumber' } })
             await asyncDelay(300)
             const currentPage2 = ctx.store.getState().sensenetDocumentViewer.viewer.activePages[0]
             expect(currentPage2).to.be.eq(5)
 
             // limit min
-            textInput.props.onChange({currentTarget: {value: -5}})
+            textInput.props.onChange({ currentTarget: { value: -5 } })
             await asyncDelay(300)
             const currentPage3 = ctx.store.getState().sensenetDocumentViewer.viewer.activePages[0]
             expect(currentPage3).to.be.eq(1)
 
             // limit max
-            textInput.props.onChange({currentTarget: {value: 500}})
+            textInput.props.onChange({ currentTarget: { value: 500 } })
             await asyncDelay(300)
             const currentPage4 = ctx.store.getState().sensenetDocumentViewer.viewer.activePages[0]
             expect(currentPage4).to.be.eq(10)
@@ -70,7 +70,7 @@ export const pagerWidgetTests = describe('PagerWidget component', () => {
 
     it('First page should jump to page 1', async () => {
         await useTestContextAsync(async (ctx) => {
-            ctx.store.dispatch(documentReceivedAction({...exampleDocumentData, pageCount: 10}))
+            ctx.store.dispatch(documentReceivedAction({ ...exampleDocumentData, pageCount: 10 }))
             ctx.store.dispatch(setActivePages([5]))
 
             c = renderer.create(
@@ -89,7 +89,7 @@ export const pagerWidgetTests = describe('PagerWidget component', () => {
 
     it('NavigateBefore should jump a page back', async () => {
         await useTestContextAsync(async (ctx) => {
-            ctx.store.dispatch(documentReceivedAction({...exampleDocumentData, pageCount: 10}))
+            ctx.store.dispatch(documentReceivedAction({ ...exampleDocumentData, pageCount: 10 }))
             ctx.store.dispatch(setActivePages([5]))
 
             c = renderer.create(
@@ -108,7 +108,7 @@ export const pagerWidgetTests = describe('PagerWidget component', () => {
 
     it('NavigateNext should jump to the next page', async () => {
         await useTestContextAsync(async (ctx) => {
-            ctx.store.dispatch(documentReceivedAction({...exampleDocumentData, pageCount: 10}))
+            ctx.store.dispatch(documentReceivedAction({ ...exampleDocumentData, pageCount: 10 }))
             ctx.store.dispatch(setActivePages([5]))
 
             c = renderer.create(
@@ -127,7 +127,7 @@ export const pagerWidgetTests = describe('PagerWidget component', () => {
 
     it('Last page should jump to page 1', async () => {
         await useTestContextAsync(async (ctx) => {
-            ctx.store.dispatch(documentReceivedAction({...exampleDocumentData, pageCount: 10}))
+            ctx.store.dispatch(documentReceivedAction({ ...exampleDocumentData, pageCount: 10 }))
             ctx.store.dispatch(setActivePages([5]))
 
             c = renderer.create(

@@ -1,4 +1,4 @@
-import { Store } from 'react-redux'
+import { Store } from 'redux'
 import { v1 } from 'uuid'
 import { DocumentData, DocumentViewerSettings, PreviewImageData } from '../src/models'
 import { configureStore, RootReducerType } from '../src/store'
@@ -80,15 +80,15 @@ export const examplePreviewImageData: PreviewImageData = {
 /**
  * Default settings for document viewer context
  */
-export const defaultSettings: DocumentViewerSettings = {
+export const defaultSettings: DocumentViewerSettings = new DocumentViewerSettings({
     canEditDocument: async () => true,
     canHideRedaction: async () => true,
     canHideWatermark: async () => true,
-    getDocumentData: async (idOrPath) => exampleDocumentData,
+    getDocumentData: async () => exampleDocumentData,
     getExistingPreviewImages: async () => [examplePreviewImageData],
     isPreviewAvailable: async () => examplePreviewImageData,
     saveChanges: async () => undefined,
-}
+})
 
 /**
  * Model interface for the text contetxt
@@ -121,10 +121,10 @@ export interface DocViewerTestContext {
  * @param {(context: DocViewerTestContext) => void} callback Callback for the internal test implemetation
  */
 export const useTestContextWithSettings = (additionalSettings: Partial<DocumentViewerSettings>, callback: (context: DocViewerTestContext) => void) => {
-    const settings = {
+    const settings = new DocumentViewerSettings({
         ...defaultSettings,
         ...additionalSettings,
-    }
+    })
     const store = configureStore(settings)
     callback({ store, settings })
 }
@@ -160,10 +160,10 @@ export const useTestContext: (callback: (context: DocViewerTestContext) => void)
  * @param {(context: DocViewerTestContext) => Promise<void>} callback Callback for the internal test implemetation
  */
 export const useTestContextWithSettingsAsync = async (additionalSettings: Partial<DocumentViewerSettings>, callback: (context: DocViewerTestContext) => Promise<void>) => {
-    const settings = {
+    const settings = new DocumentViewerSettings({
         ...defaultSettings,
         ...additionalSettings,
-    }
+    })
     const store = configureStore(settings)
     await callback({ store, settings })
 }

@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { RootReducerType } from './store'
 
 import { v1 } from 'uuid'
-import { PagerWidget, RotateDocumentWidget, SaveWidget, ToggleRedactionWidget, ToggleShapesWidget, ToggleWatermarkWidget, ZoomModeWidget } from './components/document-widgets'
+import { DocumentTitlePager, RotateActivePages, SearchBar, ToggleThumbnailsWidget, ZoomInOutWidget } from './components/document-widgets'
 import { DocumentViewer } from './components/DocumentViewer'
 import { LayoutAppBar } from './components/LayoutAppBar'
 import { DocumentViewerSettings } from './models/DocumentViewerSettings'
@@ -11,8 +11,11 @@ import { PreviewImageData } from './models/PreviewImageData'
 import { Annotation, Highlight, Redaction, Shape } from './models/Shapes'
 import { componentType } from './services'
 
-import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, Paper, TextField, Typography } from 'material-ui'
-import { FolderOpen, Help, Send } from 'material-ui-icons'
+import { Button, Checkbox, createMuiTheme, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, MuiThemeProvider, Paper, TextField, Typography } from '@material-ui/core'
+import { FolderOpen, Help, Send } from '@material-ui/icons'
+import { Download } from './components/document-widgets/DownloadWidget'
+import { Print } from './components/document-widgets/PrintWidget'
+import { Share } from './components/document-widgets/ShareWidget'
 
 /**
  * Adds a globally unique ID to the shape
@@ -52,7 +55,7 @@ const mapDispatchToProps = {
 /**
  * Settings object for the Document Viewer Example component
  */
-export const exampleSettings: DocumentViewerSettings = {
+export const exampleSettings: DocumentViewerSettings = new DocumentViewerSettings({
     canEditDocument: async (documentData) => {
         const response = await fetch(`${encodeURI(documentData.hostName)}/odata.svc/${encodeURI(documentData.idOrPath.toString())}/HasPermission?permissions=Save`, { method: 'GET', credentials: 'include' })
         if (response.ok) {
@@ -76,14 +79,14 @@ export const exampleSettings: DocumentViewerSettings = {
         })
     },
     canHideWatermark: async (documentData) => {
-        const response = await fetch(`${documentData.hostName}/odata.svc/${documentData.idOrPath}/HasPermission?permissions=PreviewWithoutWatermark`, {credentials: 'include'})
+        const response = await fetch(`${documentData.hostName}/odata.svc/${documentData.idOrPath}/HasPermission?permissions=PreviewWithoutWatermark`, { credentials: 'include' })
         if (response.ok) {
             return await response.text() === 'true'
         }
         return false
     },
     canHideRedaction: async (documentData) => {
-        const response = await fetch(`${documentData.hostName}/odata.svc/${documentData.idOrPath}/HasPermission?permissions=PreviewWithoutRedaction`, {credentials: 'include'})
+        const response = await fetch(`${documentData.hostName}/odata.svc/${documentData.idOrPath}/HasPermission?permissions=PreviewWithoutRedaction`, { credentials: 'include' })
         if (response.ok) {
             return await response.text() === 'true'
         }
@@ -101,7 +104,7 @@ export const exampleSettings: DocumentViewerSettings = {
 
         const allPreviews: PreviewImageData[] = []
         for (let i = 0; i < documentData.pageCount; i++) {
-            allPreviews[i] = availablePreviews[i] || { Index: i + 1 }
+            allPreviews[i] = availablePreviews[i] || { Index: i + 1 } as any
             const pageAttributes = documentData.pageAttributes.find((p) => p.pageNum === allPreviews[i].Index)
             allPreviews[i].Attributes = pageAttributes && pageAttributes.options
         }
@@ -127,6 +130,13 @@ export const exampleSettings: DocumentViewerSettings = {
         const docData = await fetch(`${documentData.hostName}/odata.svc/` + documentData.idOrPath, {
             credentials: 'include',
         })
+
+        if (!docData.ok) {
+            const e = new Error('Error fetching document');
+            (e as any).status = docData.status
+            throw e
+        }
+
         const body = await docData.json()
         return {
             idOrPath: documentData.idOrPath,
@@ -147,9 +157,43 @@ export const exampleSettings: DocumentViewerSettings = {
             pageAttributes: body.d.PageAttributes && JSON.parse(body.d.PageAttributes) || [],
         }
     },
-}
+})
 
 const localStorageKey = 'sn-docviewer-example'
+
+/**
+ * The default example theme
+ */
+export const exampleTheme = createMuiTheme({
+    palette: {
+        primary: {
+            main: '#ff9800',
+        },
+        secondary: {
+            main: '#ff9800',
+        },
+        background: {
+            default: '#f5f5f5',
+            paper: '#ffffff',
+        },
+    },
+    overrides: {
+        MuiDrawer: {
+            paper: {
+                backgroundColor: 'transparent',
+            },
+            docked: {
+                backgroundColor: '#eaeaeb',
+            },
+        },
+        MuiToolbar: {
+            root: {
+                backgroundColor: '#2a2a2c',
+                color: '#707070',
+            },
+        },
+    },
+})
 
 class ExampleAppLayout extends React.Component<componentType<typeof mapStateToProps, typeof mapDispatchToProps, {}>, ExampleAppState> {
     /** the component state */
@@ -194,129 +238,143 @@ class ExampleAppLayout extends React.Component<componentType<typeof mapStateToPr
      * renders the component
      */
     public render() {
-        return (<div style={{ height: '100%' }}>
-            {
-                this.state.isViewerOpened ?
-                    <DocumentViewer
-                        hostName={this.state.hostName}
-                        documentIdOrPath={this.state.documentIdOrPath}>
-                        <LayoutAppBar>
-                            <div>
-                                <RotateDocumentWidget />
-                                <ZoomModeWidget />
-                                <ToggleRedactionWidget />
-                                <ToggleWatermarkWidget />
-                                <ToggleShapesWidget />
-                                <PagerWidget />
-                                <SaveWidget />
-                            </div>
-                        </LayoutAppBar>
-                    </DocumentViewer>
-                    :
-                    <div style={{
-                        display: 'flex',
-                        justifyContent: 'space-around',
-                        alignContent: 'center',
-                        alignItems: 'center',
-                        height: '100%',
-                    }}>
-                        <Paper elevation={4} style={{
-                            padding: '1.2rem',
-                            flexGrow: 1,
-                            maxWidth: '65%',
-                        }}>
-                            <Typography variant="title">Document Viewer Demo</Typography>
-                            <Typography>
-                                Select a sensenet site and document to open.
-                            </Typography>
-                            <form
-                                autoComplete="off"
-                                autoCorrect="off"
-                                onSubmit={(ev) => this.openViewer(ev)}
-                                style={{
-                                    margin: '.5em',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                }}
-
-                            >
-                                <TextField
-                                    value={this.state.hostName}
-                                    onChange={(ev) => { this.setState({ ...this.state, hostName: ev.currentTarget.value }) }}
-                                    required
-                                    placeholder="The host URL, e.g. 'https://my-sensenet-site.org'"
-                                    type="url"
-                                    label="Host name"
-                                    margin="normal"
-                                />
-                                <TextField
-                                    value={this.state.documentIdOrPath}
-                                    onChange={(ev) => { this.setState({ ...this.state, documentIdOrPath: ev.currentTarget.value }) }}
-                                    required
-                                    margin="normal"
-                                    placeholder="The Id or full path of the document, e.g.: /Root/Sites/MySite/MyDocLib/('Example.docx')"
-                                    label="Document id / full path"
-                                />
-                                <div style={{
-                                    display: 'flex',
-                                    flexDirection: 'row-reverse',
-                                    marginTop: '1em',
+        return (
+            <MuiThemeProvider theme={exampleTheme} >
+                <div style={{ height: '100%' }}>
+                    {
+                        this.state.isViewerOpened ?
+                            <DocumentViewer
+                                hostName={this.state.hostName}
+                                documentIdOrPath={this.state.documentIdOrPath}>
+                                <LayoutAppBar>
+                                    <div style={{ flexShrink: 0 }}>
+                                        <ToggleThumbnailsWidget />
+                                        <Download download={(doc) => {
+                                            // tslint:disable-next-line:no-console
+                                            console.log('Download triggered', doc)
+                                        }} />
+                                        <Print print={(doc) => {
+                                            // tslint:disable-next-line:no-console
+                                            console.log('Print triggered', doc)
+                                        }} />
+                                        <Share share={(doc) => {
+                                            // tslint:disable-next-line:no-console
+                                            console.log('Share triggered', doc)
+                                        }} />
+                                        <ZoomInOutWidget />
+                                        <RotateActivePages />
+                                    </div>
+                                    <DocumentTitlePager />
+                                    <div style={{ flexShrink: 0 }}>
+                                        <SearchBar />
+                                    </div>
+                                </LayoutAppBar>
+                            </DocumentViewer>
+                            :
+                            <div style={{
+                                display: 'flex',
+                                justifyContent: 'space-around',
+                                alignContent: 'center',
+                                alignItems: 'center',
+                                height: '100%',
+                            }}>
+                                <Paper elevation={4} style={{
+                                    padding: '1.2rem',
+                                    flexGrow: 1,
+                                    maxWidth: '65%',
                                 }}>
-                                    <Button type="submit" variant="raised" color="primary"> <Send fontSize="20px" /> &nbsp; Open </Button>
-                                    &nbsp;
-                                    <Button onClick={(ev) => this.setState({ ...this.state, isHelpOpened: true })} variant="raised" color="primary"> <Help fontSize="20px" /> &nbsp; Help </Button>
-                                    &nbsp;
+                                    <Typography variant="title">Document Viewer Demo</Typography>
+                                    <Typography>
+                                        Select a sensenet site and document to open.
+                            </Typography>
+                                    <form
+                                        autoComplete="off"
+                                        autoCorrect="off"
+                                        onSubmit={(ev) => this.openViewer(ev)}
+                                        style={{
+                                            margin: '.5em',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                        }}
+
+                                    >
+                                        <TextField
+                                            value={this.state.hostName}
+                                            onChange={(ev) => { this.setState({ ...this.state, hostName: ev.currentTarget.value }) }}
+                                            required
+                                            placeholder="The host URL, e.g. 'https://my-sensenet-site.org'"
+                                            type="url"
+                                            label="Host name"
+                                            margin="normal"
+                                        />
+                                        <TextField
+                                            value={this.state.documentIdOrPath}
+                                            onChange={(ev) => { this.setState({ ...this.state, documentIdOrPath: ev.currentTarget.value }) }}
+                                            required
+                                            margin="normal"
+                                            placeholder="The Id or full path of the document, e.g.: /Root/Sites/MySite/MyDocLib/('Example.docx')"
+                                            label="Document id / full path"
+                                        />
+                                        <div style={{
+                                            display: 'flex',
+                                            flexDirection: 'row-reverse',
+                                            marginTop: '1em',
+                                        }}>
+                                            <Button type="submit" variant="raised" color="primary"> <Send /> &nbsp; Open </Button>
+                                            &nbsp;
+                                    <Button onClick={(ev) => this.setState({ ...this.state, isHelpOpened: true })} variant="raised" color="primary"> <Help /> &nbsp; Help </Button>
+                                            &nbsp;
                                     <FormControlLabel
-                                        control={
-                                            <Checkbox
-                                                checked={this.state.save}
-                                                onChange={(ev) => this.setState({ ...this.state, save: !this.state.save })}
-                                                value="checkedA"
+                                                control={
+                                                    <Checkbox
+                                                        checked={this.state.save}
+                                                        onChange={(ev) => this.setState({ ...this.state, save: !this.state.save })}
+                                                        value="checkedA"
+                                                    />
+                                                }
+                                                label="Remember"
                                             />
-                                        }
-                                        label="Remember"
-                                    />
-                                </div>
-                            </form>
-                            <Dialog open={this.state.isHelpOpened || false}>
-                                <DialogTitle>Help</DialogTitle>
-                                <DialogContent>
-                                    <Typography component="div">
-                                        If you have trouble opening a file be sure that
+                                        </div>
+                                    </form>
+                                    <Dialog open={this.state.isHelpOpened || false}>
+                                        <DialogTitle>Help</DialogTitle>
+                                        <DialogContent>
+                                            <Typography component="div">
+                                                If you have trouble opening a file be sure that
                                         <ul>
-                                            <li>you are using sensenet <a href="https://community.sensenet.com/docs/install-sn-from-nuget/" target="_blank" >7.0+</a></li>
-                                            <li><a href="https://community.sensenet.com/docs/cors/" target="_blank">CORS</a> is allowed for the current host</li>
-                                            <li>You are logged in</li>
-                                            <li>You have Open rights to the document</li>
-                                            <li>The preview images has been generated or Task Management is configured</li>
-                                        </ul>
-                                    </Typography>
-                                </DialogContent>
-                                <DialogActions>
-                                    <Button onClick={(ev) => this.setState({ ...this.state, isHelpOpened: false })} variant="raised" color="primary"> Close </Button>
-                                </DialogActions>
-                            </Dialog>
-                        </Paper>
-                    </div>
-            }
+                                                    <li>you are using sensenet <a href="https://community.sensenet.com/docs/install-sn-from-nuget/" target="_blank" >7.0+</a></li>
+                                                    <li><a href="https://community.sensenet.com/docs/cors/" target="_blank">CORS</a> is allowed for the current host</li>
+                                                    <li>You are logged in</li>
+                                                    <li>You have Open rights to the document</li>
+                                                    <li>The preview images has been generated or Task Management is configured</li>
+                                                </ul>
+                                            </Typography>
+                                        </DialogContent>
+                                        <DialogActions>
+                                            <Button onClick={(ev) => this.setState({ ...this.state, isHelpOpened: false })} variant="raised" color="primary"> Close </Button>
+                                        </DialogActions>
+                                    </Dialog>
+                                </Paper>
+                            </div>
+                    }
 
-            {this.state.isViewerOpened ?
-                <Button
-                    style={{
-                        position: 'fixed',
-                        right: '2em',
-                        bottom: '1em',
-                        zIndex: 1,
-                    }}
-                    variant="fab"
-                    color="secondary"
-                    aria-label="select another document"
-                    onClick={(ev) => this.closeViewer()}>
-                    <FolderOpen />
-                </Button>
-                : null}
-
-        </div>)
+                    {this.state.isViewerOpened ?
+                        <Button
+                            style={{
+                                position: 'fixed',
+                                right: '2em',
+                                bottom: '1em',
+                                zIndex: 1,
+                            }}
+                            variant="fab"
+                            color="secondary"
+                            aria-label="select another document"
+                            onClick={(ev) => this.closeViewer()}>
+                            <FolderOpen />
+                        </Button>
+                        : null}
+                </div>
+            </MuiThemeProvider>)
     }
 }
 

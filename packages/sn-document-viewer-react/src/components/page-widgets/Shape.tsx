@@ -1,5 +1,5 @@
-import { IconButton } from 'material-ui'
-import { Delete } from 'material-ui-icons'
+import { IconButton } from '@material-ui/core'
+import { Delete } from '@material-ui/icons'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { Annotation, Shape, Shapes } from '../../models'
@@ -134,14 +134,14 @@ abstract class ShapeComponent<T extends Shape = Shape> extends React.Component<c
      */
     public render() {
         return (
-        <div
-            onClickCapture={(ev) => ev.stopPropagation()}
-            style={{ filter: this.state.focused ? 'contrast(.9) brightness(1.1)' : '' }}
-            onKeyUp={this.state.handleKeyPress}
-            onFocus={this.state.onFocus}
-            onBlur={this.state.onBlur}>
-            {this.renderShape()}
-        </div>)
+            <div
+                onClickCapture={(ev) => ev.stopPropagation()}
+                style={{ filter: this.state.focused ? 'contrast(.9) brightness(1.1)' : '' }}
+                onKeyUp={this.state.handleKeyPress}
+                onFocus={this.state.onFocus}
+                onBlur={this.state.onBlur}>
+                {this.renderShape()}
+            </div>)
     }
 }
 
@@ -222,11 +222,11 @@ class ShapeAnnotation extends ShapeComponent<Annotation> {
                         <div style={{ width: '100%', height: '100%', overflow: 'auto' }}
                             contentEditable={this.props.canEdit ? 'plaintext-only' as any : false}
                             suppressContentEditableWarning={true}
-                            >{this.props.shape.text}</div>
+                        >{this.props.shape.text}</div>
                         {this.state.focused ?
-                            <div style={{position: 'relative', top: `-${64 * this.props.zoomRatio}px`}}>
+                            <div style={{ position: 'relative', top: `-${64 * this.props.zoomRatio}px` }}>
                                 <IconButton >
-                                    <Delete style={{color: 'black'}} scale={this.props.zoomRatio} onMouseUp={(ev) => this.props.removeShape(this.shapeType, this.props.shape.guid)} />
+                                    <Delete style={{ color: 'black' }} scale={this.props.zoomRatio} onMouseUp={(ev) => this.props.removeShape(this.shapeType, this.props.shape.guid)} />
                                 </IconButton>
                             </div>
                             : null}

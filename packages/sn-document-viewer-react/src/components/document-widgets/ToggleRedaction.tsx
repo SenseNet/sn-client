@@ -1,5 +1,5 @@
-import { IconButton } from 'material-ui'
-import { PictureInPicture } from 'material-ui-icons'
+import { IconButton } from '@material-ui/core'
+import { PictureInPicture } from '@material-ui/icons'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { componentType } from '../../services'
@@ -51,4 +51,4 @@ export class ToggleRedactionComponent extends React.Component<componentType<type
 const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(ToggleRedactionComponent)
 
 // todo: disabled to state.sensenetDocumentViewer.documentState.canHideRedaction
-export {connectedComponent as ToggleRedactionWidget}
+export { connectedComponent as ToggleRedactionWidget }

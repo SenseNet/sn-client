@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { Provider } from 'react-redux'
 
+import { BrandingWatermark } from '@material-ui/icons'
 import { expect } from 'chai'
-import { BrandingWatermark } from 'material-ui-icons'
 import * as renderer from 'react-test-renderer'
 import { ToggleWatermarkWidget } from '../../../src/components/document-widgets/ToggleWatermark'
 import { documentReceivedAction } from '../../../src/store/Document'
@@ -11,7 +11,7 @@ import { exampleDocumentData, useTestContext } from '../../viewercontext'
 /**
  * Toggle Watermark widget tests
  */
-export const toggleWatermarkWidgetTests = describe('ToggleWatermarkWidget component', () => {
+export const toggleWatermarkWidgetTests: Mocha.Suite = describe('ToggleWatermarkWidget component', () => {
 
     let c!: renderer.ReactTestRenderer
 

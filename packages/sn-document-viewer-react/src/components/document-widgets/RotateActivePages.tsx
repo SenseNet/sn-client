@@ -28,16 +28,16 @@ export const mapDispatchToProps = {
 }
 
 /**
- * Component that allows document rotation
+ * Component that allows active page rotation
  */
-export class RotateDocumentComponent extends React.Component<componentType<typeof mapStateToProps, typeof mapDispatchToProps>> {
+export class RotateActivePagesComponent extends React.Component<componentType<typeof mapStateToProps, typeof mapDispatchToProps>> {
 
     private rotateDocumentLeft() {
-        this.props.rotateImages(this.props.pages.map((p) => p.Index), -90)
+        this.props.rotateImages(this.props.activePages, -90)
     }
 
     private rotateDocumentRight() {
-        this.props.rotateImages(this.props.pages.map((p) => p.Index), 90)
+        this.props.rotateImages(this.props.activePages, 90)
     }
 
     /**
@@ -46,16 +46,16 @@ export class RotateDocumentComponent extends React.Component<componentType<typeo
     public render() {
         return (
             <div style={{ display: 'inline-block' }}>
-                <IconButton title={this.props.rotateDocumentLeft}>
-                    <RotateLeft onClick={() => this.rotateDocumentLeft()} style={{ border: '2px solid', borderRadius: '5px' }} />
+                <IconButton color="inherit" title={this.props.rotateDocumentLeft}>
+                    <RotateLeft onClick={() => this.rotateDocumentLeft()} />
                 </IconButton>
-                <IconButton title={this.props.rotateDocumentRight}>
-                    <RotateRight onClick={() => this.rotateDocumentRight()} style={{ border: '2px solid', borderRadius: '5px' }} />
+                <IconButton color="inherit" title={this.props.rotateDocumentRight}>
+                    <RotateRight onClick={() => this.rotateDocumentRight()} />
                 </IconButton>
             </div>)
     }
 }
 
-const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(RotateDocumentComponent)
+const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(RotateActivePagesComponent)
 
-export { connectedComponent as RotateDocumentWidget }
+export { connectedComponent as RotateActivePages }

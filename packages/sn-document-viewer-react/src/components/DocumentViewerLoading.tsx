@@ -1,8 +1,9 @@
-import { CircularProgress } from 'material-ui'
+import { Typography } from '@material-ui/core'
 import React = require('react')
 import { connect } from 'react-redux'
 import { componentType } from '../services/TypeHelpers'
 import { RootReducerType } from '../store'
+import { LayoutAppBar } from './LayoutAppBar'
 
 /**
  * maps state fields from the store to component props
@@ -34,19 +35,27 @@ class DocumentViewerLoadingComponent extends React.Component<componentType<typeo
                 alignItems: 'center',
                 height: '100%',
             }}>
+                <LayoutAppBar style={{ position: 'fixed', top: 0 }} >
+                    <span></span>
+                </LayoutAppBar>
                 <div style={{
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
+                    flexDirection: 'column',
+                    maxWidth: 500,
+                    margin: '.5em 0 .6em 0',
                 }}>
-                    <CircularProgress size={64} />
-                    <div style={{ marginLeft: '2rem' }}> { this.props.loadingDocument } </div>
+                    <img src="./assets/loader.gif" />
+                    <Typography variant="headline" color="textSecondary" align="center" style={{ fontWeight: 'bolder' }}>
+                        {this.props.loadingDocument}
+                    </Typography>
                 </div>
-            </div>
+            </div >
         )
     }
 }
 
 const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(DocumentViewerLoadingComponent)
 
-export {connectedComponent as DocumentViewerLoading}
+export { connectedComponent as DocumentViewerLoading }

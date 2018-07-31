@@ -1,9 +1,8 @@
-import _ = require('lodash')
-import { IconButton, TextField } from 'material-ui'
-import { FirstPage, LastPage, NavigateBefore, NavigateNext } from 'material-ui-icons'
+import { IconButton, TextField } from '@material-ui/core'
+import { FirstPage, LastPage, NavigateBefore, NavigateNext } from '@material-ui/icons'
+import * as _ from 'lodash'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { componentType } from '../../services'
 import { RootReducerType, setActivePages } from '../../store'
 
 /**
@@ -41,7 +40,7 @@ export interface PagerState {
 /**
  * Document widget component for paging
  */
-export class PagerComponent extends React.Component<componentType<typeof mapStateToProps, typeof mapDispatchToProps>, PagerState> {
+export class PagerComponent extends React.Component<ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, PagerState> {
 
     /** the component state */
     public state = { currentPage: this.props.activePages[0], lastPage: this.props.pageCount }
@@ -50,9 +49,13 @@ export class PagerComponent extends React.Component<componentType<typeof mapStat
         this.props.setActivePages([this.state.currentPage])
     }, 200).bind(this)
 
-    /** triggered when the component will receive props */
-    public componentWillReceiveProps(nextProps: this['props']) {
-        this.setState({ currentPage: nextProps.activePages[0], lastPage: nextProps.pageCount })
+    /** creates a derived state from props */
+    public static getDerivedStateFromProps(nextProps: PagerComponent['props'], lastState: Partial<PagerComponent['state']>) {
+        return {
+            ...lastState,
+            currentPage: lastState.currentPage || nextProps.activePages[0],
+            lastPage: nextProps.pageCount,
+        }
     }
 
     private gotoPage(page: string | number) {
@@ -94,7 +97,7 @@ export class PagerComponent extends React.Component<componentType<typeof mapStat
                     margin="dense"
                 />
 
-                <IconButton disabled={this.state.currentPage >= this.state.lastPage} title={this.props.nextPage}>
+                <IconButton disabled={this.state.currentPage >= this.state.lastPage} title={this.props.nextPage} color={'primary'}>
                     <NavigateNext onClick={(ev) => this.gotoPage(this.props.activePages[0] + 1)} />
                 </IconButton>
 
@@ -107,4 +110,4 @@ export class PagerComponent extends React.Component<componentType<typeof mapStat
 
 const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(PagerComponent)
 
-export {connectedComponent as PagerWidget}
+export { connectedComponent as PagerWidget }

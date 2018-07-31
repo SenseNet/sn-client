@@ -1,5 +1,5 @@
-import { IconButton } from 'material-ui'
-import { Dashboard } from 'material-ui-icons'
+import { IconButton } from '@material-ui/core'
+import { Dashboard } from '@material-ui/icons'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { componentType } from '../../services'
@@ -40,7 +40,7 @@ export class ToggleShapesComponent extends React.Component<componentType<typeof 
         return (
             <div style={{ display: 'inline-block' }}>
                 <IconButton title={this.props.toggleShapes} style={{ opacity: this.props.showShapes ? 1 : 0.5 }}>
-                    <Dashboard onClick={() => this.toggleShapes()}  />
+                    <Dashboard onClick={() => this.toggleShapes()} />
                 </IconButton>
             </div>)
     }
@@ -48,4 +48,4 @@ export class ToggleShapesComponent extends React.Component<componentType<typeof 
 
 const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(ToggleShapesComponent)
 
-export {connectedComponent as ToggleShapesWidget}
+export { connectedComponent as ToggleShapesWidget }

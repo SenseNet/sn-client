@@ -11,19 +11,19 @@ import { exampleDocumentData, useTestContext } from '../viewercontext'
 /**
  * DocumentViewerLayout Component tests
  */
-export const documentViewerLayoutTests = describe('Document Viewer Layout component', () => {
+export const documentViewerLayoutTests: Mocha.Suite = describe('Document Viewer Layout component', () => {
 
     let c!: renderer.ReactTestRenderer
 
     after(() => {
-        c.unmount()
+        c && c.unmount()
     })
 
     it('Should render without crashing', () => {
         useTestContext((ctx) => {
             c = renderer.create(
                 <Provider store={ctx.store}>
-                    <DocumentViewerLayout>
+                    <DocumentViewerLayout drawerSlideProps={{ in: true }}>
                         <span>test</span>
                     </DocumentViewerLayout>
                 </Provider>)
@@ -45,7 +45,7 @@ export const documentViewerLayoutTests = describe('Document Viewer Layout compon
             }]))
             c = renderer.create(
                 <Provider store={ctx.store}>
-                    <DocumentViewerLayout>
+                    <DocumentViewerLayout drawerSlideProps={{ in: true }}>
                         <span>test</span>
                     </DocumentViewerLayout>
                 </Provider>)
@@ -54,6 +54,7 @@ export const documentViewerLayoutTests = describe('Document Viewer Layout compon
             page.props.onClick()
         });
         (global as any).innerWidth = 1024
+        c.unmount()
     })
 
     it('Click on a page should scroll to the selected page', () => {
@@ -70,7 +71,7 @@ export const documentViewerLayoutTests = describe('Document Viewer Layout compon
 
             c = renderer.create(
                 <Provider store={ctx.store}>
-                    <DocumentViewerLayout>
+                    <DocumentViewerLayout drawerSlideProps={{ in: true }}>
                     </DocumentViewerLayout>
                 </Provider>)
 

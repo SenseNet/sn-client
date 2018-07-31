@@ -1,6 +1,6 @@
-import { Action, ActionCreator } from 'redux'
+import { Action } from 'redux'
 import { Reducer } from 'redux'
-import { ThunkAction } from 'redux-thunk'
+import { InjectableAction } from 'redux-di-middleware'
 import { RootReducerType } from '.'
 import { DocumentData, DocumentViewerSettings, PreviewImageData } from '../models'
 import { ImageUtil } from '../services'
@@ -74,20 +74,22 @@ export const rotateImages = (imageIndexes: number[], amount: number) => ({
  * @param documentData
  * @param version
  */
-export const getAvailableImages: ActionCreator<ThunkAction<Promise<void>, RootReducerType, DocumentViewerSettings>> = (documentData: DocumentData, version: string = 'V1.0A') => {
-    return async (dispatch, getState, api) => {
-        dispatch(getAvailabelImagesAction(documentData))
+export const getAvailableImages: (documentData: DocumentData, version?: string) => InjectableAction<RootReducerType, Action> = (documentData: DocumentData, version: string = 'V1.0A') => ({
+    type: 'SN_GET_AVAILABLE_IMAGES_INJECTABLE_ACTION',
+    inject: async (options) => {
+        options.dispatch(getAvailabelImagesAction(documentData))
+        const docViewerSettings = options.getInjectable(DocumentViewerSettings)
         let docData: PreviewImageData[] | undefined
         try {
-            const state = getState()
-            docData = await api.getExistingPreviewImages(documentData, version, state.sensenetDocumentViewer.viewer.showWatermark)
+            const state = options.getState()
+            docData = await docViewerSettings.getExistingPreviewImages(documentData, version, state.sensenetDocumentViewer.viewer.showWatermark)
         } catch (error) {
-            dispatch(availabelImagesReceiveErrorAction(error.message || Error('Error getting preview images')))
+            options.dispatch(availabelImagesReceiveErrorAction(error.message || Error('Error getting preview images')))
             return
         }
-        dispatch(availabelImagesReceivedAction(docData))
-    }
-}
+        options.dispatch(availabelImagesReceivedAction(docData))
+    },
+})
 
 /**
  * Action that updates the store with the provided document data
@@ -146,24 +148,26 @@ export const setPagePollInterval = (pollInterval: number) => ({
  * @param version
  * @param page
  */
-export const previewAvailable: ActionCreator<ThunkAction<Promise<void>, RootReducerType, DocumentViewerSettings>> = (documentData: DocumentData, version: string = 'V1.0A', page: number = 1) => {
-    return async (dispatch, getState, api) => {
-        dispatch(previewAvailableAction(documentData, version, page))
+export const previewAvailable: (documentData: DocumentData, version?: string, page?: number) => InjectableAction<RootReducerType, Action> = (documentData: DocumentData, version: string = 'V1.0A', page: number = 1) => ({
+    type: 'SN_DOCVIEWER_PREVIEW_AVAILABLE_INJECTABLE_ACTION',
+    inject: async (options) => {
+        options.dispatch(previewAvailableAction(documentData, version, page))
+        const docViewerApi = options.getInjectable(DocumentViewerSettings)
         let docData: PreviewImageData | undefined
         try {
-            const state = getState()
-            docData = await api.isPreviewAvailable(documentData, version, page, state.sensenetDocumentViewer.viewer.showWatermark)
+            const state = options.getState()
+            docData = await docViewerApi.isPreviewAvailable(documentData, version, page, state.sensenetDocumentViewer.viewer.showWatermark)
         } catch (error) {
-            dispatch(availabelImagesReceiveErrorAction(error.message || Error(`Error getting preview image for page ${page}`)))
+            options.dispatch(availabelImagesReceiveErrorAction(error.message || Error(`Error getting preview image for page ${page}`)))
             return
         }
         if (docData) {
-            dispatch(previewAvailableReceivedAction(documentData, version, page, docData))
+            options.dispatch(previewAvailableReceivedAction(documentData, version, page, docData))
         } else {
-            dispatch(previewNotAvailableReceivedAction)
+            options.dispatch(previewNotAvailableReceivedAction())
         }
-    }
-}
+    },
+})
 
 /**
  * Reducer for the preview images

@@ -12,7 +12,7 @@ import { exampleDocumentData, useTestContext } from '../../viewercontext'
 /**
  * Shapes widget tests
  */
-export const shapesWidgetTests = describe('ShapesWidget component', () => {
+export const shapesWidgetTests: Mocha.Suite = describe('ShapesWidget component', () => {
 
     let c!: renderer.ReactTestRenderer
 

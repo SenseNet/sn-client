@@ -33,6 +33,16 @@ export interface ViewerStateType {
      * Shapes are on / off
      */
     showShapes: boolean
+
+    /**
+     * Thumbnails on / off
+     */
+    showThumbnails: boolean
+
+    /**
+     * Zoom level relative to the fitted image size
+     */
+    fitRelativeZoomLevel: number
 }
 
 /**
@@ -56,10 +66,22 @@ export const setZoomMode = (zoomMode: ZoomMode) => ({
 /**
  * Action to set the zoom level to a custom value
  * @param customZoomLevel
+ * @param defaultModeOnZero
  */
-export const setCustomZoomLevel = (customZoomLevel: number) => ({
+export const setCustomZoomLevel = (customZoomLevel: number, defaultModeOnZero: ZoomMode = 'fit') => ({
     type: 'SN_DOCVIEWER_DOCUMENT_VIEWER_SET_CUSTOM_ZOOM_LEVEL',
     customZoomLevel,
+    defaultModeOnZero,
+})
+
+/**
+ * Action to set the zoom level to a custom value
+ * @param customZoomLevel
+ * @param defaultModeOnZero
+ */
+export const setFitRelativeZoomLevel = (fitRelativeZoomLevel: number, defaultModeOnZero: ZoomMode = 'fit') => ({
+    type: 'SN_DOCVIEWER_DOCUMENT_VIEWER_SET_FIT_RELATIVE_ZOOM_LEVEL',
+    fitRelativeZoomLevel,
 })
 
 /**
@@ -90,24 +112,39 @@ export const setShapes = (showShapes: boolean) => ({
 })
 
 /**
+ * Action to set the visibility of the shapes
+ * @param showThumbnails
+ */
+export const setThumbnails = (showThumbnails: boolean) => ({
+    type: 'SN_DOCVIEWER_DOCUMENT_VIEWER_SET_THUMBNAILS',
+    showThumbnails,
+})
+
+/**
  * Reducer for the Viewer state
  * @param state the current state
  * @param action the dispatched action
  */
-export const viewerStateReducer: Reducer<ViewerStateType> = (state = { activePages: [1], zoomMode: 'fit', customZoomLevel: 3, showWatermark: false, showRedaction: true, showShapes: true }, action) => {
+export const viewerStateReducer: Reducer<ViewerStateType> = (state = { activePages: [1], zoomMode: 'fit', customZoomLevel: 3, showWatermark: false, showRedaction: true, showShapes: true, showThumbnails: false, fitRelativeZoomLevel: 0 }, action) => {
     switch (action.type) {
+        case 'SN_DOCVIEWER_DOCUMENT_RESET_DOCUMENT':
+            return { ...state, activePages: [1] }
         case 'SN_DOCVIEWER_DOCUMENT_VIEWER_SET_PAGE':
-            return {...state, activePages: [...action.activePages] }
+            return { ...state, activePages: [...action.activePages] }
         case 'SN_DOCVIEWER_DOCUMENT_VIEWER_SET_ZOOM_MODE':
-            return {...state, zoomMode: action.zoomMode, customZoomLevel: 0 }
+            return { ...state, zoomMode: action.zoomMode, customZoomLevel: 0 }
         case 'SN_DOCVIEWER_DOCUMENT_VIEWER_SET_CUSTOM_ZOOM_LEVEL':
-            return {...state, zoomMode: 'custom', customZoomLevel: action.customZoomLevel }
+            return { ...state, zoomMode: !action.customZoomLevel ? action.defaultModeOnZero : 'custom', customZoomLevel: action.customZoomLevel }
         case 'SN_DOCVIEWER_DOCUMENT_VIEWER_SET_WATERMARK':
-            return {...state, showWatermark: action.showWatermark }
+            return { ...state, showWatermark: action.showWatermark }
         case 'SN_DOCVIEWER_DOCUMENT_VIEWER_SET_REDACTION':
-            return {...state, showRedaction: action.showRedaction }
+            return { ...state, showRedaction: action.showRedaction }
         case 'SN_DOCVIEWER_DOCUMENT_VIEWER_SET_SHAPES':
-            return {...state, showShapes: action.showShapes }
+            return { ...state, showShapes: action.showShapes }
+        case 'SN_DOCVIEWER_DOCUMENT_VIEWER_SET_THUMBNAILS':
+            return { ...state, showThumbnails: action.showThumbnails }
+        case 'SN_DOCVIEWER_DOCUMENT_VIEWER_SET_FIT_RELATIVE_ZOOM_LEVEL':
+            return { ...state, fitRelativeZoomLevel: action.fitRelativeZoomLevel }
         default:
             return state
     }

@@ -1,5 +1,5 @@
-import { IconButton } from 'material-ui'
-import { BrandingWatermark } from 'material-ui-icons'
+import { IconButton } from '@material-ui/core'
+import { BrandingWatermark } from '@material-ui/icons'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { componentType } from '../../services'
@@ -49,4 +49,4 @@ export class ToggleWatermarkComponent extends React.Component<componentType<type
 
 const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(ToggleWatermarkComponent)
 
-export {connectedComponent as ToggleWatermarkWidget}
+export { connectedComponent as ToggleWatermarkWidget }

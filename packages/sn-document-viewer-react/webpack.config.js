@@ -5,7 +5,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
     mode: 'development',
-    entry: "./src/index.tsx",
+    entry: "./src/example.tsx",
     output: {
         filename: "bundle.js",
         publicPath: "/assets/",
@@ -34,6 +34,10 @@ module.exports = {
         new CopyWebpackPlugin([{
             from: "index.html",
             to: "./../"
+        }, {
+            from: "assets",
+            to: "./assets"
+
         }])
     ],
     module: {

@@ -7,12 +7,12 @@ import { useTestContext } from '../viewercontext'
 /**
  * DocumentViewerError Component tests
  */
-export const documentViewerErrorTests = describe('Document Viewer Error component', () => {
+export const documentViewerErrorTests: Mocha.Suite = describe('Document Viewer Error component', () => {
     it('Should render without crashing', () => {
         useTestContext((ctx) => {
             const c = renderer.create(
                 <Provider store={ctx.store}>
-                <DocumentViewerError error=":(" />
+                    <DocumentViewerError error=":(" />
                 </Provider>)
             c.unmount()
         })

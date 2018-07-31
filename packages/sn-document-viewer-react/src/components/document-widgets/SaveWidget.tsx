@@ -1,5 +1,5 @@
-import { IconButton } from 'material-ui'
-import { Save } from 'material-ui-icons'
+import { IconButton } from '@material-ui/core'
+import { Save } from '@material-ui/icons'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { DocumentData, PreviewImageData } from '../../models'
