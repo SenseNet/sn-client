@@ -34,15 +34,18 @@ export const promiseMiddleware: <TService>(service: TService) => Middleware = (s
             const actionType = action.type
             if (isPromiseMiddlewareAction(action)) {
                 (async () => {
+                    const { payload, ...originalAction } = action
                     try {
                         const result = await action.payload(service)
-                        return dispatch<PromiseMiddlewareSucceededAction<typeof result>>({
+                        return dispatch<PromiseMiddlewareSucceededAction<typeof result> & typeof originalAction>({
+                            ...originalAction,
                             type: `${actionType}_${suffixes.success}`,
                             result,
                         })
 
                     } catch (error) {
-                        return dispatch<PromiseMiddlewareFailedAction<typeof error>>({
+                        return dispatch<PromiseMiddlewareFailedAction<typeof error> & typeof originalAction>({
+                            ...originalAction,
                             type: `${actionType}_${suffixes.failure}`,
                             error,
                         })
