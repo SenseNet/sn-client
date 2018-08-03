@@ -4,6 +4,8 @@ import { IContent } from "../Models/IContent";
 import { IUploadFileOptions, IUploadFromEventOptions, IUploadFromFileListOptions, IUploadOptions, IUploadTextOptions } from "../Models/IRequestOptions";
 import { Repository } from "../Repository/Repository";
 
+import { WebKitDirectoryEntry, WebKitFileEntry } from "./WebkitTypes";
+
 /**
  * Response model for Uploads
  */
@@ -289,7 +291,7 @@ export class Upload {
      */
     public static async fromFileList<T extends IContent = IContent>(options: IUploadFromFileListOptions<T>) {
         if (options.createFolders) {
-            const directories = new Set(Array.from(options.fileList).map((f) => PathHelper.getParentPath(f.webkitRelativePath)));
+            const directories = new Set(Array.from(options.fileList).map((f) => PathHelper.getParentPath((f as any).webkitRelativePath)));
             const directoriesBySegments = Array.from(directories).map((d) => PathHelper.getSegments(d));
             const createdDirectories = new Set<string>();
             for (const directory of directoriesBySegments) {
@@ -307,7 +309,7 @@ export class Upload {
             await Promise.all(Array.from(options.fileList).map(async (file) => {
                 await this.file({
                     ...options as IUploadOptions<T>,
-                    parentPath: PathHelper.joinPaths(options.parentPath, PathHelper.getParentPath(file.webkitRelativePath)),
+                    parentPath: PathHelper.joinPaths(options.parentPath, PathHelper.getParentPath((file as any).webkitRelativePath)),
                     file,
                 });
             }));

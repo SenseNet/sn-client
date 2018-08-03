@@ -19,8 +19,6 @@ export class Versioning {
     public getVersions<T extends IContent = IContent>(idOrPath: number | string, oDataOptions?: IODataParams<T>): Promise<IODataCollectionResponse<T>> {
         return this.repository.loadCollection<T>({
             path: PathHelper.joinPaths(
-                this.repository.configuration.repositoryUrl,
-                this.repository.configuration.oDataToken,
                 PathHelper.getContentUrl(idOrPath),
                 "Versions"),
             oDataOptions,
@@ -102,11 +100,11 @@ export class Versioning {
      */
     public approve<T extends IContent = IContent>(idOrPath: number | string, oDataOptions?: IODataParams<T>) {
         return this.repository.executeAction<undefined, IODataResponse<T>>({
-             name: "Approve",
-             idOrPath,
-             method: "POST",
-             body: undefined,
-             oDataOptions,
+            name: "Approve",
+            idOrPath,
+            method: "POST",
+            body: undefined,
+            oDataOptions,
         });
     }
 
@@ -117,14 +115,14 @@ export class Versioning {
      * @returns {Promise<IODataResponse<T>>} A promise that will be resolved when the operation finished
      */
     public reject<T extends IContent = IContent>(idOrPath: number | string, rejectReason: string = "", oDataOptions?: IODataParams<T>) {
-        return this.repository.executeAction<{rejectReason: string}, IODataResponse<T>>({
-             name: "Reject",
-             idOrPath,
-             method: "POST",
-             body: {
+        return this.repository.executeAction<{ rejectReason: string }, IODataResponse<T>>({
+            name: "Reject",
+            idOrPath,
+            method: "POST",
+            body: {
                 rejectReason,
-             },
-             oDataOptions,
+            },
+            oDataOptions,
         });
     }
 
@@ -136,11 +134,11 @@ export class Versioning {
      */
     public publish<T extends IContent = IContent>(idOrPath: number | string, oDataOptions?: IODataParams<T>) {
         return this.repository.executeAction<undefined, IODataResponse<T>>({
-             name: "Publish",
-             idOrPath,
-             method: "POST",
-             body: undefined,
-             oDataOptions,
+            name: "Publish",
+            idOrPath,
+            method: "POST",
+            body: undefined,
+            oDataOptions,
         });
     }
 
@@ -151,14 +149,14 @@ export class Versioning {
      * @returns {Promise<IODataResponse<T>>} A promise that will be resolved when the operation finished
      */
     public restoreVersion<T extends IContent = IContent>(idOrPath: number | string, version: string = "", oDataOptions?: IODataParams<T>) {
-        return this.repository.executeAction<{version: string}, IODataResponse<T>>({
-             name: "RestoreVersion",
-             idOrPath,
-             method: "POST",
-             body: {
+        return this.repository.executeAction<{ version: string }, IODataResponse<T>>({
+            name: "RestoreVersion",
+            idOrPath,
+            method: "POST",
+            body: {
                 version,
-             },
-             oDataOptions,
+            },
+            oDataOptions,
         });
     }
 

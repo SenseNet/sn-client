@@ -10,7 +10,7 @@
         "preserveConstEnums": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "outDir": "./dist"
+        "outDir": "./dist",
     },
     "exclude": [
         "node_modules",
