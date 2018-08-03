@@ -336,6 +336,7 @@ export const forceUndoCheckout = <T extends IContent = IContent>(idOrPath: numbe
  */
 export const restoreVersion = <T extends IContent = IContent>(idOrPath: number | string, version: string, options?: IODataParams<T>) => ({
     type: 'RESTOREVERSION_CONTENT',
+    version,
     payload: (repository: Repository) => repository.versioning.restoreVersion(idOrPath, version, options),
 })
 /**

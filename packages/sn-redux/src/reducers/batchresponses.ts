@@ -38,7 +38,10 @@ export const batchResponseError: Reducer<string> = (state = '', action) => {
 /**
  * Reducer combining response and error into a single object, ```batchResponses```.
  */
-export const batchResponses = combineReducers({
+export const batchResponses = combineReducers<{
+    response: ReturnType<typeof odataBatchResponse>,
+    error: ReturnType<typeof batchResponseError>,
+}>({
     response: odataBatchResponse,
     error: batchResponseError,
 })

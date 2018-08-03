@@ -168,7 +168,15 @@ export const options: Reducer<IODataParams<GenericContent> | null> = (state = nu
 /**
  * Reducer combining ids, entities, isFetching, actions, error, top, skip, query, order, filter, select and isOpened into a single object, ```currentitems```.
  */
-export const currentitems = combineReducers({
+export const currentitems = combineReducers<{
+    ids: ReturnType<typeof ids>,
+    entities: ReturnType<typeof entities>,
+    isFetching: ReturnType<typeof isFetching>,
+    actions: ReturnType<typeof childrenactions>,
+    error: ReturnType<typeof childrenerror>,
+    isOpened: ReturnType<typeof isOpened>,
+    options: ReturnType<typeof options>,
+}>({
     ids,
     entities,
     isFetching,

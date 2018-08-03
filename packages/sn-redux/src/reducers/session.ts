@@ -1,5 +1,6 @@
 import { ConstantContent, LoginState } from '@sensenet/client-core'
 import { RepositoryConfiguration } from '@sensenet/client-core/dist/Repository/RepositoryConfiguration'
+import { User } from '@sensenet/default-content-types'
 import { combineReducers, Reducer } from 'redux'
 import { loadRepository, userChanged } from '../Actions'
 
@@ -126,14 +127,36 @@ export const userAvatarPath: Reducer<string, ReturnType<typeof userChanged>> = (
             return state
     }
 }
+
+/**
+ * Reducer to handle Actions on the id property in the user object.
+ * @param state Represents the current state.
+ * @param action Represents an action that is called.
+ * @returns state. Returns the next state based on the action.
+ */
+export const userContent: Reducer<User, ReturnType<typeof userChanged>> = (state = ConstantContent.VISITOR_USER, action) => {
+    switch (action.type) {
+        case 'USER_CHANGED':
+            return action.user
+        default:
+            return state
+    }
+}
 /**
  * Reducer combining userName, fullName, userLanguage, userAvatarPath into a single object, ```user```.
  */
-const user = combineReducers({
+const user = combineReducers<{
+    userName: ReturnType<typeof userName>,
+    fullName: ReturnType<typeof fullName>,
+    userLanguage: ReturnType<typeof userLanguage>,
+    userAvatarPath: ReturnType<typeof userAvatarPath>,
+    content: ReturnType<typeof userContent>,
+}>({
     userName,
     fullName,
     userLanguage,
     userAvatarPath,
+    content: userContent,
 })
 /**
  * Reducer to handle Actions on the repostory property in the user object.
@@ -152,11 +175,19 @@ export const repository: Reducer<RepositoryConfiguration | null, ReturnType<type
 /**
  * Reducer combining country, language, loginState, error, user and repository into a single object, ```session```.
  */
-export const session = combineReducers({
-    country,
-    language,
-    loginState,
-    error: loginError,
-    user,
-    repository,
-})
+export const session = combineReducers<{
+    country: ReturnType<typeof country>,
+    language: ReturnType<typeof language>,
+    loginState: ReturnType<typeof loginState>,
+    error: ReturnType<typeof loginError>,
+    user: ReturnType<typeof user>,
+    repository: ReturnType<typeof repository>,
+}>
+    ({
+        country,
+        language,
+        loginState,
+        error: loginError,
+        user,
+        repository,
+    })

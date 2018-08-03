@@ -46,7 +46,10 @@ export const selectedContentItems: Reducer<any, ReturnType<typeof selectContent 
 /**
  * Reducer combining ids and entities into a single object, ```selected```.
  */
-export const selected = combineReducers({
+export const selected = combineReducers<{
+    ids: ReturnType<typeof selectedIds>
+    entities: ReturnType<typeof selectedContentItems>,
+}>({
     ids: selectedIds,
     entities: selectedContentItems,
 })

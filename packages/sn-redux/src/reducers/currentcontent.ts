@@ -115,7 +115,14 @@ export const schema: Reducer<Schema | null, Action & { result: Schema }> = (stat
 /**
  * Reducer combining contentState, error, actions, fields and content into a single object, ```currentcontent```.
  */
-export const currentcontent = combineReducers({
+export const currentcontent = combineReducers<{
+    contentState: ReturnType<typeof contentState>,
+    error: ReturnType<typeof contenterror>,
+    actions: ReturnType<typeof contentactions>,
+    fields: ReturnType<typeof fields>,
+    content: ReturnType<typeof content>,
+    schema: ReturnType<typeof schema>,
+}>({
     contentState,
     error: contenterror,
     actions: contentactions,

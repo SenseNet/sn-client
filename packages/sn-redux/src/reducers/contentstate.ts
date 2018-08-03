@@ -56,7 +56,12 @@ export const isOperationInProgress: Reducer<boolean> = (state = false, action) =
 /**
  * Reducer combining isSaved, isValid, isDirty and isOperationInProgress into a single object, ```contentState```.
  */
-export const contentState = combineReducers({
+export const contentState = combineReducers<{
+    isSaved: ReturnType<typeof isSaved>,
+    isValid: ReturnType<typeof isValid>,
+    isDirty: ReturnType<typeof isDirty>,
+    isOperationInProgress: ReturnType<typeof isOperationInProgress>,
+}>({
     isSaved,
     isValid,
     isDirty,
