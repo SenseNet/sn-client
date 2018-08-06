@@ -79,6 +79,7 @@ export class DisplayName extends React.Component<DisplayNameProps, { value }> {
                         disabled={this.props.readOnly}
                         error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
                         fullWidth
+                        autoFocus={true}
                         onChange={(e) => this.handleChange(e)}
                     />
                 )
@@ -96,6 +97,7 @@ export class DisplayName extends React.Component<DisplayNameProps, { value }> {
                         disabled={this.props.readOnly}
                         error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
                         fullWidth
+                        autoFocus={true}
                         onChange={(e) => this.handleChange(e)}
                     />
                 )
