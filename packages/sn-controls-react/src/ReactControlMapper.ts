@@ -75,6 +75,8 @@ export const reactControlMapper = (repository: Repository) => new ControlMapper(
                 return FieldControls.Name
             case 'sn:DisplayName':
                 return FieldControls.DisplayName
+            case 'sn:FileName':
+                return FieldControls.FileName
             default:
                 return FieldControls.ShortText
         }

@@ -24,9 +24,11 @@ export interface NewViewProps {
     schema?,
     path,
     contentTypeName,
+    extension?,
     columns?,
     handleCancel?,
     submitCallback?,
+    title?: string,
 }
 
 /**
@@ -60,7 +62,7 @@ class NewView extends React.Component<NewViewProps, { schema, dataSource }> {
      * handle cancle button click
      */
     public handleCancel() {
-        return this.props.handleCancel ? this.props.handleCancel() :  null
+        return this.props.handleCancel ? this.props.handleCancel() : null
     }
     /**
      * check if all the required fields are set
@@ -79,7 +81,7 @@ class NewView extends React.Component<NewViewProps, { schema, dataSource }> {
      */
     public render() {
         const fieldSettings = this.state.schema.fieldMappings
-        const { fields, onSubmit, repository, changeAction, path, columns } = this.props
+        const { fields, onSubmit, repository, changeAction, path, columns, contentTypeName, extension, title, submitCallback } = this.props
         const { schema } = this.state
         return (
             <form style={styles.container} onSubmit={(e) => {
@@ -90,17 +92,20 @@ class NewView extends React.Component<NewViewProps, { schema, dataSource }> {
                         onSubmit(path, c, schema.schema.ContentTypeName)
                     }
                 }
-                return this.props.submitCallback ? this.props.submitCallback() :  null
+                return submitCallback ? this.props.submitCallback() : null
             }
             }>
                 <Typography variant="headline" gutterBottom>
-                    New {schema.schema.DisplayName}
+                    {title && title.length > 0 ? `New ${this.props.title}` : `New {schema.schema.DisplayName}`}
                 </Typography>
                 <Grid container spacing={24}>
                     {
                         fieldSettings.map((e, i) => {
                             if (fieldSettings[i].clientSettings['data-typeName'] === 'ReferenceFieldSetting') {
                                 fieldSettings[i].clientSettings['data-repository'] = repository
+                            }
+                            if (contentTypeName === 'File' && extension && fieldSettings[i].fieldSettings.ControlHint === 'sn:FileName') {
+                                fieldSettings[i].clientSettings['data-extension'] = extension
                             }
                             return (<Grid item xs={12} style={{ marginBottom: 16 }}
                                 sm={12}
