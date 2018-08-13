@@ -20,7 +20,7 @@ export interface FileNameProps extends ReactClientFieldSettingProps, ReactClient
  * Field control that represents a ShortText field. Available values will be populated from the FieldSettings.
  */
 @Radium
-export class FileName extends React.Component<FileNameProps, { value, isValid, error }> {
+export class FileName extends React.Component<FileNameProps, { value, isValid, error, extension }> {
     /**
      * constructor
      * @param {object} props
@@ -35,6 +35,8 @@ export class FileName extends React.Component<FileNameProps, { value, isValid, e
             value: this.setValue(this.props['data-fieldValue']),
             isValid: this.props.required ? false : true,
             error: '',
+            // tslint:disable-next-line:no-string-literal
+            extension: this.getExtensionFromValue(this.props['content'].Name),
         }
 
         this.handleChange = this.handleChange.bind(this)
@@ -60,9 +62,12 @@ export class FileName extends React.Component<FileNameProps, { value, isValid, e
      */
     public handleChange(e) {
         const { onChange } = this.props
-        const value = e.target.value
-        this.setState({ value })
-        onChange(this.props.name, `${value}.${this.props['data-extension']}`)
+        const value = `${e.target.value}.${this.state.extension}`
+        // tslint:disable-next-line:no-string-literal
+        onChange(this.props.name, `${value}`)
+    }
+    public getExtensionFromValue = (filename) => {
+        return filename.substr(filename.lastIndexOf('.') + 1)
     }
     /**
      * render
@@ -87,7 +92,8 @@ export class FileName extends React.Component<FileNameProps, { value, isValid, e
                             defaultValue={this.state.value}
                             onChange={(e) => this.handleChange(e)}
                             InputProps={{
-                                endAdornment: <InputAdornment position="end"><span>{`.${this.props['data-extension']}`}</span></InputAdornment>,
+                                // tslint:disable-next-line:no-string-literal
+                                endAdornment: <InputAdornment position="end"><span>{`.${this.getExtensionFromValue(this.props['content'].Name)}`}</span></InputAdornment>,
                             }}
                             autoFocus
                         />

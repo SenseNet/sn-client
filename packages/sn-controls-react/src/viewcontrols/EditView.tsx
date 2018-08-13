@@ -4,7 +4,6 @@
  */ /** */
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
 import * as React from 'react'
 import { reactControlMapper } from '../ReactControlMapper'
 import { styles } from './EditViewStyles'
@@ -70,11 +69,8 @@ export class EditView extends React.Component<EditViewProps, { content, schema }
      * handle change event on an input
      * @param {SytheticEvent} event
      */
-    public handleInputChange(event) {
-        const target = event.target
-        const value = target.type === 'checkbox' ? target.checked : target.value
-        const name = target.name
-        this.state.content[name] = value
+    public handleInputChange(field, value) {
+        this.state.content[field] = value
 
         this.setState({
             content: this.props.content,
@@ -105,14 +101,11 @@ export class EditView extends React.Component<EditViewProps, { content, schema }
                 (e) => {
                     e.preventDefault()
                     if (this.props.onSubmit) {
-                        this.props.onSubmit(this.state.content)
+                        this.props.onSubmit(this.state.content.Id, this.props.content)
                     }
                     return this.props.submitCallback ? this.props.submitCallback() : null
                 }
             }>
-                <Typography variant="headline" gutterBottom>
-                    Edit {this.displayName}
-                </Typography>
                 <Grid container spacing={24}>
                     {
                         fieldSettings.map((e, i) => {
