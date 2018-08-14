@@ -55,7 +55,7 @@
     "postcss-loader": "^2.1.1",
     "promise": "8.0.1",
     "react": "^16.0.0",
-    "react-async-script": "^0.9.1",
+    "react-async-script": "^0.11.1",
     "react-dev-utils": "^5.0.0",
     "react-dnd": "^5.0.0",
     "react-dnd-html5-backend": "^5.0.0",
