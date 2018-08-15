@@ -151,8 +151,8 @@ export const traceTests = describe("Trace tests", () => {
                 object: instance,
                 method: instance.testError,
                 onError: (traceData) => {
-                    if ((traceData as ITraceMethodError).error) {
-                        expect((traceData as ITraceMethodError).error.message).to.be.eq("message");
+                    if ((traceData).error) {
+                        expect((traceData).error.message).to.be.eq("message");
                         observer.dispose();
                         done();
                     }
@@ -168,8 +168,8 @@ export const traceTests = describe("Trace tests", () => {
                 method: instance.testErrorAsync,
                 isAsync: true,
                 onError: (traceData) => {
-                    if ((traceData as ITraceMethodError).error) {
-                        expect((traceData as ITraceMethodError).error.message).to.be.eq("message");
+                    if ((traceData).error) {
+                        expect((traceData).error.message).to.be.eq("message");
                         observer.dispose();
                         done();
                     }

@@ -1,11 +1,11 @@
 import { IDisposable } from "./Disposable";
 import { ObservableValue } from "./ObservableValue";
-import {ValueObserver} from "./ValueObserver";
+import { ValueObserver } from "./ValueObserver";
 
 /**
  * Options object for tracing method calls
  */
-export interface ITraceMethodOptions<T, K extends keyof T, TReturns> {
+export interface ITraceMethodOptions<T, K extends keyof T, TReturns, TArgs extends any[]> {
     /**
      * The context object. Can be an instance or a constructor for static methods
      */
@@ -13,19 +13,19 @@ export interface ITraceMethodOptions<T, K extends keyof T, TReturns> {
     /**
      * The method reference that needs to be traced
      */
-    method: ((...args: any[]) => TReturns) & T[K];
+    method: (...args: TArgs) => TReturns;
     /**
      * Callback that will be called right before executing the method
      */
-    onCalled?: (newValue: ITraceMethodCall) => void;
+    onCalled?: (newValue: ITraceMethodCall<TArgs>) => void;
     /**
      * Callback that will be called right after the method returns
      */
-    onFinished?: (newValue: ITraceMethodFinished<TReturns>) => void;
+    onFinished?: (newValue: ITraceMethodFinished<TReturns, TArgs>) => void;
     /**
      * Callback that will be called when a method throws an error
      */
-    onError?: (newValue: ITraceMethodError) => void;
+    onError?: (newValue: ITraceMethodError<TArgs>) => void;
 
     /**
      * The method execution will be awaited if set
@@ -36,7 +36,7 @@ export interface ITraceMethodOptions<T, K extends keyof T, TReturns> {
 /**
  * Defines a trace method call object
  */
-export interface ITraceMethodCall {
+export interface ITraceMethodCall<TArgs extends any[]> {
     /**
      * The timestamp when the event occured
      */
@@ -45,13 +45,13 @@ export interface ITraceMethodCall {
     /**
      * The provided arguments for the call
      */
-    arguments: any[];
+    arguments: TArgs;
 }
 
 /**
  * Defines a trace event when a method call has been finished
  */
-export interface ITraceMethodFinished<TReturns> extends ITraceMethodCall {
+export interface ITraceMethodFinished<TReturns, TArgs extends any[]> extends ITraceMethodCall<TArgs> {
     returned: TReturns;
     finishedDateTime: Date;
 }
@@ -59,7 +59,7 @@ export interface ITraceMethodFinished<TReturns> extends ITraceMethodCall {
 /**
  * Defines a trace event when an error was thrown during a method call
  */
-export interface ITraceMethodError extends ITraceMethodCall {
+export interface ITraceMethodError<TArgs extends any[]> extends ITraceMethodCall<TArgs> {
     error: any;
     errorDateTime: Date;
 }
@@ -67,18 +67,18 @@ export interface ITraceMethodError extends ITraceMethodCall {
 /**
  * Defines a method mapping object
  */
-export interface IMethodMapping {
+export interface IMethodMapping<TReturns, TArgs extends any[]> {
     /**
      * The original method instance
      */
-    originalMethod: (...args: any[]) => any;
+    originalMethod: (...args: TArgs) => TReturns;
     /**
      * An observable for distributing the events
      */
-    callObservable: ObservableValue<ITraceMethodCall>;
+    callObservable: ObservableValue<ITraceMethodCall<TArgs>>;
 
-    finishedObservable: ObservableValue<ITraceMethodFinished<any>>;
-    errorObservable: ObservableValue<ITraceMethodError>;
+    finishedObservable: ObservableValue<ITraceMethodFinished<any, TArgs>>;
+    errorObservable: ObservableValue<ITraceMethodError<TArgs>>;
 }
 
 /**
@@ -88,7 +88,7 @@ export interface IObjectTrace {
     /**
      * Map about the already wrapped methods
      */
-    methodMappings: Map<string, IMethodMapping>;
+    methodMappings: Map<string, IMethodMapping<any, any[]>>;
 }
 
 /**
@@ -115,23 +115,23 @@ export interface IObjectTrace {
 export class Trace {
     private static objectTraces: Map<object, IObjectTrace> = new Map();
 
-    private static getMethodTrace(object: object, method: (...args: any[]) => any): IMethodMapping {
+    private static getMethodTrace<TArgs extends any[], TReturns>(object: object, method: (...args: TArgs) => TReturns): IMethodMapping<TReturns, TArgs> {
         const objectTrace = this.objectTraces.get(object) as any as IObjectTrace;
-        return objectTrace.methodMappings.get(method.name) as IMethodMapping;
+        return objectTrace.methodMappings.get(method.name) as any as IMethodMapping<TReturns, TArgs>;
     }
 
-    private static traceStart(methodTrace: IMethodMapping, args: any[]) {
+    private static traceStart<TReturns, TArgs extends any[]>(methodTrace: IMethodMapping<TReturns, TArgs>, args: TArgs[]) {
         const startDateTime = new Date();
         const traceValue = {
             arguments: args,
             startDateTime,
-        } as ITraceMethodCall;
+        } as ITraceMethodCall<TArgs>;
         methodTrace.callObservable.setValue(traceValue);
         return traceValue;
     }
 
-    private static traceFinished(methodTrace: IMethodMapping, args: any[], callTrace: ITraceMethodCall, returned: any) {
-        const finishedTrace: ITraceMethodFinished<any> = {
+    private static traceFinished<TReturns, TArgs extends any[]>(methodTrace: IMethodMapping<TReturns, TArgs>, args: TArgs, callTrace: ITraceMethodCall<TArgs>, returned: any) {
+        const finishedTrace: ITraceMethodFinished<TReturns, TArgs> = {
             arguments: args,
             startDateTime: callTrace.startDateTime,
             finishedDateTime: new Date(),
@@ -140,8 +140,8 @@ export class Trace {
         methodTrace.finishedObservable.setValue(finishedTrace);
     }
 
-    private static traceError(methodTrace: IMethodMapping, args: any[], callTrace: ITraceMethodCall, error: any) {
-        const errorTrace: ITraceMethodError = {
+    private static traceError<TReturns, TArgs extends any[]>(methodTrace: IMethodMapping<TReturns, TArgs>, args: TArgs, callTrace: ITraceMethodCall<TArgs>, error: any) {
+        const errorTrace: ITraceMethodError<TArgs> = {
             arguments: args,
             startDateTime: callTrace.startDateTime,
             errorDateTime: new Date(),
@@ -151,7 +151,7 @@ export class Trace {
         return errorTrace;
     }
 
-    private static callMethod(object: object, method: (...args: any[]) => any, args: any[]) {
+    private static callMethod<TReturns, TArgs extends any[]>(object: object, method: (...args: TArgs) => TReturns, args: TArgs) {
         const methodTrace = this.getMethodTrace(object, method);
         const start = this.traceStart(methodTrace, args);
         try {
@@ -164,7 +164,7 @@ export class Trace {
         }
     }
 
-    private static async callMethodAsync(object: object, method: (...args: any[]) => any, args: any[]) {
+    private static async callMethodAsync<TReturns, TArgs extends any[]>(object: object, method: (...args: TArgs) => TReturns, args: TArgs) {
         const methodTrace = this.getMethodTrace(object, method);
         const start = this.traceStart(methodTrace, args);
         try {
@@ -181,7 +181,7 @@ export class Trace {
      * Creates an observer that will be observe method calls, finishes and errors
      * @param options The options object for the trace
      */
-    public static method<T extends object, K extends keyof T, TReturns>(options: ITraceMethodOptions<T, K, TReturns>): IDisposable {
+    public static method<T extends object, K extends keyof T, TReturns, TArgs extends any[]>(options: ITraceMethodOptions<T, K, TReturns, TArgs>): IDisposable {
         // add object mapping
         if (!this.objectTraces.has(options.object)) {
             this.objectTraces.set(options.object, {
@@ -191,10 +191,10 @@ export class Trace {
         // setup override if needed
         if (!((options.object as any)[options.method.name] as any).isTraced) {
             const overriddenMethod = options.isAsync ?
-                ((...args: any[]) => this.callMethodAsync(options.object, options.method, args)) :
-                ((...args: any[]) => this.callMethod(options.object, options.method, args));
-            Object.defineProperty(overriddenMethod, "name", {value: options.method.name});
-            Object.defineProperty(overriddenMethod, "isTraced", {value: options.method.name});
+                ((...args: TArgs) => this.callMethodAsync(options.object, options.method, args)) :
+                ((...args: TArgs) => this.callMethod(options.object, options.method, args));
+            Object.defineProperty(overriddenMethod, "name", { value: options.method.name });
+            Object.defineProperty(overriddenMethod, "isTraced", { value: options.method.name });
             (options.object as any)[options.method.name] = overriddenMethod;
         }
         const objectTrace = (this.objectTraces.get(options.object) as any) as IObjectTrace;
@@ -203,12 +203,12 @@ export class Trace {
         if (!objectTrace.methodMappings.has(options.method.name)) {
             objectTrace.methodMappings.set(options.method.name, {
                 originalMethod: options.method,
-                callObservable: new ObservableValue<ITraceMethodCall>(),
-                finishedObservable: new ObservableValue<ITraceMethodFinished<any>>(),
-                errorObservable: new ObservableValue<ITraceMethodError>(),
-            });
+                callObservable: new ObservableValue<ITraceMethodCall<TArgs>>(),
+                finishedObservable: new ObservableValue<ITraceMethodFinished<TReturns, TArgs>>(),
+                errorObservable: new ObservableValue<ITraceMethodError<TArgs>>(),
+            } as any);
         }
-        const methodTrace = (objectTrace.methodMappings.get(options.method.name) as any) as IMethodMapping;
+        const methodTrace = (objectTrace.methodMappings.get(options.method.name) as any) as IMethodMapping<TReturns, TArgs>;
         const callbacks = [
             options.onCalled && methodTrace.callObservable.subscribe(options.onCalled),
             options.onFinished && methodTrace.finishedObservable.subscribe(options.onFinished),
