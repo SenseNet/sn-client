@@ -136,10 +136,6 @@ export interface ICustomActionFailed<T extends IContent> {
     // tslint:disable-next-line:naming-convention
     oDataParams?: IODataParams<T>;
     /**
-     * The Type of the Result object
-     */
-    resultType: { new(...args: any[]): any };
-    /**
      * The Error that caused the failure
      */
     error: any;

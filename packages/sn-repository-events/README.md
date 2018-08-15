@@ -11,7 +11,13 @@
 
 This NPM package contains *event observables* that can be used for tracking sensenet repository events.
 
-Usage example:
+## Installation
+
+```shell
+npm install @sensenet/repository-events
+```
+
+## Usage
 
 ```ts
 const repository = new Repository({});

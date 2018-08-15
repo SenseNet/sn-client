@@ -2,7 +2,6 @@ import { IContent, Repository } from "@sensenet/client-core";
 import { ICopyOptions, IDeleteOptions, IPatchOptions, IPostOptions, IPutOptions } from "@sensenet/client-core/dist/Models/IRequestOptions";
 import { ObservableValue, Trace } from "@sensenet/client-utils";
 import { IDisposable } from "@sensenet/client-utils/dist/Disposable";
-import { ValueObserver } from "@sensenet/client-utils/dist/ValueObserver";
 import { IContentMoved, IContentMoveFailed, ICreated, ICreateFailed, ICustomActionExecuted, ICustomActionFailed, IDeleted, IDeleteFailed, ILoaded, IModificationFailed, IModified } from "./IEventModels";
 
 /**
@@ -14,11 +13,9 @@ export class EventHub implements IDisposable {
      */
     public dispose() {
         for (const key in this) {
-            // tslint:disable:no-string-literal
-            if (this.hasOwnProperty(key) && typeof this[key]["dispose"] === "function") {
-                this[key]["dispose"]();
+            if (this.hasOwnProperty(key) && typeof (this[key] as any).dispose === "function") {
+                (this[key] as any).dispose();
             }
-            // tslint:enable:no-string-literal
         }
     }
     /**
@@ -177,7 +174,7 @@ export class EventHub implements IDisposable {
                         contentArgs = [contentArgs];
                     }
                     const contents = contentArgs.map((v) => {
-                        return isNaN(v as number) ? {Path: v} : {Id: parseInt(v as string, 10)} as IContent;
+                        return isNaN(v as number) ? { Path: v } : { Id: parseInt(v as string, 10) } as IContent;
                     });
                     for (const c of contents) {
                         this.onContentDeleteFailed.setValue({
@@ -219,7 +216,7 @@ export class EventHub implements IDisposable {
                         contentArgs = [contentArgs];
                     }
                     const contents = contentArgs.map((v) => {
-                        return isNaN(v as number) ? {Path: v} : {Id: parseInt(v as string, 10)} as IContent;
+                        return isNaN(v as number) ? { Path: v } : { Id: parseInt(v as string, 10) } as IContent;
                     });
                     for (const c of contents) {
                         this.onContentCreateFailed.setValue({
@@ -260,7 +257,7 @@ export class EventHub implements IDisposable {
                         contentArgs = [contentArgs];
                     }
                     const contents = contentArgs.map((v) => {
-                        return isNaN(v as number) ? {Path: v} : {Id: parseInt(v as string, 10)} as IContent;
+                        return isNaN(v as number) ? { Path: v } : { Id: parseInt(v as string, 10) } as IContent;
                     });
                     for (const c of contents) {
                         this.onContentMoveFailed.setValue({
@@ -268,6 +265,25 @@ export class EventHub implements IDisposable {
                             error,
                         });
                     }
+                },
+            }),
+            Trace.method({
+                object: this.repository,
+                method: this.repository.executeAction,
+                isAsync: true,
+                onFinished: async (finished) => {
+                    this.onCustomActionExecuted.setValue({
+                        actionOptions: finished.arguments[0],
+                        oDataParams: finished.arguments[0].oDataOptions,
+                        result: finished.returned,
+                    });
+                },
+                onError: async (error) => {
+                    this.onCustomActionFailed.setValue({
+                        actionOptions: error.arguments[0],
+                        error: error.error,
+                        oDataParams: error.arguments[0].oDataOptions,
+                    });
                 },
             }),
         );
