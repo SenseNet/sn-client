@@ -8,7 +8,7 @@ React controls for sensenet lists
 ## Installation and usage
 
 You can install the package into your React project from [npm](https://npmjs.org) with the ``npm install @sensenet/list-controls-react`` command.
-You can check additional usage examples from the example app and from the unit tests.
+You can check additional usage examples from the [example app](https://sn-list-controls-react.netlify.com/) and from the [tests](https://github.com/SenseNet/sn-list-controls-react/tree/master/src/Tests).
 
 ## Running the example application
 
