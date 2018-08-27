@@ -18,7 +18,7 @@ export const oDataUrlBuilderTests: Mocha.Suite = describe("ODataUrlBuilder", () 
 
         it("should return an empty string, if the argument is undefined", () => {
             const urlParamString = ODataUrlBuilder.buildUrlParamString<GenericContent>(repo.configuration);
-            expect(urlParamString).to.be.eq("$select=Id,Path,Name,Type,DisplayName,Description,Icon&metadata=no&$inlinecount=allpages");
+            expect(urlParamString).to.be.eq("$select=Id,Path,Name,Type,DisplayName,Description,Icon&metadata=no&$inlinecount=allpages&$top=10000");
         });
         it("should return a string with only select Id and Type if there's no selected field", () => {
             const urlParamString = ODataUrlBuilder.buildUrlParamString<GenericContent>({ defaultSelect: ["Id", "Type"] } as any, { metadata: "no" });

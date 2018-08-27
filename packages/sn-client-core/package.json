@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/client-core",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "Core Client package for sensenet",
   "main": "./dist/index.js",
   "files": [
@@ -12,9 +12,6 @@
     "commit": "git-cz",
     "pretest": "tslint --project tsconfig.test.json && rimraf temp && tsc -p tsconfig.test.json",
     "test": "rimraf coverage && nyc mocha -p tsconfig.test.json ./temp/test/index.js",
-    "check-coverage": "istanbul check-coverage ",
-    "report-coverage": "cat ./coverage/lcov.info | ./node_modules/.bin/codecov",
-    "semantic-release": "semantic-release pre && semantic-release post",
     "prebuild": "tslint --project tsconfig.json",
     "build": "rimraf dist && tsc -p tsconfig.json",
     "publish:development": "npm run build && npm t && npm run typedoc && npm publish --tag development",
@@ -51,7 +48,7 @@
   },
   "homepage": "https://sensenet.com",
   "dependencies": {
-    "@sensenet/client-utils": "^1.0.1",
+    "@sensenet/client-utils": "^1.1.0",
     "@sensenet/default-content-types": "^1.1.0",
     "@sensenet/query": "^1.0.1",
     "@types/uuid": "^3.4.3",
@@ -61,7 +58,6 @@
     "@types/chai": "^4.1.4",
     "@types/mocha": "^5.2.5",
     "chai": "^4.1.2",
-    "codecov": "^3.0.4",
     "mocha": "^5.2.0",
     "nyc": "^12.0.2",
     "rimraf": "^2.6.2",
