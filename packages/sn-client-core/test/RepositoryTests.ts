@@ -6,6 +6,7 @@ import { IContent } from "../src/Models/IContent";
 import { IODataCollectionResponse } from "../src/Models/IODataCollectionResponse";
 import { IODataResponse } from "../src/Models/IODataResponse";
 import { ConstantContent } from "../src/Repository/ConstantContent";
+import { isExtendedError } from "../src/Repository/Repository";
 
 // tslint:disable:completed-docs
 declare const global: any;
@@ -492,6 +493,33 @@ export const repositoryTests: Mocha.Suite = describe("Repository", () => {
                 return {} as any;
             };
             repository.reloadSchema();
+        });
+    });
+
+    describe("#extendedError", () => {
+
+        it("isExtendedError should return with false if the response is not attached", async () => {
+            expect(isExtendedError(Error(""))).to.be.eq(false);
+        });
+
+        it("Should be generated from Repository errors with the statusText if no response body is available", async () => {
+            const e = await repository.getErrorFromResponse({
+                // json: async () => ({}),
+                statusText: "statusText",
+            } as Response);
+            expect(e).to.be.instanceof(Error);
+            expect(isExtendedError(e)).to.be.eq(true);
+            expect(e.message).to.be.eq("statusText");
+        });
+
+        it("Should be generated from Repository errors from the response body message", async () => {
+            const e = await repository.getErrorFromResponse({
+                json: async () => ({error: {message: {value: "errorValue"}}}),
+                statusText: "invalid",
+            } as Response);
+            expect(e).to.be.instanceof(Error);
+            expect(isExtendedError(e)).to.be.eq(true);
+            expect(e.message).to.be.eq("errorValue");
         });
     });
 
