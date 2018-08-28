@@ -282,7 +282,7 @@ export class Security {
         if (response.ok) {
             return await response.text() === "true" || false;
         } else {
-            throw Error(response.statusText);
+            throw (await this.repository.getErrorFromResponse(response));
         }
     }
     /**

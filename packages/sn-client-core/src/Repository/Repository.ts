@@ -55,8 +55,25 @@ export class Repository implements IDisposable {
         }
         return await this.fetchMethod(info, init || {
             credentials: "include",
-
         });
+    }
+
+    /**
+     * Gets a more meaningful error object from a specific response
+     * @param response The Response object to extract the message
+     */
+    public async getErrorFromResponse(response: Response): Promise<Error & { body: any }> {
+        let msgFromBody: string = "";
+        let body!: any;
+        try {
+            body = await response.json();
+            msgFromBody = body.error.message.value;
+        } catch (error) {
+            /** */
+        }
+        const error: Error & { body: any } = new Error(msgFromBody || response.statusText) as any;
+        error.body = body;
+        return error;
     }
 
     /**
@@ -73,7 +90,7 @@ export class Repository implements IDisposable {
             method: "GET",
         });
         if (!response.ok) {
-            throw Error(response.statusText);
+            throw (await this.getErrorFromResponse(response));
         }
         return await response.json();
     }
@@ -90,7 +107,7 @@ export class Repository implements IDisposable {
             method: "GET",
         });
         if (!response.ok) {
-            throw Error(response.statusText);
+            throw (await this.getErrorFromResponse(response));
         }
         return await response.json();
 
@@ -113,7 +130,7 @@ export class Repository implements IDisposable {
             body: JSON.stringify(postBody),
         });
         if (!response.ok) {
-            throw Error(response.statusText);
+            throw (await this.getErrorFromResponse(response));
         }
         return await response.json();
     }
@@ -132,7 +149,7 @@ export class Repository implements IDisposable {
             body: JSON.stringify(options.content),
         });
         if (!response.ok) {
-            throw Error(response.statusText);
+            throw (await this.getErrorFromResponse(response));
         }
         return await response.json();
     }
@@ -151,7 +168,7 @@ export class Repository implements IDisposable {
             body: JSON.stringify(options.content),
         });
         if (!response.ok) {
-            throw Error(response.statusText);
+            throw (await this.getErrorFromResponse(response));
         }
         return await response.json();
     }
@@ -226,7 +243,7 @@ export class Repository implements IDisposable {
             method: "GET",
         });
         if (!response.ok) {
-            throw Error(response.statusText);
+            throw (await this.getErrorFromResponse(response));
         }
         return await response.json();
     }
@@ -246,7 +263,7 @@ export class Repository implements IDisposable {
             body: JSON.stringify(options.body),
         });
         if (!response.ok) {
-            throw Error(response.statusText);
+            throw (await this.getErrorFromResponse(response));
         }
         return await response.json();
     }

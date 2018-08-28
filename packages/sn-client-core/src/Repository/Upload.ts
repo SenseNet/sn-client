@@ -113,7 +113,7 @@ export class Upload {
                 createdContent: options.progressObservable.getValue().createdContent,
                 error,
             });
-            throw Error(response.statusText);
+            throw (await options.repository.getErrorFromResponse(response));
         }
 
         const uploadResponse: IUploadResponse = await response.json();
@@ -160,7 +160,7 @@ export class Upload {
         });
 
         if (!initRequest.ok) {
-            throw Error(initRequest.statusText);
+            throw (await options.repository.getErrorFromResponse(initRequest));
         }
 
         const chunkToken = await initRequest.text();
@@ -209,7 +209,7 @@ export class Upload {
                     createdContent: lastResponseContent,
                     error,
                 });
-                throw Error(lastResponse.statusText);
+                throw (await options.repository.getErrorFromResponse(lastResponse));
             }
         }
 
