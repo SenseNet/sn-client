@@ -40,7 +40,7 @@ export class ControlMapper<TControlBaseType, TClientControlSettings> {
                 case "view":
                     return s.VisibleBrowse !== FieldVisibility.Hide;
             }
-        });
+        }).sort((fs1, fs2) => (fs1.FieldIndex || Number.MAX_SAFE_INTEGER) - (fs2.FieldIndex || Number.MAX_SAFE_INTEGER));
         return schema;
     }
 

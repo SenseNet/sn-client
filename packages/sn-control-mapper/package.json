@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/control-mapper",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Control mapping utility for sensenet ECM",
   "main": "dist/index.js",
   "files": [
@@ -12,9 +12,6 @@
     "commit": "git-cz",
     "pretest": "tslint --project tsconfig.test.json && rimraf temp && tsc -p tsconfig.test.json",
     "test": "rimraf coverage && nyc mocha -p tsconfig.test.json ./temp/test/index.js",
-    "check-coverage": "istanbul check-coverage ",
-    "report-coverage": "cat ./coverage/lcov.info | ./node_modules/.bin/codecov",
-    "semantic-release": "semantic-release pre && semantic-release post",
     "prebuild": "tslint --project tsconfig.json",
     "build": "rimraf dist && tsc -p tsconfig.json",
     "publish:development": "npm run build && npm t && npm run typedoc && npm publish --tag development",
@@ -58,19 +55,18 @@
   },
   "homepage": "https://sensenet.com",
   "dependencies": {
-    "@sensenet/client-core": "^1.0.0",
-    "@sensenet/default-content-types": "^1.0.0"
+    "@sensenet/client-core": "^1.3.0",
+    "@sensenet/default-content-types": "^1.1.0"
   },
   "devDependencies": {
-    "@types/chai": "^4.1.0",
+    "@types/chai": "^4.1.4",
     "@types/mocha": "^5.0.0",
     "chai": "^4.1.2",
-    "codecov": "^3.0.0",
-    "mocha": "^5.0.0",
+    "mocha": "^5.2.0",
     "nyc": "^12.0.2",
     "rimraf": "^2.6.1",
-    "tslint": "^5.8.0",
-    "typescript": "^2.7.1"
+    "tslint": "^5.11.0",
+    "typescript": "^3.0.3"
   },
   "config": {
     "commitizen": {
