@@ -13,6 +13,7 @@ export interface ContentListProps<T extends GenericContent> {
     orderDirection: 'asc' | 'desc'
     fieldComponent?: React.StatelessComponent<CellProps<T, keyof T>>,
     icons: any
+    displayRowCheckbox?: boolean,
     onItemClick?: (e: React.MouseEvent, content: T) => void
     onItemDoubleClick?: (e: React.MouseEvent, content: T) => void
     onItemTap?: (e: React.TouchEvent, content: T) => void
@@ -93,35 +94,38 @@ export class ContentList<T extends GenericContent> extends React.Component<Conte
         return <Table>
             <TableHead>
                 <TableRow>
-                    <TableCell padding="checkbox" key="selectAll" style={{ width: '30px', paddingRight: 0 }}>
-                        <Checkbox
-                            className="select-all"
-                            indeterminate={this.state.hasSelected && !this.state.isAllSelected}
-                            checked={this.state.isAllSelected}
-                            onChange={this.handleSelectAllClick}
-                        />
-                    </TableCell>
+                    {this.props.displayRowCheckbox !== false ?
+                        <TableCell padding="checkbox" key="selectAll" style={{ width: '30px', paddingRight: 0 }}>
+                            <Checkbox
+                                className="select-all"
+                                indeterminate={this.state.hasSelected && !this.state.isAllSelected}
+                                checked={this.state.isAllSelected}
+                                onChange={this.handleSelectAllClick}
+                            />
+                        </TableCell>
+                        : null}
                     {this.props.fieldsToDisplay.map((field) => {
                         const fieldSetting = this.props.schema.FieldSettings.find((s) => s.Name === field)
                         const isNumeric = fieldSetting && (fieldSetting.Type === 'IntegerFieldSetting' || fieldSetting.Type === 'NumberFieldSetting')
                         const description = fieldSetting && fieldSetting.Description || field
                         const displayName = fieldSetting && fieldSetting.DisplayName || field
-                        return (<TableCell
-                            key={field as string}
-                            numeric={isNumeric}
-                            className={field as string}
-                            padding="checkbox"
-                        >
-                            <Tooltip title={description} >
-                                <TableSortLabel
-                                    active={this.props.orderBy === field}
-                                    direction={this.props.orderDirection}
-                                    onClick={() => this.props.onRequestOrderChange && this.props.onRequestOrderChange(field, this.props.orderDirection === 'asc' ? 'desc' : 'asc')}
-                                >
-                                    {displayName}
-                                </TableSortLabel>
-                            </Tooltip>
-                        </TableCell>)
+                        return (
+                            <TableCell
+                                key={field as string}
+                                numeric={isNumeric}
+                                className={field as string}
+                                padding="checkbox"
+                            >
+                                <Tooltip title={description} >
+                                    <TableSortLabel
+                                        active={this.props.orderBy === field}
+                                        direction={this.props.orderDirection}
+                                        onClick={() => this.props.onRequestOrderChange && this.props.onRequestOrderChange(field, this.props.orderDirection === 'asc' ? 'desc' : 'asc')}
+                                    >
+                                        {displayName}
+                                    </TableSortLabel>
+                                </Tooltip>
+                            </TableCell>)
                     })}
                 </TableRow>
             </TableHead>
@@ -144,12 +148,13 @@ export class ContentList<T extends GenericContent> extends React.Component<Conte
                         onTouchEnd={(e) => this.props.onItemTap && this.props.onItemTap(e, item)}
                         onContextMenu={(e) => this.props.onItemContextMenu && this.props.onItemContextMenu(e, item)}
                     >
-                        <TableCell padding="checkbox" key="select">
-                            <Checkbox
-                                checked={this.props.selected.find((i) => i.Id === item.Id) ? true : false}
-                                onChange={() => this.handleContentSelection(item)}
-                            />
-                        </TableCell>
+                        {this.props.displayRowCheckbox !== false ?
+                            <TableCell padding="checkbox" key="select">
+                                <Checkbox
+                                    checked={this.props.selected.find((i) => i.Id === item.Id) ? true : false}
+                                    onChange={() => this.handleContentSelection(item)}
+                                />
+                            </TableCell> : null}
                         {this.props.fieldsToDisplay.map((field) => {
                             const fieldSetting = this.props.schema.FieldSettings.find((s) => s.Name === field)
                             const cellProps: CellProps<T, keyof T> = { ...this.props as ContentListProps<T>, field, content: item, fieldSetting, isSelected }
