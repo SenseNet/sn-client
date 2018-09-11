@@ -39,6 +39,14 @@ export interface PagerState {
  */
 export class DocumentTitlePagerComponent extends React.Component<ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, PagerState> {
 
+    /**
+     *
+     */
+    constructor(props: DocumentTitlePagerComponent['props']) {
+        super(props)
+        this.submitPageNumber = this.submitPageNumber.bind(this)
+    }
+
     /** the component state */
     public state: PagerState = {
         currentPage: (this.props.activePages[0]) || 1,
@@ -54,7 +62,6 @@ export class DocumentTitlePagerComponent extends React.Component<ReturnType<type
     public static getDerivedStateFromProps(nextProps: DocumentTitlePagerComponent['props'], lastState: Partial<PagerState>) {
         const newState: Partial<PagerState> = {
             ...lastState,
-            currentPage: nextProps.activePages[0] || 1,
             lastPage: nextProps.pageCount,
         }
         return newState
@@ -71,8 +78,18 @@ export class DocumentTitlePagerComponent extends React.Component<ReturnType<type
             pageInt = Math.min(pageInt, this.props.pageCount)
             this.setState({
                 currentPage: pageInt,
+            }, () => {
+                this.setPage()
             })
-            this.setPage()
+        }
+    }
+
+    private submitPageNumber(ev: React.FormEvent<HTMLFormElement>) {
+        ev.preventDefault()
+        const formData = new FormData(ev.currentTarget)
+        const pageNo = formData.get('gotoPage') as string
+        if (pageNo) {
+            this.gotoPage(pageNo)
         }
     }
 
@@ -99,21 +116,24 @@ export class DocumentTitlePagerComponent extends React.Component<ReturnType<type
                 <Typography onClick={() => this.handleFocused()} variant="title" color="inherit" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', overflow: 'hidden', margin: '0 2.5em' }} title={this.props.documentName}>
                     <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{this.props.documentName}&nbsp;</div>
                     {this.state.focused ?
-                        <TextField
-                            style={{ flexShrink: 0 }}
-                            title={this.props.gotoPage}
-                            value={this.state.currentPage}
-                            onChange={(ev) => this.gotoPage(ev.currentTarget.value)}
-                            type="number"
-                            required={true}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            inputProps={{
-                                min: 1, max: this.state.lastPage, style: { textAlign: 'center', color: 'white' },
-                            }}
-                            margin="dense"
-                        />
+                        <form onSubmit={this.submitPageNumber} >
+                            <TextField
+                                style={{ flexShrink: 0 }}
+                                title={this.props.gotoPage}
+                                defaultValue={this.state.currentPage}
+                                onClick={(ev) => this.gotoPage((ev.target as HTMLInputElement).value)}
+                                type="number"
+                                required={true}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                name="gotoPage"
+                                inputProps={{
+                                    min: 1, max: this.state.lastPage, style: { textAlign: 'center', color: 'white' },
+                                }}
+                                margin="dense"
+                            />
+                        </form>
                         :
                         <div style={{ flexShrink: 0 }}>{this.props.activePages[0]} / {this.props.pageCount}</div>
                     }

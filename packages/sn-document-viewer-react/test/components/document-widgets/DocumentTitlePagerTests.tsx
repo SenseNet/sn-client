@@ -40,7 +40,6 @@ export const documentTitlePagerWidgetTests: Mocha.Suite = describe('DocumentTitl
             setActivePages: () => ({} as any),
         }, {} as any)
 
-        expect(derivedState.currentPage).to.be.eq(3)
         expect(derivedState.lastPage).to.be.eq(5)
     })
 

@@ -5,11 +5,15 @@ import { componentType } from '../services/TypeHelpers'
 import { RootReducerType } from '../store'
 import { LayoutAppBar } from './LayoutAppBar'
 
+interface DocumentViewerLoadingProps {
+    image: string
+}
+
 /**
  * maps state fields from the store to component props
  * @param state the redux state
  */
-const mapStateToProps = (state: RootReducerType, ownProps: undefined) => {
+const mapStateToProps = (state: RootReducerType, ownProps: DocumentViewerLoadingProps) => {
     return {
         loadingDocument: state.sensenetDocumentViewer.localization.loadingDocument,
     }
@@ -22,7 +26,7 @@ const mapStateToProps = (state: RootReducerType, ownProps: undefined) => {
 const mapDispatchToProps = {
 }
 
-class DocumentViewerLoadingComponent extends React.Component<componentType<typeof mapStateToProps, typeof mapDispatchToProps, undefined>> {
+class DocumentViewerLoadingComponent extends React.Component<componentType<typeof mapStateToProps, typeof mapDispatchToProps, DocumentViewerLoadingProps>> {
     /**
      * renders the component
      */
@@ -46,7 +50,7 @@ class DocumentViewerLoadingComponent extends React.Component<componentType<typeo
                     maxWidth: 500,
                     margin: '.5em 0 .6em 0',
                 }}>
-                    <img src="./assets/loader.gif" />
+                    <img src={this.props.image} />
                     <Typography variant="headline" color="textSecondary" align="center" style={{ fontWeight: 'bolder' }}>
                         {this.props.loadingDocument}
                     </Typography>

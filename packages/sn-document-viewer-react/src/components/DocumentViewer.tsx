@@ -19,6 +19,7 @@ export interface OwnProps {
     version?: string
     localization?: Partial<LocalizationStateType>
     drawerSlideProps?: Partial<SlideProps>
+    loaderImage?: string
 
 }
 
@@ -83,7 +84,7 @@ class DocumentViewer extends React.Component<docViewerComponentType> {
      */
     public render() {
         if (this.props.isLoading) {
-            return <DocumentViewerLoading />
+            return <DocumentViewerLoading image={this.props.loaderImage || './assets/loader.gif'} />
         }
 
         if (this.props.docViewerError || this.props.previewImagesError) {
