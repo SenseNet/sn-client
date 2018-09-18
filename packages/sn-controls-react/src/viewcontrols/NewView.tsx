@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import { Actions, Reducers } from '@sensenet/redux'
+import MediaQuery from 'react-responsive'
 import { reactControlMapper } from '../ReactControlMapper'
 import { styles } from './NewViewStyles'
 
@@ -107,7 +108,7 @@ class NewView extends React.Component<NewViewProps, { schema, dataSource }> {
                             if (contentTypeName === 'File' && extension && fieldSettings[i].fieldSettings.ControlHint === 'sn:FileName') {
                                 fieldSettings[i].clientSettings['data-extension'] = extension
                             }
-                            return (<Grid item xs={12} style={{ marginBottom: 16 }}
+                            return (<Grid item xs={12}
                                 sm={12}
                                 md={fieldSettings[i].clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
                                 lg={fieldSettings[i].clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
@@ -127,7 +128,12 @@ class NewView extends React.Component<NewViewProps, { schema, dataSource }> {
                         })
                     }
                     <Grid item xs={12} sm={12} md={12} lg={12} xl={12} style={{ textAlign: 'right' }}>
-                        <Button color="default" style={{ marginRight: 20 }} onClick={() => this.handleCancel()}>Cancel</Button>
+                        <MediaQuery minDeviceWidth={700}>
+                            {(matches) =>
+                                matches ? <Button color="default" style={{ marginRight: 20 }} onClick={() => this.handleCancel()}>Cancel</Button> :
+                                null
+                            }
+                        </MediaQuery>
                         <Button type="submit" variant="raised" color="secondary">Submit</Button>
                     </Grid>
 

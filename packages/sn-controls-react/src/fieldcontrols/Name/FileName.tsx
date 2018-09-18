@@ -36,7 +36,7 @@ export class FileName extends React.Component<FileNameProps, { value, isValid, e
             isValid: this.props.required ? false : true,
             error: '',
             // tslint:disable-next-line:no-string-literal
-            extension: this.getExtensionFromValue(this.props['content'].Name),
+            extension: this.props['data-extension'] || this.getExtensionFromValue(this.props['content'].Name),
         }
 
         this.handleChange = this.handleChange.bind(this)

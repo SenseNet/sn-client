@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/controls-react",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "React controls for sensenet",
   "main": "dist/index.js",
   "scripts": {
@@ -67,6 +67,7 @@
     "radium": "^0.22.0",
     "react-number-format": "^3.3.2",
     "react-quill": "^1.0.0-rc.3",
+    "react-responsive": "^5.0.0",
     "react-select": "^1.2.1",
     "react-tap-event-plugin": "^3.0.1"
   },

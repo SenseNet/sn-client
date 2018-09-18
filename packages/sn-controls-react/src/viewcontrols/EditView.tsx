@@ -5,6 +5,7 @@
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import * as React from 'react'
+import MediaQuery from 'react-responsive'
 import { reactControlMapper } from '../ReactControlMapper'
 import { styles } from './EditViewStyles'
 
@@ -112,7 +113,7 @@ export class EditView extends React.Component<EditViewProps, { content, schema }
                             if (fieldSettings[i].clientSettings['data-typeName'] === 'ReferenceFieldSetting') {
                                 fieldSettings[i].clientSettings['data-repository'] = this.props.repository
                             }
-                            return (<Grid item xs={12} style={{ marginBottom: 16 }}
+                            return (<Grid item xs={12}
                                 sm={12}
                                 md={fieldSettings[i].clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
                                 lg={fieldSettings[i].clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
@@ -134,7 +135,11 @@ export class EditView extends React.Component<EditViewProps, { content, schema }
                         })
                     }
                     <Grid item xs={12} sm={12} md={12} lg={12} xl={12} style={{ textAlign: 'right' }}>
-                        <Button color="default" style={{ marginRight: 20 }} onClick={() => this.handleCancel()}>Cancel</Button>
+                        <MediaQuery minDeviceWidth={700}>
+                            {(matches) =>
+                                matches ? <Button color="default" style={{ marginRight: 20 }} onClick={() => this.handleCancel()}>Cancel</Button> : null
+                            }
+                        </MediaQuery>
                         <Button type="submit" variant="raised" color="secondary">Submit</Button>
                     </Grid>
                 </Grid >
