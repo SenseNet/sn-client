@@ -1,0 +1,94 @@
+{
+  "name": "@sensenet/search-react",
+  "version": "1.0.0-development.1",
+  "description": "",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "keywords": [
+    "sensenet",
+    "ecm",
+    "search",
+    "query"
+  ],
+  "scripts": {
+    "precommit": "npm run test",
+    "commit": "git-cz",
+    "pretest": "tslint --project tsconfig.test.json && rimraf temp && tsc -p tsconfig.test.json",
+    "test": "rimraf coverage && nyc mocha -p tsconfig.test.json ./temp/test/index.js",
+    "tslint": "tslint --project tsconfig.json",
+    "prebuild": "npm run tslint",
+    "build": "npm run build:tsc && npm run build:webpack",
+    "build:tsc": "rimraf dist && tsc -p tsconfig.json",
+    "build:webpack": "rimraf bundle && webpack",
+    "publish:development": "npm run build && npm t && npm run typedoc && npm publish --tag development",
+    "prepublishOnly": "npm run test && npm run build",
+    "typedoc": "typedoc --mode file --out documentation src --tsconfig tsconfig.json --theme c:/Users/%USERNAME%/AppData/Roaming/npm/node_modules/@sensenet/typedoc-theme/sn-theme",
+    "start": "webpack-dev-server"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
+  "license": "GPL-2.0",
+  "nyc": {
+    "lines": 80,
+    "exclude": [
+      "temp/test/**/*.*",
+      "temp/**/index.js",
+      "temp/src/style.js",
+      "temp/src/**/I*.js",
+      "temp/src/models/*.js",
+      "temp/src/services/TypeHelpers.js",
+      "temp/src/ExampleAppLayout.js",
+      "**/index.js"
+    ],
+    "include": "temp/src/**/*.*",
+    "check-coverage": true,
+    "cache": true,
+    "all": true,
+    "reporter": [
+      "lcov",
+      "text-summary",
+      "json"
+    ]
+  },
+  "homepage": "https://sensenet.com",
+  "devDependencies": {
+    "@types/chai": "^4.1.4",
+    "@types/lodash": "^4.14.115",
+    "@types/mocha": "^5.2.5",
+    "@types/react": "^16.4.7",
+    "@types/react-dom": "^16.0.6",
+    "@types/react-router-dom": "^4.3.0",
+    "@types/react-test-renderer": "^16.0.1",
+    "@types/uuid": "^3.4.3",
+    "awesome-typescript-loader": "^5.2.0",
+    "chai": "^4.1.2",
+    "copy-webpack-plugin": "^4.5.2",
+    "mocha": "^5.2.0",
+    "nyc": "^12.0.2",
+    "react-test-renderer": "^16.5.2",
+    "source-map-loader": "^0.2.3",
+    "tslint": "^5.11.0",
+    "typescript": "^3.0.3",
+    "webpack": "^4.19.1",
+    "webpack-bundle-analyzer": "^3.0.2",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.8"
+  },
+  "dependencies": {
+    "@material-ui/core": "^3.1.0",
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "uuid": "^3.3.2"
+  },
+  "config": {
+    "commitizen": {
+      "path": "sensenet-kfi-cz-conventional-changelog"
+    }
+  },
+  "typings": "./dist/index.d.ts"
+}
