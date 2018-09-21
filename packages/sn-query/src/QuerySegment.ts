@@ -6,6 +6,11 @@ import { Query } from "./Query";
 export class QuerySegment<TReturns> {
 
     /**
+     * The type of the expression
+     */
+    public segmentType?: string;
+
+    /**
      * Escapes a String value (except '?' and '*' characters for wildcards)
      * @param {string} value The String value to be escaped
      * @returns {string} The escaped value
@@ -26,6 +31,7 @@ export class QuerySegment<TReturns> {
      */
     public sort<K extends keyof TReturns>(field: K, reverse: boolean = false) {
         this.stringValue = ` .${reverse ? "REVERSESORT" : "SORT"}:${field}`;
+        this.segmentType = "sort";
         return this.finializeSegment();
     }
 
@@ -35,6 +41,7 @@ export class QuerySegment<TReturns> {
      */
     public top(topCount: number) {
         this.stringValue = ` .TOP:${topCount}`;
+        this.segmentType = "top";
         return this.finializeSegment();
     }
 
@@ -45,6 +52,7 @@ export class QuerySegment<TReturns> {
 
     public skip(skipCount: number) {
         this.stringValue = ` .SKIP:${skipCount}`;
+        this.segmentType = "skip";
         return this.finializeSegment();
     }
 

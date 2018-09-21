@@ -2,6 +2,11 @@ import { QueryExpression } from "./QueryExpression";
 import { QuerySegment } from "./QuerySegment";
 
 /**
+ * Type for query builder callbacks
+ */
+export type QueryBuilder<TExpression, TReturns> = (first: QueryExpression<TExpression>) => QuerySegment<TReturns>;
+
+/**
  * Represents an instance of a Query expression.
  * Usage example:
  * ```ts
@@ -16,7 +21,7 @@ export class Query<T> {
      * Appends a new QuerySegment to the existing Query
      * @param {QuerySegment<T>} newSegment The Segment to be added
      */
-    public addSegment(newSegment: QuerySegment<T> ) {
+    public addSegment(newSegment: QuerySegment<T>) {
         this.segments.push(newSegment);
     }
 
@@ -32,7 +37,7 @@ export class Query<T> {
      * Constructs a Query instance
      * @param build the Query Builder expression
      */
-    constructor(build: (first: QueryExpression<any>) => QuerySegment<T>) {
+    constructor(build: QueryBuilder<any, T>) {
         const firstExpression = new QueryExpression<T>(this);
         build(firstExpression);
     }

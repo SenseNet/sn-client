@@ -31,7 +31,7 @@ describe("Query", () => {
                     .notEquals("Approvable", true)
                     .and
                     .notEquals("Description", "*alma*"), // Contains with wildcards
-            )
+                )
                 .sort("DisplayName")
                 .top(5)			// adds .TOP:5
                 .skip(10),		// adds .SKIP:10
@@ -120,7 +120,16 @@ describe("Query", () => {
                 .and
                 .query((inner) =>
                     inner.equals("Index", 1),
-            ));
+                ));
+            expect(queryInstance.toString()).to.be.eq("DisplayName:'Test' AND (Index:'1')");
+        });
+
+        it("inner query syntax with sub query", () => {
+            const queryInstance = new Query((q) => q.equals("DisplayName", "Test")
+                .and
+                .query(new Query((inner) =>
+                    inner.equals("Index", 1)),
+                ));
             expect(queryInstance.toString()).to.be.eq("DisplayName:'Test' AND (Index:'1')");
         });
 
@@ -129,7 +138,16 @@ describe("Query", () => {
                 .and
                 .not((inner) =>
                     inner.equals("Index", 1),
-            ));
+                ));
+            expect(queryInstance.toString()).to.be.eq("DisplayName:'Test' AND NOT(Index:'1')");
+        });
+
+        it("NOT syntax with sub query", () => {
+            const queryInstance = new Query((q) => q.equals("DisplayName", "Test")
+                .and
+                .not(new Query((inner) =>
+                    inner.equals("Index", 1),
+                )));
             expect(queryInstance.toString()).to.be.eq("DisplayName:'Test' AND NOT(Index:'1')");
         });
 

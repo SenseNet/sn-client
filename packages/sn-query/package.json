@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/query",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Client side content query builder package for sensenet",
   "main": "dist/index.js",
   "files": [
@@ -13,9 +13,6 @@
     "commit": "git-cz",
     "pretest": "tslint --project tsconfig.test.json && rimraf temp && tsc -p tsconfig.test.json",
     "test": "rimraf coverage && nyc mocha -p tsconfig.test.json ./temp/test/index.js",
-    "check-coverage": "istanbul check-coverage ",
-    "report-coverage": "cat ./coverage/lcov.info | ./node_modules/.bin/codecov",
-    "semantic-release": "semantic-release pre && semantic-release post",
     "prebuild": "tslint --project tsconfig.json",
     "build": "rimraf dist && tsc -p tsconfig.json",
     "prepublishOnly": "npm run test && npm run build",
@@ -62,12 +59,12 @@
     "@types/chai": "^4.1.3",
     "@types/mocha": "^5.0.0",
     "chai": "^4.1.2",
-    "codecov": "^3.0.2",
+    "codecov": "^3.1.0",
     "mocha": "^5.2.0",
-    "nyc": "^11.8.0",
+    "nyc": "^13.0.1",
     "rimraf": "^2.6.1",
-    "tslint": "^5.10.0",
-    "typescript": "^2.8.3"
+    "tslint": "^5.11.0",
+    "typescript": "^3.0.3"
   },
   "config": {
     "commitizen": {

@@ -11,6 +11,7 @@ export class QueryOperators<TReturns> extends QuerySegment<TReturns> {
      */
     public get and() {
         this.stringValue = " AND ";
+        this.segmentType = "and";
         return this.finialize();
     }
 
@@ -19,6 +20,7 @@ export class QueryOperators<TReturns> extends QuerySegment<TReturns> {
      */
     public get or() {
         this.stringValue = " OR ";
+        this.segmentType = "or";
         return this.finialize();
     }
 
