@@ -7,10 +7,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
-
-import Home from '@material-ui/icons/Home'
-import ListIcon from '@material-ui/icons/List'
-import Menu from '@material-ui/icons/Menu'
+import { Icon, iconType } from '@sensenet/icons-react'
 
 import * as React from 'react'
 import { Route, Switch } from 'react-router'
@@ -48,7 +45,10 @@ export class ExampleAppLayout extends React.Component<{}, ExampleAppState> {
                 <AppBar position="static">
                     <Toolbar>
                         <IconButton color="inherit" aria-label="Menu">
-                            <Menu onClick={() => { this.setState({ ...this.state, isDrawerOpened: !this.state.isDrawerOpened }) }} />
+                            <Icon
+                                type={iconType.materialui}
+                                iconName="menu"
+                                onClick={() => { this.setState({ ...this.state, isDrawerOpened: !this.state.isDrawerOpened }) }} />
                         </IconButton>
                         <Typography variant="title" color="inherit">
                             list-controls-react showcase
@@ -59,7 +59,11 @@ export class ExampleAppLayout extends React.Component<{}, ExampleAppState> {
                     <List>
                         <Link to="/" onClick={this.closeDrawer}>
                             <ListItem>
-                                <ListItemIcon><Home /></ListItemIcon>
+                                <ListItemIcon>
+                                    <Icon
+                                        type={iconType.materialui}
+                                        iconName="home" />
+                                </ListItemIcon>
                                 <ListItemText primary="Home" secondary="Return to the starting screen of the showcase application" />
 
                             </ListItem>
@@ -67,7 +71,9 @@ export class ExampleAppLayout extends React.Component<{}, ExampleAppState> {
 
                         <Link to="/contentlist" onClick={this.closeDrawer}>
                             <ListItem>
-                                <ListItemIcon><ListIcon /></ListItemIcon>
+                                <ListItemIcon><Icon
+                                    type={iconType.materialui}
+                                    iconName="list" /></ListItemIcon>
                                 <ListItemText primary="ContentList" secondary="Control for displaying a list of content" />
 
                             </ListItem>

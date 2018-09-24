@@ -1,7 +1,7 @@
 import IconButton from '@material-ui/core/IconButton'
 import TableCell from '@material-ui/core/TableCell'
-import MoreVert from '@material-ui/icons/MoreVert'
 import { GenericContent, IActionModel } from '@sensenet/default-content-types'
+import { Icon, iconType } from '@sensenet/icons-react'
 import * as React from 'react'
 
 export const styles = {
@@ -52,7 +52,7 @@ export class ActionsCell<T extends GenericContent> extends React.Component<Actio
                 aria-owns="actionmenu"
                 onClick={(event) => this.handleActionMenuClick(event, content)}
             >
-                <MoreVert />
+                <Icon type={iconType.materialui} iconName="more_vert" />
             </IconButton>
         </TableCell>
         )

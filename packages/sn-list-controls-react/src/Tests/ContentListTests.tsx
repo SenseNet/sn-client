@@ -306,7 +306,7 @@ export const contentListTests: Mocha.Suite = describe('ContentList component', (
     describe('Field with a custom field component', () => {
         it('Should be added for referemces', () => {
             const component = renderer.create(<ContentList<GenericContent>
-                items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder'}]}
+                items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
                 schema={genericSchema}
                 fieldsToDisplay={['DisplayName', 'Name']}
                 selected={[]}
@@ -442,6 +442,19 @@ export const contentListTests: Mocha.Suite = describe('ContentList component', (
             />)
             const row = component.root.findAll((instance) => (instance.type as any).name === 'TableSortLabel')[0]
             row.props.onClick()
+        })
+        it('should render without crashing with setting displayRowCheckbox to false', () => {
+            const component = renderer.create(<ContentList<GenericContent>
+                items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
+                schema={genericSchema}
+                fieldsToDisplay={['DisplayName']}
+                selected={[]}
+                orderBy="DisplayName"
+                orderDirection="asc"
+                icons={{}}
+                displayRowCheckbox={false}
+            />)
+            component.unmount()
         })
     })
 })

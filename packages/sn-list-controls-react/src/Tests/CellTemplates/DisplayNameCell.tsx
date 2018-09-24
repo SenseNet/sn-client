@@ -1,4 +1,4 @@
-import Icon from '@material-ui/core/Icon'
+import { Icon } from '@sensenet/icons-react'
 import {expect} from 'chai'
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
@@ -35,6 +35,15 @@ export const DisplayNameCellTests: Mocha.Suite = describe('DisplayNameCell compo
             isSelected={false}
         />)
         expect(component.root.findAllByType(Icon).length).to.be.eq(1)
+        component.unmount()
+    })
+    it('Should render without crashing when icon is office related', () => {
+        const component = renderer.create(<DisplayNameCell
+            icons={{}}
+            content={{ Id: 123, Path: '', Name: '', Type: 'Folder', Icon: 'word' }}
+            isSelected={false}
+        />)
+        expect(component.root.findAllByType(Icon).length).to.be.eq(0)
         component.unmount()
     })
 })
