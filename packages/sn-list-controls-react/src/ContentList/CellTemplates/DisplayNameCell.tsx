@@ -1,6 +1,7 @@
-import { Icon, TableCell } from '@material-ui/core'
+import Icon from '@material-ui/core/Icon'
+import TableCell from '@material-ui/core/TableCell'
 import { GenericContent } from '@sensenet/default-content-types'
-import React = require('react')
+import * as React from 'react'
 
 export interface DisplayNameCellProps<T extends GenericContent> {
     content: T

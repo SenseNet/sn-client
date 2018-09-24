@@ -1,6 +1,6 @@
-import { TableCell } from '@material-ui/core'
+import TableCell from '@material-ui/core/TableCell'
 import { GenericContent } from '@sensenet/default-content-types'
-import React = require('react')
+import * as React from 'react'
 
 export interface DefaultCellProps<T extends GenericContent, K extends keyof T> {
     isSelected: boolean

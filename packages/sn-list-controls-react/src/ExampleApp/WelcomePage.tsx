@@ -1,5 +1,6 @@
-import { Typography } from '@material-ui/core'
-import React = require('react')
+import Typography from '@material-ui/core/Typography'
+import * as React from 'react'
+
 import { ContentListDemo } from './ContentListDemo'
 
 export const WelcomePage: React.StatelessComponent = (props: any) => (<div style={{padding: '2em'}}>

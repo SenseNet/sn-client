@@ -1,4 +1,4 @@
-import { IconButton } from '@material-ui/core'
+import IconButton from '@material-ui/core/IconButton'
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
 import { ActionsCell } from '../../ContentList/CellTemplates/ActionsCell'

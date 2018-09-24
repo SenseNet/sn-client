@@ -1,6 +1,14 @@
-import { Checkbox, FormControlLabel, FormGroup, Paper, TableCell, TextField, Tooltip } from '@material-ui/core'
+import Checkbox from '@material-ui/core/Checkbox'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import FormGroup from '@material-ui/core/FormGroup'
+import Paper from '@material-ui/core/Paper'
+import TableCell from '@material-ui/core/TableCell'
+import TextField from '@material-ui/core/TextField'
+import Tooltip from '@material-ui/core/Tooltip'
+
 import { GenericContent, SchemaStore } from '@sensenet/default-content-types'
-import React = require('react')
+import * as React from 'react'
+
 import { ContentList, ContentListProps } from '../ContentList'
 
 export interface ContentListDemoState extends ContentListProps<GenericContent> {

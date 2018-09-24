@@ -1,6 +1,6 @@
 import IconButton from '@material-ui/core/IconButton'
 import TableCell from '@material-ui/core/TableCell'
-import { MoreVert } from '@material-ui/icons'
+import MoreVert from '@material-ui/icons/MoreVert'
 import { GenericContent, IActionModel } from '@sensenet/default-content-types'
 import * as React from 'react'
 

@@ -1,4 +1,4 @@
-import { Icon } from '@material-ui/core'
+import Icon from '@material-ui/core/Icon'
 import {expect} from 'chai'
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
