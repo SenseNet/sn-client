@@ -1,5 +1,6 @@
-import { IconButton } from '@material-ui/core'
-import { ZoomIn, ZoomOut } from '@material-ui/icons'
+import IconButton from '@material-ui/core/IconButton'
+import ZoomIn from '@material-ui/icons/ZoomIn'
+import ZoomOut from '@material-ui/icons/ZoomOut'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { componentType } from '../../services'

@@ -1,5 +1,17 @@
-import { Divider, IconButton, Menu, MenuItem, MobileStepper } from '@material-ui/core'
-import { AspectRatio, Code, Error, ZoomIn, ZoomOut, ZoomOutMap } from '@material-ui/icons'
+import Divider from '@material-ui/core/Divider'
+import IconButton from '@material-ui/core/IconButton'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+import MobileStepper from '@material-ui/core/MobileStepper'
+
+import AspectRatio from '@material-ui/icons/AspectRatio'
+import Code from '@material-ui/icons/Code'
+import Error from '@material-ui/icons/Error'
+
+import ZoomIn from '@material-ui/icons/ZoomIn'
+import ZoomOut from '@material-ui/icons/ZoomOut'
+import ZoomOutMap from '@material-ui/icons/ZoomOutMap'
+
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { componentType } from '../../services'

@@ -1,5 +1,5 @@
-import { IconButton } from '@material-ui/core'
-import { FileDownload } from '@material-ui/icons'
+import IconButton from '@material-ui/core/IconButton'
+import CloudDownload from '@material-ui/icons/CloudDownload'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { DocumentData } from '../../models'
@@ -44,7 +44,7 @@ export class DownloadComponent extends React.Component<componentType<typeof mapS
         return (
             <div style={{ display: 'inline-block' }}>
                 <IconButton color="inherit" title={this.props.title}>
-                    <FileDownload onClick={() => this.props.download(this.props.document)} />
+                    <CloudDownload onClick={() => this.props.download(this.props.document)} />
                 </IconButton>
             </div>)
     }

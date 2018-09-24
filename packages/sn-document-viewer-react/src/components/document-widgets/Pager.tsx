@@ -1,9 +1,16 @@
-import { IconButton, TextField } from '@material-ui/core'
-import { FirstPage, LastPage, NavigateBefore, NavigateNext } from '@material-ui/icons'
-import * as _ from 'lodash'
+import IconButton from '@material-ui/core/IconButton'
+import TextField from '@material-ui/core/TextField'
+
+import FirstPage from '@material-ui/icons/FirstPage'
+import LastPage from '@material-ui/icons/LastPage'
+import NavigateBefore from '@material-ui/icons/NavigateBefore'
+import NavigateNext from '@material-ui/icons/NavigateNext'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { RootReducerType, setActivePages } from '../../store'
+
+// tslint:disable-next-line:no-var-requires
+const debounce = require('lodash.debounce')
 
 /**
  * maps state fields from the store to component props
@@ -45,7 +52,7 @@ export class PagerComponent extends React.Component<ReturnType<typeof mapStateTo
     /** the component state */
     public state = { currentPage: this.props.activePages[0], lastPage: this.props.pageCount }
 
-    private setPage = _.debounce(() => {
+    private setPage = debounce(() => {
         this.props.setActivePages([this.state.currentPage])
     }, 200).bind(this)
 

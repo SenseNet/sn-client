@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Provider } from 'react-redux'
 
-import { Dashboard } from '@material-ui/icons'
+import Dashboard from '@material-ui/icons/Dashboard'
 import { expect } from 'chai'
 import * as renderer from 'react-test-renderer'
 import { ToggleShapesWidget } from '../../../src/components/document-widgets/ToggleShapes'

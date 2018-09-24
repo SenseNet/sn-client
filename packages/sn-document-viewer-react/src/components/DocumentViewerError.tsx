@@ -1,4 +1,4 @@
-import { Typography } from '@material-ui/core'
+import Typography from '@material-ui/core/Typography'
 import React = require('react')
 import { connect } from 'react-redux'
 import { PreviewState } from '../Enums'

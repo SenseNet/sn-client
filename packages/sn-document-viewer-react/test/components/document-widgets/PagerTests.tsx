@@ -1,8 +1,13 @@
 import * as React from 'react'
 import { Provider } from 'react-redux'
 
-import { TextField } from '@material-ui/core'
-import { FirstPage, LastPage, NavigateBefore, NavigateNext } from '@material-ui/icons'
+import TextField from '@material-ui/core/TextField'
+
+import FirstPage from '@material-ui/icons/FirstPage'
+import LastPage from '@material-ui/icons/LastPage'
+import NavigateBefore from '@material-ui/icons/NavigateBefore'
+import NavigateNext from '@material-ui/icons/NavigateNext'
+
 import { expect } from 'chai'
 import * as renderer from 'react-test-renderer'
 import { PagerWidget } from '../../../src/components/document-widgets/Pager'

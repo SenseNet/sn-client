@@ -1,5 +1,5 @@
-import { IconButton } from '@material-ui/core'
-import { PictureInPicture } from '@material-ui/icons'
+import IconButton from '@material-ui/core/IconButton'
+import PictureInPicture from '@material-ui/icons/PictureInPicture'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { componentType } from '../../services'

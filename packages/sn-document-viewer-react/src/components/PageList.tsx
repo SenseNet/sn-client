@@ -1,11 +1,13 @@
-import { Grid } from '@material-ui/core'
-import * as _ from 'lodash'
+import Grid from '@material-ui/core/Grid'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { PreviewImageData } from '../models'
 import { componentType, ImageUtil } from '../services'
 import { RootReducerType, ZoomMode } from '../store'
 import { Page } from './'
+
+// tslint:disable-next-line:no-var-requires
+const debounce = require('lodash.debounce')
 
 /**
  * maps state fields from the store to component props
@@ -77,7 +79,7 @@ class PageList extends React.Component<componentType<typeof mapStateToProps, typ
 
     /** event that will be triggered before mounting the component */
     public componentWillMount() {
-        this.onResize = _.debounce(() => this.setupViewPort(), 50).bind(this)
+        this.onResize = debounce(() => this.setupViewPort(), 50).bind(this)
         addEventListener('resize', this.onResize)
         this.onResize()
         this.canUpdate = true
@@ -86,7 +88,7 @@ class PageList extends React.Component<componentType<typeof mapStateToProps, typ
     /** event that will be triggered after mounting the component */
     public componentDidMount() {
         this.setupViewPort()
-        this.onScroll = _.debounce(() => this.setupVisiblePages(this.props), 10).bind(this)
+        this.onScroll = debounce(() => this.setupVisiblePages(this.props), 10).bind(this)
         this.viewPort && this.viewPort.addEventListener('scroll', this.onScroll)
         this.onScroll()
     }

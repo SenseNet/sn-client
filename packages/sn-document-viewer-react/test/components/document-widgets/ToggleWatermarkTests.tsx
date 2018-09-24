@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Provider } from 'react-redux'
 
-import { BrandingWatermark } from '@material-ui/icons'
+import BrandingWatermark from '@material-ui/icons/BrandingWatermark'
 import { expect } from 'chai'
 import * as renderer from 'react-test-renderer'
 import { ToggleWatermarkWidget } from '../../../src/components/document-widgets/ToggleWatermark'

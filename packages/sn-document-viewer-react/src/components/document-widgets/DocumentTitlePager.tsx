@@ -1,8 +1,12 @@
-import { ClickAwayListener, TextField, Typography } from '@material-ui/core'
-import _ = require('lodash')
+import ClickAwayListener from '@material-ui/core/ClickAwayListener'
+import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { RootReducerType, setActivePages } from '../../store'
+
+// tslint:disable-next-line:no-var-requires
+const debounce = require('lodash.debounce')
 
 /**
  * maps state fields from the store to component props
@@ -54,7 +58,7 @@ export class DocumentTitlePagerComponent extends React.Component<ReturnType<type
         focused: false,
     }
 
-    private setPage = _.debounce(() => {
+    private setPage = debounce(() => {
         this.props.setActivePages([this.state.currentPage])
     }, 200).bind(this)
 

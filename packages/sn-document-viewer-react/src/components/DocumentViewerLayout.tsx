@@ -1,4 +1,4 @@
-import { Drawer } from '@material-ui/core'
+import Drawer from '@material-ui/core/Drawer'
 import { SlideProps } from '@material-ui/core/Slide'
 import React = require('react')
 import { connect } from 'react-redux'

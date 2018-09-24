@@ -1,5 +1,7 @@
-import { Grid, TextField } from '@material-ui/core'
-import { Search } from '@material-ui/icons'
+import Grid from '@material-ui/core/Grid'
+import TextField from '@material-ui/core/TextField'
+
+import Search from '@material-ui/icons/Search'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { componentType } from '../../services'

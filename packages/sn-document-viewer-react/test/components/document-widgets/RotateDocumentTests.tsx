@@ -1,7 +1,8 @@
+import RotateLeft from '@material-ui/icons/RotateLeft'
+import RotateRight from '@material-ui/icons/RotateRight'
 import * as React from 'react'
 import { Provider } from 'react-redux'
 
-import { RotateLeft, RotateRight } from '@material-ui/icons'
 import { expect } from 'chai'
 import * as renderer from 'react-test-renderer'
 import { RotateDocumentWidget } from '../../../src/components/document-widgets/RotateDocument'

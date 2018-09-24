@@ -1,5 +1,5 @@
-import { IconButton } from '@material-ui/core'
-import { Dashboard } from '@material-ui/icons'
+import IconButton from '@material-ui/core/IconButton'
+import Dashboard from '@material-ui/icons/Dashboard'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { componentType } from '../../services'

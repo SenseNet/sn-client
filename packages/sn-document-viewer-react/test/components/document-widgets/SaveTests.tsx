@@ -1,4 +1,4 @@
-import { Save } from '@material-ui/icons'
+import Save from '@material-ui/icons/Save'
 import * as React from 'react'
 import { Provider } from 'react-redux'
 import * as renderer from 'react-test-renderer'

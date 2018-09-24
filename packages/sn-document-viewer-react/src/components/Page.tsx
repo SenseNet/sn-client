@@ -1,5 +1,5 @@
-import { Paper } from '@material-ui/core'
-import { CircularProgress } from '@material-ui/core'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import Paper from '@material-ui/core/Paper'
 import React = require('react')
 import { connect } from 'react-redux'
 import { DocumentData, PreviewImageData } from '../models'
