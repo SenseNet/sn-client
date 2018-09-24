@@ -1,0 +1,117 @@
+{
+  "name": "@sensenet/icons-react",
+  "version": "1.0.0",
+  "description": "A React component rendering icons for sensenet.",
+  "main": "dist/index.js",
+  "scripts": {
+    "precommit": "npm run test",
+    "commit": "git-cz",
+    "pretest": "tslint --project tsconfig.test.json && rimraf temp && tsc -p tsconfig.test.json  && cpx \"src/assets/**/*.*\" temp/src/assets",
+    "test": "rimraf coverage && nyc mocha --require ignore-styles -p tsconfig.test.json ./temp/test/index.js",
+    "check-coverage": "istanbul check-coverage ",
+    "report-coverage": "cat ./coverage/lcov.info | codecov",
+    "prebuild": "tslint --project tsconfig.json",
+    "build": "rimraf dist && tsc -p tsconfig.json && cpx \"src/assets/**/*.*\" dist/assets",
+    "prepublishOnly": "npm run test && npm run build",
+    "publish:development": "npm run build && npm t && npm run typedoc && npm publish --tag development",
+    "typedoc": "typedoc --mode modules --out documentation src --exclude **/index.ts --theme c:/Users/%USERNAME%/AppData/Roaming/npm/node_modules/@sensenet/typedoc-theme/sn-theme"
+  },
+  "files": [
+    "dist",
+    "src",
+    "test",
+    "documentation",
+    "coverage"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SenseNet/sn-icons-react.git"
+  },
+  "keywords": [
+    "sensenet",
+    "ecm",
+    "react",
+    "reactjs",
+    "icons",
+    "components"
+  ],
+  "author": "SenseNet",
+  "license": "GPL-2.0",
+  "nyc": {
+    "cache": true,
+    "extension": [
+      ".tsx",
+      ".ts",
+      ".d.ts"
+    ],
+    "include": "temp/src/components/**/*.*",
+    "check-coverage": true,
+    "exclude": [
+      "**/*.css",
+      "temp/test/**/*.*",
+      "**/index.js"
+    ],
+    "reporter": [
+      "lcov",
+      "text-summary",
+      "json"
+    ]
+  },
+  "bugs": {
+    "url": "https://github.com/SenseNet/sn-icons-react/issues"
+  },
+  "homepage": "https://sensenet.com",
+  "dependencies": {
+    "@material-ui/core": "^1.1.0",
+    "@material-ui/icons": "^1.0.0-beta.42",
+    "react-test-renderer": "^16.4.1"
+  },
+  "devDependencies": {
+    "@types/mocha": "^5.2.1",
+    "@types/node": "^10.3.1",
+    "@types/react": "^16.0.27",
+    "@types/react-dom": "^16.0.0",
+    "@types/react-test-renderer": "^16.0.1",
+    "autoprefixer": "^8.0.0",
+    "case-sensitive-paths-webpack-plugin": "^2.1.1",
+    "chalk": "2.4.1",
+    "codecov.io": "^0.1.6",
+    "cpx": "^1.5.0",
+    "css-loader": "^0.28.4",
+    "dotenv": "6.0.0",
+    "extract-text-webpack-plugin": "^3.0.0",
+    "file-loader": "^1.0.0-rc.0",
+    "fs-extra": "6.0.1",
+    "html-webpack-plugin": "3.2.0",
+    "ignore-styles": "^5.0.1",
+    "mocha": "^5.0.0",
+    "nyc": "^12.0.2",
+    "object-assign": "4.1.1",
+    "postcss-flexbugs-fixes": "3.3.1",
+    "postcss-loader": "^2.0.6",
+    "promise": "8.0.1",
+    "react": "^16.2.0",
+    "react-dev-utils": "^5.0.0",
+    "react-dom": "^16.2.0",
+    "rimraf": "^2.6.1",
+    "source-map-loader": "^0.2.1",
+    "style-loader": "^0.20.1",
+    "sw-precache-webpack-plugin": "^0.11.3",
+    "ts-loader": "^4.2.0",
+    "tslint": "^5.2.0",
+    "typescript": "^3.0.1",
+    "url-loader": "^1.0.1",
+    "webpack": "^4.11.1",
+    "webpack-dev-server": "^3.1.4",
+    "webpack-manifest-plugin": "2.0.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "config": {
+    "commitizen": {
+      "path": "sensenet-kfi-cz-conventional-changelog"
+    }
+  },
+  "typings": "./dist/index.d.ts"
+}
