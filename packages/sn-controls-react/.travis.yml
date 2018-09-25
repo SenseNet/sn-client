@@ -20,7 +20,7 @@ script:
   - npm test
 after_script: greenkeeper-lockfile-upload
 after_success:
-  - npm run report-coverage
+  - bash <(curl -s https://codecov.io/bash)
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/

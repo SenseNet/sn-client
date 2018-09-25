@@ -3,7 +3,7 @@
  *
  */ /** */
 import { DateTimePicker as MUIDateTimePicker } from 'material-ui-pickers'
-import DateFnsUtils from 'material-ui-pickers/utils/date-fns-utils'
+import MomentUtils from 'material-ui-pickers/utils/moment-utils'
 import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider'
 import * as moment from 'moment'
 import * as React from 'react'
@@ -72,7 +72,7 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, { value
         switch (this.props['data-actionName']) {
             case 'edit':
                 return (
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <MuiPickersUtilsProvider utils={MomentUtils}>
                         <Fragment>
                             <MUIDateTimePicker
                                 value={dateValue}
@@ -89,7 +89,7 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, { value
                 )
             case 'new':
                 return (
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <MuiPickersUtilsProvider utils={MomentUtils}>
                         <Fragment>
                             <MUIDateTimePicker
                                 value={dateValue}

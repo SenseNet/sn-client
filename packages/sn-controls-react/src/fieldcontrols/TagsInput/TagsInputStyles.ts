@@ -1,3 +1,6 @@
+/**
+ * Styles for the Tags input
+ */
 export const styles = {
     input: {},
     error: {},

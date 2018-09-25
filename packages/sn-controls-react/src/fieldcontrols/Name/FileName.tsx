@@ -6,7 +6,7 @@ import * as React from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactFileNameFieldSetting } from './FileNameFieldSetting'
 
-import { FormControl } from '@material-ui/core'
+import FormControl from '@material-ui/core/FormControl'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
 import Radium from 'radium'
@@ -66,6 +66,10 @@ export class FileName extends React.Component<FileNameProps, { value, isValid, e
         // tslint:disable-next-line:no-string-literal
         onChange(this.props.name, `${value}`)
     }
+
+    /**
+     * Returns an extension from a file name
+     */
     public getExtensionFromValue = (filename) => {
         return filename.substr(filename.lastIndexOf('.') + 1)
     }

@@ -36,8 +36,7 @@
         "quotemark": [true, "single", "jsx-double"],
         "semicolon": [true, "never"],
         "interface-name": [true, "never-prefix"],
-        "no-console": [false, "log", "error"],
-        "no-unused-variable": [true, {"ignore-pattern": "^_"}]
+        "no-console": [false, "log", "error"]
     },
     "rulesDirectory": []
 }

@@ -6,7 +6,7 @@ import * as React from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactRichTextEditorFieldSetting } from './RichTextEditorFieldSetting'
 
-import * as ReactQuill from 'react-quill'
+import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 
 import Radium from 'radium'
@@ -70,24 +70,24 @@ export class RichTextEditor extends React.Component<RichTextEditorProps, { value
             case 'edit':
                 return (
                     <ReactQuill
-                        name={this.props.name}
-                        label={
-                            this.props.required
-                                ? this.props['data-labelText'] + ' *'
-                                : this.props['data-labelText']
-                        }
+                        // name={this.props.name}
+                        // label={
+                        //     this.props.required
+                        //         ? this.props['data-labelText'] + ' *'
+                        //         : this.props['data-labelText']
+                        // }
                         className={this.props.className}
                         // placeholder={this.props['data-placeHolderText']}
                         // placeHolderStyle?: object
                         style={this.props.style}
                         value={this.state.value}
                         readOnly={this.props.readOnly}
-                        required={this.props.required}
-                        disabled={this.props.readOnly}
-                        error={this.props['data-errorText']}
-                        s={12}
-                        m={12}
-                        l={12}
+                        // required={this.props.required}
+                        // disabled={this.props.readOnly}
+                        // error={this.props['data-errorText']}
+                        // s={12}
+                        // m={12}
+                        // l={12}
                         modules={modules}
                         formats={formats}
                         onChange={this.handleChange}
@@ -96,24 +96,24 @@ export class RichTextEditor extends React.Component<RichTextEditorProps, { value
             case 'new':
                 return (
                     <ReactQuill
-                        name={this.props.name}
-                        label={
-                            this.props.required
-                                ? this.props['data-labelText'] + ' *'
-                                : this.props['data-labelText']
-                        }
+                        // name={this.props.name}
+                        // label={
+                        //     this.props.required
+                        //         ? this.props['data-labelText'] + ' *'
+                        //         : this.props['data-labelText']
+                        // }
                         className={this.props.className}
                         // placeholder={this.props['data-placeHolderText']}
                         // placeHolderStyle?: object
                         style={this.props.style}
                         defaultValue={this.props['data-defaultValue']}
                         readOnly={this.props.readOnly}
-                        required={this.props.required}
-                        disabled={this.props.readOnly}
-                        error={this.props['data-errorText']}
-                        s={12}
-                        m={12}
-                        l={12}
+                        // required={this.props.required}
+                        // disabled={this.props.readOnly}
+                        // error={this.props['data-errorText']}
+                        // s={12}
+                        // m={12}
+                        // l={12}
                         modules={modules}
                         formats={formats}
                         onChange={this.handleChange}

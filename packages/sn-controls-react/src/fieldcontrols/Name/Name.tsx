@@ -7,7 +7,8 @@ import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../Client
 import { ReactShortTextFieldSetting } from '../ShortText/ShortTextFieldSetting'
 import { ReactNameFieldSetting } from './NameFieldSetting'
 
-import { FormControl, FormHelperText } from '@material-ui/core'
+import FormControl from '@material-ui/core/FormControl'
+import FormHelperText from '@material-ui/core/FormHelperText'
 import TextField from '@material-ui/core/TextField'
 import Radium from 'radium'
 

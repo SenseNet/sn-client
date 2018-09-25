@@ -5,14 +5,10 @@
 import Chip from '@material-ui/core/Chip'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
-import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp'
-import CancelIcon from '@material-ui/icons/Cancel'
-import ClearIcon from '@material-ui/icons/Clear'
 import { PathHelper } from '@sensenet/client-utils'
+import { MaterialIcon } from '@sensenet/icons-react'
 import * as React from 'react'
 import Select from 'react-select'
-import 'react-select/dist/react-select.css'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactReferenceFieldSetting } from '../ReferenceFieldSetting'
 import { Option } from './TagsInputOptions'
@@ -21,8 +17,6 @@ import { styles } from './TagsInputStyles'
 import './TagsInput.css'
 
 import { IContent, IODataCollectionResponse } from '@sensenet/client-core'
-import * as injectTapEventPlugin from 'react-tap-event-plugin'
-injectTapEventPlugin()
 
 /**
  * Interface for TagsInput properties
@@ -79,9 +73,9 @@ export class TagsInput extends React.Component<TagsInputProps, { label, multiLab
             optionComponent={Option}
             noResultsText={<Typography>{'No results found'}</Typography>}
             arrowRenderer={(arrowProps) => {
-                return arrowProps.isOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />
+                return arrowProps.isOpen ? <MaterialIcon iconName="ArrowDropUpIcon" /> : <MaterialIcon iconName="ArrowDropDownIcon" />
             }}
-            clearRenderer={() => <ClearIcon />}
+            clearRenderer={() => <MaterialIcon iconName="ClearIcon" />}
             valueComponent={(valueProps) => {
                 const { value, children, onRemove } = valueProps
 
@@ -97,7 +91,7 @@ export class TagsInput extends React.Component<TagsInputProps, { label, multiLab
                             tabIndex={-1}
                             label={children}
                             // className={classes.chip}
-                            deleteIcon={<CancelIcon onTouchEnd={onDelete} />}
+                            deleteIcon={<MaterialIcon iconName="CancelIcon" onClick={onDelete} />}
                             onDelete={onDelete}
                         />
                     )

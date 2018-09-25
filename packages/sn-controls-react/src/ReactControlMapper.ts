@@ -38,9 +38,8 @@ const clientConfigFactory = (fieldSettings: FieldSetting) => {
 // const repository = new Repository()
 
 /**
- * @description A static Control Mapper instance, used to create the mapping between sensenet ECM ContentTypes and FieldSettings and React components.
+ * A static Control Mapper instance, used to create the mapping between sensenet ECM ContentTypes and FieldSettings and React components.
  */
-
 export const reactControlMapper = (repository: Repository) => new ControlMapper(repository, React.Component, clientConfigFactory, ViewControls.EditView, FieldControls.ShortText)
     .setupFieldSettingDefault(NumberFieldSetting, (setting) => {
         return FieldControls.Number

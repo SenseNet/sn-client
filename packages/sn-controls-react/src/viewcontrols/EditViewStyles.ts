@@ -1,3 +1,6 @@
+/**
+ * Styles for the 'Edit' view
+ */
 export const styles = {
     container: {
         margin: '0 auto',
