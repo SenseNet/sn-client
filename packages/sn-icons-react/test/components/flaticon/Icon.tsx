@@ -1,6 +1,7 @@
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
 import { FlatIcon } from '../../../src/components/flaticon/Icon'
+import { Icon, iconType } from '../../../src/components/Icon'
 /**
  * Flat Icon Component tests
  */
@@ -51,6 +52,14 @@ export const flatIconTests: Mocha.Suite = describe('Icon component', () => {
             <FlatIcon
                 onClick={(e) => console.log(e.target)}
                 iconName="workspace" >
+            </FlatIcon >)
+    })
+    it('Should render without crashing with children component', () => {
+        c = renderer.create(
+            <FlatIcon
+                onClick={(e) => console.log(e.target)}
+                iconName="workspace" >
+                <Icon type={iconType.materialui} iconName="forward" />
             </FlatIcon >)
     })
 })

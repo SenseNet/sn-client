@@ -26,6 +26,9 @@ export class MaterialIcon extends React.Component<MaterialIconProps, {}> {
             style={style ? style : null}
             onClick={onClick ? onClick : null}
             className={className ? className : null}
-        >{iconName}</Icon>
+        >
+            {iconName}
+            {this.props.children ? this.props.children : null}
+        </Icon>
     }
 }

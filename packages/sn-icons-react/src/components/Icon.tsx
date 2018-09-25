@@ -50,13 +50,13 @@ export class Icon extends React.Component<IconProps, {}> {
 
         switch (type) {
             case iconType.materialui:
-                return <MaterialIcon color={color} fontSize={fontSize} classes={classes} iconName={iconName} style={style} onClick={onClick} className={className}></MaterialIcon>
+                return <MaterialIcon color={color} fontSize={fontSize} classes={classes} iconName={iconName} style={style} onClick={onClick} className={className}>{this.props.children ? this.props.children : null}</MaterialIcon>
             case iconType.flaticon:
-                return <FlatIcon color={color} fontSize={fontSize} classes={classes} iconName={iconName} style={style} onClick={onClick}></FlatIcon>
+                return <FlatIcon color={color} fontSize={fontSize} classes={classes} iconName={iconName} style={style} onClick={onClick}>{this.props.children ? this.props.children : null}</FlatIcon>
             case iconType.fontawesome:
-                return <FontAwesomeIcon color={color} fontSize={fontSize} classes={classes} iconName={iconName} style={style} onClick={onClick}></FontAwesomeIcon>
+                return <FontAwesomeIcon color={color} fontSize={fontSize} classes={classes} iconName={iconName} style={style} onClick={onClick}>{this.props.children ? this.props.children : null}</FontAwesomeIcon>
             case iconType.image:
-                return <ImageIcon iconName={iconName} size={size} style={style} onClick={onClick}></ImageIcon>
+                return <ImageIcon iconName={iconName} size={size} style={style} onClick={onClick}>{this.props.children ? this.props.children : null}</ImageIcon>
             default:
                 return <MaterialIcon
                     iconName={iconName}

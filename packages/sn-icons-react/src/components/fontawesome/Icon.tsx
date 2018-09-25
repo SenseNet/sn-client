@@ -27,6 +27,8 @@ export class FontAwesomeIcon extends React.Component<FontAwesomeIconProps, {}> {
             className={`fa fa-${iconName}`}
             style={style ? style : null}
             onClick={onClick ? onClick : null}
-        />
+        >
+            {this.props.children ? this.props.children : null}
+        </Icon>
     }
 }

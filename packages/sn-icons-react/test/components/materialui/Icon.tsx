@@ -1,5 +1,6 @@
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
+import { Icon, iconType } from '../../../src/components/Icon'
 import { MaterialIcon } from '../../../src/components/materialui/Icon'
 /**
  * MaterialUI Icon Component tests
@@ -60,5 +61,15 @@ export const materialuiIconTests: Mocha.Suite = describe('Icon component', () =>
                 className="workspace"
                 iconName="workspace" >
             </MaterialIcon >)
+    })
+    it('Should render without crashing with overlay', () => {
+        c = renderer.create(
+            <MaterialIcon
+                color="primary"
+                fontSize="default"
+                classes={{}}
+                iconName="workspace">
+                <Icon type={iconType.materialui} iconName="forward" />
+            </MaterialIcon>)
     })
 })

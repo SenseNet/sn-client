@@ -57,4 +57,48 @@ export const pageTests: Mocha.Suite = describe('Icon component', () => {
                 iconName="workspace">
             </Icon>)
     })
+    it('Should render without crashing with overlay', () => {
+        c = renderer.create(
+            <Icon
+                color="primary"
+                fontSize="default"
+                classes={{}}
+                type={iconType.materialui}
+                iconName="workspace">
+                <Icon type={iconType.materialui} iconName="forward" />
+            </Icon>)
+    })
+    it('Should render without crashing with overlay', () => {
+        c = renderer.create(
+            <Icon
+                color="primary"
+                fontSize="default"
+                classes={{}}
+                type={iconType.flaticon}
+                iconName="workspace">
+                <Icon type={iconType.materialui} iconName="forward" />
+            </Icon>)
+    })
+    it('Should render without crashing with overlay', () => {
+        c = renderer.create(
+            <Icon
+                color="primary"
+                fontSize="default"
+                classes={{}}
+                type={iconType.fontawesome}
+                iconName="workspace">
+                <Icon type={iconType.materialui} iconName="forward" />
+            </Icon>)
+    })
+    it('Should render without crashing with overlay', () => {
+        c = renderer.create(
+            <Icon
+                color="primary"
+                fontSize="default"
+                classes={{}}
+                type={iconType.image}
+                iconName="workspace">
+                <Icon type={iconType.materialui} iconName="forward" />
+            </Icon>)
+    })
 })

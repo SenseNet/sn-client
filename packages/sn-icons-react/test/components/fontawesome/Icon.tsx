@@ -1,6 +1,7 @@
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
 import { FontAwesomeIcon } from '../../../src/components/fontawesome/Icon'
+import { Icon, iconType } from '../../../src/components/Icon'
 /**
  * FontAwesome Icon Component tests
  */
@@ -51,6 +52,14 @@ export const fontawesomeIconTests: Mocha.Suite = describe('Icon component', () =
             <FontAwesomeIcon
                 onClick={(e) => console.log(e.target)}
                 iconName="workspace" >
+            </FontAwesomeIcon >)
+    })
+    it('Should render without crashing with children component', () => {
+        c = renderer.create(
+            <FontAwesomeIcon
+                onClick={(e) => console.log(e.target)}
+                iconName="workspace" >
+                <Icon type={iconType.materialui} iconName="forward" />
             </FontAwesomeIcon >)
     })
 })

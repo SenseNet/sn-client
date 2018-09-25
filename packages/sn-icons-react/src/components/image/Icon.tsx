@@ -24,9 +24,13 @@ export class ImageIcon extends React.Component<ImageIconProps, {}> {
             backgroundImage: `url(${image})`,
             width: `${imgSize}px`,
             height: `${imgSize}px`,
+            position: 'relative',
         }
         const styles = style ? style : null
-        return <span style={{ ...styler, ...styles }}
-            onClick={onClick ? onClick : null} />
+        return <span
+            style={{ ...styler as any, ...styles }}
+            onClick={onClick ? onClick : null} >
+            {this.props.children ? this.props.children : null}
+        </span>
     }
 }
