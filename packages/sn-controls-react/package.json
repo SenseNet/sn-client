@@ -76,6 +76,7 @@
     "autoprefixer": "^9.1.5",
     "chalk": "2.4.1",
     "cpx": "^1.5.0",
+    "date-fns": "^2.0.0-alpha.20",
     "dotenv": "6.0.0",
     "fs-extra": "7.0.0",
     "mocha": "^5.2.0",
