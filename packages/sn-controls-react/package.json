@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/controls-react",
-  "version": "2.2.4",
+  "version": "2.2.5",
   "description": "React controls for sensenet",
   "main": "dist/index.js",
   "scripts": {
