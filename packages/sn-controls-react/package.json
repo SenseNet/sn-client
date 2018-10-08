@@ -85,7 +85,7 @@
     "postcss-flexbugs-fixes": "4.1.0",
     "promise": "8.0.2",
     "react": "^16.5.2",
-    "react-dev-utils": "^5.0.2",
+    "react-dev-utils": "^6.0.3",
     "react-dom": "^16.5.2",
     "rimraf": "^2.6.2",
     "tslint": "^5.11.0",
