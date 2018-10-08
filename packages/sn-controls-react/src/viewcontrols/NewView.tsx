@@ -89,9 +89,7 @@ class NewView extends React.Component<NewViewProps, { schema, dataSource }> {
                 e.preventDefault()
                 if (onSubmit) {
                     const c = fields
-                    if (this.formIsValid()) {
-                        onSubmit(path, c, schema.schema.ContentTypeName)
-                    }
+                    onSubmit(path, c, schema.schema.ContentTypeName)
                 }
                 return submitCallback ? this.props.submitCallback() : null
             }
@@ -131,7 +129,7 @@ class NewView extends React.Component<NewViewProps, { schema, dataSource }> {
                         <MediaQuery minDeviceWidth={700}>
                             {(matches) =>
                                 matches ? <Button color="default" style={{ marginRight: 20 }} onClick={() => this.handleCancel()}>Cancel</Button> :
-                                null
+                                    null
                             }
                         </MediaQuery>
                         <Button type="submit" variant="raised" color="secondary">Submit</Button>
