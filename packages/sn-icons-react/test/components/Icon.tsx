@@ -50,6 +50,12 @@ export const pageTests: Mocha.Suite = describe('Icon component', () => {
     it('Should render without crashing', () => {
         c = renderer.create(
             <Icon
+                iconName="workspace">
+            </Icon>)
+    })
+    it('Should render without crashing', () => {
+        c = renderer.create(
+            <Icon
                 color="primary"
                 fontSize="default"
                 classes={{}}

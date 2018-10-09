@@ -8,13 +8,13 @@ A React component rendering icons for sensenet supporting [material-ui](https://
 
 ## Usage
 
-There's a base component to handle the different icon types and an enum for the exact types that are supported. Import the base component and the enum to set which icon type you want to use.
+There's a base component to handle the different icon types and an enum for the exact types that are supported. Import the base component and the enum to set which icon type you want to use. With no type param it fallbacks to material-ui as it is the default.
 
 ```ts
-import { Icon, iconType } from '@sensenet/icons-react'
+import { Icon } from '@sensenet/icons-react'
 
 ...
-<Icon type={iconType.materialui} iconName="file">
+<Icon iconName="file">
 ...
 
 ```
@@ -40,7 +40,7 @@ import { Icon, iconType } from '@sensenet/icons-react'
 
 ### FontAwesome icons
 
-Check [FontAwesom icons' page](https://fontawesome.com/icons?d=gallery) to get the name of the icon you need and set it as the ```iconName``` of the component. As optional parameters you can set ```fontSize```, ```color```, ```classes```, ```style```, ```className``` and you can add an eventHandler function to the ```onClick``` param which will called when the icon is clicked.
+Check [FontAwesome icons' page](https://fontawesome.com/icons?d=gallery) to get the name of the icon you need and set it as the ```iconName``` of the component. As optional parameters you can set ```fontSize```, ```color```, ```classes```, ```style```, ```className``` and you can add an eventHandler function to the ```onClick``` param which will called when the icon is clicked.
 
 ```ts
 import { Icon, iconType } from '@sensenet/icons-react'

@@ -1,6 +1,8 @@
 import Icon from '@material-ui/core/Icon'
 import * as React from 'react'
 
+import '../../assets/css/material.css'
+
 interface MaterialIconProps {
     iconName: string,
     color?: 'inherit' | 'primary' | 'secondary' | 'action' | 'error' | 'disabled',

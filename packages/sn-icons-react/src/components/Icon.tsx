@@ -27,8 +27,8 @@ export enum iconType {
 }
 
 interface IconProps {
-    type: iconType,
     iconName: string,
+    type?: iconType,
     color?: 'inherit' | 'primary' | 'secondary' | 'action' | 'error' | 'disabled',
     size?: 16 | 32,
     fontSize?: 'inherit' | 'default',
@@ -47,7 +47,6 @@ export class Icon extends React.Component<IconProps, {}> {
      */
     public render() {
         const { type, color, size, classes, iconName, style, onClick, className, fontSize } = this.props
-
         switch (type) {
             case iconType.materialui:
                 return <MaterialIcon color={color} fontSize={fontSize} classes={classes} iconName={iconName} style={style} onClick={onClick} className={className}>{this.props.children ? this.props.children : null}</MaterialIcon>
