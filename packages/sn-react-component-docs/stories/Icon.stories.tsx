@@ -1,6 +1,6 @@
 import React from "react";
 import { storiesOf, addDecorator } from "@storybook/react";
-import { Icon, iconType } from "../src/components/icons-react/components/Icon";
+import { Icon, iconType } from "../src/components/icons-react/src/components/Icon";
 import { muiTheme } from 'storybook-addon-material-ui';
 import { action } from '@storybook/addon-actions';
 import { withKnobs, text, select } from '@storybook/addon-knobs';
