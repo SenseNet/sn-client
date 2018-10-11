@@ -28,6 +28,7 @@ configureViewport({
 const req = require.context("../stories", true, /.stories.tsx$/);
 function loadStories() {
   addDecorator(muiTheme())
+  require('./welcomeStory')
   req.keys().forEach(filename => req(filename));
 }
 
