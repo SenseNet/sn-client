@@ -71,7 +71,8 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "rimraf src/components && cpx \"node_modules/@sensenet/**/src/**/*.*\" src/components && build-storybook -c .storybook",
     "clean": "rimraf storybook-static",
-    "start": "rimraf src/components && cpx \"node_modules/@sensenet/**/src/**/*.*\" src/components && npm run storybook"
+    "start": "rimraf src/components && cpx \"node_modules/@sensenet/**/src/**/*.*\" src/components && npm run storybook",
+    "create-storybook": "rimraf src/components && cpx \"node_modules/@sensenet/**/src/**/*.*\" src/components && build-storybook -c .storybook"
   },
   "config": {
     "commitizen": {
