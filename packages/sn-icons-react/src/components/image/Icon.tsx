@@ -1,9 +1,23 @@
 import * as React from 'react'
 
 interface ImageIconProps {
+    /**
+     * Name of the icon
+     */
     iconName: string,
+    /**
+     * Size of the icon (only used on image icons)
+     * @default 16
+     *
+     */
     size?: 16 | 32,
+    /**
+     * Style object that is passed to the inner material-ui Icon component
+     */
     style?: object,
+    /**
+     * Called when the icon is clicked
+     */
     onClick?
 }
 /**
