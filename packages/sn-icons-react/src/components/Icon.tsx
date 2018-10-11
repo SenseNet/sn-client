@@ -38,17 +38,17 @@ interface IconProps {
     type?: iconType,
     /**
      * Color of the icon
-     * * @default primary
+     * @default primary
      */
     color?: 'inherit' | 'primary' | 'secondary' | 'action' | 'error' | 'disabled',
     /**
      * Size of the icon (only used on image icons)
-     * * @default 16
+     * @default 16
      */
     size?: 16 | 32,
     /**
      * Font size of the icon (only used on icon font-based icons)
-     * * @default default
+     * @default default
      */
     fontSize?: 'inherit' | 'default',
     /**
