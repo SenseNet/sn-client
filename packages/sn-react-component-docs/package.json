@@ -72,5 +72,10 @@
     "build-storybook": "build-storybook -c .storybook",
     "clean": "rimraf storybook-static",
     "start": "rimraf src/components && cpx \"node_modules/@sensenet/**/src/**/*.*\" src/components && npm run storybook"
+  },
+  "config": {
+    "commitizen": {
+      "path": "sensenet-kfi-cz-conventional-changelog"
+    }
   }
 }
