@@ -5,7 +5,7 @@
   "description": "UI components for building apps upon sensenet implemented in React",
   "main": "index.js",
   "dependencies": {
-    "@sensenet/icons-react": "^1.2.0",
+    "@sensenet/icons-react": "^1.2.3",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-redux": "^5.0.7"
