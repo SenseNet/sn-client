@@ -1,10 +1,10 @@
 import React from "react";
 import { storiesOf, addDecorator } from "@storybook/react";
-import { Icon } from "../src/components/icons-react/src/components/Icon";
-import { FontAwesomeIcon } from '../src/components/icons-react/src/components/fontawesome/Icon';
-import { FlatIcon } from '../src/components/icons-react/src/components/flaticon/Icon';
-import { ImageIcon } from '../src/components/icons-react/src/components/image/Icon';
-import { MaterialIcon } from '../src/components/icons-react/src/components/materialui/Icon';
+import { Icon } from "../src/components/icons-react/components/Icon";
+import { FontAwesomeIcon } from '../src/components/icons-react/components/fontawesome/Icon';
+import { FlatIcon } from '../src/components/icons-react/components/flaticon/Icon';
+import { ImageIcon } from '../src/components/icons-react/components/image/Icon';
+import { MaterialIcon } from '../src/components/icons-react/components/materialui/Icon';
 import { muiTheme } from 'storybook-addon-material-ui';
 import { action } from '@storybook/addon-actions';
 import { withKnobs, text, select } from '@storybook/addon-knobs';
