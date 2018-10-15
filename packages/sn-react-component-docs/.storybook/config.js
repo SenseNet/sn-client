@@ -2,12 +2,13 @@ import React from "react";
 import { addDecorator, configure, setAddon } from "@storybook/react";
 import { muiTheme } from 'storybook-addon-material-ui'
 import { configureViewport, INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
-import { setOptions } from '@storybook/addon-options';
+import { setOptions, withOptions } from '@storybook/addon-options';
 import { setDefaults } from '@storybook/addon-info';
 
 setOptions({
   name: 'sensenet React Component Docs',
-  url: 'https://github.com/sensenet/sn-react-component-docs'
+  url: 'https://github.com/sensenet/sn-react-component-docs',
+  hierarchySeparator: /\/|\./,
 })
 
 setDefaults({
