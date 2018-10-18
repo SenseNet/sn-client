@@ -9,7 +9,7 @@ import { withInfo } from "@storybook/addon-info";
 import { checkA11y } from '@storybook/addon-a11y'
 
 import { Repository } from '@sensenet/client-core'
-import { customSchema } from '../src/schema'
+import { customSchema } from './ViewControl.stories'
 
 import { CheckboxGroup, DisplayName, FileName, Name, Number, ShortText, Textarea, RichTextEditor, DatePicker, DateTimePicker, TimePicker, DropDownList, Password, RadioButtonGroup, TagsInput, AutoComplete } from "../src/components/controls-react";
 import { User } from "@sensenet/default-content-types";
