@@ -14,8 +14,7 @@ module.exports = (baseConfig, env, config /* Storybook 4 default config */) => {
   config.module.rules.push({
     test: /\.tsx?$/,
     include: [
-      path.resolve(__dirname, "../src/components/icons-react"),
-      path.resolve(__dirname, "../src/components/controls-react"),
+      path.resolve(__dirname, "../src"),
       path.resolve(__dirname, "../stories")],
     use: [
       require.resolve("ts-loader"),
