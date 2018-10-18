@@ -17,5 +17,8 @@
     "alwaysStrict": false,
     "skipLibCheck": true,
     "experimentalDecorators": true,
-  }
+  },
+  "typeRoots": [
+    "node_modules/@types","./typings.d.ts"
+  ]
 }
