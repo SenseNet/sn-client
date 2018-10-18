@@ -13,7 +13,10 @@ module.exports = (baseConfig, env, config /* Storybook 4 default config */) => {
 
   config.module.rules.push({
     test: /\.tsx?$/,
-    include: [path.resolve(__dirname, "../src"), path.resolve(__dirname, "../stories")],
+    include: [
+      path.resolve(__dirname, "../src/components/icons-react"),
+      path.resolve(__dirname, "../src/components/controls-react"),
+      path.resolve(__dirname, "../stories")],
     use: [
       require.resolve("ts-loader"),
       require.resolve("react-docgen-typescript-loader"),
@@ -24,7 +27,7 @@ module.exports = (baseConfig, env, config /* Storybook 4 default config */) => {
       loaders: [{ loader: require.resolve('@storybook/addon-storysource/loader'), options: { parser: 'typescript' } }],
       enforce: 'pre',
     },
-    );
+  );
 
 
   config.resolve.extensions.push(".ts", ".tsx");
