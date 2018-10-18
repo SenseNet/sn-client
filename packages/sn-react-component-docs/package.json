@@ -5,7 +5,9 @@
   "description": "UI components for building apps upon sensenet implemented in React",
   "main": "index.js",
   "dependencies": {
+    "@sensenet/controls-react": "^2.3.0",
     "@sensenet/icons-react": "^1.2.3",
+    "@sensenet/redux": "^5.1.1",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-redux": "^5.0.7"
@@ -55,10 +57,14 @@
     "babel-loader": "^8.0.4",
     "babel-runtime": "^6.26.0",
     "cpx": "^1.5.0",
+    "html-loader": "^0.5.5",
     "lerna": "^3.4.0",
+    "markdown-loader": "^4.0.0",
     "moment": "^2.22.2",
     "prettier": "^1.14.3",
+    "raw-loader": "^0.5.1",
     "react-docgen-typescript-loader": "^2.0.3",
+    "redux": "^4.0.1",
     "rimraf": "^2.6.2",
     "storybook-addon-material-ui": "^0.9.0-alpha.16",
     "ts-loader": "^5.1.1",
@@ -70,9 +76,10 @@
   "scripts": {
     "commit": "git-cz",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "rimraf src/components && cpx \"node_modules/@sensenet/**/src/**/*.*\" src/components && build-storybook -c .storybook",
+    "build-storybook": "rimraf src/components && npm run copy-components && build-storybook -c .storybook",
     "clean": "rimraf storybook-static",
-    "start": "rimraf src/components && cpx \"node_modules/@sensenet/**/src/**/*.*\" src/components && npm run storybook"
+    "copy-components": "cpx \"node_modules/@sensenet/icons-react/src/**/*.*\" src/components/icons-react &&cpx \"node_modules/@sensenet/controls-react/src/**/*.*\" src/components/controls-react",
+    "start": "rimraf src/components && npm run copy-components && npm run storybook"
   },
   "config": {
     "commitizen": {
