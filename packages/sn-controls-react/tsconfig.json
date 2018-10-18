@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "esnext",
         "target": "es2015",
         "sourceMap": true,
         "declaration": true,
@@ -21,6 +21,7 @@
         "suppressImplicitAnyIndexErrors": true,
         "noUnusedLocals": true,
         "strict": true,
+        "allowSyntheticDefaultImports": true,
         "skipLibCheck": true
     },
     "exclude": [

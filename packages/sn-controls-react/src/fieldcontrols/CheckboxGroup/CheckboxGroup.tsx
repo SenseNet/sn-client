@@ -2,7 +2,7 @@
  * @module FieldControls
  *
  */ /** */
-import * as React from 'react'
+import React, { Component } from 'react'
 import { ReactChoiceFieldSetting } from '../ChoiceFieldSetting'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 
@@ -20,6 +20,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormGroup from '@material-ui/core/FormGroup'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
+import TextField from '@material-ui/core/TextField'
 
 /**
  * Interface for CheckboxGroup properties
@@ -29,7 +30,7 @@ export interface CheckboxGroupProps extends ReactClientFieldSettingProps, ReactC
 /**
  * Field control that represents a Choice field. Available values will be populated from the FieldSettings.
  */
-export class CheckboxGroup extends React.Component<CheckboxGroupProps, { value }> {
+export class CheckboxGroup extends Component<CheckboxGroupProps, { value }> {
     /**
      * constructor
      * @param {object} props
@@ -51,13 +52,13 @@ export class CheckboxGroup extends React.Component<CheckboxGroupProps, { value }
         const index = value.indexOf(newValue)
         if (this.props['data-allowMultiple']) {
             if (index > -1) {
-                checked[index].splice(index, 1)
+                checked.splice(index, 1)
             } else {
                 checked.push(newValue)
             }
         } else {
             if (index > -1) {
-                checked[index].splice(index, 1)
+                checked.splice(index, 1)
             } else {
                 checked[0] = newValue
             }
@@ -72,18 +73,25 @@ export class CheckboxGroup extends React.Component<CheckboxGroupProps, { value }
      * @param {string} item
      */
     public isChecked(item) {
-        return this.state.value.indexOf(item) > -1
+        let checked = false
+        // tslint:disable-next-line:prefer-for-of
+        for (let i = 0; i < this.state.value.length; i++) {
+            if (this.state.value[i].toString() === item.toString()) {
+                checked = true
+                break
+            }
+        }
+        return checked
     }
     /**
      * render
      * @return {ReactElement} markup
      */
     public render() {
-        const { onChange } = this.props
         switch (this.props['data-actionName']) {
             case 'edit':
                 return (
-                    <FormControl component="fieldset">
+                    <FormControl className={this.props.className} component="fieldset" required={this.props.required} error={this.props['data-errorText'] !== undefined && this.props['data-errorText'].length > 0}>
                         <FormLabel component="legend">{this.props['data-labelText']}</FormLabel>
                         <FormGroup>
                             {this.props.options.map((option) => {
@@ -93,19 +101,22 @@ export class CheckboxGroup extends React.Component<CheckboxGroupProps, { value }
                                         <Checkbox
                                             checked={this.isChecked(option.Value)}
                                             onChange={this.handleChange}
-                                            value={option.Value}
+                                            value={option.Value.toString()}
+                                            disabled={this.props.readOnly}
                                         />
                                     }
                                     label={option.Text}
                                 />
                             })}
                         </FormGroup>
+                        {this.props['data-allowExtraValue'] ? <TextField placeholder="Extra value" /> : null}
                         <FormHelperText>{this.props['data-hintText']}</FormHelperText>
+                        <FormHelperText>{this.props['data-errorText']}</FormHelperText>
                     </FormControl>
                 )
             case 'new':
                 return (
-                    <FormControl component="fieldset">
+                    <FormControl className={this.props.className} component="fieldset" required={this.props.required} error={this.props['data-errorText'] !== undefined && this.props['data-errorText'].length > 0}>
                         <FormLabel component="legend">{this.props['data-labelText']}</FormLabel>
                         <FormGroup>
                             {this.props.options.map((option) => {
@@ -114,24 +125,49 @@ export class CheckboxGroup extends React.Component<CheckboxGroupProps, { value }
                                     control={
                                         <Checkbox
                                             checked={this.isChecked(option.Value)}
-                                            onChange={onChange(this.props.name, option.Value)}
-                                            value={option.Value}
+                                            onChange={this.handleChange}
+                                            value={option.Value.toString()}
+                                            disabled={this.props.readOnly}
                                         />
                                     }
                                     label={option.Text}
                                 />
                             })}
                         </FormGroup>
+                        {this.props['data-allowExtraValue'] ? <TextField placeholder="Extra value" /> : null}
                         <FormHelperText>{this.props['data-hintText']}</FormHelperText>
+                        <FormHelperText>{this.props['data-errorText']}</FormHelperText>
                     </FormControl>
                 )
             case 'browse':
                 return (
-                    <span>under consctruction</span>
+                    this.props['data-fieldValue'].length > 0 ?
+                        <FormControl component="fieldset" className={this.props.className}>
+                            <FormLabel component="legend">
+                                {this.props['data-labelText']}
+                            </FormLabel>
+                            <FormGroup>
+                                {this.props['data-fieldValue'].map((value) =>
+                                    <FormControl component="fieldset">
+                                        <FormControlLabel style={{ marginLeft: 0 }} label={this.props.options.find((item) => (item.Value === value)).Text} control={<span></span>} key={value} />
+                                    </FormControl>)}
+                            </FormGroup>
+                        </FormControl> : null
                 )
             default:
                 return (
-                    <span>under consctruction</span>
+                    this.props['data-fieldValue'].length > 0 ?
+                        <FormControl component="fieldset" className={this.props.className}>
+                            <FormLabel component="legend">
+                                {this.props['data-labelText']}
+                            </FormLabel>
+                            <FormGroup>
+                                {this.props['data-fieldValue'].map((value) =>
+                                    <FormControl component="fieldset">
+                                        <FormControlLabel style={{ marginLeft: 0 }} label={this.props.options.find((item) => (item.Value === value)).Text} control={<span></span>} key={value} />
+                                    </FormControl>)}
+                            </FormGroup>
+                        </FormControl> : null
                 )
         }
     }

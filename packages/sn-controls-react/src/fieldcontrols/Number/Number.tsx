@@ -4,8 +4,9 @@
  */ /** */
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
 import Radium from 'radium'
-import * as React from 'react'
+import React, { Component } from 'react'
 import NumberFormat from 'react-number-format'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactNumberFieldSetting } from './NumberFieldSetting'
@@ -19,7 +20,7 @@ export interface NumberProps extends ReactClientFieldSettingProps, ReactClientFi
  * Field control that represents a Number field. Available values will be populated from the FieldSettings.
  */
 @Radium
-export class Number extends React.Component<NumberProps, { value, numberFormat }> {
+export class Number extends Component<NumberProps, { value, numberFormat }> {
 
     constructor(props) {
         super(props)
@@ -35,11 +36,10 @@ export class Number extends React.Component<NumberProps, { value, numberFormat }
      * @param {string} name
      * @param {event} event
      */
-    public handleChange(event) {
-        this.setState({
-            value: event.target.value,
-        })
-        this.props.onChange(this.props.name, event.target.value)
+    public handleChange(e) {
+        const { name, onChange } = this.props
+        const value = e.target.value
+        onChange(name, value)
     }
     /**
      * convert incoming default value string to proper format
@@ -70,7 +70,7 @@ export class Number extends React.Component<NumberProps, { value, numberFormat }
      * @param {any} props
      */
     public numberFormatCustom(props) {
-        const { inputRef, onChange, ...other} = props
+        const { inputRef, onChange, ...other } = props
         return (
             <NumberFormat
                 {...other}
@@ -88,73 +88,107 @@ export class Number extends React.Component<NumberProps, { value, numberFormat }
         )
     }
     /**
+     * Returns steps value by decimal and step settings
+     */
+    public defineStepValue = () => {
+        return this.props['data-decimal'] && this.props['data-step'] === undefined ? 0.1 : this.props['data-step'] ? this.props['data-step'] : 1
+    }
+    /**
+     * Returns inputadornment by currency and percentage settings
+     */
+    public defineCurrency = () => {
+        let currency = null
+        if (this.props['data-isCurrency']) {
+            currency = this.props['data-currency'] ? <InputAdornment position="start">{this.props['data-currency']}</InputAdornment> : <InputAdornment position="start">$</InputAdornment>
+        } else {
+            currency = this.props['data-isPercentage'] ? <InputAdornment position="start">%</InputAdornment> : null
+        }
+        return currency
+    }
+    /**
      * render
      * @return {ReactElement} markup
      */
     public render() {
-        const { value } = this.state
+        console.log(this.props['data-fieldValue'])
         switch (this.props['data-actionName']) {
             case 'edit':
                 return (
                     <TextField
                         name={this.props.name}
+                        type="number"
                         label={this.props['data-labelText']}
                         className={this.props.className}
                         style={this.props.style}
-                        defaultValue={value}
+                        value={this.props['data-fieldValue']}
                         required={this.props.required}
                         disabled={this.props.readOnly}
-                        error={this.props['data-']}
-                        onChange={(e) => this.props.onChange(this.props.name, e.target.value)}
                         InputProps={{
-                            startAdornment: this.props['data-isPercentage'] ? <InputAdornment position="start">%</InputAdornment> : null,
-                          }}
+                            startAdornment: this.defineCurrency(),
+                        }}
+                        inputProps={{
+                            step: this.defineStepValue(),
+                            max: this.props.max ? this.props.max : null,
+                            min: this.props.min ? this.props.min : null,
+                        }}
                         id={this.props.name}
+                        error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
                         fullWidth
+                        onChange={(e) => this.handleChange(e)}
+                        helperText={this.props['data-hintText']}
                     />
                 )
             case 'new':
                 return (
                     <TextField
                         name={this.props.name}
+                        type="number"
                         label={this.props['data-labelText']}
                         className={this.props.className}
                         style={this.props.style}
-                        defaultValue={value}
+                        defaultValue={this.props['data-defaultValue']}
                         required={this.props.required}
                         disabled={this.props.readOnly}
-                        error={this.props['data-']}
-                        onChange={(e) => this.props.onChange(this.props.name, e.target.value)}
                         InputProps={{
-                            startAdornment: this.props['data-isPercentage'] ? <InputAdornment position="start">%</InputAdornment> : null,
-                          }}
+                            startAdornment: this.defineCurrency(),
+                        }}
+                        inputProps={{
+                            step: this.defineStepValue(),
+                            max: this.props.max ? this.props.max : null,
+                            min: this.props.min ? this.props.min : null,
+                        }}
                         id={this.props.name}
+                        error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
                         fullWidth
+                        onChange={(e) => this.handleChange(e)}
+                        helperText={this.props['data-hintText']}
                     />
                 )
             case 'browse':
                 return (
-                    <div>
-                        <label>
+                    this.props.value ? <div className={this.props.className}>
+                        <Typography variant="caption" gutterBottom>
                             {this.props['data-labelText']}
-                        </label>
-                        <p>
-                            {this.props['data-fieldValue']}
-                            {this.props['data-isPercentage'] ? '%' : ''}
-                        </p>
-                    </div>
+                        </Typography>
+                        <Typography variant="body2" gutterBottom>
+                            {this.props['data-isCurrency'] ? this.props['data-currency'] ? this.props['data-currency'] : '$' : null}
+                            {this.props['data-isPercentage'] ? '%' : null}
+                            {this.props.value}
+                        </Typography>
+                    </div> : null
                 )
             default:
                 return (
-                    <div>
-                        <label>
+                    this.props.value ? <div className={this.props.className}>
+                        <Typography variant="caption" gutterBottom>
                             {this.props['data-labelText']}
-                        </label>
-                        <p>
-                            {this.props['data-fieldValue']}
-                            {this.props['data-isPercentage'] ? '%' : ''}
-                        </p>
-                    </div>
+                        </Typography>
+                        <Typography variant="body2" gutterBottom>
+                            {this.props['data-isCurrency'] ? this.props['data-currency'] ? this.props['data-currency'] : '$' : null}
+                            {this.props['data-isPercentage'] ? '%' : null}
+                            {this.props.value}
+                        </Typography>
+                    </div> : null
                 )
         }
 

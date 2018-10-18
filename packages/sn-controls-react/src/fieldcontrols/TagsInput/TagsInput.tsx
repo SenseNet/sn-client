@@ -3,18 +3,44 @@
  *
  */ /** */
 import Chip from '@material-ui/core/Chip'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
+import FormControl from '@material-ui/core/FormControl'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import FormGroup from '@material-ui/core/FormGroup'
+import FormHelperText from '@material-ui/core/FormHelperText'
+import FormLabel from '@material-ui/core/FormLabel'
+import Input from '@material-ui/core/Input'
+import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
+import Select from '@material-ui/core/Select'
 import { PathHelper } from '@sensenet/client-utils'
-import { MaterialIcon } from '@sensenet/icons-react'
-import * as React from 'react'
-import Select from 'react-select'
+import React, { Component } from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactReferenceFieldSetting } from '../ReferenceFieldSetting'
-import { Option } from './TagsInputOptions'
-import { styles } from './TagsInputStyles'
 
-import './TagsInput.css'
+const ITEM_HEIGHT = 48
+const ITEM_PADDING_TOP = 8
+const menuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
+    },
+}
+
+const styles = {
+    root: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+    chips: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+    chip: {
+        margin: 2,
+    },
+}
 
 import { IContent, IODataCollectionResponse } from '@sensenet/client-core'
 
@@ -26,7 +52,7 @@ export interface TagsInputProps extends ReactClientFieldSettingProps, ReactClien
 /**
  * Field control that represents a Reference field. Available values will be populated from the FieldSettings.
  */
-export class TagsInput extends React.Component<TagsInputProps, { label, multiLabel, dataSource, fieldValue }> {
+export class TagsInput extends Component<TagsInputProps, { label, dataSource, fieldValue }> {
     /**
      * constructor
      * @param {object} props
@@ -38,14 +64,25 @@ export class TagsInput extends React.Component<TagsInputProps, { label, multiLab
          * @property {any[]} chips array of chips input value
          * @property {any[]} dataSource array of data for autocomplete
          */
-        this.state = {
-            dataSource: [],
-            label: this.props['data-defaultDisplayName'],
-            multiLabel: null,
-            fieldValue: null,
-        }
+
         this.search = this.search.bind(this)
-        this.search()
+        if (this.props.dataSource && this.props.dataSource.length > 0) {
+            this.state = {
+                dataSource: this.props.dataSource.map((suggestion) => ({
+                    value: suggestion.Id,
+                    label: suggestion[this.props['data-defaultDisplayName'] || 'DisplayName'],
+                })),
+                label: this.props['data-defaultDisplayName'] || 'DisplayName',
+                fieldValue: this.props['data-fieldValue'] || [],
+            }
+        } else {
+            this.state = {
+                dataSource: [],
+                label: this.props['data-defaultDisplayName'] || 'DisplayName',
+                fieldValue: this.props['data-fieldValue'] || [],
+            }
+            this.search()
+        }
         this.getSelected = this.getSelected.bind(this)
         if (this.props['data-actionName'] === 'edit') {
             this.getSelected()
@@ -55,60 +92,31 @@ export class TagsInput extends React.Component<TagsInputProps, { label, multiLab
     /**
      * handles input changes
      */
-    public handleChange = (name) => (value) => {
-        const ids = value.length > 0 ? value.split(',') : []
-        const saveable = ids.map((id) => parseInt(id, 10))
+    public handleChange = (e) => {
+        const { name, onChange } = this.props
+        const selected = this.state.fieldValue
+        let s = selected
+        const selectedContent = this.props['data-allowMultiple'] !== undefined && this.props['data-allowMultiple'] ? this.getContentById(e.target.value[e.target.value.length - 1]).value : this.getContentById(e.target.value).value
+        this.props['data-allowMultiple'] !== undefined &&
+            this.props['data-allowMultiple'] ?
+            this.isSelected(selectedContent) ?
+                s = selected :
+                s.push(selectedContent) :
+            s = [selectedContent]
+
         this.setState({
-            [name]: value,
-            fieldValue: ids,
-        } as any)
-        this.props.onChange(this.props.name, saveable)
-    }
-    /**
-     * handles selection
-     */
-    public selectWrapped = (props) => {
-        const { ...other } = props
-        return <Select
-            optionComponent={Option}
-            noResultsText={<Typography>{'No results found'}</Typography>}
-            arrowRenderer={(arrowProps) => {
-                return arrowProps.isOpen ? <MaterialIcon iconName="ArrowDropUpIcon" /> : <MaterialIcon iconName="ArrowDropDownIcon" />
-            }}
-            clearRenderer={() => <MaterialIcon iconName="ClearIcon" />}
-            valueComponent={(valueProps) => {
-                const { value, children, onRemove } = valueProps
-
-                const onDelete = (event) => {
-                    event.preventDefault()
-                    event.stopPropagation()
-                    onRemove(value)
-                }
-
-                if (onRemove) {
-                    return (
-                        <Chip
-                            tabIndex={-1}
-                            label={children}
-                            // className={classes.chip}
-                            deleteIcon={<MaterialIcon iconName="CancelIcon" onClick={onDelete} />}
-                            onDelete={onDelete}
-                        />
-                    )
-                }
-
-                return <div className="Select-value">{children}</div>
-            }}
-            {...other}
-        />
+            fieldValue: s,
+        })
+        onChange(name, s)
     }
     /**
      * returns referencefields' datasource
      * @param path
      */
     public async search(): Promise<IODataCollectionResponse<IContent>> {
-        const selectionRoot = this.props['data-selectionRoot']
-        const allowedTypes = this.props['data-allowedTypes']
+        const selectionRoot = this.props['data-selectionRoot'] || []
+        const allowedTypes = this.props['data-allowedTypes'] || ['GenericContent']
+
         let pathQuery = ''
         selectionRoot.map((selectionPath, index) => {
             pathQuery += index === 0 ? `InTree:${selectionPath}` : `OR InTree:${selectionPath}`
@@ -117,7 +125,7 @@ export class TagsInput extends React.Component<TagsInputProps, { label, multiLab
         allowedTypes.map((type) => {
             typeQuery += ` +TypeIs:${type}`
         })
-        const req = await this.props['data-repository'].loadCollection({
+        const req = await this.props.repository.loadCollection({
             path: '/Root',
             oDataOptions: {
                 query: `(${pathQuery}) AND${typeQuery}`,
@@ -140,8 +148,8 @@ export class TagsInput extends React.Component<TagsInputProps, { label, multiLab
      */
     public async getSelected() {
         // tslint:disable-next-line:no-string-literal
-        const loadPath = PathHelper.joinPaths(PathHelper.getContentUrl(this.props['content'].Path), '/', this.props.name)
-        const references = await this.props['data-repository'].loadCollection({
+        const loadPath = this.props['content'] ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props['content'].Path), '/', this.props.name) : ''
+        const references = await this.props.repository.loadCollection({
             path: loadPath,
             oDataOptions: {
                 select: 'all',
@@ -158,6 +166,18 @@ export class TagsInput extends React.Component<TagsInputProps, { label, multiLab
         return references
     }
     /**
+     * returns a content by its id
+     */
+    public getContentById = (id) => {
+        return this.state.dataSource.find((item) => item.value === id)
+    }
+    /**
+     * returns whether the content with the given id is selected or not
+     */
+    public isSelected = (id) => {
+        return this.state.fieldValue.indexOf(id) > -1
+    }
+    /**
      * render
      * @return {ReactElement} markup
      */
@@ -165,79 +185,95 @@ export class TagsInput extends React.Component<TagsInputProps, { label, multiLab
         switch (this.props['data-actionName']) {
             case 'edit':
                 return (
-                    <div style={styles.container} className="col input-field s12">
-                        <TextField
-                            fullWidth
-                            value={this.state.multiLabel}
-                            onChange={this.handleChange('multiLabel')}
-                            placeholder={this.props['data-placeHolderText']}
-                            name="react-select-chip-label"
-                            label={this.props['data-labelText']}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            InputProps={{
-                                inputComponent: this.selectWrapped,
-                                inputProps: {
-                                    multi: true,
-                                    instanceId: 'react-select-chip-label',
-                                    id: 'react-select-chip-label',
-                                    simpleValue: true,
-                                    options: this.state.dataSource,
-                                    value: this.state.fieldValue,
-                                },
-                            }}
-                        />
-                    </div>
+                    <FormControl className={this.props.className} style={styles.root as any} key={this.props.name} component="fieldset" required={this.props.required}>
+                        <InputLabel htmlFor={this.props.name}>{this.props['data-labelText']}</InputLabel>
+                        <Select
+                            multiple={this.props['data-allowMultiple']}
+                            value={this.state.fieldValue}
+                            onChange={(e) => this.handleChange(e)}
+                            input={<Input id={this.props.name} fullWidth />}
+                            renderValue={() =>
+                                <div style={styles.chips as any}>
+                                    {this.state.fieldValue.map((value) => (
+                                        <Chip key={value.toString()} label={this.getContentById(value).label} />
+                                    ))}
+                                </div>
+                            }
+                            MenuProps={menuProps}
+                        >
+                            {this.state.dataSource.map((content) => (
+                                <MenuItem
+                                    key={content.value}
+                                    value={content.value}
+                                >
+                                    {content.label}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                        <FormHelperText>{this.props['data-hintText']}</FormHelperText>
+                        <FormHelperText>{this.props['data-errorText']}</FormHelperText>
+                    </FormControl>
                 )
             case 'new':
                 return (
-                    <div style={styles.container} className="col input-field s12">
-                        <TextField
-                            fullWidth
-                            value={this.state.multiLabel}
-                            onChange={this.handleChange('multiLabel')}
-                            placeholder={this.props['data-placeHolderText']}
-                            name="react-select-chip-label"
-                            label={this.props['data-labelText']}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            InputProps={{
-                                inputComponent: this.selectWrapped,
-                                inputProps: {
-                                    multi: true,
-                                    instanceId: 'react-select-chip-label',
-                                    id: 'react-select-chip-label',
-                                    simpleValue: true,
-                                    options: this.state.dataSource,
-                                },
-                            }}
-                        />
-                    </div>
+                    <FormControl className={this.props.className} style={styles.root as any} key={this.props.name} component="fieldset" required={this.props.required}>
+                        <InputLabel htmlFor={this.props.name}>{this.props['data-labelText']}</InputLabel>
+                        <Select
+                            multiple={this.props['data-allowMultiple']}
+                            value={this.state.fieldValue}
+                            onChange={(e) => this.handleChange(e)}
+                            input={<Input id={this.props.name} fullWidth />}
+                            renderValue={() =>
+                                <div style={styles.chips as any}>
+                                    {this.state.fieldValue.map((value) => (
+                                        <Chip key={value.toString()} label={this.getContentById(value).label} />
+                                    ))}
+                                </div>
+                            }
+                            MenuProps={menuProps}
+                        >
+                            {this.state.dataSource.map((content) => (
+                                <MenuItem
+                                    key={content.value}
+                                    value={content.value}
+                                >
+                                    {content.label}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                        <FormHelperText>{this.props['data-hintText']}</FormHelperText>
+                        <FormHelperText>{this.props['data-errorText']}</FormHelperText>
+                    </FormControl>
                 )
             case 'browse':
                 return (
-                    <div>
-                        <label>
-                            {this.props['data-labelText']}
-                        </label>
-                        <p>
-                            {this.props['data-fieldValue']}
-                        </p>
-                    </div>
+                    this.props['data-fieldValue'].length > 0 ?
+                        <FormControl component="fieldset" className={this.props.className}>
+                            <FormLabel component="legend">
+                                {this.props['data-labelText']}
+                            </FormLabel>
+                            <FormGroup>
+                                {this.props['data-fieldValue'].map((value) =>
+                                    <FormControl component="fieldset">
+                                        <FormControlLabel style={{ marginLeft: 0 }} label={this.state.dataSource.find((item) => (item.value === value)).label} control={<span></span>} key={value} />
+                                    </FormControl>)}
+                            </FormGroup>
+                        </FormControl> : null
                 )
-
             default:
                 return (
-                    <div>
-                        <label>
-                            {this.props['data-labelText']}
-                        </label>
-                        <p>
-                            {this.props['data-fieldValue']}
-                        </p>
-                    </div>
+                    this.props['data-fieldValue'].length > 0 ?
+                        <FormControl component="fieldset" className={this.props.className}>
+                            <FormLabel component="legend">
+                                {this.props['data-labelText']}
+                            </FormLabel>
+                            <FormGroup>
+                                {this.props['data-fieldValue'].map((value) =>
+                                    <FormControl component="fieldset">
+                                        <FormControlLabel style={{ marginLeft: 0 }} label={this.state.dataSource.find((item) => (item.value === value)).label} control={<span></span>} key={value} />
+                                    </FormControl>)}
+                            </FormGroup>
+                        </FormControl> : null
                 )
         }
     }

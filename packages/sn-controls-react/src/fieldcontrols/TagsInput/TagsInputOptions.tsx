@@ -1,11 +1,11 @@
 
 import MenuItem from '@material-ui/core/MenuItem'
-import * as React from 'react'
+import React, { Component } from 'react'
 
 /**
  * Control that represents a Option of an autocomplete dropdown.
  */
-export class Option extends React.Component<{ option, children, isSelected, onFocus, isFocused, onSelect }, {}> {
+export class Option extends Component<{ option, children, isSelected, onFocus, isFocused, onSelect }, {}> {
     /**
      * constructor
      * @param {object} props

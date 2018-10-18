@@ -2,7 +2,7 @@
  * @module ViewControls
  *
  */ /** */
-import * as React from 'react'
+import React, { Component, createElement } from 'react'
 import { connect } from 'react-redux'
 
 import Button from '@material-ui/core/Button'
@@ -40,7 +40,7 @@ export interface NewViewProps {
  *  <NewView content={content} onSubmit={createSubmitClick} />
  * ```
  */
-class NewView extends React.Component<NewViewProps, { schema, dataSource }> {
+class NewView extends Component<NewViewProps, { schema, dataSource }> {
     /**
      * constructor
      * @param {object} props
@@ -57,24 +57,12 @@ class NewView extends React.Component<NewViewProps, { schema, dataSource }> {
             dataSource: [],
         }
         this.handleCancel = this.handleCancel.bind(this)
-        this.formIsValid()
     }
     /**
      * handle cancle button click
      */
     public handleCancel() {
         return this.props.handleCancel ? this.props.handleCancel() : null
-    }
-    /**
-     * check if all the required fields are set
-     */
-    public formIsValid() {
-        let valid = true
-        const { fields } = this.props
-        this.state.schema.fieldMappings.map((setting) => {
-            valid = fields[setting.clientSettings.name] === undefined ? false : true
-        })
-        return valid
     }
     /**
      * render
@@ -113,7 +101,7 @@ class NewView extends React.Component<NewViewProps, { schema, dataSource }> {
                                 xl={fieldSettings[i].clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
                                 key={fieldSettings[i].clientSettings.name}>
                                 {
-                                    React.createElement(
+                                    createElement(
                                         fieldSettings[i].controlType,
                                         {
                                             ...fieldSettings[i].clientSettings,

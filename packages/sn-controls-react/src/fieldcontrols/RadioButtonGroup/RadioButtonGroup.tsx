@@ -4,11 +4,12 @@
  */ /** */
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
+import FormGroup from '@material-ui/core/FormGroup'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
-import * as React from 'react'
+import React, { Component } from 'react'
 import { ReactChoiceFieldSetting } from '../ChoiceFieldSetting'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 
@@ -20,7 +21,7 @@ export interface RadioButtonGroupProps extends ReactClientFieldSettingProps, Rea
 /**
  * Field control that represents a Choice field. Available values will be populated from the FieldSettings.
  */
-export class RadioButtonGroup extends React.Component<RadioButtonGroupProps, { value }> {
+export class RadioButtonGroup extends Component<RadioButtonGroupProps, { value }> {
     /**
      * constructor
      * @param {object} props
@@ -28,7 +29,7 @@ export class RadioButtonGroup extends React.Component<RadioButtonGroupProps, { v
     constructor(props) {
         super(props)
         this.state = {
-            value: this.props['data-fieldValue'][0] || this.props['data-defaultValue'] || null,
+            value: this.props['data-fieldValue'] || this.props['data-defaultValue'] || [],
         }
         this.handleChange = this.handleChange.bind(this)
     }
@@ -36,8 +37,20 @@ export class RadioButtonGroup extends React.Component<RadioButtonGroupProps, { v
      * set selected value
      */
     public handleChange = (event) => {
-        this.setState({ value: event.target.value })
-        this.props.onChange(this.props.name, event.target.value)
+        const { value } = this.state
+        const newValue = event.target.value
+        const checked = value
+        const index = value.indexOf(newValue.toString())
+
+        if (index > -1) {
+            checked.splice(index, 1)
+        } else {
+            checked[0] = newValue
+        }
+        this.setState({
+            value: checked,
+        })
+        this.props.onChange(this.props.name, checked)
     }
     /**
      * render
@@ -47,59 +60,93 @@ export class RadioButtonGroup extends React.Component<RadioButtonGroupProps, { v
         switch (this.props['data-actionName']) {
             case 'edit':
                 return (
-                    <FormControl component="fieldset" error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false} required={this.props.required}>
+                    <FormControl component="fieldset"
+                        fullWidth={true}
+                        error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
+                        required={this.props.required}
+                        className={this.props.className}>
                         <FormLabel component="legend">{this.props['data-labelText']}</FormLabel>
                         <RadioGroup
                             aria-label={this.props['data-labelText']}
                             name={this.props.name}
-                            value={this.state.value}
+                            value={this.state.value[0].toString()}
                             onChange={(e) => this.handleChange(e)}
                         >
                             {this.props.options.map((option) => {
                                 return <FormControlLabel
                                     key={option.Value}
-                                    value={option.Value}
+                                    value={option.Value.toString()}
                                     control={
                                         <Radio />
                                     }
                                     label={option.Text}
+                                    disabled={this.props.readOnly}
                                 />
                             })}
                         </RadioGroup>
                         <FormHelperText>{this.props['data-hintText']}</FormHelperText>
+                        <FormHelperText>{this.props['data-errorText']}</FormHelperText>
                     </FormControl>
                 )
             case 'new':
                 return (
-                    <FormControl component="fieldset" error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false} required={this.props.required}>
+                    <FormControl component="fieldset"
+                        fullWidth={true}
+                        error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
+                        required={this.props.required}
+                        className={this.props.className}>
                         <FormLabel component="legend">{this.props['data-labelText']}</FormLabel>
                         <RadioGroup
                             aria-label={this.props['data-labelText']}
                             name={this.props.name}
-                            value={this.state.value}
+                            value={this.state.value.toString()}
                             onChange={(e) => this.handleChange(e)}
                         >
                             {this.props.options.map((option) => {
                                 return <FormControlLabel
                                     key={option.Value}
-                                    value={option.Value}
+                                    value={option.Value.toString()}
                                     control={
                                         <Radio />
                                     }
                                     label={option.Text}
+                                    disabled={this.props.readOnly}
                                 />
                             })}
                         </RadioGroup>
                         <FormHelperText>{this.props['data-hintText']}</FormHelperText>
+                        <FormHelperText>{this.props['data-errorText']}</FormHelperText>
                     </FormControl>
                 )
             case 'browse':
                 return (
-                    <span>under consctruction</span>
+                    this.props['data-fieldValue'].length > 0 ?
+                        <FormControl component="fieldset" className={this.props.className}>
+                            <FormLabel component="legend">
+                                {this.props['data-labelText']}
+                            </FormLabel>
+                            <FormGroup>
+                                {this.props['data-fieldValue'].map((value) =>
+                                    <FormControl component="fieldset">
+                                        <FormControlLabel style={{ marginLeft: 0 }} label={this.props.options.find((item) => (item.Value === value)).Text} control={<span></span>} key={value} />
+                                    </FormControl>)}
+                            </FormGroup>
+                        </FormControl> : null
                 )
             default:
                 return (
-                    <span>under consctruction</span>
+                    this.props['data-fieldValue'].length > 0 ?
+                        <FormControl component="fieldset" className={this.props.className}>
+                            <FormLabel component="legend">
+                                {this.props['data-labelText']}
+                            </FormLabel>
+                            <FormGroup>
+                                {this.props['data-fieldValue'].map((value) =>
+                                    <FormControl component="fieldset">
+                                        <FormControlLabel style={{ marginLeft: 0 }} label={this.props.options.find((item) => (item.Value === value)).Text} control={<span></span>} key={value} />
+                                    </FormControl>)}
+                            </FormGroup>
+                        </FormControl> : null
                 )
         }
     }

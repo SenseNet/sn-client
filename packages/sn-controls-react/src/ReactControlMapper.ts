@@ -7,7 +7,7 @@
 import { Repository } from '@sensenet/client-core'
 import { ControlMapper } from '@sensenet/control-mapper'
 import { ChoiceFieldSetting, DateTimeFieldSetting, FieldSetting, IntegerFieldSetting, LongTextFieldSetting, NumberFieldSetting, PasswordFieldSetting, ReferenceFieldSetting, ShortTextFieldSetting } from '@sensenet/default-content-types'
-import * as React from 'react'
+import { Component } from 'react'
 import * as FieldControls from './fieldcontrols'
 import { ReactChoiceFieldSetting } from './fieldcontrols/ChoiceFieldSetting'
 import { ReactClientFieldSettingProps } from './fieldcontrols/ClientFieldSetting'
@@ -31,7 +31,7 @@ const clientConfigFactory = (fieldSettings: FieldSetting) => {
         defaultSetting.required = fieldSettings.Compulsory || false,
         defaultSetting['data-placeHolderText'] = fieldSettings.DisplayName || ''
     defaultSetting['data-labelText'] = fieldSettings.DisplayName || '',
-    defaultSetting['data-typeName'] = fieldSettings.Type || ''
+        defaultSetting['data-typeName'] = fieldSettings.Type || ''
     return defaultSetting
 }
 
@@ -40,7 +40,7 @@ const clientConfigFactory = (fieldSettings: FieldSetting) => {
 /**
  * A static Control Mapper instance, used to create the mapping between sensenet ECM ContentTypes and FieldSettings and React components.
  */
-export const reactControlMapper = (repository: Repository) => new ControlMapper(repository, React.Component, clientConfigFactory, ViewControls.EditView, FieldControls.ShortText)
+export const reactControlMapper = (repository: Repository) => new ControlMapper(repository, Component, clientConfigFactory, ViewControls.EditView, FieldControls.ShortText)
     .setupFieldSettingDefault(NumberFieldSetting, (setting) => {
         return FieldControls.Number
     })

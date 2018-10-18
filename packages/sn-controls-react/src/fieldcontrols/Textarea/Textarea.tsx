@@ -2,12 +2,13 @@
  * @module FieldControls
  *
  */ /** */
-import * as React from 'react'
+import React, { Component } from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactLongTextFieldSetting } from '../LongTextFieldSetting'
 import { ReactTextareaFieldSetting } from './TextareaFieldSetting'
 
 import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
 import Radium from 'radium'
 
 /**
@@ -19,7 +20,7 @@ export interface TextareaProps extends ReactClientFieldSettingProps, ReactClient
  * Field control that represents a LongText field. Available values will be populated from the FieldSettings.
  */
 @Radium
-export class Textarea extends React.Component<TextareaProps, { value }> {
+export class Textarea extends Component<TextareaProps, { value }> {
     /**
      * constructor
      * @param {object} props
@@ -74,7 +75,7 @@ export class Textarea extends React.Component<TextareaProps, { value }> {
                         className={this.props.className}
                         placeholder={this.props['data-placeHolderText']}
                         style={this.props.style}
-                        defaultValue={this.state.value}
+                        value={this.props.value}
                         required={this.props.required}
                         disabled={this.props.readOnly}
                         error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
@@ -91,7 +92,7 @@ export class Textarea extends React.Component<TextareaProps, { value }> {
                         className={this.props.className}
                         placeholder={this.props['data-placeHolderText']}
                         style={this.props.style}
-                        defaultValue={this.state.value}
+                        defaultValue={this.props['data-defaultValue']}
                         required={this.props.required}
                         disabled={this.props.readOnly}
                         error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
@@ -100,27 +101,27 @@ export class Textarea extends React.Component<TextareaProps, { value }> {
                     />
                 )
             case 'browse':
-                return (
-                    <div>
-                        <label>
-                            {this.props['data-labelText']}
-                        </label>
-                        <p>
-                            {this.props['data-fieldValue']}
-                        </p>
-                    </div>
-                )
+            return (
+                this.props.value && this.props.value.length > 0 ? <div className={this.props.className}>
+                    <Typography variant="caption" gutterBottom>
+                        {this.props['data-labelText']}
+                    </Typography>
+                    <Typography variant="body2" gutterBottom>
+                        {this.props.value}
+                    </Typography>
+                </div> : null
+            )
             default:
-                return (
-                    <div>
-                        <label>
-                            {this.props['data-labelText']}
-                        </label>
-                        <p>
-                            {this.props['data-fieldValue']}
-                        </p>
-                    </div>
-                )
+            return (
+                this.props.value && this.props.value.length > 0 ? <div className={this.props.className}>
+                    <Typography variant="caption" gutterBottom>
+                        {this.props['data-labelText']}
+                    </Typography>
+                    <Typography variant="body2" gutterBottom>
+                        {this.props.value}
+                    </Typography>
+                </div> : null
+            )
         }
 
     }

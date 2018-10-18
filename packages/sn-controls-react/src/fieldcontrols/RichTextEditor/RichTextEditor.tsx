@@ -2,7 +2,8 @@
  * @module FieldControls
  *
  */ /** */
-import * as React from 'react'
+import Typography from '@material-ui/core/Typography'
+import React, { Component } from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactRichTextEditorFieldSetting } from './RichTextEditorFieldSetting'
 
@@ -21,7 +22,7 @@ export interface RichTextEditorProps extends ReactClientFieldSettingProps, React
  * Field control that represents a LongText field. Available values will be populated from the FieldSettings.
  */
 @Radium
-export class RichTextEditor extends React.Component<RichTextEditorProps, { value }> {
+export class RichTextEditor extends Component<RichTextEditorProps, { value }> {
     /**
      * constructor
      * @param {object} props
@@ -80,7 +81,7 @@ export class RichTextEditor extends React.Component<RichTextEditorProps, { value
                         // placeholder={this.props['data-placeHolderText']}
                         // placeHolderStyle?: object
                         style={this.props.style}
-                        value={this.state.value}
+                        value={this.props.value}
                         readOnly={this.props.readOnly}
                         // required={this.props.required}
                         // disabled={this.props.readOnly}
@@ -121,21 +122,25 @@ export class RichTextEditor extends React.Component<RichTextEditorProps, { value
                 )
             case 'browse':
                 return (
-                    <div>
-                        <label>
+                    this.props.value && this.props.value.length > 0 ? <div className={this.props.className}>
+                        <Typography variant="caption" gutterBottom>
                             {this.props['data-labelText']}
-                        </label>
-                        <div dangerouslySetInnerHTML={{ __html: this.props['data-fieldValue'] }} />
-                    </div>
+                        </Typography>
+                        <Typography variant="body2" gutterBottom>
+                            <div dangerouslySetInnerHTML={{ __html: this.props.value }} />
+                        </Typography>
+                    </div> : null
                 )
             default:
                 return (
-                    <div>
-                        <label>
+                    this.props.value && this.props.value.length > 0 ? <div className={this.props.className}>
+                        <Typography variant="caption" gutterBottom>
                             {this.props['data-labelText']}
-                        </label>
-                        <div dangerouslySetInnerHTML={{ __html: this.props['data-fieldValue'] }} />
-                    </div>
+                        </Typography>
+                        <Typography variant="body2" gutterBottom>
+                            <div dangerouslySetInnerHTML={{ __html: this.props.value }} />
+                        </Typography>
+                    </div> : null
                 )
         }
 

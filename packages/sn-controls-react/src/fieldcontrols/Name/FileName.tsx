@@ -2,13 +2,13 @@
  * @module FieldControls
  *
  */ /** */
-import * as React from 'react'
+import React, { Component } from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactFileNameFieldSetting } from './FileNameFieldSetting'
 
-import FormControl from '@material-ui/core/FormControl'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
 import Radium from 'radium'
 
 /**
@@ -20,7 +20,7 @@ export interface FileNameProps extends ReactClientFieldSettingProps, ReactClient
  * Field control that represents a ShortText field. Available values will be populated from the FieldSettings.
  */
 @Radium
-export class FileName extends React.Component<FileNameProps, { value, isValid, error, extension }> {
+export class FileName extends Component<FileNameProps, { value, isValid, error, extension }> {
     /**
      * constructor
      * @param {object} props
@@ -36,7 +36,8 @@ export class FileName extends React.Component<FileNameProps, { value, isValid, e
             isValid: this.props.required ? false : true,
             error: '',
             // tslint:disable-next-line:no-string-literal
-            extension: this.props['data-extension'] || this.getExtensionFromValue(this.props['content'].Name),
+            extension: this.props['data-extension'] ? this.props['data-extension'] : this.props['content'] ? this.getExtensionFromValue(this.props['content'].Name) :
+                this.props.value && this.props.value.indexOf('.') > - 1 ? this.getExtensionFromValue(this.props.value) : null,
         }
 
         this.handleChange = this.handleChange.bind(this)
@@ -81,11 +82,6 @@ export class FileName extends React.Component<FileNameProps, { value, isValid, e
         switch (this.props['data-actionName']) {
             case 'edit':
                 return (
-                    <FormControl
-                        error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
-                        required={this.props.required}
-                        disabled={this.props.readOnly}
-                        fullWidth>
                         <TextField
                             name={this.props.name}
                             id={this.props.name}
@@ -97,19 +93,18 @@ export class FileName extends React.Component<FileNameProps, { value, isValid, e
                             onChange={(e) => this.handleChange(e)}
                             InputProps={{
                                 // tslint:disable-next-line:no-string-literal
-                                endAdornment: <InputAdornment position="end"><span>{`.${this.getExtensionFromValue(this.props['content'].Name)}`}</span></InputAdornment>,
+                                endAdornment: <InputAdornment position="end"><span>{`.${this.state.extension}`}</span></InputAdornment>,
                             }}
                             autoFocus
+                            error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
+                            required={this.props.required}
+                            disabled={this.props.readOnly}
+                            fullWidth
+                            helperText={this.props['data-hintText']}
                         />
-                    </FormControl>
                 )
             case 'new':
                 return (
-                    <FormControl
-                        error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
-                        required={this.props.required}
-                        disabled={this.props.readOnly}
-                        fullWidth>
                         <TextField
                             name={this.props.name}
                             id={this.props.name}
@@ -123,30 +118,34 @@ export class FileName extends React.Component<FileNameProps, { value, isValid, e
                                 endAdornment: <InputAdornment position="end"><span>{`.${this.props['data-extension']}`}</span></InputAdornment>,
                             }}
                             autoFocus
+                            error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
+                            required={this.props.required}
+                            disabled={this.props.readOnly}
+                            fullWidth
+                            helperText={this.props['data-hintText']}
                         />
-                    </FormControl>
                 )
             case 'browse':
                 return (
-                    <div>
-                        <label>
+                    this.props.value && this.props.value.length > 0 ? <div className={this.props.className}>
+                        <Typography variant="caption" gutterBottom>
                             {this.props['data-labelText']}
-                        </label>
-                        <p>
-                            {this.props['data-fieldValue']}
-                        </p>
-                    </div>
+                        </Typography>
+                        <Typography variant="body2" gutterBottom>
+                            {this.props.value}
+                        </Typography>
+                    </div> : null
                 )
             default:
                 return (
-                    <div>
-                        <label>
+                    this.props.value && this.props.value.length > 0 ? <div className={this.props.className}>
+                        <Typography variant="caption" gutterBottom>
                             {this.props['data-labelText']}
-                        </label>
-                        <p>
-                            {this.props['data-fieldValue']}
-                        </p>
-                    </div>
+                        </Typography>
+                        <Typography variant="body2" gutterBottom>
+                            {this.props.value}
+                        </Typography>
+                    </div> : null
                 )
         }
 

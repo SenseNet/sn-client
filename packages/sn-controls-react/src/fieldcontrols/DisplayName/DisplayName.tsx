@@ -2,11 +2,12 @@
  * @module FieldControls
  *
  */ /** */
-import * as React from 'react'
+import React, { Component } from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactDisplayNameFieldSetting } from './DisplayNameFieldSetting'
 
 import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
 import Radium from 'radium'
 
 /**
@@ -18,7 +19,7 @@ export interface DisplayNameProps extends ReactClientFieldSettingProps, ReactCli
  * Field control that represents a ShortText field. Available values will be populated from the FieldSettings.
  */
 @Radium
-export class DisplayName extends React.Component<DisplayNameProps, { value }> {
+export class DisplayName extends Component<DisplayNameProps, { value }> {
     /**
      * constructor
      * @param {object} props
@@ -103,25 +104,25 @@ export class DisplayName extends React.Component<DisplayNameProps, { value }> {
                 )
             case 'browse':
                 return (
-                    <div>
-                        <label>
+                    this.props.value && this.props.value.length > 0 ? <div className={this.props.className}>
+                        <Typography variant="caption" gutterBottom>
                             {this.props['data-labelText']}
-                        </label>
-                        <p>
-                            {this.props['data-fieldValue']}
-                        </p>
-                    </div>
+                        </Typography>
+                        <Typography variant="body2" gutterBottom>
+                            {this.props.value}
+                        </Typography>
+                    </div> : null
                 )
             default:
                 return (
-                    <div>
-                        <label>
+                    this.props.value && this.props.value.length > 0 ? <div className={this.props.className}>
+                        <Typography variant="caption" gutterBottom>
                             {this.props['data-labelText']}
-                        </label>
-                        <p>
-                            {this.props['data-fieldValue']}
-                        </p>
-                    </div>
+                        </Typography>
+                        <Typography variant="body2" gutterBottom>
+                            {this.props.value}
+                        </Typography>
+                    </div> : null
                 )
         }
 

@@ -2,11 +2,15 @@
  * @module FieldControls
  *
  *//** */
-import * as React from 'react'
+import React, { Component } from 'react'
 import { ReactChoiceFieldSetting } from '../ChoiceFieldSetting'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 
 import FormControl from '@material-ui/core/FormControl'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import FormGroup from '@material-ui/core/FormGroup'
+import FormHelperText from '@material-ui/core/FormHelperText'
+import FormLabel from '@material-ui/core/FormLabel'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
@@ -19,7 +23,7 @@ export interface DropDownListProps extends ReactClientFieldSettingProps, ReactCl
 /**
  * Field control that represents a Choice field. Available values will be populated from the FieldSettings.
  */
-export class DropDownList extends React.Component<DropDownListProps, { value }> {
+export class DropDownList extends Component<DropDownListProps, { value }> {
     /**
      * constructor
      * @param {object} props
@@ -30,7 +34,7 @@ export class DropDownList extends React.Component<DropDownListProps, { value }> 
          * @type {object}
          */
         this.state = {
-            value: this.props['data-defaultValue'] || '',
+            value: this.props['data-fieldValue'] || this.props['data-defaultValue'] || [],
         }
     }
     /**
@@ -95,7 +99,7 @@ export class DropDownList extends React.Component<DropDownListProps, { value }> 
                                 name: this.props.name,
                                 id: this.props.name,
                             }}
-                            value={this.props['data-fieldValue'][0]}
+                            value={this.state.value[0]}
                             multiple={this.props['data-allowMultiple']}
                             autoWidth={true}
                             fullWidth={true}
@@ -106,6 +110,8 @@ export class DropDownList extends React.Component<DropDownListProps, { value }> 
                                 )
                             })}
                         </Select>
+                        <FormHelperText>{this.props['data-hintText']}</FormHelperText>
+                        <FormHelperText>{this.props['data-errorText']}</FormHelperText>
                     </FormControl>
                 )
             case 'new':
@@ -133,29 +139,39 @@ export class DropDownList extends React.Component<DropDownListProps, { value }> 
                                 )
                             })}
                         </Select>
+                        <FormHelperText>{this.props['data-hintText']}</FormHelperText>
+                        <FormHelperText>{this.props['data-errorText']}</FormHelperText>
                     </FormControl>
                 )
             case 'browse':
                 return (
-                    <div>
-                        <label>
-                            {this.props['data-labelText']}
-                        </label>
-                        <div>
-                            {this.getTextByValue(this.props['data-fieldValue'])}
-                        </div>
-                    </div>
+                    this.props['data-fieldValue'].length > 0 ?
+                        <FormControl component="fieldset" className={this.props.className}>
+                            <FormLabel component="legend">
+                                {this.props['data-labelText']}
+                            </FormLabel>
+                            <FormGroup>
+                                {this.props['data-fieldValue'].map((value) =>
+                                    <FormControl component="fieldset">
+                                        <FormControlLabel style={{ marginLeft: 0 }} label={this.props.options.find((item) => (item.Value === value)).Text} control={<span></span>} key={value} />
+                                    </FormControl>)}
+                            </FormGroup>
+                        </FormControl> : null
                 )
             default:
                 return (
-                    <div>
-                        <label>
-                            {this.props['data-labelText']}
-                        </label>
-                        <div>
-                            {this.getTextByValue(this.props['data-fieldValue'])}
-                        </div>
-                    </div>
+                    this.props['data-fieldValue'].length > 0 ?
+                        <FormControl component="fieldset" className={this.props.className}>
+                            <FormLabel component="legend">
+                                {this.props['data-labelText']}
+                            </FormLabel>
+                            <FormGroup>
+                                {this.props['data-fieldValue'].map((value) =>
+                                    <FormControl component="fieldset">
+                                        <FormControlLabel style={{ marginLeft: 0 }} label={this.props.options.find((item) => (item.Value === value)).Text} control={<span></span>} key={value} />
+                                    </FormControl>)}
+                            </FormGroup>
+                        </FormControl> : null
                 )
         }
     }

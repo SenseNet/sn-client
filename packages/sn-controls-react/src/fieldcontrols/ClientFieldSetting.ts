@@ -6,13 +6,39 @@
  * Interface for ReactClientFieldSetting properties
  */
 export interface ReactClientFieldSettingProps {
+    /**
+     * Unique name of the field control
+     */
     name?: string
+    /**
+     * Unique key of the field control
+     */
     key?: string
+    /**
+     * React style object
+     */
     style?: object
-    value?: number
+    /**
+     * Value of the field control
+     */
+    value?: any
+    /**
+     * Defining whether the field's data can be edited
+     */
     readOnly?: boolean
+    /**
+     * Defining whether the field has to contain any data
+     * @default false
+     */
     required?: boolean
+    /**
+     * Additional class name
+     * @default false
+     */
     className?: string,
+    /**
+     * Called when the icon is clicked
+     */
     onChange
 }
 
@@ -20,16 +46,33 @@ export interface ReactClientFieldSettingProps {
  * Interface for ClientFieldSetting properties
  */
 export interface ReactClientFieldSetting extends ReactClientFieldSettingProps {
+    /**
+     * Display mode of the field control
+     * @default browse
+     */
     'data-actionName'?: 'new' | 'edit' | 'browse'
+    /**
+     * Text of the hint that could be displayed after the field control
+     */
     'data-hintText'?: string
-    'data-hintStyle'?: object
+    /**
+     * Text of the placeholder
+     */
     'data-placeHolderText'?: string
-    'data-placeHolderStyle'?: object
+    /**
+     * Default value of the empty field control
+     */
     'data-defaultValue'?
-    'data-outPutMethod'?: 'default' | 'raw' | 'text' | 'html',
-    'data-labelStyle'?: object,
+    /**
+     * Text of the label
+     */
     'data-labelText'?: string,
-    'data-errorStyle'?: object,
+    /**
+     * Text of the error message
+     */
     'data-errorText'?: string,
+    /**
+     * Name of the fildcontrol type
+     */
     'data-typeName'?: string
 }

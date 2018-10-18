@@ -3,6 +3,6 @@
  */
 export const styles = {
     container: {
-        margin: '0 auto',
+        margin: 12,
     },
 }

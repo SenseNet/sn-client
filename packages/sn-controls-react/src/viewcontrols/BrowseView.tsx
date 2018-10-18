@@ -2,8 +2,9 @@
  * @module ViewControls
  *
  *//** */
+import { Typography } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid'
-import * as React from 'react'
+import React, { Component, createElement } from 'react'
 import { reactControlMapper } from '../ReactControlMapper'
 import { styles } from './BrowseViewStyles'
 
@@ -23,7 +24,7 @@ export interface BrowseViewProps {
  *  <BrowseView content={content} />
  * ```
  */
-export class BrowseView extends React.Component<BrowseViewProps, { content, schema }> {
+export class BrowseView extends Component<BrowseViewProps, { content, schema }> {
     /**
      * constructor
      * @param {object} props
@@ -63,18 +64,18 @@ export class BrowseView extends React.Component<BrowseViewProps, { content, sche
         return (
             <Grid container spacing={24}>
                 <div style={styles.container}>
-                    <h4>{this.props.content.DisplayName}</h4>
+                    <Typography variant="headline" gutterBottom>{this.props.content.DisplayName}</Typography>
                     {
                         fieldSettings.map((e, i) => {
                             return (
                                 <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                                     {
-                                        React.createElement(
+                                        createElement(
                                             fieldSettings[i].controlType,
                                             {
                                                 ...fieldSettings[i].clientSettings,
                                                 'data-actionName': 'browse',
-                                                'data-fieldValue': that.getFieldValue(fieldSettings[i].clientSettings.name),
+                                                'value': that.getFieldValue(fieldSettings[i].clientSettings.name),
                                             })
                                     }
                                 </Grid>)

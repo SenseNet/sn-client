@@ -4,7 +4,7 @@
  */ /** */
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
-import * as React from 'react'
+import React, { Component, createElement } from 'react'
 import MediaQuery from 'react-responsive'
 import { reactControlMapper } from '../ReactControlMapper'
 import { styles } from './EditViewStyles'
@@ -31,7 +31,7 @@ export interface EditViewProps {
  *  <EditView content={selectedContent} onSubmit={editSubmitClick} />
  * ```
  */
-export class EditView extends React.Component<EditViewProps, { content, schema }> {
+export class EditView extends Component<EditViewProps, { content, schema }> {
     /**
      * property
      * @property {string} displayName
@@ -86,7 +86,7 @@ export class EditView extends React.Component<EditViewProps, { content, schema }
         if (this.props.content[name]) {
             return this.props.content[name]
         } else {
-            return null
+            return false
         }
     }
     /**
@@ -120,7 +120,7 @@ export class EditView extends React.Component<EditViewProps, { content, schema }
                                 xl={fieldSettings[i].clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
                                 key={fieldSettings[i].clientSettings.name}>
                                 {
-                                    React.createElement(
+                                    createElement(
                                         fieldSettings[i].controlType,
                                         {
                                             ...fieldSettings[i].clientSettings,
