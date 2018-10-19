@@ -145,7 +145,7 @@ export class DropDownList extends Component<DropDownListProps, { value }> {
                 )
             case 'browse':
                 return (
-                    this.props['data-fieldValue'].length > 0 ?
+                    this.props['data-fieldValue'] ?
                         <FormControl component="fieldset" className={this.props.className}>
                             <FormLabel component="legend">
                                 {this.props['data-labelText']}
@@ -160,7 +160,7 @@ export class DropDownList extends Component<DropDownListProps, { value }> {
                 )
             default:
                 return (
-                    this.props['data-fieldValue'].length > 0 ?
+                    this.props['data-fieldValue'] ?
                         <FormControl component="fieldset" className={this.props.className}>
                             <FormLabel component="legend">
                                 {this.props['data-labelText']}

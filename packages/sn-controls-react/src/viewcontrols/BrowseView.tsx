@@ -39,7 +39,7 @@ export class BrowseView extends Component<BrowseViewProps, { content, schema }> 
         const controlMapper = reactControlMapper(this.props.repository)
         this.state = {
             content: this.props.content,
-            schema: controlMapper.getFullSchemaForContentType(this.props.content as any, 'edit'),
+            schema: controlMapper.getFullSchemaForContentType(this.props.content as any, 'view'),
         }
     }
     /**
@@ -66,16 +66,16 @@ export class BrowseView extends Component<BrowseViewProps, { content, schema }> 
                 <div style={styles.container}>
                     <Typography variant="headline" gutterBottom>{this.props.content.DisplayName}</Typography>
                     {
-                        fieldSettings.map((e, i) => {
+                        fieldSettings.map((fieldSetting, i) => {
                             return (
                                 <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                                     {
                                         createElement(
-                                            fieldSettings[i].controlType,
+                                            fieldSetting.controlType,
                                             {
-                                                ...fieldSettings[i].clientSettings,
+                                                ...fieldSetting.clientSettings,
                                                 'data-actionName': 'browse',
-                                                'value': that.getFieldValue(fieldSettings[i].clientSettings.name),
+                                                'value': that.getFieldValue(fieldSetting.clientSettings.name),
                                             })
                                     }
                                 </Grid>)
