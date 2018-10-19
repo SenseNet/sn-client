@@ -39,7 +39,7 @@ export class BrowseView extends Component<BrowseViewProps, { content, schema }> 
         const controlMapper = reactControlMapper(this.props.repository)
         this.state = {
             content: this.props.content,
-            schema: controlMapper.getFullSchemaForContentType(this.props.content as any, 'view'),
+            schema: controlMapper.getFullSchemaForContentType(this.props.content.Type, 'view'),
         }
     }
     /**

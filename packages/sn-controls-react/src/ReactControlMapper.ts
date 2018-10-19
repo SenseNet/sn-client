@@ -127,7 +127,7 @@ export const reactControlMapper = (repository: Repository) => new ControlMapper(
         return choiceSettings
     })
     .setupFieldSettingDefault(ReferenceFieldSetting, (setting) => {
-        if (setting.AllowedTypes.indexOf('User') !== -1) {
+        if (setting.AllowedTypes && setting.AllowedTypes.indexOf('User') !== -1) {
             return FieldControls.TagsInput
         } else {
             // TODO: referencegrid
@@ -139,7 +139,7 @@ export const reactControlMapper = (repository: Repository) => new ControlMapper(
         referenceSettings['data-allowMultiple'] = setting.AllowMultiple,
             referenceSettings['data-allowedTypes'] = setting.AllowedTypes,
             referenceSettings['data-selectionRoot'] = setting.SelectionRoots,
-            referenceSettings['data-defaultDisplayName'] = setting.AllowedTypes.indexOf('User') > -1 ? 'FullName' : 'DisplayName'
+            referenceSettings['data-defaultDisplayName'] = setting.AllowedTypes !== undefined ? setting.AllowedTypes.indexOf('User') > -1 ? 'FullName' : 'DisplayName' : 'DisplayName'
         return referenceSettings
     })
     .setupFieldSettingDefault(LongTextFieldSetting, (setting) => {
