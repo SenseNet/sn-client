@@ -66,7 +66,7 @@ import { Icon, iconType } from '@sensenet/icons-react'
 
 ...
 <Icon 
-    type={iconType.fontawesome} 
+    type={iconType.flaticon} 
     iconName="file"
     fontSize="default",
     color="primary"
