@@ -8,14 +8,21 @@ import { MaterialIcon } from '../src/components/icons-react/components/materialu
 import { muiTheme } from 'storybook-addon-material-ui';
 import { action } from '@storybook/addon-actions';
 import { withKnobs, text, select } from '@storybook/addon-knobs';
-import { withNotes } from '@storybook/addon-notes';
+import { withMarkdownNotes } from '@storybook/addon-notes';
 import { withInfo } from "@storybook/addon-info";
 
 addDecorator(muiTheme())
 const stories = storiesOf("Icon", module).addDecorator(withKnobs).addDecorator(withInfo());
 
+
+const defaultNotes = require('../notes/icon/Default.md')
+const materialuiNotes = require('../notes/icon/Materialui.md')
+const fontawesomeNotes = require('../notes/icon/FontAwesome.md')
+const flaticonNotes = require('../notes/icon/Flaticon.md')
+const imageNotes = require('../notes/icon/Image.md')
+
 stories.add(
-    "default", withNotes('A very simple component to display icons with various icon libs.')
+    "default", withMarkdownNotes(defaultNotes)
     (() => (
         <Icon
             iconName={text('Name of the icon', 'folder')}
@@ -26,7 +33,7 @@ stories.add(
         />
     )),
 ).add(
-    "materialui",
+    "materialui", withMarkdownNotes(materialuiNotes)
     (() => (
         <MaterialIcon
             iconName={text('Name of the icon', 'folder')}
@@ -37,7 +44,7 @@ stories.add(
         />
     )),
 ).add(
-    "fontawesome",
+    "fontawesome", withMarkdownNotes(fontawesomeNotes)
     (() => (
         <FontAwesomeIcon
             iconName={text('Name of the icon', 'folder')}
@@ -47,7 +54,7 @@ stories.add(
         />
     )),
 ).add(
-    "flaticon",
+    "flaticon", withMarkdownNotes(flaticonNotes)
     (() => (
         <FlatIcon
             iconName={text('Name of the icon', 'folder-symbol')}
@@ -57,7 +64,7 @@ stories.add(
         />
     )),
 ).add(
-    "image",
+    "image", withMarkdownNotes(imageNotes)
     (() => (
         <ImageIcon
             iconName={text('Name of the icon', 'folder')}
