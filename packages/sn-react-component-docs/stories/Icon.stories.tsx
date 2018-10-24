@@ -10,9 +10,10 @@ import { action } from '@storybook/addon-actions';
 import { withKnobs, text, select } from '@storybook/addon-knobs';
 import { withMarkdownNotes } from '@storybook/addon-notes';
 import { withInfo } from "@storybook/addon-info";
+import { checkA11y } from '@storybook/addon-a11y'
 
 addDecorator(muiTheme())
-const stories = storiesOf("Icon", module).addDecorator(withKnobs).addDecorator(withInfo());
+const stories = storiesOf("Icon", module).addDecorator(withKnobs).addDecorator(withInfo()).addDecorator(checkA11y);
 
 
 const defaultNotes = require('../notes/icon/Default.md')
