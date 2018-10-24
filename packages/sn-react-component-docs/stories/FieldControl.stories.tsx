@@ -4,7 +4,7 @@ import { muiTheme } from 'storybook-addon-material-ui';
 import { action } from '@storybook/addon-actions';
 import { withActions } from '@storybook/addon-actions/dist/preview'
 import { withKnobs, boolean, text, number, select, date } from '@storybook/addon-knobs';
-import { withNotes } from '@storybook/addon-notes';
+import { withMarkdownNotes } from '@storybook/addon-notes';
 import { withInfo } from "@storybook/addon-info";
 import { checkA11y } from '@storybook/addon-a11y'
 
@@ -35,10 +35,26 @@ const tagsInputDataSource = [
     { DisplayName: 'Terry Cherry', Id: 2 } as User,
 ]
 
+const shorttextNotes = require('../notes/fieldcontrols/ShortText.md')
+const displaynameNotes = require('../notes/fieldcontrols/DisplayName.md')
+const checkboxgroupNotes = require('../notes/fieldcontrols/CheckboxGroup.md')
+const dropdownlistNotes = require('../notes/fieldcontrols/DropDownList.md')
+const radiobuttongroupNotes = require('../notes/fieldcontrols/RadioButtonGroup.md')
+const datetimepickerNotes = require('../notes/fieldcontrols/DateTimePicker.md')
+const datepickerNotes = require('../notes/fieldcontrols/DatePicker.md')
+const timepickerNotes = require('../notes/fieldcontrols/TimePicker.md')
+const textaresNotes = require('../notes/fieldcontrols/Textarea.md')
+const richtextNotes = require('../notes/fieldcontrols/RichTextEditor.md')
+const nameNotes = require('../notes/fieldcontrols/Name.md')
+const filenameNotes = require('../notes/fieldcontrols/FileName.md')
+const passwordNotes = require('../notes/fieldcontrols/Password.md')
+const numberNotes = require('../notes/fieldcontrols/Number.md')
+const tagsInputNotes = require('../notes/fieldcontrols/TagsInput.md')
+const autocompleteNotes = require('../notes/fieldcontrols/AutoComplete.md')
+
 storiesOf('FieldControls.AutoComplete', module).addDecorator(withKnobs).addDecorator(withInfo()).addDecorator(checkA11y).addDecorator(withActions('change'))
     .add("new mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(autocompleteNotes)
             (() => (
                 <AutoComplete
                     data-actionName="new"
@@ -57,8 +73,7 @@ storiesOf('FieldControls.AutoComplete', module).addDecorator(withKnobs).addDecor
             )),
     )
     .add("edit mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(autocompleteNotes)
             (() => (
                 <AutoComplete
                     data-actionName="edit"
@@ -78,8 +93,7 @@ storiesOf('FieldControls.AutoComplete', module).addDecorator(withKnobs).addDecor
             )),
     )
     .add("browse mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(autocompleteNotes)
             (() => (
                 <AutoComplete
                     data-textType='LongText'
@@ -97,7 +111,7 @@ storiesOf('FieldControls.AutoComplete', module).addDecorator(withKnobs).addDecor
 
 storiesOf("FieldControls.CheckboxGroup", module).addDecorator(withKnobs).addDecorator(checkA11y).addDecorator(withInfo())
     .add(
-        "new mode", withNotes(`The CheckBoxGroup Field Control displays a list of checkboxes for selecting an option from a single- or multiple-selection Choice field.`)
+        "new mode", withMarkdownNotes(checkboxgroupNotes)
             (() => (
                 <CheckboxGroup
                     data-labelText={text('Label', 'Checkboxgroup label')}
@@ -116,7 +130,7 @@ storiesOf("FieldControls.CheckboxGroup", module).addDecorator(withKnobs).addDeco
             )),
     )
     .add(
-        "edit mode", withNotes('The CheckBoxGroup Field Control displays a list of checkboxes for selecting an option from a single- or multiple-selection Choice field.')
+        "edit mode", withMarkdownNotes(checkboxgroupNotes)
             (() => (
                 <CheckboxGroup
                     data-labelText={text('Label', 'Checkboxgroup label')}
@@ -136,7 +150,7 @@ storiesOf("FieldControls.CheckboxGroup", module).addDecorator(withKnobs).addDeco
             )),
     )
     .add(
-        "browse mode", withNotes('The CheckBoxGroup Field Control displays a list of checkboxes for selecting an option from a single- or multiple-selection Choice field.')
+        "browse mode", withMarkdownNotes(checkboxgroupNotes)
             (() => (
                 <CheckboxGroup
                     data-labelText={text('Label', 'Checkboxgroup label')}
@@ -153,8 +167,7 @@ storiesOf("FieldControls.CheckboxGroup", module).addDecorator(withKnobs).addDeco
 storiesOf("FieldControls.DatePicker", module).addDecorator(withKnobs).addDecorator(withInfo()).addDecorator(checkA11y).addDecorator(withActions('change'))
     .add(
         "new mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-    <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(datepickerNotes)
             (() => (
                 <DatePicker
                     data-actionName="new"
@@ -171,8 +184,7 @@ storiesOf("FieldControls.DatePicker", module).addDecorator(withKnobs).addDecorat
     )
     .add(
         "edit mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-    <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(datepickerNotes)
             (() => (
                 <DatePicker
                     data-actionName="edit"
@@ -189,8 +201,7 @@ storiesOf("FieldControls.DatePicker", module).addDecorator(withKnobs).addDecorat
     )
     .add(
         "browse mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-    <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(datepickerNotes)
             (() => (
                 <DatePicker
                     data-actionName="browse"
@@ -204,8 +215,7 @@ storiesOf("FieldControls.DatePicker", module).addDecorator(withKnobs).addDecorat
 storiesOf("FieldControls.DateTimePicker", module).addDecorator(withKnobs).addDecorator(withInfo()).addDecorator(checkA11y).addDecorator(withActions('change'))
     .add(
         "new mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-    <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(datetimepickerNotes)
             (() => (
                 <DateTimePicker
                     data-actionName="new"
@@ -222,8 +232,7 @@ storiesOf("FieldControls.DateTimePicker", module).addDecorator(withKnobs).addDec
     )
     .add(
         "edit mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-    <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(datetimepickerNotes)
             (() => (
                 <DateTimePicker
                     data-actionName="edit"
@@ -240,8 +249,7 @@ storiesOf("FieldControls.DateTimePicker", module).addDecorator(withKnobs).addDec
     )
     .add(
         "browse mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-    <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(datetimepickerNotes)
             (() => (
                 <DateTimePicker
                     data-actionName="browse"
@@ -255,8 +263,7 @@ storiesOf("FieldControls.DateTimePicker", module).addDecorator(withKnobs).addDec
 storiesOf("FieldControls.DisplayName", module).addDecorator(withKnobs).addDecorator(withInfo()).addDecorator(checkA11y).addDecorator(withActions('change'))
     .add(
         "new mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(displaynameNotes)
             (() => (
                 <DisplayName
                     data-actionName="new"
@@ -274,9 +281,7 @@ storiesOf("FieldControls.DisplayName", module).addDecorator(withKnobs).addDecora
     )
     .add(
         "edit mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`
-        )
+        withMarkdownNotes(displaynameNotes)
             (() => (
                 <DisplayName
                     data-labelText={text('Label', 'DisplayName label')}
@@ -294,8 +299,7 @@ storiesOf("FieldControls.DisplayName", module).addDecorator(withKnobs).addDecora
     )
     .add(
         "browse mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(displaynameNotes)
             (() => (
                 <DisplayName
                     data-actionName="browse"
@@ -309,8 +313,7 @@ storiesOf("FieldControls.DisplayName", module).addDecorator(withKnobs).addDecora
 storiesOf("FieldControls.DropDownList", module).addDecorator(withKnobs).addDecorator(withInfo()).addDecorator(checkA11y).addDecorator(withActions('change'))
     .add(
         "new mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(dropdownlistNotes)
             (() => (
                 <DropDownList
                     data-actionName="new"
@@ -330,9 +333,7 @@ storiesOf("FieldControls.DropDownList", module).addDecorator(withKnobs).addDecor
     )
     .add(
         "edit mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`
-        )
+        withMarkdownNotes(dropdownlistNotes)
             (() => (
                 <DropDownList
                     data-labelText={text('Label', 'DropDownList label')}
@@ -354,8 +355,7 @@ storiesOf("FieldControls.DropDownList", module).addDecorator(withKnobs).addDecor
     )
     .add(
         "browse mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(dropdownlistNotes)
             (() => (
                 <DropDownList
                     data-actionName="browse"
@@ -373,8 +373,7 @@ storiesOf("FieldControls.DropDownList", module).addDecorator(withKnobs).addDecor
 storiesOf('FieldControls.FileName', module).addDecorator(withKnobs).addDecorator(withInfo()).addDecorator(checkA11y).addDecorator(withActions('change'))
     .add(
         "new mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-    <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(filenameNotes)
             (() => (
                 <FileName
                     data-actionName="new"
@@ -393,8 +392,7 @@ storiesOf('FieldControls.FileName', module).addDecorator(withKnobs).addDecorator
     )
     .add(
         "edit mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-    <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(filenameNotes)
             (() => (
                 <FileName
                     data-labelText={text('Label', 'FileName label')}
@@ -412,14 +410,13 @@ storiesOf('FieldControls.FileName', module).addDecorator(withKnobs).addDecorator
     )
     .add(
         "browse mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(filenameNotes)
             (() => (
                 <FileName
                     data-actionName="browse"
                     data-labelText={text('Label', 'FileName label')}
                     className={text('Additional class name', 'filename-field')}
-                    value={text('Value', 'FileName value')}
+                    value={text('Value', 'Lorem-ipsum.docx')}
                     onChange={action('change')}
                 />
             )),
@@ -431,8 +428,7 @@ storiesOf('FieldControls.FileName', module).addDecorator(withKnobs).addDecorator
 storiesOf('FieldControls.Name', module).addDecorator(withKnobs).addDecorator(withInfo()).addDecorator(checkA11y).addDecorator(withActions('change'))
     .add(
         "new mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-    <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(nameNotes)
             (() => (
                 <Name
                     data-actionName="new"
@@ -450,8 +446,7 @@ storiesOf('FieldControls.Name', module).addDecorator(withKnobs).addDecorator(wit
     )
     .add(
         "edit mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-    <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(nameNotes)
             (() => (
                 <Name
                     data-labelText={text('Label', 'Name label')}
@@ -469,8 +464,7 @@ storiesOf('FieldControls.Name', module).addDecorator(withKnobs).addDecorator(wit
     )
     .add(
         "browse mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(nameNotes)
             (() => (
                 <Name
                     data-actionName="browse"
@@ -484,8 +478,7 @@ storiesOf('FieldControls.Name', module).addDecorator(withKnobs).addDecorator(wit
 storiesOf("FieldControls.Number", module).addDecorator(withKnobs).addDecorator(withInfo()).addDecorator(checkA11y).addDecorator(withActions('change'))
     .add(
         "new mode integer",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(numberNotes)
             (() => (
                 <Number
                     data-actionName="new"
@@ -511,8 +504,7 @@ storiesOf("FieldControls.Number", module).addDecorator(withKnobs).addDecorator(w
     )
     .add(
         "new mode decimal",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(numberNotes)
             (() => (
                 <Number
                     data-actionName="new"
@@ -538,8 +530,7 @@ storiesOf("FieldControls.Number", module).addDecorator(withKnobs).addDecorator(w
     )
     .add(
         "edit mode integer",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(numberNotes)
             (() => (
                 <Number
                     data-actionName="edit"
@@ -565,8 +556,7 @@ storiesOf("FieldControls.Number", module).addDecorator(withKnobs).addDecorator(w
     )
     .add(
         "edit mode decimal",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(numberNotes)
             (() => (
                 <Number
                     data-actionName="edit"
@@ -592,8 +582,7 @@ storiesOf("FieldControls.Number", module).addDecorator(withKnobs).addDecorator(w
     )
     .add(
         "browse mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(numberNotes)
             (() => (
                 <Number
                     data-actionName="browse"
@@ -610,8 +599,7 @@ storiesOf("FieldControls.Number", module).addDecorator(withKnobs).addDecorator(w
 storiesOf("FieldControls.Password", module).addDecorator(withKnobs).addDecorator(withInfo()).addDecorator(checkA11y).addDecorator(withActions('change'))
     .add(
         "new mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(passwordNotes)
             (() => (
                 <Password
                     data-actionName="new"
@@ -628,9 +616,7 @@ storiesOf("FieldControls.Password", module).addDecorator(withKnobs).addDecorator
     )
     .add(
         "edit mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`
-        )
+        withMarkdownNotes(passwordNotes)
             (() => (
                 <Password
                     data-labelText={text('Label', 'Password label')}
@@ -649,8 +635,7 @@ storiesOf("FieldControls.Password", module).addDecorator(withKnobs).addDecorator
 storiesOf("FieldControls.RadioButtonGroup", module).addDecorator(withKnobs).addDecorator(withInfo()).addDecorator(checkA11y).addDecorator(withActions('change'))
     .add(
         "new mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(passwordNotes)
             (() => (
                 <RadioButtonGroup
                     data-actionName="new"
@@ -670,9 +655,7 @@ storiesOf("FieldControls.RadioButtonGroup", module).addDecorator(withKnobs).addD
     )
     .add(
         "edit mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`
-        )
+        withMarkdownNotes(radiobuttongroupNotes)
             (() => (
                 <RadioButtonGroup
                     data-labelText={text('Label', 'RadioButtonGroup label')}
@@ -694,8 +677,7 @@ storiesOf("FieldControls.RadioButtonGroup", module).addDecorator(withKnobs).addD
     )
     .add(
         "browse mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(radiobuttongroupNotes)
             (() => (
                 <RadioButtonGroup
                     data-actionName="browse"
@@ -711,8 +693,7 @@ storiesOf("FieldControls.RadioButtonGroup", module).addDecorator(withKnobs).addD
     )
 storiesOf("FieldControls.RichTextEditor", module).addDecorator(withKnobs).addDecorator(withInfo()).addDecorator(checkA11y).addDecorator(withActions('change'))
     .add("new mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(richtextNotes)
             (() => (
                 <RichTextEditor
                     data-actionName="new"
@@ -729,8 +710,7 @@ storiesOf("FieldControls.RichTextEditor", module).addDecorator(withKnobs).addDec
             )),
     )
     .add("edit mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(richtextNotes)
             (() => (
                 <RichTextEditor
                     data-actionName="edit"
@@ -747,8 +727,7 @@ storiesOf("FieldControls.RichTextEditor", module).addDecorator(withKnobs).addDec
             )),
     )
     .add("browse mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-    <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(richtextNotes)
             (() => (
                 <RichTextEditor
                     data-actionName="browse"
@@ -762,8 +741,7 @@ storiesOf("FieldControls.RichTextEditor", module).addDecorator(withKnobs).addDec
 storiesOf("FieldControls.ShortText", module).addDecorator(withKnobs).addDecorator(withInfo()).addDecorator(checkA11y).addDecorator(withActions('change'))
     .add(
         "new mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(shorttextNotes)
             (() => (
                 <ShortText
                     data-actionName="new"
@@ -781,9 +759,7 @@ storiesOf("FieldControls.ShortText", module).addDecorator(withKnobs).addDecorato
     )
     .add(
         "edit mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`
-        )
+        withMarkdownNotes(shorttextNotes)
             (() => (
                 <ShortText
                     data-labelText={text('Label', 'ShortText label')}
@@ -801,8 +777,7 @@ storiesOf("FieldControls.ShortText", module).addDecorator(withKnobs).addDecorato
     )
     .add(
         "browse mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(shorttextNotes)
             (() => (
                 <ShortText
                     data-actionName="browse"
@@ -815,8 +790,7 @@ storiesOf("FieldControls.ShortText", module).addDecorator(withKnobs).addDecorato
     )
 storiesOf('FieldControls.TagsInput', module).addDecorator(withKnobs).addDecorator(withInfo()).addDecorator(checkA11y).addDecorator(withActions('change'))
     .add("new mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(tagsInputNotes)
             (() => (
                 <TagsInput
                     data-actionName="new"
@@ -835,8 +809,7 @@ storiesOf('FieldControls.TagsInput', module).addDecorator(withKnobs).addDecorato
             )),
     )
     .add("edit mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(tagsInputNotes)
             (() => (
                 <TagsInput
                     data-actionName="edit"
@@ -856,8 +829,7 @@ storiesOf('FieldControls.TagsInput', module).addDecorator(withKnobs).addDecorato
             )),
     )
     .add("browse mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(tagsInputNotes)
             (() => (
                 <TagsInput
                     data-textType='LongText'
@@ -873,8 +845,7 @@ storiesOf('FieldControls.TagsInput', module).addDecorator(withKnobs).addDecorato
     )
 storiesOf('FieldControls.Textarea', module).addDecorator(withKnobs).addDecorator(withInfo()).addDecorator(checkA11y).addDecorator(withActions('change'))
     .add("new mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(textaresNotes)
             (() => (
                 <Textarea
                     data-actionName="new"
@@ -892,8 +863,7 @@ storiesOf('FieldControls.Textarea', module).addDecorator(withKnobs).addDecorator
             )),
     )
     .add("edit mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(textaresNotes)
             (() => (
                 <Textarea
                     data-textType='LongText'
@@ -911,8 +881,7 @@ storiesOf('FieldControls.Textarea', module).addDecorator(withKnobs).addDecorator
             )),
     )
     .add("browse mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(textaresNotes)
             (() => (
                 <Textarea
                     data-textType='LongText'
@@ -927,8 +896,7 @@ storiesOf('FieldControls.Textarea', module).addDecorator(withKnobs).addDecorator
 storiesOf("FieldControls.TimePicker", module).addDecorator(withKnobs).addDecorator(withInfo()).addDecorator(checkA11y).addDecorator(withActions('change'))
     .add(
         "new mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(timepickerNotes)
             (() => (
                 <TimePicker
                     data-actionName="new"
@@ -945,8 +913,7 @@ storiesOf("FieldControls.TimePicker", module).addDecorator(withKnobs).addDecorat
     )
     .add(
         "edit mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(timepickerNotes)
             (() => (
                 <TimePicker
                     data-actionName="edit"
@@ -963,8 +930,7 @@ storiesOf("FieldControls.TimePicker", module).addDecorator(withKnobs).addDecorat
     )
     .add(
         "browse mode",
-        withNotes(`<p>The ShortText Field Control is a Field Control that handles ShortText Fields and provides an interface to <b>display/modify short text data</b>. With ShortText field control textual data can be displayed or edited up to 450 characters. (Longer text will be truncated on save!) Ideal for storing simple descriptions, but also can contain complex HTML formatted text to display custom visualized data.</p>
-        <p>The ShortText Field Control is a simple Field Control that renders a single TextBox. In Browse mode simply the value of the Field is rendered.</p>`)
+        withMarkdownNotes(timepickerNotes)
             (() => (
                 <TimePicker
                     data-actionName="browse"

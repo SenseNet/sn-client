@@ -1,0 +1,5 @@
+### Name
+
+The Name Field Control is a Field Control that provides an interface to **display/modify the Name of Content**. The Name is a fragment of the Content Path, it cannot contain special characters and is stored in a ShortText Field defined on GenericContent Content Type.
+
+Special characters are not allowed for a Name. Changing the Name of a Content may affect the portal's standard flow of operation, as the Path act as a permalink to the Content and changing it may cause broken links in the portal. The Content also have a DisplayName field which holds the legible (human-readable) name of the Content. The Name and DisplayName relate to each other in many cases. For some Content for example the DisplayName also determines the Name and for other Content the latter determines the former one. Please refer to Content naming to read detailed information on this topic.
