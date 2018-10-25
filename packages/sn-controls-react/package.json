@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/controls-react",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "description": "React controls for sensenet",
   "main": "dist/index.js",
   "scripts": {
@@ -60,7 +60,7 @@
     "@sensenet/icons-react": "^1.2.3",
     "@sensenet/redux": "^5.1.1",
     "lodash.debounce": "^4.0.8",
-    "material-ui-pickers": "^1.0.0-rc.17",
+    "material-ui-pickers": "^1.0.0",
     "moment": "^2.22.2",
     "radium": "^0.25.0",
     "react-number-format": "^3.6.0",
