@@ -1,6 +1,5 @@
 import { expect } from "chai";
-import { Trace, using } from "../src";
-import { ITraceMethodError, ITraceMethodFinished } from "../src/Trace";
+import { Trace } from "../src";
 
 // tslint:disable:completed-docs
 
