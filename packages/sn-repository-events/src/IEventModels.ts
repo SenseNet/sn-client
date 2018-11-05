@@ -164,3 +164,31 @@ export interface IContentMoveFailed {
      */
     error: any;
 }
+
+/**
+ * Model for Content renamed event
+ */
+export interface IContentCopied {
+    /**
+     * The copied Content instance
+     */
+    content: IContent;
+    /**
+     * The original Content instance
+     */
+    originalContent: string | number | Array<string | number>;
+}
+
+/**
+ * Model for Content Move failed event
+ */
+export interface IContentCopyFailed {
+    /**
+     * The Content instance that you've tried to copy
+     */
+    content: IContent;
+    /**
+     * The Error that caused the failure
+     */
+    error: any;
+}

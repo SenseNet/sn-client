@@ -2,7 +2,7 @@ import { IContent, Repository } from "@sensenet/client-core";
 import { ICopyOptions, IDeleteOptions, IPatchOptions, IPostOptions, IPutOptions } from "@sensenet/client-core/dist/Models/IRequestOptions";
 import { ObservableValue, Trace } from "@sensenet/client-utils";
 import { IDisposable } from "@sensenet/client-utils/dist/Disposable";
-import { IContentMoved, IContentMoveFailed, ICreated, ICreateFailed, ICustomActionExecuted, ICustomActionFailed, IDeleted, IDeleteFailed, ILoaded, IModificationFailed, IModified } from "./IEventModels";
+import { IContentCopied, IContentCopyFailed, IContentMoved, IContentMoveFailed, ICreated, ICreateFailed, ICustomActionExecuted, ICustomActionFailed, IDeleted, IDeleteFailed, ILoaded, IModificationFailed, IModified } from "./IEventModels";
 
 /**
  * Event hub for sensenet Repository Events
@@ -70,6 +70,16 @@ export class EventHub implements IDisposable {
      * Triggered after moving a content has been failed
      */
     public readonly onContentMoveFailed = new ObservableValue<IContentMoveFailed>();
+
+    /**
+     * Triggered after copying a content to another location
+     */
+    public readonly onContentCopied = new ObservableValue<IContentCopied>();
+
+    /**
+     * Triggered after copying a content has been failed
+     */
+    public readonly onContentCopyFailed = new ObservableValue<IContentCopyFailed>();
 
     // ToDo
     // private readonly onUploadProgressObservableValue = new ObservableValue<UploadProgressInfo<IContent>>();
@@ -194,15 +204,16 @@ export class EventHub implements IDisposable {
                     const response = await finished.returned;
                     if (response.d.results.length) {
                         for (const copied of response.d.results) {
-                            this.onContentCreated.setValue({
+                            this.onContentCopied.setValue({
                                 content: copied as IContent,
+                                originalContent: finished.arguments[0].idOrPath,
                             });
                         }
                     }
 
                     if (response.d.errors.length) {
                         for (const failed of response.d.errors) {
-                            this.onContentCreateFailed.setValue({
+                            this.onContentCopyFailed.setValue({
                                 content: failed.content as IContent,
                                 error: failed.error,
                             });
@@ -219,7 +230,7 @@ export class EventHub implements IDisposable {
                         return isNaN(v as number) ? { Path: v } : { Id: parseInt(v as string, 10) } as IContent;
                     });
                     for (const c of contents) {
-                        this.onContentCreateFailed.setValue({
+                        this.onContentCopyFailed.setValue({
                             content: c as IContent,
                             error: error.error,
                         });
@@ -230,7 +241,7 @@ export class EventHub implements IDisposable {
                 object: this.repository,
                 method: this.repository.move,
                 isAsync: true,
-                // handle CopyBatch finished based on the response value
+                // handle MoveBatch finished based on the response value
                 onFinished: async (finished) => {
                     const response = await finished.returned;
                     if (response.d.results.length) {
@@ -250,7 +261,7 @@ export class EventHub implements IDisposable {
                         }
                     }
                 },
-                // Handle CopyBatch errors
+                // Handle MoveBatch errors
                 onError: (error) => {
                     let contentArgs: Array<string | number> = (error.arguments[0] as IDeleteOptions).idOrPath as any;
                     if (!(contentArgs instanceof Array)) {

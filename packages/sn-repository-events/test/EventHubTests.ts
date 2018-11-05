@@ -86,7 +86,7 @@ export const eventHubTests = describe("EventHub", () => {
         });
 
         it("should be trigger after copy", (done: MochaDone) => {
-            eventHub.onContentCreated.subscribe((c) => {
+            eventHub.onContentCopied.subscribe((c) => {
                 expect(c.content).to.be.deep.eq(mockContent);
                 done();
             });
@@ -111,7 +111,7 @@ export const eventHubTests = describe("EventHub", () => {
         });
 
         it("should trigger failed after copy failed", (done: MochaDone) => {
-            eventHub.onContentCreateFailed.subscribe((c) => {
+            eventHub.onContentCopyFailed.subscribe((c) => {
                 expect(c.content).to.be.deep.eq(mockContent);
                 done();
             });
@@ -136,7 +136,7 @@ export const eventHubTests = describe("EventHub", () => {
         });
 
         it("should trigger failed if copyBatch operation has been failed ", (done: MochaDone) => {
-            eventHub.onContentCreateFailed.subscribe((c) => {
+            eventHub.onContentCopyFailed.subscribe((c) => {
                 expect(c.content).to.be.deep.eq({Id: 321});
                 done();
             });
@@ -157,7 +157,7 @@ export const eventHubTests = describe("EventHub", () => {
         });
 
         it("should trigger failed if copyBatch operation has been failed with an array of pathes", (done: MochaDone) => {
-            eventHub.onContentCreateFailed.subscribe((c) => {
+            eventHub.onContentCopyFailed.subscribe((c) => {
                 expect(c.content).to.be.deep.eq({Path: "Root/Example/Path1"});
                 done();
             });
