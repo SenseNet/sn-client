@@ -269,12 +269,12 @@ export class Upload {
     public static async fromDropEvent<T extends IContent = IContent>(options: IUploadFromEventOptions<T>) {
         if ((window as any).webkitRequestFileSystem) {
             const entries: Array<WebKitFileEntry | WebKitDirectoryEntry> =
-                [].map.call(options.event.dataTransfer.items, (i: DataTransferItem) => i.webkitGetAsEntry());
+                options.event.dataTransfer && [].map.call(options.event.dataTransfer.items, (i: DataTransferItem) => i.webkitGetAsEntry());
 
             await this.webkitItemListHandler<T>(entries, options.parentPath, options.createFolders, options);
         } else {
             // Fallback for non-webkit browsers.
-            [].forEach.call(options.event.dataTransfer.files, async (f: File) => {
+            options.event.dataTransfer && [].forEach.call(options.event.dataTransfer.files, async (f: File) => {
                 if (f.type === "file") {
                     return await Upload.file({
                         file: f,
