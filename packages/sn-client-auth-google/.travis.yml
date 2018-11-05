@@ -5,15 +5,16 @@ cache:
 notifications:
   email: false
 node_js:
-  - '9'  
   - '8'  
   - '10'
 before_script:
+  - greenkeeper-lockfile-update
   - npm --v
 script: 
   - npm test
+after_script: greenkeeper-lockfile-upload
 after_success:
-  - npm run report-coverage
+  - bash <(curl -s https://codecov.io/bash)
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/

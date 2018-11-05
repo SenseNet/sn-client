@@ -9,6 +9,12 @@
 
 This package contains a client-side Google Oauth2 authentication provider for sensenet.
 
+## Installation
+
+```shell
+npm install @sensenet/authentication-google
+```
+
 ## Usage
 
 ### Prerequisites
@@ -38,7 +44,7 @@ In your login component, you can use the following snippet. If you don't provide
 // an example login method with an optional idToken:
 async Login(idToken?: string){
  try {
-     await googleOauthProvider.Login(idToken);
+     await googleOauthProvider.login(idToken);
      console.log('Logged in');
  } catch (error) {
     console.warn('Error during login', error);

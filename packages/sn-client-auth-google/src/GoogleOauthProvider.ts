@@ -113,7 +113,7 @@ export class GoogleOauthProvider implements IOauthProvider {
             this.iframe.setAttribute("sandbox", "allow-same-origin");
 
             this.iframe.onload = async (ev) => {
-                let location: Location | undefined;
+                let location: Location | null = null;
                 await Retrier.create(async () => {
                     try {
                         location = ((ev.srcElement as HTMLIFrameElement).contentDocument as Document).location;
