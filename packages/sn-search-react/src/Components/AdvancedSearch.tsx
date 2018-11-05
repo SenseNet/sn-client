@@ -1,6 +1,8 @@
-import { FieldSetting, GenericContent, Schema } from '@sensenet/default-content-types'
+import { GenericContent, Schema } from '@sensenet/default-content-types'
 import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
 import * as React from 'react'
+
+import debounce = require('lodash.debounce')
 
 /**
  * Callback object for the Advanced Search Fields method
@@ -10,10 +12,6 @@ export interface AdvancedSearchOptions<T> {
      * Updates the aggregated query
      */
     updateQuery: (key: string, query: Query<T>) => void
-    /**
-     * Returns a field setting based on the provided name
-     */
-    getFieldSetting: <TFieldSetting extends FieldSetting = FieldSetting>(fieldName: keyof T) => TFieldSetting
     /**
      * Returns the full Schema object
      */
@@ -46,8 +44,9 @@ export interface AdvancedSearchProps<T extends GenericContent> {
  * State object for the Advanced Search component
  */
 export interface AdvancedSearchState<T> {
-    query: Query<T>
     fieldQueries: Map<string, Query<T>>
+    onQueryChanged?: (q: Query<T>) => void
+
 }
 
 /**
@@ -57,16 +56,13 @@ export class AdvancedSearch<T extends GenericContent = GenericContent> extends R
 
     constructor(props: AdvancedSearchProps<T>) {
         super(props)
-
         this.updateQuery = this.updateQuery.bind(this)
-        this.getFieldSetting = this.getFieldSetting.bind(this)
     }
 
     /**
      * The Advanced Search State object
      */
-    public state = {
-        query: new Query((q) => q),
+    public state: AdvancedSearchState<T> = {
         fieldQueries: new Map<string, Query<T>>(),
     }
 
@@ -90,15 +86,7 @@ export class AdvancedSearch<T extends GenericContent = GenericContent> extends R
                 })
             return q
         })
-        this.props.onQueryChanged && this.props.onQueryChanged(query)
-        this.setState({
-            ...this.state,
-            query,
-        })
-    }
-
-    private getFieldSetting<TFieldSetting extends FieldSetting = FieldSetting>(fieldName: keyof T) {
-        return this.props.schema.FieldSettings.find((f) => f.Name === fieldName) as TFieldSetting
+        this.state.onQueryChanged && this.state.onQueryChanged(query)
     }
 
     /**
@@ -110,6 +98,7 @@ export class AdvancedSearch<T extends GenericContent = GenericContent> extends R
         const query = new Query<T>((q) => q)
         return {
             ...lastState,
+            onQueryChanged: _newProps.onQueryChanged && debounce(_newProps.onQueryChanged, 50),
             query,
         }
     }
@@ -123,7 +112,6 @@ export class AdvancedSearch<T extends GenericContent = GenericContent> extends R
                 this.props.fields({
                     updateQuery: this.updateQuery,
                     schema: this.props.schema,
-                    getFieldSetting: this.getFieldSetting,
                 })
             }
         </div>

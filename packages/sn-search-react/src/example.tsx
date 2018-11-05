@@ -1,4 +1,4 @@
-import { Divider } from '@material-ui/core'
+import { Checkbox, Divider, FormControl, FormHelperText, InputLabel, ListItemText, MenuItem } from '@material-ui/core'
 import AppBar from '@material-ui/core/AppBar'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
@@ -17,12 +17,17 @@ import MaterialTextField from '@material-ui/core/TextField'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import { IODataCollectionResponse, Repository } from '@sensenet/client-core'
-import { GenericContent } from '@sensenet/default-content-types'
-import { MaterialIcon } from '@sensenet/icons-react'
+import * as DefaultContentTypes from '@sensenet/default-content-types'
+import { ReferenceFieldSetting } from '@sensenet/default-content-types'
+import { Icon, iconType, MaterialIcon } from '@sensenet/icons-react'
+import { Query } from '@sensenet/query'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { AdvancedSearch } from './Components/AdvancedSearch'
+import { PresetField } from './Components/Fields/PresetField'
+import { ReferenceField } from './Components/Fields/ReferenceField'
 import { TextField } from './Components/Fields/TextField'
+import { TypeField } from './Components/Fields/TypeField'
 
 const localStorageKey = 'sn-advanced-search-demo'
 
@@ -51,10 +56,30 @@ const repo = new Repository({
 interface ExampleComponentState {
     nameFieldQuery: string
     displayNameFieldQuery: string
+    typeFieldQuery: string
+    creationDateQuery: string
+    referenceFieldQuery: string
     fullQuery: string
     isSettingsOpen: boolean
     isHelpOpen: boolean
-    response?: IODataCollectionResponse<GenericContent>
+    response?: IODataCollectionResponse<DefaultContentTypes.GenericContent>
+}
+
+const contentTypes: Array<{ new(...args: any[]): DefaultContentTypes.GenericContent }> = []
+
+for (const key in DefaultContentTypes) {
+    if ((DefaultContentTypes as object).hasOwnProperty(key)) {
+        const current = (DefaultContentTypes as any)[key as any] as DefaultContentTypes.GenericContent
+        if (DefaultContentTypes.GenericContent.isPrototypeOf(current)) {
+            contentTypes.push(current as any)
+        }
+    }
+}
+
+const icons: any = {
+    folder: 'folder',
+    file: 'insert_drive_file',
+    user: 'person',
 }
 
 class ExampleComponent extends React.Component<{}, ExampleComponentState> {
@@ -65,16 +90,19 @@ class ExampleComponent extends React.Component<{}, ExampleComponentState> {
         nameFieldQuery: '',
         displayNameFieldQuery: '',
         fullQuery: '',
-        isSettingsOpen: false,
+        typeFieldQuery: '',
+        creationDateQuery: '',
+        referenceFieldQuery: '',
+        isSettingsOpen: localStorage.getItem(localStorageKey) === null, // false,
         isHelpOpen: false,
     }
 
     private async sendRequest(ev: React.SyntheticEvent) {
         ev.preventDefault()
-        const response = await repo.loadCollection<GenericContent>({
+        const response = await repo.loadCollection<DefaultContentTypes.GenericContent>({
             path: demoData.idOrPath as string, // ToDo: query by Id in client-core
             oDataOptions: {
-                select: ['Id', 'Path', 'Name', 'DisplayName', 'Type'],
+                select: 'all',
                 metadata: 'no',
                 inlinecount: 'allpages',
                 query: this.state.fullQuery,
@@ -144,19 +172,84 @@ class ExampleComponent extends React.Component<{}, ExampleComponentState> {
                                         _options.updateQuery(key, query)
                                     }}
                                     fieldKey="alma"
-                                    fieldSetting={_options.getFieldSetting('Name')}
+                                    fieldSetting={_options.schema.FieldSettings.find((s) => s.Name === 'Name')}
                                     helperText={this.state.nameFieldQuery ? `Field Query: ${this.state.nameFieldQuery}` : 'A simple free text query on the Name field'}
                                 />
 
                                 <TextField
                                     fieldName="DisplayName"
                                     onQueryChange={(key, query) => {
-                                        this.setState({ displayNameFieldQuery: query.toString() })
+                                        this.setState({ typeFieldQuery: query.toString() })
                                         _options.updateQuery(key, query)
                                     }}
-                                    fieldSetting={_options.getFieldSetting('DisplayName')}
+                                    fieldSetting={_options.schema.FieldSettings.find((s) => s.Name === 'DisplayName')}
                                     helperText={this.state.displayNameFieldQuery ? `Field Query: ${this.state.displayNameFieldQuery}` : 'Query on the DisplayName'}
                                 />
+                                <FormControl>
+                                    <InputLabel htmlFor="type-filter">Created at</InputLabel>
+                                    <PresetField
+                                        fieldName="CreationDate"
+                                        presets={[
+                                            { text: '-', value: new Query((a) => a) },
+                                            { text: 'Today', value: new Query((a) => a.term('CreationDate:>@@Today@@')) },
+                                            { text: 'Yesterday', value: new Query((a) => a.term('CreationDate:>@@Yesterday@@').and.term('CreationDate:<@@Today@@')) },
+                                        ]}
+                                        onQueryChange={(key, query) => {
+                                            this.setState({ creationDateQuery: query.toString() })
+                                            _options.updateQuery(key, query)
+                                        }}
+                                    />
+                                    <FormHelperText>{this.state.creationDateQuery.length ? this.state.creationDateQuery : 'Filter by creation date'}</FormHelperText>
+                                </FormControl>
+
+                                <FormControl style={{ minWidth: 150 }}>
+                                    <InputLabel htmlFor="type-filter">Filter by type</InputLabel>
+                                    <TypeField onQueryChange={(query) => {
+                                        this.setState({ typeFieldQuery: query.toString() })
+                                        _options.updateQuery('Type', query)
+                                    }}
+                                        id="type-filter"
+                                        types={/*contentTypes*/[DefaultContentTypes.File, DefaultContentTypes.Folder, DefaultContentTypes.User]}
+                                        schemaStore={repo.schemas}
+                                        getMenuItem={(schema, isSelected) => <MenuItem key={schema.ContentTypeName} value={schema.ContentTypeName} title={schema.Description}>
+                                            {isSelected ?
+                                                <Checkbox checked style={{ padding: 0 }} />
+                                                : <Icon type={iconType.materialui} iconName={icons[schema.Icon.toLocaleLowerCase()]} />}
+                                            <ListItemText primary={schema.ContentTypeName} />
+                                        </MenuItem>
+
+                                        }
+                                    />
+                                    <FormHelperText>{this.state.typeFieldQuery.length ? this.state.typeFieldQuery : 'Filter in all content types'}</FormHelperText>
+                                </FormControl>
+
+                                <ReferenceField
+                                    fieldName="CreatedBy"
+                                    fieldSetting={{
+                                        ..._options.schema.FieldSettings.find((s) => s.Name === 'CreatedBy') as ReferenceFieldSetting,
+                                        AllowedTypes: ['User'],
+                                    }}
+                                    fetchItems={async (q) => {
+                                        const response = await repo.loadCollection<DefaultContentTypes.GenericContent>({
+                                            path: demoData.idOrPath as string, // ToDo: query by Id in client-core
+                                            oDataOptions: {
+                                                select: ['Id', 'Path', 'Name', 'DisplayName', 'Type'],
+                                                metadata: 'no',
+                                                inlinecount: 'allpages',
+                                                query: q.toString(),
+                                                top: 10,
+                                            },
+                                        })
+                                        return response.d.results
+                                    }}
+                                    onQueryChange={(key, query) => {
+                                        this.setState({ referenceFieldQuery: query.toString() })
+                                        _options.updateQuery(key, query)
+                                    }}
+                                    helperText={this.state.referenceFieldQuery || 'Search a content creator'}
+                                    id="reference-filter"
+                                />
+
                                 <button style={{ display: 'none' }} type="submit"></button>
                             </form>
                             <Divider />
@@ -254,10 +347,8 @@ class ExampleComponent extends React.Component<{}, ExampleComponentState> {
                         This example application is a showcase for the <a href="http://npmjs.com/package/@sensenet/search-react" target="_blank">@sensenet/search-react</a> package
                         and demonstrates the basic functionality with some predefined field filters and an example query result.<br />
                         In order to get the result, please set up your repository in the <strong>Settings</strong> section and check that
-                        <ul>
                             <li>Your <a href="https://community.sensenet.com/docs/cors/" target="_blank">CORS</a> settings are correct</li>
-                            <li>You have logged in and have appropriate rights for the content</li>
-                        </ul>
+                        <li>You have logged in / have appropriate rights for the content</li>
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

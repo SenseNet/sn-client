@@ -6,7 +6,7 @@ import React = require('react')
 /**
  * Props object for the TextField Component
  */
-export interface TextFieldProps<T> extends MaterialTextFieldProps {
+export interface TextFieldProps<T> {
     /**
      * Name of the field
      */
@@ -29,7 +29,7 @@ export interface TextFieldProps<T> extends MaterialTextFieldProps {
  * Component for searching simple text fragments in a specified field
  * @param props
  */
-export const TextField = <T extends GenericContent>(props: TextFieldProps<T>) => {
+export const TextField = <T extends GenericContent>(props: TextFieldProps<T> & MaterialTextFieldProps) => {
     const displayName = props.fieldSetting && props.fieldSetting.DisplayName || props.label
     const description = props.fieldSetting && props.fieldSetting.Description || ''
     const { fieldName, onQueryChange, fieldSetting, fieldKey, ...materialProps } = { ...props }
