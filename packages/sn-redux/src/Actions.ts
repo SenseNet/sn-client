@@ -252,7 +252,7 @@ export const moveContent = (idOrPath: number | string, targetPath: string) => ({
  */
 export const moveBatch = (items: Array<number | string>, targetPath: string) => ({
     type: 'MOVE_BATCH',
-    payload: (repository: Repository) => repository.copy({ idOrPath: items, targetPath }),
+    payload: (repository: Repository) => repository.move({ idOrPath: items, targetPath }),
 })
 /**
  * Action creator for checking out a Content in the Content Repository.
