@@ -456,5 +456,78 @@ export const contentListTests: Mocha.Suite = describe('ContentList component', (
             />)
             component.unmount()
         })
+        it('should render without crashing without selected', () => {
+            const component = renderer.create(<ContentList<GenericContent>
+                items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
+                schema={genericSchema}
+                fieldsToDisplay={['DisplayName']}
+                orderBy="DisplayName"
+                orderDirection="asc"
+                icons={{}}
+                displayRowCheckbox={true}
+            />)
+            component.unmount()
+        })
+        it('should render without crashing without selected undefined', () => {
+            const component = renderer.create(<ContentList<GenericContent>
+                items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
+                schema={genericSchema}
+                selected={undefined}
+                fieldsToDisplay={['DisplayName']}
+                orderBy="DisplayName"
+                orderDirection="asc"
+                icons={{}}
+                displayRowCheckbox={true}
+            />)
+            component.unmount()
+        })
+        it('should render without crashing without orderBy', () => {
+            const component = renderer.create(<ContentList<GenericContent>
+                items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
+                schema={genericSchema}
+                fieldsToDisplay={['DisplayName']}
+                selected={[]}
+                orderDirection="asc"
+                icons={{}}
+                displayRowCheckbox={true}
+            />)
+            component.unmount()
+        })
+        it('should render without crashing without orderDirection', () => {
+            const component = renderer.create(<ContentList<GenericContent>
+                items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
+                schema={genericSchema}
+                fieldsToDisplay={['DisplayName']}
+                selected={[]}
+                orderBy="DisplayName"
+                icons={{}}
+                displayRowCheckbox={true}
+            />)
+            component.unmount()
+        })
+        it('should render without crashing without icons', () => {
+            const component = renderer.create(<ContentList<GenericContent>
+                items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
+                schema={genericSchema}
+                fieldsToDisplay={['DisplayName']}
+                selected={[]}
+                orderBy="DisplayName"
+                orderDirection="asc"
+                displayRowCheckbox={true}
+            />)
+            component.unmount()
+        })
+        it('should render without crashing without fieldsToDisplay', () => {
+            const component = renderer.create(<ContentList<GenericContent>
+                items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
+                schema={genericSchema}
+                selected={[]}
+                orderBy="DisplayName"
+                orderDirection="asc"
+                icons={{}}
+                displayRowCheckbox={true}
+            />)
+            component.unmount()
+        })
     })
 })

@@ -11,25 +11,90 @@ import { GenericContent, IActionModel, Schema } from '@sensenet/default-content-
 import * as React from 'react'
 import { ActionsCell, CellProps, DateCell, DefaultCell, DisplayNameCell, ReferenceCell } from './CellTemplates'
 
+/**
+ * Interface for ContentList properties
+ */
 export interface ContentListProps<T extends GenericContent> {
+    /**
+     * Array of content items
+     */
     items: T[]
+    /**
+     * Schema object
+     */
     schema: Schema
+    /**
+     * Active content item
+     */
     active?: T
-    selected: T[]
-    fieldsToDisplay: Array<keyof T>
-    orderBy: keyof T
-    orderDirection: 'asc' | 'desc'
+    /**
+     * Array of selected content items
+     * @default []
+     */
+    selected?: T[]
+    /**
+     * Array of fields that should be displayed
+     * @default []
+     */
+    fieldsToDisplay?: Array<keyof T>
+    /**
+     * Array of fields that descibe how the list items should be sorted
+     * @default 'DisplayName'
+     */
+    orderBy?: keyof T
+    /**
+     * Direction of ordering
+     * @default asc
+     */
+    orderDirection?: 'asc' | 'desc'
+    /**
+     * Contains custom cell template components
+     */
     fieldComponent?: React.StatelessComponent<CellProps<T, keyof T>>,
-    icons: any
+    /**
+     * Object that contains icon names
+     * @default null
+     */
+    icons?: any
+    /**
+     * Defines wheter a checkbox per row should be displayed or not
+     */
     displayRowCheckbox?: boolean,
+    /**
+     * Called when a content item is clicked
+     */
     onItemClick?: (e: React.MouseEvent, content: T) => void
+    /**
+     * Called when a content item is double-clicked
+     */
     onItemDoubleClick?: (e: React.MouseEvent, content: T) => void
+    /**
+     * Called when a content item is tapped
+     */
     onItemTap?: (e: React.TouchEvent, content: T) => void
+    /**
+     * Called when a user hits right click on a content item
+     */
     onItemContextMenu?: (e: React.MouseEvent, content: T) => void
+    /**
+     * Called when actionmenu is requested
+     */
     onRequestActionsMenu?: (ev: React.MouseEvent, content: T) => void
+    /**
+     * Called when the order params are changed
+     */
     onRequestOrderChange?: (field: keyof T, direction: 'asc' | 'desc') => void
+    /**
+     * Called when a content item is selected
+     */
     onRequestSelectionChange?: (newSelection: T[]) => void
+    /**
+     * Called when there's a new active item
+     */
     onRequestActiveItemChange?: (newActiveItem: T) => void
+    /**
+     * Called when a action is requested
+     */
     onAction?: (item: T, action: IActionModel) => void
 }
 
@@ -44,7 +109,8 @@ export class ContentList<T extends GenericContent> extends React.Component<Conte
     public state = ContentList.getDerivedStateFromProps(this.props as any, null as any)
 
     public static getDerivedStateFromProps(nextProps: ContentListProps<GenericContent>, lastState: ContentListState) {
-        const selectedCount = nextProps.selected.length
+        const selected = nextProps.selected ? nextProps.selected : []
+        const selectedCount = selected.length
         const itemCount = nextProps.items.length
         return {
             selectedCount,
@@ -62,11 +128,12 @@ export class ContentList<T extends GenericContent> extends React.Component<Conte
     }
 
     public handleContentSelection(content: T) {
+        const selected = this.props.selected !== undefined && this.props.selected.length > 0 ? this.props.selected : []
         if (this.props.onRequestSelectionChange) {
-            if (this.props.selected.find((c) => c.Id === content.Id)) {
-                this.props.onRequestSelectionChange(this.props.selected.filter((s) => s.Id !== content.Id))
+            if (selected.find((c) => c.Id === content.Id)) {
+                this.props.onRequestSelectionChange(selected.filter((s) => s.Id !== content.Id))
             } else {
-                this.props.onRequestSelectionChange([...this.props.selected, content])
+                this.props.onRequestSelectionChange([...selected, content])
             }
         }
     }
@@ -99,6 +166,9 @@ export class ContentList<T extends GenericContent> extends React.Component<Conte
         this.handleContentSelection = this.handleContentSelection.bind(this)
     }
     public render() {
+        const selected = this.props.selected ? this.props.selected : []
+        const orderDirection = this.props.orderDirection ? this.props.orderDirection : 'asc'
+        const orderBy = this.props.orderBy ? this.props.orderBy : 'DisplayName'
         return <Table>
             <TableHead>
                 <TableRow>
@@ -112,7 +182,7 @@ export class ContentList<T extends GenericContent> extends React.Component<Conte
                             />
                         </TableCell>
                         : null}
-                    {this.props.fieldsToDisplay.map((field) => {
+                    {this.props.fieldsToDisplay ? this.props.fieldsToDisplay.map((field) => {
                         const fieldSetting = this.props.schema.FieldSettings.find((s) => s.Name === field)
                         const isNumeric = fieldSetting && (fieldSetting.Type === 'IntegerFieldSetting' || fieldSetting.Type === 'NumberFieldSetting')
                         const description = fieldSetting && fieldSetting.Description || field
@@ -126,20 +196,20 @@ export class ContentList<T extends GenericContent> extends React.Component<Conte
                             >
                                 <Tooltip title={description} >
                                     <TableSortLabel
-                                        active={this.props.orderBy === field}
-                                        direction={this.props.orderDirection}
-                                        onClick={() => this.props.onRequestOrderChange && this.props.onRequestOrderChange(field, this.props.orderDirection === 'asc' ? 'desc' : 'asc')}
+                                        active={orderBy === field}
+                                        direction={orderDirection}
+                                        onClick={() => this.props.onRequestOrderChange && this.props.onRequestOrderChange(field, orderDirection === 'asc' ? 'desc' : 'asc')}
                                     >
                                         {displayName}
                                     </TableSortLabel>
                                 </Tooltip>
                             </TableCell>)
-                    })}
+                    }) : null}
                 </TableRow>
             </TableHead>
             <TableBody>
                 {this.props.items.map((item) => {
-                    const isSelected = this.props.selected.find((s) => s.Id === item.Id) ? true : false
+                    const isSelected = selected.find((s) => s.Id === item.Id) ? true : false
                     const isActive = this.props.active && this.props.active.Id === item.Id ? true : false
                     return (<TableRow
                         key={item.Id}
@@ -159,11 +229,11 @@ export class ContentList<T extends GenericContent> extends React.Component<Conte
                         {this.props.displayRowCheckbox !== false ?
                             <TableCell padding="checkbox" key="select">
                                 <Checkbox
-                                    checked={this.props.selected.find((i) => i.Id === item.Id) ? true : false}
+                                    checked={selected.find((i) => i.Id === item.Id) ? true : false}
                                     onChange={() => this.handleContentSelection(item)}
                                 />
                             </TableCell> : null}
-                        {this.props.fieldsToDisplay.map((field) => {
+                        {this.props.fieldsToDisplay ? this.props.fieldsToDisplay.map((field) => {
                             const fieldSetting = this.props.schema.FieldSettings.find((s) => s.Name === field)
                             const cellProps: CellProps<T, keyof T> = { ...this.props as ContentListProps<T>, field, content: item, fieldSetting, isSelected }
 
@@ -175,7 +245,7 @@ export class ContentList<T extends GenericContent> extends React.Component<Conte
                                 key: field as string,
                             }
                             return el
-                        })}
+                        }) : null}
                     </TableRow>
                     )
                 })}
