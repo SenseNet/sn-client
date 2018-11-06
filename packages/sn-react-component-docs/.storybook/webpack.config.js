@@ -16,6 +16,7 @@ module.exports = (baseConfig, env, config /* Storybook 4 default config */) => {
     include: [
       path.resolve(__dirname, "../src/components/icons-react"),
       path.resolve(__dirname, "../src/components/controls-react"),
+      path.resolve(__dirname, "../src/components/list-controls-react"),
       path.resolve(__dirname, "../stories")],
     use: [
       require.resolve("ts-loader"),

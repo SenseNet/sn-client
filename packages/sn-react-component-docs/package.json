@@ -7,6 +7,7 @@
   "dependencies": {
     "@sensenet/controls-react": "^2.3.0",
     "@sensenet/icons-react": "^1.2.3",
+    "@sensenet/list-controls-react": "^1.1.1",
     "@sensenet/redux": "^5.1.1",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
@@ -78,7 +79,7 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "rimraf src/components && npm run copy-components && build-storybook -c .storybook",
     "clean": "rimraf storybook-static",
-    "copy-components": "cpx \"node_modules/@sensenet/icons-react/src/**/*.*\" src/components/icons-react &&cpx \"node_modules/@sensenet/controls-react/src/**/*.*\" src/components/controls-react",
+    "copy-components": "cpx \"node_modules/@sensenet/icons-react/src/**/*.*\" src/components/icons-react && cpx \"node_modules/@sensenet/controls-react/src/**/*.*\" src/components/controls-react && cpx \"node_modules/@sensenet/list-controls-react/src/ContentList/**/*.*\" src/components/list-controls-react",
     "start": "rimraf src/components && npm run copy-components && npm run storybook"
   },
   "config": {
