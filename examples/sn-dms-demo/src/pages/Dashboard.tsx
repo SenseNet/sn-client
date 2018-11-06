@@ -1,116 +1,267 @@
-import { Actions, Reducers } from '@sensenet/redux'
+import Button from '@material-ui/core/Button'
+import Dialog from '@material-ui/core/Dialog'
+import DialogContent from '@material-ui/core/DialogContent'
+import Drawer from '@material-ui/core/Drawer'
+import IconButton from '@material-ui/core/IconButton'
+import { LoginState } from '@sensenet/client-core'
+import { PathHelper } from '@sensenet/client-utils'
+import { Icon, iconType } from '@sensenet/icons-react'
 import * as React from 'react'
+import * as Loadable from 'react-loadable'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
+import { Route, RouteComponentProps, Switch } from 'react-router-dom'
+import { rootStateType } from '..'
 import * as DMSActions from '../Actions'
-import BreadCrumb from '../components/BreadCrumb'
+import { ContentTemplates } from '../components/ContentTemplates'
+import { ContentTypes } from '../components/ContentTypes'
+import DashboardDrawer from '../components/DashboardDrawer'
 import DocumentLibrary from '../components/DocumentLibrary'
-import FloatingActionButton from '../components/FloatingActionButton'
+import { FullScreenLoader } from '../components/FullScreenLoader'
+import { Groups } from '../components/Groups'
 import Header from '../components/Header'
-import MessageBar from '../components/MessageBar'
-import * as DMSReducers from '../Reducers'
+import MobileHeader from '../components/Mobile/Header'
+import Picker from '../components/Pickers/PickerBase'
+import { SavedQueries } from '../components/SavedQueries'
+import { Settings } from '../components/Settings'
+import { Shared } from '../components/Shared'
+import { Trash } from '../components/Trash'
+import { Users } from '../components/Users'
 
 const styles = {
     dashBoardInner: {
         padding: 60,
     },
     dashBoardInnerMobile: {
-        padding: '30px 0 0',
+        marginTop: 36,
+        width: '100%',
     },
     root: {
-        background: '#efefef',
+        flexGrow: 1,
+        zIndex: 1,
+        overflow: 'hidden' as any,
+        position: 'relative' as any,
+        display: 'flex' as any,
+    },
+    rootMobile: {
+        flexGrow: 1,
+        zIndex: 1,
+        position: 'relative' as any,
+        display: 'flex' as any,
+    },
+    main: {
+        flexGrow: 1,
+        backgroundColor: '#eee',
+        padding: '0 10px 10px',
+        minWidth: 0,
+    },
+    dialogClose: {
+        position: 'absolute',
+        right: 0,
+    },
+    dialogCloseMobile: {
+        position: 'absolute',
+        right: 0,
+        top: '15px',
+        fontFamily: 'Raleway Medium',
+        color: '#016D9E',
+        fontSize: '14px',
+    },
+    progress: {
+        width: '100%',
+        textAlign: 'center',
     },
 }
 
-interface DashboardProps {
-    match,
-    currentContent,
-    loggedinUser,
-    loadContent,
-    setCurrentId,
-    currentId,
-    selectionModeIsOn: boolean
+const mapStateToProps = (state: rootStateType) => {
+    return {
+        loggedinUser: state.sensenet.session.user,
+        loginState: state.sensenet.session.loginState,
+        isDialogOpen: state.dms.dialog.isOpened,
+        dialogContent: state.dms.dialog.content,
+    }
 }
 
-class Dashboard extends React.Component<DashboardProps, { currentId }> {
-    constructor(props) {
-        super(props)
-        this.state = {
-            currentId: this.props.match.params.id ? this.props.match.params.id : '',
-        }
-    }
-    public componentDidMount() {
-        const id = parseInt(this.props.match.params.id, 10)
-        if (id && !isNaN(id) && isFinite(id)) {
-            this.props.setCurrentId(id)
-        } else {
-            if (this.props.match.params.id !== undefined && this.props.match.params.id !== this.props.currentId) {
-                if (this.props.loggedinUser.userName !== 'Visitor') {
-                    return this.props.setCurrentId(this.props.match.params.id)
-                        && this.props.loadContent(`/Root/Profiles/Public/${this.props.loggedinUser.userName}/Document_Library`)
-                }
-            }
-        }
-    }
-    public componentWillReceiveProps(nextProps) {
-        const id = parseInt(nextProps.match.params.id, 10)
-        if (id && !isNaN(id) && isFinite(id)) {
-            this.props.setCurrentId(id)
-        }
-        if (nextProps.currentId &&
-            !isNaN(id) &&
-            id === Number(nextProps.currentId) &&
-            this.props.currentId !== nextProps.currentId) {
-            if (nextProps.loggedinUser.userName !== 'Visitor') {
+const mapDispatchToProps = {
+    loadUserActions: DMSActions.loadUserActions,
+    closeDialog: DMSActions.closeDialog,
+}
 
-                this.props.setCurrentId(id)
-                this.props.loadContent(id)
-            }
+interface DashboardProps extends RouteComponentProps<any> {
+    currentId: number,
+}
+
+export interface DashboardState {
+    currentSelection: number[]
+    currentScope: string
+    currentViewName: string
+    currentUserName: string
+}
+
+class DashboardComponent extends React.Component<DashboardProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, DashboardState> {
+
+    public state = {
+        currentFolderId: undefined,
+        currentSelection: [],
+        currentViewName: 'list',
+        currentUserName: 'Visitor',
+        currentScope: 'documents',
+    }
+
+    constructor(props: DashboardComponent['props']) {
+        super(props)
+    }
+
+    public static getDerivedStateFromProps(newProps: DashboardComponent['props'], lastState: DashboardComponent['state']) {
+        const currentSelection = newProps.match.params.selection && decodeURIComponent(newProps.match.params.selection) || []
+        const currentViewName = newProps.match.params.action
+
+        if (newProps.loggedinUser.userName !== lastState.currentUserName) {
+            newProps.loadUserActions(newProps.loggedinUser.content.Path, 'DMSUserActions')
         }
-        if (nextProps.loggedinUser.userName !== this.props.loggedinUser.userName) {
-            id ?
-                this.props.setCurrentId(Number(nextProps.match.params.id)) &&
-                this.props.loadContent(Number(nextProps.match.params.id)) :
-                this.props.loadContent(`/Root/Profiles/Public/${nextProps.loggedinUser.userName}/Document_Library`)
+
+        return {
+            ...lastState,
+            currentSelection,
+            currentViewName,
+            currentScope: newProps.match.params.scope || 'documents',
+            currentUserName: newProps.loggedinUser.userName,
         }
     }
     public render() {
-        const { id } = this.props.match.params
+        const { closeDialog, isDialogOpen, dialogContent } = this.props
+
+        if (this.props.loginState !== LoginState.Unauthenticated && this.props.loggedinUser.userName === 'Visitor') {
+            return null
+        }
+
         return (
-            <div style={styles.root}>
-                <Header />
-                <MediaQuery minDeviceWidth={700}>
-                    {(matches) => {
-                        if (matches) {
-                            return <div style={styles.dashBoardInner}>
-                                <BreadCrumb />
-                                <DocumentLibrary parentId={id} />
-                            </div>
-                        } else {
-                            return <div style={styles.dashBoardInnerMobile}>
-                                <BreadCrumb />
-                                <DocumentLibrary parentId={id} />
-                            </div>
+            <MediaQuery minDeviceWidth={700}>
+                {(matches) => {
+                    return <div>
+                        <div style={matches ? { ...styles.root } : { ...styles.rootMobile }}>
+                            {matches ? <Header /> : <MobileHeader />}
+                            {matches ? null : <DashboardDrawer />}
+                            {matches ?
+                                <div style={{ width: '100%', display: 'flex' }}>
+                                    <DashboardDrawer />
+                                    <div style={styles.main}>
+                                        <div style={{ height: 48, width: '100%' }}></div>
+                                        <Switch>
+                                            <Route path="/documents" component={(props: RouteComponentProps<any>) => (
+                                                <Switch>
+                                                    <Route path={props.match.url + '/shared'}>
+                                                        <Shared />
+                                                    </Route>
+
+                                                    <Route path={props.match.url + '/savedqueries'}>
+                                                        <SavedQueries />
+                                                    </Route>
+                                                    <Route path={props.match.url + '/trash'}>
+                                                        <Trash />
+                                                    </Route>
+                                                    <Route path={'/' + PathHelper.joinPaths(props.match.url, '/:folderPath?/:otherActions*')} exact component={() => (
+                                                        <div>
+                                                            <DocumentLibrary matchesDesktop={matches} />
+                                                        </div>
+                                                    )}>
+                                                    </Route>
+                                                </Switch>
+                                            )} >
+                                            </Route>
+                                            <Route path="/users" >
+                                                <Users />
+                                            </Route>
+                                            <Route path="/groups" >
+                                                <Groups />
+                                            </Route>
+                                            <Route path="/contenttypes" >
+                                                <ContentTypes />
+                                            </Route>
+                                            <Route path="/contenttemplates" >
+                                                <ContentTemplates />
+                                            </Route>
+                                            <Route path="/settings" >
+                                                <Settings />
+                                            </Route>
+
+                                            {/* <Redirect to="/documents" /> */}
+                                        </Switch>
+                                    </div>
+                                </div>
+                                :
+                                <div style={styles.dashBoardInnerMobile}>
+                                    <Switch>
+                                        <Route path="/documents" component={(props: RouteComponentProps<any>) => (
+                                            <Switch>
+                                                <Route path={props.match.url + '/shared'}>
+                                                    <Shared />
+                                                </Route>
+
+                                                <Route path={props.match.url + '/savedqueries'}>
+                                                    <SavedQueries />
+                                                </Route>
+                                                <Route path={props.match.url + '/trash'}>
+                                                    <Trash />
+                                                </Route>
+                                                <Route path={'/' + PathHelper.joinPaths(props.match.url, '/:folderPath?/:otherActions*')} exact component={() => (
+                                                    <div>
+                                                        <DocumentLibrary matchesDesktop={matches} />
+                                                    </div>
+                                                )}>
+                                                </Route>
+                                            </Switch>
+                                        )} >
+                                        </Route>
+                                        <Route path="/users" >
+                                            <Users />
+                                        </Route>
+                                        <Route path="/groups" >
+                                            <Groups />
+                                        </Route>
+                                        <Route path="/contenttypes" >
+                                            <ContentTypes />
+                                        </Route>
+                                        <Route path="/contenttemplates" >
+                                            <ContentTemplates />
+                                        </Route>
+                                        <Route path="/settings" >
+                                            <Settings />
+                                        </Route>
+
+                                        {/* <Redirect to="/documents" /> */}
+                                    </Switch>
+                                </div>}
+                        </div>
+                        <Route exact path="/:prefix*/preview/:documentId" component={() => {
+                            const LoadableDmsViewer = Loadable({
+                                loader: async () => (await import(/* webpackChunkName: "viewer" */ '../components/DmsViewer')).DmsViewer,
+                                loading: () => <FullScreenLoader />,
+                            })
+                            return <LoadableDmsViewer />
+                        }} />
+                        {matches ? <Dialog open={isDialogOpen} onClose={closeDialog} maxWidth="md">
+                            <DialogContent children={dialogContent} />
+                            <IconButton onClick={closeDialog} style={styles.dialogClose as any}>
+                                <Icon
+                                    type={iconType.materialui}
+                                    iconName="close" />
+                            </IconButton>
+                        </Dialog> :
+                            <Drawer open={isDialogOpen} anchor="bottom" onClose={closeDialog}>
+                                <DialogContent children={dialogContent} />
+                                <Button onClick={closeDialog} style={styles.dialogCloseMobile as any}>
+                                    Cancel
+                                </Button>
+                            </Drawer>
                         }
-                    }}
-                </MediaQuery>
-                {!this.props.selectionModeIsOn ? <FloatingActionButton content={this.props.currentContent} /> : null}
-                <MessageBar />
-            </div>
+                        <Picker />
+                    </div>
+                }}
+            </MediaQuery>
         )
     }
 }
+const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(DashboardComponent)
 
-const mapStateToProps = (state, match) => {
-    return {
-        loggedinUser: DMSReducers.getAuthenticatedUser(state.sensenet),
-        currentContent: Reducers.getCurrentContent(state.sensenet),
-        currentId: DMSReducers.getCurrentId(state.dms),
-        selectionModeIsOn: DMSReducers.getIsSelectionModeOn(state.dms),
-    }
-}
-
-export default connect(mapStateToProps, {
-    loadContent: Actions.loadContent,
-    setCurrentId: DMSActions.setCurrentId,
-})(Dashboard)
+export default connectedComponent

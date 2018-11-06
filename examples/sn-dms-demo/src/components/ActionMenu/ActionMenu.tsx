@@ -1,118 +1,489 @@
-import Dialog from '@material-ui/core/Dialog'
-import DialogTitle from '@material-ui/core/DialogTitle'
+import Drawer from '@material-ui/core/Drawer'
+import Fade from '@material-ui/core/Fade'
+import List from '@material-ui/core/List'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+import { IActionModel } from '@sensenet/default-content-types'
+import { Icon, iconType } from '@sensenet/icons-react'
+import { Actions } from '@sensenet/redux'
+import { compile } from 'path-to-regexp'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
+import { v1 } from 'uuid'
+import { rootStateType } from '../..'
 import * as DMSActions from '../../Actions'
-import * as DMSReducers from '../../Reducers'
-import ActionList from './ActionList'
+import { downloadFile } from '../../assets/helpers'
+import { icons } from '../../assets/icons'
+import { resources } from '../../assets/resources'
+import { select } from '../../store/documentlibrary/actions'
+import { closePicker, loadPickerItems, openPicker, setBackLink, setPickerParent } from '../../store/picker/actions'
+import ApproveorRejectDialog from '../Dialogs/ApproveorRejectDialog'
+import CopyToConfirmDialog from '../Dialogs/CopyToConfirmDialog'
+import DeleteDialog from '../Dialogs/DeleteDialog'
+import EditPropertiesDialog from '../Dialogs/EditPropertiesDialog'
+import MoveToConfirmDialog from '../Dialogs/MoveToConfirmDialog'
+import ShareDialog from '../Dialogs/ShareDialog'
+import VersionsDialog from '../Dialogs/VersionsDialog'
+import PathPicker from '../Pickers/PathPicker'
+import { UPLOAD_FILE_BUTTON_ID, UPLOAD_FOLDER_BUTTON_ID } from '../Upload/UploadButton'
+
+const mapStateToProps = (state: rootStateType) => {
+    return {
+        actions: state.dms.actionmenu.actions,
+        open: state.dms.actionmenu.open,
+        anchorElement: state.dms.actionmenu.anchorElement,
+        position: state.dms.actionmenu.position,
+        hostName: state.sensenet.session.repository.repositoryUrl,
+        currentitems: state.sensenet.currentitems,
+        userName: state.sensenet.session.user.userName,
+        queryOptions: state.sensenet.currentitems.options,
+        currentContent: state.dms.actionmenu.content,
+        currentParent: state.dms.documentLibrary.parent,
+    }
+}
+
+const mapDispatchToProps = {
+    setEdited: DMSActions.setEditedContentId,
+    clearSelection: Actions.clearSelection,
+    deleteBatch: Actions.deleteBatch,
+    closeActionMenu: DMSActions.closeActionMenu,
+    openViewer: DMSActions.openViewer,
+    logout: Actions.userLogout,
+    openDialog: DMSActions.openDialog,
+    closeDialog: DMSActions.closeDialog,
+    openPicker,
+    closePicker,
+    setBackLink,
+    loadContent: Actions.loadContent,
+    fetchContent: Actions.requestContent,
+    checkoutContent: Actions.checkOut,
+    checkinContent: Actions.checkIn,
+    publishContent: Actions.publish,
+    undoCheckout: Actions.undoCheckout,
+    forceundoCheckout: Actions.forceUndoCheckout,
+    setPickerParent,
+    loadPickerItems,
+    select,
+    uploadFileList: DMSActions.uploadFileList,
+}
 
 const styles = {
-    actionMenu: {
-        display: 'none',
+    actionmenuContainer: {
+        flex: 1,
     },
-    open: {
-        display: 'block' as any,
-        position: 'absolute' as any,
-        zIndex: 10,
-        maxHeight: 'calc(100vh - 96px)',
-        WebkitOverflowScrolling: 'touch' as any,
-        minWidth: 16,
-        minHeight: 16,
-        transform: 'scale(1, 1)',
-        transformOrigin: '0px 32px 0px',
-        transition: 'opacity 267ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, transform 178ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
-        background: '#fff',
-        boxShadow: '0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12)',
-        borderRadius: 2,
+    menuIcon: {
+        color: '#fff',
+        display: 'inline-block',
+        verticalAlign: 'middle',
+        cursor: 'pointer',
+    },
+    menuIconMobile: {
+        width: 'auto' as any,
+        marginLeft: '16px',
+    },
+    arrowButton: {
+        marginLeft: 0,
+    },
+    menuItem: {
+        padding: '6px 15px',
+        fontSize: '0.9rem',
+        fontFamily: 'Raleway Medium',
+    },
+    menuItemMobile: {
+        padding: '10px 15px',
+        fontSize: '0.9rem',
+        fontFamily: 'Raleway Medium',
+    },
+    avatar: {
+        display: 'inline-block',
+    },
+    actionIcon: {
+        color: '#016D9E',
+        marginRight: 14,
     },
 }
 
-interface ActionMenuProps {
-    actions,
-    id,
-    title,
-    isOpen,
-    position,
-    currentContent,
-    close
+interface ActionMenuProps extends RouteComponentProps<any> {
+    id: number,
 }
 
 interface ActionMenuState {
-    mouseIsDownOnMenu
+    hovered: string,
+    selectedIndex: number,
+    anchorEl: HTMLElement | null
 }
 
-class ActionMenu extends React.Component<ActionMenuProps, ActionMenuState> {
-    constructor(props) {
+class ActionMenu extends React.Component<ActionMenuProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, ActionMenuState> {
+    constructor(props: ActionMenu['props']) {
         super(props)
-
         this.state = {
-            mouseIsDownOnMenu: false,
+            hovered: '',
+            selectedIndex: 1,
+            anchorEl: null,
         }
+        this.handleMouseEnter = this.handleMouseEnter.bind(this)
+        this.handleMouseLeave = this.handleMouseLeave.bind(this)
+        this.handleMenuItemClick = this.handleMenuItemClick.bind(this)
+    }
+    public componentWillReceiveProps(nextProps: this['props']) {
+        if (nextProps.open === false) {
+            this.setState({
+                anchorEl: null,
+            })
+        }
+    }
+    public isHovered(id: string) {
+        return this.state.hovered === id
+    }
+    public handleMouseEnter(e: React.MouseEvent, name: string) {
+        this.setState({
+            hovered: name,
+        })
+    }
+    public handleMouseLeave() {
+        this.setState({
+            hovered: '',
+        })
+    }
+    public handleClose = () => {
+        this.props.closeActionMenu()
+        this.setState({ anchorEl: null })
+    }
+    public handleMenuItemClick(e: React.MouseEvent, action: IActionModel) {
+        if ((action as any).Action) {
+            (action as any).Action()
+        } else {
+            const content = this.props.currentContent
+            switch (action.Name) {
+                case 'Rename':
+                    this.handleClose()
+                    this.props.setEdited(this.props.currentContent.Id)
+                    break
+                case 'ClearSelection':
+                    this.handleClose()
+                    this.props.clearSelection()
+                    break
+                case 'DeleteBatch':
+                case 'Delete':
+                    this.handleClose()
+                    this.props.clearSelection()
+                    this.props.openDialog(
+                        <DeleteDialog />,
+                        resources.DELETE, this.props.closeDialog)
+                    break
+                case 'Preview':
+                    this.handleClose()
+                    const newPath = compile(this.props.match.path)({ folderPath: this.props.match.params.folderPath || btoa(this.props.id as any), otherActions: ['preview', btoa(content.Id as any)] })
+                    this.props.history.push(newPath)
+                    break
+                case 'Logout':
+                    this.handleClose()
+                    this.props.logout()
+                    break
+                case 'Browse':
+                    this.handleClose()
+                    const path = this.props.currentContent.Path
+                    downloadFile(path, this.props.hostName)
+                    break
+                case 'Versions':
+                    this.handleClose()
+                    this.props.openDialog(
+                        <VersionsDialog currentContent={this.props.currentContent} />,
+                        resources.VERSIONS, this.props.closeDialog)
+                    break
+                case 'ShareContent':
+                    this.handleClose()
+                    this.props.openDialog(<ShareDialog currentContent={this.props.currentContent} />)
+                    break
+                case 'Profile':
+                    this.handleClose()
+                    const doclibPath = `/Root/Profiles/Public/${this.props.userName}/Document_Library`
+                    this.props.loadContent(doclibPath)
+                    this.props.fetchContent(doclibPath, this.props.queryOptions)
+                    break
+                case 'Edit':
+                    this.handleClose()
+                    this.props.openDialog(
+                        <EditPropertiesDialog
+                            content={content}
+                            contentTypeName={content.Type} />,
+                        resources.EDIT_PROPERTIES, this.props.closeDialog)
+                    break
+                case 'CheckOut':
+                    this.handleClose()
+                    this.props.checkoutContent(content.Id)
+                    break
+                case 'Publish':
+                    this.handleClose()
+                    this.props.publishContent(content.Id)
+                    break
+                case 'CheckIn':
+                    this.handleClose()
+                    this.props.checkinContent(content.Id)
+                    break
+                case 'UndoCheckOut':
+                    this.handleClose()
+                    this.props.undoCheckout(content.Id)
+                    break
+                case 'ForceUndoCheckOut':
+                    this.handleClose()
+                    this.props.forceundoCheckout(content.Id)
+                    break
+                case 'Approve':
+                    this.handleClose()
+                    this.props.openDialog(
+                        <ApproveorRejectDialog
+                            id={content.Id}
+                            fileName={content.DisplayName} />,
+                        resources.APPROVE_OR_REJECT, this.props.closeDialog)
+                    break
+                case 'MoveTo':
+                    this.handleClose()
+                    this.props.select([content])
+                    this.props.setPickerParent(this.props.currentParent)
+                    this.props.loadPickerItems(this.props.currentParent.Path, content)
+                    this.props.openPicker(
+                        <PathPicker
+                            mode="MoveTo"
+                            dialogComponent={<MoveToConfirmDialog />}
+                            dialogTitle={resources.MOVE}
+                            dialogCallback={Actions.moveBatch} />,
+                        'move',
+                        () => { this.props.closePicker() && this.props.setBackLink(true) })
+                    break
+                case 'CopyTo':
+                    this.handleClose()
+                    this.props.select([content])
+                    this.props.setPickerParent(this.props.currentParent)
+                    this.props.loadPickerItems(this.props.currentParent.Path, content)
+                    this.props.openPicker(
+                        <PathPicker
+                            mode="CopyTo"
+                            dialogComponent={<CopyToConfirmDialog />}
+                            dialogTitle={resources.COPY}
+                            dialogCallback={Actions.copyBatch} />,
+                        'copy',
+                        () => this.props.closePicker() && this.props.setBackLink(true))
+                    break
+                case 'MoveBatch':
+                    this.handleClose()
+                    this.props.setPickerParent(this.props.currentParent)
+                    this.props.loadPickerItems(this.props.currentParent.Path, content)
+                    this.props.openPicker(
+                        <PathPicker
+                            mode="MoveTo"
+                            dialogComponent={<MoveToConfirmDialog />}
+                            dialogTitle={resources.MOVE}
+                            dialogCallback={Actions.moveBatch} />,
+                        'move',
+                        () => this.props.closePicker() && this.props.setBackLink(true))
+                    break
+                default:
+                    console.log(`${action.Name} is clicked`)
+                    this.handleClose()
+                    break
+            }
+        }
+    }
 
-        this.handleMouseDown = this.handleMouseDown.bind(this)
-        this.handleMouseUp = this.handleMouseUp.bind(this)
-        this.handleActionMenuClose = this.handleActionMenuClose.bind(this)
-        this.handleOutsideClick = this.handleOutsideClick.bind(this)
-    }
-    public componentDidMount() {
-        window.addEventListener('mousedown', this.handleOutsideClick, false)
-    }
-    public handleActionMenuClose() {
-        this.props.close()
-    }
-    public handleMouseDown(e) {
-        this.setState({
-            mouseIsDownOnMenu: true,
+    private async handleUpload(ev: React.ChangeEvent<HTMLInputElement>) {
+        ev.persist()
+        this.handleClose()
+        ev.target.files && await this.props.uploadFileList({
+            fileList: ev.target.files,
+            createFolders: true,
+            contentTypeName: 'File',
+            binaryPropertyName: 'Binary',
+            overwrite: false,
+            parentPath: this.props.currentContent.Path,
         })
     }
-    public handleMouseUp(e) {
-        this.setState({
-            mouseIsDownOnMenu: false,
-        })
-    }
-    public handleOutsideClick(e) {
-        if (this.state.mouseIsDownOnMenu) {
-            return
-        }
-        if (this.props.isOpen) {
-            this.handleActionMenuClose()
-        }
-    }
+
     public render() {
-        const { isOpen, position } = this.props
-        const positionStyles = {
-            positions: {
-                top: position ? `${position.top}px` : 0,
-                left: position ? `${position.left}px` : 0,
-            },
-        }
-        return (
-            <MediaQuery minDeviceWidth={700}>
-                {(matches) => {
-                    return matches ?
-                        <div style={isOpen ? { ...styles.open, ...positionStyles.positions as any } : styles.actionMenu}>
-                            <ActionList handleActionMenuClose={this.handleActionMenuClose} id={this.props.id} handleMouseUp={this.handleMouseUp} handleMouseDown={this.handleMouseDown} />
-                        </div> :
-                        <Dialog onClose={this.handleActionMenuClose} open={isOpen}>
-                            <DialogTitle>{this.props.title}</DialogTitle>
-                            <ActionList handleActionMenuClose={this.handleActionMenuClose} id={this.props.id} handleMouseUp={this.handleMouseUp} handleMouseDown={this.handleMouseDown} />
-                        </Dialog>
-                }}
-            </MediaQuery>
-        )
+        const { actions, open, position } = this.props
+        return <MediaQuery minDeviceWidth={700}>
+            {(matches) => {
+                return matches ? <Menu
+                    id="actionmenu"
+                    open={open}
+                    onClose={this.handleClose}
+                    anchorReference="anchorPosition"
+                    anchorPosition={position}
+                    TransitionComponent={Fade}
+                >
+                    {
+                        actions.map((action, index) => {
+                            let iconFileType
+                            switch (action.Icon) {
+                                case 'word':
+                                case 'excel':
+                                case 'acrobat':
+                                case 'powerpoint':
+                                    iconFileType = iconType.flaticon
+                                    break
+                                default:
+                                    iconFileType = iconType.materialui
+                                    break
+                            }
+                            return <MenuItem
+                                key={index}
+                                onClick={(event) => this.handleMenuItemClick(event, action)}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.color = '#016d9e'
+                                    e.currentTarget.style.fontWeight = 'bold'
+                                }
+                                }
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.color = '#000'
+                                    e.currentTarget.style.fontWeight = 'normal'
+                                }}
+                                style={styles.menuItem}
+                                title={action.DisplayName}>
+                                <ListItemIcon style={styles.actionIcon}>
+                                    <Icon type={iconFileType} color="primary" iconName={
+                                        action.Icon === 'Application' ?
+                                            icons[action.Name.toLowerCase() as keyof typeof icons] :
+                                            icons[action.Icon.toLowerCase() as keyof typeof icons]
+                                    }>
+                                        {
+                                            action.Name === 'MoveTo' ?
+                                                <Icon iconName="forward" type={iconType.materialui} style={{ position: 'absolute', left: '1.8em', top: '1.1em', color: '#fff', fontSize: 12 }} /> : null
+                                        }
+                                        {
+                                            action.Name === 'Rename' ?
+                                                <Icon iconName="mode_edit" type={iconType.materialui} style={{ position: 'absolute', left: '1.87em', top: '1.38em', color: '#fff', fontSize: 11 }} /> : null
+                                        }
+                                        {
+                                            action.Name === 'ForceUndoCheckOut' ?
+                                                <Icon  iconName="warning" type={iconType.materialui} style={{ position: 'absolute', left: '1.87em', top: '1.38em', color: '#fff', fontSize: 11 }} /> : null
+                                        }
+                                    </Icon>
+                                </ListItemIcon>
+                                {action.DisplayName}
+                            </MenuItem>
+                        })
+                    }
+                </Menu > :
+                    <Drawer
+                        anchor="bottom"
+                        open={open}
+                        onClose={this.handleClose}>
+                        <List>
+                            {actions.map((action, index) => {
+
+                                if (action.Name === 'uploadFile') {
+                                    const uploadFileButtonId = `${UPLOAD_FILE_BUTTON_ID}-${v1()}`
+                                    return <label htmlFor={uploadFileButtonId} style={{ outline: 'none' }}>
+                                        <MenuItem style={styles.menuItem}>
+                                            <ListItemIcon style={styles.actionIcon}>
+                                                <div>
+                                                    <Icon  iconName="insert_drive_file" type={iconType.materialui} />
+                                                    <Icon iconName="forward" type={iconType.materialui} style={{ color: '#fff', position: 'absolute', left: '1.75em', top: '1em', fontSize: 12, transform: 'rotate(-90deg)' }} />
+                                                </div>
+                                            </ListItemIcon>
+                                            {resources.UPLOAD_BUTTON_UPLOAD_FILE_TITLE}
+                                        </MenuItem>
+                                        <input
+                                            multiple={true}
+                                            id={uploadFileButtonId}
+                                            type="file"
+                                            onChange={(ev) => this.handleUpload(ev)}
+                                            style={{ display: 'none' }}
+                                        />
+                                    </label>
+                                }
+
+                                if (action.Name === 'uploadFolder') {
+                                    const uploadFolderButtonId = `${UPLOAD_FOLDER_BUTTON_ID}-${v1()}`
+                                    return <label htmlFor={uploadFolderButtonId} style={{ outline: 'none' }}>
+                                        <MenuItem style={styles.menuItem}>
+                                            <ListItemIcon style={styles.actionIcon}>
+                                                <div>
+                                                    <Icon iconName="folder" type={iconType.materialui} />
+                                                    <Icon iconName="forward" type={iconType.materialui} style={{ color: '#fff', position: 'absolute', left: '1.75em', top: '0.85em', fontSize: 12, transform: 'rotate(-90deg)' }} />
+                                                </div>
+                                            </ListItemIcon>
+                                            {resources.UPLOAD_BUTTON_UPLOAD_FOLDER_TITLE}
+                                        </MenuItem>
+                                        <input
+                                            multiple={true}
+                                            id={uploadFolderButtonId}
+                                            type="file"
+                                            onChange={(ev) => this.handleUpload(ev)}
+                                            style={{ display: 'none' }}
+                                            {...{
+                                                directory: '',
+                                                webkitdirectory: '',
+                                            } as any
+                                            }
+                                        />
+                                    </label>
+                                }
+                                let iconFileType
+                                switch (action.Icon) {
+                                    case 'word':
+                                    case 'excel':
+                                    case 'acrobat':
+                                    case 'powerpoint':
+                                        iconFileType = iconType.flaticon
+                                        break
+                                    default:
+                                        iconFileType = iconType.materialui
+                                        break
+                                }
+                                return <MenuItem
+                                    key={index}
+                                    onClick={(event) => this.handleMenuItemClick(event, action)}
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.color = '#016d9e'
+                                        e.currentTarget.style.fontWeight = 'bold'
+                                    }
+                                    }
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.color = '#000'
+                                        e.currentTarget.style.fontWeight = 'normal'
+                                    }}
+                                    style={styles.menuItemMobile}
+                                    title={action.DisplayName}>
+                                    <ListItemIcon style={styles.actionIcon}>
+                                        <Icon
+                                            type={iconFileType} color="primary" iconName={
+                                                action.Icon === 'Application' ?
+                                                    icons[action.Name.toLowerCase() as keyof typeof icons] :
+                                                    icons[action.Icon.toLowerCase() as keyof typeof icons]
+                                            }>{
+                                                action.Icon === 'Application' ?
+                                                    icons[action.Name.toLowerCase() as keyof typeof icons] :
+                                                    icons[action.Icon.toLowerCase() as keyof typeof icons]
+                                            }
+                                            {
+                                                action.Name === 'MoveTo' ? <Icon iconName="forward" type={iconType.materialui} style={{ color: '#fff', position: 'absolute', left: '1.75em', top: '1.4em', fontSize: 12 }} /> : null
+                                            }
+                                            {
+                                                action.Name === 'Rename' ? <Icon iconName="mode_edit" type={iconType.materialui} style={{ color: '#fff', position: 'absolute', left: '1.87em', top: '1.78em', fontSize: 11 }} /> : null
+                                            }
+                                            {
+                                                action.Name === 'ForceUndoCheckOut' ? <Icon iconName="warning" type={iconType.materialui} style={{ color: '#fff', position: 'absolute', left: '1.87em', top: '1.38em', fontSize: 11 }} /> : null
+                                            }
+                                            {
+                                                action.Name === 'uploadFile' ? <Icon iconName="forward" type={iconType.materialui} style={{ color: '#fff', position: 'absolute', left: '0.86em', top: '0.48em', fontSize: 11, transform: 'rotate(-90deg)' }} /> : null
+                                            }
+                                            {
+                                                action.Name === 'uploadFolder' ? <Icon iconName="forward" type={iconType.materialui} style={{ color: '#fff', position: 'absolute', left: '0.87em', top: '0.42em', fontSize: 11, transform: 'rotate(-90deg)' }} /> : null
+                                            }
+                                        </Icon>
+                                    </ListItemIcon>
+                                    {action.DisplayName}
+                                </MenuItem>
+                            })}
+                        </List>
+                    </Drawer>
+            }}
+        </MediaQuery>
     }
 }
 
-const mapStateToProps = (state, match) => {
-    return {
-        isOpen: DMSReducers.actionmenuIsOpen(state.dms.actionmenu),
-        position: DMSReducers.getActionMenuPosition(state.dms.actionmenu),
-        id: DMSReducers.getItemOnActionMenuIsOpen(state.dms.actionmenu),
-        title: DMSReducers.getItemTitleOnActionMenuIsOpen(state.dms.actionmenu),
-    }
-}
-
-export default connect(mapStateToProps, {
-    close: DMSActions.closeActionMenu,
-})(ActionMenu)
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ActionMenu))

@@ -11,24 +11,17 @@
     "allowJs": true,
     "jsx": "react",
     "moduleResolution": "node",
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noImplicitAny": false,
-    "strictNullChecks": false,
-    "alwaysStrict": false,
-    "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": false,
-    "strict": true,
-    "removeComments": true,
+    "strict": false,
+    "noUnusedLocals": true,
+    "removeComments": false,
     "preserveConstEnums": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "skipLibCheck": true,
-"types": [
+    "forceConsistentCasingInFileNames": true,
+    "types": [
       "jest",
       "node"
-    ]    
+    ]
   },
   "exclude": [
     "node_modules",
@@ -37,5 +30,8 @@
     "acceptance-tests",
     "webpack",
     "jest"
+  ],
+  "typeRoots": [
+    "node_modules/@types","./typings.d.ts"
   ]
 }

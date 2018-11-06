@@ -1,45 +1,49 @@
-import { Repository } from '@sensenet/client-core'
-import { Reducers, Store } from '@sensenet/redux'
+import { LoginState } from '@sensenet/client-core'
+import { Store } from '@sensenet/redux'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import { Provider } from 'react-redux'
 import {
-    MemoryRouter,
+  MemoryRouter,
 } from 'react-router-dom'
-import { combineReducers } from 'redux'
-import 'rxjs'
+import { rootStateType } from '../..'
+import { withStore } from '../../__tests__/TestHelper'
 import Header from '../Header'
 
 it('renders without crashing', () => {
-    const div = document.createElement('div')
-    const sensenet = Reducers.sensenet
-    const myReducer = combineReducers({ sensenet })
+  const div = document.createElement('div')
 
-    const repository = new Repository({
-        repositoryUrl: process.env.REACT_APP_SERVICE_URL || 'https://dmsservice.demo.sensenet.com',
-        requiredSelect: ['Id', 'Path', 'Name', 'Type', 'ParentId'] as any,
-    })
-
-    const options = {
-        repository,
-        rootReducer: myReducer,
-        persistedState: {
-            sensenet: {
-                session: {
-                    repository: {
-                        RepositoryUrl
-                            :
-                            'https://dmsservice.demo.sensenet.com',
-                    },
-                },
-            },
+  const options = {
+    persistedState: {
+      sensenet: {
+        currentcontent: {
+          contentState: {
+            isSaved: false,
+          },
         },
-    } as Store.CreateStoreOptions<any>
-    const store = Store.createSensenetStore(options)
-    ReactDOM.render(
-        <Provider store={store}>
-            <MemoryRouter>
-                <Header />
-            </MemoryRouter>
-        </Provider>, div)
+        batchResponses: {
+          response: null,
+        },
+        session: {
+          country: '',
+          language: '',
+          loginState: LoginState.Pending,
+          user: {
+            userName: 'aaa',
+          },
+          error: null,
+          repository: null,
+        },
+        selected: {
+          ids: [123],
+        },
+        currentitems: {
+          ids: [123],
+        },
+      },
+    },
+  } as Partial<Store.CreateStoreOptions<rootStateType>>
+  ReactDOM.render(withStore(
+    <MemoryRouter>
+      <Header />
+    </MemoryRouter>, options), div)
 })

@@ -1,26 +1,11 @@
-import IconButton from '@material-ui/core/IconButton'
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
+import { Icon, iconType } from '@sensenet/icons-react'
 import { Actions } from '@sensenet/redux'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
-import * as DMSReducers from '../Reducers'
+import { rootStateType } from '..'
+import * as DMSActions from '../Actions'
 import UserPanel from './UserPanel'
-
-interface UserActionMenu {
-    loggedinUser,
-    logout
-}
-
-import { resources } from '../assets/resources'
-
-const actions = [
-    {
-        name: 'Logout',
-        displayName: resources.LOGOUT,
-    },
-]
 
 const styles = {
     actionmenuContainer: {
@@ -28,7 +13,9 @@ const styles = {
     },
     menuIcon: {
         color: '#fff',
-        width: 80,
+        display: 'inline-block',
+        verticalAlign: 'middle',
+        cursor: 'pointer',
     },
     menuIconMobile: {
         width: 'auto' as any,
@@ -37,29 +24,55 @@ const styles = {
     arrowButton: {
         marginLeft: 0,
     },
-    menu: {
-        marginTop: 40,
+    avatar: {
+        display: 'inline-block',
     },
 }
 
-class UserActionMenu extends React.Component<UserActionMenu, { anchorEl, open, selectedIndex }> {
+interface UserActionMenuState {
+    anchorEl,
+    open: boolean,
+    selectedIndex: number,
+}
+
+const mapStateToProps = (state: rootStateType, match) => {
+    return {
+        loggedinUser: state.sensenet.session.user,
+        actions: state.dms.actionmenu.userActions,
+    }
+}
+
+const mapDispatchToProps = {
+    logout: Actions.userLogout,
+    loadUserActions: DMSActions.loadUserActions,
+    openActionMenu: DMSActions.openActionMenu,
+    closeActionMenu: DMSActions.closeActionMenu,
+}
+
+class UserActionMenu extends React.Component<ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, UserActionMenuState> {
+    public state = {
+        anchorEl: null,
+        open: false,
+        selectedIndex: 1,
+    }
     constructor(props) {
         super(props)
-        this.state = {
-            anchorEl: null,
-            open: false,
-            selectedIndex: 1,
+        this.handleClick = this.handleClick.bind(this)
+        this.handleRequestClose = this.handleRequestClose.bind(this)
+    }
+    public componentWillReceiveProps(nextProps: UserActionMenu['props']) {
+        const { loggedinUser, loadUserActions } = this.props
+        if (loggedinUser.userName !== nextProps.loggedinUser.userName && nextProps.loggedinUser.userName !== 'Visitor') {
+            loadUserActions(nextProps.loggedinUser.content.Path, 'DMSUserActions')
         }
     }
-    public handleClick = (event) => {
-        this.setState({ open: true, anchorEl: event.currentTarget })
-    }
-
-    public handleMenuItemClick = (event, index) => {
-        this.setState({ selectedIndex: index, open: false })
-        const actionName = actions[index].name.toLocaleLowerCase()
-        const action = this.props[actionName]
-        action()
+    public handleClick = (e) => {
+        const { actions, loggedinUser } = this.props
+        this.props.closeActionMenu()
+        this.props.openActionMenu(actions, loggedinUser.content, loggedinUser.fullName, e.currentTarget, {
+            top: e.currentTarget.offsetTop + 40,
+            left: e.currentTarget.offsetLeft,
+        })
     }
 
     public handleRequestClose = () => {
@@ -69,32 +82,15 @@ class UserActionMenu extends React.Component<UserActionMenu, { anchorEl, open, s
         return (
             <MediaQuery minDeviceWidth={700}>
                 {(matches) => {
-                    return <div style={matches ? null : styles.actionmenuContainer}>
-                        <IconButton
-                            aria-label={resources.OPEN_MENU}
-                            aria-owns={this.state.open ? 'long-menu' : null}
-                            aria-haspopup="true"
-                            onClick={this.handleClick}
-                            style={matches ? styles.menuIcon : { ...styles.menuIcon, ...styles.menuIconMobile }}
-                        >
-                            <UserPanel user={this.props.loggedinUser} />
-                        </IconButton>
-                        <Menu
-                            id="long-menu"
-                            anchorEl={this.state.anchorEl}
-                            open={this.state.open}
-                            onClose={this.handleRequestClose}
-                            style={styles.menu}
-                        >
-                            {actions.map((action, index) => (
-                                <MenuItem
-                                    key={action.name}
-                                    selected={index === this.state.selectedIndex}
-                                    onClick={(event) => this.handleMenuItemClick(event, index)}>
-                                    {action.displayName}
-                                </MenuItem>
-                            ))}
-                        </Menu>
+                    return <div
+                        style={matches ? {} : styles.actionmenuContainer}
+                        aria-owns="actionmenu"
+                        onClick={(e) => this.handleClick(e)}>
+                        <UserPanel user={this.props.loggedinUser} style={styles.avatar} />
+                        <Icon
+                            type={iconType.materialui}
+                            iconName="arrow_drop_down"
+                            style={matches ? styles.menuIcon : { ...styles.menuIcon, ...styles.menuIconMobile }} />
                     </div>
                 }}
             </MediaQuery>
@@ -102,14 +98,4 @@ class UserActionMenu extends React.Component<UserActionMenu, { anchorEl, open, s
     }
 }
 
-const userLogout = Actions.userLogout
-
-const mapStateToProps = (state, match) => {
-    return {
-        loggedinUser: DMSReducers.getAuthenticatedUser(state.sensenet),
-    }
-}
-
-export default connect(mapStateToProps, {
-    logout: userLogout,
-})(UserActionMenu)
+export default connect(mapStateToProps, mapDispatchToProps)(UserActionMenu)

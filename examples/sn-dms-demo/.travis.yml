@@ -5,12 +5,12 @@ cache:
 notifications:
   email: false
 node_js:
-  - '9'
+  - '10'
   - '8'
 script: 
   - npm test
 after_success:
-  - npm run report-coverage
+  - bash <(curl -s https://codecov.io/bash)
 branches:
   except:
     - /^v\d+\.\d+\.\d+$/

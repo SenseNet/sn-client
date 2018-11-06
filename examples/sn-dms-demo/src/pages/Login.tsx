@@ -1,36 +1,22 @@
 import Button from '@material-ui/core/Button'
 import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
-import InputLabel from '@material-ui/core/InputLabel'
-import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 import TextField from '@material-ui/core/TextField'
-import { Reducers } from '@sensenet/redux'
+import { Actions, Reducers } from '@sensenet/redux'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
+import { Redirect } from 'react-router-dom'
 import LoginTabs from '../components/LoginTabs'
 import { OauthRow } from '../components/OAuthRow'
 import { WelcomeMessage } from '../components/WelcomeMessage'
-import * as DMSReducers from '../Reducers'
 
 // tslint:disable-next-line:no-var-requires
 const logo = require('../assets/logo.png')
 
-import lightBlue from '@material-ui/core/colors/lightBlue'
-import pink from '@material-ui/core/colors/pink'
-
-const muiTheme = createMuiTheme({
-  palette: {
-    primary: lightBlue,
-    secondary: pink,
-  },
-})
-
 const styles = {
   button: {
-    margin: '10px 0',
-    width: '100%',
+    margin: '30px 0',
   },
   formControl: {
     marginTop: '20px 0px',
@@ -39,38 +25,52 @@ const styles = {
     backgroundColor: '#fff',
     padding: '60px',
     color: '#444',
-    textAlign: 'center'  as any,
+    textAlign: 'center' as any,
   },
   logoMobile: {
     padding: '50px  0',
-    textAlign: 'center'  as any,
+    textAlign: 'center' as any,
   },
 }
 
+import { IOauthProvider } from '@sensenet/authentication-jwt'
+import { LoginState } from '@sensenet/client-core'
+import { rootStateType } from '..'
 import { resources } from '../assets/resources'
+import { FullScreenLoader } from '../components/FullScreenLoader'
+
+const mapStateToProps = (state: rootStateType) => {
+  return {
+    loginState: state.sensenet.session.loginState,
+    loginError: Reducers.getAuthenticationError(state.sensenet),
+    isRegistered: state.dms.register.registrationDone,
+  }
+}
+
+const mapDispatchToProps = {
+  login: Actions.userLogin,
+}
 
 interface LoginProps {
-  login,
-  params,
-  loginError,
-  clear,
-  isRegistered
+  clear: () => any,
+  loginState: LoginState,
+  oauthProvider: IOauthProvider
 }
 
-interface LoginState {
-  email,
-  password,
-  emailError,
-  passwordError,
-  emailErrorMessage,
-  passwordErrorMessage,
-  formIsValid,
-  isButtonDisabled
+interface LoginComponentState {
+  email: string,
+  password: string,
+  emailError: boolean,
+  passwordError: boolean,
+  emailErrorMessage: string,
+  passwordErrorMessage: string,
+  formIsValid: boolean,
+  isButtonDisabled: boolean
 }
 
-class Login extends React.Component<LoginProps, LoginState> {
+class Login extends React.Component<LoginProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, LoginComponentState> {
 
-  constructor(props) {
+  constructor(props: Login['props']) {
     super(props)
     this.state = {
       email: '',
@@ -91,7 +91,7 @@ class Login extends React.Component<LoginProps, LoginState> {
     this.buttonIsDisabled = this.buttonIsDisabled.bind(this)
   }
 
-  public handleEmailBlur(e) {
+  public handleEmailBlur(e: React.FocusEvent<HTMLInputElement>) {
     if (this.validateEmail(e.target.value)) {
       this.setState({
         email: e.target.value,
@@ -106,7 +106,7 @@ class Login extends React.Component<LoginProps, LoginState> {
     }
   }
 
-  public handlePasswordBlur(e) {
+  public handlePasswordBlur(e: React.FocusEvent<HTMLInputElement>) {
     if (e.target.value.length > 0) {
       this.setState({
         password: e.target.value,
@@ -121,24 +121,24 @@ class Login extends React.Component<LoginProps, LoginState> {
     }
   }
 
-  public handleEmailChange(e) {
+  public handleEmailChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
     this.setState({
       email: e.target.value,
     })
   }
 
-  public handlePasswordChange(e) {
+  public handlePasswordChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
     this.setState({
       password: e.target.value,
     })
   }
 
-  public validateEmail(text) {
+  public validateEmail(text: string) {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     return re.test(text)
   }
 
-  public valid(e) {
+  public valid(e: React.SyntheticEvent) {
     let valid = true
     if (this.state.email === '' || !this.validateEmail(this.state.email)) {
       valid = false
@@ -157,7 +157,7 @@ class Login extends React.Component<LoginProps, LoginState> {
     return valid
   }
 
-  public formSubmit(e) {
+  public formSubmit(e: React.FormEvent<HTMLFormElement>) {
     if (this.valid(e)) {
       this.props.login(this.state.email, this.state.password)
       this.setState({
@@ -181,6 +181,15 @@ class Login extends React.Component<LoginProps, LoginState> {
   }
 
   public render() {
+
+    if (this.props.loginState === LoginState.Authenticated) {
+      return (<Redirect to="/documents/" />)
+    }
+
+    if (this.props.loginState === LoginState.Pending) {
+      return <FullScreenLoader />
+    }
+
     return (
       <div className="Sensenet">
         <div className="Sensenet-header">
@@ -195,59 +204,50 @@ class Login extends React.Component<LoginProps, LoginState> {
         <WelcomeMessage />
 
         <div>
-          <MuiThemeProvider theme={muiTheme}>
-            <form onSubmit={(e) => {
-              e.preventDefault()
-              this.formSubmit(e)
-            }}>
-              <FormControl
-                error={this.state.emailError || (this.props.loginError && this.props.loginError.length) > 0 ? true : false}
+          <form onSubmit={(e) => {
+            e.preventDefault()
+            this.formSubmit(e)
+          }}>
+            <FormControl
+              error={this.state.emailError || (this.props.loginError && this.props.loginError.length) > 0 ? true : false}
+              fullWidth
+              required
+              style={styles.formControl}>
+              <TextField
+                id="email"
+                onBlur={(event) => this.handleEmailBlur(event)}
+                onChange={(event) => this.handleEmailChange(event)}
                 fullWidth
-                required
-                style={styles.formControl}>
-                <InputLabel htmlFor="email">{resources.EMAIL_INPUT_LABEL}</InputLabel>
-                <TextField
-                  id="email"
-                  onBlur={(event) => this.handleEmailBlur(event)}
-                  onChange={(event) => this.handleEmailChange(event)}
-                  fullWidth
-                  autoFocus
-                  placeholder={resources.EMAIL_INPUT_PLACEHOLDER} />
-                <FormHelperText>{this.state.emailErrorMessage}</FormHelperText>
-              </FormControl>
-              <FormControl
-                error={this.state.passwordError || (this.props.loginError && this.props.loginError.length) ? true : false}
+                autoFocus
+                label={resources.EMAIL_INPUT_LABEL}
+                placeholder={resources.EMAIL_INPUT_PLACEHOLDER} />
+              <FormHelperText>{this.state.emailErrorMessage}</FormHelperText>
+            </FormControl>
+            <FormControl
+              error={this.state.passwordError || (this.props.loginError && this.props.loginError.length) ? true : false}
+              fullWidth
+              required
+              style={styles.formControl}>
+              <TextField
+                type="password"
+                id="password"
+                onBlur={(event) => this.handlePasswordBlur(event)}
+                onChange={(event) => this.handlePasswordChange(event)}
                 fullWidth
-                required
-                style={styles.formControl}>
-                <InputLabel htmlFor="password">{resources.PASSWORD_INPUT_LABEL}</InputLabel>
-                <TextField
-                  type="password"
-                  id="password"
-                  onBlur={(event) => this.handlePasswordBlur(event)}
-                  onChange={(event) => this.handlePasswordChange(event)}
-                  fullWidth
-                  placeholder={resources.PASSWORD_INPUT_PLACEHOLDER} />
-                <FormHelperText>{this.state.passwordErrorMessage}</FormHelperText>
-              </FormControl>
-              <FormControl>
-                <FormHelperText error>{this.props.loginError && this.props.loginError.length ? resources.WRONG_USERNAME_OR_PASSWORD : ''}</FormHelperText>
-              </FormControl>
-              <Button type="submit" color="primary" style={styles.button} disabled={this.props.loginError === null && this.state.isButtonDisabled}>{resources.LOGIN_BUTTON_TEXT}</Button>
-            </form>
-          </MuiThemeProvider>
-          <OauthRow oAuthProvider={this.props.params.oAuthProvider} />
+                label={resources.PASSWORD_INPUT_LABEL}
+                placeholder={resources.PASSWORD_INPUT_PLACEHOLDER} />
+              <FormHelperText>{this.state.passwordErrorMessage}</FormHelperText>
+            </FormControl>
+            <FormControl>
+              <FormHelperText error>{this.props.loginError && this.props.loginError.length ? resources.WRONG_USERNAME_OR_PASSWORD : ''}</FormHelperText>
+            </FormControl>
+            <Button type="submit" variant="contained" color="primary" style={styles.button} disabled={this.props.loginError === null && this.state.isButtonDisabled}>{resources.LOGIN_BUTTON_TEXT}</Button>
+          </form>
+          <OauthRow oAuthProvider={this.props.oauthProvider} />
         </div>
       </div>
     )
   }
 }
 
-const mapStateToProps = (state, match) => {
-  return {
-    loginError: Reducers.getAuthenticationError(state.sensenet),
-    isRegistered: DMSReducers.registrationIsDone,
-  }
-}
-
-export default connect(mapStateToProps, {})(Login)
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

@@ -1,116 +1,93 @@
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
+import { IOauthProvider } from '@sensenet/authentication-jwt'
 import { LoginState } from '@sensenet/client-core'
-import { Actions, Reducers } from '@sensenet/redux'
 import * as React from 'react'
+import * as Loadable from 'react-loadable'
 import { connect } from 'react-redux'
-import {
-  Redirect,
-  Route,
-  withRouter,
-} from 'react-router-dom'
+import { HashRouter, Redirect, Route, Switch } from 'react-router-dom'
 import 'typeface-roboto'
+import { rootStateType } from '.'
 import * as DMSActions from './Actions'
-import Dashboard from './pages/Dashboard'
+import { dmsTheme } from './assets/dmstheme'
+import { AuthorizedRoute } from './components/AuthorizedRoute'
+import { FullScreenLoader } from './components/FullScreenLoader'
+import MessageBar from './components/MessageBar'
 import Login from './pages/Login'
+import PrivacyPolicy from './pages/PrivacyPolicy'
 import Registration from './pages/Registration'
 import './Sensenet.css'
 
-import lightBlue from '@material-ui/core/colors/lightBlue'
-import pink from '@material-ui/core/colors/pink'
-import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
-
-const muiTheme = createMuiTheme({
-  palette: {
-    primary: lightBlue,
-    secondary: pink,
-  },
-})
-
-interface SensenetProps {
-  repository,
-  history,
-  loginState,
-  loggedinUser,
-  loginError: string,
-  registrationError: string,
-  login,
-  registration,
-  recaptchaCallback,
-  clearRegistration,
-  oAuthProvider
+const mapStateToProps = (state: rootStateType) => {
+  return {
+    loginState: state.sensenet.session.loginState,
+    currentUserId: state.sensenet.session.user.content.Id,
+  }
 }
 
-class Sensenet extends React.Component<SensenetProps, { isAuthenticated: boolean, params, loginError, registrationError }> {
+const verifyCaptcha = DMSActions.verifyCaptchaSuccess
+const clearReg = DMSActions.clearRegistration
+
+const mapDispatchToProps = {
+  recaptchaCallback: verifyCaptcha,
+  clearRegistration: clearReg,
+}
+
+export interface SensenetProps {
+  oAuthProvider: IOauthProvider
+}
+
+class Sensenet extends React.Component<SensenetProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps> {
   public name: string = ''
   public password: string = ''
 
-  constructor(props, context) {
-    super(props, context)
-
-    this.state = {
-      params: this.props,
-      isAuthenticated: false,
-      loginError: this.props.loginError || '',
-      registrationError: this.props.loginError || '',
-    }
+  constructor(props: Sensenet['props']) {
+    super(props)
   }
   public render() {
+    // if (this.props.loginState === LoginState.Pending
+    //   || (this.props.loginState === LoginState.Authenticated && this.props.currentUserId === ConstantContent.VISITOR_USER.Id)) {
+    //   return null
+    // }
     return (
+      <MuiThemeProvider theme={dmsTheme}>
+        <div className="root" style={{ height: window.innerHeight }}>
+          <HashRouter>
+            <Switch>
+              <AuthorizedRoute exact path="/login" authorize={() => this.props.loginState !== LoginState.Authenticated} redirectOnUnauthorized="/">
+                <Login oauthProvider={this.props.oAuthProvider} clear={this.props.clearRegistration} />
+              </AuthorizedRoute>
+              <AuthorizedRoute exact path="/registration" authorize={() => this.props.loginState !== LoginState.Authenticated} redirectOnUnauthorized="/">
+                <Registration oAuthProvider={this.props.oAuthProvider} verify={this.props.recaptchaCallback} />
+              </AuthorizedRoute>
 
-      <MuiThemeProvider theme={muiTheme}>
-        <div className="root">
-          <Route
-            exact
-            path="/"
-            render={(routerProps) => {
-              const status = this.props.loginState === LoginState.Unauthenticated
-              return status ? <Redirect key="login" to="/login" /> :
-              <Dashboard {...routerProps} />
-            }}
-          />
-          <Route
-            path="/login"
-            render={(routerProps) => {
-              const status = this.props.loginState === LoginState.Authenticated
-              return status ?
-                <Redirect key="dashboard" to="/" /> :
-                <Login login={this.props.login} params={{ error: this.props.loginError, oAuthProvider: this.props.oAuthProvider }} clear={this.props.clearRegistration} />
-            }}
-          />
-          <Route
-            path="/registration"
-            render={() => <Registration registration={this.props.registration} history={history} verify={this.props.recaptchaCallback} />} />
-          <Route path="/:id"
-            render={(routerProps) => {
-              const status = this.props.loginState !== LoginState.Authenticated
-              return status ?
-                <Redirect key="login" to="/login" />
-                : <Dashboard {...routerProps} />
-            }} />
+              <AuthorizedRoute exact path="/privacypolicy" authorize={() => this.props.loginState !== LoginState.Authenticated} redirectOnUnauthorized="/">
+                <PrivacyPolicy />
+              </AuthorizedRoute>
+
+              {/* Empty path, default routes per login state */}
+              {this.props.loginState === LoginState.Unauthenticated ? <Redirect path="*" to="/login" /> : null}
+              {/* {this.props.loginState === LoginState.Authenticated ? <Redirect path="*" to="/" /> : null} */}
+
+              <AuthorizedRoute path="/" authorize={() => this.props.loginState !== LoginState.Unauthenticated} redirectOnUnauthorized="/" render={(routerProps) => {
+                const LoadableDashboard = Loadable({
+                  loader: () => import(/* webpackChunkName: "dashboard" */ './pages/Dashboard'),
+                  loading: () => <FullScreenLoader />,
+                })
+                return <LoadableDashboard {...routerProps} />
+              }}>
+              </AuthorizedRoute>
+
+              {/* Not found */}
+              <Route path="*" exact={true} >
+                <Redirect to="/" />
+              </Route>
+            </Switch>
+          </HashRouter>
         </div>
+        <MessageBar />
       </MuiThemeProvider>
     )
   }
 }
 
-const mapStateToProps = (state, match) => {
-  return {
-    loginState: Reducers.getAuthenticationStatus(state.sensenet),
-    loginError: Reducers.getAuthenticationError(state.sensenet),
-    registrationError: '',
-  }
-}
-
-const userLogin = Actions.userLogin
-const userRegistration = DMSActions.userRegistration
-const verifyCaptcha = DMSActions.verifyCaptchaSuccess
-const clearReg = DMSActions.clearRegistration
-
-export default withRouter(connect(
-  mapStateToProps,
-  {
-    login: userLogin,
-    registration: userRegistration,
-    recaptchaCallback: verifyCaptcha,
-    clearRegistration: clearReg,
-  })(Sensenet))
+export default connect(mapStateToProps, mapDispatchToProps)(Sensenet)

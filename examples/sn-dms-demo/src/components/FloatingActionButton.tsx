@@ -1,6 +1,6 @@
 import Button from '@material-ui/core/Button'
-import Add from '@material-ui/icons/Add'
 import { GenericContent } from '@sensenet/default-content-types'
+import { Icon, iconType } from '@sensenet/icons-react'
 import { Actions } from '@sensenet/redux'
 import * as React from 'react'
 import { connect } from 'react-redux'
@@ -8,7 +8,6 @@ import {
     withRouter,
 } from 'react-router-dom'
 import * as DMSActions from '../Actions'
-import * as DMSReducers from '../Reducers'
 
 const styles = {
     actionButton: {
@@ -45,11 +44,10 @@ class FloatingActionButton extends React.Component<FloatingActionButton, { color
         })
     }
     public render() {
-        const { actionMenuIsOpen } = this.props
         return (
             <Button variant="fab" color={this.state.color} aria-label="add" style={styles.actionButton as any}
                 onClick={(event) => this.handleActionMenuClick(event)} >
-                <Add aria-label="Menu" />
+                <Icon type={iconType.materialui} iconName="add" />
             </Button>
         )
     }
@@ -57,7 +55,7 @@ class FloatingActionButton extends React.Component<FloatingActionButton, { color
 
 const mapStateToProps = (state, match) => {
     return {
-        actions: DMSReducers.getActions(state.dms.actionmenu),
+        actions: state.dms.actionmenu.actions,
     }
 }
 export default withRouter(connect(mapStateToProps, {

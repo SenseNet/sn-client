@@ -1,12 +1,20 @@
-import { combineReducers } from 'redux'
+import { GenericContent, IActionModel } from '@sensenet/default-content-types'
+import { loadContent, loadContentActions, PromiseReturns } from '@sensenet/redux/dist/Actions'
+import { Action, AnyAction, combineReducers, Reducer } from 'redux'
+import { ExtendedUploadProgressInfo, loadListActions, loadTypesToAddNewList, loadUserActions, loadVersions, setListActions } from './Actions'
 import { resources } from './assets/resources'
 
-enum MessageMode { error, warning, info }
+import { documentLibrary } from './store/documentlibrary/reducers'
+import { editedContent } from './store/edited/reducers'
+import { picker } from './store/picker/reducers'
+import { workspaces } from './store/workspaces/reducers'
 
-export const email = (state = '', action) => {
+import { logReducer } from './store/actionlog/reducers'
+
+export const email: Reducer<string, Action & { email?: string }> = (state = '', action) => {
     switch (action.type) {
         case 'USER_REGISTRATION_REQUEST':
-            return action.email
+            return action.email || state
         case 'USER_REGISTRATION_SUCCESS':
         case 'USER_REGISTRATION_FAILURE':
             return state
@@ -14,7 +22,7 @@ export const email = (state = '', action) => {
             return state
     }
 }
-export const registrationError = (state = null, action) => {
+export const registrationError: Reducer<string | null, Action> = (state = null, action) => {
     switch (action.type) {
         case 'USER_REGISTRATION_FAILURE':
             return resources.USER_IS_ALREADY_REGISTERED
@@ -22,7 +30,7 @@ export const registrationError = (state = null, action) => {
             return state
     }
 }
-export const isRegistering = (state = false, action) => {
+export const isRegistering: Reducer<boolean> = (state = false, action) => {
     switch (action.type) {
         case 'USER_REGISTRATION_REQUEST':
             return true
@@ -34,7 +42,7 @@ export const isRegistering = (state = false, action) => {
     }
 }
 
-export const registrationDone = (state = false, action) => {
+export const registrationDone: Reducer<boolean> = (state = false, action) => {
     switch (action.type) {
         case 'USER_REGISTRATION_SUCCESS':
             return true
@@ -47,7 +55,7 @@ export const registrationDone = (state = false, action) => {
     }
 }
 
-export const captcha = (state = false, action) => {
+export const captcha: Reducer<boolean> = (state = false, action) => {
     switch (action.type) {
         case 'VERIFY_CAPTCHA_SUCCESS':
             return true
@@ -64,18 +72,7 @@ export const register = combineReducers({
     captcha,
 })
 
-export const actions = (state = [], action) => {
-    switch (action.type) {
-        case 'LOAD_CONTENT_ACTIONS_SUCCESS':
-            return action.payload.d.Actions
-        case 'OPEN_ACTIONMENU':
-            return action.actions
-        default:
-            return state
-    }
-}
-
-export const open = (state = false, action) => {
+export const open: Reducer<boolean> = (state = false, action) => {
     switch (action.type) {
         case 'OPEN_ACTIONMENU':
             return true
@@ -86,38 +83,61 @@ export const open = (state = false, action) => {
     }
 }
 
-export const id = (state = null, action) => {
+export const actions: Reducer<IActionModel[]> = (state = [], action) => {
     switch (action.type) {
+        case 'LOAD_CONTENT_ACTIONS_SUCCESS':
+            const result: { d: { Actions: IActionModel[] } } = (action.result as PromiseReturns<typeof loadContentActions>) as any
+            return result && result.d.Actions ? result.d.Actions : []
         case 'OPEN_ACTIONMENU':
-            return action.id
+            return action.actions || []
         default:
             return state
     }
 }
 
-export const title = (state = '', action) => {
+export const id: Reducer<number | null> = (state = null, action) => {
     switch (action.type) {
         case 'OPEN_ACTIONMENU':
-            return action.title
+            console.log(actions)
+            return action.id || null
         default:
             return state
     }
 }
 
-export const position = (state = null, action) => {
+export const title: Reducer<string, Action & { title?: string }> = (state = '', action) => {
     switch (action.type) {
         case 'OPEN_ACTIONMENU':
-            return action.position
+            return action.title || state
         default:
             return state
     }
 }
 
-export const rootId = (state = null, action) => {
+export const anchorElement: Reducer<HTMLElement | null, Action & { element?: HTMLElement | null }> = (state = null, action) => {
+    switch (action.type) {
+        case 'OPEN_ACTIONMENU':
+            return action.element || state
+        default:
+            return state
+    }
+}
+
+export const position: Reducer<any, Action & { position?: any }> = (state = null, action) => {
+    switch (action.type) {
+        case 'OPEN_ACTIONMENU':
+            return action.position || null
+        default:
+            return state
+    }
+}
+
+export const rootId: Reducer<number | null> = (state = null, action) => {
     switch (action.type) {
         case 'LOAD_CONTENT_SUCCESS':
-            if (!state && action.payload.d.Path.indexOf('Default_Site') === -1) {
-                return action.payload.d.Id
+            const result = action.result as PromiseReturns<typeof loadContent>
+            if (!state && result && result.d.Path.indexOf('Default_Site') === -1) {
+                return result.d.Id
             } else {
                 return state
             }
@@ -126,19 +146,19 @@ export const rootId = (state = null, action) => {
     }
 }
 
-export const currentId = (state = null, action) => {
+export const currentId: Reducer<number | null, Action & { id?: number }> = (state = null, action) => {
     switch (action.type) {
         case 'SET_CURRENT_ID':
-            return action.id
+            return action.id || state
         default:
             return state
     }
 }
 
-export const editedItemId = (state = null, action) => {
+export const editedItemId: Reducer<number | null, Action & { id?: number }> = (state = null, action) => {
     switch (action.type) {
         case 'SET_EDITED_ID':
-            return action.id
+            return action.id || null
         case 'UPDATE_CONTENT_SUCCESS':
             return null
         default:
@@ -146,12 +166,12 @@ export const editedItemId = (state = null, action) => {
     }
 }
 
-export const editedFirst = (state = false, action) => {
+export const editedFirst: Reducer<boolean, Action & { id?: number, edited?: boolean }> = (state = false, action) => {
     switch (action.type) {
         case 'SET_EDITED_ID':
             return action.id ? true : false
         case 'SET_EDITED_FIRST':
-            return action.edited
+            return action.edited || state
         case 'UPDATE_CONTENT_SUCCESS':
             return false
         default:
@@ -159,19 +179,24 @@ export const editedFirst = (state = false, action) => {
     }
 }
 
-export const breadcrumb = (state = [], action) => {
+export interface BreadcrumbItemType { name: string, id: number, path: string }
+
+export const breadcrumb: Reducer<BreadcrumbItemType[]> = (state = [], action) => {
     switch (action.type) {
         case 'LOAD_CONTENT_SUCCESS':
-            if (action.payload.d.Path.indexOf('Default_Site') === -1 && state.filter((e) => e.id === action.payload.d.Id).length === 0) {
-                const element = {
-                    name: action.payload.d.DisplayName,
-                    id: action.payload.d.Id,
-                    path: action.payload.d.Path,
+            const result = action.result as PromiseReturns<typeof loadContent>
+            if (result) {
+                if (result.d.Path.indexOf('Default_Site') === -1 && state.filter((e) => e.id === result.d.Id).length === 0) {
+                    const element = {
+                        name: result.d.DisplayName,
+                        id: result.d.Id,
+                        path: result.d.Path,
+                    } as BreadcrumbItemType
+                    return [...state, element]
+                } else if (state.filter((e) => e.id === result.d.Id).length > 0) {
+                    const index = state.findIndex((e) => e.id === result.d.Id) + 1
+                    return [...state.slice(0, index)]
                 }
-                return [...state, element]
-            } else if (state.filter((e) => e.id === action.payload.d.Id).length > 0) {
-                const index = state.findIndex((e) => e.id === action.payload.d.Id)
-                return [...state.slice(0, index - 1)]
             } else {
                 return state
             }
@@ -180,7 +205,7 @@ export const breadcrumb = (state = [], action) => {
     }
 }
 
-export const isLoading = (state = false, action) => {
+export const isLoading: Reducer<boolean> = (state = false, action) => {
     switch (action.type) {
         case 'LOAD_CONTENT_SUCCESS':
             return false
@@ -191,7 +216,7 @@ export const isLoading = (state = false, action) => {
     }
 }
 
-export const isSelectionModeOn = (state = false, action) => {
+export const isSelectionModeOn: Reducer<boolean> = (state = false, action) => {
     switch (action.type) {
         case 'SELECTION_MODE_ON':
             return true
@@ -203,75 +228,248 @@ export const isSelectionModeOn = (state = false, action) => {
     }
 }
 
+export const userActions: Reducer<IActionModel[]> = (state = [], action) => {
+    switch (action.type) {
+        case 'LOAD_USER_ACTIONS_SUCCESS':
+            const result = action.result as PromiseReturns<typeof loadUserActions>
+            return result ? result.d.Actions : []
+        default:
+            return state
+    }
+}
+
+export const addNewTypes = (state = [], action) => {
+    switch (action.type) {
+        case 'LOAD_TYPES_TO_ADDNEW_LIST_SUCCESS':
+            const result = action.result as PromiseReturns<typeof loadTypesToAddNewList>
+            return result ? result.d.Actions : []
+        default:
+            return state
+    }
+}
+
+export const actionmenuContent: Reducer<GenericContent | null> = (state = null, action) => {
+    switch (action.type) {
+        case 'OPEN_ACTIONMENU':
+            return action.content
+        default:
+            return state
+    }
+}
+
+export const breadcrumbActions: Reducer<{ actions: IActionModel[], idOrPath: number }> = (state = { actions: [], idOrPath: 0 }, action: AnyAction) => {
+    switch (action.type) {
+        case 'LOAD_BREADCRUMB_ACTIONS_SUCCESS':
+            const result = action.result.actions
+            return {
+                actions: result ? result as IActionModel[] : [],
+                idOrPath: action.result.idOrPath,
+            }
+        default:
+            return state
+    }
+}
+
 export const actionmenu = combineReducers({
     actions,
     open,
+    anchorElement,
     position,
-    id,
+    content: actionmenuContent,
     title,
+    userActions,
+    addNewTypes,
+    breadcrumb: breadcrumbActions,
 })
 
-export const messagebarmode = (state = MessageMode.info, action) => {
+export const toolbar: Reducer<{ actions: IActionModel[], isLoading: boolean, idOrPath: number | string, scenario: string }> = (state = { actions: [], isLoading: false, idOrPath: 0, scenario: '' }, action) => {
     switch (action.type) {
-        case 'OPEN_MESSAGE_BAR':
-            return action.mode
-        case 'CLOSE_MESSAGE_BAR':
-            return MessageMode.info
+        case 'LOAD_LIST_ACTIONS': {
+            const a: ReturnType<typeof loadListActions> = action as any
+            return {
+                ...state,
+                isLoading: true,
+                idOrPath: a.idOrPath,
+                scenario: a.scenario,
+            }
+        }
+        case 'SET_LIST_ACTIONS':
+            return {
+                ...state,
+                isLoading: false,
+                actions: (action as ReturnType<typeof setListActions>).actions,
+            }
         default:
             return state
     }
 }
 
-export const messagebarcontent = (state = {}, action) => {
+export const uploads: Reducer<{ uploads: ExtendedUploadProgressInfo[], showProgress: boolean }>
+    = (state = { uploads: [], showProgress: false }, action: AnyAction) => {
+        switch (action.type) {
+            case 'UPLOAD_ADD_ITEM':
+                return {
+                    ...state,
+                    showProgress: true,
+                    uploads: [
+                        ...state.uploads,
+                        action.uploadItem,
+                    ],
+                }
+            case 'UPLOAD_UPDATE_ITEM':
+                return {
+                    ...state,
+                    uploads: state.uploads.map((uploadItem) => {
+                        if (uploadItem.guid === action.uploadItem.guid) {
+                            return {
+                                ...uploadItem,
+                                ...action.uploadItem,
+                            }
+                        }
+                        return uploadItem
+                    }),
+                }
+            case 'UPLOAD_HIDE_ITEM':
+                return {
+                    ...state,
+                    uploads: state.uploads.map((uploadItem) => {
+                        if (uploadItem.guid === action.uploadItem.guid) {
+                            return {
+                                ...uploadItem,
+                                ...action.uploadItem,
+                                visible: false,
+                            }
+                        }
+                        return uploadItem
+                    }),
+                }
+            case 'UPLOAD_REMOVE_ITEM':
+                return {
+                    ...state,
+                    uploads: state.uploads.filter((u) => u.guid !== action.uploadItem.guid),
+                }
+            case 'UPLOAD_HIDE_PROGRESS':
+                return {
+                    ...state,
+                    showProgress: false,
+                }
+            case 'UPLOAD_SHOW_PROGRESS':
+                return {
+                    ...state,
+                    showProgress: false,
+                }
+        }
+        return state
+    }
+
+export const activeMenuItem: Reducer<string, Action & { itemName?: string }> = (state = 'documents', action) => {
     switch (action.type) {
-        case 'OPEN_MESSAGE_BAR':
-            return action.content
-        case 'CLOSE_MESSAGE_BAR':
-            return {}
+        case 'CHOOSE_MENUITEM':
+            return action.itemName || state
         default:
             return state
     }
 }
 
-export const messagebaropen = (state = false, action) => {
+export const activeSubmenu: Reducer<string | null, Action & { itemName?: string }> = (state = null, action) => {
     switch (action.type) {
-        case 'OPEN_MESSAGE_BAR':
+        case 'CHOOSE_SUBMENUITEM':
+            return action.itemName || state
+        default:
+            return state
+    }
+}
+
+export const menu = combineReducers({
+    active: activeMenuItem,
+    activeSubmenu,
+})
+
+export const viewer: Reducer<{ isOpened: boolean, currentDocumentId: number }, Action & { id?: number }> = (state = { isOpened: false, currentDocumentId: 0 }, action: AnyAction) => {
+    switch (action.type) {
+        case 'OPEN_VIEWER':
+            return {
+                ...state,
+                isOpened: true,
+                currentDocumentId: action.id,
+            }
+        case 'CLOSE_VIEWER':
+            return {
+                ...state,
+                isOpened: false,
+            }
+    }
+    return state
+}
+
+export const isOpened = (state: boolean = false, action: AnyAction) => {
+    switch (action.type) {
+        case 'OPEN_DIALOG':
             return true
-        case 'CLOSE_MESSAGE_BAR':
+        case 'CLOSE_DIALOG':
             return false
-        default:
-            return state
     }
+    return state
 }
 
-export const vertical = (state = 'bottom', action) => {
+export const onClose = (state: () => void = null, action: AnyAction) => {
     switch (action.type) {
-        case 'OPEN_MESSAGE_BAR':
-            return action.vertical
-        default:
-            return state
+        case 'OPEN_DIALOG':
+            return action.onClose
+        case 'CLOSE_DIALOG':
+            return null
     }
+    return state
 }
 
-export const horizontal = (state = 'left', action) => {
+export const dialogContent = (state: any = '', action: AnyAction) => {
     switch (action.type) {
-        case 'OPEN_MESSAGE_BAR':
-            return action.horizontal
-        default:
+        case 'OPEN_DIALOG':
+            return action.content
+        case 'CLOSE_DIALOG':
             return state
     }
+    return state
 }
 
-export const messagebar = combineReducers({
-    open: messagebaropen,
-    mode: messagebarmode,
-    content: messagebarcontent,
-    vertical,
-    horizontal,
+export const dialogTitle = (state: string = '', action: AnyAction) => {
+    switch (action.type) {
+        case 'OPEN_DIALOG':
+            return action.title
+        case 'CLOSE_DIALOG':
+            return {}
+    }
+    return state
+}
+
+export const dialog = combineReducers({
+    isOpened,
+    onClose,
+    content: dialogContent,
+    title: dialogTitle,
 })
+
+export const versions: Reducer<GenericContent[]> = (state: any[], action: AnyAction) => {
+    switch (action.type) {
+        case 'LOAD_VERSIONS_SUCCESS':
+            const versionItems = (action.result as PromiseReturns<typeof loadVersions>).d.results as any[]
+            return versionItems
+        default:
+            return state || []
+    }
+}
+
+export const menuOpen: Reducer<boolean> = (state: boolean = false, action: AnyAction) => {
+    switch (action.type) {
+        case 'HANDLE_DRAWERMENU':
+            return action.open
+        default:
+            return state || false
+    }
+}
 
 export const dms = combineReducers({
-    messagebar,
+    documentLibrary,
     actionmenu,
     breadcrumb,
     editedItemId,
@@ -281,85 +479,15 @@ export const dms = combineReducers({
     register,
     isLoading,
     isSelectionModeOn,
+    toolbar,
+    uploads,
+    menu,
+    viewer,
+    dialog,
+    workspaces,
+    versions,
+    picker,
+    edited: editedContent,
+    menuOpen,
+    log: logReducer,
 })
-
-export const getRegistrationError = (state) => {
-    return state.registrationError
-}
-export const registrationInProgress = (state) => {
-    return state.isRegistering
-}
-
-export const registrationIsDone = (state) => {
-    return state.registrationDone
-}
-
-export const getRegisteredEmail = (state) => {
-    return state.email
-}
-
-export const captchaIsVerified = (state) => {
-    return state.captcha
-}
-export const getAuthenticatedUser = (state) => {
-    return state.session.user
-}
-
-export const getChildrenItems = (state) => {
-    return state.children.entities
-}
-
-export const getCurrentContentPath = (state) => {
-    return state.Path
-}
-
-export const actionmenuIsOpen = (state) => {
-    return state.open
-}
-
-export const getActionMenuPosition = (state) => {
-    return state.position
-}
-
-export const getParentId = (state) => {
-    return state.currentcontent.content.ParentId
-}
-export const getRootId = (state) => {
-    return state.rootId
-}
-export const getBreadCrumbArray = (state) => {
-    return state.breadcrumb
-}
-export const getCurrentId = (state) => {
-    return state.currentId
-}
-export const getActionsOfAContent = (state) => {
-    return state.Actions
-}
-export const getActions = (state) => {
-    return state.actions
-}
-export const getEditedItemId = (state) => {
-    return state.editedItemId
-}
-export const getItemOnActionMenuIsOpen = (state) => {
-    return state.id
-}
-export const getLoading = (state) => {
-    return state.isLoading
-}
-export const getItemTitleOnActionMenuIsOpen = (state) => {
-    return state.title
-}
-export const getIsSelectionModeOn = (state) => {
-    return state.isSelectionModeOn
-}
-export const getAddNewActions = (state) => {
-    return state.addnew
-}
-export const isEditedFirst = (state) => {
-    return state.editedFirst
-}
-export const getMessageBarProps = (state) => {
-    return state.messagebar
-}

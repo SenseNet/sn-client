@@ -5,37 +5,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="user-scalable=0, initial-scale=1, minimum-scale=1, width=device-width, height=device-height">
     <meta name="theme-color" content="#444444">
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/favicon.ico">
     <title>sensenet DMS Demo</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css"
-    />
-    <script src="//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
-    <script>
-        window.addEventListener("load", function () {
-            window.cookieconsent.initialise({
-                "palette": {
-                    "popup": {
-                        "background": "#eaf7f7",
-                        "text": "#5c7291"
-                    },
-                    "button": {
-                        "background": "#56cbdb",
-                        "text": "#ffffff"
-                    }
-                },
-                "theme": "edgeless",
-                "content": {
-                    "href": "www.sensenet.com/privacypolicy"
-                }
-            })
-        });
-    </script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-19325314-6"></script>
-    <script>
+    <script type="text/plain" data-cookie-if="analytical">
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
@@ -43,7 +20,7 @@
         gtag('config', 'UA-19325314-6');
     </script>
     <!-- Hotjar Tracking Code for https://dms.demo.sensenet.com -->
-    <script>
+    <script type="text/plain" data-cookie-if="analytical">
         (function (h, o, t, j, a, r) {
             h.hj = h.hj || function () { (h.hj.q = h.hj.q || []).push(arguments) };
             h._hjSettings = { hjid: 653084, hjsv: 6 };
@@ -60,6 +37,13 @@
         You need to enable JavaScript to run this app.
     </noscript>
     <div id="root"></div>
+    <script src="//www.eucookie.eu/public/gdpr-cookie-consent.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var cookieConsent = new cookieConsent({
+            clientId: 'ae27828e-947f-4e65-9a63-da69a8c559c3'
+        });
+        cookieConsent.run();
+    </script>
 </body>
 
 </html>

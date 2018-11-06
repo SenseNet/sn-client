@@ -1,13 +1,13 @@
 
 export const rowSource = {
-    beginDrag(props) {
+    beginDrag(props: { content: any }) {
         return {
             content: props.content,
         }
     },
 }
 
-export function collect(connect, monitor) {
+export function collect(connect: any, monitor: any) {
     return ({
         connectDragSource: connect.dragSource(),
         isDragging: monitor.isDragging(),
@@ -15,7 +15,7 @@ export function collect(connect, monitor) {
 }
 
 export const rowTarget = {
-    drop(props, monitor, component) {
+    drop(props: any, monitor: any, component: any) {
         const content = monitor.getItem().content
         const dragId = content.Id
         const dropId = props.content.Id
@@ -32,7 +32,7 @@ export const rowTarget = {
                 props.moveBatch(selectedContentItems, props.content.Path)
             }
         } else {
-            const obj = {}
+            const obj: any = {}
             obj[content.Id] = content
             if (props.isCopy) {
                 props.copyBatch(obj, props.content.Path)
@@ -42,16 +42,16 @@ export const rowTarget = {
             }
         }
     },
-    canDrop(props, monitor) {
+    canDrop(props: any, monitor: any) {
         return props.content.IsFolder
     },
 }
 
 export const uploadTarget = {
-    hover(props, monitor, component) {
+    hover(props: any, monitor: any, component: any) {
         // console.log(monitor.getItem().files)
     },
-    drop(props, monitor) {
+    drop(props: any, monitor: any) {
         if (props.onDrop) {
             props.onDrop(props, monitor)
         }

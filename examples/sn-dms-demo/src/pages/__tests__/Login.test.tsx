@@ -1,46 +1,56 @@
-import { Repository } from '@sensenet/client-core'
-import { Reducers, Store } from '@sensenet/redux'
+import { LoginState } from '@sensenet/client-core'
+import { Store } from '@sensenet/redux'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import {
   MemoryRouter,
 } from 'react-router-dom'
-import { combineReducers } from 'redux'
-import 'rxjs'
+import { rootStateType } from '../..'
+import { withStore } from '../../__tests__/TestHelper'
 import Login from '../Login'
 
 it('renders without crashing', () => {
   const div = document.createElement('div')
-  const sensenet = Reducers.sensenet
-  const myReducer = combineReducers({ sensenet })
-
-  const repository = new Repository({
-    repositoryUrl: process.env.REACT_APP_SERVICE_URL || 'https://dmsservice.demo.sensenet.com',
-    requiredSelect: ['Id', 'Path', 'Name', 'Type', 'ParentId', 'Actions'] as any,
-    defaultExpand: ['Actions'] as any,
-  })
 
   const options = {
-    repository,
-    rootReducer: myReducer,
     persistedState: {
       sensenet: {
-        session: {
-          repository: {
-            RepositoryUrl
-              :
-              'https://dmsservice.demo.sensenet.com',
+        currentcontent: {
+          contentState: {
+            isSaved: false,
           },
+        },
+        batchResponses: {
+          response: null,
+        },
+        session: {
+          country: '',
+          language: '',
+          loginState: LoginState.Pending,
+          user: {
+            userName: 'aaa',
+          },
+          error: null,
+          repository: null,
+        },
+        selected: {
+          ids: [123],
+        },
+        currentitems: {
+          ids: [123],
+          entities: [
+            { Id: 123 },
+          ],
         },
       },
     },
-  } as Store.CreateStoreOptions<any>
+  } as Partial<Store.CreateStoreOptions<rootStateType>>
 
-  const store = Store.createSensenetStore(options)
   ReactDOM.render(
-    <MemoryRouter>
-      <Login store={store} clear={() => {
-        //
-      }} />
-    </MemoryRouter>, div)
+    withStore(
+      <MemoryRouter>
+        <Login oauthProvider={{} as any} clear={() => {
+          //
+        }} />
+      </MemoryRouter>, options), div)
 })
