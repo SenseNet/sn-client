@@ -1,6 +1,6 @@
 {
   "name": "sn-dms-demo",
-  "version": "0.1.0-development",
+  "version": "1.0.0",
   "description": "Document Management Demo upon sensenet",
   "private": false,
   "repository": {
