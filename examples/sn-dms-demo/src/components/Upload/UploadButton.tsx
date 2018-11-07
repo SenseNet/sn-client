@@ -1,3 +1,4 @@
+import { ClickAwayListener } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -71,103 +72,105 @@ export class UploadButton extends React.Component<UploadButtonProps, UploadButto
     }
 
     public render() {
-        return (<div style={this.props.style}>
-            <Button
-                aria-owns={this.state.anchorElement ? this.uploadMenuId : undefined}
-                aria-haspopup={true}
-                variant="contained"
-                component="span"
-                color="primary"
-                style={{
-                    color: '#fff',
-                    width: '100%',
-                    fontFamily: 'Raleway Bold',
-                    textTransform: 'none',
-                    fontSize: '14px',
-                    paddingTop: 6,
-                    paddingBottom: 6,
-                    letterSpacing: 1,
-                }}
-                onClick={(ev) => this.toggleOpen(ev)}>
-                <Icon
-                    type={iconType.flaticon}
-                    iconName="upload-button"
-                    style={{ marginRight: 5, color: '#fff', textAlign: 'center' }} />
-                {resources.UPLOAD_BUTTON_TITLE}
-            </Button>
-            <Menu
-                id={this.uploadMenuId}
-                open={Boolean(this.state.anchorElement)}
-                anchorEl={this.state.anchorElement}
-                getContentAnchorEl={undefined}
-                anchorOrigin={{
-                    horizontal: 'left',
-                    vertical: 'bottom',
-                }}
-                style={{
-                    width: '100%',
-                }}
-                onBlur={() => this.closeMenu()}
-            >
-                <label htmlFor={this.uploadFileButtonId} style={{ outline: 'none' }}>
-                    <MenuItem style={styles.menuItem}>
-                        <ListItemIcon style={styles.icon}>
-                            <div>
-                                <Icon
-                                    type={iconType.materialui}
-                                    iconName="insert_drive_file"
-                                    style={{ color: theme.palette.primary.main }} />
-                                <Icon
-                                    type={iconType.materialui}
-                                    iconName="forward"
-                                    style={{ position: 'absolute', left: '0.86em', top: '0.28em', width: '0.5em', color: 'white', transform: 'rotate(-90deg)' }} />
-                            </div>
-                        </ListItemIcon>
-                        <ListItemText style={styles.text} primary={resources.UPLOAD_BUTTON_UPLOAD_FILE_TITLE} disableTypography />
-                    </MenuItem>
-                </label>
-                <label htmlFor={this.uploadFolderButtonId} tabIndex={-1} style={{ outline: 'none' }}>
-                    <MenuItem style={styles.menuItem}>
-                        <ListItemIcon style={styles.icon}>
-                            <div>
-                                <Icon
-                                    type={iconType.materialui}
-                                    iconName="folder"
-                                    style={{ color: theme.palette.primary.main }} />
-                                <Icon
-                                    type={iconType.materialui}
-                                    iconName="forward"
-                                    style={{ position: 'absolute', left: '0.87em', top: '0.22em', width: '0.5em', color: 'white', transform: 'rotate(-90deg)' }} />
-                            </div>
-                        </ListItemIcon>
-                        <ListItemText style={styles.text} primary={resources.UPLOAD_BUTTON_UPLOAD_FOLDER_TITLE} disableTypography />
-                    </MenuItem>
-                </label>
-            </Menu>
-            {!Boolean(this.state.anchorElement) ?
-                <div style={{ visibility: 'hidden', display: 'none' }}>
-                    <input
-                        accept={this.props.accept}
-                        multiple={this.props.multiple}
-                        id={this.uploadFileButtonId}
-                        type="file"
-                        onChange={(ev) => this.handleUpload(ev)}
-                    />
-                    <input
-                        accept={this.props.accept}
-                        multiple={this.props.multiple}
-                        id={this.uploadFolderButtonId}
-                        type="file"
-                        onChange={(ev) => this.handleUpload(ev)}
-                        {...{
-                            directory: '',
-                            webkitdirectory: '',
-                        } as any
-                        }
-                    />
-                </div>
-                : null}
-        </div >
+        return (
+            <ClickAwayListener onClickAway={() => this.closeMenu()} >
+                <div style={this.props.style}>
+                    <Button
+                        aria-owns={this.state.anchorElement ? this.uploadMenuId : undefined}
+                        aria-haspopup={true}
+                        variant="contained"
+                        component="span"
+                        color="primary"
+                        style={{
+                            color: '#fff',
+                            width: '100%',
+                            fontFamily: 'Raleway Bold',
+                            textTransform: 'none',
+                            fontSize: '14px',
+                            paddingTop: 6,
+                            paddingBottom: 6,
+                            letterSpacing: 1,
+                        }}
+                        onClick={(ev) => this.toggleOpen(ev)}>
+                        <Icon
+                            type={iconType.flaticon}
+                            iconName="upload-button"
+                            style={{ marginRight: 5, color: '#fff', textAlign: 'center' }} />
+                        {resources.UPLOAD_BUTTON_TITLE}
+                    </Button>
+                    <Menu
+                        id={this.uploadMenuId}
+                        open={Boolean(this.state.anchorElement)}
+                        anchorEl={this.state.anchorElement}
+                        getContentAnchorEl={undefined}
+                        anchorOrigin={{
+                            horizontal: 'left',
+                            vertical: 'bottom',
+                        }}
+                        style={{
+                            width: '100%',
+                        }}
+                    >
+                        <label htmlFor={this.uploadFileButtonId} style={{ outline: 'none' }}>
+                            <MenuItem style={styles.menuItem}>
+                                <ListItemIcon style={styles.icon}>
+                                    <div>
+                                        <Icon
+                                            type={iconType.materialui}
+                                            iconName="insert_drive_file"
+                                            style={{ color: theme.palette.primary.main }} />
+                                        <Icon
+                                            type={iconType.materialui}
+                                            iconName="forward"
+                                            style={{ position: 'absolute', left: '0.86em', top: '0.28em', width: '0.5em', color: 'white', transform: 'rotate(-90deg)' }} />
+                                    </div>
+                                </ListItemIcon>
+                                <ListItemText style={styles.text} primary={resources.UPLOAD_BUTTON_UPLOAD_FILE_TITLE} disableTypography />
+                            </MenuItem>
+                        </label>
+                        <label htmlFor={this.uploadFolderButtonId} tabIndex={-1} style={{ outline: 'none' }}>
+                            <MenuItem style={styles.menuItem}>
+                                <ListItemIcon style={styles.icon}>
+                                    <div>
+                                        <Icon
+                                            type={iconType.materialui}
+                                            iconName="folder"
+                                            style={{ color: theme.palette.primary.main }} />
+                                        <Icon
+                                            type={iconType.materialui}
+                                            iconName="forward"
+                                            style={{ position: 'absolute', left: '0.87em', top: '0.22em', width: '0.5em', color: 'white', transform: 'rotate(-90deg)' }} />
+                                    </div>
+                                </ListItemIcon>
+                                <ListItemText style={styles.text} primary={resources.UPLOAD_BUTTON_UPLOAD_FOLDER_TITLE} disableTypography />
+                            </MenuItem>
+                        </label>
+                    </Menu>
+                    {!Boolean(this.state.anchorElement) ?
+                        <div style={{ visibility: 'hidden', display: 'none' }}>
+                            <input
+                                accept={this.props.accept}
+                                multiple={this.props.multiple}
+                                id={this.uploadFileButtonId}
+                                type="file"
+                                onChange={(ev) => this.handleUpload(ev)}
+                            />
+                            <input
+                                accept={this.props.accept}
+                                multiple={this.props.multiple}
+                                id={this.uploadFolderButtonId}
+                                type="file"
+                                onChange={(ev) => this.handleUpload(ev)}
+                                {...{
+                                    directory: '',
+                                    webkitdirectory: '',
+                                } as any
+                                }
+                            />
+                        </div>
+                        : null}
+                </div >
+            </ClickAwayListener>
         )
     }
 }
