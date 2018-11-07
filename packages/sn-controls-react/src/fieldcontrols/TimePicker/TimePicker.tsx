@@ -2,12 +2,11 @@
  * @module FieldControls
  *
  */ /** */
-import FormHelperText from '@material-ui/core/FormHelperText'
-import Typography from '@material-ui/core/Typography'
 import { TimePicker as MUITimePicker } from 'material-ui-pickers'
-import { MuiPickersUtilsProvider } from 'material-ui-pickers'
+import MuiPickersUtilsProvider from 'material-ui-pickers/MuiPickersUtilsProvider'
 import MomentUtils from 'material-ui-pickers/utils/moment-utils'
-import React, { Component, Fragment } from 'react'
+import * as React from 'react'
+import { Fragment } from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactDateTimeFieldSetting } from '../DateTimeFieldSetting'
 
@@ -19,13 +18,20 @@ export interface TimePickerProps extends ReactClientFieldSettingProps, ReactClie
 /**
  * Field control that represents a Date field. Available values will be populated from the FieldSettings.
  */
-export class TimePicker extends Component<TimePickerProps, {}> {
+export class TimePicker extends React.Component<TimePickerProps, { value }> {
     /**
      * constructor
      * @param {object} props
      */
     constructor(props: TimePickerProps) {
         super(props)
+        /**
+         * @type {object}
+         * @property {string} value default value
+         */
+        this.state = {
+            value: this.props['data-fieldValue'] ? this.setValue(this.props['data-fieldValue']) : this.setValue(this.props['data-defaultValue']),
+        }
     }
 
     /**
@@ -55,6 +61,7 @@ export class TimePicker extends Component<TimePickerProps, {}> {
      * @return {ReactElement} markup
      */
     public render() {
+        const { value } = this.state
         const { readOnly, required } = this.props
         switch (this.props['data-actionName']) {
             case 'edit':
@@ -62,7 +69,7 @@ export class TimePicker extends Component<TimePickerProps, {}> {
                     <MuiPickersUtilsProvider utils={MomentUtils}>
                         <Fragment>
                             <MUITimePicker
-                                value={this.props.value}
+                                value={value}
                                 onChange={this.handleDateChange}
                                 label={this.props['data-labelText']}
                                 id={this.props.name}
@@ -70,11 +77,8 @@ export class TimePicker extends Component<TimePickerProps, {}> {
                                 placeholder={this.props['data-placeHolderText']}
                                 required={required}
                                 fullWidth
-                                className={this.props.className}
                             />
                         </Fragment>
-                        <FormHelperText>{this.props['data-hintText']}</FormHelperText>
-                        <FormHelperText color="error">{this.props['data-errorText']}</FormHelperText>
                     </MuiPickersUtilsProvider>
                 )
             case 'new':
@@ -82,7 +86,7 @@ export class TimePicker extends Component<TimePickerProps, {}> {
                     <MuiPickersUtilsProvider utils={MomentUtils}>
                         <Fragment>
                             <MUITimePicker
-                                value={this.props['data-defaultValue']}
+                                value={value}
                                 onChange={this.handleDateChange}
                                 label={this.props['data-labelText']}
                                 id={this.props.name}
@@ -90,34 +94,31 @@ export class TimePicker extends Component<TimePickerProps, {}> {
                                 placeholder={this.props['data-placeHolderText']}
                                 required={required}
                                 fullWidth
-                                className={this.props.className}
                             />
                         </Fragment>
-                        <FormHelperText>{this.props['data-hintText']}</FormHelperText>
-                        <FormHelperText color="error">{this.props['data-errorText']}</FormHelperText>
                     </MuiPickersUtilsProvider>
                 )
             case 'browse':
                 return (
-                    this.props.value ? <div className={this.props.className}>
-                        <Typography variant="caption" gutterBottom>
+                    <div>
+                        <label>
                             {this.props['data-labelText']}
-                        </Typography>
-                        <Typography variant="body2" gutterBottom>
-                            {this.props.value}
-                        </Typography>
-                    </div> : null
+                        </label>
+                        <p>
+                            {this.props['data-fieldValue']}
+                        </p>
+                    </div>
                 )
             default:
                 return (
-                    this.props.value ? <div className={this.props.className}>
-                        <Typography variant="caption" gutterBottom>
+                    <div>
+                        <label>
                             {this.props['data-labelText']}
-                        </Typography>
-                        <Typography variant="body2" gutterBottom>
-                            {this.props.value}
-                        </Typography>
-                    </div> : null
+                        </label>
+                        <p>
+                            {this.props['data-fieldValue']}
+                        </p>
+                    </div>
                 )
         }
     }
