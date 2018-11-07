@@ -128,6 +128,7 @@ export class EditView extends Component<EditViewProps, { content, schema }> {
                                             'data-fieldValue': that.getFieldValue(fieldSettings[i].clientSettings.name),
                                             'onChange': that.handleInputChange,
                                             'content': this.state.content,
+                                            'value': that.getFieldValue(fieldSettings[i].clientSettings.name),
                                         })
                                 }
                             </Grid>)
