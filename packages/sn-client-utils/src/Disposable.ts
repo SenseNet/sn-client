@@ -31,7 +31,7 @@ export interface IDisposable {
     /**
      * Method called when the IDisposable is disposed.
      */
-    dispose: () => void;
+    dispose: () => void | Promise<void>;
 }
 
 /**
@@ -57,6 +57,9 @@ export const usingAsync = async <T extends IDisposable, TReturns>
     try {
         return await callback(resource);
     } finally {
-        resource.dispose();
+        const disposeResult = resource.dispose();
+        if (disposeResult instanceof Promise) {
+            await disposeResult;
+        }
     }
 };

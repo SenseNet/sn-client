@@ -5,7 +5,7 @@
  */
 export const debounce = <TArgs extends any[], TReturns>(method: (...args: TArgs) => TReturns, debounceMs: number = 250) => {
     let timeout: number | undefined;
-    return (...args: TArgs) => {
+    return ((...args: TArgs) => {
         if (timeout) {
             clearTimeout(timeout);
         }
@@ -14,5 +14,5 @@ export const debounce = <TArgs extends any[], TReturns>(method: (...args: TArgs)
             clearTimeout(timeout);
             timeout = undefined;
         }, debounceMs);
-    };
+    }) as (...args: TArgs) => TReturns;
 };

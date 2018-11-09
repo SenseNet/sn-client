@@ -72,6 +72,26 @@ export const disposableTests = describe("Disposable", () => {
             });
         });
 
+        it("should await dispose for asyncs with usingAsync()", async () => {
+            class AsyncDispose {
+                /** flag */
+                public isDisposed = false;
+                /** set isDisposed with a timeout */
+                public async dispose() {
+                    await new Promise((resolve) => setTimeout(() => {
+                        this.isDisposed = true;
+                        resolve();
+                    }, 10));
+                }
+            }
+
+            const asyncDispose = new AsyncDispose();
+            await usingAsync(asyncDispose, async (d) => {
+                /** */
+            });
+            expect(asyncDispose.isDisposed).to.be.eq(true);
+        });
+
     });
 
 });
