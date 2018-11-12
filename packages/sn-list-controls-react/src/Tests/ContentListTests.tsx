@@ -481,6 +481,36 @@ export const contentListTests: Mocha.Suite = describe('ContentList component', (
             />)
             component.unmount()
         })
+        it('should render with custom selection control', () => {
+            const component = renderer.create(<ContentList<GenericContent>
+                items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
+                schema={genericSchema}
+                selected={undefined}
+                fieldsToDisplay={['DisplayName']}
+                orderBy="DisplayName"
+                orderDirection="asc"
+                icons={{}}
+                getSelectionControl={() => <div></div>}
+                displayRowCheckbox={true}
+            />)
+            component.unmount()
+        })
+
+        it('should render with custom selection control and selection', () => {
+            const content = { Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }
+            const component = renderer.create(<ContentList<GenericContent>
+                items={[content]}
+                schema={genericSchema}
+                selected={[content]}
+                fieldsToDisplay={['DisplayName']}
+                orderBy="DisplayName"
+                orderDirection="asc"
+                icons={{}}
+                getSelectionControl={() => <div></div>}
+                displayRowCheckbox={true}
+            />)
+            component.unmount()
+        })
         it('should render without crashing without orderBy', () => {
             const component = renderer.create(<ContentList<GenericContent>
                 items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}

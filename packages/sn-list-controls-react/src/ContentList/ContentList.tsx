@@ -100,6 +100,11 @@ export interface ContentListProps<T extends GenericContent> {
      * Props for the selection checkbox
      */
     checkboxProps?: CheckboxProps
+
+    /**
+     *
+     */
+    getSelectionControl?: (selected: boolean, content: T) => JSX.Element
 }
 
 export interface ContentListState {
@@ -232,11 +237,15 @@ export class ContentList<T extends GenericContent> extends React.Component<Conte
                     >
                         {this.props.displayRowCheckbox !== false ?
                             <TableCell padding="checkbox" key="select">
-                                <Checkbox
-                                    checked={selected.find((i) => i.Id === item.Id) ? true : false}
-                                    onChange={() => this.handleContentSelection(item)}
-                                    {...this.props.checkboxProps}
-                                />
+                                {
+                                    this.props.getSelectionControl ?
+                                        this.props.getSelectionControl(selected.find((i) => i.Id === item.Id) ? true : false, item)
+                                        : <Checkbox
+                                            checked={selected.find((i) => i.Id === item.Id) ? true : false}
+                                            onChange={() => this.handleContentSelection(item)}
+                                            {...this.props.checkboxProps}
+                                        />
+                                }
                             </TableCell> : null}
                         {this.props.fieldsToDisplay ? this.props.fieldsToDisplay.map((field) => {
                             const fieldSetting = this.props.schema.FieldSettings.find((s) => s.Name === field)
