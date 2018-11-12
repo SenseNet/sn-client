@@ -1,4 +1,4 @@
-import Checkbox from '@material-ui/core/Checkbox'
+import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -96,6 +96,10 @@ export interface ContentListProps<T extends GenericContent> {
      * Called when a action is requested
      */
     onAction?: (item: T, action: IActionModel) => void
+    /**
+     * Props for the selection checkbox
+     */
+    checkboxProps?: CheckboxProps
 }
 
 export interface ContentListState {
@@ -231,6 +235,7 @@ export class ContentList<T extends GenericContent> extends React.Component<Conte
                                 <Checkbox
                                     checked={selected.find((i) => i.Id === item.Id) ? true : false}
                                     onChange={() => this.handleContentSelection(item)}
+                                    {...this.props.checkboxProps}
                                 />
                             </TableCell> : null}
                         {this.props.fieldsToDisplay ? this.props.fieldsToDisplay.map((field) => {
