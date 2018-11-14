@@ -9,6 +9,7 @@ import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
+import { GenericContent } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
 import { ReactChoiceFieldSetting } from '../ChoiceFieldSetting'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
@@ -16,17 +17,22 @@ import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../Client
 /**
  * Interface for RadioButton properties
  */
-export interface RadioButtonGroupProps extends ReactClientFieldSettingProps, ReactClientFieldSetting, ReactChoiceFieldSetting { }
-
+export interface RadioButtonGroupProps<T extends GenericContent, K extends keyof T> extends ReactClientFieldSettingProps<T, K>, ReactClientFieldSetting<T, K>, ReactChoiceFieldSetting<T, K> { }
+/**
+ * Interface for RadioButton state
+ */
+export interface RadioButtonGroupState {
+    value: any[]
+}
 /**
  * Field control that represents a Choice field. Available values will be populated from the FieldSettings.
  */
-export class RadioButtonGroup extends Component<RadioButtonGroupProps, { value }> {
+export class RadioButtonGroup<T extends GenericContent, K extends keyof T> extends Component<RadioButtonGroupProps<T, K>, RadioButtonGroupState> {
     /**
      * constructor
      * @param {object} props
      */
-    constructor(props) {
+    constructor(props: RadioButtonGroupProps<T, K>) {
         super(props)
         this.state = {
             value: this.props['data-fieldValue'] || this.props['data-defaultValue'] || [],
@@ -36,9 +42,10 @@ export class RadioButtonGroup extends Component<RadioButtonGroupProps, { value }
     /**
      * set selected value
      */
-    public handleChange = (event) => {
+    public handleChange = (event: React.ChangeEvent) => {
         const { value } = this.state
-        const newValue = event.target.value
+        // tslint:disable-next-line:no-string-literal
+        const newValue = event.target['value']
         const checked = value
         const index = value.indexOf(newValue.toString())
 
@@ -50,7 +57,7 @@ export class RadioButtonGroup extends Component<RadioButtonGroupProps, { value }
         this.setState({
             value: checked,
         })
-        this.props.onChange(this.props.name, checked)
+        this.props.onChange(this.props.name, checked as any)
     }
     /**
      * render
@@ -68,9 +75,9 @@ export class RadioButtonGroup extends Component<RadioButtonGroupProps, { value }
                         <FormLabel component="legend">{this.props['data-labelText']}</FormLabel>
                         <RadioGroup
                             aria-label={this.props['data-labelText']}
-                            name={this.props.name}
+                            name={this.props.name as string}
                             value={this.state.value[0].toString()}
-                            onChange={(e) => this.handleChange(e)}
+                            onChange={this.handleChange as any}
                         >
                             {this.props.options.map((option) => {
                                 return <FormControlLabel
@@ -98,9 +105,9 @@ export class RadioButtonGroup extends Component<RadioButtonGroupProps, { value }
                         <FormLabel component="legend">{this.props['data-labelText']}</FormLabel>
                         <RadioGroup
                             aria-label={this.props['data-labelText']}
-                            name={this.props.name}
+                            name={this.props.name as string}
                             value={this.state.value.toString()}
-                            onChange={(e) => this.handleChange(e)}
+                            onChange={this.handleChange as any}
                         >
                             {this.props.options.map((option) => {
                                 return <FormControlLabel
@@ -126,7 +133,7 @@ export class RadioButtonGroup extends Component<RadioButtonGroupProps, { value }
                                 {this.props['data-labelText']}
                             </FormLabel>
                             <FormGroup>
-                                {this.props['data-fieldValue'].map((value) =>
+                                {this.props['data-fieldValue'].map((value: any) =>
                                     <FormControl component="fieldset">
                                         <FormControlLabel style={{ marginLeft: 0 }} label={this.props.options.find((item) => (item.Value === value)).Text} control={<span></span>} key={value} />
                                     </FormControl>)}
@@ -141,7 +148,7 @@ export class RadioButtonGroup extends Component<RadioButtonGroupProps, { value }
                                 {this.props['data-labelText']}
                             </FormLabel>
                             <FormGroup>
-                                {this.props['data-fieldValue'].map((value) =>
+                                {this.props['data-fieldValue'].map((value: any) =>
                                     <FormControl component="fieldset">
                                         <FormControlLabel style={{ marginLeft: 0 }} label={this.props.options.find((item) => (item.Value === value)).Text} control={<span></span>} key={value} />
                                     </FormControl>)}

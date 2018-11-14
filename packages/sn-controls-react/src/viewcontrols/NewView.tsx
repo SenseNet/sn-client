@@ -8,28 +8,48 @@ import { connect } from 'react-redux'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
+import { Repository } from '@sensenet/client-core'
+import { ControlSchema } from '@sensenet/control-mapper'
+import { GenericContent, Schema } from '@sensenet/default-content-types'
 import { Actions, Reducers } from '@sensenet/redux'
 import MediaQuery from 'react-responsive'
+import { ReactClientFieldSettingProps } from '../fieldcontrols/ClientFieldSetting'
 import { reactControlMapper } from '../ReactControlMapper'
+import { RootStateType } from './index'
 import { styles } from './NewViewStyles'
 
 /**
  * Interface for NewView properties
  */
-export interface NewViewProps {
-    history?,
-    onSubmit?,
-    repository,
-    fields,
-    changeAction,
-    schema?,
-    path,
-    contentTypeName,
-    extension?,
-    columns?,
-    handleCancel?,
-    submitCallback?,
+export interface NewViewProps<T extends GenericContent> {
+    onSubmit?: (path: string, content: T, contentTypeName: string) => void,
+    repository: Repository,
+    changeAction: (e: React.MouseEvent, content: T) => void,
+    schema?: Schema,
+    path: string,
+    contentTypeName: string,
+    extension?: string,
+    columns?: string[],
+    handleCancel?: () => void,
+    submitCallback?: () => void,
     title?: string,
+}
+/**
+ * Interface for NewView state
+ */
+export interface NewViewState {
+    schema: ControlSchema<React.Component, ReactClientFieldSettingProps>,
+    dataSource: GenericContent[],
+}
+
+const mapStateToProps = (state: RootStateType) => {
+    return {
+        fields: Reducers.getFields(state.sensenet),
+    }
+}
+
+const mapDispatchToProps = {
+    changeAction: Actions.changeFieldValue,
 }
 
 /**
@@ -40,7 +60,7 @@ export interface NewViewProps {
  *  <NewView content={content} onSubmit={createSubmitClick} />
  * ```
  */
-class NewView extends Component<NewViewProps, { schema, dataSource }> {
+class NewView<T extends GenericContent> extends Component<NewViewProps<T> & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, NewViewState> {
     /**
      * constructor
      * @param {object} props
@@ -53,7 +73,7 @@ class NewView extends Component<NewViewProps, { schema, dataSource }> {
          */
         const controlMapper = reactControlMapper(this.props.repository)
         this.state = {
-            schema: controlMapper.getFullSchemaForContentType(this.props.contentTypeName as any, 'new'),
+            schema: controlMapper.getFullSchemaForContentType(this.props.contentTypeName, 'new'),
             dataSource: [],
         }
         this.handleCancel = this.handleCancel.bind(this)
@@ -76,10 +96,10 @@ class NewView extends Component<NewViewProps, { schema, dataSource }> {
             <form style={styles.container} onSubmit={(e) => {
                 e.preventDefault()
                 if (onSubmit) {
-                    const c = fields
+                    const c = fields as T
                     onSubmit(path, c, schema.schema.ContentTypeName)
                 }
-                return submitCallback ? this.props.submitCallback() : null
+                if (submitCallback) { submitCallback() }
             }
             }>
                 <Typography variant="headline" gutterBottom>
@@ -87,26 +107,26 @@ class NewView extends Component<NewViewProps, { schema, dataSource }> {
                 </Typography>
                 <Grid container spacing={24}>
                     {
-                        fieldSettings.map((e, i) => {
-                            if (fieldSettings[i].clientSettings['data-typeName'] === 'ReferenceFieldSetting') {
-                                fieldSettings[i].clientSettings['data-repository'] = repository
+                        fieldSettings.map((fieldSetting) => {
+                            if (fieldSetting.clientSettings['data-typeName'] === 'ReferenceFieldSetting') {
+                                fieldSetting.clientSettings['data-repository'] = repository
                             }
-                            if (contentTypeName === 'File' && extension && fieldSettings[i].fieldSettings.ControlHint === 'sn:FileName') {
-                                fieldSettings[i].clientSettings['data-extension'] = extension
+                            if (contentTypeName === 'File' && extension && fieldSetting.fieldSettings.ControlHint === 'sn:FileName') {
+                                fieldSetting.clientSettings['data-extension'] = extension
                             }
+                            fieldSetting.clientSettings.onChange = changeAction
+                            fieldSetting.clientSettings['data-actionName'] = 'new'
                             return (<Grid item xs={12}
                                 sm={12}
-                                md={fieldSettings[i].clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                                lg={fieldSettings[i].clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                                xl={fieldSettings[i].clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                                key={fieldSettings[i].clientSettings.name}>
+                                md={fieldSetting.clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                                lg={fieldSetting.clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                                xl={fieldSetting.clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                                key={fieldSetting.clientSettings.name}>
                                 {
                                     createElement(
-                                        fieldSettings[i].controlType,
+                                        fieldSetting.controlType,
                                         {
-                                            ...fieldSettings[i].clientSettings,
-                                            'data-actionName': 'new',
-                                            'onChange': changeAction,
+                                            ...fieldSetting.clientSettings,
                                         })
                                 }
                             </Grid>)
@@ -129,13 +149,5 @@ class NewView extends Component<NewViewProps, { schema, dataSource }> {
     }
 }
 
-const mapStateToProps = (state, match) => {
-    return {
-        fields: Reducers.getFields(state.sensenet),
-    }
-}
-
-const newView = connect(mapStateToProps, {
-    changeAction: Actions.changeFieldValue,
-})(NewView)
+const newView = connect(mapStateToProps, mapDispatchToProps)(NewView)
 export { newView as NewView }

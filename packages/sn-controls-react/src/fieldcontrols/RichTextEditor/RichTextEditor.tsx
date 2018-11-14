@@ -10,31 +10,37 @@ import { ReactRichTextEditorFieldSetting } from './RichTextEditorFieldSetting'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 
+import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
 import './RichTextEditorStyles.css'
 
 /**
  * Interface for RichTextEditor properties
  */
-export interface RichTextEditorProps extends ReactClientFieldSettingProps, ReactClientFieldSetting, ReactRichTextEditorFieldSetting { }
-
+export interface RichTextEditorProps<T extends GenericContent, K extends keyof T> extends ReactClientFieldSettingProps<T, K>, ReactClientFieldSetting<T, K>, ReactRichTextEditorFieldSetting<T, K> { }
+/**
+ * Interface for RichTextEditor state
+ */
+export interface RichTextEditorState {
+    value: string,
+}
 /**
  * Field control that represents a LongText field. Available values will be populated from the FieldSettings.
  */
 @Radium
-export class RichTextEditor extends Component<RichTextEditorProps, { value }> {
+export class RichTextEditor<T extends GenericContent, K extends keyof T> extends Component<RichTextEditorProps<T, K>, RichTextEditorState> {
     /**
      * constructor
      * @param {object} props
      */
-    constructor(props) {
+    constructor(props: RichTextEditorProps<T, K>) {
         super(props)
         /**
          * @type {object}
          * @property {string} value input value
          */
         this.state = {
-            value: this.setValue(this.props['data-fieldValue']),
+            value: this.setValue(this.props['data-fieldValue']).toString(),
         }
 
         this.handleChange = this.handleChange.bind(this)
@@ -43,7 +49,7 @@ export class RichTextEditor extends Component<RichTextEditorProps, { value }> {
      * returns default value of an input
      * @param {string} value
      */
-    public setValue(value) {
+    public setValue(value: string) {
         if (value) {
             return value
         } else {
@@ -58,9 +64,9 @@ export class RichTextEditor extends Component<RichTextEditorProps, { value }> {
      * handle change event on an input
      * @param {SytheticEvent} event
      */
-    public handleChange(value) {
+    public handleChange(value: string) {
         this.setState({ value })
-        this.props.onChange(this.props.name, value)
+        this.props.onChange(this.props.name, value as any)
     }
     /**
      * render

@@ -1,3 +1,5 @@
+import { GenericContent } from '@sensenet/default-content-types'
+
 /**
  * @module FieldControls
  *
@@ -5,11 +7,15 @@
 /**
  * Interface for ReactClientFieldSetting properties
  */
-export interface ReactClientFieldSettingProps {
+export interface ReactClientFieldSettingProps<T extends GenericContent = GenericContent,  K extends keyof T = 'Name'> {
     /**
      * Unique name of the field control
      */
-    name?: string
+    name: K
+    /**
+     * Called when the icon is clicked
+     */
+    onChange: (field: keyof T, value: T[K]) => void
     /**
      * Unique key of the field control
      */
@@ -36,16 +42,16 @@ export interface ReactClientFieldSettingProps {
      * @default false
      */
     className?: string,
-    /**
-     * Called when the icon is clicked
-     */
-    onChange
 }
 
 /**
  * Interface for ClientFieldSetting properties
  */
-export interface ReactClientFieldSetting extends ReactClientFieldSettingProps {
+export interface ReactClientFieldSetting<T extends GenericContent = GenericContent, K extends keyof T = 'Name'> extends ReactClientFieldSettingProps<T, K> {
+    /**
+     * Default value of the empty field control
+     */
+    'data-defaultValue'?: T[K],
     /**
      * Display mode of the field control
      * @default browse
@@ -60,10 +66,6 @@ export interface ReactClientFieldSetting extends ReactClientFieldSettingProps {
      */
     'data-placeHolderText'?: string
     /**
-     * Default value of the empty field control
-     */
-    'data-defaultValue'?
-    /**
      * Text of the label
      */
     'data-labelText'?: string,
@@ -72,7 +74,7 @@ export interface ReactClientFieldSetting extends ReactClientFieldSettingProps {
      */
     'data-errorText'?: string,
     /**
-     * Name of the fildcontrol type
+     * Name of the fieldcontrol type
      */
     'data-typeName'?: string
 }

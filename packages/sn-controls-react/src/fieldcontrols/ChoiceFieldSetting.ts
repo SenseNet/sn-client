@@ -2,12 +2,13 @@
  * @module FieldControls
  *
  */ /** */
+import { GenericContent } from '@sensenet/default-content-types'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
  * Interface for ChoiceFieldSetting properties
  */
-export interface ReactChoiceFieldSetting extends ReactClientFieldSetting {
+export interface ReactChoiceFieldSetting<T extends GenericContent = GenericContent, K extends keyof T = 'Name'> extends ReactClientFieldSetting<T, K> {
     /**
      * Allows multiple selection
      * @default false

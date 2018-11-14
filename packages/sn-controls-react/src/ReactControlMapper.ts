@@ -26,7 +26,7 @@ import * as ViewControls from './viewcontrols'
 const clientConfigFactory = (fieldSettings: FieldSetting) => {
     const defaultSetting = {} as ReactClientFieldSettingProps
     defaultSetting.key = fieldSettings.Name,
-        defaultSetting.name = fieldSettings.Name,
+        defaultSetting.name = fieldSettings.Name as any,
         defaultSetting.readOnly = fieldSettings.ReadOnly || false,
         defaultSetting.required = fieldSettings.Compulsory || false,
         defaultSetting['data-placeHolderText'] = fieldSettings.DisplayName || ''
@@ -123,7 +123,7 @@ export const reactControlMapper = (repository: Repository) => new ControlMapper(
         const choiceSettings = clientConfigFactory(setting) as ReactChoiceFieldSetting
         choiceSettings['data-allowExtraValue'] = setting.AllowExtraValue,
             choiceSettings['data-allowMultiple'] = setting.AllowMultiple,
-            choiceSettings.options = setting.Options
+            choiceSettings.options = setting.Options || []
         return choiceSettings
     })
     .setupFieldSettingDefault(ReferenceFieldSetting, (setting) => {

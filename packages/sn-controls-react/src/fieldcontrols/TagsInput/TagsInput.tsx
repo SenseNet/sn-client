@@ -43,21 +43,29 @@ const styles = {
 }
 
 import { IContent, IODataCollectionResponse } from '@sensenet/client-core'
+import { GenericContent } from '@sensenet/default-content-types'
 
 /**
  * Interface for TagsInput properties
  */
-export interface TagsInputProps extends ReactClientFieldSettingProps, ReactClientFieldSetting, ReactReferenceFieldSetting { }
-
+export interface TagsInputProps<T extends GenericContent, K extends keyof T> extends ReactClientFieldSettingProps<T, K>, ReactClientFieldSetting<T, K>, ReactReferenceFieldSetting<T, K> { }
+/**
+ * Interface for TagsInput state
+ */
+export interface TagsInputState<T extends GenericContent, K extends keyof T> {
+    label: string,
+    dataSource: any[],
+    fieldValue: any
+}
 /**
  * Field control that represents a Reference field. Available values will be populated from the FieldSettings.
  */
-export class TagsInput extends Component<TagsInputProps, { label, dataSource, fieldValue }> {
+export class TagsInput<T extends GenericContent, K extends keyof T> extends Component<TagsInputProps<T, K>, TagsInputState<T, K>> {
     /**
      * constructor
      * @param {object} props
      */
-    constructor(props) {
+    constructor(props: TagsInputProps<T, K>) {
         super(props)
         /**
          * @type {object}
@@ -92,11 +100,12 @@ export class TagsInput extends Component<TagsInputProps, { label, dataSource, fi
     /**
      * handles input changes
      */
-    public handleChange = (e) => {
+    public handleChange = (e: React.ChangeEvent) => {
         const { name, onChange } = this.props
         const selected = this.state.fieldValue
         let s = selected
-        const selectedContent = this.props['data-allowMultiple'] !== undefined && this.props['data-allowMultiple'] ? this.getContentById(e.target.value[e.target.value.length - 1]).value : this.getContentById(e.target.value).value
+        // tslint:disable-next-line:no-string-literal
+        const selectedContent = this.props['data-allowMultiple'] !== undefined && this.props['data-allowMultiple'] ? this.getContentById(e.target['value'][e.target['value'].length - 1]).value : this.getContentById(e.target['value']).value
         this.props['data-allowMultiple'] !== undefined &&
             this.props['data-allowMultiple'] ?
             this.isSelected(selectedContent) ?
@@ -148,7 +157,7 @@ export class TagsInput extends Component<TagsInputProps, { label, dataSource, fi
      */
     public async getSelected() {
         // tslint:disable-next-line:no-string-literal
-        const loadPath = this.props['content'] ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props['content'].Path), '/', this.props.name) : ''
+        const loadPath = this.props['content'] ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props['content'].Path), '/', this.props.name.toString()) : ''
         const references = await this.props.repository.loadCollection({
             path: loadPath,
             oDataOptions: {
@@ -168,13 +177,13 @@ export class TagsInput extends Component<TagsInputProps, { label, dataSource, fi
     /**
      * returns a content by its id
      */
-    public getContentById = (id) => {
+    public getContentById = (id: number) => {
         return this.state.dataSource.find((item) => item.value === id)
     }
     /**
      * returns whether the content with the given id is selected or not
      */
-    public isSelected = (id) => {
+    public isSelected = (id: number) => {
         return this.state.fieldValue.indexOf(id) > -1
     }
     /**
@@ -185,16 +194,16 @@ export class TagsInput extends Component<TagsInputProps, { label, dataSource, fi
         switch (this.props['data-actionName']) {
             case 'edit':
                 return (
-                    <FormControl className={this.props.className} style={styles.root as any} key={this.props.name} component="fieldset" required={this.props.required}>
-                        <InputLabel htmlFor={this.props.name}>{this.props['data-labelText']}</InputLabel>
+                    <FormControl className={this.props.className} style={styles.root as any} key={this.props.name as string} component="fieldset" required={this.props.required}>
+                        <InputLabel htmlFor={this.props.name as string}>{this.props['data-labelText']}</InputLabel>
                         <Select
                             multiple={this.props['data-allowMultiple']}
                             value={this.state.fieldValue}
                             onChange={(e) => this.handleChange(e)}
-                            input={<Input id={this.props.name} fullWidth />}
+                            input={<Input id={this.props.name as string} fullWidth />}
                             renderValue={() =>
                                 <div style={styles.chips as any}>
-                                    {this.state.fieldValue.map((value) => (
+                                    {this.state.fieldValue.map((value: any) => (
                                         <Chip key={value.toString()} label={this.getContentById(value).label} />
                                     ))}
                                 </div>
@@ -216,16 +225,16 @@ export class TagsInput extends Component<TagsInputProps, { label, dataSource, fi
                 )
             case 'new':
                 return (
-                    <FormControl className={this.props.className} style={styles.root as any} key={this.props.name} component="fieldset" required={this.props.required}>
-                        <InputLabel htmlFor={this.props.name}>{this.props['data-labelText']}</InputLabel>
+                    <FormControl className={this.props.className} style={styles.root as any} key={this.props.name as string} component="fieldset" required={this.props.required}>
+                        <InputLabel htmlFor={this.props.name as string}>{this.props['data-labelText']}</InputLabel>
                         <Select
                             multiple={this.props['data-allowMultiple']}
                             value={this.state.fieldValue}
                             onChange={(e) => this.handleChange(e)}
-                            input={<Input id={this.props.name} fullWidth />}
+                            input={<Input id={this.props.name as string} fullWidth />}
                             renderValue={() =>
                                 <div style={styles.chips as any}>
-                                    {this.state.fieldValue.map((value) => (
+                                    {this.state.fieldValue.map((value: any) => (
                                         <Chip key={value.toString()} label={this.getContentById(value).label} />
                                     ))}
                                 </div>
@@ -253,7 +262,7 @@ export class TagsInput extends Component<TagsInputProps, { label, dataSource, fi
                                 {this.props['data-labelText']}
                             </FormLabel>
                             <FormGroup>
-                                {this.props['data-fieldValue'].map((value) =>
+                                {this.props['data-fieldValue'].map((value: any) =>
                                     <FormControl component="fieldset">
                                         <FormControlLabel style={{ marginLeft: 0 }} label={this.state.dataSource.find((item) => (item.value === value)).label} control={<span></span>} key={value} />
                                     </FormControl>)}
@@ -268,7 +277,7 @@ export class TagsInput extends Component<TagsInputProps, { label, dataSource, fi
                                 {this.props['data-labelText']}
                             </FormLabel>
                             <FormGroup>
-                                {this.props['data-fieldValue'].map((value) =>
+                                {this.props['data-fieldValue'].map((value: any) =>
                                     <FormControl component="fieldset">
                                         <FormControlLabel style={{ marginLeft: 0 }} label={this.state.dataSource.find((item) => (item.value === value)).label} control={<span></span>} key={value} />
                                     </FormControl>)}

@@ -2,9 +2,9 @@
  * @module FieldControls
  *
  */ /** */
+import MomentUtils from '@date-io/date-fns'
 import { DateTimePicker as MUIDateTimePicker } from 'material-ui-pickers'
-import MuiPickersUtilsProvider from 'material-ui-pickers/MuiPickersUtilsProvider'
-import MomentUtils from 'material-ui-pickers/utils/moment-utils'
+import { MuiPickersUtilsProvider } from 'material-ui-pickers'
 import * as moment from 'moment'
 import * as React from 'react'
 import { Fragment } from 'react'
@@ -15,11 +15,17 @@ import { ReactDateTimeFieldSetting } from '../DateTimeFieldSetting'
  * Interface for DatePicker properties
  */
 export interface DateTimePickerProps extends ReactClientFieldSettingProps, ReactClientFieldSetting, ReactDateTimeFieldSetting { }
-
+/**
+ * Interface for DatePicker state
+ */
+export interface DateTimePickerState {
+    value: string,
+    dateValue: Date,
+}
 /**
  * Field control that represents a Date field. Available values will be populated from the FieldSettings.
  */
-export class DateTimePicker extends React.Component<DateTimePickerProps, { value, dateValue }> {
+export class DateTimePicker extends React.Component<DateTimePickerProps, DateTimePickerState> {
     /**
      * constructor
      * @param {object} props
@@ -31,7 +37,7 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, { value
          * @property {string} value default value
          */
         this.state = {
-            dateValue: props['data-fieldValue'] ? new Date(this.setValue(props['data-fieldValue'])) : new Date(this.setValue(props['data-defaultValue'])),
+            dateValue: props['data-fieldValue'] ? new Date(this.setValue(props['data-fieldValue'])) : new Date(this.setValue(props['data-defaultValue'] as string)),
             value: props['data-fieldValue'] ? props['data-fieldValue'] : props['data-defaultValue'],
         }
         this.handleDateChange = this.handleDateChange.bind(this)
@@ -41,7 +47,7 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, { value
      * convert string to proper date format
      * @param {string} value
      */
-    public setValue(value) {
+    public setValue(value: string) {
         // TODO: check datetimemode and return a value based on this property
         let date = ''
         if (value) {
@@ -55,12 +61,12 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, { value
      * handle changes
      * @param {Date} date
      */
-    public handleDateChange = (date) => {
+    public handleDateChange = (date: Date) => {
         this.setState({
             dateValue: date,
-            value: moment.utc(date),
+            value: moment.utc(date).toString(),
         })
-        this.props.onChange(this.props.name, moment.utc(date))
+        this.props.onChange(this.props.name, moment.utc(date).toString())
     }
     /**
      * render

@@ -21,21 +21,27 @@ import FormGroup from '@material-ui/core/FormGroup'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import TextField from '@material-ui/core/TextField'
+import { GenericContent } from '@sensenet/default-content-types'
 
 /**
  * Interface for CheckboxGroup properties
  */
-export interface CheckboxGroupProps extends ReactClientFieldSettingProps, ReactClientFieldSetting, ReactChoiceFieldSetting { }
-
+export interface CheckboxGroupProps<T extends GenericContent, K extends keyof T> extends ReactClientFieldSettingProps<T, K>, ReactClientFieldSetting<T, K>, ReactChoiceFieldSetting<T, K> { }
+/**
+ * Interface for CheckboxGroup state
+ */
+export interface CheckboxGroupState<T extends GenericContent, K extends keyof T> {
+    value: any[]
+}
 /**
  * Field control that represents a Choice field. Available values will be populated from the FieldSettings.
  */
-export class CheckboxGroup extends Component<CheckboxGroupProps, { value }> {
+export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends Component<CheckboxGroupProps<T, K>, CheckboxGroupState<T, K>> {
     /**
      * constructor
      * @param {object} props
      */
-    constructor(props) {
+    constructor(props: CheckboxGroup<T, K>['props']) {
         super(props)
         this.state = {
             value: this.props['data-fieldValue'] || this.props['data-defaultValue'] || [],
@@ -45,9 +51,10 @@ export class CheckboxGroup extends Component<CheckboxGroupProps, { value }> {
     /**
      * set selected value
      */
-    public handleChange = (event) => {
+    public handleChange = (event: React.ChangeEvent) => {
         const { value } = this.state
-        const newValue = event.target.value
+        // tslint:disable-next-line:no-string-literal
+        const newValue = event.target['value']
         const checked = value
         const index = value.indexOf(newValue)
         if (this.props['data-allowMultiple']) {
@@ -66,13 +73,13 @@ export class CheckboxGroup extends Component<CheckboxGroupProps, { value }> {
         this.setState({
             value: checked,
         })
-        this.props.onChange(this.props.name, checked)
+        this.props.onChange(this.props.name, checked as any)
     }
     /**
      * returns if an item is checked or not
      * @param {string} item
      */
-    public isChecked(item) {
+    public isChecked(item: number | string) {
         let checked = false
         // tslint:disable-next-line:prefer-for-of
         for (let i = 0; i < this.state.value.length; i++) {
@@ -147,9 +154,9 @@ export class CheckboxGroup extends Component<CheckboxGroupProps, { value }> {
                                 {this.props['data-labelText']}
                             </FormLabel>
                             <FormGroup>
-                                {this.props['data-fieldValue'].map((value) =>
+                                {this.props['data-fieldValue'].map((value: T[K]) =>
                                     <FormControl component="fieldset">
-                                        <FormControlLabel style={{ marginLeft: 0 }} label={this.props.options.find((item) => (item.Value === value)).Text} control={<span></span>} key={value} />
+                                        <FormControlLabel style={{ marginLeft: 0 }} label={this.props.options.find((item) => (item.Value === value)).Text} control={<span></span>} key={this.props.options.find((item) => (item.Value === value)).Name} />
                                     </FormControl>)}
                             </FormGroup>
                         </FormControl> : null
@@ -162,9 +169,9 @@ export class CheckboxGroup extends Component<CheckboxGroupProps, { value }> {
                                 {this.props['data-labelText']}
                             </FormLabel>
                             <FormGroup>
-                                {this.props['data-fieldValue'].map((value) =>
+                                {this.props['data-fieldValue'].map((value: T[K]) =>
                                     <FormControl component="fieldset">
-                                        <FormControlLabel style={{ marginLeft: 0 }} label={this.props.options.find((item) => (item.Value === value)).Text} control={<span></span>} key={value} />
+                                        <FormControlLabel style={{ marginLeft: 0 }} label={this.props.options.find((item) => (item.Value === value)).Text} control={<span></span>} key={this.props.options.find((item) => (item.Value === value)).Name} />
                                     </FormControl>)}
                             </FormGroup>
                         </FormControl> : null

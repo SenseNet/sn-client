@@ -14,21 +14,27 @@ import FormLabel from '@material-ui/core/FormLabel'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
+import { GenericContent } from '@sensenet/default-content-types'
 
 /**
  * Interface for DatePicker properties
  */
-export interface DropDownListProps extends ReactClientFieldSettingProps, ReactClientFieldSetting, ReactChoiceFieldSetting { }
-
+export interface DropDownListProps<T extends GenericContent, K extends keyof T> extends ReactClientFieldSettingProps<T, K>, ReactClientFieldSetting<T, K>, ReactChoiceFieldSetting<T, K> { }
+/**
+ * Interface for DatePicker state
+ */
+export interface DropDownListState<T extends GenericContent, K extends keyof T> {
+    value: T[K]
+}
 /**
  * Field control that represents a Choice field. Available values will be populated from the FieldSettings.
  */
-export class DropDownList extends Component<DropDownListProps, { value }> {
+export class DropDownList<T extends GenericContent, K extends keyof T> extends Component<DropDownListProps<T, K>, DropDownListState<T, K>> {
     /**
      * constructor
      * @param {object} props
      */
-    constructor(props) {
+    constructor(props: DropDownListProps<T, K>) {
         super(props)
         /**
          * @type {object}
@@ -40,9 +46,11 @@ export class DropDownList extends Component<DropDownListProps, { value }> {
     /**
      * sets the selected value in the state
      */
-    public handleChange = (event) => {
-        this.setState({ value: event.target.value })
-        this.props.onChange(this.props.name, event.target.value)
+    public handleChange = (event: React.ChangeEvent) => {
+        // tslint:disable-next-line:no-string-literal
+        this.setState({ value: event.target['value'] })
+        // tslint:disable-next-line:no-string-literal
+        this.props.onChange(this.props.name, event.target['value'])
     }
     /**
      * returns selected options value
@@ -61,7 +69,7 @@ export class DropDownList extends Component<DropDownListProps, { value }> {
      * returns selected options text by its value
      * @param {any} value
      */
-    public getTextByValue(value) {
+    public getTextByValue(value: any) {
         let text = ''
         if (value) {
             this.props.options.map((option) => {
@@ -92,13 +100,13 @@ export class DropDownList extends Component<DropDownListProps, { value }> {
                         required={this.props.required}
                         error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
                     >
-                        <InputLabel htmlFor={this.props.name}>{this.props['data-labelText']}</InputLabel>
+                        <InputLabel htmlFor={this.props.name as string}>{this.props['data-labelText']}</InputLabel>
                         <Select
                             onChange={this.handleChange}
                             inputProps={{
                                 name: this.props.name,
                                 id: this.props.name,
-                            }}
+                            } as any}
                             value={this.state.value[0]}
                             multiple={this.props['data-allowMultiple']}
                             autoWidth={true}
@@ -121,14 +129,14 @@ export class DropDownList extends Component<DropDownListProps, { value }> {
                         required={this.props.required}
                         error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
                     >
-                        <InputLabel htmlFor={this.props.name}>{this.props['data-labelText']}</InputLabel>
+                        <InputLabel htmlFor={this.props.name as string}>{this.props['data-labelText']}</InputLabel>
                         <Select
                             onChange={this.handleChange}
                             inputProps={{
                                 name: this.props.name,
                                 id: this.props.name,
-                            }}
-                            value={this.state.value}
+                            } as any}
+                            value={this.state.value as any}
                             multiple={this.props['data-allowMultiple']}
                             autoWidth={true}
                             fullWidth={true}
@@ -151,7 +159,7 @@ export class DropDownList extends Component<DropDownListProps, { value }> {
                                 {this.props['data-labelText']}
                             </FormLabel>
                             <FormGroup>
-                                {this.props['data-fieldValue'].map((value) =>
+                                {this.props['data-fieldValue'].map((value: any) =>
                                     <FormControl component="fieldset">
                                         <FormControlLabel style={{ marginLeft: 0 }} label={this.props.options.find((item) => (item.Value === value)).Text} control={<span></span>} key={value} />
                                     </FormControl>)}
@@ -166,7 +174,7 @@ export class DropDownList extends Component<DropDownListProps, { value }> {
                                 {this.props['data-labelText']}
                             </FormLabel>
                             <FormGroup>
-                                {this.props['data-fieldValue'].map((value) =>
+                                {this.props['data-fieldValue'].map((value: any) =>
                                     <FormControl component="fieldset">
                                         <FormControlLabel style={{ marginLeft: 0 }} label={this.props.options.find((item) => (item.Value === value)).Text} control={<span></span>} key={value} />
                                     </FormControl>)}

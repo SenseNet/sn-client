@@ -15,4 +15,4 @@ export {
 export * from './fieldcontrols'
 export * from './viewcontrols/EditView'
 export * from './viewcontrols/NewView'
-export * from './viewcontrols/BrowseView'
+export { BrowseView } from './viewcontrols/BrowseView'

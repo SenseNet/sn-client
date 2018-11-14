@@ -2,9 +2,11 @@
  * @module FieldControls
  *
  */ /** */
+import MomentUtils from '@date-io/date-fns'
+import { GenericContent } from '@sensenet/default-content-types'
 import { TimePicker as MUITimePicker } from 'material-ui-pickers'
-import MuiPickersUtilsProvider from 'material-ui-pickers/MuiPickersUtilsProvider'
-import MomentUtils from 'material-ui-pickers/utils/moment-utils'
+import { MuiPickersUtilsProvider } from 'material-ui-pickers'
+import * as moment from 'moment'
 import * as React from 'react'
 import { Fragment } from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
@@ -13,24 +15,29 @@ import { ReactDateTimeFieldSetting } from '../DateTimeFieldSetting'
 /**
  * Interface for DatePicker properties
  */
-export interface TimePickerProps extends ReactClientFieldSettingProps, ReactClientFieldSetting, ReactDateTimeFieldSetting { }
-
+export interface TimePickerProps<T extends GenericContent, K extends keyof T> extends ReactClientFieldSettingProps<T, K>, ReactClientFieldSetting<T, K>, ReactDateTimeFieldSetting<T, K> { }
+/**
+ * Interface for DatePicker state
+ */
+export interface TimePickerState {
+    value: moment.Moment
+}
 /**
  * Field control that represents a Date field. Available values will be populated from the FieldSettings.
  */
-export class TimePicker extends React.Component<TimePickerProps, { value }> {
+export class TimePicker<T extends GenericContent, K extends keyof T> extends React.Component<TimePickerProps<T, K>, TimePickerState> {
     /**
      * constructor
      * @param {object} props
      */
-    constructor(props: TimePickerProps) {
+    constructor(props: TimePickerProps<T, K>) {
         super(props)
         /**
          * @type {object}
          * @property {string} value default value
          */
         this.state = {
-            value: this.props['data-fieldValue'] ? this.setValue(this.props['data-fieldValue']) : this.setValue(this.props['data-defaultValue']),
+            value: props['data-fieldValue'] ? props['data-fieldValue'] : props['data-defaultValue'],
         }
     }
 
@@ -38,7 +45,7 @@ export class TimePicker extends React.Component<TimePickerProps, { value }> {
      * convert string to proper date format
      * @param {string} value
      */
-    public setValue(value) {
+    public setValue(value: string) {
         // TODO: check datetimemode and return a value based on this property
         let date = ''
         if (value) {
@@ -52,9 +59,11 @@ export class TimePicker extends React.Component<TimePickerProps, { value }> {
      * handle changes
      * @param {Date} date
      */
-    public handleDateChange = (date) => {
-        this.setState({ value: date })
-        this.props.onChange(this.props.name, date)
+    public handleDateChange = (date: Date) => {
+        this.setState({
+            value: moment.utc(date),
+        })
+        this.props.onChange(this.props.name, moment.utc(date) as any)
     }
     /**
      * render
@@ -72,7 +81,7 @@ export class TimePicker extends React.Component<TimePickerProps, { value }> {
                                 value={value}
                                 onChange={this.handleDateChange}
                                 label={this.props['data-labelText']}
-                                id={this.props.name}
+                                id={this.props.name as string}
                                 disabled={readOnly}
                                 placeholder={this.props['data-placeHolderText']}
                                 required={required}
@@ -89,7 +98,7 @@ export class TimePicker extends React.Component<TimePickerProps, { value }> {
                                 value={value}
                                 onChange={this.handleDateChange}
                                 label={this.props['data-labelText']}
-                                id={this.props.name}
+                                id={this.props.name as string}
                                 disabled={readOnly}
                                 placeholder={this.props['data-placeHolderText']}
                                 required={required}

@@ -12,24 +12,31 @@ import IconButton from '@material-ui/core/IconButton'
 import Input from '@material-ui/core/Input'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import InputLabel from '@material-ui/core/InputLabel'
+import { GenericContent } from '@sensenet/default-content-types'
 import { Icon } from '@sensenet/icons-react'
 import Radium from 'radium'
 
 /**
  * Interface for Password properties
  */
-export interface PasswordProps extends ReactClientFieldSettingProps, ReactClientFieldSetting, ReactPasswordFieldSetting { }
-
+export interface PasswordProps<T extends GenericContent, K extends keyof T> extends ReactClientFieldSettingProps<T, K>, ReactClientFieldSetting<T, K>, ReactPasswordFieldSetting<T, K> { }
+/**
+ * Interface for Password state
+ */
+export interface PasswordState {
+    value: string,
+    showPassword: boolean,
+}
 /**
  * Field control that represents a Password field. Available values will be populated from the FieldSettings.
  */
 @Radium
-export class Password extends Component<PasswordProps, { value, showPassword }> {
+export class Password<T extends GenericContent, K extends keyof T> extends Component<PasswordProps<T, K>, PasswordState> {
     /**
      * constructor
      * @param {object} props
      */
-    constructor(props) {
+    constructor(props: PasswordProps<T, K>) {
         super(props)
         /**
          * @type {object}
@@ -46,7 +53,7 @@ export class Password extends Component<PasswordProps, { value, showPassword }> 
      * convert incoming default value string to proper format
      * @param {string} value
      */
-    public setValue(value) {
+    public setValue(value: string) {
         if (value) {
             return value.replace(/<[^>]*>/g, '')
         } else {
@@ -61,8 +68,9 @@ export class Password extends Component<PasswordProps, { value, showPassword }> 
      * handle change event on an input
      * @param {SytheticEvent} event
      */
-    public handleChange(event) {
-        this.setState({ value: event.target.value })
+    public handleChange(event: React.ChangeEvent) {
+        // tslint:disable-next-line:no-string-literal
+        this.setState({ value: event.target['value'] })
     }
     /**
      * handle clicking on show password icon
@@ -79,11 +87,11 @@ export class Password extends Component<PasswordProps, { value, showPassword }> 
             case 'edit':
                 return (
                     <FormControl className={this.props.className}>
-                        <InputLabel htmlFor={this.props.name}>{this.props['data-labelText']}</InputLabel>
+                        <InputLabel htmlFor={this.props.name as string}>{this.props['data-labelText']}</InputLabel>
                         <Input
                             type={this.state.showPassword ? 'text' : 'password'}
-                            name={this.props.name}
-                            id={this.props.name}
+                            name={this.props.name as string}
+                            id={this.props.name as string}
                             className={this.props.className}
                             placeholder={this.props['data-placeHolderText']}
                             style={this.props.style}
@@ -110,11 +118,11 @@ export class Password extends Component<PasswordProps, { value, showPassword }> 
             case 'new':
                 return (
                     <FormControl className={this.props.className}>
-                        <InputLabel htmlFor={this.props.name}>{this.props['data-labelText']}</InputLabel>
+                        <InputLabel htmlFor={this.props.name as string}>{this.props['data-labelText']}</InputLabel>
                         <Input
                             type={this.state.showPassword ? 'text' : 'password'}
-                            name={this.props.name}
-                            id={this.props.name}
+                            name={this.props.name as string}
+                            id={this.props.name as string}
                             className={this.props.className}
                             placeholder={this.props['data-placeHolderText']}
                             style={this.props.style}

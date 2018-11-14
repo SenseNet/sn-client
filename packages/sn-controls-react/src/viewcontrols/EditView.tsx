@@ -4,23 +4,34 @@
  */ /** */
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
+import { Repository } from '@sensenet/client-core'
+import { ControlSchema } from '@sensenet/control-mapper'
+import { GenericContent, Schema } from '@sensenet/default-content-types'
 import React, { Component, createElement } from 'react'
 import MediaQuery from 'react-responsive'
+import { ReactClientFieldSettingProps } from '../fieldcontrols/ClientFieldSetting'
 import { reactControlMapper } from '../ReactControlMapper'
 import { styles } from './EditViewStyles'
 
 /**
  * Interface for EditView properties
  */
-export interface EditViewProps {
-    content,
-    onSubmit?,
-    repository,
-    schema?,
-    contentTypeName,
+export interface EditViewProps<T extends GenericContent = GenericContent> {
+    content: T,
+    onSubmit?: (id: number, content: GenericContent) => void,
+    repository: Repository,
+    schema?: Schema,
+    contentTypeName: string,
     columns?: boolean,
-    handleCancel?,
-    submitCallback?,
+    handleCancel?: () => void,
+    submitCallback?: () => void,
+}
+/**
+ * Interface for EditView state
+ */
+export interface EditViewState<T extends GenericContent = GenericContent> {
+    content: T,
+    schema: ControlSchema<React.Component, ReactClientFieldSettingProps>,
 }
 
 /**
@@ -31,7 +42,7 @@ export interface EditViewProps {
  *  <EditView content={selectedContent} onSubmit={editSubmitClick} />
  * ```
  */
-export class EditView extends Component<EditViewProps, { content, schema }> {
+export class EditView<T extends GenericContent, K extends keyof T> extends Component<EditViewProps<T>, EditViewState<T>> {
     /**
      * property
      * @property {string} displayName
@@ -57,7 +68,7 @@ export class EditView extends Component<EditViewProps, { content, schema }> {
         this.handleInputChange = this.handleInputChange.bind(this)
         this.handleCancel = this.handleCancel.bind(this)
 
-        this.displayName = this.props.content.DisplayName
+        this.displayName = this.props.content.DisplayName || ''
     }
 
     /**
@@ -70,7 +81,7 @@ export class EditView extends Component<EditViewProps, { content, schema }> {
      * handle change event on an input
      * @param {SytheticEvent} event
      */
-    public handleInputChange(field, value) {
+    public handleInputChange(field: keyof T, value: T[K]) {
         this.state.content[field] = value
 
         this.setState({
@@ -82,8 +93,8 @@ export class EditView extends Component<EditViewProps, { content, schema }> {
      * @param {string} name name of the input
      * @return {any} value of the input or null
      */
-    public getFieldValue(name) {
-        if (this.props.content[name]) {
+    public getFieldValue(name: string | undefined) {
+        if (name && this.props.content[name]) {
             return this.props.content[name]
         } else {
             return false
@@ -109,26 +120,28 @@ export class EditView extends Component<EditViewProps, { content, schema }> {
             }>
                 <Grid container spacing={24}>
                     {
-                        fieldSettings.map((e, i) => {
-                            if (fieldSettings[i].clientSettings['data-typeName'] === 'ReferenceFieldSetting') {
-                                fieldSettings[i].clientSettings['data-repository'] = this.props.repository
+                        fieldSettings.map((fieldSetting) => {
+                            if (fieldSetting.clientSettings['data-typeName'] === 'ReferenceFieldSetting') {
+                                fieldSetting.clientSettings['data-repository'] = this.props.repository
                             }
+                            fieldSetting.clientSettings['data-actionName'] = 'edit'
+                            fieldSetting.clientSettings['data-fieldValue'] = that.getFieldValue(fieldSetting.clientSettings.name)
+                            // tslint:disable-next-line:no-string-literal
+                            fieldSetting.clientSettings['content'] = this.state.content
+                            // tslint:disable-next-line:no-string-literal
+                            fieldSetting.clientSettings['value'] = that.getFieldValue(fieldSetting.clientSettings.name)
+                            fieldSetting.clientSettings.onChange = that.handleInputChange as any
                             return (<Grid item xs={12}
                                 sm={12}
-                                md={fieldSettings[i].clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                                lg={fieldSettings[i].clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                                xl={fieldSettings[i].clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                                key={fieldSettings[i].clientSettings.name}>
+                                md={fieldSetting.clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                                lg={fieldSetting.clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                                xl={fieldSetting.clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                                key={fieldSetting.clientSettings.name}>
                                 {
                                     createElement(
-                                        fieldSettings[i].controlType,
+                                        fieldSetting.controlType,
                                         {
-                                            ...fieldSettings[i].clientSettings,
-                                            'data-actionName': 'edit',
-                                            'data-fieldValue': that.getFieldValue(fieldSettings[i].clientSettings.name),
-                                            'onChange': that.handleInputChange,
-                                            'content': this.state.content,
-                                            'value': that.getFieldValue(fieldSettings[i].clientSettings.name),
+                                            ...fieldSetting.clientSettings,
                                         })
                                 }
                             </Grid>)

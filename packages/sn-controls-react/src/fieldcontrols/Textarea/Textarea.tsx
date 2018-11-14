@@ -9,30 +9,36 @@ import { ReactTextareaFieldSetting } from './TextareaFieldSetting'
 
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
+import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
 
 /**
  * Interface for Textarea properties
  */
-export interface TextareaProps extends ReactClientFieldSettingProps, ReactClientFieldSetting, ReactLongTextFieldSetting, ReactTextareaFieldSetting { }
-
+export interface TextareaProps<T extends GenericContent, K extends keyof T> extends ReactClientFieldSettingProps<T, K>, ReactClientFieldSetting<T, K>, ReactLongTextFieldSetting<T, K>, ReactTextareaFieldSetting<T, K> { }
+/**
+ * Interface for Textarea state
+ */
+export interface TextareaState {
+    value: string
+}
 /**
  * Field control that represents a LongText field. Available values will be populated from the FieldSettings.
  */
 @Radium
-export class Textarea extends Component<TextareaProps, { value }> {
+export class Textarea<T extends GenericContent, K extends keyof T> extends Component<TextareaProps<T, K>, TextareaState> {
     /**
      * constructor
      * @param {object} props
      */
-    constructor(props) {
+    constructor(props: TextareaProps<T, K>) {
         super(props)
         /**
          * @type {object}
          * @property {string} value input value
          */
         this.state = {
-            value: this.setValue(this.props['data-fieldValue']),
+            value: this.setValue(this.props['data-fieldValue']).toString(),
         }
 
         this.handleChange = this.handleChange.bind(this)
@@ -41,7 +47,7 @@ export class Textarea extends Component<TextareaProps, { value }> {
      * returns default value of an input
      * @param {string} value
      */
-    public setValue(value) {
+    public setValue(value: string) {
         if (value) {
             return value.replace(/<[^>]*>/g, '')
         } else {
@@ -56,9 +62,11 @@ export class Textarea extends Component<TextareaProps, { value }> {
      * handle change event on an input
      * @param {SytheticEvent} event
      */
-    public handleChange(event) {
-        this.setState({ value: event.target.value })
-        this.props.onChange(this.props.name, event.target.value)
+    public handleChange(event: React.ChangeEvent) {
+        // tslint:disable-next-line:no-string-literal
+        this.setState({ value: event.target['value'] })
+        // tslint:disable-next-line:no-string-literal
+        this.props.onChange(this.props.name, event.target['value'])
     }
     /**
      * render
@@ -69,8 +77,8 @@ export class Textarea extends Component<TextareaProps, { value }> {
             case 'edit':
                 return (
                     <TextField
-                        name={this.props.name}
-                        id={this.props.name}
+                        name={this.props.name as string}
+                        id={this.props.name as string}
                         label={this.props['data-labelText']}
                         className={this.props.className}
                         placeholder={this.props['data-placeHolderText']}
@@ -86,13 +94,13 @@ export class Textarea extends Component<TextareaProps, { value }> {
             case 'new':
                 return (
                     <TextField
-                        name={this.props.name}
-                        id={this.props.name}
+                        name={this.props.name as string}
+                        id={this.props.name as string}
                         label={this.props['data-labelText']}
                         className={this.props.className}
                         placeholder={this.props['data-placeHolderText']}
                         style={this.props.style}
-                        defaultValue={this.props['data-defaultValue']}
+                        defaultValue={this.props['data-defaultValue'] ? this.props['data-defaultValue'].toString() :  ''}
                         required={this.props.required}
                         disabled={this.props.readOnly}
                         error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
@@ -101,27 +109,27 @@ export class Textarea extends Component<TextareaProps, { value }> {
                     />
                 )
             case 'browse':
-            return (
-                this.props.value && this.props.value.length > 0 ? <div className={this.props.className}>
-                    <Typography variant="caption" gutterBottom>
-                        {this.props['data-labelText']}
-                    </Typography>
-                    <Typography variant="body2" gutterBottom>
-                        {this.props.value}
-                    </Typography>
-                </div> : null
-            )
+                return (
+                    this.props.value && this.props.value.length > 0 ? <div className={this.props.className}>
+                        <Typography variant="caption" gutterBottom>
+                            {this.props['data-labelText']}
+                        </Typography>
+                        <Typography variant="body2" gutterBottom>
+                            {this.props.value}
+                        </Typography>
+                    </div> : null
+                )
             default:
-            return (
-                this.props.value && this.props.value.length > 0 ? <div className={this.props.className}>
-                    <Typography variant="caption" gutterBottom>
-                        {this.props['data-labelText']}
-                    </Typography>
-                    <Typography variant="body2" gutterBottom>
-                        {this.props.value}
-                    </Typography>
-                </div> : null
-            )
+                return (
+                    this.props.value && this.props.value.length > 0 ? <div className={this.props.className}>
+                        <Typography variant="caption" gutterBottom>
+                            {this.props['data-labelText']}
+                        </Typography>
+                        <Typography variant="body2" gutterBottom>
+                            {this.props.value}
+                        </Typography>
+                    </div> : null
+                )
         }
 
     }

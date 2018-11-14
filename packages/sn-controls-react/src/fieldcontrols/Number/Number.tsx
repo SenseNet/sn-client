@@ -5,30 +5,34 @@
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
+import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
 import React, { Component } from 'react'
-import NumberFormat from 'react-number-format'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactNumberFieldSetting } from './NumberFieldSetting'
 
 /**
  * Interface for Number properties
  */
-export interface NumberProps extends ReactClientFieldSettingProps, ReactClientFieldSetting, ReactNumberFieldSetting { }
+export interface NumberProps<T extends GenericContent, K extends keyof T> extends ReactClientFieldSettingProps<T, K>, ReactClientFieldSetting<T, K>, ReactNumberFieldSetting<T, K> { }
+/**
+ * Interface for Number state
+ */
+export interface NumberState<T extends GenericContent, K extends keyof T> {
+    value: T[K],
+}
 
 /**
  * Field control that represents a Number field. Available values will be populated from the FieldSettings.
  */
 @Radium
-export class Number extends Component<NumberProps, { value, numberFormat }> {
+export class Number<T extends GenericContent, K extends keyof T= 'Name'> extends Component<NumberProps<T, K>, NumberState<T, K>> {
 
-    constructor(props) {
+    constructor(props: Number<T, K>['props']) {
         super(props)
         this.state = {
-            value: this.props['data-fieldValue'] ? this.setValue(this.props['data-fieldValue']) : this.setValue(this.props['data-defaultValue']),
-            numberFormat: '1320',
+            value: this.props['data-fieldValue'] ? this.setValue(this.props['data-fieldValue']) as any : this.setValue(this.props['data-defaultValue'] as any),
         }
-        this.numberFormatCustom = this.numberFormatCustom.bind(this)
         this.handleChange = this.handleChange.bind(this)
     }
     /**
@@ -36,16 +40,17 @@ export class Number extends Component<NumberProps, { value, numberFormat }> {
      * @param {string} name
      * @param {event} event
      */
-    public handleChange(e) {
+    public handleChange(e: React.ChangeEvent) {
         const { name, onChange } = this.props
-        const value = e.target.value
+        // tslint:disable-next-line:no-string-literal
+        const value = e.target['value']
         onChange(name, value)
     }
     /**
      * convert incoming default value string to proper format
      * @param {string} value
      */
-    public setValue(value) {
+    public setValue(value: T[K]) {
         if (value) {
             return value
         } else {
@@ -62,30 +67,8 @@ export class Number extends Component<NumberProps, { value, numberFormat }> {
      * returns whether the value is valid or not
      * @param {number} value
      */
-    public isValid(value) {
-        return value > this.props.min && value < this.props.max
-    }
-    /**
-     * format text to predefined number format
-     * @param {any} props
-     */
-    public numberFormatCustom(props) {
-        const { inputRef, onChange, ...other } = props
-        return (
-            <NumberFormat
-                {...other}
-                ref={inputRef}
-                onValueChange={(values) => {
-                    onChange({
-                        target: {
-                            value: values.value,
-                        },
-                    })
-                }}
-                thousandSeparator
-                prefix="$"
-            />
-        )
+    public isValid(value: number) {
+        return (this.props.min && value > this.props.min) && (this.props.max && value < this.props.max)
     }
     /**
      * Returns steps value by decimal and step settings
@@ -115,7 +98,7 @@ export class Number extends Component<NumberProps, { value, numberFormat }> {
             case 'edit':
                 return (
                     <TextField
-                        name={this.props.name}
+                        name={this.props.name as string}
                         type="number"
                         label={this.props['data-labelText']}
                         className={this.props.className}
@@ -131,7 +114,7 @@ export class Number extends Component<NumberProps, { value, numberFormat }> {
                             max: this.props.max ? this.props.max : null,
                             min: this.props.min ? this.props.min : null,
                         }}
-                        id={this.props.name}
+                        id={this.props.name as string}
                         error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
                         fullWidth
                         onChange={(e) => this.handleChange(e)}
@@ -141,12 +124,12 @@ export class Number extends Component<NumberProps, { value, numberFormat }> {
             case 'new':
                 return (
                     <TextField
-                        name={this.props.name}
+                        name={this.props.name as string}
                         type="number"
                         label={this.props['data-labelText']}
                         className={this.props.className}
                         style={this.props.style}
-                        defaultValue={this.props['data-defaultValue']}
+                        defaultValue={this.props['data-defaultValue'] as any}
                         required={this.props.required}
                         disabled={this.props.readOnly}
                         InputProps={{
@@ -157,7 +140,7 @@ export class Number extends Component<NumberProps, { value, numberFormat }> {
                             max: this.props.max ? this.props.max : null,
                             min: this.props.min ? this.props.min : null,
                         }}
-                        id={this.props.name}
+                        id={this.props.name as string}
                         error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
                         fullWidth
                         onChange={(e) => this.handleChange(e)}
