@@ -25,6 +25,34 @@ export const referenceFieldTests = describe('ReferenceField Component', () => {
         />).unmount()
     })
 
+    it('Should be constructed with default Id', (done) => {
+        renderer.create(<ReferenceField<GenericContent>
+            fieldName="CreatedBy"
+            fieldSetting={exampleFieldSetting}
+            defaultValueIdOrPath={1}
+            fetchItems={async (fetchQuery) => {
+                expect(fetchQuery.toString()).to.be.eq('Id:\'1\'')
+                done()
+                return [{ Id: 1, Name: 'a', Path: '', Type: 'Document' }]
+            }}
+            onQueryChange={() => { /** */ }}
+        />)
+    })
+
+    it('Should be constructed with default Path', (done) => {
+        renderer.create(<ReferenceField<GenericContent>
+            fieldName="CreatedBy"
+            fieldSetting={exampleFieldSetting}
+            defaultValueIdOrPath="Root/Example/A"
+            fetchItems={async (fetchQuery) => {
+                expect(fetchQuery.toString()).to.be.eq('Path:\'Root/Example/A\'')
+                done()
+                return [{ Id: 1, Name: 'a', Path: '', Type: 'Document' }]
+            }}
+            onQueryChange={() => { /** */ }}
+        />)
+    })
+
     it('Text change should trigger the fetchItems method', (done) => {
         const instance = renderer.create(<ReferenceField<GenericContent>
             fieldName="CreatedBy"

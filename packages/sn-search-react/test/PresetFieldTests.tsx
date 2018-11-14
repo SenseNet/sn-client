@@ -19,15 +19,27 @@ export const presetFieldTests = describe('Preset Fields', () => {
         />)
     })
 
+    it('Should be constructed with default value', () => {
+        renderer.create(<PresetField
+            fieldName="DisplayName"
+            presets={[
+                { text: 'value1', value: new Query((q) => q) },
+            ]}
+            defaultValue="value1"
+            onQueryChange={(key, q) => { /** */ }}
+        />)
+    })
+
     it('onQueryChange should be executed on change', (done) => {
         const instance = renderer.create(<PresetField
             fieldName="DisplayName"
             presets={[
                 { text: 'value1', value: new Query((q) => q.equals('DisplayName', 'Alma')) },
             ]}
-            onQueryChange={(key, q) => {
+            onQueryChange={(key, q, name) => {
                 expect(key).to.be.eq('DisplayName')
                 expect(q.toString()).to.be.eq('DisplayName:\'Alma\'')
+                expect(name).to.be.eq('value1')
                 done()
             }}
         />)

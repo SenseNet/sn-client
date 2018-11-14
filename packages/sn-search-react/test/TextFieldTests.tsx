@@ -20,9 +20,10 @@ export const textFieldTests = describe('TextField Component', () => {
         const instance = renderer.create(<TextField
             fieldName="DisplayName"
             fieldSetting={{}}
-            onQueryChange={(key, q) => {
+            onQueryChange={(key, q, text) => {
                 expect(key).to.be.eq('DisplayName')
                 expect(q.toString()).to.be.eq('DisplayName:\'*Alma*\'')
+                expect(text).to.be.eq('Alma')
                 done()
             }}
         />)

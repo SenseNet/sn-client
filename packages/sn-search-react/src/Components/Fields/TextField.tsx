@@ -14,7 +14,7 @@ export interface TextFieldProps<T> {
     /**
      * Callback that will triggered when the query changes
      */
-    onQueryChange: (key: string, query: Query<T>) => void
+    onQueryChange: (key: string, query: Query<T>, plainValue: string) => void
     /**
      * Field settings for setting labels, placeholders and hint texts
      */
@@ -35,10 +35,11 @@ export const TextField = <T extends GenericContent>(props: TextFieldProps<T> & M
     const { fieldName, onQueryChange, fieldSetting, fieldKey, ...materialProps } = { ...props }
     return (<MaterialTextField type="text"
         onChange={(ev) => {
+            const value = ev.currentTarget.value
             const query = new Query((q) =>
-                ev.currentTarget.value ? q.equals(props.fieldName, `*${ev.currentTarget.value}*`) : q,
+                value ? q.equals(props.fieldName, `*${value}*`) : q,
             )
-            return props.onQueryChange(props.fieldKey || props.fieldName, query)
+            return props.onQueryChange(props.fieldKey || props.fieldName, query, value)
         }}
         label={displayName}
         placeholder={description}

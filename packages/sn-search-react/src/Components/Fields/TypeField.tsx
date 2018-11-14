@@ -13,6 +13,7 @@ import React = require('react')
  */
 export interface TypeFieldProps extends SelectProps {
     types: Array<{ new(...args: any[]): GenericContent }>,
+    selectedTypes?: Array<{ new(...args: any[]): GenericContent }>,
     schemaStore: SchemaStore
     onQueryChange: (query: Query<GenericContent>) => void
     getMenuItem?: (schema: Schema, isSelected: boolean) => JSX.Element
@@ -39,7 +40,7 @@ export class TypeField extends React.Component<TypeFieldProps, TypeFieldState> {
      */
     public state: TypeFieldState = {
         name: '',
-        selected: [],
+        selected: this.props.selectedTypes || [],
         schemas: [],
         getMenuItem: (schema: Schema, isSelected: boolean) => <MenuItem key={schema.ContentTypeName} value={schema.ContentTypeName} title={schema.Description}>
             <Checkbox checked={isSelected} />

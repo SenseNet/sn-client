@@ -15,6 +15,7 @@ export interface ReferenceFieldProps<T> {
     fieldName: keyof T
     fieldKey?: string
     fieldSetting: ReferenceFieldSetting
+    defaultValueIdOrPath?: string | number
     fetchItems: (fetchQuery: Query<T>) => Promise<T[]>
     onQueryChange: (key: string, query: Query<GenericContent>) => void
     getMenuItem?: (item: T, select: (item: T) => void) => JSX.Element
@@ -64,6 +65,24 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
         this.handleInputChange = debounce(handleInputChange, 350)
         this.handleSelect = this.handleSelect.bind(this)
         this.handleClickAway = this.handleClickAway.bind(this)
+    }
+
+    public async componentDidMount() {
+        /** */
+        if (this.props.defaultValueIdOrPath) {
+            const items = await this.props.fetchItems(new Query((q) => isNaN(this.props.defaultValueIdOrPath as number)
+                ? q.equals('Path', this.props.defaultValueIdOrPath)
+                : q.equals('Id', this.props.defaultValueIdOrPath),
+            ))
+            if (items.length === 1 && items[0]) {
+                const item = items[0]
+                this.setState({
+                    inputValue: item.DisplayName || item.Name,
+                    selected: item,
+                })
+                this.props.onQueryChange(this.props.fieldKey || this.props.fieldName.toString(), new Query((q) => q.equals(this.props.fieldName, item.Id)))
+            }
+        }
     }
 
     private async handleInputChange(ev: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) {

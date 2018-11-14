@@ -8,6 +8,12 @@ import React = require('react')
  * Props object for the SelectFieldP Component
  */
 export interface SelectFieldProps<T> extends SelectProps {
+
+    /**
+     *  The default selected value
+     */
+    defaultValue?: string
+
     /**
      * Name of the field
      */
@@ -21,7 +27,7 @@ export interface SelectFieldProps<T> extends SelectProps {
     /**
      * Callback that will triggered when the query changes
      */
-    onQueryChange: (key: string, query: Query<T>) => void
+    onQueryChange: (key: string, query: Query<T>, valueName: string) => void
     /**
      * Field settings for setting labels, placeholders and hint texts
      */
@@ -41,7 +47,7 @@ export class PresetField<T extends GenericContent = GenericContent> extends Reac
     /**
      * Preset field state object
      */
-    public state = { value: '' }
+    public state = { value: this.props.defaultValue || '' }
 
     /**
      * renders the component
@@ -53,7 +59,7 @@ export class PresetField<T extends GenericContent = GenericContent> extends Reac
             onChange={(ev) => {
                 const preset = this.props.presets.find((p) => p.text === ev.target.value.toString())
                 if (preset) {
-                    this.props.onQueryChange(this.props.fieldKey || this.props.fieldName, preset.value)
+                    this.props.onQueryChange(this.props.fieldKey || this.props.fieldName, preset.value, preset.text)
                     this.setState({ value: ev.target.value })
                 }
             }}
@@ -61,7 +67,7 @@ export class PresetField<T extends GenericContent = GenericContent> extends Reac
         >
             {this.props.presets.map((p) => {
                 return <MenuItem value={p.text} key={p.text}>
-                    <ListItemText >{p.text}</ListItemText>
+                    <ListItemText>{p.text}</ListItemText>
                 </MenuItem>
 
             })}
