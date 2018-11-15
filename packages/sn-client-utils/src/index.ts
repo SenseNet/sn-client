@@ -6,3 +6,4 @@ export { ValueObserver } from "./ValueObserver";
 export { PathHelper } from "./PathHelper";
 export { sleepAsync } from "./SleepAsync";
 export { Trace } from "./Trace";
+export { toNumber } from "./ToNumber";
