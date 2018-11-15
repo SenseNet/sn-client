@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import { sleepAsync } from "../src";
 
 /**
@@ -6,7 +5,7 @@ import { sleepAsync } from "../src";
  */
 export const sleepAsyncTests = describe("sleepAsync", () => {
     it("Should return a Promise", () => {
-        expect(sleepAsync()).to.be.instanceof(Promise);
+        expect(sleepAsync()).toBeInstanceOf(Promise);
     });
 
     it("Should be resolved in time", async () => {

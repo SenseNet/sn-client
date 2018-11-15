@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import { Trace } from "../src";
 
 // tslint:disable:completed-docs
@@ -41,13 +40,13 @@ class MockClass {
 export const traceTests = describe("Trace tests", () => {
     describe("Static method traces", () => {
 
-        it("Static Methods call should be traced with args", (done: MochaDone) => {
+        it("Static Methods call should be traced with args", (done) => {
             const args = [1, 2, 3];
             const observer = Trace.method({
                 object: MockClass,
                 method: MockClass.addStatic,
                 onCalled: (traceData) => {
-                    expect(args).to.be.deep.eq(traceData.arguments);
+                    expect(args).toEqual(traceData.arguments);
                     observer.dispose();
                     done();
                 },
@@ -55,14 +54,14 @@ export const traceTests = describe("Trace tests", () => {
             MockClass.addStatic(...args);
         });
 
-        it("Static Methods call should be traced with args and return value", (done: MochaDone) => {
+        it("Static Methods call should be traced with args and return value", (done) => {
             const args = [1, 2, 3];
             const observer = Trace.method({
                 object: MockClass,
                 method: MockClass.addStatic,
                 onFinished: (traceData) => {
-                    expect(args).to.be.deep.eq(traceData.arguments);
-                    expect(traceData.returned).to.be.eq(1 + 2 + 3);
+                    expect(args).toEqual(traceData.arguments);
+                    expect(traceData.returned).toBe(1 + 2 + 3);
                     observer.dispose();
                     done();
                 },
@@ -70,7 +69,7 @@ export const traceTests = describe("Trace tests", () => {
             MockClass.addStatic(...args);
         });
 
-        it("shouldn't be triggered after observer is disposed", (done: MochaDone) => {
+        it("shouldn't be triggered after observer is disposed", (done) => {
             const args = [1, 2, 3];
             const observer = Trace.method({
                 object: MockClass,
@@ -89,20 +88,20 @@ export const traceTests = describe("Trace tests", () => {
             });
             observer.dispose();
             const returned = MockClass.addStatic(...args);
-            expect(returned).to.be.eq(1 + 2 + 3);
+            expect(returned).toEqual(1 + 2 + 3);
         });
     });
 
     describe("Instance method traces", () => {
-        it("should be traced with arguments", (done: MochaDone) => {
+        it("should be traced with arguments", (done) => {
             const instance = new MockClass();
             const args = [1, 2, 3];
             const observer = Trace.method({
                 object: instance,
                 method: instance.addInstance,
                 onFinished: (traceData) => {
-                    expect(args).to.be.deep.eq(traceData.arguments);
-                    expect((traceData).returned).to.be.eq(1 + 2 + 3);
+                    expect(args).toEqual(traceData.arguments);
+                    expect((traceData).returned).toBe(1 + 2 + 3);
                     observer.dispose();
                     done();
                 },
@@ -110,7 +109,7 @@ export const traceTests = describe("Trace tests", () => {
             instance.addInstance(...args);
         });
 
-        it("should be traced asynchronously", (done: MochaDone) => {
+        it("should be traced asynchronously", (done) => {
             const instance = new MockClass();
             const args = [1, 2, 3];
             const observer = Trace.method({
@@ -118,9 +117,9 @@ export const traceTests = describe("Trace tests", () => {
                 method: instance.addInstanceAsync,
                 isAsync: true,
                 onFinished: (traceData) => {
-                    expect(args).to.be.deep.eq(traceData.arguments);
+                    expect(args).toEqual(traceData.arguments);
                     const returned = traceData.returned;
-                    expect(returned).to.be.eq(1 + 2 + 3);
+                    expect(returned).toBe(1 + 2 + 3);
                     observer.dispose();
                     done();
                 },
@@ -128,39 +127,39 @@ export const traceTests = describe("Trace tests", () => {
             instance.addInstanceAsync(...args);
         });
 
-        it("should have a valid 'this' scope", (done: MochaDone) => {
+        it("should have a valid 'this' scope", (done) => {
             const instance = new MockClass("testValue");
             const observer = Trace.method({
                 object: instance,
                 method: instance.testScope,
                 onFinished: (traceData) => {
                     if (traceData.returned) {
-                        expect(traceData.returned).to.be.eq("testValue");
+                        expect(traceData.returned).toBe("testValue");
                         observer.dispose();
                         done();
                     }
                 },
             });
-            expect(instance.testScope()).to.be.eq("testValue");
+            expect(instance.testScope()).toBe("testValue");
         });
 
-        it("should handle throwing errors", (done: MochaDone) => {
+        it("should handle throwing errors", (done) => {
             const instance = new MockClass("testValue");
             const observer = Trace.method({
                 object: instance,
                 method: instance.testError,
                 onError: (traceData) => {
                     if ((traceData).error) {
-                        expect((traceData).error.message).to.be.eq("message");
+                        expect((traceData).error.message).toBe("message");
                         observer.dispose();
                         done();
                     }
                 },
             });
-            expect(() => { instance.testError("message"); }).to.throw();
+            expect(() => { instance.testError("message"); }).toThrow();
         });
 
-        it("should handle throwing errors with asyncs", (done: MochaDone) => {
+        it("should handle throwing errors with asyncs", (done) => {
             const instance = new MockClass("testValue");
             const observer = Trace.method({
                 object: instance,
@@ -168,7 +167,7 @@ export const traceTests = describe("Trace tests", () => {
                 isAsync: true,
                 onError: (traceData) => {
                     if ((traceData).error) {
-                        expect((traceData).error.message).to.be.eq("message");
+                        expect((traceData).error.message).toBe("message");
                         observer.dispose();
                         done();
                     }

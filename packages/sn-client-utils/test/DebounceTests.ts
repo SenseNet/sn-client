@@ -1,11 +1,10 @@
-import { expect } from "chai";
 import { debounce, sleepAsync } from "../src";
 
 /**
  * Tests for debounce
  */
 export const debounceTests = describe("debounce", () => {
-    it("Simple method execution", (done: MochaDone) => {
+    it("Simple method execution", (done) => {
         const method = debounce(() => {
             done();
         });
@@ -21,7 +20,7 @@ export const debounceTests = describe("debounce", () => {
             method();
         }
         await sleepAsync(300);
-        expect(counter).to.be.eq(1);
+        expect(counter).toBe(1);
     });
 
     it("Should be executed multiple times  when triggered multiple times out of a a given range", async () => {
@@ -34,7 +33,7 @@ export const debounceTests = describe("debounce", () => {
             await sleepAsync(15);
         }
         await sleepAsync(300);
-        expect(counter).to.be.eq(10);
+        expect(counter).toBe(10);
     });
 
 });

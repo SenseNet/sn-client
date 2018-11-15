@@ -1,4 +1,4 @@
-import {IDisposable} from "../src/Disposable";
+import {IDisposable} from "../../src/Disposable";
 
 /**
  * Defines a Mock Disposable class

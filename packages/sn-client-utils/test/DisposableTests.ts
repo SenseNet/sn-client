@@ -1,6 +1,5 @@
-import { expect } from "chai";
 import { using, usingAsync } from "../src";
-import { MockDisposable } from "./MockDisposable";
+import { MockDisposable } from "./__Mocks__/MockDisposable";
 
 /**
  * Unit tests for disposables
@@ -8,7 +7,7 @@ import { MockDisposable } from "./MockDisposable";
 export const disposableTests = describe("Disposable", () => {
     it("Can be constructed", () => {
         using(new MockDisposable(), (d) => {
-            expect(d).to.be.instanceof(MockDisposable);
+            expect(d).toBeInstanceOf(MockDisposable);
         });
     });
 
@@ -16,27 +15,27 @@ export const disposableTests = describe("Disposable", () => {
         const returned = using(new MockDisposable(), () => {
             return 1;
         });
-        expect(returned).to.be.eq(1);
+        expect(returned).toBe(1);
     });
 
     it("Should return a value from an async callback", async () => {
         const returned = await usingAsync(new MockDisposable(), async () => {
             return 2;
         });
-        expect(returned).to.be.eq(2);
+        expect(returned).toBe(2);
     });
 
     describe("isDisposed", () => {
         it("should return a correct value before and after disposition", () => {
             const d = new MockDisposable();
-            expect(d.isDisposed()).to.be.eq(false);
+            expect(d.isDisposed()).toBe(false);
             d.dispose();
-            expect(d.isDisposed()).to.be.eq(true);
+            expect(d.isDisposed()).toBe(true);
         });
     });
 
     describe("dispose()", () => {
-        it("should be called on error", (done: MochaDone) => {
+        it("should be called on error", (done) => {
             try {
                 using(new MockDisposable(), (d) => {
                     d.disposeCallback = () => { done(); };
@@ -48,7 +47,7 @@ export const disposableTests = describe("Disposable", () => {
             }
         });
 
-        it("should be called with usingAsync()", (done: MochaDone) => {
+        it("should be called with usingAsync()", (done) => {
             usingAsync(new MockDisposable(), async (d) => {
                 d.disposeCallback = () => {
                     done();
@@ -59,7 +58,7 @@ export const disposableTests = describe("Disposable", () => {
             });
         });
 
-        it("should be called when async fails", (done: MochaDone) => {
+        it("should be called when async fails", (done) => {
             usingAsync(new MockDisposable(), async (d) => {
                 d.disposeCallback = () => {
                     done();
@@ -89,7 +88,7 @@ export const disposableTests = describe("Disposable", () => {
             await usingAsync(asyncDispose, async (d) => {
                 /** */
             });
-            expect(asyncDispose.isDisposed).to.be.eq(true);
+            expect(asyncDispose.isDisposed).toBe(true);
         });
 
     });

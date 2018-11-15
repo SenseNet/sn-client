@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import { Retrier } from "../src";
 
 /**
@@ -12,7 +11,7 @@ export const retrierTests = describe("Retrier", () => {
                 count = count + 1;
                 return count === 3;
             }).run();
-            expect(count).to.be.eq(3);
+            expect(count).toBe(3);
         });
     });
 
@@ -26,7 +25,7 @@ export const retrierTests = describe("Retrier", () => {
                     },
                 }).run();
 
-            expect(triggered).to.be.eq(true);
+            expect(triggered).toBe(true);
         });
 
         it("should trigger onTimeout on timeout", async () => {
@@ -39,7 +38,7 @@ export const retrierTests = describe("Retrier", () => {
                     timeoutMs: 1,
                 }).run();
 
-            expect(triggered).to.be.eq(true);
+            expect(triggered).toBe(true);
         });
 
         it("should trigger onTry on each try", async () => {
@@ -51,7 +50,7 @@ export const retrierTests = describe("Retrier", () => {
                     },
                 })
                 .run();
-            expect(triggered).to.be.eq(true);
+            expect(triggered).toBe(true);
         });
     });
 
@@ -71,7 +70,7 @@ export const retrierTests = describe("Retrier", () => {
             })
             .run();
 
-        expect(retrierSuccess).to.be.eq(false);
+        expect(retrierSuccess).toBe(false);
     });
 
     it("should throw error when started twice", async () => {
@@ -92,6 +91,6 @@ export const retrierTests = describe("Retrier", () => {
             retrier.setup({
                 Retries: 2,
             });
-        }).to.throw();
+        }).toThrow();
     });
 });
