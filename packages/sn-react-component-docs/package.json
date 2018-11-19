@@ -5,7 +5,8 @@
   "description": "UI components for building apps upon sensenet implemented in React",
   "main": "index.js",
   "dependencies": {
-    "@sensenet/controls-react": "^2.3.0",
+    "@date-io/date-fns": "0.0.2",
+    "@sensenet/controls-react": "^2.3.5",
     "@sensenet/icons-react": "^1.2.3",
     "@sensenet/list-controls-react": "^1.1.1",
     "@sensenet/redux": "^5.1.1",
@@ -58,6 +59,7 @@
     "babel-loader": "^8.0.4",
     "babel-runtime": "^6.26.0",
     "cpx": "^1.5.0",
+    "date-fns": "^2.0.0-alpha.21",
     "html-loader": "^0.5.5",
     "lerna": "^3.4.0",
     "markdown-loader": "^4.0.0",

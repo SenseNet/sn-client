@@ -58,7 +58,7 @@ storiesOf('FieldControls.AutoComplete', module).addDecorator(withKnobs).addDecor
             (() => (
                 <AutoComplete
                     data-actionName="new"
-                    name='autocomplete'
+                    name="Name"
                     data-labelText={text('Label', 'AutoComplete label')}
                     readOnly={boolean('Readonly', false)}
                     required={boolean('Required', false)}
@@ -77,7 +77,7 @@ storiesOf('FieldControls.AutoComplete', module).addDecorator(withKnobs).addDecor
             (() => (
                 <AutoComplete
                     data-actionName="edit"
-                    name='autocomplete'
+                    name="Name"
                     data-labelText={text('Label', 'AutoComplete label')}
                     readOnly={boolean('Readonly', false)}
                     required={boolean('Required', false)}
@@ -97,7 +97,7 @@ storiesOf('FieldControls.AutoComplete', module).addDecorator(withKnobs).addDecor
             (() => (
                 <AutoComplete
                     data-textType='LongText'
-                    name='autocomplete'
+                    name="Name"
                     data-actionName="browse"
                     data-labelText={text('Label', 'AutoComplete label')}
                     className={text('Additional class name', 'autocomplete-field')}
@@ -126,6 +126,7 @@ storiesOf("FieldControls.CheckboxGroup", module).addDecorator(withKnobs).addDeco
                     data-errorText={text('Error text', '')}
                     data-hintText={text('Hint', 'Checkboxgroup hint')}
                     data-allowExtraValue={boolean('Allow extra value', false)}
+                    name="VersioningMode"
                 />
             )),
     )
@@ -146,6 +147,7 @@ storiesOf("FieldControls.CheckboxGroup", module).addDecorator(withKnobs).addDeco
                     data-errorText={text('Error text', '')}
                     data-hintText={text('Hint', 'Checkboxgroup hint')}
                     data-allowExtraValue={boolean('Allow extra value', false)}
+                    name="VersioningMode"
                 />
             )),
     )
@@ -161,6 +163,7 @@ storiesOf("FieldControls.CheckboxGroup", module).addDecorator(withKnobs).addDeco
                     { Text: 'option3', Value: 3 }]}
                     data-fieldValue={[3]}
                     value={3}
+                    name="VersioningMode"
                 />
             )),
     )
@@ -179,7 +182,8 @@ storiesOf("FieldControls.DatePicker", module).addDecorator(withKnobs).addDecorat
                     data-placeHolderText={text('Placeholder', 'placeholder')}
                     data-errorText={text('Error text')}
                     data-defaultValue={date('Default value')}
-                    data-hintText={text('Hint', 'DatePicker hint')} />
+                    data-hintText={text('Hint', 'DatePicker hint')}
+                    name="ModificationDate" />
             ))
     )
     .add(
@@ -196,7 +200,8 @@ storiesOf("FieldControls.DatePicker", module).addDecorator(withKnobs).addDecorat
                     data-placeHolderText={text('Placeholder', 'placeholder')}
                     data-errorText={text('Error text')}
                     value={date('Value')}
-                    data-hintText={text('Hint', 'DatePicker hint')} />
+                    data-hintText={text('Hint', 'DatePicker hint')}
+                    name="ModificationDate" />
             ))
     )
     .add(
@@ -209,7 +214,8 @@ storiesOf("FieldControls.DatePicker", module).addDecorator(withKnobs).addDecorat
                     value='2013-03-26T03:55:00'
                     onChange={action('change')}
                     data-displayMode={select('Display mode', ['relative', 'calendar', 'raw'], 'relative')}
-                    className={text('Additional class name', 'datepicker-field')} />
+                    className={text('Additional class name', 'datepicker-field')}
+                    name="ModificationDate" />
             ))
     )
 storiesOf("FieldControls.DateTimePicker", module).addDecorator(withKnobs).addDecorator(withInfo()).addDecorator(checkA11y).addDecorator(withActions('change'))
@@ -227,7 +233,8 @@ storiesOf("FieldControls.DateTimePicker", module).addDecorator(withKnobs).addDec
                     data-placeHolderText={text('Placeholder', 'placeholder')}
                     data-errorText={text('Error text')}
                     data-defaultValue={date('Default value')}
-                    data-hintText={text('Hint', 'DateTimePicker hint')} />
+                    data-hintText={text('Hint', 'DateTimePicker hint')}
+                    name="Name" />
             ))
     )
     .add(
@@ -244,7 +251,8 @@ storiesOf("FieldControls.DateTimePicker", module).addDecorator(withKnobs).addDec
                     data-placeHolderText={text('Placeholder', 'placeholder')}
                     data-errorText={text('Error text')}
                     value={date('Value')}
-                    data-hintText={text('Hint', 'DateTimePicker hint')} />
+                    data-hintText={text('Hint', 'DateTimePicker hint')}
+                    name="Name" />
             ))
     )
     .add(
@@ -257,7 +265,8 @@ storiesOf("FieldControls.DateTimePicker", module).addDecorator(withKnobs).addDec
                     value='2018-10-03T03:55:00'
                     onChange={action('change')}
                     data-displayMode={select('Display mode', ['relative', 'calendar', 'raw'], 'relative')}
-                    className={text('Additional class name', 'datetimepicker-field')} />
+                    className={text('Additional class name', 'datetimepicker-field')}
+                    name="Name" />
             ))
     )
 storiesOf("FieldControls.DisplayName", module).addDecorator(withKnobs).addDecorator(withInfo()).addDecorator(checkA11y).addDecorator(withActions('change'))
@@ -276,6 +285,7 @@ storiesOf("FieldControls.DisplayName", module).addDecorator(withKnobs).addDecora
                     data-errorText={text('Error text')}
                     onChange={action('change')}
                     data-hintText={text('Hint', 'DisplayName hint')}
+                    name="Name"
                 />
             )),
     )
@@ -294,6 +304,7 @@ storiesOf("FieldControls.DisplayName", module).addDecorator(withKnobs).addDecora
                     data-actionName="edit"
                     onChange={action('change')}
                     data-hintText={text('Hint', 'DisplayName hint')}
+                    name="Name"
                 />
             )),
     )
@@ -307,6 +318,7 @@ storiesOf("FieldControls.DisplayName", module).addDecorator(withKnobs).addDecora
                     className={text('Additional class name', 'displayname-field')}
                     value={text('Value', 'DisplayName value')}
                     onChange={action('change')}
+                    name="Name"
                 />
             )),
     )
@@ -318,7 +330,7 @@ storiesOf("FieldControls.DropDownList", module).addDecorator(withKnobs).addDecor
                 <DropDownList
                     data-actionName="new"
                     data-labelText={text('Label', 'DropDownList label')}
-                    data-defaultValue={[2]}
+                    data-defaultValue={'2'}
                     readOnly={boolean('Readonly', false)}
                     required={boolean('Required', false)}
                     className={text('Additional class name', 'dropdownlist-field')}
@@ -328,6 +340,7 @@ storiesOf("FieldControls.DropDownList", module).addDecorator(withKnobs).addDecor
                     options={[{ Text: 'option1', Value: 1 },
                     { Text: 'option2', Value: 2 },
                     { Text: 'option3', Value: 3 }]}
+                    name="Version"
                 />
             )),
     )
@@ -349,6 +362,7 @@ storiesOf("FieldControls.DropDownList", module).addDecorator(withKnobs).addDecor
                     options={[{ Text: 'option1', Value: 1 },
                     { Text: 'option2', Value: 2 },
                     { Text: 'option3', Value: 3 }]}
+                    name="VersioningMode"
 
                 />
             )),
@@ -366,6 +380,7 @@ storiesOf("FieldControls.DropDownList", module).addDecorator(withKnobs).addDecor
                     options={[{ Text: 'option1', Value: 1 },
                     { Text: 'option2', Value: 2 },
                     { Text: 'option3', Value: 3 }]}
+                    name="VersioningMode"
                 />
             )),
     )
@@ -387,6 +402,7 @@ storiesOf('FieldControls.FileName', module).addDecorator(withKnobs).addDecorator
                     onChange={action('change')}
                     data-hintText={text('Hint', 'FileName hint')}
                     data-extension={text('Extension', 'docx')}
+                    name="Name"
                 />
             )),
     )
@@ -405,6 +421,7 @@ storiesOf('FieldControls.FileName', module).addDecorator(withKnobs).addDecorator
                     data-actionName="edit"
                     onChange={action('change')}
                     data-hintText={text('Hint', 'FileName hint')}
+                    name="Name"
                 />
             )),
     )
@@ -418,6 +435,7 @@ storiesOf('FieldControls.FileName', module).addDecorator(withKnobs).addDecorator
                     className={text('Additional class name', 'filename-field')}
                     value={text('Value', 'Lorem-ipsum.docx')}
                     onChange={action('change')}
+                    name="Name"
                 />
             )),
     )
@@ -441,6 +459,7 @@ storiesOf('FieldControls.Name', module).addDecorator(withKnobs).addDecorator(wit
                     data-errorText={text('Error text')}
                     onChange={action('change')}
                     data-hintText={text('Hint', 'Name hint')}
+                    name="Name"
                 />
             )),
     )
@@ -459,6 +478,7 @@ storiesOf('FieldControls.Name', module).addDecorator(withKnobs).addDecorator(wit
                     data-actionName="edit"
                     onChange={action('change')}
                     data-hintText={text('Hint', 'Name hint')}
+                    name="Name"
                 />
             )),
     )
@@ -472,6 +492,7 @@ storiesOf('FieldControls.Name', module).addDecorator(withKnobs).addDecorator(wit
                     className={text('Additional class name', 'name-field')}
                     value={text('Value', 'Name value')}
                     onChange={action('change')}
+                    name="Name"
                 />
             )),
     )
@@ -499,6 +520,7 @@ storiesOf("FieldControls.Number", module).addDecorator(withKnobs).addDecorator(w
                     data-isPercentage={boolean('Percentage', false)}
                     data-isCurrency={boolean('Currency', false)}
                     data-currency={select('Currency symbol', currencyOptions, '$')}
+                    name="Index"
                 />
             )),
     )
@@ -525,6 +547,7 @@ storiesOf("FieldControls.Number", module).addDecorator(withKnobs).addDecorator(w
                     data-isPercentage={boolean('Percentage', false)}
                     data-isCurrency={boolean('Currency', false)}
                     data-currency={select('Currency symbol', currencyOptions, '$')}
+                    name="Index"
                 />
             )),
     )
@@ -551,6 +574,7 @@ storiesOf("FieldControls.Number", module).addDecorator(withKnobs).addDecorator(w
                     data-isPercentage={boolean('Percentage', false)}
                     data-isCurrency={boolean('Currency', false)}
                     data-currency={select('Currency symbol', currencyOptions, '$')}
+                    name="Index"
                 />
             )),
     )
@@ -577,6 +601,7 @@ storiesOf("FieldControls.Number", module).addDecorator(withKnobs).addDecorator(w
                     data-isPercentage={boolean('Percentage', false)}
                     data-isCurrency={boolean('Currency', false)}
                     data-currency={select('Currency symbol', currencyOptions, '$')}
+                    name="Index"
                 />
             )),
     )
@@ -593,6 +618,7 @@ storiesOf("FieldControls.Number", module).addDecorator(withKnobs).addDecorator(w
                     data-isPercentage={boolean('Percentage', false)}
                     data-isCurrency={boolean('Currency', false)}
                     data-currency={select('Currency symbol', currencyOptions, '$')}
+                    name="Index"
                 />
             )),
     )
@@ -611,6 +637,7 @@ storiesOf("FieldControls.Password", module).addDecorator(withKnobs).addDecorator
                     data-errorText={text('Error text')}
                     onChange={action('change')}
                     data-hintText={text('Hint', 'Password hint')}
+                    name="Name"
                 />
             )),
     )
@@ -629,6 +656,7 @@ storiesOf("FieldControls.Password", module).addDecorator(withKnobs).addDecorator
                     data-actionName="edit"
                     onChange={action('change')}
                     data-hintText={text('Hint', 'Password hint')}
+                    name="Name"
                 />
             )),
     )
@@ -640,16 +668,32 @@ storiesOf("FieldControls.RadioButtonGroup", module).addDecorator(withKnobs).addD
                 <RadioButtonGroup
                     data-actionName="new"
                     data-labelText={text('Label', 'RadioButtonGroup label')}
-                    data-defaultValue={[3]}
+                    data-defaultValue={'3'}
                     readOnly={boolean('Readonly', false)}
                     required={boolean('Required', false)}
                     className={text('Additional class name', 'radiobuttongroup-field')}
                     data-errorText={text('Error text')}
                     onChange={action('change')}
                     data-hintText={text('Hint', 'RadioButtonGroup hint')}
-                    options={[{ Text: 'option1', Value: 1 },
-                    { Text: 'option2', Value: 2 },
-                    { Text: 'option3', Value: 3 }]}
+                    options={[
+                        {
+                            Value: '0',
+                            Text: 'Inherited',
+                        },
+                        {
+                            Value: '1',
+                            Text: 'None',
+                        },
+                        {
+                            Value: '2',
+                            Text: 'Major only',
+                        },
+                        {
+                            Value: '3',
+                            Text: 'Major and minor',
+                        },
+                    ]}
+                    name="Version"
                 />
             )),
     )
@@ -671,6 +715,7 @@ storiesOf("FieldControls.RadioButtonGroup", module).addDecorator(withKnobs).addD
                     options={[{ Text: 'option1', Value: 1 },
                     { Text: 'option2', Value: 2 },
                     { Text: 'option3', Value: 3 }]}
+                    name="VersioningMode"
 
                 />
             )),
@@ -688,6 +733,7 @@ storiesOf("FieldControls.RadioButtonGroup", module).addDecorator(withKnobs).addD
                     options={[{ Text: 'option1', Value: 1 },
                     { Text: 'option2', Value: 2 },
                     { Text: 'option3', Value: 3 }]}
+                    name="VersioningMode"
                 />
             )),
     )
@@ -706,6 +752,7 @@ storiesOf("FieldControls.RichTextEditor", module).addDecorator(withKnobs).addDec
                     data-errorText={text('Error text')}
                     onChange={action('change')}
                     data-hintText={text('Hint', 'RichTextEditor hint')}
+                    name="Description"
                 />
             )),
     )
@@ -723,6 +770,7 @@ storiesOf("FieldControls.RichTextEditor", module).addDecorator(withKnobs).addDec
                     data-errorText={text('Error text')}
                     onChange={action('change')}
                     data-hintText={text('Hint', 'RichTextEditor hint')}
+                    name="Description"
                 />
             )),
     )
@@ -734,6 +782,7 @@ storiesOf("FieldControls.RichTextEditor", module).addDecorator(withKnobs).addDec
                     data-labelText={text('Label', 'RichTextEditor label')}
                     value={text('Value', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec iaculis lectus, sed blandit urna. Nullam in auctor odio, eu eleifend diam. Curabitur rutrum ullamcorper nunc, sit amet consectetur turpis elementum ac. Aenean lorem lorem, feugiat sit amet sem at, accumsan cursus leo.')}
                     className={text('Additional class name', 'richtext-field')}
+                    name="Description"
                     onChange={action('change')}
                 />
             )),
@@ -754,6 +803,7 @@ storiesOf("FieldControls.ShortText", module).addDecorator(withKnobs).addDecorato
                     data-errorText={text('Error text')}
                     onChange={action('change')}
                     data-hintText={text('Hint', 'Shorttext hint')}
+                    name="Name"
                 />
             )),
     )
@@ -772,6 +822,7 @@ storiesOf("FieldControls.ShortText", module).addDecorator(withKnobs).addDecorato
                     data-actionName="edit"
                     onChange={action('change')}
                     data-hintText={text('Hint', 'Shorttext hint')}
+                    name="Name"
                 />
             )),
     )
@@ -785,6 +836,7 @@ storiesOf("FieldControls.ShortText", module).addDecorator(withKnobs).addDecorato
                     className={text('Additional class name', 'shorttext-field')}
                     value={text('Value', 'ShortText value')}
                     onChange={action('change')}
+                    name="Name"
                 />
             )),
     )
@@ -805,6 +857,7 @@ storiesOf('FieldControls.TagsInput', module).addDecorator(withKnobs).addDecorato
                     dataSource={tagsInputDataSource}
                     repository={testRepository}
                     data-allowMultiple={boolean('Allow multiple selection', false)}
+                    name="ModifiedBy"
                 />
             )),
     )
@@ -825,6 +878,7 @@ storiesOf('FieldControls.TagsInput', module).addDecorator(withKnobs).addDecorato
                     repository={testRepository}
                     data-allowMultiple={boolean('Allow multiple selection', false)}
                     data-fieldValue={[2]}
+                    name="ModifiedBy"
                 />
             )),
     )
@@ -840,6 +894,7 @@ storiesOf('FieldControls.TagsInput', module).addDecorator(withKnobs).addDecorato
                     onChange={action('change')}
                     dataSource={tagsInputDataSource}
                     repository={testRepository}
+                    name="ModifiedBy"
                 />
             )),
     )
@@ -859,6 +914,7 @@ storiesOf('FieldControls.Textarea', module).addDecorator(withKnobs).addDecorator
                     data-errorText={text('Error text')}
                     onChange={action('change')}
                     data-hintText={text('Hint', 'Textarea hint')}
+                    name="Description"
                 />
             )),
     )
@@ -877,6 +933,7 @@ storiesOf('FieldControls.Textarea', module).addDecorator(withKnobs).addDecorator
                     value={text('Value', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec iaculis lectus, sed blandit urna. Nullam in auctor odio, eu eleifend diam. Curabitur rutrum ullamcorper nunc, sit amet consectetur turpis elementum ac. Aenean lorem lorem, feugiat sit amet sem at, accumsan cursus leo.')}
                     onChange={action('change')}
                     data-hintText={text('Hint', 'Textarea hint')}
+                    name="Description"
                 />
             )),
     )
@@ -890,6 +947,7 @@ storiesOf('FieldControls.Textarea', module).addDecorator(withKnobs).addDecorator
                     className={text('Additional class name', 'textarea-field')}
                     value={text('Value', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec iaculis lectus, sed blandit urna. Nullam in auctor odio, eu eleifend diam. Curabitur rutrum ullamcorper nunc, sit amet consectetur turpis elementum ac. Aenean lorem lorem, feugiat sit amet sem at, accumsan cursus leo.')}
                     onChange={action('change')}
+                    name="Description"
                 />
             )),
     )
@@ -908,7 +966,8 @@ storiesOf("FieldControls.TimePicker", module).addDecorator(withKnobs).addDecorat
                     data-placeHolderText={text('Placeholder', 'placeholder')}
                     data-errorText={text('Error text')}
                     data-defaultValue={date('Default value')}
-                    data-hintText={text('Hint', 'TimePicker hint')} />
+                    data-hintText={text('Hint', 'TimePicker hint')}
+                    name="ModificationDate" />
             ))
     )
     .add(
@@ -925,7 +984,8 @@ storiesOf("FieldControls.TimePicker", module).addDecorator(withKnobs).addDecorat
                     data-placeHolderText={text('Placeholder', 'placeholder')}
                     data-errorText={text('Error text')}
                     value={date('Value')}
-                    data-hintText={text('Hint', 'TimePicker hint')} />
+                    data-hintText={text('Hint', 'TimePicker hint')}
+                    name="ModificationDate" />
             ))
     )
     .add(
@@ -937,6 +997,7 @@ storiesOf("FieldControls.TimePicker", module).addDecorator(withKnobs).addDecorat
                     data-labelText={text('Label', 'TimePicker label')}
                     value={text('Value', '03:50:00')}
                     onChange={action('change')}
-                    className={text('Additional class name', 'timepicker-field')} />
+                    className={text('Additional class name', 'timepicker-field')}
+                    name="ModificationDate" />
             ))
     )
