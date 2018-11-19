@@ -6,7 +6,7 @@ import Select, { SelectProps } from '@material-ui/core/Select'
 import { SchemaStore } from '@sensenet/client-core/dist/Schemas/SchemaStore'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
-import React = require('react')
+import React, { Component } from 'react'
 
 /**
  * Props for the Type Field component
@@ -33,7 +33,7 @@ export interface TypeFieldState {
 /**
  * Component that represents a content type filter
  */
-export class TypeField extends React.Component<TypeFieldProps, TypeFieldState> {
+export class TypeField extends Component<TypeFieldProps, TypeFieldState> {
 
     /**
      * State object for the Type Field filter component

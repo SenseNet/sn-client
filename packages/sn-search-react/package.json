@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/search-react",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "",
   "main": "dist/index.js",
   "files": [
@@ -58,7 +58,6 @@
   "homepage": "https://sensenet.com",
   "devDependencies": {
     "@types/chai": "^4.1.7",
-    "@types/lodash.debounce": "^4.0.4",
     "@types/mocha": "^5.2.5",
     "@types/react": "^16.7.6",
     "@types/react-dom": "^16.0.9",
@@ -81,7 +80,7 @@
     "tslint": "^5.11.0",
     "typescript": "^3.1.6",
     "url-loader": "^1.1.2",
-    "webpack": "^4.25.1",
+    "webpack": "^4.26.0",
     "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10"
@@ -92,7 +91,6 @@
     "@sensenet/default-content-types": "^1.1.0",
     "@sensenet/icons-react": "^1.2.3",
     "@sensenet/query": "^1.1.0",
-    "lodash.debounce": "^4.0.8",
     "react": "^16.6.3",
     "react-dom": "^16.6.3"
   },

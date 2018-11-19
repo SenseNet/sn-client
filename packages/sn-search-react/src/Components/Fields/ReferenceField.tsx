@@ -1,12 +1,10 @@
+import { CircularProgress, InputAdornment, Menu, MenuItem } from '@material-ui/core'
 import { MenuProps } from '@material-ui/core/Menu'
 import TextField, { TextFieldProps as MaterialTextFieldProps } from '@material-ui/core/TextField'
+import { debounce } from '@sensenet/client-utils'
 import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
 import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
-import * as React from 'react'
-
-// tslint:disable-next-line:no-var-requires
-import { CircularProgress, InputAdornment, Menu, MenuItem } from '@material-ui/core'
-import debounce = require('lodash.debounce')
+import React from 'react'
 
 /**
  * Props for the ReferenceField component

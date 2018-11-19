@@ -11,7 +11,9 @@
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "outDir": "./dist",
-        "jsx": "react"
+        "jsx": "react",
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
     },
     "exclude": [
         "node_modules",

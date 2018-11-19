@@ -1,8 +1,7 @@
+import { debounce } from '@sensenet/client-utils'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
-import * as React from 'react'
-
-import debounce = require('lodash.debounce')
+import React, { Component } from 'react'
 
 /**
  * Callback object for the Advanced Search Fields method
@@ -52,7 +51,7 @@ export interface AdvancedSearchState<T> {
 /**
  * Wrapper component for creating an Advanced Search UI
  */
-export class AdvancedSearch<T extends GenericContent = GenericContent> extends React.Component<AdvancedSearchProps<T>, AdvancedSearchState<T>> {
+export class AdvancedSearch<T extends GenericContent = GenericContent> extends Component<AdvancedSearchProps<T>, AdvancedSearchState<T>> {
 
     constructor(props: AdvancedSearchProps<T>) {
         super(props)
