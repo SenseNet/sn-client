@@ -1,4 +1,5 @@
 export { IDisposable, using, usingAsync } from "./Disposable";
+export * from "./FilterAsync";
 export { debounce } from "./Debounce";
 export { ObservableValue } from "./ObservableValue";
 export { Retrier } from "./Retrier";
