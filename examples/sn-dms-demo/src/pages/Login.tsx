@@ -33,6 +33,7 @@ const styles = {
   },
 }
 
+import { GoogleOauthProvider } from '@sensenet/authentication-google'
 import { IOauthProvider } from '@sensenet/authentication-jwt'
 import { LoginState } from '@sensenet/client-core'
 import { rootStateType } from '..'
@@ -54,7 +55,7 @@ const mapDispatchToProps = {
 interface LoginProps {
   clear: () => any,
   loginState: LoginState,
-  oauthProvider: IOauthProvider
+  oauthProvider: IOauthProvider | GoogleOauthProvider
 }
 
 interface LoginComponentState {
@@ -209,7 +210,7 @@ class Login extends React.Component<LoginProps & ReturnType<typeof mapStateToPro
             this.formSubmit(e)
           }}>
             <FormControl
-              error={this.state.emailError || (this.props.loginError && this.props.loginError.length) > 0 ? true : false}
+              error={this.state.emailError || this.props.loginError && this.props.loginError.length > 0 ? true : false}
               fullWidth
               required
               style={styles.formControl}>

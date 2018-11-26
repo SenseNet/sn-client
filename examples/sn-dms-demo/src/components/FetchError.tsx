@@ -3,7 +3,7 @@ import * as React from 'react'
 
 export interface FetchErrorProps {
     message: string,
-    onRetry: any
+    onRetry: () => void
 }
 
 export class FetchError extends React.Component<FetchErrorProps, {}> {

@@ -33,8 +33,8 @@ export class UploadBarItem extends React.Component<UploadBarItemProps, UploadBar
     public static getDerivedStateFromProps(newProps: UploadBarItemProps) {
         return {
             displayName: newProps.item.content ? newProps.item.content.DisplayName : newProps.item.createdContent && newProps.item.createdContent.Name || newProps.item.file && newProps.item.file.name || '..',
-            icon: icons[(newProps.item.content ? newProps.item.content.Icon : 'File')],
-            percent: newProps.item && (newProps.item.uploadedChunks / newProps.item.chunkCount) * 100 || 0,
+            icon: icons[(newProps.item.content && newProps.item.content.Icon ? newProps.item.content.Icon : 'File')],
+            percent: newProps.item && newProps.item.uploadedChunks && newProps.item.chunkCount && (newProps.item.uploadedChunks / newProps.item.chunkCount) * 100 || 0,
             isLoading: (newProps.item.error || newProps.item.completed && newProps.item.content) ? false : true,
         }
     }

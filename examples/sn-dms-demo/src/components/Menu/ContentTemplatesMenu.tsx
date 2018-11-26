@@ -6,6 +6,7 @@ import { Icon, iconType } from '@sensenet/icons-react'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
+import { rootStateType } from '../..'
 import { resources } from '../../assets/resources'
 
 export const subMenu = [
@@ -104,20 +105,25 @@ const styles: StyleRulesCallback = (theme) => ({
 })
 
 interface ContentTemplatesMenuProps extends RouteComponentProps<any> {
-    active,
-    classes,
-    subactive,
-    item,
-    chooseMenuItem,
-    chooseSubmenuItem
+    active: boolean,
+    classes: any,
+    item: any,
+    chooseMenuItem: (title: string) => void,
+    chooseSubmenuItem: (title: string) => void,
 }
 
-class ContentTemplatesMenu extends React.Component<ContentTemplatesMenuProps, {}> {
-    public handleMenuItemClick = (title) => {
+const mapStateToProps = (state: rootStateType) => {
+    return {
+        subactive: state.dms.menu.activeSubmenu,
+    }
+}
+
+class ContentTemplatesMenu extends React.Component<ContentTemplatesMenuProps & ReturnType<typeof mapStateToProps>, {}> {
+    public handleMenuItemClick = (title: string) => {
         this.props.history.push('/contenttemplates')
         this.props.chooseMenuItem(title)
     }
-    public handleSubmenuItemClick = (title) => {
+    public handleSubmenuItemClick = (title: string) => {
         this.props.history.push(`/contenttemplates/${title}`)
         this.props.chooseSubmenuItem(title)
     }
@@ -133,7 +139,7 @@ class ContentTemplatesMenu extends React.Component<ContentTemplatesMenuProps, {}
                         className={active ? classes.iconWhiteActive : classes.iconWhite}
                         color="primary"
                         type={iconType.materialui}
-                        iconName={item.icon}/>
+                        iconName={item.icon} />
                     <ListItemText classes={{ primary: active ? classes.primaryActive : classes.primary }} inset primary={item.title} />
                 </MenuItem>
                 {/* <div className={active ? classes.open : classes.closed}>
@@ -153,12 +159,6 @@ class ContentTemplatesMenu extends React.Component<ContentTemplatesMenuProps, {}
                 </div> */}
             </div>
         )
-    }
-}
-
-const mapStateToProps = (state) => {
-    return {
-        subactive: state.dms.menu.activeSubmenu,
     }
 }
 

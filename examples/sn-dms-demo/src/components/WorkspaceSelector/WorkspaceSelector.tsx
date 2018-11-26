@@ -45,7 +45,7 @@ class WorkspaceSelector extends React.Component<ReturnType<typeof mapStateToProp
     public state = {
         open: false,
     }
-    public handleButtonClick = (open) => {
+    public handleButtonClick = (open?: boolean) => {
         this.setState({
             open: open ? false : !this.state.open,
         })
@@ -55,7 +55,7 @@ class WorkspaceSelector extends React.Component<ReturnType<typeof mapStateToProp
         return <MediaQuery minDeviceWidth={700}>
             {(matches) => {
                 const iconStyle = matches ? open ? { ...styles.button, ...styles.activeButton } : styles.button : open ? { ...styles.buttonMobile, ...styles.activeButtonMobile } : styles.buttonMobile
-                return <ClickAwayListener onClickAway={this.handleButtonClick}>
+                return <ClickAwayListener onClickAway={this.handleButtonClick as any}>
                     <div style={matches ? { flex: '0 1 auto' } : { flex: '0 0 auto' }}>
                         <Button
                             style={iconStyle}

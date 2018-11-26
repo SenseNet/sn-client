@@ -13,7 +13,7 @@ import { connect } from 'react-redux'
 import { rootStateType } from '../..'
 import { resources } from '../../assets/resources'
 
-const styles = (theme) => ({
+const styles = () => ({
     toolbar: {
         padding: 10,
         flexGrow: 1,
@@ -89,7 +89,7 @@ const mapStateToProps = (state: rootStateType) => {
     }
 }
 
-class WorkspaceSelectorToolbar extends React.Component<{ classes } & ReturnType<typeof mapStateToProps> & WorkspaceSelectorToolbarProps, {}> {
+class WorkspaceSelectorToolbar extends React.Component<{ classes: any } & ReturnType<typeof mapStateToProps> & WorkspaceSelectorToolbarProps, {}> {
     public handleClick = () => {
         this.props.closeDropdDown(true)
     }
@@ -114,7 +114,7 @@ class WorkspaceSelectorToolbar extends React.Component<{ classes } & ReturnType<
                         </ListItemIcon>
                         <ListItemText
                             classes={{ primary: classes.primary, root: classes.listItemRoot }}
-                            primary={currentworkspace.Path.includes(PathHelper.joinPaths('Profiles', currentUser.userName)) ? resources.MYPROFILE : currentworkspace.DisplayName} />
+                            primary={currentworkspace ? currentworkspace.Path.includes(PathHelper.joinPaths('Profiles', currentUser.userName)) ? resources.MYPROFILE : currentworkspace.DisplayName : ''} />
                     </ListItem >
                 </div>
                 <Button

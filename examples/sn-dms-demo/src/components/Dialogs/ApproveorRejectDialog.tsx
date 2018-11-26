@@ -70,7 +70,7 @@ const styles = {
 
 interface ApproveorRejectDialogProps {
     id: number,
-    fileName: string,
+    fileName: string | undefined,
 }
 
 interface ApproveorRejectDialogState {
@@ -90,7 +90,7 @@ const mapDispatchToProps = {
     rejectContent: Actions.rejectContent,
 }
 
-class RestoreVersionDialog extends React.Component<{ classes } & ApproveorRejectDialogProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, ApproveorRejectDialogState> {
+class RestoreVersionDialog extends React.Component<{ classes: any } & ApproveorRejectDialogProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, ApproveorRejectDialogState> {
     public state: ApproveorRejectDialogState = {
         isRejected: false,
         rejectReason: '',
@@ -113,9 +113,10 @@ class RestoreVersionDialog extends React.Component<{ classes } & ApproveorReject
                 isRejected: true,
             })
     }
-    public handleChange = (e) => {
+    public handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         this.setState({
-            rejectReason: e.target.value,
+            // tslint:disable-next-line:no-string-literal
+            rejectReason: (e.target as HTMLInputElement).value,
         })
     }
     public render() {
@@ -141,7 +142,7 @@ class RestoreVersionDialog extends React.Component<{ classes } & ApproveorReject
                                 multiline
                                 rowsMax="4"
                                 value={this.state.rejectReason}
-                                onChange={(e) => this.handleChange(e)}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.handleChange(e)}
                                 margin="normal"
                                 fullWidth
                                 style={{ marginBottom: 30, marginTop: 0 }}
@@ -151,7 +152,7 @@ class RestoreVersionDialog extends React.Component<{ classes } & ApproveorReject
                             <div style={matches ? styles.rightColumn as any : styles.buttonsMobile}>
                                 {matches ? <Button color="default" style={{ marginRight: 20 }} onClick={() => this.handleCancel()}>{resources.CANCEL}</Button> : null}
                                 <Button onClick={() => this.approveCallback()} variant="raised" color="secondary" style={matches ? { marginRight: 20 } : { marginRight: 20, flexGrow: 1 }}>{resources.APPROVE}</Button>
-                                <Button onClick={() => this.rejectCallback()} variant="contained" color="primary" style={matches ? null : { flexGrow: 1 }}>{resources.REJECT}</Button>
+                                <Button onClick={() => this.rejectCallback()} variant="contained" color="primary" style={matches ? {} : { flexGrow: 1 }}>{resources.REJECT}</Button>
                             </div>
                         </div>
                     </div >

@@ -15,16 +15,17 @@ it('renders without crashing', () => {
           repository: {
             RepositoryUrl: 'https://dmsservice.demo.sensenet.com',
           },
+          user: {
+            fullName: 'Alba Monday',
+            userAvatarPath: '/Root/Sites/Default_Site/demoavatars/alba.jpg',
+            userLanguage: 'en-US',
+            userName: 'alba',
+          },
         },
       },
     },
   } as Partial<Store.CreateStoreOptions<rootStateType>>
 
   ReactDOM.render(withStore(
-    <UserPanel user={{
-      fullName: 'Alba Monday',
-      userAvatarPath: '/Root/Sites/Default_Site/demoavatars/alba.jpg',
-      userLanguage: 'en-US',
-      userName: 'alba',
-    }} />, options), div)
+    <UserPanel />, options), div)
 })

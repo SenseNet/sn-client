@@ -1,4 +1,4 @@
-export const styles = (theme) => ({
+export const styles = () => ({
   root: {
     flexGrow: 1,
     marginTop: 30,

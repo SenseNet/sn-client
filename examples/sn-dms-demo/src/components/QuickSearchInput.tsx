@@ -30,7 +30,7 @@ const styles = {
     },
 }
 
-const quickSearchBox = ({ isOpen, onClick }) => {
+const quickSearchBox = ({ isOpen, onClick }: {isOpen: boolean, onClick: () => void}) => {
     return (
         <MediaQuery minDeviceWidth={700}>
             {(matches) => {

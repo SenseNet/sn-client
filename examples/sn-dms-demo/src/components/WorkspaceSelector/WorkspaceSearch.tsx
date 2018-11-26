@@ -1,3 +1,4 @@
+import { Theme } from '@material-ui/core'
 import FormControl from '@material-ui/core/FormControl'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
@@ -5,7 +6,7 @@ import TextField from '@material-ui/core/TextField'
 import { Icon, iconType } from '@sensenet/icons-react'
 import * as React from 'react'
 
-const styles = (theme) => ({
+const styles = (theme: Theme) => ({
     wsSearchContainer: {
         display: 'flex',
         flexGrow: 1,
@@ -52,13 +53,14 @@ const styles = (theme) => ({
 
 type C = 'wsSearchInput'
 
-class WorkspaceSearch extends React.Component<{ classes, handleKeyup: (e) => void, matches, closeDropDown } & WithStyles<C>, {}> {
-    constructor(props) {
+class WorkspaceSearch extends React.Component<{ classes: any, handleKeyup: (e: React.KeyboardEvent) => void, matches: boolean, closeDropDown: (open: boolean) => void } & WithStyles<C>, {}> {
+    constructor(props: WorkspaceSearch['props']) {
         super(props)
         this.handleKeyup = this.handleKeyup.bind(this)
     }
-    public handleKeyup = (e) => {
-        this.props.handleKeyup(e.target.value)
+    public handleKeyup = (e: any) => {
+        // tslint:disable-next-line:no-string-literal
+        this.props.handleKeyup(e.target['value'])
     }
     public closeDropdown = () => {
         this.props.closeDropDown(false)

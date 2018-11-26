@@ -12,7 +12,7 @@ export interface DisplayNameCellProps<T extends GenericContent> {
 
 export class DisplayNameCell<T extends GenericContent> extends React.Component<DisplayNameCellProps<T>> {
     public render() {
-        const icon = this.props.content.Icon && this.props.icons[this.props.content.Icon.toLowerCase() as any]
+        const icon = this.props.content.Icon && this.props.icons[this.props.content.Icon.toLowerCase()]
         const type = this.props.content.Icon === 'word' || this.props.content.Icon === 'excel' || this.props.content.Icon === 'acrobat' || this.props.content.Icon === 'powerpoint'
             ? iconType.flaticon : iconType.materialui
         const { content, hostName } = this.props

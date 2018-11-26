@@ -1,7 +1,7 @@
 import Checkbox from '@material-ui/core/Checkbox'
 import TableCell from '@material-ui/core/TableCell'
 import Tooltip from '@material-ui/core/Tooltip'
-import { GenericContent } from '@sensenet/default-content-types'
+import { GenericContent, User } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import * as React from 'react'
 import { connect } from 'react-redux'
@@ -48,7 +48,7 @@ const mapDispatchToProps = {
     setActive,
 }
 class DisplayNameMobileCell extends React.Component<DisplayNameMobilCellProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, {}> {
-    public getStatus = (content) => {
+    public getStatus = (content: GenericContent) => {
         if (content.Approvable) {
             return DocumentState.Approvable
         } else if (content.CheckedOutTo) {
@@ -90,13 +90,14 @@ class DisplayNameMobileCell extends React.Component<DisplayNameMobilCellProps & 
         status: this.getStatus(this.props.content),
     }
 
-    public lockedByName = (content) => {
+    public lockedByName = (content: GenericContent) => {
         // tslint:disable-next-line:no-string-literal
-        if (content['CheckedOutTo'].Name === this.props.currentUserName) {
+        const checkedOutTo = content ? content['CheckedOutTo'] : null
+        if (checkedOutTo && (checkedOutTo as User).Name === this.props.currentUserName) {
             return 'Me'
         } else {
             // tslint:disable-next-line:no-string-literal
-            return content['CheckedOutTo'].FullName
+            return (checkedOutTo as User).FullName
         }
     }
 

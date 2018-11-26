@@ -1,5 +1,4 @@
-import { IContent } from '@sensenet/client-core'
-import { IActionModel } from '@sensenet/default-content-types'
+import { GenericContent, IActionModel } from '@sensenet/default-content-types'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { rootStateType } from '../..'
@@ -24,13 +23,18 @@ const mapDispatchToProps = {
 }
 
 interface AddNemMenuProps {
-    currentContent: IContent,
+    currentContent: GenericContent | null,
     actions: IActionModel[],
 }
 
 interface AddNemMenuState {
     addNewOptions: IActionModel[],
-    currentContent: IContent,
+    currentContent: GenericContent | null,
+}
+
+// tslint:disable-next-line:class-name
+interface a extends IActionModel {
+    [key: string]: any
 }
 
 class AddNewMenu extends React.Component<AddNemMenuProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, AddNemMenuState> {
@@ -47,10 +51,10 @@ class AddNewMenu extends React.Component<AddNemMenuProps & ReturnType<typeof map
         if ((newProps.currentContent && newProps.currentContent.Id && (lastState.currentContent !== newProps.currentContent)) && lastState.addNewOptions.length === 0) {
             newProps.getActions(newProps.currentContent.Id)
         }
-        const optionList = []
-        const folderList = []
+        const optionList: IActionModel[] = []
+        const folderList: IActionModel[] = []
         if (lastState.addNewOptions.length !== newProps.actions.length) {
-            newProps.actions.map((action) => {
+            newProps.actions.map((action: a) => {
                 const contentType = action.Url.includes('ContentType') ? getContentTypeFromUrl(action.Url) : null
                 const extension = contentType === 'File' ? getExtensionFromUrl(action.Url) : null
                 const displayName = action.DisplayName.indexOf('New') === -1 ? action.DisplayName : action.DisplayName.substring(3)
@@ -60,10 +64,10 @@ class AddNewMenu extends React.Component<AddNemMenuProps & ReturnType<typeof map
                 action['Action'] = () => {
                     newProps.closeActionMenu()
                     newProps.openDialog(<AddNewDialog
-                        parentPath={newProps.currentContent.Path}
-                        contentTypeName={contentType}
-                        extension={extension}
-                        title={contentType === 'File' ? displayName : contentType.toLowerCase()} />,
+                        parentPath={newProps.currentContent ? newProps.currentContent.Path : ''}
+                        contentTypeName={contentType || ''}
+                        extension={extension || ''}
+                        title={contentType === 'File' ? displayName : contentType ? contentType.toLowerCase() : ''} />,
                         newDisplayName, newProps.closeDialog)
                 }
                 if (action.DisplayName.indexOf('folder') > -1) {
@@ -81,19 +85,21 @@ class AddNewMenu extends React.Component<AddNemMenuProps & ReturnType<typeof map
             addNewOptions: lastState.addNewOptions.length !== newProps.actions.length ? [...optionList, ...folderList] : lastState.addNewOptions,
         }
     }
-    public handleButtonClick = (e) => {
+    public handleButtonClick = (e: React.MouseEvent<HTMLElement>) => {
         const { addNewOptions } = this.state
         this.props.closeActionMenu()
-        this.props.openActionMenu(addNewOptions, this.props.currentContent, this.props.currentContent.Id.toString(), e.currentTarget, {
-            top: e.currentTarget.offsetTop + 45,
-            left: e.currentTarget.offsetLeft,
+        this.props.openActionMenu(addNewOptions, this.props.currentContent || null, this.props.currentContent ? this.props.currentContent.Id.toString() : '', e.currentTarget as HTMLElement, {
+            // tslint:disable-next-line:no-string-literal
+            top: (e.target as HTMLElement).offsetTop + 200,
+            // tslint:disable-next-line:no-string-literal
+            left: (e.target as HTMLElement).offsetLeft,
         })
     }
     public render() {
         return (
             <AddNewButton
                 contentType=""
-                onClick={(e) => this.handleButtonClick(e)} />
+                onClick={(e: React.MouseEvent<HTMLElement>) => this.handleButtonClick(e)} />
         )
     }
 }

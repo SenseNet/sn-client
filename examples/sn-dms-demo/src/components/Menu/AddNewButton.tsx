@@ -3,12 +3,17 @@ import { Icon, iconType } from '@sensenet/icons-react'
 import * as React from 'react'
 import { resources } from '../../assets/resources'
 
-export class AddNewButton extends React.Component<{ contentType, onClick }, {}> {
-    constructor(props) {
+interface AddNewButtonProps {
+    contentType: string,
+    onClick: (e: React.MouseEvent<HTMLElement>) => void
+}
+
+export class AddNewButton extends React.Component<AddNewButtonProps, {}> {
+    constructor(props: AddNewButton['props']) {
         super(props)
         this.handleButtonClick = this.handleButtonClick.bind(this)
     }
-    public handleButtonClick(e) {
+    public handleButtonClick(e: React.MouseEvent<HTMLElement>) {
         if (this.props.onClick) {
             this.props.onClick(e)
         }

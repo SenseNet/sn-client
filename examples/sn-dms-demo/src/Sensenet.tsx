@@ -50,7 +50,7 @@ class Sensenet extends React.Component<SensenetProps & ReturnType<typeof mapStat
     // }
     return (
       <MuiThemeProvider theme={dmsTheme}>
-        <div className="root" style={{ height: window.innerHeight }}>
+        <div className="root" style={{ minHeight: document.documentElement && window.innerHeight >= document.documentElement.offsetHeight ? window.innerHeight : 'auto' }}>
           <HashRouter>
             <Switch>
               <AuthorizedRoute exact path="/login" authorize={() => this.props.loginState !== LoginState.Authenticated} redirectOnUnauthorized="/">
@@ -73,7 +73,7 @@ class Sensenet extends React.Component<SensenetProps & ReturnType<typeof mapStat
                   loader: () => import(/* webpackChunkName: "dashboard" */ './pages/Dashboard'),
                   loading: () => <FullScreenLoader />,
                 })
-                return <LoadableDashboard {...routerProps} />
+                return <LoadableDashboard {...routerProps} currentId={0} />
               }}>
               </AuthorizedRoute>
 

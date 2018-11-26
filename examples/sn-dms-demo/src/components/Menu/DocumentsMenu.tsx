@@ -2,8 +2,8 @@ import Divider from '@material-ui/core/Divider'
 import ListItemText from '@material-ui/core/ListItemText'
 import MenuItem from '@material-ui/core/MenuItem'
 import MenuList from '@material-ui/core/MenuList'
-import withStyles, {StyleRulesCallback} from '@material-ui/core/styles/withStyles'
-import { IContent, IUploadProgressInfo } from '@sensenet/client-core'
+import withStyles, { StyleRulesCallback } from '@material-ui/core/styles/withStyles'
+import { IUploadProgressInfo } from '@sensenet/client-core'
 import { Icon, iconType } from '@sensenet/icons-react'
 import * as React from 'react'
 import { connect } from 'react-redux'
@@ -104,18 +104,27 @@ const styles: StyleRulesCallback = () => ({
 })
 
 interface DocumentMenuProps extends RouteComponentProps<any> {
-    active,
-    subactive,
-    classes,
-    item,
-    uploadFileList: typeof uploadFileList,
-    currentContent: IContent,
+    active: boolean,
+    subactive: string,
+    classes: any,
+    item: any,
     uploadItems: IUploadProgressInfo[]
     showUploads: boolean
     hideUploadProgress: () => void,
     removeUploadItem: typeof removeUploadItem,
-    chooseMenuItem,
-    chooseSubmenuItem,
+    chooseMenuItem: (title: string) => void,
+    chooseSubmenuItem: (title: string) => void,
+}
+
+const mapStateToProps = (state: rootStateType) => {
+    return {
+        currentContent: state.dms.documentLibrary.parent,
+        currentWorkspace: state.sensenet.currentworkspace,
+    }
+}
+
+const mapDispatchToProps = {
+    uploadFileList,
 }
 
 const subMenu = [
@@ -136,8 +145,8 @@ const subMenu = [
     },
 ]
 
-class DocumentsMenu extends React.Component<DocumentMenuProps & ReturnType<typeof mapStateToProps>, {}> {
-    public handleMenuItemClick = (title) => {
+class DocumentsMenu extends React.Component<DocumentMenuProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, {}> {
+    public handleMenuItemClick = (title: string) => {
         if (this.props.currentWorkspace) {
             this.props.history.push(`/documents/${btoa(this.props.currentWorkspace.Path + '/Document_Library')}`)
         } else {
@@ -145,7 +154,7 @@ class DocumentsMenu extends React.Component<DocumentMenuProps & ReturnType<typeo
         }
         this.props.chooseMenuItem(title)
     }
-    public handleSubmenuItemClick = (title) => {
+    public handleSubmenuItemClick = (title: string) => {
         this.props.history.push(`/documents/${title}`)
         this.props.chooseSubmenuItem(title)
     }
@@ -181,10 +190,10 @@ class DocumentsMenu extends React.Component<DocumentMenuProps & ReturnType<typeo
                                     contentTypeName: 'File',
                                     binaryPropertyName: 'Binary',
                                     overwrite: false,
-                                    parentPath: this.props.currentContent.Path,
+                                    parentPath: this.props.currentContent ? this.props.currentContent.Path : '',
                                 })}
                             />
-                            <AddNewMenu currentContent={this.props.currentContent} />
+                            <AddNewMenu currentContent={this.props.currentContent || null} />
                         </div> : null}
                         <MenuList className={classes.submenu}>
                             {subMenu.map((menuitem, index) => {
@@ -207,14 +216,4 @@ class DocumentsMenu extends React.Component<DocumentMenuProps & ReturnType<typeo
     }
 }
 
-const mapStateToProps = (state: rootStateType) => {
-    return {
-        subactive: state.dms.menu.activeSubmenu,
-        currentContent: state.dms.documentLibrary.parent,
-        currentWorkspace: state.sensenet.currentworkspace,
-    }
-}
-
-export default withRouter(connect(mapStateToProps, {
-    uploadFileList,
-})(withStyles(styles)(DocumentsMenu)))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DocumentsMenu)))

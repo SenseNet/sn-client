@@ -26,7 +26,7 @@ import { SavedQueries } from '../components/SavedQueries'
 import { Settings } from '../components/Settings'
 import { Shared } from '../components/Shared'
 import { Trash } from '../components/Trash'
-import { Users } from '../components/Users'
+import UserProfile from '../components/UserProfile'
 
 const styles = {
     dashBoardInner: {
@@ -42,6 +42,7 @@ const styles = {
         overflow: 'hidden' as any,
         position: 'relative' as any,
         display: 'flex' as any,
+        minHeight: document.documentElement && window.innerHeight >= document.documentElement.offsetHeight ? window.innerHeight : 'auto',
     },
     rootMobile: {
         flexGrow: 1,
@@ -169,8 +170,16 @@ class DashboardComponent extends React.Component<DashboardProps & ReturnType<typ
                                                 </Switch>
                                             )} >
                                             </Route>
-                                            <Route path="/users" >
-                                                <Users />
+                                            <Route path="/users" component={(props: RouteComponentProps<any>) => (
+                                                <Switch>
+                                                    <Route path={'/' + PathHelper.joinPaths('/users', '/:folderPath?/:otherActions*')} exact component={() => (
+                                                        <div>
+                                                            <UserProfile matchesDesktop={matches} />
+                                                        </div>
+                                                    )}>
+                                                    </Route>
+                                                </Switch>
+                                            )} >
                                             </Route>
                                             <Route path="/groups" >
                                                 <Groups />
@@ -204,7 +213,7 @@ class DashboardComponent extends React.Component<DashboardProps & ReturnType<typ
                                                 <Route path={props.match.url + '/trash'}>
                                                     <Trash />
                                                 </Route>
-                                                <Route path={'/' + PathHelper.joinPaths(props.match.url, '/:folderPath?/:otherActions*')} exact component={() => (
+                                                <Route path={'/' + PathHelper.joinPaths(props.match.url)} exact component={() => (
                                                     <div>
                                                         <DocumentLibrary matchesDesktop={matches} />
                                                     </div>
@@ -213,8 +222,16 @@ class DashboardComponent extends React.Component<DashboardProps & ReturnType<typ
                                             </Switch>
                                         )} >
                                         </Route>
-                                        <Route path="/users" >
-                                            <Users />
+                                        <Route path="/users" component={(props: RouteComponentProps<any>) => (
+                                            <Switch>
+                                                <Route path={'/' + PathHelper.joinPaths(props.match.url)} exact component={() => (
+                                                    <div>
+                                                        <UserProfile matchesDesktop={matches} />
+                                                    </div>
+                                                )}>
+                                                </Route>
+                                            </Switch>
+                                        )} >
                                         </Route>
                                         <Route path="/groups" >
                                             <Groups />

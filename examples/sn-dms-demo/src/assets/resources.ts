@@ -142,7 +142,13 @@ const resources = {
     MOVETO_BUTTON: 'Move content here',
     COPYTO_BUTTON: 'Copy content here',
     NEW_FOLDER: 'New folder',
-}
+    DELETE_FROM_GROUP: 'Delete from group',
+    ADD_TO_GROUP: 'Add to group',
+    REMOVE_FROM_SELECTED_GROUPS: 'Remove from selected groups',
+    ARE_YOU_SURE_YOU_WANT_TO_REMOVE_USER: 'Are you sure you want to remove user',
+    FROM_GROUP: 'from group',
+    ADD: 'Add',
+} as any
 
 const resourceHandler: ProxyHandler<typeof resources> = {
     get: (target, name) => {

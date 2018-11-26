@@ -1,6 +1,6 @@
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 import { ConstantContent } from '@sensenet/client-core'
-import { GenericContent, IActionModel } from '@sensenet/default-content-types'
+import { GenericContent, IActionModel, SchemaStore } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
 import { updateContent, uploadRequest } from '@sensenet/redux/dist/Actions'
 import { compile } from 'path-to-regexp'
@@ -44,7 +44,7 @@ const mapStateToProps = (state: rootStateType) => {
         active: state.dms.documentLibrary.active,
         ancestors: state.dms.documentLibrary.ancestors,
         childrenOptions: state.dms.documentLibrary.childrenOptions,
-        hostName: state.sensenet.session.repository.repositoryUrl,
+        hostName: state.sensenet.session.repository ? state.sensenet.session.repository.repositoryUrl : '',
     }
 }
 
@@ -62,11 +62,11 @@ const mapDispatchToProps = {
 }
 
 interface DocumentLibraryProps extends RouteComponentProps<any> {
-    matchesDesktop
+    matchesDesktop: boolean,
 }
 
 interface DocumentLibraryState {
-    droppedFiles,
+    droppedFiles: any[],
 }
 
 class DocumentLibrary extends React.Component<DocumentLibraryProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, DocumentLibraryState> {
@@ -119,7 +119,7 @@ class DocumentLibrary extends React.Component<DocumentLibraryProps & ReturnType<
             createFolders: true,
             event: new DragEvent('drop', { dataTransfer: ev.dataTransfer }),
             overwrite: false,
-            parentPath: parent.Path,
+            parentPath: parent ? parent.Path : '',
         })
     }
 
@@ -160,7 +160,7 @@ class DocumentLibrary extends React.Component<DocumentLibraryProps & ReturnType<
         return this.props.currentUser.content.Id !== ConstantContent.VISITOR_USER.Id ?
             <div onDragOver={(ev) => ev.preventDefault()} onDrop={this.handleFileDrop}>
                 <ListToolbar
-                    currentContent={this.props.parent}
+                    currentContent={this.props.parent || null}
                     selected={this.props.selected}
                     ancestors={this.props.ancestors}
                 />
@@ -168,13 +168,13 @@ class DocumentLibrary extends React.Component<DocumentLibraryProps & ReturnType<
                 <MuiThemeProvider theme={contentListTheme}>
                     <ContentList
                         displayRowCheckbox={matchesDesktop ? true : false}
-                        schema={customSchema.find((s) => s.ContentTypeName === 'GenericContent')}
+                        schema={customSchema.find((s) => s.ContentTypeName === 'GenericContent') ||  SchemaStore.filter((s) => s.ContentTypeName === 'GenericContent')[0]}
                         selected={this.props.selected}
                         active={this.props.active}
                         items={this.props.items.d.results}
                         fieldsToDisplay={matchesDesktop ? ['DisplayName', 'Locked', 'ModificationDate', 'Owner', 'Actions'] : ['DisplayName', 'Actions']}
-                        orderBy={this.props.childrenOptions.orderby[0][0] as any}
-                        orderDirection={this.props.childrenOptions.orderby[0][1] as any}
+                        orderBy={this.props.childrenOptions.orderby ? this.props.childrenOptions.orderby[0][0] as any : ''}
+                        orderDirection={this.props.childrenOptions.orderby ? this.props.childrenOptions.orderby[0][1] as any : ''}
                         onRequestSelectionChange={(newSelection) => this.props.select(newSelection)}
                         onRequestActiveItemChange={(active) => this.props.setActive(active)}
                         onRequestActionsMenu={(ev, content) => {
@@ -201,7 +201,8 @@ class DocumentLibrary extends React.Component<DocumentLibraryProps & ReturnType<
                                     this.props.select([...this.props.selected, content])
                                 }
                             } else if (ev.shiftKey) {
-                                const activeIndex = this.props.items.d.results.findIndex((s) => s.Id === this.props.active.Id)
+                                const active = this.props.active || undefined
+                                const activeIndex = active ? this.props.items.d.results.findIndex((s) => s.Id === active.Id) : -1
                                 const clickedIndex = this.props.items.d.results.findIndex((s) => s.Id === content.Id)
                                 const newSelection = Array.from(new Set([...this.props.selected, ...[...this.props.items.d.results].slice(Math.min(activeIndex, clickedIndex), Math.max(activeIndex, clickedIndex) + 1)]))
                                 this.props.select(newSelection)
@@ -217,16 +218,16 @@ class DocumentLibrary extends React.Component<DocumentLibraryProps & ReturnType<
                                 case 'DisplayName':
                                     if (this.props.editedItemId === props.content.Id) {
                                         return (<RenameCell
-                                            icon={props.content.Icon}
+                                            icon={props.content.Icon || 'File'}
                                             icons={icons}
-                                            displayName={props.content.DisplayName}
+                                            displayName={props.content.DisplayName || ''}
                                             onFinish={(newName) => this.props.updateContent<GenericContent>(props.content.Id, { DisplayName: newName })}
                                         />)
                                     } else if (!matchesDesktop) {
                                         return (<DisplayNameMobileCell
                                             content={props.content}
                                             isSelected={props.isSelected}
-                                            hasSelected={props.selected.length > 0}
+                                            hasSelected={props.selected ? props.selected.length > 0 : false}
                                             icons={icons}
                                             onActivate={(ev, content) => this.handleRowDoubleClick(ev, content)} />)
                                     } else {
@@ -251,4 +252,4 @@ class DocumentLibrary extends React.Component<DocumentLibraryProps & ReturnType<
     }
 }
 
-export default withRouter(connect<ReturnType<typeof mapStateToProps>, typeof mapDispatchToProps, DocumentLibraryProps>(mapStateToProps, mapDispatchToProps)(DocumentLibrary))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DocumentLibrary))

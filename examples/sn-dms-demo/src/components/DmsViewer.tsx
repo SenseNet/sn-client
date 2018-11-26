@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography'
 
 import { DocumentTitlePager, DocumentViewer, Download, LayoutAppBar, Print, RotateActivePages, SearchBar, Share, ToggleThumbnailsWidget, ZoomInOutWidget } from '@sensenet/document-viewer-react/dist/components'
 import { exampleTheme } from '@sensenet/document-viewer-react/dist/ExampleAppLayout'
-import { Icon, iconType} from '@sensenet/icons-react'
+import { Icon, iconType } from '@sensenet/icons-react'
 import { compile } from 'path-to-regexp'
 import * as React from 'react'
 import { connect } from 'react-redux'
@@ -18,7 +18,7 @@ import ShareDialog from './Dialogs/ShareDialog'
 const loaderImage = require('../assets/viewer-loader.gif')
 
 const mapStateToProps = (state: rootStateType) => ({
-    hostName: state.sensenet.session.repository.repositoryUrl,
+    hostName: state.sensenet.session.repository ? state.sensenet.session.repository.repositoryUrl : '',
     documentName: state.sensenetDocumentViewer.documentState.document.documentName,
     currentContent: state.dms.documentLibrary.items.d.results.find((i) => i.Id === state.sensenetDocumentViewer.documentState.document.idOrPath),
 })
@@ -115,7 +115,7 @@ export class DmsViewerComponent extends React.Component<DmsViewerProps & ReturnT
                                             <Share share={() => {
                                                 // tslint:disable-next-line:no-console
                                                 // console.log('Share triggered', doc)
-                                                this.props.openDialog((<ShareDialog currentContent={this.props.currentContent} />))
+                                                this.props.openDialog((<ShareDialog currentContent={this.props.currentContent || null} />))
                                             }} />
                                             <ZoomInOutWidget />
                                             <RotateActivePages />
@@ -131,7 +131,7 @@ export class DmsViewerComponent extends React.Component<DmsViewerProps & ReturnT
                                             <div>
                                                 <Share share={(doc) => {
                                                     // tslint:disable-next-line:no-console
-                                                    this.props.openDialog((<ShareDialog currentContent={this.props.currentContent} />))
+                                                    this.props.openDialog((<ShareDialog currentContent={this.props.currentContent || null} />))
                                                 }} />
                                                 <IconButton color="inherit">
                                                     <Icon iconName="search" type={iconType.materialui} />

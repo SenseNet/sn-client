@@ -16,6 +16,7 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
 import { GenericContent } from '@sensenet/default-content-types'
+import { User } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import * as moment from 'moment'
 import * as React from 'react'
@@ -26,6 +27,7 @@ import { rootStateType } from '../..'
 import * as DMSActions from '../../Actions'
 import { versionName } from '../../assets/helpers'
 import { resources } from '../../assets/resources'
+import { Version } from '../../Reducers'
 import DialogInfo from './DialogInfo'
 import RestoreVersionsDialog from './RestoreVersionDialog'
 
@@ -134,13 +136,14 @@ const styles = {
 }
 
 interface VersionsDialogProps {
-    currentContent: GenericContent,
+    currentContent: GenericContent | null,
     closeCallback?: () => void
 }
 
 const mapStateToProps = (state: rootStateType, props: VersionsDialogProps) => {
     return {
-        versions: state.dms.versions,
+        versions: state.dms.versions as Version[],
+        repositoryUrl: state.sensenet.session.repository ? state.sensenet.session.repository.repositoryUrl : '',
     }
 }
 
@@ -151,24 +154,24 @@ const mapDispatchToProps = {
 }
 
 interface VersionsDialogState {
-    versions: GenericContent[],
-    expanded: string,
+    versions: Version[],
+    expanded: string | boolean,
 }
 
-class VersionsDialog extends React.Component<{ classes } & VersionsDialogProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, VersionsDialogState> {
+class VersionsDialog extends React.Component<{ classes: any } & VersionsDialogProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, VersionsDialogState> {
     public state: VersionsDialogState = {
         versions: [],
         expanded: 'panel0',
     }
     constructor(props: VersionsDialog['props']) {
         super(props)
-        this.props.getVersionList(this.props.currentContent.Id)
+        this.props.getVersionList(this.props.currentContent ? this.props.currentContent.Id : 0)
         this.handleRestoreButtonClick = this.handleRestoreButtonClick.bind(this)
         this.handleExpandButtonClick = this.handleExpandButtonClick.bind(this)
     }
     public static getDerivedStateFromProps(newProps: VersionsDialog['props'], lastState: VersionsDialogState) {
         if (newProps.versions && newProps.versions.length !== lastState.versions.length) {
-            newProps.getVersionList(newProps.currentContent.Id)
+            newProps.getVersionList(newProps.currentContent ? newProps.currentContent.Id : 0)
         }
         return {
             ...lastState,
@@ -178,11 +181,11 @@ class VersionsDialog extends React.Component<{ classes } & VersionsDialogProps &
 
     public handleCancel = () => {
         this.props.closeDialog()
-        this.props.closeCallback()
+        if (this.props.closeCallback) { this.props.closeCallback() }
     }
     public submitCallback = () => {
         this.props.closeDialog()
-        this.props.closeCallback()
+        if (this.props.closeCallback) { this.props.closeCallback() }
     }
     public formatVersionNumber = (version: string) => {
         const v = resources[`VERSION_${versionName(version.slice(-1))}`]
@@ -192,13 +195,13 @@ class VersionsDialog extends React.Component<{ classes } & VersionsDialogProps &
         this.props.closeDialog()
         this.props.openDialog(<RestoreVersionsDialog id={id} version={version} fileName={name} />)
     }
-    public handleExpandButtonClick = (panel) => {
+    public handleExpandButtonClick = (panel: string) => {
         this.setState({
             expanded: this.state.expanded ? panel : false,
         })
     }
     public render() {
-        const { classes, currentContent, versions } = this.props
+        const { classes, currentContent, repositoryUrl, versions } = this.props
         const { expanded } = this.state
         return (
             <MediaQuery minDeviceWidth={700}>
@@ -208,7 +211,7 @@ class VersionsDialog extends React.Component<{ classes } & VersionsDialogProps &
                             {resources.VERSIONS}
                         </Typography>
                         <div style={matches ? styles.inner : styles.innerMobile}>
-                            <DialogInfo currentContent={currentContent} />
+                            <DialogInfo currentContent={currentContent} repositoryUrl={repositoryUrl} />
                             {matches ?
                                 <div style={versions.length > 3 ? styles.tableContainerScroll : styles.tableContainer}>
                                     <Table className={classes.table}>
@@ -222,9 +225,9 @@ class VersionsDialog extends React.Component<{ classes } & VersionsDialogProps &
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
-                                            {versions.map((version, index) =>
+                                            {versions.map((version: Version, index: number) =>
                                                 <TableRow key={index}>
-                                                    <TableCell padding="checkbox" className={classes.versionNumber}>{this.formatVersionNumber(version.Version)}</TableCell>
+                                                    <TableCell padding="checkbox" className={classes.versionNumber}>{this.formatVersionNumber(version.Version || '')}</TableCell>
                                                     <TableCell padding="checkbox" className={classes.versionTableCell}>
                                                         <Moment fromNow>
                                                             {
@@ -234,7 +237,7 @@ class VersionsDialog extends React.Component<{ classes } & VersionsDialogProps &
                                                         </Moment>
                                                         {
                                                             // tslint:disable-next-line:no-string-literal
-                                                            ` (${version['VersionModifiedBy']['FullName']})`
+                                                            ` (${(version['VersionModifiedBy'] as any as User)['FullName']})`
                                                         }
                                                     </TableCell>
                                                     <TableCell
@@ -252,7 +255,7 @@ class VersionsDialog extends React.Component<{ classes } & VersionsDialogProps &
                                                     <TableCell padding="none" style={{ width: '5%' }}>
                                                         {index !== versions.length - 1 ? <IconButton
                                                             title={resources.RESTORE_VERSION}
-                                                            onClick={() => this.handleRestoreButtonClick(currentContent.Id, version.Version, version.Name)}>
+                                                            onClick={() => this.handleRestoreButtonClick(currentContent ? currentContent.Id : 0, version.Version || '', version.Name)}>
                                                             <Icon type={iconType.materialui} iconName="restore" color="error" />
                                                         </IconButton> : null}
                                                     </TableCell>
@@ -263,19 +266,19 @@ class VersionsDialog extends React.Component<{ classes } & VersionsDialogProps &
                                 </div> :
                                 <Paper>
                                     <Typography style={styles.mobileVersionsTitle}>{resources.VERSIONS}</Typography>
-                                    {versions.map((version, index) =>
+                                    {versions.map((version: Version, index: number) =>
                                         <ExpansionPanel
                                             style={styles.innerMobileList}
                                             key={`panel${index}`}
                                             expanded={expanded === `panel${index}`} onChange={() => this.handleExpandButtonClick(`panel${index}`)}>
                                             <ExpansionPanelSummary expandIcon={versions.length > 1 ? <Icon type={iconType.materialui} iconName="expand_more" /> : false}>
                                                 <div style={{ flexGrow: 1, display: 'flex' }}>
-                                                    <Typography style={styles.heading}>{this.formatVersionNumber(version.Version)}</Typography>
+                                                    <Typography style={styles.heading}>{this.formatVersionNumber(version.Version ? version.Version : '')}</Typography>
                                                     {index !== versions.length - 1 ?
                                                         <IconButton
                                                             style={styles.restoreButtonMobile}
                                                             title={resources.RESTORE_VERSION}
-                                                            onClick={() => this.handleRestoreButtonClick(currentContent.Id, version.Version, version.Name)}>
+                                                            onClick={() => this.handleRestoreButtonClick(currentContent ? currentContent.Id : 0, version.Version ? version.Version : '', version.Name)}>
                                                             <Icon type={iconType.materialui} iconName="restore" color="error" />
                                                         </IconButton> : null}
                                                 </div>
@@ -287,7 +290,7 @@ class VersionsDialog extends React.Component<{ classes } & VersionsDialogProps &
                                                             primary={resources.MODIFIED}
                                                             secondary={
                                                                 // tslint:disable-next-line:no-string-literal
-                                                                `${moment(version['VersionModificationDate']).fromNow()} (${version['VersionModifiedBy']['FullName']})`
+                                                                `${moment(version['VersionModificationDate']).fromNow()} (${(version['VersionModifiedBy'] as any as User)['FullName']})`
                                                             }
                                                         />
                                                     </ListItem>

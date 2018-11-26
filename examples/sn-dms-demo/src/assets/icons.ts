@@ -36,4 +36,6 @@ export const icons = {
     approve: 'check_circle',
     undocheckout: 'undo',
     forceundocheckout: 'undo',
-}
+    group: 'supervised_user_circle',
+    orgunit: 'supervised_user_circle',
+} as any

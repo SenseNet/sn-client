@@ -62,13 +62,13 @@ const styles = {
 }
 
 interface ShareDialogProps extends RouteComponentProps<any> {
-    currentContent: GenericContent,
+    currentContent: GenericContent | null,
     closeCallback?: () => void
 }
 
 const mapStateToProps = (state: rootStateType, props: ShareDialogProps) => {
     return {
-        //
+        repositoryUrl: state.sensenet.session.repository ? state.sensenet.session.repository.repositoryUrl : '',
     }
 }
 
@@ -86,10 +86,10 @@ interface ShareDialogState {
     addValue: string
     sharedWithValues: Array<{ value: string, type: addType }>
     linkSharingType: linkSharingType
-    anchorEl: HTMLElement
+    anchorEl: HTMLElement | null
 }
 
-class ShareDialog extends React.Component<{ classes } & ShareDialogProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, ShareDialogState> {
+class ShareDialog extends React.Component<{ classes: any } & ShareDialogProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, ShareDialogState> {
     public state: ShareDialogState = {
         addType: 'see',
         addValue: '',
@@ -109,7 +109,7 @@ class ShareDialog extends React.Component<{ classes } & ShareDialogProps & Retur
         this.handleCloseLinkSharingMenu = this.handleCloseLinkSharingMenu.bind(this)
     }
     public static getDerivedStateFromProps(newProps: ShareDialog['props'], lastState: ShareDialogState) {
-        const icon = newProps.currentContent.Icon && icons[newProps.currentContent.Icon.toLowerCase() as any]
+        const icon = newProps.currentContent && newProps.currentContent.Icon && icons[newProps.currentContent.Icon.toLowerCase() as any]
         return {
             icon,
         }
@@ -148,7 +148,7 @@ class ShareDialog extends React.Component<{ classes } & ShareDialogProps & Retur
 
     public handleAddEntry(ev: React.KeyboardEvent<HTMLInputElement>) {
         const target: HTMLInputElement = ev.target as any
-        if (ev.key === 'Enter' && target.form.reportValidity()) {
+        if (ev.key === 'Enter' && target.form && target.form.reportValidity()) {
             ev.preventDefault()
             ev.stopPropagation()
             if (target.value && target.value.length) {
@@ -177,7 +177,7 @@ class ShareDialog extends React.Component<{ classes } & ShareDialogProps & Retur
 
     private copyUrl() {
         const newUrl = new URL(window.location.origin)
-        newUrl.hash = PathHelper.joinPaths('preview', btoa(this.props.currentContent.Id.toString()));
+        newUrl.hash = PathHelper.joinPaths('preview', btoa(this.props.currentContent ? this.props.currentContent.Id.toString() : ''));
         (navigator as any).clipboard.writeText(newUrl.toString()).then(() => {
             /** Link copied */
         })
@@ -197,7 +197,7 @@ class ShareDialog extends React.Component<{ classes } & ShareDialogProps & Retur
     }
 
     public render() {
-        const { currentContent } = this.props
+        const { currentContent, repositoryUrl } = this.props
         return (
             <MediaQuery minWidth={700}>
                 {(matches) => (
@@ -212,7 +212,7 @@ class ShareDialog extends React.Component<{ classes } & ShareDialogProps & Retur
                                 margin: matches ? undefined : '0 0 20px 0px',
                             },
                         }}>
-                            <DialogInfo currentContent={currentContent} hideVersionInfo={true} />
+                            <DialogInfo currentContent={currentContent} hideVersionInfo={true} repositoryUrl={repositoryUrl} />
                             <Divider />
                             {matches ? null : <Typography variant="body1" style={{ paddingTop: '1em' }}><strong>Share with</strong></Typography>}
                             <div style={{
@@ -265,7 +265,7 @@ class ShareDialog extends React.Component<{ classes } & ShareDialogProps & Retur
                                     <strong>&nbsp;{this.getLinkSharingTypePostfix()}</strong>
 
                                     <Button style={{ ...styles.link, display: 'inline-flex', margin: '0 7px', fontSize: '18px' }}
-                                        aria-owns={this.state.anchorEl ? 'simple-menu' : null}
+                                        aria-owns={this.state.anchorEl ? 'simple-menu' : ''}
                                         aria-haspopup="true"
                                         onClick={this.handleOpenLinkSharingMenu}
                                     >

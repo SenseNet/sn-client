@@ -1,3 +1,4 @@
+import { GoogleOauthProvider } from '@sensenet/authentication-google'
 import { Actions } from '@sensenet/redux'
 import * as React from 'react'
 import { connect } from 'react-redux'
@@ -17,8 +18,16 @@ const styles = {
 
 enum buttonState { normal, focused, pressed }
 
-class GoogleAuthButton extends React.Component<{ login, oAuthProvider }, { buttonImage: buttonState }> {
-    constructor(props) {
+interface GoogleAuthButtonProps {
+    oAuthProvider: GoogleOauthProvider,
+}
+
+const mapDispatchToProps = {
+    login: Actions.userLoginGoogle,
+}
+
+class GoogleAuthButton extends React.Component<GoogleAuthButtonProps & typeof mapDispatchToProps, { buttonImage: buttonState }> {
+    constructor(props: GoogleAuthButton['props']) {
         super(props)
 
         this.state = {
@@ -31,25 +40,25 @@ class GoogleAuthButton extends React.Component<{ login, oAuthProvider }, { butto
         this.handleButtonMouseDown = this.handleButtonMouseDown.bind(this)
         this.handleButtonMouseUp = this.handleButtonMouseUp.bind(this)
     }
-    public handleButtonClick(e) {
+    public handleButtonClick(e: React.MouseEvent) {
         this.props.login(this.props.oAuthProvider)
     }
-    public handleButtonMouseOver(e) {
+    public handleButtonMouseOver(e: React.MouseEvent) {
         this.setState({
             buttonImage: focused,
         })
     }
-    public handleButtonMouseOut(e) {
+    public handleButtonMouseOut(e: React.MouseEvent) {
         this.setState({
             buttonImage: normal,
         })
     }
-    public handleButtonMouseDown(e) {
+    public handleButtonMouseDown(e: React.MouseEvent) {
         this.setState({
             buttonImage: pressed,
         })
     }
-    public handleButtonMouseUp(e) {
+    public handleButtonMouseUp(e: React.MouseEvent) {
         this.setState({
             buttonImage: normal,
         })
@@ -69,12 +78,10 @@ class GoogleAuthButton extends React.Component<{ login, oAuthProvider }, { butto
     }
 }
 
-const mapStateToProps = (state, match) => {
+const mapStateToProps = () => {
     return {
 
     }
 }
 
-export default connect(mapStateToProps, {
-    login: Actions.userLoginGoogle,
-})(GoogleAuthButton)
+export default connect(mapStateToProps, mapDispatchToProps)(GoogleAuthButton)

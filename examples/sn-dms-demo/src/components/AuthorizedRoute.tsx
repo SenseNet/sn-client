@@ -10,7 +10,7 @@ export interface AuthorizedRouteProps extends RouteComponentProps<any>, RoutePro
 }
 
 export class AuthorizedRouteComponent extends React.Component<AuthorizedRouteProps> {
-    constructor(props: any) {
+    constructor(props: AuthorizedRouteComponent['props']) {
         super(props)
         this.checkIsAuthorized(props)
     }

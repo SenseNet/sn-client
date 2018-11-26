@@ -54,7 +54,7 @@ const styles = {
 }
 
 interface BatchActionListProps {
-    currentContent: GenericContent,
+    currentContent: GenericContent | null,
     selected: GenericContent[]
 
 }
@@ -83,8 +83,8 @@ const mapDispatchToProps = {
 export interface BatchActionlistState {
     options: IActionModel[],
     currentId: number
-    anchorEl,
-    actions,
+    anchorEl: HTMLElement | null,
+    actions: IActionModel[],
 }
 
 class BatchActionlist extends React.Component<BatchActionListProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, BatchActionlistState> {
@@ -107,7 +107,7 @@ class BatchActionlist extends React.Component<BatchActionListProps & ReturnType<
                 // } as IActionModel]
             )
         }
-        const optionList = []
+        const optionList: IActionModel[] = []
         if (lastState.actions.length !== newProps.actions.length) {
             newProps.actions.map((action, index) => {
                 if (index > 1) {
@@ -124,29 +124,30 @@ class BatchActionlist extends React.Component<BatchActionListProps & ReturnType<
     public isHidden = () => {
         return this.props.selected.length > 0 ? false : true
     }
-    public handleClick = (e) => {
+    public handleClick = (e: React.MouseEvent<HTMLElement>) => {
         const { currentContent } = this.props
         const { options } = this.state
         this.props.closeActionMenu()
-        this.props.openActionMenu(options, currentContent, currentContent.Id.toString(), e.currentTarget, {
-            top: e.currentTarget.offsetTop + 100,
-            left: e.currentTarget.offsetLeft + 100,
+        this.props.openActionMenu(options, currentContent, currentContent ? currentContent.Id.toString() : '', e.currentTarget, {
+            // tslint:disable-next-line:no-string-literal
+            top: (e.target as HTMLElement).offsetTop + 100,
+            left: (e.target as HTMLElement).offsetLeft + 100,
         })
     }
 
-    public handleClickMobile = (e) => {
+    public handleClickMobile = (e: React.MouseEvent<HTMLElement>) => {
         const { actions, currentContent } = this.props
         this.props.closeActionMenu()
-        this.props.openActionMenu(actions, currentContent, currentContent.Id.toString(), e.currentTarget, {
-            top: e.currentTarget.offsetTop + 100,
-            left: e.currentTarget.offsetLeft + 100,
+        this.props.openActionMenu(actions, currentContent, currentContent ? currentContent.Id.toString() : '', e.currentTarget, {
+            top: (e.target as HTMLElement).offsetTop + 100,
+            left: (e.target as HTMLElement).offsetLeft + 100,
         })
     }
 
     public handleClose = () => {
         this.setState({ anchorEl: null })
     }
-    public handleMenuItemClick = (actionName) => {
+    public handleMenuItemClick = (actionName: string) => {
         const content = this.props.currentContent
         switch (actionName) {
             case 'DeleteBatch':
@@ -158,27 +159,27 @@ class BatchActionlist extends React.Component<BatchActionListProps & ReturnType<
                 break
             case 'MoveBatch':
                 this.handleClose()
-                this.props.setPickerParent(this.props.currentParent)
-                this.props.loadPickerItems(this.props.currentParent.Path, content)
+                this.props.setPickerParent(this.props.currentParent || null)
+                this.props.loadPickerItems(this.props.currentParent ? this.props.currentParent.Path : '', content)
                 this.props.openPicker(
                     <PathPicker
                         mode="MoveTo"
                         dialogComponent={<MoveToConfirmDialog />}
                         dialogTitle={resources.MOVE}
-                        dialogCallback={Actions.moveBatch} />,
+                        dialogCallback={Actions.moveBatch as any} />,
                     'move',
                     () => this.props.closePicker() && this.props.setBackLink(true))
                 break
             case 'CopyBatch':
                 this.handleClose()
-                this.props.setPickerParent(this.props.currentParent)
-                this.props.loadPickerItems(this.props.currentParent.Path, content)
+                this.props.setPickerParent(this.props.currentParent || null)
+                this.props.loadPickerItems(this.props.currentParent ? this.props.currentParent.Path : '', content)
                 this.props.openPicker(
                     <PathPicker
                         mode="CopyTo"
                         dialogComponent={<CopyToConfirmDialog />}
                         dialogTitle={resources.COPY}
-                        dialogCallback={Actions.copyBatch} />,
+                        dialogCallback={Actions.copyBatch as any} />,
                     'copy',
                     () => this.props.closePicker() && this.props.setBackLink(true))
                 break
@@ -219,7 +220,7 @@ class BatchActionlist extends React.Component<BatchActionListProps & ReturnType<
                 </ul> :
                     <IconButton
                         aria-label="Actions"
-                        aria-owns={open ? 'batch-actions' : null}
+                        aria-owns={open ? 'batch-actions' : ''}
                         aria-haspopup="true"
                         onClick={(e) => this.handleClickMobile(e)}
                         style={{ height: 36 }}

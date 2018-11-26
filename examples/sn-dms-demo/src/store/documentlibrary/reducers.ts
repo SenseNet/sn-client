@@ -67,7 +67,7 @@ export const documentLibrary: Reducer<DocumentLibraryState> = (state = defaultSt
             return {
                 ...state,
                 items: (action as ReturnType<typeof setItems>).items,
-                selected: [...state.selected.filter((s) => action.items.d.results.find((i) => i.Id === s.Id) ? true : false)],
+                selected: [...state.selected.filter((s) => action.items.d.results.find((i: GenericContent) => i.Id === s.Id) ? true : false)],
             }
         case 'DMS_DOCLIB_SET_ERROR':
             return {

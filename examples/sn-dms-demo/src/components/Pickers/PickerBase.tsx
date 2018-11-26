@@ -92,7 +92,7 @@ class Picker extends React.Component<ReturnType<typeof mapStateToProps> & typeof
     }
     public isLastItem = () => {
         const { parent, closestWs } = this.props
-        return parent.Path === closestWs
+        return parent && closestWs ? parent.Path === closestWs.Path : false
     }
     public handleClickBack = () => {
         const { parent } = this.props
@@ -103,7 +103,7 @@ class Picker extends React.Component<ReturnType<typeof mapStateToProps> & typeof
                 Workspace: {
                     Path: null,
                 },
-            } as GenericContent
+            } as any
             this.props.setPickerParent(snContent)
             this.props.loadPickerItems('/', snContent,
                 {
@@ -113,8 +113,8 @@ class Picker extends React.Component<ReturnType<typeof mapStateToProps> & typeof
                 })
             this.props.deselectPickeritem()
         } else {
-            this.props.loadPickerParent(parent.ParentId)
-            this.props.loadPickerItems(parent.Path.substr(0, parent.Path.length - (parent.Name.length + 1)), { Id: parent.ParentId } as GenericContent)
+            this.props.loadPickerParent(parent && parent.ParentId ? parent.ParentId : '')
+            this.props.loadPickerItems(parent ? parent.Path.substr(0, parent.Path.length - (parent.Name.length + 1)) : '', { Id: parent ? parent.ParentId : '' } as GenericContent)
             this.props.deselectPickeritem()
         }
     }

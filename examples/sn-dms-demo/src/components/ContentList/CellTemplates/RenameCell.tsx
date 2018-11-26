@@ -31,7 +31,7 @@ class RenameCell extends React.Component<RenameCellProps & ReturnType<typeof map
         this.handleClick = this.handleClick.bind(this)
     }
 
-    private input: HTMLInputElement
+    private input: HTMLInputElement = new HTMLInputElement()
     public componentDidMount() {
         setTimeout(() => {
             this.input.focus()
@@ -89,7 +89,7 @@ class RenameCell extends React.Component<RenameCellProps & ReturnType<typeof map
                             onKeyUp={this.handleKeyUp}
                             onChange={this.handleChange}
                             defaultValue={this.props.displayName}
-                            ref={(input) => (this.input = input)} />
+                            ref={(input) => (this.input = input as HTMLInputElement)} />
                     </ClickAwayListener>
                 </form>
 

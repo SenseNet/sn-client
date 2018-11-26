@@ -6,6 +6,7 @@ import { Icon, iconType } from '@sensenet/icons-react'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
+import { rootStateType } from '../..'
 import { resources } from '../../assets/resources'
 
 const subMenu = [
@@ -123,21 +124,20 @@ const styles: StyleRulesCallback = (theme) => ({
 })
 
 interface SettingsMenuProps extends RouteComponentProps<any> {
-    active,
-    classes,
-    subactive,
-    item,
-    chooseMenuItem,
-    chooseSubmenuItem,
-    matches,
+    active: boolean,
+    classes: any,
+    item: any,
+    chooseMenuItem: (title: string) => void,
+    chooseSubmenuItem: (title: string) => void,
+    matches: boolean,
 }
 
-class SettingsMenu extends React.Component<SettingsMenuProps, {}> {
-    public handleMenuItemClick = (title) => {
+class SettingsMenu extends React.Component<SettingsMenuProps & ReturnType<typeof mapStateToProps>, {}> {
+    public handleMenuItemClick = (title: string) => {
         this.props.history.push('/settings')
         this.props.chooseMenuItem(title)
     }
-    public handleSubmenuItemClick = (title) => {
+    public handleSubmenuItemClick = (title: string) => {
         this.props.history.push(`/settings/${title}`)
         this.props.chooseSubmenuItem(title)
     }
@@ -175,7 +175,7 @@ class SettingsMenu extends React.Component<SettingsMenuProps, {}> {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: rootStateType) => {
     return {
         subactive: state.dms.menu.activeSubmenu,
     }

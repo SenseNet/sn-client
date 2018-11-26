@@ -72,24 +72,24 @@ const styles: StyleRulesCallback = (theme) => ({
 })
 
 interface UsersMenuProps extends RouteComponentProps<any> {
-    active,
-    classes,
-    item,
-    chooseMenuItem,
-    chooseSubmenuItem,
-    matches,
+    active: boolean,
+    classes: any,
+    item: any,
+    chooseMenuItem: (title: string) => void,
+    chooseSubmenuItem: (title: string) => void,
+    matches: boolean,
 }
 
 class UsersMenu extends React.Component<UsersMenuProps, {}> {
-    public handleMenuItemClick = (title) => {
+    public handleMenuItemClick = (title: string) => {
         this.props.history.push('/users')
         this.props.chooseMenuItem(title)
     }
-    public handleSubmenuItemClick = (title) => {
+    public handleSubmenuItemClick = (title: string) => {
         this.props.history.push(`/users/${title}`)
         this.props.chooseSubmenuItem(title)
     }
-    public handleButtonClick = (e) => {
+    public handleButtonClick = (e: React.MouseEvent) => {
         // TODO
     }
     public render() {

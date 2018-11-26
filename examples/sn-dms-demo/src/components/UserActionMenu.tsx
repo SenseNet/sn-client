@@ -1,5 +1,4 @@
 import { Icon, iconType } from '@sensenet/icons-react'
-import { Actions } from '@sensenet/redux'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
@@ -24,18 +23,16 @@ const styles = {
     arrowButton: {
         marginLeft: 0,
     },
-    avatar: {
-        display: 'inline-block',
-    },
 }
 
 interface UserActionMenuState {
-    anchorEl,
+    anchorEl: JSX.Element | null,
     open: boolean,
     selectedIndex: number,
+    userName: string,
 }
 
-const mapStateToProps = (state: rootStateType, match) => {
+const mapStateToProps = (state: rootStateType) => {
     return {
         loggedinUser: state.sensenet.session.user,
         actions: state.dms.actionmenu.userActions,
@@ -43,7 +40,6 @@ const mapStateToProps = (state: rootStateType, match) => {
 }
 
 const mapDispatchToProps = {
-    logout: Actions.userLogout,
     loadUserActions: DMSActions.loadUserActions,
     openActionMenu: DMSActions.openActionMenu,
     closeActionMenu: DMSActions.closeActionMenu,
@@ -54,24 +50,28 @@ class UserActionMenu extends React.Component<ReturnType<typeof mapStateToProps> 
         anchorEl: null,
         open: false,
         selectedIndex: 1,
+        userName: '',
     }
-    constructor(props) {
+    constructor(props: UserActionMenu['props']) {
         super(props)
         this.handleClick = this.handleClick.bind(this)
         this.handleRequestClose = this.handleRequestClose.bind(this)
     }
-    public componentWillReceiveProps(nextProps: UserActionMenu['props']) {
-        const { loggedinUser, loadUserActions } = this.props
-        if (loggedinUser.userName !== nextProps.loggedinUser.userName && nextProps.loggedinUser.userName !== 'Visitor') {
-            loadUserActions(nextProps.loggedinUser.content.Path, 'DMSUserActions')
+    public static getDerivedStateFromProps(newProps: UserActionMenu['props'], lastState: UserActionMenu['state']) {
+        if (lastState.userName !== newProps.loggedinUser.userName && newProps.loggedinUser.userName !== 'Visitor') {
+            newProps.loadUserActions(newProps.loggedinUser.content.Path, 'DMSUserActions')
         }
+        return {
+            ...lastState,
+            userName: newProps.loggedinUser.userName,
+        } as UserActionMenu['state']
     }
-    public handleClick = (e) => {
+    public handleClick = (e: React.MouseEvent<HTMLElement>) => {
         const { actions, loggedinUser } = this.props
         this.props.closeActionMenu()
         this.props.openActionMenu(actions, loggedinUser.content, loggedinUser.fullName, e.currentTarget, {
-            top: e.currentTarget.offsetTop + 40,
-            left: e.currentTarget.offsetLeft,
+            top: (e.target as HTMLElement).offsetTop + 40,
+            left: (e.target as HTMLElement).offsetLeft,
         })
     }
 
@@ -86,7 +86,7 @@ class UserActionMenu extends React.Component<ReturnType<typeof mapStateToProps> 
                         style={matches ? {} : styles.actionmenuContainer}
                         aria-owns="actionmenu"
                         onClick={(e) => this.handleClick(e)}>
-                        <UserPanel user={this.props.loggedinUser} style={styles.avatar} />
+                        <UserPanel />
                         <Icon
                             type={iconType.materialui}
                             iconName="arrow_drop_down"

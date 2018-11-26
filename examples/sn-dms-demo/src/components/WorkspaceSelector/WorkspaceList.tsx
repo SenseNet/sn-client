@@ -2,7 +2,7 @@ import MenuList from '@material-ui/core/MenuList'
 import withStyles from '@material-ui/core/styles/withStyles'
 import { Workspace } from '@sensenet/default-content-types'
 import * as React from 'react'
-import { Scrollbars } from 'react-custom-scrollbars'
+import Scrollbars from 'react-custom-scrollbars'
 import { connect } from 'react-redux'
 import { rootStateType } from '../..'
 import { getWorkspaces, loadFavoriteWorkspaces, searchWorkspaces } from '../../store/workspaces/actions'
@@ -56,18 +56,18 @@ interface WorkspaceListState {
 
 interface WorkspaceListProps {
     closeDropDown: (open: boolean) => void,
-    matches,
+    matches: boolean,
 }
 
-class WorkspaceList extends React.Component<{ classes } & WorkspaceListProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, WorkspaceListState> {
+class WorkspaceList extends React.Component<{ classes: any } & WorkspaceListProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, WorkspaceListState> {
     public state = {
-        workspaces: this.props.workspaces,
-        orderedWsList: null,
+        workspaces: this.props.workspaces || [],
+        orderedWsList: [],
         favorites: this.props.favorites,
         top: 0,
         term: '',
     }
-    constructor(props) {
+    constructor(props: WorkspaceList['props']) {
         super(props)
         this.handleCloseClick = this.handleCloseClick.bind(this)
     }
@@ -82,12 +82,12 @@ class WorkspaceList extends React.Component<{ classes } & WorkspaceListProps & R
             ...lastState,
             workspaces: newProps.workspaces,
             favorites: newProps.favorites,
-            orderedWsList: newProps.term.length > 0 ? [...newProps.workspaces.filter((ws) => newProps.favorites.indexOf(ws.Id) > -1), ...newProps.workspaces.filter((ws) => newProps.favorites.indexOf(ws.Id) === -1)].filter((ws) => ws.DisplayName.includes(newProps.term) || ws.Name.includes(newProps.term)) :
+            orderedWsList: newProps.term.length > 0 ? [...newProps.workspaces.filter((ws) => newProps.favorites.indexOf(ws.Id) > -1), ...newProps.workspaces.filter((ws) => newProps.favorites.indexOf(ws.Id) === -1)].filter((ws) => ws.DisplayName ? ws.DisplayName.includes(newProps.term) || ws.Name.includes(newProps.term) : '') :
                 [...newProps.workspaces.filter((ws) => newProps.favorites.indexOf(ws.Id) > -1), ...newProps.workspaces.filter((ws) => newProps.favorites.indexOf(ws.Id) === -1)],
             term: newProps.term,
         } as WorkspaceList['state']
     }
-    public handleSearch = (text) => {
+    public handleSearch = (text: string) => {
         this.props.searchWorkspaces(text)
     }
     public handleCloseClick = () => {
@@ -98,13 +98,13 @@ class WorkspaceList extends React.Component<{ classes } & WorkspaceListProps & R
         const { classes, matches } = this.props
         return (
             <div>
-                <WorkspaceSearch matches={matches} handleKeyup={this.handleSearch} closeDropDown={this.props.closeDropDown} />
+                <WorkspaceSearch matches={matches} handleKeyup={this.handleSearch as any} closeDropDown={this.props.closeDropDown} />
                 <Scrollbars
                     style={{ height: matches ? window.innerHeight - 220 : window.innerHeight - 88, width: 'calc(100% - 1px)' }}
                     renderThumbVertical={({ style }) => <div style={{ ...style, borderRadius: 2, backgroundColor: '#fff', width: 10, marginLeft: -2 }}></div>}
                     thumbMinSize={180}>
                     <MenuList className={classes.workspaceList}>
-                        {orderedWsList.map((workspace) => <WorkspaceListItem
+                        {orderedWsList.map((workspace: Workspace) => <WorkspaceListItem
                             closeDropDown={this.props.closeDropDown}
                             key={workspace.Id}
                             workspace={workspace}

@@ -36,7 +36,7 @@ const mapStateToProps = (state: rootStateType) => {
         open: state.dms.actionmenu.open,
         anchorElement: state.dms.actionmenu.anchorElement,
         position: state.dms.actionmenu.position,
-        hostName: state.sensenet.session.repository.repositoryUrl,
+        hostName: state.sensenet.session.repository ? state.sensenet.session.repository.repositoryUrl : '',
         currentitems: state.sensenet.currentitems,
         userName: state.sensenet.session.user.userName,
         queryOptions: state.sensenet.currentitems.options,
@@ -68,6 +68,7 @@ const mapDispatchToProps = {
     loadPickerItems,
     select,
     uploadFileList: DMSActions.uploadFileList,
+    chooseMenuItem: DMSActions.chooseMenuItem,
 }
 
 const styles = {
@@ -160,7 +161,7 @@ class ActionMenu extends React.Component<ActionMenuProps & ReturnType<typeof map
             switch (action.Name) {
                 case 'Rename':
                     this.handleClose()
-                    this.props.setEdited(this.props.currentContent.Id)
+                    this.props.setEdited(this.props.currentContent ? this.props.currentContent.Id : 0)
                     break
                 case 'ClearSelection':
                     this.handleClose()
@@ -176,7 +177,7 @@ class ActionMenu extends React.Component<ActionMenuProps & ReturnType<typeof map
                     break
                 case 'Preview':
                     this.handleClose()
-                    const newPath = compile(this.props.match.path)({ folderPath: this.props.match.params.folderPath || btoa(this.props.id as any), otherActions: ['preview', btoa(content.Id as any)] })
+                    const newPath = compile(this.props.match.path)({ folderPath: this.props.match.params.folderPath || btoa(this.props.id as any), otherActions: ['preview', btoa(content ? content.Id.toString() : '')] })
                     this.props.history.push(newPath)
                     break
                 case 'Logout':
@@ -185,7 +186,7 @@ class ActionMenu extends React.Component<ActionMenuProps & ReturnType<typeof map
                     break
                 case 'Browse':
                     this.handleClose()
-                    const path = this.props.currentContent.Path
+                    const path = this.props.currentContent ? this.props.currentContent.Path : ''
                     downloadFile(path, this.props.hostName)
                     break
                 case 'Versions':
@@ -200,84 +201,84 @@ class ActionMenu extends React.Component<ActionMenuProps & ReturnType<typeof map
                     break
                 case 'Profile':
                     this.handleClose()
-                    const doclibPath = `/Root/Profiles/Public/${this.props.userName}/Document_Library`
-                    this.props.loadContent(doclibPath)
-                    this.props.fetchContent(doclibPath, this.props.queryOptions)
+                    const userPath = compile('/users/:otherActions*')({ folderPath: btoa(content ? content.Id.toString() : ''), otherActions: ['profile', btoa(content ? content.Id.toString() : '')] })
+                    this.props.history.push(userPath)
+                    this.props.chooseMenuItem('profile')
                     break
                 case 'Edit':
                     this.handleClose()
                     this.props.openDialog(
                         <EditPropertiesDialog
                             content={content}
-                            contentTypeName={content.Type} />,
+                            contentTypeName={content ? content.Type : ''} />,
                         resources.EDIT_PROPERTIES, this.props.closeDialog)
                     break
                 case 'CheckOut':
                     this.handleClose()
-                    this.props.checkoutContent(content.Id)
+                    this.props.checkoutContent(content ? content.Id : 0)
                     break
                 case 'Publish':
                     this.handleClose()
-                    this.props.publishContent(content.Id)
+                    this.props.publishContent(content ? content.Id : 0)
                     break
                 case 'CheckIn':
                     this.handleClose()
-                    this.props.checkinContent(content.Id)
+                    this.props.checkinContent(content ? content.Id : 0)
                     break
                 case 'UndoCheckOut':
                     this.handleClose()
-                    this.props.undoCheckout(content.Id)
+                    this.props.undoCheckout(content ? content.Id : 0)
                     break
                 case 'ForceUndoCheckOut':
                     this.handleClose()
-                    this.props.forceundoCheckout(content.Id)
+                    this.props.forceundoCheckout(content ? content.Id : 0)
                     break
                 case 'Approve':
                     this.handleClose()
                     this.props.openDialog(
                         <ApproveorRejectDialog
-                            id={content.Id}
-                            fileName={content.DisplayName} />,
+                            id={content ? content.Id : 0}
+                            fileName={content ? content.DisplayName : ''} />,
                         resources.APPROVE_OR_REJECT, this.props.closeDialog)
                     break
                 case 'MoveTo':
                     this.handleClose()
-                    this.props.select([content])
-                    this.props.setPickerParent(this.props.currentParent)
-                    this.props.loadPickerItems(this.props.currentParent.Path, content)
+                    this.props.select(content ? [content] : [])
+                    this.props.setPickerParent(this.props.currentParent ? this.props.currentParent : null)
+                    this.props.loadPickerItems(this.props.currentParent ? this.props.currentParent.Path : '', content)
                     this.props.openPicker(
                         <PathPicker
                             mode="MoveTo"
                             dialogComponent={<MoveToConfirmDialog />}
                             dialogTitle={resources.MOVE}
-                            dialogCallback={Actions.moveBatch} />,
+                            dialogCallback={Actions.moveBatch as any} />,
                         'move',
                         () => { this.props.closePicker() && this.props.setBackLink(true) })
                     break
                 case 'CopyTo':
                     this.handleClose()
-                    this.props.select([content])
-                    this.props.setPickerParent(this.props.currentParent)
-                    this.props.loadPickerItems(this.props.currentParent.Path, content)
+                    this.props.select(content ? [content] : [])
+                    this.props.setPickerParent(this.props.currentParent ? this.props.currentParent : null)
+                    this.props.loadPickerItems(this.props.currentParent ? this.props.currentParent.Path : '', content)
                     this.props.openPicker(
                         <PathPicker
                             mode="CopyTo"
                             dialogComponent={<CopyToConfirmDialog />}
                             dialogTitle={resources.COPY}
-                            dialogCallback={Actions.copyBatch} />,
+                            dialogCallback={Actions.copyBatch as any} />,
                         'copy',
                         () => this.props.closePicker() && this.props.setBackLink(true))
                     break
                 case 'MoveBatch':
                     this.handleClose()
-                    this.props.setPickerParent(this.props.currentParent)
-                    this.props.loadPickerItems(this.props.currentParent.Path, content)
+                    this.props.setPickerParent(this.props.currentParent ? this.props.currentParent : null)
+                    this.props.loadPickerItems(this.props.currentParent ? this.props.currentParent.Path : '', content)
                     this.props.openPicker(
                         <PathPicker
                             mode="MoveTo"
                             dialogComponent={<MoveToConfirmDialog />}
                             dialogTitle={resources.MOVE}
-                            dialogCallback={Actions.moveBatch} />,
+                            dialogCallback={Actions.moveBatch as any} />,
                         'move',
                         () => this.props.closePicker() && this.props.setBackLink(true))
                     break
@@ -298,7 +299,7 @@ class ActionMenu extends React.Component<ActionMenuProps & ReturnType<typeof map
             contentTypeName: 'File',
             binaryPropertyName: 'Binary',
             overwrite: false,
-            parentPath: this.props.currentContent.Path,
+            parentPath: this.props.currentParent ? this.props.currentParent.Path : '',
         })
     }
 
@@ -358,7 +359,7 @@ class ActionMenu extends React.Component<ActionMenuProps & ReturnType<typeof map
                                         }
                                         {
                                             action.Name === 'ForceUndoCheckOut' ?
-                                                <Icon  iconName="warning" type={iconType.materialui} style={{ position: 'absolute', left: '1.87em', top: '1.38em', color: '#fff', fontSize: 11 }} /> : null
+                                                <Icon iconName="warning" type={iconType.materialui} style={{ position: 'absolute', left: '1.87em', top: '1.38em', color: '#fff', fontSize: 11 }} /> : null
                                         }
                                     </Icon>
                                 </ListItemIcon>
@@ -380,7 +381,7 @@ class ActionMenu extends React.Component<ActionMenuProps & ReturnType<typeof map
                                         <MenuItem style={styles.menuItem}>
                                             <ListItemIcon style={styles.actionIcon}>
                                                 <div>
-                                                    <Icon  iconName="insert_drive_file" type={iconType.materialui} />
+                                                    <Icon iconName="insert_drive_file" type={iconType.materialui} />
                                                     <Icon iconName="forward" type={iconType.materialui} style={{ color: '#fff', position: 'absolute', left: '1.75em', top: '1em', fontSize: 12, transform: 'rotate(-90deg)' }} />
                                                 </div>
                                             </ListItemIcon>

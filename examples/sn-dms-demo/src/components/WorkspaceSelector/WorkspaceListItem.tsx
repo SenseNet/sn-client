@@ -54,7 +54,7 @@ const styles = {
 interface WorkspaceListItemProps extends RouteComponentProps<any> {
     followed: boolean,
     workspace: Workspace,
-    userName,
+    userName: string,
     favorites: number[],
     closeDropDown: (open: boolean) => void,
 }
@@ -77,7 +77,7 @@ interface WorkspaceListItemState {
     followed: boolean,
 }
 
-class WorkspaceListItem extends React.Component<{ classes } & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & WorkspaceListItemProps, WorkspaceListItemState> {
+class WorkspaceListItem extends React.Component<{ classes: any } & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & WorkspaceListItemProps, WorkspaceListItemState> {
     public state = {
         followed: this.props.followed,
     }
@@ -88,21 +88,21 @@ class WorkspaceListItem extends React.Component<{ classes } & ReturnType<typeof 
         this.handleMouseLeave = this.handleMouseLeave.bind(this)
         this.handleClick = this.handleClick.bind(this)
     }
-    public handleClick = (path) => {
+    public handleClick = (path: string) => {
         const doclibPath = `${path}/Document_Library`
         const newPath = compile(this.props.match.path)({ folderPath: btoa(doclibPath) })
         this.props.history.push(newPath)
         this.props.closeDropDown(true)
     }
-    public startButtonClick = (id) => {
+    public startButtonClick = (id: number) => {
         const { userName, favorites } = this.props
         this.state.followed ? this.props.unfollowWorkspace(userName, id, favorites) : this.props.followWorkspace(userName, id, favorites)
         this.setState({
             followed: !this.state.followed,
         })
     }
-    public handleMouseOver = (e) => e.currentTarget.style.backgroundColor = '#01A1EA'
-    public handleMouseLeave = (e) => e.currentTarget.style.backgroundColor = 'transparent'
+    public handleMouseOver = (e: any) => e.currentTarget.style.backgroundColor = '#01A1EA'
+    public handleMouseLeave = (e: any) => e.currentTarget.style.backgroundColor = 'transparent'
     public render() {
         const { classes, workspace, followed } = this.props
         return (

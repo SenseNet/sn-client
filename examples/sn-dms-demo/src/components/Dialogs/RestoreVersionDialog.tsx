@@ -71,11 +71,11 @@ const mapDispatchToProps = {
     restoreVersion: Actions.restoreVersion,
 }
 
-class RestoreVersionDialog extends React.Component<{ classes } & RestoreVersionDialogProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, {}> {
+class RestoreVersionDialog extends React.Component<{ classes: any } & RestoreVersionDialogProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, {}> {
     public handleCancel = () => {
         this.props.closeDialog()
     }
-    public submitCallback = (id, version) => {
+    public submitCallback = (id: number, version: string) => {
         this.props.restoreVersion(id, version)
         this.props.closeDialog()
     }

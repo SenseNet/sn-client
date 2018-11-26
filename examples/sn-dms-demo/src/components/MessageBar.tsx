@@ -9,7 +9,7 @@ import { rootStateType } from '..'
 import { LogEntry, readLogEntries } from '../store/actionlog/actions'
 
 // tslint:disable-next-line:no-var-requires
-const groupBy: typeof import ('lodash.groupby') = require('lodash.groupby')
+const groupBy: typeof import('lodash.groupby') = require('lodash.groupby')
 
 const styles = {
     window: {
@@ -64,7 +64,7 @@ const mapDispatchToProps = {
     read: readLogEntries,
 }
 
-class MessageBar extends React.Component<{ classes } & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, MessageBarState> {
+class MessageBar extends React.Component<{ classes: any } & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, MessageBarState> {
 
     public state: MessageBarState = {
         digestedMessageEntries: [],
@@ -87,13 +87,13 @@ class MessageBar extends React.Component<{ classes } & ReturnType<typeof mapStat
             if (grouped[type]) {
                 const groupedEntries = grouped[type]
                 const unreadEntries = groupedEntries.filter((e) => e.unread)
-                const verbosity = groupedEntries.find((e) => e.messageEntry.verbosity === 'error') ? 'error' : 'info'
+                const verbosity = groupedEntries.find((e) => (e.messageEntry as any).verbosity === 'error') ? 'error' : 'info'
 
                 let newSegment!: MessageSegmentType
 
                 if (unreadEntries.length < 2) {
                     newSegment = {
-                        message: groupedEntries[0].messageEntry.message,
+                        message: (groupedEntries[0].messageEntry as any).message,
                         logEntries: [...groupedEntries],
                         visible: unreadEntries.length > 0,
                         verbosity,

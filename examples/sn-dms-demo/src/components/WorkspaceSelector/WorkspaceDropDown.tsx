@@ -5,7 +5,7 @@ import * as React from 'react'
 import WorkspaceList from './WorkspaceList'
 import WorkspaceSelectorToolbar from './WorspaceSelectorToolbar'
 
-const styles = (theme) => ({
+const styles = () => ({
     wsSelectorContainer: {
         position: 'absolute',
         zIndex: 10,
@@ -30,10 +30,10 @@ const styles = (theme) => ({
 interface WorkspaceDropDownProps {
     open: boolean,
     closeDropDown: (open: boolean) => void,
-    matches,
+    matches: boolean,
 }
 
-class WorkspaceDropDown extends React.Component<{ classes } & WorkspaceDropDownProps, {}> {
+class WorkspaceDropDown extends React.Component<{ classes: any } & WorkspaceDropDownProps, {}> {
     public render() {
         const { open, classes, matches } = this.props
         return (

@@ -3,18 +3,18 @@ import { createContent, PromiseReturns } from '@sensenet/redux/dist/Actions'
 import { AnyAction, combineReducers, Reducer } from 'redux'
 import { loadPickerItems, loadPickerParent } from './actions'
 
-export const pickerIsOpened: Reducer<boolean> = (state: false, action: AnyAction) => {
+export const pickerIsOpened: Reducer<boolean> = (state: boolean = false, action: AnyAction) => {
     switch (action.type) {
         case 'OPEN_PICKER':
             return true
         case 'CLOSE_PICKER':
             return false
         default:
-            return state || false
+            return state
     }
 }
 
-export const pickerOnClose = (state: () => void = null, action: AnyAction) => {
+export const pickerOnClose: Reducer<any> = (state: any = null, action: AnyAction) => {
     switch (action.type) {
         case 'OPEN_PICKER':
             return action.onClose
@@ -25,7 +25,7 @@ export const pickerOnClose = (state: () => void = null, action: AnyAction) => {
     }
 }
 
-export const pickerContent = (state: any = '', action: AnyAction) => {
+export const pickerContent: Reducer<GenericContent | null> = (state: GenericContent | null = null, action: AnyAction) => {
     switch (action.type) {
         case 'OPEN_PICKER':
             return action.content
@@ -36,13 +36,13 @@ export const pickerContent = (state: any = '', action: AnyAction) => {
     }
 }
 
-export const pickerParent: Reducer<GenericContent | null> = (state: GenericContent = null, action: AnyAction) => {
+export const pickerParent: Reducer<GenericContent | undefined> = (state: GenericContent | null = null, action: AnyAction) => {
     switch (action.type) {
         case 'SET_PICKER_PARENT':
             return action.content
         case 'LOAD_PICKER_PARENT_SUCCESS':
-            // tslint:disable-next-line:no-string-literal
-            return (action as ReturnType<typeof loadPickerParent>)['result'].d
+            const result = action.result as PromiseReturns<typeof loadPickerParent>
+            return result.d
         default:
             return state
     }
@@ -51,7 +51,8 @@ export const pickerParent: Reducer<GenericContent | null> = (state: GenericConte
 export const pickerItems: Reducer<GenericContent[]> = (state: GenericContent[] = [], action: AnyAction) => {
     switch (action.type) {
         case 'LOAD_PICKER_ITEMS_SUCCESS':
-            return (action.result as PromiseReturns<typeof loadPickerItems>).d.results.filter((item) => item.Id !== action.current.Id)
+            const result = (action.result as PromiseReturns<typeof loadPickerItems>).d.results
+            return result.filter((item: GenericContent) => item.Id !== action.current.Id)
         case 'CREATE_CONTENT_SUCCESS':
             const newContent = (action.result as PromiseReturns<typeof createContent>).d
             return [...state, newContent]
@@ -80,15 +81,15 @@ export const pickerMode: Reducer<string> = (state: string = 'move', action: AnyA
     }
 }
 
-export const closestWorkspace: Reducer<string | null> = (state: string = null, action: AnyAction) => {
+export const closestWorkspace: Reducer<GenericContent | null> = (state: GenericContent | null = null, action: AnyAction) => {
     switch (action.type) {
         case 'SET_PICKER_PARENT':
             return action.content.Workspace.Path
         case 'LOAD_PICKER_PARENT_SUCCESS':
-            // tslint:disable-next-line:no-string-literal
-            return (action.result as PromiseReturns<typeof loadPickerParent>).d.Workspace['Path']
+            const result = action.result as PromiseReturns<typeof loadPickerParent>
+            return result && result.d.Workspace
         default:
-            return state || null
+            return state
     }
 }
 

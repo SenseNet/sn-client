@@ -7,6 +7,7 @@ import { Icon, iconType } from '@sensenet/icons-react'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
+import { rootStateType } from '../..'
 import { resources } from '../../assets/resources'
 import { AddNewButton } from './AddNewButton'
 
@@ -106,24 +107,29 @@ const styles: StyleRulesCallback = (theme) => ({
 })
 
 interface ContentTypesMenuProps extends RouteComponentProps<any> {
-    active,
-    classes,
-    subactive,
-    item,
-    chooseMenuItem,
-    chooseSubmenuItem
+    active: boolean,
+    classes: any,
+    item: any,
+    chooseMenuItem: (title: string) => void,
+    chooseSubmenuItem: (title: string) => void,
 }
 
-class ContentTypesMenu extends React.Component<ContentTypesMenuProps, {}> {
-    public handleMenuItemClick = (title) => {
+const mapStateToProps = (state: rootStateType) => {
+    return {
+        subactive: state.dms.menu.activeSubmenu,
+    }
+}
+
+class ContentTypesMenu extends React.Component<ContentTypesMenuProps & ReturnType<typeof mapStateToProps>, {}> {
+    public handleMenuItemClick = (title: string) => {
         this.props.history.push('/contenttypes')
         this.props.chooseMenuItem(title)
     }
-    public handleSubmenuItemClick = (title) => {
+    public handleSubmenuItemClick = (title: string) => {
         this.props.history.push(`/contenttypes/${title}`)
         this.props.chooseSubmenuItem(title)
     }
-    public handleButtonClick = (e) => {
+    public handleButtonClick = (e: React.MouseEvent) => {
         // TODO
     }
     public render() {
@@ -159,12 +165,6 @@ class ContentTypesMenu extends React.Component<ContentTypesMenuProps, {}> {
                 </div>
             </div>
         )
-    }
-}
-
-const mapStateToProps = (state) => {
-    return {
-        subactive: state.dms.menu.activeSubmenu,
     }
 }
 

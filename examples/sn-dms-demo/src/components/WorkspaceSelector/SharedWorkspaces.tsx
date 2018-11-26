@@ -1,6 +1,6 @@
 import Badge from '@material-ui/core/Badge'
 import Button from '@material-ui/core/Button'
-import withStyles, { WithStyles } from '@material-ui/core/styles/withStyles'
+import withStyles from '@material-ui/core/styles/withStyles'
 import { Icon, iconType } from '@sensenet/icons-react'
 import * as React from 'react'
 
@@ -33,9 +33,8 @@ const styles = () => ({
         display: 'block',
     },
 })
-type C = 'badge'
 
-class SharedWorkspaces extends React.Component<{ classes } & WithStyles<C>, {}> {
+class SharedWorkspaces extends React.Component<{ classes?: any }, {}> {
     public render() {
         const { classes } = this.props
         return (

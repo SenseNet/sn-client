@@ -15,8 +15,8 @@ const styles = {
     },
 }
 
-export class QuickSearch extends React.Component<{}, { isOpen }> {
-    constructor(props) {
+export class QuickSearch extends React.Component<{}, { isOpen: boolean }> {
+    constructor(props: QuickSearch['props']) {
         super(props)
         this.state = {
             isOpen: false,
@@ -30,7 +30,7 @@ export class QuickSearch extends React.Component<{}, { isOpen }> {
             <MediaQuery minDeviceWidth={700}>
                 {(matches) => {
                     if (matches) {
-                        return <div style={matches ? null : styles.searchContainerMobile}>
+                        return <div style={matches ? {} : styles.searchContainerMobile}>
                             <QuickSearchBox {...this.props}
                                 isOpen={matches ? this.state.isOpen : true}
                                 onClick={this.onClick} />

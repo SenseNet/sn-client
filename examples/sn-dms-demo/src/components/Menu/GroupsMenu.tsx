@@ -66,24 +66,24 @@ const styles: StyleRulesCallback = (theme) => ({
 })
 
 interface GroupsMenuProps extends RouteComponentProps<any> {
-    active,
-    classes,
-    item,
-    chooseMenuItem,
-    chooseSubmenuItem,
-    matches
+    active: boolean,
+    classes: any,
+    item: any,
+    chooseMenuItem: (title: string) => void,
+    chooseSubmenuItem: (title: string) => void,
+    matches: boolean,
 }
 
 class GroupsMenu extends React.Component<GroupsMenuProps, {}> {
-    public handleMenuItemClick = (title) => {
+    public handleMenuItemClick = (title: string) => {
         this.props.history.push('/groups')
         this.props.chooseMenuItem(title)
     }
-    public handleSubmenuItemClick = (title) => {
+    public handleSubmenuItemClick = (title: string) => {
         this.props.history.push(`/groups/${title}`)
         this.props.chooseSubmenuItem(title)
     }
-    public handleButtonClick = (e) => {
+    public handleButtonClick = (e: React.MouseEvent) => {
         // TODO
     }
     public render() {

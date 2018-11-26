@@ -63,7 +63,7 @@ class AddNewDialog extends React.Component<AddNewDialogProps & ReturnType<typeof
         return (
             <MediaQuery minDeviceWidth={700}>
                 {(matches) =>
-                    <div style={matches ? { width: 500 } : null}>
+                    <div style={matches ? { width: 500 } : {}}>
                         {schema ?
                             <LoadableNewView
                                 schema={schema}

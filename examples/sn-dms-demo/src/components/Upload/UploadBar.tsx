@@ -49,7 +49,7 @@ export class UploadBar extends React.Component<UploadBarProps, UploadBarState> {
             })
             return {
                 isUploadInProgress: !overallProgressPercent.completed,
-                overallProgressPercent: overallProgressPercent.completed ? 0 : (overallProgressPercent.uploadedChunks / overallProgressPercent.chunkCount) * 100,
+                overallProgressPercent: (overallProgressPercent.uploadedChunks && overallProgressPercent.chunkCount) ? overallProgressPercent.completed ? 0 : (overallProgressPercent.uploadedChunks / overallProgressPercent.chunkCount) * 100 : 0,
             }
         }
         return {

@@ -1,6 +1,6 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
-import { IODataParams } from '@sensenet/client-core'
+import { IODataParams, Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Actions } from '@sensenet/redux'
 import * as React from 'react'
@@ -17,14 +17,15 @@ import DialogInfo from './DialogInfo'
 
 interface EditPropertiesDialogProps {
     contentTypeName: string,
-    content: GenericContent,
+    content: GenericContent | null,
 }
 
 const mapStateToProps = (state: rootStateType) => {
     return {
-        schemas: state.sensenet.session.repository.schemas,
+        schemas: state.sensenet.session.repository ? state.sensenet.session.repository.schemas : [],
         editedcontent: state.dms.edited,
         items: state.dms.documentLibrary.items,
+        repositoryUrl: state.sensenet.session.repository ? state.sensenet.session.repository.repositoryUrl : '',
     }
 }
 
@@ -37,7 +38,7 @@ const mapDispatchToProps = {
 }
 
 interface EditPropertiesDialogState {
-    editedcontent: GenericContent,
+    editedcontent: GenericContent | undefined,
 }
 
 const LoadableEditView = Loadable({
@@ -50,10 +51,10 @@ const LoadableEditView = Loadable({
 
 class EditPropertiesDialog extends React.Component<EditPropertiesDialogProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, EditPropertiesDialogState> {
     public state = {
-        editedcontent: this.props.editedcontent,
+        editedcontent: this.props.editedcontent ? this.props.editedcontent : undefined,
     }
     public static getDerivedStateFromProps(newProps: EditPropertiesDialog['props'], lastState: EditPropertiesDialog['state']) {
-        if (lastState.editedcontent === null || lastState.editedcontent.Id !== newProps.content.Id) {
+        if (lastState.editedcontent === null || newProps.content && (lastState.editedcontent ? lastState.editedcontent.Id !== newProps.content.Id : false)) {
             const schema = repository.schemas.getSchemaByName(newProps.contentTypeName)
             const editableFields = schema.FieldSettings
                 .filter((field) => field.VisibleEdit)
@@ -63,7 +64,7 @@ class EditPropertiesDialog extends React.Component<EditPropertiesDialogProps & R
                 select: editableFields,
                 metadata: 'no',
             } as IODataParams<GenericContent>
-            newProps.loadEditedContent(newProps.content.Id, options)
+            newProps.loadEditedContent(newProps.content ? newProps.content.Id : 0, options)
         }
         return {
             editedcontent: newProps.content,
@@ -76,21 +77,21 @@ class EditPropertiesDialog extends React.Component<EditPropertiesDialogProps & R
         this.props.closeDialog()
     }
     public render() {
-        const { contentTypeName, editContent, content } = this.props
+        const { contentTypeName, editContent, content, repositoryUrl } = this.props
         const { editedcontent } = this.state
 
         return (
             <MediaQuery minDeviceWidth={700}>
                 {(matches) =>
-                    <div style={matches ? { width: 550 } : null}>
+                    <div style={matches ? { width: 550 } : {}}>
                         <Typography variant="headline" gutterBottom>
                             {resources.EDIT_PROPERTIES}
                         </Typography>
-                        <DialogInfo currentContent={editedcontent ? editedcontent : content} />
+                        <DialogInfo currentContent={editedcontent ? editedcontent : content} repositoryUrl={repositoryUrl} />
                         {editedcontent ?
                             <LoadableEditView
                                 content={editedcontent}
-                                repository={repository}
+                                repository={repository as Repository}
                                 contentTypeName={contentTypeName}
                                 onSubmit={editContent}
                                 handleCancel={() => this.handleCancel()}

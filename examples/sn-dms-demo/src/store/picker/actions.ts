@@ -16,7 +16,7 @@ const pickerItemOptions: IODataParams<any> = {
     orderby: 'DisplayName',
 }
 
-export const openPicker = (content: any = '', mode: string = 'move', onClose?: () => void) => ({
+export const openPicker = (content: JSX.Element | React.Component | Element | null = null, mode: string = 'move', onClose?: () => void) => ({
     type: 'OPEN_PICKER',
     content,
     onClose: onClose || null,
@@ -27,7 +27,7 @@ export const closePicker = () => ({
     type: 'CLOSE_PICKER',
 })
 
-export const setPickerParent = (content: GenericContent) => ({
+export const setPickerParent = (content: GenericContent | null) => ({
     type: 'SET_PICKER_PARENT',
     content,
 })
@@ -40,11 +40,11 @@ export const loadPickerParent = (idOrPath: string | number) => ({
     }),
 })
 
-export const loadPickerItems = (path: string, current: GenericContent, options?: IODataParams<any>) => ({
+export const loadPickerItems = (path: string, current: GenericContent | null, options?: IODataParams<any>) => ({
     type: 'LOAD_PICKER_ITEMS',
     payload: (repository: Repository) => repository.loadCollection({
         path,
-        oDataOptions: {...pickerItemOptions, ...options},
+        oDataOptions: {...pickerItemOptions, ...options} as any,
     }),
     current,
 })

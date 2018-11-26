@@ -1,8 +1,7 @@
 import AppBar from '@material-ui/core/AppBar'
 import IconButton from '@material-ui/core/IconButton'
 import Toolbar from '@material-ui/core/Toolbar'
-import { IContent } from '@sensenet/client-core'
-import { IActionModel } from '@sensenet/default-content-types'
+import { GenericContent, IActionModel } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import * as React from 'react'
 import { connect } from 'react-redux'
@@ -47,14 +46,18 @@ const mapDispatchToProps = {
 }
 
 interface MobileHeaderProps {
-    currentContent: IContent,
     actions: IActionModel[],
 }
 
 interface MobileHeaderState {
     open: boolean,
     addNewOptions: IActionModel[],
-    currentContent: IContent,
+    currentContent: GenericContent | null,
+}
+
+// tslint:disable-next-line:class-name
+interface a extends IActionModel {
+    [key: string]: any,
 }
 
 class MobileHeader extends React.Component<MobileHeaderProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, MobileHeaderState> {
@@ -63,7 +66,7 @@ class MobileHeader extends React.Component<MobileHeaderProps & ReturnType<typeof
         addNewOptions: [],
         currentContent: null,
     }
-    constructor(props) {
+    constructor(props: MobileHeader['props']) {
         super(props)
 
         this.handleAddNewClick = this.handleAddNewClick.bind(this)
@@ -74,12 +77,12 @@ class MobileHeader extends React.Component<MobileHeaderProps & ReturnType<typeof
             open: !this.state.open,
         })
     }
-    public handleAddNewClick = (e) => {
+    public handleAddNewClick = (e: React.MouseEvent<HTMLElement>) => {
         const { addNewOptions } = this.state
         this.props.closeActionMenu()
-        this.props.openActionMenu(addNewOptions, this.props.currentContent, this.props.currentContent.Id.toString(), e.currentTarget, {
-            top: e.currentTarget.offsetTop + 45,
-            left: e.currentTarget.offsetLeft,
+        this.props.openActionMenu(addNewOptions, this.props.currentContent || null, this.props.currentContent ? this.props.currentContent.Id.toString() : '', e.currentTarget, {
+            top: (e.target as HTMLElement).offsetTop + 45,
+            left: (e.target as HTMLElement).offsetLeft,
         })
     }
     public static getDerivedStateFromProps(newProps: MobileHeader['props'], lastState: MobileHeader['state']) {
@@ -96,10 +99,10 @@ class MobileHeader extends React.Component<MobileHeaderProps & ReturnType<typeof
             Icon: 'folder',
             Name: 'uploadFolder',
         }]
-        const optionList = []
-        const folderList = []
+        const optionList: IActionModel[] = []
+        const folderList: IActionModel[] = []
         if (lastState.addNewOptions.length !== newProps.actions.length) {
-            newProps.actions.map((action) => {
+            newProps.actions.map((action: a) => {
                 const contentType = action.Url.includes('ContentType') ? getContentTypeFromUrl(action.Url) : null
                 const extension = contentType === 'File' ? getExtensionFromUrl(action.Url) : null
                 const displayName = action.DisplayName.indexOf('New') === -1 ? action.DisplayName : action.DisplayName.substring(3)
@@ -109,10 +112,10 @@ class MobileHeader extends React.Component<MobileHeaderProps & ReturnType<typeof
                 action['Action'] = () => {
                     newProps.closeActionMenu()
                     newProps.openDialog(<AddNewDialog
-                        parentPath={newProps.currentContent.Path}
-                        contentTypeName={contentType}
-                        extension={extension}
-                        title={contentType === 'File' ? displayName : contentType.toLowerCase()} />,
+                        parentPath={newProps.currentContent ? newProps.currentContent.Path : ''}
+                        contentTypeName={contentType || ''}
+                        extension={extension || ''}
+                        title={contentType === 'File' ? displayName : contentType ? contentType.toLowerCase() : ''} />,
                         newDisplayName, newProps.closeDialog)
                 }
                 if (action.DisplayName.indexOf('folder') > -1) {

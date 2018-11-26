@@ -113,7 +113,7 @@ export const initLog: () => InjectableAction<rootStateType, ReturnType<typeof ad
         })
 
         eventHub.onContentModificationFailed.subscribe((ev) => {
-            const msg = resources.EDIT_PROPERTIES_FAILURE_MESSAGE.replace('{contentName}', ev.content.Name)
+            const msg = resources.EDIT_PROPERTIES_FAILURE_MESSAGE.replace('{contentName}', ev.content.Name ? ev.content.Name : '')
             options.dispatch(addLogEntry({
                 dump: ev,
                 messageEntry: {

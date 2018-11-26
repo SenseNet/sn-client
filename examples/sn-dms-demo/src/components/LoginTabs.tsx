@@ -30,15 +30,15 @@ const style = () => createStyles({
 
 import { resources } from '../assets/resources'
 
-class LoginTabs extends React.Component<RouteComponentProps<any> & { classes: any }, { value }> {
-    constructor(props) {
+class LoginTabs extends React.Component<RouteComponentProps<any> & { classes: any }, { value: number }> {
+    constructor(props: LoginTabs['props']) {
         super(props)
         this.state = {
             value: location.href.indexOf('login') !== -1 ? 0 : 1,
         }
         this.handleChange = this.handleChange.bind(this)
     }
-    public handleChange = (event, value) => {
+    public handleChange = (value: number) => {
         this.setState({ value })
         return value === 0 ?
             this.props.history.push('/login') :
@@ -51,7 +51,7 @@ class LoginTabs extends React.Component<RouteComponentProps<any> & { classes: an
                 <AppBar position="static" color="default">
                     <Tabs
                         value={value}
-                        onChange={this.handleChange}
+                        onChange={() => this.handleChange(value)}
                         fullWidth
                         indicatorColor="primary"
                         centered>
