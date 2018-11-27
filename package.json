@@ -1,8 +1,9 @@
 {
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces":{
+    "packages": ["packages/*"],
+    "nohoist": ["**@types/**", "**/react-moment", "**/material-ui-pickers"]
+  },
   "devDependencies": {
     "jest": "^23.6.0",
     "lerna": "^3.4.3",
@@ -12,6 +13,7 @@
   },
   "scripts": {
     "bootstrap": "lerna bootstrap",
-    "clean:all": "lerna clean rimraf node_modules"
+    "build": "lerna run build --stream",
+    "clean:packages": "lerna clean"
   }
 }

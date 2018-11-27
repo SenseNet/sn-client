@@ -5,6 +5,7 @@
     "declaration": true,
     "sourceMap": true,
     "outDir": "./dist",
+    "lib": ["dom", "es2018"],
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
