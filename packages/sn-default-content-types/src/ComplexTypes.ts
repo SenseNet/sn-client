@@ -28,27 +28,27 @@
 // tslint:disable:naming-convention
 
 export class ChoiceOption {
-    public Value!: string;
-    public Text?: string;
-    public Enabled?: boolean;
-    public Selected?: boolean;
+  public Value!: string
+  public Text?: string
+  public Enabled?: boolean
+  public Selected?: boolean
 }
 
 export class DeferredUriObject {
-    public uri!: string;
+  public uri!: string
 }
 
 export class DeferredObject extends Object {
-    public __deferred!: DeferredUriObject;
+  public __deferred!: DeferredUriObject
 }
 
 export class MediaObject {
-    public edit_media!: string;
-    public media_src!: string;
-    public content_type!: string;
-    public media_etag!: string;
+  public edit_media!: string
+  public media_src!: string
+  public content_type!: string
+  public media_etag!: string
 }
 
 export class MediaResourceObject extends Object {
-   public __mediaresource!: MediaObject;
+  public __mediaresource!: MediaObject
 }

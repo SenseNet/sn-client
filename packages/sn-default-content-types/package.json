@@ -8,11 +8,14 @@
     "src"
   ],
   "scripts": {
-    "lint": "./node_modules/.bin/tslint --project tsconfig.json",
     "clean": "rimraf dist",
     "precommit": "npm run build",
     "commit": "git-cz",
     "test": "npm run build",
+    "fix": "npm run fix:prettier && npm run fix:tslint",
+    "fix:prettier": "prettier \"{,!(dist|temp)/**/}*.{ts,tsx}\" --write",
+    "fix:tslint": "tslint --fix --project .",
+    "lint": "tslint --project .",
     "prebuild": "npm run lint && npm run clean",
     "build": "tsc",
     "typedoc": "typedoc --mode modules --out documentation src --tsconfig tsconfig.json --theme c:/Users/%USERNAME%/AppData/Roaming/npm/node_modules/@sensenet/typedoc-theme/sn-theme",

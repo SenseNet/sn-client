@@ -1,56 +1,8 @@
 {
-    "rulesDirectory": ["tslint-consistent-codestyle"],
-    "extends": "tslint:recommended",
-    "rules": {
-        "array-type": false,
-        "no-trailing-whitespace": {
-            "severity": "warn"
-        },
-        "member-ordering": false,
-        "ordered-imports": true,
-        "variable-name": false,
-        "max-line-length": false,
-        "max-classes-per-file": false,
-        "no-unused-expression": {
-            "severity": "warn",
-            "options": [
-                "allow-fast-null-checks"
-            ]
-        },
-        "forin": [
-            false
-        ],
-        "trailing-comma": false,
-        "object-literal-sort-keys": false,
-        "only-arrow-functions": [
-            true
-        ],
-        "triple-equals": [
-            true,
-            "allow-null-check"
-        ],
-        "class-name": {
-            "severity": "warn"
-        },
-        "naming-convention": {
-            "severity": "warn",
-            "options": [
-                true,
-
-                {"type": "method", "filter": "^toJSON$", "format": null},
-                
-                {"type": "method", "modifiers": "private", "leadingUnderscore": "forbid", "format":"camelCase"},
-                {"type": "method", "modifiers": "protected", "leadingUnderscore": "forbid", "format":"camelCase"},
-                {"type": "method", "modifiers": "public", "leadingUnderscore": "forbid", "format":"PascalCase"},
-                {"type": "method", "modifiers": ["public", "static"], "leadingUnderscore": "forbid", "format":["UPPER_CASE", "PascalCase"]},
-
-                {"type": "property", "modifiers": "private", "leadingUnderscore": "require", "format":"camelCase"},
-                {"type": "property", "modifiers": "protected", "leadingUnderscore": "require", "format":"camelCase"},
-                {"type": "property", "modifiers": "public", "leadingUnderscore": "forbid", "format": "PascalCase"},
-                {"type": "property", "modifiers": ["public", "static"], "leadingUnderscore": "forbid", "format":"UPPER_CASE"},
-
-                {"type": "enumMember", "format": "PascalCase"}
-            ]
-        }
-    }
+  "extends": ["../../tslint.json"],
+  "rules":{
+    "completed-docs":false,
+    "max-classes-per-file":false,
+    "variable-name":false
+  }
 }
