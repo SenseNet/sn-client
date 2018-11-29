@@ -1,2 +1,2 @@
-export { addGoogleAuth } from "./AddGoogleAuth";
-export { GoogleOauthProvider } from "./GoogleOauthProvider";
+export { addGoogleAuth } from './AddGoogleAuth'
+export { GoogleOauthProvider } from './GoogleOauthProvider'

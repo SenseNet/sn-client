@@ -1,23 +1,18 @@
 {
-    "compilerOptions": {
-        "strict": true,
-        "noUnusedLocals": true,
-        "target": "es2015",
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "sourceMap": true,
-        "declaration": true,
-        "preserveConstEnums": true,
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
-        "outDir": "./dist"
-    },
-    "exclude": [
-        "node_modules",
-        "dist"
-    ],
-    "compileOnSave": false,
-    "files": [
-        "src/index.ts"
-    ]
+  "compilerOptions": {
+    "strict": true,
+    "noUnusedLocals": true,
+    "target": "es2015",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "declaration": true,
+    "preserveConstEnums": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "outDir": "./dist"
+  },
+  "exclude": ["node_modules", "dist"],
+  "compileOnSave": false,
+  "files": ["src/index.ts"]
 }
