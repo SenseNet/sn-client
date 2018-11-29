@@ -1,12 +1,12 @@
 import {Content, CopyOptions, DeleteOptions, PatchOptions, PostOptions, PutOptions, Repository } from "@sensenet/client-core";
 import { ObservableValue, Trace } from "@sensenet/client-utils";
-import { IDisposable } from "@sensenet/client-utils/dist/Disposable";
+import { Disposable } from "@sensenet/client-utils/dist/Disposable";
 import { IContentCopied, IContentCopyFailed, IContentMoved, IContentMoveFailed, ICreated, ICreateFailed, ICustomActionExecuted, ICustomActionFailed, IDeleted, IDeleteFailed, ILoaded, IModificationFailed, IModified } from "./IEventModels";
 
 /**
  * Event hub for sensenet Repository Events
  */
-export class EventHub implements IDisposable {
+export class EventHub implements Disposable {
     /**
      * Disposes the event hub and all of its ObservableValues
      */
@@ -87,7 +87,7 @@ export class EventHub implements IDisposable {
         this.initializeMappings();
     }
 
-    private traceObservers: IDisposable[] = [];
+    private traceObservers: Disposable[] = [];
     private initializeMappings() {
         this.traceObservers.push(
             Trace.method({

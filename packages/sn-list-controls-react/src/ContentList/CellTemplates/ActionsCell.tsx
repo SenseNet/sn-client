@@ -1,6 +1,6 @@
 import IconButton from '@material-ui/core/IconButton'
 import TableCell from '@material-ui/core/TableCell'
-import { GenericContent, IActionModel } from '@sensenet/default-content-types'
+import { ActionModel, GenericContent } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import * as React from 'react'
 
@@ -23,7 +23,7 @@ export const styles = {
 
 export interface ActionsCellProps<T extends GenericContent> {
     content: T,
-    actions: IActionModel[]
+    actions: ActionModel[]
     openActionMenu: (ev: React.MouseEvent) => any
 }
 

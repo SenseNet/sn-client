@@ -1,7 +1,7 @@
 import { GoogleOauthProvider } from '@sensenet/authentication-google'
 import { JwtService } from '@sensenet/authentication-jwt'
 import { Content, LoginState, ODataBatchResponse, ODataCollectionResponse, ODataResponse, Repository } from '@sensenet/client-core'
-import { GenericContent, IActionModel, Task, User } from '@sensenet/default-content-types'
+import { ActionModel, GenericContent, Task, User } from '@sensenet/default-content-types'
 import { expect } from 'chai'
 import * as Actions from '../src/Actions'
 
@@ -202,7 +202,7 @@ describe('Actions', () => {
 
         describe('serviceChecks()', () => {
             context('Given repository.getActions() resolves', () => {
-                let data: { d: { Actions: IActionModel[] } }
+                let data: { d: { Actions: ActionModel[] } }
                 const expectedResult = { d: [] }
                 beforeEach(async () => {
                     data = await Actions.loadContentActions(path).payload(repo)

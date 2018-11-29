@@ -1,4 +1,4 @@
-import { GenericContent, IActionModel, Schema } from '@sensenet/default-content-types'
+import { ActionModel, GenericContent, Schema } from '@sensenet/default-content-types'
 import { Action, combineReducers, Reducer } from 'redux'
 import { loadContent, loadContentActions, PromiseReturns } from '../Actions'
 import { contentState } from './contentstate'
@@ -58,7 +58,7 @@ export const contenterror: Reducer<object | null> = (state = null, action) => {
  * @param action Represents an action that is called.
  * @returns state. Returns the next state based on the action.
  */
-export const contentactions: Reducer<IActionModel[]> = (state = [], action) => {
+export const contentactions: Reducer<ActionModel[]> = (state = [], action) => {
     switch (action.type) {
         case 'LOAD_CONTENT_ACTIONS_SUCCESS':
             return (action.result as PromiseReturns<typeof loadContentActions>).d.Actions

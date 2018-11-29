@@ -1,5 +1,5 @@
 import { Disposable, PathHelper } from '@sensenet/client-utils'
-import { IActionModel, Schema } from '@sensenet/default-content-types'
+import { ActionModel, Schema } from '@sensenet/default-content-types'
 import { AuthenticationService } from '../Authentication/AuthenticationService'
 import { BypassAuthentication } from '../Authentication/BypassAuthentication'
 import { Content } from '../Models/Content'
@@ -274,7 +274,7 @@ export class Repository implements Disposable {
    * Retrieves a list of content actions for a specified content
    * @param options Options for fetching the Custom Actions
    */
-  public async getActions(options: GetActionOptions): Promise<{ d: { Actions: IActionModel[] } }> {
+  public async getActions(options: GetActionOptions): Promise<{ d: { Actions: ActionModel[] } }> {
     const contextPath = PathHelper.getContentUrl(options.idOrPath)
     const path = PathHelper.joinPaths(
       this.configuration.repositoryUrl,

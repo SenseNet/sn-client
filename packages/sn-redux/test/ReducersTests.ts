@@ -1,5 +1,5 @@
 import { Content, LoginState, ODataBatchResponse, ODataParams, Repository } from '@sensenet/client-core'
-import { GenericContent, IActionModel, Status, Task, User, Workspace } from '@sensenet/default-content-types'
+import { ActionModel, GenericContent, Status, Task, User, Workspace } from '@sensenet/default-content-types'
 import * as Chai from 'chai'
 import * as Reducers from '../src/reducers'
 const expect = Chai.expect
@@ -890,7 +890,7 @@ describe('Reducers', () => {
             result: {
                 d: {
                     Actions: [
-                        { Name: 'aaa' } as IActionModel, { Name: 'bbb' } as IActionModel] as IActionModel[],
+                        { Name: 'aaa' } as ActionModel, { Name: 'bbb' } as ActionModel] as ActionModel[],
                 },
             },
         }

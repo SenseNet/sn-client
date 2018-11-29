@@ -1,5 +1,5 @@
 import { ODataParams } from '@sensenet/client-core'
-import { GenericContent, IActionModel } from '@sensenet/default-content-types'
+import { ActionModel, GenericContent } from '@sensenet/default-content-types'
 import { PromiseMiddlewareFailedAction, PromiseMiddlewareSucceededAction } from '@sensenet/redux-promise-middleware'
 import { combineReducers, Reducer } from 'redux'
 import { createContent, deleteContent, moveBatch, PromiseReturns, requestContent, updateContent, uploadRequest } from '../Actions'
@@ -129,7 +129,7 @@ export const childrenerror: Reducer<object | null, PromiseMiddlewareFailedAction
  * @param action Represents an action that is called.
  * @returns state. Returns the next state based on the action.
  */
-export const childrenactions: Reducer<IActionModel[]> = (state = [], action) => {
+export const childrenactions: Reducer<ActionModel[]> = (state = [], action) => {
     switch (action.type) {
         case 'REQUEST_CONTENT_ACTIONS_SUCCESS':
             return action.result

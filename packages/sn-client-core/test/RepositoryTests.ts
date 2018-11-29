@@ -1,5 +1,5 @@
 import { using } from '@sensenet/client-utils'
-import { IActionModel, User } from '@sensenet/default-content-types'
+import { ActionModel, User } from '@sensenet/default-content-types'
 import { expect } from 'chai'
 import { ActionOptions, Repository } from '../src'
 import { Content } from '../src/Models/Content'
@@ -313,7 +313,7 @@ export const repositoryTests: Mocha.Suite = describe('Repository', () => {
         mockResponse.json = async () => {
           return {
             d: [{ Name: 'MockAction' }],
-          } as { d: IActionModel[] }
+          } as { d: ActionModel[] }
         }
         const response = await repository.getActions({
           idOrPath: 'Root/Sites/Default_Site',
@@ -326,7 +326,7 @@ export const repositoryTests: Mocha.Suite = describe('Repository', () => {
         mockResponse.json = async () => {
           return {
             d: [{ Name: 'MockAction' }],
-          } as { d: IActionModel[] }
+          } as { d: ActionModel[] }
         }
         const response = await repository.getActions({
           idOrPath: 'Root/Sites/Default_Site',

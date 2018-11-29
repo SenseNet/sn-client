@@ -7,7 +7,7 @@ import TableRow from '@material-ui/core/TableRow'
 import TableSortLabel from '@material-ui/core/TableSortLabel'
 import Tooltip from '@material-ui/core/Tooltip'
 
-import { GenericContent, IActionModel, Schema } from '@sensenet/default-content-types'
+import { ActionModel, GenericContent, Schema } from '@sensenet/default-content-types'
 import * as React from 'react'
 import { ActionsCell, CellProps, DateCell, DefaultCell, DisplayNameCell, ReferenceCell } from './CellTemplates'
 
@@ -95,7 +95,7 @@ export interface ContentListProps<T extends GenericContent> {
     /**
      * Called when a action is requested
      */
-    onAction?: (item: T, action: IActionModel) => void
+    onAction?: (item: T, action: ActionModel) => void
     /**
      * Props for the selection checkbox
      */
@@ -154,7 +154,7 @@ export class ContentList<T extends GenericContent> extends React.Component<Conte
             case 'Actions':
                 if (props.content.Actions && props.content.Actions instanceof Array) {
                     return (<ActionsCell
-                        actions={props.content.Actions as IActionModel[]}
+                        actions={props.content.Actions as ActionModel[]}
                         content={props.content}
                         openActionMenu={(ev) => this.props.onRequestActionsMenu && this.props.onRequestActionsMenu(ev, props.content)}></ActionsCell>)
                 }
