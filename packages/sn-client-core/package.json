@@ -10,7 +10,7 @@
   "scripts": {
     "precommit": "npm run test",
     "commit": "git-cz",
-    "pretest": "npm run lint && rimraf temp && tsc -p tsconfig.test.json",
+    "pretest": "rimraf temp && tsc -p tsconfig.test.json",
     "test": "rimraf coverage && nyc mocha -p tsconfig.test.json ./temp/test/index.js",
     "prebuild": "npm run lint",
     "fix": "npm run fix:prettier && npm run fix:tslint",
