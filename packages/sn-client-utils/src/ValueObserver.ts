@@ -1,5 +1,5 @@
-import { IDisposable } from "./Disposable";
-import { ObservableValue, ValueChangeCallback } from "./ObservableValue";
+import { Disposable } from './Disposable'
+import { ObservableValue, ValueChangeCallback } from './ObservableValue'
 
 /**
  * Defines a generic ValueObserver instance
@@ -24,18 +24,16 @@ import { ObservableValue, ValueChangeCallback } from "./ObservableValue";
  *
  * @param T This type parameter is the value type to observe
  */
-export class ValueObserver<T> implements IDisposable {
-    /**
-     * Disposes the ValueObserver instance. Unsubscribes from the observable
-     */
-    public dispose() {
-        this.observable.unsubscribe(this);
-    }
+export class ValueObserver<T> implements Disposable {
+  /**
+   * Disposes the ValueObserver instance. Unsubscribes from the observable
+   */
+  public dispose() {
+    this.observable.unsubscribe(this)
+  }
 
-    /**
-     * @constructs ValueObserver<T> the ValueObserver instance
-     */
-    constructor(private readonly observable: ObservableValue<T>, public callback: ValueChangeCallback<T>) {
-
-    }
+  /**
+   * @constructs ValueObserver<T> the ValueObserver instance
+   */
+  constructor(private readonly observable: ObservableValue<T>, public callback: ValueChangeCallback<T>) {}
 }

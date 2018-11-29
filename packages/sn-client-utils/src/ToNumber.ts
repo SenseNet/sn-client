@@ -12,6 +12,6 @@
  *    NaN       = asNumber('Hello')
  */
 export function toNumber(value: any, defaultValue?: number): number | undefined {
-  const num = value === null || value === undefined || value === "" ? defaultValue : +value;
-  return num;
+  const num = value === null || value === undefined || value === '' ? defaultValue : +value
+  return num
 }
