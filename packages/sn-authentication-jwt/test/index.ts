@@ -1,3 +1,3 @@
-export * from "./JwtServiceTests";
-export * from "./TokenStoreTests";
-export * from "./TokenTests";
+export * from './JwtServiceTests'
+export * from './TokenStoreTests'
+export * from './TokenTests'
