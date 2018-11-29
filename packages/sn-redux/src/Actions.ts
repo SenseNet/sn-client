@@ -112,8 +112,7 @@
 /**
  */
 import { GoogleOauthProvider } from '@sensenet/authentication-google'
-import { IContent, LoginState, Repository, Upload } from '@sensenet/client-core'
-import { IODataParams, ODataFieldParameter } from '@sensenet/client-core/dist/Models/IODataParams'
+import { Content, LoginState, ODataFieldParameter, ODataParams, Repository, Upload } from '@sensenet/client-core'
 import { RepositoryConfiguration } from '@sensenet/client-core/dist/Repository/RepositoryConfiguration'
 import { GenericContent, User } from '@sensenet/default-content-types'
 import { PromiseMiddlewareAction } from '@sensenet/redux-promise-middleware'
@@ -129,7 +128,7 @@ export type PromiseReturns<T> = T extends ((...args: any[]) => PromiseMiddleware
  * @param options Represents an ODataOptions object based on the IODataOptions interface. Holds the possible url parameters as properties.
  * @returns Returns normalized data while dispatches the next action based on the response.
  */
-export const requestContent = (path: string, options?: IODataParams<GenericContent>) => ({
+export const requestContent = (path: string, options?: ODataParams<GenericContent>) => ({
     type: 'FETCH_CONTENT',
     payload: (repository: Repository) => repository.loadCollection({
         path,
@@ -143,10 +142,10 @@ export const requestContent = (path: string, options?: IODataParams<GenericConte
  * @param options {OData.IODataParams<T>} Represents an ODataOptions object based on the IODataOptions interface. Holds the possible url parameters as properties.
  * @returns Returns the Content while dispatches the next action based on the response.
  */
-export const loadContent = <T extends GenericContent = GenericContent>(idOrPath: number | string, options: IODataParams<T> = {}) => ({
+export const loadContent = <T extends GenericContent = GenericContent>(idOrPath: number | string, options: ODataParams<T> = {}) => ({
     type: 'LOAD_CONTENT',
     payload: (repository: Repository) => {
-        const o = {} as IODataParams<T>
+        const o = {} as ODataParams<T>
         switch (typeof options.expand) {
             case 'undefined':
                 o.expand = 'Workspace'
@@ -180,7 +179,7 @@ export const loadContentActions = (idOrPath: number | string, scenario?: string)
  * @param contentType {string} Name of the Content Type of the Content.
  * @returns Returns the newly created Content and dispatches the next action based on the response.
  */
-export const createContent = <T extends IContent = IContent>(parentPath: string, content: T, contentType: string) => ({
+export const createContent = <T extends Content = Content>(parentPath: string, content: T, contentType: string) => ({
     type: 'CREATE_CONTENT',
     payload: (repository: Repository) => repository.post<T>({ parentPath, content, contentType }),
 })
@@ -190,7 +189,7 @@ export const createContent = <T extends IContent = IContent>(parentPath: string,
  * @param content {Content} Content with the patchable Fields.
  * @returns Returns the modified Content and dispatches the next action based on the response.
  */
-export const updateContent = <T extends IContent = IContent>(idOrPath: number | string, content: Partial<T>) => ({
+export const updateContent = <T extends Content = Content>(idOrPath: number | string, content: Partial<T>) => ({
     type: 'UPDATE_CONTENT',
     payload: (repository: Repository) => repository.patch<T>({ idOrPath, content }),
 })
@@ -257,10 +256,10 @@ export const moveBatch = (items: Array<number | string>, targetPath: string) => 
 /**
  * Action creator for checking out a Content in the Content Repository.
  * @param idOrPath {number | string} Id or path of the Content that should be checked out.
- * @param options {IODataParams} Options to filter the response.
+ * @param options {ODataParams} Options to filter the response.
  * @returns Returns the Content and dispatches the next action based on the response.
  */
-export const checkOut = <T extends IContent = IContent>(idOrPath: number | string, options?: IODataParams<T>) => ({
+export const checkOut = <T extends Content = Content>(idOrPath: number | string, options?: ODataParams<T>) => ({
     type: 'CHECKOUT_CONTENT',
     payload: (repository: Repository) => repository.versioning.checkOut(idOrPath, options),
 })
@@ -268,30 +267,30 @@ export const checkOut = <T extends IContent = IContent>(idOrPath: number | strin
  * Action creator for checking in a Content in the Content Repository.
  * @param idOrPath {number | string} Id or Path of the Content that should be checked in.
  * @param checkInComments {string=''} Comments of the checkin.
- * @param options {IODataParams} Options to filter the response.
+ * @param options {ODataParams} Options to filter the response.
  * @returns Returns the Content and dispatches the next action based on the response.
  */
-export const checkIn = <T extends IContent = IContent>(idOrPath: number | string, checkInComments: string = '', options?: IODataParams<T>) => ({
+export const checkIn = <T extends Content = Content>(idOrPath: number | string, checkInComments: string = '', options?: ODataParams<T>) => ({
     type: 'CHECKIN_CONTENT',
     payload: (repository: Repository) => repository.versioning.checkIn(idOrPath, checkInComments, options),
 })
 /**
  * Action creator for publishing a Content in the Content Repository.
  * @param idOrPath {number | string} Id or Path of the Content that should be published.
- * @param options {IODataParams} Options to filter the response.
+ * @param options {ODataParams} Options to filter the response.
  * @returns Returns the Content and dispatches the next action based on the response.
  */
-export const publish = <T extends IContent = IContent>(idOrPath: number | string, options?: IODataParams<T>) => ({
+export const publish = <T extends Content = Content>(idOrPath: number | string, options?: ODataParams<T>) => ({
     type: 'PUBLISH_CONTENT',
     payload: (repository: Repository) => repository.versioning.publish(idOrPath, options),
 })
 /**
  * Action creator for approving a Content in the Content Repository.
  * @param idOrPath {number | string} Id or Path of the Content that should be approved.
- * @param options {IODataParams} Options to filter the response.
+ * @param options {ODataParams} Options to filter the response.
  * @returns Returns the Content and dispatches the next action based on the response.
  */
-export const approve = <T extends IContent = IContent>(idOrPath: number | string, options?: IODataParams<T>) => ({
+export const approve = <T extends Content = Content>(idOrPath: number | string, options?: ODataParams<T>) => ({
     type: 'APPROVE_CONTENT',
     payload: (repository: Repository) => repository.versioning.approve(idOrPath, options),
 })
@@ -300,30 +299,30 @@ export const approve = <T extends IContent = IContent>(idOrPath: number | string
  * Action creator for rejecting a Content in the Content Repository.
  * @param idOrPath {number | string} Id or Path of the Content that should be rejected.
  * @param rejectReason {string} Reason of rejecting.
- * @param options {IODataParams} Options to filter the response.
+ * @param options {ODataParams} Options to filter the response.
  * @returns Returns the Content and dispatches the next action based on the response.
  */
-export const rejectContent = <T extends IContent = IContent>(idOrPath: number | string, rejectReason: string = '', options?: IODataParams<T>) => ({
+export const rejectContent = <T extends Content = Content>(idOrPath: number | string, rejectReason: string = '', options?: ODataParams<T>) => ({
     type: 'REJECT_CONTENT',
     payload: (repository: Repository) => repository.versioning.reject(idOrPath, rejectReason, options),
 })
 /**
  * Action creator for undoing checkout on a Content in the Content Repository.
  * @param idOrPath {number | string} Id or Path of the Content on which undo checkout be called.
- * @param options {IODataParams} Options to filter the response.
+ * @param options {ODataParams} Options to filter the response.
  * @returns Returns the Content and dispatches the next action based on the response.
  */
-export const undoCheckout = <T extends IContent = IContent>(idOrPath: number | string, options?: IODataParams<T>) => ({
+export const undoCheckout = <T extends Content = Content>(idOrPath: number | string, options?: ODataParams<T>) => ({
     type: 'UNDOCHECKOUT_CONTENT',
     payload: (repository: Repository) => repository.versioning.undoCheckOut(idOrPath, options),
 })
 /**
  * Action creator for force undoing checkout on a Content in the Content Repository.
  * @param idOrPath {number | string} Id or Path of the Content on which force undo checkout be called.
- * @param options {IODataParams} Options to filter the response.
+ * @param options {ODataParams} Options to filter the response.
  * @returns Returns the Content and dispatches the next action based on the response.
  */
-export const forceUndoCheckout = <T extends IContent = IContent>(idOrPath: number | string, options?: IODataParams<T>) => ({
+export const forceUndoCheckout = <T extends Content = Content>(idOrPath: number | string, options?: ODataParams<T>) => ({
     type: 'FORCE_UNDOCHECKOUT_CONTENT',
     payload: (repository: Repository) => repository.versioning.forceUndoCheckOut(idOrPath, options),
 })
@@ -331,10 +330,10 @@ export const forceUndoCheckout = <T extends IContent = IContent>(idOrPath: numbe
  * Action creator for restoring the version of a Content in the Content Repository.
  * @param idOrPath {number | string} Id or Path of the Content that should be checked in.
  * @param version {string} Specify which old version to restore.
- * @param options {IODataParams} Options to filter the response.
+ * @param options {ODataParams} Options to filter the response.
  * @returns Returns the Content and dispatches the next action based on the response.
  */
-export const restoreVersion = <T extends IContent = IContent>(idOrPath: number | string, version: string, options?: IODataParams<T>) => ({
+export const restoreVersion = <T extends Content = Content>(idOrPath: number | string, version: string, options?: ODataParams<T>) => ({
     type: 'RESTOREVERSION_CONTENT',
     version,
     payload: (repository: Repository) => repository.versioning.restoreVersion(idOrPath, version, options),
@@ -411,7 +410,7 @@ export const loadRepository = (repositoryConfig: RepositoryConfiguration) => ({
  * @param id {number} The id of the selected Content
  * @returns Returns a redux action.
  */
-export const selectContent = <T extends IContent>(content: T) => ({
+export const selectContent = <T extends Content>(content: T) => ({
     type: 'SELECT_CONTENT',
     content,
 })
@@ -420,7 +419,7 @@ export const selectContent = <T extends IContent>(content: T) => ({
  * @param id {number} The id of the deselected Content
  * @returns Returns a redux action.
  */
-export const deSelectContent = <T extends IContent>(content: T) => ({
+export const deSelectContent = <T extends Content>(content: T) => ({
     type: 'DESELECT_CONTENT',
     content,
 })
@@ -441,7 +440,7 @@ export const clearSelection = () => ({
  * @param propertyName Name of the field where the binary should be saved
  * @returns Returns a redux action with the properties type, content, file, contentType, overwrite, body and propertyName.
  */
-export const uploadRequest = <T extends IContent>(parentPath: string, file: File, contentTypeName: string = 'File', overwrite: boolean = true, body?: {}, propertyName: string = 'Binary') => ({
+export const uploadRequest = <T extends Content>(parentPath: string, file: File, contentTypeName: string = 'File', overwrite: boolean = true, body?: {}, propertyName: string = 'Binary') => ({
     type: 'UPLOAD_CONTENT',
     // tslint:disable:completed-docs
     payload: async (repository: Repository) => {
@@ -479,7 +478,7 @@ export const getSchema = (typeName: string) => ({
  * Action creator for setting the default select, expandm etc. options
  * @param {string} typeName Name of the Content Type.
  */
-export const setDefaultOdataOptions = (options: IODataParams<GenericContent>) => ({
+export const setDefaultOdataOptions = (options: ODataParams<GenericContent>) => ({
     type: 'SET_ODATAOPTIONS',
     options,
 })

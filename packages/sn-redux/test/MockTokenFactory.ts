@@ -1,5 +1,5 @@
-import { ITokenPayload } from '@sensenet/authentication-jwt/dist/ITokenPayload'
 import { Token } from '@sensenet/authentication-jwt/dist/Token'
+import { TokenPayload } from '@sensenet/authentication-jwt/dist/TokenPayload'
 
 // tslint:disable
 export class MockTokenFactory {
@@ -19,7 +19,7 @@ export class MockTokenFactory {
             name: "BuiltIn\\Mock",
             nbf: notBefore,
             sub: "",
-        } as ITokenPayload;
+        } as TokenPayload;
 
         const headerEncoded = Buffer.from(JSON.stringify(header)).toString("base64");
 

@@ -1,7 +1,6 @@
 /**
  * @module FieldControls
- *
- */ /** */
+ */
 import Chip from '@material-ui/core/Chip'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -42,7 +41,7 @@ const styles = {
     },
 }
 
-import { IContent, IODataCollectionResponse } from '@sensenet/client-core'
+import { Content, ODataCollectionResponse } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 
 /**
@@ -122,7 +121,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
      * returns referencefields' datasource
      * @param path
      */
-    public async search(): Promise<IODataCollectionResponse<IContent>> {
+    public async search(): Promise<ODataCollectionResponse<Content>> {
         const selectionRoot = this.props['data-selectionRoot'] || []
         const allowedTypes = this.props['data-allowedTypes'] || ['GenericContent']
 

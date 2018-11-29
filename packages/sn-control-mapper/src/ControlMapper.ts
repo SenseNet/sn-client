@@ -1,4 +1,4 @@
-import { IContent, Repository } from "@sensenet/client-core";
+import { Repository } from "@sensenet/client-core";
 import { FieldSetting, FieldVisibility, Schema, SchemaStore } from "@sensenet/default-content-types";
 import { ControlSchema } from "./ControlSchema";
 

@@ -1,8 +1,4 @@
-import { IContent, Repository } from "@sensenet/client-core";
-import { IODataBatchResponse } from "@sensenet/client-core/dist/Models/IODataBatchResponse";
-import { IODataResponse } from "@sensenet/client-core/dist/Models/IODataResponse";
-import { using } from "@sensenet/client-utils";
-import { ChoiceFieldSetting, FieldSetting, FieldVisibility, ShortTextFieldSetting, Task, User } from "@sensenet/default-content-types";
+import { Content, ODataBatchResponse, ODataResponse, Repository } from "@sensenet/client-core";
 import { expect } from "chai";
 import { EventHub } from "../src";
 
@@ -17,7 +13,7 @@ export const eventHubTests = describe("EventHub", () => {
         Id: 123,
         Name: "mook",
         Path: "Root/Example",
-    } as IContent;
+    } as Content;
 
     beforeEach(() => {
         repository = new Repository({}, async () => ({ ok: true } as any));
@@ -49,7 +45,7 @@ export const eventHubTests = describe("EventHub", () => {
                 json: async () => {
                     return {
                         d: mockContent,
-                    } as IODataResponse<IContent>;
+                    } as ODataResponse<Content>;
                 },
             }) as any;
             repository.post({
@@ -100,7 +96,7 @@ export const eventHubTests = describe("EventHub", () => {
                             errors: [],
                             results: [mockContent],
                         },
-                    } as IODataBatchResponse<IContent>;
+                    } as ODataBatchResponse<Content>;
                 },
             }) as any;
             repository.copy({
@@ -125,7 +121,7 @@ export const eventHubTests = describe("EventHub", () => {
                             errors: [{error: "error", content: mockContent}],
                             results: [],
                         },
-                    } as IODataBatchResponse<IContent>;
+                    } as ODataBatchResponse<Content>;
                 },
             }) as any;
             repository.copy({
@@ -190,7 +186,7 @@ export const eventHubTests = describe("EventHub", () => {
                 json: async () => {
                     return {
                         d: mockContent,
-                    } as IODataResponse<IContent>;
+                    } as ODataResponse<Content>;
                 },
             }) as any;
             repository.patch({
@@ -235,7 +231,7 @@ export const eventHubTests = describe("EventHub", () => {
                 json: async () => {
                     return {
                         d: mockContent,
-                    } as IODataResponse<IContent>;
+                    } as ODataResponse<Content>;
                 },
             }) as any;
             repository.put({
@@ -286,7 +282,7 @@ export const eventHubTests = describe("EventHub", () => {
                             results: [mockContent],
                             errors: [],
                         },
-                    } as IODataBatchResponse<IContent>;
+                    } as ODataBatchResponse<Content>;
                 },
             }) as any;
             repository.delete({
@@ -312,7 +308,7 @@ export const eventHubTests = describe("EventHub", () => {
                                 content: mockContent,
                             }],
                         },
-                    } as IODataBatchResponse<IContent>;
+                    } as ODataBatchResponse<Content>;
                 },
             }) as any;
             repository.delete({
@@ -377,7 +373,7 @@ export const eventHubTests = describe("EventHub", () => {
                             results: [mockContent],
                             errors: [],
                         },
-                    } as IODataBatchResponse<IContent>;
+                    } as ODataBatchResponse<Content>;
                 },
             }) as any;
             repository.move({
@@ -404,7 +400,7 @@ export const eventHubTests = describe("EventHub", () => {
                                 content: mockContent,
                             }],
                         },
-                    } as IODataBatchResponse<IContent>;
+                    } as ODataBatchResponse<Content>;
                 },
             }) as any;
             repository.move({

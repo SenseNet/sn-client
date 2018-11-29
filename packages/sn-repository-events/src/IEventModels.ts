@@ -3,8 +3,7 @@
  */
 /** */
 
-import { IContent } from "@sensenet/client-core";
-import { IODataParams } from "@sensenet/client-core/dist/Models/IODataParams";
+import { Content, ODataParams } from "@sensenet/client-core";
 
 /**
  * Model for Content Created event
@@ -13,7 +12,7 @@ export interface ICreated {
     /**
      * The created Content instance
      */
-    content: IContent;
+    content: Content;
 }
 
 /**
@@ -23,7 +22,7 @@ export interface ICreateFailed {
     /**
      * The unsaved Content instance
      */
-    content: IContent;
+    content: Content;
 
     /**
      * The Error that caused the failure
@@ -38,12 +37,12 @@ export interface IModified {
     /**
      * The Content instance that has been modified.
      */
-    content: IContent;
+    content: Content;
 
     /**
      * The Change data
      */
-    changes: IContent;
+    changes: Content;
 }
 
 /**
@@ -53,7 +52,7 @@ export interface IModificationFailed {
     /**
      * The Content instance that has been failed to modify
      */
-    content: Partial<IContent>;
+    content: Partial<Content>;
     /**
      * The Error that caused the failure
      */
@@ -67,7 +66,7 @@ export interface ILoaded {
     /**
      * The Loaded content instance
      */
-    content: IContent;
+    content: Content;
 }
 
 /**
@@ -77,7 +76,7 @@ export interface IDeleted {
     /**
      * The Content data that has been deleted
      */
-    contentData: IContent;
+    contentData: Content;
     /**
      * Indicates if the Content was deleted permanently or just moved to Trash
      */
@@ -91,7 +90,7 @@ export interface IDeleteFailed {
     /**
      * The Content that you've tried to delete
      */
-    content: IContent;
+    content: Content;
     /**
      * Indicates if you've tried to delete the Content permanently or just tried to move it to the Trash
      */
@@ -106,7 +105,7 @@ export interface IDeleteFailed {
 /**
  * Model for Custom Action executed event
  */
-export interface ICustomActionExecuted<T extends IContent> {
+export interface ICustomActionExecuted<T extends Content> {
     /**
      * The Action options
      */
@@ -115,7 +114,7 @@ export interface ICustomActionExecuted<T extends IContent> {
      * The additional OData parameters (optional)
      */
     // tslint:disable-next-line:naming-convention
-    oDataParams?: IODataParams<T>;
+    oDataParams?: ODataParams<T>;
     /**
      * The Action result
      */
@@ -125,7 +124,7 @@ export interface ICustomActionExecuted<T extends IContent> {
 /**
  * Model for Custom Action Failed event
  */
-export interface ICustomActionFailed<T extends IContent> {
+export interface ICustomActionFailed<T extends Content> {
     /**
      * The Action options
      */
@@ -134,7 +133,7 @@ export interface ICustomActionFailed<T extends IContent> {
      * The additional OData parameters (optional)
      */
     // tslint:disable-next-line:naming-convention
-    oDataParams?: IODataParams<T>;
+    oDataParams?: ODataParams<T>;
     /**
      * The Error that caused the failure
      */
@@ -148,7 +147,7 @@ export interface IContentMoved {
     /**
      * The moved Content instance
      */
-    content: IContent;
+    content: Content;
 }
 
 /**
@@ -158,7 +157,7 @@ export interface IContentMoveFailed {
     /**
      * The Content instance that you've tried to move
      */
-    content: IContent;
+    content: Content;
     /**
      * The Error that caused the failure
      */
@@ -172,7 +171,7 @@ export interface IContentCopied {
     /**
      * The copied Content instance
      */
-    content: IContent;
+    content: Content;
     /**
      * The original Content instance
      */
@@ -186,7 +185,7 @@ export interface IContentCopyFailed {
     /**
      * The Content instance that you've tried to copy
      */
-    content: IContent;
+    content: Content;
     /**
      * The Error that caused the failure
      */

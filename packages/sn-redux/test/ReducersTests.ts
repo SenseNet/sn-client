@@ -1,4 +1,4 @@
-import { IContent, IODataBatchResponse, IODataParams, LoginState, Repository } from '@sensenet/client-core'
+import { Content, LoginState, ODataBatchResponse, ODataParams, Repository } from '@sensenet/client-core'
 import { GenericContent, IActionModel, Status, Task, User, Workspace } from '@sensenet/default-content-types'
 import * as Chai from 'chai'
 import * as Reducers from '../src/reducers'
@@ -148,7 +148,7 @@ describe('Reducers', () => {
                                 { Id: 1 },
                             ],
                         },
-                    } as IODataBatchResponse<IContent>,
+                    } as ODataBatchResponse<Content>,
                 }))
                 .to.be.deep.equal([2, 3])
         })
@@ -1202,7 +1202,7 @@ describe('Reducers', () => {
             const options = {
                 top: 0,
                 skip: 0,
-            } as IODataParams<GenericContent>
+            } as ODataParams<GenericContent>
             expect(Reducers.options(undefined, { type: 'SET_ODATAOPTIONS', options })).to.deep.equal({ top: 0, skip: 0 })
         })
     })

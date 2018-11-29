@@ -1,4 +1,4 @@
-import { IODataParams } from '@sensenet/client-core'
+import { ODataParams } from '@sensenet/client-core'
 import { GenericContent, IActionModel } from '@sensenet/default-content-types'
 import { PromiseMiddlewareFailedAction, PromiseMiddlewareSucceededAction } from '@sensenet/redux-promise-middleware'
 import { combineReducers, Reducer } from 'redux'
@@ -157,7 +157,7 @@ export const isOpened: Reducer<boolean | null> = (state = null, action) => {
  * @param action Represents an action that is called.
  * @returns state. Returns the next state based on the action.
  */
-export const options: Reducer<IODataParams<GenericContent> | null> = (state = null, action) => {
+export const options: Reducer<ODataParams<GenericContent> | null> = (state = null, action) => {
     switch (action.type) {
         case 'SET_ODATAOPTIONS':
             return action.options

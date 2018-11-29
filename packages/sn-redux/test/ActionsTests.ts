@@ -1,6 +1,6 @@
 import { GoogleOauthProvider } from '@sensenet/authentication-google'
 import { JwtService } from '@sensenet/authentication-jwt'
-import { IContent, IODataBatchResponse, IODataCollectionResponse, IODataResponse, LoginState, Repository } from '@sensenet/client-core'
+import { Content, LoginState, ODataBatchResponse, ODataCollectionResponse, ODataResponse, Repository } from '@sensenet/client-core'
 import { GenericContent, IActionModel, Task, User } from '@sensenet/default-content-types'
 import { expect } from 'chai'
 import * as Actions from '../src/Actions'
@@ -107,8 +107,8 @@ describe('Actions', () => {
 
         describe('serviceChecks()', () => {
             context('Given repository.loadCollection() resolves', () => {
-                let data: IODataCollectionResponse<GenericContent>
-                let dataWithoutOptions: IODataCollectionResponse<GenericContent>
+                let data: ODataCollectionResponse<GenericContent>
+                let dataWithoutOptions: ODataCollectionResponse<GenericContent>
                 let mockCollectionResponseData: ReturnType<typeof collectionMockResponse['json']>
                 beforeEach(async () => {
                     data = await Actions.requestContent(path, { scenario: '' }).payload(repo)
@@ -136,12 +136,12 @@ describe('Actions', () => {
 
         describe('serviceChecks()', () => {
             context('Given repository.load() resolves', () => {
-                let data: IODataResponse<IContent>
-                let dataWithoutOptions: IODataResponse<IContent>
-                let dataWithExpandUndefined: IODataResponse<IContent>
-                let dataWithStringExpand: IODataResponse<IContent>
-                let dataWithStringExpandWorkspace: IODataResponse<IContent>
-                let dataWithSelectWorkspace: IODataResponse<IContent>
+                let data: ODataResponse<Content>
+                let dataWithoutOptions: ODataResponse<Content>
+                let dataWithExpandUndefined: ODataResponse<Content>
+                let dataWithStringExpand: ODataResponse<Content>
+                let dataWithStringExpandWorkspace: ODataResponse<Content>
+                let dataWithSelectWorkspace: ODataResponse<Content>
                 const expectedResult = { d: { Name: 'DefaultSite' } }
                 beforeEach(async () => {
                     data = await Actions.loadContent(path, {}).payload(repo)
@@ -227,7 +227,7 @@ describe('Actions', () => {
 
         describe('serviceChecks()', () => {
             context('Given repository.post() resolves', () => {
-                let data: IODataResponse<Task>
+                let data: ODataResponse<Task>
                 const expectedResult = { d: { Name: 'DefaultSite' } }
                 beforeEach(async () => {
                     data = await Actions.createContent(path, content, 'Task').payload(repo)
@@ -252,7 +252,7 @@ describe('Actions', () => {
 
         describe('serviceChecks()', () => {
             context('Given repository.patch() resolves', () => {
-                let data: IODataResponse<IContent>
+                let data: ODataResponse<Content>
                 const expectedResult = { d: { Name: 'DefaultSite' } }
                 beforeEach(async () => {
                     data = await Actions.updateContent(path, content).payload(repo)
@@ -275,7 +275,7 @@ describe('Actions', () => {
 
         describe('serviceChecks()', () => {
             context('Given repository.delete() resolves', () => {
-                let data: IODataBatchResponse<IContent>
+                let data: ODataBatchResponse<Content>
                 const expectedResult = { d: { Name: 'DefaultSite' } }
                 beforeEach(async () => {
                     data = await Actions.deleteContent(path).payload(repo)
@@ -298,7 +298,7 @@ describe('Actions', () => {
 
         describe('serviceChecks()', () => {
             context('Given repository.delete() resolves', () => {
-                let data: IODataBatchResponse<IContent>
+                let data: ODataBatchResponse<Content>
                 const expectedResult = { d: { Name: 'DefaultSite' } }
                 beforeEach(async () => {
                     data = await Actions.deleteBatch([1, 2]).payload(repo)
@@ -321,7 +321,7 @@ describe('Actions', () => {
 
         describe('serviceChecks()', () => {
             context('Given repository.copy() resolves', () => {
-                let data: IODataBatchResponse<IContent>
+                let data: ODataBatchResponse<Content>
                 const expectedResult = { d: { Name: 'DefaultSite' } }
                 beforeEach(async () => {
                     data = await Actions.copyContent(path, '/workspaces').payload(repo)
@@ -344,7 +344,7 @@ describe('Actions', () => {
 
         describe('serviceChecks()', () => {
             context('Given repository.copy() resolves', () => {
-                let data: IODataBatchResponse<IContent>
+                let data: ODataBatchResponse<Content>
                 const expectedResult = { d: { Name: 'DefaultSite' } }
                 beforeEach(async () => {
                     data = await Actions.copyBatch([path], '/workspaces').payload(repo)
@@ -367,7 +367,7 @@ describe('Actions', () => {
 
         describe('serviceChecks()', () => {
             context('Given repository.move() resolves', () => {
-                let data: IODataBatchResponse<IContent>
+                let data: ODataBatchResponse<Content>
                 const expectedResult = { d: { Name: 'DefaultSite' } }
                 beforeEach(async () => {
                     data = await Actions.moveContent(path, '/workspaces').payload(repo)
@@ -390,7 +390,7 @@ describe('Actions', () => {
 
         describe('serviceChecks()', () => {
             context('Given repository.move() resolves', () => {
-                let data: IODataBatchResponse<IContent>
+                let data: ODataBatchResponse<Content>
                 const expectedResult = { d: { Name: 'DefaultSite' } }
                 beforeEach(async () => {
                     data = await Actions.moveBatch([path], '/workspaces').payload(repo)
@@ -413,7 +413,7 @@ describe('Actions', () => {
 
         describe('serviceChecks()', () => {
             context('Given repository.versioning.checkout() resolves', () => {
-                let data: IODataResponse<IContent>
+                let data: ODataResponse<Content>
                 const expectedResult = { d: { Name: 'DefaultSite' } }
                 beforeEach(async () => {
                     data = await Actions.checkOut('/workspaces').payload(repo)
@@ -436,7 +436,7 @@ describe('Actions', () => {
 
         describe('serviceChecks()', () => {
             context('Given repository.versioning.checkin() resolves', () => {
-                let data: IODataResponse<IContent>
+                let data: ODataResponse<Content>
                 const expectedResult = { d: { Name: 'DefaultSite' } }
                 beforeEach(async () => {
                     data = await Actions.checkIn('/workspaces').payload(repo)
@@ -459,7 +459,7 @@ describe('Actions', () => {
 
         describe('serviceChecks()', () => {
             context('Given repository.versioning.publish() resolves', () => {
-                let data: IODataResponse<IContent>
+                let data: ODataResponse<Content>
                 const expectedResult = { d: { Name: 'DefaultSite' } }
                 beforeEach(async () => {
                     data = await Actions.publish('/workspaces').payload(repo)
@@ -482,7 +482,7 @@ describe('Actions', () => {
 
         describe('serviceChecks()', () => {
             context('Given repository.versioning.approve() resolves', () => {
-                let data: IODataResponse<IContent>
+                let data: ODataResponse<Content>
                 const expectedResult = { d: { Name: 'DefaultSite' } }
                 beforeEach(async () => {
                     data = await Actions.approve('/workspaces').payload(repo)
@@ -505,7 +505,7 @@ describe('Actions', () => {
 
         describe('serviceChecks()', () => {
             context('Given repository.versioning.reject() resolves', () => {
-                let data: IODataResponse<IContent>
+                let data: ODataResponse<Content>
                 const expectedResult = { d: { Name: 'DefaultSite' } }
                 beforeEach(async () => {
                     data = await Actions.rejectContent('/workspaces').payload(repo)
@@ -528,7 +528,7 @@ describe('Actions', () => {
 
         describe('serviceChecks()', () => {
             context('Given repository.versioning.undoCheckout() resolves', () => {
-                let data: IODataResponse<IContent>
+                let data: ODataResponse<Content>
                 const expectedResult = { d: { Name: 'DefaultSite' } }
                 beforeEach(async () => {
                     data = await Actions.undoCheckout('/workspaces').payload(repo)
@@ -551,7 +551,7 @@ describe('Actions', () => {
 
         describe('serviceChecks()', () => {
             context('Given repository.versioning.forceUndoCheckout() resolves', () => {
-                let data: IODataResponse<IContent>
+                let data: ODataResponse<Content>
                 const expectedResult = { d: { Name: 'DefaultSite' } }
                 beforeEach(async () => {
                     data = await Actions.forceUndoCheckout('/workspaces').payload(repo)
@@ -574,7 +574,7 @@ describe('Actions', () => {
 
         describe('serviceChecks()', () => {
             context('Given repository.versioning.restoreVersion() resolves', () => {
-                let data: IODataResponse<IContent>
+                let data: ODataResponse<Content>
                 const expectedResult = { d: { Name: 'DefaultSite' } }
                 beforeEach(async () => {
                     data = await Actions.restoreVersion('/workspaces', '1').payload(repo)
@@ -748,7 +748,7 @@ describe('Actions', () => {
 
         describe('serviceChecks()', () => {
             context('Given Upload.file() resolves', () => {
-                let data: IODataResponse<IContent>
+                let data: ODataResponse<Content>
                 beforeEach(async () => {
                     data = await Actions.uploadRequest('Root/Example', { size: 65535000, slice: (..._args: any[]) => '' } as any as File, 'Binary').payload(repo)
 

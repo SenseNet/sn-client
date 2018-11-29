@@ -1,4 +1,4 @@
-import { IODataBatchResponse } from '@sensenet/client-core'
+import { ODataBatchResponse } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { combineReducers, Reducer } from 'redux'
 import { copyBatch, deleteBatch, PromiseReturns } from '../Actions'
@@ -9,7 +9,7 @@ import { copyBatch, deleteBatch, PromiseReturns } from '../Actions'
  * @param action Represents an action that is called.
  * @returns state. Returns the next state based on the action.
  */
-export const odataBatchResponse: Reducer<IODataBatchResponse<GenericContent> | null> = (state = null, action) => {
+export const odataBatchResponse: Reducer<ODataBatchResponse<GenericContent> | null> = (state = null, action) => {
     switch (action.type) {
         case 'DELETE_BATCH_SUCCESS':
         case 'COPY_BATCH_SUCCESS':

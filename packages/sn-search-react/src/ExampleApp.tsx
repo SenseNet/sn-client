@@ -16,7 +16,7 @@ import TableRow from '@material-ui/core/TableRow'
 import MaterialTextField from '@material-ui/core/TextField'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
-import { IODataCollectionResponse, Repository } from '@sensenet/client-core'
+import { ODataCollectionResponse, Repository } from '@sensenet/client-core'
 import { File as SnFile, Folder, GenericContent, User } from '@sensenet/default-content-types'
 import { ReferenceFieldSetting } from '@sensenet/default-content-types'
 import { Icon, iconType, MaterialIcon } from '@sensenet/icons-react'
@@ -61,7 +61,7 @@ interface ExampleComponentState {
     fullQuery: string
     isSettingsOpen: boolean
     isHelpOpen: boolean
-    response?: IODataCollectionResponse<GenericContent>
+    response?: ODataCollectionResponse<GenericContent>
 }
 
 const icons: any = {

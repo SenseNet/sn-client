@@ -1,4 +1,4 @@
-import { ConstantContent, IAuthenticationService, IODataParams, LoginState, Repository } from '@sensenet/client-core'
+import { AuthenticationService, ConstantContent, LoginState, ODataParams, Repository } from '@sensenet/client-core'
 import { ObservableValue, PathHelper } from '@sensenet/client-utils'
 import { User } from '@sensenet/default-content-types'
 import { Query } from '@sensenet/query'
@@ -12,7 +12,7 @@ import { TokenStore } from './TokenStore'
 /**
  * This service class manages the JWT authentication, the session and the current login state.
  */
-export class JwtService implements IAuthenticationService {
+export class JwtService implements AuthenticationService {
   private readonly jwtTokenKeyTemplate: string = 'sn-${siteName}-${tokenName}'
 
   /**
@@ -133,7 +133,7 @@ export class JwtService implements IAuthenticationService {
    */
   constructor(
     public readonly repository: Repository,
-    private readonly userLoadOptions: IODataParams<User> = { select: 'all' },
+    private readonly userLoadOptions: ODataParams<User> = { select: 'all' },
     private readonly latencyCompensationMs: number = 5000,
   ) {
     this.repository.authentication = this
