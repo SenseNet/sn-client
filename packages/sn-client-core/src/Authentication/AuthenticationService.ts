@@ -2,14 +2,14 @@
  * @module Authentication
  */ /** */
 
-import { IDisposable, ObservableValue } from '@sensenet/client-utils'
+import { Disposable, ObservableValue } from '@sensenet/client-utils'
 import { User } from '@sensenet/default-content-types'
 import { LoginState } from './LoginState'
 
 /**
  * Interface that describes how injectable Authentication Services should work
  */
-export interface AuthenticationService extends IDisposable {
+export interface AuthenticationService extends Disposable {
   /**
    * Executes a check for the current state
    * @returns A promise that will be resolved with a boolean, that indicates if a refres was needed.

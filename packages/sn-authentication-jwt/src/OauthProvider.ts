@@ -1,9 +1,9 @@
-import { IDisposable } from '@sensenet/client-utils/dist/Disposable'
+import { Disposable } from '@sensenet/client-utils'
 
 /**
  * Interface that represents a basic structure for an additional OAuth Provider
  */
-export interface OauthProvider extends IDisposable {
+export interface OauthProvider extends Disposable {
   /**
    * Method that retrieves the token info
    */

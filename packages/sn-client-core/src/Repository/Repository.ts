@@ -1,4 +1,4 @@
-import { IDisposable, PathHelper } from '@sensenet/client-utils'
+import { Disposable, PathHelper } from '@sensenet/client-utils'
 import { IActionModel, Schema } from '@sensenet/default-content-types'
 import { AuthenticationService } from '../Authentication/AuthenticationService'
 import { BypassAuthentication } from '../Authentication/BypassAuthentication'
@@ -41,7 +41,7 @@ export const isExtendedError = (e: Error): e is ExtendedError => {
 /**
  * Class that can be used as a main entry point to manipulate a sensenet content repository
  */
-export class Repository implements IDisposable {
+export class Repository implements Disposable {
   /**
    * Disposes the Repository object
    */
