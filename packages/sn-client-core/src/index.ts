@@ -1,21 +1,21 @@
-export { BypassAuthentication } from "./Authentication/BypassAuthentication";
-export { Repository } from "./Repository/Repository";
-export { Upload } from "./Repository/Upload";
-export { IAuthenticationService } from "./Authentication/IAuthenticationService";
-export { LoginState } from "./Authentication/LoginState";
-export { ConstantContent } from "./Repository/ConstantContent";
-export { IContent } from "./Models/IContent";
-export { IODataCollectionResponse } from "./Models/IODataCollectionResponse";
-export { IODataResponse } from "./Models/IODataResponse";
+export { BypassAuthentication } from './Authentication/BypassAuthentication'
+export { Repository } from './Repository/Repository'
+export { Upload } from './Repository/Upload'
+export { AuthenticationService } from './Authentication/AuthenticationService'
+export { LoginState } from './Authentication/LoginState'
+export { ConstantContent } from './Repository/ConstantContent'
+export { Content } from './Models/Content'
+export { ODataCollectionResponse } from './Models/ODataCollectionResponse'
+export { ODataResponse } from './Models/ODataResponse'
 
-export * from "./Models/IContent";
-export * from "./Models/IMetadata";
-export * from "./Models/IMetadataAction";
-export * from "./Models/IODataBatchResponse";
-export * from "./Models/IODataCollectionResponse";
-export * from "./Models/IODataParams";
-export * from "./Models/IODataRequestOptions";
-export * from "./Models/IODataResponse";
-export * from "./Models/IRequestOptions";
-export * from "./Models/IUploadProgressInfo";
-export * from "./Models/ISecurityModels";
+export * from './Models/Content'
+export * from './Models/Metadata'
+export * from './Models/MetadataAction'
+export * from './Models/ODataBatchResponse'
+export * from './Models/ODataCollectionResponse'
+export * from './Models/ODataParams'
+export * from './Models/ODataRequestOptions'
+export * from './Models/ODataResponse'
+export * from './Models/RequestOptions'
+export * from './Models/UploadProgressInfo'
+export * from './Models/SecurityModels'
