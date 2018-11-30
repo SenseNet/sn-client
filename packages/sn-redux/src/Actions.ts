@@ -129,10 +129,11 @@ export type PromiseReturns<T> = T extends ((...args: any[]) => PromiseMiddleware
  * @returns Returns normalized data while dispatches the next action based on the response.
  */
 export const requestContent = (path: string, options?: ODataParams<GenericContent>) => ({
-    type: 'FETCH_CONTENT',
-    payload: (repository: Repository) => repository.loadCollection({
-        path,
-        oDataOptions: options,
+  type: 'FETCH_CONTENT',
+  payload: (repository: Repository) =>
+    repository.loadCollection({
+      path,
+      oDataOptions: options,
     }),
 })
 
@@ -142,25 +143,33 @@ export const requestContent = (path: string, options?: ODataParams<GenericConten
  * @param options {OData.IODataParams<T>} Represents an ODataOptions object based on the IODataOptions interface. Holds the possible url parameters as properties.
  * @returns Returns the Content while dispatches the next action based on the response.
  */
-export const loadContent = <T extends GenericContent = GenericContent>(idOrPath: number | string, options: ODataParams<T> = {}) => ({
-    type: 'LOAD_CONTENT',
-    payload: (repository: Repository) => {
-        const o = {} as ODataParams<T>
-        switch (typeof options.expand) {
-            case 'undefined':
-                o.expand = 'Workspace'
-            case 'string':
-                if (options.expand === 'Workspace') {
-                    o.expand = 'Workspace'
-                } else {
-                    o.expand = [options.expand, 'Workspace'] as ODataFieldParameter<T>
-                }
-            default:
-                options.expand !== undefined ? o.expand = [...options.expand as string[], 'Workspace'] as ODataFieldParameter<GenericContent> : o.expand = ['Workspace']
+export const loadContent = <T extends GenericContent = GenericContent>(
+  idOrPath: number | string,
+  options: ODataParams<T> = {},
+) => ({
+  type: 'LOAD_CONTENT',
+  payload: (repository: Repository) => {
+    const o = {} as ODataParams<T>
+    switch (typeof options.expand) {
+      case 'undefined':
+        o.expand = 'Workspace'
+      case 'string':
+        if (options.expand === 'Workspace') {
+          o.expand = 'Workspace'
+        } else {
+          o.expand = [options.expand, 'Workspace'] as ODataFieldParameter<T>
         }
-        o.select = options.select !== undefined ? [...options.select as string[], 'Workspace'] as ODataFieldParameter<T> : ['Workspace']
-        return repository.load<T>({ idOrPath, oDataOptions: o })
-    },
+      default:
+        options.expand !== undefined
+          ? (o.expand = [...(options.expand as string[]), 'Workspace'] as ODataFieldParameter<GenericContent>)
+          : (o.expand = ['Workspace'])
+    }
+    o.select =
+      options.select !== undefined
+        ? ([...(options.select as string[]), 'Workspace'] as ODataFieldParameter<T>)
+        : ['Workspace']
+    return repository.load<T>({ idOrPath, oDataOptions: o })
+  },
 })
 /**
  * Action creator for loading Actions of a Content from sensenet Content Repository.
@@ -169,8 +178,8 @@ export const loadContent = <T extends GenericContent = GenericContent>(idOrPath:
  * @returns Returns the list of actions and dispatches the next action based on the response.
  */
 export const loadContentActions = (idOrPath: number | string, scenario?: string) => ({
-    type: 'LOAD_CONTENT_ACTIONS',
-    payload: (repository: Repository) => repository.getActions({ idOrPath, scenario }),
+  type: 'LOAD_CONTENT_ACTIONS',
+  payload: (repository: Repository) => repository.getActions({ idOrPath, scenario }),
 })
 /**
  * Action creator for creating a Content in the Content Repository.
@@ -180,8 +189,8 @@ export const loadContentActions = (idOrPath: number | string, scenario?: string)
  * @returns Returns the newly created Content and dispatches the next action based on the response.
  */
 export const createContent = <T extends Content = Content>(parentPath: string, content: T, contentType: string) => ({
-    type: 'CREATE_CONTENT',
-    payload: (repository: Repository) => repository.post<T>({ parentPath, content, contentType }),
+  type: 'CREATE_CONTENT',
+  payload: (repository: Repository) => repository.post<T>({ parentPath, content, contentType }),
 })
 /**
  * Action creator for creating a Content in the Content Repository.
@@ -190,8 +199,8 @@ export const createContent = <T extends Content = Content>(parentPath: string, c
  * @returns Returns the modified Content and dispatches the next action based on the response.
  */
 export const updateContent = <T extends Content = Content>(idOrPath: number | string, content: Partial<T>) => ({
-    type: 'UPDATE_CONTENT',
-    payload: (repository: Repository) => repository.patch<T>({ idOrPath, content }),
+  type: 'UPDATE_CONTENT',
+  payload: (repository: Repository) => repository.patch<T>({ idOrPath, content }),
 })
 /**
  * Action creator for deleting a Content from the Content Repository.
@@ -200,8 +209,8 @@ export const updateContent = <T extends Content = Content>(idOrPath: number | st
  * @returns Returns an object with the deleted item or error  and dispatches the next action based on the response.
  */
 export const deleteContent = (idOrPath: number | string, permanently: boolean = false) => ({
-    type: 'DELETE_CONTENT',
-    payload: (repository: Repository) => repository.delete({ idOrPath, permanent: permanently }),
+  type: 'DELETE_CONTENT',
+  payload: (repository: Repository) => repository.delete({ idOrPath, permanent: permanently }),
 })
 /**
  * Action creator for deleting multiple Content from the Content Repository.
@@ -210,8 +219,8 @@ export const deleteContent = (idOrPath: number | string, permanently: boolean = 
  * @returns Returns an object with the deleted items or errors  and dispatches the next action based on the response.
  */
 export const deleteBatch = (contentItems: Array<number | string>, permanently: boolean = false) => ({
-    type: 'DELETE_BATCH',
-    payload: (repository: Repository) => repository.delete({ idOrPath: contentItems, permanent: permanently }),
+  type: 'DELETE_BATCH',
+  payload: (repository: Repository) => repository.delete({ idOrPath: contentItems, permanent: permanently }),
 })
 /**
  * Action creator for copying a Content in the Content Repository.
@@ -220,8 +229,8 @@ export const deleteBatch = (contentItems: Array<number | string>, permanently: b
  * @returns Returns the Content and dispatches the next action based on the response.
  */
 export const copyContent = (idOrPath: number | string, targetPath: string) => ({
-    type: 'COPY_CONTENT',
-    payload: (repository: Repository) => repository.copy({ idOrPath, targetPath }),
+  type: 'COPY_CONTENT',
+  payload: (repository: Repository) => repository.copy({ idOrPath, targetPath }),
 })
 /**
  * Action creator for copying multiple Content in the Content Repository.
@@ -230,8 +239,8 @@ export const copyContent = (idOrPath: number | string, targetPath: string) => ({
  * @returns Returns the list of the Content and dispatches the next action based on the response.
  */
 export const copyBatch = (items: Array<number | string>, targetPath: string) => ({
-    type: 'COPY_BATCH',
-    payload: (repository: Repository) => repository.copy({ idOrPath: items, targetPath }),
+  type: 'COPY_BATCH',
+  payload: (repository: Repository) => repository.copy({ idOrPath: items, targetPath }),
 })
 /**
  * Action creator for moving a Content in the Content Repository.
@@ -240,8 +249,8 @@ export const copyBatch = (items: Array<number | string>, targetPath: string) => 
  * @returns Returns the Content and dispatches the next action based on the response.
  */
 export const moveContent = (idOrPath: number | string, targetPath: string) => ({
-    type: 'MOVE_CONTENT',
-    payload: (repository: Repository) => repository.move({ idOrPath, targetPath }),
+  type: 'MOVE_CONTENT',
+  payload: (repository: Repository) => repository.move({ idOrPath, targetPath }),
 })
 /**
  * Action creator for moving multiple Content in the Content Repository.
@@ -250,8 +259,8 @@ export const moveContent = (idOrPath: number | string, targetPath: string) => ({
  * @returns Returns the list of the Content and dispatches the next action based on the response.
  */
 export const moveBatch = (items: Array<number | string>, targetPath: string) => ({
-    type: 'MOVE_BATCH',
-    payload: (repository: Repository) => repository.move({ idOrPath: items, targetPath }),
+  type: 'MOVE_BATCH',
+  payload: (repository: Repository) => repository.move({ idOrPath: items, targetPath }),
 })
 /**
  * Action creator for checking out a Content in the Content Repository.
@@ -260,8 +269,8 @@ export const moveBatch = (items: Array<number | string>, targetPath: string) => 
  * @returns Returns the Content and dispatches the next action based on the response.
  */
 export const checkOut = <T extends Content = Content>(idOrPath: number | string, options?: ODataParams<T>) => ({
-    type: 'CHECKOUT_CONTENT',
-    payload: (repository: Repository) => repository.versioning.checkOut(idOrPath, options),
+  type: 'CHECKOUT_CONTENT',
+  payload: (repository: Repository) => repository.versioning.checkOut(idOrPath, options),
 })
 /**
  * Action creator for checking in a Content in the Content Repository.
@@ -270,9 +279,13 @@ export const checkOut = <T extends Content = Content>(idOrPath: number | string,
  * @param options {ODataParams} Options to filter the response.
  * @returns Returns the Content and dispatches the next action based on the response.
  */
-export const checkIn = <T extends Content = Content>(idOrPath: number | string, checkInComments: string = '', options?: ODataParams<T>) => ({
-    type: 'CHECKIN_CONTENT',
-    payload: (repository: Repository) => repository.versioning.checkIn(idOrPath, checkInComments, options),
+export const checkIn = <T extends Content = Content>(
+  idOrPath: number | string,
+  checkInComments: string = '',
+  options?: ODataParams<T>,
+) => ({
+  type: 'CHECKIN_CONTENT',
+  payload: (repository: Repository) => repository.versioning.checkIn(idOrPath, checkInComments, options),
 })
 /**
  * Action creator for publishing a Content in the Content Repository.
@@ -281,8 +294,8 @@ export const checkIn = <T extends Content = Content>(idOrPath: number | string, 
  * @returns Returns the Content and dispatches the next action based on the response.
  */
 export const publish = <T extends Content = Content>(idOrPath: number | string, options?: ODataParams<T>) => ({
-    type: 'PUBLISH_CONTENT',
-    payload: (repository: Repository) => repository.versioning.publish(idOrPath, options),
+  type: 'PUBLISH_CONTENT',
+  payload: (repository: Repository) => repository.versioning.publish(idOrPath, options),
 })
 /**
  * Action creator for approving a Content in the Content Repository.
@@ -291,8 +304,8 @@ export const publish = <T extends Content = Content>(idOrPath: number | string, 
  * @returns Returns the Content and dispatches the next action based on the response.
  */
 export const approve = <T extends Content = Content>(idOrPath: number | string, options?: ODataParams<T>) => ({
-    type: 'APPROVE_CONTENT',
-    payload: (repository: Repository) => repository.versioning.approve(idOrPath, options),
+  type: 'APPROVE_CONTENT',
+  payload: (repository: Repository) => repository.versioning.approve(idOrPath, options),
 })
 
 /**
@@ -302,9 +315,13 @@ export const approve = <T extends Content = Content>(idOrPath: number | string, 
  * @param options {ODataParams} Options to filter the response.
  * @returns Returns the Content and dispatches the next action based on the response.
  */
-export const rejectContent = <T extends Content = Content>(idOrPath: number | string, rejectReason: string = '', options?: ODataParams<T>) => ({
-    type: 'REJECT_CONTENT',
-    payload: (repository: Repository) => repository.versioning.reject(idOrPath, rejectReason, options),
+export const rejectContent = <T extends Content = Content>(
+  idOrPath: number | string,
+  rejectReason: string = '',
+  options?: ODataParams<T>,
+) => ({
+  type: 'REJECT_CONTENT',
+  payload: (repository: Repository) => repository.versioning.reject(idOrPath, rejectReason, options),
 })
 /**
  * Action creator for undoing checkout on a Content in the Content Repository.
@@ -313,8 +330,8 @@ export const rejectContent = <T extends Content = Content>(idOrPath: number | st
  * @returns Returns the Content and dispatches the next action based on the response.
  */
 export const undoCheckout = <T extends Content = Content>(idOrPath: number | string, options?: ODataParams<T>) => ({
-    type: 'UNDOCHECKOUT_CONTENT',
-    payload: (repository: Repository) => repository.versioning.undoCheckOut(idOrPath, options),
+  type: 'UNDOCHECKOUT_CONTENT',
+  payload: (repository: Repository) => repository.versioning.undoCheckOut(idOrPath, options),
 })
 /**
  * Action creator for force undoing checkout on a Content in the Content Repository.
@@ -322,9 +339,12 @@ export const undoCheckout = <T extends Content = Content>(idOrPath: number | str
  * @param options {ODataParams} Options to filter the response.
  * @returns Returns the Content and dispatches the next action based on the response.
  */
-export const forceUndoCheckout = <T extends Content = Content>(idOrPath: number | string, options?: ODataParams<T>) => ({
-    type: 'FORCE_UNDOCHECKOUT_CONTENT',
-    payload: (repository: Repository) => repository.versioning.forceUndoCheckOut(idOrPath, options),
+export const forceUndoCheckout = <T extends Content = Content>(
+  idOrPath: number | string,
+  options?: ODataParams<T>,
+) => ({
+  type: 'FORCE_UNDOCHECKOUT_CONTENT',
+  payload: (repository: Repository) => repository.versioning.forceUndoCheckOut(idOrPath, options),
 })
 /**
  * Action creator for restoring the version of a Content in the Content Repository.
@@ -333,18 +353,22 @@ export const forceUndoCheckout = <T extends Content = Content>(idOrPath: number 
  * @param options {ODataParams} Options to filter the response.
  * @returns Returns the Content and dispatches the next action based on the response.
  */
-export const restoreVersion = <T extends Content = Content>(idOrPath: number | string, version: string, options?: ODataParams<T>) => ({
-    type: 'RESTOREVERSION_CONTENT',
-    version,
-    payload: (repository: Repository) => repository.versioning.restoreVersion(idOrPath, version, options),
+export const restoreVersion = <T extends Content = Content>(
+  idOrPath: number | string,
+  version: string,
+  options?: ODataParams<T>,
+) => ({
+  type: 'RESTOREVERSION_CONTENT',
+  version,
+  payload: (repository: Repository) => repository.versioning.restoreVersion(idOrPath, version, options),
 })
 /**
  * Action creator for check user state in a sensenet application.
  * @returns Returns a redux action with the properties.
  */
 export const loginStateChanged = (loginState: LoginState) => ({
-    type: 'USER_LOGIN_STATE_CHANGED',
-    loginState,
+  type: 'USER_LOGIN_STATE_CHANGED',
+  loginState,
 })
 /**
  * Action creator for user changes.
@@ -352,8 +376,8 @@ export const loginStateChanged = (loginState: LoginState) => ({
  * @returns Returns a redux action with the properties.
  */
 export const userChanged = (user: User) => ({
-    type: 'USER_CHANGED',
-    user,
+  type: 'USER_CHANGED',
+  user,
 })
 /**
  * Action creator for login a user to a sensenet portal.
@@ -362,8 +386,8 @@ export const userChanged = (user: User) => ({
  * @returns Returns a redux action with the properties userName and password.
  */
 export const userLogin = (userName: string, password: string) => ({
-    type: 'USER_LOGIN',
-    payload: (repository: Repository) => repository.authentication.login(userName, password),
+  type: 'USER_LOGIN',
+  payload: (repository: Repository) => repository.authentication.login(userName, password),
 })
 // /**
 //  * Action creator for handling a user login success response without a loggedin user.
@@ -385,16 +409,16 @@ export const userLogin = (userName: string, password: string) => ({
  * @returnsReturns a redux action.
  */
 export const userLoginGoogle = (provider: GoogleOauthProvider, token?: string) => ({
-    type: 'USER_LOGIN_GOOGLE',
-    payload: () => provider.login(token),
+  type: 'USER_LOGIN_GOOGLE',
+  payload: () => provider.login(token),
 })
 /**
  * Action creator for logout a user from a sensenet portal.
  * @returns Returns a redux action.
  */
 export const userLogout = () => ({
-    type: 'USER_LOGOUT',
-    payload: (repository: Repository) => repository.authentication.logout(),
+  type: 'USER_LOGOUT',
+  payload: (repository: Repository) => repository.authentication.logout(),
 })
 /**
  * Action creator for load repository config.
@@ -402,8 +426,8 @@ export const userLogout = () => ({
  * @returns Returns a redux action.
  */
 export const loadRepository = (repositoryConfig: RepositoryConfiguration) => ({
-    type: 'LOAD_REPOSITORY',
-    repository: repositoryConfig,
+  type: 'LOAD_REPOSITORY',
+  repository: repositoryConfig,
 })
 /**
  * Action creator for selecting a Content
@@ -411,8 +435,8 @@ export const loadRepository = (repositoryConfig: RepositoryConfiguration) => ({
  * @returns Returns a redux action.
  */
 export const selectContent = <T extends Content>(content: T) => ({
-    type: 'SELECT_CONTENT',
-    content,
+  type: 'SELECT_CONTENT',
+  content,
 })
 /**
  * Action creator for deselecting a Content
@@ -420,15 +444,15 @@ export const selectContent = <T extends Content>(content: T) => ({
  * @returns Returns a redux action.
  */
 export const deSelectContent = <T extends Content>(content: T) => ({
-    type: 'DESELECT_CONTENT',
-    content,
+  type: 'DESELECT_CONTENT',
+  content,
 })
 /**
  * Action creator for clearing the array of selected content
  * @returns Returns a redux action.
  */
 export const clearSelection = () => ({
-    type: 'CLEAR_SELECTION',
+  type: 'CLEAR_SELECTION',
 })
 /**
  * Action creator for uploading a Content into the Content Repository.
@@ -440,21 +464,28 @@ export const clearSelection = () => ({
  * @param propertyName Name of the field where the binary should be saved
  * @returns Returns a redux action with the properties type, content, file, contentType, overwrite, body and propertyName.
  */
-export const uploadRequest = <T extends Content>(parentPath: string, file: File, contentTypeName: string = 'File', overwrite: boolean = true, body?: {}, propertyName: string = 'Binary') => ({
-    type: 'UPLOAD_CONTENT',
-    // tslint:disable:completed-docs
-    payload: async (repository: Repository) => {
-        const data = await Upload.file<T>({
-            binaryPropertyName: propertyName,
-            overwrite,
-            file,
-            repository,
-            contentTypeName,
-            parentPath,
-            body,
-        })
-        return await repository.load<T>({ idOrPath: data.Id })
-    },
+export const uploadRequest = <T extends Content>(
+  parentPath: string,
+  file: File,
+  contentTypeName: string = 'File',
+  overwrite: boolean = true,
+  body?: {},
+  propertyName: string = 'Binary',
+) => ({
+  type: 'UPLOAD_CONTENT',
+  // tslint:disable:completed-docs
+  payload: async (repository: Repository) => {
+    const data = await Upload.file<T>({
+      binaryPropertyName: propertyName,
+      overwrite,
+      file,
+      repository,
+      contentTypeName,
+      parentPath,
+      body,
+    })
+    return await repository.load<T>({ idOrPath: data.Id })
+  },
 })
 /**
  * Action creator for changing a field value of a content
@@ -462,23 +493,23 @@ export const uploadRequest = <T extends Content>(parentPath: string, file: File,
  * @param {any} value Value of the field.
  */
 export const changeFieldValue = (name: string, value: any) => ({
-    type: 'CHANGE_FIELD_VALUE',
-    name,
-    value,
+  type: 'CHANGE_FIELD_VALUE',
+  name,
+  value,
 })
 /**
  * Action creator for loading schema of a given type
  * @param {string} typeName Name of the Content Type.
  */
 export const getSchema = (typeName: string) => ({
-    type: 'GET_SCHEMA',
-    payload: (repository: Repository) => repository.schemas.getSchemaByName(typeName),
+  type: 'GET_SCHEMA',
+  payload: (repository: Repository) => repository.schemas.getSchemaByName(typeName),
 })
 /**
  * Action creator for setting the default select, expandm etc. options
  * @param {string} typeName Name of the Content Type.
  */
 export const setDefaultOdataOptions = (options: ODataParams<GenericContent>) => ({
-    type: 'SET_ODATAOPTIONS',
-    options,
+  type: 'SET_ODATAOPTIONS',
+  options,
 })

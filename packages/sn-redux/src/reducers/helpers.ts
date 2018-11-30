@@ -27,7 +27,7 @@ export const getFetching = (state: any) => state.isFetching
  * @returns Returns the error message.
  */
 export const getError = (state: any) => {
-    return state.error
+  return state.error
 }
 /**
  * Method to get the authentication status.
@@ -35,7 +35,7 @@ export const getError = (state: any) => {
  * @returns Returns the authentication state.
  */
 export const getAuthenticationStatus = (state: ReturnType<typeof sensenet>) => {
-    return state.session.loginState as LoginState
+  return state.session.loginState as LoginState
 }
 /**
  * Method to get the authentication error.
@@ -43,7 +43,7 @@ export const getAuthenticationStatus = (state: ReturnType<typeof sensenet>) => {
  * @returns Returns the error message.
  */
 export const getAuthenticationError = (state: ReturnType<typeof sensenet>) => {
-    return state.session.error
+  return state.session.error
 }
 /**
  * Method to get the repository url.
@@ -51,7 +51,7 @@ export const getAuthenticationError = (state: ReturnType<typeof sensenet>) => {
  * @returns Returns the url of the repository.
  */
 export const getRepositoryUrl = (state: ReturnType<typeof sensenet>) => {
-    return state.session.repository && state.session.repository.repositoryUrl
+  return state.session.repository && state.session.repository.repositoryUrl
 }
 /**
  * Method to get the ids of the selected content items.
@@ -59,7 +59,7 @@ export const getRepositoryUrl = (state: ReturnType<typeof sensenet>) => {
  * @returns Returns an array with the ids.
  */
 export const getSelectedContentIds = (state: ReturnType<typeof sensenet>) => {
-    return state.selected.ids
+  return state.selected.ids
 }
 /**
  * Method to get the selected content items.
@@ -67,7 +67,7 @@ export const getSelectedContentIds = (state: ReturnType<typeof sensenet>) => {
  * @returns Returns an Oject with the selected content items.
  */
 export const getSelectedContentItems = (state: ReturnType<typeof sensenet>) => {
-    return state.selected.entities
+  return state.selected.entities
 }
 /**
  * Method to get the id of the opened content item.
@@ -75,7 +75,7 @@ export const getSelectedContentItems = (state: ReturnType<typeof sensenet>) => {
  * @returns Returns the id of the opened content item.
  */
 export const getOpenedContent = (state: ReturnType<typeof currentitems>) => {
-    return state.isOpened
+  return state.isOpened
 }
 /**
  * Method to get the list of actions of the currentitems items.
@@ -83,7 +83,7 @@ export const getOpenedContent = (state: ReturnType<typeof currentitems>) => {
  * @returns Returns the list of actions.
  */
 export const getChildrenActions = (state: ReturnType<typeof currentitems>) => {
-    return state.actions
+  return state.actions
 }
 /**
  * Method to get the current content object.
@@ -91,7 +91,7 @@ export const getChildrenActions = (state: ReturnType<typeof currentitems>) => {
  * @returns Returns the content object.
  */
 export const getCurrentContent = (state: ReturnType<typeof sensenet>) => {
-    return state.currentcontent.content
+  return state.currentcontent.content
 }
 /**
  * Method to get the currentitems items.
@@ -99,7 +99,7 @@ export const getCurrentContent = (state: ReturnType<typeof sensenet>) => {
  * @returns Returns the content items as an object.
  */
 export const getChildren = (state: ReturnType<typeof currentitems>) => {
-    return state.entities
+  return state.entities
 }
 /**
  * Method to get the list of current content's chanegd fields and their values.
@@ -107,7 +107,7 @@ export const getChildren = (state: ReturnType<typeof currentitems>) => {
  * @returns Returns the list of the fields.
  */
 export const getFields = (state: ReturnType<typeof sensenet>) => {
-    return state.currentcontent.fields
+  return state.currentcontent.fields
 }
 /**
  * Method to get the schema of current content.
@@ -115,5 +115,5 @@ export const getFields = (state: ReturnType<typeof sensenet>) => {
  * @returns Returns the schema object.
  */
 export const getSchema = (state: ReturnType<typeof sensenet>) => {
-    return state.currentcontent.schema
+  return state.currentcontent.schema
 }

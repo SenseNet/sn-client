@@ -26,8 +26,6 @@
  * );
  * ```
  */
-/**
- */
 import { Repository } from '@sensenet/client-core'
 import { promiseMiddleware } from '@sensenet/redux-promise-middleware'
 import { applyMiddleware, compose, createStore, DeepPartial, Middleware, Reducer, Store, StoreEnhancer } from 'redux'
@@ -71,80 +69,83 @@ import * as Actions from './Actions'
  * Defines config options for a sensenet Redux store.
  */
 export interface CreateStoreOptions<T> {
-    /**
-     * The root reducer of the store
-     */
-    rootReducer: Reducer<T>,
-    /**
-     * Related repository object
-     */
-    repository: Repository,
-    /**
-     * Array of additional middlewares
-     */
-    middlewares?: Middleware[],
-    /**
-     * Initial state of the store
-     */
-    persistedState?: DeepPartial<T>,
-    /**
-     * Array of additional enhancers
-     */
-    enhancers?: Array<StoreEnhancer<any>>,
-    /**
-     * Switches redux logger on or off
-     */
-    logger?: boolean,
-    /**
-     * Switches redux developer tools on or off
-     */
-    devTools?: boolean,
+  /**
+   * The root reducer of the store
+   */
+  rootReducer: Reducer<T>
+  /**
+   * Related repository object
+   */
+  repository: Repository
+  /**
+   * Array of additional middlewares
+   */
+  middlewares?: Middleware[]
+  /**
+   * Initial state of the store
+   */
+  persistedState?: DeepPartial<T>
+  /**
+   * Array of additional enhancers
+   */
+  enhancers?: Array<StoreEnhancer<any>>
+  /**
+   * Switches redux logger on or off
+   */
+  logger?: boolean
+  /**
+   * Switches redux developer tools on or off
+   */
+  devTools?: boolean
 }
 /**
  * Method that configures a sensenet Redux store
  * @param options {CreateStoreOptions} An object to hold config options of the Store.
  * @returns store {Store} Returns a preconfigured Redux store.
  */
-export const createSensenetStore: <T>(options: CreateStoreOptions<T>) => Store<T> = <T>(options: CreateStoreOptions<T>) => {
-    let middlewareArray: Array<Middleware<any>> = []
-    let enhancerArray: Array<StoreEnhancer<any>> = []
-    if (typeof options.middlewares === 'undefined' || options.middlewares === null) {
-        // middlewareArray.push(epicMiddleware)
-    } else {
-        middlewareArray = [...options.middlewares]
-    }
-    const loggerMiddleware = options.logger ? createLogger() : null
-    const reduxPromiseMiddleware = promiseMiddleware(options.repository)
-    loggerMiddleware ? middlewareArray.push(loggerMiddleware, reduxPromiseMiddleware) :
-        middlewareArray.push(reduxPromiseMiddleware)
+export const createSensenetStore: <T>(options: CreateStoreOptions<T>) => Store<T> = <T>(
+  options: CreateStoreOptions<T>,
+) => {
+  let middlewareArray: Array<Middleware<any>> = []
+  let enhancerArray: Array<StoreEnhancer<any>> = []
+  if (typeof options.middlewares === 'undefined' || options.middlewares === null) {
+    // middlewareArray.push(epicMiddleware)
+  } else {
+    middlewareArray = [...options.middlewares]
+  }
+  const loggerMiddleware = options.logger ? createLogger() : null
+  const reduxPromiseMiddleware = promiseMiddleware(options.repository)
+  loggerMiddleware
+    ? middlewareArray.push(loggerMiddleware, reduxPromiseMiddleware)
+    : middlewareArray.push(reduxPromiseMiddleware)
 
-    if (typeof options.enhancers === 'undefined' || options.enhancers === null) {
-        // middlewareArray.push(epicMiddleware)
-    } else {
-        enhancerArray = [...options.enhancers]
-    }
+  if (typeof options.enhancers === 'undefined' || options.enhancers === null) {
+    // middlewareArray.push(epicMiddleware)
+  } else {
+    enhancerArray = [...options.enhancers]
+  }
 
-    // tslint:disable-next-line:no-string-literal
-    const composeEnhancers = (window as any)['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] && options.devTools ? (window as any)['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] : compose
+  // tslint:disable-next-line:no-string-literal
+  const composeEnhancers =
+    (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ && options.devTools
+      ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+      : compose
 
-    const store = createStore(
-        options.rootReducer,
-        options.persistedState || {},
-        composeEnhancers(
-            applyMiddleware(...middlewareArray),
-            ...enhancerArray,
-        ),
-    )
+  const store = createStore(
+    options.rootReducer,
+    options.persistedState || {},
+    composeEnhancers(applyMiddleware(...middlewareArray), ...enhancerArray),
+  )
 
-    const repo: Repository = options.repository
-    store.dispatch(Actions.loadRepository(repo.configuration))
+  const repo: Repository = options.repository
+  store.dispatch(Actions.loadRepository(repo.configuration))
 
-    repo.authentication.state.subscribe((state) => {
-        store.dispatch(Actions.loginStateChanged(state))
-    }, true)
+  repo.authentication.state.subscribe(state => {
+    store.dispatch(Actions.loginStateChanged(state))
+  }, true)
 
-    repo.authentication.currentUser.subscribe((user) => {
-        store.dispatch(Actions.userChanged(user))
-    }, true)
-    return store
+  repo.authentication.currentUser.subscribe(user => {
+    store.dispatch(Actions.userChanged(user))
+  }, true)
+  return store
 }
