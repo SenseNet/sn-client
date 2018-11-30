@@ -1,4 +1,3 @@
-
 /**
  * @module sn-controls-react
  *
@@ -8,9 +7,7 @@
 import { ReactClientFieldConfig } from './ReactClientFieldConfig'
 import { reactControlMapper } from './ReactControlMapper'
 
-export {
-    ReactClientFieldConfig, reactControlMapper,
-}
+export { ReactClientFieldConfig, reactControlMapper }
 
 export * from './fieldcontrols'
 export * from './viewcontrols/EditView'

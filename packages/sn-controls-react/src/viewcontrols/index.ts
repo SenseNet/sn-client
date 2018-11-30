@@ -14,4 +14,6 @@ export { BrowseView } from './BrowseView'
 /**
  * Interface for root state type
  */
-export interface RootStateType { sensenet: ReturnType<typeof Reducers.sensenet> }
+export interface RootStateType {
+  sensenet: ReturnType<typeof Reducers.sensenet>
+}

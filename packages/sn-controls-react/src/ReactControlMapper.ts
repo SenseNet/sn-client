@@ -6,7 +6,17 @@
 
 import { Repository } from '@sensenet/client-core'
 import { ControlMapper } from '@sensenet/control-mapper'
-import { ChoiceFieldSetting, DateTimeFieldSetting, FieldSetting, IntegerFieldSetting, LongTextFieldSetting, NumberFieldSetting, PasswordFieldSetting, ReferenceFieldSetting, ShortTextFieldSetting } from '@sensenet/default-content-types'
+import {
+  ChoiceFieldSetting,
+  DateTimeFieldSetting,
+  FieldSetting,
+  IntegerFieldSetting,
+  LongTextFieldSetting,
+  NumberFieldSetting,
+  PasswordFieldSetting,
+  ReferenceFieldSetting,
+  ShortTextFieldSetting,
+} from '@sensenet/default-content-types'
 import { Component } from 'react'
 import * as FieldControls from './fieldcontrols'
 import { ReactChoiceFieldSetting } from './fieldcontrols/ChoiceFieldSetting'
@@ -24,15 +34,15 @@ import * as ViewControls from './viewcontrols'
  */
 
 const clientConfigFactory = (fieldSettings: FieldSetting) => {
-    const defaultSetting = {} as ReactClientFieldSettingProps
-    defaultSetting.key = fieldSettings.Name,
-        defaultSetting.name = fieldSettings.Name as any,
-        defaultSetting.readOnly = fieldSettings.ReadOnly || false,
-        defaultSetting.required = fieldSettings.Compulsory || false,
-        defaultSetting['data-placeHolderText'] = fieldSettings.DisplayName || ''
-    defaultSetting['data-labelText'] = fieldSettings.DisplayName || '',
-        defaultSetting['data-typeName'] = fieldSettings.Type || ''
-    return defaultSetting
+  const defaultSetting = {} as ReactClientFieldSettingProps
+  ;(defaultSetting.key = fieldSettings.Name),
+    (defaultSetting.name = fieldSettings.Name as any),
+    (defaultSetting.readOnly = fieldSettings.ReadOnly || false),
+    (defaultSetting.required = fieldSettings.Compulsory || false),
+    (defaultSetting['data-placeHolderText'] = fieldSettings.DisplayName || '')
+  ;(defaultSetting['data-labelText'] = fieldSettings.DisplayName || ''),
+    (defaultSetting['data-typeName'] = fieldSettings.Type || '')
+  return defaultSetting
 }
 
 // const repository = new Repository()
@@ -40,123 +50,129 @@ const clientConfigFactory = (fieldSettings: FieldSetting) => {
 /**
  * A static Control Mapper instance, used to create the mapping between sensenet ECM ContentTypes and FieldSettings and React components.
  */
-export const reactControlMapper = (repository: Repository) => new ControlMapper(repository, Component, clientConfigFactory, ViewControls.EditView, FieldControls.ShortText)
-    .setupFieldSettingDefault(NumberFieldSetting, (setting) => {
-        return FieldControls.Number
+export const reactControlMapper = (repository: Repository) =>
+  new ControlMapper(repository, Component, clientConfigFactory, ViewControls.EditView, FieldControls.ShortText)
+    .setupFieldSettingDefault(NumberFieldSetting, setting => {
+      return FieldControls.Number
     })
-    .setClientControlFactory(NumberFieldSetting, (setting) => {
-        const numberSettings = clientConfigFactory(setting) as ReactNumberFieldSetting
-        numberSettings['data-digits'] = setting.Digits,
-            numberSettings['data-step'] = setting.Step,
-            numberSettings['data-isPercentage'] = setting.ShowAsPercentage,
-            numberSettings['data-decimal'] = true,
-            numberSettings.max = setting.MaxValue,
-            numberSettings.min = setting.MinValue
-        // TODO: currency
-        return numberSettings
+    .setClientControlFactory(NumberFieldSetting, setting => {
+      const numberSettings = clientConfigFactory(setting) as ReactNumberFieldSetting
+      ;(numberSettings['data-digits'] = setting.Digits),
+        (numberSettings['data-step'] = setting.Step),
+        (numberSettings['data-isPercentage'] = setting.ShowAsPercentage),
+        (numberSettings['data-decimal'] = true),
+        (numberSettings.max = setting.MaxValue),
+        (numberSettings.min = setting.MinValue)
+      // TODO: currency
+      return numberSettings
     })
-    .setupFieldSettingDefault(IntegerFieldSetting, (setting) => {
-        return FieldControls.Number
+    .setupFieldSettingDefault(IntegerFieldSetting, setting => {
+      return FieldControls.Number
     })
-    .setClientControlFactory(IntegerFieldSetting, (setting) => {
-        const numberSettings = clientConfigFactory(setting) as ReactNumberFieldSetting
-        numberSettings['data-step'] = setting.Step,
-            numberSettings['data-isPercentage'] = setting.ShowAsPercentage,
-            numberSettings['data-decimal'] = false,
-            numberSettings.max = setting.MaxValue,
-            numberSettings.min = setting.MinValue
-        // TODO: currency
-        return numberSettings
+    .setClientControlFactory(IntegerFieldSetting, setting => {
+      const numberSettings = clientConfigFactory(setting) as ReactNumberFieldSetting
+      ;(numberSettings['data-step'] = setting.Step),
+        (numberSettings['data-isPercentage'] = setting.ShowAsPercentage),
+        (numberSettings['data-decimal'] = false),
+        (numberSettings.max = setting.MaxValue),
+        (numberSettings.min = setting.MinValue)
+      // TODO: currency
+      return numberSettings
     })
-    .setupFieldSettingDefault(ShortTextFieldSetting, (setting) => {
-        switch (setting.ControlHint) {
-            case 'sn:Name':
-                return FieldControls.Name
-            case 'sn:DisplayName':
-                return FieldControls.DisplayName
-            case 'sn:FileName':
-                return FieldControls.FileName
-            default:
-                return FieldControls.ShortText
-        }
+    .setupFieldSettingDefault(ShortTextFieldSetting, setting => {
+      switch (setting.ControlHint) {
+        case 'sn:Name':
+          return FieldControls.Name
+        case 'sn:DisplayName':
+          return FieldControls.DisplayName
+        case 'sn:FileName':
+          return FieldControls.FileName
+        default:
+          return FieldControls.ShortText
+      }
     })
-    .setClientControlFactory(ShortTextFieldSetting, (setting) => {
-        const shortTextSettings = clientConfigFactory(setting) as ReactShortTextFieldSetting
-        shortTextSettings['data-minLength'] = setting.MinLength,
-            shortTextSettings['data-maxLength'] = setting.MaxLength,
-            shortTextSettings['data-regex'] = setting.Regex
-        return shortTextSettings
+    .setClientControlFactory(ShortTextFieldSetting, setting => {
+      const shortTextSettings = clientConfigFactory(setting) as ReactShortTextFieldSetting
+      ;(shortTextSettings['data-minLength'] = setting.MinLength),
+        (shortTextSettings['data-maxLength'] = setting.MaxLength),
+        (shortTextSettings['data-regex'] = setting.Regex)
+      return shortTextSettings
     })
-    .setupFieldSettingDefault(PasswordFieldSetting, (setting) => {
-        return FieldControls.Password
+    .setupFieldSettingDefault(PasswordFieldSetting, setting => {
+      return FieldControls.Password
     })
-    .setClientControlFactory(PasswordFieldSetting, (setting) => {
-        const passwordSettings = clientConfigFactory(setting) as ReactPasswordFieldSetting
-        return passwordSettings
+    .setClientControlFactory(PasswordFieldSetting, setting => {
+      const passwordSettings = clientConfigFactory(setting) as ReactPasswordFieldSetting
+      return passwordSettings
     })
-    .setupFieldSettingDefault(DateTimeFieldSetting, (setting) => {
-        return FieldControls.DateTimePicker
+    .setupFieldSettingDefault(DateTimeFieldSetting, setting => {
+      return FieldControls.DateTimePicker
     })
-    .setClientControlFactory(DateTimeFieldSetting, (setting) => {
-        const dateTimeSettings = clientConfigFactory(setting) as ReactDateTimeFieldSetting
-        dateTimeSettings['data-dateTimeMode'] = setting.DateTimeMode as any,
-            dateTimeSettings['data-precision'] = setting.Precision as any
-        return dateTimeSettings
+    .setClientControlFactory(DateTimeFieldSetting, setting => {
+      const dateTimeSettings = clientConfigFactory(setting) as ReactDateTimeFieldSetting
+      ;(dateTimeSettings['data-dateTimeMode'] = setting.DateTimeMode as any),
+        (dateTimeSettings['data-precision'] = setting.Precision as any)
+      return dateTimeSettings
     })
-    .setupFieldSettingDefault(ChoiceFieldSetting, (setting) => {
-        switch (setting.DisplayChoice) {
-            case 2:
-                return FieldControls.CheckboxGroup
-            case 0:
-                return FieldControls.DropDownList
-            case 1:
-                return FieldControls.RadioButtonGroup
-            default:
-                if (setting.AllowMultiple) {
-                    return FieldControls.CheckboxGroup
-                } else {
-                    return FieldControls.DropDownList
-                }
-        }
+    .setupFieldSettingDefault(ChoiceFieldSetting, setting => {
+      switch (setting.DisplayChoice) {
+        case 2:
+          return FieldControls.CheckboxGroup
+        case 0:
+          return FieldControls.DropDownList
+        case 1:
+          return FieldControls.RadioButtonGroup
+        default:
+          if (setting.AllowMultiple) {
+            return FieldControls.CheckboxGroup
+          } else {
+            return FieldControls.DropDownList
+          }
+      }
     })
-    .setClientControlFactory(ChoiceFieldSetting, (setting) => {
-        const choiceSettings = clientConfigFactory(setting) as ReactChoiceFieldSetting
-        choiceSettings['data-allowExtraValue'] = setting.AllowExtraValue,
-            choiceSettings['data-allowMultiple'] = setting.AllowMultiple,
-            choiceSettings.options = setting.Options || []
-        return choiceSettings
+    .setClientControlFactory(ChoiceFieldSetting, setting => {
+      const choiceSettings = clientConfigFactory(setting) as ReactChoiceFieldSetting
+      ;(choiceSettings['data-allowExtraValue'] = setting.AllowExtraValue),
+        (choiceSettings['data-allowMultiple'] = setting.AllowMultiple),
+        (choiceSettings.options = setting.Options || [])
+      return choiceSettings
     })
-    .setupFieldSettingDefault(ReferenceFieldSetting, (setting) => {
-        if (setting.AllowedTypes && setting.AllowedTypes.indexOf('User') !== -1) {
-            return FieldControls.TagsInput
-        } else {
-            // TODO: referencegrid
-            return FieldControls.ShortText
-        }
+    .setupFieldSettingDefault(ReferenceFieldSetting, setting => {
+      if (setting.AllowedTypes && setting.AllowedTypes.indexOf('User') !== -1) {
+        return FieldControls.TagsInput
+      } else {
+        // TODO: referencegrid
+        return FieldControls.ShortText
+      }
     })
-    .setClientControlFactory(ReferenceFieldSetting, (setting) => {
-        const referenceSettings = clientConfigFactory(setting) as ReactReferenceFieldSetting
-        referenceSettings['data-allowMultiple'] = setting.AllowMultiple,
-            referenceSettings['data-allowedTypes'] = setting.AllowedTypes,
-            referenceSettings['data-selectionRoot'] = setting.SelectionRoots,
-            referenceSettings['data-defaultDisplayName'] = setting.AllowedTypes !== undefined ? setting.AllowedTypes.indexOf('User') > -1 ? 'FullName' : 'DisplayName' : 'DisplayName'
-        return referenceSettings
+    .setClientControlFactory(ReferenceFieldSetting, setting => {
+      const referenceSettings = clientConfigFactory(setting) as ReactReferenceFieldSetting
+      ;(referenceSettings['data-allowMultiple'] = setting.AllowMultiple),
+        (referenceSettings['data-allowedTypes'] = setting.AllowedTypes),
+        (referenceSettings['data-selectionRoot'] = setting.SelectionRoots),
+        (referenceSettings['data-defaultDisplayName'] =
+          setting.AllowedTypes !== undefined
+            ? setting.AllowedTypes.indexOf('User') > -1
+              ? 'FullName'
+              : 'DisplayName'
+            : 'DisplayName')
+      return referenceSettings
     })
-    .setupFieldSettingDefault(LongTextFieldSetting, (setting) => {
-        switch (setting.TextType) {
-            case 'LongText' as any:
-                return FieldControls.Textarea
-            case 'RichText' as any:
-                return FieldControls.RichTextEditor
-            case 'AdvancedRichText' as any:
-                return FieldControls.RichTextEditor
-            default:
-                return FieldControls.RichTextEditor
-        }
+    .setupFieldSettingDefault(LongTextFieldSetting, setting => {
+      switch (setting.TextType) {
+        case 'LongText' as any:
+          return FieldControls.Textarea
+        case 'RichText' as any:
+          return FieldControls.RichTextEditor
+        case 'AdvancedRichText' as any:
+          return FieldControls.RichTextEditor
+        default:
+          return FieldControls.RichTextEditor
+      }
     })
-    .setClientControlFactory(LongTextFieldSetting, (setting) => {
-        const longTextSettings = clientConfigFactory(setting) as ReactLongTextFieldSetting
-        longTextSettings['data-minLength'] = setting.MinLength,
-            longTextSettings['data-maxLength'] = setting.MaxLength
-        return longTextSettings
+    .setClientControlFactory(LongTextFieldSetting, setting => {
+      const longTextSettings = clientConfigFactory(setting) as ReactLongTextFieldSetting
+      ;(longTextSettings['data-minLength'] = setting.MinLength),
+        (longTextSettings['data-maxLength'] = setting.MaxLength)
+      return longTextSettings
     })

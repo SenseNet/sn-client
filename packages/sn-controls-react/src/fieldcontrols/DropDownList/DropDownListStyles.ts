@@ -1,5 +1,5 @@
 export const styles = {
-    input: {},
-    error: {},
-    browse: {},
+  input: {},
+  error: {},
+  browse: {},
 }

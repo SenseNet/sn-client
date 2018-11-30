@@ -1,34 +1,29 @@
 {
-    "compilerOptions": {
-        "module": "esnext",
-        "target": "es2015",
-        "sourceMap": true,
-        "declaration": true,
-        "allowJs": false,
-        "jsx": "react",
-        "moduleResolution": "node",
-        "outDir": "./dist",
-        "noImplicitAny": true,
-        "preserveConstEnums": true,
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
-        "removeComments": true,
-        "forceConsistentCasingInFileNames": true,
-        "noImplicitReturns": true,
-        "noImplicitThis": true,
-        "strictNullChecks": true,
-        "alwaysStrict": false,
-        "suppressImplicitAnyIndexErrors": true,
-        "noUnusedLocals": true,
-        "strict": true,
-        "allowSyntheticDefaultImports": true,
-        "skipLibCheck": true
-    },
-    "exclude": [
-        "node_modules",
-        "dist"
-    ],
-    "files": [
-        "src/index.ts"
-    ]
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "es2015",
+    "sourceMap": true,
+    "declaration": true,
+    "allowJs": false,
+    "jsx": "react",
+    "moduleResolution": "node",
+    "outDir": "./dist",
+    "noImplicitAny": true,
+    "preserveConstEnums": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "removeComments": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "alwaysStrict": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "noUnusedLocals": true,
+    "strict": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true
+  },
+  "exclude": ["node_modules", "dist"],
+  "files": ["src/index.ts"]
 }

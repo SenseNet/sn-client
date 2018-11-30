@@ -10,6 +10,5 @@ import { FieldSetting } from '@sensenet/default-content-types'
  * @description Base class for React client field config
  */
 export class ReactClientFieldConfig<TFieldSettings extends FieldSetting> {
-    constructor(public readonly fieldSettings: TFieldSettings) {
-    }
+  constructor(public readonly fieldSettings: TFieldSettings) {}
 }
