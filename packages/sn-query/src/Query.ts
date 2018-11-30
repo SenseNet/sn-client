@@ -1,10 +1,10 @@
-import { QueryExpression } from "./QueryExpression";
-import { QuerySegment } from "./QuerySegment";
+import { QueryExpression } from './QueryExpression'
+import { QuerySegment } from './QuerySegment'
 
 /**
  * Type for query builder callbacks
  */
-export type QueryBuilder<TExpression, TReturns> = (first: QueryExpression<TExpression>) => QuerySegment<TReturns>;
+export type QueryBuilder<TExpression, TReturns> = (first: QueryExpression<TExpression>) => QuerySegment<TReturns>
 
 /**
  * Represents an instance of a Query expression.
@@ -15,30 +15,30 @@ export type QueryBuilder<TExpression, TReturns> = (first: QueryExpression<TExpre
  * ```
  */
 export class Query<T> {
-    private readonly segments: Array<QuerySegment<T>> = [];
+  private readonly segments: Array<QuerySegment<T>> = []
 
-    /**
-     * Appends a new QuerySegment to the existing Query
-     * @param {QuerySegment<T>} newSegment The Segment to be added
-     */
-    public addSegment(newSegment: QuerySegment<T>) {
-        this.segments.push(newSegment);
-    }
+  /**
+   * Appends a new QuerySegment to the existing Query
+   * @param {QuerySegment<T>} newSegment The Segment to be added
+   */
+  public addSegment(newSegment: QuerySegment<T>) {
+    this.segments.push(newSegment)
+  }
 
-    /**
-     * Creates a stringified Content Query from the Query object
-     * @returns {String} The Query expression as a sensenet Content Query
-     */
-    public toString(): string {
-        return this.segments.map((s) => s.toString()).join("");
-    }
+  /**
+   * Creates a stringified Content Query from the Query object
+   * @returns {String} The Query expression as a sensenet Content Query
+   */
+  public toString(): string {
+    return this.segments.map(s => s.toString()).join('')
+  }
 
-    /**
-     * Constructs a Query instance
-     * @param build the Query Builder expression
-     */
-    constructor(build: QueryBuilder<any, T>) {
-        const firstExpression = new QueryExpression<T>(this);
-        build(firstExpression);
-    }
+  /**
+   * Constructs a Query instance
+   * @param build the Query Builder expression
+   */
+  constructor(build: QueryBuilder<any, T>) {
+    const firstExpression = new QueryExpression<T>(this)
+    build(firstExpression)
+  }
 }
