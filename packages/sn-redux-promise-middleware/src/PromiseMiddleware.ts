@@ -5,9 +5,9 @@ import { PromiseMiddlewareFailedAction, PromiseMiddlewareSucceededAction } from 
 // tslint:disable:completed-docs
 
 export const suffixes = {
-    loading: 'LOADING',
-    success: 'SUCCESS',
-    failure: 'FAILURE',
+  loading: 'LOADING',
+  success: 'SUCCESS',
+  failure: 'FAILURE',
 }
 
 /**
@@ -26,37 +26,36 @@ export const suffixes = {
  *  applyMiddleware([promiseMiddleware(repository)]),
  * )
  */
-export const promiseMiddleware: <TService>(service: TService) => Middleware = (service) => {
-    return (ref) => {
-        const { dispatch } = ref
+export const promiseMiddleware: <TService>(service: TService) => Middleware = service => {
+  return ref => {
+    const { dispatch } = ref
 
-        return (next) => (action) => {
-            const actionType = action.type
-            if (isPromiseMiddlewareAction(action)) {
-                (async () => {
-                    const { payload, ...originalAction } = action
-                    try {
-                        const result = await action.payload(service)
-                        return dispatch<PromiseMiddlewareSucceededAction<typeof result> & typeof originalAction>({
-                            ...originalAction,
-                            type: `${actionType}_${suffixes.success}`,
-                            result,
-                        })
-
-                    } catch (error) {
-                        return dispatch<PromiseMiddlewareFailedAction<typeof error> & typeof originalAction>({
-                            ...originalAction,
-                            type: `${actionType}_${suffixes.failure}`,
-                            error,
-                        })
-                    }
-                })()
-                return next({
-                    ...action as object,
-                    type: `${actionType}_${suffixes.loading}`,
-                } as typeof action)
-            }
-            return next(action)
-        }
+    return next => action => {
+      const actionType = action.type
+      if (isPromiseMiddlewareAction(action)) {
+        ;(async () => {
+          const { payload, ...originalAction } = action
+          try {
+            const result = await action.payload(service)
+            return dispatch<PromiseMiddlewareSucceededAction<typeof result> & typeof originalAction>({
+              ...originalAction,
+              type: `${actionType}_${suffixes.success}`,
+              result,
+            })
+          } catch (error) {
+            return dispatch<PromiseMiddlewareFailedAction<typeof error> & typeof originalAction>({
+              ...originalAction,
+              type: `${actionType}_${suffixes.failure}`,
+              error,
+            })
+          }
+        })()
+        return next({
+          ...(action as object),
+          type: `${actionType}_${suffixes.loading}`,
+        } as typeof action)
+      }
+      return next(action)
     }
+  }
 }
