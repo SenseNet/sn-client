@@ -1,37 +1,30 @@
 {
-    "compilerOptions": {
-        "strict": true,
-        "forceConsistentCasingInFileNames": true,
-        "noUnusedLocals": true,
-        "target": "es2015",
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "sourceMap": true,
-        "declaration": true,
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
-        "outDir": "./dist",
-        "rootDir": "./src",
-        "jsx": "react"
+  "compilerOptions": {
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noUnusedLocals": true,
+    "target": "es2015",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "declaration": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "jsx": "react"
+  },
+  "include": ["./src/**/*.ts", "./src/**/*.tsx"],
+  "exclude": ["./node_modules/**/*.*", "./dist/**/*.*", "./bundle/**/*.*"],
+  "references": [
+    {
+      "path": "./src/ContentList"
     },
-    "include": [
-        "./src/**/*.ts",
-        "./src/**/*.tsx"
-    ],
-    "exclude": [
-        "./node_modules/**/*.*",
-        "./dist/**/*.*",
-        "./bundle/**/*.*"
-    ],
-    "references": [
-        {
-            "path": "./src/ContentList"
-        },
-        {
-            "path": "./src/ExampleApp"
-        },
-        {
-            "path": "./src/Tests"
-        }
-    ]
+    {
+      "path": "./src/ExampleApp"
+    },
+    {
+      "path": "./src/Tests"
+    }
+  ]
 }

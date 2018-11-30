@@ -3,13 +3,13 @@ import * as React from 'react'
 import Moment from 'react-moment'
 
 interface DateCellProps {
-    date: string
+  date: string
 }
 
-export const DateCell: React.StatelessComponent<DateCellProps> = (props) => {
-    return (<TableCell padding="checkbox">
-        <Moment fromNow>
-            {props.date}
-        </Moment>
-    </TableCell >)
+export const DateCell: React.StatelessComponent<DateCellProps> = props => {
+  return (
+    <TableCell padding="checkbox">
+      <Moment fromNow={true}>{props.date}</Moment>
+    </TableCell>
+  )
 }
