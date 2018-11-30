@@ -10,10 +10,10 @@ import { RootReducerType, setShapes } from '../../store'
  * @param state the redux state
  */
 export const mapStateToProps = (state: RootReducerType) => {
-    return {
-        showShapes: state.sensenetDocumentViewer.viewer.showShapes,
-        toggleShapes: state.sensenetDocumentViewer.localization.toggleShapes,
-    }
+  return {
+    showShapes: state.sensenetDocumentViewer.viewer.showShapes,
+    toggleShapes: state.sensenetDocumentViewer.localization.toggleShapes,
+  }
 }
 
 /**
@@ -21,31 +21,36 @@ export const mapStateToProps = (state: RootReducerType) => {
  * @param state the redux state
  */
 export const mapDispatchToProps = {
-    setShapes,
+  setShapes,
 }
 
 /**
  * Document widget component that toggles the displaying of the shapes
  */
-export class ToggleShapesComponent extends React.Component<componentType<typeof mapStateToProps, typeof mapDispatchToProps>> {
+export class ToggleShapesComponent extends React.Component<
+  componentType<typeof mapStateToProps, typeof mapDispatchToProps>
+> {
+  private toggleShapes() {
+    this.props.setShapes(!this.props.showShapes)
+  }
 
-    private toggleShapes() {
-        this.props.setShapes(!this.props.showShapes)
-    }
-
-    /**
-     * renders the component
-     */
-    public render() {
-        return (
-            <div style={{ display: 'inline-block' }}>
-                <IconButton title={this.props.toggleShapes} style={{ opacity: this.props.showShapes ? 1 : 0.5 }}>
-                    <Dashboard onClick={() => this.toggleShapes()} />
-                </IconButton>
-            </div>)
-    }
+  /**
+   * renders the component
+   */
+  public render() {
+    return (
+      <div style={{ display: 'inline-block' }}>
+        <IconButton title={this.props.toggleShapes} style={{ opacity: this.props.showShapes ? 1 : 0.5 }}>
+          <Dashboard onClick={() => this.toggleShapes()} />
+        </IconButton>
+      </div>
+    )
+  }
 }
 
-const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(ToggleShapesComponent)
+const connectedComponent = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ToggleShapesComponent)
 
 export { connectedComponent as ToggleShapesWidget }

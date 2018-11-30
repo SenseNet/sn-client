@@ -14,13 +14,12 @@ import { DocumentViewerLoading } from './DocumentViewerLoading'
  * Defined the component's own properties
  */
 export interface OwnProps {
-    hostName: string
-    documentIdOrPath: string | number
-    version?: string
-    localization?: Partial<LocalizationStateType>
-    drawerSlideProps?: Partial<SlideProps>
-    loaderImage?: string
-
+  hostName: string
+  documentIdOrPath: string | number
+  version?: string
+  localization?: Partial<LocalizationStateType>
+  drawerSlideProps?: Partial<SlideProps>
+  loaderImage?: string
 }
 
 /**
@@ -29,12 +28,14 @@ export interface OwnProps {
  */
 
 const mapStateToProps = (state: RootReducerType, ownProps: OwnProps) => {
-    return {
-        isLoading: state.sensenetDocumentViewer.documentState.isLoading,
-        idOrPath: state.sensenetDocumentViewer.documentState.document && state.sensenetDocumentViewer.documentState.document.idOrPath,
-        docViewerError: state.sensenetDocumentViewer.documentState.error,
-        previewImagesError: state.sensenetDocumentViewer.previewImages.error,
-    }
+  return {
+    isLoading: state.sensenetDocumentViewer.documentState.isLoading,
+    idOrPath:
+      state.sensenetDocumentViewer.documentState.document &&
+      state.sensenetDocumentViewer.documentState.document.idOrPath,
+    docViewerError: state.sensenetDocumentViewer.documentState.error,
+    previewImagesError: state.sensenetDocumentViewer.previewImages.error,
+  }
 }
 
 /**
@@ -42,8 +43,12 @@ const mapStateToProps = (state: RootReducerType, ownProps: OwnProps) => {
  * @param state the redux state
  */
 const mapDispatchToProps = {
-    pollDocumentData: pollDocumentData as (hostName: string, idOrPath: string | number, version?: string) => InjectableAction<RootReducerType, Action>,
-    setLocalization,
+  pollDocumentData: pollDocumentData as (
+    hostName: string,
+    idOrPath: string | number,
+    version?: string,
+  ) => InjectableAction<RootReducerType, Action>,
+  setLocalization,
 }
 
 type docViewerComponentType = componentType<typeof mapStateToProps, typeof mapDispatchToProps, OwnProps>
@@ -52,50 +57,51 @@ type docViewerComponentType = componentType<typeof mapStateToProps, typeof mapDi
  * Main document viewer component
  */
 class DocumentViewer extends React.Component<docViewerComponentType> {
+  constructor(props: docViewerComponentType) {
+    super(props)
 
-    constructor(props: docViewerComponentType) {
-        super(props)
+    if (this.props.documentIdOrPath) {
+      this.props.pollDocumentData(this.props.hostName, this.props.documentIdOrPath, this.props.version)
+    }
+    if (this.props.localization) {
+      this.props.setLocalization(this.props.localization)
+    }
+  }
 
-        if (this.props.documentIdOrPath) {
-            this.props.pollDocumentData(this.props.hostName, this.props.documentIdOrPath, this.props.version)
-        }
-        if (this.props.localization) {
-            this.props.setLocalization(this.props.localization)
-        }
+  /** triggered when the component will receive props */
+  public componentWillReceiveProps(newProps: this['props']) {
+    if (
+      this.props.hostName !== newProps.hostName ||
+      this.props.documentIdOrPath !== newProps.documentIdOrPath ||
+      this.props.version !== newProps.version
+    ) {
+      this.props.pollDocumentData(this.props.hostName, this.props.documentIdOrPath, this.props.version)
+    }
+    if (this.props.localization) {
+      this.props.setLocalization(this.props.localization)
+    }
+  }
+
+  /**
+   * renders the component
+   */
+  public render() {
+    if (this.props.isLoading) {
+      return <DocumentViewerLoading image={this.props.loaderImage || './assets/loader.gif'} />
     }
 
-    /** triggered when the component will receive props */
-    public componentWillReceiveProps(newProps: this['props']) {
-        if (
-            this.props.hostName !== newProps.hostName
-            || this.props.documentIdOrPath !== newProps.documentIdOrPath
-            || this.props.version !== newProps.version
-        ) {
-            this.props.pollDocumentData(this.props.hostName, this.props.documentIdOrPath, this.props.version)
-        }
-        if (this.props.localization) {
-            this.props.setLocalization(this.props.localization)
-        }
-
+    if (this.props.docViewerError || this.props.previewImagesError) {
+      return <DocumentViewerError error={this.props.docViewerError || this.props.previewImagesError} />
     }
-
-    /**
-     * renders the component
-     */
-    public render() {
-        if (this.props.isLoading) {
-            return <DocumentViewerLoading image={this.props.loaderImage || './assets/loader.gif'} />
-        }
-
-        if (this.props.docViewerError || this.props.previewImagesError) {
-            return <DocumentViewerError error={this.props.docViewerError || this.props.previewImagesError} />
-        }
-        return (<DocumentViewerLayout drawerSlideProps={this.props.drawerSlideProps}>
-            {this.props.children}
-        </DocumentViewerLayout>)
-    }
+    return (
+      <DocumentViewerLayout drawerSlideProps={this.props.drawerSlideProps}>{this.props.children}</DocumentViewerLayout>
+    )
+  }
 }
 
-const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(DocumentViewer)
+const connectedComponent = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(DocumentViewer)
 
 export { connectedComponent as DocumentViewer }

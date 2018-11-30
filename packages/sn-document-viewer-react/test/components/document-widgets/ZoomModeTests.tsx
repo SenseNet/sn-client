@@ -13,62 +13,62 @@ import { exampleDocumentData, useTestContext } from '../../viewercontext'
  * Zoom Mode widget tests
  */
 export const zoomModeWidgetTests: Mocha.Suite = describe('ZoomModeWidget component', () => {
+  let c!: renderer.ReactTestRenderer
 
-    let c!: renderer.ReactTestRenderer
+  after(() => {
+    c.unmount()
+  })
 
-    after(() => {
-        c.unmount()
+  it('Should render without crashing', () => {
+    useTestContext(ctx => {
+      ctx.store.dispatch(documentReceivedAction(exampleDocumentData))
+
+      c = renderer.create(
+        <Provider store={ctx.store}>
+          <ZoomWidgetComponent
+            customZoomLevel={0}
+            localization={defaultLocalization}
+            setZoomLevel={() => ({} as any)}
+            setZoomMode={() => ({} as any)}
+            zoomMode="custom"
+          />
+        </Provider>,
+      )
     })
+  })
 
-    it('Should render without crashing', () => {
-        useTestContext((ctx) => {
-            ctx.store.dispatch(documentReceivedAction(exampleDocumentData))
+  it('ZoomMenu open / close', () => {
+    c = renderer.create(
+      <ZoomWidgetComponent
+        customZoomLevel={0}
+        localization={defaultLocalization}
+        setZoomLevel={() => ({} as any)}
+        setZoomMode={() => ({} as any)}
+        zoomMode="custom"
+      />,
+    )
+    const zoomMenuButton = c.root.findByType(IconButton)
+    zoomMenuButton.props.onClick({ currentTarget: undefined })
+    const zoomMenu = c.root.findByType(Menu)
+    zoomMenu.props.onClose()
+  })
 
-            c = renderer.create(
-                <Provider store={ctx.store}>
-                    <ZoomWidgetComponent
-                        customZoomLevel={0}
-                        localization={defaultLocalization}
-                        setZoomLevel={() => ({} as any)}
-                        setZoomMode={() => ({} as any)}
-                        zoomMode="custom"
-                    >
-                    </ZoomWidgetComponent>
-                </Provider>)
-        })
-    })
+  it('set zoom mode to fit', async () => {
+    c = renderer.create(
+      <ZoomWidgetComponent
+        customZoomLevel={0}
+        localization={defaultLocalization}
+        setZoomLevel={() => ({} as any)}
+        setZoomMode={() => ({} as any)}
+        zoomMode="custom"
+      />,
+    )
 
-    it('ZoomMenu open / close', () => {
-
-        c = renderer.create(
-            <ZoomWidgetComponent
-                customZoomLevel={0}
-                localization={defaultLocalization}
-                setZoomLevel={() => ({} as any)}
-                setZoomMode={() => ({} as any)}
-                zoomMode="custom">
-            </ZoomWidgetComponent>)
-        const zoomMenuButton = c.root.findByType(IconButton)
-        zoomMenuButton.props.onClick({ currentTarget: undefined })
-        const zoomMenu = c.root.findByType(Menu)
-        zoomMenu.props.onClose()
-    })
-
-    it('set zoom mode to fit', async () => {
-        c = renderer.create(
-            <ZoomWidgetComponent
-                customZoomLevel={0}
-                localization={defaultLocalization}
-                setZoomLevel={() => ({} as any)}
-                setZoomMode={() => ({} as any)}
-                zoomMode="custom">
-            </ZoomWidgetComponent>)
-
-        /* ToDo: Fix me!!!
+    /* ToDo: Fix me!!!
         const zoomMenuButton = c.root.findByType(IconButton)
         zoomMenuButton.props.onClick({ currentTarget: { ...zoomMenuButton, children: [] } })
         await asyncDelay(1000)
         const button = c.root.findAllByType(MenuItem)[0];
         (button as any).props.onClick({})*/
-    })
+  })
 })

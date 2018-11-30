@@ -12,71 +12,80 @@ import { exampleDocumentData, useTestContext } from '../viewercontext'
  * DocumentViewerLayout Component tests
  */
 export const documentViewerLayoutTests: Mocha.Suite = describe('Document Viewer Layout component', () => {
+  let c!: renderer.ReactTestRenderer
 
-    let c!: renderer.ReactTestRenderer
+  after(() => {
+    c && c.unmount()
+  })
 
-    after(() => {
-        c && c.unmount()
+  it('Should render without crashing', () => {
+    useTestContext(ctx => {
+      c = renderer.create(
+        <Provider store={ctx.store}>
+          <DocumentViewerLayout drawerSlideProps={{ in: true }}>
+            <span>test</span>
+          </DocumentViewerLayout>
+        </Provider>,
+      )
     })
+  })
 
-    it('Should render without crashing', () => {
-        useTestContext((ctx) => {
-            c = renderer.create(
-                <Provider store={ctx.store}>
-                    <DocumentViewerLayout drawerSlideProps={{ in: true }}>
-                        <span>test</span>
-                    </DocumentViewerLayout>
-                </Provider>)
-        })
+  it('Should render and scroll on small screens', () => {
+    ;(global as any).innerWidth = 600
+
+    useTestContext(ctx => {
+      ctx.store.dispatch(documentReceivedAction(exampleDocumentData))
+      ctx.store.dispatch(
+        availabelImagesReceivedAction([
+          {
+            Attributes: {
+              degree: 0,
+            },
+            Index: 1,
+            Height: 100,
+            Width: 100,
+          },
+        ]),
+      )
+      c = renderer.create(
+        <Provider store={ctx.store}>
+          <DocumentViewerLayout drawerSlideProps={{ in: true }}>
+            <span>test</span>
+          </DocumentViewerLayout>
+        </Provider>,
+      )
+      const page = c.root.findAllByType(Page)[0]
+      page.props.onClick()
+      page.props.onClick()
     })
+    ;(global as any).innerWidth = 1024
+    c.unmount()
+  })
 
-    it('Should render and scroll on small screens', () => {
-        (global as any).innerWidth = 600
+  it('Click on a page should scroll to the selected page', () => {
+    useTestContext(ctx => {
+      ctx.store.dispatch(documentReceivedAction(exampleDocumentData))
+      ctx.store.dispatch(
+        availabelImagesReceivedAction([
+          {
+            Attributes: {
+              degree: 0,
+            },
+            Index: 1,
+            Height: 100,
+            Width: 100,
+          },
+        ]),
+      )
 
-        useTestContext((ctx) => {
-            ctx.store.dispatch(documentReceivedAction(exampleDocumentData))
-            ctx.store.dispatch(availabelImagesReceivedAction([{
-                Attributes: {
-                    degree: 0,
-                },
-                Index: 1,
-                Height: 100,
-                Width: 100,
-            }]))
-            c = renderer.create(
-                <Provider store={ctx.store}>
-                    <DocumentViewerLayout drawerSlideProps={{ in: true }}>
-                        <span>test</span>
-                    </DocumentViewerLayout>
-                </Provider>)
-            const page = c.root.findAllByType(Page)[0]
-            page.props.onClick()
-            page.props.onClick()
-        });
-        (global as any).innerWidth = 1024
-        c.unmount()
+      c = renderer.create(
+        <Provider store={ctx.store}>
+          <DocumentViewerLayout drawerSlideProps={{ in: true }} />
+        </Provider>,
+      )
+
+      const page = c.root.findAllByType(Page)[0]
+      page.props.onClick()
     })
-
-    it('Click on a page should scroll to the selected page', () => {
-        useTestContext((ctx) => {
-            ctx.store.dispatch(documentReceivedAction(exampleDocumentData))
-            ctx.store.dispatch(availabelImagesReceivedAction([{
-                Attributes: {
-                    degree: 0,
-                },
-                Index: 1,
-                Height: 100,
-                Width: 100,
-            }]))
-
-            c = renderer.create(
-                <Provider store={ctx.store}>
-                    <DocumentViewerLayout drawerSlideProps={{ in: true }}>
-                    </DocumentViewerLayout>
-                </Provider>)
-
-            const page = c.root.findAllByType(Page)[0]
-            page.props.onClick()
-        })
-    })
+  })
 })

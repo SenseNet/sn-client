@@ -12,40 +12,39 @@ import { exampleDocumentData, useTestContext } from '../../viewercontext'
  * Toggle Redaction widget tests
  */
 export const toggleRedactionTests: Mocha.Suite = describe('ToggleRedactionWidget component', () => {
+  let c!: renderer.ReactTestRenderer
 
-    let c!: renderer.ReactTestRenderer
+  after(() => {
+    c.unmount()
+  })
 
-    after(() => {
-        c.unmount()
+  it('Should render without crashing', () => {
+    useTestContext(ctx => {
+      ctx.store.dispatch(documentReceivedAction(exampleDocumentData))
+
+      c = renderer.create(
+        <Provider store={ctx.store}>
+          <ToggleRedactionWidget />
+        </Provider>,
+      )
     })
+  })
 
-    it('Should render without crashing', () => {
-        useTestContext((ctx) => {
-            ctx.store.dispatch(documentReceivedAction(exampleDocumentData))
+  it('Click on toggle should toggle the redaction', () => {
+    useTestContext(ctx => {
+      const originalValue = ctx.store.getState().sensenetDocumentViewer.viewer.showRedaction
+      ctx.store.dispatch(documentReceivedAction(exampleDocumentData))
+      c = renderer.create(
+        <Provider store={ctx.store}>
+          <ToggleRedactionWidget />
+        </Provider>,
+      )
+      const button = c.root.findByType(PictureInPicture)
+      button.props.onClick()
+      expect(ctx.store.getState().sensenetDocumentViewer.viewer.showRedaction).to.not.eq(originalValue)
 
-            c = renderer.create(
-                <Provider store={ctx.store}>
-                    <ToggleRedactionWidget>
-                    </ToggleRedactionWidget>
-                </Provider>)
-        })
+      button.props.onClick()
+      expect(ctx.store.getState().sensenetDocumentViewer.viewer.showRedaction).to.be.eq(originalValue)
     })
-
-    it('Click on toggle should toggle the redaction', () => {
-        useTestContext((ctx) => {
-            const originalValue = ctx.store.getState().sensenetDocumentViewer.viewer.showRedaction
-            ctx.store.dispatch(documentReceivedAction(exampleDocumentData))
-            c = renderer.create(
-                <Provider store={ctx.store}>
-                    <ToggleRedactionWidget>
-                    </ToggleRedactionWidget>
-                </Provider>)
-            const button = c.root.findByType(PictureInPicture)
-            button.props.onClick()
-            expect(ctx.store.getState().sensenetDocumentViewer.viewer.showRedaction).to.not.eq(originalValue)
-
-            button.props.onClick()
-            expect(ctx.store.getState().sensenetDocumentViewer.viewer.showRedaction).to.be.eq(originalValue)
-        })
-    })
+  })
 })

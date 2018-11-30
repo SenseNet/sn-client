@@ -12,40 +12,39 @@ import { exampleDocumentData, useTestContext } from '../../viewercontext'
  * Toggle Shapes widget tests
  */
 export const toggleShapesWidgetTests: Mocha.Suite = describe('ToggleShapesWidget component', () => {
+  let c!: renderer.ReactTestRenderer
 
-    let c!: renderer.ReactTestRenderer
+  after(() => {
+    c.unmount()
+  })
 
-    after(() => {
-        c.unmount()
+  it('Should render without crashing', () => {
+    useTestContext(ctx => {
+      ctx.store.dispatch(documentReceivedAction(exampleDocumentData))
+
+      c = renderer.create(
+        <Provider store={ctx.store}>
+          <ToggleShapesWidget />
+        </Provider>,
+      )
     })
+  })
 
-    it('Should render without crashing', () => {
-        useTestContext((ctx) => {
-            ctx.store.dispatch(documentReceivedAction(exampleDocumentData))
+  it('Click on toggle should toggle the shapes', () => {
+    useTestContext(ctx => {
+      const originalValue = ctx.store.getState().sensenetDocumentViewer.viewer.showShapes
+      ctx.store.dispatch(documentReceivedAction(exampleDocumentData))
+      c = renderer.create(
+        <Provider store={ctx.store}>
+          <ToggleShapesWidget />
+        </Provider>,
+      )
+      const button = c.root.findByType(Dashboard)
+      button.props.onClick()
+      expect(ctx.store.getState().sensenetDocumentViewer.viewer.showShapes).to.not.eq(originalValue)
 
-            c = renderer.create(
-                <Provider store={ctx.store}>
-                    <ToggleShapesWidget>
-                    </ToggleShapesWidget>
-                </Provider>)
-        })
+      button.props.onClick()
+      expect(ctx.store.getState().sensenetDocumentViewer.viewer.showShapes).to.be.eq(originalValue)
     })
-
-    it('Click on toggle should toggle the shapes', () => {
-        useTestContext((ctx) => {
-            const originalValue = ctx.store.getState().sensenetDocumentViewer.viewer.showShapes
-            ctx.store.dispatch(documentReceivedAction(exampleDocumentData))
-            c = renderer.create(
-                <Provider store={ctx.store}>
-                    <ToggleShapesWidget>
-                    </ToggleShapesWidget>
-                </Provider>)
-            const button = c.root.findByType(Dashboard)
-            button.props.onClick()
-            expect(ctx.store.getState().sensenetDocumentViewer.viewer.showShapes).to.not.eq(originalValue)
-
-            button.props.onClick()
-            expect(ctx.store.getState().sensenetDocumentViewer.viewer.showShapes).to.be.eq(originalValue)
-        })
-    })
+  })
 })

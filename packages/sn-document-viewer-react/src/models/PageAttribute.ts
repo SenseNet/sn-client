@@ -2,19 +2,18 @@
  * PageAttribute model
  */
 export interface PageAttribute {
-    /**
-     * The index of the page
-     */
-    pageNum: number,
+  /**
+   * The index of the page
+   */
+  pageNum: number
 
+  /**
+   * Options for the current page
+   */
+  options: {
     /**
-     * Options for the current page
+     * Rotation in degrees
      */
-    options: {
-
-        /**
-         * Rotation in degrees
-         */
-        degree: number,
-    }
+    degree: number
+  }
 }

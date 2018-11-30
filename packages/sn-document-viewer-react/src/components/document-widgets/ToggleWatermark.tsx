@@ -10,11 +10,11 @@ import { RootReducerType, setWatermark } from '../../store'
  * @param state the redux state
  */
 export const mapStateToProps = (state: RootReducerType) => {
-    return {
-        canHideWatermark: state.sensenetDocumentViewer.documentState.canHideWatermark,
-        showWatermark: state.sensenetDocumentViewer.viewer.showWatermark,
-        toggleWatermark: state.sensenetDocumentViewer.localization.toggleWatermark,
-    }
+  return {
+    canHideWatermark: state.sensenetDocumentViewer.documentState.canHideWatermark,
+    showWatermark: state.sensenetDocumentViewer.viewer.showWatermark,
+    toggleWatermark: state.sensenetDocumentViewer.localization.toggleWatermark,
+  }
 }
 
 /**
@@ -22,31 +22,36 @@ export const mapStateToProps = (state: RootReducerType) => {
  * @param state the redux state
  */
 export const mapDispatchToProps = {
-    setWatermark,
+  setWatermark,
 }
 
 /**
  * Document widget component that toggles the displaying of the watermark
  */
-export class ToggleWatermarkComponent extends React.Component<componentType<typeof mapStateToProps, typeof mapDispatchToProps>> {
+export class ToggleWatermarkComponent extends React.Component<
+  componentType<typeof mapStateToProps, typeof mapDispatchToProps>
+> {
+  private toggleWatermark() {
+    this.props.setWatermark(!this.props.showWatermark)
+  }
 
-    private toggleWatermark() {
-        this.props.setWatermark(!this.props.showWatermark)
-    }
-
-    /**
-     * renders the component
-     */
-    public render() {
-        return (
-            <div style={{ display: 'inline-block' }}>
-                <IconButton title={this.props.toggleWatermark} style={{ opacity: this.props.showWatermark ? 1 : 0.5 }}>
-                    <BrandingWatermark onClick={() => this.toggleWatermark()} />
-                </IconButton>
-            </div>)
-    }
+  /**
+   * renders the component
+   */
+  public render() {
+    return (
+      <div style={{ display: 'inline-block' }}>
+        <IconButton title={this.props.toggleWatermark} style={{ opacity: this.props.showWatermark ? 1 : 0.5 }}>
+          <BrandingWatermark onClick={() => this.toggleWatermark()} />
+        </IconButton>
+      </div>
+    )
+  }
 }
 
-const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(ToggleWatermarkComponent)
+const connectedComponent = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ToggleWatermarkComponent)
 
 export { connectedComponent as ToggleWatermarkWidget }

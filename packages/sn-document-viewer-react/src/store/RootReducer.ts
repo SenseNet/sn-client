@@ -10,48 +10,47 @@ import { viewerStateReducer, ViewerStateType } from './Viewer'
  * Type definitions for the sensenet document viewer root reducer
  */
 export interface RootReducerType {
-    sensenetDocumentViewer: {
-        /**
-         * Reducer for the document state
-         */
-        documentState: DocumentStateType,
+  sensenetDocumentViewer: {
+    /**
+     * Reducer for the document state
+     */
+    documentState: DocumentStateType
 
-        /**
-         * Reducer for the preview images
-         */
-        previewImages: PreviewImagesStateType,
+    /**
+     * Reducer for the preview images
+     */
+    previewImages: PreviewImagesStateType
 
-        /**
-         * Reducer for the viewer state and settings
-         */
-        viewer: ViewerStateType,
+    /**
+     * Reducer for the viewer state and settings
+     */
+    viewer: ViewerStateType
 
-        /**
-         * Reducer for the localized string resources
-         */
-        localization: LocalizationStateType,
-    }
+    /**
+     * Reducer for the localized string resources
+     */
+    localization: LocalizationStateType
+  }
 }
 
 /**
  * The root reducer instance with the sensenetDocumentViewer reducer instance
  */
 export const rootReducer: Reducer<RootReducerType> = combineReducers<RootReducerType>({
-    sensenetDocumentViewer:
-        combineReducers({
-            documentState: documentStateReducer,
-            previewImages: previewImagesReducer,
-            viewer: viewerStateReducer,
-            localization: localizationReducer,
-        }),
+  sensenetDocumentViewer: combineReducers({
+    documentState: documentStateReducer,
+    previewImages: previewImagesReducer,
+    viewer: viewerStateReducer,
+    localization: localizationReducer,
+  }),
 })
 
 /**
  * The sensenetDocumentViewerReducer instance
  */
 export const sensenetDocumentViewerReducer = combineReducers({
-    documentState: documentStateReducer,
-    previewImages: previewImagesReducer,
-    viewer: viewerStateReducer,
-    localization: localizationReducer,
+  documentState: documentStateReducer,
+  previewImages: previewImagesReducer,
+  viewer: viewerStateReducer,
+  localization: localizationReducer,
 })

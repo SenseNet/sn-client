@@ -10,23 +10,23 @@ import { exampleDocumentData, useTestContext } from '../viewercontext'
  * LayoutAppBar Component tests
  */
 export const layoutAppBarTests: Mocha.Suite = describe('Layout AppBar component', () => {
+  let c!: renderer.ReactTestRenderer
 
-    let c!: renderer.ReactTestRenderer
+  after(() => {
+    c.unmount()
+  })
 
-    after(() => {
-        c.unmount()
+  it('Should render without crashing', () => {
+    useTestContext(ctx => {
+      ctx.store.dispatch(documentReceivedAction(exampleDocumentData))
+
+      c = renderer.create(
+        <Provider store={ctx.store}>
+          <LayoutAppBar>
+            <span>test</span>
+          </LayoutAppBar>
+        </Provider>,
+      )
     })
-
-    it('Should render without crashing', () => {
-        useTestContext((ctx) => {
-            ctx.store.dispatch(documentReceivedAction(exampleDocumentData))
-
-            c = renderer.create(
-                <Provider store={ctx.store}>
-                    <LayoutAppBar>
-                        <span>test</span>
-                    </LayoutAppBar>
-                </Provider>)
-        })
-    })
+  })
 })

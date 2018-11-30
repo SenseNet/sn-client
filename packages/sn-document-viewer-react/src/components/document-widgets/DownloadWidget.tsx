@@ -11,45 +11,48 @@ import { RootReducerType } from '../../store'
  * @param state the redux state
  */
 export const mapStateToProps = (state: RootReducerType) => {
-    return {
-        title: state.sensenetDocumentViewer.localization.download,
-        document: state.sensenetDocumentViewer.documentState.document,
-    }
+  return {
+    title: state.sensenetDocumentViewer.localization.download,
+    document: state.sensenetDocumentViewer.documentState.document,
+  }
 }
 
 /**
  * maps state actions from the store to component props
  * @param state the redux state
  */
-export const mapDispatchToProps = {
-
-}
+export const mapDispatchToProps = {}
 
 /**
  * Own properties for the Share component
  */
 export interface OwnProps {
-    download: (document: DocumentData) => void
+  download: (document: DocumentData) => void
 }
 
 /**
  * Component that allows active page rotation
  */
-export class DownloadComponent extends React.Component<componentType<typeof mapStateToProps, typeof mapDispatchToProps, OwnProps>> {
-
-    /**
-     * renders the component
-     */
-    public render() {
-        return (
-            <div style={{ display: 'inline-block' }}>
-                <IconButton color="inherit" title={this.props.title}>
-                    <CloudDownload onClick={() => this.props.download(this.props.document)} />
-                </IconButton>
-            </div>)
-    }
+export class DownloadComponent extends React.Component<
+  componentType<typeof mapStateToProps, typeof mapDispatchToProps, OwnProps>
+> {
+  /**
+   * renders the component
+   */
+  public render() {
+    return (
+      <div style={{ display: 'inline-block' }}>
+        <IconButton color="inherit" title={this.props.title}>
+          <CloudDownload onClick={() => this.props.download(this.props.document)} />
+        </IconButton>
+      </div>
+    )
+  }
 }
 
-const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(DownloadComponent)
+const connectedComponent = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(DownloadComponent)
 
 export { connectedComponent as Download }
