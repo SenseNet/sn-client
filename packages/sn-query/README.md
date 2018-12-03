@@ -18,7 +18,7 @@ npm install @sensenet/query
 
 ## Usage
 
-The package allows you to create strongly typed content queries that will be evaluated into sensenet ECM queries
+The package allows you to create strongly typed content queries that will be evaluated into sensenet queries
 
 Usage example:
 
