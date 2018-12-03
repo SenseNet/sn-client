@@ -4,7 +4,7 @@
 
 # @sensenet/document-viewer-react
 
-Document viewer component for sensenet ECM
+Document viewer component for sensenet
 
 ## Running the example application
 
