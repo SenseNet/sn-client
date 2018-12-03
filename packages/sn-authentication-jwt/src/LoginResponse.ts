@@ -1,5 +1,5 @@
 /**
- * This class represents a plain response body that is returned from sensenet ECM in case of a succesfully login.
+ * This class represents a plain response body that is returned from sensenet in case of a succesfully login.
  */
 export interface LoginResponse {
   /**

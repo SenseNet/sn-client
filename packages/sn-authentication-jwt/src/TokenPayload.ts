@@ -1,5 +1,5 @@
 /**
- * This interface represents payload data, as it is recieved from sensenet ECM.
+ * This interface represents payload data, as it is recieved from sensenet.
  */
 export interface TokenPayload {
   /**
