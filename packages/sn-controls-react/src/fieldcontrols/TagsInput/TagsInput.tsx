@@ -207,7 +207,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
             className={this.props.className}
             style={styles.root as any}
             key={this.props.name as string}
-            component="fieldset"
+            component={"fieldset" as "div"}
             required={this.props.required}>
             <InputLabel htmlFor={this.props.name as string}>{this.props['data-labelText']}</InputLabel>
             <Select
@@ -239,7 +239,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
             className={this.props.className}
             style={styles.root as any}
             key={this.props.name as string}
-            component="fieldset"
+            component={"fieldset" as "div"}
             required={this.props.required}>
             <InputLabel htmlFor={this.props.name as string}>{this.props['data-labelText']}</InputLabel>
             <Select
@@ -267,11 +267,11 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
         )
       case 'browse':
         return this.props['data-fieldValue'].length > 0 ? (
-          <FormControl component="fieldset" className={this.props.className}>
-            <FormLabel component="legend">{this.props['data-labelText']}</FormLabel>
+          <FormControl component={"fieldset" as "div"} className={this.props.className}>
+            <FormLabel component={"legend" as "label"}>{this.props['data-labelText']}</FormLabel>
             <FormGroup>
               {this.props['data-fieldValue'].map((value: any) => (
-                <FormControl component="fieldset">
+                <FormControl component={"fieldset" as "div"}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
                     label={this.state.dataSource.find(item => item.value === value).label}
@@ -285,11 +285,11 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
         ) : null
       default:
         return this.props['data-fieldValue'].length > 0 ? (
-          <FormControl component="fieldset" className={this.props.className}>
-            <FormLabel component="legend">{this.props['data-labelText']}</FormLabel>
+          <FormControl component={"fieldset" as "div"} className={this.props.className}>
+            <FormLabel component={"legend" as "label"}>{this.props['data-labelText']}</FormLabel>
             <FormGroup>
               {this.props['data-fieldValue'].map((value: any) => (
-                <FormControl component="fieldset">
+                <FormControl component={"fieldset" as "div"}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
                     label={this.state.dataSource.find(item => item.value === value).label}

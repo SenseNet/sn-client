@@ -163,11 +163,11 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
         )
       case 'browse':
         return this.props['data-fieldValue'] ? (
-          <FormControl component="fieldset" className={this.props.className}>
-            <FormLabel component="legend">{this.props['data-labelText']}</FormLabel>
+          <FormControl component={"fieldset" as "div"} className={this.props.className}>
+            <FormLabel component={"legend" as "label"}>{this.props['data-labelText']}</FormLabel>
             <FormGroup>
               {this.props['data-fieldValue'].map((value: any) => (
-                <FormControl component="fieldset">
+                <FormControl component={"fieldset" as "div"}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
                     label={this.props.options.find(item => item.Value === value).Text}
@@ -181,11 +181,11 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
         ) : null
       default:
         return this.props['data-fieldValue'] ? (
-          <FormControl component="fieldset" className={this.props.className}>
-            <FormLabel component="legend">{this.props['data-labelText']}</FormLabel>
+          <FormControl component={"fieldset" as "div"} className={this.props.className}>
+            <FormLabel component={"legend" as "label"}>{this.props['data-labelText']}</FormLabel>
             <FormGroup>
               {this.props['data-fieldValue'].map((value: any) => (
-                <FormControl component="fieldset">
+                <FormControl component={"fieldset" as "div"}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
                     label={this.props.options.find(item => item.Value === value).Text}

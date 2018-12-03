@@ -59,7 +59,7 @@ class DocumentViewerLayoutComponent extends React.Component<
       if (pagesContainer && pagesContainer.scrollTo && activePage) {
         pagesContainer.scrollTo({
           top: activePage.offsetTop - 8,
-          behavior: smoothScroll ? 'smooth' : 'instant',
+          behavior: smoothScroll ? 'smooth' : 'auto',
         })
       }
 
