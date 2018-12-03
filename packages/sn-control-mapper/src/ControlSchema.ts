@@ -9,7 +9,7 @@ export class ControlSchema<TControlBaseType, TClientControlSettings> {
    */
   public contentTypeControl!: { new (...args: any[]): TControlBaseType }
   /**
-   * The assicoated Schema object from sensenet ECM
+   * The assicoated Schema object from sensenet
    */
   public schema!: Schema
   /**

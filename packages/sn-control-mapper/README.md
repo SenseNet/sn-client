@@ -9,7 +9,7 @@
 [![License](https://img.shields.io/github/license/SenseNet/sn-client-js.svg?style=flat)](https://github.com/sn-control-mapper/LICENSE.txt)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat)](http://commitizen.github.io/cz-cli/)
 
-This NPM package contains a control mapping tool for sensenet ECM. This can be used for specifying relations between sensenet ECM schemas and specified UI controls at content and field level and can be used for automatized form generation.
+This NPM package contains a control mapping tool for sensenet. This can be used for specifying relations between sensenet schemas and specified UI controls at content and field level and can be used for automatized form generation.
 
 ## Installation
 

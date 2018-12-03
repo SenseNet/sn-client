@@ -8,7 +8,7 @@ import { ControlSchema } from './ControlSchema'
 export type ActionName = 'new' | 'edit' | 'view'
 
 /**
- * Class that handles control mappings between a sensenet ECM Repository schemas and a generic control set
+ * Class that handles control mappings between a sensenet Repository schemas and a generic control set
  */
 export class ControlMapper<TControlBaseType, TClientControlSettings> {
   constructor(
