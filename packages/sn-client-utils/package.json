@@ -24,7 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/SenseNet/sn-client-utils.git"
+    "url": "https://github.com/SenseNet/sn-client.git"
   },
   "keywords": [
     "sensenet",
@@ -40,17 +40,13 @@
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "license": "GPL-2.0",
   "bugs": {
-    "url": "https://github.com/SenseNet/sn-client-utils/issues"
+    "url": "https://github.com/SenseNet/sn-client/issues"
   },
   "homepage": "https://sensenet.com",
   "dependencies": {},
   "devDependencies": {
-    "@types/jest": "^23.3.9",
-    "jest": "^23.6.0",
-    "ts-jest": "^23.10.4",
-    "rimraf": "^2.6.2",
-    "tslint": "^5.11.0",
-    "typescript": "^3.1.6"
+    "@types/jest": "^23.3.10",
+    "ts-jest": "^23.10.5"
   },
   "config": {
     "commitizen": {
