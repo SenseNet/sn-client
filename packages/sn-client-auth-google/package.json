@@ -61,7 +61,7 @@
   },
   "homepage": "https://github.com/SenseNet/sn-client-auth-google#readme",
   "dependencies": {
-    "@sensenet/authentication-jwt": "1.0.3",
+    "@sensenet/authentication-jwt": "1.0.5",
     "@sensenet/client-utils":"^1.4.0"
   },
   "config": {

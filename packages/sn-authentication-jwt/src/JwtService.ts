@@ -150,12 +150,8 @@ export class JwtService implements AuthenticationService {
   public handleAuthenticationResponse(response: LoginResponse): boolean {
     this.tokenStore.AccessToken = Token.FromHeadAndPayload(response.access)
     this.tokenStore.RefreshToken = Token.FromHeadAndPayload(response.refresh)
-    if (this.tokenStore.AccessToken.IsValid(true)) {
-      this.state.setValue(LoginState.Authenticated)
-      return true
-    }
-    this.state.setValue(LoginState.Unauthenticated)
-    return false
+    const isValid = this.tokenStore.AccessToken.IsValid(true)
+    return isValid
   }
 
   /**
@@ -199,6 +195,7 @@ export class JwtService implements AuthenticationService {
       const json: LoginResponse = await response.json()
       const result = this.handleAuthenticationResponse(json)
       await this.tokenStore.AccessToken.AwaitNotBeforeTime()
+      this.state.setValue(result ? LoginState.Authenticated : LoginState.Unauthenticated)
       return result
     } else {
       this.state.setValue(LoginState.Unauthenticated)

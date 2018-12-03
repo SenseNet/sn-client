@@ -1,7 +1,7 @@
 {
   "name": "@sensenet/authentication-jwt",
-  "version": "1.0.3",
-  "description": "JWT Authentication service for sensenet ECM",
+  "version": "1.0.5",
+  "description": "JWT Authentication service for sensenet",
   "main": "dist/index.js",
   "files": [
     "dist",
@@ -12,9 +12,6 @@
     "commit": "git-cz",
     "pretest": "npm run build:test",
     "test": "rimraf coverage && nyc mocha -p tsconfig.test.json ./temp/test/index.js",
-    "check-coverage": "istanbul check-coverage ",
-    "report-coverage": "cat ./coverage/lcov.info | ./node_modules/.bin/codecov",
-    "semantic-release": "semantic-release pre && semantic-release post",
     "prebuild": "npm run lint",
     "fix": "npm run fix:prettier && npm run fix:tslint",
     "fix:prettier": "prettier \"{,!(dist|temp)/**/}*.{ts,tsx}\" --write",
