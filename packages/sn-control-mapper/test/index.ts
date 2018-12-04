@@ -101,7 +101,7 @@ export const controlMapperTests = describe('ControlMapper', () => {
   })
 
   it('Should return a correct default control for a specified Content Field when FieldSetting has default value', () => {
-    mapper.setupFieldSettingDefault(ShortTextFieldSetting, setting => {
+    mapper.setupFieldSettingDefault(ShortTextFieldSetting, () => {
       return ExampleModifiedControl
     })
     const control = mapper.getControlForContentField('Task', 'DisplayName', 'new')
@@ -115,7 +115,7 @@ export const controlMapperTests = describe('ControlMapper', () => {
   })
 
   it('Should return a correct default control for a specified Content Field when there is a ContentType bound setting specified', () => {
-    mapper.setupFieldSettingForControl(Task, 'DisplayName', setting => {
+    mapper.setupFieldSettingForControl(Task, 'DisplayName', () => {
       return ExampleModifiedControl2
     })
     const control = mapper.getControlForContentField('Task', 'DisplayName', 'new')

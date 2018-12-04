@@ -109,7 +109,6 @@ export class ControlMapper<TControlBaseType, TClientControlSettings> {
    * @param contentType The Content Type
    * @param fieldName The name of the field on the Content Type
    * @param setupControl The callback function that will setup the Control
-   * @param fieldSetting Optional type hint for the FieldSetting
    */
 
   public setupFieldSettingForControl<
@@ -120,7 +119,6 @@ export class ControlMapper<TControlBaseType, TClientControlSettings> {
     contentType: { new (...args: any[]): TContentType },
     fieldName: TField,
     setupControl: (fieldSetting: TFieldSettingType) => { new (...args: any[]): TControlBaseType },
-    fieldSetting?: { new (...args: any[]): TFieldSettingType },
   ) {
     this.contentTypeBoundfieldSettings.set(`${contentType.name}-${fieldName}`, setupControl as any)
     return this
