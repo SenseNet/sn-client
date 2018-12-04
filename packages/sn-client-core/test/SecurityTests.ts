@@ -9,10 +9,7 @@ export const securityTests: Mocha.Suite = describe('Security', () => {
   let repository: Repository
 
   beforeEach(() => {
-    repository = new Repository(
-      {},
-      async (...args: any[]) => ({ ok: true, json: async () => ({}), text: async () => '' } as any),
-    )
+    repository = new Repository({}, async () => ({ ok: true, json: async () => ({}), text: async () => '' } as any))
     security = new Security(repository)
   })
 

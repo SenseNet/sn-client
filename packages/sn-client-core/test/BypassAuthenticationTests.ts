@@ -23,7 +23,7 @@ export const bypassAuthTest: Mocha.Suite = describe('BypassAuthentication', () =
   it('login() should throw error', async () => {
     const auth = new BypassAuthentication()
     try {
-      await auth.login('', '')
+      await auth.login()
       throw Error('Should have failed')
     } catch {
       /** */

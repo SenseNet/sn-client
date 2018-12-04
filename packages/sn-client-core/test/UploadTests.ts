@@ -13,12 +13,12 @@ declare const global: any
 global.File = class {
   public size: number = 1024
   public namme: string = 'file.txt'
-  public slice(...args: any[]) {
+  public slice() {
     return ''
   }
 }
 global.FormData = class {
-  public append(...args: any[]) {
+  public append() {
     /** */
   }
 }
@@ -45,7 +45,7 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
     fetchOk = true
     repo = new Repository(
       {},
-      async (...args: any[]) => ({ ok: fetchOk, json: async () => mockAnswer, text: async () => mockText } as any),
+      async () => ({ ok: fetchOk, json: async () => mockAnswer, text: async () => mockText } as any),
     )
   })
 
@@ -97,7 +97,7 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
         .then(() => {
           done(Error('Should throw'))
         })
-        .catch(err => {
+        .catch(() => {
           done()
         })
     })
@@ -110,7 +110,7 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
         binaryPropertyName: 'Binary',
         overwrite: true,
         parentPath: 'Root/Example',
-        file: ({ size: 65535000, slice: (...args: any[]) => '' } as any) as File,
+        file: ({ size: 65535000, slice: () => '' } as any) as File,
         repository: repo,
         contentTypeName: 'File',
         progressObservable: new ObservableValue<UploadProgressInfo>(),
@@ -123,7 +123,7 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
       Upload.file({
         binaryPropertyName: 'Binary',
         overwrite: true,
-        file: ({ size: 65535000, slice: (...args: any[]) => '' } as any) as File,
+        file: ({ size: 65535000, slice: () => '' } as any) as File,
         parentPath: 'Root/Example',
         repository: repo,
         contentTypeName: 'File',
@@ -132,14 +132,14 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
         .then(() => {
           done(Error('Should throw'))
         })
-        .catch(err => {
+        .catch(() => {
           done()
         })
     })
 
     it('Should throw if a chunk has been failed', done => {
       let ok: boolean = true
-      repo['fetchMethod'] = async (...args: any[]) => {
+      repo['fetchMethod'] = async () => {
         return {
           ok,
           text: async () => '',
@@ -152,7 +152,7 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
       Upload.file({
         binaryPropertyName: 'Binary',
         overwrite: true,
-        file: ({ size: 65535000, slice: (...args: any[]) => '' } as any) as File,
+        file: ({ size: 65535000, slice: () => '' } as any) as File,
         parentPath: 'Root/Example',
         repository: repo,
         contentTypeName: 'File',
@@ -161,7 +161,7 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
         .then(() => {
           done(Error('Should throw'))
         })
-        .catch(err => {
+        .catch(() => {
           done()
         })
     })
@@ -175,7 +175,7 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
       const uploadTrace = Trace.method({
         object: Upload,
         method: Upload.file,
-        onCalled: c => {
+        onCalled: () => {
           uploadTrace.dispose()
           done()
         },
@@ -205,7 +205,7 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
       const uploadTrace = Trace.method({
         object: Upload,
         method: Upload.file,
-        onCalled: c => {
+        onCalled: () => {
           uploadTrace.dispose()
           done()
         },
@@ -239,7 +239,8 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
       }
       const file = {
         isFile: true,
-        file: (cb: (f: File) => void, err: (err: any) => void) => {
+        // tslint:disable-next-line:variable-name
+        file: (_cb: (f: File) => void, err: (err: any) => void) => {
           err('File read fails here...')
         },
       }
@@ -255,7 +256,7 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
         binaryPropertyName: 'Binary',
         contentTypeName: 'File',
         overwrite: true,
-      }).catch(err => {
+      }).catch(() => {
         done()
       })
     })
@@ -277,7 +278,7 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
       const uploadTrace = Trace.method({
         object: repo,
         method: repo.post,
-        onCalled: c => {
+        onCalled: () => {
           uploadTrace.dispose()
           postHasCalled = true
         },
@@ -287,7 +288,7 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
         isDirectory: true,
         createReader: () => {
           return {
-            readEntries: (cb: (entries: any) => void, err: (err: any) => void) => {
+            readEntries: (cb: (entries: any) => void) => {
               cb([
                 {
                   isFile: true,
@@ -337,7 +338,8 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
         isDirectory: true,
         createReader: () => {
           return {
-            readEntries: (cb: (entries: any) => void, err: (err: any) => void) => {
+            // tslint:disable-next-line:variable-name
+            readEntries: (_cb: (entries: any) => void, err: (err: any) => void) => {
               err('Reading directories fails here...')
             },
           }
@@ -359,7 +361,7 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
         .then(() => {
           done(Error('Should have failed'))
         })
-        .catch(err => {
+        .catch(() => {
           done()
         })
     })
@@ -397,7 +399,7 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
       const uploadTrace = Trace.method({
         object: Upload,
         method: Upload.file,
-        onCalled: c => {
+        onCalled: () => {
           uploadTrace.dispose()
           done()
         },
@@ -423,7 +425,7 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
       const uploadTrace = Trace.method({
         object: Upload,
         method: Upload.file,
-        onCalled: c => {
+        onCalled: () => {
           uploadTrace.dispose()
           done()
         },

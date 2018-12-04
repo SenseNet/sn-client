@@ -18,7 +18,7 @@ export const repositoryTests: Mocha.Suite = describe('Repository', () => {
     json: async () => ({}),
   } as Response
 
-  const fetchMock: Repository['fetchMethod'] = async (input: RequestInfo, init: RequestInit) => {
+  const fetchMock: Repository['fetchMethod'] = async () => {
     return mockResponse
   }
 

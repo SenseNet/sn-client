@@ -22,10 +22,8 @@ export class BypassAuthentication implements AuthenticationService {
 
   /**
    * Login method - not available for BypassAuthentication
-   * @param username
-   * @param password
    */
-  public async login(username: string, password: string): Promise<boolean> {
+  public async login(): Promise<boolean> {
     throw new Error('Not allowed when authentication is bypassed.')
   }
 
