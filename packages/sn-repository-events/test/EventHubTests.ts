@@ -71,7 +71,7 @@ export const eventHubTests = describe('EventHub', () => {
         } as any)
       ;(async () => {
         try {
-          const response = await repository.post({
+          await repository.post({
             parentPath: '',
             contentType: 'User',
             content: mockContent,
@@ -146,7 +146,7 @@ export const eventHubTests = describe('EventHub', () => {
         } as any)
       ;(async () => {
         try {
-          const deleteResponse = await repository.copy({
+          await repository.copy({
             targetPath: 'Root/Example/Target',
             idOrPath: 321,
           })
@@ -168,7 +168,7 @@ export const eventHubTests = describe('EventHub', () => {
         } as any)
       ;(async () => {
         try {
-          const deleteResponse = await repository.copy({
+          await repository.copy({
             targetPath: 'Root/Example/Target',
             idOrPath: ['Root/Example/Path1'],
           })
@@ -216,7 +216,7 @@ export const eventHubTests = describe('EventHub', () => {
         } as any)
       ;(async () => {
         try {
-          const response = await repository.patch({
+          await repository.patch({
             content: mockContent,
             idOrPath: 123,
           })
@@ -263,7 +263,7 @@ export const eventHubTests = describe('EventHub', () => {
       } as any)
     ;(async () => {
       try {
-        const response = await repository.put({
+        await repository.put({
           content: mockContent,
           idOrPath: 123,
         })
@@ -339,7 +339,7 @@ export const eventHubTests = describe('EventHub', () => {
         } as any)
       ;(async () => {
         try {
-          const deleteResponse = await repository.delete({
+          await repository.delete({
             idOrPath: 123,
           })
         } catch (error) {
@@ -360,7 +360,7 @@ export const eventHubTests = describe('EventHub', () => {
         } as any)
       ;(async () => {
         try {
-          const deleteResponse = await repository.delete({
+          await repository.delete({
             idOrPath: ['Root/Example/Path1'],
           })
         } catch (error) {
@@ -438,7 +438,7 @@ export const eventHubTests = describe('EventHub', () => {
         } as any)
       ;(async () => {
         try {
-          const deleteResponse = await repository.move({
+          await repository.move({
             idOrPath: 123,
             targetPath: 'Root/Example',
           })
@@ -460,7 +460,7 @@ export const eventHubTests = describe('EventHub', () => {
         } as any)
       ;(async () => {
         try {
-          const moveResponse = await repository.move({
+          await repository.move({
             idOrPath: ['Root/Example/Path1'],
             targetPath: 'Root/Example/Target',
           })
