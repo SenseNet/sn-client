@@ -148,7 +148,7 @@ class DocumentViewerLayoutComponent extends React.Component<
               zoomMode="fit"
               fitRelativeZoomLevel={0}
               zoomLevel={1}
-              onPageClick={(ev, index) => this.scrollTo(index)}
+              onPageClick={(_ev, index) => this.scrollTo(index)}
               elementNamePrefix="Thumbnail-"
               images="thumbnail"
               tolerance={0}
@@ -162,7 +162,7 @@ class DocumentViewerLayoutComponent extends React.Component<
             zoomMode={this.props.zoomMode}
             zoomLevel={this.props.customZoomLevel}
             fitRelativeZoomLevel={this.props.fitRelativeZoomLevel}
-            onPageClick={(ev, index) => this.scrollTo(index)}
+            onPageClick={(_ev, index) => this.scrollTo(index)}
             elementNamePrefix="Page-"
             images="preview"
             tolerance={0}

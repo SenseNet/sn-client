@@ -89,11 +89,11 @@ export class PagerComponent extends React.Component<
     return (
       <div style={{ display: 'inline-block' }}>
         <IconButton disabled={this.state.currentPage <= 1} title={this.props.fistPage}>
-          <FirstPage onClick={ev => this.gotoPage(1)} />
+          <FirstPage onClick={() => this.gotoPage(1)} />
         </IconButton>
 
         <IconButton disabled={this.state.currentPage <= 1} title={this.props.previousPage}>
-          <NavigateBefore onClick={ev => this.gotoPage(this.props.activePages[0] - 1)} />
+          <NavigateBefore onClick={() => this.gotoPage(this.props.activePages[0] - 1)} />
         </IconButton>
 
         <TextField
@@ -113,11 +113,11 @@ export class PagerComponent extends React.Component<
           disabled={this.state.currentPage >= this.state.lastPage}
           title={this.props.nextPage}
           color={'primary'}>
-          <NavigateNext onClick={ev => this.gotoPage(this.props.activePages[0] + 1)} />
+          <NavigateNext onClick={() => this.gotoPage(this.props.activePages[0] + 1)} />
         </IconButton>
 
         <IconButton disabled={this.state.currentPage >= this.state.lastPage} title={this.props.lastPage}>
-          <LastPage onClick={ev => this.gotoPage(this.state.lastPage)} />
+          <LastPage onClick={() => this.gotoPage(this.state.lastPage)} />
         </IconButton>
       </div>
     )

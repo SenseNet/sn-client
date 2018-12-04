@@ -23,7 +23,7 @@ export const pageListTests: Mocha.Suite = describe('PageList component', () => {
         <Provider store={ctx.store}>
           <PageList
             id={'1'}
-            onPageClick={ev => undefined}
+            onPageClick={() => undefined}
             elementNamePrefix={'EL'}
             zoomMode={'fit'}
             zoomLevel={0}

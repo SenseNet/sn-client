@@ -25,7 +25,7 @@ export interface OwnProps {
  * maps state fields from the store to component props
  * @param state the redux state
  */
-export const mapStateToProps = (state: RootReducerType, ownProps: OwnProps) => {
+export const mapStateToProps = (state: RootReducerType) => {
   return {
     rotateLeft: state.sensenetDocumentViewer.localization.rotatePageLeft,
     rotateRight: state.sensenetDocumentViewer.localization.rotatePageRight,
@@ -34,7 +34,6 @@ export const mapStateToProps = (state: RootReducerType, ownProps: OwnProps) => {
 
 /**
  * maps state actions from the store to component props
- * @param state the redux state
  */
 export const mapDispatchToProps = {
   rotateImages,

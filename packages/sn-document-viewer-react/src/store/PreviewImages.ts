@@ -106,6 +106,8 @@ export const getAvailableImages: (
 export const previewAvailableAction = (documentData: DocumentData, version: string, page: number) => ({
   type: 'SN_DOCVIEWER_PREVIEWS_PREVIEW_AVAILABLE',
   documentData,
+  version,
+  page,
 })
 
 /**

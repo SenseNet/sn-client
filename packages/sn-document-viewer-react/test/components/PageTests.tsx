@@ -22,7 +22,7 @@ export const pageTests: Mocha.Suite = describe('Page component', () => {
       c = renderer.create(
         <Provider store={ctx.store}>
           <Page
-            onClick={ev => undefined}
+            onClick={() => undefined}
             imageIndex={1}
             image={{} as any}
             elementNamePrefix={'EL'}

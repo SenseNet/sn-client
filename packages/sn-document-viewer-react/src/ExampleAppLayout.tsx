@@ -1,6 +1,5 @@
 import React = require('react')
 import { connect } from 'react-redux'
-import { RootReducerType } from './store'
 
 import { v1 } from 'uuid'
 import {
@@ -48,9 +47,8 @@ const addGuidToShape: <T extends Shape>(shape: T) => T = shape => {
 
 /**
  * maps state fields from the store to component props
- * @param state the redux state
  */
-const mapStateToProps = (state: RootReducerType, ownProps: {}) => {
+const mapStateToProps = () => {
   return {}
 }
 
@@ -149,7 +147,7 @@ export const exampleSettings: DocumentViewerSettings = new DocumentViewerSetting
     }
     return allPreviews
   },
-  isPreviewAvailable: async (documentData, version, page: number, showWatermark) => {
+  isPreviewAvailable: async (documentData, version, page: number) => {
     const response = await fetch(
       `${documentData.hostName}/odata.svc/${documentData.idOrPath}/PreviewAvailable?version=${version}`,
       {
@@ -380,7 +378,7 @@ class ExampleAppLayout extends React.Component<
                     </Button>
                     &nbsp;
                     <Button
-                      onClick={ev => this.setState({ ...this.state, isHelpOpened: true })}
+                      onClick={() => this.setState({ ...this.state, isHelpOpened: true })}
                       variant="raised"
                       color="primary">
                       {' '}
@@ -391,7 +389,7 @@ class ExampleAppLayout extends React.Component<
                       control={
                         <Checkbox
                           checked={this.state.save}
-                          onChange={ev => this.setState({ ...this.state, save: !this.state.save })}
+                          onChange={() => this.setState({ ...this.state, save: !this.state.save })}
                           value="checkedA"
                         />
                       }
@@ -425,7 +423,7 @@ class ExampleAppLayout extends React.Component<
                   </DialogContent>
                   <DialogActions>
                     <Button
-                      onClick={ev => this.setState({ ...this.state, isHelpOpened: false })}
+                      onClick={() => this.setState({ ...this.state, isHelpOpened: false })}
                       variant="raised"
                       color="primary">
                       {' '}
@@ -448,7 +446,7 @@ class ExampleAppLayout extends React.Component<
               variant="fab"
               color="secondary"
               aria-label="select another document"
-              onClick={ev => this.closeViewer()}>
+              onClick={() => this.closeViewer()}>
               <FolderOpen />
             </Button>
           ) : null}

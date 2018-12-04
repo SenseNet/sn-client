@@ -74,7 +74,7 @@ export const documentTitlePagerWidgetTests: Mocha.Suite = describe('DocumentTitl
 
   it('gotoPage() should trigger the setPage', (done: MochaDone) => {
     let promise!: Promise<void>
-    promise = new Promise((resolve, reject) => {
+    promise = new Promise(resolve => {
       useTestContextAsync(async ctx => {
         ctx.store.dispatch(documentReceivedAction(exampleDocumentData))
         c = renderer.create(
@@ -83,7 +83,7 @@ export const documentTitlePagerWidgetTests: Mocha.Suite = describe('DocumentTitl
               pageCount={5}
               activePages={[]}
               documentName=""
-              setActivePages={(page: number[]) => {
+              setActivePages={() => {
                 done()
                 resolve()
                 return null as any

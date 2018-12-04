@@ -77,9 +77,8 @@ export const setCustomZoomLevel = (customZoomLevel: number, defaultModeOnZero: Z
 /**
  * Action to set the zoom level to a custom value
  * @param customZoomLevel
- * @param defaultModeOnZero
  */
-export const setFitRelativeZoomLevel = (fitRelativeZoomLevel: number, defaultModeOnZero: ZoomMode = 'fit') => ({
+export const setFitRelativeZoomLevel = (fitRelativeZoomLevel: number) => ({
   type: 'SN_DOCVIEWER_DOCUMENT_VIEWER_SET_FIT_RELATIVE_ZOOM_LEVEL',
   fitRelativeZoomLevel,
 })

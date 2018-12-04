@@ -23,7 +23,7 @@ export interface OwnProps<T extends Shape> {
  * maps state fields from the store to component props
  * @param state the redux state
  */
-const mapStateToProps = (state: RootReducerType, ownProps: OwnProps<Shape>) => {
+const mapStateToProps = (state: RootReducerType) => {
   return {
     zoomMode: state.sensenetDocumentViewer.viewer.zoomMode,
     zoomLevel: state.sensenetDocumentViewer.viewer.customZoomLevel,
@@ -120,7 +120,7 @@ abstract class ShapeComponent<T extends Shape = Shape> extends React.Component<
   }
 
   /** onFocus event handler that updates the 'focused' property */
-  public onFocus(ev: React.FocusEvent<HTMLDivElement>) {
+  public onFocus() {
     if (!this.state.focused) {
       this.setState({ ...this.state, focused: true })
     }
@@ -187,7 +187,7 @@ class ShapeAnnotation extends ShapeComponent<Annotation> {
   public readonly shapeType = 'annotations'
 
   /** keypress handler for to stop event bubbling and shape deletion */
-  protected handleKeyPress(ev: React.KeyboardEvent<HTMLDivElement>) {
+  protected handleKeyPress(_ev: React.KeyboardEvent<HTMLDivElement>) {
     /** */
   }
 
@@ -240,7 +240,7 @@ class ShapeAnnotation extends ShapeComponent<Annotation> {
                   <Delete
                     style={{ color: 'black' }}
                     scale={this.props.zoomRatio}
-                    onMouseUp={ev => this.props.removeShape(this.shapeType, this.props.shape.guid)}
+                    onMouseUp={() => this.props.removeShape(this.shapeType, this.props.shape.guid)}
                   />
                 </IconButton>
               </div>

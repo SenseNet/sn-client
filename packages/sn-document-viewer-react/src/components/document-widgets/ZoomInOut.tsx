@@ -18,7 +18,6 @@ export const mapStateToProps = (state: RootReducerType) => {
 
 /**
  * maps state actions from the store to component props
- * @param state the redux state
  */
 export const mapDispatchToProps = {
   setFitRelativeZoomLevel,
@@ -31,11 +30,11 @@ export class ZoomInOutWidgetComponent extends React.Component<
   componentType<typeof mapStateToProps, typeof mapDispatchToProps>,
   { zoomMenuAnchor?: HTMLElement }
 > {
-  private zoomIn(ev: React.MouseEvent<HTMLElement>) {
+  private zoomIn() {
     this.props.setFitRelativeZoomLevel(this.props.fitRelativeZoomLevel + 1)
   }
 
-  private zoomOut(ev: React.MouseEvent<HTMLElement>) {
+  private zoomOut() {
     this.props.setFitRelativeZoomLevel(this.props.fitRelativeZoomLevel - 1)
   }
 
@@ -45,10 +44,10 @@ export class ZoomInOutWidgetComponent extends React.Component<
   public render() {
     return (
       <div style={{ display: 'inline-block' }}>
-        <IconButton color="inherit" onClick={ev => this.zoomIn(ev)}>
+        <IconButton color="inherit" onClick={() => this.zoomIn()}>
           <ZoomIn />
         </IconButton>
-        <IconButton color="inherit" onClick={ev => this.zoomOut(ev)}>
+        <IconButton color="inherit" onClick={() => this.zoomOut()}>
           <ZoomOut />
         </IconButton>
       </div>

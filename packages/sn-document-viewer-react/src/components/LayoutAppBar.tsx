@@ -3,16 +3,14 @@ import Toolbar from '@material-ui/core/Toolbar'
 
 import React = require('react')
 import { connect } from 'react-redux'
-import { RootReducerType } from '../store'
 
 import { CSSProperties } from 'react'
 import { componentType } from '../services'
 
 /**
  * maps state fields from the store to component props
- * @param state the redux state
  */
-const mapStateToProps = (state: RootReducerType, ownProps: {}) => {
+const mapStateToProps = () => {
   return {}
 }
 

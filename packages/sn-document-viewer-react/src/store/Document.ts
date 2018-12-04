@@ -51,7 +51,7 @@ export const pollDocumentData: (
     let docData: DocumentData | undefined
     while (!docData || docData.pageCount === PreviewState.Loading) {
       try {
-        docData = await api.getDocumentData({ idOrPath, hostName })
+        docData = await api.getDocumentData({ idOrPath, hostName, version })
         if (!docData || docData.pageCount === PreviewState.Loading) {
           await new Promise<void>(resolve =>
             setTimeout(() => {

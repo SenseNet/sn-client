@@ -27,7 +27,7 @@ export interface OwnProps {
  * @param state the redux state
  */
 
-const mapStateToProps = (state: RootReducerType, ownProps: OwnProps) => {
+const mapStateToProps = (state: RootReducerType) => {
   return {
     isLoading: state.sensenetDocumentViewer.documentState.isLoading,
     idOrPath:

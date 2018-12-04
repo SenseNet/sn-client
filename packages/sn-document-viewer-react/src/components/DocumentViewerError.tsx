@@ -42,7 +42,7 @@ export function getPreviewState(state: RootReducerType): number {
  * maps state fields from the store to component props
  * @param state the redux state
  */
-const mapStateToProps = (state: RootReducerType, ownProps: OwnProps) => {
+const mapStateToProps = (state: RootReducerType) => {
   return {
     previewState: getPreviewState(state),
     errorLoadingDocument: state.sensenetDocumentViewer.localization.errorLoadingDocument,

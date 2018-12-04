@@ -13,7 +13,7 @@ interface DocumentViewerLoadingProps {
  * maps state fields from the store to component props
  * @param state the redux state
  */
-const mapStateToProps = (state: RootReducerType, ownProps: DocumentViewerLoadingProps) => {
+const mapStateToProps = (state: RootReducerType) => {
   return {
     loadingDocument: state.sensenetDocumentViewer.localization.loadingDocument,
   }
