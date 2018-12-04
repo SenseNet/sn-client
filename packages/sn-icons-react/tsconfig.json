@@ -1,27 +1,11 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es2015",
-    "sourceMap": true,
-    "declaration": true,
     "allowJs": false,
     "jsx": "react",
-    "moduleResolution": "node",
     "outDir": "./dist",
-    "noImplicitAny": false,
-    "preserveConstEnums": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "removeComments": true,
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
     "strictNullChecks": false,
-    "alwaysStrict": false,
-    "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true,
-    "strict": true,
-    "skipLibCheck": true
+    "noImplicitAny": false
   },
   "exclude": ["node_modules", "dist"],
   "files": ["src/index.ts"]
