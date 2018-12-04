@@ -1,3 +1,5 @@
+/// <reference types="mocha" />
+
 import { JwtService, LoginResponse } from '@sensenet/authentication-jwt'
 import { Repository } from '@sensenet/client-core'
 import { expect } from 'chai'
@@ -83,7 +85,7 @@ export const oauthProviderTests = describe('GoogleOauthProvider', () => {
         .then(() => {
           done('Error should be thrown')
         })
-        .catch(err => {
+        .catch(() => {
           done()
         })
     })
@@ -112,7 +114,7 @@ export const oauthProviderTests = describe('GoogleOauthProvider', () => {
     it('should throw if an iframe is already created', (done: MochaDone) => {
       oauth['iframe'] = {} as any
       oauth['getTokenSilent']('')
-        .then(res => {
+        .then(() => {
           done('Should have fail')
         })
         .catch(err => {
@@ -139,15 +141,15 @@ export const oauthProviderTests = describe('GoogleOauthProvider', () => {
         }
       }
       ;(window.document as any).body = {
-        appendChild: (...args: any[]) => {
+        appendChild: () => {
           /** */
         },
-        removeChild: (...args: any[]) => {
+        removeChild: () => {
           /** */
         },
       }
       oauth['getTokenSilent'](oauth.getGoogleLoginUrl())
-        .then(result => {
+        .then(() => {
           done('Should have failed')
         })
         .catch(err => {
@@ -176,15 +178,15 @@ export const oauthProviderTests = describe('GoogleOauthProvider', () => {
         }
       }
       ;(window.document as any).body = {
-        appendChild: (...args: any[]) => {
+        appendChild: () => {
           /** */
         },
-        removeChild: (...args: any[]) => {
+        removeChild: () => {
           /** */
         },
       }
       oauth['getTokenSilent'](oauth.getGoogleLoginUrl())
-        .then(result => {
+        .then(() => {
           done('Should have failed')
         })
         .catch(err => {
@@ -215,15 +217,15 @@ export const oauthProviderTests = describe('GoogleOauthProvider', () => {
 
       let hasIframeRemoved = false
       ;(window.document as any).body = {
-        appendChild: (...args: any[]) => {
+        appendChild: () => {
           /** */
         },
-        removeChild: (...args: any[]) => {
+        removeChild: () => {
           hasIframeRemoved = true
         },
       }
       oauth['getTokenSilent'](oauth.getGoogleLoginUrl())
-        .then(result => {
+        .then(() => {
           expect(oauth['iframe']).to.be.eq(undefined)
           expect(hasIframeRemoved).to.be.eq(true)
           done()
@@ -303,7 +305,7 @@ export const oauthProviderTests = describe('GoogleOauthProvider', () => {
         .then(() => {
           done('should have failed')
         })
-        .catch(err => done())
+        .catch(() => done())
     })
   })
 })
