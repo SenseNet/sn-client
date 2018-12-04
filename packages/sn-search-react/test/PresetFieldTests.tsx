@@ -14,7 +14,7 @@ export const presetFieldTests = describe('Preset Fields', () => {
       <PresetField
         fieldName="DisplayName"
         presets={[{ text: 'value1', value: new Query(q => q) }]}
-        onQueryChange={(key, q) => {
+        onQueryChange={() => {
           /** */
         }}
       />,
@@ -27,7 +27,7 @@ export const presetFieldTests = describe('Preset Fields', () => {
         fieldName="DisplayName"
         presets={[{ text: 'value1', value: new Query(q => q) }]}
         defaultValue="value1"
-        onQueryChange={(key, q) => {
+        onQueryChange={() => {
           /** */
         }}
       />,
@@ -57,7 +57,7 @@ export const presetFieldTests = describe('Preset Fields', () => {
       <PresetField
         fieldName="DisplayName"
         presets={[{ text: 'value1', value: new Query(q => q) }]}
-        onQueryChange={(key, q) => {
+        onQueryChange={() => {
           throw Error("Shouldn't be triggered")
         }}
       />,

@@ -13,7 +13,7 @@ export const textFieldTests = describe('TextField Component', () => {
       <TextField
         fieldName="DisplayName"
         fieldSetting={{}}
-        onQueryChange={(key, q) => {
+        onQueryChange={() => {
           /**  */
         }}
       />,
