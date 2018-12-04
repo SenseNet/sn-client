@@ -4,8 +4,8 @@ import * as ReactDOM from 'react-dom'
 import {
   MemoryRouter,
 } from 'react-router-dom'
-import { rootStateType } from '../..'
 import { withStore } from '../../__tests__/TestHelper'
+import { rootStateType } from '../../store/rootReducer'
 import BreadCrumb from '../BreadCrumb'
 
 it('renders without crashing', () => {

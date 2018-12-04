@@ -8,16 +8,17 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Typography from '@material-ui/core/Typography'
 
 import IconButton from '@material-ui/core/IconButton'
+import { IODataParams } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import * as React from 'react'
 import Scrollbars from 'react-custom-scrollbars'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
-import { rootStateType } from '../..'
 import * as DMSActions from '../../Actions'
 import { resources } from '../../assets/resources'
 import { loadPickerItems, loadPickerParent, selectPickerItem, setBackLink } from '../../store/picker/actions'
+import { rootStateType } from '../../store/rootReducer'
 import AddNewDialog from '../Dialogs/AddNewDialog'
 
 const styles = {
@@ -38,10 +39,13 @@ const styles = {
 }
 
 interface PathPickerProps {
-    dialogComponent: React.Component | JSX.Element,
+    dialogComponent?: JSX.Element,
     dialogTitle: string,
-    dialogCallback: (items?: string[] | number[], targetPath?: string) => void,
+    dialogCallback?: (...args: any[]) => void,
+    onSelect?: (content: GenericContent) => void,
     mode: string,
+    showAddFolder?: boolean,
+    loadOptions?: IODataParams<GenericContent>
 }
 
 const mapStateToProps = (state: rootStateType) => {
@@ -72,8 +76,8 @@ class PathPicker extends React.Component<PathPickerProps & ReturnType<typeof map
         items: this.props.items,
     }
     public static getDerivedStateFromProps(newProps: PathPicker['props'], lastState: PathPicker['state']) {
-        if (lastState.items.length !== newProps.items.length) {
-            newProps.loadPickerItems(newProps.parent ? newProps.parent.Path : '', newProps.parent || null)
+        if (newProps.parent && lastState.items.length !== newProps.items.length) {
+            newProps.loadPickerItems(newProps.parent.Path)
         }
         return {
             ...lastState,
@@ -86,7 +90,10 @@ class PathPicker extends React.Component<PathPickerProps & ReturnType<typeof map
     }
     public handleSubmit = () => {
         const { dialogComponent, dialogTitle, dialogCallback } = this.props
-        this.props.openDialog(dialogComponent, dialogTitle, this.handleAddNewClose, dialogCallback)
+        if (dialogComponent) {
+            this.props.openDialog(dialogComponent, dialogTitle, this.handleAddNewClose, dialogCallback)
+        }
+        this.props.onSelect && this.props.onSelect(this.props.selectedTarget[0])
     }
     public isSelected = (id: number) => {
         return this.props.selectedTarget.findIndex((item) => item.Id === id) > -1
@@ -116,9 +123,9 @@ class PathPicker extends React.Component<PathPickerProps & ReturnType<typeof map
         return content['Children'] ? content['Children'].filter((child: GenericContent) => child.IsFolder).length > 0 ? true : false : false
     }
     public handleLoading = (id: number) => {
-        const content = this.props.items.find((item) => item.Id === id)
+        const content = this.props.items.find((item) => item.Id === id) as GenericContent
         this.props.loadPickerParent(id)
-        this.props.loadPickerItems(content ? content.Path : '', content || null)
+        this.props.loadPickerItems(content ? content.Path : '')
         this.props.setBackLink(true)
     }
     public handleAddNewClose = () => {
@@ -178,14 +185,18 @@ class PathPicker extends React.Component<PathPickerProps & ReturnType<typeof map
                 <MediaQuery minDeviceWidth={700}>
                     {(matches) =>
                         <DialogActions className="mobile-picker-buttonRow">
-                            <IconButton onClick={() => this.handleAddNewClick()}>
-                                <Icon type={iconType.materialui} iconName="create_new_folder" style={{ color: '#016D9E' }} />
-                            </IconButton>
-                            <Typography style={{ flexGrow: 1, color: '#016D9E', fontFamily: 'Raleway Medium', fontSize: 14 }} onClick={() => this.handleAddNewClick()}>
-                                {matches ? null : resources.NEW_FOLDER}
-                            </Typography>
+                            {this.props.showAddFolder === false ? null :
+                                <div>
+                                    <IconButton onClick={() => this.handleAddNewClick()}>
+                                        <Icon type={iconType.materialui} iconName="create_new_folder" style={{ color: '#016D9E' }} />
+                                    </IconButton>
+                                    <Typography style={{ flexGrow: 1, color: '#016D9E', fontFamily: 'Raleway Medium', fontSize: 14 }} onClick={() => this.handleAddNewClick()}>
+                                        {matches ? null : resources.NEW_FOLDER}
+                                    </Typography>
+                                </div>
+                            }
                             {matches ? <Button color="default" style={{ marginRight: 20 }} onClick={() => this.handleClose()}>{resources.CANCEL}</Button> : null}
-                            <Button onClick={() => this.handleSubmit()} variant="raised" className="disabled-mobile-button" disabled={selectedTarget.length > 0 ? false : true} color={matches ? 'primary' : 'default'}>{resources[`${this.props.mode.toUpperCase()}_BUTTON`]}</Button>
+                            <Button onClick={() => this.handleSubmit()} variant="contained" className="disabled-mobile-button" disabled={selectedTarget.length > 0 ? false : true} color={matches ? 'primary' : 'default'}>{resources[`${this.props.mode.toUpperCase()}_BUTTON`]}</Button>
                         </DialogActions>
                     }
                 </MediaQuery>

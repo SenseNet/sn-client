@@ -5,12 +5,12 @@ import { GenericContent, IActionModel } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { rootStateType } from '../..'
 import * as DMSActions from '../../Actions'
 import { getContentTypeFromUrl, getExtensionFromUrl } from '../../assets/helpers'
+import { rootStateType } from '../../store/rootReducer'
 import AppBarLogo from '../AppBarLogo'
 import AddNewDialog from '../Dialogs/AddNewDialog'
-import { QuickSearch } from '../QuickSearch'
+import { Search } from '../Search/Search'
 
 const styles = {
     appBar: {
@@ -80,7 +80,7 @@ class MobileHeader extends React.Component<MobileHeaderProps & ReturnType<typeof
     public handleAddNewClick = (e: React.MouseEvent<HTMLElement>) => {
         const { addNewOptions } = this.state
         this.props.closeActionMenu()
-        this.props.openActionMenu(addNewOptions, this.props.currentContent || null, this.props.currentContent ? this.props.currentContent.Id.toString() : '', e.currentTarget, {
+        this.props.currentContent && this.props.openActionMenu(addNewOptions, this.props.currentContent, this.props.currentContent.Name, e.currentTarget, {
             top: (e.target as HTMLElement).offsetTop + 45,
             left: (e.target as HTMLElement).offsetLeft,
         })
@@ -146,7 +146,7 @@ class MobileHeader extends React.Component<MobileHeaderProps & ReturnType<typeof
                     </IconButton>
                     <AppBarLogo />
                     <div>
-                        <QuickSearch />
+                        <Search />
                         <IconButton onClick={(e) => this.handleAddNewClick(e)} style={styles.plusButton} color="inherit" aria-label="Add new">
                             <Icon type={iconType.materialui} iconName="add" style={{ color: '#fff' }} />
                         </IconButton>

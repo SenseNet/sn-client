@@ -2,7 +2,7 @@ import { Repository } from '@sensenet/client-core'
 import { User, Workspace } from '@sensenet/default-content-types'
 import { AnyAction } from 'redux'
 import { InjectableAction } from 'redux-di-middleware'
-import { rootStateType } from '../../'
+import { rootStateType } from '../../store/rootReducer'
 
 export const getWorkspaces = () => ({
     type: 'GET_WORKSPACES',

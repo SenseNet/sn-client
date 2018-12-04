@@ -1,9 +1,9 @@
 import { GenericContent, IActionModel } from '@sensenet/default-content-types'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { rootStateType } from '../..'
 import * as DMSActions from '../../Actions'
 import { getContentTypeFromUrl, getExtensionFromUrl } from '../../assets/helpers'
+import { rootStateType } from '../../store/rootReducer'
 import AddNewDialog from '../Dialogs/AddNewDialog'
 import { AddNewButton } from '../Menu/AddNewButton'
 
@@ -23,7 +23,7 @@ const mapDispatchToProps = {
 }
 
 interface AddNemMenuProps {
-    currentContent: GenericContent | null,
+    currentContent?: GenericContent,
     actions: IActionModel[],
 }
 
@@ -88,7 +88,7 @@ class AddNewMenu extends React.Component<AddNemMenuProps & ReturnType<typeof map
     public handleButtonClick = (e: React.MouseEvent<HTMLElement>) => {
         const { addNewOptions } = this.state
         this.props.closeActionMenu()
-        this.props.openActionMenu(addNewOptions, this.props.currentContent || null, this.props.currentContent ? this.props.currentContent.Id.toString() : '', e.currentTarget as HTMLElement, {
+        this.props.currentContent && this.props.openActionMenu(addNewOptions, this.props.currentContent, this.props.currentContent.Id.toString(), e.currentTarget as HTMLElement, {
             // tslint:disable-next-line:no-string-literal
             top: (e.target as HTMLElement).offsetTop + 200,
             // tslint:disable-next-line:no-string-literal

@@ -6,7 +6,6 @@ import * as Loadable from 'react-loadable'
 import { connect } from 'react-redux'
 import { HashRouter, Redirect, Route, Switch } from 'react-router-dom'
 import 'typeface-roboto'
-import { rootStateType } from '.'
 import * as DMSActions from './Actions'
 import { dmsTheme } from './assets/dmstheme'
 import { AuthorizedRoute } from './components/AuthorizedRoute'
@@ -16,6 +15,7 @@ import Login from './pages/Login'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import Registration from './pages/Registration'
 import './Sensenet.css'
+import { rootStateType } from './store/rootReducer'
 
 const mapStateToProps = (state: rootStateType) => {
   return {

@@ -2,20 +2,18 @@ import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import Drawer from '@material-ui/core/Drawer'
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
-
 import IconButton from '@material-ui/core/IconButton'
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
-import { GenericContent } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
-import { rootStateType } from '../..'
 import { pickerTheme } from '../../assets/picker'
 import { resources } from '../../assets/resources'
 import { deselectPickeritem, loadPickerItems, loadPickerParent, selectPickerItem, setBackLink, setPickerParent } from '../../store/picker/actions'
+import { rootStateType } from '../../store/rootReducer'
 
 // tslint:disable-next-line:no-var-requires
 const sensenetLogo = require('../../assets/sensenet_white.png')
@@ -105,7 +103,7 @@ class Picker extends React.Component<ReturnType<typeof mapStateToProps> & typeof
                 },
             } as any
             this.props.setPickerParent(snContent)
-            this.props.loadPickerItems('/', snContent,
+            this.props.loadPickerItems('/',
                 {
                     query: 'TypeIs:Workspace -TypeIs:Site',
                     select: ['DisplayName', 'Id', 'Path', 'Children'],
@@ -114,7 +112,7 @@ class Picker extends React.Component<ReturnType<typeof mapStateToProps> & typeof
             this.props.deselectPickeritem()
         } else {
             this.props.loadPickerParent(parent && parent.ParentId ? parent.ParentId : '')
-            this.props.loadPickerItems(parent ? parent.Path.substr(0, parent.Path.length - (parent.Name.length + 1)) : '', { Id: parent ? parent.ParentId : '' } as GenericContent)
+            this.props.loadPickerItems(parent ? parent.Path.substr(0, parent.Path.length - (parent.Name.length + 1)) : '')
             this.props.deselectPickeritem()
         }
     }
@@ -131,7 +129,7 @@ class Picker extends React.Component<ReturnType<typeof mapStateToProps> & typeof
                                 <Toolbar>
                                     {backLink ?
                                         <IconButton color="inherit" onClick={() => this.handleClickBack()}>
-                                            <Icon type={iconType.materialui} iconName="arrow_back"  style={{ color: '#fff' }} />
+                                            <Icon type={iconType.materialui} iconName="arrow_back" style={{ color: '#fff' }} />
                                         </IconButton> :
                                         <div style={styles.snButton}>
                                             <img src={sensenetLogo} alt="sensenet" aria-label="sensenet" style={styles.snLogo} />

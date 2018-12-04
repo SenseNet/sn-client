@@ -6,9 +6,9 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
-import { rootStateType } from '..'
 import * as DMSActions from '../Actions'
 import { icons } from '../assets/icons'
+import { rootStateType } from '../store/rootReducer'
 
 const styles = {
     breadCrumb: {
@@ -70,12 +70,12 @@ const mapDispatchToProps = {
 
 interface BreadCrumbProps extends RouteComponentProps<any> {
     ancestors: GenericContent[]
-    currentContent: GenericContent | null,
+    currentContent?: GenericContent,
     typeFilter: string[],
 }
 
 interface BreadCrumbState {
-    currentContent: GenericContent | null,
+    currentContent?: GenericContent,
 }
 
 class BreadCrumb extends React.Component<BreadCrumbProps & typeof mapDispatchToProps & ReturnType<typeof mapStateToProps>, BreadCrumbState> {

@@ -6,9 +6,9 @@ import {
 
 const styles = {
     logo: {
-        flex: 1,
-        color: '#fff',
-        width: 40,
+        display: 'flex',
+        alignItems: 'center',
+        color: '#000',
         textDecoration: 'none' as any,
         fontFamily: 'Raleway Regular',
     },
@@ -24,14 +24,14 @@ const styles = {
         textAlign: 'center',
     },
     logoImg: {
-        maxWidth: 25,
-        maxHeight: 25,
+        maxWidth: 48,
+        maxHeight: 48,
         verticalAlign: 'middle' as any,
         marginRight: 5,
     },
     logoImgMobile: {
-        maxWidth: 20,
-        maxHeight: 20,
+        maxWidth: 25,
+        maxHeight: 25,
         verticalAlign: 'middle' as any,
         marginRight: 5,
     },
@@ -45,12 +45,12 @@ const styles = {
 }
 
 // tslint:disable-next-line:no-var-requires
-const sensenetLogo = require('../assets/sensenet_white.png')
+const sensenetLogo = require('../assets/logo.png')
 
-const appBarLogo = () => (
+const appBarLogo = (props: { style?: React.CSSProperties }) => (
     <MediaQuery minDeviceWidth={700}>
         {(matches) => {
-            return <Link to="/" style={matches ? styles.logo : styles.logoMobile as any} >
+            return <Link to="/documents" style={{ ...matches ? styles.logo : styles.logoMobile as any, ...props.style }} >
                 <img src={sensenetLogo} alt="sensenet" aria-label="sensenet" style={matches ? styles.logoImg : styles.logoImgMobile} />
                 <span style={matches ? styles.logoText : styles.logoTextMobile}>
                     <span style={styles.logoSpan}>sense</span>net

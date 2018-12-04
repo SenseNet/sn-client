@@ -11,10 +11,10 @@ import { Actions } from '@sensenet/redux'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
-import { rootStateType } from '..'
 import * as DMSActions from '../Actions'
 import { icons } from '../assets/icons'
 import { resources } from '../assets/resources'
+import { rootStateType } from '../store/rootReducer'
 import { userIsAdmin } from '../store/usersandgroups/actions'
 import ContentTemplatesMenu from './Menu/ContentTemplatesMenu'
 import ContentTypesMenu from './Menu/ContentTypesMenu'
@@ -217,10 +217,14 @@ class DashboardDrawer extends React.Component<DashboardDrawerProps & ReturnType<
                     classes={{
                         paper: matches ? classes.drawerPaper : null,
                     }}
+                    style={matches ? { paddingTop: '64px' } : {}}
                     onClose={() => this.toggleDrawer(matches)}
+                    PaperProps={{
+                        style: {
+                            border: 'none',
+                        },
+                    }}
                 >
-                    {matches ? <div style={{ height: 48 }}></div> : null}
-
                     <MenuList>
                         {menu.map((item, index) => {
                             return matches ? (
@@ -290,8 +294,9 @@ class DashboardDrawer extends React.Component<DashboardDrawerProps & ReturnType<
                         })}
                     </MenuList>
                 </Drawer>
-            }}
-        </MediaQuery>
+            }
+            }
+        </MediaQuery >
     }
 }
 

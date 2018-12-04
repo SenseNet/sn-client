@@ -2,26 +2,36 @@ import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import * as React from 'react'
 import AppBarLogo from './AppBarLogo'
-import { QuickSearch } from './QuickSearch'
+import { Search } from './Search/Search'
 import UserActionMenu from './UserActionMenu'
 
 const styles = {
     appBar: {
-        background: '#4cc9f2',
-        borderBottom: 'solid 1px #f5f5f5',
+        background: 'transparent',
         zIndex: 1210,
-        height: 48,
+        height: 64,
+        borderBottom: '1px solid #ddd',
     },
 }
 
 class Header extends React.Component<{}, {}> {
     public render() {
         return (
-            <AppBar position="absolute" style={styles.appBar}>
-                <Toolbar style={{ minHeight: 48, padding: '0px 10px' }}>
-                    <AppBarLogo />
-                    <QuickSearch />
-                    <UserActionMenu />
+            <AppBar position="absolute" style={{ ...styles.appBar, boxShadow: 'none' }}>
+                <Toolbar style={{ padding: '0px 10px', display: 'flex' }}>
+                    <AppBarLogo style={{
+                        width: '216px',
+                        flexGrow: 0,
+                        flexShrink: 0,
+                        fontSize: '1.33em',
+                    }} />
+                    <Search style={{
+                        flexGrow: 1,
+                    }} />
+                    <UserActionMenu style={{
+                        flexGrow: 0,
+                        flexShrink: 0,
+                    }} />
                 </Toolbar>
             </AppBar>
         )

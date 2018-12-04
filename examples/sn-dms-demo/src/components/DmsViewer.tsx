@@ -10,8 +10,8 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
-import { rootStateType } from '..'
 import { openDialog } from '../Actions'
+import { rootStateType } from '../store/rootReducer'
 import ShareDialog from './Dialogs/ShareDialog'
 
 // tslint:disable-next-line:no-var-requires

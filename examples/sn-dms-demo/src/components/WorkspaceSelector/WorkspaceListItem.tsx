@@ -10,7 +10,7 @@ import { compile } from 'path-to-regexp'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
-import { rootStateType } from '../..'
+import { rootStateType } from '../../store/rootReducer'
 import { followWorkspace, unfollowWorkspace } from '../../store/workspaces/actions'
 
 const styles = {

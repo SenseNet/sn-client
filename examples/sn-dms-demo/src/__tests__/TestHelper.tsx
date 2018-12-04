@@ -6,8 +6,8 @@ import { CreateStoreOptions } from '@sensenet/redux/dist/Store'
 import * as React from 'react'
 import { Provider } from 'react-redux'
 import { combineReducers } from 'redux'
-import { rootStateType } from '..'
 import { dms } from '../Reducers'
+import { rootStateType } from '../store/rootReducer'
 
 it('Should help tests', () => {
     /** */

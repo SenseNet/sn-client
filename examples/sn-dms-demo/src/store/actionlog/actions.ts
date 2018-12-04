@@ -2,8 +2,8 @@ import { Repository } from '@sensenet/client-core'
 import { isExtendedError } from '@sensenet/client-core/dist/Repository/Repository'
 import { EventHub } from '@sensenet/repository-events'
 import { InjectableAction } from 'redux-di-middleware'
-import { rootStateType } from '../..'
 import { resources } from '../../assets/resources'
+import { rootStateType } from '../../store/rootReducer'
 
 export const logActions: string[] = ['CheckIn', 'Checkout', 'UndoCheckOut', 'Approve', 'Reject', 'Publish']
 

@@ -5,9 +5,9 @@ import { GenericContent, User } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { rootStateType } from '../../..'
 import { resources } from '../../../assets/resources'
 import { select, setActive } from '../../../store/documentlibrary/actions'
+import { rootStateType } from '../../../store/rootReducer'
 import { DocumentState } from './LockedCell'
 
 export interface DisplayNameMobilCellProps {

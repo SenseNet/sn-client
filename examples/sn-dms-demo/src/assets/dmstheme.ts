@@ -36,9 +36,9 @@ export const dmsTheme = createMuiTheme({
         },
         MuiExpansionPanelSummary: {
             root: {
-                minHeight: 48,
+                minHeight: 64,
                 expanded: {
-                    minHeight: 48,
+                    minHeight: 64,
                 },
             },
         },

@@ -3,9 +3,9 @@ import { Group, User } from '@sensenet/default-content-types'
 import { Icon } from '@sensenet/icons-react'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { rootStateType } from '../..'
 import * as DMSActions from '../../Actions'
 import { resources } from '../../assets/resources'
+import { rootStateType } from '../../store/rootReducer'
 import RemoveUserFromGroupDialog from '../Dialogs/RemoveUserFromGroupDialog'
 
 const styles = {

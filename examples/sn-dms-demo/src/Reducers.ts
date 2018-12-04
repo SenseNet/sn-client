@@ -254,7 +254,7 @@ export const addNewTypes: Reducer<IActionModel[]> = (state: IActionModel[] = [],
     }
 }
 
-export const actionmenuContent: Reducer<GenericContent | null> = (state: GenericContent | null = null, action: AnyAction) => {
+export const actionmenuContent: Reducer<GenericContent> = (state: GenericContent | null = null, action: AnyAction) => {
     switch (action.type) {
         case 'OPEN_ACTIONMENU':
             return action.content

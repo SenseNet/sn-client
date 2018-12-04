@@ -4,9 +4,9 @@ import { Actions } from '@sensenet/redux'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
-import { rootStateType } from '../..'
 import * as DMSActions from '../../Actions'
 import { resources } from '../../assets/resources'
+import { rootStateType } from '../../store/rootReducer'
 
 const styles = {
     inner: {
@@ -92,7 +92,7 @@ class MoveToConfirmDialog extends React.Component<ReturnType<typeof mapStateToPr
                     </div>
                     <div style={styles.buttonContainer}>
                         <div style={styles.rightColumn as any}>
-                            { matches ? <Button color="default" style={{ marginRight: 20 }} onClick={() => this.handleCancel()}>{resources.CANCEL}</Button> : null }
+                            {matches ? <Button color="default" style={{ marginRight: 20 }} onClick={() => this.handleCancel()}>{resources.CANCEL}</Button> : null}
                             <Button onClick={() => this.submitCallback()} variant="raised" color="secondary">{resources.MOVE}</Button>
                         </div>
                     </div>

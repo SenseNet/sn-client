@@ -5,8 +5,8 @@ import * as ReactDOM from 'react-dom'
 import {
   MemoryRouter,
 } from 'react-router-dom'
-import { rootStateType } from '../..'
 import { withStore } from '../../__tests__/TestHelper'
+import { rootStateType } from '../../store/rootReducer'
 import Registration from '../Registration'
 
 it('renders without crashing', () => {

@@ -4,9 +4,9 @@ import { GenericContent, Group, IActionModel, User } from '@sensenet/default-con
 import { EventHub } from '@sensenet/repository-events'
 import { Action, AnyAction } from 'redux'
 import { InjectableAction } from 'redux-di-middleware'
-import { rootStateType } from '../..'
 import { changedContent } from '../../Actions'
 import { arrayComparer } from '../../assets/helpers'
+import { rootStateType } from '../../store/rootReducer'
 
 const eventObservables: Array<ValueObserver<any>> = []
 

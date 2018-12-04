@@ -4,7 +4,6 @@ import Typography from '@material-ui/core/Typography'
 
 import * as React from 'react'
 
-// tslint:disable-next-line:variable-name
 export const SavedQueries: React.StatelessComponent = (props) => {
     return (<AppBar position="static" style={{ background: '#fff' }
     }>

@@ -9,7 +9,7 @@ import { Actions } from '@sensenet/redux'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
-import { rootStateType } from '../../..'
+import { rootStateType } from '../../../store/rootReducer'
 import { selectGroup } from '../../../store/usersandgroups/actions'
 
 const styles = {

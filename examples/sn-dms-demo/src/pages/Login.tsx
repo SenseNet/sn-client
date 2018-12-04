@@ -36,9 +36,9 @@ const styles = {
 import { GoogleOauthProvider } from '@sensenet/authentication-google'
 import { IOauthProvider } from '@sensenet/authentication-jwt'
 import { LoginState } from '@sensenet/client-core'
-import { rootStateType } from '..'
 import { resources } from '../assets/resources'
 import { FullScreenLoader } from '../components/FullScreenLoader'
+import { rootStateType } from '../store/rootReducer'
 
 const mapStateToProps = (state: rootStateType) => {
   return {

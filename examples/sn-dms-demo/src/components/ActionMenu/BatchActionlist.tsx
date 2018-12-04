@@ -5,11 +5,11 @@ import { Actions } from '@sensenet/redux'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
-import { rootStateType } from '../..'
 import * as DMSActions from '../../Actions'
 import { icons } from '../../assets/icons'
 import { resources } from '../../assets/resources'
 import { closePicker, loadPickerItems, openPicker, setBackLink, setPickerParent } from '../../store/picker/actions'
+import { rootStateType } from '../../store/rootReducer'
 import CopyToConfirmDialog from '../Dialogs/CopyToConfirmDialog'
 import DeleteDialog from '../Dialogs/DeleteDialog'
 import MoveToConfirmDialog from '../Dialogs/MoveToConfirmDialog'
@@ -54,7 +54,7 @@ const styles = {
 }
 
 interface BatchActionListProps {
-    currentContent: GenericContent | null,
+    currentContent?: GenericContent,
     selected: GenericContent[]
 
 }
@@ -128,7 +128,7 @@ class BatchActionlist extends React.Component<BatchActionListProps & ReturnType<
         const { currentContent } = this.props
         const { options } = this.state
         this.props.closeActionMenu()
-        this.props.openActionMenu(options, currentContent, currentContent ? currentContent.Id.toString() : '', e.currentTarget, {
+        currentContent && this.props.openActionMenu(options, currentContent, currentContent.Id.toString(), e.currentTarget, {
             // tslint:disable-next-line:no-string-literal
             top: (e.target as HTMLElement).offsetTop + 100,
             left: (e.target as HTMLElement).offsetLeft + 100,
@@ -138,7 +138,7 @@ class BatchActionlist extends React.Component<BatchActionListProps & ReturnType<
     public handleClickMobile = (e: React.MouseEvent<HTMLElement>) => {
         const { actions, currentContent } = this.props
         this.props.closeActionMenu()
-        this.props.openActionMenu(actions, currentContent, currentContent ? currentContent.Id.toString() : '', e.currentTarget, {
+        currentContent && this.props.openActionMenu(actions, currentContent, currentContent.Id.toString(), e.currentTarget, {
             top: (e.target as HTMLElement).offsetTop + 100,
             left: (e.target as HTMLElement).offsetLeft + 100,
         })
@@ -148,7 +148,6 @@ class BatchActionlist extends React.Component<BatchActionListProps & ReturnType<
         this.setState({ anchorEl: null })
     }
     public handleMenuItemClick = (actionName: string) => {
-        const content = this.props.currentContent
         switch (actionName) {
             case 'DeleteBatch':
             case 'Delete':
@@ -160,7 +159,7 @@ class BatchActionlist extends React.Component<BatchActionListProps & ReturnType<
             case 'MoveBatch':
                 this.handleClose()
                 this.props.setPickerParent(this.props.currentParent || null)
-                this.props.loadPickerItems(this.props.currentParent ? this.props.currentParent.Path : '', content)
+                this.props.loadPickerItems(this.props.currentParent ? this.props.currentParent.Path : '')
                 this.props.openPicker(
                     <PathPicker
                         mode="MoveTo"
@@ -173,7 +172,7 @@ class BatchActionlist extends React.Component<BatchActionListProps & ReturnType<
             case 'CopyBatch':
                 this.handleClose()
                 this.props.setPickerParent(this.props.currentParent || null)
-                this.props.loadPickerItems(this.props.currentParent ? this.props.currentParent.Path : '', content)
+                this.props.loadPickerItems(this.props.currentParent ? this.props.currentParent.Path : '')
                 this.props.openPicker(
                     <PathPicker
                         mode="CopyTo"

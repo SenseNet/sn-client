@@ -1,11 +1,12 @@
 import { IContent, IUploadFromEventOptions, IUploadFromFileListOptions, IUploadProgressInfo, Repository, Upload } from '@sensenet/client-core'
 import { ObservableValue, usingAsync } from '@sensenet/client-utils'
+import { debounce } from '@sensenet/client-utils'
 import { File as SnFile, GenericContent } from '@sensenet/default-content-types'
 import { IActionModel } from '@sensenet/default-content-types/dist/IActionModel'
 import { Action, AnyAction, Dispatch } from 'redux'
-
 import { InjectableAction } from 'redux-di-middleware'
-import { rootStateType } from '.'
+import { updateChildrenOptions } from './store/documentlibrary/actions'
+import { rootStateType } from './store/rootReducer'
 
 export enum MessageMode { error = 'error', warning = 'warning', info = 'info' }
 
@@ -36,7 +37,7 @@ export const setEditedContentId = (id: number) => ({
     type: 'SET_EDITED_ID',
     id,
 })
-export const openActionMenu = (actions: IActionModel[], content: GenericContent | null, title: string, element: HTMLElement | EventTarget | null, position?: {left: number, top: number}, customItems?: IActionModel[]) => ({
+export const openActionMenu = (actions: IActionModel[], content: GenericContent, title: string, element: HTMLElement | EventTarget | null, position?: { left: number, top: number }, customItems?: IActionModel[]) => ({
     type: 'OPEN_ACTIONMENU',
     actions: customItems && customItems.length > 0 ? customItems : actions,
     content,
@@ -108,6 +109,18 @@ export type ExtendedUploadProgressInfo = IUploadProgressInfo & { content?: Gener
 
 export const changedContent: GenericContent[] = []
 
+function methodToDebounce(getState: () => rootStateType, dispatch: Dispatch) {
+    const currentContent = getState().dms.documentLibrary.parent
+    changedContent.forEach((content) => {
+        if (currentContent && currentContent.Id === content.ParentId) {
+            dispatch(updateChildrenOptions({}))
+            changedContent.length = 0
+            return
+        }
+    })
+}
+export const debounceReloadOnProgress = debounce(methodToDebounce, 300)
+
 export const trackUploadProgress = async <T extends GenericContent>(currentValue: ExtendedUploadProgressInfo, getState: () => rootStateType, dispatch: Dispatch, api: Repository) => {
 
     let currentUpload: ExtendedUploadProgressInfo | undefined = getState().dms.uploads.uploads.find((u) => u.guid === currentValue.guid)
@@ -130,6 +143,7 @@ export const trackUploadProgress = async <T extends GenericContent>(currentValue
         })
         dispatch(updateUploadItem({ ...currentValue, content: content.d }))
         changedContent.push(content.d)
+        debounceReloadOnProgress(getState, dispatch)
     }
 }
 

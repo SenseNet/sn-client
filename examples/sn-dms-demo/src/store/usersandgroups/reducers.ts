@@ -71,7 +71,7 @@ export const selected: Reducer<GenericContent[]> = (state: GenericContent[] = []
 export const loadChunkSize = 25
 
 const defaultOptions = {
-    select: ['Id', 'Path', 'Name','Type','ParentId','Actions','Avatar','Owner','DisplayName','Workspace','Icon','Members'],
+    select: ['Id', 'Path', 'Name', 'Type', 'ParentId', 'Actions', 'Avatar', 'Owner', 'DisplayName', 'Workspace', 'Icon', 'Members'],
     expand: ['Actions', 'Workspace', 'Members'],
     orderby: [['IsFolder', 'desc'], ['DisplayName', 'asc']],
     filter: `isOf('Group')`,
@@ -87,7 +87,7 @@ export const grouplistOptions: Reducer<IODataParams<GenericContent>> = (state: I
     }
 }
 
-export const active: Reducer<GenericContent | undefined> = (state: GenericContent | null = null, action: AnyAction) => {
+export const active: Reducer<GenericContent | null> = (state: GenericContent | null = null, action: AnyAction) => {
     switch (action.type) {
         case 'DMS_USERSANDGROUPS_SET_ACTIVE':
             return action.active

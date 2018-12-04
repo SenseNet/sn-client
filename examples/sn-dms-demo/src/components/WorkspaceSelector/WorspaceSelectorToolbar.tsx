@@ -10,8 +10,8 @@ import { PathHelper } from '@sensenet/client-utils'
 import { Icon, iconType } from '@sensenet/icons-react'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { rootStateType } from '../..'
 import { resources } from '../../assets/resources'
+import { rootStateType } from '../../store/rootReducer'
 
 const styles = () => ({
     toolbar: {

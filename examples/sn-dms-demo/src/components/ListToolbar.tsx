@@ -8,14 +8,15 @@ import BatchActionlist from './ActionMenu/BatchActionlist'
 import BreadCrumb from './BreadCrumb'
 
 export interface ListToolbarProps {
-    currentContent: GenericContent | null,
+    currentContent?: GenericContent,
     selected: GenericContent[],
     ancestors: GenericContent[]
 }
 
 const styles = {
     appBar: {
-        background: '#fff',
+        background: 'transparent',
+        boxShadow: 'none',
     },
     appBarMobile: {
         background: '#4cc9f2',
@@ -24,6 +25,7 @@ const styles = {
         display: 'flex',
         flexDirection: 'row',
         padding: '0 12px',
+        minHeight: '68px',
     },
     toolbarMobile: {
         padding: '0',

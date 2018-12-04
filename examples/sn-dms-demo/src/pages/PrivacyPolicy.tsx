@@ -1,5 +1,6 @@
 import * as React from 'react'
 import * as ReactMarkdown from 'react-markdown'
+import '../md'
 
 import * as content from '../assets/privacy-policy.md'
 

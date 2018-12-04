@@ -14,11 +14,11 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
-import { rootStateType } from '../..'
 import * as DMSActions from '../../Actions'
 import { versionName } from '../../assets/helpers'
 import { icons } from '../../assets/icons'
 import { resources } from '../../assets/resources'
+import { rootStateType } from '../../store/rootReducer'
 import DialogInfo from './DialogInfo'
 import RestoreVersionsDialog from './RestoreVersionDialog'
 
@@ -285,7 +285,7 @@ class ShareDialog extends React.Component<{ classes: any } & ShareDialogProps & 
 
                                 </div>
                                 <Button style={{ ...styles.link, fontSize: '12px' }} onClick={this.copyUrl}>
-                                <Icon type={iconType.materialui} iconName="link" /> &nbsp;
+                                    <Icon type={iconType.materialui} iconName="link" /> &nbsp;
                             {resources.SHARE_COPY_LINK}
                                 </Button>
                             </div>

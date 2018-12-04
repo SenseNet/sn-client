@@ -5,10 +5,10 @@ import { Actions } from '@sensenet/redux'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
-import { rootStateType } from '../..'
 import * as DMSActions from '../../Actions'
 import { versionName } from '../../assets/helpers'
 import { resources } from '../../assets/resources'
+import { rootStateType } from '../../store/rootReducer'
 
 const styles = {
     buttonContainer: {

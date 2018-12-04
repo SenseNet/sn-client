@@ -5,11 +5,11 @@ import { Icon, iconType } from '@sensenet/icons-react'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
-import { rootStateType } from '..'
 import { LogEntry, readLogEntries } from '../store/actionlog/actions'
+import { rootStateType } from '../store/rootReducer'
 
 // tslint:disable-next-line:no-var-requires
-const groupBy: typeof import('lodash.groupby') = require('lodash.groupby')
+const groupBy: typeof import ('lodash.groupby') = require('lodash.groupby')
 
 const styles = {
     window: {

@@ -13,13 +13,13 @@ import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { v1 } from 'uuid'
-import { rootStateType } from '../..'
 import * as DMSActions from '../../Actions'
 import { downloadFile } from '../../assets/helpers'
 import { icons } from '../../assets/icons'
 import { resources } from '../../assets/resources'
 import { select } from '../../store/documentlibrary/actions'
 import { closePicker, loadPickerItems, openPicker, setBackLink, setPickerParent } from '../../store/picker/actions'
+import { rootStateType } from '../../store/rootReducer'
 import ApproveorRejectDialog from '../Dialogs/ApproveorRejectDialog'
 import CopyToConfirmDialog from '../Dialogs/CopyToConfirmDialog'
 import DeleteDialog from '../Dialogs/DeleteDialog'
@@ -191,13 +191,13 @@ class ActionMenu extends React.Component<ActionMenuProps & ReturnType<typeof map
                     break
                 case 'Versions':
                     this.handleClose()
-                    this.props.openDialog(
+                    this.props.currentContent && this.props.openDialog(
                         <VersionsDialog currentContent={this.props.currentContent} />,
                         resources.VERSIONS, this.props.closeDialog)
                     break
                 case 'ShareContent':
                     this.handleClose()
-                    this.props.openDialog(<ShareDialog currentContent={this.props.currentContent} />)
+                    this.props.currentContent && this.props.openDialog(<ShareDialog currentContent={this.props.currentContent} />)
                     break
                 case 'Profile':
                     this.handleClose()
@@ -207,7 +207,7 @@ class ActionMenu extends React.Component<ActionMenuProps & ReturnType<typeof map
                     break
                 case 'Edit':
                     this.handleClose()
-                    this.props.openDialog(
+                    content && this.props.openDialog(
                         <EditPropertiesDialog
                             content={content}
                             contentTypeName={content ? content.Type : ''} />,
@@ -245,7 +245,7 @@ class ActionMenu extends React.Component<ActionMenuProps & ReturnType<typeof map
                     this.handleClose()
                     this.props.select(content ? [content] : [])
                     this.props.setPickerParent(this.props.currentParent ? this.props.currentParent : null)
-                    this.props.loadPickerItems(this.props.currentParent ? this.props.currentParent.Path : '', content)
+                    this.props.loadPickerItems(this.props.currentParent ? this.props.currentParent.Path : '')
                     this.props.openPicker(
                         <PathPicker
                             mode="MoveTo"
@@ -259,7 +259,7 @@ class ActionMenu extends React.Component<ActionMenuProps & ReturnType<typeof map
                     this.handleClose()
                     this.props.select(content ? [content] : [])
                     this.props.setPickerParent(this.props.currentParent ? this.props.currentParent : null)
-                    this.props.loadPickerItems(this.props.currentParent ? this.props.currentParent.Path : '', content)
+                    this.props.loadPickerItems(this.props.currentParent ? this.props.currentParent.Path : '')
                     this.props.openPicker(
                         <PathPicker
                             mode="CopyTo"
@@ -272,7 +272,7 @@ class ActionMenu extends React.Component<ActionMenuProps & ReturnType<typeof map
                 case 'MoveBatch':
                     this.handleClose()
                     this.props.setPickerParent(this.props.currentParent ? this.props.currentParent : null)
-                    this.props.loadPickerItems(this.props.currentParent ? this.props.currentParent.Path : '', content)
+                    this.props.loadPickerItems(this.props.currentParent ? this.props.currentParent.Path : '')
                     this.props.openPicker(
                         <PathPicker
                             mode="MoveTo"

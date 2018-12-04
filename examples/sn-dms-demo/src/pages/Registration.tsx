@@ -42,9 +42,9 @@ const styles = {
   },
 }
 
-import { rootStateType } from '..'
+import { IOauthProvider } from '@sensenet/authentication-jwt'
 import { resources } from '../assets/resources'
-import { IOauthProvider } from '@sensenet/authentication-jwt';
+import { rootStateType } from '../store/rootReducer'
 
 const mapStateToProps = (state: rootStateType) => {
   return {

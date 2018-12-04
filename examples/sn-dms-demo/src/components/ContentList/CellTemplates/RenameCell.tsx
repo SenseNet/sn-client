@@ -3,8 +3,8 @@ import TableCell from '@material-ui/core/TableCell'
 import { Icon, iconType } from '@sensenet/icons-react'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { rootStateType } from '../../..'
 import { setEditedContentId } from '../../../Actions'
+import { rootStateType } from '../../../store/rootReducer'
 
 const mapStateToProps = (state: rootStateType) => ({})
 const mapDispatchToProps = {

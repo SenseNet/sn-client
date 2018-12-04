@@ -1,3 +1,4 @@
+import { Injector } from '@furystack/inject'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
 import { IODataParams, Repository } from '@sensenet/client-core'
@@ -7,17 +8,16 @@ import * as React from 'react'
 import * as Loadable from 'react-loadable'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
-import { rootStateType } from '../..'
 import * as DMSActions from '../../Actions'
 import { resources } from '../../assets/resources'
-import { repository } from '../../index'
 import { loadEditedContent } from '../../store/edited/actions'
+import { rootStateType } from '../../store/rootReducer'
 import { FullScreenLoader } from '../FullScreenLoader'
 import DialogInfo from './DialogInfo'
 
 interface EditPropertiesDialogProps {
     contentTypeName: string,
-    content: GenericContent | null,
+    content: GenericContent,
 }
 
 const mapStateToProps = (state: rootStateType) => {
@@ -39,6 +39,7 @@ const mapDispatchToProps = {
 
 interface EditPropertiesDialogState {
     editedcontent: GenericContent | undefined,
+    repository: Repository
 }
 
 const LoadableEditView = Loadable({
@@ -52,8 +53,10 @@ const LoadableEditView = Loadable({
 class EditPropertiesDialog extends React.Component<EditPropertiesDialogProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, EditPropertiesDialogState> {
     public state = {
         editedcontent: this.props.editedcontent ? this.props.editedcontent : undefined,
+        repository: Injector.Default.GetInstance(Repository),
     }
     public static getDerivedStateFromProps(newProps: EditPropertiesDialog['props'], lastState: EditPropertiesDialog['state']) {
+        const repository = Injector.Default.GetInstance(Repository)
         if (lastState.editedcontent === null || newProps.content && (lastState.editedcontent ? lastState.editedcontent.Id !== newProps.content.Id : false)) {
             const schema = repository.schemas.getSchemaByName(newProps.contentTypeName)
             const editableFields = schema.FieldSettings
@@ -68,6 +71,7 @@ class EditPropertiesDialog extends React.Component<EditPropertiesDialogProps & R
         }
         return {
             editedcontent: newProps.content,
+            repository,
         }
     }
     public handleCancel = () => {
@@ -91,7 +95,7 @@ class EditPropertiesDialog extends React.Component<EditPropertiesDialogProps & R
                         {editedcontent ?
                             <LoadableEditView
                                 content={editedcontent}
-                                repository={repository as Repository}
+                                repository={this.state.repository}
                                 contentTypeName={contentTypeName}
                                 onSubmit={editContent}
                                 handleCancel={() => this.handleCancel()}

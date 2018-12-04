@@ -1,7 +1,7 @@
 import * as React from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { connect } from 'react-redux'
-import { rootStateType } from '..'
+import { rootStateType } from '../store/rootReducer'
 
 class GoogleReCaptcha extends React.Component<{ verify?: (response: any) => void }, { recaptchaResponse: any }> {
     constructor(props: GoogleReCaptcha['props']) {

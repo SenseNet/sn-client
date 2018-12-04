@@ -5,45 +5,48 @@ import * as ReactDOM from 'react-dom'
 import {
   MemoryRouter,
 } from 'react-router-dom'
-import { rootStateType } from '../..'
 import { withStore } from '../../__tests__/TestHelper'
+import { rootStateType } from '../../store/rootReducer'
 import Header from '../Header'
 
-it('renders without crashing', () => {
-  const div = document.createElement('div')
+describe('Header', () => {
+  it('renders without crashing', () => {
+    const div = document.createElement('div')
 
-  const options = {
-    persistedState: {
-      sensenet: {
-        currentcontent: {
-          contentState: {
-            isSaved: false,
+    const options = {
+      persistedState: {
+        sensenet: {
+          currentcontent: {
+            contentState: {
+              isSaved: false,
+            },
           },
-        },
-        batchResponses: {
-          response: null,
-        },
-        session: {
-          country: '',
-          language: '',
-          loginState: LoginState.Pending,
-          user: {
-            userName: 'aaa',
+          batchResponses: {
+            response: null,
           },
-          error: null,
-          repository: null,
-        },
-        selected: {
-          ids: [123],
-        },
-        currentitems: {
-          ids: [123],
+          session: {
+            country: '',
+            language: '',
+            loginState: LoginState.Pending,
+            user: {
+              userName: 'aaa',
+            },
+            error: null,
+            repository: null,
+          },
+          selected: {
+            ids: [123],
+          },
+          currentitems: {
+            ids: [123],
+          },
         },
       },
-    },
-  } as Partial<Store.CreateStoreOptions<rootStateType>>
-  ReactDOM.render(withStore(
-    <MemoryRouter>
-      <Header />
-    </MemoryRouter>, options), div)
+    } as Partial<Store.CreateStoreOptions<rootStateType>>
+    ReactDOM.render(withStore(
+      <MemoryRouter>
+        <Header />
+      </MemoryRouter>, options), div)
+  })
+
 })

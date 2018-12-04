@@ -11,7 +11,6 @@ import * as Loadable from 'react-loadable'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { Route, RouteComponentProps, Switch } from 'react-router-dom'
-import { rootStateType } from '..'
 import * as DMSActions from '../Actions'
 import { ContentTemplates } from '../components/ContentTemplates'
 import { ContentTypes } from '../components/ContentTypes'
@@ -27,6 +26,7 @@ import { Settings } from '../components/Settings'
 import { Shared } from '../components/Shared'
 import { Trash } from '../components/Trash'
 import UserProfile from '../components/UserProfile'
+import { rootStateType } from '../store/rootReducer'
 
 const styles = {
     dashBoardInner: {
@@ -52,7 +52,6 @@ const styles = {
     },
     main: {
         flexGrow: 1,
-        backgroundColor: '#eee',
         padding: '0 10px 10px',
         minWidth: 0,
     },
@@ -147,7 +146,7 @@ class DashboardComponent extends React.Component<DashboardProps & ReturnType<typ
                                 <div style={{ width: '100%', display: 'flex' }}>
                                     <DashboardDrawer />
                                     <div style={styles.main}>
-                                        <div style={{ height: 48, width: '100%' }}></div>
+                                        <div style={{ height: 64, width: '100%' }}></div>
                                         <Switch>
                                             <Route path="/documents" component={(props: RouteComponentProps<any>) => (
                                                 <Switch>

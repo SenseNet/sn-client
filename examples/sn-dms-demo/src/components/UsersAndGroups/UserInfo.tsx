@@ -4,8 +4,8 @@ import Paper from '@material-ui/core/Paper'
 import { Icon } from '@sensenet/icons-react'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { rootStateType } from '../..'
 import * as DMSActions from '../../Actions'
+import { rootStateType } from '../../store/rootReducer'
 import EditPropertiesDialog from '../Dialogs/EditPropertiesDialog'
 
 import { resources } from '../../assets/resources'
@@ -70,7 +70,7 @@ interface UserInfoProps {
 
 const mapStateToProps = (state: rootStateType) => {
     return {
-        user: state.dms.usersAndGroups.user.currentUser || null,
+        user: state.dms.usersAndGroups.user.currentUser,
         isLoading: state.dms.usersAndGroups.user.isLoading,
         repositoryUrl: state.sensenet.session.repository ? state.sensenet.session.repository.repositoryUrl : '',
         currentUser: state.sensenet.session.user.userName,
@@ -84,7 +84,7 @@ const mapDispatchToProps = {
 
 class UserInfo extends React.Component<UserInfoProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, {}> {
     public handleEditClick = () => {
-        this.props.openDialog(
+        this.props.user && this.props.openDialog(
             <EditPropertiesDialog
                 content={this.props.user}
                 contentTypeName="User" />,

@@ -3,14 +3,15 @@ import ListItemText from '@material-ui/core/ListItemText'
 import MenuItem from '@material-ui/core/MenuItem'
 import MenuList from '@material-ui/core/MenuList'
 import withStyles, { StyleRulesCallback } from '@material-ui/core/styles/withStyles'
-import { IUploadProgressInfo } from '@sensenet/client-core'
+import { IContent, IUploadProgressInfo } from '@sensenet/client-core'
 import { Icon, iconType } from '@sensenet/icons-react'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
-import { rootStateType } from '../..'
 import { removeUploadItem, uploadFileList } from '../../Actions'
+import { updateChildrenOptions } from '../../store/documentlibrary/actions'
+import { rootStateType } from '../../store/rootReducer'
 import AddNewMenu from '../ActionMenu/AddNewMenu'
 import { UploadButton } from '../Upload/UploadButton'
 
@@ -81,7 +82,6 @@ const styles: StyleRulesCallback = () => ({
     submenuItem: {
         paddingLeft: 0,
         paddingRight: 0,
-        borderTop: 'solid 1px rgba(0, 0, 0, 0.08)',
     },
     submenuIcon: {
         color: '#666',
@@ -120,11 +120,13 @@ const mapStateToProps = (state: rootStateType) => {
     return {
         currentContent: state.dms.documentLibrary.parent,
         currentWorkspace: state.sensenet.currentworkspace,
+        query: state.dms.documentLibrary.childrenOptions.query,
     }
 }
 
 const mapDispatchToProps = {
     uploadFileList,
+    updateChildrenOptions,
 }
 
 const subMenu = [
@@ -147,6 +149,7 @@ const subMenu = [
 
 class DocumentsMenu extends React.Component<DocumentMenuProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, {}> {
     public handleMenuItemClick = (title: string) => {
+        this.props.updateChildrenOptions({ query: '' })
         if (this.props.currentWorkspace) {
             this.props.history.push(`/documents/${btoa(this.props.currentWorkspace.Path + '/Document_Library')}`)
         } else {
@@ -175,26 +178,29 @@ class DocumentsMenu extends React.Component<DocumentMenuProps & ReturnType<typeo
                         <ListItemText classes={{ primary: active ? classes.primaryActive : classes.primary }} inset primary={item.title} />
                     </MenuItem>
                     <div className={active ? classes.open : classes.closed}>
-                        {matches ? <div><Divider />
-                            <UploadButton
-                                style={{
-                                    width: '100%',
-                                    margin: '10px 0 0 0',
-                                    fontFamily: 'Raleway Bold',
-                                    fontSize: '14px',
-                                }}
-                                multiple={true}
-                                handleUpload={(fileList) => this.props.uploadFileList({
-                                    fileList,
-                                    createFolders: true,
-                                    contentTypeName: 'File',
-                                    binaryPropertyName: 'Binary',
-                                    overwrite: false,
-                                    parentPath: this.props.currentContent ? this.props.currentContent.Path : '',
-                                })}
-                            />
-                            <AddNewMenu currentContent={this.props.currentContent || null} />
-                        </div> : null}
+                        {matches ?
+                            !this.props.query ?
+                                <div><Divider />
+                                    <UploadButton
+                                        style={{
+                                            width: '100%',
+                                            margin: '10px 0 0 0',
+                                            fontFamily: 'Raleway Bold',
+                                            fontSize: '14px',
+                                        }}
+                                        multiple={true}
+                                        handleUpload={(fileList) => this.props.uploadFileList({
+                                            fileList,
+                                            createFolders: true,
+                                            contentTypeName: 'File',
+                                            binaryPropertyName: 'Binary',
+                                            overwrite: false,
+                                            parentPath: (this.props.currentContent as IContent).Path,
+                                        })}
+                                    />
+                                    <AddNewMenu currentContent={this.props.currentContent} />
+                                </div> : null
+                            : null}
                         <MenuList className={classes.submenu}>
                             {subMenu.map((menuitem, index) => {
                                 return (<MenuItem className={matches ? classes.submenuItem : classes.submenuItemMobile} key={index}

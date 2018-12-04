@@ -11,12 +11,12 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
-import { rootStateType } from '..'
 import { closeActionMenu, openActionMenu } from '../Actions'
 import { contentListTheme } from '../assets/contentlist'
 import { icons } from '../assets/icons'
 import { customSchema } from '../assets/schema'
 import WorkspaceSelector from '../components/WorkspaceSelector/WorkspaceSelector'
+import { rootStateType } from '../store/rootReducer'
 import { loadUser, selectGroup, updateChildrenOptions } from '../store/usersandgroups/actions'
 import BreadCrumb from './BreadCrumb'
 import { DisplayNameCell } from './ContentList/CellTemplates/DisplayNameCell'
@@ -146,7 +146,7 @@ class UserProfile extends React.Component<UserProfileProps & ReturnType<typeof m
                                     <WorkspaceSelector />
                                     <BreadCrumb
                                         ancestors={this.props.ancestors}
-                                        currentContent={this.props.user || null}
+                                        currentContent={this.props.user}
                                         typeFilter={['OrganizationalUnit', 'Folder', 'Domain']} />
                                 </div>
                             </Toolbar>

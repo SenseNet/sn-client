@@ -1,12 +1,13 @@
+import { Injector } from '@furystack/inject'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import { Repository } from '@sensenet/client-core'
 import { Actions, Reducers } from '@sensenet/redux'
 import * as React from 'react'
 import * as Loadable from 'react-loadable'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
-import { rootStateType } from '../..'
 import * as DMSActions from '../../Actions'
-import { repository } from '../../index'
+import { rootStateType } from '../../store/rootReducer'
 import { FullScreenLoader } from '../FullScreenLoader'
 
 interface AddNewDialogProps {
@@ -68,7 +69,7 @@ class AddNewDialog extends React.Component<AddNewDialogProps & ReturnType<typeof
                             <LoadableNewView
                                 schema={schema}
                                 path={parentPath}
-                                repository={repository}
+                                repository={Injector.Default.GetInstance(Repository)}
                                 contentTypeName={contentTypeName}
                                 handleCancel={() => this.handleCancel()}
                                 onSubmit={createContent}

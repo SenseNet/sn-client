@@ -6,9 +6,9 @@ import { Actions } from '@sensenet/redux'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
-import { rootStateType } from '../..'
 import * as DMSActions from '../../Actions'
 import { resources } from '../../assets/resources'
+import { rootStateType } from '../../store/rootReducer'
 import { removeMemberFromGroups } from '../../store/usersandgroups/actions'
 
 const styles = {

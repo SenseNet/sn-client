@@ -2,8 +2,8 @@ import { Icon, iconType } from '@sensenet/icons-react'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
-import { rootStateType } from '..'
 import * as DMSActions from '../Actions'
+import { rootStateType } from '../store/rootReducer'
 import UserPanel from './UserPanel'
 
 const styles = {
@@ -11,7 +11,6 @@ const styles = {
         flex: 1,
     },
     menuIcon: {
-        color: '#fff',
         display: 'inline-block',
         verticalAlign: 'middle',
         cursor: 'pointer',
@@ -45,7 +44,7 @@ const mapDispatchToProps = {
     closeActionMenu: DMSActions.closeActionMenu,
 }
 
-class UserActionMenu extends React.Component<ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, UserActionMenuState> {
+class UserActionMenu extends React.Component<{ style?: React.CSSProperties } & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, UserActionMenuState> {
     public state = {
         anchorEl: null,
         open: false,
@@ -83,7 +82,7 @@ class UserActionMenu extends React.Component<ReturnType<typeof mapStateToProps> 
             <MediaQuery minDeviceWidth={700}>
                 {(matches) => {
                     return <div
-                        style={matches ? {} : styles.actionmenuContainer}
+                        style={{ ...matches ? {} : styles.actionmenuContainer, ...this.props.style }}
                         aria-owns="actionmenu"
                         onClick={(e) => this.handleClick(e)}>
                         <UserPanel />
