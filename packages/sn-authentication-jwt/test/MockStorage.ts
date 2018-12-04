@@ -16,7 +16,7 @@ export class MockStorage implements Storage {
   public getItem(key: string): string | null {
     return this.innerStorage.get(key) || null
   }
-  public key(index: number): string {
+  public key(): string {
     throw new Error('Method not implemented.')
   }
   public removeItem(key: string): void {

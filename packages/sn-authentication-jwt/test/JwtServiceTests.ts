@@ -11,7 +11,7 @@ export const jwtServiceTests: Mocha.Suite = describe('JwtService', () => {
   let repo: Repository
   let jwtService: JwtService
   beforeEach(() => {
-    repo = new Repository({}, async (info: RequestInfo, init?: RequestInit) => ({} as any))
+    repo = new Repository({}, async () => ({} as any))
     jwtService = new JwtService(repo)
     repo.authentication = jwtService
   })

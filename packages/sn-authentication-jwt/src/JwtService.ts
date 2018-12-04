@@ -137,7 +137,7 @@ export class JwtService implements AuthenticationService {
     private readonly latencyCompensationMs: number = 5000,
   ) {
     this.repository.authentication = this
-    this.state.subscribe(state => {
+    this.state.subscribe(() => {
       this.updateUser()
     })
     this.checkForUpdate()
