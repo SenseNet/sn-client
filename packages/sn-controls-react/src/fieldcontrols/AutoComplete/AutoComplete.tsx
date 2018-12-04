@@ -169,7 +169,7 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
               className={this.props.className}
               key={this.props.name as string}
               // Issue in type checking in 3.2 https://github.com/mui-org/material-ui/issues/13744
-              component={"fieldset" as "div"}
+              component={'fieldset' as 'div'}
               required={this.props.required}>
               <TextField
                 value={this.state.selected.length > 0 ? this.getContentById(this.state.selected[0])[displayName] : ''}
@@ -228,11 +228,11 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
         )
       case 'browse':
         return this.props['data-fieldValue'].length > 0 ? (
-          <FormControl component={"fieldset" as "div"} className={this.props.className}>
-            <FormLabel component={"legend" as "label"}>{this.props['data-labelText']}</FormLabel>
+          <FormControl component={'fieldset' as 'div'} className={this.props.className}>
+            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
             <FormGroup>
               {this.props['data-fieldValue'].map((value: T[K]) => (
-                <FormControl component={"fieldset" as "div"}>
+                <FormControl component={'fieldset' as 'div'}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
                     label={this.state.items.find((item: any) => item.Id === value)[displayName]}
@@ -246,11 +246,11 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
         ) : null
       default:
         return this.props['data-fieldValue'].length > 0 ? (
-          <FormControl component={"fieldset" as "div"} className={this.props.className}>
-            <FormLabel component={"legend" as "label"}>{this.props['data-labelText']}</FormLabel>
+          <FormControl component={'fieldset' as 'div'} className={this.props.className}>
+            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
             <FormGroup>
               {this.props['data-fieldValue'].map((value: T[K]) => (
-                <FormControl component={"fieldset" as "div"}>
+                <FormControl component={'fieldset' as 'div'}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
                     label={this.state.items.find((item: any) => item.Id === value)[displayName]}

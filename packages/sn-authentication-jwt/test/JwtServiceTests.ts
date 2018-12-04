@@ -114,7 +114,7 @@ export const jwtServiceTests: Mocha.Suite = describe('JwtService', () => {
       expect(jwtService['tokenStore'].RefreshToken.toString()).to.be.eq(rt)
     })
 
-    it("should return true if the access token is valid", () => {
+    it('should return true if the access token is valid', () => {
       const at = MockTokenFactory.CreateValid().toString()
       const rt = MockTokenFactory.CreateNotValidYet().toString()
       const result = jwtService.handleAuthenticationResponse({
@@ -124,7 +124,7 @@ export const jwtServiceTests: Mocha.Suite = describe('JwtService', () => {
       expect(result).to.be.eq(true)
     })
 
-    it("should return false if the access token is not valid", () => {
+    it('should return false if the access token is not valid', () => {
       const at = MockTokenFactory.CreateExpired().toString()
       const rt = MockTokenFactory.CreateNotValidYet().toString()
       const result = jwtService.handleAuthenticationResponse({

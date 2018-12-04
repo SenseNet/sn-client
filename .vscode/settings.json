@@ -1,4 +1,5 @@
 {
     "typescript.tsdk": "node_modules\\typescript\\lib",
-    "javascript.validate.enable": false
+    "tslint.autoFixOnSave": true,
+    "editor.formatOnSave": true
 }

@@ -28,6 +28,7 @@
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build",
     "test": "lerna run test",
-    "clean:packages": "lerna clean"
+    "clean": "lerna clean",
+    "fix": "lerna run fix --parallel"
   }
 }

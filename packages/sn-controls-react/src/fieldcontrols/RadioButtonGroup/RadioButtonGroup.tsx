@@ -74,12 +74,12 @@ export class RadioButtonGroup<T extends GenericContent, K extends keyof T> exten
       case 'edit':
         return (
           <FormControl
-            component={"fieldset" as "div"}
+            component={'fieldset' as 'div'}
             fullWidth={true}
             error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
             required={this.props.required}
             className={this.props.className}>
-            <FormLabel component={"legend" as "label"}>{this.props['data-labelText']}</FormLabel>
+            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
             <RadioGroup
               aria-label={this.props['data-labelText']}
               name={this.props.name as string}
@@ -104,12 +104,12 @@ export class RadioButtonGroup<T extends GenericContent, K extends keyof T> exten
       case 'new':
         return (
           <FormControl
-            component={"fieldset" as "div"}
+            component={'fieldset' as 'div'}
             fullWidth={true}
             error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
             required={this.props.required}
             className={this.props.className}>
-            <FormLabel component={"legend" as "label"}>{this.props['data-labelText']}</FormLabel>
+            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
             <RadioGroup
               aria-label={this.props['data-labelText']}
               name={this.props.name as string}
@@ -133,11 +133,11 @@ export class RadioButtonGroup<T extends GenericContent, K extends keyof T> exten
         )
       case 'browse':
         return this.props['data-fieldValue'].length > 0 ? (
-          <FormControl component={"fieldset" as "div"} className={this.props.className}>
-            <FormLabel component={"legend" as "label"}>{this.props['data-labelText']}</FormLabel>
+          <FormControl component={'fieldset' as 'div'} className={this.props.className}>
+            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
             <FormGroup>
               {this.props['data-fieldValue'].map((value: any) => (
-                <FormControl component={"fieldset" as "div"}>
+                <FormControl component={'fieldset' as 'div'}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
                     label={this.props.options.find(item => item.Value === value).Text}
@@ -151,11 +151,11 @@ export class RadioButtonGroup<T extends GenericContent, K extends keyof T> exten
         ) : null
       default:
         return this.props['data-fieldValue'].length > 0 ? (
-          <FormControl component={"fieldset" as "div"} className={this.props.className}>
-            <FormLabel component={"legend" as "label"}>{this.props['data-labelText']}</FormLabel>
+          <FormControl component={'fieldset' as 'div'} className={this.props.className}>
+            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
             <FormGroup>
               {this.props['data-fieldValue'].map((value: any) => (
-                <FormControl component={"fieldset" as "div"}>
+                <FormControl component={'fieldset' as 'div'}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
                     label={this.props.options.find(item => item.Value === value).Text}

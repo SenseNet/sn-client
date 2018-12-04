@@ -304,7 +304,9 @@ export class Upload {
   public static async fromDropEvent<T extends Content = Content>(options: UploadFromEventOptions<T>) {
     if ((window as any).webkitRequestFileSystem) {
       const entries: Array<WebKitFileEntry | WebKitDirectoryEntry | never> = options.event.dataTransfer
-        ? [].map.call(options.event.dataTransfer.items, (i: DataTransferItem) => i.webkitGetAsEntry()) as Array<WebKitFileEntry | WebKitDirectoryEntry>
+        ? ([].map.call(options.event.dataTransfer.items, (i: DataTransferItem) => i.webkitGetAsEntry()) as Array<
+            WebKitFileEntry | WebKitDirectoryEntry
+          >)
         : []
       await this.webkitItemListHandler<T>(entries, options.parentPath, options.createFolders, options)
     } else {
