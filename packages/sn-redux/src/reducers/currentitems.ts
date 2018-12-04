@@ -45,6 +45,7 @@ export const ids: Reducer<number[], PromiseMiddlewareSucceededAction<any>> = (st
         }
         return newIds
       }
+      return state
     default:
       return state
   }

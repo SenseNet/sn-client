@@ -1,18 +1,7 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "sourceMap": true,
     "target": "es2017",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "forceConsistentCasingInFileNames": true,
-    "strictNullChecks": true,
-    "declaration": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "strict": true,
-    "noImplicitAny": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
     "outDir": "./dist"
   },
   "exclude": ["node_modules", "dist"],
