@@ -1,20 +1,11 @@
 /**
  * @module FieldControls
- *
- */ /** */
+ */
 import React, { Component } from 'react'
 import { ReactChoiceFieldSetting } from '../ChoiceFieldSetting'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 
 import Checkbox from '@material-ui/core/Checkbox'
-// import {
-//     FormControl,
-//     FormControlLabel,
-//     FormGroup,
-//     FormHelperText,
-//     FormLabel,
-// } from '@material-ui/core/Form'
-
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormGroup from '@material-ui/core/FormGroup'
@@ -33,7 +24,7 @@ export interface CheckboxGroupProps<T extends GenericContent, K extends keyof T>
 /**
  * Interface for CheckboxGroup state
  */
-export interface CheckboxGroupState<T extends GenericContent, K extends keyof T> {
+export interface CheckboxGroupState<T extends GenericContent, _K extends keyof T> {
   value: any[]
 }
 /**

@@ -52,7 +52,7 @@ const clientConfigFactory = (fieldSettings: FieldSetting) => {
  */
 export const reactControlMapper = (repository: Repository) =>
   new ControlMapper(repository, Component, clientConfigFactory, ViewControls.EditView, FieldControls.ShortText)
-    .setupFieldSettingDefault(NumberFieldSetting, setting => {
+    .setupFieldSettingDefault(NumberFieldSetting, () => {
       return FieldControls.Number
     })
     .setClientControlFactory(NumberFieldSetting, setting => {
@@ -66,7 +66,7 @@ export const reactControlMapper = (repository: Repository) =>
       // TODO: currency
       return numberSettings
     })
-    .setupFieldSettingDefault(IntegerFieldSetting, setting => {
+    .setupFieldSettingDefault(IntegerFieldSetting, () => {
       return FieldControls.Number
     })
     .setClientControlFactory(IntegerFieldSetting, setting => {
@@ -98,14 +98,14 @@ export const reactControlMapper = (repository: Repository) =>
         (shortTextSettings['data-regex'] = setting.Regex)
       return shortTextSettings
     })
-    .setupFieldSettingDefault(PasswordFieldSetting, setting => {
+    .setupFieldSettingDefault(PasswordFieldSetting, () => {
       return FieldControls.Password
     })
     .setClientControlFactory(PasswordFieldSetting, setting => {
       const passwordSettings = clientConfigFactory(setting) as ReactPasswordFieldSetting
       return passwordSettings
     })
-    .setupFieldSettingDefault(DateTimeFieldSetting, setting => {
+    .setupFieldSettingDefault(DateTimeFieldSetting, () => {
       return FieldControls.DateTimePicker
     })
     .setClientControlFactory(DateTimeFieldSetting, setting => {

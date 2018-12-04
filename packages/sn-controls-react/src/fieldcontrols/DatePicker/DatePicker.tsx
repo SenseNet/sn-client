@@ -22,7 +22,7 @@ export interface DatePickerProps<T extends GenericContent, K extends keyof T>
 /**
  * Interface for DatePicker state
  */
-export interface DatePickerState<T extends GenericContent, K extends keyof T> {
+export interface DatePickerState<T extends GenericContent, _K extends keyof T> {
   dateValue: Date
   value: moment.Moment
 }

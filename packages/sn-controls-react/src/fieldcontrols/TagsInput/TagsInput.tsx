@@ -54,7 +54,7 @@ export interface TagsInputProps<T extends GenericContent, K extends keyof T>
 /**
  * Interface for TagsInput state
  */
-export interface TagsInputState<T extends GenericContent, K extends keyof T> {
+export interface TagsInputState<T extends GenericContent, _K extends keyof T> {
   label: string
   dataSource: any[]
   fieldValue: any
