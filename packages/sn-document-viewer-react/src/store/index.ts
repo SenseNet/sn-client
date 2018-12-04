@@ -1,4 +1,4 @@
-import { Store } from 'redux'
+import { compose, Store } from 'redux'
 import { Action, applyMiddleware, createStore } from 'redux'
 import { Reducer } from 'redux'
 import { StoreEnhancer } from 'redux'
@@ -20,9 +20,11 @@ export const getStoreConfig: (
   return {
     rootReducer,
     preloadedState: { sensenetDocumentViewer: { documentState: { isLoading: true } } } as RootReducerType,
-    enhancer: applyMiddleware(di.getMiddleware()),
+    enhancer: composeEnhancers(applyMiddleware(di.getMiddleware())),
   }
 }
+
+const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 /**
  * returns a Store object for a Document Viewer instance

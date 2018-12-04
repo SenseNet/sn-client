@@ -1,4 +1,5 @@
 import Typography from '@material-ui/core/Typography'
+import { toNumber } from '@sensenet/client-utils'
 import React = require('react')
 import { connect } from 'react-redux'
 import { PreviewState } from '../Enums'
@@ -22,15 +23,28 @@ export interface ErrorState {
 }
 
 /**
+ * Gets the preview state form the document's page count
+ * @param {RootReducerType} state
+ * @returns {number} page count that can be compared to PreviewState
+ */
+export function getPreviewState(state: RootReducerType): number {
+  if (
+    state.sensenetDocumentViewer.documentState.document &&
+    state.sensenetDocumentViewer.documentState.document.idOrPath
+  ) {
+    // toNumber will return with a number because we added a default value
+    return toNumber(state.sensenetDocumentViewer.documentState.document.pageCount, PreviewState.Loading)!
+  }
+  return PreviewState.Loading
+}
+
+/**
  * maps state fields from the store to component props
  * @param state the redux state
  */
 const mapStateToProps = (state: RootReducerType, ownProps: OwnProps) => {
   return {
-    previewState:
-      (state.sensenetDocumentViewer.documentState.document &&
-        state.sensenetDocumentViewer.documentState.document.pageCount) ||
-      PreviewState.Loading,
+    previewState: getPreviewState(state),
     errorLoadingDocument: state.sensenetDocumentViewer.localization.errorLoadingDocument,
     errorLoadingDetails: state.sensenetDocumentViewer.localization.errorLoadingDetails,
     reloadPage: state.sensenetDocumentViewer.localization.reloadPage,
@@ -59,7 +73,7 @@ class DocumentViewerErrorComponent extends React.Component<
     const stateMessageValue =
       props.errorLoadingDocument &&
       props.errorLoadingDocument.find(
-        a => (props.error.status && a.code === props.error.status) || a.state === props.previewState,
+        a => (props.error && props.error.status && a.code === props.error.status) || a.state === props.previewState,
       )
     return {
       message: (stateMessageValue && stateMessageValue.message) || '',

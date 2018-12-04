@@ -61,6 +61,7 @@ export const defaultLocalization: LocalizationStateType = {
   saveChanges: 'Save changes',
   loadingDocument: 'Preview image generation is in progress',
   errorLoadingDocument: [
+    { state: PreviewState.Empty, message: "The document doesn't have any preview images", details: '' },
     {
       code: 500,
       state: PreviewState.Empty,
@@ -81,7 +82,6 @@ export const defaultLocalization: LocalizationStateType = {
       message: 'Failed to generate preview images due to an extension error',
       details: '',
     },
-    { state: PreviewState.Empty, message: "The document doesn't have any preview images", details: '' },
     { state: PreviewState.NoPreviewProviderEnabled, message: 'There is no preview provider enabled', details: '' },
   ],
   errorLoadingDetails: 'The following error occured during opening a document: ',
