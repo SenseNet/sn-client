@@ -54,7 +54,7 @@ export const disposableTests = describe('Disposable', () => {
         d.disposeCallback = () => {
           done()
         }
-        return new Promise((resolve, reject) => {
+        return new Promise(resolve => {
           setTimeout(resolve, 1)
         })
       })
@@ -65,10 +65,10 @@ export const disposableTests = describe('Disposable', () => {
         d.disposeCallback = () => {
           done()
         }
-        return new Promise((resolve, reject) => {
+        return new Promise((_resolve, reject) => {
           setTimeout(reject, 1)
         })
-      }).catch(err => {
+      }).catch(() => {
         /** ignore */
       })
     })
@@ -89,7 +89,7 @@ export const disposableTests = describe('Disposable', () => {
       }
 
       const asyncDispose = new AsyncDispose()
-      await usingAsync(asyncDispose, async d => {
+      await usingAsync(asyncDispose, async () => {
         /** */
       })
       expect(asyncDispose.isDisposed).toBe(true)

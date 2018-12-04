@@ -66,14 +66,14 @@ export const traceTests = describe('Trace tests', () => {
       const observer = Trace.method({
         object: MockClass,
         method: MockClass.addStatic,
-        onCalled: traceData => {
+        onCalled: () => {
           done("Shouldn't be triggered here")
         },
       })
       const observer2 = Trace.method({
         object: MockClass,
         method: MockClass.addStatic,
-        onCalled: traceData => {
+        onCalled: () => {
           observer2.dispose()
           done()
         },
@@ -172,7 +172,7 @@ export const traceTests = describe('Trace tests', () => {
         .then(() => {
           done('Should throw error')
         })
-        .catch(err => {
+        .catch(() => {
           /** ignore, done handled in the onError callback */
         })
     })

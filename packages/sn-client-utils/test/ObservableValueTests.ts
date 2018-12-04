@@ -6,7 +6,7 @@ import { ObservableValue } from '../src'
 export const observableTests = describe('Observable', () => {
   it('should be constructed without initial value', done => {
     const v = new ObservableValue()
-    v.subscribe(value => {
+    v.subscribe(() => {
       expect(v.getValue()).toBe(undefined)
       done()
     }, true)
@@ -15,7 +15,7 @@ export const observableTests = describe('Observable', () => {
 
   it('should be constructed with initial value', done => {
     const v = new ObservableValue(1)
-    v.subscribe(value => {
+    v.subscribe(() => {
       expect(v.getValue()).toBe(1)
       done()
     }, true)
@@ -65,7 +65,7 @@ export const observableTests = describe('Observable', () => {
       const callback1 = () => {
         /** */
       }
-      const callback2 = (value: number) => {
+      const callback2 = () => {
         /** */
       }
       const v = new ObservableValue(1)
@@ -93,7 +93,7 @@ export const observableTests = describe('Observable', () => {
          * Example mock class for testing
          * @param {number} n example parameter
          */
-        public Callback(n: number) {
+        public Callback() {
           done()
         }
       }

@@ -77,7 +77,7 @@ export const retrierTests = describe('Retrier', () => {
 
   it('should throw error when started twice', async () => {
     const retrier = Retrier.create(async () => false)
-    const runPromise = retrier.run()
+    retrier.run()
     try {
       await retrier.run()
       throw Error('Should have been failed')
