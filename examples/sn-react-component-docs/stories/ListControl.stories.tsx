@@ -1,6 +1,6 @@
 import React from "react";
 import { storiesOf, addDecorator } from "@storybook/react";
-import { ContentList } from "../src/components/list-controls-react/ContentList";
+import { ContentList } from "@sensenet/list-controls-react/src/ContentList";
 import { action } from '@storybook/addon-actions';
 import { muiTheme } from 'storybook-addon-material-ui';
 import { withKnobs, array, boolean, select, text } from '@storybook/addon-knobs';

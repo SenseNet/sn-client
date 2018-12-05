@@ -10,7 +10,7 @@ import { Repository } from '@sensenet/client-core'
 import { File, Folder } from "@sensenet/default-content-types";
 import { Reducers } from '@sensenet/redux'
 
-import { EditView, NewView, BrowseView } from "../src/components/controls-react";
+import { EditView, NewView, BrowseView } from "@sensenet/controls-react/src";
 import { combineReducers, createStore } from "redux";
 
 export const customSchema = [
