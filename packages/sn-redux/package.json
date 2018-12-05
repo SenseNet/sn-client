@@ -75,7 +75,6 @@
     "@types/mocha": "^5.2.5",
     "@types/node": "^10.12.11",
     "@types/redux-logger": "^3.0.6",
-    "codecov": "^3.1.0",
     "redux-mock-store": "^1.5.3"
   },
   "config": {
