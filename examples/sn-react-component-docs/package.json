@@ -1,23 +1,27 @@
 {
-  "private": false,
+  "private": true,
   "name": "sn-react-component-docs",
   "version": "1.0.0",
   "description": "UI components for building apps upon sensenet implemented in React",
   "main": "index.js",
   "dependencies": {
     "@date-io/date-fns": "0.0.2",
+    "@sensenet/client-core": "^1.3.1",
+    "@sensenet/client-utils": "^1.4.0",
     "@sensenet/controls-react": "^2.3.5",
+    "@sensenet/default-content-types": "^1.1.0",
     "@sensenet/icons-react": "^1.2.3",
     "@sensenet/list-controls-react": "^1.3.0",
+    "@sensenet/query": "^1.1.0",
     "@sensenet/redux": "^5.1.2",
     "@sensenet/search-react": "^1.1.1",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
-    "react-redux": "^5.1.1"
+    "react-redux": "^6.0.0"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SenseNet/sn-react-component-docs.git"
+    "url": "https://github.com/SenseNet/sn-client.git"
   },
   "keywords": [
     "sensenet",
@@ -48,40 +52,36 @@
     "@storybook/addon-viewport": "^4.0.0-alpha.24",
     "@storybook/addons": "4.0.0-alpha.24",
     "@storybook/react": "4.0.0-alpha.24",
-    "@types/jest": "^23.3.2",
     "@types/memory-fs": "^0.3.2",
     "@types/node": "^10.10.1",
     "@types/react": "^16.4.14",
     "@types/storybook__addon-actions": "^3.0.3",
     "@types/storybook__addon-info": "^3.4.2",
     "@types/storybook__react": "^3.0.8",
-    "@types/webpack": "^4.4.12",
     "babel-core": "^6.26.3",
     "babel-loader": "^8.0.4",
     "babel-runtime": "^6.26.0",
     "date-fns": "^2.0.0-alpha.21",
     "html-loader": "^0.5.5",
-    "lerna": "^3.4.0",
     "markdown-loader": "^4.0.0",
     "moment": "^2.22.2",
-    "prettier": "^1.14.3",
     "raw-loader": "^0.5.1",
     "react-docgen-typescript-loader": "^3.0.0",
     "redux": "^4.0.1",
-    "rimraf": "^2.6.2",
     "storybook-addon-material-ui": "^0.9.0-alpha.16",
     "ts-loader": "^5.1.1",
-    "tslint-config-airbnb": "^5.11.0",
-    "tslint-plugin-prettier": "^2.0.0",
-    "typescript": "^3.0.3",
     "url-loader": "^1.1.2"
   },
   "scripts": {
     "commit": "git-cz",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "rimraf src/components && npm run copy-components && build-storybook -c .storybook",
+    "build-storybook": "build-storybook -c .storybook",
     "clean": "rimraf storybook-static",
-    "start": "npm run storybook"
+    "start": "npm run storybook",
+    "fix": "npm run fix:prettier && npm run fix:tslint",
+    "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
+    "fix:tslint": "tslint --fix --project .",
+    "lint": "tslint --project ."
   },
   "config": {
     "commitizen": {
