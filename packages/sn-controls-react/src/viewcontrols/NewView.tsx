@@ -60,7 +60,7 @@ const mapDispatchToProps = {
  *  <NewView content={content} onSubmit={createSubmitClick} />
  * ```
  */
-class NewView<T extends GenericContent> extends Component<
+export class NewViewComponent<T extends GenericContent> extends Component<
   NewViewProps<T> & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   NewViewState
 > {
@@ -170,5 +170,5 @@ class NewView<T extends GenericContent> extends Component<
 const newView = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(NewView)
+)(NewViewComponent)
 export { newView as NewView }

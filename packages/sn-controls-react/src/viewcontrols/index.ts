@@ -9,7 +9,7 @@
 import { Reducers } from '@sensenet/redux'
 
 export { EditView } from './EditView'
-export { NewView } from './NewView'
+export { NewView, NewViewComponent } from './NewView'
 export { BrowseView } from './BrowseView'
 /**
  * Interface for root state type
