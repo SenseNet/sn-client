@@ -41,17 +41,16 @@ export class ActionsCell<T extends GenericContent> extends React.Component<Actio
     }
     this.handleActionMenuClick = this.handleActionMenuClick.bind(this)
   }
-  public handleActionMenuClick(e: React.MouseEvent, content: T) {
+  public handleActionMenuClick(e: React.MouseEvent) {
     this.props.openActionMenu(e)
   }
   public render() {
-    const { content } = this.props
     return (
       <TableCell style={styles.actionMenuButton} padding="checkbox">
         <IconButton
           aria-label="Menu"
           aria-owns="actionmenu"
-          onClick={event => this.handleActionMenuClick(event, content)}>
+          onClick={event => this.handleActionMenuClick(event)}>
           <Icon type={iconType.materialui} iconName="more_vert" />
         </IconButton>
       </TableCell>

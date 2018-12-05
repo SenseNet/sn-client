@@ -115,9 +115,9 @@ export interface ContentListState {
 }
 
 export class ContentList<T extends GenericContent> extends React.Component<ContentListProps<T>, ContentListState> {
-  public state = ContentList.getDerivedStateFromProps(this.props as any, null as any)
+  public state = ContentList.getDerivedStateFromProps(this.props as any)
 
-  public static getDerivedStateFromProps(nextProps: ContentListProps<GenericContent>, lastState: ContentListState) {
+  public static getDerivedStateFromProps(nextProps: ContentListProps<GenericContent>) {
     const selected = nextProps.selected ? nextProps.selected : []
     const selectedCount = selected.length
     const itemCount = nextProps.items.length

@@ -1,15 +1,13 @@
 {
-    "extends": "../../tsconfig.json",
-    "compilerOptions": {
-        "strict": true,
-        "composite": true,
-    },
-    "files": [
-        "./index.ts"
-    ],
-    "references": [
-        {
-            "path": "../ContentList"
-        }
-    ]
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "composite": true
+  },
+  "files": ["./index.ts"],
+  "references": [
+    {
+      "path": "../ContentList"
+    }
+  ]
 }

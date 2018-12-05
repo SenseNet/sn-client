@@ -1,14 +1,10 @@
 {
-    "extends": "../../tsconfig.json",
-    "compilerOptions": {
-        "strict": true,
-        "jsx": "react",
-        "composite": true,
-    },
-    "files": [
-        "./index.ts"
-    ],
-    "references": [
-        {"path": "../ContentList"}
-    ]
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "jsx": "react",
+    "composite": true
+  },
+  "files": ["./index.ts"],
+  "references": [{ "path": "../ContentList" }]
 }

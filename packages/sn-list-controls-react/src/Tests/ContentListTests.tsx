@@ -305,7 +305,7 @@ export const contentListTests: Mocha.Suite = describe('ContentList component', (
           orderBy="DisplayName"
           orderDirection="asc"
           icons={{}}
-          onRequestActionsMenu={ev => {
+          onRequestActionsMenu={() => {
             component.unmount()
             done()
           }}
@@ -406,7 +406,7 @@ export const contentListTests: Mocha.Suite = describe('ContentList component', (
           orderBy="DisplayName"
           orderDirection="asc"
           icons={{}}
-          onItemClick={(ev, item) => {
+          onItemClick={(_ev, item) => {
             expect(item.Id).to.be.equal(1)
             component.unmount()
             done()
@@ -432,7 +432,7 @@ export const contentListTests: Mocha.Suite = describe('ContentList component', (
           orderBy="DisplayName"
           orderDirection="asc"
           icons={{}}
-          onItemDoubleClick={(ev, item) => {
+          onItemDoubleClick={(_ev, item) => {
             expect(item.Id).to.be.equal(1)
             component.unmount()
             done()
@@ -458,7 +458,7 @@ export const contentListTests: Mocha.Suite = describe('ContentList component', (
           orderBy="DisplayName"
           orderDirection="asc"
           icons={{}}
-          onItemTap={(ev, item) => {
+          onItemTap={(_ev, item) => {
             expect(item.Id).to.be.equal(1)
             component.unmount()
             done()
@@ -484,7 +484,7 @@ export const contentListTests: Mocha.Suite = describe('ContentList component', (
           orderBy="DisplayName"
           orderDirection="asc"
           icons={{}}
-          onItemContextMenu={(ev, item) => {
+          onItemContextMenu={(_ev, item) => {
             expect(item.Id).to.be.equal(1)
             component.unmount()
             done()

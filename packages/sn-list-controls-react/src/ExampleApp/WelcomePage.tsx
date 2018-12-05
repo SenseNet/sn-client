@@ -3,7 +3,7 @@ import * as React from 'react'
 
 import { ContentListDemo } from './ContentListDemo'
 
-export const WelcomePage: React.StatelessComponent = (props: any) => (
+export const WelcomePage: React.StatelessComponent = () => (
   <div style={{ padding: '2em' }}>
     <Typography variant="headline">
       Welcome to the <strong>@sensenet/list-controls-react</strong> ShowCase app
