@@ -6,5 +6,12 @@ import { Search } from '../Search/Search'
 
 it('renders without crashing', () => {
   const div = document.createElement('div')
-  ReactDOM.render(withStore(<MemoryRouter><Search /></MemoryRouter>), div)
+  ReactDOM.render(
+    withStore(
+      <MemoryRouter>
+        <Search />
+      </MemoryRouter>,
+    ),
+    div,
+  )
 })

@@ -1,39 +1,16 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "build/dist",
     "module": "esnext",
     "target": "es5",
-    "lib": [
-      "es6",
-      "dom"
-    ],
-    "sourceMap": true,
+    "lib": ["es6", "dom"],
     "allowJs": true,
+    "declaration": false,
     "jsx": "react",
-    "moduleResolution": "node",
     "removeComments": false,
-    "preserveConstEnums": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "forceConsistentCasingInFileNames": true,
-    "allowSyntheticDefaultImports": true,
-    "noUnusedLocals": true,
     "noImplicitReturns": false,
-    "noImplicitThis": true,
-    "strictNullChecks": true,
-    "alwaysStrict": false,
-    "strict": true,
-    "noImplicitAny": true,
-    "types": [
-      "jest",
-      "node"
-    ]
+    "alwaysStrict": false
   },
-  "include": [
-    "src",
-  ],
-  "typeRoots": [
-    "node_modules/@types",
-    "./typings.d.ts"
-  ]
+  "include": ["src"]
 }

@@ -26,6 +26,5 @@ it('renders without crashing', () => {
     },
   } as Partial<Store.CreateStoreOptions<rootStateType>>
 
-  ReactDOM.render(withStore(
-    <UserPanel />, options), div)
+  ReactDOM.render(withStore(<UserPanel />, options), div)
 })

@@ -10,33 +10,33 @@ import { dms } from '../Reducers'
 import { rootStateType } from '../store/rootReducer'
 
 it('Should help tests', () => {
-    /** */
+  /** */
 })
 
 export const withStore = (component: JSX.Element, options?: Partial<CreateStoreOptions<rootStateType>>) => {
-    const myReducer = combineReducers({ sensenet: Reducers.sensenet, dms, sensenetDocumentViewer: sensenetDocumentViewerReducer })
-    const repository = new Repository({
-        repositoryUrl: process.env.REACT_APP_SERVICE_URL,
-        requiredSelect: ['Id', 'Path', 'Name', 'Type', 'ParentId'] as any,
-    })
-    const defaultOptions = {
-        repository,
-        rootReducer: myReducer,
-        persistedState: {
-            sensenet: {
-                session: {
-                    repository: {
-                        RepositoryUrl
-                            :
-                            'https://dmsservice.demo.sensenet.com',
-                    },
-                },
-            },
+  const myReducer = combineReducers({
+    sensenet: Reducers.sensenet,
+    dms,
+    sensenetDocumentViewer: sensenetDocumentViewerReducer,
+  })
+  const repository = new Repository({
+    repositoryUrl: process.env.REACT_APP_SERVICE_URL,
+    requiredSelect: ['Id', 'Path', 'Name', 'Type', 'ParentId'] as any,
+  })
+  const defaultOptions = {
+    repository,
+    rootReducer: myReducer,
+    persistedState: {
+      sensenet: {
+        session: {
+          repository: {
+            RepositoryUrl: 'https://dmsservice.demo.sensenet.com',
+          },
         },
-    } as Store.CreateStoreOptions<rootStateType>
-    const store = Store.createSensenetStore({ ...defaultOptions, ...options } as CreateStoreOptions<rootStateType>)
+      },
+    },
+  } as Store.CreateStoreOptions<rootStateType>
+  const store = Store.createSensenetStore({ ...defaultOptions, ...options } as CreateStoreOptions<rootStateType>)
 
-    return (<Provider store={store} >
-        {component}
-    </Provider>)
+  return <Provider store={store}>{component}</Provider>
 }

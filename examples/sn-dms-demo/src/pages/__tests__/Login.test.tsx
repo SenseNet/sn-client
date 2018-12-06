@@ -2,9 +2,7 @@ import { LoginState } from '@sensenet/client-core'
 import { Store } from '@sensenet/redux'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import {
-  MemoryRouter,
-} from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
 import { withStore } from '../../__tests__/TestHelper'
 import { rootStateType } from '../../store/rootReducer'
 import Login from '../Login'
@@ -38,9 +36,7 @@ it('renders without crashing', () => {
         },
         currentitems: {
           ids: [123],
-          entities: [
-            { Id: 123 },
-          ],
+          entities: [{ Id: 123 }],
         },
       },
     },
@@ -49,8 +45,15 @@ it('renders without crashing', () => {
   ReactDOM.render(
     withStore(
       <MemoryRouter>
-        <Login oauthProvider={{} as any} clear={() => {
-          //
-        }} />
-      </MemoryRouter>, options), div)
+        <Login
+          oauthProvider={{} as any}
+          clear={() => {
+            //
+          }}
+        />
+      </MemoryRouter>,
+      options,
+    ),
+    div,
+  )
 })

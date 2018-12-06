@@ -253,7 +253,8 @@ export const customSchema = [
         Name: 'IsSystemContent',
         FieldClassName: 'SenseNet.ContentRepository.Fields.BooleanField',
         DisplayName: 'System Content',
-        Description: 'This field is true if content is in a system folder/trash or the content is a system folder/file.',
+        Description:
+          'This field is true if content is in a system folder/trash or the content is a system folder/file.',
         ReadOnly: true,
         Compulsory: false,
         OutputMethod: 0,
@@ -377,7 +378,8 @@ export const customSchema = [
         Name: 'ValidTill',
         FieldClassName: 'SenseNet.ContentRepository.Fields.DateTimeField',
         DisplayName: 'Valid Till',
-        Description: 'This content will disappear on the date you set if lifespan handling is enabled for this content.',
+        Description:
+          'This content will disappear on the date you set if lifespan handling is enabled for this content.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -392,7 +394,8 @@ export const customSchema = [
         Name: 'AllowedChildTypes',
         FieldClassName: 'SenseNet.ContentRepository.Fields.AllowedChildTypesField',
         DisplayName: 'Allowed child types',
-        Description: 'You can get and set which content types are explicitly allowed to be created under this content. It is a local setting.',
+        Description:
+          'You can get and set which content types are explicitly allowed to be created under this content. It is a local setting.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -407,7 +410,8 @@ export const customSchema = [
         Name: 'EffectiveAllowedChildTypes',
         FieldClassName: 'SenseNet.ContentRepository.Fields.AllowedChildTypesField',
         DisplayName: 'Effective allowed child types',
-        Description: 'You can get which content types are effective allowed to be created under this content. If there is no local setting, the global setting takes effect.',
+        Description:
+          'You can get which content types are effective allowed to be created under this content. If there is no local setting, the global setting takes effect.',
         ReadOnly: true,
         Compulsory: false,
         OutputMethod: 0,
@@ -505,7 +509,8 @@ export const customSchema = [
         Name: 'InheritableVersioningMode',
         FieldClassName: 'SenseNet.ContentRepository.Fields.InheritableVersioningModeField',
         DisplayName: 'Version history',
-        Description: 'Specify whether the system should create a new version whenever you create or modify a content below this content.',
+        Description:
+          'Specify whether the system should create a new version whenever you create or modify a content below this content.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -652,7 +657,8 @@ export const customSchema = [
         Name: 'InheritableApprovingMode',
         FieldClassName: 'SenseNet.ContentRepository.Fields.InheritableApprovingModeField',
         DisplayName: 'Content approval',
-        Description: 'Specify whether new or changed content below the current one should remain in a draft state until they have been approved.',
+        Description:
+          'Specify whether new or changed content below the current one should remain in a draft state until they have been approved.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -698,7 +704,8 @@ export const customSchema = [
         Name: 'TrashDisabled',
         FieldClassName: 'SenseNet.ContentRepository.Fields.BooleanField',
         DisplayName: 'Disable Trash',
-        Description: 'You can disable trash for this content and its children. If set, you can not restore deleted content.',
+        Description:
+          'You can disable trash for this content and its children. If set, you can not restore deleted content.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -794,7 +801,8 @@ export const customSchema = [
         Name: 'Approvable',
         FieldClassName: 'SenseNet.ContentRepository.Fields.BooleanField',
         DisplayName: 'Approvable By Current User',
-        Description: 'This fileld is true if the content is in \'pending\' state and can be approved by the current user.',
+        Description:
+          "This fileld is true if the content is in 'pending' state and can be approved by the current user.",
         ReadOnly: true,
         Compulsory: false,
         OutputMethod: 0,
@@ -978,9 +986,7 @@ export const customSchema = [
       },
       {
         AllowMultiple: false,
-        AllowedTypes: [
-          'Workspace',
-        ],
+        AllowedTypes: ['Workspace'],
         Name: 'Workspace',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'Workspace',
@@ -1180,7 +1186,8 @@ export const customSchema = [
         Name: 'PageCount',
         FieldClassName: 'SenseNet.ContentRepository.Fields.IntegerField',
         DisplayName: 'Page count',
-        Description: 'Read-only field for storing the number of pages in the document. It is filled by the document preview generator.',
+        Description:
+          'Read-only field for storing the number of pages in the document. It is filled by the document preview generator.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -1241,7 +1248,8 @@ export const customSchema = [
         Name: 'Shapes',
         FieldClassName: 'SenseNet.ContentRepository.Fields.LongTextField',
         DisplayName: 'Shapes',
-        Description: 'Stores data used for document preview (redaction, highlight, annotation shapes). This value can be modified by the document preview plugin.',
+        Description:
+          'Stores data used for document preview (redaction, highlight, annotation shapes). This value can be modified by the document preview plugin.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -1256,7 +1264,8 @@ export const customSchema = [
         Name: 'PageAttributes',
         FieldClassName: 'SenseNet.ContentRepository.Fields.LongTextField',
         DisplayName: 'Page attributes',
-        Description: 'Stores data used for document preview (for example page rotation). This value can be modified by the document preview plugin.',
+        Description:
+          'Stores data used for document preview (for example page rotation). This value can be modified by the document preview plugin.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -1271,7 +1280,8 @@ export const customSchema = [
         Name: 'Watermark',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ShortTextField',
         DisplayName: 'Watermark',
-        Description: 'The text that is displayed as a watermark on the document preview. The format can be set by modifying the Document Preview settings.',
+        Description:
+          'The text that is displayed as a watermark on the document preview. The format can be set by modifying the Document Preview settings.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -1298,7 +1308,8 @@ export const customSchema = [
         Name: 'Watermark',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ShortTextField',
         DisplayName: 'Watermark',
-        Description: 'The text that is displayed as a watermark on the document preview. The format can be set by modifying the Document Preview settings.',
+        Description:
+          'The text that is displayed as a watermark on the document preview. The format can be set by modifying the Document Preview settings.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -1351,9 +1362,7 @@ export const customSchema = [
         Type: 'ShortTextFieldSetting',
       },
       {
-        SelectionRoots: [
-          '/Root/Sites/Default_Site/workspaces/Sales',
-        ],
+        SelectionRoots: ['/Root/Sites/Default_Site/workspaces/Sales'],
         Name: 'Project',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'Project',
@@ -1410,12 +1419,8 @@ export const customSchema = [
       },
       {
         AllowMultiple: false,
-        AllowedTypes: [
-          'User',
-        ],
-        SelectionRoots: [
-          '/Root/IMS',
-        ],
+        AllowedTypes: ['User'],
+        SelectionRoots: ['/Root/IMS'],
         Name: 'Responsee',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'Account',
@@ -1475,9 +1480,7 @@ export const customSchema = [
       },
       {
         AllowMultiple: true,
-        SelectionRoots: [
-          '/Root/Sites/Default_Site/workspaces/Sales',
-        ],
+        SelectionRoots: ['/Root/Sites/Default_Site/workspaces/Sales'],
         Name: 'RelatedDocs',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'Related documents',
@@ -1518,7 +1521,8 @@ export const customSchema = [
         Name: 'Watermark',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ShortTextField',
         DisplayName: 'Watermark',
-        Description: 'The text that is displayed as a watermark on the document preview. The format can be set by modifying the Document Preview settings.',
+        Description:
+          'The text that is displayed as a watermark on the document preview. The format can be set by modifying the Document Preview settings.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -1843,7 +1847,8 @@ export const customSchema = [
         Name: 'Watermark',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ShortTextField',
         DisplayName: 'Watermark',
-        Description: 'The text that is displayed as a watermark on the document preview. The format can be set by modifying the Document Preview settings.',
+        Description:
+          'The text that is displayed as a watermark on the document preview. The format can be set by modifying the Document Preview settings.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -1858,7 +1863,8 @@ export const customSchema = [
         Name: 'GlobalOnly',
         FieldClassName: 'SenseNet.ContentRepository.Fields.BooleanField',
         DisplayName: 'Global only',
-        Description: 'Switching this ON will prevent the creation of local settings with the same name preventing others to gain access to the contents of this settings file through inheritance.',
+        Description:
+          'Switching this ON will prevent the creation of local settings with the same name preventing others to gain access to the contents of this settings file through inheritance.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -1934,7 +1940,8 @@ export const customSchema = [
         Name: 'Watermark',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ShortTextField',
         DisplayName: 'Watermark',
-        Description: 'The text that is displayed as a watermark on the document preview. The format can be set by modifying the Document Preview settings.',
+        Description:
+          'The text that is displayed as a watermark on the document preview. The format can be set by modifying the Document Preview settings.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -1985,9 +1992,7 @@ export const customSchema = [
         Type: 'BinaryFieldSetting',
       },
       {
-        AllowedTypes: [
-          'MasterPage',
-        ],
+        AllowedTypes: ['MasterPage'],
         Name: 'MasterPageNode',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'MasterPage node',
@@ -2007,7 +2012,8 @@ export const customSchema = [
   {
     ContentTypeName: 'Resource',
     DisplayName: 'Resource',
-    Description: 'String or binary resource used to localize the system. Its format is the same as the internal part of a standard .Net resx file.',
+    Description:
+      'String or binary resource used to localize the system. Its format is the same as the internal part of a standard .Net resx file.',
     Icon: 'Resource',
     ParentTypeName: 'SystemFile',
     AllowIndexing: true,
@@ -2091,7 +2097,8 @@ export const customSchema = [
         Name: 'Watermark',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ShortTextField',
         DisplayName: 'Watermark',
-        Description: 'The text that is displayed as a watermark on the document preview. The format can be set by modifying the Document Preview settings.',
+        Description:
+          'The text that is displayed as a watermark on the document preview. The format can be set by modifying the Document Preview settings.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -2265,7 +2272,7 @@ export const customSchema = [
         Name: 'Hidden',
         FieldClassName: 'SenseNet.ContentRepository.Fields.BooleanField',
         DisplayName: 'Hidden',
-        Description: 'The view won\'t show in the selector menu if checked. (If unsure, leave unchecked).',
+        Description: "The view won't show in the selector menu if checked. (If unsure, leave unchecked).",
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -2295,7 +2302,8 @@ export const customSchema = [
         Name: 'QuerySkip',
         FieldClassName: 'SenseNet.ContentRepository.Fields.IntegerField',
         DisplayName: 'Skip',
-        Description: 'If you do not want to display the first several content please specify here a value greater than 0.',
+        Description:
+          'If you do not want to display the first several content please specify here a value greater than 0.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -2310,7 +2318,7 @@ export const customSchema = [
         Name: 'Icon',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ShortTextField',
         DisplayName: 'Icon identifier',
-        Description: 'The string identifier of the View\'s icon.',
+        Description: "The string identifier of the View's icon.",
         ReadOnly: true,
         Compulsory: false,
         OutputMethod: 0,
@@ -2338,7 +2346,8 @@ export const customSchema = [
         Name: 'Name',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ShortTextField',
         DisplayName: 'Name',
-        Description: 'Specify a name that will appear in the address bar of the browser. The name of the list view should end with an \'.ascx\' extension.',
+        Description:
+          "Specify a name that will appear in the address bar of the browser. The name of the list view should end with an '.ascx' extension.",
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -2403,7 +2412,8 @@ export const customSchema = [
         Name: 'GroupBy',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ShortTextField',
         DisplayName: 'Group by',
-        Description: 'Select the column to group by. This setting only works if the view template is capable of rendering grouped items.',
+        Description:
+          'Select the column to group by. This setting only works if the view template is capable of rendering grouped items.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -2434,7 +2444,8 @@ export const customSchema = [
         Name: 'Binary',
         FieldClassName: 'SenseNet.ContentRepository.Fields.BinaryField',
         DisplayName: 'Binary',
-        Description: 'The binary content of the view. Please note that when a custom Markup template is specified this field is automatically filled - modify binary content by modifying given template.',
+        Description:
+          'The binary content of the view. Please note that when a custom Markup template is specified this field is automatically filled - modify binary content by modifying given template.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -2449,7 +2460,8 @@ export const customSchema = [
         Name: 'MainScenario',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ShortTextField',
         DisplayName: 'Main scenario',
-        Description: 'Name of the scenario that is used for the list item menus. If you leave this empty, this will be the default \'ListItem\' scenario.',
+        Description:
+          "Name of the scenario that is used for the list item menus. If you leave this empty, this will be the default 'ListItem' scenario.",
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -2523,7 +2535,8 @@ export const customSchema = [
         Name: 'Watermark',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ShortTextField',
         DisplayName: 'Watermark',
-        Description: 'The text that is displayed as a watermark on the document preview. The format can be set by modifying the Document Preview settings.',
+        Description:
+          'The text that is displayed as a watermark on the document preview. The format can be set by modifying the Document Preview settings.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -2538,7 +2551,8 @@ export const customSchema = [
         Name: 'ContentWorkflow',
         FieldClassName: 'SenseNet.ContentRepository.Fields.BooleanField',
         DisplayName: 'Content workflow',
-        Description: 'True for workflow types that are related to one content (e.g. approval or printing). Related content must be an existing content.',
+        Description:
+          'True for workflow types that are related to one content (e.g. approval or printing). Related content must be an existing content.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -2553,7 +2567,8 @@ export const customSchema = [
         Name: 'AssignableToContentList',
         FieldClassName: 'SenseNet.ContentRepository.Fields.BooleanField',
         DisplayName: 'Assignable to content list',
-        Description: 'Set this for workflow types that users should be able to assign to content lists (e.g. a Document Library).',
+        Description:
+          'Set this for workflow types that users should be able to assign to content lists (e.g. a Document Library).',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -2716,15 +2731,13 @@ export const customSchema = [
   {
     ContentTypeName: 'ArticleSection',
     DisplayName: 'Article Section',
-    Description: 'An Article Section is a kind folder that can contain articles and other Article Sections with a default presentation.',
+    Description:
+      'An Article Section is a kind folder that can contain articles and other Article Sections with a default presentation.',
     Icon: 'Folder',
     ParentTypeName: 'Folder',
     AllowIndexing: true,
     AllowIncrementalNaming: false,
-    AllowedChildTypes: [
-      'ArticleSection',
-      'Article',
-    ],
+    AllowedChildTypes: ['ArticleSection', 'Article'],
     FieldSettings: [
       {
         Name: 'Name',
@@ -2819,7 +2832,8 @@ export const customSchema = [
         Name: 'InheritableApprovingMode',
         FieldClassName: 'SenseNet.ContentRepository.Fields.InheritableApprovingModeField',
         DisplayName: 'Content approval',
-        Description: 'Specify whether new or changed content below the current one should remain in a draft state until they have been approved.',
+        Description:
+          'Specify whether new or changed content below the current one should remain in a draft state until they have been approved.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -2868,7 +2882,8 @@ export const customSchema = [
         Name: 'InheritableVersioningMode',
         FieldClassName: 'SenseNet.ContentRepository.Fields.InheritableVersioningModeField',
         DisplayName: 'Version history',
-        Description: 'Specify whether the system should create a new version whenever you create or modify a content below this content.',
+        Description:
+          'Specify whether the system should create a new version whenever you create or modify a content below this content.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -2940,9 +2955,7 @@ export const customSchema = [
       },
       {
         AllowMultiple: true,
-        AllowedTypes: [
-          'ListView',
-        ],
+        AllowedTypes: ['ListView'],
         Name: 'AvailableViews',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'Available views',
@@ -2959,9 +2972,7 @@ export const customSchema = [
       },
       {
         AllowMultiple: true,
-        AllowedTypes: [
-          'FieldSettingContent',
-        ],
+        AllowedTypes: ['FieldSettingContent'],
         Name: 'FieldSettingContents',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'FieldSetting content',
@@ -2977,9 +2988,7 @@ export const customSchema = [
       },
       {
         AllowMultiple: true,
-        AllowedTypes: [
-          'FieldSettingContent',
-        ],
+        AllowedTypes: ['FieldSettingContent'],
         Name: 'AvailableContentTypeFields',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'Available ContentType Field content.',
@@ -3027,7 +3036,8 @@ export const customSchema = [
         Name: 'OverwriteFiles',
         FieldClassName: 'SenseNet.ContentRepository.Fields.BooleanField',
         DisplayName: 'Overwrite files with same name',
-        Description: 'If checked new emails and attachments with the same name will overwrite existing items in list. Otherwise increment suffix is used in the name of new mail items.',
+        Description:
+          'If checked new emails and attachments with the same name will overwrite existing items in list. Otherwise increment suffix is used in the name of new mail items.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -3104,9 +3114,7 @@ export const customSchema = [
       },
       {
         AllowMultiple: false,
-        SelectionRoots: [
-          '/Root/System/Schema/ContentTypes/GenericContent/Workflow/MailProcessorWorkflow',
-        ],
+        SelectionRoots: ['/Root/System/Schema/ContentTypes/GenericContent/Workflow/MailProcessorWorkflow'],
         Name: 'IncomingEmailWorkflow',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'Incoming email workflow',
@@ -3156,7 +3164,8 @@ export const customSchema = [
         Name: 'AllowedChildTypes',
         FieldClassName: 'SenseNet.ContentRepository.Fields.AllowedChildTypesField',
         DisplayName: 'Allowed child types',
-        Description: 'You can get and set which content types are explicitly allowed to be created under this content. It is a local setting.',
+        Description:
+          'You can get and set which content types are explicitly allowed to be created under this content. It is a local setting.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -3204,7 +3213,8 @@ export const customSchema = [
         Name: 'InheritableVersioningMode',
         FieldClassName: 'SenseNet.ContentRepository.Fields.InheritableVersioningModeField',
         DisplayName: 'Version history',
-        Description: 'Specify whether the system should create a new version whenever you create or modify a content below this content.',
+        Description:
+          'Specify whether the system should create a new version whenever you create or modify a content below this content.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -3246,7 +3256,8 @@ export const customSchema = [
         Name: 'InheritableApprovingMode',
         FieldClassName: 'SenseNet.ContentRepository.Fields.InheritableApprovingModeField',
         DisplayName: 'Content approval',
-        Description: 'Specify whether new or changed content below the current one should remain in a draft state until they have been approved.',
+        Description:
+          'Specify whether new or changed content below the current one should remain in a draft state until they have been approved.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -3260,16 +3271,13 @@ export const customSchema = [
       },
       {
         AllowMultiple: false,
-        AllowedTypes: [
-          'User',
-        ],
-        SelectionRoots: [
-          '/Root/IMS',
-        ],
+        AllowedTypes: ['User'],
+        SelectionRoots: ['/Root/IMS'],
         Name: 'OwnerWhenVisitor',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'Owner of items created by visitor',
-        Description: 'If a Visitor adds content to this list, this user will be set as the creator instead of the Visitor. This prevents visitors see each others\' content.',
+        Description:
+          "If a Visitor adds content to this list, this user will be set as the creator instead of the Visitor. This prevents visitors see each others' content.",
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -3341,9 +3349,7 @@ export const customSchema = [
       },
       {
         AllowMultiple: true,
-        AllowedTypes: [
-          'ListView',
-        ],
+        AllowedTypes: ['ListView'],
         Name: 'AvailableViews',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'Available views',
@@ -3360,9 +3366,7 @@ export const customSchema = [
       },
       {
         AllowMultiple: true,
-        AllowedTypes: [
-          'FieldSettingContent',
-        ],
+        AllowedTypes: ['FieldSettingContent'],
         Name: 'FieldSettingContents',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'FieldSetting content',
@@ -3378,9 +3382,7 @@ export const customSchema = [
       },
       {
         AllowMultiple: true,
-        AllowedTypes: [
-          'FieldSettingContent',
-        ],
+        AllowedTypes: ['FieldSettingContent'],
         Name: 'AvailableContentTypeFields',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'Available ContentType Field content.',
@@ -3428,7 +3430,8 @@ export const customSchema = [
         Name: 'OverwriteFiles',
         FieldClassName: 'SenseNet.ContentRepository.Fields.BooleanField',
         DisplayName: 'Overwrite files with same name',
-        Description: 'If checked new emails and attachments with the same name will overwrite existing items in list. Otherwise increment suffix is used in the name of new mail items.',
+        Description:
+          'If checked new emails and attachments with the same name will overwrite existing items in list. Otherwise increment suffix is used in the name of new mail items.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -3505,9 +3508,7 @@ export const customSchema = [
       },
       {
         AllowMultiple: false,
-        SelectionRoots: [
-          '/Root/System/Schema/ContentTypes/GenericContent/Workflow/MailProcessorWorkflow',
-        ],
+        SelectionRoots: ['/Root/System/Schema/ContentTypes/GenericContent/Workflow/MailProcessorWorkflow'],
         Name: 'IncomingEmailWorkflow',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'Incoming email workflow',
@@ -3527,7 +3528,8 @@ export const customSchema = [
         Name: 'AllowedChildTypes',
         FieldClassName: 'SenseNet.ContentRepository.Fields.AllowedChildTypesField',
         DisplayName: 'Allowed child types',
-        Description: 'You can get and set which content types are explicitly allowed to be created under this content. It is a local setting.',
+        Description:
+          'You can get and set which content types are explicitly allowed to be created under this content. It is a local setting.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -3575,7 +3577,8 @@ export const customSchema = [
         Name: 'InheritableVersioningMode',
         FieldClassName: 'SenseNet.ContentRepository.Fields.InheritableVersioningModeField',
         DisplayName: 'Version history',
-        Description: 'Specify whether the system should create a new version whenever you create or modify a content below this content.',
+        Description:
+          'Specify whether the system should create a new version whenever you create or modify a content below this content.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -3617,7 +3620,8 @@ export const customSchema = [
         Name: 'InheritableApprovingMode',
         FieldClassName: 'SenseNet.ContentRepository.Fields.InheritableApprovingModeField',
         DisplayName: 'Content approval',
-        Description: 'Specify whether new or changed content below the current one should remain in a draft state until they have been approved.',
+        Description:
+          'Specify whether new or changed content below the current one should remain in a draft state until they have been approved.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -3643,16 +3647,13 @@ export const customSchema = [
     FieldSettings: [
       {
         AllowMultiple: false,
-        AllowedTypes: [
-          'User',
-        ],
-        SelectionRoots: [
-          '/Root/IMS',
-        ],
+        AllowedTypes: ['User'],
+        SelectionRoots: ['/Root/IMS'],
         Name: 'OwnerWhenVisitor',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'Owner of items created by visitor',
-        Description: 'If a Visitor adds content to this list, this user will be set as the creator instead of the Visitor. This prevents visitors see each others\' content.',
+        Description:
+          "If a Visitor adds content to this list, this user will be set as the creator instead of the Visitor. This prevents visitors see each others' content.",
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -3701,7 +3702,8 @@ export const customSchema = [
         Name: 'InheritableVersioningMode',
         FieldClassName: 'SenseNet.ContentRepository.Fields.InheritableVersioningModeField',
         DisplayName: 'Version history',
-        Description: 'Specify whether the system should create a new version whenever you create or modify a content under this list.',
+        Description:
+          'Specify whether the system should create a new version whenever you create or modify a content under this list.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -3765,9 +3767,7 @@ export const customSchema = [
     ParentTypeName: 'ItemList',
     AllowIndexing: true,
     AllowIncrementalNaming: false,
-    AllowedChildTypes: [
-      'ListItem',
-    ],
+    AllowedChildTypes: ['ListItem'],
     FieldSettings: [],
   },
   {
@@ -3778,9 +3778,7 @@ export const customSchema = [
     ParentTypeName: 'ItemList',
     AllowIndexing: true,
     AllowIncrementalNaming: false,
-    AllowedChildTypes: [
-      'CalendarEvent',
-    ],
+    AllowedChildTypes: ['CalendarEvent'],
     FieldSettings: [
       {
         Name: 'DisplayName',
@@ -3832,9 +3830,7 @@ export const customSchema = [
       },
       {
         AllowMultiple: false,
-        AllowedTypes: [
-          'Folder',
-        ],
+        AllowedTypes: ['Folder'],
         Name: 'RegistrationFolder',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'Registration folder',
@@ -3900,7 +3896,8 @@ export const customSchema = [
         Name: 'InheritableVersioningMode',
         FieldClassName: 'SenseNet.ContentRepository.Fields.InheritableVersioningModeField',
         DisplayName: 'Version history',
-        Description: 'Specify whether the system should create a new version whenever you create or modify a content under this list.',
+        Description:
+          'Specify whether the system should create a new version whenever you create or modify a content under this list.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -3964,9 +3961,7 @@ export const customSchema = [
     ParentTypeName: 'ItemList',
     AllowIndexing: true,
     AllowIncrementalNaming: false,
-    AllowedChildTypes: [
-      'Link',
-    ],
+    AllowedChildTypes: ['Link'],
     FieldSettings: [],
   },
   {
@@ -3977,9 +3972,7 @@ export const customSchema = [
     ParentTypeName: 'ItemList',
     AllowIndexing: true,
     AllowIncrementalNaming: false,
-    AllowedChildTypes: [
-      'Memo',
-    ],
+    AllowedChildTypes: ['Memo'],
     FieldSettings: [],
   },
   {
@@ -3990,10 +3983,7 @@ export const customSchema = [
     ParentTypeName: 'ItemList',
     AllowIndexing: true,
     AllowIncrementalNaming: false,
-    AllowedChildTypes: [
-      'Task',
-      'ApprovalWorkflowTask',
-    ],
+    AllowedChildTypes: ['Task', 'ApprovalWorkflowTask'],
     FieldSettings: [],
   },
   {
@@ -4043,7 +4033,8 @@ export const customSchema = [
         Name: 'InheritableVersioningMode',
         FieldClassName: 'SenseNet.ContentRepository.Fields.InheritableVersioningModeField',
         DisplayName: 'Version history',
-        Description: 'Specify whether the system should create a new version whenever you create or modify a content under this library.',
+        Description:
+          'Specify whether the system should create a new version whenever you create or modify a content under this library.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -4107,11 +4098,7 @@ export const customSchema = [
     ParentTypeName: 'Library',
     AllowIndexing: true,
     AllowIncrementalNaming: false,
-    AllowedChildTypes: [
-      'Folder',
-      'File',
-      'SmartFolder',
-    ],
+    AllowedChildTypes: ['Folder', 'File', 'SmartFolder'],
     FieldSettings: [],
   },
   {
@@ -4122,10 +4109,7 @@ export const customSchema = [
     ParentTypeName: 'Library',
     AllowIndexing: true,
     AllowIncrementalNaming: false,
-    AllowedChildTypes: [
-      'Folder',
-      'Image',
-    ],
+    AllowedChildTypes: ['Folder', 'Image'],
     FieldSettings: [
       {
         Name: 'Description',
@@ -4145,9 +4129,7 @@ export const customSchema = [
       },
       {
         AllowMultiple: false,
-        AllowedTypes: [
-          'Image',
-        ],
+        AllowedTypes: ['Image'],
         Name: 'CoverImage',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'Cover image',
@@ -4167,21 +4149,20 @@ export const customSchema = [
   {
     ContentTypeName: 'ContentViews',
     DisplayName: 'Content Views',
-    Description: 'This is the container type for ContentViews. Instances are only allowed at /Root/Global/contentviews.',
+    Description:
+      'This is the container type for ContentViews. Instances are only allowed at /Root/Global/contentviews.',
     Icon: 'Folder',
     ParentTypeName: 'Folder',
     AllowIndexing: true,
     AllowIncrementalNaming: false,
-    AllowedChildTypes: [
-      'ContentView',
-      'ContentViews',
-    ],
+    AllowedChildTypes: ['ContentView', 'ContentViews'],
     FieldSettings: [],
   },
   {
     ContentTypeName: 'Device',
     DisplayName: 'Device',
-    Description: 'This content type is for defining different devices to browse the portal from - e.g. tablet or different phone types.',
+    Description:
+      'This content type is for defining different devices to browse the portal from - e.g. tablet or different phone types.',
     Icon: 'Device',
     ParentTypeName: 'Folder',
     AllowIndexing: true,
@@ -4213,25 +4194,19 @@ export const customSchema = [
     ParentTypeName: 'Folder',
     AllowIndexing: true,
     AllowIncrementalNaming: false,
-    AllowedChildTypes: [
-      'DocumentWorkspace',
-      'DocumentWorkspaceFolder',
-    ],
+    AllowedChildTypes: ['DocumentWorkspace', 'DocumentWorkspaceFolder'],
     FieldSettings: [],
   },
   {
     ContentTypeName: 'Domain',
     DisplayName: 'Domain',
-    Description: 'A centrally-managed group of users and/or computers. Sense/Net ECMS has a built-in domain (BuiltIn), but you can syncronyze external LDAP directories as well.',
+    Description:
+      'A centrally-managed group of users and/or computers. Sense/Net ECMS has a built-in domain (BuiltIn), but you can syncronyze external LDAP directories as well.',
     Icon: 'Domain',
     ParentTypeName: 'Folder',
     AllowIndexing: true,
     AllowIncrementalNaming: false,
-    AllowedChildTypes: [
-      'User',
-      'Group',
-      'OrganizationalUnit',
-    ],
+    AllowedChildTypes: ['User', 'Group', 'OrganizationalUnit'],
     FieldSettings: [
       {
         Name: 'Name',
@@ -4322,9 +4297,7 @@ export const customSchema = [
     ParentTypeName: 'Folder',
     AllowIndexing: true,
     AllowIncrementalNaming: false,
-    AllowedChildTypes: [
-      'Domain',
-    ],
+    AllowedChildTypes: ['Domain'],
     FieldSettings: [],
   },
   {
@@ -4335,9 +4308,7 @@ export const customSchema = [
     ParentTypeName: 'Folder',
     AllowIndexing: true,
     AllowIncrementalNaming: true,
-    AllowedChildTypes: [
-      'File',
-    ],
+    AllowedChildTypes: ['File'],
     FieldSettings: [
       {
         Name: 'From',
@@ -4408,15 +4379,13 @@ export const customSchema = [
   {
     ContentTypeName: 'FieldControlTemplates',
     DisplayName: 'FieldControlTemplates',
-    Description: 'This is the container type for ContentViews. Instances are allowed only at /Root/Global/fieldcontroltemplates.',
+    Description:
+      'This is the container type for ContentViews. Instances are allowed only at /Root/Global/fieldcontroltemplates.',
     Icon: 'Folder',
     ParentTypeName: 'Folder',
     AllowIndexing: true,
     AllowIncrementalNaming: false,
-    AllowedChildTypes: [
-      'FieldControlTemplates',
-      'FieldControlTemplate',
-    ],
+    AllowedChildTypes: ['FieldControlTemplates', 'FieldControlTemplate'],
     FieldSettings: [],
   },
   {
@@ -4427,11 +4396,7 @@ export const customSchema = [
     ParentTypeName: 'Folder',
     AllowIndexing: true,
     AllowIncrementalNaming: false,
-    AllowedChildTypes: [
-      'User',
-      'Group',
-      'OrganizationalUnit',
-    ],
+    AllowedChildTypes: ['User', 'Group', 'OrganizationalUnit'],
     FieldSettings: [
       {
         Name: 'Name',
@@ -4570,10 +4535,7 @@ export const customSchema = [
     ParentTypeName: 'Folder',
     AllowIndexing: true,
     AllowIncrementalNaming: false,
-    AllowedChildTypes: [
-      'Portlet',
-      'Image',
-    ],
+    AllowedChildTypes: ['Portlet', 'Image'],
     FieldSettings: [
       {
         Name: 'Name',
@@ -4627,7 +4589,7 @@ export const customSchema = [
         Name: 'Hidden',
         FieldClassName: 'SenseNet.ContentRepository.Fields.BooleanField',
         DisplayName: 'Hidden',
-        Description: 'Doesn\'t show up in Add portlet dialog if checked.',
+        Description: "Doesn't show up in Add portlet dialog if checked.",
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -4648,9 +4610,7 @@ export const customSchema = [
     ParentTypeName: 'Folder',
     AllowIndexing: true,
     AllowIncrementalNaming: false,
-    AllowedChildTypes: [
-      'UserProfile',
-    ],
+    AllowedChildTypes: ['UserProfile'],
     FieldSettings: [
       {
         Name: 'Name',
@@ -4710,9 +4670,7 @@ export const customSchema = [
     ParentTypeName: 'Folder',
     AllowIndexing: true,
     AllowIncrementalNaming: false,
-    AllowedChildTypes: [
-      'ProfileDomain',
-    ],
+    AllowedChildTypes: ['ProfileDomain'],
     FieldSettings: [],
   },
   {
@@ -4723,10 +4681,7 @@ export const customSchema = [
     ParentTypeName: 'Folder',
     AllowIndexing: true,
     AllowIncrementalNaming: false,
-    AllowedChildTypes: [
-      'ProjectWorkspace',
-      'ProjectWorkspaceFolder',
-    ],
+    AllowedChildTypes: ['ProjectWorkspace', 'ProjectWorkspaceFolder'],
     FieldSettings: [],
   },
   {
@@ -4748,10 +4703,7 @@ export const customSchema = [
     ParentTypeName: 'Folder',
     AllowIndexing: true,
     AllowIncrementalNaming: false,
-    AllowedChildTypes: [
-      'SalesWorkspace',
-      'SalesWorkspaceFolder',
-    ],
+    AllowedChildTypes: ['SalesWorkspace', 'SalesWorkspaceFolder'],
     FieldSettings: [],
   },
   {
@@ -4762,9 +4714,7 @@ export const customSchema = [
     ParentTypeName: 'Folder',
     AllowIndexing: true,
     AllowIncrementalNaming: false,
-    AllowedChildTypes: [
-      'Site',
-    ],
+    AllowedChildTypes: ['Site'],
     FieldSettings: [],
   },
   {
@@ -5038,13 +4988,8 @@ export const customSchema = [
       },
       {
         AllowMultiple: false,
-        AllowedTypes: [
-          'User',
-        ],
-        SelectionRoots: [
-          '/Root/IMS',
-          '/Root',
-        ],
+        AllowedTypes: ['User'],
+        SelectionRoots: ['/Root/IMS', '/Root'],
         Name: 'Manager',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'Project manager',
@@ -5092,12 +5037,8 @@ export const customSchema = [
       },
       {
         AllowMultiple: false,
-        AllowedTypes: [
-          'Skin',
-        ],
-        SelectionRoots: [
-          '/Root/Skins',
-        ],
+        AllowedTypes: ['Skin'],
+        SelectionRoots: ['/Root/Skins'],
         Name: 'WorkspaceSkin',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'Skin',
@@ -5130,7 +5071,8 @@ export const customSchema = [
         Name: 'IsWallContainer',
         FieldClassName: 'SenseNet.ContentRepository.Fields.BooleanField',
         DisplayName: 'Wall Container',
-        Description: 'This workspace is configured to contain a wall - this indicates that posts are created under this workspace if Content are shared anywhere below this path.',
+        Description:
+          'This workspace is configured to contain a wall - this indicates that posts are created under this workspace if Content are shared anywhere below this path.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -5145,7 +5087,8 @@ export const customSchema = [
         Name: 'AllowedChildTypes',
         FieldClassName: 'SenseNet.ContentRepository.Fields.AllowedChildTypesField',
         DisplayName: 'Allowed child types',
-        Description: 'You can get and set which content types are explicitly allowed to be created under this content. It is a local setting.',
+        Description:
+          'You can get and set which content types are explicitly allowed to be created under this content. It is a local setting.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -5193,7 +5136,8 @@ export const customSchema = [
         Name: 'InheritableVersioningMode',
         FieldClassName: 'SenseNet.ContentRepository.Fields.InheritableVersioningModeField',
         DisplayName: 'Version history',
-        Description: 'Specify whether the system should create a new version whenever you create or modify a content under this workspace.',
+        Description:
+          'Specify whether the system should create a new version whenever you create or modify a content under this workspace.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -5342,13 +5286,8 @@ export const customSchema = [
     FieldSettings: [
       {
         AllowMultiple: false,
-        AllowedTypes: [
-          'User',
-        ],
-        SelectionRoots: [
-          '/Root/IMS',
-          '/Root',
-        ],
+        AllowedTypes: ['User'],
+        SelectionRoots: ['/Root/IMS', '/Root'],
         Name: 'Manager',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'Responsible salesperson',
@@ -5657,9 +5596,7 @@ export const customSchema = [
       },
       {
         AllowMultiple: false,
-        SelectionRoots: [
-          '.',
-        ],
+        SelectionRoots: ['.'],
         Name: 'StartPage',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'Alternative start page',
@@ -5676,13 +5613,12 @@ export const customSchema = [
       },
       {
         AllowMultiple: false,
-        SelectionRoots: [
-          '.',
-        ],
+        SelectionRoots: ['.'],
         Name: 'LoginPage',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'Login page',
-        Description: 'The login page to display when a user tries to access restricted Content (Forms authentication only).',
+        Description:
+          'The login page to display when a user tries to access restricted Content (Forms authentication only).',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -5711,12 +5647,8 @@ export const customSchema = [
       },
       {
         AllowMultiple: false,
-        AllowedTypes: [
-          'Skin',
-        ],
-        SelectionRoots: [
-          '/Root/Skins',
-        ],
+        AllowedTypes: ['Skin'],
+        SelectionRoots: ['/Root/Skins'],
         Name: 'SiteSkin',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'Skin',
@@ -5733,12 +5665,8 @@ export const customSchema = [
       },
       {
         AllowMultiple: false,
-        AllowedTypes: [
-          'Skin',
-        ],
-        SelectionRoots: [
-          '/Root/Skins',
-        ],
+        AllowedTypes: ['Skin'],
+        SelectionRoots: ['/Root/Skins'],
         Name: 'WorkspaceSkin',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'Skin',
@@ -5756,7 +5684,8 @@ export const customSchema = [
         Name: 'IsWallContainer',
         FieldClassName: 'SenseNet.ContentRepository.Fields.BooleanField',
         DisplayName: 'Wall Container',
-        Description: 'This workspace is configured to contain a wall - this indicates that posts are created under this workspace if Content are shared anywhere below this path.',
+        Description:
+          'This workspace is configured to contain a wall - this indicates that posts are created under this workspace if Content are shared anywhere below this path.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -5784,13 +5713,8 @@ export const customSchema = [
       },
       {
         AllowMultiple: false,
-        AllowedTypes: [
-          'User',
-        ],
-        SelectionRoots: [
-          '/Root/IMS',
-          '/Root',
-        ],
+        AllowedTypes: ['User'],
+        SelectionRoots: ['/Root/IMS', '/Root'],
         Name: 'Manager',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'Project manager',
@@ -5824,7 +5748,8 @@ export const customSchema = [
         Name: 'DenyCrossSiteAccess',
         FieldClassName: 'SenseNet.ContentRepository.Fields.BooleanField',
         DisplayName: 'Deny cross-site access',
-        Description: 'If set, content under this site can only be accessed via this site and not via other sites using a Root relative path.',
+        Description:
+          'If set, content under this site can only be accessed via this site and not via other sites using a Root relative path.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -5873,7 +5798,8 @@ export const customSchema = [
         Name: 'InheritableVersioningMode',
         FieldClassName: 'SenseNet.ContentRepository.Fields.InheritableVersioningModeField',
         DisplayName: 'Version history',
-        Description: 'Specify whether the system should create a new version whenever you create or modify a content under this site.',
+        Description:
+          'Specify whether the system should create a new version whenever you create or modify a content under this site.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -5938,9 +5864,7 @@ export const customSchema = [
     ParentTypeName: 'Workspace',
     AllowIndexing: true,
     AllowIncrementalNaming: false,
-    AllowedChildTypes: [
-      'TrashBag',
-    ],
+    AllowedChildTypes: ['TrashBag'],
     FieldSettings: [
       {
         Name: 'Name',
@@ -6042,7 +5966,8 @@ export const customSchema = [
         Name: 'InheritableVersioningMode',
         FieldClassName: 'SenseNet.ContentRepository.Fields.InheritableVersioningModeField',
         DisplayName: 'Version history',
-        Description: 'Specify whether the system should create a new version whenever you create or modify a content under this workspace.',
+        Description:
+          'Specify whether the system should create a new version whenever you create or modify a content under this workspace.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -6165,7 +6090,8 @@ export const customSchema = [
         Name: 'TrashDisabled',
         FieldClassName: 'SenseNet.ContentRepository.Fields.BooleanField',
         DisplayName: 'Disable Trash',
-        Description: 'You can disable trash for this content and its children. If set, you can not restore deleted content.',
+        Description:
+          'You can disable trash for this content and its children. If set, you can not restore deleted content.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -6181,7 +6107,8 @@ export const customSchema = [
         Name: 'IsWallContainer',
         FieldClassName: 'SenseNet.ContentRepository.Fields.BooleanField',
         DisplayName: 'Wall Container',
-        Description: 'This workspace is configured to contain a wall - this indicates that posts are created under this workspace if Content are shared anywhere below this path.',
+        Description:
+          'This workspace is configured to contain a wall - this indicates that posts are created under this workspace if Content are shared anywhere below this path.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -6209,13 +6136,8 @@ export const customSchema = [
       },
       {
         AllowMultiple: false,
-        AllowedTypes: [
-          'User',
-        ],
-        SelectionRoots: [
-          '/Root/IMS',
-          '/Root',
-        ],
+        AllowedTypes: ['User'],
+        SelectionRoots: ['/Root/IMS', '/Root'],
         Name: 'Manager',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'Project manager',
@@ -6247,12 +6169,8 @@ export const customSchema = [
       },
       {
         AllowMultiple: false,
-        AllowedTypes: [
-          'Skin',
-        ],
-        SelectionRoots: [
-          '/Root/Skins',
-        ],
+        AllowedTypes: ['Skin'],
+        SelectionRoots: ['/Root/Skins'],
         Name: 'WorkspaceSkin',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'Skin',
@@ -6305,7 +6223,8 @@ export const customSchema = [
         Name: 'IsWallContainer',
         FieldClassName: 'SenseNet.ContentRepository.Fields.BooleanField',
         DisplayName: 'Wall Container',
-        Description: 'This workspace is configured to contain a wall - this indicates that posts are created under this workspace if Content are shared anywhere below this path.',
+        Description:
+          'This workspace is configured to contain a wall - this indicates that posts are created under this workspace if Content are shared anywhere below this path.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -6334,13 +6253,8 @@ export const customSchema = [
       },
       {
         AllowMultiple: false,
-        AllowedTypes: [
-          'User',
-        ],
-        SelectionRoots: [
-          '/Root/IMS',
-          '/Root',
-        ],
+        AllowedTypes: ['User'],
+        SelectionRoots: ['/Root/IMS', '/Root'],
         Name: 'Manager',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'Project manager',
@@ -6388,12 +6302,8 @@ export const customSchema = [
       },
       {
         AllowMultiple: false,
-        AllowedTypes: [
-          'User',
-        ],
-        SelectionRoots: [
-          '/Root/IMS',
-        ],
+        AllowedTypes: ['User'],
+        SelectionRoots: ['/Root/IMS'],
         Name: 'User',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'User',
@@ -6634,12 +6544,8 @@ export const customSchema = [
       },
       {
         AllowMultiple: false,
-        AllowedTypes: [
-          'EventRegistrationForm',
-        ],
-        SelectionRoots: [
-          '/Root',
-        ],
+        AllowedTypes: ['EventRegistrationForm'],
+        SelectionRoots: ['/Root'],
         Name: 'RegistrationForm',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'Registration form',
@@ -6656,8 +6562,9 @@ export const customSchema = [
       {
         Name: 'OwnerEmail',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ShortTextField',
-        DisplayName: 'Event owner\'s e-mail',
-        Description: 'The list of email addresses to where a notification message containing submitted values are sent after submitting the form. The addresses should be separated by ";", "," or new line.',
+        DisplayName: "Event owner's e-mail",
+        Description:
+          'The list of email addresses to where a notification message containing submitted values are sent after submitting the form. The addresses should be separated by ";", "," or new line.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -6713,7 +6620,8 @@ export const customSchema = [
         Name: 'EmailTemplate',
         FieldClassName: 'SenseNet.ContentRepository.Fields.LongTextField',
         DisplayName: 'Email template',
-        Description: 'The template of the email message sent to the administrators. By default the template of notification email sent to the submitter is the same as the one sent to the recipients given in the email list above. Form content can be inserted with the "{0}" string.',
+        Description:
+          'The template of the email message sent to the administrators. By default the template of notification email sent to the submitter is the same as the one sent to the recipients given in the email list above. Form content can be inserted with the "{0}" string.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -6728,7 +6636,8 @@ export const customSchema = [
         Name: 'EmailTemplateSubmitter',
         FieldClassName: 'SenseNet.ContentRepository.Fields.LongTextField',
         DisplayName: 'Submitter email template',
-        Description: 'The template of the email message sent to the submitter. By default the template of notification email sent to the submitter is the same as the one sent to the recipients given in the email list above. Form content can be inserted with the "{0}" string.',
+        Description:
+          'The template of the email message sent to the submitter. By default the template of notification email sent to the submitter is the same as the one sent to the recipients given in the email list above. Form content can be inserted with the "{0}" string.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -6758,7 +6667,8 @@ export const customSchema = [
         Name: 'EmailFromSubmitter',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ShortTextField',
         DisplayName: 'Subbmitter email from',
-        Description: 'This address is displayed in the "From" field of the user notification email sent to submitters. Default is "mailerservice@example.com".',
+        Description:
+          'This address is displayed in the "From" field of the user notification email sent to submitters. Default is "mailerservice@example.com".',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -6773,7 +6683,8 @@ export const customSchema = [
         Name: 'EmailField',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ShortTextField',
         DisplayName: 'Email field',
-        Description: 'The name of the field specified among ContentList fields containing the submitter\'s email address. Ie.: "#Email" or "#SubmitterEmail".',
+        Description:
+          'The name of the field specified among ContentList fields containing the submitter\'s email address. Ie.: "#Email" or "#SubmitterEmail".',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -7108,7 +7019,8 @@ export const customSchema = [
         Type: 'ShortTextFieldSetting',
       },
       {
-        Regex: '^(http|https)\\://([a-zA-Z0-9\\.\\-]+(\\:[a-zA-Z0-9\\.&%\\$\\-]+)*@)*((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|localhost|([a-zA-Z0-9\\-]+\\.)*[a-zA-Z0-9\\-]+(\\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|hu|[a-zA-Z]{2})){0,1})(\\:[0-9]+)*((\\#|/)($|[a-zA-Z0-9\\.\\,\\?\\\'\\\\\\+&%\\$#\\=~_\\-]+))*$',
+        Regex:
+          "^(http|https)\\://([a-zA-Z0-9\\.\\-]+(\\:[a-zA-Z0-9\\.&%\\$\\-]+)*@)*((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|localhost|([a-zA-Z0-9\\-]+\\.)*[a-zA-Z0-9\\-]+(\\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|hu|[a-zA-Z]{2})){0,1})(\\:[0-9]+)*((\\#|/)($|[a-zA-Z0-9\\.\\,\\?\\'\\\\\\+&%\\$#\\=~_\\-]+))*$",
         Name: 'Url',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ShortTextField',
         DisplayName: 'URL',
@@ -7324,7 +7236,7 @@ export const customSchema = [
   {
     ContentTypeName: 'Portlet',
     DisplayName: 'Portlet',
-    Description: 'Portlet that can be selected in the \'Add new portlet\' dialog.',
+    Description: "Portlet that can be selected in the 'Add new portlet' dialog.",
     Icon: 'FormItem',
     ParentTypeName: 'ListItem',
     AllowIndexing: true,
@@ -7409,7 +7321,7 @@ export const customSchema = [
         Name: 'Hidden',
         FieldClassName: 'SenseNet.ContentRepository.Fields.BooleanField',
         DisplayName: 'Hidden',
-        Description: 'Doesn\'t show up in Add portlet dialog if checked.',
+        Description: "Doesn't show up in Add portlet dialog if checked.",
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -7480,13 +7392,8 @@ export const customSchema = [
       },
       {
         AllowMultiple: true,
-        AllowedTypes: [
-          'User',
-        ],
-        SelectionRoots: [
-          '/Root/IMS',
-          '/Root',
-        ],
+        AllowedTypes: ['User'],
+        SelectionRoots: ['/Root/IMS', '/Root'],
         Name: 'AssignedTo',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ReferenceField',
         DisplayName: 'Assigned to',
@@ -7833,7 +7740,8 @@ export const customSchema = [
         Name: 'ValidTill',
         FieldClassName: 'SenseNet.ContentRepository.Fields.DateTimeField',
         DisplayName: 'Valid Till',
-        Description: 'This content will disappear on the date you set if lifespan handling is enabled for this content.',
+        Description:
+          'This content will disappear on the date you set if lifespan handling is enabled for this content.',
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -7955,7 +7863,7 @@ export const customSchema = [
         Name: 'Pinned',
         FieldClassName: 'SenseNet.ContentRepository.Fields.BooleanField',
         DisplayName: 'Highlights',
-        Description: 'Content is always showing on the main page\'s [Highlights] collection.',
+        Description: "Content is always showing on the main page's [Highlights] collection.",
         ReadOnly: false,
         Compulsory: false,
         OutputMethod: 0,
@@ -8085,7 +7993,8 @@ export const customSchema = [
         Name: 'LoginName',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ShortTextField',
         DisplayName: 'Login name',
-        Description: 'The name that the user has to type in on login forms (in some cases along with the domain name). It has to be unique under a domain.',
+        Description:
+          'The name that the user has to type in on login forms (in some cases along with the domain name). It has to be unique under a domain.',
         ReadOnly: false,
         Compulsory: true,
         Visible: true,
@@ -8488,7 +8397,7 @@ export const customSchema = [
         Name: 'ProfilePath',
         FieldClassName: 'SenseNet.ContentRepository.Fields.ShortTextField',
         DisplayName: 'Profile path',
-        Description: 'Path of the user\'s personal workspace.',
+        Description: "Path of the user's personal workspace.",
         ReadOnly: true,
         Compulsory: false,
         Visible: false,

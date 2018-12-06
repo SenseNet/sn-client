@@ -4,33 +4,33 @@ import { Route, RouteComponentProps, RouteProps, withRouter } from 'react-router
 import { Location } from 'history'
 
 export interface AuthorizedRouteProps extends RouteComponentProps<any>, RouteProps {
-    authorize: () => boolean
-    redirectOnUnauthorized: string
-    location: Location
+  authorize: () => boolean
+  redirectOnUnauthorized: string
+  location: Location
 }
 
 export class AuthorizedRouteComponent extends React.Component<AuthorizedRouteProps> {
-    constructor(props: AuthorizedRouteComponent['props']) {
-        super(props)
-        this.checkIsAuthorized(props)
-    }
+  constructor(props: AuthorizedRouteComponent['props']) {
+    super(props)
+    this.checkIsAuthorized(props)
+  }
 
-    private checkIsAuthorized(props = this.props) {
-        if (!props.authorize()) {
-            props.history.push(props.redirectOnUnauthorized)
-        }
+  private checkIsAuthorized(props = this.props) {
+    if (!props.authorize()) {
+      props.history.push(props.redirectOnUnauthorized)
     }
+  }
 
-    public componentWillReceiveProps(newProps: this['props']) {
-        this.checkIsAuthorized(newProps)
-    }
+  public componentWillReceiveProps(newProps: this['props']) {
+    this.checkIsAuthorized(newProps)
+  }
 
-    public render() {
-        const { ...routeProps } = { ...this.props }
-        return (<Route {...routeProps} />)
-    }
+  public render() {
+    const { ...routeProps } = { ...this.props }
+    return <Route {...routeProps} />
+  }
 }
 
 const component = withRouter(AuthorizedRouteComponent)
 
-export {component as AuthorizedRoute}
+export { component as AuthorizedRoute }

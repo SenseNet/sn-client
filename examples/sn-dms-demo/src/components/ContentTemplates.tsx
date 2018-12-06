@@ -5,13 +5,14 @@ import Typography from '@material-ui/core/Typography'
 import * as React from 'react'
 
 // tslint:disable-next-line:variable-name
-export const ContentTemplates: React.StatelessComponent = (props) => {
-    return (<AppBar position="static" style={{ background: '#fff' }
-    }>
-        <Toolbar style={{ display: 'flex', flexDirection: 'row', padding: '0 12px' }}>
-            <div style={{ flex: 1, display: 'flex' }}>
-                <Typography variant="headline">Content Templates</Typography>
-            </div>
-        </Toolbar>
-    </AppBar>)
+export const ContentTemplates: React.StatelessComponent = () => {
+  return (
+    <AppBar position="static" style={{ background: '#fff' }}>
+      <Toolbar style={{ display: 'flex', flexDirection: 'row', padding: '0 12px' }}>
+        <div style={{ flex: 1, display: 'flex' }}>
+          <Typography variant="headline">Content Templates</Typography>
+        </div>
+      </Toolbar>
+    </AppBar>
+  )
 }

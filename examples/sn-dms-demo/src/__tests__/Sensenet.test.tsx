@@ -11,18 +11,17 @@
 
 // const div = document.createElement('div');
 
-  // const sensenet = Reducers.sensenet;
-  // const myReducer = combineReducers({
-  //   sensenet
-  // });
+// const sensenet = Reducers.sensenet;
+// const myReducer = combineReducers({
+//   sensenet
+// });
 
-  // const repository = new Repository.SnRepository({
-  //   RepositoryUrl: 'https://sn-services/'
-  // });
+// const repository = new Repository.SnRepository({
+//   RepositoryUrl: 'https://sn-services/'
+// });
 
 it('renders without crashing', () => {
- // const store = Store.configureStore(myReducer, null, undefined, {}, repository)
-
+  // const store = Store.configureStore(myReducer, null, undefined, {}, repository)
   // ReactDOM.render(
   //   <Provider store={store}>
   //     <MemoryRouter>
@@ -33,7 +32,6 @@ it('renders without crashing', () => {
 
 it('renders without crashing', () => {
   // const store = Store.configureStore(myReducer, null, undefined, {}, repository)
-
   // ReactDOM.render(
   //   <Provider store={store}>
   //     <MemoryRouter>

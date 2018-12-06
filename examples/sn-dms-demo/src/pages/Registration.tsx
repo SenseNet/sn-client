@@ -42,7 +42,7 @@ const styles = {
   },
 }
 
-import { IOauthProvider } from '@sensenet/authentication-jwt'
+import { OauthProvider } from '@sensenet/authentication-jwt'
 import { resources } from '../assets/resources'
 import { rootStateType } from '../store/rootReducer'
 
@@ -57,32 +57,33 @@ const mapStateToProps = (state: rootStateType) => {
 
 const mapDispatchToProps = {
   registration: userRegistration,
-
 }
 
 interface RegistrationProps extends RouteComponentProps<any> {
-  verify: any,
-  oAuthProvider: IOauthProvider,
+  verify: any
+  oAuthProvider: OauthProvider
 }
 
 interface RegistrationState {
-  email: string,
-  password: string,
-  confirmpassword: string,
-  emailError: boolean,
-  passwordError: boolean,
-  confirmPasswordError: boolean,
-  emailErrorMessage: string,
-  passwordErrorMessage: string,
-  confirmPasswordErrorMessage: string,
-  formIsValid: boolean,
-  isButtonDisabled: boolean,
-  captchaError: boolean,
+  email: string
+  password: string
+  confirmpassword: string
+  emailError: boolean
+  passwordError: boolean
+  confirmPasswordError: boolean
+  emailErrorMessage: string
+  passwordErrorMessage: string
+  confirmPasswordErrorMessage: string
+  formIsValid: boolean
+  isButtonDisabled: boolean
+  captchaError: boolean
   captchaErrorMessage: string
 }
 
-class Registration extends React.Component<RegistrationProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, RegistrationState> {
-
+class Registration extends React.Component<
+  RegistrationProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
+  RegistrationState
+> {
   constructor(props: Registration['props']) {
     super(props)
     this.state = {
@@ -155,7 +156,6 @@ class Registration extends React.Component<RegistrationProps & ReturnType<typeof
     })
   }
   public validatePassword(text: string) {
-
     const re = /^([a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]*[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]){3}[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]*$/
     return re.test(text)
   }
@@ -190,15 +190,15 @@ class Registration extends React.Component<RegistrationProps & ReturnType<typeof
   public confirmPasswords(p1: string, p2: string) {
     return p1 === p2
   }
-  public formSubmit(e: React.FormEvent<HTMLFormElement>) {
-    if (this.valid(e)) {
+  public formSubmit() {
+    if (this.valid()) {
       this.props.registration(this.state.email, this.state.password)
       this.setState({
         isButtonDisabled: true,
       })
     }
   }
-  public valid(e: React.SyntheticEvent) {
+  public valid() {
     let valid = true
     if (this.state.email === '' || !this.validateEmail(this.state.email)) {
       valid = false
@@ -242,8 +242,16 @@ class Registration extends React.Component<RegistrationProps & ReturnType<typeof
       <div className="Sensenet">
         <div className="Sensenet-header">
           <MediaQuery minDeviceWidth={700}>
-            {(matches) => {
-              return <img src={logo} width={matches ? '60%' : '50%'} className="Sensenet-logo" style={matches ? styles.logo : styles.logoMobile} alt="logo" />
+            {matches => {
+              return (
+                <img
+                  src={logo}
+                  width={matches ? '60%' : '50%'}
+                  className="Sensenet-logo"
+                  style={matches ? styles.logo : styles.logoMobile}
+                  alt="logo"
+                />
+              )
             }}
           </MediaQuery>
         </div>
@@ -253,75 +261,95 @@ class Registration extends React.Component<RegistrationProps & ReturnType<typeof
 
         <div>
           <div>
-            {this.props.isRegistered ?
-              this.props.history.push('/login') :
-              false}
-            {
-              this.props.inProgress ? <div style={styles.progress}><CircularProgress color="secondary" /></div> : ''}
-            <form onSubmit={(e) => {
-              e.preventDefault()
-              this.formSubmit(e)
-            }}>
+            {this.props.isRegistered ? this.props.history.push('/login') : false}
+            {this.props.inProgress ? (
+              <div style={styles.progress}>
+                <CircularProgress color="secondary" />
+              </div>
+            ) : (
+              ''
+            )}
+            <form
+              onSubmit={e => {
+                e.preventDefault()
+                this.formSubmit()
+              }}>
               <FormControl
-                error={this.state.emailError || (this.props.registrationError !== null && this.props.registrationError.length) > 0 ? true : false}
-                fullWidth
-                required
+                error={
+                  this.state.emailError ||
+                  (this.props.registrationError !== null && this.props.registrationError.length) > 0
+                    ? true
+                    : false
+                }
+                fullWidth={true}
+                required={true}
                 style={styles.formControl}>
                 <TextField
                   id="email"
-                  onBlur={(event) => this.handleEmailBlur(event)}
-                  onChange={(event) => this.handleEmailChange(event)}
-                  fullWidth
-                  autoFocus
+                  onBlur={event => this.handleEmailBlur(event)}
+                  onChange={event => this.handleEmailChange(event)}
+                  fullWidth={true}
+                  autoFocus={true}
                   label={resources.EMAIL_INPUT_LABEL}
-                  placeholder={resources.EMAIL_INPUT_FORMAT_PLACEHOLDER} />
+                  placeholder={resources.EMAIL_INPUT_FORMAT_PLACEHOLDER}
+                />
                 <FormHelperText>{this.state.emailErrorMessage}</FormHelperText>
               </FormControl>
               <FormControl
                 error={this.state.passwordError ? true : false}
-                fullWidth
-                required
+                fullWidth={true}
+                required={true}
                 style={styles.formControl}>
                 <TextField
                   type="password"
                   id="password"
-                  onBlur={(event) => this.handlePasswordBlur(event)}
-                  onChange={(event) => this.handlePasswordChange(event)}
-                  fullWidth
+                  onBlur={event => this.handlePasswordBlur(event)}
+                  onChange={event => this.handlePasswordChange(event)}
+                  fullWidth={true}
                   label={resources.PASSWORD_INPUT_LABEL}
-                  placeholder={resources.PASSWORD_INPUT_PLACEHOLDER} />
+                  placeholder={resources.PASSWORD_INPUT_PLACEHOLDER}
+                />
                 <FormHelperText>{this.state.passwordErrorMessage}</FormHelperText>
               </FormControl>
               <FormControl
                 error={this.state.confirmPasswordError ? true : false}
-                fullWidth
-                required
+                fullWidth={true}
+                required={true}
                 style={styles.formControl}>
                 <TextField
                   type="password"
                   id="confirmpassword"
-                  onBlur={(event) => this.handleConfirmPasswordBlur(event)}
-                  onChange={(event) => this.handleConfirmPasswordChange(event)}
-                  fullWidth
+                  onBlur={event => this.handleConfirmPasswordBlur(event)}
+                  onChange={event => this.handleConfirmPasswordChange(event)}
+                  fullWidth={true}
                   label={resources.CONFIRM_PASSWORD_INPUT_LABEL}
-                  placeholder={resources.PASSWORD_INPUT_PLACEHOLDER} />
+                  placeholder={resources.PASSWORD_INPUT_PLACEHOLDER}
+                />
                 <FormHelperText>{this.state.confirmPasswordErrorMessage}</FormHelperText>
               </FormControl>
               <FormControl>
                 <GoogleReCaptcha verify={this.props.verify} />
-                <FormHelperText error>{this.state.captchaError && this.state.captchaErrorMessage.length > 0 ? this.state.captchaErrorMessage : ''}</FormHelperText>
+                <FormHelperText error={true}>
+                  {this.state.captchaError && this.state.captchaErrorMessage.length > 0
+                    ? this.state.captchaErrorMessage
+                    : ''}
+                </FormHelperText>
               </FormControl>
               <FormControl>
-                <FormHelperText error>{this.props.registrationError && this.props.registrationError.length > 0 ? this.props.registrationError : ''}</FormHelperText>
+                <FormHelperText error={true}>
+                  {this.props.registrationError && this.props.registrationError.length > 0
+                    ? this.props.registrationError
+                    : ''}
+                </FormHelperText>
               </FormControl>
               <Button
                 type="submit"
                 color="primary"
                 variant="contained"
                 style={styles.button}
-                disabled={this.state.isButtonDisabled}
-              >
-                {resources.REGISTRATION_BUTTON_TEXT}</Button>
+                disabled={this.state.isButtonDisabled}>
+                {resources.REGISTRATION_BUTTON_TEXT}
+              </Button>
             </form>
             <OauthRow oAuthProvider={this.props.oAuthProvider} />
           </div>
@@ -331,4 +359,9 @@ class Registration extends React.Component<RegistrationProps & ReturnType<typeof
   }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Registration))
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(Registration),
+)

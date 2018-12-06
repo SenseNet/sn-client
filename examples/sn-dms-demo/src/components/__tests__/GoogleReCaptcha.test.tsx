@@ -6,16 +6,16 @@ import { rootStateType } from '../../store/rootReducer'
 import GoogleReCaptcha from '../GoogleReCaptcha'
 
 it('renders without crashing', () => {
-    const div = document.createElement('div')
-    const options = {
-        persistedState: {
-            dms: {
-                register: {
-                    captcha: false,
-                },
-            },
+  const div = document.createElement('div')
+  const options = {
+    persistedState: {
+      dms: {
+        register: {
+          captcha: false,
         },
-    } as Store.CreateStoreOptions<rootStateType>
+      },
+    },
+  } as Store.CreateStoreOptions<rootStateType>
 
-    ReactDOM.render(withStore(<GoogleReCaptcha />, options), div)
+  ReactDOM.render(withStore(<GoogleReCaptcha />, options), div)
 })

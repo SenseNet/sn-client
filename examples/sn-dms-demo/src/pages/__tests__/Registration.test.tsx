@@ -2,9 +2,7 @@ import { LoginState } from '@sensenet/client-core'
 import { Store } from '@sensenet/redux'
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import {
-  MemoryRouter,
-} from 'react-router-dom'
+import { MemoryRouter } from 'react-router-dom'
 import { withStore } from '../../__tests__/TestHelper'
 import { rootStateType } from '../../store/rootReducer'
 import Registration from '../Registration'
@@ -49,8 +47,13 @@ it('renders without crashing', () => {
     },
   } as Partial<Store.CreateStoreOptions<rootStateType>>
 
-  ReactDOM.render(withStore(
-    <MemoryRouter>
-      <Registration verify={null} oAuthProvider={null as any} />
-    </MemoryRouter>, options), div)
+  ReactDOM.render(
+    withStore(
+      <MemoryRouter>
+        <Registration verify={null} oAuthProvider={null as any} />
+      </MemoryRouter>,
+      options,
+    ),
+    div,
+  )
 })

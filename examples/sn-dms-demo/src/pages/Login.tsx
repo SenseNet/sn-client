@@ -34,7 +34,7 @@ const styles = {
 }
 
 import { GoogleOauthProvider } from '@sensenet/authentication-google'
-import { IOauthProvider } from '@sensenet/authentication-jwt'
+import { OauthProvider } from '@sensenet/authentication-jwt'
 import { LoginState } from '@sensenet/client-core'
 import { resources } from '../assets/resources'
 import { FullScreenLoader } from '../components/FullScreenLoader'
@@ -53,24 +53,26 @@ const mapDispatchToProps = {
 }
 
 interface LoginProps {
-  clear: () => any,
-  loginState: LoginState,
-  oauthProvider: IOauthProvider | GoogleOauthProvider
+  clear: () => any
+  loginState: LoginState
+  oauthProvider: OauthProvider | GoogleOauthProvider
 }
 
 interface LoginComponentState {
-  email: string,
-  password: string,
-  emailError: boolean,
-  passwordError: boolean,
-  emailErrorMessage: string,
-  passwordErrorMessage: string,
-  formIsValid: boolean,
+  email: string
+  password: string
+  emailError: boolean
+  passwordError: boolean
+  emailErrorMessage: string
+  passwordErrorMessage: string
+  formIsValid: boolean
   isButtonDisabled: boolean
 }
 
-class Login extends React.Component<LoginProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, LoginComponentState> {
-
+class Login extends React.Component<
+  LoginProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
+  LoginComponentState
+> {
   constructor(props: Login['props']) {
     super(props)
     this.state = {
@@ -139,7 +141,7 @@ class Login extends React.Component<LoginProps & ReturnType<typeof mapStateToPro
     return re.test(text)
   }
 
-  public valid(e: React.SyntheticEvent) {
+  public valid() {
     let valid = true
     if (this.state.email === '' || !this.validateEmail(this.state.email)) {
       valid = false
@@ -158,8 +160,8 @@ class Login extends React.Component<LoginProps & ReturnType<typeof mapStateToPro
     return valid
   }
 
-  public formSubmit(e: React.FormEvent<HTMLFormElement>) {
-    if (this.valid(e)) {
+  public formSubmit() {
+    if (this.valid()) {
       this.props.login(this.state.email, this.state.password)
       this.setState({
         isButtonDisabled: true,
@@ -182,9 +184,8 @@ class Login extends React.Component<LoginProps & ReturnType<typeof mapStateToPro
   }
 
   public render() {
-
     if (this.props.loginState === LoginState.Authenticated) {
-      return (<Redirect to="/documents/" />)
+      return <Redirect to="/documents/" />
     }
 
     if (this.props.loginState === LoginState.Pending) {
@@ -195,8 +196,16 @@ class Login extends React.Component<LoginProps & ReturnType<typeof mapStateToPro
       <div className="Sensenet">
         <div className="Sensenet-header">
           <MediaQuery minDeviceWidth={700}>
-            {(matches) => {
-              return <img src={logo} width={matches ? '60%' : '50%'} className="Sensenet-logo" style={matches ? styles.logo : styles.logoMobile} alt="logo" />
+            {matches => {
+              return (
+                <img
+                  src={logo}
+                  width={matches ? '60%' : '50%'}
+                  className="Sensenet-logo"
+                  style={matches ? styles.logo : styles.logoMobile}
+                  alt="logo"
+                />
+              )
             }}
           </MediaQuery>
         </div>
@@ -205,44 +214,58 @@ class Login extends React.Component<LoginProps & ReturnType<typeof mapStateToPro
         <WelcomeMessage />
 
         <div>
-          <form onSubmit={(e) => {
-            e.preventDefault()
-            this.formSubmit(e)
-          }}>
+          <form
+            onSubmit={e => {
+              e.preventDefault()
+              this.formSubmit()
+            }}>
             <FormControl
-              error={this.state.emailError || this.props.loginError && this.props.loginError.length > 0 ? true : false}
-              fullWidth
-              required
+              error={
+                this.state.emailError || (this.props.loginError && this.props.loginError.length > 0) ? true : false
+              }
+              fullWidth={true}
+              required={true}
               style={styles.formControl}>
               <TextField
                 id="email"
-                onBlur={(event) => this.handleEmailBlur(event)}
-                onChange={(event) => this.handleEmailChange(event)}
-                fullWidth
-                autoFocus
+                onBlur={event => this.handleEmailBlur(event)}
+                onChange={event => this.handleEmailChange(event)}
+                fullWidth={true}
+                autoFocus={true}
                 label={resources.EMAIL_INPUT_LABEL}
-                placeholder={resources.EMAIL_INPUT_PLACEHOLDER} />
+                placeholder={resources.EMAIL_INPUT_PLACEHOLDER}
+              />
               <FormHelperText>{this.state.emailErrorMessage}</FormHelperText>
             </FormControl>
             <FormControl
               error={this.state.passwordError || (this.props.loginError && this.props.loginError.length) ? true : false}
-              fullWidth
-              required
+              fullWidth={true}
+              required={true}
               style={styles.formControl}>
               <TextField
                 type="password"
                 id="password"
-                onBlur={(event) => this.handlePasswordBlur(event)}
-                onChange={(event) => this.handlePasswordChange(event)}
-                fullWidth
+                onBlur={event => this.handlePasswordBlur(event)}
+                onChange={event => this.handlePasswordChange(event)}
+                fullWidth={true}
                 label={resources.PASSWORD_INPUT_LABEL}
-                placeholder={resources.PASSWORD_INPUT_PLACEHOLDER} />
+                placeholder={resources.PASSWORD_INPUT_PLACEHOLDER}
+              />
               <FormHelperText>{this.state.passwordErrorMessage}</FormHelperText>
             </FormControl>
             <FormControl>
-              <FormHelperText error>{this.props.loginError && this.props.loginError.length ? resources.WRONG_USERNAME_OR_PASSWORD : ''}</FormHelperText>
+              <FormHelperText error={true}>
+                {this.props.loginError && this.props.loginError.length ? resources.WRONG_USERNAME_OR_PASSWORD : ''}
+              </FormHelperText>
             </FormControl>
-            <Button type="submit" variant="contained" color="primary" style={styles.button} disabled={this.props.loginError === null && this.state.isButtonDisabled}>{resources.LOGIN_BUTTON_TEXT}</Button>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              style={styles.button}
+              disabled={this.props.loginError === null && this.state.isButtonDisabled}>
+              {resources.LOGIN_BUTTON_TEXT}
+            </Button>
           </form>
           <OauthRow oAuthProvider={this.props.oauthProvider} />
         </div>
@@ -251,4 +274,7 @@ class Login extends React.Component<LoginProps & ReturnType<typeof mapStateToPro
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Login)

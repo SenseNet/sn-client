@@ -8,9 +8,15 @@ it('renders without crashing', () => {
   ReactDOM.render(
     <MemoryRouter>
       <div>
-        <QuickSearchInput isLoading={false} isOpen={false} onClick={() => {
-          /** */
-        }} />
+        <QuickSearchInput
+          isLoading={false}
+          isOpen={false}
+          onClick={() => {
+            /** */
+          }}
+        />
       </div>
-    </MemoryRouter>, div)
+    </MemoryRouter>,
+    div,
+  )
 })

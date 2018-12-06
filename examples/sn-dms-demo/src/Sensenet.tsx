@@ -1,8 +1,8 @@
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
-import { IOauthProvider } from '@sensenet/authentication-jwt'
+import { OauthProvider } from '@sensenet/authentication-jwt'
 import { LoginState } from '@sensenet/client-core'
 import * as React from 'react'
-import * as Loadable from 'react-loadable'
+import Loadable from 'react-loadable'
 import { connect } from 'react-redux'
 import { HashRouter, Redirect, Route, Switch } from 'react-router-dom'
 import 'typeface-roboto'
@@ -33,7 +33,7 @@ const mapDispatchToProps = {
 }
 
 export interface SensenetProps {
-  oAuthProvider: IOauthProvider
+  oAuthProvider: OauthProvider
 }
 
 class Sensenet extends React.Component<SensenetProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps> {
@@ -50,17 +50,36 @@ class Sensenet extends React.Component<SensenetProps & ReturnType<typeof mapStat
     // }
     return (
       <MuiThemeProvider theme={dmsTheme}>
-        <div className="root" style={{ minHeight: document.documentElement && window.innerHeight >= document.documentElement.offsetHeight ? window.innerHeight : 'auto' }}>
+        <div
+          className="root"
+          style={{
+            minHeight:
+              document.documentElement && window.innerHeight >= document.documentElement.offsetHeight
+                ? window.innerHeight
+                : 'auto',
+          }}>
           <HashRouter>
             <Switch>
-              <AuthorizedRoute exact path="/login" authorize={() => this.props.loginState !== LoginState.Authenticated} redirectOnUnauthorized="/">
+              <AuthorizedRoute
+                exact={true}
+                path="/login"
+                authorize={() => this.props.loginState !== LoginState.Authenticated}
+                redirectOnUnauthorized="/">
                 <Login oauthProvider={this.props.oAuthProvider} clear={this.props.clearRegistration} />
               </AuthorizedRoute>
-              <AuthorizedRoute exact path="/registration" authorize={() => this.props.loginState !== LoginState.Authenticated} redirectOnUnauthorized="/">
+              <AuthorizedRoute
+                exact={true}
+                path="/registration"
+                authorize={() => this.props.loginState !== LoginState.Authenticated}
+                redirectOnUnauthorized="/">
                 <Registration oAuthProvider={this.props.oAuthProvider} verify={this.props.recaptchaCallback} />
               </AuthorizedRoute>
 
-              <AuthorizedRoute exact path="/privacypolicy" authorize={() => this.props.loginState !== LoginState.Authenticated} redirectOnUnauthorized="/">
+              <AuthorizedRoute
+                exact={true}
+                path="/privacypolicy"
+                authorize={() => this.props.loginState !== LoginState.Authenticated}
+                redirectOnUnauthorized="/">
                 <PrivacyPolicy />
               </AuthorizedRoute>
 
@@ -68,17 +87,21 @@ class Sensenet extends React.Component<SensenetProps & ReturnType<typeof mapStat
               {this.props.loginState === LoginState.Unauthenticated ? <Redirect path="*" to="/login" /> : null}
               {/* {this.props.loginState === LoginState.Authenticated ? <Redirect path="*" to="/" /> : null} */}
 
-              <AuthorizedRoute path="/" authorize={() => this.props.loginState !== LoginState.Unauthenticated} redirectOnUnauthorized="/" render={(routerProps) => {
-                const LoadableDashboard = Loadable({
-                  loader: () => import(/* webpackChunkName: "dashboard" */ './pages/Dashboard'),
-                  loading: () => <FullScreenLoader />,
-                })
-                return <LoadableDashboard {...routerProps} currentId={0} />
-              }}>
-              </AuthorizedRoute>
+              <AuthorizedRoute
+                path="/"
+                authorize={() => this.props.loginState !== LoginState.Unauthenticated}
+                redirectOnUnauthorized="/"
+                render={routerProps => {
+                  const LoadableDashboard = Loadable({
+                    loader: () => import(/* webpackChunkName: "dashboard" */ './pages/Dashboard'),
+                    loading: () => <FullScreenLoader />,
+                  })
+                  return <LoadableDashboard {...routerProps} currentId={0} />
+                }}
+              />
 
               {/* Not found */}
-              <Route path="*" exact={true} >
+              <Route path="*" exact={true}>
                 <Redirect to="/" />
               </Route>
             </Switch>
@@ -90,4 +113,7 @@ class Sensenet extends React.Component<SensenetProps & ReturnType<typeof mapStat
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Sensenet)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Sensenet)

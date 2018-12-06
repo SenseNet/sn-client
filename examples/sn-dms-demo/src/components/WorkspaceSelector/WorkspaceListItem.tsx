@@ -14,120 +14,131 @@ import { rootStateType } from '../../store/rootReducer'
 import { followWorkspace, unfollowWorkspace } from '../../store/workspaces/actions'
 
 const styles = {
-    listItem: {
-        listStyleType: 'none',
-        borderTop: 'solid 1px #2080aa',
-        padding: '12px 12px 12px 0px',
+  listItem: {
+    listStyleType: 'none',
+    borderTop: 'solid 1px #2080aa',
+    padding: '12px 12px 12px 0px',
+  },
+  listItemRoot: {
+    padding: 0,
+  },
+  primary: {
+    fontFamily: 'Raleway ExtraBold',
+    fontSize: 15,
+    lineHeight: '24px',
+    color: '#fff',
+    background: 'none',
+    padding: 0,
+    '&:hover': {
+      backgroundColor: 'transparent',
     },
-    listItemRoot: {
-        padding: 0,
+  },
+  icon: {
+    margin: 0,
+    color: '#fff',
+  },
+  iconButton: {
+    margin: 0,
+    padding: 0,
+    '&:hover': {
+      backgroundColor: 'transparent',
     },
-    primary: {
-        'fontFamily': 'Raleway ExtraBold',
-        'fontSize': 15,
-        'lineHeight': '24px',
-        'color': '#fff',
-        'background': 'none',
-        'padding': 0,
-        '&:hover': {
-            backgroundColor: 'transparent',
-        },
-    },
-    icon: {
-        margin: 0,
-        color: '#fff',
-    },
-    iconButton: {
-        'margin': 0,
-        'padding': 0,
-        '&:hover': {
-            backgroundColor: 'transparent',
-        },
-    },
-    followedIconButton: {
-        margin: 0,
-        padding: 0,
-        color: '#ffeb3b',
-    },
+  },
+  followedIconButton: {
+    margin: 0,
+    padding: 0,
+    color: '#ffeb3b',
+  },
 }
 
 interface WorkspaceListItemProps extends RouteComponentProps<any> {
-    followed: boolean,
-    workspace: Workspace,
-    userName: string,
-    favorites: number[],
-    closeDropDown: (open: boolean) => void,
+  followed: boolean
+  workspace: Workspace
+  userName: string
+  favorites: number[]
+  closeDropDown: (open: boolean) => void
 }
 
 const mapStateToProps = (state: rootStateType) => {
-    return {
-        userName: state.sensenet.session.user.userName,
-        options: state.sensenet.currentitems.options,
-    }
+  return {
+    userName: state.sensenet.session.user.userName,
+    options: state.sensenet.currentitems.options,
+  }
 }
 
 const mapDispatchToProps = {
-    followWorkspace,
-    unfollowWorkspace,
-    loadContent: Actions.loadContent,
-    fetchContent: Actions.requestContent,
+  followWorkspace,
+  unfollowWorkspace,
+  loadContent: Actions.loadContent,
+  fetchContent: Actions.requestContent,
 }
 
 interface WorkspaceListItemState {
-    followed: boolean,
+  followed: boolean
 }
 
-class WorkspaceListItem extends React.Component<{ classes: any } & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & WorkspaceListItemProps, WorkspaceListItemState> {
-    public state = {
-        followed: this.props.followed,
-    }
-    constructor(props: WorkspaceListItem['props']) {
-        super(props)
+class WorkspaceListItem extends React.Component<
+  { classes: any } & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & WorkspaceListItemProps,
+  WorkspaceListItemState
+> {
+  public state = {
+    followed: this.props.followed,
+  }
+  constructor(props: WorkspaceListItem['props']) {
+    super(props)
 
-        this.handleMouseOver = this.handleMouseOver.bind(this)
-        this.handleMouseLeave = this.handleMouseLeave.bind(this)
-        this.handleClick = this.handleClick.bind(this)
-    }
-    public handleClick = (path: string) => {
-        const doclibPath = `${path}/Document_Library`
-        const newPath = compile(this.props.match.path)({ folderPath: btoa(doclibPath) })
-        this.props.history.push(newPath)
-        this.props.closeDropDown(true)
-    }
-    public startButtonClick = (id: number) => {
-        const { userName, favorites } = this.props
-        this.state.followed ? this.props.unfollowWorkspace(userName, id, favorites) : this.props.followWorkspace(userName, id, favorites)
-        this.setState({
-            followed: !this.state.followed,
-        })
-    }
-    public handleMouseOver = (e: any) => e.currentTarget.style.backgroundColor = '#01A1EA'
-    public handleMouseLeave = (e: any) => e.currentTarget.style.backgroundColor = 'transparent'
-    public render() {
-        const { classes, workspace, followed } = this.props
-        return (
-            <MenuItem
-                onMouseOver={(e) => this.handleMouseOver(e)}
-                onMouseLeave={(e) => this.handleMouseLeave(e)}
-                style={styles.listItem}>
-                <ListItemIcon className={classes.icon}>
-                    <IconButton
-                        className={followed ? classes.followedIconButton : classes.iconButton}>
-                        <Icon
-                            className={followed ? classes.followedIconButton : classes.iconButton}
-                            type={iconType.materialui}
-                            iconName="star"
-                            style={followed ? { color: '#ffeb3b', margin: '0 10px' } : { color: '#fff', margin: '0 10px' }}
-                            onClick={() => this.startButtonClick(workspace.Id)} />
-                    </IconButton>
-                </ListItemIcon>
-                <ListItemText
-                    classes={{ primary: classes.primary, root: classes.listItemRoot }}
-                    primary={workspace.DisplayName}
-                    onClick={(e) => this.handleClick(workspace.Path)} />
-            </MenuItem>
-        )
-    }
+    this.handleMouseOver = this.handleMouseOver.bind(this)
+    this.handleMouseLeave = this.handleMouseLeave.bind(this)
+    this.handleClick = this.handleClick.bind(this)
+  }
+  public handleClick = (path: string) => {
+    const doclibPath = `${path}/Document_Library`
+    const newPath = compile(this.props.match.path)({ folderPath: btoa(doclibPath) })
+    this.props.history.push(newPath)
+    this.props.closeDropDown(true)
+  }
+  public startButtonClick = (id: number) => {
+    const { userName, favorites } = this.props
+    this.state.followed
+      ? this.props.unfollowWorkspace(userName, id, favorites)
+      : this.props.followWorkspace(userName, id, favorites)
+    this.setState({
+      followed: !this.state.followed,
+    })
+  }
+  public handleMouseOver = (e: any) => (e.currentTarget.style.backgroundColor = '#01A1EA')
+  public handleMouseLeave = (e: any) => (e.currentTarget.style.backgroundColor = 'transparent')
+  public render() {
+    const { classes, workspace, followed } = this.props
+    return (
+      <MenuItem
+        onMouseOver={e => this.handleMouseOver(e)}
+        onMouseLeave={e => this.handleMouseLeave(e)}
+        style={styles.listItem}>
+        <ListItemIcon className={classes.icon}>
+          <IconButton className={followed ? classes.followedIconButton : classes.iconButton}>
+            <Icon
+              className={followed ? classes.followedIconButton : classes.iconButton}
+              type={iconType.materialui}
+              iconName="star"
+              style={followed ? { color: '#ffeb3b', margin: '0 10px' } : { color: '#fff', margin: '0 10px' }}
+              onClick={() => this.startButtonClick(workspace.Id)}
+            />
+          </IconButton>
+        </ListItemIcon>
+        <ListItemText
+          classes={{ primary: classes.primary, root: classes.listItemRoot }}
+          primary={workspace.DisplayName}
+          onClick={() => this.handleClick(workspace.Path)}
+        />
+      </MenuItem>
+    )
+  }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(WorkspaceListItem)))
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(withStyles(styles)(WorkspaceListItem)),
+)

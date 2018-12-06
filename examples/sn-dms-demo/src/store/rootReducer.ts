@@ -8,9 +8,9 @@ const dms = DMSReducers.dms
 const sensenetDocumentViewer = sensenetDocumentViewerReducer
 
 export const rootReducer = combineReducers({
-    sensenet,
-    dms,
-    sensenetDocumentViewer,
+  sensenet,
+  dms,
+  sensenetDocumentViewer,
 })
 
 export type rootStateType = ReturnType<typeof rootReducer>

@@ -13,112 +13,119 @@ import { rootStateType } from '../../../store/rootReducer'
 import { selectGroup } from '../../../store/usersandgroups/actions'
 
 const styles = {
-    listItem: {
-        listStyleType: 'none',
-        borderTop: 'solid 1px #2080aa',
-        padding: '12px 12px 12px 0px',
+  listItem: {
+    listStyleType: 'none',
+    borderTop: 'solid 1px #2080aa',
+    padding: '12px 12px 12px 0px',
+  },
+  listItemRoot: {
+    padding: 0,
+  },
+  primary: {
+    fontFamily: 'Raleway ExtraBold',
+    fontSize: 15,
+    lineHeight: '24px',
+    color: '#fff',
+    background: 'none',
+    padding: 0,
+    '&:hover': {
+      backgroundColor: 'transparent',
     },
-    listItemRoot: {
-        padding: 0,
+  },
+  secondary: {
+    color: '#fff',
+    fontFamily: 'Raleway SemiBold',
+    fontStyle: 'italic',
+    fontSize: 11,
+  },
+  icon: {
+    margin: 0,
+    color: '#fff',
+  },
+  iconButton: {
+    margin: 0,
+    padding: 0,
+    '&:hover': {
+      backgroundColor: 'transparent',
     },
-    primary: {
-        'fontFamily': 'Raleway ExtraBold',
-        'fontSize': 15,
-        'lineHeight': '24px',
-        'color': '#fff',
-        'background': 'none',
-        'padding': 0,
-        '&:hover': {
-            backgroundColor: 'transparent',
-        },
-    },
-    secondary: {
-        color: '#fff',
-        fontFamily: 'Raleway SemiBold',
-        fontStyle: 'italic',
-        fontSize: 11,
-    },
-    icon: {
-        margin: 0,
-        color: '#fff',
-    },
-    iconButton: {
-        'margin': 0,
-        'padding': 0,
-        '&:hover': {
-            backgroundColor: 'transparent',
-        },
-    },
-    followedIconButton: {
-        margin: 0,
-        padding: 0,
-        color: '#ffeb3b',
-    },
+  },
+  followedIconButton: {
+    margin: 0,
+    padding: 0,
+    color: '#ffeb3b',
+  },
 }
 
 interface GroupListItemProps extends RouteComponentProps<any> {
-    selected: boolean,
-    group: Group | null,
-    userName: string,
-    closeDropDown: (open: boolean) => void,
+  selected: boolean
+  group: Group | null
+  userName: string
+  closeDropDown: (open: boolean) => void
 }
 
 const mapStateToProps = (state: rootStateType) => {
-    return {
-        userName: state.sensenet.session.user.userName,
-        options: state.sensenet.currentitems.options,
-        groups: state.dms.usersAndGroups.group.selected,
-    }
+  return {
+    userName: state.sensenet.session.user.userName,
+    options: state.sensenet.currentitems.options,
+    groups: state.dms.usersAndGroups.group.selected,
+  }
 }
 
 const mapDispatchToProps = {
-    selectGroup,
-    loadContent: Actions.loadContent,
-    fetchContent: Actions.requestContent,
+  selectGroup,
+  loadContent: Actions.loadContent,
+  fetchContent: Actions.requestContent,
 }
 
 interface GroupListItemState {
-    selected: boolean,
+  selected: boolean
 }
 
-class GroupListItem extends React.Component<{ classes: any } & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & GroupListItemProps, GroupListItemState> {
-    public state = {
-        selected: this.props.selected,
-    }
-    constructor(props: GroupListItem['props']) {
-        super(props)
-
-    }
-    public checkboxClick = (group: Group | null) => {
-        this.props.selectGroup(group ? [...this.props.groups, group] : [...this.props.groups])
-        this.setState({
-            selected: !this.state.selected,
-        })
-    }
-    public shortenPath = (path: string) => path.replace('/Root/IMS/', '')
-    public render() {
-        const { classes, group, selected } = this.props
-        return (
-            <MenuItem
-                style={styles.listItem}>
-                <ListItemIcon className={classes.icon}>
-                    <IconButton
-                        className={selected ? classes.followedIconButton : classes.iconButton}>
-                        <Icon
-                            className={selected ? classes.followedIconButton : classes.iconButton}
-                            type={iconType.materialui}
-                            iconName={selected ? 'check_box' : 'check_box_outline_blank'}
-                            style={selected ? { color: '#ffeb3b', margin: '0 10px' } : { color: '#fff', margin: '0 10px' }}
-                            onClick={() => this.checkboxClick(group)} />
-                    </IconButton>
-                </ListItemIcon>
-                <ListItemText
-                    classes={{ primary: classes.primary, root: classes.listItemRoot, secondary: classes.secondary }}
-                    primary={group ? group.DisplayName : ''}
-                    secondary={this.shortenPath(group ? group.Path : '')} />
-            </MenuItem>
-        )
-    }
+class GroupListItem extends React.Component<
+  { classes: any } & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & GroupListItemProps,
+  GroupListItemState
+> {
+  public state = {
+    selected: this.props.selected,
+  }
+  constructor(props: GroupListItem['props']) {
+    super(props)
+  }
+  public checkboxClick = (group: Group | null) => {
+    this.props.selectGroup(group ? [...this.props.groups, group] : [...this.props.groups])
+    this.setState({
+      selected: !this.state.selected,
+    })
+  }
+  public shortenPath = (path: string) => path.replace('/Root/IMS/', '')
+  public render() {
+    const { classes, group, selected } = this.props
+    return (
+      <MenuItem style={styles.listItem}>
+        <ListItemIcon className={classes.icon}>
+          <IconButton className={selected ? classes.followedIconButton : classes.iconButton}>
+            <Icon
+              className={selected ? classes.followedIconButton : classes.iconButton}
+              type={iconType.materialui}
+              iconName={selected ? 'check_box' : 'check_box_outline_blank'}
+              style={selected ? { color: '#ffeb3b', margin: '0 10px' } : { color: '#fff', margin: '0 10px' }}
+              onClick={() => this.checkboxClick(group)}
+            />
+          </IconButton>
+        </ListItemIcon>
+        <ListItemText
+          classes={{ primary: classes.primary, root: classes.listItemRoot, secondary: classes.secondary }}
+          primary={group ? group.DisplayName : ''}
+          secondary={this.shortenPath(group ? group.Path : '')}
+        />
+      </MenuItem>
+    )
+  }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(GroupListItem)))
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(withStyles(styles)(GroupListItem)),
+)
