@@ -32,5 +32,29 @@
     "test": "lerna run test",
     "clean": "lerna clean",
     "fix": "lerna run fix --parallel"
+  },
+  "jest": {
+    "rootDir": ".",
+    "projects": [
+      "<rootDir>/examples/sn-dms-demo"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest",
+      "^.+\\.css$": "<rootDir>/jest/cssTransform.js",
+      "^.+\\.(png|jpg)$": "<rootDir>/jest/fileTransform.js"
+    },
+    "globals": {
+      "ts-jest": {
+        "tsConfig": "tsconfig.test.json"
+      }
+    },
+    "testMatch": [
+      "**/__tests__/*.+(ts|tsx|js)"
+    ]
   }
 }
