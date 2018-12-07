@@ -111,7 +111,6 @@ export const actions: Reducer<ActionModel[]> = (state: ActionModel[] = [], actio
 export const id: Reducer<number | null> = (state: number | null = null, action: AnyAction) => {
   switch (action.type) {
     case 'OPEN_ACTIONMENU':
-      console.log(actions)
       return action.id || null
     default:
       return state

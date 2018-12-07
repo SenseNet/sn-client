@@ -149,20 +149,12 @@
     "testURL": "http://localhost",
     "transform": {
       "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
-      "^.+\\.ts?$": "<rootDir>/config/jest/typescriptTransform.js",
-      "^.+\\.tsx?$": "<rootDir>/config/jest/typescriptTransform.js",
-      "^(?!.*\\.(css|json)$)": "<rootDir>/config/jest/fileTransform.js"
-    },
-    "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$",
-      "<rootDir>/packages/"
-    ],
-    "moduleNameMapper": {
-      "^react-native$": "react-native-web"
+      "^.+\\.(ts|tsx)$": "<rootDir>/config/jest/typescriptTransform.js",
+      "^.+\\.(png|jpg|json)$": "<rootDir>/config/jest/fileTransform.js"
     },
     "globals": {
       "ts-jest": {
-        "tsConfig": "tsconfig.test.json"
+        "tsConfig": "<rootDir>/tsconfig.test.json"
       }
     }
   }
