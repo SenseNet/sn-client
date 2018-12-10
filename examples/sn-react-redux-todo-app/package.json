@@ -3,6 +3,7 @@
   "version": "2.0.0",
   "description": "Todo app with React and Redux built upon Sense/Net ECM",
   "main": "index.tsx",
+  "private": true,
   "scripts": {
     "commit": "git-cz",
     "start": "react-scripts-ts start",
