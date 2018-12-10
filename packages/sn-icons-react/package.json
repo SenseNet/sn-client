@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/icons-react",
-  "version": "1.2.3",
+  "version": "1.2.4-alpha.0",
   "description": "A React component rendering icons for sensenet.",
   "main": "dist/index.js",
   "scripts": {
@@ -71,8 +71,8 @@
     "react-test-renderer": "^16.6.3"
   },
   "peerDependencies": {
-    "react-dom":"^16.6.3",
-    "prop-types": "^15.6.2"
+    "prop-types": "^15.6.2",
+    "react-dom": "^16.6.3"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.5",

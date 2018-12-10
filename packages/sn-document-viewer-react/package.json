@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/document-viewer-react",
-  "version": "1.0.2",
+  "version": "1.0.3-alpha.0",
   "description": "",
   "main": "dist/index.js",
   "files": [
@@ -82,7 +82,7 @@
   "dependencies": {
     "@material-ui/core": "^3.1.1",
     "@material-ui/icons": "^3.0.1",
-    "@sensenet/client-utils": "^1.4.0",
+    "@sensenet/client-utils": "^1.4.1-alpha.0",
     "lodash.debounce": "^4.0.8",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",

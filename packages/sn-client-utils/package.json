@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/client-utils",
-  "version": "1.4.0",
+  "version": "1.4.1-alpha.0",
   "description": "General sensenet ECM independent client side utilities",
   "main": "dist/index.js",
   "files": [
@@ -43,7 +43,6 @@
     "url": "https://github.com/SenseNet/sn-client/issues"
   },
   "homepage": "https://sensenet.com",
-  "dependencies": {},
   "devDependencies": {
     "@types/jest": "^23.3.10",
     "ts-jest": "^23.10.5"
