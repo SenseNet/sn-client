@@ -11,5 +11,5 @@ cache: yarn
 
 script:
   - yarn
-  - npm run build
-  - npm run test
+  - yarn build
+  - yarn test
