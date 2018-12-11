@@ -154,8 +154,12 @@
       "^.+\\.(ts|tsx)$": "<rootDir>/config/jest/typescriptTransform.js",
       "^.+\\.(png|jpg|json)$": "<rootDir>/config/jest/fileTransform.js"
     },
+    "moduleNameMapper": {
+      "\\.css$": "<rootDir>/config/jest/cssTransform.js"
+    },
     "globals": {
       "ts-jest": {
+        "skipBabel": true,
         "tsConfig": "<rootDir>/tsconfig.test.json"
       }
     }
