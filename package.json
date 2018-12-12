@@ -42,7 +42,9 @@
   "jest": {
     "rootDir": ".",
     "projects": [
-      "<rootDir>/examples/sn-dms-demo"
+      "<rootDir>/examples/sn-dms-demo",
+      "<rootDir>/examples/sn-react-redux-todo-app",
+      "<rootDir>/packages/sn-client-utils"
     ],
     "moduleFileExtensions": [
       "ts",

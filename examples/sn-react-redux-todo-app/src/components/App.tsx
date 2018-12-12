@@ -1,13 +1,16 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { LoginState } from '@sensenet/client-core'
 import { EditView, NewView } from '@sensenet/controls-react'
-import { Schema, Task } from '@sensenet/default-content-types'
+import { Task } from '@sensenet/default-content-types'
 import { Actions, Reducers } from '@sensenet/redux'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { HashRouter as Router, Route } from 'react-router-dom'
+import { rootStateType } from '..'
+import { repository } from '..'
 import Login from '../containers/Login'
 import VisibleTodoList from '../containers/VisibleTodoList'
+import { fetch } from '../reducers/todos'
 import { FilterMenu } from './FilterMenu'
 import { Menu } from './Menu'
 
@@ -17,35 +20,38 @@ const styles = {
   },
 }
 
-interface AppProps {
-  loginState
-  store
-  repository
-  filter
-  editSubmitClick
-  createSubmitClick
-  id: number
-  schema: Schema
-  getSchema
+const mapStateToProps = (state: rootStateType) => {
+  return {
+    loginState: Reducers.getAuthenticationStatus(state.sensenet),
+    schema: Reducers.getSchema(state.sensenet),
+    selected: state.todoList.selected,
+  }
+}
+
+const mapDispatchToProps = {
+  loginClick: Actions.userLogin,
+  editSubmitClick: Actions.updateContent,
+  createSubmitClick: Actions.createContent,
+  getSchema: Actions.getSchema,
+  fetch,
 }
 
 interface AppState {
-  content
-  params
-  loginState
-  listView
-  newView
-  editView
-  name
-  password
+  content: Task
+  loginState: LoginState
+  listView: () => JSX.Element
+  newView: () => JSX.Element
+  editView: () => JSX.Element
+  name: string
+  password: string
 }
 
-class App extends React.Component<AppProps, AppState> {
+class App extends React.Component<ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, AppState> {
   constructor(props) {
     super(props)
     this.state = {
       content: { Status: 'active' as any, Path: '/Root/Sites/Default_Site/tasks', Type: 'Task' } as Task,
-      params: this.props,
+      // params: this.props,
       loginState: LoginState.Pending,
       name: '',
       password: '',
@@ -54,7 +60,7 @@ class App extends React.Component<AppProps, AppState> {
           <div>
             <h4>Todos</h4>
             <FilterMenu />
-            <VisibleTodoList params={true} repository={this.props.repository} />
+            <VisibleTodoList />
           </div>
         )
       },
@@ -62,21 +68,19 @@ class App extends React.Component<AppProps, AppState> {
         <NewView
           path={this.state.content.Path}
           contentTypeName={'Task'}
-          repository={this.props.repository}
+          repository={repository}
           onSubmit={this.props.createSubmitClick}
           schema={this.props.schema}
         />
       ),
-      editView: ({ match }) => {
-        const selectedContent = Reducers.getContent(this.props.store.sensenet.children.entities, match.params.id)
-        const content = selectedContent as Task
-        if (content) {
+      editView: () => {
+        if (this.props.selected) {
           return (
             <EditView
-              content={content}
+              content={this.props.selected}
               contentTypeName="Task"
               onSubmit={this.props.editSubmitClick}
-              repository={this.props.repository}
+              repository={repository}
               schema={this.props.schema}
             />
           )
@@ -94,8 +98,9 @@ class App extends React.Component<AppProps, AppState> {
     const { loginState } = this.props
     const isLoggedin = loginState === LoginState.Authenticated
     const isPending = loginState === LoginState.Pending
-    const { listView, editView, newView, name, password } = this.state
+    const { listView, editView, newView } = this.state
     if (isLoggedin) {
+      this.props.fetch()
       return (
         <Router>
           <div>
@@ -116,32 +121,14 @@ class App extends React.Component<AppProps, AppState> {
     } else {
       return (
         <div>
-          <Login props={{ name, password, repository: this.props.repository }} />
+          <Login />
         </div>
       )
     }
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    loginState: Reducers.getAuthenticationStatus(state.sensenet),
-    store: state,
-    schema: Reducers.getSchema(state.sensenet),
-  }
-}
-
-const userLogin = Actions.userLogin
-const update = Actions.updateContent
-const create = Actions.createContent
-const getSchema = Actions.getSchema
-
 export default connect(
   mapStateToProps,
-  {
-    loginClick: userLogin,
-    editSubmitClick: update,
-    createSubmitClick: create,
-    getSchema,
-  },
+  mapDispatchToProps,
 )(App as any)

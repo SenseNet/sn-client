@@ -1,10 +1,11 @@
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
-import { reactControlMapper } from '@sensenet/controls-react'
+import { Repository } from '@sensenet/client-core'
 import { Actions } from '@sensenet/redux'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { rootStateType } from '..'
+import { reactControlMapper } from '../../../../packages/sn-controls-react/dist'
 
 const styles = {
   button: {
@@ -29,23 +30,18 @@ const mapStateToProps = (state: rootStateType) => {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    user: reactControlMapper(ownProps.props.repository).getFullSchemaForContentType('User', 'new'),
-    onSubmit: (name, password) => dispatch(Actions.userLogin(name, password)),
-  }
-}
-export interface LoginProps {
-  repository: any
+const mapDispatchToProps = {
+  onSubmit: Actions.userLogin,
 }
 
-export class Login extends React.Component<ReturnType<typeof mapDispatchToProps>, {}> {
+const userSchema = reactControlMapper(new Repository()).getFullSchemaForContentType('User', 'new')
+
+export class Login extends React.Component<typeof mapDispatchToProps, {}> {
   constructor(props) {
     super(props)
   }
   public render() {
-    const { user } = this.props
-    user.fieldMappings = user.fieldMappings.filter(
+    userSchema.fieldMappings = userSchema.fieldMappings.filter(
       fieldSettings =>
         fieldSettings.fieldSettings.Name === 'LoginName' || fieldSettings.fieldSettings.Name === 'Password',
     )
@@ -61,13 +57,13 @@ export class Login extends React.Component<ReturnType<typeof mapDispatchToProps>
             this.props.onSubmit(name, password)
           }}>
           <Grid container={true}>
-            {user.fieldMappings.map((_e, i) => (
+            {userSchema.fieldMappings.map((_e, i) => (
               <Grid item={true} sm={12} md={12} lg={12} key={i}>
-                {React.createElement(user.fieldMappings[i].controlType, {
-                  ...user.fieldMappings[i].clientSettings,
+                {React.createElement(userSchema.fieldMappings[i].controlType, {
+                  ...userSchema.fieldMappings[i].clientSettings,
                   'data-actionName': 'new',
                   'data-fieldValue': '',
-                  className: user.fieldMappings[i].clientSettings.key,
+                  className: userSchema.fieldMappings[i].clientSettings.key,
                 } as any)}
               </Grid>
             ))}

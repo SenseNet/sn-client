@@ -5,7 +5,9 @@
     "strictNullChecks": false,
     "jsx": "react",
     "outDir": "./dist",
-    "composite": true
+    "composite": false,
+    "declaration": false,
+    "declarationMap": false
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src"]
 }

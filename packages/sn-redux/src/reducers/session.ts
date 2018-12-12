@@ -123,7 +123,9 @@ export const userLanguage: Reducer<string, ReturnType<typeof userChanged>> = (st
 export const userAvatarPath: Reducer<string, ReturnType<typeof userChanged>> = (state = '', action) => {
   switch (action.type) {
     case 'USER_CHANGED':
-      return action.user.Avatar ? (action.user.Avatar as any)._deferred : ''
+      return action.user && action.user.Avatar && (action.user.Avatar as any)._deferred
+        ? (action.user.Avatar as any)._deferred
+        : ''
     default:
       return state
   }

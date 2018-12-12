@@ -4,15 +4,15 @@ import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
 import CreateIcon from '@material-ui/icons/Create'
 import DeleteIcon from '@material-ui/icons/Delete'
-import { Task } from '@sensenet/default-content-types'
+import { Status, Task } from '@sensenet/default-content-types'
 import * as React from 'react'
 
 import { Link } from 'react-router-dom'
 
 interface TodoProps {
   content: Task
-  onClick: any
-  onDeleteClick: any
+  onClick: (todo: Task) => void
+  onDeleteClick: (todo: Task) => void
 }
 
 export class Todo extends React.Component<TodoProps, { comp }> {
@@ -25,6 +25,7 @@ export class Todo extends React.Component<TodoProps, { comp }> {
   }
   public handleClick() {
     const selected = this.state.comp ? false : true
+    this.props.content.Status = selected ? Status.completed : Status.active
     this.setState({
       comp: selected,
     })
@@ -41,7 +42,7 @@ export class Todo extends React.Component<TodoProps, { comp }> {
                 checked={this.state.comp}
                 onClick={() => {
                   this.handleClick()
-                  this.props.onClick('checkedA')
+                  this.props.onClick(content)
                 }}
                 value="comp"
               />
@@ -55,7 +56,7 @@ export class Todo extends React.Component<TodoProps, { comp }> {
               <CreateIcon />
             </IconButton>
           </Link>
-          <IconButton aria-label="Delete" onClick={() => this.props.onDeleteClick(this.props.content.Id, true)}>
+          <IconButton aria-label="Delete" onClick={() => this.props.onDeleteClick(content)}>
             <DeleteIcon />
           </IconButton>
         </Grid>

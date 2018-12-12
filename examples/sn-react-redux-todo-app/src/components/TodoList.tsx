@@ -1,6 +1,6 @@
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import { Status, Task } from '@sensenet/default-content-types'
+import { Task } from '@sensenet/default-content-types'
 import * as React from 'react'
 import { Todo } from './Todo'
 
@@ -13,8 +13,8 @@ const style = {
 
 export interface TodoListProps {
   collection: TodoListItem[]
-  onTodoClick: any
-  onDeleteClick: any
+  onTodoClick: (todo: Task) => void
+  onDeleteClick: (todo: Task) => void
 }
 
 type TodoListItem = Task
@@ -31,13 +31,8 @@ export class TodoList extends React.Component<TodoListProps, {}> {
                 <Todo
                   key={c.Id + index}
                   content={c}
-                  onClick={() => {
-                    const vmi = { Status: c.Status[0] === Status.active ? Status.completed : Status.active } as Partial<
-                      Task
-                    >
-                    this.props.onTodoClick(c.Id, vmi)
-                  }}
-                  onDeleteClick={this.props.onDeleteClick}
+                  onClick={t => this.props.onTodoClick(t)}
+                  onDeleteClick={t => this.props.onDeleteClick(t)}
                 />
               </ListItem>
             ) : null

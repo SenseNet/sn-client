@@ -6,6 +6,7 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": false,
+    "declarationMap": true,
     "module": "commonjs",
     "moduleResolution": "node",
     "noEmitOnError": true,

@@ -3,7 +3,7 @@ import * as React from 'react'
 
 interface FetchErrorProps {
   message: string
-  onRetry: any
+  onRetry: () => void
 }
 
 /**
@@ -16,7 +16,7 @@ export class FetchError extends React.Component<FetchErrorProps, {}> {
   public render() {
     return (
       <div>
-        <p>Could not fetch content. {this.props.message}</p>
+        <p>Could not fetch content. {this.props.message.toString()}</p>
         <Button variant="raised" color="primary" onClick={this.props.onRetry}>
           Retry
         </Button>

@@ -1,26 +1,36 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { ODataParams } from '@sensenet/client-core'
-import { Task } from '@sensenet/default-content-types'
-import { Actions } from '@sensenet/redux'
+import { Status, Task } from '@sensenet/default-content-types'
 import * as React from 'react'
 import { connect } from 'react-redux'
+import { rootStateType } from '..'
 import { FetchError } from '../components/FetchError'
 import { TodoList } from '../components/TodoList'
-import { getErrorMessage, getIsFetching, getVisibilityFilter, getVisibleTodos } from '../reducers/filtering'
+import { fetch, removeTodo, updateFilter, updateTodo } from '../reducers/todos'
+
+const mapStateToProps = (state: rootStateType) => {
+  return {
+    visibleTasks: state.todoList.visibleTasks,
+    errorMessage: state.todoList.error,
+    isFetching: state.todoList.isFetching,
+    visibilityFilter: state.todoList.filter,
+  }
+}
+
+const mapDispatchToProps = {
+  onTodoClick: updateTodo,
+  onDeleteClick: removeTodo,
+  fetchTodos: fetch,
+  updateFilter,
+}
 
 export interface VisibleTodoListProps {
-  onTodoClick
-  onDeleteClick
-  collection: Task[]
   path: string
   options: ODataParams<Task>
-  filter
-  fetchTodos
-  requestTodos
+  filter: Status
   isFetching: false
   visibilityFilter: any
   errorMessage: any
-  repository
 }
 
 const styles = {
@@ -29,53 +39,34 @@ const styles = {
   },
 }
 
-class VisibleTodoList extends React.Component<VisibleTodoListProps, {}> {
+class VisibleTodoList extends React.Component<
+  ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & VisibleTodoListProps,
+  {}
+> {
   constructor(props) {
     super(props)
   }
   public componentDidMount() {
     this.fetchData(this.props.filter)
   }
-  public componentDidUpdate(prevOps) {
-    if (this.props.filter !== prevOps.filter) {
-      this.fetchData(this.props.filter)
-    }
-    // tslint:disable-next-line:no-string-literal
-    if (this.props.collection && this.props.collection.length > prevOps.collection.length) {
-      this.fetchData(this.props.filter)
-    }
-  }
-  public fetchData(filter) {
-    const { path, fetchTodos } = this.props
-    const optionObj = {
-      select: 'all',
-    }
-    if (filter === 'Active') {
-      // tslint:disable-next-line:no-string-literal
-      optionObj['filter'] = `isOf('Task') and Status eq %27Active%27`
-    } else if (filter === 'Completed') {
-      // tslint:disable-next-line:no-string-literal
-      optionObj['filter'] = `isOf('Task') and Status eq %27Completed%27`
-    } else {
-      // tslint:disable-next-line:no-string-literal quotemark
-      optionObj['filter'] = "isOf('Task')"
-    }
-    fetchTodos(path, optionObj, Task)
+  public fetchData(filter: Status) {
+    this.props.fetchTodos()
+    this.props.updateFilter(filter)
   }
   public render() {
-    if (this.props.isFetching && this.props.collection.length > 0) {
+    if (this.props.isFetching && this.props.visibleTasks.length > 0) {
       return (
         <div style={styles.loader}>
           <CircularProgress />
         </div>
       )
     }
-    if (this.props.errorMessage && this.props.collection.length > 0) {
+    if (this.props.errorMessage && this.props.visibleTasks.length > 0) {
       return <FetchError message={this.props.errorMessage} onRetry={() => this.fetchData(this.props.filter)} />
     }
     return (
       <TodoList
-        collection={this.props.collection}
+        collection={this.props.visibleTasks}
         onTodoClick={this.props.onTodoClick}
         onDeleteClick={this.props.onDeleteClick}
       />
@@ -83,30 +74,9 @@ class VisibleTodoList extends React.Component<VisibleTodoListProps, {}> {
   }
 }
 
-const mapStateToProps = (state, params) => {
-  const filter = state.listByFilter.VisibilityFilter || 'All'
-  const url = '/Root/Sites/Default_Site/tasks'
-  return {
-    collection: getVisibleTodos(state, filter),
-    errorMessage: getErrorMessage(state, filter),
-    isFetching: getIsFetching(state, filter),
-    visibilityFilter: getVisibilityFilter(state),
-    filter,
-    path: params.path || url,
-  }
-}
-
-const toggleTodoAction = Actions.updateContent
-const deleteTodoAction = Actions.deleteContent
-const fetchTodosAction = Actions.requestContent
-
 const visibleTodoLista = connect(
   mapStateToProps,
-  {
-    onTodoClick: toggleTodoAction,
-    onDeleteClick: deleteTodoAction,
-    fetchTodos: fetchTodosAction,
-  },
+  mapDispatchToProps,
 )(VisibleTodoList as any)
 
 export default visibleTodoLista

@@ -6,12 +6,15 @@ import './index.css'
 import { Repository } from '@sensenet/client-core'
 import { Reducers, Store } from '@sensenet/redux'
 import { combineReducers } from 'redux'
-import { listByFilter } from './reducers/filtering'
+import { todoListReducer } from './reducers/todos'
 
 import lightBlue from '@material-ui/core/colors/lightBlue'
 import pink from '@material-ui/core/colors/pink'
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
+import { JwtService } from '@sensenet/authentication-jwt'
+import { Provider } from 'react-redux'
+import { ReduxDiMiddleware } from 'redux-di-middleware'
 
 const muiTheme = createMuiTheme({
   palette: {
@@ -23,25 +26,31 @@ const muiTheme = createMuiTheme({
 const sensenet = Reducers.sensenet
 const myReducer = combineReducers({
   sensenet,
-  listByFilter,
+  todoList: todoListReducer,
 })
+export type rootStateType = ReturnType<typeof myReducer>
 
-const repository = new Repository({
+export const repository = new Repository({
   repositoryUrl: 'https://dmsservice.demo.sensenet.com',
 })
 
-const options = {
+export const jwt = new JwtService(repository)
+
+const di = new ReduxDiMiddleware()
+di.setInjectable(repository)
+
+const store = Store.createSensenetStore({
   repository,
   rootReducer: myReducer,
   logger: true,
-} as Store.CreateStoreOptions<any>
-
-const store = Store.createSensenetStore(options)
-export type rootStateType = ReturnType<typeof myReducer>
-
+  middlewares: [di.getMiddleware()],
+})
 ReactDOM.render(
   <MuiThemeProvider theme={muiTheme}>
-    <Root store={store} repository={repository} />
+    <Provider store={store}>
+      <Root />
+    </Provider>
   </MuiThemeProvider>,
+
   document.getElementById('root') as HTMLElement,
 )

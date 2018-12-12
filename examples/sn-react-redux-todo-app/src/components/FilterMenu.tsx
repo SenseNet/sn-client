@@ -1,5 +1,6 @@
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
+import { Status } from '@sensenet/default-content-types'
 import * as React from 'react'
 import FilterLink from '../containers/FilterLink'
 
@@ -14,9 +15,15 @@ export class FilterMenu extends React.Component<{}, {}> {
     return (
       <AppBar position="static">
         <Toolbar>
-          <FilterLink filter="All">All</FilterLink>
-          <FilterLink filter="Active">Active</FilterLink>
-          <FilterLink filter="Completed">Completed</FilterLink>
+          <FilterLink name="All" status={'all' as Status}>
+            All
+          </FilterLink>
+          <FilterLink name="Active" status={Status.active}>
+            Active
+          </FilterLink>
+          <FilterLink name="Completed" status={Status.completed}>
+            Completed
+          </FilterLink>
         </Toolbar>
       </AppBar>
     )
