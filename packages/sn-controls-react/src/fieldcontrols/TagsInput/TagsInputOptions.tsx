@@ -1,22 +1,30 @@
 import MenuItem from '@material-ui/core/MenuItem'
 import React, { Component } from 'react'
 
+export interface OptionProps {
+  option: any
+  isSelected: boolean
+  onFocus: (...args: any[]) => any
+  isFocused: boolean
+  onSelect: (...args: any[]) => any
+}
+
 /**
  * Control that represents a Option of an autocomplete dropdown.
  */
-export class Option extends Component<{ option; children; isSelected; onFocus; isFocused; onSelect }, {}> {
+export class Option extends Component<OptionProps, {}> {
   /**
    * constructor
    * @param {object} props
    */
-  constructor(props) {
+  constructor(props: Option['props']) {
     super(props)
     this.handleClick = this.handleClick.bind(this)
   }
   /**
    * handles click event
    */
-  public handleClick = e => {
+  public handleClick = (e: React.SyntheticEvent) => {
     this.props.onSelect(this.props.option, e)
   }
   /**
