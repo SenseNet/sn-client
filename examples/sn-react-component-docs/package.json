@@ -82,7 +82,7 @@
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
     "fix:tslint": "tslint --fix --project .",
     "lint": "tslint --project .",
-    "test": "@echo No tests defined"
+    "test": ""
   },
   "config": {
     "commitizen": {
