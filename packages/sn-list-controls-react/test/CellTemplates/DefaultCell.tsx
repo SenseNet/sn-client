@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import * as React from 'react'
 import { create } from 'react-test-renderer'
-import { DefaultCell } from '../../ContentList/CellTemplates/DefaultCell'
+import { DefaultCell } from '../../src/ContentList/CellTemplates/DefaultCell'
 
 /**
  * DefaultCell Component tests

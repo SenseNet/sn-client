@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
-import { ReferenceCell } from '../../ContentList/CellTemplates/ReferenceCell'
+import { ReferenceCell } from '../../src/ContentList/CellTemplates/ReferenceCell'
 
 /**
  * ReferenceCell Component tests

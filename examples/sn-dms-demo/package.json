@@ -116,7 +116,7 @@
   "scripts": {
     "start": "webpack-dev-server --port 3000 --display-error-details",
     "build:webpack": "rimraf build && webpack",
-    "test": "jest",
+    "test:jest": "jest",
     "fix": "npm run fix:prettier && npm run fix:tslint",
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
     "fix:tslint": "tslint --fix --project .",

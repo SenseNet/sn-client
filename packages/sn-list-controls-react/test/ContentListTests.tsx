@@ -2,17 +2,17 @@ import { GenericContent, SchemaStore } from '@sensenet/default-content-types'
 import { expect } from 'chai'
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
-import { ActionsCell } from '../ContentList/CellTemplates/ActionsCell'
-import { DateCell } from '../ContentList/CellTemplates/DateCell'
-import { ReferenceCell } from '../ContentList/CellTemplates/ReferenceCell'
-import { ContentList } from '../ContentList/ContentList'
+import { ActionsCell } from '../src/ContentList/CellTemplates/ActionsCell'
+import { DateCell } from '../src/ContentList/CellTemplates/DateCell'
+import { ReferenceCell } from '../src/ContentList/CellTemplates/ReferenceCell'
+import { ContentList } from '../src/ContentList/ContentList'
 
 const genericSchema = SchemaStore[1]
 
 /**
  * ContentList Component tests
  */
-export const contentListTests: Mocha.Suite = describe('ContentList component', () => {
+export const contentListTests = describe('ContentList component', () => {
   describe('Initialization', () => {
     it('Should render without crashing with bare minimum props', () => {
       const component = renderer.create(

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
-import { DateCell } from '../../ContentList/CellTemplates/DateCell'
+import { DateCell } from '../../src/ContentList/CellTemplates/DateCell'
 
 /**
  * DateCell Component tests

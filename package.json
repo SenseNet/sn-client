@@ -35,7 +35,7 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build",
-    "test": "yarn workspaces run test -- --ci",
+    "test": "yarn jest && lerna run test",
     "clean": "lerna clean",
     "fix": "lerna run fix --parallel",
     "lint": "lerna run lint --parallel"

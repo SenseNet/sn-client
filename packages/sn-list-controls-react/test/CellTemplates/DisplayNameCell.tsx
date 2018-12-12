@@ -2,7 +2,7 @@ import { Icon } from '@sensenet/icons-react'
 import { expect } from 'chai'
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
-import { DisplayNameCell } from '../../ContentList/CellTemplates/DisplayNameCell'
+import { DisplayNameCell } from '../../src/ContentList/CellTemplates/DisplayNameCell'
 
 /**
  * DisplayNameCell Component tests

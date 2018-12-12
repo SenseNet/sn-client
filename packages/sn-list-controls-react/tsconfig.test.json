@@ -4,5 +4,5 @@
     "outDir": "temp",
     "rootDir": "."
   },
-  "include": ["src"]
+  "include": ["src", "test"]
 }

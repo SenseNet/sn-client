@@ -17,7 +17,7 @@
     "precommit": "npm run test",
     "commit": "git-cz",
     "pretest": "tsc --build tsconfig.test.json",
-    "test": "rimraf coverage && nyc mocha --require ignore-styles -p tsconfig.test.json ./dist/Tests/index.js",
+    "test": "rimraf coverage && nyc mocha --require ignore-styles -p tsconfig.test.json ./temp/test/index.js",
     "fix": "npm run fix:prettier && npm run fix:tslint",
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
     "fix:tslint": "tslint --fix --project .",
