@@ -4,7 +4,8 @@
     "outDir": "dist",
     "composite": true,
     "jsx": "react",
-    "suppressImplicitAnyIndexErrors": true
+    "suppressImplicitAnyIndexErrors": true,
+    "rootDir": "./src"
   },
-  "include": ["./src/**/*.ts", "./src/**/*.tsx"]
+  "include": ["src"]
 }
