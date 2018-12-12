@@ -1,5 +1,5 @@
-import { Token } from '../src/Token'
-import { TokenPayload } from '../src/TokenPayload'
+import { Token } from '../../src/Token'
+import { TokenPayload } from '../../src/TokenPayload'
 
 export class MockTokenFactory {
   private static getStillValidDate(addMs: number = 3000000) {

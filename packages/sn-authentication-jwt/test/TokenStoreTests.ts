@@ -1,13 +1,15 @@
-import { expect } from 'chai'
+import 'jest'
 import { TokenPersist } from '../src/TokenPersist'
 import { TokenStore } from '../src/TokenStore'
 import { TokenStoreType } from '../src/TokenStoreType'
-import { MockStorage } from './MockStorage'
-import { MockTokenFactory } from './MockTokenFactory'
+import { MockStorage } from './__Mocks__/MockStorage'
+import { MockTokenFactory } from './__Mocks__/MockTokenFactory'
 
 // tslint:disable:completed-docs
 
-export const tokenStoreTests: Mocha.Suite = describe('TokenStore', () => {
+declare var global: any
+
+describe('TokenStore', () => {
   let documentInstance: Document
   let inMemory: TokenStore
   let sessionCookie: TokenStore
@@ -20,21 +22,21 @@ export const tokenStoreTests: Mocha.Suite = describe('TokenStore', () => {
   })
 
   describe('Storage initialization', () => {
-    it('can be constructed with an InMemoryStore', () => {
+    it('can be constructed without provided doc & store instances', () => {
       inMemory = new TokenStore('https://my_token_store', 'token_store_key_template', TokenPersist.Session)
-      expect(inMemory).to.be.instanceof(TokenStore)
-      expect(inMemory.tokenStoreType).to.be.eq(TokenStoreType.InMemory)
+      expect(inMemory).toBeInstanceOf(TokenStore)
+      expect(inMemory.tokenStoreType).toEqual(TokenStoreType.SessionStorage)
     })
 
-    it("can be constructed with an InMemoryStore if document doesn't support cookies", () => {
+    it("can be constructed with a document that doesn't support cookies", () => {
       const store = new TokenStore(
         'https://my_token_store',
         'token_store_key_template',
         TokenPersist.Session,
         {} as any,
       )
-      expect(store).to.be.instanceof(TokenStore)
-      expect(store.tokenStoreType).to.be.eq(TokenStoreType.InMemory)
+      expect(store).toBeInstanceOf(TokenStore)
+      expect(store.tokenStoreType).toEqual(TokenStoreType.SessionStorage)
     })
 
     it('should use cookies if document is available', () => {
@@ -43,9 +45,11 @@ export const tokenStoreTests: Mocha.Suite = describe('TokenStore', () => {
         'token_store_key_template',
         TokenPersist.Session,
         documentInstance,
+        undefined,
+        undefined,
       )
-      expect(sessionCookie).to.be.instanceof(TokenStore)
-      expect(sessionCookie.tokenStoreType).to.be.eq(TokenStoreType.SessionCookie)
+      expect(sessionCookie).toBeInstanceOf(TokenStore)
+      expect(sessionCookie.tokenStoreType).toEqual(TokenStoreType.SessionStorage)
     })
 
     it('should use cookies with expiration if document is available', () => {
@@ -55,8 +59,8 @@ export const tokenStoreTests: Mocha.Suite = describe('TokenStore', () => {
         TokenPersist.Expiration,
         documentInstance,
       )
-      expect(expirationCookie).to.be.instanceof(TokenStore)
-      expect(expirationCookie.tokenStoreType).to.be.eq(TokenStoreType.ExpirationCookie)
+      expect(expirationCookie).toBeInstanceOf(TokenStore)
+      expect(expirationCookie.tokenStoreType).toEqual(TokenStoreType.LocalStorage)
     })
 
     it('should return invalid cookie if the cookie is not set', () => {
@@ -64,55 +68,55 @@ export const tokenStoreTests: Mocha.Suite = describe('TokenStore', () => {
       const retrievedToken = expirationCookie['getTokenFromCookie']('invalidCookieKey', {
         cookie: 'my-cookie-value',
       } as any)
-      expect(retrievedToken.IsValid()).to.be.eq(false)
+      expect(retrievedToken.IsValid()).toEqual(false)
     })
 
     it('should pick up global document if declared', () => {
       ;(global as any).document = { cookie: '' }
       const store = new TokenStore('https://my_token_store', 'token_store_key_template', TokenPersist.Session)
-      expect(store).to.be.instanceof(TokenStore)
-      expect(store.tokenStoreType).to.be.eq(TokenStoreType.SessionCookie)
+      expect(store).toBeInstanceOf(TokenStore)
+      expect(store.tokenStoreType).toEqual(TokenStoreType.SessionStorage)
     })
 
     it('should pick up global localStorage and sessionStorage if declared', () => {
       ;(global as any).localStorage = new MockStorage()
       ;(global as any).sessionStorage = new MockStorage()
       sessionStorage = new TokenStore('https://my_token_store', 'token_store_key_template', TokenPersist.Session)
-      expect(sessionStorage).to.be.instanceof(TokenStore)
-      expect(sessionStorage.tokenStoreType).to.be.eq(TokenStoreType.SessionStorage)
+      expect(sessionStorage).toBeInstanceOf(TokenStore)
+      expect(sessionStorage.tokenStoreType).toEqual(TokenStoreType.SessionStorage)
     })
 
     it('should work with localStorage', () => {
       ;(global as any).localStorage = new MockStorage()
       ;(global as any).sessionStorage = new MockStorage()
       localStorage = new TokenStore('https://my_token_store', 'token_store_key_template', TokenPersist.Expiration)
-      expect(localStorage).to.be.instanceof(TokenStore)
-      expect(localStorage.tokenStoreType).to.be.eq(TokenStoreType.LocalStorage)
+      expect(localStorage).toBeInstanceOf(TokenStore)
+      expect(localStorage.tokenStoreType).toEqual(TokenStoreType.LocalStorage)
     })
 
-    after(() => {
+    afterAll(() => {
       ;((...stores: TokenStore[]) => {
         for (const store of stores) {
           describe(`Store with type ${store.tokenStoreType}`, () => {
             it('Should return empty if token is not set', () => {
               const retrieved = store.GetToken('refresh')
-              expect(retrieved.IsValid()).to.be.eq(false)
+              expect(retrieved.IsValid()).toEqual(false)
             })
 
             it('Should store AccessToken', () => {
               const token = MockTokenFactory.CreateValid()
               store.AccessToken = token
               const retrieved = store.AccessToken
-              expect(token.IsValid()).to.be.eq(true)
-              expect(token.toString()).to.be.eq(retrieved.toString())
+              expect(token.IsValid()).toEqual(true)
+              expect(token.toString()).toEqual(retrieved.toString())
             })
 
             it('Should store RefreshToken', () => {
               const token = MockTokenFactory.CreateValid()
               store.RefreshToken = token
               const retrieved = store.RefreshToken
-              expect(token.IsValid()).to.be.eq(true)
-              expect(token.toString()).to.be.eq(retrieved.toString())
+              expect(token.IsValid()).toEqual(true)
+              expect(token.toString()).toEqual(retrieved.toString())
             })
           })
         }

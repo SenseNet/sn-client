@@ -1,34 +1,33 @@
-import { expect } from 'chai'
 import { Token } from '../src/Token'
-import { MockTokenFactory } from './MockTokenFactory'
+import { MockTokenFactory } from './__Mocks__/MockTokenFactory'
 
 // tslint:disable:completed-docs
 
-export const tokenTests: Mocha.Suite = describe('Token', () => {
+describe('Token', () => {
   it('should be constructed', () => {
     const t = MockTokenFactory.CreateValid()
-    expect(t).to.be.instanceof(Token)
+    expect(t).toBeInstanceOf(Token)
   })
 
   it('should have a username', () => {
     const t = MockTokenFactory.CreateValid()
-    expect(t.Username).to.be.equal('BuiltIn\\Mock')
+    expect(t.Username).toEqual('BuiltIn\\Mock')
   })
 
   it('should have a payload', () => {
     const t = MockTokenFactory.CreateValid()
-    expect(t.GetPayload()).to.be.instanceof(Object)
+    expect(t.GetPayload()).toBeInstanceOf(Object)
   })
 
   it('should have an IssuedDate', () => {
     const t = MockTokenFactory.CreateValid()
-    expect(t.IssuedDate).to.be.instanceof(Date)
+    expect(t.IssuedDate).toBeInstanceOf(Date)
   })
 
   it('should be able to await its notBefore time', async () => {
     const t = MockTokenFactory.CreateNotValidYet(1000)
-    expect(t.IsValid()).to.be.eq(false)
+    expect(t.IsValid()).toEqual(false)
     await t.AwaitNotBeforeTime()
-    expect(t.IsValid()).to.be.eq(true)
+    expect(t.IsValid()).toEqual(true)
   })
 })

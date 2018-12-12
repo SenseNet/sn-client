@@ -1,4 +1,4 @@
-import { OauthProvider } from '../src/OauthProvider'
+import { OauthProvider } from '../../src/OauthProvider'
 
 export class MockOauthProvider implements OauthProvider {
   public async dispose() {
