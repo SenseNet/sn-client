@@ -110,7 +110,8 @@
     "webpack": "^4.27.0",
     "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.10"
+    "webpack-dev-server": "^3.1.10",
+    "ts-jest": "^23.10.5"
   },
   "scripts": {
     "start": "webpack-dev-server --port 3000 --display-error-details",
@@ -122,45 +123,5 @@
     "lint": "tslint --project .",
     "commit": "git-cz",
     "report-coverage": "cat ./coverage/lcov.info | codecov"
-  },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{ts,tsx}",
-      "!src/index.tsx",
-      "!src/SensenetStyles.ts",
-      "!src/registerServiceWorker.ts",
-      "!src/assets/*.ts"
-    ],
-    "moduleFileExtensions": [
-      "web.ts",
-      "ts",
-      "web.tsx",
-      "tsx",
-      "web.js",
-      "js",
-      "web.jsx",
-      "jsx",
-      "json"
-    ],
-    "testMatch": [
-      "<rootDir>/src/__tests__/**/*.ts?(x)",
-      "<rootDir>/src/**/*.test.ts?(x)"
-    ],
-    "testEnvironment": "jsdom",
-    "testURL": "http://localhost",
-    "transform": {
-      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
-      "^.+\\.(ts|tsx)$": "<rootDir>/config/jest/typescriptTransform.js",
-      "^.+\\.(png|jpg|json)$": "<rootDir>/config/jest/fileTransform.js"
-    },
-    "moduleNameMapper": {
-      "\\.css$": "<rootDir>/config/jest/cssTransform.js"
-    },
-    "globals": {
-      "ts-jest": {
-        "skipBabel": true,
-        "tsConfig": "<rootDir>/tsconfig.test.json"
-      }
-    }
   }
 }

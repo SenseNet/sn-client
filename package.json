@@ -26,7 +26,8 @@
     "prettier": "^1.15.3",
     "rimraf": "^2.6.2",
     "tslint": "^5.11.0",
-    "ts-jest": "20.*",
+    "jest": "^23.6.0",
+    "ts-jest": "^23.10.5",
     "tslint-config-prettier": "^1.17.0",
     "tslint-react": "^3.6.0",
     "typescript": "next"
@@ -40,8 +41,7 @@
     "lint": "lerna run lint --parallel"
   },
   "jest": {
-    "rootDir": ".",
-    "projects": [
+    "roots": [
       "<rootDir>/examples/sn-dms-demo",
       "<rootDir>/examples/sn-react-redux-todo-app",
       "<rootDir>/packages/sn-client-utils"
@@ -62,7 +62,8 @@
       }
     },
     "testMatch": [
-      "**/__tests__/*.+(ts|tsx|js)"
+      "**/__tests__/*.+(ts|tsx|js)",
+      "**/test/*.+(ts|tsx|js)"
     ]
   }
 }
