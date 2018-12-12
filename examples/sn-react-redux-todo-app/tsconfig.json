@@ -1,11 +1,11 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "declaration": false,
     "noImplicitAny": false,
     "strictNullChecks": false,
-    "allowJs": true,
     "jsx": "react",
-    "outDir": "./dist"
-  }
+    "outDir": "./dist",
+    "composite": true
+  },
+  "include": ["src/**/*.ts"]
 }

@@ -34,9 +34,10 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build",
-    "test": "lerna run test",
+    "test": "yarn workspaces run test -- --ci",
     "clean": "lerna clean",
-    "fix": "lerna run fix --parallel"
+    "fix": "lerna run fix --parallel",
+    "lint": "lerna run lint --parallel"
   },
   "jest": {
     "rootDir": ".",

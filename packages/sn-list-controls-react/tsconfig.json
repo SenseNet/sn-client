@@ -1,21 +1,9 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "./dist",
-    "rootDir": "./src",
+    "outDir": "dist",
+    "composite": true,
     "jsx": "react"
   },
-  "include": ["./src/**/*.ts", "./src/**/*.tsx"],
-  "exclude": ["./node_modules/**/*.*", "./dist/**/*.*", "./bundle/**/*.*"],
-  "references": [
-    {
-      "path": "./src/ContentList"
-    },
-    {
-      "path": "./src/ExampleApp"
-    },
-    {
-      "path": "./src/Tests"
-    }
-  ]
+  "include": ["src/ContentList"]
 }

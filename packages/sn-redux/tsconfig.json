@@ -1,9 +1,8 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "target": "es2017",
-    "outDir": "./dist"
+    "outDir": "dist",
+    "composite": true
   },
-  "exclude": ["node_modules", "dist"],
-  "files": ["src/index.ts"]
+  "include": ["./src/**/*.ts", "./src/**/*.tsx"]
 }

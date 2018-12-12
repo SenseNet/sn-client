@@ -5,12 +5,10 @@
     "module": "esnext",
     "target": "es5",
     "lib": ["es6", "dom"],
-    "allowJs": true,
-    "declaration": false,
     "jsx": "react",
-    "removeComments": false,
     "noImplicitReturns": false,
-    "alwaysStrict": false
+    "alwaysStrict": false,
+    "composite": true
   },
   "include": ["src"]
 }

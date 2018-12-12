@@ -16,8 +16,7 @@
     "fix:prettier": "prettier \"{,!(dist|temp)/**/}*.{ts,tsx}\" --write",
     "fix:tslint": "tslint --fix --project .",
     "lint": "tslint --project .",
-    "prebuild": "npm run lint && npm run clean",
-    "build": "tsc",
+    "build": "tsc -b",
     "typedoc": "typedoc --mode modules --out documentation src --tsconfig tsconfig.json --theme c:/Users/%USERNAME%/AppData/Roaming/npm/node_modules/@sensenet/typedoc-theme/sn-theme",
     "prepublishOnly": "npm run build",
     "publish:development": "npm run build && npm t && npm run typedoc && npm publish --tag development"

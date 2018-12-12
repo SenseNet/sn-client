@@ -12,7 +12,7 @@
     "fix:prettier": "prettier \"{,!(dist|temp)/**/}*.{ts,tsx}\" --write",
     "fix:tslint": "tslint --fix --project .",
     "lint": "tslint --project .",
-    "build": "rimraf dist && tsc -p tsconfig.json && cpx \"src/**/*.css\" dist",
+    "build": "tsc -b",
     "prepublishOnly": "npm run test && npm run build",
     "publish:development": "npm run build && npm t && npm run typedoc && npm publish --tag development",
     "typedoc": "typedoc --mode modules --out documentation src --exclude **/index.ts --theme c:/Users/%USERNAME%/AppData/Roaming/npm/node_modules/@sensenet/typedoc-theme/sn-theme"

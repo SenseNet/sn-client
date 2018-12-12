@@ -1,12 +1,10 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "module": "esnext",
-    "allowJs": false,
+    "outDir": "dist",
+    "composite": true,
     "jsx": "react",
-    "outDir": "./dist",
     "suppressImplicitAnyIndexErrors": true
   },
-  "exclude": ["node_modules", "dist"],
-  "files": ["src/index.ts"]
+  "include": ["./src/**/*.ts", "./src/**/*.tsx"]
 }

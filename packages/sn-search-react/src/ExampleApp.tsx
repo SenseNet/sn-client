@@ -70,6 +70,9 @@ const icons: any = {
   user: 'person',
 }
 
+/**
+ * Example app component for search
+ */
 export class ExampleApp extends React.Component<{}, ExampleComponentState> {
   /**
    * State object for the Example component
@@ -160,7 +163,7 @@ export class ExampleApp extends React.Component<{}, ExampleComponentState> {
                     flexWrap: 'wrap',
                   }}
                   onSubmit={ev => this.sendRequest(ev)}
-                  noValidate
+                  noValidate={true}
                   autoComplete="off">
                   <TextField
                     fieldName="Name"
@@ -230,7 +233,7 @@ export class ExampleApp extends React.Component<{}, ExampleComponentState> {
                           value={schema.ContentTypeName}
                           title={schema.Description}>
                           {isSelected ? (
-                            <Checkbox checked style={{ padding: 0 }} />
+                            <Checkbox checked={true} style={{ padding: 0 }} />
                           ) : (
                             <Icon type={iconType.materialui} iconName={icons[schema.Icon.toLocaleLowerCase()]} />
                           )}
@@ -334,7 +337,7 @@ export class ExampleApp extends React.Component<{}, ExampleComponentState> {
           <DialogContent style={{ paddingTop: '.6em' }}>
             <DialogContentText>You can configure there a repository instance to test your queries</DialogContentText>
             <MaterialTextField
-              fullWidth
+              fullWidth={true}
               margin="normal"
               label="Repository URL"
               type="URL"
@@ -349,7 +352,7 @@ export class ExampleApp extends React.Component<{}, ExampleComponentState> {
             />
             <br />
             <MaterialTextField
-              fullWidth
+              fullWidth={true}
               margin="normal"
               label="Content path or Id"
               type="URL"

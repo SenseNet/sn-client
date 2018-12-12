@@ -3,5 +3,5 @@
   "compilerOptions": {
     "outDir": "temp"
   },
-  "files": ["./src/index.ts", "./test/index.ts"]
+  "include": ["src", "test"]
 }

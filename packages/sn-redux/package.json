@@ -17,7 +17,7 @@
     "typedoc:md": "gulp typedoc:md",
     "typedoc:html": "gulp typedoc",
     "semantic-release": "semantic-release pre && semantic-release post",
-    "build": "rimraf dist && tsc -p tsconfig.json",
+    "build": "tsc -b",
     "prepublishOnly": "npm run test && npm run build",
     "publish:development": "npm run build && npm t && npm publish --tag development",
     "typedoc": "typedoc --mode modules --out documentation src --exclude **/index.ts --theme c:/Users/%USERNAME%/AppData/Roaming/npm/node_modules/@sensenet/typedoc-theme/sn-theme"

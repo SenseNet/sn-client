@@ -9,7 +9,8 @@
     "noImplicitAny": false,
     "strictNullChecks": false,
     "alwaysStrict": false,
-    "removeComments": false
+    "removeComments": false,
+    "composite": true
   },
   "typeRoots": ["node_modules/@types", "./typings.d.ts"]
 }
