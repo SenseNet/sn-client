@@ -13,8 +13,6 @@
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
     "fix:tslint": "tslint --fix --project .",
     "lint": "tslint --project .",
-    "build": "npm run build:tsc",
-    "build:tsc": "tsc -b",
     "build:webpack": "rimraf bundle && webpack",
     "publish:development": "npm run build && npm t && npm run typedoc && npm publish --tag development",
     "prepublishOnly": "npm run test && npm run build",
