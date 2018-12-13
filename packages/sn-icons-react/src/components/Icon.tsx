@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import { FlatIcon } from './flaticon/Icon'
 import { FontAwesomeIcon } from './fontawesome/Icon'
 import { ImageIcon } from './image/Icon'
@@ -35,7 +35,7 @@ interface IconProps {
    * Type of the icon (name of the icon library e.g. fontawesome)
    * @default iconType.materialui
    */
-  type?: iconType
+  type?: iconType | null
   /**
    * Color of the icon
    * @default primary
@@ -54,15 +54,15 @@ interface IconProps {
   /**
    * Classes object that is passed to the inner material-ui Icon component
    */
-  classes?: object
+  classes?: object | null
   /**
    * Style object that is passed to the inner material-ui Icon component
    */
-  style?: object
+  style?: object | null
   /**
    * Called when the icon is clicked
    */
-  onClick?
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void
   /**
    * Additional class name
    */
@@ -87,7 +87,7 @@ export class Icon extends React.Component<IconProps, {}> {
             classes={classes}
             iconName={iconName}
             style={style}
-            onClick={onClick}
+            onClick={onClick ? (e: React.MouseEvent<HTMLElement>) => onClick(e) : undefined}
             className={className}>
             {this.props.children ? this.props.children : null}
           </MaterialIcon>
@@ -100,7 +100,7 @@ export class Icon extends React.Component<IconProps, {}> {
             classes={classes}
             iconName={iconName}
             style={style}
-            onClick={onClick}>
+            onClick={onClick ? (e: React.MouseEvent<HTMLElement>) => onClick(e) : undefined}>
             {this.props.children ? this.props.children : null}
           </FlatIcon>
         )
@@ -112,13 +112,14 @@ export class Icon extends React.Component<IconProps, {}> {
             classes={classes}
             iconName={iconName}
             style={style}
-            onClick={onClick}>
+            onClick={onClick ? (e: React.MouseEvent<HTMLElement>) => onClick(e) : undefined}>
             {this.props.children ? this.props.children : null}
           </FontAwesomeIcon>
         )
       case iconType.image:
         return (
-          <ImageIcon iconName={iconName} size={size} style={style} onClick={onClick}>
+          <ImageIcon iconName={iconName} size={size} style={style}
+            onClick={onClick ? (e: React.MouseEvent<HTMLElement>) => onClick(e) : undefined}>
             {this.props.children ? this.props.children : null}
           </ImageIcon>
         )
@@ -130,7 +131,7 @@ export class Icon extends React.Component<IconProps, {}> {
             fontSize={fontSize ? fontSize : 'default'}
             classes={classes ? classes : null}
             className={className}
-            onClick={onClick}
+            onClick={onClick ? (e: React.MouseEvent<HTMLElement>) => onClick(e) : undefined}
             style={style}
           />
         )

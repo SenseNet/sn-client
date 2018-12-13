@@ -1,5 +1,5 @@
 import Icon from '@material-ui/core/Icon'
-import * as React from 'react'
+import React from 'react'
 import '../../assets/css/flaticon.css'
 
 interface FlatIconProps {
@@ -22,15 +22,15 @@ interface FlatIconProps {
   /**
    * Classes object that is passed to the inner material-ui Icon component
    */
-  classes?: object
+  classes?: object | null
   /**
    * Style object that is passed to the inner material-ui Icon component
    */
-  style?: object
+  style?: object | null
   /**
    * Additional class name
    */
-  onClick?
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void
 }
 
 /**
@@ -46,11 +46,11 @@ export class FlatIcon extends React.Component<FlatIconProps, {}> {
       <Icon
         color={color ? color : 'primary'}
         fontSize={fontSize ? fontSize : 'default'}
-        classes={classes ? classes : null}
+        classes={classes ? classes : undefined}
         className={`flaticon-${iconName}`}
-        style={style ? style : null}
-        onClick={onClick ? onClick : null}>
-        {this.props.children ? this.props.children : null}
+        style={style ? style : undefined}
+        onClick={onClick ? onClick : undefined}>
+        {this.props.children ? this.props.children : undefined}
       </Icon>
     )
   }

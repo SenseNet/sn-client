@@ -1,5 +1,5 @@
 import Icon from '@material-ui/core/Icon'
-import * as React from 'react'
+import React from 'react'
 
 import '../../assets/css/material.css'
 
@@ -23,15 +23,15 @@ interface MaterialIconProps {
   /**
    * Classes object that is passed to the inner material-ui Icon component
    */
-  classes?: object
+  classes?: object | null
   /**
    * Style object that is passed to the inner material-ui Icon component
    */
-  style?: object
+  style?: object | null
   /**
    * Called when the icon is clicked
    */
-  onClick?
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void
   /**
    * Additional class name
    */
@@ -50,12 +50,12 @@ export class MaterialIcon extends React.Component<MaterialIconProps, {}> {
       <Icon
         color={color ? color : 'primary'}
         fontSize={fontSize ? fontSize : 'default'}
-        classes={classes ? classes : null}
-        style={style ? style : null}
-        onClick={onClick ? onClick : null}
-        className={className ? className : null}>
+        classes={classes ? classes : undefined}
+        style={style ? style : undefined}
+        onClick={onClick ? onClick : undefined}
+        className={className ? className : undefined}>
         {iconName}
-        {this.props.children ? this.props.children : null}
+        {this.props.children ? this.props.children : undefined}
       </Icon>
     )
   }
