@@ -1,15 +1,11 @@
 import { TextField } from '@material-ui/core'
 import { SchemaStore } from '@sensenet/client-core/dist/Schemas/SchemaStore'
 import { GenericContent, ReferenceFieldSetting, SchemaStore as defaultSchemas } from '@sensenet/default-content-types'
-import { expect } from 'chai'
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
 import { ReferenceField } from '../src/Components/Fields/ReferenceField'
 
-/**
- * Reference field component tests
- */
-export const referenceFieldTests = describe('ReferenceField Component', () => {
+describe('ReferenceField Component', () => {
   const schemaStore = new SchemaStore()
   schemaStore.setSchemas(defaultSchemas)
   const exampleSchema = schemaStore.getSchema(GenericContent)
@@ -37,7 +33,7 @@ export const referenceFieldTests = describe('ReferenceField Component', () => {
         fieldSetting={exampleFieldSetting}
         defaultValueIdOrPath={1}
         fetchItems={async fetchQuery => {
-          expect(fetchQuery.toString()).to.be.eq("Id:'1'")
+          expect(fetchQuery.toString()).toBe("Id:'1'")
           done()
           return [{ Id: 1, Name: 'a', Path: '', Type: 'Document' }]
         }}
@@ -55,7 +51,7 @@ export const referenceFieldTests = describe('ReferenceField Component', () => {
         fieldSetting={exampleFieldSetting}
         defaultValueIdOrPath="Root/Example/A"
         fetchItems={async fetchQuery => {
-          expect(fetchQuery.toString()).to.be.eq("Path:'Root/Example/A'")
+          expect(fetchQuery.toString()).toBe("Path:'Root/Example/A'")
           done()
           return [{ Id: 1, Name: 'a', Path: '', Type: 'Document' }]
         }}
@@ -72,7 +68,7 @@ export const referenceFieldTests = describe('ReferenceField Component', () => {
         fieldName="CreatedBy"
         fieldSetting={exampleFieldSetting}
         fetchItems={async fetchQuery => {
-          expect(fetchQuery.toString()).to.be.eq("(Name:'*a*' OR DisplayName:'*a*')")
+          expect(fetchQuery.toString()).toBe("(Name:'*a*' OR DisplayName:'*a*')")
           done()
           instance.unmount()
           return []
@@ -98,7 +94,7 @@ export const referenceFieldTests = describe('ReferenceField Component', () => {
         fieldName="CreatedBy"
         fieldSetting={fieldSetting}
         fetchItems={async fetchQuery => {
-          expect(fetchQuery.toString()).to.be.eq("(Name:'*a*' OR DisplayName:'*a*') AND (TypeIs:User OR TypeIs:Task)")
+          expect(fetchQuery.toString()).toBe("(Name:'*a*' OR DisplayName:'*a*') AND (TypeIs:User OR TypeIs:Task)")
           done()
           instance.unmount()
           return []
@@ -124,7 +120,7 @@ export const referenceFieldTests = describe('ReferenceField Component', () => {
         fieldName="CreatedBy"
         fieldSetting={fieldSetting}
         fetchItems={async fetchQuery => {
-          expect(fetchQuery.toString()).to.be.eq(
+          expect(fetchQuery.toString()).toBe(
             '(Name:\'*a*\' OR DisplayName:\'*a*\') AND (InTree:"Root/A" OR InTree:"Root/B")',
           )
           done()

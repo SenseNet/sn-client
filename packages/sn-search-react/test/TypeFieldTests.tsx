@@ -1,15 +1,11 @@
 import { Select } from '@material-ui/core'
 import { SchemaStore } from '@sensenet/client-core/dist/Schemas/SchemaStore'
 import { SchemaStore as defaultSchemas, Task, User } from '@sensenet/default-content-types'
-import { expect } from 'chai'
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
 import { TypeField } from '../src/Components/Fields/TypeField'
 
-/**
- * Tests for the TypeField component
- */
-export const typeFieldTests = describe('TypeField component', () => {
+describe('TypeField component', () => {
   const schemaStore = new SchemaStore()
   schemaStore.setSchemas(defaultSchemas)
   it('Should be constructed', () => {
@@ -45,7 +41,7 @@ export const typeFieldTests = describe('TypeField component', () => {
         types={[User, Task]}
         schemaStore={schemaStore}
         onQueryChange={q => {
-          expect(q.toString()).to.be.eq('TypeIs:User')
+          expect(q.toString()).toBe('TypeIs:User')
           done()
         }}
       />,
@@ -60,7 +56,7 @@ export const typeFieldTests = describe('TypeField component', () => {
         types={[User, Task]}
         schemaStore={schemaStore}
         onQueryChange={q => {
-          expect(q.toString()).to.be.eq('TypeIs:User OR TypeIs:Task')
+          expect(q.toString()).toBe('TypeIs:User OR TypeIs:Task')
           done()
         }}
       />,

@@ -1,5 +1,4 @@
 import { Icon } from '@sensenet/icons-react'
-import { expect } from 'chai'
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
 import { DisplayNameCell } from '../src/ContentList/CellTemplates/DisplayNameCell'
@@ -12,7 +11,7 @@ describe('DisplayNameCell component', () => {
     const component = renderer.create(
       <DisplayNameCell icons={{}} content={{ Id: 123, Path: '', Name: '', Type: 'Folder' }} isSelected={false} />,
     )
-    expect(component.root.findAllByType(Icon).length).to.be.eq(0)
+    expect(component.root.findAllByType(Icon).length).toBe(0)
     component.unmount()
   })
 
@@ -24,7 +23,7 @@ describe('DisplayNameCell component', () => {
         isSelected={false}
       />,
     )
-    expect(component.root.findAllByType(Icon).length).to.be.eq(0)
+    expect(component.root.findAllByType(Icon).length).toBe(0)
     component.unmount()
   })
 
@@ -36,7 +35,7 @@ describe('DisplayNameCell component', () => {
         isSelected={false}
       />,
     )
-    expect(component.root.findAllByType(Icon).length).to.be.eq(1)
+    expect(component.root.findAllByType(Icon).length).toBe(1)
     component.unmount()
   })
   it('Should render without crashing when icon is office related', () => {
@@ -47,7 +46,7 @@ describe('DisplayNameCell component', () => {
         isSelected={false}
       />,
     )
-    expect(component.root.findAllByType(Icon).length).to.be.eq(0)
+    expect(component.root.findAllByType(Icon).length).toBe(0)
     component.unmount()
   })
 })

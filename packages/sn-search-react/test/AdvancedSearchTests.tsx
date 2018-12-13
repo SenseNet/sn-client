@@ -1,15 +1,11 @@
 import { SchemaStore } from '@sensenet/client-core/dist/Schemas/SchemaStore'
 import { GenericContent, SchemaStore as defaultSchemas } from '@sensenet/default-content-types'
 import { Query } from '@sensenet/query'
-import { expect } from 'chai'
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
 import { AdvancedSearch } from '../src/'
 
-/**
- * Tests for the Advanced Search component
- */
-export const advancedSearchTests = describe('AdvancedSearch component', () => {
+describe('AdvancedSearch component', () => {
   const schemaStore = new SchemaStore()
   schemaStore.setSchemas(defaultSchemas)
   const exampleSchema = schemaStore.getSchema(GenericContent)
@@ -18,7 +14,7 @@ export const advancedSearchTests = describe('AdvancedSearch component', () => {
     renderer.create(<AdvancedSearch fields={() => <div />} schema={exampleSchema} />)
   })
 
-  it('updateQuery() should trigger the onQueryChanged callback with the updated query', (done: MochaDone) => {
+  it('updateQuery() should trigger the onQueryChanged callback with the updated query', done => {
     let hasChanged: boolean = false
     renderer.create(
       <AdvancedSearch
@@ -30,7 +26,7 @@ export const advancedSearchTests = describe('AdvancedSearch component', () => {
           return <div />
         }}
         onQueryChanged={q => {
-          expect(q.toString()).to.be.eq("(DisplayName:'Alma')")
+          expect(q.toString()).toBe("(DisplayName:'Alma')")
           done()
         }}
         schema={exampleSchema}
@@ -38,7 +34,7 @@ export const advancedSearchTests = describe('AdvancedSearch component', () => {
     )
   })
 
-  it('updateQuery() should trigger the debounced onQueryChanged callback with an aggregated query', (done: MochaDone) => {
+  it('updateQuery() should trigger the debounced onQueryChanged callback with an aggregated query', done => {
     let hasChanged: boolean = false
     renderer.create(
       <AdvancedSearch
@@ -51,7 +47,7 @@ export const advancedSearchTests = describe('AdvancedSearch component', () => {
           return <div />
         }}
         onQueryChanged={q => {
-          expect(q.toString()).to.be.eq("(DisplayName:'Alma') AND (Name:'Körte')")
+          expect(q.toString()).toBe("(DisplayName:'Alma') AND (Name:'Körte')")
           done()
         }}
         schema={exampleSchema}

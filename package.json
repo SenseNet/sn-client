@@ -18,11 +18,7 @@
     }
   },
   "devDependencies": {
-    "chai": "^4.2.0",
-    "codecov": "^3.1.0",
     "lerna": "^3.5.1",
-    "mocha": "^5.2.0",
-    "nyc": "^13.1.0",
     "prettier": "^1.15.3",
     "rimraf": "^2.6.2",
     "tslint": "^5.11.0",
@@ -36,7 +32,7 @@
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build",
     "build:dms": "yarn && yarn build && yarn workspace sn-dms-demo run build:webpack",
-    "test": "yarn jest && lerna run test",
+    "test": "yarn jest",
     "clean": "lerna clean",
     "fix": "lerna run fix --parallel",
     "lint": "lerna run lint --parallel"
@@ -55,6 +51,7 @@
       "<rootDir>/packages/sn-document-viewer-react",
       "<rootDir>/packages/sn-list-controls-react",
       "<rootDir>/packages/sn-query",
+      "<rootDir>/packages/sn-search-react",
       "<rootDir>/packages/sn-redux-promise-middleware"
     ],
     "moduleFileExtensions": [

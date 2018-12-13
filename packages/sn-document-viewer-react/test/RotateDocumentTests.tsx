@@ -3,7 +3,6 @@ import RotateRight from '@material-ui/icons/RotateRight'
 import * as React from 'react'
 import { Provider } from 'react-redux'
 
-import { expect } from 'chai'
 import * as renderer from 'react-test-renderer'
 import { RotateDocumentWidget } from '../src/components/document-widgets/RotateDocument'
 import { documentReceivedAction } from '../src/store/Document'
@@ -56,7 +55,7 @@ describe('RotateDocumentWidget component', () => {
       button.props.onClick()
       expect(
         (ctx.store.getState().sensenetDocumentViewer.previewImages.AvailableImages[0] as any).Attributes.degree,
-      ).to.be.eq(270)
+      ).toBe(270)
     })
   })
 
@@ -84,7 +83,7 @@ describe('RotateDocumentWidget component', () => {
       button.props.onClick()
       expect(
         (ctx.store.getState().sensenetDocumentViewer.previewImages.AvailableImages[0] as any).Attributes.degree,
-      ).to.be.eq(90)
+      ).toBe(90)
     })
   })
 })
