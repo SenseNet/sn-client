@@ -6,8 +6,7 @@
   "scripts": {
     "precommit": "npm run test",
     "commit": "git-cz",
-    "pretest": "rimraf temp && tsc -p tsconfig.test.json  && cpx \"src/assets/**/*.*\" temp/src/assets",
-    "test": "rimraf coverage && nyc mocha --require ignore-styles -p tsconfig.test.json ./temp/test/index.js",
+    "test:jest": "jest",
     "check-coverage": "istanbul check-coverage ",
     "report-coverage": "cat ./coverage/lcov.info | codecov",
     "fix": "npm run fix:prettier && npm run fix:tslint",
@@ -40,43 +39,24 @@
   ],
   "author": "SenseNet",
   "license": "GPL-2.0",
-  "nyc": {
-    "cache": true,
-    "extension": [
-      ".tsx",
-      ".ts",
-      ".d.ts"
-    ],
-    "include": "temp/src/components/**/*.*",
-    "check-coverage": true,
-    "exclude": [
-      "**/*.css",
-      "temp/test/**/*.*",
-      "**/index.js"
-    ],
-    "reporter": [
-      "lcov",
-      "text-summary",
-      "json"
-    ]
-  },
   "bugs": {
     "url": "https://github.com/SenseNet/sn-icons-react/issues"
   },
   "homepage": "https://sensenet.com",
   "dependencies": {
     "@material-ui/core": "^1.1.0",
-    "@material-ui/icons": "^1.0.0-beta.42",
-    "react-test-renderer": "^16.6.3"
+    "@material-ui/icons": "^1.0.0-beta.42"
   },
   "devDependencies": {
-    "@types/mocha": "^5.2.5",
+    "@types/enzyme": "^3.1.15",
+    "@types/enzyme-adapter-react-16": "^1.0.3",
+    "@types/jest": "^23.3.10",
     "@types/node": "^10.12.11",
     "@types/react": "^16.7.11",
-    "@types/react-test-renderer": "^16.0.3",
-    "codecov.io": "^0.1.6",
     "cpx": "^1.5.0",
+    "enzyme": "^3.8.0",
     "ignore-styles": "^5.0.1",
+    "jest": "^23.6.0",
     "prop-types": "^15.6.2",
     "react": "^16.6.3",
     "react-dom": "^16.6.3"

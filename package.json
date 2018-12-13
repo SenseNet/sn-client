@@ -54,7 +54,8 @@
       "<rootDir>/packages/sn-repository-events",
       "<rootDir>/packages/sn-document-viewer-react",
       "<rootDir>/packages/sn-query",
-      "<rootDir>/packages/sn-redux-promise-middleware"
+      "<rootDir>/packages/sn-redux-promise-middleware",
+      "<rootDir>/packages/sn-icons-react"
     ],
     "moduleFileExtensions": [
       "ts",
