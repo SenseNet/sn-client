@@ -1,18 +1,17 @@
 import * as React from 'react'
 import { Provider } from 'react-redux'
-
 import * as renderer from 'react-test-renderer'
-import { LayoutAppBar } from '../../src/components/LayoutAppBar'
-import { documentReceivedAction } from '../../src/store/Document'
-import { exampleDocumentData, useTestContext } from '../viewercontext'
+import { LayoutAppBar } from '../src/components/LayoutAppBar'
+import { documentReceivedAction } from '../src/store/Document'
+import { exampleDocumentData, useTestContext } from './__Mocks__/viewercontext'
 
 /**
  * LayoutAppBar Component tests
  */
-export const layoutAppBarTests: Mocha.Suite = describe('Layout AppBar component', () => {
+describe('Layout AppBar component', () => {
   let c!: renderer.ReactTestRenderer
 
-  after(() => {
+  afterEach(() => {
     c.unmount()
   })
 

@@ -1,16 +1,13 @@
-/// <reference types="mocha" />
-
-import { expect } from 'chai'
 import * as React from 'react'
 import { Provider } from 'react-redux'
 import * as renderer from 'react-test-renderer'
-import { DocumentViewerError, getPreviewState } from '../../src/components/DocumentViewerError'
-import { exampleDocumentData, useTestContext } from '../viewercontext'
+import { DocumentViewerError, getPreviewState } from '../src/components/DocumentViewerError'
+import { exampleDocumentData, useTestContext } from './__Mocks__/viewercontext'
 
 /**
  * DocumentViewerError Component tests
  */
-export const documentViewerErrorTests: Mocha.Suite = describe('Document Viewer Error component', () => {
+describe('Document Viewer Error component', () => {
   it('Should render without crashing', () => {
     useTestContext(ctx => {
       const c = renderer.create(
@@ -33,7 +30,7 @@ export const documentViewerErrorTests: Mocha.Suite = describe('Document Viewer E
         },
       }
       const previewState = getPreviewState(state as any)
-      expect(previewState).to.be.eq(1)
+      expect(previewState).toBe(1)
     })
 
     it('Should set the preview state to -1 when there is no document', () => {
@@ -43,7 +40,7 @@ export const documentViewerErrorTests: Mocha.Suite = describe('Document Viewer E
         },
       }
       const previewState = getPreviewState(state as any)
-      expect(previewState).to.be.eq(-1)
+      expect(previewState).toBe(-1)
     })
   })
 })

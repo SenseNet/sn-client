@@ -1,28 +1,24 @@
-import * as React from 'react'
-import { Provider } from 'react-redux'
-
 import TextField from '@material-ui/core/TextField'
-
 import FirstPage from '@material-ui/icons/FirstPage'
 import LastPage from '@material-ui/icons/LastPage'
 import NavigateBefore from '@material-ui/icons/NavigateBefore'
 import NavigateNext from '@material-ui/icons/NavigateNext'
-
-import { expect } from 'chai'
+import { sleepAsync } from '@sensenet/client-utils'
+import * as React from 'react'
+import { Provider } from 'react-redux'
 import * as renderer from 'react-test-renderer'
-import { PagerWidget } from '../../../src/components/document-widgets/Pager'
-import { documentReceivedAction } from '../../../src/store/Document'
-import { setActivePages } from '../../../src/store/Viewer'
-import { asyncDelay } from '../../asyncdelayer'
-import { exampleDocumentData, useTestContext, useTestContextAsync } from '../../viewercontext'
+import { PagerWidget } from '../src/components/document-widgets/Pager'
+import { documentReceivedAction } from '../src/store/Document'
+import { setActivePages } from '../src/store/Viewer'
+import { exampleDocumentData, useTestContext, useTestContextAsync } from './__Mocks__/viewercontext'
 
 /**
  * Pager widget tests
  */
-export const pagerWidgetTests: Mocha.Suite = describe('PagerWidget component', () => {
+describe('PagerWidget component', () => {
   let c!: renderer.ReactTestRenderer
 
-  after(() => {
+  afterEach(() => {
     c.unmount()
   })
 
@@ -50,27 +46,27 @@ export const pagerWidgetTests: Mocha.Suite = describe('PagerWidget component', (
 
       // in range
       textInput.props.onChange({ currentTarget: { value: 5 } })
-      await asyncDelay(300)
+      await sleepAsync(300)
       const currentPage = ctx.store.getState().sensenetDocumentViewer.viewer.activePages[0]
-      expect(currentPage).to.be.eq(5)
+      expect(currentPage).toBe(5)
 
       // NaN
       textInput.props.onChange({ currentTarget: { value: 'NotANumber' } })
-      await asyncDelay(300)
+      await sleepAsync(300)
       const currentPage2 = ctx.store.getState().sensenetDocumentViewer.viewer.activePages[0]
-      expect(currentPage2).to.be.eq(5)
+      expect(currentPage2).toBe(5)
 
       // limit min
       textInput.props.onChange({ currentTarget: { value: -5 } })
-      await asyncDelay(300)
+      await sleepAsync(300)
       const currentPage3 = ctx.store.getState().sensenetDocumentViewer.viewer.activePages[0]
-      expect(currentPage3).to.be.eq(1)
+      expect(currentPage3).toBe(1)
 
       // limit max
       textInput.props.onChange({ currentTarget: { value: 500 } })
-      await asyncDelay(300)
+      await sleepAsync(300)
       const currentPage4 = ctx.store.getState().sensenetDocumentViewer.viewer.activePages[0]
-      expect(currentPage4).to.be.eq(10)
+      expect(currentPage4).toBe(10)
     })
   })
 
@@ -88,9 +84,9 @@ export const pagerWidgetTests: Mocha.Suite = describe('PagerWidget component', (
 
       // click test
       button.props.onClick()
-      await asyncDelay(300)
+      await sleepAsync(300)
       const currentPage = ctx.store.getState().sensenetDocumentViewer.viewer.activePages[0]
-      expect(currentPage).to.be.eq(1)
+      expect(currentPage).toBe(1)
     })
   })
 
@@ -108,9 +104,9 @@ export const pagerWidgetTests: Mocha.Suite = describe('PagerWidget component', (
 
       // click test
       button.props.onClick()
-      await asyncDelay(300)
+      await sleepAsync(300)
       const currentPage = ctx.store.getState().sensenetDocumentViewer.viewer.activePages[0]
-      expect(currentPage).to.be.eq(4)
+      expect(currentPage).toBe(4)
     })
   })
 
@@ -128,9 +124,9 @@ export const pagerWidgetTests: Mocha.Suite = describe('PagerWidget component', (
 
       // click test
       button.props.onClick()
-      await asyncDelay(300)
+      await sleepAsync(300)
       const currentPage = ctx.store.getState().sensenetDocumentViewer.viewer.activePages[0]
-      expect(currentPage).to.be.eq(6)
+      expect(currentPage).toBe(6)
     })
   })
 
@@ -148,9 +144,9 @@ export const pagerWidgetTests: Mocha.Suite = describe('PagerWidget component', (
 
       // click test
       button.props.onClick()
-      await asyncDelay(300)
+      await sleepAsync(300)
       const currentPage = ctx.store.getState().sensenetDocumentViewer.viewer.activePages[0]
-      expect(currentPage).to.be.eq(10)
+      expect(currentPage).toBe(10)
     })
   })
 })

@@ -2,19 +2,18 @@ import * as React from 'react'
 import { Provider } from 'react-redux'
 
 import PictureInPicture from '@material-ui/icons/PictureInPicture'
-import { expect } from 'chai'
 import * as renderer from 'react-test-renderer'
-import { ToggleRedactionWidget } from '../../../src/components/document-widgets/ToggleRedaction'
-import { documentReceivedAction } from '../../../src/store/Document'
-import { exampleDocumentData, useTestContext } from '../../viewercontext'
+import { ToggleRedactionWidget } from '../src/components/document-widgets/ToggleRedaction'
+import { documentReceivedAction } from '../src/store/Document'
+import { exampleDocumentData, useTestContext } from './__Mocks__/viewercontext'
 
 /**
  * Toggle Redaction widget tests
  */
-export const toggleRedactionTests: Mocha.Suite = describe('ToggleRedactionWidget component', () => {
+describe('ToggleRedactionWidget component', () => {
   let c!: renderer.ReactTestRenderer
 
-  after(() => {
+  afterEach(() => {
     c.unmount()
   })
 
@@ -41,10 +40,10 @@ export const toggleRedactionTests: Mocha.Suite = describe('ToggleRedactionWidget
       )
       const button = c.root.findByType(PictureInPicture)
       button.props.onClick()
-      expect(ctx.store.getState().sensenetDocumentViewer.viewer.showRedaction).to.not.eq(originalValue)
+      expect(ctx.store.getState().sensenetDocumentViewer.viewer.showRedaction).not.toBe(originalValue)
 
       button.props.onClick()
-      expect(ctx.store.getState().sensenetDocumentViewer.viewer.showRedaction).to.be.eq(originalValue)
+      expect(ctx.store.getState().sensenetDocumentViewer.viewer.showRedaction).toBe(originalValue)
     })
   })
 })

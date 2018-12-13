@@ -1,18 +1,17 @@
 import * as React from 'react'
 import { Provider } from 'react-redux'
-
 import * as renderer from 'react-test-renderer'
-import { Page } from '../../src/components/Page'
-import { documentReceivedAction } from '../../src/store/Document'
-import { exampleDocumentData, useTestContext } from '../viewercontext'
+import { Page } from '../src/components/Page'
+import { documentReceivedAction } from '../src/store/Document'
+import { exampleDocumentData, useTestContext } from './__Mocks__/viewercontext'
 
 /**
  * Page Component tests
  */
-export const pageTests: Mocha.Suite = describe('Page component', () => {
+describe('Page component', () => {
   let c!: renderer.ReactTestRenderer
 
-  after(() => {
+  afterEach(() => {
     c.unmount()
   })
 

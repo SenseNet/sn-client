@@ -1,21 +1,19 @@
 import * as React from 'react'
 import { Provider } from 'react-redux'
-
-import { expect } from 'chai'
 import * as renderer from 'react-test-renderer'
-import { ShapeAnnotation, ShapeHighlight } from '../../../src/components/page-widgets/Shape'
-import { ShapesWidget } from '../../../src/components/page-widgets/Shapes'
-import { documentPermissionsReceived, documentReceivedAction } from '../../../src/store/Document'
-import { availabelImagesReceivedAction } from '../../../src/store/PreviewImages'
-import { exampleDocumentData, useTestContext } from '../../viewercontext'
+import { ShapeAnnotation, ShapeHighlight } from '../src/components/page-widgets/Shape'
+import { ShapesWidget } from '../src/components/page-widgets/Shapes'
+import { documentPermissionsReceived, documentReceivedAction } from '../src/store/Document'
+import { availabelImagesReceivedAction } from '../src/store/PreviewImages'
+import { exampleDocumentData, useTestContext } from './__Mocks__/viewercontext'
 
 /**
  * Shapes widget tests
  */
-export const shapesWidgetTests: Mocha.Suite = describe('ShapesWidget component', () => {
+describe('ShapesWidget component', () => {
   let c!: renderer.ReactTestRenderer
 
-  after(() => {
+  afterEach(() => {
     c.unmount()
   })
 
@@ -73,7 +71,7 @@ export const shapesWidgetTests: Mocha.Suite = describe('ShapesWidget component',
         ctx.store
           .getState()
           .sensenetDocumentViewer.documentState.document.shapes.annotations.find(s => s.guid === guid),
-      ).to.be.eq(undefined)
+      ).toBe(undefined)
     })
   })
 
@@ -107,7 +105,7 @@ export const shapesWidgetTests: Mocha.Suite = describe('ShapesWidget component',
         ctx.store
           .getState()
           .sensenetDocumentViewer.documentState.document.shapes.annotations.find(s => s.guid === guid),
-      ).to.not.be.eq(undefined)
+      ).toBeTruthy()
     })
   })
 
@@ -135,22 +133,22 @@ export const shapesWidgetTests: Mocha.Suite = describe('ShapesWidget component',
       )
 
       const annotation = c.root.findByType(ShapeAnnotation).children[0] as any
-      expect(annotation.instance.state.focused).to.be.eq(false)
+      expect(annotation.instance.state.focused).toBe(false)
 
       // focus
       annotation.instance.state.onFocus()
-      expect(annotation.instance.state.focused).to.be.eq(true)
+      expect(annotation.instance.state.focused).toBe(true)
 
       // focus on child
       annotation.instance.state.onBlur({ currentTarget: { contains: () => true, innerText: ' a ' }, nativeEvent: {} })
-      expect(annotation.instance.state.focused).to.be.eq(true)
+      expect(annotation.instance.state.focused).toBe(true)
 
       // blur
       annotation.instance.state.onBlur({ currentTarget: { contains: () => false, innerText: ' a ' }, nativeEvent: {} })
-      expect(annotation.instance.state.focused).to.be.eq(false)
+      expect(annotation.instance.state.focused).toBe(false)
 
       // annotation text should be updated and trimmed
-      expect(annotation.instance.props.shape.text).to.be.eq('a')
+      expect(annotation.instance.props.shape.text).toBe('a')
     })
   })
 
@@ -178,7 +176,7 @@ export const shapesWidgetTests: Mocha.Suite = describe('ShapesWidget component',
       )
 
       const annotation = c.root.findByType(ShapeAnnotation).children[0] as any
-      expect(annotation.instance.state.focused).to.be.eq(false)
+      expect(annotation.instance.state.focused).toBe(false)
 
       // resize
       annotation.instance.state.onResized(
@@ -213,15 +211,15 @@ export const shapesWidgetTests: Mocha.Suite = describe('ShapesWidget component',
       )
 
       const annotation = c.root.findByType(ShapeAnnotation).children[0] as any
-      expect(annotation.instance.state.focused).to.be.eq(false)
+      expect(annotation.instance.state.focused).toBe(false)
 
       // onDragStart
       annotation.instance.state.onDragStart(
         {
           dataTransfer: {
             setData: (key: string, value: string) => {
-              expect(key).to.be.eq('shape')
-              expect(typeof value).to.be.eq('string')
+              expect(key).toBe('shape')
+              expect(typeof value).toBe('string')
               /** */
             },
           },

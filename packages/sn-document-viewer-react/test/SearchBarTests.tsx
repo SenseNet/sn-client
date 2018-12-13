@@ -1,16 +1,16 @@
 import * as React from 'react'
 import { Provider } from 'react-redux'
 import * as renderer from 'react-test-renderer'
-import { SearchBar } from '../../../src/components/document-widgets/SearchBar'
-import { useTestContext } from '../../viewercontext'
+import { SearchBar } from '../src/components/document-widgets/SearchBar'
+import { useTestContext } from './__Mocks__/viewercontext'
 
 /**
  * Toggle Shapes widget tests
  */
-export const searchBarWidgetTests: Mocha.Suite = describe('ToggleShapesWidget component', () => {
+describe('ToggleShapesWidget component', () => {
   let c!: renderer.ReactTestRenderer
 
-  after(() => {
+  afterEach(() => {
     c.unmount()
   })
 
