@@ -46,7 +46,8 @@
       "<rootDir>/examples/sn-react-redux-todo-app",
       "<rootDir>/packages/sn-authentication-jwt",
       "<rootDir>/packages/sn-client-auth-google",
-      "<rootDir>/packages/sn-client-utils"
+      "<rootDir>/packages/sn-client-utils",
+      "<rootDir>/packages/sn-control-mapper"
     ],
     "moduleFileExtensions": [
       "ts",
@@ -79,5 +80,8 @@
       "json",
       "html"
     ]
+  },
+  "dependencies": {
+    "@types/jest": "^23.3.10"
   }
 }
