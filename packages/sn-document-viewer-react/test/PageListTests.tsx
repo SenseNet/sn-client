@@ -12,28 +12,32 @@ describe('PageList component', () => {
   let c!: renderer.ReactTestRenderer
 
   afterEach(() => {
-    c.unmount()
+    c && c.unmount()
   })
 
   it('Should render without crashing', () => {
     useTestContext(ctx => {
       ctx.store.dispatch(documentReceivedAction(exampleDocumentData))
-      c = renderer.create(
-        <Provider store={ctx.store}>
-          <PageList
-            id={'a'}
-            onPageClick={() => undefined}
-            elementNamePrefix={'EL'}
-            zoomMode={'fit'}
-            zoomLevel={0}
-            showWidgets={true}
-            tolerance={100}
-            padding={10}
-            images={'preview'}
-            fitRelativeZoomLevel={0}
-          />
-        </Provider>,
-      )
+      try {
+        c = renderer.create(
+          <Provider store={ctx.store}>
+            <PageList
+              id={'1'}
+              onPageClick={() => undefined}
+              elementNamePrefix={'EL'}
+              zoomMode={'fit'}
+              zoomLevel={0}
+              showWidgets={true}
+              tolerance={100}
+              padding={10}
+              images={'preview'}
+              fitRelativeZoomLevel={0}
+            />
+          </Provider>,
+        )
+      } catch (error) {
+        throw error
+      }
     })
   })
 })
