@@ -4,17 +4,11 @@
   "description": "React controls for sensenet",
   "main": "dist/index.js",
   "scripts": {
-    "precommit": "npm run test",
-    "commit": "git-cz",
-    "pretest": "rimraf temp && tsc -p tsconfig.test.json",
-    "test": "rimraf coverage && nyc mocha -p tsconfig.test.json ./temp/test/index.js",
     "fix": "npm run fix:prettier && npm run fix:tslint",
     "fix:prettier": "prettier \"{,!(dist|temp)/**/}*.{ts,tsx}\" --write",
     "fix:tslint": "tslint --fix --project .",
     "lint": "tslint --project .",
     "build": "tsc -b && cpx \"src/**/*.css\" dist",
-    "prepublishOnly": "npm run test && npm run build",
-    "publish:development": "npm run build && npm t && npm run typedoc && npm publish --tag development",
     "typedoc": "typedoc --mode modules --out documentation src --exclude **/index.ts --theme c:/Users/%USERNAME%/AppData/Roaming/npm/node_modules/@sensenet/typedoc-theme/sn-theme"
   },
   "files": [
@@ -38,20 +32,6 @@
   ],
   "author": "SenseNet",
   "license": "GPL-2.0",
-  "nyc": {
-    "cache": true,
-    "include": "temp/src/**/*.*",
-    "exclude": [
-      "temp/test/**/*.*",
-      "**/index.js"
-    ],
-    "all": true,
-    "reporter": [
-      "lcov",
-      "text-summary",
-      "json"
-    ]
-  },
   "bugs": {
     "url": "https://github.com/SenseNet/sn-client/issues"
   },
@@ -74,7 +54,6 @@
   },
   "devDependencies": {
     "@types/lodash.debounce": "^4.0.4",
-    "@types/mocha": "^5.2.5",
     "@types/node": "^10.10.3",
     "@types/radium": "^0.24.2",
     "@types/react": "^16.4.16",
@@ -96,11 +75,6 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "config": {
-    "commitizen": {
-      "path": "sensenet-kfi-cz-conventional-changelog"
-    }
   },
   "typings": "./dist/index.d.ts"
 }
