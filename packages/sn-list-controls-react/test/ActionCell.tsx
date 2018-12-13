@@ -14,7 +14,7 @@ describe('ActionCell component', () => {
     component.unmount()
   })
 
-  it('Should handle on action menu click', (done: MochaDone) => {
+  it('Should handle on action menu click', (done: jest.DoneCallback) => {
     const component = renderer.create(
       <ActionsCell
         actions={[]}
