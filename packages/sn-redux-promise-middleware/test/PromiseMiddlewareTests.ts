@@ -1,4 +1,4 @@
-import { expect } from 'chai'
+import 'jest'
 import { Action, applyMiddleware, createStore, Unsubscribe } from 'redux'
 import { promiseMiddleware } from '../src/PromiseMiddleware'
 import { PromiseMiddlewareAction } from '../src/Types'
@@ -6,16 +6,16 @@ import { PromiseMiddlewareAction } from '../src/Types'
 /**
  * Test suite for promiseMiddleware
  */
-export const promiseMiddlewareTest: Mocha.Suite = describe('PromiseMiddleware', () => {
+export const promiseMiddlewareTest = describe('PromiseMiddleware', () => {
   it('Should be registered into a Store', () => {
-    const store = createStore(({}) => ({}), {}, applyMiddleware(promiseMiddleware(undefined)))
-    expect(store).to.be.instanceof(Object)
+    const store = createStore(({ }) => ({}), {}, applyMiddleware(promiseMiddleware(undefined)))
+    expect(store).toBeInstanceOf(Object)
   })
 
-  it('Generic API Endpoint should be added and method should be called', (done: MochaDone) => {
+  it('Generic API Endpoint should be added and method should be called', (done: jest.DoneCallback) => {
     const customApi = { call: () => done() }
     const m = promiseMiddleware(customApi)
-    const store = createStore(({}) => ({}), {}, applyMiddleware(m))
+    const store = createStore(({ }) => ({}), {}, applyMiddleware(m))
     store.dispatch({
       type: 'EXAMPLE_ACTION',
       payload: async api => {
@@ -24,7 +24,7 @@ export const promiseMiddlewareTest: Mocha.Suite = describe('PromiseMiddleware', 
     } as PromiseMiddlewareAction<typeof customApi, any>)
   })
 
-  it('Success action should be dispatched', (done: MochaDone) => {
+  it('Success action should be dispatched', (done: jest.DoneCallback) => {
     const customApi = { call: () => 1 }
     const m = promiseMiddleware(customApi)
     const store = createStore(
@@ -51,7 +51,7 @@ export const promiseMiddlewareTest: Mocha.Suite = describe('PromiseMiddleware', 
     })
   })
 
-  it('Error action should be dispatched', (done: MochaDone) => {
+  it('Error action should be dispatched', (done: jest.DoneCallback) => {
     const m = promiseMiddleware(undefined)
     const store = createStore(
       (state: { actions: any[] } = { actions: [] }, action) => {
