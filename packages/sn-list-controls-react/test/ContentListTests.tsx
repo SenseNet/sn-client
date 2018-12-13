@@ -1,5 +1,4 @@
 import { GenericContent, SchemaStore } from '@sensenet/default-content-types'
-import { expect } from 'chai'
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
 import { ActionsCell } from '../src/ContentList/CellTemplates/ActionsCell'
@@ -65,7 +64,7 @@ export const contentListTests = describe('ContentList component', () => {
           typeof instance.props.className === 'string' &&
           instance.props.className.indexOf('selected') > -1,
       )
-      expect(selected.length).to.be.equal(1)
+      expect(selected.length).toBe(1)
 
       component.unmount()
     })
@@ -108,8 +107,8 @@ export const contentListTests = describe('ContentList component', () => {
           orderDirection="asc"
           icons={{}}
           onRequestSelectionChange={items => {
-            expect(items.length).to.be.equal(1)
-            expect(items[0].Id).to.be.equal(1)
+            expect(items.length).toBe(1)
+            expect(items[0].Id).toBe(1)
             component.unmount()
             done()
           }}
@@ -136,8 +135,8 @@ export const contentListTests = describe('ContentList component', () => {
           orderDirection="asc"
           icons={{}}
           onRequestSelectionChange={items => {
-            expect(items.length).to.be.equal(0)
-            expect(items).to.be.deep.equal([])
+            expect(items.length).toBe(0)
+            expect(items).toEqual([])
             component.unmount()
             done()
           }}
@@ -165,8 +164,8 @@ export const contentListTests = describe('ContentList component', () => {
           orderDirection="asc"
           icons={{}}
           onRequestSelectionChange={selection => {
-            expect(selection.length).to.be.equal(2)
-            expect(selection).to.be.deep.eq(selection)
+            expect(selection.length).toBe(2)
+            expect(selection).toEqual(selection)
             component.unmount()
             done()
           }}
@@ -194,8 +193,8 @@ export const contentListTests = describe('ContentList component', () => {
           orderDirection="asc"
           icons={{}}
           onRequestSelectionChange={selection => {
-            expect(selection.length).to.be.equal(0)
-            expect(selection).to.be.deep.eq([])
+            expect(selection.length).toBe(0)
+            expect(selection).toEqual([])
             component.unmount()
             done()
           }}
@@ -226,7 +225,7 @@ export const contentListTests = describe('ContentList component', () => {
           typeof instance.props.className === 'string' &&
           instance.props.className.indexOf('active') > -1,
       )
-      expect(selected.length).to.be.equal(1)
+      expect(selected.length).toBe(1)
       component.unmount()
     })
 
@@ -241,7 +240,7 @@ export const contentListTests = describe('ContentList component', () => {
           orderDirection="asc"
           icons={{}}
           onRequestActiveItemChange={item => {
-            expect(item.Id).to.be.equal(1)
+            expect(item.Id).toBe(1)
             component.unmount()
             done()
           }}
@@ -272,7 +271,7 @@ export const contentListTests = describe('ContentList component', () => {
       )
 
       const actionsComponent = component.root.findAllByType(ActionsCell)
-      expect(actionsComponent.length).to.be.equal(0)
+      expect(actionsComponent.length).toBe(0)
 
       component.unmount()
     })
@@ -290,7 +289,7 @@ export const contentListTests = describe('ContentList component', () => {
         />,
       )
       const actionsComponent = component.root.findAllByType(ActionsCell)
-      expect(actionsComponent.length).to.be.equal(1)
+      expect(actionsComponent.length).toBe(1)
 
       component.unmount()
     })
@@ -332,7 +331,7 @@ export const contentListTests = describe('ContentList component', () => {
         />,
       )
       const actionsComponent = component.root.findAllByType(DateCell)
-      expect(actionsComponent.length).to.be.equal(1)
+      expect(actionsComponent.length).toBe(1)
 
       component.unmount()
     })
@@ -361,7 +360,7 @@ export const contentListTests = describe('ContentList component', () => {
         />,
       )
       const actionsComponent = component.root.findAllByType(ReferenceCell)
-      expect(actionsComponent.length).to.be.equal(1)
+      expect(actionsComponent.length).toBe(1)
 
       component.unmount()
     })
@@ -389,7 +388,7 @@ export const contentListTests = describe('ContentList component', () => {
       const actionsComponent = component.root.findAll(
         instance => instance.props.className && instance.props.className === 'custom-field',
       )
-      expect(actionsComponent.length).to.be.equal(1)
+      expect(actionsComponent.length).toBe(1)
 
       component.unmount()
     })
@@ -407,7 +406,7 @@ export const contentListTests = describe('ContentList component', () => {
           orderDirection="asc"
           icons={{}}
           onItemClick={(_ev, item) => {
-            expect(item.Id).to.be.equal(1)
+            expect(item.Id).toBe(1)
             component.unmount()
             done()
           }}
@@ -433,7 +432,7 @@ export const contentListTests = describe('ContentList component', () => {
           orderDirection="asc"
           icons={{}}
           onItemDoubleClick={(_ev, item) => {
-            expect(item.Id).to.be.equal(1)
+            expect(item.Id).toBe(1)
             component.unmount()
             done()
           }}
@@ -459,7 +458,7 @@ export const contentListTests = describe('ContentList component', () => {
           orderDirection="asc"
           icons={{}}
           onItemTap={(_ev, item) => {
-            expect(item.Id).to.be.equal(1)
+            expect(item.Id).toBe(1)
             component.unmount()
             done()
           }}
@@ -485,7 +484,7 @@ export const contentListTests = describe('ContentList component', () => {
           orderDirection="asc"
           icons={{}}
           onItemContextMenu={(_ev, item) => {
-            expect(item.Id).to.be.equal(1)
+            expect(item.Id).toBe(1)
             component.unmount()
             done()
           }}
@@ -511,8 +510,8 @@ export const contentListTests = describe('ContentList component', () => {
           orderDirection="asc"
           icons={{}}
           onRequestOrderChange={(field, direction) => {
-            expect(field).to.be.equal('DisplayName')
-            expect(direction).to.be.equal('desc')
+            expect(field).toBe('DisplayName')
+            expect(direction).toBe('desc')
             component.unmount()
             done()
           }}
@@ -533,8 +532,8 @@ export const contentListTests = describe('ContentList component', () => {
           orderDirection="desc"
           icons={{}}
           onRequestOrderChange={(field, direction) => {
-            expect(field).to.be.equal('DisplayName')
-            expect(direction).to.be.equal('asc')
+            expect(field).toBe('DisplayName')
+            expect(direction).toBe('asc')
             component.unmount()
             done()
           }}
