@@ -2,7 +2,7 @@ import { Token } from '../../src/Token'
 import { TokenPayload } from '../../src/TokenPayload'
 
 export class MockTokenFactory {
-  private static getStillValidDate(addMs: number = 3000000) {
+  private static getStillValidDate(addMs: number = 30000000) {
     const date = new Date()
     date.setTime(date.getTime() + addMs)
     return date.getTime() / 1000
