@@ -1,12 +1,12 @@
 import { expect } from 'chai'
 import * as React from 'react'
 import { create } from 'react-test-renderer'
-import { DefaultCell } from '../../src/ContentList/CellTemplates/DefaultCell'
+import { DefaultCell } from '../src/ContentList/CellTemplates/DefaultCell'
 
 /**
  * DefaultCell Component tests
  */
-export const defaultCellTests: Mocha.Suite = describe('DefaultCell component', () => {
+describe('DefaultCell component', () => {
   it('Should render without crashing without selected class by default', () => {
     const component = create(
       <DefaultCell content={{ Id: 123, Path: '', Name: '', Type: 'Folder' }} field={'Type'} isSelected={false} />,

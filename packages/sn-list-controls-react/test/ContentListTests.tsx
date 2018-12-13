@@ -93,7 +93,7 @@ export const contentListTests = describe('ContentList component', () => {
       component.unmount()
     })
 
-    it('Clicking on a selection box should add a content to the selection if not selected', (done: MochaDone) => {
+    it('Clicking on a selection box should add a content to the selection if not selected', (done: jest.DoneCallback) => {
       const component = renderer.create(
         <ContentList<GenericContent>
           items={[
@@ -121,7 +121,7 @@ export const contentListTests = describe('ContentList component', () => {
       selected.props.onChange()
     })
 
-    it('Clicking on a selection box should remove a content from the selection if selected', (done: MochaDone) => {
+    it('Clicking on a selection box should remove a content from the selection if selected', (done: jest.DoneCallback) => {
       const component = renderer.create(
         <ContentList<GenericContent>
           items={[
@@ -149,7 +149,7 @@ export const contentListTests = describe('ContentList component', () => {
       selected.props.onChange()
     })
 
-    it('Clicking on a select all box should add all content to the selection, if not all is selected', (done: MochaDone) => {
+    it('Clicking on a select all box should add all content to the selection, if not all is selected', (done: jest.DoneCallback) => {
       const items = [
         { Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' },
         { Id: 2, Name: '2', Path: '2', DisplayName: 'B', Type: 'Folder' },
@@ -178,7 +178,7 @@ export const contentListTests = describe('ContentList component', () => {
       selected.props.onChange()
     })
 
-    it('Clicking on a select all box should clear the selection if all content are selected', (done: MochaDone) => {
+    it('Clicking on a select all box should clear the selection if all content are selected', (done: jest.DoneCallback) => {
       const items = [
         { Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' },
         { Id: 2, Name: '2', Path: '2', DisplayName: 'B', Type: 'Folder' },
@@ -230,7 +230,7 @@ export const contentListTests = describe('ContentList component', () => {
       component.unmount()
     })
 
-    it('Clicking on a row should trigger an active item change, if the callback is provided', (done: MochaDone) => {
+    it('Clicking on a row should trigger an active item change, if the callback is provided', (done: jest.DoneCallback) => {
       const component = renderer.create(
         <ContentList<GenericContent>
           items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
@@ -295,7 +295,7 @@ export const contentListTests = describe('ContentList component', () => {
       component.unmount()
     })
 
-    it('onRequestActionsMenu should be triggered on click if actions are expanded', (done: MochaDone) => {
+    it('onRequestActionsMenu should be triggered on click if actions are expanded', (done: jest.DoneCallback) => {
       const component = renderer.create(
         <ContentList<GenericContent>
           items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder', Actions: [] }]}
@@ -396,7 +396,7 @@ export const contentListTests = describe('ContentList component', () => {
   })
 
   describe('Event bindings', () => {
-    it('should fire onItemClick when the row is clicked', (done: MochaDone) => {
+    it('should fire onItemClick when the row is clicked', (done: jest.DoneCallback) => {
       const component = renderer.create(
         <ContentList<GenericContent>
           items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
@@ -422,7 +422,7 @@ export const contentListTests = describe('ContentList component', () => {
       row.props.onClick()
     })
 
-    it('should fire onItemDoubleClick  when the row is double-clicked', (done: MochaDone) => {
+    it('should fire onItemDoubleClick  when the row is double-clicked', (done: jest.DoneCallback) => {
       const component = renderer.create(
         <ContentList<GenericContent>
           items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
@@ -448,7 +448,7 @@ export const contentListTests = describe('ContentList component', () => {
       row.props.onDoubleClick()
     })
 
-    it('should fire onItemTap when the row is tapped', (done: MochaDone) => {
+    it('should fire onItemTap when the row is tapped', (done: jest.DoneCallback) => {
       const component = renderer.create(
         <ContentList<GenericContent>
           items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
@@ -474,7 +474,7 @@ export const contentListTests = describe('ContentList component', () => {
       row.props.onTouchEnd()
     })
 
-    it('should fire onItemContextMenu  when the context menu is triggered', (done: MochaDone) => {
+    it('should fire onItemContextMenu  when the context menu is triggered', (done: jest.DoneCallback) => {
       const component = renderer.create(
         <ContentList<GenericContent>
           items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
@@ -500,7 +500,7 @@ export const contentListTests = describe('ContentList component', () => {
       row.props.onContextMenu()
     })
 
-    it('should request order change when the header is clicked', (done: MochaDone) => {
+    it('should request order change when the header is clicked', (done: jest.DoneCallback) => {
       const component = renderer.create(
         <ContentList<GenericContent>
           items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
@@ -522,7 +522,7 @@ export const contentListTests = describe('ContentList component', () => {
       row.props.onClick()
     })
 
-    it('should request order change and invert the direction', (done: MochaDone) => {
+    it('should request order change and invert the direction', (done: jest.DoneCallback) => {
       const component = renderer.create(
         <ContentList<GenericContent>
           items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}

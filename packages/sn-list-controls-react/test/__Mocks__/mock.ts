@@ -17,6 +17,3 @@
 ;(global as any).getComputedStyle = () => ({
   getBoundingClientRect: () => ({}),
 })
-
-export * from './CellTemplates'
-export * from './ContentListTests'
