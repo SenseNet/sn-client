@@ -22,7 +22,7 @@ describe('PageList component', () => {
         c = renderer.create(
           <Provider store={ctx.store}>
             <PageList
-              id={'1'}
+              id={'a1'}
               onPageClick={() => undefined}
               elementNamePrefix={'EL'}
               zoomMode={'fit'}
