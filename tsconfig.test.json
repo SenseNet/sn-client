@@ -2,8 +2,6 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "module": "commonjs",
-    "jsx": "react",
-    "allowJs": true,
-    "typeRoots": ["examples/sn-dms-demo/node_modules/@types"]
+    "jsx": "react"
   }
 }

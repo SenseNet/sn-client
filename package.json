@@ -66,6 +66,18 @@
     "testMatch": [
       "**/__tests__/*.+(ts|tsx|js)",
       "**/test/*.+(ts|tsx|js)"
+    ],
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/packages/**/src/*.{ts,tsx}",
+      "!**/test/**/*.{ts,tsx}",
+      "!**/__tests__/**/*.{ts,tsx}",
+      "!**/*.d.{ts,tsx}",
+      "!**/node_modules/**"
+    ],
+    "coverageReporters": [
+      "json",
+      "html"
     ]
   }
 }
