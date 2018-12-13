@@ -3,7 +3,6 @@ import { Provider } from 'react-redux'
 
 import RotateLeft from '@material-ui/icons/RotateLeft'
 import RotateRight from '@material-ui/icons/RotateRight'
-import { expect } from 'chai'
 import * as renderer from 'react-test-renderer'
 import { RotatePageWidget } from '../src/components/page-widgets/RotatePage'
 import { documentReceivedAction } from '../src/store/Document'
@@ -58,7 +57,7 @@ describe('RotatePageWidget component', () => {
       button.props.onClick()
       expect(
         (ctx.store.getState().sensenetDocumentViewer.previewImages.AvailableImages[0] as any).Attributes.degree,
-      ).to.be.eq(270)
+      ).toBe(270)
     })
   })
 
@@ -87,7 +86,7 @@ describe('RotatePageWidget component', () => {
       button.props.onClick()
       expect(
         (ctx.store.getState().sensenetDocumentViewer.previewImages.AvailableImages[0] as any).Attributes.degree,
-      ).to.be.eq(90)
+      ).toBe(90)
     })
   })
 })

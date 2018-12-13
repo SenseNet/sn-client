@@ -1,14 +1,10 @@
 import { Select } from '@material-ui/core'
 import { Query } from '@sensenet/query'
-import { expect } from 'chai'
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
 import { PresetField } from '../src/Components/Fields/PresetField'
 
-/**
- * Test for the Preset Field component
- */
-export const presetFieldTests = describe('Preset Fields', () => {
+describe('Preset Fields', () => {
   it('Should be constructed', () => {
     renderer.create(
       <PresetField
@@ -40,9 +36,9 @@ export const presetFieldTests = describe('Preset Fields', () => {
         fieldName="DisplayName"
         presets={[{ text: 'value1', value: new Query(q => q.equals('DisplayName', 'Alma')) }]}
         onQueryChange={(key, q, name) => {
-          expect(key).to.be.eq('DisplayName')
-          expect(q.toString()).to.be.eq("DisplayName:'Alma'")
-          expect(name).to.be.eq('value1')
+          expect(key).toBe('DisplayName')
+          expect(q.toString()).toBe("DisplayName:'Alma'")
+          expect(name).toBe('value1')
           done()
         }}
       />,

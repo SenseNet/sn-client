@@ -1,5 +1,4 @@
 import { GenericContent, SchemaStore } from '@sensenet/default-content-types'
-import { expect } from 'chai'
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
 import { ActionsCell } from '../src/ContentList/CellTemplates/ActionsCell'
@@ -65,7 +64,7 @@ export const contentListTests = describe('ContentList component', () => {
           typeof instance.props.className === 'string' &&
           instance.props.className.indexOf('selected') > -1,
       )
-      expect(selected.length).to.be.equal(1)
+      expect(selected.length).toBe(1)
 
       component.unmount()
     })
@@ -93,7 +92,7 @@ export const contentListTests = describe('ContentList component', () => {
       component.unmount()
     })
 
-    it('Clicking on a selection box should add a content to the selection if not selected', (done: MochaDone) => {
+    it('Clicking on a selection box should add a content to the selection if not selected', (done: jest.DoneCallback) => {
       const component = renderer.create(
         <ContentList<GenericContent>
           items={[
@@ -108,8 +107,8 @@ export const contentListTests = describe('ContentList component', () => {
           orderDirection="asc"
           icons={{}}
           onRequestSelectionChange={items => {
-            expect(items.length).to.be.equal(1)
-            expect(items[0].Id).to.be.equal(1)
+            expect(items.length).toBe(1)
+            expect(items[0].Id).toBe(1)
             component.unmount()
             done()
           }}
@@ -121,7 +120,7 @@ export const contentListTests = describe('ContentList component', () => {
       selected.props.onChange()
     })
 
-    it('Clicking on a selection box should remove a content from the selection if selected', (done: MochaDone) => {
+    it('Clicking on a selection box should remove a content from the selection if selected', (done: jest.DoneCallback) => {
       const component = renderer.create(
         <ContentList<GenericContent>
           items={[
@@ -136,8 +135,8 @@ export const contentListTests = describe('ContentList component', () => {
           orderDirection="asc"
           icons={{}}
           onRequestSelectionChange={items => {
-            expect(items.length).to.be.equal(0)
-            expect(items).to.be.deep.equal([])
+            expect(items.length).toBe(0)
+            expect(items).toEqual([])
             component.unmount()
             done()
           }}
@@ -149,7 +148,7 @@ export const contentListTests = describe('ContentList component', () => {
       selected.props.onChange()
     })
 
-    it('Clicking on a select all box should add all content to the selection, if not all is selected', (done: MochaDone) => {
+    it('Clicking on a select all box should add all content to the selection, if not all is selected', (done: jest.DoneCallback) => {
       const items = [
         { Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' },
         { Id: 2, Name: '2', Path: '2', DisplayName: 'B', Type: 'Folder' },
@@ -165,8 +164,8 @@ export const contentListTests = describe('ContentList component', () => {
           orderDirection="asc"
           icons={{}}
           onRequestSelectionChange={selection => {
-            expect(selection.length).to.be.equal(2)
-            expect(selection).to.be.deep.eq(selection)
+            expect(selection.length).toBe(2)
+            expect(selection).toEqual(selection)
             component.unmount()
             done()
           }}
@@ -178,7 +177,7 @@ export const contentListTests = describe('ContentList component', () => {
       selected.props.onChange()
     })
 
-    it('Clicking on a select all box should clear the selection if all content are selected', (done: MochaDone) => {
+    it('Clicking on a select all box should clear the selection if all content are selected', (done: jest.DoneCallback) => {
       const items = [
         { Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' },
         { Id: 2, Name: '2', Path: '2', DisplayName: 'B', Type: 'Folder' },
@@ -194,8 +193,8 @@ export const contentListTests = describe('ContentList component', () => {
           orderDirection="asc"
           icons={{}}
           onRequestSelectionChange={selection => {
-            expect(selection.length).to.be.equal(0)
-            expect(selection).to.be.deep.eq([])
+            expect(selection.length).toBe(0)
+            expect(selection).toEqual([])
             component.unmount()
             done()
           }}
@@ -226,11 +225,11 @@ export const contentListTests = describe('ContentList component', () => {
           typeof instance.props.className === 'string' &&
           instance.props.className.indexOf('active') > -1,
       )
-      expect(selected.length).to.be.equal(1)
+      expect(selected.length).toBe(1)
       component.unmount()
     })
 
-    it('Clicking on a row should trigger an active item change, if the callback is provided', (done: MochaDone) => {
+    it('Clicking on a row should trigger an active item change, if the callback is provided', (done: jest.DoneCallback) => {
       const component = renderer.create(
         <ContentList<GenericContent>
           items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
@@ -241,7 +240,7 @@ export const contentListTests = describe('ContentList component', () => {
           orderDirection="asc"
           icons={{}}
           onRequestActiveItemChange={item => {
-            expect(item.Id).to.be.equal(1)
+            expect(item.Id).toBe(1)
             component.unmount()
             done()
           }}
@@ -272,7 +271,7 @@ export const contentListTests = describe('ContentList component', () => {
       )
 
       const actionsComponent = component.root.findAllByType(ActionsCell)
-      expect(actionsComponent.length).to.be.equal(0)
+      expect(actionsComponent.length).toBe(0)
 
       component.unmount()
     })
@@ -290,12 +289,12 @@ export const contentListTests = describe('ContentList component', () => {
         />,
       )
       const actionsComponent = component.root.findAllByType(ActionsCell)
-      expect(actionsComponent.length).to.be.equal(1)
+      expect(actionsComponent.length).toBe(1)
 
       component.unmount()
     })
 
-    it('onRequestActionsMenu should be triggered on click if actions are expanded', (done: MochaDone) => {
+    it('onRequestActionsMenu should be triggered on click if actions are expanded', (done: jest.DoneCallback) => {
       const component = renderer.create(
         <ContentList<GenericContent>
           items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder', Actions: [] }]}
@@ -332,7 +331,7 @@ export const contentListTests = describe('ContentList component', () => {
         />,
       )
       const actionsComponent = component.root.findAllByType(DateCell)
-      expect(actionsComponent.length).to.be.equal(1)
+      expect(actionsComponent.length).toBe(1)
 
       component.unmount()
     })
@@ -361,7 +360,7 @@ export const contentListTests = describe('ContentList component', () => {
         />,
       )
       const actionsComponent = component.root.findAllByType(ReferenceCell)
-      expect(actionsComponent.length).to.be.equal(1)
+      expect(actionsComponent.length).toBe(1)
 
       component.unmount()
     })
@@ -389,14 +388,14 @@ export const contentListTests = describe('ContentList component', () => {
       const actionsComponent = component.root.findAll(
         instance => instance.props.className && instance.props.className === 'custom-field',
       )
-      expect(actionsComponent.length).to.be.equal(1)
+      expect(actionsComponent.length).toBe(1)
 
       component.unmount()
     })
   })
 
   describe('Event bindings', () => {
-    it('should fire onItemClick when the row is clicked', (done: MochaDone) => {
+    it('should fire onItemClick when the row is clicked', (done: jest.DoneCallback) => {
       const component = renderer.create(
         <ContentList<GenericContent>
           items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
@@ -407,7 +406,7 @@ export const contentListTests = describe('ContentList component', () => {
           orderDirection="asc"
           icons={{}}
           onItemClick={(_ev, item) => {
-            expect(item.Id).to.be.equal(1)
+            expect(item.Id).toBe(1)
             component.unmount()
             done()
           }}
@@ -422,7 +421,7 @@ export const contentListTests = describe('ContentList component', () => {
       row.props.onClick()
     })
 
-    it('should fire onItemDoubleClick  when the row is double-clicked', (done: MochaDone) => {
+    it('should fire onItemDoubleClick  when the row is double-clicked', (done: jest.DoneCallback) => {
       const component = renderer.create(
         <ContentList<GenericContent>
           items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
@@ -433,7 +432,7 @@ export const contentListTests = describe('ContentList component', () => {
           orderDirection="asc"
           icons={{}}
           onItemDoubleClick={(_ev, item) => {
-            expect(item.Id).to.be.equal(1)
+            expect(item.Id).toBe(1)
             component.unmount()
             done()
           }}
@@ -448,7 +447,7 @@ export const contentListTests = describe('ContentList component', () => {
       row.props.onDoubleClick()
     })
 
-    it('should fire onItemTap when the row is tapped', (done: MochaDone) => {
+    it('should fire onItemTap when the row is tapped', (done: jest.DoneCallback) => {
       const component = renderer.create(
         <ContentList<GenericContent>
           items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
@@ -459,7 +458,7 @@ export const contentListTests = describe('ContentList component', () => {
           orderDirection="asc"
           icons={{}}
           onItemTap={(_ev, item) => {
-            expect(item.Id).to.be.equal(1)
+            expect(item.Id).toBe(1)
             component.unmount()
             done()
           }}
@@ -474,7 +473,7 @@ export const contentListTests = describe('ContentList component', () => {
       row.props.onTouchEnd()
     })
 
-    it('should fire onItemContextMenu  when the context menu is triggered', (done: MochaDone) => {
+    it('should fire onItemContextMenu  when the context menu is triggered', (done: jest.DoneCallback) => {
       const component = renderer.create(
         <ContentList<GenericContent>
           items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
@@ -485,7 +484,7 @@ export const contentListTests = describe('ContentList component', () => {
           orderDirection="asc"
           icons={{}}
           onItemContextMenu={(_ev, item) => {
-            expect(item.Id).to.be.equal(1)
+            expect(item.Id).toBe(1)
             component.unmount()
             done()
           }}
@@ -500,7 +499,7 @@ export const contentListTests = describe('ContentList component', () => {
       row.props.onContextMenu()
     })
 
-    it('should request order change when the header is clicked', (done: MochaDone) => {
+    it('should request order change when the header is clicked', (done: jest.DoneCallback) => {
       const component = renderer.create(
         <ContentList<GenericContent>
           items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
@@ -511,8 +510,8 @@ export const contentListTests = describe('ContentList component', () => {
           orderDirection="asc"
           icons={{}}
           onRequestOrderChange={(field, direction) => {
-            expect(field).to.be.equal('DisplayName')
-            expect(direction).to.be.equal('desc')
+            expect(field).toBe('DisplayName')
+            expect(direction).toBe('desc')
             component.unmount()
             done()
           }}
@@ -522,7 +521,7 @@ export const contentListTests = describe('ContentList component', () => {
       row.props.onClick()
     })
 
-    it('should request order change and invert the direction', (done: MochaDone) => {
+    it('should request order change and invert the direction', (done: jest.DoneCallback) => {
       const component = renderer.create(
         <ContentList<GenericContent>
           items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
@@ -533,8 +532,8 @@ export const contentListTests = describe('ContentList component', () => {
           orderDirection="desc"
           icons={{}}
           onRequestOrderChange={(field, direction) => {
-            expect(field).to.be.equal('DisplayName')
-            expect(direction).to.be.equal('asc')
+            expect(field).toBe('DisplayName')
+            expect(direction).toBe('asc')
             component.unmount()
             done()
           }}
