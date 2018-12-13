@@ -6,24 +6,24 @@ import {
   ShortTextFieldSetting,
   Task,
 } from '@sensenet/default-content-types'
-import { expect } from 'chai'
+import 'jest'
 import { ControlMapper } from '../src'
 
 // tslint:disable:max-classes-per-file
 // tslint:disable:completed-docs
 
-class ExampleControlBase {}
+class ExampleControlBase { }
 
-class ExampleDefaultControl extends ExampleControlBase {}
+class ExampleDefaultControl extends ExampleControlBase { }
 
-class ExampleModifiedControl extends ExampleControlBase {}
+class ExampleModifiedControl extends ExampleControlBase { }
 
-class ExampleModifiedControl2 extends ExampleControlBase {}
+class ExampleModifiedControl2 extends ExampleControlBase { }
 
-class ExampleDefaultFieldControl extends ExampleControlBase {}
+class ExampleDefaultFieldControl extends ExampleControlBase { }
 
 class ExampleClientSetting {
-  constructor(public readonly setting: FieldSetting) {}
+  constructor(public readonly setting: FieldSetting) { }
 }
 
 export const controlMapperTests = describe('ControlMapper', () => {
@@ -42,12 +42,12 @@ export const controlMapperTests = describe('ControlMapper', () => {
   })
 
   it('Should be constructed', () => {
-    expect(mapper).to.be.instanceof(ControlMapper)
+    expect(mapper).toBeInstanceOf(ControlMapper)
   })
 
   it('Should be constructed with BaseType and ClientControlSettingsFactory', () => {
     const newMapper = new ControlMapper(repository, ExampleControlBase, setting => new ExampleClientSetting(setting))
-    expect(newMapper).to.be.instanceof(ControlMapper)
+    expect(newMapper).toBeInstanceOf(ControlMapper)
   })
 
   it('Should be constructed with all parameters', () => {
@@ -58,24 +58,24 @@ export const controlMapperTests = describe('ControlMapper', () => {
       ExampleDefaultControl,
       ExampleDefaultFieldControl,
     )
-    expect(newMapper).to.be.instanceof(ControlMapper)
+    expect(newMapper).toBeInstanceOf(ControlMapper)
   })
 
   it('Should return correct Default Control for ContentTypes', () => {
     const controlType = mapper.getControlForContentType('Task')
-    expect(controlType).to.be.eq(ExampleDefaultControl)
+    expect(controlType).toBe(ExampleDefaultControl)
   })
 
   it('Should return correct explicit defined Control for ContentTypes', () => {
     mapper.mapContentTypeToControl('Task', ExampleModifiedControl)
     const controlType = mapper.getControlForContentType('Task')
-    expect(controlType).to.be.eq(ExampleModifiedControl)
+    expect(controlType).toBe(ExampleModifiedControl)
   })
 
   it('Should return correct Default Control for FieldSettings', () => {
     const fs = {} as ChoiceFieldSetting
     const controlType = mapper.getControlForFieldSetting(fs)
-    expect(controlType).to.be.eq(ExampleDefaultFieldControl)
+    expect(controlType).toBe(ExampleDefaultFieldControl)
   })
 
   it('Should return correct explicit defined Control for FieldSettings', () => {
@@ -88,16 +88,16 @@ export const controlMapperTests = describe('ControlMapper', () => {
 
     const fs = { Compulsory: true, Type: 'ChoiceFieldSetting' } as ChoiceFieldSetting
     const controlType = mapper.getControlForFieldSetting(fs)
-    expect(controlType).to.be.eq(ExampleModifiedControl)
+    expect(controlType).toBe(ExampleModifiedControl)
 
     const fs2 = { Compulsory: false, Type: 'ChoiceFieldSetting' } as ChoiceFieldSetting
     const controlType2 = mapper.getControlForFieldSetting(fs2)
-    expect(controlType2).to.be.eq(ExampleDefaultFieldControl)
+    expect(controlType2).toBe(ExampleDefaultFieldControl)
   })
 
   it('Should return a correct default control for a specified Content Field', () => {
     const control = mapper.getControlForContentField('Task', 'DisplayName', 'new')
-    expect(control).to.be.eq(ExampleDefaultFieldControl)
+    expect(control).toBe(ExampleDefaultFieldControl)
   })
 
   it('Should return a correct default control for a specified Content Field when FieldSetting has default value', () => {
@@ -105,13 +105,13 @@ export const controlMapperTests = describe('ControlMapper', () => {
       return ExampleModifiedControl
     })
     const control = mapper.getControlForContentField('Task', 'DisplayName', 'new')
-    expect(control).to.be.eq(ExampleModifiedControl)
+    expect(control).toBe(ExampleModifiedControl)
 
     const controlOther = mapper.getControlForContentField('User', 'DisplayName', 'new')
-    expect(controlOther).to.be.eq(ExampleModifiedControl)
+    expect(controlOther).toBe(ExampleModifiedControl)
 
     const controlOtherDateTime = mapper.getControlForContentField('Task', 'DueDate', 'new')
-    expect(controlOtherDateTime).to.be.eq(ExampleDefaultFieldControl)
+    expect(controlOtherDateTime).toBe(ExampleDefaultFieldControl)
   })
 
   it('Should return a correct default control for a specified Content Field when there is a ContentType bound setting specified', () => {
@@ -119,16 +119,16 @@ export const controlMapperTests = describe('ControlMapper', () => {
       return ExampleModifiedControl2
     })
     const control = mapper.getControlForContentField('Task', 'DisplayName', 'new')
-    expect(control).to.be.eq(ExampleModifiedControl2)
+    expect(control).toBe(ExampleModifiedControl2)
 
     const control2 = mapper.getControlForContentField('User', 'DisplayName', 'new')
-    expect(control2).to.be.eq(ExampleDefaultFieldControl)
+    expect(control2).toBe(ExampleDefaultFieldControl)
   })
 
   it('CreateClientSetting should run with defult factory method by default', () => {
     const fieldSetting = { DisplayName: 'TestField' } as ShortTextFieldSetting
     const clientSetting = mapper.createClientSetting(fieldSetting)
-    expect(clientSetting.setting.DisplayName).to.be.eq(fieldSetting.DisplayName)
+    expect(clientSetting.setting.DisplayName).toBe(fieldSetting.DisplayName)
   })
 
   it('CreateClientSetting should be able to run with an overridden factory method', () => {
@@ -139,36 +139,36 @@ export const controlMapperTests = describe('ControlMapper', () => {
     })
 
     const clientSetting = mapper.createClientSetting(fieldSetting)
-    expect(clientSetting.setting.DisplayName).to.be.eq('TESTFIELD')
+    expect(clientSetting.setting.DisplayName).toBe('TESTFIELD')
   })
 
   it('GetAllMappingsForContentTye filtered to View should be able to return all mappings', () => {
     const fullMapping = mapper.getFullSchemaForContentType('Task', 'view').fieldMappings
-    expect(fullMapping.length).to.be.greaterThan(0)
+    expect(fullMapping.length).toBeGreaterThan(0)
     fullMapping.forEach(m => {
-      expect(m.clientSettings.setting.VisibleBrowse).to.be.not.eq(FieldVisibility.Hide)
-      expect(m.clientSettings).to.be.instanceof(ExampleClientSetting)
-      expect(m.controlType).to.be.eq(ExampleDefaultFieldControl)
+      expect(m.clientSettings.setting.VisibleBrowse).not.toBe(FieldVisibility.Hide)
+      expect(m.clientSettings).toBeInstanceOf(ExampleClientSetting)
+      expect(m.controlType).toBe(ExampleDefaultFieldControl)
     })
   })
 
   it('GetAllMappingsForContentTye filtered to Edit should be able to return all mappings', () => {
     const fullMapping = mapper.getFullSchemaForContentType('Task', 'edit').fieldMappings
-    expect(fullMapping.length).to.be.greaterThan(0)
+    expect(fullMapping.length).toBeGreaterThan(0)
     fullMapping.forEach(m => {
-      expect(m.clientSettings.setting.VisibleEdit).to.be.not.eq(FieldVisibility.Hide)
-      expect(m.clientSettings).to.be.instanceof(ExampleClientSetting)
-      expect(m.controlType).to.be.eq(ExampleDefaultFieldControl)
+      expect(m.clientSettings.setting.VisibleEdit).not.toBe(FieldVisibility.Hide)
+      expect(m.clientSettings).toBeInstanceOf(ExampleClientSetting)
+      expect(m.controlType).toBe(ExampleDefaultFieldControl)
     })
   })
 
   it('GetAllMappingsForContentTye filtered to New should be able to return all mappings', () => {
     const fullMapping = mapper.getFullSchemaForContentType('Task', 'new').fieldMappings
-    expect(fullMapping.length).to.be.greaterThan(0)
+    expect(fullMapping.length).toBeGreaterThan(0)
     fullMapping.forEach(m => {
-      expect(m.clientSettings.setting.VisibleNew).to.be.not.eq(FieldVisibility.Hide)
-      expect(m.clientSettings).to.be.instanceof(ExampleClientSetting)
-      expect(m.controlType).to.be.eq(ExampleDefaultFieldControl)
+      expect(m.clientSettings.setting.VisibleNew).not.toBe(FieldVisibility.Hide)
+      expect(m.clientSettings).toBeInstanceOf(ExampleClientSetting)
+      expect(m.controlType).toBe(ExampleDefaultFieldControl)
     })
   })
 })

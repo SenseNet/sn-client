@@ -16,8 +16,7 @@
   "scripts": {
     "precommit": "npm run test",
     "commit": "git-cz",
-    "pretest": "rimraf temp && tsc -p tsconfig.test.json",
-    "test": "rimraf coverage && nyc mocha -p tsconfig.test.json ./temp/test/index.js",
+    "test:jest": "jest",
     "fix": "npm run fix:prettier && npm run fix:tslint",
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
     "fix:tslint": "tslint --fix --project .",
@@ -35,33 +34,8 @@
   },
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "license": "GPL-2.0",
-  "nyc": {
-    "lines": 80,
-    "exclude": [
-      "temp/test/**/*.*",
-      "temp/**/index.js",
-      "temp/src/style.js",
-      "temp/src/**/I*.js",
-      "temp/src/models/*.js",
-      "temp/src/services/TypeHelpers.js",
-      "temp/src/ExampleAppLayout.js",
-      "**/index.js"
-    ],
-    "include": "temp/src/**/*.*",
-    "check-coverage": true,
-    "cache": true,
-    "all": true,
-    "reporter": [
-      "lcov",
-      "text-summary",
-      "json"
-    ]
-  },
   "homepage": "https://sensenet.com",
   "devDependencies": {
-    "@types/chai": "^4.1.7",
-    "@types/lodash.debounce": "^4.0.4",
-    "@types/mocha": "^5.2.5",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.7",
     "@types/react-fontawesome": "^1.6.4",
@@ -70,6 +44,8 @@
     "@types/react-test-renderer": "^16.0.2",
     "@types/redux-logger": "^3.0.6",
     "@types/uuid": "^3.4.4",
+    "@types/jest": "^23.3.10",
+    "jest": "^23.6.0",
     "awesome-typescript-loader": "^5.2.1",
     "copy-webpack-plugin": "^4.5.2",
     "source-map-loader": "^0.2.4",
@@ -83,7 +59,6 @@
     "@material-ui/icons": "^3.0.1",
     "@sensenet/client-utils": "^1.4.1-alpha.0",
     "@sensenet/control-mapper": "^1.0.3-alpha.0",
-    "lodash.debounce": "^4.0.8",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-redux": "^5.0.7",

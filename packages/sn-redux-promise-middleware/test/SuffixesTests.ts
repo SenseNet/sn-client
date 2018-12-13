@@ -1,11 +1,11 @@
-import { expect } from 'chai'
+import 'jest'
 import { suffixes } from '../src'
 
 // tslint:disable:completed-docs
-export const suffixesTest: Mocha.Suite = describe('suffixes', () => {
+export const suffixesTest = describe('suffixes', () => {
   it('should contain the given strings', () => {
-    expect(suffixes.loading).to.be.eq('LOADING')
-    expect(suffixes.success).to.be.eq('SUCCESS')
-    expect(suffixes.failure).to.be.eq('FAILURE')
+    expect(suffixes.loading).toBe('LOADING')
+    expect(suffixes.success).toBe('SUCCESS')
+    expect(suffixes.failure).toBe('FAILURE')
   })
 })

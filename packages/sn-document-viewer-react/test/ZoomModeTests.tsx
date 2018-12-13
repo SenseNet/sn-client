@@ -1,21 +1,21 @@
-import * as React from 'react'
-import { Provider } from 'react-redux'
-
 import IconButton from '@material-ui/core/IconButton'
 import Menu from '@material-ui/core/Menu'
+import 'jest'
+import * as React from 'react'
+import { Provider } from 'react-redux'
 import * as renderer from 'react-test-renderer'
-import { ZoomWidgetComponent } from '../../../src/components/document-widgets/ZoomMode'
-import { documentReceivedAction } from '../../../src/store/Document'
-import { defaultLocalization } from '../../../src/store/Localization'
-import { exampleDocumentData, useTestContext } from '../../viewercontext'
+import { ZoomWidgetComponent } from '../src/components/document-widgets/ZoomMode'
+import { documentReceivedAction } from '../src/store/Document'
+import { defaultLocalization } from '../src/store/Localization'
+import { exampleDocumentData, useTestContext } from './__Mocks__/viewercontext'
 
 /**
  * Zoom Mode widget tests
  */
-export const zoomModeWidgetTests: Mocha.Suite = describe('ZoomModeWidget component', () => {
+describe('ZoomModeWidget component', () => {
   let c!: renderer.ReactTestRenderer
 
-  after(() => {
+  afterEach(() => {
     c.unmount()
   })
 

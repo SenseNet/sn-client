@@ -1,24 +1,24 @@
 import Save from '@material-ui/icons/Save'
+import { sleepAsync } from '@sensenet/client-utils'
 import * as React from 'react'
 import { Provider } from 'react-redux'
 import * as renderer from 'react-test-renderer'
-import { SaveWidget } from '../../../src/components/document-widgets/SaveWidget'
-import { documentPermissionsReceived, documentReceivedAction } from '../../../src/store/Document'
-import { asyncDelay } from '../../asyncdelayer'
+import { SaveWidget } from '../src/components/document-widgets/SaveWidget'
+import { documentPermissionsReceived, documentReceivedAction } from '../src/store/Document'
 import {
   exampleDocumentData,
   useTestContext,
   useTestContextWithSettings,
   useTestContextWithSettingsAsync,
-} from '../../viewercontext'
+} from './__Mocks__/viewercontext'
 
 /**
  * Save widget tests
  */
-export const saveWidgetTests: Mocha.Suite = describe('SaveWidget component', () => {
+describe('SaveWidget component', () => {
   let c!: renderer.ReactTestRenderer
 
-  after(() => {
+  afterEach(() => {
     c.unmount()
   })
 
@@ -33,7 +33,7 @@ export const saveWidgetTests: Mocha.Suite = describe('SaveWidget component', () 
     })
   })
 
-  it('Click on save should trigger a save request', (done: MochaDone) => {
+  it('Click on save should trigger a save request', (done: jest.DoneCallback) => {
     useTestContextWithSettings(
       {
         saveChanges: async () => {
@@ -73,7 +73,7 @@ export const saveWidgetTests: Mocha.Suite = describe('SaveWidget component', () 
         )
         const button = c.root.findByType(Save)
         button.props.onClick()
-        await asyncDelay(100)
+        await sleepAsync(100)
       },
     )
   })

@@ -1,15 +1,14 @@
-import { expect } from 'chai'
 import * as React from 'react'
 import { Provider } from 'react-redux'
 import * as renderer from 'react-test-renderer'
-import { DocumentViewerError } from '../../src/components'
-import { DocumentViewer } from '../../src/components/DocumentViewer'
-import { exampleDocumentData, useTestContext, useTestContextWithSettings } from '../viewercontext'
+import { DocumentViewerError } from '../src/components'
+import { DocumentViewer } from '../src/components/DocumentViewer'
+import { exampleDocumentData, useTestContext, useTestContextWithSettings } from './__Mocks__/viewercontext'
 
 /**
  * Tests for the Document Viewer main component
  */
-export const documentViewerTests: Mocha.Suite = describe('Document Viewer component', () => {
+describe('Document Viewer component', () => {
   it('Should render without crashing', () => {
     useTestContext(ctx => {
       const c = renderer.create(
@@ -21,16 +20,16 @@ export const documentViewerTests: Mocha.Suite = describe('Document Viewer compon
     })
   })
 
-  it('Should poll document data if there is an Id or Path provided and stop polling on unmount', (done: MochaDone) => {
+  it('Should poll document data if there is an Id or Path provided and stop polling on unmount', (done: jest.DoneCallback) => {
     let c!: renderer.ReactTestRenderer
-    after(() => {
+    afterEach(() => {
       c.unmount()
     })
     const exampleIdOrPath = 'Example/Id/Or/Path'
     useTestContextWithSettings(
       {
         getDocumentData: async ({ idOrPath }) => {
-          expect(idOrPath).to.be.eq(exampleIdOrPath)
+          expect(idOrPath).toBe(exampleIdOrPath)
           done()
           return exampleDocumentData
         },
@@ -45,11 +44,11 @@ export const documentViewerTests: Mocha.Suite = describe('Document Viewer compon
     )
   })
 
-  it('Should start polling again on path change', (done: MochaDone) => {
+  it('Should start polling again on path change', (done: jest.DoneCallback) => {
     let c!: renderer.ReactTestRenderer
     let pollCount = 0
     let promise!: Promise<void>
-    after(() => {
+    afterEach(() => {
       c.unmount()
     })
 
@@ -82,15 +81,15 @@ export const documentViewerTests: Mocha.Suite = describe('Document Viewer compon
     })
   })
 
-  it('should render the Error component when failed to get doc data', (done: MochaDone) => {
+  it('should render the Error component when failed to get doc data', (done: jest.DoneCallback) => {
     let c!: renderer.ReactTestRenderer
-    after(() => {
+    afterEach(() => {
       c.unmount()
     })
     const exampleIdOrPath = 'Example/Id/Or/Path'
     useTestContextWithSettings(
       {
-        getDocumentData: () => Promise.reject('Nooo'),
+        getDocumentData: () => Promise.reject('Nooo') as Promise<any>,
       },
       ctx => {
         c = renderer.create(
@@ -100,7 +99,7 @@ export const documentViewerTests: Mocha.Suite = describe('Document Viewer compon
         )
         setTimeout(() => {
           const error = c.root.findByType(DocumentViewerError).instance
-          expect(error).to.be.not.eq(null)
+          expect(error).not.toBe(null)
           done()
         }, 100)
       },

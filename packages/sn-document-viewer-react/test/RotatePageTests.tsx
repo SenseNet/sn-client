@@ -1,32 +1,32 @@
-import RotateLeft from '@material-ui/icons/RotateLeft'
-import RotateRight from '@material-ui/icons/RotateRight'
 import * as React from 'react'
 import { Provider } from 'react-redux'
 
+import RotateLeft from '@material-ui/icons/RotateLeft'
+import RotateRight from '@material-ui/icons/RotateRight'
 import { expect } from 'chai'
 import * as renderer from 'react-test-renderer'
-import { RotateDocumentWidget } from '../../../src/components/document-widgets/RotateDocument'
-import { documentReceivedAction } from '../../../src/store/Document'
-import { availabelImagesReceivedAction } from '../../../src/store/PreviewImages'
-import { exampleDocumentData, useTestContext } from '../../viewercontext'
+import { RotatePageWidget } from '../src/components/page-widgets/RotatePage'
+import { documentReceivedAction } from '../src/store/Document'
+import { availabelImagesReceivedAction } from '../src/store/PreviewImages'
+import { exampleDocumentData, useTestContext } from './__Mocks__/viewercontext'
 
 /**
- * Rotate Document widget tests
+ * RotatePage widget tests
  */
-export const rotateDocumentWidgetTests: Mocha.Suite = describe('RotateDocumentWidget component', () => {
+describe('RotatePageWidget component', () => {
   let c!: renderer.ReactTestRenderer
 
-  after(() => {
+  afterEach(() => {
     c.unmount()
   })
 
   it('Should render without crashing', () => {
     useTestContext(ctx => {
       ctx.store.dispatch(documentReceivedAction(exampleDocumentData))
-
+      const page = ctx.store.getState().sensenetDocumentViewer.previewImages.AvailableImages[0]
       c = renderer.create(
         <Provider store={ctx.store}>
-          <RotateDocumentWidget />
+          <RotatePageWidget page={page} viewPort={{ width: 1024, height: 768 }} zoomRatio={1} />
         </Provider>,
       )
     })
@@ -47,9 +47,11 @@ export const rotateDocumentWidgetTests: Mocha.Suite = describe('RotateDocumentWi
           },
         ]),
       )
+      const page = ctx.store.getState().sensenetDocumentViewer.previewImages.AvailableImages[0]
+
       c = renderer.create(
         <Provider store={ctx.store}>
-          <RotateDocumentWidget />
+          <RotatePageWidget page={page} viewPort={{ width: 1024, height: 768 }} zoomRatio={1} />
         </Provider>,
       )
       const button = c.root.findByType(RotateLeft)
@@ -75,9 +77,10 @@ export const rotateDocumentWidgetTests: Mocha.Suite = describe('RotateDocumentWi
           },
         ]),
       )
+      const page = ctx.store.getState().sensenetDocumentViewer.previewImages.AvailableImages[0]
       c = renderer.create(
         <Provider store={ctx.store}>
-          <RotateDocumentWidget />
+          <RotatePageWidget page={page} viewPort={{ width: 1024, height: 768 }} zoomRatio={1} />
         </Provider>,
       )
       const button = c.root.findByType(RotateRight)
