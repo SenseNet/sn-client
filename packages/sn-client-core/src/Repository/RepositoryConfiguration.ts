@@ -6,13 +6,15 @@ import { ODataFieldParameter, ODataMetadataType } from '../Models/ODataParams'
  */
 export class RepositoryConfiguration {
   /**
+   * A reference to the global window instance
+   */
+  public static windowInstance?: Window = typeof window === 'undefined' ? undefined : window
+
+  /**
    * The default base URL, returns window.location if available
    */
   public static get DEFAULT_BASE_URL(): string {
-    if (typeof window !== 'undefined') {
-      return (window && window.location && window.location.origin) || ''
-    }
-    return ''
+    return (this.windowInstance && this.windowInstance.location && this.windowInstance.location.origin) || ''
   }
 
   /**

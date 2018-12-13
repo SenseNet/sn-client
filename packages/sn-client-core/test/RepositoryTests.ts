@@ -1,6 +1,6 @@
 import { using } from '@sensenet/client-utils'
 import { ActionModel, User } from '@sensenet/default-content-types'
-import { expect } from 'chai'
+import 'jest'
 import { ActionOptions, Repository } from '../src'
 import { Content } from '../src/Models/Content'
 import { ODataCollectionResponse } from '../src/Models/ODataCollectionResponse'
@@ -11,7 +11,7 @@ import { isExtendedError } from '../src/Repository/Repository'
 // tslint:disable:completed-docs
 declare const global: any
 global.window = {}
-export const repositoryTests: Mocha.Suite = describe('Repository', () => {
+describe('Repository', () => {
   let repository: Repository
   const mockResponse: Response = {
     ok: true,
@@ -31,10 +31,10 @@ export const repositoryTests: Mocha.Suite = describe('Repository', () => {
   })
 
   it('Should be constructed', () => {
-    expect(repository).to.be.instanceof(Repository)
+    expect(repository).toBeInstanceOf(Repository)
   })
 
-  it('Should be constructed with a built-in fetch method', (done: MochaDone) => {
+  it('Should be constructed with a built-in fetch method', (done: jest.DoneCallback) => {
     global.window.fetch = () => {
       done()
     }
@@ -45,19 +45,19 @@ export const repositoryTests: Mocha.Suite = describe('Repository', () => {
 
   it('Should be disposed', () => {
     using(new Repository(), r => {
-      expect(r).to.be.instanceof(Repository)
+      expect(r).toBeInstanceOf(Repository)
     })
   })
 
   describe('fetch', () => {
-    it('Should await readyState by default', (done: MochaDone) => {
+    it('Should await readyState by default', (done: jest.DoneCallback) => {
       repository.awaitReadyState = async () => {
         done()
       }
       repository.fetch('')
     })
 
-    it('Should be able to skip awaiting readyState', (done: MochaDone) => {
+    it('Should be able to skip awaiting readyState', (done: jest.DoneCallback) => {
       repository.awaitReadyState = async () => {
         done("Shouldn't be called")
       }
@@ -81,10 +81,10 @@ export const repositoryTests: Mocha.Suite = describe('Repository', () => {
         const resp = await repository.load({
           idOrPath: 1,
         })
-        expect(resp.d).to.be.deep.eq(ConstantContent.PORTAL_ROOT)
+        expect(resp.d).toEqual(ConstantContent.PORTAL_ROOT)
       })
 
-      it('should throw on unsuccessfull request', (done: MochaDone) => {
+      it('should throw on unsuccessfull request', (done: jest.DoneCallback) => {
         ;(mockResponse as any).ok = false
         repository
           .load({
@@ -113,10 +113,10 @@ export const repositoryTests: Mocha.Suite = describe('Repository', () => {
         const resp = await repository.loadCollection({
           path: 'Root/Sites/Default_Site',
         })
-        expect(resp.d.results[0]).to.be.deep.eq(ConstantContent.PORTAL_ROOT)
+        expect(resp.d.results[0]).toEqual(ConstantContent.PORTAL_ROOT)
       })
 
-      it('should throw on unsuccessfull request', (done: MochaDone) => {
+      it('should throw on unsuccessfull request', (done: jest.DoneCallback) => {
         ;(mockResponse as any).ok = false
         repository
           .loadCollection({
@@ -145,10 +145,10 @@ export const repositoryTests: Mocha.Suite = describe('Repository', () => {
           contentType: 'Task',
         })
 
-        expect(response.d).to.be.deep.eq(ConstantContent.PORTAL_ROOT)
+        expect(response.d).toEqual(ConstantContent.PORTAL_ROOT)
       })
 
-      it('should throw on unsuccessfull request', (done: MochaDone) => {
+      it('should throw on unsuccessfull request', (done: jest.DoneCallback) => {
         ;(mockResponse as any).ok = false
         repository
           .post({
@@ -178,10 +178,10 @@ export const repositoryTests: Mocha.Suite = describe('Repository', () => {
           content: ConstantContent.PORTAL_ROOT,
         })
 
-        expect(response.d).to.be.deep.eq(ConstantContent.PORTAL_ROOT)
+        expect(response.d).toEqual(ConstantContent.PORTAL_ROOT)
       })
 
-      it('should throw on unsuccessfull request', (done: MochaDone) => {
+      it('should throw on unsuccessfull request', (done: jest.DoneCallback) => {
         ;(mockResponse as any).ok = false
         repository
           .patch({
@@ -210,10 +210,10 @@ export const repositoryTests: Mocha.Suite = describe('Repository', () => {
           content: ConstantContent.PORTAL_ROOT,
         })
 
-        expect(response.d).to.be.deep.eq(ConstantContent.PORTAL_ROOT)
+        expect(response.d).toEqual(ConstantContent.PORTAL_ROOT)
       })
 
-      it('should throw on unsuccessfull request', (done: MochaDone) => {
+      it('should throw on unsuccessfull request', (done: jest.DoneCallback) => {
         ;(mockResponse as any).ok = false
         repository
           .put({
@@ -245,7 +245,7 @@ export const repositoryTests: Mocha.Suite = describe('Repository', () => {
           permanent: true,
         })
 
-        expect(response.d.results[0]).to.be.deep.eq(ConstantContent.PORTAL_ROOT)
+        expect(response.d.results[0]).toEqual(ConstantContent.PORTAL_ROOT)
       })
 
       it('should resolve with muliple content', async () => {
@@ -263,7 +263,7 @@ export const repositoryTests: Mocha.Suite = describe('Repository', () => {
           permanent: true,
         })
 
-        expect(response.d.results[0]).to.be.deep.eq(ConstantContent.PORTAL_ROOT)
+        expect(response.d.results[0]).toEqual(ConstantContent.PORTAL_ROOT)
       })
     })
 
@@ -283,7 +283,7 @@ export const repositoryTests: Mocha.Suite = describe('Repository', () => {
           targetPath: 'Root/Example/Folder',
         })
 
-        expect(response.d.results[0]).to.be.deep.eq(ConstantContent.PORTAL_ROOT)
+        expect(response.d.results[0]).toEqual(ConstantContent.PORTAL_ROOT)
       })
     })
 
@@ -303,7 +303,7 @@ export const repositoryTests: Mocha.Suite = describe('Repository', () => {
           targetPath: 'Root/Example/Folder',
         })
 
-        expect(response.d.results[0]).to.be.deep.eq(ConstantContent.PORTAL_ROOT)
+        expect(response.d.results[0]).toEqual(ConstantContent.PORTAL_ROOT)
       })
     })
 
@@ -318,7 +318,7 @@ export const repositoryTests: Mocha.Suite = describe('Repository', () => {
         const response = await repository.getActions({
           idOrPath: 'Root/Sites/Default_Site',
         })
-        expect(response.d).to.be.deep.eq([{ Name: 'MockAction' }])
+        expect(response.d).toEqual([{ Name: 'MockAction' }])
       })
 
       it('should resolve on success with scenario', async () => {
@@ -332,10 +332,10 @@ export const repositoryTests: Mocha.Suite = describe('Repository', () => {
           idOrPath: 'Root/Sites/Default_Site',
           scenario: 'example',
         })
-        expect(response.d).to.be.deep.eq([{ Name: 'MockAction' }])
+        expect(response.d).toEqual([{ Name: 'MockAction' }])
       })
 
-      it('should throw on unsuccessfull request', (done: MochaDone) => {
+      it('should throw on unsuccessfull request', (done: jest.DoneCallback) => {
         ;(mockResponse as any).ok = false
         ;(mockResponse as any).statusText = ':('
         repository
@@ -346,7 +346,7 @@ export const repositoryTests: Mocha.Suite = describe('Repository', () => {
             done('Should throw')
           })
           .catch(err => {
-            expect(err.message).to.be.eq(':(')
+            expect(err.message).toBe(':(')
             done()
           })
       })
@@ -366,10 +366,10 @@ export const repositoryTests: Mocha.Suite = describe('Repository', () => {
           method: 'GET',
           body: {},
         })
-        expect(response.d).to.be.deep.eq(ConstantContent.PORTAL_ROOT)
+        expect(response.d).toEqual(ConstantContent.PORTAL_ROOT)
       })
 
-      it('should throw on unsuccessfull request', (done: MochaDone) => {
+      it('should throw on unsuccessfull request', (done: jest.DoneCallback) => {
         ;(mockResponse as any).ok = false
         repository
           .executeAction<{}, ODataResponse<Content>>({
@@ -499,9 +499,9 @@ export const repositoryTests: Mocha.Suite = describe('Repository', () => {
   describe('#reloadSchema', () => {
     it('Should execute the proper custom action', done => {
       repository.executeAction = async (options: ActionOptions<any, any>) => {
-        expect(options.name).to.be.eq('GetSchema')
-        expect(options.idOrPath).to.be.eq('Root')
-        expect(options.method).to.be.eq('GET')
+        expect(options.name).toBe('GetSchema')
+        expect(options.idOrPath).toBe('Root')
+        expect(options.method).toBe('GET')
         done()
         return {} as any
       }
@@ -511,7 +511,7 @@ export const repositoryTests: Mocha.Suite = describe('Repository', () => {
 
   describe('#extendedError', () => {
     it('isExtendedError should return with false if the response is not attached', async () => {
-      expect(isExtendedError(Error(''))).to.be.eq(false)
+      expect(isExtendedError(Error(''))).toBe(false)
     })
 
     it('Should be generated from Repository errors with the statusText if no response body is available', async () => {
@@ -519,9 +519,9 @@ export const repositoryTests: Mocha.Suite = describe('Repository', () => {
         // json: async () => ({}),
         statusText: 'statusText',
       } as Response)
-      expect(e).to.be.instanceof(Error)
-      expect(isExtendedError(e)).to.be.eq(true)
-      expect(e.message).to.be.eq('statusText')
+      expect(e).toBeInstanceOf(Error)
+      expect(isExtendedError(e)).toBe(true)
+      expect(e.message).toBe('statusText')
     })
 
     it('Should be generated from Repository errors from the response body message', async () => {
@@ -529,9 +529,9 @@ export const repositoryTests: Mocha.Suite = describe('Repository', () => {
         json: async () => ({ error: { message: { value: 'errorValue' } } }),
         statusText: 'invalid',
       } as Response)
-      expect(e).to.be.instanceof(Error)
-      expect(isExtendedError(e)).to.be.eq(true)
-      expect(e.message).to.be.eq('errorValue')
+      expect(e).toBeInstanceOf(Error)
+      expect(isExtendedError(e)).toBe(true)
+      expect(e.message).toBe('errorValue')
     })
   })
 })

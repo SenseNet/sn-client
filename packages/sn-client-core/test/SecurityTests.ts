@@ -1,10 +1,10 @@
 import { IdentityKind, Inheritance, PermissionLevel, PermissionValues } from '@sensenet/default-content-types'
-import { expect } from 'chai'
+import 'jest'
 import { Repository } from '../src/Repository/Repository'
 import { Security } from '../src/Repository/Security'
 
 // tslint:disable:completed-docs
-export const securityTests: Mocha.Suite = describe('Security', () => {
+describe('Security', () => {
   let security: Security
   let repository: Repository
 
@@ -18,7 +18,7 @@ export const securityTests: Mocha.Suite = describe('Security', () => {
   })
 
   it('Should execute setPermissionInheritance', () => {
-    expect(security.setPermissionInheritance(1, Inheritance.Break)).to.be.instanceof(Promise)
+    expect(security.setPermissionInheritance(1, Inheritance.Break)).toBeInstanceOf(Promise)
   })
 
   it('Should execute setPermissions', () => {
@@ -27,23 +27,23 @@ export const securityTests: Mocha.Suite = describe('Security', () => {
         AddNew: PermissionValues.allow,
         identity: 'root/users/user1',
       }),
-    ).to.be.instanceof(Promise)
+    ).toBeInstanceOf(Promise)
   })
 
   it('Should execute getPermissions', () => {
-    expect(security.getPermissionsForIdentity(1, 'root/users/user1')).to.be.instanceof(Promise)
+    expect(security.getPermissionsForIdentity(1, 'root/users/user1')).toBeInstanceOf(Promise)
   })
 
   it('Should execute getPermissions w/o identity path', () => {
-    expect(security.getAllPermissions(1)).to.be.instanceof(Promise)
+    expect(security.getAllPermissions(1)).toBeInstanceOf(Promise)
   })
 
   it('Should execute hasPermission', () => {
-    expect(security.hasPermission(1, ['See'], 'root/users/user1')).to.be.instanceof(Promise)
+    expect(security.hasPermission(1, ['See'], 'root/users/user1')).toBeInstanceOf(Promise)
   })
 
   it('Should execute hasPermission w/o identity path', () => {
-    expect(security.hasPermission(1, ['See'])).to.be.instanceof(Promise)
+    expect(security.hasPermission(1, ['See'])).toBeInstanceOf(Promise)
   })
 
   it('Should evaulate if hasPermission returns false', async () => {
@@ -55,7 +55,7 @@ export const securityTests: Mocha.Suite = describe('Security', () => {
       } as any
     }
     const hasPermission = await security.hasPermission(1, ['See'], 'root/users/user1')
-    expect(hasPermission).to.be.eq(false)
+    expect(hasPermission).toBe(false)
   })
 
   it('Should throw if hasPermission fails', async () => {
@@ -76,7 +76,7 @@ export const securityTests: Mocha.Suite = describe('Security', () => {
         level: PermissionLevel.Allowed,
         kind: IdentityKind.All,
       }),
-    ).to.be.instanceof(Promise)
+    ).toBeInstanceOf(Promise)
   })
 
   it('Should execute getRelatedPermissions', () => {
@@ -87,7 +87,7 @@ export const securityTests: Mocha.Suite = describe('Security', () => {
         explicitOnly: true,
         memberPath: 'root/user/member',
       }),
-    ).to.be.instanceof(Promise)
+    ).toBeInstanceOf(Promise)
   })
 
   it('Should execute getRelatedItems', () => {
@@ -99,7 +99,7 @@ export const securityTests: Mocha.Suite = describe('Security', () => {
         member: 'root/users/member1',
         permissions: [],
       }),
-    ).to.be.instanceof(Promise)
+    ).toBeInstanceOf(Promise)
   })
 
   it('Should execute getRelatedIdentitiesByPermissions', () => {
@@ -110,7 +110,7 @@ export const securityTests: Mocha.Suite = describe('Security', () => {
         kind: IdentityKind.All,
         permissions: [],
       }),
-    ).to.be.instanceof(Promise)
+    ).toBeInstanceOf(Promise)
   })
 
   it('Should execute getRelatedItemsOneLevel', () => {
@@ -121,7 +121,7 @@ export const securityTests: Mocha.Suite = describe('Security', () => {
         member: 'root/users/member',
         permissions: [],
       }),
-    ).to.be.instanceof(Promise)
+    ).toBeInstanceOf(Promise)
   })
 
   it('Should execute getAllowedUsers', () => {
@@ -130,18 +130,18 @@ export const securityTests: Mocha.Suite = describe('Security', () => {
         contentIdOrPath: 1,
         permissions: [],
       }),
-    ).to.be.instanceof(Promise)
+    ).toBeInstanceOf(Promise)
   })
 
   it('Should execute getParentGroups', () => {
-    expect(security.getParentGroups({ contentIdOrPath: 1, directOnly: true })).to.be.instanceof(Promise)
+    expect(security.getParentGroups({ contentIdOrPath: 1, directOnly: true })).toBeInstanceOf(Promise)
   })
 
   it('Should execute addMembers', () => {
-    expect(security.addMembers(1, [])).to.be.instanceof(Promise)
+    expect(security.addMembers(1, [])).toBeInstanceOf(Promise)
   })
 
   it('Should execute removeMembers', () => {
-    expect(security.removeMembers(1, [])).to.be.instanceof(Promise)
+    expect(security.removeMembers(1, [])).toBeInstanceOf(Promise)
   })
 })

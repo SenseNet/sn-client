@@ -1,5 +1,5 @@
 import { ObservableValue, Trace } from '@sensenet/client-utils'
-import { expect } from 'chai'
+import 'jest'
 import { UploadProgressInfo } from '../src'
 import { Repository } from '../src/Repository/Repository'
 import { Upload } from '../src/Repository/Upload'
@@ -23,7 +23,7 @@ global.FormData = class {
   }
 }
 
-export const uploadTests: Mocha.Suite = describe('Upload', () => {
+describe('Upload', () => {
   let repo: Repository
 
   let mockAnswer: any
@@ -55,15 +55,15 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
 
   describe('#isChunkedUploadNeeded()', () => {
     it('should return true is the file is larger than the chunk size', () => {
-      expect(
-        Upload.isChunkedUploadNeeded({ size: 1024 } as any, { configuration: { chunkSize: 640 } } as any),
-      ).to.be.eq(true)
+      expect(Upload.isChunkedUploadNeeded({ size: 1024 } as any, { configuration: { chunkSize: 640 } } as any)).toBe(
+        true,
+      )
     })
 
     it('should return false is the file is smaller than the chunk size', () => {
-      expect(
-        Upload.isChunkedUploadNeeded({ size: 1024 } as any, { configuration: { chunkSize: 2048 } } as any),
-      ).to.be.eq(false)
+      expect(Upload.isChunkedUploadNeeded({ size: 1024 } as any, { configuration: { chunkSize: 2048 } } as any)).toBe(
+        false,
+      )
     })
   })
 
@@ -79,7 +79,7 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
         contentTypeName: 'File',
         progressObservable: new ObservableValue<UploadProgressInfo>(),
       })
-      expect(answer).to.be.deep.eq(mockAnswer)
+      expect(answer).toEqual(mockAnswer)
     })
 
     it('should throw on upload failure', done => {
@@ -115,7 +115,7 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
         contentTypeName: 'File',
         progressObservable: new ObservableValue<UploadProgressInfo>(),
       })
-      expect(answer).to.be.deep.eq(mockAnswer)
+      expect(answer).toEqual(mockAnswer)
     })
 
     it('Should throw on error chunked', done => {
@@ -168,7 +168,7 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
   })
 
   describe('#fromDropEvent()', () => {
-    it('should trigger an Upload request without webkitRequestFileSystem', (done: MochaDone) => {
+    it('should trigger an Upload request without webkitRequestFileSystem', (done: jest.DoneCallback) => {
       ;(global as any).window.webkitRequestFileSystem = undefined
       const file = new File(['alma.txt'], 'alma')
       Object.assign(file, { type: 'file' })
@@ -196,11 +196,9 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
       })
     })
 
-    it('should trigger an Upload request with webkitRequestFileSystem', (done: MochaDone) => {
-      ;(global as any).window = {
-        webkitRequestFileSystem: () => {
-          /**/
-        },
+    it('should trigger an Upload request with webkitRequestFileSystem', (done: jest.DoneCallback) => {
+      ;(global as any).window.webkitRequestFileSystem = () => {
+        /**/
       }
       const uploadTrace = Trace.method({
         object: Upload,
@@ -220,6 +218,7 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
         event: {
           dataTransfer: {
             items: [{ webkitGetAsEntry: () => file }],
+            files: [],
           },
         } as any,
         parentPath: 'Root/Example',
@@ -231,7 +230,7 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
       })
     })
 
-    it('should fail with webkitRequestFileSystem if failed to read a file', (done: MochaDone) => {
+    it('should fail with webkitRequestFileSystem if failed to read a file', (done: jest.DoneCallback) => {
       ;(global as any).window = {
         webkitRequestFileSystem: () => {
           /**/
@@ -261,7 +260,7 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
       })
     })
 
-    it('should trigger a post when the dataTransfer contains folders', (done: MochaDone) => {
+    it('should trigger a post when the dataTransfer contains folders', (done: jest.DoneCallback) => {
       ;(global as any).window = {
         webkitRequestFileSystem: () => {
           /**/
@@ -307,6 +306,7 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
         event: {
           dataTransfer: {
             items: [{ webkitGetAsEntry: () => directory }],
+            files: [],
           },
         } as any,
         progressObservable: new ObservableValue<UploadProgressInfo>(),
@@ -318,7 +318,7 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
         overwrite: true,
       })
         .then(() => {
-          expect(postHasCalled).to.be.eq(true)
+          expect(postHasCalled).toBe(true)
           done()
         })
         .catch(err => {
@@ -326,7 +326,7 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
         })
     })
 
-    it('should fail if there is an error reading folders', (done: MochaDone) => {
+    it('should fail if there is an error reading folders', (done: jest.DoneCallback) => {
       ;(global as any).window = {
         webkitRequestFileSystem: () => {
           /**/
@@ -390,7 +390,7 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
       },
     }
 
-    it('should trigger an Upload request when uploading with folders', (done: MochaDone) => {
+    it('should trigger an Upload request when uploading with folders', (done: jest.DoneCallback) => {
       ;(global as any).window = {
         webkitRequestFileSystem: () => {
           /**/
@@ -416,7 +416,7 @@ export const uploadTests: Mocha.Suite = describe('Upload', () => {
       })
     })
 
-    it('should trigger an Upload request without folder upload', (done: MochaDone) => {
+    it('should trigger an Upload request without folder upload', (done: jest.DoneCallback) => {
       ;(global as any).window = {
         webkitRequestFileSystem: () => {
           /**/

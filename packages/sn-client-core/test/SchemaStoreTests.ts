@@ -1,13 +1,13 @@
 import { Schema, SchemaStore as DefaultSchemaStore, User } from '@sensenet/default-content-types'
-import { expect } from 'chai'
+import 'jest'
 import { SchemaStore } from '../src/Schemas/SchemaStore'
 
 /**
  * Unit tests for SchemaStore
  */
-export const schemaStoreTests: Mocha.Suite = describe('SchemaStore', () => {
+describe('SchemaStore', () => {
   it('Should be constructed', () => {
-    expect(new SchemaStore()).to.be.instanceof(SchemaStore)
+    expect(new SchemaStore()).toBeInstanceOf(SchemaStore)
   })
 
   it('Schemas can be set', () => {
@@ -15,7 +15,7 @@ export const schemaStoreTests: Mocha.Suite = describe('SchemaStore', () => {
     const newSchemaArray: Schema[] = []
     store.setSchemas(newSchemaArray)
     // tslint:disable-next-line:no-string-literal
-    expect(store['schemas']).to.be.eq(newSchemaArray)
+    expect(store['schemas']).toBe(newSchemaArray)
   })
 
   it('Schemas can be retrieved by Content Type', () => {
@@ -23,7 +23,7 @@ export const schemaStoreTests: Mocha.Suite = describe('SchemaStore', () => {
     store.setSchemas(DefaultSchemaStore)
     const schema = store.getSchema(User)
     // tslint:disable-next-line:no-string-literal
-    expect(schema.ContentTypeName).to.be.eq('User')
+    expect(schema.ContentTypeName).toBe('User')
   })
 
   it('Schemas can be retrieved by name', () => {
@@ -31,7 +31,7 @@ export const schemaStoreTests: Mocha.Suite = describe('SchemaStore', () => {
     store.setSchemas(DefaultSchemaStore)
     const schema = store.getSchemaByName('User')
     // tslint:disable-next-line:no-string-literal
-    expect(schema.ContentTypeName).to.be.eq('User')
+    expect(schema.ContentTypeName).toBe('User')
   })
 
   it('Schemas can be retrieved by name from cache', () => {
@@ -39,15 +39,15 @@ export const schemaStoreTests: Mocha.Suite = describe('SchemaStore', () => {
     store.setSchemas(DefaultSchemaStore)
     const schema = store.getSchemaByName('User')
     const schema2 = store.getSchemaByName('GenericContent')
-    expect(schema.ContentTypeName).to.be.eq('User')
-    expect(schema2.ContentTypeName).to.be.eq('GenericContent')
+    expect(schema.ContentTypeName).toBe('User')
+    expect(schema2.ContentTypeName).toBe('GenericContent')
   })
 
   it('Should fall back to GenericContent Schema if not found', () => {
     const store = new SchemaStore()
     store.setSchemas(DefaultSchemaStore)
     const schema = store.getSchemaByName('NotFound')
-    expect(schema.ContentTypeName).to.be.eq('GenericContent')
+    expect(schema.ContentTypeName).toBe('GenericContent')
   })
 
   it('Should be able to merge field settings', () => {
@@ -64,7 +64,7 @@ export const schemaStoreTests: Mocha.Suite = describe('SchemaStore', () => {
         { Name: 'ParentField', Type: 'Example', FieldClassName: 'Example' },
       ],
     )
-    expect(result).to.be.deep.eq([
+    expect(result).toEqual([
       { Name: 'Field', Type: 'Example', FieldClassName: 'ExampleOverriddenValue' },
       { Name: 'Field2', Type: 'Example', FieldClassName: 'Example' },
       { Name: 'ParentField', Type: 'Example', FieldClassName: 'Example' },

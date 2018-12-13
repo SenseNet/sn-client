@@ -10,8 +10,7 @@
   "scripts": {
     "precommit": "npm run test",
     "commit": "git-cz",
-    "pretest": "rimraf temp && tsc -p tsconfig.test.json",
-    "test": "rimraf coverage && nyc mocha -p tsconfig.test.json ./temp/test/index.js",
+    "test:jest": "jest",
     "fix": "npm run fix:prettier && npm run fix:tslint",
     "fix:prettier": "prettier \"{,!(dist|temp)/**/}*.{ts,tsx}\" --write",
     "fix:tslint": "tslint --fix --project .",
@@ -33,22 +32,6 @@
   },
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "license": "GPL-2.0",
-  "nyc": {
-    "exclude": [
-      "temp/test/**/*.*",
-      "temp/src/**/I*.js",
-      "**/index.js"
-    ],
-    "include": "temp/src/**/*.*",
-    "check-coverage": true,
-    "cache": true,
-    "all": true,
-    "reporter": [
-      "lcov",
-      "text-summary",
-      "json"
-    ]
-  },
   "homepage": "https://sensenet.com",
   "dependencies": {
     "@sensenet/client-utils": "^1.4.1-alpha.0",
@@ -58,8 +41,8 @@
     "uuid": "^3.3.2"
   },
   "devDependencies": {
-    "@types/chai": "^4.1.7",
-    "@types/mocha": "^5.2.5"
+    "@types/jest": "^23.3.10",
+    "jest": "^23.6.0"
   },
   "config": {
     "commitizen": {
