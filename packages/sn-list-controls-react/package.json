@@ -16,8 +16,7 @@
   "scripts": {
     "precommit": "npm run test",
     "commit": "git-cz",
-    "pretest": "tsc --build tsconfig.test.json",
-    "test": "rimraf coverage && nyc mocha --require ignore-styles -p tsconfig.test.json ./temp/test/index.js",
+    "test:jest": "jest",
     "fix": "npm run fix:prettier && npm run fix:tslint",
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
     "fix:tslint": "tslint --fix --project .",
@@ -34,40 +33,16 @@
   },
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "license": "GPL-2.0",
-  "nyc": {
-    "lines": 80,
-    "exclude": [
-      "dist/Tests/**/*.*",
-      "dist/Tests/**/*.*",
-      "dist/assets",
-      "dist/**/index.js",
-      "**/*.css",
-      "**/index.js"
-    ],
-    "extension": [
-      ".tsx",
-      ".ts",
-      ".d.ts"
-    ],
-    "include": "dist/ContentList/**/*.*",
-    "check-coverage": true,
-    "cache": true,
-    "reporter": [
-      "lcov",
-      "text-summary",
-      "json"
-    ]
-  },
   "homepage": "https://sensenet.com",
   "devDependencies": {
-    "@types/chai": "^4.1.7",
-    "@types/mocha": "^5.2.5",
     "@types/react": "^16.7.7",
     "@types/react-dom": "^16.0.10",
     "@types/react-router": "^4.4.1",
     "@types/react-router-dom": "^4.3.1",
     "@types/react-test-renderer": "^16.0.3",
+    "@types/jest": "^23.3.10",
     "@types/uuid": "^3.4.4",
+    "jest": "^23.6.0",
     "autoprefixer": "^9.3.1",
     "awesome-typescript-loader": "^5.2.1",
     "copy-webpack-plugin": "^4.6.0",

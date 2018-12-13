@@ -1,12 +1,12 @@
 import IconButton from '@material-ui/core/IconButton'
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
-import { ActionsCell } from '../../src/ContentList/CellTemplates/ActionsCell'
+import { ActionsCell } from '../src/ContentList/CellTemplates/ActionsCell'
 
 /**
  * ActionCell Component tests
  */
-export const actionCellTests: Mocha.Suite = describe('ActionCell component', () => {
+describe('ActionCell component', () => {
   it('Should render without crashing', () => {
     const component = renderer.create(
       <ActionsCell actions={[]} openActionMenu={() => undefined} content={{ Id: 1, Path: '', Name: '', Type: '' }} />,
@@ -14,7 +14,7 @@ export const actionCellTests: Mocha.Suite = describe('ActionCell component', () 
     component.unmount()
   })
 
-  it('Should handle on action menu click', (done: MochaDone) => {
+  it('Should handle on action menu click', (done: jest.DoneCallback) => {
     const component = renderer.create(
       <ActionsCell
         actions={[]}
