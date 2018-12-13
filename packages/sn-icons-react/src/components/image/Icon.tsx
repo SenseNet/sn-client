@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 
 interface ImageIconProps {
   /**
@@ -14,11 +14,11 @@ interface ImageIconProps {
   /**
    * Style object that is passed to the inner material-ui Icon component
    */
-  style?: object
+  style?: object | null
   /**
    * Called when the icon is clicked
    */
-  onClick?
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void
 }
 /**
  * Image Icon component
@@ -42,7 +42,7 @@ export class ImageIcon extends React.Component<ImageIconProps, {}> {
     }
     const styles = style ? style : null
     return (
-      <span style={{ ...(styler as any), ...styles }} onClick={onClick ? onClick : null}>
+      <span style={{ ...(styler as any), ...styles }} onClick={onClick ? onClick : undefined}>
         {this.props.children ? this.props.children : null}
       </span>
     )
