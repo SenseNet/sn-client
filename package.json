@@ -35,6 +35,7 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build",
+    "build:dms": "yarn && yarn build && yarn workspace sn-dms-demo run build:webpack",
     "test": "yarn jest && lerna run test",
     "clean": "lerna clean",
     "fix": "lerna run fix --parallel",
