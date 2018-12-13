@@ -80,7 +80,11 @@
       "!**/test/**/*.{ts,tsx}",
       "!**/__tests__/**/*.{ts,tsx}",
       "!**/*.d.{ts,tsx}",
-      "!**/node_modules/**"
+      "!**/node_modules/**",
+      "!**/index.ts",
+      "!**/example*.*",
+      "!**/Example*.*",
+      "!**/Example*/**/*.*"
     ],
     "coverageReporters": [
       "json",
