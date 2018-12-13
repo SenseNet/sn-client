@@ -6,7 +6,7 @@ import { PromiseMiddlewareAction } from '../src/Types'
 /**
  * Test suite for promiseMiddleware
  */
-export const promiseMiddlewareTest: Mocha.Suite = describe('PromiseMiddleware', () => {
+describe('PromiseMiddleware', () => {
   it('Should be registered into a Store', () => {
     const store = createStore(({}) => ({}), {}, applyMiddleware(promiseMiddleware(undefined)))
     expect(store).to.be.instanceof(Object)

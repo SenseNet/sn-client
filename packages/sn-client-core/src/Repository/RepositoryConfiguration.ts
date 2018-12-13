@@ -5,14 +5,13 @@ import { ODataFieldParameter, ODataMetadataType } from '../Models/ODataParams'
  * Class that contains basic configuration for a sensenet Repository
  */
 export class RepositoryConfiguration {
+  public static windowInstance: Window = window
+
   /**
    * The default base URL, returns window.location if available
    */
   public static get DEFAULT_BASE_URL(): string {
-    if (typeof window !== 'undefined') {
-      return (window && window.location && window.location.origin) || ''
-    }
-    return ''
+    return (this.windowInstance && this.windowInstance.location && this.windowInstance.location.origin) || ''
   }
 
   /**

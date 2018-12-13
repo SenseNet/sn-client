@@ -1,34 +1,32 @@
-import { expect } from 'chai'
+import 'jest'
 import { RepositoryConfiguration } from '../src/Repository/RepositoryConfiguration'
 
 // tslint:disable:completed-docs
-declare const global: any
-
-export const repositoryConfigTests: Mocha.Suite = describe('RepositoryConfig', () => {
+describe('RepositoryConfig', () => {
   it('Should be constructed without options', () => {
     const c = new RepositoryConfiguration()
-    expect(c).to.be.instanceof(RepositoryConfiguration)
+    expect(c).toBeInstanceOf(RepositoryConfiguration)
   })
 
   it('Should be constructed with options', () => {
     const c = new RepositoryConfiguration({ repositoryUrl: 'https://sensenet.com' })
-    expect(c).to.be.instanceof(RepositoryConfiguration)
+    expect(c).toBeInstanceOf(RepositoryConfiguration)
   })
 
   describe('#DEFAULT_BASE_URL', () => {
     it('Should be empty if no window is available', () => {
-      global.window = undefined
-      expect(RepositoryConfiguration.DEFAULT_BASE_URL).to.be.eq('')
+      RepositoryConfiguration.windowInstance = undefined as any
+      expect(RepositoryConfiguration.DEFAULT_BASE_URL).toBe('')
     })
 
     it('Should be empty if no window.location is available', () => {
-      global.window = {}
-      expect(RepositoryConfiguration.DEFAULT_BASE_URL).to.be.eq('')
+      RepositoryConfiguration.windowInstance = {} as any
+      expect(RepositoryConfiguration.DEFAULT_BASE_URL).toBe('')
     })
 
     it('Should point to window.location if available', () => {
-      global.window = { location: { origin: 'https://sensenet.com' } }
-      expect(RepositoryConfiguration.DEFAULT_BASE_URL).to.be.eq('https://sensenet.com')
+      RepositoryConfiguration.windowInstance = { location: { origin: 'https://sensenet.com' } } as any
+      expect(RepositoryConfiguration.DEFAULT_BASE_URL).toBe('https://sensenet.com')
     })
   })
 })

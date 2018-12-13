@@ -1,12 +1,12 @@
-import { expect } from 'chai'
+import 'jest'
 import { BypassAuthentication } from '../src'
 
 // tslint:disable:completed-docs
 
-export const bypassAuthTest: Mocha.Suite = describe('BypassAuthentication', () => {
+describe('BypassAuthentication', () => {
   it('Should be constructed', () => {
     const auth = new BypassAuthentication()
-    expect(auth).to.be.instanceof(BypassAuthentication)
+    expect(auth).toBeInstanceOf(BypassAuthentication)
   })
 
   it('Should be disposable', () => {
@@ -17,7 +17,7 @@ export const bypassAuthTest: Mocha.Suite = describe('BypassAuthentication', () =
   it('should be resolve checkForUpdate() with false', async () => {
     const auth = new BypassAuthentication()
     const updated = await auth.checkForUpdate()
-    expect(updated).to.be.eq(false)
+    expect(updated).toBe(false)
   })
 
   it('login() should throw error', async () => {
