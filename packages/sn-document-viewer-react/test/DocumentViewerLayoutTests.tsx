@@ -1,3 +1,4 @@
+import 'jest'
 import * as React from 'react'
 import { Provider } from 'react-redux'
 import * as renderer from 'react-test-renderer'

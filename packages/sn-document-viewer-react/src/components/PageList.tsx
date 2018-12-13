@@ -74,7 +74,7 @@ class PageList extends React.Component<
   }
 
   private canUpdate: boolean = false
-  private viewPort: any
+  private viewPort?: Element
   private onResize!: () => void
   private onScroll!: () => void
 
@@ -97,7 +97,7 @@ class PageList extends React.Component<
   /** event that will be triggered before unmounting the component */
   public componentWillUnmount() {
     removeEventListener('resize', this.onResize)
-    this.viewPort.removeEventListener('scroll', this.onScroll)
+    this.viewPort && this.viewPort.removeEventListener('scroll', this.onScroll)
     this.canUpdate = false
   }
 
@@ -145,7 +145,7 @@ class PageList extends React.Component<
       }
     })
 
-    const scrollState = this.viewPort.scrollTop
+    const scrollState = (this.viewPort && this.viewPort.scrollTop) || 0
     let marginTop: number = 0
     let pagesToSkip: number = 0
 
@@ -187,7 +187,7 @@ class PageList extends React.Component<
 
   private setupViewPort() {
     if (!this.viewPort) {
-      this.viewPort = document.querySelector(`#${this.props.id}`)
+      this.viewPort = document.querySelector(`#${this.props.id}`) || undefined
     }
     if (this.canUpdate && this.viewPort) {
       const newHeight = this.viewPort.clientHeight - this.props.padding * 2
