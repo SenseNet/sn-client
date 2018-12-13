@@ -113,7 +113,7 @@ export const createSensenetStore: <T>(options: CreateStoreOptions<T>) => Store<T
   } else {
     middlewareArray = [...options.middlewares]
   }
-  const loggerMiddleware = options.logger ? createLogger() : null
+  const loggerMiddleware = options.logger && process.env.NODE_ENV !== `test` ? createLogger() : null
   const reduxPromiseMiddleware = promiseMiddleware(options.repository)
   loggerMiddleware
     ? middlewareArray.push(loggerMiddleware, reduxPromiseMiddleware)

@@ -4,22 +4,11 @@
   "description": "A set of redux actions, reducers and redux-ovbservable epics for sensenet",
   "main": "dist/index.js",
   "scripts": {
-    "precommit": "npm run test",
-    "commit": "git-cz",
-    "pretest": "rimraf temp && tsc -p tsconfig.test.json",
-    "test": "rimraf coverage && nyc mocha -p tsconfig.test.json ./temp/test/index.js",
     "fix": "npm run fix:prettier && npm run fix:tslint",
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
     "fix:tslint": "tslint --fix --project .",
     "lint": "tslint --project .",
-    "check-coverage": "istanbul check-coverage ",
-    "report-coverage": "cat ./coverage/lcov.info | codecov",
-    "typedoc:md": "gulp typedoc:md",
-    "typedoc:html": "gulp typedoc",
-    "semantic-release": "semantic-release pre && semantic-release post",
     "build": "tsc -b",
-    "prepublishOnly": "npm run test && npm run build",
-    "publish:development": "npm run build && npm t && npm publish --tag development",
     "typedoc": "typedoc --mode modules --out documentation src --exclude **/index.ts --theme c:/Users/%USERNAME%/AppData/Roaming/npm/node_modules/@sensenet/typedoc-theme/sn-theme"
   },
   "files": [
@@ -46,20 +35,6 @@
   "bugs": {
     "url": "https://github.com/SenseNet/sn-client/issues"
   },
-  "nyc": {
-    "cache": true,
-    "include": "temp/src/**/*.*",
-    "exclude": [
-      "temp/test/**/*.*",
-      "**/index.js"
-    ],
-    "all": true,
-    "reporter": [
-      "lcov",
-      "text-summary",
-      "json"
-    ]
-  },
   "homepage": "https://sensenet.com",
   "dependencies": {
     "@sensenet/authentication-google": "^2.0.2-alpha.0",
@@ -71,9 +46,8 @@
     "redux-logger": "^3.0.6"
   },
   "devDependencies": {
-    "@types/chai": "^4.1.7",
-    "@types/mocha": "^5.2.5",
-    "@types/node": "^10.12.11",
+    "@types/jest": "^23.3.10",
+    "@types/node": "^10.12.14",
     "@types/redux-logger": "^3.0.6",
     "redux-mock-store": "^1.5.3"
   },
