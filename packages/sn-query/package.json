@@ -11,8 +11,7 @@
   "scripts": {
     "precommit": "npm run test",
     "commit": "git-cz",
-    "pretest": "rimraf temp && tsc -p tsconfig.test.json",
-    "test": "rimraf coverage && nyc mocha -p tsconfig.test.json ./temp/test/index.js",
+    "test:jest": "jest",
     "fix": "npm run fix:prettier && npm run fix:tslint",
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
     "fix:tslint": "tslint --fix --project .",
@@ -41,25 +40,10 @@
   "bugs": {
     "url": "https://github.com/SenseNet/sn-client/issues"
   },
-  "nyc": {
-    "exclude": [
-      "temp/test/**/*.*",
-      "temp/src/**/I*.js"
-    ],
-    "include": "temp/src/**/*.*",
-    "check-coverage": true,
-    "cache": true,
-    "all": true,
-    "reporter": [
-      "lcov",
-      "text-summary",
-      "json"
-    ]
-  },
   "homepage": "https://sensenet.com",
   "devDependencies": {
-    "@types/chai": "^4.1.7",
-    "@types/mocha": "^5.2.5"
+    "@types/jest": "^23.3.10",
+    "jest": "^23.6.0"
   },
   "config": {
     "commitizen": {

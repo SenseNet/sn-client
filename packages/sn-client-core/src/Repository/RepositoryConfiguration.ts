@@ -5,7 +5,10 @@ import { ODataFieldParameter, ODataMetadataType } from '../Models/ODataParams'
  * Class that contains basic configuration for a sensenet Repository
  */
 export class RepositoryConfiguration {
-  public static windowInstance: Window = window
+  /**
+   * A reference to the global window instance
+   */
+  public static windowInstance?: Window = typeof window === 'undefined' ? undefined : window
 
   /**
    * The default base URL, returns window.location if available
