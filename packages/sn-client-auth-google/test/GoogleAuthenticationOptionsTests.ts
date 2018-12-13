@@ -1,25 +1,23 @@
-import { expect } from 'chai'
+import 'jest'
+import { JSDOM } from 'jsdom'
 import { GoogleAuthenticationOptions } from '../src/GoogleAuthenticationOptions'
 
 // tslint:disable:completed-docs
-export const authOptionsTests = describe('Google Authentication Options', () => {
+describe('Google Authentication Options', () => {
   it(' can be constructed with valid default parameters', () => {
     const exampleOrigin = 'http://example.origin.com'
     const exampleClientId = 'exampleAppId'
-    ;(global as any).window = {
-      location: {
-        origin: exampleOrigin,
+    const dom = new JSDOM('', { url: exampleOrigin, referrer: exampleOrigin })
+    const options = new GoogleAuthenticationOptions(
+      {
+        clientId: exampleClientId,
       },
-    }
-    // tslint:disable-next-line:no-unused-expression
-    window
-    const options = new GoogleAuthenticationOptions({
-      clientId: exampleClientId,
-    })
-    expect(options).to.be.instanceof(GoogleAuthenticationOptions)
-    expect(options.clientId).to.be.eq(exampleClientId)
-    expect(options.redirectUri).to.be.eq(exampleOrigin + '/')
-    expect(options.scope).to.be.deep.eq(['email', 'profile'])
+      dom.window,
+    )
+    expect(options).toBeInstanceOf(GoogleAuthenticationOptions)
+    expect(options.clientId).toBe(exampleClientId)
+    expect(options.redirectUri).toBe(exampleOrigin + '/')
+    expect(options.scope).toEqual(['email', 'profile'])
   })
   it('can be constructed with valid specified parameters', () => {
     const exampleClientId = 'ExampleClientId2'
@@ -32,9 +30,9 @@ export const authOptionsTests = describe('Google Authentication Options', () => 
       scope: exampleScope,
     })
 
-    expect(options).to.be.instanceof(GoogleAuthenticationOptions)
-    expect(options.clientId).to.be.eq(exampleClientId)
-    expect(options.redirectUri).to.be.eq(exampleRedirectUri)
-    expect(options.scope).to.be.deep.eq(exampleScope)
+    expect(options).toBeInstanceOf(GoogleAuthenticationOptions)
+    expect(options.clientId).toBe(exampleClientId)
+    expect(options.redirectUri).toBe(exampleRedirectUri)
+    expect(options.scope).toBe(exampleScope)
   })
 })

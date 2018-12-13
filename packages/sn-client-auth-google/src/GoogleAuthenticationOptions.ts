@@ -17,9 +17,9 @@ export class GoogleAuthenticationOptions {
    */
   public clientId!: string
 
-  constructor(options: Partial<GoogleAuthenticationOptions> & { clientId: string }) {
+  constructor(options: Partial<GoogleAuthenticationOptions> & { clientId: string }, windowInstance: Window = window) {
     if (!options.redirectUri) {
-      options.redirectUri = window.location.origin + '/'
+      options.redirectUri = windowInstance.location.origin + '/'
     }
     Object.assign(this, options)
   }

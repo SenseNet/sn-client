@@ -68,7 +68,7 @@ export class GoogleOauthProvider implements OauthProvider {
    */
   private async getTokenFromPrompt(loginReqUrl: string): Promise<string> {
     return new Promise<string>(async (resolve, reject) => {
-      this.popup = window.open(
+      this.popup = this.windowInstance.open(
         loginReqUrl,
         '_blank',
         'toolbar=no,scrollbars=no,resizable=no,top=200,left=300,width=400,height=400',
@@ -110,7 +110,7 @@ export class GoogleOauthProvider implements OauthProvider {
     }
 
     const token = await new Promise<string>((resolve, reject) => {
-      this.iframe = window.document.createElement('iframe')
+      this.iframe = this.windowInstance.document.createElement('iframe')
       this.iframe.style.display = 'none'
       this.iframe.setAttribute('sandbox', 'allow-same-origin')
 
@@ -131,11 +131,11 @@ export class GoogleOauthProvider implements OauthProvider {
 
         const iframeToken = location && this.getGoogleTokenFromUri(location)
         iframeToken ? resolve(iframeToken) : reject(Error('Token not found'))
-        window.document.body.removeChild(this.iframe)
+        this.windowInstance.document.body.removeChild(this.iframe)
         this.iframe = undefined as any
       }
       this.iframe.src = loginUrl
-      window.document.body.appendChild(this.iframe)
+      this.windowInstance.document.body.appendChild(this.iframe)
     })
 
     return token
@@ -189,5 +189,9 @@ export class GoogleOauthProvider implements OauthProvider {
    * @param {BaseRepository} _repository the Repository instance
    * @param {GoogleAuthenticationOptions} _options Additional options for the Provider
    */
-  constructor(private readonly jwtService: JwtService, private readonly options: GoogleAuthenticationOptions) {}
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly options: GoogleAuthenticationOptions,
+    private readonly windowInstance: Window,
+  ) {}
 }

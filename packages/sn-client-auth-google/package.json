@@ -70,9 +70,9 @@
   },
   "typings": "./dist/index.d.ts",
   "devDependencies": {
-    "@types/chai": "^4.1.7",
+    "@types/jest": "^23.3.10",
     "@types/jsdom": "^12.2.0",
-    "@types/mocha": "^5.2.5",
-    "jsdom": "^13.0.0"
+    "jsdom": "^13.0.0",
+    "jest": "^23.6.0"
   }
 }

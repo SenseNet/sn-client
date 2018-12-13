@@ -10,9 +10,10 @@ import { GoogleOauthProvider } from './GoogleOauthProvider'
 export const addGoogleAuth = (
   jwtService: JwtService,
   options: Partial<GoogleAuthenticationOptions> & { clientId: string },
+  windowInstance: Window = window,
 ) => {
-  const newOptions = new GoogleAuthenticationOptions(options)
-  const providerInstance = new GoogleOauthProvider(jwtService, newOptions)
+  const newOptions = new GoogleAuthenticationOptions(options, windowInstance)
+  const providerInstance = new GoogleOauthProvider(jwtService, newOptions, windowInstance)
   jwtService.oauthProviders.add(providerInstance)
   return providerInstance
 }
