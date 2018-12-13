@@ -1,13 +1,9 @@
 import { TextField as MaterialTextField } from '@material-ui/core'
-import { expect } from 'chai'
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
 import { TextField } from '../src/Components/Fields/TextField'
 
-/**
- * Tests for the TextField Component
- */
-export const textFieldTests = describe('TextField Component', () => {
+describe('TextField Component', () => {
   it('Should be constructed', () => {
     renderer.create(
       <TextField
@@ -26,9 +22,9 @@ export const textFieldTests = describe('TextField Component', () => {
         fieldName="DisplayName"
         fieldSetting={{}}
         onQueryChange={(key, q, text) => {
-          expect(key).to.be.eq('DisplayName')
-          expect(q.toString()).to.be.eq("DisplayName:'*Alma*'")
-          expect(text).to.be.eq('Alma')
+          expect(key).toBe('DisplayName')
+          expect(q.toString()).toBe("DisplayName:'*Alma*'")
+          expect(text).toBe('Alma')
           done()
         }}
       />,
@@ -43,8 +39,8 @@ export const textFieldTests = describe('TextField Component', () => {
         fieldName="DisplayName"
         fieldSetting={{}}
         onQueryChange={(key, q) => {
-          expect(key).to.be.eq('DisplayName')
-          expect(q.toString()).to.be.eq('')
+          expect(key).toBe('DisplayName')
+          expect(q.toString()).toBe('')
           done()
         }}
       />,
