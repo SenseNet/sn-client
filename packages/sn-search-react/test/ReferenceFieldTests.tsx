@@ -1,33 +1,34 @@
 import { TextField } from '@material-ui/core'
 import { SchemaStore } from '@sensenet/client-core/dist/Schemas/SchemaStore'
 import { GenericContent, ReferenceFieldSetting, SchemaStore as defaultSchemas } from '@sensenet/default-content-types'
+import { configure, shallow } from 'enzyme'
+import Adapter from 'enzyme-adapter-react-16'
 import * as React from 'react'
-import * as renderer from 'react-test-renderer'
 import { ReferenceField } from '../src/Components/Fields/ReferenceField'
 
 describe('ReferenceField Component', () => {
+  configure({ adapter: new Adapter() })
+
   const schemaStore = new SchemaStore()
   schemaStore.setSchemas(defaultSchemas)
   const exampleSchema = schemaStore.getSchema(GenericContent)
   const exampleFieldSetting = exampleSchema.FieldSettings.find(f => f.Name === 'CreatedBy') as ReferenceFieldSetting
 
   it('Should be constructed', () => {
-    renderer
-      .create(
-        <ReferenceField<GenericContent>
-          fieldName="CreatedBy"
-          fieldSetting={exampleFieldSetting}
-          fetchItems={async () => []}
-          onQueryChange={() => {
-            /** */
-          }}
-        />,
-      )
-      .unmount()
+    shallow(
+      <ReferenceField<GenericContent>
+        fieldName="CreatedBy"
+        fieldSetting={exampleFieldSetting}
+        fetchItems={async () => []}
+        onQueryChange={() => {
+          /** */
+        }}
+      />,
+    ).unmount()
   })
 
   it('Should be constructed with default Id', done => {
-    renderer.create(
+    shallow(
       <ReferenceField<GenericContent>
         fieldName="CreatedBy"
         fieldSetting={exampleFieldSetting}
@@ -45,7 +46,7 @@ describe('ReferenceField Component', () => {
   })
 
   it('Should be constructed with default Path', done => {
-    renderer.create(
+    shallow(
       <ReferenceField<GenericContent>
         fieldName="CreatedBy"
         fieldSetting={exampleFieldSetting}
@@ -63,7 +64,7 @@ describe('ReferenceField Component', () => {
   })
 
   it('Text change should trigger the fetchItems method', done => {
-    const instance = renderer.create(
+    const instance = shallow(
       <ReferenceField<GenericContent>
         fieldName="CreatedBy"
         fieldSetting={exampleFieldSetting}
@@ -78,18 +79,21 @@ describe('ReferenceField Component', () => {
         }}
       />,
     )
-    instance.root.findByType(TextField).props.onChange({
-      target: { value: 'a' },
-      persist: () => {
-        /** */
-      },
-    })
+    instance
+      .find(TextField)
+      .props()
+      .onChange({
+        target: { value: 'a' },
+        persist: () => {
+          /** */
+        },
+      })
   })
 
   it('Text change query should include the allowed types', done => {
     const fieldSetting = { ...exampleFieldSetting }
     fieldSetting.AllowedTypes = ['User', 'Task']
-    const instance = renderer.create(
+    const instance = shallow(
       <ReferenceField<GenericContent>
         fieldName="CreatedBy"
         fieldSetting={fieldSetting}
@@ -104,18 +108,21 @@ describe('ReferenceField Component', () => {
         }}
       />,
     )
-    instance.root.findByType(TextField).props.onChange({
-      target: { value: 'a' },
-      persist: () => {
-        /** */
-      },
-    })
+    instance
+      .find(TextField)
+      .props()
+      .onChange({
+        target: { value: 'a' },
+        persist: () => {
+          /** */
+        },
+      })
   })
 
   it('Text change query should include the selection roots', done => {
     const fieldSetting = { ...exampleFieldSetting }
     fieldSetting.SelectionRoots = ['Root/A', 'Root/B']
-    const instance = renderer.create(
+    const instance = shallow(
       <ReferenceField<GenericContent>
         fieldName="CreatedBy"
         fieldSetting={fieldSetting}
@@ -132,11 +139,14 @@ describe('ReferenceField Component', () => {
         }}
       />,
     )
-    instance.root.findByType(TextField).props.onChange({
-      target: { value: 'a' },
-      persist: () => {
-        /** */
-      },
-    })
+    instance
+      .find(TextField)
+      .props()
+      .onChange({
+        target: { value: 'a' },
+        persist: () => {
+          /** */
+        },
+      })
   })
 })
