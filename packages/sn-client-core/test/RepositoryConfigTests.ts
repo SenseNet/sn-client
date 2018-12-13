@@ -1,6 +1,9 @@
 import 'jest'
 import { RepositoryConfiguration } from '../src/Repository/RepositoryConfiguration'
 
+declare const global: any
+;(global as any).window = {}
+
 // tslint:disable:completed-docs
 describe('RepositoryConfig', () => {
   it('Should be constructed without options', () => {
