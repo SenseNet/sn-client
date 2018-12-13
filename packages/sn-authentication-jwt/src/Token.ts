@@ -73,7 +73,7 @@ export class Token {
       // check if NotBefore time already passed
       if (awaitMillis > 0) {
         await new Promise(resolve => {
-          setTimeout(() => resolve(), awaitMillis)
+          setTimeout(() => resolve(), awaitMillis + 1000)
         })
       }
     }
