@@ -2,12 +2,12 @@ import { Icon } from '@sensenet/icons-react'
 import { expect } from 'chai'
 import * as React from 'react'
 import * as renderer from 'react-test-renderer'
-import { DisplayNameCell } from '../../src/ContentList/CellTemplates/DisplayNameCell'
+import { DisplayNameCell } from '../src/ContentList/CellTemplates/DisplayNameCell'
 
 /**
  * DisplayNameCell Component tests
  */
-export const DisplayNameCellTests: Mocha.Suite = describe('DisplayNameCell component', () => {
+describe('DisplayNameCell component', () => {
   it('Should render without crashing', () => {
     const component = renderer.create(
       <DisplayNameCell icons={{}} content={{ Id: 123, Path: '', Name: '', Type: 'Folder' }} isSelected={false} />,
