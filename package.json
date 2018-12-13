@@ -47,6 +47,7 @@
       "<rootDir>/packages/sn-authentication-jwt",
       "<rootDir>/packages/sn-client-auth-google",
       "<rootDir>/packages/sn-client-core",
+      "<rootDir>/packages/sn-repository-events",
       "<rootDir>/packages/sn-client-utils"
     ],
     "moduleFileExtensions": [

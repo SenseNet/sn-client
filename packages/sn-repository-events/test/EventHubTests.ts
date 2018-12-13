@@ -1,5 +1,4 @@
 import { Content, ODataBatchResponse, ODataResponse, Repository } from '@sensenet/client-core'
-import { expect } from 'chai'
 import { EventHub } from '../src'
 
 /**
@@ -26,7 +25,7 @@ export const eventHubTests = describe('EventHub', () => {
   })
 
   it('should be constructed', () => {
-    expect(eventHub).to.be.instanceOf(EventHub)
+    expect(eventHub).toBeInstanceOf(EventHub)
   })
 
   it('should be disposed', () => {
@@ -34,9 +33,9 @@ export const eventHubTests = describe('EventHub', () => {
   })
 
   describe('Content Created', () => {
-    it('should be triggered after post', (done: MochaDone) => {
+    it('should be triggered after post', done => {
       eventHub.onContentCreated.subscribe(c => {
-        expect(c.content).to.be.deep.eq(mockContent)
+        expect(c.content).toEqual(mockContent)
         done()
       })
       // tslint:disable-next-line:no-string-literal
@@ -56,9 +55,9 @@ export const eventHubTests = describe('EventHub', () => {
       })
     })
 
-    it('fail should be trigger after post failed', (done: MochaDone) => {
+    it('fail should be trigger after post failed', done => {
       eventHub.onContentCreateFailed.subscribe(c => {
-        expect(c.content).to.be.deep.eq(mockContent)
+        expect(c.content).toEqual(mockContent)
         done()
       })
       // tslint:disable-next-line:no-string-literal
@@ -82,9 +81,9 @@ export const eventHubTests = describe('EventHub', () => {
       })()
     })
 
-    it('should be trigger after copy', (done: MochaDone) => {
+    it('should be trigger after copy', done => {
       eventHub.onContentCopied.subscribe(c => {
-        expect(c.content).to.be.deep.eq(mockContent)
+        expect(c.content).toEqual(mockContent)
         done()
       })
       // tslint:disable-next-line:no-string-literal
@@ -108,9 +107,9 @@ export const eventHubTests = describe('EventHub', () => {
       })
     })
 
-    it('should trigger failed after copy failed', (done: MochaDone) => {
+    it('should trigger failed after copy failed', done => {
       eventHub.onContentCopyFailed.subscribe(c => {
-        expect(c.content).to.be.deep.eq(mockContent)
+        expect(c.content).toEqual(mockContent)
         done()
       })
       // tslint:disable-next-line:no-string-literal
@@ -134,9 +133,9 @@ export const eventHubTests = describe('EventHub', () => {
       })
     })
 
-    it('should trigger failed if copyBatch operation has been failed ', (done: MochaDone) => {
+    it('should trigger failed if copyBatch operation has been failed ', done => {
       eventHub.onContentCopyFailed.subscribe(c => {
-        expect(c.content).to.be.deep.eq({ Id: 321 })
+        expect(c.content).toEqual({ Id: 321 })
         done()
       })
       // tslint:disable-next-line:no-string-literal
@@ -156,9 +155,9 @@ export const eventHubTests = describe('EventHub', () => {
       })()
     })
 
-    it('should trigger failed if copyBatch operation has been failed with an array of pathes', (done: MochaDone) => {
+    it('should trigger failed if copyBatch operation has been failed with an array of pathes', done => {
       eventHub.onContentCopyFailed.subscribe(c => {
-        expect(c.content).to.be.deep.eq({ Path: 'Root/Example/Path1' })
+        expect(c.content).toEqual({ Path: 'Root/Example/Path1' })
         done()
       })
       // tslint:disable-next-line:no-string-literal
@@ -180,9 +179,9 @@ export const eventHubTests = describe('EventHub', () => {
   })
 
   describe('Content Modified', () => {
-    it('should be trigger after patch', (done: MochaDone) => {
+    it('should be trigger after patch', done => {
       eventHub.onContentModified.subscribe(c => {
-        expect(c.content).to.be.deep.eq(mockContent)
+        expect(c.content).toEqual(mockContent)
         done()
       })
       // tslint:disable-next-line:no-string-literal
@@ -201,9 +200,9 @@ export const eventHubTests = describe('EventHub', () => {
       })
     })
 
-    it('fail should be triggered after patch failed', (done: MochaDone) => {
+    it('fail should be triggered after patch failed', done => {
       eventHub.onContentModificationFailed.subscribe(c => {
-        expect(c.content).to.be.deep.eq(mockContent)
+        expect(c.content).toEqual(mockContent)
         done()
       })
       // tslint:disable-next-line:no-string-literal
@@ -226,9 +225,9 @@ export const eventHubTests = describe('EventHub', () => {
       })()
     })
 
-    it('should be trigger after put', (done: MochaDone) => {
+    it('should be trigger after put', done => {
       eventHub.onContentModified.subscribe(c => {
-        expect(c.content).to.be.deep.eq(mockContent)
+        expect(c.content).toEqual(mockContent)
         done()
       })
       // tslint:disable-next-line:no-string-literal
@@ -248,9 +247,9 @@ export const eventHubTests = describe('EventHub', () => {
     })
   })
 
-  it('fail should be triggered after put failed', (done: MochaDone) => {
+  it('fail should be triggered after put failed', done => {
     eventHub.onContentModificationFailed.subscribe(c => {
-      expect(c.content).to.be.deep.eq(mockContent)
+      expect(c.content).toEqual(mockContent)
       done()
     })
     // tslint:disable-next-line:no-string-literal
@@ -274,9 +273,9 @@ export const eventHubTests = describe('EventHub', () => {
   })
 
   describe('Content Deleted', () => {
-    it('should be triggered after delete', (done: MochaDone) => {
+    it('should be triggered after delete', done => {
       eventHub.onContentDeleted.subscribe(c => {
-        expect(c.contentData).to.be.deep.eq(mockContent)
+        expect(c.contentData).toEqual(mockContent)
         done()
       })
       // tslint:disable-next-line:no-string-literal
@@ -298,9 +297,9 @@ export const eventHubTests = describe('EventHub', () => {
       })
     })
 
-    it('failed should be triggered after delete succeed with errors', (done: MochaDone) => {
+    it('failed should be triggered after delete succeed with errors', done => {
       eventHub.onContentDeleteFailed.subscribe(c => {
-        expect(c.content).to.be.deep.eq(mockContent)
+        expect(c.content).toEqual(mockContent)
         done()
       })
       // tslint:disable-next-line:no-string-literal
@@ -327,9 +326,9 @@ export const eventHubTests = describe('EventHub', () => {
       })
     })
 
-    it('failed should be triggered if deleteBatch operation has been failed', (done: MochaDone) => {
+    it('failed should be triggered if deleteBatch operation has been failed', done => {
       eventHub.onContentDeleteFailed.subscribe(c => {
-        expect(c.content).to.be.deep.eq({ Id: 123 })
+        expect(c.content).toEqual({ Id: 123 })
         done()
       })
       // tslint:disable-next-line:no-string-literal
@@ -348,9 +347,9 @@ export const eventHubTests = describe('EventHub', () => {
       })()
     })
 
-    it('failed should be triggered if deleteBatch operation has been failed with an array of pathes', (done: MochaDone) => {
+    it('failed should be triggered if deleteBatch operation has been failed with an array of pathes', done => {
       eventHub.onContentDeleteFailed.subscribe(c => {
-        expect(c.content).to.be.deep.eq({ Path: 'Root/Example/Path1' })
+        expect(c.content).toEqual({ Path: 'Root/Example/Path1' })
         done()
       })
       // tslint:disable-next-line:no-string-literal
@@ -371,9 +370,9 @@ export const eventHubTests = describe('EventHub', () => {
   })
 
   describe('Content Move', () => {
-    it('should be triggered after move', (done: MochaDone) => {
+    it('should be triggered after move', done => {
       eventHub.onContentMoved.subscribe(c => {
-        expect(c.content).to.be.deep.eq(mockContent)
+        expect(c.content).toEqual(mockContent)
         done()
       })
       // tslint:disable-next-line:no-string-literal
@@ -396,9 +395,9 @@ export const eventHubTests = describe('EventHub', () => {
       })
     })
 
-    it('failed should be triggered after move succeed with errors', (done: MochaDone) => {
+    it('failed should be triggered after move succeed with errors', done => {
       eventHub.onContentMoveFailed.subscribe(c => {
-        expect(c.content).to.be.deep.eq(mockContent)
+        expect(c.content).toEqual(mockContent)
         done()
       })
       // tslint:disable-next-line:no-string-literal
@@ -426,9 +425,9 @@ export const eventHubTests = describe('EventHub', () => {
       })
     })
 
-    it('failed should be triggered if moveBatch operation has been failed', (done: MochaDone) => {
+    it('failed should be triggered if moveBatch operation has been failed', done => {
       eventHub.onContentMoveFailed.subscribe(c => {
-        expect(c.content).to.be.deep.eq({ Id: 123 })
+        expect(c.content).toEqual({ Id: 123 })
         done()
       })
       // tslint:disable-next-line:no-string-literal
@@ -448,9 +447,9 @@ export const eventHubTests = describe('EventHub', () => {
       })()
     })
 
-    it('failed should be triggered if moveBatch operation has been failed with an array of pathes', (done: MochaDone) => {
+    it('failed should be triggered if moveBatch operation has been failed with an array of pathes', done => {
       eventHub.onContentMoveFailed.subscribe(c => {
-        expect(c.content).to.be.deep.eq({ Path: 'Root/Example/Path1' })
+        expect(c.content).toEqual({ Path: 'Root/Example/Path1' })
         done()
       })
       // tslint:disable-next-line:no-string-literal
