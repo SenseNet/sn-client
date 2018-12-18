@@ -1,4 +1,5 @@
 import { Repository } from '@sensenet/client-core'
+import { toNumber } from '@sensenet/client-utils'
 import { File as SnFile } from '@sensenet/default-content-types'
 import {
   Annotation,
@@ -50,7 +51,7 @@ export const getViewerSettings: (repo: Repository) => DocumentViewerSettings = (
         idOrPath: settings.idOrPath,
         hostName: repo.configuration.repositoryUrl,
         fileSizekB: documentData.Size as number,
-        pageCount: documentData.PageCount || -1,
+        pageCount: toNumber(documentData.PageCount, -1)!,
         documentName: documentData.DisplayName || '',
         documentType: documentData.Type || 'File',
         shapes: (documentData.Shapes && {
