@@ -33,7 +33,8 @@
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build",
     "build:dms": "yarn && yarn build && yarn workspace sn-dms-demo run build:webpack",
-    "test": "yarn jest",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
     "clean": "lerna clean",
     "fix": "lerna run fix --parallel",
     "lint": "lerna run lint --parallel"
@@ -75,7 +76,10 @@
       "**/__tests__/*.+(ts|tsx|js)",
       "**/test/*.+(ts|tsx|js)"
     ],
-    "collectCoverage": true,
+    "setupTestFrameworkScriptFile": "<rootDir>/jest/setup.js",
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ],
     "collectCoverageFrom": [
       "**/packages/**/src/**/*.{ts,tsx}",
       "!**/test/**/*.{ts,tsx}",
