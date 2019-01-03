@@ -4,6 +4,7 @@ import { GenericContent, SchemaStore } from '@sensenet/default-content-types'
 import { configure, shallow } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import * as React from 'react'
+import { ActionsCell } from '../src/ContentList/CellTemplates'
 import { ContentList } from '../src/ContentList/ContentList'
 
 const genericSchema = SchemaStore[1]
@@ -179,143 +180,139 @@ describe('ContentList component', () => {
       selected.props().onChange()
     })
 
-    //   it('Clicking on a select all box should clear the selection if all content are selected', (done: jest.DoneCallback) => {
-    //     const items = [
-    //       { Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' },
-    //       { Id: 2, Name: '2', Path: '2', DisplayName: 'B', Type: 'Folder' },
-    //     ]
-    //     const component = renderer.create(
-    //       <ContentList<GenericContent>
-    //         items={items}
-    //         schema={genericSchema}
-    //         fieldsToDisplay={['DisplayName', 'Type']}
-    //         selected={items}
-    //         active={{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }}
-    //         orderBy="DisplayName"
-    //         orderDirection="asc"
-    //         icons={{}}
-    //         onRequestSelectionChange={selection => {
-    //           expect(selection.length).toBe(0)
-    //           expect(selection).toEqual([])
-    //           component.unmount()
-    //           done()
-    //         }}
-    //       />,
-    //     )
-    //     const selected = component.root.findAll(
-    //       instance => (instance.type as any).name === 'Checkbox' && instance.props.className === 'select-all',
-    //     )[0]
-    //     selected.props.onChange()
-    //   })
+    it('Clicking on a select all box should clear the selection if all content are selected', (done: jest.DoneCallback) => {
+      const items = [
+        { Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' },
+        { Id: 2, Name: '2', Path: '2', DisplayName: 'B', Type: 'Folder' },
+      ]
+      const component = shallow(
+        <ContentList<GenericContent>
+          items={items}
+          schema={genericSchema}
+          fieldsToDisplay={['DisplayName', 'Type']}
+          selected={items}
+          active={{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }}
+          orderBy="DisplayName"
+          orderDirection="asc"
+          icons={{}}
+          onRequestSelectionChange={selection => {
+            expect(selection.length).toBe(0)
+            expect(selection).toEqual([])
+            component.unmount()
+            done()
+          }}
+        />,
+      )
+      const selected = component
+        .findWhere(instance => instance.type() === Checkbox && instance.props().className === 'select-all')
+        .first()
+      selected.props().onChange()
+    })
 
-    //   it('Should render with an active content and the corresponding class should be appear', () => {
-    //     const component = renderer.create(
-    //       <ContentList<GenericContent>
-    //         items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
-    //         schema={genericSchema}
-    //         fieldsToDisplay={['DisplayName', 'Type']}
-    //         selected={[]}
-    //         active={{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }}
-    //         orderBy="DisplayName"
-    //         orderDirection="asc"
-    //         icons={{}}
-    //       />,
-    //     )
-    //     const selected = component.root.findAll(
-    //       instance =>
-    //         (instance.type as any).name === 'TableRow' &&
-    //         typeof instance.props.className === 'string' &&
-    //         instance.props.className.indexOf('active') > -1,
-    //     )
-    //     expect(selected.length).toBe(1)
-    //     component.unmount()
-    //   })
+    it('Should render with an active content and the corresponding class should be appear', () => {
+      const component = shallow(
+        <ContentList<GenericContent>
+          items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
+          schema={genericSchema}
+          fieldsToDisplay={['DisplayName', 'Type']}
+          selected={[]}
+          active={{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }}
+          orderBy="DisplayName"
+          orderDirection="asc"
+          icons={{}}
+        />,
+      )
+      const selected = component.findWhere(
+        instance =>
+          instance.type() === TableRow &&
+          typeof instance.props().className === 'string' &&
+          instance.props().className.indexOf('active') > -1,
+      )
+      expect(selected.length).toBe(1)
+      component.unmount()
+    })
 
-    //   it('Clicking on a row should trigger an active item change, if the callback is provided', (done: jest.DoneCallback) => {
-    //     const component = renderer.create(
-    //       <ContentList<GenericContent>
-    //         items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
-    //         schema={genericSchema}
-    //         fieldsToDisplay={['DisplayName', 'Type']}
-    //         selected={[]}
-    //         orderBy="DisplayName"
-    //         orderDirection="asc"
-    //         icons={{}}
-    //         onRequestActiveItemChange={item => {
-    //           expect(item.Id).toBe(1)
-    //           component.unmount()
-    //           done()
-    //         }}
-    //       />,
-    //     )
-    //     const row = component.root.findAll(
-    //       instance =>
-    //         (instance.type as any).name === 'TableRow' &&
-    //         instance.props.className &&
-    //         instance.props.className.indexOf('type-folder') !== -1,
-    //     )[0]
-    //     row.props.onClick()
-    //   })
-    // })
+    it('Clicking on a row should trigger an active item change, if the callback is provided', (done: jest.DoneCallback) => {
+      const component = shallow(
+        <ContentList<GenericContent>
+          items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
+          schema={genericSchema}
+          fieldsToDisplay={['DisplayName', 'Type']}
+          selected={[]}
+          orderBy="DisplayName"
+          orderDirection="asc"
+          icons={{}}
+          onRequestActiveItemChange={item => {
+            expect(item.Id).toBe(1)
+            component.unmount()
+            done()
+          }}
+        />,
+      )
+      const row = component
+        .findWhere(
+          instance =>
+            instance.type() === TableRow &&
+            instance.props().className &&
+            instance.props().className.indexOf('type-folder') !== -1,
+        )
+        .first()
+      row.props().onClick()
+    })
 
-    // describe('Actions', () => {
-    //   it("Actions component shouldn't be added by if actions are selected but not expanded on the content", () => {
-    //     const component = renderer.create(
-    //       <ContentList<GenericContent>
-    //         items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
-    //         schema={genericSchema}
-    //         fieldsToDisplay={['Actions', 'Type']}
-    //         selected={[]}
-    //         orderBy="DisplayName"
-    //         orderDirection="asc"
-    //         icons={{}}
-    //       />,
-    //     )
-
-    //     const actionsComponent = component.root.findAllByType(ActionsCell)
-    //     expect(actionsComponent.length).toBe(0)
-
-    //     component.unmount()
-    //   })
-
-    //   it('Actions component should be added by if actions are selected and expanded on the content', () => {
-    //     const component = renderer.create(
-    //       <ContentList<GenericContent>
-    //         items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder', Actions: [] }]}
-    //         schema={genericSchema}
-    //         fieldsToDisplay={['Actions', 'Type']}
-    //         selected={[]}
-    //         orderBy="DisplayName"
-    //         orderDirection="asc"
-    //         icons={{}}
-    //       />,
-    //     )
-    //     const actionsComponent = component.root.findAllByType(ActionsCell)
-    //     expect(actionsComponent.length).toBe(1)
-
-    //     component.unmount()
-    //   })
-
-    //   it('onRequestActionsMenu should be triggered on click if actions are expanded', (done: jest.DoneCallback) => {
-    //     const component = renderer.create(
-    //       <ContentList<GenericContent>
-    //         items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder', Actions: [] }]}
-    //         schema={genericSchema}
-    //         fieldsToDisplay={['Actions', 'Type']}
-    //         selected={[]}
-    //         orderBy="DisplayName"
-    //         orderDirection="asc"
-    //         icons={{}}
-    //         onRequestActionsMenu={() => {
-    //           component.unmount()
-    //           done()
-    //         }}
-    //       />,
-    //     )
-    //     const actionsComponent = component.root.findAllByType(ActionsCell)
-    //     actionsComponent[0].props.openActionMenu()
-    //   })
-    // })
+    describe('Actions', () => {
+      it("Actions component shouldn't be added by if actions are selected but not expanded on the content", () => {
+        const component = shallow(
+          <ContentList<GenericContent>
+            items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
+            schema={genericSchema}
+            fieldsToDisplay={['Actions', 'Type']}
+            selected={[]}
+            orderBy="DisplayName"
+            orderDirection="asc"
+            icons={{}}
+          />,
+        )
+        const actionsComponent = component.find(ActionsCell)
+        expect(actionsComponent.length).toBe(0)
+        component.unmount()
+      })
+      // it('Actions component should be added by if actions are selected and expanded on the content', () => {
+      //   const component = shallow(
+      //     <ContentList<GenericContent>
+      //       items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder', Actions: [] }]}
+      //       schema={genericSchema}
+      //       fieldsToDisplay={['Actions', 'Type']}
+      //       selected={[]}
+      //       orderBy="DisplayName"
+      //       orderDirection="asc"
+      //       icons={{}}
+      //     />,
+      //   )
+      //   const actionsComponent = component.find(ActionsCell)
+      //   expect(actionsComponent.length).toBe(1)
+      //   component.unmount()
+      // })
+      //   it('onRequestActionsMenu should be triggered on click if actions are expanded', (done: jest.DoneCallback) => {
+      //     const component = renderer.create(
+      //       <ContentList<GenericContent>
+      //         items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder', Actions: [] }]}
+      //         schema={genericSchema}
+      //         fieldsToDisplay={['Actions', 'Type']}
+      //         selected={[]}
+      //         orderBy="DisplayName"
+      //         orderDirection="asc"
+      //         icons={{}}
+      //         onRequestActionsMenu={() => {
+      //           component.unmount()
+      //           done()
+      //         }}
+      //       />,
+      //     )
+      //     const actionsComponent = component.root.findAllByType(ActionsCell)
+      //     actionsComponent[0].props.openActionMenu()
+      //   })
+    })
 
     // describe('Date field', () => {
     //   it('Should be added for modification date', () => {
