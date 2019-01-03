@@ -74,7 +74,7 @@ export enum UrlFormat {
 }
 
 // tslint:disable-next-line:only-arrow-functions
-export function isFieldSettingOfType<T extends FieldSetting>(setting: FieldSetting, type: { new (): T }): setting is T {
+export function isFieldSettingOfType<T extends FieldSetting>(setting: FieldSetting, type: new () => T): setting is T {
   return setting.Type === type.name
 }
 
