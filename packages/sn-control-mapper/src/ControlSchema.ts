@@ -7,7 +7,7 @@ export class ControlSchema<TControlBaseType, TClientControlSettings> {
   /**
    * The type of the content type control
    */
-  public contentTypeControl!: { new (...args: any[]): TControlBaseType }
+  public contentTypeControl!: new (...args: any[]) => TControlBaseType
   /**
    * The assicoated Schema object from sensenet
    */
@@ -17,7 +17,7 @@ export class ControlSchema<TControlBaseType, TClientControlSettings> {
    */
   public fieldMappings!: Array<{
     fieldSettings: FieldSetting
-    controlType: { new (...args: any[]): TControlBaseType }
+    controlType: new (...args: any[]) => TControlBaseType
     clientSettings: TClientControlSettings
   }>
 }

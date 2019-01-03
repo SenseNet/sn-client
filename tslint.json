@@ -16,8 +16,9 @@
         "enum-members": { "visibilities": ["exported"] },
         "functions": { "visibilities": ["exported"] },
         "interfaces": { "visibilities": ["exported"] },
-        "properties": { "privacies": ["public", "protected"] },
+        "properties": { "locations": "all", "privacies": ["public", "protected"] },
         "methods": {
+          "locations": "all",
           "privacies": ["public", "protected"],
           "tags": { "content": {}, "existence": ["inheritdoc"] }
         },

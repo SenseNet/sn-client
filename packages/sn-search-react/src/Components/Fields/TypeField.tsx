@@ -12,8 +12,8 @@ import React, { Component } from 'react'
  * Props for the Type Field component
  */
 export interface TypeFieldProps extends SelectProps {
-  types: Array<{ new (...args: any[]): GenericContent }>
-  selectedTypes?: Array<{ new (...args: any[]): GenericContent }>
+  types: Array<new (...args: any[]) => GenericContent>
+  selectedTypes?: Array<new (...args: any[]) => GenericContent>
   schemaStore: SchemaStore
   onQueryChange: (query: Query<GenericContent>) => void
   getMenuItem?: (schema: Schema, isSelected: boolean) => JSX.Element
@@ -23,7 +23,7 @@ export interface TypeFieldProps extends SelectProps {
  * State for the Type Field component
  */
 export interface TypeFieldState {
-  selected: Array<{ new (...args: any[]): GenericContent }>
+  selected: Array<new (...args: any[]) => GenericContent>
   schemas: Schema[]
   name: string
   query?: Query<any>
