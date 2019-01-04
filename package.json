@@ -34,6 +34,7 @@
   "scripts": {
     "build": "lerna run build",
     "build:dms": "yarn && yarn build && yarn workspace sn-dms-demo run build:webpack",
+    "build:docs": "yarn && yarn build && yarn workspace sn-react-component-docs run build-storybook",
     "test": "jest",
     "clean": "lerna clean",
     "fix": "lerna run fix --parallel",
