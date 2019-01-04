@@ -23,7 +23,7 @@ export class SchemaStore {
    * var genericContentSchema = SenseNet.Content.getSchema(Content);
    * ```
    */
-  public getSchema<TType>(currentType: { new (...args: any[]): TType }): Schema {
+  public getSchema<TType>(currentType: new (...args: any[]) => TType): Schema {
     return this.getSchemaByName(currentType.name)
   }
 
