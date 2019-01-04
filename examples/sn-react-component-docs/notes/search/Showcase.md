@@ -3,7 +3,7 @@
 The search component can be separated into a container component called ```<AdvancedSearch />``` and into separate field controls.
 
 #### The <AdvancedSearch< T > /> component
-This container component is responsible for aggregate the query (with an AND term by default) and fire the ```onQueryChanged()``` event.
+This container component is responsible for aggregating the query (with an AND term by default) and firing the ```onQueryChanged()``` event.
 You can use its generic parameter for code completition on fields and you should provide a schema object that can be used by the field controls.
 
 The component has a ```fields``` factory method on its props that can be used to generate the field controls and it has an options parameter that can be used to:
