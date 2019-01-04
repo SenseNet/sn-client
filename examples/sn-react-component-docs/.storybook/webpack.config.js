@@ -1,4 +1,4 @@
-const path = require("path");
+const path = require('path')
 
 /**
  * To extend the default Storybook 3 config, it is necessary to import it from
@@ -11,25 +11,22 @@ module.exports = (baseConfig, env, config /* Storybook 4 default config */) => {
   // Storybook 3 default config
   // const config = genDefaultConfig(baseConfig);
 
-  config.module.rules.push({
-    test: /\.tsx?$/,
-    exclude: [
-      /\/node_modules\/(?!@sensenet\/d)/
-    ],
-    use: [
-      require.resolve("ts-loader"),
-      require.resolve("react-docgen-typescript-loader")
-    ],
-  },
+  config.module.rules.push(
+    {
+      test: /\.tsx?$/,
+      exclude: [/\/node_modules\/(?!@sensenet\/d)/],
+      use: [require.resolve('ts-loader'), require.resolve('react-docgen-typescript-loader')],
+    },
     {
       test: /\.stories\.tsx?$/,
       loaders: [{ loader: require.resolve('@storybook/addon-storysource/loader'), options: { parser: 'typescript' } }],
       enforce: 'pre',
     },
-  );
+  )
 
+  config.optimization.minimize = false
 
-  config.resolve.extensions.push(".ts", ".tsx");
+  config.resolve.extensions.push('.ts', '.tsx')
 
-  return config;
-};
+  return config
+}
