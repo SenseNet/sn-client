@@ -21,5 +21,5 @@ The search component has the following field controls:
 ### Using the showcase app
 
 In order to get the result, please set up your repository in the Settings section and check that
- - Your [CORS](https://community.sensenet.com/docs/cors/) settings are correct
+ - Your <a href="https://community.sensenet.com/docs/cors/" target="_blank">CORS</a> settings are correct
  - You have logged in / have appropriate rights for the content
