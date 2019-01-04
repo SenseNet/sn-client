@@ -1,15 +1,18 @@
 import { Select } from '@material-ui/core'
 import { SchemaStore } from '@sensenet/client-core/dist/Schemas/SchemaStore'
 import { SchemaStore as defaultSchemas, Task, User } from '@sensenet/default-content-types'
+import { configure, shallow } from 'enzyme'
+import Adapter from 'enzyme-adapter-react-16'
 import * as React from 'react'
-import * as renderer from 'react-test-renderer'
 import { TypeField } from '../src/Components/Fields/TypeField'
 
 describe('TypeField component', () => {
+  configure({ adapter: new Adapter() })
+
   const schemaStore = new SchemaStore()
   schemaStore.setSchemas(defaultSchemas)
   it('Should be constructed', () => {
-    const instance = renderer.create(
+    const instance = shallow(
       <TypeField
         types={[]}
         schemaStore={schemaStore}
@@ -22,7 +25,7 @@ describe('TypeField component', () => {
   })
 
   it('Should be constructed with custom menu items', () => {
-    const instance = renderer.create(
+    const instance = shallow(
       <TypeField
         types={[]}
         schemaStore={schemaStore}
@@ -36,7 +39,7 @@ describe('TypeField component', () => {
   })
 
   it('Select change should update the query', done => {
-    const instance = renderer.create(
+    const instance = shallow(
       <TypeField
         types={[User, Task]}
         schemaStore={schemaStore}
@@ -46,12 +49,12 @@ describe('TypeField component', () => {
         }}
       />,
     )
-    const select = instance.root.findByType(Select)
-    select.props.onChange({ target: { value: 'User' } })
+    const select = instance.find(Select)
+    select.props().onChange({ target: { value: 'User' } })
   })
 
   it('Selecting multiple values should update the query', done => {
-    const instance = renderer.create(
+    const instance = shallow(
       <TypeField
         types={[User, Task]}
         schemaStore={schemaStore}
@@ -61,7 +64,7 @@ describe('TypeField component', () => {
         }}
       />,
     )
-    const select = instance.root.findByType(Select)
-    select.props.onChange({ target: { value: ['User', 'Task'] } })
+    const select = instance.find(Select)
+    select.props().onChange({ target: { value: ['User', 'Task'] } })
   })
 })

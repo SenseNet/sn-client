@@ -10,7 +10,8 @@
     "strictNullChecks": false,
     "alwaysStrict": false,
     "removeComments": false,
-    "composite": true
+    "declaration": false,
+    "declarationMap": false
   },
   "typeRoots": ["node_modules/@types", "./typings.d.ts"]
 }
