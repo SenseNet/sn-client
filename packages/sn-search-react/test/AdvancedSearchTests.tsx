@@ -1,22 +1,25 @@
 import { SchemaStore } from '@sensenet/client-core/dist/Schemas/SchemaStore'
 import { GenericContent, SchemaStore as defaultSchemas } from '@sensenet/default-content-types'
 import { Query } from '@sensenet/query'
+import { configure, shallow } from 'enzyme'
+import Adapter from 'enzyme-adapter-react-16'
 import * as React from 'react'
-import * as renderer from 'react-test-renderer'
-import { AdvancedSearch } from '../src/'
+import { AdvancedSearch } from '../src/Components/AdvancedSearch'
 
 describe('AdvancedSearch component', () => {
   const schemaStore = new SchemaStore()
   schemaStore.setSchemas(defaultSchemas)
   const exampleSchema = schemaStore.getSchema(GenericContent)
 
+  configure({ adapter: new Adapter() })
+
   it('Should be constructed with minimal parameters', () => {
-    renderer.create(<AdvancedSearch fields={() => <div />} schema={exampleSchema} />)
+    shallow(<AdvancedSearch fields={() => <div />} schema={exampleSchema} />)
   })
 
   it('updateQuery() should trigger the onQueryChanged callback with the updated query', done => {
     let hasChanged: boolean = false
-    renderer.create(
+    shallow(
       <AdvancedSearch
         fields={options => {
           if (!hasChanged) {
@@ -36,7 +39,7 @@ describe('AdvancedSearch component', () => {
 
   it('updateQuery() should trigger the debounced onQueryChanged callback with an aggregated query', done => {
     let hasChanged: boolean = false
-    renderer.create(
+    shallow(
       <AdvancedSearch
         fields={options => {
           if (!hasChanged) {

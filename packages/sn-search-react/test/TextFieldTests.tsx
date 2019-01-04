@@ -1,11 +1,14 @@
 import { TextField as MaterialTextField } from '@material-ui/core'
+import { configure, shallow } from 'enzyme'
+import Adapter from 'enzyme-adapter-react-16'
 import * as React from 'react'
-import * as renderer from 'react-test-renderer'
 import { TextField } from '../src/Components/Fields/TextField'
 
 describe('TextField Component', () => {
+  configure({ adapter: new Adapter() })
+
   it('Should be constructed', () => {
-    renderer.create(
+    shallow(
       <TextField
         fieldName="DisplayName"
         fieldSetting={{}}
@@ -17,7 +20,7 @@ describe('TextField Component', () => {
   })
 
   it('onQueryChanged() should be executed on input change', done => {
-    const instance = renderer.create(
+    const instance = shallow(
       <TextField
         fieldName="DisplayName"
         fieldSetting={{}}
@@ -29,12 +32,12 @@ describe('TextField Component', () => {
         }}
       />,
     )
-    const input = instance.root.findByType(MaterialTextField)
-    input.props.onChange({ currentTarget: { value: 'Alma' } })
+    const input = instance.find(MaterialTextField)
+    input.props().onChange({ currentTarget: { value: 'Alma' } })
   })
 
   it('onQueryChanged() should be executed on input change with an empty query if no value provided', done => {
-    const instance = renderer.create(
+    const instance = shallow(
       <TextField
         fieldName="DisplayName"
         fieldSetting={{}}
@@ -45,7 +48,7 @@ describe('TextField Component', () => {
         }}
       />,
     )
-    const input = instance.root.findByType(MaterialTextField)
-    input.props.onChange({ currentTarget: {} })
+    const input = instance.find(MaterialTextField)
+    input.props().onChange({ currentTarget: {} })
   })
 })

@@ -1,12 +1,15 @@
 import { Select } from '@material-ui/core'
 import { Query } from '@sensenet/query'
+import { configure, shallow } from 'enzyme'
+import Adapter from 'enzyme-adapter-react-16'
 import * as React from 'react'
-import * as renderer from 'react-test-renderer'
 import { PresetField } from '../src/Components/Fields/PresetField'
 
 describe('Preset Fields', () => {
+  configure({ adapter: new Adapter() })
+
   it('Should be constructed', () => {
-    renderer.create(
+    shallow(
       <PresetField
         fieldName="DisplayName"
         presets={[{ text: 'value1', value: new Query(q => q) }]}
@@ -18,7 +21,7 @@ describe('Preset Fields', () => {
   })
 
   it('Should be constructed with default value', () => {
-    renderer.create(
+    shallow(
       <PresetField
         fieldName="DisplayName"
         presets={[{ text: 'value1', value: new Query(q => q) }]}
@@ -31,7 +34,7 @@ describe('Preset Fields', () => {
   })
 
   it('onQueryChange should be executed on change', done => {
-    const instance = renderer.create(
+    const instance = shallow(
       <PresetField
         fieldName="DisplayName"
         presets={[{ text: 'value1', value: new Query(q => q.equals('DisplayName', 'Alma')) }]}
@@ -43,13 +46,13 @@ describe('Preset Fields', () => {
         }}
       />,
     )
-    const select = instance.root.findByType(Select)
-    select.props.onChange({ target: { value: 'value1' } })
+    const select = instance.find(Select)
+    select.props().onChange({ target: { value: 'value1' } })
     expect(select)
   })
 
   it('onQueryChange should not be executed when there is no hit in presets', done => {
-    const instance = renderer.create(
+    const instance = shallow(
       <PresetField
         fieldName="DisplayName"
         presets={[{ text: 'value1', value: new Query(q => q) }]}
@@ -58,8 +61,8 @@ describe('Preset Fields', () => {
         }}
       />,
     )
-    const select = instance.root.findByType(Select)
-    select.props.onChange({ target: { value: 'value2' } })
+    const select = instance.find(Select)
+    select.props().onChange({ target: { value: 'value2' } })
 
     setTimeout(() => {
       done()
