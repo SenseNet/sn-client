@@ -54,7 +54,7 @@
     "@storybook/react": "4.0.0-alpha.24",
     "@types/memory-fs": "^0.3.2",
     "@types/node": "^10.10.1",
-    "@types/react": "^16.4.14",
+    "@types/react": "^16.7.14",
     "@types/storybook__addon-actions": "^3.0.3",
     "@types/storybook__addon-info": "^3.4.2",
     "@types/storybook__react": "^3.0.8",

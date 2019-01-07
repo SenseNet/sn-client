@@ -32,7 +32,7 @@
   "homepage": "https://sensenet.com",
   "devDependencies": {
     "@types/jest": "^23.3.10",
-    "@types/react": "^16.7.11",
+    "@types/react": "^16.7.14",
     "@types/react-dom": "^16.0.11",
     "@types/react-router-dom": "^4.3.1",
     "@types/enzyme": "^3.1.15",

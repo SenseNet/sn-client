@@ -318,7 +318,7 @@ export const loadVersions = (id: number) => ({
         'RejectReason',
         'VersionModifiedBy/FullName' as any,
       ],
-      expand: 'VersionModifiedBy' as any,
+      expand: 'VersionModifiedBy',
       metadata: 'no',
     }),
 })
