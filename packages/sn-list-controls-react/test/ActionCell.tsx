@@ -1,6 +1,6 @@
 import IconButton from '@material-ui/core/IconButton'
-import { configure, shallow } from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16'
+import { shallow } from 'enzyme'
+
 import * as React from 'react'
 import { ActionsCell } from '../src/ContentList/CellTemplates/ActionsCell'
 
@@ -8,7 +8,6 @@ import { ActionsCell } from '../src/ContentList/CellTemplates/ActionsCell'
  * ActionCell Component tests
  */
 describe('ActionCell component', () => {
-  configure({ adapter: new Adapter() })
   it('Should render without crashing', () => {
     const component = shallow(
       <ActionsCell actions={[]} openActionMenu={() => undefined} content={{ Id: 1, Path: '', Name: '', Type: '' }} />,

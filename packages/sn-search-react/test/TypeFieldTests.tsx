@@ -1,14 +1,12 @@
 import { Select } from '@material-ui/core'
 import { SchemaStore } from '@sensenet/client-core/dist/Schemas/SchemaStore'
 import { SchemaStore as defaultSchemas, Task, User } from '@sensenet/default-content-types'
-import { configure, shallow } from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16'
+import { shallow } from 'enzyme'
+
 import * as React from 'react'
 import { TypeField } from '../src/Components/Fields/TypeField'
 
 describe('TypeField component', () => {
-  configure({ adapter: new Adapter() })
-
   const schemaStore = new SchemaStore()
   schemaStore.setSchemas(defaultSchemas)
   it('Should be constructed', () => {
