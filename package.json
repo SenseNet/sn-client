@@ -5,12 +5,7 @@
       "packages/*",
       "examples/*"
     ],
-    "nohoist": [
-      "**@types/**",
-      "**/react-moment",
-      "**/material-ui-pickers",
-      "**/react-markdown"
-    ]
+    "nohoist": []
   },
   "config": {
     "commitizen": {
