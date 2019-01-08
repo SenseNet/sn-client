@@ -1,5 +1,6 @@
 {
   "private": true,
+  "version": "2019-01-staging",
   "workspaces": {
     "packages": [
       "packages/*",
