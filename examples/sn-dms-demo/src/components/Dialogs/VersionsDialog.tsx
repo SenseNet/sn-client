@@ -26,7 +26,6 @@ import MediaQuery from 'react-responsive'
 import * as DMSActions from '../../Actions'
 import { versionName } from '../../assets/helpers'
 import { resources } from '../../assets/resources'
-import { Version } from '../../Reducers'
 import { rootStateType } from '../../store/rootReducer'
 import DialogInfo from './DialogInfo'
 import RestoreVersionsDialog from './RestoreVersionDialog'
@@ -142,7 +141,7 @@ interface VersionsDialogProps {
 
 const mapStateToProps = (state: rootStateType) => {
   return {
-    versions: state.dms.versions as Version[],
+    versions: state.dms.versions,
     repositoryUrl: state.sensenet.session.repository ? state.sensenet.session.repository.repositoryUrl : '',
   }
 }
@@ -154,7 +153,7 @@ const mapDispatchToProps = {
 }
 
 interface VersionsDialogState {
-  versions: Version[]
+  versions: GenericContent[]
   expanded: string | boolean
 }
 
@@ -241,20 +240,14 @@ class VersionsDialog extends React.Component<
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {versions.map((version: Version, index: number) => (
+                        {versions.map((version, index: number) => (
                           <TableRow key={index}>
                             <TableCell padding="checkbox" className={classes.versionNumber}>
                               {this.formatVersionNumber(version.Version || '')}
                             </TableCell>
                             <TableCell padding="checkbox" className={classes.versionTableCell}>
-                              <Moment fromNow={true}>
-                                {
-                                  // tslint:disable-next-line:no-string-literal
-                                  version['versionModificationDate']
-                                }
-                              </Moment>
-                              {// tslint:disable-next-line:no-string-literal
-                              ` (${((version['versionModifiedBy'] as any) as User)['FullName']})`}
+                              <Moment fromNow={true}>{version.VersionModificationDate as any}</Moment>
+                              {` (${((version.VersionModifiedBy as any) as User).FullName})`}
                             </TableCell>
                             <TableCell padding="checkbox" className={classes.versionTableCell}>
                               <Tooltip
@@ -293,7 +286,7 @@ class VersionsDialog extends React.Component<
                 ) : (
                   <Paper>
                     <Typography style={styles.mobileVersionsTitle}>{resources.VERSIONS}</Typography>
-                    {versions.map((version: Version, index: number) => (
+                    {versions.map((version, index: number) => (
                       <ExpansionPanel
                         style={styles.innerMobileList}
                         key={`panel${index}`}
@@ -330,8 +323,8 @@ class VersionsDialog extends React.Component<
                                 primary={resources.MODIFIED}
                                 secondary={
                                   // tslint:disable-next-line:no-string-literal
-                                  `${moment(version['versionModificationDate']).fromNow()} (${
-                                    ((version.versionModifiedBy as any) as User).FullName
+                                  `${moment(version.VersionModificationDate).fromNow()} (${
+                                    ((version.VersionModifiedBy as any) as User).FullName
                                   })`
                                 }
                               />

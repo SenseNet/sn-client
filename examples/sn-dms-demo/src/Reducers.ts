@@ -1,4 +1,4 @@
-import { ActionModel, ContentListReferenceField, GenericContent } from '@sensenet/default-content-types'
+import { ActionModel, GenericContent } from '@sensenet/default-content-types'
 import { Actions } from '@sensenet/redux'
 import { Action, AnyAction, combineReducers, Reducer } from 'redux'
 import {
@@ -16,11 +16,6 @@ import { editedContent } from './store/edited/reducers'
 import { picker } from './store/picker/reducers'
 import { usersAndGroups } from './store/usersandgroups/reducers'
 import { workspaces } from './store/workspaces/reducers'
-
-export class Version extends GenericContent {
-  public versionModificationDate?: string
-  public versionModifiedBy?: ContentListReferenceField<ActionModel>
-}
 
 export const email: Reducer<string, Action & { email?: string }> = (state = '', action: AnyAction) => {
   switch (action.type) {
@@ -492,10 +487,10 @@ export const dialog = combineReducers({
   title: dialogTitle,
 })
 
-export const versions: Reducer<Version[]> = (state: Version[] = [], action: AnyAction) => {
+export const versions = (state: GenericContent[] = [], action: AnyAction) => {
   switch (action.type) {
     case 'LOAD_VERSIONS_SUCCESS':
-      const versionItems = (action.result as Actions.PromiseReturns<typeof loadVersions>).d.results as any[]
+      const versionItems = (action.result as Actions.PromiseReturns<typeof loadVersions>).d.results
       return versionItems
     default:
       return state

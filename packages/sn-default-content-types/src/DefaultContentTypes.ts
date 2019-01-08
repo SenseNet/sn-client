@@ -172,6 +172,10 @@ export class GenericContent {
 
   public Actions?: ContentListReferenceField<ActionModel>
   public Type!: string
+  public VersionModifiedBy?: ContentReferenceField<User>
+  public VersionModificationDate?: Date
+  public VersionCreatedBy?: ContentReferenceField<User>
+  public VersionCreationDate?: Date
 }
 /**
  * A content that propagates most of the Fields of another content.
