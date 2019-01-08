@@ -206,7 +206,11 @@ export class ContentList<T extends GenericContent> extends React.Component<Conte
                   const description = (fieldSetting && fieldSetting.Description) || field
                   const displayName = (fieldSetting && fieldSetting.DisplayName) || field
                   return (
-                    <TableCell key={field as string} numeric={isNumeric} className={field as string} padding="checkbox">
+                    <TableCell
+                      key={field as string}
+                      align={isNumeric ? 'right' : undefined}
+                      className={field as string}
+                      padding="checkbox">
                       <Tooltip title={description}>
                         <TableSortLabel
                           active={orderBy === field}
