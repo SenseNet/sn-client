@@ -49,7 +49,7 @@ class LoginTabs extends React.Component<RouteComponentProps<any> & { classes: an
           <Tabs
             value={value}
             onChange={() => this.handleChange(value)}
-            fullWidth={true}
+            variant="fullWidth"
             indicatorColor="primary"
             centered={true}>
             <Tab

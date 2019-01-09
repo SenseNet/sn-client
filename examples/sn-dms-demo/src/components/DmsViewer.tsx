@@ -168,7 +168,7 @@ export class DmsViewerComponent extends React.Component<
                   ) : (
                     <div>
                       <LayoutAppBar>
-                        <Typography variant="title" color="inherit">
+                        <Typography variant="h6" color="inherit">
                           {this.props.documentName}
                         </Typography>
                         <div>

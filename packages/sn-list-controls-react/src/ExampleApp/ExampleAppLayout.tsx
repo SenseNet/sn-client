@@ -53,7 +53,7 @@ export class ExampleAppLayout extends React.Component<{}, ExampleAppState> {
                   }}
                 />
               </IconButton>
-              <Typography variant="title" color="inherit">
+              <Typography variant="h6" color="inherit">
                 list-controls-react showcase
               </Typography>
             </Toolbar>

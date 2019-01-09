@@ -74,7 +74,7 @@ class GroupListToolbar extends React.Component<ReturnType<typeof mapStateToProps
     return (
       <AppBar position="static" style={styles.appbar}>
         <Toolbar style={this.props.isAdmin ? styles.toolbarAdmin : styles.toolbar}>
-          <Typography variant="title" color="inherit" noWrap={true} style={styles.title as any}>
+          <Typography variant="h6" color="inherit" noWrap={true} style={styles.title as any}>
             {resources.GROUPS}
           </Typography>
           {this.props.isAdmin ? (

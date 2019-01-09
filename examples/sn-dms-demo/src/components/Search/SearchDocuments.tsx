@@ -265,7 +265,7 @@ class SearchDocuments extends React.Component<
                             }
                           />
                         </Grid>
-                        <Grid xs={3} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start' }}>
+                        <Grid style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start' }}>
                           <IconButton onClick={this.handleClose}>
                             <Icon iconName="close" />
                           </IconButton>
