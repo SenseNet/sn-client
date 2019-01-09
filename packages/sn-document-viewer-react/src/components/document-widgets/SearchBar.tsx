@@ -4,7 +4,6 @@ import TextField from '@material-ui/core/TextField'
 import Search from '@material-ui/icons/Search'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { componentType } from '../../services'
 import { RootReducerType } from '../../store'
 
 /**
@@ -34,7 +33,7 @@ export interface SearchBarState {
  * Document widget component for paging
  */
 export class SearchBarComponent extends React.Component<
-  componentType<typeof mapStateToProps, typeof mapDispatchToProps>,
+  ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   SearchBarState
 > {
   /** the component state */
