@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "jsx": "react",
+    "outDir": "./dist",
+    "composite": false,
+    "declaration": false,
+    "declarationMap": false
+  },
+  "include": ["src"]
+}

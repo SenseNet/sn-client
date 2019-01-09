@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "build/dist",
+    "module": "esnext",
+    "target": "es5",
+    "lib": ["es6", "dom"],
+    "jsx": "react",
+    "noImplicitReturns": false,
+    "alwaysStrict": false,
+    "composite": true
+  },
+  "include": ["src"]
+}

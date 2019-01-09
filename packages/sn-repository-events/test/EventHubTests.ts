@@ -1,0 +1,472 @@
+import { Content, ODataBatchResponse, ODataResponse, Repository } from '@sensenet/client-core'
+import { EventHub } from '../src'
+
+/**
+ * Unit tests for the Repository Event Hub
+ */
+export const eventHubTests = describe('EventHub', () => {
+  let repository: Repository
+  let eventHub: EventHub
+
+  const mockContent = {
+    Id: 123,
+    Name: 'mook',
+    Path: 'Root/Example',
+  } as Content
+
+  beforeEach(() => {
+    repository = new Repository({}, async () => ({ ok: true } as any))
+    eventHub = new EventHub(repository)
+  })
+
+  afterEach(() => {
+    repository.dispose()
+    eventHub.dispose()
+  })
+
+  it('should be constructed', () => {
+    expect(eventHub).toBeInstanceOf(EventHub)
+  })
+
+  it('should be disposed', () => {
+    eventHub.dispose()
+  })
+
+  describe('Content Created', () => {
+    it('should be triggered after post', done => {
+      eventHub.onContentCreated.subscribe(c => {
+        expect(c.content).toEqual(mockContent)
+        done()
+      })
+      // tslint:disable-next-line:no-string-literal
+      repository['fetch'] = async () =>
+        ({
+          ok: true,
+          json: async () => {
+            return {
+              d: mockContent,
+            } as ODataResponse<Content>
+          },
+        } as any)
+      repository.post({
+        parentPath: '',
+        contentType: 'User',
+        content: mockContent,
+      })
+    })
+
+    it('fail should be trigger after post failed', done => {
+      eventHub.onContentCreateFailed.subscribe(c => {
+        expect(c.content).toEqual(mockContent)
+        done()
+      })
+      // tslint:disable-next-line:no-string-literal
+      repository['fetch'] = async () =>
+        ({
+          ok: false,
+          json: async () => {
+            return { content: mockContent }
+          },
+        } as any)
+      ;(async () => {
+        try {
+          await repository.post({
+            parentPath: '',
+            contentType: 'User',
+            content: mockContent,
+          })
+        } catch {
+          // ignore...
+        }
+      })()
+    })
+
+    it('should be trigger after copy', done => {
+      eventHub.onContentCopied.subscribe(c => {
+        expect(c.content).toEqual(mockContent)
+        done()
+      })
+      // tslint:disable-next-line:no-string-literal
+      repository['fetch'] = async () =>
+        ({
+          ok: true,
+          json: async () => {
+            return {
+              d: {
+                __count: 1,
+                errors: [],
+                results: [mockContent],
+              },
+            } as ODataBatchResponse<Content>
+          },
+        } as any)
+      repository.copy({
+        idOrPath: 123,
+        rootContent: mockContent,
+        targetPath: 'Root/Example/Target/Path',
+      })
+    })
+
+    it('should trigger failed after copy failed', done => {
+      eventHub.onContentCopyFailed.subscribe(c => {
+        expect(c.content).toEqual(mockContent)
+        done()
+      })
+      // tslint:disable-next-line:no-string-literal
+      repository['fetch'] = async () =>
+        ({
+          ok: true,
+          json: async () => {
+            return {
+              d: {
+                __count: 1,
+                errors: [{ error: 'error', content: mockContent }],
+                results: [],
+              },
+            } as ODataBatchResponse<Content>
+          },
+        } as any)
+      repository.copy({
+        idOrPath: 123,
+        rootContent: mockContent,
+        targetPath: 'Root/Example/Target/Path',
+      })
+    })
+
+    it('should trigger failed if copyBatch operation has been failed ', done => {
+      eventHub.onContentCopyFailed.subscribe(c => {
+        expect(c.content).toEqual({ Id: 321 })
+        done()
+      })
+      // tslint:disable-next-line:no-string-literal
+      repository['fetch'] = async () =>
+        ({
+          ok: false,
+        } as any)
+      ;(async () => {
+        try {
+          await repository.copy({
+            targetPath: 'Root/Example/Target',
+            idOrPath: 321,
+          })
+        } catch (error) {
+          /** ignore */
+        }
+      })()
+    })
+
+    it('should trigger failed if copyBatch operation has been failed with an array of pathes', done => {
+      eventHub.onContentCopyFailed.subscribe(c => {
+        expect(c.content).toEqual({ Path: 'Root/Example/Path1' })
+        done()
+      })
+      // tslint:disable-next-line:no-string-literal
+      repository['fetch'] = async () =>
+        ({
+          ok: false,
+        } as any)
+      ;(async () => {
+        try {
+          await repository.copy({
+            targetPath: 'Root/Example/Target',
+            idOrPath: ['Root/Example/Path1'],
+          })
+        } catch (error) {
+          /** ignore */
+        }
+      })()
+    })
+  })
+
+  describe('Content Modified', () => {
+    it('should be trigger after patch', done => {
+      eventHub.onContentModified.subscribe(c => {
+        expect(c.content).toEqual(mockContent)
+        done()
+      })
+      // tslint:disable-next-line:no-string-literal
+      repository['fetch'] = async () =>
+        ({
+          ok: true,
+          json: async () => {
+            return {
+              d: mockContent,
+            } as ODataResponse<Content>
+          },
+        } as any)
+      repository.patch({
+        idOrPath: 123,
+        content: mockContent,
+      })
+    })
+
+    it('fail should be triggered after patch failed', done => {
+      eventHub.onContentModificationFailed.subscribe(c => {
+        expect(c.content).toEqual(mockContent)
+        done()
+      })
+      // tslint:disable-next-line:no-string-literal
+      repository['fetch'] = async () =>
+        ({
+          ok: false,
+          json: async () => {
+            return { content: mockContent }
+          },
+        } as any)
+      ;(async () => {
+        try {
+          await repository.patch({
+            content: mockContent,
+            idOrPath: 123,
+          })
+        } catch {
+          // ignore...
+        }
+      })()
+    })
+
+    it('should be trigger after put', done => {
+      eventHub.onContentModified.subscribe(c => {
+        expect(c.content).toEqual(mockContent)
+        done()
+      })
+      // tslint:disable-next-line:no-string-literal
+      repository['fetch'] = async () =>
+        ({
+          ok: true,
+          json: async () => {
+            return {
+              d: mockContent,
+            } as ODataResponse<Content>
+          },
+        } as any)
+      repository.put({
+        idOrPath: 123,
+        content: mockContent,
+      })
+    })
+  })
+
+  it('fail should be triggered after put failed', done => {
+    eventHub.onContentModificationFailed.subscribe(c => {
+      expect(c.content).toEqual(mockContent)
+      done()
+    })
+    // tslint:disable-next-line:no-string-literal
+    repository['fetch'] = async () =>
+      ({
+        ok: false,
+        json: async () => {
+          return { content: mockContent }
+        },
+      } as any)
+    ;(async () => {
+      try {
+        await repository.put({
+          content: mockContent,
+          idOrPath: 123,
+        })
+      } catch {
+        // ignore...
+      }
+    })()
+  })
+
+  describe('Content Deleted', () => {
+    it('should be triggered after delete', done => {
+      eventHub.onContentDeleted.subscribe(c => {
+        expect(c.contentData).toEqual(mockContent)
+        done()
+      })
+      // tslint:disable-next-line:no-string-literal
+      repository['fetch'] = async () =>
+        ({
+          ok: true,
+          json: async () => {
+            return {
+              d: {
+                __count: 1,
+                results: [mockContent],
+                errors: [],
+              },
+            } as ODataBatchResponse<Content>
+          },
+        } as any)
+      repository.delete({
+        idOrPath: 123,
+      })
+    })
+
+    it('failed should be triggered after delete succeed with errors', done => {
+      eventHub.onContentDeleteFailed.subscribe(c => {
+        expect(c.content).toEqual(mockContent)
+        done()
+      })
+      // tslint:disable-next-line:no-string-literal
+      repository['fetch'] = async () =>
+        ({
+          ok: true,
+          json: async () => {
+            return {
+              d: {
+                __count: 1,
+                results: [],
+                errors: [
+                  {
+                    error: 'alma',
+                    content: mockContent,
+                  },
+                ],
+              },
+            } as ODataBatchResponse<Content>
+          },
+        } as any)
+      repository.delete({
+        idOrPath: 123,
+      })
+    })
+
+    it('failed should be triggered if deleteBatch operation has been failed', done => {
+      eventHub.onContentDeleteFailed.subscribe(c => {
+        expect(c.content).toEqual({ Id: 123 })
+        done()
+      })
+      // tslint:disable-next-line:no-string-literal
+      repository['fetch'] = async () =>
+        ({
+          ok: false,
+        } as any)
+      ;(async () => {
+        try {
+          await repository.delete({
+            idOrPath: 123,
+          })
+        } catch (error) {
+          /** ignore */
+        }
+      })()
+    })
+
+    it('failed should be triggered if deleteBatch operation has been failed with an array of pathes', done => {
+      eventHub.onContentDeleteFailed.subscribe(c => {
+        expect(c.content).toEqual({ Path: 'Root/Example/Path1' })
+        done()
+      })
+      // tslint:disable-next-line:no-string-literal
+      repository['fetch'] = async () =>
+        ({
+          ok: false,
+        } as any)
+      ;(async () => {
+        try {
+          await repository.delete({
+            idOrPath: ['Root/Example/Path1'],
+          })
+        } catch (error) {
+          /** ignore */
+        }
+      })()
+    })
+  })
+
+  describe('Content Move', () => {
+    it('should be triggered after move', done => {
+      eventHub.onContentMoved.subscribe(c => {
+        expect(c.content).toEqual(mockContent)
+        done()
+      })
+      // tslint:disable-next-line:no-string-literal
+      repository['fetch'] = async () =>
+        ({
+          ok: true,
+          json: async () => {
+            return {
+              d: {
+                __count: 1,
+                results: [mockContent],
+                errors: [],
+              },
+            } as ODataBatchResponse<Content>
+          },
+        } as any)
+      repository.move({
+        idOrPath: 123,
+        targetPath: 'Root/Example/TargetPath',
+      })
+    })
+
+    it('failed should be triggered after move succeed with errors', done => {
+      eventHub.onContentMoveFailed.subscribe(c => {
+        expect(c.content).toEqual(mockContent)
+        done()
+      })
+      // tslint:disable-next-line:no-string-literal
+      repository['fetch'] = async () =>
+        ({
+          ok: true,
+          json: async () => {
+            return {
+              d: {
+                __count: 1,
+                results: [],
+                errors: [
+                  {
+                    error: 'alma',
+                    content: mockContent,
+                  },
+                ],
+              },
+            } as ODataBatchResponse<Content>
+          },
+        } as any)
+      repository.move({
+        targetPath: 'Root/Example',
+        idOrPath: 123,
+      })
+    })
+
+    it('failed should be triggered if moveBatch operation has been failed', done => {
+      eventHub.onContentMoveFailed.subscribe(c => {
+        expect(c.content).toEqual({ Id: 123 })
+        done()
+      })
+      // tslint:disable-next-line:no-string-literal
+      repository['fetch'] = async () =>
+        ({
+          ok: false,
+        } as any)
+      ;(async () => {
+        try {
+          await repository.move({
+            idOrPath: 123,
+            targetPath: 'Root/Example',
+          })
+        } catch (error) {
+          /** ignore */
+        }
+      })()
+    })
+
+    it('failed should be triggered if moveBatch operation has been failed with an array of pathes', done => {
+      eventHub.onContentMoveFailed.subscribe(c => {
+        expect(c.content).toEqual({ Path: 'Root/Example/Path1' })
+        done()
+      })
+      // tslint:disable-next-line:no-string-literal
+      repository['fetch'] = async () =>
+        ({
+          ok: false,
+        } as any)
+      ;(async () => {
+        try {
+          await repository.move({
+            idOrPath: ['Root/Example/Path1'],
+            targetPath: 'Root/Example/Target',
+          })
+        } catch (error) {
+          /** ignore */
+        }
+      })()
+    })
+  })
+})

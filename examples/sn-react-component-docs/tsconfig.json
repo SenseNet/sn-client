@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "target": "es5",
+    "module": "esnext",
+    "lib": ["esnext", "dom"],
+    "jsx": "react",
+    "noUnusedParameters": false,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "alwaysStrict": false,
+    "removeComments": false,
+    "declaration": false,
+    "declarationMap": false
+  },
+  "typeRoots": ["node_modules/@types", "./typings.d.ts"]
+}

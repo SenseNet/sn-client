@@ -1,0 +1,73 @@
+{
+  "name": "@sensenet/icons-react",
+  "version": "1.2.4",
+  "description": "A React component rendering icons for sensenet.",
+  "main": "dist/index.js",
+  "scripts": {
+    "precommit": "npm run test",
+    "commit": "git-cz",
+    "test:jest": "jest",
+    "check-coverage": "istanbul check-coverage ",
+    "report-coverage": "cat ./coverage/lcov.info | codecov",
+    "fix": "npm run fix:prettier && npm run fix:tslint",
+    "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
+    "fix:tslint": "tslint --fix --project .",
+    "lint": "tslint --project .",
+    "build": "tsc -b && cpx \"src/assets/**/*.*\" dist/assets",
+    "prepublishOnly": "npm run build",
+    "publish:development": "npm run build && npm t && npm run typedoc && npm publish --tag development",
+    "typedoc": "typedoc --mode modules --out documentation src --exclude **/index.ts --theme c:/Users/%USERNAME%/AppData/Roaming/npm/node_modules/@sensenet/typedoc-theme/sn-theme"
+  },
+  "files": [
+    "dist",
+    "src",
+    "test",
+    "documentation",
+    "coverage"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SenseNet/sn-client.git"
+  },
+  "keywords": [
+    "sensenet",
+    "ecm",
+    "react",
+    "reactjs",
+    "icons",
+    "components"
+  ],
+  "author": "SenseNet",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/SenseNet/sn-icons-react/issues"
+  },
+  "homepage": "https://sensenet.com",
+  "dependencies": {
+    "@material-ui/core": "^1.1.0",
+    "@material-ui/icons": "^1.0.0-beta.42"
+  },
+  "devDependencies": {
+    "@types/enzyme": "^3.1.15",
+    "@types/enzyme-adapter-react-16": "^1.0.3",
+    "@types/jest": "^23.3.10",
+    "@types/node": "^10.12.11",
+    "@types/react": "^16.7.14",
+    "cpx": "^1.5.0",
+    "enzyme": "^3.8.0",
+    "ignore-styles": "^5.0.1",
+    "jest": "^23.6.0",
+    "prop-types": "^15.6.2",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "config": {
+    "commitizen": {
+      "path": "sensenet-kfi-cz-conventional-changelog"
+    }
+  },
+  "typings": "./dist/index.d.ts"
+}

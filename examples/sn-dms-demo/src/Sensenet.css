@@ -1,0 +1,18 @@
+
+
+.Sensenet {
+  text-align: center;
+  font-family: 'Roboto';
+  width: 100%;
+  margin: 0 auto;
+}
+
+.Sensenet-intro {
+  font-size: large;
+}
+
+@media screen and (min-width: 500px) {
+  .Sensenet {
+    max-width: 300px;
+  }
+}

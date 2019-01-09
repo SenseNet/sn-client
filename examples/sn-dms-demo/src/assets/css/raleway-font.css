@@ -1,0 +1,63 @@
+@font-face {
+  font-family: "Raleway Thin";
+  src: url('../fonts/raleway-thin.eot');
+  src: url('../fonts/raleway-thin.eot?#iefix') format('embedded-opentype'), url('../fonts/raleway-thin.woff') format('woff'), url('../fonts/raleway-thin.ttf') format('truetype'), url('../fonts/raleway-thin.svg#ralewaythin') format('svg');
+  font-weight: 100;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Raleway ExtraLight";
+  src: url('../fonts/raleway-extralight.eot');
+  src: url('../fonts/raleway-extralight.eot?#iefix') format('embedded-opentype'), url('../fonts/raleway-extralight.woff') format('woff'), url('../fonts/raleway-extralight.ttf') format('truetype'), url('../fonts/raleway-extralight.svg#ralewayextralight') format('svg');
+  font-weight: 200;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Raleway Light";
+  src: url('../fonts/raleway-light.eot');
+  src: url('../fonts/raleway-light.eot?#iefix') format('embedded-opentype'), url('../fonts/raleway-light.woff') format('woff'), url('../fonts/raleway-light.ttf') format('truetype'), url('../fonts/raleway-light.svg#ralewaylight') format('svg');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Raleway Regular";
+  src: url('../fonts/raleway-regular.eot');
+  src: url('../fonts/raleway-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/raleway-regular.woff') format('woff'), url('../fonts/raleway-regular.ttf') format('truetype'), url('../fonts/raleway-regular.svg#ralewayregular') format('svg');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Raleway Medium";
+  src: url('../fonts/raleway-medium.eot');
+  src: url('../fonts/raleway-medium.eot?#iefix') format('embedded-opentype'), url('../fonts/raleway-medium.woff') format('woff'), url('../fonts/raleway-medium.ttf') format('truetype'), url('../fonts/raleway-medium.svg#ralewaymedium') format('svg');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Raleway SemiBold";
+  src: url('../fonts/raleway-semibold.eot');
+  src: url('../fonts/raleway-semibold.eot?#iefix') format('embedded-opentype'), url('../fonts/raleway-semibold.woff') format('woff'), url('../fonts/raleway-semibold.ttf') format('truetype'), url('../fonts/raleway-semibold.svg#ralewaysemibold') format('svg');
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Raleway Bold";
+  src: url('../fonts/raleway-bold.eot');
+  src: url('../fonts/raleway-bold.eot?#iefix') format('embedded-opentype'), url('../fonts/raleway-bold.woff') format('woff'), url('../fonts/raleway-bold.ttf') format('truetype'), url('../fonts/raleway-bold.svg#ralewaybold') format('svg');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Raleway ExtraBold";
+  src: url('../fonts/raleway-extrabold.eot');
+  src: url('../fonts/raleway-extrabold.eot?#iefix') format('embedded-opentype'), url('../fonts/raleway-extrabold.woff') format('woff'), url('../fonts/raleway-extrabold.ttf') format('truetype'), url('../fonts/raleway-extrabold.svg#ralewayextrabold') format('svg');
+  font-weight: 800;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Raleway Heavy";
+  src: url('../fonts/raleway-heavy.eot');
+  src: url('../fonts/raleway-heavy.eot?#iefix') format('embedded-opentype'), url('../fonts/raleway-heavy.woff') format('woff'), url('../fonts/raleway-heavy.ttf') format('truetype'), url('../fonts/raleway-heavy.svg#ralewayheavy') format('svg');
+  font-weight: 900;
+  font-style: normal;
+}

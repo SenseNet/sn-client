@@ -1,0 +1,110 @@
+{
+  "private": true,
+  "version": "2019-01-staging-2",
+  "workspaces": {
+    "packages": [
+      "packages/*",
+      "examples/*"
+    ],
+    "nohoist": [
+      "**@types/**",
+      "**/react-moment",
+      "**/material-ui-pickers",
+      "**/react-markdown"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "sensenet-kfi-cz-conventional-changelog"
+    }
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.11",
+    "husky": "^1.3.1",
+    "jest": "^23.6.0",
+    "lerna": "^3.8.4",
+    "lint-staged": "^8.1.0",
+    "prettier": "^1.15.3",
+    "rimraf": "^2.6.3",
+    "ts-jest": "^23.10.5",
+    "tslint": "^5.12.0",
+    "tslint-config-prettier": "^1.17.0",
+    "tslint-react": "^3.6.0",
+    "typescript": "^3.3.0-dev.20190105"
+  },
+  "scripts": {
+    "build": "lerna run build",
+    "build:dms": "yarn && yarn build && yarn workspace sn-dms-demo run build:webpack",
+    "build:docs": "yarn && yarn build && yarn workspace sn-react-component-docs run build-storybook",
+    "test": "jest",
+    "clean": "lerna clean",
+    "fix": "lerna run fix --parallel",
+    "lint": "lerna run lint --parallel"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "tslint -p . --fix",
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>/examples/sn-dms-demo",
+      "<rootDir>/examples/sn-react-redux-todo-app",
+      "<rootDir>/packages/sn-authentication-jwt",
+      "<rootDir>/packages/sn-client-auth-google",
+      "<rootDir>/packages/sn-client-utils",
+      "<rootDir>/packages/sn-control-mapper",
+      "<rootDir>/packages/sn-client-core",
+      "<rootDir>/packages/sn-redux",
+      "<rootDir>/packages/sn-repository-events",
+      "<rootDir>/packages/sn-document-viewer-react",
+      "<rootDir>/packages/sn-list-controls-react",
+      "<rootDir>/packages/sn-query",
+      "<rootDir>/packages/sn-search-react",
+      "<rootDir>/packages/sn-redux-promise-middleware",
+      "<rootDir>/packages/sn-icons-react"
+    ],
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest",
+      "^.+\\.css$": "<rootDir>/jest/cssTransform.js",
+      "^.+\\.(png|jpg)$": "<rootDir>/jest/fileTransform.js"
+    },
+    "globals": {
+      "ts-jest": {
+        "tsConfig": "tsconfig.test.json"
+      }
+    },
+    "testMatch": [
+      "**/__tests__/*.+(ts|tsx|js)",
+      "**/test/*.+(ts|tsx|js)"
+    ],
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/packages/**/src/**/*.{ts,tsx}",
+      "!**/test/**/*.{ts,tsx}",
+      "!**/__tests__/**/*.{ts,tsx}",
+      "!**/*.d.{ts,tsx}",
+      "!**/node_modules/**",
+      "!**/index.ts",
+      "!**/example*.*",
+      "!**/Example*.*",
+      "!**/Example*/**/*.*"
+    ],
+    "coverageReporters": [
+      "json",
+      "html"
+    ]
+  }
+}

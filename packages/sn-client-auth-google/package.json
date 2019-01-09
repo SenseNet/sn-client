@@ -1,0 +1,62 @@
+{
+  "name": "@sensenet/authentication-google",
+  "version": "2.0.2",
+  "description": "Client-side Google authentication provider for sensenet",
+  "main": "dist/index.js",
+  "scripts": {
+    "precommit": "npm run test",
+    "commit": "git-cz",
+    "test:jest": "jest",
+    "fix": "npm run fix:prettier && npm run fix:tslint",
+    "fix:prettier": "prettier \"{,!(dist|temp)/**/}*.{ts,tsx}\" --write",
+    "fix:tslint": "tslint --fix --project .",
+    "lint": "tslint --project .",
+    "build": "tsc -b",
+    "prepublishOnly": "npm run build",
+    "publish:development": "npm run build && npm t && npm run typedoc && npm publish --tag development",
+    "typedoc": "typedoc --mode file --out documentation src --tsconfig tsconfig.json --theme c:/Users/%USERNAME%/AppData/Roaming/npm/node_modules/@sensenet/typedoc-theme/sn-theme"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SenseNet/sn-client.git"
+  },
+  "keywords": [
+    "sensenet",
+    "ECM",
+    "document",
+    "management",
+    "Google",
+    "OAuth",
+    "JWT",
+    "Login"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/SenseNet/sn-client/issues"
+  },
+  "homepage": "https://sensenet.com",
+  "dependencies": {
+    "@sensenet/authentication-jwt": "^1.0.6",
+    "@sensenet/client-utils": "^1.4.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "sensenet-kfi-cz-conventional-changelog"
+    }
+  },
+  "typings": "./dist/index.d.ts",
+  "devDependencies": {
+    "@types/jest": "^23.3.10",
+    "@types/jsdom": "^12.2.0",
+    "jest": "^23.6.0",
+    "jsdom": "^13.0.0"
+  }
+}
