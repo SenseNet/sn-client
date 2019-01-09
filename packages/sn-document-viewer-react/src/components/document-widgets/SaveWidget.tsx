@@ -1,9 +1,8 @@
 import IconButton from '@material-ui/core/IconButton'
 import Save from '@material-ui/icons/Save'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { DocumentData, PreviewImageData } from '../../models'
-import { componentType } from '../../services'
 import { RootReducerType, saveChanges } from '../../store'
 
 /**
@@ -15,7 +14,6 @@ export const mapStateToProps = (state: RootReducerType) => {
     saveChanges: state.sensenetDocumentViewer.localization.saveChanges,
     document: state.sensenetDocumentViewer.documentState.document as DocumentData,
     pages: state.sensenetDocumentViewer.previewImages.AvailableImages as PreviewImageData[],
-    activePages: state.sensenetDocumentViewer.viewer.activePages,
     canEdit: state.sensenetDocumentViewer.documentState.canEdit,
     hasChanges:
       state.sensenetDocumentViewer.documentState.hasChanges || state.sensenetDocumentViewer.previewImages.hasChanges,
@@ -34,7 +32,7 @@ export const mapDispatchToProps = {
  * Document widget component for saving document state
  */
 export class SaveDocumentComponent extends React.Component<
-  componentType<typeof mapStateToProps, typeof mapDispatchToProps>
+  ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 > {
   private save() {
     this.props.canEdit && this.props.save(this.props.document, this.props.pages)
