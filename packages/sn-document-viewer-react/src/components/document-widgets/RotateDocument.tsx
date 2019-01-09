@@ -4,7 +4,6 @@ import RotateRight from '@material-ui/icons/RotateRight'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { PreviewImageData } from '../../models'
-import { componentType } from '../../services'
 import { RootReducerType, rotateImages } from '../../store'
 
 /**
@@ -32,7 +31,7 @@ export const mapDispatchToProps = {
  * Component that allows document rotation
  */
 export class RotateDocumentComponent extends React.Component<
-  componentType<typeof mapStateToProps, typeof mapDispatchToProps>
+  ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 > {
   private rotateDocumentLeft() {
     this.props.rotateImages(this.props.pages.map(p => p.Index), -90)
