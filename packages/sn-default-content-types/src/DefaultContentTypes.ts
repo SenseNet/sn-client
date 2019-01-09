@@ -559,7 +559,7 @@ export class User extends GenericContent {
   public ImageRef?: ContentReferenceField<GenericContent>
   public ImageData?: ComplexTypes.MediaResourceObject
   /* Avatar image of user. */
-  public Avatar?: ComplexTypes.MediaResourceObject
+  public Avatar?: { Url: string }
   /* User password. */
   public Password?: string
   /* GUID of corresponding AD object. */

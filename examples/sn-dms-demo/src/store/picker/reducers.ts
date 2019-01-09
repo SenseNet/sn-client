@@ -57,8 +57,7 @@ export const pickerParent: Reducer<GenericContent | undefined> = (
 export const pickerItems: Reducer<GenericContent[]> = (state: GenericContent[] = [], action: AnyAction) => {
   switch (action.type) {
     case 'LOAD_PICKER_ITEMS_SUCCESS':
-      const result = (action.result as PromiseReturns<typeof loadPickerItems>).d.results
-      return result.filter((item: GenericContent) => item.Id !== action.current.Id)
+      return (action.result as PromiseReturns<typeof loadPickerItems>).d.results
     case 'CREATE_CONTENT_SUCCESS':
       const newContent = (action.result as PromiseReturns<typeof createContent>).d
       return [...state, newContent]

@@ -14,19 +14,18 @@ export const repository = new Repository({
     'Type',
     'ParentId',
     'Actions',
-    'Avatar',
     'Owner',
     'DisplayName',
     'Locked',
     'CheckedOutTo',
     'Approvable',
-  ] as any,
-  defaultExpand: ['Actions', 'Owner', 'CheckedOutTo'] as any,
+  ],
+  defaultExpand: ['Actions', 'Owner', 'CheckedOutTo'],
   schemas: customSchema,
   sessionLifetime: 'expiration',
 })
 
-const jwt = new JwtService(repository)
+const jwt = new JwtService(repository, { select: 'all' })
 const googleOauthProvider = addGoogleAuth(jwt, {
   clientId: '188576321252-cad8ho16mf68imajdvai6e2cpl3iv8ss.apps.googleusercontent.com',
 })
