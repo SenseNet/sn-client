@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/document-viewer-react",
-  "version": "1.0.3-alpha.0",
+  "version": "1.0.3",
   "description": "",
   "main": "dist/index.js",
   "files": [
@@ -57,8 +57,8 @@
   "dependencies": {
     "@material-ui/core": "^3.1.1",
     "@material-ui/icons": "^3.0.1",
-    "@sensenet/client-utils": "^1.4.1-alpha.0",
-    "@sensenet/control-mapper": "^1.0.3-alpha.0",
+    "@sensenet/client-utils": "^1.4.1",
+    "@sensenet/control-mapper": "^1.0.3",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-redux": "^6.0.0",
