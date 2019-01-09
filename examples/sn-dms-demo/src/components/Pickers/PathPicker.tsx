@@ -101,9 +101,10 @@ class PathPicker extends React.Component<
   public isSelected = (id: number) => {
     return this.props.selectedTarget.findIndex(item => item.Id === id) > -1
   }
-  public handleClick = (e: React.MouseEvent<HTMLElement>, content: GenericContent) => {
-    const role = (e.target as HTMLElement).attributes.getNamedItem('role') || ''
-    role === 'menuitem' ? this.props.selectPickerItem(content) : this.handleLoading(content.Id)
+  public handleClick = (e: React.MouseEvent<HTMLElement>, content: GenericContent, select: boolean = true) => {
+    e.stopPropagation()
+    e.preventDefault()
+    select ? this.props.selectPickerItem(content) : this.handleLoading(content.Id)
   }
   public handleMouseOver = (id: number) => {
     this.setState({
@@ -167,7 +168,9 @@ class PathPicker extends React.Component<
                     onMouseEnter={() => this.handleMouseOver(item.Id)}
                     onMouseLeave={() => this.handleMouseOut()}
                     selected={this.isSelected(item.Id)}>
-                    <ListItemIcon style={this.isSelected(item.Id) ? styles.iconsSelected : {}}>
+                    <ListItemIcon
+                      style={this.isSelected(item.Id) ? styles.iconsSelected : {}}
+                      onClick={e => this.handleClick(e, item, false)}>
                       <Icon type={iconType.materialui} iconName="folder" />
                     </ListItemIcon>
                     <ListItemText
