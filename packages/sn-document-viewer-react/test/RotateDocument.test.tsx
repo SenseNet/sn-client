@@ -5,7 +5,7 @@ import React from 'react'
 import { RotateDocumentComponent } from '../src/components/document-widgets/RotateDocument'
 import { examplePreviewImageData } from './__Mocks__/viewercontext'
 
-describe('RotateDocumentWidget component', () => {
+describe('RotateDocument component', () => {
   const locals = {
     rotateDocumentLeft: 'rotateDocumentLeft',
     rotateDocumentRight: 'rotateDocumentRight',

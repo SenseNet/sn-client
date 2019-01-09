@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`RotateDocumentWidget component Should render without crashing 1`] = `
+exports[`RotateDocument component Should render without crashing 1`] = `
 <div
   style={
     Object {
