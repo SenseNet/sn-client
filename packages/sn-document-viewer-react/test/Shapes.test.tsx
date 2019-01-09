@@ -1,5 +1,6 @@
 import { shallow } from 'enzyme'
 import React from 'react'
+import { ShapeAnnotation, ShapeHighlight, ShapeRedaction } from '../src/components/page-widgets/Shape'
 import { ShapesComponent } from '../src/components/page-widgets/Shapes'
 import { exampleDocumentData, examplePreviewImageData } from './__Mocks__/viewercontext'
 
@@ -20,7 +21,9 @@ describe('Shapes component', () => {
         updateShapeData={jest.fn()}
       />,
     )
-    expect(wrapper).toMatchSnapshot()
+    expect(wrapper.find(ShapeRedaction).exists()).toBeTruthy()
+    expect(wrapper.find(ShapeAnnotation).exists()).toBeTruthy()
+    expect(wrapper.find(ShapeHighlight).exists()).toBeTruthy()
   })
 
   it('should render just redactions', () => {
@@ -39,7 +42,9 @@ describe('Shapes component', () => {
         updateShapeData={jest.fn()}
       />,
     )
-    expect(wrapper).toMatchSnapshot()
+    expect(wrapper.find(ShapeRedaction).exists()).toBeTruthy()
+    expect(wrapper.find(ShapeAnnotation).exists()).toBeFalsy()
+    expect(wrapper.find(ShapeHighlight).exists()).toBeFalsy()
   })
 
   it('should not render any shape or redactions', () => {
@@ -58,6 +63,8 @@ describe('Shapes component', () => {
         updateShapeData={jest.fn()}
       />,
     )
-    expect(wrapper).toMatchSnapshot()
+    expect(wrapper.find(ShapeRedaction).exists()).toBeFalsy()
+    expect(wrapper.find(ShapeAnnotation).exists()).toBeFalsy()
+    expect(wrapper.find(ShapeHighlight).exists()).toBeFalsy()
   })
 })
