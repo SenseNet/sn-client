@@ -146,7 +146,7 @@ module.exports = {
         },
       },
       {
-        test: /\.md$/,
+        test: [/\.md$/],
         use: 'raw-loader',
       },
     ],
