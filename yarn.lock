@@ -1158,12 +1158,12 @@
   resolved "https://registry.yarnpkg.com/@icons/material/-/material-0.2.4.tgz#e90c9f71768b3736e76d7dd6783fc6c2afa88bc8"
   integrity sha512-QPcGmICAPbGLGb6F/yNf/KzKqvFx8z5qx3D1yFqVAjoFmXK35EgyW+cJ57Te3CNsmzblwtzakLGFqHPqrfb4Tw==
 
-"@lerna/add@3.10.1":
-  version "3.10.1"
-  resolved "https://registry.yarnpkg.com/@lerna/add/-/add-3.10.1.tgz#9668a696cafe1056d27f8fe4a51c6dc89cbad5ae"
-  integrity sha512-H6rPK13BWC6Hf108C/zoXsg+nf1/osp3PWP1k9DsulLr1OWMrpFqFNa2StQHqbbPL2K0FDFeoswcOL6AxpZRrg==
+"@lerna/add@3.10.2":
+  version "3.10.2"
+  resolved "https://registry.yarnpkg.com/@lerna/add/-/add-3.10.2.tgz#586a2db4f3e53c47390c9cd3c59a1925f75760f1"
+  integrity sha512-mEgF6lzIIvH8XisznANmRIpFDIUA9FiEDkR7N86tWuKJoqv/6Q72MaUT+QlV5G9tkgKgsVZ5T/Jaxudr6ZlTzA==
   dependencies:
-    "@lerna/bootstrap" "3.10.1"
+    "@lerna/bootstrap" "3.10.2"
     "@lerna/command" "3.10.0"
     "@lerna/filter-options" "3.10.1"
     "@lerna/npm-conf" "3.7.0"
@@ -1182,10 +1182,10 @@
     "@lerna/validation-error" "3.6.0"
     libnpm "^2.0.1"
 
-"@lerna/bootstrap@3.10.1":
-  version "3.10.1"
-  resolved "https://registry.yarnpkg.com/@lerna/bootstrap/-/bootstrap-3.10.1.tgz#53d349ae9971505ddd3e637359a64eebb8a18a2a"
-  integrity sha512-tI6Vt3ewW1Z9Yfv3pFQG0gmbuI8cjo578Ohg5KJQSrMRF+Bm4uuSxJiJ+aqz0xz2OnRT48YYO3GOIJTlhi5wXA==
+"@lerna/bootstrap@3.10.2":
+  version "3.10.2"
+  resolved "https://registry.yarnpkg.com/@lerna/bootstrap/-/bootstrap-3.10.2.tgz#a45efd4d74ef4a3b1ae1b95023a8b187f49f2c88"
+  integrity sha512-6ux3eApTvRaok0DbAtVgv2WECYDAqqz+2zUiamR7stYHai78kO/95+WJxjHWytch5tZOb2sFIjNu6vvg7AjYEw==
   dependencies:
     "@lerna/batch-packages" "3.10.0"
     "@lerna/command" "3.10.0"
@@ -1750,10 +1750,10 @@
     libnpm "^2.0.1"
     write-file-atomic "^2.3.0"
 
-"@material-ui/core@3.8.2", "@material-ui/core@^3.1.1", "@material-ui/core@^3.6.1", "@material-ui/core@^3.6.2", "@material-ui/core@^3.8.2":
-  version "3.8.2"
-  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-3.8.2.tgz#24d78fb6093f5435c25a7cb76f17a6289215d805"
-  integrity sha512-OLPZqA0oeu1ritKxwDl6vfuVu+pxmcyF0C9iulvy41O9OJzjgFi89c8i8XOoJYcxW3HyuOvl+HGB4YX0sr2QZw==
+"@material-ui/core@3.8.3", "@material-ui/core@^3.1.1", "@material-ui/core@^3.6.1", "@material-ui/core@^3.6.2", "@material-ui/core@^3.8.2":
+  version "3.8.3"
+  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-3.8.3.tgz#5173ceb114e781b01d239a02d851ff6ffbdbc0b0"
+  integrity sha512-jgWx5uwpo+mCj+Y6JdygFRji8ZHDYZdbylqCXvpK42c2n6m/jsr4Y5Y7RnlgllkIqftKFGNnik/rd1gTLaF+Ig==
   dependencies:
     "@babel/runtime" "^7.2.0"
     "@material-ui/system" "^3.0.0-alpha.0"
@@ -8709,12 +8709,12 @@ left-pad@^1.3.0:
   integrity sha512-XI5MPzVNApjAyhQzphX8BkmKsKUxD4LdyK24iZeQGinBN9yTQT3bFlCBy/aVx2HrNcqQGsdot8ghrjyrvMCoEA==
 
 lerna@^3.8.4:
-  version "3.10.1"
-  resolved "https://registry.yarnpkg.com/lerna/-/lerna-3.10.1.tgz#9a76f1264796a3115ccbc5177f2330fb50c59184"
-  integrity sha512-zZ1pVy+aQTmPA4ezaIRALCMAc06TjawcB7PfpSHrlhWxQwv30rq7Fd26+cED5FTbDxmJYyD7a2vdaRlNKZW6bw==
+  version "3.10.2"
+  resolved "https://registry.yarnpkg.com/lerna/-/lerna-3.10.2.tgz#2c0568b8dc58286d984a5704bc449df3428851a0"
+  integrity sha512-6g2OzlrwWaZQQduL9xywJPEGJxbmC8jWD9QKZ8itkk7YIWEesbliD7buewnTxuIlsINSDrzYk7f/JDwq9EHIhg==
   dependencies:
-    "@lerna/add" "3.10.1"
-    "@lerna/bootstrap" "3.10.1"
+    "@lerna/add" "3.10.2"
+    "@lerna/bootstrap" "3.10.2"
     "@lerna/changed" "3.10.1"
     "@lerna/clean" "3.10.1"
     "@lerna/cli" "3.10.0"
@@ -13516,9 +13516,9 @@ typeface-roboto@^0.0.54:
   integrity sha512-sOFA1FXgP0gOgBYlS6irwq6hHYA370KE3dPlgYEJHL3PJd5X8gQE0RmL79ONif6fL5JZuGDj+rtOrFeOqz5IZQ==
 
 typescript@^3.3.0-dev.20190105:
-  version "3.3.0-dev.20190108"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.3.0-dev.20190108.tgz#4ac2e3f7b619a961bfae0750412bf9e79fafe720"
-  integrity sha512-GNGczOoEyZtqbY72G6fNnyCsgSw/gSLyVxHfduDalKl0tOrIt+mEV5JyVQzEMsmcyO821/3QsCjulJHS5KFOWg==
+  version "3.3.0-dev.20190110"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.3.0-dev.20190110.tgz#3904786315ffd8aa10144b6e10562895206b8ffd"
+  integrity sha512-KX6KnWq717uH4cXe9RZruhwnhPufqBLDrxAHy6k3A5JHPnIRuaK2cdij+TQNG8nur3PO6dTLWo4rgwdBsFz/qw==
 
 ua-parser-js@^0.7.18:
   version "0.7.19"
