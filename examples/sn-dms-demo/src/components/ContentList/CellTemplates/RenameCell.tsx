@@ -32,7 +32,7 @@ class RenameCell extends React.Component<
     this.handleClick = this.handleClick.bind(this)
   }
 
-  private input: HTMLInputElement = new HTMLInputElement()
+  private input!: HTMLInputElement
   public componentDidMount() {
     setTimeout(() => {
       this.input.focus()

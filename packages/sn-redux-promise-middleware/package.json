@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/redux-promise-middleware",
-  "version": "2.1.1-alpha.0",
+  "version": "2.1.1",
   "description": "Redux middleware for async sensenet functions",
   "main": "dist/index.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "fix:tslint": "tslint --fix --project .",
     "lint": "tslint --project .",
     "build": "tsc -b",
-    "prepublishOnly": "npm run test && npm run build",
+    "prepublishOnly": "npm run build",
     "publish:development": "npm run build && npm t && npm run typedoc && npm publish --tag development",
     "typedoc": "typedoc --mode file --out documentation src --exclude **/index.ts --theme c:/Users/%USERNAME%/AppData/Roaming/npm/node_modules/@sensenet/typedoc-theme/sn-theme"
   },
@@ -48,7 +48,7 @@
   },
   "typings": "./dist/index.d.ts",
   "devDependencies": {
-    "redux": "^4.0.1",
-    "@types/jest": "^23.3.10"
+    "@types/jest": "^23.3.10",
+    "redux": "^4.0.1"
   }
 }
