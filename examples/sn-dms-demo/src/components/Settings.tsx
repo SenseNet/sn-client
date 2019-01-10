@@ -9,7 +9,7 @@ export const Settings: React.StatelessComponent = () => {
     <AppBar position="static" style={{ background: '#fff' }}>
       <Toolbar style={{ display: 'flex', flexDirection: 'row', padding: '0 12px' }}>
         <div style={{ flex: 1, display: 'flex' }}>
-          <Typography variant="headline">Settings</Typography>
+          <Typography variant="h5">Settings</Typography>
         </div>
       </Toolbar>
     </AppBar>

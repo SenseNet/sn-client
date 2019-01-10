@@ -24,7 +24,9 @@ module.exports = (baseConfig, env, config /* Storybook 4 default config */) => {
     },
   )
 
-  config.optimization.minimize = false
+  if (config.optimization) {
+    config.optimization.minimize = false
+  }
 
   config.resolve.extensions.push('.ts', '.tsx')
 

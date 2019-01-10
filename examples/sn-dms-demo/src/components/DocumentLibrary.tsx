@@ -318,6 +318,7 @@ class DocumentLibrary extends React.Component<
                 }
               }}
               onItemDoubleClick={this.handleRowDoubleClick}
+              checkboxProps={{ color: 'primary' }}
               fieldComponent={props => {
                 switch (props.field) {
                   case 'Locked':

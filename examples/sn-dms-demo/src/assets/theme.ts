@@ -32,6 +32,7 @@ export const theme = createMuiTheme({
     },
   },
   typography: {
+    useNextVariants: true,
     fontSize: 14,
     fontFamily: 'Raleway Regular',
     button: {
@@ -41,7 +42,7 @@ export const theme = createMuiTheme({
       letterSpacing: '.1em',
       minWidth: 50,
     },
-    headline: {
+    h5: {
       fontFamily: 'Raleway SemiBold',
       fontSize: 18,
     },

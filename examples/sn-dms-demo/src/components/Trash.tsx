@@ -9,7 +9,7 @@ export const Trash: React.StatelessComponent = () => {
     <AppBar position="static" style={{ background: '#fff' }}>
       <Toolbar style={{ display: 'flex', flexDirection: 'row', padding: '0 12px' }}>
         <div style={{ flex: 1, display: 'flex' }}>
-          <Typography variant="headline">Trash</Typography>
+          <Typography variant="h5">Trash</Typography>
         </div>
       </Toolbar>
     </AppBar>

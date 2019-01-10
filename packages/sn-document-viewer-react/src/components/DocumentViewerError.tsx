@@ -137,10 +137,10 @@ class DocumentViewerErrorComponent extends React.Component<
               </g>
             </g>
           </svg>
-          <Typography variant="headline" color="textSecondary" align="center" style={{ fontWeight: 'bolder' }}>
+          <Typography variant="h5" color="textSecondary" align="center" style={{ fontWeight: 'bolder' }}>
             {this.state.message}
           </Typography>
-          <Typography variant="subheading" color="textSecondary" align="center" style={{ whiteSpace: 'pre-wrap' }}>
+          <Typography variant="subtitle1" color="textSecondary" align="center" style={{ whiteSpace: 'pre-wrap' }}>
             {this.state.details}
           </Typography>
         </div>

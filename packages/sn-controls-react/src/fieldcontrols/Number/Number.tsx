@@ -168,7 +168,7 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
             <Typography variant="caption" gutterBottom={true}>
               {this.props['data-labelText']}
             </Typography>
-            <Typography variant="body2" gutterBottom={true}>
+            <Typography variant="body1" gutterBottom={true}>
               {this.props['data-isCurrency'] ? (this.props['data-currency'] ? this.props['data-currency'] : '$') : null}
               {this.props['data-isPercentage'] ? '%' : null}
               {this.props.value}
@@ -181,7 +181,7 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
             <Typography variant="caption" gutterBottom={true}>
               {this.props['data-labelText']}
             </Typography>
-            <Typography variant="body2" gutterBottom={true}>
+            <Typography variant="body1" gutterBottom={true}>
               {this.props['data-isCurrency'] ? (this.props['data-currency'] ? this.props['data-currency'] : '$') : null}
               {this.props['data-isPercentage'] ? '%' : null}
               {this.props.value}
