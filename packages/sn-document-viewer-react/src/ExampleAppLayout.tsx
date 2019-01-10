@@ -236,6 +236,9 @@ export const exampleTheme = createMuiTheme({
       },
     },
   },
+  typography: {
+    useNextVariants: true,
+  },
 })
 
 class ExampleAppLayout extends React.Component<
@@ -334,7 +337,7 @@ class ExampleAppLayout extends React.Component<
                   flexGrow: 1,
                   maxWidth: '65%',
                 }}>
-                <Typography variant="title">Document Viewer Demo</Typography>
+                <Typography variant="h6">Document Viewer Demo</Typography>
                 <Typography>Select a sensenet site and document to open.</Typography>
                 <form
                   autoComplete="off"

@@ -127,7 +127,7 @@ export class DocumentTitlePagerComponent extends React.Component<
       <ClickAwayListener onClickAway={() => this.handleBlur()}>
         <Typography
           onClick={() => this.handleFocused()}
-          variant="title"
+          variant="h6"
           color="inherit"
           style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', overflow: 'hidden', margin: '0 2.5em' }}
           title={this.props.documentName}>

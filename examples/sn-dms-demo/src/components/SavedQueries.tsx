@@ -9,7 +9,7 @@ export const SavedQueries: React.StatelessComponent = () => {
     <AppBar position="static" style={{ background: '#fff' }}>
       <Toolbar style={{ display: 'flex', flexDirection: 'row', padding: '0 12px' }}>
         <div style={{ flex: 1, display: 'flex' }}>
-          <Typography variant="headline">Saved Queries</Typography>
+          <Typography variant="h5">Saved Queries</Typography>
         </div>
       </Toolbar>
     </AppBar>

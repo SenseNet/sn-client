@@ -61,17 +61,17 @@
     "@types/react-redux": "^6.0.11",
     "@types/react-responsive": "^3.0.2",
     "autoprefixer": "^9.1.5",
-    "chalk": "2.4.1",
+    "chalk": "2.4.2",
     "cpx": "^1.5.0",
     "date-fns": "^2.0.0-alpha.21",
-    "dotenv": "6.1.0",
+    "dotenv": "6.2.0",
     "fs-extra": "^7.0.1",
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "4.1.0",
     "promise": "8.0.2",
-    "react": "^16.6.3",
-    "react-dev-utils": "^6.0.5",
-    "react-dom": "^16.6.3"
+    "react": "^16.7.0",
+    "react-dev-utils": "^7.0.1",
+    "react-dom": "^16.7.0"
   },
   "publishConfig": {
     "access": "public"

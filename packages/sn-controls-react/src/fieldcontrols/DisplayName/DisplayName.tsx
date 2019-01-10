@@ -121,7 +121,7 @@ export class DisplayName<T extends GenericContent, K extends keyof T> extends Co
             <Typography variant="caption" gutterBottom={true}>
               {this.props['data-labelText']}
             </Typography>
-            <Typography variant="body2" gutterBottom={true}>
+            <Typography variant="body1" gutterBottom={true}>
               {this.props.value}
             </Typography>
           </div>
@@ -132,7 +132,7 @@ export class DisplayName<T extends GenericContent, K extends keyof T> extends Co
             <Typography variant="caption" gutterBottom={true}>
               {this.props['data-labelText']}
             </Typography>
-            <Typography variant="body2" gutterBottom={true}>
+            <Typography variant="body1" gutterBottom={true}>
               {this.props.value}
             </Typography>
           </div>
