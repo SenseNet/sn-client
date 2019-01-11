@@ -19,7 +19,7 @@ exports[`DocumentTitlePager component Should render the focused state without cr
       }
     }
     title="TestDocument"
-    variant="title"
+    variant="h6"
   >
     <div
       style={
@@ -90,7 +90,7 @@ exports[`DocumentTitlePager component Should render the unfocused state without 
       }
     }
     title="TestDocument"
-    variant="title"
+    variant="h6"
   >
     <div
       style={

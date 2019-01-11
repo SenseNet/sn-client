@@ -214,7 +214,7 @@ class VersionsDialog extends React.Component<
         {matches => {
           return (
             <div>
-              <Typography variant="headline" gutterBottom={true}>
+              <Typography variant="h5" gutterBottom={true}>
                 {resources.VERSIONS}
               </Typography>
               <div style={matches ? styles.inner : styles.innerMobile}>

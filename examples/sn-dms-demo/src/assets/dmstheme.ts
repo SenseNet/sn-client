@@ -5,7 +5,7 @@ export const dmsTheme = createMuiTheme({
   ...theme,
   overrides: {
     MuiTypography: {
-      headline: {
+      h5: {
         [theme.breakpoints.down('md')]: {
           fontSize: 14,
         },

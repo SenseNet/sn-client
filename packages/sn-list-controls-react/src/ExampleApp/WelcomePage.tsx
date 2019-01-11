@@ -5,7 +5,7 @@ import { ContentListDemo } from './ContentListDemo'
 
 export const WelcomePage: React.StatelessComponent = () => (
   <div style={{ padding: '2em' }}>
-    <Typography variant="headline">
+    <Typography variant="h5">
       Welcome to the <strong>@sensenet/list-controls-react</strong> ShowCase app
     </Typography>
     <Typography variant="body1">This control is designed to display sensenet content in a list or grid view</Typography>

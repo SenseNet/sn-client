@@ -22,6 +22,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
         />
       </WithStyles(TableCell)>
       <WithStyles(TableCell)
+        align="inherit"
         className="DisplayName"
         key="DisplayName"
         padding="checkbox"
@@ -1084,6 +1085,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
         />
       </WithStyles(TableCell)>
       <WithStyles(TableCell)
+        align="inherit"
         className="DisplayName"
         key="DisplayName"
         padding="checkbox"
@@ -2140,6 +2142,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
   <WithStyles(TableHead)>
     <WithStyles(TableRow)>
       <WithStyles(TableCell)
+        align="inherit"
         className="DisplayName"
         key="DisplayName"
         padding="checkbox"
@@ -3244,6 +3247,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
         />
       </WithStyles(TableCell)>
       <WithStyles(TableCell)
+        align="inherit"
         className="DisplayName"
         key="DisplayName"
         padding="checkbox"
@@ -4308,6 +4312,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
         />
       </WithStyles(TableCell)>
       <WithStyles(TableCell)
+        align="inherit"
         className="DisplayName"
         key="DisplayName"
         padding="checkbox"
@@ -5372,6 +5377,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
         />
       </WithStyles(TableCell)>
       <WithStyles(TableCell)
+        align="inherit"
         className="DisplayName"
         key="DisplayName"
         padding="checkbox"
@@ -6436,6 +6442,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
         />
       </WithStyles(TableCell)>
       <WithStyles(TableCell)
+        align="inherit"
         className="DisplayName"
         key="DisplayName"
         padding="checkbox"
@@ -7500,6 +7507,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
         />
       </WithStyles(TableCell)>
       <WithStyles(TableCell)
+        align="inherit"
         className="DisplayName"
         key="DisplayName"
         padding="checkbox"
