@@ -38,4 +38,5 @@ export const icons = {
   forceundocheckout: 'undo',
   group: 'supervised_user_circle',
   orgunit: 'supervised_user_circle',
+  query: 'library_books',
 } as any

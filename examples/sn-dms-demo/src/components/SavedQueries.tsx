@@ -1,3 +1,4 @@
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 import Typography from '@material-ui/core/Typography'
 import { ActionModel, Query } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
@@ -5,6 +6,7 @@ import { updateContent } from '@sensenet/redux/dist/Actions'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { closeActionMenu, openActionMenu } from '../Actions'
+import { contentListTheme } from '../assets/contentlist'
 import { icons } from '../assets/icons'
 import { getQueries, select, setActive } from '../store/queries'
 import { rootStateType } from '../store/rootReducer'
@@ -41,61 +43,66 @@ class SavedQueries extends React.Component<ReturnType<typeof mapStateToProps> & 
     this.load()
     return (
       <div style={{ padding: '2em' }}>
-        <Typography variant="h5">Saved Queries</Typography>
-        <ContentList<Query>
-          schema={{ FieldSettings: [] } as any}
-          selected={this.props.selected}
-          onRequestSelectionChange={this.props.select}
-          active={this.props.active}
-          icons={icons}
-          items={this.props.queries.map(q => ({ ...q, Icon: 'preview' }))}
-          fieldsToDisplay={['DisplayName', 'Actions']}
-          onRequestActiveItemChange={active => this.props.setActive(active)}
-          onRequestActionsMenu={(ev, content) => {
-            ev.preventDefault()
-            this.props.closeActionMenu()
-            this.props.openActionMenu(content.Actions as ActionModel[], content, '', ev.currentTarget.parentElement, {
-              top: ev.clientY,
-              left: ev.clientX,
-            })
-          }}
-          onItemContextMenu={(ev, content) => {
-            ev.preventDefault()
-            this.props.closeActionMenu()
-            this.props.openActionMenu(content.Actions as ActionModel[], content, '', ev.currentTarget.parentElement, {
-              top: ev.clientY,
-              left: ev.clientX,
-            })
-          }}
-          fieldComponent={props => {
-            switch (props.field) {
-              case 'DisplayName':
-                if (this.props.editedItemId === props.content.Id) {
+        <MuiThemeProvider theme={contentListTheme}>
+          <Typography variant="h5">Saved Queries</Typography>
+          <ContentList<Query>
+            schema={{ FieldSettings: [] } as any}
+            selected={this.props.selected}
+            onRequestSelectionChange={this.props.select}
+            active={this.props.active}
+            icons={icons}
+            items={this.props.queries.map(q => ({ ...q, Icon: 'query' }))}
+            fieldsToDisplay={['DisplayName', 'Actions']}
+            onRequestActiveItemChange={active => this.props.setActive(active)}
+            onRequestActionsMenu={(ev, content) => {
+              ev.preventDefault()
+              this.props.closeActionMenu()
+              this.props.openActionMenu(content.Actions as ActionModel[], content, '', ev.currentTarget.parentElement, {
+                top: ev.clientY,
+                left: ev.clientX,
+              })
+            }}
+            checkboxProps={{
+              color: 'primary',
+            }}
+            onItemContextMenu={(ev, content) => {
+              ev.preventDefault()
+              this.props.closeActionMenu()
+              this.props.openActionMenu(content.Actions as ActionModel[], content, '', ev.currentTarget.parentElement, {
+                top: ev.clientY,
+                left: ev.clientX,
+              })
+            }}
+            fieldComponent={props => {
+              switch (props.field) {
+                case 'DisplayName':
+                  if (this.props.editedItemId === props.content.Id) {
+                    return (
+                      <RenameCell
+                        icon={props.content.Icon || ''}
+                        icons={icons}
+                        displayName={props.content.DisplayName || props.content.Name}
+                        onFinish={newName => {
+                          this.props.updateContent<Query>(props.content.Id, { DisplayName: newName })
+                        }}
+                      />
+                    )
+                  }
                   return (
-                    <RenameCell
-                      icon={props.content.Icon || ''}
+                    <DisplayNameCell
+                      content={props.content}
+                      isSelected={props.isSelected}
                       icons={icons}
-                      displayName={props.content.DisplayName || props.content.Name}
-                      onFinish={newName => {
-                        this.props.updateContent<Query>(props.content.Id, { DisplayName: newName })
-                      }}
+                      hostName={this.props.hostName}
                     />
                   )
-                }
-                return (
-                  <DisplayNameCell
-                    content={props.content}
-                    isSelected={props.isSelected}
-                    icons={icons}
-                    hostName={this.props.hostName}
-                  />
-                )
 
-              default:
-                return null
-            }
-          }}
-        />
+                default:
+                  return null
+              }
+            }}
+          />
+        </MuiThemeProvider>
         <ActionMenu id={0} />
       </div>
     )
