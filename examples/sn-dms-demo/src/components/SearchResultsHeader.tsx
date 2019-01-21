@@ -12,6 +12,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { openDialog } from '../Actions'
 import { resources } from '../assets/resources'
+import { saveQuery } from '../store/queries'
 import { rootStateType } from '../store/rootReducer'
 
 interface SearchResultsHeaderProps {
@@ -25,24 +26,20 @@ interface SearchResultsHeaderState {
 }
 
 const mapStateToProps = (state: rootStateType) => ({
-  dialog: state.dms.dialog,
+  doclib: state.dms.documentLibrary.parentIdOrPath,
+
   contains: state.dms.documentLibrary.searchState.contains,
 })
 
 const mapDispatchToProps = {
   openDialog,
+  saveQuery,
 }
 
 class SearchResultsHeader extends React.Component<
   SearchResultsHeaderProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   SearchResultsHeaderState
 > {
-  public static getDerivedStateFromProps(props: SearchResultsHeader['props']) {
-    return {
-      queryName: props.contains ? `${resources.SEARCH_RESULTS_FOR} '${props.contains}'` : resources.SEARCH_RESULTS,
-    }
-  }
-
   public state: SearchResultsHeaderState = {
     isSaveDialogOpened: false,
     queryName: this.props.contains
@@ -52,11 +49,22 @@ class SearchResultsHeader extends React.Component<
   private handleOpenSaveQueryDialog() {
     this.setState({
       isSaveDialogOpened: true,
+      queryName:
+        this.state.queryName || this.props.contains
+          ? `${resources.SEARCH_RESULTS_FOR} '${this.props.contains}'`
+          : resources.SEARCH_RESULTS,
     })
+  }
+
+  private handleSaveQuery() {
+    /** */
+    this.props.doclib && this.props.saveQuery(this.props.doclib, this.props.query, this.state.queryName, 'Private')
+    this.setState({ isSaveDialogOpened: false, queryName: '' })
   }
   constructor(props: SearchResultsHeader['props']) {
     super(props)
     this.handleOpenSaveQueryDialog = this.handleOpenSaveQueryDialog.bind(this)
+    this.handleSaveQuery = this.handleSaveQuery.bind(this)
   }
   public render() {
     return (
@@ -81,7 +89,9 @@ class SearchResultsHeader extends React.Component<
           </DialogContent>
           <DialogActions>
             <Button onClick={() => this.setState({ isSaveDialogOpened: false })}>Cancel</Button>
-            <Button color="primary">Submit</Button>
+            <Button color="primary" onClick={this.handleSaveQuery}>
+              Submit
+            </Button>
           </DialogActions>
         </Dialog>
       </Typography>

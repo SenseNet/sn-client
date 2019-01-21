@@ -14,6 +14,7 @@ import { logReducer } from './store/actionlog/reducers'
 import { documentLibrary } from './store/documentlibrary/reducers'
 import { editedContent } from './store/edited/reducers'
 import { picker } from './store/picker/reducers'
+import { queries } from './store/queries'
 import { usersAndGroups } from './store/usersandgroups/reducers'
 import { workspaces } from './store/workspaces/reducers'
 
@@ -529,4 +530,5 @@ export const dms = combineReducers({
   menuOpen,
   log: logReducer,
   usersAndGroups,
+  queries,
 })
