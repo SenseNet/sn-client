@@ -1,19 +1,20 @@
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
+import { CSSProperties } from '@material-ui/core/styles/withStyles'
 import theme from './theme'
 
-export const defaultCell: React.CSSProperties = {
+export const defaultCell: CSSProperties = {
   color: '#666',
   fontSize: '16px',
   fontFamily: 'Raleway Light',
   cursor: 'pointer',
 }
 
-export const selectedCell: React.CSSProperties = {
+export const selectedCell: CSSProperties = {
   color: '#016D9E',
   fontWeight: 'bold',
 }
 
-export const hoveredCell: React.CSSProperties = {
+export const hoveredCell: CSSProperties = {
   color: 'black',
   fontWeight: 'bold',
 }
