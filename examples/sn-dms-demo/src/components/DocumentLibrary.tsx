@@ -129,6 +129,29 @@ class DocumentLibrary extends React.Component<
       const pathFromUrl = newProps.match.params.folderPath && atob(decodeURIComponent(newProps.match.params.folderPath))
       const userProfilePath = `/Root/Profiles/Public/${newProps.loggedinUser.content.Name}/Document_Library`
       newProps.loadParent(pathFromUrl || userProfilePath)
+
+      const queryObject = newProps.location.search
+        .substring(1)
+        .split('&')
+        .map(segment => segment.split('='))
+        .reduce(
+          (acc, val) => {
+            acc[val[0]] = decodeURIComponent(val[1])
+            return acc
+          },
+          {} as any,
+        )
+
+      if (queryObject.query && queryObject.query !== newProps.childrenOptions.query) {
+        newProps.updateChildrenOptions({
+          query: queryObject.query,
+        })
+        if (queryObject.queryName) {
+          newProps.updateSearchValues({
+            contains: queryObject.queryName,
+          })
+        }
+      }
     } catch (error) {
       /** Cannot parse current folder from URL */
       return compile(newProps.match.path)({ folderPath: '' })

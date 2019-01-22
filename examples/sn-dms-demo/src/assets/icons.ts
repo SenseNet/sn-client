@@ -39,4 +39,5 @@ export const icons = {
   group: 'supervised_user_circle',
   orgunit: 'supervised_user_circle',
   query: 'library_books',
+  query_execute: 'play_arrow',
 } as any

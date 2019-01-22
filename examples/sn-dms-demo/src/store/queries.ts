@@ -57,6 +57,7 @@ export const getQueries: (
       name: 'GetQueries',
       method: 'GET',
       oDataOptions: {
+        select: ['Query'],
         scenario: 'DMSListItem',
         onlyPublic: queryType === 'Public' ? true : false,
       } as any,

@@ -4,7 +4,7 @@ import List from '@material-ui/core/List'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import { ActionModel } from '@sensenet/default-content-types'
+import { ActionModel, Query } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import { Actions } from '@sensenet/redux'
 import { compile } from 'path-to-regexp'
@@ -118,7 +118,7 @@ interface ActionMenuState {
 }
 
 class ActionMenu extends React.Component<
-  ActionMenuProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
+  ActionMenuProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & RouteComponentProps,
   ActionMenuState
 > {
   constructor(props: ActionMenu['props']) {
@@ -301,6 +301,12 @@ class ActionMenu extends React.Component<
             () => this.props.closePicker() && this.props.setBackLink(true),
           )
           break
+        case 'ExecuteQuery':
+          const query = content as Query
+          this.props.history.replace(`/documents?query=${query.Query}&queryName=${query.DisplayName || query.Name}`)
+          this.props.closeActionMenu()
+          break
+
         default:
           console.log(`${action.Name} is clicked`)
           this.handleClose()
