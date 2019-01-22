@@ -49,7 +49,7 @@ export class FormsAuthenticationService implements AuthenticationService {
   /**
    * Returns the current user value
    */
-  public async getCurrentUser() {
+  public async getCurrentUser(): Promise<User> {
     this.state.setValue(LoginState.Pending)
     try {
       const result = await this.repository.loadCollection({
@@ -64,7 +64,7 @@ export class FormsAuthenticationService implements AuthenticationService {
         if (result.d.results[0].Id !== ConstantContent.VISITOR_USER.Id) {
           this.state.setValue(LoginState.Authenticated)
           this.currentUser.setValue(result.d.results[0])
-          return
+          return result.d.results[0]
         }
       }
     } catch (error) {
@@ -72,6 +72,7 @@ export class FormsAuthenticationService implements AuthenticationService {
     }
     this.state.setValue(LoginState.Unauthenticated)
     this.currentUser.setValue(ConstantContent.VISITOR_USER)
+    return ConstantContent.VISITOR_USER
   }
 
   /**
@@ -91,7 +92,9 @@ export class FormsAuthenticationService implements AuthenticationService {
         name: 'Login',
       })
       this.currentUser.setValue(user.d)
-      return user.d.Id !== ConstantContent.VISITOR_USER.Id ? true : false
+      const isVisitor = user.d.Id !== ConstantContent.VISITOR_USER.Id ? true : false
+      this.state.setValue(isVisitor ? LoginState.Authenticated : LoginState.Unauthenticated)
+      return isVisitor
     } catch (error) {
       return false
     }
@@ -107,6 +110,7 @@ export class FormsAuthenticationService implements AuthenticationService {
       body: {},
     })
     this.currentUser.setValue(ConstantContent.VISITOR_USER)
+    this.state.setValue(LoginState.Unauthenticated)
     return true
   }
 }
