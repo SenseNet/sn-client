@@ -10,7 +10,7 @@ export const ContentTypes: React.StatelessComponent = () => {
     <AppBar position="static" style={{ background: '#fff' }}>
       <Toolbar style={{ display: 'flex', flexDirection: 'row', padding: '0 12px' }}>
         <div style={{ flex: 1, display: 'flex' }}>
-          <Typography variant="headline">Content Types</Typography>
+          <Typography variant="h5">Content Types</Typography>
         </div>
       </Toolbar>
     </AppBar>

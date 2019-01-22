@@ -54,7 +54,7 @@ class DocumentViewerLoadingComponent extends React.Component<
             margin: '.5em 0 .6em 0',
           }}>
           <img src={this.props.image} />
-          <Typography variant="headline" color="textSecondary" align="center" style={{ fontWeight: 'bolder' }}>
+          <Typography variant="h5" color="textSecondary" align="center" style={{ fontWeight: 'bolder' }}>
             {this.props.loadingDocument}
           </Typography>
         </div>

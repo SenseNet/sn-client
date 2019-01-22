@@ -94,10 +94,7 @@ class UserInfo extends React.Component<
   }
   public render() {
     const { isLoading, repositoryUrl, user, currentUser } = this.props
-    const avatar = user ? (user.Avatar as any) : null
-    const avatarPath = avatar ? (avatar.Url as any) : ''
-    const avatarUrl =
-      !isLoading && avatar ? (avatarPath.length > 0 ? repositoryUrl + avatarPath : defaultAvatar) : defaultAvatar
+    const avatarUrl = (user && user.Avatar && user.Avatar.Url && repositoryUrl + user.Avatar.Url) || defaultAvatar
     return isLoading ? null : (
       <Paper style={styles.container as any}>
         <div style={styles.leftColumn}>

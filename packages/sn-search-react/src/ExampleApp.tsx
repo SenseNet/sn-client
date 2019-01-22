@@ -117,7 +117,7 @@ export class ExampleApp extends React.Component<{}, ExampleComponentState> {
         <AppBar position="static" color="primary">
           <Toolbar>
             <Typography
-              variant="title"
+              variant="h6"
               color="inherit"
               style={{ display: 'flex', width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
@@ -152,7 +152,7 @@ export class ExampleApp extends React.Component<{}, ExampleComponentState> {
             schema={repo.schemas.getSchemaByName('GenericContent')}
             fields={_options => (
               <Paper style={{ margin: '1em' }}>
-                <Typography variant="title" style={{ padding: '1em .7em' }}>
+                <Typography variant="h6" style={{ padding: '1em .7em' }}>
                   Advanced search in fields
                 </Typography>
                 <form

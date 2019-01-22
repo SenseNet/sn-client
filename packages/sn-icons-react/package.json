@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/icons-react",
-  "version": "1.2.4-alpha.0",
+  "version": "1.2.4",
   "description": "A React component rendering icons for sensenet.",
   "main": "dist/index.js",
   "scripts": {
@@ -14,7 +14,7 @@
     "fix:tslint": "tslint --fix --project .",
     "lint": "tslint --project .",
     "build": "tsc -b && cpx \"src/assets/**/*.*\" dist/assets",
-    "prepublishOnly": "npm run test && npm run build",
+    "prepublishOnly": "npm run build",
     "publish:development": "npm run build && npm t && npm run typedoc && npm publish --tag development",
     "typedoc": "typedoc --mode modules --out documentation src --exclude **/index.ts --theme c:/Users/%USERNAME%/AppData/Roaming/npm/node_modules/@sensenet/typedoc-theme/sn-theme"
   },
@@ -44,8 +44,8 @@
   },
   "homepage": "https://sensenet.com",
   "dependencies": {
-    "@material-ui/core": "^1.1.0",
-    "@material-ui/icons": "^1.0.0-beta.42"
+    "@material-ui/core": "3.8.3",
+    "@material-ui/icons": "3.0.2"
   },
   "devDependencies": {
     "@types/enzyme": "^3.1.15",

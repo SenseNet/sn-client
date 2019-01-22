@@ -128,7 +128,7 @@ class RestoreVersionDialog extends React.Component<
       <MediaQuery minDeviceWidth={700}>
         {matches => (
           <div>
-            <Typography variant="headline" gutterBottom={true}>
+            <Typography variant="h5" gutterBottom={true}>
               {resources.APPROVE_OR_REJECT}
             </Typography>
             <div style={matches ? styles.inner : styles.innerMobile}>

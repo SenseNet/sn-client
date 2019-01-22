@@ -10,7 +10,7 @@ export const ContentTemplates: React.StatelessComponent = () => {
     <AppBar position="static" style={{ background: '#fff' }}>
       <Toolbar style={{ display: 'flex', flexDirection: 'row', padding: '0 12px' }}>
         <div style={{ flex: 1, display: 'flex' }}>
-          <Typography variant="headline">Content Templates</Typography>
+          <Typography variant="h5">Content Templates</Typography>
         </div>
       </Toolbar>
     </AppBar>

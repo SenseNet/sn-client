@@ -141,7 +141,7 @@ class Picker extends React.Component<ReturnType<typeof mapStateToProps> & typeof
                         <img src={sensenetLogo} alt="sensenet" aria-label="sensenet" style={styles.snLogo} />
                       </div>
                     )}
-                    <Typography variant="title" color="inherit">
+                    <Typography variant="h6" color="inherit">
                       {parent ? parent.DisplayName : 'Move content'}
                     </Typography>
                     <IconButton color="inherit" onClick={() => this.handleClose()}>
@@ -172,7 +172,7 @@ class Picker extends React.Component<ReturnType<typeof mapStateToProps> & typeof
                         <img src={sensenetLogo} alt="sensenet" aria-label="sensenet" style={styles.snLogo} />
                       </div>
                     )}
-                    <Typography variant="title" color="inherit" style={styles.mobileContentTitle}>
+                    <Typography variant="h6" color="inherit" style={styles.mobileContentTitle}>
                       {parent ? parent.DisplayName : 'Move content'}
                     </Typography>
                   </Toolbar>

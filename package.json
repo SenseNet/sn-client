@@ -1,15 +1,10 @@
 {
   "private": true,
+  "version": "2019-01-staging-2",
   "workspaces": {
     "packages": [
       "packages/*",
       "examples/*"
-    ],
-    "nohoist": [
-      "**@types/**",
-      "**/react-moment",
-      "**/material-ui-pickers",
-      "**/react-markdown"
     ]
   },
   "config": {

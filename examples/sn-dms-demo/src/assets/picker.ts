@@ -131,7 +131,7 @@ export const pickerTheme = createMuiTheme({
           boxShadow: 'none',
         },
       },
-      disabled: {
+      '&$disabled': {
         background: '#fff',
         color: '#016D9E',
         boxShadow: 'none',
@@ -143,6 +143,6 @@ export const pickerTheme = createMuiTheme({
           },
         },
       },
-    },
+    } as any,
   },
 })
