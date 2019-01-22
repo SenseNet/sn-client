@@ -95,7 +95,7 @@ class UserInfo extends React.Component<
   public render() {
     const { isLoading, repositoryUrl, user, currentUser } = this.props
     const avatar = user ? (user.Avatar as any) : null
-    const avatarPath = avatar ? (avatar.url as any) : ''
+    const avatarPath = avatar ? (avatar.Url as any) : ''
     const avatarUrl =
       !isLoading && avatar ? (avatarPath.length > 0 ? repositoryUrl + avatarPath : defaultAvatar) : defaultAvatar
     return isLoading ? null : (
