@@ -1,7 +1,6 @@
 import { AuthenticationService, ConstantContent, LoginState, ODataParams, Repository } from '@sensenet/client-core'
 import { ObservableValue, PathHelper } from '@sensenet/client-utils'
 import { User } from '@sensenet/default-content-types'
-import { Query } from '@sensenet/query'
 import { LoginResponse } from './LoginResponse'
 import { OauthProvider } from './OauthProvider'
 import { RefreshResponse } from './RefreshResponse'
@@ -110,17 +109,12 @@ export class JwtService implements AuthenticationService {
       this.state.getValue() === LoginState.Authenticated &&
       this.tokenStore.AccessToken.Username !== `${lastUser.Domain}\\${lastUser.LoginName}`
     ) {
-      const [domain, loginName] = this.tokenStore.AccessToken.Username.split('\\')
+      await this.checkForUpdate()
       const response = await this.repository.loadCollection<User>({
         path: 'Root',
         oDataOptions: {
           ...this.userLoadOptions,
-          query: new Query(q =>
-            q
-              .typeIs<User>(User)
-              .and.equals('Domain', domain)
-              .and.equals('LoginName', loginName),
-          ).toString(),
+          query: 'Id:@@CurrentUser.Id@@',
         },
       })
       this.currentUser.setValue(response.d.results[0])
