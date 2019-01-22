@@ -61,9 +61,9 @@ class SavedQueries extends React.Component<
             onRequestSelectionChange={this.props.select}
             active={this.props.active}
             icons={icons}
-            items={this.props.queries.map(q => ({ ...q, Icon: 'query' }))}
+            items={this.props.queries}
             fieldsToDisplay={['DisplayName', 'Actions']}
-            onRequestActiveItemChange={active => this.props.setActive(active)}
+            onRequestActiveItemChange={this.props.setActive}
             displayRowCheckbox={false}
             onRequestActionsMenu={(ev, content) => {
               ev.preventDefault()
