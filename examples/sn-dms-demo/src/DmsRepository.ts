@@ -28,7 +28,7 @@ export const repository = new Repository({
 const formsAuthService = FormsAuthenticationService.Setup(repository)
 Injector.Default.SetInstance(formsAuthService)
 
-const jwt = new JwtService(repository, { select: 'all' })
+const jwt = JwtService.setup(repository, { select: 'all' })
 
 const googleOauthProvider = addGoogleAuth(jwt, {
   clientId: '188576321252-cad8ho16mf68imajdvai6e2cpl3iv8ss.apps.googleusercontent.com',
