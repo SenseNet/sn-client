@@ -35,11 +35,11 @@ describe('Forms Authentication', () => {
 
   describe('Login', () => {
     it('Login should call a custom action endpoint', async () => {
-      const actionCall = jest.fn()
+      const actionCall = jest.fn(async () => true)
       const r = new Repository({})
-      FormsAuthenticationService.Setup(r)
+      r.authentication = new FormsAuthenticationService(r)
       r.executeAction = actionCall
-      r.authentication.login('username', 'password')
+      await r.authentication.login('username', 'password')
       expect(actionCall).toBeCalledWith({
         body: {
           password: 'password',

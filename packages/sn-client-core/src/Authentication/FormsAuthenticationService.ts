@@ -1,18 +1,23 @@
 import { ObservableValue } from '@sensenet/client-utils'
 import { User } from '@sensenet/default-content-types'
+import Semaphor from 'semaphore-async-await'
 import { AuthenticationService, ConstantContent, LoginState, ODataParams, ODataResponse, Repository } from '..'
 
 /**
  * Authentication Service class for using Forms authentication through OData Actions
  */
 export class FormsAuthenticationService implements AuthenticationService {
+  private statusLock = new Semaphor(1)
+
   /**
    * Static Factory Method for attaching the service to a Repository object
    * @param repository The repository instance
    * @param loadUserOptions Additional options for loading User content
    */
   public static Setup(repository: Repository, loadUserOptions?: ODataParams<User>) {
-    return new FormsAuthenticationService(repository, loadUserOptions)
+    const service = new FormsAuthenticationService(repository, loadUserOptions)
+    service.getCurrentUser()
+    return service
   }
 
   /**
@@ -28,7 +33,6 @@ export class FormsAuthenticationService implements AuthenticationService {
 
   constructor(private repository: Repository, private readonly userLoadOptions: ODataParams<User> = { select: 'all' }) {
     this.repository.authentication = this
-    this.getCurrentUser()
   }
 
   /**
@@ -50,29 +54,34 @@ export class FormsAuthenticationService implements AuthenticationService {
    * Returns the current user value
    */
   public async getCurrentUser(): Promise<User> {
-    this.state.setValue(LoginState.Pending)
     try {
-      const result = await this.repository.loadCollection({
-        path: ConstantContent.PORTAL_ROOT.Path,
-        oDataOptions: {
-          ...this.userLoadOptions,
-          query: 'Id:@@CurrentUser.Id@@',
-          top: 1,
-        },
-      })
-      if (result.d.__count === 1) {
-        if (result.d.results[0].Id !== ConstantContent.VISITOR_USER.Id) {
-          this.state.setValue(LoginState.Authenticated)
-          this.currentUser.setValue(result.d.results[0])
-          return result.d.results[0]
+      await this.statusLock.acquire()
+      this.state.setValue(LoginState.Pending)
+      try {
+        const result = await this.repository.loadCollection({
+          path: ConstantContent.PORTAL_ROOT.Path,
+          oDataOptions: {
+            ...this.userLoadOptions,
+            query: 'Id:@@CurrentUser.Id@@',
+            top: 1,
+          },
+        })
+        if (result.d.__count === 1) {
+          if (result.d.results[0].Id !== ConstantContent.VISITOR_USER.Id) {
+            this.state.setValue(LoginState.Authenticated)
+            this.currentUser.setValue(result.d.results[0])
+            return result.d.results[0]
+          }
         }
+      } catch (error) {
+        /** */
       }
-    } catch (error) {
-      /** */
+      this.state.setValue(LoginState.Unauthenticated)
+      this.currentUser.setValue(ConstantContent.VISITOR_USER)
+      return ConstantContent.VISITOR_USER
+    } finally {
+      await this.statusLock.release()
     }
-    this.state.setValue(LoginState.Unauthenticated)
-    this.currentUser.setValue(ConstantContent.VISITOR_USER)
-    return ConstantContent.VISITOR_USER
   }
 
   /**
@@ -82,6 +91,7 @@ export class FormsAuthenticationService implements AuthenticationService {
    */
   public async login(username: string, password: string): Promise<boolean> {
     try {
+      await this.statusLock.acquire()
       const user = await this.repository.executeAction<{ username: string; password: string }, ODataResponse<User>>({
         body: {
           username,
@@ -97,6 +107,8 @@ export class FormsAuthenticationService implements AuthenticationService {
       return isVisitor
     } catch (error) {
       return false
+    } finally {
+      this.statusLock.release()
     }
   }
   /**
