@@ -1,6 +1,7 @@
 import { AuthenticationService, ConstantContent, LoginState, ODataParams, Repository } from '@sensenet/client-core'
 import { ObservableValue, PathHelper } from '@sensenet/client-utils'
 import { User } from '@sensenet/default-content-types'
+import Semaphore from 'semaphore-async-await'
 import { LoginResponse } from './LoginResponse'
 import { OauthProvider } from './OauthProvider'
 import { RefreshResponse } from './RefreshResponse'
@@ -12,6 +13,12 @@ import { TokenStore } from './TokenStore'
  * This service class manages the JWT authentication, the session and the current login state.
  */
 export class JwtService implements AuthenticationService {
+  public static setup(repository: Repository, userLoadOptions?: ODataParams<User>): JwtService {
+    const s = new JwtService(repository, userLoadOptions)
+    s.checkForUpdate()
+    return s
+  }
+
   private readonly jwtTokenKeyTemplate: string = 'sn-${siteName}-${tokenName}'
 
   /**
@@ -50,25 +57,32 @@ export class JwtService implements AuthenticationService {
     this.repository.configuration.sessionLifetime === 'session' ? TokenPersist.Session : TokenPersist.Expiration,
   )
 
+  private updateLock = new Semaphore(1)
+
   /**
    * Executed before each Ajax call. If the access token has been expired, but the refresh token is still valid, it triggers the token refreshing call
    * @returns {Promise<boolean>} Promise with a boolean that indicates if there was a refresh triggered.
    */
   public async checkForUpdate(): Promise<boolean> {
-    const now = new Date()
-    if (this.tokenStore.AccessToken.IsValid()) {
-      if (this.tokenStore.AccessToken.ExpirationTime.getTime() - this.latencyCompensationMs > now.getTime()) {
-        this.state.setValue(LoginState.Authenticated)
+    try {
+      await this.updateLock.acquire()
+      const now = new Date()
+      if (this.tokenStore.AccessToken.IsValid()) {
+        if (this.tokenStore.AccessToken.ExpirationTime.getTime() - this.latencyCompensationMs > now.getTime()) {
+          this.state.setValue(LoginState.Authenticated)
+          return false
+        }
+      }
+      await this.tokenStore.RefreshToken.AwaitNotBeforeTime()
+      if (!this.tokenStore.RefreshToken.IsValid()) {
+        this.state.setValue(LoginState.Unauthenticated)
         return false
       }
+      this.state.setValue(LoginState.Pending)
+      return await this.execTokenRefresh()
+    } finally {
+      await this.updateLock.release()
     }
-    await this.tokenStore.RefreshToken.AwaitNotBeforeTime()
-    if (!this.tokenStore.RefreshToken.IsValid()) {
-      this.state.setValue(LoginState.Unauthenticated)
-      return false
-    }
-    this.state.setValue(LoginState.Pending)
-    return await this.execTokenRefresh()
   }
 
   /**
@@ -134,7 +148,6 @@ export class JwtService implements AuthenticationService {
     this.state.subscribe(() => {
       this.updateUser()
     })
-    this.checkForUpdate()
   }
 
   /**
@@ -169,31 +182,36 @@ export class JwtService implements AuthenticationService {
    * ```
    */
   public async login(username: string, password: string): Promise<boolean> {
-    this.state.setValue(LoginState.Pending)
-    const authToken: string = Buffer.from(`${username}:${password}`).toString('base64')
-    const response = await this.repository.fetch(
-      PathHelper.joinPaths(this.repository.configuration.repositoryUrl, 'sn-token/login'),
-      {
-        method: 'POST',
-        headers: {
-          'X-Authentication-Type': 'Token',
-          Authorization: `Basic ${authToken}`,
+    try {
+      await this.updateLock.acquire()
+      this.state.setValue(LoginState.Pending)
+      const authToken: string = Buffer.from(`${username}:${password}`).toString('base64')
+      const response = await this.repository.fetch(
+        PathHelper.joinPaths(this.repository.configuration.repositoryUrl, 'sn-token/login'),
+        {
+          method: 'POST',
+          headers: {
+            'X-Authentication-Type': 'Token',
+            Authorization: `Basic ${authToken}`,
+          },
+          cache: 'no-cache',
+          credentials: 'include',
         },
-        cache: 'no-cache',
-        credentials: 'include',
-      },
-      false,
-    )
+        false,
+      )
 
-    if (response.ok) {
-      const json: LoginResponse = await response.json()
-      const result = this.handleAuthenticationResponse(json)
-      await this.tokenStore.AccessToken.AwaitNotBeforeTime()
-      this.state.setValue(result ? LoginState.Authenticated : LoginState.Unauthenticated)
-      return result
-    } else {
-      this.state.setValue(LoginState.Unauthenticated)
-      return false
+      if (response.ok) {
+        const json: LoginResponse = await response.json()
+        const result = this.handleAuthenticationResponse(json)
+        await this.tokenStore.AccessToken.AwaitNotBeforeTime()
+        this.state.setValue(result ? LoginState.Authenticated : LoginState.Unauthenticated)
+        return result
+      } else {
+        this.state.setValue(LoginState.Unauthenticated)
+        return false
+      }
+    } finally {
+      await this.updateLock.release()
     }
   }
 
@@ -202,18 +220,23 @@ export class JwtService implements AuthenticationService {
    * @returns {Promise<boolean>} A promise that will resolved with a boolean value that indicates if the logout succeeded.
    */
   public async logout(): Promise<boolean> {
-    this.tokenStore.AccessToken = Token.CreateEmpty()
-    this.tokenStore.RefreshToken = Token.CreateEmpty()
-    this.state.setValue(LoginState.Unauthenticated)
-    await this.repository.fetch(
-      PathHelper.joinPaths(this.repository.configuration.repositoryUrl, 'sn-token/logout'),
-      {
-        method: 'POST',
-        cache: 'no-cache',
-        credentials: 'include',
-      },
-      false,
-    )
-    return true
+    try {
+      await this.updateLock.acquire()
+      this.tokenStore.AccessToken = Token.CreateEmpty()
+      this.tokenStore.RefreshToken = Token.CreateEmpty()
+      this.state.setValue(LoginState.Unauthenticated)
+      await this.repository.fetch(
+        PathHelper.joinPaths(this.repository.configuration.repositoryUrl, 'sn-token/logout'),
+        {
+          method: 'POST',
+          cache: 'no-cache',
+          credentials: 'include',
+        },
+        false,
+      )
+      return true
+    } finally {
+      await this.updateLock.release()
+    }
   }
 }
