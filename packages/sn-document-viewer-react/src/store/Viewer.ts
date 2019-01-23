@@ -85,38 +85,38 @@ export const setFitRelativeZoomLevel = (fitRelativeZoomLevel: number) => ({
 
 /**
  * Action to set the visibility of the watermark
- * @param showWatermark
+ * @param isVisible
  */
-export const setWatermark = (showWatermark: boolean) => ({
+export const setWatermark = (isVisible: boolean) => ({
   type: 'SN_DOCVIEWER_DOCUMENT_VIEWER_SET_WATERMARK',
-  showWatermark,
+  isVisible,
 })
 
 /**
  * Action to set the visibility of the redactions
- * @param showRedaction
+ * @param isVisible
  */
-export const setRedaction = (showRedaction: boolean) => ({
+export const setRedaction = (isVisible: boolean) => ({
   type: 'SN_DOCVIEWER_DOCUMENT_VIEWER_SET_REDACTION',
-  showRedaction,
+  isVisible,
 })
 
 /**
  * Action to set the visibility of the shapes
- * @param showShapes
+ * @param isVisible
  */
-export const setShapes = (showShapes: boolean) => ({
+export const setShapes = (isVisible: boolean) => ({
   type: 'SN_DOCVIEWER_DOCUMENT_VIEWER_SET_SHAPES',
-  showShapes,
+  isVisible,
 })
 
 /**
  * Action to set the visibility of the shapes
- * @param showThumbnails
+ * @param isVisible
  */
-export const setThumbnails = (showThumbnails: boolean) => ({
+export const setThumbnails = (isVisible: boolean) => ({
   type: 'SN_DOCVIEWER_DOCUMENT_VIEWER_SET_THUMBNAILS',
-  showThumbnails,
+  isVisible,
 })
 
 /**
@@ -151,13 +151,13 @@ export const viewerStateReducer: Reducer<ViewerStateType> = (
         customZoomLevel: action.customZoomLevel,
       }
     case 'SN_DOCVIEWER_DOCUMENT_VIEWER_SET_WATERMARK':
-      return { ...state, showWatermark: action.showWatermark }
+      return { ...state, showWatermark: action.isVisible }
     case 'SN_DOCVIEWER_DOCUMENT_VIEWER_SET_REDACTION':
-      return { ...state, showRedaction: action.showRedaction }
+      return { ...state, showRedaction: action.isVisible }
     case 'SN_DOCVIEWER_DOCUMENT_VIEWER_SET_SHAPES':
-      return { ...state, showShapes: action.showShapes }
+      return { ...state, showShapes: action.isVisible }
     case 'SN_DOCVIEWER_DOCUMENT_VIEWER_SET_THUMBNAILS':
-      return { ...state, showThumbnails: action.showThumbnails }
+      return { ...state, showThumbnails: action.isVisible }
     case 'SN_DOCVIEWER_DOCUMENT_VIEWER_SET_FIT_RELATIVE_ZOOM_LEVEL':
       return { ...state, fitRelativeZoomLevel: action.fitRelativeZoomLevel }
     default:

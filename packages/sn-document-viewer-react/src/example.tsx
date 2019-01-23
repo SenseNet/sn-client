@@ -6,7 +6,6 @@ import { createStore } from 'redux'
 import { combineReducers } from 'redux'
 import { ExampleAppLayout, exampleSettings } from './ExampleAppLayout'
 import { getStoreConfig, sensenetDocumentViewerReducer } from './store'
-import './style'
 
 const storeConfig = getStoreConfig(exampleSettings)
 
