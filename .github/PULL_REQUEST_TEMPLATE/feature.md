@@ -16,7 +16,7 @@ Thanks for filing a pull request 😄 ! Before you submit, please check open/clo
 
 ## 📦 Package / Application
 
-<!-- In what package(s) or application(s) have you experienced this bug? -->
+<!-- In what package(s) or application(s) would you like to add your feature request? -->
 <!-- [e.g.: @sensenet/query or sn-dms-demo ] -->
 
 ## 📖 Description
