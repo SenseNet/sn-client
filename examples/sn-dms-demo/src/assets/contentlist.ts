@@ -1,5 +1,4 @@
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
-import React from 'react'
 import theme from './theme'
 
 export const defaultCell: React.CSSProperties = {
