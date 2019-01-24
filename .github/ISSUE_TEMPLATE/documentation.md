@@ -1,6 +1,6 @@
 ---
 name: 📚 Documentation
-about: Find an inaccuracy in the documentation or something missing?
+about: Found an inaccuracy in the documentation or something missing?
 title: '[DOC]'
 labels: documentation
 ---
