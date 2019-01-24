@@ -14,6 +14,15 @@ Thanks for submitting a feature request! Before you proceed, please check the op
 
 <!--- Provide a general summary of the issue here -->
 
+## 📦 Package / Application
+
+<!-- In what package(s) or application(s) have you experienced this bug? -->
+<!-- [e.g.: @sensenet/query or sn-dms-demo ] -->
+
+## 📃 Version
+
+<!-- The concrete version of the package / application -->
+
 ## 🤔 Expected Behavior
 
 <!--- Tell us how the feature should work -->

@@ -12,6 +12,13 @@ Thanks for filing a pull request 😄 ! Before you submit, please check open/clo
 
 # ✨ New Feature
 
+<!--- Provide a general summary of the new feature here -->
+
+## 📦 Package / Application
+
+<!-- In what package(s) or application(s) have you experienced this bug? -->
+<!-- [e.g.: @sensenet/query or sn-dms-demo ] -->
+
 ## 📖 Description
 
 <!---

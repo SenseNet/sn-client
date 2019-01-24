@@ -9,7 +9,12 @@ title: '[DOC]'
 Thanks for filing a pull request! Before you submit, please check the open/closed issues since someone might have pushed the same thing before!
 -->
 
-# ✨ Documentation
+# 📚 Documentation
+
+## 📦 Package / Application
+
+<!-- In what package(s) or application(s) have you experienced this bug? -->
+<!-- [e.g.: @sensenet/query or sn-dms-demo ] -->
 
 ## 📖 Description
 

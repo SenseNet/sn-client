@@ -14,7 +14,7 @@ Thanks for submitting a bug report! Before you proceed, please check the open/cl
 
 <!--- Provide a general summary of the issue here -->
 
-## 🔦 Package / Application
+## 📦 Package / Application
 
 <!-- In what package(s) or application(s) have you experienced this bug? -->
 <!-- [e.g.: @sensenet/query or sn-dms-demo ] -->

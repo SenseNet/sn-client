@@ -1,5 +1,5 @@
 ---
-name: 🐛 Bug Fix
+name: 🐜 Bug Fix
 about: Did you fix something that did not work as expected?
 labels: bug
 title: '[BUG]'
@@ -9,9 +9,9 @@ title: '[BUG]'
 Thanks for filing a pull request 😄 ! Before you submit, please check the open/closed similar issues and pull requests since someone might have pushed the same thing before!
 -->
 
-# 🐛 Bug Fix
+# 🐜 Bug Fix
 
-## 🔦 Package / Application
+## 📦 Package / Application
 
 <!-- In what package(s) or application(s) have you experienced this bug? -->
 <!-- [e.g.: @sensenet/query or sn-dms-demo ] -->
