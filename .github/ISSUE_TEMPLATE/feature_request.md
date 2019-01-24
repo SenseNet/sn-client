@@ -1,20 +1,37 @@
 ---
-name: Feature request
-about: Suggest an idea for this project
-title: ''
+name: 🙋 Feature Request
+about: Suggest an idea for the sensenet client libraries
+title: '[FEATURE]'
 labels: enhancement
 assignees: ''
-
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+<!---
+Thanks for submitting a feature request! Before you proceed, please check the open/closed issues since someone might have asked the same thing before!
+-->
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+# 🙋 Feature Request
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+<!--- Provide a general summary of the issue here -->
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+## 🤔 Expected Behavior
+
+<!--- Tell us how the feature should work -->
+
+## 😯 Current Behavior
+
+<!--- Explain the difference from current behavior -->
+
+## 💁 Possible Solution
+
+<!--- Ideas how to implement this feature or a similar solution/workaround that already exists -->
+
+## 🔦 Context
+
+<!--- How has this issue affected you? What are you trying to accomplish? -->
+
+<!--- Providing context helps us come up with a solution that is most useful in the real world -->
+
+## 💻 Examples
+
+<!-- Examples help us understand the requested feature better -->

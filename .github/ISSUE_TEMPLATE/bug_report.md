@@ -1,5 +1,5 @@
 ---
-name: Bug report
+name: 🐜 Bug report
 about: Create a report to help us improve
 title: '[BUG]'
 labels: bug
@@ -10,7 +10,11 @@ assignees: ''
 Thanks for submitting a bug report! Before you proceed, please check the open/closed issues since someone might have asked the same thing before!
 -->
 
-## 🔦 Context
+# 🐜 Bug Report
+
+<!--- Provide a general summary of the issue here -->
+
+## 🔦 Package / Application
 
 <!-- In what package(s) or application(s) have you experienced this bug? -->
 <!-- [e.g.: @sensenet/query or sn-dms-demo ] -->
