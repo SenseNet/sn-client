@@ -56,7 +56,6 @@ class SearchResultsHeader extends React.Component<
   }
 
   private handleSaveQuery() {
-    /** */
     this.props.doclib && this.props.saveQuery(this.props.doclib, this.props.query, this.state.queryName, 'Private')
     this.setState({ isSaveDialogOpened: false, queryName: '' })
   }
