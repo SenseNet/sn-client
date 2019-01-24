@@ -1,9 +1,9 @@
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
-
 import Search from '@material-ui/icons/Search'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
+import { componentType } from '../../services/TypeHelpers'
 import { RootReducerType } from '../../store'
 
 /**
@@ -33,7 +33,7 @@ export interface SearchBarState {
  * Document widget component for paging
  */
 export class SearchBarComponent extends React.Component<
-  ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
+  componentType<typeof mapStateToProps, typeof mapDispatchToProps>,
   SearchBarState
 > {
   /** the component state */

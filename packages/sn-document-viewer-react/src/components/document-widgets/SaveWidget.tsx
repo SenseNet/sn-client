@@ -3,6 +3,7 @@ import Save from '@material-ui/icons/Save'
 import React from 'react'
 import { connect } from 'react-redux'
 import { DocumentData, PreviewImageData } from '../../models'
+import { componentType } from '../../services/TypeHelpers'
 import { RootReducerType, saveChanges } from '../../store'
 
 /**
@@ -32,7 +33,7 @@ export const mapDispatchToProps = {
  * Document widget component for saving document state
  */
 export class SaveDocumentComponent extends React.Component<
-  ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
+  componentType<typeof mapStateToProps, typeof mapDispatchToProps>
 > {
   private save() {
     this.props.canEdit && this.props.save(this.props.document, this.props.pages)
