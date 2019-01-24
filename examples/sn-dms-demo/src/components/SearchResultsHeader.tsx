@@ -27,7 +27,6 @@ interface SearchResultsHeaderState {
 
 const mapStateToProps = (state: rootStateType) => ({
   doclib: state.dms.documentLibrary.parentIdOrPath,
-
   contains: state.dms.documentLibrary.searchState.contains,
 })
 
@@ -57,7 +56,6 @@ class SearchResultsHeader extends React.Component<
   }
 
   private handleSaveQuery() {
-    /** */
     this.props.doclib && this.props.saveQuery(this.props.doclib, this.props.query, this.state.queryName, 'Private')
     this.setState({ isSaveDialogOpened: false, queryName: '' })
   }

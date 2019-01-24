@@ -147,6 +147,7 @@ const resources = {
   SEARCH_OWNER_PLACEHOLDER: 'Enter a name or email address',
   SEARCH_SHAREDWITH_PLACEHOLDER: 'Enter a name or email address',
   SEARCH_ITEMNAME_PLACEHOLDER: 'Enter a term that matches part of the file or folder name',
+  SEARCH_CONTAINS_TITLE: 'Contains',
   SEARCH_CONTAINS_PLACEHOLDER: 'Enter words found in the file',
   SEARCH_LOCATION_BUTTON_TITLE: 'Location',
   SEARCH_LOCATION_ANYWHERE: 'Anywhere',

@@ -73,9 +73,9 @@ export const queriesRequested = (idOrPath: string | number, queryType = 'Private
   queryType,
 })
 
-export const queriesReceived = (q: Query[]) => ({
+export const queriesReceived = (receivedQueries: Query[]) => ({
   type: 'SN_DMS_DEMO_QUERIES_RECEIVED',
-  q,
+  receivedQueries,
 })
 
 export const select = <T extends Query>(selected: T[]) => ({
@@ -105,7 +105,7 @@ export const queries: Reducer<QueriesType> = (
     case 'SN_DMS_DEMO_QUERIES_RECEIVED':
       return {
         ...state,
-        queries: action.q,
+        queries: action.receivedQueries,
       }
     case 'SN_DMS_DEMO_QUERIES_REQUESTED':
       return {
