@@ -36,7 +36,7 @@ describe('RotateDocument component', () => {
     expect(rotateImages).toBeCalledWith([1], -90)
   })
 
-  it('RotateRight should trigger a rotate to left', () => {
+  it('RotateRight should trigger a rotate to right', () => {
     const rotateImages = jest.fn()
     const wrapper = shallow(
       <RotateDocumentComponent
