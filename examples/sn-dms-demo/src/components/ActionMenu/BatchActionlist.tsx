@@ -155,7 +155,11 @@ class BatchActionlist extends React.Component<
     switch (actionName) {
       case 'DeleteBatch':
       case 'Delete':
-        this.props.openDialog(<DeleteDialog />, resources.DELETE, this.props.clearSelection)
+        this.props.openDialog(
+          <DeleteDialog content={this.props.selected} />,
+          resources.DELETE,
+          this.props.clearSelection,
+        )
         this.handleClose()
         break
       case 'MoveBatch':
