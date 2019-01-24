@@ -31,5 +31,5 @@ Provide some background and a description of your work
 ## 👩‍💻 Reviewer Notes
 
 <!---
-Provide some notes for reviewers to help them provide targeted feedback
+Provide some notes for reviewers to help them to give you targeted feedback
 -->
