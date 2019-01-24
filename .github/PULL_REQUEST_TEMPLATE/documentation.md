@@ -19,17 +19,17 @@ Thanks for filing a pull request! Before you submit, please check the open/close
 ## 📖 Description
 
 <!---
-Provide some background and a description of your work.
+Provide some background and a description of your work
 -->
 
 ### 🎫 Issues
 
 <!---
-* List and link relevant issues here.
+* List and link relevant issues here
 -->
 
 ## 👩‍💻 Reviewer Notes
 
 <!---
-Provide some notes for reviewers to help them provide targeted feedback.
+Provide some notes for reviewers to help them provide targeted feedback
 -->

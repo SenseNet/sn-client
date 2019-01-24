@@ -19,7 +19,7 @@ Thanks for filing a pull request 😄 ! Before you submit, please check the open
 ## 📖 Description
 
 <!---
-Provide some background and a description of the bug being fixed.
+Provide some background and a description of the bug being fixed
 -->
 
 ## 💁 Your Solution
@@ -29,17 +29,17 @@ Provide some background and a description of the bug being fixed.
 ## 👩‍💻 Reviewer Notes
 
 <!---
-Provide some notes for reviewers to help them provide targeted feedback.
+Provide some notes for reviewers to help them provide targeted feedback
 -->
 
 ## 📑 Test Plan
 
 <!---
-Please provide a summary of the tests affected by this work and any unique strategies employed in testing the fixes.
+Please provide a summary of the tests affected by this work and any unique strategies employed in testing the fixes
 -->
 
 ## ⏭ Next Steps
 
 <!---
-If there is relevant follow-up work to this PR, please list any existing issues or provide brief descriptions of what you would like to do next.
+If there is relevant follow-up work to this PR, please list any existing issues or provide brief descriptions of what you would like to do next
 -->

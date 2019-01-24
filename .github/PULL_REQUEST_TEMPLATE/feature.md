@@ -22,29 +22,29 @@ Thanks for filing a pull request 😄 ! Before you submit, please check open/clo
 ## 📖 Description
 
 <!---
-Provide some background and a description of your work.
+Provide some background and a description of your work
 -->
 
 ### 🎫 Issues
 
 <!---
-* List and link relevant issues here.
+* List and link relevant issues here
 -->
 
 ## 👩‍💻 Reviewer Notes
 
 <!---
-Provide some notes for reviewers to help them provide targeted feedback.
+Provide some notes for reviewers to help them provide targeted feedback
 -->
 
 ## 📑 Test Plan
 
 <!---
-Please provide a summary of the tests affected by this work and any unique strategies employed in testing the feature.
+Please provide a summary of the tests affected by this work and any unique strategies employed in testing the feature
 -->
 
 ## ⏭ Next Steps
 
 <!---
-If there is relevant follow-up work to this PR, please list any existing issues or provide brief descriptions of what you would like to do next.
+If there is relevant follow-up work to this PR, please list any existing issues or provide brief descriptions of what you would like to do next
 -->
