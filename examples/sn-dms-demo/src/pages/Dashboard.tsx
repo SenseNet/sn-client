@@ -10,7 +10,7 @@ import * as React from 'react'
 import Loadable from 'react-loadable'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
-import { Route, RouteComponentProps, Switch } from 'react-router-dom'
+import { Redirect, Route, RouteComponentProps, Switch } from 'react-router-dom'
 import * as DMSActions from '../Actions'
 import { ContentTemplates } from '../components/ContentTemplates'
 import { ContentTypes } from '../components/ContentTypes'
@@ -213,7 +213,7 @@ class DashboardComponent extends React.Component<
                           <Settings />
                         </Route>
 
-                        {/* <Redirect to="/documents" /> */}
+                        <Redirect to="/documents" />
                       </Switch>
                     </div>
                   </div>
