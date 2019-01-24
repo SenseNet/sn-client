@@ -109,7 +109,7 @@ class RemoveUserFromGroupDialog extends React.Component<
       <MediaQuery minDeviceWidth={700}>
         {matches => (
           <div>
-            <Typography variant="headline" gutterBottom={true}>
+            <Typography variant="h5" gutterBottom={true}>
               {resources.DELETE}
             </Typography>
             <div style={styles.inner}>

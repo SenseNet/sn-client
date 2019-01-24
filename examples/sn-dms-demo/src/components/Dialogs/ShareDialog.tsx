@@ -212,7 +212,7 @@ class ShareDialog extends React.Component<
         {matches => (
           <form onSubmit={this.submitCallback}>
             {matches ? (
-              <Typography variant="headline" gutterBottom={true}>
+              <Typography variant="h5" gutterBottom={true}>
                 {resources.SHARE}
               </Typography>
             ) : null}

@@ -1007,8 +1007,8 @@ ShallowWrapper {
               />
             </WithStyles(TableCell)>
             <WithStyles(TableCell)
+              align="inherit"
               className="DisplayName"
-              numeric={false}
               padding="checkbox"
             >
               <WithStyles(Tooltip)
@@ -2068,8 +2068,8 @@ ShallowWrapper {
               />
             </WithStyles(TableCell)>
             <WithStyles(TableCell)
+              align="inherit"
               className="DisplayName"
-              numeric={false}
               padding="checkbox"
             >
               <WithStyles(Tooltip)
@@ -2111,8 +2111,8 @@ ShallowWrapper {
               </WithStyles(TableCell)>,
               Array [
                 <WithStyles(TableCell)
+                  align="inherit"
                   className="DisplayName"
-                  numeric={false}
                   padding="checkbox"
                 >
                   <WithStyles(Tooltip)
@@ -2171,6 +2171,7 @@ ShallowWrapper {
               "key": "DisplayName",
               "nodeType": "class",
               "props": Object {
+                "align": "inherit",
                 "children": <WithStyles(Tooltip)
                   title="Content name. You can set any name you prefer without any restrictions."
                 >
@@ -2183,7 +2184,6 @@ ShallowWrapper {
                   </WithStyles(TableSortLabel)>
                 </WithStyles(Tooltip)>,
                 "className": "DisplayName",
-                "numeric": false,
                 "padding": "checkbox",
               },
               "ref": null,
@@ -5325,8 +5325,8 @@ ShallowWrapper {
                 />
               </WithStyles(TableCell)>
               <WithStyles(TableCell)
+                align="inherit"
                 className="DisplayName"
-                numeric={false}
                 padding="checkbox"
               >
                 <WithStyles(Tooltip)
@@ -6386,8 +6386,8 @@ ShallowWrapper {
                 />
               </WithStyles(TableCell)>
               <WithStyles(TableCell)
+                align="inherit"
                 className="DisplayName"
-                numeric={false}
                 padding="checkbox"
               >
                 <WithStyles(Tooltip)
@@ -6429,8 +6429,8 @@ ShallowWrapper {
                 </WithStyles(TableCell)>,
                 Array [
                   <WithStyles(TableCell)
+                    align="inherit"
                     className="DisplayName"
-                    numeric={false}
                     padding="checkbox"
                   >
                     <WithStyles(Tooltip)
@@ -6489,6 +6489,7 @@ ShallowWrapper {
                 "key": "DisplayName",
                 "nodeType": "class",
                 "props": Object {
+                  "align": "inherit",
                   "children": <WithStyles(Tooltip)
                     title="Content name. You can set any name you prefer without any restrictions."
                   >
@@ -6501,7 +6502,6 @@ ShallowWrapper {
                     </WithStyles(TableSortLabel)>
                   </WithStyles(Tooltip)>,
                   "className": "DisplayName",
-                  "numeric": false,
                   "padding": "checkbox",
                 },
                 "ref": null,
@@ -10656,8 +10656,8 @@ ShallowWrapper {
               />
             </WithStyles(TableCell)>
             <WithStyles(TableCell)
+              align="inherit"
               className="DisplayName"
-              numeric={false}
               padding="checkbox"
             >
               <WithStyles(Tooltip)
@@ -11728,8 +11728,8 @@ ShallowWrapper {
               />
             </WithStyles(TableCell)>
             <WithStyles(TableCell)
+              align="inherit"
               className="DisplayName"
-              numeric={false}
               padding="checkbox"
             >
               <WithStyles(Tooltip)
@@ -11771,8 +11771,8 @@ ShallowWrapper {
               </WithStyles(TableCell)>,
               Array [
                 <WithStyles(TableCell)
+                  align="inherit"
                   className="DisplayName"
-                  numeric={false}
                   padding="checkbox"
                 >
                   <WithStyles(Tooltip)
@@ -11831,6 +11831,7 @@ ShallowWrapper {
               "key": "DisplayName",
               "nodeType": "class",
               "props": Object {
+                "align": "inherit",
                 "children": <WithStyles(Tooltip)
                   title="Content name. You can set any name you prefer without any restrictions."
                 >
@@ -11843,7 +11844,6 @@ ShallowWrapper {
                   </WithStyles(TableSortLabel)>
                 </WithStyles(Tooltip)>,
                 "className": "DisplayName",
-                "numeric": false,
                 "padding": "checkbox",
               },
               "ref": null,
@@ -15015,8 +15015,8 @@ ShallowWrapper {
                 />
               </WithStyles(TableCell)>
               <WithStyles(TableCell)
+                align="inherit"
                 className="DisplayName"
-                numeric={false}
                 padding="checkbox"
               >
                 <WithStyles(Tooltip)
@@ -16087,8 +16087,8 @@ ShallowWrapper {
                 />
               </WithStyles(TableCell)>
               <WithStyles(TableCell)
+                align="inherit"
                 className="DisplayName"
-                numeric={false}
                 padding="checkbox"
               >
                 <WithStyles(Tooltip)
@@ -16130,8 +16130,8 @@ ShallowWrapper {
                 </WithStyles(TableCell)>,
                 Array [
                   <WithStyles(TableCell)
+                    align="inherit"
                     className="DisplayName"
-                    numeric={false}
                     padding="checkbox"
                   >
                     <WithStyles(Tooltip)
@@ -16190,6 +16190,7 @@ ShallowWrapper {
                 "key": "DisplayName",
                 "nodeType": "class",
                 "props": Object {
+                  "align": "inherit",
                   "children": <WithStyles(Tooltip)
                     title="Content name. You can set any name you prefer without any restrictions."
                   >
@@ -16202,7 +16203,6 @@ ShallowWrapper {
                     </WithStyles(TableSortLabel)>
                   </WithStyles(Tooltip)>,
                   "className": "DisplayName",
-                  "numeric": false,
                   "padding": "checkbox",
                 },
                 "ref": null,
@@ -20360,8 +20360,8 @@ ShallowWrapper {
         <WithStyles(TableHead)>
           <WithStyles(TableRow)>
             <WithStyles(TableCell)
+              align="inherit"
               className="DisplayName"
-              numeric={false}
               padding="checkbox"
             >
               <WithStyles(Tooltip)
@@ -21400,8 +21400,8 @@ ShallowWrapper {
         "props": Object {
           "children": <WithStyles(TableRow)>
             <WithStyles(TableCell)
+              align="inherit"
               className="DisplayName"
-              numeric={false}
               padding="checkbox"
             >
               <WithStyles(Tooltip)
@@ -21428,8 +21428,8 @@ ShallowWrapper {
               null,
               Array [
                 <WithStyles(TableCell)
+                  align="inherit"
                   className="DisplayName"
-                  numeric={false}
                   padding="checkbox"
                 >
                   <WithStyles(Tooltip)
@@ -21455,6 +21455,7 @@ ShallowWrapper {
               "key": "DisplayName",
               "nodeType": "class",
               "props": Object {
+                "align": "inherit",
                 "children": <WithStyles(Tooltip)
                   title="Content name. You can set any name you prefer without any restrictions."
                 >
@@ -21467,7 +21468,6 @@ ShallowWrapper {
                   </WithStyles(TableSortLabel)>
                 </WithStyles(Tooltip)>,
                 "className": "DisplayName",
-                "numeric": false,
                 "padding": "checkbox",
               },
               "ref": null,
@@ -24564,8 +24564,8 @@ ShallowWrapper {
           <WithStyles(TableHead)>
             <WithStyles(TableRow)>
               <WithStyles(TableCell)
+                align="inherit"
                 className="DisplayName"
-                numeric={false}
                 padding="checkbox"
               >
                 <WithStyles(Tooltip)
@@ -25604,8 +25604,8 @@ ShallowWrapper {
           "props": Object {
             "children": <WithStyles(TableRow)>
               <WithStyles(TableCell)
+                align="inherit"
                 className="DisplayName"
-                numeric={false}
                 padding="checkbox"
               >
                 <WithStyles(Tooltip)
@@ -25632,8 +25632,8 @@ ShallowWrapper {
                 null,
                 Array [
                   <WithStyles(TableCell)
+                    align="inherit"
                     className="DisplayName"
-                    numeric={false}
                     padding="checkbox"
                   >
                     <WithStyles(Tooltip)
@@ -25659,6 +25659,7 @@ ShallowWrapper {
                 "key": "DisplayName",
                 "nodeType": "class",
                 "props": Object {
+                  "align": "inherit",
                   "children": <WithStyles(Tooltip)
                     title="Content name. You can set any name you prefer without any restrictions."
                   >
@@ -25671,7 +25672,6 @@ ShallowWrapper {
                     </WithStyles(TableSortLabel)>
                   </WithStyles(Tooltip)>,
                   "className": "DisplayName",
-                  "numeric": false,
                   "padding": "checkbox",
                 },
                 "ref": null,
@@ -31248,8 +31248,8 @@ ShallowWrapper {
               />
             </WithStyles(TableCell)>
             <WithStyles(TableCell)
+              align="inherit"
               className="DisplayName"
-              numeric={false}
               padding="checkbox"
             >
               <WithStyles(Tooltip)
@@ -32311,8 +32311,8 @@ ShallowWrapper {
               />
             </WithStyles(TableCell)>
             <WithStyles(TableCell)
+              align="inherit"
               className="DisplayName"
-              numeric={false}
               padding="checkbox"
             >
               <WithStyles(Tooltip)
@@ -32354,8 +32354,8 @@ ShallowWrapper {
               </WithStyles(TableCell)>,
               Array [
                 <WithStyles(TableCell)
+                  align="inherit"
                   className="DisplayName"
-                  numeric={false}
                   padding="checkbox"
                 >
                   <WithStyles(Tooltip)
@@ -32414,6 +32414,7 @@ ShallowWrapper {
               "key": "DisplayName",
               "nodeType": "class",
               "props": Object {
+                "align": "inherit",
                 "children": <WithStyles(Tooltip)
                   title="Content name. You can set any name you prefer without any restrictions."
                 >
@@ -32426,7 +32427,6 @@ ShallowWrapper {
                   </WithStyles(TableSortLabel)>
                 </WithStyles(Tooltip)>,
                 "className": "DisplayName",
-                "numeric": false,
                 "padding": "checkbox",
               },
               "ref": null,
@@ -35576,8 +35576,8 @@ ShallowWrapper {
                 />
               </WithStyles(TableCell)>
               <WithStyles(TableCell)
+                align="inherit"
                 className="DisplayName"
-                numeric={false}
                 padding="checkbox"
               >
                 <WithStyles(Tooltip)
@@ -36639,8 +36639,8 @@ ShallowWrapper {
                 />
               </WithStyles(TableCell)>
               <WithStyles(TableCell)
+                align="inherit"
                 className="DisplayName"
-                numeric={false}
                 padding="checkbox"
               >
                 <WithStyles(Tooltip)
@@ -36682,8 +36682,8 @@ ShallowWrapper {
                 </WithStyles(TableCell)>,
                 Array [
                   <WithStyles(TableCell)
+                    align="inherit"
                     className="DisplayName"
-                    numeric={false}
                     padding="checkbox"
                   >
                     <WithStyles(Tooltip)
@@ -36742,6 +36742,7 @@ ShallowWrapper {
                 "key": "DisplayName",
                 "nodeType": "class",
                 "props": Object {
+                  "align": "inherit",
                   "children": <WithStyles(Tooltip)
                     title="Content name. You can set any name you prefer without any restrictions."
                   >
@@ -36754,7 +36755,6 @@ ShallowWrapper {
                     </WithStyles(TableSortLabel)>
                   </WithStyles(Tooltip)>,
                   "className": "DisplayName",
-                  "numeric": false,
                   "padding": "checkbox",
                 },
                 "ref": null,
@@ -40905,8 +40905,8 @@ ShallowWrapper {
               />
             </WithStyles(TableCell)>
             <WithStyles(TableCell)
+              align="inherit"
               className="DisplayName"
-              numeric={false}
               padding="checkbox"
             >
               <WithStyles(Tooltip)
@@ -41968,8 +41968,8 @@ ShallowWrapper {
               />
             </WithStyles(TableCell)>
             <WithStyles(TableCell)
+              align="inherit"
               className="DisplayName"
-              numeric={false}
               padding="checkbox"
             >
               <WithStyles(Tooltip)
@@ -42011,8 +42011,8 @@ ShallowWrapper {
               </WithStyles(TableCell)>,
               Array [
                 <WithStyles(TableCell)
+                  align="inherit"
                   className="DisplayName"
-                  numeric={false}
                   padding="checkbox"
                 >
                   <WithStyles(Tooltip)
@@ -42071,6 +42071,7 @@ ShallowWrapper {
               "key": "DisplayName",
               "nodeType": "class",
               "props": Object {
+                "align": "inherit",
                 "children": <WithStyles(Tooltip)
                   title="Content name. You can set any name you prefer without any restrictions."
                 >
@@ -42083,7 +42084,6 @@ ShallowWrapper {
                   </WithStyles(TableSortLabel)>
                 </WithStyles(Tooltip)>,
                 "className": "DisplayName",
-                "numeric": false,
                 "padding": "checkbox",
               },
               "ref": null,
@@ -45233,8 +45233,8 @@ ShallowWrapper {
                 />
               </WithStyles(TableCell)>
               <WithStyles(TableCell)
+                align="inherit"
                 className="DisplayName"
-                numeric={false}
                 padding="checkbox"
               >
                 <WithStyles(Tooltip)
@@ -46296,8 +46296,8 @@ ShallowWrapper {
                 />
               </WithStyles(TableCell)>
               <WithStyles(TableCell)
+                align="inherit"
                 className="DisplayName"
-                numeric={false}
                 padding="checkbox"
               >
                 <WithStyles(Tooltip)
@@ -46339,8 +46339,8 @@ ShallowWrapper {
                 </WithStyles(TableCell)>,
                 Array [
                   <WithStyles(TableCell)
+                    align="inherit"
                     className="DisplayName"
-                    numeric={false}
                     padding="checkbox"
                   >
                     <WithStyles(Tooltip)
@@ -46399,6 +46399,7 @@ ShallowWrapper {
                 "key": "DisplayName",
                 "nodeType": "class",
                 "props": Object {
+                  "align": "inherit",
                   "children": <WithStyles(Tooltip)
                     title="Content name. You can set any name you prefer without any restrictions."
                   >
@@ -46411,7 +46412,6 @@ ShallowWrapper {
                     </WithStyles(TableSortLabel)>
                   </WithStyles(Tooltip)>,
                   "className": "DisplayName",
-                  "numeric": false,
                   "padding": "checkbox",
                 },
                 "ref": null,
@@ -50562,8 +50562,8 @@ ShallowWrapper {
               />
             </WithStyles(TableCell)>
             <WithStyles(TableCell)
+              align="inherit"
               className="DisplayName"
-              numeric={false}
               padding="checkbox"
             >
               <WithStyles(Tooltip)
@@ -51625,8 +51625,8 @@ ShallowWrapper {
               />
             </WithStyles(TableCell)>
             <WithStyles(TableCell)
+              align="inherit"
               className="DisplayName"
-              numeric={false}
               padding="checkbox"
             >
               <WithStyles(Tooltip)
@@ -51668,8 +51668,8 @@ ShallowWrapper {
               </WithStyles(TableCell)>,
               Array [
                 <WithStyles(TableCell)
+                  align="inherit"
                   className="DisplayName"
-                  numeric={false}
                   padding="checkbox"
                 >
                   <WithStyles(Tooltip)
@@ -51728,6 +51728,7 @@ ShallowWrapper {
               "key": "DisplayName",
               "nodeType": "class",
               "props": Object {
+                "align": "inherit",
                 "children": <WithStyles(Tooltip)
                   title="Content name. You can set any name you prefer without any restrictions."
                 >
@@ -51740,7 +51741,6 @@ ShallowWrapper {
                   </WithStyles(TableSortLabel)>
                 </WithStyles(Tooltip)>,
                 "className": "DisplayName",
-                "numeric": false,
                 "padding": "checkbox",
               },
               "ref": null,
@@ -54890,8 +54890,8 @@ ShallowWrapper {
                 />
               </WithStyles(TableCell)>
               <WithStyles(TableCell)
+                align="inherit"
                 className="DisplayName"
-                numeric={false}
                 padding="checkbox"
               >
                 <WithStyles(Tooltip)
@@ -55953,8 +55953,8 @@ ShallowWrapper {
                 />
               </WithStyles(TableCell)>
               <WithStyles(TableCell)
+                align="inherit"
                 className="DisplayName"
-                numeric={false}
                 padding="checkbox"
               >
                 <WithStyles(Tooltip)
@@ -55996,8 +55996,8 @@ ShallowWrapper {
                 </WithStyles(TableCell)>,
                 Array [
                   <WithStyles(TableCell)
+                    align="inherit"
                     className="DisplayName"
-                    numeric={false}
                     padding="checkbox"
                   >
                     <WithStyles(Tooltip)
@@ -56056,6 +56056,7 @@ ShallowWrapper {
                 "key": "DisplayName",
                 "nodeType": "class",
                 "props": Object {
+                  "align": "inherit",
                   "children": <WithStyles(Tooltip)
                     title="Content name. You can set any name you prefer without any restrictions."
                   >
@@ -56068,7 +56069,6 @@ ShallowWrapper {
                     </WithStyles(TableSortLabel)>
                   </WithStyles(Tooltip)>,
                   "className": "DisplayName",
-                  "numeric": false,
                   "padding": "checkbox",
                 },
                 "ref": null,
@@ -60219,8 +60219,8 @@ ShallowWrapper {
               />
             </WithStyles(TableCell)>
             <WithStyles(TableCell)
+              align="inherit"
               className="DisplayName"
-              numeric={false}
               padding="checkbox"
             >
               <WithStyles(Tooltip)
@@ -61282,8 +61282,8 @@ ShallowWrapper {
               />
             </WithStyles(TableCell)>
             <WithStyles(TableCell)
+              align="inherit"
               className="DisplayName"
-              numeric={false}
               padding="checkbox"
             >
               <WithStyles(Tooltip)
@@ -61325,8 +61325,8 @@ ShallowWrapper {
               </WithStyles(TableCell)>,
               Array [
                 <WithStyles(TableCell)
+                  align="inherit"
                   className="DisplayName"
-                  numeric={false}
                   padding="checkbox"
                 >
                   <WithStyles(Tooltip)
@@ -61385,6 +61385,7 @@ ShallowWrapper {
               "key": "DisplayName",
               "nodeType": "class",
               "props": Object {
+                "align": "inherit",
                 "children": <WithStyles(Tooltip)
                   title="Content name. You can set any name you prefer without any restrictions."
                 >
@@ -61397,7 +61398,6 @@ ShallowWrapper {
                   </WithStyles(TableSortLabel)>
                 </WithStyles(Tooltip)>,
                 "className": "DisplayName",
-                "numeric": false,
                 "padding": "checkbox",
               },
               "ref": null,
@@ -64547,8 +64547,8 @@ ShallowWrapper {
                 />
               </WithStyles(TableCell)>
               <WithStyles(TableCell)
+                align="inherit"
                 className="DisplayName"
-                numeric={false}
                 padding="checkbox"
               >
                 <WithStyles(Tooltip)
@@ -65610,8 +65610,8 @@ ShallowWrapper {
                 />
               </WithStyles(TableCell)>
               <WithStyles(TableCell)
+                align="inherit"
                 className="DisplayName"
-                numeric={false}
                 padding="checkbox"
               >
                 <WithStyles(Tooltip)
@@ -65653,8 +65653,8 @@ ShallowWrapper {
                 </WithStyles(TableCell)>,
                 Array [
                   <WithStyles(TableCell)
+                    align="inherit"
                     className="DisplayName"
-                    numeric={false}
                     padding="checkbox"
                   >
                     <WithStyles(Tooltip)
@@ -65713,6 +65713,7 @@ ShallowWrapper {
                 "key": "DisplayName",
                 "nodeType": "class",
                 "props": Object {
+                  "align": "inherit",
                   "children": <WithStyles(Tooltip)
                     title="Content name. You can set any name you prefer without any restrictions."
                   >
@@ -65725,7 +65726,6 @@ ShallowWrapper {
                     </WithStyles(TableSortLabel)>
                   </WithStyles(Tooltip)>,
                   "className": "DisplayName",
-                  "numeric": false,
                   "padding": "checkbox",
                 },
                 "ref": null,
@@ -69876,8 +69876,8 @@ ShallowWrapper {
               />
             </WithStyles(TableCell)>
             <WithStyles(TableCell)
+              align="inherit"
               className="DisplayName"
-              numeric={false}
               padding="checkbox"
             >
               <WithStyles(Tooltip)
@@ -70939,8 +70939,8 @@ ShallowWrapper {
               />
             </WithStyles(TableCell)>
             <WithStyles(TableCell)
+              align="inherit"
               className="DisplayName"
-              numeric={false}
               padding="checkbox"
             >
               <WithStyles(Tooltip)
@@ -70982,8 +70982,8 @@ ShallowWrapper {
               </WithStyles(TableCell)>,
               Array [
                 <WithStyles(TableCell)
+                  align="inherit"
                   className="DisplayName"
-                  numeric={false}
                   padding="checkbox"
                 >
                   <WithStyles(Tooltip)
@@ -71042,6 +71042,7 @@ ShallowWrapper {
               "key": "DisplayName",
               "nodeType": "class",
               "props": Object {
+                "align": "inherit",
                 "children": <WithStyles(Tooltip)
                   title="Content name. You can set any name you prefer without any restrictions."
                 >
@@ -71054,7 +71055,6 @@ ShallowWrapper {
                   </WithStyles(TableSortLabel)>
                 </WithStyles(Tooltip)>,
                 "className": "DisplayName",
-                "numeric": false,
                 "padding": "checkbox",
               },
               "ref": null,
@@ -74205,8 +74205,8 @@ ShallowWrapper {
                 />
               </WithStyles(TableCell)>
               <WithStyles(TableCell)
+                align="inherit"
                 className="DisplayName"
-                numeric={false}
                 padding="checkbox"
               >
                 <WithStyles(Tooltip)
@@ -75268,8 +75268,8 @@ ShallowWrapper {
                 />
               </WithStyles(TableCell)>
               <WithStyles(TableCell)
+                align="inherit"
                 className="DisplayName"
-                numeric={false}
                 padding="checkbox"
               >
                 <WithStyles(Tooltip)
@@ -75311,8 +75311,8 @@ ShallowWrapper {
                 </WithStyles(TableCell)>,
                 Array [
                   <WithStyles(TableCell)
+                    align="inherit"
                     className="DisplayName"
-                    numeric={false}
                     padding="checkbox"
                   >
                     <WithStyles(Tooltip)
@@ -75371,6 +75371,7 @@ ShallowWrapper {
                 "key": "DisplayName",
                 "nodeType": "class",
                 "props": Object {
+                  "align": "inherit",
                   "children": <WithStyles(Tooltip)
                     title="Content name. You can set any name you prefer without any restrictions."
                   >
@@ -75383,7 +75384,6 @@ ShallowWrapper {
                     </WithStyles(TableSortLabel)>
                   </WithStyles(Tooltip)>,
                   "className": "DisplayName",
-                  "numeric": false,
                   "padding": "checkbox",
                 },
                 "ref": null,

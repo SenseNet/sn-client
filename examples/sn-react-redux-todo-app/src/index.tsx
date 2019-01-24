@@ -21,6 +21,9 @@ const muiTheme = createMuiTheme({
     primary: lightBlue,
     secondary: pink,
   },
+  typography: {
+    useNextVariants: true,
+  },
 })
 
 const sensenet = Reducers.sensenet

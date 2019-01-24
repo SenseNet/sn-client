@@ -95,7 +95,7 @@ class EditPropertiesDialog extends React.Component<
       <MediaQuery minDeviceWidth={700}>
         {matches => (
           <div style={matches ? { width: 550 } : {}}>
-            <Typography variant="headline" gutterBottom={true}>
+            <Typography variant="h5" gutterBottom={true}>
               {resources.EDIT_PROPERTIES}
             </Typography>
             <DialogInfo currentContent={editedcontent ? editedcontent : content} repositoryUrl={repositoryUrl} />

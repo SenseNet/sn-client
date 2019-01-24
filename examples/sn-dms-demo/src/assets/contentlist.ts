@@ -81,14 +81,5 @@ export const contentListTheme = createMuiTheme({
         },
       },
     },
-    MuiCheckbox: {
-      checked: {
-        color: '#016D9E !important',
-      },
-      root: {
-        padding: 0,
-        width: 'auto',
-      },
-    },
   },
 })
