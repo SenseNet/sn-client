@@ -13,7 +13,7 @@ Thanks for filing a pull request! Before you submit, please check the open/close
 
 ## 📦 Package / Application
 
-<!-- In what package(s) or application(s) have you experienced this bug? -->
+<!-- For what package(s) or application(s) would you like to modify the documentation? -->
 <!-- [e.g.: @sensenet/query or sn-dms-demo ] -->
 
 ## 📖 Description
@@ -31,5 +31,5 @@ Provide some background and a description of your work
 ## 👩‍💻 Reviewer Notes
 
 <!---
-Provide some notes for reviewers to help them provide targeted feedback
+Provide some notes for reviewers to help them to give you targeted feedback
 -->
