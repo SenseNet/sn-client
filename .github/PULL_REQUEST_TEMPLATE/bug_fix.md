@@ -29,7 +29,7 @@ Provide some background and a description of the bug being fixed
 ## 👩‍💻 Reviewer Notes
 
 <!---
-Provide some notes for reviewers to help them with targeted feedback
+Provide some notes for reviewers to help them to give you targeted feedback
 -->
 
 ## 📑 Test Plan
