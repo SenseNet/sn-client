@@ -27,7 +27,6 @@ interface SearchResultsHeaderState {
 
 const mapStateToProps = (state: rootStateType) => ({
   doclib: state.dms.documentLibrary.parentIdOrPath,
-
   contains: state.dms.documentLibrary.searchState.contains,
 })
 

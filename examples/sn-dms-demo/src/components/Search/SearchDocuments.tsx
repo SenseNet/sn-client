@@ -367,7 +367,7 @@ class SearchDocuments extends React.Component<
                             value={this.props.searchState.dateModified}
                           />
                         </SearchRow>
-                        <SearchRow title="Contains">
+                        <SearchRow title={resources.SEARCH_CONTAINS_TITLE}>
                           <TextField
                             fullWidth={true}
                             value={this.props.searchState.contains}
