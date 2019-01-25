@@ -1,0 +1,155 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Document Viewer Layout component should render without crashing 1`] = `
+<div
+  style={
+    Object {
+      "display": "flex",
+      "flexDirection": "column",
+      "height": "100%",
+      "width": "100%",
+    }
+  }
+>
+  some children
+  <div
+    style={
+      Object {
+        "display": "flex",
+        "height": "100%",
+        "overflow": "hidden",
+        "position": "relative",
+        "width": "100%",
+        "zIndex": 0,
+      }
+    }
+  >
+    <WithStyles(Drawer)
+      PaperProps={
+        Object {
+          "style": Object {
+            "height": "100%",
+            "overflow": "hidden",
+            "position": "relative",
+            "width": "200px",
+          },
+        }
+      }
+      anchor="left"
+      open={true}
+      variant="persistent"
+    >
+      <Connect(PageListComponent)
+        activePage={1}
+        elementNamePrefix="Thumbnail-"
+        fitRelativeZoomLevel={0}
+        id="sn-document-viewer-thumbnails"
+        images="thumbnail"
+        onPageClick={[Function]}
+        padding={16}
+        showWidgets={false}
+        style={
+          Object {
+            "marginRight": "-16px",
+            "minWidth": 200,
+            "paddingRight": 0,
+          }
+        }
+        tolerance={0}
+        zoomLevel={1}
+        zoomMode="fit"
+      />
+    </WithStyles(Drawer)>
+    <Connect(PageListComponent)
+      activePage={1}
+      elementNamePrefix="Page-"
+      fitRelativeZoomLevel={1}
+      id="sn-document-viewer-pages"
+      images="preview"
+      onPageClick={[Function]}
+      padding={8}
+      showWidgets={true}
+      tolerance={0}
+      zoomLevel={1}
+      zoomMode="custom"
+    />
+  </div>
+</div>
+`;
+
+exports[`Document Viewer Layout component should render without crashing 2`] = `
+<div
+  style={
+    Object {
+      "display": "flex",
+      "flexDirection": "column",
+      "height": "100%",
+      "width": "100%",
+    }
+  }
+>
+  some children
+  <div
+    style={
+      Object {
+        "display": "flex",
+        "height": "100%",
+        "overflow": "hidden",
+        "position": "relative",
+        "width": "100%",
+        "zIndex": 0,
+      }
+    }
+  >
+    <WithStyles(Drawer)
+      PaperProps={
+        Object {
+          "style": Object {
+            "height": "100%",
+            "overflow": "hidden",
+            "position": "relative",
+            "width": 0,
+          },
+        }
+      }
+      anchor="left"
+      open={false}
+      variant="persistent"
+    >
+      <Connect(PageListComponent)
+        activePage={1}
+        elementNamePrefix="Thumbnail-"
+        fitRelativeZoomLevel={0}
+        id="sn-document-viewer-thumbnails"
+        images="thumbnail"
+        onPageClick={[Function]}
+        padding={16}
+        showWidgets={false}
+        style={
+          Object {
+            "marginRight": "-16px",
+            "minWidth": 200,
+            "paddingRight": 0,
+          }
+        }
+        tolerance={0}
+        zoomLevel={1}
+        zoomMode="fit"
+      />
+    </WithStyles(Drawer)>
+    <Connect(PageListComponent)
+      activePage={1}
+      elementNamePrefix="Page-"
+      fitRelativeZoomLevel={1}
+      id="sn-document-viewer-pages"
+      images="preview"
+      onPageClick={[Function]}
+      padding={8}
+      showWidgets={true}
+      tolerance={0}
+      zoomLevel={1}
+      zoomMode="custom"
+    />
+  </div>
+</div>
+`;
