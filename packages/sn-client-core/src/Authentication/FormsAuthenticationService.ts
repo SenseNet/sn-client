@@ -39,12 +39,11 @@ export class FormsAuthenticationService implements AuthenticationService {
    * Disposes the service, the state and currentUser observables
    */
   public async dispose(): Promise<void> {
-    /** */
     this.state.dispose()
     this.currentUser.dispose()
   }
   /**
-   *
+   * Placehlolder to check if a token update is needed. Not used with Forms authentication
    */
   public async checkForUpdate(): Promise<boolean> {
     return false
