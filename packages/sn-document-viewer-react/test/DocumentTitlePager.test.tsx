@@ -46,7 +46,6 @@ describe('DocumentTitlePager component', () => {
       />,
     )
     wrapper.find(Typography).simulate('click')
-    await sleepAsync()
     wrapper.find(TextField).prop('onChange')({ currentTarget: { value: 3 } })
     await sleepAsync()
     expect(activePages).toBeCalled()
