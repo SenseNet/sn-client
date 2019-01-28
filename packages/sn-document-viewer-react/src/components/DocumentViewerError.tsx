@@ -57,7 +57,10 @@ const mapStateToProps = (state: RootReducerType) => {
  */
 const mapDispatchToProps = {}
 
-class DocumentViewerErrorComponent extends React.Component<
+/**
+ * Component to display viewer related errors
+ */
+export class DocumentViewerErrorComponent extends React.Component<
   componentType<typeof mapStateToProps, typeof mapDispatchToProps, OwnProps>,
   ErrorState
 > {

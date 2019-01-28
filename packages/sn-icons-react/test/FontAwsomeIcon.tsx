@@ -1,5 +1,5 @@
-import { configure, shallow } from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16'
+import { shallow } from 'enzyme'
+
 import 'jest'
 import React from 'react'
 import { FontAwesomeIcon } from '../src/components/fontawesome/Icon'
@@ -8,7 +8,6 @@ import { Icon, iconType } from '../src/components/Icon'
  * FontAwesome Icon Component tests
  */
 describe('Icon component', () => {
-  configure({ adapter: new Adapter() })
   it('Should render without crashing', () => {
     expect(shallow(<FontAwesomeIcon iconName="folder" />).hasClass('fa-folder')).toBe(true)
   })
@@ -25,9 +24,19 @@ describe('Icon component', () => {
     expect(shallow(<FontAwesomeIcon style={{}} iconName="folder" />).hasClass('fa-folder')).toBe(true)
   })
   it('Should render without crashing with onClick', () => {
-    expect(shallow(<FontAwesomeIcon onClick={(e: React.MouseEvent<HTMLElement>) => console.log(e.target)} iconName="folder" />).hasClass('fa-folder')).toBe(true)
+    expect(
+      shallow(
+        <FontAwesomeIcon onClick={(e: React.MouseEvent<HTMLElement>) => console.log(e.target)} iconName="folder" />,
+      ).hasClass('fa-folder'),
+    ).toBe(true)
   })
   it('Should render without crashing with children component', () => {
-    expect(shallow(<FontAwesomeIcon iconName="folder"><Icon type={iconType.materialui} iconName="forward" /></FontAwesomeIcon>).hasClass('fa-folder')).toBe(true)
+    expect(
+      shallow(
+        <FontAwesomeIcon iconName="folder">
+          <Icon type={iconType.materialui} iconName="forward" />
+        </FontAwesomeIcon>,
+      ).hasClass('fa-folder'),
+    ).toBe(true)
   })
 })

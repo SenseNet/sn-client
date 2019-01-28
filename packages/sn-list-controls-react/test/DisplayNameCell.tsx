@@ -1,5 +1,5 @@
-import { configure, shallow } from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16'
+import { shallow } from 'enzyme'
+
 import * as React from 'react'
 import { DisplayNameCell } from '../src/ContentList/CellTemplates/DisplayNameCell'
 
@@ -7,8 +7,6 @@ import { DisplayNameCell } from '../src/ContentList/CellTemplates/DisplayNameCel
  * DisplayNameCell Component tests
  */
 describe('DisplayNameCell component', () => {
-  configure({ adapter: new Adapter() })
-
   it('Should render without crashing', () => {
     const component = shallow(
       <DisplayNameCell icons={{}} content={{ Id: 123, Path: '', Name: '', Type: 'Folder' }} isSelected={false} />,

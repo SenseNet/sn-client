@@ -57,7 +57,11 @@ export interface PageListState {
   visiblePages: PreviewImageData[]
 }
 
-class PageList extends React.Component<
+/**
+ * Represents list of pages in a Grid component
+ * @extends {React.Component<componentType<typeof mapStateToProps, typeof mapDispatchToProps, PageListProps>, PageListState>}
+ */
+export class PageListComponent extends React.Component<
   componentType<typeof mapStateToProps, typeof mapDispatchToProps, PageListProps>,
   PageListState
 > {
@@ -247,5 +251,5 @@ class PageList extends React.Component<
 const connectedComponent = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(PageList)
+)(PageListComponent)
 export { connectedComponent as PageList }

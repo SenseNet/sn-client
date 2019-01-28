@@ -43,7 +43,7 @@ export interface DocumentLayoutState {
 /**
  * Component for the main DocumentViewer layout
  */
-class DocumentViewerLayoutComponent extends React.Component<
+export class DocumentViewerLayoutComponent extends React.Component<
   componentType<typeof mapStateToProps, typeof mapDispatchToProps, DocumentLayoutOwnProps>,
   DocumentLayoutState
 > {

@@ -20,7 +20,7 @@ export const mapStateToProps = (state: RootReducerType) => {
   return {
     activePages: state.sensenetDocumentViewer.viewer.activePages,
     pageCount: state.sensenetDocumentViewer.documentState.document.pageCount,
-    fistPage: state.sensenetDocumentViewer.localization.firstPage,
+    firstPage: state.sensenetDocumentViewer.localization.firstPage,
     previousPage: state.sensenetDocumentViewer.localization.previousPage,
     gotoPage: state.sensenetDocumentViewer.localization.gotoPage,
     nextPage: state.sensenetDocumentViewer.localization.nextPage,
@@ -88,7 +88,7 @@ export class PagerComponent extends React.Component<
   public render() {
     return (
       <div style={{ display: 'inline-block' }}>
-        <IconButton disabled={this.state.currentPage <= 1} title={this.props.fistPage}>
+        <IconButton disabled={this.state.currentPage <= 1} title={this.props.firstPage}>
           <FirstPage onClick={() => this.gotoPage(1)} />
         </IconButton>
 

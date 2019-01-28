@@ -10,7 +10,7 @@ import { RootReducerType, rotateImages, rotateShapesForPages } from '../../store
 /**
  * The amount of rotation in degrees
  */
-const ROTATION_AMOUNT = 90
+export const ROTATION_AMOUNT = 90
 
 /**
  * Defined the component's own properties

@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SaveDocumentComponent component Should render without crashing when has changes 1`] = `
+<div
+  style={
+    Object {
+      "display": "inline-block",
+    }
+  }
+>
+  <WithStyles(IconButton)
+    disabled={false}
+    title="Save"
+  >
+    <pure(SaveIcon)
+      onClick={[Function]}
+    />
+  </WithStyles(IconButton)>
+</div>
+`;
+
+exports[`SaveDocumentComponent component Should render without crashing when there are no changes 1`] = `
+<div
+  style={
+    Object {
+      "display": "inline-block",
+    }
+  }
+>
+  <WithStyles(IconButton)
+    disabled={true}
+    title="Save"
+  >
+    <pure(SaveIcon)
+      onClick={[Function]}
+    />
+  </WithStyles(IconButton)>
+</div>
+`;

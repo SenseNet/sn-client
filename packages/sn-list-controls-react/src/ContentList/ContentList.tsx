@@ -208,7 +208,7 @@ export class ContentList<T extends GenericContent> extends React.Component<Conte
                   return (
                     <TableCell
                       key={field as string}
-                      align={isNumeric ? 'center' : 'inherit'}
+                      align={isNumeric ? 'right' : 'inherit'}
                       className={field as string}
                       padding="checkbox">
                       <Tooltip title={description}>

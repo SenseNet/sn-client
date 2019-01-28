@@ -6,6 +6,7 @@ import {
   DocumentTitlePager,
   RotateActivePages,
   SearchBar,
+  ToggleShapesWidget,
   ToggleThumbnailsWidget,
   ZoomInOutWidget,
 } from './components/document-widgets'
@@ -293,6 +294,7 @@ class ExampleAppLayout extends React.Component<
             <DocumentViewer hostName={this.state.hostName} documentIdOrPath={this.state.documentIdOrPath}>
               <LayoutAppBar>
                 <div style={{ flexShrink: 0 }}>
+                  <ToggleShapesWidget />
                   <ToggleThumbnailsWidget />
                   <Download
                     download={doc => {

@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Layout AppBar component should match snapshot with children 1`] = `
+<WithStyles(AppBar)
+  position="sticky"
+  style={
+    Object {
+      "position": "relative",
+      "zIndex": 1,
+    }
+  }
+>
+  <WithStyles(Toolbar)
+    style={
+      Object {
+        "display": "flex",
+        "justifyContent": "space-between",
+      }
+    }
+  >
+    <span>
+      test
+    </span>
+  </WithStyles(Toolbar)>
+</WithStyles(AppBar)>
+`;

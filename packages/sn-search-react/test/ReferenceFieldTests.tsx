@@ -1,14 +1,12 @@
 import { TextField } from '@material-ui/core'
 import { SchemaStore } from '@sensenet/client-core/dist/Schemas/SchemaStore'
 import { GenericContent, ReferenceFieldSetting, SchemaStore as defaultSchemas } from '@sensenet/default-content-types'
-import { configure, shallow } from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16'
+import { shallow } from 'enzyme'
+
 import * as React from 'react'
 import { ReferenceField } from '../src/Components/Fields/ReferenceField'
 
 describe('ReferenceField Component', () => {
-  configure({ adapter: new Adapter() })
-
   const schemaStore = new SchemaStore()
   schemaStore.setSchemas(defaultSchemas)
   const exampleSchema = schemaStore.getSchema(GenericContent)
