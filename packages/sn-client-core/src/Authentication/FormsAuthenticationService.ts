@@ -72,11 +72,10 @@ export class FormsAuthenticationService implements AuthenticationService {
             return result.d.results[0]
           }
         }
-      } catch (error) {
-        /** */
+      } catch {
+        this.state.setValue(LoginState.Unauthenticated)
+        this.currentUser.setValue(ConstantContent.VISITOR_USER)
       }
-      this.state.setValue(LoginState.Unauthenticated)
-      this.currentUser.setValue(ConstantContent.VISITOR_USER)
       return ConstantContent.VISITOR_USER
     } finally {
       await this.statusLock.release()
