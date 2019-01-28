@@ -1,0 +1,120 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DocumentTitlePager component Should render the focused state without crashing 1`] = `
+<ClickAwayListener
+  mouseEvent="onMouseUp"
+  onClickAway={[Function]}
+  touchEvent="onTouchEnd"
+>
+  <WithStyles(Typography)
+    color="inherit"
+    onClick={[Function]}
+    style={
+      Object {
+        "alignItems": "center",
+        "cursor": "pointer",
+        "display": "flex",
+        "margin": "0 2.5em",
+        "overflow": "hidden",
+      }
+    }
+    title="TestDocument"
+    variant="h6"
+  >
+    <div
+      style={
+        Object {
+          "overflow": "hidden",
+          "textOverflow": "ellipsis",
+          "whiteSpace": "nowrap",
+        }
+      }
+    >
+      TestDocument
+       
+    </div>
+    <form
+      onSubmit={[Function]}
+    >
+      <TextField
+        InputLabelProps={
+          Object {
+            "shrink": true,
+          }
+        }
+        defaultValue={1}
+        inputProps={
+          Object {
+            "max": 10,
+            "min": 1,
+            "style": Object {
+              "color": "white",
+              "textAlign": "center",
+            },
+          }
+        }
+        margin="dense"
+        onChange={[Function]}
+        required={true}
+        select={false}
+        style={
+          Object {
+            "flexShrink": 0,
+          }
+        }
+        title="goto"
+        type="number"
+        variant="standard"
+      />
+    </form>
+  </WithStyles(Typography)>
+</ClickAwayListener>
+`;
+
+exports[`DocumentTitlePager component Should render the unfocused state without crashing 1`] = `
+<ClickAwayListener
+  mouseEvent="onMouseUp"
+  onClickAway={[Function]}
+  touchEvent="onTouchEnd"
+>
+  <WithStyles(Typography)
+    color="inherit"
+    onClick={[Function]}
+    style={
+      Object {
+        "alignItems": "center",
+        "cursor": "pointer",
+        "display": "flex",
+        "margin": "0 2.5em",
+        "overflow": "hidden",
+      }
+    }
+    title="TestDocument"
+    variant="h6"
+  >
+    <div
+      style={
+        Object {
+          "overflow": "hidden",
+          "textOverflow": "ellipsis",
+          "whiteSpace": "nowrap",
+        }
+      }
+    >
+      TestDocument
+       
+    </div>
+    <div
+      style={
+        Object {
+          "flexShrink": 0,
+        }
+      }
+    >
+      1
+       / 
+      10
+    </div>
+  </WithStyles(Typography)>
+</ClickAwayListener>
+`;

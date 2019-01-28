@@ -36,6 +36,7 @@
   "license": "GPL-2.0",
   "homepage": "https://sensenet.com",
   "devDependencies": {
+    "@types/enzyme": "^3.1.15",
     "@types/jest": "^23.3.10",
     "@types/react": "^16.7.14",
     "@types/react-dom": "^16.0.7",
@@ -47,6 +48,9 @@
     "@types/uuid": "^3.4.4",
     "awesome-typescript-loader": "^5.2.1",
     "copy-webpack-plugin": "^4.5.2",
+    "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.7.1",
+    "enzyme-to-json": "^3.3.5",
     "jest": "^23.6.0",
     "source-map-loader": "^0.2.4",
     "webpack": "^4.19.1",

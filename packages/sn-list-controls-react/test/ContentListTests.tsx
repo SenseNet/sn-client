@@ -1,8 +1,8 @@
 import { Checkbox, TableSortLabel } from '@material-ui/core'
 import TableRow from '@material-ui/core/TableRow'
 import { GenericContent, SchemaStore } from '@sensenet/default-content-types'
-import { configure, mount, shallow } from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16'
+import { mount, shallow } from 'enzyme'
+
 import * as React from 'react'
 import { ActionsCell, DateCell, ReferenceCell } from '../src/ContentList/CellTemplates'
 import { ContentList } from '../src/ContentList/ContentList'
@@ -13,8 +13,6 @@ const genericSchema = SchemaStore[1]
  * ContentList Component tests
  */
 describe('ContentList component', () => {
-  configure({ adapter: new Adapter() })
-
   describe('Initialization', () => {
     it('Should render without crashing with bare minimum props', () => {
       const component = shallow(
@@ -374,7 +372,7 @@ describe('ContentList component', () => {
     })
 
     describe('Field with a custom field component', () => {
-      it('Should be added for referemces', () => {
+      it('Should be added for references', () => {
         const component = mount(
           <ContentList<GenericContent>
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
@@ -386,7 +384,11 @@ describe('ContentList component', () => {
             icons={{}}
             fieldComponent={props => {
               if (props.field === 'Name') {
-                return <div className="custom-field">{props.content[props.field]}</div>
+                return (
+                  <td>
+                    <div className="custom-field">{props.content[props.field]}</div>
+                  </td>
+                )
               }
               return null
             }}
@@ -429,6 +431,7 @@ describe('ContentList component', () => {
           .first()
         row.simulate('click')
       })
+
       it('should fire onItemDoubleClick  when the row is double-clicked', (done: jest.DoneCallback) => {
         const component = mount(
           <ContentList<GenericContent>

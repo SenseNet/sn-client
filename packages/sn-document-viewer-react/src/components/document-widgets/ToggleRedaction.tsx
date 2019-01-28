@@ -1,9 +1,9 @@
-import IconButton from '@material-ui/core/IconButton'
 import PictureInPicture from '@material-ui/icons/PictureInPicture'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { componentType } from '../../services'
 import { RootReducerType, setRedaction } from '../../store'
+import { ToggleBase } from './ToggleBase'
 
 /**
  * maps state fields from the store to component props
@@ -12,9 +12,9 @@ import { RootReducerType, setRedaction } from '../../store'
 export const mapStateToProps = (state: RootReducerType) => {
   return {
     canHideRedaction: state.sensenetDocumentViewer.documentState.canHideRedaction,
-    showShapes: state.sensenetDocumentViewer.viewer.showShapes,
+    isVisible: state.sensenetDocumentViewer.viewer.showShapes,
     showRedaction: state.sensenetDocumentViewer.viewer.showRedaction,
-    toggleRedaction: state.sensenetDocumentViewer.localization.toggleRedaction,
+    title: state.sensenetDocumentViewer.localization.toggleRedaction,
   }
 }
 
@@ -23,32 +23,19 @@ export const mapStateToProps = (state: RootReducerType) => {
  * @param state the redux state
  */
 export const mapDispatchToProps = {
-  setRedaction,
+  setValue: setRedaction,
 }
 
 /**
  * Document widget component to toggleing redaction
  */
-export class ToggleRedactionComponent extends React.Component<
+export const ToggleRedactionComponent: React.FunctionComponent<
   componentType<typeof mapStateToProps, typeof mapDispatchToProps>
-> {
-  private toggleRedaction() {
-    this.props.setRedaction(!this.props.showRedaction)
-  }
-
-  /**
-   * renders the component
-   */
-  public render() {
-    return (
-      <div style={{ display: 'inline-block' }}>
-        <IconButton title={this.props.toggleRedaction} style={{ opacity: this.props.showRedaction ? 1 : 0.5 }}>
-          <PictureInPicture onClick={() => this.toggleRedaction()} />
-        </IconButton>
-      </div>
-    )
-  }
-}
+> = props => (
+  <ToggleBase {...props}>
+    <PictureInPicture />
+  </ToggleBase>
+)
 
 const connectedComponent = connect(
   mapStateToProps,
