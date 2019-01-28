@@ -30,7 +30,7 @@ describe('DocumentTitlePager component', () => {
       />,
     )
     wrapper.find(Typography).simulate('click')
-    await sleepAsync()
+    expect(wrapper.find(TextField)).toBeTruthy()
     expect(wrapper).toMatchSnapshot()
   })
 

@@ -76,7 +76,7 @@ describe('ZoomMode component', () => {
     expect(wrapper.find(Menu).prop('open')).toBeFalsy()
   })
 
-  it('should close ZoomMenu and sets the zoomMode to fitHeight when reversed Code clicked', () => {
+  it('should close ZoomMenu and sets the zoomMode to fitHeight when reversed "Fit Height" clicked', () => {
     const setZoomMode = jest.fn()
     const wrapper = getComponentWithProps({ setZoomMode })
     wrapper.find(IconButton).simulate('click', { currentTarget: IconButton })
@@ -89,7 +89,7 @@ describe('ZoomMode component', () => {
     expect(wrapper.find(Menu).prop('open')).toBeFalsy()
   })
 
-  it('should close ZoomMenu and sets the zoomMode to fitWidth when Code clicked', () => {
+  it('should close ZoomMenu and sets the zoomMode to fitWidth when "Fit Width" clicked', () => {
     const setZoomMode = jest.fn()
     const wrapper = getComponentWithProps({ setZoomMode })
     wrapper.find(IconButton).simulate('click', { currentTarget: IconButton })
