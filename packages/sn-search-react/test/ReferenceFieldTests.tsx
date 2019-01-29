@@ -68,8 +68,7 @@ describe('ReferenceField Component', () => {
         fetchItems={async fetchQuery => {
           expect(fetchQuery.toString()).toBe("(Name:'*a*' OR DisplayName:'*a*' OR Path:'*a*')")
           done()
-          instance.unmount()
-          return []
+          return [{ Id: 123, Name: 'alba', Type: 'User', Path: 'Root/Users/Alba' }]
         }}
         onQueryChange={() => {
           /** */
@@ -81,9 +80,6 @@ describe('ReferenceField Component', () => {
       .props()
       .inputProps.onChange({
         target: { value: 'a' },
-        persist: () => {
-          /** */
-        },
       })
   })
 

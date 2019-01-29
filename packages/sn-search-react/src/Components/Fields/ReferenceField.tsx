@@ -2,8 +2,7 @@ import { ListItemText } from '@material-ui/core'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import Paper from '@material-ui/core/Paper'
-import TextField, { TextFieldProps as MaterialTextFieldProps } from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
+import TextField from '@material-ui/core/TextField'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
 import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
@@ -22,6 +21,8 @@ import Autosuggest, {
  * Props for the ReferenceField component
  */
 export interface ReferenceFieldProps<T> {
+  label?: string
+  helperText?: string
   fieldName: keyof T
   fieldKey?: string
   fieldSetting: ReferenceFieldSetting
@@ -45,7 +46,7 @@ export interface ReferenceFieldState<T extends GenericContent> {
  * Reference field picker component
  */
 export class ReferenceField<T extends GenericContent = GenericContent> extends React.Component<
-  ReferenceFieldProps<T> & MaterialTextFieldProps,
+  ReferenceFieldProps<T>,
   ReferenceFieldState<T>
 > {
   /**
@@ -80,7 +81,6 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
       return (
         <ListItem key={item.Id} selected={isHighlighted} component="div" value={item.Id}>
           <ListItemText primary={primary} secondary={secondary} />
-          <Typography variant="body2">{}</Typography>
         </ListItem>
       )
     },
