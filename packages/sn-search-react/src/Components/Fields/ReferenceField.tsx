@@ -1,6 +1,4 @@
 import { ListItemText } from '@material-ui/core'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import InputAdornment from '@material-ui/core/InputAdornment'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import Paper from '@material-ui/core/Paper'
@@ -38,12 +36,8 @@ export interface ReferenceFieldProps<T> {
  */
 export interface ReferenceFieldState<T extends GenericContent> {
   inputValue: string
-  isLoading: boolean
-  isOpened: boolean
-  term?: string
   items: T[]
   selected: T | null
-  anchorEl: HTMLElement
   renderSuggestion: RenderSuggestion<T>
 }
 
@@ -64,47 +58,25 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
     this.onChange = this.onChange.bind(this)
   }
 
+  private getMatchParts(text: string, term: string) {
+    const matchValue = match(term, text)
+    const parseValue = parse(term, matchValue)
+
+    return parseValue.map((part, index) =>
+      part.highlight ? <strong key={String(index)}>{part.text}</strong> : <span key={String(index)}>{part.text}</span>,
+    )
+  }
+
   /**
    * Initial state
    */
   public state: ReferenceFieldState<T> = {
     inputValue: '',
-    isOpened: false,
-    isLoading: false,
     items: [],
     selected: null,
-    anchorEl: null as any,
     renderSuggestion: (item, { query, isHighlighted }) => {
-      const matchesName = match(item.DisplayName || item.Name, query)
-      const partsName = parse(item.DisplayName || item.Name, matchesName)
-
-      const primary = partsName.map((part, index) =>
-        part.highlight ? (
-          <span key={String(index)} style={{ fontWeight: 500 }}>
-            {part.text}
-          </span>
-        ) : (
-          <strong key={String(index)} style={{ fontWeight: 300 }}>
-            {part.text}
-          </strong>
-        ),
-      )
-
-      const matchesPath = match(item.Path, query)
-      const partsPath = parse(item.Path, matchesPath)
-
-      const secondary = partsPath.map((part, index) =>
-        part.highlight ? (
-          <span key={String(index)} style={{ fontWeight: 500 }}>
-            {part.text}
-          </span>
-        ) : (
-          <strong key={String(index)} style={{ fontWeight: 300 }}>
-            {part.text}
-          </strong>
-        ),
-      )
-
+      const primary = this.getMatchParts(query, item.DisplayName || item.Name)
+      const secondary = this.getMatchParts(query, item.Path)
       return (
         <ListItem key={item.Id} selected={isHighlighted} component="div" value={item.Id}>
           <ListItemText primary={primary} secondary={secondary} />
@@ -135,25 +107,23 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
       onChange,
       displayName,
       name,
+      description,
+      helperText,
       ...other
     } = inputProps
 
     return (
       <TextField
         type="text"
-        label={this.props.fieldSetting && this.props.fieldSetting.DisplayName}
-        placeholder={this.props.fieldSetting && this.props.fieldSetting.DisplayName}
-        title={this.props.fieldSetting && this.props.fieldSetting.Description}
+        label={displayName}
+        placeholder={displayName}
+        title={description}
+        helperText={helperText}
         InputProps={{
           inputRef: node => {
             ref(node)
             inputRef(node)
           },
-          endAdornment: this.state.isLoading ? (
-            <InputAdornment position="end">
-              <CircularProgress size={16} />
-            </InputAdornment>
-          ) : null,
         }}
         value={this.state.inputValue}
         onChange={ev => this.onChange(ev.target.value)}
@@ -170,7 +140,6 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
   }
 
   public async componentDidMount() {
-    /** */
     if (this.props.defaultValueIdOrPath) {
       const items = await this.props.fetchItems(
         new Query(q =>
@@ -235,7 +204,6 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
     this.setState({
       inputValue: item.DisplayName || item.Name,
       selected: item,
-      isOpened: false,
     })
     this.props.onQueryChange(
       this.props.fieldKey || this.props.fieldName.toString(),
@@ -249,52 +217,52 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
   public render() {
     const displayName = (this.props.fieldSetting && this.props.fieldSetting.DisplayName) || this.props.label
     const description = (this.props.fieldSetting && this.props.fieldSetting.Description) || ''
+    const helperText = this.props.helperText || (this.props.fieldSetting && this.props.fieldSetting.Description) || ''
     const inputProps: InputProps<T> = {
       value: this.state.inputValue,
       onChange: ev => this.onChange((ev.target as HTMLInputElement).value),
       id: 'CommandBoxInput',
       displayName,
       description,
+      helperText,
     }
 
     return (
-      <div ref={ref => ref && this.state.anchorEl !== ref && this.setState({ anchorEl: ref })}>
-        <Autosuggest
-          theme={{
-            suggestionsList: {
-              listStyle: 'none',
-              margin: 0,
-              padding: 0,
-            },
-          }}
-          suggestions={this.state.items}
-          onSuggestionsFetchRequested={async req => {
-            const query = this.getQueryFromTerm<T>(`*${req.value}*`)
-            const items = await this.props.fetchItems(query)
-            this.setState({ items })
-          }}
-          onSuggestionsClearRequested={() => {
-            this.setState({ items: [] })
-          }}
-          getSuggestionValue={this.getSuggestionValue}
-          renderSuggestion={this.state.renderSuggestion}
-          inputProps={inputProps}
-          renderInputComponent={this.renderInputComponent}
-          renderSuggestionsContainer={options => (
-            <Paper
-              square={true}
-              style={{
-                position: 'fixed',
-                zIndex: 1,
-              }}>
-              <List component="nav" {...options.containerProps} style={{ padding: 0 }}>
-                {options.children}
-              </List>
-            </Paper>
-          )}
-          onSuggestionSelected={this.onSuggestionSelected}
-        />
-      </div>
+      <Autosuggest
+        theme={{
+          suggestionsList: {
+            listStyle: 'none',
+            margin: 0,
+            padding: 0,
+          },
+        }}
+        suggestions={this.state.items}
+        onSuggestionsFetchRequested={async req => {
+          const query = this.getQueryFromTerm<T>(`*${req.value}*`)
+          const items = await this.props.fetchItems(query)
+          this.setState({ items })
+        }}
+        onSuggestionsClearRequested={() => {
+          this.setState({ items: [] })
+        }}
+        getSuggestionValue={this.getSuggestionValue}
+        renderSuggestion={this.state.renderSuggestion}
+        inputProps={inputProps}
+        renderInputComponent={this.renderInputComponent}
+        renderSuggestionsContainer={options => (
+          <Paper
+            square={true}
+            style={{
+              position: 'fixed',
+              zIndex: 1,
+            }}>
+            <List component="nav" {...options.containerProps} style={{ padding: 0 }}>
+              {options.children}
+            </List>
+          </Paper>
+        )}
+        onSuggestionSelected={this.onSuggestionSelected}
+      />
     )
   }
 }
