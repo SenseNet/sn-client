@@ -133,8 +133,9 @@ class MessageBar extends React.Component<
               flexDirection: 'column',
               bottom: matches ? '20px' : 0,
               left: matches ? '20px' : 0,
-              position: 'absolute',
+              position: 'fixed',
               alignItems: 'flex-start',
+              zIndex: 1,
               width: matches ? undefined : '100%',
             }}>
             {this.state.digestedMessageEntries.map(message => (
