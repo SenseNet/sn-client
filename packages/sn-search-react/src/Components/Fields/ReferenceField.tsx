@@ -1,10 +1,24 @@
-import { CircularProgress, InputAdornment, Menu, MenuItem } from '@material-ui/core'
-import { MenuProps } from '@material-ui/core/Menu'
+import { ListItemText } from '@material-ui/core'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import Paper from '@material-ui/core/Paper'
 import TextField, { TextFieldProps as MaterialTextFieldProps } from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
 import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
+import match from 'autosuggest-highlight/match'
+import parse from 'autosuggest-highlight/parse'
 import React from 'react'
+import Autosuggest, {
+  GetSuggestionValue,
+  InputProps,
+  OnSuggestionSelected,
+  RenderInputComponent,
+  RenderSuggestion,
+} from 'react-autosuggest'
 
 /**
  * Props for the ReferenceField component
@@ -15,9 +29,8 @@ export interface ReferenceFieldProps<T> {
   fieldSetting: ReferenceFieldSetting
   defaultValueIdOrPath?: string | number
   fetchItems: (fetchQuery: Query<T>) => Promise<T[]>
-  onQueryChange: (key: string, query: Query<GenericContent>) => void
-  getMenuItem?: (item: T, select: (item: T) => void) => JSX.Element
-  MenuProps?: Partial<MenuProps>
+  onQueryChange: (key: string, query: Query<T>) => void
+  renderSuggestion?: RenderSuggestion<T>
 }
 
 /**
@@ -31,7 +44,7 @@ export interface ReferenceFieldState<T extends GenericContent> {
   items: T[]
   selected: T | null
   anchorEl: HTMLElement
-  getMenuItem: (item: T, select: (item: T) => void) => JSX.Element
+  renderSuggestion: RenderSuggestion<T>
 }
 
 /**
@@ -42,6 +55,16 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
   ReferenceFieldState<T>
 > {
   /**
+   *
+   */
+  constructor(props: ReferenceField<T>['props']) {
+    super(props)
+    this.handleSelect = this.handleSelect.bind(this)
+    this.fetchItems = debounce(this.fetchItems.bind(this), 500)
+    this.onChange = this.onChange.bind(this)
+  }
+
+  /**
    * Initial state
    */
   public state: ReferenceFieldState<T> = {
@@ -51,24 +74,99 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
     items: [],
     selected: null,
     anchorEl: null as any,
-    getMenuItem: (item: T, select: (item: T) => void) => (
-      <MenuItem key={item.Id} value={item.Id} onClick={() => select(item)}>
-        {item.DisplayName}
-      </MenuItem>
-    ),
+    renderSuggestion: (item, { query, isHighlighted }) => {
+      const matchesName = match(item.DisplayName || item.Name, query)
+      const partsName = parse(item.DisplayName || item.Name, matchesName)
+
+      const primary = partsName.map((part, index) =>
+        part.highlight ? (
+          <span key={String(index)} style={{ fontWeight: 500 }}>
+            {part.text}
+          </span>
+        ) : (
+          <strong key={String(index)} style={{ fontWeight: 300 }}>
+            {part.text}
+          </strong>
+        ),
+      )
+
+      const matchesPath = match(item.Path, query)
+      const partsPath = parse(item.Path, matchesPath)
+
+      const secondary = partsPath.map((part, index) =>
+        part.highlight ? (
+          <span key={String(index)} style={{ fontWeight: 500 }}>
+            {part.text}
+          </span>
+        ) : (
+          <strong key={String(index)} style={{ fontWeight: 300 }}>
+            {part.text}
+          </strong>
+        ),
+      )
+
+      return (
+        <ListItem key={item.Id} selected={isHighlighted} component="div" value={item.Id}>
+          <ListItemText primary={primary} secondary={secondary} />
+          <Typography variant="body2">{}</Typography>
+        </ListItem>
+      )
+    },
   }
 
-  private willUnmount: boolean = false
-  public componentWillUnmount() {
-    this.willUnmount = true
+  public onChange = (inputValue: string) => {
+    this.setState({ inputValue })
+    this.fetchItems(this.getQueryFromTerm(`*${inputValue}*`))
   }
 
-  constructor(props: ReferenceFieldProps<T>) {
-    super(props)
-    const handleInputChange = this.handleInputChange.bind(this)
-    this.handleInputChange = debounce(handleInputChange, 350)
-    this.handleSelect = this.handleSelect.bind(this)
-    this.handleClickAway = this.handleClickAway.bind(this)
+  public async fetchItems(query: Query<T>) {
+    const items = await this.props.fetchItems(query)
+    this.setState({ items })
+  }
+
+  public renderInputComponent: RenderInputComponent<T> = (inputProps: InputProps<T>) => {
+    const {
+      classes,
+      inputRef = () => {
+        /** */
+      },
+      ref,
+      defaultValue,
+      onChange,
+      displayName,
+      name,
+      ...other
+    } = inputProps
+
+    return (
+      <TextField
+        type="text"
+        label={this.props.fieldSetting && this.props.fieldSetting.DisplayName}
+        placeholder={this.props.fieldSetting && this.props.fieldSetting.DisplayName}
+        title={this.props.fieldSetting && this.props.fieldSetting.Description}
+        InputProps={{
+          inputRef: node => {
+            ref(node)
+            inputRef(node)
+          },
+          endAdornment: this.state.isLoading ? (
+            <InputAdornment position="end">
+              <CircularProgress size={16} />
+            </InputAdornment>
+          ) : null,
+        }}
+        value={this.state.inputValue}
+        onChange={ev => this.onChange(ev.target.value)}
+        {...other}
+      />
+    )
+  }
+  public getSuggestionValue: GetSuggestionValue<T> = c => {
+    return c.DisplayName || c.Name
+  }
+  public onSuggestionSelected: OnSuggestionSelected<T> = (_ev, data) => {
+    _ev.preventDefault()
+    this.handleSelect(data.suggestion)
   }
 
   public async componentDidMount() {
@@ -95,10 +193,16 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
     }
   }
 
-  private async handleInputChange(ev: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) {
+  public getQueryFromTerm<TQueryReturns>(term: string) {
     // tslint:disable
-    const term = `*${ev.target.value}*`
-    const query = new Query(q => q.query(q2 => q2.equals('Name', term).or.equals('DisplayName', term)))
+    const query = new Query<TQueryReturns>(q =>
+      q.query(q2 =>
+        q2
+          .equals('Name', term)
+          .or.equals('DisplayName', term)
+          .or.equals('Path', term),
+      ),
+    )
 
     if (this.props.fieldSetting.AllowedTypes) {
       new QueryOperators(query).and.query(q2 => {
@@ -122,31 +226,9 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
         })
         return q2
       })
-      // tslint:enable
     }
-
-    this.setState({
-      isLoading: true,
-      inputValue: ev.target.value,
-    })
-    try {
-      const values = await this.props.fetchItems(query)
-      if (this.willUnmount) {
-        return
-      }
-      this.setState({
-        items: values,
-        isOpened: values.length > 0 ? true : false,
-      })
-    } catch {
-      /** */
-    } finally {
-      !this.willUnmount && this.setState({ isLoading: false })
-    }
-  }
-
-  private handleClickAway() {
-    this.setState({ isOpened: false })
+    return query
+    // tslint:enable
   }
 
   private handleSelect(item: T) {
@@ -167,51 +249,51 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
   public render() {
     const displayName = (this.props.fieldSetting && this.props.fieldSetting.DisplayName) || this.props.label
     const description = (this.props.fieldSetting && this.props.fieldSetting.Description) || ''
-    const { fetchItems, fieldName, onQueryChange, fieldSetting, fieldKey, ...materialProps } = { ...this.props }
+    const inputProps: InputProps<T> = {
+      value: this.state.inputValue,
+      onChange: ev => this.onChange((ev.target as HTMLInputElement).value),
+      id: 'CommandBoxInput',
+      displayName,
+      description,
+    }
 
     return (
       <div ref={ref => ref && this.state.anchorEl !== ref && this.setState({ anchorEl: ref })}>
-        <TextField
-          value={this.state.inputValue}
-          type="text"
-          onChange={async ev => {
-            this.setState({ inputValue: ev.target.value })
-            ev.persist()
-            await this.handleInputChange(ev)
-          }}
-          autoFocus={true}
-          label={displayName}
-          placeholder={description}
-          title={this.props.fieldSetting && this.props.fieldSetting.Description}
-          InputProps={{
-            endAdornment: this.state.isLoading ? (
-              <InputAdornment position="end">
-                <CircularProgress size={16} />
-              </InputAdornment>
-            ) : null,
-          }}
-          {...materialProps}
-        />
-        <Menu
-          BackdropProps={{
-            onClick: this.handleClickAway,
-            style: { background: 'none' },
-          }}
-          open={this.state.isOpened}
-          anchorEl={this.state.anchorEl}
-          PaperProps={{
-            style: {
-              marginTop: '45px',
-              minWidth: '250px',
+        <Autosuggest
+          theme={{
+            suggestionsList: {
+              listStyle: 'none',
+              margin: 0,
+              padding: 0,
             },
           }}
-          {...this.props.MenuProps}>
-          {this.state.items.length > 0 ? (
-            this.state.items.map(i => this.state.getMenuItem(i, this.handleSelect))
-          ) : (
-            <MenuItem>No hits</MenuItem>
+          suggestions={this.state.items}
+          onSuggestionsFetchRequested={async req => {
+            const query = this.getQueryFromTerm<T>(`*${req.value}*`)
+            const items = await this.props.fetchItems(query)
+            this.setState({ items })
+          }}
+          onSuggestionsClearRequested={() => {
+            this.setState({ items: [] })
+          }}
+          getSuggestionValue={this.getSuggestionValue}
+          renderSuggestion={this.state.renderSuggestion}
+          inputProps={inputProps}
+          renderInputComponent={this.renderInputComponent}
+          renderSuggestionsContainer={options => (
+            <Paper
+              square={true}
+              style={{
+                position: 'fixed',
+                zIndex: 1,
+              }}>
+              <List component="nav" {...options.containerProps} style={{ padding: 0 }}>
+                {options.children}
+              </List>
+            </Paper>
           )}
-        </Menu>
+          onSuggestionSelected={this.onSuggestionSelected}
+        />
       </div>
     )
   }

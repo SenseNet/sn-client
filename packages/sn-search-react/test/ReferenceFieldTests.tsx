@@ -1,9 +1,8 @@
-import { TextField } from '@material-ui/core'
 import { SchemaStore } from '@sensenet/client-core/dist/Schemas/SchemaStore'
 import { GenericContent, ReferenceFieldSetting, SchemaStore as defaultSchemas } from '@sensenet/default-content-types'
 import { shallow } from 'enzyme'
-
 import * as React from 'react'
+import Autosuggest from 'react-autosuggest'
 import { ReferenceField } from '../src/Components/Fields/ReferenceField'
 
 describe('ReferenceField Component', () => {
@@ -67,7 +66,7 @@ describe('ReferenceField Component', () => {
         fieldName="CreatedBy"
         fieldSetting={exampleFieldSetting}
         fetchItems={async fetchQuery => {
-          expect(fetchQuery.toString()).toBe("(Name:'*a*' OR DisplayName:'*a*')")
+          expect(fetchQuery.toString()).toBe("(Name:'*a*' OR DisplayName:'*a*' OR Path:'*a*')")
           done()
           instance.unmount()
           return []
@@ -78,9 +77,9 @@ describe('ReferenceField Component', () => {
       />,
     )
     instance
-      .find(TextField)
+      .find(Autosuggest)
       .props()
-      .onChange({
+      .inputProps.onChange({
         target: { value: 'a' },
         persist: () => {
           /** */
@@ -88,63 +87,39 @@ describe('ReferenceField Component', () => {
       })
   })
 
-  it('Text change query should include the allowed types', done => {
-    const fieldSetting = { ...exampleFieldSetting }
-    fieldSetting.AllowedTypes = ['User', 'Task']
-    const instance = shallow(
-      <ReferenceField<GenericContent>
-        fieldName="CreatedBy"
-        fieldSetting={fieldSetting}
-        fetchItems={async fetchQuery => {
-          expect(fetchQuery.toString()).toBe("(Name:'*a*' OR DisplayName:'*a*') AND (TypeIs:User OR TypeIs:Task)")
-          done()
-          instance.unmount()
-          return []
-        }}
-        onQueryChange={() => {
-          /** */
-        }}
-      />,
-    )
-    instance
-      .find(TextField)
-      .props()
-      .onChange({
-        target: { value: 'a' },
-        persist: () => {
-          /** */
-        },
-      })
-  })
+  describe('Queries', () => {
+    it('Text change query should include the allowed types', () => {
+      const fieldSetting = { ...exampleFieldSetting }
+      fieldSetting.AllowedTypes = ['User', 'Task']
 
-  it('Text change query should include the selection roots', done => {
-    const fieldSetting = { ...exampleFieldSetting }
-    fieldSetting.SelectionRoots = ['Root/A', 'Root/B']
-    const instance = shallow(
-      <ReferenceField<GenericContent>
-        fieldName="CreatedBy"
-        fieldSetting={fieldSetting}
-        fetchItems={async fetchQuery => {
-          expect(fetchQuery.toString()).toBe(
-            '(Name:\'*a*\' OR DisplayName:\'*a*\') AND (InTree:"Root/A" OR InTree:"Root/B")',
-          )
-          done()
-          instance.unmount()
+      const mockComponent = new ReferenceField<GenericContent>({
+        fieldName: 'CreatedBy',
+        fieldSetting,
+        fetchItems: async () => [],
+        onQueryChange: () => undefined,
+      })
+
+      expect(mockComponent.getQueryFromTerm('*a*').toString()).toBe(
+        "(Name:'*a*' OR DisplayName:'*a*' OR Path:'*a*') AND (TypeIs:User OR TypeIs:Task)",
+      )
+    })
+
+    it('Text change query should include the selection roots', () => {
+      const fieldSetting = { ...exampleFieldSetting }
+      fieldSetting.SelectionRoots = ['Root/A', 'Root/B']
+      const mockComponent = new ReferenceField<GenericContent>({
+        fieldName: 'CreatedBy',
+        fieldSetting,
+        fetchItems: async () => {
           return []
-        }}
-        onQueryChange={() => {
-          /** */
-        }}
-      />,
-    )
-    instance
-      .find(TextField)
-      .props()
-      .onChange({
-        target: { value: 'a' },
-        persist: () => {
+        },
+        onQueryChange: () => {
           /** */
         },
       })
+      expect(mockComponent.getQueryFromTerm('*a*').toString()).toBe(
+        "(Name:'*a*' OR DisplayName:'*a*' OR Path:'*a*') AND (InTree:\"Root/A\" OR InTree:\"Root/B\")",
+      )
+    })
   })
 })

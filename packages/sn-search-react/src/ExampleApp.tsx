@@ -245,7 +245,6 @@ export class ExampleApp extends React.Component<{}, ExampleComponentState> {
                       {this.state.typeFieldQuery.length ? this.state.typeFieldQuery : 'Filter in all content types'}
                     </FormHelperText>
                   </FormControl>
-
                   <ReferenceField
                     fieldName="CreatedBy"
                     fieldSetting={{
