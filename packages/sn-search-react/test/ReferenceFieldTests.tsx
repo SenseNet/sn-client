@@ -1,3 +1,4 @@
+import TextField from '@material-ui/core/TextField'
 import { SchemaStore } from '@sensenet/client-core/dist/Schemas/SchemaStore'
 import { GenericContent, ReferenceFieldSetting, SchemaStore as defaultSchemas } from '@sensenet/default-content-types'
 import { shallow } from 'enzyme'
@@ -73,9 +74,7 @@ describe('ReferenceField Component', () => {
           done()
           return [{ Id: 123, Name: 'alba', Type: 'User', Path: 'Root/Users/Alba' }]
         }}
-        onQueryChange={() => {
-          /** */
-        }}
+        onQueryChange={jest.fn()}
       />,
     )
     instance
@@ -84,6 +83,22 @@ describe('ReferenceField Component', () => {
       .inputProps.onChange({
         target: { value: 'a' },
       })
+  })
+
+  it('Should get DisplayName or Name as a content value', () => {
+    const mockComponent = new ReferenceField({} as any)
+
+    const valueName = mockComponent.getSuggestionValue({ Id: 123, Name: 'c', Type: 'User', Path: 'Root/Content' })
+    expect(valueName).toBe('c')
+
+    const valueDisplayName = mockComponent.getSuggestionValue({
+      Id: 123,
+      Name: 'c',
+      DisplayName: 'content',
+      Type: 'User',
+      Path: 'Root/Content',
+    })
+    expect(valueDisplayName).toBe('content')
   })
 
   describe('Queries', () => {
@@ -112,9 +127,7 @@ describe('ReferenceField Component', () => {
         fetchItems: async () => {
           return []
         },
-        onQueryChange: () => {
-          /** */
-        },
+        onQueryChange: jest.fn(),
       })
       expect(mockComponent.getQueryFromTerm('*a*').toString()).toBe(
         "(Name:'*a*' OR DisplayName:'*a*' OR Path:'*a*') AND (InTree:\"Root/A\" OR InTree:\"Root/B\")",
@@ -123,37 +136,45 @@ describe('ReferenceField Component', () => {
   })
 
   describe('Container', () => {
-    expect(
-      shallow(
-        <ReferenceFieldContainer query="" containerProps={{ id: '1', key: '1', ref: null as any, style: {} }}>
-          <span>a</span>
-        </ReferenceFieldContainer>,
-      ),
-    ).toMatchSnapshot()
+    it('Should be rendered without error', () => {
+      expect(
+        shallow(
+          <ReferenceFieldContainer query="" containerProps={{ id: '1', key: '1', ref: null as any, style: {} }}>
+            <span>a</span>
+          </ReferenceFieldContainer>,
+        ),
+      ).toMatchSnapshot()
+    })
   })
 
   describe('InputField', () => {
-    expect(
-      shallow(
-        <ReferenceFieldInput
-          onChange={() => {
-            /** */
-          }}
-          value=""
-        />,
-      ),
-    ).toMatchSnapshot()
+    it('Should be rendered without error', () => {
+      expect(shallow(<ReferenceFieldInput onChange={jest.fn()} value="" />)).toMatchSnapshot()
+    })
+
+    it('Should exec onChange when the value is changed', () => {
+      const onChange = jest.fn()
+      const ev = { currentTarget: { value: 'a' } }
+      const component = shallow(<ReferenceFieldInput onChange={onChange} value="" />)
+      component
+        .find(TextField)
+        .first()
+        .simulate('change', ev)
+      expect(onChange).toBeCalledWith(ev, { method: 'type', newValue: 'a' })
+    })
   })
 
   describe('Suggestion', () => {
-    expect(
-      shallow(
-        <ReferenceFieldSuggestion
-          item={{ Id: 1, Name: 'Alma', Type: 'GenericContent', Path: 'Root/Sites/Alma' }}
-          isHighlighted={true}
-          query="Al"
-        />,
-      ),
-    ).toMatchSnapshot()
+    it('Should be rendered without error', () => {
+      expect(
+        shallow(
+          <ReferenceFieldSuggestion
+            item={{ Id: 1, Name: 'Alma', Type: 'GenericContent', Path: 'Root/Sites/Alma' }}
+            isHighlighted={true}
+            query="Al"
+          />,
+        ),
+      ).toMatchSnapshot()
+    })
   })
 })

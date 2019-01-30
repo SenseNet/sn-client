@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[` 1`] = `
+exports[`ReferenceField Component Container Should be rendered without error 1`] = `
 <WithStyles(Paper)
   square={true}
   style={
@@ -27,7 +27,7 @@ exports[` 1`] = `
 </WithStyles(Paper)>
 `;
 
-exports[` 2`] = `
+exports[`ReferenceField Component InputField Should be rendered without error 1`] = `
 <TextField
   InputProps={
     Object {
@@ -43,7 +43,7 @@ exports[` 2`] = `
 />
 `;
 
-exports[` 3`] = `
+exports[`ReferenceField Component Suggestion Should be rendered without error 1`] = `
 <WithStyles(ListItem)
   component="div"
   key="1"
