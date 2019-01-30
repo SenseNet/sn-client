@@ -1,13 +1,6 @@
-import { ListItemText } from '@material-ui/core'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import Paper from '@material-ui/core/Paper'
-import TextField from '@material-ui/core/TextField'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
 import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
-import match from 'autosuggest-highlight/match'
-import parse from 'autosuggest-highlight/parse'
 import React from 'react'
 import Autosuggest, {
   GetSuggestionValue,
@@ -16,6 +9,9 @@ import Autosuggest, {
   RenderInputComponent,
   RenderSuggestion,
 } from 'react-autosuggest'
+import { ReferenceFieldContainer } from './ReferenceFieldContainer'
+import { ReferenceFieldInput } from './ReferenceFieldInput'
+import { ReferenceFieldSuggestion } from './ReferenceFieldSuggestion'
 
 /**
  * Props for the ReferenceField component
@@ -59,15 +55,6 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
     this.onChange = this.onChange.bind(this)
   }
 
-  private getMatchParts(text: string, term: string) {
-    const matchValue = match(term, text)
-    const parseValue = parse(term, matchValue)
-
-    return parseValue.map((part, index) =>
-      part.highlight ? <strong key={String(index)}>{part.text}</strong> : <span key={String(index)}>{part.text}</span>,
-    )
-  }
-
   /**
    * Initial state
    */
@@ -75,15 +62,9 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
     inputValue: '',
     items: [],
     selected: null,
-    renderSuggestion: (item, { query, isHighlighted }) => {
-      const primary = this.getMatchParts(query, item.DisplayName || item.Name)
-      const secondary = this.getMatchParts(query, item.Path)
-      return (
-        <ListItem key={item.Id} selected={isHighlighted} component="div" value={item.Id}>
-          <ListItemText primary={primary} secondary={secondary} />
-        </ListItem>
-      )
-    },
+    renderSuggestion: (item, props) => (
+      <ReferenceFieldSuggestion item={item} query={props.query} isHighlighted={props.isHighlighted} />
+    ),
   }
 
   public onChange = (inputValue: string) => {
@@ -96,41 +77,6 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
     this.setState({ items })
   }
 
-  public renderInputComponent: RenderInputComponent<T> = (inputProps: InputProps<T>) => {
-    const {
-      classes,
-      inputRef = () => {
-        /** */
-      },
-      ref,
-      defaultValue,
-      onChange,
-      displayName,
-      name,
-      description,
-      helperText,
-      ...other
-    } = inputProps
-
-    return (
-      <TextField
-        type="text"
-        label={displayName}
-        placeholder={displayName}
-        title={description}
-        helperText={helperText}
-        InputProps={{
-          inputRef: node => {
-            ref(node)
-            inputRef(node)
-          },
-        }}
-        value={this.state.inputValue}
-        onChange={ev => this.onChange(ev.target.value)}
-        {...other}
-      />
-    )
-  }
   public getSuggestionValue: GetSuggestionValue<T> = c => {
     return c.DisplayName || c.Name
   }
@@ -248,19 +194,8 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
         getSuggestionValue={this.getSuggestionValue}
         renderSuggestion={this.state.renderSuggestion}
         inputProps={inputProps}
-        renderInputComponent={this.renderInputComponent}
-        renderSuggestionsContainer={options => (
-          <Paper
-            square={true}
-            style={{
-              position: 'fixed',
-              zIndex: 1,
-            }}>
-            <List component="nav" {...options.containerProps} style={{ padding: 0 }}>
-              {options.children}
-            </List>
-          </Paper>
-        )}
+        renderInputComponent={ReferenceFieldInput as RenderInputComponent<T>}
+        renderSuggestionsContainer={ReferenceFieldContainer}
         onSuggestionSelected={this.onSuggestionSelected}
       />
     )

@@ -4,6 +4,9 @@ import { shallow } from 'enzyme'
 import * as React from 'react'
 import Autosuggest from 'react-autosuggest'
 import { ReferenceField } from '../src/Components/Fields/ReferenceField'
+import { ReferenceFieldContainer } from '../src/Components/Fields/ReferenceFieldContainer'
+import { ReferenceFieldInput } from '../src/Components/Fields/ReferenceFieldInput'
+import { ReferenceFieldSuggestion } from '../src/Components/Fields/ReferenceFieldSuggestion'
 
 describe('ReferenceField Component', () => {
   const schemaStore = new SchemaStore()
@@ -117,5 +120,40 @@ describe('ReferenceField Component', () => {
         "(Name:'*a*' OR DisplayName:'*a*' OR Path:'*a*') AND (InTree:\"Root/A\" OR InTree:\"Root/B\")",
       )
     })
+  })
+
+  describe('Container', () => {
+    expect(
+      shallow(
+        <ReferenceFieldContainer query="" containerProps={{ id: '1', key: '1', ref: null as any, style: {} }}>
+          <span>a</span>
+        </ReferenceFieldContainer>,
+      ),
+    ).toMatchSnapshot()
+  })
+
+  describe('InputField', () => {
+    expect(
+      shallow(
+        <ReferenceFieldInput
+          onChange={() => {
+            /** */
+          }}
+          value=""
+        />,
+      ),
+    ).toMatchSnapshot()
+  })
+
+  describe('Suggestion', () => {
+    expect(
+      shallow(
+        <ReferenceFieldSuggestion
+          item={{ Id: 1, Name: 'Alma', Type: 'GenericContent', Path: 'Root/Sites/Alma' }}
+          isHighlighted={true}
+          query="Al"
+        />,
+      ),
+    ).toMatchSnapshot()
   })
 })

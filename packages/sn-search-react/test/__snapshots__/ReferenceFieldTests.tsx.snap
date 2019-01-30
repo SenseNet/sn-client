@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+<WithStyles(Paper)
+  square={true}
+  style={
+    Object {
+      "position": "fixed",
+      "zIndex": 1,
+    }
+  }
+>
+  <WithStyles(List)
+    component="nav"
+    id="1"
+    key="1"
+    style={
+      Object {
+        "padding": 0,
+      }
+    }
+  >
+    <span>
+      a
+    </span>
+  </WithStyles(List)>
+</WithStyles(Paper)>
+`;
+
+exports[` 2`] = `
+<TextField
+  InputProps={
+    Object {
+      "inputRef": [Function],
+    }
+  }
+  onChange={[Function]}
+  required={false}
+  select={false}
+  type="text"
+  value=""
+  variant="standard"
+/>
+`;
+
+exports[` 3`] = `
+<WithStyles(ListItem)
+  component="div"
+  key="1"
+  selected={true}
+  value={1}
+>
+  <WithStyles(ListItemText)
+    primary={
+      Array [
+        <strong>
+          Al
+        </strong>,
+        <span>
+          ma
+        </span>,
+      ]
+    }
+    secondary={
+      Array [
+        <span>
+          Root/Sites/
+        </span>,
+        <strong>
+          Al
+        </strong>,
+        <span>
+          ma
+        </span>,
+      ]
+    }
+  />
+</WithStyles(ListItem)>
+`;
