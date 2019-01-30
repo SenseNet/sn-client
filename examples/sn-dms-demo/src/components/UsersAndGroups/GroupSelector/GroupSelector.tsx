@@ -64,7 +64,7 @@ class GroupSelector extends React.Component<
             <ClickAwayListener onClickAway={() => this.handleButtonClick(false, true)}>
               <div style={{ display: 'inline' }}>
                 <Button
-                  variant="raised"
+                  variant="contained"
                   color="primary"
                   style={{ ...styles.button, ...styles.buttonRaised }}
                   onClick={() => this.handleButtonClick(open, false)}>

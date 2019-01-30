@@ -142,7 +142,7 @@ class DeleteDialog extends React.Component<
                 ) : null}
                 <Button
                   onClick={() => this.submitCallback()}
-                  variant="raised"
+                  variant="contained"
                   color="secondary"
                   style={styles.deleteButton}>
                   {resources.DELETE}
