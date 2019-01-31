@@ -117,7 +117,6 @@ storiesOf('Search', module)
             }}
             onQueryChange={action('onQueryChange')}
             helperText={'Type something to search'}
-            id="reference-filter"
           />
         )}
       />
