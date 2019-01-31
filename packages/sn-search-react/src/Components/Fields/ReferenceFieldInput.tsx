@@ -16,11 +16,6 @@ export const ReferenceFieldInput: React.FunctionComponent<InputProps<{}>> = inpu
       placeholder={displayName}
       title={description}
       helperText={helperText}
-      InputProps={{
-        inputRef: node => {
-          ref(node)
-        },
-      }}
       value={inputProps.value}
       onChange={ev => inputProps.onChange(ev, { method: 'type', newValue: ev.currentTarget.value })}
       {...other}
