@@ -3,6 +3,7 @@ import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content
 import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
 import React from 'react'
 import Autosuggest, {
+  AutosuggestProps,
   GetSuggestionValue,
   InputProps,
   OnSuggestionSelected,
@@ -26,6 +27,7 @@ export interface ReferenceFieldProps<T> {
   fetchItems: (fetchQuery: Query<T>) => Promise<T[]>
   onQueryChange: (key: string, query: Query<T>) => void
   renderSuggestion?: RenderSuggestion<T>
+  autoSuggestProps?: Partial<AutosuggestProps<T>>
 }
 
 /**
@@ -175,6 +177,7 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
 
     return (
       <Autosuggest
+        {...this.props.autoSuggestProps}
         theme={{
           suggestionsList: {
             listStyle: 'none',

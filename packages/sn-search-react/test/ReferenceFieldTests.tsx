@@ -21,9 +21,22 @@ describe('ReferenceField Component', () => {
         fieldName="CreatedBy"
         fieldSetting={exampleFieldSetting}
         fetchItems={async () => []}
-        onQueryChange={() => {
-          /** */
+        onQueryChange={jest.fn()}
+      />,
+    ).unmount()
+  })
+
+  it('Should be constructed with additional autoSuggest parameters', () => {
+    shallow(
+      <ReferenceField<GenericContent>
+        autoSuggestProps={{
+          alwaysRenderSuggestions: true,
+          suggestions: [{ Id: 123, Path: 'Root/Content', Name: 'Content', Type: 'Content' }],
         }}
+        fieldName="CreatedBy"
+        fieldSetting={exampleFieldSetting}
+        fetchItems={async () => []}
+        onQueryChange={jest.fn()}
       />,
     ).unmount()
   })
@@ -39,9 +52,7 @@ describe('ReferenceField Component', () => {
           done()
           return [{ Id: 1, Name: 'a', Path: '', Type: 'Document' }]
         }}
-        onQueryChange={() => {
-          /** */
-        }}
+        onQueryChange={jest.fn()}
       />,
     )
   })

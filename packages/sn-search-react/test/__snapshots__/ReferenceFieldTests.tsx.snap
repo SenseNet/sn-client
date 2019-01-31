@@ -29,11 +29,6 @@ exports[`ReferenceField Component Container Should be rendered without error 1`]
 
 exports[`ReferenceField Component InputField Should be rendered without error 1`] = `
 <TextField
-  InputProps={
-    Object {
-      "inputRef": [Function],
-    }
-  }
   onChange={[Function]}
   required={false}
   select={false}
