@@ -47,9 +47,6 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
   ReferenceFieldProps<T>,
   ReferenceFieldState<T>
 > {
-  /**
-   *
-   */
   constructor(props: ReferenceField<T>['props']) {
     super(props)
     this.handleSelect = this.handleSelect.bind(this)
