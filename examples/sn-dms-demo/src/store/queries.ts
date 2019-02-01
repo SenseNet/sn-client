@@ -70,7 +70,7 @@ export const setActive = <T extends Query>(active?: T) => ({
   active,
 })
 
-interface QueriesType {
+export interface QueriesType {
   idOrPath: number | string
   queryType: QueryType
   queries: Query[]
