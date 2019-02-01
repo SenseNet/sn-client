@@ -12024,10 +12024,10 @@ redent@^2.0.0:
     indent-string "^3.0.0"
     strip-indent "^2.0.0"
 
-redux-di-middleware@^2.0.2:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/redux-di-middleware/-/redux-di-middleware-2.0.3.tgz#2ae9dd3fbaadce8e97f248595b9089cc56f55661"
-  integrity sha512-MQnhTcE67bQXABVdaWHvenUeq63J2PvFmRhz23uKfOVjZugMiGwixVOUkZzcnOkfpfy7WeBqo54CvKZqUmZeiA==
+redux-di-middleware@3.0.0, redux-di-middleware@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/redux-di-middleware/-/redux-di-middleware-3.0.0.tgz#66485cf46ab7bffd67f070d705da9db220832876"
+  integrity sha512-U5EEdlMbBscj19LVlQnH60bLGsb6YLv9uxlOwi6JJqqjfno1nsPnMorE/FyKn+q0WTL4ABN3ozSr0hJtQBCbKA==
   dependencies:
     "@furystack/inject" "^1.0.9"
     redux "^4.0.1"
