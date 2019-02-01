@@ -69,7 +69,6 @@ interface ShareDialogProps extends RouteComponentProps<any> {
 const mapStateToProps = (state: rootStateType) => {
   return {
     repositoryUrl: state.sensenet.session.repository ? state.sensenet.session.repository.repositoryUrl : '',
-    sharingEntries: state.dms.sharing,
   }
 }
 
