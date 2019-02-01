@@ -37,7 +37,7 @@ export const repository = new Repository({
   repositoryUrl: 'https://dmsservice.demo.sensenet.com',
 })
 
-export const jwt = new JwtService(repository)
+export const jwt = JwtService.setup(repository)
 
 const di = new ReduxDiMiddleware()
 di.setInjectable(repository)

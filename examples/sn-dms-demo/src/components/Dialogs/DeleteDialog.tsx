@@ -3,6 +3,7 @@ import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import withStyles from '@material-ui/core/styles/withStyles'
 import Typography from '@material-ui/core/Typography'
+import { GenericContent } from '@sensenet/default-content-types'
 import { Actions } from '@sensenet/redux'
 import * as React from 'react'
 import { connect } from 'react-redux'
@@ -56,6 +57,7 @@ const styles = {
 }
 
 interface DeleteDialogProps {
+  content: GenericContent[]
   permanent?: boolean
 }
 
@@ -65,8 +67,6 @@ interface DeleteDialogState {
 
 const mapStateToProps = (state: rootStateType) => {
   return {
-    selected: state.dms.documentLibrary.selected,
-    currentitems: state.sensenet.currentitems.entities,
     closeCallback: state.dms.dialog.onClose,
   }
 }
@@ -94,13 +94,13 @@ class DeleteDialog extends React.Component<
   }
   public submitCallback = () => {
     const permanently = this.state.checked ? true : false
-    const selectedIds = this.props.selected.map(content => content.Id)
+    const selectedIds = this.props.content.map(content => content.Id)
     this.props.deleteContent(selectedIds, permanently)
     this.props.closeDialog()
     this.props.closeCallback()
   }
   public render() {
-    const { classes, selected } = this.props
+    const { classes, content } = this.props
     return (
       <MediaQuery minDeviceWidth={700}>
         {matches => (
@@ -110,11 +110,11 @@ class DeleteDialog extends React.Component<
             </Typography>
             <div style={styles.inner}>
               <div style={{ opacity: 0.54 }}>{resources.ARE_YOU_SURE_YOU_WANT_TO_DELETE}</div>
-              <div style={selected.length > 3 ? styles.longList : styles.normalList}>
+              <div style={content.length > 3 ? styles.longList : styles.normalList}>
                 <ul style={styles.list}>
-                  {selected.map(content => (
-                    <li key={content.Id} style={styles.listItem}>
-                      {content.DisplayName}
+                  {content.map(c => (
+                    <li key={c.Id} style={styles.listItem}>
+                      {c.DisplayName}
                     </li>
                   ))}
                 </ul>

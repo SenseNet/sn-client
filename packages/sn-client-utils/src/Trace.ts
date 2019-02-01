@@ -44,7 +44,7 @@ export interface TraceMethodCall<TArgs extends any[]> {
   /**
    * The provided arguments for the call
    */
-  arguments: TArgs
+  methodArguments: TArgs
 }
 
 /**
@@ -125,7 +125,7 @@ export class Trace {
   private static traceStart<TReturns, TArgs extends any[]>(methodTrace: MethodMapping<TReturns, TArgs>, args: TArgs[]) {
     const startDateTime = new Date()
     const traceValue = {
-      arguments: args,
+      methodArguments: args,
       startDateTime,
     } as TraceMethodCall<TArgs>
     methodTrace.callObservable.setValue(traceValue)
@@ -139,7 +139,7 @@ export class Trace {
     returned: any,
   ) {
     const finishedTrace: TraceMethodFinished<TReturns, TArgs> = {
-      arguments: args,
+      methodArguments: args,
       startDateTime: callTrace.startDateTime,
       finishedDateTime: new Date(),
       returned,
@@ -154,7 +154,7 @@ export class Trace {
     error: any,
   ) {
     const errorTrace: TraceMethodError<TArgs> = {
-      arguments: args,
+      methodArguments: args,
       startDateTime: callTrace.startDateTime,
       errorDateTime: new Date(),
       error,

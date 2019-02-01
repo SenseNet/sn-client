@@ -3,7 +3,8 @@
  */
 /** */
 
-import { Content, ODataParams } from '@sensenet/client-core'
+import { Content, LoadCollectionOptions, LoadOptions, ODataParams } from '@sensenet/client-core'
+import { GenericContent } from '@sensenet/default-content-types'
 
 /**
  * Model for Content Created event
@@ -67,6 +68,34 @@ export interface Loaded {
    * The Loaded content instance
    */
   content: Content
+}
+
+/**
+ * Model for Content Loaded failed event
+ */
+export interface LoadFailed {
+  /**
+   * The Load payload for the request
+   */
+  payload: LoadOptions<GenericContent>
+  /**
+   * The Error instance
+   */
+  error: any
+}
+
+/**
+ * Model for the Load Content Collection event
+ */
+export interface LoadCollectionFailed {
+  /**
+   * The collection payload for the request
+   */
+  payload: LoadCollectionOptions<GenericContent>
+  /**
+   * the error instance
+   */
+  error: any
 }
 
 /**

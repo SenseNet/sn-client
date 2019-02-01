@@ -38,7 +38,7 @@ export const traceTests = describe('Trace tests', () => {
         object: MockClass,
         method: MockClass.addStatic,
         onCalled: traceData => {
-          expect(args).toEqual(traceData.arguments)
+          expect(args).toEqual(traceData.methodArguments)
           observer.dispose()
           done()
         },
@@ -52,7 +52,7 @@ export const traceTests = describe('Trace tests', () => {
         object: MockClass,
         method: MockClass.addStatic,
         onFinished: traceData => {
-          expect(args).toEqual(traceData.arguments)
+          expect(args).toEqual(traceData.methodArguments)
           expect(traceData.returned).toBe(1 + 2 + 3)
           observer.dispose()
           done()
@@ -92,7 +92,7 @@ export const traceTests = describe('Trace tests', () => {
         object: instance,
         method: instance.addInstance,
         onFinished: traceData => {
-          expect(args).toEqual(traceData.arguments)
+          expect(args).toEqual(traceData.methodArguments)
           expect(traceData.returned).toBe(1 + 2 + 3)
           observer.dispose()
           done()
@@ -109,7 +109,7 @@ export const traceTests = describe('Trace tests', () => {
         method: instance.addInstanceAsync,
         isAsync: true,
         onFinished: traceData => {
-          expect(args).toEqual(traceData.arguments)
+          expect(args).toEqual(traceData.methodArguments)
           const returned = traceData.returned
           expect(returned).toBe(1 + 2 + 3)
           observer.dispose()

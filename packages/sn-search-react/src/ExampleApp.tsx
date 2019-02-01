@@ -245,7 +245,6 @@ export class ExampleApp extends React.Component<{}, ExampleComponentState> {
                       {this.state.typeFieldQuery.length ? this.state.typeFieldQuery : 'Filter in all content types'}
                     </FormHelperText>
                   </FormControl>
-
                   <ReferenceField
                     fieldName="CreatedBy"
                     fieldSetting={{
@@ -270,7 +269,6 @@ export class ExampleApp extends React.Component<{}, ExampleComponentState> {
                       _options.updateQuery(key, query)
                     }}
                     helperText={this.state.referenceFieldQuery || 'Search a content creator'}
-                    id="reference-filter"
                   />
 
                   <button style={{ display: 'none' }} type="submit" />

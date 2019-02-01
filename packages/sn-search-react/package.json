@@ -37,7 +37,8 @@
     "@types/react": "^16.7.14",
     "@types/react-dom": "^16.0.11",
     "@types/react-router-dom": "^4.3.1",
-    "@types/uuid": "^3.4.4",
+    "@types/autosuggest-highlight": "3.1.0",
+    "@types/react-autosuggest": "^9.3.6",
     "autoprefixer": "^9.4.0",
     "awesome-typescript-loader": "^5.2.1",
     "copy-webpack-plugin": "^4.6.0",
@@ -62,7 +63,9 @@
     "@sensenet/default-content-types": "^1.1.1",
     "@sensenet/icons-react": "^1.2.4",
     "@sensenet/query": "^1.1.1",
+    "autosuggest-highlight": "^3.1.1",
     "react": "^16.6.3",
+    "react-autosuggest": "^9.4.3",
     "react-dom": "^16.6.3"
   },
   "typings": "./dist/index.d.ts"
