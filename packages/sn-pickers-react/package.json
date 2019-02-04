@@ -1,0 +1,44 @@
+{
+  "name": "@sensenet/pickers-react",
+  "version": "1.0.0",
+  "description": "Content picker components in react with sensenet.",
+  "keywords": [
+    "sensenet",
+    "ecm",
+    "picker"
+  ],
+  "author": "Sense/Net <snteam@sensenet.com>",
+  "homepage": "https://sensenet.com",
+  "license": "GPL-2.0",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SenseNet/sn-client.git"
+  },
+  "scripts": {
+    "fix": "npm run fix:prettier && npm run fix:tslint",
+    "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
+    "fix:tslint": "tslint --fix --project .",
+    "lint": "tslint --project .",
+    "build": "tsc -b"
+  },
+  "bugs": {
+    "url": "https://github.com/SenseNet/sn-client/issues"
+  },
+  "dependencies": {
+    "@material-ui/core": "^3.9.2",
+    "immer": "^2.0.0",
+    "react": "16.8.0-alpha.1"
+  },
+  "devDependencies": {
+    "tslint": "^5.12.1",
+    "typescript": "^3.3.1"
+  }
+}

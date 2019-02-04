@@ -64,6 +64,7 @@
       "<rootDir>/packages/sn-query",
       "<rootDir>/packages/sn-search-react",
       "<rootDir>/packages/sn-redux-promise-middleware",
+      "<rootDir>/packages/sn-pickers-react",
       "<rootDir>/packages/sn-icons-react"
     ],
     "moduleFileExtensions": [
