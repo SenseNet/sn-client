@@ -1,4 +1,4 @@
-import { Item } from '../src/ListPicker/Item'
+import { Item } from '../../src/ListPicker/Item'
 
 export interface MockData {
   text: string

@@ -2,7 +2,7 @@ import { shallow } from 'enzyme'
 import React from 'react'
 import { ItemComponent, ItemProps } from '../src/ListPicker/Item'
 import { ItemList } from '../src/ListPicker/ItemsList'
-import { items, MockData } from './items'
+import { items, MockData } from './mocks/items'
 
 describe('Item component', () => {
   it('should return a div with a rendered text', () => {
