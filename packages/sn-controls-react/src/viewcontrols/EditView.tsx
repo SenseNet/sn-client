@@ -25,6 +25,8 @@ export interface EditViewProps<T extends GenericContent = GenericContent> {
   columns?: boolean
   handleCancel?: () => void
   submitCallback?: () => void
+  repositoryUrl?: string
+  uploadFolderPath?: string
 }
 /**
  * Interface for EditView state
@@ -32,6 +34,7 @@ export interface EditViewProps<T extends GenericContent = GenericContent> {
 export interface EditViewState<T extends GenericContent = GenericContent> {
   content: T
   schema: ControlSchema<React.Component, ReactClientFieldSettingProps>
+  saveableContent: T
 }
 
 /**
@@ -66,6 +69,7 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
     this.state = {
       content: this.props.content,
       schema: controlMapper.getFullSchemaForContentType(this.props.contentTypeName as any, 'edit'),
+      saveableContent: {} as T,
     }
 
     this.handleInputChange = this.handleInputChange.bind(this)
@@ -86,6 +90,7 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
    */
   public handleInputChange(field: keyof T, value: T[K]) {
     this.state.content[field] = value
+    this.state.saveableContent[field] = value
 
     this.setState({
       content: this.props.content,
@@ -117,7 +122,7 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
         onSubmit={e => {
           e.preventDefault()
           if (this.props.onSubmit) {
-            this.props.onSubmit(this.state.content.Id, this.props.content)
+            this.props.onSubmit(this.state.content.Id, this.state.saveableContent)
           }
           return this.props.submitCallback ? this.props.submitCallback() : null
         }}>
@@ -133,6 +138,14 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
             // tslint:disable-next-line:no-string-literal
             fieldSetting.clientSettings['value'] = that.getFieldValue(fieldSetting.clientSettings.name)
             fieldSetting.clientSettings.onChange = that.handleInputChange as any
+            fieldSetting.clientSettings['data-repositoryUrl'] = this.props.repositoryUrl || ''
+            if (
+              fieldSetting.clientSettings['data-typeName'] === 'NullFieldSetting' &&
+              fieldSetting.fieldSettings.Name === 'Avatar'
+            ) {
+              fieldSetting.clientSettings['data-uploadFolderPath'] = this.props.uploadFolderPath || ''
+              fieldSetting.clientSettings['data-repository'] = this.props.repository
+            }
             return (
               <Grid
                 item={true}
@@ -158,7 +171,7 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
                 ) : null
               }
             </MediaQuery>
-            <Button type="submit" variant="raised" color="secondary">
+            <Button type="submit" variant="contained" color="secondary">
               Submit
             </Button>
           </Grid>
