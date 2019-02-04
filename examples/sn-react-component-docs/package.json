@@ -12,11 +12,12 @@
     "@sensenet/default-content-types": "^1.1.1",
     "@sensenet/icons-react": "^1.2.4",
     "@sensenet/list-controls-react": "^1.3.1",
+    "@sensenet/pickers-react": "^1.0.0",
     "@sensenet/query": "^1.1.1",
     "@sensenet/redux": "^5.1.3",
     "@sensenet/search-react": "^1.1.2",
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3",
+    "react": "^16.8.0-alpha.1",
+    "react-dom": "^16.8.0-alpha.1",
     "react-redux": "^6.0.0"
   },
   "repository": {
