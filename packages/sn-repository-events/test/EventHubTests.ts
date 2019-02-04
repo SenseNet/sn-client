@@ -1,4 +1,13 @@
-import { Content, ODataBatchResponse, ODataResponse, Repository } from '@sensenet/client-core'
+import {
+  Content,
+  LoadCollectionOptions,
+  LoadOptions,
+  ODataBatchResponse,
+  ODataCollectionResponse,
+  ODataResponse,
+  Repository,
+} from '@sensenet/client-core'
+import { GenericContent } from '@sensenet/default-content-types'
 import { EventHub } from '../src'
 
 /**
@@ -465,6 +474,107 @@ export const eventHubTests = describe('EventHub', () => {
           })
         } catch (error) {
           /** ignore */
+        }
+      })()
+    })
+  })
+
+  describe('load', () => {
+    it('onContentLoaded() should be triggered after load', done => {
+      eventHub.onContentLoaded.subscribe(c => {
+        expect(c.content).toEqual(mockContent)
+        done()
+      })
+      // tslint:disable-next-line:no-string-literal
+      repository['fetch'] = async () =>
+        ({
+          ok: true,
+          json: async () => {
+            return {
+              d: mockContent,
+            } as ODataResponse<Content>
+          },
+        } as any)
+      repository.load({
+        idOrPath: 1,
+      })
+    })
+
+    it('onContentLoadFailed() should be trigger after load failed', done => {
+      const payload: LoadOptions<GenericContent> = {
+        idOrPath: 1,
+      }
+
+      eventHub.onContentLoadFailed.subscribe(c => {
+        expect(c.payload).toEqual(payload)
+        done()
+      })
+      // tslint:disable-next-line:no-string-literal
+      repository['fetch'] = async () =>
+        ({
+          ok: false,
+          json: async () => {
+            return { content: mockContent }
+          },
+        } as any)
+      ;(async () => {
+        try {
+          await repository.load(payload)
+        } catch {
+          // ignore...
+        }
+      })()
+    })
+  })
+
+  describe('loadCollection', () => {
+    it('onContentCollectionLoaded() should be triggered after load', done => {
+      const mockResponse: ODataCollectionResponse<Partial<GenericContent>> = {
+        d: {
+          __count: 3,
+          results: [{ Id: 123 }, { Id: 234 }, { Id: 345 }],
+        },
+      }
+
+      eventHub.onContentCollectionLoaded.subscribe(c => {
+        expect(c).toEqual(mockResponse)
+        done()
+      })
+      // tslint:disable-next-line:no-string-literal
+      repository['fetch'] = async () =>
+        ({
+          ok: true,
+          json: async () => {
+            return mockResponse
+          },
+        } as any)
+      repository.loadCollection({
+        path: 'Root/Content',
+      })
+    })
+
+    it('onContentLoadFailed() should be trigger after load failed', done => {
+      const payload: LoadCollectionOptions<GenericContent> = {
+        path: 'Root/Content',
+      }
+
+      eventHub.onContentCollectionLoadFailed.subscribe(c => {
+        expect(c.payload).toEqual(payload)
+        done()
+      })
+      // tslint:disable-next-line:no-string-literal
+      repository['fetch'] = async () =>
+        ({
+          ok: false,
+          json: async () => {
+            return { content: mockContent }
+          },
+        } as any)
+      ;(async () => {
+        try {
+          await repository.loadCollection(payload)
+        } catch {
+          // ignore...
         }
       })()
     })
