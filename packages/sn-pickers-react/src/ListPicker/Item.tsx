@@ -11,11 +11,6 @@ export interface Item<T = {}> {
   id: string | number
 
   /**
-   * Whether this node is selected.
-   */
-  isSelected?: boolean
-
-  /**
    * An optional custom user object to associate with the node.
    * This property can then be used in the `onClick`
    * event handlers for doing custom logic per node.

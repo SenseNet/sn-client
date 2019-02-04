@@ -6,9 +6,7 @@ import { items, MockData } from './mocks/items'
 
 describe('Item component', () => {
   it('should return a div with a rendered text', () => {
-    const renderItem = (item: ItemProps<MockData>) => (
-      <div className={item.isSelected ? 'selected' : ''}>{item.nodeData && item.nodeData.text}</div>
-    )
+    const renderItem = (item: ItemProps<MockData>) => <div>{item.nodeData && item.nodeData.text}</div>
     const text = 'some text'
     const wrapper = shallow(<ItemComponent<MockData> id={1} nodeData={{ text }} renderItem={renderItem} />)
     expect(wrapper.find('div')).toBeTruthy()
@@ -18,19 +16,6 @@ describe('Item component', () => {
         .last()
         .text(),
     ).toBe(text)
-  })
-
-  it('should add a class to a selected div', () => {
-    const renderItem = (item: ItemProps<MockData>) => (
-      <div className={item.isSelected ? 'selected' : ''}>{item.nodeData && item.nodeData.text}</div>
-    )
-    const wrapper = shallow(<ItemComponent<MockData> id={1} isSelected={true} renderItem={renderItem} />)
-    expect(
-      wrapper
-        .find('div')
-        .last()
-        .hasClass('selected'),
-    ).toBeTruthy()
   })
 })
 

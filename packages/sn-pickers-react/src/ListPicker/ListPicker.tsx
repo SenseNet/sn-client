@@ -1,46 +1,30 @@
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
-import produce from 'immer'
+import { GenericContent } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
+import { useAsync } from 'react-use'
 import { Item, ItemProps } from './Item'
 import { ItemList } from './ItemsList'
 
-const items: Array<Item<{ name: string }>> = [
-  {
-    id: 1,
-    isSelected: false,
-    nodeData: {
-      name: 'Content1',
-    },
-  },
-  {
-    id: 2,
-    isSelected: false,
-    nodeData: {
-      name: 'Content2',
-    },
-  },
-]
+/**
+ * Properties for list picker component.
+ * @interface ListPickerProps
+ * @template T
+ */
+export interface ListPickerProps<T> {
+  loadItems: () => Promise<Array<Item<T>>>
+}
 
 /**
  * Represents a list picker component.
  */
-export function ListPickerComponent() {
-  const [state, setState] = useState(items)
-  const onClickHandler = (node: Item<{ name: string }>, event: React.MouseEvent) => {
+export function ListPickerComponent<T extends GenericContent>(props: ListPickerProps<T>) {
+  const { loading, value: items } = useAsync(props.loadItems)
+  const [selectedId, setSelectedId] = useState<string | number>(0)
+  const onClickHandler = (node: Item<T>, event: React.MouseEvent) => {
     event.preventDefault()
-    setState(
-      produce(state, draftState => {
-        draftState.map(item => {
-          if (item.id === node.id) {
-            item.isSelected = !item.isSelected
-          } else {
-            item.isSelected = false
-          }
-        })
-      }),
-    )
+    setSelectedId(node.id)
   }
 
   // const getSelectedItem = () => {
@@ -48,15 +32,21 @@ export function ListPickerComponent() {
   //   return selectedItem ? selectedItem.name : 'Not found'
   // }
 
-  const renderItem = (props: ItemProps<{ name: string }>) => (
-    <ListItem button={true} selected={props.isSelected}>
-      <ListItemText primary={props.nodeData!.name} />
+  const renderItem = (renderItemProps: ItemProps<T>) => (
+    <ListItem button={true} selected={renderItemProps.id === selectedId}>
+      <ListItemText primary={renderItemProps.nodeData!.Name} />
     </ListItem>
   )
 
   return (
     <List>
-      <ItemList items={state} onNodeClickHandler={onClickHandler} renderItem={renderItem} />
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <>
+          <ItemList items={items!} onNodeClickHandler={onClickHandler} renderItem={renderItem} />
+        </>
+      )}
     </List>
   )
 }

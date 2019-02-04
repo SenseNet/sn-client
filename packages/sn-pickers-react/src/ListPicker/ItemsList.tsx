@@ -40,7 +40,6 @@ export function ItemList<T = {}>(props: ItemListProps<T>) {
         <ItemComponent
           key={item.id}
           id={item.id}
-          isSelected={item.isSelected}
           nodeData={item.nodeData}
           onClickHandler={props.onNodeClickHandler}
           renderItem={props.renderItem}
