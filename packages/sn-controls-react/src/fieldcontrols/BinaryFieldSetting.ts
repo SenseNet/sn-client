@@ -2,6 +2,7 @@
  * @module FieldControls
  *
  */ /** */
+import { Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
@@ -17,4 +18,6 @@ export interface ReactBinaryFieldSetting<T extends GenericContent = GenericConte
   'data-folderPath'?: string
   'data-onUploadSuccess'?: (filename: string, path: string) => void
   'data-innerComponent'?: (filename: string, path: string) => React.Component
+  'data-uploadFolderPath'?: string
+  'data-repository': Repository
 }
