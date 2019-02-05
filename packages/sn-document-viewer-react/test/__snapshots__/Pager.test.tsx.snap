@@ -10,6 +10,7 @@ exports[`PagerWidget component Should render without crashing 1`] = `
 >
   <WithStyles(IconButton)
     disabled={true}
+    id="FirstPage"
     onClick={[Function]}
     title="firstpage"
   >
@@ -17,6 +18,7 @@ exports[`PagerWidget component Should render without crashing 1`] = `
   </WithStyles(IconButton)>
   <WithStyles(IconButton)
     disabled={true}
+    id="NavigateBefore"
     onClick={[Function]}
     title="previouspage"
   >
@@ -46,6 +48,7 @@ exports[`PagerWidget component Should render without crashing 1`] = `
   <WithStyles(IconButton)
     color="primary"
     disabled={false}
+    id="NavigateNext"
     onClick={[Function]}
     title="nextpage"
   >
@@ -53,6 +56,7 @@ exports[`PagerWidget component Should render without crashing 1`] = `
   </WithStyles(IconButton)>
   <WithStyles(IconButton)
     disabled={false}
+    id="LastPage"
     onClick={[Function]}
     title="lastpage"
   >
