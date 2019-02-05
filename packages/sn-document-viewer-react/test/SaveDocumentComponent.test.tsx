@@ -1,4 +1,3 @@
-import Save from '@material-ui/icons/Save'
 import { shallow } from 'enzyme'
 import React from 'react'
 import { SaveDocumentComponent } from '../src/components/document-widgets/SaveWidget'

@@ -1,5 +1,3 @@
-import RotateLeft from '@material-ui/icons/RotateLeft'
-import RotateRight from '@material-ui/icons/RotateRight'
 import { shallow } from 'enzyme'
 import React from 'react'
 import { RotateDocumentComponent } from '../src/components/document-widgets/RotateDocument'

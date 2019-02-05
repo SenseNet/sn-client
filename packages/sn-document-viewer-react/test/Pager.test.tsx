@@ -1,8 +1,4 @@
 import TextField from '@material-ui/core/TextField/TextField'
-import FirstPage from '@material-ui/icons/FirstPage'
-import LastPage from '@material-ui/icons/LastPage'
-import NavigateBefore from '@material-ui/icons/NavigateBefore'
-import NavigateNext from '@material-ui/icons/NavigateNext'
 import { sleepAsync } from '@sensenet/client-utils'
 import { shallow } from 'enzyme'
 import React from 'react'
