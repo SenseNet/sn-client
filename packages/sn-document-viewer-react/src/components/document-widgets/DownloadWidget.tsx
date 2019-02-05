@@ -42,8 +42,8 @@ export class DownloadComponent extends React.Component<
   public render() {
     return (
       <div style={{ display: 'inline-block' }}>
-        <IconButton color="inherit" title={this.props.title}>
-          <CloudDownload onClick={() => this.props.download(this.props.document)} />
+        <IconButton color="inherit" title={this.props.title} onClick={() => this.props.download(this.props.document)}>
+          <CloudDownload />
         </IconButton>
       </div>
     )

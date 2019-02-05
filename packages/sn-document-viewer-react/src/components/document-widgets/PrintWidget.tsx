@@ -41,9 +41,9 @@ export class PrintComponent extends React.Component<
    */
   public render() {
     return (
-      <div style={{ display: 'inline-block' }}>
+      <div style={{ display: 'inline-block' }} onClick={() => this.props.print(this.props.document)}>
         <IconButton color="inherit" title={this.props.title}>
-          <Print onClick={() => this.props.print(this.props.document)} />
+          <Print />
         </IconButton>
       </div>
     )
