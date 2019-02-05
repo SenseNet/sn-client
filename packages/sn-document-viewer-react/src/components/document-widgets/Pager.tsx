@@ -123,8 +123,11 @@ export class PagerComponent extends React.Component<
           <NavigateNext />
         </IconButton>
 
-        <IconButton disabled={this.state.currentPage >= this.state.lastPage} title={this.props.lastPage}>
-          <LastPage onClick={() => this.gotoPage(this.state.lastPage)} />
+        <IconButton
+          disabled={this.state.currentPage >= this.state.lastPage}
+          title={this.props.lastPage}
+          onClick={() => this.gotoPage(this.state.lastPage)}>
+          <LastPage />
         </IconButton>
       </div>
     )
