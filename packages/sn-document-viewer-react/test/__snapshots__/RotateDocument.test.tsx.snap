@@ -9,21 +9,20 @@ exports[`RotateDocument component Should render without crashing 1`] = `
   }
 >
   <WithStyles(IconButton)
-    title="rotateDocumentLeft"
     onClick={[Function]}
-  >
-    <pure(RotateLeftIcon)
-      style={
-        Object {
-          "border": "2px solid",
-          "borderRadius": "5px",
-        }
+    style={
+      Object {
+        "border": "2px solid",
+        "borderRadius": "5px",
       }
-    />
+    }
+    title="rotateDocumentLeft"
+  >
+    <pure(RotateLeftIcon) />
   </WithStyles(IconButton)>
   <WithStyles(IconButton)
-    title="rotateDocumentRight"
     onClick={[Function]}
+    title="rotateDocumentRight"
   >
     <pure(RotateRightIcon)
       style={

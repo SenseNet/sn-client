@@ -10,10 +10,10 @@ exports[`SaveDocumentComponent component Should render without crashing when has
 >
   <WithStyles(IconButton)
     disabled={false}
+    onClick={[Function]}
     title="Save"
   >
-    <pure(SaveIcon)
-    />
+    <pure(SaveIcon) />
   </WithStyles(IconButton)>
 </div>
 `;
@@ -28,10 +28,10 @@ exports[`SaveDocumentComponent component Should render without crashing when the
 >
   <WithStyles(IconButton)
     disabled={true}
+    onClick={[Function]}
     title="Save"
   >
-    <pure(SaveIcon)
-    />
+    <pure(SaveIcon) />
   </WithStyles(IconButton)>
 </div>
 `;
