@@ -50,6 +50,10 @@ const mapDispatchToProps = {
 }
 
 const styles = {
+  closeButton: {
+    position: 'absolute',
+    right: 0,
+  },
   snButton: {
     flex: '0 0 auto',
     width: 48,
@@ -144,7 +148,10 @@ class Picker extends React.Component<ReturnType<typeof mapStateToProps> & typeof
                     <Typography variant="h6" color="inherit">
                       {parent ? parent.DisplayName : 'Move content'}
                     </Typography>
-                    <IconButton color="inherit" onClick={() => this.handleClose()}>
+                    <IconButton
+                      style={styles.closeButton as React.CSSProperties}
+                      color="inherit"
+                      onClick={() => this.handleClose()}>
                       <Icon type={iconType.materialui} iconName="close" style={{ color: '#fff' }} />
                     </IconButton>
                   </Toolbar>
