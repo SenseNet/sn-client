@@ -11,17 +11,17 @@ exports[`PagerWidget component Should render without crashing 1`] = `
   <WithStyles(IconButton)
     disabled={true}
     title="firstpage"
+      onClick={[Function]}
   >
     <pure(FirstPageIcon)
-      onClick={[Function]}
     />
   </WithStyles(IconButton)>
   <WithStyles(IconButton)
     disabled={true}
     title="previouspage"
+      onClick={[Function]}
   >
     <pure(NavigateBeforeIcon)
-      onClick={[Function]}
     />
   </WithStyles(IconButton)>
   <TextField
@@ -49,17 +49,17 @@ exports[`PagerWidget component Should render without crashing 1`] = `
     color="primary"
     disabled={false}
     title="nextpage"
+      onClick={[Function]}
   >
     <pure(NavigateNextIcon)
-      onClick={[Function]}
     />
   </WithStyles(IconButton)>
   <WithStyles(IconButton)
     disabled={false}
     title="lastpage"
+      onClick={[Function]}
   >
     <pure(LastPageIcon)
-      onClick={[Function]}
     />
   </WithStyles(IconButton)>
 </div>
