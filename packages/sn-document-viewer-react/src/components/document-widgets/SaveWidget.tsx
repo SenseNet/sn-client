@@ -48,7 +48,8 @@ export class SaveDocumentComponent extends React.Component<
         <IconButton
           disabled={!this.props.hasChanges || !this.props.canEdit}
           title={this.props.saveChanges}
-          onClick={() => this.save()}>
+          onClick={() => this.save()}
+          id="Save">
           <Save />
         </IconButton>
       </div>

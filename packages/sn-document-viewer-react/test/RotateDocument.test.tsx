@@ -32,7 +32,7 @@ describe('RotateDocument component', () => {
         {...locals}
       />,
     )
-    wrapper.find(RotateLeft).simulate('click')
+    wrapper.find('#RotateLeft').simulate('click')
     expect(rotateImages).toBeCalledWith([1], -90)
   })
 
@@ -46,7 +46,7 @@ describe('RotateDocument component', () => {
         {...locals}
       />,
     )
-    wrapper.find(RotateRight).simulate('click')
+    wrapper.find('#RotateRight').simulate('click')
     expect(rotateImages).toBeCalledWith([1], 90)
   })
 })

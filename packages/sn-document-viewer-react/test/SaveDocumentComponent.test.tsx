@@ -45,7 +45,7 @@ describe('SaveDocumentComponent component', () => {
         hasChanges={true}
       />,
     )
-    wrapper.find(Save).simulate('click')
+    wrapper.find('#Save').simulate('click')
     expect(save).toBeCalled()
   })
 })

@@ -91,14 +91,16 @@ export class PagerComponent extends React.Component<
         <IconButton
           disabled={this.state.currentPage <= 1}
           title={this.props.firstPage}
-          onClick={() => this.gotoPage(1)}>
+          onClick={() => this.gotoPage(1)}
+          id="FirstPage">
           <FirstPage />
         </IconButton>
 
         <IconButton
           disabled={this.state.currentPage <= 1}
           title={this.props.previousPage}
-          onClick={() => this.gotoPage(this.props.activePages[0] - 1)}>
+          onClick={() => this.gotoPage(this.props.activePages[0] - 1)}
+          id="NavigateBefore">
           <NavigateBefore />
         </IconButton>
 
@@ -119,14 +121,16 @@ export class PagerComponent extends React.Component<
           disabled={this.state.currentPage >= this.state.lastPage}
           title={this.props.nextPage}
           color={'primary'}
-          onClick={() => this.gotoPage(this.props.activePages[0] + 1)}>
+          onClick={() => this.gotoPage(this.props.activePages[0] + 1)}
+          id="NavigateNext">
           <NavigateNext />
         </IconButton>
 
         <IconButton
           disabled={this.state.currentPage >= this.state.lastPage}
           title={this.props.lastPage}
-          onClick={() => this.gotoPage(this.state.lastPage)}>
+          onClick={() => this.gotoPage(this.state.lastPage)}
+          id="LastPage">
           <LastPage />
         </IconButton>
       </div>

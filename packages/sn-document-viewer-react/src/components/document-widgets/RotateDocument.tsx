@@ -51,10 +51,11 @@ export class RotateDocumentComponent extends React.Component<
         <IconButton
           title={this.props.rotateDocumentLeft}
           onClick={() => this.rotateDocumentLeft()}
-          style={{ border: '2px solid', borderRadius: '5px' }}>
+          style={{ border: '2px solid', borderRadius: '5px' }}
+          id="RotateLeft">
           <RotateLeft />
         </IconButton>
-        <IconButton title={this.props.rotateDocumentRight} onClick={() => this.rotateDocumentRight()}>
+        <IconButton title={this.props.rotateDocumentRight} onClick={() => this.rotateDocumentRight()} id="RotateRight">
           <RotateRight style={{ border: '2px solid', borderRadius: '5px' }} />
         </IconButton>
       </div>

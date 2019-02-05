@@ -54,28 +54,28 @@ describe('PagerWidget component', () => {
 
   it('First page should jump to page 1', async () => {
     const wrapper = shallow(<PagerComponent activePages={[5]} pageCount={10} setActivePages={jest.fn()} {...local} />)
-    wrapper.find(FirstPage).simulate('click')
+    wrapper.find('#FirstPage').simulate('click')
     await sleepAsync()
     expect(wrapper.find(TextField).props().value).toBe(1)
   })
 
   it('NavigateBefore should jump a page back', async () => {
     const wrapper = shallow(<PagerComponent activePages={[5]} pageCount={10} setActivePages={jest.fn()} {...local} />)
-    wrapper.find(NavigateBefore).simulate('click')
+    wrapper.find('#NavigateBefore').simulate('click')
     await sleepAsync()
     expect(wrapper.find(TextField).props().value).toBe(4)
   })
 
   it('NavigateNext should jump to the next page', async () => {
     const wrapper = shallow(<PagerComponent activePages={[5]} pageCount={10} setActivePages={jest.fn()} {...local} />)
-    wrapper.find(NavigateNext).simulate('click')
+    wrapper.find('#NavigateNext').simulate('click')
     await sleepAsync()
     expect(wrapper.find(TextField).props().value).toBe(6)
   })
 
   it('Last page should jump to page 10', async () => {
     const wrapper = shallow(<PagerComponent activePages={[5]} pageCount={10} setActivePages={jest.fn()} {...local} />)
-    wrapper.find(LastPage).simulate('click')
+    wrapper.find('#LastPage').simulate('click')
     await sleepAsync()
     expect(wrapper.find(TextField).props().value).toBe(10)
   })
