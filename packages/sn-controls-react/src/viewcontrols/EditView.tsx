@@ -158,7 +158,7 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
                 ) : null
               }
             </MediaQuery>
-            <Button type="submit" variant="raised" color="secondary">
+            <Button type="submit" variant="contained" color="secondary">
               Submit
             </Button>
           </Grid>

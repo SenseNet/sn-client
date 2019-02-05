@@ -109,7 +109,7 @@ class RestoreVersionDialog extends React.Component<
                     {resources.CANCEL}
                   </Button>
                 ) : null}
-                <Button onClick={() => this.submitCallback(id, version)} variant="raised" color="secondary">
+                <Button onClick={() => this.submitCallback(id, version)} variant="contained" color="secondary">
                   {resources.RESTORE}
                 </Button>
               </div>

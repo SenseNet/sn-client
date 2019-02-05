@@ -158,7 +158,7 @@ class RestoreVersionDialog extends React.Component<
                 ) : null}
                 <Button
                   onClick={() => this.approveCallback()}
-                  variant="raised"
+                  variant="contained"
                   color="secondary"
                   style={matches ? { marginRight: 20 } : { marginRight: 20, flexGrow: 1 }}>
                   {resources.APPROVE}
