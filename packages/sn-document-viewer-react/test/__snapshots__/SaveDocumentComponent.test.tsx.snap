@@ -13,7 +13,6 @@ exports[`SaveDocumentComponent component Should render without crashing when has
     title="Save"
   >
     <pure(SaveIcon)
-      onClick={[Function]}
     />
   </WithStyles(IconButton)>
 </div>
@@ -32,7 +31,6 @@ exports[`SaveDocumentComponent component Should render without crashing when the
     title="Save"
   >
     <pure(SaveIcon)
-      onClick={[Function]}
     />
   </WithStyles(IconButton)>
 </div>
