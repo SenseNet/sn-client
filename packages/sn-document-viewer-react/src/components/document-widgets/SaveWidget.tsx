@@ -45,8 +45,12 @@ export class SaveDocumentComponent extends React.Component<
   public render() {
     return (
       <div style={{ display: 'inline-block' }}>
-        <IconButton disabled={!this.props.hasChanges || !this.props.canEdit} title={this.props.saveChanges}>
-          <Save onClick={() => this.save()} />
+        <IconButton
+          disabled={!this.props.hasChanges || !this.props.canEdit}
+          title={this.props.saveChanges}
+          onClick={() => this.save()}
+          id="Save">
+          <Save />
         </IconButton>
       </div>
     )

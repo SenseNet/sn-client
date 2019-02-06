@@ -14,6 +14,8 @@ const styles = {
     boxShadow: '#cacaca 0px 2px 2px',
     minWidth: 60,
     borderRadius: 2,
+    padding: 8,
+    marginTop: 5,
   },
   activeButton: {
     background: '#016d9e',

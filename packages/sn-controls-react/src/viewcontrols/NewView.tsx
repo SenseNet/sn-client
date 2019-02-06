@@ -157,7 +157,7 @@ export class NewViewComponent<T extends GenericContent> extends Component<
                 ) : null
               }
             </MediaQuery>
-            <Button type="submit" variant="raised" color="secondary">
+            <Button type="submit" variant="contained" color="secondary">
               Submit
             </Button>
           </Grid>

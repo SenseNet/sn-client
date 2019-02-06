@@ -1,4 +1,3 @@
-import Save from '@material-ui/icons/Save'
 import { shallow } from 'enzyme'
 import React from 'react'
 import { SaveDocumentComponent } from '../src/components/document-widgets/SaveWidget'
@@ -45,7 +44,7 @@ describe('SaveDocumentComponent component', () => {
         hasChanges={true}
       />,
     )
-    wrapper.find(Save).simulate('click')
+    wrapper.find('#Save').simulate('click')
     expect(save).toBeCalled()
   })
 })
