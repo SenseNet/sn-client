@@ -68,7 +68,7 @@ export class Login extends React.Component<typeof mapDispatchToProps, {}> {
               </Grid>
             ))}
             <Grid item={true} style={styles.buttonRow as any}>
-              <Button type="submit" style={styles.button} variant="raised" color="primary">
+              <Button type="submit" style={styles.button} variant="contained" color="primary">
                 Login
               </Button>
             </Grid>
