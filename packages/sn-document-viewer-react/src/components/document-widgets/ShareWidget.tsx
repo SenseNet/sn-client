@@ -42,7 +42,11 @@ export class ShareComponent extends React.Component<
   public render() {
     return (
       <div style={{ display: 'inline-block' }}>
-        <IconButton color="inherit" title={this.props.title} onClick={() => this.props.share(this.props.document)}>
+        <IconButton
+          color="inherit"
+          title={this.props.title}
+          onClick={() => this.props.share(this.props.document)}
+          id="Share">
           <Share />
         </IconButton>
       </div>
