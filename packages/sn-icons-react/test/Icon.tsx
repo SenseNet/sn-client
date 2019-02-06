@@ -101,7 +101,7 @@ export const pageTests = describe('Icon component', () => {
     const wrapper = shallow(
       <Icon className="workspace" type={iconType.materialui} iconName="workspace" onClick={mockEvent} />,
     )
-    wrapper.find('.workspace').simulate('click')
+    wrapper.simulate('click')
     expect(mockEvent).toBeCalled()
   })
   it('Should trigger the given function on click event', () => {
@@ -109,7 +109,7 @@ export const pageTests = describe('Icon component', () => {
     const wrapper = shallow(
       <Icon className="workspace" type={iconType.fontawesome} iconName="workspace" onClick={mockEvent} />,
     )
-    wrapper.find('.workspace').simulate('click')
+    wrapper.simulate('click')
     expect(mockEvent).toBeCalled()
   })
   it('Should trigger the given function on click event', () => {
@@ -117,13 +117,13 @@ export const pageTests = describe('Icon component', () => {
     const wrapper = shallow(
       <Icon className="workspace" type={iconType.flaticon} iconName="workspace" onClick={mockEvent} />,
     )
-    wrapper.find('.workspace').simulate('click')
+    wrapper.simulate('click')
     expect(mockEvent).toBeCalled()
   })
   it('Should trigger the given function on click event', () => {
     const mockEvent = jest.fn()
     const wrapper = shallow(<Icon className="workspace" iconName="workspace" onClick={mockEvent} />)
-    wrapper.find('.workspace').simulate('click')
+    wrapper.simulate('click')
     expect(mockEvent).toBeCalled()
   })
 })
