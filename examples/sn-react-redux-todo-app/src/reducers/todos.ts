@@ -7,7 +7,6 @@ import { rootStateType } from '..'
 export const fetch = () => ({
   type: 'FETCH_TASKS',
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
-    /** */
     if (!options.getState().todoList.isFetching) {
       options.dispatch(startFetching())
       try {
@@ -54,7 +53,6 @@ export const todoUpdated = (todo: Task) => ({
 export const removeTodo = (todo: Task) => ({
   type: 'UPDATE_TODO',
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
-    /** */
     try {
       const result = await options.getInjectable(Repository).delete({
         idOrPath: todo.Id,
