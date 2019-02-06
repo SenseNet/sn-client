@@ -6,7 +6,7 @@ import { Item, ItemComponent, ItemProps } from './Item'
  * @interface ItemListProps
  * @template T
  */
-export interface ItemListProps<T = {}> {
+export interface ItemListProps<T extends { Id: string | number }> {
   /**
    * The data items to be rendered.
    * @type {Array<Item<T>>}
@@ -15,10 +15,22 @@ export interface ItemListProps<T = {}> {
   items: Array<Item<T>>
 
   /**
+   * The parent node.
+   * @memberof ItemListProps
+   */
+  parentNode?: Item<T>
+
+  /**
    * Click handler for the Item component.
    * @memberof ItemListProps
    */
   onNodeClickHandler?: (node: Item<T>, event: React.MouseEvent) => void
+
+  /**
+   * Double click handler for the Item component.
+   * @memberof ItemListProps
+   */
+  onNodeDoubleClickHandler?: (node: Item<T>, event: React.MouseEvent) => void
 
   /**
    * Function to render the item component.
@@ -33,15 +45,23 @@ export interface ItemListProps<T = {}> {
  * @param {ItemListProps<T>} props
  * @returns JSX.Element
  */
-export function ItemList<T = {}>(props: ItemListProps<T>) {
+export function ItemList<T extends { Id: string | number }>(props: ItemListProps<T>) {
   return (
     <>
+      {props.parentNode !== undefined ? (
+        <ItemComponent
+          onClickHandler={props.onNodeClickHandler}
+          onDoubleClickHandler={props.onNodeDoubleClickHandler}
+          nodeData={{ ...props.parentNode.nodeData, Name: '..' }}
+          renderItem={props.renderItem as any}
+        />
+      ) : null}
       {props.items.map(item => (
         <ItemComponent
-          key={item.id}
-          id={item.id}
+          key={item.nodeData.Id}
           nodeData={item.nodeData}
           onClickHandler={props.onNodeClickHandler}
+          onDoubleClickHandler={props.onNodeDoubleClickHandler}
           renderItem={props.renderItem}
         />
       ))}

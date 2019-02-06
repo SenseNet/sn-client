@@ -8,7 +8,7 @@ describe('Item component', () => {
   it('should return a div with a rendered text', () => {
     const renderItem = (item: ItemProps<MockData>) => <div>{item.nodeData && item.nodeData.text}</div>
     const text = 'some text'
-    const wrapper = shallow(<ItemComponent<MockData> id={1} nodeData={{ text }} renderItem={renderItem} />)
+    const wrapper = shallow(<ItemComponent<MockData> nodeData={{ text }} renderItem={renderItem} />)
     expect(wrapper.find('div')).toBeTruthy()
     expect(
       wrapper
@@ -16,6 +16,27 @@ describe('Item component', () => {
         .last()
         .text(),
     ).toBe(text)
+  })
+
+  it('should add secondary click action', () => {
+    const renderItem = (item: ItemProps<MockData>) => {
+      const onClick = (event: React.MouseEvent<Element, MouseEvent>) => {
+        item.actionClickHandler && item.actionClickHandler(item, event)
+      }
+      return (
+        <div>
+          {item.nodeData && item.nodeData.text} <span onClick={onClick}>icon</span>
+        </div>
+      )
+    }
+    const text = 'some text'
+    const actionClickHandler = jest.fn()
+    const wrapper = shallow(
+      <ItemComponent<MockData> actionClickHandler={actionClickHandler} nodeData={{ text }} renderItem={renderItem} />,
+    )
+    expect(wrapper.find('span')).toBeTruthy()
+    wrapper.find('span').simulate('click')
+    expect(actionClickHandler).toBeCalled()
   })
 })
 
