@@ -1,8 +1,8 @@
 import { SchemaStore } from '@sensenet/client-core/dist/Schemas/SchemaStore'
 import { GenericContent, SchemaStore as defaultSchemas } from '@sensenet/default-content-types'
 import { Query } from '@sensenet/query'
-import { configure, shallow } from 'enzyme'
-import Adapter from 'enzyme-adapter-react-16'
+import { shallow } from 'enzyme'
+
 import * as React from 'react'
 import { AdvancedSearch } from '../src/Components/AdvancedSearch'
 
@@ -10,8 +10,6 @@ describe('AdvancedSearch component', () => {
   const schemaStore = new SchemaStore()
   schemaStore.setSchemas(defaultSchemas)
   const exampleSchema = schemaStore.getSchema(GenericContent)
-
-  configure({ adapter: new Adapter() })
 
   it('Should be constructed with minimal parameters', () => {
     shallow(<AdvancedSearch fields={() => <div />} schema={exampleSchema} />)

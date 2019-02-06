@@ -31,7 +31,7 @@ export class GroupButtonRow extends Component<GroupButtonRowProps> {
         <Button color="default" style={{ marginRight: 20, color: '#fff' }} onClick={() => this.handleCancelClick()}>
           {resources.CANCEL}
         </Button>
-        <Button onClick={() => this.handleSubmitClick()} variant="raised" color="secondary">
+        <Button onClick={() => this.handleSubmitClick()} variant="contained" color="secondary">
           {resources.ADD}
         </Button>
       </div>

@@ -6,6 +6,7 @@ import {
   DocumentTitlePager,
   RotateActivePages,
   SearchBar,
+  ToggleShapesWidget,
   ToggleThumbnailsWidget,
   ZoomInOutWidget,
 } from './components/document-widgets'
@@ -236,6 +237,9 @@ export const exampleTheme = createMuiTheme({
       },
     },
   },
+  typography: {
+    useNextVariants: true,
+  },
 })
 
 class ExampleAppLayout extends React.Component<
@@ -290,6 +294,7 @@ class ExampleAppLayout extends React.Component<
             <DocumentViewer hostName={this.state.hostName} documentIdOrPath={this.state.documentIdOrPath}>
               <LayoutAppBar>
                 <div style={{ flexShrink: 0 }}>
+                  <ToggleShapesWidget />
                   <ToggleThumbnailsWidget />
                   <Download
                     download={doc => {
@@ -334,7 +339,7 @@ class ExampleAppLayout extends React.Component<
                   flexGrow: 1,
                   maxWidth: '65%',
                 }}>
-                <Typography variant="title">Document Viewer Demo</Typography>
+                <Typography variant="h6">Document Viewer Demo</Typography>
                 <Typography>Select a sensenet site and document to open.</Typography>
                 <form
                   autoComplete="off"
@@ -372,14 +377,14 @@ class ExampleAppLayout extends React.Component<
                       flexDirection: 'row-reverse',
                       marginTop: '1em',
                     }}>
-                    <Button type="submit" variant="raised" color="primary">
+                    <Button type="submit" variant="contained" color="primary">
                       {' '}
                       <Send /> &nbsp; Open{' '}
                     </Button>
                     &nbsp;
                     <Button
                       onClick={() => this.setState({ ...this.state, isHelpOpened: true })}
-                      variant="raised"
+                      variant="contained"
                       color="primary">
                       {' '}
                       <Help /> &nbsp; Help{' '}
@@ -424,7 +429,7 @@ class ExampleAppLayout extends React.Component<
                   <DialogActions>
                     <Button
                       onClick={() => this.setState({ ...this.state, isHelpOpened: false })}
-                      variant="raised"
+                      variant="contained"
                       color="primary">
                       {' '}
                       Close{' '}

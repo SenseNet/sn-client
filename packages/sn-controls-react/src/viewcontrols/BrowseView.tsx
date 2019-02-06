@@ -75,7 +75,7 @@ export class BrowseView extends Component<BrowseViewProps, EditViewProps> {
     return (
       <Grid container={true} spacing={24}>
         <div style={styles.container}>
-          <Typography variant="headline" gutterBottom={true}>
+          <Typography variant="h5" gutterBottom={true}>
             {this.props.content.DisplayName}
           </Typography>
           {fieldSettings.map(fieldSetting => {

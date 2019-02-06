@@ -73,7 +73,7 @@ class MoveToConfirmDialog extends React.Component<ReturnType<typeof mapStateToPr
       <MediaQuery minDeviceWidth={700}>
         {matches => (
           <div>
-            <Typography variant="headline" gutterBottom={true}>
+            <Typography variant="h5" gutterBottom={true}>
               {resources.MOVE}
             </Typography>
             <div style={matches ? styles.inner : styles.innerMobile}>
@@ -97,7 +97,7 @@ class MoveToConfirmDialog extends React.Component<ReturnType<typeof mapStateToPr
                     {resources.CANCEL}
                   </Button>
                 ) : null}
-                <Button onClick={() => this.submitCallback()} variant="raised" color="secondary">
+                <Button onClick={() => this.submitCallback()} variant="contained" color="secondary">
                   {resources.MOVE}
                 </Button>
               </div>

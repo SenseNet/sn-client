@@ -70,7 +70,11 @@ export interface PageState {
   isPolling: boolean
 }
 
-class Page extends React.Component<
+/**
+ * Represents a Page component that show the preview image on a Paper component
+ * @extends {React.Component<componentType<typeof mapStateToProps, typeof mapDispatchToProps, OwnProps>, PageState>}
+ */
+export class PageComponent extends React.Component<
   componentType<typeof mapStateToProps, typeof mapDispatchToProps, OwnProps>,
   PageState
 > {
@@ -81,7 +85,7 @@ class Page extends React.Component<
   }, this.props.pollInterval) as any) as number
 
   /** the component state */
-  public state = Page.getDerivedStateFromProps(this.props)
+  public state = PageComponent.getDerivedStateFromProps(this.props)
 
   private stopPolling() {
     if (this.pollPreview) {
@@ -99,7 +103,7 @@ class Page extends React.Component<
    * Returns a derived state from the specified props
    * @param props The props for state creation
    */
-  public static getDerivedStateFromProps(props: Page['props']): PageState {
+  public static getDerivedStateFromProps(props: PageComponent['props']): PageState {
     const imageRotation = ImageUtil.normalizeDegrees((props.page.Attributes && props.page.Attributes.degree) || 0)
     const imageRotationRads = ((imageRotation % 180) * Math.PI) / 180
     const imgSrc = (props.image === 'preview' ? props.page.PreviewImageUrl : props.page.ThumbnailImageUrl) || ''
@@ -190,5 +194,5 @@ class Page extends React.Component<
 const connectedComponent = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Page)
+)(PageComponent)
 export { connectedComponent as Page }

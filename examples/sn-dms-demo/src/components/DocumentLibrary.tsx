@@ -1,7 +1,4 @@
-import IconButton from '@material-ui/core/IconButton'
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
-import Typography from '@material-ui/core/Typography'
-import Close from '@material-ui/icons/Close'
 import { ConstantContent, Content } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import { ActionModel, GenericContent } from '@sensenet/default-content-types'
@@ -14,7 +11,6 @@ import { RouteComponentProps, withRouter } from 'react-router-dom'
 import * as DMSActions from '../Actions'
 import { contentListTheme } from '../assets/contentlist'
 import { icons } from '../assets/icons'
-import { resources } from '../assets/resources'
 import { customSchema } from '../assets/schema'
 import { ListToolbar } from '../components/ListToolbar'
 import {
@@ -33,6 +29,7 @@ import LockedCell from './ContentList/CellTemplates/LockedCell'
 import { RenameCell } from './ContentList/CellTemplates/RenameCell'
 import { FetchError } from './FetchError'
 import { GridPlaceholder } from './Loaders/GridPlaceholder'
+import { SearchResultsHeader } from './SearchResultsHeader'
 import { UploadBar } from './Upload/UploadBar'
 
 // tslint:disable-next-line:variable-name
@@ -132,6 +129,29 @@ class DocumentLibrary extends React.Component<
       const pathFromUrl = newProps.match.params.folderPath && atob(decodeURIComponent(newProps.match.params.folderPath))
       const userProfilePath = `/Root/Profiles/Public/${newProps.loggedinUser.content.Name}/Document_Library`
       newProps.loadParent(pathFromUrl || userProfilePath)
+
+      const queryObject = newProps.location.search
+        .substring(1)
+        .split('&')
+        .map(segment => segment.split('='))
+        .reduce(
+          (acc, val) => {
+            acc[val[0]] = decodeURIComponent(val[1])
+            return acc
+          },
+          {} as any,
+        )
+
+      if (queryObject.query && queryObject.query !== newProps.childrenOptions.query) {
+        newProps.updateChildrenOptions({
+          query: queryObject.query,
+        })
+        if (queryObject.queryName) {
+          newProps.updateSearchValues({
+            contains: queryObject.queryName,
+          })
+        }
+      }
     } catch (error) {
       /** Cannot parse current folder from URL */
       return compile(newProps.match.path)({ folderPath: '' })
@@ -210,12 +230,7 @@ class DocumentLibrary extends React.Component<
     return this.props.currentUser.content.Id !== ConstantContent.VISITOR_USER.Id ? (
       <div onDragOver={ev => ev.preventDefault()} onDrop={this.handleFileDrop}>
         {this.props.childrenOptions.query ? (
-          <Typography variant="h4" style={{ margin: '.5em' }}>
-            {resources.SEARCH_RESULTS}
-            <IconButton onClick={this.handleClearSearchResults}>
-              <Close />
-            </IconButton>
-          </Typography>
+          <SearchResultsHeader query={this.props.childrenOptions.query} clearResults={this.handleClearSearchResults} />
         ) : (
           <ListToolbar
             currentContent={this.props.parent}
@@ -318,6 +333,7 @@ class DocumentLibrary extends React.Component<
                 }
               }}
               onItemDoubleClick={this.handleRowDoubleClick}
+              checkboxProps={{ color: 'primary' }}
               fieldComponent={props => {
                 switch (props.field) {
                   case 'Locked':

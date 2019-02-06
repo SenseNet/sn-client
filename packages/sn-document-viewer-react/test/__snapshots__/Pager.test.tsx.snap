@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PagerWidget component Should render without crashing 1`] = `
+<div
+  style={
+    Object {
+      "display": "inline-block",
+    }
+  }
+>
+  <WithStyles(IconButton)
+    disabled={true}
+    id="FirstPage"
+    onClick={[Function]}
+    title="firstpage"
+  >
+    <pure(FirstPageIcon) />
+  </WithStyles(IconButton)>
+  <WithStyles(IconButton)
+    disabled={true}
+    id="NavigateBefore"
+    onClick={[Function]}
+    title="previouspage"
+  >
+    <pure(NavigateBeforeIcon) />
+  </WithStyles(IconButton)>
+  <TextField
+    InputLabelProps={
+      Object {
+        "shrink": true,
+      }
+    }
+    inputProps={
+      Object {
+        "max": 10,
+        "min": 1,
+      }
+    }
+    margin="dense"
+    onChange={[Function]}
+    required={true}
+    select={false}
+    title="gotopage"
+    type="number"
+    value={1}
+    variant="standard"
+  />
+  <WithStyles(IconButton)
+    color="primary"
+    disabled={false}
+    id="NavigateNext"
+    onClick={[Function]}
+    title="nextpage"
+  >
+    <pure(NavigateNextIcon) />
+  </WithStyles(IconButton)>
+  <WithStyles(IconButton)
+    disabled={false}
+    id="LastPage"
+    onClick={[Function]}
+    title="lastpage"
+  >
+    <pure(LastPageIcon) />
+  </WithStyles(IconButton)>
+</div>
+`;

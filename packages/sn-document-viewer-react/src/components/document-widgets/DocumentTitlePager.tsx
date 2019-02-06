@@ -1,7 +1,7 @@
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { RootReducerType, setActivePages } from '../../store'
 
@@ -45,14 +45,6 @@ export class DocumentTitlePagerComponent extends React.Component<
   ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   PagerState
 > {
-  /**
-   *
-   */
-  constructor(props: DocumentTitlePagerComponent['props']) {
-    super(props)
-    this.submitPageNumber = this.submitPageNumber.bind(this)
-  }
-
   /** the component state */
   public state: PagerState = {
     currentPage: this.props.activePages[0] || 1,
@@ -96,15 +88,6 @@ export class DocumentTitlePagerComponent extends React.Component<
     }
   }
 
-  private submitPageNumber(ev: React.FormEvent<HTMLFormElement>) {
-    ev.preventDefault()
-    const formData = new FormData(ev.currentTarget)
-    const pageNo = formData.get('gotoPage') as string
-    if (pageNo) {
-      this.gotoPage(pageNo)
-    }
-  }
-
   private handleFocused() {
     this.setState({
       ...this.state,
@@ -127,7 +110,7 @@ export class DocumentTitlePagerComponent extends React.Component<
       <ClickAwayListener onClickAway={() => this.handleBlur()}>
         <Typography
           onClick={() => this.handleFocused()}
-          variant="title"
+          variant="h6"
           color="inherit"
           style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', overflow: 'hidden', margin: '0 2.5em' }}
           title={this.props.documentName}>
@@ -135,18 +118,17 @@ export class DocumentTitlePagerComponent extends React.Component<
             {this.props.documentName}&nbsp;
           </div>
           {this.state.focused ? (
-            <form onSubmit={this.submitPageNumber}>
+            <form onSubmit={event => event.preventDefault()}>
               <TextField
                 style={{ flexShrink: 0 }}
                 title={this.props.gotoPage}
                 defaultValue={this.state.currentPage}
-                onClick={ev => this.gotoPage((ev.target as HTMLInputElement).value)}
+                onChange={ev => this.gotoPage(ev.currentTarget.value)}
                 type="number"
                 required={true}
                 InputLabelProps={{
                   shrink: true,
                 }}
-                name="gotoPage"
                 inputProps={{
                   min: 1,
                   max: this.state.lastPage,

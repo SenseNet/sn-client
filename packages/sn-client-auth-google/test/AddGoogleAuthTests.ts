@@ -8,7 +8,7 @@ import { GoogleOauthProvider } from '../src/GoogleOauthProvider'
 describe('RepositoryExtensions', () => {
   it('Can be configured on a Repository', () => {
     const repo = new Repository()
-    const jwt = new JwtService(repo)
+    const jwt = JwtService.setup(repo)
     const googleOauthProvider = addGoogleAuth(jwt, { clientId: '' })
     expect(googleOauthProvider).toBeInstanceOf(GoogleOauthProvider)
   })

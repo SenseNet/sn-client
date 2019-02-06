@@ -1,9 +1,9 @@
-import IconButton from '@material-ui/core/IconButton'
 import Dashboard from '@material-ui/icons/Dashboard'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { componentType } from '../../services'
 import { RootReducerType, setShapes } from '../../store'
+import { ToggleBase } from './ToggleBase'
 
 /**
  * maps state fields from the store to component props
@@ -11,8 +11,8 @@ import { RootReducerType, setShapes } from '../../store'
  */
 export const mapStateToProps = (state: RootReducerType) => {
   return {
-    showShapes: state.sensenetDocumentViewer.viewer.showShapes,
-    toggleShapes: state.sensenetDocumentViewer.localization.toggleShapes,
+    isVisible: state.sensenetDocumentViewer.viewer.showShapes,
+    title: state.sensenetDocumentViewer.localization.toggleShapes,
   }
 }
 
@@ -21,32 +21,19 @@ export const mapStateToProps = (state: RootReducerType) => {
  * @param state the redux state
  */
 export const mapDispatchToProps = {
-  setShapes,
+  setValue: setShapes,
 }
 
 /**
  * Document widget component that toggles the displaying of the shapes
  */
-export class ToggleShapesComponent extends React.Component<
+export const ToggleShapesComponent: React.FunctionComponent<
   componentType<typeof mapStateToProps, typeof mapDispatchToProps>
-> {
-  private toggleShapes() {
-    this.props.setShapes(!this.props.showShapes)
-  }
-
-  /**
-   * renders the component
-   */
-  public render() {
-    return (
-      <div style={{ display: 'inline-block' }}>
-        <IconButton title={this.props.toggleShapes} style={{ opacity: this.props.showShapes ? 1 : 0.5 }}>
-          <Dashboard onClick={() => this.toggleShapes()} />
-        </IconButton>
-      </div>
-    )
-  }
-}
+> = props => (
+  <ToggleBase {...props}>
+    <Dashboard />
+  </ToggleBase>
+)
 
 const connectedComponent = connect(
   mapStateToProps,

@@ -119,7 +119,7 @@ export class NewViewComponent<T extends GenericContent> extends Component<
             submitCallback()
           }
         }}>
-        <Typography variant="headline" gutterBottom={true}>
+        <Typography variant="h5" gutterBottom={true}>
           {title && title.length > 0 ? `New ${this.props.title}` : `New {schema.schema.DisplayName}`}
         </Typography>
         <Grid container={true} spacing={24}>
@@ -157,7 +157,7 @@ export class NewViewComponent<T extends GenericContent> extends Component<
                 ) : null
               }
             </MediaQuery>
-            <Button type="submit" variant="raised" color="secondary">
+            <Button type="submit" variant="contained" color="secondary">
               Submit
             </Button>
           </Grid>

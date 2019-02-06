@@ -153,14 +153,14 @@ export const loadContent = <T extends GenericContent = GenericContent>(
     switch (typeof options.expand) {
       case 'undefined':
         o.expand = 'Workspace'
-        break;
+        break
       case 'string':
         if (options.expand === 'Workspace') {
           o.expand = 'Workspace'
         } else {
           o.expand = [options.expand, 'Workspace'] as ODataFieldParameter<T>
         }
-        break;
+        break
       default:
         options.expand !== undefined
           ? (o.expand = [...(options.expand as string[]), 'Workspace'] as ODataFieldParameter<GenericContent>)

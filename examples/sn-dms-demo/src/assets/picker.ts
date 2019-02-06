@@ -25,11 +25,6 @@ export const pickerTheme = createMuiTheme({
       },
     },
     MuiTypography: {
-      // root: {
-      //     '&.selected, &.active, &:hover, &.active:hover': {
-      //         color: '#fff !important',
-      //     },
-      // },
       title: {
         fontFamily: 'Raleway Semibold',
         fontSize: 18,
@@ -131,18 +126,6 @@ export const pickerTheme = createMuiTheme({
           boxShadow: 'none',
         },
       },
-      disabled: {
-        background: '#fff',
-        color: '#016D9E',
-        boxShadow: 'none',
-        '&.disabled-mobile-button': {
-          [theme.breakpoints.down('md')]: {
-            background: '#fff',
-            color: '#016D9E',
-            opacity: 0.25,
-          },
-        },
-      },
-    },
+    } as any,
   },
 })

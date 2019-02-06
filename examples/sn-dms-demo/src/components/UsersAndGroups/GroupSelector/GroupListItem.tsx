@@ -103,13 +103,14 @@ class GroupListItem extends React.Component<
     return (
       <MenuItem style={styles.listItem}>
         <ListItemIcon className={classes.icon}>
-          <IconButton className={selected ? classes.followedIconButton : classes.iconButton}>
+          <IconButton
+            className={selected ? classes.followedIconButton : classes.iconButton}
+            onClick={() => this.checkboxClick(group)}>
             <Icon
               className={selected ? classes.followedIconButton : classes.iconButton}
               type={iconType.materialui}
               iconName={selected ? 'check_box' : 'check_box_outline_blank'}
               style={selected ? { color: '#ffeb3b', margin: '0 10px' } : { color: '#fff', margin: '0 10px' }}
-              onClick={() => this.checkboxClick(group)}
             />
           </IconButton>
         </ListItemIcon>

@@ -1,6 +1,6 @@
+import { Injector } from '@furystack/inject'
 import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
-import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
 import Popover from '@material-ui/core/Popover'
 import Typography from '@material-ui/core/Typography'
@@ -55,6 +55,45 @@ interface SearchDocumentsState {
   isOpen: boolean
   query?: string
 }
+
+const titleWidth = 2
+const contentWidth = 7
+const containerStyles: React.CSSProperties = {
+  padding: '1em',
+  display: 'flex',
+  flexDirection: 'column',
+  marginRight: '4em',
+}
+
+const rowStyles: React.CSSProperties = {
+  display: 'flex',
+  flexDirection: 'row',
+}
+
+const titleColumnStyles: React.CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  margin: '1em 0',
+  flexGrow: titleWidth,
+  width: 200,
+}
+
+const contentColumnStyles: React.CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  flexGrow: contentWidth,
+}
+
+const SearchRow: React.StatelessComponent<{ title: string }> = props => (
+  <div style={rowStyles}>
+    <Typography style={titleColumnStyles} variant="body1">
+      {props.title}
+    </Typography>
+    <div style={contentColumnStyles}>{props.children}</div>
+  </div>
+)
 
 class SearchDocuments extends React.Component<
   ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & { style?: React.CSSProperties },
@@ -150,19 +189,9 @@ class SearchDocuments extends React.Component<
   private elementRef: HTMLElement | null = null
   private searchBoxContainerRef: HTMLElement | null = null
 
-  // todo: DI?
-  private readonly repository: Repository = new Repository()
+  private readonly repository: Repository = Injector.Default.GetInstance(Repository)
 
   public render() {
-    const titleWidth = 2
-    const contentWidth = 7
-    const containerStyles: React.CSSProperties = {
-      padding: '1em',
-    }
-
-    const titleStyles: React.CSSProperties = {
-      margin: '1em 0',
-    }
     return (
       <AdvancedSearch
         schema={this.repository.schemas.getSchema(GenericContent)}
@@ -191,16 +220,14 @@ class SearchDocuments extends React.Component<
                         style: {
                           width: '100%',
                         },
-                        value: this.props.searchState.searchString,
+                        value: this.props.searchState.contains,
                         placeholder: resources.SEARCH_DOCUMENTS_PLACEHOLDER,
                         onChange: ev => {
                           const term = ev.currentTarget.value
-                          this.props.updateSearchValues({ searchString: term })
+                          this.props.updateSearchValues({ contains: term })
                           this.handleFieldQueryChanged(
-                            'searchString',
-                            new Query(q =>
-                              term ? q.equals('Name', `*${term}*`).or.equals('DisplayName', `*${term}*`) : q,
-                            ),
+                            'contains',
+                            new Query(q => (term ? q.equals('_Text', `*${term}*`) : q)),
                             term,
                             options.updateQuery,
                           )
@@ -229,13 +256,8 @@ class SearchDocuments extends React.Component<
                           overflow: 'hidden',
                         },
                       }}>
-                      <Grid container={true} spacing={24} style={containerStyles}>
-                        <Grid item={true} xs={titleWidth}>
-                          <Typography style={titleStyles} variant="body1">
-                            Type
-                          </Typography>
-                        </Grid>
-                        <Grid item={true} xs={contentWidth}>
+                      <div style={containerStyles}>
+                        <SearchRow title="Type">
                           <PresetField
                             fullWidth={true}
                             fieldName="Type"
@@ -264,18 +286,8 @@ class SearchDocuments extends React.Component<
                               this.handleFieldQueryChanged('type', query, name, options.updateQuery)
                             }
                           />
-                        </Grid>
-                        <Grid xs={3} style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start' }}>
-                          <IconButton onClick={this.handleClose}>
-                            <Icon iconName="close" />
-                          </IconButton>
-                        </Grid>
-                        <Grid item={true} xs={titleWidth}>
-                          <Typography style={titleStyles} variant="body1">
-                            Owner
-                          </Typography>
-                        </Grid>
-                        <Grid item={true} xs={contentWidth}>
+                        </SearchRow>
+                        <SearchRow title="Owner">
                           <TextField
                             fullWidth={true}
                             placeholder={resources.SEARCH_OWNER_PLACEHOLDER}
@@ -285,14 +297,8 @@ class SearchDocuments extends React.Component<
                             }
                             value={this.props.searchState.owner}
                           />
-                        </Grid>
-                        <Grid item={true} xs={3} />
-                        <Grid item={true} xs={titleWidth}>
-                          <Typography style={titleStyles} variant="body1">
-                            Shared with
-                          </Typography>
-                        </Grid>
-                        <Grid item={true} xs={contentWidth}>
+                        </SearchRow>
+                        <SearchRow title="Shared with">
                           <TextField
                             fullWidth={true}
                             placeholder={resources.SEARCH_SHAREDWITH_PLACEHOLDER}
@@ -302,16 +308,11 @@ class SearchDocuments extends React.Component<
                             }
                             value={this.props.searchState.sharedWith}
                           />
-                        </Grid>
-                      </Grid>
+                        </SearchRow>
+                      </div>
                       <Divider />
-                      <Grid container={true} spacing={24} style={containerStyles}>
-                        <Grid item={true} xs={titleWidth}>
-                          <Typography style={titleStyles} variant="body1">
-                            Item name
-                          </Typography>
-                        </Grid>
-                        <Grid item={true} xs={contentWidth}>
+                      <div style={containerStyles}>
+                        <SearchRow title="Item name">
                           <TextField
                             fullWidth={true}
                             placeholder={resources.SEARCH_ITEMNAME_PLACEHOLDER}
@@ -321,14 +322,8 @@ class SearchDocuments extends React.Component<
                             }
                             value={this.props.searchState.itemName}
                           />
-                        </Grid>
-                        <Grid item={true} xs={3} />
-                        <Grid item={true} xs={titleWidth}>
-                          <Typography style={titleStyles} variant="body1">
-                            Date modified
-                          </Typography>
-                        </Grid>
-                        <Grid item={true} xs={contentWidth}>
+                        </SearchRow>
+                        <SearchRow title="Date modified">
                           <PresetField
                             fullWidth={true}
                             fieldName="ModificationDate"
@@ -341,54 +336,64 @@ class SearchDocuments extends React.Component<
                                   a.term('CreationDate:>@@Yesterday@@').and.term('CreationDate:<@@Today@@'),
                                 ),
                               },
+                              {
+                                text: 'Last 7 days',
+                                value: new Query(a =>
+                                  a.term('CreationDate:>@@Today-7days@@').and.term('CreationDate:<@@Today@@'),
+                                ),
+                              },
+                              {
+                                text: 'Last 30 days',
+                                value: new Query(a =>
+                                  a.term('CreationDate:>@@Today-30days@@').and.term('CreationDate:<@@Today@@'),
+                                ),
+                              },
+                              {
+                                text: 'Last 90 days',
+                                value: new Query(a =>
+                                  a.term('CreationDate:>@@Today-90days@@').and.term('CreationDate:<@@Today@@'),
+                                ),
+                              },
+                              {
+                                text: 'Last 365 days',
+                                value: new Query(a =>
+                                  a.term('CreationDate:>@@Today-365days@@').and.term('CreationDate:<@@Today@@'),
+                                ),
+                              },
                             ]}
                             onQueryChange={(_key, query, name) =>
                               this.handleFieldQueryChanged('dateModified', query, name, options.updateQuery)
                             }
                             value={this.props.searchState.dateModified}
                           />
-                        </Grid>
-                        <Grid item={true} xs={3} />
-                        <Grid item={true} xs={titleWidth}>
-                          <Typography style={titleStyles} variant="body1">
-                            Contains
-                          </Typography>
-                        </Grid>
-                        <Grid item={true} xs={contentWidth}>
+                        </SearchRow>
+                        <SearchRow title={resources.SEARCH_CONTAINS_TITLE}>
                           <TextField
                             fullWidth={true}
+                            value={this.props.searchState.contains}
                             placeholder={resources.SEARCH_CONTAINS_PLACEHOLDER}
                             fieldName={'_Text'}
                             onQueryChange={(_key, query, plainValue) =>
                               this.handleFieldQueryChanged('contains', query, plainValue, options.updateQuery)
                             }
                           />
-                        </Grid>
-                        <Grid item={true} xs={3} />
-                        <Grid item={true} xs={titleWidth}>
-                          <Typography style={titleStyles} variant="body1">
-                            {resources.SEARCH_LOCATION_BUTTON_TITLE}
-                          </Typography>
-                        </Grid>
-                        <Grid item={true} xs={7}>
-                          <Button
-                            style={{ boxShadow: 'none' }}
-                            variant="contained"
-                            onClick={ev => this.handlePickLocation(ev, options)}>
-                            {this.props.selectedTypeRoot[0]
-                              ? this.props.selectedTypeRoot[0].DisplayName
-                              : resources.SEARCH_LOCATION_ANYWHERE}
-                          </Button>
-                        </Grid>
-                        <Grid
-                          item={true}
-                          xs={3}
-                          style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-start' }}>
-                          <Button style={{ boxShadow: 'none' }} type="submit" variant="contained">
-                            Search
-                          </Button>
-                        </Grid>
-                      </Grid>
+                        </SearchRow>
+                        <SearchRow title={resources.SEARCH_LOCATION_BUTTON_TITLE}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <Button
+                              style={{ boxShadow: 'none' }}
+                              variant="contained"
+                              onClick={ev => this.handlePickLocation(ev, options)}>
+                              {this.props.selectedTypeRoot[0]
+                                ? this.props.selectedTypeRoot[0].DisplayName
+                                : resources.SEARCH_LOCATION_ANYWHERE}
+                            </Button>
+                            <Button style={{ boxShadow: 'none' }} type="submit" variant="contained">
+                              Search
+                            </Button>
+                          </div>
+                        </SearchRow>
+                      </div>
                     </Popover>
                   </form>
                 )

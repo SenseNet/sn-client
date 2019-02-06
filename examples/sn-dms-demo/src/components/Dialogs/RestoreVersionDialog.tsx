@@ -92,7 +92,7 @@ class RestoreVersionDialog extends React.Component<
       <MediaQuery minDeviceWidth={700}>
         {matches => (
           <div>
-            <Typography variant="headline" gutterBottom={true}>
+            <Typography variant="h5" gutterBottom={true}>
               {resources.RESTORE_VERSION}
             </Typography>
             <div style={matches ? styles.inner : styles.innerMobile}>
@@ -109,7 +109,7 @@ class RestoreVersionDialog extends React.Component<
                     {resources.CANCEL}
                   </Button>
                 ) : null}
-                <Button onClick={() => this.submitCallback(id, version)} variant="raised" color="secondary">
+                <Button onClick={() => this.submitCallback(id, version)} variant="contained" color="secondary">
                   {resources.RESTORE}
                 </Button>
               </div>

@@ -1,4 +1,5 @@
 export { BypassAuthentication } from './Authentication/BypassAuthentication'
+export { FormsAuthenticationService } from './Authentication/FormsAuthenticationService'
 export { Repository } from './Repository/Repository'
 export { Upload } from './Repository/Upload'
 export { AuthenticationService } from './Authentication/AuthenticationService'

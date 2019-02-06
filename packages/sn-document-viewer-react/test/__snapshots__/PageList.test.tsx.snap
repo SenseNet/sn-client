@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PageList component should match snapshot with one page 1`] = `
+<WithStyles(Grid)
+  id="sn-document-viewer-pages"
+  item={true}
+  style={
+    Object {
+      "flexGrow": 1,
+      "flexShrink": 1,
+      "height": "100%",
+      "overflow": "auto",
+    }
+  }
+>
+  <div
+    style={
+      Object {
+        "alignItems": "center",
+        "display": "flex",
+        "flexDirection": "column",
+        "justifyContent": "center",
+        "paddingBottom": 0,
+        "paddingTop": 0,
+      }
+    }
+  >
+    <Connect(PageComponent)
+      elementNamePrefix="Page-"
+      fitRelativeZoomLevel={1}
+      image="preview"
+      imageIndex={1}
+      key="1"
+      margin={8}
+      onClick={[Function]}
+      showWidgets={true}
+      viewportHeight={110}
+      viewportWidth={110}
+      zoomLevel={1}
+      zoomMode="originalSize"
+    />
+  </div>
+</WithStyles(Grid)>
+`;

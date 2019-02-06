@@ -17,7 +17,7 @@ export class FetchError extends React.Component<FetchErrorProps, {}> {
     return (
       <div>
         <p>Could not fetch content. {this.props.message.toString()}</p>
-        <Button variant="raised" color="primary" onClick={this.props.onRetry}>
+        <Button variant="contained" color="primary" onClick={this.props.onRetry}>
           Retry
         </Button>
       </div>
