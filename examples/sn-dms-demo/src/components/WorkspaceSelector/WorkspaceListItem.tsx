@@ -116,13 +116,14 @@ class WorkspaceListItem extends React.Component<
         onMouseLeave={e => this.handleMouseLeave(e)}
         style={styles.listItem}>
         <ListItemIcon className={classes.icon}>
-          <IconButton className={followed ? classes.followedIconButton : classes.iconButton}>
+          <IconButton
+            className={followed ? classes.followedIconButton : classes.iconButton}
+            onClick={() => this.startButtonClick(workspace.Id)}>
             <Icon
               className={followed ? classes.followedIconButton : classes.iconButton}
               type={iconType.materialui}
               iconName="star"
               style={followed ? { color: '#ffeb3b', margin: '0 10px' } : { color: '#fff', margin: '0 10px' }}
-              onClick={() => this.startButtonClick(workspace.Id)}
             />
           </IconButton>
         </ListItemIcon>

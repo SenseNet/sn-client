@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`RotateDocument component Should render without crashing 1`] = `
+exports[`RotateActivePage component Should render without crashing 1`] = `
 <div
   style={
     Object {
@@ -9,31 +9,20 @@ exports[`RotateDocument component Should render without crashing 1`] = `
   }
 >
   <WithStyles(IconButton)
-    id="RotateLeft"
+    color="inherit"
+    id="RotateActiveLeft"
     onClick={[Function]}
-    style={
-      Object {
-        "border": "2px solid",
-        "borderRadius": "5px",
-      }
-    }
     title="rotateDocumentLeft"
   >
     <pure(RotateLeftIcon) />
   </WithStyles(IconButton)>
   <WithStyles(IconButton)
-    id="RotateRight"
+    color="inherit"
+    id="RotateActiveRight"
     onClick={[Function]}
     title="rotateDocumentRight"
   >
-    <pure(RotateRightIcon)
-      style={
-        Object {
-          "border": "2px solid",
-          "borderRadius": "5px",
-        }
-      }
-    />
+    <pure(RotateRightIcon) />
   </WithStyles(IconButton)>
 </div>
 `;

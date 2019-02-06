@@ -29,6 +29,7 @@ import UserInfo from './UsersAndGroups/UserInfo'
 const styles = {
   appBar: {
     background: '#fff',
+    boxShadow: 'none',
   },
   appBarMobile: {
     background: '#4cc9f2',

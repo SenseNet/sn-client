@@ -377,14 +377,14 @@ class ExampleAppLayout extends React.Component<
                       flexDirection: 'row-reverse',
                       marginTop: '1em',
                     }}>
-                    <Button type="submit" variant="raised" color="primary">
+                    <Button type="submit" variant="contained" color="primary">
                       {' '}
                       <Send /> &nbsp; Open{' '}
                     </Button>
                     &nbsp;
                     <Button
                       onClick={() => this.setState({ ...this.state, isHelpOpened: true })}
-                      variant="raised"
+                      variant="contained"
                       color="primary">
                       {' '}
                       <Help /> &nbsp; Help{' '}
@@ -429,7 +429,7 @@ class ExampleAppLayout extends React.Component<
                   <DialogActions>
                     <Button
                       onClick={() => this.setState({ ...this.state, isHelpOpened: false })}
-                      variant="raised"
+                      variant="contained"
                       color="primary">
                       {' '}
                       Close{' '}
