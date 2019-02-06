@@ -20,7 +20,7 @@ export const mapStateToProps = (state: RootReducerType) => {
   return {
     activePages: state.sensenetDocumentViewer.viewer.activePages,
     pageCount: state.sensenetDocumentViewer.documentState.document.pageCount,
-    fistPage: state.sensenetDocumentViewer.localization.firstPage,
+    firstPage: state.sensenetDocumentViewer.localization.firstPage,
     previousPage: state.sensenetDocumentViewer.localization.previousPage,
     gotoPage: state.sensenetDocumentViewer.localization.gotoPage,
     nextPage: state.sensenetDocumentViewer.localization.nextPage,
@@ -88,12 +88,20 @@ export class PagerComponent extends React.Component<
   public render() {
     return (
       <div style={{ display: 'inline-block' }}>
-        <IconButton disabled={this.state.currentPage <= 1} title={this.props.fistPage}>
-          <FirstPage onClick={() => this.gotoPage(1)} />
+        <IconButton
+          disabled={this.state.currentPage <= 1}
+          title={this.props.firstPage}
+          onClick={() => this.gotoPage(1)}
+          id="FirstPage">
+          <FirstPage />
         </IconButton>
 
-        <IconButton disabled={this.state.currentPage <= 1} title={this.props.previousPage}>
-          <NavigateBefore onClick={() => this.gotoPage(this.props.activePages[0] - 1)} />
+        <IconButton
+          disabled={this.state.currentPage <= 1}
+          title={this.props.previousPage}
+          onClick={() => this.gotoPage(this.props.activePages[0] - 1)}
+          id="NavigateBefore">
+          <NavigateBefore />
         </IconButton>
 
         <TextField
@@ -112,12 +120,18 @@ export class PagerComponent extends React.Component<
         <IconButton
           disabled={this.state.currentPage >= this.state.lastPage}
           title={this.props.nextPage}
-          color={'primary'}>
-          <NavigateNext onClick={() => this.gotoPage(this.props.activePages[0] + 1)} />
+          color={'primary'}
+          onClick={() => this.gotoPage(this.props.activePages[0] + 1)}
+          id="NavigateNext">
+          <NavigateNext />
         </IconButton>
 
-        <IconButton disabled={this.state.currentPage >= this.state.lastPage} title={this.props.lastPage}>
-          <LastPage onClick={() => this.gotoPage(this.state.lastPage)} />
+        <IconButton
+          disabled={this.state.currentPage >= this.state.lastPage}
+          title={this.props.lastPage}
+          onClick={() => this.gotoPage(this.state.lastPage)}
+          id="LastPage">
+          <LastPage />
         </IconButton>
       </div>
     )

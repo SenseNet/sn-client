@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Page component Should render without crashing 1`] = `
+<WithStyles(Paper)
+  elevation={8}
+  id="EL1"
+  style={
+    Object {
+      "margin": 8,
+    }
+  }
+>
+  <div
+    onClick={[Function]}
+    style={
+      Object {
+        "height": 752,
+        "overflow": "hidden",
+        "padding": 0,
+        "position": "relative",
+        "width": 560,
+      }
+    }
+  >
+    <div>
+      <Connect(ShapesComponent)
+        page={
+          Object {
+            "Attributes": Object {
+              "degree": 0,
+            },
+            "Height": 1024,
+            "Index": 1,
+            "PreviewImageUrl": "/",
+            "ThumbnailImageUrl": "/",
+            "Width": 768,
+          }
+        }
+        viewPort={
+          Object {
+            "height": 768,
+            "width": 576,
+          }
+        }
+        zoomRatio={0.75}
+      />
+    </div>
+    <span
+      style={
+        Object {
+          "display": "flex",
+          "justifyContent": "center",
+        }
+      }
+    >
+      <img
+        src="/?watermark=true"
+        style={
+          Object {
+            "height": "100%",
+            "transform": "translateY(0px) rotate(0deg)",
+            "transition": "transform .1s ease-in-out",
+            "width": "100%",
+          }
+        }
+      />
+    </span>
+  </div>
+</WithStyles(Paper)>
+`;

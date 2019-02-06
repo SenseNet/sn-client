@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RotateActivePage component Should render without crashing 1`] = `
+<div
+  style={
+    Object {
+      "display": "inline-block",
+    }
+  }
+>
+  <WithStyles(IconButton)
+    color="inherit"
+    id="RotateActiveLeft"
+    onClick={[Function]}
+    title="rotateDocumentLeft"
+  >
+    <pure(RotateLeftIcon) />
+  </WithStyles(IconButton)>
+  <WithStyles(IconButton)
+    color="inherit"
+    id="RotateActiveRight"
+    onClick={[Function]}
+    title="rotateDocumentRight"
+  >
+    <pure(RotateRightIcon) />
+  </WithStyles(IconButton)>
+</div>
+`;

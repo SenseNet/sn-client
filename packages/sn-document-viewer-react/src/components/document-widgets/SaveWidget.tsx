@@ -1,9 +1,9 @@
 import IconButton from '@material-ui/core/IconButton'
 import Save from '@material-ui/icons/Save'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { DocumentData, PreviewImageData } from '../../models'
-import { componentType } from '../../services'
+import { componentType } from '../../services/TypeHelpers'
 import { RootReducerType, saveChanges } from '../../store'
 
 /**
@@ -15,7 +15,6 @@ export const mapStateToProps = (state: RootReducerType) => {
     saveChanges: state.sensenetDocumentViewer.localization.saveChanges,
     document: state.sensenetDocumentViewer.documentState.document as DocumentData,
     pages: state.sensenetDocumentViewer.previewImages.AvailableImages as PreviewImageData[],
-    activePages: state.sensenetDocumentViewer.viewer.activePages,
     canEdit: state.sensenetDocumentViewer.documentState.canEdit,
     hasChanges:
       state.sensenetDocumentViewer.documentState.hasChanges || state.sensenetDocumentViewer.previewImages.hasChanges,
@@ -46,8 +45,12 @@ export class SaveDocumentComponent extends React.Component<
   public render() {
     return (
       <div style={{ display: 'inline-block' }}>
-        <IconButton disabled={!this.props.hasChanges || !this.props.canEdit} title={this.props.saveChanges}>
-          <Save onClick={() => this.save()} />
+        <IconButton
+          disabled={!this.props.hasChanges || !this.props.canEdit}
+          title={this.props.saveChanges}
+          onClick={() => this.save()}
+          id="Save">
+          <Save />
         </IconButton>
       </div>
     )

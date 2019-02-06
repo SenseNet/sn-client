@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RotatePage component Should render without crashing 1`] = `
+<div
+  style={
+    Object {
+      "filter": "drop-shadow(0 0 3px white) drop-shadow(0 0 5px white) drop-shadow(0 0 9px white)",
+      "position": "absolute",
+      "right": 0,
+      "top": 0,
+      "zIndex": 1,
+    }
+  }
+>
+  <WithStyles(IconButton)
+    title="rotatePageLeft"
+  >
+    <pure(RotateLeftIcon)
+      onClick={[Function]}
+    />
+  </WithStyles(IconButton)>
+  <WithStyles(IconButton)
+    title="rotatePageRight"
+  >
+    <pure(RotateRightIcon)
+      onClick={[Function]}
+    />
+  </WithStyles(IconButton)>
+</div>
+`;

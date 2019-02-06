@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Document Viewer component should render a loading component while loading 1`] = `
+<Connect(DocumentViewerLoadingComponent)
+  image="./assets/loader.gif"
+/>
+`;
+
+exports[`Document Viewer component should render an error component if there were docViewer or preview images error 1`] = `
+<Connect(DocumentViewerErrorComponent)
+  error="error"
+/>
+`;
+
+exports[`Document Viewer component should render an error component if there were docViewer or preview images error 2`] = `
+<Connect(DocumentViewerErrorComponent)
+  error="error"
+/>
+`;
+
+exports[`Document Viewer component should render an error component if there were errors while preview generation 1`] = `
+<Connect(DocumentViewerErrorComponent)
+  error=""
+/>
+`;
+
+exports[`Document Viewer component should render without crashing 1`] = `
+<Connect(DocumentViewerLayoutComponent)>
+  some children
+</Connect(DocumentViewerLayoutComponent)>
+`;

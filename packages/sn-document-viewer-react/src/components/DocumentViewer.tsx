@@ -1,5 +1,5 @@
 import { SlideProps } from '@material-ui/core/Slide'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { Action } from 'redux'
 import { InjectableAction } from 'redux-di-middleware'
@@ -59,7 +59,7 @@ type docViewerComponentType = componentType<typeof mapStateToProps, typeof mapDi
 /**
  * Main document viewer component
  */
-class DocumentViewer extends React.Component<docViewerComponentType> {
+export class DocumentViewerComponent extends React.Component<docViewerComponentType> {
   constructor(props: docViewerComponentType) {
     super(props)
 
@@ -106,6 +106,6 @@ class DocumentViewer extends React.Component<docViewerComponentType> {
 const connectedComponent = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(DocumentViewer)
+)(DocumentViewerComponent)
 
 export { connectedComponent as DocumentViewer }

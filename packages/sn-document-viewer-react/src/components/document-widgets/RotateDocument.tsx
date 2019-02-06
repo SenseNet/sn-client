@@ -1,10 +1,10 @@
 import IconButton from '@material-ui/core/IconButton'
 import RotateLeft from '@material-ui/icons/RotateLeft'
 import RotateRight from '@material-ui/icons/RotateRight'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { PreviewImageData } from '../../models'
-import { componentType } from '../../services'
+import { componentType } from '../../services/TypeHelpers'
 import { RootReducerType, rotateImages } from '../../store'
 
 /**
@@ -48,14 +48,15 @@ export class RotateDocumentComponent extends React.Component<
   public render() {
     return (
       <div style={{ display: 'inline-block' }}>
-        <IconButton title={this.props.rotateDocumentLeft}>
-          <RotateLeft onClick={() => this.rotateDocumentLeft()} style={{ border: '2px solid', borderRadius: '5px' }} />
+        <IconButton
+          title={this.props.rotateDocumentLeft}
+          onClick={() => this.rotateDocumentLeft()}
+          style={{ border: '2px solid', borderRadius: '5px' }}
+          id="RotateLeft">
+          <RotateLeft />
         </IconButton>
-        <IconButton title={this.props.rotateDocumentRight}>
-          <RotateRight
-            onClick={() => this.rotateDocumentRight()}
-            style={{ border: '2px solid', borderRadius: '5px' }}
-          />
+        <IconButton title={this.props.rotateDocumentRight} onClick={() => this.rotateDocumentRight()} id="RotateRight">
+          <RotateRight style={{ border: '2px solid', borderRadius: '5px' }} />
         </IconButton>
       </div>
     )

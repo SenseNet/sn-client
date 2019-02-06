@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RotateDocument component Should render without crashing 1`] = `
+<div
+  style={
+    Object {
+      "display": "inline-block",
+    }
+  }
+>
+  <WithStyles(IconButton)
+    id="RotateLeft"
+    onClick={[Function]}
+    style={
+      Object {
+        "border": "2px solid",
+        "borderRadius": "5px",
+      }
+    }
+    title="rotateDocumentLeft"
+  >
+    <pure(RotateLeftIcon) />
+  </WithStyles(IconButton)>
+  <WithStyles(IconButton)
+    id="RotateRight"
+    onClick={[Function]}
+    title="rotateDocumentRight"
+  >
+    <pure(RotateRightIcon)
+      style={
+        Object {
+          "border": "2px solid",
+          "borderRadius": "5px",
+        }
+      }
+    />
+  </WithStyles(IconButton)>
+</div>
+`;
