@@ -2,7 +2,8 @@ import { ODataCollectionResponse, ODataParams, Repository } from '@sensenet/clie
 import { ValueObserver } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { EventHub } from '@sensenet/repository-events'
-import { IInjectableActionCallbackParams } from 'redux-di-middleware'
+import { Action } from 'redux'
+import { InjectableAction } from 'redux-di-middleware'
 import { changedContent, debounceReloadOnProgress } from '../../Actions'
 import { rootStateType } from '../../store/rootReducer'
 import { DocumentLibraryState, loadChunkSize } from './reducers'
@@ -26,12 +27,15 @@ export const startLoadingChildren = (idOrPath: number | string) => ({
 export const finishLoadingChildren = () => ({
   type: 'DMS_DOCLIB_FINISH_LOADING_CHILDREN',
 })
-export const loadParent = <T extends GenericContent = GenericContent>(
+export const loadParent: <T extends GenericContent = GenericContent>(
+  idOrPath: string | number,
+  loadParentOptions?: ODataParams<T>,
+) => InjectableAction<rootStateType, Action> = <T extends GenericContent = GenericContent>(
   idOrPath: number | string,
   loadParentOptions?: ODataParams<T>,
 ) => ({
   type: 'DMS_DOCLIB_LOAD_PARENT',
-  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
+  inject: async options => {
     const prevState = options.getState().dms.documentLibrary
     if (prevState.parentIdOrPath === idOrPath) {
       return
@@ -117,9 +121,11 @@ export const loadParent = <T extends GenericContent = GenericContent>(
   },
 })
 
-export const loadMore = (count: number = loadChunkSize) => ({
+export const loadMore: (count?: number) => InjectableAction<rootStateType, Action> = (
+  count: number = loadChunkSize,
+) => ({
   type: 'DMS_DOCLIB_LOAD_MORE',
-  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
+  inject: async options => {
     const currentDocLibState = options.getState().dms.documentLibrary
 
     if (
@@ -152,7 +158,9 @@ export const loadMore = (count: number = loadChunkSize) => ({
   },
 })
 
-export const setParent = <T extends GenericContent = GenericContent>(content: T) => ({
+export const setParent: <T extends GenericContent = GenericContent>(content: T) => Action & { content: T } = <T>(
+  content: T,
+) => ({
   type: 'DMS_DOCLIB_SET_PARENT',
   content,
 })
@@ -162,7 +170,9 @@ export const setAncestors = <T extends GenericContent>(ancestors: T[]) => ({
   ancestors,
 })
 
-export const setItems = <T extends GenericContent = GenericContent>(items: ODataCollectionResponse<T>) => ({
+export const setItems: <T extends GenericContent = GenericContent>(
+  items: ODataCollectionResponse<T>,
+) => Action & { items: ODataCollectionResponse<T> } = <T>(items: ODataCollectionResponse<T>) => ({
   type: 'DMS_DOCLIB_SET_ITEMS',
   items,
 })
@@ -182,36 +192,37 @@ export const setActive = <T extends GenericContent>(active?: T) => ({
   active,
 })
 
-export const updateChildrenOptions = <T extends GenericContent>(odataOptions: ODataParams<T>) => ({
-  type: 'DMS_DOCLIB_UPDATE_CHILDREN_OPTIONS',
-  odataOptions,
-  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
-    const currentState = options.getState()
-    const parentPath = currentState.dms.documentLibrary.parent ? currentState.dms.documentLibrary.parent.Path : ''
-    const repository = options.getInjectable(Repository)
-    options.dispatch(
-      startLoadingChildren(
-        currentState.dms.documentLibrary.parentIdOrPath ? currentState.dms.documentLibrary.parentIdOrPath : '',
-      ),
-    )
-    try {
-      const items = await repository.loadCollection({
-        path: parentPath,
-        oDataOptions: {
-          ...options.getState().dms.documentLibrary.childrenOptions,
-          ...odataOptions,
-        },
-      })
-      options.dispatch(setItems(items))
-    } catch (error) {
-      options.dispatch(setError(error))
-    } finally {
-      options.dispatch(finishLoadingChildren())
-      options.dispatch(setChildrenOptions(odataOptions))
-    }
+export const updateChildrenOptions = <T extends GenericContent>(odataOptions: ODataParams<T>) =>
+  ({
+    type: 'DMS_DOCLIB_UPDATE_CHILDREN_OPTIONS',
+    inject: async options => {
+      const currentState = options.getState()
+      const parentPath = currentState.dms.documentLibrary.parent ? currentState.dms.documentLibrary.parent.Path : ''
+      const repository = options.getInjectable(Repository)
+      options.dispatch(
+        startLoadingChildren(
+          currentState.dms.documentLibrary.parentIdOrPath ? currentState.dms.documentLibrary.parentIdOrPath : '',
+        ),
+      )
+      try {
+        const items = await repository.loadCollection({
+          path: parentPath,
+          oDataOptions: {
+            ...options.getState().dms.documentLibrary.childrenOptions,
+            ...odataOptions,
+          },
+        })
+        options.dispatch(setItems(items))
+      } catch (error) {
+        options.dispatch(setError(error))
+      } finally {
+        options.dispatch(finishLoadingChildren())
+        options.dispatch(setChildrenOptions(odataOptions))
+      }
 
-  },
-})
+      /** */
+    },
+  } as InjectableAction<rootStateType, Action> & { odataOptions: ODataParams<GenericContent> })
 
 export const updateSearchValues = (value: Partial<DocumentLibraryState['searchState']>) => ({
   type: 'DMS_DOCLIB_UPDATE_SEARCH_STATE',

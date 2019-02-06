@@ -1,69 +1,76 @@
 import { Repository } from '@sensenet/client-core'
 import { Status, Task } from '@sensenet/default-content-types'
 import { Query } from '@sensenet/query'
-import { AnyAction } from 'redux'
+import { Action, AnyAction } from 'redux'
+import { InjectableAction } from 'redux-di-middleware'
 import { rootStateType } from '..'
 
-export const fetch = () => ({
-  type: 'FETCH_TASKS',
-  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
-    if (!options.getState().todoList.isFetching) {
-      options.dispatch(startFetching())
+export const fetch = () =>
+  ({
+    type: 'FETCH_TASKS',
+    inject: async options => {
+      /** */
+      if (!options.getState().todoList.isFetching) {
+        options.dispatch(startFetching())
+        try {
+          const todos = await options.getInjectable(Repository).loadCollection<Task>({
+            path: '/Root/Sites/Default_Site/tasks',
+            oDataOptions: {
+              query: new Query(q => q.typeIs(Task)).toString(),
+              select: ['Status', 'Name', 'DisplayName'],
+            },
+          })
+          options.dispatch(finishFetching(todos.d.results))
+        } catch (error) {
+          options.dispatch(fetchingError(error))
+        }
+        options.dispatch(updateFilter())
+      }
+    },
+  } as InjectableAction<rootStateType, Action>)
+
+export const updateTodo = (todo: Task) =>
+  ({
+    type: 'UPDATE_TODO',
+    inject: async options => {
+      /** */
       try {
-        const todos = await options.getInjectable(Repository).loadCollection<Task>({
-          path: '/Root/Sites/Default_Site/tasks',
+        const updated = await options.getInjectable(Repository).patch<Task>({
+          idOrPath: todo.Id,
+          content: todo,
           oDataOptions: {
-            query: new Query(q => q.typeIs(Task)).toString(),
             select: ['Status', 'Name', 'DisplayName'],
           },
         })
-        options.dispatch(finishFetching(todos.d.results))
+        options.dispatch(todoUpdated(updated.d))
       } catch (error) {
         options.dispatch(fetchingError(error))
       }
       options.dispatch(updateFilter())
-    }
-  },
-})
-
-export const updateTodo = (todo: Task) => ({
-  type: 'UPDATE_TODO',
-  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
-    try {
-      const updated = await options.getInjectable(Repository).patch<Task>({
-        idOrPath: todo.Id,
-        content: todo,
-        oDataOptions: {
-          select: ['Status', 'Name', 'DisplayName'],
-        },
-      })
-      options.dispatch(todoUpdated(updated.d))
-    } catch (error) {
-      options.dispatch(fetchingError(error))
-    }
-    options.dispatch(updateFilter())
-  },
-})
+    },
+  } as InjectableAction<rootStateType, Action>)
 
 export const todoUpdated = (todo: Task) => ({
   type: 'TODO_UPDATED',
   todo,
 })
 
-export const removeTodo = (todo: Task) => ({
-  type: 'UPDATE_TODO',
-  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
-    try {
-      const result = await options.getInjectable(Repository).delete({
-        idOrPath: todo.Id,
-      })
-      options.dispatch(todoRemoved(result.d.results[0]))
-    } catch (error) {
-      options.dispatch(fetchingError(error))
-    }
-    options.dispatch(updateFilter())
-  },
-})
+export const removeTodo = (todo: Task) =>
+  ({
+    type: 'UPDATE_TODO',
+    inject: async options => {
+      /** */
+      try {
+        const result = await options.getInjectable(Repository).delete({
+          idOrPath: todo.Id,
+        })
+        options.dispatch(todoRemoved(result.d.results[0]))
+      } catch (error) {
+        options.dispatch(fetchingError(error))
+      }
+      options.dispatch(updateFilter())
+    },
+  } as InjectableAction<rootStateType, Action>)
 
 export const todoRemoved = (todo: Task) => ({
   type: 'TODO_REMOVED',

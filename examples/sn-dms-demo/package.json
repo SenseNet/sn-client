@@ -71,7 +71,7 @@
     "react-responsive": "^6.0.1",
     "react-router-dom": "^4.3.1",
     "redux": "^4.0.1",
-    "redux-di-middleware": "^3.0.0",
+    "redux-di-middleware": "^2.0.2",
     "reflect-metadata": "^0.1.12",
     "ts-keycode-enum": "^1.0.6",
     "typeface-roboto": "^0.0.54",

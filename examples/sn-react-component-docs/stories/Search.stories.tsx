@@ -1,5 +1,4 @@
-import FormControl from '@material-ui/core/FormControl'
-import InputLabel from '@material-ui/core/InputLabel'
+import { FormControl, InputLabel } from '@material-ui/core'
 import { Repository } from '@sensenet/client-core'
 import { sleepAsync } from '@sensenet/client-utils'
 import { Folder, PortalSettings, User } from '@sensenet/default-content-types'

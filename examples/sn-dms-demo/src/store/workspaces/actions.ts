@@ -1,26 +1,28 @@
 import { Repository } from '@sensenet/client-core'
 import { User, Workspace } from '@sensenet/default-content-types'
-import { IInjectableActionCallbackParams } from 'redux-di-middleware'
+import { AnyAction } from 'redux'
+import { InjectableAction } from 'redux-di-middleware'
 import { rootStateType } from '../../store/rootReducer'
 
-export const getWorkspaces = () => ({
-  type: 'GET_WORKSPACES',
-  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
-    if (!options.getState().dms.workspaces.isLoading) {
-      options.dispatch(loadWorkspaces())
-      const repository = options.getInjectable(Repository)
-      const workspaces = await repository.loadCollection<Workspace>({
-        path: '/',
-        oDataOptions: {
-          query: 'TypeIs:Workspace -TypeIs:Site',
-          select: ['DisplayName', 'Id', 'Path'],
-          orderby: [['DisplayName', 'asc']],
-        },
-      })
-      options.dispatch(setWorkspaces(workspaces.d.results))
-    }
-  },
-})
+export const getWorkspaces = () =>
+  ({
+    type: 'GET_WORKSPACES',
+    inject: async options => {
+      if (!options.getState().dms.workspaces.isLoading) {
+        options.dispatch(loadWorkspaces())
+        const repository = options.getInjectable(Repository)
+        const workspaces = await repository.loadCollection<Workspace>({
+          path: '/',
+          oDataOptions: {
+            query: 'TypeIs:Workspace -TypeIs:Site',
+            select: ['DisplayName', 'Id', 'Path'],
+            orderby: [['DisplayName', 'asc']],
+          },
+        })
+        options.dispatch(setWorkspaces(workspaces.d.results))
+      }
+    },
+  } as InjectableAction<rootStateType, AnyAction>)
 
 export const loadWorkspaces = () => ({
   type: 'LOAD_WORKSPACES',
@@ -31,25 +33,26 @@ export const setWorkspaces = (workspaces: Workspace[]) => ({
   workspaces,
 })
 
-export const loadFavoriteWorkspaces = (userName: string) => ({
-  type: 'LOAD_FAVORITE_WORKSPACES',
-  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
-    if (
-      options.getState().dms.workspaces.favorites === null ||
-      options.getState().dms.workspaces.favorites.length === 0
-    ) {
-      const repository = options.getInjectable(Repository)
-      const favorites = await repository.load<User>({
-        idOrPath: `/Root/IMS/Public/${userName}`,
-        oDataOptions: {
-          select: 'FollowedWorkspaces',
-          expand: 'FollowedWorkspaces',
-        },
-      })
-      options.dispatch(setFavoriteWorkspaces(favorites.d.FollowedWorkspaces as Workspace[]))
-    }
-  },
-})
+export const loadFavoriteWorkspaces = (userName: string) =>
+  ({
+    type: 'LOAD_FAVORITE_WORKSPACES',
+    inject: async options => {
+      if (
+        options.getState().dms.workspaces.favorites === null ||
+        options.getState().dms.workspaces.favorites.length === 0
+      ) {
+        const repository = options.getInjectable(Repository)
+        const favorites = await repository.load<User>({
+          idOrPath: `/Root/IMS/Public/${userName}`,
+          oDataOptions: {
+            select: 'FollowedWorkspaces',
+            expand: 'FollowedWorkspaces',
+          },
+        })
+        options.dispatch(setFavoriteWorkspaces(favorites.d.FollowedWorkspaces as Workspace[]))
+      }
+    },
+  } as InjectableAction<rootStateType, AnyAction>)
 
 export const setFavoriteWorkspaces = (workspaces: Workspace[]) => ({
   type: 'SET_FAVORITE_WORKSPACES',

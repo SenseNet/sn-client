@@ -1,5 +1,5 @@
-import { Reducer } from 'redux'
-import { IInjectableActionCallbackParams } from 'redux-di-middleware'
+import { Action, Reducer } from 'redux'
+import { InjectableAction } from 'redux-di-middleware'
 import { PreviewState } from '../Enums'
 import { DocumentData, DocumentViewerSettings, PreviewImageData, Shape, Shapes } from '../models'
 import { Dimensions, ImageUtil } from '../services'
@@ -35,9 +35,17 @@ export const resetDocumentData = () => ({
  * @param idOrPath Id or full path for the document, e.g.: 'Root/Sites/MySite/MyDocLib/('doc.docx')
  * @param version The document version
  */
-export const pollDocumentData = (hostName: string, idOrPath: string | number, version: string = 'V1.0A') => ({
+export const pollDocumentData: (
+  hostName: string,
+  idOrPath: string | number,
+  version?: string,
+) => InjectableAction<RootReducerType, Action> = (
+  hostName: string,
+  idOrPath: string | number,
+  version: string = 'V1.0A',
+) => ({
   type: 'SN_POLL_DOCUMENT_DATA_INJECTABLE_ACTION',
-  inject: async (options: IInjectableActionCallbackParams<RootReducerType>) => {
+  inject: async options => {
     const api = options.getInjectable(DocumentViewerSettings)
     options.dispatch(resetDocumentData())
     let docData: DocumentData | undefined
@@ -176,9 +184,9 @@ export const rotateShapesForPages = (pages: Array<{ index: number; size: Dimensi
 /**
  * Thunk action to call the Save endpoint with the current document state to save changes
  */
-export const saveChanges = () => ({
+export const saveChanges: () => InjectableAction<RootReducerType, Action> = () => ({
   type: 'SN_DOCVIEWER_SAVE_CHANGES_INJECTABLE_ACTION',
-  inject: async (options: IInjectableActionCallbackParams<RootReducerType>) => {
+  inject: async options => {
     const api = options.getInjectable(DocumentViewerSettings)
     options.dispatch(saveChangesRequest())
     try {

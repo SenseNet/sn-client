@@ -1,7 +1,7 @@
 import { Repository } from '@sensenet/client-core'
 import { isExtendedError } from '@sensenet/client-core/dist/Repository/Repository'
 import { EventHub } from '@sensenet/repository-events'
-import { IInjectableActionCallbackParams } from 'redux-di-middleware'
+import { InjectableAction } from 'redux-di-middleware'
 import { resources } from '../../assets/resources'
 import { rootStateType } from '../../store/rootReducer'
 
@@ -34,9 +34,9 @@ export const readLogEntries = (entries: LogEntry[]) => ({
   entries,
 })
 
-export const initLog = () => ({
+export const initLog: () => InjectableAction<rootStateType, ReturnType<typeof addLogEntry>> = () => ({
   type: 'SN_DMS_INIT_LOG',
-  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
+  inject: async options => {
     const repository = options.getInjectable(Repository)
     const eventHub = new EventHub(repository)
     eventHub.onContentCreated.subscribe(ev => {

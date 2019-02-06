@@ -1,5 +1,4 @@
-import ListItemText from '@material-ui/core/ListItemText'
-import MenuItem from '@material-ui/core/MenuItem'
+import { ListItemText, MenuItem } from '@material-ui/core'
 import Select, { SelectProps } from '@material-ui/core/Select'
 import { FieldSetting, GenericContent } from '@sensenet/default-content-types'
 import { Query } from '@sensenet/query'

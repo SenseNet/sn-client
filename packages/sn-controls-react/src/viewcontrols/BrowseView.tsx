@@ -1,9 +1,9 @@
 /**
  * @module ViewControls
  *
- */
+ */ /** */
+import { Typography } from '@material-ui/core'
 import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
 import { Repository } from '@sensenet/client-core'
 import { ControlSchema } from '@sensenet/control-mapper'
 import { GenericContent } from '@sensenet/default-content-types'

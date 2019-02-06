@@ -1,7 +1,7 @@
+import { Select } from '@material-ui/core'
 import { Query } from '@sensenet/query'
 import { shallow } from 'enzyme'
 
-import Select from '@material-ui/core/Select'
 import * as React from 'react'
 import { PresetField } from '../src/Components/Fields/PresetField'
 
@@ -45,7 +45,7 @@ describe('Preset Fields', () => {
       />,
     )
     const select = instance.find(Select)
-    select.props().onChange({ target: { value: 'value1' } } as any, undefined)
+    select.props().onChange({ target: { value: 'value1' } })
     expect(select)
   })
 
@@ -60,7 +60,7 @@ describe('Preset Fields', () => {
       />,
     )
     const select = instance.find(Select)
-    select.props().onChange({ target: { value: 'value2' } } as any, undefined)
+    select.props().onChange({ target: { value: 'value2' } })
 
     setTimeout(() => {
       done()

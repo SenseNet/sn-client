@@ -12051,10 +12051,10 @@ redent@^2.0.0:
     indent-string "^3.0.0"
     strip-indent "^2.0.0"
 
-redux-di-middleware@3.0.0, redux-di-middleware@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/redux-di-middleware/-/redux-di-middleware-3.0.0.tgz#66485cf46ab7bffd67f070d705da9db220832876"
-  integrity sha512-U5EEdlMbBscj19LVlQnH60bLGsb6YLv9uxlOwi6JJqqjfno1nsPnMorE/FyKn+q0WTL4ABN3ozSr0hJtQBCbKA==
+redux-di-middleware@^2.0.2:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/redux-di-middleware/-/redux-di-middleware-2.0.3.tgz#2ae9dd3fbaadce8e97f248595b9089cc56f55661"
+  integrity sha512-MQnhTcE67bQXABVdaWHvenUeq63J2PvFmRhz23uKfOVjZugMiGwixVOUkZzcnOkfpfy7WeBqo54CvKZqUmZeiA==
   dependencies:
     "@furystack/inject" "^1.0.9"
     redux "^4.0.1"
@@ -13840,10 +13840,10 @@ typeface-roboto@^0.0.54:
   resolved "https://registry.yarnpkg.com/typeface-roboto/-/typeface-roboto-0.0.54.tgz#8f02c9a18d1cfa7f49381a6ff0d21ff061f38ad2"
   integrity sha512-sOFA1FXgP0gOgBYlS6irwq6hHYA370KE3dPlgYEJHL3PJd5X8gQE0RmL79ONif6fL5JZuGDj+rtOrFeOqz5IZQ==
 
-typescript@3.3.1:
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.3.1.tgz#6de14e1db4b8a006ac535e482c8ba018c55f750b"
-  integrity sha512-cTmIDFW7O0IHbn1DPYjkiebHxwtCMU+eTy30ZtJNBPF9j2O1ITu5XH2YnBeVRKWHqF+3JQwWJv0Q0aUgX8W7IA==
+typescript@3.2.4:
+  version "3.2.4"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.2.4.tgz#c585cb952912263d915b462726ce244ba510ef3d"
+  integrity sha512-0RNDbSdEokBeEAkgNbxJ+BLwSManFy9TeXz8uW+48j/xhEXv1ePME60olyzw2XzUqUBNAYFeJadIqAgNqIACwg==
 
 ua-parser-js@^0.7.18:
   version "0.7.19"

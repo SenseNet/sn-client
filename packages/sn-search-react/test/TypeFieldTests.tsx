@@ -1,8 +1,8 @@
+import { Select } from '@material-ui/core'
 import { SchemaStore } from '@sensenet/client-core/dist/Schemas/SchemaStore'
 import { SchemaStore as defaultSchemas, Task, User } from '@sensenet/default-content-types'
 import { shallow } from 'enzyme'
 
-import Select from '@material-ui/core/Select'
 import * as React from 'react'
 import { TypeField } from '../src/Components/Fields/TypeField'
 
@@ -48,7 +48,7 @@ describe('TypeField component', () => {
       />,
     )
     const select = instance.find(Select)
-    select.props().onChange({ target: { value: 'User' } } as any, null)
+    select.props().onChange({ target: { value: 'User' } })
   })
 
   it('Selecting multiple values should update the query', done => {
@@ -63,6 +63,6 @@ describe('TypeField component', () => {
       />,
     )
     const select = instance.find(Select)
-    select.props().onChange({ target: { value: ['User', 'Task'] } } as any, undefined)
+    select.props().onChange({ target: { value: ['User', 'Task'] } })
   })
 })

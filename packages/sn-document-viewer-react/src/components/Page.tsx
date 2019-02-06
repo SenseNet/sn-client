@@ -5,6 +5,9 @@ import { connect } from 'react-redux'
 import { DocumentData, PreviewImageData } from '../models'
 import { componentType, ImageUtil } from '../services'
 import { previewAvailable, RootReducerType, ZoomMode } from '../store'
+
+import { Action } from 'redux'
+import { InjectableAction } from 'redux-di-middleware'
 import { ShapesWidget } from './page-widgets'
 
 /**
@@ -28,7 +31,11 @@ const mapStateToProps = (state: RootReducerType, ownProps: { imageIndex: number 
  * @param state the redux state
  */
 const mapDispatchToProps = {
-  previewAvailable,
+  previewAvailable: previewAvailable as (
+    documentData: DocumentData,
+    version?: string,
+    page?: number,
+  ) => InjectableAction<RootReducerType, Action>,
 }
 
 /**

@@ -1,8 +1,8 @@
-import Checkbox from '@material-ui/core/Checkbox'
+import { Checkbox, TableSortLabel } from '@material-ui/core'
 import TableRow from '@material-ui/core/TableRow'
-import TableSortLabel from '@material-ui/core/TableSortLabel'
 import { GenericContent, SchemaStore } from '@sensenet/default-content-types'
 import { mount, shallow } from 'enzyme'
+
 import * as React from 'react'
 import { ActionsCell, DateCell, ReferenceCell } from '../src/ContentList/CellTemplates'
 import { ContentList } from '../src/ContentList/ContentList'
