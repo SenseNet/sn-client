@@ -1,21 +1,20 @@
 import { storiesOf } from '@storybook/react'
 import React from 'react'
 
-import { ODataParams, Repository } from '@sensenet/client-core'
-import { GenericContent, SchemaStore } from '@sensenet/default-content-types'
+import { ODataCollectionResponse, ODataParams, Repository } from '@sensenet/client-core'
+import { Folder, GenericContent, SchemaStore } from '@sensenet/default-content-types'
 import { ListPickerComponent } from '@sensenet/pickers-react/src/ListPicker'
+import { action } from '@storybook/addon-actions'
 
 export const testRepository = new Repository({
   repositoryUrl: 'https://dmsservice.demo.sensenet.com',
-  requiredSelect: ['Id', 'Path', 'Name', 'Type', 'ParentId', 'DisplayName'] as any,
+  requiredSelect: ['Id', 'Path', 'Name', 'Type', 'ParentId', 'DisplayName'],
   schemas: SchemaStore,
   sessionLifetime: 'expiration',
 })
 
-const pickerItemOptions: ODataParams<any> = {
-  select: ['DisplayName', 'Path', 'Id', 'Children/DisplayName'],
-  expand: ['Children'],
-  // tslint:disable-next-line:quotemark
+const pickerItemOptions: ODataParams<Folder> = {
+  select: ['DisplayName', 'Path', 'Id'],
   filter: "(isOf('Folder') and not isOf('SystemFolder'))",
   metadata: 'no',
   orderby: 'DisplayName',
@@ -27,11 +26,22 @@ const pickerParentOptions: ODataParams<GenericContent> = {
   metadata: 'no',
 }
 
+let isAccessDenied = false
+
 const loadItems = async (path: string) => {
-  const result = await testRepository.loadCollection<GenericContent>({
-    path,
-    oDataOptions: { ...(pickerItemOptions as any) },
-  })
+  let result: ODataCollectionResponse<Folder>
+  isAccessDenied = false
+
+  try {
+    result = await testRepository.loadCollection<Folder>({
+      path,
+      oDataOptions: { ...pickerItemOptions },
+    })
+  } catch (error) {
+    isAccessDenied = error.message === 'Access denied.'
+    throw error
+  }
+
   return result.d.results.map(content => {
     return { nodeData: content }
   })
@@ -46,5 +56,18 @@ const loadParent = async (idOrPath: number | string) => {
 }
 
 storiesOf('ListPicker', module).add('default', () => (
-  <ListPickerComponent loadParent={loadParent} loadItems={loadItems} />
+  <>
+    <p style={!isAccessDenied ? { display: 'none' } : {}}>
+      You need to <strong>login</strong> to{' '}
+      <a href="https://dmsservice.demo.sensenet.com" target="_blank">
+        https://dmsservice.demo.sensenet.com
+      </a>{' '}
+      to see this component working!
+    </p>
+    <ListPickerComponent
+      loadParent={loadParent}
+      loadItems={loadItems}
+      onSelectionChanged={action('SelectionChanged')}
+    />
+  </>
 ))

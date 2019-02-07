@@ -60,10 +60,10 @@ export interface ItemProps<T extends { Id: string | number }> extends Item<T> {
  */
 export function ItemComponent<T extends { Id: string | number }>(props: ItemProps<T>) {
   const renderItem = props.renderItem || defaultRender
-  const onClick = (event: React.MouseEvent<Element, MouseEvent>) => {
+  const onClick = (event: React.MouseEvent) => {
     props.onClickHandler && props.onClickHandler(props, event)
   }
-  const onDoubleClick = (event: React.MouseEvent<Element, MouseEvent>) => {
+  const onDoubleClick = (event: React.MouseEvent) => {
     props.onDoubleClickHandler && props.onDoubleClickHandler(props, event)
   }
 

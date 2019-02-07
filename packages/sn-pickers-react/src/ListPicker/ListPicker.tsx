@@ -17,6 +17,20 @@ import { ItemList } from './ItemsList'
 export interface ListPickerProps<T extends { Id: string | number }> {
   loadItems: (path: string) => Promise<Array<Item<T>>>
   loadParent: (id?: number) => Promise<Item<T>>
+  onSelectionChanged?: (node: T) => void
+  /**
+   * Render a loading component when loadItems called.
+   * @default null
+   * @memberof ListPickerProps
+   */
+  renderLoading?: () => JSX.Element
+
+  /**
+   * Render an error component when error happened in loadItems call.
+   * @default null
+   * @memberof ListPickerProps
+   */
+  renderError?: (message: string) => JSX.Element
 }
 
 /**
@@ -32,33 +46,21 @@ export function ListPickerComponent<T extends GenericContent>(props: ListPickerP
 
   const onClickHandler = (node: Item<T>, event: React.MouseEvent) => {
     event.preventDefault()
+    props.onSelectionChanged && props.onSelectionChanged(node.nodeData)
     setSelectedId(node.nodeData.Id)
   }
 
   const onDoubleClickHandler = (node: Item<T>, event: React.MouseEvent) => {
     event.preventDefault()
-    if (parent.value && parent.value.nodeData.Id === node.nodeData.Id) {
-      const parentData = parent.value.nodeData
-      if ((parentData.Workspace as Workspace).Id === parentData.Id) {
-        setParentId(undefined)
-      } else {
-        setParentId(parent.value!.nodeData.ParentId)
-      }
-    } else {
-      setParentId(node.nodeData.ParentId)
-    }
-    // User clicked parent
+    setParentIdOnDoubleClick(node.nodeData)
+
+    // Navigation to parent
     if (parent.value && node.nodeData.Id === parentId) {
       setCurrentPath(parent.value.nodeData.Path)
     } else {
       setCurrentPath(node.nodeData.Path)
     }
   }
-
-  // const getSelectedItem = () => {
-  //   const selectedItem = items.find(item => item.id === selectedId)
-  //   return selectedItem ? selectedItem.name : 'Not found'
-  // }
 
   const renderItem = (renderItemProps: ItemProps<T>) => (
     <ListItem button={true} selected={renderItemProps.nodeData.Id === selectedId}>
@@ -69,21 +71,38 @@ export function ListPickerComponent<T extends GenericContent>(props: ListPickerP
     </ListItem>
   )
 
+  if (loading) {
+    return props.renderLoading ? props.renderLoading() : null
+  }
+
+  if (error) {
+    return props.renderError ? props.renderError(error.message) : <div>{error.message}</div>
+  }
+
   return (
     <List>
-      {loading ? null : error ? (
-        <div>{error.message}</div>
-      ) : (
-        <>
-          <ItemList
-            items={items!}
-            parentNode={parent.value}
-            onNodeClickHandler={onClickHandler}
-            onNodeDoubleClickHandler={onDoubleClickHandler}
-            renderItem={renderItem}
-          />
-        </>
-      )}
+      <ItemList
+        items={items!}
+        parentNode={parent.value}
+        onNodeClickHandler={onClickHandler}
+        onNodeDoubleClickHandler={onDoubleClickHandler}
+        renderItem={renderItem}
+      />
     </List>
   )
+
+  function setParentIdOnDoubleClick(node: T) {
+    // If parent value is set and clicked, set parent id to parent's parent id otherwise set it
+    // to clicked item's parent id
+    if (parent.value && parent.value.nodeData.Id === node.Id) {
+      const parentData = parent.value.nodeData
+      if ((parentData.Workspace as Workspace).Id === parentData.Id) {
+        setParentId(undefined)
+      } else {
+        setParentId(parent.value!.nodeData.ParentId)
+      }
+    } else {
+      setParentId(node.ParentId)
+    }
+  }
 }
