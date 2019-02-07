@@ -5,7 +5,7 @@ import { EventHub } from '@sensenet/repository-events'
 import { Action, AnyAction } from 'redux'
 import { InjectableAction } from 'redux-di-middleware'
 import { changedContent } from '../../Actions'
-import { arrayComparer } from '../../assets/helpers'
+import { arrayComparer, arrayDiff } from '../../assets/helpers'
 import { rootStateType } from '../../store/rootReducer'
 
 const eventObservables: Array<ValueObserver<any>> = []
@@ -250,7 +250,7 @@ export const getGroups = (memberships: ODataCollectionResponse<Group>) =>
             expand: ['Actions'] as any,
           },
         })
-        const comparedList: Group[] = arrayComparer(groups.d.results, memberships.d.results)
+        const comparedList: Group[] = arrayDiff(groups.d.results, memberships.d.results)
         const newGroups = {
           d: {
             __count: comparedList.length,

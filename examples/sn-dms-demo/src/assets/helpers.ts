@@ -1,3 +1,5 @@
+import { Group } from '@sensenet/default-content-types'
+
 export const getContentTypeFromUrl = (urlString: string) => {
   const urlTemp = urlString.split('ContentTypeName=')[1]
   const type = urlTemp.indexOf('&') > -1 ? urlTemp.split('&')[0] : urlTemp
@@ -46,3 +48,6 @@ export const arrayComparer = (array1: any[], array2: any[]) =>
 
 const uniqueResultOne = (array1: any[], array2: any[]) => array1.filter(obj => !array2.some(obj2 => obj.Id === obj2.Id))
 const uniqueResultTwo = (array1: any[], array2: any[]) => array2.filter(obj => !array1.some(obj2 => obj.Id === obj2.Id))
+
+export const arrayDiff = (a1: Group[], a2: Group[]) =>
+  a1.filter(item1 => !a2.some(item2 => item2.Id === item1.Id && item2.Name === item1.Name))
