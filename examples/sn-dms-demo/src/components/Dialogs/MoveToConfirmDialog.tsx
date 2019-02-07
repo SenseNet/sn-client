@@ -97,7 +97,7 @@ class MoveToConfirmDialog extends React.Component<ReturnType<typeof mapStateToPr
                     {resources.CANCEL}
                   </Button>
                 ) : null}
-                <Button onClick={() => this.submitCallback()} variant="raised" color="secondary">
+                <Button onClick={() => this.submitCallback()} variant="contained" color="secondary">
                   {resources.MOVE}
                 </Button>
               </div>

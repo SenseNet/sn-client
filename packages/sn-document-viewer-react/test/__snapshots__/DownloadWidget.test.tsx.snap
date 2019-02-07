@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DownloadWidget component Should render without crashing 1`] = `
+<div
+  style={
+    Object {
+      "display": "inline-block",
+    }
+  }
+>
+  <WithStyles(IconButton)
+    color="inherit"
+    id="CloudDownload"
+    onClick={[Function]}
+    title=""
+  >
+    <pure(CloudDownloadIcon) />
+  </WithStyles(IconButton)>
+</div>
+`;

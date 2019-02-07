@@ -66,7 +66,7 @@ export class ControlMapper<TControlBaseType, TClientControlSettings> {
 
   private fieldSettingDefaults: Map<
     string,
-    ((fieldSetting: FieldSetting) => new (...args: any[]) => TControlBaseType)
+    (fieldSetting: FieldSetting) => new (...args: any[]) => TControlBaseType
   > = new Map()
 
   /**
@@ -101,7 +101,7 @@ export class ControlMapper<TControlBaseType, TClientControlSettings> {
 
   private contentTypeBoundfieldSettings: Map<
     string,
-    ((fieldSetting: FieldSetting) => new (...args: any[]) => TControlBaseType)
+    (fieldSetting: FieldSetting) => new (...args: any[]) => TControlBaseType
   > = new Map()
 
   /**
@@ -149,7 +149,7 @@ export class ControlMapper<TControlBaseType, TClientControlSettings> {
 
   private fieldSettingBoundClientSettingFactories: Map<
     string,
-    ((setting: FieldSetting) => TClientControlSettings)
+    (setting: FieldSetting) => TClientControlSettings
   > = new Map()
 
   /**

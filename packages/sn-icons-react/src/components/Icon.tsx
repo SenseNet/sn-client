@@ -118,7 +118,10 @@ export class Icon extends React.Component<IconProps, {}> {
         )
       case iconType.image:
         return (
-          <ImageIcon iconName={iconName} size={size} style={style}
+          <ImageIcon
+            iconName={iconName}
+            size={size}
+            style={style}
             onClick={onClick ? (e: React.MouseEvent<HTMLElement>) => onClick(e) : undefined}>
             {this.props.children ? this.props.children : null}
           </ImageIcon>

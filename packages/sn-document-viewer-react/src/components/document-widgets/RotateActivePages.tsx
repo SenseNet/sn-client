@@ -49,11 +49,19 @@ export class RotateActivePagesComponent extends React.Component<
   public render() {
     return (
       <div style={{ display: 'inline-block' }}>
-        <IconButton color="inherit" title={this.props.rotateDocumentLeft}>
-          <RotateLeft onClick={() => this.rotateDocumentLeft()} />
+        <IconButton
+          color="inherit"
+          title={this.props.rotateDocumentLeft}
+          onClick={() => this.rotateDocumentLeft()}
+          id="RotateActiveLeft">
+          <RotateLeft />
         </IconButton>
-        <IconButton color="inherit" title={this.props.rotateDocumentRight}>
-          <RotateRight onClick={() => this.rotateDocumentRight()} />
+        <IconButton
+          color="inherit"
+          title={this.props.rotateDocumentRight}
+          onClick={() => this.rotateDocumentRight()}
+          id="RotateActiveRight">
+          <RotateRight />
         </IconButton>
       </div>
     )
