@@ -91,8 +91,11 @@ class GroupListItem extends React.Component<
   constructor(props: GroupListItem['props']) {
     super(props)
   }
-  public checkboxClick = (group: Group | null) => {
-    this.props.selectGroup(group ? [...this.props.groups, group] : [...this.props.groups])
+  public checkboxClick = (group: Group) => {
+    const index = this.props.groups.findIndex(g => g.Id === group.Id)
+    index === -1
+      ? this.props.selectGroup([...this.props.groups, group])
+      : this.props.selectGroup([...this.props.groups.slice(0, index), ...this.props.groups.slice(index + 1)])
     this.setState({
       selected: !this.state.selected,
     })
@@ -105,7 +108,7 @@ class GroupListItem extends React.Component<
         <ListItemIcon className={classes.icon}>
           <IconButton
             className={selected ? classes.followedIconButton : classes.iconButton}
-            onClick={() => this.checkboxClick(group)}>
+            onClick={() => this.checkboxClick(group as Group)}>
             <Icon
               className={selected ? classes.followedIconButton : classes.iconButton}
               type={iconType.materialui}
