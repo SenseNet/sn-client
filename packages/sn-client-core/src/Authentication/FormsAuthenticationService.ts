@@ -123,11 +123,9 @@ export class FormsAuthenticationService implements AuthenticationService {
         body: {},
       })
     } catch (error) {
-      //
-      if (isExtendedError(error)) {
-        if (!error.response.ok) {
-          throw error
-        }
+      // ignore json parsing errors from empty response
+      if (!isExtendedError(error) || !error.response.ok) {
+        throw error
       }
     }
     this.currentUser.setValue(ConstantContent.VISITOR_USER)
