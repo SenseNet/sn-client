@@ -1,3 +1,4 @@
+import { Tooltip } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -117,11 +118,13 @@ class GroupListItem extends React.Component<
             />
           </IconButton>
         </ListItemIcon>
-        <ListItemText
-          classes={{ primary: classes.primary, root: classes.listItemRoot, secondary: classes.secondary }}
-          primary={group ? group.DisplayName : ''}
-          secondary={this.shortenPath(group ? group.Path : '')}
-        />
+        <Tooltip title={group ? group.DisplayName : ''} aria-label={group ? group.DisplayName : ''} placement="left">
+          <ListItemText
+            classes={{ primary: classes.primary, root: classes.listItemRoot, secondary: classes.secondary }}
+            primary={group ? group.DisplayName : ''}
+            secondary={this.shortenPath(group ? group.Path : '')}
+          />
+        </Tooltip>
       </MenuItem>
     )
   }
