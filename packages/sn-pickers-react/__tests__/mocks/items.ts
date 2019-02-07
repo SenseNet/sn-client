@@ -3,30 +3,31 @@ import { Item } from '../../src/ListPicker/Item'
 
 export interface MockData {
   text: string
+  Id: string | number
 }
 
 export const items: Array<Item<MockData>> = [
   {
-    id: 1,
     nodeData: {
+      Id: 1,
       text: 'Csiga',
     },
   },
   {
-    id: 2,
     nodeData: {
+      Id: 2,
       text: 'Biga',
     },
   },
   {
-    id: 3,
     nodeData: {
+      Id: 3,
       text: 'Sapka',
     },
   },
   {
-    id: 4,
     nodeData: {
+      Id: 4,
       text: 'Kabát',
     },
   },
@@ -34,7 +35,6 @@ export const items: Array<Item<MockData>> = [
 
 export const genericContentItems: Array<Item<GenericContent>> = [
   {
-    id: 1,
     nodeData: {
       Id: 1,
       Type: 'Folder',
@@ -43,7 +43,6 @@ export const genericContentItems: Array<Item<GenericContent>> = [
     },
   },
   {
-    id: 2,
     nodeData: {
       Id: 2,
       Type: 'Folder',
@@ -52,7 +51,6 @@ export const genericContentItems: Array<Item<GenericContent>> = [
     },
   },
   {
-    id: 3,
     nodeData: {
       Id: 3,
       Type: 'Folder',
@@ -61,7 +59,6 @@ export const genericContentItems: Array<Item<GenericContent>> = [
     },
   },
   {
-    id: 4,
     nodeData: {
       Id: 4,
       Type: 'Folder',

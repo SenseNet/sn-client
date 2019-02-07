@@ -7,7 +7,7 @@ import { genericContentItems } from './mocks/items'
 describe('List picker component', () => {
   it.skip('render list items', () => {
     const loadItems = () => Promise.resolve(genericContentItems)
-    const wrapper = shallow(<ListPickerComponent loadItems={loadItems} />)
+    const wrapper = shallow(<ListPickerComponent loadParent={jest.fn()} loadItems={loadItems} />)
     expect(wrapper.find(ListItem).length).toBe(4)
   })
 })

@@ -8,7 +8,7 @@ describe('Item component', () => {
   it('should return a div with a rendered text', () => {
     const renderItem = (item: ItemProps<MockData>) => <div>{item.nodeData && item.nodeData.text}</div>
     const text = 'some text'
-    const wrapper = shallow(<ItemComponent<MockData> nodeData={{ text }} renderItem={renderItem} />)
+    const wrapper = shallow(<ItemComponent<MockData> nodeData={{ text, Id: 1 }} renderItem={renderItem} />)
     expect(wrapper.find('div')).toBeTruthy()
     expect(
       wrapper
@@ -32,7 +32,11 @@ describe('Item component', () => {
     const text = 'some text'
     const actionClickHandler = jest.fn()
     const wrapper = shallow(
-      <ItemComponent<MockData> actionClickHandler={actionClickHandler} nodeData={{ text }} renderItem={renderItem} />,
+      <ItemComponent<MockData>
+        actionClickHandler={actionClickHandler}
+        nodeData={{ text, Id: 1 }}
+        renderItem={renderItem}
+      />,
     )
     expect(wrapper.find('span')).toBeTruthy()
     wrapper.find('span').simulate('click')
