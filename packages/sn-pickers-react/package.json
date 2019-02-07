@@ -34,10 +34,9 @@
   },
   "dependencies": {
     "@material-ui/core": "^3.9.2",
-    "@sensenet/default-content-types": "^1.1.1",
-    "immer": "^2.0.0",
-    "react": "16.8.0-alpha.1",
-    "react-dom": "16.8.0-alpha.1"
+    "@sensenet/default-content-types": "^1.1.2",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1"
   },
   "devDependencies": {
     "react-use": "^5.2.2",
