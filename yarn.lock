@@ -2636,18 +2636,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^16.7.14":
+"@types/react@*", "@types/react@^16.7.14", "@types/react@^16.8.2":
   version "16.8.2"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.8.2.tgz#3b7a7f7ea89d1c7d68b00849fb5de839011c077b"
   integrity sha512-6mcKsqlqkN9xADrwiUz2gm9Wg4iGnlVGciwBRYFQSMWG6MQjhOZ/AVnxn+6v8nslFgfYTV8fNdE6XwKu6va5PA==
-  dependencies:
-    "@types/prop-types" "*"
-    csstype "^2.2.0"
-
-"@types/react@^16.7.13":
-  version "16.8.1"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.8.1.tgz#b431b104ecc6febda170b718caa9f50be66a6750"
-  integrity sha512-tD1ETKJcuhANOejRc/p7OgQ16DKnbGi0M3LccelKlPnUCDp2a5koVxZFoRN9HN+A+m84HB5VGN7I+r3nNhS3PA==
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
@@ -11879,11 +11871,11 @@ react-treebeard@^3.1.0:
     velocity-react "^1.4.1"
 
 react-use@^5.2.2:
-  version "5.2.2"
-  resolved "https://registry.yarnpkg.com/react-use/-/react-use-5.2.2.tgz#6590866304528905028cc03088188b892f4871f2"
-  integrity sha512-k3upFSTInBNOa0QLKE+0Re3nkbxYTu4ga2hX4knwxMmaINuPJmF1O9yBGlTUvYdtpDv+UZoficmC95A3PK64GQ==
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/react-use/-/react-use-5.3.0.tgz#2a3da301082dfba2822f2e4d8369974aa7e15f27"
+  integrity sha512-gF5gGQyHIKpHmyIoEPzq1oCgf8p1l0AS3RBsGeLcVUJXZmatQsYwhjv1190CwNpmjxIQsrMCBakycZxoy9tXcA==
   dependencies:
-    "@types/react" "^16.7.13"
+    "@types/react" "^16.8.2"
     keyboardjs "^2.5.1"
     nano-css "^3.4.0"
     react-wait "^0.3.0"
