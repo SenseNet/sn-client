@@ -2,6 +2,7 @@ import { ObservableValue } from '@sensenet/client-utils'
 import { User } from '@sensenet/default-content-types'
 import Semaphor from 'semaphore-async-await'
 import { AuthenticationService, ConstantContent, LoginState, ODataParams, ODataResponse, Repository } from '..'
+import { isExtendedError } from '../Repository/Repository'
 
 /**
  * Authentication Service class for using Forms authentication through OData Actions
@@ -114,12 +115,19 @@ export class FormsAuthenticationService implements AuthenticationService {
    * Logs out and destroys the current session
    */
   public async logout(): Promise<boolean> {
-    await this.repository.executeAction({
-      method: 'POST',
-      idOrPath: ConstantContent.PORTAL_ROOT.Id,
-      name: 'Logout',
-      body: {},
-    })
+    try {
+      await this.repository.executeAction({
+        method: 'POST',
+        idOrPath: ConstantContent.PORTAL_ROOT.Id,
+        name: 'Logout',
+        body: {},
+      })
+    } catch (error) {
+      // ignore json parsing errors from empty response
+      if (!isExtendedError(error) || !error.response.ok) {
+        throw error
+      }
+    }
     this.currentUser.setValue(ConstantContent.VISITOR_USER)
     this.state.setValue(LoginState.Unauthenticated)
     return true
