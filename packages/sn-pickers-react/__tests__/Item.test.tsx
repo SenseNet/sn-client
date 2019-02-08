@@ -1,7 +1,6 @@
 import { shallow } from 'enzyme'
 import React from 'react'
-import { ItemComponent, ItemProps } from '../src/ListPicker/Item'
-import { ItemList } from '../src/ListPicker/ItemsList'
+import { ItemComponent, ItemList, ItemProps } from '../src/ListPicker'
 import { items, MockData } from './mocks/items'
 
 describe('Item component', () => {
@@ -16,6 +15,12 @@ describe('Item component', () => {
         .last()
         .text(),
     ).toBe(text)
+  })
+
+  it('should render the Id without renderItem props', () => {
+    const wrapper = shallow(<ItemComponent<MockData> nodeData={{ text: 'some text', Id: 1 }} />)
+    expect(wrapper.find('li')).toBeTruthy()
+    expect(wrapper.find('li').text()).toBe('1')
   })
 
   it('click action should work', () => {
@@ -33,6 +38,15 @@ describe('Item component', () => {
       .first()
       .simulate('click')
     expect(clickHandler).toBeCalled()
+  })
+
+  it('double click action should work', () => {
+    const doubleClickHandler = jest.fn()
+    const wrapper = shallow(
+      <ItemComponent<MockData> onDoubleClickHandler={doubleClickHandler} nodeData={{ text: 'some text', Id: 1 }} />,
+    )
+    wrapper.find('div').simulate('doubleClick')
+    expect(doubleClickHandler).toBeCalled()
   })
 })
 

@@ -69,5 +69,5 @@ export function ItemComponent<T extends { Id: string | number }>(props: ItemProp
 }
 
 function defaultRender<T extends { Id: string | number }>(props: ItemProps<T>) {
-  return <li>{props.nodeData && (props.nodeData as any).name}</li>
+  return <li>{props.nodeData && props.nodeData.Id}</li>
 }
