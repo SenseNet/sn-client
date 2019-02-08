@@ -6,8 +6,7 @@ import { GenericContent, Workspace } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import React, { useState } from 'react'
 import { useAsync } from 'react-use'
-import { Item, ItemProps } from './Item'
-import { ItemList } from './ItemsList'
+import { Item, ItemComponent, ItemProps } from './Item'
 
 /**
  * Properties for list picker component.
@@ -31,6 +30,20 @@ export interface ListPickerProps<T extends { Id: string | number }> {
    * @memberof ListPickerProps
    */
   renderError?: (message: string) => JSX.Element
+
+  /**
+   * Function to render the item component.
+   * @memberof ItemListProps
+   * @default const defaultRenderItem = (renderItemProps: ItemProps<T>) => (
+   * <ListItem button={true} selected={renderItemProps.nodeData.Id === selectedId}>
+   *   <ListItemIcon>
+   *     <Icon type={iconType.materialui} iconName="folder" />
+   *   </ListItemIcon>
+   *   <ListItemText primary={renderItemProps.nodeData!.Name} />
+   * </ListItem>
+   * )
+   */
+  renderItem?: (props: ItemProps<T>) => JSX.Element
 }
 
 /**
@@ -44,13 +57,13 @@ export function ListPickerComponent<T extends GenericContent>(props: ListPickerP
   const { loading, value: items, error } = useAsync(() => props.loadItems(currentPath), [currentPath])
   const parent = useAsync(() => props.loadParent(parentId), [parentId])
 
-  const onClickHandler = (event: React.MouseEvent, node: Item<T>) => {
+  const onItemClickHandler = (event: React.MouseEvent, node: Item<T>) => {
     event.preventDefault()
     props.onSelectionChanged && props.onSelectionChanged(node.nodeData)
     setSelectedId(node.nodeData.Id)
   }
 
-  const onDoubleClickHandler = (event: React.MouseEvent, node: Item<T>) => {
+  const onItemDoubleClickHandler = (event: React.MouseEvent, node: Item<T>) => {
     event.preventDefault()
     setParentIdOnDoubleClick(node.nodeData)
 
@@ -62,7 +75,7 @@ export function ListPickerComponent<T extends GenericContent>(props: ListPickerP
     }
   }
 
-  const renderItem = (renderItemProps: ItemProps<T>) => (
+  const defaultRenderItem = (renderItemProps: ItemProps<T>) => (
     <ListItem button={true} selected={renderItemProps.nodeData.Id === selectedId}>
       <ListItemIcon>
         <Icon type={iconType.materialui} iconName="folder" />
@@ -70,6 +83,8 @@ export function ListPickerComponent<T extends GenericContent>(props: ListPickerP
       <ListItemText primary={renderItemProps.nodeData!.Name} />
     </ListItem>
   )
+
+  const renderItem = props.renderItem || defaultRenderItem
 
   if (loading) {
     return props.renderLoading ? props.renderLoading() : null
@@ -81,19 +96,30 @@ export function ListPickerComponent<T extends GenericContent>(props: ListPickerP
 
   return (
     <List>
-      <ItemList
-        items={items!}
-        parentNode={parent.value}
-        onNodeClickHandler={onClickHandler}
-        onNodeDoubleClickHandler={onDoubleClickHandler}
-        renderItem={renderItem}
-      />
+      {parent.value !== undefined ? (
+        <ItemComponent
+          onClickHandler={onItemClickHandler}
+          onDoubleClickHandler={onItemDoubleClickHandler}
+          nodeData={{ ...parent.value.nodeData, Name: '..' }}
+          renderItem={renderItem}
+        />
+      ) : null}
+      {items &&
+        items.map(item => (
+          <ItemComponent
+            key={item.nodeData.Id}
+            nodeData={item.nodeData}
+            onClickHandler={onItemClickHandler}
+            onDoubleClickHandler={onItemDoubleClickHandler}
+            renderItem={renderItem}
+          />
+        ))}
     </List>
   )
 
   function setParentIdOnDoubleClick(node: T) {
-    // If parent value is set and clicked, set parent id to parent's parent id otherwise set it
-    // to clicked item's parent id
+    // If parent value is set (there were already some navigation) and clicked, set parent id to parent's parent id
+    // otherwise set it to clicked item's parent id.
     if (parent.value && parent.value.nodeData.Id === node.Id) {
       const parentData = parent.value.nodeData
       if ((parentData.Workspace as Workspace).Id === parentData.Id) {

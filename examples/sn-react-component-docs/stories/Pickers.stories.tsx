@@ -1,10 +1,10 @@
-import { storiesOf } from '@storybook/react'
-import React from 'react'
-
 import { ODataCollectionResponse, ODataParams, Repository } from '@sensenet/client-core'
 import { Folder, GenericContent, SchemaStore } from '@sensenet/default-content-types'
 import { ListPickerComponent } from '@sensenet/pickers-react/src/ListPicker'
 import { action } from '@storybook/addon-actions'
+import { withInfo } from '@storybook/addon-info'
+import { storiesOf } from '@storybook/react'
+import React from 'react'
 
 export const testRepository = new Repository({
   repositoryUrl: 'https://dmsservice.demo.sensenet.com',
@@ -55,19 +55,22 @@ const loadParent = async (idOrPath: number | string) => {
   return { nodeData: result.d }
 }
 
-storiesOf('ListPicker', module).add('default', () => (
-  <>
-    <p style={!isAccessDenied ? { display: 'none' } : {}}>
-      You need to <strong>login</strong> to{' '}
-      <a href="https://dmsservice.demo.sensenet.com" target="_blank">
-        https://dmsservice.demo.sensenet.com
-      </a>{' '}
-      to see this component working!
-    </p>
-    <ListPickerComponent
-      loadParent={loadParent}
-      loadItems={loadItems}
-      onSelectionChanged={action('SelectionChanged')}
-    />
-  </>
-))
+storiesOf('ListPicker', module)
+  .addDecorator(withInfo())
+  .addDecorator(story => <div style={{ padding: '3rem' }}>{story()}</div>)
+  .add('default', () => (
+    <>
+      <p style={!isAccessDenied ? { display: 'none' } : {}}>
+        You need to <strong>login</strong> to{' '}
+        <a href="https://dmsservice.demo.sensenet.com" target="_blank">
+          https://dmsservice.demo.sensenet.com
+        </a>{' '}
+        to see this component working!
+      </p>
+      <ListPickerComponent
+        loadParent={loadParent}
+        loadItems={loadItems}
+        onSelectionChanged={action('SelectionChanged')}
+      />
+    </>
+  ))

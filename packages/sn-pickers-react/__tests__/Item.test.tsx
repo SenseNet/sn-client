@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme'
 import React from 'react'
-import { ItemComponent, ItemList, ItemProps } from '../src/ListPicker'
-import { items, MockData } from './mocks/items'
+import { ItemComponent, ItemProps } from '../src/ListPicker'
+import { MockData } from './mocks/items'
 
 describe('Item component', () => {
   it('should return a div with a rendered text', () => {
@@ -47,20 +47,5 @@ describe('Item component', () => {
     )
     wrapper.find('div').simulate('doubleClick')
     expect(doubleClickHandler).toBeCalled()
-  })
-})
-
-describe('ItemsList component', () => {
-  it('should return multiple Items with rendered texts', () => {
-    const renderItem = (item: ItemProps<MockData>) => <div>{item.nodeData && item.nodeData.text}</div>
-    const wrapper = shallow(<ItemList<MockData> items={items} renderItem={renderItem} />)
-    expect(wrapper.find(ItemComponent).length).toBe(items.length)
-    expect(
-      wrapper
-        .find(ItemComponent)
-        .first()
-        .dive()
-        .text(),
-    ).toBe('Csiga')
   })
 })
