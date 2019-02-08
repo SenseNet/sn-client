@@ -8,8 +8,8 @@ import {
 import { debounce, ObservableValue, usingAsync } from '@sensenet/client-utils'
 import { File as SnFile, GenericContent } from '@sensenet/default-content-types'
 import { ActionModel } from '@sensenet/default-content-types/dist/ActionModel'
-import { Action, AnyAction, Dispatch } from 'redux'
-import { InjectableAction } from 'redux-di-middleware'
+import { Dispatch } from 'redux'
+import { IInjectableActionCallbackParams } from 'redux-di-middleware'
 import { updateChildrenOptions } from './store/documentlibrary/actions'
 import { rootStateType } from './store/rootReducer'
 
@@ -78,25 +78,24 @@ export const setEditedFirst = (edited: boolean) => ({
   edited,
 })
 
-export const getListActions = (idOrPath: number | string, scenario?: string, customActions?: ActionModel[]) =>
-  ({
-    type: 'GET_LIST_ACTIONS',
-    async inject(options) {
-      const actionsState = options.getState().dms.toolbar
-      if (!actionsState.isLoading && (actionsState.idOrPath !== idOrPath || actionsState.scenario !== scenario)) {
-        options.dispatch(loadListActions(idOrPath, scenario))
-        const repository = options.getInjectable(Repository)
-        const data: { d: { Actions: ActionModel[] } } = (await repository.getActions({ idOrPath, scenario })) as any
-        const actions = customActions ? [...data.d.Actions, ...customActions] : data.d.Actions
-        const ordered = actions.sort((a, b) => {
-          const x = a.Index
-          const y = b.Index
-          return x < y ? -1 : x > y ? 1 : 0
-        })
-        options.dispatch(setListActions(ordered))
-      }
-    },
-  } as InjectableAction<rootStateType, AnyAction>)
+export const getListActions = (idOrPath: number | string, scenario?: string, customActions?: ActionModel[]) => ({
+  type: 'GET_LIST_ACTIONS',
+  async inject(options: IInjectableActionCallbackParams<rootStateType>) {
+    const actionsState = options.getState().dms.toolbar
+    if (!actionsState.isLoading && (actionsState.idOrPath !== idOrPath || actionsState.scenario !== scenario)) {
+      options.dispatch(loadListActions(idOrPath, scenario))
+      const repository = options.getInjectable(Repository)
+      const data: { d: { Actions: ActionModel[] } } = (await repository.getActions({ idOrPath, scenario })) as any
+      const actions = customActions ? [...data.d.Actions, ...customActions] : data.d.Actions
+      const ordered = actions.sort((a, b) => {
+        const x = a.Index
+        const y = b.Index
+        return x < y ? -1 : x > y ? 1 : 0
+      })
+      options.dispatch(setListActions(ordered))
+    }
+  },
+})
 
 export const loadListActions = (idOrPath: number | string, scenario?: string) => ({
   type: 'LOAD_LIST_ACTIONS',
@@ -175,13 +174,11 @@ export const trackUploadProgress = async <T extends GenericContent>(
   }
 }
 
-export const uploadFileList: <T extends SnFile>(
-  uploadOptions: Pick<UploadFromFileListOptions<T>, Exclude<keyof UploadFromFileListOptions<T>, 'repository'>>,
-) => InjectableAction<rootStateType, Action> = <T extends SnFile>(
+export const uploadFileList = <T extends SnFile>(
   uploadOptions: Pick<UploadFromFileListOptions<T>, Exclude<keyof UploadFromFileListOptions<T>, 'repository'>>,
 ) => ({
   type: 'DMS_UPLOAD_FILE_LIST_INJECTABLE_ACTION',
-  inject: async options => {
+  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const api = options.getInjectable(Repository)
     await usingAsync(new ObservableValue<UploadProgressInfo>(), async progress => {
       progress.subscribe(async currentValue =>
@@ -203,13 +200,11 @@ export const uploadFileList: <T extends SnFile>(
   },
 })
 
-export const uploadDataTransfer: <T extends SnFile>(
-  options: Pick<UploadFromEventOptions<T>, Exclude<keyof UploadFromEventOptions<T>, 'repository'>>,
-) => InjectableAction<rootStateType, Action> = <T extends SnFile>(
+export const uploadDataTransfer = <T extends SnFile>(
   uploadOptions: Pick<UploadFromEventOptions<T>, Exclude<keyof UploadFromEventOptions<T>, 'repository'>>,
 ) => ({
   type: 'DMS_UPLOAD_DATA_TRANSFER_INJECTABLE_ACTION',
-  inject: async options => {
+  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const api = options.getInjectable(Repository)
     await usingAsync(new ObservableValue<UploadProgressInfo>(), async progress => {
       progress.subscribe(async currentValue =>
@@ -328,21 +323,20 @@ export const handleDrawerMenu = (open: boolean) => ({
   open,
 })
 
-export const loadBreadcrumbActions = (idOrPath: number | string) =>
-  ({
-    type: 'LOAD_BREADCRUMB_ACTIONS',
-    inject: async options => {
-      if (idOrPath === options.getState().dms.actionmenu.breadcrumb.idOrPath) {
-        return
-      }
-      const repository = options.getInjectable(Repository)
-      const actions: { d: { Actions: ActionModel[] } } = (await repository.getActions({
-        idOrPath,
-        scenario: 'DMSBreadcrumb',
-      })) as any
-      options.dispatch({
-        type: 'LOAD_BREADCRUMB_ACTIONS_SUCCESS',
-        result: { idOrPath, actions: actions.d.Actions },
-      })
-    },
-  } as InjectableAction<rootStateType, AnyAction>)
+export const loadBreadcrumbActions = (idOrPath: number | string) => ({
+  type: 'LOAD_BREADCRUMB_ACTIONS',
+  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
+    if (idOrPath === options.getState().dms.actionmenu.breadcrumb.idOrPath) {
+      return
+    }
+    const repository = options.getInjectable(Repository)
+    const actions: { d: { Actions: ActionModel[] } } = (await repository.getActions({
+      idOrPath,
+      scenario: 'DMSBreadcrumb',
+    })) as any
+    options.dispatch({
+      type: 'LOAD_BREADCRUMB_ACTIONS_SUCCESS',
+      result: { idOrPath, actions: actions.d.Actions },
+    })
+  },
+})

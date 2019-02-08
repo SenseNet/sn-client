@@ -1,4 +1,3 @@
-import { Typography } from '@material-ui/core'
 import Avatar from '@material-ui/core/Avatar'
 import Paper from '@material-ui/core/Paper'
 import { Icon } from '@sensenet/icons-react'
@@ -8,6 +7,7 @@ import * as DMSActions from '../../Actions'
 import { rootStateType } from '../../store/rootReducer'
 import EditPropertiesDialog from '../Dialogs/EditPropertiesDialog'
 
+import Typography from '@material-ui/core/Typography'
 import { resources } from '../../assets/resources'
 
 // tslint:disable-next-line:no-var-requires
