@@ -24,13 +24,13 @@ export interface ItemListProps<T extends { Id: string | number }> {
    * Click handler for the Item component.
    * @memberof ItemListProps
    */
-  onNodeClickHandler?: (node: Item<T>, event: React.MouseEvent) => void
+  onNodeClickHandler?: (event: React.MouseEvent, node: Item<T>) => void
 
   /**
    * Double click handler for the Item component.
    * @memberof ItemListProps
    */
-  onNodeDoubleClickHandler?: (node: Item<T>, event: React.MouseEvent) => void
+  onNodeDoubleClickHandler?: (event: React.MouseEvent, node: Item<T>) => void
 
   /**
    * Function to render the item component.

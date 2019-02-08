@@ -24,13 +24,13 @@ export interface ItemProps<T extends { Id: string | number }> extends Item<T> {
    * Click handler for the item component.
    * @memberof ItemProps
    */
-  onClickHandler?: (node: Item<T>, event: React.MouseEvent) => void
+  onClickHandler?: (event: React.MouseEvent, node: Item<T>) => void
 
   /**
    * Click handler for the item component.
    * @memberof ItemProps
    */
-  onDoubleClickHandler?: (node: Item<T>, event: React.MouseEvent) => void
+  onDoubleClickHandler?: (event: React.MouseEvent, node: Item<T>) => void
 
   /**
    * Additional class to add to the div element.
@@ -44,12 +44,6 @@ export interface ItemProps<T extends { Id: string | number }> extends Item<T> {
    * @memberof ItemProps
    */
   renderItem?: (props: ItemProps<T>) => JSX.Element
-
-  /**
-   * Click handler for secondary action.
-   * @memberof ItemProps
-   */
-  actionClickHandler?: (node: Item<T>, event: React.MouseEvent) => void
 }
 
 /**
@@ -61,10 +55,10 @@ export interface ItemProps<T extends { Id: string | number }> extends Item<T> {
 export function ItemComponent<T extends { Id: string | number }>(props: ItemProps<T>) {
   const renderItem = props.renderItem || defaultRender
   const onClick = (event: React.MouseEvent) => {
-    props.onClickHandler && props.onClickHandler(props, event)
+    props.onClickHandler && props.onClickHandler(event, props)
   }
   const onDoubleClick = (event: React.MouseEvent) => {
-    props.onDoubleClickHandler && props.onDoubleClickHandler(props, event)
+    props.onDoubleClickHandler && props.onDoubleClickHandler(event, props)
   }
 
   return (

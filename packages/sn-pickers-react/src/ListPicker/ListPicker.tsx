@@ -44,13 +44,13 @@ export function ListPickerComponent<T extends GenericContent>(props: ListPickerP
   const { loading, value: items, error } = useAsync(() => props.loadItems(currentPath), [currentPath])
   const parent = useAsync(() => props.loadParent(parentId), [parentId])
 
-  const onClickHandler = (node: Item<T>, event: React.MouseEvent) => {
+  const onClickHandler = (event: React.MouseEvent, node: Item<T>) => {
     event.preventDefault()
     props.onSelectionChanged && props.onSelectionChanged(node.nodeData)
     setSelectedId(node.nodeData.Id)
   }
 
-  const onDoubleClickHandler = (node: Item<T>, event: React.MouseEvent) => {
+  const onDoubleClickHandler = (event: React.MouseEvent, node: Item<T>) => {
     event.preventDefault()
     setParentIdOnDoubleClick(node.nodeData)
 

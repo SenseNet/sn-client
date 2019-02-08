@@ -18,29 +18,21 @@ describe('Item component', () => {
     ).toBe(text)
   })
 
-  it('should add secondary click action', () => {
-    const renderItem = (item: ItemProps<MockData>) => {
-      const onClick = (event: React.MouseEvent<Element, MouseEvent>) => {
-        item.actionClickHandler && item.actionClickHandler(item, event)
-      }
-      return (
-        <div>
-          {item.nodeData && item.nodeData.text} <span onClick={onClick}>icon</span>
-        </div>
-      )
-    }
-    const text = 'some text'
-    const actionClickHandler = jest.fn()
+  it('click action should work', () => {
+    const renderItem = (item: ItemProps<MockData>) => <div>{item.nodeData && item.nodeData.text}</div>
+    const clickHandler = jest.fn()
     const wrapper = shallow(
       <ItemComponent<MockData>
-        actionClickHandler={actionClickHandler}
-        nodeData={{ text, Id: 1 }}
+        onClickHandler={clickHandler}
+        nodeData={{ text: 'some text', Id: 1 }}
         renderItem={renderItem}
       />,
     )
-    expect(wrapper.find('span')).toBeTruthy()
-    wrapper.find('span').simulate('click')
-    expect(actionClickHandler).toBeCalled()
+    wrapper
+      .find('div')
+      .first()
+      .simulate('click')
+    expect(clickHandler).toBeCalled()
   })
 })
 
