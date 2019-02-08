@@ -175,7 +175,6 @@ class DocumentLibrary extends React.Component<
     ev.preventDefault()
     uploadDataTransfer({
       binaryPropertyName: 'Binary',
-      contentTypeName: 'File',
       createFolders: true,
       event: new DragEvent('drop', { dataTransfer: ev.dataTransfer }),
       overwrite: false,
