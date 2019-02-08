@@ -121,7 +121,6 @@ export class Image<T extends GenericContent, K extends keyof T> extends Componen
       (await Upload.fromFileList({
         fileList: e.target.files,
         createFolders: true,
-        contentTypeName: 'File',
         binaryPropertyName: 'Binary',
         overwrite: true,
         parentPath: this.props['data-uploadFolderPath'] ? this.props['data-uploadFolderPath'] : '',
@@ -129,7 +128,7 @@ export class Image<T extends GenericContent, K extends keyof T> extends Componen
       }))
     // tslint:disable-next-line:no-string-literal
     const newValue = `${this.props['data-uploadFolderPath']}/${this.getNameFromPath(
-      (e.target as HTMLInputElement)['value'],
+      (e.target as HTMLInputElement).value,
     )}`
     this.setState({
       value: newValue,
