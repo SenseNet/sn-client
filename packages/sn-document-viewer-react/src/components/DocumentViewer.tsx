@@ -1,8 +1,6 @@
 import { SlideProps } from '@material-ui/core/Slide'
 import React from 'react'
 import { connect } from 'react-redux'
-import { Action } from 'redux'
-import { InjectableAction } from 'redux-di-middleware'
 import { componentType } from '../services'
 import { pollDocumentData, RootReducerType } from '../store'
 import { LocalizationStateType, setLocalization } from '../store/Localization'
@@ -46,11 +44,7 @@ const mapStateToProps = (state: RootReducerType) => {
  * @param state the redux state
  */
 const mapDispatchToProps = {
-  pollDocumentData: pollDocumentData as (
-    hostName: string,
-    idOrPath: string | number,
-    version?: string,
-  ) => InjectableAction<RootReducerType, Action>,
+  pollDocumentData,
   setLocalization,
 }
 
