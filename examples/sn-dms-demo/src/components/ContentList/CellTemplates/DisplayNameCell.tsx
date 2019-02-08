@@ -1,4 +1,4 @@
-import { TableCell } from '@material-ui/core'
+import TableCell from '@material-ui/core/TableCell'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import * as React from 'react'

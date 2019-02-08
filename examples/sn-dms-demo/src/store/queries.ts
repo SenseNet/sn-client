@@ -2,24 +2,14 @@ import { ODataBatchResponse, ODataParams, Repository } from '@sensenet/client-co
 import { Query } from '@sensenet/default-content-types'
 import { deleteContent, PromiseReturns, updateContent } from '@sensenet/redux/dist/Actions'
 import { AnyAction, Reducer } from 'redux'
-import { InjectableAction } from 'redux-di-middleware'
+import { IInjectableActionCallbackParams } from 'redux-di-middleware'
 import { rootStateType } from './rootReducer'
 
 export type QueryType = 'Private' | 'Public' | 'NonDefined'
 
-export const saveQuery: (
-  idOrPath: string | number,
-  query: string,
-  displayName: string,
-  queryType: QueryType,
-) => InjectableAction<rootStateType, AnyAction> = (
-  idOrPath: string | number,
-  query: string,
-  displayName: string,
-  queryType = 'Private',
-) => ({
+export const saveQuery = (idOrPath: string | number, query: string, displayName: string, queryType = 'Private') => ({
   type: 'SN_DMS_SAVE_QUERY',
-  inject: async options => {
+  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const repo = options.getInjectable(Repository)
     await repo.executeAction({
       idOrPath,
@@ -35,17 +25,9 @@ export const saveQuery: (
   },
 })
 
-export const getQueries: (
-  idOrPath: string | number,
-  queryType: QueryType,
-  force?: boolean,
-) => InjectableAction<rootStateType, AnyAction> = (
-  idOrPath: string | number,
-  queryType = 'Private',
-  force: boolean = false,
-) => ({
+export const getQueries = (idOrPath: string | number, queryType = 'Private', force: boolean = false) => ({
   type: 'SN_DMS_GET_QUERIES',
-  inject: async options => {
+  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const state = options.getState()
     if (force === false && state.dms.queries.idOrPath === idOrPath && state.dms.queries.queryType === queryType) {
       return
@@ -88,7 +70,7 @@ export const setActive = <T extends Query>(active?: T) => ({
   active,
 })
 
-interface QueriesType {
+export interface QueriesType {
   idOrPath: number | string
   queryType: QueryType
   queries: Query[]

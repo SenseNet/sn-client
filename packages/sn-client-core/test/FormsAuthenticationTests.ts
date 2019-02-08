@@ -37,7 +37,7 @@ describe('Forms Authentication', () => {
       const actionCall = jest.fn(async () => true)
       const r = new Repository({})
       r.authentication = new FormsAuthenticationService(r)
-      r.executeAction = actionCall
+      r.executeAction = actionCall as typeof r.executeAction
       await r.authentication.login('username', 'password')
       expect(actionCall).toBeCalledWith({
         body: {

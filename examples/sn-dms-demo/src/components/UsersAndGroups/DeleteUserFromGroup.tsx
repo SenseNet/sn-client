@@ -1,4 +1,5 @@
-import { Button, TableCell } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import TableCell from '@material-ui/core/TableCell'
 import { Group, User } from '@sensenet/default-content-types'
 import { Icon } from '@sensenet/icons-react'
 import * as React from 'react'
