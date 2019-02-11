@@ -19,6 +19,7 @@ import {
   DisplayName,
   DropDownList,
   FileName,
+  FileUpload,
   Name,
   Number,
   Password,
@@ -68,6 +69,7 @@ const passwordNotes = require('../notes/fieldcontrols/Password.md')
 const numberNotes = require('../notes/fieldcontrols/Number.md')
 const tagsInputNotes = require('../notes/fieldcontrols/TagsInput.md')
 const autocompleteNotes = require('../notes/fieldcontrols/AutoComplete.md')
+const fileUploadNotes = require('../notes/fieldcontrols/FileUpload.md')
 
 storiesOf('FieldControls.AutoComplete', module)
   .addDecorator(withKnobs)
@@ -461,7 +463,26 @@ storiesOf('FieldControls.FileName', module)
       />
     )),
   )
-
+storiesOf('FieldControls.FileUpload', module)
+  .addDecorator(withKnobs)
+  .addDecorator(withInfo())
+  .addDecorator(checkA11y)
+  .addDecorator(withActions('change'))
+  .add(
+    'new mode',
+    withMarkdownNotes(fileUploadNotes)(() => (
+      <FileUpload
+        data-actionName="new"
+        data-labelText={text('Label', 'FileUpload label')}
+        onChange={action('change')}
+        className={text('Additional class name', 'fileupload-field')}
+        data-placeHolderText={text('Placeholder', 'placeholder')}
+        data-hintText={text('Hint', 'FileUpload hint')}
+        name="Name"
+        data-repository={testRepository}
+      />
+    )),
+  )
 storiesOf('FieldControls.Name', module)
   .addDecorator(withKnobs)
   .addDecorator(withInfo())

@@ -208,7 +208,6 @@ class DocumentsMenu extends React.Component<
                           this.props.uploadFileList({
                             fileList,
                             createFolders: true,
-                            contentTypeName: 'File',
                             binaryPropertyName: 'Binary',
                             overwrite: false,
                             parentPath: (this.props.currentContent as Content).Path,

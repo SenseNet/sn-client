@@ -12,6 +12,7 @@ import {
   FieldSetting,
   IntegerFieldSetting,
   LongTextFieldSetting,
+  NullFieldSetting,
   NumberFieldSetting,
   PasswordFieldSetting,
   ReferenceFieldSetting,
@@ -175,4 +176,12 @@ export const reactControlMapper = (repository: Repository) =>
       ;(longTextSettings['data-minLength'] = setting.MinLength),
         (longTextSettings['data-maxLength'] = setting.MaxLength)
       return longTextSettings
+    })
+    .setupFieldSettingDefault(NullFieldSetting, setting => {
+      switch (setting.Name) {
+        case 'Avatar' as any:
+          return FieldControls.Image
+        default:
+          return FieldControls.ShortText
+      }
     })

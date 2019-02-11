@@ -96,7 +96,7 @@ class DialogInfo extends React.Component<{ classes: any } & DialogInfoProps, {}>
               currentContent && currentContent.Type === 'User' ? (
                 // tslint:disable-next-line:no-string-literal
                 <Avatar
-                  src={`${repositoryUrl}${currentContent ? (currentContent as any).Avatar.url : ''}`}
+                  src={`${repositoryUrl}${currentContent ? (currentContent as any).Avatar.Url : ''}`}
                   style={styles.avatar}
                 />
               ) : (

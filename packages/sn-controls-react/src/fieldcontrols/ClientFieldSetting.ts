@@ -80,4 +80,8 @@ export interface ReactClientFieldSetting<T extends GenericContent = GenericConte
    * Name of the fieldcontrol type
    */
   'data-typeName'?: string
+  /**
+   * Url of the repository
+   */
+  'data-repositoryUrl'?: string
 }
