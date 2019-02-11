@@ -2,7 +2,7 @@ import { ODataCollectionResponse, ODataParams, Repository } from '@sensenet/clie
 import { Folder, GenericContent, SchemaStore } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
 import { hot } from 'react-hot-loader/root'
-import { ListPickerComponent } from './ListPicker/ListPicker'
+import { ListPickerComponent } from '../src/ListPicker/ListPicker'
 
 const testRepository = new Repository({
   repositoryUrl: 'https://dmsservice.demo.sensenet.com',

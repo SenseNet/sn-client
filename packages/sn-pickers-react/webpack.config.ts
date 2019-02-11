@@ -11,19 +11,20 @@ const AssetConfigWebpackPlugin = require('asset-config-webpack-plugin')
 const config: webpack.Configuration = {
   mode: 'development',
   name: 'Dev config',
-  entry: './src/example.tsx',
+  entry: './example/index.tsx',
   devtool: 'eval-source-map',
   devServer: {
     hot: true,
     historyApiFallback: true,
     open: true,
+    contentBase: './example',
   },
   plugins: [
     new TsConfigWebpackPlugin(),
     new ScssConfigWebpackPlugin(),
     new AssetConfigWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: 'index.html',
+      template: 'example/index.html',
     }),
     new webpack.HotModuleReplacementPlugin(),
   ],
