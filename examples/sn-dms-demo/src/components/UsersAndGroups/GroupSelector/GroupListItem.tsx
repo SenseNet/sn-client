@@ -1,3 +1,4 @@
+import { Tooltip } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -91,8 +92,11 @@ class GroupListItem extends React.Component<
   constructor(props: GroupListItem['props']) {
     super(props)
   }
-  public checkboxClick = (group: Group | null) => {
-    this.props.selectGroup(group ? [...this.props.groups, group] : [...this.props.groups])
+  public checkboxClick = (group: Group) => {
+    const index = this.props.groups.findIndex(g => g.Id === group.Id)
+    index === -1
+      ? this.props.selectGroup([...this.props.groups, group])
+      : this.props.selectGroup([...this.props.groups.slice(0, index), ...this.props.groups.slice(index + 1)])
     this.setState({
       selected: !this.state.selected,
     })
@@ -105,7 +109,7 @@ class GroupListItem extends React.Component<
         <ListItemIcon className={classes.icon}>
           <IconButton
             className={selected ? classes.followedIconButton : classes.iconButton}
-            onClick={() => this.checkboxClick(group)}>
+            onClick={() => this.checkboxClick(group as Group)}>
             <Icon
               className={selected ? classes.followedIconButton : classes.iconButton}
               type={iconType.materialui}
@@ -114,11 +118,13 @@ class GroupListItem extends React.Component<
             />
           </IconButton>
         </ListItemIcon>
-        <ListItemText
-          classes={{ primary: classes.primary, root: classes.listItemRoot, secondary: classes.secondary }}
-          primary={group ? group.DisplayName : ''}
-          secondary={this.shortenPath(group ? group.Path : '')}
-        />
+        <Tooltip title={group ? group.DisplayName : ''} aria-label={group ? group.DisplayName : ''} placement="left">
+          <ListItemText
+            classes={{ primary: classes.primary, root: classes.listItemRoot, secondary: classes.secondary }}
+            primary={group ? group.DisplayName : ''}
+            secondary={this.shortenPath(group ? group.Path : '')}
+          />
+        </Tooltip>
       </MenuItem>
     )
   }
