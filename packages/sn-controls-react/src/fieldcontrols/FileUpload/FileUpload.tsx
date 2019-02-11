@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button'
 import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel/InputLabel'
 import Typography from '@material-ui/core/Typography'
+import { Upload } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
 import React, { Component } from 'react'
@@ -119,14 +120,28 @@ export class FileUpload<T extends GenericContent, K extends keyof T> extends Com
   /**
    * handles change event on the fileupload input
    */
-  public handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  public handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (this.props['data-onChange']) {
       this.props['data-onChange']()
     }
+    e.persist()
+    e.target.files &&
+      (await Upload.fromFileList({
+        fileList: e.target.files,
+        createFolders: true,
+        binaryPropertyName: 'Binary',
+        overwrite: true,
+        parentPath: this.props['data-uploadFolderPath'] ? this.props['data-uploadFolderPath'] : '',
+        repository: this.props['data-repository'],
+      }))
+    // tslint:disable-next-line:no-string-literal
+    const newValue = `${this.props['data-uploadFolderPath']}/${this.getNameFromPath(
+      (e.target as HTMLInputElement).value,
+    )}`
     this.setState({
-      // tslint:disable-next-line:no-string-literal
-      filename: this.getNameFromPath((e.target as HTMLInputElement)['value']),
+      value: newValue,
     })
+    this.props.onChange('Avatar' as any, newValue as any)
   }
   /**
    * render
@@ -210,28 +225,8 @@ export class FileUpload<T extends GenericContent, K extends keyof T> extends Com
             />
           </FormControl>
         )
-      case 'browse':
-        return this.props.value && this.props.value.length > 0 ? (
-          <div className={this.props.className}>
-            <Typography variant="caption" gutterBottom={true}>
-              {this.props['data-labelText']}
-            </Typography>
-            <Typography variant="body1" gutterBottom={true}>
-              <a href={this.props.value}>{this.getNameFromPath(this.props.value)}</a>
-            </Typography>
-          </div>
-        ) : null
       default:
-        return this.props.value && this.props.value.length > 0 ? (
-          <div className={this.props.className}>
-            <Typography variant="caption" gutterBottom={true}>
-              {this.props['data-labelText']}
-            </Typography>
-            <Typography variant="body1" gutterBottom={true}>
-              <a href={this.props.value}>{this.getNameFromPath(this.props.value)}</a>
-            </Typography>
-          </div>
-        ) : null
+        return null
     }
   }
 }
