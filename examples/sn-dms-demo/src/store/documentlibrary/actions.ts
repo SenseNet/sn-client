@@ -209,7 +209,6 @@ export const updateChildrenOptions = <T extends GenericContent>(odataOptions: OD
       options.dispatch(finishLoadingChildren())
       options.dispatch(setChildrenOptions(odataOptions))
     }
-
   },
 })
 

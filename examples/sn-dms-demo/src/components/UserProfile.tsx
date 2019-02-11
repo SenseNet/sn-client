@@ -209,10 +209,12 @@ class UserProfile extends React.Component<
                       )
                     }}
                     onRequestOrderChange={(field, direction) => {
-                      this.props.updateChildrenOptions({
-                        ...this.props.childrenOptions,
-                        orderby: [[field, direction]],
-                      })
+                      if (field !== 'Workspace' && field !== 'Actions') {
+                        this.props.updateChildrenOptions({
+                          ...this.props.childrenOptions,
+                          orderby: [[field, direction]],
+                        })
+                      }
                     }}
                     onItemClick={(ev, content) => {
                       if (

@@ -5,7 +5,7 @@ import { EventHub } from '@sensenet/repository-events'
 import { Action } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
 import { changedContent } from '../../Actions'
-import { arrayComparer } from '../../assets/helpers'
+import { arrayComparer, arrayDiff } from '../../assets/helpers'
 import { rootStateType } from '../../store/rootReducer'
 
 const eventObservables: Array<ValueObserver<any>> = []
@@ -44,10 +44,10 @@ export const loadUser = <T extends User = User>(idOrPath: number | string, userO
       eventObservables.push(
         eventHub.onCustomActionExecuted.subscribe(() => {
           emitChange({ Id: newUser.d.Id } as User)
-        }) as any,
-        eventHub.onContentCreated.subscribe(value => emitChange(value.content)) as any,
-        eventHub.onContentModified.subscribe(value => emitChange(value.content)) as any,
-        eventHub.onContentMoved.subscribe(value => emitChange(value.content)) as any,
+        }),
+        eventHub.onContentCreated.subscribe(value => emitChange(value.content)),
+        eventHub.onContentModified.subscribe(value => emitChange(value.content)),
+        eventHub.onContentMoved.subscribe(value => emitChange(value.content)),
       )
 
       await Promise.all([
@@ -172,7 +172,6 @@ export const updateChildrenOptions = <T extends GenericContent>(o: ODataParams<T
       options.dispatch(finishLoading())
       options.dispatch(setChildrenOptions(o))
     }
-
   },
 })
 
@@ -239,7 +238,7 @@ export const getGroups = (memberships: ODataCollectionResponse<Group>) => ({
           expand: ['Actions'] as any,
         },
       })
-      const comparedList: Group[] = arrayComparer(groups.d.results, memberships.d.results)
+      const comparedList: Group[] = arrayDiff(groups.d.results, memberships.d.results)
       const newGroups = {
         d: {
           __count: comparedList.length,
