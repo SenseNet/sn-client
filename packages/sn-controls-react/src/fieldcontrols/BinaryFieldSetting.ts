@@ -15,9 +15,12 @@ export interface ReactBinaryFieldSetting<T extends GenericContent = GenericConte
    * Path of the folder where the file should be uploaded
    */
   'data-onChange'?: () => void
-  'data-folderPath'?: string
-  'data-onUploadSuccess'?: (filename: string, path: string) => void
-  'data-innerComponent'?: (filename: string, path: string) => React.Component
+  /**
+   * Path of the folder where the file will be uploaded.
+   */
   'data-uploadFolderPath'?: string
+  /**
+   * Repository object.
+   */
   'data-repository': Repository
 }
