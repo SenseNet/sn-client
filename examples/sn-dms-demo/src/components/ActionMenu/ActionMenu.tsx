@@ -322,7 +322,6 @@ class ActionMenu extends React.Component<
       (await this.props.uploadFileList({
         fileList: ev.target.files,
         createFolders: true,
-        contentTypeName: 'File',
         binaryPropertyName: 'Binary',
         overwrite: false,
         parentPath: this.props.currentParent ? this.props.currentParent.Path : '',
