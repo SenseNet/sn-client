@@ -94,7 +94,9 @@ export class Upload {
     formData.append('Overwrite', options.overwrite.toString())
     formData.append('PropertyName', options.binaryPropertyName.toString())
     formData.append('FileLength', options.file.size.toString())
-    formData.append('ContentType', options.contentTypeName.toString())
+    if (options.contentTypeName) {
+      formData.append('ContentType', options.contentTypeName.toString())
+    }
     return formData
   }
 

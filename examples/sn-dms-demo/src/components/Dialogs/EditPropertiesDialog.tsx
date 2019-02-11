@@ -26,6 +26,7 @@ const mapStateToProps = (state: rootStateType) => {
     editedcontent: state.dms.edited,
     items: state.dms.documentLibrary.items,
     repositoryUrl: state.sensenet.session.repository ? state.sensenet.session.repository.repositoryUrl : '',
+    currentUser: state.sensenet.session.user.userName,
   }
 }
 
@@ -107,6 +108,8 @@ class EditPropertiesDialog extends React.Component<
                 onSubmit={editContent}
                 handleCancel={() => this.handleCancel()}
                 submitCallback={this.submitCallback}
+                repositoryUrl={repositoryUrl}
+                uploadFolderPath={`/Root/Profiles/Public/${this.props.currentUser}/Document_Library`}
               />
             ) : (
               <CircularProgress size={50} />
