@@ -1,3 +1,4 @@
+import { GenericContent } from '@sensenet/default-content-types'
 import React from 'react'
 
 /**
@@ -19,7 +20,7 @@ export interface Item<T extends { Id: string | number }> {
  * @extends {Item<T>}
  * @template T
  */
-export interface ItemProps<T extends { Id: string | number }> extends Item<T> {
+export interface ItemProps<T extends { Id: string | number } = GenericContent> extends Item<T> {
   /**
    * Click handler for the item component.
    * @memberof ItemProps

@@ -16,6 +16,7 @@ import { Item, ItemComponent, ItemProps } from './Item'
 export interface ListPickerProps<T extends { Id: string | number }> {
   loadItems: (path: string) => Promise<Array<Item<T>>>
   loadParent: (id?: number) => Promise<Item<T>>
+  currentPath?: string
   onSelectionChanged?: (node: T) => void
   /**
    * Render a loading component when loadItems called.
@@ -49,8 +50,8 @@ export interface ListPickerProps<T extends { Id: string | number }> {
 /**
  * Represents a list picker component.
  */
-export function ListPickerComponent<T extends GenericContent>(props: ListPickerProps<T>) {
-  const [currentPath, setCurrentPath] = useState('')
+export function ListPickerComponent<T extends GenericContent = GenericContent>(props: ListPickerProps<T>) {
+  const [currentPath, setCurrentPath] = useState(props.currentPath || '')
   const [parentId, setParentId] = useState<number | undefined>(undefined)
   const [selectedId, setSelectedId] = useState<string | number>(0)
 
@@ -91,7 +92,7 @@ export function ListPickerComponent<T extends GenericContent>(props: ListPickerP
   }
 
   if (error) {
-    return props.renderError ? props.renderError(error.message) : <div>{error.message}</div>
+    return props.renderError ? props.renderError(error.message) : null
   }
 
   return (
@@ -100,7 +101,7 @@ export function ListPickerComponent<T extends GenericContent>(props: ListPickerP
         <ItemComponent
           onClickHandler={onItemClickHandler}
           onDoubleClickHandler={onItemDoubleClickHandler}
-          nodeData={{ ...parent.value.nodeData, Name: '..' }}
+          nodeData={{ Name: '..', DisplayName: '..' } as any}
           renderItem={renderItem}
         />
       ) : null}
