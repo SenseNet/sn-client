@@ -36,10 +36,7 @@ export const pickerContent: Reducer<GenericContent | null> = (state = null, acti
   }
 }
 
-export const pickerParent: Reducer<GenericContent | undefined> = (
-  state: GenericContent | null = null,
-  action: AnyAction,
-) => {
+export const pickerParent: Reducer<GenericContent | null> = (state = null, action: AnyAction) => {
   switch (action.type) {
     case 'SET_PICKER_PARENT':
       return action.content

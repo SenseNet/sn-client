@@ -198,7 +198,7 @@ export const removeMemberFromGroups = (contentIds: number[], groups: Group[]) =>
     } catch (error) {
       options.dispatch(setError(error))
     } finally {
-      const comparedList: Group[] = arrayComparer(groups, currentState.dms.usersAndGroups.user.memberships.d.results)
+      const comparedList = arrayComparer(groups, currentState.dms.usersAndGroups.user.memberships.d.results)
       options.dispatch(updateGroupList({ d: { __count: comparedList.length, results: comparedList } }))
       options.dispatch(loadUser(contentIds[0]))
       options.dispatch(finishLoading())
@@ -290,7 +290,7 @@ export const addUserToGroups = (user: User, groups: Group[]) => ({
     } finally {
       options.dispatch(finishLoading())
       options.dispatch(loadUser(user.Id))
-      const comparedList: Group[] = arrayComparer(groups, currentState.dms.usersAndGroups.user.memberships.d.results)
+      const comparedList = arrayComparer(groups, currentState.dms.usersAndGroups.user.memberships.d.results)
       options.dispatch(updateGroupList({ d: { __count: comparedList.length, results: comparedList } }))
     }
   },

@@ -2,7 +2,7 @@ import { ODataCollectionResponse, ODataParams } from '@sensenet/client-core'
 import { GenericContent, User } from '@sensenet/default-content-types'
 import { AnyAction, combineReducers, Reducer } from 'redux'
 
-export const currentUser: Reducer<User | undefined> = (state: User | null = null, action: AnyAction) => {
+export const currentUser: Reducer<User | null> = (state = null, action: AnyAction) => {
   switch (action.type) {
     case 'DMS_USERSANDGROUPS_SET_USER':
       return action.content
