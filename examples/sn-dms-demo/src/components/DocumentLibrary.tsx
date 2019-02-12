@@ -175,7 +175,6 @@ class DocumentLibrary extends React.Component<
     ev.preventDefault()
     uploadDataTransfer({
       binaryPropertyName: 'Binary',
-      contentTypeName: 'File',
       createFolders: true,
       event: new DragEvent('drop', { dataTransfer: ev.dataTransfer }),
       overwrite: false,
@@ -297,10 +296,12 @@ class DocumentLibrary extends React.Component<
                 )
               }}
               onRequestOrderChange={(field, direction) => {
-                this.props.updateChildrenOptions({
-                  ...this.props.childrenOptions,
-                  orderby: [[field, direction]],
-                })
+                if (field !== 'Workspace' && field !== 'Owner' && field !== 'Actions') {
+                  this.props.updateChildrenOptions({
+                    ...this.props.childrenOptions,
+                    orderby: [[field, direction]],
+                  })
+                }
               }}
               onItemClick={(ev, content) => {
                 if (ev.ctrlKey) {

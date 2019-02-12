@@ -108,7 +108,6 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
    * @return {ReactElement} markup
    */
   public render() {
-    console.log(this.props['data-fieldValue'])
     switch (this.props['data-actionName']) {
       case 'edit':
         return (

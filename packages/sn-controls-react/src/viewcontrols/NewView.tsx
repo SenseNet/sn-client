@@ -45,6 +45,7 @@ export interface NewViewState {
 const mapStateToProps = (state: RootStateType) => {
   return {
     fields: Reducers.getFields(state.sensenet),
+    repositoryUrl: state.sensenet.session.repository ? state.sensenet.session.repository.repositoryUrl : '',
   }
 }
 
@@ -104,6 +105,7 @@ export class NewViewComponent<T extends GenericContent> extends Component<
       extension,
       title,
       submitCallback,
+      repositoryUrl,
     } = this.props
     const { schema } = this.state
     return (
@@ -132,6 +134,7 @@ export class NewViewComponent<T extends GenericContent> extends Component<
             }
             fieldSetting.clientSettings.onChange = changeAction
             fieldSetting.clientSettings['data-actionName'] = 'new'
+            fieldSetting.clientSettings['data-repositoryUrl'] = repositoryUrl
             return (
               <Grid
                 item={true}

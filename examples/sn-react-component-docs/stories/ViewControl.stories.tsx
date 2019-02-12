@@ -1562,6 +1562,7 @@ storiesOf('ViewControls', module)
         contentTypeName="File"
         title={text('Title', 'File')}
         extension={text('Extension', 'docx')}
+        repositoryUrl={testRepository.configuration.repositoryUrl}
       />
     )),
   )

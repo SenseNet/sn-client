@@ -206,7 +206,7 @@ export interface UploadOptions<T> {
   /**
    * The name of the content type, e.g.: File
    */
-  contentTypeName: string
+  contentTypeName?: string
   /**
    * Name of the binary property on the content, e.g.: Binary
    */
