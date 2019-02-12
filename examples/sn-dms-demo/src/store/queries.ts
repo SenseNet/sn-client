@@ -39,7 +39,7 @@ export const getQueries = createAction((idOrPath: string | number, queryType = '
     }
     options.dispatch(queriesRequested(idOrPath, queryType))
     const repo = options.getInjectable(Repository)
-    const q = await repo.executeAction({
+    const q = await repo.executeAction<undefined, { d: { results: Query[] } }>({
       idOrPath,
       name: 'GetQueries',
       method: 'GET',
