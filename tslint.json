@@ -1,6 +1,6 @@
 {
   "defaultSeverity": "error",
-  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier", "tslint-consistent-codestyle"],
+  "extends": ["tslint:recommended", "tslint-react", "tslint-consistent-codestyle", "tslint-config-prettier"],
   "rules": {
     "jsx-no-lambda": false,
     "arrow-parens": [true, "ban-single-arg-parens"],
