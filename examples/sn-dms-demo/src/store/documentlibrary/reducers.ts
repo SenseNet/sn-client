@@ -8,12 +8,12 @@ import {
   select,
   setActive,
   setAncestors,
+  setChildrenOptions,
   setError,
   setItems,
   setParent,
   startLoadingChildren,
   startLoadingParent,
-  updateChildrenOptions,
   updateSearchValues,
 } from './actions'
 
@@ -172,7 +172,7 @@ export const documentLibrary: Reducer<DocumentLibraryState> = (state = defaultSt
       active: action.active,
     }
   }
-  if (isFromAction(action, updateChildrenOptions)) {
+  if (isFromAction(action, setChildrenOptions)) {
     return {
       ...state,
       childrenOptions: {
