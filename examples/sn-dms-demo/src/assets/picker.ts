@@ -79,6 +79,16 @@ export const pickerTheme = createMuiTheme({
           },
         },
         borderBottom: 'solid 1px #ddd',
+        '&$selected, &$selected:hover, &$selected:focus': {
+          '& path': {
+            fill: '#fff',
+          },
+          '& span': {
+            color: '#fff',
+          },
+          backgroundColor: '#016d9e',
+          color: '#fff',
+        },
       },
       gutters: {
         padding: '12px !important',

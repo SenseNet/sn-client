@@ -254,12 +254,10 @@ class ActionMenu extends React.Component<
           break
         case 'MoveTo':
           this.handleClose()
-          this.props.select(content ? [content] : [])
-          this.props.setPickerParent(this.props.currentParent ? this.props.currentParent : null)
-          this.props.loadPickerItems(this.props.currentParent ? this.props.currentParent.Path : '')
           this.props.openPicker(
             <PathPicker
               mode="MoveTo"
+              currentPath={content.Path}
               dialogComponent={<MoveToConfirmDialog />}
               dialogTitle={resources.MOVE}
               dialogCallback={Actions.moveBatch as any}
