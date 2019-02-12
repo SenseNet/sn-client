@@ -1,5 +1,6 @@
 import { Repository } from '@sensenet/client-core'
 import { isExtendedError } from '@sensenet/client-core/dist/Repository/Repository'
+import { createAction } from '@sensenet/redux'
 import { EventHub } from '@sensenet/repository-events'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
 import { resources } from '../../assets/resources'
@@ -24,17 +25,17 @@ export interface LogEntry extends AddLogEntry {
   unread: boolean
 }
 
-export const addLogEntry = (entry: AddLogEntry) => ({
+export const addLogEntry = createAction((entry: AddLogEntry) => ({
   type: 'SN_DMS_ADD_LOG_ENTRY',
   entry,
-})
+}))
 
-export const readLogEntries = (entries: LogEntry[]) => ({
+export const readLogEntries = createAction((entries: LogEntry[]) => ({
   type: 'SN_DMS_READ_LOG_ENTRIES',
   entries,
-})
+}))
 
-export const initLog = () => ({
+export const initLog = createAction(() => ({
   type: 'SN_DMS_INIT_LOG',
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const repository = options.getInjectable(Repository)
@@ -204,4 +205,4 @@ export const initLog = () => ({
       }
     })
   },
-})
+}))
