@@ -2,36 +2,30 @@ import { GenericContent } from '@sensenet/default-content-types'
 import React from 'react'
 
 /**
- * Item component schema.
- * @template T
- */
-export interface Item<T extends { Id: string | number }> {
-  /**
-   * An optional custom user object to associate with the node.
-   * This property can then be used in the `onClick`
-   * event handlers for doing custom logic per node.
-   */
-  nodeData: T
-}
-
-/**
  * Item component properties.
  * @interface ItemProps
  * @extends {Item<T>}
  * @template T
  */
-export interface ItemProps<T extends { Id: string | number } = GenericContent> extends Item<T> {
+export interface ItemProps<T extends GenericContent = GenericContent> {
   /**
-   * Click handler for the item component.
+   * Node data.
+   * @type {T}
    * @memberof ItemProps
    */
-  onClickHandler?: (event: React.MouseEvent, node: Item<T>) => void
+  node: T
+  /**
+   * Click handler for the item component.
+   * @param event mouse event.
+   * @memberof ItemProps
+   */
+  onClickHandler?: (event: React.MouseEvent, node: T) => void
 
   /**
    * Click handler for the item component.
    * @memberof ItemProps
    */
-  onDoubleClickHandler?: (event: React.MouseEvent, node: Item<T>) => void
+  onDoubleClickHandler?: (event: React.MouseEvent, node: T) => void
 
   /**
    * Additional class to add to the div element.
@@ -44,7 +38,7 @@ export interface ItemProps<T extends { Id: string | number } = GenericContent> e
    * A function to render the item.
    * @memberof ItemProps
    */
-  renderItem?: (props: ItemProps<T>) => JSX.Element
+  renderItem?: (props: T) => JSX.Element
 }
 
 /**
@@ -53,22 +47,22 @@ export interface ItemProps<T extends { Id: string | number } = GenericContent> e
  * @param {ItemProps<T>} props
  * @returns JSX.Elment
  */
-export function ItemComponent<T extends { Id: string | number }>(props: ItemProps<T>) {
+export function ItemComponent<T extends GenericContent = GenericContent>(props: ItemProps<T>) {
   const renderItem = props.renderItem || defaultRender
   const onClick = (event: React.MouseEvent) => {
-    props.onClickHandler && props.onClickHandler(event, props)
+    props.onClickHandler && props.onClickHandler(event, props.node)
   }
   const onDoubleClick = (event: React.MouseEvent) => {
-    props.onDoubleClickHandler && props.onDoubleClickHandler(event, props)
+    props.onDoubleClickHandler && props.onDoubleClickHandler(event, props.node)
   }
 
   return (
     <div onClick={onClick} onDoubleClick={onDoubleClick} className={props.className}>
-      {renderItem(props)}
+      {renderItem(props.node)}
     </div>
   )
 }
 
-function defaultRender<T extends { Id: string | number }>(props: ItemProps<T>) {
-  return <li>{props.nodeData && props.nodeData.Id}</li>
+function defaultRender<T extends GenericContent>(props: T) {
+  return <li>{props && props.Id}</li>
 }

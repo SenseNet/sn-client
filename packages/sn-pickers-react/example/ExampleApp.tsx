@@ -29,7 +29,7 @@ const loadParent = async (id?: number) => {
     idOrPath: id as number,
     oDataOptions: { ...pickerParentOptions },
   })
-  return { nodeData: result.d }
+  return result.d
 }
 
 // tslint:disable-next-line: completed-docs
@@ -49,9 +49,7 @@ export const App = () => {
       throw error
     }
 
-    return result.d.results.map(content => {
-      return { nodeData: content }
-    })
+    return result.d.results
   }
 
   return (

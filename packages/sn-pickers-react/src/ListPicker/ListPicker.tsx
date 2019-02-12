@@ -6,17 +6,29 @@ import { GenericContent, Workspace } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import React, { useState } from 'react'
 import { useAsync } from 'react-use'
-import { Item, ItemComponent, ItemProps } from './Item'
+import { ItemComponent } from './Item'
 
 /**
  * Properties for list picker component.
  * @interface ListPickerProps
  * @template T
  */
-export interface ListPickerProps<T extends { Id: string | number }> {
-  loadItems: (path: string) => Promise<Array<Item<T>>>
-  loadParent: (id?: number) => Promise<Item<T>>
+export interface ListPickerProps<T extends GenericContent = GenericContent> {
+  loadItems: (path: string) => Promise<T[]>
+  loadParent: (id?: number) => Promise<T>
+  /**
+   * Items to render.
+   * @type {T[]}
+   * @memberof ListPickerProps
+   */
+  items?: T[]
   currentPath?: string
+  parentId?: number
+  /**
+   * Called before navigation. Can be used to clear the selected state.
+   * @memberof ListPickerProps
+   */
+  onNavigation?: () => void
   onSelectionChanged?: (node: T) => void
   /**
    * Render a loading component when loadItems called.
@@ -44,7 +56,7 @@ export interface ListPickerProps<T extends { Id: string | number }> {
    * </ListItem>
    * )
    */
-  renderItem?: (props: ItemProps<T>) => JSX.Element
+  renderItem?: (props: T) => JSX.Element
 }
 
 /**
@@ -52,36 +64,42 @@ export interface ListPickerProps<T extends { Id: string | number }> {
  */
 export function ListPickerComponent<T extends GenericContent = GenericContent>(props: ListPickerProps<T>) {
   const [currentPath, setCurrentPath] = useState(props.currentPath || '')
-  const [parentId, setParentId] = useState<number | undefined>(undefined)
+  const [parentId, setParentId] = useState<number | undefined>(props.parentId)
   const [selectedId, setSelectedId] = useState<string | number>(0)
 
   const { loading, value: items, error } = useAsync(() => props.loadItems(currentPath), [currentPath])
   const parent = useAsync(() => props.loadParent(parentId), [parentId])
 
-  const onItemClickHandler = (event: React.MouseEvent, node: Item<T>) => {
+  const onItemClickHandler = (event: React.MouseEvent, node: T) => {
     event.preventDefault()
-    props.onSelectionChanged && props.onSelectionChanged(node.nodeData)
-    setSelectedId(node.nodeData.Id)
+    // Don't pass parent value on selection.
+    // Should this be an option to let the user pass that as well?
+    if (parent.value && parent.value.Id === node.Id) {
+      return
+    }
+    props.onSelectionChanged && props.onSelectionChanged(node)
+    setSelectedId(node.Id)
   }
 
-  const onItemDoubleClickHandler = (event: React.MouseEvent, node: Item<T>) => {
+  const onItemDoubleClickHandler = (event: React.MouseEvent, node: T) => {
     event.preventDefault()
-    setParentIdOnDoubleClick(node.nodeData)
+    props.onNavigation && props.onNavigation()
+    setParentIdOnDoubleClick(node)
 
     // Navigation to parent
-    if (parent.value && node.nodeData.Id === parentId) {
-      setCurrentPath(parent.value.nodeData.Path)
+    if (parent.value && node.Id === parentId) {
+      setCurrentPath(parent.value.Path)
     } else {
-      setCurrentPath(node.nodeData.Path)
+      setCurrentPath(node.Path)
     }
   }
 
-  const defaultRenderItem = (renderItemProps: ItemProps<T>) => (
-    <ListItem button={true} selected={renderItemProps.nodeData.Id === selectedId}>
+  const defaultRenderItem = (node: T) => (
+    <ListItem button={true} selected={node.Id === selectedId}>
       <ListItemIcon>
         <Icon type={iconType.materialui} iconName="folder" />
       </ListItemIcon>
-      <ListItemText primary={renderItemProps.nodeData!.Name} />
+      <ListItemText primary={node.DisplayName} />
     </ListItem>
   )
 
@@ -99,17 +117,17 @@ export function ListPickerComponent<T extends GenericContent = GenericContent>(p
     <List>
       {parent.value !== undefined ? (
         <ItemComponent
+          node={{ ...parent.value, DisplayName: '..' }}
           onClickHandler={onItemClickHandler}
           onDoubleClickHandler={onItemDoubleClickHandler}
-          nodeData={{ Name: '..', DisplayName: '..' } as any}
           renderItem={renderItem}
         />
       ) : null}
       {items &&
         items.map(item => (
           <ItemComponent
-            key={item.nodeData.Id}
-            nodeData={item.nodeData}
+            key={item.Id}
+            node={item}
             onClickHandler={onItemClickHandler}
             onDoubleClickHandler={onItemDoubleClickHandler}
             renderItem={renderItem}
@@ -121,12 +139,12 @@ export function ListPickerComponent<T extends GenericContent = GenericContent>(p
   function setParentIdOnDoubleClick(node: T) {
     // If parent value is set (there were already some navigation) and clicked, set parent id to parent's parent id
     // otherwise set it to clicked item's parent id.
-    if (parent.value && parent.value.nodeData.Id === node.Id) {
-      const parentData = parent.value.nodeData
+    if (parent.value && parent.value.Id === node.Id) {
+      const parentData = parent.value
       if ((parentData.Workspace as Workspace).Id === parentData.Id) {
         setParentId(undefined)
       } else {
-        setParentId(parent.value!.nodeData.ParentId)
+        setParentId(parent.value.ParentId)
       }
     } else {
       setParentId(node.ParentId)

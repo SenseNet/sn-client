@@ -1,38 +1,32 @@
+import { GenericContent } from '@sensenet/default-content-types'
 import { shallow } from 'enzyme'
 import React from 'react'
-import { ItemComponent, ItemProps } from '../src/ListPicker'
-import { MockData } from './mocks/items'
+import { ItemComponent } from '../src/ListPicker'
+import { mockContent } from './mocks/items'
 
 describe('Item component', () => {
   it('should return a div with a rendered text', () => {
-    const renderItem = (item: ItemProps<MockData>) => <div>{item.nodeData && item.nodeData.text}</div>
-    const text = 'some text'
-    const wrapper = shallow(<ItemComponent<MockData> nodeData={{ text, Id: 1 }} renderItem={renderItem} />)
+    const renderItem = (item: GenericContent) => <div>{item.Name}</div>
+    const wrapper = shallow(<ItemComponent node={mockContent} renderItem={renderItem} />)
     expect(wrapper.find('div')).toBeTruthy()
     expect(
       wrapper
         .find('div')
         .last()
         .text(),
-    ).toBe(text)
+    ).toBe(mockContent.Name)
   })
 
   it('should render the Id without renderItem props', () => {
-    const wrapper = shallow(<ItemComponent<MockData> nodeData={{ text: 'some text', Id: 1 }} />)
+    const wrapper = shallow(<ItemComponent node={mockContent} />)
     expect(wrapper.find('li')).toBeTruthy()
     expect(wrapper.find('li').text()).toBe('1')
   })
 
   it('click action should work', () => {
-    const renderItem = (item: ItemProps<MockData>) => <div>{item.nodeData && item.nodeData.text}</div>
+    const renderItem = (item: GenericContent) => <div>{item.Name}</div>
     const clickHandler = jest.fn()
-    const wrapper = shallow(
-      <ItemComponent<MockData>
-        onClickHandler={clickHandler}
-        nodeData={{ text: 'some text', Id: 1 }}
-        renderItem={renderItem}
-      />,
-    )
+    const wrapper = shallow(<ItemComponent onClickHandler={clickHandler} node={mockContent} renderItem={renderItem} />)
     wrapper
       .find('div')
       .first()
@@ -42,9 +36,7 @@ describe('Item component', () => {
 
   it('double click action should work', () => {
     const doubleClickHandler = jest.fn()
-    const wrapper = shallow(
-      <ItemComponent<MockData> onDoubleClickHandler={doubleClickHandler} nodeData={{ text: 'some text', Id: 1 }} />,
-    )
+    const wrapper = shallow(<ItemComponent onDoubleClickHandler={doubleClickHandler} node={mockContent} />)
     wrapper.find('div').simulate('doubleClick')
     expect(doubleClickHandler).toBeCalled()
   })
