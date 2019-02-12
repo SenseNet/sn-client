@@ -1,7 +1,10 @@
 import { ODataCollectionResponse, ODataParams } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
+import { isFromAction } from '@sensenet/redux'
 import { Reducer } from 'redux'
 import {
+  finishLoadingChildren,
+  finishLoadingParent,
   select,
   setActive,
   setAncestors,
@@ -101,80 +104,91 @@ export const defaultState: DocumentLibraryState = {
 }
 
 export const documentLibrary: Reducer<DocumentLibraryState> = (state = defaultState, action) => {
-  switch (action.type) {
-    case 'DMS_DOCLIB_LOADING_PARENT':
-      return {
-        ...state,
-        isLoadingParent: true,
-        parentIdOrPath: (action as ReturnType<typeof startLoadingParent>).idOrPath,
-      }
-    case 'DMS_DOCLIB_FINISH_LOADING_PARENT':
-      return {
-        ...state,
-        isLoadingParent: false,
-      }
-    case 'DMS_DOCLIB_LOADING_CHILDREN':
-      return {
-        ...state,
-        isLoadingChildren: true,
-        parentIdOrPath: (action as ReturnType<typeof startLoadingChildren>).idOrPath,
-      }
-    case 'DMS_DOCLIB_FINISH_LOADING_CHILDREN':
-      return {
-        ...state,
-        isLoadingChildren: false,
-      }
-    case 'DMS_DOCLIB_SET_PARENT':
-      return {
-        ...state,
-        parent: (action as ReturnType<typeof setParent>).content,
-      }
-    case 'DMS_DOCLIB_SET_ANCESTORS':
-      return {
-        ...state,
-        ancestors: (action as ReturnType<typeof setAncestors>).ancestors,
-      }
-    case 'DMS_DOCLIB_SET_ITEMS':
-      return {
-        ...state,
-        items: (action as ReturnType<typeof setItems>).items,
-        selected: [
-          ...state.selected.filter(s =>
-            action.items.d.results.find((i: GenericContent) => i.Id === s.Id) ? true : false,
-          ),
-        ],
-      }
-    case 'DMS_DOCLIB_SET_ERROR':
-      return {
-        ...state,
-        error: (action as ReturnType<typeof setError>).error,
-      }
-    case 'DMS_DOCLIB_SELECT':
-      return {
-        ...state,
-        selected: (action as ReturnType<typeof select>).selected,
-      }
-    case 'DMS_DOCLIB_SET_ACTIVE':
-      return {
-        ...state,
-        active: (action as ReturnType<typeof setActive>).active,
-      }
-    case 'DMS_DOCLIB_SET_CHILDREN_OPTIONS':
-      return {
-        ...state,
-        childrenOptions: {
-          ...state.childrenOptions,
-          ...(action as ReturnType<typeof updateChildrenOptions>).odataOptions,
-        },
-      }
-    case 'DMS_DOCLIB_UPDATE_SEARCH_STATE':
-      return {
-        ...state,
-        searchState: {
-          ...state.searchState,
-          ...(action as ReturnType<typeof updateSearchValues>).value,
-        },
-      }
+  if (isFromAction(action, startLoadingParent)) {
+    return {
+      ...state,
+      isLoadingParent: true,
+      parentIdOrPath: action.idOrPath,
+    }
+  }
+  if (isFromAction(action, finishLoadingParent)) {
+    return {
+      ...state,
+      isLoadingParent: false,
+    }
+  }
+  if (isFromAction(action, startLoadingChildren)) {
+    return {
+      ...state,
+      isLoadingChildren: true,
+      parentIdOrPath: action.idOrPath,
+    }
+  }
+  if (isFromAction(action, finishLoadingChildren)) {
+    return {
+      ...state,
+      isLoadingChildren: false,
+    }
+  }
+
+  if (isFromAction(action, setParent)) {
+    return {
+      ...state,
+      parent: action.content,
+    }
+  }
+  if (isFromAction(action, setAncestors)) {
+    return {
+      ...state,
+      ancestors: action.ancestors,
+    }
+  }
+  if (isFromAction(action, setItems)) {
+    return {
+      ...state,
+      items: action.items,
+      selected: [
+        ...state.selected.filter(s =>
+          action.items.d.results.find((i: GenericContent) => i.Id === s.Id) ? true : false,
+        ),
+      ],
+    }
+  }
+  if (isFromAction(action, setError)) {
+    return {
+      ...state,
+      error: action.error,
+    }
+  }
+  if (isFromAction(action, select)) {
+    return {
+      ...state,
+      selected: action.selected,
+    }
+  }
+  if (isFromAction(action, setActive)) {
+    return {
+      ...state,
+      active: action.active,
+    }
+  }
+  if (isFromAction(action, updateChildrenOptions)) {
+    return {
+      ...state,
+      childrenOptions: {
+        ...state.childrenOptions,
+        ...action.odataOptions,
+      },
+    }
+  }
+  if (isFromAction(action, updateSearchValues)) {
+    return {
+      ...state,
+      searchState: {
+        ...state.searchState,
+        ...action.value,
+      },
+    }
   }
   return state
 }
