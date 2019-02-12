@@ -238,7 +238,7 @@ export const getGroups = (memberships: ODataCollectionResponse<Group>) => ({
           expand: ['Actions'] as any,
         },
       })
-      const comparedList: Group[] = arrayDiff(groups.d.results, memberships.d.results)
+      const comparedList = arrayDiff(groups.d.results, memberships.d.results)
       const newGroups = {
         d: {
           __count: comparedList.length,

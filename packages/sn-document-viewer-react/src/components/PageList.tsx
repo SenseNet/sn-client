@@ -150,8 +150,8 @@ export class PageListComponent extends React.Component<
     })
 
     const scrollState = (this.viewPort && this.viewPort.scrollTop) || 0
-    let marginTop: number = 0
-    let pagesToSkip: number = 0
+    let marginTop = 0
+    let pagesToSkip = 0
 
     while (
       pageNo !== undefined
@@ -162,15 +162,15 @@ export class PageListComponent extends React.Component<
       pagesToSkip++
     }
 
-    let pagesToTake: number = 1
-    let pagesHeight: number = 0
+    let pagesToTake = 1
+    let pagesHeight = 0
 
     while (pages[pagesToSkip + pagesToTake] && pagesHeight < this.state.viewportHeight + props.tolerance) {
       pagesHeight += pages[pagesToSkip + pagesToTake].Height + props.padding * 2
       pagesToTake++
     }
 
-    let marginBottom: number = 0
+    let marginBottom = 0
     for (let i = pagesToSkip + pagesToTake - 1; i < pages.length - 1; i++) {
       marginBottom += pages[i].Height + props.padding * 2
     }

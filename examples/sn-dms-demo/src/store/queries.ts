@@ -1,4 +1,4 @@
-import { ODataBatchResponse, ODataParams, Repository } from '@sensenet/client-core'
+import { ODataParams, Repository } from '@sensenet/client-core'
 import { Query } from '@sensenet/default-content-types'
 import { createAction, isFromAction } from '@sensenet/redux'
 import { deleteContent, PromiseReturns, updateContent } from '@sensenet/redux/dist/Actions'
@@ -11,6 +11,7 @@ export type QueryType = 'Private' | 'Public' | 'NonDefined'
 export const saveQuery = createAction(
   (idOrPath: string | number, query: string, displayName: string, queryType = 'Private') => ({
     type: 'SN_DMS_SAVE_QUERY',
+    // tslint:disable-next-line: no-unnecessary-type-annotation
     inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
       const repo = options.getInjectable(Repository)
       await repo.executeAction({
@@ -30,6 +31,7 @@ export const saveQuery = createAction(
 
 export const getQueries = createAction((idOrPath: string | number, queryType = 'Private', force: boolean = false) => ({
   type: 'SN_DMS_GET_QUERIES',
+  // tslint:disable-next-line: no-unnecessary-type-annotation
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const state = options.getState()
     if (force === false && state.dms.queries.idOrPath === idOrPath && state.dms.queries.queryType === queryType) {
@@ -37,7 +39,7 @@ export const getQueries = createAction((idOrPath: string | number, queryType = '
     }
     options.dispatch(queriesRequested(idOrPath, queryType))
     const repo = options.getInjectable(Repository)
-    const q: ODataBatchResponse<Query> = await repo.executeAction({
+    const q = await repo.executeAction({
       idOrPath,
       name: 'GetQueries',
       method: 'GET',

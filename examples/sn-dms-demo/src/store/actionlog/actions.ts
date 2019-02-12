@@ -6,7 +6,7 @@ import { IInjectableActionCallbackParams } from 'redux-di-middleware'
 import { resources } from '../../assets/resources'
 import { rootStateType } from '../../store/rootReducer'
 
-export const logActions: string[] = ['CheckIn', 'Checkout', 'UndoCheckOut', 'Approve', 'Reject', 'Publish']
+export const logActions = ['CheckIn', 'Checkout', 'UndoCheckOut', 'Approve', 'Reject', 'Publish']
 
 export interface MessageEntry {
   verbosity: 'info' | 'error'
@@ -37,6 +37,7 @@ export const readLogEntries = createAction((entries: LogEntry[]) => ({
 
 export const initLog = createAction(() => ({
   type: 'SN_DMS_INIT_LOG',
+  // tslint:disable-next-line: no-unnecessary-type-annotation
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const repository = options.getInjectable(Repository)
     const eventHub = new EventHub(repository)

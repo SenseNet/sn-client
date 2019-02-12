@@ -106,10 +106,7 @@ export const setLocalization = (localization: Partial<LocalizationStateType>) =>
  * @param state the current state
  * @param action the action to dispatch
  */
-export const localizationReducer: Reducer<LocalizationStateType> = (
-  state: LocalizationStateType = defaultLocalization,
-  action,
-) => {
+export const localizationReducer: Reducer<LocalizationStateType> = (state = defaultLocalization, action) => {
   switch (action.type) {
     case 'SN_DOCVIEWER_SET_LOCALIZATION': {
       return {

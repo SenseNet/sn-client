@@ -185,7 +185,7 @@ export class JwtService implements AuthenticationService {
     try {
       await this.updateLock.acquire()
       this.state.setValue(LoginState.Pending)
-      const authToken: string = Buffer.from(`${username}:${password}`).toString('base64')
+      const authToken = Buffer.from(`${username}:${password}`).toString('base64')
       const response = await this.repository.fetch(
         PathHelper.joinPaths(this.repository.configuration.repositoryUrl, 'sn-token/login'),
         {

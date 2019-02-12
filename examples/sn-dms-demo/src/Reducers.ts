@@ -29,7 +29,7 @@ export const email: Reducer<string, Action & { email?: string }> = (state = '', 
       return state
   }
 }
-export const registrationError: Reducer<string | null, Action> = (state: string | null = null, action: AnyAction) => {
+export const registrationError: Reducer<string | null, Action> = (state = null, action: AnyAction) => {
   switch (action.type) {
     case 'USER_REGISTRATION_FAILURE':
       return resources.USER_IS_ALREADY_REGISTERED
@@ -37,7 +37,7 @@ export const registrationError: Reducer<string | null, Action> = (state: string 
       return state
   }
 }
-export const isRegistering: Reducer<boolean> = (state: boolean = false, action: AnyAction) => {
+export const isRegistering: Reducer<boolean> = (state = false, action: AnyAction) => {
   switch (action.type) {
     case 'USER_REGISTRATION_REQUEST':
       return true
@@ -49,7 +49,7 @@ export const isRegistering: Reducer<boolean> = (state: boolean = false, action: 
   }
 }
 
-export const registrationDone: Reducer<boolean> = (state: boolean = false, action: AnyAction) => {
+export const registrationDone: Reducer<boolean> = (state = false, action: AnyAction) => {
   switch (action.type) {
     case 'USER_REGISTRATION_SUCCESS':
       return true
@@ -62,7 +62,7 @@ export const registrationDone: Reducer<boolean> = (state: boolean = false, actio
   }
 }
 
-export const captcha: Reducer<boolean> = (state: boolean = false, action: AnyAction) => {
+export const captcha: Reducer<boolean> = (state = false, action: AnyAction) => {
   switch (action.type) {
     case 'VERIFY_CAPTCHA_SUCCESS':
       return true
@@ -79,7 +79,7 @@ export const register = combineReducers({
   captcha,
 })
 
-export const open: Reducer<boolean> = (state: boolean = false, action: AnyAction) => {
+export const open: Reducer<boolean> = (state = false, action: AnyAction) => {
   switch (action.type) {
     case 'OPEN_ACTIONMENU':
       return true
@@ -90,7 +90,7 @@ export const open: Reducer<boolean> = (state: boolean = false, action: AnyAction
   }
 }
 
-export const actions: Reducer<ActionModel[]> = (state: ActionModel[] = [], action: AnyAction) => {
+export const actions: Reducer<ActionModel[]> = (state = [], action: AnyAction) => {
   switch (action.type) {
     case 'LOAD_CONTENT_ACTIONS_SUCCESS':
       const result: { d: { Actions: ActionModel[] } } = (action.result as Actions.PromiseReturns<
@@ -104,7 +104,7 @@ export const actions: Reducer<ActionModel[]> = (state: ActionModel[] = [], actio
   }
 }
 
-export const id: Reducer<number | null> = (state: number | null = null, action: AnyAction) => {
+export const id: Reducer<number | null> = (state = null, action: AnyAction) => {
   switch (action.type) {
     case 'OPEN_ACTIONMENU':
       return action.id || null
@@ -248,7 +248,7 @@ export const isSelectionModeOn: Reducer<boolean> = (state = false, action: AnyAc
   }
 }
 
-export const userActions: Reducer<ActionModel[]> = (state: ActionModel[] = [], action: AnyAction) => {
+export const userActions: Reducer<ActionModel[]> = (state = [], action: AnyAction) => {
   switch (action.type) {
     case 'LOAD_USER_ACTIONS_SUCCESS':
       const result = action.result as Actions.PromiseReturns<typeof loadUserActions>
@@ -258,7 +258,7 @@ export const userActions: Reducer<ActionModel[]> = (state: ActionModel[] = [], a
   }
 }
 
-export const addNewTypes: Reducer<ActionModel[]> = (state: ActionModel[] = [], action: AnyAction) => {
+export const addNewTypes: Reducer<ActionModel[]> = (state = [], action: AnyAction) => {
   switch (action.type) {
     case 'LOAD_TYPES_TO_ADDNEW_LIST_SUCCESS':
       const result = action.result as Actions.PromiseReturns<typeof loadTypesToAddNewList>
@@ -435,7 +435,7 @@ export const viewer: Reducer<{ isOpened: boolean; currentDocumentId: number }, A
   return state
 }
 
-export const isOpened: Reducer<boolean> = (state: boolean = false, action: AnyAction) => {
+export const isOpened: Reducer<boolean> = (state = false, action: AnyAction) => {
   switch (action.type) {
     case 'OPEN_DIALOG':
       return true
@@ -445,10 +445,7 @@ export const isOpened: Reducer<boolean> = (state: boolean = false, action: AnyAc
   return state
 }
 
-export const onClose: Reducer<() => void | undefined> = (
-  state: () => void | undefined = () => undefined,
-  action: AnyAction,
-) => {
+export const onClose: Reducer<() => void | undefined> = (state = () => undefined, action: AnyAction) => {
   switch (action.type) {
     case 'OPEN_DIALOG':
       return action.onClose
@@ -471,7 +468,7 @@ export const dialogContent: Reducer<React.Component | undefined> = (
   return state
 }
 
-export const dialogTitle: Reducer<string> = (state: string = '', action: AnyAction) => {
+export const dialogTitle: Reducer<string> = (state = '', action: AnyAction) => {
   switch (action.type) {
     case 'OPEN_DIALOG':
       return action.title
@@ -498,7 +495,7 @@ export const versions = (state: GenericContent[] = [], action: AnyAction) => {
   }
 }
 
-export const menuOpen: Reducer<boolean> = (state: boolean = false, action: AnyAction) => {
+export const menuOpen: Reducer<boolean> = (state = false, action: AnyAction) => {
   switch (action.type) {
     case 'HANDLE_DRAWERMENU':
       return action.open

@@ -12,7 +12,7 @@ export const currentUser: Reducer<User | undefined> = (state: User | null = null
 }
 
 export const memberships: Reducer<ODataCollectionResponse<GenericContent>> = (
-  state: ODataCollectionResponse<GenericContent> = { d: { __count: 0, results: [] } },
+  state = { d: { __count: 0, results: [] } },
   action: AnyAction,
 ) => {
   switch (action.type) {
@@ -25,7 +25,7 @@ export const memberships: Reducer<ODataCollectionResponse<GenericContent>> = (
   }
 }
 
-export const error: Reducer<any> = (state: any = null, action: AnyAction) => {
+export const error: Reducer<any> = (state = null, action: AnyAction) => {
   switch (action.type) {
     case 'DMS_USERSANDGROUPS_SET_ERROR':
       return action.error
@@ -33,7 +33,7 @@ export const error: Reducer<any> = (state: any = null, action: AnyAction) => {
       return state
   }
 }
-export const isLoading: Reducer<boolean> = (state: boolean = false, action: AnyAction) => {
+export const isLoading: Reducer<boolean> = (state = false, action: AnyAction) => {
   switch (action.type) {
     case 'DMS_USERSANDGROUPS_LOADING':
       return true
@@ -44,7 +44,7 @@ export const isLoading: Reducer<boolean> = (state: boolean = false, action: AnyA
   }
 }
 
-export const isAdmin: Reducer<boolean> = (state: boolean = false, action: AnyAction) => {
+export const isAdmin: Reducer<boolean> = (state = false, action: AnyAction) => {
   switch (action.type) {
     case 'DMS_USER_ISADMIN':
       return action.admin
@@ -53,7 +53,7 @@ export const isAdmin: Reducer<boolean> = (state: boolean = false, action: AnyAct
   }
 }
 
-export const ancestors: Reducer<GenericContent[]> = (state: GenericContent[] = [], action: AnyAction) => {
+export const ancestors: Reducer<GenericContent[]> = (state = [], action: AnyAction) => {
   switch (action.type) {
     case 'DMS_USERSANDGROUPS_SET_ANCESTORS':
       return action.ancestors
@@ -62,7 +62,7 @@ export const ancestors: Reducer<GenericContent[]> = (state: GenericContent[] = [
   }
 }
 
-export const selected: Reducer<GenericContent[]> = (state: GenericContent[] = [], action: AnyAction) => {
+export const selected: Reducer<GenericContent[]> = (state = [], action: AnyAction) => {
   switch (action.type) {
     case 'DMS_USERSANDGROUPS_SET_ANCESTORS':
       return action.ancestors
@@ -94,10 +94,7 @@ const defaultOptions = {
   top: loadChunkSize,
 } as ODataParams<GenericContent>
 
-export const grouplistOptions: Reducer<ODataParams<GenericContent>> = (
-  state: ODataParams<GenericContent> = defaultOptions,
-  action: AnyAction,
-) => {
+export const grouplistOptions: Reducer<ODataParams<GenericContent>> = (state = defaultOptions, action: AnyAction) => {
   switch (action.type) {
     case 'DMS_USERSANDGROUPS_SET_CHILDREN_OPTIONS':
       return action.odataOptions
@@ -106,7 +103,7 @@ export const grouplistOptions: Reducer<ODataParams<GenericContent>> = (
   }
 }
 
-export const active: Reducer<GenericContent | null> = (state: GenericContent | null = null, action: AnyAction) => {
+export const active: Reducer<GenericContent | null> = (state = null, action: AnyAction) => {
   switch (action.type) {
     case 'DMS_USERSANDGROUPS_SET_ACTIVE':
       return action.active
@@ -127,7 +124,7 @@ export const user = combineReducers({
   active,
 })
 
-export const selectedGroups: Reducer<GenericContent[]> = (state: GenericContent[] = [], action: AnyAction) => {
+export const selectedGroups: Reducer<GenericContent[]> = (state = [], action: AnyAction) => {
   switch (action.type) {
     case 'DMS_USERSANDGROUPS_SELECT_GROUP':
       return [...action.groups]
@@ -142,7 +139,7 @@ export const selectedGroups: Reducer<GenericContent[]> = (state: GenericContent[
   }
 }
 
-export const all: Reducer<GenericContent[]> = (state: GenericContent[] = [], action: AnyAction) => {
+export const all: Reducer<GenericContent[]> = (state = [], action: AnyAction) => {
   switch (action.type) {
     case 'DMS_USERSANDGROUPS_SET_GROUPS':
       return action.groups.d.results
@@ -151,7 +148,7 @@ export const all: Reducer<GenericContent[]> = (state: GenericContent[] = [], act
   }
 }
 
-export const searchTerm: Reducer<string> = (state: string = '', action: AnyAction) => {
+export const searchTerm: Reducer<string> = (state = '', action: AnyAction) => {
   switch (action.type) {
     case 'DMS_USERSANDGROUPS_SEARCH_GROUPS':
       return action.text

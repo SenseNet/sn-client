@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux'
-import { Reducer } from 'redux'
 import { documentStateReducer, DocumentStateType } from './Document'
 import { localizationReducer, LocalizationStateType } from './Localization'
 
@@ -36,7 +35,7 @@ export interface RootReducerType {
 /**
  * The root reducer instance with the sensenetDocumentViewer reducer instance
  */
-export const rootReducer: Reducer<RootReducerType> = combineReducers<RootReducerType>({
+export const rootReducer = combineReducers<RootReducerType>({
   sensenetDocumentViewer: combineReducers({
     documentState: documentStateReducer,
     previewImages: previewImagesReducer,
