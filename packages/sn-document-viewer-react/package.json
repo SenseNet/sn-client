@@ -63,6 +63,8 @@
     "@material-ui/icons": "^3.0.1",
     "@sensenet/client-utils": "^1.4.2",
     "@sensenet/control-mapper": "^1.0.4",
+    "@sensenet/client-core": "^1.4.0",
+    "@sensenet/default-content-types": "1.1.2",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-redux": "^6.0.0",
