@@ -22,9 +22,6 @@ import {
 } from '../../store/picker/actions'
 import { rootStateType } from '../../store/rootReducer'
 
-// tslint:disable-next-line:no-var-requires
-const sensenetLogo = require('../../assets/sensenet_white.png')
-
 const mapStateToProps = (state: rootStateType) => {
   return {
     open: state.dms.picker.isOpened,
@@ -97,7 +94,6 @@ class Picker extends React.Component<ReturnType<typeof mapStateToProps> & typeof
   }
   public handleClose = () => {
     this.props.onClose()
-    this.props.setBackLink(true)
   }
   public isLastItem = () => {
     const { parent, closestWs } = this.props
@@ -127,24 +123,15 @@ class Picker extends React.Component<ReturnType<typeof mapStateToProps> & typeof
     }
   }
   public render() {
-    const { backLink, open, parent } = this.props
+    const { open, parent } = this.props
     return (
       <MediaQuery minDeviceWidth={700}>
         {matches => (
           <MuiThemeProvider theme={pickerTheme}>
             {matches ? (
               <Dialog open={open} onClose={this.handleClose}>
-                <DialogTitle>
+                <DialogTitle disableTypography={true}>
                   <Toolbar>
-                    {backLink ? (
-                      <IconButton color="inherit" onClick={() => this.handleClickBack()}>
-                        <Icon type={iconType.materialui} iconName="arrow_back" style={{ color: '#fff' }} />
-                      </IconButton>
-                    ) : (
-                      <div style={styles.snButton}>
-                        <img src={sensenetLogo} alt="sensenet" aria-label="sensenet" style={styles.snLogo} />
-                      </div>
-                    )}
                     <Typography variant="h6" color="inherit">
                       {parent ? parent.DisplayName : 'Move content'}
                     </Typography>
@@ -170,15 +157,6 @@ class Picker extends React.Component<ReturnType<typeof mapStateToProps> & typeof
                     </Button>
                   </Toolbar>
                   <Toolbar style={styles.mobileToolbar}>
-                    {backLink ? (
-                      <IconButton color="inherit" onClick={() => this.handleClickBack()}>
-                        <Icon type={iconType.materialui} iconName="arrow_back" />
-                      </IconButton>
-                    ) : (
-                      <div style={styles.snButton}>
-                        <img src={sensenetLogo} alt="sensenet" aria-label="sensenet" style={styles.snLogo} />
-                      </div>
-                    )}
                     <Typography variant="h6" color="inherit" style={styles.mobileContentTitle}>
                       {parent ? parent.DisplayName : 'Move content'}
                     </Typography>

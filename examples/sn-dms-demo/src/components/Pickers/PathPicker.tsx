@@ -1,25 +1,25 @@
 import Button from '@material-ui/core/Button'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import IconButton from '@material-ui/core/IconButton'
+import ListItem from '@material-ui/core/ListItem/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
 
 import { Injector } from '@furystack/inject'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import ListItem from '@material-ui/core/ListItem/ListItem'
 import { ODataCollectionResponse, ODataParams, Repository } from '@sensenet/client-core'
 import { Folder, GenericContent } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
-import { ItemProps, ListPickerComponent } from '@sensenet/pickers-react'
+import { ListPickerComponent } from '@sensenet/pickers-react'
 import React from 'react'
 import Scrollbars from 'react-custom-scrollbars'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import * as DMSActions from '../../Actions'
 import { resources } from '../../assets/resources'
-import { loadPickerItems, loadPickerParent, selectPickerItem, setBackLink } from '../../store/picker/actions'
+import { selectPickerItem } from '../../store/picker/actions'
 import { rootStateType } from '../../store/rootReducer'
 import AddNewDialog from '../Dialogs/AddNewDialog'
 
@@ -31,42 +31,31 @@ interface PathPickerProps {
   mode: string
   showAddFolder?: boolean
   loadOptions?: ODataParams<GenericContent>
-  currentPath?: string
+  currentContent?: GenericContent
+  currentParent?: GenericContent
 }
 
 const mapStateToProps = (state: rootStateType) => {
   return {
     selectedTarget: state.dms.picker.selected,
-    items: state.dms.picker.items,
     pickerClose: state.dms.picker.pickerOnClose,
-    parent: state.dms.picker.parent,
   }
 }
 
 const mapDispatchToProps = {
   selectPickerItem,
-  loadPickerParent,
-  loadPickerItems,
   openDialog: DMSActions.openDialog,
-  closeDialog: DMSActions.closeDialog,
-  setBackLink,
-}
-
-interface PathPickerState {
-  items: GenericContent[]
 }
 
 class PathPicker extends React.Component<
-  PathPickerProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
-  PathPickerState
+  PathPickerProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 > {
-  public state = {
-    items: this.props.items,
-  }
+  private items: GenericContent[] = []
 
   public handleClose = () => {
     this.props.pickerClose()
   }
+
   public handleSubmit = () => {
     const { dialogComponent, dialogTitle, dialogCallback } = this.props
     if (dialogComponent) {
@@ -74,12 +63,9 @@ class PathPicker extends React.Component<
     }
     this.props.onSelect && this.props.onSelect(this.props.selectedTarget[0])
   }
-  public isSelected = (id: number) => {
-    return this.props.selectedTarget.findIndex(item => item.Id === id) > -1
-  }
 
   public hasChildren = (id: number) => {
-    const content = this.state.items.find(item => item.Id === id) as any
+    const content = this.items.find(item => item.Id === id) as any
     if (!content) {
       return false
     }
@@ -90,28 +76,32 @@ class PathPicker extends React.Component<
         : false
       : false
   }
+
   public handleAddNewClose = () => {
     // TODO
   }
   public handleAddNewClick = () => {
-    const { parent, openDialog } = this.props
+    const { currentParent, openDialog } = this.props
     openDialog(
-      <AddNewDialog parentPath={parent ? parent.Path : ''} contentTypeName="Folder" title="folder" />,
+      <AddNewDialog parentPath={currentParent ? currentParent.Path : ''} contentTypeName="Folder" title="folder" />,
       resources.ADD_NEW,
       this.handleAddNewClose,
     )
   }
 
   public onSelectionChanged = (node: GenericContent) => {
+    if (this.props.currentParent && this.props.currentParent.Id === node.Id) {
+      return
+    }
     this.props.selectPickerItem(node)
   }
 
   public loadItems = async (path: string) => {
     let result: ODataCollectionResponse<Folder>
     const repository = Injector.Default.GetInstance(Repository)
-    const pickerItemOptions: ODataParams<any> = {
-      select: ['DisplayName', 'Path', 'Id', 'Children/IsFolder'],
-      expand: ['Children'],
+    const pickerItemOptions: ODataParams<Folder> = {
+      select: ['DisplayName', 'Path', 'Id', 'Children/IsFolder'] as any,
+      expand: ['Children'] as any,
       filter: "(isOf('Folder') and not isOf('SystemFolder'))",
       metadata: 'no',
       orderby: 'DisplayName',
@@ -120,16 +110,14 @@ class PathPicker extends React.Component<
     try {
       result = await repository.loadCollection<Folder>({
         path,
-        oDataOptions: { ...(pickerItemOptions as any) },
+        oDataOptions: { ...pickerItemOptions, ...this.props.loadOptions },
       })
     } catch (error) {
       throw error
     }
 
-    this.setState({ items: result.d.results })
-    return result.d.results.map(content => {
-      return { nodeData: content }
-    })
+    this.items = result.d.results
+    return result.d.results
   }
 
   public loadParent = async (id?: number) => {
@@ -143,23 +131,23 @@ class PathPicker extends React.Component<
       idOrPath: id as number,
       oDataOptions: { ...pickerParentOptions },
     })
-    return { nodeData: result.d }
+    return result.d as GenericContent
   }
 
-  public renderItem = (renderItemProps: ItemProps<GenericContent>) => (
-    <ListItem button={true} selected={this.isSelected(renderItemProps.nodeData.Id)}>
+  public renderItem = (renderItemProps: GenericContent) => (
+    <ListItem button={true} selected={this.props.selectedTarget.some(node => node.Id === renderItemProps.Id)}>
       <ListItemIcon>
         <Icon type={iconType.materialui} iconName="folder" />
       </ListItemIcon>
-      <ListItemText primary={renderItemProps.nodeData!.DisplayName} />
-      {this.hasChildren(renderItemProps.nodeData.Id) ? (
+      <ListItemText primary={renderItemProps.DisplayName} />
+      {this.hasChildren(renderItemProps.Id) ? (
         <Icon type={iconType.materialui} iconName="keyboard_arrow_right" />
       ) : null}
     </ListItem>
   )
 
   public render() {
-    const { selectedTarget } = this.props
+    const { selectedTarget, currentParent } = this.props
     return (
       <>
         <DialogContent>
@@ -171,11 +159,13 @@ class PathPicker extends React.Component<
             thumbMinSize={180}>
             <ListPickerComponent
               onSelectionChanged={this.onSelectionChanged}
+              onNavigation={() => this.props.selectPickerItem(null)}
               renderLoading={() => <CircularProgress size={50} />}
               renderItem={this.renderItem}
               loadItems={this.loadItems}
               loadParent={this.loadParent}
-              currentPath={this.props.currentPath ? this.props.currentPath : ''}
+              parentId={currentParent && currentParent.ParentId}
+              currentPath={currentParent && currentParent.Path}
             />
           </Scrollbars>
         </DialogContent>

@@ -257,7 +257,8 @@ class ActionMenu extends React.Component<
           this.props.openPicker(
             <PathPicker
               mode="MoveTo"
-              currentPath={content.Path}
+              currentContent={content}
+              currentParent={this.props.currentParent}
               dialogComponent={<MoveToConfirmDialog />}
               dialogTitle={resources.MOVE}
               dialogCallback={Actions.moveBatch as any}
