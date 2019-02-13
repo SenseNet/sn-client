@@ -32,7 +32,7 @@ export const selectedContentItems: Reducer<
 > = (state = {}, action) => {
   switch (action.type) {
     case 'DESELECT_CONTENT':
-      const res: any = Object.assign({}, state)
+      const res = Object.assign({}, state)
       delete res[(action as ReturnType<typeof deSelectContent>).content.Id]
       return res
     case 'SELECT_CONTENT':

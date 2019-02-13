@@ -41,7 +41,7 @@ import { Share } from './components/document-widgets/ShareWidget'
 /**
  * Adds a globally unique ID to the shape
  */
-const addGuidToShape: <T extends Shape>(shape: T) => T = shape => {
+const addGuidToShape = <T extends Shape>(shape: T) => {
   shape.guid = v1()
   return shape
 }
@@ -73,7 +73,7 @@ const mapDispatchToProps = {}
 /**
  * Settings object for the Document Viewer Example component
  */
-export const exampleSettings: DocumentViewerSettings = new DocumentViewerSettings({
+export const exampleSettings = new DocumentViewerSettings({
   canEditDocument: async documentData => {
     const response = await fetch(
       `${encodeURI(documentData.hostName)}/odata.svc/${encodeURI(
@@ -148,7 +148,7 @@ export const exampleSettings: DocumentViewerSettings = new DocumentViewerSetting
     }
     return allPreviews
   },
-  isPreviewAvailable: async (documentData, version, page: number) => {
+  isPreviewAvailable: async (documentData, version, page) => {
     const response = await fetch(
       `${documentData.hostName}/odata.svc/${documentData.idOrPath}/PreviewAvailable?version=${version}`,
       {

@@ -41,7 +41,7 @@ export class TypeField extends Component<TypeFieldProps, TypeFieldState> {
     name: '',
     selected: this.props.selectedTypes || [],
     schemas: [],
-    getMenuItem: (schema: Schema, isSelected: boolean) => (
+    getMenuItem: (schema, isSelected) => (
       <MenuItem key={schema.ContentTypeName} value={schema.ContentTypeName} title={schema.Description}>
         <Checkbox checked={isSelected} />
         <ListItemText primary={schema.ContentTypeName} />

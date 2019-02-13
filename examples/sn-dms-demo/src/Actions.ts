@@ -146,9 +146,7 @@ export const trackUploadProgress = async <T extends GenericContent>(
   dispatch: Dispatch,
   api: Repository,
 ) => {
-  let currentUpload: ExtendedUploadProgressInfo | undefined = getState().dms.uploads.uploads.find(
-    u => u.guid === currentValue.guid,
-  )
+  let currentUpload = getState().dms.uploads.uploads.find(u => u.guid === currentValue.guid)
   if (currentUpload) {
     dispatch(updateUploadItem(currentValue))
   } else {

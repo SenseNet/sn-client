@@ -160,6 +160,7 @@ class DashboardComponent extends React.Component<
                       <Switch>
                         <Route
                           path="/documents"
+                          // tslint:disable-next-line: no-unnecessary-type-annotation
                           component={(props: RouteComponentProps<any>) => (
                             <Switch>
                               <Route path={props.match.url + '/shared'}>
@@ -222,6 +223,7 @@ class DashboardComponent extends React.Component<
                     <Switch>
                       <Route
                         path="/documents"
+                        // tslint:disable-next-line: no-unnecessary-type-annotation
                         component={(props: RouteComponentProps<any>) => (
                           <Switch>
                             <Route path={props.match.url + '/shared'}>
@@ -248,6 +250,7 @@ class DashboardComponent extends React.Component<
                       />
                       <Route
                         path="/users"
+                        // tslint:disable-next-line: no-unnecessary-type-annotation
                         component={(props: RouteComponentProps<any>) => (
                           <Switch>
                             <Route

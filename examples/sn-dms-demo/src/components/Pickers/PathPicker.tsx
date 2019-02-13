@@ -192,7 +192,7 @@ class PathPicker extends React.Component<
                         type={iconType.materialui}
                         iconName="keyboard_arrow_right"
                         style={this.isHovered ? styles.openIcon : { display: 'none' }}
-                        onClick={(e: React.MouseEvent<HTMLElement>) => this.handleClick(e, item)}
+                        onClick={e => this.handleClick(e, item)}
                       />
                     ) : null}
                   </MenuItem>

@@ -66,7 +66,7 @@ export class ControlMapper<TControlBaseType, TClientControlSettings> {
 
   private fieldSettingDefaults: Map<
     string,
-    ((fieldSetting: FieldSetting) => new (...args: any[]) => TControlBaseType)
+    (fieldSetting: FieldSetting) => new (...args: any[]) => TControlBaseType
   > = new Map()
 
   /**
@@ -101,7 +101,7 @@ export class ControlMapper<TControlBaseType, TClientControlSettings> {
 
   private contentTypeBoundfieldSettings: Map<
     string,
-    ((fieldSetting: FieldSetting) => new (...args: any[]) => TControlBaseType)
+    (fieldSetting: FieldSetting) => new (...args: any[]) => TControlBaseType
   > = new Map()
 
   /**
@@ -149,7 +149,7 @@ export class ControlMapper<TControlBaseType, TClientControlSettings> {
 
   private fieldSettingBoundClientSettingFactories: Map<
     string,
-    ((setting: FieldSetting) => TClientControlSettings)
+    (setting: FieldSetting) => TClientControlSettings
   > = new Map()
 
   /**
@@ -188,12 +188,8 @@ export class ControlMapper<TControlBaseType, TClientControlSettings> {
   ): ControlSchema<TControlBaseType, TClientControlSettings> {
     const schema = this.getTypeSchema(contentTypeName, actionName)
     const mappings = schema.FieldSettings.map(f => {
-      const clientSetting: TClientControlSettings = this.createClientSetting(f)
-      const control: new (...args: any[]) => TControlBaseType = this.getControlForContentField(
-        contentTypeName,
-        f.Name,
-        actionName,
-      )
+      const clientSetting = this.createClientSetting(f)
+      const control = this.getControlForContentField(contentTypeName, f.Name, actionName)
       return {
         fieldSettings: f,
         clientSettings: clientSetting,

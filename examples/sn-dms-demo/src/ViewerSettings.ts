@@ -14,12 +14,12 @@ import { v1 } from 'uuid'
 /**
  * Adds a globally unique ID to the shape
  */
-const addGuidToShape: <T extends Shape>(shape: T) => T = shape => {
+const addGuidToShape = <T extends Shape>(shape: T) => {
   shape.guid = v1()
   return shape
 }
 
-export const getViewerSettings: (repo: Repository) => DocumentViewerSettings = (repo: Repository) =>
+export const getViewerSettings = (repo: Repository) =>
   new DocumentViewerSettings({
     saveChanges: async (documentData, pages) => {
       const reqBody = {
@@ -67,7 +67,7 @@ export const getViewerSettings: (repo: Repository) => DocumentViewerSettings = (
         pageAttributes: (documentData.PageAttributes && JSON.parse(documentData.PageAttributes)) || [],
       }
     },
-    isPreviewAvailable: async (documentData, version, page: number) => {
+    isPreviewAvailable: async (documentData, version, page) => {
       const responseBody = await repo.executeAction<{ page: number }, PreviewImageData & { PreviewAvailable: string }>({
         idOrPath: documentData.idOrPath,
         method: 'POST',

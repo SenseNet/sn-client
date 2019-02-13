@@ -141,7 +141,7 @@ class BreadCrumb extends React.Component<
                         ) : (
                           <Icon
                             style={styles.breadCrumbIconLast}
-                            onClick={(e: React.MouseEvent<HTMLElement>) => this.handleActionMenuClick(e, ancestor)}
+                            onClick={e => this.handleActionMenuClick(e, ancestor)}
                             type={iconType.materialui}
                             iconName={icons.arrowDropDown}
                           />
@@ -150,7 +150,7 @@ class BreadCrumb extends React.Component<
                       {!isLast ? (
                         <Icon
                           style={styles.breadCrumbIcon}
-                          onClick={(e: React.MouseEvent<HTMLElement>) => this.handleActionMenuClick(e, ancestor)}
+                          onClick={e => this.handleActionMenuClick(e, ancestor)}
                           type={iconType.materialui}
                           iconName={icons.arrowRight}
                         />
