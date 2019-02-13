@@ -52,7 +52,7 @@ export class GoogleOauthProvider implements OauthProvider {
       },
     )
     if (request.ok) {
-      const loginResponse: LoginResponse = await request.json()
+      const loginResponse = await (request.json() as Promise<LoginResponse>)
       return this.jwtService.handleAuthenticationResponse(loginResponse)
     } else {
       throw Error(request.statusText)

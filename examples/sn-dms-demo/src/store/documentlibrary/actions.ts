@@ -1,6 +1,7 @@
 import { ODataCollectionResponse, ODataParams, Repository } from '@sensenet/client-core'
 import { ValueObserver } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
+import { createAction } from '@sensenet/redux'
 import { EventHub } from '@sensenet/repository-events'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
 import { changedContent, debounceReloadOnProgress } from '../../Actions'
@@ -9,116 +10,117 @@ import { DocumentLibraryState, loadChunkSize } from './reducers'
 
 const eventObservables: Array<ValueObserver<any>> = []
 
-export const startLoadingParent = (idOrPath: number | string) => ({
+export const startLoadingParent = createAction((idOrPath: number | string) => ({
   type: 'DMS_DOCLIB_LOADING_PARENT',
   idOrPath,
-})
+}))
 
-export const finishLoadingParent = () => ({
+export const finishLoadingParent = createAction(() => ({
   type: 'DMS_DOCLIB_FINISH_LOADING_PARENT',
-})
+}))
 
-export const startLoadingChildren = (idOrPath: number | string) => ({
+export const startLoadingChildren = createAction((idOrPath: number | string) => ({
   type: 'DMS_DOCLIB_LOADING_CHILDREN',
   idOrPath,
-})
+}))
 
-export const finishLoadingChildren = () => ({
+export const finishLoadingChildren = createAction(() => ({
   type: 'DMS_DOCLIB_FINISH_LOADING_CHILDREN',
-})
-export const loadParent = <T extends GenericContent = GenericContent>(
-  idOrPath: number | string,
-  loadParentOptions?: ODataParams<T>,
-) => ({
-  type: 'DMS_DOCLIB_LOAD_PARENT',
-  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
-    const prevState = options.getState().dms.documentLibrary
-    if (prevState.parentIdOrPath === idOrPath) {
-      return
-    }
-
-    eventObservables.forEach(o => o.dispose())
-    eventObservables.length = 0
-
-    const eventHub = options.getInjectable(EventHub)
-
-    options.dispatch(startLoadingParent(idOrPath))
-    options.dispatch(startLoadingChildren(idOrPath))
-    try {
-      const repository = options.getInjectable(Repository)
-      const newParent = await repository.load<T>({
-        idOrPath,
-        oDataOptions: {
-          ...prevState.parentOptions,
-          ...loadParentOptions,
-        },
-      })
-      options.dispatch(setParent(newParent.d))
-      const emitChange = (content: GenericContent) => {
-        changedContent.push(content)
-        debounceReloadOnProgress(options.getState, options.dispatch)
+}))
+export const loadParent = createAction(
+  <T extends GenericContent = GenericContent>(idOrPath: number | string, loadParentOptions?: ODataParams<T>) => ({
+    type: 'DMS_DOCLIB_LOAD_PARENT',
+    // tslint:disable-next-line: no-unnecessary-type-annotation
+    inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
+      const prevState = options.getState().dms.documentLibrary
+      if (prevState.parentIdOrPath === idOrPath) {
+        return
       }
 
-      eventObservables.push(
-        eventHub.onCustomActionExecuted.subscribe(value => {
-          const currentItems = options.getState().dms.documentLibrary.items
-          if (
-            value.actionOptions.name !== 'GetExistingPreviewImages' &&
-            (currentItems.d.results.filter(a => a.Id === value.actionOptions.idOrPath) ||
-              currentItems.d.results.filter(a => a.Path === value.actionOptions.idOrPath))
-          ) {
-            emitChange({ ParentId: newParent.d.Id } as GenericContent)
-          }
-        }) as any,
-        eventHub.onContentCreated.subscribe(value => emitChange(value.content)) as any,
-        eventHub.onContentModified.subscribe(value => emitChange(value.content)) as any,
-        eventHub.onContentDeleted.subscribe(value => {
-          const currentItems = options.getState().dms.documentLibrary.items
-          const filtered = currentItems.d.results.filter(item => item.Id !== value.contentData.Id)
-          options.dispatch(
-            setItems({
-              ...currentItems,
-              d: {
-                __count: filtered.length,
-                results: filtered,
-              },
-            }),
-          )
-        }) as any,
-        eventHub.onContentMoved.subscribe(value => emitChange(value.content)) as any,
-      )
-      const ancestors = await repository.executeAction<undefined, ODataCollectionResponse<GenericContent>>({
-        idOrPath: newParent.d.Id,
-        method: 'GET',
-        name: 'Ancestors',
-        body: undefined,
-        oDataOptions: {
-          ...prevState.childrenOptions,
-          orderby: [['Path', 'asc']],
-        },
-      })
-      options.dispatch(setAncestors([...ancestors.d.results, newParent.d]))
+      eventObservables.forEach(o => o.dispose())
+      eventObservables.length = 0
 
-      options.dispatch(
-        setItems({
-          d: {
-            __count: 0,
-            results: [],
+      const eventHub = options.getInjectable(EventHub)
+
+      options.dispatch(startLoadingParent(idOrPath))
+      options.dispatch(startLoadingChildren(idOrPath))
+      try {
+        const repository = options.getInjectable(Repository)
+        const newParent = await repository.load<T>({
+          idOrPath,
+          oDataOptions: {
+            ...prevState.parentOptions,
+            ...loadParentOptions,
           },
-        }),
-      )
-      options.dispatch(finishLoadingChildren())
-      options.dispatch(loadMore())
-    } catch (error) {
-      options.dispatch(setError(error))
-    } finally {
-      options.dispatch(finishLoadingParent())
-    }
-  },
-})
+        })
+        options.dispatch(setParent(newParent.d))
+        const emitChange = (content: GenericContent) => {
+          changedContent.push(content)
+          debounceReloadOnProgress(options.getState, options.dispatch)
+        }
 
-export const loadMore = (count: number = loadChunkSize) => ({
+        eventObservables.push(
+          eventHub.onCustomActionExecuted.subscribe(value => {
+            const currentItems = options.getState().dms.documentLibrary.items
+            if (
+              value.actionOptions.name !== 'GetExistingPreviewImages' &&
+              (currentItems.d.results.filter(a => a.Id === value.actionOptions.idOrPath) ||
+                currentItems.d.results.filter(a => a.Path === value.actionOptions.idOrPath))
+            ) {
+              emitChange({ ParentId: newParent.d.Id } as GenericContent)
+            }
+          }) as any,
+          eventHub.onContentCreated.subscribe(value => emitChange(value.content)) as any,
+          eventHub.onContentModified.subscribe(value => emitChange(value.content)) as any,
+          eventHub.onContentDeleted.subscribe(value => {
+            const currentItems = options.getState().dms.documentLibrary.items
+            const filtered = currentItems.d.results.filter(item => item.Id !== value.contentData.Id)
+            options.dispatch(
+              setItems({
+                ...currentItems,
+                d: {
+                  __count: filtered.length,
+                  results: filtered,
+                },
+              }),
+            )
+          }) as any,
+          eventHub.onContentMoved.subscribe(value => emitChange(value.content)) as any,
+        )
+        const ancestors = await repository.executeAction<undefined, ODataCollectionResponse<GenericContent>>({
+          idOrPath: newParent.d.Id,
+          method: 'GET',
+          name: 'Ancestors',
+          body: undefined,
+          oDataOptions: {
+            ...prevState.childrenOptions,
+            orderby: [['Path', 'asc']],
+          },
+        })
+        options.dispatch(setAncestors([...ancestors.d.results, newParent.d]))
+
+        options.dispatch(
+          setItems({
+            d: {
+              __count: 0,
+              results: [],
+            },
+          }),
+        )
+        options.dispatch(finishLoadingChildren())
+        options.dispatch(loadMore())
+      } catch (error) {
+        options.dispatch(setError(error))
+      } finally {
+        options.dispatch(finishLoadingParent())
+      }
+    },
+  }),
+)
+
+export const loadMore = createAction((count: number = loadChunkSize) => ({
   type: 'DMS_DOCLIB_LOAD_MORE',
+  // tslint:disable-next-line: no-unnecessary-type-annotation
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const currentDocLibState = options.getState().dms.documentLibrary
 
@@ -150,41 +152,44 @@ export const loadMore = (count: number = loadChunkSize) => ({
       options.dispatch(finishLoadingChildren())
     }
   },
-})
+}))
 
-export const setParent = <T extends GenericContent = GenericContent>(content: T) => ({
+export const setParent = createAction(<T extends GenericContent = GenericContent>(content: T) => ({
   type: 'DMS_DOCLIB_SET_PARENT',
   content,
-})
+}))
 
-export const setAncestors = <T extends GenericContent>(ancestors: T[]) => ({
+export const setAncestors = createAction(<T extends GenericContent>(ancestors: T[]) => ({
   type: 'DMS_DOCLIB_SET_ANCESTORS',
   ancestors,
-})
+}))
 
-export const setItems = <T extends GenericContent = GenericContent>(items: ODataCollectionResponse<T>) => ({
-  type: 'DMS_DOCLIB_SET_ITEMS',
-  items,
-})
+export const setItems = createAction(
+  <T extends GenericContent = GenericContent>(items: ODataCollectionResponse<T>) => ({
+    type: 'DMS_DOCLIB_SET_ITEMS',
+    items,
+  }),
+)
 
-export const setError = (error?: any) => ({
+export const setError = createAction((error?: any) => ({
   type: 'DMS_DOCLIB_SET_ERROR',
   error,
-})
+}))
 
-export const select = <T extends GenericContent>(selected: T[]) => ({
+export const select = createAction(<T extends GenericContent>(selected: T[]) => ({
   type: 'DMS_DOCLIB_SELECT',
   selected,
-})
+}))
 
-export const setActive = <T extends GenericContent>(active?: T) => ({
+export const setActive = createAction(<T extends GenericContent>(active?: T) => ({
   type: 'DMS_DOCLIB_SET_ACTIVE',
   active,
-})
+}))
 
-export const updateChildrenOptions = <T extends GenericContent>(odataOptions: ODataParams<T>) => ({
+export const updateChildrenOptions = createAction(<T extends GenericContent>(odataOptions: ODataParams<T>) => ({
   type: 'DMS_DOCLIB_UPDATE_CHILDREN_OPTIONS',
   odataOptions,
+  // tslint:disable-next-line: no-unnecessary-type-annotation
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const currentState = options.getState()
     const parentPath = currentState.dms.documentLibrary.parent ? currentState.dms.documentLibrary.parent.Path : ''
@@ -210,14 +215,14 @@ export const updateChildrenOptions = <T extends GenericContent>(odataOptions: OD
       options.dispatch(setChildrenOptions(odataOptions))
     }
   },
-})
+}))
 
-export const updateSearchValues = (value: Partial<DocumentLibraryState['searchState']>) => ({
+export const updateSearchValues = createAction((value: Partial<DocumentLibraryState['searchState']>) => ({
   type: 'DMS_DOCLIB_UPDATE_SEARCH_STATE',
   value,
-})
+}))
 
-export const setChildrenOptions = <T extends GenericContent>(odataOptions: ODataParams<T>) => ({
+export const setChildrenOptions = createAction(<T extends GenericContent>(odataOptions: ODataParams<T>) => ({
   type: 'DMS_DOCLIB_SET_CHILDREN_OPTIONS',
   odataOptions,
-})
+}))

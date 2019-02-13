@@ -1,11 +1,12 @@
 import { Repository } from '@sensenet/client-core'
 import { isExtendedError } from '@sensenet/client-core/dist/Repository/Repository'
+import { createAction } from '@sensenet/redux'
 import { EventHub } from '@sensenet/repository-events'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
 import { resources } from '../../assets/resources'
 import { rootStateType } from '../../store/rootReducer'
 
-export const logActions: string[] = ['CheckIn', 'Checkout', 'UndoCheckOut', 'Approve', 'Reject', 'Publish']
+export const logActions = ['CheckIn', 'Checkout', 'UndoCheckOut', 'Approve', 'Reject', 'Publish']
 
 export interface MessageEntry {
   verbosity: 'info' | 'error'
@@ -24,18 +25,19 @@ export interface LogEntry extends AddLogEntry {
   unread: boolean
 }
 
-export const addLogEntry = (entry: AddLogEntry) => ({
+export const addLogEntry = createAction((entry: AddLogEntry) => ({
   type: 'SN_DMS_ADD_LOG_ENTRY',
   entry,
-})
+}))
 
-export const readLogEntries = (entries: LogEntry[]) => ({
+export const readLogEntries = createAction((entries: LogEntry[]) => ({
   type: 'SN_DMS_READ_LOG_ENTRIES',
   entries,
-})
+}))
 
-export const initLog = () => ({
+export const initLog = createAction(() => ({
   type: 'SN_DMS_INIT_LOG',
+  // tslint:disable-next-line: no-unnecessary-type-annotation
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const repository = options.getInjectable(Repository)
     const eventHub = new EventHub(repository)
@@ -204,4 +206,4 @@ export const initLog = () => ({
       }
     })
   },
-})
+}))

@@ -24,6 +24,7 @@
     "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.17.0",
     "tslint-react": "^3.6.0",
+    "tslint-consistent-codestyle": "1.15.0",
     "typescript": "3.3.1"
   },
   "scripts": {

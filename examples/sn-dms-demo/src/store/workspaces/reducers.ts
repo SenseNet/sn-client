@@ -2,7 +2,7 @@ import { Workspace } from '@sensenet/default-content-types'
 import { AnyAction, combineReducers, Reducer } from 'redux'
 import { setFavoriteWorkspaces, setWorkspaces } from './actions'
 
-export const allWorkspaces: Reducer<Workspace[]> = (state: Workspace[] = [], action: AnyAction) => {
+export const allWorkspaces: Reducer<Workspace[]> = (state = [], action: AnyAction) => {
   switch (action.type) {
     case 'SET_WORKSPACES':
       return (action as ReturnType<typeof setWorkspaces>).workspaces
@@ -11,7 +11,7 @@ export const allWorkspaces: Reducer<Workspace[]> = (state: Workspace[] = [], act
   }
 }
 
-export const favorites: Reducer<number[]> = (state: number[] = [], action: AnyAction) => {
+export const favorites: Reducer<number[]> = (state = [], action: AnyAction) => {
   switch (action.type) {
     case 'SET_FAVORITE_WORKSPACES':
       const items = (action as ReturnType<typeof setFavoriteWorkspaces>).workspaces
@@ -25,7 +25,7 @@ export const favorites: Reducer<number[]> = (state: number[] = [], action: AnyAc
   }
 }
 
-export const searchTerm: Reducer<string> = (state: string = '', action: AnyAction) => {
+export const searchTerm: Reducer<string> = (state = '', action: AnyAction) => {
   switch (action.type) {
     case 'SEARCH_WORKSPACES':
       return action.text
@@ -34,7 +34,7 @@ export const searchTerm: Reducer<string> = (state: string = '', action: AnyActio
   }
 }
 
-export const isLoading: Reducer<boolean> = (state: boolean = false, action: AnyAction) => {
+export const isLoading: Reducer<boolean> = (state = false, action: AnyAction) => {
   switch (action.type) {
     case 'LOAD_WORKSPACES':
       return true

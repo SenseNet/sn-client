@@ -3,7 +3,7 @@ import { createContent, PromiseReturns } from '@sensenet/redux/dist/Actions'
 import { AnyAction, combineReducers, Reducer } from 'redux'
 import { loadPickerItems, loadPickerParent } from './actions'
 
-export const pickerIsOpened: Reducer<boolean> = (state: boolean = false, action: AnyAction) => {
+export const pickerIsOpened: Reducer<boolean> = (state = false, action: AnyAction) => {
   switch (action.type) {
     case 'OPEN_PICKER':
       return true
@@ -14,7 +14,7 @@ export const pickerIsOpened: Reducer<boolean> = (state: boolean = false, action:
   }
 }
 
-export const pickerOnClose: Reducer<any> = (state: any = null, action: AnyAction) => {
+export const pickerOnClose: Reducer<any> = (state = null, action: AnyAction) => {
   switch (action.type) {
     case 'OPEN_PICKER':
       return action.onClose
@@ -25,10 +25,7 @@ export const pickerOnClose: Reducer<any> = (state: any = null, action: AnyAction
   }
 }
 
-export const pickerContent: Reducer<GenericContent | null> = (
-  state: GenericContent | null = null,
-  action: AnyAction,
-) => {
+export const pickerContent: Reducer<GenericContent | null> = (state = null, action: AnyAction) => {
   switch (action.type) {
     case 'OPEN_PICKER':
       return action.content
@@ -39,10 +36,7 @@ export const pickerContent: Reducer<GenericContent | null> = (
   }
 }
 
-export const pickerParent: Reducer<GenericContent | undefined> = (
-  state: GenericContent | null = null,
-  action: AnyAction,
-) => {
+export const pickerParent: Reducer<GenericContent | null> = (state = null, action: AnyAction) => {
   switch (action.type) {
     case 'SET_PICKER_PARENT':
       return action.content
@@ -54,7 +48,7 @@ export const pickerParent: Reducer<GenericContent | undefined> = (
   }
 }
 
-export const pickerItems: Reducer<GenericContent[]> = (state: GenericContent[] = [], action: AnyAction) => {
+export const pickerItems: Reducer<GenericContent[]> = (state = [], action: AnyAction) => {
   switch (action.type) {
     case 'LOAD_PICKER_ITEMS_SUCCESS':
       return (action.result as PromiseReturns<typeof loadPickerItems>).d.results
@@ -66,7 +60,7 @@ export const pickerItems: Reducer<GenericContent[]> = (state: GenericContent[] =
   }
 }
 
-export const pickerSelected: Reducer<GenericContent[]> = (state: GenericContent[] = [], action: AnyAction) => {
+export const pickerSelected: Reducer<GenericContent[]> = (state = [], action: AnyAction) => {
   switch (action.type) {
     case 'SELECT_PICKER_ITEM':
       return action.content ? [action.content] : []
@@ -77,7 +71,7 @@ export const pickerSelected: Reducer<GenericContent[]> = (state: GenericContent[
   }
 }
 
-export const pickerMode: Reducer<string> = (state: string = 'move', action: AnyAction) => {
+export const pickerMode: Reducer<string> = (state = 'move', action: AnyAction) => {
   switch (action.type) {
     case 'OPEN_PICKER':
       return action.mode
@@ -86,10 +80,7 @@ export const pickerMode: Reducer<string> = (state: string = 'move', action: AnyA
   }
 }
 
-export const closestWorkspace: Reducer<GenericContent | null> = (
-  state: GenericContent | null = null,
-  action: AnyAction,
-) => {
+export const closestWorkspace: Reducer<GenericContent | null> = (state = null, action: AnyAction) => {
   switch (action.type) {
     case 'SET_PICKER_PARENT':
       return action.content.Workspace.Path
@@ -101,7 +92,7 @@ export const closestWorkspace: Reducer<GenericContent | null> = (
   }
 }
 
-export const backLink: Reducer<boolean> = (state: boolean = true, action: AnyAction) => {
+export const backLink: Reducer<boolean> = (state = true, action: AnyAction) => {
   switch (action.type) {
     case 'SET_BACKLINK':
       return action.state
