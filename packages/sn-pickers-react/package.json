@@ -11,6 +11,7 @@
   "homepage": "https://sensenet.com",
   "license": "GPL-2.0",
   "main": "dist/index.js",
+  "typings": "./dist/index.d.ts",
   "files": [
     "dist",
     "src"
@@ -28,7 +29,7 @@
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
     "fix:tslint": "tslint --fix --project .",
     "lint": "tslint --project .",
-    "build": "tsc -b"
+    "build": "tsc -b ./tsconfig.build.json"
   },
   "bugs": {
     "url": "https://github.com/SenseNet/sn-client/issues"
