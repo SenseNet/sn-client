@@ -40,6 +40,7 @@
     "@sensenet/document-viewer-react": "^1.0.4",
     "@sensenet/icons-react": "^1.2.5",
     "@sensenet/list-controls-react": "^1.3.2",
+    "@sensenet/pickers-react": "^1.0.0",
     "@sensenet/redux": "^5.1.4",
     "@sensenet/repository-events": "^1.3.0",
     "@sensenet/search-react": "^1.2.0",
