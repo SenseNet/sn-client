@@ -14,9 +14,9 @@ export interface ItemProps<T extends GenericContent = GenericContent> {
    * @memberof ItemProps
    */
   node: T
+
   /**
    * Click handler for the item component.
-   * @param event mouse event.
    * @memberof ItemProps
    */
   onClickHandler?: (event: React.MouseEvent, node: T) => void
@@ -37,6 +37,9 @@ export interface ItemProps<T extends GenericContent = GenericContent> {
   /**
    * A function to render the item.
    * @memberof ItemProps
+   * @default function defaultRender<T extends GenericContent>(props: T) {
+   *  return <li>{props && props.DisplayName}</li>
+   * }
    */
   renderItem?: (props: T) => JSX.Element
 }
@@ -64,5 +67,5 @@ export function ItemComponent<T extends GenericContent = GenericContent>(props: 
 }
 
 function defaultRender<T extends GenericContent>(props: T) {
-  return <li>{props && props.Id}</li>
+  return <li>{props && props.DisplayName}</li>
 }

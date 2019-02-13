@@ -7,63 +7,14 @@ import { Icon, iconType } from '@sensenet/icons-react'
 import React, { useState } from 'react'
 import { useAsync } from 'react-use'
 import { ItemComponent } from './Item'
-
-/**
- * Properties for list picker component.
- * @interface ListPickerProps
- * @template T
- */
-export interface ListPickerProps<T extends GenericContent = GenericContent> {
-  loadItems: (path: string) => Promise<T[]>
-  loadParent: (id?: number) => Promise<T>
-  /**
-   * Items to render.
-   * @type {T[]}
-   * @memberof ListPickerProps
-   */
-  items?: T[]
-  currentPath?: string
-  parentId?: number
-  /**
-   * Called before navigation. Can be used to clear the selected state.
-   * @memberof ListPickerProps
-   */
-  onNavigation?: () => void
-  onSelectionChanged?: (node: T) => void
-  /**
-   * Render a loading component when loadItems called.
-   * @default null
-   * @memberof ListPickerProps
-   */
-  renderLoading?: () => JSX.Element
-
-  /**
-   * Render an error component when error happened in loadItems call.
-   * @default null
-   * @memberof ListPickerProps
-   */
-  renderError?: (message: string) => JSX.Element
-
-  /**
-   * Function to render the item component.
-   * @memberof ItemListProps
-   * @default const defaultRenderItem = (renderItemProps: ItemProps<T>) => (
-   * <ListItem button={true} selected={renderItemProps.nodeData.Id === selectedId}>
-   *   <ListItemIcon>
-   *     <Icon type={iconType.materialui} iconName="folder" />
-   *   </ListItemIcon>
-   *   <ListItemText primary={renderItemProps.nodeData!.Name} />
-   * </ListItem>
-   * )
-   */
-  renderItem?: (props: T) => JSX.Element
-}
+import { ListPickerProps } from './ListPickerProps'
 
 /**
  * Represents a list picker component.
  */
 export function ListPickerComponent<T extends GenericContent = GenericContent>(props: ListPickerProps<T>) {
-  const [currentPath, setCurrentPath] = useState(props.currentPath || '')
+  const { currentPath: currentContentPath = '' } = props
+  const [currentPath, setCurrentPath] = useState(currentContentPath)
   const [parentId, setParentId] = useState<number | undefined>(props.parentId)
   const [selectedId, setSelectedId] = useState<string | number>(0)
 
