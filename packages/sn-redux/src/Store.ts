@@ -28,7 +28,7 @@
  */
 import { Repository } from '@sensenet/client-core'
 import { promiseMiddleware } from '@sensenet/redux-promise-middleware'
-import { applyMiddleware, compose, createStore, DeepPartial, Middleware, Reducer, Store, StoreEnhancer } from 'redux'
+import { applyMiddleware, compose, createStore, DeepPartial, Middleware, Reducer, StoreEnhancer } from 'redux'
 import { createLogger } from 'redux-logger'
 import * as Actions from './Actions'
 
@@ -103,9 +103,7 @@ export interface CreateStoreOptions<T> {
  * @param options {CreateStoreOptions} An object to hold config options of the Store.
  * @returns store {Store} Returns a preconfigured Redux store.
  */
-export const createSensenetStore: <T>(options: CreateStoreOptions<T>) => Store<T> = <T>(
-  options: CreateStoreOptions<T>,
-) => {
+export const createSensenetStore = <T>(options: CreateStoreOptions<T>) => {
   let middlewareArray: Array<Middleware<any>> = []
   let enhancerArray: Array<StoreEnhancer<any>> = []
   if (typeof options.middlewares === 'undefined' || options.middlewares === null) {
@@ -137,7 +135,7 @@ export const createSensenetStore: <T>(options: CreateStoreOptions<T>) => Store<T
     composeEnhancers(applyMiddleware(...middlewareArray), ...enhancerArray),
   )
 
-  const repo: Repository = options.repository
+  const repo = options.repository
   store.dispatch(Actions.loadRepository(repo.configuration))
 
   repo.authentication.state.subscribe(state => {

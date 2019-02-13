@@ -56,10 +56,7 @@ export const ids: Reducer<number[], PromiseMiddlewareSucceededAction<any>> = (st
  * @param action Represents an action that is called.
  * @returns state. Returns the next state based on the action.
  */
-export const entities: Reducer<GenericContent[], PromiseMiddlewareSucceededAction<any>> = (
-  state: GenericContent[] = [],
-  action,
-) => {
+export const entities: Reducer<GenericContent[], PromiseMiddlewareSucceededAction<any>> = (state = [], action) => {
   switch (action.type) {
     case 'DELETE_CONTENT_SUCCESS':
     case 'DELETE_BATCH_SUCCESS':

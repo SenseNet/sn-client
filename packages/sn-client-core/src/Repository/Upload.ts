@@ -305,7 +305,7 @@ export class Upload {
    */
   public static async fromDropEvent<T extends Content = Content>(options: UploadFromEventOptions<T>) {
     if ((window as any).webkitRequestFileSystem) {
-      const entries: Array<WebKitFileEntry | WebKitDirectoryEntry | never> = options.event.dataTransfer
+      const entries = options.event.dataTransfer
         ? ([].map.call(options.event.dataTransfer.items, (i: DataTransferItem) => i.webkitGetAsEntry()) as Array<
             WebKitFileEntry | WebKitDirectoryEntry
           >)
@@ -314,6 +314,8 @@ export class Upload {
     } else {
       // Fallback for non-webkit browsers.
       options.event.dataTransfer &&
+        options.event.dataTransfer.files &&
+        // tslint:disable-next-line: no-unnecessary-type-annotation
         [].forEach.call(options.event.dataTransfer.files, async (f: File) => {
           if (f.type === 'file') {
             return await Upload.file({

@@ -30,6 +30,7 @@ export const finishLoadingChildren = createAction(() => ({
 export const loadParent = createAction(
   <T extends GenericContent = GenericContent>(idOrPath: number | string, loadParentOptions?: ODataParams<T>) => ({
     type: 'DMS_DOCLIB_LOAD_PARENT',
+    // tslint:disable-next-line: no-unnecessary-type-annotation
     inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
       const prevState = options.getState().dms.documentLibrary
       if (prevState.parentIdOrPath === idOrPath) {
@@ -119,6 +120,7 @@ export const loadParent = createAction(
 
 export const loadMore = createAction((count: number = loadChunkSize) => ({
   type: 'DMS_DOCLIB_LOAD_MORE',
+  // tslint:disable-next-line: no-unnecessary-type-annotation
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const currentDocLibState = options.getState().dms.documentLibrary
 
@@ -187,6 +189,7 @@ export const setActive = createAction(<T extends GenericContent>(active?: T) => 
 export const updateChildrenOptions = createAction(<T extends GenericContent>(odataOptions: ODataParams<T>) => ({
   type: 'DMS_DOCLIB_UPDATE_CHILDREN_OPTIONS',
   odataOptions,
+  // tslint:disable-next-line: no-unnecessary-type-annotation
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const currentState = options.getState()
     const parentPath = currentState.dms.documentLibrary.parent ? currentState.dms.documentLibrary.parent.Path : ''

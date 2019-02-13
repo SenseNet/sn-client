@@ -188,12 +188,8 @@ export class ControlMapper<TControlBaseType, TClientControlSettings> {
   ): ControlSchema<TControlBaseType, TClientControlSettings> {
     const schema = this.getTypeSchema(contentTypeName, actionName)
     const mappings = schema.FieldSettings.map(f => {
-      const clientSetting: TClientControlSettings = this.createClientSetting(f)
-      const control: new (...args: any[]) => TControlBaseType = this.getControlForContentField(
-        contentTypeName,
-        f.Name,
-        actionName,
-      )
+      const clientSetting = this.createClientSetting(f)
+      const control = this.getControlForContentField(contentTypeName, f.Name, actionName)
       return {
         fieldSettings: f,
         clientSettings: clientSetting,

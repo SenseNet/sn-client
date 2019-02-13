@@ -82,7 +82,7 @@ class MessageBar extends React.Component<
       e.messageEntry && e.messageEntry.bulkMessage && e.messageEntry.bulkMessage
 
     const grouped = groupBy(newProps.entries.filter(e => e.messageEntry), getBulkMessageKey)
-    const msgSegments: MessageBarState['digestedMessageEntries'] = [...lastState.digestedMessageEntries]
+    const msgSegments = [...lastState.digestedMessageEntries]
     for (const type in grouped) {
       if (grouped[type]) {
         const groupedEntries = grouped[type]

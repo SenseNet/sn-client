@@ -240,7 +240,7 @@ class VersionsDialog extends React.Component<
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {versions.map((version, index: number) => (
+                        {versions.map((version, index) => (
                           <TableRow key={index}>
                             <TableCell padding="checkbox" className={classes.versionNumber}>
                               {this.formatVersionNumber(version.Version || '')}
@@ -286,7 +286,7 @@ class VersionsDialog extends React.Component<
                 ) : (
                   <Paper>
                     <Typography style={styles.mobileVersionsTitle}>{resources.VERSIONS}</Typography>
-                    {versions.map((version, index: number) => (
+                    {versions.map((version, index) => (
                       <ExpansionPanel
                         style={styles.innerMobileList}
                         key={`panel${index}`}
