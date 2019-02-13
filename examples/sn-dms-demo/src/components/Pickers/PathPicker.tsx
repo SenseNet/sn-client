@@ -80,6 +80,7 @@ class PathPicker extends React.Component<
   public handleAddNewClose = () => {
     // TODO
   }
+
   public handleAddNewClick = () => {
     const { currentParent, openDialog } = this.props
     openDialog(
@@ -90,9 +91,6 @@ class PathPicker extends React.Component<
   }
 
   public onSelectionChanged = (node: GenericContent) => {
-    if (this.props.currentParent && this.props.currentParent.Id === node.Id) {
-      return
-    }
     this.props.selectPickerItem(node)
   }
 
