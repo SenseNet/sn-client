@@ -6,7 +6,6 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import withStyles from '@material-ui/core/styles/withStyles'
 import Typography from '@material-ui/core/Typography'
-
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
@@ -19,8 +18,8 @@ import { versionName } from '../../assets/helpers'
 import { icons } from '../../assets/icons'
 import { resources } from '../../assets/resources'
 import { rootStateType } from '../../store/rootReducer'
+import { getSharingEntries, share } from '../../store/sharing'
 import DialogInfo from './DialogInfo'
-import RestoreVersionsDialog from './RestoreVersionDialog'
 
 const styles = {
   buttonContainer: {
@@ -66,15 +65,15 @@ interface ShareDialogProps extends RouteComponentProps<any> {
   closeCallback?: () => void
 }
 
-const mapStateToProps = (state: rootStateType) => {
-  return {
-    repositoryUrl: state.sensenet.session.repository ? state.sensenet.session.repository.repositoryUrl : '',
-  }
-}
+const mapStateToProps = (state: rootStateType) => ({
+  repositoryUrl: state.sensenet.session.repository ? state.sensenet.session.repository.repositoryUrl : '',
+  items: state.dms.sharing,
+})
 
 const mapDispatchToProps = {
+  getSharingEntries,
+  share,
   closeDialog: DMSActions.closeDialog,
-  openDialog: DMSActions.openDialog,
 }
 
 type addType = 'see' | 'edit'
@@ -116,8 +115,10 @@ class ShareDialog extends React.Component<
       newProps.currentContent &&
       newProps.currentContent.Icon &&
       icons[newProps.currentContent.Icon.toLowerCase() as any]
+    const entries = Object.values(newProps.items)
     return {
       icon,
+      sharedWithValues: entries,
     }
   }
 
@@ -146,10 +147,6 @@ class ShareDialog extends React.Component<
   public formatVersionNumber = (version: string) => {
     const v = resources[`VERSION_${versionName(version.slice(-1))}`]
     return `${version.substring(0, version.length - 2)} ${v}`
-  }
-  public handleRestoreButtonClick = (id: number, version: string, name: string) => {
-    this.props.closeDialog()
-    this.props.openDialog(<RestoreVersionsDialog id={id} version={version} fileName={name} />)
   }
 
   public handleAddEntry(ev: React.KeyboardEvent<HTMLInputElement>) {
