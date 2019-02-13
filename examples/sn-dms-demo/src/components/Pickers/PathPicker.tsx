@@ -12,7 +12,7 @@ import { Injector } from '@furystack/inject'
 import { ODataCollectionResponse, ODataParams, Repository } from '@sensenet/client-core'
 import { Folder, GenericContent } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
-import { ListPickerComponent } from '@sensenet/pickers-react/src'
+import { ListPickerComponent } from '@sensenet/pickers-react'
 import React from 'react'
 import Scrollbars from 'react-custom-scrollbars'
 import { connect } from 'react-redux'
@@ -152,7 +152,10 @@ class PathPicker extends React.Component<
       <>
         <DialogContent>
           <Scrollbars
-            style={{ height: 240, width: 'calc(100% - 1px)' }}
+            style={{
+              height: 240,
+              width: 'calc(100% - 1px)',
+            }}
             renderThumbVertical={({ style }) => (
               <div style={{ ...style, borderRadius: 2, backgroundColor: '#999', width: 10, marginLeft: -2 }} />
             )}
@@ -160,7 +163,11 @@ class PathPicker extends React.Component<
             <ListPickerComponent
               onSelectionChanged={this.onSelectionChanged}
               onNavigation={() => this.props.selectPickerItem(null)}
-              renderLoading={() => <CircularProgress size={50} />}
+              renderLoading={() => (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <CircularProgress size={50} />
+                </div>
+              )}
               renderItem={this.renderItem}
               loadItems={this.loadItems}
               loadParent={this.loadParent}
