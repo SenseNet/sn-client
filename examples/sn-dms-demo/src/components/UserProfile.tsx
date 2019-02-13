@@ -155,11 +155,13 @@ class UserProfile extends React.Component<
                   <Toolbar style={matches ? (styles.toolbar as any) : (styles.toolbarMobile as any)}>
                     <div style={{ flex: 1, display: 'flex' }}>
                       <WorkspaceSelector />
-                      <BreadCrumb
-                        ancestors={this.props.ancestors}
-                        currentContent={this.props.user}
-                        typeFilter={['OrganizationalUnit', 'Folder', 'Domain']}
-                      />
+                      {this.props.user ? (
+                        <BreadCrumb
+                          ancestors={this.props.ancestors}
+                          currentContent={this.props.user}
+                          typeFilter={['OrganizationalUnit', 'Folder', 'Domain']}
+                        />
+                      ) : null}
                     </div>
                   </Toolbar>
                 </AppBar>

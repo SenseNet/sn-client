@@ -172,9 +172,11 @@ class ActionMenu extends React.Component<
           break
         case 'DeleteBatch':
         case 'Delete':
-          this.handleClose()
-          this.props.clearSelection()
-          this.props.openDialog(<DeleteDialog content={[content]} />, resources.DELETE, this.props.closeDialog)
+          if (content) {
+            this.handleClose()
+            this.props.clearSelection()
+            this.props.openDialog(<DeleteDialog content={[content]} />, resources.DELETE, this.props.closeDialog)
+          }
           break
         case 'Preview':
           this.handleClose()
