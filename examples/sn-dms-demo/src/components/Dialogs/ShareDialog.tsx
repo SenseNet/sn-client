@@ -76,14 +76,14 @@ const mapDispatchToProps = {
   closeDialog: DMSActions.closeDialog,
 }
 
-type addType = 'see' | 'edit'
+type addType = 'Open' | 'Edit'
 
 type linkSharingType = addType | 'off'
 
 interface ShareDialogState {
   addType: addType
   addValue: string
-  sharedWithValues: Array<{ value: string; type: addType }>
+  sharedWithValues: Array<{ value: string; type: addType; isSaved: boolean }>
   linkSharingType: linkSharingType
   anchorEl: HTMLElement | null
 }
@@ -93,7 +93,7 @@ class ShareDialog extends React.Component<
   ShareDialogState
 > {
   public state: ShareDialogState = {
-    addType: 'see',
+    addType: 'Open',
     addValue: '',
     linkSharingType: 'off',
     sharedWithValues: [],
@@ -109,16 +109,29 @@ class ShareDialog extends React.Component<
     this.copyUrl = this.copyUrl.bind(this)
     this.handleOpenLinkSharingMenu = this.handleOpenLinkSharingMenu.bind(this)
     this.handleCloseLinkSharingMenu = this.handleCloseLinkSharingMenu.bind(this)
+    this.props.currentContent && this.props.getSharingEntries(this.props.currentContent.Id)
   }
-  public static getDerivedStateFromProps(newProps: ShareDialog['props']) {
+  public static getDerivedStateFromProps(newProps: ShareDialog['props'], lastState: ShareDialog['state']) {
     const icon =
       newProps.currentContent &&
       newProps.currentContent.Icon &&
       icons[newProps.currentContent.Icon.toLowerCase() as any]
     const entries = Object.values(newProps.items)
+      .map(item => Object.values(item))
+      .reduce((acc, val) => acc.concat(val), []) // .flat()
+    console.log(entries)
     return {
       icon,
-      sharedWithValues: entries,
+      sharedWithValues: [
+        ...entries
+          .filter(e => lastState.sharedWithValues.findIndex(s => s.value === e.Token) === -1)
+          .map(entry => ({
+            value: entry.Token,
+            type: entry.Level,
+            isSaved: true,
+          })),
+        ...lastState.sharedWithValues,
+      ],
     }
   }
 
@@ -126,9 +139,18 @@ class ShareDialog extends React.Component<
     this.props.closeDialog()
     this.props.closeCallback && this.props.closeCallback()
   }
-  public submitCallback = () => {
+  public submitCallback = (ev: { preventDefault: () => void }) => {
+    ev.preventDefault()
     this.props.closeDialog()
     this.props.closeCallback && this.props.closeCallback()
+    this.state.sharedWithValues
+      .filter(v => !v.isSaved)
+      .map(v => {
+        this.props.currentContent && this.props.share(this.props.currentContent.Id, v.value, v.type, 'Private')
+      })
+    this.setState({
+      sharedWithValues: [],
+    })
     console.log('Share form submitted, payload:', this.state)
   }
 
@@ -160,7 +182,7 @@ class ShareDialog extends React.Component<
           addValue: '',
           sharedWithValues: [
             ...this.state.sharedWithValues.filter(val => val.value !== this.state.addValue),
-            { type: this.state.addType, value: this.state.addValue },
+            { type: this.state.addType, value: this.state.addValue, isSaved: false },
           ],
         })
       }
@@ -171,9 +193,9 @@ class ShareDialog extends React.Component<
     switch (this.state.linkSharingType) {
       case 'off':
         return <span>{resources.SHARE_LINK_POSTFIX_OFF}</span>
-      case 'see':
+      case 'Open':
         return <span>{resources.SHARE_LINK_POSTFIX_VIEW}</span>
-      case 'edit':
+      case 'Edit':
         return <span>{resources.SHARE_LINK_POSTFIX_EDIT}</span>
     }
   }
@@ -263,8 +285,8 @@ class ShareDialog extends React.Component<
                   inputProps={{
                     name: 'addType',
                   }}>
-                  <MenuItem value="see">{resources.SHARE_PERMISSION_VIEW}</MenuItem>
-                  <MenuItem value="edit">{resources.SHARE_PERMISSION_EDIT}</MenuItem>
+                  <MenuItem value="Open">{resources.SHARE_PERMISSION_VIEW}</MenuItem>
+                  <MenuItem value="Edit">{resources.SHARE_PERMISSION_EDIT}</MenuItem>
                 </Select>
               </div>
               {matches && this.state.sharedWithValues.length ? (
@@ -297,10 +319,10 @@ class ShareDialog extends React.Component<
                     <MenuItem onClick={() => this.handleCloseLinkSharingMenu('off')}>
                       {resources.SHARE_LINK_POSTFIX_OFF}
                     </MenuItem>
-                    <MenuItem onClick={() => this.handleCloseLinkSharingMenu('see')}>
+                    <MenuItem onClick={() => this.handleCloseLinkSharingMenu('Open')}>
                       {resources.SHARE_LINK_POSTFIX_VIEW}
                     </MenuItem>
-                    <MenuItem onClick={() => this.handleCloseLinkSharingMenu('edit')}>
+                    <MenuItem onClick={() => this.handleCloseLinkSharingMenu('Edit')}>
                       {resources.SHARE_LINK_POSTFIX_EDIT}
                     </MenuItem>
                   </Menu>
