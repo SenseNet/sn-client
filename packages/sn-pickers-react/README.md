@@ -1,11 +1,13 @@
 # `@sensenet/pickers-react`
 
-> TODO: description
+## List picker component
 
-## Usage
+> This is a basic component to view list of items from the repository.
 
+## Installation
+
+```shell
+yarn add @sensenet/pickers-react
 ```
-const pickersReact = require('@sensenet/pickers-react');
 
-// TODO: DEMONSTRATE API
-```
+For usage see the [example](./example).
