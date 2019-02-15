@@ -17,10 +17,10 @@ describe('Item component', () => {
     ).toBe(mockContent.Name)
   })
 
-  it('should render the Id without renderItem props', () => {
+  it('should render the Name without renderItem props', () => {
     const wrapper = shallow(<ItemComponent node={mockContent} />)
     expect(wrapper.find('li')).toBeTruthy()
-    expect(wrapper.find('li').text()).toBe('1')
+    expect(wrapper.find('li').text()).toBe('MockFolder')
   })
 
   it('click action should work', () => {

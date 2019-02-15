@@ -67,5 +67,5 @@ export function ItemComponent<T extends GenericContent = GenericContent>(props: 
 }
 
 function defaultRender<T extends GenericContent>(props: T) {
-  return <li>{props && props.DisplayName}</li>
+  return <li>{props && props.Name}</li>
 }
