@@ -161,6 +161,9 @@ class ActionMenu extends React.Component<
       ;(action as any).Action()
     } else {
       const content = this.props.currentContent
+      if (!content) {
+        return
+      }
       switch (action.Name) {
         case 'Rename':
           this.handleClose()
