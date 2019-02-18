@@ -1,34 +1,40 @@
 const path = require('path')
 
-/**
- * To extend the default Storybook 3 config, it is necessary to import it from
- * the @storybook/react package. Storybook 4 provides the default config as the
- * third parameter to this module's exported function.
- */
-// const genDefaultConfig = require("@storybook/react/dist/server/config/defaults/webpack.config.js");
+// tslint:disable-next-line: variable-name
+const TsConfigWebpackPlugin = require('ts-config-webpack-plugin')
 
-module.exports = (baseConfig, env, config /* Storybook 4 default config */) => {
-  // Storybook 3 default config
-  // const config = genDefaultConfig(baseConfig);
-
-  config.module.rules.push(
-    {
-      test: /\.tsx?$/,
-      exclude: [/\/node_modules\/(?!@sensenet\/d)/],
-      use: [require.resolve('ts-loader'), require.resolve('react-docgen-typescript-loader')],
-    },
-    {
-      test: /\.stories\.tsx?$/,
-      loaders: [{ loader: require.resolve('@storybook/addon-storysource/loader'), options: { parser: 'typescript' } }],
-      enforce: 'pre',
-    },
-  )
-
-  if (config.optimization) {
-    config.optimization.minimize = false
-  }
-
-  config.resolve.extensions.push('.ts', '.tsx')
-
-  return config
+const config = {
+  module: {
+    rules: [
+      {
+        test: /\.(ts|tsx)$/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: [['react-app', { flow: false, typescript: true }]],
+            },
+          },
+          {
+            loader: require.resolve('react-docgen-typescript-loader'),
+          },
+        ],
+        include: [path.resolve(__dirname, '../stories')],
+      },
+      {
+        test: /\.stories\.tsx?$/,
+        loaders: [
+          { loader: require.resolve('@storybook/addon-storysource/loader'), options: { parser: 'typescript' } },
+        ],
+        enforce: 'pre',
+      },
+    ],
+  },
+  plugins: [new TsConfigWebpackPlugin()],
+  resolve: {
+    symlinks: true,
+    extensions: ['.ts', '.tsx'],
+  },
 }
+
+module.exports = config
