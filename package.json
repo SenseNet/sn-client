@@ -5,6 +5,9 @@
     "packages": [
       "packages/*",
       "examples/*"
+    ],
+    "nohoist": [
+      "**@storybook/**"
     ]
   },
   "config": {
