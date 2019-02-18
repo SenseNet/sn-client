@@ -51,6 +51,10 @@
       "tslint -p . --fix",
       "prettier --write",
       "git add"
+    ],
+    "*.{js,jsx}": [
+      "prettier --write",
+      "git add"
     ]
   },
   "jest": {
