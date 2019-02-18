@@ -28,6 +28,7 @@
     "typescript": "3.3.1"
   },
   "scripts": {
+    "storybook": "yarn workspace sn-react-component-docs run start-storybook",
     "build": "lerna run build",
     "build:dms": "yarn && yarn build && yarn workspace sn-dms-demo run build:webpack",
     "build:docs": "yarn && yarn build && yarn workspace sn-react-component-docs run build-storybook",
@@ -65,6 +66,7 @@
       "<rootDir>/packages/sn-query",
       "<rootDir>/packages/sn-search-react",
       "<rootDir>/packages/sn-redux-promise-middleware",
+      "<rootDir>/packages/sn-pickers-react",
       "<rootDir>/packages/sn-icons-react"
     ],
     "moduleFileExtensions": [
