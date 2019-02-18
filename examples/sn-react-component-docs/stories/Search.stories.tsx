@@ -12,12 +12,8 @@ import { action } from '@storybook/addon-actions'
 import { withActions } from '@storybook/addon-actions/dist/preview'
 import { withInfo } from '@storybook/addon-info'
 import { withKnobs } from '@storybook/addon-knobs'
-import { withMarkdownNotes } from '@storybook/addon-notes'
-import { addDecorator, storiesOf } from '@storybook/react'
+import { storiesOf } from '@storybook/react'
 import React from 'react'
-import { muiTheme } from 'storybook-addon-material-ui'
-
-addDecorator(muiTheme())
 
 const showcaseNotes = require('../notes/search/Showcase.md')
 
@@ -32,10 +28,10 @@ storiesOf('Search', module)
   .addDecorator(withInfo())
   .addDecorator(checkA11y)
   .addDecorator(withActions('queryChange', 'fetchItems'))
-  .add('Showcase', withMarkdownNotes(showcaseNotes)(() => <ExampleApp />))
+  .add('Showcase', () => <ExampleApp />, { notes: { markdown: showcaseNotes } })
   .add(
     'Advanced Search container component',
-    withMarkdownNotes(advancedSearchNotes)(() => (
+    () => (
       <AdvancedSearch
         schema={null}
         onQueryChanged={action('queryChange')}
@@ -53,11 +49,12 @@ storiesOf('Search', module)
           </div>
         )}
       />
-    )),
+    ),
+    { notes: { markdown: advancedSearchNotes } },
   )
   .add(
     'Preset field',
-    withMarkdownNotes(presetFieldNotes)(() => (
+    () => (
       <AdvancedSearch
         schema={null as any}
         fields={() => (
@@ -79,11 +76,12 @@ storiesOf('Search', module)
           </FormControl>
         )}
       />
-    )),
+    ),
+    { notes: { markdown: presetFieldNotes } },
   )
   .add(
     'Reference field',
-    withMarkdownNotes(referenceFieldNotes)(() => (
+    () => (
       <AdvancedSearch
         schema={null as any}
         onQueryChanged={action('queryChanged')}
@@ -121,11 +119,12 @@ storiesOf('Search', module)
           />
         )}
       />
-    )),
+    ),
+    { notes: { markdown: referenceFieldNotes } },
   )
   .add(
     'Text field',
-    withMarkdownNotes(textFieldNotes)(() => (
+    () => (
       <AdvancedSearch
         schema={null as any}
         onQueryChanged={action('queryChanged')}
@@ -137,11 +136,12 @@ storiesOf('Search', module)
           />
         )}
       />
-    )),
+    ),
+    { notes: { markdown: textFieldNotes } },
   )
   .add(
     'Type field',
-    withMarkdownNotes(typeFieldNotes)(() => (
+    () => (
       <AdvancedSearch
         schema={null as any}
         onQueryChanged={action('queryChanged')}
@@ -155,5 +155,6 @@ storiesOf('Search', module)
           />
         )}
       />
-    )),
+    ),
+    { notes: { markdown: typeFieldNotes } },
   )

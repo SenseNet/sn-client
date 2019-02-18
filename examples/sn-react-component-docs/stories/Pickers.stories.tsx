@@ -4,14 +4,13 @@ import { genericContentItems, mockContent } from '@sensenet/pickers-react/__test
 import { App } from '@sensenet/pickers-react/example/ExampleApp'
 import { ListPickerComponent } from '@sensenet/pickers-react/src/ListPicker'
 import { withInfo } from '@storybook/addon-info'
-import { withMarkdownNotes } from '@storybook/addon-notes'
 import { storiesOf } from '@storybook/react'
 import React from 'react'
 const showCaseAppNotes = require('../notes/pickers/ConnectedToDms.md')
 
 storiesOf('ListPicker', module)
   .addDecorator(withInfo())
-  .add('Connected to repository', withMarkdownNotes(showCaseAppNotes)(() => <App />))
+  .add('Connected to repository', () => <App />, { showCaseAppNotes })
   .add('With default parameters', () => (
     <ListPickerComponent
       loadParent={() => Promise.resolve(mockContent)}

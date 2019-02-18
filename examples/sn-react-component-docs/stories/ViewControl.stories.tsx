@@ -1,10 +1,8 @@
 import { checkA11y } from '@storybook/addon-a11y'
 import { withInfo } from '@storybook/addon-info'
 import { object, text, withKnobs } from '@storybook/addon-knobs'
-import { withMarkdownNotes } from '@storybook/addon-notes'
-import { addDecorator, storiesOf } from '@storybook/react'
+import { storiesOf } from '@storybook/react'
 import React from 'react'
-import { muiTheme } from 'storybook-addon-material-ui'
 
 import { Repository } from '@sensenet/client-core'
 import { File, Folder } from '@sensenet/default-content-types'
@@ -1545,15 +1543,13 @@ const browseViewNotes = require('../notes/viewcontrols/BrowseView.md')
 const sensenet = Reducers.sensenet
 export const testStore = createStore(combineReducers({ sensenet }))
 
-addDecorator(muiTheme())
-
 storiesOf('ViewControls', module)
   .addDecorator(withKnobs)
   .addDecorator(checkA11y)
   .addDecorator(withInfo())
   .add(
     'new view',
-    withMarkdownNotes(newViewNotes)(() => (
+    () => (
       <NewViewComponent
         path="/Root/Profiles/MyProfile/DocumentLibrary"
         fields={[]}
@@ -1564,17 +1560,14 @@ storiesOf('ViewControls', module)
         extension={text('Extension', 'docx')}
         repositoryUrl={testRepository.configuration.repositoryUrl}
       />
-    )),
+    ),
+    { notes: { markdown: newViewNotes } },
   )
   .add(
     'edit view',
-    withMarkdownNotes(editViewNotes)(() => (
-      <EditView content={object('Content', testFile)} repository={testRepository} contentTypeName="File" />
-    )),
+    () => <EditView content={object('Content', testFile)} repository={testRepository} contentTypeName="File" />,
+    { notes: { markdown: editViewNotes } },
   )
-  .add(
-    'browse view',
-    withMarkdownNotes(browseViewNotes)(() => (
-      <BrowseView content={object('Content', testFile)} repository={testRepository} />
-    )),
-  )
+  .add('browse view', () => <BrowseView content={object('Content', testFile)} repository={testRepository} />, {
+    notes: { markdown: browseViewNotes },
+  })
