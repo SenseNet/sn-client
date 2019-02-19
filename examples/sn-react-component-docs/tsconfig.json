@@ -13,5 +13,5 @@
     "declaration": false,
     "declarationMap": false
   },
-  "typeRoots": ["node_modules/@types", "./typings.d.ts"]
+  "include": ["stories"]
 }
