@@ -1074,7 +1074,6 @@ export const customSchema = [
         DefaultOrder: 0,
         ControlHint: 'sn:FileName',
         Type: 'ShortTextFieldSetting',
-        FieldIndex: 1,
       },
       {
         Name: 'ModifiedBy',
@@ -1292,7 +1291,6 @@ export const customSchema = [
         VisibleNew: 2,
         DefaultOrder: 0,
         Type: 'ShortTextFieldSetting',
-        FieldIndex: 2,
       },
     ],
   },
@@ -1647,7 +1645,6 @@ export const customSchema = [
         VisibleNew: 2,
         DefaultOrder: 0,
         Type: 'IntegerFieldSetting',
-        FieldIndex: 3,
       },
       {
         Name: 'Version',
