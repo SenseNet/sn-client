@@ -1,21 +1,15 @@
-import Avatar from '@material-ui/core/Avatar'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormGroup from '@material-ui/core/FormGroup'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
-import Icon from '@material-ui/core/Icon'
 import InputLabel from '@material-ui/core/InputLabel'
 import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemAvatar from '@material-ui/core/ListItemAvatar'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
-import ListItemText from '@material-ui/core/ListItemText'
 import { PathHelper } from '@sensenet/client-utils'
-import { GenericContent, User } from '@sensenet/default-content-types'
+import { GenericContent } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
+import { DefaultItemTemplate } from './DefaultItemTemplate'
 import { ReactReferenceGridFieldSetting } from './ReferenceGridFieldSettings'
 
 const styles = {
@@ -25,9 +19,6 @@ const styles = {
   },
   listContainer: {
     display: 'block',
-  },
-  icon: {
-    marginRight: 0,
   },
 }
 
@@ -68,7 +59,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
      * @property {string} value default value
      */
     this.state = {
-      fieldValue: this.props['data-fieldValue'] || this.props['data-defaultValue'] || [],
+      fieldValue: this.props['data-fieldValue'] || this.props['data-defaultValue'] || [emptyContent],
       itemLabel: this.props['data-defaultDisplayName'] || 'DisplayName',
     }
     this.getSelected = this.getSelected.bind(this)
@@ -96,52 +87,27 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
         references.d.results.length > 0
           ? references.d.results.map((item: GenericContent) => ({
               // tslint:disable-next-line:no-string-literal
-              value: item['Id'],
-              label: item[this.state.itemLabel],
+              DisplayName: item.DisplayName,
+              Icon: item.Icon,
+              Id: item.Id,
             }))
           : [],
     })
     return references
   }
   /**
-   * Returns the default item template for non-user content items
-   * @property {GenericContent} content the content item
+   * Removes the chosen item from the grid and the field value
    */
-  public defaultItemTempalte = (content: GenericContent) => {
-    return (
-      <ListItem key={content.Id} button={false}>
-        <ListItemIcon style={styles.icon}>
-          <Icon>{content.Icon}</Icon>
-        </ListItemIcon>
-        <ListItemText primary={content.DisplayName} />
-        <ListItemSecondaryAction>
-          {content.Id ? <Icon>remove_circle</Icon> : <Icon>add_circle</Icon>}
-        </ListItemSecondaryAction>
-      </ListItem>
-    )
+  public removeItem = (id: number) => {
+    this.setState({
+      fieldValue: this.state.fieldValue.filter((item: GenericContent) => item.Id !== id),
+    })
   }
   /**
-   * Returns the default item template for user content items
-   * @property {User} content the user content item
+   * Opens a picker to choose an item to add into the grid and the field value
    */
-  public defaultItemTempalteForUsers = (user: User) => {
-    return (
-      <ListItem key={user.Id} button={false}>
-        {user.Avatar ? (
-          <ListItemAvatar>
-            <Avatar alt={user.FullName} src={user.Avatar.Url} />
-          </ListItemAvatar>
-        ) : (
-          <ListItemIcon style={styles.icon}>
-            <Icon>{user.Icon}</Icon>
-          </ListItemIcon>
-        )}
-        <ListItemText primary={user.FullName} />
-        <ListItemSecondaryAction>
-          {user.Id ? <Icon>remove_circle</Icon> : <Icon>add_circle</Icon>}
-        </ListItemSecondaryAction>
-      </ListItem>
-    )
+  public addItem = () => {
+    console.log('add')
   }
   /**
    * render
@@ -162,17 +128,15 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
               {this.props['data-labelText']}
             </InputLabel>
             <List dense={true} style={styles.listContainer}>
-              {this.state.fieldValue.length > 0
-                ? this.state.fieldValue.map((item: GenericContent) => {
-                    if (itemTemplate) {
-                      return itemTemplate(item as GenericContent)
-                    } else {
-                      item.Type === 'User'
-                        ? this.defaultItemTempalteForUsers(item as User)
-                        : this.defaultItemTempalte(item as GenericContent)
-                    }
-                  })
-                : this.defaultItemTempalte(emptyContent)}
+              {this.state.fieldValue.map((item: GenericContent) => {
+                if (itemTemplate) {
+                  return itemTemplate(item)
+                } else {
+                  return (
+                    <DefaultItemTemplate content={item} remove={this.removeItem} add={this.addItem} key={item.Id} />
+                  )
+                }
+              })}
             </List>
             {this.props['data-hintText'] ? <FormHelperText>{this.props['data-hintText']}</FormHelperText> : null}
             {this.props['data-errorText'] ? <FormHelperText>{this.props['data-errorText']}</FormHelperText> : null}
