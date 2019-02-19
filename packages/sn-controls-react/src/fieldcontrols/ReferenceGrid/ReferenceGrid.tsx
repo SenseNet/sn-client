@@ -27,6 +27,7 @@ const ADD_REFERENCECE = 'Add reference'
 const emptyContent = {
   DisplayName: ADD_REFERENCECE,
   Icon: 'link',
+  Id: 0,
 } as GenericContent
 
 /**
@@ -100,7 +101,10 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
    */
   public removeItem = (id: number) => {
     this.setState({
-      fieldValue: this.state.fieldValue.filter((item: GenericContent) => item.Id !== id),
+      fieldValue:
+        this.state.fieldValue.length > 1
+          ? this.state.fieldValue.filter((item: GenericContent) => item.Id !== id)
+          : [emptyContent],
     })
   }
   /**
