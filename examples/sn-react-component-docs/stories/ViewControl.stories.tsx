@@ -1546,7 +1546,7 @@ storiesOf('ViewControls', module)
   .addDecorator(withKnobs)
   .addDecorator(withA11Y)
   .add(
-    'NewViewComponent',
+    'new view',
     () => (
       <NewViewComponent
         path="/Root/Profiles/MyProfile/DocumentLibrary"
