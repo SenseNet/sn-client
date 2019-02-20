@@ -1,3 +1,4 @@
+import { Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 
 /**
@@ -7,14 +8,30 @@ import { GenericContent } from '@sensenet/default-content-types'
  */
 export interface ListPickerProps<T extends GenericContent = GenericContent> {
   /**
-   * Load content from path.
+   * Repositry to load contents from.
+   * To use the default load options you need to provide a repository.
+   * @type {Repository}
    */
-  loadItems: (path: string) => Promise<T[]>
+  repository?: Repository
+
+  /**
+   * Load content from path.
+   * @default { select: ['DisplayName', 'Path', 'Id'],
+   *   filter: "(isOf('Folder') and not isOf('SystemFolder'))",
+   *   metadata: 'no',
+   *   orderby: 'DisplayName',}
+   */
+  loadItems?: (path: string) => Promise<T[]>
 
   /**
    * Load parent content.
+   * @default {
+   *   select: ['DisplayName', 'Path', 'Id', 'ParentId', 'Workspace'],
+   *   expand: ['Workspace'],
+   *   metadata: 'no',
+   * }
    */
-  loadParent: (id?: number) => Promise<T>
+  loadParent?: (id?: number) => Promise<T>
 
   /**
    * The current content's path.
