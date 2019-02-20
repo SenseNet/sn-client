@@ -1,23 +1,21 @@
-import { addDecorator, configure } from '@storybook/react'
-import { configureViewport, INITIAL_VIEWPORTS } from '@storybook/addon-viewport'
-import { withOptions } from '@storybook/addon-options'
-import { setDefaults } from '@storybook/addon-info'
+import { addDecorator, addParameters, configure } from '@storybook/react'
+import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport'
+import { withInfo } from '@storybook/addon-info'
 
 addDecorator(
-  withOptions({
-    name: 'sensenet React Component Docs',
-    url: 'https://github.com/sensenet/sn-react-component-docs',
-    hierarchySeparator: /\/|\./,
+  withInfo({
+    header: true,
+    inline: false,
+    source: true,
   }),
 )
 
-setDefaults({
-  header: true,
-  inline: false,
-  source: true,
-})
-
-configureViewport({
+addParameters({
+  options: {
+    name: 'sensenet React Component Docs',
+    url: 'https://github.com/sensenet/sn-react-component-docs',
+    hierarchySeparator: /\/|\./,
+  },
   viewports: {
     ...INITIAL_VIEWPORTS,
   },

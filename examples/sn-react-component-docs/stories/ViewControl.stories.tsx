@@ -1,5 +1,4 @@
-import { checkA11y } from '@storybook/addon-a11y'
-import { withInfo } from '@storybook/addon-info'
+import { withA11Y } from '@storybook/addon-a11y'
 import { object, text, withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
 import React from 'react'
@@ -1545,10 +1544,9 @@ export const testStore = createStore(combineReducers({ sensenet }))
 
 storiesOf('ViewControls', module)
   .addDecorator(withKnobs)
-  .addDecorator(checkA11y)
-  .addDecorator(withInfo())
+  .addDecorator(withA11Y)
   .add(
-    'new view',
+    'NewViewComponent',
     () => (
       <NewViewComponent
         path="/Root/Profiles/MyProfile/DocumentLibrary"

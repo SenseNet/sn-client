@@ -1,7 +1,6 @@
-import { checkA11y } from '@storybook/addon-a11y'
+import { withA11Y } from '@storybook/addon-a11y'
 import { action } from '@storybook/addon-actions'
 import { withActions } from '@storybook/addon-actions/dist/preview'
-import { withInfo } from '@storybook/addon-info'
 import { boolean, date, number, select, text, withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
 import React from 'react'
@@ -69,8 +68,7 @@ const fileUploadNotes = require('../notes/fieldcontrols/FileUpload.md')
 
 storiesOf('FieldControls.AutoComplete', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
@@ -133,8 +131,7 @@ storiesOf('FieldControls.AutoComplete', module)
 
 storiesOf('FieldControls.CheckboxGroup', module)
   .addDecorator(withKnobs)
-  .addDecorator(checkA11y)
-  .addDecorator(withInfo())
+  .addDecorator(withA11Y)
   .add(
     'new mode',
     () => (
@@ -189,10 +186,10 @@ storiesOf('FieldControls.CheckboxGroup', module)
     ),
     { notes: { markdown: checkboxgroupNotes } },
   )
+
 storiesOf('FieldControls.DatePicker', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
@@ -247,10 +244,10 @@ storiesOf('FieldControls.DatePicker', module)
     ),
     { notes: { markdown: datepickerNotes } },
   )
+
 storiesOf('FieldControls.DateTimePicker', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
@@ -305,10 +302,10 @@ storiesOf('FieldControls.DateTimePicker', module)
     ),
     { notes: { markdown: datetimepickerNotes } },
   )
+
 storiesOf('FieldControls.DisplayName', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
@@ -362,10 +359,10 @@ storiesOf('FieldControls.DisplayName', module)
     ),
     { notes: { markdown: displaynameNotes } },
   )
+
 storiesOf('FieldControls.DropDownList', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
@@ -424,8 +421,7 @@ storiesOf('FieldControls.DropDownList', module)
 
 storiesOf('FieldControls.FileName', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
@@ -480,10 +476,10 @@ storiesOf('FieldControls.FileName', module)
     ),
     { notes: { markdown: filenameNotes } },
   )
+
 storiesOf('FieldControls.FileUpload', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
@@ -501,10 +497,10 @@ storiesOf('FieldControls.FileUpload', module)
     ),
     { notes: { markdown: fileUploadNotes } },
   )
+
 storiesOf('FieldControls.Name', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
@@ -558,10 +554,10 @@ storiesOf('FieldControls.Name', module)
     ),
     { notes: { markdown: nameNotes } },
   )
+
 storiesOf('FieldControls.Number', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode integer',
@@ -688,10 +684,10 @@ storiesOf('FieldControls.Number', module)
     ),
     { notes: { markdown: numberNotes } },
   )
+
 storiesOf('FieldControls.Password', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
@@ -730,10 +726,10 @@ storiesOf('FieldControls.Password', module)
     ),
     { notes: { markdown: passwordNotes } },
   )
+
 storiesOf('FieldControls.RadioButtonGroup', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
@@ -806,10 +802,10 @@ storiesOf('FieldControls.RadioButtonGroup', module)
     ),
     { notes: { markdown: radiobuttongroupNotes } },
   )
+
 storiesOf('FieldControls.RichTextEditor', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
@@ -866,10 +862,10 @@ storiesOf('FieldControls.RichTextEditor', module)
     ),
     { notes: { markdown: richtextNotes } },
   )
+
 storiesOf('FieldControls.ShortText', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
@@ -923,10 +919,10 @@ storiesOf('FieldControls.ShortText', module)
     ),
     { notes: { markdown: shorttextNotes } },
   )
+
 storiesOf('FieldControls.TagsInput', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
@@ -988,10 +984,10 @@ storiesOf('FieldControls.TagsInput', module)
     ),
     { notes: { markdown: tagsInputNotes } },
   )
+
 storiesOf('FieldControls.Textarea', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
@@ -1054,10 +1050,10 @@ storiesOf('FieldControls.Textarea', module)
     ),
     { notes: { markdown: textareasNotes } },
   )
+
 storiesOf('FieldControls.TimePicker', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
