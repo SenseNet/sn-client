@@ -4,39 +4,33 @@ import React from 'react'
 /**
  * Item component properties.
  * @interface ItemProps
- * @extends {Item<T>}
- * @template T
+ * @template T extends GenericContent
  */
 export interface ItemProps<T extends GenericContent = GenericContent> {
   /**
    * Node data.
    * @type {T}
-   * @memberof ItemProps
    */
   node: T
 
   /**
    * Click handler for the item component.
-   * @memberof ItemProps
    */
   onClickHandler?: (event: React.MouseEvent, node: T) => void
 
   /**
    * Click handler for the item component.
-   * @memberof ItemProps
    */
   onDoubleClickHandler?: (event: React.MouseEvent, node: T) => void
 
   /**
    * Additional class to add to the div element.
    * @type {string}
-   * @memberof ItemProps
    */
   className?: string
 
   /**
    * A function to render the item.
-   * @memberof ItemProps
    * @default function defaultRender<T extends GenericContent>(props: T) {
    *  return <li>{props && props.DisplayName}</li>
    * }
