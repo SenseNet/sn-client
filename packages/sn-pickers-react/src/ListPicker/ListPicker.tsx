@@ -2,6 +2,7 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
+import { Repository } from '@sensenet/client-core'
 import { GenericContent, Workspace } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import React, { useState } from 'react'
@@ -18,8 +19,14 @@ export function ListPickerComponent<T extends GenericContent = GenericContent>(p
   const [parentId, setParentId] = useState<number | undefined>(props.parentId)
   const [selectedId, setSelectedId] = useState<string | number>(0)
 
-  const { loading, value: items, error } = useAsync(() => props.loadItems(currentPath), [currentPath])
-  const parent = useAsync(() => props.loadParent(parentId), [parentId])
+  const loadItems = () =>
+    (props.loadItems && props.loadItems(currentPath)) || defaultLoadItems(currentPath, props.repository)
+
+  const loadParent = () =>
+    (props.loadParent && props.loadParent(parentId)) || defaultLoadParent(parentId, props.repository)
+
+  const { loading, value: items, error } = useAsync(loadItems, [currentPath])
+  const parent = useAsync(loadParent, [parentId])
 
   const onItemClickHandler = (event: React.MouseEvent, node: T) => {
     event.preventDefault()
@@ -101,4 +108,36 @@ export function ListPickerComponent<T extends GenericContent = GenericContent>(p
       setParentId(node.ParentId)
     }
   }
+}
+
+async function defaultLoadItems<T extends GenericContent>(path: string, repository?: Repository) {
+  if (!repository) {
+    throw new Error('You need to provide a repository to be able to load content.')
+  }
+  const result = await repository.loadCollection<T>({
+    path,
+    oDataOptions: {
+      select: ['DisplayName', 'Path', 'Id'],
+      filter: "(isOf('Folder') and not isOf('SystemFolder'))",
+      metadata: 'no',
+      orderby: 'DisplayName',
+    },
+  })
+
+  return result.d.results
+}
+
+async function defaultLoadParent<T extends GenericContent>(id?: number, repository?: Repository) {
+  if (!repository) {
+    throw new Error('You need to provide a repository to be able to load content.')
+  }
+  const result = await repository.load<T>({
+    idOrPath: id as number,
+    oDataOptions: {
+      select: ['DisplayName', 'Path', 'Id', 'ParentId', 'Workspace'],
+      expand: ['Workspace'],
+      metadata: 'no',
+    },
+  })
+  return result.d
 }
