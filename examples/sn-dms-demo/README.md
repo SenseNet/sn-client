@@ -1,35 +1,15 @@
 # sn-dms-demo
 
-[![Join the chat at https://gitter.im/SenseNet/sn-dms-demo](https://badges.gitter.im/SenseNet/sn-dms-demo.svg)](https://gitter.im/SenseNet/sn-dms-demo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Build Status](https://travis-ci.org/SenseNet/sn-dms-demo.svg?branch=master)](https://travis-ci.org/SenseNet/sn-dms-demo)
-[![codecov](https://codecov.io/gh/SenseNet/sn-dms-demo/branch/master/graph/badge.svg)](https://codecov.io/gh/SenseNet/sn-dms-demo)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/708a03362ad447958a6830badfc61d80)](https://www.codacy.com/app/herflis33/sn-dms-demo?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=SenseNet/sn-dms-demo&amp;utm_campaign=Badge_Grade)
-[![License](https://img.shields.io/github/license/SenseNet/sn-dms-demo.svg?style=flat)](https://github.com/SenseNet/sn-dms-demo/LICENSE.txt)
-[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg?style=flat)](https://github.com/semantic-release/semantic-release)
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=flat)](http://commitizen.github.io/cz-cli/)
-[![Greenkeeper badge](https://badges.greenkeeper.io/SenseNet/sn-dms-demo.svg)](https://greenkeeper.io/)
-
-sensenet Document Management demo with React.
-
-[![Sense/Net Services](https://img.shields.io/badge/sensenet-7.0.0--beta3%20tested-green.svg)](https://github.com/SenseNet/sensenet/releases/tag/v7.0.0-beta3)
+A sensenet Document Management demo with React.
 
 ## Install and start
 
-```
-$ git clone https://github.com/SenseNet/sn-dms-demo.git
-$ cd sn-dms-demo
-$ npm install
-$ npm start
-```
 
-Please set the following enviroment variables:
-- REACT_APP_SERVICE_URL: url of the site that has at least [sensenet services](https://github.com/SenseNet/sensenet) installed (default value is ```https://sn-local``` so if you have a site installed locally with this url, you have nothing to do with this).
-- REACT_APP_RECAPTCHA_KEY: [Google ReCAPTCHA](https://www.google.com/recaptcha/intro/) sitekey. Without this registration won't work.
-
-## Running Tests
-
-```
-$ npm test
-```
-
-The app is built with [create-react-app-typescript](https://github.com/wmonk/create-react-app-typescript) the TypeScript version of [create-react-app](https://github.com/facebookincubator/create-react-app), so for further information about build, test, config, etc. issues, check them on github.
+1. Install yarn globally with: **npm i yarn -g**
+2. Clone the monorepo with: **git clone https://github.com/SenseNet/sn-client.git**
+3. Navigate into the monorepo's root folder: **cd sn-client**
+4. Install all of the dependencies with a simple **yarn** command (this will take a second or two)
+5. Set the environment options, Repository path in index.tsx, etc... *(Since this app is for demo purposes it requires several demo content items (e.g. demo users, demo content types, demo templates, demo actions) that are NOT the part of the official sensenet packages. So please, please if you want to try out the examples of the sn-client package, do it with connecting to our fully prepared demo sensenet instance at [https://dmsservice.demo.sensenet.com](https://dmsservice.demo.sensenet.com). Note: we rebuild this service daily and sometimes more frequently. When a reset happens, expect short downtimes and losing any changes you made before.*
+6. Build all of the packages with the command **yarn build**
+7. Run the application with **yarn workspace sn-dms-demo run start**
+8. You should be able to login at https://localhost:3000
