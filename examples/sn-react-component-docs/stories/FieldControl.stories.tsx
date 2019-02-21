@@ -203,7 +203,7 @@ storiesOf('FieldControls.DatePicker', module)
         className={text('Additional class name', 'datepicker-field')}
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
-        data-defaultValue={date('Default value')}
+        data-defaultValue={dateKnob('Default value')}
         data-hintText={text('Hint', 'DatePicker hint')}
         name="ModificationDate"
       />
@@ -222,7 +222,7 @@ storiesOf('FieldControls.DatePicker', module)
         className={text('Additional class name', 'datepicker-field')}
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
-        value={date('Value')}
+        value={dateKnob('Value')}
         data-hintText={text('Hint', 'DatePicker hint')}
         name="ModificationDate"
       />
@@ -261,7 +261,7 @@ storiesOf('FieldControls.DateTimePicker', module)
         className={text('Additional class name', 'datetimepicker-field')}
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
-        data-defaultValue={date('Default value')}
+        data-defaultValue={dateKnob('Default value')}
         data-hintText={text('Hint', 'DateTimePicker hint')}
         name="Name"
       />
@@ -280,7 +280,7 @@ storiesOf('FieldControls.DateTimePicker', module)
         className={text('Additional class name', 'datetimepicker-field')}
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
-        value={date('Value')}
+        value={dateKnob('Value')}
         data-hintText={text('Hint', 'DateTimePicker hint')}
         name="Name"
       />
@@ -1067,7 +1067,7 @@ storiesOf('FieldControls.TimePicker', module)
         className={text('Additional class name', 'timepicker-field')}
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
-        data-defaultValue={date('Default value')}
+        data-defaultValue={dateKnob('Default value')}
         data-hintText={text('Hint', 'TimePicker hint')}
         name="ModificationDate"
       />
@@ -1086,7 +1086,7 @@ storiesOf('FieldControls.TimePicker', module)
         className={text('Additional class name', 'timepicker-field')}
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
-        value={date('Value')}
+        value={dateKnob('Value')}
         data-hintText={text('Hint', 'TimePicker hint')}
         name="ModificationDate"
       />
@@ -1107,3 +1107,8 @@ storiesOf('FieldControls.TimePicker', module)
     ),
     { notes: { markdown: timepickerNotes } },
   )
+
+function dateKnob(name: string, defaultValue = new Date()) {
+  const stringTimestamp = date(name, defaultValue)
+  return new Date(stringTimestamp).toISOString()
+}
