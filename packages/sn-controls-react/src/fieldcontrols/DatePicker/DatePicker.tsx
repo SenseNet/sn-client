@@ -1,13 +1,12 @@
 /**
  * @module FieldControls
- *
- */ /** */
-import MomentUtils from '@date-io/date-fns'
+ */
+import MomentUtils from '@date-io/moment'
 import { GenericContent } from '@sensenet/default-content-types'
 import { DatePicker as MUIDatePicker } from 'material-ui-pickers'
 import { MuiPickersUtilsProvider } from 'material-ui-pickers'
-import * as moment from 'moment'
-import * as React from 'react'
+import moment from 'moment'
+import React from 'react'
 import { Fragment } from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactDateTimeFieldSetting } from '../DateTimeFieldSetting'
