@@ -3,7 +3,6 @@ import { PageAttribute, Shapes } from '.'
 /**
  * Generic document properties
  */
-
 export interface DocumentData {
   hostName: string
   idOrPath: number | string
