@@ -14,20 +14,14 @@
     "online viewer"
   ],
   "scripts": {
-    "precommit": "npm run test",
-    "commit": "git-cz",
-    "test:jest": "jest",
     "fix": "npm run fix:prettier && npm run fix:tslint",
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
     "fix:tslint": "tslint --fix --project .",
     "lint": "tslint --project .",
-    "build": "npm run build:tsc",
-    "build:tsc": "tsc -b",
-    "build:webpack": "rimraf bundle && webpack",
-    "publish:development": "npm run build && npm t && npm run typedoc && npm publish --tag development",
+    "build": "tsc -b ./tsconfig.build.json",
     "prepublishOnly": "npm run build",
     "typedoc": "typedoc --mode file --out documentation src --tsconfig tsconfig.json --theme c:/Users/%USERNAME%/AppData/Roaming/npm/node_modules/@sensenet/typedoc-theme/sn-theme",
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server --progress"
   },
   "publishConfig": {
     "access": "public"
@@ -38,46 +32,42 @@
   "devDependencies": {
     "@types/enzyme": "^3.1.15",
     "@types/jest": "^23.3.10",
-    "@types/react": "^16.7.14",
-    "@types/react-dom": "^16.0.7",
-    "@types/react-fontawesome": "^1.6.4",
-    "@types/react-redux": "^6.0.11",
+    "@types/react": "^16.8.5",
+    "@types/react-dom": "^16.8.2",
+    "@types/react-redux": "^7.0.1",
     "@types/react-router-dom": "^4.3.1",
-    "@types/react-test-renderer": "^16.0.2",
-    "@types/redux-logger": "^3.0.6",
     "@types/uuid": "^3.4.4",
-    "awesome-typescript-loader": "^5.2.1",
-    "copy-webpack-plugin": "^4.5.2",
+    "@types/webpack": "4.4.24",
+    "@types/webpack-dev-server": "^3.1.2",
+    "ts-config-webpack-plugin": "^1.3.1",
+    "scss-config-webpack-plugin": "^1.3.1",
+    "asset-config-webpack-plugin": "^1.3.1",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.7.1",
     "enzyme-to-json": "^3.3.5",
     "jest": "^23.6.0",
-    "source-map-loader": "^0.2.4",
-    "webpack": "^4.19.1",
-    "webpack-bundle-analyzer": "^3.0.2",
-    "webpack-cli": "^3.1.1",
-    "webpack-dev-server": "^3.1.8"
+    "uuid": "^3.3.2",
+    "html-webpack-plugin": "^3.2.0",
+    "html-loader": "^0.5.5",
+    "tslint": "^5.12.0",
+    "ts-node": "^8.0.2",
+    "webpack": "^4.29.5",
+    "webpack-bundle-analyzer": "^3.0.3",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.2.1"
   },
   "dependencies": {
-    "@material-ui/core": "^3.1.1",
-    "@material-ui/icons": "^3.0.1",
+    "@material-ui/core": "^3.9.2",
+    "@material-ui/icons": "^3.0.2",
     "@sensenet/client-utils": "^1.4.2",
     "@sensenet/control-mapper": "^1.0.4",
     "@sensenet/client-core": "^1.4.0",
     "@sensenet/default-content-types": "1.1.2",
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3",
-    "react-redux": "^6.0.0",
-    "react-test-renderer": "^16.5.2",
-    "redux": "^4.0.0",
-    "redux-di-middleware": "^3.0.0",
-    "redux-logger": "^3.0.6",
-    "uuid": "^3.3.2"
-  },
-  "config": {
-    "commitizen": {
-      "path": "sensenet-kfi-cz-conventional-changelog"
-    }
+    "react": "^16.8.3",
+    "react-dom": "^16.8.3",
+    "react-redux": "^6.0.1",
+    "redux": "^4.0.1",
+    "redux-di-middleware": "^3.0.0"
   },
   "typings": "./dist/index.d.ts"
 }
