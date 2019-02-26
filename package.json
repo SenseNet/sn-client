@@ -81,7 +81,7 @@
     "transform": {
       "^.+\\.(ts|tsx)$": "ts-jest",
       "^.+\\.css$": "<rootDir>/jest/cssTransform.js",
-      "^.+\\.(png|jpg)$": "<rootDir>/jest/fileTransform.js"
+      "^.+\\.(png|jpg|gif)$": "<rootDir>/jest/fileTransform.js"
     },
     "globals": {
       "ts-jest": {
