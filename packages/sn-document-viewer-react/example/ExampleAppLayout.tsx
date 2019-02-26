@@ -1,4 +1,4 @@
-import React = require('react')
+import React from 'react'
 import { connect } from 'react-redux'
 
 import { v1 } from 'uuid'
@@ -9,13 +9,13 @@ import {
   ToggleShapesWidget,
   ToggleThumbnailsWidget,
   ZoomInOutWidget,
-} from './components/document-widgets'
-import { DocumentViewer } from './components/DocumentViewer'
-import { LayoutAppBar } from './components/LayoutAppBar'
-import { DocumentViewerSettings } from './models/DocumentViewerSettings'
-import { PreviewImageData } from './models/PreviewImageData'
-import { Annotation, Highlight, Redaction, Shape } from './models/Shapes'
-import { componentType } from './services'
+} from '../src/components/document-widgets'
+import { DocumentViewer } from '../src/components/DocumentViewer'
+import { LayoutAppBar } from '../src/components/LayoutAppBar'
+import { DocumentViewerSettings } from '../src/models/DocumentViewerSettings'
+import { PreviewImageData } from '../src/models/PreviewImageData'
+import { Annotation, Highlight, Redaction, Shape } from '../src/models/Shapes'
+import { componentType } from '../src/services'
 
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
@@ -23,6 +23,7 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
+import Fab from '@material-ui/core/Fab'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Paper from '@material-ui/core/Paper'
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
@@ -34,9 +35,9 @@ import FolderOpen from '@material-ui/icons/FolderOpen'
 import Help from '@material-ui/icons/Help'
 import Send from '@material-ui/icons/Send'
 
-import { Download } from './components/document-widgets/DownloadWidget'
-import { Print } from './components/document-widgets/PrintWidget'
-import { Share } from './components/document-widgets/ShareWidget'
+import { Download } from '../src/components/document-widgets/DownloadWidget'
+import { Print } from '../src/components/document-widgets/PrintWidget'
+import { Share } from '../src/components/document-widgets/ShareWidget'
 
 /**
  * Adds a globally unique ID to the shape
@@ -441,19 +442,18 @@ class ExampleAppLayout extends React.Component<
           )}
 
           {this.state.isViewerOpened ? (
-            <Button
+            <Fab
               style={{
                 position: 'fixed',
                 right: '2em',
                 bottom: '1em',
                 zIndex: 1,
               }}
-              variant="fab"
               color="secondary"
               aria-label="select another document"
               onClick={() => this.closeViewer()}>
               <FolderOpen />
-            </Button>
+            </Fab>
           ) : null}
         </div>
       </MuiThemeProvider>
