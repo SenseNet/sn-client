@@ -2,7 +2,7 @@
 
 exports[`Document Viewer component should render a loading component while loading 1`] = `
 <Connect(DocumentViewerLoadingComponent)
-  image="./assets/loader.gif"
+  image="loader.gif"
 />
 `;
 

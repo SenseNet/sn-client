@@ -1,6 +1,7 @@
 import { SlideProps } from '@material-ui/core/Slide'
 import React from 'react'
 import { connect } from 'react-redux'
+import loaderImage from '../../assets/loader.gif'
 import { componentType } from '../services'
 import { pollDocumentData, RootReducerType } from '../store'
 import { LocalizationStateType, setLocalization } from '../store/Localization'
@@ -84,7 +85,7 @@ export class DocumentViewerComponent extends React.Component<docViewerComponentT
    */
   public render() {
     if (this.props.isLoading) {
-      return <DocumentViewerLoading image={this.props.loaderImage || './assets/loader.gif'} />
+      return <DocumentViewerLoading image={this.props.loaderImage || loaderImage} />
     }
 
     const isPreviewError = this.props.previewState !== -1 && this.props.previewState < 1
