@@ -1,5 +1,7 @@
+import React from 'react'
 import { addDecorator, addParameters, configure } from '@storybook/react'
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport'
+import { Global, ThemeProvider, themes, createReset } from '@storybook/theming'
 import { withInfo } from '@storybook/addon-info'
 
 addDecorator(
@@ -9,6 +11,13 @@ addDecorator(
     source: true,
   }),
 )
+
+addDecorator(storyFn => (
+  <ThemeProvider theme={themes.normal}>
+    <Global styles={createReset} />
+    {storyFn()}
+  </ThemeProvider>
+))
 
 addParameters({
   options: {
