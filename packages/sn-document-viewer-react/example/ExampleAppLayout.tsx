@@ -26,7 +26,6 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import Fab from '@material-ui/core/Fab'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Paper from '@material-ui/core/Paper'
-import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
@@ -38,6 +37,7 @@ import Send from '@material-ui/icons/Send'
 import { Download } from '../src/components/document-widgets/DownloadWidget'
 import { Print } from '../src/components/document-widgets/PrintWidget'
 import { Share } from '../src/components/document-widgets/ShareWidget'
+import { defaultTheme } from '../src/models/Theming'
 
 /**
  * Adds a globally unique ID to the shape
@@ -206,43 +206,6 @@ export const exampleSettings = new DocumentViewerSettings({
 
 const localStorageKey = 'sn-docviewer-example'
 
-/**
- * The default example theme
- */
-export const exampleTheme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#ff9800',
-    },
-    secondary: {
-      main: '#ff9800',
-    },
-    background: {
-      default: '#f5f5f5',
-      paper: '#ffffff',
-    },
-  },
-  overrides: {
-    MuiDrawer: {
-      paper: {
-        backgroundColor: 'transparent',
-      },
-      docked: {
-        backgroundColor: '#eaeaeb',
-      },
-    },
-    MuiToolbar: {
-      root: {
-        backgroundColor: '#2a2a2c',
-        color: '#707070',
-      },
-    },
-  },
-  typography: {
-    useNextVariants: true,
-  },
-})
-
 class ExampleAppLayout extends React.Component<
   componentType<typeof mapStateToProps, typeof mapDispatchToProps, {}>,
   ExampleAppState
@@ -289,7 +252,7 @@ class ExampleAppLayout extends React.Component<
    */
   public render() {
     return (
-      <MuiThemeProvider theme={exampleTheme}>
+      <MuiThemeProvider theme={defaultTheme}>
         <div style={{ height: '100%' }}>
           {this.state.isViewerOpened ? (
             <DocumentViewer hostName={this.state.hostName} documentIdOrPath={this.state.documentIdOrPath}>
