@@ -1,12 +1,9 @@
-import { checkA11y } from '@storybook/addon-a11y'
+import { withA11Y } from '@storybook/addon-a11y'
 import { action } from '@storybook/addon-actions'
 import { withActions } from '@storybook/addon-actions/dist/preview'
-import { withInfo } from '@storybook/addon-info'
 import { boolean, date, number, select, text, withKnobs } from '@storybook/addon-knobs'
-import { withMarkdownNotes } from '@storybook/addon-notes'
-import { addDecorator, storiesOf } from '@storybook/react'
+import { storiesOf } from '@storybook/react'
 import React from 'react'
-import { muiTheme } from 'storybook-addon-material-ui'
 
 import { Repository } from '@sensenet/client-core'
 import { customSchema } from './ViewControl.stories'
@@ -31,8 +28,6 @@ import {
   TimePicker,
 } from '@sensenet/controls-react/src'
 import { User } from '@sensenet/default-content-types/src'
-
-addDecorator(muiTheme())
 
 export const testRepository = new Repository({
   repositoryUrl: 'https://dmsservice.demo.sensenet.com',
@@ -61,7 +56,7 @@ const radiobuttongroupNotes = require('../notes/fieldcontrols/RadioButtonGroup.m
 const datetimepickerNotes = require('../notes/fieldcontrols/DateTimePicker.md')
 const datepickerNotes = require('../notes/fieldcontrols/DatePicker.md')
 const timepickerNotes = require('../notes/fieldcontrols/TimePicker.md')
-const textaresNotes = require('../notes/fieldcontrols/Textarea.md')
+const textareasNotes = require('../notes/fieldcontrols/Textarea.md')
 const richtextNotes = require('../notes/fieldcontrols/RichTextEditor.md')
 const nameNotes = require('../notes/fieldcontrols/Name.md')
 const filenameNotes = require('../notes/fieldcontrols/FileName.md')
@@ -73,12 +68,11 @@ const fileUploadNotes = require('../notes/fieldcontrols/FileUpload.md')
 
 storiesOf('FieldControls.AutoComplete', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
-    withMarkdownNotes(autocompleteNotes)(() => (
+    () => (
       <AutoComplete
         data-actionName="new"
         name="Name"
@@ -93,11 +87,12 @@ storiesOf('FieldControls.AutoComplete', module)
         dataSource={tagsInputDataSource}
         repository={testRepository}
       />
-    )),
+    ),
+    { notes: { markdown: autocompleteNotes } },
   )
   .add(
     'edit mode',
-    withMarkdownNotes(autocompleteNotes)(() => (
+    () => (
       <AutoComplete
         data-actionName="edit"
         name="Name"
@@ -113,11 +108,12 @@ storiesOf('FieldControls.AutoComplete', module)
         repository={testRepository}
         data-fieldValue={[2]}
       />
-    )),
+    ),
+    { notes: { markdown: autocompleteNotes } },
   )
   .add(
     'browse mode',
-    withMarkdownNotes(autocompleteNotes)(() => (
+    () => (
       <AutoComplete
         data-textType="LongText"
         name="Name"
@@ -129,16 +125,16 @@ storiesOf('FieldControls.AutoComplete', module)
         dataSource={tagsInputDataSource}
         repository={testRepository}
       />
-    )),
+    ),
+    { notes: { markdown: autocompleteNotes } },
   )
 
 storiesOf('FieldControls.CheckboxGroup', module)
   .addDecorator(withKnobs)
-  .addDecorator(checkA11y)
-  .addDecorator(withInfo())
+  .addDecorator(withA11Y)
   .add(
     'new mode',
-    withMarkdownNotes(checkboxgroupNotes)(() => (
+    () => (
       <CheckboxGroup
         data-labelText={text('Label', 'Checkboxgroup label')}
         data-actionName="new"
@@ -152,11 +148,12 @@ storiesOf('FieldControls.CheckboxGroup', module)
         data-allowExtraValue={boolean('Allow extra value', false)}
         name="VersioningMode"
       />
-    )),
+    ),
+    { notes: { markdown: checkboxgroupNotes } },
   )
   .add(
     'edit mode',
-    withMarkdownNotes(checkboxgroupNotes)(() => (
+    () => (
       <CheckboxGroup
         data-labelText={text('Label', 'Checkboxgroup label')}
         data-actionName="edit"
@@ -171,11 +168,12 @@ storiesOf('FieldControls.CheckboxGroup', module)
         data-allowExtraValue={boolean('Allow extra value', false)}
         name="VersioningMode"
       />
-    )),
+    ),
+    { notes: { markdown: checkboxgroupNotes } },
   )
   .add(
     'browse mode',
-    withMarkdownNotes(checkboxgroupNotes)(() => (
+    () => (
       <CheckboxGroup
         data-labelText={text('Label', 'Checkboxgroup label')}
         data-actionName="browse"
@@ -185,16 +183,17 @@ storiesOf('FieldControls.CheckboxGroup', module)
         value={3}
         name="VersioningMode"
       />
-    )),
+    ),
+    { notes: { markdown: checkboxgroupNotes } },
   )
+
 storiesOf('FieldControls.DatePicker', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
-    withMarkdownNotes(datepickerNotes)(() => (
+    () => (
       <DatePicker
         data-actionName="new"
         data-labelText={text('Label', 'DatePicker label')}
@@ -204,15 +203,16 @@ storiesOf('FieldControls.DatePicker', module)
         className={text('Additional class name', 'datepicker-field')}
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
-        data-defaultValue={date('Default value')}
+        data-defaultValue={dateKnob('Default value')}
         data-hintText={text('Hint', 'DatePicker hint')}
         name="ModificationDate"
       />
-    )),
+    ),
+    { notes: { markdown: datepickerNotes } },
   )
   .add(
     'edit mode',
-    withMarkdownNotes(datepickerNotes)(() => (
+    () => (
       <DatePicker
         data-actionName="edit"
         data-labelText={text('Label', 'DatePicker label')}
@@ -222,15 +222,16 @@ storiesOf('FieldControls.DatePicker', module)
         className={text('Additional class name', 'datepicker-field')}
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
-        value={date('Value')}
+        value={dateKnob('Value')}
         data-hintText={text('Hint', 'DatePicker hint')}
         name="ModificationDate"
       />
-    )),
+    ),
+    { notes: { markdown: datepickerNotes } },
   )
   .add(
     'browse mode',
-    withMarkdownNotes(datepickerNotes)(() => (
+    () => (
       <DatePicker
         data-actionName="browse"
         data-labelText={text('Label', 'DatePicker label')}
@@ -240,16 +241,17 @@ storiesOf('FieldControls.DatePicker', module)
         className={text('Additional class name', 'datepicker-field')}
         name="ModificationDate"
       />
-    )),
+    ),
+    { notes: { markdown: datepickerNotes } },
   )
+
 storiesOf('FieldControls.DateTimePicker', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
-    withMarkdownNotes(datetimepickerNotes)(() => (
+    () => (
       <DateTimePicker
         data-actionName="new"
         data-labelText={text('Label', 'DateTimePicker label')}
@@ -259,15 +261,16 @@ storiesOf('FieldControls.DateTimePicker', module)
         className={text('Additional class name', 'datetimepicker-field')}
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
-        data-defaultValue={date('Default value')}
+        data-defaultValue={dateKnob('Default value')}
         data-hintText={text('Hint', 'DateTimePicker hint')}
         name="Name"
       />
-    )),
+    ),
+    { notes: { markdown: datetimepickerNotes } },
   )
   .add(
     'edit mode',
-    withMarkdownNotes(datetimepickerNotes)(() => (
+    () => (
       <DateTimePicker
         data-actionName="edit"
         data-labelText={text('Label', 'DateTimePicker label')}
@@ -277,15 +280,16 @@ storiesOf('FieldControls.DateTimePicker', module)
         className={text('Additional class name', 'datetimepicker-field')}
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
-        value={date('Value')}
+        value={dateKnob('Value')}
         data-hintText={text('Hint', 'DateTimePicker hint')}
         name="Name"
       />
-    )),
+    ),
+    { notes: { markdown: datetimepickerNotes } },
   )
   .add(
     'browse mode',
-    withMarkdownNotes(datetimepickerNotes)(() => (
+    () => (
       <DateTimePicker
         data-actionName="browse"
         data-labelText={text('Label', 'DateTimePicker label')}
@@ -295,16 +299,17 @@ storiesOf('FieldControls.DateTimePicker', module)
         className={text('Additional class name', 'datetimepicker-field')}
         name="Name"
       />
-    )),
+    ),
+    { notes: { markdown: datetimepickerNotes } },
   )
+
 storiesOf('FieldControls.DisplayName', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
-    withMarkdownNotes(displaynameNotes)(() => (
+    () => (
       <DisplayName
         data-actionName="new"
         data-labelText={text('Label', 'DisplayName label')}
@@ -318,11 +323,12 @@ storiesOf('FieldControls.DisplayName', module)
         data-hintText={text('Hint', 'DisplayName hint')}
         name="Name"
       />
-    )),
+    ),
+    { notes: { markdown: displaynameNotes } },
   )
   .add(
     'edit mode',
-    withMarkdownNotes(displaynameNotes)(() => (
+    () => (
       <DisplayName
         data-labelText={text('Label', 'DisplayName label')}
         readOnly={boolean('Readonly', false)}
@@ -336,11 +342,12 @@ storiesOf('FieldControls.DisplayName', module)
         data-hintText={text('Hint', 'DisplayName hint')}
         name="Name"
       />
-    )),
+    ),
+    { notes: { markdown: displaynameNotes } },
   )
   .add(
     'browse mode',
-    withMarkdownNotes(displaynameNotes)(() => (
+    () => (
       <DisplayName
         data-actionName="browse"
         data-labelText={text('Label', 'DisplayName label')}
@@ -349,16 +356,17 @@ storiesOf('FieldControls.DisplayName', module)
         onChange={action('change')}
         name="Name"
       />
-    )),
+    ),
+    { notes: { markdown: displaynameNotes } },
   )
+
 storiesOf('FieldControls.DropDownList', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
-    withMarkdownNotes(dropdownlistNotes)(() => (
+    () => (
       <DropDownList
         data-actionName="new"
         data-labelText={text('Label', 'DropDownList label')}
@@ -372,11 +380,12 @@ storiesOf('FieldControls.DropDownList', module)
         options={[{ Text: 'option1', Value: 1 }, { Text: 'option2', Value: 2 }, { Text: 'option3', Value: 3 }]}
         name="Version"
       />
-    )),
+    ),
+    { notes: { markdown: dropdownlistNotes } },
   )
   .add(
     'edit mode',
-    withMarkdownNotes(dropdownlistNotes)(() => (
+    () => (
       <DropDownList
         data-labelText={text('Label', 'DropDownList label')}
         readOnly={boolean('Readonly', false)}
@@ -391,11 +400,12 @@ storiesOf('FieldControls.DropDownList', module)
         options={[{ Text: 'option1', Value: 1 }, { Text: 'option2', Value: 2 }, { Text: 'option3', Value: 3 }]}
         name="VersioningMode"
       />
-    )),
+    ),
+    { notes: { markdown: dropdownlistNotes } },
   )
   .add(
     'browse mode',
-    withMarkdownNotes(dropdownlistNotes)(() => (
+    () => (
       <DropDownList
         data-actionName="browse"
         data-labelText={text('Label', 'DropDownList label')}
@@ -405,17 +415,17 @@ storiesOf('FieldControls.DropDownList', module)
         options={[{ Text: 'option1', Value: 1 }, { Text: 'option2', Value: 2 }, { Text: 'option3', Value: 3 }]}
         name="VersioningMode"
       />
-    )),
+    ),
+    { notes: { markdown: dropdownlistNotes } },
   )
 
 storiesOf('FieldControls.FileName', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
-    withMarkdownNotes(filenameNotes)(() => (
+    () => (
       <FileName
         data-actionName="new"
         data-labelText={text('Label', 'FileName label')}
@@ -430,11 +440,12 @@ storiesOf('FieldControls.FileName', module)
         data-extension={text('Extension', 'docx')}
         name="Name"
       />
-    )),
+    ),
+    { notes: { markdown: filenameNotes } },
   )
   .add(
     'edit mode',
-    withMarkdownNotes(filenameNotes)(() => (
+    () => (
       <FileName
         data-labelText={text('Label', 'FileName label')}
         readOnly={boolean('Readonly', false)}
@@ -448,11 +459,12 @@ storiesOf('FieldControls.FileName', module)
         data-hintText={text('Hint', 'FileName hint')}
         name="Name"
       />
-    )),
+    ),
+    { notes: { markdown: filenameNotes } },
   )
   .add(
     'browse mode',
-    withMarkdownNotes(filenameNotes)(() => (
+    () => (
       <FileName
         data-actionName="browse"
         data-labelText={text('Label', 'FileName label')}
@@ -461,16 +473,17 @@ storiesOf('FieldControls.FileName', module)
         onChange={action('change')}
         name="Name"
       />
-    )),
+    ),
+    { notes: { markdown: filenameNotes } },
   )
+
 storiesOf('FieldControls.FileUpload', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
-    withMarkdownNotes(fileUploadNotes)(() => (
+    () => (
       <FileUpload
         data-actionName="new"
         data-labelText={text('Label', 'FileUpload label')}
@@ -481,16 +494,17 @@ storiesOf('FieldControls.FileUpload', module)
         name="Name"
         data-repository={testRepository}
       />
-    )),
+    ),
+    { notes: { markdown: fileUploadNotes } },
   )
+
 storiesOf('FieldControls.Name', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
-    withMarkdownNotes(nameNotes)(() => (
+    () => (
       <Name
         data-actionName="new"
         data-labelText={text('Label', 'Name label')}
@@ -504,11 +518,12 @@ storiesOf('FieldControls.Name', module)
         data-hintText={text('Hint', 'Name hint')}
         name="Name"
       />
-    )),
+    ),
+    { notes: { markdown: nameNotes } },
   )
   .add(
     'edit mode',
-    withMarkdownNotes(nameNotes)(() => (
+    () => (
       <Name
         data-labelText={text('Label', 'Name label')}
         readOnly={boolean('Readonly', false)}
@@ -522,11 +537,12 @@ storiesOf('FieldControls.Name', module)
         data-hintText={text('Hint', 'Name hint')}
         name="Name"
       />
-    )),
+    ),
+    { notes: { markdown: nameNotes } },
   )
   .add(
     'browse mode',
-    withMarkdownNotes(nameNotes)(() => (
+    () => (
       <Name
         data-actionName="browse"
         data-labelText={text('Label', 'Name label')}
@@ -535,16 +551,17 @@ storiesOf('FieldControls.Name', module)
         onChange={action('change')}
         name="Name"
       />
-    )),
+    ),
+    { notes: { markdown: nameNotes } },
   )
+
 storiesOf('FieldControls.Number', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode integer',
-    withMarkdownNotes(numberNotes)(() => (
+    () => (
       <Number
         data-actionName="new"
         data-labelText={text('Label', 'Number label')}
@@ -566,11 +583,12 @@ storiesOf('FieldControls.Number', module)
         data-currency={select('Currency symbol', currencyOptions, '$')}
         name="Index"
       />
-    )),
+    ),
+    { notes: { markdown: numberNotes } },
   )
   .add(
     'new mode decimal',
-    withMarkdownNotes(numberNotes)(() => (
+    () => (
       <Number
         data-actionName="new"
         data-labelText={text('Label', 'Number label')}
@@ -592,11 +610,12 @@ storiesOf('FieldControls.Number', module)
         data-currency={select('Currency symbol', currencyOptions, '$')}
         name="Index"
       />
-    )),
+    ),
+    { notes: { markdown: numberNotes } },
   )
   .add(
     'edit mode integer',
-    withMarkdownNotes(numberNotes)(() => (
+    () => (
       <Number
         data-actionName="edit"
         data-labelText={text('Label', 'Number label')}
@@ -618,11 +637,12 @@ storiesOf('FieldControls.Number', module)
         data-currency={select('Currency symbol', currencyOptions, '$')}
         name="Index"
       />
-    )),
+    ),
+    { notes: { markdown: numberNotes } },
   )
   .add(
     'edit mode decimal',
-    withMarkdownNotes(numberNotes)(() => (
+    () => (
       <Number
         data-actionName="edit"
         data-labelText={text('Label', 'Number label')}
@@ -644,11 +664,12 @@ storiesOf('FieldControls.Number', module)
         data-currency={select('Currency symbol', currencyOptions, '$')}
         name="Index"
       />
-    )),
+    ),
+    { notes: { markdown: numberNotes } },
   )
   .add(
     'browse mode',
-    withMarkdownNotes(numberNotes)(() => (
+    () => (
       <Number
         data-actionName="browse"
         data-labelText={text('Label', 'Number label')}
@@ -660,16 +681,17 @@ storiesOf('FieldControls.Number', module)
         data-currency={select('Currency symbol', currencyOptions, '$')}
         name="Index"
       />
-    )),
+    ),
+    { notes: { markdown: numberNotes } },
   )
+
 storiesOf('FieldControls.Password', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
-    withMarkdownNotes(passwordNotes)(() => (
+    () => (
       <Password
         data-actionName="new"
         data-labelText={text('Label', 'Password label')}
@@ -682,11 +704,12 @@ storiesOf('FieldControls.Password', module)
         data-hintText={text('Hint', 'Password hint')}
         name="Name"
       />
-    )),
+    ),
+    { notes: { markdown: passwordNotes } },
   )
   .add(
     'edit mode',
-    withMarkdownNotes(passwordNotes)(() => (
+    () => (
       <Password
         data-labelText={text('Label', 'Password label')}
         readOnly={boolean('Readonly', false)}
@@ -700,16 +723,17 @@ storiesOf('FieldControls.Password', module)
         data-hintText={text('Hint', 'Password hint')}
         name="Name"
       />
-    )),
+    ),
+    { notes: { markdown: passwordNotes } },
   )
+
 storiesOf('FieldControls.RadioButtonGroup', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
-    withMarkdownNotes(passwordNotes)(() => (
+    () => (
       <RadioButtonGroup
         data-actionName="new"
         data-labelText={text('Label', 'RadioButtonGroup label')}
@@ -740,11 +764,12 @@ storiesOf('FieldControls.RadioButtonGroup', module)
         ]}
         name="Version"
       />
-    )),
+    ),
+    { notes: { markdown: radiobuttongroupNotes } },
   )
   .add(
     'edit mode',
-    withMarkdownNotes(radiobuttongroupNotes)(() => (
+    () => (
       <RadioButtonGroup
         data-labelText={text('Label', 'RadioButtonGroup label')}
         readOnly={boolean('Readonly', false)}
@@ -759,11 +784,12 @@ storiesOf('FieldControls.RadioButtonGroup', module)
         options={[{ Text: 'option1', Value: 1 }, { Text: 'option2', Value: 2 }, { Text: 'option3', Value: 3 }]}
         name="VersioningMode"
       />
-    )),
+    ),
+    { notes: { markdown: radiobuttongroupNotes } },
   )
   .add(
     'browse mode',
-    withMarkdownNotes(radiobuttongroupNotes)(() => (
+    () => (
       <RadioButtonGroup
         data-actionName="browse"
         data-labelText={text('Label', 'RadioButtonGroup label')}
@@ -773,16 +799,17 @@ storiesOf('FieldControls.RadioButtonGroup', module)
         options={[{ Text: 'option1', Value: 1 }, { Text: 'option2', Value: 2 }, { Text: 'option3', Value: 3 }]}
         name="VersioningMode"
       />
-    )),
+    ),
+    { notes: { markdown: radiobuttongroupNotes } },
   )
+
 storiesOf('FieldControls.RichTextEditor', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
-    withMarkdownNotes(richtextNotes)(() => (
+    () => (
       <RichTextEditor
         data-actionName="new"
         data-labelText={text('Label', 'RichTextEditor label')}
@@ -796,11 +823,12 @@ storiesOf('FieldControls.RichTextEditor', module)
         data-hintText={text('Hint', 'RichTextEditor hint')}
         name="Description"
       />
-    )),
+    ),
+    { notes: { markdown: richtextNotes } },
   )
   .add(
     'edit mode',
-    withMarkdownNotes(richtextNotes)(() => (
+    () => (
       <RichTextEditor
         data-actionName="edit"
         data-labelText={text('Label', 'RichTextEditor label')}
@@ -814,11 +842,12 @@ storiesOf('FieldControls.RichTextEditor', module)
         data-hintText={text('Hint', 'RichTextEditor hint')}
         name="Description"
       />
-    )),
+    ),
+    { notes: { markdown: richtextNotes } },
   )
   .add(
     'browse mode',
-    withMarkdownNotes(richtextNotes)(() => (
+    () => (
       <RichTextEditor
         data-actionName="browse"
         data-labelText={text('Label', 'RichTextEditor label')}
@@ -830,16 +859,17 @@ storiesOf('FieldControls.RichTextEditor', module)
         name="Description"
         onChange={action('change')}
       />
-    )),
+    ),
+    { notes: { markdown: richtextNotes } },
   )
+
 storiesOf('FieldControls.ShortText', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
-    withMarkdownNotes(shorttextNotes)(() => (
+    () => (
       <ShortText
         data-actionName="new"
         data-labelText={text('Label', 'ShortText label')}
@@ -853,11 +883,12 @@ storiesOf('FieldControls.ShortText', module)
         data-hintText={text('Hint', 'Shorttext hint')}
         name="Name"
       />
-    )),
+    ),
+    { notes: { markdown: shorttextNotes } },
   )
   .add(
     'edit mode',
-    withMarkdownNotes(shorttextNotes)(() => (
+    () => (
       <ShortText
         data-labelText={text('Label', 'ShortText label')}
         readOnly={boolean('Readonly', false)}
@@ -871,11 +902,12 @@ storiesOf('FieldControls.ShortText', module)
         data-hintText={text('Hint', 'Shorttext hint')}
         name="Name"
       />
-    )),
+    ),
+    { notes: { markdown: shorttextNotes } },
   )
   .add(
     'browse mode',
-    withMarkdownNotes(shorttextNotes)(() => (
+    () => (
       <ShortText
         data-actionName="browse"
         data-labelText={text('Label', 'ShortText label')}
@@ -884,16 +916,17 @@ storiesOf('FieldControls.ShortText', module)
         onChange={action('change')}
         name="Name"
       />
-    )),
+    ),
+    { notes: { markdown: shorttextNotes } },
   )
+
 storiesOf('FieldControls.TagsInput', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
-    withMarkdownNotes(tagsInputNotes)(() => (
+    () => (
       <TagsInput
         data-actionName="new"
         data-labelText={text('Label', 'TagsInput label')}
@@ -909,11 +942,12 @@ storiesOf('FieldControls.TagsInput', module)
         data-allowMultiple={boolean('Allow multiple selection', false)}
         name="ModifiedBy"
       />
-    )),
+    ),
+    { notes: { markdown: tagsInputNotes } },
   )
   .add(
     'edit mode',
-    withMarkdownNotes(tagsInputNotes)(() => (
+    () => (
       <TagsInput
         data-actionName="edit"
         data-labelText={text('Label', 'TagsInput label')}
@@ -930,11 +964,12 @@ storiesOf('FieldControls.TagsInput', module)
         data-fieldValue={[2]}
         name="ModifiedBy"
       />
-    )),
+    ),
+    { notes: { markdown: tagsInputNotes } },
   )
   .add(
     'browse mode',
-    withMarkdownNotes(tagsInputNotes)(() => (
+    () => (
       <TagsInput
         data-textType="LongText"
         data-actionName="browse"
@@ -946,16 +981,17 @@ storiesOf('FieldControls.TagsInput', module)
         repository={testRepository}
         name="ModifiedBy"
       />
-    )),
+    ),
+    { notes: { markdown: tagsInputNotes } },
   )
+
 storiesOf('FieldControls.Textarea', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
-    withMarkdownNotes(textaresNotes)(() => (
+    () => (
       <Textarea
         data-actionName="new"
         data-textType="LongText"
@@ -970,11 +1006,12 @@ storiesOf('FieldControls.Textarea', module)
         data-hintText={text('Hint', 'Textarea hint')}
         name="Description"
       />
-    )),
+    ),
+    { notes: { markdown: textareasNotes } },
   )
   .add(
     'edit mode',
-    withMarkdownNotes(textaresNotes)(() => (
+    () => (
       <Textarea
         data-textType="LongText"
         data-actionName="edit"
@@ -992,11 +1029,12 @@ storiesOf('FieldControls.Textarea', module)
         data-hintText={text('Hint', 'Textarea hint')}
         name="Description"
       />
-    )),
+    ),
+    { notes: { markdown: textareasNotes } },
   )
   .add(
     'browse mode',
-    withMarkdownNotes(textaresNotes)(() => (
+    () => (
       <Textarea
         data-textType="LongText"
         data-actionName="browse"
@@ -1009,16 +1047,17 @@ storiesOf('FieldControls.Textarea', module)
         onChange={action('change')}
         name="Description"
       />
-    )),
+    ),
+    { notes: { markdown: textareasNotes } },
   )
+
 storiesOf('FieldControls.TimePicker', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
-    withMarkdownNotes(timepickerNotes)(() => (
+    () => (
       <TimePicker
         data-actionName="new"
         data-labelText={text('Label', 'TimePicker label')}
@@ -1028,15 +1067,16 @@ storiesOf('FieldControls.TimePicker', module)
         className={text('Additional class name', 'timepicker-field')}
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
-        data-defaultValue={date('Default value')}
+        data-defaultValue={dateKnob('Default value')}
         data-hintText={text('Hint', 'TimePicker hint')}
         name="ModificationDate"
       />
-    )),
+    ),
+    { notes: { markdown: timepickerNotes } },
   )
   .add(
     'edit mode',
-    withMarkdownNotes(timepickerNotes)(() => (
+    () => (
       <TimePicker
         data-actionName="edit"
         data-labelText={text('Label', 'TimePicker label')}
@@ -1046,15 +1086,16 @@ storiesOf('FieldControls.TimePicker', module)
         className={text('Additional class name', 'timepicker-field')}
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
-        value={date('Value')}
+        value={dateKnob('Value')}
         data-hintText={text('Hint', 'TimePicker hint')}
         name="ModificationDate"
       />
-    )),
+    ),
+    { notes: { markdown: timepickerNotes } },
   )
   .add(
     'browse mode',
-    withMarkdownNotes(timepickerNotes)(() => (
+    () => (
       <TimePicker
         data-actionName="browse"
         data-labelText={text('Label', 'TimePicker label')}
@@ -1063,5 +1104,11 @@ storiesOf('FieldControls.TimePicker', module)
         className={text('Additional class name', 'timepicker-field')}
         name="ModificationDate"
       />
-    )),
+    ),
+    { notes: { markdown: timepickerNotes } },
   )
+
+function dateKnob(name: string, defaultValue = new Date()) {
+  const stringTimestamp = date(name, defaultValue)
+  return new Date(stringTimestamp).toISOString()
+}
