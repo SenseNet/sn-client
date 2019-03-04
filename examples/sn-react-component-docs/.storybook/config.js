@@ -21,8 +21,8 @@ addDecorator(storyFn => (
 
 addParameters({
   options: {
-    name: 'sensenet React Component Docs',
-    url: 'https://github.com/sensenet/sn-react-component-docs',
+    brandTitle: 'sensenet React Component Docs',
+    brandUrl: 'https://github.com/sensenet/sn-react-component-docs',
     hierarchySeparator: /\/|\./,
   },
   viewports: {
