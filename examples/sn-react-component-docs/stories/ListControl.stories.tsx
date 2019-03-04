@@ -1,12 +1,9 @@
 import { ContentList } from '@sensenet/list-controls-react/src/ContentList'
-import { checkA11y } from '@storybook/addon-a11y'
+import { withA11Y } from '@storybook/addon-a11y'
 import { action } from '@storybook/addon-actions'
-import { withInfo } from '@storybook/addon-info'
 import { array, boolean, select, text, withKnobs } from '@storybook/addon-knobs'
-import { withMarkdownNotes } from '@storybook/addon-notes'
-import { addDecorator, storiesOf } from '@storybook/react'
+import { storiesOf } from '@storybook/react'
 import React from 'react'
-import { muiTheme } from 'storybook-addon-material-ui'
 
 import { ActionModel } from '@sensenet/default-content-types'
 import { icons } from '../assets/icons'
@@ -16,8 +13,6 @@ const orderDirectionOptions = {
   asc: 'asc',
   desc: 'desc',
 }
-
-addDecorator(muiTheme())
 
 const contentListNotes = require('../notes/listcontrols/ContentList.md')
 
@@ -75,11 +70,10 @@ const items = [
 
 storiesOf('ListControls', module)
   .addDecorator(withKnobs)
-  .addDecorator(withInfo())
-  .addDecorator(checkA11y)
+  .addDecorator(withA11Y)
   .add(
     'ContentList',
-    withMarkdownNotes(contentListNotes)(() => (
+    () => (
       <ContentList
         items={items}
         schema={customSchema.find(s => s.ContentTypeName === 'GenericContent')}
@@ -98,5 +92,6 @@ storiesOf('ListControls', module)
         onRequestActiveItemChange={action('active item is changed')}
         onAction={action('an action is requested')}
       />
-    )),
+    ),
+    { notes: { markdown: contentListNotes } },
   )

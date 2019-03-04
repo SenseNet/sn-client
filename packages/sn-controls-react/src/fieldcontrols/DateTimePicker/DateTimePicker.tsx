@@ -1,12 +1,11 @@
 /**
  * @module FieldControls
- *
- */ /** */
-import MomentUtils from '@date-io/date-fns'
+ */
+import MomentUtils from '@date-io/moment'
 import { DateTimePicker as MUIDateTimePicker } from 'material-ui-pickers'
 import { MuiPickersUtilsProvider } from 'material-ui-pickers'
-import * as moment from 'moment'
-import * as React from 'react'
+import moment from 'moment'
+import React from 'react'
 import { Fragment } from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactDateTimeFieldSetting } from '../DateTimeFieldSetting'
@@ -54,13 +53,7 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
    */
   public setValue(value: string) {
     // TODO: check datetimemode and return a value based on this property
-    let date = ''
-    if (value) {
-      date = value.split('T')[0]
-    } else {
-      date = new Date().toISOString().split('T')[0]
-    }
-    return date
+    return value || new Date().toISOString()
   }
   /**
    * handle changes
