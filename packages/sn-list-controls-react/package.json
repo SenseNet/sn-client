@@ -52,6 +52,7 @@
     "file-loader": "3.0.1",
     "ignore-styles": "^5.0.1",
     "jest": "^23.6.0",
+    "prop-types": "^15.7.2",
     "postcss-flexbugs-fixes": "^4.1.0",
     "postcss-loader": "^3.0.0",
     "react-router": "^4.3.1",
