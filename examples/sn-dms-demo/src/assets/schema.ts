@@ -1521,6 +1521,7 @@ export const customSchema = [
         VisibleNew: 0,
         FieldIndex: 2,
         Type: 'ReferenceFieldSetting',
+        AllowedTypes: ['File', 'DemoFile', 'Image'],
       },
     ],
   },
