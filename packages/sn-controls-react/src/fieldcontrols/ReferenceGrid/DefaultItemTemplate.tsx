@@ -8,6 +8,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import AddCircle from '@material-ui/icons/AddCircle'
 import InsertDriveFile from '@material-ui/icons/InsertDriveFile'
+import Refresh from '@material-ui/icons/Refresh'
 import RemoveCircle from '@material-ui/icons/RemoveCircle'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
@@ -48,29 +49,38 @@ export class DefaultItemTemplate extends Component<DefaultItemTemplateProps, {}>
     const { content } = this.props
     return (
       <ListItem key={content.Id} button={false}>
-        {content.Type === 'User' ? (
-          <ListItemAvatar>
-            {
-              // tslint:disable-next-line: no-string-literal
-              <Avatar alt={content['FullName']} src={content['Avatar'].Url} />
-            }
-          </ListItemAvatar>
-        ) : (
-          <ListItemIcon style={styles.icon}>
-            <Icon>
-              <InsertDriveFile />
-            </Icon>
-          </ListItemIcon>
-        )}
-        <ListItemText primary={content.DisplayName} />
+        {content.Type !== undefined ? (
+          content.Type === 'User' ? (
+            <ListItemAvatar>
+              {
+                // tslint:disable-next-line: no-string-literal
+                <Avatar alt={content['FullName']} src={content['Avatar'].Url} />
+              }
+            </ListItemAvatar>
+          ) : (
+            <ListItemIcon style={styles.icon}>
+              <Icon>
+                <InsertDriveFile />
+              </Icon>
+            </ListItemIcon>
+          )
+        ) : null}
+        <ListItemText
+          primary={content.DisplayName}
+          style={content.Id < 0 ? { textAlign: 'right' } : { textAlign: 'left' }}
+        />
         <ListItemSecondaryAction>
-          {content.Id ? (
+          {content.Id > 0 ? (
             <IconButton onClick={() => this.handlRemoveIconClick(content.Id)}>
               <RemoveCircle />
             </IconButton>
-          ) : (
+          ) : content.Id > -2 ? (
             <IconButton onClick={() => this.handleAddIconClick()}>
               <AddCircle />
+            </IconButton>
+          ) : (
+            <IconButton onClick={() => this.handleAddIconClick()}>
+              <Refresh />
             </IconButton>
           )}
         </ListItemSecondaryAction>

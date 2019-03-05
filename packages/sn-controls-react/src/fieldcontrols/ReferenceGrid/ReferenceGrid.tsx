@@ -34,15 +34,22 @@ const styles = {
   },
 }
 
-const ADD_REFERENCECE = 'Add reference'
+const ADD_REFERENCE = 'Add reference'
+const CHANGE_REFERENCE = 'Change reference'
 const REFERENCE_PICKER_TITLE = 'Reference picker'
 const OK = 'Ok'
 const CANCEL = 'Cancel'
 
 const emptyContent = {
-  DisplayName: ADD_REFERENCECE,
+  DisplayName: ADD_REFERENCE,
   Icon: '',
-  Id: 0,
+  Id: -1,
+} as GenericContent
+
+const changeContent = {
+  DisplayName: CHANGE_REFERENCE,
+  Icon: '',
+  Id: -2,
 } as GenericContent
 
 /**
@@ -155,18 +162,28 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
   }
   public handleOkClick = () => {
     this.setState({
-      fieldValue: this.state.fieldValue.concat(this.state.selected),
+      fieldValue:
+        this.state.selected.length > 0 && !this.props['data-allowMultiple']
+          ? this.state.selected
+          : this.state.fieldValue.concat(this.state.selected),
       selected: [],
     })
     this.handleDialogClose()
   }
   public selectItem = (content: GenericContent) => {
-    this.setState({
-      selected:
-        this.state.selected.findIndex((c: GenericContent) => content.Id === c.Id) > -1
-          ? this.state.selected.filter((c: GenericContent) => content.Id !== c.Id)
-          : [...this.state.selected, content],
-    })
+    this.state.selected.length > 0 && !this.props['data-allowMultiple']
+      ? this.setState({
+          selected:
+            this.state.selected.findIndex((c: GenericContent) => content.Id === c.Id) > -1
+              ? this.state.selected
+              : [content],
+        })
+      : this.setState({
+          selected:
+            this.state.selected.findIndex((c: GenericContent) => content.Id === c.Id) > -1
+              ? this.state.selected.filter((c: GenericContent) => content.Id !== c.Id)
+              : [...this.state.selected, content],
+        })
   }
   /**
    * render
@@ -196,7 +213,12 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                   )
                 }
               })}
-              <DefaultItemTemplate content={emptyContent} add={this.addItem} />
+              <DefaultItemTemplate
+                content={
+                  this.state.fieldValue.length > 0 && !this.props['data-allowMultiple'] ? changeContent : emptyContent
+                }
+                add={this.addItem}
+              />
             </List>
             {this.props['data-hintText'] ? <FormHelperText>{this.props['data-hintText']}</FormHelperText> : null}
             {this.props['data-errorText'] ? <FormHelperText>{this.props['data-errorText']}</FormHelperText> : null}
