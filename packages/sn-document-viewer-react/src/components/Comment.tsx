@@ -5,6 +5,7 @@ import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
 import React, { useState } from 'react'
+import { FunctionComponent } from 'react'
 
 /**
  * Comment props interface.
@@ -19,7 +20,7 @@ export interface CommentProps {
  * Represents a single comment component.
  * @param {CommentProps} props
  */
-export const Comment = (props: CommentProps) => {
+export const Comment: FunctionComponent<CommentProps> = (props: CommentProps) => {
   const isLongText = props.commentBody && props.commentBody.length > 160
   const [isOpen, setIsOpen] = useState(!isLongText)
   return (
