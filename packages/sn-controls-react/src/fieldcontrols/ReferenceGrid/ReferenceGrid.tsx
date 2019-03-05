@@ -141,7 +141,6 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
     this.setState({
       pickerIsOpen: true,
     })
-    console.log('add')
   }
   public handleDialogClose = () => {
     this.setState({
@@ -165,8 +164,8 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
     this.setState({
       selected:
         this.state.selected.findIndex((c: GenericContent) => content.Id === c.Id) > -1
-          ? [...this.state.selected]
-          : [...this.state.selected.filter((item: GenericContent) => item.Id !== 0), content],
+          ? this.state.selected.filter((c: GenericContent) => content.Id !== c.Id)
+          : [...this.state.selected, content],
     })
   }
   /**
@@ -212,6 +211,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                   allowedTypes={this.props['data-allowedTypes']}
                   repository={this.props['data-repository']}
                   select={content => this.selectItem(content)}
+                  selected={this.state.selected}
                 />
                 <DialogActions>
                   <Button variant="contained" onClick={this.handleOkClick} color="primary">
