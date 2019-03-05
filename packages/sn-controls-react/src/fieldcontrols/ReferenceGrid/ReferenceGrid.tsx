@@ -262,10 +262,51 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
             key={name as string}
             component={'fieldset' as 'div'}
             required={required}>
-            <InputLabel htmlFor={name as string}>{this.props['data-labelText']}</InputLabel>
+            <InputLabel shrink={true} htmlFor={name as string}>
+              {this.props['data-labelText']}
+            </InputLabel>
+            <List dense={true} style={styles.listContainer}>
+              {this.state.fieldValue.map((item: GenericContent) => {
+                if (itemTemplate) {
+                  return itemTemplate(item)
+                } else {
+                  return (
+                    <DefaultItemTemplate content={item} remove={this.removeItem} add={this.addItem} key={item.Id} />
+                  )
+                }
+              })}
+              <DefaultItemTemplate
+                content={
+                  this.state.fieldValue.length > 0 && !this.props['data-allowMultiple'] ? changeContent : emptyContent
+                }
+                add={this.addItem}
+              />
+            </List>
+            {this.props['data-hintText'] ? <FormHelperText>{this.props['data-hintText']}</FormHelperText> : null}
+            {this.props['data-errorText'] ? <FormHelperText>{this.props['data-errorText']}</FormHelperText> : null}
 
-            <FormHelperText>{this.props['data-hintText']}</FormHelperText>
-            <FormHelperText>{this.props['data-errorText']}</FormHelperText>
+            <Dialog onClose={this.handleDialogClose} open={this.state.pickerIsOpen}>
+              <div style={styles.dialog}>
+                <Typography variant="h5" gutterBottom={true}>
+                  {REFERENCE_PICKER_TITLE}
+                </Typography>
+                <ReferencePicker
+                  path={this.props['data-selectionRoot'] ? this.props['data-selectionRoot'][0] : '/Root'}
+                  allowedTypes={this.props['data-allowedTypes']}
+                  repository={this.props['data-repository']}
+                  select={content => this.selectItem(content)}
+                  selected={this.state.selected}
+                />
+                <DialogActions>
+                  <Button variant="contained" onClick={this.handleOkClick} color="primary">
+                    {OK}
+                  </Button>
+                  <Button variant="contained" onClick={this.handleCancelClick} color="secondary">
+                    {CANCEL}
+                  </Button>
+                </DialogActions>
+              </div>
+            </Dialog>
           </FormControl>
         )
       case 'browse':
