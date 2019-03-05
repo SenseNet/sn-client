@@ -136,9 +136,12 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
    * Removes the chosen item from the grid and the field value
    */
   public removeItem = (id: number) => {
+    const { name, onChange } = this.props
+    const value =
+      this.state.fieldValue.length > 1 ? this.state.fieldValue.filter((item: GenericContent) => item.Id !== id) : []
+    onChange(name, value.map((item: GenericContent) => item.Id))
     this.setState({
-      fieldValue:
-        this.state.fieldValue.length > 1 ? this.state.fieldValue.filter((item: GenericContent) => item.Id !== id) : [],
+      fieldValue: value,
     })
   }
   /**
