@@ -161,11 +161,15 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
     this.handleDialogClose()
   }
   public handleOkClick = () => {
+    const { name, onChange } = this.props
+    const value =
+      this.state.selected.length > 0 && !this.props['data-allowMultiple']
+        ? this.state.selected
+        : this.state.fieldValue.concat(this.state.selected)
+    onChange(name, value.map((item: GenericContent) => item.Id))
+
     this.setState({
-      fieldValue:
-        this.state.selected.length > 0 && !this.props['data-allowMultiple']
-          ? this.state.selected
-          : this.state.fieldValue.concat(this.state.selected),
+      fieldValue: value,
       selected: [],
     })
     this.handleDialogClose()
