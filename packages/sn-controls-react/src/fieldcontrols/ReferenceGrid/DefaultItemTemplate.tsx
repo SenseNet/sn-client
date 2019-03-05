@@ -27,13 +27,15 @@ const styles = {
 
 interface DefaultItemTemplateProps {
   content: GenericContent
-  remove: (id: number) => void
+  remove?: (id: number) => void
   add: () => void
 }
 
 export class DefaultItemTemplate extends Component<DefaultItemTemplateProps, {}> {
   public handlRemoveIconClick = (id: number) => {
-    this.props.remove(id)
+    if (this.props.remove) {
+      this.props.remove(id)
+    }
   }
   public handleAddIconClick = () => {
     this.props.add()

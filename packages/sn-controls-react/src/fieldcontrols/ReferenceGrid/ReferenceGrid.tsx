@@ -1,3 +1,6 @@
+import Button from '@material-ui/core/Button'
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormGroup from '@material-ui/core/FormGroup'
@@ -5,28 +8,40 @@ import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import InputLabel from '@material-ui/core/InputLabel'
 import List from '@material-ui/core/List'
+import Typography from '@material-ui/core/Typography'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { DefaultItemTemplate } from './DefaultItemTemplate'
 import { ReactReferenceGridFieldSetting } from './ReferenceGridFieldSettings'
+import { ReferencePicker } from './ReferencePicker'
 
 const styles = {
   root: {
     display: 'flex',
     flexWrap: 'wrap',
   },
+  dialog: {
+    padding: 20,
+  },
   listContainer: {
     display: 'block',
+  },
+  closeButton: {
+    position: 'absolute',
+    right: 0,
   },
 }
 
 const ADD_REFERENCECE = 'Add reference'
+const REFERENCE_PICKER_TITLE = 'Reference picker'
+const OK = 'Ok'
+const CANCEL = 'Cancel'
 
 const emptyContent = {
   DisplayName: ADD_REFERENCECE,
-  Icon: 'link',
+  Icon: '',
   Id: 0,
 } as GenericContent
 
@@ -43,6 +58,8 @@ export interface ReferenceGridProps<T extends GenericContent, K extends keyof T>
 export interface ReferenceGridState<T extends GenericContent, _K extends keyof T> {
   fieldValue: any
   itemLabel: string
+  pickerIsOpen: boolean
+  selected: any
 }
 
 export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends Component<
@@ -60,8 +77,20 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
      * @property {string} value default value
      */
     this.state = {
-      fieldValue: this.props['data-fieldValue'] || this.props['data-defaultValue'] || [emptyContent],
+      fieldValue:
+        this.props['data-fieldValue'] && this.props['data-fieldValue'].length > 0
+          ? this.props['data-fieldValue']
+          : this.props['data-defaultValue']
+          ? this.props['data-defaultValue']
+          : [],
       itemLabel: this.props['data-defaultDisplayName'] || 'DisplayName',
+      pickerIsOpen: false,
+      selected:
+        this.props['data-fieldValue'] && this.props['data-fieldValue'].length > 0
+          ? this.props['data-fieldValue']
+          : this.props['data-defaultValue']
+          ? this.props['data-defaultValue']
+          : [],
     }
     this.getSelected = this.getSelected.bind(this)
     if (this.props['data-actionName'] === 'edit') {
@@ -102,16 +131,43 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
   public removeItem = (id: number) => {
     this.setState({
       fieldValue:
-        this.state.fieldValue.length > 1
-          ? this.state.fieldValue.filter((item: GenericContent) => item.Id !== id)
-          : [emptyContent],
+        this.state.fieldValue.length > 1 ? this.state.fieldValue.filter((item: GenericContent) => item.Id !== id) : [],
     })
   }
   /**
    * Opens a picker to choose an item to add into the grid and the field value
    */
   public addItem = () => {
+    this.setState({
+      pickerIsOpen: true,
+    })
     console.log('add')
+  }
+  public handleDialogClose = () => {
+    this.setState({
+      pickerIsOpen: false,
+    })
+  }
+  public handleCancelClick = () => {
+    this.setState({
+      selected: [],
+    })
+    this.handleDialogClose()
+  }
+  public handleOkClick = () => {
+    this.setState({
+      fieldValue: this.state.fieldValue.concat(this.state.selected),
+      selected: [],
+    })
+    this.handleDialogClose()
+  }
+  public selectItem = (content: GenericContent) => {
+    this.setState({
+      selected:
+        this.state.selected.findIndex((c: GenericContent) => content.Id === c.Id) > -1
+          ? [...this.state.selected]
+          : [...this.state.selected.filter((item: GenericContent) => item.Id !== 0), content],
+    })
   }
   /**
    * render
@@ -141,9 +197,32 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                   )
                 }
               })}
+              <DefaultItemTemplate content={emptyContent} add={this.addItem} />
             </List>
             {this.props['data-hintText'] ? <FormHelperText>{this.props['data-hintText']}</FormHelperText> : null}
             {this.props['data-errorText'] ? <FormHelperText>{this.props['data-errorText']}</FormHelperText> : null}
+
+            <Dialog onClose={this.handleDialogClose} open={this.state.pickerIsOpen}>
+              <div style={styles.dialog}>
+                <Typography variant="h5" gutterBottom={true}>
+                  {REFERENCE_PICKER_TITLE}
+                </Typography>
+                <ReferencePicker
+                  path={this.props['data-selectionRoot'] ? this.props['data-selectionRoot'][0] : '/Root'}
+                  allowedTypes={this.props['data-allowedTypes']}
+                  repository={this.props['data-repository']}
+                  select={content => this.selectItem(content)}
+                />
+                <DialogActions>
+                  <Button variant="contained" onClick={this.handleOkClick} color="primary">
+                    {OK}
+                  </Button>
+                  <Button variant="contained" onClick={this.handleCancelClick} color="secondary">
+                    {CANCEL}
+                  </Button>
+                </DialogActions>
+              </div>
+            </Dialog>
           </FormControl>
         )
       case 'new':
