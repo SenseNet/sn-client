@@ -1,5 +1,5 @@
 import { FlatIcon, FontAwesomeIcon, Icon, ImageIcon, MaterialIcon } from '@sensenet/icons-react/src'
-import { withA11Y } from '@storybook/addon-a11y'
+import { withA11y } from '@storybook/addon-a11y'
 import { action } from '@storybook/addon-actions'
 import { select, text, withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
@@ -7,7 +7,7 @@ import React from 'react'
 
 const stories = storiesOf('Icon', module)
   .addDecorator(withKnobs)
-  .addDecorator(withA11Y)
+  .addDecorator(withA11y)
 
 const defaultNotes = require('../notes/icon/Default.md')
 const materialuiNotes = require('../notes/icon/Materialui.md')

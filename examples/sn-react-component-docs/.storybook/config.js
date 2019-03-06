@@ -1,7 +1,7 @@
 import React from 'react'
 import { addDecorator, addParameters, configure } from '@storybook/react'
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport'
-import { Global, ThemeProvider, themes, createReset } from '@storybook/theming'
+import { Global, ThemeProvider, themes, createReset, convert } from '@storybook/theming'
 import { withInfo } from '@storybook/addon-info'
 
 addDecorator(
@@ -13,7 +13,7 @@ addDecorator(
 )
 
 addDecorator(storyFn => (
-  <ThemeProvider theme={themes.normal}>
+  <ThemeProvider theme={convert(themes.light)}>
     <Global styles={createReset} />
     {storyFn()}
   </ThemeProvider>
@@ -21,8 +21,8 @@ addDecorator(storyFn => (
 
 addParameters({
   options: {
-    name: 'sensenet React Component Docs',
-    url: 'https://github.com/sensenet/sn-react-component-docs',
+    brandTitle: 'sensenet React Component Docs',
+    brandUrl: 'https://github.com/sensenet/sn-react-component-docs',
     hierarchySeparator: /\/|\./,
   },
   viewports: {
