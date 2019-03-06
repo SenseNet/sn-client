@@ -1,30 +1,37 @@
+import IconButton from '@material-ui/core/IconButton'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Paper from '@material-ui/core/Paper'
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
 import Tooltip from '@material-ui/core/Tooltip'
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
+import Settings from '@material-ui/icons/Settings'
 import React, { useContext } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
+import { Link } from 'react-router-dom'
 import { matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
 import { rootStateType } from '../../store'
-import { toggleDrawer } from '../../store/Drawer'
+import { closeDrawer, openDrawer } from '../../store/Drawer'
 import { ResponsivePersonalSetttings } from '../ResponsiveContextProvider'
 import { ThemeContext } from '../ThemeContext'
+import { UserAvatar } from '../UserAvatar'
 
 const mapStateToProps = (state: rootStateType) => ({
   items: state.drawer.items,
   opened: state.drawer.opened,
+  user: state.session.currentUser,
+  repositoryUrl: state.persistedState.lastRepositoryUrl,
 })
 
 const mapDispatchToProps = {
-  toggleDrawer,
+  openDrawer,
+  closeDrawer,
 }
 
-const DesktopDrawer: React.StatelessComponent<
+const TemporaryDrawer: React.StatelessComponent<
   ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & RouteComponentProps
 > = props => {
   const settings = useContext(ResponsivePersonalSetttings)
@@ -33,13 +40,12 @@ const DesktopDrawer: React.StatelessComponent<
   if (!settings.drawer.enabled) {
     return null
   }
-
   return (
-    <Paper style={{ flexGrow: 0, flexShrink: 0 }}>
+    <SwipeableDrawer open={props.opened} onClose={() => props.closeDrawer()} onOpen={() => props.openDrawer()}>
       <List
         dense={true}
         style={{
-          width: props.opened ? 270 : 55,
+          // width: 270,
           height: '100%',
           flexGrow: 1,
           flexShrink: 0,
@@ -49,6 +55,7 @@ const DesktopDrawer: React.StatelessComponent<
           flexDirection: 'column',
           backgroundColor: theme.palette.background.default, // '#222',
           paddingTop: '1em',
+          transition: 'width 100ms ease-in-out',
         }}>
         <div style={{ paddingTop: '1em' }}>
           {props.items
@@ -66,10 +73,11 @@ const DesktopDrawer: React.StatelessComponent<
                     placement="right">
                     <ListItemIcon>{item.icon}</ListItemIcon>
                   </Tooltip>
-                  {props.opened ? <ListItemText primary={item.primaryText} secondary={item.secondaryText} /> : null}
+                  <ListItemText primary={item.primaryText} secondary={item.secondaryText} />
                 </ListItem>
               ) : (
                 <NavLink
+                  onClick={() => props.closeDrawer()}
                   to={item.url}
                   activeStyle={{ opacity: 1 }}
                   style={{ textDecoration: 'none', opacity: 0.54 }}
@@ -84,20 +92,29 @@ const DesktopDrawer: React.StatelessComponent<
                       placement="right">
                       <ListItemIcon>{item.icon}</ListItemIcon>
                     </Tooltip>
-                    {props.opened ? <ListItemText primary={item.primaryText} secondary={item.secondaryText} /> : null}
+                    <ListItemText primary={item.primaryText} secondary={item.secondaryText} />
                   </ListItem>
                 </NavLink>
               )
             })}
         </div>
-        <ListItem button={true} onClick={props.toggleDrawer} key="expandcollapse">
-          <Tooltip title={props.opened ? 'Collapse' : 'Expand'} placement="right">
-            <ListItemIcon>{props.opened ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}</ListItemIcon>
-          </Tooltip>
-          {props.opened ? <ListItemText primary="Collapse sidebar" /> : null}
-        </ListItem>
+        <Paper style={{ padding: '1em' }}>
+          <ListItem>
+            <ListItemIcon>
+              <UserAvatar user={props.user} repositoryUrl={props.repositoryUrl} />
+            </ListItemIcon>
+            <ListItemText primary={props.user.DisplayName || props.user.Name} />
+            <ListItemSecondaryAction>
+              <Link to={`/personalSettings`} style={{ textDecoration: 'none' }} onClick={() => props.closeDrawer()}>
+                <IconButton title="Edit personal settings">
+                  <Settings />
+                </IconButton>
+              </Link>
+            </ListItemSecondaryAction>
+          </ListItem>
+        </Paper>
       </List>
-    </Paper>
+    </SwipeableDrawer>
   )
 }
 
@@ -105,6 +122,6 @@ const connectedComponent = withRouter(
   connect(
     mapStateToProps,
     mapDispatchToProps,
-  )(DesktopDrawer),
+  )(TemporaryDrawer),
 )
-export { connectedComponent as DesktopDrawer }
+export { connectedComponent as TemporaryDrawer }

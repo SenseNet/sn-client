@@ -5,6 +5,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
 import { ContentContextProvider } from '../../services/ContentContextProvider'
 import { InjectorContext } from '../InjectorContext'
+import { ResponsiveContext } from '../ResponsiveContextProvider'
 import { ThemeContext } from '../ThemeContext'
 
 export interface TextEditorProps {
@@ -17,6 +18,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
   const injector = useContext(InjectorContext)
   const contextProvider = injector.GetInstance(ContentContextProvider)
   const theme = useContext(ThemeContext)
+  const platform = useContext(ResponsiveContext)
 
   const [textValue, setTextValue] = useState('')
   const [language, setLanguage] = useState(contextProvider.getMonacoLanguage(props.content))
@@ -76,6 +78,12 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
         language={language}
         value={textValue}
         onChange={v => setTextValue(v)}
+        options={{
+          automaticLayout: true,
+          minimap: {
+            enabled: platform === 'desktop' ? true : false,
+          },
+        }}
         editorDidMount={(editor, monaco) => {
           if (!monaco.editor.getModel(uri)) {
             const m = monaco.editor.createModel(textValue, language, uri)

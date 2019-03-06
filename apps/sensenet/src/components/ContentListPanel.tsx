@@ -47,7 +47,6 @@ export const createCommandListPanel = (collectionState: ReturnType<typeof create
 
     let searchString = ''
     const runSearch = debounce(() => {
-      console.log('Search for:', searchString)
       const child = children.find(
         c =>
           c.Name.toLocaleLowerCase().indexOf(searchString) === 0 ||

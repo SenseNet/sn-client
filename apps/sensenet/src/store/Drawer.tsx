@@ -53,6 +53,10 @@ const defaultDrawerItems: DrawerItem[] = [
 
 export const toggleDrawer = createAction(() => ({ type: 'toggleDrawer' }))
 
+export const openDrawer = createAction(() => ({ type: 'openDrawer' }))
+
+export const closeDrawer = createAction(() => ({ type: 'closeDrawer' }))
+
 export const drawer: Reducer<{ items: DrawerItem[]; opened: boolean }> = (
   state = { items: [], opened: false },
   action: AnyAction,
@@ -63,6 +67,21 @@ export const drawer: Reducer<{ items: DrawerItem[]; opened: boolean }> = (
       opened: !state.opened,
     }
   }
+
+  if (isFromAction(action, openDrawer)) {
+    return {
+      ...state,
+      opened: true,
+    }
+  }
+
+  if (isFromAction(action, closeDrawer)) {
+    return {
+      ...state,
+      opened: false,
+    }
+  }
+
   if (isFromAction(action, setDrawerItems)) {
     return {
       ...state,

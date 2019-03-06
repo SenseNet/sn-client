@@ -12,6 +12,7 @@ export interface PersonalSettingType {
   commandPalette: { enabled: boolean; wrapQuery: string }
   drawer: {
     enabled: boolean
+    type: 'temporary' | 'permanent' | 'mini-variant'
     items: string[]
   }
 }
@@ -24,6 +25,7 @@ export const defaultSettings: PlatformDependent<PersonalSettingType> = {
     },
     drawer: {
       enabled: true,
+      type: 'mini-variant',
       items: ['Content'],
     },
     commandPalette: { enabled: true, wrapQuery: '${0} .AUTOFILTERS:OFF' },

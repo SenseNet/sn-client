@@ -28,9 +28,8 @@ export const Commander: React.StatelessComponent<RouteComponentProps<CommanderRo
   const [_rightPanelRef, setRightPanelRef] = useState<null | any>(null)
 
   useEffect(() => {
-    const historyChangeListener = props.history.listen((location, action) => {
+    const historyChangeListener = props.history.listen(location => {
       const match = matchPath(location.pathname, props.match.path)
-      console.log(action)
       if (match) {
         if (getLeftFromPath(match.params) !== leftParentId) {
           setLeftParentId(getLeftFromPath(match.params))

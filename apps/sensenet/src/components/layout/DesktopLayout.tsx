@@ -1,10 +1,15 @@
 import CssBaseline from '@material-ui/core/CssBaseline'
 import React from 'react'
+import { useContext } from 'react'
 import snLogo from '../../assets/sensenet_logo_transparent.png'
 import { DesktopAppBar } from '../appbar/DesktopAppBar'
-import { DesktopDrawer } from '../drawer/DesktopDrawer'
+import { PermanentDrawer } from '../drawer/PermanentDrawer'
+import { TemporaryDrawer } from '../drawer/TemporaryDrawer'
+import { ResponsivePersonalSetttings } from '../ResponsiveContextProvider'
 
 export const DesktopLayout: React.FunctionComponent = props => {
+  const settings = useContext(ResponsivePersonalSetttings)
+
   return (
     <div
       style={{
@@ -25,7 +30,7 @@ export const DesktopLayout: React.FunctionComponent = props => {
           flexDirection: 'row',
           height: '100%',
         }}>
-        <DesktopDrawer />
+        {settings.drawer.type === 'temporary' ? <TemporaryDrawer /> : <PermanentDrawer />}
         <div
           style={{
             display: 'flex',

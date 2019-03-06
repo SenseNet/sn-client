@@ -3,10 +3,11 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import match from 'autosuggest-highlight/match'
 import parse from 'autosuggest-highlight/parse'
-import React from 'react'
+import React, { useContext } from 'react'
 import { RenderSuggestionParams } from 'react-autosuggest'
 import { CommandPaletteItem } from '../../store/CommandPalette'
 import { Icon } from '../Icon'
+import { ResponsiveContext } from '../ResponsiveContextProvider'
 
 export const getMatchParts = (text: string, term: string) => {
   const matchValue = match(term, text)
@@ -20,16 +21,28 @@ export const getMatchParts = (text: string, term: string) => {
 export const CommandPaletteSuggestion: React.FunctionComponent<{
   suggestion: CommandPaletteItem
   params: RenderSuggestionParams
-}> = ({ suggestion, params }) => (
-  <ListItem button={true} selected={params.isHighlighted}>
-    {suggestion.content ? (
-      <ListItemIcon style={{ margin: '0 8px' }}>
-        <Icon item={suggestion.content} style={{ width: '40px', height: '40px' }} />
-      </ListItemIcon>
-    ) : null}
-    <ListItemText
-      primary={getMatchParts(params.query, suggestion.primaryText)}
-      secondary={getMatchParts(params.query, suggestion.secondaryText)}
-    />
-  </ListItem>
-)
+}> = ({ suggestion, params }) => {
+  const device = useContext(ResponsiveContext)
+  return (
+    <ListItem button={true} selected={params.isHighlighted}>
+      {suggestion.content ? (
+        <ListItemIcon style={device === 'mobile' ? { margin: '0 3px' } : { margin: '0 8px' }}>
+          <Icon
+            item={suggestion.content}
+            style={device === 'mobile' ? { width: '25px', height: '25px' } : { width: '40px', height: '40px' }}
+          />
+        </ListItemIcon>
+      ) : null}
+      <ListItemText
+        primary={getMatchParts(params.query, suggestion.primaryText)}
+        secondary={getMatchParts(params.query, suggestion.secondaryText)}
+        secondaryTypographyProps={{
+          style: {
+            textOverflow: 'ellipsis',
+            overflow: 'hidden',
+          },
+        }}
+      />
+    </ListItem>
+  )
+}

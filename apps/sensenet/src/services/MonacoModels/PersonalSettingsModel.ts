@@ -17,6 +17,7 @@ languages.json.jsonDefaults.setDiagnosticsOptions({
             description: 'Options for the left drawer',
             properties: {
               enabled: { type: 'boolean', description: 'Enable or disable the drawer' },
+              type: { enum: ['temporary', 'permanent', 'mini-variant'] },
               items: {
                 description: 'An array of enabled items',
                 type: 'array',
