@@ -3,7 +3,7 @@ import createStyles from '@material-ui/core/styles/createStyles'
 import withStyles from '@material-ui/core/styles/withStyles'
 import Tab from '@material-ui/core/Tab'
 import Tabs from '@material-ui/core/Tabs'
-import * as React from 'react'
+import React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 
 const styles = {
@@ -29,7 +29,7 @@ const style = () =>
 
 import { resources } from '../assets/resources'
 
-class LoginTabs extends React.Component<RouteComponentProps<any> & { classes: any }, { value: number }> {
+export class LoginTabs extends React.Component<RouteComponentProps<any> & { classes: any }, { value: number }> {
   constructor(props: LoginTabs['props']) {
     super(props)
     this.state = {
@@ -37,21 +37,18 @@ class LoginTabs extends React.Component<RouteComponentProps<any> & { classes: an
     }
     this.handleChange = this.handleChange.bind(this)
   }
-  public handleChange = (value: number) => {
+
+  public handleChange = (_event: any, value: number) => {
     this.setState({ value })
     return value === 0 ? this.props.history.push('/login') : this.props.history.push('/registration')
   }
+
   public render() {
     const { value } = this.state
     return (
       <div>
         <AppBar position="static" color="default">
-          <Tabs
-            value={value}
-            onChange={() => this.handleChange(value)}
-            variant="fullWidth"
-            indicatorColor="primary"
-            centered={true}>
+          <Tabs value={value} onChange={this.handleChange} variant="fullWidth" indicatorColor="primary" centered={true}>
             <Tab
               label={resources.LOGIN_TAB_TEXT}
               style={styles.tabLink as any}
