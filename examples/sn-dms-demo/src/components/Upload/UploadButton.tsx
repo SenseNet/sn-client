@@ -1,5 +1,5 @@
-import { ClickAwayListener } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
+import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Menu from '@material-ui/core/Menu'
@@ -39,9 +39,9 @@ export interface UploadButtonState {
   anchorElement: HTMLElement | undefined
 }
 
-export const UPLOAD_FILE_BUTTON_ID: string = 'sn-dms-upload-button'
-export const UPLOAD_FOLDER_BUTTON_ID: string = 'sn-dms-upload-button'
-export const UPLOAD_MENU_ID: string = 'sn-dms-upload-button'
+export const UPLOAD_FILE_BUTTON_ID = 'sn-dms-upload-button'
+export const UPLOAD_FOLDER_BUTTON_ID = 'sn-dms-upload-button'
+export const UPLOAD_MENU_ID = 'sn-dms-upload-button'
 
 export class UploadButton extends React.Component<UploadButtonProps, UploadButtonState> {
   private readonly uploadFileButtonId = `${UPLOAD_FILE_BUTTON_ID}-${v1()}`

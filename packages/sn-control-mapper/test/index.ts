@@ -12,18 +12,18 @@ import { ControlMapper } from '../src'
 // tslint:disable:max-classes-per-file
 // tslint:disable:completed-docs
 
-class ExampleControlBase { }
+class ExampleControlBase {}
 
-class ExampleDefaultControl extends ExampleControlBase { }
+class ExampleDefaultControl extends ExampleControlBase {}
 
-class ExampleModifiedControl extends ExampleControlBase { }
+class ExampleModifiedControl extends ExampleControlBase {}
 
-class ExampleModifiedControl2 extends ExampleControlBase { }
+class ExampleModifiedControl2 extends ExampleControlBase {}
 
-class ExampleDefaultFieldControl extends ExampleControlBase { }
+class ExampleDefaultFieldControl extends ExampleControlBase {}
 
 class ExampleClientSetting {
-  constructor(public readonly setting: FieldSetting) { }
+  constructor(public readonly setting: FieldSetting) {}
 }
 
 export const controlMapperTests = describe('ControlMapper', () => {

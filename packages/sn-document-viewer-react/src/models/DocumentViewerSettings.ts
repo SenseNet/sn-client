@@ -28,9 +28,11 @@ export interface DocumentViewerSettingsOptions {
    * Callback that will return with the retrieved DocumentData (if available)
    */
 
-  getDocumentData: (
-    document: { idOrPath: number | string; hostName: string; version?: string },
-  ) => Promise<DocumentData | undefined>
+  getDocumentData: (document: {
+    idOrPath: number | string
+    hostName: string
+    version?: string
+  }) => Promise<DocumentData | undefined>
 
   /**
    * Callback that will return with the retrieved PreviewImageData array
@@ -60,9 +62,11 @@ export class DocumentViewerSettings implements DocumentViewerSettingsOptions {
   public saveChanges!: (document: DocumentData, pages: PreviewImageData[]) => Promise<void>
   public canHideWatermark!: (document: DocumentData) => Promise<boolean>
   public canHideRedaction!: (document: DocumentData) => Promise<boolean>
-  public getDocumentData!: (
-    document: { idOrPath: string | number; hostName: string; version?: string },
-  ) => Promise<DocumentData | undefined>
+  public getDocumentData!: (document: {
+    idOrPath: string | number
+    hostName: string
+    version?: string
+  }) => Promise<DocumentData | undefined>
   public getExistingPreviewImages!: (
     document: DocumentData,
     version: string,

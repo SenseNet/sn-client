@@ -30,6 +30,9 @@ export const pickerTheme = createMuiTheme({
         fontSize: 18,
         flex: 1,
       },
+      h6: {
+        paddingLeft: theme.spacing.unit * 2,
+      },
       subheading: {
         fontFamily: 'Raleway Medium',
         fontSize: 15,
@@ -79,6 +82,19 @@ export const pickerTheme = createMuiTheme({
           },
         },
         borderBottom: 'solid 1px #ddd',
+        '&$selected, &$selected:hover, &$selected:focus': {
+          '& path': {
+            fill: '#fff',
+          },
+          '& span': {
+            color: '#fff',
+          },
+          backgroundColor: '#016d9e',
+          color: '#fff',
+        },
+      },
+      button: {
+        '&:focus': { backgroundColor: 'unset' },
       },
       gutters: {
         padding: '12px !important',

@@ -82,6 +82,19 @@ describe('Upload', () => {
       expect(answer).toEqual(mockAnswer)
     })
 
+    it('should resolve on upload without contentTypeName', async () => {
+      const answer = await Upload.textAsFile({
+        binaryPropertyName: 'Binary',
+        overwrite: true,
+        fileName: 'alma.txt',
+        parentPath: 'Root/Example',
+        text: 'ExampleText',
+        repository: repo,
+        progressObservable: new ObservableValue<UploadProgressInfo>(),
+      })
+      expect(answer).toEqual(mockAnswer)
+    })
+
     it('should throw on upload failure', done => {
       fetchOk = false
       Upload.textAsFile({

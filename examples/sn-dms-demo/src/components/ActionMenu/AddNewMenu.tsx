@@ -120,7 +120,7 @@ class AddNewMenu extends React.Component<
       )
   }
   public render() {
-    return <AddNewButton contentType="" onClick={(e: React.MouseEvent<HTMLElement>) => this.handleButtonClick(e)} />
+    return <AddNewButton contentType="" onClick={e => this.handleButtonClick(e)} />
   }
 }
 

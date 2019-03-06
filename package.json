@@ -1,6 +1,6 @@
 {
   "private": true,
-  "version": "2019-02-staging-1",
+  "version": "2019-03",
   "workspaces": {
     "packages": [
       "packages/*",
@@ -24,9 +24,11 @@
     "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.17.0",
     "tslint-react": "^3.6.0",
-    "typescript": "3.2.4"
+    "tslint-consistent-codestyle": "1.15.0",
+    "typescript": "3.3.1"
   },
   "scripts": {
+    "storybook": "yarn workspace sn-react-component-docs run start-storybook",
     "build": "lerna run build",
     "build:dms": "yarn && yarn build && yarn workspace sn-dms-demo run build:webpack",
     "build:docs": "yarn && yarn build && yarn workspace sn-react-component-docs run build-storybook",
@@ -44,6 +46,10 @@
   "lint-staged": {
     "*.{ts,tsx}": [
       "tslint -p . --fix",
+      "prettier --write",
+      "git add"
+    ],
+    "*.{js,jsx}": [
       "prettier --write",
       "git add"
     ]
@@ -64,6 +70,7 @@
       "<rootDir>/packages/sn-query",
       "<rootDir>/packages/sn-search-react",
       "<rootDir>/packages/sn-redux-promise-middleware",
+      "<rootDir>/packages/sn-pickers-react",
       "<rootDir>/packages/sn-icons-react"
     ],
     "moduleFileExtensions": [

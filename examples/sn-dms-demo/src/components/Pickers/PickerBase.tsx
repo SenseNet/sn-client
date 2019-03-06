@@ -12,41 +12,15 @@ import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { pickerTheme } from '../../assets/picker'
 import { resources } from '../../assets/resources'
-import {
-  deselectPickeritem,
-  loadPickerItems,
-  loadPickerParent,
-  selectPickerItem,
-  setBackLink,
-  setPickerParent,
-} from '../../store/picker/actions'
 import { rootStateType } from '../../store/rootReducer'
-
-// tslint:disable-next-line:no-var-requires
-const sensenetLogo = require('../../assets/sensenet_white.png')
 
 const mapStateToProps = (state: rootStateType) => {
   return {
     open: state.dms.picker.isOpened,
-    anchorElement: state.dms.actionmenu.anchorElement,
     onClose: state.dms.picker.pickerOnClose,
-    parent: state.dms.picker.parent,
-    items: state.dms.picker.items,
-    selected: state.dms.documentLibrary.selected,
-    closestWs: state.dms.picker.closestWorkspace,
-    backLink: state.dms.picker.backLink,
     pickerContent: state.dms.picker.content,
     pickerMode: state.dms.picker.mode,
   }
-}
-
-const mapDispatchToProps = {
-  selectPickerItem,
-  deselectPickeritem,
-  loadPickerParent,
-  loadPickerItems,
-  setPickerParent,
-  setBackLink,
 }
 
 const styles = {
@@ -91,62 +65,27 @@ const styles = {
   },
 }
 
-class Picker extends React.Component<ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, {}> {
+class Picker extends React.Component<ReturnType<typeof mapStateToProps>, {}> {
   constructor(props: Picker['props']) {
     super(props)
   }
+
   public handleClose = () => {
     this.props.onClose()
-    this.props.setBackLink(true)
   }
-  public isLastItem = () => {
-    const { parent, closestWs } = this.props
-    return parent && closestWs ? parent.Path === closestWs.Path : false
-  }
-  public handleClickBack = () => {
-    const { parent } = this.props
-    if (this.isLastItem()) {
-      this.props.setBackLink(false)
-      const snContent = {
-        DisplayName: 'sensenet',
-        Workspace: {
-          Path: null,
-        },
-      } as any
-      this.props.setPickerParent(snContent)
-      this.props.loadPickerItems('/', {
-        query: 'TypeIs:Workspace -TypeIs:Site',
-        select: ['DisplayName', 'Id', 'Path', 'Children'],
-        orderby: [['DisplayName', 'asc']],
-      })
-      this.props.deselectPickeritem()
-    } else {
-      this.props.loadPickerParent(parent && parent.ParentId ? parent.ParentId : '')
-      this.props.loadPickerItems(parent ? parent.Path.substr(0, parent.Path.length - (parent.Name.length + 1)) : '')
-      this.props.deselectPickeritem()
-    }
-  }
+
   public render() {
-    const { backLink, open, parent } = this.props
+    const { open } = this.props
     return (
       <MediaQuery minDeviceWidth={700}>
         {matches => (
           <MuiThemeProvider theme={pickerTheme}>
             {matches ? (
               <Dialog open={open} onClose={this.handleClose}>
-                <DialogTitle>
+                <DialogTitle disableTypography={true}>
                   <Toolbar>
-                    {backLink ? (
-                      <IconButton color="inherit" onClick={() => this.handleClickBack()}>
-                        <Icon type={iconType.materialui} iconName="arrow_back" style={{ color: '#fff' }} />
-                      </IconButton>
-                    ) : (
-                      <div style={styles.snButton}>
-                        <img src={sensenetLogo} alt="sensenet" aria-label="sensenet" style={styles.snLogo} />
-                      </div>
-                    )}
                     <Typography variant="h6" color="inherit">
-                      {parent ? parent.DisplayName : 'Move content'}
+                      {resources[this.props.pickerMode.toUpperCase()]}
                     </Typography>
                     <IconButton
                       style={styles.closeButton as React.CSSProperties}
@@ -170,17 +109,8 @@ class Picker extends React.Component<ReturnType<typeof mapStateToProps> & typeof
                     </Button>
                   </Toolbar>
                   <Toolbar style={styles.mobileToolbar}>
-                    {backLink ? (
-                      <IconButton color="inherit" onClick={() => this.handleClickBack()}>
-                        <Icon type={iconType.materialui} iconName="arrow_back" />
-                      </IconButton>
-                    ) : (
-                      <div style={styles.snButton}>
-                        <img src={sensenetLogo} alt="sensenet" aria-label="sensenet" style={styles.snLogo} />
-                      </div>
-                    )}
                     <Typography variant="h6" color="inherit" style={styles.mobileContentTitle}>
-                      {parent ? parent.DisplayName : 'Move content'}
+                      {resources[this.props.pickerMode.toUpperCase()]}
                     </Typography>
                   </Toolbar>
                 </DialogTitle>
@@ -194,7 +124,4 @@ class Picker extends React.Component<ReturnType<typeof mapStateToProps> & typeof
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Picker)
+export default connect(mapStateToProps)(Picker)

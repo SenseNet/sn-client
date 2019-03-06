@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/control-mapper",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Control mapping utility for sensenet",
   "main": "dist/index.js",
   "files": [
@@ -42,7 +42,7 @@
   },
   "homepage": "https://sensenet.com",
   "dependencies": {
-    "@sensenet/client-core": "^1.4.0",
+    "@sensenet/client-core": "^1.4.1",
     "@sensenet/default-content-types": "^1.1.2"
   },
   "devDependencies": {

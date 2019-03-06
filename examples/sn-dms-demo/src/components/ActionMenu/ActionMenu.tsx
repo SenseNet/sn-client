@@ -161,6 +161,9 @@ class ActionMenu extends React.Component<
       ;(action as any).Action()
     } else {
       const content = this.props.currentContent
+      if (!content) {
+        return
+      }
       switch (action.Name) {
         case 'Rename':
           this.handleClose()
@@ -172,9 +175,11 @@ class ActionMenu extends React.Component<
           break
         case 'DeleteBatch':
         case 'Delete':
-          this.handleClose()
-          this.props.clearSelection()
-          this.props.openDialog(<DeleteDialog content={[content]} />, resources.DELETE, this.props.closeDialog)
+          if (content) {
+            this.handleClose()
+            this.props.clearSelection()
+            this.props.openDialog(<DeleteDialog content={[content]} />, resources.DELETE, this.props.closeDialog)
+          }
           break
         case 'Preview':
           this.handleClose()
@@ -254,12 +259,11 @@ class ActionMenu extends React.Component<
           break
         case 'MoveTo':
           this.handleClose()
-          this.props.select(content ? [content] : [])
-          this.props.setPickerParent(this.props.currentParent ? this.props.currentParent : null)
-          this.props.loadPickerItems(this.props.currentParent ? this.props.currentParent.Path : '')
           this.props.openPicker(
             <PathPicker
-              mode="MoveTo"
+              mode="Move"
+              currentContent={content}
+              currentParent={this.props.currentParent}
               dialogComponent={<MoveToConfirmDialog />}
               dialogTitle={resources.MOVE}
               dialogCallback={Actions.moveBatch as any}
@@ -272,12 +276,11 @@ class ActionMenu extends React.Component<
           break
         case 'CopyTo':
           this.handleClose()
-          this.props.select(content ? [content] : [])
-          this.props.setPickerParent(this.props.currentParent ? this.props.currentParent : null)
-          this.props.loadPickerItems(this.props.currentParent ? this.props.currentParent.Path : '')
           this.props.openPicker(
             <PathPicker
-              mode="CopyTo"
+              mode="Copy"
+              currentContent={content}
+              currentParent={this.props.currentParent}
               dialogComponent={<CopyToConfirmDialog />}
               dialogTitle={resources.COPY}
               dialogCallback={Actions.copyBatch as any}
@@ -288,11 +291,11 @@ class ActionMenu extends React.Component<
           break
         case 'MoveBatch':
           this.handleClose()
-          this.props.setPickerParent(this.props.currentParent ? this.props.currentParent : null)
-          this.props.loadPickerItems(this.props.currentParent ? this.props.currentParent.Path : '')
           this.props.openPicker(
             <PathPicker
-              mode="MoveTo"
+              mode="Move"
+              currentContent={content}
+              currentParent={this.props.currentParent}
               dialogComponent={<MoveToConfirmDialog />}
               dialogTitle={resources.MOVE}
               dialogCallback={Actions.moveBatch as any}
@@ -322,7 +325,6 @@ class ActionMenu extends React.Component<
       (await this.props.uploadFileList({
         fileList: ev.target.files,
         createFolders: true,
-        contentTypeName: 'File',
         binaryPropertyName: 'Binary',
         overwrite: false,
         parentPath: this.props.currentParent ? this.props.currentParent.Path : '',

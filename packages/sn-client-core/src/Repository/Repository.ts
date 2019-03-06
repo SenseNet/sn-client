@@ -88,7 +88,7 @@ export class Repository implements Disposable {
    * @param response The Response object to extract the message
    */
   public async getErrorFromResponse(response: Response): Promise<Error & { body: any; response: Response }> {
-    let msgFromBody: string = ''
+    let msgFromBody = ''
     let body: any = {}
     try {
       body = await response.json()
