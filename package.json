@@ -92,7 +92,9 @@
       "**/__tests__/*.+(ts|tsx|js)",
       "**/test/*.+(ts|tsx|js)"
     ],
-    "setupTestFrameworkScriptFile": "<rootDir>/jest/setup.js",
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest/setup.js"
+    ],
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
     ],
