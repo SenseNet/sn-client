@@ -29,7 +29,15 @@ const Editor: React.FunctionComponent<
   const contentId = parseInt(props.match.params.contentId as string, 10)
   props.loadContent(contentId)
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', width: '100%', padding: '.3em 0' }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        height: '100%',
+        overflow: 'hidden',
+        padding: '.3em 0',
+      }}>
       <Breadcrumbs
         onItemClick={(_ev, item) => {
           props.history.push(item.url)

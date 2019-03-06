@@ -29,6 +29,7 @@ export const DesktopLayout: React.FunctionComponent = props => {
           display: 'flex',
           flexDirection: 'row',
           height: '100%',
+          width: '100%',
         }}>
         {settings.drawer.type === 'temporary' ? <TemporaryDrawer /> : <PermanentDrawer />}
         <div
@@ -38,6 +39,7 @@ export const DesktopLayout: React.FunctionComponent = props => {
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
             backgroundImage: `url(${snLogo})`,
+            overflow: 'hidden',
           }}>
           {props.children}
         </div>
