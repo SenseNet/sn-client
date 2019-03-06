@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Layout Matches snapshot 1`] = `
+<div
+  style={
+    Object {
+      "display": "flex",
+      "flexDirection": "column",
+      "height": "100%",
+      "left": 0,
+      "position": "fixed",
+      "top": 0,
+      "width": "100%",
+    }
+  }
+>
+  <WithStyles(CssBaseline) />
+  <Connect(DesktopAppBar) />
+  <div
+    style={
+      Object {
+        "display": "flex",
+        "flexDirection": "row",
+        "flexGrow": 1,
+      }
+    }
+  >
+    <withRouter(Connect(DesktopDrawer)) />
+    <div
+      style={
+        Object {
+          "display": "flex",
+          "flexGrow": 1,
+        }
+      }
+    />
+  </div>
+</div>
+`;

@@ -39,6 +39,7 @@
     { "path": "packages/sn-search-react" },
     { "path": "examples/sn-dms-demo" },
     { "path": "examples/sn-react-component-docs" },
-    { "path": "examples/sn-react-redux-todo-app" }
+    { "path": "examples/sn-react-redux-todo-app" },
+    { "path": "apps/sensenet" }
   ]
 }
