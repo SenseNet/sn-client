@@ -12,6 +12,7 @@ import { loginToRepository } from '../store/Session'
 
 const mapStateToProps = (state: rootStateType) => ({
   lastUserName: state.persistedState.lastUserName,
+  hasLoginError: state.session.hasError,
   lastRepository: state.persistedState.lastRepositoryUrl,
 })
 
@@ -54,6 +55,7 @@ class Login extends React.Component<ReturnType<typeof mapStateToProps> & typeof 
         <form onSubmit={this.handleSubmit}>
           <Divider />
           <TextField
+            error={this.props.hasLoginError}
             required={true}
             margin="normal"
             label="Username"
@@ -68,6 +70,7 @@ class Login extends React.Component<ReturnType<typeof mapStateToProps> & typeof 
           />
           <TextField
             required={true}
+            error={this.props.hasLoginError}
             margin="dense"
             label="Password"
             fullWidth={true}
@@ -83,6 +86,7 @@ class Login extends React.Component<ReturnType<typeof mapStateToProps> & typeof 
             margin="dense"
             label="Repository URL"
             fullWidth={true}
+            type="url"
             defaultValue={this.props.lastRepository}
             onChange={ev => {
               this.setState({

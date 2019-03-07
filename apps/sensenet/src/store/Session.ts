@@ -1,5 +1,4 @@
 import { ConstantContent, LoginState, Repository } from '@sensenet/client-core'
-import { isExtendedError } from '@sensenet/client-core/dist/Repository/Repository'
 import { Group, User } from '@sensenet/default-content-types'
 import { AnyAction, Reducer } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
@@ -9,6 +8,7 @@ import { createAction, isFromAction } from './ActionHelpers'
 export interface SessionReducerType {
   loginState: LoginState
   currentUser: User
+  hasError: boolean
   groups: Group[]
 }
 
@@ -17,7 +17,12 @@ export const loginToRepository = createAction((username: string, password: strin
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const repo = options.getInjectable(Repository)
     repo.configuration.repositoryUrl = repository
-    await repo.authentication.login(username, password)
+    try {
+      const success = await repo.authentication.login(username, password)
+      options.dispatch(setLoginError(!success))
+    } catch (error) {
+      options.dispatch(setLoginError(true))
+    }
   },
   type: 'LOGIN_TO_REPOSITORY',
 }))
@@ -26,17 +31,7 @@ export const logoutFromRepository = createAction(() => ({
   // tslint:disable-next-line: no-unnecessary-type-annotation
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const repo = options.getInjectable(Repository)
-    try {
-      options.dispatch(setCurrentUser(ConstantContent.VISITOR_USER))
-      options.dispatch(setLoginState(LoginState.Unauthenticated))
-      await repo.authentication.logout()
-    } catch (error) {
-      if (isExtendedError(error)) {
-        if (!error.response.ok) {
-          throw error
-        }
-      }
-    }
+    await repo.authentication.logout()
   },
   type: 'LOGOUT_FROM_REPOSITORY',
 }))
@@ -56,11 +51,17 @@ export const setLoginState = createAction((state: LoginState) => ({
   type: 'setLoginState',
 }))
 
+export const setLoginError = createAction((hasError: boolean) => ({
+  hasError,
+  type: 'setLoginError',
+}))
+
 export const session: Reducer<SessionReducerType, AnyAction> = (
   state = {
     loginState: LoginState.Unknown,
     currentUser: ConstantContent.VISITOR_USER,
     groups: [],
+    hasError: false,
   },
   action: AnyAction,
 ) => {
@@ -78,6 +79,11 @@ export const session: Reducer<SessionReducerType, AnyAction> = (
     return {
       ...state,
       groups: action.groups,
+    }
+  } else if (isFromAction(action, setLoginError)) {
+    return {
+      ...state,
+      hasError: action.hasError,
     }
   }
 

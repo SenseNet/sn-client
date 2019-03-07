@@ -61,6 +61,9 @@ export const setupRepositoryServices = async (options: {
       loadUserLock.release()
     }
   }, true)
-  repo.authentication.state.subscribe(state => store.dispatch(setLoginState(state)), true)
+  repo.authentication.state.subscribe(state => {
+    store.dispatch(setLoginState(state))
+    console.log('SetLoginState', state)
+  }, true)
   subscribeEventsToStore(store, eventHub)
 }
