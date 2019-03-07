@@ -1,3 +1,4 @@
+import { Avatar, Icon, ListItem, ListItemAvatar, ListItemIcon, ListItemText } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -9,6 +10,7 @@ import FormLabel from '@material-ui/core/FormLabel'
 import InputLabel from '@material-ui/core/InputLabel'
 import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
+import InsertDriveFile from '@material-ui/icons/InsertDriveFile'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
@@ -31,6 +33,9 @@ const styles = {
   closeButton: {
     position: 'absolute',
     right: 0,
+  },
+  icon: {
+    marginRight: 0,
   },
 }
 
@@ -314,11 +319,32 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
           <FormControl component={'fieldset' as 'div'} className={className}>
             <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
             <FormGroup>
-              {this.props['data-fieldValue'].map((value: any) => (
-                <FormControl component={'fieldset' as 'div'}>
-                  <FormControlLabel style={{ marginLeft: 0 }} label="aaa" control={<span />} key={value} />
-                </FormControl>
-              ))}
+              <List dense={true} style={styles.listContainer}>
+                {this.state.fieldValue.map((item: GenericContent) => (
+                  <ListItem key={item.Id} button={false}>
+                    {item.Type !== undefined ? (
+                      item.Type === 'User' ? (
+                        <ListItemAvatar>
+                          {
+                            // tslint:disable-next-line: no-string-literal
+                            <Avatar alt={item['FullName']} src={item['Avatar'].Url} />
+                          }
+                        </ListItemAvatar>
+                      ) : (
+                        <ListItemIcon style={styles.icon}>
+                          <Icon>
+                            <InsertDriveFile />
+                          </Icon>
+                        </ListItemIcon>
+                      )
+                    ) : null}
+                    <ListItemText
+                      primary={item.DisplayName}
+                      style={item.Id < 0 ? { textAlign: 'right' } : { textAlign: 'left' }}
+                    />
+                  </ListItem>
+                ))}
+              </List>
             </FormGroup>
           </FormControl>
         ) : null

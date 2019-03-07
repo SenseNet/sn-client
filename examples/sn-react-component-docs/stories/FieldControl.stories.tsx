@@ -21,6 +21,7 @@ import {
   Number,
   Password,
   RadioButtonGroup,
+  ReferenceGrid,
   RichTextEditor,
   ShortText,
   TagsInput,
@@ -65,6 +66,7 @@ const numberNotes = require('../notes/fieldcontrols/Number.md')
 const tagsInputNotes = require('../notes/fieldcontrols/TagsInput.md')
 const autocompleteNotes = require('../notes/fieldcontrols/AutoComplete.md')
 const fileUploadNotes = require('../notes/fieldcontrols/FileUpload.md')
+const referenceGridNotes = require('../notes/fieldcontrols/ReferenceGridNotes.md')
 
 storiesOf('FieldControls.AutoComplete', module)
   .addDecorator(withKnobs)
@@ -801,6 +803,64 @@ storiesOf('FieldControls.RadioButtonGroup', module)
       />
     ),
     { notes: { markdown: radiobuttongroupNotes } },
+  )
+
+storiesOf('FieldControls.ReferenceGrid', module)
+  .addDecorator(withKnobs)
+  .addDecorator(withA11Y)
+  .addDecorator(withActions('change'))
+  .add(
+    'new mode',
+    () => (
+      <ReferenceGrid
+        data-actionName="new"
+        data-labelText={text('Label', 'ReferenceGrid label')}
+        data-defaultValue={text('Default value', 'ReferenceGrid default value')}
+        readOnly={boolean('Readonly', false)}
+        required={boolean('Required', false)}
+        className={text('Additional class name', 'reference-field')}
+        onChange={action('change')}
+        name="Name"
+        dataSource={tagsInputDataSource}
+        repository={testRepository}
+      />
+    ),
+    { notes: { markdown: referenceGridNotes } },
+  )
+  .add(
+    'edit mode',
+    () => (
+      <ReferenceGrid
+        data-labelText={text('Label', 'ReferenceGrid label')}
+        readOnly={boolean('Readonly', false)}
+        required={boolean('Required', false)}
+        className={text('Additional class name', 'reference-field')}
+        data-errorText={text('Error text')}
+        data-fieldValue={[2]}
+        data-actionName="edit"
+        onChange={action('change')}
+        name="Name"
+        dataSource={tagsInputDataSource}
+        repository={testRepository}
+      />
+    ),
+    { notes: { markdown: nameNotes } },
+  )
+  .add(
+    'browse mode',
+    () => (
+      <ReferenceGrid
+        data-actionName="browse"
+        data-labelText={text('Label', 'ReferenceGrid label')}
+        className={text('Additional class name', 'reference-field')}
+        data-fieldValue={[2]}
+        onChange={action('change')}
+        name="Name"
+        dataSource={tagsInputDataSource}
+        repository={testRepository}
+      />
+    ),
+    { notes: { markdown: nameNotes } },
   )
 
 storiesOf('FieldControls.RichTextEditor', module)
