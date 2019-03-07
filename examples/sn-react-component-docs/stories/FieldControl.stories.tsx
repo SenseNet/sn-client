@@ -856,7 +856,7 @@ storiesOf('FieldControls.ReferenceGrid', module)
         data-allowedTypes={['File']}
       />
     ),
-    { notes: { markdown: nameNotes } },
+    { notes: { markdown: referenceGridNotes } },
   )
   .add(
     'browse mode',
@@ -880,7 +880,7 @@ storiesOf('FieldControls.ReferenceGrid', module)
         repository={testRepository}
       />
     ),
-    { notes: { markdown: nameNotes } },
+    { notes: { markdown: referenceGridNotes } },
   )
 
 storiesOf('FieldControls.RichTextEditor', module)
