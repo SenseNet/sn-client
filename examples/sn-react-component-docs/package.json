@@ -41,11 +41,11 @@
     "@sensenet/query": "^1.1.2",
     "@sensenet/redux": "^5.1.5",
     "@sensenet/search-react": "^1.2.1",
-    "react": "^16.8.2",
-    "react-dom": "^16.8.2"
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4"
   },
   "devDependencies": {
-    "@babel/core": "7.3.3",
+    "@babel/core": "7.3.4",
     "@storybook/addon-a11y": "^5.0.0",
     "@storybook/addon-actions": "^5.0.0",
     "@storybook/addon-events": "^5.0.0",
