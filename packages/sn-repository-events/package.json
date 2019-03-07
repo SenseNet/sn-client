@@ -41,7 +41,7 @@
     "@sensenet/client-utils": "^1.4.2"
   },
   "devDependencies": {
-    "@types/jest": "^23.3.10"
+    "@types/jest": "^24.0.9"
   },
   "typings": "./dist/index.d.ts"
 }
