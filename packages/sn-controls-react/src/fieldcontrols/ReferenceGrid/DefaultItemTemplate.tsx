@@ -31,6 +31,7 @@ interface DefaultItemTemplateProps {
   remove?: (id: number) => void
   add: () => void
   actionName?: 'new' | 'edit' | 'browse'
+  readOnly?: boolean
 }
 
 export class DefaultItemTemplate extends Component<DefaultItemTemplateProps, {}> {
@@ -71,7 +72,7 @@ export class DefaultItemTemplate extends Component<DefaultItemTemplateProps, {}>
           primary={content.DisplayName}
           style={content.Id < 0 ? { textAlign: 'right' } : { textAlign: 'left' }}
         />
-        {this.props.actionName && this.props.actionName !== 'browse' ? (
+        {this.props.actionName && this.props.actionName !== 'browse' && !this.props.readOnly ? (
           <ListItemSecondaryAction>
             {content.Id > 0 ? (
               <IconButton onClick={() => this.handlRemoveIconClick(content.Id)}>

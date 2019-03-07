@@ -226,17 +226,20 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                       add={this.addItem}
                       key={item.Id}
                       actionName="edit"
+                      readOnly={this.props.readOnly}
                     />
                   )
                 }
               })}
-              <DefaultItemTemplate
-                content={
-                  this.state.fieldValue.length > 0 && !this.props['data-allowMultiple'] ? changeContent : emptyContent
-                }
-                add={this.addItem}
-                actionName="edit"
-              />
+              {!this.props.readOnly ? (
+                <DefaultItemTemplate
+                  content={
+                    this.state.fieldValue.length > 0 && !this.props['data-allowMultiple'] ? changeContent : emptyContent
+                  }
+                  add={this.addItem}
+                  actionName="edit"
+                />
+              ) : null}
             </List>
             {this.props['data-hintText'] ? <FormHelperText>{this.props['data-hintText']}</FormHelperText> : null}
             {this.props['data-errorText'] ? <FormHelperText>{this.props['data-errorText']}</FormHelperText> : null}
@@ -290,17 +293,20 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                       add={this.addItem}
                       key={item.Id}
                       actionName="new"
+                      readOnly={this.props.readOnly}
                     />
                   )
                 }
               })}
-              <DefaultItemTemplate
-                content={
-                  this.state.fieldValue.length > 0 && !this.props['data-allowMultiple'] ? changeContent : emptyContent
-                }
-                add={this.addItem}
-                actionName="new"
-              />
+              {!this.props.readOnly ? (
+                <DefaultItemTemplate
+                  content={
+                    this.state.fieldValue.length > 0 && !this.props['data-allowMultiple'] ? changeContent : emptyContent
+                  }
+                  add={this.addItem}
+                  actionName="new"
+                />
+              ) : null}
             </List>
             {this.props['data-hintText'] ? <FormHelperText>{this.props['data-hintText']}</FormHelperText> : null}
             {this.props['data-errorText'] ? <FormHelperText>{this.props['data-errorText']}</FormHelperText> : null}
