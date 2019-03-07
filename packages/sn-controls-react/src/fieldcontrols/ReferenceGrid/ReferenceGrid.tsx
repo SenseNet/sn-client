@@ -6,7 +6,6 @@ import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormGroup from '@material-ui/core/FormGroup'
 import FormHelperText from '@material-ui/core/FormHelperText'
-import FormLabel from '@material-ui/core/FormLabel'
 import InputLabel from '@material-ui/core/InputLabel'
 import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
@@ -320,8 +319,10 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
         )
       case 'browse':
         return this.props['data-fieldValue'].length > 0 ? (
-          <FormControl component={'fieldset' as 'div'} className={className}>
-            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
+          <FormControl className={className} style={styles.root as any}>
+            <InputLabel shrink={true} htmlFor={name as string}>
+              {this.props['data-labelText']}
+            </InputLabel>
             <FormGroup>
               <List dense={true} style={styles.listContainer}>
                 {this.state.fieldValue.map((item: GenericContent) => (
@@ -354,8 +355,10 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
         ) : null
       default:
         return this.props['data-fieldValue'].length > 0 ? (
-          <FormControl component={'fieldset' as 'div'} className={className}>
-            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
+          <FormControl className={className} style={styles.root as any}>
+            <InputLabel shrink={true} htmlFor={name as string}>
+              {this.props['data-labelText']}
+            </InputLabel>
             <FormGroup>
               {this.props['data-fieldValue'].map((value: any) => (
                 <FormControl component={'fieldset' as 'div'}>
