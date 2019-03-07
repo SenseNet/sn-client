@@ -215,7 +215,9 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
             <InputLabel shrink={true} htmlFor={name as string}>
               {this.props['data-labelText']}
             </InputLabel>
-            <List dense={true} style={styles.listContainer}>
+            <List
+              dense={true}
+              style={this.state.fieldValue.length > 0 ? styles.listContainer : { ...styles.listContainer, width: 200 }}>
               {this.state.fieldValue.map((item: GenericContent) => {
                 if (itemTemplate) {
                   return itemTemplate(item)
@@ -270,7 +272,9 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
             <InputLabel shrink={true} htmlFor={name as string}>
               {this.props['data-labelText']}
             </InputLabel>
-            <List dense={true} style={styles.listContainer}>
+            <List
+              dense={true}
+              style={this.state.fieldValue.length > 0 ? styles.listContainer : { ...styles.listContainer, width: 200 }}>
               {this.state.fieldValue.map((item: GenericContent) => {
                 if (itemTemplate) {
                   return itemTemplate(item)
