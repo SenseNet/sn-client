@@ -4,6 +4,7 @@ import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
+import Collapse from '@material-ui/core/Collapse'
 import React, { useState } from 'react'
 import { FunctionComponent } from 'react'
 import { connect } from 'react-redux'
@@ -28,20 +29,24 @@ export interface CommentProps {
   id: string
   createdBy: CreatedByUser
   text: string
+  delete: (id: string) => void
 }
 
 const mapStateToProps = (state: RootReducerType) => ({
   localization: state.sensenetDocumentViewer.localization,
 })
 
-const StyledCardContent = styled(({ isOpen, ...rest }) => <CardContent {...rest} />)`
-  height: ${props => (props.isOpen ? 'unset' : '78px')};
-  overflow: hidden;
+const StyledCardContent = styled(CardContent)`
   font-size: 14px;
   letter-spacing: 0.2px;
   line-height: 20px;
   word-wrap: break-word;
 `
+const DeleteButton = (props: CommentPropType) => (
+  <Button size="small" onClick={() => props.delete(props.id)}>
+    {props.localization.delete || 'delete'}
+  </Button>
+)
 
 type CommentPropType = ReturnType<typeof mapStateToProps> & CommentProps
 /**
@@ -57,13 +62,20 @@ export const Comment: FunctionComponent<CommentPropType> = (props: CommentPropTy
         avatar={<Avatar src={props.createdBy.avatarUrl} alt={props.localization.avatarAlt} />}
         title={props.createdBy.displayName}
       />
-      <StyledCardContent isOpen={isOpen}>{props.text}</StyledCardContent>
+      <Collapse in={isOpen} timeout="auto" collapsedHeight={isOpen ? '0px' : '78px'}>
+        <StyledCardContent>{props.text}</StyledCardContent>
+      </Collapse>
       <CardActions>
         {isLongText ? (
-          <Button size="small" onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? props.localization.showLess || 'Show less' : props.localization.showMore || 'Show more'}
-          </Button>
-        ) : null}
+          <>
+            <Button size="small" onClick={() => setIsOpen(!isOpen)}>
+              {isOpen ? props.localization.showLess || 'Show less' : props.localization.showMore || 'Show more'}
+            </Button>
+            {isOpen ? <DeleteButton {...props} /> : null}
+          </>
+        ) : (
+          <DeleteButton {...props} />
+        )}
       </CardActions>
     </Card>
   )

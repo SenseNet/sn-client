@@ -36,6 +36,7 @@ export interface LocalizationStateType {
   showMore: string
   showLess: string
   avatarAlt: string
+  delete: string
 }
 
 /**
@@ -96,6 +97,7 @@ export const defaultLocalization: LocalizationStateType = {
   showMore: '+ Show more',
   showLess: '+ Show less',
   avatarAlt: 'Picture of the commenter',
+  delete: 'Delete',
 }
 
 /**

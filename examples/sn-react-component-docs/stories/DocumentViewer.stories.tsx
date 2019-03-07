@@ -1,4 +1,5 @@
 import { Comment, CreatedByUser } from '@sensenet/document-viewer-react/src/components/Comment'
+import { action } from '@storybook/addon-actions'
 import { object, text, withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
 import React from 'react'
@@ -21,7 +22,8 @@ storiesOf('DocumentViewer', module)
   .add('a single comment with long text', () => (
     <Comment
       createdBy={object('Created by', createdBy)}
-      id="a"
+      delete={action('delete')}
+      id={text('id', 'randomId')}
       localization={{} as any}
       text={text(
         'commentBody',
@@ -34,7 +36,8 @@ storiesOf('DocumentViewer', module)
   .add('a single comment with short text', () => (
     <Comment
       createdBy={createdBy}
-      id="a"
+      delete={action('delete')}
+      id={text('id', 'randomId')}
       localization={{} as any}
       text={text('commentBody', 'Lorem Ipsum is simply dummy text')}
     />

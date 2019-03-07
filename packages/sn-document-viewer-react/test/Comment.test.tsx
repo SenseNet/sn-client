@@ -14,6 +14,7 @@ const longText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit,
 const localization = {
   showMore: undefined,
   showLess: undefined,
+  delete: undefined,
 }
 
 const createdBy: CreatedByUser = {
@@ -26,28 +27,34 @@ const createdBy: CreatedByUser = {
 
 describe('Comment component', () => {
   it('should show text', () => {
-    const wrapper = mount(<Comment createdBy={createdBy} id="a" localization={localization as any} text="some text" />)
+    const wrapper = mount(
+      <Comment delete={jest.fn()} createdBy={createdBy} id="a" localization={localization as any} text="some text" />,
+    )
     expect(wrapper.find(CardContent).exists()).toBeTruthy()
     expect(wrapper.find(CardContent).text()).toBe('some text')
   })
 
   it('should show show more button when text is long', () => {
-    const wrapper = mount(<Comment createdBy={createdBy} id="a" localization={localization as any} text={longText} />)
+    const wrapper = mount(
+      <Comment delete={jest.fn()} createdBy={createdBy} id="a" localization={localization as any} text={longText} />,
+    )
     expect(wrapper.find(Button).exists()).toBeTruthy()
     expect(wrapper.find(Button).text()).toBe('Show more')
   })
 
   it('should show show less button when too long text is opened', () => {
-    const wrapper = mount(<Comment createdBy={createdBy} id="a" localization={localization as any} text={longText} />)
-    const btn = wrapper.find(Button)
+    const wrapper = mount(
+      <Comment delete={jest.fn()} createdBy={createdBy} id="a" localization={localization as any} text={longText} />,
+    )
+    const btn = wrapper.find(Button).first()
     btn.simulate('click')
-    expect(wrapper.find(Button).text()).toBe('Show less')
+    expect(btn.text()).toBe('Show less')
   })
 
   it('should show show more button with localized text when connected', () => {
     const wrapper = mount(
       <Provider store={createStore(rootReducer)}>
-        <ConnectedComment createdBy={createdBy} id="a" text={longText} />
+        <ConnectedComment delete={jest.fn()} createdBy={createdBy} id="a" text={longText} />
       </Provider>,
     )
     expect(wrapper.find(Button).text()).toBe('+ Show more')
@@ -56,11 +63,11 @@ describe('Comment component', () => {
   it('should show show less button with localized text when connected', () => {
     const wrapper = mount(
       <Provider store={createStore(rootReducer)}>
-        <ConnectedComment createdBy={createdBy} id="a" text={longText} />
+        <ConnectedComment delete={jest.fn()} createdBy={createdBy} id="a" text={longText} />
       </Provider>,
     )
-    const btn = wrapper.find(Button)
+    const btn = wrapper.find(Button).first()
     btn.simulate('click')
-    expect(wrapper.find(Button).text()).toBe('+ Show less')
+    expect(btn.text()).toBe('+ Show less')
   })
 })
