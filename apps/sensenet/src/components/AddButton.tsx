@@ -1,6 +1,6 @@
 import Button from '@material-ui/core/Button'
-import Drawer from '@material-ui/core/Drawer'
 import Fab from '@material-ui/core/Fab'
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import Add from '@material-ui/icons/Add'
@@ -37,13 +37,16 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
           <Add />
         </Fab>
       </Tooltip>
-      <Drawer
+      <SwipeableDrawer
         anchor="bottom"
         PaperProps={{ style: { padding: '2em' } }}
-        onBackdropClick={() => setAddState('hidden')}
+        onClose={() => setAddState('hidden')}
+        onOpen={() => {
+          /** */
+        }}
         open={addState === 'selectType'}>
         <Typography variant="body1">New...</Typography>
-        <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', maxHeight: '512px', overflow: 'auto' }}>
           <Button key="Upload">
             <label htmlFor="upload_file_input">
               <div
@@ -89,7 +92,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
             </Button>
           ))}
         </div>
-      </Drawer>
+      </SwipeableDrawer>
     </div>
   )
 }
