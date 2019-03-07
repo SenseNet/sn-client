@@ -1,5 +1,5 @@
 import { ContentList } from '@sensenet/list-controls-react/src/ContentList'
-import { withA11Y } from '@storybook/addon-a11y'
+import { withA11y } from '@storybook/addon-a11y'
 import { action } from '@storybook/addon-actions'
 import { array, boolean, select, text, withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
@@ -70,7 +70,7 @@ const items = [
 
 storiesOf('ListControls', module)
   .addDecorator(withKnobs)
-  .addDecorator(withA11Y)
+  .addDecorator(withA11y)
   .add(
     'ContentList',
     () => (

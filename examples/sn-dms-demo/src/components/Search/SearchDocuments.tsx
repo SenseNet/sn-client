@@ -121,7 +121,7 @@ class SearchDocuments extends React.Component<
     if (innerQuery.toString()) {
       this.setState({
         query: new Query(q =>
-          q.query(typeQuery => typeQuery.type(SnFile).or.type(Folder)).and.query(innerQuery),
+          q.query(typeQuery => typeQuery.typeIs(SnFile).or.typeIs(Folder)).and.query(innerQuery),
         ).toString(),
       })
     } else {

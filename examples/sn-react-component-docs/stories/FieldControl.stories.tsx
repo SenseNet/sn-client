@@ -1,4 +1,4 @@
-import { withA11Y } from '@storybook/addon-a11y'
+import { withA11y } from '@storybook/addon-a11y'
 import { action } from '@storybook/addon-actions'
 import { withActions } from '@storybook/addon-actions/dist/preview'
 import { boolean, date, number, select, text, withKnobs } from '@storybook/addon-knobs'
@@ -68,7 +68,7 @@ const fileUploadNotes = require('../notes/fieldcontrols/FileUpload.md')
 
 storiesOf('FieldControls.AutoComplete', module)
   .addDecorator(withKnobs)
-  .addDecorator(withA11Y)
+  .addDecorator(withA11y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
@@ -131,7 +131,7 @@ storiesOf('FieldControls.AutoComplete', module)
 
 storiesOf('FieldControls.CheckboxGroup', module)
   .addDecorator(withKnobs)
-  .addDecorator(withA11Y)
+  .addDecorator(withA11y)
   .add(
     'new mode',
     () => (
@@ -189,7 +189,7 @@ storiesOf('FieldControls.CheckboxGroup', module)
 
 storiesOf('FieldControls.DatePicker', module)
   .addDecorator(withKnobs)
-  .addDecorator(withA11Y)
+  .addDecorator(withA11y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
@@ -247,7 +247,7 @@ storiesOf('FieldControls.DatePicker', module)
 
 storiesOf('FieldControls.DateTimePicker', module)
   .addDecorator(withKnobs)
-  .addDecorator(withA11Y)
+  .addDecorator(withA11y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
@@ -305,7 +305,7 @@ storiesOf('FieldControls.DateTimePicker', module)
 
 storiesOf('FieldControls.DisplayName', module)
   .addDecorator(withKnobs)
-  .addDecorator(withA11Y)
+  .addDecorator(withA11y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
@@ -362,7 +362,7 @@ storiesOf('FieldControls.DisplayName', module)
 
 storiesOf('FieldControls.DropDownList', module)
   .addDecorator(withKnobs)
-  .addDecorator(withA11Y)
+  .addDecorator(withA11y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
@@ -421,7 +421,7 @@ storiesOf('FieldControls.DropDownList', module)
 
 storiesOf('FieldControls.FileName', module)
   .addDecorator(withKnobs)
-  .addDecorator(withA11Y)
+  .addDecorator(withA11y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
@@ -479,7 +479,7 @@ storiesOf('FieldControls.FileName', module)
 
 storiesOf('FieldControls.FileUpload', module)
   .addDecorator(withKnobs)
-  .addDecorator(withA11Y)
+  .addDecorator(withA11y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
@@ -500,7 +500,7 @@ storiesOf('FieldControls.FileUpload', module)
 
 storiesOf('FieldControls.Name', module)
   .addDecorator(withKnobs)
-  .addDecorator(withA11Y)
+  .addDecorator(withA11y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
@@ -557,7 +557,7 @@ storiesOf('FieldControls.Name', module)
 
 storiesOf('FieldControls.Number', module)
   .addDecorator(withKnobs)
-  .addDecorator(withA11Y)
+  .addDecorator(withA11y)
   .addDecorator(withActions('change'))
   .add(
     'new mode integer',
@@ -687,7 +687,7 @@ storiesOf('FieldControls.Number', module)
 
 storiesOf('FieldControls.Password', module)
   .addDecorator(withKnobs)
-  .addDecorator(withA11Y)
+  .addDecorator(withA11y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
@@ -729,7 +729,7 @@ storiesOf('FieldControls.Password', module)
 
 storiesOf('FieldControls.RadioButtonGroup', module)
   .addDecorator(withKnobs)
-  .addDecorator(withA11Y)
+  .addDecorator(withA11y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
@@ -805,7 +805,7 @@ storiesOf('FieldControls.RadioButtonGroup', module)
 
 storiesOf('FieldControls.RichTextEditor', module)
   .addDecorator(withKnobs)
-  .addDecorator(withA11Y)
+  .addDecorator(withA11y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
@@ -865,7 +865,7 @@ storiesOf('FieldControls.RichTextEditor', module)
 
 storiesOf('FieldControls.ShortText', module)
   .addDecorator(withKnobs)
-  .addDecorator(withA11Y)
+  .addDecorator(withA11y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
@@ -922,7 +922,7 @@ storiesOf('FieldControls.ShortText', module)
 
 storiesOf('FieldControls.TagsInput', module)
   .addDecorator(withKnobs)
-  .addDecorator(withA11Y)
+  .addDecorator(withA11y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
@@ -987,7 +987,7 @@ storiesOf('FieldControls.TagsInput', module)
 
 storiesOf('FieldControls.Textarea', module)
   .addDecorator(withKnobs)
-  .addDecorator(withA11Y)
+  .addDecorator(withA11y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',
@@ -1053,7 +1053,7 @@ storiesOf('FieldControls.Textarea', module)
 
 storiesOf('FieldControls.TimePicker', module)
   .addDecorator(withKnobs)
-  .addDecorator(withA11Y)
+  .addDecorator(withA11y)
   .addDecorator(withActions('change'))
   .add(
     'new mode',

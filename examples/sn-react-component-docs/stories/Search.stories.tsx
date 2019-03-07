@@ -7,7 +7,7 @@ import { GenericContent } from '@sensenet/default-content-types/src'
 import { Query } from '@sensenet/query'
 import { AdvancedSearch, PresetField, ReferenceField, TextField, TypeField } from '@sensenet/search-react/src'
 import { ExampleApp } from '@sensenet/search-react/src/ExampleApp'
-import { withA11Y } from '@storybook/addon-a11y'
+import { withA11y } from '@storybook/addon-a11y'
 import { action } from '@storybook/addon-actions'
 import { withActions } from '@storybook/addon-actions/dist/preview'
 import { withKnobs } from '@storybook/addon-knobs'
@@ -23,7 +23,7 @@ const typeFieldNotes = require('../notes/search/TypeField.md')
 
 storiesOf('Search', module)
   .addDecorator(withKnobs)
-  .addDecorator(withA11Y)
+  .addDecorator(withA11y)
   .addDecorator(withActions('queryChange', 'fetchItems'))
   .add('Showcase', () => <ExampleApp />, { notes: { markdown: showcaseNotes } })
   .add(
