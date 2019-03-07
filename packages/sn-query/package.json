@@ -42,8 +42,8 @@
   },
   "homepage": "https://sensenet.com",
   "devDependencies": {
-    "@types/jest": "^23.3.10",
-    "jest": "^23.6.0"
+    "@types/jest": "^24.0.9",
+    "jest": "^24.1.0"
   },
   "config": {
     "commitizen": {

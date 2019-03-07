@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/search-react",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Search component in react with sensenet",
   "main": "dist/index.js",
   "files": [
@@ -34,14 +34,14 @@
     "@types/autosuggest-highlight": "3.1.0",
     "@types/enzyme": "^3.1.15",
     "@types/enzyme-adapter-react-16": "^1.0.3",
-    "@types/jest": "^23.3.10",
+    "@types/jest": "^24.0.9",
     "@types/react": "^16.7.14",
     "@types/react-autosuggest": "^9.3.6",
     "@types/react-dom": "^16.0.11",
     "@types/react-router-dom": "^4.3.1",
-    "autoprefixer": "^9.4.0",
+    "autoprefixer": "^9.4.10",
     "awesome-typescript-loader": "^5.2.1",
-    "copy-webpack-plugin": "^4.6.0",
+    "copy-webpack-plugin": "^5.0.0",
     "css-loader": "^2.1.0",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.7.1",
@@ -58,15 +58,15 @@
   },
   "dependencies": {
     "@material-ui/core": "^3.6.1",
-    "@sensenet/client-core": "^1.4.0",
-    "@sensenet/control-mapper": "^1.0.4",
+    "@sensenet/client-core": "^1.4.1",
+    "@sensenet/control-mapper": "^1.0.5",
     "@sensenet/default-content-types": "^1.1.2",
-    "@sensenet/icons-react": "^1.2.5",
+    "@sensenet/icons-react": "^1.2.6",
     "@sensenet/query": "^1.1.2",
     "autosuggest-highlight": "^3.1.1",
-    "react": "^16.6.3",
+    "react": "^16.8.4",
     "react-autosuggest": "^9.4.3",
-    "react-dom": "^16.6.3"
+    "react-dom": "^16.8.4"
   },
   "typings": "./dist/index.d.ts"
 }

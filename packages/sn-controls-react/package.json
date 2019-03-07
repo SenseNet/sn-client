@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/controls-react",
-  "version": "2.3.7",
+  "version": "2.4.0",
   "description": "React controls for sensenet",
   "main": "dist/index.js",
   "scripts": {
@@ -41,10 +41,10 @@
   "dependencies": {
     "@date-io/moment": "1.1.0",
     "@material-ui/core": "^3.6.1",
-    "@sensenet/client-core": "^1.4.0",
-    "@sensenet/control-mapper": "^1.0.4",
-    "@sensenet/icons-react": "^1.2.5",
-    "@sensenet/redux": "^5.1.4",
+    "@sensenet/client-core": "^1.4.1",
+    "@sensenet/control-mapper": "^1.0.5",
+    "@sensenet/icons-react": "^1.2.6",
+    "@sensenet/redux": "^5.1.5",
     "lodash.debounce": "^4.0.8",
     "material-ui-pickers": "^2.2.1",
     "moment": "^2.24.0",
@@ -54,14 +54,14 @@
     "react-select": "^2.0.0"
   },
   "devDependencies": {
-    "@types/lodash.debounce": "^4.0.4",
-    "@types/node": "^10.10.3",
+    "@types/lodash.debounce": "^4.0.6",
+    "@types/node": "^11.10.4",
     "@types/radium": "^0.24.2",
     "@types/react": "^16.7.14",
     "@types/react-dom": "^16.0.7",
-    "@types/react-redux": "^6.0.11",
+    "@types/react-redux": "^7.0.1",
     "@types/react-responsive": "^3.0.2",
-    "autoprefixer": "^9.1.5",
+    "autoprefixer": "^9.4.10",
     "chalk": "2.4.2",
     "cpx": "^1.5.0",
     "date-fns": "^2.0.0-alpha.21",
@@ -71,9 +71,9 @@
     "postcss-flexbugs-fixes": "4.1.0",
     "promise": "8.0.2",
     "prop-types": "^15.7.2",
-    "react": "^16.7.0",
+    "react": "^16.8.4",
     "react-dev-utils": "^7.0.1",
-    "react-dom": "^16.7.0"
+    "react-dom": "^16.8.4"
   },
   "publishConfig": {
     "access": "public"
