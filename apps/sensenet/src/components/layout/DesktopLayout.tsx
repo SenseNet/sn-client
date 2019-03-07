@@ -39,6 +39,7 @@ export const DesktopLayout: React.FunctionComponent = props => {
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
             backgroundImage: `url(${snLogo})`,
+            backgroundSize: 'contain',
             overflow: 'hidden',
           }}>
           {props.children}

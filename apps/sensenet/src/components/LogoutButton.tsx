@@ -49,11 +49,11 @@ export const LogoutButtonComponent: React.FunctionComponent<
       <Dialog open={showLogout} onClose={() => setShowLogout(false)}>
         <DialogTitle>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Icon style={{ margin: '1em' }} item={props.currentUser} /> Really log out?
+            <Icon style={{ margin: '0 1em 0 0' }} item={props.currentUser} /> Really log out?
           </div>
         </DialogTitle>
         <DialogContent>
-          <DialogContentText>
+          <DialogContentText style={{ wordBreak: 'break-word' }}>
             You are logged in to{' '}
             <Link to="/" onClick={() => setShowLogout(false)}>
               {repo.configuration.repositoryUrl}
@@ -67,10 +67,8 @@ export const LogoutButtonComponent: React.FunctionComponent<
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setShowLogout(false)} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={() => props.logoutFromRepository()} color="primary" autoFocus={true}>
+          <Button onClick={() => setShowLogout(false)}>Cancel</Button>
+          <Button onClick={() => props.logoutFromRepository()} autoFocus={true}>
             Log out
           </Button>
         </DialogActions>

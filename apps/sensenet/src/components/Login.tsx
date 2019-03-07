@@ -50,7 +50,8 @@ class Login extends React.Component<ReturnType<typeof mapStateToProps> & typeof 
 
   public render() {
     return (
-      <Paper style={{ padding: '1em', flexShrink: 0, width: '450px', alignSelf: 'center', margin: 'auto' }}>
+      <Paper
+        style={{ padding: '1em', flexShrink: 0, width: '450px', maxWidth: '90%', alignSelf: 'center', margin: 'auto' }}>
         <Typography variant="h4">Login</Typography>
         <form onSubmit={this.handleSubmit}>
           <Divider />

@@ -39,23 +39,24 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
       </Tooltip>
       <SwipeableDrawer
         anchor="bottom"
-        PaperProps={{ style: { padding: '2em' } }}
         onClose={() => setAddState('hidden')}
         onOpen={() => {
           /** */
         }}
         open={addState === 'selectType'}>
-        <Typography variant="body1">New...</Typography>
-        <div style={{ display: 'flex', flexWrap: 'wrap', maxHeight: '512px', overflow: 'auto' }}>
+        <Typography variant="subtitle1" style={{ margin: '0.8em' }}>
+          New...
+        </Typography>
+        <div
+          style={{ display: 'flex', alignItems: 'flex-start', flexWrap: 'wrap', maxHeight: '512px', overflow: 'auto' }}>
           <Button key="Upload">
             <label htmlFor="upload_file_input">
               <div
                 style={{
-                  width: 128,
-                  height: 128,
+                  width: 90,
                 }}>
-                <CloudUpload style={{ height: 82, width: 82 }} />
-                <Typography>Upload</Typography>
+                <CloudUpload style={{ height: 38, width: 38 }} />
+                <Typography variant="body2">Upload</Typography>
               </div>
             </label>
           </Button>
@@ -83,11 +84,10 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
             <Button key={childType.ContentTypeName}>
               <div
                 style={{
-                  width: 128,
-                  height: 128,
+                  width: 90,
                 }}>
-                <Icon style={{ height: 82, width: 82 }} item={childType} />
-                <Typography>{childType.DisplayName}</Typography>
+                <Icon style={{ height: 38, width: 38 }} item={childType} />
+                <Typography variant="body2">{childType.DisplayName}</Typography>
               </div>
             </Button>
           ))}
