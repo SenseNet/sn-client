@@ -1,12 +1,12 @@
 /**
  * @module FieldControls
  *
- */ /** */
+ */
 import { GenericContent } from '@sensenet/default-content-types'
 import { ReactReferenceFieldSetting } from '../ReferenceFieldSetting'
 
 /**
- * Interface for TextareaFieldSetting properties
+ * Interface for ReactReferenceGridFieldSetting properties
  */
 // tslint:disable-next-line:no-empty-interface
 export interface ReactReferenceGridFieldSetting<T extends GenericContent, K extends keyof T>

@@ -62,7 +62,7 @@ export interface ReferenceGridProps<T extends GenericContent, K extends keyof T>
     ReactClientFieldSetting<T, K>,
     ReactReferenceGridFieldSetting<T, K> {}
 /**
- * Interface for TagsInput state
+ * Interface for ReferenceGrid state
  */
 export interface ReferenceGridState<T extends GenericContent, _K extends keyof T> {
   fieldValue: any
