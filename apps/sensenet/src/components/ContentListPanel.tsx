@@ -26,6 +26,7 @@ export const createCommandListPanel = (collectionState: ReturnType<typeof create
 
   const CollectionComponent: React.StatelessComponent<
     {
+      enableBreadcrumbs?: boolean
       parentId: number
       onParentChange: (newParent: GenericContent) => void
       onTabRequest: () => void
@@ -67,7 +68,7 @@ export const createCommandListPanel = (collectionState: ReturnType<typeof create
 
     return (
       <div style={{ ...props.style }}>
-        {parent ? (
+        {props.enableBreadcrumbs && parent ? (
           <Breadcrumbs
             content={ancestors.map(
               content =>

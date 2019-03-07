@@ -16,6 +16,7 @@ export const SimpleListComponent: React.FunctionComponent<RouteComponentProps<{ 
   return (
     <div style={{ display: 'flex', width: '100%', height: '100%' }}>
       <SimpleListControl
+        enableBreadcrumbs={true}
         onActivateItem={item => {
           props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item))
         }}

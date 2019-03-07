@@ -56,6 +56,7 @@ export const Commander: React.StatelessComponent<RouteComponentProps<CommanderRo
   return (
     <div style={{ display: 'flex', width: '100%', height: '100%' }}>
       <LeftControl
+        enableBreadcrumbs={true}
         onActivateItem={item => {
           props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item))
         }}
@@ -68,6 +69,7 @@ export const Commander: React.StatelessComponent<RouteComponentProps<CommanderRo
         onTabRequest={() => _rightPanelRef && _rightPanelRef.focus()}
       />
       <RightControl
+        enableBreadcrumbs={true}
         onActivateItem={item => {
           props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item))
         }}

@@ -5,6 +5,7 @@ import { RouteComponentProps, withRouter } from 'react-router'
 import { ContentContextProvider } from '../../services/ContentContextProvider'
 import { rootStateType } from '../../store'
 import { left } from '../../store/Commander'
+import Breadcrumbs, { BreadcrumbItem } from '../Breadcrumbs'
 import { createCommandListPanel } from '../ContentListPanel'
 import { InjectorContext } from '../InjectorContext'
 import { Tree } from '../tree/index'
@@ -13,6 +14,7 @@ const ExploreControl = createCommandListPanel(left)
 
 const mapStateToProps = (state: rootStateType) => ({
   ancestors: state.commander.left.ancestors,
+  parent: state.commander.left.parent,
 })
 
 export const ExploreComponent: React.FunctionComponent<
@@ -23,30 +25,54 @@ export const ExploreComponent: React.FunctionComponent<
   const [leftParentId, setLeftParentId] = useState(getLeftFromPath())
 
   return (
-    <div style={{ display: 'flex', width: '100%', height: '100%' }}>
-      <Tree
-        ancestorPaths={props.ancestors.map(a => a.Path)}
-        style={{ flexGrow: 1, flexShrink: 0, borderRight: '1px solid rgba(128,128,128,.2)', overflow: 'auto' }}
-        parentPath={ConstantContent.PORTAL_ROOT.Path}
-        onItemClick={item => {
-          setLeftParentId(item.Id)
-          props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item))
+    <div style={{ display: 'flex', width: '100%', height: '100%', flexDirection: 'column' }}>
+      <Breadcrumbs
+        content={props.ancestors.map(
+          content =>
+            ({
+              displayName: content.DisplayName || content.Name,
+              title: content.Path,
+              url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(content),
+              content,
+            } as BreadcrumbItem),
+        )}
+        currentContent={{
+          displayName: props.parent.DisplayName || props.parent.Name,
+          title: props.parent.Path,
+          url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(props.parent),
+          content: props.parent,
         }}
-        activeItemId={leftParentId}
-      />
-      <ExploreControl
-        onActivateItem={item => {
-          props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item))
-        }}
-        style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
-        onParentChange={p => {
-          setLeftParentId(p.Id)
-        }}
-        parentId={leftParentId}
-        onTabRequest={() => {
-          /** */
+        onItemClick={(_ev, item) => {
+          setLeftParentId(item.content.Id)
+          props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item.content))
         }}
       />
+      <div style={{ display: 'flex', width: '100%', height: '100%' }}>
+        <Tree
+          ancestorPaths={props.ancestors.map(a => a.Path)}
+          style={{ flexGrow: 1, flexShrink: 0, borderRight: '1px solid rgba(128,128,128,.2)', overflow: 'auto' }}
+          parentPath={ConstantContent.PORTAL_ROOT.Path}
+          onItemClick={item => {
+            setLeftParentId(item.Id)
+            props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item))
+          }}
+          activeItemId={leftParentId}
+        />
+        <ExploreControl
+          enableBreadcrumbs={false}
+          onActivateItem={item => {
+            props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item))
+          }}
+          style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
+          onParentChange={p => {
+            setLeftParentId(p.Id)
+          }}
+          parentId={leftParentId}
+          onTabRequest={() => {
+            /** */
+          }}
+        />
+      </div>
     </div>
   )
 }
