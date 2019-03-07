@@ -5,6 +5,7 @@ import { RouteComponentProps, withRouter } from 'react-router'
 import { ContentContextProvider } from '../../services/ContentContextProvider'
 import { rootStateType } from '../../store'
 import { left } from '../../store/Commander'
+import { AddButton } from '../AddButton'
 import Breadcrumbs, { BreadcrumbItem } from '../Breadcrumbs'
 import { createCommandListPanel } from '../ContentListPanel'
 import { InjectorContext } from '../InjectorContext'
@@ -72,6 +73,7 @@ export const ExploreComponent: React.FunctionComponent<
             /** */
           }}
         />
+        <AddButton parent={props.parent} />
       </div>
     </div>
   )

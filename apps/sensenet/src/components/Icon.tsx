@@ -5,12 +5,13 @@ import DeleteTwoTone from '@material-ui/icons/DeleteTwoTone'
 import FolderTwoTone from '@material-ui/icons/FolderTwoTone'
 import FormatPaintTwoTone from '@material-ui/icons/FormatPaintTwoTone'
 import GroupTwoTone from '@material-ui/icons/GroupTwoTone'
+import InsertDriveFileTwoTone from '@material-ui/icons/InsertDriveFileTwoTone'
 import PublicTwoTone from '@material-ui/icons/PublicTwoTone'
 import SettingsTwoTone from '@material-ui/icons/SettingsTwoTone'
 import WebAssetTwoTone from '@material-ui/icons/WebAssetTwoTone'
 import { Repository } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
-import { File as SnFile } from '@sensenet/default-content-types'
+import { File as SnFile, Schema } from '@sensenet/default-content-types'
 import { GenericContent, User } from '@sensenet/default-content-types'
 import React, { useContext } from 'react'
 import { InjectorContext } from './InjectorContext'
@@ -21,11 +22,11 @@ export interface IconOptions {
   injector: Injector
 }
 
-export interface IconResolver<T extends GenericContent = GenericContent> {
+export interface IconResolver<T> {
   get: (item: T, options: IconOptions) => JSX.Element | null
 }
 
-export const defaultResolvers: IconResolver[] = [
+export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   {
     get: (item, options) =>
       item.Type === 'User' ? (
@@ -97,16 +98,29 @@ export const defaultResolvers: IconResolver[] = [
   },
 ]
 
+export const defaultSchemaResolvers: Array<IconResolver<Schema>> = [
+  {
+    get: (item, options) => {
+      return item.ContentTypeName === 'Folder' ? <FolderTwoTone style={{ ...options.style }} /> : null
+    },
+  },
+  {
+    get: (item, options) => {
+      return item.ContentTypeName === 'File' ? <InsertDriveFileTwoTone style={{ ...options.style }} /> : null
+    },
+  },
+]
+
 export const IconComponent: React.FunctionComponent<{
-  resolvers?: IconResolver[]
-  item: GenericContent
+  resolvers?: Array<IconResolver<any>>
+  item: any
   defaultIcon?: JSX.Element
   style?: React.CSSProperties
 }> = props => {
   const injector = useContext(InjectorContext)
 
   const options: IconOptions = { style: props.style, injector }
-  const resolvers = [...(props.resolvers || []), ...defaultResolvers]
+  const resolvers = [...(props.resolvers || []), ...defaultContentResolvers, ...defaultSchemaResolvers]
   const defaultIcon = props.defaultIcon || <WebAssetTwoTone style={props.style} /> || null
   const assignedResolver = resolvers.find(r => (r.get(props.item, options) ? true : false))
   if (assignedResolver) {
