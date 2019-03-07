@@ -1,14 +1,23 @@
 import { ConstantContent } from '@sensenet/client-core'
 import React, { useContext, useState } from 'react'
+import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { ContentContextProvider } from '../../services/ContentContextProvider'
+import { rootStateType } from '../../store'
 import { left } from '../../store/Commander'
+import { AddButton } from '../AddButton'
 import { createCommandListPanel } from '../ContentListPanel'
 import { InjectorContext } from '../InjectorContext'
 
 const SimpleListControl = createCommandListPanel(left)
 
-export const SimpleListComponent: React.FunctionComponent<RouteComponentProps<{ leftParent?: string }>> = props => {
+export const mapStateToProps = (state: rootStateType) => ({
+  parent: state.commander.left.parent,
+})
+
+export const SimpleListComponent: React.FunctionComponent<
+  RouteComponentProps<{ leftParent?: string }> & ReturnType<typeof mapStateToProps>
+> = props => {
   const getLeftFromPath = () => parseInt(props.match.params.leftParent as string, 10) || ConstantContent.PORTAL_ROOT.Id
   const injector = useContext(InjectorContext)
   const [leftParentId, setLeftParentId] = useState(getLeftFromPath())
@@ -29,9 +38,10 @@ export const SimpleListComponent: React.FunctionComponent<RouteComponentProps<{ 
           /** */
         }}
       />
+      <AddButton parent={props.parent} />
     </div>
   )
 }
 
-const connected = withRouter(SimpleListComponent)
+const connected = withRouter(connect(mapStateToProps)(SimpleListComponent))
 export { connected as SimpleList }
