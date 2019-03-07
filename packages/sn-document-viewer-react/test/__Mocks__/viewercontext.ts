@@ -79,7 +79,7 @@ export const examplePreviewImageData: PreviewImageData = {
 /**
  * Default settings for document viewer context
  */
-export const defaultSettings: DocumentViewerSettings = new DocumentViewerSettings({
+export const defaultSettings = new DocumentViewerSettings({
   canEditDocument: async () => true,
   canHideRedaction: async () => true,
   canHideWatermark: async () => true,
@@ -142,7 +142,7 @@ export const useTestContextWithSettings = (
  * ```
  * @param {(context: DocViewerTestContext) => void} callback Callback for the internal test implemetation
  */
-export const useTestContext: (callback: (context: DocViewerTestContext) => void) => void = callback =>
+export const useTestContext = (callback: (context: DocViewerTestContext) => void) =>
   useTestContextWithSettings({}, callback)
 
 /**
@@ -185,6 +185,5 @@ export const useTestContextWithSettingsAsync = async (
  * ```
  * @param {(context: DocViewerTestContext) => Promise<void>} callback Callback for the internal test implemetation
  */
-export const useTestContextAsync: (
-  callback: (context: DocViewerTestContext) => Promise<void>,
-) => Promise<void> = callback => useTestContextWithSettingsAsync({}, callback)
+export const useTestContextAsync = (callback: (context: DocViewerTestContext) => Promise<void>) =>
+  useTestContextWithSettingsAsync({}, callback)
