@@ -6,6 +6,8 @@ import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
 import React, { useState } from 'react'
 import { FunctionComponent } from 'react'
+import { connect } from 'react-redux'
+import { RootReducerType } from '../store'
 
 /**
  * Comment props interface.
@@ -16,13 +18,21 @@ export interface CommentProps {
   commentBody?: string
 }
 
+const mapStateToProps = (state: RootReducerType) => ({
+  localication: state.sensenetDocumentViewer.localization,
+})
+
+type CommentPropType = Partial<ReturnType<typeof mapStateToProps>> & CommentProps
+
 /**
  * Represents a single comment component.
- * @param {CommentProps} props
+ * @param {CommentPropType} props
  */
-export const Comment: FunctionComponent<CommentProps> = (props: CommentProps) => {
+export const Comment: FunctionComponent<CommentPropType> = (props: CommentPropType) => {
   const isLongText = props.commentBody && props.commentBody.length > 160
   const [isOpen, setIsOpen] = useState(!isLongText)
+  const showMoreText = (props.localication && props.localication.showMore) || 'Show more'
+  const showLessText = (props.localication && props.localication.showLess) || 'Show less'
   return (
     <Card>
       <CardHeader
@@ -43,10 +53,12 @@ export const Comment: FunctionComponent<CommentProps> = (props: CommentProps) =>
       <CardActions>
         {isLongText ? (
           <Button size="small" onClick={() => setIsOpen(!isOpen)}>
-            + Show More
+            {isOpen ? showLessText : showMoreText}
           </Button>
         ) : null}
       </CardActions>
     </Card>
   )
 }
+
+export default connect(mapStateToProps)(Comment)

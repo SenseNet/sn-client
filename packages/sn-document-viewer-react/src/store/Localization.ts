@@ -33,6 +33,8 @@ export interface LocalizationStateType {
   share: string
   download: string
   print: string
+  showMore: string
+  showLess: string
 }
 
 /**
@@ -90,6 +92,8 @@ export const defaultLocalization: LocalizationStateType = {
   share: 'Share',
   download: 'Download',
   print: 'Print',
+  showMore: '+ Show more',
+  showLess: '+ Show less',
 }
 
 /**
