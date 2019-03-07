@@ -7,53 +7,61 @@ import CardHeader from '@material-ui/core/CardHeader'
 import React, { useState } from 'react'
 import { FunctionComponent } from 'react'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
 import { RootReducerType } from '../store'
+
+/**
+ * User properties that created the comment
+ */
+export interface CreatedByUser {
+  id: number
+  path: string
+  userName: string
+  displayName: string
+  avatarUrl: string
+}
 
 /**
  * Comment props interface.
  */
 export interface CommentProps {
-  avatarUrl?: string
-  displayName?: string
-  commentBody?: string
+  id: string
+  createdBy: CreatedByUser
+  text: string
 }
 
 const mapStateToProps = (state: RootReducerType) => ({
-  localication: state.sensenetDocumentViewer.localization,
+  localization: state.sensenetDocumentViewer.localization,
 })
 
-type CommentPropType = Partial<ReturnType<typeof mapStateToProps>> & CommentProps
+const StyledCardContent = styled(({ isOpen, ...rest }) => <CardContent {...rest} />)`
+  height: ${props => (props.isOpen ? 'unset' : '78px')};
+  overflow: hidden;
+  font-size: 14px;
+  letter-spacing: 0.2px;
+  line-height: 20px;
+  word-wrap: break-word;
+`
 
+type CommentPropType = ReturnType<typeof mapStateToProps> & CommentProps
 /**
  * Represents a single comment component.
  * @param {CommentPropType} props
  */
 export const Comment: FunctionComponent<CommentPropType> = (props: CommentPropType) => {
-  const isLongText = props.commentBody && props.commentBody.length > 160
+  const isLongText = props.text && props.text.length > 160
   const [isOpen, setIsOpen] = useState(!isLongText)
-  const showMoreText = (props.localication && props.localication.showMore) || 'Show more'
-  const showLessText = (props.localication && props.localication.showLess) || 'Show less'
   return (
     <Card>
       <CardHeader
-        avatar={<Avatar src={props.avatarUrl} alt={`Picture of the commenter`} />}
-        title={props.displayName}
+        avatar={<Avatar src={props.createdBy.avatarUrl} alt={props.localization.avatarAlt} />}
+        title={props.createdBy.displayName}
       />
-      <CardContent
-        style={{
-          height: isOpen ? 'unset' : '78px',
-          overflow: 'hidden',
-          fontSize: '14px',
-          letterSpacing: '0.2px',
-          lineHeight: '20px',
-          wordWrap: 'break-word',
-        }}>
-        {props.commentBody}
-      </CardContent>
+      <StyledCardContent isOpen={isOpen}>{props.text}</StyledCardContent>
       <CardActions>
         {isLongText ? (
           <Button size="small" onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? showLessText : showMoreText}
+            {isOpen ? props.localization.showLess || 'Show less' : props.localization.showMore || 'Show more'}
           </Button>
         ) : null}
       </CardActions>

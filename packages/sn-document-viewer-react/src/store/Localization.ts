@@ -35,6 +35,7 @@ export interface LocalizationStateType {
   print: string
   showMore: string
   showLess: string
+  avatarAlt: string
 }
 
 /**
@@ -94,6 +95,7 @@ export const defaultLocalization: LocalizationStateType = {
   print: 'Print',
   showMore: '+ Show more',
   showLess: '+ Show less',
+  avatarAlt: 'Picture of the commenter',
 }
 
 /**
