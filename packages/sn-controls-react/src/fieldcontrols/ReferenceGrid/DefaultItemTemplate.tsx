@@ -49,7 +49,6 @@ export class DefaultItemTemplate extends Component<DefaultItemTemplateProps, {}>
    */
   public render() {
     const { content } = this.props
-    console.log(content)
     return (
       <ListItem key={content.Id} button={false}>
         {content.Type !== undefined ? (
