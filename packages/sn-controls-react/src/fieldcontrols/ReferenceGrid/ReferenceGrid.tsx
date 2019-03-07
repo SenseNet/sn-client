@@ -81,10 +81,6 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
    */
   constructor(props: ReferenceGrid<T, K>['props']) {
     super(props)
-    /**
-     * @type {object}
-     * @property {string} value default value
-     */
     this.state = {
       fieldValue:
         this.props['data-fieldValue'] && this.props['data-fieldValue'].length > 0
