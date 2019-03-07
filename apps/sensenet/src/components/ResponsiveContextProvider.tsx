@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import MediaQuery from 'react-responsive'
+import { DeepPartial } from 'redux'
 import { defaultSettings } from '../services/PersonalSettings'
 import { mergeDeep } from '../utils/deepMerge'
 import { PersonalSettingsContext } from './PersonalSettingsContext'
@@ -7,7 +8,7 @@ import { ThemeContext } from './ThemeContext'
 
 export type ResponsivePlatforms = 'desktop' | 'tablet' | 'mobile'
 
-export type PlatformDependent<T> = { [key in ResponsivePlatforms]?: T } & {
+export type PlatformDependent<T> = { [key in ResponsivePlatforms]?: DeepPartial<T> } & {
   default: T
 }
 export const ResponsiveContext = React.createContext<ResponsivePlatforms>('desktop')

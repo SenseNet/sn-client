@@ -1,9 +1,11 @@
+import { DeepPartial } from 'redux'
+
 /**
  * Deep merge two objects.
  * @param target
  * @param ...sources
  */
-export const mergeDeep = <T>(target: T, ...sources: Array<T | undefined>) => {
+export const mergeDeep = <T>(target: T, ...sources: Array<DeepPartial<T> | undefined>) => {
   if (!sources.length) {
     return target
   }
@@ -17,7 +19,7 @@ export const mergeDeep = <T>(target: T, ...sources: Array<T | undefined>) => {
       if (!(source[key] instanceof Array) && typeof source[key] === 'object' && typeof target[key] === 'object') {
         merged[key] = mergeDeep(target[key], source[key])
       } else if (source[key]) {
-        merged[key] = source[key]
+        ;(merged[key] as any) = source[key]
       }
     }
   }

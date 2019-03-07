@@ -8,7 +8,7 @@ const settingsKey = `SN-APP-USER-SETTINGS`
 
 export interface PersonalSettingType {
   theme: 'dark' | 'light'
-  content: { browseType: 'explorer' | 'commander' }
+  content: { browseType: 'explorer' | 'commander' | 'simple' }
   commandPalette: { enabled: boolean; wrapQuery: string }
   drawer: {
     enabled: boolean
@@ -29,6 +29,14 @@ export const defaultSettings: PlatformDependent<PersonalSettingType> = {
       items: ['Content'],
     },
     commandPalette: { enabled: true, wrapQuery: '${0} .AUTOFILTERS:OFF' },
+  },
+  mobile: {
+    drawer: {
+      type: 'temporary',
+    },
+    content: {
+      browseType: 'simple',
+    },
   },
 }
 
