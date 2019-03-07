@@ -30,6 +30,7 @@ interface DefaultItemTemplateProps {
   content: GenericContent
   remove?: (id: number) => void
   add: () => void
+  actionName?: 'new' | 'edit' | 'browse'
 }
 
 export class DefaultItemTemplate extends Component<DefaultItemTemplateProps, {}> {
@@ -47,6 +48,7 @@ export class DefaultItemTemplate extends Component<DefaultItemTemplateProps, {}>
    */
   public render() {
     const { content } = this.props
+    console.log(content)
     return (
       <ListItem key={content.Id} button={false}>
         {content.Type !== undefined ? (
@@ -69,21 +71,23 @@ export class DefaultItemTemplate extends Component<DefaultItemTemplateProps, {}>
           primary={content.DisplayName}
           style={content.Id < 0 ? { textAlign: 'right' } : { textAlign: 'left' }}
         />
-        <ListItemSecondaryAction>
-          {content.Id > 0 ? (
-            <IconButton onClick={() => this.handlRemoveIconClick(content.Id)}>
-              <RemoveCircle />
-            </IconButton>
-          ) : content.Id > -2 ? (
-            <IconButton onClick={() => this.handleAddIconClick()}>
-              <AddCircle />
-            </IconButton>
-          ) : (
-            <IconButton onClick={() => this.handleAddIconClick()}>
-              <Refresh />
-            </IconButton>
-          )}
-        </ListItemSecondaryAction>
+        {this.props.actionName && this.props.actionName !== 'browse' ? (
+          <ListItemSecondaryAction>
+            {content.Id > 0 ? (
+              <IconButton onClick={() => this.handlRemoveIconClick(content.Id)}>
+                <RemoveCircle />
+              </IconButton>
+            ) : content.Id > -2 ? (
+              <IconButton onClick={() => this.handleAddIconClick()}>
+                <AddCircle />
+              </IconButton>
+            ) : (
+              <IconButton onClick={() => this.handleAddIconClick()}>
+                <Refresh />
+              </IconButton>
+            )}
+          </ListItemSecondaryAction>
+        ) : null}
       </ListItem>
     )
   }
