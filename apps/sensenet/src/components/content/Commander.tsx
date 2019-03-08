@@ -3,11 +3,11 @@ import React, { useContext, useEffect, useState } from 'react'
 import { matchPath, RouteComponentProps, withRouter } from 'react-router'
 import { ContentContextProvider } from '../../services/ContentContextProvider'
 import { left, right } from '../../store/Commander'
-import { createCommandListPanel } from '../ContentListPanel'
+import { createContentListPanel } from '../ContentListPanel'
 import { InjectorContext } from '../InjectorContext'
 
-const LeftControl = createCommandListPanel(left)
-const RightControl = createCommandListPanel(right)
+const LeftControl = createContentListPanel(left, { fields: ['DisplayName', 'CreatedBy'] })
+const RightControl = createContentListPanel(right, { fields: ['DisplayName', 'CreatedBy'] })
 
 export interface CommanderRouteParams {
   folderId?: string

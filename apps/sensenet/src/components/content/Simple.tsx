@@ -6,10 +6,10 @@ import { ContentContextProvider } from '../../services/ContentContextProvider'
 import { rootStateType } from '../../store'
 import { left } from '../../store/Commander'
 import { AddButton } from '../AddButton'
-import { createCommandListPanel } from '../ContentListPanel'
+import { createContentListPanel } from '../ContentListPanel'
 import { InjectorContext } from '../InjectorContext'
 
-const SimpleListControl = createCommandListPanel(left)
+const SimpleListControl = createContentListPanel(left, { fields: ['DisplayName'] })
 
 export const mapStateToProps = (state: rootStateType) => ({
   parent: state.commander.left.parent,

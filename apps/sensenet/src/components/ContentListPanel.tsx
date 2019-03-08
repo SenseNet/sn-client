@@ -16,7 +16,12 @@ import { Icon } from './Icon'
 import { InjectorContext } from './InjectorContext'
 import { SelectionControl } from './SelectionControl'
 
-export const createCommandListPanel = (collectionState: ReturnType<typeof createCollectionState>) => {
+export const createContentListPanel = (
+  collectionState: ReturnType<typeof createCollectionState>,
+  options: {
+    fields: Array<keyof GenericContent>
+  },
+) => {
   const mapStateToProps = (state: rootStateType) => ({
     collection: collectionState.collectionOptions.getSelfState(state),
   })
@@ -236,19 +241,23 @@ export const createCommandListPanel = (collectionState: ReturnType<typeof create
               }}
               onItemDoubleClick={(_ev, item) => handleActivateItem(item)}
               getSelectionControl={(isSelected, content) => <SelectionControl {...{ isSelected, content }} />}
-              fieldComponent={options => {
-                switch (options.field) {
+              fieldComponent={fieldOptions => {
+                switch (fieldOptions.field) {
                   case 'DisplayName':
-                    return <TableCell padding={'none'}>{options.content.DisplayName || options.content.Name}</TableCell>
+                    return (
+                      <TableCell padding={'none'}>
+                        {fieldOptions.content.DisplayName || fieldOptions.content.Name}
+                      </TableCell>
+                    )
                   case 'CreatedBy':
-                    return options.content.CreatedBy ? (
+                    return fieldOptions.content.CreatedBy ? (
                       <TableCell padding={'none'}>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
                           {' '}
-                          <Icon item={options.content.CreatedBy as GenericContent} />
+                          <Icon item={fieldOptions.content.CreatedBy as GenericContent} />
                           <div style={{ marginLeft: '1em' }}>
-                            {(options.content.CreatedBy as GenericContent).DisplayName ||
-                              (options.content.CreatedBy as GenericContent).Name}
+                            {(fieldOptions.content.CreatedBy as GenericContent).DisplayName ||
+                              (fieldOptions.content.CreatedBy as GenericContent).Name}
                           </div>
                         </div>
                       </TableCell>
@@ -256,7 +265,7 @@ export const createCommandListPanel = (collectionState: ReturnType<typeof create
                 }
                 return null
               }}
-              fieldsToDisplay={['DisplayName', 'CreatedBy', 'Type']}
+              fieldsToDisplay={options.fields}
               selected={selected}
               onRequestSelectionChange={select}
               icons={{}}

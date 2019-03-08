@@ -7,11 +7,11 @@ import { rootStateType } from '../../store'
 import { left } from '../../store/Commander'
 import { AddButton } from '../AddButton'
 import Breadcrumbs, { BreadcrumbItem } from '../Breadcrumbs'
-import { createCommandListPanel } from '../ContentListPanel'
+import { createContentListPanel } from '../ContentListPanel'
 import { InjectorContext } from '../InjectorContext'
 import { Tree } from '../tree/index'
 
-const ExploreControl = createCommandListPanel(left)
+const ExploreControl = createContentListPanel(left, { fields: ['DisplayName', 'CreatedBy'] })
 
 const mapStateToProps = (state: rootStateType) => ({
   ancestors: state.commander.left.ancestors,
