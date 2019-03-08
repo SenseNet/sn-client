@@ -1,10 +1,12 @@
 import Drawer from '@material-ui/core/Drawer'
 import { SlideProps } from '@material-ui/core/Slide'
+import Typography from '@material-ui/core/Typography'
 import React = require('react')
 import { connect } from 'react-redux'
 import { componentType } from '../services'
 import { RootReducerType, setActivePages, setThumbnails } from '../store'
 import { PageList } from './'
+import Comment from './Comment'
 
 /**
  * maps state fields from the store to component props
@@ -16,6 +18,7 @@ const mapStateToProps = (state: RootReducerType) => {
     zoomMode: state.sensenetDocumentViewer.viewer.zoomMode,
     customZoomLevel: state.sensenetDocumentViewer.viewer.customZoomLevel,
     showThumbnails: state.sensenetDocumentViewer.viewer.showThumbnails,
+    showComments: state.sensenetDocumentViewer.viewer.showComments,
     fitRelativeZoomLevel: state.sensenetDocumentViewer.viewer.fitRelativeZoomLevel,
   }
 }
@@ -169,6 +172,32 @@ export class DocumentViewerLayoutComponent extends React.Component<
             padding={8}
             activePage={this.state.activePage}
           />
+          <Drawer
+            variant={'persistent'}
+            open={this.props.showComments}
+            anchor="right"
+            SlideProps={this.props.drawerSlideProps}
+            PaperProps={{
+              style: {
+                width: '300px',
+                right: '25px',
+                top: '75px',
+              },
+            }}>
+            <Typography variant="h4">Comments</Typography>
+            <Comment
+              createdBy={{
+                avatarUrl: 'https://cdn.images.express.co.uk/img/dynamic/79/590x/486693_1.jpg',
+                displayName: 'Alba',
+                id: 1,
+                path: 'some/path',
+                userName: 'some/name',
+              }}
+              text="Some comment"
+              id="aa"
+              delete={a => console.log(a)}
+            />
+          </Drawer>
         </div>
       </div>
     )

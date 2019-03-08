@@ -6,6 +6,7 @@ import {
   DocumentTitlePager,
   RotateActivePages,
   SearchBar,
+  ToggleCommentsWidget,
   ToggleShapesWidget,
   ToggleThumbnailsWidget,
   ZoomInOutWidget,
@@ -283,6 +284,7 @@ class ExampleAppLayout extends React.Component<
                 </div>
                 <DocumentTitlePager />
                 <div style={{ flexShrink: 0 }}>
+                  <ToggleCommentsWidget />
                   <SearchBar />
                 </div>
               </LayoutAppBar>

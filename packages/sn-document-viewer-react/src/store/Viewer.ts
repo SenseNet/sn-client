@@ -43,6 +43,11 @@ export interface ViewerStateType {
    * Zoom level relative to the fitted image size
    */
   fitRelativeZoomLevel: number
+
+  /**
+   * Determines if comments are shown
+   */
+  showComments: boolean
 }
 
 /**
@@ -120,6 +125,14 @@ export const setThumbnails = (isVisible: boolean) => ({
 })
 
 /**
+ * Action to set the visibility of the comments
+ */
+export const showComments = (isVisible: boolean) => ({
+  type: 'SN_DOCVIEWER_DOCUMENT_VIEWER_SHOW_COMMENTS',
+  isVisible,
+})
+
+/**
  * Reducer for the Viewer state
  * @param state the current state
  * @param action the dispatched action
@@ -134,6 +147,7 @@ export const viewerStateReducer: Reducer<ViewerStateType> = (
     showShapes: true,
     showThumbnails: false,
     fitRelativeZoomLevel: 0,
+    showComments: false,
   },
   action,
 ) => {
@@ -156,6 +170,8 @@ export const viewerStateReducer: Reducer<ViewerStateType> = (
       return { ...state, showRedaction: action.isVisible }
     case 'SN_DOCVIEWER_DOCUMENT_VIEWER_SET_SHAPES':
       return { ...state, showShapes: action.isVisible }
+    case 'SN_DOCVIEWER_DOCUMENT_VIEWER_SHOW_COMMENTS':
+      return { ...state, showComments: action.isVisible }
     case 'SN_DOCVIEWER_DOCUMENT_VIEWER_SET_THUMBNAILS':
       return { ...state, showThumbnails: action.isVisible }
     case 'SN_DOCVIEWER_DOCUMENT_VIEWER_SET_FIT_RELATIVE_ZOOM_LEVEL':
