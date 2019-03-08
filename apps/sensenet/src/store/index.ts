@@ -44,7 +44,7 @@ setupRepositoryServices({
   injector: Injector.Default,
   repositoryConfig: {
     sessionLifetime: 'expiration',
-    repositoryUrl: 'https://dmsservice.demo.sensenet.com',
+    repositoryUrl: store.getState().persistedState.lastRepositoryUrl,
     requiredSelect: [
       'Id',
       'Path',
