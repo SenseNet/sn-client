@@ -58,7 +58,7 @@ export interface AvatarProps<T extends GenericContent, K extends keyof T>
 export interface AvatarState<T extends GenericContent, _K extends keyof T> {
   fieldValue: any
   pickerIsOpen: boolean
-  selected: any
+  selected: GenericContent
 }
 
 export class Avatar<T extends GenericContent, K extends keyof T> extends Component<
@@ -114,13 +114,11 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
   /**
    * Removes the chosen item from the grid and the field value
    */
-  public removeItem = (id: number) => {
+  public removeItem = () => {
     const { name, onChange } = this.props
-    const value =
-      this.state.fieldValue.length > 1 ? this.state.fieldValue.filter((item: GenericContent) => item.Id !== id) : []
-    onChange(name, value.map((item: GenericContent) => item.Id))
+    onChange(name, { Url: '' } as any)
     this.setState({
-      fieldValue: value,
+      fieldValue: '',
     })
   }
   public handleDialogClose = () => {
@@ -130,38 +128,27 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
   }
   public handleCancelClick = () => {
     this.setState({
-      selected: [],
+      selected: {} as GenericContent,
     })
     this.handleDialogClose()
   }
   public handleOkClick = () => {
     const { name, onChange } = this.props
-    const value =
-      this.state.selected.length > 0 && !this.props['data-allowMultiple']
-        ? this.state.selected
-        : this.state.fieldValue.concat(this.state.selected)
-    onChange(name, value.map((item: GenericContent) => item.Id))
+    const content = this.state.selected
+    if (content.Path && this.state.fieldValue !== content.Path) {
+      onChange(name, { Url: content.Path } as any)
 
-    this.setState({
-      fieldValue: value,
-      selected: [],
-    })
+      this.setState({
+        fieldValue: content.Path,
+        selected: {} as GenericContent,
+      })
+    }
     this.handleDialogClose()
   }
   public selectItem = (content: GenericContent) => {
-    this.state.selected.length > 0 && !this.props['data-allowMultiple']
-      ? this.setState({
-          selected:
-            this.state.selected.findIndex((c: GenericContent) => content.Id === c.Id) > -1
-              ? this.state.selected
-              : [content],
-        })
-      : this.setState({
-          selected:
-            this.state.selected.findIndex((c: GenericContent) => content.Id === c.Id) > -1
-              ? this.state.selected.filter((c: GenericContent) => content.Id !== c.Id)
-              : [...this.state.selected, content],
-        })
+    this.setState({
+      selected: content,
+    })
   }
   /**
    * Opens a picker to choose an item to add into the grid and the field value
@@ -208,11 +195,16 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                   {REFERENCE_PICKER_TITLE}
                 </Typography>
                 <AvatarPicker
-                  path={this.props['data-selectionRoot'] ? this.props['data-selectionRoot'][0] : '/Root'}
+                  path={
+                    this.props['data-selectionRoot']
+                      ? this.props['data-selectionRoot'][0]
+                      : `/Root/Profiles/Public/${this.props['content'].Name}/Document_Library`
+                  }
                   allowedTypes={this.props['data-allowedTypes']}
                   repository={this.props['data-repository']}
                   select={content => this.selectItem(content)}
                   selected={this.state.selected}
+                  repositoryUrl={this.props['data-repositoryUrl'] || ''}
                 />
                 <DialogActions>
                   <Button variant="contained" onClick={this.handleOkClick} color="primary">
@@ -268,11 +260,16 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                   {REFERENCE_PICKER_TITLE}
                 </Typography>
                 <AvatarPicker
-                  path={this.props['data-selectionRoot'] ? this.props['data-selectionRoot'][0] : '/Root'}
+                  path={
+                    this.props['data-selectionRoot']
+                      ? this.props['data-selectionRoot'][0]
+                      : `/Root/Profiles/Public/${this.props['content'].Name}/Document_Library`
+                  }
                   allowedTypes={this.props['data-allowedTypes']}
                   repository={this.props['data-repository']}
                   select={content => this.selectItem(content)}
                   selected={this.state.selected}
+                  repositoryUrl={this.props['data-repositoryUrl'] || ''}
                 />
                 <DialogActions>
                   <Button variant="contained" onClick={this.handleOkClick} color="primary">

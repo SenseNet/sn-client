@@ -1,8 +1,9 @@
+import Avatar from '@material-ui/core/Avatar'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import { ODataCollectionResponse, ODataParams, Repository } from '@sensenet/client-core'
-import { Folder, GenericContent } from '@sensenet/default-content-types'
+import { Folder, GenericContent, User } from '@sensenet/default-content-types'
 import { Icon } from '@sensenet/icons-react'
 import { ListPickerComponent } from '@sensenet/pickers-react'
 import React, { Component } from 'react'
@@ -13,7 +14,8 @@ interface AvatarPickerProps {
   repository: Repository
   path: string
   allowedTypes?: string[]
-  selected: any[]
+  selected: GenericContent
+  repositoryUrl: string
 }
 interface AvatarPickerState {
   items: GenericContent[]
@@ -27,30 +29,19 @@ export class AvatarPicker extends Component<AvatarPickerProps, AvatarPickerState
     }
   }
   public onSelectionChanged = (content: GenericContent) => {
-    if (this.props.allowedTypes && this.props.allowedTypes.indexOf(content.Type) > -1) {
+    if (content.Type === 'Image') {
       this.props.select(content)
     }
   }
-  public createTypeFilterString = (allowedTypes: string[]) => {
-    let filterString = "(isOf('Folder') and not isOf('SystemFolder'))"
-    allowedTypes.map((typeName: string) => {
-      if (typeName !== 'Folder') {
-        filterString += ` or isOf('${typeName}')`
-      }
-    })
-    return filterString
-  }
   public loadItems = async (path: string) => {
     let result: ODataCollectionResponse<Folder>
-    const filter = this.props.allowedTypes
-      ? this.createTypeFilterString(this.props.allowedTypes)
-      : "(isOf('Folder') and not isOf('SystemFolder'))"
+    const filter = "(isOf('Folder') and not isOf('SystemFolder')) or isOf('Image')"
     const pickerItemOptions: ODataParams<Folder> = {
       select: ['DisplayName', 'Path', 'Id', 'Children/IsFolder', 'IsFolder'] as any,
       expand: ['Children'] as any,
       filter,
       metadata: 'no',
-      orderby: 'DisplayName',
+      orderby: [['IsFolder', 'desc'], 'DisplayName'],
     }
 
     try {
@@ -78,24 +69,25 @@ export class AvatarPicker extends Component<AvatarPickerProps, AvatarPickerState
     })
     return result.d as GenericContent
   }
-  public iconName = (isFolder: boolean | undefined) => {
-    switch (isFolder) {
+  public iconName = (node: GenericContent) => {
+    switch (node.IsFolder) {
       case true:
         return 'folder'
-        break
-      case false:
-        return 'insert_drive_file'
         break
       default:
         return 'arrow_upward'
         break
     }
   }
-  public renderItem = (node: GenericContent) => (
-    <ListItem button={true} selected={this.props.selected.findIndex(content => node.Id === content.Id) > -1}>
-      <ListItemIcon>
-        <Icon iconName={this.iconName(node.IsFolder)} />
-      </ListItemIcon>
+  public renderItem = (node: GenericContent | User) => (
+    <ListItem button={true} selected={node.Id === this.props.selected.Id}>
+      {node.IsFolder ? (
+        <ListItemIcon>
+          <Icon iconName={this.iconName(node)} />
+        </ListItemIcon>
+      ) : (
+        <Avatar src={`${this.props.repositoryUrl}${node.Path}`} />
+      )}
       <ListItemText primary={node.DisplayName} />
     </ListItem>
   )
