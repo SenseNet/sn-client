@@ -8,6 +8,7 @@ import CloudUpload from '@material-ui/icons/CloudUpload'
 import { Repository, Upload } from '@sensenet/client-core'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
+import { UploadTracker } from '../services/UploadTracker'
 import { Icon } from './Icon'
 import { InjectorContext } from './InjectorContext'
 
@@ -72,6 +73,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
                     repository: repo,
                     binaryPropertyName: 'Binary',
                     overwrite: false,
+                    progressObservable: injector.GetInstance(UploadTracker).onUploadProgress,
                   })
               }}
               type="file"

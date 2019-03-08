@@ -31,6 +31,8 @@ export const setupRepositoryServices = async (options: {
 
   const eventHub = new EventHub(repo)
 
+  options.injector.SetInstance(eventHub)
+
   const commandProviderManager = options.injector.GetInstance(CommandProviderManager)
   commandProviderManager.RegisterProviders(
     QueryCommandProvider,
