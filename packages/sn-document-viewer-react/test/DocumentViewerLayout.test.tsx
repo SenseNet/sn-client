@@ -13,6 +13,7 @@ describe('Document Viewer Layout component', () => {
     fitRelativeZoomLevel: 1,
     setThumbnails: jest.fn(),
     showThumbnails: true,
+    showComments: false,
     zoomMode: 'custom',
   }
   it('should render without crashing', () => {
@@ -56,7 +57,10 @@ describe('Document Viewer Layout component', () => {
     })
     await sleepAsync()
     expect(setActivePages.mock.calls.length).toBe(0)
-    const paperProps = wrapper.find(Drawer).prop('PaperProps')
+    const paperProps = wrapper
+      .find(Drawer)
+      .first()
+      .prop('PaperProps')
     expect(paperProps.style.width).toBe(0)
   })
 

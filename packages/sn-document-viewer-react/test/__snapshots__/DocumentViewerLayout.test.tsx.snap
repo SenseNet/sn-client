@@ -73,6 +73,40 @@ exports[`Document Viewer Layout component should render without crashing 1`] = `
       zoomLevel={1}
       zoomMode="custom"
     />
+    <WithStyles(Drawer)
+      PaperProps={
+        Object {
+          "style": Object {
+            "right": "25px",
+            "top": "75px",
+            "width": "300px",
+          },
+        }
+      }
+      anchor="right"
+      open={false}
+      variant="persistent"
+    >
+      <WithStyles(Typography)
+        variant="h4"
+      >
+        Comments
+      </WithStyles(Typography)>
+      <Connect(Component)
+        createdBy={
+          Object {
+            "avatarUrl": "https://cdn.images.express.co.uk/img/dynamic/79/590x/486693_1.jpg",
+            "displayName": "Alba",
+            "id": 1,
+            "path": "some/path",
+            "userName": "some/name",
+          }
+        }
+        delete={[Function]}
+        id="aa"
+        text="Some comment"
+      />
+    </WithStyles(Drawer)>
   </div>
 </div>
 `;
@@ -150,6 +184,40 @@ exports[`Document Viewer Layout component should render without crashing 2`] = `
       zoomLevel={1}
       zoomMode="custom"
     />
+    <WithStyles(Drawer)
+      PaperProps={
+        Object {
+          "style": Object {
+            "right": "25px",
+            "top": "75px",
+            "width": "300px",
+          },
+        }
+      }
+      anchor="right"
+      open={false}
+      variant="persistent"
+    >
+      <WithStyles(Typography)
+        variant="h4"
+      >
+        Comments
+      </WithStyles(Typography)>
+      <Connect(Component)
+        createdBy={
+          Object {
+            "avatarUrl": "https://cdn.images.express.co.uk/img/dynamic/79/590x/486693_1.jpg",
+            "displayName": "Alba",
+            "id": 1,
+            "path": "some/path",
+            "userName": "some/name",
+          }
+        }
+        delete={[Function]}
+        id="aa"
+        text="Some comment"
+      />
+    </WithStyles(Drawer)>
   </div>
 </div>
 `;
