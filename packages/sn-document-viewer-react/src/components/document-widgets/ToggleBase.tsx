@@ -22,7 +22,7 @@ export interface ToggleBaseProps {
 }
 
 /**
- * Represents a Toolbar component in an AppBar
+ * Represents a base toggle component
  */
 export const ToggleBase: React.FunctionComponent<ToggleBaseProps> = props => (
   <div style={{ display: 'inline-block' }}>

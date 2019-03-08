@@ -116,7 +116,7 @@ export const setShapes = (isVisible: boolean) => ({
 })
 
 /**
- * Action to set the visibility of the shapes
+ * Action to set the visibility of the thumbnails
  * @param isVisible
  */
 export const setThumbnails = (isVisible: boolean) => ({
