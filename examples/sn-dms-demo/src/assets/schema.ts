@@ -8220,9 +8220,9 @@ export const customSchema = [
         ReadOnly: false,
         Compulsory: false,
         Visible: true,
-        VisibleBrowse: 0,
-        VisibleEdit: 0,
-        VisibleNew: 0,
+        VisibleBrowse: 1,
+        VisibleEdit: 1,
+        VisibleNew: 1,
         DefaultOrder: 0,
       },
       {
