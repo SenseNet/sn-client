@@ -3,6 +3,7 @@ import IconButton from '@material-ui/core/IconButton'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
+import AddCircle from '@material-ui/icons/AddCircle'
 import Refresh from '@material-ui/icons/Refresh'
 import RemoveCircle from '@material-ui/icons/RemoveCircle'
 import React, { Component } from 'react'
@@ -67,7 +68,7 @@ export class DefaultAvatarTemplate extends Component<DefaultAvatarTemplateProps,
               </div>
             ) : (
               <IconButton onClick={() => this.handleAddIconClick()}>
-                <Refresh />
+                <AddCircle />
               </IconButton>
             )}
           </ListItemSecondaryAction>

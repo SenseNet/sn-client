@@ -112,7 +112,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
     return references
   }
   /**
-   * Removes the chosen item from the grid and the field value
+   * Removes the item and clears the field value
    */
   public removeItem = () => {
     const { name, onChange } = this.props
@@ -151,7 +151,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
     })
   }
   /**
-   * Opens a picker to choose an item to add into the grid and the field value
+   * Opens a picker to choose an item
    */
   public addItem = () => {
     this.setState({
@@ -182,6 +182,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                   repositoryUrl={this.props['data-repositoryUrl'] || ''}
                   url={this.state.fieldValue}
                   add={this.addItem}
+                  remove={this.removeItem}
                   actionName="edit"
                 />
               )}
@@ -240,6 +241,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                   add={this.addItem}
                   actionName="new"
                   readOnly={this.props.readOnly}
+                  remove={this.removeItem}
                 />
               )}
               }
