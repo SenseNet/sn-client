@@ -38,11 +38,10 @@ const styles = {
   },
 }
 
-// const ADD_REFERENCE = 'Add reference'
-// const CHANGE_REFERENCE = 'Change reference'
 const REFERENCE_PICKER_TITLE = 'Reference picker'
 const OK = 'Ok'
 const CANCEL = 'Cancel'
+const DEFAULT_AVATAR_PATH = '/Root/Sites/Default_Site/demoavatars/Admin.png'
 
 /**
  * Interface for Avatar properties
@@ -116,7 +115,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
    */
   public removeItem = () => {
     const { name, onChange } = this.props
-    onChange(name, { Url: '' } as any)
+    onChange(name, DEFAULT_AVATAR_PATH as any)
     this.setState({
       fieldValue: '',
     })
@@ -136,7 +135,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
     const { name, onChange } = this.props
     const content = this.state.selected
     if (content.Path && this.state.fieldValue !== content.Path) {
-      onChange(name, { Url: content.Path } as any)
+      onChange(name, content.Path as any)
 
       this.setState({
         fieldValue: content.Path,
@@ -174,7 +173,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
             </InputLabel>
             <List
               dense={true}
-              style={this.state.fieldValue.length > 0 ? styles.listContainer : { ...styles.listContainer, width: 200 }}>
+              style={this.state.fieldValue.length > 0 ? styles.listContainer : { ...styles.listContainer, width: 150 }}>
               {itemTemplate ? (
                 itemTemplate(this.state.fieldValue)
               ) : (

@@ -19,6 +19,9 @@ const styles = {
 }
 
 const DEFAULT_AVATAR_PATH = '/demoavatars/Admin.png'
+const ADD_AVATAR = 'Add avatar'
+const CHANGE_AVATAR = 'Change avatar'
+const REMOVE_AVATAR = 'Remove avatar'
 
 interface DefaultAvatarTemplateProps {
   repositoryUrl: string
@@ -59,15 +62,15 @@ export class DefaultAvatarTemplate extends Component<DefaultAvatarTemplateProps,
           <ListItemSecondaryAction>
             {url ? (
               <div>
-                <IconButton onClick={() => this.handleAddIconClick()}>
+                <IconButton title={CHANGE_AVATAR} onClick={() => this.handleAddIconClick()}>
                   <Refresh />
                 </IconButton>
-                <IconButton onClick={() => this.handlRemoveIconClick(url)}>
+                <IconButton title={REMOVE_AVATAR} onClick={() => this.handlRemoveIconClick(url)}>
                   <RemoveCircle />
                 </IconButton>
               </div>
             ) : (
-              <IconButton onClick={() => this.handleAddIconClick()}>
+              <IconButton title={ADD_AVATAR} onClick={() => this.handleAddIconClick()}>
                 <AddCircle />
               </IconButton>
             )}
