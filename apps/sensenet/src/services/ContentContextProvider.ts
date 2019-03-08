@@ -1,18 +1,16 @@
 import { Injectable } from '@furystack/inject'
-import { Repository } from '@sensenet/client-core'
+import { SchemaStore } from '@sensenet/client-core/dist/Schemas/SchemaStore'
 import { ContentType, File as SnFile, GenericContent, Resource, Settings } from '@sensenet/default-content-types'
 import { Uri } from 'monaco-editor'
 import { isContentFromType } from '../utils/isContentFromType'
 
 @Injectable()
 export class ContentContextProvider {
-  constructor(private readonly repository: Repository) {}
-
   public getMonacoModelUri(content: GenericContent) {
-    if (isContentFromType(content, Settings, this.repository.schemas)) {
+    if (isContentFromType(content, Settings)) {
       return Uri.parse(`sensenet://${content.Type}/${content.Name}`)
     }
-    if (isContentFromType(content, SnFile, this.repository.schemas)) {
+    if (isContentFromType(content, SnFile)) {
       if (content.Binary) {
         return Uri.parse(`sensenet://${content.Type}/${content.Binary.__mediaresource.content_type}`)
       }
@@ -20,17 +18,14 @@ export class ContentContextProvider {
     return Uri.parse(`sensenet://${content.Type}`)
   }
 
-  public getMonacoLanguage(content: GenericContent) {
-    if (isContentFromType(content, Settings, this.repository.schemas)) {
+  public getMonacoLanguage(content: GenericContent, schemas: SchemaStore) {
+    if (isContentFromType(content, Settings, schemas)) {
       return 'json'
     }
-    if (
-      isContentFromType(content, ContentType, this.repository.schemas) ||
-      isContentFromType(content, Resource, this.repository.schemas)
-    ) {
+    if (isContentFromType(content, ContentType, schemas) || isContentFromType(content, Resource, schemas)) {
       return 'xml'
     }
-    if (isContentFromType(content, SnFile, this.repository.schemas)) {
+    if (isContentFromType(content, SnFile, schemas)) {
       if (content.Binary) {
         switch (content.Binary.__mediaresource.content_type) {
           case 'application/x-javascript':
@@ -47,11 +42,11 @@ export class ContentContextProvider {
     return ''
   }
 
-  public canEditBinary(content: GenericContent) {
-    return this.getMonacoLanguage(content) ? true : false
+  public canEditBinary(content: GenericContent, schemas: SchemaStore) {
+    return this.getMonacoLanguage(content, schemas) ? true : false
   }
 
-  public getPrimaryActionUrl<T extends GenericContent>(content: T) {
+  public getPrimaryActionUrl<T extends GenericContent>(content: T, schemas: SchemaStore) {
     if (content.IsFolder) {
       return `/content/${content.Id}`
     }
@@ -62,7 +57,7 @@ export class ContentContextProvider {
     ) {
       return `/preview/${content.Id}`
     }
-    if (this.canEditBinary(content)) {
+    if (this.canEditBinary(content, schemas)) {
       return `/editBinary/${content.Id}`
     }
     return `/editProperties/${content.Id}`

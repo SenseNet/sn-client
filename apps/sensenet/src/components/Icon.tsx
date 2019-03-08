@@ -9,7 +9,6 @@ import InsertDriveFileTwoTone from '@material-ui/icons/InsertDriveFileTwoTone'
 import PublicTwoTone from '@material-ui/icons/PublicTwoTone'
 import SettingsTwoTone from '@material-ui/icons/SettingsTwoTone'
 import WebAssetTwoTone from '@material-ui/icons/WebAssetTwoTone'
-import { Repository } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { File as SnFile, Schema } from '@sensenet/default-content-types'
 import { GenericContent, User } from '@sensenet/default-content-types'
@@ -32,7 +31,7 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
       item.Type === 'User' ? (
         <UserAvatar
           user={item as User}
-          repositoryUrl={options.injector.GetInstance(Repository).configuration.repositoryUrl}
+          repositoryUrl={options.injector.getCurrentRepository().configuration.repositoryUrl}
           style={options.style}
         />
       ) : null,
@@ -59,7 +58,7 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
       item.Type === 'File' && (item as SnFile).PageCount ? (
         <img
           src={PathHelper.joinPaths(
-            options.injector.GetInstance(Repository).configuration.repositoryUrl,
+            options.injector.getCurrentRepository().configuration.repositoryUrl,
             item.Path,
             '/Previews',
             item.Version as string,

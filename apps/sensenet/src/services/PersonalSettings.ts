@@ -1,7 +1,5 @@
 import { Injectable } from '@furystack/inject'
-import { Repository } from '@sensenet/client-core'
 import { ObservableValue } from '@sensenet/client-utils'
-import { User } from '@sensenet/default-content-types'
 import { PlatformDependent } from '../context/ResponsiveContextProvider'
 
 const settingsKey = `SN-APP-USER-SETTINGS`
@@ -42,21 +40,21 @@ export const defaultSettings: PlatformDependent<PersonalSettingType> = {
 
 @Injectable()
 export class PersonalSettings {
-  constructor(private readonly repository: Repository) {
-    this.repository.authentication.currentUser.subscribe(user => this.init(user), true)
+  constructor() {
+    this.init()
   }
 
-  private async init(user: User) {
-    const currentUserSettings = await this.getLocalUserSettingsValue(user)
+  private async init() {
+    const currentUserSettings = await this.getLocalUserSettingsValue()
     this.currentValue.setValue({
       ...defaultSettings,
       ...currentUserSettings,
     })
   }
 
-  public async getLocalUserSettingsValue(user: User): Promise<Partial<PersonalSettingType>> {
+  public async getLocalUserSettingsValue(): Promise<Partial<PersonalSettingType>> {
     try {
-      return JSON.parse(localStorage.getItem(`${settingsKey}/${user.Path}`) as string)
+      return JSON.parse(localStorage.getItem(`${settingsKey}`) as string)
     } catch {
       /** */
     }
@@ -67,9 +65,6 @@ export class PersonalSettings {
 
   public async setValue(settings: PlatformDependent<PersonalSettingType>) {
     this.currentValue.setValue(settings)
-    localStorage.setItem(
-      `${settingsKey}/${this.repository.authentication.currentUser.getValue().Path}`,
-      JSON.stringify(settings),
-    )
+    localStorage.setItem(`${settingsKey}`, JSON.stringify(settings))
   }
 }

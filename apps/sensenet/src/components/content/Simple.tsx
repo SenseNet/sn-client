@@ -3,6 +3,7 @@ import React, { useContext, useState } from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { InjectorContext } from '../../context/InjectorContext'
+import { RepositoryContext } from '../../context/RepositoryContext'
 import { ContentContextProvider } from '../../services/ContentContextProvider'
 import { rootStateType } from '../../store'
 import { left } from '../../store/Commander'
@@ -21,13 +22,14 @@ export const SimpleListComponent: React.FunctionComponent<
   const getLeftFromPath = () => parseInt(props.match.params.leftParent as string, 10) || ConstantContent.PORTAL_ROOT.Id
   const injector = useContext(InjectorContext)
   const [leftParentId, setLeftParentId] = useState(getLeftFromPath())
+  const repo = useContext(RepositoryContext)
 
   return (
     <div style={{ display: 'flex', width: '100%', height: '100%' }}>
       <SimpleListControl
         enableBreadcrumbs={true}
         onActivateItem={item => {
-          props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item))
+          props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item, repo.schemas))
         }}
         style={{ flexGrow: 1, flexShrink: 0, maxHeight: '100%' }}
         onParentChange={p => {

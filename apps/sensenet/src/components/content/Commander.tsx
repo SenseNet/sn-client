@@ -2,6 +2,7 @@ import { ConstantContent } from '@sensenet/client-core'
 import React, { useContext, useEffect, useState } from 'react'
 import { matchPath, RouteComponentProps, withRouter } from 'react-router'
 import { InjectorContext } from '../../context/InjectorContext'
+import { RepositoryContext } from '../../context/RepositoryContext'
 import { ContentContextProvider } from '../../services/ContentContextProvider'
 import { left, right } from '../../store/Commander'
 import { createContentListPanel } from '../ContentListPanel'
@@ -16,6 +17,7 @@ export interface CommanderRouteParams {
 
 export const Commander: React.StatelessComponent<RouteComponentProps<CommanderRouteParams>> = props => {
   const injector = useContext(InjectorContext)
+  const repo = useContext(RepositoryContext)
   const getLeftFromPath = (params: CommanderRouteParams) =>
     parseInt(params.folderId as string, 10) || ConstantContent.PORTAL_ROOT.Id
   const getRightFromPath = (params: CommanderRouteParams) =>
@@ -58,7 +60,7 @@ export const Commander: React.StatelessComponent<RouteComponentProps<CommanderRo
       <LeftControl
         enableBreadcrumbs={true}
         onActivateItem={item => {
-          props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item))
+          props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item, repo.schemas))
         }}
         containerRef={r => setLeftPanelRef(r)}
         style={{ flexGrow: 1, flexShrink: 0, maxHeight: '100%' }}
@@ -71,7 +73,7 @@ export const Commander: React.StatelessComponent<RouteComponentProps<CommanderRo
       <RightControl
         enableBreadcrumbs={true}
         onActivateItem={item => {
-          props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item))
+          props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item, repo.schemas))
         }}
         containerRef={r => setRightPanelRef(r)}
         parentId={rightParentId}

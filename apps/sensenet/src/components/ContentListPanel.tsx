@@ -2,7 +2,7 @@ import TableCell from '@material-ui/core/TableCell'
 import { debounce, PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
-import { Created, EventHub } from '@sensenet/repository-events'
+import { Created } from '@sensenet/repository-events'
 import React, { useContext, useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { InjectorContext } from '../context/InjectorContext'
@@ -48,7 +48,7 @@ export const createContentListPanel = (
     const { setActiveContent, select, loadParent } = props
     const injector = useContext(InjectorContext)
     const [isFocused, setIsFocused] = useState(false)
-    const eventHub = injector.GetInstance(EventHub)
+    const eventHub = injector.getCurrentEventHub()
     const uploadTracker = injector.GetInstance(UploadTracker)
     const update = debounce(() => {
       loadParent(props.parentId, repo, true)
@@ -118,14 +118,14 @@ export const createContentListPanel = (
                 ({
                   displayName: content.DisplayName || content.Name,
                   title: content.Path,
-                  url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(content),
+                  url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(content, repo.schemas),
                   content,
                 } as BreadcrumbItem),
             )}
             currentContent={{
               displayName: parent.DisplayName || parent.Name,
               title: parent.Path,
-              url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(parent),
+              url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(parent, repo.schemas),
               content: parent,
             }}
             onItemClick={(_ev, item) => {

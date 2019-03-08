@@ -6,7 +6,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import { ODataParams } from '@sensenet/client-core'
 import { debounce, PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
-import { Created, EventHub } from '@sensenet/repository-events'
+import { Created } from '@sensenet/repository-events'
 import React, { useContext, useEffect, useState } from 'react'
 import { RepositoryContext } from '../../context//RepositoryContext'
 import { InjectorContext } from '../../context/InjectorContext'
@@ -33,7 +33,7 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
   const [reloadTimestamp, setReloadTimestamp] = useState(new Date())
   const injector = useContext(InjectorContext)
   const repo = useContext(RepositoryContext)
-  const eventHub = injector.GetInstance(EventHub)
+  const eventHub = injector.getCurrentEventHub()
   const update = debounce(() => {
     setReloadTimestamp(new Date())
   }, 100)

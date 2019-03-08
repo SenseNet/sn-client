@@ -14,6 +14,7 @@ import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 import { matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
 import { ResponsivePersonalSetttings } from '../../context/ResponsiveContextProvider'
+import { SessionContext } from '../../context/SessionContext'
 import { ThemeContext } from '../../context/ThemeContext'
 import { rootStateType } from '../../store'
 import { closeDrawer, openDrawer } from '../../store/Drawer'
@@ -22,7 +23,6 @@ import { UserAvatar } from '../UserAvatar'
 const mapStateToProps = (state: rootStateType) => ({
   items: state.drawer.items,
   opened: state.drawer.opened,
-  user: state.session.currentUser,
   repositoryUrl: state.persistedState.lastRepositoryUrl,
 })
 
@@ -36,6 +36,7 @@ const TemporaryDrawer: React.StatelessComponent<
 > = props => {
   const settings = useContext(ResponsivePersonalSetttings)
   const theme = useContext(ThemeContext)
+  const session = useContext(SessionContext)
 
   if (!settings.drawer.enabled) {
     return null
@@ -101,9 +102,9 @@ const TemporaryDrawer: React.StatelessComponent<
         <Paper style={{ padding: '1em' }}>
           <ListItem>
             <ListItemIcon>
-              <UserAvatar user={props.user} repositoryUrl={props.repositoryUrl} />
+              <UserAvatar user={session.currentUser} repositoryUrl={props.repositoryUrl} />
             </ListItemIcon>
-            <ListItemText primary={props.user.DisplayName || props.user.Name} />
+            <ListItemText primary={session.currentUser.DisplayName || session.currentUser.Name} />
             <ListItemSecondaryAction>
               <Link to={`/personalSettings`} style={{ textDecoration: 'none' }} onClick={() => props.closeDrawer()}>
                 <IconButton title="Edit personal settings">

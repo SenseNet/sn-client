@@ -14,6 +14,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import { Link, matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
 import { ResponsivePersonalSetttings } from '../../context/ResponsiveContextProvider'
+import { SessionContext } from '../../context/SessionContext'
 import { ThemeContext } from '../../context/ThemeContext'
 import { rootStateType } from '../../store'
 import { toggleDrawer } from '../../store/Drawer'
@@ -22,7 +23,6 @@ import { UserAvatar } from '../UserAvatar'
 const mapStateToProps = (state: rootStateType) => ({
   items: state.drawer.items,
   opened: state.drawer.opened,
-  user: state.session.currentUser,
   repositoryUrl: state.persistedState.lastRepositoryUrl,
 })
 
@@ -35,6 +35,7 @@ const PermanentDrawer: React.StatelessComponent<
 > = props => {
   const settings = useContext(ResponsivePersonalSetttings)
   const theme = useContext(ThemeContext)
+  const session = useContext(SessionContext)
 
   if (!settings.drawer.enabled) {
     return null
@@ -104,9 +105,9 @@ const PermanentDrawer: React.StatelessComponent<
             <Paper style={{ padding: '1em' }}>
               <ListItem>
                 <ListItemIcon>
-                  <UserAvatar user={props.user} repositoryUrl={props.repositoryUrl} />
+                  <UserAvatar user={session.currentUser} repositoryUrl={props.repositoryUrl} />
                 </ListItemIcon>
-                <ListItemText primary={props.user.DisplayName || props.user.Name} />
+                <ListItemText primary={session.currentUser.DisplayName || session.currentUser.Name} />
                 <ListItemSecondaryAction>
                   <Link to={`/personalSettings`} style={{ textDecoration: 'none' }}>
                     <IconButton title="Edit personal settings">

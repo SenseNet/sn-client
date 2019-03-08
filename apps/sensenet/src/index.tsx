@@ -8,7 +8,9 @@ import { DesktopLayout } from './components/layout/DesktopLayout'
 import { MainRouter } from './components/MainRouter'
 import { InjectorContext } from './context/InjectorContext'
 import { PersonalSettingsContextProvider } from './context/PersonalSettingsContext'
+import { RepositoryContextProvider } from './context/RepositoryContext'
 import { ResponsiveContextProvider } from './context/ResponsiveContextProvider'
+import { SessionContextProvider } from './context/SessionContext'
 import { ThemeProvider } from './context/ThemeProvider'
 import './gif'
 import './jpg'
@@ -22,17 +24,21 @@ ReactDOM.render(
   <CssBaseline>
     <Provider store={store}>
       <InjectorContext.Provider value={new Injector()}>
-        <HashRouter>
-          <PersonalSettingsContextProvider>
-            <ResponsiveContextProvider>
-              <ThemeProvider theme={theme}>
-                <DesktopLayout>
-                  <MainRouter />
-                </DesktopLayout>{' '}
-              </ThemeProvider>
-            </ResponsiveContextProvider>
-          </PersonalSettingsContextProvider>
-        </HashRouter>
+        <RepositoryContextProvider>
+          <SessionContextProvider>
+            <HashRouter>
+              <PersonalSettingsContextProvider>
+                <ResponsiveContextProvider>
+                  <ThemeProvider theme={theme}>
+                    <DesktopLayout>
+                      <MainRouter />
+                    </DesktopLayout>{' '}
+                  </ThemeProvider>
+                </ResponsiveContextProvider>
+              </PersonalSettingsContextProvider>
+            </HashRouter>
+          </SessionContextProvider>
+        </RepositoryContextProvider>
       </InjectorContext.Provider>
     </Provider>
   </CssBaseline>,

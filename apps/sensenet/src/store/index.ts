@@ -9,14 +9,14 @@ import { editContent } from './EditContent'
 import { loadedContentCache } from './LoadedContentCache'
 import { persistedState } from './PersistedState'
 import { setupRepositoryServices } from './RepositoryServices'
-import { session } from './Session'
+// import { session } from './Session'
 
 const sensenetDocumentViewer = sensenetDocumentViewerReducer
 
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 export const rootReducer = combineReducers({
-  session,
+  // session,
   drawer,
   persistedState,
   loadedContentCache,

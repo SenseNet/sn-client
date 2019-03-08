@@ -3,6 +3,7 @@ import React, { useContext, useState } from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { InjectorContext } from '../../context/InjectorContext'
+import { RepositoryContext } from '../../context/RepositoryContext'
 import { ContentContextProvider } from '../../services/ContentContextProvider'
 import { rootStateType } from '../../store'
 import { left } from '../../store/Commander'
@@ -24,6 +25,7 @@ export const ExploreComponent: React.FunctionComponent<
   const getLeftFromPath = () => parseInt(props.match.params.folderId as string, 10) || ConstantContent.PORTAL_ROOT.Id
   const injector = useContext(InjectorContext)
   const [leftParentId, setLeftParentId] = useState(getLeftFromPath())
+  const repo = useContext(RepositoryContext)
 
   return (
     <div style={{ display: 'flex', width: '100%', height: '100%', flexDirection: 'column' }}>
@@ -33,19 +35,21 @@ export const ExploreComponent: React.FunctionComponent<
             ({
               displayName: content.DisplayName || content.Name,
               title: content.Path,
-              url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(content),
+              url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(content, repo.schemas),
               content,
             } as BreadcrumbItem),
         )}
         currentContent={{
           displayName: props.parent.DisplayName || props.parent.Name,
           title: props.parent.Path,
-          url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(props.parent),
+          url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(props.parent, repo.schemas),
           content: props.parent,
         }}
         onItemClick={(_ev, item) => {
           setLeftParentId(item.content.Id)
-          props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item.content))
+          props.history.push(
+            injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item.content, repo.schemas),
+          )
         }}
       />
       <div style={{ display: 'flex', width: '100%', height: '100%' }}>
@@ -55,14 +59,14 @@ export const ExploreComponent: React.FunctionComponent<
           parentPath={ConstantContent.PORTAL_ROOT.Path}
           onItemClick={item => {
             setLeftParentId(item.Id)
-            props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item))
+            props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item, repo.schemas))
           }}
           activeItemId={leftParentId}
         />
         <ExploreControl
           enableBreadcrumbs={false}
           onActivateItem={item => {
-            props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item))
+            props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item, repo.schemas))
           }}
           style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
           onParentChange={p => {

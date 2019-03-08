@@ -20,15 +20,15 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
   const contextProvider = injector.GetInstance(ContentContextProvider)
   const theme = useContext(ThemeContext)
   const platform = useContext(ResponsiveContext)
+  const repo = useContext(RepositoryContext)
 
   const [textValue, setTextValue] = useState('')
-  const [language, setLanguage] = useState(contextProvider.getMonacoLanguage(props.content))
+  const [language, setLanguage] = useState(contextProvider.getMonacoLanguage(props.content, repo.schemas))
   const [uri, setUri] = useState<any>(contextProvider.getMonacoModelUri(props.content))
-  const repo = useContext(RepositoryContext)
 
   useEffect(() => {
     setUri(contextProvider.getMonacoModelUri(props.content))
-    setLanguage(contextProvider.getMonacoLanguage(props.content))
+    setLanguage(contextProvider.getMonacoLanguage(props.content, repo.schemas))
     ;(async () => {
       if (props.loadContent) {
         /** */

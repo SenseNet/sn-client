@@ -9,36 +9,25 @@ import Tooltip from '@material-ui/core/Tooltip'
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew'
 import { LoginState } from '@sensenet/client-core'
 import React, { useContext, useState } from 'react'
-import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { InjectorContext } from '../context/InjectorContext'
 import { RepositoryContext } from '../context/RepositoryContext'
+import { SessionContext } from '../context/SessionContext'
 import { ThemeContext } from '../context/ThemeContext'
 import { ContentContextProvider } from '../services/ContentContextProvider'
-import { rootStateType } from '../store'
-import { logoutFromRepository } from '../store/Session'
 import { Icon } from './Icon'
 
-const mapStateToProps = (state: rootStateType) => ({
-  loginState: state.session.loginState,
-  currentUser: state.session.currentUser,
-})
-
-const mapDispatchToProps = {
-  logoutFromRepository,
-}
-
-export const LogoutButtonComponent: React.FunctionComponent<
-  ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
-> = props => {
-  if (props.loginState !== LoginState.Authenticated) {
-    return null
-  }
+export const LogoutButton: React.FunctionComponent = () => {
+  const session = useContext(SessionContext)
   const theme = useContext(ThemeContext)
   const injector = useContext(InjectorContext)
   const repo = useContext(RepositoryContext)
   const ctx = injector.GetInstance(ContentContextProvider)
   const [showLogout, setShowLogout] = useState(false)
+
+  if (session.state !== LoginState.Authenticated) {
+    return null
+  }
 
   return (
     <div>
@@ -50,7 +39,7 @@ export const LogoutButtonComponent: React.FunctionComponent<
       <Dialog open={showLogout} onClose={() => setShowLogout(false)}>
         <DialogTitle>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Icon style={{ margin: '0 1em 0 0' }} item={props.currentUser} /> Really log out?
+            <Icon style={{ margin: '0 1em 0 0' }} item={session.currentUser} /> Really log out?
           </div>
         </DialogTitle>
         <DialogContent>
@@ -60,8 +49,8 @@ export const LogoutButtonComponent: React.FunctionComponent<
               {repo.configuration.repositoryUrl}
             </Link>{' '}
             as{' '}
-            <Link to={ctx.getPrimaryActionUrl(props.currentUser)} onClick={() => setShowLogout(false)}>
-              {props.currentUser.DisplayName || props.currentUser.Name}
+            <Link to={ctx.getPrimaryActionUrl(session.currentUser, repo.schemas)} onClick={() => setShowLogout(false)}>
+              {session.currentUser.DisplayName || session.currentUser.Name}
             </Link>
             . <br />
             Are you sure that you want to leave?
@@ -69,7 +58,7 @@ export const LogoutButtonComponent: React.FunctionComponent<
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setShowLogout(false)}>Cancel</Button>
-          <Button onClick={() => props.logoutFromRepository(repo)} autoFocus={true}>
+          <Button onClick={() => repo.authentication.logout()} autoFocus={true}>
             Log out
           </Button>
         </DialogActions>
@@ -77,9 +66,3 @@ export const LogoutButtonComponent: React.FunctionComponent<
     </div>
   )
 }
-
-const connectedComponent = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(LogoutButtonComponent)
-export { connectedComponent as LogoutButton }
