@@ -10,6 +10,7 @@ import { loadedContentCache } from './LoadedContentCache'
 import { persistedState } from './PersistedState'
 import { setupRepositoryServices } from './RepositoryServices'
 import { session } from './Session'
+
 const sensenetDocumentViewer = sensenetDocumentViewerReducer
 
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
@@ -28,16 +29,7 @@ export const rootReducer = combineReducers({
 export type rootStateType = ReturnType<typeof rootReducer>
 export const diMiddleware = new ReduxDiMiddleware(Injector.Default)
 
-const persistedStateFromStorage = localStorage.getItem('sensenet-admin')
-const persistedStateParsed = persistedStateFromStorage
-  ? { persistedState: persistedStateFromStorage && JSON.parse(persistedStateFromStorage) }
-  : {}
-
-export const store = createStore(
-  rootReducer,
-  persistedStateParsed,
-  composeEnhancers(applyMiddleware(diMiddleware.getMiddleware())),
-)
+export const store = createStore(rootReducer, {}, composeEnhancers(applyMiddleware(diMiddleware.getMiddleware())))
 
 setupRepositoryServices({
   store,

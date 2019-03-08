@@ -1,10 +1,10 @@
 import { ConstantContent } from '@sensenet/client-core'
 import React, { useContext, useEffect, useState } from 'react'
 import { matchPath, RouteComponentProps, withRouter } from 'react-router'
+import { InjectorContext } from '../../context/InjectorContext'
 import { ContentContextProvider } from '../../services/ContentContextProvider'
 import { left, right } from '../../store/Commander'
 import { createContentListPanel } from '../ContentListPanel'
-import { InjectorContext } from '../InjectorContext'
 
 const LeftControl = createContentListPanel(left, { fields: ['DisplayName', 'CreatedBy'] })
 const RightControl = createContentListPanel(right, { fields: ['DisplayName', 'CreatedBy'] })

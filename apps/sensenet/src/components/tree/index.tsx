@@ -3,15 +3,16 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import { ODataParams, Repository } from '@sensenet/client-core'
+import { ODataParams } from '@sensenet/client-core'
 import { debounce, PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Created, EventHub } from '@sensenet/repository-events'
 import React, { useContext, useEffect, useState } from 'react'
+import { RepositoryContext } from '../../context//RepositoryContext'
+import { InjectorContext } from '../../context/InjectorContext'
 import { rootStateType } from '../../store'
 import { DropFileArea } from '../DropFileArea'
 import { Icon } from '../Icon'
-import { InjectorContext } from '../InjectorContext'
 
 export interface TreeProps {
   parentPath: string
@@ -31,7 +32,7 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
   const [opened, setOpened] = useState<number[]>([])
   const [reloadTimestamp, setReloadTimestamp] = useState(new Date())
   const injector = useContext(InjectorContext)
-  const repo = injector.GetInstance(Repository)
+  const repo = useContext(RepositoryContext)
   const eventHub = injector.GetInstance(EventHub)
   const update = debounce(() => {
     setReloadTimestamp(new Date())

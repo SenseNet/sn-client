@@ -1,11 +1,12 @@
 import TableCell from '@material-ui/core/TableCell'
-import { Repository } from '@sensenet/client-core'
 import { debounce, PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
 import { Created, EventHub } from '@sensenet/repository-events'
 import React, { useContext, useEffect, useState } from 'react'
 import { connect } from 'react-redux'
+import { InjectorContext } from '../context/InjectorContext'
+import { RepositoryContext } from '../context/RepositoryContext'
 import { ContentContextProvider } from '../services/ContentContextProvider'
 import { UploadTracker } from '../services/UploadTracker'
 import { rootStateType } from '../store'
@@ -13,7 +14,6 @@ import { createCollectionState } from '../store/CollectionState'
 import Breadcrumbs, { BreadcrumbItem } from './Breadcrumbs'
 import { DropFileArea } from './DropFileArea'
 import { Icon } from './Icon'
-import { InjectorContext } from './InjectorContext'
 import { SelectionControl } from './SelectionControl'
 
 export const createContentListPanel = (
@@ -51,9 +51,9 @@ export const createContentListPanel = (
     const eventHub = injector.GetInstance(EventHub)
     const uploadTracker = injector.GetInstance(UploadTracker)
     const update = debounce(() => {
-      loadParent(props.parentId, true)
+      loadParent(props.parentId, repo, true)
     }, 100)
-    const repo = injector.GetInstance(Repository)
+    const repo = useContext(RepositoryContext)
 
     const handleCreate = (c: Created) => {
       if ((c.content as GenericContent).ParentId === props.parentId) {
@@ -65,7 +65,7 @@ export const createContentListPanel = (
     }
 
     useEffect(() => {
-      loadParent(props.parentId)
+      loadParent(props.parentId, repo)
       const subscriptions = [
         eventHub.onContentCreated.subscribe(handleCreate),
         eventHub.onContentCopied.subscribe(handleCreate),
@@ -102,7 +102,7 @@ export const createContentListPanel = (
 
     const handleActivateItem = (item: GenericContent) => {
       if (item.IsFolder) {
-        props.loadParent(item.Id)
+        props.loadParent(item.Id, repo)
         props.onParentChange(item)
       } else {
         props.onActivateItem(item)
@@ -196,7 +196,7 @@ export const createContentListPanel = (
                   break
                 }
                 case 'Backspace': {
-                  ancestors.length && loadParent(ancestors[ancestors.length - 1].Id)
+                  ancestors.length && loadParent(ancestors[ancestors.length - 1].Id, repo)
                   break
                 }
                 case 'Tab':

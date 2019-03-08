@@ -14,7 +14,7 @@ import { PathHelper } from '@sensenet/client-utils'
 import { File as SnFile, Schema } from '@sensenet/default-content-types'
 import { GenericContent, User } from '@sensenet/default-content-types'
 import React, { useContext } from 'react'
-import { InjectorContext } from './InjectorContext'
+import { InjectorContext } from '../context/InjectorContext'
 import { UserAvatar } from './UserAvatar'
 
 export interface IconOptions {

@@ -7,16 +7,17 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew'
-import { LoginState, Repository } from '@sensenet/client-core'
+import { LoginState } from '@sensenet/client-core'
 import React, { useContext, useState } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { InjectorContext } from '../context/InjectorContext'
+import { RepositoryContext } from '../context/RepositoryContext'
+import { ThemeContext } from '../context/ThemeContext'
 import { ContentContextProvider } from '../services/ContentContextProvider'
 import { rootStateType } from '../store'
 import { logoutFromRepository } from '../store/Session'
 import { Icon } from './Icon'
-import { InjectorContext } from './InjectorContext'
-import { ThemeContext } from './ThemeContext'
 
 const mapStateToProps = (state: rootStateType) => ({
   loginState: state.session.loginState,
@@ -35,7 +36,7 @@ export const LogoutButtonComponent: React.FunctionComponent<
   }
   const theme = useContext(ThemeContext)
   const injector = useContext(InjectorContext)
-  const repo = injector.GetInstance(Repository)
+  const repo = useContext(RepositoryContext)
   const ctx = injector.GetInstance(ContentContextProvider)
   const [showLogout, setShowLogout] = useState(false)
 
@@ -68,7 +69,7 @@ export const LogoutButtonComponent: React.FunctionComponent<
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setShowLogout(false)}>Cancel</Button>
-          <Button onClick={() => props.logoutFromRepository()} autoFocus={true}>
+          <Button onClick={() => props.logoutFromRepository(repo)} autoFocus={true}>
             Log out
           </Button>
         </DialogActions>

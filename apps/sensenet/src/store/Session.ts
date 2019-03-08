@@ -12,25 +12,25 @@ export interface SessionReducerType {
   groups: Group[]
 }
 
-export const loginToRepository = createAction((username: string, password: string, repository: string) => ({
-  // tslint:disable-next-line: no-unnecessary-type-annotation
-  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
-    const repo = options.getInjectable(Repository)
-    repo.configuration.repositoryUrl = repository
-    try {
-      const success = await repo.authentication.login(username, password)
-      options.dispatch(setLoginError(!success))
-    } catch (error) {
-      options.dispatch(setLoginError(true))
-    }
-  },
-  type: 'LOGIN_TO_REPOSITORY',
-}))
+export const loginToRepository = createAction(
+  (username: string, password: string, repositoryUrl: string, repo: Repository) => ({
+    // tslint:disable-next-line: no-unnecessary-type-annotation
+    inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
+      repo.configuration.repositoryUrl = repositoryUrl
+      try {
+        const success = await repo.authentication.login(username, password)
+        options.dispatch(setLoginError(!success))
+      } catch (error) {
+        options.dispatch(setLoginError(true))
+      }
+    },
+    type: 'LOGIN_TO_REPOSITORY',
+  }),
+)
 
-export const logoutFromRepository = createAction(() => ({
+export const logoutFromRepository = createAction((repo: Repository) => ({
   // tslint:disable-next-line: no-unnecessary-type-annotation
-  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
-    const repo = options.getInjectable(Repository)
+  inject: async () => {
     await repo.authentication.logout()
   },
   type: 'LOGOUT_FROM_REPOSITORY',

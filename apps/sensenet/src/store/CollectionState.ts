@@ -37,13 +37,12 @@ export const createCollectionState = <TStateType>(collectionOptions: CollectionS
   }
 
   const loadLock = new Semaphore(1)
-  const loadParent = createAction((id: number, forceUpdate?: boolean) => ({
+  const loadParent = createAction((id: number, repo: Repository, forceUpdate?: boolean) => ({
     type: `${collectionOptions.prefix}_SET_PARENT`,
     // tslint:disable-next-line: no-unnecessary-type-annotation
     inject: async (options: IInjectableActionCallbackParams<TStateType>) => {
       try {
         await loadLock.acquire()
-        const repo = options.getInjectable(Repository)
         const currentState = collectionOptions.getSelfState(options.getState())
         if (!forceUpdate && currentState.parent.Id === id) {
           return

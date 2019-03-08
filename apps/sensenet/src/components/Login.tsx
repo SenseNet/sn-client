@@ -1,9 +1,8 @@
+import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
-import IconButton from '@material-ui/core/IconButton'
 import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import Check from '@material-ui/icons/Check'
 import React from 'react'
 import { connect } from 'react-redux'
 import { rootStateType } from '../store'
@@ -41,11 +40,7 @@ class Login extends React.Component<ReturnType<typeof mapStateToProps> & typeof 
 
   private handleSubmit(ev: React.FormEvent) {
     ev.preventDefault()
-    this.props.setPersistedState({
-      lastRepositoryUrl: this.state.repositoryUrl,
-      lastUserName: this.state.userName,
-    })
-    this.props.loginToRepository(this.state.userName, this.state.password, this.state.repositoryUrl)
+    this.props.loginToRepository(this.state.userName, this.state.password, this.state.repositoryUrl, this.props.repo)
   }
 
   public render() {
@@ -96,10 +91,9 @@ class Login extends React.Component<ReturnType<typeof mapStateToProps> & typeof 
             }}
           />
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1em' }}>
-            <IconButton type="submit">
-              <Check />
+            <Button style={{ width: '100%' }} type="submit">
               <Typography variant="button">Log in</Typography>
-            </IconButton>
+            </Button>
           </div>
         </form>
       </Paper>

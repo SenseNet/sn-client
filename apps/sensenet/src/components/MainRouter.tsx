@@ -1,7 +1,9 @@
 import { LoginState } from '@sensenet/client-core'
-import React, { lazy, Suspense } from 'react'
+import React, { lazy, Suspense, useContext } from 'react'
 import { connect } from 'react-redux'
 import { Route, RouteComponentProps, Switch, withRouter } from 'react-router'
+import { InjectorContext } from '../context/InjectorContext'
+import { RepositoryContext } from '../context/RepositoryContext'
 import { rootStateType } from '../store'
 import { AuthorizedRoute } from './AuthorizedRoute'
 import { ErrorBoundary } from './ErrorBoundary'
@@ -10,6 +12,7 @@ import { FullScreenLoader } from './FullScreenLoader'
 const mapStateToProps = (state: rootStateType) => ({
   loginState: state.session.loginState,
   currentUser: state.session.currentUser,
+  repositoryUrl: state.persistedState.lastRepositoryUrl,
 })
 
 const ExploreComponent = lazy(async () => await import(/* webpackChunkName: "content" */ './content'))
@@ -28,8 +31,11 @@ const PersonalSettingsEditor = lazy(
 )
 
 const MainRouter: React.StatelessComponent<ReturnType<typeof mapStateToProps> & RouteComponentProps> = props => {
+  const injector = useContext(InjectorContext)
+  const repo = injector.getRepository(props.repositoryUrl)
   return (
     <ErrorBoundary>
+      <RepositoryContext.Provider value={repo} />
       <Suspense fallback={<FullScreenLoader />}>
         {props.loginState === LoginState.Unauthenticated ? (
           <LoginComponent />

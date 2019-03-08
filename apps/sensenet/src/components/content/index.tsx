@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { ResponsivePersonalSetttings } from '../ResponsiveContextProvider'
+import { ResponsivePersonalSetttings } from '../../context/ResponsiveContextProvider'
 import Commander from './Commander'
 import { Explore } from './Explore'
 import { SimpleList } from './Simple'

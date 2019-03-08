@@ -1,14 +1,15 @@
-import { Repository, Upload } from '@sensenet/client-core'
+import { Upload } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useContext, useState } from 'react'
+import { InjectorContext } from '../context/InjectorContext'
+import { RepositoryContext } from '../context/RepositoryContext'
+import { ThemeContext } from '../context/ThemeContext'
 import { UploadTracker } from '../services/UploadTracker'
-import { InjectorContext } from './InjectorContext'
-import { ThemeContext } from './ThemeContext'
 
 export const DropFileArea: React.FunctionComponent<{ parent: GenericContent; style?: React.CSSProperties }> = props => {
   const [isDragOver, setDragOver] = useState(false)
   const injector = useContext(InjectorContext)
-  const repo = injector.GetInstance(Repository)
+  const repo = useContext(RepositoryContext)
   const theme = useContext(ThemeContext)
 
   return (

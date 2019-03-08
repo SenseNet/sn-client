@@ -1,12 +1,13 @@
 import React, { useContext } from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
+import { InjectorContext } from '../../context/InjectorContext'
+import { RepositoryContext } from '../../context/RepositoryContext'
 import { ContentContextProvider } from '../../services/ContentContextProvider'
 import { rootStateType } from '../../store'
 import { loadContent } from '../../store/EditContent'
 import Breadcrumbs, { BreadcrumbItem } from '../Breadcrumbs'
 import { FullScreenLoader } from '../FullScreenLoader'
-import { InjectorContext } from '../InjectorContext'
 import { TextEditor } from './TextEditor'
 
 const mapStateToProps = (state: rootStateType) => ({
@@ -26,8 +27,9 @@ const Editor: React.FunctionComponent<
     throw props.error
   }
   const injector = useContext(InjectorContext)
+  const repo = useContext(RepositoryContext)
   const contentId = parseInt(props.match.params.contentId as string, 10)
-  props.loadContent(contentId)
+  props.loadContent(contentId, repo)
   return (
     <div
       style={{

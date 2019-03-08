@@ -5,9 +5,9 @@ import match from 'autosuggest-highlight/match'
 import parse from 'autosuggest-highlight/parse'
 import React, { useContext } from 'react'
 import { RenderSuggestionParams } from 'react-autosuggest'
+import { ResponsiveContext } from '../../context/ResponsiveContextProvider'
 import { CommandPaletteItem } from '../../store/CommandPalette'
 import { Icon } from '../Icon'
-import { ResponsiveContext } from '../ResponsiveContextProvider'
 
 export const getMatchParts = (text: string, term: string) => {
   const matchValue = match(term, text)

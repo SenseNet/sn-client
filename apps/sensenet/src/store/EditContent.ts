@@ -14,7 +14,7 @@ export interface EditContentState<T extends GenericContent> {
 
 const loadLock = new Semaphore(1)
 
-export const loadContent = createAction((id: number) => ({
+export const loadContent = createAction((id: number, repo: Repository) => ({
   type: 'LOAD_CONTENT_TO_EDIT',
   id,
   // tslint:disable-next-line: no-unnecessary-type-annotation
@@ -24,8 +24,6 @@ export const loadContent = createAction((id: number) => ({
       if (id === options.getState().editContent.currentContent.Id) {
         return
       }
-
-      const repo = options.getInjectable(Repository)
       const response = await repo.load({
         idOrPath: id,
         oDataOptions: {

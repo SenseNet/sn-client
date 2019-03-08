@@ -2,12 +2,12 @@ import { ConstantContent } from '@sensenet/client-core'
 import React, { useContext, useState } from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
+import { InjectorContext } from '../../context/InjectorContext'
 import { ContentContextProvider } from '../../services/ContentContextProvider'
 import { rootStateType } from '../../store'
 import { left } from '../../store/Commander'
 import { AddButton } from '../AddButton'
 import { createContentListPanel } from '../ContentListPanel'
-import { InjectorContext } from '../InjectorContext'
 
 const SimpleListControl = createContentListPanel(left, { fields: ['DisplayName'] })
 

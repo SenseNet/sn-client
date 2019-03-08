@@ -1,16 +1,19 @@
 import Button from '@material-ui/core/Button'
+import Dialog from '@material-ui/core/Dialog'
+import DialogTitle from '@material-ui/core/DialogTitle'
 import Fab from '@material-ui/core/Fab'
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import Add from '@material-ui/icons/Add'
 import CloudUpload from '@material-ui/icons/CloudUpload'
-import { Repository, Upload } from '@sensenet/client-core'
+import { Upload } from '@sensenet/client-core'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
+import { InjectorContext } from '../context/InjectorContext'
+import { RepositoryContext } from '../context/RepositoryContext'
 import { UploadTracker } from '../services/UploadTracker'
 import { Icon } from './Icon'
-import { InjectorContext } from './InjectorContext'
 
 export interface AddButtonProps {
   parent: GenericContent
@@ -18,9 +21,12 @@ export interface AddButtonProps {
 
 export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   const injector = useContext(InjectorContext)
-  const repo = injector.GetInstance(Repository)
-  const [addState, setAddState] = useState<'hidden' | 'selectType' | 'edit'>('hidden')
+  const repo = useContext(RepositoryContext)
+  const [showSelectType, setShowSelectType] = useState(false)
   const [allowedChildTypes, setAllowedChildTypes] = useState<Schema[]>([])
+
+  const [showAddNewDialog, setShowAddNewDialog] = useState(false)
+  const [selectedSchema, setSelectedSchema] = useState<Schema>(repo.schemas.getSchemaByName('GenericContent'))
 
   useEffect(() => {
     setAllowedChildTypes(
@@ -34,17 +40,17 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
         <Fab
           color="primary"
           style={{ position: 'fixed', bottom: '1em', right: '1em' }}
-          onClick={() => setAddState('selectType')}>
+          onClick={() => setShowSelectType(true)}>
           <Add />
         </Fab>
       </Tooltip>
       <SwipeableDrawer
         anchor="bottom"
-        onClose={() => setAddState('hidden')}
+        onClose={() => setShowSelectType(false)}
         onOpen={() => {
           /** */
         }}
-        open={addState === 'selectType'}>
+        open={showSelectType}>
         <Typography variant="subtitle1" style={{ margin: '0.8em' }}>
           New...
         </Typography>
@@ -64,7 +70,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
           <div style={{ visibility: 'hidden', display: 'none' }}>
             <input
               onChange={ev => {
-                setAddState('hidden')
+                setShowSelectType(false)
                 ev.target.files &&
                   Upload.fromFileList({
                     parentPath: props.parent.Path,
@@ -83,7 +89,13 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
             />
           </div>
           {allowedChildTypes.map(childType => (
-            <Button key={childType.ContentTypeName}>
+            <Button
+              key={childType.ContentTypeName}
+              onClick={() => {
+                setShowSelectType(false)
+                setShowAddNewDialog(true)
+                setSelectedSchema(childType)
+              }}>
               <div
                 style={{
                   width: 90,
@@ -95,6 +107,9 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
           ))}
         </div>
       </SwipeableDrawer>
+      <Dialog open={showAddNewDialog}>
+        <DialogTitle>Create new {selectedSchema.DisplayName}</DialogTitle>
+      </Dialog>
     </div>
   )
 }

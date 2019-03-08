@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
+import { InjectorContext } from '../../context/InjectorContext'
+import { PersonalSettingsContext } from '../../context/PersonalSettingsContext'
 import '../../services/MonacoModels/PersonalSettingsModel'
 import { defaultSettings, PersonalSettings } from '../../services/PersonalSettings'
 import { mergeDeep } from '../../utils/deepMerge'
-import { InjectorContext } from '../InjectorContext'
-import { PersonalSettingsContext } from '../PersonalSettingsContext'
 import { TextEditor } from './TextEditor'
 
 const SettingsEditor: React.FunctionComponent = () => {

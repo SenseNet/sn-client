@@ -1,12 +1,13 @@
-import { Repository, Upload } from '@sensenet/client-core'
+import { Upload } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { File as SnFile } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
+import { InjectorContext } from '../../context/InjectorContext'
+import { RepositoryContext } from '../../context/RepositoryContext'
+import { ResponsiveContext } from '../../context/ResponsiveContextProvider'
+import { ThemeContext } from '../../context/ThemeContext'
 import { ContentContextProvider } from '../../services/ContentContextProvider'
-import { InjectorContext } from '../InjectorContext'
-import { ResponsiveContext } from '../ResponsiveContextProvider'
-import { ThemeContext } from '../ThemeContext'
 
 export interface TextEditorProps {
   content: SnFile
@@ -23,7 +24,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
   const [textValue, setTextValue] = useState('')
   const [language, setLanguage] = useState(contextProvider.getMonacoLanguage(props.content))
   const [uri, setUri] = useState<any>(contextProvider.getMonacoModelUri(props.content))
-  const repo = injector.GetInstance(Repository)
+  const repo = useContext(RepositoryContext)
 
   useEffect(() => {
     setUri(contextProvider.getMonacoModelUri(props.content))

@@ -13,10 +13,10 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 import { matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
+import { ResponsivePersonalSetttings } from '../../context/ResponsiveContextProvider'
+import { ThemeContext } from '../../context/ThemeContext'
 import { rootStateType } from '../../store'
 import { closeDrawer, openDrawer } from '../../store/Drawer'
-import { ResponsivePersonalSetttings } from '../ResponsiveContextProvider'
-import { ThemeContext } from '../ThemeContext'
 import { UserAvatar } from '../UserAvatar'
 
 const mapStateToProps = (state: rootStateType) => ({

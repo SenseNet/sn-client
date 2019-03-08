@@ -6,12 +6,12 @@ import Menu from '@material-ui/icons/Menu'
 import React, { useContext } from 'react'
 import { connect } from 'react-redux'
 import logo from '../../assets/sensenet-icon-32.png'
+import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context/ResponsiveContextProvider'
+import { ThemeContext } from '../../context/ThemeContext'
 import { rootStateType } from '../../store'
 import { toggleDrawer } from '../../store/Drawer'
 import { CommandPalette } from '../command-palette/CommandPalette'
 import { LogoutButton } from '../LogoutButton'
-import { ResponsiveContext, ResponsivePersonalSetttings } from '../ResponsiveContextProvider'
-import { ThemeContext } from '../ThemeContext'
 
 const mapStateToProps = (state: rootStateType) => ({
   commandPaletteOpened: state.commandPalette.isOpened,

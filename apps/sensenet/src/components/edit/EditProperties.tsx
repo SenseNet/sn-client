@@ -1,14 +1,14 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
-import { Repository } from '@sensenet/client-core'
 import { EditView } from '@sensenet/controls-react'
 import React, { useContext } from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
+import { InjectorContext } from '../../context/InjectorContext'
+import { RepositoryContext } from '../../context/RepositoryContext'
 import { ContentContextProvider } from '../../services/ContentContextProvider'
 import { rootStateType } from '../../store'
 import { loadContent } from '../../store/EditContent'
 import Breadcrumbs, { BreadcrumbItem } from '../Breadcrumbs'
-import { InjectorContext } from '../InjectorContext'
 
 const mapStateToProps = (state: rootStateType) => ({
   content: state.editContent.currentContent,
@@ -26,11 +26,11 @@ const GenericContentEditor: React.FunctionComponent<
   if (props.error) {
     throw props.error
   }
+  const repo = useContext(RepositoryContext)
   const contentId = parseInt(props.match.params.contentId as string, 10)
-  props.loadContent(contentId)
+  props.loadContent(contentId, repo)
 
   const injector = useContext(InjectorContext)
-  const repo = injector.GetInstance(Repository)
 
   return (
     <div style={{ width: '100%', height: '100%', padding: '1em', overflow: 'auto' }}>
