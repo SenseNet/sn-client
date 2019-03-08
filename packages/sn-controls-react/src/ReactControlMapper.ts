@@ -180,7 +180,7 @@ export const reactControlMapper = (repository: Repository) =>
     .setupFieldSettingDefault(NullFieldSetting, setting => {
       switch (setting.Name) {
         case 'Avatar' as any:
-          return FieldControls.Image
+          return FieldControls.Avatar
         default:
           return FieldControls.ShortText
       }
