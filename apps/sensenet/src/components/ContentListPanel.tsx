@@ -1,5 +1,5 @@
 import TableCell from '@material-ui/core/TableCell'
-import { Repository } from '@sensenet/client-core'
+import { Repository, Upload } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
@@ -91,6 +91,18 @@ export const createCommandListPanel = (collectionState: ReturnType<typeof create
           />
         ) : null}
         <div
+          onDragOver={ev => ev.preventDefault()}
+          onDrop={ev => {
+            ev.preventDefault()
+            Upload.fromDropEvent({
+              binaryPropertyName: 'Binary',
+              createFolders: true,
+              event: new DragEvent('drop', { dataTransfer: ev.dataTransfer }),
+              overwrite: false,
+              parentPath: parent ? parent.Path : '',
+              repository: repo,
+            })
+          }}
           style={{
             ...(isFocused ? {} : { opacity: 0.8 }),
             height: 'calc(100% - 36px)',
