@@ -49,12 +49,15 @@ const DeleteButton = (props: CommentPropType) => (
 )
 
 type CommentPropType = ReturnType<typeof mapStateToProps> & CommentProps
+
+const MAX_TEXT_LENGTH = 160
+
 /**
  * Represents a single comment component.
  * @param {CommentPropType} props
  */
 export const Comment: FunctionComponent<CommentPropType> = (props: CommentPropType) => {
-  const isLongText = props.text && props.text.length > 160
+  const isLongText = props.text && props.text.length > MAX_TEXT_LENGTH
   const [isOpen, setIsOpen] = useState(!isLongText)
   return (
     <Card>
