@@ -8147,6 +8147,8 @@ export const customSchema = [
         DefaultOrder: 0,
         ControlHint: 'sn:Image',
         BindProperty: ['ImageRef'],
+        SelectionRoots: ['/demoavatars'],
+        AllowedTypes: ['Image'],
       },
       {
         Type: 'PasswordFieldSetting',
