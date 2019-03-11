@@ -1,3 +1,4 @@
+import { Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Reducer } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
@@ -31,12 +32,12 @@ export const clearItems = createAction(() => ({ type: 'CLEAR_COMMAND_PALETTE_ITE
 export const setItems = createAction((items: CommandPaletteItem[]) => ({ type: 'SET_COMMAND_PALETTE_ITEMS', items }))
 export const setInputValue = createAction((value: string) => ({ type: 'SET_COMMAND_PALETTE_INPUT_VALUE', value }))
 
-export const updateItemsFromTerm = createAction((value: string) => ({
+export const updateItemsFromTerm = createAction((value: string, repo: Repository) => ({
   type: 'UPDATE_ITEMS_FROM_TERM',
   // tslint:disable-next-line: no-unnecessary-type-annotation
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const commandProviderManager = options.getInjectable(CommandProviderManager)
-    const items = await commandProviderManager.getItems(value)
+    const items = await commandProviderManager.getItems(value, repo)
     options.dispatch(setItems(items))
   },
 }))

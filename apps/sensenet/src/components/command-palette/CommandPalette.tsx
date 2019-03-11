@@ -2,6 +2,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 import KeyboardArrowRightTwoTone from '@material-ui/icons/KeyboardArrowRightTwoTone'
+import { Repository } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import React from 'react'
 import Autosuggest, {
@@ -11,6 +12,7 @@ import Autosuggest, {
 } from 'react-autosuggest'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
+import { RepositoryContext } from '../../context/RepositoryContext'
 import { rootStateType } from '../../store'
 import {
   clearItems,
@@ -42,6 +44,8 @@ export class CommandPaletteComponent extends React.Component<
 > {
   private containerRef?: HTMLDivElement
 
+  public static contextType = RepositoryContext
+
   private handleKeyUp(ev: KeyboardEvent) {
     if (ev.key.toLowerCase() === 'p' && ev.ctrlKey) {
       ev.stopImmediatePropagation()
@@ -68,8 +72,8 @@ export class CommandPaletteComponent extends React.Component<
     this.handleSelectSuggestion = this.handleSelectSuggestion.bind(this)
   }
 
-  private handleSuggestionsFetchRequested = debounce((options: SuggestionsFetchRequestedParams) => {
-    this.props.updateItemsFromTerm(options.value)
+  private handleSuggestionsFetchRequested = debounce((options: SuggestionsFetchRequestedParams, repo: Repository) => {
+    this.props.updateItemsFromTerm(options.value, repo)
   }, 500)
 
   public componentDidMount() {
@@ -142,7 +146,7 @@ export class CommandPaletteComponent extends React.Component<
               suggestions={this.props.items}
               highlightFirstSuggestion={true}
               onSuggestionSelected={this.handleSelectSuggestion}
-              onSuggestionsFetchRequested={this.handleSuggestionsFetchRequested}
+              onSuggestionsFetchRequested={e => this.handleSuggestionsFetchRequested(e, this.context)}
               onSuggestionsClearRequested={this.props.clearItems}
               getSuggestionValue={s => s.primaryText}
               renderSuggestion={(s, params) => <CommandPaletteSuggestion suggestion={s} params={params} />}

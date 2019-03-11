@@ -29,7 +29,7 @@ export const SimpleListComponent: React.FunctionComponent<
       <SimpleListControl
         enableBreadcrumbs={true}
         onActivateItem={item => {
-          props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item, repo.schemas))
+          props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item, repo))
         }}
         style={{ flexGrow: 1, flexShrink: 0, maxHeight: '100%' }}
         onParentChange={p => {

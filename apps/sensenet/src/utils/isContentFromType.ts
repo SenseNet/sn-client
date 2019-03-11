@@ -17,7 +17,7 @@ export const isContentFromType = <T extends typeof GenericContent>(
         return true
       }
       currentSchema = schemaStore.getSchemaByName(currentSchema.ParentTypeName || '')
-    } while (currentSchema.ParentTypeName && currentSchema.ParentTypeName !== 'GenericContent')
+    } while (currentSchema.ContentTypeName && currentSchema.ContentTypeName !== 'GenericContent')
   }
   return false
 }

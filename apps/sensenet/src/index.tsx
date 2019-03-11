@@ -1,9 +1,8 @@
-import { Injector } from '@furystack/inject'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { HashRouter } from 'react-router-dom'
+import { HashRouter, Route } from 'react-router-dom'
 import { DesktopLayout } from './components/layout/DesktopLayout'
 import { MainRouter } from './components/MainRouter'
 import { InjectorContext } from './context/InjectorContext'
@@ -15,29 +14,50 @@ import { ThemeProvider } from './context/ThemeProvider'
 import './gif'
 import './jpg'
 import './png'
-import { store } from './store'
+import { CommandProviderManager } from './services/CommandProviderManager'
+import { CheatCommandProvider } from './services/CommandProviders/CheatCommandProvider'
+import { HelpCommandProvider } from './services/CommandProviders/HelpCommandProvider'
+import { HistoryCommandProvider } from './services/CommandProviders/HistoryCommandProvider'
+import { InFolderSearchCommandProvider } from './services/CommandProviders/InFolderSearchCommandProvider'
+import { QueryCommandProvider } from './services/CommandProviders/QueryCommandProvider'
+import { diMiddleware, store } from './store'
 import './style.css'
 import theme from './theme'
 import './utils/InjectorExtensions'
 
+// tslint:disable-next-line: no-string-literal
+const injector = diMiddleware['injector']
+
+diMiddleware
+  .getInjectable(CommandProviderManager)
+  .RegisterProviders(
+    CheatCommandProvider,
+    HelpCommandProvider,
+    HistoryCommandProvider,
+    InFolderSearchCommandProvider,
+    QueryCommandProvider,
+  )
+
 ReactDOM.render(
   <CssBaseline>
     <Provider store={store}>
-      <InjectorContext.Provider value={new Injector()}>
+      <InjectorContext.Provider value={injector}>
         <PersonalSettingsContextProvider>
-          <RepositoryContextProvider>
-            <SessionContextProvider>
-              <HashRouter>
-                <ResponsiveContextProvider>
-                  <ThemeProvider theme={theme}>
-                    <DesktopLayout>
-                      <MainRouter />
-                    </DesktopLayout>{' '}
-                  </ThemeProvider>
-                </ResponsiveContextProvider>
-              </HashRouter>
-            </SessionContextProvider>
-          </RepositoryContextProvider>
+          <HashRouter>
+            <Route path="/:repo?">
+              <RepositoryContextProvider>
+                <SessionContextProvider>
+                  <ResponsiveContextProvider>
+                    <ThemeProvider theme={theme}>
+                      <DesktopLayout>
+                        <MainRouter />
+                      </DesktopLayout>{' '}
+                    </ThemeProvider>
+                  </ResponsiveContextProvider>
+                </SessionContextProvider>
+              </RepositoryContextProvider>
+            </Route>
+          </HashRouter>
         </PersonalSettingsContextProvider>
       </InjectorContext.Provider>
     </Provider>

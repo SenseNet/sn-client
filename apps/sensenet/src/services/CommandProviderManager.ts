@@ -1,9 +1,10 @@
 import { Injectable, Injector } from '@furystack/inject'
+import { Repository } from '@sensenet/client-core'
 import { CommandPaletteItem } from '../store/CommandPalette'
 
 export interface CommandProvider {
   shouldExec: (term: string) => boolean
-  getItems: (term: string) => Promise<CommandPaletteItem[]>
+  getItems: (term: string, repo: Repository) => Promise<CommandPaletteItem[]>
 }
 
 @Injectable()
@@ -18,8 +19,8 @@ export class CommandProviderManager {
     }
   }
 
-  public async getItems(term: string) {
-    const promises = this.Providers.filter(p => p.shouldExec(term)).map(provider => provider.getItems(term))
+  public async getItems(term: string, repo: Repository) {
+    const promises = this.Providers.filter(p => p.shouldExec(term)).map(provider => provider.getItems(term, repo))
     const results = await Promise.all(promises)
     return results.reduce((acc, val) => acc.concat(val), []) // flattern
   }

@@ -1,5 +1,5 @@
 import { Injectable, Injector } from '@furystack/inject'
-import { ConstantContent } from '@sensenet/client-core'
+import { ConstantContent, Repository } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Query } from '@sensenet/query'
@@ -15,13 +15,13 @@ export class InFolderSearchCommandProvider implements CommandProvider {
     return searchTerm[0] === '/'
   }
 
-  public async getItems(path: string): Promise<CommandPaletteItem[]> {
+  public async getItems(path: string, repo: Repository): Promise<CommandPaletteItem[]> {
     const currentPath = PathHelper.trimSlashes(path)
     const segments = currentPath.split('/')
     const parentPath = PathHelper.trimSlashes(
       PathHelper.joinPaths(...segments.slice(0, segments.length - 1)) || currentPath,
     )
-    const result = await this.injector.getCurrentRepository().loadCollection<GenericContent>({
+    const result = await repo.loadCollection<GenericContent>({
       path: ConstantContent.PORTAL_ROOT.Path,
       oDataOptions: {
         query: new Query(q =>
@@ -38,9 +38,7 @@ export class InFolderSearchCommandProvider implements CommandProvider {
       primaryText: content.DisplayName || content.Name,
       secondaryText: content.Path,
       content,
-      url: this.injector
-        .GetInstance(ContentContextProvider)
-        .getPrimaryActionUrl(content, this.injector.getCurrentRepository().schemas),
+      url: this.injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(content, repo),
     }))
   }
 }

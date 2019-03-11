@@ -49,14 +49,14 @@ const Editor: React.FunctionComponent<
             ({
               displayName: content.DisplayName || content.Name,
               title: content.Path,
-              url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(content, repo.schemas),
+              url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(content, repo),
               content,
             } as BreadcrumbItem),
         )}
         currentContent={{
           displayName: props.currentContent.DisplayName || props.currentContent.Name,
           title: props.currentContent.Path,
-          url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(props.currentContent, repo.schemas),
+          url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(props.currentContent, repo),
           content: props.currentContent,
         }}
       />

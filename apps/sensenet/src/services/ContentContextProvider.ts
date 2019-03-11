@@ -1,4 +1,5 @@
 import { Injectable } from '@furystack/inject'
+import { Repository } from '@sensenet/client-core'
 import { SchemaStore } from '@sensenet/client-core/dist/Schemas/SchemaStore'
 import { ContentType, File as SnFile, GenericContent, Resource, Settings } from '@sensenet/default-content-types'
 import { Uri } from 'monaco-editor'
@@ -46,20 +47,21 @@ export class ContentContextProvider {
     return this.getMonacoLanguage(content, schemas) ? true : false
   }
 
-  public getPrimaryActionUrl<T extends GenericContent>(content: T, schemas: SchemaStore) {
+  public getPrimaryActionUrl<T extends GenericContent>(content: T, repo: Repository) {
+    const repoSegment = btoa(repo.configuration.repositoryUrl)
     if (content.IsFolder) {
-      return `/content/${content.Id}`
+      return `/${repoSegment}/content/${content.Id}`
     }
     if (
-      (content.Type === 'File' || content.Type === 'Image') &&
+      (content as any).Binary &&
       (content as any).Binary.__mediaresource.content_type !== 'application/x-javascript' &&
       (content as any).Binary.__mediaresource.content_type !== 'text/css'
     ) {
-      return `/preview/${content.Id}`
+      return `/${repoSegment}/preview/${content.Id}`
     }
-    if (this.canEditBinary(content, schemas)) {
-      return `/editBinary/${content.Id}`
+    if (this.canEditBinary(content, repo.schemas)) {
+      return `/${repoSegment}/editBinary/${content.Id}`
     }
-    return `/editProperties/${content.Id}`
+    return `/${repoSegment}/editProperties/${content.Id}`
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable, Injector } from '@furystack/inject'
-import { ConstantContent } from '@sensenet/client-core'
+import { ConstantContent, Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { CommandPaletteItem } from '../../store/CommandPalette'
 import { CommandProvider } from '../CommandProviderManager'
@@ -14,11 +14,11 @@ export class QueryCommandProvider implements CommandProvider {
     return searchTerm[0] === '+'
   }
 
-  public async getItems(query: string): Promise<CommandPaletteItem[]> {
+  public async getItems(query: string, repo: Repository): Promise<CommandPaletteItem[]> {
     const extendedQuery = this.personalSettings.currentValue
       .getValue()
       .default.commandPalette.wrapQuery.replace('{0}', query)
-    const result = await this.injector.getCurrentRepository().loadCollection<GenericContent>({
+    const result = await repo.loadCollection<GenericContent>({
       path: ConstantContent.PORTAL_ROOT.Path,
       oDataOptions: {
         query: extendedQuery,
@@ -31,9 +31,7 @@ export class QueryCommandProvider implements CommandProvider {
         ({
           primaryText: content.DisplayName || content.Name,
           secondaryText: content.Path,
-          url: this.injector
-            .GetInstance(ContentContextProvider)
-            .getPrimaryActionUrl(content, this.injector.getCurrentRepository().schemas),
+          url: this.injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(content, repo),
           content,
           icon: content.Icon,
         } as CommandPaletteItem),

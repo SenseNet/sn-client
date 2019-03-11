@@ -12,6 +12,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 import { matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
+import { PersonalSettingsContext } from '../../context/PersonalSettingsContext'
 import { ResponsivePersonalSetttings } from '../../context/ResponsiveContextProvider'
 import { SessionContext } from '../../context/SessionContext'
 import { ThemeContext } from '../../context/ThemeContext'
@@ -20,6 +21,7 @@ import { getAllowedDrawerItems } from './Items'
 
 const TemporaryDrawer: React.StatelessComponent<RouteComponentProps & { isOpened: boolean }> = props => {
   const settings = useContext(ResponsivePersonalSetttings)
+  const personalSettings = useContext(PersonalSettingsContext)
   const theme = useContext(ThemeContext)
   const session = useContext(SessionContext)
   const [opened, setOpened] = useState(false)
@@ -70,7 +72,7 @@ const TemporaryDrawer: React.StatelessComponent<RouteComponentProps & { isOpened
               ) : (
                 <NavLink
                   onClick={() => setOpened(false)}
-                  to={item.url}
+                  to={`/${btoa(personalSettings.lastRepository)}${item.url}`}
                   activeStyle={{ opacity: 1 }}
                   style={{ textDecoration: 'none', opacity: 0.54 }}
                   key={item.primaryText}>

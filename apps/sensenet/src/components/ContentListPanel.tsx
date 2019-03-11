@@ -118,14 +118,14 @@ export const createContentListPanel = (
                 ({
                   displayName: content.DisplayName || content.Name,
                   title: content.Path,
-                  url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(content, repo.schemas),
+                  url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(content, repo),
                   content,
                 } as BreadcrumbItem),
             )}
             currentContent={{
               displayName: parent.DisplayName || parent.Name,
               title: parent.Path,
-              url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(parent, repo.schemas),
+              url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(parent, repo),
               content: parent,
             }}
             onItemClick={(_ev, item) => {

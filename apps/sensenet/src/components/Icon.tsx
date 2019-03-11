@@ -9,16 +9,19 @@ import InsertDriveFileTwoTone from '@material-ui/icons/InsertDriveFileTwoTone'
 import PublicTwoTone from '@material-ui/icons/PublicTwoTone'
 import SettingsTwoTone from '@material-ui/icons/SettingsTwoTone'
 import WebAssetTwoTone from '@material-ui/icons/WebAssetTwoTone'
+import { Repository } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { File as SnFile, Schema } from '@sensenet/default-content-types'
 import { GenericContent, User } from '@sensenet/default-content-types'
 import React, { useContext } from 'react'
 import { InjectorContext } from '../context/InjectorContext'
+import { RepositoryContext } from '../context/RepositoryContext'
 import { UserAvatar } from './UserAvatar'
 
 export interface IconOptions {
   style?: React.CSSProperties
   injector: Injector
+  repo: Repository
 }
 
 export interface IconResolver<T> {
@@ -51,7 +54,7 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
       item.Type === 'File' && (item as SnFile).PageCount ? (
         <img
           src={PathHelper.joinPaths(
-            options.injector.getCurrentRepository().configuration.repositoryUrl,
+            options.repo.configuration.repositoryUrl,
             item.Path,
             '/Previews',
             item.Version as string,
@@ -110,8 +113,9 @@ export const IconComponent: React.FunctionComponent<{
   style?: React.CSSProperties
 }> = props => {
   const injector = useContext(InjectorContext)
+  const repo = useContext(RepositoryContext)
 
-  const options: IconOptions = { style: props.style, injector }
+  const options: IconOptions = { style: props.style, injector, repo }
   const resolvers = [...(props.resolvers || []), ...defaultContentResolvers, ...defaultSchemaResolvers]
   const defaultIcon = props.defaultIcon || <WebAssetTwoTone style={props.style} /> || null
   const assignedResolver = resolvers.find(r => (r.get(props.item, options) ? true : false))

@@ -18,8 +18,6 @@ export const rootReducer = combineReducers({
   sensenetDocumentViewer,
   commander,
 })
-
 export type rootStateType = ReturnType<typeof rootReducer>
-export const diMiddleware = new ReduxDiMiddleware(Injector.Default)
-
+export const diMiddleware = new ReduxDiMiddleware(new Injector())
 export const store = createStore(rootReducer, {}, composeEnhancers(applyMiddleware(diMiddleware.getMiddleware())))

@@ -35,21 +35,19 @@ export const ExploreComponent: React.FunctionComponent<
             ({
               displayName: content.DisplayName || content.Name,
               title: content.Path,
-              url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(content, repo.schemas),
+              url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(content, repo),
               content,
             } as BreadcrumbItem),
         )}
         currentContent={{
           displayName: props.parent.DisplayName || props.parent.Name,
           title: props.parent.Path,
-          url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(props.parent, repo.schemas),
+          url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(props.parent, repo),
           content: props.parent,
         }}
         onItemClick={(_ev, item) => {
           setLeftParentId(item.content.Id)
-          props.history.push(
-            injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item.content, repo.schemas),
-          )
+          props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item.content, repo))
         }}
       />
       <div style={{ display: 'flex', width: '100%', height: '100%' }}>
@@ -59,14 +57,14 @@ export const ExploreComponent: React.FunctionComponent<
           parentPath={ConstantContent.PORTAL_ROOT.Path}
           onItemClick={item => {
             setLeftParentId(item.Id)
-            props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item, repo.schemas))
+            props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item, repo))
           }}
           activeItemId={leftParentId}
         />
         <ExploreControl
           enableBreadcrumbs={false}
           onActivateItem={item => {
-            props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item, repo.schemas))
+            props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item, repo))
           }}
           style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
           onParentChange={p => {

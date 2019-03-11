@@ -6,6 +6,7 @@ import Menu from '@material-ui/icons/Menu'
 import React, { useContext } from 'react'
 import { connect } from 'react-redux'
 import logo from '../../assets/sensenet-icon-32.png'
+import { RepositoryContext } from '../../context/RepositoryContext'
 import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context/ResponsiveContextProvider'
 import { ThemeContext } from '../../context/ThemeContext'
 import { rootStateType } from '../../store'
@@ -22,6 +23,7 @@ const DesktopAppBar: React.StatelessComponent<
   const device = useContext(ResponsiveContext)
   const theme = useContext(ThemeContext)
   const personalSettings = useContext(ResponsivePersonalSetttings)
+  const repoContext = useContext(RepositoryContext)
 
   return (
     <AppBar position="sticky" style={{ backgroundColor: theme.palette.background.paper }}>
@@ -48,7 +50,7 @@ const DesktopAppBar: React.StatelessComponent<
               }}>
               <img src={logo} style={{ marginRight: '1em', filter: 'drop-shadow(0px 0px 3px black)' }} />
               <Typography variant="h5" color="textPrimary">
-                SENSENET
+                {repoContext.configuration.repositoryUrl}
               </Typography>
             </a>
           )}

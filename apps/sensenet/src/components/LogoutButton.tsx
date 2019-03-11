@@ -49,7 +49,7 @@ export const LogoutButton: React.FunctionComponent = () => {
               {repo.configuration.repositoryUrl}
             </Link>{' '}
             as{' '}
-            <Link to={ctx.getPrimaryActionUrl(session.currentUser, repo.schemas)} onClick={() => setShowLogout(false)}>
+            <Link to={ctx.getPrimaryActionUrl(session.currentUser, repo)} onClick={() => setShowLogout(false)}>
               {session.currentUser.DisplayName || session.currentUser.Name}
             </Link>
             . <br />

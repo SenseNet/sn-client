@@ -60,7 +60,7 @@ export const Commander: React.StatelessComponent<RouteComponentProps<CommanderRo
       <LeftControl
         enableBreadcrumbs={true}
         onActivateItem={item => {
-          props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item, repo.schemas))
+          props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item, repo))
         }}
         containerRef={r => setLeftPanelRef(r)}
         style={{ flexGrow: 1, flexShrink: 0, maxHeight: '100%' }}
@@ -73,7 +73,7 @@ export const Commander: React.StatelessComponent<RouteComponentProps<CommanderRo
       <RightControl
         enableBreadcrumbs={true}
         onActivateItem={item => {
-          props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item, repo.schemas))
+          props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item, repo))
         }}
         containerRef={r => setRightPanelRef(r)}
         parentId={rightParentId}

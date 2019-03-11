@@ -43,14 +43,14 @@ const GenericContentEditor: React.FunctionComponent<
             ({
               displayName: content.DisplayName || content.Name,
               title: content.Path,
-              url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(content, repo.schemas),
+              url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(content, repo),
               content,
             } as BreadcrumbItem),
         )}
         currentContent={{
           displayName: props.content.DisplayName || props.content.Name,
           title: props.content.Path,
-          url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(props.content, repo.schemas),
+          url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(props.content, repo),
           content: props.content,
         }}
       />
