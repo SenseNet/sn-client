@@ -3,7 +3,6 @@ import {
   Dialog,
   DialogActions,
   FormControl,
-  FormGroup,
   FormHelperText,
   InputLabel,
   List,
@@ -13,7 +12,7 @@ import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
-import { ReactReferenceGridFieldSetting } from '../ReferenceGrid/ReferenceGridFieldSettings'
+import { ReactAvatarFieldSetting } from './AvatarFieldSetting'
 import { AvatarPicker } from './AvatarPicker'
 import { DefaultAvatarTemplate } from './DefaultAvatarTemplate'
 
@@ -24,7 +23,7 @@ const styles = {
   },
   dialog: {
     padding: 20,
-    minWidth: 210,
+    minWidth: 250,
   },
   listContainer: {
     display: 'block',
@@ -50,7 +49,7 @@ const DEFAULT_AVATAR_PATH = '/Root/Sites/Default_Site/demoavatars/Admin.png'
 export interface AvatarProps<T extends GenericContent, K extends keyof T>
   extends ReactClientFieldSettingProps<T, K>,
     ReactClientFieldSetting<T, K>,
-    ReactReferenceGridFieldSetting<T, K> {}
+    ReactAvatarFieldSetting<T, K> {}
 
 /**
  * Interface for Avatar state
@@ -179,7 +178,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                 itemTemplate(this.state.fieldValue)
               ) : (
                 <DefaultAvatarTemplate
-                  repositoryUrl={this.props['data-repositoryUrl'] || ''}
+                  repositoryUrl={this.props.repository.configuration.repositoryUrl}
                   url={this.state.fieldValue}
                   add={this.addItem}
                   remove={this.removeItem}
@@ -205,7 +204,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                   repository={this.props['data-repository']}
                   select={content => this.selectItem(content)}
                   selected={this.state.selected}
-                  repositoryUrl={this.props['data-repositoryUrl'] || ''}
+                  repositoryUrl={this.props.repository.configuration.repositoryUrl}
                 />
                 <DialogActions>
                   <Button onClick={this.handleCancelClick}>{CANCEL}</Button>
@@ -235,26 +234,18 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                 itemTemplate(this.state.fieldValue)
               ) : (
                 <DefaultAvatarTemplate
-                  repositoryUrl={this.props['data-repositoryUrl'] || ''}
+                  repositoryUrl={this.props.repository.configuration.repositoryUrl}
                   add={this.addItem}
                   actionName="new"
                   readOnly={this.props.readOnly}
                   remove={this.removeItem}
                 />
               )}
-              }
-              {!this.props.readOnly ? (
-                <DefaultAvatarTemplate
-                  repositoryUrl={this.props['data-repositoryUrl'] || ''}
-                  add={this.addItem}
-                  actionName="edit"
-                />
-              ) : null}
             </List>
             {this.props['data-hintText'] ? <FormHelperText>{this.props['data-hintText']}</FormHelperText> : null}
             {this.props['data-errorText'] ? <FormHelperText>{this.props['data-errorText']}</FormHelperText> : null}
 
-            <Dialog onClose={this.handleDialogClose} open={this.state.pickerIsOpen} style={{ minWidth: 250 }}>
+            <Dialog onClose={this.handleDialogClose} open={this.state.pickerIsOpen}>
               <div style={styles.dialog}>
                 <Typography variant="h5" gutterBottom={true}>
                   {AVATAR_PICKER_TITLE}
@@ -269,7 +260,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                   repository={this.props['data-repository']}
                   select={content => this.selectItem(content)}
                   selected={this.state.selected}
-                  repositoryUrl={this.props['data-repositoryUrl'] || ''}
+                  repositoryUrl={this.props.repository.configuration.repositoryUrl}
                 />
                 <DialogActions>
                   <Button onClick={this.handleCancelClick}>{CANCEL}</Button>
@@ -287,14 +278,16 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
             <InputLabel shrink={true} htmlFor={name as string}>
               {this.props['data-labelText']}
             </InputLabel>
-            <FormGroup>
+            <List
+              dense={true}
+              style={this.state.fieldValue.length > 0 ? styles.listContainer : { ...styles.listContainer, width: 200 }}>
               <DefaultAvatarTemplate
-                repositoryUrl={this.props['data-repositoryUrl'] || ''}
+                repositoryUrl={this.props.repository.configuration.repositoryUrl}
                 url={this.state.fieldValue}
                 add={this.addItem}
                 actionName="browse"
               />
-            </FormGroup>
+            </List>
           </FormControl>
         ) : null
       default:
@@ -303,14 +296,16 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
             <InputLabel shrink={true} htmlFor={name as string}>
               {this.props['data-labelText']}
             </InputLabel>
-            <FormGroup>
+            <List
+              dense={true}
+              style={this.state.fieldValue.length > 0 ? styles.listContainer : { ...styles.listContainer, width: 200 }}>
               <DefaultAvatarTemplate
-                repositoryUrl={this.props['data-repositoryUrl'] || ''}
+                repositoryUrl={this.props.repository.configuration.repositoryUrl}
                 url={this.state.fieldValue}
                 add={this.addItem}
                 actionName="browse"
               />
-            </FormGroup>
+            </List>
           </FormControl>
         ) : null
     }
