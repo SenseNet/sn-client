@@ -81,7 +81,9 @@ export class AvatarPicker extends Component<AvatarPickerProps, AvatarPickerState
   }
   public renderItem = (node: GenericContent | User) => (
     <ListItem button={true} selected={node.Id === this.props.selected.Id}>
-      {node.IsFolder ? (
+      {console.log(node)}
+      {console.log(node.IsFolder)}
+      {node.IsFolder || node.IsFolder === undefined ? (
         <ListItemIcon>
           <Icon iconName={this.iconName(node)} />
         </ListItemIcon>
