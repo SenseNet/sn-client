@@ -7,7 +7,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew'
-import { LoginState } from '@sensenet/client-core'
+import { FormsAuthenticationService, LoginState } from '@sensenet/client-core'
 import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { InjectorContext } from '../context/InjectorContext'
@@ -58,7 +58,18 @@ export const LogoutButton: React.FunctionComponent = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setShowLogout(false)}>Cancel</Button>
-          <Button onClick={() => repo.authentication.logout()} autoFocus={true}>
+          <Button
+            onClick={async () => {
+              try {
+                await repo.authentication.logout()
+              } catch {
+                /** ignore logout response parsing error */
+              } finally {
+                /** */
+                ;(repo.authentication as FormsAuthenticationService).getCurrentUser()
+              }
+            }}
+            autoFocus={true}>
             Log out
           </Button>
         </DialogActions>
