@@ -1,5 +1,5 @@
 import { Injector } from '@furystack/inject'
-import { Avatar } from '@material-ui/core'
+import Avatar from '@material-ui/core/Avatar'
 import CodeTwoTone from '@material-ui/icons/CodeTwoTone'
 import DeleteTwoTone from '@material-ui/icons/DeleteTwoTone'
 import FolderTwoTone from '@material-ui/icons/FolderTwoTone'

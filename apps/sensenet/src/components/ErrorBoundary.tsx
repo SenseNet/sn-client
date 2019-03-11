@@ -1,5 +1,5 @@
-import { ClickAwayListener } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
+import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import Typography from '@material-ui/core/Typography'
 import HomeTwoTone from '@material-ui/icons/HomeTwoTone'
 import RefreshTwoTone from '@material-ui/icons/RefreshTwoTone'
