@@ -55,7 +55,8 @@ export class ContentContextProvider {
     if (
       (content as any).Binary &&
       (content as any).Binary.__mediaresource.content_type !== 'application/x-javascript' &&
-      (content as any).Binary.__mediaresource.content_type !== 'text/css'
+      (content as any).Binary.__mediaresource.content_type !== 'text/css' &&
+      (content as any).Binary.__mediaresource.content_type !== 'text/xml'
     ) {
       return `/${repoSegment}/preview/${content.Id}`
     }
