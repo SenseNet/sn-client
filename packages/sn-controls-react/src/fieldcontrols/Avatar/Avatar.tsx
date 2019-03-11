@@ -38,7 +38,7 @@ const styles = {
   },
 }
 
-const REFERENCE_PICKER_TITLE = 'Reference picker'
+const AVATAR_PICKER_TITLE = 'Avatar picker'
 const OK = 'Ok'
 const CANCEL = 'Cancel'
 const DEFAULT_AVATAR_PATH = '/Root/Sites/Default_Site/demoavatars/Admin.png'
@@ -192,7 +192,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
             <Dialog onClose={this.handleDialogClose} open={this.state.pickerIsOpen}>
               <div style={styles.dialog}>
                 <Typography variant="h5" gutterBottom={true}>
-                  {REFERENCE_PICKER_TITLE}
+                  {AVATAR_PICKER_TITLE}
                 </Typography>
                 <AvatarPicker
                   path={
@@ -207,11 +207,9 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                   repositoryUrl={this.props['data-repositoryUrl'] || ''}
                 />
                 <DialogActions>
-                  <Button variant="contained" onClick={this.handleOkClick} color="primary">
+                  <Button onClick={this.handleCancelClick}>{CANCEL}</Button>
+                  <Button variant="contained" onClick={this.handleOkClick} color="secondary">
                     {OK}
-                  </Button>
-                  <Button variant="contained" onClick={this.handleCancelClick} color="secondary">
-                    {CANCEL}
                   </Button>
                 </DialogActions>
               </div>
@@ -258,7 +256,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
             <Dialog onClose={this.handleDialogClose} open={this.state.pickerIsOpen}>
               <div style={styles.dialog}>
                 <Typography variant="h5" gutterBottom={true}>
-                  {REFERENCE_PICKER_TITLE}
+                  {AVATAR_PICKER_TITLE}
                 </Typography>
                 <AvatarPicker
                   path={
@@ -273,11 +271,9 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                   repositoryUrl={this.props['data-repositoryUrl'] || ''}
                 />
                 <DialogActions>
-                  <Button variant="contained" onClick={this.handleOkClick} color="primary">
+                  <Button onClick={this.handleCancelClick}>{CANCEL}</Button>
+                  <Button variant="contained" onClick={this.handleOkClick} color="secondary">
                     {OK}
-                  </Button>
-                  <Button variant="contained" onClick={this.handleCancelClick} color="secondary">
-                    {CANCEL}
                   </Button>
                 </DialogActions>
               </div>
