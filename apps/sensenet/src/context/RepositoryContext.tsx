@@ -19,8 +19,9 @@ export const RepositoryContextProviderComponent: React.FunctionComponent<
 
   useEffect(() => {
     const repoFromUrl = (props.match.params.repo && atob(props.match.params.repo)) || ''
-    const newRepo = injector.getRepository(repoFromUrl.startsWith('http') ? repoFromUrl : settings.lastRepository)
-    newRepo.reloadSchema()
+    const newRepo = injector.getRepository(
+      repoFromUrl.startsWith('http://') || repoFromUrl.startsWith('https://') ? repoFromUrl : settings.lastRepository,
+    )
     setRepo(newRepo)
   }, [settings.lastRepository, props.match.params.repo])
 

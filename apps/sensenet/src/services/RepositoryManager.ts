@@ -1,5 +1,5 @@
 import { Injectable } from '@furystack/inject'
-import { FormsAuthenticationService, Repository } from '@sensenet/client-core'
+import { FormsAuthenticationService, LoginState, Repository } from '@sensenet/client-core'
 import { RepositoryConfiguration } from '@sensenet/client-core/dist/Repository/RepositoryConfiguration'
 import { EventHub } from '@sensenet/repository-events'
 
@@ -45,8 +45,12 @@ export class RepositoryManager {
     FormsAuthenticationService.Setup(instance, {
       select: 'all',
     })
-
     this.repos.set(repositoryUrl, instance)
+    instance.authentication.state.subscribe(s => {
+      if (s === LoginState.Authenticated) {
+        instance.reloadSchema()
+      }
+    })
     return instance
   }
 }
