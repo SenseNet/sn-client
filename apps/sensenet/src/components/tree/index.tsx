@@ -33,7 +33,7 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
   const [reloadTimestamp, setReloadTimestamp] = useState(new Date())
   const injector = useContext(InjectorContext)
   const repo = useContext(RepositoryContext)
-  const eventHub = injector.getCurrentEventHub()
+  const eventHub = injector.getEventHub(repo.configuration.repositoryUrl)
   const update = debounce(() => {
     setReloadTimestamp(new Date())
   }, 100)

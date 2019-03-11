@@ -9,7 +9,6 @@ import logo from '../../assets/sensenet-icon-32.png'
 import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context/ResponsiveContextProvider'
 import { ThemeContext } from '../../context/ThemeContext'
 import { rootStateType } from '../../store'
-import { toggleDrawer } from '../../store/Drawer'
 import { CommandPalette } from '../command-palette/CommandPalette'
 import { LogoutButton } from '../LogoutButton'
 
@@ -17,12 +16,8 @@ const mapStateToProps = (state: rootStateType) => ({
   commandPaletteOpened: state.commandPalette.isOpened,
 })
 
-const mapDispatchToProps = {
-  toggleDrawer,
-}
-
 const DesktopAppBar: React.StatelessComponent<
-  ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
+  ReturnType<typeof mapStateToProps> & { openDrawer?: () => void }
 > = props => {
   const device = useContext(ResponsiveContext)
   const theme = useContext(ThemeContext)
@@ -33,7 +28,11 @@ const DesktopAppBar: React.StatelessComponent<
       <Toolbar>
         <div style={{ display: 'flex', flexDirection: 'row', textDecoration: 'none' }}>
           {personalSettings.drawer.type === 'temporary' ? (
-            <IconButton style={{ padding: 0 }} onClick={() => props.toggleDrawer()}>
+            <IconButton
+              style={{ padding: 0 }}
+              onClick={() => {
+                props.openDrawer && props.openDrawer()
+              }}>
               <Menu />
             </IconButton>
           ) : null}
@@ -64,9 +63,6 @@ const DesktopAppBar: React.StatelessComponent<
   )
 }
 
-const connectedComponent = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(DesktopAppBar)
+const connectedComponent = connect(mapStateToProps)(DesktopAppBar)
 
 export { connectedComponent as DesktopAppBar }

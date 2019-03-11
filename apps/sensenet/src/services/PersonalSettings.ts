@@ -4,7 +4,7 @@ import { PlatformDependent } from '../context/ResponsiveContextProvider'
 
 const settingsKey = `SN-APP-USER-SETTINGS`
 
-export interface PersonalSettingType {
+export interface UiSettings {
   theme: 'dark' | 'light'
   content: { browseType: 'explorer' | 'commander' | 'simple' }
   commandPalette: { enabled: boolean; wrapQuery: string }
@@ -15,7 +15,12 @@ export interface PersonalSettingType {
   }
 }
 
-export const defaultSettings: PlatformDependent<PersonalSettingType> = {
+export type PersonalSettingsType = PlatformDependent<UiSettings> & {
+  repositories: Array<{ url: string; loginName?: string }>
+  lastRepository: string
+}
+
+export const defaultSettings: PersonalSettingsType = {
   default: {
     theme: 'dark',
     content: {
@@ -36,6 +41,8 @@ export const defaultSettings: PlatformDependent<PersonalSettingType> = {
       browseType: 'simple',
     },
   },
+  repositories: [],
+  lastRepository: '',
 }
 
 @Injectable()
@@ -52,7 +59,7 @@ export class PersonalSettings {
     })
   }
 
-  public async getLocalUserSettingsValue(): Promise<Partial<PersonalSettingType>> {
+  public async getLocalUserSettingsValue(): Promise<Partial<PersonalSettingsType>> {
     try {
       return JSON.parse(localStorage.getItem(`${settingsKey}`) as string)
     } catch {
@@ -63,7 +70,7 @@ export class PersonalSettings {
 
   public currentValue = new ObservableValue(defaultSettings)
 
-  public async setValue(settings: PlatformDependent<PersonalSettingType>) {
+  public async setValue(settings: PersonalSettingsType) {
     this.currentValue.setValue(settings)
     localStorage.setItem(`${settingsKey}`, JSON.stringify(settings))
   }

@@ -1,5 +1,5 @@
 import CssBaseline from '@material-ui/core/CssBaseline'
-import React from 'react'
+import React, { useState } from 'react'
 import { useContext } from 'react'
 import snLogo from '../../assets/sensenet_logo_transparent.png'
 import { ResponsivePersonalSetttings } from '../../context/ResponsiveContextProvider'
@@ -9,6 +9,7 @@ import { TemporaryDrawer } from '../drawer/TemporaryDrawer'
 
 export const DesktopLayout: React.FunctionComponent = props => {
   const settings = useContext(ResponsivePersonalSetttings)
+  const [tempDrawerOpened, setTempDrawerOpened] = useState(false)
 
   return (
     <div
@@ -22,7 +23,7 @@ export const DesktopLayout: React.FunctionComponent = props => {
         height: '100%',
       }}>
       <CssBaseline />
-      <DesktopAppBar />
+      <DesktopAppBar openDrawer={() => setTempDrawerOpened(!tempDrawerOpened)} />
       <div
         style={{
           flexGrow: 1,
@@ -31,7 +32,7 @@ export const DesktopLayout: React.FunctionComponent = props => {
           height: '100%',
           width: '100%',
         }}>
-        {settings.drawer.type === 'temporary' ? <TemporaryDrawer /> : <PermanentDrawer />}
+        {settings.drawer.type === 'temporary' ? <TemporaryDrawer isOpened={tempDrawerOpened} /> : <PermanentDrawer />}
         <div
           style={{
             display: 'flex',

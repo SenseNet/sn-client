@@ -1,18 +1,26 @@
 import Avatar, { AvatarProps } from '@material-ui/core/Avatar'
 import { PathHelper } from '@sensenet/client-utils'
 import { User } from '@sensenet/default-content-types'
-import React from 'react'
+import React, { useContext } from 'react'
+import { RepositoryContext } from '../context/RepositoryContext'
 
 export const UserAvatar: React.StatelessComponent<{
   user: User
-  repositoryUrl: string
   avatarProps?: AvatarProps
   style?: React.CSSProperties
 }> = props => {
-  const { user, repositoryUrl, avatarProps } = props
-  const avatarUrl = user.Avatar && user.Avatar.Url
+  const repo = useContext(RepositoryContext)
+  const avatarUrl = props.user.Avatar && props.user.Avatar.Url
   if (avatarUrl) {
-    return <Avatar src={PathHelper.joinPaths(repositoryUrl, avatarUrl)} {...avatarProps} style={props.style} />
+    return (
+      <Avatar
+        src={PathHelper.joinPaths(repo.configuration.repositoryUrl, avatarUrl)}
+        {...props.avatarProps}
+        style={props.style}
+      />
+    )
   }
-  return <Avatar style={props.style}>{(user.DisplayName && user.DisplayName[0]) || user.Name[0]}</Avatar>
+  return (
+    <Avatar style={props.style}>{(props.user.DisplayName && props.user.DisplayName[0]) || props.user.Name[0]}</Avatar>
+  )
 }

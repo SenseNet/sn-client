@@ -9,39 +9,28 @@ import Tooltip from '@material-ui/core/Tooltip'
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 import Settings from '@material-ui/icons/Settings'
-import React, { useContext } from 'react'
-import { connect } from 'react-redux'
+import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import { Link, matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
 import { ResponsivePersonalSetttings } from '../../context/ResponsiveContextProvider'
 import { SessionContext } from '../../context/SessionContext'
 import { ThemeContext } from '../../context/ThemeContext'
-import { rootStateType } from '../../store'
-import { toggleDrawer } from '../../store/Drawer'
 import { UserAvatar } from '../UserAvatar'
+import { getAllowedDrawerItems } from './Items'
 
-const mapStateToProps = (state: rootStateType) => ({
-  items: state.drawer.items,
-  opened: state.drawer.opened,
-  repositoryUrl: state.persistedState.lastRepositoryUrl,
-})
-
-const mapDispatchToProps = {
-  toggleDrawer,
-}
-
-const PermanentDrawer: React.StatelessComponent<
-  ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & RouteComponentProps
-> = props => {
+const PermanentDrawer: React.StatelessComponent<RouteComponentProps> = props => {
   const settings = useContext(ResponsivePersonalSetttings)
   const theme = useContext(ThemeContext)
   const session = useContext(SessionContext)
 
+  const [opened, setOpened] = useState(settings.drawer.type === 'permanent')
+  const [items, setItems] = useState(getAllowedDrawerItems(session.groups))
+
+  useEffect(() => setItems(getAllowedDrawerItems(session.groups)))
+
   if (!settings.drawer.enabled) {
     return null
   }
-
-  const opened = props.opened || settings.drawer.type === 'permanent'
 
   return (
     <Paper style={{ flexGrow: 0, flexShrink: 0 }}>
@@ -61,7 +50,7 @@ const PermanentDrawer: React.StatelessComponent<
           transition: 'width 100ms ease-in-out',
         }}>
         <div style={{ paddingTop: '1em' }}>
-          {props.items
+          {items
             .filter(i => settings.drawer.items && settings.drawer.items.indexOf(i.primaryText) !== -1)
             .map(item => {
               const isActive = matchPath(props.location.pathname, item.url)
@@ -76,7 +65,7 @@ const PermanentDrawer: React.StatelessComponent<
                     placement="right">
                     <ListItemIcon>{item.icon}</ListItemIcon>
                   </Tooltip>
-                  {props.opened ? <ListItemText primary={item.primaryText} secondary={item.secondaryText} /> : null}
+                  {opened ? <ListItemText primary={item.primaryText} secondary={item.secondaryText} /> : null}
                 </ListItem>
               ) : (
                 <NavLink
@@ -105,7 +94,7 @@ const PermanentDrawer: React.StatelessComponent<
             <Paper style={{ padding: '1em' }}>
               <ListItem>
                 <ListItemIcon>
-                  <UserAvatar user={session.currentUser} repositoryUrl={props.repositoryUrl} />
+                  <UserAvatar user={session.currentUser} />
                 </ListItemIcon>
                 <ListItemText primary={session.currentUser.DisplayName || session.currentUser.Name} />
                 <ListItemSecondaryAction>
@@ -140,7 +129,7 @@ const PermanentDrawer: React.StatelessComponent<
           )}
 
           {settings.drawer.type === 'mini-variant' ? (
-            <ListItem button={true} onClick={props.toggleDrawer} key="expandcollapse">
+            <ListItem button={true} onClick={() => setOpened(!opened)} key="expandcollapse">
               <Tooltip title={opened ? 'Collapse' : 'Expand'} placement="right">
                 <ListItemIcon>{opened ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}</ListItemIcon>
               </Tooltip>
@@ -153,10 +142,5 @@ const PermanentDrawer: React.StatelessComponent<
   )
 }
 
-const connectedComponent = withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(PermanentDrawer),
-)
+const connectedComponent = withRouter(PermanentDrawer)
 export { connectedComponent as PermanentDrawer }

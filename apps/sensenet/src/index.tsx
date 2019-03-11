@@ -24,10 +24,10 @@ ReactDOM.render(
   <CssBaseline>
     <Provider store={store}>
       <InjectorContext.Provider value={new Injector()}>
-        <RepositoryContextProvider>
-          <SessionContextProvider>
-            <HashRouter>
-              <PersonalSettingsContextProvider>
+        <PersonalSettingsContextProvider>
+          <RepositoryContextProvider>
+            <SessionContextProvider>
+              <HashRouter>
                 <ResponsiveContextProvider>
                   <ThemeProvider theme={theme}>
                     <DesktopLayout>
@@ -35,10 +35,10 @@ ReactDOM.render(
                     </DesktopLayout>{' '}
                   </ThemeProvider>
                 </ResponsiveContextProvider>
-              </PersonalSettingsContextProvider>
-            </HashRouter>
-          </SessionContextProvider>
-        </RepositoryContextProvider>
+              </HashRouter>
+            </SessionContextProvider>
+          </RepositoryContextProvider>
+        </PersonalSettingsContextProvider>
       </InjectorContext.Provider>
     </Provider>
   </CssBaseline>,

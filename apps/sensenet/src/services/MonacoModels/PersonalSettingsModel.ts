@@ -26,6 +26,23 @@ languages.json.jsonDefaults.setDiagnosticsOptions({
               },
             },
           },
+          repository: {
+            type: 'object',
+            required: ['url'],
+            properties: {
+              url: {
+                type: 'string',
+                description: 'The path for the repository, e.g.: https://my-sensenet-repository.org',
+              },
+              userName: {
+                type: 'string',
+              },
+            },
+          },
+          repositories: {
+            type: 'array',
+            items: { $ref: '#/definitions/repository' },
+          },
           commandPalette: {
             type: 'object',
             description: 'Options for the command palette',
@@ -60,12 +77,14 @@ languages.json.jsonDefaults.setDiagnosticsOptions({
           },
         },
         type: 'object',
-        required: ['default'],
+        required: ['default', 'repositories', 'lastRepository'],
         properties: {
           default: { $ref: '#/definitions/settings' },
           mobile: { $ref: '#/definitions/settings' },
           tablet: { $ref: '#/definitions/settings' },
           desktop: { $ref: '#/definitions/settings' },
+          repositories: { $ref: '#/definitions/repositories' },
+          lastRepository: { type: 'string', description: 'The last visited repository URL' },
         },
       },
     },

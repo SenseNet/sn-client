@@ -33,39 +33,39 @@ const MainRouter: React.StatelessComponent<ReturnType<typeof mapStateToProps> & 
   return (
     <ErrorBoundary>
       <Suspense fallback={<FullScreenLoader />}>
-        {sessionContext.state === LoginState.Unauthenticated ? (
-          <LoginComponent />
-        ) : sessionContext.state === LoginState.Authenticated ? (
-          <Switch>
-            <AuthorizedRoute
-              path="/content/:folderId?/:rightParent?"
-              render={() => <ExploreComponent />}
-              authorize={() => true}
-            />
-            <AuthorizedRoute path="/search" render={() => <SearchComponent />} authorize={() => true} />
-            <AuthorizedRoute path="/iam" render={() => <IamComponent />} authorize={() => true} />
-            <AuthorizedRoute path="/setup" render={() => <SetupComponent />} authorize={() => true} />
-            <AuthorizedRoute path="/editBinary/:contentId?" render={() => <EditBinary />} authorize={() => true} />
-            <AuthorizedRoute
-              path="/editProperties/:contentId?"
-              render={() => <EditProperties />}
-              authorize={() => true}
-            />
-            <AuthorizedRoute
-              path="/preview/:documentId?"
-              render={() => <DocumentViewerComponent />}
-              authorize={() => true}
-            />
-            <AuthorizedRoute
-              path="/personalSettings"
-              render={() => <PersonalSettingsEditor />}
-              authorize={() => true}
-            />
-            <Route path="/" render={() => <DashboardComponent />} />
-          </Switch>
-        ) : (
-          <FullScreenLoader />
-        )}
+        <Switch>
+          <AuthorizedRoute path="/personalSettings" render={() => <PersonalSettingsEditor />} authorize={() => true} />
+
+          {/** Requires login */}
+          {sessionContext.state === LoginState.Unauthenticated ? (
+            <LoginComponent />
+          ) : sessionContext.state === LoginState.Authenticated ? (
+            <Switch>
+              <AuthorizedRoute
+                path="/content/:folderId?/:rightParent?"
+                render={() => <ExploreComponent />}
+                authorize={() => true}
+              />
+              <AuthorizedRoute path="/search" render={() => <SearchComponent />} authorize={() => true} />
+              <AuthorizedRoute path="/iam" render={() => <IamComponent />} authorize={() => true} />
+              <AuthorizedRoute path="/setup" render={() => <SetupComponent />} authorize={() => true} />
+              <AuthorizedRoute path="/editBinary/:contentId?" render={() => <EditBinary />} authorize={() => true} />
+              <AuthorizedRoute
+                path="/editProperties/:contentId?"
+                render={() => <EditProperties />}
+                authorize={() => true}
+              />
+              <AuthorizedRoute
+                path="/preview/:documentId?"
+                render={() => <DocumentViewerComponent />}
+                authorize={() => true}
+              />
+              <Route path="/" render={() => <DashboardComponent />} />
+            </Switch>
+          ) : (
+            <FullScreenLoader />
+          )}
+        </Switch>
       </Suspense>
     </ErrorBoundary>
   )

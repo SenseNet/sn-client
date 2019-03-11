@@ -48,12 +48,12 @@ export const createContentListPanel = (
     const { setActiveContent, select, loadParent } = props
     const injector = useContext(InjectorContext)
     const [isFocused, setIsFocused] = useState(false)
-    const eventHub = injector.getCurrentEventHub()
+    const repo = useContext(RepositoryContext)
+    const eventHub = injector.getEventHub(repo.configuration.repositoryUrl)
     const uploadTracker = injector.GetInstance(UploadTracker)
     const update = debounce(() => {
       loadParent(props.parentId, repo, true)
     }, 100)
-    const repo = useContext(RepositoryContext)
 
     const handleCreate = (c: Created) => {
       if ((c.content as GenericContent).ParentId === props.parentId) {

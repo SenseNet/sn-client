@@ -10,11 +10,7 @@ declare module '@furystack/inject/dist/Injector' {
    */
   interface Injector {
     getRepository: (url: string, config?: RepositoryConfiguration) => Repository
-
-    getCurrentRepository: () => Repository
-
     getEventHub: (url: string) => EventHub
-    getCurrentEventHub: () => EventHub
   }
 }
 
@@ -25,14 +21,6 @@ Injector.prototype.getRepository = function(url, config) {
   return repo
 }
 
-Injector.prototype.getCurrentRepository = function() {
-  return this.GetInstance(RepositoryManager).currentRepository.getValue()
-}
-
 Injector.prototype.getEventHub = function(name) {
   return this.GetInstance(RepositoryManager).getEventHub(name)
-}
-
-Injector.prototype.getCurrentEventHub = function() {
-  return this.GetInstance(RepositoryManager).getCurrentEventHub()
 }

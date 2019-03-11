@@ -5,15 +5,19 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import React, { useContext, useState } from 'react'
 import { InjectorContext } from '../context/InjectorContext'
-import { RepositoryManager } from '../services/RepositoryManager'
+import { PersonalSettingsContext } from '../context/PersonalSettingsContext'
+import { PersonalSettings } from '../services/PersonalSettings'
 
 export const Login: React.FunctionComponent = () => {
   const injector = useContext(InjectorContext)
-  const repoManager = injector.GetInstance(RepositoryManager)
+  const personalSettings = useContext(PersonalSettingsContext)
+  const settingsManager = injector.GetInstance(PersonalSettings)
 
-  const [userName, setUserName] = useState('')
+  const existingRepo = personalSettings.repositories.find(r => r.url === personalSettings.lastRepository)
+
+  const [userName, setUserName] = useState((existingRepo && existingRepo.loginName) || '')
   const [password, setPassword] = useState('')
-  const [url, setUrl] = useState(repoManager.currentRepository.getValue().configuration.repositoryUrl)
+  const [url, setUrl] = useState(personalSettings.lastRepository)
 
   return (
     <Paper
@@ -22,8 +26,23 @@ export const Login: React.FunctionComponent = () => {
       <form
         onSubmit={() => {
           const repo = injector.getRepository(url)
-          repoManager.currentRepository.setValue(repo)
-          repo.authentication.login(userName, password)
+          personalSettings.lastRepository = url
+          repo.authentication.login(userName, password).then(success => {
+            if (success) {
+              const existing = personalSettings.repositories.find(i => i.url === url)
+              if (!existing) {
+                personalSettings.repositories.push({ url, loginName: userName })
+              } else {
+                personalSettings.repositories = personalSettings.repositories.map(r => {
+                  if (r.url === url) {
+                    r.loginName = userName
+                  }
+                  return r
+                })
+              }
+              settingsManager.setValue(personalSettings)
+            }
+          })
         }}>
         <Divider />
         <TextField
@@ -32,7 +51,7 @@ export const Login: React.FunctionComponent = () => {
           label="Username"
           helperText="Enter the user name you've registered with"
           fullWidth={true}
-          // defaultValue={this.props.lastUserName}
+          defaultValue={userName}
           onChange={ev => {
             setUserName(ev.target.value)
           }}
@@ -53,7 +72,7 @@ export const Login: React.FunctionComponent = () => {
           label="Repository URL"
           fullWidth={true}
           type="url"
-          // defaultValue={this.props.lastRepository}
+          defaultValue={personalSettings.lastRepository}
           onChange={ev => {
             setUrl(ev.target.value)
           }}

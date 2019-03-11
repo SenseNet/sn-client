@@ -8,41 +8,32 @@ import Paper from '@material-ui/core/Paper'
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
 import Tooltip from '@material-ui/core/Tooltip'
 import Settings from '@material-ui/icons/Settings'
-import React, { useContext } from 'react'
-import { connect } from 'react-redux'
+import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 import { matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
 import { ResponsivePersonalSetttings } from '../../context/ResponsiveContextProvider'
 import { SessionContext } from '../../context/SessionContext'
 import { ThemeContext } from '../../context/ThemeContext'
-import { rootStateType } from '../../store'
-import { closeDrawer, openDrawer } from '../../store/Drawer'
 import { UserAvatar } from '../UserAvatar'
+import { getAllowedDrawerItems } from './Items'
 
-const mapStateToProps = (state: rootStateType) => ({
-  items: state.drawer.items,
-  opened: state.drawer.opened,
-  repositoryUrl: state.persistedState.lastRepositoryUrl,
-})
-
-const mapDispatchToProps = {
-  openDrawer,
-  closeDrawer,
-}
-
-const TemporaryDrawer: React.StatelessComponent<
-  ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & RouteComponentProps
-> = props => {
+const TemporaryDrawer: React.StatelessComponent<RouteComponentProps & { isOpened: boolean }> = props => {
   const settings = useContext(ResponsivePersonalSetttings)
   const theme = useContext(ThemeContext)
   const session = useContext(SessionContext)
+  const [opened, setOpened] = useState(false)
+  const [items, setItems] = useState(getAllowedDrawerItems(session.groups))
+
+  useEffect(() => setItems(getAllowedDrawerItems(session.groups)))
+
+  useEffect(() => setOpened(props.isOpened), [props.isOpened])
 
   if (!settings.drawer.enabled) {
     return null
   }
   return (
-    <SwipeableDrawer open={props.opened} onClose={() => props.closeDrawer()} onOpen={() => props.openDrawer()}>
+    <SwipeableDrawer open={opened} onClose={() => setOpened(false)} onOpen={() => setOpened(true)}>
       <List
         dense={true}
         style={{
@@ -59,7 +50,7 @@ const TemporaryDrawer: React.StatelessComponent<
           transition: 'width 100ms ease-in-out',
         }}>
         <div style={{ paddingTop: '1em' }}>
-          {props.items
+          {items
             .filter(i => settings.drawer.items && settings.drawer.items.indexOf(i.primaryText) !== -1)
             .map(item => {
               const isActive = matchPath(props.location.pathname, item.url)
@@ -78,7 +69,7 @@ const TemporaryDrawer: React.StatelessComponent<
                 </ListItem>
               ) : (
                 <NavLink
-                  onClick={() => props.closeDrawer()}
+                  onClick={() => setOpened(false)}
                   to={item.url}
                   activeStyle={{ opacity: 1 }}
                   style={{ textDecoration: 'none', opacity: 0.54 }}
@@ -102,11 +93,11 @@ const TemporaryDrawer: React.StatelessComponent<
         <Paper style={{ padding: '1em' }}>
           <ListItem>
             <ListItemIcon>
-              <UserAvatar user={session.currentUser} repositoryUrl={props.repositoryUrl} />
+              <UserAvatar user={session.currentUser} />
             </ListItemIcon>
             <ListItemText primary={session.currentUser.DisplayName || session.currentUser.Name} />
             <ListItemSecondaryAction>
-              <Link to={`/personalSettings`} style={{ textDecoration: 'none' }} onClick={() => props.closeDrawer()}>
+              <Link to={`/personalSettings`} style={{ textDecoration: 'none' }} onClick={() => setOpened(false)}>
                 <IconButton title="Edit personal settings">
                   <Settings />
                 </IconButton>
@@ -119,10 +110,5 @@ const TemporaryDrawer: React.StatelessComponent<
   )
 }
 
-const connectedComponent = withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(TemporaryDrawer),
-)
+const connectedComponent = withRouter(TemporaryDrawer)
 export { connectedComponent as TemporaryDrawer }
