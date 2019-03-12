@@ -1,5 +1,6 @@
 import { Store } from 'redux'
 import { DocumentData, DocumentViewerSettings, PreviewImageData } from '../../src/models'
+import { Comment } from '../../src/models/Comment'
 import { configureStore, RootReducerType } from '../../src/store'
 
 /**
@@ -77,6 +78,24 @@ export const examplePreviewImageData: PreviewImageData = {
 }
 
 /**
+ * Example preview comment
+ */
+export const examplePreviewComment: Comment = {
+  createdBy: {
+    avatarUrl: 'https://cdn.images.express.co.uk/img/dynamic/79/590x/486693_1.jpg',
+    displayName: 'Alba',
+    id: 1,
+    path: 'some/path',
+    userName: 'some/name',
+  },
+  id: 'someId',
+  page: 1,
+  text: 'Thats a comment',
+  x: 10,
+  y: 10,
+}
+
+/**
  * Default settings for document viewer context
  */
 export const defaultSettings = new DocumentViewerSettings({
@@ -87,6 +106,13 @@ export const defaultSettings = new DocumentViewerSettings({
   getExistingPreviewImages: async () => [examplePreviewImageData],
   isPreviewAvailable: async () => examplePreviewImageData,
   saveChanges: async () => undefined,
+  commentActions: {
+    addPreviewComment: async () => examplePreviewComment,
+    deletePreviewComment: async () => {
+      return { modified: true }
+    },
+    getPreviewComments: async () => [examplePreviewComment],
+  },
 })
 
 /**

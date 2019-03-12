@@ -1,7 +1,7 @@
 import { Reducer } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
 import { PreviewState } from '../Enums'
-import { DocumentData, DocumentViewerSettings, PreviewImageData, Shape, Shapes } from '../models'
+import { Comment, DocumentData, DocumentViewerSettings, PreviewImageData, Shape, Shapes } from '../models'
 import { Dimensions, ImageUtil } from '../services'
 import { getAvailableImages } from './PreviewImages'
 import { RootReducerType } from './RootReducer'
@@ -20,6 +20,7 @@ export interface DocumentStateType {
   canHideWatermark: boolean
   canHideRedaction: boolean
   hasChanges: boolean
+  comments: Comment[]
 }
 
 /**
@@ -163,6 +164,13 @@ export const saveChangesSuccess = () => ({
 })
 
 /**
+ * Action that will be fired when getting comments succeeded
+ */
+export const getCommentSuccess = () => ({
+  type: 'SN_DOCVEWER_DOCUMENT_GET_COMMENTS_SUCCESS',
+})
+
+/**
  * Action that rotates the specified shapes for the given page(s)
  * @param pages The pages to rotate
  * @param degree The rotation angle in degrees
@@ -189,6 +197,25 @@ export const saveChanges = () => ({
       options.dispatch(saveChangesSuccess())
     } catch (error) {
       options.dispatch(saveChangesError(error))
+    }
+  },
+})
+
+/**
+ * Thunk action to call the get comments
+ */
+export const getComments = () => ({
+  type: 'SN_DOCVIEWER_GET_COMMENTS_INJECTABLE_ACTION',
+  inject: async (options: IInjectableActionCallbackParams<RootReducerType>) => {
+    const api = options.getInjectable(DocumentViewerSettings)
+    try {
+      await api.commentActions.getPreviewComments(
+        options.getState().sensenetDocumentViewer.documentState.document,
+        options.getState().sensenetDocumentViewer.viewer.activePages[0],
+      )
+      options.dispatch(getCommentSuccess())
+    } catch (error) {
+      console.log(error)
     }
   },
 })
@@ -250,6 +277,7 @@ export const defaultState: DocumentStateType = {
   canHideRedaction: false,
   canHideWatermark: false,
   pollInterval: 2000,
+  comments: [],
 }
 
 /**
@@ -334,6 +362,11 @@ export const documentStateReducer: Reducer<DocumentStateType> = (state = default
       return {
         ...state,
         hasChanges: false,
+      }
+    case 'SN_DOCVEWER_DOCUMENT_GET_COMMENTS_SUCCESS':
+      return {
+        ...state,
+        comments: action.comments,
       }
     case 'SN_DOCVIEWER_DOCUMENT_SET_POLL_INTERVAL':
       return {

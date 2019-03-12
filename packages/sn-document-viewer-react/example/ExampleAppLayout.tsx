@@ -38,6 +38,7 @@ import Send from '@material-ui/icons/Send'
 import { Download } from '../src/components/document-widgets/DownloadWidget'
 import { Print } from '../src/components/document-widgets/PrintWidget'
 import { Share } from '../src/components/document-widgets/ShareWidget'
+import { Comment } from '../src/models/Comment'
 import { defaultTheme } from '../src/models/Theming'
 
 /**
@@ -76,6 +77,34 @@ const mapDispatchToProps = {}
  * Settings object for the Document Viewer Example component
  */
 export const exampleSettings = new DocumentViewerSettings({
+  commentActions: {
+    addPreviewComment: async (documentData, comment) => {
+      const response = await fetch(`${documentData.hostName}/odata.svc/${documentData.idOrPath}/AddPreviewComment`, {
+        method: 'POST',
+        body: JSON.stringify({ ...comment }),
+        credentials: 'include',
+      })
+      if (response.ok) {
+        const responseBody = await response.json()
+        return responseBody as Comment
+      }
+    },
+    deletePreviewComment: async (documentData, commentId) => {
+      throw new Error('not implemented')
+    },
+    getPreviewComments: async (documentData, page) => {
+      const response = await fetch(
+        `${encodeURI(documentData.hostName)}/odata.svc/${encodeURI(
+          documentData.idOrPath.toString(),
+        )}/GetPreviewComments?page=${page}`,
+        { method: 'GET', credentials: 'include' },
+      )
+      if (response.ok) {
+        const responseBody = await response.json()
+        return responseBody as Comment[]
+      }
+    },
+  },
   canEditDocument: async documentData => {
     const response = await fetch(
       `${encodeURI(documentData.hostName)}/odata.svc/${encodeURI(
