@@ -1,4 +1,5 @@
-import { Comment, CreatedByUser } from '@sensenet/document-viewer-react/src/components/Comment'
+import { CommentComponent } from '@sensenet/document-viewer-react/src/components/Comment'
+import { CreatedByUser } from '@sensenet/document-viewer-react/src/models'
 import { action } from '@storybook/addon-actions'
 import { object, text, withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
@@ -20,8 +21,11 @@ storiesOf('DocumentViewer', module)
     </div>
   ))
   .add('a single comment with long text', () => (
-    <Comment
+    <CommentComponent
       createdBy={object('Created by', createdBy)}
+      page={1}
+      x={10}
+      y={10}
       delete={action('delete')}
       id={text('id', 'randomId')}
       localization={{} as any}
@@ -34,8 +38,11 @@ storiesOf('DocumentViewer', module)
     />
   ))
   .add('a single comment with short text', () => (
-    <Comment
+    <CommentComponent
       createdBy={createdBy}
+      page={1}
+      x={10}
+      y={10}
       delete={action('delete')}
       id={text('id', 'randomId')}
       localization={{} as any}

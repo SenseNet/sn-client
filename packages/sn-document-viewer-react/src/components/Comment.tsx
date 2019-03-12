@@ -9,26 +9,13 @@ import React, { useState } from 'react'
 import { FunctionComponent } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
+import { Comment as CommentType } from '../models/Comment'
 import { RootReducerType } from '../store'
-
-/**
- * User properties that created the comment
- */
-export interface CreatedByUser {
-  id: number
-  path: string
-  userName: string
-  displayName: string
-  avatarUrl: string
-}
 
 /**
  * Comment props interface.
  */
-export interface CommentProps {
-  id: string
-  createdBy: CreatedByUser
-  text: string
+export interface CommentProps extends CommentType {
   delete: (id: string) => void
 }
 
@@ -56,7 +43,7 @@ const MAX_TEXT_LENGTH = 160
  * Represents a single comment component.
  * @param {CommentPropType} props
  */
-export const Comment: FunctionComponent<CommentPropType> = (props: CommentPropType) => {
+export const CommentComponent: FunctionComponent<CommentPropType> = (props: CommentPropType) => {
   const isLongText = props.text && props.text.length > MAX_TEXT_LENGTH
   const [isOpen, setIsOpen] = useState(!isLongText)
   return (
@@ -84,4 +71,4 @@ export const Comment: FunctionComponent<CommentPropType> = (props: CommentPropTy
   )
 }
 
-export default connect(mapStateToProps)(Comment)
+export default connect(mapStateToProps)(CommentComponent)

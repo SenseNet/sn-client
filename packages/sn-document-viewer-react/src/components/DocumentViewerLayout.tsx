@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { componentType } from '../services'
 import { RootReducerType, setActivePages, setThumbnails } from '../store'
 import { PageList } from './'
-import Comment from './Comment'
+import CommentComponent from './Comment'
 
 /**
  * maps state fields from the store to component props
@@ -185,7 +185,7 @@ export class DocumentViewerLayoutComponent extends React.Component<
               },
             }}>
             <Typography variant="h4">Comments</Typography>
-            <Comment
+            <CommentComponent
               createdBy={{
                 avatarUrl: 'https://cdn.images.express.co.uk/img/dynamic/79/590x/486693_1.jpg',
                 displayName: 'Alba',
@@ -193,6 +193,9 @@ export class DocumentViewerLayoutComponent extends React.Component<
                 path: 'some/path',
                 userName: 'some/name',
               }}
+              page={1}
+              x={10}
+              y={10}
               text="Some comment"
               id="aa"
               delete={a => console.log(a)}
