@@ -4,7 +4,8 @@ import { mount } from 'enzyme'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
-import ConnectedComment, { Comment, CreatedByUser } from '../src/components/Comment'
+import ConnectedComment, { CommentComponent, CommentPropType } from '../src/components/Comment'
+import { CreatedByUser } from '../src/models'
 import { rootReducer } from '../src/store'
 
 const longText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit,
@@ -25,19 +26,26 @@ const createdBy: CreatedByUser = {
   userName: 'some/name',
 }
 
+const defaultProps: CommentPropType = {
+  createdBy,
+  deleteComment: () => jest.fn() as any,
+  id: 'a',
+  localization: localization as any,
+  page: 1,
+  x: 10,
+  y: 10,
+  text: 'some text',
+}
+
 describe('Comment component', () => {
   it('should show text', () => {
-    const wrapper = mount(
-      <Comment delete={jest.fn()} createdBy={createdBy} id="a" localization={localization as any} text="some text" />,
-    )
+    const wrapper = mount(<CommentComponent {...defaultProps} />)
     expect(wrapper.find(CardContent).exists()).toBeTruthy()
     expect(wrapper.find(CardContent).text()).toBe('some text')
   })
 
   it('should show show more button when text is long', () => {
-    const wrapper = mount(
-      <Comment delete={jest.fn()} createdBy={createdBy} id="a" localization={localization as any} text={longText} />,
-    )
+    const wrapper = mount(<CommentComponent {...defaultProps} text={longText} />)
     const button = wrapper.find(Button)
     expect(button.exists()).toBeTruthy()
     expect(button.length).toBe(1) // Should not show delete button
@@ -45,9 +53,7 @@ describe('Comment component', () => {
   })
 
   it('should show show less button when too long text is opened', () => {
-    const wrapper = mount(
-      <Comment delete={jest.fn()} createdBy={createdBy} id="a" localization={localization as any} text={longText} />,
-    )
+    const wrapper = mount(<CommentComponent {...defaultProps} text={longText} />)
     const button = wrapper.find(Button).first()
     button.simulate('click')
     expect(wrapper.find(Button).length).toBe(2) // Should show delete button as well
@@ -57,7 +63,7 @@ describe('Comment component', () => {
   it('should show show more button with localized text when connected', () => {
     const wrapper = mount(
       <Provider store={createStore(rootReducer)}>
-        <ConnectedComment delete={jest.fn()} createdBy={createdBy} id="a" text={longText} />
+        <ConnectedComment {...defaultProps} text={longText} />
       </Provider>,
     )
     expect(wrapper.find(Button).text()).toBe('+ Show more')
@@ -66,7 +72,7 @@ describe('Comment component', () => {
   it('should show show less button with localized text when connected', () => {
     const wrapper = mount(
       <Provider store={createStore(rootReducer)}>
-        <ConnectedComment delete={jest.fn()} createdBy={createdBy} id="a" text={longText} />
+        <ConnectedComment {...defaultProps} text={longText} />
       </Provider>,
     )
     const btn = wrapper.find(Button).first()
@@ -75,16 +81,14 @@ describe('Comment component', () => {
   })
 
   it('should show delete button when text is short', () => {
-    const wrapper = mount(
-      <Comment delete={jest.fn()} createdBy={createdBy} id="a" localization={localization as any} text="some text" />,
-    )
+    const wrapper = mount(<CommentComponent {...defaultProps} />)
     expect(wrapper.find('DeleteButton').text()).toBe('delete')
   })
 
   it('should show localized delete button', () => {
     const wrapper = mount(
       <Provider store={createStore(rootReducer)}>
-        <ConnectedComment delete={jest.fn()} createdBy={createdBy} id="a" text="Some text" />
+        <ConnectedComment {...defaultProps} />
       </Provider>,
     )
     expect(wrapper.find('DeleteButton').text()).toBe('Delete')
@@ -92,9 +96,7 @@ describe('Comment component', () => {
 
   it('should call delete when delete button is clicked', () => {
     const deleteFn = jest.fn()
-    const wrapper = mount(
-      <Comment delete={deleteFn} createdBy={createdBy} id="a" localization={localization as any} text="some text" />,
-    )
+    const wrapper = mount(<CommentComponent {...defaultProps} deleteComment={deleteFn} />)
     const deleteButton = wrapper.find(Button).last()
     deleteButton.simulate('click')
     expect(deleteFn).toBeCalled()
