@@ -4,9 +4,10 @@ import Typography from '@material-ui/core/Typography'
 import React = require('react')
 import { connect } from 'react-redux'
 import { componentType } from '../services'
-import { RootReducerType, setActivePages, setThumbnails } from '../store'
+import { createComment, RootReducerType, setActivePages, setThumbnails } from '../store'
 import { PageList } from './'
 import CommentComponent from './Comment'
+import { CreateComment } from './document-widgets/CreateComment'
 
 /**
  * maps state fields from the store to component props
@@ -31,6 +32,7 @@ const mapStateToProps = (state: RootReducerType) => {
 const mapDispatchToProps = {
   setActivePages,
   setThumbnails,
+  createComment,
 }
 
 /** Props definition for the Document Viewer layout */
@@ -51,6 +53,10 @@ export class DocumentViewerLayoutComponent extends React.Component<
   componentType<typeof mapStateToProps, typeof mapDispatchToProps, DocumentLayoutOwnProps>,
   DocumentLayoutState
 > {
+  constructor(props: DocumentViewerLayoutComponent['props']) {
+    super(props)
+    this.createComment = this.createComment.bind(this)
+  }
   /** the component state */
   public state = { activePage: 1, thumbnaislVisibility: this.props.showThumbnails }
 
@@ -81,6 +87,10 @@ export class DocumentViewerLayoutComponent extends React.Component<
         this.props.setActivePages([index])
       }
     })
+  }
+
+  protected createComment(text: string) {
+    this.props.createComment({ page: this.state.activePage, x: 10, y: 10, text })
   }
 
   /** triggered when the component will receive props */
@@ -186,6 +196,7 @@ export class DocumentViewerLayoutComponent extends React.Component<
               },
             }}>
             <Typography variant="h4">Comments</Typography>
+            <CreateComment createComment={this.createComment} />
             {this.props.comments.map(comment => (
               <CommentComponent key={comment.id} {...comment} />
             ))}

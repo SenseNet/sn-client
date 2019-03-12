@@ -14,3 +14,4 @@ export { ToggleWatermarkWidget, ToggleWatermarkComponent } from './ToggleWaterma
 export { ToggleCommentsWidget, ToggleComments } from './ToggleComments'
 export { ZoomInOutWidget } from './ZoomInOut'
 export { ZoomModeWidget } from './ZoomMode'
+export { CreateComment } from './CreateComment'
