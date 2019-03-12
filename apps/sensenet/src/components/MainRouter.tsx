@@ -46,9 +46,9 @@ const MainRouter: React.StatelessComponent<ReturnType<typeof mapStateToProps> & 
                 render={() => <ExploreComponent />}
                 authorize={() => true}
               />
-              <AuthorizedRoute path="/search" render={() => <SearchComponent />} authorize={() => true} />
-              <AuthorizedRoute path="/iam" render={() => <IamComponent />} authorize={() => true} />
-              <AuthorizedRoute path="/setup" render={() => <SetupComponent />} authorize={() => true} />
+              <AuthorizedRoute path="/:repo/search" render={() => <SearchComponent />} authorize={() => true} />
+              <AuthorizedRoute path="/:repo/iam" render={() => <IamComponent />} authorize={() => true} />
+              <AuthorizedRoute path="/:repo/setup" render={() => <SetupComponent />} authorize={() => true} />
               <AuthorizedRoute
                 path="/:repo/editBinary/:contentId?"
                 render={() => <EditBinary />}

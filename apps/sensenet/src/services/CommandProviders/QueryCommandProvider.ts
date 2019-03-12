@@ -8,13 +8,14 @@ import { PersonalSettings } from '../PersonalSettings'
 
 @Injectable()
 export class QueryCommandProvider implements CommandProvider {
-  constructor(private readonly injector: Injector, private readonly personalSettings: PersonalSettings) {}
+  constructor(public readonly injector: Injector, private readonly personalSettings: PersonalSettings) {}
 
   public shouldExec(searchTerm: string): boolean {
     return searchTerm[0] === '+'
   }
 
   public async getItems(query: string, repo: Repository): Promise<CommandPaletteItem[]> {
+    const ctx = new ContentContextProvider(repo)
     const extendedQuery = this.personalSettings.currentValue
       .getValue()
       .default.commandPalette.wrapQuery.replace('{0}', query)
@@ -31,7 +32,7 @@ export class QueryCommandProvider implements CommandProvider {
         ({
           primaryText: content.DisplayName || content.Name,
           secondaryText: content.Path,
-          url: this.injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(content, repo),
+          url: ctx.getPrimaryActionUrl(content),
           content,
           icon: content.Icon,
         } as CommandPaletteItem),

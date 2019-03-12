@@ -1,49 +1,45 @@
 import { ConstantContent } from '@sensenet/client-core'
 import React, { useContext, useState } from 'react'
-import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { InjectorContext } from '../../context/InjectorContext'
-import { RepositoryContext } from '../../context/RepositoryContext'
-import { ContentContextProvider } from '../../services/ContentContextProvider'
-import { rootStateType } from '../../store'
-import { left } from '../../store/Commander'
+import { ContentRoutingContext } from '../../context/ContentRoutingContext'
+import { CurrentAncestorsProvider } from '../../context/CurrentAncestors'
+import { CurrentChildrenProvider } from '../../context/CurrentChildren'
+import { CurrentContentProvider } from '../../context/CurrentContent'
 import { AddButton } from '../AddButton'
-import { createContentListPanel } from '../ContentListPanel'
+import { CollectionComponent } from '../ContentListPanel'
 
-const SimpleListControl = createContentListPanel(left, { fields: ['DisplayName'] })
-
-export const mapStateToProps = (state: rootStateType) => ({
-  parent: state.commander.left.parent,
-})
-
-export const SimpleListComponent: React.FunctionComponent<
-  RouteComponentProps<{ leftParent?: string }> & ReturnType<typeof mapStateToProps>
-> = props => {
+export const SimpleListComponent: React.FunctionComponent<RouteComponentProps<{ leftParent?: string }>> = props => {
   const getLeftFromPath = () => parseInt(props.match.params.leftParent as string, 10) || ConstantContent.PORTAL_ROOT.Id
-  const injector = useContext(InjectorContext)
   const [leftParentId, setLeftParentId] = useState(getLeftFromPath())
-  const repo = useContext(RepositoryContext)
+  const ctx = useContext(ContentRoutingContext)
 
   return (
     <div style={{ display: 'flex', width: '100%', height: '100%' }}>
-      <SimpleListControl
-        enableBreadcrumbs={true}
-        onActivateItem={item => {
-          props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item, repo))
-        }}
-        style={{ flexGrow: 1, flexShrink: 0, maxHeight: '100%' }}
-        onParentChange={p => {
-          setLeftParentId(p.Id)
-        }}
-        parentId={leftParentId}
-        onTabRequest={() => {
-          /** */
-        }}
-      />
-      <AddButton parent={props.parent} />
+      <CurrentContentProvider idOrPath={leftParentId}>
+        <CurrentChildrenProvider>
+          <CurrentAncestorsProvider>
+            <CollectionComponent
+              fields={['DisplayName']}
+              enableBreadcrumbs={true}
+              onActivateItem={item => {
+                props.history.push(ctx.getPrimaryActionUrl(item))
+              }}
+              style={{ flexGrow: 1, flexShrink: 0, maxHeight: '100%' }}
+              onParentChange={p => {
+                setLeftParentId(p.Id)
+              }}
+              parentId={leftParentId}
+              onTabRequest={() => {
+                /** */
+              }}
+            />
+            <AddButton />
+          </CurrentAncestorsProvider>
+        </CurrentChildrenProvider>
+      </CurrentContentProvider>
     </div>
   )
 }
 
-const connected = withRouter(connect(mapStateToProps)(SimpleListComponent))
+const connected = withRouter(SimpleListComponent)
 export { connected as SimpleList }

@@ -8,20 +8,18 @@ import Typography from '@material-ui/core/Typography'
 import Add from '@material-ui/icons/Add'
 import CloudUpload from '@material-ui/icons/CloudUpload'
 import { Upload } from '@sensenet/client-core'
-import { GenericContent, Schema } from '@sensenet/default-content-types'
+import { Schema } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
+import { CurrentContentContext } from '../context/CurrentContent'
 import { InjectorContext } from '../context/InjectorContext'
 import { RepositoryContext } from '../context/RepositoryContext'
 import { UploadTracker } from '../services/UploadTracker'
 import { Icon } from './Icon'
 
-export interface AddButtonProps {
-  parent: GenericContent
-}
-
-export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
+export const AddButton: React.FunctionComponent = () => {
   const injector = useContext(InjectorContext)
   const repo = useContext(RepositoryContext)
+  const parent = useContext(CurrentContentContext)
   const [showSelectType, setShowSelectType] = useState(false)
   const [allowedChildTypes, setAllowedChildTypes] = useState<Schema[]>([])
 
@@ -30,9 +28,9 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
 
   useEffect(() => {
     setAllowedChildTypes(
-      repo.schemas.getSchemaByName(props.parent.Type).AllowedChildTypes.map(type => repo.schemas.getSchemaByName(type)),
+      repo.schemas.getSchemaByName(parent.Type).AllowedChildTypes.map(type => repo.schemas.getSchemaByName(type)),
     )
-  }, [props.parent.Type])
+  }, [parent.Type])
 
   return (
     <div>
@@ -73,7 +71,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
                 setShowSelectType(false)
                 ev.target.files &&
                   Upload.fromFileList({
-                    parentPath: props.parent.Path,
+                    parentPath: parent.Path,
                     fileList: ev.target.files,
                     createFolders: true,
                     repository: repo,

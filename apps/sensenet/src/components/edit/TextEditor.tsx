@@ -3,11 +3,10 @@ import { PathHelper } from '@sensenet/client-utils'
 import { File as SnFile } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
-import { InjectorContext } from '../../context/InjectorContext'
+import { ContentRoutingContext } from '../../context/ContentRoutingContext'
 import { RepositoryContext } from '../../context/RepositoryContext'
 import { ResponsiveContext } from '../../context/ResponsiveContextProvider'
 import { ThemeContext } from '../../context/ThemeContext'
-import { ContentContextProvider } from '../../services/ContentContextProvider'
 
 export interface TextEditorProps {
   content: SnFile
@@ -16,19 +15,19 @@ export interface TextEditorProps {
 }
 
 export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
-  const injector = useContext(InjectorContext)
-  const contextProvider = injector.GetInstance(ContentContextProvider)
   const theme = useContext(ThemeContext)
   const platform = useContext(ResponsiveContext)
   const repo = useContext(RepositoryContext)
 
+  const ctx = useContext(ContentRoutingContext)
+
   const [textValue, setTextValue] = useState('')
-  const [language, setLanguage] = useState(contextProvider.getMonacoLanguage(props.content, repo.schemas))
-  const [uri, setUri] = useState<any>(contextProvider.getMonacoModelUri(props.content))
+  const [language, setLanguage] = useState(ctx.getMonacoLanguage(props.content))
+  const [uri, setUri] = useState<any>(ctx.getMonacoModelUri(props.content))
 
   useEffect(() => {
-    setUri(contextProvider.getMonacoModelUri(props.content))
-    setLanguage(contextProvider.getMonacoLanguage(props.content, repo.schemas))
+    setUri(ctx.getMonacoModelUri(props.content))
+    setLanguage(ctx.getMonacoLanguage(props.content))
     ;(async () => {
       if (props.loadContent) {
         /** */

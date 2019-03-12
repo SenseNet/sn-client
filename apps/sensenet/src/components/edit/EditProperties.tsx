@@ -3,9 +3,8 @@ import { EditView } from '@sensenet/controls-react'
 import React, { useContext } from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { InjectorContext } from '../../context/InjectorContext'
+import { ContentRoutingContext } from '../../context/ContentRoutingContext'
 import { RepositoryContext } from '../../context/RepositoryContext'
-import { ContentContextProvider } from '../../services/ContentContextProvider'
 import { rootStateType } from '../../store'
 import { loadContent } from '../../store/EditContent'
 import Breadcrumbs, { BreadcrumbItem } from '../Breadcrumbs'
@@ -26,12 +25,12 @@ const GenericContentEditor: React.FunctionComponent<
   if (props.error) {
     throw props.error
   }
+
+  const ctx = useContext(ContentRoutingContext)
+
   const repo = useContext(RepositoryContext)
   const contentId = parseInt(props.match.params.contentId as string, 10)
   props.loadContent(contentId, repo)
-
-  const injector = useContext(InjectorContext)
-
   return (
     <div style={{ width: '100%', height: '100%', padding: '1em', overflow: 'auto' }}>
       <Breadcrumbs
@@ -43,14 +42,14 @@ const GenericContentEditor: React.FunctionComponent<
             ({
               displayName: content.DisplayName || content.Name,
               title: content.Path,
-              url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(content, repo),
+              url: ctx.getPrimaryActionUrl(content),
               content,
             } as BreadcrumbItem),
         )}
         currentContent={{
           displayName: props.content.DisplayName || props.content.Name,
           title: props.content.Path,
-          url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(props.content, repo),
+          url: ctx.getPrimaryActionUrl(props.content),
           content: props.content,
         }}
       />

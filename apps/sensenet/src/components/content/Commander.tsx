@@ -1,14 +1,12 @@
 import { ConstantContent } from '@sensenet/client-core'
 import React, { useContext, useEffect, useState } from 'react'
 import { matchPath, RouteComponentProps, withRouter } from 'react-router'
-import { InjectorContext } from '../../context/InjectorContext'
+import { ContentRoutingContext } from '../../context/ContentRoutingContext'
+import { CurrentAncestorsProvider } from '../../context/CurrentAncestors'
+import { CurrentChildrenProvider } from '../../context/CurrentChildren'
+import { CurrentContentProvider } from '../../context/CurrentContent'
 import { RepositoryContext } from '../../context/RepositoryContext'
-import { ContentContextProvider } from '../../services/ContentContextProvider'
-import { left, right } from '../../store/Commander'
-import { createContentListPanel } from '../ContentListPanel'
-
-const LeftControl = createContentListPanel(left, { fields: ['DisplayName', 'CreatedBy'] })
-const RightControl = createContentListPanel(right, { fields: ['DisplayName', 'CreatedBy'] })
+import { CollectionComponent } from '../ContentListPanel'
 
 export interface CommanderRouteParams {
   folderId?: string
@@ -16,7 +14,7 @@ export interface CommanderRouteParams {
 }
 
 export const Commander: React.StatelessComponent<RouteComponentProps<CommanderRouteParams>> = props => {
-  const injector = useContext(InjectorContext)
+  const ctx = useContext(ContentRoutingContext)
   const repo = useContext(RepositoryContext)
   const getLeftFromPath = (params: CommanderRouteParams) =>
     parseInt(params.folderId as string, 10) || ConstantContent.PORTAL_ROOT.Id
@@ -51,38 +49,52 @@ export const Commander: React.StatelessComponent<RouteComponentProps<CommanderRo
       props.match.params.folderId !== leftParentId.toString() ||
       props.match.params.rightParent !== rightParentId.toString()
     ) {
-      props.history.push(`/content/${leftParentId}/${rightParentId}`)
+      props.history.push(`/${btoa(repo.configuration.repositoryUrl)}/content/${leftParentId}/${rightParentId}`)
     }
   }, [leftParentId, rightParentId])
 
   return (
     <div style={{ display: 'flex', width: '100%', height: '100%' }}>
-      <LeftControl
-        enableBreadcrumbs={true}
-        onActivateItem={item => {
-          props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item, repo))
-        }}
-        containerRef={r => setLeftPanelRef(r)}
-        style={{ flexGrow: 1, flexShrink: 0, maxHeight: '100%' }}
-        parentId={leftParentId}
-        onParentChange={p => {
-          setLeftParentId(p.Id)
-        }}
-        onTabRequest={() => _rightPanelRef && _rightPanelRef.focus()}
-      />
-      <RightControl
-        enableBreadcrumbs={true}
-        onActivateItem={item => {
-          props.history.push(injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(item, repo))
-        }}
-        containerRef={r => setRightPanelRef(r)}
-        parentId={rightParentId}
-        style={{ flexGrow: 1, flexShrink: 0, borderLeft: '1px solid rgba(255,255,255,0.3)', maxHeight: '100%' }}
-        onParentChange={p2 => {
-          setRightParentId(p2.Id)
-        }}
-        onTabRequest={() => _leftPanelRef && _leftPanelRef.focus()}
-      />
+      <CurrentContentProvider idOrPath={leftParentId}>
+        <CurrentChildrenProvider>
+          <CurrentAncestorsProvider>
+            <CollectionComponent
+              fields={['DisplayName', 'CreatedBy']}
+              enableBreadcrumbs={true}
+              onActivateItem={item => {
+                props.history.push(ctx.getPrimaryActionUrl(item))
+              }}
+              containerRef={r => setLeftPanelRef(r)}
+              style={{ flexGrow: 1, flexShrink: 0, maxHeight: '100%' }}
+              parentId={leftParentId}
+              onParentChange={p => {
+                setLeftParentId(p.Id)
+              }}
+              onTabRequest={() => _rightPanelRef && _rightPanelRef.focus()}
+            />
+          </CurrentAncestorsProvider>
+        </CurrentChildrenProvider>
+      </CurrentContentProvider>
+      <CurrentContentProvider idOrPath={rightParentId}>
+        <CurrentChildrenProvider>
+          <CurrentAncestorsProvider>
+            <CollectionComponent
+              fields={['DisplayName', 'CreatedBy']}
+              enableBreadcrumbs={true}
+              onActivateItem={item => {
+                props.history.push(ctx.getPrimaryActionUrl(item))
+              }}
+              containerRef={r => setRightPanelRef(r)}
+              parentId={rightParentId}
+              style={{ flexGrow: 1, flexShrink: 0, borderLeft: '1px solid rgba(255,255,255,0.3)', maxHeight: '100%' }}
+              onParentChange={p2 => {
+                setRightParentId(p2.Id)
+              }}
+              onTabRequest={() => _leftPanelRef && _leftPanelRef.focus()}
+            />
+          </CurrentAncestorsProvider>
+        </CurrentChildrenProvider>
+      </CurrentContentProvider>
     </div>
   )
 }

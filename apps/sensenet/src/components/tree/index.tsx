@@ -9,28 +9,25 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { Created } from '@sensenet/repository-events'
 import React, { useContext, useEffect, useState } from 'react'
 import { RepositoryContext } from '../../context//RepositoryContext'
+import { CurrentAncestorsContext } from '../../context/CurrentAncestors'
 import { InjectorContext } from '../../context/InjectorContext'
-import { rootStateType } from '../../store'
 import { DropFileArea } from '../DropFileArea'
 import { Icon } from '../Icon'
 
 export interface TreeProps {
   parentPath: string
-  ancestorPaths?: string[]
   onItemClick?: (item: GenericContent) => void
   activeItemId?: number
   loadOptions?: ODataParams<GenericContent>
   style?: React.CSSProperties
 }
 
-export const mapStateToProps = (state: rootStateType) => ({
-  currentItem: state.commander.left,
-})
-
 export const Tree: React.FunctionComponent<TreeProps> = props => {
   const [items, setItems] = useState<GenericContent[]>([])
   const [opened, setOpened] = useState<number[]>([])
   const [reloadTimestamp, setReloadTimestamp] = useState(new Date())
+  const ancestors = useContext(CurrentAncestorsContext)
+  const [ancestorPaths] = useState(ancestors.map(a => a.Path))
   const injector = useContext(InjectorContext)
   const repo = useContext(RepositoryContext)
   const eventHub = injector.getEventHub(repo.configuration.repositoryUrl)
@@ -73,8 +70,7 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
     <div style={props.style}>
       <List dense={true}>
         {items.map(content => {
-          const isOpened =
-            opened.includes(content.Id) || (props.ancestorPaths && props.ancestorPaths.includes(content.Path))
+          const isOpened = opened.includes(content.Id) || (ancestorPaths && ancestorPaths.includes(content.Path))
           return (
             <div key={content.Id}>
               <DropFileArea parent={content}>
@@ -95,12 +91,7 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
               </DropFileArea>
               <Collapse style={{ marginLeft: '1em' }} in={isOpened} timeout="auto" unmountOnExit={true}>
                 {isOpened ? (
-                  <Tree
-                    parentPath={content.Path}
-                    onItemClick={props.onItemClick}
-                    activeItemId={props.activeItemId}
-                    ancestorPaths={props.ancestorPaths}
-                  />
+                  <Tree parentPath={content.Path} onItemClick={props.onItemClick} activeItemId={props.activeItemId} />
                 ) : null}
               </Collapse>
             </div>

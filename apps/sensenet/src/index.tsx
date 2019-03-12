@@ -5,6 +5,7 @@ import { Provider } from 'react-redux'
 import { HashRouter, Route } from 'react-router-dom'
 import { DesktopLayout } from './components/layout/DesktopLayout'
 import { MainRouter } from './components/MainRouter'
+import { ContentRoutingContextProvider } from './context/ContentRoutingContext'
 import { InjectorContext } from './context/InjectorContext'
 import { PersonalSettingsContextProvider } from './context/PersonalSettingsContext'
 import { RepositoryContextProvider } from './context/RepositoryContext'
@@ -46,15 +47,17 @@ ReactDOM.render(
           <HashRouter>
             <Route path="/:repo?">
               <RepositoryContextProvider>
-                <SessionContextProvider>
-                  <ResponsiveContextProvider>
-                    <ThemeProvider theme={theme}>
-                      <DesktopLayout>
-                        <MainRouter />
-                      </DesktopLayout>{' '}
-                    </ThemeProvider>
-                  </ResponsiveContextProvider>
-                </SessionContextProvider>
+                <ContentRoutingContextProvider>
+                  <SessionContextProvider>
+                    <ResponsiveContextProvider>
+                      <ThemeProvider theme={theme}>
+                        <DesktopLayout>
+                          <MainRouter />
+                        </DesktopLayout>{' '}
+                      </ThemeProvider>
+                    </ResponsiveContextProvider>
+                  </SessionContextProvider>
+                </ContentRoutingContextProvider>
               </RepositoryContextProvider>
             </Route>
           </HashRouter>

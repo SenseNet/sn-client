@@ -1,9 +1,8 @@
 import React, { useContext } from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { InjectorContext } from '../../context/InjectorContext'
+import { ContentRoutingContext } from '../../context/ContentRoutingContext'
 import { RepositoryContext } from '../../context/RepositoryContext'
-import { ContentContextProvider } from '../../services/ContentContextProvider'
 import { rootStateType } from '../../store'
 import { loadContent } from '../../store/EditContent'
 import Breadcrumbs, { BreadcrumbItem } from '../Breadcrumbs'
@@ -26,9 +25,9 @@ const Editor: React.FunctionComponent<
   if (props.error) {
     throw props.error
   }
-  const injector = useContext(InjectorContext)
   const repo = useContext(RepositoryContext)
   const contentId = parseInt(props.match.params.contentId as string, 10)
+  const ctx = useContext(ContentRoutingContext)
   props.loadContent(contentId, repo)
   return (
     <div
@@ -49,14 +48,14 @@ const Editor: React.FunctionComponent<
             ({
               displayName: content.DisplayName || content.Name,
               title: content.Path,
-              url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(content, repo),
+              url: ctx.getPrimaryActionUrl(content),
               content,
             } as BreadcrumbItem),
         )}
         currentContent={{
           displayName: props.currentContent.DisplayName || props.currentContent.Name,
           title: props.currentContent.Path,
-          url: injector.GetInstance(ContentContextProvider).getPrimaryActionUrl(props.currentContent, repo),
+          url: ctx.getPrimaryActionUrl(props.currentContent),
           content: props.currentContent,
         }}
       />

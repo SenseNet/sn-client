@@ -10,19 +10,17 @@ import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew'
 import { FormsAuthenticationService, LoginState } from '@sensenet/client-core'
 import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { InjectorContext } from '../context/InjectorContext'
+import { ContentRoutingContext } from '../context/ContentRoutingContext'
 import { RepositoryContext } from '../context/RepositoryContext'
 import { SessionContext } from '../context/SessionContext'
 import { ThemeContext } from '../context/ThemeContext'
-import { ContentContextProvider } from '../services/ContentContextProvider'
 import { Icon } from './Icon'
 
 export const LogoutButton: React.FunctionComponent = () => {
   const session = useContext(SessionContext)
   const theme = useContext(ThemeContext)
-  const injector = useContext(InjectorContext)
   const repo = useContext(RepositoryContext)
-  const ctx = injector.GetInstance(ContentContextProvider)
+  const ctx = useContext(ContentRoutingContext)
   const [showLogout, setShowLogout] = useState(false)
 
   if (session.state !== LoginState.Authenticated) {
@@ -49,7 +47,7 @@ export const LogoutButton: React.FunctionComponent = () => {
               {repo.configuration.repositoryUrl}
             </Link>{' '}
             as{' '}
-            <Link to={ctx.getPrimaryActionUrl(session.currentUser, repo)} onClick={() => setShowLogout(false)}>
+            <Link to={ctx.getPrimaryActionUrl(session.currentUser)} onClick={() => setShowLogout(false)}>
               {session.currentUser.DisplayName || session.currentUser.Name}
             </Link>
             . <br />
