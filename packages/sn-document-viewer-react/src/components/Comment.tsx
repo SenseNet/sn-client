@@ -10,18 +10,16 @@ import { FunctionComponent } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import { Comment as CommentType } from '../models/Comment'
-import { RootReducerType } from '../store'
-
-/**
- * Comment props interface.
- */
-export interface CommentProps extends CommentType {
-  delete: (id: string) => void
-}
+import { componentType } from '../services'
+import { deleteComment, RootReducerType } from '../store'
 
 const mapStateToProps = (state: RootReducerType) => ({
   localization: state.sensenetDocumentViewer.localization,
 })
+
+const mapDispatchToProps = {
+  deleteComment,
+}
 
 const StyledCardContent = styled(CardContent)`
   font-size: 14px;
@@ -30,20 +28,22 @@ const StyledCardContent = styled(CardContent)`
   word-wrap: break-word;
 `
 const DeleteButton = (props: CommentPropType) => (
-  <Button size="small" onClick={() => props.delete(props.id)}>
+  <Button size="small" onClick={() => props.deleteComment(props.id)}>
     {props.localization.delete || 'delete'}
   </Button>
 )
 
-type CommentPropType = ReturnType<typeof mapStateToProps> & CommentProps
+/**
+ * Comment prop type
+ */
+export type CommentPropType = componentType<typeof mapStateToProps, typeof mapDispatchToProps, CommentType>
 
 const MAX_TEXT_LENGTH = 160
 
 /**
  * Represents a single comment component.
- * @param {CommentPropType} props
  */
-export const CommentComponent: FunctionComponent<CommentPropType> = (props: CommentPropType) => {
+export const CommentComponent: FunctionComponent<CommentPropType> = props => {
   const isLongText = props.text && props.text.length > MAX_TEXT_LENGTH
   const [isOpen, setIsOpen] = useState(!isLongText)
   return (
@@ -71,4 +71,7 @@ export const CommentComponent: FunctionComponent<CommentPropType> = (props: Comm
   )
 }
 
-export default connect(mapStateToProps)(CommentComponent)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(CommentComponent)

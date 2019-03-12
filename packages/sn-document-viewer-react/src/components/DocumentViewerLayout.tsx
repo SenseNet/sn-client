@@ -19,6 +19,7 @@ const mapStateToProps = (state: RootReducerType) => {
     customZoomLevel: state.sensenetDocumentViewer.viewer.customZoomLevel,
     showThumbnails: state.sensenetDocumentViewer.viewer.showThumbnails,
     showComments: state.sensenetDocumentViewer.viewer.showComments,
+    comments: state.sensenetDocumentViewer.documentState.comments,
     fitRelativeZoomLevel: state.sensenetDocumentViewer.viewer.fitRelativeZoomLevel,
   }
 }
@@ -185,21 +186,9 @@ export class DocumentViewerLayoutComponent extends React.Component<
               },
             }}>
             <Typography variant="h4">Comments</Typography>
-            <CommentComponent
-              createdBy={{
-                avatarUrl: 'https://cdn.images.express.co.uk/img/dynamic/79/590x/486693_1.jpg',
-                displayName: 'Alba',
-                id: 1,
-                path: 'some/path',
-                userName: 'some/name',
-              }}
-              page={1}
-              x={10}
-              y={10}
-              text="Some comment"
-              id="aa"
-              delete={a => console.log(a)}
-            />
+            {this.props.comments.map(comment => (
+              <CommentComponent key={comment.id} {...comment} />
+            ))}
           </Drawer>
         </div>
       </div>

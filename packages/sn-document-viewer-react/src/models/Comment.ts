@@ -1,3 +1,4 @@
+import { Omit } from 'react-redux'
 /**
  * User properties who created the comment
  */
@@ -24,4 +25,4 @@ export interface Comment {
 /**
  * Comment object without the created by User
  */
-export type CommentWithoutCreatedBy = Pick<Comment, Exclude<keyof Comment, 'createdBy'>>
+export type CommentWithoutCreatedByAndId = Omit<Comment, 'createdBy' | 'id'>

@@ -90,7 +90,15 @@ export const exampleSettings = new DocumentViewerSettings({
       }
     },
     deletePreviewComment: async (documentData, commentId) => {
-      throw new Error('not implemented')
+      const response = await fetch(`${documentData.hostName}/odata.svc/${documentData.idOrPath}/DeletePreviewComment`, {
+        method: 'POST',
+        body: JSON.stringify({ id: commentId }),
+        credentials: 'include',
+      })
+      if (response.ok) {
+        const responseBody = await response.json()
+        return responseBody
+      }
     },
     getPreviewComments: async (documentData, page) => {
       const response = await fetch(

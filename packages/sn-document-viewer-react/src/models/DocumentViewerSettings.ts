@@ -1,5 +1,5 @@
 import { DocumentData, PreviewImageData } from '.'
-import { Comment } from './Comment'
+import { Comment, CommentWithoutCreatedByAndId } from './Comment'
 
 /**
  * Main settings for the Document Viewer component
@@ -59,8 +59,8 @@ export interface DocumentViewerSettingsOptions {
    */
   commentActions: {
     getPreviewComments: (document: DocumentData, page: number) => Promise<Comment[]>
-    addPreviewComment: (document: DocumentData, comment: Comment) => Promise<Comment>
-    deletePreviewComment: (document: DocumentData, commentId: number) => Promise<{ modified: boolean }>
+    addPreviewComment: (document: DocumentData, comment: CommentWithoutCreatedByAndId) => Promise<Comment>
+    deletePreviewComment: (document: DocumentData, commentId: string) => Promise<{ modified: boolean }>
   }
 }
 
@@ -70,8 +70,8 @@ export interface DocumentViewerSettingsOptions {
 export class DocumentViewerSettings implements DocumentViewerSettingsOptions {
   public commentActions!: {
     getPreviewComments: (document: DocumentData, page: number) => Promise<Comment[]>
-    addPreviewComment: (document: DocumentData, comment: Comment) => Promise<Comment>
-    deletePreviewComment: (document: DocumentData, commentId: number) => Promise<{ modified: boolean }>
+    addPreviewComment: (document: DocumentData, comment: CommentWithoutCreatedByAndId) => Promise<Comment>
+    deletePreviewComment: (document: DocumentData, commentId: string) => Promise<{ modified: boolean }>
   }
   public canEditDocument!: (document: DocumentData) => Promise<boolean>
   public saveChanges!: (document: DocumentData, pages: PreviewImageData[]) => Promise<void>
