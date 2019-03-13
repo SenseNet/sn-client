@@ -1,15 +1,12 @@
 import TableCell from '@material-ui/core/TableCell'
-import { debounce, PathHelper } from '@sensenet/client-utils'
+import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
-import { Created } from '@sensenet/repository-events'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { CurrentAncestorsContext } from '../context/CurrentAncestors'
 import { CurrentChildrenContext } from '../context/CurrentChildren'
 import { CurrentContentContext } from '../context/CurrentContent'
-import { InjectorContext } from '../context/InjectorContext'
 import { RepositoryContext } from '../context/RepositoryContext'
-import { UploadTracker } from '../services/UploadTracker'
 import { ContentBreadcrumbs } from './ContentBreadcrumbs'
 import { DropFileArea } from './DropFileArea'
 import { Icon } from './Icon'
@@ -32,45 +29,8 @@ export const CollectionComponent: React.StatelessComponent<{
 
   const [activeContent, setActiveContent] = useState<GenericContent>(children[0])
   const [selected, setSelected] = useState<GenericContent[]>([])
-  const injector = useContext(InjectorContext)
   const [isFocused, setIsFocused] = useState(false)
   const repo = useContext(RepositoryContext)
-  const eventHub = injector.getEventHub(repo.configuration.repositoryUrl)
-  const uploadTracker = injector.GetInstance(UploadTracker)
-  const update = debounce(() => {
-    props.requestReload && props.requestReload()
-  }, 100)
-
-  const handleCreate = (c: Created) => {
-    if ((c.content as GenericContent).ParentId === props.parentId) {
-      update()
-    }
-    if (parent && PathHelper.isAncestorOf(parent.Path, c.content.Path)) {
-      update()
-    }
-  }
-
-  useEffect(() => {
-    const subscriptions = [
-      eventHub.onContentCreated.subscribe(handleCreate),
-      eventHub.onContentCopied.subscribe(handleCreate),
-      eventHub.onContentMoved.subscribe(handleCreate),
-      uploadTracker.onUploadProgress.subscribe(pr => {
-        if (pr.completed && pr.createdContent) {
-          if (PathHelper.getParentPath(pr.createdContent.Url) === PathHelper.trimSlashes(parent.Path)) {
-            update()
-          }
-        }
-      }),
-      eventHub.onContentDeleted.subscribe(d => {
-        if (PathHelper.getParentPath(d.contentData.Path) === PathHelper.trimSlashes(parent.Path)) {
-          update()
-        }
-      }),
-    ]
-
-    return () => subscriptions.forEach(s => s.dispose())
-  }, [props.parentId, repo])
 
   let searchString = ''
   const runSearch = debounce(() => {
