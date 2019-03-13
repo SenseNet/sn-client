@@ -15,6 +15,8 @@ describe('Document Viewer Layout component', () => {
     showThumbnails: true,
     showComments: false,
     zoomMode: 'custom',
+    comments: [],
+    createComment: jest.fn(),
   }
   it('should render without crashing', () => {
     const wrapper = shallow(

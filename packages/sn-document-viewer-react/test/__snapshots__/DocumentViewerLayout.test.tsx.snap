@@ -92,19 +92,8 @@ exports[`Document Viewer Layout component should render without crashing 1`] = `
       >
         Comments
       </WithStyles(Typography)>
-      <Connect(Component)
-        createdBy={
-          Object {
-            "avatarUrl": "https://cdn.images.express.co.uk/img/dynamic/79/590x/486693_1.jpg",
-            "displayName": "Alba",
-            "id": 1,
-            "path": "some/path",
-            "userName": "some/name",
-          }
-        }
-        delete={[Function]}
-        id="aa"
-        text="Some comment"
+      <CreateComment
+        createComment={[Function]}
       />
     </WithStyles(Drawer)>
   </div>
@@ -203,19 +192,8 @@ exports[`Document Viewer Layout component should render without crashing 2`] = `
       >
         Comments
       </WithStyles(Typography)>
-      <Connect(Component)
-        createdBy={
-          Object {
-            "avatarUrl": "https://cdn.images.express.co.uk/img/dynamic/79/590x/486693_1.jpg",
-            "displayName": "Alba",
-            "id": 1,
-            "path": "some/path",
-            "userName": "some/name",
-          }
-        }
-        delete={[Function]}
-        id="aa"
-        text="Some comment"
+      <CreateComment
+        createComment={[Function]}
       />
     </WithStyles(Drawer)>
   </div>
