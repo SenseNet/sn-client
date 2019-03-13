@@ -24,15 +24,15 @@ export interface TreeProps {
 
 export const Tree: React.FunctionComponent<TreeProps> = props => {
   const [items, setItems] = useState<GenericContent[]>([])
-  const [opened, setOpened] = useState<number[]>([])
-  const [reloadTimestamp, setReloadTimestamp] = useState(new Date())
   const ancestors = useContext(CurrentAncestorsContext)
-  const [ancestorPaths] = useState(ancestors.map(a => a.Path))
+  const [opened, setOpened] = useState<number[]>([])
+  const [reloadToken, setReloadToken] = useState(0)
+  const [ancestorPaths, setAncestorPaths] = useState(ancestors.map(a => a.Path))
   const injector = useContext(InjectorContext)
   const repo = useContext(RepositoryContext)
   const eventHub = injector.getEventHub(repo.configuration.repositoryUrl)
   const update = debounce(() => {
-    setReloadTimestamp(new Date())
+    setReloadToken(reloadToken + 1)
   }, 100)
   const handleCreate = (c: Created) => {
     if (
@@ -43,6 +43,10 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
       update()
     }
   }
+
+  useEffect(() => {
+    setAncestorPaths(ancestors.map(a => a.Path))
+  }, [ancestors])
 
   useEffect(() => {
     const subscriptions = [
@@ -64,7 +68,7 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
       setItems(children.d.results)
     })()
     return () => subscriptions.forEach(s => s.dispose())
-  }, [reloadTimestamp])
+  }, [reloadToken])
 
   return (
     <div style={props.style}>
