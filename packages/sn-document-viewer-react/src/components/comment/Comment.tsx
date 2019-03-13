@@ -12,6 +12,7 @@ import styled from 'styled-components'
 import { Comment as CommentType } from '../../models/Comment'
 import { componentType } from '../../services'
 import { deleteComment, RootReducerType } from '../../store'
+import { DeleteButton } from './DeleteCommentButton'
 
 const mapStateToProps = (state: RootReducerType) => ({
   localization: state.sensenetDocumentViewer.localization,
@@ -27,11 +28,6 @@ const StyledCardContent = styled(CardContent)`
   line-height: 20px;
   word-wrap: break-word;
 `
-const DeleteButton = (props: CommentPropType) => (
-  <Button size="small" onClick={() => props.deleteComment(props.id)}>
-    {props.localization.delete || 'delete'}
-  </Button>
-)
 
 /**
  * Comment prop type

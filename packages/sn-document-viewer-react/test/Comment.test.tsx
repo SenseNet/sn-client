@@ -4,7 +4,8 @@ import { mount } from 'enzyme'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
-import ConnectedComment, { CommentComponent, CommentPropType } from '../src/components/Comment'
+import ConnectedComment, { CommentComponent, CommentPropType } from '../src/components/comment/Comment'
+import { DeleteButton } from '../src/components/comment/DeleteCommentButton'
 import { CreatedByUser } from '../src/models'
 import { rootReducer } from '../src/store'
 
@@ -82,7 +83,7 @@ describe('Comment component', () => {
 
   it('should show delete button when text is short', () => {
     const wrapper = mount(<CommentComponent {...defaultProps} />)
-    expect(wrapper.find('DeleteButton').text()).toBe('delete')
+    expect(wrapper.find(DeleteButton).text()).toBe('delete')
   })
 
   it('should show localized delete button', () => {
@@ -91,15 +92,6 @@ describe('Comment component', () => {
         <ConnectedComment {...defaultProps} />
       </Provider>,
     )
-    expect(wrapper.find('DeleteButton').text()).toBe('Delete')
-  })
-
-  it('should call delete when delete button is clicked', () => {
-    const deleteFn = jest.fn()
-    const wrapper = mount(<CommentComponent {...defaultProps} deleteComment={deleteFn} />)
-    const deleteButton = wrapper.find(Button).last()
-    deleteButton.simulate('click')
-    expect(deleteFn).toBeCalled()
-    expect(deleteFn).toBeCalledWith('a')
+    expect(wrapper.find(DeleteButton).text()).toBe('Delete')
   })
 })
