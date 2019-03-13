@@ -34,8 +34,13 @@ languages.json.jsonDefaults.setDiagnosticsOptions({
                 type: 'string',
                 description: 'The path for the repository, e.g.: https://my-sensenet-repository.org',
               },
-              userName: {
+              loginName: {
                 type: 'string',
+                description: "The last user you've logged in with",
+              },
+              displayName: {
+                type: 'string',
+                description: 'An optional user friendly name to display when referencing this repository',
               },
             },
           },

@@ -1,16 +1,10 @@
 import { LoginState } from '@sensenet/client-core'
 import React, { lazy, Suspense, useContext } from 'react'
-import { connect } from 'react-redux'
 import { Route, RouteComponentProps, Switch, withRouter } from 'react-router'
 import { SessionContext } from '../context/SessionContext'
-import { rootStateType } from '../store'
 import { AuthorizedRoute } from './AuthorizedRoute'
 import { ErrorBoundary } from './ErrorBoundary'
 import { FullScreenLoader } from './FullScreenLoader'
-
-const mapStateToProps = (state: rootStateType) => ({
-  repositoryUrl: state.persistedState.lastRepositoryUrl,
-})
 
 const ExploreComponent = lazy(async () => await import(/* webpackChunkName: "content" */ './content'))
 const DashboardComponent = lazy(async () => await import(/* webpackChunkName: "dashboard" */ './dashboard'))
@@ -27,7 +21,7 @@ const PersonalSettingsEditor = lazy(
   async () => await import(/* webpackChunkName: "PersonalSettingsEditor" */ './edit/PersonalSettingsEditor'),
 )
 
-const MainRouter: React.StatelessComponent<ReturnType<typeof mapStateToProps> & RouteComponentProps> = () => {
+const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
   const sessionContext = useContext(SessionContext)
 
   return (
@@ -75,6 +69,6 @@ const MainRouter: React.StatelessComponent<ReturnType<typeof mapStateToProps> & 
   )
 }
 
-const connectedComponent = withRouter(connect(mapStateToProps)(MainRouter))
+const connectedComponent = withRouter(MainRouter)
 
 export { connectedComponent as MainRouter }

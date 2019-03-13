@@ -40,9 +40,12 @@ const mapDispatchToProps = {
 }
 
 export class CommandPaletteComponent extends React.Component<
-  ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & RouteComponentProps
+  ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & RouteComponentProps,
+  { delayedOpened: boolean }
 > {
   private containerRef?: HTMLDivElement
+
+  public state: { delayedOpened: boolean } = { delayedOpened: false }
 
   public static contextType = RepositoryContext
 
@@ -98,6 +101,22 @@ export class CommandPaletteComponent extends React.Component<
     this.props.history.push(suggestion.suggestion.url)
   }
 
+  private setDelayedOpenedState = debounce((value: boolean) => {
+    this.setState({ delayedOpened: value })
+  }, 370)
+
+  public componentDidUpdate(prevProps: CommandPaletteComponent['props']) {
+    if (this.props.isOpened && !prevProps.isOpened) {
+      if (this.containerRef) {
+        const input = this.containerRef.querySelector('input')
+        if (input) {
+          input.focus()
+        }
+      }
+    }
+    this.setDelayedOpenedState(this.props.isOpened)
+  }
+
   public render() {
     const inputProps: InputProps<CommandPaletteItem> = {
       value: this.props.inputValue || '',
@@ -107,22 +126,36 @@ export class CommandPaletteComponent extends React.Component<
       onBlur: this.props.close,
     }
 
-    if (!this.props.isOpened) {
-      return (
-        <Tooltip style={{ flex: 1, justifyContent: 'start' }} placeholder="bottom" title="Show Command Palette">
-          <div>
-            <IconButton onClick={this.props.open}>
-              <KeyboardArrowRightTwoTone />
-            </IconButton>
-          </div>
-        </Tooltip>
-      )
-    }
-
     return (
-      <div style={{ flex: 1, padding: '0 2em' }}>
-        <ClickAwayListener onClickAway={this.props.close}>
-          <div ref={r => (r ? (this.containerRef = r) : null)}>
+      <ClickAwayListener onClickAway={this.props.close}>
+        <div
+          style={{
+            flex: 1,
+            display: 'flex',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            border: this.props.isOpened ? '1px solid #13a5ad' : '',
+            backgroundColor: this.props.isOpened ? 'rgba(255,255,255,.10)' : 'transparent',
+          }}>
+          <Tooltip style={{}} placeholder="bottom-end" title="Show Command Palette">
+            <IconButton
+              onClick={this.props.open}
+              disabled={this.props.isOpened}
+              style={{ padding: this.props.isOpened ? 0 : undefined }}>
+              <KeyboardArrowRightTwoTone />
+              {this.props.isOpened ? '' : '_'}
+            </IconButton>
+          </Tooltip>
+
+          <div
+            ref={r => (r ? (this.containerRef = r) : null)}
+            style={{
+              overflow: 'visible',
+              transition:
+                'width cubic-bezier(0.230, 1.000, 0.320, 1.000) 350ms, opacity cubic-bezier(0.230, 1.000, 0.320, 1.000) 250ms',
+              opacity: this.props.isOpened ? 1 : 0,
+              width: this.props.isOpened ? '100%' : 0,
+            }}>
             <Autosuggest<CommandPaletteItem>
               theme={{
                 suggestionsList: {
@@ -135,14 +168,14 @@ export class CommandPaletteComponent extends React.Component<
                   padding: '5px',
                   fontFamily: 'monospace',
                   color: 'white',
-                  border: '1px solid #333',
-                  backgroundColor: 'rgba(255,255,255,.10)',
+                  backgroundColor: 'transparent',
+                  border: 'none',
                 },
                 inputFocused: {
-                  border: '1px solid #13a5ad',
+                  outlineWidth: 0,
                 },
               }}
-              alwaysRenderSuggestions={true}
+              alwaysRenderSuggestions={this.state.delayedOpened}
               suggestions={this.props.items}
               highlightFirstSuggestion={true}
               onSuggestionSelected={this.handleSelectSuggestion}
@@ -159,8 +192,8 @@ export class CommandPaletteComponent extends React.Component<
               inputProps={inputProps}
             />
           </div>
-        </ClickAwayListener>
-      </div>
+        </div>
+      </ClickAwayListener>
     )
   }
 }

@@ -58,6 +58,7 @@ export const LogoutButton: React.FunctionComponent = () => {
           <Button onClick={() => setShowLogout(false)}>Cancel</Button>
           <Button
             onClick={async () => {
+              setShowLogout(false)
               try {
                 await repo.authentication.logout()
               } catch {

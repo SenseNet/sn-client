@@ -6,10 +6,12 @@ import Typography from '@material-ui/core/Typography'
 import React, { useContext, useState } from 'react'
 import { InjectorContext } from '../context/InjectorContext'
 import { PersonalSettingsContext } from '../context/PersonalSettingsContext'
+import { RepositoryContext } from '../context/RepositoryContext'
 import { PersonalSettings } from '../services/PersonalSettings'
-
+import { RepositorySelector } from './RepositorySelector'
 export const Login: React.FunctionComponent = () => {
   const injector = useContext(InjectorContext)
+  const repo = useContext(RepositoryContext)
   const personalSettings = useContext(PersonalSettingsContext)
   const settingsManager = injector.GetInstance(PersonalSettings)
 
@@ -17,7 +19,7 @@ export const Login: React.FunctionComponent = () => {
 
   const [userName, setUserName] = useState((existingRepo && existingRepo.loginName) || '')
   const [password, setPassword] = useState('')
-  const [url, setUrl] = useState(personalSettings.lastRepository)
+  const [url, setUrl] = useState(repo.configuration.repositoryUrl)
 
   return (
     <Paper
@@ -25,9 +27,9 @@ export const Login: React.FunctionComponent = () => {
       <Typography variant="h4">Login</Typography>
       <form
         onSubmit={() => {
-          const repo = injector.getRepository(url)
+          const repoToLogin = injector.getRepository(url)
           personalSettings.lastRepository = url
-          repo.authentication.login(userName, password).then(success => {
+          repoToLogin.authentication.login(userName, password).then(success => {
             if (success) {
               const existing = personalSettings.repositories.find(i => i.url === url)
               if (!existing) {
@@ -72,7 +74,7 @@ export const Login: React.FunctionComponent = () => {
           label="Repository URL"
           fullWidth={true}
           type="url"
-          defaultValue={personalSettings.lastRepository}
+          defaultValue={repo.configuration.repositoryUrl}
           onChange={ev => {
             setUrl(ev.target.value)
           }}

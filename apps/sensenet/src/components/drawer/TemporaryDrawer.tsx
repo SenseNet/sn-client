@@ -13,15 +13,18 @@ import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 import { matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
 import { PersonalSettingsContext } from '../../context/PersonalSettingsContext'
+import { RepositoryContext } from '../../context/RepositoryContext'
 import { ResponsivePersonalSetttings } from '../../context/ResponsiveContextProvider'
 import { SessionContext } from '../../context/SessionContext'
 import { ThemeContext } from '../../context/ThemeContext'
+import { LogoutButton } from '../LogoutButton'
 import { UserAvatar } from '../UserAvatar'
 import { getAllowedDrawerItems } from './Items'
 
 const TemporaryDrawer: React.StatelessComponent<RouteComponentProps & { isOpened: boolean }> = props => {
   const settings = useContext(ResponsivePersonalSetttings)
   const personalSettings = useContext(PersonalSettingsContext)
+  const repo = useContext(RepositoryContext)
   const theme = useContext(ThemeContext)
   const session = useContext(SessionContext)
   const [opened, setOpened] = useState(false)
@@ -97,13 +100,17 @@ const TemporaryDrawer: React.StatelessComponent<RouteComponentProps & { isOpened
             <ListItemIcon>
               <UserAvatar user={session.currentUser} />
             </ListItemIcon>
-            <ListItemText primary={session.currentUser.DisplayName || session.currentUser.Name} />
+            <ListItemText
+              primary={session.currentUser.DisplayName || session.currentUser.Name}
+              secondary={repo.configuration.repositoryUrl}
+            />
             <ListItemSecondaryAction>
               <Link to={`/personalSettings`} style={{ textDecoration: 'none' }} onClick={() => setOpened(false)}>
                 <IconButton title="Edit personal settings">
                   <Settings />
                 </IconButton>
               </Link>
+              <LogoutButton />
             </ListItemSecondaryAction>
           </ListItem>
         </Paper>

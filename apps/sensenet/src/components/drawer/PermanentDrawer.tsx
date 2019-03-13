@@ -12,18 +12,19 @@ import Settings from '@material-ui/icons/Settings'
 import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import { Link, matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
-import { PersonalSettingsContext } from '../../context/PersonalSettingsContext'
+import { RepositoryContext } from '../../context/RepositoryContext'
 import { ResponsivePersonalSetttings } from '../../context/ResponsiveContextProvider'
 import { SessionContext } from '../../context/SessionContext'
 import { ThemeContext } from '../../context/ThemeContext'
+import { LogoutButton } from '../LogoutButton'
 import { UserAvatar } from '../UserAvatar'
 import { getAllowedDrawerItems } from './Items'
 
 const PermanentDrawer: React.StatelessComponent<RouteComponentProps> = props => {
   const settings = useContext(ResponsivePersonalSetttings)
-  const personalSettings = useContext(PersonalSettingsContext)
   const theme = useContext(ThemeContext)
   const session = useContext(SessionContext)
+  const repo = useContext(RepositoryContext)
 
   const [opened, setOpened] = useState(settings.drawer.type === 'permanent')
   const [items, setItems] = useState(getAllowedDrawerItems(session.groups))
@@ -39,7 +40,7 @@ const PermanentDrawer: React.StatelessComponent<RouteComponentProps> = props => 
       <List
         dense={true}
         style={{
-          width: opened ? 270 : 55,
+          width: opened ? 450 : 55,
           height: '100%',
           flexGrow: 1,
           flexShrink: 0,
@@ -71,7 +72,7 @@ const PermanentDrawer: React.StatelessComponent<RouteComponentProps> = props => 
                 </ListItem>
               ) : (
                 <NavLink
-                  to={`/${btoa(personalSettings.lastRepository)}${item.url}`}
+                  to={`/${btoa(repo.configuration.repositoryUrl)}${item.url}`}
                   activeStyle={{ opacity: 1 }}
                   style={{ textDecoration: 'none', opacity: 0.54 }}
                   key={item.primaryText}>
@@ -98,36 +99,43 @@ const PermanentDrawer: React.StatelessComponent<RouteComponentProps> = props => 
                 <ListItemIcon>
                   <UserAvatar user={session.currentUser} />
                 </ListItemIcon>
-                <ListItemText primary={session.currentUser.DisplayName || session.currentUser.Name} />
+                <ListItemText
+                  primary={session.currentUser.DisplayName || session.currentUser.Name}
+                  secondary={repo.configuration.repositoryUrl}
+                />
                 <ListItemSecondaryAction>
                   <Link to={`/personalSettings`} style={{ textDecoration: 'none' }}>
                     <IconButton title="Edit personal settings">
                       <Settings />
                     </IconButton>
                   </Link>
+                  <LogoutButton />
                 </ListItemSecondaryAction>
               </ListItem>
             </Paper>
           ) : (
-            <NavLink
-              to={'/personalSettings'}
-              activeStyle={{ opacity: 1 }}
-              style={{ textDecoration: 'none', opacity: 0.54 }}
-              key={'personalSettings'}>
-              <ListItem button={true}>
-                <Tooltip
-                  title={
-                    <React.Fragment>
-                      {'Personal settings'} <br /> {'Customize the application behavior'}
-                    </React.Fragment>
-                  }
-                  placement="right">
-                  <ListItemIcon>
-                    <Settings />
-                  </ListItemIcon>
-                </Tooltip>
-              </ListItem>
-            </NavLink>
+            <>
+              <NavLink
+                to={'/personalSettings'}
+                activeStyle={{ opacity: 1 }}
+                style={{ textDecoration: 'none', opacity: 0.54 }}
+                key={'personalSettings'}>
+                <ListItem button={true}>
+                  <Tooltip
+                    title={
+                      <React.Fragment>
+                        {'Personal settings'} <br /> {'Customize the application behavior'}
+                      </React.Fragment>
+                    }
+                    placement="right">
+                    <ListItemIcon>
+                      <Settings />
+                    </ListItemIcon>
+                  </Tooltip>
+                </ListItem>
+              </NavLink>
+              <LogoutButton />
+            </>
           )}
 
           {settings.drawer.type === 'mini-variant' ? (
