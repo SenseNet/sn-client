@@ -8,7 +8,6 @@ import { InjectorContext } from '../context/InjectorContext'
 import { PersonalSettingsContext } from '../context/PersonalSettingsContext'
 import { RepositoryContext } from '../context/RepositoryContext'
 import { PersonalSettings } from '../services/PersonalSettings'
-import { RepositorySelector } from './RepositorySelector'
 export const Login: React.FunctionComponent = () => {
   const injector = useContext(InjectorContext)
   const repo = useContext(RepositoryContext)
