@@ -46,18 +46,18 @@ export class DefaultAvatarTemplate extends Component<DefaultAvatarTemplateProps,
    * @return {ReactElement} markup
    */
   public render() {
-    const { url } = this.props
+    const { actionName, readOnly, repositoryUrl, url } = this.props
     return (
       <ListItem button={true} style={styles.listItem}>
         <ListItemAvatar>
           {
             <Avatar
-              src={url ? `${this.props.repositoryUrl}${url}` : `${this.props.repositoryUrl}${DEFAULT_AVATAR_PATH}`}
+              src={url ? `${repositoryUrl}${url}` : `${repositoryUrl}${DEFAULT_AVATAR_PATH}`}
               style={styles.avatar}
             />
           }
         </ListItemAvatar>
-        {this.props.actionName && this.props.actionName !== 'browse' && !this.props.readOnly ? (
+        {actionName && actionName !== 'browse' && !readOnly ? (
           <ListItemSecondaryAction>
             {url ? (
               <div>
