@@ -6,7 +6,7 @@ import { User } from '@sensenet/default-content-types'
 import { ReactReferenceGridFieldSetting } from '../ReferenceGrid/ReferenceGridFieldSettings'
 
 /**
- * Interface for ReactReferenceGridFieldSetting properties
+ * Interface for ReactAvatarFieldSetting
  */
 export interface ReactAvatarFieldSetting<T extends User, K extends keyof T>
   extends ReactReferenceGridFieldSetting<T, K> {
