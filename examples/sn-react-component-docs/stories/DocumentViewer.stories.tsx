@@ -1,4 +1,4 @@
-import { CommentComponent } from '@sensenet/document-viewer-react/src/components/Comment'
+import { CommentComponent } from '@sensenet/document-viewer-react/src/components'
 import { CreatedByUser } from '@sensenet/document-viewer-react/src/models'
 import { action } from '@storybook/addon-actions'
 import { object, text, withKnobs } from '@storybook/addon-knobs'
@@ -26,7 +26,7 @@ storiesOf('DocumentViewer', module)
       page={1}
       x={10}
       y={10}
-      delete={action('delete')}
+      deleteComment={action('delete')}
       id={text('id', 'randomId')}
       localization={{} as any}
       text={text(
@@ -43,7 +43,7 @@ storiesOf('DocumentViewer', module)
       page={1}
       x={10}
       y={10}
-      delete={action('delete')}
+      deleteComment={action('delete')}
       id={text('id', 'randomId')}
       localization={{} as any}
       text={text('commentBody', 'Lorem Ipsum is simply dummy text')}
