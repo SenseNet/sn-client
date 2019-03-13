@@ -8,7 +8,6 @@ import { ReactReferenceGridFieldSetting } from '../ReferenceGrid/ReferenceGridFi
 /**
  * Interface for ReactReferenceGridFieldSetting properties
  */
-// tslint:disable-next-line:no-empty-interface
 export interface ReactAvatarFieldSetting<T extends User, K extends keyof T>
   extends ReactReferenceGridFieldSetting<T, K> {
   /**
