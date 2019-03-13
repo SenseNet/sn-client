@@ -100,7 +100,7 @@ class GroupsMenu extends React.Component<GroupsMenuProps, {}> {
           onClick={_e => this.handleMenuItemClick('groups')}>
           <Icon
             className={active ? classes.iconWhiteActive : classes.iconWhite}
-            color="primary"
+            color={active ? 'primary' : 'inherit'}
             type={iconType.materialui}
             iconName={item.icon}
           />
