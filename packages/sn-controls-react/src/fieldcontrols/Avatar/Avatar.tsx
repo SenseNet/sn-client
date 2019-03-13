@@ -1,13 +1,11 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  List,
-  Typography,
-} from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import FormControl from '@material-ui/core/FormControl'
+import FormHelperText from '@material-ui/core/FormHelperText'
+import InputLabel from '@material-ui/core/InputLabel'
+import List from '@material-ui/core/List'
+import Typography from '@material-ui/core/Typography'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
