@@ -51,7 +51,6 @@ export class DefaultAvatarTemplate extends Component<DefaultAvatarTemplateProps,
       <ListItem button={true} style={styles.listItem}>
         <ListItemAvatar>
           {
-            // tslint:disable-next-line: no-string-literal
             <Avatar
               src={url ? `${this.props.repositoryUrl}${url}` : `${this.props.repositoryUrl}${DEFAULT_AVATAR_PATH}`}
               style={styles.avatar}
