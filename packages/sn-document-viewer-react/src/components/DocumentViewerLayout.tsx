@@ -6,8 +6,8 @@ import { connect } from 'react-redux'
 import { componentType } from '../services'
 import { createComment, RootReducerType, setActivePages, setThumbnails } from '../store'
 import { PageList } from './'
-import CommentComponent from './Comment'
-import { CreateComment } from './CreateComment'
+import CommentComponent from './comment/Comment'
+import { CreateComment } from './comment/CreateComment'
 
 /**
  * maps state fields from the store to component props

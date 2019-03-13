@@ -9,9 +9,9 @@ import React, { useState } from 'react'
 import { FunctionComponent } from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
-import { Comment as CommentType } from '../models/Comment'
-import { componentType } from '../services'
-import { deleteComment, RootReducerType } from '../store'
+import { Comment as CommentType } from '../../models/Comment'
+import { componentType } from '../../services'
+import { deleteComment, RootReducerType } from '../../store'
 
 const mapStateToProps = (state: RootReducerType) => ({
   localization: state.sensenetDocumentViewer.localization,
