@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Confirmation dialog component should render with default props 1`] = `
+<WithStyles(Dialog)
+  aria-describedby="confirmation-dialog-description"
+  aria-labelledby="confirmation-dialog-title"
+  disableBackdropClick={true}
+  disableEscapeKeyDown={true}
+  maxWidth="md"
+  open={true}
+>
+  <WithStyles(DialogTitle)
+    id="confirmation-dialog-title"
+  >
+    Some dialog title
+  </WithStyles(DialogTitle)>
+  <WithStyles(DialogContent)>
+    <WithStyles(DialogContentText)
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": <p>
+            Are you sure?
+          </p>,
+        }
+      }
+      id="confirmation-dialog-description"
+    />
+  </WithStyles(DialogContent)>
+  <WithStyles(DialogActions)>
+    <WithStyles(Button)
+      color="primary"
+      onClick={[Function]}
+      variant="contained"
+    >
+      OK
+    </WithStyles(Button)>
+    <WithStyles(Button)
+      onClick={[Function]}
+    >
+      Cancel
+    </WithStyles(Button)>
+  </WithStyles(DialogActions)>
+</WithStyles(Dialog)>
+`;
+
+exports[`Confirmation dialog component should render without button texts 1`] = `
+<WithStyles(Dialog)
+  aria-describedby="confirmation-dialog-description"
+  aria-labelledby="confirmation-dialog-title"
+  disableBackdropClick={true}
+  disableEscapeKeyDown={true}
+  maxWidth="md"
+  open={true}
+>
+  <WithStyles(DialogTitle)
+    id="confirmation-dialog-title"
+  >
+    Some dialog title
+  </WithStyles(DialogTitle)>
+  <WithStyles(DialogContent)>
+    <WithStyles(DialogContentText)
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": <p>
+            Are you sure?
+          </p>,
+        }
+      }
+      id="confirmation-dialog-description"
+    />
+  </WithStyles(DialogContent)>
+  <WithStyles(DialogActions)>
+    <WithStyles(Button)
+      color="primary"
+      onClick={[Function]}
+      variant="contained"
+    >
+      ok
+    </WithStyles(Button)>
+    <WithStyles(Button)
+      onClick={[Function]}
+    >
+      cancel
+    </WithStyles(Button)>
+  </WithStyles(DialogActions)>
+</WithStyles(Dialog)>
+`;
