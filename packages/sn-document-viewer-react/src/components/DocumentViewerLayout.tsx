@@ -7,7 +7,7 @@ import { componentType } from '../services'
 import { createComment, RootReducerType, setActivePages, setThumbnails } from '../store'
 import { PageList } from './'
 import CommentComponent from './Comment'
-import { CreateComment } from './document-widgets/CreateComment'
+import { CreateComment } from './CreateComment'
 
 /**
  * maps state fields from the store to component props

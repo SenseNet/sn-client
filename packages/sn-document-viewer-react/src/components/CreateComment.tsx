@@ -6,6 +6,7 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import InputLabel from '@material-ui/core/InputLabel'
 import SvgIcon from '@material-ui/core/SvgIcon/SvgIcon'
 import React, { useState } from 'react'
+
 interface CreateCommentProps {
   createComment: (text: string) => void
 }
