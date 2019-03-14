@@ -69,7 +69,7 @@ class UserSelector extends React.Component<
                   style={{ ...styles.button, ...styles.buttonRaised }}
                   onClick={() => this.handleButtonClick(open, false)}>
                   <Icon iconName="add" style={{ ...styles.icon, ...{ color: '#fff' } }} />
-                  {resources.ADD_TO_GROUP}
+                  {resources.ADD_USER_TO_GROUP}
                 </Button>
                 <UserDropDown
                   matches={matches}

@@ -90,7 +90,7 @@ class Groups extends Component<
     }
     return {
       ...lastState,
-      userName: newProps.group ? newProps.group.Name : '',
+      groupName: newProps.group ? newProps.group.Name : '',
     } as Groups['state']
   }
   public handleDeleteClick = () => {

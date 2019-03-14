@@ -160,7 +160,11 @@ export const searchTerm: Reducer<string> = (state = '', action: AnyAction) => {
 export const currentGroup: Reducer<Group | null> = (state = null, action: AnyAction) => {
   switch (action.type) {
     case 'DMS_USERSANDGROUPS_SET_GROUP':
-      return action.content
+      const g = action.content
+      if (action.content.Name === 'Root') {
+        g.DisplayName = 'Groups'
+      }
+      return g
     default:
       return state
   }
