@@ -13,7 +13,7 @@
     "declaration": false,
     "declarationMap": false
   },
-  "include": ["stories"],
+  "include": ["stories", "../../typings"],
   "references": [
     { "path": "../../packages/sn-client-core" },
     { "path": "../../packages/sn-client-utils" },
