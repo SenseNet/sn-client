@@ -120,6 +120,14 @@ export const AddButton: React.FunctionComponent = () => {
             contentTypeName={selectedSchema.ContentTypeName}
             schema={selectedSchema}
             path={parent.Path}
+            onSubmit={(parentPath, content) => {
+              repo.post({
+                contentType: selectedSchema.ContentTypeName,
+                parentPath,
+                content,
+              })
+              setShowAddNewDialog(false)
+            }}
           />
         </DialogContent>
       </Dialog>
