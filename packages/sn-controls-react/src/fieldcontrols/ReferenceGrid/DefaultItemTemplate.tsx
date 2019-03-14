@@ -14,13 +14,6 @@ import { GenericContent } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
 
 const styles = {
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  listContainer: {
-    display: 'block',
-  },
   icon: {
     marginRight: 0,
   },
