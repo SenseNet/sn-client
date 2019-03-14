@@ -42,6 +42,9 @@ export interface LocalizationStateType {
   deleteCommentDialogTitle: string
   okButton: string
   cancelButton: string
+  addComment: string
+  commentInputPlaceholder: string
+  submit: string
 }
 
 /**
@@ -108,6 +111,9 @@ export const defaultLocalization: LocalizationStateType = {
   deleteCommentDialogBody: `1 comment is about to permanently deleted. <br /><strong>Warning: You cant undo this action.</strong>`,
   okButton: 'ok',
   cancelButton: 'cancel',
+  addComment: '+ Add Comment',
+  commentInputPlaceholder: 'Make a comment',
+  submit: 'Submit',
 }
 
 /**

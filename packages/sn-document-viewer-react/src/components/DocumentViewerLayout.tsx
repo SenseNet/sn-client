@@ -22,6 +22,7 @@ const mapStateToProps = (state: RootReducerType) => {
     showComments: state.sensenetDocumentViewer.viewer.showComments,
     comments: state.sensenetDocumentViewer.documentState.comments,
     fitRelativeZoomLevel: state.sensenetDocumentViewer.viewer.fitRelativeZoomLevel,
+    localization: state.sensenetDocumentViewer.localization,
   }
 }
 
@@ -196,7 +197,7 @@ export class DocumentViewerLayoutComponent extends React.Component<
               },
             }}>
             <Typography variant="h4">Comments</Typography>
-            <CreateComment createComment={this.createComment} />
+            <CreateComment localization={this.props.localization} createComment={this.createComment} />
             {this.props.comments.map(comment => (
               <CommentComponent key={comment.id} {...comment} />
             ))}

@@ -31,6 +31,11 @@ export const defaultTheme = createMuiTheme({
         color: '#707070',
       },
     },
+    MuiButton: {
+      root: {
+        textTransform: 'none',
+      },
+    },
   },
   typography: {
     useNextVariants: true,

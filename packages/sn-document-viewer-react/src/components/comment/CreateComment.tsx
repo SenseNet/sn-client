@@ -6,9 +6,14 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import InputLabel from '@material-ui/core/InputLabel'
 import SvgIcon from '@material-ui/core/SvgIcon/SvgIcon'
 import React, { useState } from 'react'
+import { LocalizationStateType } from '../../store/Localization'
 
-interface CreateCommentProps {
+/**
+ * Create comment component properties
+ */
+export interface CreateCommentProps {
   createComment: (text: string) => void
+  localization: Pick<LocalizationStateType, 'commentInputPlaceholder' | 'addComment' | 'submit'>
 }
 
 /**
@@ -16,9 +21,25 @@ interface CreateCommentProps {
  */
 export function CreateComment(props: CreateCommentProps) {
   const [value, setValue] = useState('')
+  const [isActive, setIsActive] = useState(false)
+
+  if (!isActive) {
+    return (
+      <Button className="add-comment" onClick={() => setIsActive(!isActive)}>
+        {props.localization.addComment || 'add a comment'}
+      </Button>
+    )
+  }
+
+  const handleSubmit = () => {
+    props.createComment(value)
+    setValue('')
+    setIsActive(!isActive)
+  }
+
   return (
     <FormControl>
-      <InputLabel htmlFor="comment-input">Write a comment</InputLabel>
+      <InputLabel htmlFor="comment-input">{props.localization.commentInputPlaceholder || 'Write a comment'}</InputLabel>
       <Input
         id="comment-input"
         type="text"
@@ -34,13 +55,8 @@ export function CreateComment(props: CreateCommentProps) {
           </InputAdornment>
         }
       />
-      <Button
-        variant="text"
-        onClick={() => {
-          props.createComment(value)
-          setValue('')
-        }}>
-        Submit
+      <Button variant="text" type="submit" onClick={handleSubmit}>
+        {props.localization.submit || 'submit'}
       </Button>
     </FormControl>
   )
