@@ -1,11 +1,11 @@
 import MenuList from '@material-ui/core/MenuList'
 import withStyles from '@material-ui/core/styles/withStyles'
-import { Group } from '@sensenet/default-content-types'
+import { User } from '@sensenet/default-content-types'
 import * as React from 'react'
 import Scrollbars from 'react-custom-scrollbars'
 import { connect } from 'react-redux'
 import { rootStateType } from '../../../store/rootReducer'
-import { addUserToGroups, getGroups, searchGroups } from '../../../store/usersandgroups/actions'
+import { addUserToGroups, getUsers, searchUsers } from '../../../store/usersandgroups/actions'
 import { UserButtonRow } from './UserButtonRow'
 import UserListItem from './UserListItem'
 import UserSearch from './UserSearch'
@@ -35,26 +35,23 @@ const styles = () => ({
 
 const mapStateToProps = (state: rootStateType) => {
   return {
-    groups: state.dms.usersAndGroups.group.all,
-    selected: state.dms.usersAndGroups.group.selected,
-    term: state.dms.usersAndGroups.group.searchTerm,
-    memberships: state.dms.usersAndGroups.user.memberships,
-    user: state.dms.usersAndGroups.user.currentUser || null,
+    users: state.dms.usersAndGroups.user.all,
+    selected: state.dms.usersAndGroups.user.selected,
+    term: state.dms.usersAndGroups.user.searchTerm,
   }
 }
 
 const mapDispatchToProps = {
-  getGroups,
-  searchGroups,
+  getUsers,
+  searchUsers,
   addUserToGroups,
 }
 
 interface UserListState {
-  groups: Group[]
+  users: User[]
   top: number
   term: string
-  filtered: Group[]
-  members: Group[]
+  filtered: User[]
 }
 
 interface UserListProps {
@@ -67,44 +64,40 @@ class UserList extends React.Component<
   UserListState
 > {
   public state = {
-    groups: this.props.groups,
-    filtered: [],
+    users: this.props.users,
     selected: this.props.selected,
     top: 0,
     term: '',
-    members: this.props.memberships.d.results,
+    filtered: [],
   }
   constructor(props: UserList['props']) {
     super(props)
     this.handleCloseClick = this.handleCloseClick.bind(this)
   }
   public static getDerivedStateFromProps(newProps: UserList['props'], lastState: UserList['state']) {
-    if (newProps.groups.length !== lastState.groups.length || lastState.groups.length === 0) {
-      newProps.getGroups(newProps.memberships as any)
-    } else if (newProps.memberships.d.__count !== lastState.members.length) {
-      newProps.getGroups(newProps.memberships as any)
+    if (newProps.users.length !== lastState.users.length || lastState.users.length === 0) {
+      newProps.getUsers()
     }
 
     return {
       ...lastState,
-      groups: newProps.groups,
-      filtered:
-        newProps.term.length > 0
-          ? newProps.groups.filter(group => group.Name.indexOf(newProps.term) > -1)
-          : newProps.groups,
+      users: newProps.users,
       selected: newProps.selected,
       term: newProps.term,
-      members: newProps.memberships.d.results,
+      filtered:
+        newProps.term.length > 0
+          ? newProps.users.filter((user: User) => (user.FullName ? user.FullName.indexOf(newProps.term) > -1 : false))
+          : newProps.users,
     } as UserList['state']
   }
   public handleSearch = (text: string) => {
-    this.props.searchGroups(text)
+    this.props.searchUsers(text)
   }
   public handleCloseClick = () => {
     this.props.closeDropDown(true)
   }
-  public isSelected = (group: Group) => {
-    const selected = this.props.selected.find(item => item.Id === group.Id)
+  public isSelected = (user: User) => {
+    const selected = this.props.selected.find(item => item.Id === user.Id)
     return selected !== undefined
   }
   public render() {
@@ -120,12 +113,12 @@ class UserList extends React.Component<
           )}
           thumbMinSize={180}>
           <MenuList className={classes.workspaceList}>
-            {filtered.map((group: Group) => (
+            {filtered.map((user: User) => (
               <UserListItem
                 closeDropDown={this.props.closeDropDown}
-                key={group.Id}
-                group={group}
-                selected={this.isSelected(group)}
+                key={user.Id}
+                group={user}
+                selected={this.isSelected(user)}
               />
             ))}
           </MenuList>
@@ -134,7 +127,7 @@ class UserList extends React.Component<
           cancelClick={this.props.closeDropDown}
           submitClick={this.props.addUserToGroups as any}
           groups={this.props.selected}
-          user={this.props.user || null}
+          users={this.props.selected || null}
         />
       </div>
     )

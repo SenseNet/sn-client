@@ -12,8 +12,8 @@ const styles = {
 
 interface UserButtonRowProps {
   cancelClick: (open: boolean) => void
-  submitClick: (user?: User | null, groups?: Group[]) => void
-  user: User | null
+  submitClick: (users?: User[] | null, groups?: Group[]) => void
+  users: User[]
   groups: Group[]
 }
 
@@ -22,7 +22,7 @@ export class UserButtonRow extends Component<UserButtonRowProps> {
     this.props.cancelClick(false)
   }
   public handleSubmitClick = () => {
-    this.props.submitClick(this.props.user, this.props.groups)
+    this.props.submitClick(this.props.users, this.props.groups)
     this.props.cancelClick(false)
   }
   public render() {

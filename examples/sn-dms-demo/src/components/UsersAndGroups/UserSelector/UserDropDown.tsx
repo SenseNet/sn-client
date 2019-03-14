@@ -9,7 +9,7 @@ const styles = () => ({
     position: 'absolute',
     zIndex: 10,
     width: 450,
-    right: 0,
+    right: 22,
   },
   wsSelectorContainerMobile: {
     position: 'absolute',

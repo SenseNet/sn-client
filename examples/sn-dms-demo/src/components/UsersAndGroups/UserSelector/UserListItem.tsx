@@ -118,13 +118,11 @@ class UserListItem extends React.Component<
             />
           </IconButton>
         </ListItemIcon>
-        <Tooltip title={group ? group.DisplayName : ''} aria-label={group ? group.DisplayName : ''} placement="left">
-          <ListItemText
-            classes={{ primary: classes.primary, root: classes.listItemRoot, secondary: classes.secondary }}
-            primary={group ? group.DisplayName : ''}
-            secondary={this.shortenPath(group ? group.Path : '')}
-          />
-        </Tooltip>
+        <ListItemText
+          classes={{ primary: classes.primary, root: classes.listItemRoot, secondary: classes.secondary }}
+          primary={group ? group.DisplayName : ''}
+          secondary={this.shortenPath(group ? group.Path : '')}
+        />
       </MenuItem>
     )
   }

@@ -112,6 +112,24 @@ export const active: Reducer<GenericContent | null> = (state = null, action: Any
   }
 }
 
+export const allUsers: Reducer<GenericContent[]> = (state = [], action: AnyAction) => {
+  switch (action.type) {
+    case 'DMS_USERSANDGROUPS_SET_USERS':
+      return action.users.d.results
+    default:
+      return state
+  }
+}
+
+export const userSearchTerm: Reducer<string> = (state = '', action: AnyAction) => {
+  switch (action.type) {
+    case 'DMS_USERSANDGROUPS_SEARCH_USERS':
+      return action.text
+    default:
+      return state
+  }
+}
+
 export const user = combineReducers({
   currentUser,
   isAdmin,
@@ -122,6 +140,8 @@ export const user = combineReducers({
   selected,
   grouplistOptions,
   active,
+  all: allUsers,
+  searchTerm: userSearchTerm,
 })
 
 export const selectedGroups: Reducer<GenericContent[]> = (state = [], action: AnyAction) => {

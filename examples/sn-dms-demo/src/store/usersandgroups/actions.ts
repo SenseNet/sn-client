@@ -367,3 +367,41 @@ export const setGroupAncestors = <T extends GenericContent>(ancestors: T[]) => (
   type: 'DMS_USERSANDGROUPS_SET_GROUPANCESTORS',
   ancestors,
 })
+
+export const getUsers = () => ({
+  type: 'DMS_USERSANDGROUPS_GET_USERS',
+  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
+    const currentState = options.getState()
+    const repository = options.getInjectable(Repository)
+    options.dispatch(
+      startLoading(
+        currentState.dms.usersAndGroups.user.currentUser ? currentState.dms.usersAndGroups.user.currentUser.Id : '',
+      ),
+    )
+    try {
+      const users = await repository.loadCollection({
+        path: '/Root/IMS',
+        oDataOptions: {
+          query: '+TypeIs:User',
+          select: ['FullName', 'Path', 'Actions', 'Id'] as any,
+          expand: ['Actions'] as any,
+        },
+      })
+      options.dispatch(setUsers(users))
+    } catch (error) {
+      options.dispatch(setError(error))
+    } finally {
+      options.dispatch(finishLoading())
+    }
+  },
+})
+
+export const setUsers = (users: ODataCollectionResponse<Group>) => ({
+  type: 'DMS_USERSANDGROUPS_SET_USERS',
+  users,
+})
+
+export const searchUsers = (text: string) => ({
+  type: 'DMS_USERSANDGROUPS_SEARCH_USERS',
+  text,
+})
