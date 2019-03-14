@@ -199,12 +199,35 @@ export const groupAncestors: Reducer<GenericContent[]> = (state = [], action: An
   }
 }
 
+export const groupList: Reducer<GenericContent[]> = (state = [], action: AnyAction) => {
+  switch (action.type) {
+    case 'DMS_USERSANDGROUPS_SET_GROUP':
+      return action.items
+    default:
+      return state
+  }
+}
+
+export const groupsAreLoading: Reducer<boolean> = (state = false, action: AnyAction) => {
+  switch (action.type) {
+    case 'DMS_USERSANDGROUPS_LOADING':
+      return true
+    case 'DMS_USERSANDGROUPS_FINISH_LOADING':
+      return false
+    default:
+      return state
+  }
+}
+
 export const group = combineReducers({
   selected: selectedGroups,
   all,
   searchTerm,
   currentGroup,
   ancestors: groupAncestors,
+  groupList,
+  isLoading: groupsAreLoading,
+  grouplistOptions,
 })
 
 export const usersAndGroups = combineReducers({

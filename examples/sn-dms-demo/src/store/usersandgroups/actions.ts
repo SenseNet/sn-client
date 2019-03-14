@@ -322,7 +322,16 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
         idOrPath,
         oDataOptions: groupOptions,
       })
-      options.dispatch(setGroup(newGroup.d))
+      const items = await repository.loadCollection({
+        path: newGroup.d.Path,
+        oDataOptions: {
+          select: ['Path', 'Actions', 'Id', 'DisplayName'] as any,
+          expand: ['Actions'] as any,
+          filter: `ContentType eq 'Folder' or ContentType eq 'OrganizationalUnit' or ContentType eq 'Domain' or ContentType eq 'Group'`,
+        },
+      })
+      options.dispatch(setGroup(newGroup.d, items.d.results))
+
       const emitChange = (content: Group) => {
         changedContent.push(content)
       }
@@ -358,9 +367,13 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
   },
 })
 
-export const setGroup: <T extends Group = Group>(content: T) => Action & { content: T } = <T>(content: T) => ({
+export const setGroup: <T extends Group = Group>(content: T, items: T[]) => Action & { content: T; items: T[] } = <T>(
+  content: T,
+  items,
+) => ({
   type: 'DMS_USERSANDGROUPS_SET_GROUP',
   content,
+  items,
 })
 
 export const setGroupAncestors = <T extends GenericContent>(ancestors: T[]) => ({

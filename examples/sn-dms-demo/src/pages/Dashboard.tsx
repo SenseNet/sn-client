@@ -289,7 +289,7 @@ class DashboardComponent extends React.Component<
                               exact={true}
                               component={() => (
                                 <div>
-                                  <Groups />
+                                  <Groups matchesDesktop={matches} />
                                 </div>
                               )}
                             />
