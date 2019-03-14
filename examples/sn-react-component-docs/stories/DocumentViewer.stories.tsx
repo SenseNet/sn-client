@@ -1,5 +1,6 @@
 import { CommentComponent } from '@sensenet/document-viewer-react/src/components'
 import { CreatedByUser } from '@sensenet/document-viewer-react/src/models'
+import { defaultLocalization } from '@sensenet/document-viewer-react/src/store/Localization'
 import { action } from '@storybook/addon-actions'
 import { object, text, withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
@@ -28,7 +29,7 @@ storiesOf('DocumentViewer', module)
       y={10}
       deleteComment={action('delete')}
       id={text('id', 'randomId')}
-      localization={{} as any}
+      localization={defaultLocalization}
       text={text(
         'commentBody',
         `maros mester kis tanulóköréből Krisztián, Edgár és Böröndi Dani sikeresen letették a 480-as vizsgát! Gratulálunk nekik és köszönet marosnak a mentorálásért!
@@ -45,7 +46,7 @@ storiesOf('DocumentViewer', module)
       y={10}
       deleteComment={action('delete')}
       id={text('id', 'randomId')}
-      localization={{} as any}
+      localization={defaultLocalization}
       text={text('commentBody', 'Lorem Ipsum is simply dummy text')}
     />
   ))
