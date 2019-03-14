@@ -17,6 +17,7 @@ describe('Document Viewer Layout component', () => {
     zoomMode: 'custom',
     comments: [],
     createComment: jest.fn(),
+    localization: {} as any,
   }
   it('should render without crashing', () => {
     const wrapper = shallow(

@@ -94,6 +94,7 @@ exports[`Document Viewer Layout component should render without crashing 1`] = `
       </WithStyles(Typography)>
       <CreateComment
         createComment={[Function]}
+        localization={Object {}}
       />
     </WithStyles(Drawer)>
   </div>
@@ -194,6 +195,7 @@ exports[`Document Viewer Layout component should render without crashing 2`] = `
       </WithStyles(Typography)>
       <CreateComment
         createComment={[Function]}
+        localization={Object {}}
       />
     </WithStyles(Drawer)>
   </div>

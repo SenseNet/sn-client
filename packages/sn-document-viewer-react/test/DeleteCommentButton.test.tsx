@@ -20,10 +20,18 @@ describe('Delete comment button component', () => {
     expect(wrapper.find(Dialog).prop('open')).toBeTruthy()
   })
 
-  it.skip('should call delete comment when confirmation comes back with true', () => {
+  it('should call delete comment when confirmation comes back false', () => {
+    const deleteComment = jest.fn()
+    const wrapper = mount(<DeleteButton {...defaultProps} deleteComment={deleteComment} />)
+    wrapper.find(ConfirmationDialog).prop('onClose')(false)
+    expect(deleteComment).toBeCalled()
+  })
+
+  it("shouldn't call delete comment when confirmation comes back true and closes dialog", () => {
     const deleteComment = jest.fn()
     const wrapper = mount(<DeleteButton {...defaultProps} deleteComment={deleteComment} />)
     wrapper.find(ConfirmationDialog).prop('onClose')(true)
-    expect(deleteComment).toBeCalled()
+    expect(deleteComment).not.toBeCalled()
+    expect(wrapper.find(Dialog).prop('open')).toBeFalsy()
   })
 })

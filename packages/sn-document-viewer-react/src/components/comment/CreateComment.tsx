@@ -37,14 +37,16 @@ export function CreateComment(props: CreateCommentProps) {
     setIsActive(!isActive)
   }
 
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)
+
   return (
-    <FormControl>
+    <FormControl onSubmit={handleSubmit}>
       <InputLabel htmlFor="comment-input">{props.localization.commentInputPlaceholder || 'Write a comment'}</InputLabel>
       <Input
         id="comment-input"
         type="text"
         value={value}
-        onChange={e => setValue(e.target.value)}
+        onChange={handleOnChange}
         endAdornment={
           <InputAdornment position="end">
             <IconButton aria-label="Toggle">
@@ -55,7 +57,7 @@ export function CreateComment(props: CreateCommentProps) {
           </InputAdornment>
         }
       />
-      <Button variant="text" type="submit" onClick={handleSubmit}>
+      <Button variant="text" type="submit">
         {props.localization.submit || 'submit'}
       </Button>
     </FormControl>
