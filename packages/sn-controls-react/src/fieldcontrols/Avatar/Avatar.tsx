@@ -176,7 +176,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                 itemTemplate(this.state.fieldValue)
               ) : (
                 <DefaultAvatarTemplate
-                  repositoryUrl={this.props.repository.configuration.repositoryUrl}
+                  repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
                   url={this.state.fieldValue}
                   add={this.addItem}
                   remove={this.removeItem}
@@ -202,7 +202,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                   repository={this.props['data-repository']}
                   select={content => this.selectItem(content)}
                   selected={this.state.selected}
-                  repositoryUrl={this.props.repository.configuration.repositoryUrl}
+                  repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
                 />
                 <DialogActions>
                   <Button onClick={this.handleCancelClick}>{CANCEL}</Button>
@@ -232,7 +232,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                 itemTemplate(this.state.fieldValue)
               ) : (
                 <DefaultAvatarTemplate
-                  repositoryUrl={this.props.repository.configuration.repositoryUrl}
+                  repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
                   add={this.addItem}
                   actionName="new"
                   readOnly={this.props.readOnly}
@@ -258,7 +258,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                   repository={this.props['data-repository']}
                   select={content => this.selectItem(content)}
                   selected={this.state.selected}
-                  repositoryUrl={this.props.repository.configuration.repositoryUrl}
+                  repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
                 />
                 <DialogActions>
                   <Button onClick={this.handleCancelClick}>{CANCEL}</Button>
@@ -280,7 +280,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
               dense={true}
               style={this.state.fieldValue.length > 0 ? styles.listContainer : { ...styles.listContainer, width: 200 }}>
               <DefaultAvatarTemplate
-                repositoryUrl={this.props.repository.configuration.repositoryUrl}
+                repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
                 url={this.state.fieldValue}
                 add={this.addItem}
                 actionName="browse"
@@ -298,7 +298,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
               dense={true}
               style={this.state.fieldValue.length > 0 ? styles.listContainer : { ...styles.listContainer, width: 200 }}>
               <DefaultAvatarTemplate
-                repositoryUrl={this.props.repository.configuration.repositoryUrl}
+                repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
                 url={this.state.fieldValue}
                 add={this.addItem}
                 actionName="browse"
