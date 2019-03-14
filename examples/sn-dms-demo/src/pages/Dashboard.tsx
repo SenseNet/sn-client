@@ -17,7 +17,7 @@ import { ContentTypes } from '../components/ContentTypes'
 import DashboardDrawer from '../components/DashboardDrawer'
 import DocumentLibrary from '../components/DocumentLibrary'
 import { FullScreenLoader } from '../components/FullScreenLoader'
-import { Groups } from '../components/Groups'
+import Groups from '../components/Groups'
 import Header from '../components/Header'
 import MobileHeader from '../components/Mobile/Header'
 import Picker from '../components/Pickers/PickerBase'
@@ -201,9 +201,23 @@ class DashboardComponent extends React.Component<
                             </Switch>
                           )}
                         />
-                        <Route path="/groups">
-                          <Groups />
-                        </Route>
+                        <Route
+                          path="/groups"
+                          // tslint:disable-next-line: no-unnecessary-type-annotation
+                          component={(props: RouteComponentProps<any>) => (
+                            <Switch>
+                              <Route
+                                path={'/' + PathHelper.joinPaths(props.match.url)}
+                                exact={true}
+                                component={() => (
+                                  <div>
+                                    <Groups />
+                                  </div>
+                                )}
+                              />
+                            </Switch>
+                          )}
+                        />
                         <Route path="/contenttypes">
                           <ContentTypes />
                         </Route>
@@ -265,9 +279,23 @@ class DashboardComponent extends React.Component<
                           </Switch>
                         )}
                       />
-                      <Route path="/groups">
-                        <Groups />
-                      </Route>
+                      <Route
+                        path="/groups"
+                        // tslint:disable-next-line: no-unnecessary-type-annotation
+                        component={(props: RouteComponentProps<any>) => (
+                          <Switch>
+                            <Route
+                              path={'/' + PathHelper.joinPaths(props.match.url)}
+                              exact={true}
+                              component={() => (
+                                <div>
+                                  <Groups />
+                                </div>
+                              )}
+                            />
+                          </Switch>
+                        )}
+                      />
                       <Route path="/contenttypes">
                         <ContentTypes />
                       </Route>
