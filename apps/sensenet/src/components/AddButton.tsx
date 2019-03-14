@@ -1,5 +1,6 @@
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
+import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import Fab from '@material-ui/core/Fab'
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
@@ -8,6 +9,7 @@ import Typography from '@material-ui/core/Typography'
 import Add from '@material-ui/icons/Add'
 import CloudUpload from '@material-ui/icons/CloudUpload'
 import { Upload } from '@sensenet/client-core'
+import { NewViewComponent } from '@sensenet/controls-react'
 import { Schema } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
 import { CurrentContentContext } from '../context/CurrentContent'
@@ -107,6 +109,19 @@ export const AddButton: React.FunctionComponent = () => {
       </SwipeableDrawer>
       <Dialog open={showAddNewDialog}>
         <DialogTitle>Create new {selectedSchema.DisplayName}</DialogTitle>
+        <DialogContent>
+          <NewViewComponent
+            repositoryUrl={repo.configuration.repositoryUrl}
+            fields={[]}
+            changeAction={() => {
+              return null as any
+            }}
+            repository={repo}
+            contentTypeName={selectedSchema.ContentTypeName}
+            schema={selectedSchema}
+            path={parent.Path}
+          />
+        </DialogContent>
       </Dialog>
     </div>
   )
