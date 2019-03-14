@@ -300,3 +300,70 @@ export const updateGroupList = (groups: ODataCollectionResponse<Group>) => ({
   type: 'DMS_USERSANDGROUPS_UPDATE_GROUPS',
   groups,
 })
+
+export const loadGroup = <T extends Group = Group>(idOrPath: number | string, groupOptions?: ODataParams<T>) => ({
+  type: 'DMS_USERSANDGROUPS_LOAD_GROUP',
+  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
+    const prevState = options.getState().dms.usersAndGroups
+    if (prevState.group.currentGroup && prevState.group.currentGroup.Id.toString() === idOrPath) {
+      return
+    }
+
+    eventObservables.forEach(o => o.dispose())
+    eventObservables.length = 0
+
+    const eventHub = options.getInjectable(EventHub)
+
+    options.dispatch(startLoading(idOrPath))
+
+    try {
+      const repository = options.getInjectable(Repository)
+      const newGroup = await repository.load<T>({
+        idOrPath,
+        oDataOptions: groupOptions,
+      })
+      options.dispatch(setGroup(newGroup.d))
+      const emitChange = (content: Group) => {
+        changedContent.push(content)
+      }
+
+      eventObservables.push(
+        eventHub.onCustomActionExecuted.subscribe(() => {
+          emitChange({ Id: newGroup.d.Id } as Group)
+        }),
+        eventHub.onContentCreated.subscribe(value => emitChange(value.content)),
+        eventHub.onContentModified.subscribe(value => emitChange(value.content)),
+        eventHub.onContentMoved.subscribe(value => emitChange(value.content)),
+      )
+
+      await Promise.all([
+        (async () => {
+          const ancestors = await repository.executeAction<undefined, ODataCollectionResponse<GenericContent>>({
+            idOrPath: newGroup.d.Id,
+            method: 'GET',
+            name: 'Ancestors',
+            body: undefined,
+            oDataOptions: {
+              orderby: [['Path', 'asc']],
+            },
+          })
+          options.dispatch(setGroupAncestors([...ancestors.d.results, newGroup.d]))
+        })(),
+      ])
+    } catch (error) {
+      options.dispatch(setError(error))
+    } finally {
+      options.dispatch(finishLoading())
+    }
+  },
+})
+
+export const setGroup: <T extends Group = Group>(content: T) => Action & { content: T } = <T>(content: T) => ({
+  type: 'DMS_USERSANDGROUPS_SET_GROUP',
+  content,
+})
+
+export const setGroupAncestors = <T extends GenericContent>(ancestors: T[]) => ({
+  type: 'DMS_USERSANDGROUPS_SET_GROUPANCESTORS',
+  ancestors,
+})

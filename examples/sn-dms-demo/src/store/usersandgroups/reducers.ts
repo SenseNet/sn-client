@@ -1,5 +1,5 @@
 import { ODataCollectionResponse, ODataParams } from '@sensenet/client-core'
-import { GenericContent, User } from '@sensenet/default-content-types'
+import { GenericContent, Group, User } from '@sensenet/default-content-types'
 import { AnyAction, combineReducers, Reducer } from 'redux'
 
 export const currentUser: Reducer<User | null> = (state = null, action: AnyAction) => {
@@ -157,10 +157,30 @@ export const searchTerm: Reducer<string> = (state = '', action: AnyAction) => {
   }
 }
 
+export const currentGroup: Reducer<Group | null> = (state = null, action: AnyAction) => {
+  switch (action.type) {
+    case 'DMS_USERSANDGROUPS_SET_GROUP':
+      return action.content
+    default:
+      return state
+  }
+}
+
+export const groupAncestors: Reducer<GenericContent[]> = (state = [], action: AnyAction) => {
+  switch (action.type) {
+    case 'DMS_USERSANDGROUPS_SET_GROUPANCESTORS':
+      return action.ancestors
+    default:
+      return state
+  }
+}
+
 export const group = combineReducers({
   selected: selectedGroups,
   all,
   searchTerm,
+  currentGroup,
+  ancestors: groupAncestors,
 })
 
 export const usersAndGroups = combineReducers({
