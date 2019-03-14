@@ -30,10 +30,12 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
         <Switch>
           <AuthorizedRoute path="/personalSettings" render={() => <PersonalSettingsEditor />} authorize={() => true} />
 
+          <AuthorizedRoute path="/login" render={() => <LoginComponent />} authorize={() => true} />
+
           {/** Requires login */}
-          {sessionContext.state === LoginState.Unauthenticated ? (
+          {sessionContext.debouncedState === LoginState.Unauthenticated ? (
             <LoginComponent />
-          ) : sessionContext.state === LoginState.Authenticated ? (
+          ) : sessionContext.debouncedState === LoginState.Authenticated ? (
             <Switch>
               <AuthorizedRoute
                 path="/:repo/content/:folderId?/:rightParent?"

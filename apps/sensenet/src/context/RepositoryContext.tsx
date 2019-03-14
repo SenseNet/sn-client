@@ -18,7 +18,12 @@ export const RepositoryContextProviderComponent: React.FunctionComponent<
   const [repo, setRepo] = useState(repoManager.getRepository(localStorage.getItem(lastRepositoryKey) || ''))
 
   useEffect(() => {
-    const repoFromUrl = (props.match.params.repo && atob(props.match.params.repo)) || ''
+    let repoFromUrl = ''
+    try {
+      repoFromUrl = (props.match.params.repo && atob(props.match.params.repo)) || ''
+    } catch (error) {
+      /** */
+    }
     const newRepo = injector.getRepository(
       repoFromUrl.startsWith('http://') || repoFromUrl.startsWith('https://') ? repoFromUrl : settings.lastRepository,
     )

@@ -170,6 +170,7 @@ export class CommandPaletteComponent extends React.Component<
                   color: 'white',
                   backgroundColor: 'transparent',
                   border: 'none',
+                  margin: '.3em 0',
                 },
                 inputFocused: {
                   outlineWidth: 0,

@@ -4,8 +4,6 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Menu from '@material-ui/icons/Menu'
 import React, { useContext } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-import logo from '../../assets/sensenet-icon-32.png'
 import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context/ResponsiveContextProvider'
 import { ThemeContext } from '../../context/ThemeContext'
 import { rootStateType } from '../../store'
@@ -31,6 +29,9 @@ const DesktopAppBar: React.StatelessComponent<
             display: 'flex',
             flexDirection: 'row',
             textDecoration: 'none',
+            overflow: 'hidden',
+            alignItems: 'center',
+            flexGrow: props.commandPaletteOpened ? 0 : 1,
           }}>
           {personalSettings.drawer.type === 'temporary' ? (
             <IconButton
@@ -41,23 +42,7 @@ const DesktopAppBar: React.StatelessComponent<
               <Menu />
             </IconButton>
           ) : null}
-          {device !== 'desktop' && props.commandPaletteOpened ? null : (
-            <>
-              <div
-                style={{
-                  marginLeft: '1em',
-                  display: 'flex',
-                  flexDirection: 'row',
-                  textDecoration: 'none',
-                  alignItems: 'center',
-                }}>
-                <Link to="/">
-                  <img src={logo} style={{ marginRight: '1em', filter: 'drop-shadow(0px 0px 3px black)' }} />
-                </Link>
-              </div>
-              <RepositorySelector />
-            </>
-          )}
+          {device !== 'desktop' && props.commandPaletteOpened ? null : <RepositorySelector />}
         </div>
 
         {personalSettings.commandPalette.enabled ? <CommandPalette /> : <div style={{ flex: 1 }} />}

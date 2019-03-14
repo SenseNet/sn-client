@@ -38,7 +38,11 @@ const TemporaryDrawer: React.StatelessComponent<RouteComponentProps & { isOpened
     return null
   }
   return (
-    <SwipeableDrawer open={opened} onClose={() => setOpened(false)} onOpen={() => setOpened(true)}>
+    <SwipeableDrawer
+      ModalProps={{ keepMounted: true }}
+      open={opened}
+      onClose={() => setOpened(false)}
+      onOpen={() => setOpened(true)}>
       <List
         dense={true}
         style={{
@@ -110,7 +114,7 @@ const TemporaryDrawer: React.StatelessComponent<RouteComponentProps & { isOpened
                   <Settings />
                 </IconButton>
               </Link>
-              <LogoutButton />
+              <LogoutButton onLoggedOut={() => setOpened(false)} />
             </ListItemSecondaryAction>
           </ListItem>
         </Paper>

@@ -134,7 +134,7 @@ const PermanentDrawer: React.StatelessComponent<RouteComponentProps> = props => 
                   </Tooltip>
                 </ListItem>
               </NavLink>
-              <LogoutButton />
+              <LogoutButton buttonStyle={{ width: '100%' }} />
             </>
           )}
 

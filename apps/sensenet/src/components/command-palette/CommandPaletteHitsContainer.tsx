@@ -14,7 +14,8 @@ export const CommandPaletteHitsContainer: React.FunctionComponent<
       style={{
         position: 'fixed',
         zIndex: 1,
-        width: options.width,
+        left: device === 'mobile' ? '64px' : undefined,
+        width: device === 'mobile' ? 'calc(100% - 80px)' : options.width,
       }}>
       <List
         dense={device === 'desktop' ? false : true}

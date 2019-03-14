@@ -2,7 +2,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import IconButton from '@material-ui/core/IconButton'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Paper from '@material-ui/core/Paper'
 import Tooltip from '@material-ui/core/Tooltip'
@@ -14,6 +14,8 @@ import React from 'react'
 import { useContext, useEffect, useState } from 'react'
 import Autosuggest from 'react-autosuggest'
 import { RouteComponentProps, withRouter } from 'react-router'
+import { Link, NavLink } from 'react-router-dom'
+import logo from '../assets/sensenet-icon-32.png'
 import { InjectorContext } from '../context/InjectorContext'
 import { PersonalSettingsContext } from '../context/PersonalSettingsContext'
 import { RepositoryContext } from '../context/RepositoryContext'
@@ -21,6 +23,7 @@ import { ResponsiveContext } from '../context/ResponsiveContextProvider'
 import { ThemeContext } from '../context/ThemeContext'
 import { RepositoryManager } from '../services/RepositoryManager'
 import { getMatchParts } from './command-palette/CommandPaletteSuggestion'
+import { UserAvatar } from './UserAvatar'
 
 export const RepositorySelectorComponent: React.FunctionComponent<
   RouteComponentProps & { alwaysOpened?: boolean }
@@ -48,9 +51,15 @@ export const RepositorySelectorComponent: React.FunctionComponent<
         style={{
           textAlign: device === 'mobile' ? 'center' : 'left',
           flexGrow: 1,
+          display: 'flex',
+          alignItems: 'center',
+          overflow: 'hidden',
         }}
         variant="h5">
-        {lastRepositoryName}
+        <Link to="/">
+          <img src={logo} style={{ marginRight: '.5em', filter: 'drop-shadow(0px 0px 3px black)' }} />
+        </Link>
+        <div style={{ flexShrink: 1, textOverflow: 'ellipsis', overflow: 'hidden' }}>{lastRepositoryName}</div>
         <IconButton onClick={() => setIsActive(true)}>
           <KeyboardArrowDown />
         </IconButton>
@@ -60,108 +69,151 @@ export const RepositorySelectorComponent: React.FunctionComponent<
 
   return (
     <ClickAwayListener onClickAway={() => setIsActive(false)}>
-      <Autosuggest
-        theme={{
-          suggestionsList: {
-            listStyle: 'none',
-            margin: 0,
-            padding: 0,
-            minWidth: '400px',
-          },
-          input: {
-            background: 'transparent',
-            borderColor: theme.palette.primary.main,
-            borderStyle: 'solid',
-            color: theme.palette.text.primary,
-            padding: '.3em',
-            fontFamily: 'monospace',
-            minWidth: '400px',
-          },
-        }}
-        getSuggestionValue={s => s.url.toString()}
-        alwaysRenderSuggestions={isActive}
-        inputProps={{
-          onChange: ev => setInputValue(ev.currentTarget.value.toString()),
-          value: inputValue,
-          autoFocus: true,
-        }}
-        renderSuggestionsContainer={options => {
-          return (
-            <Paper
-              square={true}
-              style={{
-                position: 'fixed',
-                zIndex: 1,
-              }}>
-              <List component="nav" {...options.containerProps} style={{ padding: 0 }}>
-                {options.children}
-              </List>
-            </Paper>
-          )
-        }}
-        onSuggestionSelected={(ev, s) => {
-          ev.preventDefault()
-          ev.stopPropagation()
-          setIsActive(false)
-          setInputValue('')
-          props.history.push(`/${btoa(s.suggestion.url)}/`)
-        }}
-        renderSuggestion={(suggestion, params) => (
-          <ListItem button={true} selected={params.isHighlighted}>
-            <ListItemText
-              primary={getMatchParts(params.query || '', suggestion.displayName || suggestion.url)}
-              secondary={suggestion.displayName ? getMatchParts(params.query || '', suggestion.url) : undefined}
-              secondaryTypographyProps={{
-                style: {
-                  textOverflow: 'ellipsis',
+      <div
+        style={{
+          width: '100%',
+          border: '1px solid #13a5ad',
+          backgroundColor: 'rgba(255,255,255,.10)',
+          display: 'flex',
+        }}>
+        <img
+          src={logo}
+          style={{
+            filter: 'grayscale() brightness(1.4) drop-shadow(black 0px 0px 3px)',
+            transform: 'scale(0.75)',
+          }}
+        />
+        <Autosuggest
+          theme={{
+            container: {
+              width: '100%',
+            },
+            suggestionsList: {
+              listStyle: 'none',
+            },
+            input: {
+              background: 'transparent',
+              border: 'none',
+              color: theme.palette.text.primary,
+              fontFamily: 'monospace',
+              width: '100%',
+              height: '100%',
+            },
+            inputFocused: {
+              outlineWidth: 0,
+            },
+          }}
+          getSuggestionValue={s => s.url.toString()}
+          alwaysRenderSuggestions={isActive}
+          inputProps={{
+            onChange: ev => setInputValue(ev.currentTarget.value.toString()),
+            value: inputValue,
+            autoFocus: true,
+            placeholder: 'type to filter',
+          }}
+          renderSuggestionsContainer={options => {
+            return (
+              <Paper
+                square={true}
+                style={{
+                  position: 'fixed',
+                  zIndex: 1,
+                  marginTop: '1px',
+                  left: device === 'mobile' ? '16px' : undefined,
+                  width: device === 'mobile' ? 'calc(100% - 32px)' : undefined,
                   overflow: 'hidden',
-                },
-              }}
-            />
-            <ListItemSecondaryAction>
-              <Tooltip
-                placement="right"
-                title={
-                  <>
-                    {repoManager.getRepository(suggestion.url).authentication.state.getValue() ===
-                    LoginState.Authenticated ? (
-                      <>
-                        You are currently logged in as{' '}
-                        <strong>
-                          {repoManager.getRepository(suggestion.url).authentication.currentUser.getValue().DisplayName}
-                        </strong>{' '}
-                      </>
-                    ) : (
-                      <> You are not logged in</>
-                    )}
-                  </>
-                }>
-                <FiberManualRecord
+                }}>
+                <List component="nav" {...options.containerProps} style={{ padding: 0 }}>
+                  {options.children}
+                </List>
+                <Typography
                   style={{
-                    filter: 'drop-shadow(0px 0px 4px rgba(0,0,0,.3))',
-                    color:
-                      repoManager.getRepository(suggestion.url).authentication.state.getValue() ===
-                      LoginState.Authenticated
-                        ? 'green'
-                        : 'red',
+                    display: 'block',
+                    textAlign: 'right',
+                    margin: '0 1em 1em 0',
+                    color: theme.palette.text.secondary,
+                  }}>
+                  <NavLink to="/login" onClick={() => setIsActive(false)}>
+                    Another repository
+                  </NavLink>
+                </Typography>
+              </Paper>
+            )
+          }}
+          onSuggestionSelected={(ev, s) => {
+            ev.preventDefault()
+            ev.stopPropagation()
+            setIsActive(false)
+            setInputValue('')
+            props.history.push(`/${btoa(s.suggestion.url)}/`)
+          }}
+          renderSuggestion={(suggestion, params) => (
+            <Tooltip
+              placement="right"
+              title={
+                <>
+                  {repoManager.getRepository(suggestion.url).authentication.state.getValue() ===
+                  LoginState.Authenticated ? (
+                    <>
+                      You are currently logged in as{' '}
+                      <strong>
+                        {repoManager.getRepository(suggestion.url).authentication.currentUser.getValue().DisplayName}
+                      </strong>{' '}
+                    </>
+                  ) : (
+                    <> You are not logged in</>
+                  )}
+                </>
+              }>
+              <ListItem button={true} selected={params.isHighlighted} ContainerComponent="div">
+                <ListItemIcon style={{ marginRight: 0 }}>
+                  {repoManager.getRepository(suggestion.url).authentication.state.getValue() ===
+                  LoginState.Authenticated ? (
+                    <UserAvatar
+                      user={repoManager.getRepository(suggestion.url).authentication.currentUser.getValue()}
+                    />
+                  ) : (
+                    <FiberManualRecord
+                      style={{
+                        filter: 'drop-shadow(0px 0px 4px rgba(0,0,0,.3))',
+                        color:
+                          repoManager.getRepository(suggestion.url).authentication.state.getValue() ===
+                          LoginState.Authenticated
+                            ? 'green'
+                            : repoManager.getRepository(suggestion.url).authentication.state.getValue() ===
+                              LoginState.Unauthenticated
+                            ? 'red'
+                            : 'yellow',
+                      }}
+                    />
+                  )}
+                </ListItemIcon>
+                <ListItemText
+                  primary={getMatchParts(params.query || '', suggestion.displayName || suggestion.url)}
+                  secondary={suggestion.displayName ? getMatchParts(params.query || '', suggestion.url) : undefined}
+                  secondaryTypographyProps={{
+                    style: {
+                      textOverflow: 'ellipsis',
+                      overflow: 'hidden',
+                    },
                   }}
                 />
-              </Tooltip>
-            </ListItemSecondaryAction>
-          </ListItem>
-        )}
-        onSuggestionsFetchRequested={s => {
-          setFilteredSuggestions(
-            settings.repositories.filter(
-              r => r.url.indexOf(s.value) !== -1 || (r.displayName && r.displayName.indexOf(s.value) !== -1),
-            ),
-          )
-        }}
-        suggestions={filteredSuggestions}
-        onSuggestionsClearRequested={() => {
-          /** */
-        }}
-      />
+              </ListItem>
+            </Tooltip>
+          )}
+          onSuggestionsFetchRequested={s => {
+            setFilteredSuggestions(
+              settings.repositories.filter(
+                r => r.url.indexOf(s.value) !== -1 || (r.displayName && r.displayName.indexOf(s.value) !== -1),
+              ),
+            )
+          }}
+          suggestions={filteredSuggestions}
+          onSuggestionsClearRequested={() => {
+            /** */
+          }}
+        />
+      </div>
     </ClickAwayListener>
   )
 }
