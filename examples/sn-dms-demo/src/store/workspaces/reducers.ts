@@ -20,6 +20,8 @@ export const favorites: Reducer<number[]> = (state = [], action: AnyAction) => {
       return [...state, action.contentId]
     case 'UNFOLLOW_WORKSPACE_SUCCESS':
       return [...state.filter(i => i !== action.contentId)]
+    case 'USER_LOGOUT_SUCCESS':
+      return []
     default:
       return state
   }
