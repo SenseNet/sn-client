@@ -97,7 +97,7 @@ const PermanentDrawer: React.StatelessComponent<RouteComponentProps> = props => 
             <Paper style={{ padding: '1em' }}>
               <ListItem>
                 <ListItemIcon>
-                  <UserAvatar user={session.currentUser} />
+                  <UserAvatar user={session.currentUser} repositoryUrl={repo.configuration.repositoryUrl} />
                 </ListItemIcon>
                 <ListItemText
                   primary={session.currentUser.DisplayName || session.currentUser.Name}

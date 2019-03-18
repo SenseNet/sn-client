@@ -47,8 +47,9 @@ export const LoginComponent: React.FunctionComponent<RouteComponentProps> = prop
             {success ? (
               // <Check style={{ marginTop: -43, color: theme.palette.text.primary, opacity: progressValue / 100 }} />
               <UserAvatar
-                style={{ display: 'inline-block', width: 56, height: 56, marginTop: -60, opacity: progressValue / 100 }}
+                style={{ width: 56, height: 56, marginTop: -60, opacity: progressValue / 100 }}
                 user={session.currentUser}
+                repositoryUrl={url}
               />
             ) : null}
             <Typography

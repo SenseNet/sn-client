@@ -170,6 +170,7 @@ export const RepositorySelectorComponent: React.FunctionComponent<
                   {repoManager.getRepository(suggestion.url).authentication.state.getValue() ===
                   LoginState.Authenticated ? (
                     <UserAvatar
+                      repositoryUrl={suggestion.url}
                       user={repoManager.getRepository(suggestion.url).authentication.currentUser.getValue()}
                     />
                   ) : (

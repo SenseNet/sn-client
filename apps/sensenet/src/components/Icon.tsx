@@ -30,7 +30,14 @@ export interface IconResolver<T> {
 
 export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   {
-    get: (item, options) => (item.Type === 'User' ? <UserAvatar user={item as User} style={options.style} /> : null),
+    get: (item, options) =>
+      item.Type === 'User' ? (
+        <UserAvatar
+          user={item as User}
+          style={options.style}
+          repositoryUrl={options.repo.configuration.repositoryUrl}
+        />
+      ) : null,
   },
   { get: (item, options) => (item.Type === 'Group' ? <GroupTwoTone style={options.style} /> : null) },
   {

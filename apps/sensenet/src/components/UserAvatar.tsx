@@ -1,20 +1,20 @@
 import Avatar, { AvatarProps } from '@material-ui/core/Avatar'
 import { PathHelper } from '@sensenet/client-utils'
 import { User } from '@sensenet/default-content-types'
-import React, { useContext } from 'react'
-import { RepositoryContext } from '../context/RepositoryContext'
+import React from 'react'
 
 export const UserAvatar: React.StatelessComponent<{
   user: User
   avatarProps?: AvatarProps
   style?: React.CSSProperties
+  repositoryUrl: string
 }> = props => {
-  const repo = useContext(RepositoryContext)
   const avatarUrl = props.user.Avatar && props.user.Avatar.Url
   if (avatarUrl) {
     return (
       <Avatar
-        src={PathHelper.joinPaths(repo.configuration.repositoryUrl, avatarUrl)}
+        src={PathHelper.joinPaths(props.repositoryUrl, avatarUrl)}
+        // imgProps={{ crossorigin: 'use-credentials' } as any}
         {...props.avatarProps}
         style={props.style}
       />

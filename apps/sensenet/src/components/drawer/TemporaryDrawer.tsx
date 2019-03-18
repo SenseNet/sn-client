@@ -102,7 +102,7 @@ const TemporaryDrawer: React.StatelessComponent<RouteComponentProps & { isOpened
         <Paper style={{ padding: '1em' }}>
           <ListItem>
             <ListItemIcon>
-              <UserAvatar user={session.currentUser} />
+              <UserAvatar repositoryUrl={repo.configuration.repositoryUrl} user={session.currentUser} />
             </ListItemIcon>
             <ListItemText
               primary={session.currentUser.DisplayName || session.currentUser.Name}
