@@ -3,6 +3,8 @@ import { ContentType, File as SnFile, GenericContent, Resource, Settings } from 
 import { Uri } from 'monaco-editor'
 import { isContentFromType } from '../utils/isContentFromType'
 
+export type RouteType = 'Browse' | 'EditProperties' | 'EditBinary' | 'Preview'
+
 export class ContentContextProvider {
   public getMonacoModelUri(content: GenericContent) {
     if (isContentFromType(content, Settings)) {
@@ -46,14 +48,12 @@ export class ContentContextProvider {
   public canEditBinary(content: GenericContent) {
     return this.getMonacoLanguage(content) ? true : false
   }
-
-  public getPrimaryActionUrl<T extends GenericContent>(content: T) {
-    const repoSegment = btoa(this.repository.configuration.repositoryUrl)
+  public getPrimaryActionRouteType<T extends GenericContent>(content: T): RouteType {
     if (content.IsFolder) {
-      return `/${repoSegment}/content/${content.Id}`
+      return 'Browse'
     }
     if (this.canEditBinary(content)) {
-      return `/${repoSegment}/editBinary/${content.Id}`
+      return 'EditBinary'
     }
     if (
       (content as any).Binary &&
@@ -61,9 +61,18 @@ export class ContentContextProvider {
       (content as any).Binary.__mediaresource.content_type !== 'text/css' &&
       (content as any).Binary.__mediaresource.content_type !== 'text/xml'
     ) {
-      return `/${repoSegment}/preview/${content.Id}`
+      return 'Preview'
     }
-    return `/${repoSegment}/editProperties/${content.Id}`
+    return 'EditProperties'
+  }
+
+  public getActionUrl<T extends GenericContent>(content: T, routeType: RouteType) {
+    const repoSegment = btoa(this.repository.configuration.repositoryUrl)
+    return `/${repoSegment}/${routeType}/${content.Id}`
+  }
+  public getPrimaryActionUrl<T extends GenericContent>(content: T) {
+    const routeType = this.getPrimaryActionRouteType(content)
+    return this.getActionUrl(content, routeType)
   }
 
   constructor(private readonly repository: Repository) {}

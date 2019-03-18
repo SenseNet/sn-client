@@ -38,7 +38,7 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
           ) : sessionContext.debouncedState === LoginState.Authenticated ? (
             <Switch>
               <AuthorizedRoute
-                path="/:repo/content/:folderId?/:rightParent?"
+                path="/:repo/browse/:folderId?/:rightParent?"
                 render={() => <ExploreComponent />}
                 authorize={() => true}
               />

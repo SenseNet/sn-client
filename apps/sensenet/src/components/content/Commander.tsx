@@ -49,7 +49,7 @@ export const Commander: React.StatelessComponent<RouteComponentProps<CommanderRo
       props.match.params.folderId !== leftParentId.toString() ||
       props.match.params.rightParent !== rightParentId.toString()
     ) {
-      props.history.push(`/${btoa(repo.configuration.repositoryUrl)}/content/${leftParentId}/${rightParentId}`)
+      props.history.push(`/${btoa(repo.configuration.repositoryUrl)}/browse/${leftParentId}/${rightParentId}`)
     }
   }, [leftParentId, rightParentId])
 
@@ -59,7 +59,7 @@ export const Commander: React.StatelessComponent<RouteComponentProps<CommanderRo
         <CurrentChildrenProvider>
           <CurrentAncestorsProvider>
             <CollectionComponent
-              fields={['DisplayName', 'CreatedBy']}
+              fields={['DisplayName', 'CreatedBy', 'Actions']}
               enableBreadcrumbs={true}
               onActivateItem={item => {
                 props.history.push(ctx.getPrimaryActionUrl(item))

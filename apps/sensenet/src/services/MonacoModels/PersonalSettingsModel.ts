@@ -22,7 +22,7 @@ languages.json.jsonDefaults.setDiagnosticsOptions({
                 description: 'An array of enabled items',
                 type: 'array',
                 uniqueItems: true,
-                items: { enum: ['Content', 'Search', 'Users and Groups', 'Setup'] },
+                items: { enum: ['Content', 'Search', 'Users and Groups', 'Setup', 'Version info'] },
               },
             },
           },

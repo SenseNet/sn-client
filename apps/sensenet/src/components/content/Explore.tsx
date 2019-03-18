@@ -49,7 +49,7 @@ export const ExploreComponent: React.FunctionComponent<RouteComponentProps<{ fol
               />
 
               <CollectionComponent
-                fields={['DisplayName', 'CreatedBy']}
+                fields={['DisplayName', 'CreatedBy', 'Actions']}
                 enableBreadcrumbs={false}
                 onActivateItem={item => {
                   props.history.push(ctx.getPrimaryActionUrl(item))

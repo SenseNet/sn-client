@@ -7,11 +7,12 @@ import { CurrentAncestorsContext } from '../context/CurrentAncestors'
 import { CurrentChildrenContext } from '../context/CurrentChildren'
 import { CurrentContentContext } from '../context/CurrentContent'
 import { RepositoryContext } from '../context/RepositoryContext'
+import { ResponsiveContext } from '../context/ResponsiveContextProvider'
 import { ContentBreadcrumbs } from './ContentBreadcrumbs'
 import { DropFileArea } from './DropFileArea'
 import { Icon } from './Icon'
+import { SecondaryActionsMenu } from './SecondaryActionsMenu'
 import { SelectionControl } from './SelectionControl'
-
 export const CollectionComponent: React.StatelessComponent<{
   enableBreadcrumbs?: boolean
   parentId: number
@@ -26,10 +27,11 @@ export const CollectionComponent: React.StatelessComponent<{
   const parent = useContext(CurrentContentContext)
   const children = useContext(CurrentChildrenContext)
   const ancestors = useContext(CurrentAncestorsContext)
+  const device = useContext(ResponsiveContext)
 
   const [activeContent, setActiveContent] = useState<GenericContent>(children[0])
   const [selected, setSelected] = useState<GenericContent[]>([])
-  const [isFocused, setIsFocused] = useState(false)
+  const [isFocused, setIsFocused] = useState(true)
   const repo = useContext(RepositoryContext)
 
   let searchString = ''
@@ -67,7 +69,12 @@ export const CollectionComponent: React.StatelessComponent<{
           onFocus={() => {
             setIsFocused(true)
           }}
-          onBlur={() => setIsFocused(false)}
+          onBlur={ev => {
+            if (!ev.currentTarget.contains((ev as any).relatedTarget)) {
+              // Skip blurring on child focus
+              setIsFocused(false)
+            }
+          }}
           ref={props.containerRef}
           onKeyDown={ev => {
             if (!activeContent) {
@@ -171,7 +178,16 @@ export const CollectionComponent: React.StatelessComponent<{
                 case 'DisplayName':
                   return (
                     <TableCell padding={'none'}>
-                      {fieldOptions.content.DisplayName || fieldOptions.content.Name}
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        {fieldOptions.content.DisplayName || fieldOptions.content.Name}
+                        {device === 'mobile' &&
+                        fieldOptions.active &&
+                        fieldOptions.active.Id === fieldOptions.content.Id ? (
+                          <CurrentContentContext.Provider value={fieldOptions.content}>
+                            <SecondaryActionsMenu style={{ float: 'right' }} />
+                          </CurrentContentContext.Provider>
+                        ) : null}
+                      </div>
                     </TableCell>
                   )
                 case 'CreatedBy':
@@ -187,6 +203,14 @@ export const CollectionComponent: React.StatelessComponent<{
                       </div>
                     </TableCell>
                   ) : null
+                case 'Actions':
+                  return (
+                    <TableCell style={{ width: '64px' }}>
+                      <CurrentContentContext.Provider value={fieldOptions.content}>
+                        <SecondaryActionsMenu />
+                      </CurrentContentContext.Provider>
+                    </TableCell>
+                  )
               }
               return null
             }}

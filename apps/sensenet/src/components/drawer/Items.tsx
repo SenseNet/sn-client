@@ -1,7 +1,9 @@
 import BuildTwoTone from '@material-ui/icons/BuildTwoTone'
+import InfoTwoTone from '@material-ui/icons/InfoTwoTone'
 import PeopleTwoTone from '@material-ui/icons/PeopleTwoTone'
 import PublicTwoTone from '@material-ui/icons/PublicTwoTone'
 import SearchTwoTone from '@material-ui/icons/SearchTwoTone'
+
 import { Group } from '@sensenet/default-content-types'
 import React from 'react'
 export interface DrawerItem {
@@ -16,7 +18,7 @@ export const defaultDrawerItems: DrawerItem[] = [
   {
     primaryText: 'Content',
     secondaryText: 'Explore the Repository',
-    url: '/content',
+    url: '/browse',
     icon: <PublicTwoTone />,
     requiredGroupPath: '/Root/IMS/BuiltIn/Portal/ContentExplorers',
   },
@@ -39,6 +41,13 @@ export const defaultDrawerItems: DrawerItem[] = [
     secondaryText: 'Configure the sensenet system',
     url: '/setup',
     icon: <BuildTwoTone />,
+    requiredGroupPath: '/Root/IMS/BuiltIn/Portal/Administrators',
+  },
+  {
+    primaryText: 'Version info',
+    secondaryText: 'Detailed version information about the current sensenet installation',
+    url: '/info',
+    icon: <InfoTwoTone />,
     requiredGroupPath: '/Root/IMS/BuiltIn/Portal/Administrators',
   },
 ]
