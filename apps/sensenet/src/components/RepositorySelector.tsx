@@ -59,7 +59,11 @@ export const RepositorySelectorComponent: React.FunctionComponent<
         <Link to="/">
           <img src={logo} style={{ marginRight: '.5em', filter: 'drop-shadow(0px 0px 3px black)' }} />
         </Link>
-        <div style={{ flexShrink: 1, textOverflow: 'ellipsis', overflow: 'hidden' }}>{lastRepositoryName}</div>
+        <div
+          title={lastRepositoryName}
+          style={{ flexShrink: 1, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
+          {lastRepositoryName}
+        </div>
         <IconButton onClick={() => setIsActive(true)}>
           <KeyboardArrowDown />
         </IconButton>
