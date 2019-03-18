@@ -14,6 +14,7 @@ import { RouteComponentProps, withRouter } from 'react-router'
 import { closeActionMenu, openActionMenu } from '../Actions'
 import { contentListTheme } from '../assets/contentlist'
 import { icons } from '../assets/icons'
+import { resources } from '../assets/resources'
 import { customSchema } from '../assets/schema'
 import { rootStateType } from '../store/rootReducer'
 import { loadGroup, selectGroup, updateChildrenOptions } from '../store/usersandgroups/actions'
@@ -30,6 +31,7 @@ const rootItems = [
     Path: '/Root/IMS',
     Icon: 'folder',
     Id: 3,
+    IsFolder: true,
   } as GenericContent,
   {
     Name: 'Workspaces',
@@ -37,6 +39,7 @@ const rootItems = [
     Path: '/Root/Sites/Default_Site/workspaces',
     Icon: 'folder',
     Id: 3778,
+    IsFolder: true,
   } as GenericContent,
 ]
 
@@ -197,7 +200,13 @@ class Groups extends Component<
                       customSchema.find(s => s.ContentTypeName === 'GenericContent') ||
                       SchemaStore.filter(s => s.ContentTypeName === 'GenericContent')[0]
                     }
-                    fieldsToDisplay={matches ? ['DisplayName', 'Path', 'Actions'] : ['DisplayName', 'Actions']}
+                    fieldsToDisplay={
+                      matches
+                        ? items.length > 0
+                          ? ['DisplayName', 'Path', 'Actions']
+                          : ['DisplayName', 'Actions']
+                        : ['DisplayName', 'Actions']
+                    }
                     icons={icons}
                     orderBy={childrenOptions.orderby ? childrenOptions.orderby[0][0] : ('Id' as any)}
                     orderDirection={childrenOptions.orderby ? childrenOptions.orderby[0][1] : ('asc' as any)}
@@ -263,6 +272,16 @@ class Groups extends Component<
                             return <div>aaa</div> // TODO: delete group
                           } else {
                             return <TableCell />
+                          }
+                        case 'Path':
+                          if (props.content.IsFolder) {
+                            return <TableCell />
+                          } else {
+                            return props.content.Path.indexOf('IMS') > -1 ? (
+                              <TableCell>{resources.GLOBAL}</TableCell>
+                            ) : (
+                              <TableCell>{resources.LOCAL}</TableCell>
+                            )
                           }
                         default:
                           return null

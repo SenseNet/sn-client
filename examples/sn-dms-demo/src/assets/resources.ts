@@ -162,6 +162,8 @@ const resources = {
   FROM_GROUP: 'from group',
   ADD: 'Add',
   ADD_USER_TO_GROUP: 'Add user',
+  LOCAL: 'Local',
+  GLOBAL: 'Global',
 } as any
 
 const resourceHandler: ProxyHandler<typeof resources> = {
