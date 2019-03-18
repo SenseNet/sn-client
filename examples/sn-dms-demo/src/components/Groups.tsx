@@ -25,12 +25,14 @@ import UserSelector from './UsersAndGroups/UserSelector/UserSelector'
 
 const rootItems = [
   {
+    Name: 'IMS',
     DisplayName: 'Users and Groups',
     Path: '/Root/IMS',
     Icon: 'folder',
     Id: 3,
   } as GenericContent,
   {
+    Name: 'Workspaces',
     DisplayName: 'Workspaces',
     Path: '/Root/Sites/Default_Site/workspaces',
     Icon: 'folder',

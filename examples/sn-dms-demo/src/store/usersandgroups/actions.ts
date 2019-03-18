@@ -325,7 +325,7 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
       const items = await repository.loadCollection({
         path: newGroup.d.Path,
         oDataOptions: {
-          select: ['Path', 'Actions', 'Id', 'DisplayName'] as any,
+          select: ['Path', 'Actions', 'Id', 'DisplayName', 'Name'] as any,
           expand: ['Actions'] as any,
           filter: `ContentType eq 'Folder' or ContentType eq 'OrganizationalUnit' or ContentType eq 'Domain' or ContentType eq 'Group'`,
         },
