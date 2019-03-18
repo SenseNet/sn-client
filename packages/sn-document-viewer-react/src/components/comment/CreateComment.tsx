@@ -40,7 +40,7 @@ export function CreateComment(props: CreateCommentProps) {
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)
 
   return (
-    <FormControl onSubmit={handleSubmit}>
+    <FormControl>
       <InputLabel htmlFor="comment-input">{props.localization.commentInputPlaceholder || 'Write a comment'}</InputLabel>
       <Input
         id="comment-input"
@@ -57,7 +57,7 @@ export function CreateComment(props: CreateCommentProps) {
           </InputAdornment>
         }
       />
-      <Button variant="text" type="submit">
+      <Button variant="text" onClick={handleSubmit}>
         {props.localization.submit || 'submit'}
       </Button>
     </FormControl>

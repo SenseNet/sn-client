@@ -26,12 +26,11 @@ describe('Create comment component', () => {
     expect(wrapper.find(FormControl).exists()).toBeTruthy()
   })
 
-  it('should add comment when a form is submitted', () => {
+  it('should add comment when add submit is clicked', () => {
     const createComment = jest.fn()
     const wrapper = mount(<CreateComment {...defaultProps} createComment={createComment} />)
     wrapper.find(Button).simulate('click')
-    wrapper.find(FormControl).simulate('submit')
+    wrapper.find(Button).simulate('click')
     expect(createComment).toBeCalled()
-    expect(wrapper.find(Button).length).toBe(1)
   })
 })
