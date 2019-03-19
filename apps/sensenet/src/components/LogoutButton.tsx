@@ -60,7 +60,6 @@ export const LogoutButton: React.FunctionComponent<{
             </div>
           ) : (
             <DialogContentText style={{ wordBreak: 'break-word' }}>
-              ) : (
               <>
                 You are logged in to{' '}
                 <Link to="/" onClick={() => setShowLogout(false)}>
