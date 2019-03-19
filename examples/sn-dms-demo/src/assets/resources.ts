@@ -164,6 +164,7 @@ const resources = {
   ADD_USER_TO_GROUP: 'Add user',
   LOCAL: 'Local',
   GLOBAL: 'Global',
+  DELETE_GROUP: 'Delete group',
 } as any
 
 const resourceHandler: ProxyHandler<typeof resources> = {

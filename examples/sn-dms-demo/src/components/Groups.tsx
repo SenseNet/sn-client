@@ -1,10 +1,12 @@
 import AppBar from '@material-ui/core/AppBar'
+import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import TableCell from '@material-ui/core/TableCell'
 import Toolbar from '@material-ui/core/Toolbar'
 import { ConstantContent } from '@sensenet/client-core'
 import { ActionModel, GenericContent, SchemaStore } from '@sensenet/default-content-types'
+import { Icon } from '@sensenet/icons-react'
 import { ContentList } from '@sensenet/list-controls-react'
 import { compile } from 'path-to-regexp'
 import React, { Component } from 'react'
@@ -69,6 +71,10 @@ const styles = {
   },
   icon: {
     marginRight: 5,
+  },
+  deleteButton: {
+    fontFamily: 'Raleway Medium',
+    fontSize: 15,
   },
 }
 
@@ -209,9 +215,9 @@ class Groups extends Component<
                     }
                     fieldsToDisplay={
                       matches
-                        ? items.length > 0
+                        ? items.length > 0 && items[0].Type === 'Group'
                           ? ['DisplayName', 'Path', 'Actions']
-                          : ['DisplayName', 'Actions']
+                          : ['DisplayName']
                         : ['DisplayName', 'Actions']
                     }
                     icons={icons}
@@ -275,8 +281,18 @@ class Groups extends Component<
                           }
                         case 'Actions':
                           // tslint:disable-next-line:no-string-literal
-                          if (this.isGroupAdmin(props.content.Actions as ActionModel[])) {
-                            return <div>aaa</div> // TODO: delete group
+                          if (
+                            this.isGroupAdmin(props.content.Actions as ActionModel[]) &&
+                            props.content.Type === 'Group'
+                          ) {
+                            return (
+                              <TableCell padding="checkbox" style={{ width: 160 }}>
+                                <Button style={styles.deleteButton} onClick={() => this.handleDeleteClick()}>
+                                  <Icon iconName="delete" style={{ fontSize: 19, marginRight: 10 }} />
+                                  {resources.DELETE_GROUP}
+                                </Button>
+                              </TableCell>
+                            )
                           } else {
                             return <TableCell />
                           }
