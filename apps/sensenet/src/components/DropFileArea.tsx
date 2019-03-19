@@ -23,7 +23,9 @@ export const DropFileArea: React.FunctionComponent<{ parent: GenericContent; sty
       onDragLeave={ev => {
         ev.stopPropagation()
         ev.preventDefault()
-        setDragOver(false)
+        if (!ev.currentTarget.contains(ev.target as HTMLElement)) {
+          setDragOver(false)
+        }
       }}
       onDragOver={ev => {
         ev.stopPropagation()
