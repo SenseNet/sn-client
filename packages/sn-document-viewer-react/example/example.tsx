@@ -13,9 +13,12 @@ const rootReducer = combineReducers({
 
 const store = createStore(rootReducer, storeConfig.preloadedState, storeConfig.enhancer)
 
-ReactDOM.render(
+/**
+ * Showcase application for document viewer
+ */
+export const ViewerExampleApp = () => (
   <Provider store={store}>
     <ExampleAppLayout />
-  </Provider>,
-  document.getElementById('root'),
+  </Provider>
 )
+ReactDOM.render(<ViewerExampleApp />, document.getElementById('root'))
