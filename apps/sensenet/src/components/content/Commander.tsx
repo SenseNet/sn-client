@@ -65,7 +65,7 @@ export const Commander: React.StatelessComponent<RouteComponentProps<CommanderRo
                 props.history.push(ctx.getPrimaryActionUrl(item))
               }}
               containerRef={r => setLeftPanelRef(r)}
-              style={{ flexGrow: 1, flexShrink: 0, maxHeight: '100%' }}
+              style={{ width: '100%', maxHeight: '100%' }}
               parentId={leftParentId}
               onParentChange={p => {
                 setLeftParentId(p.Id)
@@ -86,7 +86,7 @@ export const Commander: React.StatelessComponent<RouteComponentProps<CommanderRo
               }}
               containerRef={r => setRightPanelRef(r)}
               parentId={rightParentId}
-              style={{ flexGrow: 1, flexShrink: 0, borderLeft: '1px solid rgba(255,255,255,0.3)', maxHeight: '100%' }}
+              style={{ width: '100%', borderLeft: '1px solid rgba(255,255,255,0.3)', maxHeight: '100%' }}
               onParentChange={p2 => {
                 setRightParentId(p2.Id)
               }}
