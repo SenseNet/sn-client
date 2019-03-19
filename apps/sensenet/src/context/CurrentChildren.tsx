@@ -1,4 +1,4 @@
-import { PathHelper } from '@sensenet/client-utils'
+import { PathHelper, debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Created } from '@sensenet/repository-events'
 import React, { useContext, useEffect, useState } from 'react'
@@ -20,7 +20,7 @@ export const CurrentChildrenProvider: React.FunctionComponent = props => {
   const eventHub = injector.getEventHub(repo.configuration.repositoryUrl)
   const uploadTracker = injector.GetInstance(UploadTracker)
 
-  const requestReload = () => setReloadToken(reloadToken + 1)
+  const requestReload = debounce(() => setReloadToken(Math.random()), 200)
 
   useEffect(() => {
     ;(async () => {

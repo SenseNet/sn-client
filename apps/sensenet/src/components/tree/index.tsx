@@ -32,7 +32,7 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
   const repo = useContext(RepositoryContext)
   const eventHub = injector.getEventHub(repo.configuration.repositoryUrl)
   const update = debounce(() => {
-    setReloadToken(reloadToken + 1)
+    setReloadToken(Math.random())
   }, 100)
   const handleCreate = (c: Created) => {
     if (
@@ -54,9 +54,15 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
       eventHub.onContentCopied.subscribe(handleCreate),
       eventHub.onContentMoved.subscribe(handleCreate),
       eventHub.onContentDeleted.subscribe(d => {
-        setItems(items.filter(i => i.Id !== d.contentData.Id))
+        if (items.map(i => i.Id).includes(d.contentData.Id)) {
+          update()
+        }
       }),
     ]
+    return () => subscriptions.forEach(s => s.dispose())
+  }, [props.parentPath, repo, opened, items])
+
+  useEffect(() => {
     ;(async () => {
       const children = await repo.loadCollection({
         path: props.parentPath,
@@ -67,7 +73,6 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
       })
       setItems(children.d.results)
     })()
-    return () => subscriptions.forEach(s => s.dispose())
   }, [reloadToken])
 
   return (
