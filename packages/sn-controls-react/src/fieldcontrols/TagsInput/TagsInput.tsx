@@ -141,7 +141,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
     allowedTypes.map(type => {
       typeQuery += ` +TypeIs:${type}`
     })
-    const req: ODataCollectionResponse<GenericContent> = await this.props['data-repository'].loadCollection({
+    const req = await this.props['data-repository'].loadCollection({
       path: '/Root',
       oDataOptions: {
         query: `(${pathQuery}) AND${typeQuery}`,
