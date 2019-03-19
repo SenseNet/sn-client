@@ -42,7 +42,7 @@ const TemporaryDrawer: React.StatelessComponent<RouteComponentProps & { isOpened
     [personalSettings, repo],
   )
 
-  useEffect(() => setItems(getAllowedDrawerItems(session.groups)))
+  useEffect(() => setItems(getAllowedDrawerItems(session.groups)), [session.groups])
 
   useEffect(() => setOpened(props.isOpened), [props.isOpened])
 
