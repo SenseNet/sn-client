@@ -118,6 +118,12 @@ export const SecondaryActionsMenuComponent: React.FunctionComponent<
                 <Info color="action" />
               </ListItemSecondaryAction>
             </ListItem>
+            <ListItem button={true} onClick={() => props.history.push(routing.getPrimaryActionUrl(content))}>
+              <ListItemIcon>
+                <Icon item={content} />
+              </ListItemIcon>
+              <ListItemText primary="Open" />
+            </ListItem>
             <ListItem button={true} onClick={() => props.history.push(routing.getActionUrl(content, 'EditProperties'))}>
               <ListItemIcon>
                 <Create />
