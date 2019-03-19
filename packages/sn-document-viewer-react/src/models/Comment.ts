@@ -26,3 +26,8 @@ export interface Comment {
  * Comment object without the created by User
  */
 export type CommentWithoutCreatedByAndId = Omit<Comment, 'createdBy' | 'id'>
+
+/**
+ * Coordinates for marker
+ */
+export type MarkerCoordinates = Pick<Comment, 'x' | 'y'>

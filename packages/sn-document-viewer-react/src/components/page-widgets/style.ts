@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Comment } from '../../models'
+import { MarkerCoordinates } from '../../models'
 
 // tslint:disable: completed-docs
 
@@ -11,13 +11,14 @@ export const ShapesContainer = styled.div`
   height: 100%;
   z-index: 1;
 `
+export const MARKER_SIZE = 10
 
-export const CommentMarker = styled('div')<{ marker: Comment; zoomRatio: number }>`
+export const CommentMarker = styled('div')<{ marker: MarkerCoordinates; zoomRatio: number }>`
   position: absolute;
   top: ${props => props.marker.y * props.zoomRatio}px;
   left: ${props => props.marker.x * props.zoomRatio}px;
-  width: 10px;
-  height: 10px;
-  border-radius: 10px;
+  width: ${MARKER_SIZE}px;
+  height: ${MARKER_SIZE}px;
+  border-radius: ${MARKER_SIZE}px;
   background-color: green;
 `

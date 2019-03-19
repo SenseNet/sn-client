@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Annotation, Highlight, PreviewImageData, Redaction, Shape, Shapes } from '../../models'
+import { Annotation, Highlight, MarkerCoordinates, PreviewImageData, Redaction, Shape, Shapes } from '../../models'
 import { componentType, Dimensions } from '../../services'
 import { RootReducerType, updateShapeData } from '../../store'
 import { ShapeAnnotation, ShapeHighlight, ShapeRedaction } from './Shape'
@@ -13,6 +13,7 @@ export interface OwnProps {
   viewPort: Dimensions
   page: PreviewImageData
   zoomRatio: number
+  draftCommentMarker?: MarkerCoordinates
 }
 
 /**
@@ -20,6 +21,12 @@ export interface OwnProps {
  * @param state the redux state
  */
 export const mapStateToProps = (state: RootReducerType, ownProps: OwnProps) => {
+  const commentMarkers = state.sensenetDocumentViewer.documentState.comments
+    .filter(comment => comment.page === ownProps.page.Index)
+    .map(comment => {
+      return { x: comment.x, y: comment.y }
+    })
+  ownProps.draftCommentMarker && commentMarkers.push(ownProps.draftCommentMarker)
   return {
     showShapes: state.sensenetDocumentViewer.viewer.showShapes,
     showRedactions: state.sensenetDocumentViewer.viewer.showRedaction,
@@ -34,9 +41,7 @@ export const mapStateToProps = (state: RootReducerType, ownProps: OwnProps) => {
     annotations: state.sensenetDocumentViewer.documentState.document.shapes.annotations.filter(
       r => r.imageIndex === ownProps.page.Index,
     ) as Annotation[],
-    commentMarkers: state.sensenetDocumentViewer.documentState.comments.filter(
-      comment => comment.page === ownProps.page.Index,
-    ),
+    commentMarkers,
     canEdit: state.sensenetDocumentViewer.documentState.canEdit,
   }
 }
@@ -80,8 +85,8 @@ export class ShapesComponent extends React.Component<
     return (
       <ShapesContainer>
         {this.props.showComments &&
-          this.props.commentMarkers.map(marker => (
-            <CommentMarker zoomRatio={this.props.zoomRatio} marker={marker} key={marker.id} />
+          this.props.commentMarkers.map((marker, index) => (
+            <CommentMarker zoomRatio={this.props.zoomRatio} marker={marker} key={index.toString()} />
           ))}
         <div onDrop={ev => this.onDrop(ev, this.props.page)} onDragOver={ev => ev.preventDefault()}>
           {this.props.canHideRedactions &&

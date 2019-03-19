@@ -2,10 +2,11 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import Paper from '@material-ui/core/Paper'
 import React = require('react')
 import { connect } from 'react-redux'
-import { DocumentData, PreviewImageData } from '../models'
+import { DocumentData, MarkerCoordinates, PreviewImageData } from '../models'
 import { componentType, ImageUtil } from '../services'
 import { previewAvailable, RootReducerType, ZoomMode } from '../store'
 import { ShapesWidget } from './page-widgets'
+import { MARKER_SIZE } from './page-widgets/style'
 
 /**
  * maps state fields from the store to component props
@@ -46,6 +47,8 @@ export interface OwnProps {
   onClick: (ev: React.MouseEvent<HTMLElement>) => any
   margin: number
   image: 'preview' | 'thumbnail'
+  isPlacingCommentMarker?: boolean
+  handleMarkerCreation?: (coordinates: MarkerCoordinates) => void
 }
 
 /**
@@ -61,6 +64,7 @@ export interface PageState {
   imageTransform: string
   zoomRatio: number
   isPolling: boolean
+  draftCommentMarker?: MarkerCoordinates
 }
 
 /**
@@ -71,14 +75,13 @@ export class PageComponent extends React.Component<
   componentType<typeof mapStateToProps, typeof mapDispatchToProps, OwnProps>,
   PageState
 > {
-  private pollPreview?: number = (setInterval(() => {
-    if (this.state.isPolling) {
-      this.props.previewAvailable(this.props.documentData, this.props.version, this.props.imageIndex)
-    }
-  }, this.props.pollInterval) as any) as number
-
   /** the component state */
-  public state = PageComponent.getDerivedStateFromProps(this.props)
+  public state = PageComponent.getDerivedStateFromProps(this.props, this.state)
+
+  /** event before the component did unmount */
+  public componentWillUnmount() {
+    this.stopPolling()
+  }
 
   private stopPolling() {
     if (this.pollPreview) {
@@ -87,16 +90,33 @@ export class PageComponent extends React.Component<
     }
   }
 
-  /** event before the component did unmount */
-  public componentWillUnmount() {
-    this.stopPolling()
+  private handleMarkerPlacement(event: React.MouseEvent) {
+    if (!this.props.isPlacingCommentMarker) {
+      return
+    }
+    // TODO(Zoli): Remove Math.trunc once backend allows floating point numbers
+    const draftCommentMarker = {
+      x: Math.trunc(event.nativeEvent.offsetX / this.state.zoomRatio) - MARKER_SIZE,
+      y: Math.trunc(event.nativeEvent.offsetY / this.state.zoomRatio) - MARKER_SIZE,
+    }
+    this.setState({
+      ...this.state,
+      draftCommentMarker,
+    })
+    this.props.handleMarkerCreation && this.props.handleMarkerCreation(draftCommentMarker)
   }
+
+  private pollPreview?: number = (setInterval(() => {
+    if (this.state.isPolling) {
+      this.props.previewAvailable(this.props.documentData, this.props.version, this.props.imageIndex)
+    }
+  }, this.props.pollInterval) as any) as number
 
   /**
    * Returns a derived state from the specified props
    * @param props The props for state creation
    */
-  public static getDerivedStateFromProps(props: PageComponent['props']): PageState {
+  public static getDerivedStateFromProps(props: PageComponent['props'], state: PageState): PageState {
     const imageRotation = ImageUtil.normalizeDegrees((props.page.Attributes && props.page.Attributes.degree) || 0)
     const imageRotationRads = ((imageRotation % 180) * Math.PI) / 180
     const imgSrc = (props.image === 'preview' ? props.page.PreviewImageUrl : props.page.ThumbnailImageUrl) || ''
@@ -126,6 +146,7 @@ export class PageComponent extends React.Component<
     const diffHeight = Math.sin(imageRotationRads) * maxDiff
 
     return {
+      draftCommentMarker: props.isPlacingCommentMarker ? state.draftCommentMarker : undefined,
       isActive: props.activePages.indexOf(props.page.Index) >= 0,
       imgSrc,
       pageWidth: relativePageSize.width,
@@ -153,10 +174,14 @@ export class PageComponent extends React.Component<
             height: this.state.pageHeight - 2 * this.props.margin,
             position: 'relative',
           }}
-          onClick={ev => this.props.onClick(ev)}>
+          onClick={ev => {
+            this.props.onClick(ev)
+            this.handleMarkerPlacement(ev)
+          }}>
           {this.props.showWidgets ? (
             <div>
               <ShapesWidget
+                draftCommentMarker={this.state.draftCommentMarker}
                 zoomRatio={this.state.zoomRatio}
                 page={this.props.page}
                 viewPort={{ height: this.state.pageHeight, width: this.state.pageWidth }}

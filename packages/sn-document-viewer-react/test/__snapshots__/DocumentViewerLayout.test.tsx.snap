@@ -64,8 +64,10 @@ exports[`Document Viewer Layout component should render without crashing 1`] = `
       activePage={1}
       elementNamePrefix="Page-"
       fitRelativeZoomLevel={1}
+      handleMarkerCreation={[Function]}
       id="sn-document-viewer-pages"
       images="preview"
+      isPlacingCommentMarker={false}
       onPageClick={[Function]}
       padding={8}
       showWidgets={true}
@@ -94,6 +96,8 @@ exports[`Document Viewer Layout component should render without crashing 1`] = `
       </WithStyles(Typography)>
       <CreateComment
         createComment={[Function]}
+        handlePlaceMarkerClick={[Function]}
+        isPlacingMarker={false}
         localization={Object {}}
       />
     </WithStyles(Drawer)>
@@ -165,8 +169,10 @@ exports[`Document Viewer Layout component should render without crashing 2`] = `
       activePage={1}
       elementNamePrefix="Page-"
       fitRelativeZoomLevel={1}
+      handleMarkerCreation={[Function]}
       id="sn-document-viewer-pages"
       images="preview"
+      isPlacingCommentMarker={false}
       onPageClick={[Function]}
       padding={8}
       showWidgets={true}
@@ -195,6 +201,8 @@ exports[`Document Viewer Layout component should render without crashing 2`] = `
       </WithStyles(Typography)>
       <CreateComment
         createComment={[Function]}
+        handlePlaceMarkerClick={[Function]}
+        isPlacingMarker={false}
         localization={Object {}}
       />
     </WithStyles(Drawer)>
