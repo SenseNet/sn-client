@@ -1,4 +1,5 @@
 import { ConstantContent, Repository } from '@sensenet/client-core'
+import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
@@ -40,18 +41,20 @@ export const CurrentContentProvider: React.FunctionComponent<{
   const [content, setContent] = useState<GenericContent>(ConstantContent.PORTAL_ROOT)
   const repo = useContext(RepositoryContext)
   const injector = useContext(InjectorContext)
+  const [reloadToken, setReloadToken] = useState(1)
+  const reload = debounce(() => setReloadToken(Math.random()), 100)
 
   useEffect(() => {
     const events = injector.getEventHub(repo.configuration.repositoryUrl)
     const subscriptions = [
       events.onContentModified.subscribe(c => {
         if (c.content.Id === content.Id) {
-          setContent({ ...content, ...c.changes })
+          reload()
         }
       }),
     ]
     return () => subscriptions.forEach(s => s.dispose())
-  })
+  }, [repo, content])
 
   useEffect(() => {
     ;(async () => {
@@ -63,7 +66,7 @@ export const CurrentContentProvider: React.FunctionComponent<{
         loadLock.release()
       }
     })()
-  }, [repo, props.idOrPath])
+  }, [repo, props.idOrPath, reloadToken])
 
   return (
     <CurrentContentContext.Provider value={content as GenericContent}>{props.children}</CurrentContentContext.Provider>
