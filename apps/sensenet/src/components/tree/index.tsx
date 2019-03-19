@@ -60,6 +60,11 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
       eventHub.onContentCreated.subscribe(handleCreate),
       eventHub.onContentCopied.subscribe(handleCreate),
       eventHub.onContentMoved.subscribe(handleCreate),
+      eventHub.onContentModified.subscribe(mod => {
+        if (items.map(i => i.Id).includes(mod.content.Id)) {
+          update()
+        }
+      }),
       eventHub.onContentDeleted.subscribe(d => {
         if (items.map(i => i.Id).includes(d.contentData.Id)) {
           update()
