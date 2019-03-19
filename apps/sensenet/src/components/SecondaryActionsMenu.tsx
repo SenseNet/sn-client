@@ -1,12 +1,12 @@
-import { ListItemSecondaryAction } from '@material-ui/core'
+import Drawer from '@material-ui/core/Drawer'
 import IconButton from '@material-ui/core/IconButton'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
 import Tooltip from '@material-ui/core/Tooltip'
 import Create from '@material-ui/icons/Create'
 import Delete from '@material-ui/icons/Delete'
@@ -19,6 +19,7 @@ import { RouteComponentProps, withRouter } from 'react-router'
 import { ContentRoutingContext } from '../context/ContentRoutingContext'
 import { CurrentContentContext } from '../context/CurrentContent'
 import { ResponsiveContext } from '../context/ResponsiveContextProvider'
+import { DeleteContentDialog } from './DeleteContentDialog'
 import { Icon } from './Icon'
 
 export const SecondaryActionsMenuComponent: React.FunctionComponent<
@@ -31,8 +32,15 @@ export const SecondaryActionsMenuComponent: React.FunctionComponent<
   const routing = useContext(ContentRoutingContext)
   const [isOpened, setIsOpened] = useState(false)
   const [ref, setRef] = useState<HTMLElement | null>(null)
+
+  const [isDeleteOpened, setIsDeleteOpened] = useState(false)
+
   return (
     <div style={props.style}>
+      <DeleteContentDialog
+        dialogProps={{ open: isDeleteOpened, disablePortal: true, onClose: () => setIsDeleteOpened(false) }}
+        content={[content]}
+      />
       <IconButton
         buttonRef={r => setRef(r)}
         onClick={ev => {
@@ -80,7 +88,13 @@ export const SecondaryActionsMenuComponent: React.FunctionComponent<
             </ListItemIcon>
             Move
           </MenuItem>
-          <MenuItem>
+          <MenuItem
+            onClick={ev => {
+              ev.preventDefault()
+              ev.stopPropagation()
+              setIsDeleteOpened(true)
+              setIsOpened(false)
+            }}>
             <ListItemIcon>
               <Delete />
             </ListItemIcon>
@@ -88,12 +102,12 @@ export const SecondaryActionsMenuComponent: React.FunctionComponent<
           </MenuItem>
         </Menu>
       ) : (
-        <SwipeableDrawer
+        <Drawer
           anchor="bottom"
           onClose={() => setIsOpened(false)}
-          onOpen={() => setIsOpened(true)}
           disablePortal={true}
-          open={isOpened}>
+          open={isOpened}
+          PaperProps={{ style: { paddingBottom: '2em' } }}>
           <List>
             <ListItem>
               <ListItemIcon>
@@ -122,14 +136,21 @@ export const SecondaryActionsMenuComponent: React.FunctionComponent<
               </ListItemIcon>
               <ListItemText primary="Move" />
             </ListItem>
-            <ListItem button={true}>
+            <ListItem
+              button={true}
+              onClick={ev => {
+                ev.preventDefault()
+                ev.stopPropagation()
+                setIsDeleteOpened(true)
+                setIsOpened(false)
+              }}>
               <ListItemIcon>
                 <Delete />
               </ListItemIcon>
               <ListItemText primary="Delete" />
             </ListItem>
           </List>
-        </SwipeableDrawer>
+        </Drawer>
       )}
     </div>
   )
