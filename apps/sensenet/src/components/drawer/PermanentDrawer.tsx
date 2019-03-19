@@ -44,7 +44,7 @@ const PermanentDrawer: React.StatelessComponent<RouteComponentProps> = props => 
     [personalSettings, repo],
   )
 
-  useEffect(() => setItems(getAllowedDrawerItems(session.groups)))
+  useEffect(() => setItems(getAllowedDrawerItems(session.groups)), [session.groups])
 
   if (!settings.drawer.enabled) {
     return null
