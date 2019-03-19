@@ -9,9 +9,11 @@ import Tooltip from '@material-ui/core/Tooltip'
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 import Settings from '@material-ui/icons/Settings'
+import { PathHelper } from '@sensenet/client-utils'
 import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import { Link, matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
+import { PersonalSettingsContext } from '../../context/PersonalSettingsContext'
 import { RepositoryContext } from '../../context/RepositoryContext'
 import { ResponsivePersonalSetttings } from '../../context/ResponsiveContextProvider'
 import { SessionContext } from '../../context/SessionContext'
@@ -22,12 +24,25 @@ import { getAllowedDrawerItems } from './Items'
 
 const PermanentDrawer: React.StatelessComponent<RouteComponentProps> = props => {
   const settings = useContext(ResponsivePersonalSetttings)
+  const personalSettings = useContext(PersonalSettingsContext)
   const theme = useContext(ThemeContext)
   const session = useContext(SessionContext)
   const repo = useContext(RepositoryContext)
 
   const [opened, setOpened] = useState(settings.drawer.type === 'permanent')
   const [items, setItems] = useState(getAllowedDrawerItems(session.groups))
+
+  const [currentRepoEntry, setCurrentRepoEntry] = useState(
+    personalSettings.repositories.find(r => r.url === PathHelper.trimSlashes(repo.configuration.repositoryUrl)),
+  )
+
+  useEffect(
+    () =>
+      setCurrentRepoEntry(
+        personalSettings.repositories.find(r => r.url === PathHelper.trimSlashes(repo.configuration.repositoryUrl)),
+      ),
+    [personalSettings, repo],
+  )
 
   useEffect(() => setItems(getAllowedDrawerItems(session.groups)))
 
@@ -40,7 +55,7 @@ const PermanentDrawer: React.StatelessComponent<RouteComponentProps> = props => 
       <List
         dense={true}
         style={{
-          width: opened ? 450 : 55,
+          width: opened ? 330 : 55,
           height: '100%',
           flexGrow: 1,
           flexShrink: 0,
@@ -101,7 +116,7 @@ const PermanentDrawer: React.StatelessComponent<RouteComponentProps> = props => 
                 </ListItemIcon>
                 <ListItemText
                   primary={session.currentUser.DisplayName || session.currentUser.Name}
-                  secondary={repo.configuration.repositoryUrl}
+                  secondary={(currentRepoEntry && currentRepoEntry.displayName) || repo.configuration.repositoryUrl}
                 />
                 <ListItemSecondaryAction>
                   <Link to={`/personalSettings`} style={{ textDecoration: 'none' }}>

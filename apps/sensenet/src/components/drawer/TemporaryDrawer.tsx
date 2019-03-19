@@ -8,10 +8,11 @@ import Paper from '@material-ui/core/Paper'
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
 import Tooltip from '@material-ui/core/Tooltip'
 import Settings from '@material-ui/icons/Settings'
+import { PathHelper } from '@sensenet/client-utils'
 import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
-import { Link } from 'react-router-dom'
 import { matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { PersonalSettingsContext } from '../../context/PersonalSettingsContext'
 import { RepositoryContext } from '../../context/RepositoryContext'
 import { ResponsivePersonalSetttings } from '../../context/ResponsiveContextProvider'
@@ -29,6 +30,17 @@ const TemporaryDrawer: React.StatelessComponent<RouteComponentProps & { isOpened
   const session = useContext(SessionContext)
   const [opened, setOpened] = useState(false)
   const [items, setItems] = useState(getAllowedDrawerItems(session.groups))
+  const [currentRepoEntry, setCurrentRepoEntry] = useState(
+    personalSettings.repositories.find(r => r.url === PathHelper.trimSlashes(repo.configuration.repositoryUrl)),
+  )
+
+  useEffect(
+    () =>
+      setCurrentRepoEntry(
+        personalSettings.repositories.find(r => r.url === PathHelper.trimSlashes(repo.configuration.repositoryUrl)),
+      ),
+    [personalSettings, repo],
+  )
 
   useEffect(() => setItems(getAllowedDrawerItems(session.groups)))
 
@@ -40,6 +52,7 @@ const TemporaryDrawer: React.StatelessComponent<RouteComponentProps & { isOpened
   return (
     <SwipeableDrawer
       ModalProps={{ keepMounted: true }}
+      PaperProps={{ style: { width: '90%' } }}
       open={opened}
       onClose={() => setOpened(false)}
       onOpen={() => setOpened(true)}>
@@ -106,7 +119,8 @@ const TemporaryDrawer: React.StatelessComponent<RouteComponentProps & { isOpened
             </ListItemIcon>
             <ListItemText
               primary={session.currentUser.DisplayName || session.currentUser.Name}
-              secondary={repo.configuration.repositoryUrl}
+              secondary={(currentRepoEntry && currentRepoEntry.displayName) || repo.configuration.repositoryUrl}
+              secondaryTypographyProps={{ style: { overflow: 'hidden', textOverflow: 'ellipsis' } }}
             />
             <ListItemSecondaryAction>
               <Link to={`/personalSettings`} style={{ textDecoration: 'none' }} onClick={() => setOpened(false)}>
