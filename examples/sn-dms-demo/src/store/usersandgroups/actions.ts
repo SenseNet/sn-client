@@ -428,7 +428,8 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
 
 export const setGroup: <T extends Group = Group>(content: T, items: T[]) => Action & { content: T; items: T[] } = <T>(
   content: T,
-  items,
+  // tslint:disable-next-line: no-unnecessary-type-annotation
+  items: T[],
 ) => ({
   type: 'DMS_USERSANDGROUPS_SET_GROUP',
   content,
