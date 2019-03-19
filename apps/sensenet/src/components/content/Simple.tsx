@@ -1,17 +1,33 @@
 import { ConstantContent } from '@sensenet/client-core'
-import React, { useContext, useState } from 'react'
-import { RouteComponentProps, withRouter } from 'react-router'
+import React, { useContext, useEffect, useState } from 'react'
+import { matchPath, RouteComponentProps, withRouter } from 'react-router'
 import { ContentRoutingContext } from '../../context/ContentRoutingContext'
 import { CurrentAncestorsProvider } from '../../context/CurrentAncestors'
 import { CurrentChildrenProvider } from '../../context/CurrentChildren'
 import { CurrentContentProvider } from '../../context/CurrentContent'
 import { AddButton } from '../AddButton'
 import { CollectionComponent } from '../ContentListPanel'
+import { CommanderRouteParams } from './Commander'
 
 export const SimpleListComponent: React.FunctionComponent<RouteComponentProps<{ folderId?: string }>> = props => {
-  const getLeftFromPath = () => parseInt(props.match.params.folderId as string, 10) || ConstantContent.PORTAL_ROOT.Id
-  const [leftParentId, setLeftParentId] = useState(getLeftFromPath())
+  const getLeftFromPath = (params: CommanderRouteParams) =>
+    parseInt(params.folderId as string, 10) || ConstantContent.PORTAL_ROOT.Id
+  const [leftParentId, setLeftParentId] = useState(getLeftFromPath(props.match.params))
   const ctx = useContext(ContentRoutingContext)
+
+  useEffect(() => {
+    const historyChangeListener = props.history.listen(location => {
+      const match = matchPath(location.pathname, props.match.path)
+      if (match) {
+        if (getLeftFromPath(match.params) !== leftParentId) {
+          setLeftParentId(getLeftFromPath(match.params))
+        }
+      }
+    })
+    return () => {
+      historyChangeListener()
+    }
+  }, [leftParentId])
 
   return (
     <div style={{ display: 'flex', width: '100%', height: '100%' }}>
