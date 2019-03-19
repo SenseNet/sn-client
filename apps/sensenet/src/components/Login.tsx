@@ -7,7 +7,6 @@ import Typography from '@material-ui/core/Typography'
 import { FormsAuthenticationService } from '@sensenet/client-core'
 import { sleepAsync } from '@sensenet/client-utils'
 import React, { useContext, useState } from 'react'
-import { RouteComponentProps, withRouter } from 'react-router'
 import { InjectorContext } from '../context/InjectorContext'
 import { PersonalSettingsContext } from '../context/PersonalSettingsContext'
 import { RepositoryContext } from '../context/RepositoryContext'
@@ -16,7 +15,7 @@ import { ThemeContext } from '../context/ThemeContext'
 import { PersonalSettings } from '../services/PersonalSettings'
 import { UserAvatar } from './UserAvatar'
 
-export const Login: React.FunctionComponent<RouteComponentProps> = () => {
+export const Login: React.FunctionComponent = () => {
   const injector = useContext(InjectorContext)
   const repo = useContext(RepositoryContext)
   const theme = useContext(ThemeContext)
