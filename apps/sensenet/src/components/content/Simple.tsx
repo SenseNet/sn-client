@@ -8,8 +8,8 @@ import { CurrentContentProvider } from '../../context/CurrentContent'
 import { AddButton } from '../AddButton'
 import { CollectionComponent } from '../ContentListPanel'
 
-export const SimpleListComponent: React.FunctionComponent<RouteComponentProps<{ leftParent?: string }>> = props => {
-  const getLeftFromPath = () => parseInt(props.match.params.leftParent as string, 10) || ConstantContent.PORTAL_ROOT.Id
+export const SimpleListComponent: React.FunctionComponent<RouteComponentProps<{ folderId?: string }>> = props => {
+  const getLeftFromPath = () => parseInt(props.match.params.folderId as string, 10) || ConstantContent.PORTAL_ROOT.Id
   const [leftParentId, setLeftParentId] = useState(getLeftFromPath())
   const ctx = useContext(ContentRoutingContext)
 
