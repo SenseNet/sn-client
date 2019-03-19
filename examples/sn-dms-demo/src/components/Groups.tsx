@@ -201,8 +201,11 @@ class Groups extends Component<
                     displayRowCheckbox={matches ? true : false}
                     items={parent && parent.Path !== '/Root' ? items : rootItems}
                     schema={
-                      customSchema.find(s => s.ContentTypeName === 'GenericContent') ||
-                      SchemaStore.filter(s => s.ContentTypeName === 'GenericContent')[0]
+                      items.length > 0 && items[0].Type === 'Group'
+                        ? customSchema.find(s => s.ContentTypeName === 'Group') ||
+                          SchemaStore.filter(s => s.ContentTypeName === 'Group')[0]
+                        : customSchema.find(s => s.ContentTypeName === 'GenericContent') ||
+                          SchemaStore.filter(s => s.ContentTypeName === 'GenericContent')[0]
                     }
                     fieldsToDisplay={
                       matches
@@ -279,12 +282,12 @@ class Groups extends Component<
                           }
                         case 'Path':
                           if (props.content.IsFolder) {
-                            return <TableCell />
+                            return <TableCell padding="checkbox">{props.content.Path}</TableCell>
                           } else {
                             return props.content.Path.indexOf('IMS') > -1 ? (
-                              <TableCell>{resources.GLOBAL}</TableCell>
+                              <TableCell padding="checkbox">{resources.GLOBAL}</TableCell>
                             ) : (
-                              <TableCell>{resources.LOCAL}</TableCell>
+                              <TableCell padding="checkbox">{resources.LOCAL}</TableCell>
                             )
                           }
                         default:
