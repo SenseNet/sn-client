@@ -1,3 +1,4 @@
+import CloudUploadTwoTone from '@material-ui/icons/CloudUploadTwoTone'
 import { Upload } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useContext, useState } from 'react'
@@ -14,7 +15,14 @@ export const DropFileArea: React.FunctionComponent<{ parent: GenericContent; sty
 
   return (
     <div
-      style={{ position: 'relative', ...props.style }}
+      style={{
+        position: 'relative',
+        filter: isDragOver ? 'blur(1px)' : undefined,
+        opacity: isDragOver ? 0.8 : 1,
+        transition:
+          'opacity 300ms cubic-bezier(0.445, 0.050, 0.550, 0.950), filter 300ms cubic-bezier(0.445, 0.050, 0.550, 0.950)',
+        ...props.style,
+      }}
       onDragEnter={ev => {
         ev.stopPropagation()
         ev.preventDefault()
@@ -23,9 +31,7 @@ export const DropFileArea: React.FunctionComponent<{ parent: GenericContent; sty
       onDragLeave={ev => {
         ev.stopPropagation()
         ev.preventDefault()
-        if (!ev.currentTarget.contains(ev.target as HTMLElement)) {
-          setDragOver(false)
-        }
+        setDragOver(false)
       }}
       onDragOver={ev => {
         ev.stopPropagation()
@@ -46,17 +52,18 @@ export const DropFileArea: React.FunctionComponent<{ parent: GenericContent; sty
           progressObservable: injector.GetInstance(UploadTracker).onUploadProgress,
         })
       }}>
-      {isDragOver ? (
-        <div
-          style={{
-            width: '100%',
-            height: '100%',
-            backgroundColor: theme.palette.primary.main,
-            opacity: 0.1,
-            position: 'absolute',
-          }}
-        />
-      ) : null}
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          backgroundColor: theme.palette.primary.main,
+          opacity: isDragOver ? 0.1 : 0,
+          position: 'absolute',
+          zIndex: -1,
+          transition: 'opacity 300ms cubic-bezier(0.445, 0.050, 0.550, 0.950)',
+        }}>
+        <CloudUploadTwoTone color="default" style={{ width: '100%', height: '100%' }} />
+      </div>
       {props.children}
     </div>
   )

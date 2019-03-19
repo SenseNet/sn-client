@@ -66,7 +66,7 @@ export const CollectionComponent: React.StatelessComponent<{
   return (
     <div style={{ ...props.style }}>
       {props.enableBreadcrumbs ? <ContentBreadcrumbs onItemClick={i => props.onParentChange(i.content)} /> : null}
-      <DropFileArea parent={parent} style={{ height: '100%', overflow: 'auto' }}>
+      <DropFileArea parent={parent} style={{ height: '100%', overflow: 'hidden' }}>
         <div
           style={{
             ...(isFocused ? {} : { opacity: 0.8 }),
