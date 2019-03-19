@@ -40,7 +40,7 @@ export const SimpleListComponent: React.FunctionComponent<RouteComponentProps<{ 
               onActivateItem={item => {
                 props.history.push(ctx.getPrimaryActionUrl(item))
               }}
-              style={{ flexGrow: 1, flexShrink: 0, maxHeight: '100%' }}
+              style={{ flexGrow: 1, flexShrink: 0, maxHeight: '100%', width: '100%' }}
               onParentChange={p => {
                 setLeftParentId(p.Id)
               }}

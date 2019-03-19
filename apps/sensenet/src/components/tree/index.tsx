@@ -10,7 +10,9 @@ import { Created } from '@sensenet/repository-events'
 import React, { useContext, useEffect, useState } from 'react'
 import { RepositoryContext } from '../../context//RepositoryContext'
 import { CurrentAncestorsContext } from '../../context/CurrentAncestors'
+import { CurrentContentContext } from '../../context/CurrentContent'
 import { InjectorContext } from '../../context/InjectorContext'
+import { ContentContextMenu } from '../ContentContextMenu'
 import { DropFileArea } from '../DropFileArea'
 import { Icon } from '../Icon'
 
@@ -31,6 +33,11 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
   const injector = useContext(InjectorContext)
   const repo = useContext(RepositoryContext)
   const eventHub = injector.getEventHub(repo.configuration.repositoryUrl)
+
+  const [contextMenuItem, setContextMenuItem] = useState<GenericContent | null>(null)
+  const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
+  const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
+
   const update = debounce(() => {
     setReloadToken(Math.random())
   }, 100)
@@ -84,6 +91,12 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
             <div key={content.Id}>
               <DropFileArea parent={content}>
                 <ListItem
+                  onContextMenu={ev => {
+                    setContextMenuItem(content)
+                    setContextMenuAnchor(ev.currentTarget)
+                    setIsContextMenuOpened(true)
+                    ev.preventDefault()
+                  }}
                   button={true}
                   selected={props.activeItemId === content.Id}
                   onClick={() => {
@@ -107,6 +120,21 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
           )
         })}
       </List>
+      {contextMenuItem ? (
+        <CurrentContentContext.Provider value={contextMenuItem}>
+          <ContentContextMenu
+            isOpened={isContextMenuOpened}
+            menuProps={{
+              anchorEl: contextMenuAnchor,
+              BackdropProps: {
+                onClick: () => setIsContextMenuOpened(false),
+                onContextMenu: ev => ev.preventDefault(),
+              },
+            }}
+            onClose={() => setIsContextMenuOpened(false)}
+          />
+        </CurrentContentContext.Provider>
+      ) : null}
     </div>
   )
 }

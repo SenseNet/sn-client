@@ -2,17 +2,20 @@ import TableCell from '@material-ui/core/TableCell'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { CurrentAncestorsContext } from '../context/CurrentAncestors'
 import { CurrentChildrenContext } from '../context/CurrentChildren'
 import { CurrentContentContext } from '../context/CurrentContent'
 import { RepositoryContext } from '../context/RepositoryContext'
 import { ResponsiveContext } from '../context/ResponsiveContextProvider'
 import { ContentBreadcrumbs } from './ContentBreadcrumbs'
+import { ContentContextMenu } from './ContentContextMenu'
+import { DeleteContentDialog } from './DeleteContentDialog'
 import { DropFileArea } from './DropFileArea'
 import { Icon } from './Icon'
 import { SecondaryActionsMenu } from './SecondaryActionsMenu'
 import { SelectionControl } from './SelectionControl'
+
 export const CollectionComponent: React.StatelessComponent<{
   enableBreadcrumbs?: boolean
   parentId: number
@@ -32,7 +35,14 @@ export const CollectionComponent: React.StatelessComponent<{
   const [activeContent, setActiveContent] = useState<GenericContent>(children[0])
   const [selected, setSelected] = useState<GenericContent[]>([])
   const [isFocused, setIsFocused] = useState(true)
+  const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
+  const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
+  const [showDelete, setShowDelete] = useState(false)
   const repo = useContext(RepositoryContext)
+
+  useEffect(() => {
+    setIsContextMenuOpened(false)
+  }, [children, activeContent, selected])
 
   let searchString = ''
   const runSearch = debounce(() => {
@@ -131,6 +141,10 @@ export const CollectionComponent: React.StatelessComponent<{
                 ancestors.length && props.onParentChange(ancestors[ancestors.length - 1])
                 break
               }
+              case 'Delete': {
+                setShowDelete(true)
+                break
+              }
               case 'Tab':
                 ev.preventDefault()
                 props.onTabRequest()
@@ -178,7 +192,18 @@ export const CollectionComponent: React.StatelessComponent<{
                 case 'DisplayName':
                   return (
                     <TableCell padding={'none'}>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <div
+                        onContextMenu={ev => {
+                          ev.preventDefault()
+                          setActiveContent(fieldOptions.content)
+                          setContextMenuAnchor((ev.nativeEvent as any).target.parentNode.parentNode)
+                          setIsContextMenuOpened(true)
+                        }}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                        }}>
                         {fieldOptions.content.DisplayName || fieldOptions.content.Name}
                         {device === 'mobile' &&
                         fieldOptions.active &&
@@ -219,8 +244,26 @@ export const CollectionComponent: React.StatelessComponent<{
             onRequestSelectionChange={setSelected}
             icons={{}}
           />
+          {activeContent ? (
+            <CurrentContentContext.Provider value={activeContent}>
+              <ContentContextMenu
+                menuProps={{
+                  disablePortal: true,
+                  anchorEl: contextMenuAnchor,
+                  BackdropProps: {
+                    onClick: () => setIsContextMenuOpened(false),
+                    onContextMenu: ev => ev.preventDefault(),
+                  },
+                }}
+                isOpened={isContextMenuOpened}
+                onClose={() => setIsContextMenuOpened(false)}
+                onOpen={() => setIsContextMenuOpened(true)}
+              />
+            </CurrentContentContext.Provider>
+          ) : null}
         </div>
       </DropFileArea>
+      <DeleteContentDialog content={selected} dialogProps={{ open: showDelete, onClose: () => setShowDelete(false) }} />
     </div>
   )
 }
