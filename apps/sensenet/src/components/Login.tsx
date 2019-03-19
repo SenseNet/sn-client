@@ -16,7 +16,7 @@ import { ThemeContext } from '../context/ThemeContext'
 import { PersonalSettings } from '../services/PersonalSettings'
 import { UserAvatar } from './UserAvatar'
 
-export const LoginComponent: React.FunctionComponent<RouteComponentProps> = props => {
+export const Login: React.FunctionComponent<RouteComponentProps> = () => {
   const injector = useContext(InjectorContext)
   const repo = useContext(RepositoryContext)
   const theme = useContext(ThemeContext)
@@ -162,4 +162,4 @@ export const LoginComponent: React.FunctionComponent<RouteComponentProps> = prop
   )
 }
 
-export default withRouter(LoginComponent)
+export default Login
