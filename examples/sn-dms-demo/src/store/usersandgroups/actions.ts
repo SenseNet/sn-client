@@ -374,7 +374,7 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
         items = await repository.loadCollection({
           path: idOrPath as string,
           oDataOptions: {
-            select: ['Path', 'Actions', 'Id', 'DisplayName', 'Name', 'IsFolder'] as any,
+            select: ['Path', 'Actions', 'Id', 'DisplayName', 'Name', 'IsFolder', 'Icon'] as any,
             expand: ['Actions'] as any,
             query: `InTree:${newGroup.d.Path} AND TypeIs:Group .AUTOFILTERS:OFF`,
           },
@@ -383,7 +383,7 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
         items = await repository.loadCollection({
           path: idOrPath as string,
           oDataOptions: {
-            select: ['Path', 'Actions', 'Id', 'DisplayName', 'Name', 'IsFolder'] as any,
+            select: ['Path', 'Actions', 'Id', 'DisplayName', 'Name', 'IsFolder', 'Icon'] as any,
             expand: ['Actions'] as any,
             filter: `IsFolder eq true and ContentType ne 'SystemFolder' or ContentType eq 'Group'`,
           },

@@ -12,12 +12,17 @@ export interface DisplayNameCellProps<T extends GenericContent> {
 
 export class DisplayNameCell<T extends GenericContent> extends React.Component<DisplayNameCellProps<T>> {
   public render() {
-    const icon = this.props.content.Icon && this.props.icons[this.props.content.Icon.toLowerCase()]
+    const icon =
+      this.props.content.Icon &&
+      (this.props.icons[this.props.content.Icon.toLowerCase().replace('-', '')] ||
+        this.props.content.Icon.toLowerCase())
+    console.log(this.props.content)
     const type =
       this.props.content.Icon === 'word' ||
       this.props.content.Icon === 'excel' ||
       this.props.content.Icon === 'acrobat' ||
-      this.props.content.Icon === 'powerpoint'
+      this.props.content.Icon === 'powerpoint' ||
+      (this.props.content.Icon && this.props.content.Icon.indexOf('workspace') > -1)
         ? iconType.flaticon
         : iconType.materialui
     const { content, hostName } = this.props
@@ -28,6 +33,7 @@ export class DisplayNameCell<T extends GenericContent> extends React.Component<D
       content.Name.indexOf('gif') > -1
         ? true
         : false
+
     return (
       <TableCell className="display-name" padding="checkbox">
         <div style={{ display: 'flex', alignItems: 'center' }}>
