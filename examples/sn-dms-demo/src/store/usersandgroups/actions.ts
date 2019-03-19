@@ -385,7 +385,7 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
           oDataOptions: {
             select: ['Path', 'Actions', 'Id', 'DisplayName', 'Name', 'IsFolder'] as any,
             expand: ['Actions'] as any,
-            filter: `IsFolder eq true and (ContentType ne 'EventList' and ContentType ne 'DocumentLibrary' and ContentType ne 'LinkList' and ContentType ne 'MemoList' and ContentType ne 'TaskList' and ContentType ne 'SystemFolder')`,
+            filter: `IsFolder eq true and ContentType ne 'SystemFolder' or ContentType eq 'Group'`,
           },
         })
       }
