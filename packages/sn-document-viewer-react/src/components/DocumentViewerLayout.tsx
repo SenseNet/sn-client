@@ -59,15 +59,14 @@ export class DocumentViewerLayoutComponent extends React.Component<
 > {
   constructor(props: DocumentViewerLayoutComponent['props']) {
     super(props)
+    this.state = {
+      activePage: 1,
+      thumbnaislVisibility: this.props.showThumbnails,
+      isPlacingCommentMarker: false,
+    }
     this.createComment = this.createComment.bind(this)
     this.handleKeyUp = this.handleKeyUp.bind(this)
-  }
-  /** the component state */
-  public state = {
-    activePage: 1,
-    thumbnaislVisibility: this.props.showThumbnails,
-    isPlacingCommentMarker: false,
-    draftCommentMarker: { x: 10, y: 10 },
+    this.handleMarkerCreation = this.handleMarkerCreation.bind(this)
   }
 
   public componentDidMount() {
@@ -107,13 +106,20 @@ export class DocumentViewerLayoutComponent extends React.Component<
     })
   }
 
+  private handleMarkerCreation(draftCommentMarker: MarkerCoordinates) {
+    this.setState({ ...this.state, draftCommentMarker })
+  }
+
   private createComment(text: string) {
+    if (!this.state.draftCommentMarker || !this.state.activePage) {
+      return
+    }
     this.props.createComment({ page: this.state.activePage, text, ...this.state.draftCommentMarker })
     this.toggleIsPlacingCommentMarker(false)
   }
 
   private toggleIsPlacingCommentMarker(isPlacingCommentMarker = !this.state.isPlacingCommentMarker) {
-    this.setState({ ...this.state, isPlacingCommentMarker })
+    this.setState({ ...this.state, isPlacingCommentMarker, draftCommentMarker: undefined })
   }
 
   private handleKeyUp(ev: KeyboardEvent) {
@@ -201,7 +207,7 @@ export class DocumentViewerLayoutComponent extends React.Component<
             />
           </Drawer>
           <PageList
-            handleMarkerCreation={marker => this.setState({ ...this.state, draftCommentMarker: marker })}
+            handleMarkerCreation={this.handleMarkerCreation}
             isPlacingCommentMarker={this.state.isPlacingCommentMarker}
             showWidgets={true}
             id="sn-document-viewer-pages"
@@ -229,6 +235,7 @@ export class DocumentViewerLayoutComponent extends React.Component<
             }}>
             <Typography variant="h4">Comments</Typography>
             <CreateComment
+              draftCommentMarker={this.state.draftCommentMarker}
               handlePlaceMarkerClick={() => this.toggleIsPlacingCommentMarker()}
               isPlacingMarker={this.state.isPlacingCommentMarker}
               localization={this.props.localization}
