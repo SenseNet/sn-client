@@ -204,10 +204,10 @@ class DashboardComponent extends React.Component<
                         <Route
                           path="/groups"
                           // tslint:disable-next-line: no-unnecessary-type-annotation
-                          component={(props: RouteComponentProps<any>) => (
+                          component={() => (
                             <Switch>
                               <Route
-                                path={'/' + PathHelper.joinPaths(props.match.url)}
+                                path={'/' + PathHelper.joinPaths('/groups', '/:folderPath?/:otherActions*')}
                                 exact={true}
                                 component={() => (
                                   <div>

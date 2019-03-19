@@ -91,6 +91,7 @@ const mapStateToProps = (state: rootStateType) => {
     childrenOptions: state.dms.usersAndGroups.group.grouplistOptions,
     hostName: state.sensenet.session.repository ? state.sensenet.session.repository.repositoryUrl : '',
     selected: state.dms.usersAndGroups.group.selected,
+    parent: state.dms.usersAndGroups.group.parent,
   }
 }
 
@@ -111,17 +112,19 @@ class Groups extends Component<
     this.state = {
       groupName: '',
     }
+    this.handleRowDoubleClick = this.handleRowDoubleClick.bind(this)
   }
   private static updateStoreFromPath(newProps: Groups['props']) {
     try {
-      const idFromUrl = newProps.match.params.folderPath && atob(decodeURIComponent(newProps.match.params.otherActions))
+      const idFromUrl = newProps.match.params.folderPath && atob(decodeURIComponent(newProps.match.params.folderPath))
       const groupsRootPath = `/Root`
-      newProps.loadGroup(Number(idFromUrl) || groupsRootPath, {
+      newProps.loadGroup(idFromUrl || groupsRootPath, {
         select: ['Icon', 'Name', 'Path', 'DisplayName'],
       })
     } catch (error) {
       /** Cannot parse current folder from URL */
       return compile(newProps.match.path)({ folderPath: '' })
+      // tslint:disable-next-line:no-empty
     }
   }
   public static getDerivedStateFromProps(newProps: Groups['props'], lastState: Groups['state']) {
@@ -167,6 +170,7 @@ class Groups extends Component<
       loggedinUser,
       matchesDesktop,
       selected,
+      parent,
     } = this.props
     return (
       <MediaQuery minDeviceWidth={700}>
@@ -195,7 +199,7 @@ class Groups extends Component<
                 ) : (
                   <ContentList
                     displayRowCheckbox={matches ? true : false}
-                    items={items.length > 0 ? items : rootItems}
+                    items={parent && parent.Path !== '/Root' ? items : rootItems}
                     schema={
                       customSchema.find(s => s.ContentTypeName === 'GenericContent') ||
                       SchemaStore.filter(s => s.ContentTypeName === 'GenericContent')[0]

@@ -219,6 +219,24 @@ export const groupsAreLoading: Reducer<boolean> = (state = false, action: AnyAct
   }
 }
 
+export const parent: Reducer<GenericContent | null> = (state = null, action: AnyAction) => {
+  switch (action.type) {
+    case 'DMS_USERSANDGROUPS_SET_GROUP':
+      return action.content
+    default:
+      return state
+  }
+}
+
+export const parentIdOrPath: Reducer<string | number> = (state = '', action: AnyAction) => {
+  switch (action.type) {
+    case 'DMS_USERSANDGROUPS_LOADING':
+      return action.idOrPath
+    default:
+      return state
+  }
+}
+
 export const group = combineReducers({
   selected: selectedGroups,
   all,
@@ -228,6 +246,8 @@ export const group = combineReducers({
   groupList,
   isLoading: groupsAreLoading,
   grouplistOptions,
+  parent,
+  parentIdOrPath,
 })
 
 export const usersAndGroups = combineReducers({

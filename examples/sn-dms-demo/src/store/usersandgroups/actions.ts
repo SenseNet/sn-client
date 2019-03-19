@@ -1,6 +1,7 @@
-import { ODataCollectionResponse, ODataParams, Repository } from '@sensenet/client-core'
+import { Content, ODataCollectionResponse, ODataParams, Repository } from '@sensenet/client-core'
 import { ValueObserver } from '@sensenet/client-utils'
 import { ActionModel, GenericContent, Group, User } from '@sensenet/default-content-types'
+import { createAction } from '@sensenet/redux'
 import { EventHub } from '@sensenet/repository-events'
 import { Action } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
@@ -301,6 +302,50 @@ export const updateGroupList = (groups: ODataCollectionResponse<Group>) => ({
   groups,
 })
 
+export const startLoadingChildren = createAction((idOrPath: number | string) => ({
+  type: 'DMS_USERSANDGROUPS_LOADING_CHILDREN',
+  idOrPath,
+}))
+
+export const updateGroupListOptions = createAction(<T extends GenericContent>(odataOptions: ODataParams<T>) => ({
+  type: 'DMS_SERSANDGROUPS_UPDATE_GROUPLIST_OPTIONS',
+  odataOptions,
+  // tslint:disable-next-line: no-unnecessary-type-annotation
+  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
+    const currentState = options.getState()
+    const parentPath = currentState.dms.usersAndGroups.group.parent
+      ? currentState.dms.usersAndGroups.group.parent.Path
+      : ''
+    const repository = options.getInjectable(Repository)
+    options.dispatch(
+      startLoadingChildren(
+        currentState.dms.usersAndGroups.group.parentIdOrPath
+          ? currentState.dms.usersAndGroups.group.parentIdOrPath
+          : '',
+      ),
+    )
+    try {
+      const items = await repository.loadCollection({
+        path: parentPath,
+        oDataOptions: {
+          ...options.getState().dms.documentLibrary.childrenOptions,
+          ...odataOptions,
+        },
+      })
+      options.dispatch(setGroups(items))
+    } catch (error) {
+      options.dispatch(setError(error))
+    } finally {
+      options.dispatch(finishLoadingChildren())
+      options.dispatch(setChildrenOptions(odataOptions))
+    }
+  },
+}))
+
+export const finishLoadingChildren = createAction(() => ({
+  type: 'DMS_SERSANDGROUPS_FINISH_LOADING_CHILDREN',
+}))
+
 export const loadGroup = <T extends Group = Group>(idOrPath: number | string, groupOptions?: ODataParams<T>) => ({
   type: 'DMS_USERSANDGROUPS_LOAD_GROUP',
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
@@ -322,14 +367,28 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
         idOrPath,
         oDataOptions: groupOptions,
       })
-      const items = await repository.loadCollection({
-        path: newGroup.d.Path,
-        oDataOptions: {
-          select: ['Path', 'Actions', 'Id', 'DisplayName', 'Name'] as any,
-          expand: ['Actions'] as any,
-          filter: `ContentType eq 'Folder' or ContentType eq 'OrganizationalUnit' or ContentType eq 'Domain' or ContentType eq 'Group'`,
-        },
-      })
+
+      let items = {} as ODataCollectionResponse<Content>
+      const WS_TYPES = ['ProjectWorkspace', 'DocumentWorkspace', 'SalesWorkspace']
+      if (WS_TYPES.indexOf(newGroup.d.Type) > -1) {
+        items = await repository.loadCollection({
+          path: idOrPath as string,
+          oDataOptions: {
+            select: ['Path', 'Actions', 'Id', 'DisplayName', 'Name', 'IsFolder'] as any,
+            expand: ['Actions'] as any,
+            query: `InTree:${newGroup.d.Path} AND TypeIs:Group .AUTOFILTERS:OFF`,
+          },
+        })
+      } else {
+        items = await repository.loadCollection({
+          path: idOrPath as string,
+          oDataOptions: {
+            select: ['Path', 'Actions', 'Id', 'DisplayName', 'Name', 'IsFolder'] as any,
+            expand: ['Actions'] as any,
+            filter: `IsFolder eq true and (ContentType ne 'EventList' and ContentType ne 'DocumentLibrary' and ContentType ne 'LinkList' and ContentType ne 'MemoList' and ContentType ne 'TaskList' and ContentType ne 'SystemFolder')`,
+          },
+        })
+      }
       options.dispatch(setGroup(newGroup.d, items.d.results))
 
       const emitChange = (content: Group) => {
