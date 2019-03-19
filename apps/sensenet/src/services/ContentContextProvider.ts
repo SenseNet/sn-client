@@ -39,6 +39,16 @@ export class ContentContextProvider {
             return 'html'
           case 'text/xml':
             return 'xml'
+          case 'application/octet-stream':
+            if (content.Name.endsWith('.json')) {
+              return 'json'
+            } else if (content.Name.endsWith('.ts') || content.Name.endsWith('.tsx')) {
+              return 'typescript'
+            } else if (content.Name.endsWith('.js') || content.Name.endsWith('.jsx')) {
+              return 'javascript'
+            } else if (content.Name.endsWith('.md')) {
+              return 'markdown'
+            }
         }
       }
     }

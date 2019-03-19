@@ -31,6 +31,10 @@ export const SecondaryActionsMenu: React.FunctionComponent<{
           menuProps={{
             anchorEl: ref,
             disablePortal: true,
+            BackdropProps: {
+              onClick: () => setIsOpened(false),
+              onContextMenu: ev => ev.preventDefault(),
+            },
           }}
           drawerProps={{}}
         />

@@ -2,6 +2,7 @@ import { ConstantContent, Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
+import { InjectorContext } from './InjectorContext'
 import { RepositoryContext } from './RepositoryContext'
 
 export class CurrentContentService<T extends GenericContent> {
@@ -38,6 +39,20 @@ export const CurrentContentProvider: React.FunctionComponent<{
   const [loadLock] = useState(new Semaphore(1))
   const [content, setContent] = useState<GenericContent>(ConstantContent.PORTAL_ROOT)
   const repo = useContext(RepositoryContext)
+  const injector = useContext(InjectorContext)
+
+  useEffect(() => {
+    const events = injector.getEventHub(repo.configuration.repositoryUrl)
+    const subscriptions = [
+      events.onContentModified.subscribe(c => {
+        if (c.content.Id === content.Id) {
+          setContent({ ...content, ...c.changes })
+        }
+      }),
+    ]
+    return () => subscriptions.forEach(s => s.dispose())
+  })
+
   useEffect(() => {
     ;(async () => {
       await loadLock.acquire()

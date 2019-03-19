@@ -20,6 +20,7 @@ import { ContentRoutingContext } from '../context/ContentRoutingContext'
 import { CurrentContentContext } from '../context/CurrentContent'
 import { ResponsiveContext } from '../context/ResponsiveContextProvider'
 import { DeleteContentDialog } from './DeleteContentDialog'
+import { EditPropertiesDialog } from './EditPropertiesDialog'
 import { Icon } from './Icon'
 
 export const ContentContextMenuComponent: React.FunctionComponent<
@@ -35,12 +36,17 @@ export const ContentContextMenuComponent: React.FunctionComponent<
   const device = useContext(ResponsiveContext)
   const routing = useContext(ContentRoutingContext)
   const [isDeleteOpened, setIsDeleteOpened] = useState(false)
+  const [isEditPropertiesOpened, setIsEditPropertiesOpened] = useState(false)
 
   return (
     <>
       <DeleteContentDialog
         dialogProps={{ open: isDeleteOpened, disablePortal: true, onClose: () => setIsDeleteOpened(false) }}
         content={[content]}
+      />
+      <EditPropertiesDialog
+        content={content}
+        dialogProps={{ open: isEditPropertiesOpened, onClose: () => setIsEditPropertiesOpened(false) }}
       />
       {device === 'mobile' ? (
         <Drawer
@@ -65,7 +71,12 @@ export const ContentContextMenuComponent: React.FunctionComponent<
               </ListItemIcon>
               <ListItemText primary="Open" />
             </ListItem>
-            <ListItem button={true} onClick={() => props.history.push(routing.getActionUrl(content, 'EditProperties'))}>
+            <ListItem
+              button={true}
+              onClick={() => {
+                props.onClose && props.onClose()
+                setIsEditPropertiesOpened(true)
+              }}>
               <ListItemIcon>
                 <Create />
               </ListItemIcon>
@@ -111,7 +122,11 @@ export const ContentContextMenuComponent: React.FunctionComponent<
               </IconButton>
             </Tooltip>
           </MenuItem>
-          <MenuItem onClick={() => props.history.push(routing.getActionUrl(content, 'EditProperties'))}>
+          <MenuItem
+            onClick={() => {
+              props.onClose && props.onClose()
+              setIsEditPropertiesOpened(true)
+            }}>
             <ListItemIcon>
               <Create />
             </ListItemIcon>

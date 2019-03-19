@@ -1,4 +1,4 @@
-import { PathHelper, debounce } from '@sensenet/client-utils'
+import { debounce, PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Created } from '@sensenet/repository-events'
 import React, { useContext, useEffect, useState } from 'react'
@@ -55,6 +55,11 @@ export const CurrentChildrenProvider: React.FunctionComponent = props => {
       eventHub.onContentCreated.subscribe(handleCreate),
       eventHub.onContentCopied.subscribe(handleCreate),
       eventHub.onContentMoved.subscribe(handleCreate),
+      eventHub.onContentModified.subscribe(mod => {
+        if (children.map(c => c.Id).includes(mod.content.Id)) {
+          requestReload()
+        }
+      }),
       uploadTracker.onUploadProgress.subscribe(pr => {
         if (pr.completed && pr.createdContent) {
           if (PathHelper.getParentPath(pr.createdContent.Url) === PathHelper.trimSlashes(currentContent.Path)) {
@@ -70,7 +75,7 @@ export const CurrentChildrenProvider: React.FunctionComponent = props => {
     ]
 
     return () => subscriptions.forEach(s => s.dispose())
-  }, [currentContent, repo])
+  }, [currentContent, repo, children])
 
   return <CurrentChildrenContext.Provider value={children}>{props.children}</CurrentChildrenContext.Provider>
 }
