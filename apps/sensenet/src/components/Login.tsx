@@ -105,7 +105,7 @@ export const LoginComponent: React.FunctionComponent<RouteComponentProps> = prop
                     await sleepAsync(1000)
                     setIsInProgress(false)
                     settingsManager.setValue(personalSettings)
-                    props.history.push('/')
+                    // props.history.push('/')
                   })()
                 } else {
                   setIsInProgress(false)

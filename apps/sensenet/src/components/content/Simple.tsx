@@ -43,6 +43,7 @@ export const SimpleListComponent: React.FunctionComponent<RouteComponentProps<{ 
               style={{ flexGrow: 1, flexShrink: 0, maxHeight: '100%', width: '100%' }}
               onParentChange={p => {
                 setLeftParentId(p.Id)
+                props.history.push(ctx.getPrimaryActionUrl(p))
               }}
               parentId={leftParentId}
               onTabRequest={() => {
