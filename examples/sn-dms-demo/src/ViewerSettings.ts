@@ -3,6 +3,8 @@ import { toNumber } from '@sensenet/client-utils'
 import { File as SnFile } from '@sensenet/default-content-types'
 import {
   Annotation,
+  Comment,
+  CommentWithoutCreatedByAndId,
   DocumentViewerSettings,
   Highlight,
   PreviewImageData,
@@ -126,5 +128,41 @@ export const getViewerSettings = (repo: Repository) =>
         allPreviews[i].Attributes = pageAttributes && pageAttributes.options
       }
       return allPreviews
+    },
+    commentActions: {
+      addPreviewComment: async (documentData, comment) => {
+        const response = await repo.executeAction<CommentWithoutCreatedByAndId, Comment>({
+          idOrPath: documentData.idOrPath,
+          body: comment,
+          name: 'AddPreviewComment',
+          method: 'POST',
+        })
+        return response
+      },
+      deletePreviewComment: async (documentData, id) => {
+        const response = await repo.executeAction<any, { modified: boolean }>({
+          idOrPath: documentData.idOrPath,
+          body: { id },
+          name: 'DeletePreviewComment',
+          method: 'POST',
+        })
+        return response
+      },
+      getPreviewComments: async (documentData, page) => {
+        const response = await repo.executeAction<any, Comment[]>({
+          idOrPath: documentData.idOrPath,
+          name: 'GetPreviewComments',
+          method: 'GET',
+          oDataOptions: {
+            page,
+          } as any,
+        })
+        return response.map(comment => {
+          return {
+            ...comment,
+            createdBy: { ...comment.createdBy, avatarUrl: `${documentData.hostName}${comment.createdBy.avatarUrl}` },
+          }
+        })
+      },
     },
   })

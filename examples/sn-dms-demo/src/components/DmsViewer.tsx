@@ -12,6 +12,7 @@ import {
   RotateActivePages,
   SearchBar,
   Share,
+  ToggleCommentsWidget,
   ToggleThumbnailsWidget,
   ZoomInOutWidget,
 } from '@sensenet/document-viewer-react'
@@ -160,7 +161,8 @@ export class DmsViewerComponent extends React.Component<
                           <RotateActivePages />
                         </div>
                         <DocumentTitlePager />
-                        <div style={{ flexShrink: 0 }}>
+                        <div style={{ display: 'flex', flexShrink: 0 }}>
+                          <ToggleCommentsWidget />
                           <SearchBar />
                         </div>
                       </LayoutAppBar>
