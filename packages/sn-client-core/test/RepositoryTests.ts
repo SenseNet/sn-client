@@ -423,7 +423,7 @@ describe('Repository', () => {
         const response = await repository.getAllowedChildTypes({
           idOrPath: 'Root/Sites/Default_Site',
         })
-        expect(response).toEqual([])
+        expect(response).toEqual({ d: { __count: 0, results: [] } })
       })
       it('should throw on unsuccessfull request', done => {
         ;(mockResponse as any).ok = false

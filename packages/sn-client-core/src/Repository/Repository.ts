@@ -309,11 +309,14 @@ export class Repository implements Disposable {
         explicitACTs = await this.getExplicitAllowedChildTypes(options)
       })(),
     ]).then(() => {
-      allowedTypes.d.results = implicitACTs.d.results
-        .filter(
-          (ct: ContentType) => !explicitACTs.d.results.find((contenttype: ContentType) => ct.Name === contenttype.Name),
-        )
-        .concat(explicitACTs.d.results)
+      allowedTypes.d.results = implicitACTs.d
+        ? implicitACTs.d.results
+            .filter(
+              (ct: ContentType) =>
+                !explicitACTs.d.results.find((contenttype: ContentType) => ct.Name === contenttype.Name),
+            )
+            .concat(explicitACTs.d.results)
+        : []
       allowedTypes.d.__count = allowedTypes.d.results.length
     })
 
