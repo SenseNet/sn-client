@@ -1,4 +1,4 @@
-import { Content, ODataCollectionResponse, ODataParams, Repository } from '@sensenet/client-core'
+import { Content, ODataCollectionResponse, ODataParams, ODataResponse, Repository } from '@sensenet/client-core'
 import { ValueObserver } from '@sensenet/client-utils'
 import { ActionModel, GenericContent, Group, User } from '@sensenet/default-content-types'
 import { createAction } from '@sensenet/redux'
@@ -367,8 +367,8 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
         idOrPath,
         oDataOptions: groupOptions,
       })
-
       let items = {} as ODataCollectionResponse<Content>
+      let realGroup = {} as ODataResponse<T>
       const WS_TYPES = ['ProjectWorkspace', 'DocumentWorkspace', 'SalesWorkspace']
       if (WS_TYPES.indexOf(newGroup.d.Type) > -1) {
         items = await repository.loadCollection({
@@ -378,6 +378,10 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
             expand: ['Actions'] as any,
             query: `InTree:${newGroup.d.Path} AND TypeIs:Group .AUTOFILTERS:OFF`,
           },
+        })
+        realGroup = await repository.load<T>({
+          idOrPath: `${newGroup.d.Path}/Groups`,
+          oDataOptions: groupOptions,
         })
       } else {
         items = await repository.loadCollection({
@@ -389,7 +393,7 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
           },
         })
       }
-      options.dispatch(setGroup(newGroup.d, items.d.results))
+      options.dispatch(setGroup(realGroup.d || newGroup.d, items.d.results))
 
       const emitChange = (content: Group) => {
         changedContent.push(content)
@@ -478,3 +482,33 @@ export const searchUsers = (text: string) => ({
   type: 'DMS_USERSANDGROUPS_SEARCH_USERS',
   text,
 })
+
+export const getAllowedTypes = createAction(<T extends GenericContent[]>(odataOptions: ODataParams<T>) => ({
+  type: 'DMS_DOCLIB_GET_ALLOWED_TYPES',
+  odataOptions,
+  // tslint:disable-next-line: no-unnecessary-type-annotation
+  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
+    const currentState = options.getState()
+    const currentPath = currentState.dms.usersAndGroups.group.currentGroup
+      ? currentState.dms.usersAndGroups.group.currentGroup.Path
+      : ''
+    const repository = options.getInjectable(Repository)
+
+    try {
+      const response = await repository.getAllowedChildTypes({
+        idOrPath: currentPath,
+        oDataOptions: { metadata: 'no', select: ['Name'] },
+      })
+      options.dispatch(setAllowedChildTypes(response.d.results))
+    } catch (error) {
+      options.dispatch(setError(error))
+    } finally {
+      options.dispatch(finishLoadingChildren())
+    }
+  },
+}))
+
+export const setAllowedChildTypes = createAction((types: GenericContent[]) => ({
+  type: 'DMS_DOCLIB_SET_ALLOWED_TYPES',
+  types,
+}))

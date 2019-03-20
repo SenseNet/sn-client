@@ -16,7 +16,6 @@ export class DisplayNameCell<T extends GenericContent> extends React.Component<D
       this.props.content.Icon &&
       (this.props.icons[this.props.content.Icon.toLowerCase().replace('-', '')] ||
         this.props.content.Icon.toLowerCase())
-    console.log(this.props.content)
     const type =
       this.props.content.Icon === 'word' ||
       this.props.content.Icon === 'excel' ||

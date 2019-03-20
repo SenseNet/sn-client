@@ -237,6 +237,15 @@ export const parentIdOrPath: Reducer<string | number> = (state = '', action: Any
   }
 }
 
+export const allowedTypes: Reducer<GenericContent[]> = (state = [], action: AnyAction) => {
+  switch (action.type) {
+    case 'DMS_DOCLIB_SET_ALLOWED_TYPES':
+      return action.types
+    default:
+      return state
+  }
+}
+
 export const group = combineReducers({
   selected: selectedGroups,
   all,
@@ -253,4 +262,5 @@ export const group = combineReducers({
 export const usersAndGroups = combineReducers({
   user,
   group,
+  allowedTypes,
 })

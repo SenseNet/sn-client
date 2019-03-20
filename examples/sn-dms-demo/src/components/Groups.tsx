@@ -19,7 +19,7 @@ import { icons } from '../assets/icons'
 import { resources } from '../assets/resources'
 import { customSchema } from '../assets/schema'
 import { rootStateType } from '../store/rootReducer'
-import { loadGroup, selectGroup, updateChildrenOptions } from '../store/usersandgroups/actions'
+import { getAllowedTypes, loadGroup, selectGroup, updateChildrenOptions } from '../store/usersandgroups/actions'
 import BreadCrumb from './BreadCrumb'
 import { DisplayNameCell } from './ContentList/CellTemplates/DisplayNameCell'
 import { DisplayNameMobileCell } from './ContentList/CellTemplates/DisplayNameMobileCell'
@@ -107,6 +107,7 @@ const mapDispatchToProps = {
   closeActionMenu,
   selectGroup,
   updateChildrenOptions,
+  getAllowedTypes,
 }
 
 class Groups extends Component<
@@ -125,8 +126,9 @@ class Groups extends Component<
       const idFromUrl = newProps.match.params.folderPath && atob(decodeURIComponent(newProps.match.params.folderPath))
       const groupsRootPath = `/Root`
       newProps.loadGroup(idFromUrl || groupsRootPath, {
-        select: ['Icon', 'Name', 'Path', 'DisplayName'],
+        select: ['Icon', 'Name', 'Path', 'DisplayName', 'AllowedChildTypes'],
       })
+      newProps.getAllowedTypes()
     } catch (error) {
       /** Cannot parse current folder from URL */
       return compile(newProps.match.path)({ folderPath: '' })
