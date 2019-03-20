@@ -141,7 +141,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
     allowedTypes.map(type => {
       typeQuery += ` +TypeIs:${type}`
     })
-    const req = await this.props.repository.loadCollection({
+    const req = await this.props['data-repository'].loadCollection({
       path: '/Root',
       oDataOptions: {
         query: `(${pathQuery}) AND${typeQuery}`,
@@ -150,7 +150,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
     })
     const { label } = this.state
     this.setState({
-      dataSource: req.d.results.map(suggestion => ({
+      dataSource: req.d.results.map((suggestion: GenericContent) => ({
         // tslint:disable-next-line:no-string-literal
         value: suggestion['Id'],
         label: suggestion[label],
