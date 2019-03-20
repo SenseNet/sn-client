@@ -41,6 +41,10 @@ export const CollectionComponent: React.StatelessComponent<{
   const repo = useContext(RepositoryContext)
 
   useEffect(() => {
+    setSelected([])
+  }, [parent])
+
+  useEffect(() => {
     setIsContextMenuOpened(false)
   }, [children, activeContent, selected])
 
