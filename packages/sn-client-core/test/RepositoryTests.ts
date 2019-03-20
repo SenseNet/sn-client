@@ -357,13 +357,13 @@ describe('Repository', () => {
         ;(mockResponse as any).ok = true
         mockResponse.json = async () => {
           return {
-            d: { results: [] },
+            d: { results: [], __count: 0 },
           } as ODataCollectionResponse<ContentType>
         }
         const response = await repository.getImplicitAllowedChildTypes({
           idOrPath: 'Root/Sites/Default_Site',
         })
-        expect(response.d).toEqual({ results: [] })
+        expect(response.d).toEqual({ results: [], __count: 0 })
       })
 
       it('should throw on unsuccessfull request', done => {
@@ -388,13 +388,13 @@ describe('Repository', () => {
         ;(mockResponse as any).ok = true
         mockResponse.json = async () => {
           return {
-            d: { results: [] },
+            d: { results: [], __count: 0 },
           } as ODataCollectionResponse<ContentType>
         }
         const response = await repository.getExplicitAllowedChildTypes({
           idOrPath: 'Root/Sites/Default_Site',
         })
-        expect(response.d).toEqual({ results: [] })
+        expect(response.d).toEqual({ results: [], __count: 0 })
       })
 
       it('should throw on unsuccessfull request', done => {
