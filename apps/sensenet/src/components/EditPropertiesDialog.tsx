@@ -19,6 +19,7 @@ export const EditPropertiesDialog: React.FunctionComponent<{
           content={props.content}
           repository={repo}
           contentTypeName={props.content.Type}
+          handleCancel={() => props.dialogProps.onClose && props.dialogProps.onClose(null as any)}
           onSubmit={async (id, content) => {
             repo.patch({
               idOrPath: id,
