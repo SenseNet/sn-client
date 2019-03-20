@@ -305,11 +305,14 @@ export class Repository implements Disposable {
       contextPath,
       options.name,
     )
-    const response = await this.fetch(`${path}?${params}`, {
+    const requestOptions: RequestInit = {
       credentials: 'include',
       method: options.method,
-      body: JSON.stringify(options.body),
-    })
+    }
+    if (options.method === 'POST') {
+      requestOptions.body = JSON.stringify(options.body)
+    }
+    const response = await this.fetch(`${path}?${params}`, requestOptions)
     if (!response.ok) {
       throw await this.getErrorFromResponse(response)
     }
