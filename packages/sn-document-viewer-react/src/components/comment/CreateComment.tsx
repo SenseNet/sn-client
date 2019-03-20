@@ -84,7 +84,7 @@ export function CreateComment(props: CreateCommentProps) {
   }
 
   const hasError = () => {
-    return !!errorMessage && !props.draftCommentMarker
+    return !!errorMessage || (!!errorMessage && !props.draftCommentMarker)
   }
 
   return (

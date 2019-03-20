@@ -93,4 +93,11 @@ describe('Create comment component', () => {
     wrapper.find('form').simulate('submit')
     expect(wrapper.find(FormHelperText).text()).toEqual(defaultProps.localization!.markerRequiredError)
   })
+
+  it('should give an error message when draftCommentMarker is set but input is empty', () => {
+    const wrapper = mount(<CreateComment {...defaultProps} />)
+    wrapper.find(Button).simulate('click')
+    wrapper.find('form').simulate('submit')
+    expect(wrapper.find(FormHelperText).text()).toEqual(defaultProps.localization!.inputRequiredError)
+  })
 })
