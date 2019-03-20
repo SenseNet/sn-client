@@ -101,10 +101,9 @@ export const Login: React.FunctionComponent = () => {
                       await sleepAsync(index / 50)
                       setProgressValue(index)
                     }
-                    await sleepAsync(1000)
-                    setIsInProgress(false)
                     settingsManager.setValue(personalSettings)
-                    // props.history.push('/')
+                    await sleepAsync(2000)
+                    setIsInProgress(false)
                   })()
                 } else {
                   setIsInProgress(false)
