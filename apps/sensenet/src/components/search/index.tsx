@@ -1,12 +1,13 @@
+import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
 import React from 'react'
 import { Bullie } from '../Bullie'
 
 const Search: React.StatelessComponent = () => (
-  <div>
+  <Paper style={{ padding: '1em', margin: '1em', overflow: 'auto' }}>
     <Typography variant="h3">Search</Typography>
     <Bullie />
-  </div>
+  </Paper>
 )
 
 export default Search

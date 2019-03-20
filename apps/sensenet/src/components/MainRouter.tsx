@@ -17,6 +17,8 @@ const EditBinary = lazy(async () => await import(/* webpackChunkName: "editBinar
 const EditProperties = lazy(async () => await import(/* webpackChunkName: "editProperties" */ './edit/EditProperties'))
 const DocumentViewerComponent = lazy(async () => await import(/* webpackChunkName: "DocViewer" */ './DocViewer'))
 
+const VersionInfoComponent = lazy(async () => await import(/* webpackChunkName: "Version Info" */ './version-info'))
+
 const PersonalSettingsEditor = lazy(
   async () => await import(/* webpackChunkName: "PersonalSettingsEditor" */ './edit/PersonalSettingsEditor'),
 )
@@ -45,6 +47,7 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
               <AuthorizedRoute path="/:repo/search" render={() => <SearchComponent />} authorize={() => true} />
               <AuthorizedRoute path="/:repo/iam" render={() => <IamComponent />} authorize={() => true} />
               <AuthorizedRoute path="/:repo/setup" render={() => <SetupComponent />} authorize={() => true} />
+              <AuthorizedRoute path="/:repo/info" render={() => <VersionInfoComponent />} authorize={() => true} />
               <AuthorizedRoute
                 path="/:repo/editBinary/:contentId?"
                 render={() => <EditBinary />}
