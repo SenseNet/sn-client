@@ -9,8 +9,9 @@ import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew'
-import { FormsAuthenticationService, LoginState } from '@sensenet/client-core'
-import React, { useContext, useState } from 'react'
+import { ConstantContent, FormsAuthenticationService, LoginState } from '@sensenet/client-core'
+import { sleepAsync } from '@sensenet/client-utils'
+import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ContentRoutingContext } from '../context/ContentRoutingContext'
 import { RepositoryContext } from '../context/RepositoryContext'
@@ -27,6 +28,14 @@ export const LogoutButton: React.FunctionComponent<{
   const repo = useContext(RepositoryContext)
   const ctx = useContext(ContentRoutingContext)
   const [showLogout, setShowLogout] = useState(false)
+
+  const [userToLogout, setUserToLogout] = useState({ ...session.currentUser })
+
+  useEffect(() => {
+    if (session.state === LoginState.Authenticated && session.currentUser.Id !== ConstantContent.VISITOR_USER.Id) {
+      setUserToLogout(session.currentUser)
+    }
+  }, [session.state, session.currentUser])
 
   const [isLoggingOut, setIsLoggingOut] = useState(false)
 
@@ -47,7 +56,16 @@ export const LogoutButton: React.FunctionComponent<{
       <Dialog open={showLogout} onClose={() => setShowLogout(false)}>
         <DialogTitle>
           <div style={{ display: 'flex', alignItems: 'center' }}>
-            <Icon style={{ margin: '0 1em 0 0' }} item={session.currentUser} /> Really log out?
+            <Icon
+              style={{
+                margin: '0 1em 0 0',
+                filter: isLoggingOut ? 'contrast(0)' : undefined,
+                opacity: isLoggingOut ? 0 : 1,
+                transition: 'filter linear 1s, opacity linear 1.5s',
+              }}
+              item={userToLogout}
+            />{' '}
+            Really log out?
           </div>
         </DialogTitle>
         <DialogContent>
@@ -66,8 +84,8 @@ export const LogoutButton: React.FunctionComponent<{
                   {repo.configuration.repositoryUrl}
                 </Link>{' '}
                 as{' '}
-                <Link to={ctx.getPrimaryActionUrl(session.currentUser)} onClick={() => setShowLogout(false)}>
-                  {session.currentUser.DisplayName || session.currentUser.Name}
+                <Link to={ctx.getPrimaryActionUrl(userToLogout)} onClick={() => setShowLogout(false)}>
+                  {userToLogout.DisplayName || userToLogout.Name}
                 </Link>
                 . <br />
                 Are you sure that you want to leave?
@@ -91,10 +109,9 @@ export const LogoutButton: React.FunctionComponent<{
                   /** */
                   ;(repo.authentication as FormsAuthenticationService).getCurrentUser()
                 }
-                setTimeout(() => {
-                  setShowLogout(false)
-                  setIsLoggingOut(false)
-                }, 3000)
+                await sleepAsync(3000)
+                setShowLogout(false)
+                setIsLoggingOut(false)
               }}
               autoFocus={true}>
               Log out
