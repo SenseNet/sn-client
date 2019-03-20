@@ -39,7 +39,7 @@ export const ContentContextMenuComponent: React.FunctionComponent<
   const [isEditPropertiesOpened, setIsEditPropertiesOpened] = useState(false)
 
   return (
-    <>
+    <div onKeyDown={ev => ev.stopPropagation()} onKeyPress={ev => ev.stopPropagation()}>
       <DeleteContentDialog
         dialogProps={{ open: isDeleteOpened, disablePortal: true, onClose: () => setIsDeleteOpened(false) }}
         content={[content]}
@@ -158,7 +158,7 @@ export const ContentContextMenuComponent: React.FunctionComponent<
           </MenuItem>
         </Menu>
       )}
-    </>
+    </div>
   )
 }
 
