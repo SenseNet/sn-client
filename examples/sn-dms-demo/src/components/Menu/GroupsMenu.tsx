@@ -6,7 +6,10 @@ import { Icon, iconType } from '@sensenet/icons-react'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
+import * as DMSActions from '../../Actions'
+import { resources } from '../../assets/resources'
 import { rootStateType } from '../../store/rootReducer'
+import AddNewDialog from '../Dialogs/AddNewDialog'
 import { AddNewButton } from './AddNewButton'
 
 const styles: StyleRulesCallback = () => ({
@@ -83,7 +86,10 @@ const mapStateToProps = (state: rootStateType) => {
   }
 }
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+  openDialog: DMSActions.openDialog,
+  closeDialog: DMSActions.closeDialog,
+}
 
 class GroupsMenu extends Component<
   GroupsMenuProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
@@ -98,7 +104,16 @@ class GroupsMenu extends Component<
     this.props.chooseSubmenuItem(title)
   }
   public handleButtonClick = (_e: React.MouseEvent) => {
-    // TODO
+    const { closeDialog, currentContent, openDialog } = this.props
+    openDialog(
+      <AddNewDialog
+        parentPath={currentContent ? currentContent.Path : ''}
+        contentTypeName="Group"
+        title={resources.GROUP}
+      />,
+      resources.ADD_NEW,
+      closeDialog,
+    )
   }
   public render() {
     const { active, classes, item, matches, allowedTypes } = this.props
