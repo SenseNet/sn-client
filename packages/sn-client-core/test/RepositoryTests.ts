@@ -1,5 +1,5 @@
 import { using } from '@sensenet/client-utils'
-import { ActionModel, User } from '@sensenet/default-content-types'
+import { ActionModel, ContentType, User } from '@sensenet/default-content-types'
 import 'jest'
 import { ActionOptions, Repository } from '../src'
 import { Content } from '../src/Models/Content'
@@ -13,7 +13,7 @@ declare const global: any
 global.window = {}
 describe('Repository', () => {
   let repository: Repository
-  const mockResponse: Response = {
+  const mockResponse = {
     ok: true,
     json: async () => ({}),
   } as Response
@@ -34,7 +34,7 @@ describe('Repository', () => {
     expect(repository).toBeInstanceOf(Repository)
   })
 
-  it('Should be constructed with a built-in fetch method', (done: jest.DoneCallback) => {
+  it('Should be constructed with a built-in fetch method', done => {
     global.window.fetch = () => {
       done()
     }
@@ -50,14 +50,14 @@ describe('Repository', () => {
   })
 
   describe('fetch', () => {
-    it('Should await readyState by default', (done: jest.DoneCallback) => {
+    it('Should await readyState by default', done => {
       repository.awaitReadyState = async () => {
         done()
       }
       repository.fetch('')
     })
 
-    it('Should be able to skip awaiting readyState', (done: jest.DoneCallback) => {
+    it('Should be able to skip awaiting readyState', done => {
       repository.awaitReadyState = async () => {
         done("Shouldn't be called")
       }
@@ -84,7 +84,7 @@ describe('Repository', () => {
         expect(resp.d).toEqual(ConstantContent.PORTAL_ROOT)
       })
 
-      it('should throw on unsuccessfull request', (done: jest.DoneCallback) => {
+      it('should throw on unsuccessfull request', done => {
         ;(mockResponse as any).ok = false
         repository
           .load({
@@ -116,7 +116,7 @@ describe('Repository', () => {
         expect(resp.d.results[0]).toEqual(ConstantContent.PORTAL_ROOT)
       })
 
-      it('should throw on unsuccessfull request', (done: jest.DoneCallback) => {
+      it('should throw on unsuccessfull request', done => {
         ;(mockResponse as any).ok = false
         repository
           .loadCollection({
@@ -148,7 +148,7 @@ describe('Repository', () => {
         expect(response.d).toEqual(ConstantContent.PORTAL_ROOT)
       })
 
-      it('should throw on unsuccessfull request', (done: jest.DoneCallback) => {
+      it('should throw on unsuccessfull request', done => {
         ;(mockResponse as any).ok = false
         repository
           .post({
@@ -181,7 +181,7 @@ describe('Repository', () => {
         expect(response.d).toEqual(ConstantContent.PORTAL_ROOT)
       })
 
-      it('should throw on unsuccessfull request', (done: jest.DoneCallback) => {
+      it('should throw on unsuccessfull request', done => {
         ;(mockResponse as any).ok = false
         repository
           .patch({
@@ -213,7 +213,7 @@ describe('Repository', () => {
         expect(response.d).toEqual(ConstantContent.PORTAL_ROOT)
       })
 
-      it('should throw on unsuccessfull request', (done: jest.DoneCallback) => {
+      it('should throw on unsuccessfull request', done => {
         ;(mockResponse as any).ok = false
         repository
           .put({
@@ -335,11 +335,101 @@ describe('Repository', () => {
         expect(response.d).toEqual([{ Name: 'MockAction' }])
       })
 
-      it('should throw on unsuccessfull request', (done: jest.DoneCallback) => {
+      it('should throw on unsuccessfull request', done => {
         ;(mockResponse as any).ok = false
         ;(mockResponse as any).statusText = ':('
         repository
           .getActions({
+            idOrPath: 'Root/Sites/Default_Site',
+          })
+          .then(() => {
+            done('Should throw')
+          })
+          .catch(err => {
+            expect(err.message).toBe(':(')
+            done()
+          })
+      })
+    })
+
+    describe('#getImplicitAllowedChildTypes()', () => {
+      it('should resolve on success', async () => {
+        ;(mockResponse as any).ok = true
+        mockResponse.json = async () => {
+          return {
+            d: { results: [] },
+          } as ODataCollectionResponse<ContentType>
+        }
+        const response = await repository.getImplicitAllowedChildTypes({
+          idOrPath: 'Root/Sites/Default_Site',
+        })
+        expect(response.d).toEqual({ results: [] })
+      })
+
+      it('should throw on unsuccessfull request', done => {
+        ;(mockResponse as any).ok = false
+        ;(mockResponse as any).statusText = ':('
+        repository
+          .getImplicitAllowedChildTypes({
+            idOrPath: 'Root/Sites/Default_Site',
+          })
+          .then(() => {
+            done('Should throw')
+          })
+          .catch(err => {
+            expect(err.message).toBe(':(')
+            done()
+          })
+      })
+    })
+
+    describe('#getExplicitAllowedChildTypes()', () => {
+      it('should resolve on success', async () => {
+        ;(mockResponse as any).ok = true
+        mockResponse.json = async () => {
+          return {
+            d: { results: [] },
+          } as ODataCollectionResponse<ContentType>
+        }
+        const response = await repository.getExplicitAllowedChildTypes({
+          idOrPath: 'Root/Sites/Default_Site',
+        })
+        expect(response.d).toEqual({ results: [] })
+      })
+
+      it('should throw on unsuccessfull request', done => {
+        ;(mockResponse as any).ok = false
+        ;(mockResponse as any).statusText = ':('
+        repository
+          .getExplicitAllowedChildTypes({
+            idOrPath: 'Root/Sites/Default_Site',
+          })
+          .then(() => {
+            done('Should throw')
+          })
+          .catch(err => {
+            expect(err.message).toBe(':(')
+            done()
+          })
+      })
+    })
+
+    describe('#getAllowedChildTypes()', () => {
+      it('should resolve on success', async () => {
+        ;(mockResponse as any).ok = true
+        mockResponse.json = async () => {
+          return []
+        }
+        const response = await repository.getAllowedChildTypes({
+          idOrPath: 'Root/Sites/Default_Site',
+        })
+        expect(response).toEqual([])
+      })
+      it('should throw on unsuccessfull request', done => {
+        ;(mockResponse as any).ok = false
+        ;(mockResponse as any).statusText = ':('
+        repository
+          .getAllowedChildTypes({
             idOrPath: 'Root/Sites/Default_Site',
           })
           .then(() => {
@@ -369,7 +459,7 @@ describe('Repository', () => {
         expect(response.d).toEqual(ConstantContent.PORTAL_ROOT)
       })
 
-      it('should throw on unsuccessfull request', (done: jest.DoneCallback) => {
+      it('should throw on unsuccessfull request', done => {
         ;(mockResponse as any).ok = false
         repository
           .executeAction<{}, ODataResponse<Content>>({
