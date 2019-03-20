@@ -62,7 +62,7 @@ export const DropFileArea: React.FunctionComponent<{ parent: GenericContent; sty
           zIndex: -1,
           transition: 'opacity 300ms cubic-bezier(0.445, 0.050, 0.550, 0.950)',
         }}>
-        <CloudUploadTwoTone color="default" style={{ width: '100%', height: '100%' }} />
+        <CloudUploadTwoTone style={{ width: '100%', height: '100%' }} />
       </div>
       {props.children}
     </div>
