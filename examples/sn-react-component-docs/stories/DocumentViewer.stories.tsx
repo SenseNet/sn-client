@@ -37,8 +37,10 @@ storiesOf('DocumentViewer', module)
         localization={defaultLocalization}
         text={text(
           'commentBody',
-          `maros mester kis tanulóköréből Krisztián, Edgár és Böröndi Dani sikeresen letették a 480-as vizsgát! Gratulálunk nekik és köszönet marosnak a mentorálásért!
-        A tanulókör készül a következő 486-os vizsgára. Cél az MCSD App Builder minősítés megszerzése, amelyhez a 486-os vizsga után már csak 1 vizsga kell.
+          `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          Nulla dictum ut lacus et gravida.
+          Mauris elementum urna nec mi facilisis, non vulputate libero luctus.
+          Praesent est turpis, dictum sed auctor id, pulvinar id neque.
         `,
         )}
       />
