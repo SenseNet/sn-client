@@ -75,8 +75,10 @@ export class PageComponent extends React.Component<
   componentType<typeof mapStateToProps, typeof mapDispatchToProps, OwnProps>,
   PageState
 > {
-  /** the component state */
-  public state = PageComponent.getDerivedStateFromProps(this.props, this.state)
+  constructor(props: PageComponent['props']) {
+    super(props)
+    this.state = {} as any
+  }
 
   /** event before the component did unmount */
   public componentWillUnmount() {
