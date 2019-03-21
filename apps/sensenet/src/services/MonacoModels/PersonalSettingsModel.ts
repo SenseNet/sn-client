@@ -76,6 +76,8 @@ languages.json.jsonDefaults.setDiagnosticsOptions({
                 items: {
                   enum: [
                     'Actions',
+                    'Type',
+                    /** ToDo: check for other displayable system fields */
                     ...new Repository().schemas.getSchemaByName('GenericContent').FieldSettings.map(f => f.Name),
                   ],
                 },

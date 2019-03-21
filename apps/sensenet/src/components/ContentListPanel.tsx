@@ -1,4 +1,6 @@
 import TableCell from '@material-ui/core/TableCell'
+import Check from '@material-ui/icons/Check'
+import Close from '@material-ui/icons/Close'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
@@ -41,6 +43,27 @@ export const CollectionComponent: React.StatelessComponent<{
   const repo = useContext(RepositoryContext)
   const loadSettings = useContext(LoadSettingsContext)
 
+  const [currentOrder, setCurrentOrder] = useState<keyof GenericContent>('DisplayName')
+  const [currentDirection, setCurrentDirection] = useState<'asc' | 'desc'>('asc')
+
+  useEffect(() => {
+    const currentField =
+      (loadSettings.loadChildrenSettings.orderby && loadSettings.loadChildrenSettings.orderby[0][0]) || 'DisplayName'
+    let order: 'asc' | 'desc' =
+      (loadSettings.loadChildrenSettings.orderby && (loadSettings.loadChildrenSettings.orderby[0][1] as any)) || 'asc'
+
+    if (currentOrder === currentField) {
+      order = order === 'asc' ? 'desc' : 'asc'
+    }
+    loadSettings.setLoadChildrenSettings({
+      orderby: [[currentOrder as any, order as any]],
+      select: personalSettings.content.fields,
+      expand: personalSettings.content.fields.filter(f => isReferenceField(f)),
+    })
+    setCurrentOrder(currentOrder)
+    setCurrentDirection(currentDirection)
+  }, [currentOrder, currentDirection])
+
   useEffect(() => {
     setSelected([])
   }, [parent])
@@ -69,8 +92,9 @@ export const CollectionComponent: React.StatelessComponent<{
   }
 
   const isReferenceField = (fieldName: string) => {
+    const refWhiteList = ['AllowedChildTypes']
     const setting = repo.schemas.getSchemaByName('GenericContent').FieldSettings.find(f => f.Name === fieldName)
-    return (setting && setting.Type === 'ReferenceFieldSetting') || false
+    return refWhiteList.indexOf(fieldName) !== -1 || (setting && setting.Type === 'ReferenceFieldSetting') || false
   }
 
   return (
@@ -171,31 +195,11 @@ export const CollectionComponent: React.StatelessComponent<{
             schema={repo.schemas.getSchema(GenericContent)}
             onRequestActiveItemChange={setActiveContent}
             active={activeContent}
-            orderBy={
-              (loadSettings.loadChildrenSettings.orderby && (loadSettings.loadChildrenSettings.orderby[0][0] as any)) ||
-              null
-            }
-            orderDirection={
-              (loadSettings.loadChildrenSettings.orderby && (loadSettings.loadChildrenSettings.orderby[0][1] as any)) ||
-              null
-            }
-            onRequestOrderChange={field => {
-              const currentField =
-                (loadSettings.loadChildrenSettings.orderby && loadSettings.loadChildrenSettings.orderby[0][0]) ||
-                'DisplayName'
-              let order: 'asc' | 'desc' =
-                (loadSettings.loadChildrenSettings.orderby &&
-                  (loadSettings.loadChildrenSettings.orderby[0][1] as any)) ||
-                'asc'
-
-              if (field === currentField) {
-                order = order === 'asc' ? 'desc' : 'asc'
-              }
-              loadSettings.setLoadChildrenSettings({
-                orderby: [[field as any, order as any]],
-                select: personalSettings.content.fields,
-                expand: personalSettings.content.fields.filter(f => isReferenceField(f)),
-              })
+            orderBy={currentOrder}
+            orderDirection={currentDirection}
+            onRequestOrderChange={(field, dir) => {
+              setCurrentOrder(field)
+              setCurrentDirection(dir)
             }}
             onItemClick={(ev, content) => {
               if (ev.ctrlKey) {
@@ -251,19 +255,6 @@ export const CollectionComponent: React.StatelessComponent<{
                       </div>
                     </TableCell>
                   )
-                case 'CreatedBy':
-                  return fieldOptions.content.CreatedBy ? (
-                    <TableCell padding={'none'}>
-                      <div style={{ display: 'flex', alignItems: 'center' }}>
-                        {' '}
-                        <Icon item={fieldOptions.content.CreatedBy as GenericContent} />
-                        <div style={{ marginLeft: '1em' }}>
-                          {(fieldOptions.content.CreatedBy as GenericContent).DisplayName ||
-                            (fieldOptions.content.CreatedBy as GenericContent).Name}
-                        </div>
-                      </div>
-                    </TableCell>
-                  ) : null
                 case 'Actions':
                   return (
                     <TableCell style={{ width: '64px' }}>
@@ -272,6 +263,47 @@ export const CollectionComponent: React.StatelessComponent<{
                       </CurrentContentContext.Provider>
                     </TableCell>
                   )
+              }
+              if (
+                typeof fieldOptions.content[fieldOptions.field] === 'object' &&
+                isReferenceField(fieldOptions.field)
+              ) {
+                const expectedContent: any = fieldOptions.content[fieldOptions.field]
+                if (
+                  expectedContent &&
+                  expectedContent.Id &&
+                  expectedContent.Type &&
+                  expectedContent.Name &&
+                  expectedContent.Path
+                ) {
+                  return (
+                    <TableCell padding={'none'}>
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        {' '}
+                        <Icon item={expectedContent as GenericContent} />
+                        <div style={{ marginLeft: '1em' }}>
+                          {(expectedContent as GenericContent).DisplayName || (expectedContent as GenericContent).Name}
+                        </div>
+                      </div>
+                    </TableCell>
+                  )
+                }
+                return null
+              }
+              if (typeof fieldOptions.content[fieldOptions.field] === 'boolean') {
+                if (fieldOptions.content[fieldOptions.field] === true) {
+                  return (
+                    <TableCell>
+                      <Check color="secondary" />
+                    </TableCell>
+                  )
+                } else if (fieldOptions.content[fieldOptions.field] === false) {
+                  return (
+                    <TableCell>
+                      <Close color="error" />
+                    </TableCell>
+                  )
+                }
               }
               return null
             }}
