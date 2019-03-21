@@ -2,7 +2,6 @@ import Drawer, { DrawerProps } from '@material-ui/core/Drawer'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Menu, { MenuProps } from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -60,14 +59,15 @@ export const ContentContextMenuComponent: React.FunctionComponent<
           open={props.isOpened}
           PaperProps={{ style: { paddingBottom: '2em' } }}>
           <List>
-            <ListItem>
+            <ListItem
+              onClick={() => {
+                setIsInfoDialogOpened(true)
+                props.onClose && props.onClose()
+              }}>
               <ListItemIcon>
-                <Icon item={content} />
+                <Info color="action" />
               </ListItemIcon>
               <ListItemText primary={content.DisplayName || content.Name} />
-              <ListItemSecondaryAction style={{ marginRight: '1em' }}>
-                <Info color="action" />
-              </ListItemSecondaryAction>
             </ListItem>
             <ListItem button={true} onClick={() => props.history.push(routing.getPrimaryActionUrl(content))}>
               <ListItemIcon>

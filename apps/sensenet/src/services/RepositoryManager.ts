@@ -37,6 +37,7 @@ export class RepositoryManager {
         'Version',
         'PageCount' as any,
         'Binary',
+        'CreationDate',
       ],
       ...config,
       repositoryUrl,
