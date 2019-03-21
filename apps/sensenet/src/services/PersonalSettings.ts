@@ -2,6 +2,7 @@ import { Injectable } from '@furystack/inject'
 import { ObservableValue } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { PlatformDependent } from '../context/ResponsiveContextProvider'
+import { mergeDeep } from '../utils/deepMerge'
 
 const settingsKey = `SN-APP-USER-SETTINGS`
 
@@ -59,10 +60,7 @@ export class PersonalSettings {
 
   private async init() {
     const currentUserSettings = await this.getLocalUserSettingsValue()
-    this.currentValue.setValue({
-      ...defaultSettings,
-      ...currentUserSettings,
-    })
+    this.currentValue.setValue(mergeDeep(defaultSettings, currentUserSettings))
   }
 
   public async getLocalUserSettingsValue(): Promise<Partial<PersonalSettingsType>> {
