@@ -227,18 +227,18 @@ export const CollectionComponent: React.StatelessComponent<{
             }}
             onItemDoubleClick={(_ev, item) => handleActivateItem(item)}
             getSelectionControl={(isSelected, content) => <SelectionControl {...{ isSelected, content }} />}
+            onItemContextMenu={(ev, item) => {
+              ev.preventDefault()
+              setActiveContent(item)
+              setContextMenuAnchor(ev.currentTarget as HTMLElement)
+              setIsContextMenuOpened(true)
+            }}
             fieldComponent={fieldOptions => {
               switch (fieldOptions.field) {
                 case 'DisplayName':
                   return (
                     <TableCell padding={'none'}>
                       <div
-                        onContextMenu={ev => {
-                          ev.preventDefault()
-                          setActiveContent(fieldOptions.content)
-                          setContextMenuAnchor((ev.nativeEvent as any).target.parentNode.parentNode)
-                          setIsContextMenuOpened(true)
-                        }}
                         style={{
                           display: 'flex',
                           alignItems: 'center',
