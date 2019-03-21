@@ -34,18 +34,16 @@ export const SessionContextProvider: React.FunctionComponent = props => {
         try {
           await loadLock.acquire()
           setUser(usr)
-          repo.security
-            .getParentGroups({
-              contentIdOrPath: usr.Id,
-              directOnly: false,
-              oDataOptions: {
-                select: ['Name'],
-              },
-            })
-            .then(result => {
-              setGroups(result.d.results)
-            })
-            .catch(() => setGroups([]))
+          const result = await repo.security.getParentGroups({
+            contentIdOrPath: usr.Id,
+            directOnly: false,
+            oDataOptions: {
+              select: ['Name'],
+            },
+          })
+          setGroups(result.d.results)
+        } catch {
+          setGroups([])
         } finally {
           loadLock.release()
         }
