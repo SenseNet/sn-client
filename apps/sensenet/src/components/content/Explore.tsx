@@ -5,6 +5,7 @@ import { ContentRoutingContext } from '../../context/ContentRoutingContext'
 import { CurrentAncestorsProvider } from '../../context/CurrentAncestors'
 import { CurrentChildrenProvider } from '../../context/CurrentChildren'
 import { CurrentContentProvider } from '../../context/CurrentContent'
+import { LoadSettingsContextProvider } from '../../context/LoadSettingsContext'
 import { AddButton } from '../AddButton'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { CollectionComponent } from '../ContentListPanel'
@@ -33,43 +34,49 @@ export const ExploreComponent: React.FunctionComponent<RouteComponentProps<{ fol
 
   return (
     <div style={{ display: 'flex', width: '100%', height: '100%', flexDirection: 'column' }}>
-      <CurrentContentProvider idOrPath={leftParentId}>
-        <CurrentChildrenProvider>
-          <CurrentAncestorsProvider>
-            <ContentBreadcrumbs />
-            <div style={{ display: 'flex', width: '100%', height: '100%' }}>
-              <Tree
-                style={{ flexGrow: 1, flexShrink: 0, borderRight: '1px solid rgba(128,128,128,.2)', overflow: 'auto' }}
-                parentPath={ConstantContent.PORTAL_ROOT.Path}
-                onItemClick={item => {
-                  setLeftParentId(item.Id)
-                  props.history.push(ctx.getPrimaryActionUrl(item))
-                }}
-                activeItemId={leftParentId}
-              />
+      <LoadSettingsContextProvider>
+        <CurrentContentProvider idOrPath={leftParentId}>
+          <CurrentChildrenProvider>
+            <CurrentAncestorsProvider>
+              <ContentBreadcrumbs />
+              <div style={{ display: 'flex', width: '100%', height: '100%' }}>
+                <Tree
+                  style={{
+                    flexGrow: 1,
+                    flexShrink: 0,
+                    borderRight: '1px solid rgba(128,128,128,.2)',
+                    overflow: 'auto',
+                  }}
+                  parentPath={ConstantContent.PORTAL_ROOT.Path}
+                  onItemClick={item => {
+                    setLeftParentId(item.Id)
+                    props.history.push(ctx.getPrimaryActionUrl(item))
+                  }}
+                  activeItemId={leftParentId}
+                />
 
-              <CollectionComponent
-                fields={['DisplayName', 'CreatedBy', 'Actions']}
-                enableBreadcrumbs={false}
-                onActivateItem={item => {
-                  props.history.push(ctx.getPrimaryActionUrl(item))
-                }}
-                style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
-                onParentChange={p => {
-                  setLeftParentId(p.Id)
-                  props.history.push(ctx.getPrimaryActionUrl(p))
-                }}
-                parentId={leftParentId}
-                onTabRequest={() => {
-                  /** */
-                }}
-              />
+                <CollectionComponent
+                  enableBreadcrumbs={false}
+                  onActivateItem={item => {
+                    props.history.push(ctx.getPrimaryActionUrl(item))
+                  }}
+                  style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
+                  onParentChange={p => {
+                    setLeftParentId(p.Id)
+                    props.history.push(ctx.getPrimaryActionUrl(p))
+                  }}
+                  parentId={leftParentId}
+                  onTabRequest={() => {
+                    /** */
+                  }}
+                />
 
-              <AddButton />
-            </div>
-          </CurrentAncestorsProvider>
-        </CurrentChildrenProvider>
-      </CurrentContentProvider>
+                <AddButton />
+              </div>
+            </CurrentAncestorsProvider>
+          </CurrentChildrenProvider>
+        </CurrentContentProvider>
+      </LoadSettingsContextProvider>
     </div>
   )
 }

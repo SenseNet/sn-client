@@ -59,7 +59,6 @@ export const Commander: React.StatelessComponent<RouteComponentProps<CommanderRo
         <CurrentChildrenProvider>
           <CurrentAncestorsProvider>
             <CollectionComponent
-              fields={['DisplayName', 'CreatedBy']}
               enableBreadcrumbs={true}
               onActivateItem={item => {
                 props.history.push(ctx.getPrimaryActionUrl(item))
@@ -79,7 +78,6 @@ export const Commander: React.StatelessComponent<RouteComponentProps<CommanderRo
         <CurrentChildrenProvider>
           <CurrentAncestorsProvider>
             <CollectionComponent
-              fields={['DisplayName', 'CreatedBy']}
               enableBreadcrumbs={true}
               onActivateItem={item => {
                 props.history.push(ctx.getPrimaryActionUrl(item))

@@ -6,8 +6,9 @@ import React, { useContext, useEffect, useState } from 'react'
 import { CurrentAncestorsContext } from '../context/CurrentAncestors'
 import { CurrentChildrenContext } from '../context/CurrentChildren'
 import { CurrentContentContext } from '../context/CurrentContent'
+import { LoadSettingsContext } from '../context/LoadSettingsContext'
 import { RepositoryContext } from '../context/RepositoryContext'
-import { ResponsiveContext } from '../context/ResponsiveContextProvider'
+import { ResponsiveContext, ResponsivePersonalSetttings } from '../context/ResponsiveContextProvider'
 import { ContentBreadcrumbs } from './ContentBreadcrumbs'
 import { ContentContextMenu } from './ContentContextMenu'
 import { DeleteContentDialog } from './DeleteContentDialog'
@@ -24,14 +25,13 @@ export const CollectionComponent: React.StatelessComponent<{
   onActivateItem: (item: GenericContent) => void
   style?: React.CSSProperties
   containerRef?: (r: HTMLDivElement | null) => void
-  fields: Array<keyof GenericContent>
   requestReload?: () => void
 }> = props => {
   const parent = useContext(CurrentContentContext)
   const children = useContext(CurrentChildrenContext)
   const ancestors = useContext(CurrentAncestorsContext)
   const device = useContext(ResponsiveContext)
-
+  const personalSettings = useContext(ResponsivePersonalSetttings)
   const [activeContent, setActiveContent] = useState<GenericContent>(children[0])
   const [selected, setSelected] = useState<GenericContent[]>([])
   const [isFocused, setIsFocused] = useState(true)
@@ -39,6 +39,7 @@ export const CollectionComponent: React.StatelessComponent<{
   const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
   const [showDelete, setShowDelete] = useState(false)
   const repo = useContext(RepositoryContext)
+  const loadSettings = useContext(LoadSettingsContext)
 
   useEffect(() => {
     setSelected([])
@@ -65,6 +66,11 @@ export const CollectionComponent: React.StatelessComponent<{
     } else {
       props.onActivateItem(item)
     }
+  }
+
+  const isReferenceField = (fieldName: string) => {
+    const setting = repo.schemas.getSchemaByName('GenericContent').FieldSettings.find(f => f.Name === fieldName)
+    return (setting && setting.Type === 'ReferenceFieldSetting') || false
   }
 
   return (
@@ -165,6 +171,32 @@ export const CollectionComponent: React.StatelessComponent<{
             schema={repo.schemas.getSchema(GenericContent)}
             onRequestActiveItemChange={setActiveContent}
             active={activeContent}
+            orderBy={
+              (loadSettings.loadChildrenSettings.orderby && (loadSettings.loadChildrenSettings.orderby[0][0] as any)) ||
+              null
+            }
+            orderDirection={
+              (loadSettings.loadChildrenSettings.orderby && (loadSettings.loadChildrenSettings.orderby[0][1] as any)) ||
+              null
+            }
+            onRequestOrderChange={field => {
+              const currentField =
+                (loadSettings.loadChildrenSettings.orderby && loadSettings.loadChildrenSettings.orderby[0][0]) ||
+                'DisplayName'
+              let order: 'asc' | 'desc' =
+                (loadSettings.loadChildrenSettings.orderby &&
+                  (loadSettings.loadChildrenSettings.orderby[0][1] as any)) ||
+                'asc'
+
+              if (field === currentField) {
+                order = order === 'asc' ? 'desc' : 'asc'
+              }
+              loadSettings.setLoadChildrenSettings({
+                orderby: [[field as any, order as any]],
+                select: personalSettings.content.fields,
+                expand: personalSettings.content.fields.filter(f => isReferenceField(f)),
+              })
+            }}
             onItemClick={(ev, content) => {
               if (ev.ctrlKey) {
                 if (selected.find(s => s.Id === content.Id)) {
@@ -243,7 +275,7 @@ export const CollectionComponent: React.StatelessComponent<{
               }
               return null
             }}
-            fieldsToDisplay={props.fields}
+            fieldsToDisplay={personalSettings.content.fields}
             selected={selected}
             onRequestSelectionChange={setSelected}
             icons={{}}

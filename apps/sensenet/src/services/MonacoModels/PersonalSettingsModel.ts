@@ -1,3 +1,4 @@
+import { Repository } from '@sensenet/client-core'
 import { editor, languages, Uri } from 'monaco-editor'
 
 const personalSettingsPath = 'sensenet://settings/PersonalSettings'
@@ -67,6 +68,17 @@ languages.json.jsonDefaults.setDiagnosticsOptions({
                 description:
                   'Choose between a simple list, a two-panel (commander) or a tree + single panel (explorer) style view',
                 enum: ['simple', 'commander', 'explorer'],
+              },
+              fields: {
+                description: 'Select fields to display',
+                type: 'array',
+                uniqueItems: true,
+                items: {
+                  enum: [
+                    'Actions',
+                    ...new Repository().schemas.getSchemaByName('GenericContent').FieldSettings.map(f => f.Name),
+                  ],
+                },
               },
             },
           },

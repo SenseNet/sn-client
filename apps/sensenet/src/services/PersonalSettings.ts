@@ -1,12 +1,16 @@
 import { Injectable } from '@furystack/inject'
 import { ObservableValue } from '@sensenet/client-utils'
+import { GenericContent } from '@sensenet/default-content-types'
 import { PlatformDependent } from '../context/ResponsiveContextProvider'
 
 const settingsKey = `SN-APP-USER-SETTINGS`
 
 export interface UiSettings {
   theme: 'dark' | 'light'
-  content: { browseType: 'explorer' | 'commander' | 'simple' }
+  content: {
+    browseType: 'explorer' | 'commander' | 'simple'
+    fields: Array<keyof GenericContent>
+  }
   commandPalette: { enabled: boolean; wrapQuery: string }
   drawer: {
     enabled: boolean
@@ -25,6 +29,7 @@ export const defaultSettings: PersonalSettingsType = {
     theme: 'dark',
     content: {
       browseType: 'explorer',
+      fields: ['DisplayName', 'CreatedBy', 'Actions'],
     },
     drawer: {
       enabled: true,
@@ -39,6 +44,7 @@ export const defaultSettings: PersonalSettingsType = {
     },
     content: {
       browseType: 'simple',
+      fields: ['DisplayName'],
     },
   },
   repositories: [],

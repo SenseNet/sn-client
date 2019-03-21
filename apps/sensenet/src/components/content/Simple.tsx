@@ -35,7 +35,6 @@ export const SimpleListComponent: React.FunctionComponent<RouteComponentProps<{ 
         <CurrentChildrenProvider>
           <CurrentAncestorsProvider>
             <CollectionComponent
-              fields={['DisplayName']}
               enableBreadcrumbs={true}
               onActivateItem={item => {
                 props.history.push(ctx.getPrimaryActionUrl(item))
