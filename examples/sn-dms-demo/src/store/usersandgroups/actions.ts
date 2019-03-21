@@ -6,6 +6,7 @@ import { EventHub } from '@sensenet/repository-events'
 import { Action } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
 import { changedContent } from '../../Actions'
+import { debounceReloadOnProgress } from '../../Actions'
 import { arrayComparer, arrayDiff } from '../../assets/helpers'
 import { rootStateType } from '../../store/rootReducer'
 
@@ -397,11 +398,12 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
 
       const emitChange = (content: Group) => {
         changedContent.push(content)
+        debounceReloadOnProgress(options.getState, options.dispatch)
       }
 
       eventObservables.push(
         eventHub.onCustomActionExecuted.subscribe(() => {
-          emitChange({ Id: newGroup.d.Id } as Group)
+          emitChange({ Id: realGroup.d ? realGroup.d.Id : newGroup.d.Id } as Group)
         }),
         eventHub.onContentCreated.subscribe(value => emitChange(value.content)),
         eventHub.onContentModified.subscribe(value => emitChange(value.content)),
