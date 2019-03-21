@@ -5,6 +5,7 @@ import { ContentRoutingContext } from '../../context/ContentRoutingContext'
 import { CurrentAncestorsProvider } from '../../context/CurrentAncestors'
 import { CurrentChildrenProvider } from '../../context/CurrentChildren'
 import { CurrentContentProvider } from '../../context/CurrentContent'
+import { LoadSettingsContextProvider } from '../../context/LoadSettingsContext'
 import { RepositoryContext } from '../../context/RepositoryContext'
 import { CollectionComponent } from '../ContentListPanel'
 
@@ -55,44 +56,46 @@ export const Commander: React.StatelessComponent<RouteComponentProps<CommanderRo
 
   return (
     <div style={{ display: 'flex', width: '100%', height: '100%' }}>
-      <CurrentContentProvider idOrPath={leftParentId}>
-        <CurrentChildrenProvider>
-          <CurrentAncestorsProvider>
-            <CollectionComponent
-              enableBreadcrumbs={true}
-              onActivateItem={item => {
-                props.history.push(ctx.getPrimaryActionUrl(item))
-              }}
-              containerRef={r => setLeftPanelRef(r)}
-              style={{ width: '100%', maxHeight: '100%' }}
-              parentId={leftParentId}
-              onParentChange={p => {
-                setLeftParentId(p.Id)
-              }}
-              onTabRequest={() => _rightPanelRef && _rightPanelRef.focus()}
-            />
-          </CurrentAncestorsProvider>
-        </CurrentChildrenProvider>
-      </CurrentContentProvider>
-      <CurrentContentProvider idOrPath={rightParentId}>
-        <CurrentChildrenProvider>
-          <CurrentAncestorsProvider>
-            <CollectionComponent
-              enableBreadcrumbs={true}
-              onActivateItem={item => {
-                props.history.push(ctx.getPrimaryActionUrl(item))
-              }}
-              containerRef={r => setRightPanelRef(r)}
-              parentId={rightParentId}
-              style={{ width: '100%', borderLeft: '1px solid rgba(255,255,255,0.3)', maxHeight: '100%' }}
-              onParentChange={p2 => {
-                setRightParentId(p2.Id)
-              }}
-              onTabRequest={() => _leftPanelRef && _leftPanelRef.focus()}
-            />
-          </CurrentAncestorsProvider>
-        </CurrentChildrenProvider>
-      </CurrentContentProvider>
+      <LoadSettingsContextProvider>
+        <CurrentContentProvider idOrPath={leftParentId}>
+          <CurrentChildrenProvider>
+            <CurrentAncestorsProvider>
+              <CollectionComponent
+                enableBreadcrumbs={true}
+                onActivateItem={item => {
+                  props.history.push(ctx.getPrimaryActionUrl(item))
+                }}
+                containerRef={r => setLeftPanelRef(r)}
+                style={{ width: '100%', maxHeight: '100%' }}
+                parentId={leftParentId}
+                onParentChange={p => {
+                  setLeftParentId(p.Id)
+                }}
+                onTabRequest={() => _rightPanelRef && _rightPanelRef.focus()}
+              />
+            </CurrentAncestorsProvider>
+          </CurrentChildrenProvider>
+        </CurrentContentProvider>
+        <CurrentContentProvider idOrPath={rightParentId}>
+          <CurrentChildrenProvider>
+            <CurrentAncestorsProvider>
+              <CollectionComponent
+                enableBreadcrumbs={true}
+                onActivateItem={item => {
+                  props.history.push(ctx.getPrimaryActionUrl(item))
+                }}
+                containerRef={r => setRightPanelRef(r)}
+                parentId={rightParentId}
+                style={{ width: '100%', borderLeft: '1px solid rgba(255,255,255,0.3)', maxHeight: '100%' }}
+                onParentChange={p2 => {
+                  setRightParentId(p2.Id)
+                }}
+                onTabRequest={() => _leftPanelRef && _leftPanelRef.focus()}
+              />
+            </CurrentAncestorsProvider>
+          </CurrentChildrenProvider>
+        </CurrentContentProvider>
+      </LoadSettingsContextProvider>
     </div>
   )
 }

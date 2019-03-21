@@ -5,6 +5,7 @@ import { ContentRoutingContext } from '../../context/ContentRoutingContext'
 import { CurrentAncestorsProvider } from '../../context/CurrentAncestors'
 import { CurrentChildrenProvider } from '../../context/CurrentChildren'
 import { CurrentContentProvider } from '../../context/CurrentContent'
+import { LoadSettingsContextProvider } from '../../context/LoadSettingsContext'
 import { AddButton } from '../AddButton'
 import { CollectionComponent } from '../ContentListPanel'
 import { CommanderRouteParams } from './Commander'
@@ -31,28 +32,30 @@ export const SimpleListComponent: React.FunctionComponent<RouteComponentProps<{ 
 
   return (
     <div style={{ display: 'flex', width: '100%', height: '100%' }}>
-      <CurrentContentProvider idOrPath={leftParentId}>
-        <CurrentChildrenProvider>
-          <CurrentAncestorsProvider>
-            <CollectionComponent
-              enableBreadcrumbs={true}
-              onActivateItem={item => {
-                props.history.push(ctx.getPrimaryActionUrl(item))
-              }}
-              style={{ flexGrow: 1, flexShrink: 0, maxHeight: '100%', width: '100%' }}
-              onParentChange={p => {
-                setLeftParentId(p.Id)
-                props.history.push(ctx.getPrimaryActionUrl(p))
-              }}
-              parentId={leftParentId}
-              onTabRequest={() => {
-                /** */
-              }}
-            />
-            <AddButton />
-          </CurrentAncestorsProvider>
-        </CurrentChildrenProvider>
-      </CurrentContentProvider>
+      <LoadSettingsContextProvider>
+        <CurrentContentProvider idOrPath={leftParentId}>
+          <CurrentChildrenProvider>
+            <CurrentAncestorsProvider>
+              <CollectionComponent
+                enableBreadcrumbs={true}
+                onActivateItem={item => {
+                  props.history.push(ctx.getPrimaryActionUrl(item))
+                }}
+                style={{ flexGrow: 1, flexShrink: 0, maxHeight: '100%', width: '100%' }}
+                onParentChange={p => {
+                  setLeftParentId(p.Id)
+                  props.history.push(ctx.getPrimaryActionUrl(p))
+                }}
+                parentId={leftParentId}
+                onTabRequest={() => {
+                  /** */
+                }}
+              />
+              <AddButton />
+            </CurrentAncestorsProvider>
+          </CurrentChildrenProvider>
+        </CurrentContentProvider>
+      </LoadSettingsContextProvider>
     </div>
   )
 }
