@@ -50,6 +50,19 @@ export const loadUser = <T extends User = User>(idOrPath: number | string, userO
         eventHub.onContentCreated.subscribe(value => emitChange(value.content)),
         eventHub.onContentModified.subscribe(value => emitChange(value.content)),
         eventHub.onContentMoved.subscribe(value => emitChange(value.content)),
+        eventHub.onContentDeleted.subscribe(value => {
+          const currentItems = options.getState().dms.documentLibrary.items
+          const filtered = currentItems.d.results.filter(item => item.Id !== value.contentData.Id)
+          options.dispatch(
+            setGroups({
+              ...currentItems,
+              d: {
+                __count: filtered.length,
+                results: filtered,
+              },
+            }),
+          )
+        }) as any,
       )
 
       await Promise.all([

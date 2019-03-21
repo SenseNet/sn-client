@@ -14,6 +14,7 @@ import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { closeActionMenu, openActionMenu } from '../Actions'
+import * as DMSActions from '../Actions'
 import { contentListTheme } from '../assets/contentlist'
 import { icons } from '../assets/icons'
 import { resources } from '../assets/resources'
@@ -23,6 +24,7 @@ import { getAllowedTypes, loadGroup, selectGroup, updateChildrenOptions } from '
 import BreadCrumb from './BreadCrumb'
 import { DisplayNameCell } from './ContentList/CellTemplates/DisplayNameCell'
 import { DisplayNameMobileCell } from './ContentList/CellTemplates/DisplayNameMobileCell'
+import DeleteDialog from './Dialogs/DeleteDialog'
 import { FullScreenLoader } from './FullScreenLoader'
 import UserSelector from './UsersAndGroups/UserSelector/UserSelector'
 
@@ -108,6 +110,8 @@ const mapDispatchToProps = {
   selectGroup,
   updateChildrenOptions,
   getAllowedTypes,
+  openDialog: DMSActions.openDialog,
+  closeDialog: DMSActions.closeDialog,
 }
 
 class Groups extends Component<
@@ -147,8 +151,8 @@ class Groups extends Component<
       groupName: newProps.group ? newProps.group.Name : '',
     } as Groups['state']
   }
-  public handleDeleteClick = () => {
-    // TODO: delete currentGroup
+  public handleDeleteClick = (content: GenericContent) => {
+    this.props.openDialog(<DeleteDialog content={[content]} />, resources.DELETE, this.props.closeDialog)
   }
   public isGroupAdmin = (actions: ActionModel[] | undefined) => {
     const editAction = actions ? actions.find((action: ActionModel) => action.Name === 'Edit') : undefined
@@ -289,7 +293,9 @@ class Groups extends Component<
                           ) {
                             return (
                               <TableCell padding="checkbox" style={{ width: 160 }}>
-                                <Button style={styles.deleteButton} onClick={() => this.handleDeleteClick()}>
+                                <Button
+                                  style={styles.deleteButton}
+                                  onClick={() => this.handleDeleteClick(props.content)}>
                                   <Icon iconName="delete" style={{ fontSize: 19, marginRight: 10 }} />
                                   {resources.DELETE_GROUP}
                                 </Button>
