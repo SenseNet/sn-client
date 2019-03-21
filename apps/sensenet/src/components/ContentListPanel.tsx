@@ -307,7 +307,7 @@ export const CollectionComponent: React.StatelessComponent<{
               }
               return null
             }}
-            fieldsToDisplay={personalSettings.content.fields}
+            fieldsToDisplay={personalSettings.content.fields || ['DisplayName']}
             selected={selected}
             onRequestSelectionChange={setSelected}
             icons={{}}
