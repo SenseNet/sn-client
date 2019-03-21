@@ -268,7 +268,7 @@ export const CollectionComponent: React.StatelessComponent<{
                 typeof fieldOptions.content[fieldOptions.field] === 'object' &&
                 isReferenceField(fieldOptions.field)
               ) {
-                const expectedContent: any = fieldOptions.content[fieldOptions.field]
+                const expectedContent = fieldOptions.content[fieldOptions.field] as GenericContent
                 if (
                   expectedContent &&
                   expectedContent.Id &&
