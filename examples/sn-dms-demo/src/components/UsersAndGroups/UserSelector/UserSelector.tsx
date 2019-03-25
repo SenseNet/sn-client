@@ -5,6 +5,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { resources } from '../../../assets/resources'
+import { rootStateType } from '../../../store/rootReducer'
 import { clearUserSelection } from '../../../store/usersandgroups/actions'
 import UserDropDown from './UserDropDown'
 
@@ -28,8 +29,10 @@ interface UserSelectorState {
   open: boolean
 }
 
-const mapStateToProps = () => {
-  return {}
+const mapStateToProps = (state: rootStateType) => {
+  return {
+    selected: state.dms.usersAndGroups.group.selected,
+  }
 }
 
 const mapDispatchToProps = {
@@ -64,6 +67,7 @@ class UserSelector extends React.Component<
             <ClickAwayListener onClickAway={() => this.handleButtonClick(false, true)}>
               <div style={{ display: 'inline' }}>
                 <Button
+                  disabled={this.props.selected.length > 0 ? false : true}
                   variant="contained"
                   color="primary"
                   style={{ ...styles.button, ...styles.buttonRaised }}
