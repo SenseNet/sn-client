@@ -1,8 +1,7 @@
 import { ConstantContent, LoginState } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import { Group, User } from '@sensenet/default-content-types'
-import { useContext, useEffect, useState } from 'react'
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
 import { RepositoryContext } from './RepositoryContext'
 

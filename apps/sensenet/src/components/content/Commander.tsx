@@ -14,7 +14,7 @@ export interface CommanderRouteParams {
   rightParent?: string
 }
 
-export const Commander: React.StatelessComponent<RouteComponentProps<CommanderRouteParams>> = props => {
+export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRouteParams>> = props => {
   const ctx = useContext(ContentRoutingContext)
   const repo = useContext(RepositoryContext)
   const getLeftFromPath = (params: CommanderRouteParams) =>

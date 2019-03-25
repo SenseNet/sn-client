@@ -1,5 +1,6 @@
 import React from 'react'
 import fullScreenLoader from '../assets/loader-fullscreen.gif'
+
 export const FullScreenLoader = () => (
   <img
     style={{

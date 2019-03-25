@@ -22,7 +22,7 @@ import { LogoutButton } from '../LogoutButton'
 import { UserAvatar } from '../UserAvatar'
 import { getAllowedDrawerItems } from './Items'
 
-const PermanentDrawer: React.StatelessComponent<RouteComponentProps> = props => {
+const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
   const settings = useContext(ResponsivePersonalSetttings)
   const personalSettings = useContext(PersonalSettingsContext)
   const theme = useContext(ThemeContext)

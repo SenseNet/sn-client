@@ -19,7 +19,7 @@ import { Icon } from './Icon'
 import { SecondaryActionsMenu } from './SecondaryActionsMenu'
 import { SelectionControl } from './SelectionControl'
 
-export const CollectionComponent: React.StatelessComponent<{
+export const CollectionComponent: React.FunctionComponent<{
   enableBreadcrumbs?: boolean
   parentId: number
   onParentChange: (newParent: GenericContent) => void

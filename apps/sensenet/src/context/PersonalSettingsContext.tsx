@@ -1,5 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { defaultSettings, PersonalSettings } from '../services/PersonalSettings'
 import { InjectorContext } from './InjectorContext'
 export const PersonalSettingsContext = React.createContext(defaultSettings)

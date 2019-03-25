@@ -6,5 +6,5 @@ interface AuthorizedRouteProps extends RouteProps {
   unauthorizedComponent?: JSX.Element
 }
 
-export const AuthorizedRoute: React.StatelessComponent<AuthorizedRouteProps> = props =>
+export const AuthorizedRoute: React.FunctionComponent<AuthorizedRouteProps> = props =>
   props.authorize() ? <Route {...props} /> : props.unauthorizedComponent || null

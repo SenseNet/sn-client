@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useContext } from 'react'
 import { ResponsiveContext } from '../context/ResponsiveContextProvider'
+
 export const ContentInfoDialog: React.FunctionComponent<{
   dialogProps: DialogProps
   content: GenericContent

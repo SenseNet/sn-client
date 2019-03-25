@@ -6,6 +6,7 @@ import SearchTwoTone from '@material-ui/icons/SearchTwoTone'
 
 import { Group } from '@sensenet/default-content-types'
 import React from 'react'
+
 export interface DrawerItem {
   primaryText: string
   secondaryText: string

@@ -22,7 +22,7 @@ import { LogoutButton } from '../LogoutButton'
 import { UserAvatar } from '../UserAvatar'
 import { getAllowedDrawerItems } from './Items'
 
-const TemporaryDrawer: React.StatelessComponent<RouteComponentProps & { isOpened: boolean }> = props => {
+const TemporaryDrawer: React.FunctionComponent<RouteComponentProps & { isOpened: boolean }> = props => {
   const settings = useContext(ResponsivePersonalSetttings)
   const personalSettings = useContext(PersonalSettingsContext)
   const repo = useContext(RepositoryContext)

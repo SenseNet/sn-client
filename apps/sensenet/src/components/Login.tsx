@@ -44,7 +44,6 @@ export const Login: React.FunctionComponent = () => {
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
             <CircularProgress size={64} variant={success ? 'determinate' : 'indeterminate'} value={progressValue} />
             {success ? (
-              // <Check style={{ marginTop: -43, color: theme.palette.text.primary, opacity: progressValue / 100 }} />
               <UserAvatar
                 style={{ width: 56, height: 56, marginTop: -60, opacity: progressValue / 100 }}
                 user={session.currentUser}

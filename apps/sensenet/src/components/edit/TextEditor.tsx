@@ -30,7 +30,6 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
     setLanguage(ctx.getMonacoLanguage(props.content))
     ;(async () => {
       if (props.loadContent) {
-        /** */
         const value = await props.loadContent(props.content)
         setTextValue(value)
       } else {
