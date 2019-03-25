@@ -5,7 +5,7 @@ import * as React from 'react'
 import Scrollbars from 'react-custom-scrollbars'
 import { connect } from 'react-redux'
 import { rootStateType } from '../../../store/rootReducer'
-import { addUserToGroups, getUsers, searchUsers } from '../../../store/usersandgroups/actions'
+import { addUsersToGroups, getUsers, searchUsers } from '../../../store/usersandgroups/actions'
 import { UserButtonRow } from './UserButtonRow'
 import UserListItem from './UserListItem'
 import UserSearch from './UserSearch'
@@ -38,13 +38,14 @@ const mapStateToProps = (state: rootStateType) => {
     users: state.dms.usersAndGroups.user.all,
     selected: state.dms.usersAndGroups.user.selected,
     term: state.dms.usersAndGroups.user.searchTerm,
+    groups: state.dms.usersAndGroups.group.selected,
   }
 }
 
 const mapDispatchToProps = {
   getUsers,
   searchUsers,
-  addUserToGroups,
+  addUsersToGroups,
 }
 
 interface UserListState {
@@ -117,7 +118,7 @@ class UserList extends React.Component<
               <UserListItem
                 closeDropDown={this.props.closeDropDown}
                 key={user.Id}
-                group={user}
+                user={user}
                 selected={this.isSelected(user)}
               />
             ))}
@@ -125,8 +126,8 @@ class UserList extends React.Component<
         </Scrollbars>
         <UserButtonRow
           cancelClick={this.props.closeDropDown}
-          submitClick={this.props.addUserToGroups as any}
-          groups={this.props.selected}
+          submitClick={this.props.addUsersToGroups as any}
+          groups={this.props.groups}
           users={this.props.selected || null}
         />
       </div>

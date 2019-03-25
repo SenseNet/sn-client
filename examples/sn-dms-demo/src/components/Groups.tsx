@@ -4,7 +4,7 @@ import Checkbox from '@material-ui/core/Checkbox'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import TableCell from '@material-ui/core/TableCell'
 import Toolbar from '@material-ui/core/Toolbar'
-import { ConstantContent } from '@sensenet/client-core'
+import { ConstantContent, Content } from '@sensenet/client-core'
 import { ActionModel, GenericContent, SchemaStore } from '@sensenet/default-content-types'
 import { Icon } from '@sensenet/icons-react'
 import { ContentList } from '@sensenet/list-controls-react'
@@ -20,12 +20,18 @@ import { icons } from '../assets/icons'
 import { resources } from '../assets/resources'
 import { customSchema } from '../assets/schema'
 import { rootStateType } from '../store/rootReducer'
-import { getAllowedTypes, loadGroup, selectGroup, updateChildrenOptions } from '../store/usersandgroups/actions'
+import {
+  getAllowedTypes,
+  loadGroup,
+  selectGroup,
+  setActive,
+  updateChildrenOptions,
+} from '../store/usersandgroups/actions'
 import BreadCrumb from './BreadCrumb'
 import { DisplayNameCell } from './ContentList/CellTemplates/DisplayNameCell'
 import { DisplayNameMobileCell } from './ContentList/CellTemplates/DisplayNameMobileCell'
 import DeleteDialog from './Dialogs/DeleteDialog'
-import { FullScreenLoader } from './FullScreenLoader'
+import { GridPlaceholder } from './Loaders/GridPlaceholder'
 import UserSelector from './UsersAndGroups/UserSelector/UserSelector'
 
 const rootItems = [
@@ -100,6 +106,7 @@ const mapStateToProps = (state: rootStateType) => {
     hostName: state.sensenet.session.repository ? state.sensenet.session.repository.repositoryUrl : '',
     selected: state.dms.usersAndGroups.group.selected,
     parent: state.dms.usersAndGroups.group.parent,
+    active: state.dms.usersAndGroups.group.active,
   }
 }
 
@@ -112,6 +119,7 @@ const mapDispatchToProps = {
   getAllowedTypes,
   openDialog: DMSActions.openDialog,
   closeDialog: DMSActions.closeDialog,
+  setActive,
 }
 
 class Groups extends Component<
@@ -207,7 +215,18 @@ class Groups extends Component<
               ) : null}
               <MuiThemeProvider theme={contentListTheme}>
                 {isLoading ? (
-                  <FullScreenLoader />
+                  <GridPlaceholder
+                    columns={5}
+                    rows={3}
+                    style={{
+                      position: 'sticky',
+                      zIndex: isLoading ? 1 : -1,
+                      height: 0,
+                      opacity: isLoading ? 1 : 0,
+                      transition: 'opacity 500ms cubic-bezier(0.230, 1.000, 0.320, 1.000)',
+                    }}
+                    columnStyle={{ backgroundColor: 'white' }}
+                  />
                 ) : (
                   <ContentList
                     displayRowCheckbox={matches ? true : false}
@@ -230,6 +249,7 @@ class Groups extends Component<
                     orderBy={childrenOptions.orderby ? childrenOptions.orderby[0][0] : ('Id' as any)}
                     orderDirection={childrenOptions.orderby ? childrenOptions.orderby[0][1] : ('asc' as any)}
                     onRequestSelectionChange={newSelection => this.props.selectGroup(newSelection)}
+                    onRequestActiveItemChange={active => this.props.setActive(active)}
                     onRequestActionsMenu={(ev, content) => {
                       ev.preventDefault()
                       this.props.closeActionMenu()
@@ -261,6 +281,37 @@ class Groups extends Component<
                       }
                     }}
                     selected={selected}
+                    onItemClick={(ev, content) => {
+                      if (ev.ctrlKey) {
+                        if (this.props.selected.find(s => s.Id === content.Id)) {
+                          this.props.selectGroup(this.props.selected.filter(s => s.Id !== content.Id))
+                        } else {
+                          this.props.selectGroup([...this.props.selected, content])
+                        }
+                      } else if (ev.shiftKey) {
+                        const activeIndex =
+                          (this.props.active &&
+                            this.props.items.findIndex(s => s.Id === (this.props.active as Content).Id)) ||
+                          0
+                        const clickedIndex = this.props.items.findIndex(s => s.Id === content.Id)
+                        const newSelection = Array.from(
+                          new Set([
+                            ...this.props.selected,
+                            ...this.props.items.slice(
+                              Math.min(activeIndex, clickedIndex),
+                              Math.max(activeIndex, clickedIndex) + 1,
+                            ),
+                          ]),
+                        )
+                        this.props.selectGroup(newSelection)
+                      } else {
+                        if (this.props.selected.find(s => s.Id === content.Id)) {
+                          this.props.selectGroup(this.props.selected.filter(s => s.Id !== content.Id))
+                        } else {
+                          this.props.selectGroup([...this.props.selected, content])
+                        }
+                      }
+                    }}
                     onItemDoubleClick={this.handleRowDoubleClick}
                     fieldComponent={props => {
                       switch (props.field) {

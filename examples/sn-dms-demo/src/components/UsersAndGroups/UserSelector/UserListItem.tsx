@@ -3,14 +3,14 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import MenuItem from '@material-ui/core/MenuItem'
 import withStyles from '@material-ui/core/styles/withStyles'
-import { Group } from '@sensenet/default-content-types'
+import { User } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import { Actions } from '@sensenet/redux'
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { rootStateType } from '../../../store/rootReducer'
-import { selectGroup } from '../../../store/usersandgroups/actions'
+import { selectUser } from '../../../store/usersandgroups/actions'
 
 const styles = {
   listItem: {
@@ -58,7 +58,7 @@ const styles = {
 
 interface UserListItemProps extends RouteComponentProps<any> {
   selected: boolean
-  group: Group | null
+  user: User
   userName: string
   closeDropDown: (open: boolean) => void
 }
@@ -67,12 +67,12 @@ const mapStateToProps = (state: rootStateType) => {
   return {
     userName: state.sensenet.session.user.userName,
     options: state.sensenet.currentitems.options,
-    groups: state.dms.usersAndGroups.group.selected,
+    users: state.dms.usersAndGroups.user.selected,
   }
 }
 
 const mapDispatchToProps = {
-  selectGroup,
+  selectUser,
   loadContent: Actions.loadContent,
   fetchContent: Actions.requestContent,
 }
@@ -91,24 +91,25 @@ class UserListItem extends React.Component<
   constructor(props: UserListItem['props']) {
     super(props)
   }
-  public checkboxClick = (group: Group) => {
-    const index = this.props.groups.findIndex(g => g.Id === group.Id)
+  public checkboxClick = (user: User) => {
+    const index = this.props.users.findIndex(g => g.Id === user.Id)
     index === -1
-      ? this.props.selectGroup([...this.props.groups, group])
-      : this.props.selectGroup([...this.props.groups.slice(0, index), ...this.props.groups.slice(index + 1)])
+      ? this.props.selectUser([...this.props.users, user])
+      : this.props.selectUser([...this.props.users.slice(0, index), ...this.props.users.slice(index + 1)])
     this.setState({
       selected: !this.state.selected,
     })
   }
   public shortenPath = (path: string) => path.replace('/Root/IMS/', '')
   public render() {
-    const { classes, group, selected } = this.props
+    const { classes, user } = this.props
+    const { selected } = this.state
     return (
       <MenuItem style={styles.listItem}>
         <ListItemIcon className={classes.icon}>
           <IconButton
             className={selected ? classes.followedIconButton : classes.iconButton}
-            onClick={() => this.checkboxClick(group as Group)}>
+            onClick={() => this.checkboxClick(user as User)}>
             <Icon
               className={selected ? classes.followedIconButton : classes.iconButton}
               type={iconType.materialui}
@@ -119,8 +120,8 @@ class UserListItem extends React.Component<
         </ListItemIcon>
         <ListItemText
           classes={{ primary: classes.primary, root: classes.listItemRoot, secondary: classes.secondary }}
-          primary={group ? group.DisplayName : ''}
-          secondary={this.shortenPath(group ? group.Path : '')}
+          primary={user ? user.FullName : ''}
+          secondary={this.shortenPath(user ? user.Path : '')}
         />
       </MenuItem>
     )

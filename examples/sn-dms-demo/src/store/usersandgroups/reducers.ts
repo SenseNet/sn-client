@@ -66,6 +66,10 @@ export const selected: Reducer<GenericContent[]> = (state = [], action: AnyActio
   switch (action.type) {
     case 'DMS_USERSANDGROUPS_SET_ANCESTORS':
       return action.ancestors
+    case 'DMS_USERSANDGROUPS_SELECT_USER':
+      return action.users
+    case 'DMS_USERSANDGROUPS_CLEAR_USER_SELECTION':
+      return []
     default:
       return state
   }
@@ -257,6 +261,7 @@ export const group = combineReducers({
   grouplistOptions,
   parent,
   parentIdOrPath,
+  active,
 })
 
 export const usersAndGroups = combineReducers({

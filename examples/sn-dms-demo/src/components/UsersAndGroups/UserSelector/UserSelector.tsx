@@ -5,7 +5,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { resources } from '../../../assets/resources'
-import { clearSelection } from '../../../store/usersandgroups/actions'
+import { clearUserSelection } from '../../../store/usersandgroups/actions'
 import UserDropDown from './UserDropDown'
 
 const styles = {
@@ -33,7 +33,7 @@ const mapStateToProps = () => {
 }
 
 const mapDispatchToProps = {
-  clearSelection,
+  clearUserSelection,
 }
 
 class UserSelector extends React.Component<
@@ -49,7 +49,7 @@ class UserSelector extends React.Component<
   }
   public handleButtonClick = (open: boolean, away: boolean) => {
     if (!away) {
-      this.props.clearSelection()
+      this.props.clearUserSelection()
     }
     this.setState({
       open: away ? false : open ? false : !this.state.open,

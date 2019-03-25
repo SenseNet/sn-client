@@ -285,6 +285,10 @@ export const clearSelection = () => ({
   type: 'DMS_USERSANDGROUPS_CLEAR_SELECTION',
 })
 
+export const clearUserSelection = () => ({
+  type: 'DMS_USERSANDGROUPS_CLEAR_USER_SELECTION',
+})
+
 export const addUserToGroups = (user: User, groups: Group[]) => ({
   type: 'DMS_USERSANDGROUPS_ADD_USER_TO_GROUPS',
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
@@ -305,6 +309,31 @@ export const addUserToGroups = (user: User, groups: Group[]) => ({
     } finally {
       options.dispatch(finishLoading())
       options.dispatch(loadUser(user.Id))
+      const comparedList = arrayComparer(groups, currentState.dms.usersAndGroups.user.memberships.d.results)
+      options.dispatch(updateGroupList({ d: { __count: comparedList.length, results: comparedList } }))
+    }
+  },
+})
+
+export const addUsersToGroups = (users: number[], groups: Group[]) => ({
+  type: 'DMS_USERSANDGROUPS_ADD_USERS_TO_GROUPS',
+  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
+    const currentState = options.getState()
+    const repository = options.getInjectable(Repository) as Repository
+    options.dispatch(
+      startLoading(
+        currentState.dms.usersAndGroups.user.currentUser ? currentState.dms.usersAndGroups.user.currentUser.Id : '',
+      ),
+    )
+    try {
+      const add = groups.map(async group => {
+        return await repository.security.addMembers(group.Id, users)
+      })
+      await Promise.all(add)
+    } catch (error) {
+      options.dispatch(setError(error))
+    } finally {
+      options.dispatch(finishLoading())
       const comparedList = arrayComparer(groups, currentState.dms.usersAndGroups.user.memberships.d.results)
       options.dispatch(updateGroupList({ d: { __count: comparedList.length, results: comparedList } }))
     }
@@ -357,7 +386,7 @@ export const updateGroupListOptions = createAction(<T extends GenericContent>(od
 }))
 
 export const finishLoadingChildren = createAction(() => ({
-  type: 'DMS_SERSANDGROUPS_FINISH_LOADING_CHILDREN',
+  type: 'DMS_USERSANDGROUPS_FINISH_LOADING_CHILDREN',
 }))
 
 export const loadGroup = <T extends Group = Group>(idOrPath: number | string, groupOptions?: ODataParams<T>) => ({
@@ -527,3 +556,15 @@ export const setAllowedChildTypes = createAction((types: GenericContent[]) => ({
   type: 'DMS_DOCLIB_SET_ALLOWED_TYPES',
   types,
 }))
+
+export const selectUser = (users: User[] | GenericContent) => {
+  return {
+    type: 'DMS_USERSANDGROUPS_SELECT_USER',
+    users,
+  }
+}
+
+export const deselectUser = (id: number) => ({
+  type: 'DMS_USERSANDGROUPS_DESELECT_USER',
+  id,
+})
