@@ -8,7 +8,7 @@ import InputLabel from '@material-ui/core/InputLabel'
 import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
 import { PathHelper } from '@sensenet/client-utils'
-import { GenericContent } from '@sensenet/default-content-types'
+import { GenericContent, User } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { DefaultItemTemplate } from './DefaultItemTemplate'
@@ -120,11 +120,13 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
     this.setState({
       fieldValue:
         references.d.results.length > 0
-          ? references.d.results.map((item: GenericContent) => ({
+          ? references.d.results.map((item: GenericContent | User) => ({
               // tslint:disable-next-line:no-string-literal
               DisplayName: item.DisplayName,
               Icon: item.Icon,
               Id: item.Id,
+              Avatar: item['Avatar'],
+              Type: item.Type,
             }))
           : [],
     })
