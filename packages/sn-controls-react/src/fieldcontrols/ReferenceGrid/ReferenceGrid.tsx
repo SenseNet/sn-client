@@ -125,6 +125,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
               DisplayName: item.DisplayName,
               Icon: item.Icon,
               Id: item.Id,
+              // tslint:disable-next-line: no-string-literal
               Avatar: item['Avatar'],
               Type: item.Type,
             }))
