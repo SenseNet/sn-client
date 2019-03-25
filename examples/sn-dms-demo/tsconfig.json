@@ -1,14 +1,26 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig-base.json",
   "compilerOptions": {
     "outDir": "build/dist",
-    "module": "esnext",
-    "target": "es5",
+    "rootDir": "src",
     "lib": ["es6", "dom"],
-    "jsx": "react",
     "noImplicitReturns": false,
-    "alwaysStrict": false,
-    "composite": true
+    "alwaysStrict": false
   },
-  "include": ["src"]
+  "include": ["src"],
+  "references": [
+    { "path": "../../packages/sn-authentication-jwt" },
+    { "path": "../../packages/sn-client-auth-google" },
+    { "path": "../../packages/sn-client-core" },
+    { "path": "../../packages/sn-client-utils" },
+    { "path": "../../packages/sn-controls-react" },
+    { "path": "../../packages/sn-default-content-types" },
+    { "path": "../../packages/sn-document-viewer-react" },
+    { "path": "../../packages/sn-icons-react" },
+    { "path": "../../packages/sn-list-controls-react" },
+    { "path": "../../packages/sn-pickers-react" },
+    { "path": "../../packages/sn-redux" },
+    { "path": "../../packages/sn-repository-events" },
+    { "path": "../../packages/sn-search-react" }
+  ]
 }
