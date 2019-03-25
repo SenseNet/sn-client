@@ -1,13 +1,22 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig-base.json",
   "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "lib": ["es6", "dom"],
+    "experimentalDecorators": true,
+    "noUnusedParameters": false,
     "noImplicitAny": false,
     "strictNullChecks": false,
-    "jsx": "react",
-    "outDir": "./dist",
-    "composite": false,
+    "alwaysStrict": false,
     "declaration": false,
     "declarationMap": false
   },
-  "include": ["src"]
+  "include": ["src"],
+  "references": [
+    { "path": "../../packages/sn-client-auth-google" },
+    { "path": "../../packages/sn-client-core" },
+    { "path": "../../packages/sn-controls-react" },
+    { "path": "../../packages/sn-redux" }
+  ]
 }

@@ -46,7 +46,7 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "tslint -p . --fix",
+      "tslint --fix",
       "prettier --write",
       "git add"
     ],
@@ -86,7 +86,7 @@
     },
     "globals": {
       "ts-jest": {
-        "tsConfig": "tsconfig.test.json"
+        "tsConfig": "tsconfig-base.json"
       }
     },
     "testMatch": [

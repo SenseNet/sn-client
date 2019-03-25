@@ -64,7 +64,7 @@ describe('Document Viewer Layout component', () => {
       .find(Drawer)
       .first()
       .prop('PaperProps')
-    expect(paperProps.style.width).toBe(0)
+    expect(paperProps!.style!.width).toBe(0)
   })
 
   it('click on a page / thumbnail should scroll to the selected page', () => {

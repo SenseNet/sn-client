@@ -48,7 +48,7 @@ describe('TypeField component', () => {
       />,
     )
     const select = instance.find(Select)
-    select.props().onChange({ target: { value: 'User' } } as any, null)
+    select.props().onChange!({ target: { value: 'User' } } as any, null)
   })
 
   it('Selecting multiple values should update the query', done => {
@@ -63,6 +63,6 @@ describe('TypeField component', () => {
       />,
     )
     const select = instance.find(Select)
-    select.props().onChange({ target: { value: ['User', 'Task'] } } as any, undefined)
+    select.props().onChange!({ target: { value: ['User', 'Task'] } } as any, undefined)
   })
 })
