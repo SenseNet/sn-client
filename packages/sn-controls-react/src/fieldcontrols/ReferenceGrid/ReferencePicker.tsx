@@ -103,7 +103,8 @@ export class ReferencePicker extends Component<ReferencePickerProps, ReferencePi
             src={
               // tslint:disable-next-line: no-string-literal
               node['Avatar']
-                ? `${this.props.repository.configuration.repositoryUrl}${node['Avatar'].Url}`
+                ? // tslint:disable-next-line: no-string-literal
+                  `${this.props.repository.configuration.repositoryUrl}${node['Avatar'].Url}`
                 : DEFAULT_AVATAR_PATH
             }
           />
