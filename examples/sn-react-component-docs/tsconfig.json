@@ -13,5 +13,5 @@
     "declaration": false,
     "declarationMap": false
   },
-  "include": ["stories", "../../typings"]
+  "include": ["stories"]
 }

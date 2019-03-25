@@ -10,5 +10,5 @@
     "alwaysStrict": false,
     "composite": true
   },
-  "include": ["src", "../../typings"]
+  "include": ["src"]
 }
