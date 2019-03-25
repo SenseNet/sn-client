@@ -23,7 +23,7 @@ describe('PagerWidget component', () => {
       <PagerComponent activePages={[1]} pageCount={10} setActivePages={setActivePages} {...local} />,
     )
     const changeValue = (value: number | string) =>
-      wrapper.find(TextField).prop('onChange')({ currentTarget: { value } })
+      wrapper.find(TextField).prop('onChange')!({ currentTarget: { value } } as any)
     const getValue = () => wrapper.find(TextField).props().value
     changeValue(5)
     await sleepAsync()

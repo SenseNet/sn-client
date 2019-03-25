@@ -45,7 +45,7 @@ describe('Preset Fields', () => {
       />,
     )
     const select = instance.find(Select)
-    select.props().onChange({ target: { value: 'value1' } } as any, undefined)
+    select.props().onChange!({ target: { value: 'value1' } } as any, undefined)
     expect(select)
   })
 
@@ -60,7 +60,7 @@ describe('Preset Fields', () => {
       />,
     )
     const select = instance.find(Select)
-    select.props().onChange({ target: { value: 'value2' } } as any, undefined)
+    select.props().onChange!({ target: { value: 'value2' } } as any, undefined)
 
     setTimeout(() => {
       done()

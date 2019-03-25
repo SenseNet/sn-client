@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "pretty": true,
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "jsx": "react",
+
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "composite": true,
+    "noEmitOnError": true,
+
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictPropertyInitialization": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+
+    "skipLibCheck": true,
+
+    "alwaysStrict": true,
+    "preserveConstEnums": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
+  }
+}
