@@ -1,9 +1,9 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig-base.json",
   "compilerOptions": {
     "outDir": "dist",
-    "composite": true,
-    "rootDir": "./src"
+    "rootDir": "src"
   },
-  "include": ["src"]
+  "include": ["src"],
+  "references": [{ "path": "../sn-client-core" }, { "path": "../sn-default-content-types" }]
 }

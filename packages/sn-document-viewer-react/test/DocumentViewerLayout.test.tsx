@@ -57,7 +57,7 @@ describe('Document Viewer Layout component', () => {
     await sleepAsync()
     expect(setActivePages.mock.calls.length).toBe(0)
     const paperProps = wrapper.find(Drawer).prop('PaperProps')
-    expect(paperProps.style.width).toBe(0)
+    expect(paperProps!.style!.width).toBe(0)
   })
 
   it('click on a page / thumbnail should scroll to the selected page', () => {

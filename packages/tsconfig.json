@@ -1,0 +1,22 @@
+{
+  "files": [],
+  "include": [],
+  "references": [
+    { "path": "./sn-authentication-jwt" },
+    { "path": "./sn-client-auth-google" },
+    { "path": "./sn-client-core" },
+    { "path": "./sn-client-utils" },
+    { "path": "./sn-control-mapper" },
+    { "path": "./sn-controls-react" },
+    { "path": "./sn-default-content-types" },
+    { "path": "./sn-document-viewer-react" },
+    { "path": "./sn-icons-react" },
+    { "path": "./sn-list-controls-react" },
+    { "path": "./sn-pickers-react" },
+    { "path": "./sn-query" },
+    { "path": "./sn-redux" },
+    { "path": "./sn-redux-promise-middleware" },
+    { "path": "./sn-repository-events" },
+    { "path": "./sn-search-react" }
+  ]
+}

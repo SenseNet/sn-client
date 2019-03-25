@@ -15,7 +15,7 @@ describe('ActionCell component', () => {
     component.unmount()
   })
 
-  it('Should handle on action menu click', (done: jest.DoneCallback) => {
+  it('Should handle on action menu click', done => {
     const component = shallow(
       <ActionsCell
         actions={[]}
@@ -27,6 +27,7 @@ describe('ActionCell component', () => {
       />,
     )
     const iconButton = component.find(IconButton)
-    iconButton.props().onClick()
+    // tslint:disable-next-line: no-unused-expression
+    iconButton.props().onClick!({} as any)
   })
 })
