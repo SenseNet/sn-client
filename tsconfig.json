@@ -17,7 +17,6 @@
     "pretty": true,
     "skipLibCheck": true,
     "sourceMap": true,
-    "importHelpers": true,
     "strict": true,
     "target": "es2016"
   },
