@@ -33,7 +33,7 @@ languages.json.jsonDefaults.setDiagnosticsOptions({
             properties: {
               url: {
                 type: 'string',
-                description: 'The path for the repository, e.g.: https://my-sensenet-repository.org',
+                description: 'The path of the repository, e.g.: https://my-sensenet-repository.org',
               },
               loginName: {
                 type: 'string',
