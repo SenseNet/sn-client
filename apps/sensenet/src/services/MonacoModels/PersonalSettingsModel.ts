@@ -41,7 +41,7 @@ languages.json.jsonDefaults.setDiagnosticsOptions({
               },
               displayName: {
                 type: 'string',
-                description: 'An optional user friendly name to display when referencing this repository',
+                description: 'An optional user friendly name to display the repository when you're connected to it',
               },
             },
           },
