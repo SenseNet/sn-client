@@ -27,6 +27,7 @@ import {
   setActive,
   updateChildrenOptions,
 } from '../store/usersandgroups/actions'
+import ActionMenu from './ActionMenu/ActionMenu'
 import BreadCrumb from './BreadCrumb'
 import { DisplayNameCell } from './ContentList/CellTemplates/DisplayNameCell'
 import { DisplayNameMobileCell } from './ContentList/CellTemplates/DisplayNameMobileCell'
@@ -253,24 +254,28 @@ class Groups extends Component<
                     onRequestActionsMenu={(ev, content) => {
                       ev.preventDefault()
                       this.props.closeActionMenu()
-                      this.props.openActionMenu(
-                        content.Actions as ActionModel[],
-                        content,
-                        '',
-                        ev.currentTarget.parentElement,
-                        { top: ev.clientY, left: ev.clientX },
-                      )
+                      if (content.Actions && (content.Actions as ActionModel[]).length > 0) {
+                        this.props.openActionMenu(
+                          content.Actions as ActionModel[],
+                          content,
+                          '',
+                          ev.currentTarget.parentElement,
+                          { top: ev.clientY, left: ev.clientX },
+                        )
+                      }
                     }}
                     onItemContextMenu={(ev, content) => {
                       ev.preventDefault()
                       this.props.closeActionMenu()
-                      this.props.openActionMenu(
-                        content.Actions as ActionModel[],
-                        content,
-                        '',
-                        ev.currentTarget.parentElement,
-                        { top: ev.clientY, left: ev.clientX },
-                      )
+                      if (content.Actions && (content.Actions as ActionModel[]).length > 0) {
+                        this.props.openActionMenu(
+                          content.Actions as ActionModel[],
+                          content,
+                          '',
+                          ev.currentTarget.parentElement,
+                          { top: ev.clientY, left: ev.clientX },
+                        )
+                      }
                     }}
                     onRequestOrderChange={(field, direction) => {
                       if (field !== 'Workspace' && field !== 'Actions') {
@@ -304,7 +309,7 @@ class Groups extends Component<
                           ]),
                         )
                         this.props.selectGroup(newSelection)
-                      } else {
+                      } else if (content.Type === 'Group') {
                         if (this.props.selected.find(s => s.Id === content.Id)) {
                           this.props.selectGroup(this.props.selected.filter(s => s.Id !== content.Id))
                         } else {
@@ -384,6 +389,8 @@ class Groups extends Component<
                     }}
                   />
                 )}
+
+                <ActionMenu id={0} />
               </MuiThemeProvider>
             </div>
           ) : null

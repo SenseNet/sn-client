@@ -95,6 +95,7 @@ const defaultOptions = {
   expand: ['Actions', 'Workspace', 'Members'],
   orderby: [['IsFolder', 'desc'], ['DisplayName', 'asc']],
   filter: `isOf('Group')`,
+  scenario: 'DMSListItem',
   top: loadChunkSize,
 } as ODataParams<GenericContent>
 
