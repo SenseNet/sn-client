@@ -24,6 +24,7 @@
     "alwaysStrict": true,
     "preserveConstEnums": true,
     "allowSyntheticDefaultImports": true,
+    "importHelpers": true,
     "esModuleInterop": true
   }
 }
