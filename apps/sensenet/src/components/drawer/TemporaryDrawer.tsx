@@ -92,7 +92,7 @@ const TemporaryDrawer: React.StatelessComponent<RouteComponentProps & { isOpened
               ) : (
                 <NavLink
                   onClick={() => setOpened(false)}
-                  to={`/${btoa(personalSettings.lastRepository)}${item.url}`}
+                  to={`/${btoa(repo.configuration.repositoryUrl)}${item.url}`}
                   activeStyle={{ opacity: 1 }}
                   style={{ textDecoration: 'none', opacity: 0.54 }}
                   key={item.primaryText}>
