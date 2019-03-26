@@ -4,7 +4,8 @@
   "workspaces": {
     "packages": [
       "packages/*",
-      "examples/*"
+      "examples/*",
+      "apps/*"
     ]
   },
   "config": {
@@ -32,6 +33,7 @@
     "dms": "yarn workspace sn-dms-demo start",
     "build": "lerna run build",
     "build:dms": "yarn && yarn build && yarn workspace sn-dms-demo run build:webpack",
+    "build:sn-app": "yarn && yarn build && yarn workspace @sensenet/sn-app run build:webpack",
     "build:docs": "yarn && yarn build && yarn workspace sn-react-component-docs run build-storybook",
     "test": "jest",
     "test:coverage": "jest --coverage",
