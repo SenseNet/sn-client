@@ -35,6 +35,47 @@ export const Login: React.FunctionComponent = () => {
 
   const [error, setError] = useState<string | undefined>()
 
+  const handleSubmit = async (ev: React.FormEvent) => {
+    ev.preventDefault()
+    const repoToLogin = injector.getRepository(url)
+    personalSettings.lastRepository = url
+    try {
+      setIsInProgress(true)
+      const result = await repoToLogin.authentication.login(userName, password)
+      setSuccess(result)
+      if (result) {
+        setError(undefined)
+        const existing = personalSettings.repositories.find(i => i.url === url)
+        if (!existing) {
+          personalSettings.repositories.push({ url, loginName: userName })
+        } else {
+          personalSettings.repositories = personalSettings.repositories.map(r => {
+            if (r.url === url) {
+              r.loginName = userName
+            }
+            return r
+          })
+        }
+        ;(repoToLogin.authentication as FormsAuthenticationService).getCurrentUser()
+        for (let index = 0; index < 100; index++) {
+          await sleepAsync(index / 50)
+          setProgressValue(index)
+        }
+        settingsManager.setValue(personalSettings)
+        await sleepAsync(2000)
+        setIsInProgress(false)
+      } else {
+        setIsInProgress(false)
+        setError('Login failed.')
+      }
+    } catch (error) {
+      console.log('Login error:', error)
+      setError(error.toString())
+    } finally {
+      setIsInProgress(false)
+    }
+  }
+
   return (
     <Paper
       style={{ padding: '1em', flexShrink: 0, width: '450px', maxWidth: '90%', alignSelf: 'center', margin: 'auto' }}>
@@ -70,50 +111,7 @@ export const Login: React.FunctionComponent = () => {
           </div>
         </div>
       ) : (
-        <form
-          onSubmit={() => {
-            const repoToLogin = injector.getRepository(url)
-            personalSettings.lastRepository = url
-            setIsInProgress(true)
-            repoToLogin.authentication
-              .login(userName, password)
-              .then(s => {
-                setSuccess(s)
-                if (s) {
-                  setError(undefined)
-                  const existing = personalSettings.repositories.find(i => i.url === url)
-                  if (!existing) {
-                    personalSettings.repositories.push({ url, loginName: userName })
-                  } else {
-                    personalSettings.repositories = personalSettings.repositories.map(r => {
-                      if (r.url === url) {
-                        r.loginName = userName
-                      }
-                      return r
-                    })
-                  }
-
-                  // tslint:disable-next-line: no-string-literal
-                  ;(repoToLogin.authentication as FormsAuthenticationService)['getCurrentUser']()
-                  ;(async () => {
-                    for (let index = 0; index < 100; index++) {
-                      await sleepAsync(index / 50)
-                      setProgressValue(index)
-                    }
-                    settingsManager.setValue(personalSettings)
-                    await sleepAsync(2000)
-                    setIsInProgress(false)
-                  })()
-                } else {
-                  setIsInProgress(false)
-                  setError('Login failed.')
-                }
-              })
-              .catch(e => {
-                console.log('Login error:', e)
-                setError(e.toString())
-              })
-          }}>
+        <form onSubmit={handleSubmit}>
           <Divider />
           <TextField
             required={true}
