@@ -1,10 +1,10 @@
 import { ODataCollectionResponse, Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
+import { createAction, isFromAction } from '@sensenet/redux'
 import { AnyAction, Reducer } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
 import Semaphore from 'semaphore-async-await'
 import { rootStateType } from '.'
-import { createAction, isFromAction } from './ActionHelpers'
 
 export interface EditContentState<T extends GenericContent> {
   currentContent: T
