@@ -1,11 +1,14 @@
-import { DeepPartial } from 'redux'
+/**
+ * Type that defines a deep partial generic object
+ */
+export type DeepPartial<T> = { [K in keyof T]?: DeepPartial<T[K]> }
 
 /**
  * Deep merge two objects.
  * @param target
  * @param ...sources
  */
-export const mergeDeep = <T>(target: T, ...sources: Array<DeepPartial<T> | undefined>) => {
+export const deepMerge = <T>(target: T, ...sources: Array<DeepPartial<T> | undefined>) => {
   if (!sources.length) {
     return target
   }
@@ -17,7 +20,7 @@ export const mergeDeep = <T>(target: T, ...sources: Array<DeepPartial<T> | undef
     const keys = Object.keys(source) as Array<keyof T>
     for (const key of keys) {
       if (!(source[key] instanceof Array) && typeof source[key] === 'object' && typeof target[key] === 'object') {
-        merged[key] = mergeDeep(target[key], source[key])
+        merged[key] = deepMerge(target[key], source[key])
       } else if (source[key]) {
         ;(merged[key] as any) = source[key]
       }
