@@ -16,6 +16,10 @@
     { "path": "../../packages/sn-client-utils" },
     { "path": "../../packages/sn-controls-react" },
     { "path": "../../packages/sn-default-content-types" },
-    { "path": "../../packages/sn-document-viewer-react" }
+    { "path": "../../packages/sn-document-viewer-react" },
+    { "path": "../../packages/sn-list-controls-react" },
+    { "path": "../../packages/sn-query" },
+    { "path": "../../packages/sn-redux" },
+    { "path": "../../packages/sn-repository-events" }
   ]
 }
