@@ -1,5 +1,5 @@
 import { Disposable, PathHelper } from '@sensenet/client-utils'
-import { ActionModel, Schema } from '@sensenet/default-content-types'
+import { ActionModel, ContentType, Schema } from '@sensenet/default-content-types'
 import { AuthenticationService } from '../Authentication/AuthenticationService'
 import { BypassAuthentication } from '../Authentication/BypassAuthentication'
 import { Content } from '../Models/Content'
@@ -292,6 +292,86 @@ export class Repository implements Disposable {
     return await response.json()
   }
 
+  /**
+   * Retrieves an aggregated list of content types the user can create as children below the given content
+   * @param {LoadOptions<ContentType>} options
+   */
+
+  public async getAllowedChildTypes(options: LoadOptions<ContentType>): Promise<ODataCollectionResponse<ContentType>> {
+    const allowedTypes: ODataCollectionResponse<ContentType> = { d: { __count: 0, results: [] } }
+    let implicitACTs: ODataCollectionResponse<ContentType>
+    let explicitACTs: ODataCollectionResponse<ContentType>
+    await Promise.all([
+      (async () => {
+        implicitACTs = await this.getImplicitAllowedChildTypes(options)
+      })(),
+      (async () => {
+        explicitACTs = await this.getExplicitAllowedChildTypes(options)
+      })(),
+    ]).then(() => {
+      allowedTypes.d.results = implicitACTs.d
+        ? implicitACTs.d.results
+            .filter(
+              (ct: ContentType) =>
+                !explicitACTs.d.results.find((contenttype: ContentType) => ct.Name === contenttype.Name),
+            )
+            .concat(explicitACTs.d.results)
+        : []
+      allowedTypes.d.__count = allowedTypes.d.results.length
+    })
+
+    return allowedTypes
+  }
+
+  /**
+   * Retrieves a list of content types the user can create as children below the given content (allowed on the content)
+   * @param {LoadOptions<ContentType>} options Options for fetching the AllowedChildTypes
+   */
+  public async getImplicitAllowedChildTypes(
+    options: LoadOptions<ContentType>,
+  ): Promise<ODataCollectionResponse<ContentType>> {
+    const contextPath = PathHelper.getContentUrl(options.idOrPath)
+    const params = ODataUrlBuilder.buildUrlParamString(this.configuration, options.oDataOptions)
+    const path = PathHelper.joinPaths(
+      this.configuration.repositoryUrl,
+      this.configuration.oDataToken,
+      contextPath,
+      'AllowedChildTypes',
+    )
+    const response = await this.fetch(`${path}?${params}`, {
+      credentials: 'include',
+      method: 'GET',
+    })
+    if (!response.ok) {
+      throw await this.getErrorFromResponse(response)
+    }
+    return await response.json()
+  }
+
+  /**
+   * Retrieves a list of content types the user can create as children below the given content (allowed in the CTD)
+   * @param {LoadOptions<ContentType>} options Options for fetching the AllowedChildTypes
+   */
+  public async getExplicitAllowedChildTypes(
+    options: LoadOptions<ContentType>,
+  ): Promise<ODataCollectionResponse<ContentType>> {
+    const contextPath = PathHelper.getContentUrl(options.idOrPath)
+    const params = ODataUrlBuilder.buildUrlParamString(this.configuration, options.oDataOptions)
+    const path = PathHelper.joinPaths(
+      this.configuration.repositoryUrl,
+      this.configuration.oDataToken,
+      contextPath,
+      'GetAllowedChildTypesFromCTD',
+    )
+    const response = await this.fetch(`${path}?${params}`, {
+      credentials: 'include',
+      method: 'GET',
+    })
+    if (!response.ok) {
+      throw await this.getErrorFromResponse(response)
+    }
+    return await response.json()
+  }
   /**
    * Executes a specified custom OData action
    * @param options Options for the Custom Action

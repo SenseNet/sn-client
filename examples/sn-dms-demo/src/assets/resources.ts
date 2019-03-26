@@ -161,6 +161,10 @@ const resources = {
   ARE_YOU_SURE_YOU_WANT_TO_REMOVE_USER: 'Are you sure you want to remove user',
   FROM_GROUP: 'from group',
   ADD: 'Add',
+  ADD_USER_TO_GROUP: 'Add user',
+  LOCAL: 'Local',
+  GLOBAL: 'Global',
+  DELETE_GROUP: 'Delete group',
 } as any
 
 const resourceHandler: ProxyHandler<typeof resources> = {
