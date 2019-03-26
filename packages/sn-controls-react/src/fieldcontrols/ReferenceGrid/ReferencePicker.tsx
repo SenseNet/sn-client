@@ -1,3 +1,4 @@
+import Avatar from '@material-ui/core/Avatar'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -6,6 +7,8 @@ import { Folder, GenericContent } from '@sensenet/default-content-types'
 import { Icon } from '@sensenet/icons-react'
 import { ListPickerComponent } from '@sensenet/pickers-react'
 import React, { Component } from 'react'
+
+const DEFAULT_AVATAR_PATH = '/Root/Sites/Default_Site/demoavatars/Admin.png'
 
 interface ReferencePickerProps {
   change?: () => void
@@ -46,7 +49,7 @@ export class ReferencePicker extends Component<ReferencePickerProps, ReferencePi
       ? this.createTypeFilterString(this.props.allowedTypes)
       : "(isOf('Folder') and not isOf('SystemFolder'))"
     const pickerItemOptions: ODataParams<Folder> = {
-      select: ['DisplayName', 'Path', 'Id', 'Children/IsFolder', 'IsFolder'] as any,
+      select: ['DisplayName', 'Path', 'Id', 'Children/IsFolder', 'IsFolder', 'Avatar', 'Icon'] as any,
       expand: ['Children'] as any,
       filter,
       metadata: 'no',
@@ -93,8 +96,21 @@ export class ReferencePicker extends Component<ReferencePickerProps, ReferencePi
   }
   public renderItem = (node: GenericContent) => (
     <ListItem button={true} selected={this.props.selected.findIndex(content => node.Id === content.Id) > -1}>
-      <ListItemIcon>
-        <Icon iconName={this.iconName(node.IsFolder)} />
+      <ListItemIcon style={{ margin: 0 }}>
+        {node.Type === 'User' ? (
+          <Avatar
+            alt={node.DisplayName}
+            src={
+              // tslint:disable-next-line: no-string-literal
+              node['Avatar']
+                ? // tslint:disable-next-line: no-string-literal
+                  `${this.props.repository.configuration.repositoryUrl}${node['Avatar'].Url}`
+                : DEFAULT_AVATAR_PATH
+            }
+          />
+        ) : (
+          <Icon iconName={this.iconName(node.IsFolder)} />
+        )}
       </ListItemIcon>
       <ListItemText primary={node.DisplayName} />
     </ListItem>

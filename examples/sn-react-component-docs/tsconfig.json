@@ -1,10 +1,10 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig-base.json",
   "compilerOptions": {
-    "target": "es5",
-    "module": "esnext",
-    "lib": ["esnext", "dom"],
-    "jsx": "react",
+    "outDir": "dist",
+    "rootDir": "src",
+    "lib": ["es6", "dom"],
+    "experimentalDecorators": true,
     "noUnusedParameters": false,
     "noImplicitAny": false,
     "strictNullChecks": false,
@@ -13,5 +13,17 @@
     "declaration": false,
     "declarationMap": false
   },
-  "include": ["stories"]
+  "include": ["stories"],
+  "references": [
+    { "path": "../../packages/sn-client-core" },
+    { "path": "../../packages/sn-client-utils" },
+    { "path": "../../packages/sn-controls-react" },
+    { "path": "../../packages/sn-default-content-types" },
+    { "path": "../../packages/sn-icons-react" },
+    { "path": "../../packages/sn-list-controls-react" },
+    { "path": "../../packages/sn-pickers-react" },
+    { "path": "../../packages/sn-query" },
+    { "path": "../../packages/sn-redux" },
+    { "path": "../../packages/sn-search-react" }
+  ]
 }

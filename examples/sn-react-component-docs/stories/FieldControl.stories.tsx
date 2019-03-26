@@ -10,6 +10,7 @@ import { customSchema } from './ViewControl.stories'
 
 import {
   AutoComplete,
+  Avatar,
   CheckboxGroup,
   DatePicker,
   DateTimePicker,
@@ -73,6 +74,7 @@ const tagsInputNotes = require('../notes/fieldcontrols/TagsInput.md')
 const autocompleteNotes = require('../notes/fieldcontrols/AutoComplete.md')
 const fileUploadNotes = require('../notes/fieldcontrols/FileUpload.md')
 const referenceGridNotes = require('../notes/fieldcontrols/ReferenceGrid.md')
+const avatarNotes = require('../notes/fieldcontrols/Avatar.md')
 
 storiesOf('FieldControls.AutoComplete', module)
   .addDecorator(withKnobs)
@@ -135,6 +137,93 @@ storiesOf('FieldControls.AutoComplete', module)
       />
     ),
     { notes: { markdown: autocompleteNotes } },
+  )
+
+storiesOf('FieldControls.Avatar', module)
+  .addDecorator(withKnobs)
+  .addDecorator(withA11y)
+  .addDecorator(withActions('change'))
+  .add(
+    'new mode',
+    () => (
+      <Avatar
+        data-actionName="new"
+        name="Name"
+        data-labelText={text('Label', 'Avatar label')}
+        readOnly={boolean('Readonly', false)}
+        className={text('Additional class name', 'avatar-field')}
+        onChange={action('change')}
+        data-hintText={text('Hint', 'Avatar hint')}
+        dataSource={referenceGridDataSource}
+        repository={testRepository}
+        data-repository={testRepository}
+        data-selectionRoot={['/demoavatars']}
+        content={
+          {
+            DisplayName: 'Alba Monday',
+            Id: 4,
+            Icon: 'user',
+            Type: 'User',
+            Avatar: { Url: 'https://dmsservice.demo.sensenet.com/Root/Sites/Default_Site/demoavatars/alba.jpg' },
+          } as User
+        }
+      />
+    ),
+    { notes: { markdown: avatarNotes } },
+  )
+  .add(
+    'edit mode',
+    () => (
+      <Avatar
+        data-actionName="edit"
+        name="Name"
+        data-labelText={text('Label', 'Avatar label')}
+        readOnly={boolean('Readonly', false)}
+        className={text('Additional class name', 'avatar-field')}
+        onChange={action('change')}
+        data-hintText={text('Hint', 'Avatar hint')}
+        dataSource={referenceGridDataSource}
+        repository={testRepository}
+        data-repository={testRepository}
+        data-fieldValue="/Root/Sites/Default_Site/demoavatars/alba.jpg"
+        data-selectionRoot={['/demoavatars']}
+        content={
+          {
+            DisplayName: 'Alba Monday',
+            Id: 4,
+            Icon: 'user',
+            Type: 'User',
+            Avatar: { Url: 'https://dmsservice.demo.sensenet.com/Root/Sites/Default_Site/demoavatars/alba.jpg' },
+          } as User
+        }
+      />
+    ),
+    { notes: { markdown: avatarNotes } },
+  )
+  .add(
+    'browse mode',
+    () => (
+      <Avatar
+        name="Name"
+        data-actionName="browse"
+        data-labelText={text('Label', 'Avatar label')}
+        className={text('Additional class name', 'avatar-field')}
+        data-fieldValue="/Root/Sites/Default_Site/demoavatars/alba.jpg"
+        onChange={action('change')}
+        dataSource={tagsInputDataSource}
+        repository={testRepository}
+        content={
+          {
+            DisplayName: 'Alba Monday',
+            Id: 4,
+            Icon: 'user',
+            Type: 'User',
+            Avatar: { Url: 'https://dmsservice.demo.sensenet.com/Root/Sites/Default_Site/demoavatars/alba.jpg' },
+          } as User
+        }
+      />
+    ),
+    { notes: { markdown: avatarNotes } },
   )
 
 storiesOf('FieldControls.CheckboxGroup', module)

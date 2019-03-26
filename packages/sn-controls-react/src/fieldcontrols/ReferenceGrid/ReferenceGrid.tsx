@@ -8,7 +8,7 @@ import InputLabel from '@material-ui/core/InputLabel'
 import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
 import { PathHelper } from '@sensenet/client-utils'
-import { GenericContent } from '@sensenet/default-content-types'
+import { GenericContent, User } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { DefaultItemTemplate } from './DefaultItemTemplate'
@@ -120,11 +120,14 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
     this.setState({
       fieldValue:
         references.d.results.length > 0
-          ? references.d.results.map((item: GenericContent) => ({
+          ? references.d.results.map((item: GenericContent | User) => ({
               // tslint:disable-next-line:no-string-literal
               DisplayName: item.DisplayName,
               Icon: item.Icon,
               Id: item.Id,
+              // tslint:disable-next-line: no-string-literal
+              Avatar: item['Avatar'],
+              Type: item.Type,
             }))
           : [],
     })
@@ -223,6 +226,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                       key={item.Id}
                       actionName="edit"
                       readOnly={this.props.readOnly}
+                      repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
                     />
                   )
                 }
@@ -234,6 +238,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                   }
                   add={this.addItem}
                   actionName="edit"
+                  repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
                 />
               ) : null}
             </List>
@@ -290,6 +295,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                       key={item.Id}
                       actionName="new"
                       readOnly={this.props.readOnly}
+                      repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
                     />
                   )
                 }
@@ -301,6 +307,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                   }
                   add={this.addItem}
                   actionName="new"
+                  repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
                 />
               ) : null}
             </List>
@@ -346,6 +353,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                     add={this.addItem}
                     key={item.Id}
                     actionName="browse"
+                    repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
                   />
                 ))}
               </List>
@@ -367,6 +375,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                     add={this.addItem}
                     key={item.Id}
                     actionName="browse"
+                    repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
                   />
                 ))}
               </List>
