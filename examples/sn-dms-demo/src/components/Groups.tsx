@@ -202,7 +202,6 @@ class Groups extends Component<
                 <AppBar position="static" style={matches ? styles.appBar : styles.appBarMobile}>
                   <Toolbar style={matches ? (styles.toolbar as any) : (styles.toolbarMobile as any)}>
                     <div style={{ flex: 1, display: 'flex' }}>
-                      {console.log(ancestors)}
                       {group ? (
                         <BreadCrumb
                           ancestors={ancestors}
