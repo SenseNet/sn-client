@@ -77,33 +77,18 @@ const mapDispatchToProps = {
   fetchContent: Actions.requestContent,
 }
 
-interface UserListItemState {
-  selected: boolean
-}
-
 class UserListItem extends React.Component<
-  { classes: any } & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & UserListItemProps,
-  UserListItemState
+  { classes: any } & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & UserListItemProps, {}
 > {
-  public state = {
-    selected: this.props.selected,
-  }
-  constructor(props: UserListItem['props']) {
-    super(props)
-  }
   public checkboxClick = (user: User) => {
     const index = this.props.users.findIndex(g => g.Id === user.Id)
     index === -1
       ? this.props.selectUser([...this.props.users, user])
       : this.props.selectUser([...this.props.users.slice(0, index), ...this.props.users.slice(index + 1)])
-    this.setState({
-      selected: !this.state.selected,
-    })
   }
   public shortenPath = (path: string) => path.replace('/Root/IMS/', '')
   public render() {
-    const { classes, user } = this.props
-    const { selected } = this.state
+    const { classes, selected, user } = this.props
     return (
       <MenuItem style={styles.listItem}>
         <ListItemIcon className={classes.icon}>
