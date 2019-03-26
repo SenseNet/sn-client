@@ -32,7 +32,15 @@ export const DesktopLayout: React.FunctionComponent = props => {
           height: '100%',
           width: '100%',
         }}>
-        {settings.drawer.type === 'temporary' ? <TemporaryDrawer isOpened={tempDrawerOpened} /> : <PermanentDrawer />}
+        {settings.drawer.type === 'temporary' ? (
+          <TemporaryDrawer
+            onClose={() => setTempDrawerOpened(false)}
+            onOpen={() => setTempDrawerOpened(true)}
+            isOpened={tempDrawerOpened}
+          />
+        ) : (
+          <PermanentDrawer />
+        )}
         <div
           style={{
             display: 'flex',

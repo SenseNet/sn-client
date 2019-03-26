@@ -22,13 +22,14 @@ import { LogoutButton } from '../LogoutButton'
 import { UserAvatar } from '../UserAvatar'
 import { getAllowedDrawerItems } from './Items'
 
-const TemporaryDrawer: React.FunctionComponent<RouteComponentProps & { isOpened: boolean }> = props => {
+const TemporaryDrawer: React.FunctionComponent<
+  RouteComponentProps & { isOpened: boolean; onClose: () => void; onOpen: () => void }
+> = props => {
   const settings = useContext(ResponsivePersonalSetttings)
   const personalSettings = useContext(PersonalSettingsContext)
   const repo = useContext(RepositoryContext)
   const theme = useContext(ThemeContext)
   const session = useContext(SessionContext)
-  const [opened, setOpened] = useState(false)
   const [items, setItems] = useState(getAllowedDrawerItems(session.groups))
   const [currentRepoEntry, setCurrentRepoEntry] = useState(
     personalSettings.repositories.find(r => r.url === PathHelper.trimSlashes(repo.configuration.repositoryUrl)),
@@ -44,8 +45,6 @@ const TemporaryDrawer: React.FunctionComponent<RouteComponentProps & { isOpened:
 
   useEffect(() => setItems(getAllowedDrawerItems(session.groups)), [session.groups])
 
-  useEffect(() => setOpened(props.isOpened), [props.isOpened])
-
   if (!settings.drawer.enabled) {
     return null
   }
@@ -53,9 +52,9 @@ const TemporaryDrawer: React.FunctionComponent<RouteComponentProps & { isOpened:
     <SwipeableDrawer
       ModalProps={{ keepMounted: true }}
       PaperProps={{ style: { width: '90%' } }}
-      open={opened}
-      onClose={() => setOpened(false)}
-      onOpen={() => setOpened(true)}>
+      open={props.isOpened}
+      onClose={() => props.onClose()}
+      onOpen={() => props.onOpen()}>
       <List
         dense={true}
         style={{
@@ -91,7 +90,7 @@ const TemporaryDrawer: React.FunctionComponent<RouteComponentProps & { isOpened:
                 </ListItem>
               ) : (
                 <NavLink
-                  onClick={() => setOpened(false)}
+                  onClick={() => props.onClose()}
                   to={`/${btoa(repo.configuration.repositoryUrl)}${item.url}`}
                   activeStyle={{ opacity: 1 }}
                   style={{ textDecoration: 'none', opacity: 0.54 }}
@@ -123,12 +122,12 @@ const TemporaryDrawer: React.FunctionComponent<RouteComponentProps & { isOpened:
               secondaryTypographyProps={{ style: { overflow: 'hidden', textOverflow: 'ellipsis' } }}
             />
             <ListItemSecondaryAction>
-              <Link to={`/personalSettings`} style={{ textDecoration: 'none' }} onClick={() => setOpened(false)}>
+              <Link to={`/personalSettings`} style={{ textDecoration: 'none' }} onClick={() => props.onClose()}>
                 <IconButton title="Edit personal settings">
                   <Settings />
                 </IconButton>
               </Link>
-              <LogoutButton onLoggedOut={() => setOpened(false)} />
+              <LogoutButton onLoggedOut={() => props.onClose()} />
             </ListItemSecondaryAction>
           </ListItem>
         </Paper>
