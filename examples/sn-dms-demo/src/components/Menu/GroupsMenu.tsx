@@ -3,8 +3,13 @@ import ListItemText from '@material-ui/core/ListItemText'
 import MenuItem from '@material-ui/core/MenuItem'
 import withStyles, { StyleRulesCallback } from '@material-ui/core/styles/withStyles'
 import { Icon, iconType } from '@sensenet/icons-react'
-import * as React from 'react'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
+import * as DMSActions from '../../Actions'
+import { resources } from '../../assets/resources'
+import { rootStateType } from '../../store/rootReducer'
+import AddNewDialog from '../Dialogs/AddNewDialog'
 import { AddNewButton } from './AddNewButton'
 
 const styles: StyleRulesCallback = () => ({
@@ -74,7 +79,22 @@ interface GroupsMenuProps extends RouteComponentProps<any> {
   matches: boolean
 }
 
-class GroupsMenu extends React.Component<GroupsMenuProps, {}> {
+const mapStateToProps = (state: rootStateType) => {
+  return {
+    currentContent: state.dms.usersAndGroups.group.parent,
+    allowedTypes: state.dms.usersAndGroups.allowedTypes,
+  }
+}
+
+const mapDispatchToProps = {
+  openDialog: DMSActions.openDialog,
+  closeDialog: DMSActions.closeDialog,
+}
+
+class GroupsMenu extends Component<
+  GroupsMenuProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
+  {}
+> {
   public handleMenuItemClick = (title: string) => {
     this.props.history.push('/groups')
     this.props.chooseMenuItem(title)
@@ -84,10 +104,19 @@ class GroupsMenu extends React.Component<GroupsMenuProps, {}> {
     this.props.chooseSubmenuItem(title)
   }
   public handleButtonClick = (_e: React.MouseEvent) => {
-    // TODO
+    const { closeDialog, currentContent, openDialog } = this.props
+    openDialog(
+      <AddNewDialog
+        parentPath={currentContent ? currentContent.Path : ''}
+        contentTypeName="Group"
+        title={resources.GROUP}
+      />,
+      resources.ADD_NEW,
+      closeDialog,
+    )
   }
   public render() {
-    const { active, classes, item, matches } = this.props
+    const { active, classes, item, matches, allowedTypes } = this.props
     return (
       <div>
         <MenuItem
@@ -100,7 +129,7 @@ class GroupsMenu extends React.Component<GroupsMenuProps, {}> {
           onClick={_e => this.handleMenuItemClick('groups')}>
           <Icon
             className={active ? classes.iconWhiteActive : classes.iconWhite}
-            color="primary"
+            color={active ? 'primary' : 'inherit'}
             type={iconType.materialui}
             iconName={item.icon}
           />
@@ -110,7 +139,10 @@ class GroupsMenu extends React.Component<GroupsMenuProps, {}> {
             primary={item.title}
           />
         </MenuItem>
-        <div className={active ? classes.open : classes.closed}>
+        <div
+          className={
+            active && allowedTypes.findIndex(ctd => ctd.Name === 'Group') > -1 ? classes.open : classes.closed
+          }>
           <Divider />
           <AddNewButton contentType="Group" onClick={e => this.handleButtonClick(e)} />
         </div>
@@ -118,5 +150,9 @@ class GroupsMenu extends React.Component<GroupsMenuProps, {}> {
     )
   }
 }
-
-export default withRouter(withStyles(styles)(GroupsMenu))
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(withStyles(styles)(GroupsMenu)),
+)

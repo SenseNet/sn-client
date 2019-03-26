@@ -40,4 +40,7 @@ export const icons = {
   orgunit: 'supervised_user_circle',
   query: 'library_books',
   query_execute: 'play_arrow',
+  workspacesales: 'workspace-with-two-horizontal-windows',
+  workspaceproject: 'workspace-with-two-horizontal-windows',
+  workspacedocument: 'workspace-with-two-horizontal-windows',
 } as any

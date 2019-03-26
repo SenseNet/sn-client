@@ -7,7 +7,7 @@
     "noImplicitReturns": false,
     "alwaysStrict": false
   },
-  "include": ["src"],
+  "include": ["src", "../../typings"],
   "references": [
     { "path": "../../packages/sn-authentication-jwt" },
     { "path": "../../packages/sn-client-auth-google" },
