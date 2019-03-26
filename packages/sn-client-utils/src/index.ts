@@ -1,4 +1,5 @@
 export { Disposable, using, usingAsync } from './Disposable'
+export * from './DeepMerge'
 export * from './FilterAsync'
 export { debounce } from './Debounce'
 export { ObservableValue } from './ObservableValue'
