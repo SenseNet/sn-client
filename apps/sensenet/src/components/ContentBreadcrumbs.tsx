@@ -4,8 +4,7 @@ import { RouteComponentProps, withRouter } from 'react-router'
 import { ContentRoutingContext } from '../context/ContentRoutingContext'
 import { CurrentAncestorsContext } from '../context/CurrentAncestors'
 import { CurrentContentContext } from '../context/CurrentContent'
-import { BreadcrumbItem } from './Breadcrumbs'
-import Breadcrumbs from './Breadcrumbs'
+import Breadcrumbs, { BreadcrumbItem } from './Breadcrumbs'
 
 export const ContentBreadcrumbsComponent: React.FunctionComponent<
   RouteComponentProps & { onItemClick?: (item: BreadcrumbItem) => void }
