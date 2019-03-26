@@ -5,8 +5,9 @@ export type DeepPartial<T> = { [K in keyof T]?: DeepPartial<T[K]> }
 
 /**
  * Deep merge two objects.
- * @param target
- * @param ...sources
+ * @param {T} target The source object to be merged
+ * @param {DeepPartial<T>} ...sources The values with the overrides
+ * @returns {T} A new instance with the merged values
  */
 export const deepMerge = <T>(target: T, ...sources: Array<DeepPartial<T> | undefined>) => {
   if (!sources.length) {
