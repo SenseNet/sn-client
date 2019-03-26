@@ -1,15 +1,13 @@
-import * as React from 'react'
+import React from 'react'
 import ReactMarkdown from 'react-markdown'
-import '../md'
-
-import * as content from '../assets/privacy-policy.md'
+import content from '../assets/privacy-policy.md'
 
 import '../assets/privacyPolicy.css'
 
 const privacyPolicy = () => {
   return (
     <div className="privacypolicyContainer">
-      <ReactMarkdown source={content.default} />
+      <ReactMarkdown source={content} />
     </div>
   )
 }

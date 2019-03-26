@@ -10,7 +10,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "include": ["src"],
+  "include": ["src", "../../typings"],
   "references": [
     { "path": "../../packages/sn-client-core" },
     { "path": "../../packages/sn-client-utils" },
