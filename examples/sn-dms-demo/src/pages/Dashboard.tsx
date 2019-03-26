@@ -203,7 +203,6 @@ class DashboardComponent extends React.Component<
                         />
                         <Route
                           path="/groups"
-                          // tslint:disable-next-line: no-unnecessary-type-annotation
                           component={() => (
                             <Switch>
                               <Route

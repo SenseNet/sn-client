@@ -66,7 +66,6 @@ class UserSearch extends React.Component<UserSearchProps & WithStyles<C>, {}> {
     this.handleKeyup = this.handleKeyup.bind(this)
   }
   public handleKeyup = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // tslint:disable-next-line:no-string-literal
     this.props.handleKeyup((e.target as HTMLInputElement).value)
   }
   public closeDropdown = () => {
