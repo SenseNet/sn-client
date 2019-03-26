@@ -1,5 +1,5 @@
 import { ODataCollectionResponse, ODataParams } from '@sensenet/client-core'
-import { GenericContent, User } from '@sensenet/default-content-types'
+import { GenericContent, Group, User } from '@sensenet/default-content-types'
 import { AnyAction, combineReducers, Reducer } from 'redux'
 
 export const currentUser: Reducer<User | null> = (state = null, action: AnyAction) => {
@@ -66,6 +66,10 @@ export const selected: Reducer<GenericContent[]> = (state = [], action: AnyActio
   switch (action.type) {
     case 'DMS_USERSANDGROUPS_SET_ANCESTORS':
       return action.ancestors
+    case 'DMS_USERSANDGROUPS_SELECT_USER':
+      return action.users
+    case 'DMS_USERSANDGROUPS_CLEAR_USER_SELECTION':
+      return []
     default:
       return state
   }
@@ -91,6 +95,7 @@ const defaultOptions = {
   expand: ['Actions', 'Workspace', 'Members'],
   orderby: [['IsFolder', 'desc'], ['DisplayName', 'asc']],
   filter: `isOf('Group')`,
+  scenario: 'DMSListItem',
   top: loadChunkSize,
 } as ODataParams<GenericContent>
 
@@ -112,6 +117,24 @@ export const active: Reducer<GenericContent | null> = (state = null, action: Any
   }
 }
 
+export const allUsers: Reducer<GenericContent[]> = (state = [], action: AnyAction) => {
+  switch (action.type) {
+    case 'DMS_USERSANDGROUPS_SET_USERS':
+      return action.users.d.results
+    default:
+      return state
+  }
+}
+
+export const userSearchTerm: Reducer<string> = (state = '', action: AnyAction) => {
+  switch (action.type) {
+    case 'DMS_USERSANDGROUPS_SEARCH_USERS':
+      return action.text
+    default:
+      return state
+  }
+}
+
 export const user = combineReducers({
   currentUser,
   isAdmin,
@@ -122,6 +145,8 @@ export const user = combineReducers({
   selected,
   grouplistOptions,
   active,
+  all: allUsers,
+  searchTerm: userSearchTerm,
 })
 
 export const selectedGroups: Reducer<GenericContent[]> = (state = [], action: AnyAction) => {
@@ -157,13 +182,91 @@ export const searchTerm: Reducer<string> = (state = '', action: AnyAction) => {
   }
 }
 
+export const currentGroup: Reducer<Group | null> = (state = null, action: AnyAction) => {
+  switch (action.type) {
+    case 'DMS_USERSANDGROUPS_SET_GROUP':
+      const g = action.content
+      if (action.content.Name === 'Root') {
+        g.DisplayName = 'Groups'
+      }
+      return g
+    default:
+      return state
+  }
+}
+
+export const groupAncestors: Reducer<GenericContent[]> = (state = [], action: AnyAction) => {
+  switch (action.type) {
+    case 'DMS_USERSANDGROUPS_SET_GROUPANCESTORS':
+      return action.ancestors
+    default:
+      return state
+  }
+}
+
+export const groupList: Reducer<GenericContent[]> = (state = [], action: AnyAction) => {
+  switch (action.type) {
+    case 'DMS_USERSANDGROUPS_SET_GROUP':
+      return action.items
+    default:
+      return state
+  }
+}
+
+export const groupsAreLoading: Reducer<boolean> = (state = false, action: AnyAction) => {
+  switch (action.type) {
+    case 'DMS_USERSANDGROUPS_LOADING':
+      return true
+    case 'DMS_USERSANDGROUPS_FINISH_LOADING':
+      return false
+    default:
+      return state
+  }
+}
+
+export const parent: Reducer<GenericContent | null> = (state = null, action: AnyAction) => {
+  switch (action.type) {
+    case 'DMS_USERSANDGROUPS_SET_GROUP':
+      return action.content
+    default:
+      return state
+  }
+}
+
+export const parentIdOrPath: Reducer<string | number> = (state = '', action: AnyAction) => {
+  switch (action.type) {
+    case 'DMS_USERSANDGROUPS_LOADING':
+      return action.idOrPath
+    default:
+      return state
+  }
+}
+
+export const allowedTypes: Reducer<GenericContent[]> = (state = [], action: AnyAction) => {
+  switch (action.type) {
+    case 'DMS_DOCLIB_SET_ALLOWED_TYPES':
+      return action.types
+    default:
+      return state
+  }
+}
+
 export const group = combineReducers({
   selected: selectedGroups,
   all,
   searchTerm,
+  currentGroup,
+  ancestors: groupAncestors,
+  groupList,
+  isLoading: groupsAreLoading,
+  grouplistOptions,
+  parent,
+  parentIdOrPath,
+  active,
 })
 
 export const usersAndGroups = combineReducers({
   user,
   group,
+  allowedTypes,
 })
