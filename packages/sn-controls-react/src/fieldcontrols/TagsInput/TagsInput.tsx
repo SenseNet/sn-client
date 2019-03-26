@@ -18,6 +18,7 @@ import { ReactReferenceFieldSetting } from '../ReferenceFieldSetting'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
+const DEFAULT_AVATAR_PATH = '/Root/Sites/Default_Site/demoavatars/Admin.png'
 const menuProps = {
   PaperProps: {
     style: {
@@ -41,6 +42,7 @@ const styles = {
   },
 }
 
+import Avatar from '@material-ui/core/Avatar'
 import { Content, ODataCollectionResponse } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 
@@ -84,6 +86,8 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
         dataSource: this.props.dataSource.map(suggestion => ({
           value: suggestion.Id,
           label: suggestion[this.props['data-defaultDisplayName'] || 'DisplayName'],
+          avatar: suggestion.Avatar || {},
+          type: suggestion.Type || 'GenericContent',
         })),
         label: this.props['data-defaultDisplayName'] || 'DisplayName',
         fieldValue: this.props['data-fieldValue'] || [],
@@ -141,7 +145,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
     allowedTypes.map(type => {
       typeQuery += ` +TypeIs:${type}`
     })
-    const req = await this.props.repository.loadCollection({
+    const req = await this.props['data-repository'].loadCollection({
       path: '/Root',
       oDataOptions: {
         query: `(${pathQuery}) AND${typeQuery}`,
@@ -150,10 +154,12 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
     })
     const { label } = this.state
     this.setState({
-      dataSource: req.d.results.map(suggestion => ({
+      dataSource: req.d.results.map((suggestion: GenericContent) => ({
         // tslint:disable-next-line:no-string-literal
         value: suggestion['Id'],
         label: suggestion[label],
+        avatar: suggestion['Avatar'] || {},
+        type: suggestion['Type'] || 'GenericContent',
       })),
     })
     return req
@@ -179,6 +185,8 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
         // tslint:disable-next-line:no-string-literal
         value: item['Id'],
         label: item[label],
+        avatar: item['Avatar'] || {},
+        type: item['Type'] || 'GenericContent',
       })),
     })
     return references
@@ -217,9 +225,28 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
               input={<Input id={this.props.name as string} fullWidth={true} />}
               renderValue={() => (
                 <div style={styles.chips as any}>
-                  {this.state.fieldValue.map((value: any) => (
-                    <Chip key={value.toString()} label={this.getContentById(value).label} />
-                  ))}
+                  {this.state.fieldValue.map((value: any) =>
+                    this.getContentById(value).type === 'User' ? (
+                      <Chip
+                        avatar={
+                          <Avatar
+                            alt={this.getContentById(value).label}
+                            src={
+                              this.getContentById(value).avatar.Url
+                                ? `${this.props['data-repository'].configuration.repositoryUrl}${
+                                    this.getContentById(value).avatar.Url
+                                  }`
+                                : `${this.props['data-repository'].configuration.repositoryUrl}${DEFAULT_AVATAR_PATH}`
+                            }
+                          />
+                        }
+                        key={value.toString()}
+                        label={this.getContentById(value).label}
+                      />
+                    ) : (
+                      <Chip key={value.toString()} label={this.getContentById(value).label} />
+                    ),
+                  )}
                 </div>
               )}
               MenuProps={menuProps}>
@@ -249,9 +276,28 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
               input={<Input id={this.props.name as string} fullWidth={true} />}
               renderValue={() => (
                 <div style={styles.chips as any}>
-                  {this.state.fieldValue.map((value: any) => (
-                    <Chip key={value.toString()} label={this.getContentById(value).label} />
-                  ))}
+                  {this.state.fieldValue.map((value: any) =>
+                    this.getContentById(value).type === 'User' ? (
+                      <Chip
+                        avatar={
+                          <Avatar
+                            alt={this.getContentById(value).label}
+                            src={
+                              this.getContentById(value).avatar.Url
+                                ? `${this.props['data-repository'].configuration.repositoryUrl}${
+                                    this.getContentById(value).avatar.Url
+                                  }`
+                                : `${this.props['data-repository'].configuration.repositoryUrl}${DEFAULT_AVATAR_PATH}`
+                            }
+                          />
+                        }
+                        key={value.toString()}
+                        label={this.getContentById(value).label}
+                      />
+                    ) : (
+                      <Chip key={value.toString()} label="{this.getContentById(value).label}" />
+                    ),
+                  )}
                 </div>
               )}
               MenuProps={menuProps}>

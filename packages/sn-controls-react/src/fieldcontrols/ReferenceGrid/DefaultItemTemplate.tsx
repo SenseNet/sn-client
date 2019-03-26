@@ -25,6 +25,7 @@ interface DefaultItemTemplateProps {
   add: () => void
   actionName?: 'new' | 'edit' | 'browse'
   readOnly?: boolean
+  repositoryUrl: string
 }
 
 export class DefaultItemTemplate extends Component<DefaultItemTemplateProps, {}> {
@@ -41,7 +42,7 @@ export class DefaultItemTemplate extends Component<DefaultItemTemplateProps, {}>
    * @return {ReactElement} markup
    */
   public render() {
-    const { content } = this.props
+    const { content, repositoryUrl } = this.props
     return (
       <ListItem key={content.Id} button={false}>
         {content.Type !== undefined ? (
@@ -49,7 +50,7 @@ export class DefaultItemTemplate extends Component<DefaultItemTemplateProps, {}>
             <ListItemAvatar>
               {
                 // tslint:disable-next-line: no-string-literal
-                <Avatar alt={content['FullName']} src={content['Avatar'].Url} />
+                <Avatar alt={content['FullName']} src={`${repositoryUrl}${content['Avatar'].Url}`} />
               }
             </ListItemAvatar>
           ) : (

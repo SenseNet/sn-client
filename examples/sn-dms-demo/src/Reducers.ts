@@ -394,6 +394,8 @@ export const activeMenuItem: Reducer<string, Action & { itemName?: string }> = (
   switch (action.type) {
     case 'CHOOSE_MENUITEM':
       return action.itemName || state
+    case 'DMS_USERSANDGROUPS_SET_GROUP':
+      return 'groups'
     default:
       return state
   }
