@@ -958,7 +958,7 @@
   resolved "https://registry.yarnpkg.com/@date-io/core/-/core-1.1.0.tgz#b7b8fbd9b5e57cc6b55a5af2d98394eafdf42921"
   integrity sha512-PyjhyR2fbp7Q8xpB5zoOyT3dqr8Bn4kXfREf1w6AnQalwdftNxChB2/p88fI1qsx8KNmHDJY12eCgLoZaPegTw==
 
-"@date-io/moment@1.1.0", "@date-io/moment@^1.1.0":
+"@date-io/moment@1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@date-io/moment/-/moment-1.1.0.tgz#993c71b77f52f078de6a28e61ddfae757d39dc64"
   integrity sha512-U7Vrhk7nlrKMtlLuNs7DAWmMsMBTgWFAvgpKg6Z5Opo/U7ab5DvI8nLks5dqJbeEFQDSlO+KCmJWfsL9hVI3Jw==
@@ -13387,7 +13387,7 @@ react-test-renderer@^16.0.0-0:
     react-is "^16.8.5"
     scheduler "^0.13.5"
 
-react-test-renderer@^16.8.2, react-test-renderer@^16.8.4:
+react-test-renderer@^16.8.4:
   version "16.8.4"
   resolved "https://registry.yarnpkg.com/react-test-renderer/-/react-test-renderer-16.8.4.tgz#abee4c2c3bf967a8892a7b37f77370c5570d5329"
   integrity sha512-jQ9Tf/ilIGSr55Cz23AZ/7H3ABEdo9oy2zF9nDHZyhLHDSLKuoILxw2ifpBfuuwQvj4LCoqdru9iZf7gwFH28A==
