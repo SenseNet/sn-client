@@ -6,7 +6,7 @@ import { CommentMarker } from '../src/components/page-widgets/style'
 import { exampleDocumentData, examplePreviewImageData } from './__Mocks__/viewercontext'
 
 describe('Shapes component', () => {
-  const defaultProps = {
+  const defaultProps: ShapesComponent['props'] = {
     canEdit: true,
     canHideRedactions: true,
     highlights: exampleDocumentData.shapes.highlights,
@@ -18,9 +18,12 @@ describe('Shapes component', () => {
     showRedactions: false,
     showShapes: false,
     updateShapeData: jest.fn(),
-    commentMarkers: [{ x: 10, y: 10 }],
+    commentMarkers: [{ x: 10, y: 10, id: 'a' }],
     showComments: false,
+    selectedCommentId: '',
+    setSelectedCommentId: jest.fn(),
   }
+
   it('should render all the shapes', () => {
     const wrapper = shallow(<ShapesComponent {...defaultProps} showRedactions={true} showShapes={true} />)
     expect(wrapper.find(ShapeRedaction).exists()).toBeTruthy()
@@ -44,7 +47,11 @@ describe('Shapes component', () => {
 
   it('should render comment markers', () => {
     const wrapper = shallow(
-      <ShapesComponent {...defaultProps} commentMarkers={[{ x: 10, y: 10 }, { x: 20, y: 20 }]} showComments={true} />,
+      <ShapesComponent
+        {...defaultProps}
+        commentMarkers={[{ x: 10, y: 10, id: 'a' }, { x: 20, y: 20, id: 'b' }]}
+        showComments={true}
+      />,
     )
     expect(wrapper.find(CommentMarker).exists()).toBeTruthy()
     expect(wrapper.find(CommentMarker).length).toBe(2)

@@ -1,4 +1,5 @@
 import Button from '@material-ui/core/Button'
+import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import { mount } from 'enzyme'
 import React from 'react'
@@ -29,7 +30,9 @@ const createdBy: CreatedByUser = {
 
 const defaultProps: CommentPropType = {
   createdBy,
-  deleteComment: () => jest.fn() as any,
+  deleteComment: jest.fn(),
+  setSelectedCommentId: jest.fn(),
+  selectedCommentId: '',
   id: 'a',
   localization: localization as any,
   page: 1,
@@ -93,5 +96,15 @@ describe('Comment component', () => {
       </Provider>,
     )
     expect(wrapper.find(DeleteButton).text()).toBe('Delete')
+  })
+
+  it('should be in selected state when clicked', () => {
+    const wrapper = mount(
+      <Provider store={createStore(rootReducer)}>
+        <ConnectedComment {...defaultProps} />
+      </Provider>,
+    )
+    wrapper.find(Card).simulate('click')
+    expect(wrapper.find(Card).prop('raised')).toBe(true)
   })
 })
