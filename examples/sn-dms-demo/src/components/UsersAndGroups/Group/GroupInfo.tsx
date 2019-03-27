@@ -1,5 +1,7 @@
+import Avatar from '@material-ui/core/Avatar'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
+import GroupIcon from '@material-ui/icons/Group'
 import { Group } from '@sensenet/default-content-types'
 import { Icon } from '@sensenet/icons-react'
 import * as React from 'react'
@@ -93,9 +95,9 @@ class GroupInfo extends React.Component<
     return isLoading ? null : (
       <Paper style={styles.container as any}>
         <div style={styles.leftColumn}>
-          {
-            // TODO group icon
-          }
+          <Avatar style={styles.avatar}>
+            <GroupIcon style={{ fontSize: 40 }} />
+          </Avatar>
         </div>
         <div style={styles.rightColumn}>
           <div style={{ display: 'flex', flexDirection: 'row' }}>
