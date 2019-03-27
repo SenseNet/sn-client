@@ -22,7 +22,7 @@ export interface OwnProps {
  * @param state the redux state
  */
 export const mapStateToProps = (state: RootReducerType, ownProps: OwnProps) => {
-  const commentMarkers = state.sensenetDocumentViewer.documentState.comments
+  const commentMarkers = state.comments.items
     .filter(comment => comment.page === ownProps.page.Index)
     .map(comment => {
       return { x: comment.x, y: comment.y, id: comment.id }

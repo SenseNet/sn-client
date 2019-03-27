@@ -1,15 +1,7 @@
 import { Reducer } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
 import { PreviewState } from '../Enums'
-import {
-  Comment,
-  CommentWithoutCreatedByAndId,
-  DocumentData,
-  DocumentViewerSettings,
-  PreviewImageData,
-  Shape,
-  Shapes,
-} from '../models'
+import { DocumentData, DocumentViewerSettings, PreviewImageData, Shape, Shapes } from '../models'
 import { Dimensions, ImageUtil } from '../services'
 import { getAvailableImages } from './PreviewImages'
 import { RootReducerType } from './RootReducer'
@@ -28,7 +20,6 @@ export interface DocumentStateType {
   canHideWatermark: boolean
   canHideRedaction: boolean
   hasChanges: boolean
-  comments: Comment[]
 }
 
 /**
@@ -172,30 +163,6 @@ export const saveChangesSuccess = () => ({
 })
 
 /**
- * Action that will be fired when getting comments succeeded
- */
-export const getCommentSuccess = (comments: Comment[]) => ({
-  type: 'SN_DOCVEWER_DOCUMENT_GET_COMMENTS_SUCCESS',
-  comments,
-})
-
-/**
- * Action that will be fired when a comment created
- */
-export const createCommentSuccess = (comment: Comment) => ({
-  type: 'SN_DOCVEWER_DOCUMENT_CREATE_COMMENTS_SUCCESS',
-  comment,
-})
-
-/**
- * Action that will be fired when a comment deleted
- */
-export const deleteCommentSuccess = (id: string) => ({
-  type: 'SN_DOCVEWER_DOCUMENT_DELETE_COMMENTS_SUCCESS',
-  id,
-})
-
-/**
  * Action that rotates the specified shapes for the given page(s)
  * @param pages The pages to rotate
  * @param degree The rotation angle in degrees
@@ -222,64 +189,6 @@ export const saveChanges = () => ({
       options.dispatch(saveChangesSuccess())
     } catch (error) {
       options.dispatch(saveChangesError(error))
-    }
-  },
-})
-
-/**
- * Thunk action to call the get comments
- */
-export const getComments = () => ({
-  type: 'SN_DOCVIEWER_GET_COMMENTS_INJECTABLE_ACTION',
-  inject: async (options: IInjectableActionCallbackParams<RootReducerType>) => {
-    const api = options.getInjectable(DocumentViewerSettings)
-    try {
-      const comments = await api.commentActions.getPreviewComments(
-        options.getState().sensenetDocumentViewer.documentState.document,
-        options.getState().sensenetDocumentViewer.viewer.activePages[0],
-      )
-      options.dispatch(getCommentSuccess(comments))
-    } catch (error) {
-      console.log(error)
-    }
-  },
-})
-
-/**
- * Thunk action to create a comment
- */
-export const createComment = (comment: CommentWithoutCreatedByAndId) => ({
-  type: 'SN_DOCVIEWER_CREATE_COMMENT_INJECTABLE_ACTION',
-  inject: async (options: IInjectableActionCallbackParams<RootReducerType>) => {
-    const api = options.getInjectable(DocumentViewerSettings)
-    try {
-      const result = await api.commentActions.addPreviewComment(
-        options.getState().sensenetDocumentViewer.documentState.document,
-        comment,
-      )
-      options.dispatch(createCommentSuccess(result))
-    } catch (error) {
-      console.log(error)
-    }
-  },
-})
-
-/**
- * Thunk action to delete a comment
- */
-export const deleteComment = (id: string) => ({
-  type: 'SN_DOCVIEWER_CREATE_COMMENT_INJECTABLE_ACTION',
-  inject: async (options: IInjectableActionCallbackParams<RootReducerType>) => {
-    const api = options.getInjectable(DocumentViewerSettings)
-    try {
-      const result = await api.commentActions.deletePreviewComment(
-        options.getState().sensenetDocumentViewer.documentState.document,
-        id,
-      )
-      console.log(result)
-      options.dispatch(deleteCommentSuccess(id))
-    } catch (error) {
-      console.log(error)
     }
   },
 })
@@ -341,7 +250,6 @@ export const defaultState: DocumentStateType = {
   canHideRedaction: false,
   canHideWatermark: false,
   pollInterval: 2000,
-  comments: [],
 }
 
 /**
@@ -426,21 +334,6 @@ export const documentStateReducer: Reducer<DocumentStateType> = (state = default
       return {
         ...state,
         hasChanges: false,
-      }
-    case 'SN_DOCVEWER_DOCUMENT_GET_COMMENTS_SUCCESS':
-      return {
-        ...state,
-        comments: action.comments,
-      }
-    case 'SN_DOCVEWER_DOCUMENT_CREATE_COMMENTS_SUCCESS':
-      return {
-        ...state,
-        comments: [...state.comments, action.comment],
-      }
-    case 'SN_DOCVEWER_DOCUMENT_DELETE_COMMENTS_SUCCESS':
-      return {
-        ...state,
-        comments: state.comments.filter(comment => comment.id !== action.id),
       }
     case 'SN_DOCVIEWER_DOCUMENT_SET_POLL_INTERVAL':
       return {

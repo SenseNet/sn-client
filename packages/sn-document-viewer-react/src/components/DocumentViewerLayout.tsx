@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { MarkerCoordinates } from '../models'
 import { componentType } from '../services'
 import { createComment, RootReducerType, setActivePages, setThumbnails } from '../store'
-import { setSelectedCommentId } from '../store/Comments'
+import { getComments, setSelectedCommentId } from '../store/Comments'
 import { PageList } from './'
 import CommentComponent from './comment/Comment'
 import { CreateComment } from './comment/CreateComment'
@@ -22,7 +22,7 @@ const mapStateToProps = (state: RootReducerType) => {
     customZoomLevel: state.sensenetDocumentViewer.viewer.customZoomLevel,
     showThumbnails: state.sensenetDocumentViewer.viewer.showThumbnails,
     showComments: state.sensenetDocumentViewer.viewer.showComments,
-    comments: state.sensenetDocumentViewer.documentState.comments,
+    comments: state.comments.items,
     fitRelativeZoomLevel: state.sensenetDocumentViewer.viewer.fitRelativeZoomLevel,
     localization: state.sensenetDocumentViewer.localization,
   }
@@ -34,6 +34,7 @@ const mapStateToProps = (state: RootReducerType) => {
  */
 const mapDispatchToProps = {
   setActivePages,
+  getComments,
   setThumbnails,
   createComment,
   setSelectedCommentId,
@@ -104,6 +105,7 @@ export class DocumentViewerLayoutComponent extends React.Component<
 
       if (this.props.activePages[0] !== index) {
         this.props.setActivePages([index])
+        this.props.getComments()
       }
     })
   }

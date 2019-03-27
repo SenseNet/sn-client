@@ -19,6 +19,7 @@ describe('Document Viewer Layout component', () => {
     createComment: jest.fn(),
     localization: {} as any,
     setSelectedCommentId: jest.fn(),
+    getComments: jest.fn(),
   }
   it('should render without crashing', () => {
     const wrapper = shallow(
