@@ -4,7 +4,7 @@
     "outDir": "dist",
     "rootDir": "src"
   },
-  "include": ["src"],
+  "include": ["src", "../../typings"],
   "references": [
     { "path": "../sn-client-core" },
     { "path": "../sn-client-utils" },
