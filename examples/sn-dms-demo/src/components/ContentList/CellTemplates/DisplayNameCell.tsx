@@ -1,5 +1,5 @@
 import TableCell from '@material-ui/core/TableCell'
-import { GenericContent } from '@sensenet/default-content-types'
+import { GenericContent, User } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import * as React from 'react'
 
@@ -41,7 +41,7 @@ export class DisplayNameCell<T extends GenericContent> extends React.Component<D
           ) : icon ? (
             <Icon type={type} iconName={icon} style={{ marginRight: '.5em' }} />
           ) : null}
-          <div>{content.DisplayName || content.Name}</div>
+          <div>{content.Type === 'User' ? (content as User).FullName : content.DisplayName || content.Name}</div>
         </div>
       </TableCell>
     )

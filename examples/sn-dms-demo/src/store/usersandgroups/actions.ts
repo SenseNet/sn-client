@@ -427,7 +427,8 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
           idOrPath: `${newGroup.d.Path}/Groups`,
           oDataOptions: groupOptions,
         })
-      } else {
+        options.dispatch(setGroup(realGroup.d, items.d.results))
+      } else if (newGroup.d.Type !== 'Group') {
         items = await repository.loadCollection({
           path: idOrPath as string,
           oDataOptions: {
@@ -437,8 +438,10 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
             filter: `IsFolder eq true and ContentType ne 'SystemFolder' or ContentType eq 'Group'`,
           },
         })
+        options.dispatch(setGroup(newGroup.d, items.d.results))
+      } else {
+        options.dispatch(setGroup(newGroup.d, newGroup.d.Members as Content[]))
       }
-      options.dispatch(setGroup(realGroup.d || newGroup.d, items.d.results))
 
       const emitChange = (content: Group) => {
         changedContent.push(content)
