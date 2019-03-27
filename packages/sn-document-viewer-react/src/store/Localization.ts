@@ -47,6 +47,7 @@ export interface LocalizationStateType {
   submit: string
   inputRequiredError: string
   markerRequiredError: string
+  markerTooltip: string
 }
 
 /**
@@ -118,6 +119,7 @@ export const defaultLocalization: LocalizationStateType = {
   submit: 'Submit',
   inputRequiredError: 'The comment text is a required field.',
   markerRequiredError: 'You must place the marker first.',
+  markerTooltip: 'You can put a marker with this button',
 }
 
 /**

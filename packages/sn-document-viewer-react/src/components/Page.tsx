@@ -96,10 +96,9 @@ export class PageComponent extends React.Component<
     if (!this.props.isPlacingCommentMarker) {
       return
     }
-    // TODO(Zoli): Remove Math.trunc once backend allows floating point numbers
     const draftCommentMarker = {
-      x: Math.trunc(event.nativeEvent.offsetX / this.state.zoomRatio) - MARKER_SIZE,
-      y: Math.trunc(event.nativeEvent.offsetY / this.state.zoomRatio) - MARKER_SIZE,
+      x: event.nativeEvent.offsetX / this.state.zoomRatio - MARKER_SIZE,
+      y: event.nativeEvent.offsetY / this.state.zoomRatio - MARKER_SIZE,
       id: 'draft',
     }
     this.setState({
