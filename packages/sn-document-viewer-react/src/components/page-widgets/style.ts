@@ -13,12 +13,13 @@ export const ShapesContainer = styled.div`
 `
 export const MARKER_SIZE = 10
 
-export const CommentMarker = styled('div')<{ marker: MarkerCoordinates; zoomRatio: number }>`
+export const CommentMarker = styled('div')<{ marker: MarkerCoordinates; zoomRatio: number; isSelected: boolean }>`
   position: absolute;
   top: ${props => props.marker.y * props.zoomRatio}px;
   left: ${props => props.marker.x * props.zoomRatio}px;
   width: ${MARKER_SIZE}px;
   height: ${MARKER_SIZE}px;
   border-radius: ${MARKER_SIZE}px;
-  background-color: green;
+  background-color: ${props => (props.isSelected ? 'chartreuse' : 'green')};
+  cursor: pointer;
 `

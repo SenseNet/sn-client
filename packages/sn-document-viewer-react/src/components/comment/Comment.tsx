@@ -12,14 +12,17 @@ import styled from 'styled-components'
 import { Comment as CommentType } from '../../models/Comment'
 import { componentType } from '../../services'
 import { deleteComment, RootReducerType } from '../../store'
+import { setSelectedCommentId } from '../../store/Comments'
 import { DeleteButton } from './DeleteCommentButton'
 
 const mapStateToProps = (state: RootReducerType) => ({
   localization: state.sensenetDocumentViewer.localization,
+  selectedCommentId: state.comments.selectedCommentId,
 })
 
 const mapDispatchToProps = {
   deleteComment,
+  setSelectedCommentId,
 }
 
 const StyledCardContent = styled(CardContent)`
@@ -43,7 +46,7 @@ export const CommentComponent: FunctionComponent<CommentPropType> = props => {
   const isLongText = props.text && props.text.length > MAX_TEXT_LENGTH
   const [isOpen, setIsOpen] = useState(!isLongText)
   return (
-    <Card>
+    <Card raised={props.selectedCommentId === props.id} onClick={() => props.setSelectedCommentId(props.id)}>
       <CardHeader
         avatar={<Avatar src={props.createdBy.avatarUrl} alt={props.localization.avatarAlt} />}
         title={props.createdBy.displayName}

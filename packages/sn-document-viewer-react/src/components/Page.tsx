@@ -64,7 +64,7 @@ export interface PageState {
   imageTransform: string
   zoomRatio: number
   isPolling: boolean
-  draftCommentMarker?: MarkerCoordinates
+  draftCommentMarker?: MarkerCoordinates & { id: string }
 }
 
 /**
@@ -100,6 +100,7 @@ export class PageComponent extends React.Component<
     const draftCommentMarker = {
       x: Math.trunc(event.nativeEvent.offsetX / this.state.zoomRatio) - MARKER_SIZE,
       y: Math.trunc(event.nativeEvent.offsetY / this.state.zoomRatio) - MARKER_SIZE,
+      id: 'draft',
     }
     this.setState({
       ...this.state,

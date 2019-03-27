@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { MarkerCoordinates } from '../models'
 import { componentType } from '../services'
 import { createComment, RootReducerType, setActivePages, setThumbnails } from '../store'
+import { setSelectedCommentId } from '../store/Comments'
 import { PageList } from './'
 import CommentComponent from './comment/Comment'
 import { CreateComment } from './comment/CreateComment'
@@ -35,6 +36,7 @@ const mapDispatchToProps = {
   setActivePages,
   setThumbnails,
   createComment,
+  setSelectedCommentId,
 }
 
 /** Props definition for the Document Viewer layout */
@@ -123,9 +125,13 @@ export class DocumentViewerLayoutComponent extends React.Component<
   }
 
   private handleKeyUp(ev: KeyboardEvent) {
-    if (this.state.isPlacingCommentMarker && ev.key === 'Escape') {
+    if (ev.key !== 'Escape') {
+      return
+    }
+    if (this.state.isPlacingCommentMarker) {
       this.toggleIsPlacingCommentMarker(false)
     }
+    this.props.setSelectedCommentId('')
   }
 
   /** triggered when the component will receive props */
