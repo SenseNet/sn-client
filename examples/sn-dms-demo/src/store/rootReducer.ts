@@ -1,4 +1,4 @@
-import { sensenetDocumentViewerReducer } from '@sensenet/document-viewer-react/dist/store'
+import { rootReducer as sensenetDocumentViewerReducer } from '@sensenet/document-viewer-react'
 import { Reducers } from '@sensenet/redux'
 import { combineReducers } from 'redux'
 import { dms } from '../Reducers'

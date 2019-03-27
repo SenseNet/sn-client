@@ -1,5 +1,5 @@
 import { Repository } from '@sensenet/client-core'
-import { sensenetDocumentViewerReducer } from '@sensenet/document-viewer-react/dist/store'
+import { rootReducer as sensenetDocumentViewerReducer } from '@sensenet/document-viewer-react'
 import { Store } from '@sensenet/redux'
 import { Reducers } from '@sensenet/redux'
 import { CreateStoreOptions } from '@sensenet/redux/dist/Store'
