@@ -8,7 +8,7 @@ import InputLabel from '@material-ui/core/InputLabel'
 import SvgIcon from '@material-ui/core/SvgIcon/SvgIcon'
 import Tooltip from '@material-ui/core/Tooltip'
 import React, { useState } from 'react'
-import { MarkerCoordinates } from '../../models'
+import { DraftCommentMarker } from '../../models'
 import { LocalizationStateType } from '../../store/Localization'
 
 /**
@@ -27,7 +27,7 @@ export interface CreateCommentProps {
   localization?: CreateCommentLocalization
   isPlacingMarker: boolean
   handlePlaceMarkerClick: () => void
-  draftCommentMarker?: MarkerCoordinates
+  draftCommentMarker?: DraftCommentMarker
 }
 
 const defaultLocalization: CreateCommentLocalization = {

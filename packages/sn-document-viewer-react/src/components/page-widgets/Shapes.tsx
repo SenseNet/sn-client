@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Annotation, Highlight, MarkerCoordinates, PreviewImageData, Redaction, Shape, Shapes } from '../../models'
+import { Annotation, DraftCommentMarker, Highlight, PreviewImageData, Redaction, Shape, Shapes } from '../../models'
 import { componentType, Dimensions } from '../../services'
 import { RootReducerType, updateShapeData } from '../../store'
 import { setSelectedCommentId } from '../../store/Comments'
@@ -14,7 +14,7 @@ export interface OwnProps {
   viewPort: Dimensions
   page: PreviewImageData
   zoomRatio: number
-  draftCommentMarker?: MarkerCoordinates & { id: string }
+  draftCommentMarker?: DraftCommentMarker
 }
 
 /**

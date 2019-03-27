@@ -3,12 +3,12 @@ import { SlideProps } from '@material-ui/core/Slide'
 import Typography from '@material-ui/core/Typography'
 import React = require('react')
 import { connect } from 'react-redux'
-import { MarkerCoordinates } from '../models'
+import { DraftCommentMarker } from '../models'
 import { componentType } from '../services'
 import { createComment, RootReducerType, setActivePages, setThumbnails } from '../store'
 import { getComments, setSelectedCommentId } from '../store/Comments'
 import { PageList } from './'
-import CommentComponent from './comment/Comment'
+import Comment from './comment/Comment'
 import { CreateComment } from './comment/CreateComment'
 
 /**
@@ -48,7 +48,7 @@ export interface DocumentLayoutOwnProps {
 /** State type definition for the DocumentViewerLayout component */
 export interface DocumentLayoutState {
   isPlacingCommentMarker: boolean
-  draftCommentMarker?: MarkerCoordinates
+  draftCommentMarker?: DraftCommentMarker
   activePage?: number
   thumbnaislVisibility: boolean
 }
@@ -110,7 +110,7 @@ export class DocumentViewerLayoutComponent extends React.Component<
     })
   }
 
-  private handleMarkerCreation(draftCommentMarker: MarkerCoordinates) {
+  private handleMarkerCreation(draftCommentMarker: DraftCommentMarker) {
     this.setState({ ...this.state, draftCommentMarker })
   }
 
@@ -250,7 +250,7 @@ export class DocumentViewerLayoutComponent extends React.Component<
               createComment={this.createComment}
             />
             {this.props.comments.map(comment => (
-              <CommentComponent key={comment.id} {...comment} />
+              <Comment key={comment.id} {...comment} />
             ))}
           </Drawer>
         </div>

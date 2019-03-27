@@ -2,7 +2,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import Paper from '@material-ui/core/Paper'
 import React = require('react')
 import { connect } from 'react-redux'
-import { DocumentData, MarkerCoordinates, PreviewImageData } from '../models'
+import { DocumentData, DraftCommentMarker, PreviewImageData } from '../models'
 import { componentType, ImageUtil } from '../services'
 import { previewAvailable, RootReducerType, ZoomMode } from '../store'
 import { ShapesWidget } from './page-widgets'
@@ -48,7 +48,7 @@ export interface OwnProps {
   margin: number
   image: 'preview' | 'thumbnail'
   isPlacingCommentMarker?: boolean
-  handleMarkerCreation?: (coordinates: MarkerCoordinates) => void
+  handleMarkerCreation?: (coordinates: DraftCommentMarker) => void
 }
 
 /**
@@ -64,7 +64,7 @@ export interface PageState {
   imageTransform: string
   zoomRatio: number
   isPolling: boolean
-  draftCommentMarker?: MarkerCoordinates & { id: string }
+  draftCommentMarker?: DraftCommentMarker
 }
 
 /**

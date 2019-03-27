@@ -1,7 +1,7 @@
 import Grid from '@material-ui/core/Grid'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { MarkerCoordinates, PreviewImageData } from '../models'
+import { DraftCommentMarker, PreviewImageData } from '../models'
 import { componentType, ImageUtil } from '../services'
 import { RootReducerType, ZoomMode } from '../store'
 import { Page } from './'
@@ -42,7 +42,7 @@ export interface PageListProps {
   style?: React.CSSProperties
   showWidgets: boolean
   isPlacingCommentMarker?: boolean
-  handleMarkerCreation?: (coordinates: MarkerCoordinates) => void
+  handleMarkerCreation?: (coordinates: DraftCommentMarker) => void
 }
 
 /**

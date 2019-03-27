@@ -30,4 +30,4 @@ export type CommentWithoutCreatedByAndId = Omit<Comment, 'createdBy' | 'id'>
 /**
  * Coordinates for marker
  */
-export type MarkerCoordinates = Pick<Comment, 'x' | 'y'>
+export type DraftCommentMarker = Pick<Comment, 'x' | 'y' | 'id'>
