@@ -165,6 +165,9 @@ const resources = {
   LOCAL: 'Local',
   GLOBAL: 'Global',
   DELETE_GROUP: 'Delete group',
+  MEMBERS: 'Members',
+  REMOVE_SELECTED_USERS_FROM_GROUP: 'Remove selected users from group',
+  ARE_YOU_SURE_YOU_WANT_TO_REMOVE_THE_FOLLOWING_MEMBERS: 'Are you sure you want to remove the following members',
 } as any
 
 const resourceHandler: ProxyHandler<typeof resources> = {

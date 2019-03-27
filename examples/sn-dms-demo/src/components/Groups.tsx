@@ -18,6 +18,7 @@ import { GridPlaceholder } from './Loaders/GridPlaceholder'
 import GroupInfo from './UsersAndGroups/Group/GroupInfo'
 import GroupList from './UsersAndGroups/Group/GroupList'
 import MembersList from './UsersAndGroups/User/MembersList'
+import MembersListToolbar from './UsersAndGroups/User/MembersListToolbar'
 import UserSelector from './UsersAndGroups/UserSelector/UserSelector'
 
 const styles = {
@@ -90,8 +91,8 @@ class Groups extends Component<
         const guid = newProps.match.params.otherActions.replace('group', '').replace(/\//g, '')
         const groupIdFromUrl = newProps.match.params.otherActions && atob(decodeURIComponent(guid))
         newProps.loadGroup(Number(groupIdFromUrl), {
-          select: ['Icon', 'Name', 'Path', 'DisplayName', 'Description', 'Members'],
-          expand: 'Members',
+          select: ['Icon', 'Name', 'Path', 'DisplayName', 'Description', 'Members', 'Actions'],
+          expand: ['Members', 'Actions'],
         })
       } else {
         const idFromUrl = newProps.match.params.folderPath && atob(decodeURIComponent(newProps.match.params.folderPath))
@@ -150,7 +151,7 @@ class Groups extends Component<
                           ]}
                         />
                       ) : null}
-                      <UserSelector />
+                      {match.params.otherActions ? null : <UserSelector />}
                     </div>
                   </Toolbar>
                 </AppBar>
@@ -158,6 +159,7 @@ class Groups extends Component<
               {match.params.otherActions ? (
                 <div>
                   <GroupInfo isAdmin={isAdmin} group={group} />
+                  <MembersListToolbar />
                   <MembersList matchesDesktop={matches} items={group ? (group.Members as GenericContent[]) : []} />
                 </div>
               ) : (

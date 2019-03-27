@@ -441,6 +441,7 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
         options.dispatch(setGroup(newGroup.d, items.d.results))
       } else {
         options.dispatch(setGroup(newGroup.d, newGroup.d.Members as Content[]))
+        options.dispatch(selectGroup([newGroup.d]))
       }
 
       const emitChange = (content: Group) => {

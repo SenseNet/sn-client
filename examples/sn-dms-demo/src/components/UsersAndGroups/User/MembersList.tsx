@@ -2,7 +2,7 @@ import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
 import TableCell from '@material-ui/core/TableCell'
 import { Content } from '@sensenet/client-core'
-import { ActionModel, GenericContent, SchemaStore } from '@sensenet/default-content-types'
+import { ActionModel, GenericContent, Group, SchemaStore } from '@sensenet/default-content-types'
 import { Icon } from '@sensenet/icons-react'
 import { ContentList } from '@sensenet/list-controls-react'
 import React, { Component } from 'react'
@@ -33,12 +33,12 @@ interface MembersListProps extends RouteComponentProps<any> {
 
 const mapStateToProps = (state: rootStateType) => {
   return {
-    currentGroup: state.dms.usersAndGroups.group.currentGroup,
-    childrenOptions: state.dms.usersAndGroups.group.grouplistOptions,
+    currentGroup: state.dms.usersAndGroups.group.currentGroup || ({} as Group),
+    childrenOptions: state.dms.usersAndGroups.user.grouplistOptions,
     hostName: state.sensenet.session.repository ? state.sensenet.session.repository.repositoryUrl : '',
-    selected: state.dms.usersAndGroups.group.selected,
+    selected: state.dms.usersAndGroups.user.selected,
     parent: state.dms.usersAndGroups.group.parent,
-    active: state.dms.usersAndGroups.group.active,
+    active: state.dms.usersAndGroups.user.active,
   }
 }
 
@@ -140,6 +140,8 @@ class MembersList extends Component<
             (this.props.selected.length === 1 && this.props.selected[0].Id !== content.Id)
           ) {
             this.props.selectUser([content])
+          } else if (this.props.selected.find(s => s.Id === content.Id)) {
+            this.props.selectUser(this.props.selected.filter(s => s.Id !== content.Id))
           }
         }}
         // onItemDoubleClick={this.handleRowDoubleClick}
@@ -184,16 +186,6 @@ class MembersList extends Component<
               } else {
                 return <TableCell />
               }
-            case 'Path':
-              if (props.content.IsFolder) {
-                return <TableCell padding="checkbox">{props.content.Path}</TableCell>
-              } else {
-                return props.content.Path.indexOf('IMS') > -1 ? (
-                  <TableCell padding="checkbox">{resources.GLOBAL}</TableCell>
-                ) : (
-                  <TableCell padding="checkbox">{resources.LOCAL}</TableCell>
-                )
-              }
             default:
               return null
           }
@@ -202,8 +194,13 @@ class MembersList extends Component<
           return (
             <Checkbox
               checked={selected.find((i: GenericContent) => i.Id === content.Id) ? true : false}
-              disabled={this.isGroupAdmin(content.Actions as ActionModel[]) && content.Type === 'Group' ? false : true}
-              style={this.isGroupAdmin(content.Actions as ActionModel[]) ? { cursor: 'normal' } : {}}
+              disabled={
+                this.isGroupAdmin(this.props.currentGroup.Actions as ActionModel[]) &&
+                (content.Type === 'User' || content.Type === 'Group')
+                  ? false
+                  : true
+              }
+              style={this.isGroupAdmin(this.props.currentGroup.Actions as ActionModel[]) ? { cursor: 'normal' } : {}}
             />
           )
         }}
