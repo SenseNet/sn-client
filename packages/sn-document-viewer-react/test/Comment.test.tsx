@@ -14,7 +14,7 @@ const longText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit,
   sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
   Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.`
 
-const createdBy: CreatedByUser = {
+export const createdByMock: CreatedByUser = {
   avatarUrl: 'uri',
   displayName: 'Lightos Lóci',
   id: 1,
@@ -23,7 +23,7 @@ const createdBy: CreatedByUser = {
 }
 
 const defaultProps: CommentPropType = {
-  createdBy,
+  createdBy: createdByMock,
   deleteComment: jest.fn(),
   setSelectedCommentId: jest.fn(),
   selectedCommentId: '',

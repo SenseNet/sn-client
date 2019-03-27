@@ -17,10 +17,11 @@ describe('Create comment component', () => {
       submit: 'submit',
       inputRequiredError: 'inputRequiredError',
       markerRequiredError: 'markerRequiredError',
+      markerTooltip: 'markerTooltip',
     },
     handlePlaceMarkerClick: jest.fn(),
     isPlacingMarker: false,
-    draftCommentMarker: { x: 10, y: 10 },
+    draftCommentMarker: { x: 10, y: 10, id: 'id' },
   }
 
   it('should show add comment button', () => {
