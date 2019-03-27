@@ -38,12 +38,11 @@ const styles = {
   button: {
     fontSize: 15,
     fontFamily: 'Raleway SemiBold',
-    marginRight: 0,
   },
   buttonRaised: {
     fontSize: 14,
     fontFamily: 'Raleway ExtraBold',
-    marginRight: 0,
+    marginRight: 10,
   },
   icon: {
     marginRight: 5,
