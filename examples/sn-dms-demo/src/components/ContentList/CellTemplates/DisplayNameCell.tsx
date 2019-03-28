@@ -19,6 +19,9 @@ export interface DisplayNameCellProps<T extends GenericContent> {
   hostName: string
 }
 
+// tslint:disable-next-line:no-var-requires
+const DEFAULT_AVATAR = '/Root/Sites/Default_Site/demoavatars/Admin.png'
+
 export class DisplayNameCell<T extends GenericContent> extends Component<DisplayNameCellProps<T>> {
   public render() {
     const icon =
@@ -48,10 +51,11 @@ export class DisplayNameCell<T extends GenericContent> extends Component<Display
           {isImage ? (
             <img src={`${hostName}${content.Path}`} style={{ marginRight: '.5em', maxWidth: 24, maxHeight: 24 }} />
           ) : content.Type === 'User' && (content as User).Avatar ? (
-            // tslint:disable-next-line: no-string-literal
             <Avatar
               src={`${hostName}${
-                (content as User).Avatar !== undefined ? ((content as User).Avatar as { Url: '' }).Url : ''
+                (content as User).Avatar !== undefined && ((content as User).Avatar as { Url: '' }).Url.length > 0
+                  ? ((content as User).Avatar as { Url: '' }).Url
+                  : DEFAULT_AVATAR
               }`}
               style={styles.avatar}
             />
