@@ -7,7 +7,7 @@ import { DraftCommentMarker } from '../models'
 import { componentType } from '../services'
 import { createComment, RootReducerType, setActivePages, setThumbnails } from '../store'
 import { getComments, setSelectedCommentId } from '../store/Comments'
-import { PageList } from './'
+import { CommentsContainer, PageList } from './'
 import Comment from './comment/Comment'
 import { CreateComment } from './comment/CreateComment'
 
@@ -237,22 +237,24 @@ export class DocumentViewerLayoutComponent extends React.Component<
             PaperProps={{
               style: {
                 position: 'relative',
-                width: this.props.showComments ? '300px' : 0,
+                width: this.props.showComments ? '340px' : 0,
                 height: '100%',
                 overflow: 'hidden',
               },
             }}>
-            <Typography variant="h4">Comments</Typography>
-            <CreateComment
-              draftCommentMarker={this.state.draftCommentMarker}
-              handlePlaceMarkerClick={() => this.toggleIsPlacingCommentMarker()}
-              isPlacingMarker={this.state.isPlacingCommentMarker}
-              localization={this.props.localization}
-              createComment={this.createComment}
-            />
-            {this.props.comments.map(comment => (
-              <Comment key={comment.id} {...comment} />
-            ))}
+            <CommentsContainer>
+              <Typography variant="h4">{this.props.localization.commentSideBarTitle}</Typography>
+              <CreateComment
+                draftCommentMarker={this.state.draftCommentMarker}
+                handlePlaceMarkerClick={() => this.toggleIsPlacingCommentMarker()}
+                isPlacingMarker={this.state.isPlacingCommentMarker}
+                localization={this.props.localization}
+                createComment={this.createComment}
+              />
+              {this.props.comments.map(comment => (
+                <Comment key={comment.id} {...comment} />
+              ))}
+            </CommentsContainer>
           </Drawer>
         </div>
       </div>
