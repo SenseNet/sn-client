@@ -56,12 +56,6 @@ class MembersList extends Component<
   ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & MembersListProps,
   {}
 > {
-  constructor(props: MembersList['props']) {
-    super(props)
-
-    // this.handleRowDoubleClick = this.handleRowDoubleClick.bind(this)
-  }
-
   public handleDeleteClick = (content: GenericContent) => {
     this.props.openDialog(
       <RemoveUserFromGroupDialog user={content} groups={[this.props.currentGroup]} />,
@@ -73,9 +67,6 @@ class MembersList extends Component<
     const editAction = actions ? actions.find((action: ActionModel) => action.Name === 'Edit') : undefined
     return editAction ? !editAction.Forbidden : false
   }
-  // public handleRowDoubleClick(_e: React.MouseEvent, content: GenericContent) {
-  //     history.push(newPath)
-  // }
   public render() {
     const { childrenOptions, hostName, matchesDesktop, selected, members } = this.props
     return (
@@ -130,7 +121,6 @@ class MembersList extends Component<
             this.props.selectUser([...this.props.selected, content])
           }
         }}
-        // onItemDoubleClick={this.handleRowDoubleClick}
         fieldComponent={props => {
           switch (props.field) {
             case 'DisplayName':

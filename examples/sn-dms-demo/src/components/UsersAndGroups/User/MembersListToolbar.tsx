@@ -89,7 +89,7 @@ class MembersListToolbar extends Component<ReturnType<typeof mapStateToProps> & 
                 color="primary"
                 style={styles.button}
                 onClick={() => this.handleClick()}
-                disabled={this.props.users.length}>
+                disabled={this.props.users.length > 0}>
                 <Icon iconName="delete" style={this.props.users.length === 0 ? styles.iconDisabled : styles.icon} />
                 {resources.REMOVE_SELECTED_USERS_FROM_GROUP}
               </Button>

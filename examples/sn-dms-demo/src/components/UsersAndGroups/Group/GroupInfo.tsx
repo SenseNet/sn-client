@@ -68,7 +68,7 @@ interface GroupInfoProps {
 
 const mapStateToProps = (state: rootStateType) => {
   return {
-    isLoading: state.dms.usersAndGroups.user.isLoading,
+    isLoading: state.dms.usersAndGroups.group.isLoading,
   }
 }
 
