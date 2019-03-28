@@ -90,17 +90,17 @@ exports[`Document Viewer Layout component should render without crashing 1`] = `
       open={false}
       variant="persistent"
     >
-      <WithStyles(Typography)
-        variant="h4"
-      >
-        Comments
-      </WithStyles(Typography)>
-      <CreateComment
-        createComment={[Function]}
-        handlePlaceMarkerClick={[Function]}
-        isPlacingMarker={false}
-        localization={Object {}}
-      />
+      <styled.div>
+        <WithStyles(Typography)
+          variant="h4"
+        />
+        <CreateComment
+          createComment={[Function]}
+          handlePlaceMarkerClick={[Function]}
+          isPlacingMarker={false}
+          localization={Object {}}
+        />
+      </styled.div>
     </WithStyles(Drawer)>
   </div>
 </div>
@@ -196,17 +196,17 @@ exports[`Document Viewer Layout component should render without crashing 2`] = `
       open={false}
       variant="persistent"
     >
-      <WithStyles(Typography)
-        variant="h4"
-      >
-        Comments
-      </WithStyles(Typography)>
-      <CreateComment
-        createComment={[Function]}
-        handlePlaceMarkerClick={[Function]}
-        isPlacingMarker={false}
-        localization={Object {}}
-      />
+      <styled.div>
+        <WithStyles(Typography)
+          variant="h4"
+        />
+        <CreateComment
+          createComment={[Function]}
+          handlePlaceMarkerClick={[Function]}
+          isPlacingMarker={false}
+          localization={Object {}}
+        />
+      </styled.div>
     </WithStyles(Drawer)>
   </div>
 </div>

@@ -2,8 +2,8 @@ import Button from '@material-ui/core/Button'
 import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import IconButton from '@material-ui/core/IconButton'
-import Input from '@material-ui/core/Input'
 import SvgIcon from '@material-ui/core/SvgIcon'
+import TextField from '@material-ui/core/TextField'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { CreateComment, CreateCommentProps } from '../src/components'
@@ -40,7 +40,10 @@ describe('Create comment component', () => {
     const createComment = jest.fn()
     const wrapper = mount(<CreateComment {...defaultProps} createComment={createComment} />)
     wrapper.find(Button).simulate('click')
-    wrapper.find('input').simulate('change', { target: { value: 'Hello' } })
+    wrapper
+      .find('textarea')
+      .last()
+      .simulate('change', { target: { value: 'Hello' } })
     wrapper.find(Button).simulate('submit')
     expect(createComment).toBeCalled()
   })
@@ -49,7 +52,10 @@ describe('Create comment component', () => {
     const createComment = jest.fn()
     const wrapper = mount(<CreateComment {...defaultProps} createComment={createComment} />)
     wrapper.find(Button).simulate('click')
-    wrapper.find('input').simulate('change', { target: { value: 'Hello' } })
+    wrapper
+      .find('textarea')
+      .last()
+      .simulate('change', { target: { value: 'Hello' } })
     wrapper.find('form').simulate('submit')
     expect(createComment).toBeCalled()
   })
@@ -59,10 +65,13 @@ describe('Create comment component', () => {
     const wrapper = mount(<CreateComment {...defaultProps} createComment={createComment} />)
     // toggle isActive state to true
     wrapper.find(Button).simulate('click')
-    wrapper.find('input').simulate('change', { target: { value: 'Hello' } })
+    wrapper
+      .find('textarea')
+      .last()
+      .simulate('change', { target: { value: 'Hello' } })
     wrapper.find(Button).simulate('submit')
     wrapper.find(Button).simulate('click')
-    expect(wrapper.find(Input).prop('value')).toBe('')
+    expect(wrapper.find(TextField).prop('value')).toBe('')
   })
 
   it('should handle marker placement', () => {
@@ -73,7 +82,7 @@ describe('Create comment component', () => {
     expect(handlePlaceMarkerClick).toBeCalled()
   })
 
-  it("'s comment marker should look different when placing is happening", () => {
+  it('comment marker should look different when placing is happening', () => {
     const wrapper = mount(<CreateComment {...defaultProps} isPlacingMarker={true} />)
     wrapper.find(Button).simulate('click')
     const iconStyle = wrapper.find(SvgIcon).prop('style')
@@ -90,7 +99,10 @@ describe('Create comment component', () => {
   it('should give an error message when input is filled but draftCommentMarker is undefined', () => {
     const wrapper = mount(<CreateComment {...defaultProps} draftCommentMarker={undefined} />)
     wrapper.find(Button).simulate('click')
-    wrapper.find('input').simulate('change', { target: { value: 'Hello' } })
+    wrapper
+      .find('textarea')
+      .last()
+      .simulate('change', { target: { value: 'Hello' } })
     wrapper.find('form').simulate('submit')
     expect(wrapper.find(FormHelperText).text()).toEqual(defaultProps.localization!.markerRequiredError)
   })
