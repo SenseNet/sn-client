@@ -218,6 +218,7 @@ export const removeMemberFromGroups = (contentIds: number[], groups: Group[]) =>
       options.dispatch(loadUser(contentIds[0]))
       options.dispatch(finishLoading())
       options.dispatch(getGroups(currentState.dms.usersAndGroups.user.memberships))
+      options.dispatch(loadGroup(groups[0].Id, { select: ['Members', 'Actions'], expand: ['Members', 'Actions'] }))
     }
   },
 })
@@ -334,6 +335,7 @@ export const addUsersToGroups = (users: number[], groups: Group[]) => ({
       options.dispatch(setError(error))
     } finally {
       options.dispatch(finishLoading())
+      options.dispatch(loadGroup(groups[0].Id, { select: ['Members', 'Actions'], expand: ['Members', 'Actions'] }))
       const comparedList = arrayComparer(groups, currentState.dms.usersAndGroups.user.memberships.d.results)
       options.dispatch(updateGroupList({ d: { __count: comparedList.length, results: comparedList } }))
     }

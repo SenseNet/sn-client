@@ -110,7 +110,7 @@ class RemoveUserFromGroupDialog extends React.Component<
         {matches => (
           <div>
             <Typography variant="h5" gutterBottom={true}>
-              {resources.DELETE}
+              {resources.REMOVE}
             </Typography>
             <div style={styles.inner}>
               <div style={{ opacity: 0.54 }}>{resources.ARE_YOU_SURE_YOU_WANT_TO_REMOVE_USER}</div>

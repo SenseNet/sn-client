@@ -111,7 +111,7 @@ class RemoveUsersFromGroupDialog extends React.Component<
         {matches => (
           <div>
             <Typography variant="h5" gutterBottom={true}>
-              {resources.DELETE}
+              {resources.REMOVE}
             </Typography>
             <div style={styles.inner}>
               <div style={{ opacity: 0.54 }}>{resources.ARE_YOU_SURE_YOU_WANT_TO_REMOVE_THE_FOLLOWING_MEMBERS}</div>
@@ -148,7 +148,7 @@ class RemoveUsersFromGroupDialog extends React.Component<
                   variant="contained"
                   color="secondary"
                   style={styles.deleteButton}>
-                  {resources.DELETE}
+                  {resources.REMOVE}
                 </Button>
               </div>
             </div>
