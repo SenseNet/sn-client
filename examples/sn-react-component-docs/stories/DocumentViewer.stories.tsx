@@ -23,7 +23,7 @@ const centered = story => (
 
 storiesOf('DocumentViewer', module)
   .addDecorator(withKnobs)
-  .add('showcase app', () => <ViewerExampleApp />, { info: { disable: true }, options: { showAddonPanel: false } })
+  .add('showcase app', () => <ViewerExampleApp />, { info: { disable: true }, options: { showPanel: false } })
   .add(
     'a single comment with long text',
     () => (
@@ -32,6 +32,8 @@ storiesOf('DocumentViewer', module)
         page={1}
         x={10}
         y={10}
+        selectedCommentId=""
+        setSelectedCommentId={action('setSelectedCommentId')}
         deleteComment={action('delete')}
         id={text('id', 'randomId')}
         localization={defaultLocalization}
@@ -55,6 +57,8 @@ storiesOf('DocumentViewer', module)
         page={1}
         x={10}
         y={10}
+        selectedCommentId=""
+        setSelectedCommentId={action('setSelectedCommentId')}
         deleteComment={action('delete')}
         id={text('id', 'randomId')}
         localization={defaultLocalization}
