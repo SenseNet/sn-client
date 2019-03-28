@@ -236,9 +236,10 @@ export class DocumentViewerLayoutComponent extends React.Component<
             SlideProps={this.props.drawerSlideProps}
             PaperProps={{
               style: {
-                width: '300px',
-                right: '25px',
-                top: '75px',
+                position: 'relative',
+                width: this.props.showComments ? '300px' : 0,
+                height: '100%',
+                overflow: 'hidden',
               },
             }}>
             <Typography variant="h4">Comments</Typography>

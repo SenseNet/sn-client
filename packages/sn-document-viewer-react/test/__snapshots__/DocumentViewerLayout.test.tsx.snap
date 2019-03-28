@@ -79,9 +79,10 @@ exports[`Document Viewer Layout component should render without crashing 1`] = `
       PaperProps={
         Object {
           "style": Object {
-            "right": "25px",
-            "top": "75px",
-            "width": "300px",
+            "height": "100%",
+            "overflow": "hidden",
+            "position": "relative",
+            "width": 0,
           },
         }
       }
@@ -184,9 +185,10 @@ exports[`Document Viewer Layout component should render without crashing 2`] = `
       PaperProps={
         Object {
           "style": Object {
-            "right": "25px",
-            "top": "75px",
-            "width": "300px",
+            "height": "100%",
+            "overflow": "hidden",
+            "position": "relative",
+            "width": 0,
           },
         }
       }
