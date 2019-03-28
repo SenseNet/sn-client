@@ -87,7 +87,9 @@ class UserList extends React.Component<
       term: newProps.term,
       filtered:
         newProps.term.length > 0
-          ? newProps.users.filter((user: User) => (user.FullName ? user.FullName.indexOf(newProps.term) > -1 : false))
+          ? newProps.users.filter((user: User) =>
+              user.FullName ? user.FullName.toLowerCase().indexOf(newProps.term) > -1 : false,
+            )
           : newProps.users,
     } as UserList['state']
   }

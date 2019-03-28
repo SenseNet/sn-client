@@ -93,7 +93,7 @@ export class RichTextEditor<T extends GenericContent, K extends keyof T> extends
             // placeholder={this.props['data-placeHolderText']}
             // placeHolderStyle?: object
             style={this.props.style}
-            value={this.props.value}
+            value={this.state.value}
             readOnly={this.props.readOnly}
             // required={this.props.required}
             // disabled={this.props.readOnly}

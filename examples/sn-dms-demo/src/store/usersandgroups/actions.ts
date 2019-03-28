@@ -218,6 +218,7 @@ export const removeMemberFromGroups = (contentIds: number[], groups: Group[]) =>
       options.dispatch(loadUser(contentIds[0]))
       options.dispatch(finishLoading())
       options.dispatch(getGroups(currentState.dms.usersAndGroups.user.memberships))
+      options.dispatch(loadGroup(groups[0].Id, { select: ['Members', 'Actions'], expand: ['Members', 'Actions'] }))
     }
   },
 })
@@ -334,6 +335,7 @@ export const addUsersToGroups = (users: number[], groups: Group[]) => ({
       options.dispatch(setError(error))
     } finally {
       options.dispatch(finishLoading())
+      options.dispatch(loadGroup(groups[0].Id, { select: ['Members', 'Actions'], expand: ['Members', 'Actions'] }))
       const comparedList = arrayComparer(groups, currentState.dms.usersAndGroups.user.memberships.d.results)
       options.dispatch(updateGroupList({ d: { __count: comparedList.length, results: comparedList } }))
     }
@@ -417,7 +419,7 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
         items = await repository.loadCollection({
           path: idOrPath as string,
           oDataOptions: {
-            select: ['Path', 'Actions', 'Id', 'DisplayName', 'Name', 'IsFolder', 'Icon'] as any,
+            select: ['Path', 'Actions', 'Id', 'DisplayName', 'Description', 'Name', 'IsFolder', 'Icon'] as any,
             expand: ['Actions'] as any,
             scenario: 'DMSGroupListItem',
             query: `InTree:${newGroup.d.Path} AND TypeIs:Group .AUTOFILTERS:OFF`,
@@ -427,18 +429,23 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
           idOrPath: `${newGroup.d.Path}/Groups`,
           oDataOptions: groupOptions,
         })
-      } else {
+        options.dispatch(setGroup(realGroup.d, items.d.results))
+      } else if (newGroup.d.Type !== 'Group') {
         items = await repository.loadCollection({
           path: idOrPath as string,
           oDataOptions: {
-            select: ['Path', 'Actions', 'Id', 'DisplayName', 'Name', 'IsFolder', 'Icon'] as any,
+            select: ['Path', 'Actions', 'Id', 'DisplayName', 'Description', 'Name', 'IsFolder', 'Icon'] as any,
             expand: ['Actions'] as any,
             scenario: 'DMSGroupListItem',
             filter: `IsFolder eq true and ContentType ne 'SystemFolder' or ContentType eq 'Group'`,
           },
         })
+        options.dispatch(setGroup(newGroup.d, items.d.results))
+      } else {
+        options.dispatch(setGroup(newGroup.d, []))
+        options.dispatch(setMembers(newGroup.d.Members as Content[]))
+        options.dispatch(selectGroup([newGroup.d]))
       }
-      options.dispatch(setGroup(realGroup.d || newGroup.d, items.d.results))
 
       const emitChange = (content: Group) => {
         changedContent.push(content)
@@ -569,4 +576,9 @@ export const selectUser = (users: User[] | GenericContent) => {
 export const deselectUser = (id: number) => ({
   type: 'DMS_USERSANDGROUPS_DESELECT_USER',
   id,
+})
+
+export const setMembers = (members: GenericContent[]) => ({
+  type: 'DMS_USERSANDGROUPS_SET_MEMBERS',
+  members,
 })
