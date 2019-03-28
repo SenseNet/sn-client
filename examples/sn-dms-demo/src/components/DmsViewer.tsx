@@ -31,9 +31,9 @@ const loaderImage = require('../assets/viewer-loader.gif')
 
 const mapStateToProps = (state: rootStateType) => ({
   hostName: state.sensenet.session.repository ? state.sensenet.session.repository.repositoryUrl : '',
-  documentName: state.sensenetDocumentViewer.sensenetDocumentViewer.documentState.document.documentName,
+  documentName: state.sensenetDocumentViewer.documentState.document.documentName,
   currentContent: state.dms.documentLibrary.items.d.results.find(
-    i => i.Id === state.sensenetDocumentViewer.sensenetDocumentViewer.documentState.document.idOrPath,
+    i => i.Id === state.sensenetDocumentViewer.documentState.document.idOrPath,
   ),
 })
 

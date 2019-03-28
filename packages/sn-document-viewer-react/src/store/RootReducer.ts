@@ -35,14 +35,19 @@ export interface RootReducerType {
 }
 
 /**
+ * The sensenetDocumentViewerReducer instance
+ */
+export const sensenetDocumentViewerReducer = combineReducers({
+  documentState: documentStateReducer,
+  previewImages: previewImagesReducer,
+  viewer: viewerStateReducer,
+  localization: localizationReducer,
+})
+
+/**
  * The root reducer instance with the sensenetDocumentViewer reducer instance
  */
 export const rootReducer = combineReducers<RootReducerType>({
   comments: commentsStateReducer,
-  sensenetDocumentViewer: combineReducers({
-    documentState: documentStateReducer,
-    previewImages: previewImagesReducer,
-    viewer: viewerStateReducer,
-    localization: localizationReducer,
-  }),
+  sensenetDocumentViewer: sensenetDocumentViewerReducer,
 })
