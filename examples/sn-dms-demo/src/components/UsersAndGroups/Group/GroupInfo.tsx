@@ -107,7 +107,7 @@ class GroupInfo extends React.Component<
           {/* <a href={`mailto:${user ? user.Email : ''}`} style={styles.email}>
             {user ? user.Email : ''}
           </a> */}
-          <Typography>{group ? group.Description : ''}</Typography>
+          <Typography>{group ? <div dangerouslySetInnerHTML={{ __html: group.Description || '' }} /> : ''}</Typography>
         </div>
       </Paper>
     )
