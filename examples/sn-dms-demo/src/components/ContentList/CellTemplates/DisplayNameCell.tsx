@@ -19,7 +19,6 @@ export interface DisplayNameCellProps<T extends GenericContent> {
   hostName: string
 }
 
-// tslint:disable-next-line:no-var-requires
 const DEFAULT_AVATAR = '/Root/Sites/Default_Site/demoavatars/Admin.png'
 
 export class DisplayNameCell<T extends GenericContent> extends Component<DisplayNameCellProps<T>> {

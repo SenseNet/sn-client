@@ -159,7 +159,6 @@ class MembersList extends Component<
                 )
               }
             case 'Actions':
-              // tslint:disable-next-line:no-string-literal
               if (this.isGroupAdmin(this.props.currentGroup.Actions as ActionModel[])) {
                 return (
                   <TableCell padding="checkbox" style={{ width: 260 }}>

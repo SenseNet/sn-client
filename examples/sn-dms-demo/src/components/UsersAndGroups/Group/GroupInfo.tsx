@@ -61,7 +61,6 @@ const styles = {
   },
 }
 
-// tslint:disable-next-line:no-empty-interface
 interface GroupInfoProps {
   isAdmin: boolean
   group: Group | null
