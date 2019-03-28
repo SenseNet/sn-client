@@ -107,7 +107,7 @@ export const AddButton: React.FunctionComponent = () => {
           ))}
         </div>
       </SwipeableDrawer>
-      <Dialog open={showAddNewDialog}>
+      <Dialog open={showAddNewDialog} onClose={() => setShowAddNewDialog(false)}>
         <DialogTitle>Create new {selectedSchema.DisplayName}</DialogTitle>
         <DialogContent>
           <NewViewComponent
@@ -116,6 +116,7 @@ export const AddButton: React.FunctionComponent = () => {
             changeAction={() => {
               return null as any
             }}
+            handleCancel={() => setShowAddNewDialog(false)}
             repository={repo}
             contentTypeName={selectedSchema.ContentTypeName}
             schema={selectedSchema}
