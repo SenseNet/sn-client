@@ -419,7 +419,7 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
         items = await repository.loadCollection({
           path: idOrPath as string,
           oDataOptions: {
-            select: ['Path', 'Actions', 'Id', 'DisplayName', 'Name', 'IsFolder', 'Icon'] as any,
+            select: ['Path', 'Actions', 'Id', 'DisplayName', 'Description', 'Name', 'IsFolder', 'Icon'] as any,
             expand: ['Actions'] as any,
             scenario: 'DMSGroupListItem',
             query: `InTree:${newGroup.d.Path} AND TypeIs:Group .AUTOFILTERS:OFF`,
@@ -434,7 +434,7 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
         items = await repository.loadCollection({
           path: idOrPath as string,
           oDataOptions: {
-            select: ['Path', 'Actions', 'Id', 'DisplayName', 'Name', 'IsFolder', 'Icon'] as any,
+            select: ['Path', 'Actions', 'Id', 'DisplayName', 'Description', 'Name', 'IsFolder', 'Icon'] as any,
             expand: ['Actions'] as any,
             scenario: 'DMSGroupListItem',
             filter: `IsFolder eq true and ContentType ne 'SystemFolder' or ContentType eq 'Group'`,

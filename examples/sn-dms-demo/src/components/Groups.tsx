@@ -97,7 +97,7 @@ class Groups extends Component<
         const idFromUrl = newProps.match.params.folderPath && atob(decodeURIComponent(newProps.match.params.folderPath))
         const groupsRootPath = `/Root`
         newProps.loadGroup(idFromUrl || groupsRootPath, {
-          select: ['Icon', 'Name', 'Path', 'DisplayName', 'AllowedChildTypes'],
+          select: ['Icon', 'Name', 'Path', 'DisplayName', 'Description', 'AllowedChildTypes'],
         })
         newProps.getAllowedTypes()
       }
