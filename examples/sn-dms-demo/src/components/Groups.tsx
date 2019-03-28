@@ -2,7 +2,7 @@ import AppBar from '@material-ui/core/AppBar'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import { ConstantContent } from '@sensenet/client-core'
-import { GenericContent } from '@sensenet/default-content-types'
+import { Group } from '@sensenet/default-content-types'
 import { compile } from 'path-to-regexp'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
@@ -160,7 +160,7 @@ class Groups extends Component<
                 <div>
                   <GroupInfo isAdmin={isAdmin} group={group} />
                   <MembersListToolbar />
-                  <MembersList matchesDesktop={matches} items={group ? (group.Members as GenericContent[]) : []} />
+                  <MembersList matchesDesktop={matches} />
                 </div>
               ) : (
                 <MuiThemeProvider theme={contentListTheme}>

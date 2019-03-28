@@ -28,7 +28,6 @@ const styles = {
 
 interface MembersListProps extends RouteComponentProps<any> {
   matchesDesktop: boolean
-  items: GenericContent[]
 }
 
 const mapStateToProps = (state: rootStateType) => {
@@ -39,6 +38,7 @@ const mapStateToProps = (state: rootStateType) => {
     selected: state.dms.usersAndGroups.user.selected,
     parent: state.dms.usersAndGroups.group.parent,
     active: state.dms.usersAndGroups.user.active,
+    members: state.dms.usersAndGroups.group.members,
   }
 }
 
@@ -73,11 +73,11 @@ class MembersList extends Component<
   //     history.push(newPath)
   // }
   public render() {
-    const { childrenOptions, hostName, matchesDesktop, selected, items } = this.props
+    const { childrenOptions, hostName, matchesDesktop, selected, members } = this.props
     return (
       <ContentList
         displayRowCheckbox={matchesDesktop ? true : false}
-        items={items}
+        items={members}
         schema={
           customSchema.find(s => s.ContentTypeName === 'User') ||
           SchemaStore.filter(s => s.ContentTypeName === 'User')[0]
@@ -126,12 +126,17 @@ class MembersList extends Component<
             }
           } else if (ev.shiftKey) {
             const activeIndex =
-              (this.props.active && this.props.items.findIndex(s => s.Id === (this.props.active as Content).Id)) || 0
-            const clickedIndex = this.props.items.findIndex(s => s.Id === content.Id)
+              (this.props.active &&
+                (members as GenericContent[]).findIndex(s => s.Id === (this.props.active as Content).Id)) ||
+              0
+            const clickedIndex = (members as GenericContent[]).findIndex(s => s.Id === content.Id)
             const newSelection = Array.from(
               new Set([
                 ...this.props.selected,
-                ...this.props.items.slice(Math.min(activeIndex, clickedIndex), Math.max(activeIndex, clickedIndex) + 1),
+                ...(members as GenericContent[]).slice(
+                  Math.min(activeIndex, clickedIndex),
+                  Math.max(activeIndex, clickedIndex) + 1,
+                ),
               ]),
             )
             this.props.selectUser(newSelection)

@@ -440,7 +440,8 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
         })
         options.dispatch(setGroup(newGroup.d, items.d.results))
       } else {
-        options.dispatch(setGroup(newGroup.d, newGroup.d.Members as Content[]))
+        options.dispatch(setGroup(newGroup.d, []))
+        options.dispatch(setMembers(newGroup.d.Members as Content[]))
         options.dispatch(selectGroup([newGroup.d]))
       }
 
@@ -573,4 +574,9 @@ export const selectUser = (users: User[] | GenericContent) => {
 export const deselectUser = (id: number) => ({
   type: 'DMS_USERSANDGROUPS_DESELECT_USER',
   id,
+})
+
+export const setMembers = (members: GenericContent[]) => ({
+  type: 'DMS_USERSANDGROUPS_SET_MEMBERS',
+  members,
 })
