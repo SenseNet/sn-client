@@ -144,13 +144,10 @@ class MembersList extends Component<
               ]),
             )
             this.props.selectUser(newSelection)
-          } else if (
-            !this.props.selected.length ||
-            (this.props.selected.length === 1 && this.props.selected[0].Id !== content.Id)
-          ) {
-            this.props.selectUser([content])
           } else if (this.props.selected.find(s => s.Id === content.Id)) {
             this.props.selectUser(this.props.selected.filter(s => s.Id !== content.Id))
+          } else {
+            this.props.selectUser([...this.props.selected, content])
           }
         }}
         // onItemDoubleClick={this.handleRowDoubleClick}
