@@ -5,12 +5,13 @@ import {
   Annotation,
   Comment,
   CommentWithoutCreatedByAndId,
+  DocumentData,
   DocumentViewerSettings,
   Highlight,
   PreviewImageData,
   Redaction,
   Shape,
-} from '@sensenet/document-viewer-react/dist/models'
+} from '@sensenet/document-viewer-react'
 import { v1 } from 'uuid'
 
 /**
@@ -137,7 +138,7 @@ export const getViewerSettings = (repo: Repository) =>
           name: 'AddPreviewComment',
           method: 'POST',
         })
-        return response
+        return [response].map(changeCreatedByUrlToCurrent(documentData))[0]
       },
       deletePreviewComment: async (documentData, id) => {
         const response = await repo.executeAction<any, { modified: boolean }>({
@@ -157,12 +158,15 @@ export const getViewerSettings = (repo: Repository) =>
             page,
           } as any,
         })
-        return response.map(comment => {
-          return {
-            ...comment,
-            createdBy: { ...comment.createdBy, avatarUrl: `${documentData.hostName}${comment.createdBy.avatarUrl}` },
-          }
-        })
+        return response.map(changeCreatedByUrlToCurrent(documentData))
       },
     },
   })
+function changeCreatedByUrlToCurrent(documentData: DocumentData): (value: Comment) => Comment {
+  return comment => {
+    return {
+      ...comment,
+      createdBy: { ...comment.createdBy, avatarUrl: `${documentData.hostName}${comment.createdBy.avatarUrl}` },
+    }
+  }
+}
