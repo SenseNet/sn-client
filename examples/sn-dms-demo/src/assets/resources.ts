@@ -158,7 +158,7 @@ const resources = {
   DELETE_FROM_GROUP: 'Delete from group',
   ADD_TO_GROUP: 'Add to group',
   REMOVE_FROM_SELECTED_GROUPS: 'Remove from selected groups',
-  ARE_YOU_SURE_YOU_WANT_TO_REMOVE_USER: 'Are you sure you want to remove user',
+  ARE_YOU_SURE_YOU_WANT_TO_REMOVE_USER: 'Are you sure you want to remove member',
   FROM_GROUP: 'from group',
   ADD: 'Add',
   ADD_USER_TO_GROUP: 'Add user',
@@ -168,6 +168,8 @@ const resources = {
   MEMBERS: 'Members',
   REMOVE_SELECTED_USERS_FROM_GROUP: 'Remove selected users from group',
   ARE_YOU_SURE_YOU_WANT_TO_REMOVE_THE_FOLLOWING_MEMBERS: 'Are you sure you want to remove the following members',
+  REMOVE_USER_FROM_GROUP: 'Remove user from group',
+  REMOVE: 'Remove',
 } as any
 
 const resourceHandler: ProxyHandler<typeof resources> = {

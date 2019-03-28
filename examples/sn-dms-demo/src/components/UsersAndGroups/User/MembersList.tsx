@@ -17,7 +17,7 @@ import { rootStateType } from '../../../store/rootReducer'
 import { selectUser, setActive, updateChildrenOptions } from '../../../store/usersandgroups/actions'
 import { DisplayNameCell } from '../../ContentList/CellTemplates/DisplayNameCell'
 import { DisplayNameMobileCell } from '../../ContentList/CellTemplates/DisplayNameMobileCell'
-import DeleteDialog from '../../Dialogs/DeleteDialog'
+import RemoveUserFromGroupDialog from '../../Dialogs/RemoveUserFromGroupDialog'
 
 const styles = {
   deleteButton: {
@@ -63,7 +63,11 @@ class MembersList extends Component<
   }
 
   public handleDeleteClick = (content: GenericContent) => {
-    this.props.openDialog(<DeleteDialog content={[content]} />, resources.DELETE, this.props.closeDialog)
+    this.props.openDialog(
+      <RemoveUserFromGroupDialog user={content} groups={[this.props.currentGroup]} />,
+      resources.DELETE,
+      this.props.closeDialog,
+    )
   }
   public isGroupAdmin = (actions: ActionModel[] | undefined) => {
     const editAction = actions ? actions.find((action: ActionModel) => action.Name === 'Edit') : undefined
@@ -179,12 +183,12 @@ class MembersList extends Component<
               }
             case 'Actions':
               // tslint:disable-next-line:no-string-literal
-              if (this.isGroupAdmin(props.content.Actions as ActionModel[]) && props.content.Type === 'Group') {
+              if (this.isGroupAdmin(this.props.currentGroup.Actions as ActionModel[])) {
                 return (
-                  <TableCell padding="checkbox" style={{ width: 160 }}>
+                  <TableCell padding="checkbox" style={{ width: 260 }}>
                     <Button style={styles.deleteButton} onClick={() => this.handleDeleteClick(props.content)}>
                       <Icon iconName="delete" style={{ fontSize: 19, marginRight: 10 }} />
-                      {resources.DELETE_GROUP}
+                      {resources.REMOVE_USER_FROM_GROUP}
                     </Button>
                   </TableCell>
                 )

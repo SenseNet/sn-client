@@ -58,7 +58,7 @@ const styles = {
 interface RemoveUsersFromGroupDialogProps {
   permanent?: boolean
   users: User[]
-  group: Group
+  groups: Group[]
 }
 
 interface RemoveUsersFromGroupDialogState {
@@ -99,13 +99,13 @@ class RemoveUsersFromGroupDialog extends React.Component<
     this.props.closeCallback()
   }
   public submitCallback = () => {
-    const { users, group } = this.props
+    const { users, groups } = this.props
     const userIds = users.map(user => user.Id)
-    this.props.removeMemberFromGroups(userIds, [group])
+    this.props.removeMemberFromGroups(userIds, groups)
     this.props.closeDialog()
   }
   public render() {
-    const { selected } = this.props
+    const { selected, groups } = this.props
     return (
       <MediaQuery minDeviceWidth={700}>
         {matches => (
@@ -119,20 +119,18 @@ class RemoveUsersFromGroupDialog extends React.Component<
                 <ul style={styles.list}>
                   {selected.map((user: User) => (
                     <li key={user.Id} style={styles.listItem}>
-                      {
-                        // tslint:disable-next-line:no-string-literal
-                        user['FullName']
-                      }
+                      {// tslint:disable-next-line:no-string-literal
+                      user['FullName'] || user['DisplayName']}
                     </li>
                   ))}
                 </ul>
               </div>
               <div style={{ opacity: 0.54 }}>{resources.FROM_GROUP}</div>
               <ul style={styles.list}>
-                {this.props.users
-                  ? this.props.users.map(user => (
-                      <li key={user.Id} style={styles.listItem}>
-                        {user.FullName || user.DisplayName}
+                {groups
+                  ? groups.map(g => (
+                      <li key={g.Id} style={styles.listItem}>
+                        {g.DisplayName}
                       </li>
                     ))
                   : null}

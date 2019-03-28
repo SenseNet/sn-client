@@ -69,7 +69,7 @@ class MembersListToolbar extends Component<ReturnType<typeof mapStateToProps> & 
   public handleClick = () => {
     if (this.props.group) {
       this.props.openDialog(
-        <RemoveUsersFromGroupDialog users={this.props.users} group={this.props.group} />,
+        <RemoveUsersFromGroupDialog users={this.props.users} groups={[this.props.group]} />,
         resources.DELETE,
         this.props.closeDialog,
       )

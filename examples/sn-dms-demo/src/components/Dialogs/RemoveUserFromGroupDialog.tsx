@@ -118,10 +118,8 @@ class RemoveUserFromGroupDialog extends React.Component<
                 <ul style={styles.list}>
                   {selected.map((user: User) => (
                     <li key={user.Id} style={styles.listItem}>
-                      {
-                        // tslint:disable-next-line:no-string-literal
-                        user['FullName']
-                      }
+                      {// tslint:disable-next-line:no-string-literal
+                      user['FullName'] || user['DisplayName']}
                     </li>
                   ))}
                 </ul>
@@ -152,7 +150,7 @@ class RemoveUserFromGroupDialog extends React.Component<
                   variant="contained"
                   color="secondary"
                   style={styles.deleteButton}>
-                  {resources.DELETE}
+                  {resources.REMOVE}
                 </Button>
               </div>
             </div>
