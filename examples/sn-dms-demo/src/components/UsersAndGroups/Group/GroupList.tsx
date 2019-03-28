@@ -116,7 +116,7 @@ class GroupList extends Component<ReturnType<typeof mapStateToProps> & typeof ma
         fieldsToDisplay={
           matchesDesktop
             ? items.length > 0 && items[0].Type === 'Group'
-              ? ['DisplayName', 'Path', 'Actions']
+              ? ['DisplayName', 'Path', 'Description', 'Actions']
               : ['DisplayName']
             : ['DisplayName', 'Actions']
         }
