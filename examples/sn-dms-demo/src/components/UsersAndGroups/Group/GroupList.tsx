@@ -128,7 +128,7 @@ class GroupList extends Component<ReturnType<typeof mapStateToProps> & typeof ma
         onRequestActionsMenu={(ev, content) => {
           ev.preventDefault()
           this.props.closeActionMenu()
-          if (content.Actions && (content.Actions as ActionModel[]).length > 0) {
+          if (content.Actions && (content.Actions as ActionModel[]).length > 0 && content.Type === 'Group') {
             this.props.openActionMenu(content.Actions as ActionModel[], content, '', ev.currentTarget.parentElement, {
               top: ev.clientY,
               left: ev.clientX,
@@ -138,7 +138,7 @@ class GroupList extends Component<ReturnType<typeof mapStateToProps> & typeof ma
         onItemContextMenu={(ev, content) => {
           ev.preventDefault()
           this.props.closeActionMenu()
-          if (content.Actions && (content.Actions as ActionModel[]).length > 0) {
+          if (content.Actions && (content.Actions as ActionModel[]).length > 0 && content.Type === 'Group') {
             this.props.openActionMenu(content.Actions as ActionModel[], content, '', ev.currentTarget.parentElement, {
               top: ev.clientY,
               left: ev.clientX,
