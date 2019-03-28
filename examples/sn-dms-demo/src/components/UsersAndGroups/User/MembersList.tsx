@@ -92,26 +92,6 @@ class MembersList extends Component<
         orderDirection={childrenOptions.orderby ? childrenOptions.orderby[0][1] : ('asc' as any)}
         onRequestSelectionChange={newSelection => this.props.selectUser(newSelection)}
         onRequestActiveItemChange={active => this.props.setActive(active)}
-        onRequestActionsMenu={(ev, content) => {
-          ev.preventDefault()
-          this.props.closeActionMenu()
-          if (content.Actions && (content.Actions as ActionModel[]).length > 0) {
-            this.props.openActionMenu(content.Actions as ActionModel[], content, '', ev.currentTarget.parentElement, {
-              top: ev.clientY,
-              left: ev.clientX,
-            })
-          }
-        }}
-        onItemContextMenu={(ev, content) => {
-          ev.preventDefault()
-          this.props.closeActionMenu()
-          if (content.Actions && (content.Actions as ActionModel[]).length > 0) {
-            this.props.openActionMenu(content.Actions as ActionModel[], content, '', ev.currentTarget.parentElement, {
-              top: ev.clientY,
-              left: ev.clientX,
-            })
-          }
-        }}
         onRequestOrderChange={(field, direction) => {
           if (field !== 'Workspace' && field !== 'Actions') {
             this.props.updateChildrenOptions({
