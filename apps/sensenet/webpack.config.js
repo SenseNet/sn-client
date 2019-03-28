@@ -1,9 +1,9 @@
 var path = require('path')
-const webpack = require('webpack')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+// const webpack = require('webpack')
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
-const autoprefixer = require('autoprefixer')
+// const autoprefixer = require('autoprefixer')
 
 module.exports = {
   mode: 'development',
@@ -60,26 +60,26 @@ module.exports = {
               importLoaders: 1,
             },
           },
-          {
-            loader: require.resolve('postcss-loader'),
-            options: {
-              // Necessary for external CSS imports to work
-              // https://github.com/facebookincubator/create-react-app/issues/2677
-              ident: 'postcss',
-              plugins: () => [
-                require('postcss-flexbugs-fixes'),
-                autoprefixer({
-                  browsers: [
-                    '>1%',
-                    'last 4 versions',
-                    'Firefox ESR',
-                    'not ie < 9', // React doesn't support IE8 anyway
-                  ],
-                  flexbox: 'no-2009',
-                }),
-              ],
-            },
-          },
+          // {
+          //   loader: require.resolve('postcss-loader'),
+          //   options: {
+          //     // Necessary for external CSS imports to work
+          //     // https://github.com/facebookincubator/create-react-app/issues/2677
+          //     ident: 'postcss',
+          //     plugins: () => [
+          //       require('postcss-flexbugs-fixes'),
+          //       autoprefixer({
+          //         browsers: [
+          //           '>1%',
+          //           'last 4 versions',
+          //           'Firefox ESR',
+          //           'not ie < 9', // React doesn't support IE8 anyway
+          //         ],
+          //         flexbox: 'no-2009',
+          //       }),
+          //     ],
+          //   },
+          // },
         ],
       },
       {
@@ -92,13 +92,4 @@ module.exports = {
       },
     ],
   },
-
-  // When importing a module whose path matches one of the following, just
-  // assume a corresponding global variable exists and use that instead.
-  // This is important because it allows us to avoid bundling all of our
-  // dependencies, which allows browsers to cache those libraries between builds.
-  // externals: {
-  //    "react": "React",
-  //    "react-dom": "ReactDOM"
-  // },
 }

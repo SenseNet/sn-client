@@ -35,7 +35,6 @@ const DesktopAppBar: React.StatelessComponent<
           }}>
           {personalSettings.drawer.type === 'temporary' ? (
             <IconButton
-              // style={{ padding: 0 }}
               onClick={() => {
                 props.openDrawer && props.openDrawer()
               }}>

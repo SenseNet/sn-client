@@ -7,6 +7,7 @@ import { DesktopLayout } from './components/layout/DesktopLayout'
 import { MainRouter } from './components/MainRouter'
 import { ContentRoutingContextProvider } from './context/ContentRoutingContext'
 import { InjectorContext } from './context/InjectorContext'
+import { LocalizationProvider } from './context/LocalizationContext'
 import { PersonalSettingsContextProvider } from './context/PersonalSettingsContext'
 import { RepositoryContextProvider } from './context/RepositoryContext'
 import { ResponsiveContextProvider } from './context/ResponsiveContextProvider'
@@ -41,23 +42,25 @@ ReactDOM.render(
     <Provider store={store}>
       <InjectorContext.Provider value={injector}>
         <PersonalSettingsContextProvider>
-          <HashRouter>
-            <Route path="/:repo?">
-              <RepositoryContextProvider>
-                <ContentRoutingContextProvider>
-                  <SessionContextProvider>
-                    <ResponsiveContextProvider>
-                      <ThemeProvider theme={theme}>
-                        <DesktopLayout>
-                          <MainRouter />
-                        </DesktopLayout>{' '}
-                      </ThemeProvider>
-                    </ResponsiveContextProvider>
-                  </SessionContextProvider>
-                </ContentRoutingContextProvider>
-              </RepositoryContextProvider>
-            </Route>
-          </HashRouter>
+          <LocalizationProvider>
+            <HashRouter>
+              <Route path="/:repo?">
+                <RepositoryContextProvider>
+                  <ContentRoutingContextProvider>
+                    <SessionContextProvider>
+                      <ResponsiveContextProvider>
+                        <ThemeProvider theme={theme}>
+                          <DesktopLayout>
+                            <MainRouter />
+                          </DesktopLayout>{' '}
+                        </ThemeProvider>
+                      </ResponsiveContextProvider>
+                    </SessionContextProvider>
+                  </ContentRoutingContextProvider>
+                </RepositoryContextProvider>
+              </Route>
+            </HashRouter>
+          </LocalizationProvider>
         </PersonalSettingsContextProvider>
       </InjectorContext.Provider>
     </Provider>

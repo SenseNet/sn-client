@@ -23,6 +23,7 @@ export interface UiSettings {
 export type PersonalSettingsType = PlatformDependent<UiSettings> & {
   repositories: Array<{ url: string; loginName?: string; displayName?: string }>
   lastRepository: string
+  language: 'default' | 'hungarian'
 }
 
 export const defaultSettings: PersonalSettingsType = {
@@ -50,6 +51,7 @@ export const defaultSettings: PersonalSettingsType = {
   },
   repositories: [],
   lastRepository: '',
+  language: 'default',
 }
 
 @Injectable()

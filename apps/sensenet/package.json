@@ -26,7 +26,7 @@
     "publish:development": "npm run build && npm t && npm run typedoc && npm publish --tag development",
     "prepublishOnly": "npm run build",
     "typedoc": "typedoc --mode file --out documentation src --tsconfig tsconfig.json --theme c:/Users/%USERNAME%/AppData/Roaming/npm/node_modules/@sensenet/typedoc-theme/sn-theme",
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server --progress"
   },
   "private": true,
   "publishConfig": {
@@ -65,6 +65,7 @@
     "source-map-loader": "^0.2.4",
     "style-loader": "^0.23.1",
     "ts-jest": "^24.0.0",
+    "ts-node": "^8.0.2",
     "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.18.0",
     "tslint-react": "^3.6.0",
