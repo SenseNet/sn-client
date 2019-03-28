@@ -16,6 +16,7 @@ import { resources } from '../../../assets/resources'
 import { customSchema } from '../../../assets/schema'
 import { rootStateType } from '../../../store/rootReducer'
 import { selectGroup, setActive, updateChildrenOptions } from '../../../store/usersandgroups/actions'
+import { DescriptionCell } from '../../ContentList/CellTemplates/DescriptionCell'
 import { DisplayNameCell } from '../../ContentList/CellTemplates/DisplayNameCell'
 import { DisplayNameMobileCell } from '../../ContentList/CellTemplates/DisplayNameMobileCell'
 import DeleteDialog from '../../Dialogs/DeleteDialog'
@@ -227,6 +228,8 @@ class GroupList extends Component<ReturnType<typeof mapStateToProps> & typeof ma
                   <TableCell padding="checkbox">{resources.LOCAL}</TableCell>
                 )
               }
+            case 'Description':
+              return <DescriptionCell content={props.content} />
             default:
               return null
           }
