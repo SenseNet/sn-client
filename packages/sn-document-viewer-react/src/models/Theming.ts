@@ -6,17 +6,41 @@ import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
 export const defaultTheme = createMuiTheme({
   palette: {
     primary: {
-      main: '#ff9800',
+      main: '#3c91f1',
     },
     secondary: {
       main: '#ff9800',
     },
     background: {
       default: '#f5f5f5',
-      paper: '#ffffff',
+      paper: '#fff',
     },
   },
   overrides: {
+    MuiTypography: {
+      h4: { padding: '10px', paddingBottom: '16px' },
+    },
+    MuiCard: {
+      root: {
+        backgroundColor: 'transparent',
+        boxShadow: 'none',
+      },
+    },
+    MuiCardContent: {
+      root: {
+        '&:last-child': {
+          paddingBottom: '16px',
+        },
+      },
+    },
+    MuiFilledInput: {
+      root: {
+        backgroundColor: '#fff',
+      },
+      multiline: {
+        padding: '27px 0px 10px 10px',
+      },
+    },
     MuiDrawer: {
       paper: {
         backgroundColor: 'transparent',
@@ -27,7 +51,7 @@ export const defaultTheme = createMuiTheme({
     },
     MuiToolbar: {
       root: {
-        backgroundColor: '#2a2a2c',
+        backgroundColor: '#fff',
         color: '#707070',
       },
     },

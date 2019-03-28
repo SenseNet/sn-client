@@ -24,7 +24,7 @@ export const DeleteButton = (props: DeleteButtonProps) => {
 
   return (
     <>
-      <Button size="small" onClick={handleClick}>
+      <Button color="primary" size="small" onClick={handleClick}>
         {props.localization.delete || 'delete'}
       </Button>
       <ConfirmationDialog

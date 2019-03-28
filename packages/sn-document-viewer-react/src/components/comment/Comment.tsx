@@ -5,10 +5,10 @@ import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
 import Collapse from '@material-ui/core/Collapse'
+import Typography from '@material-ui/core/Typography'
 import React, { useState } from 'react'
 import { FunctionComponent } from 'react'
 import { connect } from 'react-redux'
-import styled from 'styled-components'
 import { Comment as CommentType } from '../../models/Comment'
 import { componentType } from '../../services'
 import { deleteComment, RootReducerType } from '../../store'
@@ -25,13 +25,6 @@ const mapDispatchToProps = {
   setSelectedCommentId,
 }
 
-const StyledCardContent = styled(CardContent)`
-  font-size: 14px;
-  letter-spacing: 0.2px;
-  line-height: 20px;
-  word-wrap: break-word;
-`
-
 /**
  * Comment prop type
  */
@@ -46,13 +39,18 @@ export const CommentComponent: FunctionComponent<CommentPropType> = props => {
   const isLongText = props.text && props.text.length > MAX_TEXT_LENGTH
   const [isOpen, setIsOpen] = useState(!isLongText)
   return (
-    <Card raised={props.selectedCommentId === props.id} onClick={() => props.setSelectedCommentId(props.id)}>
+    <Card
+      style={{ width: '100%' }}
+      raised={props.selectedCommentId === props.id}
+      onClick={() => props.setSelectedCommentId(props.id)}>
       <CardHeader
         avatar={<Avatar src={props.createdBy.avatarUrl} alt={props.localization.avatarAlt} />}
         title={props.createdBy.displayName}
       />
       <Collapse in={isOpen} timeout="auto" collapsedHeight={isOpen ? '0px' : '78px'}>
-        <StyledCardContent>{props.text}</StyledCardContent>
+        <CardContent>
+          <Typography>{props.text}</Typography>
+        </CardContent>
       </Collapse>
       <CardActions>
         {isLongText ? (
