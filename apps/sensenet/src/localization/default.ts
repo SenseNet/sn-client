@@ -22,6 +22,13 @@ const values = {
     greetings: 'Greetings, {0}!',
     loggingInTo: 'Logging in to {0}...',
   },
+  logout: {
+    logoutButtonTitle: 'Log out',
+    logoutDialogTitle: 'Really log out?',
+    loggingOutFrom: 'Logging out from {0}...',
+    logoutConfirmText: 'You are logged in to {0} as {1}. Are you sure that you want to leave?',
+    logoutCancel: 'Cancel',
+  },
   personalSettings: {
     drawer: 'Options for the left drawer',
     drawerEnable: 'Enable or disable the drawer',

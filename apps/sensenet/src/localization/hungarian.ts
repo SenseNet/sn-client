@@ -24,6 +24,13 @@ const values: DeepPartial<typeof import('./default').default> = {
     repositoryLabel: 'Elérési út',
     repositoryHelperText: 'A repository teljes elérési útja (pl.: https://my-sensenet.com)',
   },
+  logout: {
+    logoutCancel: 'Mégsem',
+    logoutButtonTitle: 'Kijelentkezés',
+    logoutDialogTitle: 'Biztosan kijelentkezel?',
+    loggingOutFrom: "Kijelentkezés a '{0}' repository-ból... ",
+    logoutConfirmText: 'Jelenleg a {0} repository-t használod {1} felhasználóval. Biztosan kijelentkezel?',
+  },
   personalSettings: {
     languageTitle: 'A választott nyelv megnevezése',
     themeTitle: 'Sötét vagy világot színséma beállítása',
