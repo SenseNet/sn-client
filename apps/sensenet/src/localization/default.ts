@@ -9,6 +9,14 @@ const values = {
     delete: 'Delete',
     open: 'Open',
   },
+  contentInfoDialog: {
+    dialogTitle: 'Info about {0}',
+    type: 'Type',
+    owner: 'Owner',
+    path: 'Path',
+    created: 'Created',
+    unknownOwner: 'Unknown',
+  },
   drawer: {
     personalSettingsTitle: 'Edit personal settings',
     personalSettingsSecondaryText: 'Customize the application behavior',

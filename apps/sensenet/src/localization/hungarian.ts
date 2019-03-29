@@ -11,6 +11,14 @@ const values: DeepPartial<typeof import('./default').default> = {
     move: 'Áthelyezés',
     open: 'Megnyitás',
   },
+  contentInfoDialog: {
+    dialogTitle: '{0} tulajdonságai',
+    type: 'Típus',
+    owner: 'Tulajdonos',
+    path: 'Elérési út',
+    created: 'Létrehozva',
+    unknownOwner: 'Ismeretlen',
+  },
   drawer: {
     contentTitle: 'Tartalom',
     contentSecondaryText: 'Tartalom böngészése',
