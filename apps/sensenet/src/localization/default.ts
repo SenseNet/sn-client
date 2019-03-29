@@ -1,4 +1,9 @@
 const values = {
+  addButton: {
+    tooltip: 'Create or upload content',
+    new: 'New...',
+    upload: 'Upload',
+  },
   commandPalette: {
     title: 'Show Command Palette',
   },
