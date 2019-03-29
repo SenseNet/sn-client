@@ -1,12 +1,26 @@
 import { Upload } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
-import { File as SnFile } from '@sensenet/default-content-types'
+import { File as SnFile, GenericContent, Settings } from '@sensenet/default-content-types'
+import { Uri } from 'monaco-editor'
 import React, { useContext, useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
 import { ContentRoutingContext } from '../../context/ContentRoutingContext'
 import { RepositoryContext } from '../../context/RepositoryContext'
 import { ResponsiveContext } from '../../context/ResponsiveContextProvider'
 import { ThemeContext } from '../../context/ThemeContext'
+import { isContentFromType } from '../../utils/isContentFromType'
+
+const getMonacoModelUri = (content: GenericContent) => {
+  if (isContentFromType(content, Settings)) {
+    return Uri.parse(`sensenet://${content.Type}/${content.Name}`)
+  }
+  if (isContentFromType(content, SnFile)) {
+    if (content.Binary) {
+      return Uri.parse(`sensenet://${content.Type}/${content.Binary.__mediaresource.content_type}`)
+    }
+  }
+  return Uri.parse(`sensenet://${content.Type}`)
+}
 
 export interface TextEditorProps {
   content: SnFile
@@ -23,15 +37,15 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
 
   const [textValue, setTextValue] = useState('')
   const [language, setLanguage] = useState(ctx.getMonacoLanguage(props.content))
-  const [uri, setUri] = useState<any>(ctx.getMonacoModelUri(props.content))
+  const [uri, setUri] = useState<any>(getMonacoModelUri(props.content))
 
   useEffect(() => {
-    setUri(ctx.getMonacoModelUri(props.content))
+    setUri(getMonacoModelUri(props.content))
     setLanguage(ctx.getMonacoLanguage(props.content))
   }, [props.content])
 
   useEffect(() => {
-    setUri(ctx.getMonacoModelUri(props.content))
+    setUri(getMonacoModelUri(props.content))
     setLanguage(ctx.getMonacoLanguage(props.content))
     ;(async () => {
       if (props.loadContent) {

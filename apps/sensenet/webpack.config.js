@@ -1,11 +1,9 @@
 var path = require('path')
 // const webpack = require('webpack')
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
 const TsConfigWebpackPlugin = require('ts-config-webpack-plugin')
-
-// const autoprefixer = require('autoprefixer')
 
 module.exports = {
   mode: 'development',
@@ -25,6 +23,10 @@ module.exports = {
           name: 'vendors',
           chunks: 'all',
         },
+        monaco: {
+          test: /[\\/]node_modules[\\/]monaco-editor[\\/]/,
+          name: 'monaco',
+        },
       },
     },
     runtimeChunk: false,
@@ -36,7 +38,7 @@ module.exports = {
     extensions: ['.ts', '.tsx', '.js', '.json'],
   },
   plugins: [
-    // new BundleAnalyzerPlugin({ analyzerPort: 8745 }),
+    new BundleAnalyzerPlugin({ analyzerPort: 8745 }),
     new TsConfigWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './index.html',
