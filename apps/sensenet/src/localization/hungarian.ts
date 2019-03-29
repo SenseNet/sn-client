@@ -19,6 +19,15 @@ const values: DeepPartial<typeof import('./default').default> = {
     created: 'Létrehozva',
     unknownOwner: 'Ismeretlen',
   },
+  deleteContentDialog: {
+    dialogTitle: 'Tényleg törlöd?',
+    dialogContent: 'Az alábbi tartalmak törlésére készülsz:',
+    permanentlyLabel: 'Véglegesen',
+    permanentlyHint: 'A tartalom nem kerül a kukába, rögtön törlődik',
+    deletingContent: 'Törlés folyamatban...',
+    deleteButton: 'Törlés',
+    cancelButton: 'Mégsem',
+  },
   drawer: {
     contentTitle: 'Tartalom',
     contentSecondaryText: 'Tartalom böngészése',

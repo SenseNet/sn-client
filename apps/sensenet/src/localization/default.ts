@@ -17,6 +17,15 @@ const values = {
     created: 'Created',
     unknownOwner: 'Unknown',
   },
+  deleteContentDialog: {
+    dialogTitle: 'Really delete content?',
+    deletingContent: 'Deleting content...',
+    dialogContent: 'You are going to delete the following content:',
+    permanentlyLabel: 'Permanently',
+    permanentlyHint: "Don't move to trash, delete immediately",
+    deleteButton: 'Delete',
+    cancelButton: 'Cancel',
+  },
   drawer: {
     personalSettingsTitle: 'Edit personal settings',
     personalSettingsSecondaryText: 'Customize the application behavior',
