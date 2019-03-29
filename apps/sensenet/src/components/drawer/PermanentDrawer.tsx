@@ -13,6 +13,7 @@ import { PathHelper } from '@sensenet/client-utils'
 import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import { Link, matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
+import { LocalizationContext } from '../../context/LocalizationContext'
 import { PersonalSettingsContext } from '../../context/PersonalSettingsContext'
 import { RepositoryContext } from '../../context/RepositoryContext'
 import { ResponsivePersonalSetttings } from '../../context/ResponsiveContextProvider'
@@ -31,6 +32,7 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
 
   const [opened, setOpened] = useState(settings.drawer.type === 'permanent')
   const [items, setItems] = useState(getAllowedDrawerItems(session.groups))
+  const localization = useContext(LocalizationContext).values.drawer
 
   const [currentRepoEntry, setCurrentRepoEntry] = useState(
     personalSettings.repositories.find(r => r.url === PathHelper.trimSlashes(repo.configuration.repositoryUrl)),
@@ -69,39 +71,49 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
         }}>
         <div style={{ paddingTop: '1em' }}>
           {items
-            .filter(i => settings.drawer.items && settings.drawer.items.indexOf(i.primaryText) !== -1)
+            .filter(i => settings.drawer.items && settings.drawer.items.indexOf(i.name) !== -1)
             .map(item => {
               const isActive = matchPath(props.location.pathname, item.url)
               return isActive ? (
-                <ListItem button={true} disabled={true} key={item.primaryText}>
+                <ListItem button={true} disabled={true} key={item.name}>
                   <Tooltip
                     title={
                       <React.Fragment>
-                        {item.primaryText} <br /> {item.secondaryText}
+                        {localization[item.primaryText]} <br /> {localization[item.secondaryText]}
                       </React.Fragment>
                     }
                     placement="right">
                     <ListItemIcon>{item.icon}</ListItemIcon>
                   </Tooltip>
-                  {opened ? <ListItemText primary={item.primaryText} secondary={item.secondaryText} /> : null}
+                  {opened ? (
+                    <ListItemText
+                      primary={localization[item.primaryText]}
+                      secondary={localization[item.secondaryText]}
+                    />
+                  ) : null}
                 </ListItem>
               ) : (
                 <NavLink
                   to={`/${btoa(repo.configuration.repositoryUrl)}${item.url}`}
                   activeStyle={{ opacity: 1 }}
                   style={{ textDecoration: 'none', opacity: 0.54 }}
-                  key={item.primaryText}>
+                  key={item.name}>
                   <ListItem button={true}>
                     <Tooltip
                       title={
                         <React.Fragment>
-                          {item.primaryText} <br /> {item.secondaryText}
+                          {localization[item.primaryText]} <br /> {localization[item.secondaryText]}
                         </React.Fragment>
                       }
                       placement="right">
                       <ListItemIcon>{item.icon}</ListItemIcon>
                     </Tooltip>
-                    {opened ? <ListItemText primary={item.primaryText} secondary={item.secondaryText} /> : null}
+                    {opened ? (
+                      <ListItemText
+                        primary={localization[item.primaryText]}
+                        secondary={localization[item.secondaryText]}
+                      />
+                    ) : null}
                   </ListItem>
                 </NavLink>
               )
@@ -120,7 +132,7 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
                 />
                 <ListItemSecondaryAction>
                   <Link to={`/personalSettings`} style={{ textDecoration: 'none' }}>
-                    <IconButton title="Edit personal settings">
+                    <IconButton title={localization.personalSettingsTitle}>
                       <Settings />
                     </IconButton>
                   </Link>
@@ -139,7 +151,7 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
                   <Tooltip
                     title={
                       <React.Fragment>
-                        {'Personal settings'} <br /> {'Customize the application behavior'}
+                        {localization.personalSettingsTitle} <br /> {localization.personalSettingsSecondaryText}
                       </React.Fragment>
                     }
                     placement="right">

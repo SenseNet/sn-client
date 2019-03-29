@@ -12,7 +12,6 @@ import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew'
 import { ConstantContent, FormsAuthenticationService, LoginState } from '@sensenet/client-core'
 import { sleepAsync } from '@sensenet/client-utils'
 import React, { useContext, useEffect, useState } from 'react'
-import { ContentRoutingContext } from '../context/ContentRoutingContext'
 import { LocalizationContext } from '../context/LocalizationContext'
 import { RepositoryContext } from '../context/RepositoryContext'
 import { SessionContext } from '../context/SessionContext'
@@ -26,7 +25,6 @@ export const LogoutButton: React.FunctionComponent<{
   const session = useContext(SessionContext)
   const theme = useContext(ThemeContext)
   const repo = useContext(RepositoryContext)
-  const ctx = useContext(ContentRoutingContext)
   const [showLogout, setShowLogout] = useState(false)
 
   const [userToLogout, setUserToLogout] = useState({ ...session.currentUser })
