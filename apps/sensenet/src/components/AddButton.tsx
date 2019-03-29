@@ -111,7 +111,7 @@ export const AddButton: React.FunctionComponent = () => {
         </div>
       </SwipeableDrawer>
       <Dialog open={showAddNewDialog} onClose={() => setShowAddNewDialog(false)}>
-        <DialogTitle>Create new {selectedSchema.DisplayName}</DialogTitle>
+        <DialogTitle> {localization.dialogTitle.replace('{0}', selectedSchema.DisplayName)}</DialogTitle>
         <DialogContent>
           <NewViewComponent
             repositoryUrl={repo.configuration.repositoryUrl}

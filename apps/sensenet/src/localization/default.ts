@@ -2,6 +2,7 @@ const values = {
   addButton: {
     tooltip: 'Create or upload content',
     new: 'New...',
+    dialogTitle: 'Create new {0}',
     upload: 'Upload',
   },
   commandPalette: {

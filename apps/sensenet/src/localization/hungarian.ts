@@ -5,6 +5,7 @@ const values: DeepPartial<typeof import('./default').default> = {
     new: 'Új...',
     tooltip: 'Tartalom létrehozása vagy feltöltése',
     upload: 'Feltöltés',
+    dialogTitle: 'Új {0} létrehozása',
   },
   commandPalette: {
     title: 'Command palette megnyitása',
