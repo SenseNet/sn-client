@@ -251,6 +251,15 @@ export const allowedTypes: Reducer<GenericContent[]> = (state = [], action: AnyA
   }
 }
 
+export const members: Reducer<GenericContent[]> = (state = [], action: AnyAction) => {
+  switch (action.type) {
+    case 'DMS_USERSANDGROUPS_SET_MEMBERS':
+      return action.members
+    default:
+      return state
+  }
+}
+
 export const group = combineReducers({
   selected: selectedGroups,
   all,
@@ -263,6 +272,7 @@ export const group = combineReducers({
   parent,
   parentIdOrPath,
   active,
+  members,
 })
 
 export const usersAndGroups = combineReducers({

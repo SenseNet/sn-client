@@ -1,7 +1,7 @@
 import Button from '@material-ui/core/Button'
 import withStyles from '@material-ui/core/styles/withStyles'
 import Typography from '@material-ui/core/Typography'
-import { GenericContent, Group, User } from '@sensenet/default-content-types'
+import { Group, User } from '@sensenet/default-content-types'
 import { Actions } from '@sensenet/redux'
 import * as React from 'react'
 import { connect } from 'react-redux'
@@ -55,13 +55,13 @@ const styles = {
   normalList: {},
 }
 
-interface RemoveUserFromGroupDialogProps {
+interface RemoveUsersFromGroupDialogProps {
   permanent?: boolean
-  user: GenericContent | null
+  users: User[]
   groups: Group[]
 }
 
-interface RemoveUserFromGroupDialogState {
+interface RemoveUsersFromGroupDialogState {
   checked: boolean
 }
 
@@ -78,14 +78,14 @@ const mapDispatchToProps = {
   removeMemberFromGroups,
 }
 
-class RemoveUserFromGroupDialog extends React.Component<
-  { classes: any } & RemoveUserFromGroupDialogProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
-  RemoveUserFromGroupDialogState
+class RemoveUsersFromGroupDialog extends React.Component<
+  { classes: any } & RemoveUsersFromGroupDialogProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
+  RemoveUsersFromGroupDialogState
 > {
   public state = {
     checked: this.props.permanent === null || !this.props.permanent ? false : true,
   }
-  constructor(props: RemoveUserFromGroupDialog['props']) {
+  constructor(props: RemoveUsersFromGroupDialog['props']) {
     super(props)
     this.submitCallback = this.submitCallback.bind(this)
   }
@@ -99,12 +99,13 @@ class RemoveUserFromGroupDialog extends React.Component<
     this.props.closeCallback()
   }
   public submitCallback = () => {
-    const { user, groups } = this.props
-    this.props.removeMemberFromGroups([user ? user.Id : 0], groups)
+    const { users, groups } = this.props
+    const userIds = users.map(user => user.Id)
+    this.props.removeMemberFromGroups(userIds, groups)
     this.props.closeDialog()
   }
   public render() {
-    const { selected } = this.props
+    const { selected, groups } = this.props
     return (
       <MediaQuery minDeviceWidth={700}>
         {matches => (
@@ -113,7 +114,7 @@ class RemoveUserFromGroupDialog extends React.Component<
               {resources.REMOVE}
             </Typography>
             <div style={styles.inner}>
-              <div style={{ opacity: 0.54 }}>{resources.ARE_YOU_SURE_YOU_WANT_TO_REMOVE_USER}</div>
+              <div style={{ opacity: 0.54 }}>{resources.ARE_YOU_SURE_YOU_WANT_TO_REMOVE_THE_FOLLOWING_MEMBERS}</div>
               <div style={selected.length > 3 ? styles.longList : styles.normalList}>
                 <ul style={styles.list}>
                   {selected.map((user: User) => (
@@ -126,13 +127,10 @@ class RemoveUserFromGroupDialog extends React.Component<
               </div>
               <div style={{ opacity: 0.54 }}>{resources.FROM_GROUP}</div>
               <ul style={styles.list}>
-                {this.props.groups
-                  ? this.props.groups.map(group => (
-                      <li key={group.Id} style={styles.listItem}>
-                        {
-                          // tslint:disable-next-line:no-string-literal
-                          group.DisplayName
-                        }
+                {groups
+                  ? groups.map(g => (
+                      <li key={g.Id} style={styles.listItem}>
+                        {g.DisplayName}
                       </li>
                     ))
                   : null}
@@ -164,4 +162,4 @@ class RemoveUserFromGroupDialog extends React.Component<
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withStyles(styles as any)(RemoveUserFromGroupDialog))
+)(withStyles(styles as any)(RemoveUsersFromGroupDialog))
