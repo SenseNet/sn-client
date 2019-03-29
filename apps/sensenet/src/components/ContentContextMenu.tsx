@@ -14,6 +14,7 @@ import React, { useContext, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { ContentRoutingContext } from '../context/ContentRoutingContext'
 import { CurrentContentContext } from '../context/CurrentContent'
+import { LocalizationContext } from '../context/LocalizationContext'
 import { ResponsiveContext } from '../context/ResponsiveContextProvider'
 import { ContentInfoDialog } from './ContentInfoDialog'
 import { DeleteContentDialog } from './DeleteContentDialog'
@@ -32,6 +33,7 @@ export const ContentContextMenuComponent: React.FunctionComponent<
   const content = useContext(CurrentContentContext)
   const device = useContext(ResponsiveContext)
   const routing = useContext(ContentRoutingContext)
+  const localization = useContext(LocalizationContext).values.contentContextMenu
   const [isDeleteOpened, setIsDeleteOpened] = useState(false)
   const [isEditPropertiesOpened, setIsEditPropertiesOpened] = useState(false)
   const [isInfoDialogOpened, setIsInfoDialogOpened] = useState(false)
@@ -72,7 +74,7 @@ export const ContentContextMenuComponent: React.FunctionComponent<
               <ListItemIcon>
                 <Icon item={content} />
               </ListItemIcon>
-              <ListItemText primary="Open" />
+              <ListItemText primary={localization.open} />
             </ListItem>
             <ListItem
               button={true}
@@ -83,19 +85,19 @@ export const ContentContextMenuComponent: React.FunctionComponent<
               <ListItemIcon>
                 <Create />
               </ListItemIcon>
-              <ListItemText primary="Edit properties" />
+              <ListItemText primary={localization.editProperties} />
             </ListItem>
             <ListItem button={true} disabled={true}>
               <ListItemIcon>
                 <FileCopy />
               </ListItemIcon>
-              <ListItemText primary="Copy" />
+              <ListItemText primary={localization.copy} />
             </ListItem>
             <ListItem button={true} disabled={true}>
               <ListItemIcon>
                 <FileMove />
               </ListItemIcon>
-              <ListItemText primary="Move" />
+              <ListItemText primary={localization.move} />
             </ListItem>
             <ListItem
               button={true}
@@ -108,7 +110,7 @@ export const ContentContextMenuComponent: React.FunctionComponent<
               <ListItemIcon>
                 <Delete />
               </ListItemIcon>
-              <ListItemText primary="Delete" />
+              <ListItemText primary={localization.delete} />
             </ListItem>
           </List>
         </Drawer>
@@ -135,7 +137,7 @@ export const ContentContextMenuComponent: React.FunctionComponent<
             <ListItemIcon>
               <Icon item={content} />
             </ListItemIcon>
-            Open
+            {localization.open}
           </MenuItem>
           <MenuItem
             onClick={() => {
@@ -145,19 +147,19 @@ export const ContentContextMenuComponent: React.FunctionComponent<
             <ListItemIcon>
               <Create />
             </ListItemIcon>
-            Edit Properties
+            {localization.editProperties}
           </MenuItem>
           <MenuItem disabled={true}>
             <ListItemIcon>
               <FileCopy />
             </ListItemIcon>
-            Copy
+            {localization.copy}
           </MenuItem>
           <MenuItem disabled={true}>
             <ListItemIcon>
               <FileMove />
             </ListItemIcon>
-            Move
+            {localization.move}
           </MenuItem>
           <MenuItem
             onClick={ev => {
@@ -169,7 +171,7 @@ export const ContentContextMenuComponent: React.FunctionComponent<
             <ListItemIcon>
               <Delete />
             </ListItemIcon>
-            Delete
+            {localization.delete}
           </MenuItem>
         </Menu>
       )}

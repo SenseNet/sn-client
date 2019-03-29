@@ -1,5 +1,14 @@
 const values = {
-  CommandPaletteTitle: 'Show Command Palette',
+  commandPalette: {
+    title: 'Show Command Palette',
+  },
+  contentContextMenu: {
+    editProperties: 'Edit properties',
+    copy: 'Copy',
+    move: 'Move',
+    delete: 'Delete',
+    open: 'Open',
+  },
   personalSettings: {
     drawer: 'Options for the left drawer',
     drawerEnable: 'Enable or disable the drawer',
@@ -19,7 +28,7 @@ const values = {
     platformDependentTitle: 'Platform dependent setting',
     lastRepository: 'The last visited repository URL',
     languageTitle: 'The name of the active language',
-    themeTitle: 'Set up the active theme',
+    themeTitle: 'Select a dark or a light theme',
   },
 }
 

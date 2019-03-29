@@ -140,7 +140,7 @@ export class CommandPaletteComponent extends React.Component<
           }}>
           <LocalizationContext.Consumer>
             {localization => (
-              <Tooltip style={{}} placeholder="bottom-end" title={localization.values.CommandPaletteTitle}>
+              <Tooltip style={{}} placeholder="bottom-end" title={localization.values.commandPalette.title}>
                 <IconButton
                   onClick={this.props.open}
                   disabled={this.props.isOpened}
