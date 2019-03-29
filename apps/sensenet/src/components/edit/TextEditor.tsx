@@ -28,6 +28,11 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
   useEffect(() => {
     setUri(ctx.getMonacoModelUri(props.content))
     setLanguage(ctx.getMonacoLanguage(props.content))
+  }, [props.content])
+
+  useEffect(() => {
+    setUri(ctx.getMonacoModelUri(props.content))
+    setLanguage(ctx.getMonacoLanguage(props.content))
     ;(async () => {
       if (props.loadContent) {
         const value = await props.loadContent(props.content)

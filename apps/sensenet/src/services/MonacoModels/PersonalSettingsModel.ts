@@ -2,16 +2,17 @@ import { Repository } from '@sensenet/client-core'
 import { editor, languages, Uri } from 'monaco-editor'
 import defaultLanguage from '../../localization/default'
 
-export const setupModel = (language = defaultLanguage, languageName = 'default') => {
-  const personalSettingsPath = `sensenet://settings/PersonalSettings-${languageName}`
+export const setupModel = (language = defaultLanguage) => {
+  const personalSettingsPath = `sensenet://settings/PersonalSettings`
+  const uri = Uri.parse(personalSettingsPath)
+  const uriString = uri.toString()
 
-  const uriString = Uri.parse(personalSettingsPath).toString()
   languages.json.jsonDefaults.setDiagnosticsOptions({
     validate: true,
     enableSchemaRequest: false,
     schemas: [
       {
-        uri: 'sn-admin-personal-settings',
+        uri: uriString.toString(), // `sn-admin-personal-settings-${languageName}`,
         fileMatch: [uriString],
         schema: {
           definitions: {
@@ -115,7 +116,7 @@ export const setupModel = (language = defaultLanguage, languageName = 'default')
       },
     ],
   })
-  const existingModel = editor.getModels().find(m => m.uri.toString() === uriString)
+  const existingModel = editor.getModel(uri)
   if (!existingModel) {
     return editor.createModel('', 'json', Uri.parse(personalSettingsPath))
   }

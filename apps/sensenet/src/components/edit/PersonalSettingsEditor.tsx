@@ -13,15 +13,14 @@ const SettingsEditor: React.FunctionComponent = () => {
   const service = injector.GetInstance(PersonalSettings)
   const settings = useContext(PersonalSettingsContext)
   const localization = useContext(LocalizationContext)
-  const [editorContent, setEditorContent] = useState({
+  const [editorContent] = useState({
     Type: 'Settings',
-    Name: `PersonalSettings-${settings.language}`,
+    Name: `PersonalSettings`,
   })
 
   useEffect(() => {
-    setupModel(localization.values, settings.language)
-    setEditorContent({ Type: 'Settings', Name: `PersonalSettings-${settings.language}` })
-  }, [settings.language])
+    setupModel(localization.values)
+  }, [localization.values])
 
   return (
     <TextEditor
@@ -29,7 +28,7 @@ const SettingsEditor: React.FunctionComponent = () => {
       loadContent={async () => JSON.stringify(settings, undefined, 3)}
       saveContent={async (_c, v) => {
         try {
-          service.setValue(deepMerge(defaultSettings, JSON.parse(v)))
+          await service.setValue(deepMerge(defaultSettings, JSON.parse(v)))
         } catch (error) {
           /** */
         }

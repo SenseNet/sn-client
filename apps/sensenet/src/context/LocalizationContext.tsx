@@ -3,15 +3,19 @@ import { useContext } from 'react'
 import DefaultLocalization from '../localization/default'
 import { LocalizationService } from '../services/LocalizationService'
 import { PersonalSettingsContext } from './PersonalSettingsContext'
+
+/**
+ * Context that can be used for getting localization values
+ */
 export const LocalizationContext = React.createContext({
-  // tslint:disable-next-line: no-unnecessary-type-annotation
-  setLanguage: (_language: string) => {
-    /** */
-  },
   service: new LocalizationService(),
   values: DefaultLocalization,
 })
 
+/**
+ * Context provider for Localization values. Update the PersonalSettings.language to load a new language into the context.
+ * @param props
+ */
 export const LocalizationProvider: React.FunctionComponent = props => {
   const [localizationService] = useState(new LocalizationService())
   const [currentLanguage, setCurrentLanguage] = useState('default')
@@ -36,7 +40,6 @@ export const LocalizationProvider: React.FunctionComponent = props => {
   return (
     <LocalizationContext.Provider
       value={{
-        setLanguage: lang => setCurrentLanguage(lang),
         values: currentValues,
         service: localizationService,
       }}>
