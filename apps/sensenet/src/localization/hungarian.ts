@@ -66,6 +66,12 @@ const values: DeepPartial<typeof import('./default').default> = {
     repositoryLoginName: 'A legutóbb használt bejelentkezési név',
     repositoryDisplayName: 'Egy tetszőleges megjelenítendő név',
   },
+  repositorySelector: {
+    anotherRepo: 'Másik repository',
+    loggedInAs: 'Bejelentkezve mint {0}',
+    notLoggedIn: 'Nincs bejelentkezve',
+    typeToFilter: 'Kezdj írni a szűréshez...',
+  },
 }
 
 export default values

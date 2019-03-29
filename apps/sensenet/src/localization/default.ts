@@ -64,6 +64,12 @@ const values = {
     languageTitle: 'The name of the active language',
     themeTitle: 'Select a dark or a light theme',
   },
+  repositorySelector: {
+    loggedInAs: 'You are currently logged in as {0}',
+    notLoggedIn: 'You are not logged in.',
+    anotherRepo: 'Another repository',
+    typeToFilter: 'Type to filter...',
+  },
 }
 
 export default values
