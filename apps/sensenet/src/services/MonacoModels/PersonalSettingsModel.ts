@@ -18,12 +18,15 @@ export const setupModel = (language = defaultLanguage) => {
           definitions: {
             drawer: {
               type: 'object',
-              description: 'Options for the left drawer',
+              description: language.personalSettings.drawer,
               properties: {
-                enabled: { type: 'boolean', description: 'Enable or disable the drawer' },
-                type: { enum: ['temporary', 'permanent', 'mini-variant'] },
+                enabled: { type: 'boolean', description: language.personalSettings.drawerEnable },
+                type: {
+                  description: language.personalSettings.drawerType,
+                  enum: ['temporary', 'permanent', 'mini-variant'],
+                },
                 items: {
-                  description: 'An array of enabled items',
+                  description: language.personalSettings.drawerItems,
                   type: 'array',
                   uniqueItems: true,
                   items: { enum: ['Content', 'Search', 'Users and Groups', 'Setup', 'Version info'] },
@@ -36,44 +39,44 @@ export const setupModel = (language = defaultLanguage) => {
               properties: {
                 url: {
                   type: 'string',
-                  description: 'The path of the repository, e.g.: https://my-sensenet-repository.org',
+                  description: language.personalSettings.repositoryUrl,
                 },
                 loginName: {
                   type: 'string',
-                  description: "The last user you've logged in with",
+                  description: language.personalSettings.repositoryLoginName,
                 },
                 displayName: {
                   type: 'string',
-                  description: `An optional user friendly name to display the repository when you're connected to it`,
+                  description: language.personalSettings.repositoryDisplayName,
                 },
               },
             },
             repositories: {
               type: 'array',
+              description: language.personalSettings.repositoryTitle,
               items: { $ref: '#/definitions/repository' },
             },
             commandPalette: {
               type: 'object',
-              description: 'Options for the command palette',
+              description: language.personalSettings.commandPaletteTitle,
               properties: {
-                enabled: { type: 'boolean', description: 'Enable or disable the command palette' },
+                enabled: { type: 'boolean', description: language.personalSettings.commandPaletteEnable },
                 wrapQuery: {
                   type: 'string',
-                  description: 'A wrapper for all queries executed from the command palette',
+                  description: language.personalSettings.commandPaletteWrapQuery,
                 },
               },
             },
             content: {
               type: 'object',
-              description: 'Content browsing and basic editing functions',
+              description: language.personalSettings.contentTitle,
               properties: {
                 browseType: {
-                  description:
-                    'Choose between a simple list, a two-panel (commander) or a tree + single panel (explorer) style view',
+                  description: language.personalSettings.contentBrowseType,
                   enum: ['simple', 'commander', 'explorer'],
                 },
                 fields: {
-                  description: 'Select fields to display',
+                  description: language.personalSettings.contentFields,
                   type: 'array',
                   uniqueItems: true,
                   items: {
@@ -89,9 +92,9 @@ export const setupModel = (language = defaultLanguage) => {
             },
             settings: {
               type: 'object',
-              description: 'One platform dependent setting object',
+              description: language.personalSettings.platformDependentTitle,
               properties: {
-                theme: { enum: ['dark', 'light'], descriptions: language.personalSettings.themeTitle },
+                theme: { enum: ['dark', 'light'], description: language.personalSettings.themeTitle },
                 content: { $ref: '#/definitions/content' },
                 drawer: { $ref: '#/definitions/drawer' },
                 commandPalette: { $ref: '#/definitions/commandPalette' },
@@ -106,7 +109,7 @@ export const setupModel = (language = defaultLanguage) => {
             tablet: { $ref: '#/definitions/settings' },
             desktop: { $ref: '#/definitions/settings' },
             repositories: { $ref: '#/definitions/repositories' },
-            lastRepository: { type: 'string', description: 'The last visited repository URL' },
+            lastRepository: { type: 'string', description: language.personalSettings.lastRepository },
             language: {
               description: language.personalSettings.languageTitle,
               enum: ['default', 'hungarian'],
