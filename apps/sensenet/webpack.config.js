@@ -3,6 +3,8 @@ var path = require('path')
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
+const TsConfigWebpackPlugin = require('ts-config-webpack-plugin')
+
 // const autoprefixer = require('autoprefixer')
 
 module.exports = {
@@ -25,16 +27,17 @@ module.exports = {
         },
       },
     },
-    runtimeChunk: true,
+    runtimeChunk: false,
   },
   // Enable sourcemaps for debugging webpack's output.
-  devtool: 'source-map',
+  devtool: 'eval-source-map', // 'source-map',
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
     extensions: ['.ts', '.tsx', '.js', '.json'],
   },
   plugins: [
     // new BundleAnalyzerPlugin({ analyzerPort: 8745 }),
+    new TsConfigWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './index.html',
     }),
@@ -46,10 +49,10 @@ module.exports = {
   module: {
     rules: [
       // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
-      { test: /\.tsx?$/, loader: 'awesome-typescript-loader' },
+      // { test: /\.tsx?$/, loader: 'awesome-typescript-loader' },
 
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-      { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader', exclude: /monaco-editor/ },
+      // { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader', exclude: /monaco-editor/ },
       {
         test: /\.css$/,
         use: [
@@ -60,26 +63,6 @@ module.exports = {
               importLoaders: 1,
             },
           },
-          // {
-          //   loader: require.resolve('postcss-loader'),
-          //   options: {
-          //     // Necessary for external CSS imports to work
-          //     // https://github.com/facebookincubator/create-react-app/issues/2677
-          //     ident: 'postcss',
-          //     plugins: () => [
-          //       require('postcss-flexbugs-fixes'),
-          //       autoprefixer({
-          //         browsers: [
-          //           '>1%',
-          //           'last 4 versions',
-          //           'Firefox ESR',
-          //           'not ie < 9', // React doesn't support IE8 anyway
-          //         ],
-          //         flexbox: 'no-2009',
-          //       }),
-          //     ],
-          //   },
-          // },
         ],
       },
       {
