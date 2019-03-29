@@ -45,6 +45,9 @@ const values = {
     versionInfoTitle: 'Version Info',
     versionInfoSecondaryText: 'Detailed version information about the current sensenet installation',
   },
+  editPropertiesDialog: {
+    dialogTitle: 'Edit {0}',
+  },
   login: {
     loginTitle: 'Login',
     loginButtonTitle: 'Login',

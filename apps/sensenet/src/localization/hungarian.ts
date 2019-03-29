@@ -47,6 +47,9 @@ const values: DeepPartial<typeof import('./default').default> = {
     personalSettingsTitle: 'Személyes beállítások',
     personalSettingsSecondaryText: 'Az alkalmazás teste szabása',
   },
+  editPropertiesDialog: {
+    dialogTitle: '{0} tulajdonságainak szerkesztése',
+  },
   login: {
     loginTitle: 'Bejelentkezés',
     loginButtonTitle: 'Bejelentkezés',

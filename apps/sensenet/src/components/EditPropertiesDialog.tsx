@@ -4,6 +4,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import { EditView } from '@sensenet/controls-react'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useContext } from 'react'
+import { LocalizationContext } from '../context/LocalizationContext'
 import { RepositoryContext } from '../context/RepositoryContext'
 
 export const EditPropertiesDialog: React.FunctionComponent<{
@@ -11,9 +12,12 @@ export const EditPropertiesDialog: React.FunctionComponent<{
   content: GenericContent
 }> = props => {
   const repo = useContext(RepositoryContext)
+  const localization = useContext(LocalizationContext).values.editPropertiesDialog
   return (
     <Dialog {...props.dialogProps}>
-      <DialogTitle>Edit {props.content.DisplayName || props.content.Name}</DialogTitle>
+      <DialogTitle>
+        {localization.dialogTitle.replace('{0}', props.content.DisplayName || props.content.Name)}{' '}
+      </DialogTitle>
       <DialogContent>
         <EditView
           content={props.content}
