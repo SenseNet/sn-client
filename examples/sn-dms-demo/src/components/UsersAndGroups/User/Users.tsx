@@ -1,3 +1,4 @@
+import { MuiThemeProvider } from '@material-ui/core'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import { ConstantContent } from '@sensenet/client-core'
@@ -7,10 +8,13 @@ import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { RouteComponentProps, withRouter } from 'react-router'
 import * as DMSActions from '../../../Actions'
+import { contentListTheme } from '../../../assets/contentlist'
 import { rootStateType } from '../../../store/rootReducer'
 import { getAllowedTypes, loadUser } from '../../../store/usersandgroups/actions'
 import BreadCrumb from '../../BreadCrumb'
+import { GridPlaceholder } from '../../Loaders/GridPlaceholder'
 import GroupSelector from '../GroupSelector/GroupSelector'
+import UserList from './UserList'
 
 const styles = {
   appBar: {
@@ -104,7 +108,7 @@ class Users extends Component<ReturnType<typeof mapStateToProps> & typeof mapDis
     } as Users['state']
   }
   public render() {
-    const { ancestors, currentItem, loggedinUser, match } = this.props
+    const { ancestors, currentItem, isLoading, loggedinUser, match } = this.props
     return (
       <MediaQuery minDeviceWidth={700}>
         {matches => {
@@ -126,6 +130,28 @@ class Users extends Component<ReturnType<typeof mapStateToProps> & typeof mapDis
                   </Toolbar>
                 </AppBar>
               ) : null}
+              {match.params.otherActions ? (
+                <div>aaa</div>
+              ) : (
+                <MuiThemeProvider theme={contentListTheme}>
+                  {isLoading ? (
+                    <GridPlaceholder
+                      columns={5}
+                      rows={3}
+                      style={{
+                        position: 'sticky',
+                        zIndex: isLoading ? 1 : -1,
+                        height: 0,
+                        opacity: isLoading ? 1 : 0,
+                        transition: 'opacity 500ms cubic-bezier(0.230, 1.000, 0.320, 1.000)',
+                      }}
+                      columnStyle={{ backgroundColor: 'white' }}
+                    />
+                  ) : (
+                    <UserList matchesDesktop={matches} />
+                  )}
+                </MuiThemeProvider>
+              )}
             </div>
           ) : null
         }}

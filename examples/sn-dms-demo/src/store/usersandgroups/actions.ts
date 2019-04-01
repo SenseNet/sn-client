@@ -94,7 +94,8 @@ export const loadUser = <T extends User = User>(idOrPath: number | string, userO
             const children = await repository.loadCollection({
               path: newUser.d.Path,
               oDataOptions: {
-                select: ['FullName', 'Email', 'Type', 'IsFolder', 'Actions', 'Icon'] as any,
+                select: ['FullName', 'Email', 'Type', 'IsFolder', 'Actions', 'Icon', 'Avatar'] as any,
+                filter: `IsFolder eq true and ContentType ne 'SystemFolder' or ContentType eq 'User'`,
               },
             })
             options.dispatch(setUser(newUser.d))
