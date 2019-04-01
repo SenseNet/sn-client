@@ -13,6 +13,7 @@ import { rootStateType } from '../../../store/rootReducer'
 import { getAllowedTypes, loadUser } from '../../../store/usersandgroups/actions'
 import BreadCrumb from '../../BreadCrumb'
 import { GridPlaceholder } from '../../Loaders/GridPlaceholder'
+import UserProfile from '../../UserProfile'
 import GroupSelector from '../GroupSelector/GroupSelector'
 import UserList from './UserList'
 
@@ -131,7 +132,7 @@ class Users extends Component<ReturnType<typeof mapStateToProps> & typeof mapDis
                 </AppBar>
               ) : null}
               {match.params.otherActions ? (
-                <div>aaa</div>
+                <UserProfile matchesDesktop={matches} />
               ) : (
                 <MuiThemeProvider theme={contentListTheme}>
                   {isLoading ? (

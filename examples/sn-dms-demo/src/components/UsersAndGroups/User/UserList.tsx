@@ -96,7 +96,7 @@ class UserList extends Component<ReturnType<typeof mapStateToProps> & typeof map
       // const newPath = `/group/${btoa(content.Id as any)}`
       const newPath = compile(this.props.match.path)({
         folderPath: this.props.match.params.folderPath || btoa((this.props.user as any).Id),
-        otherActions: ['group', btoa(content.Id as any)],
+        otherActions: ['user', btoa(content.Id as any)],
       })
       history.push(newPath)
     }
