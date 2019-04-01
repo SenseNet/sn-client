@@ -112,7 +112,7 @@ export const defaultLocalization: LocalizationStateType = {
   avatarAlt: 'Picture of the commenter',
   delete: 'Delete',
   deleteCommentDialogTitle: 'Delete comment?',
-  deleteCommentDialogBody: `1 comment is about to permanently deleted. <br /><strong>Warning: You cant undo this action.</strong>`,
+  deleteCommentDialogBody: `1 comment is about to permanently deleted. <br /><strong>Warning: You can't undo this action.</strong>`,
   okButton: 'ok',
   cancelButton: 'cancel',
   addComment: '+ Add Comment',
