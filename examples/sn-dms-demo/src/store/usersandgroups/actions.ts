@@ -79,16 +79,27 @@ export const loadUser = <T extends User = User>(idOrPath: number | string, userO
           options.dispatch(setAncestors([...ancestors.d.results, newUser.d]))
         })(),
         (async () => {
-          const memberships = await repository.security.getParentGroups({
-            contentIdOrPath: idOrPath,
-            directOnly: false,
-            oDataOptions: {
-              select: ['Workspace', 'DisplayName', 'Type', 'Id', 'Path', 'Actions', 'Icon', 'Members'],
-              expand: ['Workspace', 'Actions', 'Members'],
-              filter: `isOf('Group')`,
-            },
-          })
-          options.dispatch(setMemberships(memberships))
+          if (newUser.d.Type === 'User') {
+            const memberships = await repository.security.getParentGroups({
+              contentIdOrPath: idOrPath,
+              directOnly: false,
+              oDataOptions: {
+                select: ['Workspace', 'DisplayName', 'Type', 'Id', 'Path', 'Actions', 'Icon', 'Members'],
+                expand: ['Workspace', 'Actions', 'Members'],
+                filter: `isOf('Group')`,
+              },
+            })
+            options.dispatch(setMemberships(memberships))
+          } else {
+            const children = await repository.loadCollection({
+              path: newUser.d.Path,
+              oDataOptions: {
+                select: ['FullName', 'Email', 'Type', 'IsFolder', 'Actions', 'Icon'] as any,
+              },
+            })
+            options.dispatch(setUser(newUser.d))
+            options.dispatch(setItems(children.d.results))
+          }
         })(),
       ])
     } catch (error) {
@@ -581,4 +592,9 @@ export const deselectUser = (id: number) => ({
 export const setMembers = (members: GenericContent[]) => ({
   type: 'DMS_USERSANDGROUPS_SET_MEMBERS',
   members,
+})
+
+export const setItems = (items: GenericContent[]) => ({
+  type: 'DMS_USERSANDGROUPS_SET_ITEMS',
+  items,
 })
