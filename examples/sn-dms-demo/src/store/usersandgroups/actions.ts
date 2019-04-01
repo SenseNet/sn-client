@@ -556,6 +556,8 @@ export const getAllowedTypes = createAction(<T extends GenericContent[]>(odataOp
     const currentState = options.getState()
     const currentPath = currentState.dms.usersAndGroups.group.currentGroup
       ? currentState.dms.usersAndGroups.group.currentGroup.Path
+      : currentState.dms.usersAndGroups.user.currentUser
+      ? currentState.dms.usersAndGroups.user.currentUser.Path
       : ''
     const repository = options.getInjectable(Repository)
 

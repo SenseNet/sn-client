@@ -396,6 +396,8 @@ export const activeMenuItem: Reducer<string, Action & { itemName?: string }> = (
       return action.itemName || state
     case 'DMS_USERSANDGROUPS_SET_GROUP':
       return 'groups'
+    case 'DMS_USERSANDGROUPS_SET_USER':
+      return 'users'
     default:
       return state
   }

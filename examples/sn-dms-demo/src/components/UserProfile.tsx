@@ -72,7 +72,7 @@ class UserProfile extends React.Component<
         ? newProps.user.Path
         : `/Root/IMS/Public/${newProps.loggedinUser.content.Name}`
       newProps.loadUser(userProfilePath, {
-        select: ['Avatar', 'FullName', 'Email', 'Phone', 'LoginName'],
+        select: ['Avatar', 'FullName', 'DisplayName', 'Email', 'Phone', 'LoginName'],
       })
     } catch (error) {
       /** Cannot parse current folder from URL */

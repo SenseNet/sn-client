@@ -3,8 +3,13 @@ import ListItemText from '@material-ui/core/ListItemText'
 import MenuItem from '@material-ui/core/MenuItem'
 import withStyles, { StyleRulesCallback } from '@material-ui/core/styles/withStyles'
 import { Icon, iconType } from '@sensenet/icons-react'
-import * as React from 'react'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
+import * as DMSActions from '../../Actions'
+import { resources } from '../../assets/resources'
+import { rootStateType } from '../../store/rootReducer'
+import AddNewDialog from '../Dialogs/AddNewDialog'
 import { AddNewButton } from './AddNewButton'
 
 const styles: StyleRulesCallback = () => ({
@@ -80,7 +85,19 @@ interface UsersMenuProps extends RouteComponentProps<any> {
   matches: boolean
 }
 
-class UsersMenu extends React.Component<UsersMenuProps, {}> {
+const mapStateToProps = (state: rootStateType) => {
+  return {
+    currentContent: state.dms.usersAndGroups.user.parent,
+    allowedTypes: state.dms.usersAndGroups.allowedTypes,
+  }
+}
+
+const mapDispatchToProps = {
+  openDialog: DMSActions.openDialog,
+  closeDialog: DMSActions.closeDialog,
+}
+
+class UsersMenu extends Component<UsersMenuProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, {}> {
   public handleMenuItemClick = (title: string) => {
     this.props.history.push('/users')
     this.props.chooseMenuItem(title)
@@ -90,10 +107,19 @@ class UsersMenu extends React.Component<UsersMenuProps, {}> {
     this.props.chooseSubmenuItem(title)
   }
   public handleButtonClick = (_e: React.MouseEvent) => {
-    // TODO
+    const { closeDialog, currentContent, openDialog } = this.props
+    openDialog(
+      <AddNewDialog
+        parentPath={currentContent ? currentContent.Path : ''}
+        contentTypeName="User"
+        title={resources.USER}
+      />,
+      resources.ADD_NEW,
+      closeDialog,
+    )
   }
   public render() {
-    const { active, classes, item, matches } = this.props
+    const { active, allowedTypes, classes, item, matches } = this.props
     return (
       <div>
         <MenuItem
@@ -116,7 +142,8 @@ class UsersMenu extends React.Component<UsersMenuProps, {}> {
             primary={item.title}
           />
         </MenuItem>
-        <div className={active ? classes.open : classes.closed}>
+        <div
+          className={active && allowedTypes.findIndex(ctd => ctd.Name === 'User') > -1 ? classes.open : classes.closed}>
           <Divider />
           <AddNewButton contentType="User" onClick={e => this.handleButtonClick(e)} />
         </div>
@@ -125,4 +152,9 @@ class UsersMenu extends React.Component<UsersMenuProps, {}> {
   }
 }
 
-export default withRouter(withStyles(styles)(UsersMenu))
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  )(withStyles(styles)(UsersMenu)),
+)
