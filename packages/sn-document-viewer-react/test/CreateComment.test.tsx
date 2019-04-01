@@ -2,7 +2,6 @@ import Button from '@material-ui/core/Button'
 import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import IconButton from '@material-ui/core/IconButton'
-import SvgIcon from '@material-ui/core/SvgIcon'
 import TextField from '@material-ui/core/TextField'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
@@ -80,13 +79,6 @@ describe('Create comment component', () => {
     wrapper.find(Button).simulate('click')
     wrapper.find(IconButton).simulate('click')
     expect(handlePlaceMarkerClick).toBeCalled()
-  })
-
-  it('comment marker should look different when placing is happening', () => {
-    const wrapper = mount(<CreateComment {...defaultProps} isPlacingMarker={true} />)
-    wrapper.find(Button).simulate('click')
-    const iconStyle = wrapper.find(SvgIcon).prop('style')
-    expect(iconStyle).toEqual({ transform: 'rotate(90deg)', color: 'blue' })
   })
 
   it('should give an error message when input is empty', () => {

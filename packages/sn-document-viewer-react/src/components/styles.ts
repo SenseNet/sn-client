@@ -24,4 +24,5 @@ export const CommentsContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
+  overflow: auto;
 `

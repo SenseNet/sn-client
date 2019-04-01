@@ -20,6 +20,7 @@ export const CommentMarker = styled('div')<{ marker: DraftCommentMarker; zoomRat
   width: ${MARKER_SIZE}px;
   height: ${MARKER_SIZE}px;
   border-radius: ${MARKER_SIZE}px;
-  background-color: ${props => (props.isSelected ? 'chartreuse' : 'green')};
+  background-color: ${props =>
+    props.isSelected ? props.theme.palette.primary.light : props.theme.palette.primary.dark};
   cursor: pointer;
 `
