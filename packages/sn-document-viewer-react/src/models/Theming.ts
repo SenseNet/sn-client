@@ -20,12 +20,6 @@ export const defaultTheme = createMuiTheme({
     MuiTypography: {
       h4: { padding: '10px', paddingBottom: '16px' },
     },
-    MuiCard: {
-      root: {
-        backgroundColor: 'transparent',
-        boxShadow: 'none',
-      },
-    },
     MuiCardContent: {
       root: {
         '&:last-child': {

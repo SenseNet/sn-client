@@ -34,7 +34,6 @@ import Typography from '@material-ui/core/Typography'
 import FolderOpen from '@material-ui/icons/FolderOpen'
 import Help from '@material-ui/icons/Help'
 import Send from '@material-ui/icons/Send'
-
 import { Download } from '../src/components/document-widgets/DownloadWidget'
 import { Print } from '../src/components/document-widgets/PrintWidget'
 import { Share } from '../src/components/document-widgets/ShareWidget'
@@ -293,7 +292,10 @@ class ExampleAppLayout extends React.Component<
       <MuiThemeProvider theme={defaultTheme}>
         <div style={{ height: '100%' }}>
           {this.state.isViewerOpened ? (
-            <DocumentViewer hostName={this.state.hostName} documentIdOrPath={this.state.documentIdOrPath}>
+            <DocumentViewer
+              theme={defaultTheme}
+              hostName={this.state.hostName}
+              documentIdOrPath={this.state.documentIdOrPath}>
               <LayoutAppBar>
                 <div style={{ flexShrink: 0 }}>
                   <ToggleShapesWidget />
