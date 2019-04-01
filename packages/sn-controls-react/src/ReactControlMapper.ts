@@ -7,6 +7,7 @@
 import { Repository } from '@sensenet/client-core'
 import { ControlMapper } from '@sensenet/control-mapper'
 import {
+  BooleanFieldSetting,
   ChoiceFieldSetting,
   DateTimeFieldSetting,
   FieldSetting,
@@ -184,4 +185,7 @@ export const reactControlMapper = (repository: Repository) =>
         default:
           return FieldControls.ShortText
       }
+    })
+    .setupFieldSettingDefault(BooleanFieldSetting, () => {
+      return FieldControls.Boolean
     })

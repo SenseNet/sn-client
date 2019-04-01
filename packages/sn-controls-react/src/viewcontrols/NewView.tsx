@@ -33,6 +33,7 @@ export interface NewViewProps<T extends GenericContent> {
   handleCancel?: () => void
   submitCallback?: () => void
   title?: string
+  uploadFolderPath?: string
 }
 /**
  * Interface for NewView state
@@ -134,6 +135,8 @@ export class NewViewComponent<T extends GenericContent> extends Component<
             }
             fieldSetting.clientSettings.onChange = changeAction
             fieldSetting.clientSettings['data-actionName'] = 'new'
+            fieldSetting.clientSettings['data-uploadFolderPath'] = this.props.uploadFolderPath || ''
+            fieldSetting.clientSettings['data-repository'] = this.props.repository
             fieldSetting.clientSettings['data-repositoryUrl'] = repositoryUrl
             return (
               <Grid
