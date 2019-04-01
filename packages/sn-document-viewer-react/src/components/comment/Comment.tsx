@@ -47,7 +47,7 @@ export const CommentComponent: FunctionComponent<CommentPropType> = props => {
       />
       <Collapse in={isOpen} timeout="auto" collapsedHeight={isOpen ? '0px' : '78px'}>
         <CardContent>
-          <Typography>{props.text}</Typography>
+          <Typography style={{ wordBreak: 'break-word' }}>{props.text}</Typography>
         </CardContent>
       </Collapse>
       <CardActions>
