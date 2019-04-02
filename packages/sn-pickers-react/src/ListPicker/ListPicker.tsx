@@ -19,13 +19,17 @@ export function ListPickerComponent<T extends GenericContent = GenericContent>(p
   const [parentId, setParentId] = useState<number | undefined>(props.parentId)
   const [selectedId, setSelectedId] = useState<string | number>(0)
 
-  const loadItems = () =>
-    (props.loadItems && props.loadItems(currentPath)) || defaultLoadItems(currentPath, props.repository)
+  const loadItems = () => {
+    if (props.items) {
+      return Promise.resolve(props.items)
+    }
+    return (props.loadItems && props.loadItems(currentPath)) || defaultLoadItems(currentPath, props.repository)
+  }
 
   const loadParent = () =>
     (props.loadParent && props.loadParent(parentId)) || defaultLoadParent(parentId, props.repository)
 
-  const { loading, value: items, error } = useAsync(loadItems, [currentPath])
+  const { loading, value: items, error } = useAsync(loadItems, [currentPath, props.items])
   const parent = useAsync(loadParent, [parentId])
 
   const onItemClickHandler = (event: React.MouseEvent, node: T) => {

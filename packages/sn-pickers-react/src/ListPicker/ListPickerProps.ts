@@ -82,4 +82,9 @@ export interface ListPickerProps<T extends GenericContent = GenericContent> {
    * )
    */
   renderItem?: (props: T) => JSX.Element
+
+  /**
+   * Content items to show in the list
+   */
+  items?: T[]
 }
