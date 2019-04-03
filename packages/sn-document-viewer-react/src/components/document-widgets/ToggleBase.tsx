@@ -22,12 +22,12 @@ export interface ToggleBaseProps {
 }
 
 /**
- * Represents a Toolbar component in an AppBar
+ * Represents a base toggle component
  */
 export const ToggleBase: React.FunctionComponent<ToggleBaseProps> = props => (
   <div style={{ display: 'inline-block' }}>
     <IconButton
-      color="inherit"
+      color={props.isVisible ? 'primary' : 'inherit'}
       title={props.title}
       onClick={() => props.setValue(!props.isVisible)}
       style={{ opacity: props.isVisible ? 1 : 0.5 }}>

@@ -171,7 +171,7 @@ export interface ActionOptions<TBody, TContentType> {
   /**
    * Additional body parameters
    */
-  body: TBody
+  body?: TBody
 
   /**
    * An OData Options object
