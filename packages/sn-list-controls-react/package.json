@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/list-controls-react",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "description": "",
   "main": "dist/index.js",
   "files": [
@@ -67,9 +67,9 @@
   },
   "dependencies": {
     "@material-ui/core": "^3.6.1",
-    "@sensenet/default-content-types": "^1.1.3",
-    "@sensenet/icons-react": "^1.2.7",
-    "@sensenet/repository-events": "^1.3.2",
+    "@sensenet/default-content-types": "^1.1.4",
+    "@sensenet/icons-react": "^1.2.8",
+    "@sensenet/repository-events": "^1.3.3",
     "moment": "^2.22.2",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
