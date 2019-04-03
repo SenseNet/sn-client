@@ -1,10 +1,14 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig-base.json",
   "compilerOptions": {
     "outDir": "dist",
-    "composite": true,
-    "jsx": "react",
-    "rootDir": "./src"
+    "rootDir": "src"
   },
-  "include": ["src"]
+  "include": ["src", "../../typings"],
+  "references": [
+    { "path": "../sn-client-core" },
+    { "path": "../sn-client-utils" },
+    { "path": "../sn-control-mapper" },
+    { "path": "../sn-default-content-types" }
+  ]
 }

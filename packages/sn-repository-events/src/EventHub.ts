@@ -121,9 +121,6 @@ export class EventHub implements Disposable {
    */
   public readonly onContentCopyFailed = new ObservableValue<ContentCopyFailed>()
 
-  // ToDo
-  // private readonly onUploadProgressObservableValue = new ObservableValue<UploadProgressInfo<IContent>>();
-
   constructor(private readonly repository: Repository) {
     this.initializeMappings()
   }

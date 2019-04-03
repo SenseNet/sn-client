@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/authentication-jwt",
-  "version": "1.0.8",
+  "version": "1.0.10",
   "description": "JWT Authentication service for sensenet",
   "main": "dist/index.js",
   "files": [
@@ -42,14 +42,14 @@
   },
   "homepage": "https://sensenet.com",
   "dependencies": {
-    "@sensenet/client-core": "^1.4.1",
-    "@sensenet/client-utils": "^1.4.2",
-    "@sensenet/default-content-types": "^1.1.2",
+    "@sensenet/client-core": "^1.5.1",
+    "@sensenet/client-utils": "^1.5.1",
+    "@sensenet/default-content-types": "^1.1.4",
     "semaphore-async-await": "^1.5.1"
   },
   "devDependencies": {
-    "@types/jest": "^23.3.10",
-    "@types/node": "^10.5.2"
+    "@types/jest": "^24.0.9",
+    "@types/node": "^11.10.4"
   },
   "config": {
     "commitizen": {

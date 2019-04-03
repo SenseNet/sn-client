@@ -15,6 +15,7 @@ import { documentLibrary } from './store/documentlibrary/reducers'
 import { editedContent } from './store/edited/reducers'
 import { picker } from './store/picker/reducers'
 import { queries } from './store/queries'
+import { sharing } from './store/sharing'
 import { usersAndGroups } from './store/usersandgroups/reducers'
 import { workspaces } from './store/workspaces/reducers'
 
@@ -393,6 +394,8 @@ export const activeMenuItem: Reducer<string, Action & { itemName?: string }> = (
   switch (action.type) {
     case 'CHOOSE_MENUITEM':
       return action.itemName || state
+    case 'DMS_USERSANDGROUPS_SET_GROUP':
+      return 'groups'
     default:
       return state
   }
@@ -528,4 +531,5 @@ export const dms = combineReducers({
   log: logReducer,
   usersAndGroups,
   queries,
+  sharing,
 })

@@ -10,6 +10,7 @@ import { customSchema } from './ViewControl.stories'
 
 import {
   AutoComplete,
+  Avatar,
   CheckboxGroup,
   DatePicker,
   DateTimePicker,
@@ -21,6 +22,7 @@ import {
   Number,
   Password,
   RadioButtonGroup,
+  ReferenceGrid,
   RichTextEditor,
   ShortText,
   TagsInput,
@@ -48,6 +50,12 @@ const tagsInputDataSource = [
   { DisplayName: 'Terry Cherry', Id: 2 } as User,
 ]
 
+const referenceGridDataSource = [
+  { DisplayName: 'Aenean semper.doc', Id: 4083, IsFolder: false, Children: [], Type: 'File' },
+  { DisplayName: 'Aliquam porta suscipit ante.doc', Id: 4082, IsFolder: false, Children: [], Type: 'File' },
+  { DisplayName: 'Duis et lorem.doc', Id: 4085, IsFolder: false, Children: [], Type: 'File' },
+]
+
 const shorttextNotes = require('../notes/fieldcontrols/ShortText.md')
 const displaynameNotes = require('../notes/fieldcontrols/DisplayName.md')
 const checkboxgroupNotes = require('../notes/fieldcontrols/CheckboxGroup.md')
@@ -65,6 +73,8 @@ const numberNotes = require('../notes/fieldcontrols/Number.md')
 const tagsInputNotes = require('../notes/fieldcontrols/TagsInput.md')
 const autocompleteNotes = require('../notes/fieldcontrols/AutoComplete.md')
 const fileUploadNotes = require('../notes/fieldcontrols/FileUpload.md')
+const referenceGridNotes = require('../notes/fieldcontrols/ReferenceGrid.md')
+const avatarNotes = require('../notes/fieldcontrols/Avatar.md')
 
 storiesOf('FieldControls.AutoComplete', module)
   .addDecorator(withKnobs)
@@ -127,6 +137,93 @@ storiesOf('FieldControls.AutoComplete', module)
       />
     ),
     { notes: { markdown: autocompleteNotes } },
+  )
+
+storiesOf('FieldControls.Avatar', module)
+  .addDecorator(withKnobs)
+  .addDecorator(withA11y)
+  .addDecorator(withActions('change'))
+  .add(
+    'new mode',
+    () => (
+      <Avatar
+        data-actionName="new"
+        name="Name"
+        data-labelText={text('Label', 'Avatar label')}
+        readOnly={boolean('Readonly', false)}
+        className={text('Additional class name', 'avatar-field')}
+        onChange={action('change')}
+        data-hintText={text('Hint', 'Avatar hint')}
+        dataSource={referenceGridDataSource}
+        repository={testRepository}
+        data-repository={testRepository}
+        data-selectionRoot={['/demoavatars']}
+        content={
+          {
+            DisplayName: 'Alba Monday',
+            Id: 4,
+            Icon: 'user',
+            Type: 'User',
+            Avatar: { Url: 'https://dmsservice.demo.sensenet.com/Root/Sites/Default_Site/demoavatars/alba.jpg' },
+          } as User
+        }
+      />
+    ),
+    { notes: { markdown: avatarNotes } },
+  )
+  .add(
+    'edit mode',
+    () => (
+      <Avatar
+        data-actionName="edit"
+        name="Name"
+        data-labelText={text('Label', 'Avatar label')}
+        readOnly={boolean('Readonly', false)}
+        className={text('Additional class name', 'avatar-field')}
+        onChange={action('change')}
+        data-hintText={text('Hint', 'Avatar hint')}
+        dataSource={referenceGridDataSource}
+        repository={testRepository}
+        data-repository={testRepository}
+        data-fieldValue="/Root/Sites/Default_Site/demoavatars/alba.jpg"
+        data-selectionRoot={['/demoavatars']}
+        content={
+          {
+            DisplayName: 'Alba Monday',
+            Id: 4,
+            Icon: 'user',
+            Type: 'User',
+            Avatar: { Url: 'https://dmsservice.demo.sensenet.com/Root/Sites/Default_Site/demoavatars/alba.jpg' },
+          } as User
+        }
+      />
+    ),
+    { notes: { markdown: avatarNotes } },
+  )
+  .add(
+    'browse mode',
+    () => (
+      <Avatar
+        name="Name"
+        data-actionName="browse"
+        data-labelText={text('Label', 'Avatar label')}
+        className={text('Additional class name', 'avatar-field')}
+        data-fieldValue="/Root/Sites/Default_Site/demoavatars/alba.jpg"
+        onChange={action('change')}
+        dataSource={tagsInputDataSource}
+        repository={testRepository}
+        content={
+          {
+            DisplayName: 'Alba Monday',
+            Id: 4,
+            Icon: 'user',
+            Type: 'User',
+            Avatar: { Url: 'https://dmsservice.demo.sensenet.com/Root/Sites/Default_Site/demoavatars/alba.jpg' },
+          } as User
+        }
+      />
+    ),
+    { notes: { markdown: avatarNotes } },
   )
 
 storiesOf('FieldControls.CheckboxGroup', module)
@@ -801,6 +898,78 @@ storiesOf('FieldControls.RadioButtonGroup', module)
       />
     ),
     { notes: { markdown: radiobuttongroupNotes } },
+  )
+
+storiesOf('FieldControls.ReferenceGrid', module)
+  .addDecorator(withKnobs)
+  .addDecorator(withA11y)
+  .addDecorator(withActions('change'))
+  .add(
+    'new mode',
+    () => (
+      <ReferenceGrid
+        data-actionName="new"
+        data-labelText={text('Label', 'ReferenceGrid label')}
+        readOnly={boolean('Readonly', false)}
+        required={boolean('Required', false)}
+        className={text('Additional class name', 'reference-field')}
+        onChange={action('change')}
+        name="Name"
+        data-fieldValue={[]}
+        dataSource={referenceGridDataSource}
+        repository={testRepository}
+        data-repository={testRepository}
+        data-selectionRoot={['/workspaces']}
+        data-allowedTypes={['File']}
+      />
+    ),
+    { notes: { markdown: referenceGridNotes } },
+  )
+  .add(
+    'edit mode',
+    () => (
+      <ReferenceGrid
+        data-labelText={text('Label', 'ReferenceGrid label')}
+        readOnly={boolean('Readonly', false)}
+        required={boolean('Required', false)}
+        className={text('Additional class name', 'reference-field')}
+        data-errorText={text('Error text')}
+        data-fieldValue={[{ DisplayName: 'Aenean semper.docx', Id: 4, Icon: 'word', Type: 'File' }]}
+        data-actionName="edit"
+        onChange={action('change')}
+        name="Name"
+        dataSource={referenceGridDataSource}
+        repository={testRepository}
+        data-repository={testRepository}
+        data-selectionRoot={['/workspaces']}
+        data-allowedTypes={['File']}
+      />
+    ),
+    { notes: { markdown: referenceGridNotes } },
+  )
+  .add(
+    'browse mode',
+    () => (
+      <ReferenceGrid
+        data-actionName="browse"
+        data-labelText={text('Label', 'ReferenceGrid label')}
+        className={text('Additional class name', 'reference-field')}
+        data-fieldValue={[
+          {
+            DisplayName: 'Alba Monday',
+            Id: 4,
+            Icon: 'user',
+            Type: 'User',
+            Avatar: { Url: 'https://dmsservice.demo.sensenet.com/Root/Sites/Default_Site/demoavatars/alba.jpg' },
+          } as User,
+        ]}
+        onChange={action('change')}
+        name="Name"
+        dataSource={tagsInputDataSource}
+        repository={testRepository}
+      />
+    ),
+    { notes: { markdown: referenceGridNotes } },
   )
 
 storiesOf('FieldControls.RichTextEditor', module)

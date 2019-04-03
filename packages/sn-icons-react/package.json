@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/icons-react",
-  "version": "1.2.6",
+  "version": "1.2.8",
   "description": "A React component rendering icons for sensenet.",
   "main": "dist/index.js",
   "scripts": {
@@ -44,22 +44,22 @@
   },
   "homepage": "https://sensenet.com",
   "dependencies": {
-    "@material-ui/core": "3.8.3",
+    "@material-ui/core": "3.9.2",
     "@material-ui/icons": "3.0.2"
   },
   "devDependencies": {
     "@types/enzyme": "^3.1.15",
     "@types/enzyme-adapter-react-16": "^1.0.3",
-    "@types/jest": "^23.3.10",
-    "@types/node": "^10.12.11",
+    "@types/jest": "^24.0.9",
+    "@types/node": "^11.10.4",
     "@types/react": "^16.7.14",
     "cpx": "^1.5.0",
     "enzyme": "^3.8.0",
     "ignore-styles": "^5.0.1",
-    "jest": "^23.6.0",
+    "jest": "^24.1.0",
     "prop-types": "^15.6.2",
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3"
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4"
   },
   "publishConfig": {
     "access": "public"

@@ -139,11 +139,10 @@ export const reactControlMapper = (repository: Repository) =>
       return choiceSettings
     })
     .setupFieldSettingDefault(ReferenceFieldSetting, setting => {
-      if (setting.AllowedTypes && setting.AllowedTypes.indexOf('User') !== -1) {
+      if (setting.AllowedTypes && setting.AllowedTypes.indexOf('User') !== -1 && !setting.AllowMultiple) {
         return FieldControls.TagsInput
       } else {
-        // TODO: referencegrid
-        return FieldControls.ShortText
+        return FieldControls.ReferenceGrid
       }
     })
     .setClientControlFactory(ReferenceFieldSetting, setting => {
@@ -151,6 +150,7 @@ export const reactControlMapper = (repository: Repository) =>
       ;(referenceSettings['data-allowMultiple'] = setting.AllowMultiple),
         (referenceSettings['data-allowedTypes'] = setting.AllowedTypes),
         (referenceSettings['data-selectionRoot'] = setting.SelectionRoots),
+        (referenceSettings['data-defaultValue'] = setting.DefaultValue || null),
         (referenceSettings['data-defaultDisplayName'] =
           setting.AllowedTypes !== undefined
             ? setting.AllowedTypes.indexOf('User') > -1
@@ -180,7 +180,7 @@ export const reactControlMapper = (repository: Repository) =>
     .setupFieldSettingDefault(NullFieldSetting, setting => {
       switch (setting.Name) {
         case 'Avatar' as any:
-          return FieldControls.Image
+          return FieldControls.Avatar
         default:
           return FieldControls.ShortText
       }
