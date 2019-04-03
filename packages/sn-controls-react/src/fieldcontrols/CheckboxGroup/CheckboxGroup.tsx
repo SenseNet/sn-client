@@ -160,8 +160,8 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
             <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
             <FormGroup>
-              {this.props['data-fieldValue'].map((value: T[K]) => (
-                <FormControl component={'fieldset' as 'div'}>
+              {this.props['data-fieldValue'].map((value: T[K], index: number) => (
+                <FormControl component={'fieldset' as 'div'} key={index}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
                     label={this.props.options.find(item => item.Value === value).Text}
@@ -178,8 +178,8 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
             <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
             <FormGroup>
-              {this.props['data-fieldValue'].map((value: T[K]) => (
-                <FormControl component={'fieldset' as 'div'}>
+              {this.props['data-fieldValue'].map((value: T[K], index: number) => (
+                <FormControl component={'fieldset' as 'div'} key={index}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
                     label={this.props.options.find(item => item.Value === value).Text}

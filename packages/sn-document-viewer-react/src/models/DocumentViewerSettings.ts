@@ -1,3 +1,4 @@
+import { Injector } from '@furystack/inject'
 import { DocumentData, PreviewImageData } from '.'
 
 /**
@@ -58,6 +59,7 @@ export interface DocumentViewerSettingsOptions {
  * A Document Viewer Settings object that will be used as a singleton service
  */
 export class DocumentViewerSettings implements DocumentViewerSettingsOptions {
+  public injector = new Injector()
   public canEditDocument!: (document: DocumentData) => Promise<boolean>
   public saveChanges!: (document: DocumentData, pages: PreviewImageData[]) => Promise<void>
   public canHideWatermark!: (document: DocumentData) => Promise<boolean>
