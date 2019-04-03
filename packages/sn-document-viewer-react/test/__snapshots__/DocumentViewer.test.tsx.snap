@@ -2,7 +2,7 @@
 
 exports[`Document Viewer component should render a loading component while loading 1`] = `
 <Connect(DocumentViewerLoadingComponent)
-  image="./assets/loader.gif"
+  image="loader.gif"
 />
 `;
 
@@ -25,7 +25,11 @@ exports[`Document Viewer component should render an error component if there wer
 `;
 
 exports[`Document Viewer component should render without crashing 1`] = `
-<Connect(DocumentViewerLayoutComponent)>
-  some children
-</Connect(DocumentViewerLayoutComponent)>
+<ThemeProvider
+  theme={Object {}}
+>
+  <Connect(DocumentViewerLayoutComponent)>
+    some children
+  </Connect(DocumentViewerLayoutComponent)>
+</ThemeProvider>
 `;
