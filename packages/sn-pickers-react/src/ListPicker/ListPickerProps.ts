@@ -72,7 +72,9 @@ export interface ListPickerProps<T extends GenericContent = GenericContent> {
 
   /**
    * Function to render the item component.
-   * @default const defaultRenderItem = (node: T) => (
+   * @default
+   * ```js
+   * const defaultRenderItem = (node: T) => (
    * <ListItem button={true} selected={node.Id === selectedId}>
    *   <ListItemIcon>
    *     <Icon type={iconType.materialui} iconName="folder" />
@@ -80,6 +82,7 @@ export interface ListPickerProps<T extends GenericContent = GenericContent> {
    *   <ListItemText primary={node.DisplayName} />
    * </ListItem>
    * )
+   * ```
    */
   renderItem?: (props: T) => JSX.Element
 

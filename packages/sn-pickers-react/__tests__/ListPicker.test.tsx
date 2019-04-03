@@ -13,9 +13,4 @@ describe('List picker component', () => {
     const wrapper = shallow(<ListPickerComponent loadParent={jest.fn()} loadItems={jest.fn()} />)
     expect(wrapper.find(ItemComponent).length).toBe(4)
   })
-  it('should render items when passed as props', () => {
-    ;(useAsync as any).mockReturnValue({ value: undefined }).mockReturnValueOnce({ value: genericContentItems })
-    const wrapper = shallow(<ListPickerComponent items={genericContentItems} />)
-    expect(wrapper.find(ItemComponent).length).toBe(4)
-  })
 })
