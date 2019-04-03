@@ -10,7 +10,7 @@ const DocViewer: React.FunctionComponent<RouteComponentProps<{ documentId: strin
   const documentId = parseInt(props.match.params.documentId, 10)
   const injector = useContext(InjectorContext)
   const repo = useContext(RepositoryContext)
-  injector.SetInstance(getViewerSettings(repo))
+  injector.setExplicitInstance(getViewerSettings(repo))
   if (isNaN(documentId)) {
     throw Error(`Invalid document Id: ${documentId}`)
   }
