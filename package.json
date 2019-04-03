@@ -48,14 +48,19 @@
     }
   },
   "lint-staged": {
-    "*.{ts,tsx}": [
-      "tslint --fix",
-      "prettier --write",
-      "git add"
-    ],
-    "*.{js,jsx}": [
-      "prettier --write",
-      "git add"
+    "linters": {
+      "*.{ts,tsx}": [
+        "tslint --fix",
+        "prettier --write",
+        "git add"
+      ],
+      "*.{js,jsx}": [
+        "prettier --write",
+        "git add"
+      ]
+    },
+    "ignore": [
+      "*.d.ts"
     ]
   },
   "jest": {
@@ -85,7 +90,7 @@
     "transform": {
       "^.+\\.(ts|tsx)$": "ts-jest",
       "^.+\\.css$": "<rootDir>/jest/cssTransform.js",
-      "^.+\\.(png|jpg)$": "<rootDir>/jest/fileTransform.js"
+      "^.+\\.(png|jpg|gif)$": "<rootDir>/jest/fileTransform.js"
     },
     "globals": {
       "ts-jest": {

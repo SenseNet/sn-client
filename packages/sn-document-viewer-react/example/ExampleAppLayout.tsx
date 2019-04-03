@@ -1,4 +1,4 @@
-import React = require('react')
+import React from 'react'
 import { connect } from 'react-redux'
 
 import { v1 } from 'uuid'
@@ -6,16 +6,17 @@ import {
   DocumentTitlePager,
   RotateActivePages,
   SearchBar,
+  ToggleCommentsWidget,
   ToggleShapesWidget,
   ToggleThumbnailsWidget,
   ZoomInOutWidget,
-} from './components/document-widgets'
-import { DocumentViewer } from './components/DocumentViewer'
-import { LayoutAppBar } from './components/LayoutAppBar'
-import { DocumentViewerSettings } from './models/DocumentViewerSettings'
-import { PreviewImageData } from './models/PreviewImageData'
-import { Annotation, Highlight, Redaction, Shape } from './models/Shapes'
-import { componentType } from './services'
+} from '../src/components/document-widgets'
+import { DocumentViewer } from '../src/components/DocumentViewer'
+import { LayoutAppBar } from '../src/components/LayoutAppBar'
+import { DocumentViewerSettings } from '../src/models/DocumentViewerSettings'
+import { PreviewImageData } from '../src/models/PreviewImageData'
+import { Annotation, Highlight, Redaction, Shape } from '../src/models/Shapes'
+import { componentType } from '../src/services'
 
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
@@ -23,9 +24,9 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
+import Fab from '@material-ui/core/Fab'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Paper from '@material-ui/core/Paper'
-import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
@@ -33,10 +34,11 @@ import Typography from '@material-ui/core/Typography'
 import FolderOpen from '@material-ui/icons/FolderOpen'
 import Help from '@material-ui/icons/Help'
 import Send from '@material-ui/icons/Send'
-
-import { Download } from './components/document-widgets/DownloadWidget'
-import { Print } from './components/document-widgets/PrintWidget'
-import { Share } from './components/document-widgets/ShareWidget'
+import { Download } from '../src/components/document-widgets/DownloadWidget'
+import { Print } from '../src/components/document-widgets/PrintWidget'
+import { Share } from '../src/components/document-widgets/ShareWidget'
+import { Comment } from '../src/models/Comment'
+import { defaultTheme } from '../src/models/Theming'
 
 /**
  * Adds a globally unique ID to the shape
@@ -74,6 +76,42 @@ const mapDispatchToProps = {}
  * Settings object for the Document Viewer Example component
  */
 export const exampleSettings = new DocumentViewerSettings({
+  commentActions: {
+    addPreviewComment: async (documentData, comment) => {
+      const response = await fetch(`${documentData.hostName}/odata.svc/${documentData.idOrPath}/AddPreviewComment`, {
+        method: 'POST',
+        body: JSON.stringify({ ...comment }),
+        credentials: 'include',
+      })
+      if (response.ok) {
+        const responseBody = await response.json()
+        return responseBody as Comment
+      }
+    },
+    deletePreviewComment: async (documentData, commentId) => {
+      const response = await fetch(`${documentData.hostName}/odata.svc/${documentData.idOrPath}/DeletePreviewComment`, {
+        method: 'POST',
+        body: JSON.stringify({ id: commentId }),
+        credentials: 'include',
+      })
+      if (response.ok) {
+        const responseBody = await response.json()
+        return responseBody
+      }
+    },
+    getPreviewComments: async (documentData, page) => {
+      const response = await fetch(
+        `${encodeURI(documentData.hostName)}/odata.svc/${encodeURI(
+          documentData.idOrPath.toString(),
+        )}/GetPreviewComments?page=${page}`,
+        { method: 'GET', credentials: 'include' },
+      )
+      if (response.ok) {
+        const responseBody = await response.json()
+        return responseBody as Comment[]
+      }
+    },
+  },
   canEditDocument: async documentData => {
     const response = await fetch(
       `${encodeURI(documentData.hostName)}/odata.svc/${encodeURI(
@@ -205,43 +243,6 @@ export const exampleSettings = new DocumentViewerSettings({
 
 const localStorageKey = 'sn-docviewer-example'
 
-/**
- * The default example theme
- */
-export const exampleTheme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#ff9800',
-    },
-    secondary: {
-      main: '#ff9800',
-    },
-    background: {
-      default: '#f5f5f5',
-      paper: '#ffffff',
-    },
-  },
-  overrides: {
-    MuiDrawer: {
-      paper: {
-        backgroundColor: 'transparent',
-      },
-      docked: {
-        backgroundColor: '#eaeaeb',
-      },
-    },
-    MuiToolbar: {
-      root: {
-        backgroundColor: '#2a2a2c',
-        color: '#707070',
-      },
-    },
-  },
-  typography: {
-    useNextVariants: true,
-  },
-})
-
 class ExampleAppLayout extends React.Component<
   componentType<typeof mapStateToProps, typeof mapDispatchToProps, {}>,
   ExampleAppState
@@ -288,10 +289,13 @@ class ExampleAppLayout extends React.Component<
    */
   public render() {
     return (
-      <MuiThemeProvider theme={exampleTheme}>
+      <MuiThemeProvider theme={defaultTheme}>
         <div style={{ height: '100%' }}>
           {this.state.isViewerOpened ? (
-            <DocumentViewer hostName={this.state.hostName} documentIdOrPath={this.state.documentIdOrPath}>
+            <DocumentViewer
+              theme={defaultTheme}
+              hostName={this.state.hostName}
+              documentIdOrPath={this.state.documentIdOrPath}>
               <LayoutAppBar>
                 <div style={{ flexShrink: 0 }}>
                   <ToggleShapesWidget />
@@ -318,7 +322,8 @@ class ExampleAppLayout extends React.Component<
                   <RotateActivePages />
                 </div>
                 <DocumentTitlePager />
-                <div style={{ flexShrink: 0 }}>
+                <div style={{ display: 'flex', flexShrink: 0 }}>
+                  <ToggleCommentsWidget />
                   <SearchBar />
                 </div>
               </LayoutAppBar>
@@ -441,19 +446,18 @@ class ExampleAppLayout extends React.Component<
           )}
 
           {this.state.isViewerOpened ? (
-            <Button
+            <Fab
               style={{
                 position: 'fixed',
                 right: '2em',
                 bottom: '1em',
                 zIndex: 1,
               }}
-              variant="fab"
               color="secondary"
               aria-label="select another document"
               onClick={() => this.closeViewer()}>
               <FolderOpen />
-            </Button>
+            </Fab>
           ) : null}
         </div>
       </MuiThemeProvider>
