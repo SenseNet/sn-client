@@ -11,9 +11,9 @@ To manage a repository, you have to login in first. You have to provide
 - The repository URL that you want to manage (e.g. _https://my-sensenet-installation.com_)
   Once you've logged in, the repository and the last username will be saved into your _personal settings_.
 
-If you want to use an another repository, you can switch with the repository selector on the top left corner. (or login to a new repository with the **Another repository** link)
+If you want to use another repository, you can switch with the repository selector on the top left corner (or login to a new repository with the **Another repository** link).
 
-Your repository sessions will be managed individually, you can use multiple repositories simultaneously. The repository selector will also indicates the current session state.
+Your repository sessions will be managed individually, you can use multiple repositories simultaneously. The repository selector will also indicate the current session state.
 
 If you want to log out from the current repository, you can do that with the 'Log out' button at the bottom of the left drawer.
 
@@ -37,12 +37,12 @@ You can adjust the Content view in the personal setting's _"content"_ section.
 
 ## 🌈 Command palette
 
-The command palette is useful is you want to search in the repository, navigate to a specific page or execute a specific command on the current content.
-You can activate the command palette from the top right **">\_"** icon - or the **ctrl-p** shortcut.
+The command palette is useful if you want to search in the repository, navigate to a specific page or execute a specific command on the current content.
+You can activate the command palette from the top right **">\_"** icon - or with the **ctrl-p** shortcut.
 
 ### Search by path
 
-You can search content by its path if you start typing with "/Root", you will get completition with one level below
+You can search content by its path if you start typing with "/Root", you will get completion with one level below.
 
 ### Search using a content query
 
