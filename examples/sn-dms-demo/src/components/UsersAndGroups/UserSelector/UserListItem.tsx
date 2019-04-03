@@ -78,8 +78,7 @@ const mapDispatchToProps = {
 }
 
 class UserListItem extends React.Component<
-  { classes: any } & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & UserListItemProps,
-  {}
+  { classes: any } & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & UserListItemProps, {}
 > {
   public checkboxClick = (user: User) => {
     const index = this.props.users.findIndex(g => g.Id === user.Id)

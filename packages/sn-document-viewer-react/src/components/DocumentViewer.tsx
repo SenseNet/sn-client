@@ -1,10 +1,6 @@
 import { SlideProps } from '@material-ui/core/Slide'
-import { Theme } from '@material-ui/core/styles'
 import React from 'react'
 import { connect } from 'react-redux'
-import { ThemeProvider } from 'styled-components'
-import loaderImage from '../../assets/loader.gif'
-import { defaultTheme } from '../models'
 import { componentType } from '../services'
 import { pollDocumentData, RootReducerType } from '../store'
 import { LocalizationStateType, setLocalization } from '../store/Localization'
@@ -22,7 +18,6 @@ export interface OwnProps {
   localization?: Partial<LocalizationStateType>
   drawerSlideProps?: Partial<SlideProps>
   loaderImage?: string
-  theme?: Theme
 }
 
 /**
@@ -89,7 +84,7 @@ export class DocumentViewerComponent extends React.Component<docViewerComponentT
    */
   public render() {
     if (this.props.isLoading) {
-      return <DocumentViewerLoading image={this.props.loaderImage || loaderImage} />
+      return <DocumentViewerLoading image={this.props.loaderImage || './assets/loader.gif'} />
     }
 
     const isPreviewError = this.props.previewState !== -1 && this.props.previewState < 1
@@ -97,11 +92,7 @@ export class DocumentViewerComponent extends React.Component<docViewerComponentT
       return <DocumentViewerError error={this.props.docViewerError || this.props.previewImagesError} />
     }
     return (
-      <ThemeProvider theme={this.props.theme || defaultTheme}>
-        <DocumentViewerLayout drawerSlideProps={this.props.drawerSlideProps}>
-          {this.props.children}
-        </DocumentViewerLayout>
-      </ThemeProvider>
+      <DocumentViewerLayout drawerSlideProps={this.props.drawerSlideProps}>{this.props.children}</DocumentViewerLayout>
     )
   }
 }

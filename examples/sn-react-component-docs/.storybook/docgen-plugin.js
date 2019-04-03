@@ -1,11 +1,9 @@
 const docGen = require('react-docgen-typescript')
 const docGenLoader = require('react-docgen-typescript-loader/dist/generateDocgenCodeBlock.js')
 const ts = require('typescript')
-const path = require('path')
 
 class DocgenPlugin {
   apply(compiler) {
-    const pathRegex = RegExp(`\\${path.sep}src.+\.tsx`)
     compiler.hooks.compilation.tap('DocgenPlugin', compilation => {
       compilation.hooks.seal.tap('DocgenPlugin', modules => {
         const modulesToProcess = []
@@ -14,7 +12,7 @@ class DocgenPlugin {
           if (!module.built || module.external || !module.rawRequest) {
             return
           }
-          if (pathRegex.test(module.request)) {
+          if (/\/src.+.tsx/.test(module.request)) {
             modulesToProcess.push(module)
           }
         })

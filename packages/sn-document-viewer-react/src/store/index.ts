@@ -29,7 +29,6 @@ export const configureStore: (settings: DocumentViewerSettings) => Store<RootRed
   return createStore<RootReducerType, Action, {}, {}>(config.rootReducer, config.preloadedState, config.enhancer)
 }
 
-export * from './Comments'
 export * from './Document'
 export * from './PreviewImages'
 export * from './RootReducer'

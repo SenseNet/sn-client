@@ -2,7 +2,7 @@
 
 exports[`SearchBar component Should render without crashing 1`] = `
 <WithStyles(Grid)
-  alignItems="center"
+  alignItems="flex-end"
   container={true}
   spacing={8}
 >

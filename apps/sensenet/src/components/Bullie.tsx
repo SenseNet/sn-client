@@ -2,7 +2,7 @@ import Typography from '@material-ui/core/Typography'
 import React from 'react'
 import zst from '../assets/sn-zseni__listekn__s.png'
 
-export const Bullie: React.FunctionComponent = () => (
+export const Bullie: React.FunctionComponent= () => (
   <div>
     <Typography paragraph={true}>
       <img src={zst} style={{ float: 'left', padding: '2em', maxWidth: '100%' }} />

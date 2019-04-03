@@ -1,5 +1,4 @@
 import { DocumentData, PreviewImageData } from '.'
-import { Comment, CommentWithoutCreatedByAndId } from './Comment'
 
 /**
  * Main settings for the Document Viewer component
@@ -53,26 +52,12 @@ export interface DocumentViewerSettingsOptions {
     page: number,
     showWatermark: boolean,
   ) => Promise<PreviewImageData | undefined>
-
-  /**
-   * Callbacks for add, read, delete comments
-   */
-  commentActions: {
-    getPreviewComments: (document: DocumentData, page: number) => Promise<Comment[]>
-    addPreviewComment: (document: DocumentData, comment: CommentWithoutCreatedByAndId) => Promise<Comment>
-    deletePreviewComment: (document: DocumentData, commentId: string) => Promise<{ modified: boolean }>
-  }
 }
 
 /**
  * A Document Viewer Settings object that will be used as a singleton service
  */
 export class DocumentViewerSettings implements DocumentViewerSettingsOptions {
-  public commentActions!: {
-    getPreviewComments: (document: DocumentData, page: number) => Promise<Comment[]>
-    addPreviewComment: (document: DocumentData, comment: CommentWithoutCreatedByAndId) => Promise<Comment>
-    deletePreviewComment: (document: DocumentData, commentId: string) => Promise<{ modified: boolean }>
-  }
   public canEditDocument!: (document: DocumentData) => Promise<boolean>
   public saveChanges!: (document: DocumentData, pages: PreviewImageData[]) => Promise<void>
   public canHideWatermark!: (document: DocumentData) => Promise<boolean>

@@ -1,5 +1,3 @@
-import styled from 'styled-components'
-
 /**
  * Style variables for the DocViewer component
  */
@@ -15,14 +13,3 @@ export const styles = {
     commentButton: '#ff9800',
   },
 }
-
-// tslint:disable: completed-docs
-
-export const CommentsContainer = styled.div`
-  display: flex;
-  padding: 15px;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  overflow: auto;
-`

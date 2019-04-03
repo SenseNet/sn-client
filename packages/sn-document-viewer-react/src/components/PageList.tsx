@@ -1,7 +1,7 @@
 import Grid from '@material-ui/core/Grid'
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { DraftCommentMarker, PreviewImageData } from '../models'
+import { PreviewImageData } from '../models'
 import { componentType, ImageUtil } from '../services'
 import { RootReducerType, ZoomMode } from '../store'
 import { Page } from './'
@@ -41,8 +41,6 @@ export interface PageListProps {
   onPageClick: (ev: React.MouseEvent<HTMLElement>, pageIndex: number) => void
   style?: React.CSSProperties
   showWidgets: boolean
-  isPlacingCommentMarker?: boolean
-  handleMarkerCreation?: (coordinates: DraftCommentMarker) => void
 }
 
 /**
@@ -230,8 +228,6 @@ export class PageListComponent extends React.Component<
           }}>
           {this.state.visiblePages.map(value => (
             <Page
-              handleMarkerCreation={this.props.handleMarkerCreation}
-              isPlacingCommentMarker={this.props.isPlacingCommentMarker}
               showWidgets={this.props.showWidgets}
               viewportWidth={this.state.viewportWidth}
               viewportHeight={this.state.viewportHeight}

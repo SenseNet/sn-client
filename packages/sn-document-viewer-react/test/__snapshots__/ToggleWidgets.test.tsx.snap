@@ -9,7 +9,7 @@ exports[`Component ToggleBase should render without crashing 1`] = `
   }
 >
   <WithStyles(IconButton)
-    color="primary"
+    color="inherit"
     onClick={[Function]}
     style={
       Object {

@@ -1,51 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Page component Should render thumbnails without crashing 1`] = `
-<WithStyles(Paper)
-  elevation={8}
-  id="EL1"
-  style={
-    Object {
-      "margin": 8,
-    }
-  }
->
-  <div
-    onClick={[Function]}
-    style={
-      Object {
-        "height": 752,
-        "overflow": "hidden",
-        "padding": 0,
-        "position": "relative",
-        "width": 560,
-      }
-    }
-  >
-    <span
-      style={
-        Object {
-          "display": "flex",
-          "justifyContent": "center",
-        }
-      }
-    >
-      <img
-        src="/"
-        style={
-          Object {
-            "height": "100%",
-            "transform": "translateY(0px) rotate(0deg)",
-            "transition": "transform .1s ease-in-out",
-            "width": "100%",
-          }
-        }
-      />
-    </span>
-  </div>
-</WithStyles(Paper)>
-`;
-
 exports[`Page component Should render without crashing 1`] = `
 <WithStyles(Paper)
   elevation={8}

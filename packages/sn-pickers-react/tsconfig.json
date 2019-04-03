@@ -3,7 +3,7 @@
   "include": ["src"],
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "."
+    "rootDir": "src"
   },
   "references": [
     { "path": "../sn-client-core" },

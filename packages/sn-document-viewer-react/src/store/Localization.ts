@@ -19,7 +19,6 @@ export interface LocalizationStateType {
   toggleWatermark: string
   toggleShapes: string
   toggleThumbnails: string
-  toggleComments: string
   firstPage: string
   previousPage: string
   gotoPage: string
@@ -34,21 +33,6 @@ export interface LocalizationStateType {
   share: string
   download: string
   print: string
-  showMore: string
-  showLess: string
-  avatarAlt: string
-  delete: string
-  deleteCommentDialogBody: string
-  deleteCommentDialogTitle: string
-  okButton: string
-  cancelButton: string
-  addComment: string
-  commentInputPlaceholder: string
-  submit: string
-  inputRequiredError: string
-  markerRequiredError: string
-  markerTooltip: string
-  commentSideBarTitle: string
 }
 
 /**
@@ -69,7 +53,6 @@ export const defaultLocalization: LocalizationStateType = {
   toggleWatermark: 'Toggle watermark',
   toggleShapes: 'Toggle shapes',
   toggleThumbnails: 'Toggle thumbnails',
-  toggleComments: 'Toggle comments',
   firstPage: 'First page',
   previousPage: 'Previous page',
   gotoPage: 'Goto page',
@@ -107,21 +90,6 @@ export const defaultLocalization: LocalizationStateType = {
   share: 'Share',
   download: 'Download',
   print: 'Print',
-  showMore: '+ Show more',
-  showLess: '+ Show less',
-  avatarAlt: 'Picture of the commenter',
-  delete: 'Delete',
-  deleteCommentDialogTitle: 'Delete comment?',
-  deleteCommentDialogBody: `1 comment is about to permanently deleted. <br /><strong>Warning: You can't undo this action.</strong>`,
-  okButton: 'ok',
-  cancelButton: 'cancel',
-  addComment: '+ Add Comment',
-  commentInputPlaceholder: 'Make a comment',
-  submit: 'Submit',
-  inputRequiredError: 'The comment text is a required field.',
-  markerRequiredError: 'You must place the marker first.',
-  markerTooltip: 'You can put a marker with this button',
-  commentSideBarTitle: 'Comments',
 }
 
 /**

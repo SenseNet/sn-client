@@ -31,7 +31,6 @@ import {
   setPagePollInterval,
 } from '../src/store/PreviewImages'
 
-import { setSelectedCommentId } from '../src/store/Comments'
 import {
   setActivePages,
   setCustomZoomLevel,
@@ -105,12 +104,6 @@ describe('Actions', () => {
       expect(setThumbnails(true)).toMatchSnapshot()
       expect(setWatermark(true)).toMatchSnapshot()
       expect(setZoomMode('fit')).toMatchSnapshot()
-    })
-  })
-
-  describe('Comments actions', () => {
-    it('should match their snapshot', () => {
-      expect(setSelectedCommentId('someId')).toMatchSnapshot()
     })
   })
 })

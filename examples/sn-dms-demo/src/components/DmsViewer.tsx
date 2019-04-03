@@ -3,7 +3,6 @@ import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 import Typography from '@material-ui/core/Typography'
 
 import {
-  defaultTheme,
   DocumentTitlePager,
   DocumentViewer,
   Download,
@@ -12,10 +11,10 @@ import {
   RotateActivePages,
   SearchBar,
   Share,
-  ToggleCommentsWidget,
   ToggleThumbnailsWidget,
   ZoomInOutWidget,
-} from '@sensenet/document-viewer-react'
+} from '@sensenet/document-viewer-react/dist/components'
+import { exampleTheme } from '@sensenet/document-viewer-react/dist/ExampleAppLayout'
 import { Icon, iconType } from '@sensenet/icons-react'
 import { compile } from 'path-to-regexp'
 import * as React from 'react'
@@ -126,7 +125,7 @@ export class DmsViewerComponent extends React.Component<
           }}
         />
         <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%' }}>
-          <MuiThemeProvider theme={defaultTheme}>
+          <MuiThemeProvider theme={exampleTheme}>
             <DocumentViewer
               documentIdOrPath={this.state.documentId}
               hostName={this.props.hostName}
@@ -161,8 +160,7 @@ export class DmsViewerComponent extends React.Component<
                           <RotateActivePages />
                         </div>
                         <DocumentTitlePager />
-                        <div style={{ display: 'flex', flexShrink: 0 }}>
-                          <ToggleCommentsWidget />
+                        <div style={{ flexShrink: 0 }}>
                           <SearchBar />
                         </div>
                       </LayoutAppBar>
