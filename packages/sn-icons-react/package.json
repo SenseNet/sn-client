@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/icons-react",
-  "version": "1.2.7",
+  "version": "1.2.6",
   "description": "A React component rendering icons for sensenet.",
   "main": "dist/index.js",
   "scripts": {
