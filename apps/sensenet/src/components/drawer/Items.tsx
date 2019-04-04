@@ -6,10 +6,12 @@ import SearchTwoTone from '@material-ui/icons/SearchTwoTone'
 
 import { Group } from '@sensenet/default-content-types'
 import React from 'react'
+import DefaultLocalization from '../../localization/default'
 
 export interface DrawerItem {
-  primaryText: string
-  secondaryText: string
+  name: string
+  primaryText: keyof (typeof DefaultLocalization.drawer)
+  secondaryText: keyof (typeof DefaultLocalization.drawer)
   url: string
   icon: JSX.Element
   requiredGroupPath: string
@@ -17,36 +19,41 @@ export interface DrawerItem {
 
 export const defaultDrawerItems: DrawerItem[] = [
   {
-    primaryText: 'Content',
-    secondaryText: 'Explore the Repository',
+    name: 'Content',
+    primaryText: 'contentTitle',
+    secondaryText: 'contentSecondaryText',
     url: '/browse',
     icon: <PublicTwoTone />,
     requiredGroupPath: '/Root/IMS/BuiltIn/Portal/ContentExplorers',
   },
   {
-    primaryText: 'Search',
-    secondaryText: 'Build queries',
+    name: 'Search',
+    primaryText: 'searchTitle',
+    secondaryText: 'searchSecondaryText',
     url: '/search',
     icon: <SearchTwoTone />,
     requiredGroupPath: '/Root/IMS/BuiltIn/Portal/Operators',
   },
   {
-    primaryText: 'Users and Groups',
-    secondaryText: 'Manage users and groups, roles and identities',
+    name: 'Users and Groups',
+    primaryText: 'usersAndGroupsTitle',
+    secondaryText: 'usersAndGroupsSecondaryText',
     url: '/iam',
     icon: <PeopleTwoTone />,
     requiredGroupPath: '/Root/IMS/BuiltIn/Portal/Operators',
   },
   {
-    primaryText: 'Setup',
-    secondaryText: 'Configure the sensenet system',
+    name: 'Setup',
+    primaryText: 'setupTitle',
+    secondaryText: 'setupSecondaryText',
     url: '/setup',
     icon: <BuildTwoTone />,
     requiredGroupPath: '/Root/IMS/BuiltIn/Portal/Administrators',
   },
   {
-    primaryText: 'Version info',
-    secondaryText: 'Detailed version information about the current sensenet installation',
+    name: 'Version info',
+    primaryText: 'versionInfoTitle',
+    secondaryText: 'versionInfoSecondaryText',
     url: '/info',
     icon: <InfoTwoTone />,
     requiredGroupPath: '/Root/IMS/BuiltIn/Portal/Administrators',

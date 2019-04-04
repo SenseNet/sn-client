@@ -4,12 +4,12 @@ const path = require('path')
 const TsConfigWebpackPlugin = require('ts-config-webpack-plugin')
 const DocgenPlugin = require('./docgen-plugin')
 
-const config = {
-  plugins: [new TsConfigWebpackPlugin(), new DocgenPlugin()],
+module.exports = ({ config }) => ({
+  ...config,
+  plugins: [new TsConfigWebpackPlugin(), new DocgenPlugin(), ...config.plugins],
   resolve: {
+    ...config.resolve,
     symlinks: true,
-    extensions: ['.ts', '.tsx'],
+    extensions: [...config.resolve.extensions, '.ts', '.tsx'],
   },
-}
-
-module.exports = config
+})

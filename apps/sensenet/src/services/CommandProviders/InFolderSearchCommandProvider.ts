@@ -7,7 +7,7 @@ import { CommandPaletteItem } from '../../store/CommandPalette'
 import { CommandProvider } from '../CommandProviderManager'
 import { ContentContextProvider } from '../ContentContextProvider'
 
-@Injectable()
+@Injectable({ lifetime: 'singleton' })
 export class InFolderSearchCommandProvider implements CommandProvider {
   public shouldExec(searchTerm: string): boolean {
     return searchTerm[0] === '/'

@@ -7,13 +7,13 @@ export interface CommandProvider {
   getItems: (term: string, repo: Repository) => Promise<CommandPaletteItem[]>
 }
 
-@Injectable()
+@Injectable({ lifetime: 'singleton' })
 export class CommandProviderManager {
   public readonly Providers: CommandProvider[] = []
   public RegisterProviders(...providerTypes: Array<new (...args: any[]) => CommandProvider>) {
     for (const providerType of providerTypes) {
       if (!this.Providers.find(p => p instanceof providerType)) {
-        const instance = this.injector.GetInstance(providerType)
+        const instance = this.injector.getInstance(providerType)
         this.Providers.push(instance)
       }
     }

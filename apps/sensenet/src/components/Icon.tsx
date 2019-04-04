@@ -13,8 +13,7 @@ import { Repository } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { File as SnFile, GenericContent, Schema, User } from '@sensenet/default-content-types'
 import React, { useContext } from 'react'
-import { InjectorContext } from '../context/InjectorContext'
-import { RepositoryContext } from '../context/RepositoryContext'
+import { InjectorContext, RepositoryContext } from '../context'
 import { UserAvatar } from './UserAvatar'
 
 export interface IconOptions {

@@ -19,7 +19,7 @@ export const CurrentChildrenProvider: React.FunctionComponent = props => {
   const [reloadToken, setReloadToken] = useState(1)
   const repo = useContext(RepositoryContext)
   const eventHub = injector.getEventHub(repo.configuration.repositoryUrl)
-  const uploadTracker = injector.GetInstance(UploadTracker)
+  const uploadTracker = injector.getInstance(UploadTracker)
   const loadSettings = useContext(LoadSettingsContext)
 
   const requestReload = debounce(() => setReloadToken(Math.random()), 200)

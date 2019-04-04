@@ -2,9 +2,7 @@ import CloudUploadTwoTone from '@material-ui/icons/CloudUploadTwoTone'
 import { Upload } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useContext, useState } from 'react'
-import { InjectorContext } from '../context/InjectorContext'
-import { RepositoryContext } from '../context/RepositoryContext'
-import { ThemeContext } from '../context/ThemeContext'
+import { InjectorContext, RepositoryContext, ThemeContext } from '../context'
 import { UploadTracker } from '../services/UploadTracker'
 
 export const DropFileArea: React.FunctionComponent<{ parent: GenericContent; style?: React.CSSProperties }> = props => {
@@ -49,7 +47,7 @@ export const DropFileArea: React.FunctionComponent<{ parent: GenericContent; sty
           overwrite: false,
           parentPath: props.parent ? props.parent.Path : '',
           repository: repo,
-          progressObservable: injector.GetInstance(UploadTracker).onUploadProgress,
+          progressObservable: injector.getInstance(UploadTracker).onUploadProgress,
         })
       }}>
       <div

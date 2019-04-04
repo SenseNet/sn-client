@@ -1,11 +1,11 @@
 import { mount } from 'enzyme'
 import React from 'react'
-import { useAsync } from 'react-use'
+import useAsync from 'react-use/lib/useAsync'
 import { ItemComponent } from '../src/ListPicker/Item'
 import { ListPickerComponent } from '../src/ListPicker/ListPicker'
 import { genericContentItems } from './mocks/items'
 
-jest.mock('react-use')
+jest.mock('react-use/lib/useAsync')
 
 describe('List picker component', () => {
   it('render list items', () => {

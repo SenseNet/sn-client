@@ -12,9 +12,7 @@ import { Upload } from '@sensenet/client-core'
 import { NewViewComponent } from '@sensenet/controls-react'
 import { Schema } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
-import { CurrentContentContext } from '../context/CurrentContent'
-import { InjectorContext } from '../context/InjectorContext'
-import { RepositoryContext } from '../context/RepositoryContext'
+import { CurrentContentContext, InjectorContext, LocalizationContext, RepositoryContext } from '../context'
 import { UploadTracker } from '../services/UploadTracker'
 import { Icon } from './Icon'
 
@@ -28,6 +26,8 @@ export const AddButton: React.FunctionComponent = () => {
   const [showAddNewDialog, setShowAddNewDialog] = useState(false)
   const [selectedSchema, setSelectedSchema] = useState<Schema>(repo.schemas.getSchemaByName('GenericContent'))
 
+  const localization = useContext(LocalizationContext).values.addButton
+
   useEffect(() => {
     setAllowedChildTypes(
       repo.schemas.getSchemaByName(parent.Type).AllowedChildTypes.map(type => repo.schemas.getSchemaByName(type)),
@@ -36,7 +36,7 @@ export const AddButton: React.FunctionComponent = () => {
 
   return (
     <div>
-      <Tooltip title="Create or upload content" placement="top-end">
+      <Tooltip title={localization.tooltip} placement="top-end">
         <Fab
           color="primary"
           style={{ position: 'fixed', bottom: '1em', right: '1em' }}
@@ -52,7 +52,7 @@ export const AddButton: React.FunctionComponent = () => {
         }}
         open={showSelectType}>
         <Typography variant="subtitle1" style={{ margin: '0.8em' }}>
-          New...
+          {localization.new}
         </Typography>
         <div
           style={{ display: 'flex', alignItems: 'flex-start', flexWrap: 'wrap', maxHeight: '512px', overflow: 'auto' }}>
@@ -63,7 +63,7 @@ export const AddButton: React.FunctionComponent = () => {
                   width: 90,
                 }}>
                 <CloudUpload style={{ height: 38, width: 38 }} />
-                <Typography variant="body2">Upload</Typography>
+                <Typography variant="body2">{localization.upload}</Typography>
               </div>
             </label>
           </Button>
@@ -79,7 +79,7 @@ export const AddButton: React.FunctionComponent = () => {
                     repository: repo,
                     binaryPropertyName: 'Binary',
                     overwrite: false,
-                    progressObservable: injector.GetInstance(UploadTracker).onUploadProgress,
+                    progressObservable: injector.getInstance(UploadTracker).onUploadProgress,
                   })
               }}
               type="file"
@@ -108,7 +108,7 @@ export const AddButton: React.FunctionComponent = () => {
         </div>
       </SwipeableDrawer>
       <Dialog open={showAddNewDialog} onClose={() => setShowAddNewDialog(false)}>
-        <DialogTitle>Create new {selectedSchema.DisplayName}</DialogTitle>
+        <DialogTitle> {localization.dialogTitle.replace('{0}', selectedSchema.DisplayName)}</DialogTitle>
         <DialogContent>
           <NewViewComponent
             repositoryUrl={repo.configuration.repositoryUrl}

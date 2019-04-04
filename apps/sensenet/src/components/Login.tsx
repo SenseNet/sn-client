@@ -7,11 +7,14 @@ import Typography from '@material-ui/core/Typography'
 import { FormsAuthenticationService } from '@sensenet/client-core'
 import { sleepAsync } from '@sensenet/client-utils'
 import React, { useContext, useState } from 'react'
-import { InjectorContext } from '../context/InjectorContext'
-import { PersonalSettingsContext } from '../context/PersonalSettingsContext'
-import { RepositoryContext } from '../context/RepositoryContext'
-import { SessionContext } from '../context/SessionContext'
-import { ThemeContext } from '../context/ThemeContext'
+import {
+  InjectorContext,
+  LocalizationContext,
+  PersonalSettingsContext,
+  RepositoryContext,
+  SessionContext,
+  ThemeContext,
+} from '../context'
 import { PersonalSettings } from '../services/PersonalSettings'
 import { UserAvatar } from './UserAvatar'
 
@@ -21,7 +24,7 @@ export const Login: React.FunctionComponent = () => {
   const theme = useContext(ThemeContext)
   const personalSettings = useContext(PersonalSettingsContext)
   const session = useContext(SessionContext)
-  const settingsManager = injector.GetInstance(PersonalSettings)
+  const settingsManager = injector.getInstance(PersonalSettings)
 
   const existingRepo = personalSettings.repositories.find(r => r.url === repo.configuration.repositoryUrl)
 
@@ -34,6 +37,8 @@ export const Login: React.FunctionComponent = () => {
   const [progressValue, setProgressValue] = useState(0)
 
   const [error, setError] = useState<string | undefined>()
+
+  const localization = useContext(LocalizationContext).values.login
 
   const handleSubmit = async (ev: React.FormEvent) => {
     ev.preventDefault()
@@ -66,7 +71,7 @@ export const Login: React.FunctionComponent = () => {
         setIsInProgress(false)
       } else {
         setIsInProgress(false)
-        setError('Login failed.')
+        setError(localization.loginFailed)
       }
     } catch (error) {
       console.log('Login error:', error)
@@ -79,7 +84,7 @@ export const Login: React.FunctionComponent = () => {
   return (
     <Paper
       style={{ padding: '1em', flexShrink: 0, width: '450px', maxWidth: '90%', alignSelf: 'center', margin: 'auto' }}>
-      <Typography variant="h4">Login</Typography>
+      <Typography variant="h4">{localization.loginTitle}</Typography>
       {isInProgress ? (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 196 }}>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
@@ -101,11 +106,13 @@ export const Login: React.FunctionComponent = () => {
               }}>
               {success ? (
                 <>
-                  Greetings,{' '}
-                  {session.currentUser.DisplayName || session.currentUser.LoginName || session.currentUser.Name}!
+                  {localization.greetings.replace(
+                    '{0}',
+                    session.currentUser.DisplayName || session.currentUser.LoginName || session.currentUser.Name,
+                  )}
                 </>
               ) : (
-                <>Logging in to {url}...</>
+                <>{localization.loggingInTo.replace('{0}', url)}</>
               )}
             </Typography>
           </div>
@@ -116,8 +123,8 @@ export const Login: React.FunctionComponent = () => {
           <TextField
             required={true}
             margin="normal"
-            label="Username"
-            helperText="Enter the user name you've registered with"
+            label={localization.userNameLabel}
+            helperText={localization.userNameHelperText}
             fullWidth={true}
             defaultValue={userName}
             onChange={ev => {
@@ -127,17 +134,18 @@ export const Login: React.FunctionComponent = () => {
           <TextField
             required={true}
             margin="dense"
-            label="Password"
+            label={localization.passwordLabel}
             fullWidth={true}
             type="password"
-            helperText="Enter a matching password for the user"
+            helperText={localization.passwordHelperText}
             onChange={ev => {
               setPassword(ev.target.value)
             }}
           />
           <TextField
             margin="dense"
-            label="Repository URL"
+            label={localization.repositoryLabel}
+            helperText={localization.repositoryHelperText}
             fullWidth={true}
             type="url"
             defaultValue={repo.configuration.repositoryUrl}
@@ -148,7 +156,7 @@ export const Login: React.FunctionComponent = () => {
           {error ? <Typography style={{ color: theme.palette.error.main }}>{error}</Typography> : null}
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1em' }}>
             <Button style={{ width: '100%' }} type="submit">
-              <Typography variant="button">Log in</Typography>
+              <Typography variant="button">{localization.loginButtonTitle}</Typography>
             </Button>
           </div>
         </form>

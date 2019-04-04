@@ -1,4 +1,3 @@
-import { Injector } from '@furystack/inject'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
 import { ODataParams, Repository } from '@sensenet/client-core'
@@ -10,6 +9,8 @@ import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import * as DMSActions from '../../Actions'
 import { resources } from '../../assets/resources'
+import { RepositoryContext } from '../../context/RepositoryContext'
+import { dmsInjector } from '../../DmsRepository'
 import { loadEditedContent } from '../../store/edited/actions'
 import { rootStateType } from '../../store/rootReducer'
 import { FullScreenLoader } from '../FullScreenLoader'
@@ -40,7 +41,6 @@ const mapDispatchToProps = {
 
 interface EditPropertiesDialogState {
   editedcontent: GenericContent | undefined
-  repository: Repository
 }
 
 const LoadableEditView = Loadable({
@@ -55,20 +55,19 @@ class EditPropertiesDialog extends React.Component<
   EditPropertiesDialogProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   EditPropertiesDialogState
 > {
+  public static contextType = RepositoryContext
   public state = {
     editedcontent: this.props.editedcontent ? this.props.editedcontent : undefined,
-    repository: Injector.Default.GetInstance(Repository),
   }
   public static getDerivedStateFromProps(
     newProps: EditPropertiesDialog['props'],
     lastState: EditPropertiesDialog['state'],
   ) {
-    const repository = Injector.Default.GetInstance(Repository)
     if (
       lastState.editedcontent === null ||
       (newProps.content && (lastState.editedcontent ? lastState.editedcontent.Id !== newProps.content.Id : false))
     ) {
-      const schema = repository.schemas.getSchemaByName(newProps.contentTypeName)
+      const schema = dmsInjector.getInstance(Repository).schemas.getSchemaByName(newProps.contentTypeName)
       const editableFields = schema.FieldSettings.filter(field => field.VisibleEdit).map(field => field.Name)
       editableFields.push('Icon')
       const options = {
@@ -79,7 +78,6 @@ class EditPropertiesDialog extends React.Component<
     }
     return {
       editedcontent: newProps.content,
-      repository,
     }
   }
   public handleCancel = () => {
@@ -101,16 +99,20 @@ class EditPropertiesDialog extends React.Component<
             </Typography>
             <DialogInfo currentContent={editedcontent ? editedcontent : content} repositoryUrl={repositoryUrl} />
             {editedcontent ? (
-              <LoadableEditView
-                content={editedcontent}
-                repository={this.state.repository}
-                contentTypeName={contentTypeName}
-                onSubmit={editContent}
-                handleCancel={() => this.handleCancel()}
-                submitCallback={this.submitCallback}
-                repositoryUrl={repositoryUrl}
-                uploadFolderPath={`/Root/Profiles/Public/${this.props.currentUser}/Document_Library`}
-              />
+              <RepositoryContext.Consumer>
+                {repository => (
+                  <LoadableEditView
+                    content={editedcontent}
+                    repository={repository}
+                    contentTypeName={contentTypeName}
+                    onSubmit={editContent}
+                    handleCancel={() => this.handleCancel()}
+                    submitCallback={this.submitCallback}
+                    repositoryUrl={repositoryUrl}
+                    uploadFolderPath={`/Root/Profiles/Public/${this.props.currentUser}/Document_Library`}
+                  />
+                )}
+              </RepositoryContext.Consumer>
             ) : (
               <CircularProgress size={50} />
             )}
