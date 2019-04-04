@@ -19,18 +19,10 @@ export function ListPickerComponent<T extends GenericContent = GenericContent>(p
   const [parentId, setParentId] = useState<number | undefined>(props.parentId)
   const [selectedId, setSelectedId] = useState<string | number>(0)
 
-  const loadItems = () => {
-    if (props.items) {
-      return Promise.resolve(props.items)
-    }
-    return (props.loadItems && props.loadItems(currentPath)) || defaultLoadItems(currentPath, props.repository)
-  }
-
-  const loadParent = () =>
-    (props.loadParent && props.loadParent(parentId)) || defaultLoadParent(parentId, props.repository)
-
-  const { loading, value: items, error } = useAsync(loadItems, [currentPath, props.items])
-  const parent = useAsync(loadParent, [parentId])
+  const { loading, value: items, error } = useAsync(() => defaultLoadItems(currentPath, props.repository), [
+    currentPath,
+  ])
+  const parent = useAsync(() => defaultLoadParent(parentId, props.repository), [parentId])
 
   const onItemClickHandler = (event: React.MouseEvent, node: T) => {
     event.preventDefault()
@@ -53,6 +45,21 @@ export function ListPickerComponent<T extends GenericContent = GenericContent>(p
       setCurrentPath(parent.value.Path)
     } else {
       setCurrentPath(node.Path)
+    }
+  }
+
+  const setParentIdOnDoubleClick = (node: T) => {
+    // If parent value is set (there were already some navigation) and clicked, set parent id to parent's parent id
+    // otherwise set it to clicked item's parent id.
+    if (parent.value && parent.value.Id === node.Id) {
+      const parentData = parent.value
+      if ((parentData.Workspace as Workspace).Id === parentData.Id) {
+        setParentId(undefined)
+      } else {
+        setParentId(parent.value.ParentId)
+      }
+    } else {
+      setParentId(node.ParentId)
     }
   }
 
@@ -79,7 +86,7 @@ export function ListPickerComponent<T extends GenericContent = GenericContent>(p
     <List>
       {parent.value !== undefined ? (
         <ItemComponent
-          node={{ ...parent.value, DisplayName: '..' }}
+          node={{ ...parent.value, DisplayName: '..' } as T}
           onClickHandler={onItemClickHandler}
           onDoubleClickHandler={onItemDoubleClickHandler}
           renderItem={renderItem}
@@ -97,21 +104,6 @@ export function ListPickerComponent<T extends GenericContent = GenericContent>(p
         ))}
     </List>
   )
-
-  function setParentIdOnDoubleClick(node: T) {
-    // If parent value is set (there were already some navigation) and clicked, set parent id to parent's parent id
-    // otherwise set it to clicked item's parent id.
-    if (parent.value && parent.value.Id === node.Id) {
-      const parentData = parent.value
-      if ((parentData.Workspace as Workspace).Id === parentData.Id) {
-        setParentId(undefined)
-      } else {
-        setParentId(parent.value.ParentId)
-      }
-    } else {
-      setParentId(node.ParentId)
-    }
-  }
 }
 
 async function defaultLoadItems<T extends GenericContent>(path: string, repository?: Repository) {

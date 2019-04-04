@@ -1,4 +1,4 @@
-import { Repository } from '@sensenet/client-core'
+import { ODataParams, Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 
 /**
@@ -12,26 +12,26 @@ export interface ListPickerProps<T extends GenericContent = GenericContent> {
    * To use the default load options you need to provide a repository.
    * @type {Repository}
    */
-  repository?: Repository
+  repository: Repository
 
   /**
-   * Load content from path.
+   * OData parameters for list items.
    * @default { select: ['DisplayName', 'Path', 'Id'],
    *   filter: "(isOf('Folder') and not isOf('SystemFolder'))",
    *   metadata: 'no',
    *   orderby: 'DisplayName',}
    */
-  loadItems?: (path: string) => Promise<T[]>
+  itemsOdataOptions: ODataParams<T>
 
   /**
-   * Load parent content.
+   * OData parameters for the parent list item.
    * @default {
    *   select: ['DisplayName', 'Path', 'Id', 'ParentId', 'Workspace'],
    *   expand: ['Workspace'],
    *   metadata: 'no',
    * }
    */
-  loadParent?: (id?: number) => Promise<T>
+  parentODataOptions: ODataParams<T>
 
   /**
    * The current content's path.
@@ -85,9 +85,4 @@ export interface ListPickerProps<T extends GenericContent = GenericContent> {
    * ```
    */
   renderItem?: (props: T) => JSX.Element
-
-  /**
-   * Content items to show in the list
-   */
-  items?: T[]
 }
