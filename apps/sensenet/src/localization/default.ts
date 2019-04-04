@@ -45,6 +45,8 @@ const values = {
     setupSecondaryText: 'Configure the sensenet system',
     versionInfoTitle: 'Version Info',
     versionInfoSecondaryText: 'Detailed version information about the current sensenet installation',
+    expand: 'Expand',
+    collapse: 'Collapse',
   },
   editPropertiesDialog: {
     dialogTitle: 'Edit {0}',

@@ -167,10 +167,10 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
 
           {settings.drawer.type === 'mini-variant' ? (
             <ListItem button={true} onClick={() => setOpened(!opened)} key="expandcollapse">
-              <Tooltip title={opened ? 'Collapse' : 'Expand'} placement="right">
+              <Tooltip title={opened ? localization.collapse : localization.expand} placement="right">
                 <ListItemIcon>{opened ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}</ListItemIcon>
               </Tooltip>
-              {opened ? <ListItemText primary="Collapse sidebar" /> : null}
+              {opened ? <ListItemText primary={localization.collapse} /> : null}
             </ListItem>
           ) : null}
         </div>
