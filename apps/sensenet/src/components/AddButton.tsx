@@ -12,7 +12,7 @@ import { Upload } from '@sensenet/client-core'
 import { NewViewComponent } from '@sensenet/controls-react'
 import { Schema } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
-import { CurrentContentContext, InjectorContext, RepositoryContext } from '../context'
+import { CurrentContentContext, InjectorContext, LocalizationContext, RepositoryContext } from '../context'
 import { UploadTracker } from '../services/UploadTracker'
 import { Icon } from './Icon'
 
