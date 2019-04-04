@@ -1,23 +1,10 @@
 import { Repository } from '@sensenet/client-core'
 import { ContentType, File as SnFile, GenericContent, Resource, Settings } from '@sensenet/default-content-types'
-import { Uri } from 'monaco-editor'
 import { isContentFromType } from '../utils/isContentFromType'
 
 export type RouteType = 'Browse' | 'EditProperties' | 'EditBinary' | 'Preview'
 
 export class ContentContextProvider {
-  public getMonacoModelUri(content: GenericContent) {
-    if (isContentFromType(content, Settings)) {
-      return Uri.parse(`sensenet://${content.Type}/${content.Name}`)
-    }
-    if (isContentFromType(content, SnFile)) {
-      if (content.Binary) {
-        return Uri.parse(`sensenet://${content.Type}/${content.Binary.__mediaresource.content_type}`)
-      }
-    }
-    return Uri.parse(`sensenet://${content.Type}`)
-  }
-
   public getMonacoLanguage(content: GenericContent) {
     if (isContentFromType(content, Settings, this.repository.schemas)) {
       return 'json'

@@ -7,7 +7,7 @@ export interface CommandProvider {
   getItems: (term: string, repo: Repository) => Promise<CommandPaletteItem[]>
 }
 
-@Injectable()
+@Injectable({ lifetime: 'singleton' })
 export class CommandProviderManager {
   public readonly Providers: CommandProvider[] = []
   public RegisterProviders(...providerTypes: Array<new (...args: any[]) => CommandProvider>) {

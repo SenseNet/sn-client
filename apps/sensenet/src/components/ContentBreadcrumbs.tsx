@@ -1,9 +1,7 @@
 import { useContext } from 'react'
 import React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { ContentRoutingContext } from '../context/ContentRoutingContext'
-import { CurrentAncestorsContext } from '../context/CurrentAncestors'
-import { CurrentContentContext } from '../context/CurrentContent'
+import { ContentRoutingContext, CurrentAncestorsContext, CurrentContentContext } from '../context'
 import Breadcrumbs, { BreadcrumbItem } from './Breadcrumbs'
 
 export const ContentBreadcrumbsComponent: React.FunctionComponent<

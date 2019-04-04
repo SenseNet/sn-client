@@ -5,13 +5,16 @@ import { Provider } from 'react-redux'
 import { HashRouter, Route } from 'react-router-dom'
 import { DesktopLayout } from './components/layout/DesktopLayout'
 import { MainRouter } from './components/MainRouter'
-import { ContentRoutingContextProvider } from './context/ContentRoutingContext'
-import { InjectorContext } from './context/InjectorContext'
-import { PersonalSettingsContextProvider } from './context/PersonalSettingsContext'
-import { RepositoryContextProvider } from './context/RepositoryContext'
-import { ResponsiveContextProvider } from './context/ResponsiveContextProvider'
-import { SessionContextProvider } from './context/SessionContext'
-import { ThemeProvider } from './context/ThemeProvider'
+import {
+  ContentRoutingContextProvider,
+  InjectorContext,
+  LocalizationProvider,
+  PersonalSettingsContextProvider,
+  RepositoryContextProvider,
+  ResponsiveContextProvider,
+  SessionContextProvider,
+  ThemeProvider,
+} from './context'
 import { CommandProviderManager } from './services/CommandProviderManager'
 import { CheatCommandProvider } from './services/CommandProviders/CheatCommandProvider'
 import { HelpCommandProvider } from './services/CommandProviders/HelpCommandProvider'
@@ -41,23 +44,25 @@ ReactDOM.render(
     <Provider store={store}>
       <InjectorContext.Provider value={injector}>
         <PersonalSettingsContextProvider>
-          <HashRouter>
-            <Route path="/:repo?">
-              <RepositoryContextProvider>
-                <ContentRoutingContextProvider>
-                  <SessionContextProvider>
-                    <ResponsiveContextProvider>
-                      <ThemeProvider theme={theme}>
-                        <DesktopLayout>
-                          <MainRouter />
-                        </DesktopLayout>{' '}
-                      </ThemeProvider>
-                    </ResponsiveContextProvider>
-                  </SessionContextProvider>
-                </ContentRoutingContextProvider>
-              </RepositoryContextProvider>
-            </Route>
-          </HashRouter>
+          <LocalizationProvider>
+            <HashRouter>
+              <Route path="/:repo?">
+                <RepositoryContextProvider>
+                  <ContentRoutingContextProvider>
+                    <SessionContextProvider>
+                      <ResponsiveContextProvider>
+                        <ThemeProvider theme={theme}>
+                          <DesktopLayout>
+                            <MainRouter />
+                          </DesktopLayout>{' '}
+                        </ThemeProvider>
+                      </ResponsiveContextProvider>
+                    </SessionContextProvider>
+                  </ContentRoutingContextProvider>
+                </RepositoryContextProvider>
+              </Route>
+            </HashRouter>
+          </LocalizationProvider>
         </PersonalSettingsContextProvider>
       </InjectorContext.Provider>
     </Provider>

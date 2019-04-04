@@ -12,11 +12,7 @@ import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew'
 import { ConstantContent, FormsAuthenticationService, LoginState } from '@sensenet/client-core'
 import { sleepAsync } from '@sensenet/client-utils'
 import React, { useContext, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { ContentRoutingContext } from '../context/ContentRoutingContext'
-import { RepositoryContext } from '../context/RepositoryContext'
-import { SessionContext } from '../context/SessionContext'
-import { ThemeContext } from '../context/ThemeContext'
+import { LocalizationContext, RepositoryContext, SessionContext, ThemeContext } from '../context'
 import { Icon } from './Icon'
 
 export const LogoutButton: React.FunctionComponent<{
@@ -26,10 +22,10 @@ export const LogoutButton: React.FunctionComponent<{
   const session = useContext(SessionContext)
   const theme = useContext(ThemeContext)
   const repo = useContext(RepositoryContext)
-  const ctx = useContext(ContentRoutingContext)
   const [showLogout, setShowLogout] = useState(false)
 
   const [userToLogout, setUserToLogout] = useState({ ...session.currentUser })
+  const localization = useContext(LocalizationContext).values.logout
 
   useEffect(() => {
     if (session.state === LoginState.Authenticated && session.currentUser.Id !== ConstantContent.VISITOR_USER.Id) {
@@ -45,7 +41,7 @@ export const LogoutButton: React.FunctionComponent<{
 
   return (
     <div>
-      <Tooltip placement="bottom-end" title="Log out">
+      <Tooltip placement="bottom-end" title={localization.logoutButtonTitle}>
         <IconButton
           onClick={() => {
             setShowLogout(true)
@@ -64,8 +60,8 @@ export const LogoutButton: React.FunctionComponent<{
                 transition: 'filter linear 1s, opacity linear 1.5s',
               }}
               item={userToLogout}
-            />{' '}
-            Really log out?
+            />
+            {localization.logoutDialogTitle}
           </div>
         </DialogTitle>
         <DialogContent>
@@ -73,29 +69,20 @@ export const LogoutButton: React.FunctionComponent<{
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
               <CircularProgress size={64} />
               <Typography style={{ marginTop: '2em', wordBreak: 'break-word' }}>
-                Logging out from {repo.configuration.repositoryUrl}...
+                {localization.loggingOutFrom.replace('{0}', repo.configuration.repositoryUrl)}
               </Typography>
             </div>
           ) : (
             <DialogContentText style={{ wordBreak: 'break-word' }}>
-              <>
-                You are logged in to{' '}
-                <Link to="/" onClick={() => setShowLogout(false)}>
-                  {repo.configuration.repositoryUrl}
-                </Link>{' '}
-                as{' '}
-                <Link to={ctx.getPrimaryActionUrl(userToLogout)} onClick={() => setShowLogout(false)}>
-                  {userToLogout.DisplayName || userToLogout.Name}
-                </Link>
-                . <br />
-                Are you sure that you want to leave?
-              </>
+              {localization.logoutConfirmText
+                .replace('{0}', repo.configuration.repositoryUrl)
+                .replace('{1}', userToLogout.DisplayName || userToLogout.Name)}
             </DialogContentText>
           )}
         </DialogContent>
         {isLoggingOut ? null : (
           <DialogActions>
-            <Button onClick={() => setShowLogout(false)}>Cancel</Button>
+            <Button onClick={() => setShowLogout(false)}>{localization.logoutCancel}</Button>
             <Button
               onClick={async () => {
                 try {
@@ -114,7 +101,7 @@ export const LogoutButton: React.FunctionComponent<{
                 setIsLoggingOut(false)
               }}
               autoFocus={true}>
-              Log out
+              {localization.logoutButtonTitle}
             </Button>
           </DialogActions>
         )}

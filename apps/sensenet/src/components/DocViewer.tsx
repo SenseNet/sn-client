@@ -2,8 +2,7 @@ import { DocumentViewer } from '@sensenet/document-viewer-react'
 import React, { useContext } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { withRouter } from 'react-router'
-import { InjectorContext } from '../context/InjectorContext'
-import { RepositoryContext } from '../context/RepositoryContext'
+import { InjectorContext, RepositoryContext } from '../context'
 import { getViewerSettings } from '../services/GetViewerSettings'
 
 const DocViewer: React.FunctionComponent<RouteComponentProps<{ documentId: string }>> = props => {

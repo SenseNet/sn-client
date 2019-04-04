@@ -2,7 +2,7 @@ import { Injectable } from '@furystack/inject'
 import { CommandPaletteItem } from '../../store/CommandPalette'
 import { CommandProvider } from '../CommandProviderManager'
 
-@Injectable()
+@Injectable({ lifetime: 'singleton' })
 export class CheatCommandProvider implements CommandProvider {
   public items: Record<string, CommandPaletteItem> = {
     iddqd: {

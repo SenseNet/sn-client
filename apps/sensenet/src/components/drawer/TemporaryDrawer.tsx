@@ -13,11 +13,14 @@ import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import { matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
 import { Link } from 'react-router-dom'
-import { PersonalSettingsContext } from '../../context/PersonalSettingsContext'
-import { RepositoryContext } from '../../context/RepositoryContext'
-import { ResponsivePersonalSetttings } from '../../context/ResponsiveContextProvider'
-import { SessionContext } from '../../context/SessionContext'
-import { ThemeContext } from '../../context/ThemeContext'
+import {
+  LocalizationContext,
+  PersonalSettingsContext,
+  RepositoryContext,
+  ResponsivePersonalSetttings,
+  SessionContext,
+  ThemeContext,
+} from '../../context'
 import { LogoutButton } from '../LogoutButton'
 import { UserAvatar } from '../UserAvatar'
 import { getAllowedDrawerItems } from './Items'
@@ -34,6 +37,8 @@ const TemporaryDrawer: React.FunctionComponent<
   const [currentRepoEntry, setCurrentRepoEntry] = useState(
     personalSettings.repositories.find(r => r.url === PathHelper.trimSlashes(repo.configuration.repositoryUrl)),
   )
+
+  const localization = useContext(LocalizationContext).values.drawer
 
   useEffect(
     () =>
@@ -72,21 +77,21 @@ const TemporaryDrawer: React.FunctionComponent<
         }}>
         <div style={{ paddingTop: '1em' }}>
           {items
-            .filter(i => settings.drawer.items && settings.drawer.items.indexOf(i.primaryText) !== -1)
+            .filter(i => settings.drawer.items && settings.drawer.items.indexOf(i.name) !== -1)
             .map(item => {
               const isActive = matchPath(props.location.pathname, item.url)
               return isActive ? (
-                <ListItem button={true} disabled={true} key={item.primaryText}>
+                <ListItem button={true} disabled={true} key={item.name}>
                   <Tooltip
                     title={
                       <React.Fragment>
-                        {item.primaryText} <br /> {item.secondaryText}
+                        {localization[item.primaryText]} <br /> {localization[item.secondaryText]}
                       </React.Fragment>
                     }
                     placement="right">
                     <ListItemIcon>{item.icon}</ListItemIcon>
                   </Tooltip>
-                  <ListItemText primary={item.primaryText} secondary={item.secondaryText} />
+                  <ListItemText primary={localization[item.primaryText]} secondary={localization[item.secondaryText]} />
                 </ListItem>
               ) : (
                 <NavLink
@@ -94,18 +99,21 @@ const TemporaryDrawer: React.FunctionComponent<
                   to={`/${btoa(repo.configuration.repositoryUrl)}${item.url}`}
                   activeStyle={{ opacity: 1 }}
                   style={{ textDecoration: 'none', opacity: 0.54 }}
-                  key={item.primaryText}>
+                  key={item.name}>
                   <ListItem button={true}>
                     <Tooltip
                       title={
                         <React.Fragment>
-                          {item.primaryText} <br /> {item.secondaryText}
+                          {localization[item.primaryText]} <br /> {localization[item.secondaryText]}
                         </React.Fragment>
                       }
                       placement="right">
                       <ListItemIcon>{item.icon}</ListItemIcon>
                     </Tooltip>
-                    <ListItemText primary={item.primaryText} secondary={item.secondaryText} />
+                    <ListItemText
+                      primary={localization[item.primaryText]}
+                      secondary={localization[item.secondaryText]}
+                    />
                   </ListItem>
                 </NavLink>
               )
@@ -123,7 +131,7 @@ const TemporaryDrawer: React.FunctionComponent<
             />
             <ListItemSecondaryAction>
               <Link to={`/personalSettings`} style={{ textDecoration: 'none' }} onClick={() => props.onClose()}>
-                <IconButton title="Edit personal settings">
+                <IconButton title={localization.personalSettingsTitle}>
                   <Settings />
                 </IconButton>
               </Link>
