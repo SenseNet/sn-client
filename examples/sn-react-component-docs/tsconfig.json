@@ -2,7 +2,7 @@
   "extends": "../../tsconfig-base.json",
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "src",
+    "rootDirs": ["stories", "assets"],
     "lib": ["es6", "dom"],
     "experimentalDecorators": true,
     "noUnusedParameters": false,
@@ -13,7 +13,7 @@
     "declaration": false,
     "declarationMap": false
   },
-  "include": ["stories", "../../typings"],
+  "include": ["stories", "assets", "../../typings"],
   "references": [
     { "path": "../../packages/sn-client-core" },
     { "path": "../../packages/sn-client-utils" },

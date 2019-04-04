@@ -6,7 +6,7 @@ import { Repository } from '@sensenet/client-core'
 import { GenericContent, Workspace } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import React, { useState } from 'react'
-import { useAsync } from 'react-use'
+import useAsync from 'react-use/lib/useAsync'
 import { ItemComponent } from './Item'
 import { ListPickerProps } from './ListPickerProps'
 

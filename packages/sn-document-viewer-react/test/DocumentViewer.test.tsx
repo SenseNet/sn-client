@@ -17,6 +17,7 @@ describe('Document Viewer component', () => {
     previewState: 1,
     setLocalization: jest.fn(),
     localization: {},
+    theme: {} as any,
   }
 
   it('should render without crashing', () => {

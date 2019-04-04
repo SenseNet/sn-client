@@ -4,7 +4,7 @@ import { ObservableValue } from './ObservableValue'
 /**
  * Options object for tracing method calls
  */
-export interface TraceMethodOptions<T, _K extends keyof T, TReturns, TArgs extends any[]> {
+export interface TraceMethodOptions<T, TMethod extends (...args: TArgs) => any, TArgs extends any[]> {
   /**
    * The context object. Can be an instance or a constructor for static methods
    */
@@ -12,7 +12,7 @@ export interface TraceMethodOptions<T, _K extends keyof T, TReturns, TArgs exten
   /**
    * The method reference that needs to be traced
    */
-  method: (...args: TArgs) => TReturns
+  method: TMethod
   /**
    * Callback that will be called right before executing the method
    */
@@ -20,7 +20,7 @@ export interface TraceMethodOptions<T, _K extends keyof T, TReturns, TArgs exten
   /**
    * Callback that will be called right after the method returns
    */
-  onFinished?: (newValue: TraceMethodFinished<TReturns, TArgs>) => void
+  onFinished?: (newValue: TraceMethodFinished<ReturnType<TMethod>, TArgs>) => void
   /**
    * Callback that will be called when a method throws an error
    */
@@ -201,8 +201,8 @@ export class Trace {
    * Creates an observer that will be observe method calls, finishes and errors
    * @param options The options object for the trace
    */
-  public static method<T extends object, K extends keyof T, TReturns, TArgs extends any[]>(
-    options: TraceMethodOptions<T, K, TReturns, TArgs>,
+  public static method<T extends object, TMethod extends (...args: TArgs) => any, TArgs extends any[]>(
+    options: TraceMethodOptions<T, TMethod, TArgs>,
   ): Disposable {
     // add object mapping
     if (!this.objectTraces.has(options.object)) {
@@ -226,11 +226,14 @@ export class Trace {
       objectTrace.methodMappings.set(options.method.name, {
         originalMethod: options.method,
         callObservable: new ObservableValue<TraceMethodCall<TArgs>>(),
-        finishedObservable: new ObservableValue<TraceMethodFinished<TReturns, TArgs>>(),
+        finishedObservable: new ObservableValue<TraceMethodFinished<ReturnType<TMethod>, TArgs>>(),
         errorObservable: new ObservableValue<TraceMethodError<TArgs>>(),
       } as any)
     }
-    const methodTrace = (objectTrace.methodMappings.get(options.method.name) as any) as MethodMapping<TReturns, TArgs>
+    const methodTrace = (objectTrace.methodMappings.get(options.method.name) as any) as MethodMapping<
+      ReturnType<TMethod>,
+      TArgs
+    >
     const callbacks = [
       options.onCalled && methodTrace.callObservable.subscribe(options.onCalled),
       options.onFinished && methodTrace.finishedObservable.subscribe(options.onFinished),
