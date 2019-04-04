@@ -66,7 +66,7 @@ export class SearchBarComponent extends React.Component<
    */
   public render() {
     return (
-      <Grid container={true} spacing={8} alignItems="flex-end">
+      <Grid container={true} spacing={8} alignItems="center">
         <Grid item={true}>
           <Search />
         </Grid>

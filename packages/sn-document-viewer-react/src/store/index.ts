@@ -9,7 +9,7 @@ import { rootReducer, RootReducerType } from './RootReducer'
  * @param {DocumentViewerSettings} settings The Settings object for the document viewer instance
  */
 export const getStoreConfig = (settings: DocumentViewerSettings) => {
-  const di = new ReduxDiMiddleware()
+  const di = new ReduxDiMiddleware(settings.injector)
   di.setInjectable(settings)
   return {
     rootReducer,
@@ -29,6 +29,7 @@ export const configureStore: (settings: DocumentViewerSettings) => Store<RootRed
   return createStore<RootReducerType, Action, {}, {}>(config.rootReducer, config.preloadedState, config.enhancer)
 }
 
+export * from './Comments'
 export * from './Document'
 export * from './PreviewImages'
 export * from './RootReducer'

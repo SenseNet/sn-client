@@ -36,7 +36,7 @@ export const RepositorySelectorComponent: React.FunctionComponent<
   const [lastRepositoryName, setLastRepositoryName] = useState('')
   const [inputValue, setInputValue] = useState(settings.lastRepository)
   const [filteredSuggestions, setFilteredSuggestions] = useState<Array<typeof settings.repositories[0]>>([])
-  const repoManager = useContext(InjectorContext).GetInstance(RepositoryManager)
+  const repoManager = useContext(InjectorContext).getInstance(RepositoryManager)
 
   const localization = useContext(LocalizationContext).values.repositorySelector
 

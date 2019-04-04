@@ -22,7 +22,7 @@ export const Login: React.FunctionComponent = () => {
   const theme = useContext(ThemeContext)
   const personalSettings = useContext(PersonalSettingsContext)
   const session = useContext(SessionContext)
-  const settingsManager = injector.GetInstance(PersonalSettings)
+  const settingsManager = injector.getInstance(PersonalSettings)
 
   const existingRepo = personalSettings.repositories.find(r => r.url === repo.configuration.repositoryUrl)
 

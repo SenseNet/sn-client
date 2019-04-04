@@ -212,7 +212,7 @@ export const updateChildrenOptions = createAction(<T extends GenericContent>(oda
       options.dispatch(setError(error))
     } finally {
       options.dispatch(finishLoadingChildren())
-      options.dispatch(setChildrenOptions(odataOptions))
+      options.dispatch(setChildrenOptions(odataOptions as ODataParams<GenericContent>))
     }
   },
 }))

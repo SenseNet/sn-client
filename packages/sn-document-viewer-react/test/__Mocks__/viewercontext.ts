@@ -1,5 +1,6 @@
 import { Store } from 'redux'
 import { DocumentData, DocumentViewerSettings, PreviewImageData } from '../../src/models'
+import { Comment } from '../../src/models/Comment'
 import { configureStore, RootReducerType } from '../../src/store'
 
 /**
@@ -77,9 +78,27 @@ export const examplePreviewImageData: PreviewImageData = {
 }
 
 /**
+ * Example preview comment
+ */
+export const examplePreviewComment: Comment = {
+  createdBy: {
+    avatarUrl: 'https://cdn.images.express.co.uk/img/dynamic/79/590x/486693_1.jpg',
+    displayName: 'Alba',
+    id: 1,
+    path: 'some/path',
+    userName: 'some/name',
+  },
+  id: 'someId',
+  page: 1,
+  text: 'Thats a comment',
+  x: 10,
+  y: 10,
+}
+
+/**
  * Default settings for document viewer context
  */
-export const defaultSettings: DocumentViewerSettings = new DocumentViewerSettings({
+export const defaultSettings = new DocumentViewerSettings({
   canEditDocument: async () => true,
   canHideRedaction: async () => true,
   canHideWatermark: async () => true,
@@ -87,6 +106,13 @@ export const defaultSettings: DocumentViewerSettings = new DocumentViewerSetting
   getExistingPreviewImages: async () => [examplePreviewImageData],
   isPreviewAvailable: async () => examplePreviewImageData,
   saveChanges: async () => undefined,
+  commentActions: {
+    addPreviewComment: async () => examplePreviewComment,
+    deletePreviewComment: async () => {
+      return { modified: true }
+    },
+    getPreviewComments: async () => [examplePreviewComment],
+  },
 })
 
 /**
@@ -142,7 +168,7 @@ export const useTestContextWithSettings = (
  * ```
  * @param {(context: DocViewerTestContext) => void} callback Callback for the internal test implemetation
  */
-export const useTestContext: (callback: (context: DocViewerTestContext) => void) => void = callback =>
+export const useTestContext = (callback: (context: DocViewerTestContext) => void) =>
   useTestContextWithSettings({}, callback)
 
 /**
@@ -185,6 +211,5 @@ export const useTestContextWithSettingsAsync = async (
  * ```
  * @param {(context: DocViewerTestContext) => Promise<void>} callback Callback for the internal test implemetation
  */
-export const useTestContextAsync: (
-  callback: (context: DocViewerTestContext) => Promise<void>,
-) => Promise<void> = callback => useTestContextWithSettingsAsync({}, callback)
+export const useTestContextAsync = (callback: (context: DocViewerTestContext) => Promise<void>) =>
+  useTestContextWithSettingsAsync({}, callback)

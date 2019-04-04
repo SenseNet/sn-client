@@ -1,5 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Actions Comments actions should match their snapshot 1`] = `
+Object {
+  "id": "someId",
+  "type": "SET_SELECTED_COMMENT_ID",
+}
+`;
+
 exports[`Actions Document actions Should match their snapshots 1`] = `Array []`;
 
 exports[`Actions Document actions Should match their snapshots 2`] = `

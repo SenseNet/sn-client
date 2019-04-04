@@ -49,7 +49,7 @@ export const DropFileArea: React.FunctionComponent<{ parent: GenericContent; sty
           overwrite: false,
           parentPath: props.parent ? props.parent.Path : '',
           repository: repo,
-          progressObservable: injector.GetInstance(UploadTracker).onUploadProgress,
+          progressObservable: injector.getInstance(UploadTracker).onUploadProgress,
         })
       }}>
       <div

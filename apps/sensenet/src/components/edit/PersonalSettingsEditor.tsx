@@ -9,7 +9,7 @@ import { TextEditor } from './TextEditor'
 
 const SettingsEditor: React.FunctionComponent = () => {
   const injector = useContext(InjectorContext)
-  const service = injector.GetInstance(PersonalSettings)
+  const service = injector.getInstance(PersonalSettings)
   const settings = useContext(PersonalSettingsContext)
   const localization = useContext(LocalizationContext)
   const [editorContent] = useState({

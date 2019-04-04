@@ -82,7 +82,7 @@ export const AddButton: React.FunctionComponent = () => {
                     repository: repo,
                     binaryPropertyName: 'Binary',
                     overwrite: false,
-                    progressObservable: injector.GetInstance(UploadTracker).onUploadProgress,
+                    progressObservable: injector.getInstance(UploadTracker).onUploadProgress,
                   })
               }}
               type="file"

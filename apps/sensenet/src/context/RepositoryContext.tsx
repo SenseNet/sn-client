@@ -13,7 +13,7 @@ export const RepositoryContextProviderComponent: React.FunctionComponent<
   RouteComponentProps<{ repo?: string }>
 > = props => {
   const injector = useContext(InjectorContext)
-  const repoManager = injector.GetInstance(RepositoryManager)
+  const repoManager = injector.getInstance(RepositoryManager)
   const settings = useContext(PersonalSettingsContext)
   const [repo, setRepo] = useState(repoManager.getRepository(localStorage.getItem(lastRepositoryKey) || ''))
 
