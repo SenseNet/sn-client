@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import DefaultLocalization from '../localization/default'
 import { LocalizationService } from '../services/LocalizationService'
 import { PersonalSettingsContext } from './PersonalSettingsContext'

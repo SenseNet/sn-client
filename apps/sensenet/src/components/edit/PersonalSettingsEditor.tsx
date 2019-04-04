@@ -1,6 +1,5 @@
 import { deepMerge } from '@sensenet/client-utils'
-import React, { useContext, useState } from 'react'
-import { useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { InjectorContext } from '../../context/InjectorContext'
 import { LocalizationContext } from '../../context/LocalizationContext'
 import { PersonalSettingsContext } from '../../context/PersonalSettingsContext'
