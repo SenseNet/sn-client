@@ -2,7 +2,7 @@ import { Injectable } from '@furystack/inject'
 import { CommandPaletteItem } from '../../store/CommandPalette'
 import { CommandProvider } from '../CommandProviderManager'
 
-@Injectable()
+@Injectable({ lifetime: 'singleton' })
 export class HelpCommandProvider implements CommandProvider {
   public shouldExec(term: string) {
     return term === '?' || term === 'help'
