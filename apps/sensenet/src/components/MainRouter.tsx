@@ -1,7 +1,7 @@
 import { LoginState } from '@sensenet/client-core'
 import React, { lazy, Suspense, useContext } from 'react'
 import { Route, RouteComponentProps, Switch, withRouter } from 'react-router'
-import { SessionContext } from '../context/SessionContext'
+import { SessionContext } from '../context'
 import { AuthorizedRoute } from './AuthorizedRoute'
 import { ErrorBoundary } from './ErrorBoundary'
 import { FullScreenLoader } from './FullScreenLoader'

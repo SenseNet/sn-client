@@ -13,12 +13,14 @@ import { PathHelper } from '@sensenet/client-utils'
 import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import { Link, matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
-import { LocalizationContext } from '../../context/LocalizationContext'
-import { PersonalSettingsContext } from '../../context/PersonalSettingsContext'
-import { RepositoryContext } from '../../context/RepositoryContext'
-import { ResponsivePersonalSetttings } from '../../context/ResponsiveContextProvider'
-import { SessionContext } from '../../context/SessionContext'
-import { ThemeContext } from '../../context/ThemeContext'
+import {
+  LocalizationContext,
+  PersonalSettingsContext,
+  RepositoryContext,
+  ResponsivePersonalSetttings,
+  SessionContext,
+  ThemeContext,
+} from '../../context'
 import { LogoutButton } from '../LogoutButton'
 import { UserAvatar } from '../UserAvatar'
 import { getAllowedDrawerItems } from './Items'

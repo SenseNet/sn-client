@@ -7,12 +7,14 @@ import Typography from '@material-ui/core/Typography'
 import { FormsAuthenticationService } from '@sensenet/client-core'
 import { sleepAsync } from '@sensenet/client-utils'
 import React, { useContext, useState } from 'react'
-import { InjectorContext } from '../context/InjectorContext'
-import { LocalizationContext } from '../context/LocalizationContext'
-import { PersonalSettingsContext } from '../context/PersonalSettingsContext'
-import { RepositoryContext } from '../context/RepositoryContext'
-import { SessionContext } from '../context/SessionContext'
-import { ThemeContext } from '../context/ThemeContext'
+import {
+  InjectorContext,
+  LocalizationContext,
+  PersonalSettingsContext,
+  RepositoryContext,
+  SessionContext,
+  ThemeContext,
+} from '../context'
 import { PersonalSettings } from '../services/PersonalSettings'
 import { UserAvatar } from './UserAvatar'
 

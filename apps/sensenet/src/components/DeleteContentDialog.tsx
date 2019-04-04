@@ -14,9 +14,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useContext, useState } from 'react'
-import { LocalizationContext } from '../context/LocalizationContext'
-import { RepositoryContext } from '../context/RepositoryContext'
-import { ResponsiveContext } from '../context/ResponsiveContextProvider'
+import { LocalizationContext, RepositoryContext, ResponsiveContext } from '../context'
 import { Icon } from './Icon'
 
 export const DeleteContentDialog: React.FunctionComponent<{

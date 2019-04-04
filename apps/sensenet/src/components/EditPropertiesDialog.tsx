@@ -4,8 +4,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import { EditView } from '@sensenet/controls-react'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useContext } from 'react'
-import { LocalizationContext } from '../context/LocalizationContext'
-import { RepositoryContext } from '../context/RepositoryContext'
+import { LocalizationContext, RepositoryContext } from '../context'
 
 export const EditPropertiesDialog: React.FunctionComponent<{
   dialogProps: DialogProps

@@ -4,10 +4,7 @@ import { File as SnFile, GenericContent, Settings } from '@sensenet/default-cont
 import { Uri } from 'monaco-editor'
 import React, { useContext, useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
-import { ContentRoutingContext } from '../../context/ContentRoutingContext'
-import { RepositoryContext } from '../../context/RepositoryContext'
-import { ResponsiveContext } from '../../context/ResponsiveContextProvider'
-import { ThemeContext } from '../../context/ThemeContext'
+import { ContentRoutingContext, RepositoryContext, ResponsiveContext, ThemeContext } from '../../context'
 import { isContentFromType } from '../../utils/isContentFromType'
 
 const getMonacoModelUri = (content: GenericContent) => {

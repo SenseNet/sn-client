@@ -12,10 +12,7 @@ import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew'
 import { ConstantContent, FormsAuthenticationService, LoginState } from '@sensenet/client-core'
 import { sleepAsync } from '@sensenet/client-utils'
 import React, { useContext, useEffect, useState } from 'react'
-import { LocalizationContext } from '../context/LocalizationContext'
-import { RepositoryContext } from '../context/RepositoryContext'
-import { SessionContext } from '../context/SessionContext'
-import { ThemeContext } from '../context/ThemeContext'
+import { LocalizationContext, RepositoryContext, SessionContext, ThemeContext } from '../context'
 import { Icon } from './Icon'
 
 export const LogoutButton: React.FunctionComponent<{

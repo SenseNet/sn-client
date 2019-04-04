@@ -1,7 +1,7 @@
 import { commentsStateReducer, sensenetDocumentViewerReducer } from '@sensenet/document-viewer-react'
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux'
 import { ReduxDiMiddleware } from 'redux-di-middleware'
-import { snInjector } from '../context/InjectorContext'
+import { snInjector } from '../context'
 import { commandPalette } from './CommandPalette'
 import { editContent } from './EditContent'
 

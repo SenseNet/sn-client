@@ -12,8 +12,7 @@ import Autosuggest, {
 } from 'react-autosuggest'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { LocalizationContext } from '../../context/LocalizationContext'
-import { RepositoryContext } from '../../context/RepositoryContext'
+import { LocalizationContext, RepositoryContext } from '../../context'
 import { rootStateType } from '../../store'
 import {
   clearItems,

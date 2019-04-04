@@ -1,7 +1,7 @@
 import IconButton from '@material-ui/core/IconButton'
 import MoreHoriz from '@material-ui/icons/MoreHoriz'
 import React, { useContext, useState } from 'react'
-import { CurrentContentContext } from '../context/CurrentContent'
+import { CurrentContentContext } from '../context'
 import { ContentContextMenu } from './ContentContextMenu'
 
 export const SecondaryActionsMenu: React.FunctionComponent<{

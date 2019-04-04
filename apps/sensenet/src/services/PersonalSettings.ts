@@ -2,7 +2,7 @@ import { Injectable } from '@furystack/inject'
 import { ObservableValue } from '@sensenet/client-utils'
 import { deepMerge } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
-import { PlatformDependent } from '../context/ResponsiveContextProvider'
+import { PlatformDependent } from '../context'
 
 const settingsKey = `SN-APP-USER-SETTINGS`
 

@@ -15,12 +15,14 @@ import Autosuggest from 'react-autosuggest'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { Link, NavLink } from 'react-router-dom'
 import logo from '../assets/sensenet-icon-32.png'
-import { InjectorContext } from '../context/InjectorContext'
-import { LocalizationContext } from '../context/LocalizationContext'
-import { PersonalSettingsContext } from '../context/PersonalSettingsContext'
-import { RepositoryContext } from '../context/RepositoryContext'
-import { ResponsiveContext } from '../context/ResponsiveContextProvider'
-import { ThemeContext } from '../context/ThemeContext'
+import {
+  InjectorContext,
+  LocalizationContext,
+  PersonalSettingsContext,
+  RepositoryContext,
+  ResponsiveContext,
+  ThemeContext,
+} from '../context'
 import { RepositoryManager } from '../services/RepositoryManager'
 import { getMatchParts } from './command-palette/CommandPaletteSuggestion'
 import { UserAvatar } from './UserAvatar'
