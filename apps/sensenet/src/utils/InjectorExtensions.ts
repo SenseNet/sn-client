@@ -15,12 +15,12 @@ declare module '@furystack/inject/dist/Injector' {
 }
 
 Injector.prototype.getRepository = function(url, config) {
-  const manager = this.GetInstance(RepositoryManager)
+  const manager = this.getInstance(RepositoryManager)
   const repo = manager.getRepository(url, config)
-  this.SetInstance(repo)
+  this.setExplicitInstance(repo)
   return repo
 }
 
 Injector.prototype.getEventHub = function(name) {
-  return this.GetInstance(RepositoryManager).getEventHub(name)
+  return this.getInstance(RepositoryManager).getEventHub(name)
 }

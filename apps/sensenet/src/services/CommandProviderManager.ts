@@ -13,7 +13,7 @@ export class CommandProviderManager {
   public RegisterProviders(...providerTypes: Array<new (...args: any[]) => CommandProvider>) {
     for (const providerType of providerTypes) {
       if (!this.Providers.find(p => p instanceof providerType)) {
-        const instance = this.injector.GetInstance(providerType)
+        const instance = this.injector.getInstance(providerType)
         this.Providers.push(instance)
       }
     }

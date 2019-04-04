@@ -7,8 +7,6 @@ import ListItem from '@material-ui/core/ListItem/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
-
-import { Injector } from '@furystack/inject'
 import { ODataCollectionResponse, ODataParams, Repository } from '@sensenet/client-core'
 import { Folder, GenericContent } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
@@ -19,6 +17,7 @@ import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import * as DMSActions from '../../Actions'
 import { resources } from '../../assets/resources'
+import { dmsInjector } from '../../DmsRepository'
 import { selectPickerItem } from '../../store/picker/actions'
 import { rootStateType } from '../../store/rootReducer'
 import AddNewDialog from '../Dialogs/AddNewDialog'
@@ -96,7 +95,7 @@ class PathPicker extends React.Component<
 
   public loadItems = async (path: string) => {
     let result: ODataCollectionResponse<Folder>
-    const repository = Injector.Default.GetInstance(Repository)
+    const repository = dmsInjector.getInstance(Repository)
     const pickerItemOptions: ODataParams<Folder> = {
       select: ['DisplayName', 'Path', 'Id', 'Children/IsFolder'] as any,
       expand: ['Children'] as any,
@@ -124,7 +123,7 @@ class PathPicker extends React.Component<
       expand: ['Workspace'],
       metadata: 'no',
     }
-    const repository = Injector.Default.GetInstance(Repository)
+    const repository = dmsInjector.getInstance(Repository)
     const result = await repository.load<GenericContent>({
       idOrPath: id as number,
       oDataOptions: { ...pickerParentOptions },

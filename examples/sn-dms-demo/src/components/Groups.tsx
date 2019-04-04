@@ -99,7 +99,7 @@ class Groups extends Component<
         newProps.loadGroup(idFromUrl || groupsRootPath, {
           select: ['Icon', 'Name', 'Path', 'DisplayName', 'Description', 'AllowedChildTypes'],
         })
-        newProps.getAllowedTypes()
+        newProps.getAllowedTypes({})
       }
     } catch (error) {
       /** Cannot parse current folder from URL */

@@ -25,8 +25,10 @@ export const repository = new Repository({
   sessionLifetime: 'expiration',
 })
 
+export const dmsInjector = new Injector()
+
 const formsAuthService = FormsAuthenticationService.Setup(repository)
-Injector.Default.SetInstance(formsAuthService)
+dmsInjector.setExplicitInstance(formsAuthService)
 
 const jwt = JwtService.setup(repository, { select: 'all' })
 
@@ -35,7 +37,7 @@ const googleOauthProvider = addGoogleAuth(jwt, {
 })
 const repositoryEvents = new EventHub(repository)
 
-Injector.Default.SetInstance(repository)
-Injector.Default.SetInstance(jwt)
-Injector.Default.SetInstance(googleOauthProvider)
-Injector.Default.SetInstance(repositoryEvents)
+dmsInjector.setExplicitInstance(repository)
+dmsInjector.setExplicitInstance(jwt)
+dmsInjector.setExplicitInstance(googleOauthProvider)
+dmsInjector.setExplicitInstance(repositoryEvents)

@@ -2,7 +2,7 @@
   "extends": "../../tsconfig-base.json",
   "compilerOptions": {
     "outDir": "dist",
-    "rootDirs": ["src", "assets"],
+    "rootDirs": ["stories", "assets"],
     "lib": ["es6", "dom"],
     "experimentalDecorators": true,
     "noUnusedParameters": false,

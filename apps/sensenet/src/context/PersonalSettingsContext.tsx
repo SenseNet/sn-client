@@ -4,7 +4,7 @@ import { InjectorContext } from './InjectorContext'
 export const PersonalSettingsContext = React.createContext(defaultSettings)
 export const PersonalSettingsContextProvider: React.StatelessComponent = props => {
   const di = useContext(InjectorContext)
-  const settingsService = di.GetInstance(PersonalSettings)
+  const settingsService = di.getInstance(PersonalSettings)
   const [settings, setSettings] = useState(settingsService.currentValue.getValue())
   useEffect(() => {
     settingsService.currentValue.subscribe(s => {

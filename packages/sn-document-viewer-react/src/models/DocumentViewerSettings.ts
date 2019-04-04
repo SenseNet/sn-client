@@ -1,3 +1,4 @@
+import { Injector } from '@furystack/inject'
 import { DocumentData, PreviewImageData } from '.'
 import { Comment, CommentWithoutCreatedByAndId } from './Comment'
 
@@ -68,6 +69,9 @@ export interface DocumentViewerSettingsOptions {
  * A Document Viewer Settings object that will be used as a singleton service
  */
 export class DocumentViewerSettings implements DocumentViewerSettingsOptions {
+
+  public injector = new Injector()
+
   public commentActions!: {
     getPreviewComments: (document: DocumentData, page: number) => Promise<Comment[]>
     addPreviewComment: (document: DocumentData, comment: CommentWithoutCreatedByAndId) => Promise<Comment>
