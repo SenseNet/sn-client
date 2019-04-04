@@ -26,11 +26,7 @@ const SettingsEditor: React.FunctionComponent = () => {
       content={editorContent as any}
       loadContent={async () => JSON.stringify(settings, undefined, 3)}
       saveContent={async (_c, v) => {
-        try {
-          await service.setValue(deepMerge(defaultSettings, JSON.parse(v)))
-        } catch (error) {
-          /** */
-        }
+        await service.setValue(deepMerge(defaultSettings, JSON.parse(v)))
       }}
     />
   )

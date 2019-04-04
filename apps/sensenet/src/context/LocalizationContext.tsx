@@ -17,13 +17,8 @@ export const LocalizationContext = React.createContext({
  */
 export const LocalizationProvider: React.FunctionComponent = props => {
   const [localizationService] = useState(new LocalizationService())
-  const [currentLanguage, setCurrentLanguage] = useState('default')
   const [currentValues, setCurrentValues] = useState({ ...DefaultLocalization })
   const personalSettings = useContext(PersonalSettingsContext)
-
-  useEffect(() => {
-    setCurrentLanguage(personalSettings.language)
-  }, [personalSettings.language])
 
   useEffect(() => {
     const observable = localizationService.currentValues.subscribe(v => {
@@ -33,8 +28,8 @@ export const LocalizationProvider: React.FunctionComponent = props => {
   }, [])
 
   useEffect(() => {
-    localizationService.load(currentLanguage)
-  }, [currentLanguage])
+    localizationService.load(personalSettings.language)
+  }, [personalSettings.language])
 
   return (
     <LocalizationContext.Provider

@@ -54,7 +54,7 @@ export const defaultSettings: PersonalSettingsType = {
   language: 'default',
 }
 
-@Injectable()
+@Injectable({ lifetime: 'singleton' })
 export class PersonalSettings {
   constructor() {
     this.init()
@@ -77,7 +77,7 @@ export class PersonalSettings {
   public currentValue = new ObservableValue(defaultSettings)
 
   public async setValue(settings: PersonalSettingsType) {
-    this.currentValue.setValue(settings)
+    this.currentValue.setValue({ ...settings })
     localStorage.setItem(`${settingsKey}`, JSON.stringify(settings))
   }
 }
