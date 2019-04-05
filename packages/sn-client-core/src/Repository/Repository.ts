@@ -411,7 +411,7 @@ export class Repository implements Disposable {
   public versioning: Versioning = new Versioning(this)
 
   /**
-   * Shortcut for versioning related custom actions
+   * Shortcut for upload related custom actions
    */
   public upload: Upload = new Upload(this)
 
