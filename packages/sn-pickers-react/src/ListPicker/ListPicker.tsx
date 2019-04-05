@@ -2,13 +2,14 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import { Repository } from '@sensenet/client-core'
 import { GenericContent, Workspace } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
-import React, { useState } from 'react'
-import useAsync from 'react-use/lib/useAsync'
+import { EventHub } from '@sensenet/repository-events'
+import React, { useEffect, useState } from 'react'
+import { useAsync } from 'react-async'
 import { ItemComponent } from './Item'
 import { ListPickerProps } from './ListPickerProps'
+import { loadItems, loadParent } from './loaders'
 
 /**
  * Represents a list picker component.
@@ -18,17 +19,40 @@ export function ListPickerComponent<T extends GenericContent = GenericContent>(p
   const [currentPath, setCurrentPath] = useState(currentContentPath)
   const [parentId, setParentId] = useState<number | undefined>(props.parentId)
   const [selectedId, setSelectedId] = useState<string | number>(0)
+  const { data: items, error: itemsError, isLoading: areItemsLoading, reload } = useAsync({
+    promiseFn: loadItems,
+    path: currentPath,
+    repository: props.repository,
+    oDataOptions: props.itemsOdataOptions,
+    watch: currentPath,
+  })
+  const { data: parent, error: parentError, isLoading: isParentLoading } = useAsync({
+    promiseFn: loadParent,
+    repository: props.repository,
+    id: parentId,
+    oDataOptions: props.parentODataOptions,
+    watch: parentId,
+  })
 
-  const { loading, value: items, error } = useAsync(() => defaultLoadItems(currentPath, props.repository), [
-    currentPath,
-  ])
-  const parent = useAsync(() => defaultLoadParent(parentId, props.repository), [parentId])
+  const update = () => reload()
+  useEffect(() => {
+    const eventHub = new EventHub(props.repository)
+    const subscriptions = [
+      eventHub.onContentCreated.subscribe(update),
+      eventHub.onContentCopied.subscribe(update),
+      eventHub.onContentMoved.subscribe(update),
+      eventHub.onContentModified.subscribe(update),
+      eventHub.onContentDeleted.subscribe(update),
+      eventHub.onUpload.subscribe(update),
+    ]
+    return () => [...subscriptions, eventHub].forEach(s => s.dispose())
+  }, [props.repository])
 
   const onItemClickHandler = (event: React.MouseEvent, node: T) => {
     event.preventDefault()
     // Don't pass parent value on selection.
     // Should this be an option to let the user pass that as well?
-    if (parent.value && parent.value.Id === node.Id) {
+    if (parent && parent.Id === node.Id) {
       return
     }
     props.onSelectionChanged && props.onSelectionChanged(node)
@@ -41,8 +65,8 @@ export function ListPickerComponent<T extends GenericContent = GenericContent>(p
     setParentIdOnDoubleClick(node)
 
     // Navigation to parent
-    if (parent.value && node.Id === parentId) {
-      setCurrentPath(parent.value.Path)
+    if (parent && node.Id === parentId) {
+      setCurrentPath(parent.Path)
     } else {
       setCurrentPath(node.Path)
     }
@@ -51,12 +75,12 @@ export function ListPickerComponent<T extends GenericContent = GenericContent>(p
   const setParentIdOnDoubleClick = (node: T) => {
     // If parent value is set (there were already some navigation) and clicked, set parent id to parent's parent id
     // otherwise set it to clicked item's parent id.
-    if (parent.value && parent.value.Id === node.Id) {
-      const parentData = parent.value
+    if (parent && parent.Id === node.Id) {
+      const parentData = parent
       if ((parentData.Workspace as Workspace).Id === parentData.Id) {
         setParentId(undefined)
       } else {
-        setParentId(parent.value.ParentId)
+        setParentId(parent.ParentId)
       }
     } else {
       setParentId(node.ParentId)
@@ -74,19 +98,20 @@ export function ListPickerComponent<T extends GenericContent = GenericContent>(p
 
   const renderItem = props.renderItem || defaultRenderItem
 
-  if (loading) {
+  if (areItemsLoading || isParentLoading) {
     return props.renderLoading ? props.renderLoading() : null
   }
 
-  if (error) {
-    return props.renderError ? props.renderError(error.message) : null
+  if (itemsError || parentError) {
+    const errorMessage = (itemsError && itemsError.message) || (parentError && parentError.message)
+    return props.renderError ? props.renderError(errorMessage!) : null
   }
 
   return (
     <List>
-      {parent.value !== undefined ? (
+      {parent !== undefined ? (
         <ItemComponent
-          node={{ ...parent.value, DisplayName: '..' } as T}
+          node={{ ...parent, DisplayName: '..' } as T}
           onClickHandler={onItemClickHandler}
           onDoubleClickHandler={onItemDoubleClickHandler}
           renderItem={renderItem}
@@ -104,36 +129,4 @@ export function ListPickerComponent<T extends GenericContent = GenericContent>(p
         ))}
     </List>
   )
-}
-
-async function defaultLoadItems<T extends GenericContent>(path: string, repository?: Repository) {
-  if (!repository) {
-    throw new Error('You need to provide a repository to be able to load content.')
-  }
-  const result = await repository.loadCollection<T>({
-    path,
-    oDataOptions: {
-      select: ['DisplayName', 'Path', 'Id'],
-      filter: "(isOf('Folder') and not isOf('SystemFolder'))",
-      metadata: 'no',
-      orderby: 'DisplayName',
-    },
-  })
-
-  return result.d.results
-}
-
-async function defaultLoadParent<T extends GenericContent>(id?: number, repository?: Repository) {
-  if (!repository) {
-    throw new Error('You need to provide a repository to be able to load content.')
-  }
-  const result = await repository.load<T>({
-    idOrPath: id as number,
-    oDataOptions: {
-      select: ['DisplayName', 'Path', 'Id', 'ParentId', 'Workspace'],
-      expand: ['Workspace'],
-      metadata: 'no',
-    },
-  })
-  return result.d
 }

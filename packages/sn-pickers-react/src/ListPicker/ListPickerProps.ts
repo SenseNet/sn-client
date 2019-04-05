@@ -21,7 +21,7 @@ export interface ListPickerProps<T extends GenericContent = GenericContent> {
    *   metadata: 'no',
    *   orderby: 'DisplayName',}
    */
-  itemsOdataOptions: ODataParams<T>
+  itemsOdataOptions?: ODataParams<T>
 
   /**
    * OData parameters for the parent list item.
@@ -31,7 +31,7 @@ export interface ListPickerProps<T extends GenericContent = GenericContent> {
    *   metadata: 'no',
    * }
    */
-  parentODataOptions: ODataParams<T>
+  parentODataOptions?: ODataParams<T>
 
   /**
    * The current content's path.
