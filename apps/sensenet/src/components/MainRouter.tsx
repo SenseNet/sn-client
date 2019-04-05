@@ -2,7 +2,6 @@ import { LoginState } from '@sensenet/client-core'
 import React, { lazy, Suspense, useContext } from 'react'
 import { Route, RouteComponentProps, Switch, withRouter } from 'react-router'
 import { SessionContext } from '../context'
-import { AuthorizedRoute } from './AuthorizedRoute'
 import { ErrorBoundary } from './ErrorBoundary'
 import { FullScreenLoader } from './FullScreenLoader'
 
@@ -30,35 +29,31 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
     <ErrorBoundary>
       <Suspense fallback={<FullScreenLoader />}>
         <Switch>
-          <AuthorizedRoute path="/personalSettings" render={() => <PersonalSettingsEditor />} authorize={() => true} />
+          <Route path="/personalSettings" render={() => <PersonalSettingsEditor />} />
 
-          <AuthorizedRoute path="/login" render={() => <LoginComponent />} authorize={() => true} />
+          <Route path="/login" render={() => <LoginComponent />} />
 
           {/** Requires login */}
           {sessionContext.debouncedState === LoginState.Unauthenticated ? (
             <LoginComponent />
           ) : sessionContext.debouncedState === LoginState.Authenticated ? (
             <Switch>
-              <AuthorizedRoute
+              <Route
                 path="/:repo/browse/:folderId?/:rightParent?"
                 render={() => <ExploreComponent />}
                 authorize={() => true}
               />
-              <AuthorizedRoute path="/:repo/search" render={() => <SearchComponent />} authorize={() => true} />
-              <AuthorizedRoute path="/:repo/iam" render={() => <IamComponent />} authorize={() => true} />
-              <AuthorizedRoute path="/:repo/setup" render={() => <SetupComponent />} authorize={() => true} />
-              <AuthorizedRoute path="/:repo/info" render={() => <VersionInfoComponent />} authorize={() => true} />
-              <AuthorizedRoute
-                path="/:repo/editBinary/:contentId?"
-                render={() => <EditBinary />}
-                authorize={() => true}
-              />
-              <AuthorizedRoute
+              <Route path="/:repo/search" render={() => <SearchComponent />} />
+              <Route path="/:repo/iam" render={() => <IamComponent />} />
+              <Route path="/:repo/setup" render={() => <SetupComponent />} />
+              <Route path="/:repo/info" render={() => <VersionInfoComponent />} />
+              <Route path="/:repo/editBinary/:contentId?" render={() => <EditBinary />} authorize={() => true} />
+              <Route
                 path="/:repo/editProperties/:contentId?"
                 render={() => <EditProperties />}
                 authorize={() => true}
               />
-              <AuthorizedRoute
+              <Route
                 path="/:repo/preview/:documentId?"
                 render={() => <DocumentViewerComponent />}
                 authorize={() => true}
