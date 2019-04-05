@@ -23,6 +23,7 @@ import { ConstantContent } from './ConstantContent'
 import { ODataUrlBuilder } from './ODataUrlBuilder'
 import { RepositoryConfiguration } from './RepositoryConfiguration'
 import { Security } from './Security'
+import { Upload } from './Upload'
 import { Versioning } from './Versioning'
 
 /**
@@ -408,6 +409,11 @@ export class Repository implements Disposable {
    * Shortcut for versioning related custom actions
    */
   public versioning: Versioning = new Versioning(this)
+
+  /**
+   * Shortcut for versioning related custom actions
+   */
+  public upload: Upload = new Upload(this)
 
   /**
    * Reloads the content schemas from the sensenet backend

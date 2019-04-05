@@ -46,11 +46,12 @@ export interface UploadResponse {
  * Helper class for uploading content into the sensenet Repository
  */
 export class Upload {
+  constructor(private repository: Repository) {}
   /**
    * Uploads a specified text as a binary file
    * @param {UploadTextOptions} options The additional options
    */
-  public static async textAsFile<T extends Content>(options: UploadTextOptions<T>): Promise<UploadResponse> {
+  public async textAsFile<T extends Content>(options: UploadTextOptions<T>): Promise<UploadResponse> {
     const uploadFileOptions = Object.assign(
       { file: new File([options.text], options.fileName) },
       options,
@@ -62,8 +63,8 @@ export class Upload {
    * Uploads a specified file into a sensenet Repository
    * @param {UploadFileOptions} options The additional upload options
    */
-  public static async file<T extends Content>(options: UploadFileOptions<T>): Promise<UploadResponse> {
-    if (this.isChunkedUploadNeeded(options.file, options.repository)) {
+  public async file<T extends Content>(options: UploadFileOptions<T>): Promise<UploadResponse> {
+    if (this.isChunkedUploadNeeded(options.file, this.repository)) {
       return await this.uploadChunked(options)
     }
     return await this.uploadNonChunked(options)
@@ -74,20 +75,20 @@ export class Upload {
    * @param {File} file The File object
    * @param {Repository} repo The sensenet Repository
    */
-  public static isChunkedUploadNeeded(file: File, repo: Repository): boolean {
+  public isChunkedUploadNeeded(file: File, repo: Repository): boolean {
     return file.size >= repo.configuration.chunkSize
   }
 
-  private static getUploadUrl(options: UploadFileOptions<any>) {
+  private getUploadUrl(options: UploadFileOptions<any>) {
     return PathHelper.joinPaths(
-      options.repository.configuration.repositoryUrl,
-      options.repository.configuration.oDataToken,
+      this.repository.configuration.repositoryUrl,
+      this.repository.configuration.oDataToken,
       PathHelper.getContentUrl(options.parentPath),
       'upload',
     )
   }
 
-  private static getFormDataFromOptions(options: UploadFileOptions<any>) {
+  private getFormDataFromOptions(options: UploadFileOptions<any>) {
     const formData = new FormData()
     formData.append('ChunkToken', '0*0*False*False')
     formData.append('FileName', options.file.name)
@@ -100,7 +101,7 @@ export class Upload {
     return formData
   }
 
-  private static async uploadNonChunked<T>(options: UploadFileOptions<T>): Promise<UploadResponse> {
+  private async uploadNonChunked<T>(options: UploadFileOptions<T>): Promise<UploadResponse> {
     const guid = v1()
 
     options.progressObservable &&
@@ -112,7 +113,7 @@ export class Upload {
 
     const formData = this.getFormDataFromOptions(options)
     formData.append(options.file.name, options.file)
-    const response = await options.repository.fetch(this.getUploadUrl(options), {
+    const response = await this.repository.fetch(this.getUploadUrl(options), {
       credentials: 'include',
       method: 'POST',
       body: formData,
@@ -129,7 +130,7 @@ export class Upload {
           createdContent: options.progressObservable.getValue().createdContent,
           error,
         })
-      throw await options.repository.getErrorFromResponse(response)
+      throw await this.repository.getErrorFromResponse(response)
     }
 
     const uploadResponse: UploadResponse = await response.json()
@@ -146,8 +147,8 @@ export class Upload {
     return uploadResponse
   }
 
-  private static async uploadChunked<T>(options: UploadFileOptions<T>) {
-    const chunkCount = Math.floor(options.file.size / options.repository.configuration.chunkSize)
+  private async uploadChunked<T>(options: UploadFileOptions<T>) {
+    const chunkCount = Math.floor(options.file.size / this.repository.configuration.chunkSize)
 
     const guid = v1()
 
@@ -164,29 +165,29 @@ export class Upload {
 
     /** initial chunk data and request */
     const formData = this.getFormDataFromOptions(options)
-    formData.append(options.file.name, options.file.slice(0, options.repository.configuration.chunkSize))
+    formData.append(options.file.name, options.file.slice(0, this.repository.configuration.chunkSize))
     formData.append('UseChunk', 'true')
     formData.append('create', '1')
-    const initRequest = await options.repository.fetch(uploadPath, {
+    const initRequest = await this.repository.fetch(uploadPath, {
       body: formData,
       credentials: 'include',
       method: 'POST',
       headers: {
-        'Content-Range': `bytes 0-${options.repository.configuration.chunkSize - 1}/${options.file.size}`,
+        'Content-Range': `bytes 0-${this.repository.configuration.chunkSize - 1}/${options.file.size}`,
         'Content-Disposition': `attachment; filename="${options.file.name}"`,
       },
     })
 
     if (!initRequest.ok) {
-      throw await options.repository.getErrorFromResponse(initRequest)
+      throw await this.repository.getErrorFromResponse(initRequest)
     }
 
     const chunkToken = await initRequest.text()
     let lastResponseContent: UploadResponse = {} as any
 
     for (let i = 0; i <= chunkCount; i++) {
-      const start = i * options.repository.configuration.chunkSize
-      let end = start + options.repository.configuration.chunkSize
+      const start = i * this.repository.configuration.chunkSize
+      let end = start + this.repository.configuration.chunkSize
       end = end > options.file.size ? options.file.size : end
 
       const chunkFormData = new FormData()
@@ -196,7 +197,7 @@ export class Upload {
       chunkFormData.append('ChunkToken', chunkToken)
       chunkFormData.append(options.file.name, chunkData)
 
-      const lastResponse = await options.repository.fetch(uploadPath, {
+      const lastResponse = await this.repository.fetch(uploadPath, {
         body: chunkFormData,
         credentials: 'include',
         method: 'POST',
@@ -228,14 +229,14 @@ export class Upload {
             createdContent: lastResponseContent,
             error,
           })
-        throw await options.repository.getErrorFromResponse(lastResponse)
+        throw await this.repository.getErrorFromResponse(lastResponse)
       }
     }
 
     return lastResponseContent
   }
 
-  private static async webkitFileHandler<T extends Content>(
+  private async webkitFileHandler<T extends Content>(
     fileEntry: WebKitFileEntry,
     contentPath: string,
     options: UploadOptions<T>,
@@ -255,13 +256,13 @@ export class Upload {
     })
   }
 
-  private static async webkitDirectoryHandler<T extends Content>(
+  private async webkitDirectoryHandler<T extends Content>(
     directory: WebKitDirectoryEntry,
     contentPath: string,
     options: UploadOptions<T>,
     readEntries: boolean = true,
   ) {
-    const folder = await options.repository.post({
+    const folder = await this.repository.post({
       content: {
         Name: directory.name,
       },
@@ -282,7 +283,7 @@ export class Upload {
     }
   }
 
-  private static async webkitItemListHandler<T extends Content>(
+  private async webkitItemListHandler<T extends Content>(
     items: Array<WebKitFileEntry | WebKitDirectoryEntry>,
     contentPath: string,
     createFolders: boolean,
@@ -303,7 +304,7 @@ export class Upload {
    * Uploads content from a specified Drop Event
    * @param { UploadOptions } options Options for the Upload request
    */
-  public static async fromDropEvent<T extends Content = Content>(options: UploadFromEventOptions<T>) {
+  public async fromDropEvent<T extends Content = Content>(options: UploadFromEventOptions<T>) {
     if ((window as any).webkitRequestFileSystem) {
       const entries = options.event.dataTransfer
         ? ([].map.call(options.event.dataTransfer.items, (i: DataTransferItem) => i.webkitGetAsEntry()) as Array<
@@ -318,7 +319,7 @@ export class Upload {
         // tslint:disable-next-line: no-unnecessary-type-annotation
         [].forEach.call(options.event.dataTransfer.files, async (f: File) => {
           if (f.type === 'file') {
-            return await Upload.file({
+            return await this.file({
               file: f,
               ...(options as UploadOptions<T>),
             })
@@ -331,7 +332,7 @@ export class Upload {
    * Uploads files (and optionally creates the directory structure) from a file list
    * @param { UploadFromFileListOptions } options Options for the Upload request
    */
-  public static async fromFileList<T extends Content = Content>(options: UploadFromFileListOptions<T>) {
+  public async fromFileList<T extends Content = Content>(options: UploadFromFileListOptions<T>) {
     if (options.createFolders) {
       const directories = new Set(
         Array.from(options.fileList).map(f => PathHelper.getParentPath((f as any).webkitRelativePath)),
