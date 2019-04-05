@@ -12,7 +12,7 @@ import Autosuggest, {
 } from 'react-autosuggest'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { RepositoryContext } from '../../context/RepositoryContext'
+import { LocalizationContext, RepositoryContext } from '../../context'
 import { rootStateType } from '../../store'
 import {
   clearItems,
@@ -137,15 +137,19 @@ export class CommandPaletteComponent extends React.Component<
             border: this.props.isOpened ? '1px solid #13a5ad' : '',
             backgroundColor: this.props.isOpened ? 'rgba(255,255,255,.10)' : 'transparent',
           }}>
-          <Tooltip style={{}} placeholder="bottom-end" title="Show Command Palette">
-            <IconButton
-              onClick={this.props.open}
-              disabled={this.props.isOpened}
-              style={{ padding: this.props.isOpened ? 0 : undefined }}>
-              <KeyboardArrowRightTwoTone />
-              {this.props.isOpened ? '' : '_'}
-            </IconButton>
-          </Tooltip>
+          <LocalizationContext.Consumer>
+            {localization => (
+              <Tooltip style={{}} placeholder="bottom-end" title={localization.values.commandPalette.title}>
+                <IconButton
+                  onClick={this.props.open}
+                  disabled={this.props.isOpened}
+                  style={{ padding: this.props.isOpened ? 0 : undefined }}>
+                  <KeyboardArrowRightTwoTone />
+                  {this.props.isOpened ? '' : '_'}
+                </IconButton>
+              </Tooltip>
+            )}
+          </LocalizationContext.Consumer>
 
           <div
             ref={r => (r ? (this.containerRef = r) : null)}

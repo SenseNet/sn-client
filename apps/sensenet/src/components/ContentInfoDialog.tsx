@@ -5,7 +5,7 @@ import Drawer from '@material-ui/core/Drawer'
 import Typography from '@material-ui/core/Typography'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useContext } from 'react'
-import { ResponsiveContext } from '../context/ResponsiveContextProvider'
+import { LocalizationContext, ResponsiveContext } from '../context'
 
 export const ContentInfoDialog: React.FunctionComponent<{
   dialogProps: DialogProps
@@ -13,6 +13,8 @@ export const ContentInfoDialog: React.FunctionComponent<{
 }> = props => {
   const device = useContext(ResponsiveContext)
   const itemStyle: React.CSSProperties = { padding: '0.3em' }
+
+  const localization = useContext(LocalizationContext).values.contentInfoDialog
 
   const dialogContent = (
     <>
@@ -22,10 +24,10 @@ export const ContentInfoDialog: React.FunctionComponent<{
           borderRight: `1px solid rgba(128,128,128,0.3)`,
           paddingRight: '1em',
         }}>
-        <Typography style={itemStyle}>Type</Typography>
-        <Typography style={itemStyle}>Owner</Typography>
-        <Typography style={itemStyle}>Path</Typography>
-        <Typography style={itemStyle}>Created</Typography>
+        <Typography style={itemStyle}>{localization.type}</Typography>
+        <Typography style={itemStyle}>{localization.owner}</Typography>
+        <Typography style={itemStyle}>{localization.path}</Typography>
+        <Typography style={itemStyle}>{localization.created}</Typography>
       </div>
       <div style={{ paddingLeft: '1em' }}>
         <Typography style={itemStyle}>{props.content.Type}</Typography>
@@ -33,7 +35,7 @@ export const ContentInfoDialog: React.FunctionComponent<{
           {(props.content.Owner &&
             ((typeof props.content.Owner === 'object' && (props.content.Owner as GenericContent).DisplayName) ||
               (props.content.Owner as GenericContent).Name)) ||
-            'Unknown'}
+            localization.unknownOwner}
         </Typography>
         <Typography style={itemStyle}>{props.content.Path}</Typography>
         <Typography style={itemStyle}>{props.content.CreationDate}</Typography>
@@ -51,7 +53,9 @@ export const ContentInfoDialog: React.FunctionComponent<{
 
   return (
     <Dialog {...props.dialogProps}>
-      <DialogTitle>Content Info</DialogTitle>
+      <DialogTitle>
+        {localization.dialogTitle.replace('{0}', props.content.DisplayName || props.content.Name)}
+      </DialogTitle>
       <DialogContent style={{ display: 'flex', justifyContent: 'flex-start' }}>{dialogContent}</DialogContent>
     </Dialog>
   )
