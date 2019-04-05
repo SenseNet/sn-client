@@ -72,6 +72,7 @@ const values = {
     logoutCancel: 'Cancel',
   },
   personalSettings: {
+    title: 'Personal settings',
     drawer: 'Options for the left drawer',
     drawerEnable: 'Enable or disable the drawer',
     drawerType: 'Drawer type',
@@ -100,6 +101,8 @@ const values = {
   },
   textEditor: {
     unsavedChangesWarning: 'You have unsaved changes. Are you sure that you want to leave?',
+    save: 'Save',
+    reset: 'Reset',
   },
 }
 

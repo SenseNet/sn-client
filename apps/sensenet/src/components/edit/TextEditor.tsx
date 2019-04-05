@@ -1,3 +1,4 @@
+import Button from '@material-ui/core/Button'
 import { Upload } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { File as SnFile, GenericContent, Settings } from '@sensenet/default-content-types'
@@ -13,6 +14,7 @@ import {
   ThemeContext,
 } from '../../context'
 import { isContentFromType } from '../../utils/isContentFromType'
+import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 
 const getMonacoModelUri = (content: GenericContent) => {
   if (isContentFromType(content, Settings)) {
@@ -44,6 +46,28 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
   const [language, setLanguage] = useState(ctx.getMonacoLanguage(props.content))
   const localization = useContext(LocalizationContext).values.textEditor
   const [uri, setUri] = useState<any>(getMonacoModelUri(props.content))
+  const [hasChanges, setHasChanges] = useState(false)
+
+  const saveContent = async () => {
+    if (props.saveContent) {
+      await props.saveContent(props.content, textValue)
+    } else {
+      await Upload.textAsFile({
+        text: textValue,
+        parentPath: PathHelper.getParentPath(props.content.Path),
+        fileName: props.content.Name,
+        overwrite: true,
+        repository: repo,
+        contentTypeName: props.content.Type,
+        binaryPropertyName: 'Binary',
+      })
+    }
+    setSavedTextValue(textValue)
+  }
+
+  useEffect(() => {
+    setHasChanges(textValue !== savedTextValue)
+  }, [textValue, savedTextValue])
 
   useEffect(() => {
     setUri(getMonacoModelUri(props.content))
@@ -80,25 +104,27 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
         if (ev.key.toLowerCase() === 's' && ev.ctrlKey) {
           try {
             ev.preventDefault()
-            if (props.saveContent) {
-              await props.saveContent(props.content, textValue)
-            } else {
-              await Upload.textAsFile({
-                text: textValue,
-                parentPath: PathHelper.getParentPath(props.content.Path),
-                fileName: props.content.Name,
-                overwrite: true,
-                repository: repo,
-                contentTypeName: props.content.Type,
-                binaryPropertyName: 'Binary',
-              })
-            }
-            setSavedTextValue(textValue)
+            saveContent()
           } catch (error) {
             /** */
           }
         }
       }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <ContentBreadcrumbs />
+        <div>
+          <Button disabled={!hasChanges} onClick={() => setTextValue(savedTextValue)}>
+            {localization.reset}
+          </Button>
+          <Button
+            disabled={!hasChanges}
+            onClick={() => {
+              saveContent()
+            }}>
+            {localization.save}
+          </Button>
+        </div>
+      </div>
       <Prompt when={textValue !== savedTextValue} message={localization.unsavedChangesWarning} />
       <MonacoEditor
         theme={theme.palette.type === 'dark' ? 'vs-dark' : 'vs-light'}
