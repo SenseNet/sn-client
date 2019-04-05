@@ -120,6 +120,7 @@ export class EventHub implements Disposable {
    * Triggered after copying a content has been failed
    */
   public readonly onContentCopyFailed = new ObservableValue<ContentCopyFailed>()
+  public readonly onUpload = new ObservableValue<{ isUploaded: boolean }>()
 
   constructor(private readonly repository: Repository) {
     this.initializeMappings()
@@ -358,6 +359,33 @@ export class EventHub implements Disposable {
         },
         onError: async error => {
           this.onContentCollectionLoadFailed.setValue({ payload: error.methodArguments[0], error: error.error })
+        },
+      }),
+      Trace.method({
+        isAsync: true,
+        object: this.repository.upload,
+        method: this.repository.upload.textAsFile,
+        onFinished: async promise => {
+          await promise
+          this.onUpload.setValue({ isUploaded: true })
+        },
+      }),
+      Trace.method({
+        isAsync: true,
+        object: this.repository.upload,
+        method: this.repository.upload.fromDropEvent,
+        onFinished: async promise => {
+          await promise
+          this.onUpload.setValue({ isUploaded: true })
+        },
+      }),
+      Trace.method({
+        isAsync: true,
+        object: this.repository.upload,
+        method: this.repository.upload.fromFileList,
+        onFinished: async promise => {
+          await promise
+          this.onUpload.setValue({ isUploaded: true })
         },
       }),
     )
