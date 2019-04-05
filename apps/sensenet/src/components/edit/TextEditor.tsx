@@ -4,7 +4,14 @@ import { File as SnFile, GenericContent, Settings } from '@sensenet/default-cont
 import { Uri } from 'monaco-editor'
 import React, { useContext, useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
-import { ContentRoutingContext, RepositoryContext, ResponsiveContext, ThemeContext } from '../../context'
+import { Prompt } from 'react-router'
+import {
+  ContentRoutingContext,
+  LocalizationContext,
+  RepositoryContext,
+  ResponsiveContext,
+  ThemeContext,
+} from '../../context'
 import { isContentFromType } from '../../utils/isContentFromType'
 
 const getMonacoModelUri = (content: GenericContent) => {
@@ -33,7 +40,9 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
   const ctx = useContext(ContentRoutingContext)
 
   const [textValue, setTextValue] = useState('')
+  const [savedTextValue, setSavedTextValue] = useState('')
   const [language, setLanguage] = useState(ctx.getMonacoLanguage(props.content))
+  const localization = useContext(LocalizationContext).values.textEditor
   const [uri, setUri] = useState<any>(getMonacoModelUri(props.content))
 
   useEffect(() => {
@@ -48,6 +57,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
       if (props.loadContent) {
         const value = await props.loadContent(props.content)
         setTextValue(value)
+        setSavedTextValue(value)
       } else {
         const binaryPath = props.content.Binary && props.content.Binary.__mediaresource.media_src
         if (!binaryPath) {
@@ -57,6 +67,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
         if (textFile.ok) {
           const text = await textFile.text()
           setTextValue(text)
+          setSavedTextValue(text)
         }
       }
     })()
@@ -82,11 +93,13 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
                 binaryPropertyName: 'Binary',
               })
             }
+            setSavedTextValue(textValue)
           } catch (error) {
             /** */
           }
         }
       }}>
+      <Prompt when={textValue !== savedTextValue} message={localization.unsavedChangesWarning} />
       <MonacoEditor
         theme={theme.palette.type === 'dark' ? 'vs-dark' : 'vs-light'}
         width="100%"

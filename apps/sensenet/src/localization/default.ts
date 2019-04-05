@@ -98,6 +98,9 @@ const values = {
     anotherRepo: 'Another repository',
     typeToFilter: 'Type to filter...',
   },
+  textEditor: {
+    unsavedChangesWarning: 'You have unsaved changes. Are you sure that you want to leave?',
+  },
 }
 
 export default values
