@@ -29,10 +29,12 @@ export const AddButton: React.FunctionComponent = () => {
   const localization = useContext(LocalizationContext).values.addButton
 
   useEffect(() => {
-    setAllowedChildTypes(
-      repo.schemas.getSchemaByName(parent.Type).AllowedChildTypes.map(type => repo.schemas.getSchemaByName(type)),
-    )
-  }, [parent.Type])
+    if (showSelectType) {
+      repo
+        .getAllowedChildTypes({ idOrPath: parent.Id })
+        .then(types => setAllowedChildTypes(types.d.results.map(t => repo.schemas.getSchemaByName(t.Name))))
+    }
+  }, [parent.Id, showSelectType])
 
   return (
     <div>
