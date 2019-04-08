@@ -27,7 +27,7 @@
     "tslint-config-prettier": "^1.18.0",
     "tslint-consistent-codestyle": "1.15.1",
     "tslint-react": "^4.0.0",
-    "typescript": "3.4.1"
+    "typescript": "3.4.2"
   },
   "scripts": {
     "storybook": "yarn workspace sn-react-component-docs start-storybook",
