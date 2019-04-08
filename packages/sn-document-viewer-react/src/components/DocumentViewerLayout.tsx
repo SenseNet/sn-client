@@ -23,6 +23,7 @@ const mapStateToProps = (state: RootReducerType) => {
     showThumbnails: state.sensenetDocumentViewer.viewer.showThumbnails,
     showComments: state.sensenetDocumentViewer.viewer.showComments,
     comments: state.comments.items,
+    selectedCommentId: state.comments.selectedCommentId,
     fitRelativeZoomLevel: state.sensenetDocumentViewer.viewer.fitRelativeZoomLevel,
     localization: state.sensenetDocumentViewer.localization,
   }
@@ -67,10 +68,13 @@ export class DocumentViewerLayoutComponent extends React.Component<
       thumbnaislVisibility: this.props.showThumbnails,
       isPlacingCommentMarker: false,
     }
+    this.commentsContainerRef = React.createRef()
     this.createComment = this.createComment.bind(this)
     this.handleKeyUp = this.handleKeyUp.bind(this)
     this.handleMarkerCreation = this.handleMarkerCreation.bind(this)
   }
+
+  private commentsContainerRef: React.RefObject<HTMLDivElement>
 
   public componentDidMount() {
     document.addEventListener('keyup', this.handleKeyUp)
@@ -162,6 +166,17 @@ export class DocumentViewerLayoutComponent extends React.Component<
         }, 200)
       }
     }
+    if (this.props.selectedCommentId !== newProps.selectedCommentId) {
+      const selectedCommentNode = document.getElementById(newProps.selectedCommentId)
+      if (!selectedCommentNode) {
+        return
+      }
+      this.commentsContainerRef.current &&
+        this.commentsContainerRef.current.scrollTo({
+          top: selectedCommentNode.offsetTop - selectedCommentNode.scrollHeight,
+          behavior: 'smooth',
+        })
+    }
   }
 
   /**
@@ -242,7 +257,7 @@ export class DocumentViewerLayoutComponent extends React.Component<
                 overflow: 'hidden',
               },
             }}>
-            <CommentsContainer>
+            <CommentsContainer ref={this.commentsContainerRef}>
               <Typography variant="h4">{this.props.localization.commentSideBarTitle}</Typography>
               <CreateComment
                 draftCommentMarker={this.state.draftCommentMarker}

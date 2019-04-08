@@ -40,7 +40,11 @@ export const CommentComponent: FunctionComponent<CommentPropType> = props => {
   const isSelected = () => props.selectedCommentId === props.id
 
   return (
-    <StyledCard isSelected={isSelected()} raised={isSelected()} onClick={() => props.setSelectedCommentId(props.id)}>
+    <StyledCard
+      id={props.id}
+      isSelected={isSelected()}
+      raised={isSelected()}
+      onClick={() => props.setSelectedCommentId(props.id)}>
       <CardHeader
         avatar={<Avatar src={props.createdBy.avatarUrl} alt={props.localization.avatarAlt} />}
         title={props.createdBy.displayName}
