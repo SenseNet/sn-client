@@ -53,15 +53,12 @@ describe('Upload', () => {
 
   describe('#isChunkedUploadNeeded()', () => {
     it('should return true is the file is larger than the chunk size', () => {
-      expect(
-        repo.upload.isChunkedUploadNeeded({ size: 1024 } as any, { configuration: { chunkSize: 640 } } as any),
-      ).toBe(true)
+      repo = new Repository({ chunkSize: 640 })
+      expect(repo.upload.isChunkedUploadNeeded({ size: 1024 } as any)).toBe(true)
     })
 
     it('should return false is the file is smaller than the chunk size', () => {
-      expect(
-        repo.upload.isChunkedUploadNeeded({ size: 1024 } as any, { configuration: { chunkSize: 2048 } } as any),
-      ).toBe(false)
+      expect(repo.upload.isChunkedUploadNeeded({ size: 1024 } as any)).toBe(false)
     })
   })
 

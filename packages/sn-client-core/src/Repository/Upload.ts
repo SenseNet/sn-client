@@ -73,10 +73,9 @@ export class Upload {
   /**
    * Returns if a chunked upload is needed for a specified file
    * @param {File} file The File object
-   * @param {Repository} repo The sensenet Repository
    */
   public isChunkedUploadNeeded(file: File): boolean {
-    return file.size >= this.repo.configuration.chunkSize
+    return file.size >= this.repository.configuration.chunkSize
   }
 
   private getUploadUrl(options: UploadFileOptions<any>) {
