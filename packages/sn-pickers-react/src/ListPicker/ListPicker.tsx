@@ -2,6 +2,7 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
+import { debounce } from '@sensenet/client-utils'
 import { GenericContent, Workspace } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import { EventHub } from '@sensenet/repository-events'
@@ -15,7 +16,7 @@ import { loadItems, loadParent } from './loaders'
  * Represents a list picker component.
  */
 export function ListPickerComponent<T extends GenericContent = GenericContent>(props: ListPickerProps<T>) {
-  const { currentPath: currentContentPath = '' } = props
+  const { currentPath: currentContentPath = '', debounceMsOnReload = 1000 } = props
   const [currentPath, setCurrentPath] = useState(currentContentPath)
   const [parentId, setParentId] = useState<number | undefined>(props.parentId)
   const [selectedId, setSelectedId] = useState<string | number>(0)
@@ -34,7 +35,7 @@ export function ListPickerComponent<T extends GenericContent = GenericContent>(p
     watch: parentId,
   })
 
-  const update = () => reload()
+  const update = debounce(() => reload(), debounceMsOnReload)
   useEffect(() => {
     const eventHub = new EventHub(props.repository)
     const subscriptions = [

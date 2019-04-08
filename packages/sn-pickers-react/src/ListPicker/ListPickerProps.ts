@@ -85,4 +85,10 @@ export interface ListPickerProps<T extends GenericContent = GenericContent> {
    * ```
    */
   renderItem?: (props: T) => JSX.Element
+
+  /**
+   * Debounce milliseconds to prevent multiple reload calls.
+   * @default 1000
+   */
+  debounceMsOnReload?: number
 }
