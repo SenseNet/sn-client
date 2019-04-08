@@ -43,7 +43,7 @@ export function ListPickerComponent<T extends GenericContent = GenericContent>(p
       eventHub.onContentMoved.subscribe(update),
       eventHub.onContentModified.subscribe(update),
       eventHub.onContentDeleted.subscribe(update),
-      eventHub.onUpload.subscribe(update),
+      eventHub.onUploadFinished.subscribe(update),
     ]
     return () => [...subscriptions, eventHub].forEach(s => s.dispose())
   }, [props.repository])
