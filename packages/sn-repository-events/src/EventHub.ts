@@ -7,7 +7,9 @@ import {
   PostOptions,
   PutOptions,
   Repository,
+  UploadFileOptions,
 } from '@sensenet/client-core'
+import { UploadResponse } from '@sensenet/client-core/dist/Repository/Upload'
 import { ObservableValue, Trace } from '@sensenet/client-utils'
 import { Disposable } from '@sensenet/client-utils/dist/Disposable'
 import { GenericContent } from '@sensenet/default-content-types'
@@ -120,7 +122,8 @@ export class EventHub implements Disposable {
    * Triggered after copying a content has been failed
    */
   public readonly onContentCopyFailed = new ObservableValue<ContentCopyFailed>()
-  public readonly onUpload = new ObservableValue<{ isUploaded: boolean }>()
+  public readonly onUploadFinished = new ObservableValue<UploadResponse>()
+  public readonly onUploadFailed = new ObservableValue<{ error: any; options: UploadFileOptions<any> }>()
 
   constructor(private readonly repository: Repository) {
     this.initializeMappings()
@@ -364,28 +367,25 @@ export class EventHub implements Disposable {
       Trace.method({
         isAsync: true,
         object: this.repository.upload,
-        method: this.repository.upload.textAsFile,
+        method: this.repository.upload.uploadChunked,
         onFinished: async promise => {
-          await promise
-          this.onUpload.setValue({ isUploaded: true })
+          const returnValue = await promise.returned
+          this.onUploadFinished.setValue(returnValue)
+        },
+        onError: e => {
+          this.onUploadFailed.setValue({ error: e.error, options: e.methodArguments[0] })
         },
       }),
       Trace.method({
         isAsync: true,
         object: this.repository.upload,
-        method: this.repository.upload.fromDropEvent,
+        method: this.repository.upload.uploadNonChunked,
         onFinished: async promise => {
-          await promise
-          this.onUpload.setValue({ isUploaded: true })
+          const returnValue = await promise.returned
+          this.onUploadFinished.setValue(returnValue)
         },
-      }),
-      Trace.method({
-        isAsync: true,
-        object: this.repository.upload,
-        method: this.repository.upload.fromFileList,
-        onFinished: async promise => {
-          await promise
-          this.onUpload.setValue({ isUploaded: true })
+        onError: e => {
+          this.onUploadFailed.setValue({ error: e.error, options: e.methodArguments[0] })
         },
       }),
     )

@@ -101,7 +101,7 @@ export class Upload {
     return formData
   }
 
-  private async uploadNonChunked<T>(options: UploadFileOptions<T>): Promise<UploadResponse> {
+  public async uploadNonChunked<T>(options: UploadFileOptions<T>): Promise<UploadResponse> {
     const guid = v1()
 
     options.progressObservable &&
@@ -147,7 +147,7 @@ export class Upload {
     return uploadResponse
   }
 
-  private async uploadChunked<T>(options: UploadFileOptions<T>) {
+  public async uploadChunked<T>(options: UploadFileOptions<T>) {
     const chunkCount = Math.floor(options.file.size / this.repository.configuration.chunkSize)
 
     const guid = v1()
