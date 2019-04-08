@@ -46,7 +46,7 @@ export interface UploadResponse {
  * Helper class for uploading content into the sensenet Repository
  */
 export class Upload {
-  constructor(private repository: Repository) {}
+  constructor(private readonly repository: Repository) {}
   /**
    * Uploads a specified text as a binary file
    * @param {UploadTextOptions} options The additional options
@@ -64,7 +64,7 @@ export class Upload {
    * @param {UploadFileOptions} options The additional upload options
    */
   public async file<T extends Content>(options: UploadFileOptions<T>): Promise<UploadResponse> {
-    if (this.isChunkedUploadNeeded(options.file, this.repository)) {
+    if (this.isChunkedUploadNeeded(options.file)) {
       return await this.uploadChunked(options)
     }
     return await this.uploadNonChunked(options)
@@ -75,8 +75,8 @@ export class Upload {
    * @param {File} file The File object
    * @param {Repository} repo The sensenet Repository
    */
-  public isChunkedUploadNeeded(file: File, repo: Repository): boolean {
-    return file.size >= repo.configuration.chunkSize
+  public isChunkedUploadNeeded(file: File): boolean {
+    return file.size >= this.repo.configuration.chunkSize
   }
 
   private getUploadUrl(options: UploadFileOptions<any>) {
