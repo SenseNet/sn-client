@@ -32,6 +32,7 @@ storiesOf('DocumentViewer', module)
         page={1}
         x={10}
         y={10}
+        host={''}
         selectedCommentId=""
         setSelectedCommentId={action('setSelectedCommentId') as any}
         deleteComment={action('delete') as any}
@@ -55,6 +56,7 @@ storiesOf('DocumentViewer', module)
       <CommentComponent
         createdBy={createdBy}
         page={1}
+        host={''}
         x={10}
         y={10}
         selectedCommentId=""

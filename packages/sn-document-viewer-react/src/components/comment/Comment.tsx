@@ -17,6 +17,7 @@ import { StyledCard } from './style'
 const mapStateToProps = (state: RootReducerType) => ({
   localization: state.sensenetDocumentViewer.localization,
   selectedCommentId: state.comments.selectedCommentId,
+  host: state.sensenetDocumentViewer.documentState.document.hostName,
 })
 
 const mapDispatchToProps = {
@@ -46,7 +47,13 @@ export const CommentComponent: FunctionComponent<CommentPropType> = props => {
       raised={isSelected()}
       onClick={() => props.setSelectedCommentId(props.id)}>
       <CardHeader
-        avatar={<Avatar src={props.createdBy.avatarUrl} alt={props.localization.avatarAlt} />}
+        avatar={
+          props.host === props.createdBy.avatarUrl ? (
+            <Avatar />
+          ) : (
+            <Avatar src={props.createdBy.avatarUrl} alt={props.localization.avatarAlt} />
+          )
+        }
         title={props.createdBy.displayName}
       />
       <Collapse in={isOpen} timeout="auto" collapsedHeight={isOpen ? '0px' : '78px'}>
