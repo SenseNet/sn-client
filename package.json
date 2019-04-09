@@ -1,6 +1,6 @@
 {
   "private": true,
-  "version": "2019-04",
+  "version": "2019.4.0",
   "workspaces": {
     "packages": [
       "packages/*",
@@ -30,12 +30,15 @@
     "typescript": "3.4.1"
   },
   "scripts": {
+    "snapp": "yarn workspace @sensenet/sn-app start",
     "storybook": "yarn workspace sn-react-component-docs start-storybook",
     "dms": "yarn workspace sn-dms-demo start",
     "build": "lerna run build",
     "build:dms": "yarn && yarn build && yarn workspace sn-dms-demo run build:webpack",
     "build:sn-app": "yarn && yarn build && yarn workspace @sensenet/sn-app run build:webpack",
     "build:docs": "yarn && yarn build && yarn workspace sn-react-component-docs run build-storybook",
+    "clean:buildinfo": "rm -f packages/tsconfig.tsbuildinfo packages/*/tsconfig.tsbuildinfo",
+    "clean:dist": "rm -rf packages/*/dist",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "clean": "lerna clean",
