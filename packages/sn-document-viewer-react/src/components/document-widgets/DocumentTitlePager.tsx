@@ -132,7 +132,7 @@ export class DocumentTitlePagerComponent extends React.Component<
                 inputProps={{
                   min: 1,
                   max: this.state.lastPage,
-                  style: { textAlign: 'center', color: 'white' },
+                  style: { textAlign: 'center' },
                 }}
                 margin="dense"
               />
