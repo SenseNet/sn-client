@@ -6,6 +6,7 @@ import {
   Comment,
   componentType,
   defaultTheme,
+  DocumentData,
   DocumentTitlePager,
   DocumentViewer,
   DocumentViewerSettings,
@@ -88,7 +89,7 @@ export const exampleSettings = new DocumentViewerSettings({
       })
       if (response.ok) {
         const responseBody = await response.json()
-        return responseBody as Comment
+        return [responseBody].map(changeCreatedByUrlToCurrent(documentData))[0]
       }
       throw new Error('Network response was not ok.')
     },
@@ -112,8 +113,9 @@ export const exampleSettings = new DocumentViewerSettings({
       )
       if (response.ok) {
         const responseBody = await response.json()
-        return responseBody as Comment[]
+        return responseBody.map(changeCreatedByUrlToCurrent(documentData))
       }
+      throw new Error('Network response was not ok.')
     },
   },
   canEditDocument: async documentData => {
@@ -244,6 +246,15 @@ export const exampleSettings = new DocumentViewerSettings({
     }
   },
 })
+
+function changeCreatedByUrlToCurrent(documentData: DocumentData): (value: Comment) => Comment {
+  return comment => {
+    return {
+      ...comment,
+      createdBy: { ...comment.createdBy, avatarUrl: `${documentData.hostName}${comment.createdBy.avatarUrl}` },
+    }
+  }
+}
 
 const localStorageKey = 'sn-docviewer-example'
 
