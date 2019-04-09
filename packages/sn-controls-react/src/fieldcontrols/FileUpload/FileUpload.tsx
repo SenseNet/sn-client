@@ -1,14 +1,12 @@
 /**
  * @module FieldControls
- *
- */ /** */
+ */
 
 import { Input } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel/InputLabel'
 import Typography from '@material-ui/core/Typography'
-import { Upload } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
 import React, { Component } from 'react'
@@ -126,13 +124,12 @@ export class FileUpload<T extends GenericContent, K extends keyof T> extends Com
     }
     e.persist()
     e.target.files &&
-      (await Upload.fromFileList({
+      (await this.props['data-repository'].upload.fromFileList({
         fileList: e.target.files,
         createFolders: true,
         binaryPropertyName: 'Binary',
         overwrite: true,
         parentPath: this.props['data-uploadFolderPath'] ? this.props['data-uploadFolderPath'] : '',
-        repository: this.props['data-repository'],
       }))
     // tslint:disable-next-line:no-string-literal
     const newValue = `${this.props['data-uploadFolderPath']}/${this.getNameFromPath(

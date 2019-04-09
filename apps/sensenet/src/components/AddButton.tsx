@@ -8,7 +8,6 @@ import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import Add from '@material-ui/icons/Add'
 import CloudUpload from '@material-ui/icons/CloudUpload'
-import { Upload } from '@sensenet/client-core'
 import { NewViewComponent } from '@sensenet/controls-react'
 import { Schema } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
@@ -74,11 +73,10 @@ export const AddButton: React.FunctionComponent = () => {
               onChange={ev => {
                 setShowSelectType(false)
                 ev.target.files &&
-                  Upload.fromFileList({
+                  repo.upload.fromFileList({
                     parentPath: parent.Path,
                     fileList: ev.target.files,
                     createFolders: true,
-                    repository: repo,
                     binaryPropertyName: 'Binary',
                     overwrite: false,
                     progressObservable: injector.getInstance(UploadTracker).onUploadProgress,

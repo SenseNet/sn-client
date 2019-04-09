@@ -1,5 +1,4 @@
 import { ObservableValue } from '@sensenet/client-utils'
-import { Repository } from '../index'
 import { Content } from './Content'
 import { ODataParams } from './ODataParams'
 import { UploadProgressInfo } from './UploadProgressInfo'
@@ -198,11 +197,6 @@ export interface GetActionOptions {
  * Options for uploading content
  */
 export interface UploadOptions<T> {
-  /**
-   * The specified sensenet Repository instance
-   */
-  repository: Repository
-
   /**
    * The name of the content type, e.g.: File
    */
