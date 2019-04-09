@@ -41,6 +41,9 @@ export const getComments = () => ({
       options.getState().sensenetDocumentViewer.viewer.activePages[0],
     )
     options.dispatch(getCommentsSuccess(comments))
+    if (comments.length) {
+      options.dispatch(showComments(true))
+    }
   },
 })
 
