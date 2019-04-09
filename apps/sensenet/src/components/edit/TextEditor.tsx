@@ -1,5 +1,4 @@
 import Button from '@material-ui/core/Button'
-import { Upload } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { File as SnFile, GenericContent, Settings } from '@sensenet/default-content-types'
 import { Uri } from 'monaco-editor'
@@ -52,12 +51,11 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
     if (props.saveContent) {
       await props.saveContent(props.content, textValue)
     } else {
-      await Upload.textAsFile({
+      await repo.upload.textAsFile({
         text: textValue,
         parentPath: PathHelper.getParentPath(props.content.Path),
         fileName: props.content.Name,
         overwrite: true,
-        repository: repo,
         contentTypeName: props.content.Type,
         binaryPropertyName: 'Binary',
       })
