@@ -1,7 +1,6 @@
+import { configureStore } from '@sensenet/document-viewer-react'
 import React from 'react'
-import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { configureStore } from '../src/store'
 import { ExampleAppLayout, exampleSettings } from './ExampleAppLayout'
 
 const store = configureStore(exampleSettings)
@@ -14,4 +13,3 @@ export const ViewerExampleApp = () => (
     <ExampleAppLayout />
   </Provider>
 )
-ReactDOM.render(<ViewerExampleApp />, document.getElementById('root'))
