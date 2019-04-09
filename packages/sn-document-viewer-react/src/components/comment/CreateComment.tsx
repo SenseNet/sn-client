@@ -8,7 +8,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import React, { useState } from 'react'
 import { DraftCommentMarker } from '../../models'
 import { LocalizationStateType } from '../../store/Localization'
-import { FlexEndButton, StyledForm, StyledSvgIcon } from './style'
+import { StyledForm, StyledSvgIcon } from './style'
 
 /**
  * Localization keys for create comment component
@@ -113,9 +113,9 @@ export function CreateComment(props: CreateCommentProps) {
           }}
         />
         {hasError() ? <FormHelperText id="component-error-text">{errorMessage}</FormHelperText> : null}
-        <FlexEndButton fullWidth={false} color="primary" variant="text" type="submit">
+        <Button style={{ alignSelf: 'flex-end' }} fullWidth={false} color="primary" variant="text" type="submit">
           {localization.submit}
-        </FlexEndButton>
+        </Button>
       </FormControl>
     </StyledForm>
   )

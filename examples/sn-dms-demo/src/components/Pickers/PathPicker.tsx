@@ -7,7 +7,7 @@ import ListItem from '@material-ui/core/ListItem/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
-import { ODataCollectionResponse, ODataParams, Repository } from '@sensenet/client-core'
+import { ODataParams, Repository } from '@sensenet/client-core'
 import { Folder, GenericContent } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import { ListPickerComponent } from '@sensenet/pickers-react'
@@ -93,42 +93,12 @@ class PathPicker extends React.Component<
     this.props.selectPickerItem(node)
   }
 
-  public loadItems = async (path: string) => {
-    let result: ODataCollectionResponse<Folder>
-    const repository = dmsInjector.getInstance(Repository)
-    const pickerItemOptions: ODataParams<Folder> = {
-      select: ['DisplayName', 'Path', 'Id', 'Children/IsFolder'] as any,
-      expand: ['Children'] as any,
-      filter: "(isOf('Folder') and not isOf('SystemFolder'))",
-      metadata: 'no',
-      orderby: 'DisplayName',
-    }
-
-    try {
-      result = await repository.loadCollection<Folder>({
-        path,
-        oDataOptions: { ...pickerItemOptions, ...this.props.loadOptions },
-      })
-    } catch (error) {
-      throw error
-    }
-
-    this.items = result.d.results
-    return result.d.results
-  }
-
-  public loadParent = async (id?: number) => {
-    const pickerParentOptions: ODataParams<GenericContent> = {
-      select: ['DisplayName', 'Path', 'Id', 'ParentId', 'Workspace'],
-      expand: ['Workspace'],
-      metadata: 'no',
-    }
-    const repository = dmsInjector.getInstance(Repository)
-    const result = await repository.load<GenericContent>({
-      idOrPath: id as number,
-      oDataOptions: { ...pickerParentOptions },
-    })
-    return result.d as GenericContent
+  private pickerItemOptions: ODataParams<Folder> = {
+    select: ['DisplayName', 'Path', 'Id', 'Children/IsFolder'] as any,
+    expand: ['Children'] as any,
+    filter: "(isOf('Folder') and not isOf('SystemFolder'))",
+    metadata: 'no',
+    orderby: 'DisplayName',
   }
 
   public renderItem = (renderItemProps: GenericContent) => (
@@ -166,8 +136,8 @@ class PathPicker extends React.Component<
                 </div>
               )}
               renderItem={this.renderItem}
-              loadItems={this.loadItems}
-              loadParent={this.loadParent}
+              repository={dmsInjector.getInstance(Repository)}
+              itemsOdataOptions={{ ...this.pickerItemOptions, ...this.props.loadOptions }}
               parentId={currentParent && currentParent.ParentId}
               currentPath={currentParent && currentParent.Path}
             />
