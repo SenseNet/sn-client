@@ -7,11 +7,8 @@
     "experimentalDecorators": true,
     "noUnusedParameters": false,
     "noImplicitAny": false,
-    "strictNullChecks": false,
     "alwaysStrict": false,
-    "removeComments": false,
-    "declaration": false,
-    "declarationMap": false
+    "removeComments": false
   },
   "include": ["stories", "assets", "../../typings"],
   "references": [

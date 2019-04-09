@@ -33,8 +33,8 @@ storiesOf('DocumentViewer', module)
         x={10}
         y={10}
         selectedCommentId=""
-        setSelectedCommentId={action('setSelectedCommentId')}
-        deleteComment={action('delete')}
+        setSelectedCommentId={action('setSelectedCommentId') as any}
+        deleteComment={action('delete') as any}
         id={text('id', 'randomId')}
         localization={defaultLocalization}
         text={text(
@@ -58,8 +58,8 @@ storiesOf('DocumentViewer', module)
         x={10}
         y={10}
         selectedCommentId=""
-        setSelectedCommentId={action('setSelectedCommentId')}
-        deleteComment={action('delete')}
+        setSelectedCommentId={action('setSelectedCommentId') as any}
+        deleteComment={action('delete') as any}
         id={text('id', 'randomId')}
         localization={defaultLocalization}
         text={text('commentBody', 'Lorem Ipsum is simply dummy text')}
