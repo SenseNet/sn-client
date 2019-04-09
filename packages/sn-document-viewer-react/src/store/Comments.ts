@@ -2,6 +2,7 @@ import { Reducer } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
 import { RootReducerType } from '.'
 import { Comment, CommentWithoutCreatedByAndId, DocumentViewerSettings } from '../models'
+import { showComments } from './Viewer'
 
 // tslint:disable: completed-docs
 export interface CommentsState {
@@ -41,6 +42,9 @@ export const getComments = () => ({
       options.getState().sensenetDocumentViewer.viewer.activePages[0],
     )
     options.dispatch(getCommentsSuccess(comments))
+    if (comments.length) {
+      options.dispatch(showComments(true))
+    }
   },
 })
 
