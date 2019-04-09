@@ -87,22 +87,21 @@ describe('comments reducer', () => {
 
   it(`should handle ${CREATE_COMMENT_REQUEST}`, async () => {
     createComment(examplePreviewComment).inject(options as any)
-    await sleepAsync()
+    await sleepAsync(0)
     expect(mockDispatch).toBeCalledTimes(1)
     expect(mockDispatch).toBeCalledWith({ type: CREATE_COMMENT_SUCCESS, comment: examplePreviewComment })
   })
 
   it(`should handle ${DELETE_COMMENT_REQUEST}`, async () => {
     deleteComment('id').inject(options as any)
-    await sleepAsync()
+    await sleepAsync(0)
     expect(mockDispatch).toBeCalledTimes(1)
     expect(mockDispatch).toBeCalledWith({ type: DELETE_COMMENT_SUCCESS, id: 'id' })
   })
 
   it(`should handle ${GET_COMMENTS_REQUEST}`, async () => {
     getComments().inject(options as any)
-    await sleepAsync()
-    expect(mockDispatch).toBeCalledTimes(1)
+    await sleepAsync(0)
     expect(mockDispatch).toBeCalledWith({ type: GET_COMMENTS_SUCCESS, comments: [examplePreviewComment] })
   })
 })
