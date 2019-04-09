@@ -1,11 +1,21 @@
 import Drawer from '@material-ui/core/Drawer'
 import { sleepAsync } from '@sensenet/client-utils'
-import { shallow } from 'enzyme'
+import { mount, shallow } from 'enzyme'
 import React from 'react'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
 import { CreateComment, PageList } from '../src/components'
 import CommentComponent from '../src/components/comment/Comment'
-import { DocumentViewerLayoutComponent } from '../src/components/DocumentViewerLayout'
+import { DocumentViewerLayout, DocumentViewerLayoutComponent } from '../src/components/DocumentViewerLayout'
+import { getCommentsSuccess, rootReducer, setSelectedCommentId } from '../src/store'
+import { examplePreviewComment } from './__Mocks__/viewercontext'
 import { createdByMock } from './Comment.test'
+
+declare global {
+  interface Window {
+    domNode: HTMLDivElement
+  }
+}
 
 describe('Document Viewer Layout component', () => {
   const defaultProps: DocumentViewerLayoutComponent['props'] = {
@@ -24,6 +34,13 @@ describe('Document Viewer Layout component', () => {
     getComments: jest.fn(),
     selectedCommentId: '',
   }
+
+  beforeAll(() => {
+    const div = document.createElement('div')
+    window.domNode = div
+    document.body.appendChild(div)
+  })
+
   it('should render without crashing', () => {
     const wrapper = shallow(
       <DocumentViewerLayoutComponent {...defaultProps}>{'some children'}</DocumentViewerLayoutComponent>,
@@ -148,16 +165,51 @@ describe('Document Viewer Layout component', () => {
   })
 
   it('should handle esc keyup', () => {
-    const setSelectedCommentId = jest.fn()
+    const setSelectedCommentIdMock = jest.fn()
     shallow(
-      <DocumentViewerLayoutComponent {...defaultProps} showComments={true} setSelectedCommentId={setSelectedCommentId}>
+      <DocumentViewerLayoutComponent
+        {...defaultProps}
+        showComments={true}
+        setSelectedCommentId={setSelectedCommentIdMock}>
         {'some children'}
       </DocumentViewerLayoutComponent>,
     )
     events.keyup({ key: 'a' })
-    expect(setSelectedCommentId).toBeCalledTimes(0)
+    expect(setSelectedCommentIdMock).toBeCalledTimes(0)
     events.keyup({ key: 'Escape' })
-    expect(setSelectedCommentId).toBeCalledTimes(1)
-    expect(setSelectedCommentId).toBeCalledWith('')
+    expect(setSelectedCommentIdMock).toBeCalledTimes(1)
+    expect(setSelectedCommentIdMock).toBeCalledWith('')
+  })
+
+  it('should scroll to comment when selectedCommentId changed', async () => {
+    const store = createStore(rootReducer)
+    const scrollToMock = jest.fn()
+    ;(window as any).HTMLElement.prototype.scrollTo = scrollToMock
+    mount(
+      <Provider store={store}>
+        <DocumentViewerLayout {...defaultProps} />
+      </Provider>,
+      { attachTo: window.domNode },
+    )
+    store.dispatch(getCommentsSuccess([examplePreviewComment]))
+
+    store.dispatch(setSelectedCommentId('someId'))
+    expect(scrollToMock).toBeCalled()
+  })
+
+  it('should not scroll to comment when comment is not found', async () => {
+    const store = createStore(rootReducer)
+    const scrollToMock = jest.fn()
+    ;(window as any).HTMLElement.prototype.scrollTo = scrollToMock
+    mount(
+      <Provider store={store}>
+        <DocumentViewerLayout {...defaultProps} />
+      </Provider>,
+      { attachTo: window.domNode },
+    )
+    store.dispatch(getCommentsSuccess([examplePreviewComment]))
+
+    store.dispatch(setSelectedCommentId('random'))
+    expect(scrollToMock).not.toBeCalled()
   })
 })
