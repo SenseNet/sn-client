@@ -33,6 +33,10 @@ describe('Document Viewer Layout component', () => {
     setSelectedCommentId: jest.fn(),
     getComments: jest.fn(),
     selectedCommentId: '',
+    isCreateCommentActive: false,
+    isPlacingCommentMarker: false,
+    toggleIsCreateCommentActive: jest.fn(),
+    toggleIsPlacingCommentMarker: jest.fn(),
   }
 
   beforeAll(() => {
@@ -159,6 +163,18 @@ describe('Document Viewer Layout component', () => {
     expect(createComment).toBeCalledWith({ page: 1, x: 10, y: 10, id: 'id', text })
   })
 
+  it('should handle creat comment isActive', () => {
+    const wrapper = shallow(
+      <DocumentViewerLayoutComponent {...defaultProps} showComments={true}>
+        {'some children'}
+      </DocumentViewerLayoutComponent>,
+    )
+
+    wrapper.find(CreateComment).prop('handleIsActive')(true)
+    expect(defaultProps.toggleIsCreateCommentActive).toBeCalledTimes(1)
+    expect(defaultProps.toggleIsCreateCommentActive).toBeCalledWith(true)
+  })
+
   const events: any = {}
   document.addEventListener = jest.fn((event, cb) => {
     events[event] = cb
@@ -179,6 +195,40 @@ describe('Document Viewer Layout component', () => {
     events.keyup({ key: 'Escape' })
     expect(setSelectedCommentIdMock).toBeCalledTimes(1)
     expect(setSelectedCommentIdMock).toBeCalledWith('')
+  })
+
+  it('should abort commenting when esc pushed', () => {
+    const toggleIsCreateCommentActive = jest.fn()
+    shallow(
+      <DocumentViewerLayoutComponent
+        {...defaultProps}
+        showComments={true}
+        isCreateCommentActive={true}
+        toggleIsCreateCommentActive={toggleIsCreateCommentActive}>
+        {'some children'}
+      </DocumentViewerLayoutComponent>,
+    )
+    events.keyup({ key: 'Escape' })
+    expect(toggleIsCreateCommentActive).toBeCalled()
+  })
+
+  it('should abort marker placement but not commenting when esc pushed', () => {
+    const toggleIsCreateCommentActive = jest.fn()
+    const toggleIsPlacingCommentMarker = jest.fn()
+    shallow(
+      <DocumentViewerLayoutComponent
+        {...defaultProps}
+        showComments={true}
+        isCreateCommentActive={true}
+        isPlacingCommentMarker={true}
+        toggleIsPlacingCommentMarker={toggleIsPlacingCommentMarker}
+        toggleIsCreateCommentActive={toggleIsCreateCommentActive}>
+        {'some children'}
+      </DocumentViewerLayoutComponent>,
+    )
+    events.keyup({ key: 'Escape' })
+    expect(toggleIsPlacingCommentMarker).toBeCalled()
+    expect(toggleIsCreateCommentActive).not.toBeCalled()
   })
 
   it('should scroll to comment when selectedCommentId changed', async () => {

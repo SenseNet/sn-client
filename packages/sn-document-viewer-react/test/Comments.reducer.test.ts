@@ -16,6 +16,10 @@ import {
   getCommentsSuccess,
   SET_SELECTED_COMMENT_ID,
   setSelectedCommentId,
+  TOGGLE_IS_CREATE_COMMENT_ACTIVE,
+  TOGGLE_IS_PLACING_COMMENT_MARKER,
+  toggleIsCreateCommentActive,
+  toggleIsPlacingCommentMarker,
 } from '../src/store/Comments'
 import { defaultState } from '../src/store/Document'
 import { examplePreviewComment } from './__Mocks__/viewercontext'
@@ -51,14 +55,11 @@ describe('comments reducer', () => {
   })
 
   it('should return the initial state', () => {
-    expect(commentsStateReducer(undefined, { type: '' })).toEqual({ selectedCommentId: '', items: [] })
+    expect(commentsStateReducer(undefined, { type: '' })).toEqual(commentsDefaultState)
   })
 
   it(`should handle ${SET_SELECTED_COMMENT_ID}`, () => {
-    expect(commentsStateReducer(undefined, setSelectedCommentId('anId'))).toEqual({
-      selectedCommentId: 'anId',
-      items: [],
-    })
+    expect(commentsStateReducer(undefined, setSelectedCommentId('anId')).selectedCommentId).toBe('anId')
   })
 
   it(`should handle ${CREATE_COMMENT_SUCCESS}`, () => {
@@ -103,5 +104,17 @@ describe('comments reducer', () => {
     getComments().inject(options as any)
     await sleepAsync(0)
     expect(mockDispatch).toBeCalledWith({ type: GET_COMMENTS_SUCCESS, comments: [examplePreviewComment] })
+  })
+
+  it(`should handle ${TOGGLE_IS_CREATE_COMMENT_ACTIVE}`, () => {
+    expect(commentsStateReducer(undefined, toggleIsCreateCommentActive(true)).isCreateCommentActive).toBeTruthy()
+    const state = { isCreateCommentActive: true } as any
+    expect(commentsStateReducer(state, toggleIsCreateCommentActive(false)).isCreateCommentActive).toBeFalsy()
+  })
+
+  it(`should handle ${TOGGLE_IS_PLACING_COMMENT_MARKER}`, () => {
+    expect(commentsStateReducer(undefined, toggleIsPlacingCommentMarker(true)).isPlacingCommentMarker).toBeTruthy()
+    const state = { isPlacingCommentMarker: true } as any
+    expect(commentsStateReducer(state, toggleIsPlacingCommentMarker(false)).isPlacingCommentMarker).toBeFalsy()
   })
 })
