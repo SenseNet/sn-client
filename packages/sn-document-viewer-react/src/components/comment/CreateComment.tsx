@@ -8,14 +8,20 @@ import Tooltip from '@material-ui/core/Tooltip'
 import React, { useState } from 'react'
 import { DraftCommentMarker } from '../../models'
 import { LocalizationStateType } from '../../store/Localization'
-import { StyledForm, StyledSvgIcon } from './style'
+import { StyledButtonContainer, StyledForm, StyledSvgIcon } from './style'
 
 /**
  * Localization keys for create comment component
  */
 export type CreateCommentLocalization = Pick<
   LocalizationStateType,
-  'commentInputPlaceholder' | 'addComment' | 'submit' | 'inputRequiredError' | 'markerRequiredError' | 'markerTooltip'
+  | 'commentInputPlaceholder'
+  | 'addComment'
+  | 'submit'
+  | 'inputRequiredError'
+  | 'markerRequiredError'
+  | 'markerTooltip'
+  | 'cancelButton'
 >
 
 /**
@@ -27,6 +33,8 @@ export interface CreateCommentProps {
   isPlacingMarker: boolean
   handlePlaceMarkerClick: () => void
   draftCommentMarker?: DraftCommentMarker
+  isActive: boolean
+  handleIsActive: (isActive: boolean) => void
 }
 
 const defaultLocalization: CreateCommentLocalization = {
@@ -36,6 +44,7 @@ const defaultLocalization: CreateCommentLocalization = {
   inputRequiredError: 'The comment text is a required field.',
   markerRequiredError: 'You must place the marker first.',
   markerTooltip: 'You can put a marker with this button.',
+  cancelButton: 'cancel',
 }
 
 /**
@@ -43,13 +52,12 @@ const defaultLocalization: CreateCommentLocalization = {
  */
 export function CreateComment(props: CreateCommentProps) {
   const [value, setValue] = useState('')
-  const [isActive, setIsActive] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | undefined>()
   const localization = { ...defaultLocalization, ...props.localization }
 
-  if (!isActive) {
+  if (!props.isActive) {
     return (
-      <Button color="primary" onClick={() => setIsActive(!isActive)}>
+      <Button color="primary" onClick={() => props.handleIsActive(!props.isActive)}>
         {localization.addComment}
       </Button>
     )
@@ -65,7 +73,7 @@ export function CreateComment(props: CreateCommentProps) {
     props.createComment(value)
     setValue('')
     setErrorMessage(undefined)
-    setIsActive(!isActive)
+    props.handleIsActive(!props.isActive)
   }
 
   const validate = () => {
@@ -113,9 +121,19 @@ export function CreateComment(props: CreateCommentProps) {
           }}
         />
         {hasError() ? <FormHelperText id="component-error-text">{errorMessage}</FormHelperText> : null}
-        <Button style={{ alignSelf: 'flex-end' }} fullWidth={false} color="primary" variant="text" type="submit">
-          {localization.submit}
-        </Button>
+        <StyledButtonContainer>
+          <Button style={{ alignSelf: 'flex-end' }} fullWidth={false} color="primary" variant="text" type="submit">
+            {localization.submit}
+          </Button>
+          <Button
+            onClick={() => props.handleIsActive(false)}
+            style={{ alignSelf: 'flex-end' }}
+            fullWidth={false}
+            color="secondary"
+            variant="text">
+            {localization.cancelButton}
+          </Button>
+        </StyledButtonContainer>
       </FormControl>
     </StyledForm>
   )

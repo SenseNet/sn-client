@@ -1,22 +1,31 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { v1 } from 'uuid'
 import {
+  Annotation,
+  Comment,
+  componentType,
+  defaultTheme,
+  DocumentData,
   DocumentTitlePager,
+  DocumentViewer,
+  DocumentViewerSettings,
+  Download,
+  Highlight,
+  LayoutAppBar,
+  PreviewImageData,
+  Print,
+  Redaction,
   RotateActivePages,
   SearchBar,
+  Shape,
+  Share,
   ToggleCommentsWidget,
   ToggleShapesWidget,
   ToggleThumbnailsWidget,
   ZoomInOutWidget,
-} from '../src/components/document-widgets'
-import { DocumentViewer } from '../src/components/DocumentViewer'
-import { LayoutAppBar } from '../src/components/LayoutAppBar'
-import { DocumentViewerSettings } from '../src/models/DocumentViewerSettings'
-import { PreviewImageData } from '../src/models/PreviewImageData'
-import { Annotation, Highlight, Redaction, Shape } from '../src/models/Shapes'
-import { componentType } from '../src/services'
+} from '@sensenet/document-viewer-react'
+import { v1 } from 'uuid'
 
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
@@ -34,11 +43,6 @@ import Typography from '@material-ui/core/Typography'
 import FolderOpen from '@material-ui/icons/FolderOpen'
 import Help from '@material-ui/icons/Help'
 import Send from '@material-ui/icons/Send'
-import { Download } from '../src/components/document-widgets/DownloadWidget'
-import { Print } from '../src/components/document-widgets/PrintWidget'
-import { Share } from '../src/components/document-widgets/ShareWidget'
-import { Comment } from '../src/models/Comment'
-import { defaultTheme } from '../src/models/Theming'
 
 /**
  * Adds a globally unique ID to the shape
@@ -85,8 +89,9 @@ export const exampleSettings = new DocumentViewerSettings({
       })
       if (response.ok) {
         const responseBody = await response.json()
-        return responseBody as Comment
+        return [responseBody].map(changeCreatedByUrlToCurrent(documentData))[0]
       }
+      throw new Error('Network response was not ok.')
     },
     deletePreviewComment: async (documentData, commentId) => {
       const response = await fetch(`${documentData.hostName}/odata.svc/${documentData.idOrPath}/DeletePreviewComment`, {
@@ -108,8 +113,9 @@ export const exampleSettings = new DocumentViewerSettings({
       )
       if (response.ok) {
         const responseBody = await response.json()
-        return responseBody as Comment[]
+        return responseBody.map(changeCreatedByUrlToCurrent(documentData))
       }
+      throw new Error('Network response was not ok.')
     },
   },
   canEditDocument: async documentData => {
@@ -240,6 +246,15 @@ export const exampleSettings = new DocumentViewerSettings({
     }
   },
 })
+
+function changeCreatedByUrlToCurrent(documentData: DocumentData): (value: Comment) => Comment {
+  return comment => {
+    return {
+      ...comment,
+      createdBy: { ...comment.createdBy, avatarUrl: `${documentData.hostName}${comment.createdBy.avatarUrl}` },
+    }
+  }
+}
 
 const localStorageKey = 'sn-docviewer-example'
 

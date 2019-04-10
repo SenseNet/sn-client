@@ -42,7 +42,9 @@
     "@sensenet/query": "^1.1.4",
     "@sensenet/search-react": "^1.2.3",
     "react": "^16.8.4",
-    "react-dom": "^16.8.4"
+    "react-dom": "^16.8.4",
+    "react-redux": "^6.0.1",
+    "redux": "^4.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
@@ -60,16 +62,19 @@
     "@storybook/react": "^5.0.0",
     "@types/node": "^11.9.4",
     "@types/react": "^16.8.3",
+    "@types/react-redux": "^7.0.1",
     "@types/storybook__addon-actions": "^3.4.2",
     "@types/storybook__addon-a11y": "^5.0.0",
     "@types/storybook__addon-info": "^4.1.0",
     "@types/storybook__addon-options": "^4.0.1",
     "@types/storybook__addon-viewport": "^4.1.0",
     "@types/storybook__react": "^4.0.1",
+    "@types/uuid": "^3.4.4",
     "babel-loader": "^8.0.5",
     "babel-preset-react-app": "^7.0.1",
     "react-docgen-typescript-loader": "^3.0.1",
     "ts-config-webpack-plugin": "^1.3.1",
+    "uuid": "^3.3.2",
     "webpack": "^4.29.6"
   }
 }

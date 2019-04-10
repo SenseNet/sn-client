@@ -76,7 +76,7 @@ storiesOf('ListControls', module)
     () => (
       <ContentList
         items={items}
-        schema={customSchema.find(s => s.ContentTypeName === 'GenericContent')}
+        schema={customSchema.find(s => s.ContentTypeName === 'GenericContent')!}
         icons={icons}
         fieldsToDisplay={array('Fields to display', ['DisplayName', 'Locked', 'ModificationDate', 'Actions'])}
         orderBy={text('Order by', 'DisplayName')}
