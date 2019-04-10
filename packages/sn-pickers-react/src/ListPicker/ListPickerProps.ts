@@ -1,5 +1,6 @@
 import { ODataParams, Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
+import { ReactElement } from 'react'
 
 /**
  * Properties for list picker component.
@@ -62,13 +63,13 @@ export interface ListPickerProps<T extends GenericContent = GenericContent> {
    * Render a loading component when loadItems called.
    * @default null
    */
-  renderLoading?: () => JSX.Element
+  renderLoading?: () => ReactElement
 
   /**
    * Render an error component when error happened in loadItems call.
    * @default null
    */
-  renderError?: (message: string) => JSX.Element
+  renderError?: (message: string) => ReactElement
 
   /**
    * Function to render the item component.
@@ -84,7 +85,7 @@ export interface ListPickerProps<T extends GenericContent = GenericContent> {
    * )
    * ```
    */
-  renderItem?: (props: T) => JSX.Element
+  renderItem?: (props: T) => ReactElement<T>
 
   /**
    * Debounce milliseconds to prevent multiple reload calls.
