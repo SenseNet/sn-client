@@ -163,7 +163,7 @@ describe('Document Viewer Layout component', () => {
     expect(createComment).toBeCalledWith({ page: 1, x: 10, y: 10, id: 'id', text })
   })
 
-  it('should handle creat comment isActive', () => {
+  it('should handle create comment isActive', () => {
     const wrapper = shallow(
       <DocumentViewerLayoutComponent {...defaultProps} showComments={true}>
         {'some children'}
@@ -197,7 +197,7 @@ describe('Document Viewer Layout component', () => {
     expect(setSelectedCommentIdMock).toBeCalledWith('')
   })
 
-  it('should abort commenting when esc pushed', () => {
+  it('should abort commenting when esc was pushed', () => {
     const toggleIsCreateCommentActive = jest.fn()
     shallow(
       <DocumentViewerLayoutComponent
@@ -212,7 +212,7 @@ describe('Document Viewer Layout component', () => {
     expect(toggleIsCreateCommentActive).toBeCalled()
   })
 
-  it('should abort marker placement but not commenting when esc pushed', () => {
+  it('should abort marker placement but not commenting when esc was pushed', () => {
     const toggleIsCreateCommentActive = jest.fn()
     const toggleIsPlacingCommentMarker = jest.fn()
     shallow(
@@ -231,7 +231,7 @@ describe('Document Viewer Layout component', () => {
     expect(toggleIsCreateCommentActive).not.toBeCalled()
   })
 
-  it('should scroll to comment when selectedCommentId changed', async () => {
+  it('should scroll to comment when selectedCommentId is changed', async () => {
     const store = createStore(rootReducer)
     const scrollToMock = jest.fn()
     ;(window as any).HTMLElement.prototype.scrollTo = scrollToMock
