@@ -72,6 +72,7 @@ const values = {
     logoutCancel: 'Cancel',
   },
   personalSettings: {
+    title: 'Personal settings',
     drawer: 'Options for the left drawer',
     drawerEnable: 'Enable or disable the drawer',
     drawerType: 'Drawer type',
@@ -97,6 +98,11 @@ const values = {
     notLoggedIn: 'You are not logged in.',
     anotherRepo: 'Another repository',
     typeToFilter: 'Type to filter...',
+  },
+  textEditor: {
+    unsavedChangesWarning: 'You have unsaved changes. Are you sure that you want to leave?',
+    save: 'Save',
+    reset: 'Reset',
   },
 }
 
