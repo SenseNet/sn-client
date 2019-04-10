@@ -548,7 +548,7 @@ export const searchUsers = (text: string) => ({
   text,
 })
 
-export const getAllowedTypes = createAction(<T extends GenericContent[]>(odataOptions: ODataParams<T>) => ({
+export const getAllowedTypes = createAction(<T extends GenericContent[]>(odataOptions?: ODataParams<T>) => ({
   type: 'DMS_DOCLIB_GET_ALLOWED_TYPES',
   odataOptions,
   // tslint:disable-next-line: no-unnecessary-type-annotation
