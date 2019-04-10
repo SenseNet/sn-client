@@ -578,5 +578,119 @@ export const eventHubTests = describe('EventHub', () => {
         }
       })()
     })
+    const mockAnswer = {
+      Id: 4037,
+      Length: 18431,
+      Name: 'LICENSE',
+      Thumbnail_url: '/Root/Sites/Default_Site/Workspace/Document_Library/LICENSE',
+      Type: 'File',
+      Url: '/Root/Sites/Default_Site/Workspace/Document_Library/LICENSE',
+    }
+
+    it('onUploadFinished() should be triggered after chuncked upload', done => {
+      eventHub.onUploadFinished.subscribe(response => {
+        expect(response).toEqual(mockAnswer)
+        done()
+      })
+      // tslint:disable-next-line:no-string-literal
+      repository['fetch'] = async () =>
+        ({
+          ok: true,
+          json: async () => mockAnswer,
+          text: async () => '',
+        } as any)
+      repository.upload.uploadChunked({
+        binaryPropertyName: 'Binary',
+        overwrite: true,
+        parentPath: 'Root/Example',
+        file: ({ size: 1, name: 'LICENSE', slice: jest.fn() } as unknown) as File,
+        contentTypeName: 'File',
+      })
+    })
+
+    it('onUploadFailed() should be triggered after chuncked upload failed', async () => {
+      const options = {
+        binaryPropertyName: 'Binary',
+        overwrite: true,
+        parentPath: 'Root/Example',
+        file: ({ size: 1, name: 'LICENSE', slice: jest.fn() } as unknown) as File,
+        contentTypeName: 'File',
+      }
+      const onUploadFailed = jest.fn()
+      eventHub.onUploadFailed.subscribe(onUploadFailed)
+      // tslint:disable-next-line:no-string-literal
+      repository['fetch'] = async () =>
+        ({
+          ok: false,
+          json: async () => {
+            return {
+              error: {
+                message: {
+                  value: 'error',
+                },
+              },
+            }
+          },
+          text: async () => '',
+        } as any)
+      try {
+        await repository.upload.uploadChunked(options)
+      } catch {
+        expect(onUploadFailed).toBeCalled()
+      }
+    })
+
+    it('onUploadFinished() should be triggered after nonchuncked upload', done => {
+      eventHub.onUploadFinished.subscribe(response => {
+        expect(response).toEqual(mockAnswer)
+        done()
+      })
+      // tslint:disable-next-line:no-string-literal
+      repository['fetch'] = async () =>
+        ({
+          ok: true,
+          json: async () => mockAnswer,
+          text: async () => '',
+        } as any)
+      repository.upload.uploadNonChunked({
+        binaryPropertyName: 'Binary',
+        overwrite: true,
+        parentPath: 'Root/Example',
+        file: ({ size: 1, name: 'LICENSE', slice: jest.fn() } as unknown) as File,
+        contentTypeName: 'File',
+      })
+    })
+
+    it('onUploadFailed() should be triggered after nonchuncked upload failed', async () => {
+      const options = {
+        binaryPropertyName: 'Binary',
+        overwrite: true,
+        parentPath: 'Root/Example',
+        file: ({ size: 1, name: 'LICENSE', slice: jest.fn() } as unknown) as File,
+        contentTypeName: 'File',
+      }
+      const onUploadFailed = jest.fn()
+      eventHub.onUploadFailed.subscribe(onUploadFailed)
+      // tslint:disable-next-line:no-string-literal
+      repository['fetch'] = async () =>
+        ({
+          ok: false,
+          json: async () => {
+            return {
+              error: {
+                message: {
+                  value: 'error',
+                },
+              },
+            }
+          },
+          text: async () => '',
+        } as any)
+      try {
+        await repository.upload.uploadNonChunked(options)
+      } catch {
+        expect(onUploadFailed).toBeCalled()
+      }
+    })
   })
 })

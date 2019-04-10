@@ -1,15 +1,12 @@
-const path = require('path')
-
-// tslint:disable-next-line: variable-name
 const TsConfigWebpackPlugin = require('ts-config-webpack-plugin')
 const DocgenPlugin = require('./docgen-plugin')
 
-module.exports = ({ config }) => ({
+module.exports = async ({ config }) => ({
   ...config,
-  plugins: [new TsConfigWebpackPlugin(), new DocgenPlugin(), ...config.plugins],
+  devtool: 'eval-source-map',
+  plugins: [...config.plugins, new TsConfigWebpackPlugin(), new DocgenPlugin()],
   resolve: {
     ...config.resolve,
-    symlinks: true,
-    extensions: [...config.resolve.extensions, '.ts', '.tsx'],
+    extensions: [...(config.resolve.extensions || []), '.ts', '.tsx'],
   },
 })

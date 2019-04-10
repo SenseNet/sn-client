@@ -1,6 +1,5 @@
 import {
   Repository,
-  Upload,
   UploadFromEventOptions,
   UploadFromFileListOptions,
   UploadProgressInfo,
@@ -183,9 +182,8 @@ export const uploadFileList = <T extends SnFile>(
         trackUploadProgress(currentValue, options.getState, options.dispatch, api),
       )
       try {
-        await Upload.fromFileList({
+        await api.upload.fromFileList({
           ...uploadOptions,
-          repository: api,
           progressObservable: progress,
         })
       } catch (error) {
@@ -209,9 +207,8 @@ export const uploadDataTransfer = <T extends SnFile>(
         trackUploadProgress(currentValue, options.getState, options.dispatch, api),
       )
       try {
-        await Upload.fromDropEvent({
+        await api.upload.fromDropEvent({
           ...uploadOptions,
-          repository: api,
           progressObservable: progress,
         })
       } catch (error) {

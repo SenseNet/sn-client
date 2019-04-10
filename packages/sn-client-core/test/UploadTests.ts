@@ -1,8 +1,6 @@
 import { ObservableValue, Trace } from '@sensenet/client-utils'
-import 'jest'
 import { UploadProgressInfo } from '../src'
 import { Repository } from '../src/Repository/Repository'
-import { Upload } from '../src/Repository/Upload'
 
 // tslint:disable:no-string-literal
 // tslint:disable:completed-docs
@@ -30,7 +28,7 @@ describe('Upload', () => {
 
   let mockText: string
 
-  let fetchOk: boolean = true
+  let fetchOk = true
 
   beforeEach(() => {
     mockAnswer = {
@@ -55,27 +53,23 @@ describe('Upload', () => {
 
   describe('#isChunkedUploadNeeded()', () => {
     it('should return true is the file is larger than the chunk size', () => {
-      expect(Upload.isChunkedUploadNeeded({ size: 1024 } as any, { configuration: { chunkSize: 640 } } as any)).toBe(
-        true,
-      )
+      repo = new Repository({ chunkSize: 640 })
+      expect(repo.upload.isChunkedUploadNeeded({ size: 1024 } as any)).toBe(true)
     })
 
     it('should return false is the file is smaller than the chunk size', () => {
-      expect(Upload.isChunkedUploadNeeded({ size: 1024 } as any, { configuration: { chunkSize: 2048 } } as any)).toBe(
-        false,
-      )
+      expect(repo.upload.isChunkedUploadNeeded({ size: 1024 } as any)).toBe(false)
     })
   })
 
   describe('#text()', () => {
     it('should resolve on upload', async () => {
-      const answer = await Upload.textAsFile({
+      const answer = await repo.upload.textAsFile({
         binaryPropertyName: 'Binary',
         overwrite: true,
         fileName: 'alma.txt',
         parentPath: 'Root/Example',
         text: 'ExampleText',
-        repository: repo,
         contentTypeName: 'File',
         progressObservable: new ObservableValue<UploadProgressInfo>(),
       })
@@ -83,13 +77,12 @@ describe('Upload', () => {
     })
 
     it('should resolve on upload without contentTypeName', async () => {
-      const answer = await Upload.textAsFile({
+      const answer = await repo.upload.textAsFile({
         binaryPropertyName: 'Binary',
         overwrite: true,
         fileName: 'alma.txt',
         parentPath: 'Root/Example',
         text: 'ExampleText',
-        repository: repo,
         progressObservable: new ObservableValue<UploadProgressInfo>(),
       })
       expect(answer).toEqual(mockAnswer)
@@ -97,16 +90,16 @@ describe('Upload', () => {
 
     it('should throw on upload failure', done => {
       fetchOk = false
-      Upload.textAsFile({
-        binaryPropertyName: 'Binary',
-        overwrite: true,
-        fileName: 'alma.txt',
-        parentPath: 'Root/Example',
-        text: 'ExampleText',
-        repository: repo,
-        contentTypeName: 'File',
-        progressObservable: new ObservableValue<UploadProgressInfo>(),
-      })
+      repo.upload
+        .textAsFile({
+          binaryPropertyName: 'Binary',
+          overwrite: true,
+          fileName: 'alma.txt',
+          parentPath: 'Root/Example',
+          text: 'ExampleText',
+          contentTypeName: 'File',
+          progressObservable: new ObservableValue<UploadProgressInfo>(),
+        })
         .then(() => {
           done(Error('Should throw'))
         })
@@ -119,12 +112,11 @@ describe('Upload', () => {
   describe('#file()', () => {
     it('should resolve on upload chunked', async () => {
       fetchOk = true
-      const answer = await Upload.file({
+      const answer = await repo.upload.file({
         binaryPropertyName: 'Binary',
         overwrite: true,
         parentPath: 'Root/Example',
         file: ({ size: 65535000, slice: () => '' } as any) as File,
-        repository: repo,
         contentTypeName: 'File',
         progressObservable: new ObservableValue<UploadProgressInfo>(),
       })
@@ -133,15 +125,15 @@ describe('Upload', () => {
 
     it('Should throw on error chunked', done => {
       fetchOk = false
-      Upload.file({
-        binaryPropertyName: 'Binary',
-        overwrite: true,
-        file: ({ size: 65535000, slice: () => '' } as any) as File,
-        parentPath: 'Root/Example',
-        repository: repo,
-        contentTypeName: 'File',
-        progressObservable: new ObservableValue<UploadProgressInfo>(),
-      })
+      repo.upload
+        .file({
+          binaryPropertyName: 'Binary',
+          overwrite: true,
+          file: ({ size: 65535000, slice: () => '' } as any) as File,
+          parentPath: 'Root/Example',
+          contentTypeName: 'File',
+          progressObservable: new ObservableValue<UploadProgressInfo>(),
+        })
         .then(() => {
           done(Error('Should throw'))
         })
@@ -151,7 +143,7 @@ describe('Upload', () => {
     })
 
     it('Should throw if a chunk has been failed', done => {
-      let ok: boolean = true
+      let ok = true
       repo['fetchMethod'] = async () => {
         return {
           ok,
@@ -162,15 +154,15 @@ describe('Upload', () => {
           },
         } as any
       }
-      Upload.file({
-        binaryPropertyName: 'Binary',
-        overwrite: true,
-        file: ({ size: 65535000, slice: () => '' } as any) as File,
-        parentPath: 'Root/Example',
-        repository: repo,
-        contentTypeName: 'File',
-        progressObservable: new ObservableValue<UploadProgressInfo>(),
-      })
+      repo.upload
+        .file({
+          binaryPropertyName: 'Binary',
+          overwrite: true,
+          file: ({ size: 65535000, slice: () => '' } as any) as File,
+          parentPath: 'Root/Example',
+          contentTypeName: 'File',
+          progressObservable: new ObservableValue<UploadProgressInfo>(),
+        })
         .then(() => {
           done(Error('Should throw'))
         })
@@ -181,19 +173,19 @@ describe('Upload', () => {
   })
 
   describe('#fromDropEvent()', () => {
-    it('should trigger an Upload request without webkitRequestFileSystem', (done: jest.DoneCallback) => {
+    it('should trigger an Upload request without webkitRequestFileSystem', done => {
       ;(global as any).window.webkitRequestFileSystem = undefined
       const file = new File(['alma.txt'], 'alma')
       Object.assign(file, { type: 'file' })
       const uploadTrace = Trace.method({
-        object: Upload,
-        method: Upload.file,
+        object: repo.upload,
+        method: repo.upload.file,
         onCalled: () => {
           uploadTrace.dispose()
           done()
         },
       })
-      Upload.fromDropEvent({
+      repo.upload.fromDropEvent({
         event: {
           dataTransfer: {
             files: [file, {}],
@@ -201,7 +193,6 @@ describe('Upload', () => {
         } as any,
         parentPath: 'Root/Example',
         createFolders: true,
-        repository: repo,
         binaryPropertyName: 'Binary',
         contentTypeName: 'File',
         overwrite: true,
@@ -209,13 +200,13 @@ describe('Upload', () => {
       })
     })
 
-    it('should trigger an Upload request with webkitRequestFileSystem', (done: jest.DoneCallback) => {
+    it('should trigger an Upload request with webkitRequestFileSystem', done => {
       ;(global as any).window.webkitRequestFileSystem = () => {
         /**/
       }
       const uploadTrace = Trace.method({
-        object: Upload,
-        method: Upload.file,
+        object: repo.upload,
+        method: repo.upload.file,
         onCalled: () => {
           uploadTrace.dispose()
           done()
@@ -227,7 +218,7 @@ describe('Upload', () => {
           cb(new File(['alma.txt'], 'alma'))
         },
       }
-      Upload.fromDropEvent({
+      repo.upload.fromDropEvent({
         event: {
           dataTransfer: {
             items: [{ webkitGetAsEntry: () => file }],
@@ -236,14 +227,13 @@ describe('Upload', () => {
         } as any,
         parentPath: 'Root/Example',
         createFolders: true,
-        repository: repo,
         binaryPropertyName: 'Binary',
         contentTypeName: 'File',
         overwrite: true,
       })
     })
 
-    it('should fail with webkitRequestFileSystem if failed to read a file', (done: jest.DoneCallback) => {
+    it('should fail with webkitRequestFileSystem if failed to read a file', done => {
       ;(global as any).window = {
         webkitRequestFileSystem: () => {
           /**/
@@ -256,24 +246,25 @@ describe('Upload', () => {
           err('File read fails here...')
         },
       }
-      Upload.fromDropEvent({
-        event: {
-          dataTransfer: {
-            items: [{ webkitGetAsEntry: () => file }],
-          },
-        } as any,
-        parentPath: 'Root/Example',
-        createFolders: true,
-        repository: repo,
-        binaryPropertyName: 'Binary',
-        contentTypeName: 'File',
-        overwrite: true,
-      }).catch(() => {
-        done()
-      })
+      repo.upload
+        .fromDropEvent({
+          event: {
+            dataTransfer: {
+              items: [{ webkitGetAsEntry: () => file }],
+            },
+          } as any,
+          parentPath: 'Root/Example',
+          createFolders: true,
+          binaryPropertyName: 'Binary',
+          contentTypeName: 'File',
+          overwrite: true,
+        })
+        .catch(() => {
+          done()
+        })
     })
 
-    it('should trigger a post when the dataTransfer contains folders', (done: jest.DoneCallback) => {
+    it('should trigger a post when the dataTransfer contains folders', done => {
       ;(global as any).window = {
         webkitRequestFileSystem: () => {
           /**/
@@ -315,21 +306,21 @@ describe('Upload', () => {
           }
         },
       }
-      Upload.fromDropEvent({
-        event: {
-          dataTransfer: {
-            items: [{ webkitGetAsEntry: () => directory }],
-            files: [],
-          },
-        } as any,
-        progressObservable: new ObservableValue<UploadProgressInfo>(),
-        parentPath: 'Root/Example',
-        createFolders: true,
-        repository: repo,
-        binaryPropertyName: 'Binary',
-        contentTypeName: 'File',
-        overwrite: true,
-      })
+      repo.upload
+        .fromDropEvent({
+          event: {
+            dataTransfer: {
+              items: [{ webkitGetAsEntry: () => directory }],
+              files: [],
+            },
+          } as any,
+          progressObservable: new ObservableValue<UploadProgressInfo>(),
+          parentPath: 'Root/Example',
+          createFolders: true,
+          binaryPropertyName: 'Binary',
+          contentTypeName: 'File',
+          overwrite: true,
+        })
         .then(() => {
           expect(postHasCalled).toBe(true)
           done()
@@ -339,7 +330,7 @@ describe('Upload', () => {
         })
     })
 
-    it('should fail if there is an error reading folders', (done: jest.DoneCallback) => {
+    it('should fail if there is an error reading folders', done => {
       ;(global as any).window = {
         webkitRequestFileSystem: () => {
           /**/
@@ -358,19 +349,19 @@ describe('Upload', () => {
           }
         },
       }
-      Upload.fromDropEvent({
-        event: {
-          dataTransfer: {
-            items: [{ webkitGetAsEntry: () => directory }],
-          },
-        } as any,
-        parentPath: 'Root/Example',
-        createFolders: true,
-        repository: repo,
-        binaryPropertyName: 'Binary',
-        contentTypeName: 'File',
-        overwrite: true,
-      })
+      repo.upload
+        .fromDropEvent({
+          event: {
+            dataTransfer: {
+              items: [{ webkitGetAsEntry: () => directory }],
+            },
+          } as any,
+          parentPath: 'Root/Example',
+          createFolders: true,
+          binaryPropertyName: 'Binary',
+          contentTypeName: 'File',
+          overwrite: true,
+        })
         .then(() => {
           done(Error('Should have failed'))
         })
@@ -403,52 +394,50 @@ describe('Upload', () => {
       },
     }
 
-    it('should trigger an Upload request when uploading with folders', (done: jest.DoneCallback) => {
+    it('should trigger an Upload request when uploading with folders', done => {
       ;(global as any).window = {
         webkitRequestFileSystem: () => {
           /**/
         },
       }
       const uploadTrace = Trace.method({
-        object: Upload,
-        method: Upload.file,
+        object: repo.upload,
+        method: repo.upload.file,
         onCalled: () => {
           uploadTrace.dispose()
           done()
         },
       })
 
-      Upload.fromFileList({
+      repo.upload.fromFileList({
         fileList: ([file, file2, file3] as any) as FileList,
         parentPath: 'Root/Example',
         createFolders: true,
-        repository: repo,
         binaryPropertyName: 'Binary',
         contentTypeName: 'File',
         overwrite: true,
       })
     })
 
-    it('should trigger an Upload request without folder upload', (done: jest.DoneCallback) => {
+    it('should trigger an Upload request without folder upload', done => {
       ;(global as any).window = {
         webkitRequestFileSystem: () => {
           /**/
         },
       }
       const uploadTrace = Trace.method({
-        object: Upload,
-        method: Upload.file,
+        object: repo.upload,
+        method: repo.upload.file,
         onCalled: () => {
           uploadTrace.dispose()
           done()
         },
       })
 
-      Upload.fromFileList({
+      repo.upload.fromFileList({
         fileList: ([file, file2, file3] as any) as FileList,
         parentPath: 'Root/Example',
         createFolders: false,
-        repository: repo,
         binaryPropertyName: 'Binary',
         contentTypeName: 'File',
         overwrite: true,

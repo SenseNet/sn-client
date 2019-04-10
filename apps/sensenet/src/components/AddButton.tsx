@@ -8,7 +8,6 @@ import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import Add from '@material-ui/icons/Add'
 import CloudUpload from '@material-ui/icons/CloudUpload'
-import { Upload } from '@sensenet/client-core'
 import { NewViewComponent } from '@sensenet/controls-react'
 import { Schema } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
@@ -29,10 +28,12 @@ export const AddButton: React.FunctionComponent = () => {
   const localization = useContext(LocalizationContext).values.addButton
 
   useEffect(() => {
-    setAllowedChildTypes(
-      repo.schemas.getSchemaByName(parent.Type).AllowedChildTypes.map(type => repo.schemas.getSchemaByName(type)),
-    )
-  }, [parent.Type])
+    if (showSelectType) {
+      repo
+        .getAllowedChildTypes({ idOrPath: parent.Id })
+        .then(types => setAllowedChildTypes(types.d.results.map(t => repo.schemas.getSchemaByName(t.Name))))
+    }
+  }, [parent.Id, showSelectType])
 
   return (
     <div>
@@ -72,11 +73,10 @@ export const AddButton: React.FunctionComponent = () => {
               onChange={ev => {
                 setShowSelectType(false)
                 ev.target.files &&
-                  Upload.fromFileList({
+                  repo.upload.fromFileList({
                     parentPath: parent.Path,
                     fileList: ev.target.files,
                     createFolders: true,
-                    repository: repo,
                     binaryPropertyName: 'Binary',
                     overwrite: false,
                     progressObservable: injector.getInstance(UploadTracker).onUploadProgress,
