@@ -38,26 +38,14 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
             <LoginComponent />
           ) : sessionContext.debouncedState === LoginState.Authenticated ? (
             <Switch>
-              <Route
-                path="/:repo/browse/:folderId?/:rightParent?"
-                render={() => <ExploreComponent />}
-                authorize={() => true}
-              />
+              <Route path="/:repo/browse/:folderId?/:rightParent?" render={() => <ExploreComponent />} />
               <Route path="/:repo/search" render={() => <SearchComponent />} />
               <Route path="/:repo/iam" render={() => <IamComponent />} />
               <Route path="/:repo/setup" render={() => <SetupComponent />} />
               <Route path="/:repo/info" render={() => <VersionInfoComponent />} />
-              <Route path="/:repo/editBinary/:contentId?" render={() => <EditBinary />} authorize={() => true} />
-              <Route
-                path="/:repo/editProperties/:contentId?"
-                render={() => <EditProperties />}
-                authorize={() => true}
-              />
-              <Route
-                path="/:repo/preview/:documentId?"
-                render={() => <DocumentViewerComponent />}
-                authorize={() => true}
-              />
+              <Route path="/:repo/editBinary/:contentId?" render={() => <EditBinary />} />
+              <Route path="/:repo/editProperties/:contentId?" render={() => <EditProperties />} />
+              <Route path="/:repo/preview/:documentId?" render={() => <DocumentViewerComponent />} />
               <Route path="/" render={() => <DashboardComponent />} />
             </Switch>
           ) : (
