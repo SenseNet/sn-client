@@ -22,3 +22,5 @@ yarn-debug.log*
 yarn-error.log*
 
 .awcache
+cypress/videos/
+cypress/screenshots/

@@ -40,4 +40,10 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root') as HTMLElement,
 )
+
+// expose repository when run in Cypress
+if ((window as any).Cypress) {
+  ;(window as any).repository = repository
+}
+
 registerServiceWorker()
