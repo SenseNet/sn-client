@@ -227,7 +227,7 @@ class Login extends React.Component<
               required={true}
               style={styles.formControl}>
               <TextField
-                id="email"
+                name="email"
                 onBlur={event => this.handleEmailBlur(event)}
                 onChange={event => this.handleEmailChange(event)}
                 fullWidth={true}
@@ -244,7 +244,7 @@ class Login extends React.Component<
               style={styles.formControl}>
               <TextField
                 type="password"
-                id="password"
+                name="password"
                 onBlur={event => this.handlePasswordBlur(event)}
                 onChange={event => this.handlePasswordChange(event)}
                 fullWidth={true}
