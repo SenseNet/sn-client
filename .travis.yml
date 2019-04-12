@@ -1,5 +1,10 @@
 language: node_js
 
+dist: trusty
+
+addons:
+  chrome: stable
+
 node_js:
   - '10'
 
@@ -10,10 +15,13 @@ before_install:
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 
-cache: yarn
+cache:
+  yarn: true
+  directories:
+    - node_modules
+    - ~/.cache
 
 script:
   - yarn
-  - yarn lint
   - yarn build
-  - yarn test:coverage
+  - yarn test:dms:e2e
