@@ -77,6 +77,7 @@
     "uuid": "^3.3.2"
   },
   "devDependencies": {
+    "@cypress/webpack-preprocessor": "^4.0.3",
     "@types/enzyme": "^3.1.15",
     "@types/enzyme-adapter-react-16": "^1.0.3",
     "@types/jest": "^24.0.9",

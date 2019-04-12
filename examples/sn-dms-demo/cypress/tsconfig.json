@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "rootDir": ".",
+    "lib": ["es2015", "dom"],
+    "baseUrl": "../../../node_modules",
+    "types": ["cypress"]
+  },
+  "include": ["**/*.*"]
+}
