@@ -48,7 +48,6 @@ exports[`DocumentTitlePager component Should render the focused state without cr
             "max": 10,
             "min": 1,
             "style": Object {
-              "color": "white",
               "textAlign": "center",
             },
           }

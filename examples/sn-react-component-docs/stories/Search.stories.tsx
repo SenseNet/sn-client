@@ -30,7 +30,7 @@ storiesOf('Search', module)
     'Advanced Search container component',
     () => (
       <AdvancedSearch
-        schema={null}
+        schema={null as any}
         onQueryChanged={action('queryChange')}
         fields={options => (
           <div>

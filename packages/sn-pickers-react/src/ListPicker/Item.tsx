@@ -1,5 +1,5 @@
 import { GenericContent } from '@sensenet/default-content-types'
-import React from 'react'
+import React, { ReactElement } from 'react'
 
 /**
  * Item component properties.
@@ -35,14 +35,14 @@ export interface ItemProps<T extends GenericContent = GenericContent> {
    *  return <li>{props && props.DisplayName}</li>
    * }
    */
-  renderItem?: (props: T) => JSX.Element
+  renderItem?: (props: T) => ReactElement<T>
 }
 
 /**
  * Represents a generic item.
  * @template T
  * @param {ItemProps<T>} props
- * @returns JSX.Elment
+ * @returns ReactElement
  */
 export function ItemComponent<T extends GenericContent = GenericContent>(props: ItemProps<T>) {
   const renderItem = props.renderItem || defaultRender

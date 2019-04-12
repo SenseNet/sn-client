@@ -67,7 +67,6 @@ exports[`Document Viewer Layout component should render without crashing 1`] = `
       handleMarkerCreation={[Function]}
       id="sn-document-viewer-pages"
       images="preview"
-      isPlacingCommentMarker={false}
       onPageClick={[Function]}
       padding={8}
       showWidgets={true}
@@ -96,7 +95,9 @@ exports[`Document Viewer Layout component should render without crashing 1`] = `
         />
         <CreateComment
           createComment={[Function]}
+          handleIsActive={[Function]}
           handlePlaceMarkerClick={[Function]}
+          isActive={false}
           isPlacingMarker={false}
           localization={Object {}}
         />
@@ -173,7 +174,6 @@ exports[`Document Viewer Layout component should render without crashing 2`] = `
       handleMarkerCreation={[Function]}
       id="sn-document-viewer-pages"
       images="preview"
-      isPlacingCommentMarker={false}
       onPageClick={[Function]}
       padding={8}
       showWidgets={true}
@@ -202,7 +202,9 @@ exports[`Document Viewer Layout component should render without crashing 2`] = `
         />
         <CreateComment
           createComment={[Function]}
+          handleIsActive={[Function]}
           handlePlaceMarkerClick={[Function]}
+          isActive={false}
           isPlacingMarker={false}
           localization={Object {}}
         />
