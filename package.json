@@ -31,7 +31,7 @@
     "typescript": "3.4.2"
   },
   "scripts": {
-    "cy:run:dms": "cypress run --project ./examples/sn-dms-demo --browser google-chrome-stable",
+    "cy:run:dms": "cypress run --project ./examples/sn-dms-demo --browser chrome",
     "start:dms:e2e": "yarn workspace sn-dms-demo start:e2e",
     "test:dms:e2e": "start-server-and-test start:dms:e2e http-get://localhost:3000 cy:run:dms",
     "snapp": "yarn workspace @sensenet/sn-app start",
