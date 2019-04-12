@@ -21,18 +21,19 @@
     "lint-staged": "^8.1.5",
     "prettier": "^1.16.4",
     "rimraf": "^2.6.3",
+    "start-server-and-test": "^1.7.13",
     "ts-jest": "^24.0.1",
     "tslib": "^1.9.3",
     "tslint": "^5.15.0",
     "tslint-config-prettier": "^1.18.0",
     "tslint-consistent-codestyle": "1.15.1",
     "tslint-react": "^4.0.0",
-    "typescript": "3.4.1",
-    "wait-on": "^3.2.0"
+    "typescript": "3.4.1"
   },
   "scripts": {
-    "cy:run:dms": "cypress run --project ./examples/sn-dms-demo",
-    "test:dms:e2e": "yarn workspace sn-dms-demo start:e2e & wait-on http://localhost:3000 cy:run:dms",
+    "cy:run:dms": "cypress run --project ./examples/sn-dms-demo --browser google-chrome-stable",
+    "start:dms:e2e": "yarn workspace sn-dms-demo start:e2e",
+    "test:dms:e2e": "start-server-and-test start:dms:e2e http-get://localhost:3000 cy:run:dms",
     "storybook": "yarn workspace sn-react-component-docs start-storybook",
     "dms": "yarn workspace sn-dms-demo start",
     "build": "lerna run build",
