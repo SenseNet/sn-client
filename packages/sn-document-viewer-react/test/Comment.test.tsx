@@ -1,3 +1,4 @@
+import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
@@ -33,6 +34,7 @@ const defaultProps: CommentPropType = {
   x: 10,
   y: 10,
   text: 'some text',
+  host: '',
 }
 
 describe('Comment component', () => {
@@ -100,5 +102,10 @@ describe('Comment component', () => {
     )
     wrapper.find(Card).simulate('click')
     expect(wrapper.find(Card).prop('raised')).toBe(true)
+  })
+
+  it('should display an avatar without src when host is the same', () => {
+    const wrapper = mount(<CommentComponent {...defaultProps} host="uri" />)
+    expect(wrapper.find(Avatar).prop('src')).toBeUndefined()
   })
 })

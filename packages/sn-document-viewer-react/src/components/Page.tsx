@@ -21,6 +21,7 @@ const mapStateToProps = (state: RootReducerType, ownProps: { imageIndex: number 
     activePages: state.sensenetDocumentViewer.viewer.activePages,
     showWatermark: state.sensenetDocumentViewer.viewer.showWatermark,
     pollInterval: state.sensenetDocumentViewer.previewImages.pollInterval,
+    isPlacingCommentMarker: state.comments.isPlacingCommentMarker,
   }
 }
 
@@ -47,7 +48,6 @@ export interface OwnProps {
   onClick: (ev: React.MouseEvent<HTMLElement>) => any
   margin: number
   image: 'preview' | 'thumbnail'
-  isPlacingCommentMarker?: boolean
   handleMarkerCreation?: (coordinates: DraftCommentMarker) => void
 }
 
