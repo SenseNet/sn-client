@@ -153,11 +153,10 @@ class UserList extends Component<ReturnType<typeof mapStateToProps> & typeof map
               ]),
             )
             this.props.selectUser(newSelection)
-          } else if (
-            !this.props.selected.length ||
-            (this.props.selected.length === 1 && this.props.selected[0].Id !== content.Id)
-          ) {
-            this.props.selectUser([content])
+          } else if (this.props.selected.find(s => s.Id === content.Id)) {
+            this.props.selectUser(this.props.selected.filter(s => s.Id !== content.Id))
+          } else if (content.Type === 'User') {
+            this.props.selectUser([...this.props.selected, content])
           }
         }}
         onItemDoubleClick={this.handleRowDoubleClick}
@@ -239,7 +238,7 @@ class UserList extends Component<ReturnType<typeof mapStateToProps> & typeof map
           return (
             <Checkbox
               checked={selected.find((i: GenericContent) => i.Id === content.Id) ? true : false}
-              disabled={this.isGroupAdmin(content.Actions as ActionModel[]) && content.Type === 'Group' ? false : true}
+              disabled={this.isGroupAdmin(content.Actions as ActionModel[]) && content.Type === 'User' ? false : true}
               style={this.isGroupAdmin(content.Actions as ActionModel[]) ? { cursor: 'normal' } : {}}
             />
           )
