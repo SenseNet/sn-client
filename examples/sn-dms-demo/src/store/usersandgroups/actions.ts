@@ -51,8 +51,8 @@ export const loadUser = <T extends User = User>(idOrPath: number | string, userO
         eventHub.onContentModified.subscribe(value => emitChange(value.content)),
         eventHub.onContentMoved.subscribe(value => emitChange(value.content)),
         eventHub.onContentDeleted.subscribe(value => {
-          const currentItems = options.getState().dms.documentLibrary.items
-          const filtered = currentItems.d.results.filter(item => item.Id !== value.contentData.Id)
+          const currentItems = options.getState().dms.usersAndGroups.user.items
+          const filtered = currentItems.filter(item => item.Id !== value.contentData.Id)
           options.dispatch(
             setGroups({
               ...currentItems,
@@ -79,22 +79,35 @@ export const loadUser = <T extends User = User>(idOrPath: number | string, userO
           options.dispatch(setAncestors([...ancestors.d.results, newUser.d]))
         })(),
         (async () => {
-          const memberships = await repository.security.getParentGroups({
-            contentIdOrPath: idOrPath,
-            directOnly: false,
-            oDataOptions: {
-              select: ['Workspace', 'DisplayName', 'Type', 'Id', 'Path', 'Actions', 'Icon', 'Members'],
-              expand: ['Workspace', 'Actions', 'Members'],
-              filter: `isOf('Group')`,
-            },
-          })
-          options.dispatch(setMemberships(memberships))
+          if (newUser.d.Type === 'User') {
+            const memberships = await repository.security.getParentGroups({
+              contentIdOrPath: idOrPath,
+              directOnly: false,
+              oDataOptions: {
+                select: ['Workspace', 'DisplayName', 'Type', 'Id', 'Path', 'Actions', 'Icon', 'Members'],
+                expand: ['Workspace', 'Actions', 'Members'],
+                filter: `isOf('Group')`,
+              },
+            })
+            options.dispatch(setMemberships(memberships))
+          } else {
+            const children = await repository.loadCollection({
+              path: newUser.d.Path,
+              oDataOptions: {
+                select: ['FullName', 'Email', 'Type', 'IsFolder', 'Actions', 'Icon', 'Avatar'] as any,
+                filter: `IsFolder eq true and ContentType ne 'SystemFolder' or ContentType eq 'User'`,
+              },
+            })
+            options.dispatch(setUser(newUser.d))
+            options.dispatch(setItems(children.d.results))
+          }
         })(),
       ])
     } catch (error) {
       options.dispatch(setError(error))
     } finally {
       options.dispatch(finishLoading())
+      options.dispatch(clearUserSelection())
     }
   },
 })
@@ -536,7 +549,7 @@ export const searchUsers = (text: string) => ({
   text,
 })
 
-export const getAllowedTypes = createAction(<T extends GenericContent[]>(odataOptions: ODataParams<T>) => ({
+export const getAllowedTypes = createAction(<T extends GenericContent[]>(odataOptions?: ODataParams<T>) => ({
   type: 'DMS_DOCLIB_GET_ALLOWED_TYPES',
   odataOptions,
   // tslint:disable-next-line: no-unnecessary-type-annotation
@@ -544,6 +557,8 @@ export const getAllowedTypes = createAction(<T extends GenericContent[]>(odataOp
     const currentState = options.getState()
     const currentPath = currentState.dms.usersAndGroups.group.currentGroup
       ? currentState.dms.usersAndGroups.group.currentGroup.Path
+      : currentState.dms.usersAndGroups.user.currentUser
+      ? currentState.dms.usersAndGroups.user.currentUser.Path
       : ''
     const repository = options.getInjectable(Repository)
 
@@ -581,4 +596,9 @@ export const deselectUser = (id: number) => ({
 export const setMembers = (members: GenericContent[]) => ({
   type: 'DMS_USERSANDGROUPS_SET_MEMBERS',
   members,
+})
+
+export const setItems = (items: GenericContent[]) => ({
+  type: 'DMS_USERSANDGROUPS_SET_ITEMS',
+  items,
 })

@@ -215,7 +215,7 @@ class ActionMenu extends React.Component<
           this.handleClose()
           const userPath = compile('/users/:otherActions*')({
             folderPath: btoa(content ? content.Id.toString() : ''),
-            otherActions: ['profile', btoa(content ? content.Id.toString() : '')],
+            otherActions: ['user', btoa(content ? content.Id.toString() : '')],
           })
           this.props.history.push(userPath)
           this.props.chooseMenuItem('profile')

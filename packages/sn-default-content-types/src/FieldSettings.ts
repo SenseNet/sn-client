@@ -180,3 +180,5 @@ export class PasswordFieldSetting extends ShortTextFieldSetting {
 
 // Used in User
 export class CaptchaFieldSetting extends FieldSetting {}
+
+export class BooleanFieldSetting extends FieldSetting {}

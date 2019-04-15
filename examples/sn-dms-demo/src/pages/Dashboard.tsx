@@ -25,7 +25,7 @@ import { SavedQueries } from '../components/SavedQueries'
 import { Settings } from '../components/Settings'
 import { Shared } from '../components/Shared'
 import { Trash } from '../components/Trash'
-import UserProfile from '../components/UserProfile'
+import Users from '../components/UsersAndGroups/User/Users'
 import { rootStateType } from '../store/rootReducer'
 
 const styles = {
@@ -194,7 +194,7 @@ class DashboardComponent extends React.Component<
                                 exact={true}
                                 component={() => (
                                   <div>
-                                    <UserProfile matchesDesktop={matches} />
+                                    <Users matchesDesktop={matches} />
                                   </div>
                                 )}
                               />
@@ -271,7 +271,7 @@ class DashboardComponent extends React.Component<
                               exact={true}
                               component={() => (
                                 <div>
-                                  <UserProfile matchesDesktop={matches} />
+                                  <Users matchesDesktop={matches} />
                                 </div>
                               )}
                             />

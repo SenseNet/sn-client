@@ -8047,7 +8047,7 @@ export const customSchema = [
         DefaultOrder: 0,
       },
       {
-        Type: 'NullFieldSetting',
+        Type: 'BooleanFieldSetting',
         Name: 'Enabled',
         FieldClassName: 'SenseNet.ContentRepository.Fields.BooleanField',
         DisplayName: 'Enabled',
