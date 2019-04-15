@@ -23,3 +23,8 @@ export const StyledCard = styled(({ isSelected, ...rest }) => <Card {...rest} />
     margin-bottom: 10px;
   }
 `
+
+export const StyledButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+`

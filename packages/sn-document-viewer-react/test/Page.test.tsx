@@ -24,6 +24,7 @@ describe('Page component', () => {
     page: examplePreviewImageData,
     pollInterval: 0,
     previewAvailable: jest.fn(),
+    isPlacingCommentMarker: false,
   }
 
   it('Should render without crashing', () => {

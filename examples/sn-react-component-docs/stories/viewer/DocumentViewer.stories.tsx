@@ -1,4 +1,3 @@
-import { ViewerExampleApp } from '@sensenet/document-viewer-react/example/example'
 import { CommentComponent } from '@sensenet/document-viewer-react/src/components'
 import { CreatedByUser } from '@sensenet/document-viewer-react/src/models'
 import { defaultLocalization } from '@sensenet/document-viewer-react/src/store/Localization'
@@ -6,6 +5,7 @@ import { action } from '@storybook/addon-actions'
 import { object, text, withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
 import React from 'react'
+import { ViewerExampleApp } from './App'
 
 const createdBy: CreatedByUser = {
   avatarUrl: 'https://cdn.images.express.co.uk/img/dynamic/79/590x/486693_1.jpg',
@@ -32,9 +32,10 @@ storiesOf('DocumentViewer', module)
         page={1}
         x={10}
         y={10}
+        host={''}
         selectedCommentId=""
-        setSelectedCommentId={action('setSelectedCommentId')}
-        deleteComment={action('delete')}
+        setSelectedCommentId={action('setSelectedCommentId') as any}
+        deleteComment={action('delete') as any}
         id={text('id', 'randomId')}
         localization={defaultLocalization}
         text={text(
@@ -55,11 +56,12 @@ storiesOf('DocumentViewer', module)
       <CommentComponent
         createdBy={createdBy}
         page={1}
+        host={''}
         x={10}
         y={10}
         selectedCommentId=""
-        setSelectedCommentId={action('setSelectedCommentId')}
-        deleteComment={action('delete')}
+        setSelectedCommentId={action('setSelectedCommentId') as any}
+        deleteComment={action('delete') as any}
         id={text('id', 'randomId')}
         localization={defaultLocalization}
         text={text('commentBody', 'Lorem Ipsum is simply dummy text')}

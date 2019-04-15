@@ -2,11 +2,14 @@ import { Reducer } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
 import { RootReducerType } from '.'
 import { Comment, CommentWithoutCreatedByAndId, DocumentViewerSettings } from '../models'
+import { showComments } from './Viewer'
 
 // tslint:disable: completed-docs
 export interface CommentsState {
   items: Comment[]
   selectedCommentId: string
+  isCreateCommentActive: boolean
+  isPlacingCommentMarker: boolean
 }
 
 export const SET_SELECTED_COMMENT_ID = 'SET_SELECTED_COMMENT_ID'
@@ -16,6 +19,8 @@ export const CREATE_COMMENT_REQUEST = 'CREATE_COMMENT_REQUEST'
 export const CREATE_COMMENT_SUCCESS = 'CREATE_COMMENTS_SUCCESS'
 export const DELETE_COMMENT_SUCCESS = 'DELETE_COMMENTS_SUCCESS'
 export const DELETE_COMMENT_REQUEST = 'DELETE_COMMENT_REQUEST'
+export const TOGGLE_IS_CREATE_COMMENT_ACTIVE = 'TOGGLE_IS_CREATE_COMMENT_ACTIVE'
+export const TOGGLE_IS_PLACING_COMMENT_MARKER = 'TOGGLE_IS_PLACING_COMMENT_MARKER'
 
 export const getCommentsSuccess = (comments: Comment[]) => ({
   type: GET_COMMENTS_SUCCESS,
@@ -41,6 +46,9 @@ export const getComments = () => ({
       options.getState().sensenetDocumentViewer.viewer.activePages[0],
     )
     options.dispatch(getCommentsSuccess(comments))
+    if (comments.length) {
+      options.dispatch(showComments(true))
+    }
   },
 })
 
@@ -75,9 +83,25 @@ export function setSelectedCommentId(id: string) {
   }
 }
 
+export function toggleIsCreateCommentActive(isActive: boolean) {
+  return {
+    type: TOGGLE_IS_CREATE_COMMENT_ACTIVE,
+    isActive,
+  }
+}
+
+export function toggleIsPlacingCommentMarker(isPlacing: boolean) {
+  return {
+    type: TOGGLE_IS_PLACING_COMMENT_MARKER,
+    isPlacing,
+  }
+}
+
 export const commentsDefaultState: CommentsState = {
   selectedCommentId: '',
   items: [],
+  isCreateCommentActive: false,
+  isPlacingCommentMarker: false,
 }
 
 /**
@@ -87,6 +111,12 @@ export const commentsStateReducer: Reducer<CommentsState> = (state = commentsDef
   switch (action.type) {
     case SET_SELECTED_COMMENT_ID:
       return { ...state, selectedCommentId: action.id }
+    case TOGGLE_IS_CREATE_COMMENT_ACTIVE: {
+      return { ...state, isCreateCommentActive: action.isActive }
+    }
+    case TOGGLE_IS_PLACING_COMMENT_MARKER: {
+      return { ...state, isPlacingCommentMarker: action.isPlacing }
+    }
     case GET_COMMENTS_SUCCESS:
       return {
         ...state,
