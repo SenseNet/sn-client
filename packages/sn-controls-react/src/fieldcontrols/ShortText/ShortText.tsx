@@ -118,6 +118,7 @@ export class ShortText<T extends GenericContent, K extends keyof T> extends Comp
             error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
             fullWidth={true}
             helperText={this.props['data-hintText']}
+            onChange={e => this.handleChange(e)}
           />
         )
       case 'browse':
