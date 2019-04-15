@@ -1,12 +1,10 @@
 import { Content, ODataCollectionResponse, ODataParams, ODataResponse, Repository } from '@sensenet/client-core'
-import { ValueObserver } from '@sensenet/client-utils'
+import { debounce, ValueObserver } from '@sensenet/client-utils'
 import { ActionModel, GenericContent, Group, User } from '@sensenet/default-content-types'
 import { createAction } from '@sensenet/redux'
 import { EventHub } from '@sensenet/repository-events'
-import { Action } from 'redux'
+import { Action, Dispatch } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
-import { changedContent } from '../../Actions'
-import { debounceReloadOnProgress } from '../../Actions'
 import { arrayComparer, arrayDiff } from '../../assets/helpers'
 import { rootStateType } from '../../store/rootReducer'
 
@@ -371,6 +369,7 @@ export const updateGroupListOptions = createAction(<T extends GenericContent>(od
   // tslint:disable-next-line: no-unnecessary-type-annotation
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const currentState = options.getState()
+    const parent = currentState.dms.usersAndGroups.group.currentGroup
     const parentPath = currentState.dms.usersAndGroups.group.parent
       ? currentState.dms.usersAndGroups.group.parent.Path
       : ''
@@ -391,6 +390,7 @@ export const updateGroupListOptions = createAction(<T extends GenericContent>(od
         },
       })
       options.dispatch(setGroups(items))
+      options.dispatch(setGroup(parent as any, items.d.results))
     } catch (error) {
       options.dispatch(setError(error))
     } finally {
@@ -432,7 +432,17 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
         items = await repository.loadCollection({
           path: idOrPath as string,
           oDataOptions: {
-            select: ['Path', 'Actions', 'Id', 'DisplayName', 'Description', 'Name', 'IsFolder', 'Icon'] as any,
+            select: [
+              'Path',
+              'Actions',
+              'Id',
+              'DisplayName',
+              'Description',
+              'Name',
+              'IsFolder',
+              'Icon',
+              'ParentId',
+            ] as any,
             expand: ['Actions'] as any,
             scenario: 'DMSGroupListItem',
             query: `InTree:${newGroup.d.Path} AND TypeIs:Group .AUTOFILTERS:OFF`,
@@ -447,7 +457,17 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
         items = await repository.loadCollection({
           path: idOrPath as string,
           oDataOptions: {
-            select: ['Path', 'Actions', 'Id', 'DisplayName', 'Description', 'Name', 'IsFolder', 'Icon'] as any,
+            select: [
+              'Path',
+              'Actions',
+              'Id',
+              'DisplayName',
+              'Description',
+              'Name',
+              'IsFolder',
+              'Icon',
+              'ParentId',
+            ] as any,
             expand: ['Actions'] as any,
             scenario: 'DMSGroupListItem',
             filter: `IsFolder eq true and ContentType ne 'SystemFolder' or ContentType eq 'Group'`,
@@ -467,10 +487,12 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
 
       eventObservables.push(
         eventHub.onCustomActionExecuted.subscribe(() => {
-          emitChange({ Id: realGroup.d ? realGroup.d.Id : newGroup.d.Id } as Group)
+          emitChange({ Id: realGroup.d ? realGroup.d.Id : newGroup.d.Id, ParentId: realGroup.d.ParentId } as Group)
         }),
         eventHub.onContentCreated.subscribe(value => emitChange(value.content)),
-        eventHub.onContentModified.subscribe(value => emitChange(value.content)),
+        eventHub.onContentModified.subscribe(value => {
+          emitChange(value.content)
+        }),
         eventHub.onContentMoved.subscribe(value => emitChange(value.content)),
       )
 
@@ -602,3 +624,17 @@ export const setItems = (items: GenericContent[]) => ({
   type: 'DMS_USERSANDGROUPS_SET_ITEMS',
   items,
 })
+
+export const changedContent: GenericContent[] = []
+
+function methodToDebounce(getState: () => rootStateType, dispatch: Dispatch) {
+  const currentContent = getState().dms.usersAndGroups.group.parent
+  changedContent.forEach(content => {
+    if (currentContent && currentContent.Id === content.ParentId) {
+      dispatch(updateGroupListOptions({}))
+      changedContent.length = 0
+      return
+    }
+  })
+}
+export const debounceReloadOnProgress = debounce(methodToDebounce, 300)
