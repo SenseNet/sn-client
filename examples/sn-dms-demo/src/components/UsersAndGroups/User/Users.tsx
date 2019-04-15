@@ -1,6 +1,8 @@
 import { MuiThemeProvider } from '@material-ui/core'
 import AppBar from '@material-ui/core/AppBar'
+import IconButton from '@material-ui/core/IconButton'
 import Toolbar from '@material-ui/core/Toolbar'
+import DeleteIcon from '@material-ui/icons/Delete'
 import { ConstantContent } from '@sensenet/client-core'
 import { compile } from 'path-to-regexp'
 import React, { Component } from 'react'
@@ -9,9 +11,11 @@ import MediaQuery from 'react-responsive'
 import { RouteComponentProps, withRouter } from 'react-router'
 import * as DMSActions from '../../../Actions'
 import { contentListTheme } from '../../../assets/contentlist'
+import { resources } from '../../../assets/resources'
 import { rootStateType } from '../../../store/rootReducer'
-import { getAllowedTypes, loadUser } from '../../../store/usersandgroups/actions'
+import { clearUserSelection, getAllowedTypes, loadUser } from '../../../store/usersandgroups/actions'
 import BreadCrumb from '../../BreadCrumb'
+import DeleteDialog from '../../Dialogs/DeleteDialog'
 import { GridPlaceholder } from '../../Loaders/GridPlaceholder'
 import UserProfile from '../../UserProfile'
 import GroupSelector from '../GroupSelector/GroupSelector'
@@ -61,6 +65,7 @@ const mapStateToProps = (state: rootStateType) => {
     currentItem: state.dms.usersAndGroups.user.currentUser,
     ancestors: state.dms.usersAndGroups.user.ancestors,
     isLoading: state.dms.usersAndGroups.user.isLoading,
+    selectedUsers: state.dms.usersAndGroups.user.selected,
   }
 }
 
@@ -69,6 +74,7 @@ const mapDispatchToProps = {
   getAllowedTypes,
   openDialog: DMSActions.openDialog,
   closeDialog: DMSActions.closeDialog,
+  clearUserSelection,
 }
 
 class Users extends Component<ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & UsersProps, UsersState> {
@@ -108,6 +114,11 @@ class Users extends Component<ReturnType<typeof mapStateToProps> & typeof mapDis
       userName: newProps.currentItem ? newProps.currentItem.Name : '',
     } as Users['state']
   }
+  public handleDeleteUsers = () => {
+    const users = this.props.selectedUsers
+    this.props.clearUserSelection()
+    this.props.openDialog(<DeleteDialog content={users} />, resources.DELETE, this.props.closeDialog)
+  }
   public render() {
     const { ancestors, currentItem, isLoading, loggedinUser, match } = this.props
     return (
@@ -127,6 +138,11 @@ class Users extends Component<ReturnType<typeof mapStateToProps> & typeof mapDis
                         />
                       ) : null}
                       {match.params.otherActions ? null : <GroupSelector />}
+                      {match.params.otherActions ? null : (
+                        <IconButton onClick={() => this.handleDeleteUsers()}>
+                          <DeleteIcon />
+                        </IconButton>
+                      )}
                     </div>
                   </Toolbar>
                 </AppBar>
