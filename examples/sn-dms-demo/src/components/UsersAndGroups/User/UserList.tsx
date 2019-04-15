@@ -101,6 +101,13 @@ class UserList extends Component<ReturnType<typeof mapStateToProps> & typeof map
       history.push(newPath)
     }
   }
+  public handleSelection = (content: GenericContent) => {
+    if (this.props.selected.find(s => s.Id === content.Id)) {
+      this.props.selectUser(this.props.selected.filter(s => s.Id !== content.Id))
+    } else {
+      this.props.selectUser([...this.props.selected, content])
+    }
+  }
   public render() {
     const { childrenOptions, hostName, items, matchesDesktop, selected, parent } = this.props
     return (
@@ -124,7 +131,6 @@ class UserList extends Component<ReturnType<typeof mapStateToProps> & typeof map
         icons={icons}
         orderBy={childrenOptions.orderby ? childrenOptions.orderby[0][0] : ('Id' as any)}
         orderDirection={childrenOptions.orderby ? childrenOptions.orderby[0][1] : ('asc' as any)}
-        onRequestSelectionChange={newSelection => this.props.selectUser(newSelection)}
         onRequestActiveItemChange={active => this.props.setActive(active)}
         onRequestOrderChange={(field, direction) => {
           if (field !== 'Workspace' && field !== 'Actions') {
@@ -138,7 +144,7 @@ class UserList extends Component<ReturnType<typeof mapStateToProps> & typeof map
         onItemClick={(ev, content) => {
           if (ev.ctrlKey) {
             if (this.props.selected.find(s => s.Id === content.Id)) {
-              this.props.selectUser(this.props.selected.filter(s => s.Id !== content.Id))
+              this.props.selectUser(selected.filter(s => s.Id !== content.Id))
             } else {
               this.props.selectUser([...this.props.selected, content])
             }
@@ -153,10 +159,11 @@ class UserList extends Component<ReturnType<typeof mapStateToProps> & typeof map
               ]),
             )
             this.props.selectUser(newSelection)
-          } else if (this.props.selected.find(s => s.Id === content.Id)) {
-            this.props.selectUser(this.props.selected.filter(s => s.Id !== content.Id))
-          } else if (content.Type === 'User') {
-            this.props.selectUser([...this.props.selected, content])
+          } else if (
+            !this.props.selected.length ||
+            (this.props.selected.length === 1 && this.props.selected[0].Id !== content.Id)
+          ) {
+            this.props.selectUser([content])
           }
         }}
         onItemDoubleClick={this.handleRowDoubleClick}
@@ -240,6 +247,7 @@ class UserList extends Component<ReturnType<typeof mapStateToProps> & typeof map
               checked={selected.find((i: GenericContent) => i.Id === content.Id) ? true : false}
               disabled={this.isGroupAdmin(content.Actions as ActionModel[]) && content.Type === 'User' ? false : true}
               style={this.isGroupAdmin(content.Actions as ActionModel[]) ? { cursor: 'normal' } : {}}
+              onChange={() => this.handleSelection(content)}
             />
           )
         }}

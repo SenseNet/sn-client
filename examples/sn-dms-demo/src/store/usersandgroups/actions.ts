@@ -107,6 +107,7 @@ export const loadUser = <T extends User = User>(idOrPath: number | string, userO
       options.dispatch(setError(error))
     } finally {
       options.dispatch(finishLoading())
+      options.dispatch(clearUserSelection())
     }
   },
 })
