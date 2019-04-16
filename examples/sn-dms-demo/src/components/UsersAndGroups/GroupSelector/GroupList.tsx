@@ -120,14 +120,16 @@ class GroupList extends React.Component<
           )}
           thumbMinSize={180}>
           <MenuList className={classes.workspaceList}>
-            {filtered.map((group: Group) => (
-              <GroupListItem
-                closeDropDown={this.props.closeDropDown}
-                key={group.Id}
-                group={group}
-                selected={this.isSelected(group)}
-              />
-            ))}
+            {filtered.length > 0
+              ? filtered.map((group: Group) => (
+                  <GroupListItem
+                    closeDropDown={this.props.closeDropDown}
+                    key={group.Id}
+                    group={group}
+                    selected={this.isSelected(group)}
+                  />
+                ))
+              : null}
           </MenuList>
         </Scrollbars>
         <GroupButtonRow

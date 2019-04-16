@@ -213,10 +213,11 @@ class ActionMenu extends React.Component<
           break
         case 'Profile':
           this.handleClose()
-          const userPath = compile('/users/:otherActions*')({
-            folderPath: btoa(content ? content.Id.toString() : ''),
+          const userPath = compile('/users/:folderPath?/:otherActions*')({
+            folderPath: btoa(content && content.ParentId ? content.ParentId.toString() : ''),
             otherActions: ['user', btoa(content ? content.Id.toString() : '')],
           })
+          console.log(userPath)
           this.props.history.push(userPath)
           this.props.chooseMenuItem('profile')
           break
