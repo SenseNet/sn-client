@@ -186,6 +186,11 @@ export const reactControlMapper = (repository: Repository) =>
           return FieldControls.ShortText
       }
     })
+    .setClientControlFactory(NullFieldSetting, setting => {
+      const avatarSettings = clientConfigFactory(setting) as ReactReferenceFieldSetting
+      avatarSettings['data-selectionRoot'] = setting.SelectionRoots
+      return avatarSettings
+    })
     .setupFieldSettingDefault(BooleanFieldSetting, () => {
       return FieldControls.Boolean
     })
