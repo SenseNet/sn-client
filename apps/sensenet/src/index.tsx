@@ -15,6 +15,7 @@ import {
   SessionContextProvider,
   ThemeProvider,
 } from './context'
+import { LoggerContextProvider } from './context/LoggerContext'
 import { CommandProviderManager } from './services/CommandProviderManager'
 import { CheatCommandProvider } from './services/CommandProviders/CheatCommandProvider'
 import { HelpCommandProvider } from './services/CommandProviders/HelpCommandProvider'
@@ -43,27 +44,29 @@ ReactDOM.render(
   <CssBaseline>
     <Provider store={store}>
       <InjectorContext.Provider value={injector}>
-        <PersonalSettingsContextProvider>
-          <LocalizationProvider>
-            <HashRouter>
-              <Route path="/:repo?">
-                <RepositoryContextProvider>
-                  <ContentRoutingContextProvider>
-                    <SessionContextProvider>
-                      <ResponsiveContextProvider>
-                        <ThemeProvider theme={theme}>
-                          <DesktopLayout>
-                            <MainRouter />
-                          </DesktopLayout>{' '}
-                        </ThemeProvider>
-                      </ResponsiveContextProvider>
-                    </SessionContextProvider>
-                  </ContentRoutingContextProvider>
-                </RepositoryContextProvider>
-              </Route>
-            </HashRouter>
-          </LocalizationProvider>
-        </PersonalSettingsContextProvider>
+        <LoggerContextProvider>
+          <PersonalSettingsContextProvider>
+            <LocalizationProvider>
+              <HashRouter>
+                <Route path="/:repo?">
+                  <RepositoryContextProvider>
+                    <ContentRoutingContextProvider>
+                      <SessionContextProvider>
+                        <ResponsiveContextProvider>
+                          <ThemeProvider theme={theme}>
+                            <DesktopLayout>
+                              <MainRouter />
+                            </DesktopLayout>{' '}
+                          </ThemeProvider>
+                        </ResponsiveContextProvider>
+                      </SessionContextProvider>
+                    </ContentRoutingContextProvider>
+                  </RepositoryContextProvider>
+                </Route>
+              </HashRouter>
+            </LocalizationProvider>
+          </PersonalSettingsContextProvider>
+        </LoggerContextProvider>
       </InjectorContext.Provider>
     </Provider>
   </CssBaseline>,
