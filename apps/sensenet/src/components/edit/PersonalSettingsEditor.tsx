@@ -10,6 +10,9 @@ const SettingsEditor: React.FunctionComponent = () => {
   const service = injector.getInstance(PersonalSettings)
   const settings = useContext(PersonalSettingsContext)
   const localization = useContext(LocalizationContext)
+
+  const logger = injector.logger.withScope('PersonalSettingsEditor')
+
   const [editorContent] = useState({
     Type: 'Settings',
     Name: `PersonalSettings`,
@@ -27,6 +30,10 @@ const SettingsEditor: React.FunctionComponent = () => {
         loadContent={async () => JSON.stringify(settings, undefined, 3)}
         saveContent={async (_c, v) => {
           await service.setValue(deepMerge(defaultSettings, JSON.parse(v)))
+          logger.information({
+            message: 'Personal settings updated succesfully.',
+            data: { shouldNotify: true, unique: true },
+          })
         }}
       />
     </CurrentContentContext.Provider>

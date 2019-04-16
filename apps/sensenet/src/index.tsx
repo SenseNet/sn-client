@@ -5,6 +5,7 @@ import { Provider } from 'react-redux'
 import { HashRouter, Route } from 'react-router-dom'
 import { DesktopLayout } from './components/layout/DesktopLayout'
 import { MainRouter } from './components/MainRouter'
+import { NotificationComponent } from './components/NotificationComponent'
 import {
   ContentRoutingContextProvider,
   InjectorContext,
@@ -56,6 +57,7 @@ ReactDOM.render(
                           <ThemeProvider theme={theme}>
                             <DesktopLayout>
                               <MainRouter />
+                              <NotificationComponent />
                             </DesktopLayout>{' '}
                           </ThemeProvider>
                         </ResponsiveContextProvider>

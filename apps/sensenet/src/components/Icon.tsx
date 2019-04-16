@@ -1,19 +1,25 @@
 import { Injector } from '@furystack/inject'
+import { LogLevel } from '@furystack/logging'
 import Avatar from '@material-ui/core/Avatar'
+import BugReport from '@material-ui/icons/BugReport'
 import CodeTwoTone from '@material-ui/icons/CodeTwoTone'
 import DeleteTwoTone from '@material-ui/icons/DeleteTwoTone'
+import Error from '@material-ui/icons/Error'
 import FolderTwoTone from '@material-ui/icons/FolderTwoTone'
 import FormatPaintTwoTone from '@material-ui/icons/FormatPaintTwoTone'
 import GroupTwoTone from '@material-ui/icons/GroupTwoTone'
+import Info from '@material-ui/icons/Info'
 import InsertDriveFileTwoTone from '@material-ui/icons/InsertDriveFileTwoTone'
 import PublicTwoTone from '@material-ui/icons/PublicTwoTone'
 import SettingsTwoTone from '@material-ui/icons/SettingsTwoTone'
+import Warning from '@material-ui/icons/Warning'
 import WebAssetTwoTone from '@material-ui/icons/WebAssetTwoTone'
 import { Repository } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { File as SnFile, GenericContent, Schema, User } from '@sensenet/default-content-types'
 import React, { useContext } from 'react'
 import { InjectorContext, RepositoryContext } from '../context'
+import { EventLogEntry } from '../services/EventService'
 import { UserAvatar } from './UserAvatar'
 
 export interface IconOptions {
@@ -111,6 +117,31 @@ export const defaultSchemaResolvers: Array<IconResolver<Schema>> = [
   },
 ]
 
+export const defaultNotificationResolvers: Array<IconResolver<EventLogEntry<any>>> = [
+  {
+    get: (item, options) => {
+      return item.level === LogLevel.Fatal || item.level === LogLevel.Error ? (
+        <Error style={{ ...options.style }} />
+      ) : null
+    },
+  },
+  {
+    get: (item, options) => {
+      return item.level === LogLevel.Warning ? <Warning style={{ ...options.style }} /> : null
+    },
+  },
+  {
+    get: (item, options) => {
+      return item.level === LogLevel.Debug ? <BugReport style={{ ...options.style }} /> : null
+    },
+  },
+  {
+    get: (item, options) => {
+      return item.level === LogLevel.Information ? <Info style={{ ...options.style }} /> : null
+    },
+  },
+]
+
 export const IconComponent: React.FunctionComponent<{
   resolvers?: Array<IconResolver<any>>
   item: any
@@ -121,7 +152,12 @@ export const IconComponent: React.FunctionComponent<{
   const repo = useContext(RepositoryContext)
 
   const options: IconOptions = { style: props.style, injector, repo }
-  const resolvers = [...(props.resolvers || []), ...defaultContentResolvers, ...defaultSchemaResolvers]
+  const resolvers = [
+    ...(props.resolvers || []),
+    ...defaultContentResolvers,
+    ...defaultSchemaResolvers,
+    ...defaultNotificationResolvers,
+  ]
   const defaultIcon = props.defaultIcon || <WebAssetTwoTone style={props.style} /> || null
   const assignedResolver = resolvers.find(r => (r.get(props.item, options) ? true : false))
   if (assignedResolver) {

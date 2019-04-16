@@ -63,12 +63,16 @@ const values = {
     loginFailed: 'Login failed.',
     greetings: 'Greetings, {0}!',
     loggingInTo: 'Logging in to {0}...',
+    loginSuccessNoty: `Logged in with user '{0} to repository '{1}'`,
+    loginFailedNoty: `Failed to log in with user '{0} to repository '{1}'`,
+    loginErrorNoty: `There was an error during login with user '{0}} to repository '{1}'`,
   },
   logout: {
     logoutButtonTitle: 'Log out',
     logoutDialogTitle: 'Really log out?',
     loggingOutFrom: 'Logging out from {0}...',
     logoutConfirmText: 'You are logged in to {0} as {1}. Are you sure that you want to leave?',
+    logoutSuccessNoty: 'You have logged out from {0}',
     logoutCancel: 'Cancel',
   },
   personalSettings: {

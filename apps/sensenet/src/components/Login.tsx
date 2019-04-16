@@ -26,6 +26,8 @@ export const Login: React.FunctionComponent = () => {
   const session = useContext(SessionContext)
   const settingsManager = injector.getInstance(PersonalSettings)
 
+  const logger = injector.logger.withScope('LoginComponent')
+
   const existingRepo = personalSettings.repositories.find(r => r.url === repo.configuration.repositoryUrl)
 
   const [userName, setUserName] = useState((existingRepo && existingRepo.loginName) || '')
@@ -49,6 +51,10 @@ export const Login: React.FunctionComponent = () => {
       const result = await repoToLogin.authentication.login(userName, password)
       setSuccess(result)
       if (result) {
+        logger.information({
+          message: localization.loginSuccessNoty.replace('{0}', userName).replace('{1}', url),
+          data: { shouldNotify: true, unique: true },
+        })
         setError(undefined)
         const existing = personalSettings.repositories.find(i => i.url === url)
         if (!existing) {
@@ -72,9 +78,16 @@ export const Login: React.FunctionComponent = () => {
       } else {
         setIsInProgress(false)
         setError(localization.loginFailed)
+        logger.warning({
+          message: localization.loginFailedNoty.replace('{0}', userName).replace('{1}', url),
+          data: { shouldNotify: true, unique: true },
+        })
       }
     } catch (error) {
-      console.log('Login error:', error)
+      logger.error({
+        message: localization.loginErrorNoty.replace('{0}', userName).replace('{1}', url),
+        data: { shouldNotify: true, unique: true, error },
+      })
       setError(error.toString())
     } finally {
       setIsInProgress(false)
