@@ -196,7 +196,7 @@ export const selectedGroups: Reducer<GenericContent[]> = (state = [], action: An
 export const all: Reducer<GenericContent[]> = (state = [], action: AnyAction) => {
   switch (action.type) {
     case 'DMS_USERSANDGROUPS_SET_GROUPS':
-      return action.groups
+      return action.groups.d.results
     default:
       return state
   }
