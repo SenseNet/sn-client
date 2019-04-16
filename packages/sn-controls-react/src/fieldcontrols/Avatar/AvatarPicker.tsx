@@ -31,11 +31,20 @@ interface AvatarPickerProps {
   repositoryUrl: string
 }
 
-export class AvatarPicker extends Component<AvatarPickerProps> {
+interface AvatarPickerState {
+  path: string
+}
+
+export class AvatarPicker extends Component<AvatarPickerProps, AvatarPickerState> {
   public onSelectionChanged = (content: GenericContent) => {
     if (content.Type === 'Image') {
       this.props.select(content)
     }
+  }
+  public onNavigation = (path: string) => {
+    this.setState({
+      path,
+    })
   }
   private pickerItemOptions: ODataParams<Folder> = {
     select: ['DisplayName', 'Path', 'Id', 'Children/IsFolder', 'IsFolder'] as any,
@@ -76,7 +85,7 @@ export class AvatarPicker extends Component<AvatarPickerProps> {
         createFolders: true,
         binaryPropertyName: 'Binary',
         overwrite: true,
-        parentPath: this.props.path,
+        parentPath: this.state.path,
       }))
   }
 
@@ -85,7 +94,7 @@ export class AvatarPicker extends Component<AvatarPickerProps> {
       <div>
         <ListPickerComponent
           onSelectionChanged={this.onSelectionChanged}
-          onNavigation={this.props.change}
+          onNavigation={this.onNavigation}
           repository={this.props.repository}
           currentPath={this.props.path}
           itemsOdataOptions={this.pickerItemOptions}
