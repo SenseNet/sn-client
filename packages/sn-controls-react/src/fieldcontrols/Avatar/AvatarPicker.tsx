@@ -36,6 +36,12 @@ interface AvatarPickerState {
 }
 
 export class AvatarPicker extends Component<AvatarPickerProps, AvatarPickerState> {
+  constructor(props: AvatarPicker['props']) {
+    super(props)
+    this.state = {
+      path: this.props.path,
+    }
+  }
   public onSelectionChanged = (content: GenericContent) => {
     if (content.Type === 'Image') {
       this.props.select(content)
