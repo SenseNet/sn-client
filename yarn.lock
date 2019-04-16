@@ -1105,13 +1105,21 @@
     reflect-metadata "^0.1.12"
     tslib "^1.8.1"
 
-"@furystack/inject@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@furystack/inject/-/inject-3.0.0.tgz#3ffc49056f25c9951b263b1829d5116c3efabd17"
-  integrity sha512-s2z5z80ByHd0L63NVv4OWCyFl6PImLjeEgjIvsbyIkj4AMtwyjL1AkFmVhoJyp1LU7F9T8+amoy8Iqb+qFi9Bg==
+"@furystack/inject@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@furystack/inject/-/inject-3.0.1.tgz#ab5769e983589eaff0c44d5676f67c2e1d9db475"
+  integrity sha512-apwxyW/nKWwiZoISvImlqFCvFehJfnt1FwAb0KyYP4wkmuMi3oQX/1HD/hS6IvzQpJtEFxVsQKc+yNefd6oruA==
   dependencies:
-    "@sensenet/client-utils" "1.4.2"
+    "@sensenet/client-utils" "^1.5.1"
     reflect-metadata "0.1.13"
+
+"@furystack/logging@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@furystack/logging/-/logging-1.1.0.tgz#80894aaddd73e2c643c289e1309f1e74a5d4100d"
+  integrity sha512-YB7+bUpV9TeAu0v6a7QfitsUXNrbL2clZjv+Pnn4jHEafQavdA8mgI0+6RCbogyl+G9U3inzaZZcGJQ2NQFpjQ==
+  dependencies:
+    "@furystack/inject" "^3.0.1"
+    ws "6.1.4"
 
 "@icons/material@^0.2.4":
   version "0.2.4"
@@ -2017,11 +2025,6 @@
   integrity sha512-MI4Xx6LHs4Webyvi6EbspgyAb4D2Q2VtnCQ1blOJcoLS6mVa8lNN2rkIy1CVxfTUpoyIbCTkXES1rLXztFD1lg==
   dependencies:
     any-observable "^0.3.0"
-
-"@sensenet/client-utils@1.4.2":
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/@sensenet/client-utils/-/client-utils-1.4.2.tgz#1094e4b1f3913ac0c2d455fbfdc0f2effc8c5721"
-  integrity sha512-y+2AamauJRa57CtNoG/3YgCaZ+pQEcA2Qehdov/9S2nel16E3qWRpP1IRz81gv2A1T/+P2/58BJovCeapYpgEw==
 
 "@storybook/addon-a11y@^5.0.0":
   version "5.0.6"
@@ -12210,12 +12213,12 @@ redent@^2.0.0:
     indent-string "^3.0.0"
     strip-indent "^2.0.0"
 
-redux-di-middleware@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/redux-di-middleware/-/redux-di-middleware-4.0.0.tgz#9cbcec250d035d1cf01b57d3f4899a7cb03cd18b"
-  integrity sha512-4MlbK1Qq6zzS91w0i6WJP0l2QghER4G0S8UPrMEMdJxhJ6LbVjz32ad54Hae4DbZeicIIce44xN2JnPlaD8HHA==
+redux-di-middleware@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/redux-di-middleware/-/redux-di-middleware-4.0.1.tgz#65611773145db69e429be205f2056c02a4db6c3d"
+  integrity sha512-f66n+TXHqqIFl3TUeSYQoOe1gjmEHU8Dkane6uNN8bz+l2bKdULaOM4mxA5briz0xyxIO/dAPmhZHLNEZcDdRA==
   dependencies:
-    "@furystack/inject" "^3.0.0"
+    "@furystack/inject" "^3.0.1"
     redux "^4.0.1"
     tslint-config-prettier "^1.18.0"
     tslint-consistent-codestyle "^1.15.1"
@@ -14019,10 +14022,20 @@ typeface-roboto@^0.0.54:
   resolved "https://registry.yarnpkg.com/typeface-roboto/-/typeface-roboto-0.0.54.tgz#8f02c9a18d1cfa7f49381a6ff0d21ff061f38ad2"
   integrity sha512-sOFA1FXgP0gOgBYlS6irwq6hHYA370KE3dPlgYEJHL3PJd5X8gQE0RmL79ONif6fL5JZuGDj+rtOrFeOqz5IZQ==
 
-typescript@3.4.1, typescript@^3.4.1:
+typescript@3.4.2:
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.4.2.tgz#9ed4e6475d906f589200193be056f5913caed481"
+  integrity sha512-Og2Vn6Mk7JAuWA1hQdDQN/Ekm/SchX80VzLhjKN9ETYrIepBFAd8PkOdOTK2nKt0FCkmMZKBJvQ1dV1gIxPu/A==
+
+typescript@^3.4.1:
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.4.1.tgz#b6691be11a881ffa9a05765a205cb7383f3b63c6"
   integrity sha512-3NSMb2VzDQm8oBTLH6Nj55VVtUEpe/rgkIzMir0qVoLyjDZlnMBva0U6vDiV3IH+sl/Yu6oP5QwsAQtHPmDd2Q==
+
+typescript@^3.4.2:
+  version "3.4.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.4.3.tgz#0eb320e4ace9b10eadf5bc6103286b0f8b7c224f"
+  integrity sha512-FFgHdPt4T/duxx6Ndf7hwgMZZjZpB+U0nMNGVCYPq0rEzWKjEDobm4J6yb3CS7naZ0yURFqdw9Gwc7UOh/P9oQ==
 
 ua-parser-js@^0.7.18:
   version "0.7.19"
@@ -14780,6 +14793,13 @@ write-pkg@^3.1.0:
   dependencies:
     sort-keys "^2.0.0"
     write-json-file "^2.2.0"
+
+ws@6.1.4:
+  version "6.1.4"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-6.1.4.tgz#5b5c8800afab925e94ccb29d153c8d02c1776ef9"
+  integrity sha512-eqZfL+NE/YQc1/ZynhojeV8q+H050oR8AZ2uIev7RU10svA9ZnJUddHcOUZTJLinZ9yEfdA2kSATS2qZK5fhJA==
+  dependencies:
+    async-limiter "~1.0.0"
 
 ws@^5.2.0:
   version "5.2.2"
