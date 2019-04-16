@@ -38,8 +38,6 @@ export const AddButton: React.FunctionComponent = () => {
           logger.error({
             message: localization.errorGettingAllowedContentTypes,
             data: {
-              shouldNotify: true,
-              unique: true,
               error,
             },
           })
@@ -143,17 +141,11 @@ export const AddButton: React.FunctionComponent = () => {
                 setShowAddNewDialog(false)
                 logger.information({
                   message: localization.contentCreatedNoty.replace('{0}', created.d.DisplayName || created.d.Name),
-                  data: {
-                    shouldNotify: true,
-                    unique: true,
-                  },
                 })
               } catch (error) {
                 logger.error({
                   message: localization.errorGettingAllowedContentTypes,
                   data: {
-                    shouldNotify: true,
-                    unique: true,
                     error,
                   },
                 })

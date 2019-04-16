@@ -83,16 +83,11 @@ export const DeleteContentDialog: React.FunctionComponent<{
                           '{0}',
                           props.content[0].DisplayName || props.content[0].Name,
                         ),
-                  data: {
-                    shouldNotify: true,
-                    unique: true,
-                  },
                 })
               } catch (error) {
                 logger.error({
                   message: localization.deleteFailedNoty,
                   data: {
-                    shouldNotify: true,
                     error,
                   },
                 })

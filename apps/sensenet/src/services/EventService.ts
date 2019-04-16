@@ -25,9 +25,7 @@ export class EventService {
 
   public add(...notys: Array<EventLogEntry<any>>) {
     this.values.push(...notys.map(n => ({ ...n, data: { ...n.data, guid: v1() } })))
-    if (notys.find(n => n.data && n.data.shouldNotify)) {
-      this.updateChanges()
-    }
+    this.updateChanges()
   }
 
   public notificationValues: ObservableValue<{ [key: string]: Array<EventLogEntry<any>> }> = new ObservableValue({})
@@ -35,11 +33,11 @@ export class EventService {
   public values: Array<EventLogEntry<any & { guid: string }>> = []
 
   public getDigestedNotificationValues(): { [key: string]: Array<EventLogEntry<any>> } {
-    const notyValues = this.values.filter(d => d.data && d.data.shouldNotify).reverse()
+    const notyValues = this.values.filter(d => !d.data || !d.data.isDismissed).reverse()
     const returns: { [key: string]: Array<EventLogEntry<any>> } = {}
 
     for (const noty of notyValues) {
-      const key = noty.data.unique ? noty.message : noty.data.digestMessage || noty.data.guid
+      const key = noty.data.multiple ? noty.data.digestMessage || noty.data.guid : noty.message
       if (returns[key]) {
         returns[key].push(noty)
       } else {

@@ -35,18 +35,10 @@ export const EditPropertiesDialog: React.FunctionComponent<{
               props.dialogProps.onClose && props.dialogProps.onClose(null as any)
               logger.information({
                 message: localization.saveSuccessNoty.replace('{0}', content.DisplayName || content.Name),
-                data: {
-                  shouldNotify: true,
-                  unique: true,
-                },
               })
             } catch (error) {
               logger.error({
                 message: localization.saveFailedNoty.replace('{0}', content.DisplayName || content.Name),
-                data: {
-                  shouldNotify: true,
-                  unique: true,
-                },
               })
             }
           }}

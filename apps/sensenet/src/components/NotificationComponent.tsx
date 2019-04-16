@@ -11,13 +11,25 @@ import { InjectorContext, ResponsiveContext } from '../context'
 import { EventLogEntry, EventService } from '../services/EventService'
 import { Icon } from './Icon'
 
-export const getItemColor = (item: EventLogEntry<any>) => {
+export const getItemBackgroundColor = (item: EventLogEntry<any>) => {
   switch (item.level) {
     case LogLevel.Error:
     case LogLevel.Fatal:
       return red[800]
     case LogLevel.Warning:
-      return amber[500]
+      return amber[200]
+    default:
+      return undefined
+  }
+}
+
+export const getItemTextColor = (item: EventLogEntry<any>) => {
+  switch (item.level) {
+    case LogLevel.Error:
+    case LogLevel.Fatal:
+      return 'white'
+    case LogLevel.Warning:
+      return 'black'
     default:
       return undefined
   }
@@ -67,7 +79,8 @@ export const NotificationComponent: React.FunctionComponent = () => {
             }}
             ContentProps={{
               style: {
-                backgroundColor: getItemColor(item),
+                backgroundColor: getItemBackgroundColor(item),
+                color: getItemTextColor(item),
                 display: 'flex',
                 flexDirection: 'row',
                 flexWrap: 'nowrap',

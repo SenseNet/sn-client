@@ -102,8 +102,7 @@ export const LogoutButton: React.FunctionComponent<{
                 setShowLogout(false)
                 setIsLoggingOut(false)
                 logger.information({
-                  message: localization.logoutSuccessNoty.replace('{0}', repo.configuration.repositoryUrl), // `You have logged out from '${repo.configuration.repositoryUrl}' `,
-                  data: { shouldNotify: true, unique: true },
+                  message: localization.logoutSuccessNoty.replace('{0}', repo.configuration.repositoryUrl),
                 })
               }}
               autoFocus={true}>

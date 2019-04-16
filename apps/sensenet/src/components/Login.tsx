@@ -72,7 +72,6 @@ export const Login: React.FunctionComponent = () => {
         await sleepAsync(2000)
         logger.information({
           message: localization.loginSuccessNoty.replace('{0}', userName).replace('{1}', url),
-          data: { shouldNotify: true, unique: true },
         })
         setIsInProgress(false)
       } else {
@@ -80,13 +79,11 @@ export const Login: React.FunctionComponent = () => {
         setError(localization.loginFailed)
         logger.warning({
           message: localization.loginFailedNoty.replace('{0}', userName).replace('{1}', url),
-          data: { shouldNotify: true, unique: true },
         })
       }
     } catch (error) {
       logger.error({
         message: localization.loginErrorNoty.replace('{0}', userName).replace('{1}', url),
-        data: { shouldNotify: true, unique: true, error },
       })
       setError(error.toString())
     } finally {
