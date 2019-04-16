@@ -51,10 +51,6 @@ export const Login: React.FunctionComponent = () => {
       const result = await repoToLogin.authentication.login(userName, password)
       setSuccess(result)
       if (result) {
-        logger.information({
-          message: localization.loginSuccessNoty.replace('{0}', userName).replace('{1}', url),
-          data: { shouldNotify: true, unique: true },
-        })
         setError(undefined)
         const existing = personalSettings.repositories.find(i => i.url === url)
         if (!existing) {
@@ -74,6 +70,10 @@ export const Login: React.FunctionComponent = () => {
         }
         settingsManager.setValue(personalSettings)
         await sleepAsync(2000)
+        logger.information({
+          message: localization.loginSuccessNoty.replace('{0}', userName).replace('{1}', url),
+          data: { shouldNotify: true, unique: true },
+        })
         setIsInProgress(false)
       } else {
         setIsInProgress(false)

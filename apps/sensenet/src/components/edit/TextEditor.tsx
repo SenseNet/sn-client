@@ -12,6 +12,7 @@ import {
   ResponsiveContext,
   ThemeContext,
 } from '../../context'
+import { LoggerContext } from '../../context/LoggerContext'
 import { isContentFromType } from '../../utils/isContentFromType'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 
@@ -46,21 +47,40 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
   const localization = useContext(LocalizationContext).values.textEditor
   const [uri, setUri] = useState<any>(getMonacoModelUri(props.content))
   const [hasChanges, setHasChanges] = useState(false)
+  const logger = useContext(LoggerContext).withScope('TextEditor')
 
   const saveContent = async () => {
-    if (props.saveContent) {
-      await props.saveContent(props.content, textValue)
-    } else {
-      await repo.upload.textAsFile({
-        text: textValue,
-        parentPath: PathHelper.getParentPath(props.content.Path),
-        fileName: props.content.Name,
-        overwrite: true,
-        contentTypeName: props.content.Type,
-        binaryPropertyName: 'Binary',
+    try {
+      if (props.saveContent) {
+        await props.saveContent(props.content, textValue)
+      } else {
+        await repo.upload.textAsFile({
+          text: textValue,
+          parentPath: PathHelper.getParentPath(props.content.Path),
+          fileName: props.content.Name,
+          overwrite: true,
+          contentTypeName: props.content.Type,
+          binaryPropertyName: 'Binary',
+        })
+      }
+      setSavedTextValue(textValue)
+      logger.information({
+        message: localization.saveSuccessNoty.replace('{0}', props.content.DisplayName || props.content.Name),
+        data: {
+          shouldNotify: true,
+          unique: true,
+        },
+      })
+    } catch (error) {
+      logger.error({
+        message: localization.saveFailedNoty.replace('{0}', props.content.DisplayName || props.content.Name),
+        data: {
+          shouldNotify: true,
+          unique: true,
+          error,
+        },
       })
     }
-    setSavedTextValue(textValue)
   }
 
   useEffect(() => {

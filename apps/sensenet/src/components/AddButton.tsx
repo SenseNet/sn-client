@@ -12,6 +12,7 @@ import { NewViewComponent } from '@sensenet/controls-react'
 import { Schema } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
 import { CurrentContentContext, InjectorContext, LocalizationContext, RepositoryContext } from '../context'
+import { LoggerContext } from '../context/LoggerContext'
 import { UploadTracker } from '../services/UploadTracker'
 import { Icon } from './Icon'
 
@@ -26,12 +27,23 @@ export const AddButton: React.FunctionComponent = () => {
   const [selectedSchema, setSelectedSchema] = useState<Schema>(repo.schemas.getSchemaByName('GenericContent'))
 
   const localization = useContext(LocalizationContext).values.addButton
+  const logger = useContext(LoggerContext).withScope('AddButton')
 
   useEffect(() => {
     if (showSelectType) {
       repo
         .getAllowedChildTypes({ idOrPath: parent.Id })
         .then(types => setAllowedChildTypes(types.d.results.map(t => repo.schemas.getSchemaByName(t.Name))))
+        .catch(error => {
+          logger.error({
+            message: localization.errorGettingAllowedContentTypes,
+            data: {
+              shouldNotify: true,
+              unique: true,
+              error,
+            },
+          })
+        })
     }
   }, [parent.Id, showSelectType])
 
@@ -121,13 +133,31 @@ export const AddButton: React.FunctionComponent = () => {
             contentTypeName={selectedSchema.ContentTypeName}
             schema={selectedSchema}
             path={parent.Path}
-            onSubmit={(parentPath, content) => {
-              repo.post({
-                contentType: selectedSchema.ContentTypeName,
-                parentPath,
-                content,
-              })
-              setShowAddNewDialog(false)
+            onSubmit={async (parentPath, content) => {
+              try {
+                const created = await repo.post({
+                  contentType: selectedSchema.ContentTypeName,
+                  parentPath,
+                  content,
+                })
+                setShowAddNewDialog(false)
+                logger.information({
+                  message: localization.contentCreatedNoty.replace('{0}', created.d.DisplayName || created.d.Name),
+                  data: {
+                    shouldNotify: true,
+                    unique: true,
+                  },
+                })
+              } catch (error) {
+                logger.error({
+                  message: localization.errorGettingAllowedContentTypes,
+                  data: {
+                    shouldNotify: true,
+                    unique: true,
+                    error,
+                  },
+                })
+              }
             }}
           />
         </DialogContent>

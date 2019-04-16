@@ -5,6 +5,7 @@ import { EditView } from '@sensenet/controls-react'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useContext } from 'react'
 import { LocalizationContext, RepositoryContext } from '../context'
+import { LoggerContext } from '../context/LoggerContext'
 
 export const EditPropertiesDialog: React.FunctionComponent<{
   dialogProps: DialogProps
@@ -12,6 +13,8 @@ export const EditPropertiesDialog: React.FunctionComponent<{
 }> = props => {
   const repo = useContext(RepositoryContext)
   const localization = useContext(LocalizationContext).values.editPropertiesDialog
+  const logger = useContext(LoggerContext).withScope('EditPropertiesDialog')
+
   return (
     <Dialog {...props.dialogProps}>
       <DialogTitle>
@@ -24,11 +27,28 @@ export const EditPropertiesDialog: React.FunctionComponent<{
           contentTypeName={props.content.Type}
           handleCancel={() => props.dialogProps.onClose && props.dialogProps.onClose(null as any)}
           onSubmit={async (id, content) => {
-            repo.patch({
-              idOrPath: id,
-              content,
-            })
-            props.dialogProps.onClose && props.dialogProps.onClose(null as any)
+            try {
+              await repo.patch({
+                idOrPath: id,
+                content,
+              })
+              props.dialogProps.onClose && props.dialogProps.onClose(null as any)
+              logger.information({
+                message: localization.saveSuccessNoty.replace('{0}', content.DisplayName || content.Name),
+                data: {
+                  shouldNotify: true,
+                  unique: true,
+                },
+              })
+            } catch (error) {
+              logger.error({
+                message: localization.saveFailedNoty.replace('{0}', content.DisplayName || content.Name),
+                data: {
+                  shouldNotify: true,
+                  unique: true,
+                },
+              })
+            }
           }}
         />
       </DialogContent>

@@ -4,6 +4,9 @@ const values = {
     new: 'New...',
     dialogTitle: 'Create new {0}',
     upload: 'Upload',
+    errorGettingAllowedContentTypes: 'There was an error while fetching the allowed content types.',
+    contentCreatedNoty: `The content '{0}' has been created succesfully.`,
+    errorPostingContentNoty: 'There was an error during content creation',
   },
   commandPalette: {
     title: 'Show Command Palette',
@@ -50,6 +53,8 @@ const values = {
   },
   editPropertiesDialog: {
     dialogTitle: 'Edit {0}',
+    saveSuccessNoty: `Content '{0}' has been updated.`,
+    saveFailedNoty: `There was an error during updating content '{0}'`,
   },
   login: {
     loginTitle: 'Login',
@@ -65,7 +70,7 @@ const values = {
     loggingInTo: 'Logging in to {0}...',
     loginSuccessNoty: `Logged in with user '{0} to repository '{1}'`,
     loginFailedNoty: `Failed to log in with user '{0} to repository '{1}'`,
-    loginErrorNoty: `There was an error during login with user '{0}} to repository '{1}'`,
+    loginErrorNoty: `There was an error during login with user '{0} to repository '{1}'`,
   },
   logout: {
     logoutButtonTitle: 'Log out',
@@ -107,6 +112,8 @@ const values = {
     unsavedChangesWarning: 'You have unsaved changes. Are you sure that you want to leave?',
     save: 'Save',
     reset: 'Reset',
+    saveSuccessNoty: `The changes of '{0}' has been saved`,
+    saveFailedNoty: `Failed to save changes of content '{0}'`,
   },
 }
 

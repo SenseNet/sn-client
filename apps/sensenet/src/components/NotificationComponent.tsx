@@ -27,7 +27,7 @@ export const getAutoHideDuration = (item: EventLogEntry<any>) => {
   switch (item.level) {
     case LogLevel.Error:
     case LogLevel.Fatal:
-      return 0
+      return undefined
     case LogLevel.Warning:
       return 15000
     default:
