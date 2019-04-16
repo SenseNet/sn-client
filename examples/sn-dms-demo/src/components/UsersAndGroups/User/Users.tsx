@@ -120,7 +120,7 @@ class Users extends Component<ReturnType<typeof mapStateToProps> & typeof mapDis
     this.props.openDialog(<DeleteDialog content={users} />, resources.DELETE, this.props.closeDialog)
   }
   public render() {
-    const { ancestors, currentItem, isLoading, loggedinUser, match } = this.props
+    const { ancestors, currentItem, isLoading, loggedinUser, match, selectedUsers } = this.props
     return (
       <MediaQuery minDeviceWidth={700}>
         {matches => {
@@ -139,7 +139,9 @@ class Users extends Component<ReturnType<typeof mapStateToProps> & typeof mapDis
                       ) : null}
                       {match.params.otherActions ? null : <GroupSelector />}
                       {match.params.otherActions ? null : (
-                        <IconButton onClick={() => this.handleDeleteUsers()}>
+                        <IconButton
+                          disabled={selectedUsers.length > 0 ? false : true}
+                          onClick={() => this.handleDeleteUsers()}>
                           <DeleteIcon />
                         </IconButton>
                       )}
