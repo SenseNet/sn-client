@@ -32,6 +32,7 @@ interface UserSelectorState {
 const mapStateToProps = (state: rootStateType) => {
   return {
     selected: state.dms.usersAndGroups.group.selected,
+    allowedChildTypes: state.dms.usersAndGroups.allowedTypes,
   }
 }
 
@@ -67,7 +68,7 @@ class UserSelector extends React.Component<
             <ClickAwayListener onClickAway={() => this.handleButtonClick(false, true)}>
               <div style={{ display: 'inline' }}>
                 <Button
-                  disabled={this.props.selected.length > 0 ? false : true}
+                  disabled={this.props.selected.length > 0 && this.props.selected[0].Type === 'Group' ? false : true}
                   variant="contained"
                   color="primary"
                   style={{ ...styles.button, ...styles.buttonRaised }}
