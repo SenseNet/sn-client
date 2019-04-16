@@ -46,7 +46,10 @@ export const loadUser = <T extends User = User>(idOrPath: number | string, userO
           emitChange({ Id: newUser.d.Id } as User)
         }),
         eventHub.onContentCreated.subscribe(value => emitChange(value.content)),
-        eventHub.onContentModified.subscribe(value => emitChange(value.content)),
+        eventHub.onContentModified.subscribe(value => {
+          emitChange(value.content)
+          options.dispatch(loadUser(value.content.Id, userOptions))
+        }),
         eventHub.onContentMoved.subscribe(value => emitChange(value.content)),
         eventHub.onContentDeleted.subscribe(value => {
           const currentItems = options.getState().dms.usersAndGroups.user.items
