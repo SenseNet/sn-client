@@ -15,6 +15,7 @@ import Typography from '@material-ui/core/Typography'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useContext, useState } from 'react'
 import { LocalizationContext, RepositoryContext, ResponsiveContext } from '../context'
+import { LoggerContext } from '../context/LoggerContext'
 import { Icon } from './Icon'
 
 export const DeleteContentDialog: React.FunctionComponent<{
@@ -26,6 +27,7 @@ export const DeleteContentDialog: React.FunctionComponent<{
   const [permanent, setPermanent] = useState(false)
   const repo = useContext(RepositoryContext)
   const localization = useContext(LocalizationContext).values.deleteContentDialog
+  const logger = useContext(LoggerContext).withScope('DeleteContentDialog')
 
   return (
     <Dialog {...props.dialogProps} onClick={ev => ev.stopPropagation()} onDoubleClick={ev => ev.stopPropagation()}>
@@ -72,6 +74,27 @@ export const DeleteContentDialog: React.FunctionComponent<{
                 await repo.delete({
                   idOrPath: props.content.map(c => c.Path),
                   permanent,
+                })
+                logger.information({
+                  message:
+                    props.content.length > 1
+                      ? localization.deleteMultipleSuccessNoty.replace('{0}', props.content.length.toString())
+                      : localization.deleteSuccessNoty.replace(
+                          '{0}',
+                          props.content[0].DisplayName || props.content[0].Name,
+                        ),
+                  data: {
+                    shouldNotify: true,
+                    unique: true,
+                  },
+                })
+              } catch (error) {
+                logger.error({
+                  message: localization.deleteFailedNoty,
+                  data: {
+                    shouldNotify: true,
+                    error,
+                  },
                 })
               } finally {
                 setIsDeleteInProgress(false)

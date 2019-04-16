@@ -34,6 +34,9 @@ const values = {
     permanentlyHint: "Don't move to trash, delete immediately",
     deleteButton: 'Delete',
     cancelButton: 'Cancel',
+    deleteSuccessNoty: `Content '{0}' has been deleted succesfully`,
+    deleteMultipleSuccessNoty: `{0} content deleted succesfully`,
+    deleteFailedNoty: `There was an error during content deletion.`,
   },
   drawer: {
     personalSettingsTitle: 'Edit personal settings',
