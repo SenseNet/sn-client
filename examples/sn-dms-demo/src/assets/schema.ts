@@ -8147,7 +8147,7 @@ export const customSchema = [
         DefaultOrder: 0,
         ControlHint: 'sn:Image',
         BindProperty: ['ImageRef'],
-        SelectionRoots: ['/Root/Sites/Default_Site'],
+        // SelectionRoots: ['/Root/Sites/Default_Site'],
         AllowedTypes: ['Image'],
       },
       {
