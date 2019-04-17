@@ -22,6 +22,7 @@ import { CheatCommandProvider } from './services/CommandProviders/CheatCommandPr
 import { HelpCommandProvider } from './services/CommandProviders/HelpCommandProvider'
 import { HistoryCommandProvider } from './services/CommandProviders/HistoryCommandProvider'
 import { InFolderSearchCommandProvider } from './services/CommandProviders/InFolderSearchCommandProvider'
+import { NavigationCommandProvider } from './services/CommandProviders/NavigationCommandProvider'
 import { QueryCommandProvider } from './services/CommandProviders/QueryCommandProvider'
 import { diMiddleware, store } from './store'
 import './style.css'
@@ -38,6 +39,7 @@ diMiddleware
     HelpCommandProvider,
     HistoryCommandProvider,
     InFolderSearchCommandProvider,
+    NavigationCommandProvider,
     QueryCommandProvider,
   )
 
