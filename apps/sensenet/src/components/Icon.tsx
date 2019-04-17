@@ -20,6 +20,7 @@ import { File as SnFile, GenericContent, Schema, User } from '@sensenet/default-
 import React, { useContext } from 'react'
 import { InjectorContext, RepositoryContext } from '../context'
 import { EventLogEntry } from '../services/EventService'
+import { isContentFromType } from '../utils/isContentFromType'
 import { UserAvatar } from './UserAvatar'
 
 export interface IconOptions {
@@ -62,8 +63,12 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   },
   {
     get: (item, options) =>
-      item.Type === 'File' && (item as SnFile).PageCount ? (
+      isContentFromType(item, SnFile, options.repo.schemas) &&
+      (item as SnFile).PageCount &&
+      (item as any).PageCount > 0 ? (
         <img
+          width={(options.style && options.style.width) || 32}
+          height={(options.style && options.style.width) || 32}
           src={PathHelper.joinPaths(
             options.repo.configuration.repositoryUrl,
             item.Path,
