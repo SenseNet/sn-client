@@ -10,5 +10,6 @@ export class EventLogger extends AbstractLogger {
 
   constructor(private readonly eventService: EventService) {
     super()
+    ;(window as any).addEvent = this.addEntry.bind(this)
   }
 }
