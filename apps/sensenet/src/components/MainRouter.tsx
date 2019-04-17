@@ -1,6 +1,7 @@
 import { LoginState } from '@sensenet/client-core'
-import React, { lazy, Suspense, useContext } from 'react'
+import React, { lazy, Suspense, useContext, useState } from 'react'
 import { Route, RouteComponentProps, Switch, withRouter } from 'react-router'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { SessionContext } from '../context'
 import { ErrorBoundary } from './ErrorBoundary'
 import { FullScreenLoader } from './FullScreenLoader'
@@ -22,37 +23,115 @@ const PersonalSettingsEditor = lazy(
   async () => await import(/* webpackChunkName: "PersonalSettingsEditor" */ './edit/PersonalSettingsEditor'),
 )
 
-const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
+const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
   const sessionContext = useContext(SessionContext)
+  const [currentRoute, setCurrentRoute] = useState(props.location.pathname)
 
   return (
     <ErrorBoundary>
-      <Suspense fallback={<FullScreenLoader />}>
-        <Switch>
-          <Route path="/personalSettings" render={() => <PersonalSettingsEditor />} />
+      <Route
+        render={() => (
+          <TransitionGroup style={{ width: '100%', height: '100%' }}>
+            <CSSTransition
+              key={currentRoute}
+              classNames="fade"
+              timeout={300}
+              onEnter={arg => console.log('onEnter', arg)}>
+              <Suspense fallback={<FullScreenLoader onStartLoading={() => setCurrentRoute('Loader')} />}>
+                <Switch>
+                  <Route
+                    path="/personalSettings"
+                    render={() => {
+                      setCurrentRoute('PersonalSettingsEditor')
+                      return <PersonalSettingsEditor />
+                    }}
+                  />
+                  <Route
+                    path="/login"
+                    render={() => {
+                      setCurrentRoute('LoginComponent')
+                      return <LoginComponent />
+                    }}
+                  />
 
-          <Route path="/login" render={() => <LoginComponent />} />
-
-          {/** Requires login */}
-          {sessionContext.debouncedState === LoginState.Unauthenticated ? (
-            <LoginComponent />
-          ) : sessionContext.debouncedState === LoginState.Authenticated ? (
-            <Switch>
-              <Route path="/:repo/browse/:folderId?/:rightParent?" render={() => <ExploreComponent />} />
-              <Route path="/:repo/search" render={() => <SearchComponent />} />
-              <Route path="/:repo/iam" render={() => <IamComponent />} />
-              <Route path="/:repo/setup" render={() => <SetupComponent />} />
-              <Route path="/:repo/info" render={() => <VersionInfoComponent />} />
-              <Route path="/:repo/editBinary/:contentId?" render={() => <EditBinary />} />
-              <Route path="/:repo/editProperties/:contentId?" render={() => <EditProperties />} />
-              <Route path="/:repo/preview/:documentId?" render={() => <DocumentViewerComponent />} />
-              <Route path="/" render={() => <DashboardComponent />} />
-            </Switch>
-          ) : (
-            <FullScreenLoader />
-          )}
-        </Switch>
-      </Suspense>
+                  {/** Requires login */}
+                  {sessionContext.debouncedState === LoginState.Unauthenticated ? (
+                    <LoginComponent />
+                  ) : sessionContext.debouncedState === LoginState.Authenticated ? (
+                    <Switch>
+                      <Route
+                        path="/:repo/browse/:folderId?/:rightParent?"
+                        render={() => {
+                          setCurrentRoute('Explore')
+                          return <ExploreComponent />
+                        }}
+                      />
+                      <Route
+                        path="/:repo/search"
+                        render={() => {
+                          setCurrentRoute('Search')
+                          return <SearchComponent />
+                        }}
+                      />
+                      <Route
+                        path="/:repo/iam"
+                        render={() => {
+                          setCurrentRoute('IAM')
+                          return <IamComponent />
+                        }}
+                      />
+                      <Route
+                        path="/:repo/setup"
+                        render={() => {
+                          setCurrentRoute('Setup')
+                          return <SetupComponent />
+                        }}
+                      />
+                      <Route
+                        path="/:repo/info"
+                        render={() => {
+                          setCurrentRoute('VersionInfo')
+                          return <VersionInfoComponent />
+                        }}
+                      />
+                      <Route
+                        path="/:repo/editBinary/:contentId?"
+                        render={() => {
+                          setCurrentRoute('EditBinary')
+                          return <EditBinary />
+                        }}
+                      />
+                      <Route
+                        path="/:repo/editProperties/:contentId?"
+                        render={() => {
+                          setCurrentRoute('EditProperties')
+                          return <EditProperties />
+                        }}
+                      />
+                      <Route
+                        path="/:repo/preview/:documentId?"
+                        render={() => {
+                          setCurrentRoute('DocumentViewer')
+                          return <DocumentViewerComponent />
+                        }}
+                      />
+                      <Route
+                        path="/"
+                        render={() => {
+                          setCurrentRoute('DashBoard')
+                          return <DashboardComponent />
+                        }}
+                      />
+                    </Switch>
+                  ) : (
+                    <FullScreenLoader />
+                  )}
+                </Switch>
+              </Suspense>
+            </CSSTransition>
+          </TransitionGroup>
+        )}
+      />
     </ErrorBoundary>
   )
 }
