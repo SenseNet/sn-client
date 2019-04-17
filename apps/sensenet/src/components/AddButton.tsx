@@ -141,6 +141,9 @@ export const AddButton: React.FunctionComponent = () => {
                 setShowAddNewDialog(false)
                 logger.information({
                   message: localization.contentCreatedNoty.replace('{0}', created.d.DisplayName || created.d.Name),
+                  data: {
+                    iconContent: created,
+                  },
                 })
               } catch (error) {
                 logger.error({

@@ -72,6 +72,9 @@ export const Login: React.FunctionComponent = () => {
         await sleepAsync(2000)
         logger.information({
           message: localization.loginSuccessNoty.replace('{0}', userName).replace('{1}', url),
+          data: {
+            iconContent: repoToLogin.authentication.currentUser.getValue(),
+          },
         })
         setIsInProgress(false)
       } else {

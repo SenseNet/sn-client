@@ -66,6 +66,9 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
       setSavedTextValue(textValue)
       logger.information({
         message: localization.saveSuccessNoty.replace('{0}', props.content.DisplayName || props.content.Name),
+        data: {
+          iconContent: props.content,
+        },
       })
     } catch (error) {
       logger.error({

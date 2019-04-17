@@ -35,6 +35,9 @@ export const EditPropertiesDialog: React.FunctionComponent<{
               props.dialogProps.onClose && props.dialogProps.onClose(null as any)
               logger.information({
                 message: localization.saveSuccessNoty.replace('{0}', content.DisplayName || content.Name),
+                data: {
+                  iconContent: content,
+                },
               })
             } catch (error) {
               logger.error({

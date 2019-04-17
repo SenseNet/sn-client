@@ -86,11 +86,16 @@ export const NotificationComponent: React.FunctionComponent = () => {
                 flexWrap: 'nowrap',
               },
             }}
-            autoHideDuration={getAutoHideDuration(item)}
+            TransitionProps={{ direction: 'left' } as any}
+            autoHideDuration={(item.data && item.data.autoHideDuration) || getAutoHideDuration(item)}
             message={
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Icon item={item} style={{ marginRight: '.5em' }} />
-                {item.message}
+                <Icon item={item.data.iconContent || item} style={{ marginRight: '1em' }} />
+                <div
+                  title={item.message}
+                  style={{ overflow: 'hidden', textOverflow: 'ellipsis', wordBreak: 'break-word' }}>
+                  {item.data.messageComponent || item.message}
+                </div>
               </div>
             }
             onClose={(_ev, reason) => {

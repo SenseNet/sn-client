@@ -83,6 +83,9 @@ export const DeleteContentDialog: React.FunctionComponent<{
                           '{0}',
                           props.content[0].DisplayName || props.content[0].Name,
                         ),
+                  data: {
+                    iconContent: props.content.length > 1 ? undefined : props.content[0],
+                  },
                 })
               } catch (error) {
                 logger.error({
