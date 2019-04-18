@@ -1,6 +1,6 @@
 import Icon from '@material-ui/core/Icon'
 import React from 'react'
-import '../../assets/css/font-awesome.css'
+import '../../../assets/css/font-awesome.css'
 
 interface FontAwesomeIconProps {
   /**
