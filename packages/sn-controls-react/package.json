@@ -8,17 +8,14 @@
     "fix:prettier": "prettier \"{,!(dist|temp)/**/}*.{ts,tsx}\" --write",
     "fix:tslint": "tslint --fix --project .",
     "lint": "tslint --project .",
-    "build": "tsc -b && cpx \"src/**/*.css\" dist",
+    "build": "tsc -b",
     "typedoc": "typedoc --mode modules --out documentation src --exclude **/index.ts --theme c:/Users/%USERNAME%/AppData/Roaming/npm/node_modules/@sensenet/typedoc-theme/sn-theme",
     "precommit": "npm run build",
     "commit": "git-cz"
   },
   "files": [
     "dist",
-    "src",
-    "test",
-    "documentation",
-    "coverage"
+    "src"
   ],
   "repository": {
     "type": "git",
@@ -62,19 +59,11 @@
     "@types/react-dom": "^16.0.7",
     "@types/react-redux": "^7.0.1",
     "@types/react-responsive": "^3.0.2",
-    "autoprefixer": "^9.4.10",
-    "chalk": "2.4.2",
-    "cpx": "^1.5.0",
-    "date-fns": "^2.0.0-alpha.21",
-    "dotenv": "^7.0.0",
-    "fs-extra": "^7.0.1",
-    "object-assign": "4.1.1",
-    "postcss-flexbugs-fixes": "4.1.0",
-    "promise": "^8.0.3",
     "prop-types": "^15.7.2",
     "react": "^16.8.4",
-    "react-dev-utils": "^8.0.0",
-    "react-dom": "^16.8.4"
+    "react-dom": "^16.8.4",
+    "react-redux": "^6.0.1",
+    "redux": "^4.0.1"
   },
   "publishConfig": {
     "access": "public"

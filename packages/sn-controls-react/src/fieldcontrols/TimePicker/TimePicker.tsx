@@ -12,20 +12,20 @@ import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../Client
 import { ReactDateTimeFieldSetting } from '../DateTimeFieldSetting'
 
 /**
- * Interface for DatePicker properties
+ * Interface for TimePicker properties
  */
 export interface TimePickerProps<T extends GenericContent, K extends keyof T>
   extends ReactClientFieldSettingProps<T, K>,
     ReactClientFieldSetting<T, K>,
     ReactDateTimeFieldSetting<T, K> {}
 /**
- * Interface for DatePicker state
+ * Interface for TimePicker state
  */
 export interface TimePickerState {
   value: moment.Moment
 }
 /**
- * Field control that represents a Date field. Available values will be populated from the FieldSettings.
+ * Field control that represents a DateTime field. Available values will be populated from the FieldSettings.
  */
 export class TimePicker<T extends GenericContent, K extends keyof T> extends React.Component<
   TimePickerProps<T, K>,

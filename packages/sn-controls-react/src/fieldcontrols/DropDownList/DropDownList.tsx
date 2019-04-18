@@ -1,7 +1,6 @@
 /**
  * @module FieldControls
- *
- */ /** */
+ */
 import React, { Component } from 'react'
 import { ReactChoiceFieldSetting } from '../ChoiceFieldSetting'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
@@ -17,14 +16,14 @@ import Select from '@material-ui/core/Select'
 import { GenericContent } from '@sensenet/default-content-types'
 
 /**
- * Interface for DatePicker properties
+ * Interface for DropDownList properties
  */
 export interface DropDownListProps<T extends GenericContent, K extends keyof T>
   extends ReactClientFieldSettingProps<T, K>,
     ReactClientFieldSetting<T, K>,
     ReactChoiceFieldSetting<T, K> {}
 /**
- * Interface for DatePicker state
+ * Interface for DropDownList state
  */
 export interface DropDownListState<T extends GenericContent, K extends keyof T> {
   value: T[K]

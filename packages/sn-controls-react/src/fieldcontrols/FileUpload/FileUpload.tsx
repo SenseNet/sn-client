@@ -2,9 +2,9 @@
  * @module FieldControls
  */
 
-import { Input } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import FormControl from '@material-ui/core/FormControl'
+import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel/InputLabel'
 import Typography from '@material-ui/core/Typography'
 import { GenericContent } from '@sensenet/default-content-types'
@@ -32,14 +32,14 @@ const styles = {
 }
 
 /**
- * Interface for Name properties
+ * Interface for FileUpload properties
  */
 export interface FileUploadProps<T extends GenericContent, K extends keyof T>
   extends ReactClientFieldSettingProps<T, K>,
     ReactClientFieldSetting<T, K>,
     ReactBinaryFieldSetting<T, K> {}
 /**
- * Interface for Name state
+ * Interface for FileUpload state
  */
 export interface FileUploadState {
   value: string
