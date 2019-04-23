@@ -63,6 +63,11 @@ export const pathHelperTests = describe('PathHelper', () => {
       const isAnItem = PathHelper.isItemPath("/workspace/('project')/CustomAction")
       expect(isAnItem).toBe(true)
     })
+
+    it('should return true for reference paths with ids', () => {
+      const isAnItem = PathHelper.isItemPath('/workspaces/(22)/CustomAction')
+      expect(isAnItem).toBe(true)
+    })
   })
 
   describe('#getContentUrlbyId()', () => {

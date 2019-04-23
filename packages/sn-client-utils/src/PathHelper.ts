@@ -26,11 +26,13 @@ export class PathHelper {
    */
   public static getSegments(path: string): string[] {
     return path
-      .split(/\/|[(][']/g)
+      .split(/\/|[(][']|[(]/g)
       .filter(segment => segment && segment.length)
       .map(segment => {
         if (segment.endsWith("')")) {
           segment = `('${segment}`
+        } else if (segment.endsWith(')')) {
+          segment = `(${segment}`
         }
         return segment
       })
