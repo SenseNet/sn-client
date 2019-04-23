@@ -95,86 +95,88 @@ export const Login: React.FunctionComponent = () => {
   }
 
   return (
-    <Paper
-      style={{ padding: '1em', flexShrink: 0, width: '450px', maxWidth: '90%', alignSelf: 'center', margin: 'auto' }}>
-      <Typography variant="h4">{localization.loginTitle}</Typography>
-      {isInProgress ? (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 196 }}>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-            <CircularProgress size={64} variant={success ? 'determinate' : 'indeterminate'} value={progressValue} />
-            {success ? (
-              <UserAvatar
-                style={{ width: 56, height: 56, marginTop: -60, opacity: progressValue / 100 }}
-                user={session.currentUser}
-                repositoryUrl={url}
-              />
-            ) : null}
-            <Typography
-              style={{
-                marginTop: '3em',
-                wordBreak: 'break-word',
-                textAlign: 'center',
-                display: 'flex',
-                alignItems: 'center',
-              }}>
+    <div style={{ width: '100%', height: '100%', display: 'flex' }}>
+      <Paper
+        style={{ padding: '1em', flexShrink: 0, width: '450px', maxWidth: '90%', alignSelf: 'center', margin: 'auto' }}>
+        <Typography variant="h4">{localization.loginTitle}</Typography>
+        {isInProgress ? (
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 196 }}>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+              <CircularProgress size={64} variant={success ? 'determinate' : 'indeterminate'} value={progressValue} />
               {success ? (
-                <>
-                  {localization.greetings.replace(
-                    '{0}',
-                    session.currentUser.DisplayName || session.currentUser.LoginName || session.currentUser.Name,
-                  )}
-                </>
-              ) : (
-                <>{localization.loggingInTo.replace('{0}', url)}</>
-              )}
-            </Typography>
+                <UserAvatar
+                  style={{ width: 56, height: 56, marginTop: -60, opacity: progressValue / 100 }}
+                  user={session.currentUser}
+                  repositoryUrl={url}
+                />
+              ) : null}
+              <Typography
+                style={{
+                  marginTop: '3em',
+                  wordBreak: 'break-word',
+                  textAlign: 'center',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}>
+                {success ? (
+                  <>
+                    {localization.greetings.replace(
+                      '{0}',
+                      session.currentUser.DisplayName || session.currentUser.LoginName || session.currentUser.Name,
+                    )}
+                  </>
+                ) : (
+                  <>{localization.loggingInTo.replace('{0}', url)}</>
+                )}
+              </Typography>
+            </div>
           </div>
-        </div>
-      ) : (
-        <form onSubmit={handleSubmit}>
-          <Divider />
-          <TextField
-            required={true}
-            margin="normal"
-            label={localization.userNameLabel}
-            helperText={localization.userNameHelperText}
-            fullWidth={true}
-            defaultValue={userName}
-            onChange={ev => {
-              setUserName(ev.target.value)
-            }}
-          />
-          <TextField
-            required={true}
-            margin="dense"
-            label={localization.passwordLabel}
-            fullWidth={true}
-            type="password"
-            helperText={localization.passwordHelperText}
-            onChange={ev => {
-              setPassword(ev.target.value)
-            }}
-          />
-          <TextField
-            margin="dense"
-            label={localization.repositoryLabel}
-            helperText={localization.repositoryHelperText}
-            fullWidth={true}
-            type="url"
-            defaultValue={repo.configuration.repositoryUrl}
-            onChange={ev => {
-              setUrl(ev.target.value)
-            }}
-          />
-          {error ? <Typography style={{ color: theme.palette.error.main }}>{error}</Typography> : null}
-          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1em' }}>
-            <Button style={{ width: '100%' }} type="submit">
-              <Typography variant="button">{localization.loginButtonTitle}</Typography>
-            </Button>
-          </div>
-        </form>
-      )}
-    </Paper>
+        ) : (
+          <form onSubmit={handleSubmit}>
+            <Divider />
+            <TextField
+              required={true}
+              margin="normal"
+              label={localization.userNameLabel}
+              helperText={localization.userNameHelperText}
+              fullWidth={true}
+              defaultValue={userName}
+              onChange={ev => {
+                setUserName(ev.target.value)
+              }}
+            />
+            <TextField
+              required={true}
+              margin="dense"
+              label={localization.passwordLabel}
+              fullWidth={true}
+              type="password"
+              helperText={localization.passwordHelperText}
+              onChange={ev => {
+                setPassword(ev.target.value)
+              }}
+            />
+            <TextField
+              margin="dense"
+              label={localization.repositoryLabel}
+              helperText={localization.repositoryHelperText}
+              fullWidth={true}
+              type="url"
+              defaultValue={repo.configuration.repositoryUrl}
+              onChange={ev => {
+                setUrl(ev.target.value)
+              }}
+            />
+            {error ? <Typography style={{ color: theme.palette.error.main }}>{error}</Typography> : null}
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1em' }}>
+              <Button style={{ width: '100%' }} type="submit">
+                <Typography variant="button">{localization.loginButtonTitle}</Typography>
+              </Button>
+            </div>
+          </form>
+        )}
+      </Paper>
+    </div>
   )
 }
 
