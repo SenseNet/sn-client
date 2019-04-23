@@ -5,12 +5,28 @@ import { PathHelper } from '../src'
  */
 export const pathHelperTests = describe('PathHelper', () => {
   describe('#isItemSegment()', () => {
-    it('Should return true for item segments', () => {
+    it('Should return true for item segments with string key "(\'Item1\')"', () => {
       expect(PathHelper.isItemSegment("('Item1')")).toBe(true)
+    })
+
+    it('Should return true for item segments with numeric key "(42)"', () => {
+      expect(PathHelper.isItemSegment('(42)')).toBe(true)
+    })
+
+    it('Should return false for string keys w/o quotes', () => {
+      expect(PathHelper.isItemSegment('(invalidValue)')).toBe(false)
+    })
+
+    it('Should return false for invalid string keys', () => {
+      expect(PathHelper.isItemSegment('(123invalidValue)')).toBe(false)
     })
 
     it('Should return false for non-item segments', () => {
       expect(PathHelper.isItemSegment('Item1')).toBe(false)
+    })
+
+    it('Should return false for inconsistent quotation', () => {
+      expect(PathHelper.isItemSegment("('123invalidValue)")).toBe(false)
     })
   })
 

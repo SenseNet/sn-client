@@ -37,11 +37,11 @@ export class PathHelper {
   }
 
   /**
-   * Checks if a specific segment is an Item segment or not (like "('Content1')")
+   * Checks if a specific segment is an Item segment or not (like "('Content1')"" or "(654)")
    * @param segment The segment to be examined
    */
   public static isItemSegment(segment: string): boolean {
-    return segment.startsWith("('") && segment.endsWith("')")
+    return RegExp(/^\('+[\s\S]+'\)$/).test(segment) || RegExp(/^\(+\d+\)$/).test(segment)
   }
 
   /**
