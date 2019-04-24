@@ -1544,7 +1544,6 @@ storiesOf('ViewControls', module)
       <NewViewComponent
         path="/Root/Profiles/MyProfile/DocumentLibrary"
         fields={[]}
-        changeAction={() => ({ type: 'a', name: 'a', value: 'a' })}
         repository={testRepository}
         contentTypeName="File"
         title={text('Title', 'File')}
