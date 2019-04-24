@@ -5,6 +5,7 @@ import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
+import CompareArrows from '@material-ui/icons/CompareArrows'
 import OpenInNewTwoTone from '@material-ui/icons/OpenInNewTwoTone'
 import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -75,9 +76,16 @@ export const List: React.FunctionComponent<{
                 ) : null}
               </TableCell>
               <TableCell>
-                <IconButton disabled={row.data && row.data.details ? false : true}>
-                  <OpenInNewTwoTone />
-                </IconButton>
+                {row.data.details ? (
+                  <IconButton disabled={row.data && row.data.details ? false : true}>
+                    <OpenInNewTwoTone />
+                  </IconButton>
+                ) : null}
+                {row.data.compare ? (
+                  <IconButton>
+                    <CompareArrows />
+                  </IconButton>
+                ) : null}
               </TableCell>
             </TableRow>
           ))}

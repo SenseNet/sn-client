@@ -63,14 +63,18 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
           binaryPropertyName: 'Binary',
         })
       }
-      setSavedTextValue(textValue)
       logger.information({
         message: localization.saveSuccessNoty.replace('{0}', props.content.DisplayName || props.content.Name),
         data: {
           relatedContent: props.content,
           relatedRepository: repo,
+          compare: {
+            old: savedTextValue,
+            new: textValue,
+          },
         },
       })
+      setSavedTextValue(textValue)
     } catch (error) {
       logger.error({
         message: localization.saveFailedNoty.replace('{0}', props.content.DisplayName || props.content.Name),
