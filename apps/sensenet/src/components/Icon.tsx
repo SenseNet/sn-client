@@ -10,7 +10,9 @@ import FormatPaintTwoTone from '@material-ui/icons/FormatPaintTwoTone'
 import GroupTwoTone from '@material-ui/icons/GroupTwoTone'
 import Info from '@material-ui/icons/Info'
 import InsertDriveFileTwoTone from '@material-ui/icons/InsertDriveFileTwoTone'
+import ListAltTwoTone from '@material-ui/icons/ListAltTwoTone'
 import PublicTwoTone from '@material-ui/icons/PublicTwoTone'
+import SearchTwoTone from '@material-ui/icons/SearchTwoTone'
 import SettingsTwoTone from '@material-ui/icons/SettingsTwoTone'
 import Warning from '@material-ui/icons/Warning'
 import WebAssetTwoTone from '@material-ui/icons/WebAssetTwoTone'
@@ -85,6 +87,8 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   { get: (item, options) => (item.Type === 'SystemFolder' ? <FolderTwoTone style={options.style} /> : null) },
   { get: (item, options) => (item.Type === 'TrashBin' ? <DeleteTwoTone style={options.style} /> : null) },
   { get: (item, options) => (item.Type === 'PortalRoot' ? <PublicTwoTone style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'Search' ? <SearchTwoTone style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'EventLog' ? <ListAltTwoTone style={options.style} /> : null) },
   {
     get: (item, options) =>
       item.Type && item.Type.indexOf('Settings') !== -1 ? <SettingsTwoTone style={options.style} /> : null,

@@ -128,6 +128,12 @@ const values = {
     eventsPrimary: 'Events',
     eventsSecondary: 'Detailed event log with general info, warnings and errors',
   },
+  eventList: {
+    filter: {
+      termTitle: 'Search term',
+      termPlaceholder: 'Search term...',
+    },
+  },
 }
 
 export default values

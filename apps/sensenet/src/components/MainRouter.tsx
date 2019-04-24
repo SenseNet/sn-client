@@ -18,6 +18,7 @@ const EditProperties = lazy(async () => await import(/* webpackChunkName: "editP
 const DocumentViewerComponent = lazy(async () => await import(/* webpackChunkName: "DocViewer" */ './DocViewer'))
 
 const VersionInfoComponent = lazy(async () => await import(/* webpackChunkName: "Version Info" */ './version-info'))
+const EventListComponent = lazy(async () => await import(/* webpackChunkName: "EventList" */ './event-list'))
 
 const PersonalSettingsEditor = lazy(
   async () => await import(/* webpackChunkName: "PersonalSettingsEditor" */ './edit/PersonalSettingsEditor'),
@@ -51,6 +52,13 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
                     render={() => {
                       setCurrentRoute('LoginComponent')
                       return <LoginComponent />
+                    }}
+                  />
+                  <Route
+                    path="/events"
+                    render={() => {
+                      setCurrentRoute('EventList')
+                      return <EventListComponent />
                     }}
                   />
 
