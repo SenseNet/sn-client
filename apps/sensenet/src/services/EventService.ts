@@ -2,12 +2,16 @@ import { Injectable } from '@furystack/inject'
 import { ILeveledLogEntry } from '@furystack/logging'
 import { debounce, ObservableValue } from '@sensenet/client-utils'
 import { v1 } from 'uuid'
+import { PersonalSettings } from './PersonalSettings'
 
 export type EventLogEntry<T> = ILeveledLogEntry<T & { guid: string; isDismissed?: boolean }>
 
 @Injectable({ lifetime: 'singleton' })
 export class EventService {
-  public static debounceInterval = 100
+  public static digestNotyDebounceInterval = 100
+  public static storageDebounceInterval = 1000
+
+  public static storageKey = `sn-app-eventservice-events`
 
   public dismiss(entry: EventLogEntry<any>) {
     this.values.setValue(
@@ -23,7 +27,14 @@ export class EventService {
 
   public updateChanges = debounce(() => {
     this.notificationValues.setValue(this.getDigestedNotificationValues())
-  }, EventService.debounceInterval)
+    this.storeChanges()
+  }, EventService.digestNotyDebounceInterval)
+
+  private storeChanges = debounce(() => {
+    const values = [...this.values.getValue()]
+    const entries = values.slice(values.length - this.personalSettings.currentValue.getValue().eventLogSize)
+    localStorage.setItem(EventService.storageKey, JSON.stringify(entries))
+  }, EventService.storageDebounceInterval)
 
   public add(...notys: Array<EventLogEntry<any>>) {
     // const newValues = this.values.getValue().push())
@@ -37,11 +48,16 @@ export class EventService {
   public clear() {
     this.values.setValue([])
     this.notificationValues.setValue({})
+    this.updateChanges()
   }
 
-  public notificationValues: ObservableValue<{ [key: string]: Array<EventLogEntry<any>> }> = new ObservableValue({})
+  public values: ObservableValue<Array<EventLogEntry<any & { guid: string }>>> = new ObservableValue(
+    JSON.parse(localStorage.getItem(EventService.storageKey) || '[]') || [],
+  )
 
-  public values: ObservableValue<Array<EventLogEntry<any & { guid: string }>>> = new ObservableValue([])
+  public notificationValues: ObservableValue<{ [key: string]: Array<EventLogEntry<any>> }> = new ObservableValue(
+    this.getDigestedNotificationValues(),
+  )
 
   public getDigestedNotificationValues(): { [key: string]: Array<EventLogEntry<any>> } {
     const notyValues = this.values
@@ -61,4 +77,6 @@ export class EventService {
 
     return returns
   }
+
+  constructor(private readonly personalSettings: PersonalSettings) {}
 }

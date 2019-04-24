@@ -9,6 +9,7 @@ import React from 'react'
 import { useContext, useEffect, useState } from 'react'
 import { InjectorContext, ResponsiveContext } from '../context'
 import { EventLogEntry, EventService } from '../services/EventService'
+import { RepositoryManager } from '../services/RepositoryManager'
 import { Icon } from './Icon'
 
 export const getItemBackgroundColor = (item: EventLogEntry<any>) => {
@@ -49,6 +50,7 @@ export const getAutoHideDuration = (item: EventLogEntry<any>) => {
 
 export const NotificationComponent: React.FunctionComponent = () => {
   const injector = useContext(InjectorContext)
+  const repoManager = injector.getInstance(RepositoryManager)
   const eventService = injector.getInstance(EventService)
   const [values, setValues] = useState<Array<[string, Array<EventLogEntry<any>>]>>([])
   const [dismisses, setDismisses] = useState<string[]>([])
@@ -91,7 +93,7 @@ export const NotificationComponent: React.FunctionComponent = () => {
             message={
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Icon
-                  repository={item.data.relatedRepository}
+                  repository={repoManager.getRepository(item.data.relatedRepository)}
                   item={item.data.relatedContent || item}
                   style={{ marginRight: '1em' }}
                 />

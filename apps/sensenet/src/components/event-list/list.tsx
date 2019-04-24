@@ -13,8 +13,10 @@ import {
   ContentRoutingContext,
   ContentRoutingContextProvider,
   CurrentContentContext,
+  InjectorContext,
   RepositoryContext,
 } from '../../context'
+import { RepositoryManager } from '../../services/RepositoryManager'
 import { Icon } from '../Icon'
 import { EventListFilterContext } from './filter-context'
 
@@ -24,11 +26,15 @@ export const List: React.FunctionComponent<{
 }> = props => {
   const filter = useContext(EventListFilterContext).filter
   const [effectiveValues, setEffectiveValues] = useState<Array<ILeveledLogEntry<any>>>([])
+
+  const repositoryManager = useContext(InjectorContext).getInstance(RepositoryManager)
+
   useEffect(() => {
     setEffectiveValues(
       props.values.filter(value => {
         return (
           (!filter.term || value.message.indexOf(filter.term) !== -1) &&
+          (!filter.scope || (value.scope && value.scope.indexOf(filter.scope) !== -1)) &&
           (filter.logLevel === undefined || value.level === filter.logLevel)
         )
       }),
@@ -41,6 +47,7 @@ export const List: React.FunctionComponent<{
           <TableRow>
             <TableCell>Level</TableCell>
             <TableCell>Message</TableCell>
+            <TableCell>Scope</TableCell>
             <TableCell>Related content</TableCell>
             <TableCell>Details</TableCell>
           </TableRow>
@@ -55,9 +62,10 @@ export const List: React.FunctionComponent<{
                 </div>
               </TableCell>
               <TableCell>{row.message}</TableCell>
+              <TableCell>{row.scope}</TableCell>
               <TableCell>
                 {row.data && row.data.relatedContent && row.data.relatedRepository ? (
-                  <RepositoryContext.Provider value={row.data.relatedRepository}>
+                  <RepositoryContext.Provider value={repositoryManager.getRepository(row.data.relatedRepository)}>
                     <ContentRoutingContextProvider>
                       <ContentRoutingContext.Consumer>
                         {ctx => (
@@ -77,14 +85,18 @@ export const List: React.FunctionComponent<{
               </TableCell>
               <TableCell>
                 {row.data.details ? (
-                  <IconButton disabled={row.data && row.data.details ? false : true}>
-                    <OpenInNewTwoTone />
-                  </IconButton>
+                  <Link to={`/events/${row.data.guid}`}>
+                    <IconButton>
+                      <OpenInNewTwoTone />
+                    </IconButton>
+                  </Link>
                 ) : null}
                 {row.data.compare ? (
-                  <IconButton>
-                    <CompareArrows />
-                  </IconButton>
+                  <Link to={`/events/${row.data.guid}`}>
+                    <IconButton>
+                      <CompareArrows />
+                    </IconButton>
+                  </Link>
                 ) : null}
               </TableCell>
             </TableRow>

@@ -37,7 +37,7 @@ export const EditPropertiesDialog: React.FunctionComponent<{
                 message: localization.saveSuccessNoty.replace('{0}', content.DisplayName || content.Name),
                 data: {
                   relatedContent: content,
-                  relatedRepository: repo,
+                  relatedRepository: repo.configuration.repositoryUrl,
                 },
               })
             } catch (error) {

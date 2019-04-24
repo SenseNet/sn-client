@@ -51,7 +51,7 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
                     }}
                   />
                   <Route
-                    path="/events"
+                    path="/events/:eventGuid?"
                     render={() => {
                       setCurrentRoute('EventList')
                       return <EventListComponent />

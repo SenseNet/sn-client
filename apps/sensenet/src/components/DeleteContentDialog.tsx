@@ -85,7 +85,7 @@ export const DeleteContentDialog: React.FunctionComponent<{
                         ),
                   data: {
                     relatedContent: props.content.length > 1 ? undefined : props.content[0],
-                    relatedRepository: repo,
+                    relatedRepository: repo.configuration.repositoryUrl,
                   },
                 })
               } catch (error) {

@@ -27,6 +27,7 @@ import { QueryCommandProvider } from './services/CommandProviders/QueryCommandPr
 import { diMiddleware, store } from './store'
 import './style.css'
 import theme from './theme'
+import './utils/errorToJson'
 import './utils/InjectorExtensions'
 
 // tslint:disable-next-line: no-string-literal

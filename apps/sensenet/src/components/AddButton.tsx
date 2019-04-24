@@ -143,7 +143,7 @@ export const AddButton: React.FunctionComponent = () => {
                   message: localization.contentCreatedNoty.replace('{0}', created.d.DisplayName || created.d.Name),
                   data: {
                     relatedContent: created,
-                    relatedRepository: repo,
+                    relatedRepository: repo.configuration.repositoryUrl,
                   },
                 })
               } catch (error) {

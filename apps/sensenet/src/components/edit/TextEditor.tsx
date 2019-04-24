@@ -17,7 +17,7 @@ import { isContentFromType } from '../../utils/isContentFromType'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 
 const getMonacoModelUri = (content: GenericContent) => {
-  if (isContentFromType(content, Settings)) {
+  if (isContentFromType(content, Settings) || content.Type === 'PersonalSettings') {
     return Uri.parse(`sensenet://${content.Type}/${content.Name}`)
   }
   if (isContentFromType(content, SnFile)) {
@@ -67,7 +67,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
         message: localization.saveSuccessNoty.replace('{0}', props.content.DisplayName || props.content.Name),
         data: {
           relatedContent: props.content,
-          relatedRepository: repo,
+          relatedRepository: repo.configuration.repositoryUrl,
           compare: {
             old: savedTextValue,
             new: textValue,

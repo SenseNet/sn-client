@@ -74,7 +74,7 @@ export const Login: React.FunctionComponent = () => {
           message: localization.loginSuccessNoty.replace('{0}', userName).replace('{1}', url),
           data: {
             relatedContent: repoToLogin.authentication.currentUser.getValue(),
-            relatedRepository: repoToLogin,
+            relatedRepository: repoToLogin.configuration.repositoryUrl,
           },
         })
         setIsInProgress(false)

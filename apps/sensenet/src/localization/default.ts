@@ -104,6 +104,7 @@ const values = {
     lastRepository: 'The last visited repository URL',
     languageTitle: 'The name of the active language',
     themeTitle: 'Select a dark or a light theme',
+    eventLogSize: 'Number of entries to store in the Event Log',
   },
   repositorySelector: {
     loggedInAs: 'You are currently logged in as {0}',
@@ -132,6 +133,8 @@ const values = {
     filter: {
       termTitle: 'Search term',
       termPlaceholder: 'Search term...',
+      scopeTitle: 'Scope',
+      scopePlaceholder: 'Scope...',
       levelTitle: 'Level',
       levelAll: 'All',
     },

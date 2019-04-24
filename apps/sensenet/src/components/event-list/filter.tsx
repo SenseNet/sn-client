@@ -23,12 +23,21 @@ export const Filter: React.FunctionComponent<{ style?: React.CSSProperties }> = 
     f.setFilter({ ...f.filter, term })
   }, 300)
 
+  const updateScope = debounce((scope: string) => {
+    f.setFilter({ ...f.filter, scope })
+  }, 300)
+
   return (
     <div style={{ display: 'flex', alignItems: 'bottom', ...props.style }}>
       <TextField
         label={localization.termTitle}
         placeholder={localization.termPlaceholder}
         onChange={ev => updateTerm(ev.target.value)}
+      />
+      <TextField
+        label={localization.scopeTitle}
+        placeholder={localization.scopePlaceholder}
+        onChange={ev => updateScope(ev.target.value)}
       />
       <FormControl style={{ justifyContent: 'flex-end', marginLeft: 15 }}>
         <InputLabel htmlFor="event-log-filter">{localization.levelTitle}</InputLabel>

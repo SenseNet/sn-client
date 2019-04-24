@@ -3,6 +3,7 @@ import React, { Dispatch, SetStateAction, useState } from 'react'
 
 export interface EventListFilter {
   term?: string
+  scope?: string
   logLevel?: LogLevel
 }
 
