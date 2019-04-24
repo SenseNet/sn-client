@@ -113,9 +113,6 @@ export const AddButton: React.FunctionComponent = () => {
           <NewViewComponent
             repositoryUrl={repo.configuration.repositoryUrl}
             fields={[]}
-            changeAction={() => {
-              return null as any
-            }}
             handleCancel={() => setShowAddNewDialog(false)}
             repository={repo}
             contentTypeName={selectedSchema.ContentTypeName}
