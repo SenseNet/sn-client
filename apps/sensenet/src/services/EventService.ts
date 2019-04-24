@@ -1,5 +1,5 @@
 import { Injectable } from '@furystack/inject'
-import { ILeveledLogEntry } from '@furystack/logging'
+import { ILeveledLogEntry, LogLevel } from '@furystack/logging'
 import { debounce, ObservableValue } from '@sensenet/client-utils'
 import { v1 } from 'uuid'
 import { PersonalSettings } from './PersonalSettings'
@@ -48,6 +48,7 @@ export class EventService {
   public clear() {
     this.values.setValue([])
     this.notificationValues.setValue({})
+    this.add({ level: LogLevel.Information, message: 'The Event Log has been cleared.', scope: 'EventLog' })
     this.updateChanges()
   }
 

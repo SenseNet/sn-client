@@ -52,6 +52,7 @@ export const List: React.FunctionComponent<{
             <TableCell>{localization.message}</TableCell>
             <TableCell>{localization.scope}</TableCell>
             <TableCell>{localization.relatedContent}</TableCell>
+            <TableCell>{localization.date}</TableCell>
             <TableCell>&nbsp;</TableCell>
           </TableRow>
         </TableHead>
@@ -86,6 +87,7 @@ export const List: React.FunctionComponent<{
                   </RepositoryContext.Provider>
                 ) : null}
               </TableCell>
+              <TableCell>{row.data.added}</TableCell>
               <TableCell>
                 {row.data.details ? (
                   <Link to={`/events/${row.data.guid}`}>

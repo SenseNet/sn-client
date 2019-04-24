@@ -137,12 +137,18 @@ const values = {
       scopePlaceholder: 'Scope...',
       levelTitle: 'Level',
       levelAll: 'All',
+      clear: 'Clear',
+      confirmClear: 'Are you sure to clear the log?',
     },
     list: {
       level: 'Level',
       message: 'Message',
       scope: 'Scope',
       relatedContent: 'Related Content',
+      date: 'Date',
+    },
+    details: {
+      back: 'Back to list',
     },
   },
 }

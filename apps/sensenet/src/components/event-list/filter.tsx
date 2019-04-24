@@ -77,8 +77,8 @@ export const Filter: React.FunctionComponent<{ style?: React.CSSProperties }> = 
           margin: '0 0 0 10px',
           alignSelf: 'flex-end',
         }}
-        title="Clear"
-        onClick={() => service.clear()}>
+        title={localization.clear}
+        onClick={() => confirm(localization.confirmClear) && service.clear()}>
         <Delete />
       </IconButton>
     </div>
