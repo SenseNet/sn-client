@@ -1,7 +1,6 @@
 /**
  * @module FieldControls
- *
- */ /** */
+ */
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'

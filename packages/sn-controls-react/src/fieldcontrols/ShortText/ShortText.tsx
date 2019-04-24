@@ -1,7 +1,6 @@
 /**
  * @module FieldControls
- *
- */ /** */
+ */
 import React, { Component } from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactShortTextFieldSetting } from './ShortTextFieldSetting'
