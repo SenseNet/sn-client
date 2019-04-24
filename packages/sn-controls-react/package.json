@@ -42,7 +42,6 @@
     "@sensenet/control-mapper": "^1.1.1",
     "@sensenet/icons-react": "^1.2.8",
     "@sensenet/pickers-react": "^1.0.2",
-    "@sensenet/redux": "^5.1.7",
     "lodash.debounce": "^4.0.8",
     "material-ui-pickers": "^2.2.1",
     "moment": "^2.24.0",
@@ -57,13 +56,10 @@
     "@types/radium": "^0.24.2",
     "@types/react": "^16.7.14",
     "@types/react-dom": "^16.0.7",
-    "@types/react-redux": "^7.0.1",
     "@types/react-responsive": "^3.0.2",
     "prop-types": "^15.7.2",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
-    "react-redux": "^6.0.1",
-    "redux": "^4.0.1"
   },
   "publishConfig": {
     "access": "public"
