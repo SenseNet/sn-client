@@ -33,11 +33,7 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
       <Route
         render={() => (
           <TransitionGroup style={{ width: '100%', height: '100%' }}>
-            <CSSTransition
-              key={currentRoute}
-              classNames="fade"
-              timeout={300}
-              onEnter={arg => console.log('onEnter', arg)}>
+            <CSSTransition key={currentRoute} classNames="fade" timeout={300}>
               <Suspense fallback={<FullScreenLoader onStartLoading={() => setCurrentRoute('Loader')} />}>
                 <Switch>
                   <Route

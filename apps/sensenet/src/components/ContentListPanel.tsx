@@ -106,11 +106,7 @@ export const CollectionComponent: React.FunctionComponent<{
       {props.enableBreadcrumbs ? <ContentBreadcrumbs onItemClick={i => props.onParentChange(i.content)} /> : null}
       <DropFileArea parent={parent} style={{ height: '100%', overflow: 'hidden' }}>
         <TransitionGroup style={{ width: '100%', height: '100%' }}>
-          <CSSTransition
-            key={parent.Path}
-            classNames="fade"
-            timeout={300}
-            onEnter={() => console.log('onEnterKe', parent.Path)}>
+          <CSSTransition key={parent.Path} classNames="fade" timeout={300}>
             <div
               style={{
                 ...(isFocused ? {} : { opacity: 0.8 }),

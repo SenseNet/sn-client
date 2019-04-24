@@ -30,7 +30,7 @@ export const EventList: React.FunctionComponent = () => {
             />
             <Typography variant="h4">Event list</Typography>
           </div>
-          <Filter style={{ justifySelf: 'flex-end' }} />
+          <Filter style={{ justifySelf: 'flex-end', marginRight: 15 }} />
         </div>
         <List style={{ height: 'calc(100% - 48px)', overflow: 'auto' }} values={events} />
       </div>
