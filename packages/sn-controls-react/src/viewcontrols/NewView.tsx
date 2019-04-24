@@ -48,10 +48,7 @@ export interface NewViewState<T extends GenericContent = GenericContent> {
  *  <NewView content={content} onSubmit={createSubmitClick} />
  * ```
  */
-export class NewViewComponent<T extends GenericContent, K extends keyof T> extends Component<
-  NewViewProps<T>,
-  NewViewState
-> {
+export class NewView<T extends GenericContent, K extends keyof T> extends Component<NewViewProps<T>, NewViewState> {
   /**
    * constructor
    * @param {object} props
@@ -159,5 +156,3 @@ export class NewViewComponent<T extends GenericContent, K extends keyof T> exten
     )
   }
 }
-
-export { NewViewComponent as NewView }
