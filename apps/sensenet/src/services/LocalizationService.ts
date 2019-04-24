@@ -1,9 +1,11 @@
+import { Injectable } from '@furystack/inject'
 import { deepMerge, ObservableValue } from '@sensenet/client-utils'
 import defaultValues from '../localization/default'
 
 /**
  * Service class that loads localizations from a dynamic import and updates an observable object with its values
  */
+@Injectable({ lifetime: 'singleton' })
 export class LocalizationService {
   /**
    * An observable that will be updated with the current localization values after loading new localization info

@@ -118,6 +118,16 @@ const values = {
     saveSuccessNoty: `The changes of '{0}' has been saved`,
     saveFailedNoty: `Failed to save changes of content '{0}'`,
   },
+  navigationCommandProvider: {
+    personalSettingsPrimary: 'Personal Settings',
+    personalSettingsSecondary: 'Edit your personal settings',
+    contentPrimary: 'Content',
+    contentSecondary: 'Explore the content of the Repository',
+    searchPrimary: 'Search',
+    searchSecondaryText: 'Search in the repository, manage content queries',
+    eventsPrimary: 'Events',
+    eventsSecondary: 'Detailed event log with general info, warnings and errors',
+  },
 }
 
 export default values
