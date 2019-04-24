@@ -104,8 +104,6 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
   public getFieldValue(name: string | undefined) {
     if (name && this.props.content[name]) {
       return this.props.content[name]
-    } else {
-      return false
     }
   }
   /**
