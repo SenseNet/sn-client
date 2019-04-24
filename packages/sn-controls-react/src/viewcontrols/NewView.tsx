@@ -3,7 +3,6 @@
  *
  */
 import React, { Component, createElement } from 'react'
-import { connect } from 'react-redux'
 
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
@@ -11,20 +10,17 @@ import Typography from '@material-ui/core/Typography'
 import { Repository } from '@sensenet/client-core'
 import { ControlSchema } from '@sensenet/control-mapper'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
-import { Actions, Reducers } from '@sensenet/redux'
 import MediaQuery from 'react-responsive'
 import { ReactClientFieldSettingProps } from '../fieldcontrols/ClientFieldSetting'
 import { reactControlMapper } from '../ReactControlMapper'
-import { RootStateType } from './index'
 import { styles } from './NewViewStyles'
 
 /**
  * Interface for NewView properties
  */
-export interface NewViewProps<T extends GenericContent> {
+export interface NewViewProps<T extends GenericContent = GenericContent> {
   onSubmit?: (path: string, content: T, contentTypeName: string) => void
   repository: Repository
-  changeAction: (e: React.MouseEvent, content: T) => void
   schema?: Schema
   path: string
   contentTypeName: string
@@ -38,20 +34,10 @@ export interface NewViewProps<T extends GenericContent> {
 /**
  * Interface for NewView state
  */
-export interface NewViewState {
+export interface NewViewState<T extends GenericContent = GenericContent> {
   schema: ControlSchema<React.Component, ReactClientFieldSettingProps>
   dataSource: GenericContent[]
-}
-
-const mapStateToProps = (state: RootStateType) => {
-  return {
-    fields: Reducers.getFields(state.sensenet),
-    repositoryUrl: state.sensenet.session.repository ? state.sensenet.session.repository.repositoryUrl : '',
-  }
-}
-
-const mapDispatchToProps = {
-  changeAction: Actions.changeFieldValue,
+  content: T
 }
 
 /**
@@ -62,8 +48,8 @@ const mapDispatchToProps = {
  *  <NewView content={content} onSubmit={createSubmitClick} />
  * ```
  */
-export class NewViewComponent<T extends GenericContent> extends Component<
-  NewViewProps<T> & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
+export class NewViewComponent<T extends GenericContent, K extends keyof T> extends Component<
+  NewViewProps<T>,
   NewViewState
 > {
   /**
@@ -80,7 +66,10 @@ export class NewViewComponent<T extends GenericContent> extends Component<
     this.state = {
       schema: controlMapper.getFullSchemaForContentType(this.props.contentTypeName, 'new'),
       dataSource: [],
+      content: {} as T,
     }
+
+    this.handleInputChange = this.handleInputChange.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
   }
   /**
@@ -90,24 +79,19 @@ export class NewViewComponent<T extends GenericContent> extends Component<
     return this.props.handleCancel ? this.props.handleCancel() : null
   }
   /**
+   * handle change event on an input
+   * @param {SytheticEvent} event
+   */
+  public handleInputChange(field: keyof T, value: T[K]) {
+    ;(this.state.content as T)[field] = value
+  }
+  /**
    * render
    * @return {ReactElement} markup
    */
   public render() {
     const fieldSettings = this.state.schema.fieldMappings
-    const {
-      fields,
-      onSubmit,
-      repository,
-      changeAction,
-      path,
-      columns,
-      contentTypeName,
-      extension,
-      title,
-      submitCallback,
-      repositoryUrl,
-    } = this.props
+    const { onSubmit, repository, path, columns, contentTypeName, extension, title, submitCallback } = this.props
     const { schema } = this.state
     return (
       <form
@@ -115,8 +99,7 @@ export class NewViewComponent<T extends GenericContent> extends Component<
         onSubmit={e => {
           e.preventDefault()
           if (onSubmit) {
-            const c = fields as T
-            onSubmit(path, c, schema.schema.ContentTypeName)
+            onSubmit(path, this.state.content as T, schema.schema.ContentTypeName)
           }
           if (submitCallback) {
             submitCallback()
@@ -133,11 +116,11 @@ export class NewViewComponent<T extends GenericContent> extends Component<
             if (contentTypeName === 'File' && extension && fieldSetting.fieldSettings.ControlHint === 'sn:FileName') {
               fieldSetting.clientSettings['data-extension'] = extension
             }
-            fieldSetting.clientSettings.onChange = changeAction
+            fieldSetting.clientSettings.onChange = this.handleInputChange as any
             fieldSetting.clientSettings['data-actionName'] = 'new'
             fieldSetting.clientSettings['data-uploadFolderPath'] = this.props.uploadFolderPath || ''
             fieldSetting.clientSettings['data-repository'] = this.props.repository
-            fieldSetting.clientSettings['data-repositoryUrl'] = repositoryUrl
+            fieldSetting.clientSettings['data-repositoryUrl'] = repository.configuration.repositoryUrl
             return (
               <Grid
                 item={true}
@@ -173,8 +156,4 @@ export class NewViewComponent<T extends GenericContent> extends Component<
   }
 }
 
-const newView = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(NewViewComponent)
-export { newView as NewView }
+export { NewViewComponent as NewView }
