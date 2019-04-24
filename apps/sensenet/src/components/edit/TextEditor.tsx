@@ -67,14 +67,15 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
       logger.information({
         message: localization.saveSuccessNoty.replace('{0}', props.content.DisplayName || props.content.Name),
         data: {
-          iconContent: props.content,
+          relatedContent: props.content,
+          relatedRepository: repo,
         },
       })
     } catch (error) {
       logger.error({
         message: localization.saveFailedNoty.replace('{0}', props.content.DisplayName || props.content.Name),
         data: {
-          error,
+          details: { error },
         },
       })
     }

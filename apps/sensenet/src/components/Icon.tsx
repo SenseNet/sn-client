@@ -156,9 +156,10 @@ export const IconComponent: React.FunctionComponent<{
   item: any
   defaultIcon?: JSX.Element
   style?: React.CSSProperties
+  repository?: Repository
 }> = props => {
   const injector = useContext(InjectorContext)
-  const repo = useContext(RepositoryContext)
+  const repo = props.repository || useContext(RepositoryContext)
 
   const options: IconOptions = { style: props.style, injector, repo }
   const resolvers = [

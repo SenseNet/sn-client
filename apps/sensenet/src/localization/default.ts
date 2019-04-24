@@ -132,6 +132,8 @@ const values = {
     filter: {
       termTitle: 'Search term',
       termPlaceholder: 'Search term...',
+      levelTitle: 'Level',
+      levelAll: 'All',
     },
   },
 }

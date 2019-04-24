@@ -34,6 +34,11 @@ export class EventService {
     this.updateChanges()
   }
 
+  public clear() {
+    this.values.setValue([])
+    this.notificationValues.setValue({})
+  }
+
   public notificationValues: ObservableValue<{ [key: string]: Array<EventLogEntry<any>> }> = new ObservableValue({})
 
   public values: ObservableValue<Array<EventLogEntry<any & { guid: string }>>> = new ObservableValue([])

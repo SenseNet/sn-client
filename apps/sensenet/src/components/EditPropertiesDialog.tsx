@@ -36,7 +36,8 @@ export const EditPropertiesDialog: React.FunctionComponent<{
               logger.information({
                 message: localization.saveSuccessNoty.replace('{0}', content.DisplayName || content.Name),
                 data: {
-                  iconContent: content,
+                  relatedContent: content,
+                  relatedRepository: repo,
                 },
               })
             } catch (error) {

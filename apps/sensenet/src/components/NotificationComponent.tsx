@@ -90,7 +90,11 @@ export const NotificationComponent: React.FunctionComponent = () => {
             autoHideDuration={(item.data && item.data.autoHideDuration) || getAutoHideDuration(item)}
             message={
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Icon item={item.data.iconContent || item} style={{ marginRight: '1em' }} />
+                <Icon
+                  repository={item.data.relatedRepository}
+                  item={item.data.relatedContent || item}
+                  style={{ marginRight: '1em' }}
+                />
                 <div
                   title={item.message}
                   style={{ overflow: 'hidden', textOverflow: 'ellipsis', wordBreak: 'break-word' }}>

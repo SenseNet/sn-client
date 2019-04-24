@@ -38,7 +38,7 @@ export const AddButton: React.FunctionComponent = () => {
           logger.error({
             message: localization.errorGettingAllowedContentTypes,
             data: {
-              error,
+              details: { error },
             },
           })
         })
@@ -142,14 +142,15 @@ export const AddButton: React.FunctionComponent = () => {
                 logger.information({
                   message: localization.contentCreatedNoty.replace('{0}', created.d.DisplayName || created.d.Name),
                   data: {
-                    iconContent: created,
+                    relatedContent: created,
+                    relatedRepository: repo,
                   },
                 })
               } catch (error) {
                 logger.error({
                   message: localization.errorGettingAllowedContentTypes,
                   data: {
-                    error,
+                    details: { error },
                   },
                 })
               }

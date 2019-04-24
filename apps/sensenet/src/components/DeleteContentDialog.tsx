@@ -84,14 +84,15 @@ export const DeleteContentDialog: React.FunctionComponent<{
                           props.content[0].DisplayName || props.content[0].Name,
                         ),
                   data: {
-                    iconContent: props.content.length > 1 ? undefined : props.content[0],
+                    relatedContent: props.content.length > 1 ? undefined : props.content[0],
+                    relatedRepository: repo,
                   },
                 })
               } catch (error) {
                 logger.error({
                   message: localization.deleteFailedNoty,
                   data: {
-                    error,
+                    details: { error },
                   },
                 })
               } finally {

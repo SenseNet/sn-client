@@ -11,7 +11,7 @@ const SettingsEditor: React.FunctionComponent = () => {
   const settings = useContext(PersonalSettingsContext)
   const localization = useContext(LocalizationContext)
   const [editorContent] = useState({
-    Type: 'Settings',
+    Type: 'PersonalSettings',
     Name: `PersonalSettings`,
   })
 
@@ -21,7 +21,7 @@ const SettingsEditor: React.FunctionComponent = () => {
 
   return (
     <CurrentContentContext.Provider
-      value={{ Id: 0, Type: 'Settings', Path: '', Name: localization.values.personalSettings.title }}>
+      value={{ Id: 0, Type: 'PersonalSettings', Path: '', Name: localization.values.personalSettings.title }}>
       <TextEditor
         content={editorContent as any}
         loadContent={async () => JSON.stringify(settings, undefined, 3)}

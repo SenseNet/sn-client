@@ -73,7 +73,8 @@ export const Login: React.FunctionComponent = () => {
         logger.information({
           message: localization.loginSuccessNoty.replace('{0}', userName).replace('{1}', url),
           data: {
-            iconContent: repoToLogin.authentication.currentUser.getValue(),
+            relatedContent: repoToLogin.authentication.currentUser.getValue(),
+            relatedRepository: repoToLogin,
           },
         })
         setIsInProgress(false)
@@ -87,6 +88,9 @@ export const Login: React.FunctionComponent = () => {
     } catch (error) {
       logger.error({
         message: localization.loginErrorNoty.replace('{0}', userName).replace('{1}', url),
+        data: {
+          details: { error },
+        },
       })
       setError(error.toString())
     } finally {
