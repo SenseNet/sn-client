@@ -113,7 +113,11 @@ export class NewViewComponent<T extends GenericContent, K extends keyof T> exten
             if (fieldSetting.clientSettings['data-typeName'] === 'ReferenceFieldSetting') {
               fieldSetting.clientSettings['data-repository'] = repository
             }
-            if (contentTypeName === 'File' && extension && fieldSetting.fieldSettings.ControlHint === 'sn:FileName') {
+            if (
+              contentTypeName.indexOf('File') > -1 &&
+              extension &&
+              fieldSetting.fieldSettings.ControlHint === 'sn:FileName'
+            ) {
               fieldSetting.clientSettings['data-extension'] = extension
             }
             fieldSetting.clientSettings.onChange = this.handleInputChange as any
