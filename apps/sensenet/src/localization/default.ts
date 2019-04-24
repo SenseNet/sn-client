@@ -138,6 +138,12 @@ const values = {
       levelTitle: 'Level',
       levelAll: 'All',
     },
+    list: {
+      level: 'Level',
+      message: 'Message',
+      scope: 'Scope',
+      relatedContent: 'Related Content',
+    },
   },
 }
 

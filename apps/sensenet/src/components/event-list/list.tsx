@@ -14,6 +14,7 @@ import {
   ContentRoutingContextProvider,
   CurrentContentContext,
   InjectorContext,
+  LocalizationContext,
   RepositoryContext,
 } from '../../context'
 import { RepositoryManager } from '../../services/RepositoryManager'
@@ -26,6 +27,8 @@ export const List: React.FunctionComponent<{
 }> = props => {
   const filter = useContext(EventListFilterContext).filter
   const [effectiveValues, setEffectiveValues] = useState<Array<ILeveledLogEntry<any>>>([])
+
+  const localization = useContext(LocalizationContext).values.eventList.list
 
   const repositoryManager = useContext(InjectorContext).getInstance(RepositoryManager)
 
@@ -45,11 +48,11 @@ export const List: React.FunctionComponent<{
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Level</TableCell>
-            <TableCell>Message</TableCell>
-            <TableCell>Scope</TableCell>
-            <TableCell>Related content</TableCell>
-            <TableCell>Details</TableCell>
+            <TableCell>{localization.level}</TableCell>
+            <TableCell>{localization.message}</TableCell>
+            <TableCell>{localization.scope}</TableCell>
+            <TableCell>{localization.relatedContent}</TableCell>
+            <TableCell>&nbsp;</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
