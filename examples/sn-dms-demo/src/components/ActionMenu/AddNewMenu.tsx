@@ -64,7 +64,7 @@ class AddNewMenu extends React.Component<
     if (lastState.addNewOptions.length !== newProps.actions.length) {
       newProps.actions.map((action: a) => {
         const contentType = action.Url.includes('ContentType') ? getContentTypeFromUrl(action.Url) : null
-        const extension = contentType === 'File' ? getExtensionFromUrl(action.Url) : null
+        const extension = contentType && contentType.indexOf('File') > -1 ? getExtensionFromUrl(action.Url) : null
         const displayName =
           action.DisplayName.indexOf('New') === -1 ? action.DisplayName : action.DisplayName.substring(3)
         const newDisplayName =
@@ -78,7 +78,9 @@ class AddNewMenu extends React.Component<
               parentPath={newProps.currentContent ? newProps.currentContent.Path : ''}
               contentTypeName={contentType || ''}
               extension={extension || ''}
-              title={contentType === 'File' ? displayName : contentType ? contentType.toLowerCase() : ''}
+              title={
+                contentType && contentType.indexOf('File') ? displayName : contentType ? contentType.toLowerCase() : ''
+              }
             />,
             newDisplayName,
             newProps.closeDialog,
