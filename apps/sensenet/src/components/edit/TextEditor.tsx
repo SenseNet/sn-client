@@ -108,7 +108,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
         } else {
           const binaryPath = props.content.Binary && props.content.Binary.__mediaresource.media_src
           if (!binaryPath) {
-            throw Error("Content doesn't have a valid path to the binary field! ")
+            return
           }
           const textFile = await repo.fetch(PathHelper.joinPaths(repo.configuration.repositoryUrl, binaryPath))
           if (textFile.ok) {
