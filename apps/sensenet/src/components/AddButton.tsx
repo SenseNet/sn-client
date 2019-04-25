@@ -74,7 +74,7 @@ export const AddButton: React.FunctionComponent = () => {
                   width: 90,
                 }}>
                 <CloudUpload style={{ height: 38, width: 38 }} />
-                <Typography variant="body2">{localization.upload}</Typography>
+                <Typography variant="body1">{localization.upload}</Typography>
               </div>
             </label>
           </Button>
@@ -111,7 +111,7 @@ export const AddButton: React.FunctionComponent = () => {
                   width: 90,
                 }}>
                 <Icon style={{ height: 38, width: 38 }} item={childType} />
-                <Typography variant="body2">{childType.DisplayName}</Typography>
+                <Typography variant="body1">{childType.DisplayName}</Typography>
               </div>
             </Button>
           ))}

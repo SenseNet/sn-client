@@ -105,6 +105,7 @@ const values = {
     languageTitle: 'The name of the active language',
     themeTitle: 'Select a dark or a light theme',
     eventLogSize: 'Number of entries to store in the Event Log',
+    sendLogWithCrashReports: 'Send log data with crash reports by default',
   },
   repositorySelector: {
     loggedInAs: 'You are currently logged in as {0}',
@@ -150,6 +151,21 @@ const values = {
     details: {
       back: 'Back to list',
     },
+  },
+  errorBoundary: {
+    title: 'Something went wrong :(',
+    text: `An error occured and your request couldn't be completed. `,
+    reload: 'Reload page',
+    reportError: 'Report error',
+  },
+  errorReport: {
+    title: 'Send error report',
+    descriptionTitle: 'Description',
+    descriptionHelperText: 'Explain what did you do when the error occured',
+    send: 'Send',
+    cancel: 'Cancel',
+    allowLogSending: 'I agree to send events from my log',
+    sendingInProgress: 'Sending error report...',
   },
 }
 

@@ -24,6 +24,7 @@ export type PersonalSettingsType = PlatformDependent<UiSettings> & {
   repositories: Array<{ url: string; loginName?: string; displayName?: string }>
   lastRepository: string
   eventLogSize: number
+  sendLogWithCrashReports: boolean
   language: 'default' | 'hungarian'
 }
 
@@ -54,6 +55,7 @@ export const defaultSettings: PersonalSettingsType = {
   lastRepository: '',
   language: 'default',
   eventLogSize: 500,
+  sendLogWithCrashReports: true,
 }
 
 @Injectable({ lifetime: 'singleton' })

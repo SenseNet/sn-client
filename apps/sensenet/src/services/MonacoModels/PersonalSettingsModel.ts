@@ -2,7 +2,7 @@ import { Repository } from '@sensenet/client-core'
 import { editor, languages, Uri } from 'monaco-editor'
 import defaultLanguage from '../../localization/default'
 
-export const setupModel = (language = defaultLanguage) => {
+export const setupModel = (language = defaultLanguage, repo: Repository) => {
   const personalSettingsPath = `sensenet://PersonalSettings/PersonalSettings`
   const uri = Uri.parse(personalSettingsPath)
   const uriString = uri.toString()
@@ -84,7 +84,7 @@ export const setupModel = (language = defaultLanguage) => {
                       'Actions',
                       'Type',
                       /** ToDo: check for other displayable system fields */
-                      ...new Repository().schemas.getSchemaByName('GenericContent').FieldSettings.map(f => f.Name),
+                      ...repo.schemas.getSchemaByName('GenericContent').FieldSettings.map(f => f.Name),
                     ],
                   },
                 },
@@ -111,6 +111,10 @@ export const setupModel = (language = defaultLanguage) => {
             repositories: { $ref: '#/definitions/repositories' },
             lastRepository: { type: 'string', description: language.personalSettings.lastRepository },
             eventLogSize: { type: 'number', description: language.personalSettings.eventLogSize },
+            sendLogWithCrashReports: {
+              type: 'boolean',
+              description: language.personalSettings.sendLogWithCrashReports,
+            },
             language: {
               description: language.personalSettings.languageTitle,
               enum: ['default', 'hungarian'],

@@ -1,21 +1,19 @@
 import { Repository } from '@sensenet/client-core'
 import React, { useContext, useEffect, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { RepositoryManager } from '../services/RepositoryManager'
 import { InjectorContext } from './InjectorContext'
 import { PersonalSettingsContext } from './PersonalSettingsContext'
 
 export const lastRepositoryKey = 'sensenet-last-repository'
 
-export const RepositoryContext = React.createContext<Repository>(new Repository())
+export const RepositoryContext = React.createContext(new Repository())
 
 export const RepositoryContextProviderComponent: React.FunctionComponent<
   RouteComponentProps<{ repo?: string }>
 > = props => {
   const injector = useContext(InjectorContext)
-  const repoManager = injector.getInstance(RepositoryManager)
   const settings = useContext(PersonalSettingsContext)
-  const [repo, setRepo] = useState(repoManager.getRepository(localStorage.getItem(lastRepositoryKey) || ''))
+  const [repo, setRepo] = useState(new Repository())
 
   useEffect(() => {
     let repoFromUrl = ''
@@ -24,10 +22,14 @@ export const RepositoryContextProviderComponent: React.FunctionComponent<
     } catch (error) {
       /** */
     }
-    const newRepo = injector.getRepository(
-      repoFromUrl.startsWith('http://') || repoFromUrl.startsWith('https://') ? repoFromUrl : settings.lastRepository,
-    )
-    setRepo(newRepo)
+
+    const repoUrl =
+      (repoFromUrl && repoFromUrl.startsWith('http://')) || repoFromUrl.startsWith('https://')
+        ? repoFromUrl
+        : settings.lastRepository
+
+    const newRepo = repoUrl && repoUrl.length && injector.getRepository(repoUrl)
+    newRepo && setRepo(newRepo)
   }, [settings.lastRepository, props.match.params.repo])
 
   return <RepositoryContext.Provider value={repo}>{props.children}</RepositoryContext.Provider>

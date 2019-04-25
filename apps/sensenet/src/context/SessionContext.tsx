@@ -30,6 +30,9 @@ export const SessionContextProvider: React.FunctionComponent = props => {
         setState(s)
       }, true),
       repo.authentication.currentUser.subscribe(async usr => {
+        if (usr.Id === ConstantContent.VISITOR_USER.Id) {
+          return
+        }
         try {
           await loadLock.acquire()
           setUser(usr)
