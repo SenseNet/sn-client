@@ -449,6 +449,7 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
             expand: ['Actions'] as any,
             scenario: 'DMSGroupListItem',
             query: `InTree:${newGroup.d.Path} AND TypeIs:Group .AUTOFILTERS:OFF`,
+            orderby: 'DisplayName' as any,
           },
         })
         realGroup = await repository.load<T>({
@@ -474,6 +475,7 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
             expand: ['Actions'] as any,
             scenario: 'DMSGroupListItem',
             filter: `IsFolder eq true and ContentType ne 'SystemFolder' or ContentType eq 'Group'`,
+            orderby: 'DisplayName' as any,
           },
         })
         options.dispatch(setGroup(newGroup.d, items.d.results))
@@ -490,7 +492,10 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
 
       eventObservables.push(
         eventHub.onCustomActionExecuted.subscribe(() => {
-          emitChange({ Id: realGroup.d ? realGroup.d.Id : newGroup.d.Id, ParentId: realGroup.d.ParentId } as Group)
+          emitChange({
+            Id: realGroup.d ? realGroup.d.Id : newGroup.d.Id,
+            ParentId: realGroup.d ? realGroup.d.ParentId : null,
+          } as Group)
         }),
         eventHub.onContentCreated.subscribe(value => emitChange(value.content)),
         eventHub.onContentModified.subscribe(value => {
