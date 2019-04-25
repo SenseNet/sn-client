@@ -23,8 +23,6 @@ export class CurrentContentService<T extends GenericContent> {
         idOrPath,
       })
       this.currentContent = result.d
-    } catch (error) {
-      /** */
     } finally {
       this.loadLock.release()
       this.isLoading = false
