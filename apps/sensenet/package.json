@@ -97,7 +97,6 @@
     "react-monaco-editor": "^0.25.1",
     "react-redux": "^6.0.1",
     "react-responsive": "^6.1.1",
-    "react-transition-group": "^4.0.0",
     "redux": "^4.0.1",
     "redux-di-middleware": "^4.0.1",
     "semaphore-async-await": "^1.5.1",

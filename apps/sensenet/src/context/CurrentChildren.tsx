@@ -25,10 +25,6 @@ export const CurrentChildrenProvider: React.FunctionComponent = props => {
   const requestReload = () => setReloadToken(Math.random())
   const [error, setError] = useState<Error | undefined>()
 
-  if (error) {
-    throw error
-  }
-
   useEffect(() => {
     const ac = new AbortController()
     ;(async () => {
@@ -86,6 +82,10 @@ export const CurrentChildrenProvider: React.FunctionComponent = props => {
 
     return () => subscriptions.forEach(s => s.dispose())
   }, [currentContent, repo, children])
+
+  if (error) {
+    throw error
+  }
 
   return <CurrentChildrenContext.Provider value={children}>{props.children}</CurrentChildrenContext.Provider>
 }

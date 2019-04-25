@@ -1,9 +1,10 @@
 import { Injector } from '@furystack/inject'
 import Button from '@material-ui/core/Button'
-import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import Typography from '@material-ui/core/Typography'
 import HomeTwoTone from '@material-ui/icons/HomeTwoTone'
 import RefreshTwoTone from '@material-ui/icons/RefreshTwoTone'
+import { Repository } from '@sensenet/client-core'
+import { isExtendedError } from '@sensenet/client-core/dist/Repository/Repository'
 import React from 'react'
 import { InjectorContext } from '../context'
 
@@ -22,10 +23,15 @@ export class ErrorBoundary extends React.Component<{}, ErrorBoundaryState> {
     return { hasError: true, error }
   }
 
-  public componentDidCatch(error: any, info: any) {
+  public async componentDidCatch(error: Error, info: any) {
+    if (isExtendedError(error)) {
+      const msg = await (this.context as Injector).getInstance(Repository).getErrorFromResponse(error.response)
+    }
+
+    const message = msg.message || error.message || 'An unhandled error happened'
     ;(this.context as Injector).logger.fatal({
       scope: 'ErrorBoundary',
-      message: 'An unhandled error happened',
+      message,
       data: {
         details: {
           error,
@@ -38,29 +44,27 @@ export class ErrorBoundary extends React.Component<{}, ErrorBoundaryState> {
   public render() {
     if (this.state.hasError) {
       return (
-        <ClickAwayListener onClickAway={() => this.setState({ hasError: false })}>
-          <div style={{ padding: '4em' }}>
-            <Typography variant="h4" color="error">
-              Something went wrong :(
-            </Typography>
-            <Typography variant="body1" color="textPrimary">
-              <strong>Error message: </strong>
-              {this.state.error && this.state.error.message}
-            </Typography>
-            <Typography variant="body2" color="textSecondary">
-              {this.state.info}
-            </Typography>
-            <Button onClick={() => window.location.reload()}>
-              <RefreshTwoTone />
-              Reload
-            </Button>
+        <div style={{ padding: '4em' }}>
+          <Typography variant="h4" color="error">
+            Something went wrong :(
+          </Typography>
+          <Typography variant="body1" color="textPrimary">
+            <strong>Error message: </strong>
+            {this.state.error && this.state.error.message}
+          </Typography>
+          <Typography variant="body2" color="textSecondary">
+            {this.state.info}
+          </Typography>
+          <Button onClick={() => window.location.reload()}>
+            <RefreshTwoTone />
+            Reload
+          </Button>
 
-            <Button onClick={() => window.location.replace('/')}>
-              <HomeTwoTone />
-              Home
-            </Button>
-          </div>
-        </ClickAwayListener>
+          <Button onClick={() => window.location.replace('/')}>
+            <HomeTwoTone />
+            Home
+          </Button>
+        </div>
       )
     }
 

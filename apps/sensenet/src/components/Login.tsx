@@ -77,7 +77,6 @@ export const Login: React.FunctionComponent = () => {
             relatedRepository: repoToLogin.configuration.repositoryUrl,
           },
         })
-        // setIsInProgress(false)
       } else {
         setIsInProgress(false)
         setError(localization.loginFailed)
@@ -92,8 +91,6 @@ export const Login: React.FunctionComponent = () => {
           details: { error },
         },
       })
-    } finally {
-      // setIsInProgress(false)
     }
   }
 

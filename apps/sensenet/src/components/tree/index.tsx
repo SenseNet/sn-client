@@ -36,10 +36,6 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
   const [error, setError] = useState<Error | undefined>()
 
-  if (error) {
-    throw error
-  }
-
   const update = () => setReloadToken(Math.random())
 
   const handleCreate = (c: Created) => {
@@ -53,7 +49,7 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
   }
 
   useEffect(() => {
-    setAncestorPaths(ancestors.map(a => a.Path))
+    ancestors && ancestors.length && setAncestorPaths(ancestors.map(a => a.Path))
   }, [ancestors])
 
   useEffect(() => {
@@ -98,6 +94,10 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
     })()
     return () => ac.abort()
   }, [reloadToken])
+
+  if (error) {
+    throw error
+  }
 
   return (
     <div style={props.style}>

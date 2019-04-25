@@ -42,10 +42,6 @@ export const CurrentAncestorsProvider: React.FunctionComponent = props => {
   }, [ancestors, repo])
   const [error, setError] = useState<Error | undefined>()
 
-  if (error) {
-    throw error
-  }
-
   useEffect(() => {
     const ac = new AbortController()
     ;(async () => {
@@ -75,5 +71,8 @@ export const CurrentAncestorsProvider: React.FunctionComponent = props => {
     return () => ac.abort()
   }, [currentContent, repo, reloadToken])
 
+  if (error) {
+    throw error
+  }
   return <CurrentAncestorsContext.Provider value={ancestors}>{props.children}</CurrentAncestorsContext.Provider>
 }
