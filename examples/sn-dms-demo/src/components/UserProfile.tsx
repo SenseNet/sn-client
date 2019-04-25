@@ -68,8 +68,8 @@ class UserProfile extends React.Component<
 
   private static updateStoreFromPath(newProps: UserProfile['props']) {
     try {
-      const userProfilePath = newProps.user
-        ? newProps.user.Path
+      const userProfilePath = newProps.active
+        ? newProps.active.Path
         : `/Root/IMS/Public/${newProps.loggedinUser.content.Name}`
       newProps.loadUser(userProfilePath, {
         select: ['Avatar', 'FullName', 'DisplayName', 'Email', 'Phone', 'LoginName'],
