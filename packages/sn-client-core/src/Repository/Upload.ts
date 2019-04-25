@@ -113,6 +113,7 @@ export class Upload {
     const formData = this.getFormDataFromOptions(options)
     formData.append(options.file.name, options.file)
     const response = await this.repository.fetch(this.getUploadUrl(options), {
+      ...options.requestInit,
       credentials: 'include',
       method: 'POST',
       body: formData,
@@ -168,6 +169,7 @@ export class Upload {
     formData.append('UseChunk', 'true')
     formData.append('create', '1')
     const initRequest = await this.repository.fetch(uploadPath, {
+      ...options.requestInit,
       body: formData,
       credentials: 'include',
       method: 'POST',
@@ -197,6 +199,7 @@ export class Upload {
       chunkFormData.append(options.file.name, chunkData)
 
       const lastResponse = await this.repository.fetch(uploadPath, {
+        ...options.requestInit,
         body: chunkFormData,
         credentials: 'include',
         method: 'POST',
