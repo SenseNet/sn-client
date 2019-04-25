@@ -1,9 +1,11 @@
+import { Injector } from '@furystack/inject'
 import Button from '@material-ui/core/Button'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import Typography from '@material-ui/core/Typography'
 import HomeTwoTone from '@material-ui/icons/HomeTwoTone'
 import RefreshTwoTone from '@material-ui/icons/RefreshTwoTone'
 import React from 'react'
+import { InjectorContext } from '../context'
 
 export interface ErrorBoundaryState {
   hasError: boolean
@@ -12,6 +14,8 @@ export interface ErrorBoundaryState {
 }
 
 export class ErrorBoundary extends React.Component<{}, ErrorBoundaryState> {
+  public static contextType = InjectorContext
+
   public state: ErrorBoundaryState = { hasError: false }
   public static getDerivedStateFromError(error: any) {
     // Update state so the next render will show the fallback UI.
@@ -20,7 +24,17 @@ export class ErrorBoundary extends React.Component<{}, ErrorBoundaryState> {
 
   public componentDidCatch(error: any, info: any) {
     // You can also log the error to an error reporting service
-    console.log(error, info)
+    ;(this.context as Injector).logger.fatal({
+      scope: 'ErrorBoundary',
+      message: 'An unhandled error happened',
+      data: {
+        details: {
+          error,
+          info,
+        },
+      },
+    })
+    // console.log(error, info)
   }
 
   public render() {

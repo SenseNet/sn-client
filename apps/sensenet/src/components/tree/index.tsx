@@ -34,6 +34,11 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
   const [contextMenuItem, setContextMenuItem] = useState<GenericContent | null>(null)
   const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
+  const [error, setError] = useState<Error | undefined>()
+
+  if (error) {
+    throw error
+  }
 
   const update = debounce(() => {
     setReloadToken(Math.random())
@@ -73,14 +78,18 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
 
   useEffect(() => {
     ;(async () => {
-      const children = await repo.loadCollection({
-        path: props.parentPath,
-        oDataOptions: {
-          filter: 'IsFolder eq true',
-          ...props.loadOptions,
-        },
-      })
-      setItems(children.d.results)
+      try {
+        const children = await repo.loadCollection({
+          path: props.parentPath,
+          oDataOptions: {
+            filter: 'IsFolder eq true',
+            ...props.loadOptions,
+          },
+        })
+        setItems(children.d.results)
+      } catch (error) {
+        setError(error)
+      }
     })()
   }, [reloadToken])
 

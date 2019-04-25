@@ -54,17 +54,26 @@ export const CurrentContentProvider: React.FunctionComponent<{
     return () => subscriptions.forEach(s => s.dispose())
   }, [repo, content])
 
+  const [error, setError] = useState<Error | undefined>()
+
   useEffect(() => {
+    const ac = new AbortController()
     ;(async () => {
-      await loadLock.acquire()
       try {
         const response = await repo.load({ idOrPath: props.idOrPath })
         setContent(response.d)
+      } catch (error) {
+        setError(error)
       } finally {
         loadLock.release()
       }
     })()
+    return () => ac.abort()
   }, [repo, props.idOrPath, reloadToken])
+
+  if (error) {
+    throw error
+  }
 
   return (
     <CurrentContentContext.Provider value={content as GenericContent}>{props.children}</CurrentContentContext.Provider>

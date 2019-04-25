@@ -49,6 +49,12 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
   const [hasChanges, setHasChanges] = useState(false)
   const logger = useContext(LoggerContext).withScope('TextEditor')
 
+  const [error, setError] = useState<Error | undefined>()
+
+  if (error) {
+    throw error
+  }
+
   const saveContent = async () => {
     try {
       if (props.saveContent) {
@@ -98,21 +104,25 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
     setUri(getMonacoModelUri(props.content))
     setLanguage(ctx.getMonacoLanguage(props.content))
     ;(async () => {
-      if (props.loadContent) {
-        const value = await props.loadContent(props.content)
-        setTextValue(value)
-        setSavedTextValue(value)
-      } else {
-        const binaryPath = props.content.Binary && props.content.Binary.__mediaresource.media_src
-        if (!binaryPath) {
-          throw Error("Content doesn't have a valid path to the binary field! ")
+      try {
+        if (props.loadContent) {
+          const value = await props.loadContent(props.content)
+          setTextValue(value)
+          setSavedTextValue(value)
+        } else {
+          const binaryPath = props.content.Binary && props.content.Binary.__mediaresource.media_src
+          if (!binaryPath) {
+            throw Error("Content doesn't have a valid path to the binary field! ")
+          }
+          const textFile = await repo.fetch(PathHelper.joinPaths(repo.configuration.repositoryUrl, binaryPath))
+          if (textFile.ok) {
+            const text = await textFile.text()
+            setTextValue(text)
+            setSavedTextValue(text)
+          }
         }
-        const textFile = await repo.fetch(PathHelper.joinPaths(repo.configuration.repositoryUrl, binaryPath))
-        if (textFile.ok) {
-          const text = await textFile.text()
-          setTextValue(text)
-          setSavedTextValue(text)
-        }
+      } catch (error) {
+        setError(error)
       }
     })()
   }, [props.content.Id])

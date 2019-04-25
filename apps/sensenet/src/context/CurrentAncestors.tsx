@@ -40,6 +40,11 @@ export const CurrentAncestorsProvider: React.FunctionComponent = props => {
     ]
     return () => subscriptions.forEach(s => s.dispose())
   }, [ancestors, repo])
+  const [error, setError] = useState<Error | undefined>()
+
+  if (error) {
+    throw error
+  }
 
   useEffect(() => {
     ;(async () => {
@@ -55,6 +60,8 @@ export const CurrentAncestorsProvider: React.FunctionComponent = props => {
           },
         })
         setAncestors(ancestorsResult.d.results)
+      } catch (error) {
+        setError(error)
       } finally {
         loadLock.release()
       }

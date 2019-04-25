@@ -23,6 +23,11 @@ export const CurrentChildrenProvider: React.FunctionComponent = props => {
   const loadSettings = useContext(LoadSettingsContext)
 
   const requestReload = debounce(() => setReloadToken(Math.random()), 200)
+  const [error, setError] = useState<Error | undefined>()
+
+  if (error) {
+    throw error
+  }
 
   useEffect(() => {
     ;(async () => {
@@ -33,6 +38,8 @@ export const CurrentChildrenProvider: React.FunctionComponent = props => {
           oDataOptions: loadSettings.loadChildrenSettings,
         })
         setChildren(childrenResult.d.results)
+      } catch (error) {
+        setError(error)
       } finally {
         loadLock.release()
       }

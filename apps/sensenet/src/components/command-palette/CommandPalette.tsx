@@ -103,7 +103,9 @@ export class CommandPaletteComponent extends React.Component<
   }
 
   private setDelayedOpenedState = debounce((value: boolean) => {
-    this.setState({ delayedOpened: value })
+    if (value !== this.state.delayedOpened) {
+      this.setState({ delayedOpened: value })
+    }
   }, 370)
 
   public componentDidUpdate(prevProps: CommandPaletteComponent['props']) {
