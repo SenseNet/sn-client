@@ -8,7 +8,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import Add from '@material-ui/icons/Add'
 import CloudUpload from '@material-ui/icons/CloudUpload'
-import { NewViewComponent } from '@sensenet/controls-react'
+import { NewView } from '@sensenet/controls-react'
 import { Schema } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
 import { CurrentContentContext, InjectorContext, LocalizationContext, RepositoryContext } from '../context'
@@ -110,12 +110,7 @@ export const AddButton: React.FunctionComponent = () => {
       <Dialog open={showAddNewDialog} onClose={() => setShowAddNewDialog(false)}>
         <DialogTitle> {localization.dialogTitle.replace('{0}', selectedSchema.DisplayName)}</DialogTitle>
         <DialogContent>
-          <NewViewComponent
-            repositoryUrl={repo.configuration.repositoryUrl}
-            fields={[]}
-            changeAction={() => {
-              return null as any
-            }}
+          <NewView
             handleCancel={() => setShowAddNewDialog(false)}
             repository={repo}
             contentTypeName={selectedSchema.ContentTypeName}
