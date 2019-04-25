@@ -51,10 +51,6 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
 
   const [error, setError] = useState<Error | undefined>()
 
-  if (error) {
-    throw error
-  }
-
   const saveContent = async () => {
     try {
       if (props.saveContent) {
@@ -126,6 +122,10 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
       }
     })()
   }, [props.content.Id])
+
+  if (error) {
+    throw error
+  }
 
   return (
     <div
