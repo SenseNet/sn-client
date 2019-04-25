@@ -1,15 +1,12 @@
+/**
+ * @module FieldControls
+ */
 import { GenericContent } from '@sensenet/default-content-types'
+
 /**
  * Interface for ReactClientFieldSetting properties
  */
-
-/**
- * @module FieldControls
- *
- */ export interface ReactClientFieldSettingProps<
-  T extends GenericContent = GenericContent,
-  K extends keyof T = 'Name'
-> {
+export interface ReactClientFieldSettingProps<T extends GenericContent = GenericContent, K extends keyof T = 'Name'> {
   /**
    * Unique name of the field control
    */

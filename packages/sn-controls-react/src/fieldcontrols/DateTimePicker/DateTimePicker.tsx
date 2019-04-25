@@ -11,21 +11,21 @@ import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../Client
 import { ReactDateTimeFieldSetting } from '../DateTimeFieldSetting'
 
 /**
- * Interface for DatePicker properties
+ * Interface for DateTimePicker properties
  */
 export interface DateTimePickerProps
   extends ReactClientFieldSettingProps,
     ReactClientFieldSetting,
     ReactDateTimeFieldSetting {}
 /**
- * Interface for DatePicker state
+ * Interface for DateTimePicker state
  */
 export interface DateTimePickerState {
   value: string
   dateValue: Date
 }
 /**
- * Field control that represents a Date field. Available values will be populated from the FieldSettings.
+ * Field control that represents a DateTime field. Available values will be populated from the FieldSettings.
  */
 export class DateTimePicker extends React.Component<DateTimePickerProps, DateTimePickerState> {
   /**

@@ -1,12 +1,11 @@
 /**
  * @module sn-controls-react
- *
- *
  */
 
 import { Repository } from '@sensenet/client-core'
 import { ControlMapper } from '@sensenet/control-mapper'
 import {
+  BooleanFieldSetting,
   ChoiceFieldSetting,
   DateTimeFieldSetting,
   FieldSetting,
@@ -45,8 +44,6 @@ const clientConfigFactory = (fieldSettings: FieldSetting) => {
     (defaultSetting['data-typeName'] = fieldSettings.Type || '')
   return defaultSetting
 }
-
-// const repository = new Repository()
 
 /**
  * A static Control Mapper instance, used to create the mapping between sensenet ECM ContentTypes and FieldSettings and React components.
@@ -184,4 +181,7 @@ export const reactControlMapper = (repository: Repository) =>
         default:
           return FieldControls.ShortText
       }
+    })
+    .setupFieldSettingDefault(BooleanFieldSetting, () => {
+      return FieldControls.Boolean
     })

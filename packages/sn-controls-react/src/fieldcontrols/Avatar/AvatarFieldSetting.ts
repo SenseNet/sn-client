@@ -1,6 +1,5 @@
 /**
  * @module FieldControls
- *
  */
 import { User } from '@sensenet/default-content-types'
 import { ReactReferenceGridFieldSetting } from '../ReferenceGrid/ReferenceGridFieldSettings'

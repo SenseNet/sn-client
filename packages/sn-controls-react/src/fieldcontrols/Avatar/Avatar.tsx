@@ -252,7 +252,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                   path={
                     this.props['data-selectionRoot']
                       ? this.props['data-selectionRoot'][0]
-                      : `/Root/Profiles/Public/${this.props['content'].Name}/Document_Library`
+                      : this.props['data-uploadFolderPath']
                   }
                   allowedTypes={this.props['data-allowedTypes']}
                   repository={this.props['data-repository']}

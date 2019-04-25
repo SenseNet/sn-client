@@ -1,7 +1,6 @@
 /**
  * @module FieldControls
- *
- */ /** */
+ */
 import React, { Component } from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactPasswordFieldSetting } from './PasswordFieldSetting'
@@ -138,6 +137,7 @@ export class Password<T extends GenericContent, K extends keyof T> extends Compo
               disabled={this.props.readOnly}
               error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
               fullWidth={true}
+              onChange={e => this.handleChange(e)}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton aria-label="Toggle password visibility" onClick={this.handleClickShowPassword}>

@@ -1,10 +1,9 @@
 /**
  * @module FieldControls
- *
  * @preferred
  * @description This module contains controls that are used to display or edit specific fields of a specified Content.
- *
- */ /** */
+ */
+
 export * from './Number/Number'
 export * from './CheckboxGroup/CheckboxGroup'
 export * from './DatePicker/DatePicker'
@@ -24,3 +23,4 @@ export * from './AutoComplete/AutoComplete'
 export * from './FileUpload/FileUpload'
 export * from './Avatar/Avatar'
 export * from './ReferenceGrid/ReferenceGrid'
+export * from './Boolean/Boolean'
