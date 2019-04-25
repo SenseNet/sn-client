@@ -190,7 +190,7 @@ export interface GetActionOptions {
 /**
  * Options for uploading content
  */
-export interface UploadOptions<T> extends WithOdataOptions<T> {
+export interface UploadOptions<T> extends WithOdataOptions<T>, WithRequestInit {
   /**
    * The name of the content type, e.g.: File
    */
