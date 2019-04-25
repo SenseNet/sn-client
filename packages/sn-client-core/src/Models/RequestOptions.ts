@@ -18,6 +18,10 @@ export interface LoadOptions<TContentType> {
    * Optional content version parameter
    */
   version?: string
+  /**
+   * Additional fetch request init options
+   */
+  requestInit?: RequestInit
 }
 
 /**
@@ -32,6 +36,10 @@ export interface LoadCollectionOptions<TContentType> {
    * an ODataOptions object
    */
   oDataOptions?: ODataParams<TContentType>
+  /**
+   * Additional fetch request init options
+   */
+  requestInit?: RequestInit
 }
 
 /**
@@ -61,6 +69,10 @@ export interface PostOptions<TContentType> {
    * An optional OData Options object
    */
   oDataOptions?: ODataParams<TContentType>
+  /**
+   * Additional fetch request init options
+   */
+  requestInit?: RequestInit
 }
 
 /**
@@ -80,6 +92,10 @@ export interface PatchOptions<TContentType> {
    * An optional OData Options object
    */
   oDataOptions?: ODataParams<TContentType>
+  /**
+   * Additional fetch request init options
+   */
+  requestInit?: RequestInit
 }
 
 /**
@@ -99,6 +115,10 @@ export interface PutOptions<TContentType> {
    * An optional OData Options object
    */
   oDataOptions?: ODataParams<TContentType>
+  /**
+   * Additional fetch request init options
+   */
+  requestInit?: RequestInit
 }
 
 /**
@@ -113,6 +133,10 @@ export interface DeleteOptions {
    * Permantent flag for a delete request
    */
   permanent?: boolean
+  /**
+   * Additional fetch request init options
+   */
+  requestInit?: RequestInit
 }
 
 /**
@@ -131,6 +155,10 @@ export interface MoveOptions {
    * Optional content to call the action
    */
   rootContent?: Content
+  /**
+   * Additional fetch request init options
+   */
+  requestInit?: RequestInit
 }
 
 /**
@@ -149,6 +177,10 @@ export interface CopyOptions {
    * Optional content to call the action
    */
   rootContent?: Content
+  /**
+   * Additional fetch request init options
+   */
+  requestInit?: RequestInit
 }
 
 /**
@@ -176,6 +208,10 @@ export interface ActionOptions<TBody, TContentType> {
    * An OData Options object
    */
   oDataOptions?: ODataParams<TContentType>
+  /**
+   * Additional fetch request init options
+   */
+  requestInit?: RequestInit
 }
 
 /**
