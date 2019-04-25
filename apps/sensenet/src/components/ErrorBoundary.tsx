@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography'
 import HomeTwoTone from '@material-ui/icons/HomeTwoTone'
 import RefreshTwoTone from '@material-ui/icons/RefreshTwoTone'
 import { Repository } from '@sensenet/client-core'
-import { isExtendedError } from '@sensenet/client-core/dist/Repository/Repository'
+import { ExtendedError, isExtendedError } from '@sensenet/client-core/dist/Repository/Repository'
 import React from 'react'
 import { InjectorContext } from '../context'
 
@@ -24,17 +24,18 @@ export class ErrorBoundary extends React.Component<{}, ErrorBoundaryState> {
   }
 
   public async componentDidCatch(error: Error, info: any) {
+    let msg: ExtendedError | undefined
     if (isExtendedError(error)) {
-      const msg = await (this.context as Injector).getInstance(Repository).getErrorFromResponse(error.response)
+      msg = await (this.context as Injector).getInstance(Repository).getErrorFromResponse(error.response)
     }
 
-    const message = msg.message || error.message || 'An unhandled error happened'
+    const message = (msg && msg.message) || error.message || 'An unhandled error happened'
     ;(this.context as Injector).logger.fatal({
       scope: 'ErrorBoundary',
       message,
       data: {
         details: {
-          error,
+          error: msg || error,
           info,
         },
       },
