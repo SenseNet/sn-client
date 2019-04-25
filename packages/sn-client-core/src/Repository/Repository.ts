@@ -29,7 +29,14 @@ import { Versioning } from './Versioning'
 /**
  * Defines an extended error message instance that contains an original error instance, a response and a parsed JSON body from the response
  */
-export type ExtendedError = Error & { body: any; response: Response; text?: string }
+export type ExtendedError = Error & {
+  body: any
+  response: Response
+  text?: string
+  statusCode: number
+  statusText: string
+  url: string
+}
 
 /**
  * Type guard to check if an error is extended with a response and a parsed body
@@ -109,6 +116,10 @@ export class Repository implements Disposable {
     error.body = body
     error.response = response
     error.text = text
+    error.statusCode = response.status
+    error.statusText = response.statusText
+    error.url = response.url
+
     return error
   }
 
