@@ -23,7 +23,6 @@ export class ErrorBoundary extends React.Component<{}, ErrorBoundaryState> {
   }
 
   public componentDidCatch(error: any, info: any) {
-    // You can also log the error to an error reporting service
     ;(this.context as Injector).logger.fatal({
       scope: 'ErrorBoundary',
       message: 'An unhandled error happened',
@@ -34,7 +33,6 @@ export class ErrorBoundary extends React.Component<{}, ErrorBoundaryState> {
         },
       },
     })
-    // console.log(error, info)
   }
 
   public render() {

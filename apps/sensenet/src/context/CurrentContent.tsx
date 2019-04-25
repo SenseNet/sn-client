@@ -60,10 +60,12 @@ export const CurrentContentProvider: React.FunctionComponent<{
     const ac = new AbortController()
     ;(async () => {
       try {
-        const response = await repo.load({ idOrPath: props.idOrPath })
+        const response = await repo.load({ idOrPath: props.idOrPath, requestInit: { signal: ac.signal } })
         setContent(response.d)
       } catch (error) {
-        setError(error)
+        if (!ac.signal.aborted) {
+          setError(error)
+        }
       } finally {
         loadLock.release()
       }

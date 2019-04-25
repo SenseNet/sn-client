@@ -5,7 +5,6 @@ import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
 import React, { useContext, useEffect, useState } from 'react'
-import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import {
   CurrentAncestorsContext,
   CurrentChildrenContext,
@@ -105,240 +104,235 @@ export const CollectionComponent: React.FunctionComponent<{
     <div style={{ ...props.style }}>
       {props.enableBreadcrumbs ? <ContentBreadcrumbs onItemClick={i => props.onParentChange(i.content)} /> : null}
       <DropFileArea parent={parent} style={{ height: '100%', overflow: 'hidden' }}>
-        <TransitionGroup style={{ width: '100%', height: '100%' }}>
-          <CSSTransition key={parent.Path} classNames="fade" timeout={300}>
-            <div
-              style={{
-                ...(isFocused ? {} : { opacity: 0.8 }),
-                height: 'calc(100% - 36px)',
-                overflow: 'auto',
-                userSelect: 'none',
-                outline: 'none',
-              }}
-              tabIndex={0}
-              onFocus={() => {
-                setIsFocused(true)
-              }}
-              onBlur={ev => {
-                if (!ev.currentTarget.contains((ev as any).relatedTarget)) {
-                  // Skip blurring on child focus
-                  setIsFocused(false)
+        <div
+          style={{
+            ...(isFocused ? {} : { opacity: 0.8 }),
+            height: 'calc(100% - 36px)',
+            overflow: 'auto',
+            userSelect: 'none',
+            outline: 'none',
+          }}
+          tabIndex={0}
+          onFocus={() => {
+            setIsFocused(true)
+          }}
+          onBlur={ev => {
+            if (!ev.currentTarget.contains((ev as any).relatedTarget)) {
+              // Skip blurring on child focus
+              setIsFocused(false)
+            }
+          }}
+          ref={props.containerRef}
+          onKeyDown={ev => {
+            if (!activeContent) {
+              setActiveContent(children[0])
+            }
+            switch (ev.key) {
+              case 'Home':
+                setActiveContent(children[0])
+                break
+              case 'End':
+                setActiveContent(children[children.length - 1])
+                break
+              case 'ArrowUp':
+                setActiveContent(
+                  activeContent && children[Math.max(0, children.findIndex(c => c.Id === activeContent.Id) - 1)],
+                )
+                break
+              case 'ArrowDown':
+                setActiveContent(
+                  activeContent &&
+                    children[Math.min(children.findIndex(c => c.Id === activeContent.Id) + 1, children.length - 1)],
+                )
+                break
+              case ' ': {
+                ev.preventDefault()
+                activeContent && selected.findIndex(s => s.Id === activeContent.Id) !== -1
+                  ? setSelected([...selected.filter(s => s.Id !== activeContent.Id)])
+                  : activeContent && setSelected([...selected, activeContent])
+                break
+              }
+              case 'Insert': {
+                activeContent && selected.findIndex(s => s.Id === activeContent.Id) !== -1
+                  ? setSelected([...selected.filter(s => s.Id !== activeContent.Id)])
+                  : activeContent && setSelected([...selected, activeContent])
+                activeContent &&
+                  setActiveContent(
+                    children[Math.min(children.findIndex(c => c.Id === activeContent.Id) + 1, children.length)],
+                  )
+                break
+              }
+              case '*': {
+                if (selected.length === children.length) {
+                  setSelected([])
+                } else {
+                  setSelected(children)
                 }
-              }}
-              ref={props.containerRef}
-              onKeyDown={ev => {
-                if (!activeContent) {
-                  setActiveContent(children[0])
+                break
+              }
+              case 'Enter': {
+                activeContent && handleActivateItem(activeContent)
+                break
+              }
+              case 'Backspace': {
+                ancestors.length && props.onParentChange(ancestors[ancestors.length - 1])
+                break
+              }
+              case 'Delete': {
+                setShowDelete(true)
+                break
+              }
+              case 'Tab':
+                ev.preventDefault()
+                props.onTabRequest()
+                break
+              default:
+                if (ev.key.length === 1) {
+                  searchString = searchString + ev.key
+                  runSearch()
                 }
-                switch (ev.key) {
-                  case 'Home':
-                    setActiveContent(children[0])
-                    break
-                  case 'End':
-                    setActiveContent(children[children.length - 1])
-                    break
-                  case 'ArrowUp':
-                    setActiveContent(
-                      activeContent && children[Math.max(0, children.findIndex(c => c.Id === activeContent.Id) - 1)],
-                    )
-                    break
-                  case 'ArrowDown':
-                    setActiveContent(
-                      activeContent &&
-                        children[Math.min(children.findIndex(c => c.Id === activeContent.Id) + 1, children.length - 1)],
-                    )
-                    break
-                  case ' ': {
-                    ev.preventDefault()
-                    activeContent && selected.findIndex(s => s.Id === activeContent.Id) !== -1
-                      ? setSelected([...selected.filter(s => s.Id !== activeContent.Id)])
-                      : activeContent && setSelected([...selected, activeContent])
-                    break
-                  }
-                  case 'Insert': {
-                    activeContent && selected.findIndex(s => s.Id === activeContent.Id) !== -1
-                      ? setSelected([...selected.filter(s => s.Id !== activeContent.Id)])
-                      : activeContent && setSelected([...selected, activeContent])
-                    activeContent &&
-                      setActiveContent(
-                        children[Math.min(children.findIndex(c => c.Id === activeContent.Id) + 1, children.length)],
-                      )
-                    break
-                  }
-                  case '*': {
-                    if (selected.length === children.length) {
-                      setSelected([])
-                    } else {
-                      setSelected(children)
-                    }
-                    break
-                  }
-                  case 'Enter': {
-                    activeContent && handleActivateItem(activeContent)
-                    break
-                  }
-                  case 'Backspace': {
-                    ancestors.length && props.onParentChange(ancestors[ancestors.length - 1])
-                    break
-                  }
-                  case 'Delete': {
-                    setShowDelete(true)
-                    break
-                  }
-                  case 'Tab':
-                    ev.preventDefault()
-                    props.onTabRequest()
-                    break
-                  default:
-                    if (ev.key.length === 1) {
-                      searchString = searchString + ev.key
-                      runSearch()
-                    }
+            }
+          }}>
+          <ContentList<GenericContent>
+            items={children}
+            schema={repo.schemas.getSchema(GenericContent)}
+            onRequestActiveItemChange={setActiveContent}
+            active={activeContent}
+            orderBy={currentOrder}
+            orderDirection={currentDirection}
+            onRequestOrderChange={(field, dir) => {
+              setCurrentOrder(field)
+              setCurrentDirection(dir)
+            }}
+            onItemClick={(ev, content) => {
+              if (ev.ctrlKey) {
+                if (selected.find(s => s.Id === content.Id)) {
+                  setSelected(selected.filter(s => s.Id !== content.Id))
+                } else {
+                  setSelected([...selected, content])
                 }
-              }}>
-              <ContentList<GenericContent>
-                items={children}
-                schema={repo.schemas.getSchema(GenericContent)}
-                onRequestActiveItemChange={setActiveContent}
-                active={activeContent}
-                orderBy={currentOrder}
-                orderDirection={currentDirection}
-                onRequestOrderChange={(field, dir) => {
-                  setCurrentOrder(field)
-                  setCurrentDirection(dir)
-                }}
-                onItemClick={(ev, content) => {
-                  if (ev.ctrlKey) {
-                    if (selected.find(s => s.Id === content.Id)) {
-                      setSelected(selected.filter(s => s.Id !== content.Id))
-                    } else {
-                      setSelected([...selected, content])
-                    }
-                  } else if (ev.shiftKey) {
-                    const activeIndex = (activeContent && children.findIndex(s => s.Id === activeContent.Id)) || 0
-                    const clickedIndex = children.findIndex(s => s.Id === content.Id)
-                    const newSelection = Array.from(
-                      new Set([
-                        ...selected,
-                        ...[...children].slice(
-                          Math.min(activeIndex, clickedIndex),
-                          Math.max(activeIndex, clickedIndex) + 1,
-                        ),
-                      ]),
-                    )
-                    setSelected(newSelection)
-                  } else if (!selected.length || (selected.length === 1 && selected[0].Id !== content.Id)) {
-                    setSelected([content])
-                  }
-                }}
-                onItemDoubleClick={(_ev, item) => handleActivateItem(item)}
-                getSelectionControl={(isSelected, content) => <SelectionControl {...{ isSelected, content }} />}
-                onItemContextMenu={(ev, item) => {
-                  ev.preventDefault()
-                  setActiveContent(item)
-                  setContextMenuAnchor(ev.currentTarget as HTMLElement)
-                  setIsContextMenuOpened(true)
-                }}
-                fieldComponent={fieldOptions => {
-                  switch (fieldOptions.field) {
-                    case 'DisplayName':
-                      return (
-                        <TableCell padding={'none'}>
-                          <div
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'space-between',
-                            }}>
-                            {fieldOptions.content.DisplayName || fieldOptions.content.Name}
-                            {device === 'mobile' &&
-                            fieldOptions.active &&
-                            fieldOptions.active.Id === fieldOptions.content.Id ? (
-                              <CurrentContentContext.Provider value={fieldOptions.content}>
-                                <SecondaryActionsMenu style={{ float: 'right' }} />
-                              </CurrentContentContext.Provider>
-                            ) : null}
-                          </div>
-                        </TableCell>
-                      )
-                    case 'Actions':
-                      return (
-                        <TableCell style={{ width: '64px' }}>
+              } else if (ev.shiftKey) {
+                const activeIndex = (activeContent && children.findIndex(s => s.Id === activeContent.Id)) || 0
+                const clickedIndex = children.findIndex(s => s.Id === content.Id)
+                const newSelection = Array.from(
+                  new Set([
+                    ...selected,
+                    ...[...children].slice(
+                      Math.min(activeIndex, clickedIndex),
+                      Math.max(activeIndex, clickedIndex) + 1,
+                    ),
+                  ]),
+                )
+                setSelected(newSelection)
+              } else if (!selected.length || (selected.length === 1 && selected[0].Id !== content.Id)) {
+                setSelected([content])
+              }
+            }}
+            onItemDoubleClick={(_ev, item) => handleActivateItem(item)}
+            getSelectionControl={(isSelected, content) => <SelectionControl {...{ isSelected, content }} />}
+            onItemContextMenu={(ev, item) => {
+              ev.preventDefault()
+              setActiveContent(item)
+              setContextMenuAnchor(ev.currentTarget as HTMLElement)
+              setIsContextMenuOpened(true)
+            }}
+            fieldComponent={fieldOptions => {
+              switch (fieldOptions.field) {
+                case 'DisplayName':
+                  return (
+                    <TableCell padding={'none'}>
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                        }}>
+                        {fieldOptions.content.DisplayName || fieldOptions.content.Name}
+                        {device === 'mobile' &&
+                        fieldOptions.active &&
+                        fieldOptions.active.Id === fieldOptions.content.Id ? (
                           <CurrentContentContext.Provider value={fieldOptions.content}>
-                            <SecondaryActionsMenu />
+                            <SecondaryActionsMenu style={{ float: 'right' }} />
                           </CurrentContentContext.Provider>
-                        </TableCell>
-                      )
-                  }
-                  if (
-                    typeof fieldOptions.content[fieldOptions.field] === 'object' &&
-                    isReferenceField(fieldOptions.field)
-                  ) {
-                    const expectedContent = fieldOptions.content[fieldOptions.field] as GenericContent
-                    if (
-                      expectedContent &&
-                      expectedContent.Id &&
-                      expectedContent.Type &&
-                      expectedContent.Name &&
-                      expectedContent.Path
-                    ) {
-                      return (
-                        <TableCell padding={'none'}>
-                          <div style={{ display: 'flex', alignItems: 'center' }}>
-                            {' '}
-                            <Icon item={expectedContent as GenericContent} />
-                            <div style={{ marginLeft: '1em' }}>
-                              {(expectedContent as GenericContent).DisplayName ||
-                                (expectedContent as GenericContent).Name}
-                            </div>
-                          </div>
-                        </TableCell>
-                      )
-                    }
-                    return null
-                  }
-                  if (typeof fieldOptions.content[fieldOptions.field] === 'boolean') {
-                    if (fieldOptions.content[fieldOptions.field] === true) {
-                      return (
-                        <TableCell>
-                          <Check color="secondary" />
-                        </TableCell>
-                      )
-                    } else if (fieldOptions.content[fieldOptions.field] === false) {
-                      return (
-                        <TableCell>
-                          <Close color="error" />
-                        </TableCell>
-                      )
-                    }
-                  }
-                  return null
+                        ) : null}
+                      </div>
+                    </TableCell>
+                  )
+                case 'Actions':
+                  return (
+                    <TableCell style={{ width: '64px' }}>
+                      <CurrentContentContext.Provider value={fieldOptions.content}>
+                        <SecondaryActionsMenu />
+                      </CurrentContentContext.Provider>
+                    </TableCell>
+                  )
+              }
+              if (
+                typeof fieldOptions.content[fieldOptions.field] === 'object' &&
+                isReferenceField(fieldOptions.field)
+              ) {
+                const expectedContent = fieldOptions.content[fieldOptions.field] as GenericContent
+                if (
+                  expectedContent &&
+                  expectedContent.Id &&
+                  expectedContent.Type &&
+                  expectedContent.Name &&
+                  expectedContent.Path
+                ) {
+                  return (
+                    <TableCell padding={'none'}>
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        {' '}
+                        <Icon item={expectedContent as GenericContent} />
+                        <div style={{ marginLeft: '1em' }}>
+                          {(expectedContent as GenericContent).DisplayName || (expectedContent as GenericContent).Name}
+                        </div>
+                      </div>
+                    </TableCell>
+                  )
+                }
+                return null
+              }
+              if (typeof fieldOptions.content[fieldOptions.field] === 'boolean') {
+                if (fieldOptions.content[fieldOptions.field] === true) {
+                  return (
+                    <TableCell>
+                      <Check color="secondary" />
+                    </TableCell>
+                  )
+                } else if (fieldOptions.content[fieldOptions.field] === false) {
+                  return (
+                    <TableCell>
+                      <Close color="error" />
+                    </TableCell>
+                  )
+                }
+              }
+              return null
+            }}
+            fieldsToDisplay={personalSettings.content.fields || ['DisplayName']}
+            selected={selected}
+            onRequestSelectionChange={setSelected}
+            icons={{}}
+          />
+          {activeContent ? (
+            <CurrentContentContext.Provider value={activeContent}>
+              <ContentContextMenu
+                menuProps={{
+                  disablePortal: true,
+                  anchorEl: contextMenuAnchor,
+                  BackdropProps: {
+                    onClick: () => setIsContextMenuOpened(false),
+                    onContextMenu: ev => ev.preventDefault(),
+                  },
                 }}
-                fieldsToDisplay={personalSettings.content.fields || ['DisplayName']}
-                selected={selected}
-                onRequestSelectionChange={setSelected}
-                icons={{}}
+                isOpened={isContextMenuOpened}
+                onClose={() => setIsContextMenuOpened(false)}
+                onOpen={() => setIsContextMenuOpened(true)}
               />
-              {activeContent ? (
-                <CurrentContentContext.Provider value={activeContent}>
-                  <ContentContextMenu
-                    menuProps={{
-                      disablePortal: true,
-                      anchorEl: contextMenuAnchor,
-                      BackdropProps: {
-                        onClick: () => setIsContextMenuOpened(false),
-                        onContextMenu: ev => ev.preventDefault(),
-                      },
-                    }}
-                    isOpened={isContextMenuOpened}
-                    onClose={() => setIsContextMenuOpened(false)}
-                    onOpen={() => setIsContextMenuOpened(true)}
-                  />
-                </CurrentContentContext.Provider>
-              ) : null}
-            </div>
-          </CSSTransition>
-        </TransitionGroup>
+            </CurrentContentContext.Provider>
+          ) : null}
+        </div>
       </DropFileArea>
       <DeleteContentDialog content={selected} dialogProps={{ open: showDelete, onClose: () => setShowDelete(false) }} />
     </div>

@@ -47,6 +47,7 @@ export const CurrentAncestorsProvider: React.FunctionComponent = props => {
   }
 
   useEffect(() => {
+    const ac = new AbortController()
     ;(async () => {
       try {
         await loadLock.acquire()
@@ -55,17 +56,23 @@ export const CurrentAncestorsProvider: React.FunctionComponent = props => {
           method: 'GET',
           name: 'Ancestors',
           body: undefined,
+          requestInit: {
+            signal: ac.signal,
+          },
           oDataOptions: {
             orderby: [['Path', 'asc']],
           },
         })
         setAncestors(ancestorsResult.d.results)
       } catch (error) {
-        setError(error)
+        if (!ac.signal.aborted) {
+          setError(error)
+        }
       } finally {
         loadLock.release()
       }
     })()
+    return () => ac.abort()
   }, [currentContent, repo, reloadToken])
 
   return <CurrentAncestorsContext.Provider value={ancestors}>{props.children}</CurrentAncestorsContext.Provider>

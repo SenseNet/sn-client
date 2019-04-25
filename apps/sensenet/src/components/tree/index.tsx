@@ -4,7 +4,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import { ODataParams } from '@sensenet/client-core'
-import { debounce, PathHelper } from '@sensenet/client-utils'
+import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Created } from '@sensenet/repository-events'
 import React, { useContext, useEffect, useState } from 'react'
@@ -40,9 +40,8 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
     throw error
   }
 
-  const update = debounce(() => {
-    setReloadToken(Math.random())
-  }, 100)
+  const update = () => setReloadToken(Math.random())
+
   const handleCreate = (c: Created) => {
     if (
       opened &&
@@ -77,10 +76,14 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
   }, [props.parentPath, repo, opened, items])
 
   useEffect(() => {
+    const ac = new AbortController()
     ;(async () => {
       try {
         const children = await repo.loadCollection({
           path: props.parentPath,
+          requestInit: {
+            signal: ac.signal,
+          },
           oDataOptions: {
             filter: 'IsFolder eq true',
             ...props.loadOptions,
@@ -88,9 +91,12 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
         })
         setItems(children.d.results)
       } catch (error) {
-        setError(error)
+        if (!ac.signal.aborted) {
+          setError(error)
+        }
       }
     })()
+    return () => ac.abort()
   }, [reloadToken])
 
   return (
