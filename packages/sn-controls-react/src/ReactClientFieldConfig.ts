@@ -1,7 +1,5 @@
 /**
  * @module sn-controls-react
- *
- *
  */
 import { FieldSetting } from '@sensenet/default-content-types'
 

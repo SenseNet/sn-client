@@ -1,7 +1,6 @@
 /**
  * @module FieldControls
- *
- */ /** */
+ */
 import Typography from '@material-ui/core/Typography'
 import React, { Component } from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
@@ -12,7 +11,6 @@ import 'react-quill/dist/quill.snow.css'
 
 import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
-import './RichTextEditorStyles.css'
 
 /**
  * Interface for RichTextEditor properties

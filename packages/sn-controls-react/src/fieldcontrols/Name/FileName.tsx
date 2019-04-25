@@ -1,6 +1,5 @@
 /**
  * @module FieldControls
- *
  */
 import React, { Component } from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
@@ -13,14 +12,14 @@ import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
 
 /**
- * Interface for Name properties
+ * Interface for FileName properties
  */
 export interface FileNameProps<T extends GenericContent, K extends keyof T>
   extends ReactClientFieldSettingProps<T, K>,
     ReactClientFieldSetting<T, K>,
     ReactFileNameFieldSetting<T, K> {}
 /**
- * Interface for Name state
+ * Interface for FileName state
  */
 export interface FileNameState {
   value: string

@@ -1,9 +1,8 @@
 /**
  * @module sn-controls-react
- *
  * @description General classes, modules and methods for sn-controls-react package
- *
- */ /** */
+ */
+
 import { ReactClientFieldConfig } from './ReactClientFieldConfig'
 import { reactControlMapper } from './ReactControlMapper'
 
