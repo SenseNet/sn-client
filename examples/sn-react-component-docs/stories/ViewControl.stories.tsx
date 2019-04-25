@@ -1,5 +1,5 @@
 import { Repository } from '@sensenet/client-core'
-import { BrowseView, EditView, NewViewComponent } from '@sensenet/controls-react/src'
+import { BrowseView, EditView, NewView } from '@sensenet/controls-react/src'
 import { File, Folder } from '@sensenet/default-content-types'
 import { withA11y } from '@storybook/addon-a11y'
 import { object, text, withKnobs } from '@storybook/addon-knobs'
@@ -1541,15 +1541,12 @@ storiesOf('ViewControls', module)
   .add(
     'new view',
     () => (
-      <NewViewComponent
+      <NewView
         path="/Root/Profiles/MyProfile/DocumentLibrary"
-        fields={[]}
-        changeAction={() => ({ type: 'a', name: 'a', value: 'a' })}
         repository={testRepository}
         contentTypeName="File"
         title={text('Title', 'File')}
         extension={text('Extension', 'docx')}
-        repositoryUrl={testRepository.configuration.repositoryUrl}
       />
     ),
     { notes: { markdown: newViewNotes } },

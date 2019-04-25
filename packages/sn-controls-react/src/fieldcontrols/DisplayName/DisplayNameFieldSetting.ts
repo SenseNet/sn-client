@@ -1,7 +1,6 @@
 /**
  * @module FieldControls
- *
- */ /** */
+ */
 import { GenericContent } from '@sensenet/default-content-types'
 import { ReactShortTextFieldSetting } from '../ShortText/ShortTextFieldSetting'
 

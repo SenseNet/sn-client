@@ -1,7 +1,5 @@
 /**
  * @module sn-controls-react
- *
- *
  */
 
 import { Repository } from '@sensenet/client-core'
@@ -46,8 +44,6 @@ const clientConfigFactory = (fieldSettings: FieldSetting) => {
     (defaultSetting['data-typeName'] = fieldSettings.Type || '')
   return defaultSetting
 }
-
-// const repository = new Repository()
 
 /**
  * A static Control Mapper instance, used to create the mapping between sensenet ECM ContentTypes and FieldSettings and React components.
