@@ -8,7 +8,7 @@ export type EventLogEntry<T> = ILeveledLogEntry<T & { guid: string; isDismissed?
 
 @Injectable({ lifetime: 'singleton' })
 export class EventService {
-  public static digestNotyDebounceInterval = 100
+  public static digestNotificationDebounceInterval = 100
   public static storageDebounceInterval = 1000
 
   public static storageKey = `sn-app-eventservice-events`
@@ -31,7 +31,7 @@ export class EventService {
   public updateChanges = debounce(() => {
     this.notificationValues.setValue(this.getDigestedNotificationValues())
     this.storeChanges()
-  }, EventService.digestNotyDebounceInterval)
+  }, EventService.digestNotificationDebounceInterval)
 
   private storeChanges = debounce(() => {
     const values = [...this.values.getValue()]
@@ -39,11 +39,11 @@ export class EventService {
     localStorage.setItem(EventService.storageKey, JSON.stringify(entries))
   }, EventService.storageDebounceInterval)
 
-  public add(...notys: Array<EventLogEntry<any>>) {
+  public add(...notifications: Array<EventLogEntry<any>>) {
     // const newValues = this.values.getValue().push())
     this.values.setValue([
       ...this.values.getValue(),
-      ...notys.map(n => ({ ...n, data: { ...n.data, guid: v1(), added: new Date().toISOString() } })),
+      ...notifications.map(n => ({ ...n, data: { ...n.data, guid: v1(), added: new Date().toISOString() } })),
     ])
     this.updateChanges()
   }
@@ -67,19 +67,21 @@ export class EventService {
     const now = new Date()
     now.setMinutes(now.getMinutes() - 2)
     const notFrom = now.toISOString()
-    const notyValues = this.values
+    const notificationValues = this.values
       .getValue()
       .filter(d => !d.data || !d.data.isDismissed)
       .filter(d => d.data.added > notFrom)
       .reverse()
     const returns: { [key: string]: Array<EventLogEntry<any>> } = {}
 
-    for (const noty of notyValues) {
-      const key = noty.data.multiple ? noty.data.digestMessage || noty.data.guid : noty.message
+    for (const notification of notificationValues) {
+      const key = notification.data.multiple
+        ? notification.data.digestMessage || notification.data.guid
+        : notification.message
       if (returns[key]) {
-        returns[key].push(noty)
+        returns[key].push(notification)
       } else {
-        returns[key] = [noty]
+        returns[key] = [notification]
       }
     }
 

@@ -35,7 +35,7 @@ export const EditPropertiesDialog: React.FunctionComponent<{
               })
               props.dialogProps.onClose && props.dialogProps.onClose(null as any)
               logger.information({
-                message: localization.saveSuccessNoty.replace('{0}', content.DisplayName || content.Name),
+                message: localization.saveSuccessNotification.replace('{0}', content.DisplayName || content.Name),
                 data: {
                   relatedContent: content,
                   relatedRepository: repo.configuration.repositoryUrl,
@@ -43,7 +43,7 @@ export const EditPropertiesDialog: React.FunctionComponent<{
               })
             } catch (error) {
               logger.error({
-                message: localization.saveFailedNoty.replace('{0}', content.DisplayName || content.Name),
+                message: localization.saveFailedNotification.replace('{0}', content.DisplayName || content.Name),
                 data: {
                   relatedContent: content,
                   relatedRepository: repo.configuration.repositoryUrl,
