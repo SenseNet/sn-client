@@ -16,7 +16,7 @@ after_success:
   - bash <(curl -s https://codecov.io/bash)
 
 after_failure:
-  - chmod +x ./scripts/sendscreenshots.sh
+  - bash ./scripts/sendscreenshots.sh
 
 cache:
   yarn: true
