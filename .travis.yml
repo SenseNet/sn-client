@@ -15,15 +15,15 @@ before_install:
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 
+after_failure:
+  - ./scripts/sendscreenshots.sh
+
 cache:
   yarn: true
   directories:
     - node_modules
-    - ~/.cache
 
 script:
   - yarn
-  - yarn lint
   - yarn build
-  - yarn test:coverage
   - yarn test:dms:e2e
