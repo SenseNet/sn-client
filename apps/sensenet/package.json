@@ -74,7 +74,8 @@
     "webpack": "^4.29.5",
     "webpack-bundle-analyzer": "^3.0.4",
     "webpack-cli": "^3.2.3",
-    "webpack-dev-server": "^3.2.0"
+    "webpack-dev-server": "^3.2.0",
+    "git-revision-webpack-plugin": "^3.0.3"
   },
   "dependencies": {
     "@furystack/logging": "^1.1.0",

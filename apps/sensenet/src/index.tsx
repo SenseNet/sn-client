@@ -30,6 +30,13 @@ import theme from './theme'
 import './utils/errorToJson'
 import './utils/InjectorExtensions'
 
+console.log(
+  `%c@sensenet app v${process.env.APP_VERSION}
+Branch ${process.env.GIT_BRANCH}
+Commit '${process.env.GIT_COMMITHASH}' `,
+  'color: #16AAA6; border-bottom: 1px solid black',
+)
+
 // tslint:disable-next-line: no-string-literal
 const injector = diMiddleware['injector']
 
