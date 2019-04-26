@@ -91,6 +91,7 @@ const defaultOptions = {
     'Workspace',
     'Icon',
     'Members',
+    'Description',
   ],
   expand: ['Actions', 'Workspace', 'Members'],
   orderby: [['IsFolder', 'desc'], ['DisplayName', 'asc']],
@@ -99,7 +100,26 @@ const defaultOptions = {
   top: loadChunkSize,
 } as ODataParams<GenericContent>
 
+const defaultUserOptions = {
+  select: ['Id', 'Path', 'Name', 'Type', 'ParentId', 'Actions', 'Avatar', 'DisplayName', 'FullName', 'Icon', 'Email'],
+  orderby: ['FullName', 'asc'] as any,
+  filter: `isOf('User')`,
+  top: loadChunkSize,
+} as ODataParams<GenericContent>
+
 export const grouplistOptions: Reducer<ODataParams<GenericContent>> = (state = defaultOptions, action: AnyAction) => {
+  switch (action.type) {
+    case 'DMS_USERSANDGROUPS_SET_CHILDREN_OPTIONS':
+      return action.odataOptions
+    default:
+      return state
+  }
+}
+
+export const userlistOptions: Reducer<ODataParams<GenericContent>> = (
+  state = defaultUserOptions,
+  action: AnyAction,
+) => {
   switch (action.type) {
     case 'DMS_USERSANDGROUPS_SET_CHILDREN_OPTIONS':
       return action.odataOptions
@@ -162,6 +182,15 @@ export const userParent: Reducer<GenericContent | null> = (state = null, action:
   }
 }
 
+export const userParentIdOrPath: Reducer<string | number> = (state = '', action: AnyAction) => {
+  switch (action.type) {
+    case 'DMS_USERSANDGROUPS_LOADING':
+      return action.idOrPath
+    default:
+      return state
+  }
+}
+
 export const user = combineReducers({
   currentUser,
   isAdmin,
@@ -170,12 +199,13 @@ export const user = combineReducers({
   isLoading,
   ancestors,
   selected,
-  grouplistOptions,
+  userlistOptions,
   active,
   all: allUsers,
   searchTerm: userSearchTerm,
   items,
   parent: userParent,
+  parentIdOrPath: userParentIdOrPath,
 })
 
 export const selectedGroups: Reducer<GenericContent[]> = (state = [], action: AnyAction) => {

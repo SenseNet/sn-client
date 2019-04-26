@@ -16,7 +16,7 @@ import { icons } from '../../../assets/icons'
 import { resources } from '../../../assets/resources'
 import { customSchema } from '../../../assets/schema'
 import { rootStateType } from '../../../store/rootReducer'
-import { loadGroup, selectGroup, setActive, updateChildrenOptions } from '../../../store/usersandgroups/actions'
+import { selectGroup, setActive, updateGroupListOptions } from '../../../store/usersandgroups/actions'
 import { DescriptionCell } from '../../ContentList/CellTemplates/DescriptionCell'
 import { DisplayNameCell } from '../../ContentList/CellTemplates/DisplayNameCell'
 import { DisplayNameMobileCell } from '../../ContentList/CellTemplates/DisplayNameMobileCell'
@@ -70,12 +70,11 @@ const mapDispatchToProps = {
   openActionMenu,
   closeActionMenu,
   selectGroup,
-  updateChildrenOptions,
+  updateGroupListOptions,
   openDialog: DMSActions.openDialog,
   closeDialog: DMSActions.closeDialog,
   setActive,
   updateContent,
-  loadGroup,
 }
 
 class GroupList extends Component<ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & GroupListProps, {}> {
@@ -153,7 +152,7 @@ class GroupList extends Component<ReturnType<typeof mapStateToProps> & typeof ma
         }}
         onRequestOrderChange={(field, direction) => {
           if (field !== 'Workspace' && field !== 'Actions') {
-            this.props.updateChildrenOptions({
+            this.props.updateGroupListOptions({
               ...childrenOptions,
               orderby: [[field, direction]],
             })

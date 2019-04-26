@@ -31,7 +31,7 @@ const mapStateToProps = (state: rootStateType) => {
     ancestors: state.dms.usersAndGroups.user.ancestors,
     user: state.dms.usersAndGroups.user.currentUser,
     isAdmin: state.dms.usersAndGroups.user.isAdmin,
-    childrenOptions: state.dms.usersAndGroups.user.grouplistOptions,
+    childrenOptions: state.dms.usersAndGroups.user.userlistOptions,
     selected: state.dms.usersAndGroups.group.selected,
     active: state.dms.usersAndGroups.user.active,
     hostName: state.sensenet.session.repository ? state.sensenet.session.repository.repositoryUrl : '',
