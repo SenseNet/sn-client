@@ -1,3 +1,4 @@
+import { LogLevel } from '@furystack/logging'
 import { Repository } from '@sensenet/client-core'
 import { editor, languages, Uri } from 'monaco-editor'
 import defaultLanguage from '../../localization/default'
@@ -111,6 +112,17 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
             repositories: { $ref: '#/definitions/repositories' },
             lastRepository: { type: 'string', description: language.personalSettings.lastRepository },
             eventLogSize: { type: 'number', description: language.personalSettings.eventLogSize },
+            logLevel: {
+              type: 'array',
+              uniqueItems: true,
+              items: {
+                enum: [
+                  ...Object.entries(LogLevel)
+                    .filter(entry => !isNaN(entry[1]))
+                    .map(entry => entry[0]),
+                ],
+              },
+            },
             sendLogWithCrashReports: {
               type: 'boolean',
               description: language.personalSettings.sendLogWithCrashReports,
