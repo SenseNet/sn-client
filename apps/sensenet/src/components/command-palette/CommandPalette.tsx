@@ -98,7 +98,11 @@ export class CommandPaletteComponent extends React.Component<
     suggestion: SuggestionSelectedEventData<CommandPaletteItem>,
   ) {
     ev.preventDefault()
-    this.props.history.push(suggestion.suggestion.url)
+    if (suggestion.suggestion.openAction) {
+      suggestion.suggestion.openAction()
+    } else {
+      this.props.history.push(suggestion.suggestion.url)
+    }
     this.props.close()
   }
 
