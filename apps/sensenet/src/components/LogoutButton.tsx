@@ -13,6 +13,7 @@ import { ConstantContent, FormsAuthenticationService, LoginState } from '@sensen
 import { sleepAsync } from '@sensenet/client-utils'
 import React, { useContext, useEffect, useState } from 'react'
 import { LocalizationContext, RepositoryContext, SessionContext, ThemeContext } from '../context'
+import { LoggerContext } from '../context/LoggerContext'
 import { Icon } from './Icon'
 
 export const LogoutButton: React.FunctionComponent<{
@@ -23,6 +24,7 @@ export const LogoutButton: React.FunctionComponent<{
   const theme = useContext(ThemeContext)
   const repo = useContext(RepositoryContext)
   const [showLogout, setShowLogout] = useState(false)
+  const logger = useContext(LoggerContext).withScope('LogoutComponent')
 
   const [userToLogout, setUserToLogout] = useState({ ...session.currentUser })
   const localization = useContext(LocalizationContext).values.logout
@@ -99,6 +101,9 @@ export const LogoutButton: React.FunctionComponent<{
                 await sleepAsync(3000)
                 setShowLogout(false)
                 setIsLoggingOut(false)
+                logger.information({
+                  message: localization.logoutSuccessNoty.replace('{0}', repo.configuration.repositoryUrl),
+                })
               }}
               autoFocus={true}>
               {localization.logoutButtonTitle}

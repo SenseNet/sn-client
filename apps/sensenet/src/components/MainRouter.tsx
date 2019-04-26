@@ -17,6 +17,7 @@ const EditProperties = lazy(async () => await import(/* webpackChunkName: "editP
 const DocumentViewerComponent = lazy(async () => await import(/* webpackChunkName: "DocViewer" */ './DocViewer'))
 
 const VersionInfoComponent = lazy(async () => await import(/* webpackChunkName: "Version Info" */ './version-info'))
+const EventListComponent = lazy(async () => await import(/* webpackChunkName: "EventList" */ './event-list'))
 
 const PersonalSettingsEditor = lazy(
   async () => await import(/* webpackChunkName: "PersonalSettingsEditor" */ './edit/PersonalSettingsEditor'),
@@ -24,35 +25,100 @@ const PersonalSettingsEditor = lazy(
 
 const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
   const sessionContext = useContext(SessionContext)
-
   return (
     <ErrorBoundary>
-      <Suspense fallback={<FullScreenLoader />}>
-        <Switch>
-          <Route path="/personalSettings" render={() => <PersonalSettingsEditor />} />
+      <Route
+        render={() => (
+          <div style={{ width: '100%', height: '100%' }}>
+            <Suspense fallback={<FullScreenLoader />}>
+              <Switch>
+                <Route
+                  path="/personalSettings"
+                  render={() => {
+                    return <PersonalSettingsEditor />
+                  }}
+                />
+                <Route
+                  path="/login"
+                  render={() => {
+                    return <LoginComponent />
+                  }}
+                />
+                <Route
+                  path="/events/:eventGuid?"
+                  render={() => {
+                    return <EventListComponent />
+                  }}
+                />
 
-          <Route path="/login" render={() => <LoginComponent />} />
-
-          {/** Requires login */}
-          {sessionContext.debouncedState === LoginState.Unauthenticated ? (
-            <LoginComponent />
-          ) : sessionContext.debouncedState === LoginState.Authenticated ? (
-            <Switch>
-              <Route path="/:repo/browse/:folderId?/:rightParent?" render={() => <ExploreComponent />} />
-              <Route path="/:repo/search" render={() => <SearchComponent />} />
-              <Route path="/:repo/iam" render={() => <IamComponent />} />
-              <Route path="/:repo/setup" render={() => <SetupComponent />} />
-              <Route path="/:repo/info" render={() => <VersionInfoComponent />} />
-              <Route path="/:repo/editBinary/:contentId?" render={() => <EditBinary />} />
-              <Route path="/:repo/editProperties/:contentId?" render={() => <EditProperties />} />
-              <Route path="/:repo/preview/:documentId?" render={() => <DocumentViewerComponent />} />
-              <Route path="/" render={() => <DashboardComponent />} />
-            </Switch>
-          ) : (
-            <FullScreenLoader />
-          )}
-        </Switch>
-      </Suspense>
+                {/** Requires login */}
+                {sessionContext.debouncedState === LoginState.Unauthenticated ? (
+                  <LoginComponent />
+                ) : sessionContext.debouncedState === LoginState.Authenticated ? (
+                  <Switch>
+                    <Route
+                      path="/:repo/browse/:folderId?/:rightParent?"
+                      render={() => {
+                        return <ExploreComponent />
+                      }}
+                    />
+                    <Route
+                      path="/:repo/search"
+                      render={() => {
+                        return <SearchComponent />
+                      }}
+                    />
+                    <Route
+                      path="/:repo/iam"
+                      render={() => {
+                        return <IamComponent />
+                      }}
+                    />
+                    <Route
+                      path="/:repo/setup"
+                      render={() => {
+                        return <SetupComponent />
+                      }}
+                    />
+                    <Route
+                      path="/:repo/info"
+                      render={() => {
+                        return <VersionInfoComponent />
+                      }}
+                    />
+                    <Route
+                      path="/:repo/editBinary/:contentId?"
+                      render={() => {
+                        return <EditBinary />
+                      }}
+                    />
+                    <Route
+                      path="/:repo/editProperties/:contentId?"
+                      render={() => {
+                        return <EditProperties />
+                      }}
+                    />
+                    <Route
+                      path="/:repo/preview/:documentId?"
+                      render={() => {
+                        return <DocumentViewerComponent />
+                      }}
+                    />
+                    <Route
+                      path="/"
+                      render={() => {
+                        return <DashboardComponent />
+                      }}
+                    />
+                  </Switch>
+                ) : (
+                  <FullScreenLoader />
+                )}
+              </Switch>
+            </Suspense>
+          </div>
+        )}
+      />
     </ErrorBoundary>
   )
 }

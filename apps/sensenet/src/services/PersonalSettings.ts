@@ -1,4 +1,5 @@
 import { Injectable } from '@furystack/inject'
+import { LogLevel } from '@furystack/logging'
 import { ObservableValue } from '@sensenet/client-utils'
 import { deepMerge } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
@@ -23,6 +24,9 @@ export interface UiSettings {
 export type PersonalSettingsType = PlatformDependent<UiSettings> & {
   repositories: Array<{ url: string; loginName?: string; displayName?: string }>
   lastRepository: string
+  eventLogSize: number
+  sendLogWithCrashReports: boolean
+  logLevel: Array<keyof typeof LogLevel>
   language: 'default' | 'hungarian'
 }
 
@@ -52,6 +56,9 @@ export const defaultSettings: PersonalSettingsType = {
   repositories: [],
   lastRepository: '',
   language: 'default',
+  eventLogSize: 500,
+  sendLogWithCrashReports: true,
+  logLevel: ['Information', 'Warning', 'Error', 'Fatal'],
 }
 
 @Injectable({ lifetime: 'singleton' })

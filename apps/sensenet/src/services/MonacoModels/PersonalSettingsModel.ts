@@ -1,9 +1,10 @@
+import { LogLevel } from '@furystack/logging'
 import { Repository } from '@sensenet/client-core'
 import { editor, languages, Uri } from 'monaco-editor'
 import defaultLanguage from '../../localization/default'
 
-export const setupModel = (language = defaultLanguage) => {
-  const personalSettingsPath = `sensenet://settings/PersonalSettings`
+export const setupModel = (language = defaultLanguage, repo: Repository) => {
+  const personalSettingsPath = `sensenet://PersonalSettings/PersonalSettings`
   const uri = Uri.parse(personalSettingsPath)
   const uriString = uri.toString()
 
@@ -12,7 +13,7 @@ export const setupModel = (language = defaultLanguage) => {
     enableSchemaRequest: false,
     schemas: [
       {
-        uri: uriString.toString(), // `sn-admin-personal-settings-${languageName}`,
+        uri: uriString.toString(),
         fileMatch: [uriString],
         schema: {
           definitions: {
@@ -29,7 +30,7 @@ export const setupModel = (language = defaultLanguage) => {
                   description: language.personalSettings.drawerItems,
                   type: 'array',
                   uniqueItems: true,
-                  items: { enum: ['Content', 'Search', 'Users and Groups', 'Setup', 'Version info'] },
+                  items: { enum: ['Content', 'Search', 'Users and Groups', 'Setup', 'Version info', 'Events'] },
                 },
               },
             },
@@ -84,7 +85,7 @@ export const setupModel = (language = defaultLanguage) => {
                       'Actions',
                       'Type',
                       /** ToDo: check for other displayable system fields */
-                      ...new Repository().schemas.getSchemaByName('GenericContent').FieldSettings.map(f => f.Name),
+                      ...repo.schemas.getSchemaByName('GenericContent').FieldSettings.map(f => f.Name),
                     ],
                   },
                 },
@@ -110,6 +111,22 @@ export const setupModel = (language = defaultLanguage) => {
             desktop: { $ref: '#/definitions/settings' },
             repositories: { $ref: '#/definitions/repositories' },
             lastRepository: { type: 'string', description: language.personalSettings.lastRepository },
+            eventLogSize: { type: 'number', description: language.personalSettings.eventLogSize },
+            logLevel: {
+              type: 'array',
+              uniqueItems: true,
+              items: {
+                enum: [
+                  ...Object.entries(LogLevel)
+                    .filter(entry => !isNaN(entry[1]))
+                    .map(entry => entry[0]),
+                ],
+              },
+            },
+            sendLogWithCrashReports: {
+              type: 'boolean',
+              description: language.personalSettings.sendLogWithCrashReports,
+            },
             language: {
               description: language.personalSettings.languageTitle,
               enum: ['default', 'hungarian'],

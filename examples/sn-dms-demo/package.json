@@ -69,7 +69,7 @@
     "react-router": "^5.0.0",
     "react-router-dom": "^5.0.0",
     "redux": "^4.0.1",
-    "redux-di-middleware": "^4.0.0",
+    "redux-di-middleware": "^4.0.1",
     "reflect-metadata": "^0.1.12",
     "semaphore-async-await": "^1.5.1",
     "ts-keycode-enum": "^1.0.6",

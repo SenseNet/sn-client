@@ -1136,13 +1136,21 @@
     reflect-metadata "^0.1.12"
     tslib "^1.8.1"
 
-"@furystack/inject@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@furystack/inject/-/inject-3.0.0.tgz#3ffc49056f25c9951b263b1829d5116c3efabd17"
-  integrity sha512-s2z5z80ByHd0L63NVv4OWCyFl6PImLjeEgjIvsbyIkj4AMtwyjL1AkFmVhoJyp1LU7F9T8+amoy8Iqb+qFi9Bg==
+"@furystack/inject@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@furystack/inject/-/inject-3.0.1.tgz#ab5769e983589eaff0c44d5676f67c2e1d9db475"
+  integrity sha512-apwxyW/nKWwiZoISvImlqFCvFehJfnt1FwAb0KyYP4wkmuMi3oQX/1HD/hS6IvzQpJtEFxVsQKc+yNefd6oruA==
   dependencies:
-    "@sensenet/client-utils" "1.4.2"
+    "@sensenet/client-utils" "^1.5.1"
     reflect-metadata "0.1.13"
+
+"@furystack/logging@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@furystack/logging/-/logging-1.1.0.tgz#80894aaddd73e2c643c289e1309f1e74a5d4100d"
+  integrity sha512-YB7+bUpV9TeAu0v6a7QfitsUXNrbL2clZjv+Pnn4jHEafQavdA8mgI0+6RCbogyl+G9U3inzaZZcGJQ2NQFpjQ==
+  dependencies:
+    "@furystack/inject" "^3.0.1"
+    ws "6.1.4"
 
 "@icons/material@^0.2.4":
   version "0.2.4"
@@ -2048,11 +2056,6 @@
   integrity sha512-MI4Xx6LHs4Webyvi6EbspgyAb4D2Q2VtnCQ1blOJcoLS6mVa8lNN2rkIy1CVxfTUpoyIbCTkXES1rLXztFD1lg==
   dependencies:
     any-observable "^0.3.0"
-
-"@sensenet/client-utils@1.4.2":
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/@sensenet/client-utils/-/client-utils-1.4.2.tgz#1094e4b1f3913ac0c2d455fbfdc0f2effc8c5721"
-  integrity sha512-y+2AamauJRa57CtNoG/3YgCaZ+pQEcA2Qehdov/9S2nel16E3qWRpP1IRz81gv2A1T/+P2/58BJovCeapYpgEw==
 
 "@storybook/addon-a11y@^5.0.0":
   version "5.0.6"
@@ -7087,6 +7090,11 @@ git-remote-origin-url@^2.0.0:
   dependencies:
     gitconfiglocal "^1.0.0"
     pify "^2.3.0"
+
+git-revision-webpack-plugin@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/git-revision-webpack-plugin/-/git-revision-webpack-plugin-3.0.3.tgz#f909949d7851d1039ed530518f73f5d46594e66f"
+  integrity sha512-B2ixM0fY7VgR61ZRSXYrh0R57Er7RY+CZb+fja5OFe21Y5o9GgzQanMgdlcBwWZ+LoOVqxBogbDutTTYMXQDWw==
 
 git-semver-tags@^2.0.2:
   version "2.0.2"
@@ -12305,12 +12313,12 @@ redent@^2.0.0:
     indent-string "^3.0.0"
     strip-indent "^2.0.0"
 
-redux-di-middleware@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/redux-di-middleware/-/redux-di-middleware-4.0.0.tgz#9cbcec250d035d1cf01b57d3f4899a7cb03cd18b"
-  integrity sha512-4MlbK1Qq6zzS91w0i6WJP0l2QghER4G0S8UPrMEMdJxhJ6LbVjz32ad54Hae4DbZeicIIce44xN2JnPlaD8HHA==
+redux-di-middleware@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/redux-di-middleware/-/redux-di-middleware-4.0.1.tgz#65611773145db69e429be205f2056c02a4db6c3d"
+  integrity sha512-f66n+TXHqqIFl3TUeSYQoOe1gjmEHU8Dkane6uNN8bz+l2bKdULaOM4mxA5briz0xyxIO/dAPmhZHLNEZcDdRA==
   dependencies:
-    "@furystack/inject" "^3.0.0"
+    "@furystack/inject" "^3.0.1"
     redux "^4.0.1"
     tslint-config-prettier "^1.18.0"
     tslint-consistent-codestyle "^1.15.1"
@@ -14959,6 +14967,13 @@ write-pkg@^3.1.0:
   dependencies:
     sort-keys "^2.0.0"
     write-json-file "^2.2.0"
+
+ws@6.1.4:
+  version "6.1.4"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-6.1.4.tgz#5b5c8800afab925e94ccb29d153c8d02c1776ef9"
+  integrity sha512-eqZfL+NE/YQc1/ZynhojeV8q+H050oR8AZ2uIev7RU10svA9ZnJUddHcOUZTJLinZ9yEfdA2kSATS2qZK5fhJA==
+  dependencies:
+    async-limiter "~1.0.0"
 
 ws@^5.2.0:
   version "5.2.2"

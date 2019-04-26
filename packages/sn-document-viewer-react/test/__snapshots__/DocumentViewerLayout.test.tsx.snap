@@ -95,8 +95,10 @@ exports[`Document Viewer Layout component should render without crashing 1`] = `
         />
         <CreateComment
           createComment={[Function]}
+          handleInputValueChange={[Function]}
           handleIsActive={[Function]}
           handlePlaceMarkerClick={[Function]}
+          inputValue=""
           isActive={false}
           isPlacingMarker={false}
           localization={Object {}}
@@ -202,8 +204,10 @@ exports[`Document Viewer Layout component should render without crashing 2`] = `
         />
         <CreateComment
           createComment={[Function]}
+          handleInputValueChange={[Function]}
           handleIsActive={[Function]}
           handlePlaceMarkerClick={[Function]}
+          inputValue=""
           isActive={false}
           isPlacingMarker={false}
           localization={Object {}}

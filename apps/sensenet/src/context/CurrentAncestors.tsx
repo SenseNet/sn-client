@@ -40,8 +40,10 @@ export const CurrentAncestorsProvider: React.FunctionComponent = props => {
     ]
     return () => subscriptions.forEach(s => s.dispose())
   }, [ancestors, repo])
+  const [error, setError] = useState<Error | undefined>()
 
   useEffect(() => {
+    const ac = new AbortController()
     ;(async () => {
       try {
         await loadLock.acquire()
@@ -50,16 +52,27 @@ export const CurrentAncestorsProvider: React.FunctionComponent = props => {
           method: 'GET',
           name: 'Ancestors',
           body: undefined,
+          requestInit: {
+            signal: ac.signal,
+          },
           oDataOptions: {
             orderby: [['Path', 'asc']],
           },
         })
         setAncestors(ancestorsResult.d.results)
+      } catch (error) {
+        if (!ac.signal.aborted) {
+          setError(error)
+        }
       } finally {
         loadLock.release()
       }
     })()
+    return () => ac.abort()
   }, [currentContent, repo, reloadToken])
 
+  if (error) {
+    throw error
+  }
   return <CurrentAncestorsContext.Provider value={ancestors}>{props.children}</CurrentAncestorsContext.Provider>
 }

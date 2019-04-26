@@ -12,6 +12,7 @@ export interface CommandPaletteItem {
   icon?: string
   url: string
   content?: GenericContent
+  openAction?: () => void
 }
 
 export interface CommandPaletteState {

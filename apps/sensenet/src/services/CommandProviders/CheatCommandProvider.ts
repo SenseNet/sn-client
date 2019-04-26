@@ -8,7 +8,8 @@ export class CheatCommandProvider implements CommandProvider {
     iddqd: {
       primaryText: 'GOD MODE ON',
       secondaryText: '',
-      url: 'https://classicreload.com/dosx-doom.html',
+      url: '',
+      openAction: () => window.open('https://classicreload.com/dosx-doom.html'),
       content: {
         Id: 0,
         Path: '',
@@ -19,7 +20,8 @@ export class CheatCommandProvider implements CommandProvider {
     'pot of gold': {
       primaryText: 'cheat enabled you wascally wabbit',
       secondaryText: 'now take a screenshot and go talk to your line manager',
-      url: 'https://www.myabandonware.com/game/warcraft-orcs-humans-250/play-250',
+      url: '',
+      openAction: () => window.open('https://www.playdosgames.com/play/warcraft-orcs-humans/'),
       content: {
         Id: 0,
         Path: '',
