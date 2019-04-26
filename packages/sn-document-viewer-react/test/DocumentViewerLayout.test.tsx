@@ -9,7 +9,6 @@ import CommentComponent from '../src/components/comment/Comment'
 import { DocumentViewerLayout, DocumentViewerLayoutComponent } from '../src/components/DocumentViewerLayout'
 import { getCommentsSuccess, rootReducer, setSelectedCommentId } from '../src/store'
 import { examplePreviewComment } from './__Mocks__/viewercontext'
-import { createdByMock } from './Comment.test'
 
 declare global {
   interface Window {
@@ -119,10 +118,7 @@ describe('Document Viewer Layout component', () => {
 
   it('should show comments', () => {
     const wrapper = shallow(
-      <DocumentViewerLayoutComponent
-        {...defaultProps}
-        showComments={true}
-        comments={[{ id: 'id', page: 1, text: 'some text', createdBy: createdByMock, x: 10, y: 10 }]}>
+      <DocumentViewerLayoutComponent {...defaultProps} showComments={true} comments={[examplePreviewComment]}>
         {'some children'}
       </DocumentViewerLayoutComponent>,
     )
@@ -144,23 +140,34 @@ describe('Document Viewer Layout component', () => {
   })
 
   it('should handle comment creation', () => {
-    const createComment = jest.fn()
     const wrapper = shallow(
-      <DocumentViewerLayoutComponent {...defaultProps} showComments={true} createComment={createComment}>
+      <DocumentViewerLayoutComponent {...defaultProps} showComments={true}>
         {'some children'}
       </DocumentViewerLayoutComponent>,
     )
 
     const text = 'this is the comment'
     wrapper.find(CreateComment).prop('createComment')(text)
-    expect(createComment).toBeCalledTimes(0) // create comment should not be called when no draft marker is present
+    expect(defaultProps.createComment).toBeCalledTimes(0) // create comment should not be called when no draft marker is present
     wrapper
       .find(PageList)
       .last()
       .prop('handleMarkerCreation')!({ x: 10, y: 10, id: 'id' })
     wrapper.find(CreateComment).prop('createComment')(text)
-    expect(createComment).toBeCalledTimes(1)
-    expect(createComment).toBeCalledWith({ page: 1, x: 10, y: 10, id: 'id', text })
+    expect(defaultProps.createComment).toBeCalledTimes(1)
+    expect(defaultProps.createComment).toBeCalledWith({ page: 1, x: 10, y: 10, id: 'id', text })
+  })
+
+  it('should handle comment input value change', async () => {
+    const wrapper = shallow(
+      <DocumentViewerLayoutComponent {...defaultProps} showComments={true}>
+        {'some children'}
+      </DocumentViewerLayoutComponent>,
+    )
+
+    const text = 'this is the comment'
+    wrapper.find(CreateComment).prop('handleInputValueChange')(text)
+    expect(wrapper.state('createCommentValue')).toBe(text)
   })
 
   it('should handle create comment isActive', () => {
