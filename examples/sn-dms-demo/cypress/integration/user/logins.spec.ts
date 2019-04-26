@@ -5,7 +5,7 @@ context('The login page', () => {
 
   it('requires email', () => {
     cy.get('form')
-      .contains('Login')
+      .contains('Logini')
       .click()
     cy.contains('Please provide a valid e-mail address!').should('exist')
   })
