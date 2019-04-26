@@ -1,6 +1,7 @@
 import Dialog, { DialogProps } from '@material-ui/core/Dialog'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
+import { isExtendedError } from '@sensenet/client-core/dist/Repository/Repository'
 import { EditView } from '@sensenet/controls-react'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useContext } from 'react'
@@ -43,6 +44,11 @@ export const EditPropertiesDialog: React.FunctionComponent<{
             } catch (error) {
               logger.error({
                 message: localization.saveFailedNoty.replace('{0}', content.DisplayName || content.Name),
+                data: {
+                  relatedContent: content,
+                  relatedRepository: repo.configuration.repositoryUrl,
+                  error: isExtendedError(error) ? repo.getErrorFromResponse(error.response) : error,
+                },
               })
             }
           }}

@@ -2,6 +2,7 @@ import { Repository } from '@sensenet/client-core'
 import React, { useContext, useEffect, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { InjectorContext } from './InjectorContext'
+import { LoggerContext } from './LoggerContext'
 import { PersonalSettingsContext } from './PersonalSettingsContext'
 
 export const lastRepositoryKey = 'sensenet-last-repository'
@@ -14,6 +15,7 @@ export const RepositoryContextProviderComponent: React.FunctionComponent<
   const injector = useContext(InjectorContext)
   const settings = useContext(PersonalSettingsContext)
   const [repo, setRepo] = useState(new Repository())
+  const logger = useContext(LoggerContext).withScope('RepositoryContext')
 
   useEffect(() => {
     let repoFromUrl = ''
@@ -28,8 +30,20 @@ export const RepositoryContextProviderComponent: React.FunctionComponent<
         ? repoFromUrl
         : settings.lastRepository
 
-    const newRepo = repoUrl && repoUrl.length && injector.getRepository(repoUrl)
-    newRepo && setRepo(newRepo)
+    const newRepo =
+      repoUrl && repoUrl.length && repoUrl !== repo.configuration.repositoryUrl && injector.getRepository(repoUrl)
+    if (newRepo) {
+      logger.debug({
+        message: `Swithed from repository ${repo.configuration.repositoryUrl} to ${
+          newRepo.configuration.repositoryUrl
+        }`,
+        data: {
+          digestMessage: 'Repository switched {count} times',
+          multiple: true,
+        },
+      })
+      setRepo(newRepo)
+    }
   }, [settings.lastRepository, props.match.params.repo])
 
   return <RepositoryContext.Provider value={repo}>{props.children}</RepositoryContext.Provider>

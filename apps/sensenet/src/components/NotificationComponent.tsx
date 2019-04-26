@@ -67,6 +67,7 @@ export const NotificationComponent: React.FunctionComponent = () => {
     <div>
       {values.map((v, i) => {
         const item = v[1][0]
+        const count = v[1].length
         return (
           <Snackbar
             key={i}
@@ -100,13 +101,15 @@ export const NotificationComponent: React.FunctionComponent = () => {
                 <div
                   title={item.message}
                   style={{ overflow: 'hidden', textOverflow: 'ellipsis', wordBreak: 'break-word' }}>
-                  {item.data.messageComponent || item.message}
+                  {(count > 1 && item.data.digestMessage && item.data.digestMessage.replace('{count}', count)) ||
+                    item.message}
                 </div>
               </div>
             }
             onClose={(_ev, reason) => {
               if (reason === 'timeout') {
                 setDismisses([...dismisses, item.data.guid])
+                eventService.dismiss(item)
               }
             }}
             action={

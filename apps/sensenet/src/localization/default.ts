@@ -167,6 +167,10 @@ const values = {
     allowLogSending: 'I agree to send events from my log',
     sendingInProgress: 'Sending error report...',
   },
+  uploadProgress: {
+    contentUploaded: `Content '{0}' has been uploaded succesfully`,
+    contentUploadedMultiple: `Finished uploading {count} content.`,
+  },
 }
 
 export default values

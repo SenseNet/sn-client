@@ -19,6 +19,9 @@ export class EventService {
         if (e.data.guid === entry.data.guid) {
           return { ...e, data: { ...e.data, isDismissed: true } }
         }
+        if (e.data.digestMessage && e.data.digestMessage === entry.data.digestMessage) {
+          return { ...e, data: { ...e.data, isDismissed: true } }
+        }
         return e
       }),
     )
@@ -61,9 +64,13 @@ export class EventService {
   )
 
   public getDigestedNotificationValues(): { [key: string]: Array<EventLogEntry<any>> } {
+    const now = new Date()
+    now.setMinutes(now.getMinutes() - 2)
+    const notFrom = now.toISOString()
     const notyValues = this.values
       .getValue()
       .filter(d => !d.data || !d.data.isDismissed)
+      .filter(d => d.data.added > notFrom)
       .reverse()
     const returns: { [key: string]: Array<EventLogEntry<any>> } = {}
 
