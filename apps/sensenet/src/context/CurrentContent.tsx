@@ -1,39 +1,11 @@
-import { ConstantContent, Repository } from '@sensenet/client-core'
-import { debounce } from '@sensenet/client-utils'
+import { ConstantContent } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
 import { InjectorContext } from './InjectorContext'
 import { RepositoryContext } from './RepositoryContext'
 
-export class CurrentContentService<T extends GenericContent> {
-  public currentContent?: T
-
-  public isLoading: boolean = false
-  private loadLock = new Semaphore(1)
-
-  public async setContent(idOrPath: number | string, repo: Repository) {
-    await this.loadLock.acquire()
-    if (this.currentContent && (this.currentContent.Id === idOrPath || this.currentContent.Path === idOrPath)) {
-      return
-    }
-    try {
-      this.isLoading = true
-      const result = await repo.load<T>({
-        idOrPath,
-      })
-      this.currentContent = result.d
-    } catch (error) {
-      /** */
-    } finally {
-      this.loadLock.release()
-      this.isLoading = false
-    }
-  }
-}
-
 export const CurrentContentContext = React.createContext<GenericContent>(ConstantContent.PORTAL_ROOT)
-
 export const CurrentContentProvider: React.FunctionComponent<{
   idOrPath: number | string
 }> = props => {
@@ -42,7 +14,7 @@ export const CurrentContentProvider: React.FunctionComponent<{
   const repo = useContext(RepositoryContext)
   const injector = useContext(InjectorContext)
   const [reloadToken, setReloadToken] = useState(1)
-  const reload = debounce(() => setReloadToken(Math.random()), 100)
+  const reload = () => setReloadToken(Math.random())
 
   useEffect(() => {
     const events = injector.getEventHub(repo.configuration.repositoryUrl)
@@ -56,17 +28,30 @@ export const CurrentContentProvider: React.FunctionComponent<{
     return () => subscriptions.forEach(s => s.dispose())
   }, [repo, content])
 
+  const [error, setError] = useState<Error | undefined>()
+
   useEffect(() => {
-    ;(async () => {
-      await loadLock.acquire()
-      try {
-        const response = await repo.load({ idOrPath: props.idOrPath })
-        setContent(response.d)
-      } finally {
-        loadLock.release()
-      }
-    })()
+    const ac = new AbortController()
+    if (props.idOrPath) {
+      ;(async () => {
+        try {
+          const response = await repo.load({ idOrPath: props.idOrPath, requestInit: { signal: ac.signal } })
+          setContent(response.d)
+        } catch (error) {
+          if (!ac.signal.aborted) {
+            setError(error)
+          }
+        } finally {
+          loadLock.release()
+        }
+      })()
+    }
+    return () => ac.abort()
   }, [repo, props.idOrPath, reloadToken])
+
+  if (error) {
+    throw error
+  }
 
   return (
     <CurrentContentContext.Provider value={content as GenericContent}>{props.children}</CurrentContentContext.Provider>

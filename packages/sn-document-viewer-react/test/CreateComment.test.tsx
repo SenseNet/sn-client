@@ -22,6 +22,8 @@ describe('Create comment component', () => {
     isActive: true,
     handleIsActive: jest.fn(),
     draftCommentMarker: { x: 10, y: 10, id: 'id' },
+    handleInputValueChange: jest.fn(),
+    inputValue: '',
   }
 
   it('should show add comment button when not active', () => {
@@ -31,65 +33,54 @@ describe('Create comment component', () => {
   })
 
   it('should handle isActive when add comment button is clicked', () => {
-    const handleIsActive = jest.fn()
-    const wrapper = shallow(<CreateComment {...defaultProps} isActive={false} handleIsActive={handleIsActive} />)
+    const wrapper = shallow(<CreateComment {...defaultProps} isActive={false} />)
     wrapper.find(Button).simulate('click')
-    expect(handleIsActive).toBeCalled()
+    expect(defaultProps.handleIsActive).toBeCalled()
   })
 
   it('should add comment when submit button is clicked', () => {
-    const createComment = jest.fn()
-    const wrapper = mount(<CreateComment {...defaultProps} createComment={createComment} />)
-    wrapper
-      .find('textarea')
-      .last()
-      .simulate('change', { target: { value: 'Hello' } })
+    const wrapper = mount(<CreateComment {...defaultProps} inputValue="Hello" />)
     wrapper
       .find(Button)
       .first()
       .simulate('submit')
-    expect(createComment).toBeCalled()
+    expect(defaultProps.createComment).toBeCalled()
   })
 
   it('should add comment when form is submitted', () => {
-    const createComment = jest.fn()
-    const wrapper = mount(<CreateComment {...defaultProps} createComment={createComment} />)
-    wrapper
-      .find('textarea')
-      .last()
-      .simulate('change', { target: { value: 'Hello' } })
+    const wrapper = mount(<CreateComment {...defaultProps} inputValue="Hello" />)
     wrapper.find('form').simulate('submit')
-    expect(createComment).toBeCalled()
+    expect(defaultProps.createComment).toBeCalled()
   })
 
   it('should handle cancel button click', () => {
-    const handleIsActive = jest.fn()
-    const wrapper = mount(<CreateComment {...defaultProps} handleIsActive={handleIsActive} />)
+    const wrapper = mount(<CreateComment {...defaultProps} />)
     wrapper
       .find(Button)
       .last()
       .simulate('click')
-    expect(handleIsActive).toBeCalled()
+    expect(defaultProps.handleIsActive).toBeCalled()
   })
 
   it('should clear input value after submitted', () => {
-    const handleIsActive = jest.fn()
-    const wrapper = mount(<CreateComment {...defaultProps} handleIsActive={handleIsActive} />)
-    wrapper
-      .find('textarea')
-      .last()
-      .simulate('change', { target: { value: 'Hello' } })
+    const wrapper = mount(<CreateComment {...defaultProps} inputValue="Hello" />)
     wrapper
       .find(Button)
       .first()
       .simulate('submit')
-    expect(handleIsActive).toBeCalled()
-    expect(
-      wrapper
-        .find('textarea')
-        .last()
-        .prop('value'),
-    ).toBe('')
+    expect(defaultProps.handleIsActive).toBeCalled()
+    expect(defaultProps.handleInputValueChange).toBeCalledWith('')
+  })
+
+  it('should clear input value when cancel clicked', () => {
+    const wrapper = mount(<CreateComment {...defaultProps} inputValue="Hello" />)
+    wrapper
+      .find(Button)
+      .last()
+      .simulate('click')
+    expect(defaultProps.handleIsActive).toBeCalled()
+    expect(defaultProps.handleInputValueChange).toBeCalledWith('')
+    expect(wrapper.prop('isPlacingMarker')).toBeFalsy()
   })
 
   it('should handle marker placement', () => {
@@ -99,6 +90,16 @@ describe('Create comment component', () => {
     expect(handlePlaceMarkerClick).toBeCalled()
   })
 
+  it('should handle input change', () => {
+    const wrapper = mount(<CreateComment {...defaultProps} />)
+    wrapper
+      .find('textarea')
+      .last()
+      .simulate('change', { target: { value: 'Hello' } })
+    wrapper.find('form').simulate('submit')
+    expect(defaultProps.handleInputValueChange).toBeCalledWith('Hello')
+  })
+
   it('should give an error message when input is empty', () => {
     const wrapper = mount(<CreateComment {...defaultProps} draftCommentMarker={undefined} />)
     wrapper.find('form').simulate('submit')
@@ -106,11 +107,7 @@ describe('Create comment component', () => {
   })
 
   it('should give an error message when input is filled but draftCommentMarker is undefined', () => {
-    const wrapper = mount(<CreateComment {...defaultProps} draftCommentMarker={undefined} />)
-    wrapper
-      .find('textarea')
-      .last()
-      .simulate('change', { target: { value: 'Hello' } })
+    const wrapper = mount(<CreateComment {...defaultProps} draftCommentMarker={undefined} inputValue="Hello" />)
     wrapper.find('form').simulate('submit')
     expect(wrapper.find(FormHelperText).text()).toEqual(defaultProps.localization!.markerRequiredError)
   })
