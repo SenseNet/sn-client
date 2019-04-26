@@ -1,6 +1,6 @@
 import Button from '@material-ui/core/Button'
 import { Status } from '@sensenet/default-content-types'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { rootStateType } from '..'

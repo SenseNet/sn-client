@@ -1,7 +1,7 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { ODataParams } from '@sensenet/client-core'
 import { Status, Task } from '@sensenet/default-content-types'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { rootStateType } from '..'
 import { FetchError } from '../components/FetchError'

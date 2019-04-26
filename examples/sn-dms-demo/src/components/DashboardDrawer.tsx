@@ -8,7 +8,7 @@ import withStyles, { StyleRulesCallback } from '@material-ui/core/styles/withSty
 import { ActionModel } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import { Actions } from '@sensenet/redux'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import * as DMSActions from '../Actions'

@@ -1,7 +1,7 @@
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 import { OauthProvider } from '@sensenet/authentication-jwt'
 import { LoginState } from '@sensenet/client-core'
-import * as React from 'react'
+import React from 'react'
 import Loadable from 'react-loadable'
 import { connect } from 'react-redux'
 import { HashRouter, Redirect, Route, Switch } from 'react-router-dom'

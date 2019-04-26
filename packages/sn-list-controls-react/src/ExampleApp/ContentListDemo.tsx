@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField'
 import Tooltip from '@material-ui/core/Tooltip'
 
 import { GenericContent, SchemaStore } from '@sensenet/default-content-types'
-import * as React from 'react'
+import React from 'react'
 
 import { ContentList, ContentListProps } from '../ContentList'
 

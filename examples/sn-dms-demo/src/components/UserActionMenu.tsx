@@ -1,5 +1,5 @@
 import { Icon, iconType } from '@sensenet/icons-react'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import * as DMSActions from '../Actions'
