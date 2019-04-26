@@ -4,6 +4,9 @@ const values = {
     new: 'New...',
     dialogTitle: 'Create new {0}',
     upload: 'Upload',
+    errorGettingAllowedContentTypes: 'There was an error while fetching the allowed content types.',
+    contentCreatedNoty: `The content '{0}' has been created succesfully.`,
+    errorPostingContentNoty: 'There was an error during content creation',
   },
   commandPalette: {
     title: 'Show Command Palette',
@@ -31,6 +34,9 @@ const values = {
     permanentlyHint: "Don't move to trash, delete immediately",
     deleteButton: 'Delete',
     cancelButton: 'Cancel',
+    deleteSuccessNoty: `Content '{0}' has been deleted succesfully`,
+    deleteMultipleSuccessNoty: `{0} content deleted succesfully`,
+    deleteFailedNoty: `There was an error during content deletion.`,
   },
   drawer: {
     personalSettingsTitle: 'Edit personal settings',
@@ -50,6 +56,8 @@ const values = {
   },
   editPropertiesDialog: {
     dialogTitle: 'Edit {0}',
+    saveSuccessNoty: `Content '{0}' has been updated.`,
+    saveFailedNoty: `There was an error during updating content '{0}'`,
   },
   login: {
     loginTitle: 'Login',
@@ -63,12 +71,16 @@ const values = {
     loginFailed: 'Login failed.',
     greetings: 'Greetings, {0}!',
     loggingInTo: 'Logging in to {0}...',
+    loginSuccessNoty: `Logged in with user '{0} to repository '{1}'`,
+    loginFailedNoty: `Failed to log in with user '{0} to repository '{1}'`,
+    loginErrorNoty: `There was an error during login with user '{0} to repository '{1}'`,
   },
   logout: {
     logoutButtonTitle: 'Log out',
     logoutDialogTitle: 'Really log out?',
     loggingOutFrom: 'Logging out from {0}...',
     logoutConfirmText: 'You are logged in to {0} as {1}. Are you sure that you want to leave?',
+    logoutSuccessNoty: 'You have logged out from {0}',
     logoutCancel: 'Cancel',
   },
   personalSettings: {
@@ -92,6 +104,8 @@ const values = {
     lastRepository: 'The last visited repository URL',
     languageTitle: 'The name of the active language',
     themeTitle: 'Select a dark or a light theme',
+    eventLogSize: 'Number of entries to store in the Event Log',
+    sendLogWithCrashReports: 'Send log data with crash reports by default',
   },
   repositorySelector: {
     loggedInAs: 'You are currently logged in as {0}',
@@ -103,6 +117,59 @@ const values = {
     unsavedChangesWarning: 'You have unsaved changes. Are you sure that you want to leave?',
     save: 'Save',
     reset: 'Reset',
+    saveSuccessNoty: `The changes of '{0}' has been saved`,
+    saveFailedNoty: `Failed to save changes of content '{0}'`,
+  },
+  navigationCommandProvider: {
+    personalSettingsPrimary: 'Personal Settings',
+    personalSettingsSecondary: 'Edit your personal settings',
+    contentPrimary: 'Content',
+    contentSecondary: 'Explore the content of the Repository',
+    searchPrimary: 'Search',
+    searchSecondaryText: 'Search in the repository, manage content queries',
+    eventsPrimary: 'Events',
+    eventsSecondary: 'Detailed event log with general info, warnings and errors',
+  },
+  eventList: {
+    filter: {
+      termTitle: 'Search term',
+      termPlaceholder: 'Search term...',
+      scopeTitle: 'Scope',
+      scopePlaceholder: 'Scope...',
+      levelTitle: 'Level',
+      levelAll: 'All',
+      clear: 'Clear',
+      confirmClear: 'Are you sure to clear the log?',
+    },
+    list: {
+      level: 'Level',
+      message: 'Message',
+      scope: 'Scope',
+      relatedContent: 'Related Content',
+      date: 'Date',
+    },
+    details: {
+      back: 'Back to list',
+    },
+  },
+  errorBoundary: {
+    title: 'Something went wrong :(',
+    text: `An error occured and your request couldn't be completed. `,
+    reload: 'Reload page',
+    reportError: 'Report error',
+  },
+  errorReport: {
+    title: 'Send error report',
+    descriptionTitle: 'Description',
+    descriptionHelperText: 'Explain what did you do when the error occured',
+    send: 'Send',
+    cancel: 'Cancel',
+    allowLogSending: 'I agree to send events from my log',
+    sendingInProgress: 'Sending error report...',
+  },
+  uploadProgress: {
+    contentUploaded: `Content '{0}' has been uploaded succesfully`,
+    contentUploadedMultiple: `Finished uploading {count} content.`,
   },
 }
 
