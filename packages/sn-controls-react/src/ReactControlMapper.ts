@@ -41,7 +41,8 @@ const clientConfigFactory = (fieldSettings: FieldSetting) => {
     (defaultSetting.required = fieldSettings.Compulsory || false),
     (defaultSetting['data-placeHolderText'] = fieldSettings.DisplayName || '')
   ;(defaultSetting['data-labelText'] = fieldSettings.DisplayName || ''),
-    (defaultSetting['data-typeName'] = fieldSettings.Type || '')
+    (defaultSetting['data-typeName'] = fieldSettings.Type || ''),
+    (defaultSetting['data-hintText'] = fieldSettings.Description || '')
   return defaultSetting
 }
 
