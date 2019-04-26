@@ -16,12 +16,13 @@ after_success:
   - bash <(curl -s https://codecov.io/bash)
 
 after_failure:
-  - ./scripts/sendscreenshots.sh
+  - chmod +x ./scripts/sendscreenshots.sh
 
 cache:
   yarn: true
   directories:
     - node_modules
+    - ~/.cache
 
 script:
   - yarn
