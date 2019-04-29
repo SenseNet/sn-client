@@ -194,6 +194,7 @@ class DashboardDrawer extends Component<
   }
   public handleClick = (name: string) => {
     this.props.chooseMenuItem(name)
+    this.props.handleDrawerMenu(false)
   }
   public static getDerivedStateFromProps(newProps: DashboardDrawer['props'], lastState: DashboardDrawer['state']) {
     if (newProps.currentUser !== lastState.currentUser) {
@@ -224,6 +225,7 @@ class DashboardDrawer extends Component<
           break
         default:
           console.log(`${action.Name} is clicked`)
+          this.props.handleDrawerMenu(false)
           break
       }
     }

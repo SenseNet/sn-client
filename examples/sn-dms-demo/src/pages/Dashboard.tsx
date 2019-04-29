@@ -267,11 +267,10 @@ class DashboardComponent extends React.Component<
                       />
                       <Route
                         path="/users"
-                        // tslint:disable-next-line: no-unnecessary-type-annotation
-                        component={(props: RouteComponentProps<any>) => (
+                        component={() => (
                           <Switch>
                             <Route
-                              path={'/' + PathHelper.joinPaths(props.match.url)}
+                              path={'/' + PathHelper.joinPaths('/users', '/:folderPath?/:otherActions*')}
                               exact={true}
                               component={() => (
                                 <div>
@@ -284,7 +283,6 @@ class DashboardComponent extends React.Component<
                       />
                       <Route
                         path="/groups"
-                        // tslint:disable-next-line: no-unnecessary-type-annotation
                         component={() => (
                           <Switch>
                             <Route
@@ -299,15 +297,6 @@ class DashboardComponent extends React.Component<
                           </Switch>
                         )}
                       />
-                      <Route path="/contenttypes">
-                        <ContentTypes />
-                      </Route>
-                      <Route path="/contenttemplates">
-                        <ContentTemplates />
-                      </Route>
-                      <Route path="/settings">
-                        <Settings />
-                      </Route>
 
                       {/* <Redirect to="/documents" /> */}
                     </Switch>

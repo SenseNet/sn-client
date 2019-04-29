@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { removeUploadItem, uploadFileList } from '../../Actions'
+import * as DMSActions from '../../Actions'
 import { updateChildrenOptions } from '../../store/documentlibrary/actions'
 import { rootStateType } from '../../store/rootReducer'
 import AddNewMenu from '../ActionMenu/AddNewMenu'
@@ -127,6 +128,7 @@ const mapStateToProps = (state: rootStateType) => {
 const mapDispatchToProps = {
   uploadFileList,
   updateChildrenOptions,
+  handleDrawerMenu: DMSActions.handleDrawerMenu,
 }
 
 const subMenu = [
@@ -159,10 +161,12 @@ class DocumentsMenu extends React.Component<
       this.props.history.push('/documents/')
     }
     this.props.chooseMenuItem(title)
+    this.props.handleDrawerMenu(false)
   }
   public handleSubmenuItemClick = (title: string) => {
     this.props.history.push(`/documents/${title}`)
     this.props.chooseSubmenuItem(title)
+    this.props.handleDrawerMenu(false)
   }
   public render() {
     const { active, classes, subactive, item } = this.props
