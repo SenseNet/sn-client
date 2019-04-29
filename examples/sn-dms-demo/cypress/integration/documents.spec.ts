@@ -35,8 +35,8 @@ context('The documents page', () => {
     const displayName = Chance().word()
     cy.get('#DisplayName').type(displayName)
     cy.get('#Watermark').type(Chance().word() + '{enter}')
-    cy.contains(displayName + ' is successfully created').should('exist')
-    cy.contains(displayName + '.').should('exist')
+    cy.contains(displayName + '.docx is successfully created').should('exist')
+    cy.contains(displayName + '.docx').should('exist')
   })
 })
 
