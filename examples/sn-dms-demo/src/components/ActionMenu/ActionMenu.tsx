@@ -217,7 +217,6 @@ class ActionMenu extends React.Component<
             folderPath: btoa(content && content.ParentId ? content.ParentId.toString() : ''),
             otherActions: ['user', btoa(content ? content.Id.toString() : '')],
           })
-          console.log(userPath)
           this.props.history.push(userPath)
           this.props.chooseMenuItem('profile')
           break

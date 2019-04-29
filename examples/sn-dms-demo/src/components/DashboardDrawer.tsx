@@ -8,9 +8,11 @@ import withStyles, { StyleRulesCallback } from '@material-ui/core/styles/withSty
 import { ActionModel } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import { Actions } from '@sensenet/redux'
-import React from 'react'
+import { compile } from 'path-to-regexp'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
+import { RouteComponentProps, withRouter } from 'react-router'
 import * as DMSActions from '../Actions'
 import { icons } from '../assets/icons'
 import { resources } from '../assets/resources'
@@ -153,7 +155,7 @@ const styles: StyleRulesCallback = () => ({
   },
 })
 
-interface DashboardDrawerProps {
+interface DashboardDrawerProps extends RouteComponentProps<any> {
   classes: any
   chooseMenuItem: (title: string) => void
   chooseSubmenuItem: (title: string) => void
@@ -167,18 +169,20 @@ const mapStateToProps = (state: rootStateType) => {
     userActions: state.dms.actionmenu.userActions,
     currentUser: state.sensenet.session.user.userName,
     isAdmin: state.dms.usersAndGroups.user.isAdmin,
+    currentContent: state.sensenet.session.user.content,
   }
 }
 
 const mapDispatchToProps = {
   chooseMenuItem: DMSActions.chooseMenuItem,
   chooseSubmenuItem: DMSActions.chooseSubmenuItem,
-  handleDrawerMenu: DMSActions.handleDrawerMenu,
   logout: Actions.userLogout,
   userIsAdmin,
+  closeActionMenu: DMSActions.closeActionMenu,
+  handleDrawerMenu: DMSActions.handleDrawerMenu,
 }
 
-class DashboardDrawer extends React.Component<
+class DashboardDrawer extends Component<
   DashboardDrawerProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   { currentUser: string }
 > {
@@ -190,11 +194,6 @@ class DashboardDrawer extends React.Component<
   }
   public handleClick = (name: string) => {
     this.props.chooseMenuItem(name)
-  }
-  public toggleDrawer = (matches: boolean) => {
-    if (!matches) {
-      this.props.handleDrawerMenu(false)
-    }
   }
   public static getDerivedStateFromProps(newProps: DashboardDrawer['props'], lastState: DashboardDrawer['state']) {
     if (newProps.currentUser !== lastState.currentUser) {
@@ -212,6 +211,17 @@ class DashboardDrawer extends React.Component<
         case 'Logout':
           this.props.logout()
           break
+        case 'Profile':
+          const { currentContent } = this.props
+          const userPath = compile('/users/:folderPath?/:otherActions*')({
+            folderPath: btoa(currentContent && currentContent.ParentId ? currentContent.ParentId.toString() : ''),
+            otherActions: ['user', btoa(currentContent ? currentContent.Id.toString() : '')],
+          })
+          this.props.history.push(userPath)
+          this.props.chooseMenuItem('profile')
+          this.props.closeActionMenu()
+          this.props.handleDrawerMenu(false)
+          break
         default:
           console.log(`${action.Name} is clicked`)
           break
@@ -226,12 +236,11 @@ class DashboardDrawer extends React.Component<
           return (
             <Drawer
               variant={matches ? 'permanent' : 'temporary'}
-              open={matches ? true : this.props.menuIsOpen}
+              open={this.props.menuIsOpen}
               classes={{
                 paper: matches ? classes.drawerPaper : null,
               }}
               style={matches ? { paddingTop: '64px' } : {}}
-              onClose={() => this.toggleDrawer(matches)}
               PaperProps={{
                 style: {
                   border: 'none',
@@ -264,16 +273,29 @@ class DashboardDrawer extends React.Component<
                       </div>
                     ) : null
                   ) : item.mobile ? (
-                    <div key={index}>
-                      {React.createElement(item.component, {
-                        active: activeItem === item.name,
-                        item,
-                        chooseMenuItem,
-                        chooseSubmenuItem,
-                        matches,
-                      })}
-                      <Divider light={true} />
-                    </div>
+                    !item.adminOnly ? (
+                      <div key={index}>
+                        {React.createElement(item.component, {
+                          active: activeItem === item.name,
+                          item,
+                          chooseMenuItem,
+                          chooseSubmenuItem,
+                          matches,
+                        })}
+                        <Divider light={true} />
+                      </div>
+                    ) : isAdmin ? (
+                      <div key={index}>
+                        {React.createElement(item.component, {
+                          active: activeItem === item.name,
+                          item,
+                          chooseMenuItem,
+                          chooseSubmenuItem,
+                          matches,
+                        })}
+                        <Divider light={true} />
+                      </div>
+                    ) : null
                   ) : null
                 })}
                 {userActions.map((action, i) => {
@@ -324,4 +346,4 @@ class DashboardDrawer extends React.Component<
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(withStyles(styles)(DashboardDrawer))
+)(withStyles(styles)(withRouter(DashboardDrawer)))

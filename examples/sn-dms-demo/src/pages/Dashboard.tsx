@@ -82,6 +82,7 @@ const mapStateToProps = (state: rootStateType) => {
     loginState: state.sensenet.session.loginState,
     isDialogOpen: state.dms.dialog.isOpened,
     dialogContent: state.dms.dialog.content,
+    userActions: state.dms.actionmenu.actions,
   }
 }
 
@@ -109,7 +110,7 @@ class DashboardComponent extends React.Component<
     currentFolderId: undefined,
     currentSelection: [],
     currentViewName: 'list',
-    currentUserName: 'Visitor',
+    currentUserName: this.props.loggedinUser.userName || 'Visitor',
     currentScope: 'documents',
   }
 
@@ -125,7 +126,10 @@ class DashboardComponent extends React.Component<
       (newProps.match.params.selection && decodeURIComponent(newProps.match.params.selection)) || []
     const currentViewName = newProps.match.params.action
 
-    if (newProps.loggedinUser.userName !== lastState.currentUserName) {
+    if (
+      newProps.loggedinUser.userName !== lastState.currentUserName ||
+      (newProps.loggedinUser.userName !== 'Visitor' && newProps.userActions.length === 0)
+    ) {
       newProps.loadUserActions(newProps.loggedinUser.content.Path, 'DMSUserActions')
     }
 
