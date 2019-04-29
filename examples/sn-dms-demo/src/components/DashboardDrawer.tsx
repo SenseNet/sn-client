@@ -68,7 +68,7 @@ const menu: Array<{
     component: ContentTypesMenu,
     routeName: '/contenttypes',
     mobile: false,
-    adminOnly: false,
+    adminOnly: true,
   },
   {
     title: resources.CONTENT_TEMPLATES,
@@ -77,7 +77,7 @@ const menu: Array<{
     component: ContentTemplatesMenu,
     routeName: '/contenttemplates',
     mobile: false,
-    adminOnly: false,
+    adminOnly: true,
   },
   {
     title: resources.SETTINGS,
@@ -86,7 +86,7 @@ const menu: Array<{
     component: SettingsMenu,
     routeName: '/settings',
     mobile: false,
-    adminOnly: false,
+    adminOnly: true,
   },
 ]
 
