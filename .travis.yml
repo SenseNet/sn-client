@@ -28,5 +28,5 @@ script:
   - yarn
   - yarn lint
   - yarn build
-  - yarn test
+  - yarn test:coverage
   - yarn test:dms:e2e
