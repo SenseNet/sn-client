@@ -26,5 +26,7 @@ cache:
 
 script:
   - yarn
+  - yarn lint
   - yarn build
+  - yarn test
   - yarn test:dms:e2e
