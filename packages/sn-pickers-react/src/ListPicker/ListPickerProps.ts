@@ -49,9 +49,10 @@ export interface ListPickerProps<T extends GenericContent = GenericContent> {
   parentId?: number
 
   /**
-   * Called before navigation. Can be used to clear the selected state.
+   * Called on navigation. Can be used to clear the selected state and to know the path
+   * of the navigation.
    */
-  onNavigation?: () => void
+  onNavigation?: (path: string) => void
 
   /**
    * Called on click with the current item.

@@ -16,16 +16,19 @@ import { loadItems, loadParent } from './loaders'
  * Represents a list picker component.
  */
 export function ListPickerComponent<T extends GenericContent = GenericContent>(props: ListPickerProps<T>) {
-  const { currentPath: currentContentPath = '', debounceMsOnReload = 1000 } = props
-  const [currentPath, setCurrentPath] = useState(currentContentPath)
+  const { currentPath = '', debounceMsOnReload = 1000 } = props
   const [parentId, setParentId] = useState<number | undefined>(props.parentId)
   const [selectedId, setSelectedId] = useState<string | number>(0)
-  const { data: items, error: itemsError, isLoading: areItemsLoading, reload } = useAsync({
+  const [reloadToken, setReloadToken] = useState(0)
+  const { data: items, error: itemsError, isLoading: areItemsLoading } = useAsync({
     promiseFn: loadItems,
     path: currentPath,
     repository: props.repository,
     oDataOptions: props.itemsOdataOptions,
-    watch: currentPath,
+    reloadToken,
+    watchFn: (current: any, previous: any) => {
+      return current.path !== previous.path || current.reloadToken !== previous.reloadToken
+    },
   })
   const { data: parent, error: parentError, isLoading: isParentLoading } = useAsync({
     promiseFn: loadParent,
@@ -35,7 +38,7 @@ export function ListPickerComponent<T extends GenericContent = GenericContent>(p
     watch: parentId,
   })
 
-  const update = debounce(() => reload(), debounceMsOnReload)
+  const update = debounce(() => setReloadToken(Math.random()), debounceMsOnReload)
   useEffect(() => {
     const eventHub = new EventHub(props.repository)
     const subscriptions = [
@@ -62,14 +65,13 @@ export function ListPickerComponent<T extends GenericContent = GenericContent>(p
 
   const onItemDoubleClickHandler = (event: React.MouseEvent, node: T) => {
     event.preventDefault()
-    props.onNavigation && props.onNavigation()
     setParentIdOnDoubleClick(node)
 
     // Navigation to parent
     if (parent && node.Id === parentId) {
-      setCurrentPath(parent.Path)
+      props.onNavigation && props.onNavigation(parent.Path)
     } else {
-      setCurrentPath(node.Path)
+      props.onNavigation && props.onNavigation(node.Path)
     }
   }
 
