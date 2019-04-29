@@ -8,32 +8,19 @@ import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 import ConnectedComment, { CommentComponent, CommentPropType } from '../src/components/comment/Comment'
 import { DeleteButton } from '../src/components/comment/DeleteCommentButton'
-import { CreatedByUser } from '../src/models'
 import { rootReducer } from '../src/store'
+import { examplePreviewComment } from './__Mocks__/viewercontext'
 
 const longText = `Lorem ipsum dolor sit amet, consectetur adipiscing elit,
   sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
   Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.`
 
-export const createdByMock: CreatedByUser = {
-  avatarUrl: 'uri',
-  displayName: 'Lightos Lóci',
-  id: 1,
-  path: 'some/path',
-  userName: 'some/name',
-}
-
 const defaultProps: CommentPropType = {
-  createdBy: createdByMock,
+  ...examplePreviewComment,
   deleteComment: jest.fn(),
   setSelectedCommentId: jest.fn(),
   selectedCommentId: '',
-  id: 'a',
   localization: {} as any,
-  page: 1,
-  x: 10,
-  y: 10,
-  text: 'some text',
   host: '',
 }
 
@@ -41,7 +28,7 @@ describe('Comment component', () => {
   it('should show text', () => {
     const wrapper = mount(<CommentComponent {...defaultProps} />)
     expect(wrapper.find(CardContent).exists()).toBeTruthy()
-    expect(wrapper.find(CardContent).text()).toBe('some text')
+    expect(wrapper.find(CardContent).text()).toBe(defaultProps.text)
   })
 
   it('should show show more button when text is long', () => {
@@ -105,7 +92,13 @@ describe('Comment component', () => {
   })
 
   it('should display an avatar without src when host is the same', () => {
-    const wrapper = mount(<CommentComponent {...defaultProps} host="uri" />)
+    const wrapper = mount(
+      <CommentComponent
+        {...defaultProps}
+        createdBy={{ ...defaultProps.createdBy, avatarUrl: 'https://cdn.images.express.co.uk' }}
+        host="https://cdn.images.express.co.uk"
+      />,
+    )
     expect(wrapper.find(Avatar).prop('src')).toBeUndefined()
   })
 })

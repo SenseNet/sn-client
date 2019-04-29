@@ -29,7 +29,14 @@ import { Versioning } from './Versioning'
 /**
  * Defines an extended error message instance that contains an original error instance, a response and a parsed JSON body from the response
  */
-export type ExtendedError = Error & { body: any; response: Response }
+export type ExtendedError = Error & {
+  body: any
+  response: Response
+  text?: string
+  statusCode: number
+  statusText: string
+  url: string
+}
 
 /**
  * Type guard to check if an error is extended with a response and a parsed body
@@ -88,18 +95,31 @@ export class Repository implements Disposable {
    * Gets a more meaningful error object from a specific response
    * @param response The Response object to extract the message
    */
-  public async getErrorFromResponse(response: Response): Promise<Error & { body: any; response: Response }> {
+  public async getErrorFromResponse(response: Response): Promise<ExtendedError> {
     let msgFromBody = ''
     let body: any = {}
+    let text = ''
     try {
       body = await response.json()
       msgFromBody = body.error.message.value
     } catch (error) {
       /** */
     }
-    const error: Error & { body: any; response: Response } = new Error(msgFromBody || response.statusText) as any
+
+    try {
+      text = await response.text()
+    } catch (error) {
+      /** */
+    }
+
+    const error = new Error(msgFromBody || text || response.statusText) as ExtendedError
     error.body = body
     error.response = response
+    error.text = text
+    error.statusCode = response.status
+    error.statusText = response.statusText
+    error.url = response.url
+
     return error
   }
 
@@ -115,6 +135,7 @@ export class Repository implements Disposable {
     const params = ODataUrlBuilder.buildUrlParamString(this.configuration, options.oDataOptions)
     const path = PathHelper.joinPaths(this.configuration.repositoryUrl, this.configuration.oDataToken, contentPath)
     const response = await this.fetch(`${path}?${params}`, {
+      ...options.requestInit,
       credentials: 'include',
       method: 'GET',
     })
@@ -134,6 +155,7 @@ export class Repository implements Disposable {
     const params = ODataUrlBuilder.buildUrlParamString(this.configuration, options.oDataOptions)
     const path = PathHelper.joinPaths(this.configuration.repositoryUrl, this.configuration.oDataToken, options.path)
     const response = await this.fetch(`${path}?${params}`, {
+      ...options.requestInit,
       credentials: 'include',
       method: 'GET',
     })
@@ -164,6 +186,7 @@ export class Repository implements Disposable {
     postBody.__ContentTemplate = options.contentTemplate
 
     const response = await this.fetch(`${path}?${params}`, {
+      ...options.requestInit,
       credentials: 'include',
       method: 'POST',
       body: JSON.stringify(postBody),
@@ -185,6 +208,7 @@ export class Repository implements Disposable {
     const path = PathHelper.joinPaths(this.configuration.repositoryUrl, this.configuration.oDataToken, contentPath)
     const params = ODataUrlBuilder.buildUrlParamString(this.configuration, options.oDataOptions)
     const response = await this.fetch(`${path}?${params}`, {
+      ...options.requestInit,
       credentials: 'include',
       method: 'PATCH',
       body: JSON.stringify(options.content),
@@ -206,6 +230,7 @@ export class Repository implements Disposable {
     const path = PathHelper.joinPaths(this.configuration.repositoryUrl, this.configuration.oDataToken, contentPath)
     const params = ODataUrlBuilder.buildUrlParamString(this.configuration, options.oDataOptions)
     const response = await this.fetch(`${path}?${params}`, {
+      ...options.requestInit,
       credentials: 'include',
       method: 'PUT',
       body: JSON.stringify(options.content),
@@ -232,6 +257,7 @@ export class Repository implements Disposable {
       idOrPath: ConstantContent.PORTAL_ROOT.Path,
       method: 'POST',
       name: 'DeleteBatch',
+      requestInit: options.requestInit,
       body: {
         paths: this.createArray(options.idOrPath),
         permanent: options.permanent,
@@ -248,6 +274,7 @@ export class Repository implements Disposable {
       idOrPath: ConstantContent.PORTAL_ROOT.Path,
       method: 'POST',
       name: 'MoveBatch',
+      requestInit: options.requestInit,
       body: {
         paths: this.createArray(options.idOrPath),
         targetPath: options.targetPath,
@@ -264,6 +291,7 @@ export class Repository implements Disposable {
       idOrPath: ConstantContent.PORTAL_ROOT.Path,
       method: 'POST',
       name: 'CopyBatch',
+      requestInit: options.requestInit,
       body: {
         paths: this.createArray(options.idOrPath),
         targetPath: options.targetPath,
@@ -387,6 +415,7 @@ export class Repository implements Disposable {
       options.name,
     )
     const requestOptions: RequestInit = {
+      ...options.requestInit,
       credentials: 'include',
       method: options.method,
     }

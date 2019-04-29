@@ -1,21 +1,21 @@
 import { Repository } from '@sensenet/client-core'
 import React, { useContext, useEffect, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { RepositoryManager } from '../services/RepositoryManager'
 import { InjectorContext } from './InjectorContext'
+import { LoggerContext } from './LoggerContext'
 import { PersonalSettingsContext } from './PersonalSettingsContext'
 
 export const lastRepositoryKey = 'sensenet-last-repository'
 
-export const RepositoryContext = React.createContext<Repository>(new Repository())
+export const RepositoryContext = React.createContext(new Repository())
 
 export const RepositoryContextProviderComponent: React.FunctionComponent<
   RouteComponentProps<{ repo?: string }>
 > = props => {
   const injector = useContext(InjectorContext)
-  const repoManager = injector.getInstance(RepositoryManager)
   const settings = useContext(PersonalSettingsContext)
-  const [repo, setRepo] = useState(repoManager.getRepository(localStorage.getItem(lastRepositoryKey) || ''))
+  const [repo, setRepo] = useState(new Repository())
+  const logger = useContext(LoggerContext).withScope('RepositoryContext')
 
   useEffect(() => {
     let repoFromUrl = ''
@@ -24,10 +24,26 @@ export const RepositoryContextProviderComponent: React.FunctionComponent<
     } catch (error) {
       /** */
     }
-    const newRepo = injector.getRepository(
-      repoFromUrl.startsWith('http://') || repoFromUrl.startsWith('https://') ? repoFromUrl : settings.lastRepository,
-    )
-    setRepo(newRepo)
+
+    const repoUrl =
+      (repoFromUrl && repoFromUrl.startsWith('http://')) || repoFromUrl.startsWith('https://')
+        ? repoFromUrl
+        : settings.lastRepository
+
+    const newRepo =
+      repoUrl && repoUrl.length && repoUrl !== repo.configuration.repositoryUrl && injector.getRepository(repoUrl)
+    if (newRepo) {
+      logger.debug({
+        message: `Swithed from repository ${repo.configuration.repositoryUrl} to ${
+          newRepo.configuration.repositoryUrl
+        }`,
+        data: {
+          digestMessage: 'Repository switched {count} times',
+          multiple: true,
+        },
+      })
+      setRepo(newRepo)
+    }
   }, [settings.lastRepository, props.match.params.repo])
 
   return <RepositoryContext.Provider value={repo}>{props.children}</RepositoryContext.Provider>
