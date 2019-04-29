@@ -14,6 +14,7 @@ import { contentListTheme } from '../../../assets/contentlist'
 import { resources } from '../../../assets/resources'
 import { rootStateType } from '../../../store/rootReducer'
 import { clearUserSelection, getAllowedTypes, loadUser } from '../../../store/usersandgroups/actions'
+import ActionMenu from '../../ActionMenu/ActionMenu'
 import BreadCrumb from '../../BreadCrumb'
 import DeleteDialog from '../../Dialogs/DeleteDialog'
 import { GridPlaceholder } from '../../Loaders/GridPlaceholder'
@@ -169,6 +170,7 @@ class Users extends Component<ReturnType<typeof mapStateToProps> & typeof mapDis
                   ) : (
                     <UserList matchesDesktop={matches} />
                   )}
+                  <ActionMenu id={0} />
                 </MuiThemeProvider>
               )}
             </div>

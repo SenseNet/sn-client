@@ -15,6 +15,7 @@ import { icons } from '../assets/icons'
 import { customSchema } from '../assets/schema'
 import { rootStateType } from '../store/rootReducer'
 import { loadUser, selectGroup, updateChildrenOptions } from '../store/usersandgroups/actions'
+import ActionMenu from './ActionMenu/ActionMenu'
 import { DisplayNameCell } from './ContentList/CellTemplates/DisplayNameCell'
 import { DisplayNameMobileCell } from './ContentList/CellTemplates/DisplayNameMobileCell'
 import { FullScreenLoader } from './FullScreenLoader'
@@ -282,6 +283,7 @@ class UserProfile extends React.Component<
                     }}
                   />
                 )}
+                <ActionMenu id={0} />
               </MuiThemeProvider>
             </div>
           ) : null
