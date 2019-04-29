@@ -1,5 +1,5 @@
 import { Repository } from '@sensenet/client-core'
-import { shallow } from 'enzyme'
+import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { useAsync } from 'react-async'
 import { ItemComponent, ListPickerComponent } from '../src/ListPicker'
@@ -28,6 +28,17 @@ describe('List picker component', () => {
     const wrapper = shallow(<ListPickerComponent renderLoading={loadingRenderer} repository={new Repository()} />)
     expect(wrapper.find(ItemComponent).exists()).toBeFalsy()
     expect(loadingRenderer).toBeCalled()
+  })
+
+  it('should handle navigation', () => {
+    ;(useAsync as any).mockReturnValue({ data: undefined }).mockReturnValueOnce({ data: genericContentItems })
+    const onNavigation = jest.fn()
+    const wrapper = mount(<ListPickerComponent onNavigation={onNavigation} repository={new Repository()} />)
+    wrapper
+      .find(ItemComponent)
+      .first()
+      .simulate('dblclick')
+    expect(onNavigation).toBeCalled()
   })
 
   it('should not render loading when items are loading and render loading is not defined', () => {
