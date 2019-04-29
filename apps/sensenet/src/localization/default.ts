@@ -38,6 +38,12 @@ const values = {
     deleteMultipleSuccessNoty: `{0} content deleted succesfully`,
     deleteFailedNoty: `There was an error during content deletion.`,
   },
+  copyContentDialog: {
+    title: 'Copy content',
+    copyButton: 'Copy',
+    cancelButton: 'Cancel',
+    details: 'Copy {0} content to {1}',
+  },
   drawer: {
     personalSettingsTitle: 'Edit personal settings',
     personalSettingsSecondaryText: 'Customize the application behavior',

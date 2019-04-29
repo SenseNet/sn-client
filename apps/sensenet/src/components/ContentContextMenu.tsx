@@ -14,6 +14,7 @@ import React, { useContext, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { ContentRoutingContext, CurrentContentContext, LocalizationContext, ResponsiveContext } from '../context'
 import { ContentInfoDialog } from './ContentInfoDialog'
+import { CopyDialog } from './CopyDialog'
 import { DeleteContentDialog } from './DeleteContentDialog'
 import { EditPropertiesDialog } from './EditPropertiesDialog'
 import { Icon } from './Icon'
@@ -34,6 +35,7 @@ export const ContentContextMenuComponent: React.FunctionComponent<
   const [isDeleteOpened, setIsDeleteOpened] = useState(false)
   const [isEditPropertiesOpened, setIsEditPropertiesOpened] = useState(false)
   const [isInfoDialogOpened, setIsInfoDialogOpened] = useState(false)
+  const [isCopyDialogOpened, setIsCopyDialogOpened] = useState(false)
 
   return (
     <div onKeyDown={ev => ev.stopPropagation()} onKeyPress={ev => ev.stopPropagation()}>
@@ -48,6 +50,10 @@ export const ContentContextMenuComponent: React.FunctionComponent<
       <ContentInfoDialog
         content={content}
         dialogProps={{ open: isInfoDialogOpened, onClose: () => setIsInfoDialogOpened(false) }}
+      />
+      <CopyDialog
+        content={[content]}
+        dialogProps={{ open: isCopyDialogOpened, onClose: () => setIsCopyDialogOpened(false) }}
       />
       {device === 'mobile' ? (
         <Drawer
@@ -84,7 +90,12 @@ export const ContentContextMenuComponent: React.FunctionComponent<
               </ListItemIcon>
               <ListItemText primary={localization.editProperties} />
             </ListItem>
-            <ListItem button={true} disabled={true}>
+            <ListItem
+              button={true}
+              onClick={() => {
+                setIsCopyDialogOpened(true)
+                props.onClose && props.onClose()
+              }}>
               <ListItemIcon>
                 <FileCopy />
               </ListItemIcon>
@@ -146,7 +157,11 @@ export const ContentContextMenuComponent: React.FunctionComponent<
             </ListItemIcon>
             {localization.editProperties}
           </MenuItem>
-          <MenuItem disabled={true}>
+          <MenuItem
+            onClick={() => {
+              setIsCopyDialogOpened(true)
+              props.onClose && props.onClose()
+            }}>
             <ListItemIcon>
               <FileCopy />
             </ListItemIcon>
