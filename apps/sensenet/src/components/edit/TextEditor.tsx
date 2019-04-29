@@ -12,11 +12,12 @@ import {
   ResponsiveContext,
   ThemeContext,
 } from '../../context'
+import { LoggerContext } from '../../context/LoggerContext'
 import { isContentFromType } from '../../utils/isContentFromType'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 
 const getMonacoModelUri = (content: GenericContent) => {
-  if (isContentFromType(content, Settings)) {
+  if (isContentFromType(content, Settings) || content.Type === 'PersonalSettings') {
     return Uri.parse(`sensenet://${content.Type}/${content.Name}`)
   }
   if (isContentFromType(content, SnFile)) {
@@ -46,21 +47,44 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
   const localization = useContext(LocalizationContext).values.textEditor
   const [uri, setUri] = useState<any>(getMonacoModelUri(props.content))
   const [hasChanges, setHasChanges] = useState(false)
+  const logger = useContext(LoggerContext).withScope('TextEditor')
+
+  const [error, setError] = useState<Error | undefined>()
 
   const saveContent = async () => {
-    if (props.saveContent) {
-      await props.saveContent(props.content, textValue)
-    } else {
-      await repo.upload.textAsFile({
-        text: textValue,
-        parentPath: PathHelper.getParentPath(props.content.Path),
-        fileName: props.content.Name,
-        overwrite: true,
-        contentTypeName: props.content.Type,
-        binaryPropertyName: 'Binary',
+    try {
+      if (props.saveContent) {
+        await props.saveContent(props.content, textValue)
+      } else {
+        await repo.upload.textAsFile({
+          text: textValue,
+          parentPath: PathHelper.getParentPath(props.content.Path),
+          fileName: props.content.Name,
+          overwrite: true,
+          contentTypeName: props.content.Type,
+          binaryPropertyName: 'Binary',
+        })
+      }
+      logger.information({
+        message: localization.saveSuccessNoty.replace('{0}', props.content.DisplayName || props.content.Name),
+        data: {
+          relatedContent: props.content,
+          relatedRepository: repo.configuration.repositoryUrl,
+          compare: {
+            old: savedTextValue,
+            new: textValue,
+          },
+        },
+      })
+      setSavedTextValue(textValue)
+    } catch (error) {
+      logger.error({
+        message: localization.saveFailedNoty.replace('{0}', props.content.DisplayName || props.content.Name),
+        data: {
+          details: { error },
+        },
       })
     }
-    setSavedTextValue(textValue)
   }
 
   useEffect(() => {
@@ -76,24 +100,32 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
     setUri(getMonacoModelUri(props.content))
     setLanguage(ctx.getMonacoLanguage(props.content))
     ;(async () => {
-      if (props.loadContent) {
-        const value = await props.loadContent(props.content)
-        setTextValue(value)
-        setSavedTextValue(value)
-      } else {
-        const binaryPath = props.content.Binary && props.content.Binary.__mediaresource.media_src
-        if (!binaryPath) {
-          throw Error("Content doesn't have a valid path to the binary field! ")
+      try {
+        if (props.loadContent) {
+          const value = await props.loadContent(props.content)
+          setTextValue(value)
+          setSavedTextValue(value)
+        } else {
+          const binaryPath = props.content.Binary && props.content.Binary.__mediaresource.media_src
+          if (!binaryPath) {
+            return
+          }
+          const textFile = await repo.fetch(PathHelper.joinPaths(repo.configuration.repositoryUrl, binaryPath))
+          if (textFile.ok) {
+            const text = await textFile.text()
+            setTextValue(text)
+            setSavedTextValue(text)
+          }
         }
-        const textFile = await repo.fetch(PathHelper.joinPaths(repo.configuration.repositoryUrl, binaryPath))
-        if (textFile.ok) {
-          const text = await textFile.text()
-          setTextValue(text)
-          setSavedTextValue(text)
-        }
+      } catch (error) {
+        setError(error)
       }
     })()
   }, [props.content.Id])
+
+  if (error) {
+    throw error
+  }
 
   return (
     <div

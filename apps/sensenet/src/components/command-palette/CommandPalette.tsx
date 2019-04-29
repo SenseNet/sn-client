@@ -77,7 +77,7 @@ export class CommandPaletteComponent extends React.Component<
 
   private handleSuggestionsFetchRequested = debounce((options: SuggestionsFetchRequestedParams, repo: Repository) => {
     this.props.updateItemsFromTerm(options.value, repo)
-  }, 500)
+  }, 200)
 
   public componentDidMount() {
     document.addEventListener('keyup', this.handleKeyUp)
@@ -98,11 +98,18 @@ export class CommandPaletteComponent extends React.Component<
     suggestion: SuggestionSelectedEventData<CommandPaletteItem>,
   ) {
     ev.preventDefault()
-    this.props.history.push(suggestion.suggestion.url)
+    if (suggestion.suggestion.openAction) {
+      suggestion.suggestion.openAction()
+    } else {
+      this.props.history.push(suggestion.suggestion.url)
+    }
+    this.props.close()
   }
 
   private setDelayedOpenedState = debounce((value: boolean) => {
-    this.setState({ delayedOpened: value })
+    if (value !== this.state.delayedOpened) {
+      this.setState({ delayedOpened: value })
+    }
   }, 370)
 
   public componentDidUpdate(prevProps: CommandPaletteComponent['props']) {

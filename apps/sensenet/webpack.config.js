@@ -1,9 +1,12 @@
 var path = require('path')
-// const webpack = require('webpack')
+const webpack = require('webpack')
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
 const TsConfigWebpackPlugin = require('ts-config-webpack-plugin')
+const GitRevisionPlugin = require('git-revision-webpack-plugin')
+
+const gitRevisionPlugin = new GitRevisionPlugin()
 
 module.exports = {
   mode: 'development',
@@ -46,6 +49,14 @@ module.exports = {
     new MonacoWebpackPlugin({
       languages: ['json', 'javascript', 'xml', 'html'],
       output: 'static/monaco',
+    }),
+    new webpack.EnvironmentPlugin({
+      NODE_ENV: 'development',
+      DEBUG: true,
+      GIT_VERSION: JSON.stringify(gitRevisionPlugin.version()),
+      APP_VERSION: JSON.stringify(require('./package.json').version),
+      GIT_COMMITHASH: JSON.stringify(gitRevisionPlugin.commithash()),
+      GIT_BRANCH: JSON.stringify(gitRevisionPlugin.branch()),
     }),
   ],
   module: {

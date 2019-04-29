@@ -60,6 +60,7 @@ export interface DocumentLayoutState {
   draftCommentMarker?: DraftCommentMarker
   activePage?: number
   thumbnaislVisibility: boolean
+  createCommentValue: string
 }
 
 /**
@@ -74,6 +75,7 @@ export class DocumentViewerLayoutComponent extends React.Component<
     this.state = {
       activePage: 1,
       thumbnaislVisibility: this.props.showThumbnails,
+      createCommentValue: '',
     }
     this.commentsContainerRef = React.createRef()
     this.createComment = this.createComment.bind(this)
@@ -149,6 +151,7 @@ export class DocumentViewerLayoutComponent extends React.Component<
       this.props.toggleIsCreateCommentActive(false)
     }
     this.props.setSelectedCommentId('')
+    this.setState({ ...this.state, createCommentValue: '' })
   }
 
   /** triggered when the component will receive props */
@@ -273,10 +276,12 @@ export class DocumentViewerLayoutComponent extends React.Component<
                 isActive={this.props.isCreateCommentActive}
                 handleIsActive={isActive => this.props.toggleIsCreateCommentActive(isActive)}
                 draftCommentMarker={this.state.draftCommentMarker}
-                handlePlaceMarkerClick={() => this.toggleIsPlacingCommentMarker()}
+                handlePlaceMarkerClick={isPlacing => this.toggleIsPlacingCommentMarker(isPlacing)}
                 isPlacingMarker={this.props.isPlacingCommentMarker}
                 localization={this.props.localization}
                 createComment={this.createComment}
+                inputValue={this.state.createCommentValue}
+                handleInputValueChange={value => this.setState({ ...this.state, createCommentValue: value })}
               />
               {this.props.comments.map(comment => (
                 <Comment key={comment.id} {...comment} />

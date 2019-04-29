@@ -30,7 +30,7 @@ const Breadcrumbs: React.FunctionComponent<BreadcrumbProps & RouteComponentProps
 
   return (
     <>
-      <Typography variant="h6" style={{ paddingLeft: '.5em' }}>
+      <Typography variant="h5" style={{ paddingLeft: '.5em' }}>
         {props.content.map((item, key) => (
           <DropFileArea key={key} parent={item.content} style={{ display: 'inline-block' }}>
             <Tooltip title={item.title}>
