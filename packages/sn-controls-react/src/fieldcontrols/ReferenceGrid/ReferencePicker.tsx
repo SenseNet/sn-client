@@ -18,8 +18,20 @@ interface ReferencePickerProps {
   allowedTypes?: string[]
   selected: any[]
 }
+interface ReferencePickerState {
+  path: string
+}
 
-export class ReferencePicker extends Component<ReferencePickerProps> {
+export class ReferencePicker extends Component<ReferencePickerProps, ReferencePickerState> {
+  public state: ReferencePickerState = {
+    path: this.props.path,
+  }
+
+  public onNavigation = (path: string) => {
+    this.props.change && this.props.change()
+    this.setState({ path })
+  }
+
   public onSelectionChanged = (content: GenericContent) => {
     if (this.props.allowedTypes && this.props.allowedTypes.indexOf(content.Type) > -1) {
       this.props.select(content)
@@ -77,9 +89,9 @@ export class ReferencePicker extends Component<ReferencePickerProps> {
     return (
       <ListPickerComponent
         onSelectionChanged={this.onSelectionChanged}
-        onNavigation={this.props.change}
+        onNavigation={this.onNavigation}
         repository={this.props.repository}
-        currentPath={this.props.path}
+        currentPath={this.state.path}
         itemsOdataOptions={this.pickerItemOptions}
         renderItem={this.renderItem}
       />

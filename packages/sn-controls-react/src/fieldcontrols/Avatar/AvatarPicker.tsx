@@ -31,7 +31,20 @@ interface AvatarPickerProps {
   repositoryUrl: string
 }
 
-export class AvatarPicker extends Component<AvatarPickerProps> {
+interface AvatarPickerState {
+  path: string
+}
+
+export class AvatarPicker extends Component<AvatarPickerProps, AvatarPickerState> {
+  public state: AvatarPickerState = {
+    path: this.props.path,
+  }
+
+  public onNavigation = (path: string) => {
+    this.props.change && this.props.change()
+    this.setState({ path })
+  }
+
   public onSelectionChanged = (content: GenericContent) => {
     if (content.Type === 'Image') {
       this.props.select(content)
@@ -76,7 +89,7 @@ export class AvatarPicker extends Component<AvatarPickerProps> {
         createFolders: true,
         binaryPropertyName: 'Binary',
         overwrite: true,
-        parentPath: this.props.path,
+        parentPath: this.state.path,
       }))
   }
 
@@ -85,9 +98,9 @@ export class AvatarPicker extends Component<AvatarPickerProps> {
       <div>
         <ListPickerComponent
           onSelectionChanged={this.onSelectionChanged}
-          onNavigation={this.props.change}
+          onNavigation={this.onNavigation}
           repository={this.props.repository}
-          currentPath={this.props.path}
+          currentPath={this.state.path}
           itemsOdataOptions={this.pickerItemOptions}
           renderItem={this.renderItem}
         />
