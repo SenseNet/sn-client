@@ -224,7 +224,6 @@ class DashboardDrawer extends Component<
           this.props.handleDrawerMenu(false)
           break
         default:
-          console.log(`${action.Name} is clicked`)
           this.props.handleDrawerMenu(false)
           break
       }
