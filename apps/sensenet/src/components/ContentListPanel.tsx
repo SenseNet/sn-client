@@ -22,7 +22,7 @@ import { Icon } from './Icon'
 import { SecondaryActionsMenu } from './SecondaryActionsMenu'
 import { SelectionControl } from './SelectionControl'
 
-export const CollectionComponent: React.FunctionComponent<{
+export interface CollectionComponentProps {
   enableBreadcrumbs?: boolean
   parentId: number
   onParentChange: (newParent: GenericContent) => void
@@ -31,7 +31,10 @@ export const CollectionComponent: React.FunctionComponent<{
   style?: React.CSSProperties
   containerRef?: (r: HTMLDivElement | null) => void
   requestReload?: () => void
-}> = props => {
+  fieldsToDisplay?: Array<keyof GenericContent>
+}
+
+export const CollectionComponent: React.FunctionComponent<CollectionComponentProps> = props => {
   const parent = useContext(CurrentContentContext)
   const children = useContext(CurrentChildrenContext)
   const ancestors = useContext(CurrentAncestorsContext)
@@ -310,7 +313,7 @@ export const CollectionComponent: React.FunctionComponent<{
               }
               return null
             }}
-            fieldsToDisplay={personalSettings.content.fields || ['DisplayName']}
+            fieldsToDisplay={props.fieldsToDisplay || personalSettings.content.fields || ['DisplayName']}
             selected={selected}
             onRequestSelectionChange={setSelected}
             icons={{}}

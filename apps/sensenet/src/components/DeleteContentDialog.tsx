@@ -67,6 +67,7 @@ export const DeleteContentDialog: React.FunctionComponent<{
             {localization.cancelButton}
           </Button>
           <Button
+            autoFocus={true}
             disabled={isDeleteInProgress}
             onClick={async ev => {
               try {

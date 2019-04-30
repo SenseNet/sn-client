@@ -39,10 +39,15 @@ const values = {
     deleteFailedNoty: `There was an error during content deletion.`,
   },
   copyContentDialog: {
-    title: 'Copy content',
+    title: `Copy '{0}'`,
+    titleMultiple: `Copy {0} items`,
     copyButton: 'Copy',
     cancelButton: 'Cancel',
     details: 'Copy {0} content to {1}',
+    copySucceededNotification: '{0} has been copied to {1}',
+    copyMultipleSucceededNotification: '{0} items has been copied to {1}',
+    copyFailedNotification: 'Failed to copy content {0} to {1}',
+    copyMultipleFailedNotification: 'Failed to copy {0} items to {1}',
   },
   drawer: {
     personalSettingsTitle: 'Edit personal settings',
