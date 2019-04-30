@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ListPickerComponent } from '@sensenet/pickers-react'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { LocalizationContext, RepositoryContext } from '../context'
 import { LoggerContext } from '../context/LoggerContext'
 import { Icon } from './Icon'
@@ -27,6 +27,10 @@ export const CopyDialog: React.FunctionComponent<{
   const localization = useContext(LocalizationContext).values.copyContentDialog
   const repo = useContext(RepositoryContext)
   const [parent, setParent] = useState(props.currentParent)
+
+  useEffect(() => {
+    setParent(props.currentParent)
+  }, [props.currentParent])
 
   const logger = useContext(LoggerContext).withScope('CopyDialog')
 
@@ -47,10 +51,10 @@ export const CopyDialog: React.FunctionComponent<{
       <DialogContent>
         <ListPickerComponent
           parentId={props.currentParent.ParentId}
-          currentPath={PathHelper.getParentPath(props.currentParent.Path)}
+          currentPath={props.currentParent.Path}
           repository={repo}
           parentODataOptions={{ filter: `isOf('Folder')` }}
-          onSelectionChanged={sel => setParent(sel)}
+          onSelectionChanged={sel => sel && setParent(sel)}
           renderItem={node => (
             <ListItem button={true} selected={parent && node.Id === parent.Id}>
               <ListItemIcon>

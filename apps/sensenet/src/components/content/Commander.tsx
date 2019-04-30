@@ -1,15 +1,18 @@
 import { ConstantContent } from '@sensenet/client-core'
+import { GenericContent } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
 import { matchPath, RouteComponentProps, withRouter } from 'react-router'
 import {
   ContentRoutingContext,
   CurrentAncestorsProvider,
   CurrentChildrenProvider,
+  CurrentContentContext,
   CurrentContentProvider,
   LoadSettingsContextProvider,
   RepositoryContext,
 } from '../../context'
 import { CollectionComponent } from '../ContentListPanel'
+import { CopyDialog } from '../CopyDialog'
 
 export interface CommanderRouteParams {
   folderId?: string
@@ -29,6 +32,8 @@ export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRou
 
   const [_leftPanelRef, setLeftPanelRef] = useState<null | any>(null)
   const [_rightPanelRef, setRightPanelRef] = useState<null | any>(null)
+
+  const [activePanel, setActivePanel] = useState<'left' | 'right'>('left')
 
   useEffect(() => {
     const historyChangeListener = props.history.listen(location => {
@@ -56,10 +61,40 @@ export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRou
     }
   }, [leftParentId, rightParentId])
 
+  const [isCopyOpened, setIsCopyOpened] = useState(false)
+  const [copySelection, setCopySelection] = useState<GenericContent[]>([ConstantContent.PORTAL_ROOT])
+  const [copyParent, setCopyParent] = useState<GenericContent>(ConstantContent.PORTAL_ROOT)
+  const [leftParent, setLeftParent] = useState<GenericContent>(ConstantContent.PORTAL_ROOT)
+  const [rightParent, setRightParent] = useState<GenericContent>(ConstantContent.PORTAL_ROOT)
+
+  const [leftSelection, setLeftSelection] = useState<GenericContent[]>([])
+  const [rightSelection, setRightSelection] = useState<GenericContent[]>([])
+
   return (
-    <div style={{ display: 'flex', width: '100%', height: '100%' }}>
+    <div
+      onKeyDown={ev => {
+        if (ev.key === 'F5') {
+          ev.preventDefault()
+          ev.stopPropagation()
+          if (activePanel === 'left') {
+            setCopySelection(leftSelection)
+            setCopyParent(rightParent)
+          } else {
+            setCopySelection(rightSelection)
+            setCopyParent(leftParent)
+          }
+          copySelection && copySelection.length && copyParent && setIsCopyOpened(true)
+        }
+      }}
+      style={{ display: 'flex', width: '100%', height: '100%' }}>
       <LoadSettingsContextProvider>
         <CurrentContentProvider idOrPath={leftParentId}>
+          <CurrentContentContext.Consumer>
+            {lp => {
+              setLeftParent(lp)
+              return null
+            }}
+          </CurrentContentContext.Consumer>
           <CurrentChildrenProvider>
             <CurrentAncestorsProvider>
               <CollectionComponent
@@ -73,12 +108,19 @@ export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRou
                 onParentChange={p => {
                   setLeftParentId(p.Id)
                 }}
-                onTabRequest={() => _rightPanelRef && _rightPanelRef.focus()}
+                onSelectionChange={sel => setLeftSelection(sel)}
+                onTabRequest={() => _rightPanelRef && _rightPanelRef.focus() && setActivePanel('right')}
               />
             </CurrentAncestorsProvider>
           </CurrentChildrenProvider>
         </CurrentContentProvider>
         <CurrentContentProvider idOrPath={rightParentId}>
+          <CurrentContentContext.Consumer>
+            {rp => {
+              setRightParent(rp)
+              return null
+            }}
+          </CurrentContentContext.Consumer>
           <CurrentChildrenProvider>
             <CurrentAncestorsProvider>
               <CollectionComponent
@@ -92,12 +134,21 @@ export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRou
                 onParentChange={p2 => {
                   setRightParentId(p2.Id)
                 }}
-                onTabRequest={() => _leftPanelRef && _leftPanelRef.focus()}
+                onSelectionChange={sel => setRightSelection(sel)}
+                onTabRequest={() => _leftPanelRef && _leftPanelRef.focus() && setActivePanel('left')}
               />
             </CurrentAncestorsProvider>
           </CurrentChildrenProvider>
         </CurrentContentProvider>
       </LoadSettingsContextProvider>
+      <CopyDialog
+        dialogProps={{
+          open: isCopyOpened,
+          onClose: () => setIsCopyOpened(false),
+        }}
+        content={copySelection}
+        currentParent={copyParent}
+      />
     </div>
   )
 }
