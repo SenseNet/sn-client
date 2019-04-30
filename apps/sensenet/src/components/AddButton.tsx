@@ -135,7 +135,10 @@ export const AddButton: React.FunctionComponent = () => {
                 })
                 setShowAddNewDialog(false)
                 logger.information({
-                  message: localization.contentCreatedNoty.replace('{0}', created.d.DisplayName || created.d.Name),
+                  message: localization.contentCreatedNotification.replace(
+                    '{0}',
+                    created.d.DisplayName || created.d.Name,
+                  ),
                   data: {
                     relatedContent: created,
                     relatedRepository: repo.configuration.repositoryUrl,

@@ -71,7 +71,7 @@ export const Login: React.FunctionComponent = () => {
         settingsManager.setValue(personalSettings)
         await sleepAsync(2000)
         logger.information({
-          message: localization.loginSuccessNoty.replace('{0}', userName).replace('{1}', url),
+          message: localization.loginSuccessNotification.replace('{0}', userName).replace('{1}', url),
           data: {
             relatedContent: repoToLogin.authentication.currentUser.getValue(),
             relatedRepository: repoToLogin.configuration.repositoryUrl,
@@ -81,12 +81,12 @@ export const Login: React.FunctionComponent = () => {
         setIsInProgress(false)
         setError(localization.loginFailed)
         logger.warning({
-          message: localization.loginFailedNoty.replace('{0}', userName).replace('{1}', url),
+          message: localization.loginFailedNotification.replace('{0}', userName).replace('{1}', url),
         })
       }
     } catch (error) {
       logger.error({
-        message: localization.loginErrorNoty.replace('{0}', userName).replace('{1}', url),
+        message: localization.loginErrorNotification.replace('{0}', userName).replace('{1}', url),
         data: {
           details: { error },
         },

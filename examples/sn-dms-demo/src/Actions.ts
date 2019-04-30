@@ -4,12 +4,12 @@ import {
   UploadFromFileListOptions,
   UploadProgressInfo,
 } from '@sensenet/client-core'
-import { debounce, ObservableValue, usingAsync } from '@sensenet/client-utils'
+import { ObservableValue, usingAsync } from '@sensenet/client-utils'
 import { File as SnFile, GenericContent } from '@sensenet/default-content-types'
 import { ActionModel } from '@sensenet/default-content-types/dist/ActionModel'
 import { Dispatch } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
-import { updateChildrenOptions } from './store/documentlibrary/actions'
+import { debounceReloadOnProgress } from './store/documentlibrary/actions'
 import { rootStateType } from './store/rootReducer'
 
 export enum MessageMode {
@@ -126,18 +126,6 @@ export const loadUserActions = (idOrPath: number | string, scenario?: string, cu
 export type ExtendedUploadProgressInfo = UploadProgressInfo & { content?: GenericContent; visible?: boolean }
 
 export const changedContent: GenericContent[] = []
-
-function methodToDebounce(getState: () => rootStateType, dispatch: Dispatch) {
-  const currentContent = getState().dms.documentLibrary.parent
-  changedContent.forEach(content => {
-    if (currentContent && currentContent.Id === content.ParentId) {
-      dispatch(updateChildrenOptions({}))
-      changedContent.length = 0
-      return
-    }
-  })
-}
-export const debounceReloadOnProgress = debounce(methodToDebounce, 300)
 
 export const trackUploadProgress = async <T extends GenericContent>(
   currentValue: ExtendedUploadProgressInfo,

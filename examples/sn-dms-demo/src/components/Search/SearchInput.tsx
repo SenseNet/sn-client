@@ -6,7 +6,7 @@ import ArrowDropDown from '@material-ui/icons/ArrowDropDown'
 import ArrowDropUp from '@material-ui/icons/ArrowDropUp'
 import Search from '@material-ui/icons/Search'
 import Tune from '@material-ui/icons/Tune'
-import * as React from 'react'
+import React from 'react'
 import MediaQuery from 'react-responsive'
 
 const styles = {

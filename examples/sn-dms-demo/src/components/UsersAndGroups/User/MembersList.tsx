@@ -33,7 +33,7 @@ interface MembersListProps extends RouteComponentProps<any> {
 const mapStateToProps = (state: rootStateType) => {
   return {
     currentGroup: state.dms.usersAndGroups.group.currentGroup || ({} as Group),
-    childrenOptions: state.dms.usersAndGroups.user.grouplistOptions,
+    childrenOptions: state.dms.usersAndGroups.user.userlistOptions,
     hostName: state.sensenet.session.repository ? state.sensenet.session.repository.repositoryUrl : '',
     selected: state.dms.usersAndGroups.user.selected,
     parent: state.dms.usersAndGroups.group.parent,

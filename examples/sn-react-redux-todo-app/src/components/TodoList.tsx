@@ -1,7 +1,7 @@
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import { Task } from '@sensenet/default-content-types'
-import * as React from 'react'
+import React from 'react'
 import { Todo } from './Todo'
 
 const style = {

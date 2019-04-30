@@ -14,6 +14,7 @@ import { contentListTheme } from '../../../assets/contentlist'
 import { resources } from '../../../assets/resources'
 import { rootStateType } from '../../../store/rootReducer'
 import { clearUserSelection, getAllowedTypes, loadUser } from '../../../store/usersandgroups/actions'
+import ActionMenu from '../../ActionMenu/ActionMenu'
 import BreadCrumb from '../../BreadCrumb'
 import DeleteDialog from '../../Dialogs/DeleteDialog'
 import { GridPlaceholder } from '../../Loaders/GridPlaceholder'
@@ -87,9 +88,11 @@ class Users extends Component<ReturnType<typeof mapStateToProps> & typeof mapDis
   private static updateStoreFromPath(newProps: Users['props']) {
     try {
       if (newProps.match.params.otherActions) {
-        const uuid = newProps.match.params.otherActions.replace('group', '').replace(/\//g, '')
+        const uuid = newProps.match.params.otherActions.replace('user', '').replace(/\//g, '')
         const userIdFromUrl = newProps.match.params.otherActions && atob(decodeURIComponent(uuid))
-        newProps.loadUser(Number(userIdFromUrl))
+        newProps.loadUser(Number(userIdFromUrl), {
+          select: ['Avatar', 'FullName', 'DisplayName', 'Email', 'Phone', 'LoginName'],
+        })
       } else {
         const idFromUrl = newProps.match.params.folderPath && atob(decodeURIComponent(newProps.match.params.folderPath))
         const groupsRootPath = `/Root/IMS`
@@ -120,7 +123,7 @@ class Users extends Component<ReturnType<typeof mapStateToProps> & typeof mapDis
     this.props.openDialog(<DeleteDialog content={users} />, resources.DELETE, this.props.closeDialog)
   }
   public render() {
-    const { ancestors, currentItem, isLoading, loggedinUser, match } = this.props
+    const { ancestors, currentItem, isLoading, loggedinUser, match, selectedUsers } = this.props
     return (
       <MediaQuery minDeviceWidth={700}>
         {matches => {
@@ -139,7 +142,9 @@ class Users extends Component<ReturnType<typeof mapStateToProps> & typeof mapDis
                       ) : null}
                       {match.params.otherActions ? null : <GroupSelector />}
                       {match.params.otherActions ? null : (
-                        <IconButton onClick={() => this.handleDeleteUsers()}>
+                        <IconButton
+                          disabled={selectedUsers.length > 0 ? false : true}
+                          onClick={() => this.handleDeleteUsers()}>
                           <DeleteIcon />
                         </IconButton>
                       )}
@@ -167,6 +172,7 @@ class Users extends Component<ReturnType<typeof mapStateToProps> & typeof mapDis
                   ) : (
                     <UserList matchesDesktop={matches} />
                   )}
+                  <ActionMenu id={0} />
                 </MuiThemeProvider>
               )}
             </div>

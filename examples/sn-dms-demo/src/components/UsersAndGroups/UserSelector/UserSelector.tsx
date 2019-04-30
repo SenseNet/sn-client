@@ -1,7 +1,7 @@
 import Button from '@material-ui/core/Button'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import { Icon } from '@sensenet/icons-react'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { resources } from '../../../assets/resources'
@@ -32,6 +32,7 @@ interface UserSelectorState {
 const mapStateToProps = (state: rootStateType) => {
   return {
     selected: state.dms.usersAndGroups.group.selected,
+    allowedChildTypes: state.dms.usersAndGroups.allowedTypes,
   }
 }
 
@@ -67,7 +68,7 @@ class UserSelector extends React.Component<
             <ClickAwayListener onClickAway={() => this.handleButtonClick(false, true)}>
               <div style={{ display: 'inline' }}>
                 <Button
-                  disabled={this.props.selected.length > 0 ? false : true}
+                  disabled={this.props.selected.length > 0 && this.props.selected[0].Type === 'Group' ? false : true}
                   variant="contained"
                   color="primary"
                   style={{ ...styles.button, ...styles.buttonRaised }}
