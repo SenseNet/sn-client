@@ -42,6 +42,7 @@ const mapStateToProps = (state: rootStateType) => {
     queryOptions: state.sensenet.currentitems.options,
     currentContent: state.dms.actionmenu.content,
     currentParent: state.dms.documentLibrary.parent,
+    currentUser: state.sensenet.session.user.content,
   }
 }
 
@@ -213,9 +214,10 @@ class ActionMenu extends React.Component<
           break
         case 'Profile':
           this.handleClose()
+          const user = this.props.currentUser
           const userPath = compile('/users/:folderPath?/:otherActions*')({
-            folderPath: btoa(content && content.ParentId ? content.ParentId.toString() : ''),
-            otherActions: ['user', btoa(content ? content.Id.toString() : '')],
+            folderPath: btoa(user && user.ParentId ? user.ParentId.toString() : ''),
+            otherActions: ['user', btoa(user ? user.Id.toString() : '')],
           })
           this.props.history.push(userPath)
           this.props.chooseMenuItem('profile')

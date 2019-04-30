@@ -88,9 +88,11 @@ class Users extends Component<ReturnType<typeof mapStateToProps> & typeof mapDis
   private static updateStoreFromPath(newProps: Users['props']) {
     try {
       if (newProps.match.params.otherActions) {
-        const uuid = newProps.match.params.otherActions.replace('group', '').replace(/\//g, '')
+        const uuid = newProps.match.params.otherActions.replace('user', '').replace(/\//g, '')
         const userIdFromUrl = newProps.match.params.otherActions && atob(decodeURIComponent(uuid))
-        newProps.loadUser(Number(userIdFromUrl))
+        newProps.loadUser(Number(userIdFromUrl), {
+          select: ['Avatar', 'FullName', 'DisplayName', 'Email', 'Phone', 'LoginName'],
+        })
       } else {
         const idFromUrl = newProps.match.params.folderPath && atob(decodeURIComponent(newProps.match.params.folderPath))
         const groupsRootPath = `/Root/IMS`

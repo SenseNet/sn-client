@@ -68,13 +68,16 @@ class UserProfile extends React.Component<
   }
 
   private static updateStoreFromPath(newProps: UserProfile['props']) {
+    // const user = newProps.user ? newProps.user : {} as User
     try {
-      const userProfilePath = newProps.active
-        ? newProps.active.Path
-        : `/Root/IMS/Public/${newProps.loggedinUser.content.Name}`
-      newProps.loadUser(userProfilePath, {
-        select: ['Avatar', 'FullName', 'DisplayName', 'Email', 'Phone', 'LoginName'],
-      })
+      // const userProfilePath = newProps.match.params.otherActions
+      //   ? user.Id
+      //   : `/Root/IMS/Public/${newProps.loggedinUser.content.Name}`
+      if (newProps.user) {
+        newProps.loadUser(newProps.user.Id, {
+          select: ['Avatar', 'FullName', 'DisplayName', 'Email', 'Phone', 'LoginName'],
+        })
+      }
     } catch (error) {
       /** Cannot parse current folder from URL */
       return compile(newProps.match.path)({ folderPath: '' })

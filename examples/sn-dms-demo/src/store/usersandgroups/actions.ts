@@ -19,7 +19,7 @@ export const loadUser = <T extends User = User>(idOrPath: number | string, userO
   type: 'DMS_USERSANDGROUPS_LOAD_USER',
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const prevState = options.getState().dms.usersAndGroups
-    if (prevState.user.currentUser && prevState.user.currentUser.Id.toString() === idOrPath) {
+    if (prevState.user.currentUser && prevState.user.currentUser.Id === idOrPath) {
       return
     }
 
@@ -82,7 +82,7 @@ export const loadUser = <T extends User = User>(idOrPath: number | string, userO
         (async () => {
           if (newUser.d.Type === 'User') {
             const memberships = await repository.security.getParentGroups({
-              contentIdOrPath: idOrPath,
+              contentIdOrPath: newUser.d.Id,
               directOnly: false,
               oDataOptions: {
                 select: ['Workspace', 'DisplayName', 'Type', 'Id', 'Path', 'Actions', 'Icon', 'Members'],
