@@ -298,7 +298,6 @@ class DashboardComponent extends React.Component<
                         )}
                       />
 
-                      {/* <Redirect to="/documents" /> */}
                     </Switch>
                   </div>
                 )}
