@@ -6,7 +6,14 @@ context('The documents page', () => {
    * @example ```js
    * { email: 'miwor@sensenet.com', password: 'aY]w9UJ2j' }```
    */
-  let currentUser = { email: '', password: '' }
+  let currentUser = { email: 'di@sensenet.com', password: 'Xqv#e[ryT2hSG5Q9' }
+  const newMenuItems = [
+    { name: 'document', ext: '.docx' },
+    { name: 'sheet', ext: '.xlsx' },
+    { name: 'slide', ext: '.pptx' },
+    { name: 'text', ext: '.txt' },
+    { name: 'folder', ext: '' },
+  ]
   before(async () => {
     if (process.env.CI) {
       currentUser = registerNewUser()
@@ -30,13 +37,34 @@ context('The documents page', () => {
     cy.get(`div[aria-label="${currentUser.email}"]`).should('exist')
   })
 
-  it('creates new document', () => {
-    openNew('document')
-    const displayName = Chance().word()
-    cy.get('#DisplayName').type(displayName)
-    cy.get('#Watermark').type(Chance().word() + '{enter}')
-    cy.contains(displayName + '.docx is successfully created').should('exist')
-    cy.contains(displayName + '.docx').should('exist')
+  describe('left side menu', () => {
+    it('should contain new and upload buttons', () => {
+      cy.contains('span[role=button]', 'Upload')
+      cy.contains('span[role=button]', 'New')
+    })
+
+    it('should contain new document, image, sheet, slide, text, folder buttons', () => {
+      cy.contains('[data-cy=appbar]', 'Document library').should('exist')
+      cy.contains('New').click()
+      cy.contains('li[role=menuitem]', 'New document')
+      cy.contains('li[role=menuitem]', 'New image')
+      cy.contains('li[role=menuitem]', 'New sheet')
+      cy.contains('li[role=menuitem]', 'New slide')
+      cy.contains('li[role=menuitem]', 'New text')
+      cy.contains('li[role=menuitem]', 'New folder')
+    })
+
+    describe('new button dropdown', () => {
+      newMenuItems.forEach(item => {
+        it(`New ${item.name} should create a new ${item.name}`, () => {
+          openNew(item.name)
+          const displayName = Chance().word()
+          cy.get('#DisplayName').type(displayName + '{enter}')
+          cy.contains(displayName + item.ext + ' is successfully created').should('exist')
+          cy.contains(displayName + item.ext).should('exist')
+        })
+      })
+    })
   })
 })
 
