@@ -1,6 +1,6 @@
 import { GoogleOauthProvider } from '@sensenet/authentication-google'
 import { Actions } from '@sensenet/redux'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 
 // tslint:disable-next-line:no-var-requires

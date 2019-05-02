@@ -1,6 +1,6 @@
 import { Store } from '@sensenet/redux'
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
+import React from 'react'
+import ReactDOM from 'react-dom'
 import { withStore } from '../../__tests__/TestHelper'
 import { rootStateType } from '../../store/rootReducer'
 import GoogleReCaptcha from '../GoogleReCaptcha'

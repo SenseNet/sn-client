@@ -1,7 +1,7 @@
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import { Status } from '@sensenet/default-content-types'
-import * as React from 'react'
+import React from 'react'
 import FilterLink from '../containers/FilterLink'
 
 /**

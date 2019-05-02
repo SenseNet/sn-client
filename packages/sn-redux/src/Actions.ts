@@ -52,7 +52,7 @@
  * ### Using built-in redux actions in your views
  *
  * ```
- * import * as React from 'react'
+ * import React from 'react'
  * import { connect } from 'react-redux'
  * import { TextField } from 'material-ui/TextField';
  * import RaisedButton from 'material-ui/RaisedButton';

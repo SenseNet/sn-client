@@ -62,7 +62,7 @@ export function ListPickerComponent<T extends GenericContent = GenericContent>(p
 
   const onItemDoubleClickHandler = (event: React.MouseEvent, node: T) => {
     event.preventDefault()
-    props.onNavigation && props.onNavigation()
+    props.onNavigation && props.onNavigation(node.Path)
     setParentIdOnDoubleClick(node)
 
     // Navigation to parent

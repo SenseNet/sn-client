@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { SearchDocuments } from './SearchDocuments'
 

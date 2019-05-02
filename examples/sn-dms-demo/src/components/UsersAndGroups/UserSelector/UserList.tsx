@@ -1,7 +1,7 @@
 import MenuList from '@material-ui/core/MenuList'
 import withStyles from '@material-ui/core/styles/withStyles'
 import { User } from '@sensenet/default-content-types'
-import * as React from 'react'
+import React from 'react'
 import Scrollbars from 'react-custom-scrollbars'
 import { connect } from 'react-redux'
 import { rootStateType } from '../../../store/rootReducer'

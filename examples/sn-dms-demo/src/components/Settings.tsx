@@ -1,7 +1,7 @@
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
-import * as React from 'react'
+import React from 'react'
 
 // tslint:disable-next-line:variable-name
 export const Settings: React.StatelessComponent = () => {

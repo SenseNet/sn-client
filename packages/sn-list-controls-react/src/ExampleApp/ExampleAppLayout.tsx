@@ -9,7 +9,7 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import { Icon, iconType } from '@sensenet/icons-react'
 
-import * as React from 'react'
+import React from 'react'
 import { Route, Switch } from 'react-router'
 import { HashRouter, Link } from 'react-router-dom'
 import { ContentListDemo } from './ContentListDemo'

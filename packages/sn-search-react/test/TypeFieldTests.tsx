@@ -3,7 +3,7 @@ import { SchemaStore as defaultSchemas, Task, User } from '@sensenet/default-con
 import { shallow } from 'enzyme'
 
 import Select from '@material-ui/core/Select'
-import * as React from 'react'
+import React from 'react'
 import { TypeField } from '../src/Components/Fields/TypeField'
 
 describe('TypeField component', () => {
