@@ -72,7 +72,10 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
       order = order === 'asc' ? 'desc' : 'asc'
     }
     loadSettings.setLoadChildrenSettings({
-      orderby: [[currentOrder as any, order as any]],
+      orderby:
+        loadSettings.loadChildrenSettings.orderby && loadSettings.loadChildrenSettings.orderby.length === 1
+          ? [[currentOrder as any, order as any]]
+          : [['DisplayName', 'asc']],
       select: personalSettings.content.fields,
       expand: personalSettings.content.fields.filter(f => isReferenceField(f)),
     })
