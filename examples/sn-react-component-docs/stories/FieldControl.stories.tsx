@@ -539,7 +539,34 @@ storiesOf('FieldControls.DropDownList', module)
     'VersioningModeChoice',
     () => (
       <DropDownList
-        data-labelText={text('Label', 'VersioningModeChoice label')}
+        data-labelText={text('Label', 'Version history')}
+        readOnly={boolean('Readonly', false)}
+        required={boolean('Required', false)}
+        className={text('Additional class name', 'versioningmodechoice-field')}
+        data-fieldValue={[3]}
+        data-actionName="edit"
+        onChange={action('change')}
+        data-hintText={text(
+          'Hint',
+          'Specify whether the system should create a new version whenever you create or modify a content below this content.',
+        )}
+        options={[
+          { Text: 'Inherited', Value: 1 },
+          { Text: 'None', Value: 2 },
+          { Text: 'Major only', Value: 3 },
+          { Text: 'Major and minor', Value: 4 },
+        ]}
+        name="VersioningMode"
+      />
+    ),
+    { notes: { markdown: approvingModeChoiceNotes } },
+  )
+
+  .add(
+    'VersioningMode',
+    () => (
+      <DropDownList
+        data-labelText={text('Label', 'Versioning for current content')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'versioningmodechoice-field')}

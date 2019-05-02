@@ -1,3 +1,3 @@
 ### ApprovingModeChoice
 
-It shows the versioning mode of the current content. It has not its own control but it is displayed with a DropDownList.
+Specify whether the system should create a new version whenever you create or modify a content below this content. It has not got its own control but it is displayed with a DropDownList.
