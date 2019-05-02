@@ -144,6 +144,9 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
               fieldSetting.clientSettings['data-uploadFolderPath'] = this.props.uploadFolderPath || ''
               fieldSetting.clientSettings['data-repository'] = this.props.repository
             }
+            if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
+              fieldSetting.fieldSettings.Type = 'NumberFieldSetting'
+            }
             return (
               <Grid
                 item={true}

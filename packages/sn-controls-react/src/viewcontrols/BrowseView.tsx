@@ -82,6 +82,9 @@ export class BrowseView extends Component<BrowseViewProps, EditViewProps> {
             fieldSetting['data-actionName'] = 'browse'
             // tslint:disable-next-line:no-string-literal
             fieldSetting['value'] = that.getFieldValue(fieldSetting.clientSettings.name)
+            if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
+              fieldSetting.fieldSettings.Type = 'NumberFieldSetting'
+            }
             return (
               <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12} key={fieldSetting.clientSettings.key}>
                 {createElement(fieldSetting.controlType, {
