@@ -86,6 +86,8 @@ export const reactControlMapper = (repository: Repository) =>
           return FieldControls.DisplayName
         case 'sn:FileName':
           return FieldControls.FileName
+        case 'sn:ColorPicker':
+          return FieldControls.ColorPicker
         default:
           return FieldControls.ShortText
       }
@@ -182,6 +184,8 @@ export const reactControlMapper = (repository: Repository) =>
     .setupFieldSettingDefault(NullFieldSetting, setting => {
       if (setting.Name === 'Avatar') {
         return FieldControls.Avatar
+      } else if (setting.Name === 'Color') {
+        return FieldControls.ColorPicker
       } else if (
         ['SiteRelativeUrl', 'UploadBinary', 'ButtonList', 'ReferenceDropDown', 'PageTemplateSelector'].indexOf(
           setting.Name,
