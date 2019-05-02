@@ -98,6 +98,7 @@
     "awesome-typescript-loader": "^5.2.1",
     "chance": "^1.0.18",
     "copy-webpack-plugin": "^5.0.0",
+    "cross-env": "^5.2.0",
     "cypress": "^3.2.0",
     "enzyme": "^3.6.0",
     "enzyme-adapter-react-16": "^1.5.0",
@@ -119,7 +120,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --port 3000 --display-error-details",
-    "start:e2e": "NODE_ENV=test webpack-dev-server --port 3000",
+    "start:e2e": "cross-env NODE_ENV=test webpack-dev-server --port 3000",
     "build:webpack": "rimraf build && webpack",
     "test:jest": "jest",
     "fix": "npm run fix:prettier && npm run fix:tslint",
