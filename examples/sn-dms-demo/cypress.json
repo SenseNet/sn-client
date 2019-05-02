@@ -2,6 +2,5 @@
   "baseUrl": "http://localhost:3000",
   "testFiles": "**/*.spec.*",
   "supportFile": "cypress/support/index.ts",
-  "fixturesFolder": "cypress/fixtures",
-  "projectId": "ego3oo"
+  "fixturesFolder": "cypress/fixtures"
 }

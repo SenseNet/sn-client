@@ -27,7 +27,7 @@ context('The documents page with admin', () => {
     })
   })
 
-  it.only('should be able open viewer from context menu and close with esc', () => {
+  it('should be able open viewer from context menu and close with esc', () => {
     openContextMenu(documentName)
     cy.get(`[title="${contextMenuItems[0]}"]`).click()
     cy.contains('Preview image generation is in progress').should('exist')
