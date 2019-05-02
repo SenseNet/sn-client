@@ -75,6 +75,7 @@ const autocompleteNotes = require('../notes/fieldcontrols/AutoComplete.md')
 const fileUploadNotes = require('../notes/fieldcontrols/FileUpload.md')
 const referenceGridNotes = require('../notes/fieldcontrols/ReferenceGrid.md')
 const avatarNotes = require('../notes/fieldcontrols/Avatar.md')
+const approvingModeChoiceNotes = require('../notes/fieldcontrols/ApprovingModeChoice.md')
 
 storiesOf('FieldControls.AutoComplete', module)
   .addDecorator(withKnobs)
@@ -514,6 +515,24 @@ storiesOf('FieldControls.DropDownList', module)
       />
     ),
     { notes: { markdown: dropdownlistNotes } },
+  )
+  .add(
+    'ApprovingModeChoice',
+    () => (
+      <DropDownList
+        data-labelText={text('Label', 'ApprovingModeChoice label')}
+        readOnly={boolean('Readonly', false)}
+        required={boolean('Required', false)}
+        className={text('Additional class name', 'approvingmodechoice-field')}
+        data-fieldValue={[3]}
+        data-actionName="edit"
+        onChange={action('change')}
+        data-hintText={text('Hint', 'ApprovingModeChoice hint')}
+        options={[{ Text: 'Inherited (Off)', Value: 1 }, { Text: 'Off', Value: 2 }, { Text: 'On', Value: 3 }]}
+        name="ApprovingMode"
+      />
+    ),
+    { notes: { markdown: approvingModeChoiceNotes } },
   )
 
 storiesOf('FieldControls.FileName', module)
