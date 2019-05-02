@@ -106,7 +106,9 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
           <Typography variant="h5" gutterBottom={true}>
             {`New ${schema.schema.DisplayName}`}
           </Typography>
-        ) : null}
+        ) : (
+          title
+        )}
         <Grid container={true} spacing={24}>
           {fieldSettings.map(fieldSetting => {
             if (fieldSetting.clientSettings['data-typeName'] === 'ReferenceFieldSetting') {

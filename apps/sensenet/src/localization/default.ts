@@ -39,8 +39,8 @@ const values = {
     deleteFailedNotification: `There was an error during content deletion.`,
   },
   copyContentDialog: {
-    title: `Copy '{0}'`,
-    titleMultiple: `Copy {0} items`,
+    title: `Copy '{0}' to '{1}'`,
+    titleMultiple: `Copy {0} items to '{1}'`,
     copyButton: 'Copy',
     cancelButton: 'Cancel',
     details: 'Copy {0} content to {1}',

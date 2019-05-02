@@ -6,7 +6,6 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import Typography from '@material-ui/core/Typography'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ListPickerComponent } from '@sensenet/pickers-react'
@@ -34,6 +33,10 @@ export const CopyDialog: React.FunctionComponent<{
 
   const logger = useContext(LoggerContext).withScope('CopyDialog')
 
+  if (!parent || !props.content.length) {
+    return null
+  }
+
   return (
     <Dialog
       fullWidth={true}
@@ -41,11 +44,13 @@ export const CopyDialog: React.FunctionComponent<{
       onClick={ev => ev.stopPropagation()}
       onDoubleClick={ev => ev.stopPropagation()}>
       <DialogTitle>
-        <div style={{ display: 'flex' }}>
+        <div>
           <Icon item={props.content[0]} style={{ marginRight: '1em' }} />
           {props.content.length === 1
-            ? localization.title.replace('{0}', props.content[0].DisplayName || props.content[0].Name)
-            : localization.titleMultiple.replace('{0}', props.content.length.toString())}
+            ? localization.title
+                .replace('{0}', props.content[0].DisplayName || props.content[0].Name)
+                .replace('{1}', parent.Path)
+            : localization.titleMultiple.replace('{0}', props.content.length.toString()).replace('{1}', parent.Path)}
         </div>
       </DialogTitle>
       <DialogContent>
@@ -66,9 +71,6 @@ export const CopyDialog: React.FunctionComponent<{
         />
       </DialogContent>
       <DialogActions>
-        <Typography>
-          {parent && localization.details.replace('{0}', props.content.length.toString()).replace('{1}', parent.Path)}
-        </Typography>
         <Button onClick={handleClose}>{localization.cancelButton}</Button>
         <Button
           autoFocus={true}

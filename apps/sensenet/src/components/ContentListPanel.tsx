@@ -33,6 +33,7 @@ export interface CollectionComponentProps {
   requestReload?: () => void
   fieldsToDisplay?: Array<keyof GenericContent>
   onSelectionChange?: (sel: GenericContent[]) => void
+  onFocus?: () => void
 }
 
 export const CollectionComponent: React.FunctionComponent<CollectionComponentProps> = props => {
@@ -52,6 +53,10 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
 
   const [currentOrder, setCurrentOrder] = useState<keyof GenericContent>('DisplayName')
   const [currentDirection, setCurrentDirection] = useState<'asc' | 'desc'>('asc')
+
+  useEffect(() => {
+    isFocused && props.onFocus && props.onFocus()
+  }, [isFocused])
 
   useEffect(() => {
     props.onSelectionChange && props.onSelectionChange(selected)

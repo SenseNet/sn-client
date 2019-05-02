@@ -11,6 +11,8 @@ import {
   LoadSettingsContextProvider,
   RepositoryContext,
 } from '../../context'
+import { AddButton } from '../AddButton'
+import { AddDialog } from '../AddDialog'
 import { CollectionComponent } from '../ContentListPanel'
 import { CopyDialog } from '../CopyDialog'
 
@@ -34,6 +36,7 @@ export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRou
   const [_rightPanelRef, setRightPanelRef] = useState<null | any>(null)
 
   const [activePanel, setActivePanel] = useState<'left' | 'right'>('left')
+  const [activeParent, setActiveParent] = useState<GenericContent>(null as any)
 
   useEffect(() => {
     const historyChangeListener = props.history.listen(location => {
@@ -68,12 +71,19 @@ export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRou
   const [rightParent, setRightParent] = useState<GenericContent>(ConstantContent.PORTAL_ROOT)
 
   const [leftSelection, setLeftSelection] = useState<GenericContent[]>([])
+
   const [rightSelection, setRightSelection] = useState<GenericContent[]>([])
+
+  const [isAddDialogOpened, setIsAddDialogOpened] = useState(false)
+
+  useEffect(() => {
+    activePanel === 'left' ? setActiveParent(leftParent) : setActiveParent(rightParent)
+  }, [leftParent, rightParent, activePanel])
 
   return (
     <div
-      onKeyDown={ev => {
-        if (ev.key === 'F5') {
+      onKeyDown={async ev => {
+        if (ev.key === 'F5' && !ev.shiftKey) {
           ev.preventDefault()
           ev.stopPropagation()
           if (activePanel === 'left') {
@@ -84,6 +94,10 @@ export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRou
             setCopyParent(leftParent)
           }
           copySelection && copySelection.length && copyParent && setIsCopyOpened(true)
+        } else if (ev.key === 'F7') {
+          ev.preventDefault()
+          ev.stopPropagation()
+          setIsAddDialogOpened(true)
         }
       }}
       style={{ display: 'flex', width: '100%', height: '100%' }}>
@@ -98,6 +112,9 @@ export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRou
           <CurrentChildrenProvider>
             <CurrentAncestorsProvider>
               <CollectionComponent
+                onFocus={() => {
+                  setActivePanel('left')
+                }}
                 enableBreadcrumbs={true}
                 onActivateItem={item => {
                   props.history.push(ctx.getPrimaryActionUrl(item))
@@ -109,7 +126,7 @@ export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRou
                   setLeftParentId(p.Id)
                 }}
                 onSelectionChange={sel => setLeftSelection(sel)}
-                onTabRequest={() => _rightPanelRef && _rightPanelRef.focus() && setActivePanel('right')}
+                onTabRequest={() => _rightPanelRef && _rightPanelRef.focus()}
               />
             </CurrentAncestorsProvider>
           </CurrentChildrenProvider>
@@ -125,6 +142,9 @@ export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRou
             <CurrentAncestorsProvider>
               <CollectionComponent
                 enableBreadcrumbs={true}
+                onFocus={() => {
+                  setActivePanel('right')
+                }}
                 onActivateItem={item => {
                   props.history.push(ctx.getPrimaryActionUrl(item))
                 }}
@@ -135,7 +155,7 @@ export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRou
                   setRightParentId(p2.Id)
                 }}
                 onSelectionChange={sel => setRightSelection(sel)}
-                onTabRequest={() => _leftPanelRef && _leftPanelRef.focus() && setActivePanel('left')}
+                onTabRequest={() => _leftPanelRef && _leftPanelRef.focus()}
               />
             </CurrentAncestorsProvider>
           </CurrentChildrenProvider>
@@ -149,6 +169,19 @@ export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRou
         content={copySelection}
         currentParent={copyParent}
       />
+      {activeParent ? (
+        <>
+          <AddButton parent={activeParent} />
+          <AddDialog
+            parent={activeParent}
+            schema={repo.schemas.getSchemaByName('Folder')}
+            dialogProps={{
+              open: isAddDialogOpened,
+              onClose: () => setIsAddDialogOpened(false),
+            }}
+          />
+        </>
+      ) : null}
     </div>
   )
 }
