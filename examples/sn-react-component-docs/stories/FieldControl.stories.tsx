@@ -76,6 +76,7 @@ const fileUploadNotes = require('../notes/fieldcontrols/FileUpload.md')
 const referenceGridNotes = require('../notes/fieldcontrols/ReferenceGrid.md')
 const avatarNotes = require('../notes/fieldcontrols/Avatar.md')
 const approvingModeChoiceNotes = require('../notes/fieldcontrols/ApprovingModeChoice.md')
+const versioningModeChoiceNotes = require('../notes/fieldcontrols/VersioningModeChoice.md')
 
 storiesOf('FieldControls.AutoComplete', module)
   .addDecorator(withKnobs)
@@ -527,9 +528,32 @@ storiesOf('FieldControls.DropDownList', module)
         data-fieldValue={[3]}
         data-actionName="edit"
         onChange={action('change')}
-        data-hintText={text('Hint', 'ApprovingModeChoice hint')}
+        data-hintText={text('Hint', 'It shows the approval mode of the current content.')}
         options={[{ Text: 'Inherited (Off)', Value: 1 }, { Text: 'Off', Value: 2 }, { Text: 'On', Value: 3 }]}
         name="ApprovingMode"
+      />
+    ),
+    { notes: { markdown: approvingModeChoiceNotes } },
+  )
+  .add(
+    'VersioningModeChoice',
+    () => (
+      <DropDownList
+        data-labelText={text('Label', 'VersioningModeChoice label')}
+        readOnly={boolean('Readonly', false)}
+        required={boolean('Required', false)}
+        className={text('Additional class name', 'versioningmodechoice-field')}
+        data-fieldValue={[3]}
+        data-actionName="edit"
+        onChange={action('change')}
+        data-hintText={text('Hint', 'It shows the versioning mode of the current content.')}
+        options={[
+          { Text: 'Inherited', Value: 1 },
+          { Text: 'None', Value: 2 },
+          { Text: 'Major only', Value: 3 },
+          { Text: 'Major and minor', Value: 4 },
+        ]}
+        name="VersioningMode"
       />
     ),
     { notes: { markdown: approvingModeChoiceNotes } },
