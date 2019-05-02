@@ -42,7 +42,7 @@ export class ListToolbar extends React.Component<ListToolbarProps, {}> {
       <MediaQuery minDeviceWidth={700}>
         {matches => {
           return matches ? (
-            <AppBar position="static" style={matches ? styles.appBar : styles.appBarMobile}>
+            <AppBar data-cy="appbar" position="static" style={matches ? styles.appBar : styles.appBarMobile}>
               <Toolbar style={matches ? (styles.toolbar as any) : (styles.toolbarMobile as any)}>
                 <div style={{ flex: 1, display: 'flex' }}>
                   <WorkspaceSelector />
