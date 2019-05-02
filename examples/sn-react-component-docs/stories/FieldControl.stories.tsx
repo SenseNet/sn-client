@@ -800,6 +800,75 @@ storiesOf('FieldControls.Number', module)
     ),
     { notes: { markdown: numberNotes } },
   )
+  .add(
+    'new mode currency',
+    () => (
+      <Number
+        data-actionName="new"
+        data-labelText={text('Label', 'Currency label')}
+        data-defaultValue={number('Default value', 2.1)}
+        readOnly={boolean('Readonly', false)}
+        required={boolean('Required', false)}
+        className={text('Additional class name', 'currency-field')}
+        data-placeHolderText={text('Placeholder', 'placeholder')}
+        data-errorText={text('Error text')}
+        onChange={action('change')}
+        data-hintText={text('Hint', 'Currency hint')}
+        max={number('Maximum value')}
+        min={number('Minimum value')}
+        data-isCurrency={boolean('Currency', true)}
+        data-currency={select('Currency symbol', currencyOptions, '$')}
+        name="Index"
+      />
+    ),
+    { notes: { markdown: numberNotes } },
+  )
+  .add(
+    'edit mode currency',
+    () => (
+      <Number
+        data-actionName="edit"
+        data-labelText={text('Label', 'Currency label')}
+        value={number('Value', 4)}
+        readOnly={boolean('Readonly', false)}
+        required={boolean('Required', false)}
+        className={text('Additional class name', 'currency-field')}
+        data-placeHolderText={text('Placeholder', 'placeholder')}
+        data-errorText={text('Error text')}
+        onChange={action('change')}
+        data-hintText={text('Hint', 'Currency hint')}
+        max={number('Maximum value')}
+        min={number('Minimum value')}
+        data-isCurrency={boolean('Currency', true)}
+        data-currency={select('Currency symbol', currencyOptions, '$')}
+        name="Index"
+      />
+    ),
+    { notes: { markdown: numberNotes } },
+  )
+  .add(
+    'browse mode currency',
+    () => (
+      <Number
+        data-actionName="browse"
+        data-labelText={text('Label', 'Currency label')}
+        value={number('Value', 4.45)}
+        readOnly={boolean('Readonly', false)}
+        required={boolean('Required', false)}
+        className={text('Additional class name', 'currency-field')}
+        data-placeHolderText={text('Placeholder', 'placeholder')}
+        data-errorText={text('Error text')}
+        onChange={action('change')}
+        data-hintText={text('Hint', 'Currency hint')}
+        max={number('Maximum value')}
+        min={number('Minimum value')}
+        data-isCurrency={boolean('Currency', true)}
+        data-currency={select('Currency symbol', currencyOptions, '$')}
+        name="Index"
+      />
+    ),
+    { notes: { markdown: numberNotes } },
+  )
 
 storiesOf('FieldControls.Password', module)
   .addDecorator(withKnobs)
