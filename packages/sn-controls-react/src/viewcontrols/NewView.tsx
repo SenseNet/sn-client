@@ -102,9 +102,11 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
             submitCallback()
           }
         }}>
-        <Typography variant="h5" gutterBottom={true}>
-          {title && title.length > 0 ? `New ${this.props.title}` : `New {schema.schema.DisplayName}`}
-        </Typography>
+        {title !== undefined ? (
+          <Typography variant="h5" gutterBottom={true}>
+            {`New ${schema.schema.DisplayName}`}
+          </Typography>
+        ) : null}
         <Grid container={true} spacing={24}>
           {fieldSettings.map(fieldSetting => {
             if (fieldSetting.clientSettings['data-typeName'] === 'ReferenceFieldSetting') {
