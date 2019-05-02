@@ -15,7 +15,7 @@ import { icons } from '../../../assets/icons'
 import { resources } from '../../../assets/resources'
 import { customSchema } from '../../../assets/schema'
 import { rootStateType } from '../../../store/rootReducer'
-import { selectUser, setActive, updateChildrenOptions } from '../../../store/usersandgroups/actions'
+import { selectUser, setActive, updateUserListOptions } from '../../../store/usersandgroups/actions'
 import { DescriptionCell } from '../../ContentList/CellTemplates/DescriptionCell'
 import { DisplayNameCell } from '../../ContentList/CellTemplates/DisplayNameCell'
 import { DisplayNameMobileCell } from '../../ContentList/CellTemplates/DisplayNameMobileCell'
@@ -55,7 +55,7 @@ const mapStateToProps = (state: rootStateType) => {
   return {
     user: state.dms.usersAndGroups.user.currentUser,
     items: state.dms.usersAndGroups.user.items,
-    childrenOptions: state.dms.usersAndGroups.user.grouplistOptions,
+    childrenOptions: state.dms.usersAndGroups.user.userlistOptions,
     hostName: state.sensenet.session.repository ? state.sensenet.session.repository.repositoryUrl : '',
     selected: state.dms.usersAndGroups.user.selected,
     parent: state.dms.usersAndGroups.user.parent,
@@ -67,7 +67,7 @@ const mapDispatchToProps = {
   openActionMenu,
   closeActionMenu,
   selectUser,
-  updateChildrenOptions,
+  updateUserListOptions,
   openDialog: DMSActions.openDialog,
   closeDialog: DMSActions.closeDialog,
   setActive,
@@ -134,7 +134,7 @@ class UserList extends Component<ReturnType<typeof mapStateToProps> & typeof map
         onRequestActiveItemChange={active => this.props.setActive(active)}
         onRequestOrderChange={(field, direction) => {
           if (field !== 'Workspace' && field !== 'Actions') {
-            this.props.updateChildrenOptions({
+            this.props.updateUserListOptions({
               ...childrenOptions,
               orderby: [[field, direction]],
             })

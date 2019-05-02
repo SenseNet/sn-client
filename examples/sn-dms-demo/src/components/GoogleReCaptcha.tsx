@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { connect } from 'react-redux'
 import { rootStateType } from '../store/rootReducer'

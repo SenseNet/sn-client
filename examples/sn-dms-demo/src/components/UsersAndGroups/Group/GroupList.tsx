@@ -5,20 +5,22 @@ import { Content } from '@sensenet/client-core'
 import { ActionModel, GenericContent, SchemaStore } from '@sensenet/default-content-types'
 import { Icon } from '@sensenet/icons-react'
 import { ContentList } from '@sensenet/list-controls-react'
+import { updateContent } from '@sensenet/redux/dist/Actions'
 import { compile } from 'path-to-regexp'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
-import * as DMSActions from '../../../Actions'
 import { closeActionMenu, openActionMenu } from '../../../Actions'
+import * as DMSActions from '../../../Actions'
 import { icons } from '../../../assets/icons'
 import { resources } from '../../../assets/resources'
 import { customSchema } from '../../../assets/schema'
 import { rootStateType } from '../../../store/rootReducer'
-import { selectGroup, setActive, updateChildrenOptions } from '../../../store/usersandgroups/actions'
+import { selectGroup, setActive, updateGroupListOptions } from '../../../store/usersandgroups/actions'
 import { DescriptionCell } from '../../ContentList/CellTemplates/DescriptionCell'
 import { DisplayNameCell } from '../../ContentList/CellTemplates/DisplayNameCell'
 import { DisplayNameMobileCell } from '../../ContentList/CellTemplates/DisplayNameMobileCell'
+import { RenameCell } from '../../ContentList/CellTemplates/RenameCell'
 import DeleteDialog from '../../Dialogs/DeleteDialog'
 
 const styles = {
@@ -60,6 +62,7 @@ const mapStateToProps = (state: rootStateType) => {
     selected: state.dms.usersAndGroups.group.selected,
     parent: state.dms.usersAndGroups.group.parent,
     active: state.dms.usersAndGroups.group.active,
+    editedItemId: state.dms.editedItemId,
   }
 }
 
@@ -67,10 +70,11 @@ const mapDispatchToProps = {
   openActionMenu,
   closeActionMenu,
   selectGroup,
-  updateChildrenOptions,
+  updateGroupListOptions,
   openDialog: DMSActions.openDialog,
   closeDialog: DMSActions.closeDialog,
   setActive,
+  updateContent,
 }
 
 class GroupList extends Component<ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & GroupListProps, {}> {
@@ -148,7 +152,7 @@ class GroupList extends Component<ReturnType<typeof mapStateToProps> & typeof ma
         }}
         onRequestOrderChange={(field, direction) => {
           if (field !== 'Workspace' && field !== 'Actions') {
-            this.props.updateChildrenOptions({
+            this.props.updateGroupListOptions({
               ...childrenOptions,
               orderby: [[field, direction]],
             })
@@ -184,7 +188,18 @@ class GroupList extends Component<ReturnType<typeof mapStateToProps> & typeof ma
         fieldComponent={props => {
           switch (props.field) {
             case 'DisplayName':
-              if (!matchesDesktop) {
+              if (this.props.editedItemId === props.content.Id) {
+                return (
+                  <RenameCell
+                    icon={props.content.Icon || ''}
+                    icons={icons}
+                    displayName={props.content.DisplayName || props.content.Name}
+                    onFinish={newName =>
+                      this.props.updateContent<GenericContent>(props.content.Id, { DisplayName: newName })
+                    }
+                  />
+                )
+              } else if (!matchesDesktop) {
                 return (
                   <DisplayNameMobileCell
                     content={props.content}

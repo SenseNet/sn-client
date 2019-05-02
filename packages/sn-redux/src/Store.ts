@@ -13,8 +13,8 @@
  * in every way.
  *
  * ```
- * import * as React from "react";
- * import * as ReactDOM from "react-dom";
+ * import React from "react";
+ * import ReactDOM from "react-dom";
  * import Authentication from 'redux-authentication' //for including custom middleware
  * import { myRootReducer } from '../myApp/Reducers'
  *

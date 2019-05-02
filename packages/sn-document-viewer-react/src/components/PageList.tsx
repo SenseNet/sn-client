@@ -1,5 +1,5 @@
 import Grid from '@material-ui/core/Grid'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { DraftCommentMarker, PreviewImageData } from '../models'
 import { componentType, ImageUtil } from '../services'

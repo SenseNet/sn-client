@@ -1,7 +1,7 @@
 import Avatar from '@material-ui/core/Avatar'
 import Paper from '@material-ui/core/Paper'
 import { Icon } from '@sensenet/icons-react'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import * as DMSActions from '../../Actions'
 import { rootStateType } from '../../store/rootReducer'

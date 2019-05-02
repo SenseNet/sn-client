@@ -41,7 +41,8 @@ const clientConfigFactory = (fieldSettings: FieldSetting) => {
     (defaultSetting.required = fieldSettings.Compulsory || false),
     (defaultSetting['data-placeHolderText'] = fieldSettings.DisplayName || '')
   ;(defaultSetting['data-labelText'] = fieldSettings.DisplayName || ''),
-    (defaultSetting['data-typeName'] = fieldSettings.Type || '')
+    (defaultSetting['data-typeName'] = fieldSettings.Type || ''),
+    (defaultSetting['data-hintText'] = fieldSettings.Description || '')
   return defaultSetting
 }
 
@@ -181,6 +182,11 @@ export const reactControlMapper = (repository: Repository) =>
         default:
           return FieldControls.ShortText
       }
+    })
+    .setClientControlFactory(NullFieldSetting, setting => {
+      const avatarSettings = clientConfigFactory(setting) as ReactReferenceFieldSetting
+      avatarSettings['data-selectionRoot'] = setting.SelectionRoots
+      return avatarSettings
     })
     .setupFieldSettingDefault(BooleanFieldSetting, () => {
       return FieldControls.Boolean

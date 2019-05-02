@@ -118,7 +118,9 @@ export class ShortTextFieldSetting extends TextFieldSetting {
 }
 
 // Used in ContentType, GenericContent, Settings, IndexingSettings, ContentList, Workspace, Site, CustomListItem, User
-export class NullFieldSetting extends FieldSetting {}
+export class NullFieldSetting extends FieldSetting {
+  public SelectionRoots?: string[]
+}
 
 // Used in ContentType, GenericContent, File, HtmlTemplate, Image, ContentList, Aspect, Email, SmartFolder, Query, User
 export class LongTextFieldSetting extends TextFieldSetting {

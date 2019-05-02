@@ -1,5 +1,5 @@
 import TableCell from '@material-ui/core/TableCell'
-import * as React from 'react'
+import React from 'react'
 import Moment from 'react-moment'
 
 interface DateCellProps {

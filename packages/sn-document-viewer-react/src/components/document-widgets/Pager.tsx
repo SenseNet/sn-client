@@ -5,7 +5,7 @@ import FirstPage from '@material-ui/icons/FirstPage'
 import LastPage from '@material-ui/icons/LastPage'
 import NavigateBefore from '@material-ui/icons/NavigateBefore'
 import NavigateNext from '@material-ui/icons/NavigateNext'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { RootReducerType, setActivePages } from '../../store'
 
