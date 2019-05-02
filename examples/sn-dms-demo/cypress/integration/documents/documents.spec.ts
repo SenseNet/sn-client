@@ -6,7 +6,7 @@ context('The documents page', () => {
    * @example ```js
    * { email: 'miwor@sensenet.com', password: 'aY]w9UJ2j' }```
    */
-  let currentUser = { email: 'di@sensenet.com', password: 'Xqv#e[ryT2hSG5Q9' }
+  let currentUser = { email: '', password: '' }
   const newMenuItems = [
     { name: 'document', ext: '.docx' },
     { name: 'sheet', ext: '.xlsx' },

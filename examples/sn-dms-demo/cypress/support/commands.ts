@@ -1,3 +1,4 @@
+import { Content, UploadFileOptions } from '@sensenet/client-core'
 import { User } from '@sensenet/default-content-types'
 
 Cypress.Commands.add('login', (email, password) => {
@@ -26,5 +27,12 @@ Cypress.Commands.add('registerUser', (email, password) => {
       },
       method: 'POST',
     })
+  })
+})
+
+Cypress.Commands.add('uploadWithApi', (options: UploadFileOptions<Content>) => {
+  cy.visit('')
+  cy.window().then(async win => {
+    return await win.repository.upload.file(options)
   })
 })
