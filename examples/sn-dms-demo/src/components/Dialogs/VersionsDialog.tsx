@@ -18,8 +18,7 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
 import { GenericContent } from '@sensenet/default-content-types'
 import { User } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
-import moment from 'moment'
-import * as React from 'react'
+import React from 'react'
 import Moment from 'react-moment'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
@@ -322,10 +321,10 @@ class VersionsDialog extends React.Component<
                               <ListItemText
                                 primary={resources.MODIFIED}
                                 secondary={
-                                  // tslint:disable-next-line:no-string-literal
-                                  `${moment(version.VersionModificationDate).fromNow()} (${
-                                    ((version.VersionModifiedBy as any) as User).FullName
-                                  })`
+                                  <span>
+                                    <Moment fromNow={true}>version.VersionModificationDate</Moment>
+                                    `(${((version.VersionModifiedBy as any) as User).FullName})`
+                                  </span>
                                 }
                               />
                             </ListItem>

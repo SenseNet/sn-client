@@ -1,18 +1,17 @@
-import { Injector } from '@furystack/inject'
 import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
 import IconButton from '@material-ui/core/IconButton'
 import Popover from '@material-ui/core/Popover'
 import Typography from '@material-ui/core/Typography'
-import { Repository } from '@sensenet/client-core'
 import { File as SnFile, Folder, GenericContent } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import { Query } from '@sensenet/query'
 import { AdvancedSearch, AdvancedSearchOptions, PresetField, TextField } from '@sensenet/search-react'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { resources } from '../../assets/resources'
+import { RepositoryContext } from '../../context/RepositoryContext'
 import { loadParent, setChildrenOptions, updateSearchValues } from '../../store/documentlibrary/actions'
 import { DocumentLibraryState } from '../../store/documentlibrary/reducers'
 import { closePicker, openPicker, setPickerParent } from '../../store/picker/actions'
@@ -189,225 +188,229 @@ class SearchDocuments extends React.Component<
   private elementRef: HTMLElement | null = null
   private searchBoxContainerRef: HTMLElement | null = null
 
-  private readonly repository: Repository = Injector.Default.GetInstance(Repository)
-
   public render() {
     return (
-      <AdvancedSearch
-        schema={this.repository.schemas.getSchema(GenericContent)}
-        onQueryChanged={this.handleQueryChanged}
-        style={{ width: '100%' }}
-        fields={options => (
-          <MediaQuery minDeviceWidth={700}>
-            {matches => {
-              if (matches) {
-                return (
-                  <form
-                    style={{ ...(matches ? null : styles.searchContainerMobile), ...this.props.style }}
-                    onSubmit={this.handleOnSubmit}>
-                    <QuickSearchBox
-                      {...this.props}
-                      isLoading={
-                        (this.state.query && this.props.isLoadingParent) || this.props.isLoadingChildren ? true : false
-                      }
-                      isOpen={matches ? this.state.isOpen : true}
-                      onClick={this.onClick}
-                      startAdornmentRef={r => {
-                        this.elementRef = r
-                      }}
-                      containerRef={r => (this.searchBoxContainerRef = r)}
-                      inputProps={{
-                        style: {
-                          width: '100%',
-                        },
-                        value: this.props.searchState.contains,
-                        placeholder: resources.SEARCH_DOCUMENTS_PLACEHOLDER,
-                        onChange: ev => {
-                          const term = ev.currentTarget.value
-                          this.props.updateSearchValues({ contains: term })
-                          this.handleFieldQueryChanged(
-                            'contains',
-                            new Query(q => (term ? q.equals('_Text', `*${term}*`) : q)),
-                            term,
-                            options.updateQuery,
-                          )
-                        },
-                      }}
-                      containerProps={{
-                        style: {
-                          width: '60%',
-                          minWidth: '450px',
-                        },
-                      }}
-                    />
-                    <Popover
-                      BackdropProps={{ style: { backgroundColor: 'rgba(0,0,0,.1)' } }}
-                      disablePortal={true}
-                      onBackdropClick={this.handleClose}
-                      open={this.state.isOpen}
-                      anchorEl={this.elementRef}
-                      anchorOrigin={{
-                        horizontal: 'left',
-                        vertical: 'bottom',
-                      }}
-                      PaperProps={{
-                        style: {
-                          width: (this.searchBoxContainerRef && this.searchBoxContainerRef.offsetWidth) || 0,
-                          overflow: 'hidden',
-                        },
-                      }}>
-                      <div style={containerStyles}>
-                        <SearchRow title="Type">
-                          <PresetField
-                            fullWidth={true}
-                            fieldName="Type"
-                            value={this.props.searchState.type || 'Any'}
-                            presets={[
-                              { text: 'Any', value: new Query(q => q) },
-                              {
-                                text: 'Document',
-                                value: new Query(q => q.typeIs(File).and.equals('Icon' as any, 'word')),
-                              },
-                              {
-                                text: 'Sheet',
-                                value: new Query(q => q.typeIs(File).and.equals('Icon' as any, 'excel')),
-                              },
-                              {
-                                text: 'Text',
-                                value: new Query(q => q.typeIs(File).and.equals('Icon' as any, 'document')),
-                              },
-                              {
-                                text: 'Slide',
-                                value: new Query(q => q.typeIs(File).and.equals('Icon' as any, 'powerpoint')),
-                              },
-                              { text: 'Folder', value: new Query(q => q.typeIs(Folder)) },
-                            ]}
-                            onQueryChange={(_key, query, name) =>
-                              this.handleFieldQueryChanged('type', query, name, options.updateQuery)
-                            }
-                          />
-                        </SearchRow>
-                        <SearchRow title="Owner">
-                          <TextField
-                            fullWidth={true}
-                            placeholder={resources.SEARCH_OWNER_PLACEHOLDER}
-                            fieldName={'Owner'}
-                            onQueryChange={(_key, query, plainValue) =>
-                              this.handleFieldQueryChanged('owner', query, plainValue, options.updateQuery)
-                            }
-                            value={this.props.searchState.owner}
-                          />
-                        </SearchRow>
-                        <SearchRow title="Shared with">
-                          <TextField
-                            fullWidth={true}
-                            placeholder={resources.SEARCH_SHAREDWITH_PLACEHOLDER}
-                            fieldName={'SharedWith'}
-                            onQueryChange={(_key, query, plainValue) =>
-                              this.handleFieldQueryChanged('sharedWith', query, plainValue, options.updateQuery)
-                            }
-                            value={this.props.searchState.sharedWith}
-                          />
-                        </SearchRow>
-                      </div>
-                      <Divider />
-                      <div style={containerStyles}>
-                        <SearchRow title="Item name">
-                          <TextField
-                            fullWidth={true}
-                            placeholder={resources.SEARCH_ITEMNAME_PLACEHOLDER}
-                            fieldName={'DisplayName'}
-                            onQueryChange={(_key, query, plainValue) =>
-                              this.handleFieldQueryChanged('itemName', query, plainValue, options.updateQuery)
-                            }
-                            value={this.props.searchState.itemName}
-                          />
-                        </SearchRow>
-                        <SearchRow title="Date modified">
-                          <PresetField
-                            fullWidth={true}
-                            fieldName="ModificationDate"
-                            presets={[
-                              { text: '-', value: new Query(a => a) },
-                              { text: 'Today', value: new Query(a => a.term('CreationDate:>@@Today@@')) },
-                              {
-                                text: 'Yesterday',
-                                value: new Query(a =>
-                                  a.term('CreationDate:>@@Yesterday@@').and.term('CreationDate:<@@Today@@'),
-                                ),
-                              },
-                              {
-                                text: 'Last 7 days',
-                                value: new Query(a =>
-                                  a.term('CreationDate:>@@Today-7days@@').and.term('CreationDate:<@@Today@@'),
-                                ),
-                              },
-                              {
-                                text: 'Last 30 days',
-                                value: new Query(a =>
-                                  a.term('CreationDate:>@@Today-30days@@').and.term('CreationDate:<@@Today@@'),
-                                ),
-                              },
-                              {
-                                text: 'Last 90 days',
-                                value: new Query(a =>
-                                  a.term('CreationDate:>@@Today-90days@@').and.term('CreationDate:<@@Today@@'),
-                                ),
-                              },
-                              {
-                                text: 'Last 365 days',
-                                value: new Query(a =>
-                                  a.term('CreationDate:>@@Today-365days@@').and.term('CreationDate:<@@Today@@'),
-                                ),
-                              },
-                            ]}
-                            onQueryChange={(_key, query, name) =>
-                              this.handleFieldQueryChanged('dateModified', query, name, options.updateQuery)
-                            }
-                            value={this.props.searchState.dateModified}
-                          />
-                        </SearchRow>
-                        <SearchRow title={resources.SEARCH_CONTAINS_TITLE}>
-                          <TextField
-                            fullWidth={true}
-                            value={this.props.searchState.contains}
-                            placeholder={resources.SEARCH_CONTAINS_PLACEHOLDER}
-                            fieldName={'_Text'}
-                            onQueryChange={(_key, query, plainValue) =>
-                              this.handleFieldQueryChanged('contains', query, plainValue, options.updateQuery)
-                            }
-                          />
-                        </SearchRow>
-                        <SearchRow title={resources.SEARCH_LOCATION_BUTTON_TITLE}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Button
-                              style={{ boxShadow: 'none' }}
-                              variant="contained"
-                              onClick={ev => this.handlePickLocation(ev, options)}>
-                              {this.props.selectedTypeRoot[0]
-                                ? this.props.selectedTypeRoot[0].DisplayName
-                                : resources.SEARCH_LOCATION_ANYWHERE}
-                            </Button>
-                            <Button style={{ boxShadow: 'none' }} type="submit" variant="contained">
-                              Search
-                            </Button>
+      <RepositoryContext.Consumer>
+        {repository => (
+          <AdvancedSearch
+            schema={repository.schemas.getSchema(GenericContent)}
+            onQueryChanged={this.handleQueryChanged}
+            style={{ width: '100%' }}
+            fields={options => (
+              <MediaQuery minDeviceWidth={700}>
+                {matches => {
+                  if (matches) {
+                    return (
+                      <form
+                        style={{ ...(matches ? null : styles.searchContainerMobile), ...this.props.style }}
+                        onSubmit={this.handleOnSubmit}>
+                        <QuickSearchBox
+                          {...this.props}
+                          isLoading={
+                            (this.state.query && this.props.isLoadingParent) || this.props.isLoadingChildren
+                              ? true
+                              : false
+                          }
+                          isOpen={matches ? this.state.isOpen : true}
+                          onClick={this.onClick}
+                          startAdornmentRef={r => {
+                            this.elementRef = r
+                          }}
+                          containerRef={r => (this.searchBoxContainerRef = r)}
+                          inputProps={{
+                            style: {
+                              width: '100%',
+                            },
+                            value: this.props.searchState.contains,
+                            placeholder: resources.SEARCH_DOCUMENTS_PLACEHOLDER,
+                            onChange: ev => {
+                              const term = ev.currentTarget.value
+                              this.props.updateSearchValues({ contains: term })
+                              this.handleFieldQueryChanged(
+                                'contains',
+                                new Query(q => (term ? q.equals('_Text', `*${term}*`) : q)),
+                                term,
+                                options.updateQuery,
+                              )
+                            },
+                          }}
+                          containerProps={{
+                            style: {
+                              width: '60%',
+                              minWidth: '450px',
+                            },
+                          }}
+                        />
+                        <Popover
+                          BackdropProps={{ style: { backgroundColor: 'rgba(0,0,0,.1)' } }}
+                          disablePortal={true}
+                          onBackdropClick={this.handleClose}
+                          open={this.state.isOpen}
+                          anchorEl={this.elementRef}
+                          anchorOrigin={{
+                            horizontal: 'left',
+                            vertical: 'bottom',
+                          }}
+                          PaperProps={{
+                            style: {
+                              width: (this.searchBoxContainerRef && this.searchBoxContainerRef.offsetWidth) || 0,
+                              overflow: 'hidden',
+                            },
+                          }}>
+                          <div style={containerStyles}>
+                            <SearchRow title="Type">
+                              <PresetField
+                                fullWidth={true}
+                                fieldName="Type"
+                                value={this.props.searchState.type || 'Any'}
+                                presets={[
+                                  { text: 'Any', value: new Query(q => q) },
+                                  {
+                                    text: 'Document',
+                                    value: new Query(q => q.typeIs(File).and.equals('Icon' as any, 'word')),
+                                  },
+                                  {
+                                    text: 'Sheet',
+                                    value: new Query(q => q.typeIs(File).and.equals('Icon' as any, 'excel')),
+                                  },
+                                  {
+                                    text: 'Text',
+                                    value: new Query(q => q.typeIs(File).and.equals('Icon' as any, 'document')),
+                                  },
+                                  {
+                                    text: 'Slide',
+                                    value: new Query(q => q.typeIs(File).and.equals('Icon' as any, 'powerpoint')),
+                                  },
+                                  { text: 'Folder', value: new Query(q => q.typeIs(Folder)) },
+                                ]}
+                                onQueryChange={(_key, query, name) =>
+                                  this.handleFieldQueryChanged('type', query, name, options.updateQuery)
+                                }
+                              />
+                            </SearchRow>
+                            <SearchRow title="Owner">
+                              <TextField
+                                fullWidth={true}
+                                placeholder={resources.SEARCH_OWNER_PLACEHOLDER}
+                                fieldName={'Owner'}
+                                onQueryChange={(_key, query, plainValue) =>
+                                  this.handleFieldQueryChanged('owner', query, plainValue, options.updateQuery)
+                                }
+                                value={this.props.searchState.owner}
+                              />
+                            </SearchRow>
+                            <SearchRow title="Shared with">
+                              <TextField
+                                fullWidth={true}
+                                placeholder={resources.SEARCH_SHAREDWITH_PLACEHOLDER}
+                                fieldName={'SharedWith'}
+                                onQueryChange={(_key, query, plainValue) =>
+                                  this.handleFieldQueryChanged('sharedWith', query, plainValue, options.updateQuery)
+                                }
+                                value={this.props.searchState.sharedWith}
+                              />
+                            </SearchRow>
                           </div>
-                        </SearchRow>
-                      </div>
-                    </Popover>
-                  </form>
-                )
-              } else {
-                return (
-                  <IconButton style={styles.searchButton}>
-                    <Icon type={iconType.materialui} iconName="search" style={{ color: '#fff' }} />
-                  </IconButton>
-                )
-              }
-            }}
-          </MediaQuery>
+                          <Divider />
+                          <div style={containerStyles}>
+                            <SearchRow title="Item name">
+                              <TextField
+                                fullWidth={true}
+                                placeholder={resources.SEARCH_ITEMNAME_PLACEHOLDER}
+                                fieldName={'DisplayName'}
+                                onQueryChange={(_key, query, plainValue) =>
+                                  this.handleFieldQueryChanged('itemName', query, plainValue, options.updateQuery)
+                                }
+                                value={this.props.searchState.itemName}
+                              />
+                            </SearchRow>
+                            <SearchRow title="Date modified">
+                              <PresetField
+                                fullWidth={true}
+                                fieldName="ModificationDate"
+                                presets={[
+                                  { text: '-', value: new Query(a => a) },
+                                  { text: 'Today', value: new Query(a => a.term('CreationDate:>@@Today@@')) },
+                                  {
+                                    text: 'Yesterday',
+                                    value: new Query(a =>
+                                      a.term('CreationDate:>@@Yesterday@@').and.term('CreationDate:<@@Today@@'),
+                                    ),
+                                  },
+                                  {
+                                    text: 'Last 7 days',
+                                    value: new Query(a =>
+                                      a.term('CreationDate:>@@Today-7days@@').and.term('CreationDate:<@@Today@@'),
+                                    ),
+                                  },
+                                  {
+                                    text: 'Last 30 days',
+                                    value: new Query(a =>
+                                      a.term('CreationDate:>@@Today-30days@@').and.term('CreationDate:<@@Today@@'),
+                                    ),
+                                  },
+                                  {
+                                    text: 'Last 90 days',
+                                    value: new Query(a =>
+                                      a.term('CreationDate:>@@Today-90days@@').and.term('CreationDate:<@@Today@@'),
+                                    ),
+                                  },
+                                  {
+                                    text: 'Last 365 days',
+                                    value: new Query(a =>
+                                      a.term('CreationDate:>@@Today-365days@@').and.term('CreationDate:<@@Today@@'),
+                                    ),
+                                  },
+                                ]}
+                                onQueryChange={(_key, query, name) =>
+                                  this.handleFieldQueryChanged('dateModified', query, name, options.updateQuery)
+                                }
+                                value={this.props.searchState.dateModified}
+                              />
+                            </SearchRow>
+                            <SearchRow title={resources.SEARCH_CONTAINS_TITLE}>
+                              <TextField
+                                fullWidth={true}
+                                value={this.props.searchState.contains}
+                                placeholder={resources.SEARCH_CONTAINS_PLACEHOLDER}
+                                fieldName={'_Text'}
+                                onQueryChange={(_key, query, plainValue) =>
+                                  this.handleFieldQueryChanged('contains', query, plainValue, options.updateQuery)
+                                }
+                              />
+                            </SearchRow>
+                            <SearchRow title={resources.SEARCH_LOCATION_BUTTON_TITLE}>
+                              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                <Button
+                                  style={{ boxShadow: 'none' }}
+                                  variant="contained"
+                                  onClick={ev => this.handlePickLocation(ev, options)}>
+                                  {this.props.selectedTypeRoot[0]
+                                    ? this.props.selectedTypeRoot[0].DisplayName
+                                    : resources.SEARCH_LOCATION_ANYWHERE}
+                                </Button>
+                                <Button style={{ boxShadow: 'none' }} type="submit" variant="contained">
+                                  Search
+                                </Button>
+                              </div>
+                            </SearchRow>
+                          </div>
+                        </Popover>
+                      </form>
+                    )
+                  } else {
+                    return (
+                      <IconButton style={styles.searchButton}>
+                        <Icon type={iconType.materialui} iconName="search" style={{ color: '#fff' }} />
+                      </IconButton>
+                    )
+                  }
+                }}
+              </MediaQuery>
+            )}
+          />
         )}
-      />
+      </RepositoryContext.Consumer>
     )
   }
 }

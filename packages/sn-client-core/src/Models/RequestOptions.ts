@@ -1,20 +1,37 @@
 import { ObservableValue } from '@sensenet/client-utils'
-import { Repository } from '../index'
 import { Content } from './Content'
 import { ODataParams } from './ODataParams'
 import { UploadProgressInfo } from './UploadProgressInfo'
+
+/**
+ * Request options with OData Model
+ */
+export interface WithOdataOptions<T> {
+  /**
+   * An OData Options object
+   */
+  oDataOptions?: ODataParams<T>
+}
+
+/**
+ * Request options with Request Init parameter
+ */
+export interface WithRequestInit {
+  /**
+   * Additional fetch request init options
+   */
+  requestInit?: RequestInit
+}
+
 /**
  * Defines options for a Load request
  */
-export interface LoadOptions<TContentType> {
+export interface LoadOptions<TContentType> extends WithOdataOptions<TContentType>, WithRequestInit {
   /**
    * The content Id or path to load
    */
   idOrPath: string | number
-  /**
-   * An OData Options object
-   */
-  oDataOptions?: ODataParams<TContentType>
+
   /**
    * Optional content version parameter
    */
@@ -24,21 +41,17 @@ export interface LoadOptions<TContentType> {
 /**
  * Defines options for a collection load request
  */
-export interface LoadCollectionOptions<TContentType> {
+export interface LoadCollectionOptions<TContentType> extends WithOdataOptions<TContentType>, WithRequestInit {
   /**
    * The collection path
    */
   path: string
-  /**
-   * an ODataOptions object
-   */
-  oDataOptions?: ODataParams<TContentType>
 }
 
 /**
  * Defines options for a Post request
  */
-export interface PostOptions<TContentType> {
+export interface PostOptions<TContentType> extends WithOdataOptions<TContentType>, WithRequestInit {
   /**
    * Path for a parent content
    */
@@ -57,17 +70,12 @@ export interface PostOptions<TContentType> {
    * An optional content template
    */
   contentTemplate?: string
-
-  /**
-   * An optional OData Options object
-   */
-  oDataOptions?: ODataParams<TContentType>
 }
 
 /**
  * Defines options for a patch request
  */
-export interface PatchOptions<TContentType> {
+export interface PatchOptions<TContentType> extends WithOdataOptions<TContentType>, WithRequestInit {
   /**
    * The id or path to the content that you want to patch
    */
@@ -76,17 +84,12 @@ export interface PatchOptions<TContentType> {
    * The content data to update
    */
   content: Partial<TContentType>
-
-  /**
-   * An optional OData Options object
-   */
-  oDataOptions?: ODataParams<TContentType>
 }
 
 /**
  * Defines options for a Put request
  */
-export interface PutOptions<TContentType> {
+export interface PutOptions<TContentType> extends WithOdataOptions<TContentType>, WithRequestInit {
   /**
    * The id or path to the content that you want to update
    */
@@ -95,17 +98,12 @@ export interface PutOptions<TContentType> {
    * The new content data
    */
   content: Partial<TContentType>
-
-  /**
-   * An optional OData Options object
-   */
-  oDataOptions?: ODataParams<TContentType>
 }
 
 /**
  * Options for a delete request
  */
-export interface DeleteOptions {
+export interface DeleteOptions extends WithRequestInit {
   /**
    * The id(s) or path(list) for a content(s) to delete
    */
@@ -119,7 +117,7 @@ export interface DeleteOptions {
 /**
  * Options for a content move request
  */
-export interface MoveOptions {
+export interface MoveOptions extends WithRequestInit {
   /**
    * The id(s) or path(list) for a content(s) to move
    */
@@ -137,7 +135,7 @@ export interface MoveOptions {
 /**
  * Options for a content copy request
  */
-export interface CopyOptions {
+export interface CopyOptions extends WithRequestInit {
   /**
    * The id(s) or path(list) for a content(s) to copy
    */
@@ -155,7 +153,7 @@ export interface CopyOptions {
 /**
  * Options to call an odata action
  */
-export interface ActionOptions<TBody, TContentType> {
+export interface ActionOptions<TBody, TContentType> extends WithOdataOptions<TContentType>, WithRequestInit {
   /**
    * The name of the odata action
    */
@@ -171,12 +169,7 @@ export interface ActionOptions<TBody, TContentType> {
   /**
    * Additional body parameters
    */
-  body: TBody
-
-  /**
-   * An OData Options object
-   */
-  oDataOptions?: ODataParams<TContentType>
+  body?: TBody
 }
 
 /**
@@ -197,12 +190,7 @@ export interface GetActionOptions {
 /**
  * Options for uploading content
  */
-export interface UploadOptions<T> {
-  /**
-   * The specified sensenet Repository instance
-   */
-  repository: Repository
-
+export interface UploadOptions<T> extends WithOdataOptions<T>, WithRequestInit {
   /**
    * The name of the content type, e.g.: File
    */
@@ -220,10 +208,6 @@ export interface UploadOptions<T> {
    */
   body?: any
 
-  /**
-   * Additional OData options
-   */
-  odataOptions?: ODataParams<T>
   /**
    * The path of the parent content
    */

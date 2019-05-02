@@ -1,9 +1,12 @@
 var path = require('path')
 const webpack = require('webpack')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
-const autoprefixer = require('autoprefixer')
+const TsConfigWebpackPlugin = require('ts-config-webpack-plugin')
+const GitRevisionPlugin = require('git-revision-webpack-plugin')
+
+const gitRevisionPlugin = new GitRevisionPlugin()
 
 module.exports = {
   mode: 'development',
@@ -23,18 +26,23 @@ module.exports = {
           name: 'vendors',
           chunks: 'all',
         },
+        monaco: {
+          test: /[\\/]node_modules[\\/]monaco-editor[\\/]/,
+          name: 'monaco',
+        },
       },
     },
-    runtimeChunk: true,
+    runtimeChunk: false,
   },
   // Enable sourcemaps for debugging webpack's output.
-  devtool: 'source-map',
+  devtool: 'eval-source-map', // 'source-map',
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
     extensions: ['.ts', '.tsx', '.js', '.json'],
   },
   plugins: [
     // new BundleAnalyzerPlugin({ analyzerPort: 8745 }),
+    new TsConfigWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './index.html',
     }),
@@ -42,14 +50,22 @@ module.exports = {
       languages: ['json', 'javascript', 'xml', 'html'],
       output: 'static/monaco',
     }),
+    new webpack.EnvironmentPlugin({
+      NODE_ENV: 'development',
+      DEBUG: true,
+      GIT_VERSION: JSON.stringify(gitRevisionPlugin.version()),
+      APP_VERSION: JSON.stringify(require('./package.json').version),
+      GIT_COMMITHASH: JSON.stringify(gitRevisionPlugin.commithash()),
+      GIT_BRANCH: JSON.stringify(gitRevisionPlugin.branch()),
+    }),
   ],
   module: {
     rules: [
       // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
-      { test: /\.tsx?$/, loader: 'awesome-typescript-loader' },
+      // { test: /\.tsx?$/, loader: 'awesome-typescript-loader' },
 
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-      { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader', exclude: /monaco-editor/ },
+      // { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader', exclude: /monaco-editor/ },
       {
         test: /\.css$/,
         use: [
@@ -58,26 +74,6 @@ module.exports = {
             loader: require.resolve('css-loader'),
             options: {
               importLoaders: 1,
-            },
-          },
-          {
-            loader: require.resolve('postcss-loader'),
-            options: {
-              // Necessary for external CSS imports to work
-              // https://github.com/facebookincubator/create-react-app/issues/2677
-              ident: 'postcss',
-              plugins: () => [
-                require('postcss-flexbugs-fixes'),
-                autoprefixer({
-                  browsers: [
-                    '>1%',
-                    'last 4 versions',
-                    'Firefox ESR',
-                    'not ie < 9', // React doesn't support IE8 anyway
-                  ],
-                  flexbox: 'no-2009',
-                }),
-              ],
             },
           },
         ],
@@ -92,13 +88,4 @@ module.exports = {
       },
     ],
   },
-
-  // When importing a module whose path matches one of the following, just
-  // assume a corresponding global variable exists and use that instead.
-  // This is important because it allows us to avoid bundling all of our
-  // dependencies, which allows browsers to cache those libraries between builds.
-  // externals: {
-  //    "react": "React",
-  //    "react-dom": "ReactDOM"
-  // },
 }

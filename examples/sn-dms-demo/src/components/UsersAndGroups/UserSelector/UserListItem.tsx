@@ -6,7 +6,7 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import { User } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import { Actions } from '@sensenet/redux'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
 import { rootStateType } from '../../../store/rootReducer'
@@ -78,7 +78,8 @@ const mapDispatchToProps = {
 }
 
 class UserListItem extends React.Component<
-  { classes: any } & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & UserListItemProps, {}
+  { classes: any } & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & UserListItemProps,
+  {}
 > {
   public checkboxClick = (user: User) => {
     const index = this.props.users.findIndex(g => g.Id === user.Id)

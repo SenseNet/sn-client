@@ -3,6 +3,7 @@ import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 import Typography from '@material-ui/core/Typography'
 
 import {
+  defaultTheme,
   DocumentTitlePager,
   DocumentViewer,
   Download,
@@ -11,13 +12,13 @@ import {
   RotateActivePages,
   SearchBar,
   Share,
+  ToggleCommentsWidget,
   ToggleThumbnailsWidget,
   ZoomInOutWidget,
-} from '@sensenet/document-viewer-react/dist/components'
-import { exampleTheme } from '@sensenet/document-viewer-react/dist/ExampleAppLayout'
+} from '@sensenet/document-viewer-react'
 import { Icon, iconType } from '@sensenet/icons-react'
 import { compile } from 'path-to-regexp'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
@@ -25,15 +26,14 @@ import { openDialog } from '../Actions'
 import { rootStateType } from '../store/rootReducer'
 import ShareDialog from './Dialogs/ShareDialog'
 
-// tslint:disable-next-line:no-var-requires
-const loaderImage = require('../assets/viewer-loader.gif')
-
 const mapStateToProps = (state: rootStateType) => ({
   hostName: state.sensenet.session.repository ? state.sensenet.session.repository.repositoryUrl : '',
   documentName: state.sensenetDocumentViewer.documentState.document.documentName,
   currentContent: state.dms.documentLibrary.items.d.results.find(
     i => i.Id === state.sensenetDocumentViewer.documentState.document.idOrPath,
   ),
+  isCreateCommentActive: state.comments.isCreateCommentActive,
+  isPlacingCommentMarker: state.comments.isPlacingCommentMarker,
 })
 
 export const mapDispatchToProps = {
@@ -78,18 +78,25 @@ export class DmsViewerComponent extends React.Component<
   }
 
   public keyboardHandler(event: KeyboardEvent) {
-    if (event.key === 'Escape') {
-      const previewIndex = this.props.location.pathname.indexOf('/preview/')
-      if (previewIndex !== -1) {
-        this.props.history.push(this.props.location.pathname.substring(0, previewIndex))
-      }
-      // this.props.closeViewer()
+    if (event.key !== 'Escape') {
+      return
     }
+    if (this.props.isCreateCommentActive || this.props.isPlacingCommentMarker) {
+      return
+    }
+    this.closeViewer()
   }
 
   constructor(props: DmsViewerComponent['props']) {
     super(props)
     this.keyboardHandler = this.keyboardHandler.bind(this)
+  }
+
+  private closeViewer() {
+    const previewIndex = this.props.location.pathname.indexOf('/preview/')
+    if (previewIndex !== -1) {
+      this.props.history.push(this.props.location.pathname.substring(0, previewIndex))
+    }
   }
 
   public componentDidMount() {
@@ -125,11 +132,8 @@ export class DmsViewerComponent extends React.Component<
           }}
         />
         <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%' }}>
-          <MuiThemeProvider theme={exampleTheme}>
-            <DocumentViewer
-              documentIdOrPath={this.state.documentId}
-              hostName={this.props.hostName}
-              loaderImage={loaderImage}>
+          <MuiThemeProvider theme={defaultTheme}>
+            <DocumentViewer documentIdOrPath={this.state.documentId} hostName={this.props.hostName}>
               <MediaQuery minDeviceWidth={700}>
                 {matches =>
                   matches ? (
@@ -160,8 +164,12 @@ export class DmsViewerComponent extends React.Component<
                           <RotateActivePages />
                         </div>
                         <DocumentTitlePager />
-                        <div style={{ flexShrink: 0 }}>
+                        <div style={{ display: 'flex', flexShrink: 0 }}>
+                          <ToggleCommentsWidget />
                           <SearchBar />
+                          <IconButton color="inherit" onClick={() => this.closeViewer()}>
+                            <Icon iconName="close" type={iconType.materialui} />
+                          </IconButton>
                         </div>
                       </LayoutAppBar>
                     </div>

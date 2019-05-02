@@ -1,7 +1,6 @@
 /**
  * @module FieldControls
- *
- */ /** */
+ */
 import React, { Component } from 'react'
 import { ReactChoiceFieldSetting } from '../ChoiceFieldSetting'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
@@ -17,14 +16,14 @@ import Select from '@material-ui/core/Select'
 import { GenericContent } from '@sensenet/default-content-types'
 
 /**
- * Interface for DatePicker properties
+ * Interface for DropDownList properties
  */
 export interface DropDownListProps<T extends GenericContent, K extends keyof T>
   extends ReactClientFieldSettingProps<T, K>,
     ReactClientFieldSetting<T, K>,
     ReactChoiceFieldSetting<T, K> {}
 /**
- * Interface for DatePicker state
+ * Interface for DropDownList state
  */
 export interface DropDownListState<T extends GenericContent, K extends keyof T> {
   value: T[K]
@@ -166,8 +165,8 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
             <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
             <FormGroup>
-              {this.props['data-fieldValue'].map((value: any) => (
-                <FormControl component={'fieldset' as 'div'}>
+              {this.props['data-fieldValue'].map((value: any, index: number) => (
+                <FormControl component={'fieldset' as 'div'} key={index}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
                     label={this.props.options.find(item => item.Value === value).Text}
@@ -184,8 +183,8 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
             <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
             <FormGroup>
-              {this.props['data-fieldValue'].map((value: any) => (
-                <FormControl component={'fieldset' as 'div'}>
+              {this.props['data-fieldValue'].map((value: any, index: number) => (
+                <FormControl component={'fieldset' as 'div'} key={index}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
                     label={this.props.options.find(item => item.Value === value).Text}

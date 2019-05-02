@@ -1,6 +1,6 @@
 import IconButton from '@material-ui/core/IconButton'
 import CloudDownload from '@material-ui/icons/CloudDownload'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { DocumentData } from '../../models'
 import { componentType } from '../../services'

@@ -26,22 +26,24 @@ export class PathHelper {
    */
   public static getSegments(path: string): string[] {
     return path
-      .split(/\/|[(][']/g)
+      .split(/\/|[(][']|[(]/g)
       .filter(segment => segment && segment.length)
       .map(segment => {
         if (segment.endsWith("')")) {
           segment = `('${segment}`
+        } else if (segment.endsWith(')')) {
+          segment = `(${segment}`
         }
         return segment
       })
   }
 
   /**
-   * Checks if a specific segment is an Item segment or not (like "('Content1')")
+   * Checks if a specific segment is an Item segment or not (like "('Content1')"" or "(654)")
    * @param segment The segment to be examined
    */
   public static isItemSegment(segment: string): boolean {
-    return segment.startsWith("('") && segment.endsWith("')")
+    return RegExp(/^\('+[\s\S]+'\)$/).test(segment) || RegExp(/^\(+\d+\)$/).test(segment)
   }
 
   /**

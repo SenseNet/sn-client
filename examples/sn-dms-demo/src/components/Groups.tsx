@@ -92,14 +92,16 @@ class Groups extends Component<
         newProps.loadGroup(Number(groupIdFromUrl), {
           select: ['Icon', 'Name', 'Path', 'DisplayName', 'Description', 'Members', 'Actions'],
           expand: ['Members', 'Actions'],
+          orderby: ['DisplayName' as any, 'asc'],
         })
       } else {
         const idFromUrl = newProps.match.params.folderPath && atob(decodeURIComponent(newProps.match.params.folderPath))
         const groupsRootPath = `/Root`
         newProps.loadGroup(idFromUrl || groupsRootPath, {
           select: ['Icon', 'Name', 'Path', 'DisplayName', 'Description', 'AllowedChildTypes'],
+          orderby: ['DisplayName' as any, 'asc'],
         })
-        newProps.getAllowedTypes()
+        newProps.getAllowedTypes({})
       }
     } catch (error) {
       /** Cannot parse current folder from URL */

@@ -1,7 +1,6 @@
 /**
  * @module FieldControls
- *
- */ /** */
+ */
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormGroup from '@material-ui/core/FormGroup'
@@ -136,8 +135,8 @@ export class RadioButtonGroup<T extends GenericContent, K extends keyof T> exten
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
             <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
             <FormGroup>
-              {this.props['data-fieldValue'].map((value: any) => (
-                <FormControl component={'fieldset' as 'div'}>
+              {this.props['data-fieldValue'].map((value: any, index: number) => (
+                <FormControl key={index} component={'fieldset' as 'div'}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
                     label={this.props.options.find(item => item.Value === value).Text}
@@ -154,8 +153,8 @@ export class RadioButtonGroup<T extends GenericContent, K extends keyof T> exten
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
             <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
             <FormGroup>
-              {this.props['data-fieldValue'].map((value: any) => (
-                <FormControl component={'fieldset' as 'div'}>
+              {this.props['data-fieldValue'].map((value: any, index: number) => (
+                <FormControl key={index} component={'fieldset' as 'div'}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
                     label={this.props.options.find(item => item.Value === value).Text}

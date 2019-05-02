@@ -4,14 +4,11 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import { ODataParams } from '@sensenet/client-core'
-import { debounce, PathHelper } from '@sensenet/client-utils'
+import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Created } from '@sensenet/repository-events'
 import React, { useContext, useEffect, useState } from 'react'
-import { RepositoryContext } from '../../context//RepositoryContext'
-import { CurrentAncestorsContext } from '../../context/CurrentAncestors'
-import { CurrentContentContext } from '../../context/CurrentContent'
-import { InjectorContext } from '../../context/InjectorContext'
+import { CurrentAncestorsContext, CurrentContentContext, InjectorContext, RepositoryContext } from '../../context'
 import { ContentContextMenu } from '../ContentContextMenu'
 import { DropFileArea } from '../DropFileArea'
 import { Icon } from '../Icon'
@@ -37,10 +34,10 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
   const [contextMenuItem, setContextMenuItem] = useState<GenericContent | null>(null)
   const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
+  const [error, setError] = useState<Error | undefined>()
 
-  const update = debounce(() => {
-    setReloadToken(Math.random())
-  }, 100)
+  const update = () => setReloadToken(Math.random())
+
   const handleCreate = (c: Created) => {
     if (
       opened &&
@@ -52,7 +49,7 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
   }
 
   useEffect(() => {
-    setAncestorPaths(ancestors.map(a => a.Path))
+    ancestors && ancestors.length && setAncestorPaths(ancestors.map(a => a.Path))
   }, [ancestors])
 
   useEffect(() => {
@@ -75,17 +72,32 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
   }, [props.parentPath, repo, opened, items])
 
   useEffect(() => {
+    const ac = new AbortController()
     ;(async () => {
-      const children = await repo.loadCollection({
-        path: props.parentPath,
-        oDataOptions: {
-          filter: 'IsFolder eq true',
-          ...props.loadOptions,
-        },
-      })
-      setItems(children.d.results)
+      try {
+        const children = await repo.loadCollection({
+          path: props.parentPath,
+          requestInit: {
+            signal: ac.signal,
+          },
+          oDataOptions: {
+            filter: 'IsFolder eq true',
+            ...props.loadOptions,
+          },
+        })
+        setItems(children.d.results)
+      } catch (error) {
+        if (!ac.signal.aborted) {
+          setError(error)
+        }
+      }
     })()
+    return () => ac.abort()
   }, [reloadToken])
+
+  if (error) {
+    throw error
+  }
 
   return (
     <div style={props.style}>

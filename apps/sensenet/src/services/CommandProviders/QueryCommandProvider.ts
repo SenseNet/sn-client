@@ -6,7 +6,7 @@ import { CommandProvider } from '../CommandProviderManager'
 import { ContentContextProvider } from '../ContentContextProvider'
 import { PersonalSettings } from '../PersonalSettings'
 
-@Injectable()
+@Injectable({ lifetime: 'singleton' })
 export class QueryCommandProvider implements CommandProvider {
   constructor(public readonly injector: Injector, private readonly personalSettings: PersonalSettings) {}
 

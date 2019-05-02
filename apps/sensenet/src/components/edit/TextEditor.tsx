@@ -1,12 +1,32 @@
-import { Upload } from '@sensenet/client-core'
+import Button from '@material-ui/core/Button'
 import { PathHelper } from '@sensenet/client-utils'
-import { File as SnFile } from '@sensenet/default-content-types'
+import { File as SnFile, GenericContent, Settings } from '@sensenet/default-content-types'
+import { Uri } from 'monaco-editor'
 import React, { useContext, useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
-import { ContentRoutingContext } from '../../context/ContentRoutingContext'
-import { RepositoryContext } from '../../context/RepositoryContext'
-import { ResponsiveContext } from '../../context/ResponsiveContextProvider'
-import { ThemeContext } from '../../context/ThemeContext'
+import { Prompt } from 'react-router'
+import {
+  ContentRoutingContext,
+  LocalizationContext,
+  RepositoryContext,
+  ResponsiveContext,
+  ThemeContext,
+} from '../../context'
+import { LoggerContext } from '../../context/LoggerContext'
+import { isContentFromType } from '../../utils/isContentFromType'
+import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
+
+const getMonacoModelUri = (content: GenericContent) => {
+  if (isContentFromType(content, Settings) || content.Type === 'PersonalSettings') {
+    return Uri.parse(`sensenet://${content.Type}/${content.Name}`)
+  }
+  if (isContentFromType(content, SnFile)) {
+    if (content.Binary) {
+      return Uri.parse(`sensenet://${content.Type}/${content.Binary.__mediaresource.content_type}`)
+    }
+  }
+  return Uri.parse(`sensenet://${content.Type}`)
+}
 
 export interface TextEditorProps {
   content: SnFile
@@ -22,29 +42,90 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
   const ctx = useContext(ContentRoutingContext)
 
   const [textValue, setTextValue] = useState('')
+  const [savedTextValue, setSavedTextValue] = useState('')
   const [language, setLanguage] = useState(ctx.getMonacoLanguage(props.content))
-  const [uri, setUri] = useState<any>(ctx.getMonacoModelUri(props.content))
+  const localization = useContext(LocalizationContext).values.textEditor
+  const [uri, setUri] = useState<any>(getMonacoModelUri(props.content))
+  const [hasChanges, setHasChanges] = useState(false)
+  const logger = useContext(LoggerContext).withScope('TextEditor')
+
+  const [error, setError] = useState<Error | undefined>()
+
+  const saveContent = async () => {
+    try {
+      if (props.saveContent) {
+        await props.saveContent(props.content, textValue)
+      } else {
+        await repo.upload.textAsFile({
+          text: textValue,
+          parentPath: PathHelper.getParentPath(props.content.Path),
+          fileName: props.content.Name,
+          overwrite: true,
+          contentTypeName: props.content.Type,
+          binaryPropertyName: 'Binary',
+        })
+      }
+      logger.information({
+        message: localization.saveSuccessNotification.replace('{0}', props.content.DisplayName || props.content.Name),
+        data: {
+          relatedContent: props.content,
+          relatedRepository: repo.configuration.repositoryUrl,
+          compare: {
+            old: savedTextValue,
+            new: textValue,
+          },
+        },
+      })
+      setSavedTextValue(textValue)
+    } catch (error) {
+      logger.error({
+        message: localization.saveFailedNotification.replace('{0}', props.content.DisplayName || props.content.Name),
+        data: {
+          details: { error },
+        },
+      })
+    }
+  }
 
   useEffect(() => {
-    setUri(ctx.getMonacoModelUri(props.content))
+    setHasChanges(textValue !== savedTextValue)
+  }, [textValue, savedTextValue])
+
+  useEffect(() => {
+    setUri(getMonacoModelUri(props.content))
+    setLanguage(ctx.getMonacoLanguage(props.content))
+  }, [props.content])
+
+  useEffect(() => {
+    setUri(getMonacoModelUri(props.content))
     setLanguage(ctx.getMonacoLanguage(props.content))
     ;(async () => {
-      if (props.loadContent) {
-        const value = await props.loadContent(props.content)
-        setTextValue(value)
-      } else {
-        const binaryPath = props.content.Binary && props.content.Binary.__mediaresource.media_src
-        if (!binaryPath) {
-          throw Error("Content doesn't have a valid path to the binary field! ")
+      try {
+        if (props.loadContent) {
+          const value = await props.loadContent(props.content)
+          setTextValue(value)
+          setSavedTextValue(value)
+        } else {
+          const binaryPath = props.content.Binary && props.content.Binary.__mediaresource.media_src
+          if (!binaryPath) {
+            return
+          }
+          const textFile = await repo.fetch(PathHelper.joinPaths(repo.configuration.repositoryUrl, binaryPath))
+          if (textFile.ok) {
+            const text = await textFile.text()
+            setTextValue(text)
+            setSavedTextValue(text)
+          }
         }
-        const textFile = await repo.fetch(PathHelper.joinPaths(repo.configuration.repositoryUrl, binaryPath))
-        if (textFile.ok) {
-          const text = await textFile.text()
-          setTextValue(text)
-        }
+      } catch (error) {
+        setError(error)
       }
     })()
   }, [props.content.Id])
+
+  if (error) {
+    throw error
+  }
 
   return (
     <div
@@ -53,24 +134,28 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
         if (ev.key.toLowerCase() === 's' && ev.ctrlKey) {
           try {
             ev.preventDefault()
-            if (props.saveContent) {
-              await props.saveContent(props.content, textValue)
-            } else {
-              await Upload.textAsFile({
-                text: textValue,
-                parentPath: PathHelper.getParentPath(props.content.Path),
-                fileName: props.content.Name,
-                overwrite: true,
-                repository: repo,
-                contentTypeName: props.content.Type,
-                binaryPropertyName: 'Binary',
-              })
-            }
+            saveContent()
           } catch (error) {
             /** */
           }
         }
       }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <ContentBreadcrumbs />
+        <div>
+          <Button disabled={!hasChanges} onClick={() => setTextValue(savedTextValue)}>
+            {localization.reset}
+          </Button>
+          <Button
+            disabled={!hasChanges}
+            onClick={() => {
+              saveContent()
+            }}>
+            {localization.save}
+          </Button>
+        </div>
+      </div>
+      <Prompt when={textValue !== savedTextValue} message={localization.unsavedChangesWarning} />
       <MonacoEditor
         theme={theme.palette.type === 'dark' ? 'vs-dark' : 'vs-light'}
         width="100%"

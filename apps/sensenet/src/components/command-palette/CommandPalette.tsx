@@ -12,7 +12,7 @@ import Autosuggest, {
 } from 'react-autosuggest'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { RepositoryContext } from '../../context/RepositoryContext'
+import { LocalizationContext, RepositoryContext } from '../../context'
 import { rootStateType } from '../../store'
 import {
   clearItems,
@@ -77,7 +77,7 @@ export class CommandPaletteComponent extends React.Component<
 
   private handleSuggestionsFetchRequested = debounce((options: SuggestionsFetchRequestedParams, repo: Repository) => {
     this.props.updateItemsFromTerm(options.value, repo)
-  }, 500)
+  }, 200)
 
   public componentDidMount() {
     document.addEventListener('keyup', this.handleKeyUp)
@@ -98,11 +98,18 @@ export class CommandPaletteComponent extends React.Component<
     suggestion: SuggestionSelectedEventData<CommandPaletteItem>,
   ) {
     ev.preventDefault()
-    this.props.history.push(suggestion.suggestion.url)
+    if (suggestion.suggestion.openAction) {
+      suggestion.suggestion.openAction()
+    } else {
+      this.props.history.push(suggestion.suggestion.url)
+    }
+    this.props.close()
   }
 
   private setDelayedOpenedState = debounce((value: boolean) => {
-    this.setState({ delayedOpened: value })
+    if (value !== this.state.delayedOpened) {
+      this.setState({ delayedOpened: value })
+    }
   }, 370)
 
   public componentDidUpdate(prevProps: CommandPaletteComponent['props']) {
@@ -137,15 +144,19 @@ export class CommandPaletteComponent extends React.Component<
             border: this.props.isOpened ? '1px solid #13a5ad' : '',
             backgroundColor: this.props.isOpened ? 'rgba(255,255,255,.10)' : 'transparent',
           }}>
-          <Tooltip style={{}} placeholder="bottom-end" title="Show Command Palette">
-            <IconButton
-              onClick={this.props.open}
-              disabled={this.props.isOpened}
-              style={{ padding: this.props.isOpened ? 0 : undefined }}>
-              <KeyboardArrowRightTwoTone />
-              {this.props.isOpened ? '' : '_'}
-            </IconButton>
-          </Tooltip>
+          <LocalizationContext.Consumer>
+            {localization => (
+              <Tooltip style={{}} placeholder="bottom-end" title={localization.values.commandPalette.title}>
+                <IconButton
+                  onClick={this.props.open}
+                  disabled={this.props.isOpened}
+                  style={{ padding: this.props.isOpened ? 0 : undefined }}>
+                  <KeyboardArrowRightTwoTone />
+                  {this.props.isOpened ? '' : '_'}
+                </IconButton>
+              </Tooltip>
+            )}
+          </LocalizationContext.Consumer>
 
           <div
             ref={r => (r ? (this.containerRef = r) : null)}

@@ -1,7 +1,7 @@
 import Collapse from '@material-ui/core/Collapse'
 import Paper from '@material-ui/core/Paper'
 import { withStyles } from '@material-ui/core/styles'
-import * as React from 'react'
+import React from 'react'
 import GroupList from './GroupList'
 
 const styles = () => ({
@@ -9,12 +9,13 @@ const styles = () => ({
     position: 'absolute',
     zIndex: 10,
     width: 450,
+    right: 0,
   },
   wsSelectorContainerMobile: {
     position: 'absolute',
     width: window.innerWidth,
     zIndex: 10,
-    left: 0,
+    right: 0,
     top: 0,
   },
   wsSelectorPaper: {

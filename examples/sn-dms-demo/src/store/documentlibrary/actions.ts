@@ -1,10 +1,10 @@
 import { ODataCollectionResponse, ODataParams, Repository } from '@sensenet/client-core'
-import { ValueObserver } from '@sensenet/client-utils'
+import { debounce, ValueObserver } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { createAction } from '@sensenet/redux'
 import { EventHub } from '@sensenet/repository-events'
+import { Dispatch } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
-import { changedContent, debounceReloadOnProgress } from '../../Actions'
 import { rootStateType } from '../../store/rootReducer'
 import { DocumentLibraryState, loadChunkSize } from './reducers'
 
@@ -212,7 +212,7 @@ export const updateChildrenOptions = createAction(<T extends GenericContent>(oda
       options.dispatch(setError(error))
     } finally {
       options.dispatch(finishLoadingChildren())
-      options.dispatch(setChildrenOptions(odataOptions))
+      options.dispatch(setChildrenOptions(odataOptions as ODataParams<GenericContent>))
     }
   },
 }))
@@ -226,3 +226,17 @@ export const setChildrenOptions = createAction(<T extends GenericContent>(odataO
   type: 'DMS_DOCLIB_SET_CHILDREN_OPTIONS',
   odataOptions,
 }))
+
+export const changedContent: GenericContent[] = []
+
+function methodToDebounce(getState: () => rootStateType, dispatch: Dispatch) {
+  const currentContent = getState().dms.documentLibrary.parent
+  changedContent.forEach(content => {
+    if (currentContent && currentContent.Id === content.ParentId) {
+      dispatch(updateChildrenOptions({}))
+      changedContent.length = 0
+      return
+    }
+  })
+}
+export const debounceReloadOnProgress = debounce(methodToDebounce, 300)

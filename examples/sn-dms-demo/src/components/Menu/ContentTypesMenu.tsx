@@ -4,9 +4,10 @@ import MenuItem from '@material-ui/core/MenuItem'
 import MenuList from '@material-ui/core/MenuList'
 import withStyles, { StyleRulesCallback } from '@material-ui/core/styles/withStyles'
 import { Icon, iconType } from '@sensenet/icons-react'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
+import * as DMSActions from '../../Actions'
 import { resources } from '../../assets/resources'
 import { rootStateType } from '../../store/rootReducer'
 import { AddNewButton } from './AddNewButton'
@@ -120,10 +121,18 @@ const mapStateToProps = (state: rootStateType) => {
   }
 }
 
-class ContentTypesMenu extends React.Component<ContentTypesMenuProps & ReturnType<typeof mapStateToProps>, {}> {
+const mapDispatchToProps = {
+  handleDrawerMenu: DMSActions.handleDrawerMenu,
+}
+
+class ContentTypesMenu extends React.Component<
+  ContentTypesMenuProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
+  {}
+> {
   public handleMenuItemClick = (title: string) => {
     this.props.history.push('/contenttypes')
     this.props.chooseMenuItem(title)
+    this.props.handleDrawerMenu(false)
   }
   public handleSubmenuItemClick = (title: string) => {
     this.props.history.push(`/contenttypes/${title}`)
@@ -182,6 +191,6 @@ class ContentTypesMenu extends React.Component<ContentTypesMenuProps & ReturnTyp
 export default withRouter(
   connect(
     mapStateToProps,
-    {},
+    mapDispatchToProps,
   )(withStyles(styles)(ContentTypesMenu)),
 )

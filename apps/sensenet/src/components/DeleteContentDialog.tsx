@@ -14,8 +14,8 @@ import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useContext, useState } from 'react'
-import { RepositoryContext } from '../context/RepositoryContext'
-import { ResponsiveContext } from '../context/ResponsiveContextProvider'
+import { LocalizationContext, RepositoryContext, ResponsiveContext } from '../context'
+import { LoggerContext } from '../context/LoggerContext'
 import { Icon } from './Icon'
 
 export const DeleteContentDialog: React.FunctionComponent<{
@@ -26,16 +26,18 @@ export const DeleteContentDialog: React.FunctionComponent<{
   const [isDeleteInProgress, setIsDeleteInProgress] = useState(false)
   const [permanent, setPermanent] = useState(false)
   const repo = useContext(RepositoryContext)
+  const localization = useContext(LocalizationContext).values.deleteContentDialog
+  const logger = useContext(LoggerContext).withScope('DeleteContentDialog')
 
   return (
     <Dialog {...props.dialogProps} onClick={ev => ev.stopPropagation()} onDoubleClick={ev => ev.stopPropagation()}>
       {isDeleteInProgress ? (
-        <DialogTitle>Deleting content...</DialogTitle>
+        <DialogTitle>{localization.deletingContent}</DialogTitle>
       ) : (
-        <DialogTitle>Really delete content?</DialogTitle>
+        <DialogTitle>{localization.dialogTitle}</DialogTitle>
       )}
       <DialogContent>
-        <Typography>You are going to delete the following content:</Typography>
+        <Typography>{localization.dialogContent}</Typography>
         <List dense={device === 'mobile'}>
           {props.content.map(c => (
             <ListItem key={c.Id}>
@@ -50,10 +52,10 @@ export const DeleteContentDialog: React.FunctionComponent<{
       </DialogContent>
       <DialogActions style={{ display: 'flex', justifyContent: 'space-between' }}>
         <div>
-          <Tooltip title="Don't move to trash, delete immediately">
+          <Tooltip title={localization.permanentlyHint}>
             <FormControlLabel
               style={{ marginLeft: '1em' }}
-              label="Permanently"
+              label={localization.permanentlyLabel}
               control={<Checkbox disabled={isDeleteInProgress} onChange={ev => setPermanent(ev.target.checked)} />}
             />
           </Tooltip>
@@ -62,7 +64,7 @@ export const DeleteContentDialog: React.FunctionComponent<{
           <Button
             disabled={isDeleteInProgress}
             onClick={ev => props.dialogProps.onClose && props.dialogProps.onClose(ev)}>
-            Cancel
+            {localization.cancelButton}
           </Button>
           <Button
             disabled={isDeleteInProgress}
@@ -73,12 +75,32 @@ export const DeleteContentDialog: React.FunctionComponent<{
                   idOrPath: props.content.map(c => c.Path),
                   permanent,
                 })
+                logger.information({
+                  message:
+                    props.content.length > 1
+                      ? localization.deleteMultipleSuccessNotification.replace('{0}', props.content.length.toString())
+                      : localization.deleteSuccessNotification.replace(
+                          '{0}',
+                          props.content[0].DisplayName || props.content[0].Name,
+                        ),
+                  data: {
+                    relatedContent: props.content.length > 1 ? undefined : props.content[0],
+                    relatedRepository: repo.configuration.repositoryUrl,
+                  },
+                })
+              } catch (error) {
+                logger.error({
+                  message: localization.deleteFailedNotification,
+                  data: {
+                    details: { error },
+                  },
+                })
               } finally {
                 setIsDeleteInProgress(false)
                 props.dialogProps.onClose && props.dialogProps.onClose(ev)
               }
             }}>
-            Delete
+            {localization.deleteButton}
           </Button>
         </div>
       </DialogActions>

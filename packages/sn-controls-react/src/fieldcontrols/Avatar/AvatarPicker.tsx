@@ -6,7 +6,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import { CSSProperties } from '@material-ui/core/styles/withStyles'
 import AddCircle from '@material-ui/icons/AddCircle'
-import { ODataCollectionResponse, ODataParams, Repository, Upload } from '@sensenet/client-core'
+import { ODataParams, Repository } from '@sensenet/client-core'
 import { Folder, GenericContent, User } from '@sensenet/default-content-types'
 import { Icon } from '@sensenet/icons-react'
 import { ListPickerComponent } from '@sensenet/pickers-react'
@@ -30,19 +30,16 @@ interface AvatarPickerProps {
   selected: GenericContent
   repositoryUrl: string
 }
+
 interface AvatarPickerState {
-  items: GenericContent[]
-  currentParent: string
-  currentParentId: number | null
+  path: string
 }
 
 export class AvatarPicker extends Component<AvatarPickerProps, AvatarPickerState> {
-  constructor(props: AvatarPickerProps) {
+  constructor(props: AvatarPicker['props']) {
     super(props)
     this.state = {
-      items: [],
-      currentParent: this.props.path,
-      currentParentId: null,
+      path: this.props.path,
     }
   }
   public onSelectionChanged = (content: GenericContent) => {
@@ -50,59 +47,21 @@ export class AvatarPicker extends Component<AvatarPickerProps, AvatarPickerState
       this.props.select(content)
     }
   }
-  public loadItems = async (path: string) => {
-    let result: ODataCollectionResponse<Folder>
-    const filter = "(isOf('Folder') and not isOf('SystemFolder')) or isOf('Image')"
-    const pickerItemOptions: ODataParams<Folder> = {
-      select: ['DisplayName', 'Path', 'Id', 'Children/IsFolder', 'IsFolder'] as any,
-      expand: ['Children'] as any,
-      filter,
-      metadata: 'no',
-      orderby: [['IsFolder', 'desc'], 'DisplayName'],
-    }
-
-    try {
-      result = await this.props.repository.loadCollection<Folder>({
-        path,
-        oDataOptions: pickerItemOptions,
-      })
-    } catch (error) {
-      throw error
-    }
-
+  public onNavigation = (path: string) => {
     this.setState({
-      items: result.d.results,
-      currentParent: path,
+      path,
     })
-    return result.d.results
+  }
+  private pickerItemOptions: ODataParams<Folder> = {
+    select: ['DisplayName', 'Path', 'Id', 'Children/IsFolder', 'IsFolder'] as any,
+    expand: ['Children'] as any,
+    filter: "(isOf('Folder') and not isOf('SystemFolder')) or isOf('Image')",
+    metadata: 'no',
+    orderby: [['IsFolder', 'desc'], 'DisplayName'],
   }
 
-  public loadParent = async (id?: number) => {
-    const pickerParentOptions: ODataParams<GenericContent> = {
-      select: ['DisplayName', 'Path', 'Id', 'ParentId', 'Workspace'],
-      expand: ['Workspace'],
-      metadata: 'no',
-    }
-    const result = await this.props.repository.load<GenericContent>({
-      idOrPath: id as number,
-      oDataOptions: { ...pickerParentOptions },
-    })
-    this.setState({
-      currentParent: result.d.Path,
-      currentParentId: id || null,
-    })
-    return result.d as GenericContent
-  }
-  public iconName = (node: GenericContent) => {
-    switch (node.IsFolder) {
-      case true:
-        return 'folder'
-        break
-      default:
-        return 'arrow_upward'
-        break
-    }
-  }
+  public iconName = (node: GenericContent) => (node.IsFolder ? 'folder' : 'arrow_upward')
+
   public renderItem = (node: GenericContent | User) => (
     <ListItem button={true} selected={node.Id === this.props.selected.Id}>
       {node.IsFolder || node.IsFolder === undefined ? (
@@ -115,36 +74,36 @@ export class AvatarPicker extends Component<AvatarPickerProps, AvatarPickerState
       <ListItemText primary={node.DisplayName} />
     </ListItem>
   )
+
   /**
    * returns a name from the given path
    */
   public getNameFromPath = (path: string) => path.replace(/^.*[\\\/]/, '')
+
   public handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (this.props['data-onChange']) {
       this.props['data-onChange']()
     }
     e.persist()
     e.target.files &&
-      (await Upload.fromFileList({
+      (await this.props.repository.upload.fromFileList({
         fileList: e.target.files,
         createFolders: true,
         binaryPropertyName: 'Binary',
         overwrite: true,
-        parentPath: this.state.currentParent,
-        repository: this.props.repository,
+        parentPath: this.state.path,
       }))
-    this.loadItems(this.state.currentParent)
   }
+
   public render() {
     return (
       <div>
         <ListPickerComponent
           onSelectionChanged={this.onSelectionChanged}
-          onNavigation={this.props.change}
+          onNavigation={this.onNavigation}
           repository={this.props.repository}
           currentPath={this.props.path}
-          loadItems={this.loadItems}
-          loadParent={this.loadParent}
+          itemsOdataOptions={this.pickerItemOptions}
           renderItem={this.renderItem}
         />
         <div style={styles.uploadContainer}>

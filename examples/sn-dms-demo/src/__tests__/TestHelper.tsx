@@ -1,9 +1,9 @@
 import { Repository } from '@sensenet/client-core'
-import { sensenetDocumentViewerReducer } from '@sensenet/document-viewer-react/dist/store'
+import { commentsStateReducer, rootReducer as sensenetDocumentViewerReducer } from '@sensenet/document-viewer-react'
 import { Store } from '@sensenet/redux'
 import { Reducers } from '@sensenet/redux'
 import { CreateStoreOptions } from '@sensenet/redux/dist/Store'
-import * as React from 'react'
+import React from 'react'
 import { Provider } from 'react-redux'
 import { combineReducers } from 'redux'
 import { dms } from '../Reducers'
@@ -18,6 +18,7 @@ export const withStore = (component: JSX.Element, options?: Partial<CreateStoreO
     sensenet: Reducers.sensenet,
     dms,
     sensenetDocumentViewer: sensenetDocumentViewerReducer,
+    comments: commentsStateReducer,
   })
   const repository = new Repository({
     repositoryUrl: process.env.REACT_APP_SERVICE_URL,
@@ -35,7 +36,7 @@ export const withStore = (component: JSX.Element, options?: Partial<CreateStoreO
         },
       },
     },
-  } as Store.CreateStoreOptions<rootStateType>
+  }
   const store = Store.createSensenetStore({ ...defaultOptions, ...options } as CreateStoreOptions<rootStateType>)
 
   return <Provider store={store}>{component}</Provider>

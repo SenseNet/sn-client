@@ -3,7 +3,7 @@ import { FormsAuthenticationService, LoginState, Repository } from '@sensenet/cl
 import { RepositoryConfiguration } from '@sensenet/client-core/dist/Repository/RepositoryConfiguration'
 import { EventHub } from '@sensenet/repository-events'
 
-@Injectable()
+@Injectable({ lifetime: 'singleton' })
 export class RepositoryManager {
   private repos: Map<string, Repository> = new Map()
   private eventHubs: Map<string, EventHub> = new Map()

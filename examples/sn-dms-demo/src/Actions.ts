@@ -1,16 +1,15 @@
 import {
   Repository,
-  Upload,
   UploadFromEventOptions,
   UploadFromFileListOptions,
   UploadProgressInfo,
 } from '@sensenet/client-core'
-import { debounce, ObservableValue, usingAsync } from '@sensenet/client-utils'
+import { ObservableValue, usingAsync } from '@sensenet/client-utils'
 import { File as SnFile, GenericContent } from '@sensenet/default-content-types'
 import { ActionModel } from '@sensenet/default-content-types/dist/ActionModel'
 import { Dispatch } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
-import { updateChildrenOptions } from './store/documentlibrary/actions'
+import { debounceReloadOnProgress } from './store/documentlibrary/actions'
 import { rootStateType } from './store/rootReducer'
 
 export enum MessageMode {
@@ -128,18 +127,6 @@ export type ExtendedUploadProgressInfo = UploadProgressInfo & { content?: Generi
 
 export const changedContent: GenericContent[] = []
 
-function methodToDebounce(getState: () => rootStateType, dispatch: Dispatch) {
-  const currentContent = getState().dms.documentLibrary.parent
-  changedContent.forEach(content => {
-    if (currentContent && currentContent.Id === content.ParentId) {
-      dispatch(updateChildrenOptions({}))
-      changedContent.length = 0
-      return
-    }
-  })
-}
-export const debounceReloadOnProgress = debounce(methodToDebounce, 300)
-
 export const trackUploadProgress = async <T extends GenericContent>(
   currentValue: ExtendedUploadProgressInfo,
   getState: () => rootStateType,
@@ -183,9 +170,8 @@ export const uploadFileList = <T extends SnFile>(
         trackUploadProgress(currentValue, options.getState, options.dispatch, api),
       )
       try {
-        await Upload.fromFileList({
+        await api.upload.fromFileList({
           ...uploadOptions,
-          repository: api,
           progressObservable: progress,
         })
       } catch (error) {
@@ -209,9 +195,8 @@ export const uploadDataTransfer = <T extends SnFile>(
         trackUploadProgress(currentValue, options.getState, options.dispatch, api),
       )
       try {
-        await Upload.fromDropEvent({
+        await api.upload.fromDropEvent({
           ...uploadOptions,
-          repository: api,
           progressObservable: progress,
         })
       } catch (error) {

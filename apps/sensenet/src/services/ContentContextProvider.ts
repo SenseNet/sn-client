@@ -1,25 +1,12 @@
 import { Repository } from '@sensenet/client-core'
 import { ContentType, File as SnFile, GenericContent, Resource, Settings } from '@sensenet/default-content-types'
-import { Uri } from 'monaco-editor'
 import { isContentFromType } from '../utils/isContentFromType'
 
-export type RouteType = 'Browse' | 'EditProperties' | 'EditBinary' | 'Preview'
+export type RouteType = 'Browse' | 'EditProperties' | 'EditBinary' | 'Preview' | 'PersonalSettings'
 
 export class ContentContextProvider {
-  public getMonacoModelUri(content: GenericContent) {
-    if (isContentFromType(content, Settings)) {
-      return Uri.parse(`sensenet://${content.Type}/${content.Name}`)
-    }
-    if (isContentFromType(content, SnFile)) {
-      if (content.Binary) {
-        return Uri.parse(`sensenet://${content.Type}/${content.Binary.__mediaresource.content_type}`)
-      }
-    }
-    return Uri.parse(`sensenet://${content.Type}`)
-  }
-
   public getMonacoLanguage(content: GenericContent) {
-    if (isContentFromType(content, Settings, this.repository.schemas)) {
+    if (isContentFromType(content, Settings, this.repository.schemas) || content.Type === 'PersonalSettings') {
       return 'json'
     }
     if (
@@ -59,6 +46,10 @@ export class ContentContextProvider {
     return this.getMonacoLanguage(content) ? true : false
   }
   public getPrimaryActionRouteType<T extends GenericContent>(content: T): RouteType {
+    if (content.Type === 'PersonalSettings') {
+      return 'PersonalSettings'
+    }
+
     if (content.IsFolder) {
       return 'Browse'
     }
@@ -82,6 +73,9 @@ export class ContentContextProvider {
   }
   public getPrimaryActionUrl<T extends GenericContent>(content: T) {
     const routeType = this.getPrimaryActionRouteType(content)
+    if (routeType === 'PersonalSettings') {
+      return '/personalSettings'
+    }
     return this.getActionUrl(content, routeType)
   }
 

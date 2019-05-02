@@ -1,12 +1,10 @@
 import { Content, ODataCollectionResponse, ODataParams, ODataResponse, Repository } from '@sensenet/client-core'
-import { ValueObserver } from '@sensenet/client-utils'
+import { debounce, ValueObserver } from '@sensenet/client-utils'
 import { ActionModel, GenericContent, Group, User } from '@sensenet/default-content-types'
 import { createAction } from '@sensenet/redux'
 import { EventHub } from '@sensenet/repository-events'
-import { Action } from 'redux'
+import { Action, Dispatch } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
-import { changedContent } from '../../Actions'
-import { debounceReloadOnProgress } from '../../Actions'
 import { arrayComparer, arrayDiff } from '../../assets/helpers'
 import { rootStateType } from '../../store/rootReducer'
 
@@ -21,7 +19,7 @@ export const loadUser = <T extends User = User>(idOrPath: number | string, userO
   type: 'DMS_USERSANDGROUPS_LOAD_USER',
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const prevState = options.getState().dms.usersAndGroups
-    if (prevState.user.currentUser && prevState.user.currentUser.Id.toString() === idOrPath) {
+    if (prevState.user.currentUser && prevState.user.currentUser.Id === idOrPath) {
       return
     }
 
@@ -48,11 +46,14 @@ export const loadUser = <T extends User = User>(idOrPath: number | string, userO
           emitChange({ Id: newUser.d.Id } as User)
         }),
         eventHub.onContentCreated.subscribe(value => emitChange(value.content)),
-        eventHub.onContentModified.subscribe(value => emitChange(value.content)),
+        eventHub.onContentModified.subscribe(value => {
+          emitChange(value.content)
+          options.dispatch(loadUser(value.content.Id, userOptions))
+        }),
         eventHub.onContentMoved.subscribe(value => emitChange(value.content)),
         eventHub.onContentDeleted.subscribe(value => {
-          const currentItems = options.getState().dms.documentLibrary.items
-          const filtered = currentItems.d.results.filter(item => item.Id !== value.contentData.Id)
+          const currentItems = options.getState().dms.usersAndGroups.user.items
+          const filtered = currentItems.filter(item => item.Id !== value.contentData.Id)
           options.dispatch(
             setGroups({
               ...currentItems,
@@ -79,22 +80,35 @@ export const loadUser = <T extends User = User>(idOrPath: number | string, userO
           options.dispatch(setAncestors([...ancestors.d.results, newUser.d]))
         })(),
         (async () => {
-          const memberships = await repository.security.getParentGroups({
-            contentIdOrPath: idOrPath,
-            directOnly: false,
-            oDataOptions: {
-              select: ['Workspace', 'DisplayName', 'Type', 'Id', 'Path', 'Actions', 'Icon', 'Members'],
-              expand: ['Workspace', 'Actions', 'Members'],
-              filter: `isOf('Group')`,
-            },
-          })
-          options.dispatch(setMemberships(memberships))
+          if (newUser.d.Type === 'User') {
+            const memberships = await repository.security.getParentGroups({
+              contentIdOrPath: newUser.d.Id,
+              directOnly: false,
+              oDataOptions: {
+                select: ['Workspace', 'DisplayName', 'Type', 'Id', 'Path', 'Actions', 'Icon', 'Members'],
+                expand: ['Workspace', 'Actions', 'Members'],
+                filter: `isOf('Group')`,
+              },
+            })
+            options.dispatch(setMemberships(memberships))
+          } else {
+            const children = await repository.loadCollection({
+              path: newUser.d.Path,
+              oDataOptions: {
+                select: ['FullName', 'Email', 'Type', 'IsFolder', 'Actions', 'Icon', 'Avatar'] as any,
+                filter: `IsFolder eq true and ContentType ne 'SystemFolder' or ContentType eq 'User'`,
+              },
+            })
+            options.dispatch(setUser(newUser.d))
+            options.dispatch(setItems(children.d.results))
+          }
         })(),
       ])
     } catch (error) {
       options.dispatch(setError(error))
     } finally {
       options.dispatch(finishLoading())
+      options.dispatch(clearUserSelection())
     }
   },
 })
@@ -166,21 +180,27 @@ export const updateChildrenOptions = <T extends GenericContent>(o: ODataParams<T
       ),
     )
     try {
-      const items = await repository.security.getParentGroups({
-        contentIdOrPath: currentState.dms.usersAndGroups.user.currentUser
-          ? currentState.dms.usersAndGroups.user.currentUser.Id
-          : 0,
-        directOnly: false,
-        oDataOptions: {
-          ...{
-            select: ['Workspace', 'DisplayName', 'Type', 'Id', 'Path', 'Actions', 'Icon', 'Members'],
-            expand: ['Workspace', 'Actions', 'Members'],
-            filter: `isOf('Group')`,
+      if (
+        currentState.dms.usersAndGroups.user.currentUser &&
+        currentState.dms.usersAndGroups.user.currentUser.Type === 'User'
+      ) {
+        const items = await repository.security.getParentGroups({
+          contentIdOrPath: currentState.dms.usersAndGroups.user.currentUser
+            ? currentState.dms.usersAndGroups.user.currentUser.Id
+            : 0,
+          directOnly: false,
+          oDataOptions: {
+            ...{
+              select: ['Workspace', 'DisplayName', 'Type', 'Id', 'Path', 'Actions', 'Icon', 'Members'],
+              expand: ['Workspace', 'Actions', 'Members'],
+              filter: `isOf('Group')`,
+            },
+            ...(o as any),
           },
-          ...(o as any),
-        },
-      })
-      options.dispatch(setMemberships(items))
+        })
+
+        options.dispatch(setMemberships(items))
+      }
     } catch (error) {
       options.dispatch(setError(error))
     } finally {
@@ -353,11 +373,12 @@ export const startLoadingChildren = createAction((idOrPath: number | string) => 
 }))
 
 export const updateGroupListOptions = createAction(<T extends GenericContent>(odataOptions: ODataParams<T>) => ({
-  type: 'DMS_SERSANDGROUPS_UPDATE_GROUPLIST_OPTIONS',
+  type: 'DMS_USERSANDGROUPS_UPDATE_GROUPLIST_OPTIONS',
   odataOptions,
   // tslint:disable-next-line: no-unnecessary-type-annotation
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const currentState = options.getState()
+    const parent = currentState.dms.usersAndGroups.group.currentGroup
     const parentPath = currentState.dms.usersAndGroups.group.parent
       ? currentState.dms.usersAndGroups.group.parent.Path
       : ''
@@ -378,6 +399,41 @@ export const updateGroupListOptions = createAction(<T extends GenericContent>(od
         },
       })
       options.dispatch(setGroups(items))
+      options.dispatch(setGroup(parent as any, items.d.results))
+    } catch (error) {
+      options.dispatch(setError(error))
+    } finally {
+      options.dispatch(finishLoadingChildren())
+      options.dispatch(setChildrenOptions(odataOptions))
+    }
+  },
+}))
+
+export const updateUserListOptions = createAction(<T extends GenericContent>(odataOptions: ODataParams<T>) => ({
+  type: 'DMS_USERSANDGROUPS_UPDATE_USERLIST_OPTIONS',
+  odataOptions,
+  // tslint:disable-next-line: no-unnecessary-type-annotation
+  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
+    const currentState = options.getState()
+    // const parent = currentState.dms.usersAndGroups.user.currentUser
+    const parentPath = currentState.dms.usersAndGroups.user.parent
+      ? currentState.dms.usersAndGroups.user.parent.Path
+      : ''
+    const repository = options.getInjectable(Repository)
+    options.dispatch(
+      startLoadingChildren(
+        currentState.dms.usersAndGroups.user.parentIdOrPath ? currentState.dms.usersAndGroups.user.parentIdOrPath : '',
+      ),
+    )
+    try {
+      const items = await repository.loadCollection({
+        path: parentPath,
+        oDataOptions: {
+          ...options.getState().dms.usersAndGroups.user.userlistOptions,
+          ...odataOptions,
+        },
+      })
+      options.dispatch(setItems(items.d.results))
     } catch (error) {
       options.dispatch(setError(error))
     } finally {
@@ -419,10 +475,21 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
         items = await repository.loadCollection({
           path: idOrPath as string,
           oDataOptions: {
-            select: ['Path', 'Actions', 'Id', 'DisplayName', 'Description', 'Name', 'IsFolder', 'Icon'] as any,
+            select: [
+              'Path',
+              'Actions',
+              'Id',
+              'DisplayName',
+              'Description',
+              'Name',
+              'IsFolder',
+              'Icon',
+              'ParentId',
+            ] as any,
             expand: ['Actions'] as any,
             scenario: 'DMSGroupListItem',
             query: `InTree:${newGroup.d.Path} AND TypeIs:Group .AUTOFILTERS:OFF`,
+            orderby: ['DisplayName' as any, 'asc'],
           },
         })
         realGroup = await repository.load<T>({
@@ -434,10 +501,21 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
         items = await repository.loadCollection({
           path: idOrPath as string,
           oDataOptions: {
-            select: ['Path', 'Actions', 'Id', 'DisplayName', 'Description', 'Name', 'IsFolder', 'Icon'] as any,
+            select: [
+              'Path',
+              'Actions',
+              'Id',
+              'DisplayName',
+              'Description',
+              'Name',
+              'IsFolder',
+              'Icon',
+              'ParentId',
+            ] as any,
             expand: ['Actions'] as any,
             scenario: 'DMSGroupListItem',
             filter: `IsFolder eq true and ContentType ne 'SystemFolder' or ContentType eq 'Group'`,
+            orderby: ['DisplayName' as any, 'asc'],
           },
         })
         options.dispatch(setGroup(newGroup.d, items.d.results))
@@ -454,10 +532,15 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
 
       eventObservables.push(
         eventHub.onCustomActionExecuted.subscribe(() => {
-          emitChange({ Id: realGroup.d ? realGroup.d.Id : newGroup.d.Id } as Group)
+          emitChange({
+            Id: realGroup.d ? realGroup.d.Id : newGroup.d.Id,
+            ParentId: realGroup.d ? realGroup.d.ParentId : null,
+          } as Group)
         }),
         eventHub.onContentCreated.subscribe(value => emitChange(value.content)),
-        eventHub.onContentModified.subscribe(value => emitChange(value.content)),
+        eventHub.onContentModified.subscribe(value => {
+          emitChange(value.content)
+        }),
         eventHub.onContentMoved.subscribe(value => emitChange(value.content)),
       )
 
@@ -536,7 +619,7 @@ export const searchUsers = (text: string) => ({
   text,
 })
 
-export const getAllowedTypes = createAction(<T extends GenericContent[]>(odataOptions: ODataParams<T>) => ({
+export const getAllowedTypes = createAction(<T extends GenericContent[]>(odataOptions?: ODataParams<T>) => ({
   type: 'DMS_DOCLIB_GET_ALLOWED_TYPES',
   odataOptions,
   // tslint:disable-next-line: no-unnecessary-type-annotation
@@ -544,6 +627,8 @@ export const getAllowedTypes = createAction(<T extends GenericContent[]>(odataOp
     const currentState = options.getState()
     const currentPath = currentState.dms.usersAndGroups.group.currentGroup
       ? currentState.dms.usersAndGroups.group.currentGroup.Path
+      : currentState.dms.usersAndGroups.user.currentUser
+      ? currentState.dms.usersAndGroups.user.currentUser.Path
       : ''
     const repository = options.getInjectable(Repository)
 
@@ -582,3 +667,23 @@ export const setMembers = (members: GenericContent[]) => ({
   type: 'DMS_USERSANDGROUPS_SET_MEMBERS',
   members,
 })
+
+export const setItems = (items: GenericContent[]) => ({
+  type: 'DMS_USERSANDGROUPS_SET_ITEMS',
+  items,
+})
+
+export const changedContent: GenericContent[] = []
+
+function methodToDebounce(getState: () => rootStateType, dispatch: Dispatch) {
+  const currentContent = getState().dms.usersAndGroups.group.parent
+  changedContent.forEach(content => {
+    if (currentContent && currentContent.Id === content.ParentId) {
+      dispatch(updateGroupListOptions({}))
+      dispatch(updateUserListOptions({}))
+      changedContent.length = 0
+      return
+    }
+  })
+}
+export const debounceReloadOnProgress = debounce(methodToDebounce, 300)

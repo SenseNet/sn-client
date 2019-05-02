@@ -2,23 +2,21 @@
   "extends": "../../tsconfig-base.json",
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "src",
+    "rootDirs": ["stories", "assets"],
     "lib": ["es6", "dom"],
     "experimentalDecorators": true,
     "noUnusedParameters": false,
     "noImplicitAny": false,
-    "strictNullChecks": false,
     "alwaysStrict": false,
-    "removeComments": false,
-    "declaration": false,
-    "declarationMap": false
+    "removeComments": false
   },
-  "include": ["stories", "../../typings"],
+  "include": ["stories", "assets", "../../typings"],
   "references": [
     { "path": "../../packages/sn-client-core" },
     { "path": "../../packages/sn-client-utils" },
     { "path": "../../packages/sn-controls-react" },
     { "path": "../../packages/sn-default-content-types" },
+    { "path": "../../packages/sn-document-viewer-react" },
     { "path": "../../packages/sn-icons-react" },
     { "path": "../../packages/sn-list-controls-react" },
     { "path": "../../packages/sn-pickers-react" },

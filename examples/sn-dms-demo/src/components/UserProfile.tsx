@@ -1,13 +1,11 @@
-import AppBar from '@material-ui/core/AppBar'
 import Checkbox from '@material-ui/core/Checkbox'
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 import TableCell from '@material-ui/core/TableCell'
-import Toolbar from '@material-ui/core/Toolbar'
 import { ConstantContent } from '@sensenet/client-core'
 import { ActionModel, GenericContent, Group, SchemaStore, User } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
 import { compile } from 'path-to-regexp'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
@@ -15,38 +13,15 @@ import { closeActionMenu, openActionMenu } from '../Actions'
 import { contentListTheme } from '../assets/contentlist'
 import { icons } from '../assets/icons'
 import { customSchema } from '../assets/schema'
-import WorkspaceSelector from '../components/WorkspaceSelector/WorkspaceSelector'
 import { rootStateType } from '../store/rootReducer'
 import { loadUser, selectGroup, updateChildrenOptions } from '../store/usersandgroups/actions'
-import BreadCrumb from './BreadCrumb'
+import ActionMenu from './ActionMenu/ActionMenu'
 import { DisplayNameCell } from './ContentList/CellTemplates/DisplayNameCell'
 import { DisplayNameMobileCell } from './ContentList/CellTemplates/DisplayNameMobileCell'
 import { FullScreenLoader } from './FullScreenLoader'
 import DeleteUserFromGroup from './UsersAndGroups/DeleteUserFromGroup'
 import GroupListToolbar from './UsersAndGroups/GroupListToolbar'
 import UserInfo from './UsersAndGroups/UserInfo'
-
-const styles = {
-  appBar: {
-    background: '#fff',
-    boxShadow: 'none',
-  },
-  appBarMobile: {
-    background: '#4cc9f2',
-  },
-  toolbar: {
-    display: 'flex',
-    flexDirection: 'row',
-    padding: '0 12px',
-  },
-  toolbarMobile: {
-    padding: '0',
-    minHeight: 36,
-    borderBottom: 'solid 1px #fff',
-    display: 'flex',
-    flexDirection: 'row',
-  },
-}
 
 const mapStateToProps = (state: rootStateType) => {
   return {
@@ -57,7 +32,7 @@ const mapStateToProps = (state: rootStateType) => {
     ancestors: state.dms.usersAndGroups.user.ancestors,
     user: state.dms.usersAndGroups.user.currentUser,
     isAdmin: state.dms.usersAndGroups.user.isAdmin,
-    childrenOptions: state.dms.usersAndGroups.user.grouplistOptions,
+    childrenOptions: state.dms.usersAndGroups.user.userlistOptions,
     selected: state.dms.usersAndGroups.group.selected,
     active: state.dms.usersAndGroups.user.active,
     hostName: state.sensenet.session.repository ? state.sensenet.session.repository.repositoryUrl : '',
@@ -93,12 +68,16 @@ class UserProfile extends React.Component<
   }
 
   private static updateStoreFromPath(newProps: UserProfile['props']) {
+    // const user = newProps.user ? newProps.user : {} as User
     try {
-      const idFromUrl = newProps.match.params.folderPath && atob(decodeURIComponent(newProps.match.params.otherActions))
-      const userProfilePath = `/Root/IMS/Public/${newProps.loggedinUser.content.Name}`
-      newProps.loadUser(Number(idFromUrl) || userProfilePath, {
-        select: ['Avatar', 'FullName', 'Email', 'Phone', 'LoginName'],
-      })
+      // const userProfilePath = newProps.match.params.otherActions
+      //   ? user.Id
+      //   : `/Root/IMS/Public/${newProps.loggedinUser.content.Name}`
+      if (newProps.user) {
+        newProps.loadUser(newProps.user.Id, {
+          select: ['Avatar', 'FullName', 'DisplayName', 'Email', 'Phone', 'LoginName'],
+        })
+      }
     } catch (error) {
       /** Cannot parse current folder from URL */
       return compile(newProps.match.path)({ folderPath: '' })
@@ -150,22 +129,6 @@ class UserProfile extends React.Component<
         {matches => {
           return this.props.loggedinUser.content.Id !== ConstantContent.VISITOR_USER.Id ? (
             <div>
-              {this.props.isAdmin ? (
-                <AppBar position="static" style={matches ? styles.appBar : styles.appBarMobile}>
-                  <Toolbar style={matches ? (styles.toolbar as any) : (styles.toolbarMobile as any)}>
-                    <div style={{ flex: 1, display: 'flex' }}>
-                      <WorkspaceSelector />
-                      {this.props.user ? (
-                        <BreadCrumb
-                          ancestors={this.props.ancestors}
-                          currentContent={this.props.user}
-                          typeFilter={['OrganizationalUnit', 'Folder', 'Domain']}
-                        />
-                      ) : null}
-                    </div>
-                  </Toolbar>
-                </AppBar>
-              ) : null}
               <UserInfo />
               <GroupListToolbar />
               <MuiThemeProvider theme={contentListTheme}>
@@ -323,6 +286,7 @@ class UserProfile extends React.Component<
                     }}
                   />
                 )}
+                <ActionMenu id={0} />
               </MuiThemeProvider>
             </div>
           ) : null

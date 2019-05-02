@@ -5,7 +5,7 @@ import match from 'autosuggest-highlight/match'
 import parse from 'autosuggest-highlight/parse'
 import React, { useContext } from 'react'
 import { RenderSuggestionParams } from 'react-autosuggest'
-import { ResponsiveContext } from '../../context/ResponsiveContextProvider'
+import { ResponsiveContext } from '../../context'
 import { CommandPaletteItem } from '../../store/CommandPalette'
 import { Icon } from '../Icon'
 

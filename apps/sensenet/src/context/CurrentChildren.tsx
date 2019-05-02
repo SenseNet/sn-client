@@ -1,4 +1,4 @@
-import { debounce, PathHelper } from '@sensenet/client-utils'
+import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Created } from '@sensenet/repository-events'
 import React, { useContext, useEffect, useState } from 'react'
@@ -19,24 +19,32 @@ export const CurrentChildrenProvider: React.FunctionComponent = props => {
   const [reloadToken, setReloadToken] = useState(1)
   const repo = useContext(RepositoryContext)
   const eventHub = injector.getEventHub(repo.configuration.repositoryUrl)
-  const uploadTracker = injector.GetInstance(UploadTracker)
+  const uploadTracker = injector.getInstance(UploadTracker)
   const loadSettings = useContext(LoadSettingsContext)
 
-  const requestReload = debounce(() => setReloadToken(Math.random()), 200)
+  const requestReload = () => setReloadToken(Math.random())
+  const [error, setError] = useState<Error | undefined>()
 
   useEffect(() => {
+    const ac = new AbortController()
     ;(async () => {
       try {
         await loadLock.acquire()
         const childrenResult = await repo.loadCollection<GenericContent>({
           path: currentContent.Path,
+          requestInit: { signal: ac.signal },
           oDataOptions: loadSettings.loadChildrenSettings,
         })
         setChildren(childrenResult.d.results)
+      } catch (error) {
+        if (!ac.signal.aborted) {
+          setError(error)
+        }
       } finally {
         loadLock.release()
       }
     })()
+    return () => ac.abort()
   }, [currentContent.Path, loadSettings.loadChildrenSettings, repo, reloadToken])
 
   const handleCreate = (c: Created) => {
@@ -74,6 +82,10 @@ export const CurrentChildrenProvider: React.FunctionComponent = props => {
 
     return () => subscriptions.forEach(s => s.dispose())
   }, [currentContent, repo, children])
+
+  if (error) {
+    throw error
+  }
 
   return <CurrentChildrenContext.Provider value={children}>{props.children}</CurrentChildrenContext.Provider>
 }

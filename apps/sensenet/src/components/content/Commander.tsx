@@ -1,12 +1,14 @@
 import { ConstantContent } from '@sensenet/client-core'
 import React, { useContext, useEffect, useState } from 'react'
 import { matchPath, RouteComponentProps, withRouter } from 'react-router'
-import { ContentRoutingContext } from '../../context/ContentRoutingContext'
-import { CurrentAncestorsProvider } from '../../context/CurrentAncestors'
-import { CurrentChildrenProvider } from '../../context/CurrentChildren'
-import { CurrentContentProvider } from '../../context/CurrentContent'
-import { LoadSettingsContextProvider } from '../../context/LoadSettingsContext'
-import { RepositoryContext } from '../../context/RepositoryContext'
+import {
+  ContentRoutingContext,
+  CurrentAncestorsProvider,
+  CurrentChildrenProvider,
+  CurrentContentProvider,
+  LoadSettingsContextProvider,
+  RepositoryContext,
+} from '../../context'
 import { CollectionComponent } from '../ContentListPanel'
 
 export interface CommanderRouteParams {

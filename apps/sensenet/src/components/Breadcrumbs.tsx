@@ -5,7 +5,7 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { CurrentContentContext } from '../context/CurrentContent'
+import { CurrentContentContext } from '../context'
 import { ContentContextMenu } from './ContentContextMenu'
 import { DropFileArea } from './DropFileArea'
 import { Icon } from './Icon'
@@ -30,7 +30,7 @@ const Breadcrumbs: React.FunctionComponent<BreadcrumbProps & RouteComponentProps
 
   return (
     <>
-      <Typography variant="h6" style={{ paddingLeft: '.5em' }}>
+      <Typography variant="h5" style={{ paddingLeft: '.5em' }}>
         {props.content.map((item, key) => (
           <DropFileArea key={key} parent={item.content} style={{ display: 'inline-block' }}>
             <Tooltip title={item.title}>

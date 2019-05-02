@@ -1,14 +1,10 @@
+import { Repository } from '@sensenet/client-core'
+import { BrowseView, EditView, NewView } from '@sensenet/controls-react/src'
+import { File, Folder } from '@sensenet/default-content-types'
 import { withA11y } from '@storybook/addon-a11y'
 import { object, text, withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
 import React from 'react'
-
-import { Repository } from '@sensenet/client-core'
-import { File, Folder } from '@sensenet/default-content-types'
-import { Reducers } from '@sensenet/redux'
-
-import { BrowseView, EditView, NewViewComponent } from '@sensenet/controls-react/src'
-import { combineReducers, createStore } from 'redux'
 
 export const customSchema = [
   {
@@ -1539,24 +1535,18 @@ const newViewNotes = require('../notes/viewcontrols/NewView.md')
 const editViewNotes = require('../notes/viewcontrols/EditView.md')
 const browseViewNotes = require('../notes/viewcontrols/BrowseView.md')
 
-const sensenet = Reducers.sensenet
-export const testStore = createStore(combineReducers({ sensenet }))
-
 storiesOf('ViewControls', module)
   .addDecorator(withKnobs)
   .addDecorator(withA11y)
   .add(
     'new view',
     () => (
-      <NewViewComponent
+      <NewView
         path="/Root/Profiles/MyProfile/DocumentLibrary"
-        fields={[]}
-        changeAction={() => ({ type: 'a', name: 'a', value: 'a' })}
         repository={testRepository}
         contentTypeName="File"
         title={text('Title', 'File')}
         extension={text('Extension', 'docx')}
-        repositoryUrl={testRepository.configuration.repositoryUrl}
       />
     ),
     { notes: { markdown: newViewNotes } },

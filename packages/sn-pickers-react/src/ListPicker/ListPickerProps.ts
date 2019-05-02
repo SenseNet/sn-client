@@ -1,5 +1,6 @@
-import { Repository } from '@sensenet/client-core'
+import { ODataParams, Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
+import { ReactElement } from 'react'
 
 /**
  * Properties for list picker component.
@@ -12,26 +13,26 @@ export interface ListPickerProps<T extends GenericContent = GenericContent> {
    * To use the default load options you need to provide a repository.
    * @type {Repository}
    */
-  repository?: Repository
+  repository: Repository
 
   /**
-   * Load content from path.
+   * OData parameters for list items.
    * @default { select: ['DisplayName', 'Path', 'Id'],
    *   filter: "(isOf('Folder') and not isOf('SystemFolder'))",
    *   metadata: 'no',
    *   orderby: 'DisplayName',}
    */
-  loadItems?: (path: string) => Promise<T[]>
+  itemsOdataOptions?: ODataParams<T>
 
   /**
-   * Load parent content.
+   * OData parameters for the parent list item.
    * @default {
    *   select: ['DisplayName', 'Path', 'Id', 'ParentId', 'Workspace'],
    *   expand: ['Workspace'],
    *   metadata: 'no',
    * }
    */
-  loadParent?: (id?: number) => Promise<T>
+  parentODataOptions?: ODataParams<T>
 
   /**
    * The current content's path.
@@ -50,7 +51,7 @@ export interface ListPickerProps<T extends GenericContent = GenericContent> {
   /**
    * Called before navigation. Can be used to clear the selected state.
    */
-  onNavigation?: () => void
+  onNavigation?: (path: string) => void
 
   /**
    * Called on click with the current item.
@@ -62,17 +63,19 @@ export interface ListPickerProps<T extends GenericContent = GenericContent> {
    * Render a loading component when loadItems called.
    * @default null
    */
-  renderLoading?: () => JSX.Element
+  renderLoading?: () => ReactElement
 
   /**
    * Render an error component when error happened in loadItems call.
    * @default null
    */
-  renderError?: (message: string) => JSX.Element
+  renderError?: (message: string) => ReactElement
 
   /**
    * Function to render the item component.
-   * @default const defaultRenderItem = (node: T) => (
+   * @default
+   * ```js
+   * const defaultRenderItem = (node: T) => (
    * <ListItem button={true} selected={node.Id === selectedId}>
    *   <ListItemIcon>
    *     <Icon type={iconType.materialui} iconName="folder" />
@@ -80,6 +83,13 @@ export interface ListPickerProps<T extends GenericContent = GenericContent> {
    *   <ListItemText primary={node.DisplayName} />
    * </ListItem>
    * )
+   * ```
    */
-  renderItem?: (props: T) => JSX.Element
+  renderItem?: (props: T) => ReactElement<T>
+
+  /**
+   * Debounce milliseconds to prevent multiple reload calls.
+   * @default 1000
+   */
+  debounceMsOnReload?: number
 }

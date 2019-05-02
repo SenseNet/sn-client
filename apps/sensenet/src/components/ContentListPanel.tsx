@@ -5,12 +5,15 @@ import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
 import React, { useContext, useEffect, useState } from 'react'
-import { CurrentAncestorsContext } from '../context/CurrentAncestors'
-import { CurrentChildrenContext } from '../context/CurrentChildren'
-import { CurrentContentContext } from '../context/CurrentContent'
-import { LoadSettingsContext } from '../context/LoadSettingsContext'
-import { RepositoryContext } from '../context/RepositoryContext'
-import { ResponsiveContext, ResponsivePersonalSetttings } from '../context/ResponsiveContextProvider'
+import {
+  CurrentAncestorsContext,
+  CurrentChildrenContext,
+  CurrentContentContext,
+  LoadSettingsContext,
+  RepositoryContext,
+  ResponsiveContext,
+  ResponsivePersonalSetttings,
+} from '../context'
 import { ContentBreadcrumbs } from './ContentBreadcrumbs'
 import { ContentContextMenu } from './ContentContextMenu'
 import { DeleteContentDialog } from './DeleteContentDialog'

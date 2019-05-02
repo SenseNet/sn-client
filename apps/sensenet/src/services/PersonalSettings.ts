@@ -1,8 +1,9 @@
 import { Injectable } from '@furystack/inject'
+import { LogLevel } from '@furystack/logging'
 import { ObservableValue } from '@sensenet/client-utils'
 import { deepMerge } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
-import { PlatformDependent } from '../context/ResponsiveContextProvider'
+import { PlatformDependent } from '../context'
 
 const settingsKey = `SN-APP-USER-SETTINGS`
 
@@ -23,6 +24,10 @@ export interface UiSettings {
 export type PersonalSettingsType = PlatformDependent<UiSettings> & {
   repositories: Array<{ url: string; loginName?: string; displayName?: string }>
   lastRepository: string
+  eventLogSize: number
+  sendLogWithCrashReports: boolean
+  logLevel: Array<keyof typeof LogLevel>
+  language: 'default' | 'hungarian'
 }
 
 export const defaultSettings: PersonalSettingsType = {
@@ -50,9 +55,13 @@ export const defaultSettings: PersonalSettingsType = {
   },
   repositories: [],
   lastRepository: '',
+  language: 'default',
+  eventLogSize: 500,
+  sendLogWithCrashReports: true,
+  logLevel: ['Information', 'Warning', 'Error', 'Fatal'],
 }
 
-@Injectable()
+@Injectable({ lifetime: 'singleton' })
 export class PersonalSettings {
   constructor() {
     this.init()
@@ -75,7 +84,7 @@ export class PersonalSettings {
   public currentValue = new ObservableValue(defaultSettings)
 
   public async setValue(settings: PersonalSettingsType) {
-    this.currentValue.setValue(settings)
+    this.currentValue.setValue({ ...settings })
     localStorage.setItem(`${settingsKey}`, JSON.stringify(settings))
   }
 }

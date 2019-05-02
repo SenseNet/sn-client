@@ -15,11 +15,14 @@ import Autosuggest from 'react-autosuggest'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { Link, NavLink } from 'react-router-dom'
 import logo from '../assets/sensenet-icon-32.png'
-import { InjectorContext } from '../context/InjectorContext'
-import { PersonalSettingsContext } from '../context/PersonalSettingsContext'
-import { RepositoryContext } from '../context/RepositoryContext'
-import { ResponsiveContext } from '../context/ResponsiveContextProvider'
-import { ThemeContext } from '../context/ThemeContext'
+import {
+  InjectorContext,
+  LocalizationContext,
+  PersonalSettingsContext,
+  RepositoryContext,
+  ResponsiveContext,
+  ThemeContext,
+} from '../context'
 import { RepositoryManager } from '../services/RepositoryManager'
 import { getMatchParts } from './command-palette/CommandPaletteSuggestion'
 import { UserAvatar } from './UserAvatar'
@@ -35,7 +38,9 @@ export const RepositorySelectorComponent: React.FunctionComponent<
   const [lastRepositoryName, setLastRepositoryName] = useState('')
   const [inputValue, setInputValue] = useState(settings.lastRepository)
   const [filteredSuggestions, setFilteredSuggestions] = useState<Array<typeof settings.repositories[0]>>([])
-  const repoManager = useContext(InjectorContext).GetInstance(RepositoryManager)
+  const repoManager = useContext(InjectorContext).getInstance(RepositoryManager)
+
+  const localization = useContext(LocalizationContext).values.repositorySelector
 
   useEffect(() => {
     const lastRepo = settings.repositories.find(r => r.url === repo.configuration.repositoryUrl)
@@ -112,7 +117,7 @@ export const RepositorySelectorComponent: React.FunctionComponent<
             onChange: ev => setInputValue(ev.currentTarget.value.toString()),
             value: inputValue,
             autoFocus: true,
-            placeholder: 'type to filter',
+            placeholder: localization.typeToFilter,
           }}
           renderSuggestionsContainer={options => {
             return (
@@ -137,7 +142,7 @@ export const RepositorySelectorComponent: React.FunctionComponent<
                     color: theme.palette.text.secondary,
                   }}>
                   <NavLink to="/login" onClick={() => setIsActive(false)}>
-                    Another repository
+                    {localization.anotherRepo}
                   </NavLink>
                 </Typography>
               </Paper>
@@ -156,16 +161,13 @@ export const RepositorySelectorComponent: React.FunctionComponent<
               title={
                 <>
                   {repoManager.getRepository(suggestion.url).authentication.state.getValue() ===
-                  LoginState.Authenticated ? (
-                    <>
-                      You are currently logged in as{' '}
-                      <strong>
-                        {repoManager.getRepository(suggestion.url).authentication.currentUser.getValue().DisplayName}
-                      </strong>{' '}
-                    </>
-                  ) : (
-                    <> You are not logged in</>
-                  )}
+                  LoginState.Authenticated
+                    ? localization.loggedInAs.replace(
+                        '{0}',
+                        repoManager.getRepository(suggestion.url).authentication.currentUser.getValue().DisplayName ||
+                          '',
+                      )
+                    : localization.notLoggedIn}
                 </>
               }>
               <ListItem button={true} selected={params.isHighlighted} ContainerComponent="div">

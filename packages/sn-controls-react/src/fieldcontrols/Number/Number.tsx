@@ -1,7 +1,6 @@
 /**
  * @module FieldControls
- *
- */ /** */
+ */
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
@@ -91,7 +90,7 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
    * Returns inputadornment by currency and percentage settings
    */
   public defineCurrency = () => {
-    let currency = null
+    let currency: any
     if (this.props['data-isCurrency']) {
       currency = this.props['data-currency'] ? (
         <InputAdornment position="start">{this.props['data-currency']}</InputAdornment>

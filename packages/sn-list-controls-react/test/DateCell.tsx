@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme'
 
-import * as React from 'react'
+import React from 'react'
 import { DateCell } from '../src/ContentList/CellTemplates/DateCell'
 
 /**
