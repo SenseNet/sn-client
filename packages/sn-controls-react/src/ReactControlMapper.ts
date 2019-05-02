@@ -180,11 +180,16 @@ export const reactControlMapper = (repository: Repository) =>
       return longTextSettings
     })
     .setupFieldSettingDefault(NullFieldSetting, setting => {
-      switch (setting.Name) {
-        case 'Avatar' as any:
-          return FieldControls.Avatar
-        default:
-          return FieldControls.ShortText
+      if (setting.Name === 'Avatar') {
+        return FieldControls.Avatar
+      } else if (
+        ['SiteRelativeUrl', 'UploadBinary', 'ButtonList', 'ReferenceDropDown', 'PageTemplateSelector'].indexOf(
+          setting.Name,
+        ) > -1
+      ) {
+        return FieldControls.EmptyFieldControl
+      } else {
+        return FieldControls.ShortText
       }
     })
     .setClientControlFactory(NullFieldSetting, setting => {
