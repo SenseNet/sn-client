@@ -166,7 +166,11 @@ export const reactControlMapper = (repository: Repository) =>
         case 'AdvancedRichText' as any:
           return FieldControls.RichTextEditor
         default:
-          return FieldControls.RichTextEditor
+          if (setting.ControlHint === 'sn:QueryBuilder') {
+            return FieldControls.Textarea
+          } else {
+            return FieldControls.RichTextEditor
+          }
       }
     })
     .setClientControlFactory(LongTextFieldSetting, setting => {
