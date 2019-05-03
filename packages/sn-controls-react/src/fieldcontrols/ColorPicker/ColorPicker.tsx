@@ -3,13 +3,12 @@
  */
 import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
+import FormLabel from '@material-ui/core/FormLabel'
 import Input from '@material-ui/core/Input'
-import InputLabel from '@material-ui/core/InputLabel'
 import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
 import React, { Component } from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
-import { ReactColorPickerFieldSetting } from './ColorPickerFieldSetting'
 
 const style = {
   input: {
@@ -22,8 +21,7 @@ const style = {
  */
 export interface ColorPickerProps<T extends GenericContent, K extends keyof T>
   extends ReactClientFieldSettingProps<T, K>,
-    ReactClientFieldSetting<T, K>,
-    ReactColorPickerFieldSetting<T, K> {}
+    ReactClientFieldSetting<T, K> {}
 /**
  * Interface for Password state
  */
@@ -86,7 +84,7 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
       case 'edit':
         return (
           <FormControl className={this.props.className}>
-            <InputLabel htmlFor={this.props.name as string}>{this.props['data-labelText']}</InputLabel>
+            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
             <Input
               type="color"
               name={this.props.name as string}
@@ -98,6 +96,7 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
               required={this.props.required}
               disabled={this.props.readOnly}
               error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
+              onChange={this.handleChange}
             />
             <FormHelperText>{this.props['data-hintText']}</FormHelperText>
             <FormHelperText>{this.props['data-errorText']}</FormHelperText>
@@ -106,7 +105,7 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
       case 'new':
         return (
           <FormControl className={this.props.className}>
-            <InputLabel htmlFor={this.props.name as string}>{this.props['data-labelText']}</InputLabel>
+            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
             <Input
               type="color"
               name={this.props.name as string}
@@ -118,6 +117,7 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
               required={this.props.required}
               disabled={this.props.readOnly}
               error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
+              onChange={this.handleChange}
             />
             <FormHelperText>{this.props['data-hintText']}</FormHelperText>
             <FormHelperText>{this.props['data-errorText']}</FormHelperText>
@@ -126,7 +126,7 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
       case 'browse':
         return (
           <FormControl className={this.props.className}>
-            <InputLabel htmlFor={this.props.name as string}>{this.props['data-labelText']}</InputLabel>
+            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
             <Input
               type="color"
               name={this.props.name as string}
