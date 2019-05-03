@@ -197,9 +197,19 @@ export const reactControlMapper = (repository: Repository) =>
       }
     })
     .setClientControlFactory(NullFieldSetting, setting => {
-      const avatarSettings = clientConfigFactory(setting) as ReactReferenceFieldSetting
-      avatarSettings['data-selectionRoot'] = setting.SelectionRoots
-      return avatarSettings
+      if (setting.SelectionRoots) {
+        const avatarSettings = clientConfigFactory(setting) as ReactReferenceFieldSetting
+        avatarSettings['data-selectionRoot'] = setting.SelectionRoots
+        return avatarSettings
+        // tslint:disable-next-line: no-string-literal
+      } else if (setting['Palette']) {
+        const colorPickerSettings = clientConfigFactory(setting) as ReactShortTextFieldSetting
+        // tslint:disable-next-line: no-string-literal
+        colorPickerSettings['palette'] = setting['Palette']
+        return colorPickerSettings
+      } else {
+        return null as any
+      }
     })
     .setupFieldSettingDefault(BooleanFieldSetting, () => {
       return FieldControls.Boolean
