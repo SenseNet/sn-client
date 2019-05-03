@@ -5,14 +5,23 @@ import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import Input from '@material-ui/core/Input'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import TextField from '@material-ui/core/TextField'
+import LensIcon from '@material-ui/icons/Lens'
 import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
 import React, { Component } from 'react'
+import { SketchPicker } from 'react-color'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 
 const style = {
   input: {
     width: 80,
+  },
+  pickerContainer: {
+    position: 'absolute',
+    left: '24px',
+    top: '20px',
   },
 }
 
@@ -27,6 +36,7 @@ export interface ColorPickerProps<T extends GenericContent, K extends keyof T>
  */
 export interface ColorPickerState {
   value: string
+  pickerIsOpen: boolean
 }
 /**
  * Field control that represents a Color field. Available values will be populated from the FieldSettings.
@@ -47,10 +57,12 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
      * @property {string} value input value
      */
     this.state = {
-      value: '',
+      value: this.setValue(this.props['data-fieldValue']).toString(),
+      pickerIsOpen: false,
     }
 
     this.handleChange = this.handleChange.bind(this)
+    this.togglePicker = this.togglePicker.bind(this)
   }
   /**
    * convert incoming default value string to proper format
@@ -63,7 +75,7 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
       if (this.props['data-defaultValue']) {
         return this.props['data-defaultValue']
       } else {
-        return ''
+        return '#016d9e'
       }
     }
   }
@@ -71,9 +83,14 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
    * handle change event on an input
    * @param {SytheticEvent} event
    */
-  public handleChange(event: React.ChangeEvent) {
-    // tslint:disable-next-line:no-string-literal
-    this.setState({ value: event.target['value'] })
+  public handleChange(color: any) {
+    this.props.onChange(this.props.name, color.hex)
+    this.setState({ value: color.hex })
+  }
+  public togglePicker() {
+    this.setState({
+      pickerIsOpen: !this.state.pickerIsOpen,
+    })
   }
   /**
    * render
@@ -85,19 +102,37 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
         return (
           <FormControl className={this.props.className}>
             <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
-            <Input
-              type="color"
+            <TextField
+              type="text"
               name={this.props.name as string}
               id={this.props.name as string}
               className={this.props.className}
-              placeholder={this.props['data-placeHolderText']}
-              style={{ ...this.props.style, ...style.input }}
-              defaultValue={this.state.value}
               required={this.props.required}
               disabled={this.props.readOnly}
+              value={this.state.value}
               error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
-              onChange={this.handleChange}
+              onClick={this.togglePicker}
+              onBlur={this.togglePicker}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <LensIcon style={{ color: this.state.value }} />
+                  </InputAdornment>
+                ),
+              }}
             />
+            <div
+              style={
+                this.state.pickerIsOpen
+                  ? { ...{ display: 'block' }, ...(style.pickerContainer as any) }
+                  : { ...{ display: 'none' }, ...(style.pickerContainer as any) }
+              }>
+              <SketchPicker
+                color={this.state.value}
+                onChangeComplete={this.handleChange}
+                onSwatchHover={this.handleChange}
+              />
+            </div>
             <FormHelperText>{this.props['data-hintText']}</FormHelperText>
             <FormHelperText>{this.props['data-errorText']}</FormHelperText>
           </FormControl>
