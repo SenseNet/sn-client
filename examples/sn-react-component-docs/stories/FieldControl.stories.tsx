@@ -12,6 +12,7 @@ import {
   AutoComplete,
   Avatar,
   CheckboxGroup,
+  ColorPicker,
   DatePicker,
   DateTimePicker,
   DisplayName,
@@ -77,6 +78,8 @@ const referenceGridNotes = require('../notes/fieldcontrols/ReferenceGrid.md')
 const avatarNotes = require('../notes/fieldcontrols/Avatar.md')
 const approvingModeChoiceNotes = require('../notes/fieldcontrols/ApprovingModeChoice.md')
 const versioningModeChoiceNotes = require('../notes/fieldcontrols/VersioningModeChoice.md')
+const versioningModeNotes = require('../notes/fieldcontrols/VersioningMode.md')
+const colorPickerNotes = require('../notes/fieldcontrols/ColorPicker.md')
 
 storiesOf('FieldControls.AutoComplete', module)
   .addDecorator(withKnobs)
@@ -284,6 +287,29 @@ storiesOf('FieldControls.CheckboxGroup', module)
       />
     ),
     { notes: { markdown: checkboxgroupNotes } },
+  )
+
+storiesOf('FieldControls.ColorPicker', module)
+  .addDecorator(withKnobs)
+  .addDecorator(withA11y)
+  .addDecorator(withActions('change'))
+  .add(
+    'new mode',
+    () => (
+      <ColorPicker
+        data-labelText={text('Label', 'ColorPicker label')}
+        data-actionName="new"
+        onChange={action('change')}
+        readOnly={boolean('Readonly', false)}
+        required={boolean('Required', false)}
+        className={text('Additional class name', 'colorpicker-field')}
+        data-errorText={text('Error text')}
+        data-defaultValue={dateKnob('Default value')}
+        data-hintText={text('Hint', 'ColorPicker hint')}
+        name="ModificationDate"
+      />
+    ),
+    { notes: { markdown: colorPickerNotes } },
   )
 
 storiesOf('FieldControls.DatePicker', module)
@@ -559,7 +585,7 @@ storiesOf('FieldControls.DropDownList', module)
         name="VersioningMode"
       />
     ),
-    { notes: { markdown: approvingModeChoiceNotes } },
+    { notes: { markdown: versioningModeChoiceNotes } },
   )
 
   .add(
@@ -583,7 +609,7 @@ storiesOf('FieldControls.DropDownList', module)
         name="VersioningMode"
       />
     ),
-    { notes: { markdown: approvingModeChoiceNotes } },
+    { notes: { markdown: versioningModeNotes } },
   )
 
 storiesOf('FieldControls.FileName', module)
