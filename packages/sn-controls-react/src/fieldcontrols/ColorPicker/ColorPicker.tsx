@@ -3,8 +3,6 @@
  */
 import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
-import FormLabel from '@material-ui/core/FormLabel'
-import Input from '@material-ui/core/Input'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
 import LensIcon from '@material-ui/icons/Lens'
@@ -90,9 +88,11 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
     this.setState({ value: color.hex })
   }
   public togglePicker() {
-    this.setState({
-      pickerIsOpen: !this.state.pickerIsOpen,
-    })
+    if (!this.props.readOnly) {
+      this.setState({
+        pickerIsOpen: !this.state.pickerIsOpen,
+      })
+    }
   }
   /**
    * render
@@ -103,8 +103,12 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
       case 'edit':
         return (
           <FormControl className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
             <TextField
+              label={
+                this.props['data-errorText'] && this.props['data-errorText'].length > 0
+                  ? this.props['data-errorText']
+                  : this.props['data-labelText']
+              }
               type="text"
               name={this.props.name as string}
               id={this.props.name as string}
@@ -143,17 +147,19 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
       case 'new':
         return (
           <FormControl className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
             <TextField
-              type="color"
+              type="text"
               name={this.props.name as string}
               id={this.props.name as string}
+              label={
+                this.props['data-errorText'] && this.props['data-errorText'].length > 0
+                  ? this.props['data-errorText']
+                  : this.props['data-labelText']
+              }
               className={this.props.className}
-              placeholder={this.props['data-placeHolderText']}
-              style={{ ...this.props.style, ...style.input }}
-              value={this.state.value}
               required={this.props.required}
               disabled={this.props.readOnly}
+              value={this.state.value}
               error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
               onClick={this.togglePicker}
               onBlur={this.togglePicker}
@@ -185,17 +191,25 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
       case 'browse':
         return (
           <FormControl className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
-            <Input
-              type="color"
+            <TextField
+              type="text"
               name={this.props.name as string}
               id={this.props.name as string}
+              label={
+                this.props['data-errorText'] && this.props['data-errorText'].length > 0
+                  ? this.props['data-errorText']
+                  : this.props['data-labelText']
+              }
               className={this.props.className}
-              placeholder={this.props['data-placeHolderText']}
-              style={{ ...this.props.style, ...style.input }}
-              value={this.state.value}
               disabled={true}
-              error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
+              value={this.state.value}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <LensIcon style={{ color: this.state.value }} />
+                  </InputAdornment>
+                ),
+              }}
             />
           </FormControl>
         )
