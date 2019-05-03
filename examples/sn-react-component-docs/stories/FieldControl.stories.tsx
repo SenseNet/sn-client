@@ -304,9 +304,42 @@ storiesOf('FieldControls.ColorPicker', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'colorpicker-field')}
         data-errorText={text('Error text')}
-        data-defaultValue={dateKnob('Default value')}
         data-hintText={text('Hint', 'ColorPicker hint')}
-        name="ModificationDate"
+        name={'Color' as any}
+        palette={['#D0021B', '#F5A623', '#F8E71C', '#8B572A', '#7ED321', '#417505']}
+      />
+    ),
+    { notes: { markdown: colorPickerNotes } },
+  )
+  .add(
+    'edit mode',
+    () => (
+      <ColorPicker
+        data-labelText={text('Label', 'ColorPicker label')}
+        data-actionName="edit"
+        onChange={action('change')}
+        readOnly={boolean('Readonly', false)}
+        required={boolean('Required', false)}
+        className={text('Additional class name', 'colorpicker-field')}
+        data-errorText={text('Error text')}
+        data-hintText={text('Hint', 'ColorPicker hint')}
+        data-fieldValue="#D0021B"
+        name={'Color' as any}
+        palette={['#D0021B', '#F5A623', '#F8E71C', '#8B572A', '#7ED321', '#417505']}
+      />
+    ),
+    { notes: { markdown: colorPickerNotes } },
+  )
+  .add(
+    'browse mode',
+    () => (
+      <ColorPicker
+        data-labelText={text('Label', 'ColorPicker label')}
+        data-actionName="browse"
+        className={text('Additional class name', 'colorpicker-field')}
+        name={'Color' as any}
+        value="#D0021B"
+        onChange={action('change')}
       />
     ),
     { notes: { markdown: colorPickerNotes } },
