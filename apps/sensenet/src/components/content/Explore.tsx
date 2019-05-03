@@ -50,6 +50,9 @@ export const ExploreComponent: React.FunctionComponent<RouteComponentProps<{ fol
                     overflow: 'auto',
                   }}
                   parentPath={ConstantContent.PORTAL_ROOT.Path}
+                  loadOptions={{
+                    orderby: [['DisplayName', 'asc'], ['Name', 'asc']],
+                  }}
                   onItemClick={item => {
                     setLeftParentId(item.Id)
                     props.history.push(ctx.getPrimaryActionUrl(item))
