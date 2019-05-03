@@ -46,31 +46,24 @@ context('The documents page', () => {
     it('should contain new document, image, sheet, slide, text, folder buttons', () => {
       cy.contains('[data-cy=appbar]', 'Document library').should('exist')
       cy.contains('New').click()
-      cy.contains('li[role=menuitem]', 'New document')
-      cy.contains('li[role=menuitem]', 'New image')
-      cy.contains('li[role=menuitem]', 'New sheet')
-      cy.contains('li[role=menuitem]', 'New slide')
-      cy.contains('li[role=menuitem]', 'New text')
-      cy.contains('li[role=menuitem]', 'New folder')
+      newMenuItems.forEach(item => cy.contains('li[role=menuitem]', 'New ' + item.name))
     })
 
-    describe('new button dropdown', () => {
+    it(`creating a new item should show succes notification and can be found in the grid`, () => {
+      cy.contains('Document library').should('exist')
       newMenuItems.forEach(item => {
-        it(`New ${item.name} should create a new ${item.name}`, () => {
-          openNew(item.name)
-          const displayName = Chance().word()
-          cy.get('#DisplayName').type(displayName + '{enter}')
-          cy.contains(displayName + item.ext + ' is successfully created').should('exist')
-          cy.contains(displayName + item.ext).should('exist')
-        })
+        openNew(item.name)
+        const displayName = Chance().word()
+        cy.get('#DisplayName').type(displayName + '{enter}')
+        cy.contains(displayName + item.ext + ' is successfully created').should('exist')
+        cy.contains(displayName + item.ext).should('exist')
+        cy.get('[aria-label="Close"]').click()
       })
     })
   })
 })
 
 const openNew = (action: string) => {
-  cy.visit('#/documents')
-  cy.contains('Document library').should('exist')
   cy.contains('Documents').click()
   cy.contains('New').click()
   cy.get(`[title="New ${action}"]`).click()
