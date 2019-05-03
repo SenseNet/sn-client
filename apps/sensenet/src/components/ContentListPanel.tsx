@@ -22,7 +22,7 @@ import { Icon } from './Icon'
 import { SecondaryActionsMenu } from './SecondaryActionsMenu'
 import { SelectionControl } from './SelectionControl'
 
-export const CollectionComponent: React.FunctionComponent<{
+export interface CollectionComponentProps {
   enableBreadcrumbs?: boolean
   parentId: number
   onParentChange: (newParent: GenericContent) => void
@@ -31,7 +31,12 @@ export const CollectionComponent: React.FunctionComponent<{
   style?: React.CSSProperties
   containerRef?: (r: HTMLDivElement | null) => void
   requestReload?: () => void
-}> = props => {
+  fieldsToDisplay?: Array<keyof GenericContent>
+  onSelectionChange?: (sel: GenericContent[]) => void
+  onFocus?: () => void
+}
+
+export const CollectionComponent: React.FunctionComponent<CollectionComponentProps> = props => {
   const parent = useContext(CurrentContentContext)
   const children = useContext(CurrentChildrenContext)
   const ancestors = useContext(CurrentAncestorsContext)
@@ -50,6 +55,14 @@ export const CollectionComponent: React.FunctionComponent<{
   const [currentDirection, setCurrentDirection] = useState<'asc' | 'desc'>('asc')
 
   useEffect(() => {
+    isFocused && props.onFocus && props.onFocus()
+  }, [isFocused])
+
+  useEffect(() => {
+    props.onSelectionChange && props.onSelectionChange(selected)
+  }, [selected])
+
+  useEffect(() => {
     const currentField =
       (loadSettings.loadChildrenSettings.orderby && loadSettings.loadChildrenSettings.orderby[0][0]) || 'DisplayName'
     let order: 'asc' | 'desc' =
@@ -59,7 +72,10 @@ export const CollectionComponent: React.FunctionComponent<{
       order = order === 'asc' ? 'desc' : 'asc'
     }
     loadSettings.setLoadChildrenSettings({
-      orderby: [[currentOrder as any, order as any]],
+      orderby:
+        loadSettings.loadChildrenSettings.orderby && loadSettings.loadChildrenSettings.orderby.length === 1
+          ? [[currentOrder as any, order as any]]
+          : [['DisplayName', 'asc']],
       select: personalSettings.content.fields,
       expand: personalSettings.content.fields.filter(f => isReferenceField(f)),
     })
@@ -310,7 +326,7 @@ export const CollectionComponent: React.FunctionComponent<{
               }
               return null
             }}
-            fieldsToDisplay={personalSettings.content.fields || ['DisplayName']}
+            fieldsToDisplay={props.fieldsToDisplay || personalSettings.content.fields || ['DisplayName']}
             selected={selected}
             onRequestSelectionChange={setSelected}
             icons={{}}

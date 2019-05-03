@@ -21,3 +21,13 @@ export const isContentFromType = <T extends typeof GenericContent>(
   }
   return false
 }
+
+export const schemaIsDescendantOf = (child: string, parent: string, schemaStore: SchemaStore) => {
+  let currentSchema = schemaStore.getSchemaByName(child)
+  do {
+    if (currentSchema.ContentTypeName === parent) {
+      return true
+    }
+    currentSchema = schemaStore.getSchemaByName(currentSchema.ParentTypeName || '')
+  } while (currentSchema.ContentTypeName && currentSchema.ContentTypeName !== 'GenericContent')
+}

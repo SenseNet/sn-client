@@ -58,6 +58,7 @@ export const CurrentChildrenProvider: React.FunctionComponent = props => {
 
   useEffect(() => {
     const subscriptions = [
+      eventHub.onCustomActionExecuted.subscribe(requestReload),
       eventHub.onContentCreated.subscribe(handleCreate),
       eventHub.onContentCopied.subscribe(handleCreate),
       eventHub.onContentMoved.subscribe(handleCreate),
