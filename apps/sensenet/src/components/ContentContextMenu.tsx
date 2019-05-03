@@ -14,7 +14,7 @@ import React, { useContext, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { ContentRoutingContext, CurrentContentContext, LocalizationContext, ResponsiveContext } from '../context'
 import { ContentInfoDialog } from './ContentInfoDialog'
-import { CopyDialog } from './CopyDialog'
+import { CopyMoveDialog } from './CopyMoveDialog'
 import { DeleteContentDialog } from './DeleteContentDialog'
 import { EditPropertiesDialog } from './EditPropertiesDialog'
 import { Icon } from './Icon'
@@ -36,6 +36,7 @@ export const ContentContextMenuComponent: React.FunctionComponent<
   const [isEditPropertiesOpened, setIsEditPropertiesOpened] = useState(false)
   const [isInfoDialogOpened, setIsInfoDialogOpened] = useState(false)
   const [isCopyDialogOpened, setIsCopyDialogOpened] = useState(false)
+  const [copyMoveOperation, setCopyMoveOperation] = useState<'copy' | 'move'>('copy')
 
   return (
     <div onKeyDown={ev => ev.stopPropagation()} onKeyPress={ev => ev.stopPropagation()}>
@@ -51,10 +52,11 @@ export const ContentContextMenuComponent: React.FunctionComponent<
         content={content}
         dialogProps={{ open: isInfoDialogOpened, onClose: () => setIsInfoDialogOpened(false) }}
       />
-      <CopyDialog
+      <CopyMoveDialog
         content={[content]}
         currentParent={content}
         dialogProps={{ open: isCopyDialogOpened, onClose: () => setIsCopyDialogOpened(false) }}
+        operation={copyMoveOperation}
       />
       {device === 'mobile' ? (
         <Drawer
@@ -94,6 +96,7 @@ export const ContentContextMenuComponent: React.FunctionComponent<
             <ListItem
               button={true}
               onClick={() => {
+                setCopyMoveOperation('copy')
                 setIsCopyDialogOpened(true)
                 props.onClose && props.onClose()
               }}>
@@ -102,7 +105,14 @@ export const ContentContextMenuComponent: React.FunctionComponent<
               </ListItemIcon>
               <ListItemText primary={localization.copy} />
             </ListItem>
-            <ListItem button={true} disabled={true}>
+            <ListItem
+              button={true}
+              onClick={() => {
+                setCopyMoveOperation('move')
+                setIsCopyDialogOpened(true)
+                props.onClose && props.onClose()
+              }}>
+              >
               <ListItemIcon>
                 <FileMove />
               </ListItemIcon>
@@ -168,7 +178,13 @@ export const ContentContextMenuComponent: React.FunctionComponent<
             </ListItemIcon>
             {localization.copy}
           </MenuItem>
-          <MenuItem disabled={true}>
+          <MenuItem
+            onClick={() => {
+              setCopyMoveOperation('move')
+              setIsCopyDialogOpened(true)
+              props.onClose && props.onClose()
+            }}>
+            >
             <ListItemIcon>
               <FileMove />
             </ListItemIcon>

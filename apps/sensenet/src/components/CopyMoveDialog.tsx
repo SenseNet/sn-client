@@ -14,16 +14,26 @@ import { LocalizationContext, RepositoryContext } from '../context'
 import { LoggerContext } from '../context/LoggerContext'
 import { Icon } from './Icon'
 
-export const CopyDialog: React.FunctionComponent<{
+export interface CopyMoveDialogProps {
   currentParent: GenericContent
   content: GenericContent[]
   dialogProps: DialogProps
-}> = props => {
+  operation: 'copy' | 'move'
+}
+
+export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = props => {
   const handleClose = (ev: React.SyntheticEvent<{}, Event>) => {
     props.dialogProps.onClose && props.dialogProps.onClose(ev)
   }
 
-  const localization = useContext(LocalizationContext).values.copyContentDialog
+  const localizations = useContext(LocalizationContext).values.copyMoveContentDialog
+
+  const [localization, setLocalization] = useState(localizations[props.operation])
+
+  useEffect(() => {
+    setLocalization(localizations[props.operation])
+  }, [props.operation])
+
   const repo = useContext(RepositoryContext)
   const [parent, setParent] = useState(props.currentParent)
 
@@ -83,7 +93,8 @@ export const CopyDialog: React.FunctionComponent<{
             handleClose(ev)
             try {
               if (parent) {
-                const result = await repo.copy({ idOrPath: props.content.map(c => c.Id), targetPath: parent.Path })
+                const action = props.operation === 'copy' ? repo.copy : repo.move
+                const result = await action({ idOrPath: props.content.map(c => c.Id), targetPath: parent.Path })
 
                 if (result.d.results.length === 1 && result.d.errors.length === 0) {
                   logger.information({

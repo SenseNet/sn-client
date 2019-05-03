@@ -14,7 +14,7 @@ import {
 import { AddButton } from '../AddButton'
 import { AddDialog } from '../AddDialog'
 import { CollectionComponent } from '../ContentListPanel'
-import { CopyDialog } from '../CopyDialog'
+import { CopyMoveDialog } from '../CopyMoveDialog'
 
 export interface CommanderRouteParams {
   folderId?: string
@@ -65,6 +65,7 @@ export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRou
   }, [leftParentId, rightParentId])
 
   const [isCopyOpened, setIsCopyOpened] = useState(false)
+  const [copyMoveOperation, setCopyMoveOperation] = useState<'copy' | 'move'>('copy')
   const [copySelection, setCopySelection] = useState<GenericContent[]>([ConstantContent.PORTAL_ROOT])
   const [copyParent, setCopyParent] = useState<GenericContent>(ConstantContent.PORTAL_ROOT)
   const [leftParent, setLeftParent] = useState<GenericContent>(ConstantContent.PORTAL_ROOT)
@@ -83,7 +84,7 @@ export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRou
   return (
     <div
       onKeyDown={async ev => {
-        if (ev.key === 'F5' && !ev.shiftKey) {
+        if ((ev.key === 'F5' || ev.key === 'F6') && !ev.shiftKey) {
           ev.preventDefault()
           ev.stopPropagation()
           if (activePanel === 'left') {
@@ -93,7 +94,10 @@ export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRou
             setCopySelection(rightSelection)
             setCopyParent(leftParent)
           }
-          copySelection && copySelection.length && copyParent && setIsCopyOpened(true)
+          if (copySelection && copySelection.length && copyParent) {
+            setCopyMoveOperation(ev.key === 'F5' ? 'copy' : 'move')
+            setIsCopyOpened(true)
+          }
         } else if (ev.key === 'F7') {
           ev.preventDefault()
           ev.stopPropagation()
@@ -161,11 +165,12 @@ export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRou
           </CurrentChildrenProvider>
         </CurrentContentProvider>
       </LoadSettingsContextProvider>
-      <CopyDialog
+      <CopyMoveDialog
         dialogProps={{
           open: isCopyOpened,
           onClose: () => setIsCopyOpened(false),
         }}
+        operation={copyMoveOperation}
         content={copySelection}
         currentParent={copyParent}
       />
