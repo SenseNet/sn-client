@@ -276,13 +276,8 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                 <ListItem key={index}>
                   <ListItemIcon>
                     <MaterialIcon
-                      iconName={
-                        item.Icon
-                          ? item.Icon === 'Document'
-                            ? 'insert_drive_file'
-                            : item.Icon.toLowerCase()
-                          : item.Name.toLowerCase()
-                      }
+                      // tslint:disable-next-line: no-string-literal
+                      iconName={item.Icon ? this.props.icons[item.Icon.toLowerCase()] : this.props.icons['file']}
                     />
                   </ListItemIcon>
                   <ListItemText primary={item.DisplayName} />
@@ -349,13 +344,8 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                 <ListItem key={index}>
                   <ListItemIcon>
                     <MaterialIcon
-                      iconName={
-                        item.Icon
-                          ? item.Icon === 'Document'
-                            ? 'insert_drive_file'
-                            : item.Icon.toLowerCase()
-                          : item.Name.toLowerCase()
-                      }
+                      // tslint:disable-next-line: no-string-literal
+                      iconName={item.Icon ? this.props.icons[item.Icon.toLowerCase()] : this.props.icons['file']}
                     />
                   </ListItemIcon>
                   <ListItemText primary={item.DisplayName} />
@@ -454,13 +444,8 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                   <ListItem key={index}>
                     <ListItemIcon>
                       <MaterialIcon
-                        iconName={
-                          item.Icon
-                            ? item.Icon === 'Document'
-                              ? 'insert_drive_file'
-                              : item.Icon.toLowerCase()
-                            : item.Name.toLowerCase()
-                        }
+                        // tslint:disable-next-line: no-string-literal
+                        iconName={item.Icon ? this.props.icons[item.Icon.toLowerCase()] : this.props.icons['file']}
                       />
                     </ListItemIcon>
                     <ListItemText primary={item.DisplayName} />

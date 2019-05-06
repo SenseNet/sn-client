@@ -11,6 +11,7 @@ import { Repository } from '@sensenet/client-core'
 import { ControlSchema } from '@sensenet/control-mapper'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 import MediaQuery from 'react-responsive'
+import { icons } from '../assets/icons'
 import { ReactClientFieldSettingProps } from '../fieldcontrols/ClientFieldSetting'
 import { reactControlMapper } from '../ReactControlMapper'
 import { styles } from './NewViewStyles'
@@ -21,6 +22,7 @@ import { styles } from './NewViewStyles'
 export interface NewViewProps<T extends GenericContent = GenericContent> {
   onSubmit?: (path: string, content: T, contentTypeName: string) => void
   repository: Repository
+  icons?: object
   schema?: Schema
   path: string
   contentTypeName: string
@@ -38,6 +40,7 @@ export interface NewViewState<T extends GenericContent = GenericContent> {
   schema: ControlSchema<React.Component, ReactClientFieldSettingProps>
   dataSource: GenericContent[]
   content: T
+  icons: object
 }
 
 /**
@@ -64,6 +67,7 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
       schema: controlMapper.getFullSchemaForContentType(this.props.contentTypeName, 'new'),
       dataSource: [],
       content: {} as T,
+      icons: this.props.icons || icons,
     }
 
     this.handleInputChange = this.handleInputChange.bind(this)
@@ -126,6 +130,7 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
             fieldSetting.clientSettings['data-uploadFolderPath'] = this.props.uploadFolderPath || ''
             fieldSetting.clientSettings['data-repository'] = this.props.repository
             fieldSetting.clientSettings['data-repositoryUrl'] = repository.configuration.repositoryUrl
+            fieldSetting.clientSettings.icons = this.state.icons
             if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
               fieldSetting.fieldSettings.Type = 'NumberFieldSetting'
             }

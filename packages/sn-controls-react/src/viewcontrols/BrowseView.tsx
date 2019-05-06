@@ -8,6 +8,7 @@ import { Repository } from '@sensenet/client-core'
 import { ControlSchema } from '@sensenet/control-mapper'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { Component, createElement } from 'react'
+import { icons } from '../assets/icons'
 import { ReactClientFieldSettingProps } from '../fieldcontrols/ClientFieldSetting'
 import { reactControlMapper } from '../ReactControlMapper'
 import { styles } from './BrowseViewStyles'
@@ -18,13 +19,15 @@ import { styles } from './BrowseViewStyles'
 export interface BrowseViewProps {
   content: GenericContent
   repository: Repository
+  icons?: object
 }
 /**
  * Interface for BrowseView state
  */
-export interface EditViewProps {
+export interface BrowseViewState {
   content: GenericContent
   schema: ControlSchema<React.Component, ReactClientFieldSettingProps>
+  icons: object
 }
 
 /**
@@ -35,7 +38,7 @@ export interface EditViewProps {
  *  <BrowseView content={content} />
  * ```
  */
-export class BrowseView extends Component<BrowseViewProps, EditViewProps> {
+export class BrowseView extends Component<BrowseViewProps, BrowseViewState> {
   /**
    * constructor
    * @param {object} props
@@ -51,6 +54,7 @@ export class BrowseView extends Component<BrowseViewProps, EditViewProps> {
     this.state = {
       content: this.props.content,
       schema: controlMapper.getFullSchemaForContentType(this.props.content.Type, 'view'),
+      icons: this.props.icons || icons,
     }
   }
   /**
@@ -82,6 +86,7 @@ export class BrowseView extends Component<BrowseViewProps, EditViewProps> {
             fieldSetting['data-actionName'] = 'browse'
             // tslint:disable-next-line:no-string-literal
             fieldSetting['value'] = that.getFieldValue(fieldSetting.clientSettings.name)
+            fieldSetting.clientSettings.icons = this.state.icons
             if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
               fieldSetting.fieldSettings.Type = 'NumberFieldSetting'
             }
