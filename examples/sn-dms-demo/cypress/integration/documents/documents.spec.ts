@@ -61,6 +61,15 @@ context('The documents page', () => {
       })
     })
   })
+
+  it.only('should rename a document', () => {
+    const fileName = 'logo.png'
+    cy.uploadWithApi({
+      parentPath: `Root/Profiles/Public/${currentUser.email}/Document_Library`,
+      fileName,
+    })
+    cy.contains(fileName).should('exist')
+  })
 })
 
 const openNew = (action: string) => {
