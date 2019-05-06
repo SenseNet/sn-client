@@ -1,25 +1,27 @@
 import Button from '@material-ui/core/Button'
-import Dialog from '@material-ui/core/Dialog'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogTitle from '@material-ui/core/DialogTitle'
 import Fab from '@material-ui/core/Fab'
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import Add from '@material-ui/icons/Add'
 import CloudUpload from '@material-ui/icons/CloudUpload'
-import { NewView } from '@sensenet/controls-react'
-import { Schema } from '@sensenet/default-content-types'
+import { GenericContent, Schema } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
 import { CurrentContentContext, InjectorContext, LocalizationContext, RepositoryContext } from '../context'
 import { LoggerContext } from '../context/LoggerContext'
 import { UploadTracker } from '../services/UploadTracker'
+import { AddDialog } from './AddDialog'
 import { Icon } from './Icon'
 
-export const AddButton: React.FunctionComponent = () => {
+export interface AddButtonProps {
+  parent?: GenericContent
+}
+
+export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   const injector = useContext(InjectorContext)
   const repo = useContext(RepositoryContext)
-  const parent = useContext(CurrentContentContext)
+  const parentContext = useContext(CurrentContentContext)
+  const [parent, setParent] = useState(parentContext)
   const [showSelectType, setShowSelectType] = useState(false)
   const [allowedChildTypes, setAllowedChildTypes] = useState<Schema[]>([])
 
@@ -28,6 +30,10 @@ export const AddButton: React.FunctionComponent = () => {
 
   const localization = useContext(LocalizationContext).values.addButton
   const logger = useContext(LoggerContext).withScope('AddButton')
+
+  useEffect(() => {
+    props.parent && setParent(props.parent)
+  }, [props.parent])
 
   useEffect(() => {
     if (showSelectType) {
@@ -117,45 +123,14 @@ export const AddButton: React.FunctionComponent = () => {
           ))}
         </div>
       </SwipeableDrawer>
-      <Dialog open={showAddNewDialog} onClose={() => setShowAddNewDialog(false)}>
-        <DialogTitle> {localization.dialogTitle.replace('{0}', selectedSchema.DisplayName)}</DialogTitle>
-        <DialogContent>
-          <NewView
-            handleCancel={() => setShowAddNewDialog(false)}
-            repository={repo}
-            contentTypeName={selectedSchema.ContentTypeName}
-            schema={selectedSchema}
-            path={parent.Path}
-            onSubmit={async (parentPath, content) => {
-              try {
-                const created = await repo.post({
-                  contentType: selectedSchema.ContentTypeName,
-                  parentPath,
-                  content,
-                })
-                setShowAddNewDialog(false)
-                logger.information({
-                  message: localization.contentCreatedNotification.replace(
-                    '{0}',
-                    created.d.DisplayName || created.d.Name,
-                  ),
-                  data: {
-                    relatedContent: created,
-                    relatedRepository: repo.configuration.repositoryUrl,
-                  },
-                })
-              } catch (error) {
-                logger.error({
-                  message: localization.errorGettingAllowedContentTypes,
-                  data: {
-                    details: { error },
-                  },
-                })
-              }
-            }}
-          />
-        </DialogContent>
-      </Dialog>
+      <AddDialog
+        schema={selectedSchema}
+        parent={parent}
+        dialogProps={{
+          open: showAddNewDialog,
+          onClose: () => setShowAddNewDialog(false),
+        }}
+      />
     </div>
   )
 }
