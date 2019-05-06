@@ -77,7 +77,7 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
                     />
 
                     <Route
-                      path="/:repo/saved-queries?"
+                      path="/:repo/saved-queries"
                       render={() => {
                         return <SavedQueriesComponent />
                       }}
