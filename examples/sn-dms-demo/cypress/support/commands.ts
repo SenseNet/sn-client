@@ -10,7 +10,7 @@ Cypress.Commands.add('login', (email, password) => {
     },
     message: [`${email} | ${password}`],
   })
-  cy.window().then(async win => {
+  cy.window().then({ timeout: 10000 }, async win => {
     return await win.repository.authentication.login(email, password)
   })
 })
@@ -32,7 +32,7 @@ Cypress.Commands.add('registerUser', (email, password) => {
 
 Cypress.Commands.add('uploadWithApi', (options: UploadOptions) => {
   cy.visit('')
-  cy.fixture(options.fileName).then(img => {
+  cy.fixture(options.fileName).then(async img => {
     Cypress.log({
       name: 'upload',
       consoleProps: () => {
@@ -40,14 +40,13 @@ Cypress.Commands.add('uploadWithApi', (options: UploadOptions) => {
       },
       message: [`Uploading ${options.fileName} to ${options.parentPath}`],
     })
-    return Cypress.Blob.base64StringToBlob(img, 'image/png').then(blob => {
-      cy.window().then(win => {
-        win.repository.upload.file({
-          file: blobToFile(blob, options.fileName),
-          ...(options as any),
-          overwrite: false,
-          binaryPropertyName: 'Binary',
-        })
+    const blob = await Cypress.Blob.base64StringToBlob(img, 'image/png')
+    cy.window().then(win => {
+      win.repository.upload.file({
+        file: blobToFile(blob, options.fileName),
+        ...(options as any),
+        overwrite: false,
+        binaryPropertyName: 'Binary',
       })
     })
   })

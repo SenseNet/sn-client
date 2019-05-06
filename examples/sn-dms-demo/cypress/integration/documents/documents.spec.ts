@@ -1,4 +1,5 @@
 import Chance = require('chance')
+import { contextMenuItems, openContextMenu } from '../../support/documents'
 
 context('The documents page', () => {
   /**
@@ -6,7 +7,7 @@ context('The documents page', () => {
    * @example ```js
    * { email: 'miwor@sensenet.com', password: 'aY]w9UJ2j' }```
    */
-  let currentUser = { email: '', password: '' }
+  let currentUser = { email: 'ceg@sensenet.com', password: 'P6u16lRP7ZyfoUvY' }
   const newMenuItems = [
     { name: 'document', ext: '.docx' },
     { name: 'sheet', ext: '.xlsx' },
@@ -62,13 +63,22 @@ context('The documents page', () => {
     })
   })
 
-  it.only('should rename a document', () => {
+  it('should rename a document', () => {
     const fileName = 'logo.png'
+    const newName = 'newName.png'
     cy.uploadWithApi({
       parentPath: `Root/Profiles/Public/${currentUser.email}/Document_Library`,
       fileName,
     })
     cy.contains(fileName).should('exist')
+    openContextMenu(fileName)
+    cy.get(`[title="${contextMenuItems.rename}"]`).click()
+    cy.wait(300)
+    cy.get('.rename')
+      .clear()
+      .type(`${newName}{enter}`)
+    cy.contains(newName)
+    cy.contains(`The content '${fileName}' has been modified`)
   })
 })
 

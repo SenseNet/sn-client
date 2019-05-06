@@ -7,3 +7,18 @@ export const openContextMenu = (name: string | number | RegExp) => {
     .click()
     .trigger('contextmenu')
 }
+
+export const contextMenuItems = {
+  preview: 'Preview',
+  download: 'Download',
+  rename: 'Rename',
+  copyTo: 'Copy to',
+  moveTo: 'Move to',
+  shareContent: 'Share content',
+  editProperties: 'Edit properties',
+  setPermissions: 'Set permissions',
+  checkOut: 'Check out',
+  publish: 'Publish',
+  versions: 'Versions',
+  delete: 'Delete',
+}
