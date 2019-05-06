@@ -10,7 +10,6 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
-import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
@@ -22,12 +21,16 @@ import React, { Component } from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactAllowedChildTypesFieldSetting } from './AllowedChildTypesFieldSettings'
 
+const INPUT_PLACEHOLDER = 'Start typing to add another type'
+const ITEM_HEIGHT = 48
+
 const styles = {
   inputContainer: {
     padding: '2px 4px',
     display: 'flex',
     alignItems: 'center',
     boxShadow: 'none',
+    position: 'relative',
   },
   input: {
     marginLeft: 8,
@@ -35,6 +38,14 @@ const styles = {
   },
   button: {
     padding: 10,
+  },
+  listContainer: {
+    position: 'absolute',
+    top: '40px',
+    background: '#fff',
+    maxHeight: ITEM_HEIGHT * 2.5,
+    overflow: 'auto',
+    boxShadow: '0px 1px 3px 0px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 2px 1px -1px rgba(0,0,0,0.12)',
   },
 }
 
@@ -99,7 +110,6 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       ),
       filteredList: [],
     }
-
     this.handleChange = this.handleChange.bind(this)
     this.handleSelect = this.handleSelect.bind(this)
     this.handleClickAway = this.handleClickAway.bind(this)
@@ -213,14 +223,10 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
         //     console.log(ctd.DisplayName.toLowerCase())
         //     console.log(term)
         // }
-        return ctd.DisplayName && ctd.DisplayName.toLowerCase().includes(term)
+        return ctd.DisplayName && ctd.DisplayName.toLowerCase().includes(term.toLowerCase())
       }),
-      isOpened: this.state.filteredList.length > 0,
       inputValue: term,
     })
-  }
-  public getItemByName = (name: string) => {
-    return this.state.allCTDs.find(ctd => ctd.Name === name) as T
   }
   private handleClickAway() {
     this.setState({ isOpened: false })
@@ -230,6 +236,11 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       inputValue: item.DisplayName || '',
       isOpened: false,
       isLoading: false,
+    })
+  }
+  private handleOnClick = () => {
+    this.setState({
+      isOpened: true,
     })
   }
   /**
@@ -242,39 +253,42 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
         return (
           <FormControl className={this.props.className}>
             <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
-            <div ref={(ref: any) => ref && this.state.anchorEl !== ref && this.setState({ anchorEl: ref })}>
-              <List dense={true}>
-                {this.state.items.map((item, index) => (
-                  <ListItem key={index}>
-                    <ListItemIcon>
-                      <MaterialIcon
-                        iconName={
-                          item.Icon
-                            ? item.Icon === 'Document'
-                              ? 'insert_drive_file'
-                              : item.Icon.toLowerCase()
-                            : item.Name.toLowerCase()
-                        }
-                      />
-                    </ListItemIcon>
-                    <ListItemText primary={item.DisplayName} />
-                    {this.state.removeable ? (
-                      <ListItemSecondaryAction>
-                        <IconButton aria-label="Remove" onClick={() => this.handleRemove(item)}>
-                          <DeleteIcon />
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    ) : null}
-                  </ListItem>
-                ))}
-              </List>
-              <Paper style={styles.inputContainer} elevation={1}>
+            <List dense={true}>
+              {this.state.items.map((item, index) => (
+                <ListItem key={index}>
+                  <ListItemIcon>
+                    <MaterialIcon
+                      iconName={
+                        item.Icon
+                          ? item.Icon === 'Document'
+                            ? 'insert_drive_file'
+                            : item.Icon.toLowerCase()
+                          : item.Name.toLowerCase()
+                      }
+                    />
+                  </ListItemIcon>
+                  <ListItemText primary={item.DisplayName} />
+                  {this.state.removeable ? (
+                    <ListItemSecondaryAction>
+                      <IconButton aria-label="Remove" onClick={() => this.handleRemove(item)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  ) : null}
+                </ListItem>
+              ))}
+            </List>
+            <div
+              ref={(ref: HTMLDivElement) => ref && this.state.anchorEl !== ref && this.setState({ anchorEl: ref })}
+              style={{ position: 'relative' }}>
+              <Paper style={styles.inputContainer as any} elevation={0}>
                 <TextField
                   type="text"
+                  onClick={this.handleOnClick}
                   onChange={e => {
                     this.handleInputChange(e)
                   }}
-                  placeholder="Start typing"
+                  placeholder={INPUT_PLACEHOLDER}
                   InputProps={{
                     endAdornment: this.state.isLoading ? (
                       <InputAdornment position="end">
@@ -291,25 +305,14 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                 </IconButton>
               </Paper>
               <ClickAwayListener onClickAway={this.handleClickAway}>
-                <Menu
-                  BackdropProps={{
-                    onClick: this.handleClickAway,
-                    style: { background: 'none' },
-                  }}
-                  open={this.state.isOpened}
-                  anchorEl={this.state.anchorEl}
-                  PaperProps={{
-                    style: {
-                      marginTop: '45px',
-                      minWidth: '250px',
-                    },
-                  }}>
+                <List
+                  style={{ ...{ display: this.state.isOpened ? 'block' : 'none' }, ...(styles.listContainer as any) }}>
                   {this.state.filteredList.length > 0 ? (
                     this.state.filteredList.map((item: any) => this.state.getMenuItem(item, this.handleSelect))
                   ) : (
-                    <MenuItem>No hits</MenuItem>
+                    <ListItem>No hits</ListItem>
                   )}
-                </Menu>
+                </List>
               </ClickAwayListener>
               <FormHelperText>{this.props['data-hintText']}</FormHelperText>
               <FormHelperText>{this.props['data-errorText']}</FormHelperText>
