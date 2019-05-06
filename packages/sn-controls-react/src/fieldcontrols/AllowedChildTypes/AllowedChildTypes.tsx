@@ -60,7 +60,7 @@ export interface AllowedChildTypesProps<T extends GenericContent, K extends keyo
  * Interface for Password state
  */
 export interface AllowedChildTypesState<T extends GenericContent> {
-  value: string
+  value: string[]
   effectiveAllowedChildTypes: T[]
   allowedTypesOnCTD: T[]
   items: T[]
@@ -93,7 +93,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
      * @property {string} value input value
      */
     this.state = {
-      value: this.setValue(this.props['data-fieldValue']).toString(),
+      value: this.setValue(this.props['data-fieldValue']) as string[],
       effectiveAllowedChildTypes: [],
       allowedTypesOnCTD: [],
       items: [],
@@ -251,6 +251,16 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       isOpened: true,
     })
   }
+  private handleAddClick = () => {
+    const { items, selected, value } = this.state
+    this.setState({
+      items: selected ? [...items, selected] : items,
+      value: selected ? [...value, selected.Name] : value,
+      selected: null,
+      inputValue: '',
+      filteredList: [],
+    })
+  }
   /**
    * render
    * @return {ReactElement} markup
@@ -310,7 +320,8 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                 />
                 <IconButton
                   style={styles.button}
-                  disabled={this.state.selected && this.state.selected.Name.length > 0 ? false : true}>
+                  disabled={this.state.selected && this.state.selected.Name.length > 0 ? false : true}
+                  onClick={this.handleAddClick}>
                   <MaterialIcon iconName="add" />
                 </IconButton>
               </Paper>
