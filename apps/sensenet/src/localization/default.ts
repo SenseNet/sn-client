@@ -201,6 +201,8 @@ const values = {
     savedQueries: 'Saved queries',
     queryLabel: 'Content Query',
     autoFilters: 'AutoFilters',
+    openInSearchTitle: 'Open in Search',
+    openInSearchDescription: 'Opens the query expression in the Search view',
   },
 }
 
