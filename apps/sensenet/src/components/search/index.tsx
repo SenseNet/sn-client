@@ -25,7 +25,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
   const ctx = useContext(ContentRoutingContext)
 
   const localization = useContext(LocalizationContext).values.search
-  const [contentQuery, setContentQuery] = useState(props.match.params.query || '')
+  const [contentQuery, setContentQuery] = useState(decodeURIComponent(props.match.params.query || ''))
   const [reloadToken, setReloadToken] = useState(Math.random())
   const [scrollToken, setScrollToken] = useState(Math.random())
 
@@ -47,7 +47,9 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
   const personalSettings = useContext(ResponsivePersonalSetttings)
 
   useEffect(() => {
-    props.history.push(generatePath(props.match.path, { ...props.match.params, query: contentQuery || undefined }))
+    props.history.push(
+      generatePath(props.match.path, { ...props.match.params, query: encodeURIComponent(contentQuery) || undefined }),
+    )
     repo
       .loadCollection({
         path: ConstantContent.PORTAL_ROOT.Path,
