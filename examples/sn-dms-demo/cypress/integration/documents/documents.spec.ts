@@ -73,7 +73,8 @@ context('The documents page', () => {
     cy.contains(fileName).should('exist')
     openContextMenu(fileName)
     cy.get(`[title="${contextMenuItems.rename}"]`).click()
-    cy.wait(300)
+    // wait for input to be focused
+    cy.wait(1000)
     cy.get('.rename')
       .clear()
       .type(`${newName}{enter}`)
