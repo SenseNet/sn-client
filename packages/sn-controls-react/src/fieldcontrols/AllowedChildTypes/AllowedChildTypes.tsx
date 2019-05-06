@@ -153,7 +153,8 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
         // tslint:disable-next-line: no-string-literal
         items:
           result.d.EffectiveAllowedChildTypes.length === 0
-            ? allowedChildTypesFromCTD['d'].results
+            ? // tslint:disable-next-line: no-string-literal
+              allowedChildTypesFromCTD['d'].results
             : result.d.EffectiveAllowedChildTypes,
         removeable: result.d.EffectiveAllowedChildTypes.length === 0 ? false : true,
       })
