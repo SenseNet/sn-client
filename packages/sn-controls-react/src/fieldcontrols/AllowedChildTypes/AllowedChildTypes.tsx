@@ -72,6 +72,7 @@ export interface AllowedChildTypesState<T extends GenericContent> {
   anchorEl: HTMLElement
   getMenuItem: (item: T, select: (item: T) => void) => JSX.Element
   filteredList: T[]
+  selected: T | null
 }
 /**
  * Field control that represents a Color field. Available values will be populated from the FieldSettings.
@@ -109,6 +110,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
         </MenuItem>
       ),
       filteredList: [],
+      selected: null,
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSelect = this.handleSelect.bind(this)
@@ -227,6 +229,11 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       }),
       inputValue: term,
     })
+    if (term.length === 0) {
+      this.setState({
+        selected: null,
+      })
+    }
   }
   private handleClickAway() {
     this.setState({ isOpened: false })
@@ -236,6 +243,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       inputValue: item.DisplayName || '',
       isOpened: false,
       isLoading: false,
+      selected: item,
     })
   }
   private handleOnClick = () => {
@@ -300,7 +308,9 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                   value={this.state.inputValue}
                   style={styles.input}
                 />
-                <IconButton style={styles.button}>
+                <IconButton
+                  style={styles.button}
+                  disabled={this.state.selected && this.state.selected.Name.length > 0 ? false : true}>
                   <MaterialIcon iconName="add" />
                 </IconButton>
               </Paper>
