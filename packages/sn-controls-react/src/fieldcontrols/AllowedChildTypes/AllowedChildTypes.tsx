@@ -197,19 +197,22 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
   public handleRemove = (item: GenericContent) => {
     const { items } = this.state
     const index = items.findIndex(i => item.Name === i.Name)
-    this.setState({
-      items: [...items.slice(0, index), ...items.slice(index + 1)],
-    })
+    if (items.length > 1) {
+      this.setState({
+        items: [...items.slice(0, index), ...items.slice(index + 1)],
+      })
+    } else {
+      this.setState({
+        items: this.state.allowedTypesOnCTD,
+        removeable: false,
+      })
+    }
   }
   public handleInputChange = (e: React.ChangeEvent) => {
     // tslint:disable-next-line: no-string-literal
     const term = e.target['value']
     this.setState({
       filteredList: this.state.allCTDs.filter(ctd => {
-        // if (ctd.DisplayName && ctd.DisplayName.toLowerCase().includes(term)) {
-        //     console.log(ctd.DisplayName.toLowerCase())
-        //     console.log(term)
-        // }
         return ctd.DisplayName && ctd.DisplayName.toLowerCase().includes(term.toLowerCase())
       }),
       inputValue: term,
@@ -238,13 +241,24 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
   }
   private handleAddClick = () => {
     const { items, selected, value } = this.state
-    this.setState({
-      items: selected ? [...items, selected] : items,
-      value: selected ? [...value, selected.Name] : value,
-      selected: null,
-      inputValue: '',
-      filteredList: [],
-    })
+    if (this.state.removeable) {
+      this.setState({
+        items: selected ? [...items, selected] : items,
+        value: selected ? [...value, selected.Name] : value,
+        selected: null,
+        inputValue: '',
+        filteredList: [],
+      })
+    } else {
+      this.setState({
+        items: selected ? [selected] : [],
+        value: selected ? [selected.Name] : [],
+        selected: null,
+        inputValue: '',
+        filteredList: [],
+        removeable: true,
+      })
+    }
     this.props.onChange(this.props.name, value as any)
   }
   /**
