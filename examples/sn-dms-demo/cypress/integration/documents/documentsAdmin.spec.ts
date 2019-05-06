@@ -9,7 +9,7 @@ context('The documents page with admin', () => {
   it('should check actions availability', () => {
     openContextMenu(documentName)
     Object.keys(contextMenuItems).forEach(item => {
-      cy.get(`[title="${item}"]`).should('exist')
+      cy.get(`[title="${contextMenuItems[item]}"]`).should('exist')
     })
   })
 
