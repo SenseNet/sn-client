@@ -195,6 +195,13 @@ const values = {
     contentUploaded: `Content '{0}' has been uploaded succesfully`,
     contentUploadedMultiple: `Finished uploading {count} content.`,
   },
+  search: {
+    title: 'Search',
+    onlyPublic: 'Only public queries',
+    savedQueries: 'Saved queries',
+    queryLabel: 'Content Query',
+    autoFilters: 'AutoFilters',
+  },
 }
 
 export default values
