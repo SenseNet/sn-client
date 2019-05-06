@@ -20,7 +20,7 @@ import {
 import { Component } from 'react'
 import * as FieldControls from './fieldcontrols'
 import { ReactChoiceFieldSetting } from './fieldcontrols/ChoiceFieldSetting'
-import { ReactClientFieldSettingProps } from './fieldcontrols/ClientFieldSetting'
+import { ReactClientFieldSetting, ReactClientFieldSettingProps } from './fieldcontrols/ClientFieldSetting'
 import { ReactDateTimeFieldSetting } from './fieldcontrols/DateTimeFieldSetting'
 import { ReactLongTextFieldSetting } from './fieldcontrols/LongTextFieldSetting'
 import { ReactNumberFieldSetting } from './fieldcontrols/Number/NumberFieldSetting'
@@ -192,6 +192,8 @@ export const reactControlMapper = (repository: Repository) =>
         ) > -1
       ) {
         return FieldControls.EmptyFieldControl
+      } else if (setting.Name === 'AllowedChildTypes') {
+        return FieldControls.AllowedChildTypes
       } else {
         return FieldControls.ShortText
       }
@@ -208,7 +210,8 @@ export const reactControlMapper = (repository: Repository) =>
         colorPickerSettings['palette'] = setting['Palette']
         return colorPickerSettings
       } else {
-        return null as any
+        const nullFieldSettings = clientConfigFactory(setting) as ReactClientFieldSetting
+        return nullFieldSettings
       }
     })
     .setupFieldSettingDefault(BooleanFieldSetting, () => {

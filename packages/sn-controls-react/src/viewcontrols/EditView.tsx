@@ -126,7 +126,11 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
         }}>
         <Grid container={true} spacing={24}>
           {fieldSettings.map(fieldSetting => {
-            if (fieldSetting.clientSettings['data-typeName'] === 'ReferenceFieldSetting') {
+            if (
+              fieldSetting.clientSettings['data-typeName'] === 'ReferenceFieldSetting' ||
+              (fieldSetting.clientSettings['data-typeName'] === 'NullFieldSetting' &&
+                fieldSetting.fieldSettings.Name === 'AllowedChildTypes')
+            ) {
               fieldSetting.clientSettings['data-repository'] = this.props.repository
             }
             fieldSetting.clientSettings['data-actionName'] = 'edit'
