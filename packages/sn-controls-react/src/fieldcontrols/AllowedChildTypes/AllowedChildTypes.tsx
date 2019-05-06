@@ -112,7 +112,6 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       filteredList: [],
       selected: null,
     }
-    this.handleChange = this.handleChange.bind(this)
     this.handleSelect = this.handleSelect.bind(this)
     this.handleClickAway = this.handleClickAway.bind(this)
     this.getAllowedChildTypes()
@@ -202,20 +201,6 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       items: [...items.slice(0, index), ...items.slice(index + 1)],
     })
   }
-  //     private async addAllowedChildTypes = (types: string[]) => {
-  //     console.log(types)
-  // }
-  //     private async removeAllowedChildTypes = (types: string[]) => {
-  //     console.log(types)
-  // }
-  /**
-   * handle change event on an input
-   * @param {SytheticEvent} event
-   */
-  public handleChange(color: any) {
-    this.props.onChange(this.props.name, color.hex)
-    this.setState({ value: color.hex })
-  }
   public handleInputChange = (e: React.ChangeEvent) => {
     // tslint:disable-next-line: no-string-literal
     const term = e.target['value']
@@ -260,6 +245,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       inputValue: '',
       filteredList: [],
     })
+    this.props.onChange(this.props.name, value as any)
   }
   /**
    * render
@@ -343,46 +329,138 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       case 'new':
         return (
           <FormControl className={this.props.className}>
-            <TextField
-              type="text"
-              name={this.props.name as string}
-              id={this.props.name as string}
-              label={
-                this.props['data-errorText'] && this.props['data-errorText'].length > 0
-                  ? this.props['data-errorText']
-                  : this.props['data-labelText']
-              }
-              className={this.props.className}
-              required={this.props.required}
-              disabled={this.props.readOnly}
-              error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
-            />
-            <FormHelperText>{this.props['data-hintText']}</FormHelperText>
-            <FormHelperText>{this.props['data-errorText']}</FormHelperText>
+            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
+            <List dense={true}>
+              {this.state.items.map((item, index) => (
+                <ListItem key={index}>
+                  <ListItemIcon>
+                    <MaterialIcon
+                      iconName={
+                        item.Icon
+                          ? item.Icon === 'Document'
+                            ? 'insert_drive_file'
+                            : item.Icon.toLowerCase()
+                          : item.Name.toLowerCase()
+                      }
+                    />
+                  </ListItemIcon>
+                  <ListItemText primary={item.DisplayName} />
+                  {this.state.removeable ? (
+                    <ListItemSecondaryAction>
+                      <IconButton aria-label="Remove" onClick={() => this.handleRemove(item)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  ) : null}
+                </ListItem>
+              ))}
+            </List>
+            <div
+              ref={(ref: HTMLDivElement) => ref && this.state.anchorEl !== ref && this.setState({ anchorEl: ref })}
+              style={{ position: 'relative' }}>
+              <Paper style={styles.inputContainer as any} elevation={0}>
+                <TextField
+                  type="text"
+                  onClick={this.handleOnClick}
+                  onChange={e => {
+                    this.handleInputChange(e)
+                  }}
+                  placeholder={INPUT_PLACEHOLDER}
+                  InputProps={{
+                    endAdornment: this.state.isLoading ? (
+                      <InputAdornment position="end">
+                        <CircularProgress size={16} />
+                      </InputAdornment>
+                    ) : null,
+                  }}
+                  fullWidth={true}
+                  value={this.state.inputValue}
+                  style={styles.input}
+                />
+                <IconButton
+                  style={styles.button}
+                  disabled={this.state.selected && this.state.selected.Name.length > 0 ? false : true}
+                  onClick={this.handleAddClick}>
+                  <MaterialIcon iconName="add" />
+                </IconButton>
+              </Paper>
+              <ClickAwayListener onClickAway={this.handleClickAway}>
+                <List
+                  style={{ ...{ display: this.state.isOpened ? 'block' : 'none' }, ...(styles.listContainer as any) }}>
+                  {this.state.filteredList.length > 0 ? (
+                    this.state.filteredList.map((item: any) => this.state.getMenuItem(item, this.handleSelect))
+                  ) : (
+                    <ListItem>No hits</ListItem>
+                  )}
+                </List>
+              </ClickAwayListener>
+              <FormHelperText>{this.props['data-hintText']}</FormHelperText>
+              <FormHelperText>{this.props['data-errorText']}</FormHelperText>
+            </div>
           </FormControl>
         )
       case 'browse':
         return (
           <FormControl className={this.props.className}>
-            <TextField
-              type="text"
-              name={this.props.name as string}
-              id={this.props.name as string}
-              label={
-                this.props['data-errorText'] && this.props['data-errorText'].length > 0
-                  ? this.props['data-errorText']
-                  : this.props['data-labelText']
-              }
-              className={this.props.className}
-              disabled={true}
-              value={this.state.value}
-            />
+            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
+            <List dense={true}>
+              {this.state.items.map((item, index) => (
+                <ListItem key={index}>
+                  <ListItemIcon>
+                    <MaterialIcon
+                      iconName={
+                        item.Icon
+                          ? item.Icon === 'Document'
+                            ? 'insert_drive_file'
+                            : item.Icon.toLowerCase()
+                          : item.Name.toLowerCase()
+                      }
+                    />
+                  </ListItemIcon>
+                  <ListItemText primary={item.DisplayName} />
+                  {this.state.removeable ? (
+                    <ListItemSecondaryAction>
+                      <IconButton aria-label="Remove" onClick={() => this.handleRemove(item)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  ) : null}
+                </ListItem>
+              ))}
+            </List>
           </FormControl>
         )
       default:
         return (
           <div>
-            <label>{this.props['data-labelText']}</label>
+            <FormControl className={this.props.className}>
+              <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
+              <List dense={true}>
+                {this.state.items.map((item, index) => (
+                  <ListItem key={index}>
+                    <ListItemIcon>
+                      <MaterialIcon
+                        iconName={
+                          item.Icon
+                            ? item.Icon === 'Document'
+                              ? 'insert_drive_file'
+                              : item.Icon.toLowerCase()
+                            : item.Name.toLowerCase()
+                        }
+                      />
+                    </ListItemIcon>
+                    <ListItemText primary={item.DisplayName} />
+                    {this.state.removeable ? (
+                      <ListItemSecondaryAction>
+                        <IconButton aria-label="Remove" onClick={() => this.handleRemove(item)}>
+                          <DeleteIcon />
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    ) : null}
+                  </ListItem>
+                ))}
+              </List>
+            </FormControl>
           </div>
         )
     }
