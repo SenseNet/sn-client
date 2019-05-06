@@ -172,7 +172,6 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
             <FormControl
               className={this.props.className}
               key={this.props.name as string}
-              // Issue in type checking in 3.2 https://github.com/mui-org/material-ui/issues/13744
               component={'fieldset' as 'div'}
               required={this.props.required}>
               <TextField
