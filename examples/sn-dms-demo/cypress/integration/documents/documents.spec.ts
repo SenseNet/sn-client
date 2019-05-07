@@ -7,6 +7,8 @@ import {
   openContextMenu,
   openNew,
   registerNewUser,
+  selectPathInListPicker,
+  uploadNewFileAndOpenContextMenuItem,
 } from '../../support/documents'
 
 context('The documents page', () => {
@@ -92,21 +94,10 @@ context('The documents page', () => {
 
   it('copy to context menu item should work', () => {
     const fileName = createNewFileName()
-    cy.uploadWithApi({
-      parentPath: `Root/Profiles/Public/${currentUser.email}/Document_Library`,
-      fileName,
-    })
-    // const fileName = 'logo.png'
     const copyToPath = 'Sample folder'
-    cy.contains(fileName).should('exist')
-    openContextMenu(fileName)
-    cy.get(`[title="${contextMenuItems.copyTo}"]`).click()
+    uploadNewFileAndOpenContextMenuItem(currentUser.email, fileName, contextMenuItems.copyTo)
     // List picker component
-    cy.contains('h6', 'Copy content').should('be.visible')
-    cy.get('div[role="dialog"]')
-      .contains('span', copyToPath)
-      .click()
-    cy.contains('button', 'Copy content here').click()
+    selectPathInListPicker({ path: copyToPath, action: 'Copy' })
     // Copy to confirm dialog
     cy.contains('div[data-cy="copyTo"] h5', 'Copy content')
     cy.contains('div[data-cy="copyTo"] button', 'Copy content').click()
@@ -117,5 +108,23 @@ context('The documents page', () => {
     // check successful copy
     cy.contains(fileName).should('exist')
     moveToFolderAndCheckIfFileExists(copyToPath, fileName)
+  })
+
+  it('move to context menu item should work', () => {
+    const fileName = createNewFileName()
+    const moveToPath = 'Sample folder'
+    uploadNewFileAndOpenContextMenuItem(currentUser.email, fileName, contextMenuItems.moveTo)
+    // List picker component
+    selectPathInListPicker({ path: moveToPath, action: 'Move' })
+    // Move to confirm dialog
+    cy.contains('div[data-cy="moveTo"] h5', 'Move content')
+    cy.contains('div[data-cy="moveTo"] button', 'Move content').click()
+    cy.contains(`${fileName} is moved successfully`)
+      .should('be.visible')
+      .get('button[aria-label="Close"]')
+      .click()
+    // check successful copy
+    cy.contains(fileName).should('not.exist')
+    moveToFolderAndCheckIfFileExists(moveToPath, fileName)
   })
 })

@@ -55,3 +55,21 @@ export const moveToFolderAndCheckIfFileExists = (copyToPath: string, fileName: s
   cy.contains('[data-cy=appbar]', copyToPath, { timeout: 10000 }).should('exist')
   cy.contains(fileName).should('exist')
 }
+
+export const uploadNewFileAndOpenContextMenuItem = (currentUserEmail: string, fileName: string, menuItem: string) => {
+  cy.uploadWithApi({
+    parentPath: `Root/Profiles/Public/${currentUserEmail}/Document_Library`,
+    fileName,
+  })
+  cy.contains(fileName).should('exist')
+  openContextMenu(fileName)
+  cy.get(`[title="${menuItem}"]`).click()
+}
+
+export const selectPathInListPicker = ({ path, action }: { path: string; action: string }) => {
+  cy.contains('h6', `${action} content`).should('be.visible')
+  cy.get('div[role="dialog"]')
+    .contains('span', path)
+    .click()
+  cy.contains('button', `${action} content here`).click()
+}
