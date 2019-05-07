@@ -122,7 +122,13 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
               requestReload()
             }}
           />
-          <Button style={{ flexShrink: 0 }} title={localization.saveQuery} onClick={() => setIsSaveOpened(true)}>
+          <Button
+            style={{ flexShrink: 0 }}
+            title={localization.saveQuery}
+            onClick={() => {
+              setIsSaveOpened(true)
+              setSaveName(`Search results for '${contentQuery}'`)
+            }}>
             <Save style={{ marginRight: 8 }} />
             {localization.saveQuery}
           </Button>
