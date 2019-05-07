@@ -91,7 +91,7 @@ export class BrowseView extends Component<BrowseViewProps, BrowseViewState> {
               fieldSetting.fieldSettings.Name === 'AllowedChildTypes'
             ) {
               // tslint:disable-next-line: no-string-literal
-              fieldSetting.clientSettings['renderIconsDefault'] = this.props.renderIcon || undefined
+              fieldSetting.clientSettings['renderIcon'] = this.props.renderIcon || undefined
             }
             return (
               <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12} key={fieldSetting.clientSettings.key}>

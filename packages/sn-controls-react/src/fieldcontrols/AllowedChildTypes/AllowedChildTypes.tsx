@@ -127,10 +127,10 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
               this.props.renderIcon
                 ? this.props.renderIcon(item.Icon ? item.Icon.toLowerCase() : 'contenttype')
                 : renderIconDefault(
-                    // tslint:disable-next-line: no-string-literal
                     item.Icon && typeicons[item.Icon.toLowerCase()]
                       ? typeicons[item.Icon.toLowerCase()]
-                      : typeicons['contenttype'],
+                      : // tslint:disable-next-line: no-string-literal
+                        typeicons['contenttype'],
                   )
             }
           />
@@ -309,10 +309,10 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                       this.props.renderIcon
                         ? this.props.renderIcon(item.Icon ? item.Icon.toLowerCase() : 'contenttype')
                         : renderIconDefault(
-                            // tslint:disable-next-line: no-string-literal
                             item.Icon && typeicons[item.Icon.toLowerCase()]
                               ? typeicons[item.Icon.toLowerCase()]
-                              : typeicons['contenttype'],
+                              : // tslint:disable-next-line: no-string-literal
+                                typeicons['contenttype'],
                           )
                     }
                   />
@@ -384,10 +384,10 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                       this.props.renderIcon
                         ? this.props.renderIcon(item.Icon ? item.Icon.toLowerCase() : 'contenttype')
                         : renderIconDefault(
-                            // tslint:disable-next-line: no-string-literal
                             item.Icon && typeicons[item.Icon.toLowerCase()]
                               ? typeicons[item.Icon.toLowerCase()]
-                              : typeicons['contenttype'],
+                              : // tslint:disable-next-line: no-string-literal
+                                typeicons['contenttype'],
                           )
                     }
                   />
@@ -459,10 +459,10 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                       this.props.renderIcon
                         ? this.props.renderIcon(item.Icon ? item.Icon.toLowerCase() : 'contenttype')
                         : renderIconDefault(
-                            // tslint:disable-next-line: no-string-literal
                             item.Icon && typeicons[item.Icon.toLowerCase()]
                               ? typeicons[item.Icon.toLowerCase()]
-                              : typeicons['contenttype'],
+                              : // tslint:disable-next-line: no-string-literal
+                                typeicons['contenttype'],
                           )
                     }
                   />

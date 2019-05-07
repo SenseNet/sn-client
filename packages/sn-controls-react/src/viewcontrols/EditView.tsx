@@ -153,7 +153,7 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
               fieldSetting.fieldSettings.Name === 'AllowedChildTypes'
             ) {
               // tslint:disable-next-line: no-string-literal
-              fieldSetting.clientSettings['renderIconsDefault'] = this.props.renderIcon || undefined
+              fieldSetting.clientSettings['renderIcon'] = this.props.renderIcon || undefined
             }
             if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
               fieldSetting.fieldSettings.Type = 'NumberFieldSetting'
