@@ -1,13 +1,16 @@
 import { LoginState } from '@sensenet/client-core'
 import React, { lazy, Suspense, useContext } from 'react'
 import { Route, RouteComponentProps, Switch, withRouter } from 'react-router'
-import { SessionContext } from '../context'
+import { LoadSettingsContextProvider, SessionContext } from '../context'
 import { ErrorBoundary } from './ErrorBoundary'
 import { FullScreenLoader } from './FullScreenLoader'
 
 const ExploreComponent = lazy(async () => await import(/* webpackChunkName: "content" */ './content'))
 const DashboardComponent = lazy(async () => await import(/* webpackChunkName: "dashboard" */ './dashboard'))
 const SearchComponent = lazy(async () => await import(/* webpackChunkName: "search" */ './search'))
+const SavedQueriesComponent = lazy(
+  async () => await import(/* webpackChunkName: "saved-queries" */ './search/saved-queries'),
+)
 const IamComponent = lazy(async () => await import(/* webpackChunkName: "iam" */ './iam'))
 const SetupComponent = lazy(async () => await import(/* webpackChunkName: "setup" */ './setup'))
 
@@ -63,9 +66,24 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
                       }}
                     />
                     <Route
-                      path="/:repo/search"
+                      path="/:repo/search/:query?"
                       render={() => {
-                        return <SearchComponent />
+                        return (
+                          <LoadSettingsContextProvider>
+                            <SearchComponent />
+                          </LoadSettingsContextProvider>
+                        )
+                      }}
+                    />
+
+                    <Route
+                      path="/:repo/saved-queries"
+                      render={() => {
+                        return (
+                          <LoadSettingsContextProvider>
+                            <SavedQueriesComponent />
+                          </LoadSettingsContextProvider>
+                        )
                       }}
                     />
                     <Route
