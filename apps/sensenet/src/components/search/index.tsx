@@ -8,8 +8,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import Save from '@material-ui/icons/Save'
-import { ConstantContent } from '@sensenet/client-core'
-import { isExtendedError } from '@sensenet/client-core/dist/Repository/Repository'
+import { ConstantContent, ODataResponse } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
@@ -25,6 +24,7 @@ import {
   RepositoryContext,
   ResponsivePersonalSetttings,
 } from '../../context'
+import { LoggerContext } from '../../context/LoggerContext'
 import { CollectionComponent } from '../ContentListPanel'
 
 const loadCount = 20
@@ -41,6 +41,9 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
   const [scrollLock] = useState(new Semaphore(1))
 
   const [requestReload] = useState(() => debounce(() => setReloadToken(Math.random()), 250))
+
+  const logger = useContext(LoggerContext).withScope('Search')
+
   const [requestScroll] = useState(() =>
     debounce((div: HTMLDivElement, total: number, loaded: number, update: (token: number) => void) => {
       const table = div.querySelector('table')
@@ -79,6 +82,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
       })
       .catch(e => {
         setError(e.message)
+        logger.warning({ message: 'Error executing search', data: { details: { error: e }, isDismissed: true } })
       })
   }, [reloadToken, loadSettingsContext.loadChildrenSettings])
 
@@ -141,19 +145,26 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
               <Button
                 onClick={() => {
                   repo
-                    .executeAction({
+                    .executeAction<any, ODataResponse<GenericContent>>({
                       idOrPath:
                         repo.authentication.currentUser.getValue().ProfilePath || ConstantContent.PORTAL_ROOT.Path,
                       name: 'SaveQuery',
                       method: 'POST',
+                      oDataOptions: {
+                        select: ['DisplayName', 'Query'],
+                      },
                       body: {
                         query: contentQuery,
                         displayName: saveName,
                         queryType: savePublic ? 'Public' : 'Private',
                       },
                     })
-                    .then(() => {
+                    .then(c => {
                       setIsSaveOpened(false)
+                      logger.information({
+                        message: `Query '${c.d.DisplayName || c.d.Name}' saved`,
+                        data: { relatedContent: c.d, details: c },
+                      })
                     })
                 }}
                 color="primary">
