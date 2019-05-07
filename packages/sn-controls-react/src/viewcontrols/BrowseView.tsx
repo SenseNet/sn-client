@@ -8,7 +8,6 @@ import { Repository } from '@sensenet/client-core'
 import { ControlSchema } from '@sensenet/control-mapper'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { Component, createElement } from 'react'
-import { icons } from '../assets/icons'
 import { ReactClientFieldSettingProps } from '../fieldcontrols/ClientFieldSetting'
 import { reactControlMapper } from '../ReactControlMapper'
 import { styles } from './BrowseViewStyles'
@@ -19,7 +18,7 @@ import { styles } from './BrowseViewStyles'
 export interface BrowseViewProps {
   content: GenericContent
   repository: Repository
-  icons?: object
+  renderIcon?: (name: string) => JSX.Element
 }
 /**
  * Interface for BrowseView state
@@ -27,7 +26,6 @@ export interface BrowseViewProps {
 export interface BrowseViewState {
   content: GenericContent
   schema: ControlSchema<React.Component, ReactClientFieldSettingProps>
-  icons: object
 }
 
 /**
@@ -54,7 +52,6 @@ export class BrowseView extends Component<BrowseViewProps, BrowseViewState> {
     this.state = {
       content: this.props.content,
       schema: controlMapper.getFullSchemaForContentType(this.props.content.Type, 'view'),
-      icons: this.props.icons || icons,
     }
   }
   /**
@@ -86,9 +83,15 @@ export class BrowseView extends Component<BrowseViewProps, BrowseViewState> {
             fieldSetting['data-actionName'] = 'browse'
             // tslint:disable-next-line:no-string-literal
             fieldSetting['value'] = that.getFieldValue(fieldSetting.clientSettings.name)
-            fieldSetting.clientSettings.icons = this.state.icons
             if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
               fieldSetting.fieldSettings.Type = 'NumberFieldSetting'
+            }
+            if (
+              fieldSetting.clientSettings['data-typeName'] === 'NullFieldSetting' &&
+              fieldSetting.fieldSettings.Name === 'AllowedChildTypes'
+            ) {
+              // tslint:disable-next-line: no-string-literal
+              fieldSetting.clientSettings['renderIconsDefault'] = this.props.renderIcon || undefined
             }
             return (
               <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12} key={fieldSetting.clientSettings.key}>

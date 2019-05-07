@@ -10,7 +10,6 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
-import MenuItem from '@material-ui/core/MenuItem'
 import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
 import DeleteIcon from '@material-ui/icons/Delete'
@@ -18,8 +17,13 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { MaterialIcon } from '@sensenet/icons-react'
 import Radium from 'radium'
 import React, { Component } from 'react'
+import { typeicons } from '../../assets/icons'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactAllowedChildTypesFieldSetting } from './AllowedChildTypesFieldSettings'
+
+const renderIconDefault = (name: string) => {
+  return <MaterialIcon iconName={name} />
+}
 
 const INPUT_PLACEHOLDER = 'Start typing to add another type'
 const ITEM_HEIGHT = 48
@@ -46,7 +50,18 @@ const styles = {
     maxHeight: ITEM_HEIGHT * 2.5,
     overflow: 'auto',
     boxShadow: '0px 1px 3px 0px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 2px 1px -1px rgba(0,0,0,0.12)',
+    zIndex: 10,
   },
+}
+
+const compare = (a: GenericContent, b: GenericContent) => {
+  if (a.Name < b.Name) {
+    return -1
+  }
+  if (a.Name > b.Name) {
+    return 1
+  }
+  return 0
 }
 
 /**
@@ -105,9 +120,22 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       anchorEl: null as any,
       // tslint:disable-next-line: no-unnecessary-type-annotation
       getMenuItem: (item: T, select: (item: T) => void) => (
-        <MenuItem key={item.Id} value={item.Id} onClick={() => select(item)}>
-          {item.DisplayName}
-        </MenuItem>
+        <ListItem key={item.Id} value={item.Id} onClick={() => select(item)} style={{ margin: 0 }}>
+          <ListItemIcon
+            style={{ margin: 0 }}
+            children={
+              this.props.renderIcon
+                ? this.props.renderIcon(item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+                : renderIconDefault(
+                    // tslint:disable-next-line: no-string-literal
+                    item.Icon && typeicons[item.Icon.toLowerCase()]
+                      ? typeicons[item.Icon.toLowerCase()]
+                      : typeicons['contenttype'],
+                  )
+            }
+          />
+          <ListItemText primary={item.DisplayName} />
+        </ListItem>
       ),
       filteredList: [],
       selected: null,
@@ -188,7 +216,8 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
         return
       }
       this.setState({
-        allCTDs: result.d.results,
+        allCTDs: result.d.results.sort(compare),
+        filteredList: result.d.results.sort(compare),
       })
     } catch (_e) {
       console.log(_e)
@@ -274,12 +303,19 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
             <List dense={true}>
               {this.state.items.map((item, index) => (
                 <ListItem key={index}>
-                  <ListItemIcon>
-                    <MaterialIcon
-                      // tslint:disable-next-line: no-string-literal
-                      iconName={item.Icon ? this.props.icons[item.Icon.toLowerCase()] : this.props.icons['file']}
-                    />
-                  </ListItemIcon>
+                  <ListItemIcon
+                    style={{ margin: 0 }}
+                    children={
+                      this.props.renderIcon
+                        ? this.props.renderIcon(item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+                        : renderIconDefault(
+                            // tslint:disable-next-line: no-string-literal
+                            item.Icon && typeicons[item.Icon.toLowerCase()]
+                              ? typeicons[item.Icon.toLowerCase()]
+                              : typeicons['contenttype'],
+                          )
+                    }
+                  />
                   <ListItemText primary={item.DisplayName} />
                   {this.state.removeable ? (
                     <ListItemSecondaryAction>
@@ -342,12 +378,19 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
             <List dense={true}>
               {this.state.items.map((item, index) => (
                 <ListItem key={index}>
-                  <ListItemIcon>
-                    <MaterialIcon
-                      // tslint:disable-next-line: no-string-literal
-                      iconName={item.Icon ? this.props.icons[item.Icon.toLowerCase()] : this.props.icons['file']}
-                    />
-                  </ListItemIcon>
+                  <ListItemIcon
+                    style={{ margin: 0 }}
+                    children={
+                      this.props.renderIcon
+                        ? this.props.renderIcon(item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+                        : renderIconDefault(
+                            // tslint:disable-next-line: no-string-literal
+                            item.Icon && typeicons[item.Icon.toLowerCase()]
+                              ? typeicons[item.Icon.toLowerCase()]
+                              : typeicons['contenttype'],
+                          )
+                    }
+                  />
                   <ListItemText primary={item.DisplayName} />
                   {this.state.removeable ? (
                     <ListItemSecondaryAction>
@@ -410,17 +453,19 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
             <List dense={true}>
               {this.state.items.map((item, index) => (
                 <ListItem key={index}>
-                  <ListItemIcon>
-                    <MaterialIcon
-                      iconName={
-                        item.Icon
-                          ? item.Icon === 'Document'
-                            ? 'insert_drive_file'
-                            : item.Icon.toLowerCase()
-                          : item.Name.toLowerCase()
-                      }
-                    />
-                  </ListItemIcon>
+                  <ListItemIcon
+                    style={{ margin: 0 }}
+                    children={
+                      this.props.renderIcon
+                        ? this.props.renderIcon(item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+                        : renderIconDefault(
+                            // tslint:disable-next-line: no-string-literal
+                            item.Icon && typeicons[item.Icon.toLowerCase()]
+                              ? typeicons[item.Icon.toLowerCase()]
+                              : typeicons['contenttype'],
+                          )
+                    }
+                  />
                   <ListItemText primary={item.DisplayName} />
                   {this.state.removeable ? (
                     <ListItemSecondaryAction>

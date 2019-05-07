@@ -9,7 +9,6 @@ import { ControlSchema } from '@sensenet/control-mapper'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 import React, { Component, createElement } from 'react'
 import MediaQuery from 'react-responsive'
-import { icons } from '../assets/icons'
 import { ReactClientFieldSettingProps } from '../fieldcontrols/ClientFieldSetting'
 import { reactControlMapper } from '../ReactControlMapper'
 import { styles } from './EditViewStyles'
@@ -21,7 +20,7 @@ export interface EditViewProps<T extends GenericContent = GenericContent> {
   content: T
   onSubmit?: (id: number, content: GenericContent) => void
   repository: Repository
-  icons?: object
+  renderIcon?: (name: string) => JSX.Element
   schema?: Schema
   contentTypeName: string
   columns?: boolean
@@ -34,7 +33,6 @@ export interface EditViewProps<T extends GenericContent = GenericContent> {
  * Interface for EditView state
  */
 export interface EditViewState<T extends GenericContent = GenericContent> {
-  icons: object
   content: T
   schema: ControlSchema<React.Component, ReactClientFieldSettingProps>
   saveableContent: T
@@ -73,7 +71,6 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
       content: this.props.content,
       schema: controlMapper.getFullSchemaForContentType(this.props.contentTypeName as any, 'edit'),
       saveableContent: {} as T,
-      icons: this.props.icons || icons,
     }
 
     this.handleInputChange = this.handleInputChange.bind(this)
@@ -81,7 +78,6 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
 
     this.displayName = this.props.content.DisplayName || ''
   }
-
   /**
    * handle cancle button click
    */
@@ -141,7 +137,6 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
             fieldSetting.clientSettings['data-fieldValue'] = that.getFieldValue(fieldSetting.clientSettings.name)
             // tslint:disable-next-line:no-string-literal
             fieldSetting.clientSettings['content'] = this.state.content
-            fieldSetting.clientSettings.icons = this.state.icons
             // tslint:disable-next-line:no-string-literal
             fieldSetting.clientSettings['value'] = that.getFieldValue(fieldSetting.clientSettings.name)
             fieldSetting.clientSettings.onChange = that.handleInputChange as any
@@ -152,6 +147,13 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
             ) {
               fieldSetting.clientSettings['data-uploadFolderPath'] = this.props.uploadFolderPath || ''
               fieldSetting.clientSettings['data-repository'] = this.props.repository
+            }
+            if (
+              fieldSetting.clientSettings['data-typeName'] === 'NullFieldSetting' &&
+              fieldSetting.fieldSettings.Name === 'AllowedChildTypes'
+            ) {
+              // tslint:disable-next-line: no-string-literal
+              fieldSetting.clientSettings['renderIconsDefault'] = this.props.renderIcon || undefined
             }
             if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
               fieldSetting.fieldSettings.Type = 'NumberFieldSetting'

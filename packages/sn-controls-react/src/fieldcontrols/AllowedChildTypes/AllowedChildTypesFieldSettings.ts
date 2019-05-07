@@ -14,4 +14,8 @@ export interface ReactAllowedChildTypesFieldSetting<T extends GenericContent, K 
    * Connected repository
    */
   repository: Repository
+  /**
+   * Element for rendering a icon by an iconname
+   */
+  renderIcon: (name: string) => JSX.Element
 }
