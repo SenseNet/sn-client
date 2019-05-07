@@ -1,4 +1,9 @@
-import { contextMenuItems, openContextMenu } from '../../support/documents'
+import {
+  contextMenuItems,
+  createNewFileName,
+  openContextMenu,
+  uploadNewFileAndOpenContextMenuItem,
+} from '../../support/documents'
 
 const documentName = 'Sample-document.docx'
 context('The documents page with admin', () => {
@@ -20,5 +25,22 @@ context('The documents page with admin', () => {
     cy.get('.overlay').should('exist')
     cy.get('body').type('{esc}')
     cy.get('.overlay').should('not.exist')
+  })
+
+  describe('share context menu', () => {
+    it('should list valid emails', () => {
+      const fileName = createNewFileName()
+      uploadNewFileAndOpenContextMenuItem('businesscat', fileName, contextMenuItems.shareContent)
+      cy.get('form input[type="email"]').type('invalid{enter}')
+      cy.contains('invalid').should('not.exist')
+      cy.get('form input[type="email"]')
+        .clear()
+        .type('asd@asd.com{enter}')
+      cy.contains('asd@asd.com').should('exist')
+      cy.contains('button', 'Ok').click()
+      openContextMenu(fileName)
+      cy.get(`[title="${contextMenuItems.shareContent}"]`).click()
+      cy.contains('asd@asd.com').should('exist')
+    })
   })
 })
