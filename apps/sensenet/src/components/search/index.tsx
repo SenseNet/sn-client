@@ -9,6 +9,7 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import Save from '@material-ui/icons/Save'
 import { ConstantContent } from '@sensenet/client-core'
+import { isExtendedError } from '@sensenet/client-core/dist/Repository/Repository'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
@@ -54,6 +55,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
   const loadSettingsContext = useContext(LoadSettingsContext)
   const personalSettings = useContext(ResponsivePersonalSetttings)
   const [isSaveOpened, setIsSaveOpened] = useState(false)
+  const [error, setError] = useState('')
 
   const [saveName, setSaveName] = useState('')
   const [savePublic, setSavePublic] = useState(false)
@@ -72,7 +74,11 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
         },
       })
       .then(r => {
+        setError('')
         setResult(r.d.results), setCount(r.d.__count)
+      })
+      .catch(e => {
+        setError(e.message)
       })
   }, [reloadToken, loadSettingsContext.loadChildrenSettings])
 
@@ -157,6 +163,12 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
           </Dialog>
         </div>
       </div>
+
+      {error ? (
+        <Typography color="error" variant="subtitle1" style={{ margin: '1em' }}>
+          {error}
+        </Typography>
+      ) : null}
 
       <CurrentContentContext.Provider value={ConstantContent.PORTAL_ROOT}>
         <CurrentChildrenContext.Provider value={result}>
