@@ -11,7 +11,6 @@ import { Query } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom'
 import {
-  ContentRoutingContext,
   CurrentAncestorsContext,
   CurrentChildrenContext,
   CurrentContentContext,
@@ -25,7 +24,6 @@ import { CollectionComponent } from '../ContentListPanel'
 const Search: React.FunctionComponent<RouteComponentProps> = props => {
   const repo = useContext(RepositoryContext)
   const localization = useContext(LocalizationContext).values.search
-  const ctx = useContext(ContentRoutingContext)
   const injector = useContext(InjectorContext)
 
   const [onlyPublic, setOnlyPublic] = useState(false)
