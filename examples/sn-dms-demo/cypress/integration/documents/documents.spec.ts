@@ -1,5 +1,13 @@
 import Chance = require('chance')
-import { contextMenuItems, newMenuItems, openContextMenu } from '../../support/documents'
+import {
+  contextMenuItems,
+  createNewFileName,
+  moveToFolderAndCheckIfFileExists,
+  newMenuItems,
+  openContextMenu,
+  openNew,
+  registerNewUser,
+} from '../../support/documents'
 
 context('The documents page', () => {
   let currentUser = { email: '', password: '' }
@@ -63,9 +71,9 @@ context('The documents page', () => {
     })
   })
 
-  it('should rename a document', () => {
-    const fileName = 'logo.png'
-    const newName = 'newName.png'
+  it('rename document should work', () => {
+    const fileName = createNewFileName()
+    const newName = createNewFileName()
     cy.uploadWithApi({
       parentPath: `Root/Profiles/Public/${currentUser.email}/Document_Library`,
       fileName,
@@ -81,17 +89,33 @@ context('The documents page', () => {
     cy.contains(newName)
     cy.contains(`The content '${fileName}' has been modified`)
   })
+
+  it('copy to context menu item should work', () => {
+    const fileName = createNewFileName()
+    cy.uploadWithApi({
+      parentPath: `Root/Profiles/Public/${currentUser.email}/Document_Library`,
+      fileName,
+    })
+    // const fileName = 'logo.png'
+    const copyToPath = 'Sample folder'
+    cy.contains(fileName).should('exist')
+    openContextMenu(fileName)
+    cy.get(`[title="${contextMenuItems.copyTo}"]`).click()
+    // List picker component
+    cy.contains('h6', 'Copy content').should('be.visible')
+    cy.get('div[role="dialog"]')
+      .contains('span', copyToPath)
+      .click()
+    cy.contains('button', 'Copy content here').click()
+    // Copy to confirm dialog
+    cy.contains('div[data-cy="copyTo"] h5', 'Copy content')
+    cy.contains('div[data-cy="copyTo"] button', 'Copy content').click()
+    cy.contains(`${fileName} is copied successfully`)
+      .should('be.visible')
+      .get('button[aria-label="Close"]')
+      .click()
+    // check successful copy
+    cy.contains(fileName).should('exist')
+    moveToFolderAndCheckIfFileExists(copyToPath, fileName)
+  })
 })
-
-const openNew = (action: string) => {
-  cy.contains('Documents').click()
-  cy.contains('New').click()
-  cy.get(`[title="New ${action}"]`).click()
-}
-
-const registerNewUser = () => {
-  const chance = new Chance()
-  const currentUser = { email: chance.email({ domain: 'sensenet.com' }), password: chance.string() }
-  cy.registerUser(currentUser.email, currentUser.password)
-  return currentUser
-}

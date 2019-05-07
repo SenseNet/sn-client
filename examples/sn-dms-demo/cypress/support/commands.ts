@@ -41,7 +41,7 @@ Cypress.Commands.add('registerUser', (email, password) => {
 
 Cypress.Commands.add('uploadWithApi', (options: UploadOptions) => {
   cy.visit('')
-  cy.fixture(options.fileName).then(async img => {
+  cy.fixture('logo.png').then(async img => {
     Cypress.log({
       name: 'upload',
       consoleProps: () => {

@@ -1,3 +1,5 @@
+import Chance = require('chance')
+
 export const openContextMenu = (name: string | number | RegExp) => {
   cy.contains('[data-cy=appbar]', 'Document library', { timeout: 10000 })
     .should('exist')
@@ -30,3 +32,26 @@ export const newMenuItems = [
   { name: 'text', ext: '.txt' },
   { name: 'folder', ext: '' },
 ]
+
+export const createNewFileName = () => Chance().word() + '.png'
+
+export const openNew = (action: string) => {
+  cy.contains('Documents').click()
+  cy.contains('New').click()
+  cy.get(`[title="New ${action}"]`).click()
+}
+
+export const registerNewUser = () => {
+  const chance = new Chance()
+  const currentUser = { email: chance.email({ domain: 'sensenet.com' }), password: chance.string() }
+  cy.registerUser(currentUser.email, currentUser.password)
+  return currentUser
+}
+
+export const moveToFolderAndCheckIfFileExists = (copyToPath: string, fileName: string) => {
+  cy.contains(copyToPath)
+    .should('be.visible')
+    .dblclick()
+  cy.contains('[data-cy=appbar]', copyToPath, { timeout: 10000 }).should('exist')
+  cy.contains(fileName).should('exist')
+}
