@@ -1,20 +1,18 @@
 import Chance = require('chance')
-import { contextMenuItems, openContextMenu } from '../../support/documents'
+import { contextMenuItems, newMenuItems, openContextMenu } from '../../support/documents'
 
 context('The documents page', () => {
-  /**
-   * Change this to registered user once the test run for the first time to prevent new registration.
-   * @example ```js
-   * { email: 'miwor@sensenet.com', password: 'aY]w9UJ2j' }```
-   */
   let currentUser = { email: '', password: '' }
-  const newMenuItems = [
-    { name: 'document', ext: '.docx' },
-    { name: 'sheet', ext: '.xlsx' },
-    { name: 'slide', ext: '.pptx' },
-    { name: 'text', ext: '.txt' },
-    { name: 'folder', ext: '' },
-  ]
+
+  const loginOrRegister = (user: { email: string; password: string }) => {
+    cy.login(user.email, user.password).then(isSuccesful => {
+      if (!isSuccesful) {
+        currentUser = registerNewUser()
+        cy.login(currentUser.email, currentUser.password)
+      }
+    })
+  }
+
   before(async () => {
     if (process.env.CI) {
       currentUser = registerNewUser()
@@ -22,12 +20,14 @@ context('The documents page', () => {
   })
 
   beforeEach(() => {
-    cy.login(currentUser.email, currentUser.password).then(isSuccesful => {
-      if (!isSuccesful) {
-        currentUser = registerNewUser()
-        cy.login(currentUser.email, currentUser.password)
-      }
-    })
+    // Save current user locally to reduce user creation
+    if (!process.env.CI) {
+      cy.task('getCurrentUser', '../fixtures/currentUser.json')
+        .then(user => (currentUser = user))
+        .then(() => loginOrRegister(currentUser))
+    } else {
+      loginOrRegister(currentUser)
+    }
   })
 
   it('header contains the logged in users avatar', () => {

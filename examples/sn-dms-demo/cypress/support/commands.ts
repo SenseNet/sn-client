@@ -17,8 +17,15 @@ Cypress.Commands.add('login', (email, password) => {
 
 Cypress.Commands.add('registerUser', (email, password) => {
   cy.visit('')
+  Cypress.log({
+    name: 'register',
+    consoleProps: () => {
+      return { email, password }
+    },
+    message: [`${email} | ${password}`],
+  })
   cy.window().then(async win => {
-    return await win.repository.executeAction<{ email: string; password: string }, User>({
+    const user = await win.repository.executeAction<{ email: string; password: string }, User>({
       name: 'RegisterUser',
       idOrPath: `/Root/IMS('Public')`,
       body: {
@@ -27,6 +34,8 @@ Cypress.Commands.add('registerUser', (email, password) => {
       },
       method: 'POST',
     })
+    cy.writeFile('cypress/fixtures/currentUser.json', { email, password })
+    return user
   })
 })
 

@@ -24,3 +24,4 @@ yarn-error.log*
 .awcache
 cypress/videos/
 cypress/screenshots/
+cypress/fixtures/currentUser.json

@@ -22,3 +22,11 @@ export const contextMenuItems = {
   versions: 'Versions',
   delete: 'Delete',
 }
+
+export const newMenuItems = [
+  { name: 'document', ext: '.docx' },
+  { name: 'sheet', ext: '.xlsx' },
+  { name: 'slide', ext: '.pptx' },
+  { name: 'text', ext: '.txt' },
+  { name: 'folder', ext: '' },
+]
