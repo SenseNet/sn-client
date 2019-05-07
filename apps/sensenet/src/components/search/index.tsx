@@ -1,5 +1,13 @@
+import Button from '@material-ui/core/Button'
+import Checkbox from '@material-ui/core/Checkbox'
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
+import Save from '@material-ui/icons/Save'
 import { ConstantContent } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
@@ -45,6 +53,10 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
   const [count, setCount] = useState(0)
   const loadSettingsContext = useContext(LoadSettingsContext)
   const personalSettings = useContext(ResponsivePersonalSetttings)
+  const [isSaveOpened, setIsSaveOpened] = useState(false)
+
+  const [saveName, setSaveName] = useState('')
+  const [savePublic, setSavePublic] = useState(false)
 
   useEffect(() => {
     props.history.push(
@@ -87,11 +99,12 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
 
   return (
     <div style={{ padding: '1em', margin: '1em', height: '100%', width: '100%' }}>
+      <Typography variant="h5">{localization.title}</Typography>
       <div style={{ display: 'flex', alignItem: 'center' }}>
-        <Typography variant="h5">{localization.title}</Typography>
-        <div style={{ marginLeft: '1em', width: '100%' }}>
+        <div style={{ marginLeft: '1em', width: '100%', display: 'flex' }}>
           <TextField
             label={localization.queryLabel}
+            helperText={localization.queryHelperText}
             defaultValue={contentQuery}
             fullWidth={true}
             onChange={ev => {
@@ -99,6 +112,49 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
               requestReload()
             }}
           />
+          <Button style={{ flexShrink: 0 }} title={localization.saveQuery} onClick={() => setIsSaveOpened(true)}>
+            <Save style={{ marginRight: 8 }} />
+            {localization.saveQuery}
+          </Button>
+          <Dialog open={isSaveOpened} onClose={() => setIsSaveOpened(false)}>
+            <DialogTitle>{localization.saveQuery}</DialogTitle>
+            <DialogContent style={{ minWidth: 450 }}>
+              <TextField
+                fullWidth={true}
+                defaultValue={`Search results for '${contentQuery}'`}
+                onChange={ev => setSaveName(ev.currentTarget.value)}
+              />
+              <br />
+              <FormControlLabel
+                label={localization.public}
+                control={<Checkbox onChange={ev => setSavePublic(ev.target.checked)} />}
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setIsSaveOpened(false)}>{localization.cancel}</Button>
+              <Button
+                onClick={() => {
+                  repo
+                    .executeAction({
+                      idOrPath:
+                        repo.authentication.currentUser.getValue().ProfilePath || ConstantContent.PORTAL_ROOT.Path,
+                      name: 'SaveQuery',
+                      method: 'POST',
+                      body: {
+                        query: contentQuery,
+                        displayName: saveName,
+                        queryType: savePublic ? 'Public' : 'Private',
+                      },
+                    })
+                    .then(() => {
+                      setIsSaveOpened(false)
+                    })
+                }}
+                color="primary">
+                {localization.save}
+              </Button>
+            </DialogActions>
+          </Dialog>
         </div>
       </div>
 
