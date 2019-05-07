@@ -67,7 +67,7 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
   return (
     <div style={{ padding: '1em', margin: '1em', overflow: 'hidden' }}>
       <div>
-        <Typography variant="h3">{localization.savedQueries}</Typography>
+        <Typography variant="h5">{localization.savedQueries}</Typography>
         <FormControlLabel
           label={localization.onlyPublic}
           control={
