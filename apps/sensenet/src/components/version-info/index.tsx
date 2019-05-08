@@ -87,10 +87,28 @@ export const VersionInfo: React.FunctionComponent = () => {
                         <ListItemText primary={localization.appVersion} secondary={process.env.APP_VERSION} />
                       </ListItem>
                       <ListItem>
-                        <ListItemText primary={localization.branchName} secondary={process.env.GIT_BRANCH} />
+                        <ListItemText
+                          primary={localization.branchName}
+                          secondary={
+                            <a
+                              href={`https://github.com/SenseNet/sn-client/tree/${process.env.GIT_BRANCH}`}
+                              target="_blank">
+                              {process.env.GIT_BRANCH}
+                            </a>
+                          }
+                        />
                       </ListItem>
                       <ListItem>
-                        <ListItemText primary={localization.commitHash} secondary={process.env.GIT_COMMITHASH} />
+                        <ListItemText
+                          primary={localization.commitHash}
+                          secondary={
+                            <a
+                              href={`https://github.com/SenseNet/sn-client/commit/${process.env.GIT_COMMITHASH}`}
+                              target="_blank">
+                              {process.env.GIT_COMMITHASH}
+                            </a>
+                          }
+                        />
                       </ListItem>
                     </List>
                   </ExpansionPanelDetails>
