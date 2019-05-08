@@ -216,6 +216,7 @@ const values = {
   },
   versionInfo: {
     title: 'Version info',
+    adminUi: 'Admin UI',
     components: 'Components',
     installedPackages: 'Installed packages',
     assemblies: 'Assemblies',
@@ -224,6 +225,9 @@ const values = {
     version: 'Version',
     lastOfficialVersion: 'Last official version',
     description: 'Description',
+    appVersion: 'Application version',
+    branchName: 'Branch name',
+    commitHash: 'Commit Hash',
   },
 }
 

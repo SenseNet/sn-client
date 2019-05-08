@@ -79,6 +79,24 @@ export const VersionInfo: React.FunctionComponent = () => {
               <>
                 <ExpansionPanel>
                   <ExpansionPanelSummary expandIcon={<ExpandMore />}>
+                    <Typography variant="h6">{localization.adminUi}</Typography>
+                  </ExpansionPanelSummary>
+                  <ExpansionPanelDetails>
+                    <List style={{ width: '100%' }}>
+                      <ListItem>
+                        <ListItemText primary={localization.appVersion} secondary={process.env.APP_VERSION} />
+                      </ListItem>
+                      <ListItem>
+                        <ListItemText primary={localization.branchName} secondary={process.env.GIT_BRANCH} />
+                      </ListItem>
+                      <ListItem>
+                        <ListItemText primary={localization.commitHash} secondary={process.env.GIT_COMMITHASH} />
+                      </ListItem>
+                    </List>
+                  </ExpansionPanelDetails>
+                </ExpansionPanel>
+                <ExpansionPanel>
+                  <ExpansionPanelSummary expandIcon={<ExpandMore />}>
                     <Typography variant="h6">{localization.components}</Typography>
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>
