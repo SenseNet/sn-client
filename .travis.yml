@@ -27,9 +27,9 @@ cache:
 before_script: yarn build
 
 jobs:
-include:
-  - stage: 'Tests'
-    name: 'Static linting'
-    script: yarn lint
-  - script: yarn test:coverage
-    name: 'Unit Tests'
+  include:
+    - stage: 'Tests'
+      name: 'Static linting'
+      script: yarn lint
+    - script: yarn test:coverage
+      name: 'Unit Tests'
