@@ -9,6 +9,7 @@ import { Repository } from '@sensenet/client-core'
 import { customSchema } from './ViewControl.stories'
 
 import {
+  AllowedChildTypes,
   AutoComplete,
   Avatar,
   CheckboxGroup,
@@ -30,7 +31,7 @@ import {
   Textarea,
   TimePicker,
 } from '@sensenet/controls-react/src'
-import { User } from '@sensenet/default-content-types/src'
+import { GenericContent, User } from '@sensenet/default-content-types/src'
 
 export const testRepository = new Repository({
   repositoryUrl: 'https://dmsservice.demo.sensenet.com',
@@ -57,6 +58,11 @@ const referenceGridDataSource = [
   { DisplayName: 'Duis et lorem.doc', Id: 4085, IsFolder: false, Children: [], Type: 'File' },
 ]
 
+const testContent = {
+  Name: 'Document_Library',
+  Id: 4808,
+} as GenericContent
+
 const shorttextNotes = require('../notes/fieldcontrols/ShortText.md')
 const displaynameNotes = require('../notes/fieldcontrols/DisplayName.md')
 const checkboxgroupNotes = require('../notes/fieldcontrols/CheckboxGroup.md')
@@ -80,6 +86,90 @@ const approvingModeChoiceNotes = require('../notes/fieldcontrols/ApprovingModeCh
 const versioningModeChoiceNotes = require('../notes/fieldcontrols/VersioningModeChoice.md')
 const versioningModeNotes = require('../notes/fieldcontrols/VersioningMode.md')
 const colorPickerNotes = require('../notes/fieldcontrols/ColorPicker.md')
+const allowedTypeNoted = require('../notes/fieldcontrols/AllowedChildTypes.md')
+
+storiesOf('FieldControls.AllowedChildTypes', module)
+  .addDecorator(withKnobs)
+  .addDecorator(withA11y)
+  .addDecorator(withActions('change'))
+  .add(
+    'new mode',
+    () => (
+      <div>
+        <div style={{ fontStyle: 'italic', fontSize: 13 }}>
+          To see this control in action, please login to{' '}
+          <a target="_blank" href="https://dmsservice.demo.sensenet.com/">
+            https://dmsservice.demo.sensenet.com/
+          </a>
+        </div>
+        <br />
+        <AllowedChildTypes
+          data-actionName="new"
+          name="Name"
+          data-labelText={text('Label', 'AllowedChildTypes label')}
+          className={text('Additional class name', 'allowedChildTypes-field')}
+          data-errorText={text('Error text')}
+          onChange={action('change')}
+          data-hintText={text('Hint', 'AllowedChildTypes hint')}
+          data-repository={testRepository}
+          content={testContent}
+        />
+      </div>
+    ),
+    { notes: { markdown: allowedTypeNoted } },
+  )
+  .add(
+    'edit mode',
+    () => (
+      <div>
+        <div style={{ fontStyle: 'italic', fontSize: 13 }}>
+          To see this control in action, please login to{' '}
+          <a target="_blank" href="https://dmsservice.demo.sensenet.com/">
+            https://dmsservice.demo.sensenet.com/
+          </a>
+        </div>
+        <br />
+        <AllowedChildTypes
+          data-actionName="edit"
+          name="Name"
+          data-labelText={text('Label', 'AllowedChildTypes label')}
+          className={text('Additional class name', 'allowedChildTypes-field')}
+          data-errorText={text('Error text')}
+          onChange={action('change')}
+          data-hintText={text('Hint', 'AllowedChildTypes hint')}
+          data-repository={testRepository}
+          content={testContent}
+        />
+      </div>
+    ),
+    { notes: { markdown: allowedTypeNoted } },
+  )
+  .add(
+    'browse mode',
+    () => (
+      <div>
+        <div style={{ fontStyle: 'italic', fontSize: 13 }}>
+          To see this control in action, please login to{' '}
+          <a target="_blank" href="https://dmsservice.demo.sensenet.com/">
+            https://dmsservice.demo.sensenet.com/
+          </a>
+        </div>
+        <br />
+        <AllowedChildTypes
+          data-actionName="browse"
+          name="Name"
+          data-labelText={text('Label', 'AllowedChildTypes label')}
+          className={text('Additional class name', 'allowedChildTypes-field')}
+          data-errorText={text('Error text')}
+          onChange={action('change')}
+          data-hintText={text('Hint', 'AllowedChildTypes hint')}
+          data-repository={testRepository}
+          content={testContent}
+        />
+      </div>
+    ),
+    { notes: { markdown: allowedTypeNoted } },
+  )
 
 storiesOf('FieldControls.AutoComplete', module)
   .addDecorator(withKnobs)
