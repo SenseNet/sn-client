@@ -95,8 +95,11 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
           ? this.props.dataSource.map(data => ({
               // tslint:disable-next-line:no-string-literal
               value: data['Id'],
+              // tslint:disable-next-line:no-string-literal
               label: data['DisplayName'],
+              // tslint:disable-next-line:no-string-literal
               avatar: data['Avatar'] || {},
+              // tslint:disable-next-line:no-string-literal
               type: data['Type'] || 'GenericContent',
             }))
           : [],
