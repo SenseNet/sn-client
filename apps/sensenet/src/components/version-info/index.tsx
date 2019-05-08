@@ -11,6 +11,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import Info from '@material-ui/icons/Info'
+import Update from '@material-ui/icons/Update'
 import { ConstantContent } from '@sensenet/client-core'
 import React, { useContext, useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
@@ -24,6 +25,7 @@ export const VersionInfo: React.FunctionComponent = () => {
   const localization = useContext(LocalizationContext).values.versionInfo
 
   const [showRaw, setShowRaw] = useState(false)
+  const [nugetManifests, setNugetManifests] = useState<any[]>([])
 
   useEffect(() => {
     ;(async () => {
@@ -34,6 +36,18 @@ export const VersionInfo: React.FunctionComponent = () => {
         name: 'GetVersionInfo',
       })
       setVersionInfo(result)
+
+      const nugetPromises = result.Components.map(async component => {
+        const response = await fetch(
+          `https://api.nuget.org/v3/registration3-gz-semver2/${component.ComponentId.toLowerCase()}/index.json`,
+        )
+        if (response.ok) {
+          const nugetManifest = await response.json()
+          return nugetManifest
+        }
+      })
+      const loadedManifests = await Promise.all(nugetPromises)
+      setNugetManifests(loadedManifests.filter(m => m))
     })()
   }, [repo])
 
@@ -69,19 +83,41 @@ export const VersionInfo: React.FunctionComponent = () => {
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>
                     <List style={{ width: '100%' }}>
-                      {versionInfo.Components.map((component, index) => (
-                        <ListItem key={index}>
-                          <ListItemText
-                            primary={`${component.ComponentId} ${component.Version}`}
-                            secondary={component.Description}
-                          />
-                          <ListItemSecondaryAction>
-                            <IconButton>
-                              <Info />
-                            </IconButton>
-                          </ListItemSecondaryAction>
-                        </ListItem>
-                      ))}
+                      {versionInfo.Components.map((component, index) => {
+                        const isUpdateAvailable = nugetManifests.find(
+                          m =>
+                            m['@id'] ===
+                              `https://api.nuget.org/v3/registration3-gz-semver2/${component.ComponentId.toLocaleLowerCase()}/index.json` &&
+                            m.items[0].upper > component.Version,
+                        )
+                        return (
+                          <ListItem key={index}>
+                            <ListItemText
+                              primary={
+                                isUpdateAvailable ? (
+                                  <>
+                                    {`${component.ComponentId} ${component.Version}`} -&nbsp;
+                                    <a href={`https://nuget.org/packages/${component.ComponentId}`} target="_blank">
+                                      {localization.updateAvailable
+                                        .replace('{0}', component.Version)
+                                        .replace('{1}', isUpdateAvailable.items[0].upper)}
+                                      <Update style={{ height: 20, marginLeft: 3, verticalAlign: 'text-bottom' }} />
+                                    </a>
+                                  </>
+                                ) : (
+                                  `${component.ComponentId} ${component.Version}`
+                                )
+                              }
+                              secondary={component.Description}
+                            />
+                            <ListItemSecondaryAction>
+                              <IconButton>
+                                <Info />
+                              </IconButton>
+                            </ListItemSecondaryAction>
+                          </ListItem>
+                        )
+                      })}
                     </List>
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
@@ -97,11 +133,6 @@ export const VersionInfo: React.FunctionComponent = () => {
                             primary={`${pkg.ComponentId} ${pkg.ComponentVersion}`}
                             secondary={pkg.Description}
                           />
-                          <ListItemSecondaryAction>
-                            <IconButton>
-                              <Info />
-                            </IconButton>
-                          </ListItemSecondaryAction>
                         </ListItem>
                       ))}
                     </List>
@@ -109,18 +140,19 @@ export const VersionInfo: React.FunctionComponent = () => {
                 </ExpansionPanel>
                 <ExpansionPanel>
                   <ExpansionPanelSummary expandIcon={<ExpandMore />}>
-                    <Typography variant="h6">{localization.installedPackages}</Typography>
+                    <Typography variant="h6">{localization.assemblies}</Typography>
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>
                     <List style={{ width: '100%' }}>
-                      {versionInfo.Assemblies.SenseNet.map((ass, index) => (
+                      {[
+                        ...versionInfo.Assemblies.Dynamic,
+                        ...versionInfo.Assemblies.GAC,
+                        ...versionInfo.Assemblies.Other,
+                        ...versionInfo.Assemblies.Plugins,
+                        ...versionInfo.Assemblies.SenseNet,
+                      ].map((ass, index) => (
                         <ListItem key={index}>
                           <ListItemText primary={`${ass.Name} ${ass.Version}`} secondary={ass.CodeBase} />
-                          <ListItemSecondaryAction>
-                            <IconButton>
-                              <Info />
-                            </IconButton>
-                          </ListItemSecondaryAction>
                         </ListItem>
                       ))}
                     </List>

@@ -220,6 +220,7 @@ const values = {
     installedPackages: 'Installed packages',
     assemblies: 'Assemblies',
     showRaw: 'Show raw',
+    updateAvailable: 'Update available from {0} to {1}',
   },
 }
 
