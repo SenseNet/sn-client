@@ -3,6 +3,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
+import Icon from '@material-ui/core/Icon'
 import IconButton from '@material-ui/core/IconButton'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import List from '@material-ui/core/List'
@@ -14,7 +15,6 @@ import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
 import DeleteIcon from '@material-ui/icons/Delete'
 import { GenericContent } from '@sensenet/default-content-types'
-import { MaterialIcon } from '@sensenet/icons-react'
 import Radium from 'radium'
 import React, { Component } from 'react'
 import { typeicons } from '../../assets/icons'
@@ -22,7 +22,7 @@ import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../Client
 import { ReactAllowedChildTypesFieldSetting } from './AllowedChildTypesFieldSettings'
 
 const renderIconDefault = (name: string) => {
-  return <MaterialIcon iconName={name} />
+  return <Icon>{name}</Icon>
 }
 
 const INPUT_PLACEHOLDER = 'Start typing to add another type'
@@ -357,7 +357,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                   style={styles.button}
                   disabled={this.state.selected && this.state.selected.Name.length > 0 ? false : true}
                   onClick={this.handleAddClick}>
-                  <MaterialIcon iconName="add" />
+                  {this.props.renderIcon ? this.props.renderIcon('add') : renderIconDefault('add')}
                 </IconButton>
               </Paper>
               <ClickAwayListener onClickAway={this.handleClickAway}>
@@ -432,7 +432,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                   style={styles.button}
                   disabled={this.state.selected && this.state.selected.Name.length > 0 ? false : true}
                   onClick={this.handleAddClick}>
-                  <MaterialIcon iconName="add" />
+                  {this.props.renderIcon ? this.props.renderIcon('add') : renderIconDefault('add')}
                 </IconButton>
               </Paper>
               <ClickAwayListener onClickAway={this.handleClickAway}>
@@ -485,10 +485,13 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                 {this.state.items.map((item, index) => (
                   <ListItem key={index}>
                     <ListItemIcon>
-                      <MaterialIcon
-                        // tslint:disable-next-line: no-string-literal
-                        iconName={item.Icon ? this.props.icons[item.Icon.toLowerCase()] : this.props.icons['file']}
-                      />
+                      {this.props.renderIcon
+                        ? this.props.renderIcon(
+                            item.Icon ? this.props.icons[item.Icon.toLowerCase()] : this.props.icons.file,
+                          )
+                        : renderIconDefault(
+                            item.Icon ? this.props.icons[item.Icon.toLowerCase()] : this.props.icons.file,
+                          )}
                     </ListItemIcon>
                     <ListItemText primary={item.DisplayName} />
                   </ListItem>
