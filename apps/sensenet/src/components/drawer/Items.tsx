@@ -30,7 +30,7 @@ export const defaultDrawerItems: DrawerItem[] = [
     name: 'Search',
     primaryText: 'searchTitle',
     secondaryText: 'searchSecondaryText',
-    url: '/search',
+    url: '/saved-queries',
     icon: <SearchTwoTone />,
     requiredGroupPath: '/Root/IMS/BuiltIn/Portal/Operators',
   },
