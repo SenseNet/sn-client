@@ -43,9 +43,13 @@ export const EditPropertiesDialog: React.FunctionComponent<{
               })
             } catch (error) {
               logger.error({
-                message: localization.saveFailedNotification.replace('{0}', content.DisplayName || content.Name),
+                message: localization.saveFailedNotification.replace(
+                  '{0}',
+                  content.DisplayName || content.Name || props.content.DisplayName || props.content.Name,
+                ),
                 data: {
-                  relatedContent: content,
+                  relatedContent: props.content,
+                  content,
                   relatedRepository: repo.configuration.repositoryUrl,
                   error: isExtendedError(error) ? repo.getErrorFromResponse(error.response) : error,
                 },
