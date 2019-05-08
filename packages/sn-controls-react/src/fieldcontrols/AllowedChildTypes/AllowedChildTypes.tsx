@@ -46,10 +46,8 @@ const styles = {
   listContainer: {
     position: 'absolute',
     top: '40px',
-    background: '#fff',
     maxHeight: ITEM_HEIGHT * 2.5,
     overflow: 'auto',
-    boxShadow: '0px 1px 3px 0px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 2px 1px -1px rgba(0,0,0,0.12)',
     zIndex: 10,
   },
 }
@@ -280,7 +278,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
         value: selected ? [...value, selected.Name] : value,
         selected: null,
         inputValue: '',
-        filteredList: [],
+        filteredList: this.state.allCTDs,
       })
     } else {
       this.setState({
@@ -288,7 +286,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
         value: selected ? [selected.Name] : [],
         selected: null,
         inputValue: '',
-        filteredList: [],
+        filteredList: this.state.allCTDs,
         removeable: true,
       })
     }
@@ -361,14 +359,16 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                 </IconButton>
               </Paper>
               <ClickAwayListener onClickAway={this.handleClickAway}>
-                <List
+                <Paper
                   style={{ ...{ display: this.state.isOpened ? 'block' : 'none' }, ...(styles.listContainer as any) }}>
-                  {this.state.filteredList.length > 0 ? (
-                    this.state.filteredList.map((item: any) => this.state.getMenuItem(item, this.handleSelect))
-                  ) : (
-                    <ListItem>No hits</ListItem>
-                  )}
-                </List>
+                  <List>
+                    {this.state.filteredList.length > 0 ? (
+                      this.state.filteredList.map((item: any) => this.state.getMenuItem(item, this.handleSelect))
+                    ) : (
+                      <ListItem>No hits</ListItem>
+                    )}
+                  </List>
+                </Paper>
               </ClickAwayListener>
               <FormHelperText>{this.props['data-hintText']}</FormHelperText>
               <FormHelperText>{this.props['data-errorText']}</FormHelperText>
@@ -436,14 +436,16 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                 </IconButton>
               </Paper>
               <ClickAwayListener onClickAway={this.handleClickAway}>
-                <List
+                <Paper
                   style={{ ...{ display: this.state.isOpened ? 'block' : 'none' }, ...(styles.listContainer as any) }}>
-                  {this.state.filteredList.length > 0 ? (
-                    this.state.filteredList.map((item: any) => this.state.getMenuItem(item, this.handleSelect))
-                  ) : (
-                    <ListItem>No hits</ListItem>
-                  )}
-                </List>
+                  <List>
+                    {this.state.filteredList.length > 0 ? (
+                      this.state.filteredList.map((item: any) => this.state.getMenuItem(item, this.handleSelect))
+                    ) : (
+                      <ListItem>No hits</ListItem>
+                    )}
+                  </List>
+                </Paper>
               </ClickAwayListener>
               <FormHelperText>{this.props['data-hintText']}</FormHelperText>
               <FormHelperText>{this.props['data-errorText']}</FormHelperText>
