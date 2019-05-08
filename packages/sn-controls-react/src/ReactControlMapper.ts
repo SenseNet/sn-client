@@ -194,6 +194,8 @@ export const reactControlMapper = (repository: Repository) =>
         return FieldControls.EmptyFieldControl
       } else if (setting.Name === 'AllowedChildTypes') {
         return FieldControls.AllowedChildTypes
+      } else if (setting.Name === 'UrlList') {
+        return FieldControls.Textarea
       } else {
         return FieldControls.ShortText
       }
