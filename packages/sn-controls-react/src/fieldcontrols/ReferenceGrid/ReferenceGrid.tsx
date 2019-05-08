@@ -118,8 +118,8 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
       },
     })
     this.setState({
-      fieldValue:
-        references.d.results.length > 0
+      fieldValue: references.d.results
+        ? references.d.results.length > 0
           ? references.d.results.map((item: GenericContent | User) => ({
               // tslint:disable-next-line:no-string-literal
               DisplayName: item.DisplayName,
@@ -129,7 +129,8 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
               Avatar: item['Avatar'],
               Type: item.Type,
             }))
-          : [],
+          : []
+        : [references.d],
     })
     return references
   }
