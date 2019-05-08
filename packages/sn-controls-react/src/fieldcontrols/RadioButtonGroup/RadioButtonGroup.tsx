@@ -40,7 +40,7 @@ export class RadioButtonGroup<T extends GenericContent, K extends keyof T> exten
   constructor(props: RadioButtonGroupProps<T, K>) {
     super(props)
     this.state = {
-      value: this.props['data-fieldValue'] || this.props['data-defaultValue'] || [],
+      value: this.props['data-fieldValue'] || this.props['data-defaultValue'] || [this.props.options[0].Value],
     }
     this.handleChange = this.handleChange.bind(this)
   }
