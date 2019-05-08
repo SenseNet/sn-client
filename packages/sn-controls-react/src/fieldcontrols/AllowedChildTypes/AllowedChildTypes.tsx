@@ -191,10 +191,12 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
         allowedTypesOnCTD: allowedChildTypesFromCTD['d'].results,
         // tslint:disable-next-line: no-string-literal
         items:
-          result.d.EffectiveAllowedChildTypes.length === 0
-            ? // tslint:disable-next-line: no-string-literal
-              allowedChildTypesFromCTD['d'].results
-            : result.d.EffectiveAllowedChildTypes,
+          this.props['data-actionName'] !== 'new'
+            ? result.d.EffectiveAllowedChildTypes.length === 0
+              ? // tslint:disable-next-line: no-string-literal
+                allowedChildTypesFromCTD['d'].results
+              : result.d.EffectiveAllowedChildTypes
+            : [],
         removeable: result.d.EffectiveAllowedChildTypes.length === 0 ? false : true,
       })
     } catch (_e) {
@@ -487,13 +489,6 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                       />
                     </ListItemIcon>
                     <ListItemText primary={item.DisplayName} />
-                    {this.state.removeable ? (
-                      <ListItemSecondaryAction>
-                        <IconButton aria-label="Remove" onClick={() => this.handleRemove(item)}>
-                          <DeleteIcon />
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    ) : null}
                   </ListItem>
                 ))}
               </List>
