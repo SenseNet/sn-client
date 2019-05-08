@@ -1,7 +1,5 @@
 language: node_js
 
-dist: trusty
-
 node_js:
   - '10'
 
@@ -22,6 +20,7 @@ jobs:
     #   script: yarn test:coverage
     #   after_success: bash <(curl -s https://codecov.io/bash)
     # - name: 'DMS e2e tests'
+    #   dist: trusty
     #   before_script: yarn build
     #   script: yarn test:dms:e2e
     #   # after_failure: bash ./scripts/sendscreenshots.sh
@@ -34,3 +33,5 @@ jobs:
         provider: script
         script: netlify deploy -s $DMS_NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN ./examples/sn-dms-demo/build
         skip_cleanup: true
+        on:
+          all_branches: true
