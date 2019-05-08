@@ -23,6 +23,7 @@ export const EditPropertiesDialog: React.FunctionComponent<{
       </DialogTitle>
       <DialogContent>
         <EditView
+          schema={repo.schemas.getSchemaByName(props.content.Type)}
           content={props.content}
           repository={repo}
           contentTypeName={props.content.Type}
