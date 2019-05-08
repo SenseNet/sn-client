@@ -145,7 +145,8 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
     allowedTypes.map(type => {
       typeQuery += ` +TypeIs:${type}`
     })
-    const req = await this.props['data-repository'].loadCollection({
+    const repo = this.props['data-repository'] || this.props.repository
+    const req = await repo.loadCollection({
       path: '/Root',
       oDataOptions: {
         query: `(${pathQuery}) AND${typeQuery}`,
@@ -169,11 +170,12 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
    * @return {any[]}
    */
   public async getSelected() {
+    const repo = this.props['data-repository'] || this.props.repository
     // tslint:disable:no-string-literal
     const loadPath = this.props['content']
       ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props['content'].Path), '/', this.props.name.toString())
       : ''
-    const references = await this.props.repository.loadCollection({
+    const references = await repo.loadCollection({
       path: loadPath,
       oDataOptions: {
         select: 'all',
@@ -181,7 +183,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
     })
     const { label } = this.state
     this.setState({
-      fieldValue: references.d.results.map(item => ({
+      fieldValue: references.d.results.map((item: GenericContent) => ({
         // tslint:disable-next-line:no-string-literal
         value: item['Id'],
         label: item[label],
