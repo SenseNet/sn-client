@@ -25,8 +25,12 @@ cache:
     - ~/.cache
 
 script:
-  - yarn
-  - yarn lint
   - yarn build
-  - yarn test:coverage
-  - yarn test:dms:e2e
+
+jobs:
+include:
+  - stage: 'Tests'
+    name: 'Static linting'
+    script: yarn lint
+  - script: yarn test:coverage
+    name: 'Unit Tests'
