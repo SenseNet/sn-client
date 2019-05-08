@@ -221,6 +221,9 @@ const values = {
     assemblies: 'Assemblies',
     showRaw: 'Show raw',
     updateAvailable: 'Update available from {0} to {1}',
+    version: 'Version',
+    lastOfficialVersion: 'Last official version',
+    description: 'Description',
   },
 }
 

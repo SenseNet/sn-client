@@ -5,17 +5,16 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
 import IconButton from '@material-ui/core/IconButton'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import ExpandMore from '@material-ui/icons/ExpandMore'
-import Info from '@material-ui/icons/Info'
 import Update from '@material-ui/icons/Update'
 import { ConstantContent } from '@sensenet/client-core'
 import React, { useContext, useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
-import { LocalizationContext, RepositoryContext, ThemeContext } from '../../context'
+import { LocalizationContext, RepositoryContext, ResponsiveContext, ThemeContext } from '../../context'
+import { ComponentInfo } from './component-info'
 import { VersionInfo as VersionInfoModel } from './version-info-models'
 
 export const VersionInfo: React.FunctionComponent = () => {
@@ -23,6 +22,7 @@ export const VersionInfo: React.FunctionComponent = () => {
   const [versionInfo, setVersionInfo] = useState<VersionInfoModel | undefined>()
   const theme = useContext(ThemeContext)
   const localization = useContext(LocalizationContext).values.versionInfo
+  const device = useContext(ResponsiveContext)
 
   const [showRaw, setShowRaw] = useState(false)
   const [nugetManifests, setNugetManifests] = useState<any[]>([])
@@ -96,11 +96,13 @@ export const VersionInfo: React.FunctionComponent = () => {
                               primary={
                                 isUpdateAvailable ? (
                                   <>
-                                    {`${component.ComponentId} ${component.Version}`} -&nbsp;
+                                    {`${component.ComponentId} ${component.Version}`}&nbsp;
                                     <a href={`https://nuget.org/packages/${component.ComponentId}`} target="_blank">
-                                      {localization.updateAvailable
-                                        .replace('{0}', component.Version)
-                                        .replace('{1}', isUpdateAvailable.items[0].upper)}
+                                      {device === 'mobile'
+                                        ? ''
+                                        : localization.updateAvailable
+                                            .replace('{0}', component.Version)
+                                            .replace('{1}', isUpdateAvailable.items[0].upper)}
                                       <Update style={{ height: 20, marginLeft: 3, verticalAlign: 'text-bottom' }} />
                                     </a>
                                   </>
@@ -110,11 +112,9 @@ export const VersionInfo: React.FunctionComponent = () => {
                               }
                               secondary={component.Description}
                             />
-                            <ListItemSecondaryAction>
-                              <IconButton>
-                                <Info />
-                              </IconButton>
-                            </ListItemSecondaryAction>
+                            {device === 'mobile' ? (
+                              <ComponentInfo component={component} update={isUpdateAvailable} />
+                            ) : null}
                           </ListItem>
                         )
                       })}
