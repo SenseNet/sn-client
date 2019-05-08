@@ -214,6 +214,13 @@ const values = {
     public: 'Public',
     confirmDeleteQuery: `Are you sure that you want to delete the query '{0}'?`,
   },
+  versionInfo: {
+    title: 'Version info',
+    components: 'Components',
+    installedPackages: 'Installed packages',
+    assemblies: 'Assemblies',
+    showRaw: 'Show raw',
+  },
 }
 
 export default values
