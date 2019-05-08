@@ -48,8 +48,8 @@ const currencyOptions = {
 }
 
 const tagsInputDataSource = [
-  { DisplayName: 'Alba Monday', Id: 1 } as User,
-  { DisplayName: 'Terry Cherry', Id: 2 } as User,
+  { DisplayName: 'Alba Monday', Id: 1, Type: 'User' } as User,
+  { DisplayName: 'Terry Cherry', Id: 2, Type: 'User' } as User,
 ]
 
 const referenceGridDataSource = [
@@ -61,6 +61,7 @@ const referenceGridDataSource = [
 const testContent = {
   Name: 'Document_Library',
   Id: 4808,
+  Path: '/Root/Sites/Default_Site',
 } as GenericContent
 
 const shorttextNotes = require('../notes/fieldcontrols/ShortText.md')
@@ -1203,7 +1204,7 @@ storiesOf('FieldControls.ReferenceGrid', module)
         className={text('Additional class name', 'reference-field')}
         onChange={action('change')}
         name="Name"
-        data-fieldValue={[]}
+        data-fieldValue={undefined}
         dataSource={referenceGridDataSource}
         repository={testRepository}
         data-repository={testRepository}
@@ -1231,6 +1232,7 @@ storiesOf('FieldControls.ReferenceGrid', module)
         data-repository={testRepository}
         data-selectionRoot={['/workspaces']}
         data-allowedTypes={['File']}
+        data-allowMultiple={true}
       />
     ),
     { notes: { markdown: referenceGridNotes } },
@@ -1242,19 +1244,19 @@ storiesOf('FieldControls.ReferenceGrid', module)
         data-actionName="browse"
         data-labelText={text('Label', 'ReferenceGrid label')}
         className={text('Additional class name', 'reference-field')}
-        data-fieldValue={[
+        data-fieldValue={
           {
             DisplayName: 'Alba Monday',
             Id: 4,
             Icon: 'user',
             Type: 'User',
             Avatar: { Url: 'https://dmsservice.demo.sensenet.com/Root/Sites/Default_Site/demoavatars/alba.jpg' },
-          } as User,
-        ]}
+          } as User
+        }
         onChange={action('change')}
         name="Name"
         dataSource={tagsInputDataSource}
-        repository={testRepository}
+        data-repository={testRepository}
       />
     ),
     { notes: { markdown: referenceGridNotes } },
@@ -1398,6 +1400,7 @@ storiesOf('FieldControls.TagsInput', module)
         repository={testRepository}
         data-allowMultiple={boolean('Allow multiple selection', false)}
         name="ModifiedBy"
+        content={testContent}
       />
     ),
     { notes: { markdown: tagsInputNotes } },
@@ -1418,8 +1421,9 @@ storiesOf('FieldControls.TagsInput', module)
         dataSource={tagsInputDataSource}
         repository={testRepository}
         data-allowMultiple={boolean('Allow multiple selection', false)}
-        data-fieldValue={[2]}
+        data-fieldValue={[tagsInputDataSource[1]]}
         name="ModifiedBy"
+        content={testContent}
       />
     ),
     { notes: { markdown: tagsInputNotes } },
@@ -1428,15 +1432,15 @@ storiesOf('FieldControls.TagsInput', module)
     'browse mode',
     () => (
       <TagsInput
-        data-textType="LongText"
         data-actionName="browse"
-        data-labelText={text('Label', 'Textarea label')}
-        className={text('Additional class name', 'textarea-field')}
-        data-fieldValue={[1, 2]}
+        data-labelText={text('Label', 'TagsInput label')}
+        className={text('Additional class name', 'tagsinput-field')}
+        data-fieldValue={[tagsInputDataSource[0], tagsInputDataSource[1]]}
         onChange={action('change')}
-        dataSource={tagsInputDataSource}
         repository={testRepository}
+        dataSource={tagsInputDataSource}
         name="ModifiedBy"
+        content={testContent}
       />
     ),
     { notes: { markdown: tagsInputNotes } },
