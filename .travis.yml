@@ -11,6 +11,8 @@ cache:
   yarn: true
 
 jobs:
+  allow_failures:
+    - name: 'DMS e2e tests'
   include:
     - stage: 'Tests'
       name: 'Static linting'
@@ -26,7 +28,7 @@ jobs:
       addons:
         chrome: stable
     - stage: 'Deploy dms to netlify'
-      before_deploy: npm install netlify-cli -g
+      before_install: npm install netlify-cli -g
       script: yarn build && yarn dms build:webpack
       deploy:
         provider: script
