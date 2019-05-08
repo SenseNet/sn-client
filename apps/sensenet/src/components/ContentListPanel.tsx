@@ -13,6 +13,7 @@ import {
   RepositoryContext,
   ResponsiveContext,
   ResponsivePersonalSetttings,
+  ResponsivePlatforms,
 } from '../context'
 import { ContentBreadcrumbs } from './ContentBreadcrumbs'
 import { ContentContextMenu } from './ContentContextMenu'
@@ -34,6 +35,31 @@ export interface CollectionComponentProps {
   fieldsToDisplay?: Array<keyof GenericContent>
   onSelectionChange?: (sel: GenericContent[]) => void
   onFocus?: () => void
+  containerProps?: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+}
+
+export const DisplayNameComponent: React.FunctionComponent<{
+  content: GenericContent
+  device: ResponsivePlatforms
+  isActive: boolean
+}> = ({ content, device, isActive }) => {
+  return (
+    <TableCell padding={'none'}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}>
+        {content.DisplayName || content.Name}
+        {device === 'mobile' && isActive ? (
+          <CurrentContentContext.Provider value={content}>
+            <SecondaryActionsMenu style={{ float: 'right' }} />
+          </CurrentContentContext.Provider>
+        ) : null}
+      </div>
+    </TableCell>
+  )
 }
 
 export const CollectionComponent: React.FunctionComponent<CollectionComponentProps> = props => {
@@ -117,7 +143,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
   }
 
   return (
-    <div style={{ ...props.style }}>
+    <div style={{ ...props.style }} {...props.containerProps}>
       {props.enableBreadcrumbs ? <ContentBreadcrumbs onItemClick={i => props.onParentChange(i.content)} /> : null}
       <DropFileArea parent={parent} style={{ height: '100%', overflow: 'hidden' }}>
         <div
@@ -256,23 +282,11 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
               switch (fieldOptions.field) {
                 case 'DisplayName':
                   return (
-                    <TableCell padding={'none'}>
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                        }}>
-                        {fieldOptions.content.DisplayName || fieldOptions.content.Name}
-                        {device === 'mobile' &&
-                        fieldOptions.active &&
-                        fieldOptions.active.Id === fieldOptions.content.Id ? (
-                          <CurrentContentContext.Provider value={fieldOptions.content}>
-                            <SecondaryActionsMenu style={{ float: 'right' }} />
-                          </CurrentContentContext.Provider>
-                        ) : null}
-                      </div>
-                    </TableCell>
+                    <DisplayNameComponent
+                      content={fieldOptions.content}
+                      device={device}
+                      isActive={activeContent && fieldOptions.content.Id === activeContent.Id}
+                    />
                   )
                 case 'Actions':
                   return (
