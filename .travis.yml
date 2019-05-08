@@ -24,8 +24,7 @@ cache:
     - node_modules
     - ~/.cache
 
-script:
-  - yarn build
+before_script: yarn build
 
 jobs:
 include:
