@@ -467,13 +467,6 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                     }
                   />
                   <ListItemText primary={item.DisplayName} />
-                  {this.state.removeable ? (
-                    <ListItemSecondaryAction>
-                      <IconButton aria-label="Remove" onClick={() => this.handleRemove(item)}>
-                        <DeleteIcon />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  ) : null}
                 </ListItem>
               ))}
             </List>
