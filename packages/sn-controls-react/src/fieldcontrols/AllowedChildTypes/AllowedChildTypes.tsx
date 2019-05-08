@@ -486,12 +486,8 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                   <ListItem key={index}>
                     <ListItemIcon>
                       {this.props.renderIcon
-                        ? this.props.renderIcon(
-                            item.Icon ? this.props.icons[item.Icon.toLowerCase()] : this.props.icons.file,
-                          )
-                        : renderIconDefault(
-                            item.Icon ? this.props.icons[item.Icon.toLowerCase()] : this.props.icons.file,
-                          )}
+                        ? this.props.renderIcon(item.Icon ? this.props.icons[item.Icon.toLowerCase()] : 'file')
+                        : renderIconDefault(item.Icon ? this.props.icons[item.Icon.toLowerCase()] : 'file')}
                     </ListItemIcon>
                     <ListItemText primary={item.DisplayName} />
                   </ListItem>
