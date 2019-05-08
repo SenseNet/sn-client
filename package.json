@@ -36,7 +36,7 @@
     "test:dms:e2e": "start-server-and-test start:dms:e2e http-get://localhost:3000 cy:run:dms",
     "snapp": "yarn workspace @sensenet/sn-app start",
     "storybook": "yarn workspace sn-react-component-docs start-storybook",
-    "dms": "yarn workspace sn-dms-demo start",
+    "dms": "yarn workspace sn-dms-demo",
     "build": "tsc -b packages",
     "build:dms": "yarn && yarn build && yarn workspace sn-dms-demo run build:webpack",
     "build:sn-app": "yarn && yarn build && yarn workspace @sensenet/sn-app run build:webpack",
