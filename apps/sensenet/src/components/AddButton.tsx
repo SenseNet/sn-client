@@ -36,6 +36,10 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   }, [props.parent])
 
   useEffect(() => {
+    !props.parent && setParent(parentContext)
+  }, [parentContext])
+
+  useEffect(() => {
     if (showSelectType) {
       repo
         .getAllowedChildTypes({ idOrPath: parent.Id })
