@@ -139,7 +139,7 @@ export const reactControlMapper = (repository: Repository) =>
       return choiceSettings
     })
     .setupFieldSettingDefault(ReferenceFieldSetting, setting => {
-      if (setting.AllowedTypes && setting.AllowedTypes.indexOf('User') !== -1 && !setting.AllowMultiple) {
+      if (setting.AllowedTypes && setting.AllowedTypes.indexOf('User') !== -1 && setting.AllowMultiple) {
         return FieldControls.TagsInput
       } else {
         return FieldControls.ReferenceGrid
@@ -196,6 +196,9 @@ export const reactControlMapper = (repository: Repository) =>
         return FieldControls.AllowedChildTypes
       } else if (setting.Name === 'UrlList') {
         return FieldControls.Textarea
+        // tslint:disable-next-line: no-string-literal
+      } else if (setting['FieldClassName'].indexOf('BooleanField') > -1) {
+        return FieldControls.Boolean
       } else {
         return FieldControls.ShortText
       }
