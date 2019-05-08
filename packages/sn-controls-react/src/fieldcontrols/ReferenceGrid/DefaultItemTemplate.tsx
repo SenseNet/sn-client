@@ -26,6 +26,7 @@ interface DefaultItemTemplateProps {
   actionName?: 'new' | 'edit' | 'browse'
   readOnly?: boolean
   repositoryUrl: string
+  multiple: boolean
 }
 
 export class DefaultItemTemplate extends Component<DefaultItemTemplateProps, {}> {
@@ -67,19 +68,21 @@ export class DefaultItemTemplate extends Component<DefaultItemTemplateProps, {}>
         />
         {this.props.actionName && this.props.actionName !== 'browse' && !this.props.readOnly ? (
           <ListItemSecondaryAction>
-            {content.Id > 0 ? (
-              <IconButton onClick={() => this.handlRemoveIconClick(content.Id)}>
-                <RemoveCircle />
-              </IconButton>
-            ) : content.Id > -2 ? (
-              <IconButton onClick={() => this.handleAddIconClick()}>
-                <AddCircle />
-              </IconButton>
-            ) : (
-              <IconButton onClick={() => this.handleAddIconClick()}>
-                <Refresh />
-              </IconButton>
-            )}
+            {content ? (
+              content.Id > 0 && this.props.multiple ? (
+                <IconButton onClick={() => this.handlRemoveIconClick(content.Id)}>
+                  <RemoveCircle />
+                </IconButton>
+              ) : content.Id === -1 ? (
+                <IconButton onClick={() => this.handleAddIconClick()}>
+                  <AddCircle />
+                </IconButton>
+              ) : (
+                <IconButton onClick={() => this.handleAddIconClick()}>
+                  <Refresh />
+                </IconButton>
+              )
+            ) : null}
           </ListItemSecondaryAction>
         ) : null}
       </ListItem>
