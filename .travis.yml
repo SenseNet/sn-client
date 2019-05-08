@@ -31,7 +31,7 @@ jobs:
       script: yarn build && yarn dms build:webpack
       deploy:
         provider: script
-        script: netlify deploy -s $DMS_NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN ./examples/sn-dms-demo/build
+        script: netlify deploy -s $DMS_NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --dir ./examples/sn-dms-demo/build
         skip_cleanup: true
         on:
           all_branches: true
