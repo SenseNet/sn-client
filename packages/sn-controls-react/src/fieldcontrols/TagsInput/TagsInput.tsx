@@ -104,6 +104,10 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
             }))
           : [],
       }
+      if (this.props['data-actionName'] !== 'new') {
+        this.getSelected()
+        this.handleChange = this.handleChange.bind(this)
+      }
     } else {
       this.state = {
         dataSource: [],
@@ -113,10 +117,6 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
       this.search()
     }
     this.getSelected = this.getSelected.bind(this)
-    if (this.props['data-actionName'] !== 'new') {
-      this.getSelected()
-      this.handleChange = this.handleChange.bind(this)
-    }
   }
   /**
    * handles input changes
@@ -173,6 +173,10 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
         type: suggestion['Type'] || 'GenericContent',
       })),
     })
+    if (this.props['data-actionName'] !== 'new') {
+      this.getSelected()
+      this.handleChange = this.handleChange.bind(this)
+    }
     return req
   }
   /**
