@@ -14,4 +14,8 @@ export interface ReactAllowedChildTypesFieldSetting<T extends GenericContent, K 
    * Connected repository
    */
   repository: Repository
+  /**
+   * Current content
+   */
+  content: GenericContent
 }
