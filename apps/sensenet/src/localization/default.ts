@@ -214,6 +214,21 @@ const values = {
     public: 'Public',
     confirmDeleteQuery: `Are you sure that you want to delete the query '{0}'?`,
   },
+  versionInfo: {
+    title: 'Version info',
+    adminUi: 'Admin UI',
+    components: 'Components',
+    installedPackages: 'Installed packages',
+    assemblies: 'Assemblies',
+    showRaw: 'Show raw',
+    updateAvailable: 'Update available from {0} to {1}',
+    version: 'Version',
+    lastOfficialVersion: 'Last official version',
+    description: 'Description',
+    appVersion: 'Application version',
+    branchName: 'Branch name',
+    commitHash: 'Commit Hash',
+  },
 }
 
 export default values
