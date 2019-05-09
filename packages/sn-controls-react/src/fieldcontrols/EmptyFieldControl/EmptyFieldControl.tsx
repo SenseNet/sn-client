@@ -4,7 +4,7 @@
 import { Component } from 'react'
 
 /**
- * Field control that represents an obsolete fieldcontrols. Available values will be populated from the FieldSettings.
+ * Field control that represents obsolete fieldcontrols.
  */
 
 export class EmptyFieldControl extends Component<{}, {}> {

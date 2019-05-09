@@ -16,10 +16,6 @@ export interface ReactClientFieldSettingProps<T extends GenericContent = Generic
    */
   onChange: (field: keyof T, value: T[K]) => void
   /**
-   * JSON object with name pairs for use sensenet icon names as material icons
-   */
-  icons: object
-  /**
    * Unique key of the field control
    */
   key?: string

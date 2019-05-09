@@ -70,7 +70,7 @@ export interface AllowedChildTypesProps<T extends GenericContent, K extends keyo
     ReactClientFieldSetting<T, K>,
     ReactAllowedChildTypesFieldSetting<T, K> {}
 /**
- * Interface for Password state
+ * Interface for AllowedChildTypes state
  */
 export interface AllowedChildTypesState<T extends GenericContent> {
   value: string[]
@@ -88,7 +88,7 @@ export interface AllowedChildTypesState<T extends GenericContent> {
   selected: T | null
 }
 /**
- * Field control that represents a Color field. Available values will be populated from the FieldSettings.
+ * Field control that represents an AllowedChildTypes field. Available values will be populated from the FieldSettings.
  */
 @Radium
 export class AllowedChildTypes<T extends GenericContent, K extends keyof T> extends Component<
@@ -187,7 +187,6 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
         effectiveAllowedChildTypes: result.d.EffectiveAllowedChildTypes,
         // tslint:disable-next-line: no-string-literal
         allowedTypesOnCTD: allowedChildTypesFromCTD['d'].results,
-        // tslint:disable-next-line: no-string-literal
         items:
           this.props['data-actionName'] !== 'new'
             ? result.d.EffectiveAllowedChildTypes.length === 0
@@ -486,11 +485,19 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
               <List dense={true}>
                 {this.state.items.map((item, index) => (
                   <ListItem key={index}>
-                    <ListItemIcon>
-                      {this.props.renderIcon
-                        ? this.props.renderIcon(item.Icon ? this.props.icons[item.Icon.toLowerCase()] : 'file')
-                        : renderIconDefault(item.Icon ? this.props.icons[item.Icon.toLowerCase()] : 'file')}
-                    </ListItemIcon>
+                    <ListItemIcon
+                      style={{ margin: 0 }}
+                      children={
+                        this.props.renderIcon
+                          ? this.props.renderIcon(item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+                          : renderIconDefault(
+                              item.Icon && typeicons[item.Icon.toLowerCase()]
+                                ? typeicons[item.Icon.toLowerCase()]
+                                : // tslint:disable-next-line: no-string-literal
+                                  typeicons['contenttype'],
+                            )
+                      }
+                    />
                     <ListItemText primary={item.DisplayName} />
                   </ListItem>
                 ))}

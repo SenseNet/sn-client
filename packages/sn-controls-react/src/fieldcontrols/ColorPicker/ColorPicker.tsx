@@ -32,7 +32,7 @@ export interface ColorPickerProps<T extends GenericContent, K extends keyof T>
     ReactClientFieldSetting<T, K>,
     ReactColorPickerFieldSetting<T, K> {}
 /**
- * Interface for Password state
+ * Interface for ColorPicker state
  */
 export interface ColorPickerState {
   value: string

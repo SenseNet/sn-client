@@ -34,9 +34,6 @@ const styles = {
   icon: {
     marginRight: 0,
   },
-  formGroup: {
-    marginTop: '10px important',
-  },
 }
 
 const ADD_REFERENCE = 'Add reference'
@@ -143,7 +140,6 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
 
     this.setState({
       fieldValue: results.map((item: GenericContent | User) => ({
-        // tslint:disable-next-line:no-string-literal
         DisplayName: item.DisplayName,
         Icon: item.Icon,
         Id: item.Id,
