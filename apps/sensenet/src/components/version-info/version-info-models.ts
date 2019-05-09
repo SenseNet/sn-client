@@ -2,7 +2,7 @@
  * @module Repository
  * @preferred
  *
- * @description This module contains models for Sense/Net ECM's GetVersionInfo custom action
+ * @description This module contains models for sensenet's GetVersionInfo custom action
  */ /** */
 
 /**
@@ -36,7 +36,7 @@ export interface Assembly {
 }
 
 /**
- * Represents a Sense/NET ECM Component in the Version Info
+ * Represents a sensenet Component in the Version Info
  */
 export interface Component {
   ComponentId: string
@@ -46,7 +46,7 @@ export interface Component {
 }
 
 /**
- * Represents a Sense/NET ECM Package in the Version Info
+ * Represents a sensenet Package in the Version Info
  */
 export interface Package {
   ComponentId: string
@@ -61,7 +61,7 @@ export interface Package {
 }
 
 /**
- * Represents a model for the Sense/NET ECM's GetVersionInfo custom action's response
+ * Represents a model for the sensenet's GetVersionInfo custom action's response
  */
 export interface VersionInfo {
   Assemblies: {
