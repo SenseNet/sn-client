@@ -74,7 +74,6 @@ export class Password<T extends GenericContent, K extends keyof T> extends Compo
    * @param {SytheticEvent} event
    */
   public handleChange(event: React.ChangeEvent) {
-    // tslint:disable-next-line:no-string-literal
     this.setState({ value: event.target['value'] })
   }
   /**

@@ -122,8 +122,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                 : renderIconDefault(
                     item.Icon && typeicons[item.Icon.toLowerCase()]
                       ? typeicons[item.Icon.toLowerCase()]
-                      : // tslint:disable-next-line: no-string-literal
-                        typeicons['contenttype'],
+                      : typeicons['contenttype'],
                   )
             }
           />
@@ -153,11 +152,16 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       }
     }
   }
+  /**
+   * component will unmount
+   */
+  public componentWillUnmount() {
+    this.willUnmount = true
+  }
   private willUnmount: boolean = false
   private async getAllowedChildTypes() {
     try {
       const result = await this.props['data-repository'].load<T>({
-        // tslint:disable-next-line: no-string-literal
         idOrPath: this.props['content'].Id,
         oDataOptions: {
           select: 'EffectiveAllowedChildTypes',
@@ -169,7 +173,6 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       }
 
       const allowedChildTypesFromCTD = await this.props['data-repository'].executeAction({
-        // tslint:disable-next-line: no-string-literal
         idOrPath: this.props['content'].Id,
         name: 'GetAllowedChildTypesFromCTD',
         method: 'GET',
@@ -180,16 +183,13 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
 
       this.setState({
         effectiveAllowedChildTypes: result.d.EffectiveAllowedChildTypes,
-        // tslint:disable-next-line: no-string-literal
         allowedTypesOnCTD: allowedChildTypesFromCTD['d'].results,
         items:
           this.props['data-actionName'] !== 'new'
             ? result.d.EffectiveAllowedChildTypes.length === 0
-              ? // tslint:disable-next-line: no-string-literal
-                allowedChildTypesFromCTD['d'].results
+              ? allowedChildTypesFromCTD['d'].results
               : result.d.EffectiveAllowedChildTypes
-            : // tslint:disable-next-line: no-string-literal
-              allowedChildTypesFromCTD['d'].results,
+            : allowedChildTypesFromCTD['d'].results,
         removeable:
           result.d.EffectiveAllowedChildTypes.length === 0 || this.props['data-actionName'] === 'new' ? false : true,
       })
@@ -200,7 +200,6 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
   private async getAllContentTypes() {
     try {
       const result = await this.props['data-repository'].executeAction({
-        // tslint:disable-next-line: no-string-literal
         idOrPath: this.props['content'].Id,
         name: 'GetAllContentTypes',
         method: 'GET',
@@ -234,7 +233,6 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
     }
   }
   public handleInputChange = (e: React.ChangeEvent) => {
-    // tslint:disable-next-line: no-string-literal
     const term = e.target['value']
     this.setState({
       filteredList: this.state.allCTDs.filter(ctd => {
@@ -307,8 +305,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                         : renderIconDefault(
                             item.Icon && typeicons[item.Icon.toLowerCase()]
                               ? typeicons[item.Icon.toLowerCase()]
-                              : // tslint:disable-next-line: no-string-literal
-                                typeicons['contenttype'],
+                              : typeicons['contenttype'],
                           )
                     }
                   />
@@ -386,8 +383,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                         : renderIconDefault(
                             item.Icon && typeicons[item.Icon.toLowerCase()]
                               ? typeicons[item.Icon.toLowerCase()]
-                              : // tslint:disable-next-line: no-string-literal
-                                typeicons['contenttype'],
+                              : typeicons['contenttype'],
                           )
                     }
                   />
@@ -465,8 +461,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                         : renderIconDefault(
                             item.Icon && typeicons[item.Icon.toLowerCase()]
                               ? typeicons[item.Icon.toLowerCase()]
-                              : // tslint:disable-next-line: no-string-literal
-                                typeicons['contenttype'],
+                              : typeicons['contenttype'],
                           )
                     }
                   />
@@ -492,8 +487,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                           : renderIconDefault(
                               item.Icon && typeicons[item.Icon.toLowerCase()]
                                 ? typeicons[item.Icon.toLowerCase()]
-                                : // tslint:disable-next-line: no-string-literal
-                                  typeicons['contenttype'],
+                                : typeicons['contenttype'],
                             )
                       }
                     />

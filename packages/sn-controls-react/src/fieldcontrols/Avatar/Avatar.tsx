@@ -94,7 +94,6 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
    * @return {GenericContent[]}
    */
   public async getSelected() {
-    // tslint:disable:no-string-literal
     const loadPath = this.props['content']
       ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props['content'].Path), '/', this.props.name.toString())
       : ''

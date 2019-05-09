@@ -81,9 +81,7 @@ export class BrowseView extends Component<BrowseViewProps, BrowseViewState> {
           </Typography>
           {fieldSettings.map(fieldSetting => {
             fieldSetting['data-actionName'] = 'browse'
-            // tslint:disable-next-line:no-string-literal
             fieldSetting['value'] = that.getFieldValue(fieldSetting.clientSettings.name)
-            // tslint:disable-next-line:no-string-literal
             fieldSetting.clientSettings['data-renderIcon'] = this.props.renderIcon || undefined
             if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
               fieldSetting.fieldSettings.Type = 'NumberFieldSetting'
@@ -92,7 +90,6 @@ export class BrowseView extends Component<BrowseViewProps, BrowseViewState> {
               fieldSetting.clientSettings['data-typeName'] === 'NullFieldSetting' &&
               fieldSetting.fieldSettings.Name === 'AllowedChildTypes'
             ) {
-              // tslint:disable-next-line: no-string-literal
               fieldSetting.clientSettings['renderIcon'] = this.props.renderIcon || undefined
             }
             return (

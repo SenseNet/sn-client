@@ -49,7 +49,6 @@ export class RadioButtonGroup<T extends GenericContent, K extends keyof T> exten
    */
   public handleChange = (event: React.ChangeEvent) => {
     const { value } = this.state
-    // tslint:disable-next-line:no-string-literal
     const newValue = event.target['value']
     const checked = value
     const index = value.indexOf(newValue.toString())

@@ -96,7 +96,6 @@ export class FileUpload<T extends GenericContent, K extends keyof T> extends Com
    */
   public handleChange(e: React.ChangeEvent) {
     const { onChange } = this.props
-    // tslint:disable-next-line:no-string-literal
     const value = e.target['value']
     this.setState({ value })
     onChange(this.props.name, value)
@@ -131,7 +130,6 @@ export class FileUpload<T extends GenericContent, K extends keyof T> extends Com
         overwrite: true,
         parentPath: this.props['data-uploadFolderPath'] ? this.props['data-uploadFolderPath'] : '',
       }))
-    // tslint:disable-next-line:no-string-literal
     const newValue = `${this.props['data-uploadFolderPath']}/${this.getNameFromPath(
       (e.target as HTMLInputElement).value,
     )}`

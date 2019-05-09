@@ -49,7 +49,6 @@ export class FileName<T extends GenericContent, K extends keyof T> extends Compo
       value: this.setValue(this.props['data-fieldValue']).toString(),
       isValid: this.props.required ? false : true,
       error: '',
-      // tslint:disable:no-string-literal
       extension: this.props['data-extension']
         ? this.props['data-extension']
         : this.props['content']
@@ -86,9 +85,7 @@ export class FileName<T extends GenericContent, K extends keyof T> extends Compo
    */
   public handleChange(e: React.ChangeEvent) {
     const { onChange } = this.props
-    // tslint:disable-next-line:no-string-literal
     const value = `${e.target['value']}.${this.state.extension}`
-    // tslint:disable-next-line:no-string-literal
     onChange(this.props.name, value as any)
   }
 
@@ -116,7 +113,6 @@ export class FileName<T extends GenericContent, K extends keyof T> extends Compo
             defaultValue={this.state.value}
             onChange={e => this.handleChange(e)}
             InputProps={{
-              // tslint:disable-next-line:no-string-literal
               endAdornment: (
                 <InputAdornment position="end">
                   <span>{`.${this.state.extension}`}</span>

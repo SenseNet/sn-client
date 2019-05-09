@@ -52,9 +52,7 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
    * sets the selected value in the state
    */
   public handleChange = (event: React.ChangeEvent) => {
-    // tslint:disable-next-line:no-string-literal
     this.setState({ value: event.target['value'] })
-    // tslint:disable-next-line:no-string-literal
     this.props.onChange(this.props.name, event.target['value'])
   }
   /**

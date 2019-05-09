@@ -48,10 +48,7 @@ export class DefaultItemTemplate extends Component<DefaultItemTemplateProps, {}>
         {content.Type !== undefined ? (
           content.Type === 'User' ? (
             <ListItemAvatar>
-              {
-                // tslint:disable-next-line: no-string-literal
-                <Avatar alt={content['FullName']} src={`${repositoryUrl}${content['Avatar'].Url}`} />
-              }
+              {<Avatar alt={content['FullName']} src={`${repositoryUrl}${content['Avatar'].Url}`} />}
             </ListItemAvatar>
           ) : (
             <ListItemIcon style={styles.icon}>

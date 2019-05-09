@@ -92,13 +92,9 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
         label: this.props['data-defaultDisplayName'] || 'DisplayName',
         fieldValue: this.props.dataSource
           ? this.props.dataSource.map(data => ({
-              // tslint:disable-next-line:no-string-literal
               value: data['Id'],
-              // tslint:disable-next-line:no-string-literal
               label: data['DisplayName'],
-              // tslint:disable-next-line:no-string-literal
               avatar: data['Avatar'] || {},
-              // tslint:disable-next-line:no-string-literal
               type: data['Type'] || 'GenericContent',
             }))
           : [],
@@ -124,7 +120,6 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
     const { name, onChange } = this.props
     const selected = this.state.fieldValue
     let s = selected
-    // tslint:disable:no-string-literal
     const selectedContent = this.getContentById(e.target['value'])
 
     this.props['data-allowMultiple'] !== undefined && this.props['data-allowMultiple']
@@ -165,7 +160,6 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
     const { label } = this.state
     this.setState({
       dataSource: req.d.results.map((suggestion: GenericContent) => ({
-        // tslint:disable-next-line:no-string-literal
         value: suggestion['Id'],
         label: suggestion[label] || suggestion['DisplayName'],
         avatar: suggestion['Avatar'] || {},
@@ -184,7 +178,6 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
    */
   public async getSelected() {
     const repo = this.props['data-repository'] || this.props.repository
-    // tslint:disable:no-string-literal
     const loadPath = this.props['content']
       ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props['content'].Path), '/', this.props.name.toString())
       : ''
@@ -198,7 +191,6 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
     const results = references.d.results ? references.d.results : [references.d]
     this.setState({
       fieldValue: results.map((item: GenericContent) => ({
-        // tslint:disable-next-line:no-string-literal
         value: item['Id'],
         label: item[label],
         avatar: item['Avatar'] || {},
@@ -209,7 +201,6 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
     if (this.props.dataSource && this.props.dataSource.length > 0) {
       this.setState({
         fieldValue: this.props.dataSource.map((item: GenericContent) => ({
-          // tslint:disable-next-line:no-string-literal
           value: item['Id'],
           label: item[label],
           avatar: item['Avatar'] || {},

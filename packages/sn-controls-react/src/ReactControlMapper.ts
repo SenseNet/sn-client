@@ -196,7 +196,6 @@ export const reactControlMapper = (repository: Repository) =>
         return FieldControls.AllowedChildTypes
       } else if (setting.Name === 'UrlList') {
         return FieldControls.Textarea
-        // tslint:disable-next-line: no-string-literal
       } else if (setting['FieldClassName'].indexOf('BooleanField') > -1) {
         return FieldControls.Boolean
       } else {
@@ -208,10 +207,8 @@ export const reactControlMapper = (repository: Repository) =>
         const avatarSettings = clientConfigFactory(setting) as ReactReferenceFieldSetting
         avatarSettings['data-selectionRoot'] = setting.SelectionRoots
         return avatarSettings
-        // tslint:disable-next-line: no-string-literal
       } else if (setting['Palette']) {
         const colorPickerSettings = clientConfigFactory(setting) as ReactShortTextFieldSetting
-        // tslint:disable-next-line: no-string-literal
         colorPickerSettings['palette'] = setting['Palette']
         return colorPickerSettings
       } else {

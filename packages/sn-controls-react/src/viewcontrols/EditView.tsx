@@ -135,13 +135,10 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
             }
             fieldSetting.clientSettings['data-actionName'] = 'edit'
             fieldSetting.clientSettings['data-fieldValue'] = that.getFieldValue(fieldSetting.clientSettings.name)
-            // tslint:disable-next-line:no-string-literal
             fieldSetting.clientSettings['content'] = this.state.content
-            // tslint:disable-next-line:no-string-literal
             fieldSetting.clientSettings['value'] = that.getFieldValue(fieldSetting.clientSettings.name)
             fieldSetting.clientSettings.onChange = that.handleInputChange as any
             fieldSetting.clientSettings['data-repositoryUrl'] = this.props.repositoryUrl || ''
-            // tslint:disable-next-line:no-string-literal
             fieldSetting.clientSettings['data-renderIcon'] = this.props.renderIcon || undefined
             if (
               fieldSetting.clientSettings['data-typeName'] === 'NullFieldSetting' &&
