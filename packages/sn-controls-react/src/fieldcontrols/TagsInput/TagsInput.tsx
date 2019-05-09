@@ -1,6 +1,7 @@
 /**
  * @module FieldControls
  */
+import Avatar from '@material-ui/core/Avatar'
 import Chip from '@material-ui/core/Chip'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -11,9 +12,12 @@ import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
+import { Content, ODataCollectionResponse } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
+import { GenericContent } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
+import { renderIconDefault } from '../icon'
 import { ReactReferenceFieldSetting } from '../ReferenceFieldSetting'
 
 const ITEM_HEIGHT = 48
@@ -41,11 +45,6 @@ const styles = {
     margin: 2,
   },
 }
-
-import Avatar from '@material-ui/core/Avatar'
-import { Content, ODataCollectionResponse } from '@sensenet/client-core'
-import { GenericContent } from '@sensenet/default-content-types'
-import { MaterialIcon } from '@sensenet/icons-react'
 
 /**
  * Interface for TagsInput properties
@@ -284,10 +283,9 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
                     ) : (
                       <Chip
                         icon={
-                          <MaterialIcon
-                            iconName={this.getContentById(content.value).type.toLowerCase()}
-                            style={{ color: '#fff' }}
-                          />
+                          this.props['data-renderIcon']
+                            ? this.props['data-renderIcon'](this.getContentById(content.value).type.toLowerCase())
+                            : renderIconDefault(this.getContentById(content.value).type.toLowerCase())
                         }
                         key={content.value.toString()}
                         label={this.getContentById(content.value).label}
@@ -345,10 +343,9 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
                         key={content.value.toString()}
                         label="{this.getContentById(fvalue).label}"
                         icon={
-                          <MaterialIcon
-                            iconName={this.getContentById(content.value).type.toLowerCase()}
-                            style={{ color: '#fff' }}
-                          />
+                          this.props['data-renderIcon']
+                            ? this.props['data-renderIcon'](this.getContentById(content.value).type.toLowerCase())
+                            : renderIconDefault(this.getContentById(content.value).type.toLowerCase())
                         }
                         onDelete={() => this.handleDelete(content.value)}
                       />

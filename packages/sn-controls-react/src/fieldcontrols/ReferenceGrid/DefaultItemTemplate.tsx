@@ -6,12 +6,10 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
-import AddCircle from '@material-ui/icons/AddCircle'
 import InsertDriveFile from '@material-ui/icons/InsertDriveFile'
-import Refresh from '@material-ui/icons/Refresh'
-import RemoveCircle from '@material-ui/icons/RemoveCircle'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
+import { renderIconDefault } from '../icon'
 
 const styles = {
   icon: {
@@ -27,6 +25,7 @@ interface DefaultItemTemplateProps {
   readOnly?: boolean
   repositoryUrl: string
   multiple: boolean
+  renderIcon?: (name: string) => JSX.Element
 }
 
 export class DefaultItemTemplate extends Component<DefaultItemTemplateProps, {}> {
@@ -71,15 +70,15 @@ export class DefaultItemTemplate extends Component<DefaultItemTemplateProps, {}>
             {content ? (
               content.Id > 0 && this.props.multiple ? (
                 <IconButton onClick={() => this.handlRemoveIconClick(content.Id)}>
-                  <RemoveCircle />
+                  {this.props.renderIcon ? this.props.renderIcon('remove_circle') : renderIconDefault('remove_circle')}
                 </IconButton>
               ) : content.Id === -1 ? (
                 <IconButton onClick={() => this.handleAddIconClick()}>
-                  <AddCircle />
+                  {this.props.renderIcon ? this.props.renderIcon('add_circle') : renderIconDefault('add_circle')}
                 </IconButton>
               ) : (
                 <IconButton onClick={() => this.handleAddIconClick()}>
-                  <Refresh />
+                  {this.props.renderIcon ? this.props.renderIcon('refresh') : renderIconDefault('refresh')}
                 </IconButton>
               )
             ) : null}

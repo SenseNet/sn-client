@@ -246,6 +246,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                       readOnly={this.props.readOnly}
                       repositoryUrl={repo.configuration.repositoryUrl}
                       multiple={this.props['data-allowMultiple'] ? this.props['data-allowMultiple'] : false}
+                      renderIcon={this.props['data-renderIcon']}
                     />
                   )
                 }
@@ -263,6 +264,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                   actionName="edit"
                   repositoryUrl={repo.configuration.repositoryUrl}
                   multiple={this.props['data-allowMultiple'] ? this.props['data-allowMultiple'] : false}
+                  renderIcon={this.props['data-renderIcon']}
                 />
               ) : null}
             </List>
@@ -280,6 +282,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                   repository={repo}
                   select={content => this.selectItem(content)}
                   selected={this.state.selected}
+                  renderIcon={this.props['data-renderIcon']}
                 />
                 <DialogActions>
                   <Button variant="contained" onClick={this.handleOkClick} color="primary">
@@ -321,6 +324,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                       readOnly={this.props.readOnly}
                       repositoryUrl={repo.configuration.repositoryUrl}
                       multiple={this.props['data-allowMultiple'] ? this.props['data-allowMultiple'] : false}
+                      renderIcon={this.props['data-renderIcon']}
                     />
                   )
                 }
@@ -338,6 +342,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                   actionName="new"
                   repositoryUrl={repo.configuration.repositoryUrl}
                   multiple={this.props['data-allowMultiple'] ? this.props['data-allowMultiple'] : false}
+                  renderIcon={this.props['data-renderIcon']}
                 />
               ) : null}
             </List>
@@ -355,6 +360,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                   repository={repo}
                   select={content => this.selectItem(content)}
                   selected={this.state.selected}
+                  renderIcon={this.props['data-renderIcon']}
                 />
                 <DialogActions>
                   <Button variant="contained" onClick={this.handleOkClick} color="primary">
@@ -385,6 +391,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                     actionName="browse"
                     repositoryUrl={repo.configuration.repositoryUrl}
                     multiple={this.props['data-allowMultiple'] ? this.props['data-allowMultiple'] : false}
+                    renderIcon={this.props['data-renderIcon']}
                   />
                 ))}
               </List>
@@ -408,6 +415,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                     actionName="browse"
                     repositoryUrl={repo.configuration.repositoryUrl}
                     multiple={this.props['data-allowMultiple'] ? this.props['data-allowMultiple'] : false}
+                    renderIcon={this.props['data-renderIcon']}
                   />
                 ))}
               </List>

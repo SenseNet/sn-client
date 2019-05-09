@@ -12,8 +12,8 @@ import Input from '@material-ui/core/Input'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import InputLabel from '@material-ui/core/InputLabel'
 import { GenericContent } from '@sensenet/default-content-types'
-import { Icon } from '@sensenet/icons-react'
 import Radium from 'radium'
+import { renderIconDefault } from '../icon'
 
 /**
  * Interface for Password properties
@@ -108,11 +108,9 @@ export class Password<T extends GenericContent, K extends keyof T> extends Compo
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton aria-label="Toggle password visibility" onClick={this.handleClickShowPassword}>
-                    {this.state.showPassword ? (
-                      <Icon iconName="visibility_off" color="inherit" />
-                    ) : (
-                      <Icon iconName="visibility" color="inherit" />
-                    )}
+                    {this.props['data-renderIcon']
+                      ? this.props['data-renderIcon'](this.state.showPassword ? 'visibility_off' : 'visibility')
+                      : renderIconDefault(this.state.showPassword ? 'visibility_off' : 'visibility')}
                   </IconButton>
                 </InputAdornment>
               }
@@ -141,11 +139,9 @@ export class Password<T extends GenericContent, K extends keyof T> extends Compo
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton aria-label="Toggle password visibility" onClick={this.handleClickShowPassword}>
-                    {this.state.showPassword ? (
-                      <Icon iconName="visibility_off" color="inherit" />
-                    ) : (
-                      <Icon iconName="visibility" color="inherit" />
-                    )}
+                    {this.props['data-renderIcon']
+                      ? this.props['data-renderIcon'](this.state.showPassword ? 'visibility_off' : 'visibility')
+                      : renderIconDefault(this.state.showPassword ? 'visibility_off' : 'visibility')}
                   </IconButton>
                 </InputAdornment>
               }

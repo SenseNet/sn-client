@@ -141,19 +141,14 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
             fieldSetting.clientSettings['value'] = that.getFieldValue(fieldSetting.clientSettings.name)
             fieldSetting.clientSettings.onChange = that.handleInputChange as any
             fieldSetting.clientSettings['data-repositoryUrl'] = this.props.repositoryUrl || ''
+            // tslint:disable-next-line:no-string-literal
+            fieldSetting.clientSettings['data-renderIcon'] = this.props.renderIcon || undefined
             if (
               fieldSetting.clientSettings['data-typeName'] === 'NullFieldSetting' &&
               fieldSetting.fieldSettings.Name === 'Avatar'
             ) {
               fieldSetting.clientSettings['data-uploadFolderPath'] = this.props.uploadFolderPath || ''
               fieldSetting.clientSettings['data-repository'] = this.props.repository
-            }
-            if (
-              fieldSetting.clientSettings['data-typeName'] === 'NullFieldSetting' &&
-              fieldSetting.fieldSettings.Name === 'AllowedChildTypes'
-            ) {
-              // tslint:disable-next-line: no-string-literal
-              fieldSetting.clientSettings['renderIcon'] = this.props.renderIcon || undefined
             }
             if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
               fieldSetting.fieldSettings.Type = 'NumberFieldSetting'

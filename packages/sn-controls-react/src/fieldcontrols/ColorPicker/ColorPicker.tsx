@@ -3,9 +3,9 @@
  */
 import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
+import Icon from '@material-ui/core/Icon'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
-import LensIcon from '@material-ui/icons/Lens'
 import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
 import React, { Component } from 'react'
@@ -22,6 +22,10 @@ const style = {
     left: '24px',
     top: '20px',
   },
+}
+
+const renderIconDefault = (name: string, color: string) => {
+  return <Icon style={{ color }}>{name}</Icon>
 }
 
 /**
@@ -122,7 +126,9 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <LensIcon style={{ color: this.state.value }} />
+                    {this.props['data-renderIcon']
+                      ? this.props['data-renderIcon']('lens')
+                      : renderIconDefault('lens', this.state.value)}
                   </InputAdornment>
                 ),
               }}
@@ -166,7 +172,9 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <LensIcon style={{ color: this.state.value }} />
+                    {this.props['data-renderIcon']
+                      ? this.props['data-renderIcon']('lens')
+                      : renderIconDefault('lens', this.state.value)}
                   </InputAdornment>
                 ),
               }}
@@ -206,7 +214,9 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <LensIcon style={{ color: this.state.value }} />
+                    {this.props['data-renderIcon']
+                      ? this.props['data-renderIcon']('lens')
+                      : renderIconDefault('lens', this.state.value)}
                   </InputAdornment>
                 ),
               }}

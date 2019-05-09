@@ -83,6 +83,8 @@ export class BrowseView extends Component<BrowseViewProps, BrowseViewState> {
             fieldSetting['data-actionName'] = 'browse'
             // tslint:disable-next-line:no-string-literal
             fieldSetting['value'] = that.getFieldValue(fieldSetting.clientSettings.name)
+            // tslint:disable-next-line:no-string-literal
+            fieldSetting.clientSettings['data-renderIcon'] = this.props.renderIcon || undefined
             if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
               fieldSetting.fieldSettings.Type = 'NumberFieldSetting'
             }

@@ -127,15 +127,10 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
             fieldSetting.clientSettings['data-uploadFolderPath'] = this.props.uploadFolderPath || ''
             fieldSetting.clientSettings['data-repository'] = this.props.repository
             fieldSetting.clientSettings['data-repositoryUrl'] = repository.configuration.repositoryUrl
+            // tslint:disable-next-line:no-string-literal
+            fieldSetting.clientSettings['data-renderIcon'] = this.props.renderIcon || undefined
             if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
               fieldSetting.fieldSettings.Type = 'NumberFieldSetting'
-            }
-            if (
-              fieldSetting.clientSettings['data-typeName'] === 'NullFieldSetting' &&
-              fieldSetting.fieldSettings.Name === 'AllowedChildTypes'
-            ) {
-              // tslint:disable-next-line: no-string-literal
-              fieldSetting.clientSettings['renderIcon'] = this.props.renderIcon || undefined
             }
             return (
               <Grid
