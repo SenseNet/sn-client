@@ -112,7 +112,7 @@ storiesOf('FieldControls.AllowedChildTypes', module)
           data-errorText={text('Error text')}
           onChange={action('change')}
           data-hintText={text('Hint', 'AllowedChildTypes hint')}
-          data-repository={testRepository}
+          repository={testRepository}
           content={testContent}
         />
       </div>
@@ -138,7 +138,7 @@ storiesOf('FieldControls.AllowedChildTypes', module)
           data-errorText={text('Error text')}
           onChange={action('change')}
           data-hintText={text('Hint', 'AllowedChildTypes hint')}
-          data-repository={testRepository}
+          repository={testRepository}
           content={testContent}
         />
       </div>
@@ -164,7 +164,7 @@ storiesOf('FieldControls.AllowedChildTypes', module)
           data-errorText={text('Error text')}
           onChange={action('change')}
           data-hintText={text('Hint', 'AllowedChildTypes hint')}
-          data-repository={testRepository}
+          repository={testRepository}
           content={testContent}
         />
       </div>
@@ -1257,6 +1257,7 @@ storiesOf('FieldControls.ReferenceGrid', module)
         name="Name"
         dataSource={tagsInputDataSource}
         data-repository={testRepository}
+        repository={testRepository}
       />
     ),
     { notes: { markdown: referenceGridNotes } },
