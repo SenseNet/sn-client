@@ -1,3 +1,3 @@
 ### VersioningMode
 
-It shows the versioning mode of the current content. It has not got its own control but it is displayed with a DropDownList.
+It shows the versioning mode of the current content. It has not got a custom control, it is displayed as a DropDownList.

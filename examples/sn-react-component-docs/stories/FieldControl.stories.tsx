@@ -87,7 +87,7 @@ const approvingModeChoiceNotes = require('../notes/fieldcontrols/ApprovingModeCh
 const versioningModeChoiceNotes = require('../notes/fieldcontrols/VersioningModeChoice.md')
 const versioningModeNotes = require('../notes/fieldcontrols/VersioningMode.md')
 const colorPickerNotes = require('../notes/fieldcontrols/ColorPicker.md')
-const allowedTypeNoted = require('../notes/fieldcontrols/AllowedChildTypes.md')
+const allowedTypeNotes = require('../notes/fieldcontrols/AllowedChildTypes.md')
 
 storiesOf('FieldControls.AllowedChildTypes', module)
   .addDecorator(withKnobs)
@@ -98,7 +98,7 @@ storiesOf('FieldControls.AllowedChildTypes', module)
     () => (
       <div>
         <div style={{ fontStyle: 'italic', fontSize: 13 }}>
-          To see this control in action, please login to{' '}
+          To see this control in action, please login at
           <a target="_blank" href="https://dmsservice.demo.sensenet.com/">
             https://dmsservice.demo.sensenet.com/
           </a>
@@ -117,14 +117,14 @@ storiesOf('FieldControls.AllowedChildTypes', module)
         />
       </div>
     ),
-    { notes: { markdown: allowedTypeNoted } },
+    { notes: { markdown: allowedTypeNotes } },
   )
   .add(
     'edit mode',
     () => (
       <div>
         <div style={{ fontStyle: 'italic', fontSize: 13 }}>
-          To see this control in action, please login to{' '}
+          To see this control in action, please login at
           <a target="_blank" href="https://dmsservice.demo.sensenet.com/">
             https://dmsservice.demo.sensenet.com/
           </a>
@@ -143,14 +143,14 @@ storiesOf('FieldControls.AllowedChildTypes', module)
         />
       </div>
     ),
-    { notes: { markdown: allowedTypeNoted } },
+    { notes: { markdown: allowedTypeNotes } },
   )
   .add(
     'browse mode',
     () => (
       <div>
         <div style={{ fontStyle: 'italic', fontSize: 13 }}>
-          To see this control in action, please login to{' '}
+          To see this control in action, please login at
           <a target="_blank" href="https://dmsservice.demo.sensenet.com/">
             https://dmsservice.demo.sensenet.com/
           </a>
@@ -169,7 +169,7 @@ storiesOf('FieldControls.AllowedChildTypes', module)
         />
       </div>
     ),
-    { notes: { markdown: allowedTypeNoted } },
+    { notes: { markdown: allowedTypeNotes } },
   )
 
 storiesOf('FieldControls.AutoComplete', module)
