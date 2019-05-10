@@ -21,6 +21,7 @@ import { styles } from './NewViewStyles'
 export interface NewViewProps<T extends GenericContent = GenericContent> {
   onSubmit?: (path: string, content: T, contentTypeName: string) => void
   repository: Repository
+  renderIcon?: (name: string) => JSX.Element
   schema?: Schema
   path: string
   contentTypeName: string
@@ -126,6 +127,10 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
             fieldSetting.clientSettings['data-uploadFolderPath'] = this.props.uploadFolderPath || ''
             fieldSetting.clientSettings['data-repository'] = this.props.repository
             fieldSetting.clientSettings['data-repositoryUrl'] = repository.configuration.repositoryUrl
+            fieldSetting.clientSettings['data-renderIcon'] = this.props.renderIcon || undefined
+            if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
+              fieldSetting.fieldSettings.Type = 'NumberFieldSetting'
+            }
             return (
               <Grid
                 item={true}

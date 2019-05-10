@@ -1,16 +1,17 @@
 /**
  * @module FieldControls
  */
+import FormControl from '@material-ui/core/FormControl'
+import FormHelperText from '@material-ui/core/FormHelperText'
+import FormLabel from '@material-ui/core/FormLabel'
 import Typography from '@material-ui/core/Typography'
-import React, { Component } from 'react'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
-import { ReactRichTextEditorFieldSetting } from './RichTextEditorFieldSetting'
-
-import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.snow.css'
-
 import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
+import React, { Component } from 'react'
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
+import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
+import { ReactRichTextEditorFieldSetting } from './RichTextEditorFieldSetting'
 
 /**
  * Interface for RichTextEditor properties
@@ -80,55 +81,49 @@ export class RichTextEditor<T extends GenericContent, K extends keyof T> extends
     switch (this.props['data-actionName']) {
       case 'edit':
         return (
-          <ReactQuill
-            // name={this.props.name}
-            // label={
-            //     this.props.required
-            //         ? this.props['data-labelText'] + ' *'
-            //         : this.props['data-labelText']
-            // }
-            className={this.props.className}
-            // placeholder={this.props['data-placeHolderText']}
-            // placeHolderStyle?: object
-            style={this.props.style}
-            value={this.state.value}
-            readOnly={this.props.readOnly}
-            // required={this.props.required}
-            // disabled={this.props.readOnly}
-            // error={this.props['data-errorText']}
-            // s={12}
-            // m={12}
-            // l={12}
-            modules={modules}
-            formats={formats}
-            onChange={this.handleChange}
-          />
+          <FormControl
+            component={'fieldset' as 'div'}
+            fullWidth={true}
+            error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
+            required={this.props.required}
+            className={this.props.className}>
+            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
+            <ReactQuill
+              className={this.props.className}
+              style={{ ...this.props.style, ...{ background: '#fff', marginTop: 10 } }}
+              value={this.state.value}
+              readOnly={this.props.readOnly}
+              modules={modules}
+              formats={formats}
+              onChange={this.handleChange}
+              theme="snow"
+            />
+            <FormHelperText>{this.props['data-hintText']}</FormHelperText>
+            <FormHelperText>{this.props['data-errorText']}</FormHelperText>
+          </FormControl>
         )
       case 'new':
         return (
-          <ReactQuill
-            // name={this.props.name}
-            // label={
-            //     this.props.required
-            //         ? this.props['data-labelText'] + ' *'
-            //         : this.props['data-labelText']
-            // }
-            className={this.props.className}
-            // placeholder={this.props['data-placeHolderText']}
-            // placeHolderStyle?: object
-            style={this.props.style}
-            defaultValue={(this.props['data-defaultValue'] as unknown) as string}
-            readOnly={this.props.readOnly}
-            // required={this.props.required}
-            // disabled={this.props.readOnly}
-            // error={this.props['data-errorText']}
-            // s={12}
-            // m={12}
-            // l={12}
-            modules={modules}
-            formats={formats}
-            onChange={this.handleChange}
-          />
+          <FormControl
+            component={'fieldset' as 'div'}
+            fullWidth={true}
+            error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
+            required={this.props.required}
+            className={this.props.className}>
+            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
+            <ReactQuill
+              className={this.props.className}
+              style={{ ...this.props.style, ...{ background: '#fff', marginTop: 10 } }}
+              defaultValue={(this.props['data-defaultValue'] as unknown) as string}
+              readOnly={this.props.readOnly}
+              modules={modules}
+              formats={formats}
+              onChange={this.handleChange}
+              theme="snow"
+            />
+            <FormHelperText>{this.props['data-hintText']}</FormHelperText>
+            <FormHelperText>{this.props['data-errorText']}</FormHelperText>
+          </FormControl>
         )
       case 'browse':
         return this.props.value && this.props.value.length > 0 ? (

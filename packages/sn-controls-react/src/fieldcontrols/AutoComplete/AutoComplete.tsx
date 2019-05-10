@@ -172,14 +172,12 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
             <FormControl
               className={this.props.className}
               key={this.props.name as string}
-              // Issue in type checking in 3.2 https://github.com/mui-org/material-ui/issues/13744
               component={'fieldset' as 'div'}
               required={this.props.required}>
               <TextField
                 value={this.state.selected.length > 0 ? this.getContentById(this.state.selected[0])[displayName] : ''}
                 type="text"
                 onChange={async e => {
-                  // tslint:disable-next-line:no-string-literal
                   this.setState({ inputValue: e.target['value'] })
                   e.persist()
                   await this.handleInputChange(e)
