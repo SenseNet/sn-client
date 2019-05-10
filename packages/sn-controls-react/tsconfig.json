@@ -6,12 +6,21 @@
     "suppressImplicitAnyIndexErrors": true,
     "experimentalDecorators": true
   },
-  "include": ["src"],
+  "include": [
+    "src"
+  ],
   "references": [
-    { "path": "../sn-client-core" },
-    { "path": "../sn-pickers-react" },
-    { "path": "../sn-control-mapper" },
-    { "path": "../sn-icons-react" },
-    { "path": "../sn-redux" }
+    {
+      "path": "../sn-client-core"
+    },
+    {
+      "path": "../sn-pickers-react"
+    },
+    {
+      "path": "../sn-control-mapper"
+    },
+    {
+      "path": "../sn-redux"
+    }
   ]
 }

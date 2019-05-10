@@ -1,7 +1,7 @@
 import { LoginState } from '@sensenet/client-core'
 import React, { lazy, Suspense, useContext } from 'react'
 import { Route, RouteComponentProps, Switch, withRouter } from 'react-router'
-import { LoadSettingsContextProvider, SessionContext } from '../context'
+import { LoadSettingsContextProvider, PersonalSettingsContext, SessionContext } from '../context'
 import { ErrorBoundary } from './ErrorBoundary'
 import { FullScreenLoader } from './FullScreenLoader'
 
@@ -28,6 +28,7 @@ const PersonalSettingsEditor = lazy(
 
 const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
   const sessionContext = useContext(SessionContext)
+  const personalSettings = useContext(PersonalSettingsContext)
   return (
     <ErrorBoundary>
       <Route
@@ -55,7 +56,7 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
                 />
 
                 {/** Requires login */}
-                {sessionContext.debouncedState === LoginState.Unauthenticated ? (
+                {sessionContext.debouncedState === LoginState.Unauthenticated || !personalSettings.lastRepository ? (
                   <LoginComponent />
                 ) : sessionContext.debouncedState === LoginState.Authenticated ? (
                   <Switch>

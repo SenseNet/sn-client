@@ -1,3 +1,4 @@
+import { IconButton } from '@material-ui/core'
 import Avatar from '@material-ui/core/Avatar'
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -5,10 +6,8 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import { CSSProperties } from '@material-ui/core/styles/withStyles'
-import AddCircle from '@material-ui/icons/AddCircle'
 import { ODataParams, Repository } from '@sensenet/client-core'
 import { Folder, GenericContent, User } from '@sensenet/default-content-types'
-import { Icon } from '@sensenet/icons-react'
 import { ListPickerComponent } from '@sensenet/pickers-react'
 import React, { Component } from 'react'
 
@@ -29,6 +28,7 @@ interface AvatarPickerProps {
   allowedTypes?: string[]
   selected: GenericContent
   repositoryUrl: string
+  renderIcon: (name: string) => JSX.Element
 }
 
 interface AvatarPickerState {
@@ -65,9 +65,7 @@ export class AvatarPicker extends Component<AvatarPickerProps, AvatarPickerState
   public renderItem = (node: GenericContent | User) => (
     <ListItem button={true} selected={node.Id === this.props.selected.Id}>
       {node.IsFolder || node.IsFolder === undefined ? (
-        <ListItemIcon>
-          <Icon iconName={this.iconName(node)} />
-        </ListItemIcon>
+        <ListItemIcon>{this.props.renderIcon(this.iconName(node))}</ListItemIcon>
       ) : (
         <Avatar src={`${this.props.repositoryUrl}${node.Path}`} />
       )}
@@ -117,7 +115,7 @@ export class AvatarPicker extends Component<AvatarPickerProps, AvatarPickerState
             htmlFor="raised-button-file"
             style={{ transform: 'translate(0, 58px) scale(1)', cursor: 'pointer' }}
             title={UPLOAD}>
-            <AddCircle color="primary" fontSize="large" />
+            <IconButton>{this.props.renderIcon('add_circle')}</IconButton>
           </InputLabel>
         </div>
       </div>

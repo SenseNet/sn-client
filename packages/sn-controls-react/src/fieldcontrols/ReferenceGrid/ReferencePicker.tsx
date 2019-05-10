@@ -4,9 +4,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import { ODataParams, Repository } from '@sensenet/client-core'
 import { Folder, GenericContent, User } from '@sensenet/default-content-types'
-import { Icon } from '@sensenet/icons-react'
 import { ListPickerComponent } from '@sensenet/pickers-react'
 import React, { Component } from 'react'
+import { renderIconDefault } from '../icon'
 
 const DEFAULT_AVATAR_PATH = '/Root/Sites/Default_Site/demoavatars/Admin.png'
 
@@ -17,6 +17,7 @@ interface ReferencePickerProps {
   path: string
   allowedTypes?: string[]
   selected: any[]
+  renderIcon?: (name: string) => JSX.Element
 }
 
 export class ReferencePicker extends Component<ReferencePickerProps> {
@@ -65,8 +66,10 @@ export class ReferencePicker extends Component<ReferencePickerProps> {
                 : DEFAULT_AVATAR_PATH
             }
           />
+        ) : this.props.renderIcon ? (
+          this.props.renderIcon(this.iconName(node.IsFolder))
         ) : (
-          <Icon iconName={this.iconName(node.IsFolder)} />
+          renderIconDefault(this.iconName(node.IsFolder))
         )}
       </ListItemIcon>
       <ListItemText primary={node.DisplayName} />

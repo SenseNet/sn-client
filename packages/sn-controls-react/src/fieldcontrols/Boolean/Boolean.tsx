@@ -6,11 +6,10 @@ import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import InputLabel from '@material-ui/core/InputLabel'
-import CheckIcon from '@material-ui/icons/Check'
-import NotInterestedIcon from '@material-ui/icons/NotInterested'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
+import { renderIconDefault } from '../icon'
 import { ReactBooleanFieldSetting } from './BooleanFieldSetting'
 
 /**
@@ -97,7 +96,9 @@ export class Boolean<T extends GenericContent, K extends keyof T> extends Compon
             <InputLabel shrink={true} htmlFor={name as string}>
               {this.props['data-labelText']}
             </InputLabel>
-            {this.state.value ? <CheckIcon /> : <NotInterestedIcon />}
+            {this.props['data-renderIcon']
+              ? this.props['data-renderIcon'](this.state.value ? 'check' : 'not_interested')
+              : renderIconDefault(this.state.value ? 'check' : 'not_interested')}
           </FormControl>
         ) : null
       default:
@@ -106,7 +107,9 @@ export class Boolean<T extends GenericContent, K extends keyof T> extends Compon
             <InputLabel shrink={true} htmlFor={name as string}>
               {this.props['data-labelText']}
             </InputLabel>
-            {this.state.value ? <CheckIcon /> : <NotInterestedIcon />}
+            {this.props['data-renderIcon']
+              ? this.props['data-renderIcon'](this.state.value ? 'check' : 'not_interested')
+              : renderIconDefault(this.state.value ? 'check' : 'not_interested')}
           </FormControl>
         ) : null
     }
