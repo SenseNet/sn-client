@@ -24,6 +24,6 @@ jobs:
     - name: 'DMS e2e tests'
       before_script: yarn build
       script: yarn test:dms:e2e
-      # after_failure: bash ./scripts/sendscreenshots.sh
+      after_failure: bash ./scripts/sendscreenshots.sh
       addons:
         chrome: stable
