@@ -31,7 +31,7 @@ context('The login page', () => {
     cy.get('input[name=email]').type('businesscat@sensenet.com')
     cy.get('input[name=password]').type(`businesscat{enter}`)
 
-    cy.url().should('include', '/documents')
+    cy.url({ timeout: 10000 }).should('include', '/documents')
 
     cy.get('div[aria-label="Business Cat"]').should('exist')
 

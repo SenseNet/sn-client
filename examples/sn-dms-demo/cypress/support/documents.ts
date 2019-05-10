@@ -61,7 +61,7 @@ export const uploadNewFileAndOpenContextMenuItem = (currentUserEmail: string, fi
     parentPath: `Root/Profiles/Public/${currentUserEmail}/Document_Library`,
     fileName,
   })
-  cy.contains(fileName).should('exist')
+  cy.contains('div', fileName, { timeout: 10000 }).should('exist')
   openContextMenu(fileName)
   cy.get(`[title="${menuItem}"]`).click()
 }
