@@ -5,21 +5,30 @@ import {
   uploadNewFileAndOpenContextMenuItem,
 } from '../../support/documents'
 
-const documentName = 'Sample-document.docx'
 context('The documents page with admin', () => {
   beforeEach(() => {
     cy.login('businesscat@sensenet.com', 'businesscat')
   })
 
   it('should check actions availability', () => {
-    openContextMenu(documentName)
+    const fileName = createNewFileName()
+    cy.uploadWithApi({
+      parentPath: `Root/Profiles/Public/businesscat/Document_Library`,
+      fileName,
+    })
+    cy.contains('div', fileName, { timeout: 10000 }).should('exist')
     Object.keys(contextMenuItems).forEach(item => {
       cy.get(`[title="${contextMenuItems[item]}"]`).should('exist')
     })
   })
 
   it('should be able open viewer from context menu and close with esc', () => {
-    openContextMenu(documentName)
+    const fileName = createNewFileName()
+    cy.uploadWithApi({
+      parentPath: `Root/Profiles/Public/businesscat/Document_Library`,
+      fileName,
+    })
+    cy.contains('div', fileName, { timeout: 10000 }).should('exist')
     cy.get(`[title="${contextMenuItems.preview}"]`).click()
     cy.contains('Preview image generation is in progress').should('exist')
     cy.get('.overlay').should('exist')

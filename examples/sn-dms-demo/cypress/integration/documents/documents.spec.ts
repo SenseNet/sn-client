@@ -128,7 +128,7 @@ context('The documents page', () => {
     moveToFolderAndCheckIfFileExists(moveToPath, fileName)
   })
 
-  it.only('edit properties should work', () => {
+  it('edit properties should work', () => {
     const fileName = createNewFileName()
     uploadNewFileAndOpenContextMenuItem(currentUser.email, fileName, contextMenuItems.editProperties)
     cy.contains('div[data-cy="editProperties"]', 'Edit properties')
