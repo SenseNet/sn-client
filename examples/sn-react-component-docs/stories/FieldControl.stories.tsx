@@ -9,9 +9,11 @@ import { Repository } from '@sensenet/client-core'
 import { customSchema } from './ViewControl.stories'
 
 import {
+  AllowedChildTypes,
   AutoComplete,
   Avatar,
   CheckboxGroup,
+  ColorPicker,
   DatePicker,
   DateTimePicker,
   DisplayName,
@@ -29,7 +31,7 @@ import {
   Textarea,
   TimePicker,
 } from '@sensenet/controls-react/src'
-import { User } from '@sensenet/default-content-types/src'
+import { GenericContent, User } from '@sensenet/default-content-types/src'
 
 export const testRepository = new Repository({
   repositoryUrl: 'https://dmsservice.demo.sensenet.com',
@@ -46,8 +48,8 @@ const currencyOptions = {
 }
 
 const tagsInputDataSource = [
-  { DisplayName: 'Alba Monday', Id: 1 } as User,
-  { DisplayName: 'Terry Cherry', Id: 2 } as User,
+  { DisplayName: 'Alba Monday', Id: 1, Type: 'User' } as User,
+  { DisplayName: 'Terry Cherry', Id: 2, Type: 'User' } as User,
 ]
 
 const referenceGridDataSource = [
@@ -55,6 +57,12 @@ const referenceGridDataSource = [
   { DisplayName: 'Aliquam porta suscipit ante.doc', Id: 4082, IsFolder: false, Children: [], Type: 'File' },
   { DisplayName: 'Duis et lorem.doc', Id: 4085, IsFolder: false, Children: [], Type: 'File' },
 ]
+
+const testContent = {
+  Name: 'Document_Library',
+  Id: 4808,
+  Path: '/Root/Sites/Default_Site',
+} as GenericContent
 
 const shorttextNotes = require('../notes/fieldcontrols/ShortText.md')
 const displaynameNotes = require('../notes/fieldcontrols/DisplayName.md')
@@ -75,6 +83,94 @@ const autocompleteNotes = require('../notes/fieldcontrols/AutoComplete.md')
 const fileUploadNotes = require('../notes/fieldcontrols/FileUpload.md')
 const referenceGridNotes = require('../notes/fieldcontrols/ReferenceGrid.md')
 const avatarNotes = require('../notes/fieldcontrols/Avatar.md')
+const approvingModeChoiceNotes = require('../notes/fieldcontrols/ApprovingModeChoice.md')
+const versioningModeChoiceNotes = require('../notes/fieldcontrols/VersioningModeChoice.md')
+const versioningModeNotes = require('../notes/fieldcontrols/VersioningMode.md')
+const colorPickerNotes = require('../notes/fieldcontrols/ColorPicker.md')
+const allowedTypeNotes = require('../notes/fieldcontrols/AllowedChildTypes.md')
+
+storiesOf('FieldControls.AllowedChildTypes', module)
+  .addDecorator(withKnobs)
+  .addDecorator(withA11y)
+  .addDecorator(withActions('change'))
+  .add(
+    'new mode',
+    () => (
+      <div>
+        <div style={{ fontStyle: 'italic', fontSize: 13 }}>
+          To see this control in action, please login at
+          <a target="_blank" href="https://dmsservice.demo.sensenet.com/">
+            https://dmsservice.demo.sensenet.com/
+          </a>
+        </div>
+        <br />
+        <AllowedChildTypes
+          data-actionName="new"
+          name="Name"
+          data-labelText={text('Label', 'AllowedChildTypes label')}
+          className={text('Additional class name', 'allowedChildTypes-field')}
+          data-errorText={text('Error text')}
+          onChange={action('change')}
+          data-hintText={text('Hint', 'AllowedChildTypes hint')}
+          repository={testRepository}
+          content={testContent}
+        />
+      </div>
+    ),
+    { notes: { markdown: allowedTypeNotes } },
+  )
+  .add(
+    'edit mode',
+    () => (
+      <div>
+        <div style={{ fontStyle: 'italic', fontSize: 13 }}>
+          To see this control in action, please login at
+          <a target="_blank" href="https://dmsservice.demo.sensenet.com/">
+            https://dmsservice.demo.sensenet.com/
+          </a>
+        </div>
+        <br />
+        <AllowedChildTypes
+          data-actionName="edit"
+          name="Name"
+          data-labelText={text('Label', 'AllowedChildTypes label')}
+          className={text('Additional class name', 'allowedChildTypes-field')}
+          data-errorText={text('Error text')}
+          onChange={action('change')}
+          data-hintText={text('Hint', 'AllowedChildTypes hint')}
+          repository={testRepository}
+          content={testContent}
+        />
+      </div>
+    ),
+    { notes: { markdown: allowedTypeNotes } },
+  )
+  .add(
+    'browse mode',
+    () => (
+      <div>
+        <div style={{ fontStyle: 'italic', fontSize: 13 }}>
+          To see this control in action, please login at
+          <a target="_blank" href="https://dmsservice.demo.sensenet.com/">
+            https://dmsservice.demo.sensenet.com/
+          </a>
+        </div>
+        <br />
+        <AllowedChildTypes
+          data-actionName="browse"
+          name="Name"
+          data-labelText={text('Label', 'AllowedChildTypes label')}
+          className={text('Additional class name', 'allowedChildTypes-field')}
+          data-errorText={text('Error text')}
+          onChange={action('change')}
+          data-hintText={text('Hint', 'AllowedChildTypes hint')}
+          repository={testRepository}
+          content={testContent}
+        />
+      </div>
+    ),
+    { notes: { markdown: allowedTypeNotes } },
+  )
 
 storiesOf('FieldControls.AutoComplete', module)
   .addDecorator(withKnobs)
@@ -282,6 +378,62 @@ storiesOf('FieldControls.CheckboxGroup', module)
       />
     ),
     { notes: { markdown: checkboxgroupNotes } },
+  )
+
+storiesOf('FieldControls.ColorPicker', module)
+  .addDecorator(withKnobs)
+  .addDecorator(withA11y)
+  .addDecorator(withActions('change'))
+  .add(
+    'new mode',
+    () => (
+      <ColorPicker
+        data-labelText={text('Label', 'ColorPicker label')}
+        data-actionName="new"
+        onChange={action('change')}
+        readOnly={boolean('Readonly', false)}
+        required={boolean('Required', false)}
+        className={text('Additional class name', 'colorpicker-field')}
+        data-errorText={text('Error text')}
+        data-hintText={text('Hint', 'ColorPicker hint')}
+        name={'Color' as any}
+        palette={['#D0021B', '#F5A623', '#F8E71C', '#8B572A', '#7ED321', '#417505']}
+      />
+    ),
+    { notes: { markdown: colorPickerNotes } },
+  )
+  .add(
+    'edit mode',
+    () => (
+      <ColorPicker
+        data-labelText={text('Label', 'ColorPicker label')}
+        data-actionName="edit"
+        onChange={action('change')}
+        readOnly={boolean('Readonly', false)}
+        required={boolean('Required', false)}
+        className={text('Additional class name', 'colorpicker-field')}
+        data-errorText={text('Error text')}
+        data-hintText={text('Hint', 'ColorPicker hint')}
+        data-fieldValue="#D0021B"
+        name={'Color' as any}
+        palette={['#D0021B', '#F5A623', '#F8E71C', '#8B572A', '#7ED321', '#417505']}
+      />
+    ),
+    { notes: { markdown: colorPickerNotes } },
+  )
+  .add(
+    'browse mode',
+    () => (
+      <ColorPicker
+        data-labelText={text('Label', 'ColorPicker label')}
+        data-actionName="browse"
+        className={text('Additional class name', 'colorpicker-field')}
+        name={'Color' as any}
+        value="#D0021B"
+        onChange={action('change')}
+      />
+    ),
+    { notes: { markdown: colorPickerNotes } },
   )
 
 storiesOf('FieldControls.DatePicker', module)
@@ -514,6 +666,74 @@ storiesOf('FieldControls.DropDownList', module)
       />
     ),
     { notes: { markdown: dropdownlistNotes } },
+  )
+  .add(
+    'ApprovingModeChoice',
+    () => (
+      <DropDownList
+        data-labelText={text('Label', 'ApprovingModeChoice label')}
+        readOnly={boolean('Readonly', false)}
+        required={boolean('Required', false)}
+        className={text('Additional class name', 'approvingmodechoice-field')}
+        data-fieldValue={[3]}
+        data-actionName="edit"
+        onChange={action('change')}
+        data-hintText={text('Hint', 'It shows the approval mode of the current content.')}
+        options={[{ Text: 'Inherited (Off)', Value: 1 }, { Text: 'Off', Value: 2 }, { Text: 'On', Value: 3 }]}
+        name="ApprovingMode"
+      />
+    ),
+    { notes: { markdown: approvingModeChoiceNotes } },
+  )
+  .add(
+    'VersioningModeChoice',
+    () => (
+      <DropDownList
+        data-labelText={text('Label', 'Version history')}
+        readOnly={boolean('Readonly', false)}
+        required={boolean('Required', false)}
+        className={text('Additional class name', 'versioningmodechoice-field')}
+        data-fieldValue={[3]}
+        data-actionName="edit"
+        onChange={action('change')}
+        data-hintText={text(
+          'Hint',
+          'Specify whether the system should create a new version whenever you create or modify a content below this content.',
+        )}
+        options={[
+          { Text: 'Inherited', Value: 1 },
+          { Text: 'None', Value: 2 },
+          { Text: 'Major only', Value: 3 },
+          { Text: 'Major and minor', Value: 4 },
+        ]}
+        name="VersioningMode"
+      />
+    ),
+    { notes: { markdown: versioningModeChoiceNotes } },
+  )
+
+  .add(
+    'VersioningMode',
+    () => (
+      <DropDownList
+        data-labelText={text('Label', 'Versioning for current content')}
+        readOnly={boolean('Readonly', false)}
+        required={boolean('Required', false)}
+        className={text('Additional class name', 'versioningmodechoice-field')}
+        data-fieldValue={[3]}
+        data-actionName="edit"
+        onChange={action('change')}
+        data-hintText={text('Hint', 'It shows the versioning mode of the current content.')}
+        options={[
+          { Text: 'Inherited', Value: 1 },
+          { Text: 'None', Value: 2 },
+          { Text: 'Major only', Value: 3 },
+          { Text: 'Major and minor', Value: 4 },
+        ]}
+        name="VersioningMode"
+      />
+    ),
+    { notes: { markdown: versioningModeNotes } },
   )
 
 storiesOf('FieldControls.FileName', module)
@@ -781,6 +1001,75 @@ storiesOf('FieldControls.Number', module)
     ),
     { notes: { markdown: numberNotes } },
   )
+  .add(
+    'new mode currency',
+    () => (
+      <Number
+        data-actionName="new"
+        data-labelText={text('Label', 'Currency label')}
+        data-defaultValue={number('Default value', 2.1)}
+        readOnly={boolean('Readonly', false)}
+        required={boolean('Required', false)}
+        className={text('Additional class name', 'currency-field')}
+        data-placeHolderText={text('Placeholder', 'placeholder')}
+        data-errorText={text('Error text')}
+        onChange={action('change')}
+        data-hintText={text('Hint', 'Currency hint')}
+        max={number('Maximum value')}
+        min={number('Minimum value')}
+        data-isCurrency={boolean('Currency', true)}
+        data-currency={select('Currency symbol', currencyOptions, '$')}
+        name="Index"
+      />
+    ),
+    { notes: { markdown: numberNotes } },
+  )
+  .add(
+    'edit mode currency',
+    () => (
+      <Number
+        data-actionName="edit"
+        data-labelText={text('Label', 'Currency label')}
+        value={number('Value', 4)}
+        readOnly={boolean('Readonly', false)}
+        required={boolean('Required', false)}
+        className={text('Additional class name', 'currency-field')}
+        data-placeHolderText={text('Placeholder', 'placeholder')}
+        data-errorText={text('Error text')}
+        onChange={action('change')}
+        data-hintText={text('Hint', 'Currency hint')}
+        max={number('Maximum value')}
+        min={number('Minimum value')}
+        data-isCurrency={boolean('Currency', true)}
+        data-currency={select('Currency symbol', currencyOptions, '$')}
+        name="Index"
+      />
+    ),
+    { notes: { markdown: numberNotes } },
+  )
+  .add(
+    'browse mode currency',
+    () => (
+      <Number
+        data-actionName="browse"
+        data-labelText={text('Label', 'Currency label')}
+        value={number('Value', 4.45)}
+        readOnly={boolean('Readonly', false)}
+        required={boolean('Required', false)}
+        className={text('Additional class name', 'currency-field')}
+        data-placeHolderText={text('Placeholder', 'placeholder')}
+        data-errorText={text('Error text')}
+        onChange={action('change')}
+        data-hintText={text('Hint', 'Currency hint')}
+        max={number('Maximum value')}
+        min={number('Minimum value')}
+        data-isCurrency={boolean('Currency', true)}
+        data-currency={select('Currency symbol', currencyOptions, '$')}
+        name="Index"
+      />
+    ),
+    { notes: { markdown: numberNotes } },
+  )
 
 storiesOf('FieldControls.Password', module)
   .addDecorator(withKnobs)
@@ -915,7 +1204,7 @@ storiesOf('FieldControls.ReferenceGrid', module)
         className={text('Additional class name', 'reference-field')}
         onChange={action('change')}
         name="Name"
-        data-fieldValue={[]}
+        data-fieldValue={undefined}
         dataSource={referenceGridDataSource}
         repository={testRepository}
         data-repository={testRepository}
@@ -943,6 +1232,7 @@ storiesOf('FieldControls.ReferenceGrid', module)
         data-repository={testRepository}
         data-selectionRoot={['/workspaces']}
         data-allowedTypes={['File']}
+        data-allowMultiple={true}
       />
     ),
     { notes: { markdown: referenceGridNotes } },
@@ -954,18 +1244,19 @@ storiesOf('FieldControls.ReferenceGrid', module)
         data-actionName="browse"
         data-labelText={text('Label', 'ReferenceGrid label')}
         className={text('Additional class name', 'reference-field')}
-        data-fieldValue={[
+        data-fieldValue={
           {
             DisplayName: 'Alba Monday',
             Id: 4,
             Icon: 'user',
             Type: 'User',
             Avatar: { Url: 'https://dmsservice.demo.sensenet.com/Root/Sites/Default_Site/demoavatars/alba.jpg' },
-          } as User,
-        ]}
+          } as User
+        }
         onChange={action('change')}
         name="Name"
         dataSource={tagsInputDataSource}
+        data-repository={testRepository}
         repository={testRepository}
       />
     ),
@@ -1110,6 +1401,7 @@ storiesOf('FieldControls.TagsInput', module)
         repository={testRepository}
         data-allowMultiple={boolean('Allow multiple selection', false)}
         name="ModifiedBy"
+        content={testContent}
       />
     ),
     { notes: { markdown: tagsInputNotes } },
@@ -1130,8 +1422,9 @@ storiesOf('FieldControls.TagsInput', module)
         dataSource={tagsInputDataSource}
         repository={testRepository}
         data-allowMultiple={boolean('Allow multiple selection', false)}
-        data-fieldValue={[2]}
+        data-fieldValue={[tagsInputDataSource[1]]}
         name="ModifiedBy"
+        content={testContent}
       />
     ),
     { notes: { markdown: tagsInputNotes } },
@@ -1140,15 +1433,15 @@ storiesOf('FieldControls.TagsInput', module)
     'browse mode',
     () => (
       <TagsInput
-        data-textType="LongText"
         data-actionName="browse"
-        data-labelText={text('Label', 'Textarea label')}
-        className={text('Additional class name', 'textarea-field')}
-        data-fieldValue={[1, 2]}
+        data-labelText={text('Label', 'TagsInput label')}
+        className={text('Additional class name', 'tagsinput-field')}
+        data-fieldValue={[tagsInputDataSource[0], tagsInputDataSource[1]]}
         onChange={action('change')}
-        dataSource={tagsInputDataSource}
         repository={testRepository}
+        dataSource={tagsInputDataSource}
         name="ModifiedBy"
+        content={testContent}
       />
     ),
     { notes: { markdown: tagsInputNotes } },

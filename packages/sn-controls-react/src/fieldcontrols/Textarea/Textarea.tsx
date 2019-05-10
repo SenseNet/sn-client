@@ -69,9 +69,7 @@ export class Textarea<T extends GenericContent, K extends keyof T> extends Compo
    * @param {SytheticEvent} event
    */
   public handleChange(event: React.ChangeEvent) {
-    // tslint:disable-next-line:no-string-literal
     this.setState({ value: event.target['value'] })
-    // tslint:disable-next-line:no-string-literal
     this.props.onChange(this.props.name, event.target['value'])
   }
   /**

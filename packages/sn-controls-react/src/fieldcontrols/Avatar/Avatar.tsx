@@ -10,6 +10,7 @@ import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
+import { renderIconDefault } from '../icon'
 import { ReactAvatarFieldSetting } from './AvatarFieldSetting'
 import { AvatarPicker } from './AvatarPicker'
 import { DefaultAvatarTemplate } from './DefaultAvatarTemplate'
@@ -93,7 +94,6 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
    * @return {GenericContent[]}
    */
   public async getSelected() {
-    // tslint:disable:no-string-literal
     const loadPath = this.props['content']
       ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props['content'].Path), '/', this.props.name.toString())
       : ''
@@ -181,6 +181,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                   add={this.addItem}
                   remove={this.removeItem}
                   actionName="edit"
+                  renderIcon={this.props['data-renderIcon'] ? this.props['data-renderIcon'] : renderIconDefault}
                 />
               )}
             </List>
@@ -203,6 +204,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                   select={content => this.selectItem(content)}
                   selected={this.state.selected}
                   repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
+                  renderIcon={this.props['data-renderIcon'] ? this.props['data-renderIcon'] : renderIconDefault}
                 />
                 <DialogActions>
                   <Button onClick={this.handleCancelClick}>{CANCEL}</Button>
@@ -237,6 +239,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                   actionName="new"
                   readOnly={this.props.readOnly}
                   remove={this.removeItem}
+                  renderIcon={this.props['data-renderIcon'] ? this.props['data-renderIcon'] : renderIconDefault}
                 />
               )}
             </List>
@@ -259,6 +262,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                   select={content => this.selectItem(content)}
                   selected={this.state.selected}
                   repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
+                  renderIcon={this.props['data-renderIcon'] ? this.props['data-renderIcon'] : renderIconDefault}
                 />
                 <DialogActions>
                   <Button onClick={this.handleCancelClick}>{CANCEL}</Button>
@@ -284,6 +288,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                 url={this.state.fieldValue}
                 add={this.addItem}
                 actionName="browse"
+                renderIcon={this.props['data-renderIcon'] ? this.props['data-renderIcon'] : renderIconDefault}
               />
             </List>
           </FormControl>
@@ -302,6 +307,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                 url={this.state.fieldValue}
                 add={this.addItem}
                 actionName="browse"
+                renderIcon={this.props['data-renderIcon'] ? this.props['data-renderIcon'] : renderIconDefault}
               />
             </List>
           </FormControl>
