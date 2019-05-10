@@ -80,7 +80,7 @@ context('The documents page', () => {
       parentPath: `Root/Profiles/Public/${currentUser.email}/Document_Library`,
       fileName,
     })
-    cy.contains(fileName).should('exist')
+    cy.contains('div', fileName, { timeout: 10000 }).should('exist')
     openContextMenu(fileName)
     cy.get(`[title="${contextMenuItems.rename}"]`).click()
     // wait for input to be focused
@@ -126,5 +126,34 @@ context('The documents page', () => {
     // check successful copy
     cy.contains(fileName).should('not.exist')
     moveToFolderAndCheckIfFileExists(moveToPath, fileName)
+  })
+
+  it.only('edit properties should work', () => {
+    const fileName = createNewFileName()
+    uploadNewFileAndOpenContextMenuItem(currentUser.email, fileName, contextMenuItems.editProperties)
+    cy.contains('div[data-cy="editProperties"]', 'Edit properties')
+    const properties = {
+      keywords: { value: 'keyword', selector: 'div[data-cy="editProperties"] .ql-editor' },
+      index: { value: '1', selector: '#Index' },
+      displayName: { value: Chance().word(), selector: '#DisplayName' },
+      watermark: { value: Chance().word(), selector: '#Watermark' },
+    }
+    Object.keys(properties).forEach(key =>
+      cy
+        .get(properties[key].selector)
+        .clear()
+        .type(properties[key].value.toString()),
+    )
+    cy.contains('div[data-cy="editProperties"] button', 'Submit').click()
+    cy.contains(`The content '${fileName}' has been modified`)
+    openContextMenu(properties.displayName.value + '.png')
+    cy.get(`[title="${contextMenuItems.editProperties}"]`).click()
+    Object.keys(properties).forEach(key => {
+      if (key === 'keywords') {
+        cy.contains(properties[key].selector, properties[key].value).should('exist')
+      } else {
+        cy.get(properties[key].selector).should('have.value', properties[key].value)
+      }
+    })
   })
 })
