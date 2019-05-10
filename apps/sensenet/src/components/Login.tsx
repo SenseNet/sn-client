@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography'
 import { FormsAuthenticationService } from '@sensenet/client-core'
 import { sleepAsync } from '@sensenet/client-utils'
 import React, { useContext, useState } from 'react'
+import { RouteComponentProps, withRouter } from 'react-router'
 import {
   InjectorContext,
   LocalizationContext,
@@ -18,7 +19,7 @@ import {
 import { PersonalSettings } from '../services/PersonalSettings'
 import { UserAvatar } from './UserAvatar'
 
-export const Login: React.FunctionComponent = () => {
+export const Login: React.FunctionComponent<RouteComponentProps> = props => {
   const injector = useContext(InjectorContext)
   const repo = useContext(RepositoryContext)
   const theme = useContext(ThemeContext)
@@ -77,6 +78,9 @@ export const Login: React.FunctionComponent = () => {
             relatedRepository: repoToLogin.configuration.repositoryUrl,
           },
         })
+        if (props.match.path === '/login') {
+          props.history.push('/')
+        }
       } else {
         setIsInProgress(false)
         setError(localization.loginFailed)
@@ -180,4 +184,4 @@ export const Login: React.FunctionComponent = () => {
   )
 }
 
-export default Login
+export default withRouter(Login)

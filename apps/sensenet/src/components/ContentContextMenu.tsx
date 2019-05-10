@@ -112,7 +112,6 @@ export const ContentContextMenuComponent: React.FunctionComponent<
                 setIsCopyDialogOpened(true)
                 props.onClose && props.onClose()
               }}>
-              >
               <ListItemIcon>
                 <FileMove />
               </ListItemIcon>
