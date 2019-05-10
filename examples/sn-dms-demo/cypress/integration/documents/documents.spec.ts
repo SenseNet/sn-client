@@ -149,11 +149,7 @@ context('The documents page', () => {
     openContextMenu(properties.displayName.value + '.png')
     cy.get(`[title="${contextMenuItems.editProperties}"]`).click()
     Object.keys(properties).forEach(key => {
-      if (key === 'keywords') {
-        cy.contains(properties[key].selector, properties[key].value).should('exist')
-      } else {
-        cy.get(properties[key].selector).should('have.value', properties[key].value)
-      }
+      cy.get(properties[key].selector).should(key === 'keywords' ? 'have.text' : 'have.value', properties[key].value)
     })
   })
 })

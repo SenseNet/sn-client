@@ -17,6 +17,7 @@ context('The documents page with admin', () => {
       fileName,
     })
     cy.contains('div', fileName, { timeout: 10000 }).should('exist')
+    openContextMenu(fileName)
     Object.keys(contextMenuItems).forEach(item => {
       cy.get(`[title="${contextMenuItems[item]}"]`).should('exist')
     })
@@ -29,6 +30,7 @@ context('The documents page with admin', () => {
       fileName,
     })
     cy.contains('div', fileName, { timeout: 10000 }).should('exist')
+    openContextMenu(fileName)
     cy.get(`[title="${contextMenuItems.preview}"]`).click()
     cy.contains('Preview image generation is in progress').should('exist')
     cy.get('.overlay').should('exist')
