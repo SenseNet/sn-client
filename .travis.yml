@@ -28,3 +28,14 @@ jobs:
       after_failure: bash ./scripts/sendscreenshots.sh
       addons:
         chrome: stable
+
+    - stage: 'Deploy dms to netlify'
+      if: $TRAVIS_PULL_REQUEST != false
+      before_deploy: npm install netlify-cli -g
+      script: yarn build && yarn dms build:webpack
+      deploy:
+        provider: script
+        script: netlify deploy --site $DMS_NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --dir ./examples/sn-dms-demo/build --message $TRAVIS_PULL_REQUEST
+        skip_cleanup: true
+        on:
+          all_branches: true
