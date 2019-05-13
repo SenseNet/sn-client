@@ -33,7 +33,7 @@ jobs:
         chrome: stable
 
     - stage: 'Deploy dms to netlify'
-      if: $TRAVIS_PULL_REQUEST != false
+      if: type = pull_request
       before_deploy: npm install netlify-cli -g
       script: yarn build && yarn dms build:webpack
       deploy:
