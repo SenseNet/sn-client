@@ -10,7 +10,7 @@ import { ConstantContent } from '@sensenet/client-core'
 import { Settings } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Query } from '../../../../../packages/sn-query/dist'
+import { Query } from '@sensenet/query'
 import { ContentRoutingContext, CurrentContentContext, LocalizationContext, RepositoryContext } from '../../context'
 import { ContentContextMenu } from '../ContentContextMenu'
 
