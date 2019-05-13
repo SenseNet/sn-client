@@ -11,6 +11,9 @@ cache:
   yarn: true
 
 jobs:
+  allow_failures:
+    - name: 'DMS e2e tests'
+
   include:
     - stage: 'Tests'
       name: 'Static linting'
