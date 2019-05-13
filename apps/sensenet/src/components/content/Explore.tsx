@@ -6,8 +6,10 @@ import {
   CurrentAncestorsProvider,
   CurrentChildrenProvider,
   CurrentContentProvider,
+  InjectorContext,
   LoadSettingsContextProvider,
 } from '../../context'
+import { SelectionContext } from '../../services/SelectionContext'
 import { AddButton } from '../AddButton'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { CollectionComponent } from '../ContentListPanel'
@@ -17,6 +19,8 @@ import { CommanderRouteParams } from './Commander'
 export const ExploreComponent: React.FunctionComponent<RouteComponentProps<{ folderId?: string }>> = props => {
   const getLeftFromPath = (params: CommanderRouteParams) =>
     parseInt(params.folderId as string, 10) || ConstantContent.PORTAL_ROOT.Id
+
+  const selectionContext = useContext(InjectorContext).getInstance(SelectionContext)
 
   const ctx = useContext(ContentRoutingContext)
   const [leftParentId, setLeftParentId] = useState(getLeftFromPath(props.match.params))
@@ -54,6 +58,7 @@ export const ExploreComponent: React.FunctionComponent<RouteComponentProps<{ fol
                     orderby: [['DisplayName', 'asc'], ['Name', 'asc']],
                   }}
                   onItemClick={item => {
+                    selectionContext.activeContent = item
                     setLeftParentId(item.Id)
                     props.history.push(ctx.getPrimaryActionUrl(item))
                   }}
