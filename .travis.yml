@@ -19,26 +19,21 @@ jobs:
       name: 'Static linting'
       script: yarn lint
 
-    - name: 'Unit Tests'
-      before_script: yarn build
-      script: yarn test:coverage
-      after_success: bash <(curl -s https://codecov.io/bash)
+    # - name: 'Unit Tests'
+    #   before_script: yarn build
+    #   script: yarn test:coverage
+    #   after_success: bash <(curl -s https://codecov.io/bash)
 
-    - name: 'DMS e2e tests'
-      if: type = pull_request
-      before_script: yarn build
-      script: yarn test:dms:e2e
-      after_failure: bash ./scripts/sendscreenshots.sh
-      addons:
-        chrome: stable
+    # - name: 'DMS e2e tests'
+    #   if: type = pull_request
+    #   before_script: yarn build
+    #   script: yarn test:dms:e2e
+    #   after_failure: bash ./scripts/sendscreenshots.sh
+    #   addons:
+    #     chrome: stable
 
     - stage: 'Deploy dms to netlify'
       if: type = pull_request
-      before_deploy: npm install netlify-cli -g
+      install: yarn && npm install netlify-cli -g
       script: yarn build && yarn dms build:webpack
-      deploy:
-        provider: script
-        script: netlify deploy --site $DMS_NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --dir ./examples/sn-dms-demo/build --message $TRAVIS_PULL_REQUEST
-        skip_cleanup: true
-        on:
-          all_branches: true
+      after_success: netlify deploy --site $DMS_NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --dir ./examples/sn-dms-demo/build --message $TRAVIS_PULL_REQUEST

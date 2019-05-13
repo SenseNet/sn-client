@@ -46,7 +46,7 @@
     "test:coverage": "jest --coverage",
     "clean": "lerna clean",
     "fix": "lerna run fix --parallel",
-    "lint": "lerna run lint --parallel"
+    "lint": "lerna run lint"
   },
   "husky": {
     "hooks": {
