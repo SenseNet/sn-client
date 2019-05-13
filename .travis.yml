@@ -32,8 +32,14 @@ jobs:
     #   addons:
     #     chrome: stable
 
-    - stage: 'Deploy dms to netlify'
+    - stage: 'Deploy to netlify'
       if: type = pull_request
+      name: 'DMS'
       install: yarn && npm install netlify-cli -g
       script: yarn build && yarn dms build:webpack
-      after_success: netlify deploy --site $DMS_NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --dir ./examples/sn-dms-demo/build --message $TRAVIS_PULL_REQUEST
+      after_success: netlify deploy --site c0604e4d-d7a1-4be1-be6a-dcfb034032c0 --auth $NETLIFY_ACCESS_TOKEN --dir ./examples/sn-dms-demo/build --message $TRAVIS_PULL_REQUEST
+    - if: type = pull_request
+      name: 'Component docs'
+      install: yarn && npm install netlify-cli -g
+      script: yarn build && yarn storybook build-storybook
+      after_success: netlify deploy --site 2739e302-a99b-4df0-95fc-8a348831dd04 --auth $NETLIFY_ACCESS_TOKEN --dir ./examples/sn-react-component-docs/storybook-static --message $TRAVIS_PULL_REQUEST
