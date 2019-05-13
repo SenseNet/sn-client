@@ -229,6 +229,32 @@ const values = {
     branchName: 'Branch name',
     commitHash: 'Commit Hash',
   },
+  settings: {
+    edit: 'Edit',
+    learnMore: 'Learn more',
+    otherSettings: 'Other settings',
+    descriptions: {
+      '/Root/System/Settings/DocumentPreview.settings':
+        'In this section you can customize the behavior of the Document Preview feature – for example the font style of the watermark displayed on documents or the number of the initially generated preview images. ',
+      '/Root/System/Settings/Indexing.settings':
+        'In this section you can customize the indexing behavior (for example the text extractor used in case of different file types) of the system. ',
+      '/Root/System/Settings/Logging.settings':
+        'Contains logging-related settings, for example which events are sent to the trace. You can control tracing by category: switch on or off writing messages in certain categories to the trace channel. ',
+      '/Root/System/Settings/MailProcessor.settings':
+        'The content list Inbox feature requires an Exchange or POP3 server configuration and other settings related to connecting libraries to a mailbox. ',
+      '/Root/System/Settings/OAuth.settings':
+        'When users log in using one of the configured OAuth providers (like Google or Facebook), these settings control the type and place of the newly created users. ',
+      '/Root/System/Settings/OfficeOnline.settings':
+        'To open or edit Office documents in the browser, the system needs to know the address of the Office Online Server that provides the user interface for the feature. In this section you can configure that and other OOS-related settings. ',
+      '/Root/System/Settings/Portal.settings':
+        'All settings related to the surface and behavior of the web application can be found here, from the cache header settings of different file types to the default content type of uploaded images and the allowed origin values. ',
+      '/Root/System/Settings/Sharing.settings': 'Content sharing related options. ',
+      '/Root/System/Settings/TaskManagement.settings':
+        'When the Task Management module is installed, this is the place where you can configure the connection to the central task management service. ',
+      '/Root/System/Settings/UserProfile.settings':
+        'When a user is created, and the profile feature is enabled (in the app configuration), they automatically get a profile – a workspace dedicated to the user’s personal documents and tasks. In this setting section you can customize the content type and the place of this profile. ',
+    },
+  },
 }
 
 export default values
