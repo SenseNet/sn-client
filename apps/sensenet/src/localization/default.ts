@@ -232,6 +232,7 @@ const values = {
   settings: {
     edit: 'Edit',
     learnMore: 'Learn more',
+    otherSettings: 'Other settings',
     descriptions: {
       '/Root/System/Settings/DocumentPreview.settings':
         'In this section you can customize the behavior of the Document Preview feature – for example the font style of the watermark displayed on documents or the number of the initially generated preview images. ',

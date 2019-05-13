@@ -2,6 +2,9 @@ import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
 import { ConstantContent } from '@sensenet/client-core'
 import { Settings } from '@sensenet/default-content-types'
@@ -25,9 +28,9 @@ const WellKnownContentCard: React.FunctionComponent<{
         onContextMenu(ev)
       }}
       style={{
-        width: 350,
+        width: 330,
         height: 250,
-        margin: '1em',
+        margin: '0.5em',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
@@ -39,7 +42,7 @@ const WellKnownContentCard: React.FunctionComponent<{
         <Typography color="textSecondary">{(localization.descriptions as any)[settings.Path]}</Typography>
       </CardContent>
       <CardActions style={{ justifyContent: 'flex-end' }}>
-        <Link to={ctx.getPrimaryActionUrl(settings)}>
+        <Link to={ctx.getPrimaryActionUrl(settings)} style={{ textDecoration: 'none' }}>
           <Button size="small">{localization.edit}</Button>
         </Link>
         <Button size="small">{localization.learnMore}</Button>
@@ -51,6 +54,8 @@ const WellKnownContentCard: React.FunctionComponent<{
 const Setup: React.StatelessComponent = () => {
   const repo = useContext(RepositoryContext)
   const localization = useContext(LocalizationContext).values.settings
+  const ctx = useContext(ContentRoutingContext)
+
   const [wellKnownSettings, setWellKnownSettings] = useState<Settings[]>([])
   const [settings, setSettings] = useState<Settings[]>([])
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
@@ -114,10 +119,20 @@ const Setup: React.StatelessComponent = () => {
         </div>
       ) : null}
       <br />
-      Settings:{' '}
-      {settings.map(s => (
-        <span key={s.Id}>{s.DisplayName || s.Name}</span>
-      ))}
+      {settings && settings.length ? (
+        <>
+          <Typography variant="h5">{localization.otherSettings}</Typography>
+          <List>
+            {settings.map(s => (
+              <Link key={s.Id} to={ctx.getPrimaryActionUrl(s)} style={{ textDecoration: 'none' }}>
+                <ListItem button={true}>
+                  <ListItemText primary={s.DisplayName || s.Name} secondary={s.Path} />
+                </ListItem>
+              </Link>
+            ))}
+          </List>
+        </>
+      ) : null}
     </div>
   )
 }
