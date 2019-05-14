@@ -311,7 +311,11 @@ class ActionMenu extends React.Component<
           this.props.history.replace(`/documents?query=${query.Query}&queryName=${query.DisplayName || query.Name}`)
           this.props.closeActionMenu()
           break
-
+        case 'OpenInEditor':
+          this.handleClose()
+          const filePath = `/wopi/${btoa(content ? content.Id.toString() : '')}`
+          this.props.history.push(filePath)
+          break
         default:
           console.log(`${action.Name} is clicked`)
           this.handleClose()
