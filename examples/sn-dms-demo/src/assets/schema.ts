@@ -2755,6 +2755,22 @@ export const customSchema = [
         ControlHint: 'sn:Name',
         Type: 'ShortTextFieldSetting',
       },
+      {
+        Name: 'AllowedChildTypes',
+        FieldClassName: 'SenseNet.ContentRepository.Fields.AllowedChildTypesField',
+        DisplayName: 'Allowed child types',
+        Description:
+          'You can get and set which content types are explicitly allowed to be created under this content. It is a local setting.',
+        ReadOnly: false,
+        Compulsory: false,
+        OutputMethod: 0,
+        Visible: true,
+        VisibleBrowse: 0,
+        VisibleEdit: 0,
+        VisibleNew: 0,
+        DefaultOrder: 0,
+        Type: 'NullFieldSetting',
+      },
     ],
   },
   {
