@@ -6,6 +6,7 @@ import { Content } from '../Models/Content'
 import { ODataBatchResponse } from '../Models/ODataBatchResponse'
 import { ODataCollectionResponse } from '../Models/ODataCollectionResponse'
 import { ODataResponse } from '../Models/ODataResponse'
+import { ODataWopiResponse } from '../Models/ODataWopiResponse'
 import {
   ActionOptions,
   CopyOptions,
@@ -400,6 +401,21 @@ export class Repository implements Disposable {
       throw await this.getErrorFromResponse(response)
     }
     return await response.json()
+  }
+  /**
+   * Returns data for loading Office document for editing
+   * @param idOrPath Id or path of the document
+   */
+  public async getWopiData(idOrPath: string | number): Promise<ODataWopiResponse> {
+    return await this.executeAction<{}, ODataWopiResponse>({
+      idOrPath,
+      method: 'GET',
+      name: 'GetWopiData',
+      oDataOptions: {
+        action: 'edit',
+      } as any,
+      body: undefined,
+    })
   }
   /**
    * Executes a specified custom OData action
