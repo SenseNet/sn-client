@@ -86,7 +86,7 @@ class DashboardComponent extends React.Component<
               path="/wopi/:documentId?"
               component={() => {
                 const LoadableEditorPage = Loadable({
-                  loader: async () => await import(/* webpackChunkName: "viewer" */ '../components/wopi/EditorPage'),
+                  loader: async () => await import(/* webpackChunkName: "viewer" */ '../components/Wopi/EditorPage'),
                   loading: () => <FullScreenLoader />,
                 })
                 return <LoadableEditorPage repository={repository} />

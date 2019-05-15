@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { rootStateType } from '../../store/rootReducer'
-import { getWopiData } from './store/actions'
+import { getWopiData } from '../../store/wopi/actions'
 
 const mapStateToProps = (state: rootStateType) => {
   return {

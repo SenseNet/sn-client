@@ -1,8 +1,8 @@
 import { commentsStateReducer, sensenetDocumentViewerReducer } from '@sensenet/document-viewer-react'
 import { Reducers } from '@sensenet/redux'
 import { combineReducers } from 'redux'
-import { wopi } from '../components/wopi/store/reducers'
 import { dms } from '../Reducers'
+import { wopi } from './wopi/reducers'
 
 const sensenet = Reducers.sensenet
 
