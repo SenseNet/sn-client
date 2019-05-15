@@ -49,4 +49,4 @@ jobs:
       name: 'Sn app'
       install: yarn && npm install netlify-cli -g
       script: yarn build && yarn snapp build:webpack
-      after_success: netlify deploy --site eddadc9d-3e2d-42ab-a0c6-81b9d58fce84 --auth $NETLIFY_ACCESS_TOKEN --dir ./apps/sensenet/bundle --message $TRAVIS_PULL_REQUEST
+      after_success: netlify deploy --site eddadc9d-3e2d-42ab-a0c6-81b9d58fce84 --auth $NETLIFY_ACCESS_TOKEN --dir ./apps/sensenet/bundle/assets --message $TRAVIS_PULL_REQUEST
