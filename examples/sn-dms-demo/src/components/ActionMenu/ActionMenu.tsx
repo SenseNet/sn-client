@@ -11,7 +11,7 @@ import { compile } from 'path-to-regexp'
 import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
-import { RouteComponentProps, withRouter } from 'react-router-dom'
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom'
 import { v1 } from 'uuid'
 import * as DMSActions from '../../Actions'
 import { downloadFile } from '../../assets/helpers'
@@ -106,6 +106,14 @@ const styles = {
     color: '#016D9E',
     marginRight: 14,
   },
+  openInEditorLink: {
+    color: '#000',
+    textDecoration: 'none' as any,
+  },
+  openInEditorLinkHovered: {
+    color: '#016d9e',
+    textDecoration: 'none' as any,
+  },
 }
 
 interface ActionMenuProps extends RouteComponentProps<any> {
@@ -165,161 +173,159 @@ class ActionMenu extends React.Component<
       if (!content) {
         return
       }
-      switch (action.Name) {
-        case 'Rename':
-          this.handleClose()
-          this.props.setEdited(this.props.currentContent ? this.props.currentContent.Id : 0)
-          break
-        case 'ClearSelection':
-          this.handleClose()
-          this.props.clearSelection()
-          break
-        case 'DeleteBatch':
-        case 'Delete':
-          if (content) {
+      if (action.Name !== 'OpenInEditor') {
+        switch (action.Name) {
+          case 'Rename':
+            this.handleClose()
+            this.props.setEdited(this.props.currentContent ? this.props.currentContent.Id : 0)
+            break
+          case 'ClearSelection':
             this.handleClose()
             this.props.clearSelection()
-            this.props.openDialog(<DeleteDialog content={[content]} />, resources.DELETE, this.props.closeDialog)
-          }
-          break
-        case 'Preview':
-          this.handleClose()
-          const newPath = compile(this.props.match.path)({
-            folderPath: this.props.match.params.folderPath || btoa(this.props.id as any),
-            otherActions: ['preview', btoa(content ? content.Id.toString() : '')],
-          })
-          this.props.history.push(newPath)
-          break
-        case 'Logout':
-          this.handleClose()
-          this.props.logout()
-          break
-        case 'Browse':
-          this.handleClose()
-          const path = this.props.currentContent ? this.props.currentContent.Path : ''
-          downloadFile(path, this.props.hostName)
-          break
-        case 'Versions':
-          this.handleClose()
-          this.props.currentContent &&
+            break
+          case 'DeleteBatch':
+          case 'Delete':
+            if (content) {
+              this.handleClose()
+              this.props.clearSelection()
+              this.props.openDialog(<DeleteDialog content={[content]} />, resources.DELETE, this.props.closeDialog)
+            }
+            break
+          case 'Preview':
+            this.handleClose()
+            const newPath = compile(this.props.match.path)({
+              folderPath: this.props.match.params.folderPath || btoa(this.props.id as any),
+              otherActions: ['preview', btoa(content ? content.Id.toString() : '')],
+            })
+            this.props.history.push(newPath)
+            break
+          case 'Logout':
+            this.handleClose()
+            this.props.logout()
+            break
+          case 'Browse':
+            this.handleClose()
+            const path = this.props.currentContent ? this.props.currentContent.Path : ''
+            downloadFile(path, this.props.hostName)
+            break
+          case 'Versions':
+            this.handleClose()
+            this.props.currentContent &&
+              this.props.openDialog(
+                <VersionsDialog currentContent={this.props.currentContent} />,
+                resources.VERSIONS,
+                this.props.closeDialog,
+              )
+            break
+          case 'ShareContent':
+            this.handleClose()
+            this.props.currentContent &&
+              this.props.openDialog(<ShareDialog currentContent={this.props.currentContent} />)
+            break
+          case 'Profile':
+            this.handleClose()
+            const user = this.props.currentUser
+            const userPath = compile('/users/:folderPath?/:otherActions*')({
+              folderPath: btoa(user && user.ParentId ? user.ParentId.toString() : ''),
+              otherActions: ['user', btoa(user ? user.Id.toString() : '')],
+            })
+            this.props.history.push(userPath)
+            this.props.chooseMenuItem('profile')
+            break
+          case 'Edit':
+            this.handleClose()
+            content &&
+              this.props.openDialog(
+                <EditPropertiesDialog content={content} contentTypeName={content ? content.Type : ''} />,
+                resources.EDIT_PROPERTIES,
+                this.props.closeDialog,
+              )
+            break
+          case 'CheckOut':
+            this.handleClose()
+            this.props.checkoutContent(content ? content.Id : 0)
+            break
+          case 'Publish':
+            this.handleClose()
+            this.props.publishContent(content ? content.Id : 0)
+            break
+          case 'CheckIn':
+            this.handleClose()
+            this.props.checkinContent(content ? content.Id : 0)
+            break
+          case 'UndoCheckOut':
+            this.handleClose()
+            this.props.undoCheckout(content ? content.Id : 0)
+            break
+          case 'ForceUndoCheckOut':
+            this.handleClose()
+            this.props.forceundoCheckout(content ? content.Id : 0)
+            break
+          case 'Approve':
+            this.handleClose()
             this.props.openDialog(
-              <VersionsDialog currentContent={this.props.currentContent} />,
-              resources.VERSIONS,
+              <ApproveorRejectDialog id={content ? content.Id : 0} fileName={content ? content.DisplayName : ''} />,
+              resources.APPROVE_OR_REJECT,
               this.props.closeDialog,
             )
-          break
-        case 'ShareContent':
-          this.handleClose()
-          this.props.currentContent && this.props.openDialog(<ShareDialog currentContent={this.props.currentContent} />)
-          break
-        case 'Profile':
-          this.handleClose()
-          const user = this.props.currentUser
-          const userPath = compile('/users/:folderPath?/:otherActions*')({
-            folderPath: btoa(user && user.ParentId ? user.ParentId.toString() : ''),
-            otherActions: ['user', btoa(user ? user.Id.toString() : '')],
-          })
-          this.props.history.push(userPath)
-          this.props.chooseMenuItem('profile')
-          break
-        case 'Edit':
-          this.handleClose()
-          content &&
-            this.props.openDialog(
-              <EditPropertiesDialog content={content} contentTypeName={content ? content.Type : ''} />,
-              resources.EDIT_PROPERTIES,
-              this.props.closeDialog,
+            break
+          case 'MoveTo':
+            this.handleClose()
+            this.props.openPicker(
+              <PathPicker
+                mode="Move"
+                currentContent={content}
+                currentParent={this.props.currentParent}
+                dialogComponent={<MoveToConfirmDialog />}
+                dialogTitle={resources.MOVE}
+                dialogCallback={Actions.moveBatch as any}
+              />,
+              'move',
+              () => {
+                this.props.closePicker() && this.props.setBackLink(true)
+              },
             )
-          break
-        case 'CheckOut':
-          this.handleClose()
-          this.props.checkoutContent(content ? content.Id : 0)
-          break
-        case 'Publish':
-          this.handleClose()
-          this.props.publishContent(content ? content.Id : 0)
-          break
-        case 'CheckIn':
-          this.handleClose()
-          this.props.checkinContent(content ? content.Id : 0)
-          break
-        case 'UndoCheckOut':
-          this.handleClose()
-          this.props.undoCheckout(content ? content.Id : 0)
-          break
-        case 'ForceUndoCheckOut':
-          this.handleClose()
-          this.props.forceundoCheckout(content ? content.Id : 0)
-          break
-        case 'Approve':
-          this.handleClose()
-          this.props.openDialog(
-            <ApproveorRejectDialog id={content ? content.Id : 0} fileName={content ? content.DisplayName : ''} />,
-            resources.APPROVE_OR_REJECT,
-            this.props.closeDialog,
-          )
-          break
-        case 'MoveTo':
-          this.handleClose()
-          this.props.openPicker(
-            <PathPicker
-              mode="Move"
-              currentContent={content}
-              currentParent={this.props.currentParent}
-              dialogComponent={<MoveToConfirmDialog />}
-              dialogTitle={resources.MOVE}
-              dialogCallback={Actions.moveBatch as any}
-            />,
-            'move',
-            () => {
-              this.props.closePicker() && this.props.setBackLink(true)
-            },
-          )
-          break
-        case 'CopyTo':
-          this.handleClose()
-          this.props.openPicker(
-            <PathPicker
-              mode="Copy"
-              currentContent={content}
-              currentParent={this.props.currentParent}
-              dialogComponent={<CopyToConfirmDialog />}
-              dialogTitle={resources.COPY}
-              dialogCallback={Actions.copyBatch as any}
-            />,
-            'copy',
-            () => this.props.closePicker() && this.props.setBackLink(true),
-          )
-          break
-        case 'MoveBatch':
-          this.handleClose()
-          this.props.openPicker(
-            <PathPicker
-              mode="Move"
-              currentContent={content}
-              currentParent={this.props.currentParent}
-              dialogComponent={<MoveToConfirmDialog />}
-              dialogTitle={resources.MOVE}
-              dialogCallback={Actions.moveBatch as any}
-            />,
-            'move',
-            () => this.props.closePicker() && this.props.setBackLink(true),
-          )
-          break
-        case 'ExecuteQuery':
-          const query = content as Query
-          this.props.history.replace(`/documents?query=${query.Query}&queryName=${query.DisplayName || query.Name}`)
-          this.props.closeActionMenu()
-          break
-        case 'OpenInEditor':
-          this.handleClose()
-          const filePath = `/wopi/${btoa(content ? content.Id.toString() : '')}`
-          this.props.history.push(filePath)
-          break
-        default:
-          console.log(`${action.Name} is clicked`)
-          this.handleClose()
-          break
+            break
+          case 'CopyTo':
+            this.handleClose()
+            this.props.openPicker(
+              <PathPicker
+                mode="Copy"
+                currentContent={content}
+                currentParent={this.props.currentParent}
+                dialogComponent={<CopyToConfirmDialog />}
+                dialogTitle={resources.COPY}
+                dialogCallback={Actions.copyBatch as any}
+              />,
+              'copy',
+              () => this.props.closePicker() && this.props.setBackLink(true),
+            )
+            break
+          case 'MoveBatch':
+            this.handleClose()
+            this.props.openPicker(
+              <PathPicker
+                mode="Move"
+                currentContent={content}
+                currentParent={this.props.currentParent}
+                dialogComponent={<MoveToConfirmDialog />}
+                dialogTitle={resources.MOVE}
+                dialogCallback={Actions.moveBatch as any}
+              />,
+              'move',
+              () => this.props.closePicker() && this.props.setBackLink(true),
+            )
+            break
+          case 'ExecuteQuery':
+            const query = content as Query
+            this.props.history.replace(`/documents?query=${query.Query}&queryName=${query.DisplayName || query.Name}`)
+            this.props.closeActionMenu()
+            break
+          default:
+            console.log(`${action.Name} is clicked`)
+            this.handleClose()
+            break
+        }
       }
     }
   }
@@ -338,7 +344,7 @@ class ActionMenu extends React.Component<
   }
 
   public render() {
-    const { actions, open, position } = this.props
+    const { actions, open, position, currentContent } = this.props
     return (
       <MediaQuery minDeviceWidth={700}>
         {matches => {
@@ -409,7 +415,21 @@ class ActionMenu extends React.Component<
                         ) : null}
                       </Icon>
                     </ListItemIcon>
-                    {action.DisplayName}
+                    {action.Name === 'OpenInEditor' ? (
+                      <Link
+                        onClick={this.handleClose}
+                        to={`/wopi/${btoa(currentContent ? currentContent.Id.toString() : '')}`}
+                        target="_blank"
+                        onMouseOver={e => this.handleMouseEnter(e, action.Name)}
+                        onMouseLeave={this.handleMouseLeave}
+                        style={
+                          this.isHovered('OpenInEditor') ? styles.openInEditorLinkHovered : styles.openInEditorLink
+                        }>
+                        {action.DisplayName}
+                      </Link>
+                    ) : (
+                      action.DisplayName
+                    )}
                   </MenuItem>
                 )
               })}
