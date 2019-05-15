@@ -1,5 +1,4 @@
 import { LoginState } from '@sensenet/client-core'
-import { PathHelper } from '@sensenet/client-utils'
 import React from 'react'
 import Loadable from 'react-loadable'
 import { connect } from 'react-redux'
@@ -7,7 +6,6 @@ import { Route, RouteComponentProps, Switch } from 'react-router-dom'
 import * as DMSActions from '../Actions'
 import { FullScreenLoader } from '../components/FullScreenLoader'
 import Header from '../components/Header'
-import EditorPage from '../components/wopi/EditorPage'
 import { repository } from '../DmsRepository'
 import { rootStateType } from '../store/rootReducer'
 

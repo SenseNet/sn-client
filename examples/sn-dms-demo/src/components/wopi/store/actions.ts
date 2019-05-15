@@ -1,11 +1,10 @@
-import { Repository } from '@sensenet/client-core'
-import { WopiDataEntry } from '../models/WopiData'
+import { ODataWopiResponse, Repository } from '@sensenet/client-core'
 
 export const getWopiData = (idOrPath: string | number) => ({
   type: 'GET_WOPIDATA',
   idOrPath,
   payload: (repository: Repository) =>
-    repository.executeAction<undefined, WopiDataEntry>({
+    repository.executeAction<undefined, ODataWopiResponse>({
       idOrPath,
       name: 'GetWopiData',
       method: 'GET',
