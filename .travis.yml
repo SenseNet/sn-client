@@ -15,9 +15,9 @@ jobs:
     - name: 'DMS e2e tests'
 
   include:
-    # - stage: 'Tests'
-    #   name: 'Static linting'
-    #   script: yarn lint
+    - stage: 'Tests'
+      name: 'Static linting'
+      script: yarn lint
 
     # - name: 'Unit Tests'
     #   before_script: yarn build
