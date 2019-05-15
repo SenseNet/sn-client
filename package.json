@@ -34,7 +34,7 @@
     "cy:run:dms": "cypress run --project ./examples/sn-dms-demo --browser chrome",
     "start:dms:e2e": "yarn workspace sn-dms-demo start:e2e",
     "test:dms:e2e": "start-server-and-test start:dms:e2e http-get://localhost:3000 cy:run:dms",
-    "snapp": "yarn workspace @sensenet/sn-app start",
+    "snapp": "yarn workspace @sensenet/sn-app",
     "storybook": "yarn workspace sn-react-component-docs",
     "dms": "yarn workspace sn-dms-demo",
     "build": "tsc -b packages",
