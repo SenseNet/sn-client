@@ -19,18 +19,18 @@ jobs:
       name: 'Static linting'
       script: yarn lint
 
-    # - name: 'Unit Tests'
-    #   before_script: yarn build
-    #   script: yarn test:coverage
-    #   after_success: bash <(curl -s https://codecov.io/bash)
+    - name: 'Unit Tests'
+      before_script: yarn build
+      script: yarn test:coverage
+      after_success: bash <(curl -s https://codecov.io/bash)
 
-    # - name: 'DMS e2e tests'
-    #   if: type = pull_request
-    #   before_script: yarn build
-    #   script: yarn test:dms:e2e
-    #   after_failure: bash ./scripts/sendscreenshots.sh
-    #   addons:
-    #     chrome: stable
+    - name: 'DMS e2e tests'
+      if: type = pull_request
+      before_script: yarn build
+      script: yarn test:dms:e2e
+      after_failure: bash ./scripts/sendscreenshots.sh
+      addons:
+        chrome: stable
 
     - stage: 'Deploy to netlify'
       if: type = pull_request
