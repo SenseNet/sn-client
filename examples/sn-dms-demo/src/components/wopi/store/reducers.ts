@@ -1,5 +1,5 @@
 import { AnyAction, combineReducers, Reducer } from 'redux'
-import { WopiDataEntry } from '../services'
+import { WopiDataEntry } from '../models/WopiData'
 
 export const wopiData: Reducer<WopiDataEntry> = (
   state = { accesstoken: '', actionUrl: '', expiration: 0, faviconUrl: '' },

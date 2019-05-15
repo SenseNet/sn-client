@@ -1,5 +1,5 @@
 import { Repository } from '@sensenet/client-core'
-import { WopiDataEntry } from '../services'
+import { WopiDataEntry } from '../models/WopiData'
 
 export const getWopiData = (idOrPath: string | number) => ({
   type: 'GET_WOPIDATA',
