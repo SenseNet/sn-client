@@ -1,11 +1,9 @@
 import { LoginState } from '@sensenet/client-core'
 import React from 'react'
-import Loadable from 'react-loadable'
 import { connect } from 'react-redux'
 import { Route, RouteComponentProps, Switch } from 'react-router-dom'
 import * as DMSActions from '../Actions'
-import { FullScreenLoader } from '../components/FullScreenLoader'
-// import Header from '../components/Header'
+import EditorPage from '../components/wopi/EditorPage'
 import { repository } from '../DmsRepository'
 import { rootStateType } from '../store/rootReducer'
 
@@ -78,22 +76,9 @@ class DashboardComponent extends React.Component<
 
     return (
       <div>
-        {/* <Header />
-        <div> */}
         <Switch>
-          <Route
-            exact={true}
-            path="/wopi/:documentId?"
-            component={() => {
-              const LoadableEditorPage = Loadable({
-                loader: async () => await import(/* webpackChunkName: "viewer" */ '../components/Wopi/EditorPage'),
-                loading: () => <FullScreenLoader />,
-              })
-              return <LoadableEditorPage repository={repository} />
-            }}
-          />
+          <Route exact={true} path="/wopi/:documentId?" component={() => <EditorPage repository={repository} />} />
         </Switch>
-        {/* </div> */}
       </div>
     )
   }

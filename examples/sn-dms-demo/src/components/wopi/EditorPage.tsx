@@ -73,9 +73,7 @@ class EditorPage extends Component<
   public render() {
     const { accesstoken, expiration, actionUrl } = this.props.wopiData.wopiData
     return (
-      <div
-      // style={{ marginTop: 65 }}
-      >
+      <div>
         <form
           id="office_form"
           name="office_form"
