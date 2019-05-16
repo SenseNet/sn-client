@@ -8,9 +8,11 @@ import {
   CurrentChildrenProvider,
   CurrentContentContext,
   CurrentContentProvider,
+  InjectorContext,
   LoadSettingsContextProvider,
   RepositoryContext,
 } from '../../context'
+import { SelectionService } from '../../services/SelectionService'
 import { AddButton } from '../AddButton'
 import { AddDialog } from '../AddDialog'
 import { CollectionComponent } from '../ContentListPanel'
@@ -24,6 +26,9 @@ export interface CommanderRouteParams {
 export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRouteParams>> = props => {
   const ctx = useContext(ContentRoutingContext)
   const repo = useContext(RepositoryContext)
+
+  const selectionService = useContext(InjectorContext).getInstance(SelectionService)
+
   const getLeftFromPath = (params: CommanderRouteParams) =>
     parseInt(params.folderId as string, 10) || ConstantContent.PORTAL_ROOT.Id
   const getRightFromPath = (params: CommanderRouteParams) =>
@@ -129,8 +134,12 @@ export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRou
                 onParentChange={p => {
                   setLeftParentId(p.Id)
                 }}
-                onSelectionChange={sel => setLeftSelection(sel)}
+                onSelectionChange={sel => {
+                  setLeftSelection(sel)
+                  selectionService.selection.setValue(sel)
+                }}
                 onTabRequest={() => _rightPanelRef && _rightPanelRef.focus()}
+                onActiveItemChange={item => selectionService.activeContent.setValue(item)}
               />
             </CurrentAncestorsProvider>
           </CurrentChildrenProvider>
@@ -158,8 +167,12 @@ export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRou
                 onParentChange={p2 => {
                   setRightParentId(p2.Id)
                 }}
-                onSelectionChange={sel => setRightSelection(sel)}
+                onSelectionChange={sel => {
+                  setRightSelection(sel)
+                  selectionService.selection.setValue(sel)
+                }}
                 onTabRequest={() => _leftPanelRef && _leftPanelRef.focus()}
+                onActiveItemChange={item => selectionService.activeContent.setValue(item)}
               />
             </CurrentAncestorsProvider>
           </CurrentChildrenProvider>

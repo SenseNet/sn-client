@@ -6,8 +6,10 @@ import {
   CurrentAncestorsProvider,
   CurrentChildrenProvider,
   CurrentContentProvider,
+  InjectorContext,
   LoadSettingsContextProvider,
 } from '../../context'
+import { SelectionService } from '../../services/SelectionService'
 import { AddButton } from '../AddButton'
 import { CollectionComponent } from '../ContentListPanel'
 import { CommanderRouteParams } from './Commander'
@@ -17,6 +19,7 @@ export const SimpleListComponent: React.FunctionComponent<RouteComponentProps<{ 
     parseInt(params.folderId as string, 10) || ConstantContent.PORTAL_ROOT.Id
   const [leftParentId, setLeftParentId] = useState(getLeftFromPath(props.match.params))
   const ctx = useContext(ContentRoutingContext)
+  const selectionService = useContext(InjectorContext).getInstance(SelectionService)
 
   useEffect(() => {
     const historyChangeListener = props.history.listen(location => {
@@ -52,6 +55,10 @@ export const SimpleListComponent: React.FunctionComponent<RouteComponentProps<{ 
                 onTabRequest={() => {
                   /** */
                 }}
+                onSelectionChange={sel => {
+                  selectionService.selection.setValue(sel)
+                }}
+                onActiveItemChange={item => selectionService.activeContent.setValue(item)}
               />
               <AddButton />
             </CurrentAncestorsProvider>

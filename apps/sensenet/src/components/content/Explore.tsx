@@ -9,7 +9,7 @@ import {
   InjectorContext,
   LoadSettingsContextProvider,
 } from '../../context'
-import { SelectionContext } from '../../services/SelectionContext'
+import { SelectionService } from '../../services/SelectionService'
 import { AddButton } from '../AddButton'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { CollectionComponent } from '../ContentListPanel'
@@ -20,7 +20,7 @@ export const ExploreComponent: React.FunctionComponent<RouteComponentProps<{ fol
   const getLeftFromPath = (params: CommanderRouteParams) =>
     parseInt(params.folderId as string, 10) || ConstantContent.PORTAL_ROOT.Id
 
-  const selectionContext = useContext(InjectorContext).getInstance(SelectionContext)
+  const selectionService = useContext(InjectorContext).getInstance(SelectionService)
 
   const ctx = useContext(ContentRoutingContext)
   const [leftParentId, setLeftParentId] = useState(getLeftFromPath(props.match.params))
@@ -58,7 +58,7 @@ export const ExploreComponent: React.FunctionComponent<RouteComponentProps<{ fol
                     orderby: [['DisplayName', 'asc'], ['Name', 'asc']],
                   }}
                   onItemClick={item => {
-                    selectionContext.activeContent = item
+                    selectionService.activeContent.setValue(item)
                     setLeftParentId(item.Id)
                     props.history.push(ctx.getPrimaryActionUrl(item))
                   }}
@@ -75,10 +75,14 @@ export const ExploreComponent: React.FunctionComponent<RouteComponentProps<{ fol
                     setLeftParentId(p.Id)
                     props.history.push(ctx.getPrimaryActionUrl(p))
                   }}
+                  onSelectionChange={sel => {
+                    selectionService.selection.setValue(sel)
+                  }}
                   parentId={leftParentId}
                   onTabRequest={() => {
                     /** */
                   }}
+                  onActiveItemChange={item => selectionService.activeContent.setValue(item)}
                 />
 
                 <AddButton />
