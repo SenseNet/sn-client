@@ -4,7 +4,7 @@
   </a>
 </p>
 
-# sensenet client
+# sensenet client,
 
 This repository is a monorepo that we manage using [Lerna](https://github.com/lerna/lerna). That means that we actually publish [several packages](/packages) to npm from the same codebase, including:
 
