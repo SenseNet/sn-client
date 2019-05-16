@@ -8,6 +8,7 @@ import { RepositoryContext } from './RepositoryContext'
 export const CurrentContentContext = React.createContext<GenericContent>(ConstantContent.PORTAL_ROOT)
 export const CurrentContentProvider: React.FunctionComponent<{
   idOrPath: number | string
+  onContentLoaded?: (content: GenericContent) => void
 }> = props => {
   const [loadLock] = useState(new Semaphore(1))
   const [content, setContent] = useState<GenericContent>(ConstantContent.PORTAL_ROOT)
@@ -37,6 +38,7 @@ export const CurrentContentProvider: React.FunctionComponent<{
         try {
           const response = await repo.load({ idOrPath: props.idOrPath, requestInit: { signal: ac.signal } })
           setContent(response.d)
+          props.onContentLoaded && props.onContentLoaded(response.d)
         } catch (error) {
           if (!ac.signal.aborted) {
             setError(error)

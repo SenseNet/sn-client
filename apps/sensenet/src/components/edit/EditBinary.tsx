@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { CurrentAncestorsProvider, CurrentContentContext, CurrentContentProvider } from '../../context'
+import { CurrentAncestorsProvider, CurrentContentContext, CurrentContentProvider, InjectorContext } from '../../context'
+import { SelectionService } from '../../services/SelectionService'
 import { FullScreenLoader } from '../FullScreenLoader'
 import { TextEditor } from './TextEditor'
 
 const Editor: React.FunctionComponent<RouteComponentProps<{ contentId?: string }>> = props => {
   const contentId = parseInt(props.match.params.contentId as string, 10)
+  const selectionService = useContext(InjectorContext).getInstance(SelectionService)
 
   return (
     <div
@@ -17,7 +19,7 @@ const Editor: React.FunctionComponent<RouteComponentProps<{ contentId?: string }
         overflow: 'hidden',
         padding: '.3em 0',
       }}>
-      <CurrentContentProvider idOrPath={contentId}>
+      <CurrentContentProvider idOrPath={contentId} onContentLoaded={c => selectionService.activeContent.setValue(c)}>
         <CurrentAncestorsProvider>
           <CurrentContentContext.Consumer>
             {currentContent => <>{currentContent ? <TextEditor content={currentContent} /> : <FullScreenLoader />}</>}

@@ -7,10 +7,12 @@ import {
   CurrentAncestorsProvider,
   CurrentContentContext,
   CurrentContentProvider,
+  InjectorContext,
   LocalizationContext,
   RepositoryContext,
 } from '../../context'
 import { LoggerContext } from '../../context/LoggerContext'
+import { SelectionService } from '../../services/SelectionService'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 
 const GenericContentEditor: React.FunctionComponent<RouteComponentProps<{ contentId?: string }>> = props => {
@@ -18,10 +20,11 @@ const GenericContentEditor: React.FunctionComponent<RouteComponentProps<{ conten
   const contentId = parseInt(props.match.params.contentId as string, 10)
   const logger = useContext(LoggerContext).withScope('EditProperties')
   const localization = useContext(LocalizationContext).values.editPropertiesDialog
+  const selectionService = useContext(InjectorContext).getInstance(SelectionService)
 
   return (
     <div style={{ width: '100%', height: '100%', padding: '1em', overflow: 'auto' }}>
-      <CurrentContentProvider idOrPath={contentId}>
+      <CurrentContentProvider idOrPath={contentId} onContentLoaded={c => selectionService.activeContent.setValue(c)}>
         <CurrentAncestorsProvider>
           <ContentBreadcrumbs />
           <CurrentContentContext.Consumer>
