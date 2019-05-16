@@ -30,9 +30,9 @@
     "typescript": "3.4.2"
   },
   "scripts": {
-    "snapp": "yarn workspace @sensenet/sn-app start",
-    "storybook": "yarn workspace sn-react-component-docs start-storybook",
-    "dms": "yarn workspace sn-dms-demo start",
+    "snapp": "yarn workspace @sensenet/sn-app",
+    "storybook": "yarn workspace sn-react-component-docs",
+    "dms": "yarn workspace sn-dms-demo",
     "build": "tsc -b packages",
     "build:dms": "yarn && yarn build && yarn workspace sn-dms-demo run build:webpack",
     "build:sn-app": "yarn && yarn build && yarn workspace @sensenet/sn-app run build:webpack",
