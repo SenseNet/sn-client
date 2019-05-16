@@ -9,7 +9,7 @@ export class HelpCommandProvider implements CommandProvider {
     return term === '?' || term === 'help'
   }
 
-  public async getItems(_term: string): Promise<CommandPaletteItem[]> {
+  public async getItems(term: string): Promise<CommandPaletteItem[]> {
     return [
       {
         primaryText: this.localizationService.currentValues.getValue().commandPalette.help.readMeTitle,
@@ -17,6 +17,7 @@ export class HelpCommandProvider implements CommandProvider {
         url: '',
         content: { Type: 'File' } as any,
         openAction: () => window.open('https://github.com/SenseNet/sn-client/blob/master/apps/sensenet/README.md'),
+        hits: [term],
       },
       {
         primaryText: this.localizationService.currentValues.getValue().commandPalette.help.communitySiteTitle,
@@ -24,6 +25,7 @@ export class HelpCommandProvider implements CommandProvider {
         url: '',
         content: { Type: 'Group' } as any,
         openAction: () => window.open('https://community.sensenet.com'),
+        hits: [term],
       },
       {
         primaryText: this.localizationService.currentValues.getValue().commandPalette.help.gitterTitle,
@@ -34,6 +36,7 @@ export class HelpCommandProvider implements CommandProvider {
           window.open(
             'https://gitter.im/SenseNet/sensenet?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge',
           ),
+        hits: [term],
       },
     ]
   }

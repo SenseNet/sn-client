@@ -10,6 +10,7 @@ export interface CommandPaletteItem {
   primaryText: string
   secondaryText: string
   url: string
+  hits: string[]
   content?: GenericContent
   openAction?: () => void
 }

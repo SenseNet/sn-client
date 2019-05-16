@@ -195,8 +195,8 @@ export const RepositorySelectorComponent: React.FunctionComponent<
                   )}
                 </ListItemIcon>
                 <ListItemText
-                  primary={getMatchParts(params.query || '', suggestion.displayName || suggestion.url)}
-                  secondary={suggestion.displayName ? getMatchParts(params.query || '', suggestion.url) : undefined}
+                  primary={getMatchParts([params.query || ''], suggestion.displayName || suggestion.url)}
+                  secondary={suggestion.displayName ? getMatchParts([params.query || ''], suggestion.url) : undefined}
                   secondaryTypographyProps={{
                     style: {
                       textOverflow: 'ellipsis',
