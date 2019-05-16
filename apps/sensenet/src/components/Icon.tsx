@@ -3,6 +3,7 @@ import { LogLevel } from '@furystack/logging'
 import Avatar from '@material-ui/core/Avatar'
 import BugReport from '@material-ui/icons/BugReport'
 import CodeTwoTone from '@material-ui/icons/CodeTwoTone'
+import CommentTwoTone from '@material-ui/icons/CommentTwoTone'
 import DeleteTwoTone from '@material-ui/icons/DeleteTwoTone'
 import Error from '@material-ui/icons/Error'
 import FolderTwoTone from '@material-ui/icons/FolderTwoTone'
@@ -88,6 +89,7 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   { get: (item, options) => (item.Type === 'TrashBin' ? <DeleteTwoTone style={options.style} /> : null) },
   { get: (item, options) => (item.Type === 'PortalRoot' ? <PublicTwoTone style={options.style} /> : null) },
   { get: (item, options) => (item.Type === 'Search' ? <SearchTwoTone style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'Comment' ? <CommentTwoTone style={options.style} /> : null) },
   { get: (item, options) => (item.Type === 'EventLog' ? <ListAltTwoTone style={options.style} /> : null) },
   {
     get: (item, options) =>

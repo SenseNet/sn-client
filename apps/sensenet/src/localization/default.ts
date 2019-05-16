@@ -10,6 +10,14 @@ const values = {
   },
   commandPalette: {
     title: 'Show Command Palette',
+    help: {
+      readMeTitle: 'ReadMe',
+      readMeDescription: 'Opens the latest readme.md file from GitHub in a new window',
+      communitySiteTitle: 'Visit the Community Site',
+      communitySiteDescription: 'Opens http://community.sensenet.com in a new window',
+      gitterTitle: 'Chat on Gitter',
+      gitterDescription: 'If you have any unanswered question about the product you can ask us on Gitter',
+    },
   },
   contentContextMenu: {
     editProperties: 'Edit properties',
