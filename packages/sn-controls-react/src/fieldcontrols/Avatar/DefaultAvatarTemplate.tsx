@@ -3,9 +3,6 @@ import IconButton from '@material-ui/core/IconButton'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
-import AddCircle from '@material-ui/icons/AddCircle'
-import Refresh from '@material-ui/icons/Refresh'
-import RemoveCircle from '@material-ui/icons/RemoveCircle'
 import React, { Component } from 'react'
 
 const styles = {
@@ -30,6 +27,7 @@ interface DefaultAvatarTemplateProps {
   remove?: (url: string) => void
   actionName?: 'new' | 'edit' | 'browse'
   readOnly?: boolean
+  renderIcon: (name: string) => JSX.Element
 }
 
 export class DefaultAvatarTemplate extends Component<DefaultAvatarTemplateProps, {}> {
@@ -62,15 +60,15 @@ export class DefaultAvatarTemplate extends Component<DefaultAvatarTemplateProps,
             {url ? (
               <div>
                 <IconButton title={CHANGE_AVATAR} onClick={() => this.handleAddIconClick()}>
-                  <Refresh />
+                  {this.props.renderIcon('refresh')}
                 </IconButton>
                 <IconButton title={REMOVE_AVATAR} onClick={() => this.handlRemoveIconClick(url)}>
-                  <RemoveCircle />
+                  {this.props.renderIcon('remove_circle')}
                 </IconButton>
               </div>
             ) : (
               <IconButton title={ADD_AVATAR} onClick={() => this.handleAddIconClick()}>
-                <AddCircle />
+                {this.props.renderIcon('add')}
               </IconButton>
             )}
           </ListItemSecondaryAction>

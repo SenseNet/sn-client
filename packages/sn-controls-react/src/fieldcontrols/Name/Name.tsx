@@ -71,7 +71,6 @@ export class Name<T extends GenericContent, K extends keyof T> extends Component
    */
   public handleChange(e: React.ChangeEvent) {
     const { onChange } = this.props
-    // tslint:disable-next-line:no-string-literal
     const value = e.target['value']
     this.setState({ value })
     onChange(this.props.name, value)

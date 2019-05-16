@@ -39,7 +39,7 @@ export const CurrentAncestorsProvider: React.FunctionComponent = props => {
       }),
     ]
     return () => subscriptions.forEach(s => s.dispose())
-  }, [ancestors, repo])
+  }, [repo.configuration.repositoryUrl])
   const [error, setError] = useState<Error | undefined>()
 
   useEffect(() => {
@@ -69,7 +69,7 @@ export const CurrentAncestorsProvider: React.FunctionComponent = props => {
       }
     })()
     return () => ac.abort()
-  }, [currentContent, repo, reloadToken])
+  }, [currentContent.Id, reloadToken])
 
   if (error) {
     throw error

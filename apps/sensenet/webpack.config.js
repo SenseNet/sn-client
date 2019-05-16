@@ -53,10 +53,10 @@ module.exports = {
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'development',
       DEBUG: true,
-      GIT_VERSION: JSON.stringify(gitRevisionPlugin.version()),
-      APP_VERSION: JSON.stringify(require('./package.json').version),
-      GIT_COMMITHASH: JSON.stringify(gitRevisionPlugin.commithash()),
-      GIT_BRANCH: JSON.stringify(gitRevisionPlugin.branch()),
+      GIT_VERSION: gitRevisionPlugin.version(),
+      APP_VERSION: require('./package.json').version,
+      GIT_COMMITHASH: gitRevisionPlugin.commithash(),
+      GIT_BRANCH: gitRevisionPlugin.branch(),
     }),
   ],
   module: {

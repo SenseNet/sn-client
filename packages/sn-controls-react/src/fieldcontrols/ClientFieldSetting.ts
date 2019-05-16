@@ -81,4 +81,8 @@ export interface ReactClientFieldSetting<T extends GenericContent = GenericConte
    * Url of the repository
    */
   'data-repositoryUrl'?: string
+  /**
+   * Function for rendering an icon by an iconname given as an input prop
+   */
+  'data-renderIcon'?: (name: string) => JSX.Element
 }
