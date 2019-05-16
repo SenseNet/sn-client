@@ -73,7 +73,9 @@ class EditorPage extends Component<
   public render() {
     const { accesstoken, expiration, actionUrl } = this.props.wopiData.wopiData
     return (
-      <div style={{ marginTop: 65 }}>
+      <div
+      // style={{ marginTop: 65 }}
+      >
         <form
           id="office_form"
           name="office_form"
@@ -88,7 +90,8 @@ class EditorPage extends Component<
           <iframe
             frameBorder="no"
             width="100%"
-            height={window.innerHeight - 65}
+            height={window.innerHeight - 5}
+            scrolling="no"
             name="office_frame"
             id="office_frame"
             title="Office Online Frame"

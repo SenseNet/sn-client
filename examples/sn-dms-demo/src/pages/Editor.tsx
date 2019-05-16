@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { Route, RouteComponentProps, Switch } from 'react-router-dom'
 import * as DMSActions from '../Actions'
 import { FullScreenLoader } from '../components/FullScreenLoader'
-import Header from '../components/Header'
+// import Header from '../components/Header'
 import { repository } from '../DmsRepository'
 import { rootStateType } from '../store/rootReducer'
 
@@ -78,22 +78,22 @@ class DashboardComponent extends React.Component<
 
     return (
       <div>
-        <Header />
-        <div>
-          <Switch>
-            <Route
-              exact={true}
-              path="/wopi/:documentId?"
-              component={() => {
-                const LoadableEditorPage = Loadable({
-                  loader: async () => await import(/* webpackChunkName: "viewer" */ '../components/Wopi/EditorPage'),
-                  loading: () => <FullScreenLoader />,
-                })
-                return <LoadableEditorPage repository={repository} />
-              }}
-            />
-          </Switch>
-        </div>
+        {/* <Header />
+        <div> */}
+        <Switch>
+          <Route
+            exact={true}
+            path="/wopi/:documentId?"
+            component={() => {
+              const LoadableEditorPage = Loadable({
+                loader: async () => await import(/* webpackChunkName: "viewer" */ '../components/Wopi/EditorPage'),
+                loading: () => <FullScreenLoader />,
+              })
+              return <LoadableEditorPage repository={repository} />
+            }}
+          />
+        </Switch>
+        {/* </div> */}
       </div>
     )
   }
