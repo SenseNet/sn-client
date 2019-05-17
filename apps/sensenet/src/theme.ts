@@ -12,12 +12,6 @@ const theme: ThemeOptions = {
     useNextVariants: true,
   },
   overrides: {
-    MuiList: {
-      root: {
-        margin: '0 !important',
-        padding: '0 !important',
-      },
-    },
     MuiAppBar: {
       root: {
         zIndex: zIndex.drawer + 1,
