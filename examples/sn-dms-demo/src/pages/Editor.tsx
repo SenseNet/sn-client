@@ -42,10 +42,6 @@ class DashboardComponent extends React.Component<
     currentScope: 'documents',
   }
 
-  constructor(props: DashboardComponent['props']) {
-    super(props)
-  }
-
   public static getDerivedStateFromProps(
     newProps: DashboardComponent['props'],
     lastState: DashboardComponent['state'],
