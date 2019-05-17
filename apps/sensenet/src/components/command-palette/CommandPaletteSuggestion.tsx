@@ -10,11 +10,7 @@ import { CommandPaletteItem } from '../../store/CommandPalette'
 import { Icon } from '../Icon'
 
 export const getMatchParts = (hits: string[], term: string) => {
-  // const matchValue: number[] | number[][] = []
-  const matchValueArr = hits
-    .filter(h => h.length > 0)
-    .map(hit => match(term, hit))
-    .reduce((flat, next) => [...flat, ...(next instanceof Array ? next : [next])], [])
+  const matchValueArr = match(term, hits.join(' '))
 
   const parseValue = parse(term, matchValueArr as number[] | number[][])
 

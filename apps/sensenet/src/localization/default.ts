@@ -18,6 +18,10 @@ const values = {
       gitterTitle: 'Chat on Gitter',
       gitterDescription: 'If you have any unanswered question about the product you can ask us on Gitter',
     },
+    customAction: {
+      executePrimaryText: '{0} 👉 {1}',
+      executeSecondaryText: "Execute custom action '{1}' on content '{0}'",
+    },
   },
   contentContextMenu: {
     editProperties: 'Edit properties',

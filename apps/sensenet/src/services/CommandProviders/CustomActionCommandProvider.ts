@@ -3,6 +3,7 @@ import { Repository } from '@sensenet/client-core'
 import { ActionModel, GenericContent } from '@sensenet/default-content-types'
 import { CommandPaletteItem } from '../../store/CommandPalette'
 import { CommandProvider } from '../CommandProviderManager'
+import { LocalizationService } from '../LocalizationService'
 import { SelectionService } from '../SelectionService'
 
 @Injectable({ lifetime: 'singleton' })
@@ -12,6 +13,7 @@ export class CustomActionCommandProvider implements CommandProvider {
   }
   public async getItems(_term: string, repo: Repository) {
     const content = this.selectionService.activeContent.getValue()
+    const localization = this.localization.currentValues.getValue().commandPalette.customAction
     const filteredTerm = _term.substr(1).toLowerCase()
     if (!content) {
       return []
@@ -26,16 +28,22 @@ export class CustomActionCommandProvider implements CommandProvider {
     })
     const actions = (result.d.Actions as ActionModel[]) || []
     return actions
-      .filter(a => a.Name.toLowerCase().includes(filteredTerm))
+      .filter(a => a.Name.toLowerCase().includes(filteredTerm) || a.DisplayName.toLowerCase().includes(filteredTerm))
       .map(
         a =>
           ({
-            primaryText: a.DisplayName || a.Name,
-            secondaryText: '',
-            content: this.selectionService.activeContent.getValue(),
+            primaryText: localization.executePrimaryText
+              .replace('{0}', content.DisplayName || content.Name)
+              .replace('{1}', a.DisplayName || a.Name),
+            secondaryText: localization.executeSecondaryText.replace('{0}', content.Name).replace('{1}', a.Name),
+            content,
+            hits: [filteredTerm],
           } as CommandPaletteItem),
       )
   }
 
-  constructor(private readonly selectionService: SelectionService) {}
+  constructor(
+    private readonly selectionService: SelectionService,
+    private readonly localization: LocalizationService,
+  ) {}
 }
