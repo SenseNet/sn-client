@@ -66,7 +66,7 @@ class Sensenet extends React.Component<SensenetProps & ReturnType<typeof mapStat
                 redirectOnUnauthorized="/"
                 render={routerProps => {
                   const LoadableEditor = Loadable({
-                    loader: () => import(/* webpackChunkName: "dashboard" */ './pages/Editor'),
+                    loader: () => import(/* webpackChunkName: "editor" */ './pages/Editor'),
                     loading: () => <FullScreenLoader />,
                   })
                   return <LoadableEditor {...routerProps} currentId={0} />
