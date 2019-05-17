@@ -20,6 +20,8 @@ export const contextMenuItems = {
   editProperties: 'Edit properties',
   setPermissions: 'Set permissions',
   checkOut: 'Check out',
+  checkIn: 'Check in',
+  undoChanges: 'Undo changes',
   publish: 'Publish',
   versions: 'Versions',
   delete: 'Delete',
@@ -62,6 +64,10 @@ export const uploadNewFileAndOpenContextMenuItem = (currentUserEmail: string, fi
     fileName,
   })
   cy.contains('div', fileName, { timeout: 10000 }).should('exist')
+  openContextMenuItem(fileName, menuItem)
+}
+
+export const openContextMenuItem = (fileName: string, menuItem: string) => {
   openContextMenu(fileName)
   cy.get(`[title="${menuItem}"]`).click()
 }

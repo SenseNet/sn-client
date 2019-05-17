@@ -5,6 +5,7 @@ import {
   moveToFolderAndCheckIfFileExists,
   newMenuItems,
   openContextMenu,
+  openContextMenuItem,
   openNew,
   registerNewUser,
   selectPathInListPicker,
@@ -76,13 +77,7 @@ context('The documents page', () => {
   it('rename document should work', () => {
     const fileName = createNewFileName()
     const newName = createNewFileName()
-    cy.uploadWithApi({
-      parentPath: `Root/Profiles/Public/${currentUser.email}/Document_Library`,
-      fileName,
-    })
-    cy.contains('div', fileName, { timeout: 10000 }).should('exist')
-    openContextMenu(fileName)
-    cy.get(`[title="${contextMenuItems.rename}"]`).click()
+    uploadNewFileAndOpenContextMenuItem(currentUser.email, fileName, contextMenuItems.rename)
     // wait for input to be focused
     cy.wait(1000)
     cy.get('.rename')
@@ -146,10 +141,25 @@ context('The documents page', () => {
     )
     cy.contains('div[data-cy="editProperties"] button', 'Submit').click()
     cy.contains(`The content '${fileName}' has been modified`)
-    openContextMenu(properties.displayName.value + '.png')
-    cy.get(`[title="${contextMenuItems.editProperties}"]`).click()
+    openContextMenuItem(properties.displayName.value + '.png', contextMenuItems.editProperties)
     Object.keys(properties).forEach(key => {
       cy.get(properties[key].selector).should(key === 'keywords' ? 'have.text' : 'have.value', properties[key].value)
     })
+  })
+
+  it('check out and undo should work', () => {
+    const fileName = createNewFileName()
+    uploadNewFileAndOpenContextMenuItem(currentUser.email, fileName, contextMenuItems.checkOut)
+    cy.contains(`${fileName} is successfully checked-out`).should('exist')
+    cy.get('div[title="Checked out by: Me"]').should('exist')
+    openContextMenuItem(fileName, contextMenuItems.editProperties)
+    cy.get('#Watermark')
+      .clear()
+      .type('sometext')
+    cy.contains('div[data-cy="editProperties"] button', 'Submit').click()
+    openContextMenuItem(fileName, contextMenuItems.undoChanges)
+    cy.contains(`${fileName} is reverted to the status before checking out`)
+    openContextMenuItem(fileName, contextMenuItems.editProperties)
+    cy.get('#Watermark').should('not.have.value', 'sometext')
   })
 })
