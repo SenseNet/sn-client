@@ -1,5 +1,5 @@
 import { ODataWopiResponse } from '@sensenet/client-core'
-import { AnyAction, combineReducers, Reducer } from 'redux'
+import { AnyAction, Reducer } from 'redux'
 
 const wopiDataInitialState = {
   accesstoken: '',
@@ -8,7 +8,7 @@ const wopiDataInitialState = {
   faviconUrl: '',
 }
 
-export const wopiData: Reducer<ODataWopiResponse> = (state = wopiDataInitialState, action: AnyAction) => {
+export const wopi: Reducer<ODataWopiResponse> = (state = wopiDataInitialState, action: AnyAction) => {
   switch (action.type) {
     case 'GET_WOPIDATA_SUCCESS':
       return action.result
@@ -16,7 +16,3 @@ export const wopiData: Reducer<ODataWopiResponse> = (state = wopiDataInitialStat
       return state
   }
 }
-
-export const wopi = combineReducers({
-  wopiData,
-})

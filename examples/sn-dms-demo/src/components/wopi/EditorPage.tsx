@@ -71,7 +71,7 @@ class EditorPage extends Component<
     }, 1000)
   }
   public render() {
-    const { accesstoken, expiration, actionUrl } = this.props.wopiData.wopiData
+    const { accesstoken, expiration, actionUrl } = this.props.wopiData
     return (
       <div>
         <form
