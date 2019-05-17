@@ -321,7 +321,6 @@ class ActionMenu extends React.Component<
           break
         case 'OpenInEditor':
           return null
-          break
         default:
           console.log(`${action.Name} is clicked`)
           this.handleClose()
