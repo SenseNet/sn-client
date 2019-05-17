@@ -414,7 +414,6 @@ export class Repository implements Disposable {
       oDataOptions: {
         action: 'edit',
       } as any,
-      body: undefined,
     })
   }
   /**
