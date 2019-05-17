@@ -29,17 +29,32 @@ export class CustomActionCommandProvider implements CommandProvider {
     const actions = (result.d.Actions as ActionModel[]) || []
     return actions
       .filter(a => a.Name.toLowerCase().includes(filteredTerm) || a.DisplayName.toLowerCase().includes(filteredTerm))
-      .map(
-        a =>
-          ({
-            primaryText: localization.executePrimaryText
-              .replace('{0}', content.DisplayName || content.Name)
-              .replace('{1}', a.DisplayName || a.Name),
-            secondaryText: localization.executeSecondaryText.replace('{0}', content.Name).replace('{1}', a.Name),
-            content,
-            hits: [filteredTerm],
-          } as CommandPaletteItem),
-      )
+      .map(a => {
+        const actionMetadata =
+          result.d.__metadata &&
+          result.d.__metadata.actions &&
+          result.d.__metadata.actions.find(action => action.name === a.Name)
+
+        const functionMetadata =
+          result.d.__metadata &&
+          result.d.__metadata.functions &&
+          result.d.__metadata.functions.find(fn => fn.name === a.Name)
+
+        return {
+          primaryText: localization.executePrimaryText
+            .replace('{0}', content.DisplayName || content.Name)
+            .replace('{1}', a.DisplayName || a.Name),
+          secondaryText: localization.executeSecondaryText.replace('{0}', content.Name).replace('{1}', a.Name),
+          content,
+          hits: [filteredTerm],
+          openAction: () =>
+            console.log({
+              action: a,
+              metadata: actionMetadata || functionMetadata,
+              type: actionMetadata ? 'action' : 'function',
+            }),
+        } as CommandPaletteItem
+      })
   }
 
   constructor(
