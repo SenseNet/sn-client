@@ -3,9 +3,10 @@ import MenuItem from '@material-ui/core/MenuItem'
 import { StyleRulesCallback } from '@material-ui/core/styles/withStyles'
 import withStyles from '@material-ui/core/styles/withStyles'
 import { Icon, iconType } from '@sensenet/icons-react'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
+import * as DMSActions from '../../Actions'
 import { resources } from '../../assets/resources'
 import { rootStateType } from '../../store/rootReducer'
 
@@ -118,10 +119,18 @@ const mapStateToProps = (state: rootStateType) => {
   }
 }
 
-class ContentTemplatesMenu extends React.Component<ContentTemplatesMenuProps & ReturnType<typeof mapStateToProps>, {}> {
+const mapDispatchToProps = {
+  handleDrawerMenu: DMSActions.handleDrawerMenu,
+}
+
+class ContentTemplatesMenu extends React.Component<
+  ContentTemplatesMenuProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
+  {}
+> {
   public handleMenuItemClick = (title: string) => {
     this.props.history.push('/contenttemplates')
     this.props.chooseMenuItem(title)
+    this.props.handleDrawerMenu(false)
   }
   public handleSubmenuItemClick = (title: string) => {
     this.props.history.push(`/contenttemplates/${title}`)
@@ -147,21 +156,6 @@ class ContentTemplatesMenu extends React.Component<ContentTemplatesMenuProps & R
             primary={item.title}
           />
         </MenuItem>
-        {/* <div className={active ? classes.open : classes.closed}>
-                    <Divider />
-                    <AddNewButton contentType="ContentTemplate" />
-                    <MenuList className={classes.submenu}>
-                        {subMenu.map((menuitem, index) => {
-                            return (<MenuItem className={classes.submenuItem} key={index}
-                                onClick={(e) => this.handleSubmenuItemClick(menuitem.name)}>
-                                <Icon className={subactive === menuitem.name ? classes.submenuIconActive : classes.submenuIcon}>
-                                    {menuitem.icon}
-                                </Icon>
-                                <ListItemText classes={{ primary: subactive === menuitem.name ? classes.primarySubActive : classes.primarySub }} inset primary={menuitem.title} />
-                            </MenuItem>)
-                        })}
-                    </MenuList>
-                </div> */}
       </div>
     )
   }
@@ -170,6 +164,6 @@ class ContentTemplatesMenu extends React.Component<ContentTemplatesMenuProps & R
 export default withRouter(
   connect(
     mapStateToProps,
-    {},
+    mapDispatchToProps,
   )(withStyles(styles)(ContentTemplatesMenu)),
 )

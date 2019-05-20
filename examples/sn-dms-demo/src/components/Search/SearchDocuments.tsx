@@ -7,7 +7,7 @@ import { File as SnFile, Folder, GenericContent } from '@sensenet/default-conten
 import { Icon, iconType } from '@sensenet/icons-react'
 import { Query } from '@sensenet/query'
 import { AdvancedSearch, AdvancedSearchOptions, PresetField, TextField } from '@sensenet/search-react'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { resources } from '../../assets/resources'

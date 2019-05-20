@@ -81,21 +81,34 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
    */
   constructor(props: ReferenceGrid<T, K>['props']) {
     super(props)
+    let value
+    let selected
+    if (this.props['data-fieldValue']) {
+      if (this.props['data-allowMultiple']) {
+        value = this.props['data-fieldValue']
+        selected = this.props['data-fieldValue']
+      } else {
+        value = [this.props['data-fieldValue']]
+        selected = [this.props['data-fieldValue']]
+      }
+    } else if (this.props['data-defaultValue']) {
+      if (this.props['data-allowMultiple']) {
+        value = this.props['data-defaultValue']
+        selected = this.props['data-defaultValue']
+      } else {
+        value = [this.props['data-defaultValue']]
+        selected = [this.props['data-defaultValue']]
+      }
+    } else {
+      value = []
+      selected = []
+    }
+
     this.state = {
-      fieldValue:
-        this.props['data-fieldValue'] && this.props['data-fieldValue'].length > 0
-          ? this.props['data-fieldValue']
-          : this.props['data-defaultValue']
-          ? this.props['data-defaultValue']
-          : [],
+      fieldValue: value,
       itemLabel: this.props['data-defaultDisplayName'] || 'DisplayName',
       pickerIsOpen: false,
-      selected:
-        this.props['data-fieldValue'] && this.props['data-fieldValue'].length > 0
-          ? this.props['data-fieldValue']
-          : this.props['data-defaultValue']
-          ? this.props['data-defaultValue']
-          : [],
+      selected,
     }
     this.getSelected = this.getSelected.bind(this)
     if (this.props['data-actionName'] === 'edit') {
@@ -107,29 +120,31 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
    * @return {GenericContent[]}
    */
   public async getSelected() {
-    // tslint:disable:no-string-literal
     const loadPath = this.props['content']
       ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props['content'].Path), '/', this.props.name.toString())
       : ''
-    const references = await this.props['data-repository'].loadCollection({
+    const repo = this.props['data-repository'] ? this.props['data-repository'] : this.props.repository
+    const references = await repo.loadCollection({
       path: loadPath,
       oDataOptions: {
         select: 'all',
       },
     })
+
+    const results = references.d.results
+      ? references.d.results.length > 0
+        ? references.d.results
+        : []
+      : [references.d]
+
     this.setState({
-      fieldValue:
-        references.d.results.length > 0
-          ? references.d.results.map((item: GenericContent | User) => ({
-              // tslint:disable-next-line:no-string-literal
-              DisplayName: item.DisplayName,
-              Icon: item.Icon,
-              Id: item.Id,
-              // tslint:disable-next-line: no-string-literal
-              Avatar: item['Avatar'],
-              Type: item.Type,
-            }))
-          : [],
+      fieldValue: results.map((item: GenericContent | User) => ({
+        DisplayName: item.DisplayName,
+        Icon: item.Icon,
+        Id: item.Id,
+        Avatar: item['Avatar'],
+        Type: item.Type,
+      })),
     })
     return references
   }
@@ -199,6 +214,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
    */
   public render() {
     const { className, name, required, itemTemplate } = this.props
+    const repo = this.props['data-repository'] ? this.props['data-repository'] : this.props.repository
     switch (this.props['data-actionName']) {
       case 'edit':
         return (
@@ -226,7 +242,9 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                       key={item.Id}
                       actionName="edit"
                       readOnly={this.props.readOnly}
-                      repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
+                      repositoryUrl={repo.configuration.repositoryUrl}
+                      multiple={this.props['data-allowMultiple'] ? this.props['data-allowMultiple'] : false}
+                      renderIcon={this.props['data-renderIcon']}
                     />
                   )
                 }
@@ -234,11 +252,17 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
               {!this.props.readOnly ? (
                 <DefaultItemTemplate
                   content={
-                    this.state.fieldValue.length > 0 && !this.props['data-allowMultiple'] ? changeContent : emptyContent
+                    this.state.fieldValue.length > 0 &&
+                    this.props['data-allowMultiple'] &&
+                    !this.props['data-allowMultiple']
+                      ? changeContent
+                      : emptyContent
                   }
                   add={this.addItem}
                   actionName="edit"
-                  repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
+                  repositoryUrl={repo.configuration.repositoryUrl}
+                  multiple={this.props['data-allowMultiple'] ? this.props['data-allowMultiple'] : false}
+                  renderIcon={this.props['data-renderIcon']}
                 />
               ) : null}
             </List>
@@ -253,9 +277,10 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                 <ReferencePicker
                   path={this.props['data-selectionRoot'] ? this.props['data-selectionRoot'][0] : '/Root'}
                   allowedTypes={this.props['data-allowedTypes']}
-                  repository={this.props['data-repository']}
+                  repository={repo}
                   select={content => this.selectItem(content)}
                   selected={this.state.selected}
+                  renderIcon={this.props['data-renderIcon']}
                 />
                 <DialogActions>
                   <Button variant="contained" onClick={this.handleOkClick} color="primary">
@@ -295,7 +320,9 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                       key={item.Id}
                       actionName="new"
                       readOnly={this.props.readOnly}
-                      repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
+                      repositoryUrl={repo.configuration.repositoryUrl}
+                      multiple={this.props['data-allowMultiple'] ? this.props['data-allowMultiple'] : false}
+                      renderIcon={this.props['data-renderIcon']}
                     />
                   )
                 }
@@ -303,11 +330,17 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
               {!this.props.readOnly ? (
                 <DefaultItemTemplate
                   content={
-                    this.state.fieldValue.length > 0 && !this.props['data-allowMultiple'] ? changeContent : emptyContent
+                    this.state.fieldValue.length > 0 &&
+                    this.props['data-allowMultiple'] &&
+                    !this.props['data-allowMultiple']
+                      ? changeContent
+                      : emptyContent
                   }
                   add={this.addItem}
                   actionName="new"
-                  repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
+                  repositoryUrl={repo.configuration.repositoryUrl}
+                  multiple={this.props['data-allowMultiple'] ? this.props['data-allowMultiple'] : false}
+                  renderIcon={this.props['data-renderIcon']}
                 />
               ) : null}
             </List>
@@ -322,9 +355,10 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                 <ReferencePicker
                   path={this.props['data-selectionRoot'] ? this.props['data-selectionRoot'][0] : '/Root'}
                   allowedTypes={this.props['data-allowedTypes']}
-                  repository={this.props['data-repository']}
+                  repository={repo}
                   select={content => this.selectItem(content)}
                   selected={this.state.selected}
+                  renderIcon={this.props['data-renderIcon']}
                 />
                 <DialogActions>
                   <Button variant="contained" onClick={this.handleOkClick} color="primary">
@@ -339,7 +373,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
           </FormControl>
         )
       case 'browse':
-        return this.props['data-fieldValue'].length > 0 ? (
+        return this.state.fieldValue.length > 0 ? (
           <FormControl className={className} style={styles.root as any}>
             <InputLabel shrink={true} htmlFor={name as string}>
               {this.props['data-labelText']}
@@ -353,7 +387,9 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                     add={this.addItem}
                     key={item.Id}
                     actionName="browse"
-                    repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
+                    repositoryUrl={repo.configuration.repositoryUrl}
+                    multiple={this.props['data-allowMultiple'] ? this.props['data-allowMultiple'] : false}
+                    renderIcon={this.props['data-renderIcon']}
                   />
                 ))}
               </List>
@@ -361,7 +397,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
           </FormControl>
         ) : null
       default:
-        return this.props['data-fieldValue'].length > 0 ? (
+        return this.state.fieldValue.length > 0 ? (
           <FormControl className={className} style={styles.root as any}>
             <InputLabel shrink={true} htmlFor={name as string}>
               {this.props['data-labelText']}
@@ -375,7 +411,9 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                     add={this.addItem}
                     key={item.Id}
                     actionName="browse"
-                    repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
+                    repositoryUrl={repo.configuration.repositoryUrl}
+                    multiple={this.props['data-allowMultiple'] ? this.props['data-allowMultiple'] : false}
+                    renderIcon={this.props['data-renderIcon']}
                   />
                 ))}
               </List>

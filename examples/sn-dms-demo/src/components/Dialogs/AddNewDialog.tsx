@@ -1,6 +1,6 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { Actions, Reducers } from '@sensenet/redux'
-import * as React from 'react'
+import React from 'react'
 import Loadable from 'react-loadable'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'

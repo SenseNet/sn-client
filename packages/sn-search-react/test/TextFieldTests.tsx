@@ -1,7 +1,7 @@
 import MaterialTextField from '@material-ui/core/TextField'
 import { shallow } from 'enzyme'
 
-import * as React from 'react'
+import React from 'react'
 import { TextField } from '../src/Components/Fields/TextField'
 
 describe('TextField Component', () => {

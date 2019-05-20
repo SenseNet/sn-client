@@ -3,7 +3,7 @@ import { commentsStateReducer, rootReducer as sensenetDocumentViewerReducer } fr
 import { Store } from '@sensenet/redux'
 import { Reducers } from '@sensenet/redux'
 import { CreateStoreOptions } from '@sensenet/redux/dist/Store'
-import * as React from 'react'
+import React from 'react'
 import { Provider } from 'react-redux'
 import { combineReducers } from 'redux'
 import { dms } from '../Reducers'

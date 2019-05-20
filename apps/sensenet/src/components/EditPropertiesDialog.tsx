@@ -23,6 +23,7 @@ export const EditPropertiesDialog: React.FunctionComponent<{
       </DialogTitle>
       <DialogContent>
         <EditView
+          schema={repo.schemas.getSchemaByName(props.content.Type)}
           content={props.content}
           repository={repo}
           contentTypeName={props.content.Type}
@@ -35,17 +36,25 @@ export const EditPropertiesDialog: React.FunctionComponent<{
               })
               props.dialogProps.onClose && props.dialogProps.onClose(null as any)
               logger.information({
-                message: localization.saveSuccessNoty.replace('{0}', content.DisplayName || content.Name),
+                message: localization.saveSuccessNotification.replace(
+                  '{0}',
+                  content.DisplayName || content.Name || props.content.DisplayName || props.content.Name,
+                ),
                 data: {
-                  relatedContent: content,
+                  relatedContent: props.content,
+                  content,
                   relatedRepository: repo.configuration.repositoryUrl,
                 },
               })
             } catch (error) {
               logger.error({
-                message: localization.saveFailedNoty.replace('{0}', content.DisplayName || content.Name),
+                message: localization.saveFailedNotification.replace(
+                  '{0}',
+                  content.DisplayName || content.Name || props.content.DisplayName || props.content.Name,
+                ),
                 data: {
-                  relatedContent: content,
+                  relatedContent: props.content,
+                  content,
                   relatedRepository: repo.configuration.repositoryUrl,
                   error: isExtendedError(error) ? repo.getErrorFromResponse(error.response) : error,
                 },

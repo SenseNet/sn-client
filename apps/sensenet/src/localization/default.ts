@@ -5,8 +5,8 @@ const values = {
     dialogTitle: 'Create new {0}',
     upload: 'Upload',
     errorGettingAllowedContentTypes: 'There was an error while fetching the allowed content types.',
-    contentCreatedNoty: `The content '{0}' has been created succesfully.`,
-    errorPostingContentNoty: 'There was an error during content creation',
+    contentCreatedNotification: `The content '{0}' has been created succesfully.`,
+    errorPostingContentNotification: 'There was an error during content creation',
   },
   commandPalette: {
     title: 'Show Command Palette',
@@ -34,9 +34,33 @@ const values = {
     permanentlyHint: "Don't move to trash, delete immediately",
     deleteButton: 'Delete',
     cancelButton: 'Cancel',
-    deleteSuccessNoty: `Content '{0}' has been deleted succesfully`,
-    deleteMultipleSuccessNoty: `{0} content deleted succesfully`,
-    deleteFailedNoty: `There was an error during content deletion.`,
+    deleteSuccessNotification: `Content '{0}' has been deleted succesfully`,
+    deleteMultipleSuccessNotification: `{0} content deleted succesfully`,
+    deleteFailedNotification: `There was an error during content deletion.`,
+  },
+  copyMoveContentDialog: {
+    copy: {
+      title: `Copy '{0}' to '{1}'`,
+      titleMultiple: `Copy {0} items to '{1}'`,
+      copyButton: 'Copy',
+      cancelButton: 'Cancel',
+      details: 'Copy {0} content to {1}',
+      copySucceededNotification: '{0} has been copied to {1}',
+      copyMultipleSucceededNotification: '{0} items has been copied to {1}',
+      copyFailedNotification: 'Failed to copy content {0} to {1}',
+      copyMultipleFailedNotification: 'Failed to copy {0} items to {1}',
+    },
+    move: {
+      title: `Move '{0}' to '{1}'`,
+      titleMultiple: `Move {0} items to '{1}'`,
+      copyButton: 'Move',
+      cancelButton: 'Cancel',
+      details: 'Move {0} content to {1}',
+      copySucceededNotification: '{0} has been moved to {1}',
+      copyMultipleSucceededNotification: '{0} items has been moved to {1}',
+      copyFailedNotification: 'Failed to move content {0} to {1}',
+      copyMultipleFailedNotification: 'Failed to move {0} items to {1}',
+    },
   },
   drawer: {
     personalSettingsTitle: 'Edit personal settings',
@@ -56,8 +80,8 @@ const values = {
   },
   editPropertiesDialog: {
     dialogTitle: 'Edit {0}',
-    saveSuccessNoty: `Content '{0}' has been updated.`,
-    saveFailedNoty: `There was an error during updating content '{0}'`,
+    saveSuccessNotification: `Content '{0}' has been updated.`,
+    saveFailedNotification: `There was an error during updating content '{0}'`,
   },
   login: {
     loginTitle: 'Login',
@@ -71,16 +95,16 @@ const values = {
     loginFailed: 'Login failed.',
     greetings: 'Greetings, {0}!',
     loggingInTo: 'Logging in to {0}...',
-    loginSuccessNoty: `Logged in with user '{0} to repository '{1}'`,
-    loginFailedNoty: `Failed to log in with user '{0} to repository '{1}'`,
-    loginErrorNoty: `There was an error during login with user '{0} to repository '{1}'`,
+    loginSuccessNotification: `Logged in with user '{0} to repository '{1}'`,
+    loginFailedNotification: `Failed to log in with user '{0} to repository '{1}'`,
+    loginErrorNotification: `There was an error during login with user '{0} to repository '{1}'`,
   },
   logout: {
     logoutButtonTitle: 'Log out',
     logoutDialogTitle: 'Really log out?',
     loggingOutFrom: 'Logging out from {0}...',
     logoutConfirmText: 'You are logged in to {0} as {1}. Are you sure that you want to leave?',
-    logoutSuccessNoty: 'You have logged out from {0}',
+    logoutSuccessNotification: 'You have logged out from {0}',
     logoutCancel: 'Cancel',
   },
   personalSettings: {
@@ -117,8 +141,8 @@ const values = {
     unsavedChangesWarning: 'You have unsaved changes. Are you sure that you want to leave?',
     save: 'Save',
     reset: 'Reset',
-    saveSuccessNoty: `The changes of '{0}' has been saved`,
-    saveFailedNoty: `Failed to save changes of content '{0}'`,
+    saveSuccessNotification: `The changes of '{0}' has been saved`,
+    saveFailedNotification: `Failed to save changes of content '{0}'`,
   },
   navigationCommandProvider: {
     personalSettingsPrimary: 'Personal Settings',
@@ -126,7 +150,9 @@ const values = {
     contentPrimary: 'Content',
     contentSecondary: 'Explore the content of the Repository',
     searchPrimary: 'Search',
-    searchSecondaryText: 'Search in the repository, manage content queries',
+    searchSecondaryText: 'Search in the current repository',
+    savedQueriesPrimary: 'Saved queries',
+    savedQueriesSecondaryText: 'List of your saved queries and searches in the current repository',
     eventsPrimary: 'Events',
     eventsSecondary: 'Detailed event log with general info, warnings and errors',
   },
@@ -170,6 +196,64 @@ const values = {
   uploadProgress: {
     contentUploaded: `Content '{0}' has been uploaded succesfully`,
     contentUploadedMultiple: `Finished uploading {count} content.`,
+  },
+  search: {
+    title: 'Search',
+    onlyPublic: 'Show public queries only',
+    savedQueries: 'Saved queries',
+    queryLabel: 'Content Query',
+    queryHelperText: 'Enter a content query expression',
+    autoFilters: 'AutoFilters',
+    openInSearchTitle: 'Open in Search',
+    openInSearchDescription: 'Opens the query expression in the Search view',
+    saveQuery: 'Save Query',
+    newSearch: 'New search',
+    noSavedQuery: 'There is no query saved yet.',
+    save: 'Save',
+    cancel: 'Cancel',
+    public: 'Public',
+    confirmDeleteQuery: `Are you sure that you want to delete the query '{0}'?`,
+  },
+  versionInfo: {
+    title: 'Version info',
+    adminUi: 'Admin UI',
+    components: 'Components',
+    installedPackages: 'Installed packages',
+    assemblies: 'Assemblies',
+    showRaw: 'Show raw',
+    updateAvailable: 'Update available from {0} to {1}',
+    version: 'Version',
+    lastOfficialVersion: 'Last official version',
+    description: 'Description',
+    appVersion: 'Application version',
+    branchName: 'Branch name',
+    commitHash: 'Commit Hash',
+  },
+  settings: {
+    edit: 'Edit',
+    learnMore: 'Learn more',
+    otherSettings: 'Other settings',
+    descriptions: {
+      '/Root/System/Settings/DocumentPreview.settings':
+        'In this section you can customize the behavior of the Document Preview feature – for example the font style of the watermark displayed on documents or the number of the initially generated preview images. ',
+      '/Root/System/Settings/Indexing.settings':
+        'In this section you can customize the indexing behavior (for example the text extractor used in case of different file types) of the system. ',
+      '/Root/System/Settings/Logging.settings':
+        'Contains logging-related settings, for example which events are sent to the trace. You can control tracing by category: switch on or off writing messages in certain categories to the trace channel. ',
+      '/Root/System/Settings/MailProcessor.settings':
+        'The content list Inbox feature requires an Exchange or POP3 server configuration and other settings related to connecting libraries to a mailbox. ',
+      '/Root/System/Settings/OAuth.settings':
+        'When users log in using one of the configured OAuth providers (like Google or Facebook), these settings control the type and place of the newly created users. ',
+      '/Root/System/Settings/OfficeOnline.settings':
+        'To open or edit Office documents in the browser, the system needs to know the address of the Office Online Server that provides the user interface for the feature. In this section you can configure that and other OOS-related settings. ',
+      '/Root/System/Settings/Portal.settings':
+        'All settings related to the surface and behavior of the web application can be found here, from the cache header settings of different file types to the default content type of uploaded images and the allowed origin values. ',
+      '/Root/System/Settings/Sharing.settings': 'Content sharing related options. ',
+      '/Root/System/Settings/TaskManagement.settings':
+        'When the Task Management module is installed, this is the place where you can configure the connection to the central task management service. ',
+      '/Root/System/Settings/UserProfile.settings':
+        'When a user is created, and the profile feature is enabled (in the app configuration), they automatically get a profile – a workspace dedicated to the user’s personal documents and tasks. In this setting section you can customize the content type and the place of this profile. ',
+    },
   },
 }
 

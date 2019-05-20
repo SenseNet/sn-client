@@ -1,10 +1,11 @@
 import Button from '@material-ui/core/Button'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import { Icon } from '@sensenet/icons-react'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { resources } from '../../../assets/resources'
+import { rootStateType } from '../../../store/rootReducer'
 import { clearSelection } from '../../../store/usersandgroups/actions'
 import GroupDropDown from './GroupDropDown'
 
@@ -28,8 +29,10 @@ interface GroupSelectorState {
   open: boolean
 }
 
-const mapStateToProps = () => {
-  return {}
+const mapStateToProps = (state: rootStateType) => {
+  return {
+    selectedItems: state.dms.usersAndGroups.user.selected,
+  }
 }
 
 const mapDispatchToProps = {
@@ -64,6 +67,7 @@ class GroupSelector extends React.Component<
             <ClickAwayListener onClickAway={() => this.handleButtonClick(false, true)}>
               <div style={{ display: 'inline' }}>
                 <Button
+                  disabled={this.props.selectedItems.length > 0 ? false : true}
                   variant="contained"
                   color="primary"
                   style={{ ...styles.button, ...styles.buttonRaised }}

@@ -5,7 +5,7 @@ import IconButton from '@material-ui/core/IconButton'
 import CreateIcon from '@material-ui/icons/Create'
 import DeleteIcon from '@material-ui/icons/Delete'
 import { Status, Task } from '@sensenet/default-content-types'
-import * as React from 'react'
+import React from 'react'
 
 import { Link } from 'react-router-dom'
 

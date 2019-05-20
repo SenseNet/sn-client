@@ -3,7 +3,7 @@ import { GenericContent, SchemaStore as defaultSchemas } from '@sensenet/default
 import { Query } from '@sensenet/query'
 import { shallow } from 'enzyme'
 
-import * as React from 'react'
+import React from 'react'
 import { AdvancedSearch } from '../src/Components/AdvancedSearch'
 
 describe('AdvancedSearch component', () => {

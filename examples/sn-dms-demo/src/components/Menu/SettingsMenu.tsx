@@ -3,9 +3,10 @@ import MenuItem from '@material-ui/core/MenuItem'
 import MenuList from '@material-ui/core/MenuList'
 import withStyles, { StyleRulesCallback } from '@material-ui/core/styles/withStyles'
 import { Icon, iconType } from '@sensenet/icons-react'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
+import * as DMSActions from '../../Actions'
 import { resources } from '../../assets/resources'
 import { rootStateType } from '../../store/rootReducer'
 
@@ -132,10 +133,18 @@ interface SettingsMenuProps extends RouteComponentProps<any> {
   matches: boolean
 }
 
-class SettingsMenu extends React.Component<SettingsMenuProps & ReturnType<typeof mapStateToProps>, {}> {
+const mapDispatchToProps = {
+  handleDrawerMenu: DMSActions.handleDrawerMenu,
+}
+
+class SettingsMenu extends React.Component<
+  SettingsMenuProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
+  {}
+> {
   public handleMenuItemClick = (title: string) => {
     this.props.history.push('/settings')
     this.props.chooseMenuItem(title)
+    this.props.handleDrawerMenu(false)
   }
   public handleSubmenuItemClick = (title: string) => {
     this.props.history.push(`/settings/${title}`)
@@ -202,6 +211,6 @@ const mapStateToProps = (state: rootStateType) => {
 export default withRouter(
   connect(
     mapStateToProps,
-    {},
+    mapDispatchToProps,
   )(withStyles(styles)(SettingsMenu)),
 )

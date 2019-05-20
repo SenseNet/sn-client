@@ -8,7 +8,7 @@ import TableSortLabel from '@material-ui/core/TableSortLabel'
 import Tooltip from '@material-ui/core/Tooltip'
 
 import { ActionModel, GenericContent, Schema } from '@sensenet/default-content-types'
-import * as React from 'react'
+import React from 'react'
 import { ActionsCell, CellProps, DateCell, DefaultCell, DisplayNameCell, ReferenceCell } from './CellTemplates'
 
 /**

@@ -75,5 +75,11 @@ export const dmsTheme = createMuiTheme({
         },
       },
     },
+    MuiFormHelperText: {
+      root: {
+        lineHeight: '1.5em',
+        color: '#999',
+      },
+    },
   },
 })

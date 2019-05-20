@@ -68,7 +68,6 @@ export class DisplayName<T extends GenericContent, K extends keyof T> extends Co
    */
   public handleChange(e: React.ChangeEvent) {
     const { name, onChange } = this.props
-    // tslint:disable-next-line:no-string-literal
     const value = e.target['value']
     onChange(name, value)
   }

@@ -95,16 +95,19 @@ const mapStateToProps = (state: rootStateType) => {
 const mapDispatchToProps = {
   openDialog: DMSActions.openDialog,
   closeDialog: DMSActions.closeDialog,
+  handleDrawerMenu: DMSActions.handleDrawerMenu,
 }
 
 class UsersMenu extends Component<UsersMenuProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, {}> {
   public handleMenuItemClick = (title: string) => {
     this.props.history.push('/users')
     this.props.chooseMenuItem(title)
+    this.props.handleDrawerMenu(false)
   }
   public handleSubmenuItemClick = (title: string) => {
     this.props.history.push(`/users/${title}`)
     this.props.chooseSubmenuItem(title)
+    this.props.handleDrawerMenu(false)
   }
   public handleButtonClick = (_e: React.MouseEvent) => {
     const { closeDialog, currentContent, openDialog } = this.props

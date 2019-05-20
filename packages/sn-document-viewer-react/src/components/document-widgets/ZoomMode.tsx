@@ -12,7 +12,7 @@ import ZoomIn from '@material-ui/icons/ZoomIn'
 import ZoomOut from '@material-ui/icons/ZoomOut'
 import ZoomOutMap from '@material-ui/icons/ZoomOutMap'
 
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { componentType } from '../../services'
 import { RootReducerType, setCustomZoomLevel, setZoomMode, ZoomMode } from '../../store'

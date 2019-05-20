@@ -5,7 +5,7 @@ import { ConstantContent } from '@sensenet/client-core'
 import { ActionModel, GenericContent, Group, SchemaStore, User } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
 import { compile } from 'path-to-regexp'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
@@ -15,6 +15,7 @@ import { icons } from '../assets/icons'
 import { customSchema } from '../assets/schema'
 import { rootStateType } from '../store/rootReducer'
 import { loadUser, selectGroup, updateChildrenOptions } from '../store/usersandgroups/actions'
+import ActionMenu from './ActionMenu/ActionMenu'
 import { DisplayNameCell } from './ContentList/CellTemplates/DisplayNameCell'
 import { DisplayNameMobileCell } from './ContentList/CellTemplates/DisplayNameMobileCell'
 import { FullScreenLoader } from './FullScreenLoader'
@@ -31,7 +32,7 @@ const mapStateToProps = (state: rootStateType) => {
     ancestors: state.dms.usersAndGroups.user.ancestors,
     user: state.dms.usersAndGroups.user.currentUser,
     isAdmin: state.dms.usersAndGroups.user.isAdmin,
-    childrenOptions: state.dms.usersAndGroups.user.grouplistOptions,
+    childrenOptions: state.dms.usersAndGroups.user.userlistOptions,
     selected: state.dms.usersAndGroups.group.selected,
     active: state.dms.usersAndGroups.user.active,
     hostName: state.sensenet.session.repository ? state.sensenet.session.repository.repositoryUrl : '',
@@ -67,13 +68,16 @@ class UserProfile extends React.Component<
   }
 
   private static updateStoreFromPath(newProps: UserProfile['props']) {
+    // const user = newProps.user ? newProps.user : {} as User
     try {
-      const userProfilePath = newProps.user
-        ? newProps.user.Path
-        : `/Root/IMS/Public/${newProps.loggedinUser.content.Name}`
-      newProps.loadUser(userProfilePath, {
-        select: ['Avatar', 'FullName', 'DisplayName', 'Email', 'Phone', 'LoginName'],
-      })
+      // const userProfilePath = newProps.match.params.otherActions
+      //   ? user.Id
+      //   : `/Root/IMS/Public/${newProps.loggedinUser.content.Name}`
+      if (newProps.user) {
+        newProps.loadUser(newProps.user.Id, {
+          select: ['Avatar', 'FullName', 'DisplayName', 'Email', 'Phone', 'LoginName'],
+        })
+      }
     } catch (error) {
       /** Cannot parse current folder from URL */
       return compile(newProps.match.path)({ folderPath: '' })
@@ -282,6 +286,7 @@ class UserProfile extends React.Component<
                     }}
                   />
                 )}
+                <ActionMenu id={0} />
               </MuiThemeProvider>
             </div>
           ) : null

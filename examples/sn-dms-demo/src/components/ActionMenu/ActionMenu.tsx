@@ -8,7 +8,7 @@ import { ActionModel, Query } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import { Actions } from '@sensenet/redux'
 import { compile } from 'path-to-regexp'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
@@ -42,6 +42,7 @@ const mapStateToProps = (state: rootStateType) => {
     queryOptions: state.sensenet.currentitems.options,
     currentContent: state.dms.actionmenu.content,
     currentParent: state.dms.documentLibrary.parent,
+    currentUser: state.sensenet.session.user.content,
   }
 }
 
@@ -213,9 +214,10 @@ class ActionMenu extends React.Component<
           break
         case 'Profile':
           this.handleClose()
-          const userPath = compile('/users/:otherActions*')({
-            folderPath: btoa(content ? content.Id.toString() : ''),
-            otherActions: ['user', btoa(content ? content.Id.toString() : '')],
+          const user = this.props.currentUser
+          const userPath = compile('/users/:folderPath?/:otherActions*')({
+            folderPath: btoa(user && user.ParentId ? user.ParentId.toString() : ''),
+            otherActions: ['user', btoa(user ? user.Id.toString() : '')],
           })
           this.props.history.push(userPath)
           this.props.chooseMenuItem('profile')

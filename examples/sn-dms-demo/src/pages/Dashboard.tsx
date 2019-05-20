@@ -6,7 +6,7 @@ import IconButton from '@material-ui/core/IconButton'
 import { LoginState } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { Icon, iconType } from '@sensenet/icons-react'
-import * as React from 'react'
+import React from 'react'
 import Loadable from 'react-loadable'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
@@ -82,6 +82,7 @@ const mapStateToProps = (state: rootStateType) => {
     loginState: state.sensenet.session.loginState,
     isDialogOpen: state.dms.dialog.isOpened,
     dialogContent: state.dms.dialog.content,
+    userActions: state.dms.actionmenu.actions,
   }
 }
 
@@ -109,7 +110,7 @@ class DashboardComponent extends React.Component<
     currentFolderId: undefined,
     currentSelection: [],
     currentViewName: 'list',
-    currentUserName: 'Visitor',
+    currentUserName: this.props.loggedinUser.userName || 'Visitor',
     currentScope: 'documents',
   }
 
@@ -125,7 +126,10 @@ class DashboardComponent extends React.Component<
       (newProps.match.params.selection && decodeURIComponent(newProps.match.params.selection)) || []
     const currentViewName = newProps.match.params.action
 
-    if (newProps.loggedinUser.userName !== lastState.currentUserName) {
+    if (
+      newProps.loggedinUser.userName !== lastState.currentUserName ||
+      (newProps.loggedinUser.userName !== 'Visitor' && newProps.userActions.length === 0)
+    ) {
       newProps.loadUserActions(newProps.loggedinUser.content.Path, 'DMSUserActions')
     }
 
@@ -263,11 +267,10 @@ class DashboardComponent extends React.Component<
                       />
                       <Route
                         path="/users"
-                        // tslint:disable-next-line: no-unnecessary-type-annotation
-                        component={(props: RouteComponentProps<any>) => (
+                        component={() => (
                           <Switch>
                             <Route
-                              path={'/' + PathHelper.joinPaths(props.match.url)}
+                              path={'/' + PathHelper.joinPaths('/users', '/:folderPath?/:otherActions*')}
                               exact={true}
                               component={() => (
                                 <div>
@@ -280,7 +283,6 @@ class DashboardComponent extends React.Component<
                       />
                       <Route
                         path="/groups"
-                        // tslint:disable-next-line: no-unnecessary-type-annotation
                         component={() => (
                           <Switch>
                             <Route
@@ -295,17 +297,6 @@ class DashboardComponent extends React.Component<
                           </Switch>
                         )}
                       />
-                      <Route path="/contenttypes">
-                        <ContentTypes />
-                      </Route>
-                      <Route path="/contenttemplates">
-                        <ContentTemplates />
-                      </Route>
-                      <Route path="/settings">
-                        <Settings />
-                      </Route>
-
-                      {/* <Redirect to="/documents" /> */}
                     </Switch>
                   </div>
                 )}

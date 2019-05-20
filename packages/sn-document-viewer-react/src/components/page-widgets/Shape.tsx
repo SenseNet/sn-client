@@ -1,6 +1,6 @@
 import IconButton from '@material-ui/core/IconButton'
 import Delete from '@material-ui/icons/Delete'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { Annotation, Shape, Shapes } from '../../models'
 import { componentType, Dimensions } from '../../services'

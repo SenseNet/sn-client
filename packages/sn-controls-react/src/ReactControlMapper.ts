@@ -20,7 +20,7 @@ import {
 import { Component } from 'react'
 import * as FieldControls from './fieldcontrols'
 import { ReactChoiceFieldSetting } from './fieldcontrols/ChoiceFieldSetting'
-import { ReactClientFieldSettingProps } from './fieldcontrols/ClientFieldSetting'
+import { ReactClientFieldSetting, ReactClientFieldSettingProps } from './fieldcontrols/ClientFieldSetting'
 import { ReactDateTimeFieldSetting } from './fieldcontrols/DateTimeFieldSetting'
 import { ReactLongTextFieldSetting } from './fieldcontrols/LongTextFieldSetting'
 import { ReactNumberFieldSetting } from './fieldcontrols/Number/NumberFieldSetting'
@@ -41,7 +41,8 @@ const clientConfigFactory = (fieldSettings: FieldSetting) => {
     (defaultSetting.required = fieldSettings.Compulsory || false),
     (defaultSetting['data-placeHolderText'] = fieldSettings.DisplayName || '')
   ;(defaultSetting['data-labelText'] = fieldSettings.DisplayName || ''),
-    (defaultSetting['data-typeName'] = fieldSettings.Type || '')
+    (defaultSetting['data-typeName'] = fieldSettings.Type || ''),
+    (defaultSetting['data-hintText'] = fieldSettings.Description || '')
   return defaultSetting
 }
 
@@ -85,6 +86,8 @@ export const reactControlMapper = (repository: Repository) =>
           return FieldControls.DisplayName
         case 'sn:FileName':
           return FieldControls.FileName
+        case 'sn:ColorPicker':
+          return FieldControls.ColorPicker
         default:
           return FieldControls.ShortText
       }
@@ -136,7 +139,7 @@ export const reactControlMapper = (repository: Repository) =>
       return choiceSettings
     })
     .setupFieldSettingDefault(ReferenceFieldSetting, setting => {
-      if (setting.AllowedTypes && setting.AllowedTypes.indexOf('User') !== -1 && !setting.AllowMultiple) {
+      if (setting.AllowedTypes && setting.AllowedTypes.indexOf('User') !== -1 && setting.AllowMultiple) {
         return FieldControls.TagsInput
       } else {
         return FieldControls.ReferenceGrid
@@ -165,7 +168,11 @@ export const reactControlMapper = (repository: Repository) =>
         case 'AdvancedRichText' as any:
           return FieldControls.RichTextEditor
         default:
-          return FieldControls.RichTextEditor
+          if (setting.ControlHint === 'sn:QueryBuilder') {
+            return FieldControls.Textarea
+          } else {
+            return FieldControls.RichTextEditor
+          }
       }
     })
     .setClientControlFactory(LongTextFieldSetting, setting => {
@@ -175,11 +182,38 @@ export const reactControlMapper = (repository: Repository) =>
       return longTextSettings
     })
     .setupFieldSettingDefault(NullFieldSetting, setting => {
-      switch (setting.Name) {
-        case 'Avatar' as any:
-          return FieldControls.Avatar
-        default:
-          return FieldControls.ShortText
+      if (setting.Name === 'Avatar') {
+        return FieldControls.Avatar
+      } else if (setting.Name === 'Color') {
+        return FieldControls.ColorPicker
+      } else if (
+        ['SiteRelativeUrl', 'UploadBinary', 'ButtonList', 'ReferenceDropDown', 'PageTemplateSelector'].indexOf(
+          setting.Name,
+        ) > -1
+      ) {
+        return FieldControls.EmptyFieldControl
+      } else if (setting.Name === 'AllowedChildTypes') {
+        return FieldControls.AllowedChildTypes
+      } else if (setting.Name === 'UrlList') {
+        return FieldControls.Textarea
+      } else if (setting['FieldClassName'].indexOf('BooleanField') > -1) {
+        return FieldControls.Boolean
+      } else {
+        return FieldControls.ShortText
+      }
+    })
+    .setClientControlFactory(NullFieldSetting, setting => {
+      if (setting.SelectionRoots) {
+        const avatarSettings = clientConfigFactory(setting) as ReactReferenceFieldSetting
+        avatarSettings['data-selectionRoot'] = setting.SelectionRoots
+        return avatarSettings
+      } else if (setting['Palette']) {
+        const colorPickerSettings = clientConfigFactory(setting) as ReactShortTextFieldSetting
+        colorPickerSettings['palette'] = setting['Palette']
+        return colorPickerSettings
+      } else {
+        const nullFieldSettings = clientConfigFactory(setting) as ReactClientFieldSetting
+        return nullFieldSettings
       }
     })
     .setupFieldSettingDefault(BooleanFieldSetting, () => {

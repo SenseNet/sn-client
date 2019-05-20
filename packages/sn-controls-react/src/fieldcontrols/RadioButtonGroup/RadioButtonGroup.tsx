@@ -40,7 +40,7 @@ export class RadioButtonGroup<T extends GenericContent, K extends keyof T> exten
   constructor(props: RadioButtonGroupProps<T, K>) {
     super(props)
     this.state = {
-      value: this.props['data-fieldValue'] || this.props['data-defaultValue'] || [],
+      value: this.props['data-fieldValue'] || this.props['data-defaultValue'] || [this.props.options[0].Value],
     }
     this.handleChange = this.handleChange.bind(this)
   }
@@ -49,7 +49,6 @@ export class RadioButtonGroup<T extends GenericContent, K extends keyof T> exten
    */
   public handleChange = (event: React.ChangeEvent) => {
     const { value } = this.state
-    // tslint:disable-next-line:no-string-literal
     const newValue = event.target['value']
     const checked = value
     const index = value.indexOf(newValue.toString())

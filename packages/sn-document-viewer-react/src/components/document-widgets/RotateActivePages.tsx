@@ -2,7 +2,7 @@ import IconButton from '@material-ui/core/IconButton'
 import RotateLeft from '@material-ui/icons/RotateLeft'
 import RotateRight from '@material-ui/icons/RotateRight'
 
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { PreviewImageData } from '../../models'
 import { componentType } from '../../services'

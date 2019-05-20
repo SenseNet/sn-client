@@ -67,6 +67,7 @@ export const DeleteContentDialog: React.FunctionComponent<{
             {localization.cancelButton}
           </Button>
           <Button
+            autoFocus={true}
             disabled={isDeleteInProgress}
             onClick={async ev => {
               try {
@@ -78,8 +79,8 @@ export const DeleteContentDialog: React.FunctionComponent<{
                 logger.information({
                   message:
                     props.content.length > 1
-                      ? localization.deleteMultipleSuccessNoty.replace('{0}', props.content.length.toString())
-                      : localization.deleteSuccessNoty.replace(
+                      ? localization.deleteMultipleSuccessNotification.replace('{0}', props.content.length.toString())
+                      : localization.deleteSuccessNotification.replace(
                           '{0}',
                           props.content[0].DisplayName || props.content[0].Name,
                         ),
@@ -90,7 +91,7 @@ export const DeleteContentDialog: React.FunctionComponent<{
                 })
               } catch (error) {
                 logger.error({
-                  message: localization.deleteFailedNoty,
+                  message: localization.deleteFailedNotification,
                   data: {
                     details: { error },
                   },

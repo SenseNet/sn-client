@@ -18,7 +18,7 @@ import {
 } from '@sensenet/document-viewer-react'
 import { Icon, iconType } from '@sensenet/icons-react'
 import { compile } from 'path-to-regexp'
-import * as React from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { RouteComponentProps, withRouter } from 'react-router-dom'

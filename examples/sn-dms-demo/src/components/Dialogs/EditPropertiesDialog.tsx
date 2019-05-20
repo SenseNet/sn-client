@@ -3,11 +3,12 @@ import Typography from '@material-ui/core/Typography'
 import { ODataParams, Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Actions } from '@sensenet/redux'
-import * as React from 'react'
+import React from 'react'
 import Loadable from 'react-loadable'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import * as DMSActions from '../../Actions'
+import { icons } from '../../assets/icons'
 import { resources } from '../../assets/resources'
 import { RepositoryContext } from '../../context/RepositoryContext'
 import { dmsInjector } from '../../DmsRepository'
@@ -102,6 +103,7 @@ class EditPropertiesDialog extends React.Component<
               <RepositoryContext.Consumer>
                 {repository => (
                   <LoadableEditView
+                    icons={icons}
                     content={editedcontent}
                     repository={repository}
                     contentTypeName={contentTypeName}
