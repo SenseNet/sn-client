@@ -6,14 +6,19 @@ import {
 } from '../../support/documents'
 
 context('The documents page with admin', () => {
+  const adminUser = {
+    email: 'e2e.admin@sensenet.com',
+    password: 'e2eadmin',
+    doclibPath: 'Root/Profiles/Public/e2e-admin/Document_Library',
+  }
   beforeEach(() => {
-    cy.login('businesscat@sensenet.com', 'businesscat')
+    cy.login(adminUser.email, adminUser.password)
   })
 
   it('should check actions availability', () => {
     const fileName = createNewFileName()
     cy.uploadWithApi({
-      parentPath: `Root/Profiles/Public/businesscat/Document_Library`,
+      parentPath: adminUser.doclibPath,
       fileName,
     })
     cy.contains('div', fileName, { timeout: 10000 }).should('exist')
@@ -29,7 +34,7 @@ context('The documents page with admin', () => {
   it('should be able open viewer from context menu and close with esc', () => {
     const fileName = createNewFileName()
     cy.uploadWithApi({
-      parentPath: `Root/Profiles/Public/businesscat/Document_Library`,
+      parentPath: adminUser.doclibPath,
       fileName,
     })
     cy.contains('div', fileName, { timeout: 10000 }).should('exist')
@@ -44,7 +49,7 @@ context('The documents page with admin', () => {
   describe('share context menu', () => {
     it('should list valid emails', () => {
       const fileName = createNewFileName()
-      uploadNewFileAndOpenContextMenuItem('businesscat', fileName, contextMenuItems.shareContent)
+      uploadNewFileAndOpenContextMenuItem('e2e-admin', fileName, contextMenuItems.shareContent)
       cy.get('form input[type="email"]').type('invalid{enter}')
       cy.contains('invalid').should('not.exist')
       cy.get('form input[type="email"]')
