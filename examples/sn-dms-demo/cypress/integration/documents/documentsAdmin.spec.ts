@@ -19,6 +19,9 @@ context('The documents page with admin', () => {
     cy.contains('div', fileName, { timeout: 10000 }).should('exist')
     openContextMenu(fileName)
     Object.keys(contextMenuItems).forEach(item => {
+      if (item === 'checkIn' || item === 'undoChanges') {
+        return
+      }
       cy.get(`[title="${contextMenuItems[item]}"]`).should('exist')
     })
   })

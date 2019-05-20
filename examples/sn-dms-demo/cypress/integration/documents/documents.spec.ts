@@ -159,6 +159,7 @@ context('The documents page', () => {
     cy.contains('div[data-cy="editProperties"] button', 'Submit').click()
     openContextMenuItem(fileName, contextMenuItems.undoChanges)
     cy.contains(`${fileName} is reverted to the status before checking out`)
+    cy.wait(1000) // wait for undo
     openContextMenuItem(fileName, contextMenuItems.editProperties)
     cy.get('#Watermark').should('not.have.value', 'sometext')
   })
