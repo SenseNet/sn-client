@@ -99,7 +99,7 @@
     "chance": "^1.0.18",
     "copy-webpack-plugin": "^5.0.0",
     "cross-env": "^5.2.0",
-    "cypress": "^3.2.0",
+    "cypress": "^3.3.0",
     "enzyme": "^3.6.0",
     "enzyme-adapter-react-16": "^1.5.0",
     "path-to-regexp": "3.0.0",
