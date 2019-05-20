@@ -29,8 +29,6 @@ jobs:
       before_script: yarn build
       script: yarn test:dms:e2e
       after_failure: bash ./scripts/sendscreenshots.sh
-      addons:
-        chrome: stable
 
     - stage: 'Deploy to netlify'
       if: type = pull_request

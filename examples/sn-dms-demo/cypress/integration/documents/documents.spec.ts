@@ -4,7 +4,6 @@ import {
   createNewFileName,
   moveToFolderAndCheckIfFileExists,
   newMenuItems,
-  openContextMenu,
   openContextMenuItem,
   openNew,
   registerNewUser,
@@ -55,7 +54,7 @@ context('The documents page', () => {
       cy.contains('span[role=button]', 'New')
     })
 
-    it('should contain new document, image, sheet, slide, text, folder buttons', () => {
+    it('should contain new document, sheet, slide, text, folder buttons', () => {
       cy.contains('[data-cy=appbar]', 'Document library').should('exist')
       cy.contains('New').click()
       newMenuItems.forEach(item => cy.contains('li[role=menuitem]', 'New ' + item.name))
