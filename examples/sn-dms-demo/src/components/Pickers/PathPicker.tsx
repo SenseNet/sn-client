@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography'
 import { ODataParams, Repository } from '@sensenet/client-core'
 import { Folder, GenericContent } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
-import { ListPickerComponent } from '@sensenet/pickers-react'
+import { GenericContentWithIsParent, ListPickerComponent } from '@sensenet/pickers-react'
 import React from 'react'
 import Scrollbars from 'react-custom-scrollbars'
 import { connect } from 'react-redux'
@@ -101,12 +101,12 @@ class PathPicker extends React.Component<
     orderby: 'DisplayName',
   }
 
-  public renderItem = (renderItemProps: GenericContent) => (
+  public renderItem = (renderItemProps: GenericContentWithIsParent) => (
     <ListItem button={true} selected={this.props.selectedTarget.some(node => node.Id === renderItemProps.Id)}>
       <ListItemIcon>
         <Icon type={iconType.materialui} iconName="folder" />
       </ListItemIcon>
-      <ListItemText primary={renderItemProps.DisplayName} />
+      <ListItemText primary={renderItemProps.isParent ? '..' : renderItemProps.DisplayName} />
       {this.hasChildren(renderItemProps.Id) ? (
         <Icon type={iconType.materialui} iconName="keyboard_arrow_right" />
       ) : null}
@@ -138,7 +138,6 @@ class PathPicker extends React.Component<
               renderItem={this.renderItem}
               repository={dmsInjector.getInstance(Repository)}
               itemsOdataOptions={{ ...this.pickerItemOptions, ...this.props.loadOptions }}
-              parentId={currentParent && currentParent.ParentId}
               currentPath={currentParent && currentParent.Path}
             />
           </Scrollbars>
