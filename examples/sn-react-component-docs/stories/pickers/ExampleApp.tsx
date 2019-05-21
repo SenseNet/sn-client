@@ -1,10 +1,7 @@
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import Fade from '@material-ui/core/Fade'
 import { Repository } from '@sensenet/client-core'
-import { SchemaStore } from '@sensenet/default-content-types'
-import { Icon, iconType } from '@sensenet/icons-react'
+import { GenericContent, SchemaStore } from '@sensenet/default-content-types'
 import { ListPickerComponent, useListPicker } from '@sensenet/pickers-react'
 import React from 'react'
 
@@ -30,41 +27,35 @@ export const ExampleApp = () => {
     }
     return <p>{message}</p>
   }
-  return <ListPickerComponent renderError={renderError} repository={testRepository} />
+  const renderLoading = () => (
+    <Fade in={true} unmountOnExit={true}>
+      <CircularProgress />
+    </Fade>
+  )
+  return <ListPickerComponent renderError={renderError} renderLoading={renderLoading} repository={testRepository} />
 }
 
 export const ExampleAppWithHook = () => {
-  const { parent, items, getListItemProps, selectedItem, path } = useListPicker(testRepository)
+  const { items, selectedItem, setSelectedItem, path, navigateTo, reload } = useListPicker<GenericContent>(
+    testRepository,
+  )
   console.log({ selectedItem, path })
 
   return (
-    <List>
-      {parent !== undefined ? (
-        <ListItem
-          button={true}
-          selected={selectedItem && parent.Id === selectedItem.Id}
-          onClick={e => getListItemProps().onClick(e, parent)}
-          onDoubleClick={e => getListItemProps().onDoubleClick(e, parent)}>
-          <ListItemIcon>
-            <Icon type={iconType.materialui} iconName="folder" style={{ color: 'yellow' }} />
-          </ListItemIcon>
-          <ListItemText primary={parent.DisplayName} />
-        </ListItem>
-      ) : null}
-      {items &&
-        items.map(node => (
-          <ListItem
-            button={true}
-            selected={selectedItem && node.Id === selectedItem.Id}
-            onClick={e => getListItemProps().onClick(e, node)}
-            onDoubleClick={e => getListItemProps().onDoubleClick(e, node)}
-            key={node.Id}>
-            <ListItemIcon>
-              <Icon type={iconType.materialui} iconName="folder" />
-            </ListItemIcon>
-            <ListItemText primary={node.DisplayName} />
-          </ListItem>
-        ))}
-    </List>
+    <>
+      <button onClick={() => reload()}>Reload</button>
+      <ul>
+        {items &&
+          items.map(node => (
+            <li
+              style={{ color: selectedItem && node.Id === selectedItem.Id ? 'red' : 'inherit', cursor: 'pointer' }}
+              onClick={() => setSelectedItem(node)}
+              onDoubleClick={() => navigateTo(node)}
+              key={node.Id}>
+              {node.isParent ? '..' : node.DisplayName}
+            </li>
+          ))}
+      </ul>
+    </>
   )
 }
