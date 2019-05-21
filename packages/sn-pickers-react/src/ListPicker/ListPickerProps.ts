@@ -1,13 +1,14 @@
 import { ODataParams, Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ReactElement } from 'react'
+import { GenericContentWithIsParent } from './loaders'
 
 /**
  * Properties for list picker component.
  * @interface ListPickerProps
  * @template T
  */
-export interface ListPickerProps<T extends GenericContent = GenericContent> {
+export interface ListPickerProps<T extends GenericContentWithIsParent = GenericContent> {
   /**
    * Repositry to load contents from.
    * To use the default load options you need to provide a repository.
@@ -42,13 +43,6 @@ export interface ListPickerProps<T extends GenericContent = GenericContent> {
   currentPath?: string
 
   /**
-   * Current parent id.
-   * `undefined` value means there isn't a parent. Parent item won't show.
-   * @type {number}
-   */
-  parentId?: number
-
-  /**
    * Called on navigation. Can be used to clear the selected state and to know the path
    * of the navigation.
    */
@@ -56,7 +50,6 @@ export interface ListPickerProps<T extends GenericContent = GenericContent> {
 
   /**
    * Called on click with the current item.
-   * This is **not** invoked for parent selection!
    */
   onSelectionChanged?: (node: T) => void
 

@@ -1,46 +1,73 @@
 import { ODataParams, Repository } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
-import { GenericContent, Workspace } from '@sensenet/default-content-types'
+import { GenericContent } from '@sensenet/default-content-types'
 import { EventHub } from '@sensenet/repository-events'
-import { useEffect, useState } from 'react'
+import { Reducer, useEffect, useReducer } from 'react'
 import { useAsync } from 'react-async'
-import { loadItems, loadParent } from './loaders'
+import { loadItems } from './loaders'
+
+interface State<T> {
+  selectedItem: T | undefined
+  path: string
+  parentId: number | undefined
+}
+
+const actions = {
+  setSelectedItem: 'SET_SELECTED_ITEM',
+  navigateTo: 'NAVIGATE_TO',
+  setReloadToken: 'SET_RELOAD_TOKEN',
+}
+
+function reducer<T extends GenericContent = GenericContent>(state: State<T>, action: any) {
+  switch (action.type) {
+    case actions.setSelectedItem: {
+      return { ...state, selectedItem: action.payload }
+    }
+    case actions.navigateTo: {
+      return { ...state, ...setParentIdAndPath(action.payload.node, action.payload.parent) }
+    }
+    case actions.setReloadToken: {
+      return { ...state, reloadToken: Math.random() }
+    }
+    default: {
+      throw new Error(`Unhandled type: ${action.type}`)
+    }
+  }
+}
+
+const setParentIdAndPath = <T extends GenericContent = GenericContent>(node: T, parent?: T) => {
+  return parent && parent.Id === node.Id
+    ? { parentId: parent.ParentId, path: parent.Path }
+    : { parentId: node.ParentId, path: node.Path }
+}
 
 // tslint:disable-next-line: completed-docs
 export const useListPicker = <T extends GenericContent = GenericContent>(
   repository: Repository,
   options: {
     currentPath?: string
-    parentId?: number
     itemsOdataOptions?: ODataParams<T>
     parentODataOptions?: ODataParams<T>
     debounceMsOnReload?: number
   } = {},
 ) => {
-  const { currentPath = '', debounceMsOnReload = 1000 } = options || {}
-  const [reloadToken, setReloadToken] = useState(0)
-  const [selectedItem, setSelectedItem] = useState<T | undefined>()
-  const [path, setPath] = useState(currentPath)
-  const [parentId, setParentId] = useState<number | undefined>(options.parentId)
-  const { data: items } = useAsync({
+  const { debounceMsOnReload = 1000 } = options || {}
+  const [{ selectedItem, path, parentId }, dispatch] = useReducer<Reducer<State<T>, { type: string; payload?: any }>>(
+    reducer,
+    { path: options.currentPath || '', selectedItem: undefined, parentId: undefined },
+  )
+  const { data: items, isLoading, error, reload } = useAsync({
     promiseFn: loadItems,
     path,
     repository,
     oDataOptions: options.itemsOdataOptions,
-    reloadToken,
-    watchFn: (current: any, previous: any) => {
-      return current.path !== previous.path || current.reloadToken !== previous.reloadToken
-    },
-  })
-  const { data: parent } = useAsync({
-    promiseFn: loadParent,
-    repository,
-    id: parentId,
-    oDataOptions: options.parentODataOptions,
-    watch: parentId,
+    parentODataOptions: options.parentODataOptions,
+    parentId,
+    watch: path,
   })
 
-  const update = debounce(() => setReloadToken(Math.random()), debounceMsOnReload)
+  // const update = debounce(() => dispatch({ type: actions.setReloadToken }), debounceMsOnReload)
+  const update = debounce(reload, debounceMsOnReload)
   useEffect(() => {
     const eventHub = new EventHub(repository)
     const subscriptions = [
@@ -54,48 +81,10 @@ export const useListPicker = <T extends GenericContent = GenericContent>(
     return () => [...subscriptions, eventHub].forEach(s => s.dispose())
   }, [repository])
 
-  const onItemClickHandler = (event: React.MouseEvent, node: T) => {
-    event.preventDefault()
-    // Don't pass parent value on selection.
-    // Should this be an option to let the user pass that as well?
-    if (parent && parent.Id === node.Id) {
-      return
-    }
-    setSelectedItem(node)
-  }
+  const setSelectedItem = (node: T) => dispatch({ type: actions.setSelectedItem, payload: node })
 
-  const onItemDoubleClickHandler = (event: React.MouseEvent, node: T) => {
-    event.preventDefault()
-    setParentIdOnDoubleClick(node)
+  const navigateTo = (node: T) =>
+    dispatch({ type: actions.navigateTo, payload: { node, parent: items && items.find(c => c.isParent) } })
 
-    // Navigation to parent
-    if (parent && node.Id === parentId) {
-      setPath(parent.Path)
-    } else {
-      setPath(node.Path)
-    }
-  }
-
-  const setParentIdOnDoubleClick = (node: T) => {
-    // If parent value is set (there were already some navigation) and clicked, set parent id to parent's parent id
-    // otherwise set it to clicked item's parent id.
-    if (parent && parent.Id === node.Id) {
-      const parentData = parent
-      if ((parentData.Workspace as Workspace).Id === parentData.Id) {
-        setParentId(undefined)
-      } else {
-        setParentId(parent.ParentId)
-      }
-    } else {
-      setParentId(node.ParentId)
-    }
-  }
-
-  const getListItemProps = (props = {}) => ({
-    ...props,
-    onClick: onItemClickHandler,
-    onDoubleClick: onItemDoubleClickHandler,
-  })
-
-  return { parent, items, selectedItem, getListItemProps, path }
+  return { items, selectedItem, setSelectedItem, navigateTo, path, isLoading, error, reload }
 }
