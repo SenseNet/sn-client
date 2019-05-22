@@ -95,7 +95,7 @@ export class ReferencePicker extends Component<ReferencePickerProps, ReferencePi
         onNavigation={this.onNavigation}
         repository={this.props.repository}
         currentPath={this.state.path}
-        itemsOdataOptions={this.pickerItemOptions}
+        itemsODataOptions={this.pickerItemOptions}
         renderItem={this.renderItem}
       />
     )
