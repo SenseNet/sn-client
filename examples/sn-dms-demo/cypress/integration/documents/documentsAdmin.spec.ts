@@ -31,7 +31,7 @@ context('The documents page with admin', () => {
     })
   })
 
-  it('should be able open viewer from context menu and close with esc', () => {
+  it('should be able to open viewer from context menu and close with esc', () => {
     const fileName = createNewFileName()
     cy.uploadWithApi({
       parentPath: adminUser.doclibPath,

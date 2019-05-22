@@ -25,7 +25,7 @@ If you run into trouble here, make sure your node, npm, and **_yarn_** are on th
 
 ### Running package script
 
-With yarn you can run the any package scripts eg.: `test, build, lint`
+With yarn you can run any package scripts eg.: `test, build, lint`
 
 ```shell
 yarn workspace @sensenet/redux test
@@ -50,5 +50,5 @@ To develop e2e tests:
 - Start cypress with `yarn cypress open -P examples/sn-dms-demo` in another command prompt
 - Add test to `examples/sn-dms-demo/cypress/integration` with a spec.ts | spec.js file extension
 
-Running the tests locally it will create a currentUser.json with a new test user. The tests are going to use this user.
+Running the tests locally will create a currentUser.json with a new test user. The tests are going to use this user.
 In order to use another user you can change the email and password of the current user or let the system create a new for you by deleting the json.
