@@ -65,7 +65,6 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
       </DialogTitle>
       <DialogContent>
         <ListPickerComponent
-          parentId={props.currentParent.ParentId}
           currentPath={props.currentParent.Path}
           repository={repo}
           parentODataOptions={{ filter: `isOf('Folder')` }}
