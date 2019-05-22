@@ -152,6 +152,7 @@ const resources = {
   SEARCH_LOCATION_BUTTON_TITLE: 'Location',
   SEARCH_LOCATION_ANYWHERE: 'Anywhere',
   SEARCH_LOCATION_TITLE: 'Select Search location',
+  SELECTSEARCHROOT: 'Select Search location',
   SAVE_QUERY_DIALOG_TITLE: 'Save Query',
   SAVE_QUERY_NAME: 'Query name',
   SEARCHROOT_BUTTON: 'Select',
