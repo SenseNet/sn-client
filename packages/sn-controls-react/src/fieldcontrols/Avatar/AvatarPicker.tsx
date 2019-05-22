@@ -1,6 +1,5 @@
 import { IconButton } from '@material-ui/core'
 import Avatar from '@material-ui/core/Avatar'
-import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
@@ -36,10 +35,13 @@ interface AvatarPickerState {
 }
 
 export class AvatarPicker extends Component<AvatarPickerProps, AvatarPickerState> {
-  public state: AvatarPickerState = {
-    path: this.props.path,
+  constructor(props: AvatarPicker['props']) {
+    super(props)
+    this.state = {
+      path: this.props.path,
+    }
+    this.inputElement = React.createRef()
   }
-
   public onNavigation = (path: string) => {
     this.props.change && this.props.change()
     this.setState({ path })
@@ -92,6 +94,11 @@ export class AvatarPicker extends Component<AvatarPickerProps, AvatarPickerState
       }))
   }
 
+  private inputElement: React.RefObject<HTMLInputElement>
+  public handleClick = () => {
+    this.inputElement.current && this.inputElement.current.click()
+  }
+
   public render() {
     return (
       <div>
@@ -104,17 +111,19 @@ export class AvatarPicker extends Component<AvatarPickerProps, AvatarPickerState
           renderItem={this.renderItem}
         />
         <div style={styles.uploadContainer}>
-          <Input
+          <input
             style={{ display: 'none' }}
             id="raised-button-file"
             type="file"
+            ref={this.inputElement}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.handleUpload(e)}
           />
           <InputLabel
             htmlFor="raised-button-file"
             style={{ transform: 'translate(0, 58px) scale(1)', cursor: 'pointer' }}
             title={UPLOAD}>
-            <IconButton>{this.props.renderIcon('add_circle')}</IconButton>
+            <IconButton
+              onClick={this.handleClick}>{this.props.renderIcon('add_circle')}</IconButton>
           </InputLabel>
         </div>
       </div>
