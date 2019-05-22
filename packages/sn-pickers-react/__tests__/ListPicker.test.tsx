@@ -5,6 +5,7 @@ import React from 'react'
 import { useAsync } from 'react-async'
 import { ListPickerComponent } from '../src/ListPicker'
 import { genericContentItems } from './mocks/items'
+import { PickerWithInvalidAction, PickerWithoutOptions } from './mocks/Pickers'
 
 jest.mock('react-async')
 
@@ -44,19 +45,24 @@ describe('List picker component', () => {
     expect(wrapper.find(ListItem).exists()).toBeFalsy()
   })
 
-  it('should handle navigation', () => {
-    ;(useAsync as any).mockReturnValue({ data: undefined }).mockReturnValueOnce({ data: genericContentItems })
+  it('should handle navigation to parent/list item', () => {
+    ;(useAsync as any).mockReturnValue({ data: genericContentItems })
     const onNavigation = jest.fn()
     const wrapper = mount(<ListPickerComponent onNavigation={onNavigation} repository={new Repository()} />)
     wrapper
       .find(ListItem)
       .first()
       .simulate('dblclick')
-    expect(onNavigation).toBeCalled()
+    expect(onNavigation).toBeCalledWith(genericContentItems[0].Path)
+    wrapper
+      .find(ListItem)
+      .last()
+      .simulate('dblclick')
+    expect(onNavigation).toBeCalledWith(genericContentItems[3].Path)
   })
 
   it('should handle selection', () => {
-    ;(useAsync as any).mockReturnValue({ data: undefined }).mockReturnValueOnce({ data: genericContentItems })
+    ;(useAsync as any).mockReturnValue({ data: genericContentItems })
     const onSelectionChanged = jest.fn()
     const wrapper = mount(<ListPickerComponent onSelectionChanged={onSelectionChanged} repository={new Repository()} />)
     wrapper
@@ -64,5 +70,21 @@ describe('List picker component', () => {
       .first()
       .simulate('click')
     expect(onSelectionChanged).toBeCalled()
+  })
+
+  it('render list items when no options passed to useListPicker', () => {
+    ;(useAsync as any).mockReturnValue({ data: genericContentItems })
+    const wrapper = shallow(<PickerWithoutOptions repository={new Repository()} />)
+    expect(wrapper.find('li').exists()).toBeTruthy()
+    expect(wrapper.find('li').length).toBe(4)
+  })
+
+  it('throw error when invalid action is called', () => {
+    ;(useAsync as any).mockReturnValue({ data: genericContentItems })
+    try {
+      shallow(<PickerWithInvalidAction repository={new Repository()} />)
+    } catch (error) {
+      expect(error.message).toBe('Unhandled type: invalid')
+    }
   })
 })

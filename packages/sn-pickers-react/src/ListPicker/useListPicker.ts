@@ -35,7 +35,9 @@ const setParentIdAndPath = <T extends GenericContent = GenericContent>(node: T, 
     : { parentId: node.ParentId, path: node.Path }
 }
 
-// tslint:disable-next-line: completed-docs
+/**
+ * useListPicker let you select and navigate in the reposiotry with built in defaults
+ */
 export const useListPicker = <T extends GenericContent = GenericContent>(
   repository: Repository,
   options: {
@@ -46,7 +48,7 @@ export const useListPicker = <T extends GenericContent = GenericContent>(
   } = {},
 ) => {
   // get defaults
-  const { stateReducer = (_s: any, a: any) => a.changes } = options || {}
+  const { stateReducer = (_s: any, a: any) => a.changes, currentPath = '' } = options
 
   const [{ selectedItem, path, parentId }, dispatch] = useReducer<Reducer<State<T>, Action>>(
     (state, action) => {
@@ -54,7 +56,7 @@ export const useListPicker = <T extends GenericContent = GenericContent>(
       return stateReducer(state, { ...action, changes })
     },
     {
-      path: options.currentPath || '',
+      path: currentPath,
       selectedItem: undefined,
       parentId: undefined,
     },
@@ -75,7 +77,7 @@ export const useListPicker = <T extends GenericContent = GenericContent>(
   const navigateTo = (node: T) =>
     dispatch({ type: useListPicker.types.navigateTo, payload: { node, parent: items && items.find(c => c.isParent) } })
 
-  return { items, selectedItem, setSelectedItem, navigateTo, path, isLoading, error, reload }
+  return { items, selectedItem, setSelectedItem, navigateTo, path, isLoading, error, reload, dispatch }
 }
 
 useListPicker.types = {
