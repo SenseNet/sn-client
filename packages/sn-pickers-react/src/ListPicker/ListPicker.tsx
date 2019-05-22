@@ -17,9 +17,8 @@ export function ListPickerComponent<T extends GenericContentWithIsParent = Gener
     GenericContentWithIsParent
   >(props.repository, {
     currentPath: props.currentPath,
-    itemsOdataOptions: props.itemsOdataOptions as any,
+    itemsODataOptions: props.itemsODataOptions as any,
     parentODataOptions: props.parentODataOptions as any,
-    debounceMsOnReload: props.debounceMsOnReload,
   })
 
   if (isLoading) {

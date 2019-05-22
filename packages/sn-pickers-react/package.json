@@ -36,10 +36,8 @@
   "dependencies": {
     "@material-ui/core": "^3.9.3",
     "@sensenet/client-core": "^2.0.0",
-    "@sensenet/client-utils": "^1.6.0",
     "@sensenet/default-content-types": "^1.2.0",
     "@sensenet/icons-react": "^1.2.9",
-    "@sensenet/repository-events": "^1.4.0",
     "react": "^16.8.6"
   },
   "devDependencies": {

@@ -23,7 +23,7 @@ export interface ListPickerProps<T extends GenericContentWithIsParent = GenericC
    *   metadata: 'no',
    *   orderby: 'DisplayName',}
    */
-  itemsOdataOptions?: ODataParams<T>
+  itemsODataOptions?: ODataParams<T>
 
   /**
    * OData parameters for the parent list item.
@@ -80,10 +80,4 @@ export interface ListPickerProps<T extends GenericContentWithIsParent = GenericC
    * ```
    */
   renderItem?: (props: T) => ReactElement<T>
-
-  /**
-   * Debounce milliseconds to prevent multiple reload calls.
-   * @default 1000
-   */
-  debounceMsOnReload?: number
 }
