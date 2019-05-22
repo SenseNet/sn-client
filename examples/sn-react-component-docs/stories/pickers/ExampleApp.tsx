@@ -38,6 +38,15 @@ export const ExampleApp = () => {
 export const ExampleAppWithHook = () => {
   const { items, selectedItem, setSelectedItem, path, navigateTo, reload } = useListPicker<GenericContent>(
     testRepository,
+    {
+      stateReducer: (_state, action) => {
+        if (action.type === useListPicker.types.setSelectedItem && action.payload.isParent) {
+          return { ...action.changes, selectedItem: undefined }
+        } else {
+          return action.changes
+        }
+      },
+    },
   )
   console.log({ selectedItem, path })
 
