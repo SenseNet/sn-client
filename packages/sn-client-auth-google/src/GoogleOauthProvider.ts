@@ -113,6 +113,7 @@ export class GoogleOauthProvider implements OauthProvider {
       this.iframe = this.windowInstance.document.createElement('iframe')
       this.iframe.style.display = 'none'
       this.iframe.setAttribute('sandbox', 'allow-same-origin allow-scripts')
+
       this.iframe.onload = async ev => {
         let location: Location | null = null
         await Retrier.create(async () => {
