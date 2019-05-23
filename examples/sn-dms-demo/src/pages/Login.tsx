@@ -16,7 +16,8 @@ const logo = require('../assets/logo.png')
 
 const styles = {
   button: {
-    margin: '30px 0',
+    margin: '30px auto',
+    display: 'block',
   },
   formControl: {
     marginTop: '20px 0px',
