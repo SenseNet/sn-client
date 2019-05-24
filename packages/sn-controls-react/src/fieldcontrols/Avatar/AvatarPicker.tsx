@@ -41,7 +41,8 @@ const pickerItemOptions: ODataParams<Folder> = {
 export function AvatarPicker(props: AvatarPickerProps) {
   const { items, selectedItem, setSelectedItem, path, navigateTo, reload, isLoading, error } = useListPicker<
     GenericContent
-  >(props.repository, {
+  >({
+    repository: props.repository,
     currentPath: props.path,
     itemsODataOptions: pickerItemOptions,
   })

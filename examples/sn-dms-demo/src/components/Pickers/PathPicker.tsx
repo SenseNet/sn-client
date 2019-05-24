@@ -35,13 +35,11 @@ const pickerItemOptions: ODataParams<Folder> = {
 }
 
 function PathPicker(props: PathPickerProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps) {
-  const { items, selectedItem, setSelectedItem, navigateTo, reload } = useListPicker<GenericContent>(
-    dmsInjector.getInstance(Repository),
-    {
-      currentPath: props.currentPath,
-      itemsODataOptions: pickerItemOptions,
-    },
-  )
+  const { items, selectedItem, setSelectedItem, navigateTo, reload } = useListPicker<GenericContent>({
+    repository: dmsInjector.getInstance(Repository),
+    currentPath: props.currentPath,
+    itemsODataOptions: pickerItemOptions,
+  })
 
   // Do a reload when a content is created
   useEffect(() => {

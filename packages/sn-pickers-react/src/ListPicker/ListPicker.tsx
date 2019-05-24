@@ -15,7 +15,8 @@ import { GenericContentWithIsParent } from './loaders'
 export function ListPickerComponent<T extends GenericContentWithIsParent = GenericContent>(props: ListPickerProps<T>) {
   const { items, selectedItem, setSelectedItem, navigateTo, isLoading, error } = useListPicker<
     GenericContentWithIsParent
-  >(props.repository, {
+  >({
+    repository: props.repository,
     currentPath: props.currentPath,
     itemsODataOptions: props.itemsODataOptions as any,
     parentODataOptions: props.parentODataOptions as any,

@@ -38,17 +38,15 @@ const setParentIdAndPath = <T extends GenericContent = GenericContent>(node: T, 
 /**
  * useListPicker let you select and navigate in the repository with built in defaults
  */
-export const useListPicker = <T extends GenericContent = GenericContent>(
-  repository: Repository,
-  options: {
-    currentPath?: string
-    itemsODataOptions?: ODataParams<T>
-    parentODataOptions?: ODataParams<T>
-    stateReducer?: Reducer<State<T>, Action & { changes: State<T> }>
-  } = {},
-) => {
+export const useListPicker = <T extends GenericContent = GenericContent>(options: {
+  repository: Repository
+  currentPath?: string
+  itemsODataOptions?: ODataParams<T>
+  parentODataOptions?: ODataParams<T>
+  stateReducer?: Reducer<State<T>, Action & { changes: State<T> }>
+}) => {
   // get defaults
-  const { stateReducer = (_s: any, a: any) => a.changes, currentPath = '' } = options
+  const { repository, stateReducer = (_s: any, a: any) => a.changes, currentPath = '' } = options
 
   const [{ selectedItem, path, parentId }, dispatch] = useReducer<Reducer<State<T>, Action>>(
     (state, action) => {
