@@ -1,5 +1,6 @@
 import { ODataParams, Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
+import { GenericContentWithIsParent } from './types'
 
 interface LoadItemsOptions<T> {
   path: string
@@ -28,11 +29,6 @@ export const defaultLoadParentODataOptions: ODataParams<GenericContent> = {
 }
 
 /**
- * Generic content with isParent property
- */
-export type GenericContentWithIsParent = GenericContent & { isParent?: boolean }
-
-/**
  * Loads the picker items from the repository.
  */
 export const loadItems = async <T extends GenericContentWithIsParent>({
@@ -50,14 +46,14 @@ export const loadItems = async <T extends GenericContentWithIsParent>({
   const items = itemsResult.d.results.map(item => {
     return { ...item, isParent: false }
   })
-  const parentResult = await getParent(items, repository, parentODataOptions, parentId)
+  const parentResult = await getParent<T>(items, repository, parentODataOptions, parentId)
   if (!parentResult) {
     return items
   }
   return [{ ...parentResult.d, isParent: true }, ...items]
 }
 
-async function getParent<T extends GenericContentWithIsParent>(
+async function getParent<T extends GenericContent>(
   items: T[],
   repository: Repository,
   parentODataOptionsArgs?: ODataParams<T>,

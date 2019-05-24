@@ -1,14 +1,12 @@
 import { ODataParams, Repository } from '@sensenet/client-core'
-import { GenericContent } from '@sensenet/default-content-types'
 import { ReactElement } from 'react'
-import { GenericContentWithIsParent } from './loaders'
 
 /**
  * Properties for list picker component.
  * @interface ListPickerProps
  * @template T
  */
-export interface ListPickerProps<T extends GenericContentWithIsParent = GenericContent> {
+export interface ListPickerProps<T> {
   /**
    * Repositry to load contents from.
    * To use the default load options you need to provide a repository.

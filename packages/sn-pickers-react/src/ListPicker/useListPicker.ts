@@ -3,33 +3,20 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { Reducer, useReducer } from 'react'
 import { useAsync } from 'react-async'
 import { loadItems } from './loaders'
+import { Action, GenericContentWithIsParent, NAVIGATE_TO, SET_SELECTED_ITEM, State } from './types'
 
-interface State<T> {
-  selectedItem: T | undefined
-  path: string
-  parentId: number | undefined
-}
-
-interface Action {
-  type: string
-  payload?: any
-}
-
-function reducer<T extends GenericContent = GenericContent>(state: State<T>, action: Action) {
+function reducer<T extends GenericContent>(state: State<T>, action: Action<T>) {
   switch (action.type) {
-    case useListPicker.types.setSelectedItem: {
+    case SET_SELECTED_ITEM: {
       return { ...state, selectedItem: action.payload }
     }
-    case useListPicker.types.navigateTo: {
+    case NAVIGATE_TO: {
       return { ...state, ...setParentIdAndPath(action.payload.node, action.payload.parent) }
-    }
-    default: {
-      throw new Error(`Unhandled type: ${action.type}`)
     }
   }
 }
 
-const setParentIdAndPath = <T extends GenericContent = GenericContent>(node: T, parent?: T) => {
+const setParentIdAndPath = <T extends GenericContent>(node: T, parent?: T) => {
   return parent && parent.Id === node.Id
     ? { parentId: parent.ParentId, path: parent.Path }
     : { parentId: node.ParentId, path: node.Path }
@@ -38,17 +25,17 @@ const setParentIdAndPath = <T extends GenericContent = GenericContent>(node: T, 
 /**
  * useListPicker let you select and navigate in the repository with built in defaults
  */
-export const useListPicker = <T extends GenericContent = GenericContent>(options: {
+export const useListPicker = <T extends GenericContentWithIsParent = GenericContent>(options: {
   repository: Repository
   currentPath?: string
   itemsODataOptions?: ODataParams<T>
   parentODataOptions?: ODataParams<T>
-  stateReducer?: Reducer<State<T>, Action & { changes: State<T> }>
+  stateReducer?: Reducer<State<T>, Action<T> & { changes: State<T> }>
 }) => {
   // get defaults
   const { repository, stateReducer = (_s: any, a: any) => a.changes, currentPath = '' } = options
 
-  const [{ selectedItem, path, parentId }, dispatch] = useReducer<Reducer<State<T>, Action>>(
+  const [{ selectedItem, path, parentId }, dispatch] = useReducer<Reducer<State<T>, Action<T>>>(
     (state, action) => {
       const changes = reducer(state, action)
       return stateReducer(state, { ...action, changes })
@@ -70,15 +57,10 @@ export const useListPicker = <T extends GenericContent = GenericContent>(options
     watch: path,
   })
 
-  const setSelectedItem = (node: T) => dispatch({ type: useListPicker.types.setSelectedItem, payload: node })
+  const setSelectedItem = (node: T) => dispatch({ type: SET_SELECTED_ITEM, payload: node })
 
   const navigateTo = (node: T) =>
-    dispatch({ type: useListPicker.types.navigateTo, payload: { node, parent: items && items.find(c => c.isParent) } })
+    dispatch({ type: NAVIGATE_TO, payload: { node, parent: items && (items.find(c => c.isParent) as any) } })
 
   return { items, selectedItem, setSelectedItem, navigateTo, path, isLoading, error, reload, dispatch }
-}
-
-useListPicker.types = {
-  setSelectedItem: 'SET_SELECTED_ITEM',
-  navigateTo: 'NAVIGATE_TO',
 }

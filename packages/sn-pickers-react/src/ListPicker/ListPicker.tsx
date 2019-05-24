@@ -7,15 +7,13 @@ import { Icon, iconType } from '@sensenet/icons-react'
 import React from 'react'
 import { useListPicker } from '.'
 import { ListPickerProps } from './ListPickerProps'
-import { GenericContentWithIsParent } from './loaders'
+import { GenericContentWithIsParent } from './types'
 
 /**
  * Represents a list picker component.
  */
 export function ListPickerComponent<T extends GenericContentWithIsParent = GenericContent>(props: ListPickerProps<T>) {
-  const { items, selectedItem, setSelectedItem, navigateTo, isLoading, error } = useListPicker<
-    GenericContentWithIsParent
-  >({
+  const { items, selectedItem, setSelectedItem, navigateTo, isLoading, error } = useListPicker<T>({
     repository: props.repository,
     currentPath: props.currentPath,
     itemsODataOptions: props.itemsODataOptions as any,
