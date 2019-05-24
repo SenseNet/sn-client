@@ -1,23 +1,22 @@
 import Avatar from '@material-ui/core/Avatar'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import Fade from '@material-ui/core/Fade'
 import IconButton from '@material-ui/core/IconButton'
 import InputLabel from '@material-ui/core/InputLabel'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import { CSSProperties } from '@material-ui/core/styles/withStyles'
 import { ODataParams, Repository } from '@sensenet/client-core'
 import { Folder, GenericContent } from '@sensenet/default-content-types'
 import { useListPicker } from '@sensenet/pickers-react'
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 const UPLOAD = 'Upload'
 
-const styles = {
-  uploadContainer: {
-    minHeight: 50,
-    position: 'relative',
-  } as CSSProperties,
+const styles: { [index: string]: React.CSSProperties } = {
+  uploadContainer: { minHeight: 50, position: 'relative' },
+  loaderContainer: { display: 'flex', alignItems: 'center', justifyContent: 'center' },
 }
 
 interface AvatarPickerProps {
@@ -40,15 +39,24 @@ const pickerItemOptions: ODataParams<Folder> = {
 }
 
 export function AvatarPicker(props: AvatarPickerProps) {
-  // TODO? handle error and loading?
-  const { items, selectedItem, setSelectedItem, path, navigateTo, reload } = useListPicker<GenericContent>(
-    props.repository,
-    {
-      currentPath: props.path,
-      itemsODataOptions: pickerItemOptions,
-    },
-  )
+  const { items, selectedItem, setSelectedItem, path, navigateTo, reload, isLoading, error } = useListPicker<
+    GenericContent
+  >(props.repository, {
+    currentPath: props.path,
+    itemsODataOptions: pickerItemOptions,
+  })
   const input = useRef<HTMLInputElement>(null)
+  const [showLoading, setShowLoading] = useState(false)
+
+  // Wait to show spinner
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setShowLoading(isLoading)
+    }, 800)
+    return () => {
+      window.clearTimeout(timer)
+    }
+  }, [isLoading])
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (props['data-onChange']) {
@@ -73,6 +81,25 @@ export function AvatarPicker(props: AvatarPickerProps) {
     if (node.Type === 'Image') {
       props.select(node)
     }
+  }
+
+  if (showLoading) {
+    return (
+      <div style={styles.loaderContainer}>
+        <Fade
+          in={showLoading}
+          style={{
+            transitionDelay: showLoading ? '800ms' : '0ms',
+          }}
+          unmountOnExit={true}>
+          <CircularProgress />
+        </Fade>
+      </div>
+    )
+  }
+
+  if (error) {
+    return <p>{error.message}</p>
   }
 
   return (
