@@ -49,7 +49,11 @@ function PathPickerDialog(
 
   const handleAddNewClick = () => {
     props.openDialog(
-      <AddNewDialog parentPath={props.currentPath} contentTypeName="Folder" title="folder" />,
+      <AddNewDialog
+        parentPath={props.selectedItems.length ? props.selectedItems[0].Path : props.currentPath}
+        contentTypeName="Folder"
+        title="folder"
+      />,
       resources.ADD_NEW,
       noop,
     )
