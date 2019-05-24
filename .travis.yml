@@ -25,7 +25,7 @@ jobs:
       after_success: bash <(curl -s https://codecov.io/bash)
 
     - name: 'DMS e2e tests'
-      if: type = pull_request
+      if: type = cron
       before_script: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p && yarn build
       script: yarn test:dms:e2e
       after_failure: bash ./scripts/sendscreenshots.sh
