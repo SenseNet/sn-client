@@ -5,7 +5,7 @@ import React from 'react'
 import { useAsync } from 'react-async'
 import { ListPickerComponent } from '../src/ListPicker'
 import { genericContentItems } from './mocks/items'
-import { PickerWithInvalidAction, PickerWithoutOptions } from './mocks/Pickers'
+import { PickerWithoutOptions } from './mocks/Pickers'
 
 jest.mock('react-async')
 
@@ -77,14 +77,5 @@ describe('List picker component', () => {
     const wrapper = shallow(<PickerWithoutOptions repository={new Repository()} />)
     expect(wrapper.find('li').exists()).toBeTruthy()
     expect(wrapper.find('li').length).toBe(4)
-  })
-
-  it('throw error when invalid action is called', () => {
-    ;(useAsync as any).mockReturnValue({ data: genericContentItems })
-    try {
-      shallow(<PickerWithInvalidAction repository={new Repository()} />)
-    } catch (error) {
-      expect(error.message).toBe('Unhandled type: invalid')
-    }
   })
 })

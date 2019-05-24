@@ -7,10 +7,3 @@ export const PickerWithoutOptions = (props: { repository: Repository }) => {
 
   return <ul>{items && items.map(item => <li key={item.Id} />)}</ul>
 }
-
-export const PickerWithInvalidAction = (props: { repository: Repository }) => {
-  const { items, dispatch } = useListPicker<GenericContentWithIsParent>({ repository: props.repository })
-  dispatch({ type: 'invalid' })
-
-  return <ul>{items && items.map(item => <li key={item.Id} />)}</ul>
-}
