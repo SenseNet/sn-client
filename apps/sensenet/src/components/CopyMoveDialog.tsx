@@ -3,12 +3,13 @@ import Dialog, { DialogProps } from '@material-ui/core/Dialog/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
+import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
-import { ListPickerComponent } from '@sensenet/pickers-react'
+import { useListPicker } from '@sensenet/pickers-react'
 import React, { useContext, useEffect, useState } from 'react'
 import { LocalizationContext, RepositoryContext } from '../context'
 import { LoggerContext } from '../context/LoggerContext'
@@ -27,19 +28,21 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
   }
 
   const localizations = useContext(LocalizationContext).values.copyMoveContentDialog
-
   const [localization, setLocalization] = useState(localizations[props.operation])
 
   useEffect(() => {
     setLocalization(localizations[props.operation])
   }, [props.operation])
 
-  const repo = useContext(RepositoryContext)
-  const [parent, setParent] = useState(props.currentParent)
-
   useEffect(() => {
-    setParent(props.currentParent)
-  }, [props.currentParent])
+    props.dialogProps.open === true && list.navigateTo(props.currentParent)
+  }, [props.dialogProps.open])
+
+  const repo = useContext(RepositoryContext)
+  const list = useListPicker(repo, {
+    currentPath: props.currentParent.Path,
+    parentODataOptions: { filter: `isOf('Folder')` },
+  })
 
   const logger = useContext(LoggerContext).withScope('CopyDialog')
 
@@ -59,47 +62,51 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
           {props.content.length === 1
             ? localization.title
                 .replace('{0}', props.content[0].DisplayName || props.content[0].Name)
-                .replace('{1}', parent.Path)
-            : localization.titleMultiple.replace('{0}', props.content.length.toString()).replace('{1}', parent.Path)}
+                .replace('{1}', list.path)
+            : localization.titleMultiple.replace('{0}', props.content.length.toString()).replace('{1}', list.path)}
         </div>
       </DialogTitle>
       <DialogContent>
-        <ListPickerComponent
-          currentPath={props.currentParent.Path}
-          repository={repo}
-          parentODataOptions={{ filter: `isOf('Folder')` }}
-          onSelectionChanged={sel => sel && setParent(sel)}
-          renderItem={node => (
-            <ListItem button={true} selected={parent && node.Id === parent.Id}>
-              <ListItemIcon>
-                <Icon item={node} />
-              </ListItemIcon>
-              <ListItemText primary={node.DisplayName} />
-            </ListItem>
-          )}
-        />
+        <List>
+          {list.items &&
+            list.items.map(item => (
+              <ListItem
+                key={item.Id}
+                button={true}
+                selected={list.selectedItem === item}
+                onClick={() => list.setSelectedItem(item)}
+                onDoubleClick={() => {
+                  list.navigateTo(item)
+                  list.reload()
+                }}>
+                <ListItemIcon>
+                  <Icon item={item} />
+                </ListItemIcon>
+                <ListItemText primary={item.isParent ? '...' : item.DisplayName} />
+              </ListItem>
+            ))}
+        </List>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>{localization.cancelButton}</Button>
         <Button
           autoFocus={true}
           disabled={
-            parent &&
-            (parent.Path === props.content[0].Path ||
-              parent.Path === '/' + PathHelper.getParentPath(props.content[0].Path))
+            (list.selectedItem && list.selectedItem.Path === props.content[0].Path) ||
+            (list.selectedItem && list.selectedItem.Path === '/' + PathHelper.getParentPath(props.content[0].Path))
           }
           onClick={async ev => {
             handleClose(ev)
             try {
-              if (parent) {
+              if (list.selectedItem) {
                 const action = props.operation === 'copy' ? repo.copy : repo.move
-                const result = await action({ idOrPath: props.content.map(c => c.Id), targetPath: parent.Path })
+                const result = await action({ idOrPath: props.content.map(c => c.Id), targetPath: list.path })
 
                 if (result.d.results.length === 1 && result.d.errors.length === 0) {
                   logger.information({
                     message: localization.copySucceededNotification
                       .replace('{0}', result.d.results[0].Name)
-                      .replace('{1}', parent.DisplayName || parent.Name),
+                      .replace('{1}', list.path),
                     data: {
                       details: result,
                       ...(props.content.length === 1
@@ -114,7 +121,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
                   logger.information({
                     message: localization.copyMultipleSucceededNotification
                       .replace('{0}', result.d.results.length.toString())
-                      .replace('{1}', parent.DisplayName || parent.Name),
+                      .replace('{1}', list.selectedItem.DisplayName || list.selectedItem.Name),
                     data: {
                       result,
                     },
@@ -126,7 +133,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
                     message:
                       localization.copyFailedNotification
                         .replace('{0}', result.d.errors[0].content.Name)
-                        .replace('{1}', parent.DisplayName || parent.Name) +
+                        .replace('{1}', list.selectedItem.DisplayName || list.selectedItem.Name) +
                       `\r\n${result.d.errors[0].error.message.value}`,
                     data: {
                       details: result,
@@ -142,7 +149,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
                   logger.warning({
                     message: localization.copyMultipleFailedNotification
                       .replace('{0}', result.d.errors.length.toString())
-                      .replace('{1}', parent.DisplayName || parent.Name),
+                      .replace('{1}', list.selectedItem.DisplayName || list.selectedItem.Name),
                     data: {
                       details: result,
                     },
