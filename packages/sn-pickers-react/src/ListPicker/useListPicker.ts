@@ -36,7 +36,7 @@ const setParentIdAndPath = <T extends GenericContent = GenericContent>(node: T, 
 }
 
 /**
- * useListPicker let you select and navigate in the reposiotry with built in defaults
+ * useListPicker let you select and navigate in the repository with built in defaults
  */
 export const useListPicker = <T extends GenericContent = GenericContent>(
   repository: Repository,
