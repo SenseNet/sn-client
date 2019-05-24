@@ -42,7 +42,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
   const list = useListPicker({
     repository: repo,
     currentPath: props.currentParent.Path,
-    parentODataOptions: { filter: `isOf('Folder')` },
+    itemsODataOptions: { filter: '' },
   })
 
   const logger = useContext(LoggerContext).withScope('CopyDialog')
