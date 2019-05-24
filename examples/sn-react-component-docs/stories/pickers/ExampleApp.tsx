@@ -1,8 +1,13 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Fade from '@material-ui/core/Fade'
 import { Repository } from '@sensenet/client-core'
-import { GenericContent, SchemaStore } from '@sensenet/default-content-types'
-import { ListPickerComponent, useListPicker } from '@sensenet/pickers-react'
+import { SchemaStore } from '@sensenet/default-content-types'
+import {
+  GenericContentWithIsParent,
+  ListPickerComponent,
+  SET_SELECTED_ITEM,
+  useListPicker,
+} from '@sensenet/pickers-react'
 import React from 'react'
 
 const testRepository = new Repository({
@@ -36,10 +41,10 @@ export const ExampleApp = () => {
 }
 
 export const ExampleAppWithHook = () => {
-  const { items, selectedItem, setSelectedItem, path, navigateTo, reload } = useListPicker<GenericContent>({
+  const { items, selectedItem, setSelectedItem, path, navigateTo, reload } = useListPicker<GenericContentWithIsParent>({
     repository: testRepository,
     stateReducer: (_state, action) => {
-      if (action.type === useListPicker.types.setSelectedItem && action.payload.isParent) {
+      if (action.type === SET_SELECTED_ITEM && action.payload.isParent) {
         return { ...action.changes, selectedItem: undefined }
       } else {
         return action.changes
