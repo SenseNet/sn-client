@@ -1,4 +1,5 @@
 import Chance = require('chance')
+import { resources } from '../../../src/assets/resources'
 import {
   contextMenuItems,
   createNewFileName,
@@ -50,14 +51,14 @@ context('The documents page', () => {
 
   describe('left side menu', () => {
     it('should contain new and upload buttons', () => {
-      cy.contains('span[role=button]', 'Upload')
-      cy.contains('span[role=button]', 'New')
+      cy.contains('span[role=button]', resources.UPLOAD_BUTTON_TITLE)
+      cy.contains('span[role=button]', resources.ADD_NEW)
     })
 
     it('should contain new document, sheet, slide, text, folder buttons', () => {
       cy.contains('[data-cy=appbar]', 'Document library').should('exist')
-      cy.contains('New').click()
-      newMenuItems.forEach(item => cy.contains('li[role=menuitem]', 'New ' + item.name))
+      cy.contains(resources.ADD_NEW).click()
+      newMenuItems.forEach(item => cy.contains('li[role=menuitem]', `${resources.ADD_NEW} ${item.name}`))
     })
 
     it(`creating a new item should show succes notification and can be found in the grid`, () => {
@@ -66,7 +67,7 @@ context('The documents page', () => {
         openNew(item.name)
         const displayName = Chance().word()
         cy.get('#DisplayName').type(displayName + '{enter}')
-        cy.contains(displayName + item.ext + ' is successfully created').should('exist')
+        cy.contains(displayName + item.ext + ' ' + resources.CREATE_CONTENT_SUCCESS_MESSAGE).should('exist')
         cy.contains(displayName + item.ext).should('exist')
         cy.get('[aria-label="Close"]').click()
       })
@@ -83,7 +84,7 @@ context('The documents page', () => {
       .clear()
       .type(`${newName}{enter}`)
     cy.contains(newName)
-    cy.contains(`The content '${fileName}' has been modified`)
+    cy.contains(resources.EDIT_PROPERTIES_SUCCESS_MESSAGE.replace('{contentName}', fileName))
   })
 
   it('copy to context menu item should work', () => {
@@ -93,9 +94,9 @@ context('The documents page', () => {
     // List picker component
     selectPathInListPicker({ path: copyToPath, action: 'Copy' })
     // Copy to confirm dialog
-    cy.contains('div[data-cy="copyTo"] h5', 'Copy content')
-    cy.contains('div[data-cy="copyTo"] button', 'Copy content').click()
-    cy.contains(`${fileName} is copied successfully`)
+    cy.contains('div[data-cy="copyTo"] h5', resources.COPY)
+    cy.contains('div[data-cy="copyTo"] button', resources.COPY).click()
+    cy.contains(`${fileName} ${resources.COPY_BATCH_SUCCESS_MESSAGE}`)
       .should('be.visible')
       .get('button[aria-label="Close"]')
       .click()
@@ -111,9 +112,9 @@ context('The documents page', () => {
     // List picker component
     selectPathInListPicker({ path: moveToPath, action: 'Move' })
     // Move to confirm dialog
-    cy.contains('div[data-cy="moveTo"] h5', 'Move content')
-    cy.contains('div[data-cy="moveTo"] button', 'Move content').click()
-    cy.contains(`${fileName} is moved successfully`)
+    cy.contains('div[data-cy="moveTo"] h5', resources.MOVE)
+    cy.contains('div[data-cy="moveTo"] button', resources.MOVE).click()
+    cy.contains(`${fileName} ${resources.MOVE_BATCH_SUCCESS_MESSAGE}`)
       .should('be.visible')
       .get('button[aria-label="Close"]')
       .click()
@@ -125,7 +126,7 @@ context('The documents page', () => {
   it('edit properties should work', () => {
     const fileName = createNewFileName()
     uploadNewFileAndOpenContextMenuItem(currentUser.email, fileName, contextMenuItems.editProperties)
-    cy.contains('div[data-cy="editProperties"]', 'Edit properties')
+    cy.contains('div[data-cy="editProperties"]', resources.EDIT_PROPERTIES).should('exist')
     const properties = {
       keywords: { value: 'keyword', selector: 'div[data-cy="editProperties"] .ql-editor' },
       index: { value: '1', selector: '#Index' },
@@ -139,7 +140,7 @@ context('The documents page', () => {
         .type(properties[key].value.toString()),
     )
     cy.contains('div[data-cy="editProperties"] button', 'Submit').click()
-    cy.contains(`The content '${fileName}' has been modified`)
+    cy.contains(resources.EDIT_PROPERTIES_SUCCESS_MESSAGE.replace('{contentName}', fileName)).should('exist')
     openContextMenuItem(properties.displayName.value + '.png', contextMenuItems.editProperties)
     Object.keys(properties).forEach(key => {
       cy.get(properties[key].selector).should(key === 'keywords' ? 'have.text' : 'have.value', properties[key].value)
@@ -149,7 +150,7 @@ context('The documents page', () => {
   it('check out and undo should work', () => {
     const fileName = createNewFileName()
     uploadNewFileAndOpenContextMenuItem(currentUser.email, fileName, contextMenuItems.checkOut)
-    cy.contains(`${fileName} is successfully checked-out`).should('exist')
+    cy.contains(resources.CHECKOUT_SUCCESS_MESSAGE.replace('{contentName}', fileName)).should('exist')
     cy.get('div[title="Checked out by: Me"]').should('exist')
     openContextMenuItem(fileName, contextMenuItems.editProperties)
     cy.get('#Watermark')
@@ -157,7 +158,7 @@ context('The documents page', () => {
       .type('sometext')
     cy.contains('div[data-cy="editProperties"] button', 'Submit').click()
     openContextMenuItem(fileName, contextMenuItems.undoChanges)
-    cy.contains(`${fileName} is reverted to the status before checking out`)
+    cy.contains(resources.UNDOCHECKOUT_SUCCESS_MESSAGE.replace('{contentName}', fileName)).should('exist')
     cy.wait(1000) // wait for undo
     openContextMenuItem(fileName, contextMenuItems.editProperties)
     cy.get('#Watermark').should('not.have.value', 'sometext')

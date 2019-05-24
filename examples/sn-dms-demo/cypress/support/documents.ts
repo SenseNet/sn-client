@@ -1,4 +1,5 @@
 import Chance = require('chance')
+import { resources } from '../../src/assets/resources'
 
 export const openContextMenu = (name: string | number | RegExp) => {
   cy.contains('[data-cy=appbar]', 'Document library', { timeout: 10000 })
@@ -39,8 +40,8 @@ export const createNewFileName = () => Chance().word() + '.png'
 
 export const openNew = (action: string) => {
   cy.contains('Documents').click()
-  cy.contains('New').click()
-  cy.get(`[title="New ${action}"]`).click()
+  cy.contains(resources.ADD_NEW).click()
+  cy.get(`[title="${resources.ADD_NEW} ${action}"]`).click()
 }
 
 export const registerNewUser = () => {
