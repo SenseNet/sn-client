@@ -7,9 +7,7 @@
   },
   "references": [
     { "path": "../sn-client-core" },
-    { "path": "../sn-client-utils" },
     { "path": "../sn-default-content-types" },
-    { "path": "../sn-icons-react" },
-    { "path": "../sn-repository-events" }
+    { "path": "../sn-icons-react" }
   ]
 }

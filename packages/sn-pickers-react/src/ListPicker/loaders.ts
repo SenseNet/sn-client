@@ -1,16 +1,13 @@
 import { ODataParams, Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
+import { GenericContentWithIsParent } from './types'
 
-interface LoadOptions<T> {
-  repository: Repository
-  oDataOptions?: ODataParams<T>
-}
-interface LoadItemsOptions<T> extends LoadOptions<T> {
+interface LoadItemsOptions<T> {
   path: string
-}
-
-interface LoadParentOptions<T> extends LoadOptions<T> {
-  id?: number
+  parentId?: number
+  repository: Repository
+  itemsODataOptions?: ODataParams<T>
+  parentODataOptions?: ODataParams<T>
 }
 
 /**
@@ -24,45 +21,59 @@ export const defaultLoadItemsODataOptions: ODataParams<GenericContent> = {
 }
 
 /**
- * Loads the picker items from the repository.
- */
-export const loadItems = async <T extends GenericContent>({
-  path,
-  repository,
-  oDataOptions: oDataOptionsArgs,
-}: LoadItemsOptions<T>) => {
-  const oDataOptions = { ...defaultLoadItemsODataOptions, ...oDataOptionsArgs }
-  const result = await repository.loadCollection<T>({
-    path,
-    oDataOptions,
-  })
-  return result.d.results
-}
-
-/**
  * Default loadParent Odata options.
  */
 export const defaultLoadParentODataOptions: ODataParams<GenericContent> = {
-  select: ['DisplayName', 'Path', 'Id', 'ParentId', 'Workspace'],
-  expand: ['Workspace'],
+  select: ['DisplayName', 'Path', 'Id', 'ParentId'],
   metadata: 'no',
 }
 
 /**
- * Loads the parent of item of the picker.
+ * Loads the picker items from the repository.
  */
-export const loadParent = async <T extends GenericContent>({
-  id,
+export const loadItems = async <T extends GenericContentWithIsParent>({
+  path,
   repository,
-  oDataOptions: oDataOptionsArgs,
-}: LoadParentOptions<T>) => {
-  if (!id) {
-    return undefined
-  }
-  const oDataOptions = { ...defaultLoadParentODataOptions, ...oDataOptionsArgs }
-  const result = await repository.load<T>({
-    idOrPath: id as number,
-    oDataOptions,
+  itemsODataOptions: itemsODataOptionsArgs,
+  parentODataOptions,
+  parentId,
+}: LoadItemsOptions<T>) => {
+  const itemsODataOptions = { ...defaultLoadItemsODataOptions, ...itemsODataOptionsArgs }
+  const itemsResult = await repository.loadCollection<T>({
+    path,
+    oDataOptions: itemsODataOptions,
   })
-  return result.d
+  const items = itemsResult.d.results.map(item => {
+    return { ...item, isParent: false }
+  })
+  const parentResult = await getParent<T>(items, repository, parentODataOptions, parentId)
+  if (!parentResult) {
+    return items
+  }
+  return [{ ...parentResult.d, isParent: true }, ...items]
+}
+
+async function getParent<T extends GenericContent>(
+  items: T[],
+  repository: Repository,
+  parentODataOptionsArgs?: ODataParams<T>,
+  parentId?: number,
+) {
+  // We don't want to query with 0
+  if (parentId === 0) {
+    return
+  }
+  const parentODataOptions = { ...defaultLoadParentODataOptions, ...parentODataOptionsArgs }
+  if (parentId == null && items[0].ParentId) {
+    // We need the parent's parent
+    const itemParent = await repository.load<T>({
+      idOrPath: items[0].ParentId,
+      oDataOptions: parentODataOptions,
+    })
+    return await repository.load<T>({ idOrPath: itemParent.d.ParentId!, oDataOptions: parentODataOptions })
+  }
+  return await repository.load<T>({
+    idOrPath: parentId!,
+    oDataOptions: parentODataOptions,
+  })
 }

@@ -3,19 +3,17 @@
   "version": "5.1.8",
   "description": "A set of redux actions, reducers and redux-ovbservable epics for sensenet",
   "main": "dist/index.js",
+  "typings": "./dist/index.d.ts",
   "scripts": {
     "fix": "npm run fix:prettier && npm run fix:tslint",
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
     "fix:tslint": "tslint --fix --project .",
     "lint": "tslint --project .",
-    "build": "tsc -b",
-    "typedoc": "typedoc --mode modules --out documentation src --exclude **/index.ts --theme c:/Users/%USERNAME%/AppData/Roaming/npm/node_modules/@sensenet/typedoc-theme/sn-theme"
+    "build": "tsc -b"
   },
   "files": [
     "dist",
-    "src",
-    "test",
-    "documentation"
+    "src"
   ],
   "repository": {
     "type": "git",
@@ -46,15 +44,8 @@
     "redux-logger": "^3.0.6"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.9",
     "@types/node": "^11.10.4",
     "@types/redux-logger": "^3.0.6",
     "redux-mock-store": "^1.5.3"
-  },
-  "config": {
-    "commitizen": {
-      "path": "sensenet-kfi-cz-conventional-changelog"
-    }
-  },
-  "typings": "./dist/index.d.ts"
+  }
 }
