@@ -1,4 +1,4 @@
-import { PathHelper } from '@sensenet/client-utils/dist/PathHelper'
+import { PathHelper } from '@sensenet/client-utils'
 import { Content } from '../index'
 import { ODataCollectionResponse } from '../Models/ODataCollectionResponse'
 import { ODataParams } from '../Models/ODataParams'

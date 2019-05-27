@@ -1,6 +1,13 @@
+import CircularProgress from '@material-ui/core/CircularProgress'
+import Fade from '@material-ui/core/Fade'
 import { Repository } from '@sensenet/client-core'
 import { SchemaStore } from '@sensenet/default-content-types'
-import { ListPickerComponent } from '@sensenet/pickers-react'
+import {
+  GenericContentWithIsParent,
+  ListPickerComponent,
+  SET_SELECTED_ITEM,
+  useListPicker,
+} from '@sensenet/pickers-react'
 import React from 'react'
 
 const testRepository = new Repository({
@@ -25,5 +32,42 @@ export const ExampleApp = () => {
     }
     return <p>{message}</p>
   }
-  return <ListPickerComponent renderError={renderError} repository={testRepository} />
+  const renderLoading = () => (
+    <Fade in={true} unmountOnExit={true}>
+      <CircularProgress />
+    </Fade>
+  )
+  return <ListPickerComponent renderError={renderError} renderLoading={renderLoading} repository={testRepository} />
+}
+
+export const ExampleAppWithHook = () => {
+  const { items, selectedItem, setSelectedItem, path, navigateTo, reload } = useListPicker<GenericContentWithIsParent>({
+    repository: testRepository,
+    stateReducer: (_state, action) => {
+      if (action.type === SET_SELECTED_ITEM && action.payload && action.payload.isParent) {
+        return { ...action.changes, selectedItem: undefined }
+      } else {
+        return action.changes
+      }
+    },
+  })
+  console.log({ selectedItem, path })
+
+  return (
+    <>
+      <button onClick={() => reload()}>Reload</button>
+      <ul>
+        {items &&
+          items.map(node => (
+            <li
+              style={{ color: selectedItem && node.Id === selectedItem.Id ? 'red' : 'inherit', cursor: 'pointer' }}
+              onClick={() => setSelectedItem(node)}
+              onDoubleClick={() => navigateTo(node)}
+              key={node.Id}>
+              {node.isParent ? '..' : node.DisplayName}
+            </li>
+          ))}
+      </ul>
+    </>
+  )
 }
