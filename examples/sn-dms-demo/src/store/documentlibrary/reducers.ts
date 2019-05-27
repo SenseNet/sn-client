@@ -5,6 +5,7 @@ import { Reducer } from 'redux'
 import {
   finishLoadingChildren,
   finishLoadingParent,
+  resetSearchValues,
   select,
   setActive,
   setAncestors,
@@ -191,6 +192,12 @@ export const documentLibrary: Reducer<DocumentLibraryState> = (state = defaultSt
         ...state.searchState,
         ...action.value,
       },
+    }
+  }
+  if (isFromAction(action, resetSearchValues)) {
+    return {
+      ...state,
+      searchState: { ...defaultState.searchState },
     }
   }
   return state
