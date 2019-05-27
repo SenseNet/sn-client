@@ -1,7 +1,7 @@
 export { BypassAuthentication } from './Authentication/BypassAuthentication'
 export { FormsAuthenticationService } from './Authentication/FormsAuthenticationService'
 export { Repository } from './Repository/Repository'
-export { Upload } from './Repository/Upload'
+export * from './Repository/Upload'
 export { AuthenticationService } from './Authentication/AuthenticationService'
 export { LoginState } from './Authentication/LoginState'
 export { ConstantContent } from './Repository/ConstantContent'
