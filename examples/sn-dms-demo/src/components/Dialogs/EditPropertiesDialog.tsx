@@ -94,7 +94,7 @@ class EditPropertiesDialog extends React.Component<
     return (
       <MediaQuery minDeviceWidth={700}>
         {matches => (
-          <div style={matches ? { width: 550 } : {}}>
+          <div data-cy="editProperties" style={matches ? { width: 550 } : {}}>
             <Typography variant="h5" gutterBottom={true}>
               {resources.EDIT_PROPERTIES}
             </Typography>

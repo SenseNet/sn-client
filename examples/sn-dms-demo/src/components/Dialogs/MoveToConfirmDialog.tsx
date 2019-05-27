@@ -72,7 +72,7 @@ class MoveToConfirmDialog extends React.Component<ReturnType<typeof mapStateToPr
     return (
       <MediaQuery minDeviceWidth={700}>
         {matches => (
-          <div>
+          <div data-cy="moveTo">
             <Typography variant="h5" gutterBottom={true}>
               {resources.MOVE}
             </Typography>
