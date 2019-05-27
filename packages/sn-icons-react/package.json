@@ -3,20 +3,13 @@
   "version": "1.2.9",
   "description": "A React component rendering icons for sensenet.",
   "main": "dist/index.js",
+  "typings": "./dist/index.d.ts",
   "scripts": {
-    "precommit": "npm run test",
-    "commit": "git-cz",
-    "test:jest": "jest",
-    "check-coverage": "istanbul check-coverage ",
-    "report-coverage": "cat ./coverage/lcov.info | codecov",
     "fix": "npm run fix:prettier && npm run fix:tslint",
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
     "fix:tslint": "tslint --fix --project .",
     "lint": "tslint --project .",
-    "build": "tsc -b",
-    "prepublishOnly": "npm run build",
-    "publish:development": "npm run build && npm t && npm run typedoc && npm publish --tag development",
-    "typedoc": "typedoc --mode modules --out documentation src --exclude **/index.ts --theme c:/Users/%USERNAME%/AppData/Roaming/npm/node_modules/@sensenet/typedoc-theme/sn-theme"
+    "build": "tsc -b"
   },
   "files": [
     "dist",
@@ -35,7 +28,7 @@
     "icons",
     "components"
   ],
-  "author": "SenseNet",
+  "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "license": "GPL-2.0",
   "bugs": {
     "url": "https://github.com/SenseNet/sn-icons-react/issues"
@@ -43,28 +36,16 @@
   "homepage": "https://sensenet.com",
   "dependencies": {
     "@material-ui/core": "^3.9.3",
-    "@material-ui/icons": "^3.0.2"
-  },
-  "devDependencies": {
-    "@types/enzyme": "^3.1.15",
-    "@types/enzyme-adapter-react-16": "^1.0.3",
-    "@types/jest": "^24.0.9",
-    "@types/node": "^11.10.4",
-    "@types/react": "^16.7.14",
-    "enzyme": "^3.8.0",
-    "ignore-styles": "^5.0.1",
-    "jest": "^24.1.0",
-    "prop-types": "^15.6.2",
+    "@material-ui/icons": "^3.0.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   },
+  "devDependencies": {
+    "@types/node": "^11.10.4",
+    "@types/react": "^16.7.14",
+    "prop-types": "^15.6.2"
+  },
   "publishConfig": {
     "access": "public"
-  },
-  "config": {
-    "commitizen": {
-      "path": "sensenet-kfi-cz-conventional-changelog"
-    }
-  },
-  "typings": "./dist/index.d.ts"
+  }
 }
