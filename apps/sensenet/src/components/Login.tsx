@@ -174,6 +174,7 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
             />
             <TextField
               margin="dense"
+              required={true}
               label={localization.repositoryLabel}
               helperText={localization.repositoryHelperText}
               fullWidth={true}
