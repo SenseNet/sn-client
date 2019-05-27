@@ -5,7 +5,7 @@
   "description": "UI components for building apps upon sensenet implemented in React",
   "main": "index.js",
   "scripts": {
-    "build-storybook": "build-storybook -c .storybook --quite",
+    "build-storybook": "build-storybook -c .storybook --quiet",
     "start": "start-storybook --static-dir assets",
     "fix": "npm run fix:prettier && npm run fix:tslint",
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
