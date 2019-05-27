@@ -25,6 +25,7 @@
     "lint-staged": "^8.1.5",
     "prettier": "^1.16.4",
     "rimraf": "^2.6.3",
+    "start-server-and-test": "^1.7.13",
     "ts-jest": "^24.0.2",
     "tslib": "^1.9.3",
     "tslint": "^5.16.0",
@@ -34,6 +35,9 @@
     "typescript": "3.4.2"
   },
   "scripts": {
+    "cy:run:dms": "cypress run --project ./examples/sn-dms-demo",
+    "start:dms:e2e": "yarn workspace sn-dms-demo start:e2e",
+    "test:dms:e2e": "start-server-and-test start:dms:e2e http-get://localhost:3000 cy:run:dms",
     "snapp": "yarn workspace @sensenet/sn-app",
     "storybook": "yarn workspace sn-react-component-docs",
     "dms": "yarn workspace sn-dms-demo",
@@ -46,7 +50,7 @@
     "test:coverage": "jest --coverage",
     "clean": "lerna clean",
     "fix": "lerna run fix --parallel",
-    "lint": "lerna run lint --parallel"
+    "lint": "lerna run lint"
   },
   "husky": {
     "hooks": {
