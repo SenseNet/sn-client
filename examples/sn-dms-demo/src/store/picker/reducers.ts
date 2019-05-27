@@ -1,7 +1,7 @@
 import { GenericContent } from '@sensenet/default-content-types'
 import { createContent, PromiseReturns } from '@sensenet/redux/dist/Actions'
 import { AnyAction, combineReducers, Reducer } from 'redux'
-import { loadPickerItems, loadPickerParent } from './actions'
+import { GenericContentWithIsParent } from '../../../../../packages/sn-pickers-react/dist'
 
 export const pickerIsOpened: Reducer<boolean> = (state = false, action: AnyAction) => {
   switch (action.type) {
@@ -40,9 +40,6 @@ export const pickerParent: Reducer<GenericContent | null> = (state = null, actio
   switch (action.type) {
     case 'SET_PICKER_PARENT':
       return action.content
-    case 'LOAD_PICKER_PARENT_SUCCESS':
-      const result = action.result as PromiseReturns<typeof loadPickerParent>
-      return result.d
     default:
       return state
   }
@@ -50,8 +47,6 @@ export const pickerParent: Reducer<GenericContent | null> = (state = null, actio
 
 export const pickerItems: Reducer<GenericContent[]> = (state = [], action: AnyAction) => {
   switch (action.type) {
-    case 'LOAD_PICKER_ITEMS_SUCCESS':
-      return (action.result as PromiseReturns<typeof loadPickerItems>).d.results
     case 'CREATE_CONTENT_SUCCESS':
       const newContent = (action.result as PromiseReturns<typeof createContent>).d
       return [...state, newContent]
@@ -60,7 +55,7 @@ export const pickerItems: Reducer<GenericContent[]> = (state = [], action: AnyAc
   }
 }
 
-export const pickerSelected: Reducer<GenericContent[]> = (state = [], action: AnyAction) => {
+export const pickerSelected: Reducer<GenericContentWithIsParent[]> = (state = [], action: AnyAction) => {
   switch (action.type) {
     case 'SELECT_PICKER_ITEM':
       return action.content ? [action.content] : []
@@ -84,9 +79,6 @@ export const closestWorkspace: Reducer<GenericContent | null> = (state = null, a
   switch (action.type) {
     case 'SET_PICKER_PARENT':
       return action.content.Workspace.Path
-    case 'LOAD_PICKER_PARENT_SUCCESS':
-      const result = action.result as PromiseReturns<typeof loadPickerParent>
-      return result && result.d.Workspace
     default:
       return state
   }
