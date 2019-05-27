@@ -29,7 +29,7 @@ export type Action<T> = SelectAction<T> | NavigateToAction<T>
  */
 export interface SelectAction<T> {
   type: typeof SET_SELECTED_ITEM
-  payload: T
+  payload?: T
 }
 
 /**

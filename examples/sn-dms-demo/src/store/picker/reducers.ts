@@ -1,6 +1,7 @@
 import { GenericContent } from '@sensenet/default-content-types'
 import { createContent, PromiseReturns } from '@sensenet/redux/dist/Actions'
 import { AnyAction, combineReducers, Reducer } from 'redux'
+import { GenericContentWithIsParent } from '../../../../../packages/sn-pickers-react/dist'
 
 export const pickerIsOpened: Reducer<boolean> = (state = false, action: AnyAction) => {
   switch (action.type) {
@@ -54,7 +55,7 @@ export const pickerItems: Reducer<GenericContent[]> = (state = [], action: AnyAc
   }
 }
 
-export const pickerSelected: Reducer<GenericContent[]> = (state = [], action: AnyAction) => {
+export const pickerSelected: Reducer<GenericContentWithIsParent[]> = (state = [], action: AnyAction) => {
   switch (action.type) {
     case 'SELECT_PICKER_ITEM':
       return action.content ? [action.content] : []
