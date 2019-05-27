@@ -73,7 +73,7 @@ class CopyToConfirmDialog extends React.Component<ReturnType<typeof mapStateToPr
     return (
       <MediaQuery minDeviceWidth={700}>
         {matches => (
-          <div>
+          <div data-cy="copyTo">
             <Typography variant="h5" gutterBottom={true}>
               {resources.COPY}
             </Typography>
