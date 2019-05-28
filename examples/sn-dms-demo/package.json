@@ -21,10 +21,14 @@
     "url": "https://github.com/SenseNet/sn-client/issues"
   },
   "homepage": "https://sensenet.com",
-  "config": {
-    "commitizen": {
-      "path": "sensenet-kfi-cz-conventional-changelog"
-    }
+  "scripts": {
+    "start": "webpack-dev-server --port 3000 --display-error-details",
+    "start:e2e": "cross-env NODE_ENV=test webpack-dev-server --port 3000",
+    "build:webpack": "rimraf build && webpack",
+    "fix": "npm run fix:prettier && npm run fix:tslint",
+    "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
+    "fix:tslint": "tslint --fix --project .",
+    "lint": "tslint --project ."
   },
   "dependencies": {
     "@material-ui/core": "^3.8.2",
@@ -79,10 +83,7 @@
   "devDependencies": {
     "@cypress/webpack-preprocessor": "^4.0.3",
     "@types/chance": "^1.0.2",
-    "@types/enzyme": "^3.1.15",
-    "@types/enzyme-adapter-react-16": "^1.0.3",
     "@types/jest": "^24.0.9",
-    "@types/lodash": "^4.14.122",
     "@types/lodash.groupby": "^4.6.6",
     "@types/node": "^11.10.4",
     "@types/react": "^16.7.14",
@@ -100,15 +101,12 @@
     "copy-webpack-plugin": "^5.0.0",
     "cross-env": "^5.2.0",
     "cypress": "^3.3.1",
-    "enzyme": "^3.6.0",
-    "enzyme-adapter-react-16": "^1.5.0",
     "path-to-regexp": "3.0.0",
     "raw-loader": "^2.0.0",
     "redux-mock-store": "^1.5.3",
     "source-map-loader": "^0.2.4",
     "style-loader": "^0.23.1",
     "svg-url-loader": "^2.3.2",
-    "ts-jest": "^24.0.0",
     "tslint-loader": "^3.6.0",
     "uglify-es": "^3.3.9",
     "uglifyjs-webpack-plugin": "^2.0.1",
@@ -117,17 +115,5 @@
     "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10"
-  },
-  "scripts": {
-    "start": "webpack-dev-server --port 3000 --display-error-details",
-    "start:e2e": "cross-env NODE_ENV=test webpack-dev-server --port 3000",
-    "build:webpack": "rimraf build && webpack",
-    "test:jest": "jest",
-    "fix": "npm run fix:prettier && npm run fix:tslint",
-    "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
-    "fix:tslint": "tslint --fix --project .",
-    "lint": "tslint --project .",
-    "commit": "git-cz",
-    "report-coverage": "cat ./coverage/lcov.info | codecov"
   }
 }
