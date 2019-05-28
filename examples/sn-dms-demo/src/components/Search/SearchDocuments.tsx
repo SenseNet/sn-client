@@ -330,35 +330,41 @@ class SearchDocuments extends React.Component<
                                 fieldName="ModificationDate"
                                 presets={[
                                   { text: '-', value: new Query(a => a) },
-                                  { text: 'Today', value: new Query(a => a.term('CreationDate:>@@Today@@')) },
+                                  { text: 'Today', value: new Query(a => a.term('ModificationDate:>@@Today@@')) },
                                   {
                                     text: 'Yesterday',
                                     value: new Query(a =>
-                                      a.term('CreationDate:>@@Yesterday@@').and.term('CreationDate:<@@Today@@'),
+                                      a.term('ModificationDate:>@@Yesterday@@').and.term('ModificationDate:<@@Today@@'),
                                     ),
                                   },
                                   {
                                     text: 'Last 7 days',
                                     value: new Query(a =>
-                                      a.term('CreationDate:>@@Today-7days@@').and.term('CreationDate:<@@Today@@'),
+                                      a.term('ModificationDate:>@@Today-7days@@').and.term('CreationDate:<@@Today@@'),
                                     ),
                                   },
                                   {
                                     text: 'Last 30 days',
                                     value: new Query(a =>
-                                      a.term('CreationDate:>@@Today-30days@@').and.term('CreationDate:<@@Today@@'),
+                                      a
+                                        .term('ModificationDate:>@@Today-30days@@')
+                                        .and.term('ModificationDate:<@@Today@@'),
                                     ),
                                   },
                                   {
                                     text: 'Last 90 days',
                                     value: new Query(a =>
-                                      a.term('CreationDate:>@@Today-90days@@').and.term('CreationDate:<@@Today@@'),
+                                      a
+                                        .term('ModificationDate:>@@Today-90days@@')
+                                        .and.term('ModificationDate:<@@Today@@'),
                                     ),
                                   },
                                   {
                                     text: 'Last 365 days',
                                     value: new Query(a =>
-                                      a.term('CreationDate:>@@Today-365days@@').and.term('CreationDate:<@@Today@@'),
+                                      a
+                                        .term('ModificationDate:>@@Today-365days@@')
+                                        .and.term('ModificationDate:<@@Today@@'),
                                     ),
                                   },
                                 ]}
