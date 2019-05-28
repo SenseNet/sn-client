@@ -119,7 +119,11 @@ export class QueryExpression<TReturns> extends QuerySegment<TReturns> {
    * @returns { QueryOperator<TReturns> } The Next query operator (fluent)
    */
 
-  public notEqualsNested<K extends keyof TReturns>(fieldName: K, nestedFieldName: K | '_Text', value: TReturns[K]) {
+  public notEqualsNested<K extends keyof TReturns>(
+    fieldName: K | '_Text',
+    nestedFieldName: K | '_Text',
+    value: TReturns[K],
+  ) {
     this.stringValue = `NOT(${fieldName}:{{${nestedFieldName}:${value.toString()}}})`
     this.segmentType = 'notEqualsNested'
     return this.finialize()
