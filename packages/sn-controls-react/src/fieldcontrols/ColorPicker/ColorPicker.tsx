@@ -1,6 +1,7 @@
 /**
  * @module FieldControls
  */
+import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import Icon from '@material-ui/core/Icon'
@@ -66,7 +67,8 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
     }
 
     this.handleChange = this.handleChange.bind(this)
-    this.togglePicker = this.togglePicker.bind(this)
+    this.openPicker = this.openPicker.bind(this)
+    this.closePicker = this.closePicker.bind(this)
   }
   /**
    * convert incoming default value string to proper format
@@ -91,12 +93,15 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
     this.props.onChange(this.props.name, color.hex)
     this.setState({ value: color.hex })
   }
-  public togglePicker() {
-    if (!this.props.readOnly) {
-      this.setState({
-        pickerIsOpen: !this.state.pickerIsOpen,
-      })
-    }
+  public openPicker() {
+    this.setState({
+      pickerIsOpen: true,
+    })
+  }
+  public closePicker() {
+    this.setState({
+      pickerIsOpen: false,
+    })
   }
   /**
    * render
@@ -121,8 +126,7 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
               disabled={this.props.readOnly}
               value={this.state.value}
               error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
-              onClick={this.togglePicker}
-              onBlur={this.togglePicker}
+              onClick={this.openPicker}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -133,19 +137,21 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
                 ),
               }}
             />
-            <div
-              style={
-                this.state.pickerIsOpen
-                  ? { ...{ display: 'block' }, ...(style.pickerContainer as any) }
-                  : { ...{ display: 'none' }, ...(style.pickerContainer as any) }
-              }>
-              <SketchPicker
-                color={this.state.value}
-                onChangeComplete={this.handleChange}
-                onSwatchHover={this.handleChange}
-                presetColors={this.props.palette ? this.props.palette : []}
-              />
-            </div>
+            <ClickAwayListener onClickAway={this.closePicker}>
+              <div
+                style={
+                  this.state.pickerIsOpen
+                    ? { ...{ display: 'block' }, ...(style.pickerContainer as any) }
+                    : { ...{ display: 'none' }, ...(style.pickerContainer as any) }
+                }>
+                <SketchPicker
+                  color={this.state.value}
+                  onChangeComplete={this.handleChange}
+                  onSwatchHover={this.handleChange}
+                  presetColors={this.props.palette ? this.props.palette : []}
+                />
+              </div>
+            </ClickAwayListener>
             <FormHelperText>{this.props['data-hintText']}</FormHelperText>
             <FormHelperText>{this.props['data-errorText']}</FormHelperText>
           </FormControl>
@@ -167,8 +173,7 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
               disabled={this.props.readOnly}
               value={this.state.value}
               error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
-              onClick={this.togglePicker}
-              onBlur={this.togglePicker}
+              onClick={this.openPicker}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -179,19 +184,22 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
                 ),
               }}
             />
-            <div
-              style={
-                this.state.pickerIsOpen
-                  ? { ...{ display: 'block' }, ...(style.pickerContainer as any) }
-                  : { ...{ display: 'none' }, ...(style.pickerContainer as any) }
-              }>
-              <SketchPicker
-                color={this.state.value}
-                onChangeComplete={this.handleChange}
-                onSwatchHover={this.handleChange}
-                presetColors={this.props.palette ? this.props.palette : []}
-              />
-            </div>
+
+            <ClickAwayListener onClickAway={this.closePicker}>
+              <div
+                style={
+                  this.state.pickerIsOpen
+                    ? { ...{ display: 'block' }, ...(style.pickerContainer as any) }
+                    : { ...{ display: 'none' }, ...(style.pickerContainer as any) }
+                }>
+                <SketchPicker
+                  color={this.state.value}
+                  onChangeComplete={this.handleChange}
+                  onSwatchHover={this.handleChange}
+                  presetColors={this.props.palette ? this.props.palette : []}
+                />
+              </div>
+            </ClickAwayListener>
             <FormHelperText>{this.props['data-hintText']}</FormHelperText>
             <FormHelperText>{this.props['data-errorText']}</FormHelperText>
           </FormControl>
