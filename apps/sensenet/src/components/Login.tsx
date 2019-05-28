@@ -45,6 +45,7 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
 
   useEffect(() => {
     setUrl(repo.configuration.repositoryUrl)
+    existingRepo && existingRepo.loginName && setUserName(existingRepo.loginName)
   }, [repo.configuration.repositoryUrl])
 
   const handleSubmit = async (ev: React.FormEvent) => {
@@ -156,7 +157,7 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
               label={localization.userNameLabel}
               helperText={localization.userNameHelperText}
               fullWidth={true}
-              defaultValue={userName}
+              value={userName}
               onChange={ev => {
                 setUserName(ev.target.value)
               }}
