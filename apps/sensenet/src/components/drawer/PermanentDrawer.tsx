@@ -13,14 +13,8 @@ import { PathHelper } from '@sensenet/client-utils'
 import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import { Link, matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
-import {
-  LocalizationContext,
-  PersonalSettingsContext,
-  RepositoryContext,
-  ResponsivePersonalSetttings,
-  SessionContext,
-  ThemeContext,
-} from '../../context'
+import { PersonalSettingsContext, ResponsivePersonalSetttings, SessionContext } from '../../context'
+import { useLocalization, useRepository, useTheme } from '../../hooks'
 import { LogoutButton } from '../LogoutButton'
 import { UserAvatar } from '../UserAvatar'
 import { getAllowedDrawerItems } from './Items'
@@ -28,13 +22,13 @@ import { getAllowedDrawerItems } from './Items'
 const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
   const settings = useContext(ResponsivePersonalSetttings)
   const personalSettings = useContext(PersonalSettingsContext)
-  const theme = useContext(ThemeContext)
+  const theme = useTheme()
   const session = useContext(SessionContext)
-  const repo = useContext(RepositoryContext)
+  const repo = useRepository()
 
   const [opened, setOpened] = useState(settings.drawer.type === 'permanent')
   const [items, setItems] = useState(getAllowedDrawerItems(session.groups))
-  const localization = useContext(LocalizationContext).values.drawer
+  const localization = useLocalization().drawer
 
   const [currentRepoEntry, setCurrentRepoEntry] = useState(
     personalSettings.repositories.find(r => r.url === PathHelper.trimSlashes(repo.configuration.repositoryUrl)),

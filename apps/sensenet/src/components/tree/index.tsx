@@ -8,7 +8,8 @@ import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Created } from '@sensenet/repository-events'
 import React, { useContext, useEffect, useState } from 'react'
-import { CurrentAncestorsContext, CurrentContentContext, InjectorContext, RepositoryContext } from '../../context'
+import { CurrentAncestorsContext, CurrentContentContext } from '../../context'
+import { useInjector, useRepository } from '../../hooks'
 import { ContentContextMenu } from '../ContentContextMenu'
 import { DropFileArea } from '../DropFileArea'
 import { Icon } from '../Icon'
@@ -27,8 +28,8 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
   const [opened, setOpened] = useState<number[]>([])
   const [reloadToken, setReloadToken] = useState(0)
   const [ancestorPaths, setAncestorPaths] = useState(ancestors.map(a => a.Path))
-  const injector = useContext(InjectorContext)
-  const repo = useContext(RepositoryContext)
+  const injector = useInjector()
+  const repo = useRepository()
   const eventHub = injector.getEventHub(repo.configuration.repositoryUrl)
 
   const [contextMenuItem, setContextMenuItem] = useState<GenericContent | null>(null)

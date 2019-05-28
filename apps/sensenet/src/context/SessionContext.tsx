@@ -2,10 +2,9 @@ import { ConstantContent, LoginState } from '@sensenet/client-core'
 import { isExtendedError } from '@sensenet/client-core/dist/Repository/Repository'
 import { debounce } from '@sensenet/client-utils'
 import { Group, User } from '@sensenet/default-content-types'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
-import { LoggerContext } from './LoggerContext'
-import { RepositoryContext } from './RepositoryContext'
+import { useLogger, useRepository } from '../hooks'
 
 export const SessionContext = React.createContext({
   state: LoginState.Unknown,
@@ -15,8 +14,8 @@ export const SessionContext = React.createContext({
 })
 
 export const SessionContextProvider: React.FunctionComponent = props => {
-  const repo = useContext(RepositoryContext)
-  const logger = useContext(LoggerContext).withScope('SessionContext')
+  const repo = useRepository()
+  const logger = useLogger('SessionContext')
   const [loadLock] = useState(new Semaphore(1))
   const [state, setState] = useState(LoginState.Unknown)
   const [debouncedState, setDebouncedState] = useState(LoginState.Unknown)

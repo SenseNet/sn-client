@@ -10,11 +10,11 @@ import {
   CurrentChildrenContext,
   CurrentContentContext,
   LoadSettingsContext,
-  RepositoryContext,
   ResponsiveContext,
   ResponsivePersonalSetttings,
   ResponsivePlatforms,
 } from '../context'
+import { useRepository } from '../hooks'
 import { ContentBreadcrumbs } from './ContentBreadcrumbs'
 import { ContentContextMenu } from './ContentContextMenu'
 import { DeleteContentDialog } from './DeleteContentDialog'
@@ -75,7 +75,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
   const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
   const [showDelete, setShowDelete] = useState(false)
-  const repo = useContext(RepositoryContext)
+  const repo = useRepository()
   const loadSettings = useContext(LoadSettingsContext)
 
   const [currentOrder, setCurrentOrder] = useState<keyof GenericContent>('DisplayName')

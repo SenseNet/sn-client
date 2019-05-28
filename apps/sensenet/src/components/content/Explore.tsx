@@ -6,10 +6,9 @@ import {
   CurrentAncestorsProvider,
   CurrentChildrenProvider,
   CurrentContentProvider,
-  InjectorContext,
   LoadSettingsContextProvider,
 } from '../../context'
-import { SelectionService } from '../../services/SelectionService'
+import { useSelectionService } from '../../hooks'
 import { AddButton } from '../AddButton'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { CollectionComponent } from '../ContentListPanel'
@@ -20,7 +19,7 @@ export const ExploreComponent: React.FunctionComponent<RouteComponentProps<{ fol
   const getLeftFromPath = (params: CommanderRouteParams) =>
     parseInt(params.folderId as string, 10) || ConstantContent.PORTAL_ROOT.Id
 
-  const selectionService = useContext(InjectorContext).getInstance(SelectionService)
+  const selectionService = useSelectionService()
 
   const ctx = useContext(ContentRoutingContext)
   const [leftParentId, setLeftParentId] = useState(getLeftFromPath(props.match.params))

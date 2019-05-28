@@ -15,14 +15,8 @@ import Autosuggest from 'react-autosuggest'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { Link, NavLink } from 'react-router-dom'
 import logo from '../assets/sensenet-icon-32.png'
-import {
-  InjectorContext,
-  LocalizationContext,
-  PersonalSettingsContext,
-  RepositoryContext,
-  ResponsiveContext,
-  ThemeContext,
-} from '../context'
+import { PersonalSettingsContext, ResponsiveContext } from '../context'
+import { useInjector, useLocalization, useRepository, useTheme } from '../hooks'
 import { RepositoryManager } from '../services/RepositoryManager'
 import { getMatchParts } from './command-palette/CommandPaletteSuggestion'
 import { UserAvatar } from './UserAvatar'
@@ -31,16 +25,16 @@ export const RepositorySelectorComponent: React.FunctionComponent<
   RouteComponentProps & { alwaysOpened?: boolean }
 > = props => {
   const settings = useContext(PersonalSettingsContext)
-  const repo = useContext(RepositoryContext)
-  const theme = useContext(ThemeContext)
+  const repo = useRepository()
+  const theme = useTheme()
   const device = useContext(ResponsiveContext)
   const [isActive, setIsActive] = useState(props.alwaysOpened || false)
   const [lastRepositoryName, setLastRepositoryName] = useState('')
   const [inputValue, setInputValue] = useState(settings.lastRepository)
   const [filteredSuggestions, setFilteredSuggestions] = useState<Array<typeof settings.repositories[0]>>([])
-  const repoManager = useContext(InjectorContext).getInstance(RepositoryManager)
+  const repoManager = useInjector().getInstance(RepositoryManager)
 
-  const localization = useContext(LocalizationContext).values.repositorySelector
+  const localization = useLocalization().repositorySelector
 
   useEffect(() => {
     const lastRepo = settings.repositories.find(r => r.url === repo.configuration.repositoryUrl)

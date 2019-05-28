@@ -8,21 +8,15 @@ import { FormsAuthenticationService } from '@sensenet/client-core'
 import { sleepAsync } from '@sensenet/client-utils'
 import React, { useContext, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import {
-  InjectorContext,
-  LocalizationContext,
-  PersonalSettingsContext,
-  RepositoryContext,
-  SessionContext,
-  ThemeContext,
-} from '../context'
+import { PersonalSettingsContext, SessionContext, ThemeContext } from '../context'
+import { useInjector, useLocalization, useRepository } from '../hooks'
 import { PersonalSettings } from '../services/PersonalSettings'
 import { UserAvatar } from './UserAvatar'
 
 export const Login: React.FunctionComponent<RouteComponentProps> = props => {
-  const injector = useContext(InjectorContext)
-  const repo = useContext(RepositoryContext)
-  const theme = useContext(ThemeContext)
+  const injector = useInjector()
+  const repo = useRepository()
+  const theme = useTheme()
   const personalSettings = useContext(PersonalSettingsContext)
   const session = useContext(SessionContext)
   const settingsManager = injector.getInstance(PersonalSettings)
@@ -41,7 +35,7 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
 
   const [error, setError] = useState<string | undefined>()
 
-  const localization = useContext(LocalizationContext).values.login
+  const localization = useLocalization().login
 
   const handleSubmit = async (ev: React.FormEvent) => {
     ev.preventDefault()

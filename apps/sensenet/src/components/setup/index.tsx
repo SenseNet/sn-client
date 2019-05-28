@@ -11,14 +11,15 @@ import { Settings } from '@sensenet/default-content-types'
 import { Query } from '@sensenet/query'
 import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ContentRoutingContext, CurrentContentContext, LocalizationContext, RepositoryContext } from '../../context'
+import { ContentRoutingContext, CurrentContentContext } from '../../context'
+import { useLocalization, useRepository } from '../../hooks'
 import { ContentContextMenu } from '../ContentContextMenu'
 
 const WellKnownContentCard: React.FunctionComponent<{
   settings: Settings
   onContextMenu: (ev: React.MouseEvent) => void
 }> = ({ settings, onContextMenu }) => {
-  const localization = useContext(LocalizationContext).values.settings
+  const localization = useLocalization().settings
   const ctx = useContext(ContentRoutingContext)
 
   return (
@@ -52,8 +53,8 @@ const WellKnownContentCard: React.FunctionComponent<{
 }
 
 const Setup: React.StatelessComponent = () => {
-  const repo = useContext(RepositoryContext)
-  const localization = useContext(LocalizationContext).values.settings
+  const repo = useRepository()
+  const localization = useLocalization().settings
   const ctx = useContext(ContentRoutingContext)
 
   const [wellKnownSettings, setWellKnownSettings] = useState<Settings[]>([])

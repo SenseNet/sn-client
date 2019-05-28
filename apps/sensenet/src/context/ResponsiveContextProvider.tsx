@@ -2,9 +2,9 @@ import { deepMerge } from '@sensenet/client-utils'
 import React, { useContext } from 'react'
 import MediaQuery from 'react-responsive'
 import { DeepPartial } from 'redux'
+import { useTheme } from '../hooks'
 import { defaultSettings } from '../services/PersonalSettings'
 import { PersonalSettingsContext } from './PersonalSettingsContext'
-import { ThemeContext } from './ThemeContext'
 
 export type ResponsivePlatforms = 'desktop' | 'tablet' | 'mobile'
 
@@ -15,7 +15,7 @@ export const ResponsiveContext = React.createContext<ResponsivePlatforms>('deskt
 export const ResponsivePersonalSetttings = React.createContext(defaultSettings.default)
 
 export const ResponsiveContextProvider: React.FunctionComponent = props => {
-  const theme = useContext(ThemeContext)
+  const theme = useTheme()
   const personalSettings = useContext(PersonalSettingsContext)
   return (
     <div>

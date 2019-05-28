@@ -4,17 +4,16 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import { isExtendedError } from '@sensenet/client-core/dist/Repository/Repository'
 import { EditView } from '@sensenet/controls-react'
 import { GenericContent } from '@sensenet/default-content-types'
-import React, { useContext } from 'react'
-import { LocalizationContext, RepositoryContext } from '../context'
-import { LoggerContext } from '../context/LoggerContext'
+import React from 'react'
+import { useLocalization, useLogger, useRepository } from '../hooks'
 
 export const EditPropertiesDialog: React.FunctionComponent<{
   dialogProps: DialogProps
   content: GenericContent
 }> = props => {
-  const repo = useContext(RepositoryContext)
-  const localization = useContext(LocalizationContext).values.editPropertiesDialog
-  const logger = useContext(LoggerContext).withScope('EditPropertiesDialog')
+  const repo = useRepository()
+  const localization = useLocalization().editPropertiesDialog
+  const logger = useLogger('EditPropertiesDialog')
 
   return (
     <Dialog {...props.dialogProps}>

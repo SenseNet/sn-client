@@ -3,21 +3,20 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { Created } from '@sensenet/repository-events'
 import React, { useContext, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
+import { useInjector, useRepository } from '../hooks'
 import { UploadTracker } from '../services/UploadTracker'
 import { CurrentContentContext } from './CurrentContent'
-import { InjectorContext } from './InjectorContext'
 import { LoadSettingsContext } from './LoadSettingsContext'
-import { RepositoryContext } from './RepositoryContext'
 export const CurrentChildrenContext = React.createContext<GenericContent[]>([])
 
 export const CurrentChildrenProvider: React.FunctionComponent = props => {
   const currentContent = useContext(CurrentContentContext)
-  const injector = useContext(InjectorContext)
+  const injector = useInjector()
   const [children, setChildren] = useState<GenericContent[]>([])
   const [loadLock] = useState(new Semaphore(1))
 
   const [reloadToken, setReloadToken] = useState(1)
-  const repo = useContext(RepositoryContext)
+  const repo = useRepository()
   const eventHub = injector.getEventHub(repo.configuration.repositoryUrl)
   const uploadTracker = injector.getInstance(UploadTracker)
   const loadSettings = useContext(LoadSettingsContext)

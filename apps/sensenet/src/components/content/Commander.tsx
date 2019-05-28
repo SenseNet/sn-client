@@ -8,11 +8,9 @@ import {
   CurrentChildrenProvider,
   CurrentContentContext,
   CurrentContentProvider,
-  InjectorContext,
   LoadSettingsContextProvider,
-  RepositoryContext,
 } from '../../context'
-import { SelectionService } from '../../services/SelectionService'
+import { useRepository, useSelectionService } from '../../hooks'
 import { AddButton } from '../AddButton'
 import { AddDialog } from '../AddDialog'
 import { CollectionComponent } from '../ContentListPanel'
@@ -25,9 +23,9 @@ export interface CommanderRouteParams {
 
 export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRouteParams>> = props => {
   const ctx = useContext(ContentRoutingContext)
-  const repo = useContext(RepositoryContext)
+  const repo = useRepository()
 
-  const selectionService = useContext(InjectorContext).getInstance(SelectionService)
+  const selectionService = useSelectionService()
 
   const getLeftFromPath = (params: CommanderRouteParams) =>
     parseInt(params.folderId as string, 10) || ConstantContent.PORTAL_ROOT.Id

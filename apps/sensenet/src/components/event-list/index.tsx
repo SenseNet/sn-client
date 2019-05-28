@@ -2,10 +2,10 @@ import { ILeveledLogEntry } from '@furystack/logging'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import KeyboardBackspace from '@material-ui/icons/KeyboardBackspace'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
-import { InjectorContext, LocalizationContext, ThemeContext } from '../../context'
+import { useInjector, useLocalization, useTheme } from '../../hooks'
 import { EventService } from '../../services/EventService'
 import { Icon } from '../Icon'
 import { EventDetails } from './details'
@@ -14,9 +14,9 @@ import { FilterContextProvider } from './filter-context'
 import { List } from './list'
 
 const EventList: React.FunctionComponent<RouteComponentProps<{ eventGuid?: string }>> = props => {
-  const theme = useContext(ThemeContext)
-  const eventService = useContext(InjectorContext).getInstance(EventService)
-  const localization = useContext(LocalizationContext).values.eventList.details
+  const theme = useTheme()
+  const eventService = useInjector().getInstance(EventService)
+  const localization = useLocalization().eventList.details
   let currentEvent: ILeveledLogEntry<any> | undefined
 
   if (props.match.params.eventGuid) {

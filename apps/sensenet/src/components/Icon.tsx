@@ -20,8 +20,8 @@ import WebAssetTwoTone from '@material-ui/icons/WebAssetTwoTone'
 import { Repository } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { File as SnFile, GenericContent, Schema, User } from '@sensenet/default-content-types'
-import React, { useContext } from 'react'
-import { InjectorContext, RepositoryContext } from '../context'
+import React from 'react'
+import { useInjector, useRepository } from '../hooks'
 import { EventLogEntry } from '../services/EventService'
 import { isContentFromType } from '../utils/isContentFromType'
 import { UserAvatar } from './UserAvatar'
@@ -160,8 +160,8 @@ export const IconComponent: React.FunctionComponent<{
   style?: React.CSSProperties
   repository?: Repository
 }> = props => {
-  const injector = useContext(InjectorContext)
-  const repo = props.repository || useContext(RepositoryContext)
+  const injector = useInjector()
+  const repo = props.repository || useRepository()
 
   const options: IconOptions = { style: props.style, injector, repo }
   const resolvers = [

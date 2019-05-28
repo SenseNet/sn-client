@@ -5,14 +5,8 @@ import { Uri } from 'monaco-editor'
 import React, { useContext, useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
 import { Prompt } from 'react-router'
-import {
-  ContentRoutingContext,
-  LocalizationContext,
-  RepositoryContext,
-  ResponsiveContext,
-  ThemeContext,
-} from '../../context'
-import { LoggerContext } from '../../context/LoggerContext'
+import { ContentRoutingContext, ResponsiveContext } from '../../context'
+import { useLocalization, useLogger, useRepository, useTheme } from '../../hooks'
 import { isContentFromType } from '../../utils/isContentFromType'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 
@@ -35,19 +29,19 @@ export interface TextEditorProps {
 }
 
 export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
-  const theme = useContext(ThemeContext)
+  const theme = useTheme()
   const platform = useContext(ResponsiveContext)
-  const repo = useContext(RepositoryContext)
+  const repo = useRepository()
 
   const ctx = useContext(ContentRoutingContext)
 
   const [textValue, setTextValue] = useState('')
   const [savedTextValue, setSavedTextValue] = useState('')
   const [language, setLanguage] = useState(ctx.getMonacoLanguage(props.content))
-  const localization = useContext(LocalizationContext).values.textEditor
+  const localization = useLocalization().textEditor
   const [uri, setUri] = useState<any>(getMonacoModelUri(props.content))
   const [hasChanges, setHasChanges] = useState(false)
-  const logger = useContext(LoggerContext).withScope('TextEditor')
+  const logger = useLogger('TextEditor')
 
   const [error, setError] = useState<Error | undefined>()
 

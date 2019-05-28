@@ -1,9 +1,8 @@
 import { ConstantContent } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
-import { InjectorContext } from './InjectorContext'
-import { RepositoryContext } from './RepositoryContext'
+import { useInjector, useRepository } from '../hooks'
 
 export const CurrentContentContext = React.createContext<GenericContent>(ConstantContent.PORTAL_ROOT)
 export const CurrentContentProvider: React.FunctionComponent<{
@@ -12,8 +11,8 @@ export const CurrentContentProvider: React.FunctionComponent<{
 }> = props => {
   const [loadLock] = useState(new Semaphore(1))
   const [content, setContent] = useState<GenericContent>(ConstantContent.PORTAL_ROOT)
-  const repo = useContext(RepositoryContext)
-  const injector = useContext(InjectorContext)
+  const repo = useRepository()
+  const injector = useInjector()
   const [reloadToken, setReloadToken] = useState(1)
   const reload = () => setReloadToken(Math.random())
 

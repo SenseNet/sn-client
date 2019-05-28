@@ -20,20 +20,18 @@ import {
   CurrentChildrenContext,
   CurrentContentContext,
   LoadSettingsContext,
-  LocalizationContext,
-  RepositoryContext,
   ResponsivePersonalSetttings,
 } from '../../context'
-import { LoggerContext } from '../../context/LoggerContext'
+import { useLocalization, useLogger, useRepository } from '../../hooks'
 import { CollectionComponent } from '../ContentListPanel'
 
 const loadCount = 20
 
 const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> = props => {
-  const repo = useContext(RepositoryContext)
+  const repo = useRepository()
   const ctx = useContext(ContentRoutingContext)
 
-  const localization = useContext(LocalizationContext).values.search
+  const localization = useLocalization().search
   const [contentQuery, setContentQuery] = useState(decodeURIComponent(props.match.params.query || ''))
   const [reloadToken, setReloadToken] = useState(Math.random())
   const [scrollToken, setScrollToken] = useState(Math.random())
@@ -42,7 +40,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
 
   const [requestReload] = useState(() => debounce(() => setReloadToken(Math.random()), 250))
 
-  const logger = useContext(LoggerContext).withScope('Search')
+  const logger = useLogger('Search')
 
   const [requestScroll] = useState(() =>
     debounce((div: HTMLDivElement, total: number, loaded: number, update: (token: number) => void) => {

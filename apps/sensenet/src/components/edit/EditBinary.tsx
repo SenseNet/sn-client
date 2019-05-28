@@ -1,13 +1,13 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { CurrentAncestorsProvider, CurrentContentContext, CurrentContentProvider, InjectorContext } from '../../context'
-import { SelectionService } from '../../services/SelectionService'
+import { CurrentAncestorsProvider, CurrentContentContext, CurrentContentProvider } from '../../context'
+import { useSelectionService } from '../../hooks'
 import { FullScreenLoader } from '../FullScreenLoader'
 import { TextEditor } from './TextEditor'
 
 const Editor: React.FunctionComponent<RouteComponentProps<{ contentId?: string }>> = props => {
   const contentId = parseInt(props.match.params.contentId as string, 10)
-  const selectionService = useContext(InjectorContext).getInstance(SelectionService)
+  const selectionService = useSelectionService()
 
   return (
     <div

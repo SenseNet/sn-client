@@ -5,7 +5,8 @@ import Drawer from '@material-ui/core/Drawer'
 import Typography from '@material-ui/core/Typography'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useContext } from 'react'
-import { LocalizationContext, ResponsiveContext } from '../context'
+import { ResponsiveContext } from '../context'
+import { useLocalization } from '../hooks'
 
 export const ContentInfoDialog: React.FunctionComponent<{
   dialogProps: DialogProps
@@ -14,7 +15,7 @@ export const ContentInfoDialog: React.FunctionComponent<{
   const device = useContext(ResponsiveContext)
   const itemStyle: React.CSSProperties = { padding: '0.3em' }
 
-  const localization = useContext(LocalizationContext).values.contentInfoDialog
+  const localization = useLocalization().contentInfoDialog
 
   const dialogContent = (
     <>

@@ -13,13 +13,14 @@ import Clear from '@material-ui/icons/Clear'
 import SendTwoTone from '@material-ui/icons/SendTwoTone'
 import { sleepAsync } from '@sensenet/client-utils'
 import React, { useContext, useEffect, useState } from 'react'
-import { InjectorContext, LocalizationContext, PersonalSettingsContext } from '../context'
+import { PersonalSettingsContext } from '../context'
+import { useInjector, useLocalization } from '../hooks'
 import { EventService } from '../services/EventService'
 
 export const ErrorReport: React.FunctionComponent<{ dismiss?: () => void; error: Error }> = props => {
-  const localization = useContext(LocalizationContext).values.errorReport
+  const localization = useLocalization().errorReport
   const personalSettings = useContext(PersonalSettingsContext)
-  const evtService = useContext(InjectorContext).getInstance(EventService)
+  const evtService = useInjector().getInstance(EventService)
 
   const [description, setDescription] = useState('')
   const [sendLog, setSendLog] = useState(personalSettings.sendLogWithCrashReports)
