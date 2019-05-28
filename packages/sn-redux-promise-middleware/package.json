@@ -4,17 +4,11 @@
   "description": "Redux middleware for async sensenet functions",
   "main": "dist/index.js",
   "scripts": {
-    "precommit": "npm run test",
-    "commit": "git-cz",
-    "test:jest": "jest",
     "fix": "npm run fix:prettier && npm run fix:tslint",
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
     "fix:tslint": "tslint --fix --project .",
     "lint": "tslint --project .",
-    "build": "tsc -b",
-    "prepublishOnly": "npm run build",
-    "publish:development": "npm run build && npm t && npm run typedoc && npm publish --tag development",
-    "typedoc": "typedoc --mode file --out documentation src --exclude **/index.ts --theme c:/Users/%USERNAME%/AppData/Roaming/npm/node_modules/@sensenet/typedoc-theme/sn-theme"
+    "build": "tsc -b"
   },
   "files": [
     "dist",
@@ -41,14 +35,8 @@
     "url": "https://github.com/SenseNet/sn-client/issues"
   },
   "homepage": "https://sensenet.com",
-  "config": {
-    "commitizen": {
-      "path": "sensenet-kfi-cz-conventional-changelog"
-    }
-  },
   "typings": "./dist/index.d.ts",
   "devDependencies": {
-    "@types/jest": "^24.0.9",
     "redux": "^4.0.1"
   }
 }

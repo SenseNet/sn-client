@@ -297,7 +297,6 @@ class DashboardComponent extends React.Component<
                           </Switch>
                         )}
                       />
-
                     </Switch>
                   </div>
                 )}

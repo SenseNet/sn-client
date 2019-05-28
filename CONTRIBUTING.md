@@ -20,21 +20,35 @@ If you run into trouble here, make sure your node, npm, and **_yarn_** are on th
 1.  `git clone https://github.com/SenseNet/sn-client.git` _bonus_: use your own fork for this step
 2.  `cd sn-client`
 3.  `yarn`
-4.  `yarn build` this will run the build script in every package
-5.  `yarn test`
+4.  `yarn build` to compile all the typescript packages
+5.  `yarn test` to run unit tests
 
-#### Bootstrapping everything
+### Running package script
 
-_This method is slow_
-
-1.  `yarn`
-2.  Have a beer 🍺
-3.  `yarn build` (to verify everything worked)
-
-#### Running package script
-
-With yarn you can run the any package scripts eg.: `test, build, lint`
+With yarn you can run any package scripts eg.: `test, build, lint`
 
 ```shell
 yarn workspace @sensenet/redux test
 ```
+
+There are aliases for the example applications like dms, component-docs, sn-app.
+You can run any command in these packages easily.
+
+```shell
+yarn dms build:webpack
+yarn dms start
+yarn snapp start
+yarn storybook start
+```
+
+### Running e2e tests locally
+
+Cypress is installed to dms-demo app right now. To run the tests you simply need to run `yarn test:dms:e2e`
+To develop e2e tests:
+
+- You need a running instance of dms (`yarn start:dms:e2e`) with NODE_ENV set to test
+- Start cypress with `yarn cypress open -P examples/sn-dms-demo` in another command prompt
+- Add test to `examples/sn-dms-demo/cypress/integration` with a spec.ts | spec.js file extension
+
+Running the tests locally will create a currentUser.json with a new test user. The tests are going to use this user.
+In order to use another user you can change the email and password of the current user or let the system create a new for you by deleting the json.

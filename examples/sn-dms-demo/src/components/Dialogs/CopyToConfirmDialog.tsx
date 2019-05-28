@@ -62,7 +62,6 @@ const mapDispatchToProps = {
 class CopyToConfirmDialog extends React.Component<ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, {}> {
   public handleCancel = () => {
     this.props.closeDialog()
-    this.props.closeCallback()
   }
   public submitCallback = () => {
     this.props.copyContent(this.props.selected.map(item => item.Id), this.props.target[0].Path)
@@ -73,7 +72,7 @@ class CopyToConfirmDialog extends React.Component<ReturnType<typeof mapStateToPr
     return (
       <MediaQuery minDeviceWidth={700}>
         {matches => (
-          <div>
+          <div data-cy="copyTo">
             <Typography variant="h5" gutterBottom={true}>
               {resources.COPY}
             </Typography>
@@ -89,7 +88,7 @@ class CopyToConfirmDialog extends React.Component<ReturnType<typeof mapStateToPr
                 </ul>
               </div>
               <div style={{ opacity: 0.54, margin: '10px 0' }}>{resources.TO}</div>
-              <div style={{ wordWrap: 'break-word' }}>{this.props.target[0].Path}</div>
+              <div style={{ wordWrap: 'break-word' }}>{this.props.target.length ? this.props.target[0].Path : ''}</div>
             </div>
             <div style={styles.buttonContainer}>
               <div style={styles.rightColumn as any}>

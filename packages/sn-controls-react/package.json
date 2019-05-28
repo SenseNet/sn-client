@@ -3,15 +3,13 @@
   "version": "2.6.0",
   "description": "React controls for sensenet",
   "main": "dist/index.js",
+  "typings": "./dist/index.d.ts",
   "scripts": {
     "fix": "npm run fix:prettier && npm run fix:tslint",
     "fix:prettier": "prettier \"{,!(dist|temp)/**/}*.{ts,tsx}\" --write",
     "fix:tslint": "tslint --fix --project .",
     "lint": "tslint --project .",
-    "build": "tsc -b",
-    "typedoc": "typedoc --mode modules --out documentation src --exclude **/index.ts --theme c:/Users/%USERNAME%/AppData/Roaming/npm/node_modules/@sensenet/typedoc-theme/sn-theme",
-    "precommit": "npm run build",
-    "commit": "git-cz"
+    "build": "tsc -b"
   },
   "files": [
     "dist",
@@ -29,7 +27,7 @@
     "controls",
     "components"
   ],
-  "author": "SenseNet",
+  "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "license": "GPL-2.0",
   "bugs": {
     "url": "https://github.com/SenseNet/sn-client/issues"
@@ -64,6 +62,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "typings": "./dist/index.d.ts"
+  }
 }

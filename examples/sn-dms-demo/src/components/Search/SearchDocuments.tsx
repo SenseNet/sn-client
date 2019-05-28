@@ -16,7 +16,7 @@ import { loadParent, setChildrenOptions, updateSearchValues } from '../../store/
 import { DocumentLibraryState } from '../../store/documentlibrary/reducers'
 import { closePicker, openPicker, setPickerParent } from '../../store/picker/actions'
 import { rootStateType } from '../../store/rootReducer'
-import PathPicker from '../Pickers/PathPicker'
+import PathPickerDialog from '../Pickers/PathPickerDialog'
 import QuickSearchBox from './SearchInput'
 
 const styles = {
@@ -154,14 +154,13 @@ class SearchDocuments extends React.Component<
   }
 
   private handlePickLocation(_ev: React.MouseEvent, options: AdvancedSearchOptions<any>) {
-    this.props.parent && this.props.setPickerParent(this.props.parent)
     this.props.openPicker(
-      <PathPicker
+      <PathPickerDialog
         showAddFolder={false}
         mode="SearchRoot"
         dialogTitle={resources.SEARCH_LOCATION_TITLE}
-        loadOptions={{}}
-        onSelect={content => this.handleSelectTypeRoot(content, options)}
+        dialogCallback={selectedItems => this.handleSelectTypeRoot(selectedItems[0], options)}
+        currentPath={this.props.parent ? this.props.parent.Path : ''}
       />,
       'selectSearchRoot',
       this.props.closePicker,
