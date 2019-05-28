@@ -1,18 +1,22 @@
-import {
-  defaultLoadItemsODataOptions,
-  defaultLoadParentODataOptions,
-  loadItems,
-  loadParent,
-} from '../src/ListPicker/loaders'
+import { defaultLoadItemsODataOptions, loadItems } from '../src/ListPicker/loaders'
+import { mockContent } from './mocks/items'
 
 const repository = {
   loadCollection: jest.fn(() => {
-    return { d: {} }
+    return {
+      d: {
+        results: [
+          {
+            ParentId: 123,
+          },
+        ],
+      },
+    }
   }),
   load: jest.fn(() => {
     return { d: {} }
   }),
-}
+} as any
 
 const mockOdataOptions = {
   select: ['DisplayName'],
@@ -23,31 +27,31 @@ const mockOdataOptions = {
 
 describe('loadItems function', () => {
   it('should load with default OData options', async () => {
-    await loadItems({ repository, path: '' } as any)
+    await loadItems({ repository, path: '' })
     expect(repository.loadCollection).toBeCalledWith({ oDataOptions: defaultLoadItemsODataOptions, path: '' })
   })
 
   it('should load with provided OData options', async () => {
-    await loadItems({ repository, path: '', oDataOptions: mockOdataOptions } as any)
+    await loadItems({ repository, path: '', itemsODataOptions: mockOdataOptions } as any)
     expect(repository.loadCollection).toBeCalledWith({ oDataOptions: mockOdataOptions, path: '' })
   })
-})
 
-describe('loadParent function', () => {
-  it('should load with default OData options', async () => {
-    await loadParent({ repository, id: 1 } as any)
-    expect(repository.load).toBeCalledWith({ oDataOptions: defaultLoadParentODataOptions, idOrPath: 1 })
-  })
-  it('should not load when id is undefined', async () => {
-    jest.clearAllMocks()
-    await loadParent({ repository } as any)
-    expect(repository.load).toBeCalledTimes(0)
-  })
-  it('should load whwith provided OData options', async () => {
-    await loadParent({ repository, id: 1, oDataOptions: mockOdataOptions } as any)
-    expect(repository.load).toBeCalledWith({
-      oDataOptions: { ...mockOdataOptions, expand: ['Workspace'] },
-      idOrPath: 1,
+  it('should load with parent when parentId is passed', async () => {
+    repository.load = jest.fn(() => {
+      return { d: mockContent }
     })
+    const items = await loadItems({ repository, path: '', parentId: 123 })
+    expect(repository.load).toBeCalledTimes(1)
+    expect(items).toHaveLength(2)
+    expect(items[0]).toHaveProperty('isParent', true)
+  })
+
+  it('should not load parent when parentId is 0', async () => {
+    repository.load = jest.fn(() => {
+      return { d: mockContent }
+    })
+    const items = await loadItems({ repository, path: '', parentId: 0 })
+    expect(repository.load).not.toBeCalled()
+    expect(items).toHaveLength(1)
   })
 })
