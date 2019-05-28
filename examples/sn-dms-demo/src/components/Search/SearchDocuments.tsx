@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography'
 import { File as SnFile, Folder, GenericContent } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import { Query } from '@sensenet/query'
-import { AdvancedSearch, AdvancedSearchOptions, PresetField, TextField } from '@sensenet/search-react'
+import { AdvancedSearch, AdvancedSearchOptions, NestedTextField, PresetField, TextField } from '@sensenet/search-react'
 import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
@@ -288,7 +288,7 @@ class SearchDocuments extends React.Component<
                               />
                             </SearchRow>
                             <SearchRow title="Owner">
-                              <TextField
+                              <NestedTextField
                                 fullWidth={true}
                                 placeholder={resources.SEARCH_OWNER_PLACEHOLDER}
                                 fieldName={'Owner'}
@@ -296,6 +296,7 @@ class SearchDocuments extends React.Component<
                                   this.handleFieldQueryChanged('owner', query, plainValue, options.updateQuery)
                                 }
                                 value={this.props.searchState.owner}
+                                nestedFieldName={this.props.searchState.owner.indexOf('@') > -1 ? 'LoginName' : 'Name'}
                               />
                             </SearchRow>
                             <SearchRow title="Shared with">
