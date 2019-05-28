@@ -12,8 +12,8 @@ import FileCopy from '@material-ui/icons/FileCopyOutlined'
 import Info from '@material-ui/icons/Info'
 import React, { useContext, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { ContentRoutingContext, CurrentContentContext, ResponsiveContext } from '../context'
-import { useLocalization } from '../hooks'
+import { CurrentContentContext, ResponsiveContext } from '../context'
+import { useContentRouting, useLocalization } from '../hooks'
 import { ContentInfoDialog } from './ContentInfoDialog'
 import { CopyMoveDialog } from './CopyMoveDialog'
 import { DeleteContentDialog } from './DeleteContentDialog'
@@ -31,7 +31,7 @@ export const ContentContextMenuComponent: React.FunctionComponent<
 > = props => {
   const content = useContext(CurrentContentContext)
   const device = useContext(ResponsiveContext)
-  const routing = useContext(ContentRoutingContext)
+  const routing = useContentRouting()
   const localization = useLocalization().contentContextMenu
   const [isDeleteOpened, setIsDeleteOpened] = useState(false)
   const [isEditPropertiesOpened, setIsEditPropertiesOpened] = useState(false)

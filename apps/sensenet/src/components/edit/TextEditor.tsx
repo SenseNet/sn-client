@@ -5,8 +5,8 @@ import { Uri } from 'monaco-editor'
 import React, { useContext, useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
 import { Prompt } from 'react-router'
-import { ContentRoutingContext, ResponsiveContext } from '../../context'
-import { useLocalization, useLogger, useRepository, useTheme } from '../../hooks'
+import { ResponsiveContext } from '../../context'
+import { useContentRouting, useLocalization, useLogger, useRepository, useTheme } from '../../hooks'
 import { isContentFromType } from '../../utils/isContentFromType'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 
@@ -33,11 +33,11 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
   const platform = useContext(ResponsiveContext)
   const repo = useRepository()
 
-  const ctx = useContext(ContentRoutingContext)
+  const contentRouter = useContentRouting()
 
   const [textValue, setTextValue] = useState('')
   const [savedTextValue, setSavedTextValue] = useState('')
-  const [language, setLanguage] = useState(ctx.getMonacoLanguage(props.content))
+  const [language, setLanguage] = useState(contentRouter.getMonacoLanguage(props.content))
   const localization = useLocalization().textEditor
   const [uri, setUri] = useState<any>(getMonacoModelUri(props.content))
   const [hasChanges, setHasChanges] = useState(false)
@@ -87,12 +87,12 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
 
   useEffect(() => {
     setUri(getMonacoModelUri(props.content))
-    setLanguage(ctx.getMonacoLanguage(props.content))
+    setLanguage(contentRouter.getMonacoLanguage(props.content))
   }, [props.content])
 
   useEffect(() => {
     setUri(getMonacoModelUri(props.content))
-    setLanguage(ctx.getMonacoLanguage(props.content))
+    setLanguage(contentRouter.getMonacoLanguage(props.content))
     ;(async () => {
       try {
         if (props.loadContent) {

@@ -15,21 +15,20 @@ import React, { useContext, useEffect, useState } from 'react'
 import { generatePath, RouteComponentProps, withRouter } from 'react-router'
 import Semaphore from 'semaphore-async-await'
 import {
-  ContentRoutingContext,
   CurrentAncestorsContext,
   CurrentChildrenContext,
   CurrentContentContext,
   LoadSettingsContext,
   ResponsivePersonalSetttings,
 } from '../../context'
-import { useLocalization, useLogger, useRepository } from '../../hooks'
+import { useContentRouting, useLocalization, useLogger, useRepository } from '../../hooks'
 import { CollectionComponent } from '../ContentListPanel'
 
 const loadCount = 20
 
 const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> = props => {
   const repo = useRepository()
-  const ctx = useContext(ContentRoutingContext)
+  const contentRouter = useContentRouting()
 
   const localization = useLocalization().search
   const [contentQuery, setContentQuery] = useState(decodeURIComponent(props.match.params.query || ''))
@@ -199,10 +198,10 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
               enableBreadcrumbs={false}
               parentId={0}
               onParentChange={p => {
-                props.history.push(ctx.getPrimaryActionUrl(p))
+                props.history.push(contentRouter.getPrimaryActionUrl(p))
               }}
               onActivateItem={p => {
-                props.history.push(ctx.getPrimaryActionUrl(p))
+                props.history.push(contentRouter.getPrimaryActionUrl(p))
               }}
               onTabRequest={() => {
                 /** */

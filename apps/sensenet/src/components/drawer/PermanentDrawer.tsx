@@ -13,17 +13,17 @@ import { PathHelper } from '@sensenet/client-utils'
 import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import { Link, matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
-import { PersonalSettingsContext, ResponsivePersonalSetttings, SessionContext } from '../../context'
-import { useLocalization, useRepository, useTheme } from '../../hooks'
+import { ResponsivePersonalSetttings } from '../../context'
+import { useLocalization, usePersonalSettings, useRepository, useSession, useTheme } from '../../hooks'
 import { LogoutButton } from '../LogoutButton'
 import { UserAvatar } from '../UserAvatar'
 import { getAllowedDrawerItems } from './Items'
 
 const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
   const settings = useContext(ResponsivePersonalSetttings)
-  const personalSettings = useContext(PersonalSettingsContext)
+  const personalSettings = usePersonalSettings()
   const theme = useTheme()
-  const session = useContext(SessionContext)
+  const session = useSession()
   const repo = useRepository()
 
   const [opened, setOpened] = useState(settings.drawer.type === 'permanent')

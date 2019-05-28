@@ -11,16 +11,15 @@ import Typography from '@material-ui/core/Typography'
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew'
 import { ConstantContent, FormsAuthenticationService, LoginState } from '@sensenet/client-core'
 import { sleepAsync } from '@sensenet/client-utils'
-import React, { useContext, useEffect, useState } from 'react'
-import { SessionContext } from '../context'
-import { useLocalization, useLogger, useRepository, useTheme } from '../hooks'
+import React, { useEffect, useState } from 'react'
+import { useLocalization, useLogger, useRepository, useSession, useTheme } from '../hooks'
 import { Icon } from './Icon'
 
 export const LogoutButton: React.FunctionComponent<{
   buttonStyle?: React.CSSProperties
   onLoggedOut?: () => void
 }> = props => {
-  const session = useContext(SessionContext)
+  const session = useSession()
   const theme = useTheme()
   const repo = useRepository()
   const [showLogout, setShowLogout] = useState(false)

@@ -15,8 +15,8 @@ import Autosuggest from 'react-autosuggest'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { Link, NavLink } from 'react-router-dom'
 import logo from '../assets/sensenet-icon-32.png'
-import { PersonalSettingsContext, ResponsiveContext } from '../context'
-import { useInjector, useLocalization, useRepository, useTheme } from '../hooks'
+import { ResponsiveContext } from '../context'
+import { useInjector, useLocalization, usePersonalSettings, useRepository, useTheme } from '../hooks'
 import { RepositoryManager } from '../services/RepositoryManager'
 import { getMatchParts } from './command-palette/CommandPaletteSuggestion'
 import { UserAvatar } from './UserAvatar'
@@ -24,7 +24,7 @@ import { UserAvatar } from './UserAvatar'
 export const RepositorySelectorComponent: React.FunctionComponent<
   RouteComponentProps & { alwaysOpened?: boolean }
 > = props => {
-  const settings = useContext(PersonalSettingsContext)
+  const settings = usePersonalSettings()
   const repo = useRepository()
   const theme = useTheme()
   const device = useContext(ResponsiveContext)

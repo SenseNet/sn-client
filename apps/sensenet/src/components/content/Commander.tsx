@@ -1,16 +1,15 @@
 import { ConstantContent } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { matchPath, RouteComponentProps, withRouter } from 'react-router'
 import {
-  ContentRoutingContext,
   CurrentAncestorsProvider,
   CurrentChildrenProvider,
   CurrentContentContext,
   CurrentContentProvider,
   LoadSettingsContextProvider,
 } from '../../context'
-import { useRepository, useSelectionService } from '../../hooks'
+import { useContentRouting, useRepository, useSelectionService } from '../../hooks'
 import { AddButton } from '../AddButton'
 import { AddDialog } from '../AddDialog'
 import { CollectionComponent } from '../ContentListPanel'
@@ -22,7 +21,7 @@ export interface CommanderRouteParams {
 }
 
 export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRouteParams>> = props => {
-  const ctx = useContext(ContentRoutingContext)
+  const contentRouter = useContentRouting()
   const repo = useRepository()
 
   const selectionService = useSelectionService()
@@ -124,7 +123,7 @@ export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRou
                 }}
                 enableBreadcrumbs={true}
                 onActivateItem={item => {
-                  props.history.push(ctx.getPrimaryActionUrl(item))
+                  props.history.push(contentRouter.getPrimaryActionUrl(item))
                 }}
                 containerRef={r => setLeftPanelRef(r)}
                 style={{ width: '100%', maxHeight: '100%' }}
@@ -157,7 +156,7 @@ export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRou
                   setActivePanel('right')
                 }}
                 onActivateItem={item => {
-                  props.history.push(ctx.getPrimaryActionUrl(item))
+                  props.history.push(contentRouter.getPrimaryActionUrl(item))
                 }}
                 containerRef={r => setRightPanelRef(r)}
                 parentId={rightParentId}

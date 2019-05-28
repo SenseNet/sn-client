@@ -5,8 +5,7 @@ import KeyboardBackspace from '@material-ui/icons/KeyboardBackspace'
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
-import { useInjector, useLocalization, useTheme } from '../../hooks'
-import { EventService } from '../../services/EventService'
+import { useEventService, useLocalization, useTheme } from '../../hooks'
 import { Icon } from '../Icon'
 import { EventDetails } from './details'
 import { Filter } from './filter'
@@ -15,7 +14,7 @@ import { List } from './list'
 
 const EventList: React.FunctionComponent<RouteComponentProps<{ eventGuid?: string }>> = props => {
   const theme = useTheme()
-  const eventService = useInjector().getInstance(EventService)
+  const eventService = useEventService()
   const localization = useLocalization().eventList.details
   let currentEvent: ILeveledLogEntry<any> | undefined
 

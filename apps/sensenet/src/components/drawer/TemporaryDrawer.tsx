@@ -13,8 +13,8 @@ import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import { matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
 import { Link } from 'react-router-dom'
-import { PersonalSettingsContext, ResponsivePersonalSetttings, SessionContext, ThemeContext } from '../../context'
-import { useLocalization, useRepository } from '../../hooks'
+import { ResponsivePersonalSetttings } from '../../context'
+import { useLocalization, usePersonalSettings, useRepository, useSession, useTheme } from '../../hooks'
 import { LogoutButton } from '../LogoutButton'
 import { UserAvatar } from '../UserAvatar'
 import { getAllowedDrawerItems } from './Items'
@@ -23,10 +23,10 @@ const TemporaryDrawer: React.FunctionComponent<
   RouteComponentProps & { isOpened: boolean; onClose: () => void; onOpen: () => void }
 > = props => {
   const settings = useContext(ResponsivePersonalSetttings)
-  const personalSettings = useContext(PersonalSettingsContext)
+  const personalSettings = usePersonalSettings()
   const repo = useRepository()
   const theme = useTheme()
-  const session = useContext(SessionContext)
+  const session = useSession()
   const [items, setItems] = useState(getAllowedDrawerItems(session.groups))
   const [currentRepoEntry, setCurrentRepoEntry] = useState(
     personalSettings.repositories.find(r => r.url === PathHelper.trimSlashes(repo.configuration.repositoryUrl)),
