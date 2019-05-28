@@ -11,6 +11,9 @@ cache:
   yarn: true
 
 jobs:
+  allow_failures:
+    - name: 'DMS e2e tests'
+
   include:
     - stage: 'Tests'
       name: 'Static linting'
@@ -20,6 +23,12 @@ jobs:
       before_script: yarn build
       script: yarn test:coverage
       after_success: bash <(curl -s https://codecov.io/bash)
+
+    - name: 'DMS e2e tests'
+      if: type = cron
+      before_script: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p && yarn build
+      script: yarn test:dms:e2e
+      after_failure: bash ./scripts/sendscreenshots.sh
 
     - stage: 'Deploy to netlify'
       if: type = pull_request

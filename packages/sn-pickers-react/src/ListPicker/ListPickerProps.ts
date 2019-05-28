@@ -1,5 +1,4 @@
 import { ODataParams, Repository } from '@sensenet/client-core'
-import { GenericContent } from '@sensenet/default-content-types'
 import { ReactElement } from 'react'
 
 /**
@@ -7,7 +6,7 @@ import { ReactElement } from 'react'
  * @interface ListPickerProps
  * @template T
  */
-export interface ListPickerProps<T extends GenericContent = GenericContent> {
+export interface ListPickerProps<T> {
   /**
    * Repositry to load contents from.
    * To use the default load options you need to provide a repository.
@@ -22,7 +21,7 @@ export interface ListPickerProps<T extends GenericContent = GenericContent> {
    *   metadata: 'no',
    *   orderby: 'DisplayName',}
    */
-  itemsOdataOptions?: ODataParams<T>
+  itemsODataOptions?: ODataParams<T>
 
   /**
    * OData parameters for the parent list item.
@@ -42,20 +41,13 @@ export interface ListPickerProps<T extends GenericContent = GenericContent> {
   currentPath?: string
 
   /**
-   * Current parent id.
-   * `undefined` value means there isn't a parent. Parent item won't show.
-   * @type {number}
-   */
-  parentId?: number
-
-  /**
-   * Called before navigation. Can be used to clear the selected state.
+   * Called on navigation. Can be used to clear the selected state and to know the path
+   * of the navigation.
    */
   onNavigation?: (path: string) => void
 
   /**
    * Called on click with the current item.
-   * This is **not** invoked for parent selection!
    */
   onSelectionChanged?: (node: T) => void
 
@@ -86,10 +78,4 @@ export interface ListPickerProps<T extends GenericContent = GenericContent> {
    * ```
    */
   renderItem?: (props: T) => ReactElement<T>
-
-  /**
-   * Debounce milliseconds to prevent multiple reload calls.
-   * @default 1000
-   */
-  debounceMsOnReload?: number
 }

@@ -22,6 +22,7 @@ class RenameCell extends React.Component<
   { newDisplayName: string }
 > {
   public state = { newDisplayName: this.props.displayName }
+  public inputRef: React.RefObject<HTMLInputElement>
 
   constructor(props: RenameCell['props']) {
     super(props)
@@ -30,12 +31,12 @@ class RenameCell extends React.Component<
     this.handleKeyUp = this.handleKeyUp.bind(this)
     this.handleDismiss = this.handleDismiss.bind(this)
     this.handleClick = this.handleClick.bind(this)
+    this.inputRef = React.createRef()
   }
 
-  private input!: HTMLInputElement
   public componentDidMount() {
     setTimeout(() => {
-      this.input.focus()
+      this.inputRef.current && this.inputRef.current.focus()
     }, 300)
   }
 
@@ -86,7 +87,7 @@ class RenameCell extends React.Component<
               onKeyUp={this.handleKeyUp}
               onChange={this.handleChange}
               defaultValue={this.props.displayName}
-              ref={input => (this.input = input as HTMLInputElement)}
+              ref={this.inputRef}
             />
           </ClickAwayListener>
         </form>

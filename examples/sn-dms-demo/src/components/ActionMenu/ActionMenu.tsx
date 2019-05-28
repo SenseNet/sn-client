@@ -18,7 +18,7 @@ import { downloadFile } from '../../assets/helpers'
 import { icons } from '../../assets/icons'
 import { resources } from '../../assets/resources'
 import { select } from '../../store/documentlibrary/actions'
-import { closePicker, loadPickerItems, openPicker, setBackLink, setPickerParent } from '../../store/picker/actions'
+import { closePicker, deselectPickeritem, openPicker } from '../../store/picker/actions'
 import { rootStateType } from '../../store/rootReducer'
 import ApproveorRejectDialog from '../Dialogs/ApproveorRejectDialog'
 import CopyToConfirmDialog from '../Dialogs/CopyToConfirmDialog'
@@ -27,7 +27,7 @@ import EditPropertiesDialog from '../Dialogs/EditPropertiesDialog'
 import MoveToConfirmDialog from '../Dialogs/MoveToConfirmDialog'
 import ShareDialog from '../Dialogs/ShareDialog'
 import VersionsDialog from '../Dialogs/VersionsDialog'
-import PathPicker from '../Pickers/PathPicker'
+import PathPickerDialog from '../Pickers/PathPickerDialog'
 import { UPLOAD_FILE_BUTTON_ID, UPLOAD_FOLDER_BUTTON_ID } from '../Upload/UploadButton'
 
 const mapStateToProps = (state: rootStateType) => {
@@ -57,7 +57,6 @@ const mapDispatchToProps = {
   closeDialog: DMSActions.closeDialog,
   openPicker,
   closePicker,
-  setBackLink,
   loadContent: Actions.loadContent,
   fetchContent: Actions.requestContent,
   checkoutContent: Actions.checkOut,
@@ -65,8 +64,7 @@ const mapDispatchToProps = {
   publishContent: Actions.publish,
   undoCheckout: Actions.undoCheckout,
   forceundoCheckout: Actions.forceUndoCheckout,
-  setPickerParent,
-  loadPickerItems,
+  deselectPickeritem,
   select,
   uploadFileList: DMSActions.uploadFileList,
   chooseMenuItem: DMSActions.chooseMenuItem,
@@ -270,48 +268,45 @@ class ActionMenu extends React.Component<
         case 'MoveTo':
           this.handleClose()
           this.props.openPicker(
-            <PathPicker
+            <PathPickerDialog
               mode="Move"
-              currentContent={content}
-              currentParent={this.props.currentParent}
+              currentPath={this.props.currentParent ? this.props.currentParent.Path : ''}
               dialogComponent={<MoveToConfirmDialog />}
               dialogTitle={resources.MOVE}
               dialogCallback={Actions.moveBatch as any}
             />,
             'move',
             () => {
-              this.props.closePicker() && this.props.setBackLink(true)
+              this.props.closePicker() && this.props.deselectPickeritem()
             },
           )
           break
         case 'CopyTo':
           this.handleClose()
           this.props.openPicker(
-            <PathPicker
+            <PathPickerDialog
               mode="Copy"
-              currentContent={content}
-              currentParent={this.props.currentParent}
+              currentPath={this.props.currentParent ? this.props.currentParent.Path : ''}
               dialogComponent={<CopyToConfirmDialog />}
               dialogTitle={resources.COPY}
               dialogCallback={Actions.copyBatch as any}
             />,
             'copy',
-            () => this.props.closePicker() && this.props.setBackLink(true),
+            () => this.props.closePicker() && this.props.deselectPickeritem(),
           )
           break
         case 'MoveBatch':
           this.handleClose()
           this.props.openPicker(
-            <PathPicker
+            <PathPickerDialog
               mode="Move"
-              currentContent={content}
-              currentParent={this.props.currentParent}
+              currentPath={this.props.currentParent ? this.props.currentParent.Path : ''}
               dialogComponent={<MoveToConfirmDialog />}
               dialogTitle={resources.MOVE}
               dialogCallback={Actions.moveBatch as any}
             />,
             'move',
-            () => this.props.closePicker() && this.props.setBackLink(true),
+            () => this.props.closePicker() && this.props.deselectPickeritem(),
           )
           break
         case 'ExecuteQuery':

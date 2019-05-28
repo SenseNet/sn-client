@@ -8,12 +8,12 @@ import MediaQuery from 'react-responsive'
 import * as DMSActions from '../../Actions'
 import { icons } from '../../assets/icons'
 import { resources } from '../../assets/resources'
-import { closePicker, loadPickerItems, openPicker, setBackLink, setPickerParent } from '../../store/picker/actions'
+import { closePicker, deselectPickeritem, openPicker } from '../../store/picker/actions'
 import { rootStateType } from '../../store/rootReducer'
 import CopyToConfirmDialog from '../Dialogs/CopyToConfirmDialog'
 import DeleteDialog from '../Dialogs/DeleteDialog'
 import MoveToConfirmDialog from '../Dialogs/MoveToConfirmDialog'
-import PathPicker from '../Pickers/PathPicker'
+import PathPickerDialog from '../Pickers/PathPickerDialog'
 
 const styles = {
   icon: {
@@ -72,11 +72,9 @@ const mapDispatchToProps = {
   closeActionMenu: DMSActions.closeActionMenu,
   clearSelection: Actions.clearSelection,
   openDialog: DMSActions.openDialog,
-  setPickerParent,
-  loadPickerItems,
+  deselectPickeritem,
   openPicker,
   closePicker,
-  setBackLink,
 }
 
 export interface BatchActionlistState {
@@ -164,32 +162,30 @@ class BatchActionlist extends React.Component<
         break
       case 'MoveBatch':
         this.handleClose()
-        this.props.setPickerParent(this.props.currentParent || null)
-        this.props.loadPickerItems(this.props.currentParent ? this.props.currentParent.Path : '')
         this.props.openPicker(
-          <PathPicker
-            mode="MoveTo"
+          <PathPickerDialog
+            mode="Move"
             dialogComponent={<MoveToConfirmDialog />}
             dialogTitle={resources.MOVE}
             dialogCallback={Actions.moveBatch as any}
+            currentPath={this.props.currentParent ? this.props.currentParent.Path : ''}
           />,
           'move',
-          () => this.props.closePicker() && this.props.setBackLink(true),
+          () => this.props.closePicker() && this.props.deselectPickeritem(),
         )
         break
       case 'CopyBatch':
         this.handleClose()
-        this.props.setPickerParent(this.props.currentParent || null)
-        this.props.loadPickerItems(this.props.currentParent ? this.props.currentParent.Path : '')
         this.props.openPicker(
-          <PathPicker
-            mode="CopyTo"
+          <PathPickerDialog
+            mode="Copy"
             dialogComponent={<CopyToConfirmDialog />}
             dialogTitle={resources.COPY}
             dialogCallback={Actions.copyBatch as any}
+            currentPath={this.props.currentParent ? this.props.currentParent.Path : ''}
           />,
           'copy',
-          () => this.props.closePicker() && this.props.setBackLink(true),
+          () => this.props.closePicker() && this.props.deselectPickeritem(),
         )
         break
       default:
