@@ -149,6 +149,7 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
                   onChangeComplete={this.handleChange}
                   onSwatchHover={this.handleChange}
                   presetColors={this.props.palette ? this.props.palette : []}
+                  disableAlpha={true}
                 />
               </div>
             </ClickAwayListener>
@@ -197,6 +198,7 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
                   onChangeComplete={this.handleChange}
                   onSwatchHover={this.handleChange}
                   presetColors={this.props.palette ? this.props.palette : []}
+                  disableAlpha={true}
                 />
               </div>
             </ClickAwayListener>
