@@ -222,6 +222,10 @@ export const updateSearchValues = createAction((value: Partial<DocumentLibrarySt
   value,
 }))
 
+export const resetSearchValues = createAction(() => ({
+  type: 'DMS_DOCLIB_RESET_SEARCH_STATE',
+}))
+
 export const setChildrenOptions = createAction(<T extends GenericContent>(odataOptions: ODataParams<T>) => ({
   type: 'DMS_DOCLIB_SET_CHILDREN_OPTIONS',
   odataOptions,
