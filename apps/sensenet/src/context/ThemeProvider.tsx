@@ -9,7 +9,7 @@ const mergeThemes = (options: ThemeOptions, type: 'light' | 'dark') =>
     ...options,
     palette: {
       ...options.palette,
-      type,
+      type: type === 'light' ? 'light' : 'dark',
     },
   })
 
