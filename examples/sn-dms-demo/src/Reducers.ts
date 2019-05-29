@@ -52,7 +52,7 @@ export const isRegistering: Reducer<boolean> = (state = false, action: AnyAction
 
 export const registrationDone: Reducer<boolean> = (state = false, action: AnyAction) => {
   switch (action.type) {
-    case 'USER_REGISTRATION_SUCCESS':
+    case 'USER_REGISTRATION_REQUEST_SUCCESS':
       return true
     case 'USER_REGISTRATION_REQUEST':
     case 'USER_REGISTRATION_FAILURE':
