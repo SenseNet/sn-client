@@ -32,7 +32,8 @@
     "tslint-config-prettier": "^1.18.0",
     "tslint-consistent-codestyle": "1.15.1",
     "tslint-react": "^4.0.0",
-    "typescript": "3.4.5"
+    "typescript": "3.4.5",
+    "wait-on": "^3.2.0"
   },
   "scripts": {
     "cy:run:dms": "cypress run --project ./examples/sn-dms-demo",

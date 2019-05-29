@@ -395,7 +395,11 @@ class SearchDocuments extends React.Component<
                                     ? this.props.selectedTypeRoot[0].DisplayName
                                     : resources.SEARCH_LOCATION_ANYWHERE}
                                 </Button>
-                                <Button style={{ boxShadow: 'none' }} type="submit" variant="contained">
+                                <Button
+                                  style={{ boxShadow: 'none' }}
+                                  type="submit"
+                                  variant="contained"
+                                  color="secondary">
                                   Search
                                 </Button>
                               </div>
