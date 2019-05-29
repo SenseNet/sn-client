@@ -87,7 +87,7 @@ class SearchResultsHeader extends React.Component<
           </DialogContent>
           <DialogActions>
             <Button onClick={() => this.setState({ isSaveDialogOpened: false })}>Cancel</Button>
-            <Button color="primary" onClick={this.handleSaveQuery}>
+            <Button color="secondary" variant="contained" onClick={this.handleSaveQuery}>
               Submit
             </Button>
           </DialogActions>
