@@ -44,6 +44,6 @@
   },
   "devDependencies": {
     "@types/jsdom": "^12.2.3",
-    "jsdom": "^15.1.0"
+    "jsdom": "^15.1.1"
   }
 }
