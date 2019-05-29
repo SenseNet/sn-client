@@ -4,7 +4,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import { NewView } from '@sensenet/controls-react'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 import React from 'react'
-import { useLocalization, useLogger, useRepository } from '../hooks'
+import { useLocalization, useLogger, useRepository } from '../../hooks'
 
 export interface AddDialogProps {
   dialogProps: DialogProps

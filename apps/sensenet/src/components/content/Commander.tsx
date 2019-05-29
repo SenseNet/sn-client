@@ -11,9 +11,8 @@ import {
 } from '../../context'
 import { useContentRouting, useRepository, useSelectionService } from '../../hooks'
 import { AddButton } from '../AddButton'
-import { AddDialog } from '../AddDialog'
 import { CollectionComponent } from '../ContentListPanel'
-import { CopyMoveDialog } from '../CopyMoveDialog'
+import { AddDialog, CopyMoveDialog } from '../dialogs'
 
 export interface CommanderRouteParams {
   folderId?: string

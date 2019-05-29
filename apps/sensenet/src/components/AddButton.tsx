@@ -10,7 +10,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { CurrentContentContext } from '../context'
 import { useInjector, useLocalization, useLogger, useRepository } from '../hooks'
 import { UploadTracker } from '../services/UploadTracker'
-import { AddDialog } from './AddDialog'
+import { AddDialog } from './dialogs/add'
 import { Icon } from './Icon'
 
 export interface AddButtonProps {

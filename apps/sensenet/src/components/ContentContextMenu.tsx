@@ -14,10 +14,7 @@ import React, { useContext, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { CurrentContentContext, ResponsiveContext } from '../context'
 import { useContentRouting, useLocalization } from '../hooks'
-import { ContentInfoDialog } from './ContentInfoDialog'
-import { CopyMoveDialog } from './CopyMoveDialog'
-import { DeleteContentDialog } from './DeleteContentDialog'
-import { EditPropertiesDialog } from './EditPropertiesDialog'
+import { ContentInfoDialog, CopyMoveDialog, DeleteContentDialog, EditPropertiesDialog } from './dialogs'
 import { Icon } from './Icon'
 
 export const ContentContextMenuComponent: React.FunctionComponent<

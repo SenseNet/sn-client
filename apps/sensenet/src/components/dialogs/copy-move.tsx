@@ -11,8 +11,8 @@ import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useListPicker } from '@sensenet/pickers-react'
 import React, { useEffect, useState } from 'react'
-import { useLocalization, useLogger, useRepository } from '../hooks'
-import { Icon } from './Icon'
+import { useLocalization, useLogger, useRepository } from '../../hooks'
+import { Icon } from '../Icon'
 
 export interface CopyMoveDialogProps {
   currentParent: GenericContent

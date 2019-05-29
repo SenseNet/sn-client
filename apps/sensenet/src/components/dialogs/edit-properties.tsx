@@ -5,7 +5,7 @@ import { isExtendedError } from '@sensenet/client-core/dist/Repository/Repositor
 import { EditView } from '@sensenet/controls-react'
 import { GenericContent } from '@sensenet/default-content-types'
 import React from 'react'
-import { useLocalization, useLogger, useRepository } from '../hooks'
+import { useLocalization, useLogger, useRepository } from '../../hooks'
 
 export const EditPropertiesDialog: React.FunctionComponent<{
   dialogProps: DialogProps
