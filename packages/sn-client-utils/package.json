@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/client-utils",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "General sensenet ECM independent client side utilities",
   "main": "dist/index.js",
   "typings": "./dist/index.d.ts",
