@@ -199,8 +199,10 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
     }
   }
   private async getAllContentTypes() {
+    // tslint:disable-next-line: no-unnecessary-type-annotation
+    const repo: Repository = this.props['data-repository'] || this.props.repository
     try {
-      const result = await this.props['data-repository'].executeAction({
+      const result = await repo.executeAction({
         idOrPath: this.props['content'].Id,
         name: 'GetAllContentTypes',
         method: 'GET',
