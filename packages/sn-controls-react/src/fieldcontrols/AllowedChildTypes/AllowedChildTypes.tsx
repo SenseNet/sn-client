@@ -12,7 +12,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
-import { Repository } from '@sensenet/client-core'
+import { ODataCollectionResponse, Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
 import React, { Component } from 'react'
@@ -202,14 +202,14 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
     // tslint:disable-next-line: no-unnecessary-type-annotation
     const repo: Repository = this.props['data-repository'] || this.props.repository
     try {
-      const result = await repo.executeAction({
+      const result = (await repo.executeAction({
         idOrPath: this.props['content'].Id,
         name: 'GetAllContentTypes',
         method: 'GET',
         oDataOptions: {
           select: ['Name', 'DisplayName', 'Icon'],
         },
-      })
+      })) as ODataCollectionResponse<T>
       if (this.willUnmount) {
         return
       }
