@@ -12,6 +12,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
+import { Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
 import React, { Component } from 'react'
@@ -160,8 +161,9 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
   }
   private willUnmount: boolean = false
   private async getAllowedChildTypes() {
+    const repo: Repository = this.props['data-repository'] || this.props.repository
     try {
-      const result = await this.props['data-repository'].load<T>({
+      const result = await repo.load<T>({
         idOrPath: this.props['content'].Id,
         oDataOptions: {
           select: 'EffectiveAllowedChildTypes',
@@ -172,7 +174,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
         return
       }
 
-      const allowedChildTypesFromCTD = await this.props['data-repository'].executeAction({
+      const allowedChildTypesFromCTD = await repo.executeAction({
         idOrPath: this.props['content'].Id,
         name: 'GetAllowedChildTypesFromCTD',
         method: 'GET',
@@ -180,18 +182,16 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
           select: ['Name', 'DisplayName', 'Icon'],
         },
       })
-
+      const typeResults = result.d.EffectiveAllowedChildTypes as T[]
       this.setState({
-        effectiveAllowedChildTypes: result.d.EffectiveAllowedChildTypes,
-        allowedTypesOnCTD: allowedChildTypesFromCTD['d'].results,
+        effectiveAllowedChildTypes: typeResults,
         items:
           this.props['data-actionName'] !== 'new'
-            ? result.d.EffectiveAllowedChildTypes.length === 0
+            ? typeResults.length === 0
               ? allowedChildTypesFromCTD['d'].results
               : result.d.EffectiveAllowedChildTypes
             : allowedChildTypesFromCTD['d'].results,
-        removeable:
-          result.d.EffectiveAllowedChildTypes.length === 0 || this.props['data-actionName'] === 'new' ? false : true,
+        removeable: typeResults.length === 0 || this.props['data-actionName'] === 'new' ? false : true,
       })
     } catch (_e) {
       console.log(_e)
