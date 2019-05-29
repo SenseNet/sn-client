@@ -161,6 +161,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
   }
   private willUnmount: boolean = false
   private async getAllowedChildTypes() {
+    // tslint:disable-next-line: no-redundant-jsdoc
     const repo: Repository = this.props['data-repository'] || this.props.repository
     try {
       const result = await repo.load<T>({
