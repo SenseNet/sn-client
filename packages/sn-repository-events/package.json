@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/repository-events",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Client side repository event observables for sensenet",
   "main": "dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -37,7 +37,7 @@
   },
   "homepage": "https://sensenet.com",
   "dependencies": {
-    "@sensenet/client-core": "^2.0.0",
-    "@sensenet/client-utils": "^1.6.0"
+    "@sensenet/client-core": "^2.0.1",
+    "@sensenet/client-utils": "^1.6.1"
   }
 }
