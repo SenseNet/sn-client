@@ -1,25 +1,19 @@
 {
   "name": "@sensenet/query",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "Client side content query builder package for sensenet",
   "main": "dist/index.js",
+  "typings": "./dist/index.d.ts",
   "files": [
     "dist",
-    "src",
-    "test"
+    "src"
   ],
   "scripts": {
-    "precommit": "npm run test",
-    "commit": "git-cz",
-    "test:jest": "jest",
     "fix": "npm run fix:prettier && npm run fix:tslint",
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
     "fix:tslint": "tslint --fix --project .",
     "lint": "tslint --project .",
-    "build": "tsc -b",
-    "prepublishOnly": "npm run build",
-    "publish:development": "npm run build && npm t && npm run typedoc && npm publish --tag development",
-    "typedoc": "typedoc --mode file --out documentation src --tsconfig tsconfig.json --theme c:/Users/%USERNAME%/AppData/Roaming/npm/node_modules/@sensenet/typedoc-theme/sn-theme"
+    "build": "tsc -b"
   },
   "repository": {
     "type": "git",
@@ -40,15 +34,5 @@
   "bugs": {
     "url": "https://github.com/SenseNet/sn-client/issues"
   },
-  "homepage": "https://sensenet.com",
-  "devDependencies": {
-    "@types/jest": "^24.0.9",
-    "jest": "^24.1.0"
-  },
-  "config": {
-    "commitizen": {
-      "path": "sensenet-kfi-cz-conventional-changelog"
-    }
-  },
-  "typings": "./dist/index.d.ts"
+  "homepage": "https://sensenet.com"
 }

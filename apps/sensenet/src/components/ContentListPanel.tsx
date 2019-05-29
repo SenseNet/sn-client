@@ -13,6 +13,7 @@ import {
   RepositoryContext,
   ResponsiveContext,
   ResponsivePersonalSetttings,
+  ResponsivePlatforms,
 } from '../context'
 import { ContentBreadcrumbs } from './ContentBreadcrumbs'
 import { ContentContextMenu } from './ContentContextMenu'
@@ -22,7 +23,7 @@ import { Icon } from './Icon'
 import { SecondaryActionsMenu } from './SecondaryActionsMenu'
 import { SelectionControl } from './SelectionControl'
 
-export const CollectionComponent: React.FunctionComponent<{
+export interface CollectionComponentProps {
   enableBreadcrumbs?: boolean
   parentId: number
   onParentChange: (newParent: GenericContent) => void
@@ -31,7 +32,37 @@ export const CollectionComponent: React.FunctionComponent<{
   style?: React.CSSProperties
   containerRef?: (r: HTMLDivElement | null) => void
   requestReload?: () => void
-}> = props => {
+  fieldsToDisplay?: Array<keyof GenericContent>
+  onSelectionChange?: (sel: GenericContent[]) => void
+  onFocus?: () => void
+  containerProps?: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+}
+
+export const DisplayNameComponent: React.FunctionComponent<{
+  content: GenericContent
+  device: ResponsivePlatforms
+  isActive: boolean
+}> = ({ content, device, isActive }) => {
+  return (
+    <TableCell padding={'none'}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}>
+        {content.DisplayName || content.Name}
+        {device === 'mobile' && isActive ? (
+          <CurrentContentContext.Provider value={content}>
+            <SecondaryActionsMenu style={{ float: 'right' }} />
+          </CurrentContentContext.Provider>
+        ) : null}
+      </div>
+    </TableCell>
+  )
+}
+
+export const CollectionComponent: React.FunctionComponent<CollectionComponentProps> = props => {
   const parent = useContext(CurrentContentContext)
   const children = useContext(CurrentChildrenContext)
   const ancestors = useContext(CurrentAncestorsContext)
@@ -50,6 +81,14 @@ export const CollectionComponent: React.FunctionComponent<{
   const [currentDirection, setCurrentDirection] = useState<'asc' | 'desc'>('asc')
 
   useEffect(() => {
+    isFocused && props.onFocus && props.onFocus()
+  }, [isFocused])
+
+  useEffect(() => {
+    props.onSelectionChange && props.onSelectionChange(selected)
+  }, [selected])
+
+  useEffect(() => {
     const currentField =
       (loadSettings.loadChildrenSettings.orderby && loadSettings.loadChildrenSettings.orderby[0][0]) || 'DisplayName'
     let order: 'asc' | 'desc' =
@@ -59,7 +98,10 @@ export const CollectionComponent: React.FunctionComponent<{
       order = order === 'asc' ? 'desc' : 'asc'
     }
     loadSettings.setLoadChildrenSettings({
-      orderby: [[currentOrder as any, order as any]],
+      orderby:
+        loadSettings.loadChildrenSettings.orderby && loadSettings.loadChildrenSettings.orderby.length === 1
+          ? [[currentOrder as any, order as any]]
+          : [['DisplayName', 'asc']],
       select: personalSettings.content.fields,
       expand: personalSettings.content.fields.filter(f => isReferenceField(f)),
     })
@@ -101,7 +143,7 @@ export const CollectionComponent: React.FunctionComponent<{
   }
 
   return (
-    <div style={{ ...props.style }}>
+    <div style={{ ...props.style }} {...props.containerProps}>
       {props.enableBreadcrumbs ? <ContentBreadcrumbs onItemClick={i => props.onParentChange(i.content)} /> : null}
       <DropFileArea parent={parent} style={{ height: '100%', overflow: 'hidden' }}>
         <div
@@ -240,23 +282,11 @@ export const CollectionComponent: React.FunctionComponent<{
               switch (fieldOptions.field) {
                 case 'DisplayName':
                   return (
-                    <TableCell padding={'none'}>
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                        }}>
-                        {fieldOptions.content.DisplayName || fieldOptions.content.Name}
-                        {device === 'mobile' &&
-                        fieldOptions.active &&
-                        fieldOptions.active.Id === fieldOptions.content.Id ? (
-                          <CurrentContentContext.Provider value={fieldOptions.content}>
-                            <SecondaryActionsMenu style={{ float: 'right' }} />
-                          </CurrentContentContext.Provider>
-                        ) : null}
-                      </div>
-                    </TableCell>
+                    <DisplayNameComponent
+                      content={fieldOptions.content}
+                      device={device}
+                      isActive={activeContent && fieldOptions.content.Id === activeContent.Id}
+                    />
                   )
                 case 'Actions':
                   return (
@@ -310,7 +340,7 @@ export const CollectionComponent: React.FunctionComponent<{
               }
               return null
             }}
-            fieldsToDisplay={personalSettings.content.fields || ['DisplayName']}
+            fieldsToDisplay={props.fieldsToDisplay || personalSettings.content.fields || ['DisplayName']}
             selected={selected}
             onRequestSelectionChange={setSelected}
             icons={{}}

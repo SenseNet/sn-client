@@ -1,8 +1,9 @@
 {
   "name": "@sensenet/repository-events",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Client side repository event observables for sensenet",
   "main": "dist/index.js",
+  "typings": "./dist/index.d.ts",
   "files": [
     "dist",
     "src"
@@ -12,8 +13,7 @@
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
     "fix:tslint": "tslint --fix --project .",
     "lint": "tslint --project .",
-    "build": "tsc -b",
-    "typedoc": "typedoc --mode file --out documentation src --tsconfig tsconfig.json --theme c:/Users/%USERNAME%/AppData/Roaming/npm/node_modules/@sensenet/typedoc-theme/sn-theme"
+    "build": "tsc -b"
   },
   "repository": {
     "type": "git",
@@ -37,11 +37,7 @@
   },
   "homepage": "https://sensenet.com",
   "dependencies": {
-    "@sensenet/client-core": "^2.0.0",
-    "@sensenet/client-utils": "^1.6.0"
-  },
-  "devDependencies": {
-    "@types/jest": "^24.0.9"
-  },
-  "typings": "./dist/index.d.ts"
+    "@sensenet/client-core": "^2.0.1",
+    "@sensenet/client-utils": "^1.6.1"
+  }
 }

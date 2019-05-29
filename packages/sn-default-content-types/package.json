@@ -1,25 +1,19 @@
 {
   "name": "@sensenet/default-content-types",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Default content type definitions for sensenet",
   "main": "dist/index.js",
+  "typings": "./dist/index.d.ts",
   "files": [
     "dist",
     "src"
   ],
   "scripts": {
-    "clean": "rimraf dist",
-    "precommit": "npm run build",
-    "commit": "git-cz",
-    "test": "npm run build",
     "fix": "npm run fix:prettier && npm run fix:tslint",
     "fix:prettier": "prettier \"{,!(dist|temp)/**/}*.{ts,tsx}\" --write",
     "fix:tslint": "tslint --fix --project .",
     "lint": "tslint --project .",
-    "build": "tsc -b",
-    "typedoc": "typedoc --mode modules --out documentation src --tsconfig tsconfig.json --theme c:/Users/%USERNAME%/AppData/Roaming/npm/node_modules/@sensenet/typedoc-theme/sn-theme",
-    "prepublishOnly": "npm run build",
-    "publish:development": "npm run build && npm t && npm run typedoc && npm publish --tag development"
+    "build": "tsc -b"
   },
   "repository": {
     "type": "git",
@@ -40,11 +34,5 @@
   },
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "license": "GPL-2.0",
-  "homepage": "https://sensenet.com",
-  "config": {
-    "commitizen": {
-      "path": "sensenet-kfi-cz-conventional-changelog"
-    }
-  },
-  "typings": "./dist/index.d.ts"
+  "homepage": "https://sensenet.com"
 }

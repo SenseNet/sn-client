@@ -7,13 +7,44 @@ before_install:
   - curl -o- -L https://yarnpkg.com/install.sh | bash
   - export PATH="$HOME/.yarn/bin:$PATH"
 
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+cache:
+  yarn: true
 
-cache: yarn
+jobs:
+  allow_failures:
+    - name: 'DMS e2e tests'
 
-script:
-  - yarn
-  - yarn lint
-  - yarn build
-  - yarn test:coverage
+  include:
+    - stage: 'Tests'
+      name: 'Static linting'
+      script: yarn lint
+
+    - name: 'Unit Tests'
+      before_script: yarn build
+      script: yarn test:coverage
+      after_success: bash <(curl -s https://codecov.io/bash)
+
+    - name: 'DMS e2e tests'
+      if: type = cron
+      before_script: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p && yarn build
+      script: yarn test:dms:e2e
+      after_failure: bash ./scripts/sendscreenshots.sh
+
+    - stage: 'Deploy to netlify'
+      if: type = pull_request
+      name: 'DMS'
+      install: yarn && npm install netlify-cli -g
+      script: yarn build && yarn dms build:webpack
+      after_success: netlify deploy --site 12d988ec-f023-45e1-9f49-d05f8b309c42 --auth $NETLIFY_ACCESS_TOKEN --dir ./examples/sn-dms-demo/build --message $TRAVIS_PULL_REQUEST
+
+    - if: type = pull_request
+      name: 'Component docs'
+      install: yarn && npm install netlify-cli -g
+      script: yarn build && yarn storybook build-storybook
+      after_success: netlify deploy --site 2e86544e-b4b5-4f40-b1a0-a5d34367a03f --auth $NETLIFY_ACCESS_TOKEN --dir ./examples/sn-react-component-docs/storybook-static --message $TRAVIS_PULL_REQUEST
+
+    - if: type = pull_request
+      name: 'Sn app'
+      install: yarn && npm install netlify-cli -g
+      script: yarn build && yarn snapp build:webpack
+      after_success: netlify deploy --site eddadc9d-3e2d-42ab-a0c6-81b9d58fce84 --auth $NETLIFY_ACCESS_TOKEN --dir ./apps/sensenet/bundle/assets --message $TRAVIS_PULL_REQUEST

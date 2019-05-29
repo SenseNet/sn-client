@@ -112,7 +112,7 @@ export class GoogleOauthProvider implements OauthProvider {
     const token = await new Promise<string>((resolve, reject) => {
       this.iframe = this.windowInstance.document.createElement('iframe')
       this.iframe.style.display = 'none'
-      this.iframe.setAttribute('sandbox', 'allow-same-origin')
+      this.iframe.setAttribute('sandbox', 'allow-same-origin allow-scripts')
 
       this.iframe.onload = async ev => {
         let location: Location | null = null

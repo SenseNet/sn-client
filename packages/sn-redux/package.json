@@ -1,21 +1,19 @@
 {
   "name": "@sensenet/redux",
-  "version": "5.1.8",
+  "version": "5.1.9",
   "description": "A set of redux actions, reducers and redux-ovbservable epics for sensenet",
   "main": "dist/index.js",
+  "typings": "./dist/index.d.ts",
   "scripts": {
     "fix": "npm run fix:prettier && npm run fix:tslint",
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
     "fix:tslint": "tslint --fix --project .",
     "lint": "tslint --project .",
-    "build": "tsc -b",
-    "typedoc": "typedoc --mode modules --out documentation src --exclude **/index.ts --theme c:/Users/%USERNAME%/AppData/Roaming/npm/node_modules/@sensenet/typedoc-theme/sn-theme"
+    "build": "tsc -b"
   },
   "files": [
     "dist",
-    "src",
-    "test",
-    "documentation"
+    "src"
   ],
   "repository": {
     "type": "git",
@@ -37,24 +35,17 @@
   },
   "homepage": "https://sensenet.com",
   "dependencies": {
-    "@sensenet/authentication-google": "^2.0.7",
-    "@sensenet/authentication-jwt": "^1.0.11",
-    "@sensenet/client-core": "^2.0.0",
-    "@sensenet/default-content-types": "^1.2.0",
-    "@sensenet/redux-promise-middleware": "^2.1.6",
+    "@sensenet/authentication-google": "^2.0.8",
+    "@sensenet/authentication-jwt": "^1.0.12",
+    "@sensenet/client-core": "^2.0.1",
+    "@sensenet/default-content-types": "^1.2.1",
+    "@sensenet/redux-promise-middleware": "^2.1.7",
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.9",
     "@types/node": "^11.10.4",
     "@types/redux-logger": "^3.0.6",
     "redux-mock-store": "^1.5.3"
-  },
-  "config": {
-    "commitizen": {
-      "path": "sensenet-kfi-cz-conventional-changelog"
-    }
-  },
-  "typings": "./dist/index.d.ts"
+  }
 }

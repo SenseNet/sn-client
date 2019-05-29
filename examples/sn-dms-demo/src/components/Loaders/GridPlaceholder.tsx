@@ -9,7 +9,7 @@ export const GridPlaceholder = (props: {
   rowStyle?: React.CSSProperties
 }) => {
   return (
-    <div style={props.style}>
+    <div style={props.style} data-cy="gridPlaceholder">
       {(Array.apply(null, { length: props.columns || 10 } as any).map(Number.call, Number) as number[]).map(c => (
         <div key={c} className="column" style={{ display: 'flex', ...props.columnStyle }}>
           {(Array.apply(null, { length: props.rows || 5 } as any).map(Number.call, Number) as number[]).map(r => (

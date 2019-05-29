@@ -1,6 +1,6 @@
 {
   "name": "sn-dms-demo",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Document Management Demo upon sensenet",
   "private": true,
   "repository": {
@@ -21,27 +21,31 @@
     "url": "https://github.com/SenseNet/sn-client/issues"
   },
   "homepage": "https://sensenet.com",
-  "config": {
-    "commitizen": {
-      "path": "sensenet-kfi-cz-conventional-changelog"
-    }
+  "scripts": {
+    "start": "webpack-dev-server --port 3000 --display-error-details",
+    "start:e2e": "cross-env NODE_ENV=test webpack-dev-server --port 3000",
+    "build:webpack": "rimraf build && webpack",
+    "fix": "npm run fix:prettier && npm run fix:tslint",
+    "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
+    "fix:tslint": "tslint --fix --project .",
+    "lint": "tslint --project ."
   },
   "dependencies": {
     "@material-ui/core": "^3.8.2",
     "@material-ui/icons": "^3.0.2",
-    "@sensenet/authentication-google": "^2.0.7",
-    "@sensenet/authentication-jwt": "^1.0.11",
-    "@sensenet/client-core": "^2.0.0",
-    "@sensenet/client-utils": "^1.6.0",
-    "@sensenet/controls-react": "^2.6.0",
-    "@sensenet/default-content-types": "^1.2.0",
-    "@sensenet/document-viewer-react": "^1.1.0",
-    "@sensenet/icons-react": "^1.2.9",
-    "@sensenet/list-controls-react": "^1.3.6",
-    "@sensenet/pickers-react": "^1.1.0",
-    "@sensenet/redux": "^5.1.8",
-    "@sensenet/repository-events": "^1.4.0",
-    "@sensenet/search-react": "^1.2.4",
+    "@sensenet/authentication-google": "^2.0.8",
+    "@sensenet/authentication-jwt": "^1.0.12",
+    "@sensenet/client-core": "^2.0.1",
+    "@sensenet/client-utils": "^1.6.1",
+    "@sensenet/controls-react": "^2.7.0",
+    "@sensenet/default-content-types": "^1.2.1",
+    "@sensenet/document-viewer-react": "^1.1.1",
+    "@sensenet/icons-react": "^1.2.10",
+    "@sensenet/list-controls-react": "^1.3.7",
+    "@sensenet/pickers-react": "^1.2.0",
+    "@sensenet/redux": "^5.1.9",
+    "@sensenet/repository-events": "^1.4.1",
+    "@sensenet/search-react": "^1.2.5",
     "autoprefixer": "^9.4.10",
     "css-loader": "^2.1.0",
     "dotenv": "^7.0.0",
@@ -77,10 +81,9 @@
     "uuid": "^3.3.2"
   },
   "devDependencies": {
-    "@types/enzyme": "^3.1.15",
-    "@types/enzyme-adapter-react-16": "^1.0.3",
+    "@cypress/webpack-preprocessor": "^4.0.3",
+    "@types/chance": "^1.0.2",
     "@types/jest": "^24.0.9",
-    "@types/lodash": "^4.14.122",
     "@types/lodash.groupby": "^4.6.6",
     "@types/node": "^11.10.4",
     "@types/react": "^16.7.14",
@@ -94,16 +97,16 @@
     "@types/redux-mock-store": "^1.0.0",
     "@types/uuid": "^3.4.4",
     "awesome-typescript-loader": "^5.2.1",
+    "chance": "^1.0.18",
     "copy-webpack-plugin": "^5.0.0",
-    "enzyme": "^3.6.0",
-    "enzyme-adapter-react-16": "^1.5.0",
+    "cross-env": "^5.2.0",
+    "cypress": "^3.3.1",
     "path-to-regexp": "3.0.0",
     "raw-loader": "^2.0.0",
     "redux-mock-store": "^1.5.3",
     "source-map-loader": "^0.2.4",
     "style-loader": "^0.23.1",
     "svg-url-loader": "^2.3.2",
-    "ts-jest": "^24.0.0",
     "tslint-loader": "^3.6.0",
     "uglify-es": "^3.3.9",
     "uglifyjs-webpack-plugin": "^2.0.1",
@@ -112,16 +115,5 @@
     "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.10"
-  },
-  "scripts": {
-    "start": "webpack-dev-server --port 3000 --display-error-details",
-    "build:webpack": "rimraf build && webpack",
-    "test:jest": "jest",
-    "fix": "npm run fix:prettier && npm run fix:tslint",
-    "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
-    "fix:tslint": "tslint --fix --project .",
-    "lint": "tslint --project .",
-    "commit": "git-cz",
-    "report-coverage": "cat ./coverage/lcov.info | codecov"
   }
 }

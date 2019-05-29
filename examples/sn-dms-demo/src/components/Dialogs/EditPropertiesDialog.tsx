@@ -8,6 +8,7 @@ import Loadable from 'react-loadable'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import * as DMSActions from '../../Actions'
+import { icons } from '../../assets/icons'
 import { resources } from '../../assets/resources'
 import { RepositoryContext } from '../../context/RepositoryContext'
 import { dmsInjector } from '../../DmsRepository'
@@ -93,7 +94,7 @@ class EditPropertiesDialog extends React.Component<
     return (
       <MediaQuery minDeviceWidth={700}>
         {matches => (
-          <div style={matches ? { width: 550 } : {}}>
+          <div data-cy="editProperties" style={matches ? { width: 550 } : {}}>
             <Typography variant="h5" gutterBottom={true}>
               {resources.EDIT_PROPERTIES}
             </Typography>
@@ -102,6 +103,7 @@ class EditPropertiesDialog extends React.Component<
               <RepositoryContext.Consumer>
                 {repository => (
                   <LoadableEditView
+                    icons={icons}
                     content={editedcontent}
                     repository={repository}
                     contentTypeName={contentTypeName}

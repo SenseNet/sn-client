@@ -18,11 +18,12 @@ import { styles } from './BrowseViewStyles'
 export interface BrowseViewProps {
   content: GenericContent
   repository: Repository
+  renderIcon?: (name: string) => JSX.Element
 }
 /**
  * Interface for BrowseView state
  */
-export interface EditViewProps {
+export interface BrowseViewState {
   content: GenericContent
   schema: ControlSchema<React.Component, ReactClientFieldSettingProps>
 }
@@ -35,7 +36,7 @@ export interface EditViewProps {
  *  <BrowseView content={content} />
  * ```
  */
-export class BrowseView extends Component<BrowseViewProps, EditViewProps> {
+export class BrowseView extends Component<BrowseViewProps, BrowseViewState> {
   /**
    * constructor
    * @param {object} props
@@ -80,8 +81,17 @@ export class BrowseView extends Component<BrowseViewProps, EditViewProps> {
           </Typography>
           {fieldSettings.map(fieldSetting => {
             fieldSetting['data-actionName'] = 'browse'
-            // tslint:disable-next-line:no-string-literal
             fieldSetting['value'] = that.getFieldValue(fieldSetting.clientSettings.name)
+            fieldSetting.clientSettings['data-renderIcon'] = this.props.renderIcon || undefined
+            if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
+              fieldSetting.fieldSettings.Type = 'NumberFieldSetting'
+            }
+            if (
+              fieldSetting.clientSettings['data-typeName'] === 'NullFieldSetting' &&
+              fieldSetting.fieldSettings.Name === 'AllowedChildTypes'
+            ) {
+              fieldSetting.clientSettings['renderIcon'] = this.props.renderIcon || undefined
+            }
             return (
               <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12} key={fieldSetting.clientSettings.key}>
                 {createElement(fieldSetting.controlType, {

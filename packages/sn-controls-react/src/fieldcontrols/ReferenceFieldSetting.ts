@@ -37,4 +37,8 @@ export interface ReactReferenceFieldSetting<T extends GenericContent = GenericCo
    * Connected repository
    */
   repository: Repository
+  /**
+   * Current content
+   */
+  content?: GenericContent
 }
