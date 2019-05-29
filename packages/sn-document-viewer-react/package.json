@@ -35,14 +35,14 @@
     "@sensenet/default-content-types": "^1.2.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-redux": "^6.0.1",
+    "react-redux": "^7.0.3",
     "redux": "^4.0.1",
     "redux-di-middleware": "^4.0.1",
     "styled-components": "^4.1.3"
   },
   "devDependencies": {
-    "@types/react": "^16.8.7",
-    "@types/react-redux": "^7.0.2",
-    "@types/styled-components": "^4.1.13"
+    "@types/react": "^16.8.19",
+    "@types/react-redux": "^7.0.9",
+    "@types/styled-components": "^4.1.15"
   }
 }
