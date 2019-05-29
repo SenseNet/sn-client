@@ -49,16 +49,16 @@
     "redux-di-middleware": "^4.0.1"
   },
   "devDependencies": {
-    "@types/react": "^16.7.14",
-    "@types/react-dom": "^16.0.7",
-    "@types/react-redux": "^7.0.1",
-    "@types/react-router-dom": "^4.3.1",
+    "@types/react": "^16.8.19",
+    "@types/react-dom": "^16.8.4",
+    "@types/react-redux": "^7.0.9",
+    "@types/react-router-dom": "^4.3.3",
     "@types/redux-logger": "^3.0.6",
     "awesome-typescript-loader": "^5.2.1",
-    "copy-webpack-plugin": "^5.0.0",
+    "copy-webpack-plugin": "^5.0.3",
     "source-map-loader": "^0.2.4",
-    "webpack": "^4.19.1",
-    "webpack-cli": "^3.1.1",
-    "webpack-dev-server": "^3.1.8"
+    "webpack": "^4.32.2",
+    "webpack-cli": "^3.3.2",
+    "webpack-dev-server": "^3.4.1"
   }
 }
