@@ -122,7 +122,7 @@ export class QueryExpression<TReturns> extends QuerySegment<TReturns> {
   public notEqualsNested<K extends keyof TReturns>(
     fieldName: K | '_Text',
     nestedFieldName: string,
-    value: TReturns[K],
+    value: string,
   ) {
     this.stringValue = `NOT(${fieldName}:{{${nestedFieldName}:${value.toString()}}})`
     this.segmentType = 'notEqualsNested'
