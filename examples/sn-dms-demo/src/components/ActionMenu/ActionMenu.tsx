@@ -351,19 +351,22 @@ class ActionMenu extends React.Component<
               anchorPosition={position}
               TransitionComponent={Fade}>
               {actions.map((action, index) => {
+                const displayName = resources[action.DisplayName.replace(/ /g, '').toUpperCase()]
                 let iconFileType
                 switch (action.Icon) {
                   case 'word':
                   case 'excel':
                   case 'acrobat':
                   case 'powerpoint':
+                  case 'office':
                     iconFileType = iconType.flaticon
                     break
                   default:
                     iconFileType = iconType.materialui
                     break
                 }
-                return (
+                return actions.findIndex(a => a.Name === 'WopiOpenEdit') > -1 &&
+                  action.Name === 'WopiOpenView' ? null : (
                   <MenuItem
                     key={index}
                     onClick={event => this.handleMenuItemClick(event, action)}
@@ -376,7 +379,7 @@ class ActionMenu extends React.Component<
                       e.currentTarget.style.fontWeight = 'normal'
                     }}
                     style={styles.menuItem}
-                    title={action.DisplayName}>
+                    title={displayName}>
                     <ListItemIcon style={styles.actionIcon}>
                       <Icon
                         type={iconFileType}
@@ -409,20 +412,20 @@ class ActionMenu extends React.Component<
                         ) : null}
                       </Icon>
                     </ListItemIcon>
-                    {action.Name === 'OpenInEditor' ? (
+                    {action.Name.indexOf('Wopi') > -1 ? (
                       <Link
                         onClick={this.handleClose}
                         to={`/wopi/${btoa(currentContent ? currentContent.Id.toString() : '')}`}
                         target="_blank"
-                        onMouseOver={e => this.handleMouseEnter(e, action.Name)}
+                        onMouseOver={e => this.handleMouseEnter(e, 'OpenInEditor')}
                         onMouseLeave={this.handleMouseLeave}
                         style={
                           this.isHovered('OpenInEditor') ? styles.openInEditorLinkHovered : styles.openInEditorLink
                         }>
-                        {action.DisplayName}
+                        {displayName}
                       </Link>
                     ) : (
-                      action.DisplayName
+                      displayName
                     )}
                   </MenuItem>
                 )
@@ -432,6 +435,7 @@ class ActionMenu extends React.Component<
             <Drawer anchor="bottom" open={open} onClose={this.handleClose}>
               <List>
                 {actions.map((action, index) => {
+                  const displayName = resources[action.DisplayName.replace(/ /g, '').toUpperCase()]
                   if (action.Name === 'uploadFile') {
                     const uploadFileButtonId = `${UPLOAD_FILE_BUTTON_ID}-${v1()}`
                     return (
@@ -511,6 +515,7 @@ class ActionMenu extends React.Component<
                     case 'excel':
                     case 'acrobat':
                     case 'powerpoint':
+                    case 'office':
                       iconFileType = iconType.flaticon
                       break
                     default:
@@ -530,7 +535,7 @@ class ActionMenu extends React.Component<
                         e.currentTarget.style.fontWeight = 'normal'
                       }}
                       style={styles.menuItemMobile}
-                      title={action.DisplayName}>
+                      title={displayName}>
                       <ListItemIcon style={styles.actionIcon}>
                         <Icon
                           type={iconFileType}
@@ -612,7 +617,7 @@ class ActionMenu extends React.Component<
                           ) : null}
                         </Icon>
                       </ListItemIcon>
-                      {action.DisplayName}
+                      {resources(action.Name.toUpperCase())}
                     </MenuItem>
                   )
                 })}
