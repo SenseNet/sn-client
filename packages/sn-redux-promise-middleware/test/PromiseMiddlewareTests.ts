@@ -8,14 +8,14 @@ import { PromiseMiddlewareAction } from '../src/Types'
  */
 export const promiseMiddlewareTest = describe('PromiseMiddleware', () => {
   it('Should be registered into a Store', () => {
-    const store = createStore(({}) => ({}), {}, applyMiddleware(promiseMiddleware(undefined)))
+    const store = createStore((a = {}) => a, {}, applyMiddleware(promiseMiddleware({})))
     expect(store).toBeInstanceOf(Object)
   })
 
   it('Generic API Endpoint should be added and method should be called', done => {
     const customApi = { call: () => done() }
     const m = promiseMiddleware(customApi)
-    const store = createStore(({}) => ({}), {}, applyMiddleware(m))
+    const store = createStore((a = {}) => a, {}, applyMiddleware(m))
     store.dispatch({
       type: 'EXAMPLE_ACTION',
       payload: async api => {
