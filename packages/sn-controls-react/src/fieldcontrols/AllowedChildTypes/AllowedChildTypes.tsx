@@ -183,16 +183,21 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
           select: ['Name', 'DisplayName', 'Icon'],
         },
       })
+
       const typeResults = result.d.EffectiveAllowedChildTypes as T[]
+
+      const types =
+        this.props['data-actionName'] !== 'new'
+          ? typeResults.length === 0
+            ? allowedChildTypesFromCTD['d'].results
+            : result.d.EffectiveAllowedChildTypes
+          : allowedChildTypesFromCTD['d'].results
+
       this.setState({
         effectiveAllowedChildTypes: typeResults,
-        items:
-          this.props['data-actionName'] !== 'new'
-            ? typeResults.length === 0
-              ? allowedChildTypesFromCTD['d'].results
-              : result.d.EffectiveAllowedChildTypes
-            : allowedChildTypesFromCTD['d'].results,
+        items: types,
         removeable: typeResults.length === 0 || this.props['data-actionName'] === 'new' ? false : true,
+        value: types.map((t: T) => t.Name),
       })
     } catch (_e) {
       console.log(_e)
@@ -267,10 +272,11 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
   }
   private handleAddClick = () => {
     const { items, selected, value } = this.state
+    const newValue = selected ? [...value, selected.Name] : value
     if (this.state.removeable) {
       this.setState({
         items: selected ? [...items, selected] : items,
-        value: selected ? [...value, selected.Name] : value,
+        value: newValue,
         selected: null,
         inputValue: '',
         filteredList: this.state.allCTDs,
@@ -285,7 +291,8 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
         removeable: true,
       })
     }
-    this.props.onChange(this.props.name, value as any)
+    console.log(newValue)
+    this.props.onChange(this.props.name, newValue as any)
   }
   /**
    * render
