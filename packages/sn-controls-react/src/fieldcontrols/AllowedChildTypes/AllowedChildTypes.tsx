@@ -12,6 +12,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
+import { ODataCollectionResponse, Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
 import React, { Component } from 'react'
@@ -160,8 +161,10 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
   }
   private willUnmount: boolean = false
   private async getAllowedChildTypes() {
+    // tslint:disable-next-line: no-unnecessary-type-annotation
+    const repo: Repository = this.props['data-repository'] || this.props.repository
     try {
-      const result = await this.props['data-repository'].load<T>({
+      const result = await repo.load<T>({
         idOrPath: this.props['content'].Id,
         oDataOptions: {
           select: 'EffectiveAllowedChildTypes',
@@ -172,7 +175,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
         return
       }
 
-      const allowedChildTypesFromCTD = await this.props['data-repository'].executeAction({
+      const allowedChildTypesFromCTD = await repo.executeAction({
         idOrPath: this.props['content'].Id,
         name: 'GetAllowedChildTypesFromCTD',
         method: 'GET',
@@ -181,32 +184,37 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
         },
       })
 
+      const typeResults = result.d.EffectiveAllowedChildTypes as T[]
+
+      const types =
+        this.props['data-actionName'] !== 'new'
+          ? typeResults.length === 0
+            ? allowedChildTypesFromCTD['d'].results
+            : result.d.EffectiveAllowedChildTypes
+          : allowedChildTypesFromCTD['d'].results
+
       this.setState({
-        effectiveAllowedChildTypes: result.d.EffectiveAllowedChildTypes,
-        allowedTypesOnCTD: allowedChildTypesFromCTD['d'].results,
-        items:
-          this.props['data-actionName'] !== 'new'
-            ? result.d.EffectiveAllowedChildTypes.length === 0
-              ? allowedChildTypesFromCTD['d'].results
-              : result.d.EffectiveAllowedChildTypes
-            : allowedChildTypesFromCTD['d'].results,
-        removeable:
-          result.d.EffectiveAllowedChildTypes.length === 0 || this.props['data-actionName'] === 'new' ? false : true,
+        effectiveAllowedChildTypes: typeResults,
+        items: types,
+        removeable: typeResults.length === 0 || this.props['data-actionName'] === 'new' ? false : true,
+        value: types.map((t: T) => t.Name),
       })
     } catch (_e) {
       console.log(_e)
     }
   }
   private async getAllContentTypes() {
+    // tslint:disable-next-line: no-unnecessary-type-annotation
+    const repo: Repository = this.props['data-repository'] || this.props.repository
     try {
-      const result = await this.props['data-repository'].executeAction({
+      const result = (await repo.executeAction({
         idOrPath: this.props['content'].Id,
         name: 'GetAllContentTypes',
         method: 'GET',
         oDataOptions: {
           select: ['Name', 'DisplayName', 'Icon'],
         },
-      })
+      })) as ODataCollectionResponse<T>
       if (this.willUnmount) {
         return
       }
@@ -264,10 +272,11 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
   }
   private handleAddClick = () => {
     const { items, selected, value } = this.state
+    const newValue = selected ? [...value, selected.Name] : value
     if (this.state.removeable) {
       this.setState({
         items: selected ? [...items, selected] : items,
-        value: selected ? [...value, selected.Name] : value,
+        value: newValue,
         selected: null,
         inputValue: '',
         filteredList: this.state.allCTDs,
@@ -282,7 +291,8 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
         removeable: true,
       })
     }
-    this.props.onChange(this.props.name, value as any)
+    console.log(newValue)
+    this.props.onChange(this.props.name, newValue as any)
   }
   /**
    * render
