@@ -132,13 +132,6 @@ export const pickerTheme = createMuiTheme({
           boxShadow: 'none',
         },
       },
-      contained: {
-        [theme.breakpoints.down('md')]: {
-          background: '#fff',
-          color: '#016D9E',
-          boxShadow: 'none',
-        },
-      },
-    } as any,
+    },
   },
 })
