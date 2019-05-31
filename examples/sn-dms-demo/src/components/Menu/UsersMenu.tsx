@@ -1,6 +1,7 @@
+import { ListItemIcon } from '@material-ui/core'
 import Divider from '@material-ui/core/Divider'
+import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
-import MenuItem from '@material-ui/core/MenuItem'
 import withStyles, { StyleRulesCallback } from '@material-ui/core/styles/withStyles'
 import { Icon, iconType } from '@sensenet/icons-react'
 import React, { Component } from 'react'
@@ -46,15 +47,11 @@ const styles: StyleRulesCallback = () => ({
   },
   root: {
     color: '#666',
-    paddingLeft: 0,
-    paddingRight: 0,
   },
   selected: {
     backgroundColor: '#fff !important',
     color: '#016d9e',
     fontWeight: 600,
-    paddingLeft: 0,
-    paddingRight: 0,
   },
   rootMobile: {
     color: '#666',
@@ -125,7 +122,8 @@ class UsersMenu extends Component<UsersMenuProps & ReturnType<typeof mapStateToP
     const { active, allowedTypes, classes, item, matches } = this.props
     return (
       <div>
-        <MenuItem
+        <ListItem
+          button={true}
           selected={active}
           classes={
             matches
@@ -133,18 +131,16 @@ class UsersMenu extends Component<UsersMenuProps & ReturnType<typeof mapStateToP
               : { root: classes.rootMobile, selected: classes.selectedMobile }
           }
           onClick={_e => this.handleMenuItemClick('users')}>
-          <Icon
-            className={active ? classes.iconWhiteActive : classes.iconWhite}
-            color="primary"
-            type={iconType.materialui}
-            iconName={item.icon}
-          />
-          <ListItemText
-            classes={{ primary: active ? classes.primaryActive : classes.primary }}
-            inset={true}
-            primary={item.title}
-          />
-        </MenuItem>
+          <ListItemIcon>
+            <Icon
+              className={active ? classes.iconWhiteActive : classes.iconWhite}
+              color="primary"
+              type={iconType.materialui}
+              iconName={item.icon}
+            />
+          </ListItemIcon>
+          <ListItemText classes={{ primary: active ? classes.primaryActive : classes.primary }} primary={item.title} />
+        </ListItem>
         <div
           className={active && allowedTypes.findIndex(ctd => ctd.Name === 'User') > -1 ? classes.open : classes.closed}>
           <Divider />

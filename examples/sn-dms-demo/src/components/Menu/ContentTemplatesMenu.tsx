@@ -1,5 +1,6 @@
+import { ListItemIcon } from '@material-ui/core'
+import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
-import MenuItem from '@material-ui/core/MenuItem'
 import { StyleRulesCallback } from '@material-ui/core/styles/withStyles'
 import withStyles from '@material-ui/core/styles/withStyles'
 import { Icon, iconType } from '@sensenet/icons-react'
@@ -65,15 +66,11 @@ const styles: StyleRulesCallback = () => ({
   },
   root: {
     color: '#666',
-    paddingLeft: 0,
-    paddingRight: 0,
   },
   selected: {
     backgroundColor: '#fff !important',
     color: '#016d9e',
     fontWeight: 600,
-    paddingLeft: 0,
-    paddingRight: 0,
   },
   open: {
     display: 'block',
@@ -81,12 +78,7 @@ const styles: StyleRulesCallback = () => ({
   closed: {
     display: 'none',
   },
-  submenu: {
-    padding: 0,
-  },
   submenuItem: {
-    paddingLeft: 0,
-    paddingRight: 0,
     borderTop: 'solid 1px rgba(0, 0, 0, 0.08)',
   },
   submenuIcon: {
@@ -139,24 +131,21 @@ class ContentTemplatesMenu extends React.Component<
   public render() {
     const { active, classes, item } = this.props
     return (
-      <div>
-        <MenuItem
-          selected={active}
-          classes={{ root: classes.root, selected: classes.selected }}
-          onClick={() => this.handleMenuItemClick('contenttemplates')}>
+      <ListItem
+        button={true}
+        selected={active}
+        classes={{ root: classes.root, selected: classes.selected }}
+        onClick={() => this.handleMenuItemClick('contenttemplates')}>
+        <ListItemIcon>
           <Icon
             className={active ? classes.iconWhiteActive : classes.iconWhite}
             color="primary"
             type={iconType.materialui}
             iconName={item.icon}
           />
-          <ListItemText
-            classes={{ primary: active ? classes.primaryActive : classes.primary }}
-            inset={true}
-            primary={item.title}
-          />
-        </MenuItem>
-      </div>
+        </ListItemIcon>
+        <ListItemText classes={{ primary: active ? classes.primaryActive : classes.primary }} primary={item.title} />
+      </ListItem>
     )
   }
 }
