@@ -9,7 +9,7 @@ export interface DefaultCellProps<T extends GenericContent, K extends keyof T> {
 }
 
 export const DefaultCell = <T extends GenericContent, K extends keyof T>(props: DefaultCellProps<T, K>) => (
-  <TableCell className={props.isSelected ? 'selected' : ''} padding="checkbox">
+  <TableCell className={props.isSelected ? 'selected' : ''}>
     <span>{props.content[props.field] && props.content[props.field].toString()}</span>
   </TableCell>
 )
