@@ -91,9 +91,12 @@ describe('ReferenceField Component', () => {
     instance
       .find(Autosuggest)
       .props()
-      .inputProps.onChange({
-        target: { value: 'a' },
-      })
+      .inputProps.onChange(
+        {
+          target: { value: 'a' },
+        } as any,
+        { method: 'type', newValue: 'a' },
+      )
   })
 
   it('Should get DisplayName or Name as a content value', () => {

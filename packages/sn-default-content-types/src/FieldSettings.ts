@@ -87,7 +87,7 @@ export class FieldSetting {
   public Icon?: string
   public ReadOnly?: boolean
   public Compulsory?: boolean
-  public DefaultValue?: string | any[]
+  public DefaultValue?: string
   public OutputMethod?: OutputMethod
   public Visible?: boolean
   public VisibleBrowse?: FieldVisibility

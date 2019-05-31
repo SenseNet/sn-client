@@ -36,7 +36,7 @@ export interface NewViewProps<T extends GenericContent = GenericContent> {
  * Interface for NewView state
  */
 export interface NewViewState<T extends GenericContent = GenericContent> {
-  schema: ControlSchema<React.Component, ReactClientFieldSettingProps>
+  schema: ControlSchema<React.Component<any, any, any>, ReactClientFieldSettingProps>
   dataSource: GenericContent[]
   content: T
 }

@@ -32,7 +32,7 @@
     "tslint-config-prettier": "^1.18.0",
     "tslint-consistent-codestyle": "1.15.1",
     "tslint-react": "^4.0.0",
-    "typescript": "3.4.5",
+    "typescript": "^3.5.1",
     "wait-on": "^3.2.0"
   },
   "scripts": {
@@ -46,7 +46,7 @@
     "build:dms": "yarn && yarn build && yarn workspace sn-dms-demo run build:webpack",
     "build:sn-app": "yarn && yarn build && yarn workspace @sensenet/sn-app run build:webpack",
     "build:docs": "yarn && yarn build && yarn workspace sn-react-component-docs run build-storybook",
-    "clean:packages": "rm -rf packages/*/dist & rm -f packages/tsconfig.tsbuildinfo packages/*/tsconfig.tsbuildinfo",
+    "clean:packages": "rimraf ./packages/**/dist ./packages/**/tsconfig.tsbuildinfo",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "clean": "lerna clean",
