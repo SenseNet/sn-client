@@ -1,6 +1,5 @@
 import Divider from '@material-ui/core/Divider'
-
-import { ListItemIcon, Typography } from '@material-ui/core'
+import ListItemText from '@material-ui/core/ListItemText'
 import MenuItem from '@material-ui/core/MenuItem'
 import withStyles, { StyleRulesCallback } from '@material-ui/core/styles/withStyles'
 import { Icon, iconType } from '@sensenet/icons-react'
@@ -131,15 +130,17 @@ class GroupsMenu extends Component<
               : { root: classes.rootMobile, selected: classes.selectedMobile }
           }
           onClick={_e => this.handleMenuItemClick('groups')}>
-          <ListItemIcon>
-            <Icon
-              className={active ? classes.iconWhiteActive : classes.iconWhite}
-              color={active ? 'primary' : 'inherit'}
-              type={iconType.materialui}
-              iconName={item.icon}
-            />
-          </ListItemIcon>
-          <Typography classes={{ root: active ? classes.primaryActive : classes.primary }}>{item.title}</Typography>
+          <Icon
+            className={active ? classes.iconWhiteActive : classes.iconWhite}
+            color={active ? 'primary' : 'inherit'}
+            type={iconType.materialui}
+            iconName={item.icon}
+          />
+          <ListItemText
+            classes={{ primary: active ? classes.primaryActive : classes.primary }}
+            inset={true}
+            primary={item.title}
+          />
         </MenuItem>
         <div
           className={

@@ -1,4 +1,4 @@
-import { ListItemIcon, Typography } from '@material-ui/core'
+import ListItemText from '@material-ui/core/ListItemText'
 import MenuItem from '@material-ui/core/MenuItem'
 import { StyleRulesCallback } from '@material-ui/core/styles/withStyles'
 import withStyles from '@material-ui/core/styles/withStyles'
@@ -144,15 +144,17 @@ class ContentTemplatesMenu extends React.Component<
           selected={active}
           classes={{ root: classes.root, selected: classes.selected }}
           onClick={() => this.handleMenuItemClick('contenttemplates')}>
-          <ListItemIcon>
-            <Icon
-              className={active ? classes.iconWhiteActive : classes.iconWhite}
-              color="primary"
-              type={iconType.materialui}
-              iconName={item.icon}
-            />
-          </ListItemIcon>
-          <Typography classes={{ root: active ? classes.primaryActive : classes.primary }}>{item.title}</Typography>
+          <Icon
+            className={active ? classes.iconWhiteActive : classes.iconWhite}
+            color="primary"
+            type={iconType.materialui}
+            iconName={item.icon}
+          />
+          <ListItemText
+            classes={{ primary: active ? classes.primaryActive : classes.primary }}
+            inset={true}
+            primary={item.title}
+          />
         </MenuItem>
       </div>
     )
