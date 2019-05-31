@@ -8,7 +8,7 @@ import { Repository } from '@sensenet/client-core'
 import { ControlSchema } from '@sensenet/control-mapper'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { Component, createElement } from 'react'
-import { ReactClientFieldSettingProps } from '../fieldcontrols/ClientFieldSetting'
+import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../fieldcontrols/ClientFieldSetting'
 import { reactControlMapper } from '../ReactControlMapper'
 import { styles } from './BrowseViewStyles'
 
@@ -60,8 +60,8 @@ export class BrowseView extends Component<BrowseViewProps, BrowseViewState> {
    * @return {any} value of the input or null
    */
   public getFieldValue(name: string) {
-    if (this.props.content[name]) {
-      return this.props.content[name]
+    if ((this.props.content as any)[name]) {
+      return (this.props.content as any)[name]
     } else {
       return null
     }
@@ -80,17 +80,12 @@ export class BrowseView extends Component<BrowseViewProps, BrowseViewState> {
             {this.props.content.DisplayName}
           </Typography>
           {fieldSettings.map(fieldSetting => {
-            fieldSetting['data-actionName'] = 'browse'
-            fieldSetting['value'] = that.getFieldValue(fieldSetting.clientSettings.name)
-            fieldSetting.clientSettings['data-renderIcon'] = this.props.renderIcon || undefined
+            ;(fieldSetting.clientSettings as ReactClientFieldSetting)['data-actionName'] = 'browse'
+            fieldSetting.clientSettings['value'] = that.getFieldValue(fieldSetting.clientSettings.name)(
+              fieldSetting.clientSettings as ReactClientFieldSetting,
+            )['data-renderIcon'] = this.props.renderIcon || undefined
             if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
               fieldSetting.fieldSettings.Type = 'NumberFieldSetting'
-            }
-            if (
-              fieldSetting.clientSettings['data-typeName'] === 'NullFieldSetting' &&
-              fieldSetting.fieldSettings.Name === 'AllowedChildTypes'
-            ) {
-              fieldSetting.clientSettings['renderIcon'] = this.props.renderIcon || undefined
             }
             return (
               <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12} key={fieldSetting.clientSettings.key}>

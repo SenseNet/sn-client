@@ -9,7 +9,6 @@ import { ReactNameFieldSetting } from './NameFieldSetting'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { GenericContent } from '@sensenet/default-content-types'
-import Radium from 'radium'
 
 /**
  * Interface for Name properties
@@ -30,7 +29,6 @@ export interface NameState {
 /**
  * Field control that represents a ShortText field. Available values will be populated from the FieldSettings.
  */
-@Radium
 export class Name<T extends GenericContent, K extends keyof T> extends Component<NameProps<T, K>, NameState> {
   /**
    * constructor
@@ -71,9 +69,9 @@ export class Name<T extends GenericContent, K extends keyof T> extends Component
    */
   public handleChange(e: React.ChangeEvent) {
     const { onChange } = this.props
-    const value = e.target['value']
+    const value = (e.target as HTMLInputElement).value
     this.setState({ value })
-    onChange(this.props.name, value)
+    onChange(this.props.name, value as any)
   }
   /**
    * render

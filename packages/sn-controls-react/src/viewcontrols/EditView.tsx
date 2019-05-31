@@ -9,7 +9,8 @@ import { ControlSchema } from '@sensenet/control-mapper'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 import React, { Component, createElement } from 'react'
 import MediaQuery from 'react-responsive'
-import { ReactClientFieldSettingProps } from '../fieldcontrols/ClientFieldSetting'
+import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../fieldcontrols/ClientFieldSetting'
+import { ReactReferenceFieldSetting } from '../fieldcontrols/ReferenceFieldSetting'
 import { reactControlMapper } from '../ReactControlMapper'
 import { styles } from './EditViewStyles'
 
@@ -102,8 +103,8 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
    * @return {any} value of the input or null
    */
   public getFieldValue(name: string | undefined) {
-    if (name && this.props.content[name]) {
-      return this.props.content[name]
+    if (name && (this.props.content as any)[name]) {
+      return (this.props.content as any)[name]
     }
   }
   /**
@@ -126,26 +127,20 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
         }}>
         <Grid container={true} spacing={24}>
           {fieldSettings.map(fieldSetting => {
-            if (
-              fieldSetting.clientSettings['data-typeName'] === 'ReferenceFieldSetting' ||
-              (fieldSetting.clientSettings['data-typeName'] === 'NullFieldSetting' &&
-                fieldSetting.fieldSettings.Name === 'AllowedChildTypes')
-            ) {
-              fieldSetting.clientSettings['data-repository'] = this.props.repository
-            }
-            fieldSetting.clientSettings['data-actionName'] = 'edit'
-            fieldSetting.clientSettings['data-fieldValue'] = that.getFieldValue(fieldSetting.clientSettings.name)
-            fieldSetting.clientSettings['content'] = this.state.content
+            const reactClientSettings = fieldSetting.clientSettings as ReactClientFieldSetting
+            reactClientSettings['data-actionName'] = 'edit'
+            reactClientSettings['data-fieldValue'] = that.getFieldValue(fieldSetting.clientSettings.name)(
+              fieldSetting.clientSettings as ReactReferenceFieldSetting,
+            )['content'] = this.state.content
             fieldSetting.clientSettings['value'] = that.getFieldValue(fieldSetting.clientSettings.name)
             fieldSetting.clientSettings.onChange = that.handleInputChange as any
-            fieldSetting.clientSettings['data-repositoryUrl'] = this.props.repositoryUrl || ''
-            fieldSetting.clientSettings['data-renderIcon'] = this.props.renderIcon || undefined
+            reactClientSettings['data-repositoryUrl'] = this.props.repositoryUrl || ''
+            reactClientSettings['data-renderIcon'] = this.props.renderIcon || undefined
             if (
-              fieldSetting.clientSettings['data-typeName'] === 'NullFieldSetting' &&
+              reactClientSettings['data-typeName'] === 'NullFieldSetting' &&
               fieldSetting.fieldSettings.Name === 'Avatar'
             ) {
-              fieldSetting.clientSettings['data-uploadFolderPath'] = this.props.uploadFolderPath || ''
-              fieldSetting.clientSettings['data-repository'] = this.props.repository
+              ;(fieldSetting.clientSettings as any)['data-uploadFolderPath'] = this.props.uploadFolderPath || ''
             }
             if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
               fieldSetting.fieldSettings.Type = 'NumberFieldSetting'
@@ -155,9 +150,9 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
                 item={true}
                 xs={12}
                 sm={12}
-                md={fieldSetting.clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                lg={fieldSetting.clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                xl={fieldSetting.clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                md={reactClientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                lg={reactClientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                xl={reactClientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
                 key={fieldSetting.clientSettings.name}>
                 {createElement(fieldSetting.controlType, {
                   ...fieldSetting.clientSettings,

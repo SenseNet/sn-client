@@ -11,7 +11,8 @@ import { Repository } from '@sensenet/client-core'
 import { ControlSchema } from '@sensenet/control-mapper'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 import MediaQuery from 'react-responsive'
-import { ReactClientFieldSettingProps } from '../fieldcontrols/ClientFieldSetting'
+import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../fieldcontrols/ClientFieldSetting'
+import { ReactFileNameFieldSetting } from '../fieldcontrols/Name/FileNameFieldSetting'
 import { reactControlMapper } from '../ReactControlMapper'
 import { styles } from './NewViewStyles'
 
@@ -112,22 +113,19 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
         )}
         <Grid container={true} spacing={24}>
           {fieldSettings.map(fieldSetting => {
-            if (fieldSetting.clientSettings['data-typeName'] === 'ReferenceFieldSetting') {
-              fieldSetting.clientSettings['data-repository'] = repository
-            }
             if (
               contentTypeName.indexOf('File') > -1 &&
               extension &&
               fieldSetting.fieldSettings.ControlHint === 'sn:FileName'
             ) {
-              fieldSetting.clientSettings['data-extension'] = extension
+              ;(fieldSetting.clientSettings as ReactFileNameFieldSetting)['data-extension'] = extension
             }
             fieldSetting.clientSettings.onChange = this.handleInputChange as any
-            fieldSetting.clientSettings['data-actionName'] = 'new'
-            fieldSetting.clientSettings['data-uploadFolderPath'] = this.props.uploadFolderPath || ''
-            fieldSetting.clientSettings['data-repository'] = this.props.repository
-            fieldSetting.clientSettings['data-repositoryUrl'] = repository.configuration.repositoryUrl
-            fieldSetting.clientSettings['data-renderIcon'] = this.props.renderIcon || undefined
+            const reactClientSettings = fieldSetting.clientSettings as ReactClientFieldSetting
+            reactClientSettings['data-actionName'] = 'new'
+            ;(fieldSetting.clientSettings as any)['data-uploadFolderPath'] = this.props.uploadFolderPath || ''
+            reactClientSettings['data-repositoryUrl'] = repository.configuration.repositoryUrl
+            reactClientSettings['data-renderIcon'] = this.props.renderIcon || undefined
             if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
               fieldSetting.fieldSettings.Type = 'NumberFieldSetting'
             }
@@ -136,9 +134,9 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
                 item={true}
                 xs={12}
                 sm={12}
-                md={fieldSetting.clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                lg={fieldSetting.clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                xl={fieldSetting.clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                md={reactClientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                lg={reactClientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                xl={reactClientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
                 key={fieldSetting.clientSettings.name}>
                 {createElement(fieldSetting.controlType, {
                   ...fieldSetting.clientSettings,

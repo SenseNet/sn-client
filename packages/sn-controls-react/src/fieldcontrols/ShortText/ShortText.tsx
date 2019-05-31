@@ -8,7 +8,6 @@ import { ReactShortTextFieldSetting } from './ShortTextFieldSetting'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { GenericContent } from '@sensenet/default-content-types'
-import Radium from 'radium'
 
 /**
  * Interface for ShortText properties
@@ -26,7 +25,6 @@ export interface ShortTextState {
 /**
  * Field control that represents a ShortText field. Available values will be populated from the FieldSettings.
  */
-@Radium
 export class ShortText<T extends GenericContent, K extends keyof T> extends Component<
   ShortTextProps<T, K>,
   ShortTextState
@@ -42,22 +40,11 @@ export class ShortText<T extends GenericContent, K extends keyof T> extends Comp
      * @property {string} value input value
      */
     this.state = {
-      value: this.setValue(this.props['data-fieldValue']).toString(),
-    }
-  }
-  /**
-   * returns default value of an input
-   * @param {string} value
-   */
-  public setValue(value: string) {
-    if (value) {
-      return value
-    } else {
-      if (this.props['data-defaultValue']) {
-        return this.props['data-defaultValue']
-      } else {
-        return ''
-      }
+      value: this.props['data-fieldValue']
+        ? this.props['data-fieldValue'].replace(/<[^>]*>/g, '')
+        : this.props['data-defaultValue']
+        ? this.props['data-defaultValue']
+        : '',
     }
   }
   /**
@@ -66,8 +53,8 @@ export class ShortText<T extends GenericContent, K extends keyof T> extends Comp
    */
   public handleChange(e: React.ChangeEvent) {
     const { name, onChange } = this.props
-    const value = e.target['value']
-    onChange(name, value)
+    const newValue = (e.target as HTMLInputElement).value
+    onChange(name, newValue as any)
   }
   /**
    * render

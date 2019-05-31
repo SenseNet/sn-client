@@ -21,5 +21,5 @@ export interface ReactBinaryFieldSetting<T extends GenericContent = GenericConte
   /**
    * Repository object.
    */
-  'data-repository': Repository
+  repository: Repository
 }

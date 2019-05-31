@@ -48,9 +48,9 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
   /**
    * set selected value
    */
-  public handleChange = (event: React.ChangeEvent) => {
+  public handleChange = (e: React.ChangeEvent) => {
     const { value } = this.state
-    const newValue = event.target['value']
+    const newValue = (e.target as HTMLInputElement).value
     const checked = value
     const index = value.indexOf(newValue)
     if (this.props['data-allowMultiple']) {

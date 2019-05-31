@@ -9,7 +9,6 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { GenericContent } from '@sensenet/default-content-types'
-import Radium from 'radium'
 
 /**
  * Interface for FileName properties
@@ -30,7 +29,6 @@ export interface FileNameState {
 /**
  * Field control that represents a ShortText field. Available values will be populated from the FieldSettings.
  */
-@Radium
 export class FileName<T extends GenericContent, K extends keyof T> extends Component<
   FileNameProps<T, K>,
   FileNameState
@@ -85,7 +83,7 @@ export class FileName<T extends GenericContent, K extends keyof T> extends Compo
    */
   public handleChange(e: React.ChangeEvent) {
     const { onChange } = this.props
-    const value = `${e.target['value']}.${this.state.extension}`
+    const value = `${(e.target as HTMLInputElement).value}.${this.state.extension}`
     onChange(this.props.name, value as any)
   }
 

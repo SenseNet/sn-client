@@ -7,7 +7,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import InsertDriveFile from '@material-ui/icons/InsertDriveFile'
-import { GenericContent } from '@sensenet/default-content-types'
+import { GenericContent, User } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
 import { renderIconDefault } from '../icon'
 
@@ -48,7 +48,7 @@ export class DefaultItemTemplate extends Component<DefaultItemTemplateProps, {}>
         {content.Type !== undefined ? (
           content.Type === 'User' ? (
             <ListItemAvatar>
-              {<Avatar alt={content['FullName']} src={`${repositoryUrl}${content['Avatar'].Url}`} />}
+              {<Avatar alt={(content as User)['FullName']} src={`${repositoryUrl}${(content as any).Avatar.Url}`} />}
             </ListItemAvatar>
           ) : (
             <ListItemIcon style={styles.icon}>

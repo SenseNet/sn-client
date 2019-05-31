@@ -1,4 +1,7 @@
-export const typeicons = {
+// tslint:disable-next-line: interface-over-type-literal
+type Dict = { [key: string]: string }
+
+export const typeicons: Dict = {
   contenttype: 'assignment',
   content: 'insert_drive_file',
   webcontent: 'insert_drive_file',

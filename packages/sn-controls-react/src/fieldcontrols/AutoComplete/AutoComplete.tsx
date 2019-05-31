@@ -81,7 +81,7 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
   }
   private async handleInputChange(e: React.ChangeEvent) {
     // tslint:disable
-    const term = `*${e.target['value']}*`
+    const term = `*${(e.target as HTMLInputElement).value}*`
     const query = new Query(q => q.query(q2 => q2.equals('Name', term).or.equals('DisplayName', term)))
 
     if (this.props['data-allowedTypes']) {

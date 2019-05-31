@@ -14,7 +14,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import { Content, ODataCollectionResponse } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
-import { GenericContent } from '@sensenet/default-content-types'
+import { GenericContent, User } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { renderIconDefault } from '../icon'
@@ -120,7 +120,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
     const { name, onChange } = this.props
     const selected = this.state.fieldValue
     let s = selected
-    const selectedContent = this.getContentById(e.target['value'])
+    const selectedContent = this.getContentById(Number((e.target as HTMLInputElement).value))
 
     this.props['data-allowMultiple'] !== undefined && this.props['data-allowMultiple']
       ? this.isSelected(selectedContent)
@@ -149,8 +149,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
     allowedTypes.map(type => {
       typeQuery += ` +TypeIs:${type}`
     })
-    const repo = this.props['data-repository'] || this.props.repository
-    const req = await repo.loadCollection({
+    const req = await this.props.repository.loadCollection({
       path: '/Root',
       oDataOptions: {
         query: `(${pathQuery}) AND${typeQuery}`,
@@ -161,8 +160,8 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
     this.setState({
       dataSource: req.d.results.map((suggestion: GenericContent) => ({
         value: suggestion['Id'],
-        label: suggestion[label] || suggestion['DisplayName'],
-        avatar: suggestion['Avatar'] || {},
+        label: (suggestion as any)[label] || suggestion['DisplayName'],
+        avatar: (suggestion as User)['Avatar'] || {},
         type: suggestion['Type'] || 'GenericContent',
       })),
     })
@@ -177,23 +176,22 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
    * @return {any[]}
    */
   public async getSelected() {
-    const repo = this.props['data-repository'] || this.props.repository
     const loadPath = this.props['content']
       ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props['content'].Path), '/', this.props.name.toString())
       : ''
-    const references = await repo.loadCollection({
+    const references = await this.props.repository.loadCollection({
       path: loadPath,
       oDataOptions: {
         select: 'all',
       },
     })
     const { label } = this.state
-    const results = references.d.results ? references.d.results : [references.d]
+    const results = references.d.results
     this.setState({
       fieldValue: results.map((item: GenericContent) => ({
         value: item['Id'],
-        label: item[label],
-        avatar: item['Avatar'] || {},
+        label: (item as any)[label],
+        avatar: (item as User)['Avatar'] || {},
         type: item['Type'] || 'GenericContent',
       })),
     })
@@ -202,8 +200,8 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
       this.setState({
         fieldValue: this.props.dataSource.map((item: GenericContent) => ({
           value: item['Id'],
-          label: item[label],
-          avatar: item['Avatar'] || {},
+          label: (item as any)[label],
+          avatar: (item as User)['Avatar'] || {},
           type: item['Type'] || 'GenericContent',
         })),
       })
@@ -237,7 +235,6 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
    * @return {ReactElement} markup
    */
   public render() {
-    const repo = this.props['data-repository'] || this.props.repository
     switch (this.props['data-actionName']) {
       case 'edit':
         return (
@@ -262,8 +259,10 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
                             alt={this.getContentById(content.value).label}
                             src={
                               this.getContentById(content.value).avatar.Url
-                                ? `${repo.configuration.repositoryUrl}${this.getContentById(content.value).avatar.Url}`
-                                : `${repo.configuration.repositoryUrl}${DEFAULT_AVATAR_PATH}`
+                                ? `${this.props.repository.configuration.repositoryUrl}${
+                                    this.getContentById(content.value).avatar.Url
+                                  }`
+                                : `${this.props.repository.configuration.repositoryUrl}${DEFAULT_AVATAR_PATH}`
                             }
                           />
                         }
@@ -320,8 +319,10 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
                             alt={this.getContentById(content.value).label}
                             src={
                               this.getContentById(content.value).avatar.Url
-                                ? `${repo.configuration.repositoryUrl}${this.getContentById(content.value).avatar.Url}`
-                                : `${repo.configuration.repositoryUrl}${DEFAULT_AVATAR_PATH}`
+                                ? `${this.props.repository.configuration.repositoryUrl}${
+                                    this.getContentById(content.value).avatar.Url
+                                  }`
+                                : `${this.props.repository.configuration.repositoryUrl}${DEFAULT_AVATAR_PATH}`
                             }
                           />
                         }

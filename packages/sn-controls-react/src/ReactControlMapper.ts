@@ -20,7 +20,8 @@ import {
 import { Component } from 'react'
 import * as FieldControls from './fieldcontrols'
 import { ReactChoiceFieldSetting } from './fieldcontrols/ChoiceFieldSetting'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from './fieldcontrols/ClientFieldSetting'
+import { ReactClientFieldSetting } from './fieldcontrols/ClientFieldSetting'
+import { ReactColorPickerFieldSetting } from './fieldcontrols/ColorPicker/ColorPickerFieldSetting'
 import { ReactDateTimeFieldSetting } from './fieldcontrols/DateTimeFieldSetting'
 import { ReactLongTextFieldSetting } from './fieldcontrols/LongTextFieldSetting'
 import { ReactNumberFieldSetting } from './fieldcontrols/Number/NumberFieldSetting'
@@ -34,7 +35,7 @@ import * as ViewControls from './viewcontrols'
  */
 
 const clientConfigFactory = (fieldSettings: FieldSetting) => {
-  const defaultSetting = {} as ReactClientFieldSettingProps
+  const defaultSetting = {} as ReactClientFieldSetting
   ;(defaultSetting.key = fieldSettings.Name),
     (defaultSetting.name = fieldSettings.Name as any),
     (defaultSetting.readOnly = fieldSettings.ReadOnly || false),
@@ -207,9 +208,9 @@ export const reactControlMapper = (repository: Repository) =>
         const avatarSettings = clientConfigFactory(setting) as ReactReferenceFieldSetting
         avatarSettings['data-selectionRoot'] = setting.SelectionRoots
         return avatarSettings
-      } else if (setting['Palette']) {
-        const colorPickerSettings = clientConfigFactory(setting) as ReactShortTextFieldSetting
-        colorPickerSettings['palette'] = setting['Palette']
+      } else if ((setting as any)['Palette']) {
+        const colorPickerSettings = clientConfigFactory(setting) as ReactColorPickerFieldSetting
+        colorPickerSettings['palette'] = (setting as any)['Palette']
         return colorPickerSettings
       } else {
         const nullFieldSettings = clientConfigFactory(setting) as ReactClientFieldSetting

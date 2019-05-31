@@ -7,7 +7,7 @@ import InputLabel from '@material-ui/core/InputLabel'
 import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
 import { PathHelper } from '@sensenet/client-utils'
-import { GenericContent } from '@sensenet/default-content-types'
+import { GenericContent, User } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { renderIconDefault } from '../icon'
@@ -97,14 +97,15 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
     const loadPath = this.props['content']
       ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props['content'].Path), '/', this.props.name.toString())
       : ''
-    const references = await this.props['data-repository'].loadCollection({
-      path: loadPath,
+    const references = await this.props.repository.load({
+      idOrPath: loadPath,
       oDataOptions: {
         select: 'all',
       },
     })
+    const avatar = (references.d as User).Avatar
     this.setState({
-      fieldValue: references.d.Avatar.Url.length > 0 ? references.d.Avatar.Url : '',
+      fieldValue: avatar && avatar.Url.length > 0 ? avatar.Url : '',
     })
     return references
   }
@@ -176,7 +177,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                 itemTemplate(this.state.fieldValue)
               ) : (
                 <DefaultAvatarTemplate
-                  repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
+                  repositoryUrl={this.props.repository.configuration.repositoryUrl}
                   url={this.state.fieldValue}
                   add={this.addItem}
                   remove={this.removeItem}
@@ -200,10 +201,11 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                       : `/Root/Profiles/Public/${this.props['content'].Name}/Document_Library`
                   }
                   allowedTypes={this.props['data-allowedTypes']}
-                  repository={this.props['data-repository']}
-                  select={content => this.selectItem(content)}
+                  repository={this.props.repository}
+                  // tslint:disable-next-line: no-unnecessary-type-annotation
+                  select={(content: GenericContent) => this.selectItem(content)}
                   selected={this.state.selected}
-                  repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
+                  repositoryUrl={this.props.repository.configuration.repositoryUrl}
                   renderIcon={this.props['data-renderIcon'] ? this.props['data-renderIcon'] : renderIconDefault}
                 />
                 <DialogActions>
@@ -234,7 +236,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                 itemTemplate(this.state.fieldValue)
               ) : (
                 <DefaultAvatarTemplate
-                  repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
+                  repositoryUrl={this.props.repository.configuration.repositoryUrl}
                   add={this.addItem}
                   actionName="new"
                   readOnly={this.props.readOnly}
@@ -255,13 +257,14 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                   path={
                     this.props['data-selectionRoot']
                       ? this.props['data-selectionRoot'][0]
-                      : this.props['data-uploadFolderPath']
+                      : this.props['data-uploadFolderPath'] || ''
                   }
                   allowedTypes={this.props['data-allowedTypes']}
-                  repository={this.props['data-repository']}
-                  select={content => this.selectItem(content)}
+                  repository={this.props.repository}
+                  // tslint:disable-next-line: no-unnecessary-type-annotation
+                  select={(content: GenericContent) => this.selectItem(content)}
                   selected={this.state.selected}
-                  repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
+                  repositoryUrl={this.props.repository.configuration.repositoryUrl}
                   renderIcon={this.props['data-renderIcon'] ? this.props['data-renderIcon'] : renderIconDefault}
                 />
                 <DialogActions>
@@ -284,7 +287,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
               dense={true}
               style={this.state.fieldValue.length > 0 ? styles.listContainer : { ...styles.listContainer, width: 200 }}>
               <DefaultAvatarTemplate
-                repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
+                repositoryUrl={this.props.repository.configuration.repositoryUrl}
                 url={this.state.fieldValue}
                 add={this.addItem}
                 actionName="browse"
@@ -303,7 +306,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
               dense={true}
               style={this.state.fieldValue.length > 0 ? styles.listContainer : { ...styles.listContainer, width: 200 }}>
               <DefaultAvatarTemplate
-                repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
+                repositoryUrl={this.props.repository.configuration.repositoryUrl}
                 url={this.state.fieldValue}
                 add={this.addItem}
                 actionName="browse"

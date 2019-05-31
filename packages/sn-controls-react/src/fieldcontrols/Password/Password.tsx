@@ -12,7 +12,6 @@ import Input from '@material-ui/core/Input'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import InputLabel from '@material-ui/core/InputLabel'
 import { GenericContent } from '@sensenet/default-content-types'
-import Radium from 'radium'
 import { renderIconDefault } from '../icon'
 
 /**
@@ -32,7 +31,6 @@ export interface PasswordState {
 /**
  * Field control that represents a Password field. Available values will be populated from the FieldSettings.
  */
-@Radium
 export class Password<T extends GenericContent, K extends keyof T> extends Component<
   PasswordProps<T, K>,
   PasswordState
@@ -73,8 +71,8 @@ export class Password<T extends GenericContent, K extends keyof T> extends Compo
    * handle change event on an input
    * @param {SytheticEvent} event
    */
-  public handleChange(event: React.ChangeEvent) {
-    this.setState({ value: event.target['value'] })
+  public handleChange(e: React.ChangeEvent) {
+    this.setState({ value: (e.target as HTMLInputElement).value })
   }
   /**
    * handle clicking on show password icon

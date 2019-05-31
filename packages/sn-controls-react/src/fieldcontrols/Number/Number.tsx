@@ -5,7 +5,6 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { GenericContent } from '@sensenet/default-content-types'
-import Radium from 'radium'
 import React, { Component } from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactNumberFieldSetting } from './NumberFieldSetting'
@@ -27,7 +26,6 @@ export interface NumberState<T extends GenericContent, K extends keyof T> {
 /**
  * Field control that represents a Number field. Available values will be populated from the FieldSettings.
  */
-@Radium
 export class Number<T extends GenericContent, K extends keyof T = 'Name'> extends Component<
   NumberProps<T, K>,
   NumberState<T, K>
@@ -48,8 +46,8 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
    */
   public handleChange(e: React.ChangeEvent) {
     const { name, onChange } = this.props
-    const value = e.target['value']
-    onChange(name, value)
+    const value = (e.target as HTMLInputElement).value
+    onChange(name, value as any)
   }
   /**
    * convert incoming default value string to proper format

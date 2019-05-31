@@ -9,7 +9,6 @@ import { ReactTextareaFieldSetting } from './TextareaFieldSetting'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { GenericContent } from '@sensenet/default-content-types'
-import Radium from 'radium'
 
 /**
  * Interface for Textarea properties
@@ -28,7 +27,6 @@ export interface TextareaState {
 /**
  * Field control that represents a LongText field. Available values will be populated from the FieldSettings.
  */
-@Radium
 export class Textarea<T extends GenericContent, K extends keyof T> extends Component<
   TextareaProps<T, K>,
   TextareaState
@@ -44,33 +42,23 @@ export class Textarea<T extends GenericContent, K extends keyof T> extends Compo
      * @property {string} value input value
      */
     this.state = {
-      value: this.setValue(this.props['data-fieldValue']).toString(),
+      value: this.props['data-fieldValue']
+        ? this.props['data-fieldValue'].replace(/<[^>]*>/g, '')
+        : this.props['data-defaultValue']
+        ? this.props['data-defaultValue']
+        : '',
     }
 
     this.handleChange = this.handleChange.bind(this)
   }
   /**
-   * returns default value of an input
-   * @param {string} value
-   */
-  public setValue(value: string) {
-    if (value) {
-      return value.replace(/<[^>]*>/g, '')
-    } else {
-      if (this.props['data-defaultValue']) {
-        return this.props['data-defaultValue']
-      } else {
-        return ''
-      }
-    }
-  }
-  /**
    * handle change event on an input
    * @param {SytheticEvent} event
    */
-  public handleChange(event: React.ChangeEvent) {
-    this.setState({ value: event.target['value'] })
-    this.props.onChange(this.props.name, event.target['value'])
+  public handleChange(e: React.ChangeEvent) {
+    const newValue = (e.target as HTMLInputElement).value
+    this.setState({ value: newValue })
+    this.props.onChange(this.props.name, newValue as any)
   }
   /**
    * render
@@ -92,6 +80,7 @@ export class Textarea<T extends GenericContent, K extends keyof T> extends Compo
             disabled={this.props.readOnly}
             error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
             multiline={true}
+            onChange={this.handleChange}
             fullWidth={true}
           />
         )
@@ -110,6 +99,7 @@ export class Textarea<T extends GenericContent, K extends keyof T> extends Compo
             error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
             multiline={true}
             fullWidth={true}
+            onChange={this.handleChange}
           />
         )
       case 'browse':

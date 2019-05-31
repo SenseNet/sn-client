@@ -8,7 +8,6 @@ import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel/InputLabel'
 import Typography from '@material-ui/core/Typography'
 import { GenericContent } from '@sensenet/default-content-types'
-import Radium from 'radium'
 import React, { Component } from 'react'
 import { ReactBinaryFieldSetting } from '../BinaryFieldSetting'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
@@ -50,7 +49,6 @@ export interface FileUploadState {
 /**
  * Field control that represents a FileUpload field. Available values will be populated from the FieldSettings.
  */
-@Radium
 export class FileUpload<T extends GenericContent, K extends keyof T> extends Component<
   FileUploadProps<T, K>,
   FileUploadState
@@ -96,9 +94,9 @@ export class FileUpload<T extends GenericContent, K extends keyof T> extends Com
    */
   public handleChange(e: React.ChangeEvent) {
     const { onChange } = this.props
-    const value = e.target['value']
+    const value = (e.target as HTMLInputElement).value
     this.setState({ value })
-    onChange(this.props.name, value)
+    onChange(this.props.name, value as any)
   }
   /**
    * Removes the saved reference
@@ -123,7 +121,7 @@ export class FileUpload<T extends GenericContent, K extends keyof T> extends Com
     }
     e.persist()
     e.target.files &&
-      (await this.props['data-repository'].upload.fromFileList({
+      (await this.props.repository.upload.fromFileList({
         fileList: e.target.files,
         createFolders: true,
         binaryPropertyName: 'Binary',
@@ -155,16 +153,9 @@ export class FileUpload<T extends GenericContent, K extends keyof T> extends Com
             <label style={styles.label} htmlFor={this.props.name as string}>
               {this.props['data-labelText']}
             </label>
-            {this.props['data-innerComponent'] ? (
-              this.props['data-innerComponent'](
-                this.state.filename,
-                `${this.props['data-folderPath']}/${this.state.filename}`,
-              )
-            ) : (
-              <Typography variant="body1" style={styles.value}>
-                {this.state.filename.length > 0 ? this.state.filename : this.props['data-placeHolderText']}
-              </Typography>
-            )}
+            <Typography variant="body1" style={styles.value}>
+              {this.state.filename.length > 0 ? this.state.filename : this.props['data-placeHolderText']}
+            </Typography>
             <div style={{ display: 'table-row' }}>
               <div style={{ position: 'relative', display: 'table-cell', minWidth: 100 }}>
                 <InputLabel htmlFor="raised-button-file" style={{ transform: 'translate(0, 4px) scale(1)' }}>

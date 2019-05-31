@@ -6,7 +6,6 @@ import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import Typography from '@material-ui/core/Typography'
 import { GenericContent } from '@sensenet/default-content-types'
-import Radium from 'radium'
 import React, { Component } from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
@@ -29,7 +28,6 @@ export interface RichTextEditorState {
 /**
  * Field control that represents a LongText field. Available values will be populated from the FieldSettings.
  */
-@Radium
 export class RichTextEditor<T extends GenericContent, K extends keyof T> extends Component<
   RichTextEditorProps<T, K>,
   RichTextEditorState

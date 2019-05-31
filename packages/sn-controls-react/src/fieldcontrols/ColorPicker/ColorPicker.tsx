@@ -8,7 +8,6 @@ import Icon from '@material-ui/core/Icon'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
 import { GenericContent } from '@sensenet/default-content-types'
-import Radium from 'radium'
 import React, { Component } from 'react'
 import { SketchPicker } from 'react-color'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
@@ -46,7 +45,6 @@ export interface ColorPickerState {
 /**
  * Field control that represents a Color field. Available values will be populated from the FieldSettings.
  */
-@Radium
 export class ColorPicker<T extends GenericContent, K extends keyof T> extends Component<
   ColorPickerProps<T, K>,
   ColorPickerState

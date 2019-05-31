@@ -51,9 +51,10 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
   /**
    * sets the selected value in the state
    */
-  public handleChange = (event: React.ChangeEvent) => {
-    this.setState({ value: event.target['value'] })
-    this.props.onChange(this.props.name, event.target['value'])
+  public handleChange = (e: React.ChangeEvent) => {
+    const newValue = (e.target as HTMLInputElement).value
+    this.setState({ value: newValue as any })
+    this.props.onChange(this.props.name, newValue as any)
   }
   /**
    * returns selected options value
@@ -111,7 +112,7 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
                   id: this.props.name,
                 } as any
               }
-              value={this.state.value[0]}
+              value={(this.state.value as any)[0]}
               multiple={this.props['data-allowMultiple']}
               autoWidth={true}
               fullWidth={true}>

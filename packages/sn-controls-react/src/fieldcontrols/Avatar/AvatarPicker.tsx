@@ -60,8 +60,8 @@ export function AvatarPicker(props: AvatarPickerProps) {
   }, [isLoading])
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (props['data-onChange']) {
-      props['data-onChange']()
+    if ((props as any)['data-onChange']) {
+      ;(props as any)['data-onChange']()
     }
     e.persist()
     e.target.files &&
