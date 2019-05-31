@@ -16,6 +16,7 @@ import { ListToolbar } from '../components/ListToolbar'
 import {
   loadMore,
   loadParent,
+  resetSearchValues,
   select,
   setActive,
   updateChildrenOptions,
@@ -74,6 +75,7 @@ const mapDispatchToProps = {
   updateChildrenOptions,
   updateContent,
   updateSearchValues,
+  resetSearchValues,
 }
 
 interface DocumentLibraryProps extends RouteComponentProps<any> {
@@ -183,6 +185,8 @@ class DocumentLibrary extends React.Component<
   }
 
   public handleRowDoubleClick(_e: React.MouseEvent, content: GenericContent) {
+    this.props.resetSearchValues()
+    this.props.updateChildrenOptions({ query: '' })
     if (content.IsFolder) {
       const newPath = compile(this.props.match.path)({ folderPath: btoa(content.Path) })
       this.props.history.push(newPath)

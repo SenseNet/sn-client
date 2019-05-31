@@ -169,8 +169,8 @@ class Registration extends React.Component<
       })
     } else if (!this.validatePassword(e.target.value)) {
       this.setState({
-        passwordErrorMessage: resources.PASSWORD_SHOULD_BE_VALID,
-        passwordError: true,
+        confirmPasswordErrorMessage: resources.PASSWORD_SHOULD_BE_VALID,
+        confirmPasswordError: true,
       })
     } else {
       this.setState({

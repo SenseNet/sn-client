@@ -52,7 +52,7 @@ describe('registrationDone reducer', () => {
     expect(DMSReducers.registrationDone(undefined, { type: '' })).toEqual(false)
   })
   it('should return true after registration success', () => {
-    expect(DMSReducers.registrationDone(undefined, { type: 'USER_REGISTRATION_SUCCESS' })).toEqual(true)
+    expect(DMSReducers.registrationDone(undefined, { type: 'USER_REGISTRATION_REQUEST_SUCCESS' })).toEqual(true)
   })
   it('should return false after a registration request', () => {
     expect(
