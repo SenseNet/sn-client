@@ -45,7 +45,7 @@ export class RepositoryConfiguration {
   /**
    * This parameter describes what fields should always be included in the OData $select statements
    */
-  public requiredSelect: ODataFieldParameter<GenericContent> = ['Id', 'Path', 'Name', 'Type']
+  public requiredSelect: ODataFieldParameter<GenericContent> | 'all' = ['Id', 'Path', 'Name', 'Type']
 
   /**
    * This field sets the default OData $metadata value

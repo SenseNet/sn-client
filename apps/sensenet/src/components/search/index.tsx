@@ -110,7 +110,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
   return (
     <div style={{ padding: '1em', margin: '1em', height: '100%', width: '100%' }}>
       <Typography variant="h5">{localization.title}</Typography>
-      <div style={{ display: 'flex', alignItem: 'center' }}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
         <div style={{ marginLeft: '1em', width: '100%', display: 'flex' }}>
           <TextField
             label={localization.queryLabel}

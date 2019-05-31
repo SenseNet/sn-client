@@ -34,7 +34,7 @@ export interface EditViewProps<T extends GenericContent = GenericContent> {
  */
 export interface EditViewState<T extends GenericContent = GenericContent> {
   content: T
-  schema: ControlSchema<React.Component, ReactClientFieldSettingProps>
+  schema: ControlSchema<React.Component<any, any, any>, ReactClientFieldSettingProps>
   saveableContent: T
 }
 
