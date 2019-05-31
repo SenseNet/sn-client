@@ -29,6 +29,12 @@ export class ControlMapper<TControlBaseType, TClientControlSettings> {
     const schema = this.repository.schemas.getSchemaByName(contentTypeName)
 
     schema.FieldSettings = schema.FieldSettings.filter(s => {
+      if (
+        (contentTypeName === 'Folder' && s.Name === 'AllowedChildTypes') ||
+        (contentTypeName === 'SystemFolder' && s.Name === 'AllowedChildTypes')
+      ) {
+        return null
+      }
       switch (actionName) {
         case 'new':
           return s.VisibleNew !== FieldVisibility.Hide
