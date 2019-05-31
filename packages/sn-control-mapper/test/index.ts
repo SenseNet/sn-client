@@ -171,4 +171,20 @@ export const controlMapperTests = describe('ControlMapper', () => {
       expect(m.controlType).toBe(ExampleDefaultFieldControl)
     })
   })
+
+  it('getFullSchemaForContentType with the type Folder should skip AllowedChildTypes', () => {
+    const mapping = mapper.getFullSchemaForContentType('Folder', 'new').fieldMappings
+    expect(mapping.length).toBeGreaterThan(0)
+    mapping.forEach(m => {
+      expect(m.clientSettings.setting.Name).not.toBe('AllowedChildTypes')
+    })
+  })
+
+  it('getFullSchemaForContentType with the type SystemFolder should skip AllowedChildTypes', () => {
+    const mapping = mapper.getFullSchemaForContentType('SystemFolder', 'new').fieldMappings
+    expect(mapping.length).toBeGreaterThan(0)
+    mapping.forEach(m => {
+      expect(m.clientSettings.setting.Name).not.toBe('AllowedChildTypes')
+    })
+  })
 })

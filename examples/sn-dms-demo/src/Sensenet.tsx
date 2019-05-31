@@ -61,6 +61,18 @@ class Sensenet extends React.Component<SensenetProps & ReturnType<typeof mapStat
           <HashRouter>
             <Switch>
               <AuthorizedRoute
+                path="/wopi"
+                authorize={() => this.props.loginState !== LoginState.Unauthenticated}
+                redirectOnUnauthorized="/"
+                render={routerProps => {
+                  const LoadableEditor = Loadable({
+                    loader: () => import(/* webpackChunkName: "editor" */ './pages/Editor'),
+                    loading: () => <FullScreenLoader />,
+                  })
+                  return <LoadableEditor {...routerProps} currentId={0} />
+                }}
+              />
+              <AuthorizedRoute
                 exact={true}
                 path="/login"
                 authorize={() => this.props.loginState !== LoginState.Authenticated}
@@ -99,7 +111,6 @@ class Sensenet extends React.Component<SensenetProps & ReturnType<typeof mapStat
                   return <LoadableDashboard {...routerProps} currentId={0} />
                 }}
               />
-
               {/* Not found */}
               <Route path="*" exact={true}>
                 <Redirect to="/" />
