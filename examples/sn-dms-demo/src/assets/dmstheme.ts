@@ -14,11 +14,6 @@ export const dmsTheme = createMuiTheme({
         marginBottom: 10,
       },
     },
-    MuiGrid: {
-      'spacing-xs-16': {
-        marginBottom: 0,
-      },
-    },
     MuiListItemText: {
       primary: {
         [theme.breakpoints.down('md')]: {

@@ -25,15 +25,13 @@ export const pickerTheme = createMuiTheme({
       },
     },
     MuiTypography: {
-      title: {
+      h6: {
         fontFamily: 'Raleway Semibold',
         fontSize: 18,
         flex: 1,
+        paddingLeft: theme.spacing(2),
       },
-      h6: {
-        paddingLeft: theme.spacing.unit * 2,
-      },
-      subheading: {
+      subtitle1: {
         fontFamily: 'Raleway Medium',
         fontSize: 15,
         '&.selected, &.active': {
@@ -123,7 +121,7 @@ export const pickerTheme = createMuiTheme({
           color: '#016D9E',
         },
       },
-      action: {
+      spacing: {
         margin: 0,
       },
     },

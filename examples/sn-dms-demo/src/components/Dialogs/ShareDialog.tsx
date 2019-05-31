@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
@@ -154,9 +154,9 @@ class ShareDialog extends React.Component<
     console.log('Share form submitted, payload:', this.state)
   }
 
-  public handleAddTypeChange(ev: React.ChangeEvent) {
+  public handleAddTypeChange(event: ChangeEvent<{ name?: string | undefined; value: unknown }>) {
     this.setState({
-      addType: (ev.target as any).value,
+      addType: (event.target as any).value,
     })
   }
 
