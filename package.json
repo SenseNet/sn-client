@@ -91,7 +91,8 @@
       "<rootDir>/packages/sn-search-react",
       "<rootDir>/packages/sn-redux-promise-middleware",
       "<rootDir>/packages/sn-pickers-react",
-      "<rootDir>/packages/sn-icons-react"
+      "<rootDir>/packages/sn-icons-react",
+      "<rootDir>/packages/sn-controls-react"
     ],
     "transform": {
       "^.+\\.(ts|tsx)$": "ts-jest",
