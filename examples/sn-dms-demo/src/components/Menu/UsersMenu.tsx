@@ -1,5 +1,5 @@
+import { ListItemIcon, Typography } from '@material-ui/core'
 import Divider from '@material-ui/core/Divider'
-import ListItemText from '@material-ui/core/ListItemText'
 import MenuItem from '@material-ui/core/MenuItem'
 import withStyles, { StyleRulesCallback } from '@material-ui/core/styles/withStyles'
 import { Icon, iconType } from '@sensenet/icons-react'
@@ -133,17 +133,15 @@ class UsersMenu extends Component<UsersMenuProps & ReturnType<typeof mapStateToP
               : { root: classes.rootMobile, selected: classes.selectedMobile }
           }
           onClick={_e => this.handleMenuItemClick('users')}>
-          <Icon
-            className={active ? classes.iconWhiteActive : classes.iconWhite}
-            color="primary"
-            type={iconType.materialui}
-            iconName={item.icon}
-          />
-          <ListItemText
-            classes={{ primary: active ? classes.primaryActive : classes.primary }}
-            inset={true}
-            primary={item.title}
-          />
+          <ListItemIcon>
+            <Icon
+              className={active ? classes.iconWhiteActive : classes.iconWhite}
+              color="primary"
+              type={iconType.materialui}
+              iconName={item.icon}
+            />
+          </ListItemIcon>
+          <Typography classes={{ root: active ? classes.primaryActive : classes.primary }}>{item.title}</Typography>
         </MenuItem>
         <div
           className={active && allowedTypes.findIndex(ctd => ctd.Name === 'User') > -1 ? classes.open : classes.closed}>

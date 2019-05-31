@@ -1,3 +1,4 @@
+import { Typography } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
@@ -134,11 +135,7 @@ export class UploadButton extends React.Component<UploadButtonProps, UploadButto
                     />
                   </div>
                 </ListItemIcon>
-                <ListItemText
-                  style={styles.text}
-                  primary={resources.UPLOAD_BUTTON_UPLOAD_FILE_TITLE}
-                  disableTypography={true}
-                />
+                <Typography style={styles.text}>{resources.UPLOAD_BUTTON_UPLOAD_FILE_TITLE}</Typography>
               </MenuItem>
             </label>
             <label htmlFor={this.uploadFolderButtonId} tabIndex={-1} style={{ outline: 'none' }}>

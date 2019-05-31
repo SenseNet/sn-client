@@ -1,5 +1,5 @@
+import { ListItemIcon, Typography } from '@material-ui/core'
 import Divider from '@material-ui/core/Divider'
-import ListItemText from '@material-ui/core/ListItemText'
 import MenuItem from '@material-ui/core/MenuItem'
 import MenuList from '@material-ui/core/MenuList'
 import withStyles, { StyleRulesCallback } from '@material-ui/core/styles/withStyles'
@@ -183,17 +183,17 @@ class DocumentsMenu extends React.Component<
                     : { root: classes.rootMobile, selected: classes.selectedMobile }
                 }
                 onClick={() => this.handleMenuItemClick('documents')}>
-                <Icon
-                  className={active ? classes.iconWhiteActive : classes.iconWhite}
-                  color="primary"
-                  type={iconType.materialui}
-                  iconName={item.icon}
-                />
-                <ListItemText
-                  classes={{ primary: active ? classes.primaryActive : classes.primary }}
-                  inset={true}
-                  primary={item.title}
-                />
+                <ListItemIcon>
+                  <Icon
+                    className={active ? classes.iconWhiteActive : classes.iconWhite}
+                    color="primary"
+                    type={iconType.materialui}
+                    iconName={item.icon}
+                  />
+                </ListItemIcon>
+                <Typography classes={{ root: active ? classes.primaryActive : classes.primary }}>
+                  {item.title}
+                </Typography>
               </MenuItem>
               <div className={active ? classes.open : classes.closed}>
                 {matches ? (
@@ -229,18 +229,20 @@ class DocumentsMenu extends React.Component<
                         className={matches ? classes.submenuItem : classes.submenuItemMobile}
                         key={index}
                         onClick={() => this.handleSubmenuItemClick(menuitem.name)}>
-                        <Icon
-                          className={subactive === menuitem.name ? classes.submenuIconActive : classes.submenuIcon}
-                          type={iconType.materialui}
-                          iconName={menuitem.icon}
-                        />
-                        <ListItemText
+                        <ListItemIcon>
+                          <Icon
+                            className={subactive === menuitem.name ? classes.submenuIconActive : classes.submenuIcon}
+                            type={iconType.materialui}
+                            iconName={menuitem.icon}
+                          />
+                        </ListItemIcon>
+                        <Typography
                           classes={{
-                            primary: subactive === menuitem.name ? classes.primarySubActive : classes.primarySub,
+                            root: subactive === menuitem.name ? classes.primarySubActive : classes.primarySub,
                           }}
-                          inset={true}
-                          primary={menuitem.title}
-                        />
+                          variant="inherit">
+                          {menuitem.title}
+                        </Typography>
                       </MenuItem>
                     )
                   })}

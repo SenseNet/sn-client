@@ -1,10 +1,10 @@
 import Divider from '@material-ui/core/Divider'
 import Drawer from '@material-ui/core/Drawer'
-import ListItemText from '@material-ui/core/ListItemText'
 import MenuItem from '@material-ui/core/MenuItem'
 import MenuList from '@material-ui/core/MenuList'
 import withStyles, { StyleRulesCallback } from '@material-ui/core/styles/withStyles'
 
+import { ListItemIcon, Typography } from '@material-ui/core'
 import { ActionModel } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import { Actions } from '@sensenet/redux'
@@ -311,25 +311,27 @@ class DashboardDrawer extends Component<
                             : { root: classes.rootMobile, selected: classes.selectedMobile }
                         }
                         onClick={event => this.handleMenuItemClick(event, action)}>
-                        <Icon
-                          type={iconType.materialui}
-                          iconName={icons[action.Icon]}
-                          className={
-                            matches
-                              ? active
+                        <ListItemIcon>
+                          <Icon
+                            type={iconType.materialui}
+                            iconName={icons[action.Icon]}
+                            className={
+                              matches
+                                ? active
+                                  ? classes.iconWhiteActive
+                                  : classes.iconWhite
+                                : active
                                 ? classes.iconWhiteActive
-                                : classes.iconWhite
-                              : active
-                              ? classes.iconWhiteActive
-                              : classes.iconWhiteMobile
-                          }
-                          color="primary"
-                        />
-                        <ListItemText
-                          classes={{ primary: active ? classes.primaryActive : classes.primary }}
-                          inset={true}
-                          primary={action.DisplayName}
-                        />
+                                : classes.iconWhiteMobile
+                            }
+                            color="primary"
+                          />
+                        </ListItemIcon>
+                        <Typography
+                          classes={{ root: active ? classes.primaryActive : classes.primary }}
+                          variant="inherit">
+                          {action.DisplayName}
+                        </Typography>
                       </MenuItem>
                       <Divider light={true} />
                     </div>
