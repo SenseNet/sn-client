@@ -19,7 +19,6 @@ const styles = {
   },
   icon: {
     flexShrink: 0,
-    marginRight: 14,
   },
   text: {
     padding: 0,

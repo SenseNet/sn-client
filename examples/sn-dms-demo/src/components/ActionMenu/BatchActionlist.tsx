@@ -49,7 +49,6 @@ const styles = {
   },
   actionIcon: {
     color: '#016D9E',
-    marginRight: 14,
   },
 }
 

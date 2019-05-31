@@ -107,7 +107,6 @@ export const pickerTheme = createMuiTheme({
     MuiListItemIcon: {
       root: {
         color: '#b0b0b0',
-        marginRight: 10,
       },
     },
     MuiDialogActions: {
@@ -126,7 +125,7 @@ export const pickerTheme = createMuiTheme({
       },
     },
     MuiButton: {
-      raised: {
+      contained: {
         [theme.breakpoints.down('md')]: {
           background: '#fff',
           color: '#016D9E',
