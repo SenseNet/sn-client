@@ -43,7 +43,7 @@ const values: DeepPartial<typeof import('./default').default> = {
     setupSecondaryText: 'A rendszer beállításai',
     usersAndGroupsTitle: 'Felhasználók és csoportok',
     usersAndGroupsSecondaryText: 'Felhasználó és csoport kezelése, szerkesztése',
-    versionInfoTitle: 'Version info',
+    versionInfoTitle: 'Verzió névjegye',
     versionInfoSecondaryText: 'Információk a telepített csomagokról és a verzióikról',
     personalSettingsTitle: 'Személyes beállítások',
     personalSettingsSecondaryText: 'Az alkalmazás testre szabása',
