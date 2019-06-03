@@ -98,9 +98,9 @@ storiesOf('FieldControls.AllowedChildTypes', module)
     () => (
       <div>
         <div style={{ fontStyle: 'italic', fontSize: 13 }}>
-          To see this control in action, please login at
-          <a target="_blank" href="https://dmsservice.demo.sensenet.com/">
-            https://dmsservice.demo.sensenet.com/
+          To see this control in action, please login at{' '}
+          <a target="_blank" href="https://devservice.demo.sensenet.com">
+            https://devservice.demo.sensenet.com
           </a>
         </div>
         <br />
@@ -114,6 +114,10 @@ storiesOf('FieldControls.AllowedChildTypes', module)
           data-hintText={text('Hint', 'AllowedChildTypes hint')}
           repository={testRepository}
           content={testContent}
+          data-defaultValue={[
+            { Name: 'Folder', DisplayName: 'Folder', Icon: 'Folder' } as GenericContent,
+            { Name: 'File', DisplayName: 'File', Icon: 'file' } as GenericContent,
+          ]}
         />
       </div>
     ),
@@ -124,9 +128,9 @@ storiesOf('FieldControls.AllowedChildTypes', module)
     () => (
       <div>
         <div style={{ fontStyle: 'italic', fontSize: 13 }}>
-          To see this control in action, please login at
-          <a target="_blank" href="https://dmsservice.demo.sensenet.com/">
-            https://dmsservice.demo.sensenet.com/
+          To see this control in action, please login at{' '}
+          <a target="_blank" href="https://devservice.demo.sensenet.com">
+            https://devservice.demo.sensenet.com
           </a>
         </div>
         <br />
@@ -150,9 +154,9 @@ storiesOf('FieldControls.AllowedChildTypes', module)
     () => (
       <div>
         <div style={{ fontStyle: 'italic', fontSize: 13 }}>
-          To see this control in action, please login at
-          <a target="_blank" href="https://dmsservice.demo.sensenet.com/">
-            https://dmsservice.demo.sensenet.com/
+          To see this control in action, please login at{' '}
+          <a target="_blank" href="https://devservice.demo.sensenet.com">
+            https://devservice.demo.sensenet.com
           </a>
         </div>
         <br />
@@ -252,7 +256,6 @@ storiesOf('FieldControls.Avatar', module)
         data-hintText={text('Hint', 'Avatar hint')}
         dataSource={referenceGridDataSource}
         repository={testRepository}
-        data-repository={testRepository}
         data-selectionRoot={['/demoavatars']}
         content={
           {
@@ -260,7 +263,7 @@ storiesOf('FieldControls.Avatar', module)
             Id: 4,
             Icon: 'user',
             Type: 'User',
-            Avatar: { Url: 'https://dmsservice.demo.sensenet.com/Root/Sites/Default_Site/demoavatars/alba.jpg' },
+            Avatar: { Url: 'https://devservice.demo.sensenet.comRoot/Sites/Default_Site/demoavatars/alba.jpg' },
           } as User
         }
       />
@@ -280,7 +283,6 @@ storiesOf('FieldControls.Avatar', module)
         data-hintText={text('Hint', 'Avatar hint')}
         dataSource={referenceGridDataSource}
         repository={testRepository}
-        data-repository={testRepository}
         data-fieldValue="/Root/Sites/Default_Site/demoavatars/alba.jpg"
         data-selectionRoot={['/demoavatars']}
         content={
@@ -289,7 +291,7 @@ storiesOf('FieldControls.Avatar', module)
             Id: 4,
             Icon: 'user',
             Type: 'User',
-            Avatar: { Url: 'https://dmsservice.demo.sensenet.com/Root/Sites/Default_Site/demoavatars/alba.jpg' },
+            Avatar: { Url: 'https://devservice.demo.sensenet.comRoot/Sites/Default_Site/demoavatars/alba.jpg' },
           } as User
         }
       />
@@ -314,7 +316,7 @@ storiesOf('FieldControls.Avatar', module)
             Id: 4,
             Icon: 'user',
             Type: 'User',
-            Avatar: { Url: 'https://dmsservice.demo.sensenet.com/Root/Sites/Default_Site/demoavatars/alba.jpg' },
+            Avatar: { Url: 'https://devservice.demo.sensenet.comRoot/Sites/Default_Site/demoavatars/alba.jpg' },
           } as User
         }
       />
@@ -808,8 +810,8 @@ storiesOf('FieldControls.FileUpload', module)
         className={text('Additional class name', 'fileupload-field')}
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-hintText={text('Hint', 'FileUpload hint')}
+        repository={testRepository}
         name="Name"
-        data-repository={testRepository}
       />
     ),
     { notes: { markdown: fileUploadNotes } },
@@ -1207,7 +1209,6 @@ storiesOf('FieldControls.ReferenceGrid', module)
         data-fieldValue={undefined}
         dataSource={referenceGridDataSource}
         repository={testRepository}
-        data-repository={testRepository}
         data-selectionRoot={['/workspaces']}
         data-allowedTypes={['File']}
       />
@@ -1229,7 +1230,6 @@ storiesOf('FieldControls.ReferenceGrid', module)
         name="Name"
         dataSource={referenceGridDataSource}
         repository={testRepository}
-        data-repository={testRepository}
         data-selectionRoot={['/workspaces']}
         data-allowedTypes={['File']}
         data-allowMultiple={true}
@@ -1250,13 +1250,12 @@ storiesOf('FieldControls.ReferenceGrid', module)
             Id: 4,
             Icon: 'user',
             Type: 'User',
-            Avatar: { Url: 'https://dmsservice.demo.sensenet.com/Root/Sites/Default_Site/demoavatars/alba.jpg' },
+            Avatar: { Url: 'https://devservice.demo.sensenet.comRoot/Sites/Default_Site/demoavatars/alba.jpg' },
           } as User
         }
         onChange={action('change')}
         name="Name"
         dataSource={tagsInputDataSource}
-        data-repository={testRepository}
         repository={testRepository}
       />
     ),
