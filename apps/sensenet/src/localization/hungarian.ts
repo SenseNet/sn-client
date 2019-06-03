@@ -38,7 +38,7 @@ const values: DeepPartial<typeof import('./default').default> = {
     contentTitle: 'Tartalom',
     contentSecondaryText: 'Tartalom böngészése',
     searchTitle: 'Keresés',
-    searchSecondaryText: 'Testre szabott keresések futtatása és mentése későbbi használatra',
+    searchSecondaryText: 'Testreszabott keresések futtatása és mentése későbbi használatra',
     setupTitle: 'Beállítás',
     setupSecondaryText: 'A rendszer beállításai',
     usersAndGroupsTitle: 'Felhasználók és csoportok',
@@ -46,7 +46,7 @@ const values: DeepPartial<typeof import('./default').default> = {
     versionInfoTitle: 'Verzió névjegye',
     versionInfoSecondaryText: 'Információk a telepített csomagokról és a verzióikról',
     personalSettingsTitle: 'Személyes beállítások',
-    personalSettingsSecondaryText: 'Az alkalmazás testre szabása',
+    personalSettingsSecondaryText: 'Az alkalmazás testreszabása',
   },
   editPropertiesDialog: {
     dialogTitle: '{0} tulajdonságainak szerkesztése',
