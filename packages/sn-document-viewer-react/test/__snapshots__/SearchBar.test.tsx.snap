@@ -1,20 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SearchBar component Should render without crashing 1`] = `
-<WithStyles(Grid)
+<WithStyles(ForwardRef(Grid))
   alignItems="center"
   container={true}
   spacing={8}
 >
-  <WithStyles(Grid)
+  <WithStyles(ForwardRef(Grid))
     item={true}
   >
-    <pure(SearchIcon) />
-  </WithStyles(Grid)>
-  <WithStyles(Grid)
+    <SearchIcon />
+  </WithStyles(ForwardRef(Grid))>
+  <WithStyles(ForwardRef(Grid))
     item={true}
   >
-    <TextField
+    <WithStyles(ForwardRef(TextField))
       inputProps={
         Object {
           "style": Object {
@@ -26,11 +26,8 @@ exports[`SearchBar component Should render without crashing 1`] = `
       onKeyPress={[Function]}
       onSubmit={[Function]}
       placeholder="placeholder"
-      required={false}
-      select={false}
       type="text"
-      variant="standard"
     />
-  </WithStyles(Grid)>
-</WithStyles(Grid)>
+  </WithStyles(ForwardRef(Grid))>
+</WithStyles(ForwardRef(Grid))>
 `;
