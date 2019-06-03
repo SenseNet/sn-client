@@ -21,4 +21,16 @@ describe('DeepMerge tests', () => {
   it('Should merge nested objects', () => {
     expect(deepMerge({ a: 1, b: { a: 1, b: 2 } }, { b: { a: 3 } })).toEqual({ a: 1, b: { a: 3, b: 2 } })
   })
+
+  it('Should respect falsy but defined values (false)', () => {
+    expect(deepMerge({ a: true }, { a: false })).toEqual({ a: false })
+  })
+
+  it('Should respect falsy but defined values (empty string)', () => {
+    expect(deepMerge({ a: 'asdasd' }, { a: '' })).toEqual({ a: '' })
+  })
+
+  it('Should respect falsy but defined values (zero)', () => {
+    expect(deepMerge({ a: 654 }, { a: 0 })).toEqual({ a: 0 })
+  })
 })
