@@ -106,7 +106,11 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
      * @property {string} value input value
      */
     this.state = {
-      value: this.setValue(this.props['data-fieldValue']) as string[],
+      value: this.props['data-fieldValue']
+        ? (this.props['data-fieldValue'] as string[])
+        : this.props['data-defaultValue']
+        ? (this.props['data-defaultValue'] as string[])
+        : [],
       effectiveAllowedChildTypes: [],
       allowedTypesOnCTD: [],
       items: [],
@@ -116,7 +120,6 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       inputValue: '',
       isOpened: false,
       anchorEl: null as any,
-      // tslint:disable-next-line: no-unnecessary-type-annotation
       getMenuItem: (item: T, select: (item: T) => void) => (
         <ListItem key={item.Id} value={item.Id} onClick={() => select(item)} style={{ margin: 0 }}>
           <ListItemIcon
@@ -141,21 +144,6 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
     this.handleClickAway = this.handleClickAway.bind(this)
     this.getAllowedChildTypes()
     this.getAllContentTypes()
-  }
-  /**
-   * convert incoming default value string to proper format
-   * @param {string} value
-   */
-  public setValue(value: string) {
-    if (value && value.length > 0) {
-      return value
-    } else {
-      if (this.props['data-defaultValue']) {
-        return this.props['data-defaultValue']
-      } else {
-        return []
-      }
-    }
   }
   /**
    * component will unmount
