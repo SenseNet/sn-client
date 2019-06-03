@@ -267,6 +267,14 @@ const values = {
         'When a user is created, and the profile feature is enabled (in the app configuration), they automatically get a profile – a workspace dedicated to the user’s personal documents and tasks. In this setting section you can customize the content type and the place of this profile. ',
     },
   },
+  customActions: {
+    executeCustomActionDialog: {
+      title: `Execute custom action '{0}' on content '{1}'`,
+      noParameters: 'The action does not have any parameters',
+      cancelButton: 'Cancel',
+      executeButton: 'Execute',
+    },
+  },
 }
 
 export default values

@@ -1,6 +1,6 @@
 import Button from '@material-ui/core/Button'
 import { PathHelper } from '@sensenet/client-utils'
-import { File as SnFile, GenericContent, Settings } from '@sensenet/default-content-types'
+import { ActionModel, File as SnFile, GenericContent, Settings } from '@sensenet/default-content-types'
 import { Uri } from 'monaco-editor'
 import React, { useContext, useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
@@ -10,7 +10,7 @@ import { useContentRouting, useLocalization, useLogger, useRepository, useTheme 
 import { isContentFromType } from '../../utils/isContentFromType'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 
-const getMonacoModelUri = (content: GenericContent) => {
+export const getMonacoModelUri = (content: GenericContent, action?: ActionModel) => {
   if (isContentFromType(content, Settings) || content.Type === 'PersonalSettings') {
     return Uri.parse(`sensenet://${content.Type}/${content.Name}`)
   }
@@ -19,6 +19,11 @@ const getMonacoModelUri = (content: GenericContent) => {
       return Uri.parse(`sensenet://${content.Type}/${content.Binary.__mediaresource.content_type}`)
     }
   }
+
+  if (action) {
+    return Uri.parse(`sensenet://${content.Type}/${action.Url}`)
+  }
+
   return Uri.parse(`sensenet://${content.Type}`)
 }
 

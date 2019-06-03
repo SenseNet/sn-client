@@ -1,5 +1,5 @@
 import { Injectable } from '@furystack/inject'
-import { Repository } from '@sensenet/client-core'
+import { MetadataAction, Repository } from '@sensenet/client-core'
 import { ObservableValue } from '@sensenet/client-utils'
 import { ActionModel, GenericContent } from '@sensenet/default-content-types'
 import { CommandPaletteItem } from '../../store/CommandPalette'
@@ -9,7 +9,13 @@ import { SelectionService } from '../SelectionService'
 
 @Injectable({ lifetime: 'singleton' })
 export class CustomActionCommandProvider implements CommandProvider {
-  public onExecuteAction = new ObservableValue<{ content: GenericContent; action: ActionModel }>()
+  public onExecuteAction = new ObservableValue<{
+    content: GenericContent
+    action: ActionModel
+    metadata?: MetadataAction
+  }>()
+
+  public onActionExecuted = new ObservableValue<{ content: GenericContent; action: ActionModel; response: any }>()
 
   public shouldExec(term: string) {
     return this.selectionService.activeContent.getValue() && term.length > 2 && term.startsWith('>') ? true : false
@@ -30,15 +36,6 @@ export class CustomActionCommandProvider implements CommandProvider {
       },
     })
     const actions = (result.d.Actions as ActionModel[]) || []
-
-    const typeNames = new Set(
-      [
-        ...((result.d.__metadata && result.d.__metadata.actions) || []),
-        ...((result.d.__metadata && result.d.__metadata.functions) || []),
-      ]
-        .map(a => a.parameters.map(param => param.type))
-        .reduce((flat, next) => [...flat, ...next], []),
-    )
 
     return actions
       .filter(a => a.Name.toLowerCase().includes(filteredTerm) || a.DisplayName.toLowerCase().includes(filteredTerm))
@@ -61,12 +58,7 @@ export class CustomActionCommandProvider implements CommandProvider {
           content,
           hits: [filteredTerm],
           openAction: () =>
-            console.log({
-              action: a,
-              metadata: actionMetadata || functionMetadata,
-              type: actionMetadata ? 'action' : 'function',
-              typeNames: Array.from(typeNames.values()),
-            }),
+            this.onExecuteAction.setValue({ action: a, content, metadata: actionMetadata || functionMetadata }),
         } as CommandPaletteItem
       })
   }

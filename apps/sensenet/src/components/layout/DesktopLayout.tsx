@@ -4,6 +4,7 @@ import { useContext } from 'react'
 import snLogo from '../../assets/sensenet_logo_transparent.png'
 import { ResponsivePersonalSetttings } from '../../context'
 import { DesktopAppBar } from '../appbar/DesktopAppBar'
+import { ExecuteActionDialog } from '../dialogs/execute-action'
 import { PermanentDrawer } from '../drawer/PermanentDrawer'
 import { TemporaryDrawer } from '../drawer/TemporaryDrawer'
 
@@ -23,6 +24,7 @@ export const DesktopLayout: React.FunctionComponent = props => {
         height: '100%',
       }}>
       <CssBaseline />
+      <ExecuteActionDialog />
       <DesktopAppBar openDrawer={() => setTempDrawerOpened(!tempDrawerOpened)} />
       <div
         style={{
