@@ -45,21 +45,6 @@ export class TimePicker<T extends GenericContent, K extends keyof T> extends Rea
       value: props['data-fieldValue'] ? props['data-fieldValue'] : props['data-defaultValue'],
     }
   }
-
-  /**
-   * convert string to proper date format
-   * @param {string} value
-   */
-  public setValue(value: string) {
-    // TODO: check datetimemode and return a value based on this property
-    let date = ''
-    if (value) {
-      date = value.split('T')[0]
-    } else {
-      date = new Date().toISOString().split('T')[0]
-    }
-    return date
-  }
   /**
    * handle changes
    * @param {Date} date
