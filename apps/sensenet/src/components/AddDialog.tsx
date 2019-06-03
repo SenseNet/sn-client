@@ -17,7 +17,7 @@ export const AddDialog: React.FunctionComponent<AddDialogProps> = ({ dialogProps
   const localization = useContext(LocalizationContext).values.addButton
   const repo = useContext(RepositoryContext)
 
-  const handleClose = () => dialogProps.onClose && dialogProps.onClose(null as any)
+  const handleClose = () => dialogProps.onClose && dialogProps.onClose(null as any, 'backdropClick')
   const logger = useContext(LoggerContext).withScope('AddDialog')
 
   return (

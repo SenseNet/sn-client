@@ -8,9 +8,6 @@ const theme: ThemeOptions = {
     primary: indigo,
     secondary: teal,
   },
-  typography: {
-    useNextVariants: true,
-  },
   overrides: {
     MuiList: {
       root: {

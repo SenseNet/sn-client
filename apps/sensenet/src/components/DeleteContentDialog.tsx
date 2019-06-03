@@ -63,7 +63,7 @@ export const DeleteContentDialog: React.FunctionComponent<{
         <div>
           <Button
             disabled={isDeleteInProgress}
-            onClick={ev => props.dialogProps.onClose && props.dialogProps.onClose(ev)}>
+            onClick={ev => props.dialogProps.onClose && props.dialogProps.onClose(ev, 'backdropClick')}>
             {localization.cancelButton}
           </Button>
           <Button
@@ -98,7 +98,7 @@ export const DeleteContentDialog: React.FunctionComponent<{
                 })
               } finally {
                 setIsDeleteInProgress(false)
-                props.dialogProps.onClose && props.dialogProps.onClose(ev)
+                props.dialogProps.onClose && props.dialogProps.onClose(ev, 'backdropClick')
               }
             }}>
             {localization.deleteButton}
