@@ -109,7 +109,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       value: this.props['data-fieldValue']
         ? (this.props['data-fieldValue'] as string[])
         : this.props['data-defaultValue']
-        ? (this.props['data-defaultValue'] as string[])
+        ? (this.props['data-defaultValue'] as any)
         : [],
       effectiveAllowedChildTypes: [],
       allowedTypesOnCTD: [],

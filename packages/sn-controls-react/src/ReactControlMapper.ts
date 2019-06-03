@@ -151,7 +151,7 @@ export const reactControlMapper = (repository: Repository) =>
       ;(referenceSettings['data-allowMultiple'] = setting.AllowMultiple),
         (referenceSettings['data-allowedTypes'] = setting.AllowedTypes),
         (referenceSettings['data-selectionRoot'] = setting.SelectionRoots),
-        (referenceSettings['data-defaultValue'] = setting.DefaultValue || null),
+        (referenceSettings['data-defaultValue'] = setting.DefaultValue),
         (referenceSettings['data-defaultDisplayName'] =
           setting.AllowedTypes !== undefined
             ? setting.AllowedTypes.indexOf('User') > -1

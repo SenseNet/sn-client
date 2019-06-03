@@ -25,7 +25,7 @@ export interface BrowseViewProps {
  */
 export interface BrowseViewState {
   content: GenericContent
-  schema: ControlSchema<React.Component, ReactClientFieldSettingProps>
+  schema: ControlSchema<React.Component<any, any, any>, ReactClientFieldSettingProps>
 }
 
 /**
