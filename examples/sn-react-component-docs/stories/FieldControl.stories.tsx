@@ -114,10 +114,12 @@ storiesOf('FieldControls.AllowedChildTypes', module)
           data-hintText={text('Hint', 'AllowedChildTypes hint')}
           repository={testRepository}
           content={testContent}
-          data-defaultValue={[
-            { Name: 'Folder', DisplayName: 'Folder', Icon: 'Folder' } as GenericContent,
-            { Name: 'File', DisplayName: 'File', Icon: 'file' } as GenericContent,
-          ]}
+          data-defaultValue={
+            [
+              { Name: 'Folder', DisplayName: 'Folder', Icon: 'Folder' } as GenericContent,
+              { Name: 'File', DisplayName: 'File', Icon: 'file' } as GenericContent,
+            ] as any
+          }
         />
       </div>
     ),
