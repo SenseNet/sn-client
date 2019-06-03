@@ -93,7 +93,7 @@ export class Textarea<T extends GenericContent, K extends keyof T> extends Compo
             className={this.props.className}
             placeholder={this.props['data-placeHolderText']}
             style={this.props.style}
-            defaultValue={this.props['data-defaultValue'] ? this.props['data-defaultValue'].toString() : ''}
+            defaultValue={this.props['data-defaultValue'] ? (this.props['data-defaultValue'] as any).toString() : ''}
             required={this.props.required}
             disabled={this.props.readOnly}
             error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}

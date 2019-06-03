@@ -40,25 +40,14 @@ export class DisplayName<T extends GenericContent, K extends keyof T> extends Co
      * @property {string} value input value
      */
     this.state = {
-      value: this.setValue(this.props['data-fieldValue']).toString(),
+      value: this.props['data-fieldValue']
+        ? this.props['data-fieldValue'].replace(/<[^>]*>/g, '')
+        : this.props['data-defaultValue']
+        ? this.props['data-defaultValue']
+        : '',
     }
 
     this.handleChange = this.handleChange.bind(this)
-  }
-  /**
-   * convert incoming default value string to proper format
-   * @param {string} value
-   */
-  public setValue(value: string) {
-    if (value) {
-      return value.replace(/<[^>]*>/g, '')
-    } else {
-      if (this.props['data-defaultValue']) {
-        return this.props['data-defaultValue']
-      } else {
-        return ''
-      }
-    }
   }
   /**
    * Handles input changes. Dispatches a redux action to change field value in the state tree.

@@ -64,7 +64,11 @@ export class FileUpload<T extends GenericContent, K extends keyof T> extends Com
      * @property {string} value input value
      */
     this.state = {
-      value: this.setValue(this.props['data-fieldValue']).toString(),
+      value: this.props['data-fieldValue']
+        ? this.props['data-fieldValue'].replace(/<[^>]*>/g, '')
+        : this.props['data-defaultValue']
+        ? this.props['data-defaultValue']
+        : '',
       error: '',
       filename: this.props.value || '',
       buttonText: this.props.value ? 'Change' : 'Add',
@@ -72,21 +76,6 @@ export class FileUpload<T extends GenericContent, K extends keyof T> extends Com
 
     this.handleChange = this.handleChange.bind(this)
     this.handleUpload = this.handleUpload.bind(this)
-  }
-  /**
-   * convert incoming default value string to proper format
-   * @param {string} value
-   */
-  public setValue(value: string) {
-    if (value) {
-      return value.replace(/<[^>]*>/g, '')
-    } else {
-      if (this.props['data-defaultValue']) {
-        return this.props['data-defaultValue']
-      } else {
-        return ''
-      }
-    }
   }
   /**
    * Handles input changes. Dispatches a redux action to change field value in the state tree.

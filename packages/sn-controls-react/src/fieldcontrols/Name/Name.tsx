@@ -41,27 +41,16 @@ export class Name<T extends GenericContent, K extends keyof T> extends Component
      * @property {string} value input value
      */
     this.state = {
-      value: this.setValue(this.props['data-fieldValue']).toString(),
+      value: this.props['data-fieldValue']
+        ? this.props['data-fieldValue'].replace(/<[^>]*>/g, '')
+        : this.props['data-defaultValue']
+        ? this.props['data-defaultValue']
+        : '',
       isValid: this.props.required ? false : true,
       error: '',
     }
 
     this.handleChange = this.handleChange.bind(this)
-  }
-  /**
-   * convert incoming default value string to proper format
-   * @param {string} value
-   */
-  public setValue(value: string) {
-    if (value) {
-      return value.replace(/<[^>]*>/g, '')
-    } else {
-      if (this.props['data-defaultValue']) {
-        return this.props['data-defaultValue']
-      } else {
-        return ''
-      }
-    }
   }
   /**
    * Handles input changes. Dispatches a redux action to change field value in the state tree.
@@ -114,7 +103,7 @@ export class Name<T extends GenericContent, K extends keyof T> extends Component
             className={this.props.className}
             placeholder={this.props['data-placeHolderText']}
             style={this.props.style}
-            defaultValue={this.props['data-defaultValue'] ? this.props['data-defaultValue'].toString() : ''}
+            defaultValue={this.props['data-defaultValue'] ? (this.props['data-defaultValue'] as any) : ''}
             required={this.props.required}
             disabled={this.props.readOnly}
             error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}

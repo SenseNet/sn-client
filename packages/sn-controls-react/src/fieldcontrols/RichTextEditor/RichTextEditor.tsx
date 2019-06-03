@@ -43,25 +43,14 @@ export class RichTextEditor<T extends GenericContent, K extends keyof T> extends
      * @property {string} value input value
      */
     this.state = {
-      value: this.setValue(this.props['data-fieldValue']).toString(),
+      value: props['data-fieldValue']
+        ? props['data-fieldValue']
+        : props['data-defaultValue']
+        ? props['data-defaultValue']
+        : '',
     }
 
     this.handleChange = this.handleChange.bind(this)
-  }
-  /**
-   * returns default value of an input
-   * @param {string} value
-   */
-  public setValue(value: string) {
-    if (value) {
-      return value
-    } else {
-      if (this.props['data-defaultValue']) {
-        return this.props['data-defaultValue']
-      } else {
-        return ''
-      }
-    }
   }
   /**
    * handle change event on an input

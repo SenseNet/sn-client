@@ -44,28 +44,17 @@ export class DatePicker<T extends GenericContent, K extends keyof T> extends Rea
      */
     this.state = {
       dateValue: props['data-fieldValue']
-        ? new Date(this.setValue(props['data-fieldValue']))
+        ? new Date(props['data-fieldValue'].replace(/<[^>]*>/g, ''))
         : props['data-defaultValue']
-        ? new Date(this.setValue(props['data-defaultValue'].toString()))
+        ? new Date(props['data-defaultValue'] as any)
         : new Date(),
-      value: props['data-fieldValue'] ? props['data-fieldValue'] : props['data-defaultValue'],
+      value: props['data-fieldValue']
+        ? props['data-fieldValue'].replace(/<[^>]*>/g, '')
+        : props['data-defaultValue']
+        ? props['data-defaultValue']
+        : '',
     }
     this.handleDateChange = this.handleDateChange.bind(this)
-  }
-
-  /**
-   * convert string to proper date format
-   * @param {string} value
-   */
-  public setValue(value: string) {
-    // TODO: check datetimemode and return a value based on this property
-    let date = ''
-    if (value) {
-      date = value.split('T')[0]
-    } else {
-      date = new Date().toISOString().split('T')[0]
-    }
-    return date
   }
   /**
    * handle changes

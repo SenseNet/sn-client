@@ -60,28 +60,17 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
      * @property {string} value input value
      */
     this.state = {
-      value: this.setValue(this.props['data-fieldValue']).toString(),
+      value: this.props['data-fieldValue']
+        ? this.props['data-fieldValue'].replace(/<[^>]*>/g, '')
+        : this.props['data-defaultValue']
+        ? this.props['data-defaultValue']
+        : '#016d9e',
       pickerIsOpen: false,
     }
 
     this.handleChange = this.handleChange.bind(this)
     this.openPicker = this.openPicker.bind(this)
     this.closePicker = this.closePicker.bind(this)
-  }
-  /**
-   * convert incoming default value string to proper format
-   * @param {string} value
-   */
-  public setValue(value: string) {
-    if (value) {
-      return value.replace(/<[^>]*>/g, '')
-    } else {
-      if (this.props['data-defaultValue']) {
-        return this.props['data-defaultValue']
-      } else {
-        return '#016d9e'
-      }
-    }
   }
   /**
    * handle change event on an input
