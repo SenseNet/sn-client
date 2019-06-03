@@ -91,13 +91,13 @@ describe('TimePicker', () => {
         name="CreationDate"
         onChange={(field, value) => {
           expect(field).toBe('CreationDate')
-          expect(value).toBe(moment('2019-05-31T03:50:00.000Z'))
+          expect(value).toStrictEqual(moment.utc('2019-05-31T03:50:00.000Z'))
           done()
         }}
         data-actionName="new"
       />,
     )
     const input = instance.find(MUITimePicker)
-    input.props().onChange!('03:50:00')
+    input.props().onChange!(moment('2019-05-31T03:50:00.000Z'))
   })
 })
