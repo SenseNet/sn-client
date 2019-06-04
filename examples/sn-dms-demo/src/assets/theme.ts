@@ -40,6 +40,9 @@ export const theme = createMuiTheme({
       textTransform: 'none',
       letterSpacing: '.1em',
     },
+    body1: {
+      color: '#000',
+    },
     h5: {
       fontFamily: 'Raleway SemiBold',
       fontSize: 18,
