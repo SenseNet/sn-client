@@ -54,6 +54,7 @@ export const CustomActionResultDialog: React.FunctionComponent = () => {
           language="json"
           value={response}
           options={{
+            minimap: { enabled: false },
             automaticLayout: true,
             lineNumbers: 'off',
             readOnly: isReadOnly,
