@@ -13,6 +13,7 @@ export class CustomActionCommandProvider implements CommandProvider {
     content: GenericContent
     action: ActionModel
     metadata?: MetadataAction
+    method: 'GET' | 'POST'
   }>()
 
   public onActionExecuted = new ObservableValue<{ content: GenericContent; action: ActionModel; response: any }>()
@@ -58,7 +59,12 @@ export class CustomActionCommandProvider implements CommandProvider {
           content,
           hits: [filteredTerm],
           openAction: () =>
-            this.onExecuteAction.setValue({ action: a, content, metadata: actionMetadata || functionMetadata }),
+            this.onExecuteAction.setValue({
+              action: a,
+              content,
+              metadata: actionMetadata || functionMetadata,
+              method: actionMetadata ? 'POST' : 'GET',
+            }),
         } as CommandPaletteItem
       })
   }

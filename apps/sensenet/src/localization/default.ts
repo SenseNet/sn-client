@@ -273,6 +273,11 @@ const values = {
       noParameters: 'The action does not have any parameters',
       cancelButton: 'Cancel',
       executeButton: 'Execute',
+      executingAction: `Executing custom action...`,
+    },
+    resultsDialog: {
+      title: `Custom action results`,
+      closeButton: 'Close',
     },
   },
 }
