@@ -50,12 +50,14 @@ export const ContentContextMenuComponent: React.FunctionComponent<
         content={content}
         dialogProps={{ open: isInfoDialogOpened, onClose: () => setIsInfoDialogOpened(false) }}
       />
-      <CopyMoveDialog
-        content={[content]}
-        currentParent={content}
-        dialogProps={{ open: isCopyDialogOpened, onClose: () => setIsCopyDialogOpened(false) }}
-        operation={copyMoveOperation}
-      />
+      {isCopyDialogOpened ? (
+        <CopyMoveDialog
+          content={[content]}
+          currentParent={content}
+          dialogProps={{ open: isCopyDialogOpened, onClose: () => setIsCopyDialogOpened(false) }}
+          operation={copyMoveOperation}
+        />
+      ) : null}
       {device === 'mobile' ? (
         <Drawer
           anchor="bottom"

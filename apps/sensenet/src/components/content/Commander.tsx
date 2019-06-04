@@ -174,15 +174,18 @@ export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRou
           </CurrentChildrenProvider>
         </CurrentContentProvider>
       </LoadSettingsContextProvider>
-      <CopyMoveDialog
-        dialogProps={{
-          open: isCopyOpened,
-          onClose: () => setIsCopyOpened(false),
-        }}
-        operation={copyMoveOperation}
-        content={copySelection}
-        currentParent={copyParent}
-      />
+      {isCopyOpened ? (
+        <CopyMoveDialog
+          dialogProps={{
+            open: isCopyOpened,
+            onClose: () => setIsCopyOpened(false),
+          }}
+          operation={copyMoveOperation}
+          content={copySelection}
+          currentParent={copyParent}
+        />
+      ) : null}
+
       {activeParent ? (
         <>
           <AddButton parent={activeParent} />
