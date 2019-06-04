@@ -422,7 +422,7 @@ export class Repository implements Disposable {
    */
   public async executeAction<TBodyType, TReturns>(options: ActionOptions<TBodyType, any>): Promise<TReturns> {
     const contextPath = PathHelper.getContentUrl(options.idOrPath)
-    const params = ODataUrlBuilder.buildUrlParamString(this.configuration, options.oDataOptions)
+    let params = ODataUrlBuilder.buildUrlParamString(this.configuration, options.oDataOptions)
     const path = PathHelper.joinPaths(
       this.configuration.repositoryUrl,
       this.configuration.oDataToken,
@@ -436,6 +436,11 @@ export class Repository implements Disposable {
     }
     if (options.method === 'POST') {
       requestOptions.body = JSON.stringify(options.body)
+    } else {
+      options.body &&
+        Object.keys(options.body).forEach(
+          key => (params += `&${key}=${encodeURIComponent((options.body as any)[key])}`),
+        )
     }
     const response = await this.fetch(`${path}?${params}`, requestOptions)
     if (!response.ok) {
