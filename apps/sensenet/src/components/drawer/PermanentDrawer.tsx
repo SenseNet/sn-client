@@ -123,6 +123,14 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
                   <UserAvatar user={session.currentUser} repositoryUrl={repo.configuration.repositoryUrl} />
                 </ListItemIcon>
                 <ListItemText
+                  primaryTypographyProps={{
+                    style: { overflow: 'hidden', textOverflow: 'ellipsis' },
+                    title: session.currentUser.DisplayName || session.currentUser.Name,
+                  }}
+                  secondaryTypographyProps={{
+                    style: { overflow: 'hidden', textOverflow: 'ellipsis' },
+                    title: (currentRepoEntry && currentRepoEntry.displayName) || repo.configuration.repositoryUrl,
+                  }}
                   primary={session.currentUser.DisplayName || session.currentUser.Name}
                   secondary={(currentRepoEntry && currentRepoEntry.displayName) || repo.configuration.repositoryUrl}
                 />
