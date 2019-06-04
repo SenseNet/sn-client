@@ -96,8 +96,8 @@ const values = {
     greetings: 'Greetings, {0}!',
     loggingInTo: 'Logging in to {0}...',
     loginSuccessNotification: `Logged in with user '{0} to repository '{1}'`,
-    loginFailedNotification: `Failed to log in with user '{0} to repository '{1}'`,
-    loginErrorNotification: `There was an error during login with user '{0} to repository '{1}'`,
+    loginFailedNotification: `Failed to log in with user '{0}' to repository '{1}'`,
+    loginErrorNotification: `There was an error during login with user '{0}' to repository '{1}'`,
   },
   logout: {
     logoutButtonTitle: 'Log out',

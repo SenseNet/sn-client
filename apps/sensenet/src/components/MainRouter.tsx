@@ -49,6 +49,12 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
                   }}
                 />
                 <Route
+                  path="/:repo/login"
+                  render={() => {
+                    return <LoginComponent />
+                  }}
+                />
+                <Route
                   path="/events/:eventGuid?"
                   render={() => {
                     return <EventListComponent />
@@ -56,9 +62,9 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
                 />
 
                 {/** Requires login */}
-                {sessionContext.debouncedState === LoginState.Unauthenticated || !personalSettings.lastRepository ? (
+                {sessionContext.state === LoginState.Unauthenticated || !personalSettings.lastRepository ? (
                   <LoginComponent />
-                ) : sessionContext.debouncedState === LoginState.Authenticated ? (
+                ) : sessionContext.state === LoginState.Authenticated ? (
                   <Switch>
                     <Route
                       path="/:repo/browse/:folderId?/:rightParent?"

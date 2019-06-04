@@ -4,9 +4,9 @@ import Divider from '@material-ui/core/Divider'
 import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import { FormsAuthenticationService } from '@sensenet/client-core'
-import { sleepAsync } from '@sensenet/client-utils'
-import React, { useContext, useState } from 'react'
+import { ConstantContent, FormsAuthenticationService } from '@sensenet/client-core'
+import { Retrier, sleepAsync } from '@sensenet/client-utils'
+import React, { useContext, useEffect, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import {
   InjectorContext,
@@ -43,6 +43,11 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
 
   const localization = useContext(LocalizationContext).values.login
 
+  useEffect(() => {
+    setUrl(repo.configuration.repositoryUrl)
+    existingRepo && existingRepo.loginName && setUserName(existingRepo.loginName)
+  }, [repo.configuration.repositoryUrl])
+
   const handleSubmit = async (ev: React.FormEvent) => {
     ev.preventDefault()
     const repoToLogin = injector.getRepository(url)
@@ -65,12 +70,19 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
           })
         }
         ;(repoToLogin.authentication as FormsAuthenticationService).getCurrentUser()
+        settingsManager.setValue(personalSettings)
+        await Retrier.create(
+          async () => repoToLogin.authentication.currentUser.getValue().Id !== ConstantContent.VISITOR_USER.Id,
+        )
+          .setup({
+            timeoutMs: 60 * 1000,
+            RetryIntervalMs: 100,
+          })
+          .run()
         for (let index = 0; index < 100; index++) {
           await sleepAsync(index / 50)
           setProgressValue(index)
         }
-        settingsManager.setValue(personalSettings)
-        await sleepAsync(2000)
         logger.information({
           message: localization.loginSuccessNotification.replace('{0}', userName).replace('{1}', url),
           data: {
@@ -79,6 +91,7 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
           },
         })
         if (props.match.path === '/login') {
+          await sleepAsync(1800)
           props.history.push('/')
         }
       } else {
@@ -144,7 +157,7 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
               label={localization.userNameLabel}
               helperText={localization.userNameHelperText}
               fullWidth={true}
-              defaultValue={userName}
+              value={userName}
               onChange={ev => {
                 setUserName(ev.target.value)
               }}
@@ -162,11 +175,12 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
             />
             <TextField
               margin="dense"
+              required={true}
               label={localization.repositoryLabel}
               helperText={localization.repositoryHelperText}
               fullWidth={true}
               type="url"
-              defaultValue={repo.configuration.repositoryUrl}
+              value={url}
               onChange={ev => {
                 setUrl(ev.target.value)
               }}
