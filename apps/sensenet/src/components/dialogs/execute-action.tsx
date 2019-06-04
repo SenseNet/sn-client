@@ -43,6 +43,7 @@ export const ExecuteActionDialog: React.FunctionComponent = () => {
     } else {
       setPostBody('{}')
     }
+    setError('')
   }, [uri])
 
   useEffect(() => {
@@ -63,7 +64,13 @@ export const ExecuteActionDialog: React.FunctionComponent = () => {
   }, [])
 
   return (
-    <Dialog open={isVisible} onClose={() => setIsVisible(false)} fullWidth={true}>
+    <Dialog
+      open={isVisible}
+      onClose={() => setIsVisible(false)}
+      fullWidth={true}
+      onKeyUp={ev => {
+        ev.key === 'Escape' && setIsVisible(false)
+      }}>
       <DialogTitle>
         {localization.title
           .replace('{0}', (actionValue && (actionValue.action.DisplayName || actionValue.action.Name)) || '')
