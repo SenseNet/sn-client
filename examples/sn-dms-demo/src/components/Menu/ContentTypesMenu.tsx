@@ -1,8 +1,8 @@
-import { ListItemIcon } from '@material-ui/core'
 import Divider from '@material-ui/core/Divider'
+import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import MenuList from '@material-ui/core/MenuList'
 import withStyles, { StyleRulesCallback } from '@material-ui/core/styles/withStyles'
 import { Icon, iconType } from '@sensenet/icons-react'
 import React from 'react'
@@ -152,7 +152,7 @@ class ContentTypesMenu extends React.Component<
         <div className={active ? classes.open : classes.closed}>
           <Divider />
           <AddNewButton contentType="ContentType" onClick={e => console.log(e)} />
-          <MenuList className={classes.submenu}>
+          <List className={classes.submenu}>
             {subMenu.map((menuitem, index) => {
               return (
                 <ListItem
@@ -174,7 +174,7 @@ class ContentTypesMenu extends React.Component<
                 </ListItem>
               )
             })}
-          </MenuList>
+          </List>
         </div>
       </div>
     )
