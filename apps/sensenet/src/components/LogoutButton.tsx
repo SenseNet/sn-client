@@ -10,9 +10,8 @@ import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew'
 import { ConstantContent, FormsAuthenticationService, LoginState } from '@sensenet/client-core'
-import React, { useContext, useEffect, useState } from 'react'
-import { LocalizationContext, RepositoryContext, SessionContext, ThemeContext } from '../context'
-import { LoggerContext } from '../context/LoggerContext'
+import React, { useEffect, useState } from 'react'
+import { useLocalization, useLogger, useRepository, useSession, useTheme } from '../hooks'
 import { Icon } from './Icon'
 
 export const LogoutButton: React.FunctionComponent<{
