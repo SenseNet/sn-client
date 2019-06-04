@@ -10,9 +10,9 @@ import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew'
 import { ConstantContent, FormsAuthenticationService, LoginState } from '@sensenet/client-core'
-import { sleepAsync } from '@sensenet/client-utils'
-import React, { useEffect, useState } from 'react'
-import { useLocalization, useLogger, useRepository, useSession, useTheme } from '../hooks'
+import React, { useContext, useEffect, useState } from 'react'
+import { LocalizationContext, RepositoryContext, SessionContext, ThemeContext } from '../context'
+import { LoggerContext } from '../context/LoggerContext'
 import { Icon } from './Icon'
 
 export const LogoutButton: React.FunctionComponent<{
@@ -36,20 +36,18 @@ export const LogoutButton: React.FunctionComponent<{
 
   const [isLoggingOut, setIsLoggingOut] = useState(false)
 
-  if (session.debouncedState !== LoginState.Authenticated) {
-    return null
-  }
-
   return (
     <div>
-      <Tooltip placement="bottom-end" title={localization.logoutButtonTitle}>
-        <IconButton
-          onClick={() => {
-            setShowLogout(true)
-          }}>
-          <PowerSettingsNew style={{ ...props.buttonStyle, color: theme.palette.text.primary }} />
-        </IconButton>
-      </Tooltip>
+      {session.state !== LoginState.Authenticated ? null : (
+        <Tooltip placement="bottom-end" title={localization.logoutButtonTitle}>
+          <IconButton
+            onClick={() => {
+              setShowLogout(true)
+            }}>
+            <PowerSettingsNew style={{ ...props.buttonStyle, color: theme.palette.text.primary }} />
+          </IconButton>
+        </Tooltip>
+      )}
       <Dialog open={showLogout} onClose={() => setShowLogout(false)}>
         <DialogTitle>
           <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -97,7 +95,6 @@ export const LogoutButton: React.FunctionComponent<{
                   /** */
                   ;(repo.authentication as FormsAuthenticationService).getCurrentUser()
                 }
-                await sleepAsync(3000)
                 setShowLogout(false)
                 setIsLoggingOut(false)
                 logger.information({
