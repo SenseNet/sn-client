@@ -89,6 +89,7 @@ const styles = {
   },
   menuItem: {
     padding: '6px 15px',
+    minHeight: 24,
     fontSize: '0.9rem',
     fontFamily: 'Raleway Medium',
   },
@@ -102,7 +103,6 @@ const styles = {
   },
   actionIcon: {
     color: '#016D9E',
-    marginRight: 14,
   },
   openInEditorLink: {
     color: '#000',

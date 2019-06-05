@@ -23,7 +23,7 @@ export interface CopyMoveDialogProps {
 
 export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = props => {
   const handleClose = (ev: React.SyntheticEvent<{}, Event>) => {
-    props.dialogProps.onClose && props.dialogProps.onClose(ev)
+    props.dialogProps.onClose && props.dialogProps.onClose(ev, 'backdropClick')
   }
 
   const localizations = useLocalization().copyMoveContentDialog

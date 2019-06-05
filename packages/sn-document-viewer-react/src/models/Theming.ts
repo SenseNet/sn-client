@@ -55,7 +55,4 @@ export const defaultTheme = createMuiTheme({
       },
     },
   },
-  typography: {
-    useNextVariants: true,
-  },
 })

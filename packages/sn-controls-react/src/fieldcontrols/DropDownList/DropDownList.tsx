@@ -51,9 +51,9 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
   /**
    * sets the selected value in the state
    */
-  public handleChange = (event: React.ChangeEvent) => {
-    this.setState({ value: event.target['value'] })
-    this.props.onChange(this.props.name, event.target['value'])
+  public handleChange = (event: React.ChangeEvent<{ name?: string; value: unknown }>) => {
+    this.setState({ value: event.target.value as any })
+    this.props.onChange(this.props.name, event.target.value as any)
   }
   /**
    * returns selected options value

@@ -26,14 +26,14 @@ export const EditPropertiesDialog: React.FunctionComponent<{
           content={props.content}
           repository={repo}
           contentTypeName={props.content.Type}
-          handleCancel={() => props.dialogProps.onClose && props.dialogProps.onClose(null as any)}
+          handleCancel={() => props.dialogProps.onClose && props.dialogProps.onClose(null as any, 'backdropClick')}
           onSubmit={async (id, content) => {
             try {
               await repo.patch({
                 idOrPath: id,
                 content,
               })
-              props.dialogProps.onClose && props.dialogProps.onClose(null as any)
+              props.dialogProps.onClose && props.dialogProps.onClose(null as any, 'backdropClick')
               logger.information({
                 message: localization.saveSuccessNotification.replace(
                   '{0}',

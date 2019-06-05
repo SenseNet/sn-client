@@ -11,7 +11,7 @@ export class ReferenceCell<T extends GenericContent> extends React.Component<Ref
   public render() {
     const { content, fieldName } = this.props
     return (
-      <TableCell padding="checkbox">
+      <TableCell>
         <span>{content[fieldName]}</span>
       </TableCell>
     )
