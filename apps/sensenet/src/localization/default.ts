@@ -10,6 +10,18 @@ const values = {
   },
   commandPalette: {
     title: 'Show Command Palette',
+    help: {
+      readMeTitle: 'ReadMe',
+      readMeDescription: 'Opens the latest readme.md file from GitHub in a new window',
+      communitySiteTitle: 'Visit the Community Site',
+      communitySiteDescription: 'Opens http://community.sensenet.com in a new window',
+      gitterTitle: 'Chat on Gitter',
+      gitterDescription: 'If you have any unanswered question about the product you can ask us on Gitter',
+    },
+    customAction: {
+      executePrimaryText: '{0} 👉 {1}',
+      executeSecondaryText: "Execute custom action '{1}' on content '{0}'",
+    },
   },
   contentContextMenu: {
     editProperties: 'Edit properties',
@@ -253,6 +265,19 @@ const values = {
         'When the Task Management module is installed, this is the place where you can configure the connection to the central task management service. ',
       '/Root/System/Settings/UserProfile.settings':
         'When a user is created, and the profile feature is enabled (in the app configuration), they automatically get a profile – a workspace dedicated to the user’s personal documents and tasks. In this setting section you can customize the content type and the place of this profile. ',
+    },
+  },
+  customActions: {
+    executeCustomActionDialog: {
+      title: `Execute custom action '{0}' on content '{1}'`,
+      noParameters: 'The action does not have any parameters',
+      cancelButton: 'Cancel',
+      executeButton: 'Execute',
+      executingAction: `Executing custom action...`,
+    },
+    resultsDialog: {
+      title: `Custom action results`,
+      closeButton: 'Close',
     },
   },
 }

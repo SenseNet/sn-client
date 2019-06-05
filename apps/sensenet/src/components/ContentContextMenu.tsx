@@ -12,11 +12,9 @@ import FileCopy from '@material-ui/icons/FileCopyOutlined'
 import Info from '@material-ui/icons/Info'
 import React, { useContext, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { ContentRoutingContext, CurrentContentContext, LocalizationContext, ResponsiveContext } from '../context'
-import { ContentInfoDialog } from './ContentInfoDialog'
-import { CopyMoveDialog } from './CopyMoveDialog'
-import { DeleteContentDialog } from './DeleteContentDialog'
-import { EditPropertiesDialog } from './EditPropertiesDialog'
+import { CurrentContentContext, ResponsiveContext } from '../context'
+import { useContentRouting, useLocalization } from '../hooks'
+import { ContentInfoDialog, CopyMoveDialog, DeleteContentDialog, EditPropertiesDialog } from './dialogs'
 import { Icon } from './Icon'
 
 export const ContentContextMenuComponent: React.FunctionComponent<
@@ -30,8 +28,8 @@ export const ContentContextMenuComponent: React.FunctionComponent<
 > = props => {
   const content = useContext(CurrentContentContext)
   const device = useContext(ResponsiveContext)
-  const routing = useContext(ContentRoutingContext)
-  const localization = useContext(LocalizationContext).values.contentContextMenu
+  const routing = useContentRouting()
+  const localization = useLocalization().contentContextMenu
   const [isDeleteOpened, setIsDeleteOpened] = useState(false)
   const [isEditPropertiesOpened, setIsEditPropertiesOpened] = useState(false)
   const [isInfoDialogOpened, setIsInfoDialogOpened] = useState(false)
@@ -52,12 +50,14 @@ export const ContentContextMenuComponent: React.FunctionComponent<
         content={content}
         dialogProps={{ open: isInfoDialogOpened, onClose: () => setIsInfoDialogOpened(false) }}
       />
-      <CopyMoveDialog
-        content={[content]}
-        currentParent={content}
-        dialogProps={{ open: isCopyDialogOpened, onClose: () => setIsCopyDialogOpened(false) }}
-        operation={copyMoveOperation}
-      />
+      {isCopyDialogOpened ? (
+        <CopyMoveDialog
+          content={[content]}
+          currentParent={content}
+          dialogProps={{ open: isCopyDialogOpened, onClose: () => setIsCopyDialogOpened(false) }}
+          operation={copyMoveOperation}
+        />
+      ) : null}
       {device === 'mobile' ? (
         <Drawer
           anchor="bottom"

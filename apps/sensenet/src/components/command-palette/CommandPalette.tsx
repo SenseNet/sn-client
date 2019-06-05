@@ -130,6 +130,7 @@ export class CommandPaletteComponent extends React.Component<
       onChange: this.handleSetInputValue,
       id: 'CommandBoxInput',
       autoFocus: true,
+      spellCheck: false,
       onBlur: this.props.close,
     }
 
@@ -144,19 +145,18 @@ export class CommandPaletteComponent extends React.Component<
             border: this.props.isOpened ? '1px solid #13a5ad' : '',
             backgroundColor: this.props.isOpened ? 'rgba(255,255,255,.10)' : 'transparent',
           }}>
-          <LocalizationContext.Consumer>
-            {localization => (
-              <Tooltip style={{}} placeholder="bottom-end" title={localization.values.commandPalette.title}>
-                <IconButton
-                  onClick={this.props.open}
-                  disabled={this.props.isOpened}
-                  style={{ padding: this.props.isOpened ? 0 : undefined }}>
-                  <KeyboardArrowRightTwoTone />
-                  {this.props.isOpened ? '' : '_'}
-                </IconButton>
-              </Tooltip>
-            )}
-          </LocalizationContext.Consumer>
+          {this.props.isOpened ? null : (
+            <LocalizationContext.Consumer>
+              {localization => (
+                <Tooltip style={{}} placeholder="bottom-end" title={localization.values.commandPalette.title}>
+                  <IconButton onClick={this.props.open} style={{ padding: undefined }}>
+                    <KeyboardArrowRightTwoTone />
+                    {'_'}
+                  </IconButton>
+                </Tooltip>
+              )}
+            </LocalizationContext.Consumer>
+          )}
 
           <div
             ref={r => (r ? (this.containerRef = r) : null)}

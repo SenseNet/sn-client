@@ -1,10 +1,9 @@
 import { deepMerge } from '@sensenet/client-utils'
-import React, { useContext } from 'react'
+import React from 'react'
 import MediaQuery from 'react-responsive'
 import { DeepPartial } from 'redux'
+import { usePersonalSettings, useTheme } from '../hooks'
 import { defaultSettings } from '../services/PersonalSettings'
-import { PersonalSettingsContext } from './PersonalSettingsContext'
-import { ThemeContext } from './ThemeContext'
 
 export type ResponsivePlatforms = 'desktop' | 'tablet' | 'mobile'
 
@@ -15,8 +14,8 @@ export const ResponsiveContext = React.createContext<ResponsivePlatforms>('deskt
 export const ResponsivePersonalSetttings = React.createContext(defaultSettings.default)
 
 export const ResponsiveContextProvider: React.FunctionComponent = props => {
-  const theme = useContext(ThemeContext)
-  const personalSettings = useContext(PersonalSettingsContext)
+  const theme = useTheme()
+  const personalSettings = usePersonalSettings()
   return (
     <div>
       <MediaQuery query={theme.breakpoints.up('lg').replace('@media ', '')}>

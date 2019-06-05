@@ -14,9 +14,9 @@ import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useContext, useState } from 'react'
-import { LocalizationContext, RepositoryContext, ResponsiveContext } from '../context'
-import { LoggerContext } from '../context/LoggerContext'
-import { Icon } from './Icon'
+import { ResponsiveContext } from '../../context'
+import { useLocalization, useLogger, useRepository } from '../../hooks'
+import { Icon } from '../Icon'
 
 export const DeleteContentDialog: React.FunctionComponent<{
   content: GenericContent[]
@@ -25,9 +25,9 @@ export const DeleteContentDialog: React.FunctionComponent<{
   const device = useContext(ResponsiveContext)
   const [isDeleteInProgress, setIsDeleteInProgress] = useState(false)
   const [permanent, setPermanent] = useState(false)
-  const repo = useContext(RepositoryContext)
-  const localization = useContext(LocalizationContext).values.deleteContentDialog
-  const logger = useContext(LoggerContext).withScope('DeleteContentDialog')
+  const repo = useRepository()
+  const localization = useLocalization().deleteContentDialog
+  const logger = useLogger('DeleteContentDialog')
 
   return (
     <Dialog {...props.dialogProps} onClick={ev => ev.stopPropagation()} onDoubleClick={ev => ev.stopPropagation()}>

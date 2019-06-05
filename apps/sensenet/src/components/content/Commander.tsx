@@ -1,20 +1,18 @@
 import { ConstantContent } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { matchPath, RouteComponentProps, withRouter } from 'react-router'
 import {
-  ContentRoutingContext,
   CurrentAncestorsProvider,
   CurrentChildrenProvider,
   CurrentContentContext,
   CurrentContentProvider,
   LoadSettingsContextProvider,
-  RepositoryContext,
 } from '../../context'
+import { useContentRouting, useRepository, useSelectionService } from '../../hooks'
 import { AddButton } from '../AddButton'
-import { AddDialog } from '../AddDialog'
 import { CollectionComponent } from '../ContentListPanel'
-import { CopyMoveDialog } from '../CopyMoveDialog'
+import { AddDialog, CopyMoveDialog } from '../dialogs'
 
 export interface CommanderRouteParams {
   folderId?: string
@@ -22,8 +20,11 @@ export interface CommanderRouteParams {
 }
 
 export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRouteParams>> = props => {
-  const ctx = useContext(ContentRoutingContext)
-  const repo = useContext(RepositoryContext)
+  const contentRouter = useContentRouting()
+  const repo = useRepository()
+
+  const selectionService = useSelectionService()
+
   const getLeftFromPath = (params: CommanderRouteParams) =>
     parseInt(params.folderId as string, 10) || ConstantContent.PORTAL_ROOT.Id
   const getRightFromPath = (params: CommanderRouteParams) =>
@@ -121,7 +122,7 @@ export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRou
                 }}
                 enableBreadcrumbs={true}
                 onActivateItem={item => {
-                  props.history.push(ctx.getPrimaryActionUrl(item))
+                  props.history.push(contentRouter.getPrimaryActionUrl(item))
                 }}
                 containerRef={r => setLeftPanelRef(r)}
                 style={{ width: '100%', maxHeight: '100%' }}
@@ -129,8 +130,12 @@ export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRou
                 onParentChange={p => {
                   setLeftParentId(p.Id)
                 }}
-                onSelectionChange={sel => setLeftSelection(sel)}
+                onSelectionChange={sel => {
+                  setLeftSelection(sel)
+                  selectionService.selection.setValue(sel)
+                }}
                 onTabRequest={() => _rightPanelRef && _rightPanelRef.focus()}
+                onActiveItemChange={item => selectionService.activeContent.setValue(item)}
               />
             </CurrentAncestorsProvider>
           </CurrentChildrenProvider>
@@ -150,7 +155,7 @@ export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRou
                   setActivePanel('right')
                 }}
                 onActivateItem={item => {
-                  props.history.push(ctx.getPrimaryActionUrl(item))
+                  props.history.push(contentRouter.getPrimaryActionUrl(item))
                 }}
                 containerRef={r => setRightPanelRef(r)}
                 parentId={rightParentId}
@@ -158,22 +163,29 @@ export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRou
                 onParentChange={p2 => {
                   setRightParentId(p2.Id)
                 }}
-                onSelectionChange={sel => setRightSelection(sel)}
+                onSelectionChange={sel => {
+                  setRightSelection(sel)
+                  selectionService.selection.setValue(sel)
+                }}
                 onTabRequest={() => _leftPanelRef && _leftPanelRef.focus()}
+                onActiveItemChange={item => selectionService.activeContent.setValue(item)}
               />
             </CurrentAncestorsProvider>
           </CurrentChildrenProvider>
         </CurrentContentProvider>
       </LoadSettingsContextProvider>
-      <CopyMoveDialog
-        dialogProps={{
-          open: isCopyOpened,
-          onClose: () => setIsCopyOpened(false),
-        }}
-        operation={copyMoveOperation}
-        content={copySelection}
-        currentParent={copyParent}
-      />
+      {isCopyOpened ? (
+        <CopyMoveDialog
+          dialogProps={{
+            open: isCopyOpened,
+            onClose: () => setIsCopyOpened(false),
+          }}
+          operation={copyMoveOperation}
+          content={copySelection}
+          currentParent={copyParent}
+        />
+      ) : null}
+
       {activeParent ? (
         <>
           <AddButton parent={activeParent} />

@@ -10,23 +10,22 @@ import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew'
 import { ConstantContent, FormsAuthenticationService, LoginState } from '@sensenet/client-core'
-import React, { useContext, useEffect, useState } from 'react'
-import { LocalizationContext, RepositoryContext, SessionContext, ThemeContext } from '../context'
-import { LoggerContext } from '../context/LoggerContext'
+import React, { useEffect, useState } from 'react'
+import { useLocalization, useLogger, useRepository, useSession, useTheme } from '../hooks'
 import { Icon } from './Icon'
 
 export const LogoutButton: React.FunctionComponent<{
   buttonStyle?: React.CSSProperties
   onLoggedOut?: () => void
 }> = props => {
-  const session = useContext(SessionContext)
-  const theme = useContext(ThemeContext)
-  const repo = useContext(RepositoryContext)
+  const session = useSession()
+  const theme = useTheme()
+  const repo = useRepository()
   const [showLogout, setShowLogout] = useState(false)
-  const logger = useContext(LoggerContext).withScope('LogoutComponent')
+  const logger = useLogger('LogoutComponent')
 
   const [userToLogout, setUserToLogout] = useState({ ...session.currentUser })
-  const localization = useContext(LocalizationContext).values.logout
+  const localization = useLocalization().logout
 
   useEffect(() => {
     if (session.state === LoginState.Authenticated && session.currentUser.Id !== ConstantContent.VISITOR_USER.Id) {

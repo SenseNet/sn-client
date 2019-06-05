@@ -1,18 +1,18 @@
 import { ConstantContent } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
-import { InjectorContext } from './InjectorContext'
-import { RepositoryContext } from './RepositoryContext'
+import { useInjector, useRepository } from '../hooks'
 
 export const CurrentContentContext = React.createContext<GenericContent>(ConstantContent.PORTAL_ROOT)
 export const CurrentContentProvider: React.FunctionComponent<{
   idOrPath: number | string
+  onContentLoaded?: (content: GenericContent) => void
 }> = props => {
   const [loadLock] = useState(new Semaphore(1))
   const [content, setContent] = useState<GenericContent>(ConstantContent.PORTAL_ROOT)
-  const repo = useContext(RepositoryContext)
-  const injector = useContext(InjectorContext)
+  const repo = useRepository()
+  const injector = useInjector()
   const [reloadToken, setReloadToken] = useState(1)
   const reload = () => setReloadToken(Math.random())
 
@@ -37,6 +37,7 @@ export const CurrentContentProvider: React.FunctionComponent<{
         try {
           const response = await repo.load({ idOrPath: props.idOrPath, requestInit: { signal: ac.signal } })
           setContent(response.d)
+          props.onContentLoaded && props.onContentLoaded(response.d)
         } catch (error) {
           if (!ac.signal.aborted) {
             setError(error)
