@@ -13,6 +13,7 @@ import theme from '../../assets/theme'
 const styles = {
   menuItem: {
     padding: '6px 15px',
+    minHeight: 24,
     display: 'flex',
     lineHeight: 1,
     minWidth: 145,

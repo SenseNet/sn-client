@@ -89,6 +89,7 @@ const styles = {
   },
   menuItem: {
     padding: '6px 15px',
+    minHeight: 24,
     fontSize: '0.9rem',
     fontFamily: 'Raleway Medium',
   },

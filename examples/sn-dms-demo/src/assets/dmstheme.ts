@@ -22,6 +22,12 @@ export const dmsTheme = createMuiTheme({
         },
       },
     },
+    MuiListItem: {
+      gutters: {
+        paddingLeft: 0,
+        paddingRight: 0,
+      },
+    },
     MuiListItemText: {
       primary: {
         [theme.breakpoints.down('md')]: {
