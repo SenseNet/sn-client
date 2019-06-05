@@ -20,6 +20,11 @@ const theme: ThemeOptions = {
         zIndex: zIndex.drawer + 1,
       },
     },
+    MuiTableCell: {
+      root: {
+        padding: '4px 56px 4px 24px',
+      },
+    },
   },
 }
 
