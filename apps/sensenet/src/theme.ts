@@ -9,12 +9,6 @@ const theme: ThemeOptions = {
     secondary: teal,
   },
   overrides: {
-    MuiList: {
-      root: {
-        margin: '0 !important',
-        padding: '0 !important',
-      },
-    },
     MuiAppBar: {
       root: {
         zIndex: zIndex.drawer + 1,

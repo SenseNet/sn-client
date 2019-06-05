@@ -13,28 +13,22 @@ import { PathHelper } from '@sensenet/client-utils'
 import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import { Link, matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
-import {
-  LocalizationContext,
-  PersonalSettingsContext,
-  RepositoryContext,
-  ResponsivePersonalSetttings,
-  SessionContext,
-  ThemeContext,
-} from '../../context'
+import { ResponsivePersonalSetttings } from '../../context'
+import { useLocalization, usePersonalSettings, useRepository, useSession, useTheme } from '../../hooks'
 import { LogoutButton } from '../LogoutButton'
 import { UserAvatar } from '../UserAvatar'
 import { getAllowedDrawerItems } from './Items'
 
 const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
   const settings = useContext(ResponsivePersonalSetttings)
-  const personalSettings = useContext(PersonalSettingsContext)
-  const theme = useContext(ThemeContext)
-  const session = useContext(SessionContext)
-  const repo = useContext(RepositoryContext)
+  const personalSettings = usePersonalSettings()
+  const theme = useTheme()
+  const session = useSession()
+  const repo = useRepository()
 
   const [opened, setOpened] = useState(settings.drawer.type === 'permanent')
   const [items, setItems] = useState(getAllowedDrawerItems(session.groups))
-  const localization = useContext(LocalizationContext).values.drawer
+  const localization = useLocalization().drawer
 
   const [currentRepoEntry, setCurrentRepoEntry] = useState(
     personalSettings.repositories.find(r => r.url === PathHelper.trimSlashes(repo.configuration.repositoryUrl)),
@@ -129,6 +123,14 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
                   <UserAvatar user={session.currentUser} repositoryUrl={repo.configuration.repositoryUrl} />
                 </ListItemIcon>
                 <ListItemText
+                  primaryTypographyProps={{
+                    style: { overflow: 'hidden', textOverflow: 'ellipsis' },
+                    title: session.currentUser.DisplayName || session.currentUser.Name,
+                  }}
+                  secondaryTypographyProps={{
+                    style: { overflow: 'hidden', textOverflow: 'ellipsis' },
+                    title: (currentRepoEntry && currentRepoEntry.displayName) || repo.configuration.repositoryUrl,
+                  }}
                   primary={session.currentUser.DisplayName || session.currentUser.Name}
                   secondary={(currentRepoEntry && currentRepoEntry.displayName) || repo.configuration.repositoryUrl}
                 />

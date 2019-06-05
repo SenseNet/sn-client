@@ -13,15 +13,16 @@ import Update from '@material-ui/icons/Update'
 import { ConstantContent } from '@sensenet/client-core'
 import React, { useContext, useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
-import { LocalizationContext, RepositoryContext, ResponsiveContext, ThemeContext } from '../../context'
+import { ResponsiveContext } from '../../context'
+import { useLocalization, useRepository, useTheme } from '../../hooks'
 import { ComponentInfo } from './component-info'
 import { VersionInfo as VersionInfoModel } from './version-info-models'
 
 export const VersionInfo: React.FunctionComponent = () => {
-  const repo = useContext(RepositoryContext)
+  const repo = useRepository()
   const [versionInfo, setVersionInfo] = useState<VersionInfoModel | undefined>()
-  const theme = useContext(ThemeContext)
-  const localization = useContext(LocalizationContext).values.versionInfo
+  const theme = useTheme()
+  const localization = useLocalization().versionInfo
   const device = useContext(ResponsiveContext)
 
   const [showRaw, setShowRaw] = useState(false)

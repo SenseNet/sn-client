@@ -10,10 +10,9 @@ import ListItemText from '@material-ui/core/ListItemText'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useListPicker } from '@sensenet/pickers-react'
-import React, { useContext, useEffect, useState } from 'react'
-import { LocalizationContext, RepositoryContext } from '../context'
-import { LoggerContext } from '../context/LoggerContext'
-import { Icon } from './Icon'
+import React, { useEffect, useState } from 'react'
+import { useLocalization, useLogger, useRepository } from '../../hooks'
+import { Icon } from '../Icon'
 
 export interface CopyMoveDialogProps {
   currentParent: GenericContent
@@ -27,7 +26,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
     props.dialogProps.onClose && props.dialogProps.onClose(ev, 'backdropClick')
   }
 
-  const localizations = useContext(LocalizationContext).values.copyMoveContentDialog
+  const localizations = useLocalization().copyMoveContentDialog
   const [localization, setLocalization] = useState(localizations[props.operation])
 
   useEffect(() => {
@@ -38,14 +37,14 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
     props.dialogProps.open === true && list.navigateTo(props.currentParent)
   }, [props.dialogProps.open])
 
-  const repo = useContext(RepositoryContext)
+  const repo = useRepository()
   const list = useListPicker({
     repository: repo,
     currentPath: props.currentParent.Path,
     itemsODataOptions: { filter: '' },
   })
 
-  const logger = useContext(LoggerContext).withScope('CopyDialog')
+  const logger = useLogger('CopyDialog')
 
   if (!parent || !props.content.length) {
     return null

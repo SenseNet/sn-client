@@ -1,14 +1,14 @@
 import CloudUploadTwoTone from '@material-ui/icons/CloudUploadTwoTone'
 import { GenericContent } from '@sensenet/default-content-types'
-import React, { useContext, useState } from 'react'
-import { InjectorContext, RepositoryContext, ThemeContext } from '../context'
+import React, { useState } from 'react'
+import { useInjector, useRepository, useTheme } from '../hooks'
 import { UploadTracker } from '../services/UploadTracker'
 
 export const DropFileArea: React.FunctionComponent<{ parent: GenericContent; style?: React.CSSProperties }> = props => {
   const [isDragOver, setDragOver] = useState(false)
-  const injector = useContext(InjectorContext)
-  const repo = useContext(RepositoryContext)
-  const theme = useContext(ThemeContext)
+  const injector = useInjector()
+  const repo = useRepository()
+  const theme = useTheme()
 
   return (
     <div

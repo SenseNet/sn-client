@@ -3,9 +3,8 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import { NewView } from '@sensenet/controls-react'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
-import React, { useContext } from 'react'
-import { LocalizationContext, RepositoryContext } from '../context'
-import { LoggerContext } from '../context/LoggerContext'
+import React from 'react'
+import { useLocalization, useLogger, useRepository } from '../../hooks'
 
 export interface AddDialogProps {
   dialogProps: DialogProps
@@ -14,11 +13,11 @@ export interface AddDialogProps {
 }
 
 export const AddDialog: React.FunctionComponent<AddDialogProps> = ({ dialogProps, schema, parent }) => {
-  const localization = useContext(LocalizationContext).values.addButton
-  const repo = useContext(RepositoryContext)
+  const localization = useLocalization().addButton
+  const repo = useRepository()
 
   const handleClose = () => dialogProps.onClose && dialogProps.onClose(null as any, 'backdropClick')
-  const logger = useContext(LoggerContext).withScope('AddDialog')
+  const logger = useLogger('AddDialog')
 
   return (
     <Dialog {...dialogProps}>

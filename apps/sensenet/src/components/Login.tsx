@@ -6,25 +6,18 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { ConstantContent, FormsAuthenticationService } from '@sensenet/client-core'
 import { Retrier, sleepAsync } from '@sensenet/client-utils'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import {
-  InjectorContext,
-  LocalizationContext,
-  PersonalSettingsContext,
-  RepositoryContext,
-  SessionContext,
-  ThemeContext,
-} from '../context'
+import { useInjector, useLocalization, usePersonalSettings, useRepository, useSession, useTheme } from '../hooks'
 import { PersonalSettings } from '../services/PersonalSettings'
 import { UserAvatar } from './UserAvatar'
 
 export const Login: React.FunctionComponent<RouteComponentProps> = props => {
-  const injector = useContext(InjectorContext)
-  const repo = useContext(RepositoryContext)
-  const theme = useContext(ThemeContext)
-  const personalSettings = useContext(PersonalSettingsContext)
-  const session = useContext(SessionContext)
+  const injector = useInjector()
+  const repo = useRepository()
+  const theme = useTheme()
+  const personalSettings = usePersonalSettings()
+  const session = useSession()
   const settingsManager = injector.getInstance(PersonalSettings)
 
   const logger = injector.logger.withScope('LoginComponent')
@@ -41,7 +34,7 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
 
   const [error, setError] = useState<string | undefined>()
 
-  const localization = useContext(LocalizationContext).values.login
+  const localization = useLocalization().login
 
   useEffect(() => {
     setUrl(repo.configuration.repositoryUrl)

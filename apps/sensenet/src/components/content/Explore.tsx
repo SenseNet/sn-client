@@ -1,13 +1,13 @@
 import { ConstantContent } from '@sensenet/client-core'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { matchPath, RouteComponentProps, withRouter } from 'react-router'
 import {
-  ContentRoutingContext,
   CurrentAncestorsProvider,
   CurrentChildrenProvider,
   CurrentContentProvider,
   LoadSettingsContextProvider,
 } from '../../context'
+import { useContentRouting, useSelectionService } from '../../hooks'
 import { AddButton } from '../AddButton'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { CollectionComponent } from '../ContentListPanel'
@@ -18,7 +18,9 @@ export const ExploreComponent: React.FunctionComponent<RouteComponentProps<{ fol
   const getLeftFromPath = (params: CommanderRouteParams) =>
     parseInt(params.folderId as string, 10) || ConstantContent.PORTAL_ROOT.Id
 
-  const ctx = useContext(ContentRoutingContext)
+  const selectionService = useSelectionService()
+
+  const contentRouter = useContentRouting()
   const [leftParentId, setLeftParentId] = useState(getLeftFromPath(props.match.params))
   useEffect(() => {
     const historyChangeListener = props.history.listen(location => {
@@ -54,8 +56,9 @@ export const ExploreComponent: React.FunctionComponent<RouteComponentProps<{ fol
                     orderby: [['DisplayName', 'asc'], ['Name', 'asc']],
                   }}
                   onItemClick={item => {
+                    selectionService.activeContent.setValue(item)
                     setLeftParentId(item.Id)
-                    props.history.push(ctx.getPrimaryActionUrl(item))
+                    props.history.push(contentRouter.getPrimaryActionUrl(item))
                   }}
                   activeItemId={leftParentId}
                 />
@@ -63,17 +66,21 @@ export const ExploreComponent: React.FunctionComponent<RouteComponentProps<{ fol
                 <CollectionComponent
                   enableBreadcrumbs={false}
                   onActivateItem={item => {
-                    props.history.push(ctx.getPrimaryActionUrl(item))
+                    props.history.push(contentRouter.getPrimaryActionUrl(item))
                   }}
                   style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
                   onParentChange={p => {
                     setLeftParentId(p.Id)
-                    props.history.push(ctx.getPrimaryActionUrl(p))
+                    props.history.push(contentRouter.getPrimaryActionUrl(p))
+                  }}
+                  onSelectionChange={sel => {
+                    selectionService.selection.setValue(sel)
                   }}
                   parentId={leftParentId}
                   onTabRequest={() => {
                     /** */
                   }}
+                  onActiveItemChange={item => selectionService.activeContent.setValue(item)}
                 />
 
                 <AddButton />

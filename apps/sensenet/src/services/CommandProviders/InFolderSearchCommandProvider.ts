@@ -38,6 +38,7 @@ export class InFolderSearchCommandProvider implements CommandProvider {
       secondaryText: content.Path,
       content,
       url: ctx.getPrimaryActionUrl(content),
+      hits: [path],
     }))
   }
 }
