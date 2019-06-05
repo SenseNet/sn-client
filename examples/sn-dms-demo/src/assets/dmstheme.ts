@@ -14,6 +14,14 @@ export const dmsTheme = createMuiTheme({
         marginBottom: 10,
       },
     },
+    MuiDialogContent: {
+      root: {
+        padding: '0 24px 24px',
+        '&:first-child': {
+          paddingTop: 24,
+        },
+      },
+    },
     MuiListItemText: {
       primary: {
         [theme.breakpoints.down('md')]: {
