@@ -8,7 +8,9 @@ before_install:
   - export PATH="$HOME/.yarn/bin:$PATH"
 
 cache:
-  yarn: true
+  - yarn
+  - directories:
+      - .eslintcache
 
 jobs:
   allow_failures:
