@@ -26,7 +26,7 @@ const Editor: React.FunctionComponent<RouteComponentProps<{ contentId?: string }
           </CurrentContentContext.Consumer>
         </CurrentAncestorsProvider>
       </CurrentContentProvider>
-      ) : ( )}
+      ) : ( )
     </div>
   )
 }

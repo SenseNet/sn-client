@@ -75,7 +75,8 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
       })
       .then(r => {
         setError('')
-        setResult(r.d.results), setCount(r.d.__count)
+        setResult(r.d.results)
+        setCount(r.d.__count)
       })
       .catch(e => {
         setError(e.message)
