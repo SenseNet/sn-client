@@ -16,8 +16,8 @@
   "devDependencies": {
     "@types/enzyme": "^3.9.3",
     "@types/jest": "^24.0.13",
-    "@typescript-eslint/eslint-plugin": "^1.9.0",
-    "@typescript-eslint/parser": "^1.9.0",
+    "@typescript-eslint/eslint-plugin": "^1.10.2",
+    "@typescript-eslint/parser": "^1.10.2",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.13.2",
     "enzyme-to-json": "^3.3.5",
@@ -58,7 +58,7 @@
     "test:coverage": "jest --coverage",
     "clean": "lerna clean",
     "fix": "lerna run fix --parallel",
-    "lint": "eslint . --ext .tsx --ext .ts"
+    "lint": "eslint . --ext .tsx --ext .ts --cache --fix"
   },
   "husky": {
     "hooks": {
