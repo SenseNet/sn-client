@@ -76,7 +76,7 @@ export class AdvancedSearch<T extends GenericContent = GenericContent> extends C
         const queryRef = q['queryRef']
         new QueryExpression(queryRef).query(fieldQuery)
         if (currentIndex < filteredQueries.length - 1) {
-          new QueryOperators(queryRef).and
+          return new QueryOperators(queryRef).and
         }
       })
       return q

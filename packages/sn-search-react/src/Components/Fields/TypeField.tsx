@@ -75,7 +75,7 @@ export class TypeField extends Component<TypeFieldProps, TypeFieldState> {
         const queryRef = q['queryRef']
         new QueryExpression(queryRef).typeIs(contentType)
         if (currentIndex < selected.length - 1) {
-          new QueryOperators(queryRef).or
+          return new QueryOperators(queryRef).or
         }
       })
       return q
