@@ -168,7 +168,7 @@ export class UploadButton extends React.Component<UploadButtonProps, UploadButto
               </MenuItem>
             </label>
           </Menu>
-          {!Boolean(this.state.anchorElement) ? (
+          {!this.state.anchorElement ? (
             <div style={{ visibility: 'hidden', display: 'none' }}>
               <input
                 accept={this.props.accept}

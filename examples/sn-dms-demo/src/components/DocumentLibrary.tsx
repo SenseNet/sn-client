@@ -213,7 +213,7 @@ class DocumentLibrary extends React.Component<
 
   private updateLoading = debounce((value: boolean) => {
     this.setState({
-      showLoader: value && !Boolean(this.props.childrenOptions.skip),
+      showLoader: value && !this.props.childrenOptions.skip,
     })
   }, 300)
 
