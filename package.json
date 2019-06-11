@@ -36,10 +36,6 @@
     "start-server-and-test": "^1.9.1",
     "ts-jest": "^24.0.2",
     "tslib": "^1.9.3",
-    "tslint": "^5.16.0",
-    "tslint-config-prettier": "^1.18.0",
-    "tslint-consistent-codestyle": "1.15.1",
-    "tslint-react": "^4.0.0",
     "typescript": "^3.5.1",
     "wait-on": "^3.2.0"
   },
@@ -58,7 +54,6 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "clean": "lerna clean",
-    "fix": "lerna run fix --parallel",
     "lint": "eslint . --ext .tsx --ext .ts --cache"
   },
   "husky": {
