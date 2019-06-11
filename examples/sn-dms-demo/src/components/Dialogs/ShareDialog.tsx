@@ -154,9 +154,9 @@ class ShareDialog extends React.Component<
     console.log('Share form submitted, payload:', this.state)
   }
 
-  public handleAddTypeChange(ev: React.ChangeEvent) {
+  public handleAddTypeChange(event: React.ChangeEvent<{ name?: string | undefined; value: unknown }>) {
     this.setState({
-      addType: (ev.target as any).value,
+      addType: (event.target as any).value,
     })
   }
 

@@ -121,7 +121,7 @@ class DisplayNameMobileCell extends React.Component<
         break
     }
     return (
-      <TableCell className="display-name" padding="checkbox" onClick={this.handleOnClick}>
+      <TableCell className="display-name" onClick={this.handleOnClick}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           {this.props.hasSelected ? (
             <Checkbox

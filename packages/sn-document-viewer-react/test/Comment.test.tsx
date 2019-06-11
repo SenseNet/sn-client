@@ -7,7 +7,6 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 import ConnectedComment, { CommentComponent, CommentPropType } from '../src/components/comment/Comment'
-import { DeleteButton } from '../src/components/comment/DeleteCommentButton'
 import { rootReducer } from '../src/store'
 import { examplePreviewComment } from './__Mocks__/viewercontext'
 
@@ -69,7 +68,7 @@ describe('Comment component', () => {
 
   it('should show delete button when text is short', () => {
     const wrapper = mount(<CommentComponent {...defaultProps} />)
-    expect(wrapper.find(DeleteButton).text()).toBe('delete')
+    expect(wrapper.find(Button).text()).toBe('delete')
   })
 
   it('should show localized delete button', () => {
@@ -78,7 +77,7 @@ describe('Comment component', () => {
         <ConnectedComment {...defaultProps} />
       </Provider>,
     )
-    expect(wrapper.find(DeleteButton).text()).toBe('Delete')
+    expect(wrapper.find(Button).text()).toBe('Delete')
   })
 
   it('should be in selected state when clicked', () => {

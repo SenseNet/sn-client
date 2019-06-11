@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Confirmation dialog component should render with default props 1`] = `
-<WithStyles(Dialog)
+<WithStyles(ForwardRef(Dialog))
   aria-describedby="confirmation-dialog-description"
   aria-labelledby="confirmation-dialog-title"
   disableBackdropClick={true}
@@ -9,13 +9,13 @@ exports[`Confirmation dialog component should render with default props 1`] = `
   maxWidth="md"
   open={true}
 >
-  <WithStyles(DialogTitle)
+  <WithStyles(ForwardRef(DialogTitle))
     id="confirmation-dialog-title"
   >
     Some dialog title
-  </WithStyles(DialogTitle)>
-  <WithStyles(DialogContent)>
-    <WithStyles(DialogContentText)
+  </WithStyles(ForwardRef(DialogTitle))>
+  <WithStyles(ForwardRef(DialogContent))>
+    <WithStyles(ForwardRef(DialogContentText))
       dangerouslySetInnerHTML={
         Object {
           "__html": <p>
@@ -25,26 +25,26 @@ exports[`Confirmation dialog component should render with default props 1`] = `
       }
       id="confirmation-dialog-description"
     />
-  </WithStyles(DialogContent)>
-  <WithStyles(DialogActions)>
-    <WithStyles(Button)
+  </WithStyles(ForwardRef(DialogContent))>
+  <WithStyles(ForwardRef(DialogActions))>
+    <WithStyles(ForwardRef(Button))
       color="primary"
       onClick={[Function]}
       variant="contained"
     >
       OK
-    </WithStyles(Button)>
-    <WithStyles(Button)
+    </WithStyles(ForwardRef(Button))>
+    <WithStyles(ForwardRef(Button))
       onClick={[Function]}
     >
       Cancel
-    </WithStyles(Button)>
-  </WithStyles(DialogActions)>
-</WithStyles(Dialog)>
+    </WithStyles(ForwardRef(Button))>
+  </WithStyles(ForwardRef(DialogActions))>
+</WithStyles(ForwardRef(Dialog))>
 `;
 
 exports[`Confirmation dialog component should render without button texts 1`] = `
-<WithStyles(Dialog)
+<WithStyles(ForwardRef(Dialog))
   aria-describedby="confirmation-dialog-description"
   aria-labelledby="confirmation-dialog-title"
   disableBackdropClick={true}
@@ -52,13 +52,13 @@ exports[`Confirmation dialog component should render without button texts 1`] = 
   maxWidth="md"
   open={true}
 >
-  <WithStyles(DialogTitle)
+  <WithStyles(ForwardRef(DialogTitle))
     id="confirmation-dialog-title"
   >
     Some dialog title
-  </WithStyles(DialogTitle)>
-  <WithStyles(DialogContent)>
-    <WithStyles(DialogContentText)
+  </WithStyles(ForwardRef(DialogTitle))>
+  <WithStyles(ForwardRef(DialogContent))>
+    <WithStyles(ForwardRef(DialogContentText))
       dangerouslySetInnerHTML={
         Object {
           "__html": <p>
@@ -68,20 +68,20 @@ exports[`Confirmation dialog component should render without button texts 1`] = 
       }
       id="confirmation-dialog-description"
     />
-  </WithStyles(DialogContent)>
-  <WithStyles(DialogActions)>
-    <WithStyles(Button)
+  </WithStyles(ForwardRef(DialogContent))>
+  <WithStyles(ForwardRef(DialogActions))>
+    <WithStyles(ForwardRef(Button))
       color="primary"
       onClick={[Function]}
       variant="contained"
     >
       ok
-    </WithStyles(Button)>
-    <WithStyles(Button)
+    </WithStyles(ForwardRef(Button))>
+    <WithStyles(ForwardRef(Button))
       onClick={[Function]}
     >
       cancel
-    </WithStyles(Button)>
-  </WithStyles(DialogActions)>
-</WithStyles(Dialog)>
+    </WithStyles(ForwardRef(Button))>
+  </WithStyles(ForwardRef(DialogActions))>
+</WithStyles(ForwardRef(Dialog))>
 `;

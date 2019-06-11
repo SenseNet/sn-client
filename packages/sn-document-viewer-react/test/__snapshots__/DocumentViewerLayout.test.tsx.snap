@@ -24,7 +24,7 @@ exports[`Document Viewer Layout component should render without crashing 1`] = `
       }
     }
   >
-    <WithStyles(Drawer)
+    <WithStyles(ForwardRef(Drawer))
       PaperProps={
         Object {
           "style": Object {
@@ -59,7 +59,7 @@ exports[`Document Viewer Layout component should render without crashing 1`] = `
         zoomLevel={1}
         zoomMode="fit"
       />
-    </WithStyles(Drawer)>
+    </WithStyles(ForwardRef(Drawer))>
     <Connect(PageListComponent)
       activePage={1}
       elementNamePrefix="Page-"
@@ -74,7 +74,7 @@ exports[`Document Viewer Layout component should render without crashing 1`] = `
       zoomLevel={1}
       zoomMode="custom"
     />
-    <WithStyles(Drawer)
+    <WithStyles(ForwardRef(Drawer))
       PaperProps={
         Object {
           "style": Object {
@@ -90,7 +90,7 @@ exports[`Document Viewer Layout component should render without crashing 1`] = `
       variant="persistent"
     >
       <styled.div>
-        <WithStyles(Typography)
+        <WithStyles(ForwardRef(Typography))
           variant="h4"
         />
         <CreateComment
@@ -104,7 +104,7 @@ exports[`Document Viewer Layout component should render without crashing 1`] = `
           localization={Object {}}
         />
       </styled.div>
-    </WithStyles(Drawer)>
+    </WithStyles(ForwardRef(Drawer))>
   </div>
 </div>
 `;
@@ -133,7 +133,7 @@ exports[`Document Viewer Layout component should render without crashing 2`] = `
       }
     }
   >
-    <WithStyles(Drawer)
+    <WithStyles(ForwardRef(Drawer))
       PaperProps={
         Object {
           "style": Object {
@@ -168,7 +168,7 @@ exports[`Document Viewer Layout component should render without crashing 2`] = `
         zoomLevel={1}
         zoomMode="fit"
       />
-    </WithStyles(Drawer)>
+    </WithStyles(ForwardRef(Drawer))>
     <Connect(PageListComponent)
       activePage={1}
       elementNamePrefix="Page-"
@@ -183,7 +183,7 @@ exports[`Document Viewer Layout component should render without crashing 2`] = `
       zoomLevel={1}
       zoomMode="custom"
     />
-    <WithStyles(Drawer)
+    <WithStyles(ForwardRef(Drawer))
       PaperProps={
         Object {
           "style": Object {
@@ -199,7 +199,7 @@ exports[`Document Viewer Layout component should render without crashing 2`] = `
       variant="persistent"
     >
       <styled.div>
-        <WithStyles(Typography)
+        <WithStyles(ForwardRef(Typography))
           variant="h4"
         />
         <CreateComment
@@ -213,7 +213,7 @@ exports[`Document Viewer Layout component should render without crashing 2`] = `
           localization={Object {}}
         />
       </styled.div>
-    </WithStyles(Drawer)>
+    </WithStyles(ForwardRef(Drawer))>
   </div>
 </div>
 `;

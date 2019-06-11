@@ -1,10 +1,10 @@
 import Divider from '@material-ui/core/Divider'
 import Drawer from '@material-ui/core/Drawer'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import MenuItem from '@material-ui/core/MenuItem'
-import MenuList from '@material-ui/core/MenuList'
 import withStyles, { StyleRulesCallback } from '@material-ui/core/styles/withStyles'
-
 import { ActionModel } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import { Actions } from '@sensenet/redux'
@@ -121,15 +121,11 @@ const styles: StyleRulesCallback = () => ({
   },
   root: {
     color: '#666',
-    paddingLeft: 0,
-    paddingRight: 0,
   },
   selected: {
     backgroundColor: '#fff !important',
     color: '#016d9e',
     fontWeight: 600,
-    paddingLeft: 0,
-    paddingRight: 0,
   },
   rootMobile: {
     color: '#666',
@@ -247,7 +243,7 @@ class DashboardDrawer extends Component<
                   border: 'none',
                 },
               }}>
-              <MenuList>
+              <List>
                 {menu.map((item, index) => {
                   return matches ? (
                     !item.adminOnly ? (
@@ -303,7 +299,7 @@ class DashboardDrawer extends Component<
                   const active = activeItem === action.Name
                   return matches ? null : (
                     <div key={i}>
-                      <MenuItem
+                      <ListItem
                         selected={active}
                         classes={
                           matches
@@ -311,31 +307,32 @@ class DashboardDrawer extends Component<
                             : { root: classes.rootMobile, selected: classes.selectedMobile }
                         }
                         onClick={event => this.handleMenuItemClick(event, action)}>
-                        <Icon
-                          type={iconType.materialui}
-                          iconName={icons[action.Icon]}
-                          className={
-                            matches
-                              ? active
+                        <ListItemIcon>
+                          <Icon
+                            type={iconType.materialui}
+                            iconName={icons[action.Icon]}
+                            className={
+                              matches
+                                ? active
+                                  ? classes.iconWhiteActive
+                                  : classes.iconWhite
+                                : active
                                 ? classes.iconWhiteActive
-                                : classes.iconWhite
-                              : active
-                              ? classes.iconWhiteActive
-                              : classes.iconWhiteMobile
-                          }
-                          color="primary"
-                        />
+                                : classes.iconWhiteMobile
+                            }
+                            color="primary"
+                          />
+                        </ListItemIcon>
                         <ListItemText
                           classes={{ primary: active ? classes.primaryActive : classes.primary }}
-                          inset={true}
                           primary={action.DisplayName}
                         />
-                      </MenuItem>
+                      </ListItem>
                       <Divider light={true} />
                     </div>
                   )
                 })}
-              </MenuList>
+              </List>
             </Drawer>
           )
         }}

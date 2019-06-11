@@ -8,21 +8,21 @@ exports[`RotateActivePage component Should render without crashing 1`] = `
     }
   }
 >
-  <WithStyles(IconButton)
+  <WithStyles(ForwardRef(IconButton))
     color="inherit"
     id="RotateActiveLeft"
     onClick={[Function]}
     title="rotateDocumentLeft"
   >
-    <pure(RotateLeftIcon) />
-  </WithStyles(IconButton)>
-  <WithStyles(IconButton)
+    <RotateLeftIcon />
+  </WithStyles(ForwardRef(IconButton))>
+  <WithStyles(ForwardRef(IconButton))
     color="inherit"
     id="RotateActiveRight"
     onClick={[Function]}
     title="rotateDocumentRight"
   >
-    <pure(RotateRightIcon) />
-  </WithStyles(IconButton)>
+    <RotateRightIcon />
+  </WithStyles(ForwardRef(IconButton))>
 </div>
 `;

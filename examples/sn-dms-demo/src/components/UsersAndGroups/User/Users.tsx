@@ -1,6 +1,6 @@
-import { MuiThemeProvider } from '@material-ui/core'
 import AppBar from '@material-ui/core/AppBar'
 import IconButton from '@material-ui/core/IconButton'
+import { MuiThemeProvider } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import DeleteIcon from '@material-ui/icons/Delete'
 import { ConstantContent } from '@sensenet/client-core'

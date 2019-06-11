@@ -13,13 +13,13 @@ import theme from '../../assets/theme'
 const styles = {
   menuItem: {
     padding: '6px 15px',
+    minHeight: 24,
     display: 'flex',
     lineHeight: 1,
     minWidth: 145,
   },
   icon: {
     flexShrink: 0,
-    marginRight: 14,
   },
   text: {
     padding: 0,
@@ -57,7 +57,7 @@ export class UploadButton extends React.Component<UploadButtonProps, UploadButto
     ev.target.files && (await this.props.handleUpload(ev.target.files))
   }
 
-  private toggleOpen(ev: React.MouseEvent<HTMLElement>) {
+  private toggleOpen = (ev: React.MouseEvent<HTMLElement>) => {
     this.setState({
       ...this.state,
       anchorElement: this.state.anchorElement ? undefined : ev.currentTarget,
@@ -91,7 +91,7 @@ export class UploadButton extends React.Component<UploadButtonProps, UploadButto
               paddingBottom: 6,
               letterSpacing: 1,
             }}
-            onClick={ev => this.toggleOpen(ev)}>
+            onClick={this.toggleOpen}>
             <Icon
               type={iconType.flaticon}
               iconName="upload-button"

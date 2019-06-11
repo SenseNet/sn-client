@@ -60,10 +60,10 @@ export class PresetField<T extends GenericContent = GenericContent> extends Reac
       <Select
         value={this.state.value}
         onChange={ev => {
-          const preset = this.props.presets.find(p => p.text === ev.target.value.toString())
+          const preset = this.props.presets.find(p => p.text === (ev.target.value as string).toString())
           if (preset) {
             this.props.onQueryChange(this.props.fieldKey || this.props.fieldName, preset.value, preset.text)
-            this.setState({ value: ev.target.value })
+            this.setState({ value: ev.target.value as string })
           }
         }}
         {...materialProps}>

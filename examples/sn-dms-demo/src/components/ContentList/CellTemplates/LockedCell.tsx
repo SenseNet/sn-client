@@ -76,7 +76,7 @@ class LockedCell extends React.Component<LockedCellProps & ReturnType<typeof map
     // tslint:disable-next-line:no-string-literal
     const checkedOutBy = content ? (content['CheckedOutTo'] ? this.lockedByName(content) : null) : null
     return (
-      <TableCell padding="checkbox" style={styles.cell}>
+      <TableCell style={styles.cell}>
         {content ? (
           content.Locked ? (
             this.state.status === DocumentState.CheckedOut ? (

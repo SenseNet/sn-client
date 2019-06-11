@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`PageList component should match snapshot with one page 1`] = `
-<WithStyles(Grid)
+<WithStyles(ForwardRef(Grid))
   id="sn-document-viewer-pages"
   item={true}
   style={
@@ -40,5 +40,5 @@ exports[`PageList component should match snapshot with one page 1`] = `
       zoomMode="originalSize"
     />
   </div>
-</WithStyles(Grid)>
+</WithStyles(ForwardRef(Grid))>
 `;

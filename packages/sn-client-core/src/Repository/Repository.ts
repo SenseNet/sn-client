@@ -6,6 +6,7 @@ import { Content } from '../Models/Content'
 import { ODataBatchResponse } from '../Models/ODataBatchResponse'
 import { ODataCollectionResponse } from '../Models/ODataCollectionResponse'
 import { ODataResponse } from '../Models/ODataResponse'
+import { ODataWopiResponse } from '../Models/ODataWopiResponse'
 import {
   ActionOptions,
   CopyOptions,
@@ -402,12 +403,26 @@ export class Repository implements Disposable {
     return await response.json()
   }
   /**
+   * Returns data for loading Office document for editing
+   * @param idOrPath Id or path of the document
+   */
+  public async getWopiData(idOrPath: string | number): Promise<ODataWopiResponse> {
+    return await this.executeAction<{}, ODataWopiResponse>({
+      idOrPath,
+      method: 'GET',
+      name: 'GetWopiData',
+      oDataOptions: {
+        action: 'edit',
+      } as any,
+    })
+  }
+  /**
    * Executes a specified custom OData action
    * @param options Options for the Custom Action
    */
   public async executeAction<TBodyType, TReturns>(options: ActionOptions<TBodyType, any>): Promise<TReturns> {
     const contextPath = PathHelper.getContentUrl(options.idOrPath)
-    const params = ODataUrlBuilder.buildUrlParamString(this.configuration, options.oDataOptions)
+    let params = ODataUrlBuilder.buildUrlParamString(this.configuration, options.oDataOptions)
     const path = PathHelper.joinPaths(
       this.configuration.repositoryUrl,
       this.configuration.oDataToken,
@@ -421,6 +436,11 @@ export class Repository implements Disposable {
     }
     if (options.method === 'POST') {
       requestOptions.body = JSON.stringify(options.body)
+    } else {
+      options.body &&
+        Object.keys(options.body).forEach(
+          key => (params += `&${key}=${encodeURIComponent((options.body as any)[key])}`),
+        )
     }
     const response = await this.fetch(`${path}?${params}`, requestOptions)
     if (!response.ok) {

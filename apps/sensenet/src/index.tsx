@@ -19,6 +19,7 @@ import {
 import { LoggerContextProvider } from './context/LoggerContext'
 import { CommandProviderManager } from './services/CommandProviderManager'
 import { CheatCommandProvider } from './services/CommandProviders/CheatCommandProvider'
+import { CustomActionCommandProvider } from './services/CommandProviders/CustomActionCommandProvider'
 import { HelpCommandProvider } from './services/CommandProviders/HelpCommandProvider'
 import { HistoryCommandProvider } from './services/CommandProviders/HistoryCommandProvider'
 import { InFolderSearchCommandProvider } from './services/CommandProviders/InFolderSearchCommandProvider'
@@ -44,6 +45,7 @@ diMiddleware
   .getInjectable(CommandProviderManager)
   .RegisterProviders(
     CheatCommandProvider,
+    CustomActionCommandProvider,
     HelpCommandProvider,
     HistoryCommandProvider,
     InFolderSearchCommandProvider,

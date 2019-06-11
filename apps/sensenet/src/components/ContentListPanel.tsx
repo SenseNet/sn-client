@@ -10,14 +10,14 @@ import {
   CurrentChildrenContext,
   CurrentContentContext,
   LoadSettingsContext,
-  RepositoryContext,
   ResponsiveContext,
   ResponsivePersonalSetttings,
   ResponsivePlatforms,
 } from '../context'
+import { useRepository } from '../hooks'
 import { ContentBreadcrumbs } from './ContentBreadcrumbs'
 import { ContentContextMenu } from './ContentContextMenu'
-import { DeleteContentDialog } from './DeleteContentDialog'
+import { DeleteContentDialog } from './dialogs'
 import { DropFileArea } from './DropFileArea'
 import { Icon } from './Icon'
 import { SecondaryActionsMenu } from './SecondaryActionsMenu'
@@ -28,6 +28,7 @@ export interface CollectionComponentProps {
   parentId: number
   onParentChange: (newParent: GenericContent) => void
   onTabRequest: () => void
+  onActiveItemChange?: (item: GenericContent) => void
   onActivateItem: (item: GenericContent) => void
   style?: React.CSSProperties
   containerRef?: (r: HTMLDivElement | null) => void
@@ -74,11 +75,15 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
   const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
   const [showDelete, setShowDelete] = useState(false)
-  const repo = useContext(RepositoryContext)
+  const repo = useRepository()
   const loadSettings = useContext(LoadSettingsContext)
 
   const [currentOrder, setCurrentOrder] = useState<keyof GenericContent>('DisplayName')
   const [currentDirection, setCurrentDirection] = useState<'asc' | 'desc'>('asc')
+
+  useEffect(() => {
+    props.onActiveItemChange && props.onActiveItemChange(activeContent)
+  }, [activeContent])
 
   useEffect(() => {
     isFocused && props.onFocus && props.onFocus()

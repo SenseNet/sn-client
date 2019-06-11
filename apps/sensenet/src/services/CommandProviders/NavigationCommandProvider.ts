@@ -6,13 +6,14 @@ import { LocalizationService } from '../LocalizationService'
 
 @Injectable({ lifetime: 'transient' })
 export class NavigationCommandProvider implements CommandProvider {
-  public getRoutes: () => Array<CommandPaletteItem & { keywords?: string }> = () => [
+  public getRoutes: (term: string) => Array<CommandPaletteItem & { keywords?: string }> = term => [
     {
       primaryText: this.localizationValues.personalSettingsPrimary,
       url: '/personalSettings',
       secondaryText: this.localizationValues.personalSettingsSecondary,
       content: { Type: 'Settings' } as any,
       keywords: 'settings setup personal settings language theme',
+      hits: [term],
     },
     {
       primaryText: this.localizationValues.contentPrimary,
@@ -20,6 +21,7 @@ export class NavigationCommandProvider implements CommandProvider {
       secondaryText: this.localizationValues.contentSecondary,
       content: { Type: 'PortalRoot' } as any,
       keywords: 'explore browse repository',
+      hits: [term],
     },
     {
       primaryText: this.localizationValues.searchPrimary,
@@ -27,6 +29,7 @@ export class NavigationCommandProvider implements CommandProvider {
       secondaryText: this.localizationValues.searchSecondaryText,
       content: { Type: 'Search' } as any,
       keywords: 'search find content query',
+      hits: [term],
     },
     {
       primaryText: this.localizationValues.savedQueriesPrimary,
@@ -34,6 +37,7 @@ export class NavigationCommandProvider implements CommandProvider {
       secondaryText: this.localizationValues.savedQueriesSecondaryText,
       content: { Type: 'Search' } as any,
       keywords: 'saved query search find',
+      hits: [term],
     },
     {
       primaryText: this.localizationValues.eventsPrimary,
@@ -41,6 +45,7 @@ export class NavigationCommandProvider implements CommandProvider {
       secondaryText: this.localizationValues.eventsSecondary,
       content: { Type: 'EventLog' } as any,
       keywords: 'event events error warning log logs',
+      hits: [term],
     },
   ]
   private localizationValues: ReturnType<LocalizationService['currentValues']['getValue']>['navigationCommandProvider']
@@ -49,7 +54,7 @@ export class NavigationCommandProvider implements CommandProvider {
     const termLowerCase = term.toLocaleLowerCase()
     return (
       term.length > 0 &&
-      this.getRoutes().find(
+      this.getRoutes(term).find(
         r =>
           r.primaryText.toLocaleLowerCase().includes(termLowerCase) ||
           r.secondaryText.includes(termLowerCase) ||
@@ -59,7 +64,7 @@ export class NavigationCommandProvider implements CommandProvider {
   }
 
   public async getItems(term: string, repo: Repository): Promise<CommandPaletteItem[]> {
-    return this.getRoutes()
+    return this.getRoutes(term)
       .filter(
         r =>
           r.primaryText.includes(term) || r.secondaryText.includes(term) || (r.keywords && r.keywords.includes(term)),

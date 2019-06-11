@@ -3,6 +3,7 @@ import { LogLevel } from '@furystack/logging'
 import Avatar from '@material-ui/core/Avatar'
 import BugReport from '@material-ui/icons/BugReport'
 import CodeTwoTone from '@material-ui/icons/CodeTwoTone'
+import CommentTwoTone from '@material-ui/icons/CommentTwoTone'
 import DeleteTwoTone from '@material-ui/icons/DeleteTwoTone'
 import Error from '@material-ui/icons/Error'
 import FolderTwoTone from '@material-ui/icons/FolderTwoTone'
@@ -19,8 +20,8 @@ import WebAssetTwoTone from '@material-ui/icons/WebAssetTwoTone'
 import { Repository } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { File as SnFile, GenericContent, Schema, User } from '@sensenet/default-content-types'
-import React, { useContext } from 'react'
-import { InjectorContext, RepositoryContext } from '../context'
+import React from 'react'
+import { useInjector, useRepository } from '../hooks'
 import { EventLogEntry } from '../services/EventService'
 import { isContentFromType } from '../utils/isContentFromType'
 import { UserAvatar } from './UserAvatar'
@@ -88,6 +89,7 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   { get: (item, options) => (item.Type === 'TrashBin' ? <DeleteTwoTone style={options.style} /> : null) },
   { get: (item, options) => (item.Type === 'PortalRoot' ? <PublicTwoTone style={options.style} /> : null) },
   { get: (item, options) => (item.Type === 'Search' ? <SearchTwoTone style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'Comment' ? <CommentTwoTone style={options.style} /> : null) },
   { get: (item, options) => (item.Type === 'EventLog' ? <ListAltTwoTone style={options.style} /> : null) },
   {
     get: (item, options) =>
@@ -158,8 +160,8 @@ export const IconComponent: React.FunctionComponent<{
   style?: React.CSSProperties
   repository?: Repository
 }> = props => {
-  const injector = useContext(InjectorContext)
-  const repo = props.repository || useContext(RepositoryContext)
+  const injector = useInjector()
+  const repo = props.repository || useRepository()
 
   const options: IconOptions = { style: props.style, injector, repo }
   const resolvers = [

@@ -25,7 +25,7 @@ export interface BrowseViewProps {
  */
 export interface BrowseViewState {
   content: GenericContent
-  schema: ControlSchema<React.Component, ReactClientFieldSettingProps>
+  schema: ControlSchema<React.Component<any, any, any>, ReactClientFieldSettingProps>
 }
 
 /**
@@ -74,7 +74,7 @@ export class BrowseView extends Component<BrowseViewProps, BrowseViewState> {
     const fieldSettings = this.state.schema.fieldMappings
     const that = this
     return (
-      <Grid container={true} spacing={24}>
+      <Grid container={true} spacing={2}>
         <div style={styles.container}>
           <Typography variant="h5" gutterBottom={true}>
             {this.props.content.DisplayName}

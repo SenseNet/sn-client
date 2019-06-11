@@ -75,7 +75,6 @@ export class UploadBarItem extends React.Component<UploadBarItemProps, UploadBar
               {this.state.displayName}
             </div>
           }
-          inset={true}
           style={{ padding: '0 25px 0 14px' }}
           title={this.state.displayName}
         />

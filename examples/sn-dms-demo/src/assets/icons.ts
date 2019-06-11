@@ -43,4 +43,5 @@ export const icons = {
   workspacesales: 'workspace-with-two-horizontal-windows',
   workspaceproject: 'workspace-with-two-horizontal-windows',
   workspacedocument: 'workspace-with-two-horizontal-windows',
+  office: 'logo-office',
 } as any

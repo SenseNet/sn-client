@@ -53,14 +53,14 @@ export class LoginTabs extends React.Component<RouteComponentProps<any> & { clas
               label={resources.LOGIN_TAB_TEXT}
               style={styles.tabLink as any}
               classes={{
-                label: this.props.classes.label,
+                root: this.props.classes.label,
               }}
             />
             <Tab
               label={resources.REGISTER_TAB_TEXT}
               style={styles.tabLink as any}
               classes={{
-                label: this.props.classes.label,
+                root: this.props.classes.label,
               }}
             />
           </Tabs>
