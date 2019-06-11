@@ -125,7 +125,7 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
           }
           return this.props.submitCallback ? this.props.submitCallback() : null
         }}>
-        <Grid container={true} spacing={24}>
+        <Grid container={true} spacing={2}>
           {fieldSettings.map(fieldSetting => {
             const reactClientSettings = fieldSetting.clientSettings as ReactClientFieldSetting
             reactClientSettings['data-actionName'] = 'edit'

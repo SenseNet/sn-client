@@ -94,7 +94,7 @@ describe('Create comment component', () => {
     const wrapper = mount(<CreateComment {...defaultProps} />)
     wrapper
       .find('textarea')
-      .last()
+      .first()
       .simulate('change', { target: { value: 'Hello' } })
     wrapper.find('form').simulate('submit')
     expect(defaultProps.handleInputValueChange).toBeCalledWith('Hello')

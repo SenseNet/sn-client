@@ -101,6 +101,41 @@ export class QueryExpression<TReturns> extends QuerySegment<TReturns> {
   }
 
   /**
+   * Field equality check on nested  field query expression (e.g. +FieldName:{{NestedFieldName:'value'}})
+   * @param { K } fieldName The name of the Field to be checked
+   * @param { K } nestedFieldName The name of the nested Field to be checked
+   * @param { TReturns[K] } value The value that will be checked. You can use '?' and '*' wildcards
+   * @returns { QueryOperator<TReturns> } The Next query operator (fluent)
+   */
+  public equalsNested<K extends keyof TReturns>(
+    fieldName: K | '_Text',
+    nestedFieldName: string,
+    value: string,
+  ) {
+    this.stringValue = `${fieldName}:{{${nestedFieldName}:${value.toString()}}}`
+    this.segmentType = 'equalsNested'
+    return this.finialize()
+  }
+
+  /**
+   * Field equality check on nested field and NOT operator combination (e.g. +NOT(FieldName:{{NestedFieldName:'value'}}))
+   * @param { K } fieldName The name of the Field to be checked
+   * @param { K } nestedFieldName The name of the nested Field to be checked
+   * @param { TReturns[K] } value The value that will be checked. You can use '?' and '*' wildcards
+   * @returns { QueryOperator<TReturns> } The Next query operator (fluent)
+   */
+
+  public notEqualsNested<K extends keyof TReturns>(
+    fieldName: K | '_Text',
+    nestedFieldName: string,
+    value: string,
+  ) {
+    this.stringValue = `NOT(${fieldName}:{{${nestedFieldName}:${value.toString()}}})`
+    this.segmentType = 'notEqualsNested'
+    return this.finialize()
+  }
+
+  /**
    * Range search query expression
    * @param { K } fieldName he name of the Field to be checked
    * @param { TReturns[K] } minValue The minimum allowed value

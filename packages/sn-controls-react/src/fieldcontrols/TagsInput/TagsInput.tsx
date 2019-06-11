@@ -116,11 +116,11 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
   /**
    * handles input changes
    */
-  public handleChange = (e: React.ChangeEvent) => {
+  public handleChange = (event: React.ChangeEvent<{ name?: string; value: unknown }>) => {
     const { name, onChange } = this.props
     const selected = this.state.fieldValue
     let s = selected
-    const selectedContent = this.getContentById(Number((e.target as HTMLInputElement).value))
+    const selectedContent = this.getContentById(event.target.value as number)
 
     this.props['data-allowMultiple'] !== undefined && this.props['data-allowMultiple']
       ? this.isSelected(selectedContent)

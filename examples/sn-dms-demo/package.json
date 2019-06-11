@@ -31,8 +31,8 @@
     "lint": "tslint --project ."
   },
   "dependencies": {
-    "@material-ui/core": "^3.8.2",
-    "@material-ui/icons": "^3.0.2",
+    "@material-ui/core": "^4.0.1",
+    "@material-ui/icons": "^4.0.1",
     "@sensenet/authentication-google": "^2.0.8",
     "@sensenet/authentication-jwt": "^1.0.12",
     "@sensenet/client-core": "^2.0.1",

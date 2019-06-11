@@ -15,25 +15,22 @@ import React, { useContext, useEffect, useState } from 'react'
 import { generatePath, RouteComponentProps, withRouter } from 'react-router'
 import Semaphore from 'semaphore-async-await'
 import {
-  ContentRoutingContext,
   CurrentAncestorsContext,
   CurrentChildrenContext,
   CurrentContentContext,
   LoadSettingsContext,
-  LocalizationContext,
-  RepositoryContext,
   ResponsivePersonalSetttings,
 } from '../../context'
-import { LoggerContext } from '../../context/LoggerContext'
+import { useContentRouting, useLocalization, useLogger, useRepository } from '../../hooks'
 import { CollectionComponent } from '../ContentListPanel'
 
 const loadCount = 20
 
 const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> = props => {
-  const repo = useContext(RepositoryContext)
-  const ctx = useContext(ContentRoutingContext)
+  const repo = useRepository()
+  const contentRouter = useContentRouting()
 
-  const localization = useContext(LocalizationContext).values.search
+  const localization = useLocalization().search
   const [contentQuery, setContentQuery] = useState(decodeURIComponent(props.match.params.query || ''))
   const [reloadToken, setReloadToken] = useState(Math.random())
   const [scrollToken, setScrollToken] = useState(Math.random())
@@ -42,7 +39,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
 
   const [requestReload] = useState(() => debounce(() => setReloadToken(Math.random()), 250))
 
-  const logger = useContext(LoggerContext).withScope('Search')
+  const logger = useLogger('Search')
 
   const [requestScroll] = useState(() =>
     debounce((div: HTMLDivElement, total: number, loaded: number, update: (token: number) => void) => {
@@ -201,10 +198,10 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
               enableBreadcrumbs={false}
               parentId={0}
               onParentChange={p => {
-                props.history.push(ctx.getPrimaryActionUrl(p))
+                props.history.push(contentRouter.getPrimaryActionUrl(p))
               }}
               onActivateItem={p => {
-                props.history.push(ctx.getPrimaryActionUrl(p))
+                props.history.push(contentRouter.getPrimaryActionUrl(p))
               }}
               onTabRequest={() => {
                 /** */

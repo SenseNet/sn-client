@@ -1,9 +1,8 @@
 import IconButton from '@material-ui/core/IconButton'
 import Menu from '@material-ui/core/Menu'
+import SvgIcon from '@material-ui/core/SvgIcon'
 import AspectRatio from '@material-ui/icons/AspectRatio'
 import Code from '@material-ui/icons/Code'
-import ZoomIn from '@material-ui/icons/ZoomIn'
-import ZoomOut from '@material-ui/icons/ZoomOut'
 import ZoomOutMap from '@material-ui/icons/ZoomOutMap'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
@@ -114,7 +113,10 @@ describe('ZoomMode component', () => {
       />,
     )
     wrapper.find(IconButton).simulate('click', { currentTarget: IconButton })
-    wrapper.find(ZoomIn).simulate('click')
+    wrapper
+      .find(SvgIcon)
+      .last()
+      .simulate('click')
     expect(setZoomLevel).toBeCalledWith(1)
   })
 
@@ -130,7 +132,11 @@ describe('ZoomMode component', () => {
       />,
     )
     wrapper.find(IconButton).simulate('click', { currentTarget: IconButton })
-    wrapper.find(ZoomOut).simulate('click')
+    wrapper
+      .find(IconButton)
+      .find(SvgIcon)
+      .at(1)
+      .simulate('click')
     expect(setZoomLevel).toBeCalledWith(4)
   })
 })

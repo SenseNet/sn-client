@@ -4,6 +4,8 @@ import { useContext } from 'react'
 import snLogo from '../../assets/sensenet_logo_transparent.png'
 import { ResponsivePersonalSetttings } from '../../context'
 import { DesktopAppBar } from '../appbar/DesktopAppBar'
+import { CustomActionResultDialog } from '../dialogs/custom-action-result'
+import { ExecuteActionDialog } from '../dialogs/execute-action'
 import { PermanentDrawer } from '../drawer/PermanentDrawer'
 import { TemporaryDrawer } from '../drawer/TemporaryDrawer'
 
@@ -23,6 +25,8 @@ export const DesktopLayout: React.FunctionComponent = props => {
         height: '100%',
       }}>
       <CssBaseline />
+      <ExecuteActionDialog />
+      <CustomActionResultDialog />
       <DesktopAppBar openDrawer={() => setTempDrawerOpened(!tempDrawerOpened)} />
       <div
         style={{
@@ -32,15 +36,20 @@ export const DesktopLayout: React.FunctionComponent = props => {
           height: '100%',
           width: '100%',
         }}>
-        {settings.drawer.type === 'temporary' ? (
-          <TemporaryDrawer
-            onClose={() => setTempDrawerOpened(false)}
-            onOpen={() => setTempDrawerOpened(true)}
-            isOpened={tempDrawerOpened}
-          />
-        ) : (
-          <PermanentDrawer />
-        )}
+        {settings.drawer.enabled ? (
+          <>
+            {settings.drawer.type === 'temporary' ? (
+              <TemporaryDrawer
+                onClose={() => setTempDrawerOpened(false)}
+                onOpen={() => setTempDrawerOpened(true)}
+                isOpened={tempDrawerOpened}
+              />
+            ) : (
+              <PermanentDrawer />
+            )}
+          </>
+        ) : null}
+
         <div
           style={{
             display: 'flex',

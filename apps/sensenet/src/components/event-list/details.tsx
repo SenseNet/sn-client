@@ -1,10 +1,11 @@
 import { ILeveledLogEntry } from '@furystack/logging'
 import React, { useContext } from 'react'
 import MonacoEditor, { MonacoDiffEditor } from 'react-monaco-editor'
-import { ResponsiveContext, ThemeContext } from '../../context'
+import { ResponsiveContext } from '../../context'
+import { useTheme } from '../../hooks'
 
 export const EventDetails: React.FunctionComponent<{ event: ILeveledLogEntry<any> }> = ({ event }) => {
-  const theme = useContext(ThemeContext)
+  const theme = useTheme()
   const platform = useContext(ResponsiveContext)
   if (event.data.compare) {
     return (

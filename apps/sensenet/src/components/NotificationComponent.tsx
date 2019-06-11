@@ -7,7 +7,8 @@ import Close from '@material-ui/icons/Close'
 import { sleepAsync } from '@sensenet/client-utils'
 import React from 'react'
 import { useContext, useEffect, useState } from 'react'
-import { InjectorContext, ResponsiveContext } from '../context'
+import { ResponsiveContext } from '../context'
+import { useInjector } from '../hooks'
 import { EventLogEntry, EventService } from '../services/EventService'
 import { RepositoryManager } from '../services/RepositoryManager'
 import { Icon } from './Icon'
@@ -49,7 +50,7 @@ export const getAutoHideDuration = (item: EventLogEntry<any>) => {
 }
 
 export const NotificationComponent: React.FunctionComponent = () => {
-  const injector = useContext(InjectorContext)
+  const injector = useInjector()
   const repoManager = injector.getInstance(RepositoryManager)
   const eventService = injector.getInstance(EventService)
   const [values, setValues] = useState<Array<[string, Array<EventLogEntry<any>>]>>([])

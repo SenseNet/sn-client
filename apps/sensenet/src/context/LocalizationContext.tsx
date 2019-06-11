@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useInjector, usePersonalSettings } from '../hooks'
 import DefaultLocalization from '../localization/default'
 import { LocalizationService } from '../services/LocalizationService'
-import { InjectorContext } from './InjectorContext'
-import { PersonalSettingsContext } from './PersonalSettingsContext'
 
 /**
  * Context that can be used for getting localization values
@@ -17,10 +16,10 @@ export const LocalizationContext = React.createContext({
  * @param props
  */
 export const LocalizationProvider: React.FunctionComponent = props => {
-  const injector = useContext(InjectorContext)
+  const injector = useInjector()
   const [localizationService] = useState(injector.getInstance(LocalizationService))
   const [currentValues, setCurrentValues] = useState({ ...DefaultLocalization })
-  const personalSettings = useContext(PersonalSettingsContext)
+  const personalSettings = usePersonalSettings()
 
   useEffect(() => {
     const observable = localizationService.currentValues.subscribe(v => {

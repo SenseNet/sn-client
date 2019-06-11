@@ -9,8 +9,8 @@ import { CommandProviderManager } from '../services/CommandProviderManager'
 export interface CommandPaletteItem {
   primaryText: string
   secondaryText: string
-  icon?: string
   url: string
+  hits: string[]
   content?: GenericContent
   openAction?: () => void
 }

@@ -2,9 +2,9 @@
  * @module FieldControls
  */
 import MomentUtils from '@date-io/moment'
+import { MaterialUiPickersDate, TimePicker as MUITimePicker } from '@material-ui/pickers'
+import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import { GenericContent } from '@sensenet/default-content-types'
-import { TimePicker as MUITimePicker } from 'material-ui-pickers'
-import { MuiPickersUtilsProvider } from 'material-ui-pickers'
 import moment from 'moment'
 import React from 'react'
 import { Fragment } from 'react'
@@ -47,9 +47,12 @@ export class TimePicker<T extends GenericContent, K extends keyof T> extends Rea
   }
   /**
    * handle changes
-   * @param {Date} date
+   * @param {MaterialUiPickersDate} date
    */
-  public handleDateChange = (date: Date) => {
+  public handleDateChange = (date: MaterialUiPickersDate) => {
+    if (!date) {
+      return
+    }
     this.setState({
       value: moment.utc(date),
     })

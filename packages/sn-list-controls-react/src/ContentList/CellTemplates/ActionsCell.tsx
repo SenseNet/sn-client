@@ -6,6 +6,7 @@ import React from 'react'
 
 export const styles = {
   actionMenuButton: {
+    padding: 0,
     width: 30,
     cursor: 'pointer' as any,
   },
@@ -46,7 +47,7 @@ export class ActionsCell<T extends GenericContent> extends React.Component<Actio
   }
   public render() {
     return (
-      <TableCell style={styles.actionMenuButton} padding="checkbox">
+      <TableCell style={styles.actionMenuButton}>
         <IconButton aria-label="Menu" aria-owns="actionmenu" onClick={event => this.handleActionMenuClick(event)}>
           <Icon type={iconType.materialui} iconName="more_vert" />
         </IconButton>

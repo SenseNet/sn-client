@@ -30,7 +30,7 @@ export const ReferenceFieldSuggestion: React.FunctionComponent<{
   const primary = getMatchParts(props.query, props.item.DisplayName || props.item.Name)
   const secondary = getMatchParts(props.query, props.item.Path)
   return (
-    <ListItem key={props.item.Id} selected={props.isHighlighted} component="div" value={props.item.Id}>
+    <ListItem key={props.item.Id} selected={props.isHighlighted} value={props.item.Id}>
       <ListItemText primary={primary} secondary={secondary} />
     </ListItem>
   )

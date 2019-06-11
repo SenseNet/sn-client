@@ -111,7 +111,7 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
         ) : (
           title
         )}
-        <Grid container={true} spacing={24}>
+        <Grid container={true} spacing={2}>
           {fieldSettings.map(fieldSetting => {
             if (
               contentTypeName.indexOf('File') > -1 &&

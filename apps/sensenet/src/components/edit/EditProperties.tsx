@@ -1,27 +1,22 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { isExtendedError } from '@sensenet/client-core/dist/Repository/Repository'
 import { EditView } from '@sensenet/controls-react'
-import React, { useContext } from 'react'
+import React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import {
-  CurrentAncestorsProvider,
-  CurrentContentContext,
-  CurrentContentProvider,
-  LocalizationContext,
-  RepositoryContext,
-} from '../../context'
-import { LoggerContext } from '../../context/LoggerContext'
+import { CurrentAncestorsProvider, CurrentContentContext, CurrentContentProvider } from '../../context'
+import { useLocalization, useLogger, useRepository, useSelectionService } from '../../hooks'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 
 const GenericContentEditor: React.FunctionComponent<RouteComponentProps<{ contentId?: string }>> = props => {
-  const repo = useContext(RepositoryContext)
+  const repo = useRepository()
   const contentId = parseInt(props.match.params.contentId as string, 10)
-  const logger = useContext(LoggerContext).withScope('EditProperties')
-  const localization = useContext(LocalizationContext).values.editPropertiesDialog
+  const logger = useLogger('EditProperties')
+  const localization = useLocalization().editPropertiesDialog
+  const selectionService = useSelectionService()
 
   return (
     <div style={{ width: '100%', height: '100%', padding: '1em', overflow: 'auto' }}>
-      <CurrentContentProvider idOrPath={contentId}>
+      <CurrentContentProvider idOrPath={contentId} onContentLoaded={c => selectionService.activeContent.setValue(c)}>
         <CurrentAncestorsProvider>
           <ContentBreadcrumbs />
           <CurrentContentContext.Consumer>

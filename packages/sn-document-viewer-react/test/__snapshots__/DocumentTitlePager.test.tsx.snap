@@ -2,11 +2,9 @@
 
 exports[`DocumentTitlePager component Should render the focused state without crashing 1`] = `
 <ClickAwayListener
-  mouseEvent="onMouseUp"
   onClickAway={[Function]}
-  touchEvent="onTouchEnd"
 >
-  <WithStyles(Typography)
+  <WithStyles(ForwardRef(Typography))
     color="inherit"
     onClick={[Function]}
     style={
@@ -36,7 +34,7 @@ exports[`DocumentTitlePager component Should render the focused state without cr
     <form
       onSubmit={[Function]}
     >
-      <TextField
+      <WithStyles(ForwardRef(TextField))
         InputLabelProps={
           Object {
             "shrink": true,
@@ -55,7 +53,6 @@ exports[`DocumentTitlePager component Should render the focused state without cr
         margin="dense"
         onChange={[Function]}
         required={true}
-        select={false}
         style={
           Object {
             "flexShrink": 0,
@@ -63,20 +60,17 @@ exports[`DocumentTitlePager component Should render the focused state without cr
         }
         title="goto"
         type="number"
-        variant="standard"
       />
     </form>
-  </WithStyles(Typography)>
+  </WithStyles(ForwardRef(Typography))>
 </ClickAwayListener>
 `;
 
 exports[`DocumentTitlePager component Should render the unfocused state without crashing 1`] = `
 <ClickAwayListener
-  mouseEvent="onMouseUp"
   onClickAway={[Function]}
-  touchEvent="onTouchEnd"
 >
-  <WithStyles(Typography)
+  <WithStyles(ForwardRef(Typography))
     color="inherit"
     onClick={[Function]}
     style={
@@ -114,6 +108,6 @@ exports[`DocumentTitlePager component Should render the unfocused state without 
        / 
       10
     </div>
-  </WithStyles(Typography)>
+  </WithStyles(ForwardRef(Typography))>
 </ClickAwayListener>
 `;

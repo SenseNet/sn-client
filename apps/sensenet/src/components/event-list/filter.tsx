@@ -9,15 +9,14 @@ import Delete from '@material-ui/icons/Delete'
 import { debounce } from '@sensenet/client-utils'
 import { useContext } from 'react'
 import React from 'react'
-import { InjectorContext, LocalizationContext } from '../../context'
-import { EventService } from '../../services/EventService'
+import { useEventService, useLocalization } from '../../hooks'
 import { Icon } from '../Icon'
 import { EventListFilterContext } from './filter-context'
 
 export const Filter: React.FunctionComponent<{ style?: React.CSSProperties }> = props => {
   const f = useContext(EventListFilterContext)
-  const service = useContext(InjectorContext).getInstance(EventService)
-  const localization = useContext(LocalizationContext).values.eventList.filter
+  const service = useEventService()
+  const localization = useLocalization().eventList.filter
 
   const updateTerm = debounce((term: string) => {
     f.setFilter({ ...f.filter, term })

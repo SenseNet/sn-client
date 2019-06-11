@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Page component Should render thumbnails without crashing 1`] = `
-<WithStyles(Paper)
+<WithStyles(ForwardRef(Paper))
   elevation={8}
   id="EL1"
   style={
@@ -43,11 +43,11 @@ exports[`Page component Should render thumbnails without crashing 1`] = `
       />
     </span>
   </div>
-</WithStyles(Paper)>
+</WithStyles(ForwardRef(Paper))>
 `;
 
 exports[`Page component Should render without crashing 1`] = `
-<WithStyles(Paper)
+<WithStyles(ForwardRef(Paper))
   elevation={8}
   id="EL1"
   style={
@@ -112,5 +112,5 @@ exports[`Page component Should render without crashing 1`] = `
       />
     </span>
   </div>
-</WithStyles(Paper)>
+</WithStyles(ForwardRef(Paper))>
 `;

@@ -21,7 +21,7 @@ const style = {
     position: 'absolute',
     left: '24px',
     top: '20px',
-  },
+  } as React.CSSProperties,
 }
 
 const renderIconDefault = (name: string, color: string) => {
@@ -97,65 +97,18 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
   public render() {
     switch (this.props['data-actionName']) {
       case 'edit':
-        return (
-          <FormControl className={this.props.className}>
-            <TextField
-              label={
-                this.props['data-errorText'] && this.props['data-errorText'].length > 0
-                  ? this.props['data-errorText']
-                  : this.props['data-labelText']
-              }
-              type="text"
-              name={this.props.name as string}
-              id={this.props.name as string}
-              className={this.props.className}
-              required={this.props.required}
-              disabled={this.props.readOnly}
-              value={this.state.value}
-              error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
-              onClick={this.openPicker}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    {this.props['data-renderIcon']
-                      ? this.props['data-renderIcon']('lens')
-                      : renderIconDefault('lens', this.state.value)}
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <ClickAwayListener onClickAway={this.closePicker}>
-              <div
-                style={
-                  this.state.pickerIsOpen
-                    ? { ...{ display: 'block' }, ...(style.pickerContainer as any) }
-                    : { ...{ display: 'none' }, ...(style.pickerContainer as any) }
-                }>
-                <SketchPicker
-                  color={this.state.value}
-                  onChangeComplete={this.handleChange}
-                  onSwatchHover={this.handleChange}
-                  presetColors={this.props.palette ? this.props.palette : []}
-                  disableAlpha={true}
-                />
-              </div>
-            </ClickAwayListener>
-            <FormHelperText>{this.props['data-hintText']}</FormHelperText>
-            <FormHelperText>{this.props['data-errorText']}</FormHelperText>
-          </FormControl>
-        )
       case 'new':
         return (
           <FormControl className={this.props.className}>
             <TextField
-              type="text"
-              name={this.props.name as string}
-              id={this.props.name as string}
               label={
                 this.props['data-errorText'] && this.props['data-errorText'].length > 0
                   ? this.props['data-errorText']
                   : this.props['data-labelText']
               }
+              type="text"
+              name={this.props.name as string}
+              id={this.props.name as string}
               className={this.props.className}
               required={this.props.required}
               disabled={this.props.readOnly}
@@ -172,23 +125,19 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
                 ),
               }}
             />
-
-            <ClickAwayListener onClickAway={this.closePicker}>
-              <div
-                style={
-                  this.state.pickerIsOpen
-                    ? { ...{ display: 'block' }, ...(style.pickerContainer as any) }
-                    : { ...{ display: 'none' }, ...(style.pickerContainer as any) }
-                }>
-                <SketchPicker
-                  color={this.state.value}
-                  onChangeComplete={this.handleChange}
-                  onSwatchHover={this.handleChange}
-                  presetColors={this.props.palette ? this.props.palette : []}
-                  disableAlpha={true}
-                />
-              </div>
-            </ClickAwayListener>
+            {this.state.pickerIsOpen ? (
+              <ClickAwayListener onClickAway={this.closePicker}>
+                <div style={style.pickerContainer}>
+                  <SketchPicker
+                    color={this.state.value}
+                    onChangeComplete={this.handleChange}
+                    onSwatchHover={this.handleChange}
+                    presetColors={this.props.palette ? this.props.palette : []}
+                    disableAlpha={true}
+                  />
+                </div>
+              </ClickAwayListener>
+            ) : null}
             <FormHelperText>{this.props['data-hintText']}</FormHelperText>
             <FormHelperText>{this.props['data-errorText']}</FormHelperText>
           </FormControl>

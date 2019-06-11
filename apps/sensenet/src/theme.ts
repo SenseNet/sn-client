@@ -8,19 +8,15 @@ const theme: ThemeOptions = {
     primary: indigo,
     secondary: teal,
   },
-  typography: {
-    useNextVariants: true,
-  },
   overrides: {
-    MuiList: {
-      root: {
-        margin: '0 !important',
-        padding: '0 !important',
-      },
-    },
     MuiAppBar: {
       root: {
         zIndex: zIndex.drawer + 1,
+      },
+    },
+    MuiTableCell: {
+      root: {
+        padding: '4px 56px 4px 24px',
       },
     },
   },

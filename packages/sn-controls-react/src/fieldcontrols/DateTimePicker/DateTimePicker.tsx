@@ -2,8 +2,8 @@
  * @module FieldControls
  */
 import MomentUtils from '@date-io/moment'
-import { DateTimePicker as MUIDateTimePicker } from 'material-ui-pickers'
-import { MuiPickersUtilsProvider } from 'material-ui-pickers'
+import { DateTimePicker as MUIDateTimePicker, MaterialUiPickersDate } from '@material-ui/pickers'
+import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import moment from 'moment'
 import React from 'react'
 import { Fragment } from 'react'
@@ -22,7 +22,7 @@ export interface DateTimePickerProps
  */
 export interface DateTimePickerState {
   value: string
-  dateValue: Date
+  dateValue: MaterialUiPickersDate
 }
 /**
  * Field control that represents a DateTime field. Available values will be populated from the FieldSettings.
@@ -40,8 +40,8 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
      */
     this.state = {
       dateValue: props['data-fieldValue']
-        ? new Date(this.setValue(props['data-fieldValue']))
-        : new Date(this.setValue(props['data-defaultValue'] as string)),
+        ? moment(this.setValue(props['data-fieldValue']))
+        : moment(this.setValue(props['data-defaultValue'] as string)),
       value: props['data-fieldValue'] ? props['data-fieldValue'] : props['data-defaultValue'],
     }
     this.handleDateChange = this.handleDateChange.bind(this)
@@ -57,14 +57,17 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
   }
   /**
    * handle changes
-   * @param {Date} date
+   * @param {MaterialUiPickersDate} date
    */
-  public handleDateChange = (date: Date) => {
+  public handleDateChange = (date: MaterialUiPickersDate) => {
+    if (!date) {
+      return
+    }
     this.setState({
       dateValue: date,
-      value: moment.utc(date).toString(),
+      value: moment.utc(date).toISOString(),
     })
-    this.props.onChange(this.props.name, moment.utc(date).toString())
+    this.props.onChange(this.props.name, this.state.value)
   }
   /**
    * render

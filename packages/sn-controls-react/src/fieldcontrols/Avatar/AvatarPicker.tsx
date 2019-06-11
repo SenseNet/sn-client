@@ -117,7 +117,9 @@ export function AvatarPicker(props: AvatarPickerProps) {
               {node.IsFolder || node.IsFolder === undefined ? (
                 <ListItemIcon>{props.renderIcon(iconName(node))}</ListItemIcon>
               ) : (
-                <Avatar src={`${props.repositoryUrl}${node.Path}`} />
+                <ListItemIcon>
+                  <Avatar src={`${props.repositoryUrl}${node.Path}`} />
+                </ListItemIcon>
               )}
               <ListItemText primary={node.DisplayName} />
             </ListItem>

@@ -73,7 +73,7 @@ class RenameCell extends React.Component<
     const icon = this.props.icon && this.props.icons[this.props.icon.toLowerCase() as any]
 
     return (
-      <TableCell padding="checkbox" className="DisplayName display-name">
+      <TableCell className="DisplayName display-name">
         <form onSubmit={this.handleSubmit} style={{ display: 'flex', alignItems: 'center' }}>
           {icon ? <Icon type={iconType.materialui} iconName={icon} style={{ marginRight: '.5em' }} /> : null}
 

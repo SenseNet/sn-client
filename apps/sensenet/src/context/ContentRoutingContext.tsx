@@ -1,9 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useRepository } from '../hooks'
 import { ContentContextProvider } from '../services/ContentContextProvider'
-import { RepositoryContext } from './RepositoryContext'
+
 export const ContentRoutingContext = React.createContext(null as any)
 export const ContentRoutingContextProvider: React.FunctionComponent = props => {
-  const repo = useContext(RepositoryContext)
+  const repo = useRepository()
   const [ctxProvider, setCtxProvider] = useState(new ContentContextProvider(repo))
 
   useEffect(() => {
