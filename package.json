@@ -58,7 +58,7 @@
     "test:coverage": "jest --coverage",
     "clean": "lerna clean",
     "fix": "lerna run fix --parallel",
-    "lint": "eslint . --ext .tsx --ext .ts --cache --cache-location node_modules"
+    "lint": "eslint . --ext .tsx --ext .ts"
   },
   "husky": {
     "hooks": {
