@@ -378,7 +378,7 @@ export class ExampleApp extends React.Component<{}, ExampleComponentState> {
           <DialogContent>
             <DialogContentText>
               This example application is a showcase for the{' '}
-              <a href="http://npmjs.com/package/@sensenet/search-react" target="_blank">
+              <a href="http://npmjs.com/package/@sensenet/search-react" target="_blank" rel="noopener noreferrer">
                 @sensenet/search-react
               </a>{' '}
               package and demonstrates the basic functionality with some predefined field filters and an example query
@@ -388,7 +388,7 @@ export class ExampleApp extends React.Component<{}, ExampleComponentState> {
               check that
               <li>
                 Your{' '}
-                <a href="https://community.sensenet.com/docs/cors/" target="_blank">
+                <a href="https://community.sensenet.com/docs/cors/" target="_blank" rel="noopener noreferrer">
                   CORS
                 </a>{' '}
                 settings are correct
