@@ -21,7 +21,6 @@ export const fakeClick = (obj: EventTarget) => {
 
 export const downloadFile = (name: string, repositoryUrl: string) => {
   const saveLink = document.createElement('a')
-  // tslint:disable-next-line:no-string-literal
   saveLink['href'] = `${repositoryUrl}${name}?download`
   fakeClick(saveLink)
 }

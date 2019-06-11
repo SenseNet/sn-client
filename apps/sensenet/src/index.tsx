@@ -38,7 +38,6 @@ Commit '${process.env.GIT_COMMITHASH}' `,
   'color: #16AAA6; border-bottom: 1px solid black',
 )
 
-// tslint:disable-next-line: no-string-literal
 const injector = diMiddleware['injector']
 
 diMiddleware

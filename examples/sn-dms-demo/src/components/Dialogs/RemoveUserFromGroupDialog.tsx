@@ -118,8 +118,7 @@ class RemoveUserFromGroupDialog extends React.Component<
                 <ul style={styles.list}>
                   {selected.map((user: User) => (
                     <li key={user.Id} style={styles.listItem}>
-                      {// tslint:disable-next-line:no-string-literal
-                      user['FullName'] || user['DisplayName']}
+                      {user['FullName'] || user['DisplayName']}
                     </li>
                   ))}
                 </ul>
@@ -129,10 +128,7 @@ class RemoveUserFromGroupDialog extends React.Component<
                 {this.props.groups
                   ? this.props.groups.map(group => (
                       <li key={group.Id} style={styles.listItem}>
-                        {
-                          // tslint:disable-next-line:no-string-literal
-                          group.DisplayName
-                        }
+                        {group.DisplayName}
                       </li>
                     ))
                   : null}

@@ -475,7 +475,6 @@ export const uploadRequest = <T extends Content>(
   propertyName: string = 'Binary',
 ) => ({
   type: 'UPLOAD_CONTENT',
-  // tslint:disable:completed-docs
   payload: async (repository: Repository) => {
     const data = await repository.upload.file<T>({
       binaryPropertyName: propertyName,

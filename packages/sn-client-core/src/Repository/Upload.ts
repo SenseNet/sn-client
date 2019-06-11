@@ -291,7 +291,6 @@ export class Upload {
     createFolders: boolean,
     options: UploadOptions<T>,
   ) {
-    // tslint:disable-next-line:forin
     for (const item of items) {
       if (createFolders && item.isDirectory) {
         await this.webkitDirectoryHandler(item as WebKitDirectoryEntry, contentPath, options)
@@ -318,7 +317,6 @@ export class Upload {
       // Fallback for non-webkit browsers.
       options.event.dataTransfer &&
         options.event.dataTransfer.files &&
-        // tslint:disable-next-line: no-unnecessary-type-annotation
         [].forEach.call(options.event.dataTransfer.files, async (f: File) => {
           if (f.type === 'file') {
             return await this.file({

@@ -51,7 +51,6 @@ class EditorPage extends Component<
     } catch (error) {
       /** Cannot parse current folder from URL */
       return compile(newProps.match.path)({ folderPath: '' })
-      // tslint:disable-next-line:no-empty
     }
   }
   public static getDerivedStateFromProps(newProps: EditorPage['props'], lastState: EditorPage['state']) {

@@ -6,8 +6,6 @@ import { Annotation, Shape, Shapes } from '../../models'
 import { componentType, Dimensions } from '../../services'
 import { removeShape, RootReducerType, updateShapeData } from '../../store'
 
-// tslint:disable:max-classes-per-file
-
 /**
  * Defined the component's own properties
  */

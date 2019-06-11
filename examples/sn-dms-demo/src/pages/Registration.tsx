@@ -12,7 +12,6 @@ import GoogleReCaptcha from '../components/GoogleReCaptcha'
 import LoginTabs from '../components/LoginTabs'
 import { OauthRow } from '../components/OAuthRow'
 import { WelcomeMessage } from '../components/WelcomeMessage'
-// tslint:disable-next-line:no-var-requires
 const logo = require('../assets/logo.png')
 
 const styles = {

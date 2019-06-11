@@ -2,7 +2,6 @@ import 'jest'
 import { JSDOM } from 'jsdom'
 import { GoogleAuthenticationOptions } from '../src/GoogleAuthenticationOptions'
 
-// tslint:disable:completed-docs
 describe('Google Authentication Options', () => {
   it(' can be constructed with valid default parameters', () => {
     const exampleOrigin = 'http://example.origin.com'

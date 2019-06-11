@@ -10,7 +10,6 @@ import EditPropertiesDialog from '../Dialogs/EditPropertiesDialog'
 import Typography from '@material-ui/core/Typography'
 import { resources } from '../../assets/resources'
 
-// tslint:disable-next-line:no-var-requires
 const defaultAvatar = require('../../assets/no-avatar.jpg')
 
 const styles = {
@@ -63,7 +62,6 @@ const styles = {
   },
 }
 
-// tslint:disable-next-line:no-empty-interface
 interface UserInfoProps {}
 
 const mapStateToProps = (state: rootStateType) => {

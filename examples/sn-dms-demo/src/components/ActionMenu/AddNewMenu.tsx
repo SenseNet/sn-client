@@ -32,7 +32,6 @@ interface AddNemMenuState {
   currentContent: GenericContent | null
 }
 
-// tslint:disable-next-line:class-name
 interface a extends ActionModel {
   [key: string]: any
 }
@@ -70,7 +69,6 @@ class AddNewMenu extends React.Component<
         const newDisplayName =
           action.DisplayName.indexOf('New') === -1 ? `New ${action.DisplayName.toLowerCase()}` : action.DisplayName
         action.DisplayName = newDisplayName
-        // tslint:disable-next-line:no-string-literal
         action['Action'] = () => {
           newProps.closeActionMenu()
           newProps.openDialog(
@@ -114,9 +112,7 @@ class AddNewMenu extends React.Component<
         this.props.currentContent.Id.toString(),
         e.currentTarget as HTMLElement,
         {
-          // tslint:disable-next-line:no-string-literal
           top: (e.target as HTMLElement).offsetTop + 200,
-          // tslint:disable-next-line:no-string-literal
           left: (e.target as HTMLElement).offsetLeft,
         },
       )

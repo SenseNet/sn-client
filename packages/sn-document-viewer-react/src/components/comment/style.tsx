@@ -3,7 +3,6 @@ import SvgIcon from '@material-ui/core/SvgIcon'
 import React from 'react'
 import styled from 'styled-components'
 
-// tslint:disable: completed-docs
 export const StyledForm = styled.form`
   width: 100%;
   display: flex;

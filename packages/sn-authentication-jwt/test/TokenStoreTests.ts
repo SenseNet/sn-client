@@ -5,8 +5,6 @@ import { TokenStoreType } from '../src/TokenStoreType'
 import { MockStorage } from './__Mocks__/MockStorage'
 import { MockTokenFactory } from './__Mocks__/MockTokenFactory'
 
-// tslint:disable:completed-docs
-
 declare var global: any
 
 describe('TokenStore', () => {
@@ -64,7 +62,6 @@ describe('TokenStore', () => {
     })
 
     it('should return invalid cookie if the cookie is not set', () => {
-      // tslint:disable-next-line:no-string-literal
       const retrievedToken = expirationCookie['getTokenFromCookie']('invalidCookieKey', {
         cookie: 'my-cookie-value',
       } as any)

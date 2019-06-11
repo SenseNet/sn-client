@@ -6,7 +6,6 @@ import { componentType, ImageUtil } from '../services'
 import { RootReducerType, ZoomMode } from '../store'
 import { Page } from './'
 
-// tslint:disable-next-line:no-var-requires
 const debounce = require('lodash.debounce')
 
 /**

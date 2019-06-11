@@ -50,7 +50,6 @@ try {
     }
   }
 } catch (error) {
-  // tslint:disable-next-line:no-console
   console.warn('Failed to parse stored settings')
 }
 

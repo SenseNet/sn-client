@@ -3,7 +3,6 @@ import 'jest'
 import { Repository } from '../src/Repository/Repository'
 import { Security } from '../src/Repository/Security'
 
-// tslint:disable:completed-docs
 describe('Security', () => {
   let security: Security
   let repository: Repository
@@ -47,7 +46,6 @@ describe('Security', () => {
   })
 
   it('Should evaulate if hasPermission returns false', async () => {
-    // tslint:disable-next-line:no-string-literal
     repository['fetchMethod'] = async () => {
       return {
         ok: true,
@@ -59,7 +57,6 @@ describe('Security', () => {
   })
 
   it('Should throw if hasPermission fails', async () => {
-    // tslint:disable-next-line:no-string-literal
     security['repository']['fetchMethod'] = async () => ({ ok: false } as any)
     try {
       await security.hasPermission(1, ['See'], 'root/users/user1')

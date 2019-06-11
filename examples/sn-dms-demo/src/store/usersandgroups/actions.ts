@@ -375,7 +375,6 @@ export const startLoadingChildren = createAction((idOrPath: number | string) => 
 export const updateGroupListOptions = createAction(<T extends GenericContent>(odataOptions: ODataParams<T>) => ({
   type: 'DMS_USERSANDGROUPS_UPDATE_GROUPLIST_OPTIONS',
   odataOptions,
-  // tslint:disable-next-line: no-unnecessary-type-annotation
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const currentState = options.getState()
     const parent = currentState.dms.usersAndGroups.group.currentGroup
@@ -412,7 +411,6 @@ export const updateGroupListOptions = createAction(<T extends GenericContent>(od
 export const updateUserListOptions = createAction(<T extends GenericContent>(odataOptions: ODataParams<T>) => ({
   type: 'DMS_USERSANDGROUPS_UPDATE_USERLIST_OPTIONS',
   odataOptions,
-  // tslint:disable-next-line: no-unnecessary-type-annotation
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const currentState = options.getState()
     // const parent = currentState.dms.usersAndGroups.user.currentUser
@@ -568,7 +566,6 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
 
 export const setGroup: <T extends Group = Group>(content: T, items: T[]) => Action & { content: T; items: T[] } = <T>(
   content: T,
-  // tslint:disable-next-line: no-unnecessary-type-annotation
   items: T[],
 ) => ({
   type: 'DMS_USERSANDGROUPS_SET_GROUP',
@@ -622,7 +619,6 @@ export const searchUsers = (text: string) => ({
 export const getAllowedTypes = createAction(<T extends GenericContent[]>(odataOptions?: ODataParams<T>) => ({
   type: 'DMS_DOCLIB_GET_ALLOWED_TYPES',
   odataOptions,
-  // tslint:disable-next-line: no-unnecessary-type-annotation
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const currentState = options.getState()
     const currentPath = currentState.dms.usersAndGroups.group.currentGroup

@@ -11,8 +11,7 @@ import LoginTabs from '../components/LoginTabs'
 import { OauthRow } from '../components/OAuthRow'
 import { WelcomeMessage } from '../components/WelcomeMessage'
 
-// tslint:disable-next-line:no-var-requires
-const logo = require('../assets/logo.png')
+import logo from '../assets/logo.png'
 
 const styles = {
   button: {
@@ -180,7 +179,6 @@ class Login extends React.Component<
   }
 
   public componentDidMount() {
-    // tslint:disable-next-line:no-unused-expression
     this.props.isRegistered ? this.props.clear() : false
   }
 

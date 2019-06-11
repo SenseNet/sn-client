@@ -2,8 +2,6 @@ import { Middleware } from 'redux'
 import { isPromiseMiddlewareAction } from './IsPromiseMiddlewareAction'
 import { PromiseMiddlewareFailedAction, PromiseMiddlewareSucceededAction } from './Types'
 
-// tslint:disable:completed-docs
-
 export const suffixes = {
   loading: 'LOADING',
   success: 'SUCCESS',

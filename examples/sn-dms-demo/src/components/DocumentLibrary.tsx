@@ -33,7 +33,6 @@ import { GridPlaceholder } from './Loaders/GridPlaceholder'
 import { SearchResultsHeader } from './SearchResultsHeader'
 import { UploadBar } from './Upload/UploadBar'
 
-// tslint:disable-next-line:variable-name
 const ConnectedUploadBar = connect(
   (state: rootStateType) => ({
     items: state.dms.uploads.uploads,

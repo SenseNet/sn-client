@@ -80,7 +80,6 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
     this.handleClickAway = this.handleClickAway.bind(this)
   }
   private async handleInputChange(e: React.ChangeEvent) {
-    // tslint:disable
     const term = `*${e.target['value']}*`
     const query = new Query(q => q.query(q2 => q2.equals('Name', term).or.equals('DisplayName', term)))
 
@@ -106,7 +105,6 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
         })
         return q2
       })
-      // tslint:enable
     }
 
     this.setState({
@@ -134,8 +132,6 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
           items: values.d.results,
           isOpened: values.d.results.length > 0 ? true : false,
         })
-
-        // tslint:disable-next-line:variable-name
       } catch (_e) {
         /** */
       } finally {

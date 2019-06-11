@@ -5,7 +5,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { rootStateType } from '../store/rootReducer'
 
-// tslint:disable-next-line:no-var-requires
 const defaultAvatar = require('../assets/no-avatar.jpg')
 
 const mapStateToProps = (state: rootStateType) => {

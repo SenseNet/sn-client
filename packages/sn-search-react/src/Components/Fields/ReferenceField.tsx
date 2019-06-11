@@ -108,7 +108,6 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
   }
 
   public getQueryFromTerm<TQueryReturns>(term: string) {
-    // tslint:disable
     const query = new Query<TQueryReturns>(q =>
       q.query(q2 =>
         q2
@@ -142,7 +141,6 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
       })
     }
     return query
-    // tslint:enable
   }
 
   private handleSelect(item: T) {

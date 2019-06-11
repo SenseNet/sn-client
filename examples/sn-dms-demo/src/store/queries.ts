@@ -11,7 +11,6 @@ export type QueryType = 'Private' | 'Public' | 'NonDefined'
 export const saveQuery = createAction(
   (idOrPath: string | number, query: string, displayName: string, queryType = 'Private') => ({
     type: 'SN_DMS_SAVE_QUERY',
-    // tslint:disable-next-line: no-unnecessary-type-annotation
     inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
       const repo = options.getInjectable(Repository)
       await repo.executeAction({
@@ -31,7 +30,6 @@ export const saveQuery = createAction(
 
 export const getQueries = createAction((idOrPath: string | number, queryType = 'Private', force: boolean = false) => ({
   type: 'SN_DMS_GET_QUERIES',
-  // tslint:disable-next-line: no-unnecessary-type-annotation
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const state = options.getState()
     if (force === false && state.dms.queries.idOrPath === idOrPath && state.dms.queries.queryType === queryType) {

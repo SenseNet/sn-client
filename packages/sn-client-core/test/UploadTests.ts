@@ -2,10 +2,6 @@ import { ObservableValue, Trace } from '@sensenet/client-utils'
 import { UploadProgressInfo } from '../src'
 import { Repository } from '../src/Repository/Repository'
 
-// tslint:disable:no-string-literal
-// tslint:disable:completed-docs
-// tslint:disable:max-classes-per-file
-
 declare const global: any
 
 global.File = class {
@@ -241,7 +237,6 @@ describe('Upload', () => {
       }
       const file = {
         isFile: true,
-        // tslint:disable-next-line:variable-name
         file: (_cb: (f: File) => void, err: (err: any) => void) => {
           err('File read fails here...')
         },
@@ -342,7 +337,6 @@ describe('Upload', () => {
         isDirectory: true,
         createReader: () => {
           return {
-            // tslint:disable-next-line:variable-name
             readEntries: (_cb: (entries: any) => void, err: (err: any) => void) => {
               err('Reading directories fails here...')
             },

@@ -5,7 +5,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { RootReducerType, setActivePages } from '../../store'
 
-// tslint:disable-next-line:no-var-requires
 const debounce = require('lodash.debounce')
 
 /**

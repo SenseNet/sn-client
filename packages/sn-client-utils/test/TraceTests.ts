@@ -1,7 +1,5 @@
 import { Trace } from '../src'
 
-// tslint:disable:completed-docs
-
 class MockClass {
   constructor(private testValue?: string) {}
 

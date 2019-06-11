@@ -317,19 +317,16 @@ class ExampleAppLayout extends React.Component<
                   <ToggleThumbnailsWidget />
                   <Download
                     download={doc => {
-                      // tslint:disable-next-line:no-console
                       console.log('Download triggered', doc)
                     }}
                   />
                   <Print
                     print={doc => {
-                      // tslint:disable-next-line:no-console
                       console.log('Print triggered', doc)
                     }}
                   />
                   <Share
                     share={doc => {
-                      // tslint:disable-next-line:no-console
                       console.log('Share triggered', doc)
                     }}
                   />

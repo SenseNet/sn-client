@@ -142,7 +142,6 @@ export interface CustomActionExecuted<T extends Content> {
   /**
    * The additional OData parameters (optional)
    */
-  // tslint:disable-next-line:naming-convention
   oDataParams?: ODataParams<T>
   /**
    * The Action result
@@ -161,7 +160,6 @@ export interface CustomActionFailed<T extends Content> {
   /**
    * The additional OData parameters (optional)
    */
-  // tslint:disable-next-line:naming-convention
   oDataParams?: ODataParams<T>
   /**
    * The Error that caused the failure

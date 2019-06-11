@@ -112,7 +112,6 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       inputValue: '',
       isOpened: false,
       anchorEl: null as any,
-      // tslint:disable-next-line: no-unnecessary-type-annotation
       getMenuItem: (item: T, select: (item: T) => void) => (
         <ListItem key={item.Id} value={item.Id} onClick={() => select(item)} style={{ margin: 0 }}>
           <ListItemIcon
@@ -161,7 +160,6 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
   }
   private willUnmount: boolean = false
   private async getAllowedChildTypes() {
-    // tslint:disable-next-line: no-unnecessary-type-annotation
     const repo: Repository = this.props['data-repository'] || this.props.repository
     try {
       const result = await repo.load<T>({
@@ -211,7 +209,6 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
     }
   }
   private async getAllContentTypes() {
-    // tslint:disable-next-line: no-unnecessary-type-annotation
     const repo: Repository = this.props['data-repository'] || this.props.repository
     try {
       const result = (await repo.executeAction({

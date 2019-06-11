@@ -42,7 +42,6 @@ const styles = {
   },
 }
 
-// tslint:disable-next-line:no-var-requires
 const sensenetLogo = require('../assets/logo.png')
 
 const appBarLogo = (props: { style?: React.CSSProperties }) => (

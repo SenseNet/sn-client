@@ -18,13 +18,11 @@ const styles = {
   },
 }
 
-// tslint:disable-next-line:no-empty-interface
 interface DeleteUserFromGroupProps {
   user: User | null
   group: Group
 }
 
-// tslint:disable-next-line:no-empty-interface
 interface DeleteUserFromGroupState {}
 
 const mapStateToProps = () => {

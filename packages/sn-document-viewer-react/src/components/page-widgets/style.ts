@@ -1,8 +1,6 @@
 import styled from 'styled-components'
 import { DraftCommentMarker } from '../../models'
 
-// tslint:disable: completed-docs
-
 export const ShapesContainer = styled.div`
   position: absolute;
   top: 0px;

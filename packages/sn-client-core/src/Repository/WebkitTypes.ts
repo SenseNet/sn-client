@@ -1,4 +1,3 @@
-// tslint:disable
 export interface WebKitFileSystem {
   readonly name: string
   readonly root: WebKitDirectoryEntry

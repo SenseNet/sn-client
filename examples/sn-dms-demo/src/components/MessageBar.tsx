@@ -8,7 +8,6 @@ import MediaQuery from 'react-responsive'
 import { LogEntry, readLogEntries } from '../store/actionlog/actions'
 import { rootStateType } from '../store/rootReducer'
 
-// tslint:disable-next-line:no-var-requires
 const groupBy: typeof import('lodash.groupby') = require('lodash.groupby')
 
 const styles = {

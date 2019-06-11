@@ -212,7 +212,6 @@ class UserList extends Component<ReturnType<typeof mapStateToProps> & typeof map
                 )
               }
             case 'Actions':
-              // tslint:disable-next-line:no-string-literal
               if (this.isGroupAdmin(props.content.Actions as ActionModel[]) && props.content.Type === 'Group') {
                 return (
                   <TableCell padding="checkbox" style={{ width: 160 }}>

@@ -24,7 +24,6 @@ export const share = createAction(
     sendNotification: boolean = false,
   ) => ({
     type: 'DMS_SHARE_CONTENT',
-    // tslint:disable-next-line: no-unnecessary-type-annotation
     inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
       const repo = options.getInjectable(Repository)
       try {
@@ -64,7 +63,6 @@ export const sharingEntriesReceived = createAction((idOrPath: number | string, e
 const loadLock = new Semaphore(1)
 export const getSharingEntries = createAction((idOrPath: number | string) => ({
   type: 'DMS_GET_SHARING_ENTRIES',
-  // tslint:disable-next-line: no-unnecessary-type-annotation
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const repo = options.getInjectable(Repository)
     try {

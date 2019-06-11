@@ -18,7 +18,6 @@ class GoogleReCaptcha extends React.Component<{ verify?: (response: any) => void
   public render() {
     return (
       <ReCAPTCHA
-        // tslint:disable-next-line:jsx-no-string-ref
         ref="recaptcha"
         sitekey={process.env.REACT_APP_RECAPTCHA_KEY || ''}
         onChange={response => this.onChange(response)}

@@ -55,7 +55,6 @@ interface MobileHeaderState {
   currentContent: GenericContent | null
 }
 
-// tslint:disable-next-line:class-name
 interface a extends ActionModel {
   [key: string]: any
 }
@@ -127,7 +126,6 @@ class MobileHeader extends React.Component<
         const newDisplayName =
           action.DisplayName.indexOf('New') === -1 ? `New ${action.DisplayName.toLowerCase()}` : action.DisplayName
         action.DisplayName = newDisplayName
-        // tslint:disable-next-line:no-string-literal
         action['Action'] = () => {
           newProps.closeActionMenu()
           newProps.openDialog(

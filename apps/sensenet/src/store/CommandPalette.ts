@@ -35,7 +35,6 @@ export const setInputValue = createAction((value: string) => ({ type: 'SET_COMMA
 
 export const updateItemsFromTerm = createAction((value: string, repo: Repository) => ({
   type: 'UPDATE_ITEMS_FROM_TERM',
-  // tslint:disable-next-line: no-unnecessary-type-annotation
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const commandProviderManager = options.getInjectable(CommandProviderManager)
     const items = await commandProviderManager.getItems(value, repo)

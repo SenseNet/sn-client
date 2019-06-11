@@ -77,7 +77,6 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
    */
   public isChecked(item: number | string) {
     let checked = false
-    // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < this.state.value.length; i++) {
       if (this.state.value[i].toString() === item.toString()) {
         checked = true

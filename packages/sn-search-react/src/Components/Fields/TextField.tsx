@@ -29,7 +29,6 @@ export interface TextFieldProps<T> {
  * Component for searching simple text fragments in a specified field
  * @param props
  */
-// tslint:disable-next-line:variable-name
 export const TextField = <T extends GenericContent>(props: TextFieldProps<T> & MaterialTextFieldProps) => {
   const displayName = (props.fieldSetting && props.fieldSetting.DisplayName) || props.label
   const description = (props.fieldSetting && props.fieldSetting.Description) || ''

@@ -4,7 +4,6 @@ import { RootReducerType } from '.'
 import { Comment, CommentWithoutCreatedByAndId, DocumentViewerSettings } from '../models'
 import { showComments } from './Viewer'
 
-// tslint:disable: completed-docs
 export interface CommentsState {
   items: Comment[]
   selectedCommentId: string
