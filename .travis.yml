@@ -10,7 +10,7 @@ before_install:
 cache:
   - yarn
   - directories:
-      - .eslintcache
+      - node_modules
 
 jobs:
   allow_failures:
