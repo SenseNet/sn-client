@@ -8,7 +8,7 @@ module.exports = {
     'prettier/@typescript-eslint',
   ],
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'prettier', 'cypress'],
+  plugins: ['@typescript-eslint', 'prettier', 'cypress', 'jsdoc'],
   env: { browser: true, node: true, es6: true, jest: true, 'cypress/globals': true },
   parserOptions: {
     ecmaVersion: 6,
@@ -21,6 +21,7 @@ module.exports = {
     react: {
       version: 'detect',
     },
+    jsdoc: { exemptEmptyFunctions: false },
   },
   rules: {
     'arrow-parens': ['error', 'as-needed'],
@@ -30,5 +31,6 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'off', // Use Typescript own check for this
     'no-unused-expressions': ['error', { allowShortCircuit: true, allowTernary: true }],
     'prettier/prettier': 'error',
+    'require-jsdoc': 1,
   },
 }
