@@ -54,7 +54,7 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "clean": "lerna clean",
-    "lint": "eslint . --ext .tsx --ext .ts --cache"
+    "lint": "eslint . --ext .tsx,.ts --cache"
   },
   "husky": {
     "hooks": {
@@ -64,7 +64,7 @@
   "lint-staged": {
     "linters": {
       "*.{ts,tsx}": [
-        "tslint --fix",
+        "eslint --ext .tsx,.ts --fix",
         "prettier --write",
         "git add"
       ],
