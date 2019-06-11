@@ -79,6 +79,7 @@ context('The documents page', () => {
     const newName = createNewFileName()
     uploadNewFileAndOpenContextMenuItem(currentUser.email, fileName, contextMenuItems.rename)
     // wait for input to be focused
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000)
     cy.get('.rename')
       .clear()
@@ -159,6 +160,7 @@ context('The documents page', () => {
     cy.contains('div[data-cy="editProperties"] button', 'Submit').click()
     openContextMenuItem(fileName, contextMenuItems.undoChanges)
     cy.contains(resources.UNDOCHECKOUT_SUCCESS_MESSAGE.replace('{contentName}', fileName)).should('exist')
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000) // wait for undo
     openContextMenuItem(fileName, contextMenuItems.editProperties)
     cy.get('#Watermark').should('not.have.value', 'sometext')
