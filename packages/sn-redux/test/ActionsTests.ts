@@ -572,7 +572,7 @@ describe('Actions', () => {
           expect(Actions.userLogin('alba', 'alba')).toHaveProperty('type', 'USER_LOGIN')
         })
         it('should return mockdata', () => {
-          expect(data).toBeFalsy
+          expect(data).toBeFalsy()
         })
       })
     })
@@ -594,7 +594,7 @@ describe('Actions', () => {
           expect(Actions.userLoginGoogle(googleOauthProvider)).toHaveProperty('type', 'USER_LOGIN_GOOGLE')
         })
         it('should return mockdata', () => {
-          expect(data).toBeTruthy
+          expect(data).toBeTruthy()
         })
       })
     })
@@ -611,7 +611,7 @@ describe('Actions', () => {
           expect(Actions.userLoginGoogle(googleOauthProvider2)).toHaveProperty('type', 'USER_LOGIN_GOOGLE')
         })
         it('should return mockdata', () => {
-          expect(data).toBeFalsy
+          expect(data).toBeFalsy()
         })
       })
     })
@@ -631,7 +631,7 @@ describe('Actions', () => {
           expect(Actions.userLogout()).toHaveProperty('type', 'USER_LOGOUT')
         })
         it('should return mockdata', () => {
-          expect(data).toBeTruthy
+          expect(data).toBeTruthy()
         })
       })
     })
