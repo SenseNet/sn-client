@@ -44,14 +44,14 @@ export class DatePicker<T extends GenericContent, K extends keyof T> extends Rea
      */
     this.state = {
       dateValue: props['data-fieldValue']
-        ? new Date(props['data-fieldValue'].replace(/<[^>]*>/g, ''))
+        ? moment(new Date(props['data-fieldValue'].replace(/<[^>]*>/g, '')))
         : props['data-defaultValue']
-        ? new Date(props['data-defaultValue'] as any)
-        : new Date(),
+        ? moment(new Date(props['data-defaultValue'] as any))
+        : moment(),
       value: props['data-fieldValue']
-        ? props['data-fieldValue'].replace(/<[^>]*>/g, '')
+        ? moment(props['data-fieldValue'].replace(/<[^>]*>/g, ''))
         : props['data-defaultValue']
-        ? props['data-defaultValue']
+        ? moment(props['data-defaultValue'])
         : '',
     }
     this.handleDateChange = this.handleDateChange.bind(this)
