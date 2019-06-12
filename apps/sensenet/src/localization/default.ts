@@ -29,6 +29,7 @@ const values = {
     move: 'Move',
     delete: 'Delete',
     open: 'Open',
+    download: 'Download',
   },
   contentInfoDialog: {
     dialogTitle: 'Info about {0}',

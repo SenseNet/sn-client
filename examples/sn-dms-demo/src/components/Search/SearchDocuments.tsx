@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography'
 import { File as SnFile, Folder, GenericContent } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import { Query } from '@sensenet/query'
-import { AdvancedSearch, AdvancedSearchOptions, PresetField, TextField } from '@sensenet/search-react'
+import { AdvancedSearch, AdvancedSearchOptions, NestedTextField, PresetField, TextField } from '@sensenet/search-react'
 import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
@@ -288,7 +288,7 @@ class SearchDocuments extends React.Component<
                               />
                             </SearchRow>
                             <SearchRow title="Owner">
-                              <TextField
+                              <NestedTextField
                                 fullWidth={true}
                                 placeholder={resources.SEARCH_OWNER_PLACEHOLDER}
                                 fieldName={'Owner'}
@@ -296,6 +296,7 @@ class SearchDocuments extends React.Component<
                                   this.handleFieldQueryChanged('owner', query, plainValue, options.updateQuery)
                                 }
                                 value={this.props.searchState.owner}
+                                nestedFieldName={this.props.searchState.owner && this.props.searchState.owner.indexOf('@') > -1 ? 'LoginName' : 'Name'}
                               />
                             </SearchRow>
                             <SearchRow title="Shared with">
@@ -329,35 +330,41 @@ class SearchDocuments extends React.Component<
                                 fieldName="ModificationDate"
                                 presets={[
                                   { text: '-', value: new Query(a => a) },
-                                  { text: 'Today', value: new Query(a => a.term('CreationDate:>@@Today@@')) },
+                                  { text: 'Today', value: new Query(a => a.term('ModificationDate:>@@Today@@')) },
                                   {
                                     text: 'Yesterday',
                                     value: new Query(a =>
-                                      a.term('CreationDate:>@@Yesterday@@').and.term('CreationDate:<@@Today@@'),
+                                      a.term('ModificationDate:>@@Yesterday@@').and.term('ModificationDate:<@@Today@@'),
                                     ),
                                   },
                                   {
                                     text: 'Last 7 days',
                                     value: new Query(a =>
-                                      a.term('CreationDate:>@@Today-7days@@').and.term('CreationDate:<@@Today@@'),
+                                      a.term('ModificationDate:>@@Today-7days@@').and.term('CreationDate:<@@Today@@'),
                                     ),
                                   },
                                   {
                                     text: 'Last 30 days',
                                     value: new Query(a =>
-                                      a.term('CreationDate:>@@Today-30days@@').and.term('CreationDate:<@@Today@@'),
+                                      a
+                                        .term('ModificationDate:>@@Today-30days@@')
+                                        .and.term('ModificationDate:<@@Today@@'),
                                     ),
                                   },
                                   {
                                     text: 'Last 90 days',
                                     value: new Query(a =>
-                                      a.term('CreationDate:>@@Today-90days@@').and.term('CreationDate:<@@Today@@'),
+                                      a
+                                        .term('ModificationDate:>@@Today-90days@@')
+                                        .and.term('ModificationDate:<@@Today@@'),
                                     ),
                                   },
                                   {
                                     text: 'Last 365 days',
                                     value: new Query(a =>
-                                      a.term('CreationDate:>@@Today-365days@@').and.term('CreationDate:<@@Today@@'),
+                                      a
+                                        .term('ModificationDate:>@@Today-365days@@')
+                                        .and.term('ModificationDate:<@@Today@@'),
                                     ),
                                   },
                                 ]}

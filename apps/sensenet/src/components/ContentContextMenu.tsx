@@ -5,6 +5,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Menu, { MenuProps } from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
+import CloudDownloadTwoTone from '@material-ui/icons/CloudDownloadTwoTone'
 import Create from '@material-ui/icons/Create'
 import Delete from '@material-ui/icons/Delete'
 import FileMove from '@material-ui/icons/FileCopy'
@@ -14,6 +15,7 @@ import React, { useContext, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { CurrentContentContext, ResponsiveContext } from '../context'
 import { useContentRouting, useLocalization } from '../hooks'
+import { useDownload } from '../hooks/use-download'
 import { ContentInfoDialog, CopyMoveDialog, DeleteContentDialog, EditPropertiesDialog } from './dialogs'
 import { Icon } from './Icon'
 
@@ -35,6 +37,7 @@ export const ContentContextMenuComponent: React.FunctionComponent<
   const [isInfoDialogOpened, setIsInfoDialogOpened] = useState(false)
   const [isCopyDialogOpened, setIsCopyDialogOpened] = useState(false)
   const [copyMoveOperation, setCopyMoveOperation] = useState<'copy' | 'move'>('copy')
+  const download = useDownload(content)
 
   return (
     <div onKeyDown={ev => ev.stopPropagation()} onKeyPress={ev => ev.stopPropagation()}>
@@ -82,6 +85,19 @@ export const ContentContextMenuComponent: React.FunctionComponent<
               </ListItemIcon>
               <ListItemText primary={localization.open} />
             </ListItem>
+            {download.isFile ? (
+              <ListItem
+                button={true}
+                onClick={() => {
+                  download.download()
+                  props.onClose && props.onClose()
+                }}>
+                <ListItemIcon>
+                  <CloudDownloadTwoTone />
+                </ListItemIcon>
+                {localization.download}
+              </ListItem>
+            ) : null}
             <ListItem
               button={true}
               onClick={() => {
@@ -157,6 +173,19 @@ export const ContentContextMenuComponent: React.FunctionComponent<
             </ListItemIcon>
             {localization.open}
           </MenuItem>
+          {download.isFile ? (
+            <MenuItem
+              button={true}
+              onClick={() => {
+                download.download()
+                props.onClose && props.onClose()
+              }}>
+              <ListItemIcon>
+                <CloudDownloadTwoTone />
+              </ListItemIcon>
+              {localization.download}
+            </MenuItem>
+          ) : null}
           <MenuItem
             onClick={() => {
               props.onClose && props.onClose()

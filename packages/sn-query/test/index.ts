@@ -73,6 +73,14 @@ describe('Query', () => {
       const queryInstance = new Query(q => q.notEquals('DisplayName', 'test'))
       expect(queryInstance.toString()).toBe("NOT(DisplayName:'test')")
     })
+    it('EqualsNested', () => {
+      const queryInstance = new Query(q => q.equalsNested('Owner', 'DisplayName', 'test'))
+      expect(queryInstance.toString()).toBe('Owner:{{DisplayName:test}}')
+    })
+    it('NotEqualsNested', () => {
+      const queryInstance = new Query(q => q.notEqualsNested('Owner', 'DisplayName', 'test'))
+      expect(queryInstance.toString()).toBe('NOT(Owner:{{DisplayName:test}})')
+    })
     it('Between exclusive', () => {
       const queryInstance = new Query(q => q.between('Index', 1, 5))
       expect(queryInstance.toString()).toBe("Index:{'1' TO '5'}")
