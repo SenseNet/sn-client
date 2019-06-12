@@ -5,6 +5,13 @@ import { useAsync } from 'react-async'
 import { loadItems } from './loaders'
 import { Action, GenericContentWithIsParent, NAVIGATE_TO, SET_SELECTED_ITEM, State } from './types'
 
+/**
+ * Reducer to modify the state of the list picker
+ * @template T
+ * @param {State<T>} state
+ * @param {Action<T>} action
+ * @returns a new state
+ */
 function reducer<T extends GenericContent>(state: State<T>, action: Action<T>) {
   switch (action.type) {
     case SET_SELECTED_ITEM: {
