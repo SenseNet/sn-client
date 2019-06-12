@@ -35,14 +35,14 @@ import * as ViewControls from './viewcontrols'
 
 const clientConfigFactory = (fieldSettings: FieldSetting) => {
   const defaultSetting = {} as ReactClientFieldSettingProps
-  ;(defaultSetting.key = fieldSettings.Name),
-    (defaultSetting.name = fieldSettings.Name as any),
-    (defaultSetting.readOnly = fieldSettings.ReadOnly || false),
-    (defaultSetting.required = fieldSettings.Compulsory || false),
-    (defaultSetting['data-placeHolderText'] = fieldSettings.DisplayName || '')
-  ;(defaultSetting['data-labelText'] = fieldSettings.DisplayName || ''),
-    (defaultSetting['data-typeName'] = fieldSettings.Type || ''),
-    (defaultSetting['data-hintText'] = fieldSettings.Description || '')
+  defaultSetting.key = fieldSettings.Name
+  defaultSetting.name = fieldSettings.Name as any
+  defaultSetting.readOnly = fieldSettings.ReadOnly || false
+  defaultSetting.required = fieldSettings.Compulsory || false
+  defaultSetting['data-placeHolderText'] = fieldSettings.DisplayName || ''
+  defaultSetting['data-labelText'] = fieldSettings.DisplayName || ''
+  defaultSetting['data-typeName'] = fieldSettings.Type || ''
+  defaultSetting['data-hintText'] = fieldSettings.Description || ''
   return defaultSetting
 }
 
@@ -56,12 +56,12 @@ export const reactControlMapper = (repository: Repository) =>
     })
     .setClientControlFactory(NumberFieldSetting, setting => {
       const numberSettings = clientConfigFactory(setting) as ReactNumberFieldSetting
-      ;(numberSettings['data-digits'] = setting.Digits),
-        (numberSettings['data-step'] = setting.Step),
-        (numberSettings['data-isPercentage'] = setting.ShowAsPercentage),
-        (numberSettings['data-decimal'] = true),
-        (numberSettings.max = setting.MaxValue),
-        (numberSettings.min = setting.MinValue)
+      numberSettings['data-digits'] = setting.Digits
+      numberSettings['data-step'] = setting.Step
+      numberSettings['data-isPercentage'] = setting.ShowAsPercentage
+      numberSettings['data-decimal'] = true
+      numberSettings.max = setting.MaxValue
+      numberSettings.min = setting.MinValue
       // TODO: currency
       return numberSettings
     })
@@ -70,11 +70,11 @@ export const reactControlMapper = (repository: Repository) =>
     })
     .setClientControlFactory(IntegerFieldSetting, setting => {
       const numberSettings = clientConfigFactory(setting) as ReactNumberFieldSetting
-      ;(numberSettings['data-step'] = setting.Step),
-        (numberSettings['data-isPercentage'] = setting.ShowAsPercentage),
-        (numberSettings['data-decimal'] = false),
-        (numberSettings.max = setting.MaxValue),
-        (numberSettings.min = setting.MinValue)
+      numberSettings['data-step'] = setting.Step
+      numberSettings['data-isPercentage'] = setting.ShowAsPercentage
+      numberSettings['data-decimal'] = false
+      numberSettings.max = setting.MaxValue
+      numberSettings.min = setting.MinValue
       // TODO: currency
       return numberSettings
     })
@@ -94,9 +94,9 @@ export const reactControlMapper = (repository: Repository) =>
     })
     .setClientControlFactory(ShortTextFieldSetting, setting => {
       const shortTextSettings = clientConfigFactory(setting) as ReactShortTextFieldSetting
-      ;(shortTextSettings['data-minLength'] = setting.MinLength),
-        (shortTextSettings['data-maxLength'] = setting.MaxLength),
-        (shortTextSettings['data-regex'] = setting.Regex)
+      shortTextSettings['data-minLength'] = setting.MinLength
+      shortTextSettings['data-maxLength'] = setting.MaxLength
+      shortTextSettings['data-regex'] = setting.Regex
       return shortTextSettings
     })
     .setupFieldSettingDefault(PasswordFieldSetting, () => {
@@ -111,8 +111,8 @@ export const reactControlMapper = (repository: Repository) =>
     })
     .setClientControlFactory(DateTimeFieldSetting, setting => {
       const dateTimeSettings = clientConfigFactory(setting) as ReactDateTimeFieldSetting
-      ;(dateTimeSettings['data-dateTimeMode'] = setting.DateTimeMode as any),
-        (dateTimeSettings['data-precision'] = setting.Precision as any)
+      dateTimeSettings['data-dateTimeMode'] = setting.DateTimeMode as any
+      dateTimeSettings['data-precision'] = setting.Precision as any
       return dateTimeSettings
     })
     .setupFieldSettingDefault(ChoiceFieldSetting, setting => {
@@ -133,9 +133,9 @@ export const reactControlMapper = (repository: Repository) =>
     })
     .setClientControlFactory(ChoiceFieldSetting, setting => {
       const choiceSettings = clientConfigFactory(setting) as ReactChoiceFieldSetting
-      ;(choiceSettings['data-allowExtraValue'] = setting.AllowExtraValue),
-        (choiceSettings['data-allowMultiple'] = setting.AllowMultiple),
-        (choiceSettings.options = setting.Options || [])
+      choiceSettings['data-allowExtraValue'] = setting.AllowExtraValue
+      choiceSettings['data-allowMultiple'] = setting.AllowMultiple
+      choiceSettings.options = setting.Options || []
       return choiceSettings
     })
     .setupFieldSettingDefault(ReferenceFieldSetting, setting => {
@@ -147,16 +147,16 @@ export const reactControlMapper = (repository: Repository) =>
     })
     .setClientControlFactory(ReferenceFieldSetting, setting => {
       const referenceSettings = clientConfigFactory(setting) as ReactReferenceFieldSetting
-      ;(referenceSettings['data-allowMultiple'] = setting.AllowMultiple),
-        (referenceSettings['data-allowedTypes'] = setting.AllowedTypes),
-        (referenceSettings['data-selectionRoot'] = setting.SelectionRoots),
-        (referenceSettings['data-defaultValue'] = setting.DefaultValue),
-        (referenceSettings['data-defaultDisplayName'] =
-          setting.AllowedTypes !== undefined
-            ? setting.AllowedTypes.indexOf('User') > -1
-              ? 'FullName'
-              : 'DisplayName'
-            : 'DisplayName')
+      referenceSettings['data-allowMultiple'] = setting.AllowMultiple
+      referenceSettings['data-allowedTypes'] = setting.AllowedTypes
+      referenceSettings['data-selectionRoot'] = setting.SelectionRoots
+      referenceSettings['data-defaultValue'] = setting.DefaultValue
+      referenceSettings['data-defaultDisplayName'] =
+        setting.AllowedTypes !== undefined
+          ? setting.AllowedTypes.indexOf('User') > -1
+            ? 'FullName'
+            : 'DisplayName'
+          : 'DisplayName'
       return referenceSettings
     })
     .setupFieldSettingDefault(LongTextFieldSetting, setting => {
@@ -177,8 +177,8 @@ export const reactControlMapper = (repository: Repository) =>
     })
     .setClientControlFactory(LongTextFieldSetting, setting => {
       const longTextSettings = clientConfigFactory(setting) as ReactLongTextFieldSetting
-      ;(longTextSettings['data-minLength'] = setting.MinLength),
-        (longTextSettings['data-maxLength'] = setting.MaxLength)
+      longTextSettings['data-minLength'] = setting.MinLength
+      longTextSettings['data-maxLength'] = setting.MaxLength
       return longTextSettings
     })
     .setupFieldSettingDefault(NullFieldSetting, setting => {

@@ -88,7 +88,7 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
         ;(this.props['data-allowedTypes'] as string[]).map((allowedType, index, array) => {
           new QueryExpression(q2['queryRef']).term(`TypeIs:${allowedType}`)
           if (index < array.length - 1) {
-            new QueryOperators(q2['queryRef']).or
+            return new QueryOperators(q2['queryRef']).or
           }
         })
         return q2
@@ -100,7 +100,7 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
         ;(this.props['data-selectionRoot'] as string[]).forEach((root, index, array) => {
           new QueryExpression(q2['queryRef']).inTree(root)
           if (index < array.length - 1) {
-            new QueryOperators(q2['queryRef']).or
+            return new QueryOperators(q2['queryRef']).or
           }
         })
         return q2

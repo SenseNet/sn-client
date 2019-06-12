@@ -38,6 +38,9 @@ const pickerItemOptions: ODataParams<Folder> = {
   orderby: [['IsFolder', 'desc'], 'DisplayName'],
 }
 
+/**
+ * Represents an avatar picker component
+ */
 export function AvatarPicker(props: AvatarPickerProps) {
   const { items, selectedItem, setSelectedItem, path, navigateTo, reload, isLoading, error } = useListPicker<
     GenericContent

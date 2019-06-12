@@ -113,7 +113,7 @@ export class FileUpload<T extends GenericContent, K extends keyof T> extends Com
   /**
    * returns a name from the given path
    */
-  public getNameFromPath = (path: string) => path.replace(/^.*[\\\/]/, '')
+  public getNameFromPath = (path: string) => path.replace(/^.*[\\/]/, '')
   /**
    * handles change event on the fileupload input
    */
