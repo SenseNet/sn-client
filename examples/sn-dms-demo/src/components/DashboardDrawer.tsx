@@ -208,7 +208,7 @@ class DashboardDrawer extends Component<
         case 'Logout':
           this.props.logout()
           break
-        case 'Profile':
+        case 'Profile': {
           const { currentContent } = this.props
           const userPath = compile('/users/:folderPath?/:otherActions*')({
             folderPath: btoa(currentContent && currentContent.ParentId ? currentContent.ParentId.toString() : ''),
@@ -219,6 +219,7 @@ class DashboardDrawer extends Component<
           this.props.closeActionMenu()
           this.props.handleDrawerMenu(false)
           break
+        }
         default:
           this.props.handleDrawerMenu(false)
           break

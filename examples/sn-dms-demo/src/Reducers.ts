@@ -93,11 +93,12 @@ export const open: Reducer<boolean> = (state = false, action: AnyAction) => {
 
 export const actions: Reducer<ActionModel[]> = (state = [], action: AnyAction) => {
   switch (action.type) {
-    case 'LOAD_CONTENT_ACTIONS_SUCCESS':
+    case 'LOAD_CONTENT_ACTIONS_SUCCESS': {
       const result: { d: { Actions: ActionModel[] } } = (action.result as Actions.PromiseReturns<
         typeof Actions.loadContentActions
       >) as any
       return result && result.d.Actions ? result.d.Actions : []
+    }
     case 'OPEN_ACTIONMENU':
       return action.actions || []
     default:
@@ -149,13 +150,14 @@ export const position: Reducer<{ top: number; left: number }, Action & { positio
 
 export const rootId: Reducer<number | null> = (state = null, action: AnyAction) => {
   switch (action.type) {
-    case 'LOAD_CONTENT_SUCCESS':
+    case 'LOAD_CONTENT_SUCCESS': {
       const result = action.result as Actions.PromiseReturns<typeof Actions.loadContent>
       if (!state && result && result.d.Path.indexOf('Default_Site') === -1) {
         return result.d.Id
       } else {
         return state
       }
+    }
     default:
       return state
   }
@@ -205,7 +207,7 @@ export interface BreadcrumbItemType {
 
 export const breadcrumb: Reducer<BreadcrumbItemType[]> = (state = [], action: AnyAction) => {
   switch (action.type) {
-    case 'LOAD_CONTENT_SUCCESS':
+    case 'LOAD_CONTENT_SUCCESS': {
       const result = action.result as Actions.PromiseReturns<typeof Actions.loadContent>
       if (result) {
         if (result.d.Path.indexOf('Default_Site') === -1 && state.filter(e => e.id === result.d.Id).length === 0) {
@@ -221,6 +223,7 @@ export const breadcrumb: Reducer<BreadcrumbItemType[]> = (state = [], action: An
         }
       }
       return state
+    }
     default:
       return state
   }
@@ -251,9 +254,10 @@ export const isSelectionModeOn: Reducer<boolean> = (state = false, action: AnyAc
 
 export const userActions: Reducer<ActionModel[]> = (state = [], action: AnyAction) => {
   switch (action.type) {
-    case 'LOAD_USER_ACTIONS_SUCCESS':
+    case 'LOAD_USER_ACTIONS_SUCCESS': {
       const result = action.result as Actions.PromiseReturns<typeof loadUserActions>
       return result ? result.d.Actions : []
+    }
     default:
       return state
   }
@@ -261,9 +265,10 @@ export const userActions: Reducer<ActionModel[]> = (state = [], action: AnyActio
 
 export const addNewTypes: Reducer<ActionModel[]> = (state = [], action: AnyAction) => {
   switch (action.type) {
-    case 'LOAD_TYPES_TO_ADDNEW_LIST_SUCCESS':
+    case 'LOAD_TYPES_TO_ADDNEW_LIST_SUCCESS': {
       const result = action.result as Actions.PromiseReturns<typeof loadTypesToAddNewList>
       return result ? result.d.Actions : []
+    }
     default:
       return state
   }
@@ -283,12 +288,13 @@ export const breadcrumbActions: Reducer<{ actions: ActionModel[]; idOrPath: numb
   action: AnyAction,
 ) => {
   switch (action.type) {
-    case 'LOAD_BREADCRUMB_ACTIONS_SUCCESS':
+    case 'LOAD_BREADCRUMB_ACTIONS_SUCCESS': {
       const result = action.result.actions
       return {
         actions: result ? (result as ActionModel[]) : [],
         idOrPath: action.result.idOrPath,
       }
+    }
     default:
       return state
   }
@@ -495,9 +501,10 @@ export const dialog = combineReducers({
 
 export const versions = (state: GenericContent[] = [], action: AnyAction) => {
   switch (action.type) {
-    case 'LOAD_VERSIONS_SUCCESS':
+    case 'LOAD_VERSIONS_SUCCESS': {
       const versionItems = (action.result as Actions.PromiseReturns<typeof loadVersions>).d.results
       return versionItems
+    }
     default:
       return state
   }

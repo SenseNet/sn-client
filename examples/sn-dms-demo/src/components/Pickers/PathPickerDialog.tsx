@@ -35,6 +35,7 @@ const mapDispatchToProps = {
   openDialog: DMSActions.openDialog,
 }
 
+// eslint-disable-next-line require-jsdoc
 function PathPickerDialog(
   props: PathPickerDialogProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
 ) {

@@ -130,7 +130,7 @@ class Registration extends React.Component<
     })
   }
   public validateEmail(text: string) {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     return re.test(text)
   }
   public handlePasswordBlur(e: React.FocusEvent<HTMLInputElement>) {
@@ -155,7 +155,7 @@ class Registration extends React.Component<
     })
   }
   public validatePassword(text: string) {
-    const re = /^([a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]*[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]){3}[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]*$/
+    const re = /^([a-zA-Z0-9!@#$%^&*)(+=._-]*[a-zA-Z0-9!@#$%^&*)(+=._-]){3}[a-zA-Z0-9!@#$%^&*)(+=._-]*$/
     return re.test(text)
   }
   public handleConfirmPasswordBlur(e: React.FocusEvent<HTMLInputElement>) {

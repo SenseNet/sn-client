@@ -230,6 +230,7 @@ export const setChildrenOptions = createAction(<T extends GenericContent>(odataO
 
 export const changedContent: GenericContent[] = []
 
+// eslint-disable-next-line require-jsdoc
 function methodToDebounce(getState: () => rootStateType, dispatch: Dispatch) {
   const currentContent = getState().dms.documentLibrary.parent
   changedContent.forEach(content => {

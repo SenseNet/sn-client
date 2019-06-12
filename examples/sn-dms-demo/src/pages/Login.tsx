@@ -137,7 +137,7 @@ class Login extends React.Component<
   }
 
   public validateEmail(text: string) {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     return re.test(text)
   }
 
@@ -179,7 +179,9 @@ class Login extends React.Component<
   }
 
   public componentDidMount() {
-    this.props.isRegistered ? this.props.clear() : false
+    if (this.props.isRegistered) {
+      this.props.clear()
+    }
   }
 
   public render() {

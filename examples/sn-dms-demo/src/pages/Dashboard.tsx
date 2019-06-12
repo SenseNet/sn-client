@@ -313,14 +313,14 @@ class DashboardComponent extends React.Component<
               />
               {matches ? (
                 <Dialog open={isDialogOpen} onClose={closeDialog} maxWidth="md">
-                  <DialogContent children={dialogContent} />
+                  <DialogContent>{dialogContent}</DialogContent>
                   <IconButton onClick={closeDialog} style={styles.dialogClose as any}>
                     <Icon type={iconType.materialui} iconName="close" />
                   </IconButton>
                 </Dialog>
               ) : (
                 <Drawer open={isDialogOpen} anchor="bottom" onClose={closeDialog}>
-                  <DialogContent children={dialogContent} />
+                  <DialogContent>{dialogContent}</DialogContent>
                   <Button onClick={closeDialog} style={styles.dialogCloseMobile as any}>
                     Cancel
                   </Button>

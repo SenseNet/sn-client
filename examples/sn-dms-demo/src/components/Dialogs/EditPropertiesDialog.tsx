@@ -51,7 +51,7 @@ const LoadableEditView = Loadable({
     )
     return module.EditView
   },
-  loading: () => <FullScreenLoader />,
+  loading: FullScreenLoader,
 })
 
 class EditPropertiesDialog extends React.Component<

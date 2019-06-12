@@ -6,6 +6,7 @@ export const rowSource = {
   },
 }
 
+// eslint-disable-next-line require-jsdoc
 export function collect(connect: any, monitor: any) {
   return {
     connectDragSource: connect.dragSource(),

@@ -671,6 +671,7 @@ export const setItems = (items: GenericContent[]) => ({
 
 export const changedContent: GenericContent[] = []
 
+// eslint-disable-next-line require-jsdoc
 function methodToDebounce(getState: () => rootStateType, dispatch: Dispatch) {
   const currentContent = getState().dms.usersAndGroups.group.parent
   changedContent.forEach(content => {

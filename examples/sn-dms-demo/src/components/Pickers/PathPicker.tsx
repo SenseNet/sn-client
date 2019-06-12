@@ -35,6 +35,7 @@ const pickerItemOptions: ODataParams<Folder> = {
   orderby: 'DisplayName',
 }
 
+// eslint-disable-next-line require-jsdoc
 function PathPicker(props: PathPickerProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps) {
   const { items, selectedItem, setSelectedItem, navigateTo, reload } = useListPicker<GenericContentWithIsParent>({
     repository: dmsInjector.getInstance(Repository),
@@ -45,7 +46,7 @@ function PathPicker(props: PathPickerProps & ReturnType<typeof mapStateToProps> 
   // Do a reload when a content is created
   useEffect(() => {
     reload()
-  }, [props.pickerItems])
+  }, [props.pickerItems, reload])
 
   const hasChildren = (node: GenericContent & { Children: Array<{ IsFolder: boolean }> }) => {
     return node.Children && node.Children.some(child => child.IsFolder)

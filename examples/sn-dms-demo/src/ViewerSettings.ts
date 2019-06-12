@@ -162,6 +162,12 @@ export const getViewerSettings = (repo: Repository) =>
       },
     },
   })
+
+/**
+ * Concatenates avatar url with host
+ * @param {DocumentData} documentData
+ * @returns {(value: Comment) => Comment}
+ */
 function changeCreatedByUrlToCurrent(documentData: DocumentData): (value: Comment) => Comment {
   return comment => {
     return {

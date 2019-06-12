@@ -188,7 +188,7 @@ class ActionMenu extends React.Component<
             this.props.openDialog(<DeleteDialog content={[content]} />, resources.DELETE, this.props.closeDialog)
           }
           break
-        case 'Preview':
+        case 'Preview': {
           this.handleClose()
           const newPath = compile(this.props.match.path)({
             folderPath: this.props.match.params.folderPath || btoa(this.props.id as any),
@@ -196,15 +196,17 @@ class ActionMenu extends React.Component<
           })
           this.props.history.push(newPath)
           break
+        }
         case 'Logout':
           this.handleClose()
           this.props.logout()
           break
-        case 'Browse':
+        case 'Browse': {
           this.handleClose()
           const path = this.props.currentContent ? this.props.currentContent.Path : ''
           downloadFile(path, this.props.hostName)
           break
+        }
         case 'Versions':
           this.handleClose()
           this.props.currentContent &&
@@ -218,7 +220,7 @@ class ActionMenu extends React.Component<
           this.handleClose()
           this.props.currentContent && this.props.openDialog(<ShareDialog currentContent={this.props.currentContent} />)
           break
-        case 'Profile':
+        case 'Profile': {
           this.handleClose()
           const user = this.props.currentUser
           const userPath = compile('/users/:folderPath?/:otherActions*')({
@@ -228,6 +230,7 @@ class ActionMenu extends React.Component<
           this.props.history.push(userPath)
           this.props.chooseMenuItem('profile')
           break
+        }
         case 'Edit':
           this.handleClose()
           content &&
@@ -309,11 +312,12 @@ class ActionMenu extends React.Component<
             () => this.props.closePicker() && this.props.deselectPickeritem(),
           )
           break
-        case 'ExecuteQuery':
+        case 'ExecuteQuery': {
           const query = content as Query
           this.props.history.replace(`/documents?query=${query.Query}&queryName=${query.DisplayName || query.Name}`)
           this.props.closeActionMenu()
           break
+        }
         case 'OpenInEditor':
           return null
         default:
