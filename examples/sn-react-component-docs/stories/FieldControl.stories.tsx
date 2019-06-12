@@ -99,7 +99,7 @@ storiesOf('FieldControls.AllowedChildTypes', module)
       <div>
         <div style={{ fontStyle: 'italic', fontSize: 13 }}>
           To see this control in action, please login at
-          <a target="_blank" href="https://dmsservice.demo.sensenet.com/">
+          <a target="_blank" href="https://dmsservice.demo.sensenet.com/" rel="noopener noreferrer">
             https://dmsservice.demo.sensenet.com/
           </a>
         </div>
@@ -125,7 +125,7 @@ storiesOf('FieldControls.AllowedChildTypes', module)
       <div>
         <div style={{ fontStyle: 'italic', fontSize: 13 }}>
           To see this control in action, please login at
-          <a target="_blank" href="https://dmsservice.demo.sensenet.com/">
+          <a target="_blank" href="https://dmsservice.demo.sensenet.com/" rel="noopener noreferrer">
             https://dmsservice.demo.sensenet.com/
           </a>
         </div>
@@ -151,7 +151,7 @@ storiesOf('FieldControls.AllowedChildTypes', module)
       <div>
         <div style={{ fontStyle: 'italic', fontSize: 13 }}>
           To see this control in action, please login at
-          <a target="_blank" href="https://dmsservice.demo.sensenet.com/">
+          <a target="_blank" href="https://dmsservice.demo.sensenet.com/" rel="noopener noreferrer">
             https://dmsservice.demo.sensenet.com/
           </a>
         </div>
@@ -1570,6 +1570,9 @@ storiesOf('FieldControls.TimePicker', module)
     { notes: { markdown: timepickerNotes } },
   )
 
+/**
+ * Date knob
+ */
 function dateKnob(name: string, defaultValue = new Date()) {
   const stringTimestamp = date(name, defaultValue)
   return new Date(stringTimestamp).toISOString()

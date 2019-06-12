@@ -23,7 +23,7 @@ export const ExampleApp = () => {
       return (
         <p>
           You need to <strong>login</strong> to{' '}
-          <a href="https://dmsservice.demo.sensenet.com" target="_blank">
+          <a href="https://dmsservice.demo.sensenet.com" target="_blank" rel="noopener noreferrer">
             https://dmsservice.demo.sensenet.com
           </a>{' '}
           to see this component working!

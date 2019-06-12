@@ -247,6 +247,11 @@ export const exampleSettings = new DocumentViewerSettings({
   },
 })
 
+/**
+ * Changes the url to the one with host in it
+ * @param {DocumentData} documentData
+ * @returns {(value: Comment) => Comment}
+ */
 function changeCreatedByUrlToCurrent(documentData: DocumentData): (value: Comment) => Comment {
   return comment => {
     return {
@@ -427,12 +432,15 @@ class ExampleAppLayout extends React.Component<
                       <ul>
                         <li>
                           you are using sensenet{' '}
-                          <a href="https://community.sensenet.com/docs/install-sn-from-nuget/" target="_blank">
+                          <a
+                            href="https://community.sensenet.com/docs/install-sn-from-nuget/"
+                            target="_blank"
+                            rel="noopener noreferrer">
                             7.0+
                           </a>
                         </li>
                         <li>
-                          <a href="https://community.sensenet.com/docs/cors/" target="_blank">
+                          <a href="https://community.sensenet.com/docs/cors/" target="_blank" rel="noopener noreferrer">
                             CORS
                           </a>{' '}
                           is allowed for the current host
