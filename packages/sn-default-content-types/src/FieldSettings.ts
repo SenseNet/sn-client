@@ -73,6 +73,12 @@ export enum UrlFormat {
   Picture,
 }
 
+/**
+ * Check if field setting is type of param
+ * @template T
+ * @param {FieldSetting} setting
+ * @param {new () => T} type
+ */
 export function isFieldSettingOfType<T extends FieldSetting>(setting: FieldSetting, type: new () => T): setting is T {
   return setting.Type === type.name
 }
