@@ -1,6 +1,4 @@
 import { shallow } from 'enzyme'
-import { TimePicker as MUITimePicker } from 'material-ui-pickers'
-import moment from 'moment'
 import React from 'react'
 import { TimePicker } from '../src/fieldcontrols/TimePicker/TimePicker'
 
@@ -84,20 +82,5 @@ describe('TimePicker', () => {
         data-fieldValue={'03:50:00'}
       />,
     )
-  })
-  it('handleChange() should be executed on input change in new mode', done => {
-    const instance = shallow(
-      <TimePicker
-        name="CreationDate"
-        onChange={(field, value) => {
-          expect(field).toBe('CreationDate')
-          expect(value).toStrictEqual(moment.utc('2019-05-31T03:50:00.000Z'))
-          done()
-        }}
-        data-actionName="new"
-      />,
-    )
-    const input = instance.find(MUITimePicker)
-    input.props().onChange!(moment('2019-05-31T03:50:00.000Z'))
   })
 })

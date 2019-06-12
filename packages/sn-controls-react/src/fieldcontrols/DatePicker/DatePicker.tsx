@@ -52,7 +52,7 @@ export class DatePicker<T extends GenericContent, K extends keyof T> extends Rea
         ? moment(props['data-fieldValue'].replace(/<[^>]*>/g, ''))
         : props['data-defaultValue']
         ? moment(props['data-defaultValue'])
-        : '',
+        : null,
     }
     this.handleDateChange = this.handleDateChange.bind(this)
   }
