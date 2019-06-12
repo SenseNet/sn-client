@@ -9,7 +9,7 @@ import { GenericContentWithIsParent, useListPicker } from '@sensenet/pickers-rea
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { dmsInjector } from '../../DmsRepository'
-import { deselectPickeritem, selectPickerItem } from '../../store/picker/actions'
+import { deselectPickeritem, selectPickerItem, reloadPickerItems } from '../../store/picker/actions'
 import { rootStateType } from '../../store/rootReducer'
 
 interface PathPickerProps {
@@ -18,13 +18,14 @@ interface PathPickerProps {
 
 const mapStateToProps = (state: rootStateType) => {
   return {
-    pickerItems: state.dms.picker.items,
+    shouldReload: state.dms.picker.shouldReload,
   }
 }
 
 const mapDispatchToProps = {
   selectPickerItem,
   deselectPickeritem,
+  reloadPickerItems,
 }
 
 const pickerItemOptions: ODataParams<Folder> = {
@@ -45,8 +46,12 @@ function PathPicker(props: PathPickerProps & ReturnType<typeof mapStateToProps> 
 
   // Do a reload when a content is created
   useEffect(() => {
-    reload()
-  }, [props.pickerItems, reload])
+    if (props.shouldReload) {
+      reload()
+      // set shouldReload to false after reload
+      props.reloadPickerItems()
+    }
+  }, [props, reload])
 
   const hasChildren = (node: GenericContent & { Children: Array<{ IsFolder: boolean }> }) => {
     return node.Children && node.Children.some(child => child.IsFolder)
