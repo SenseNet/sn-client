@@ -91,7 +91,7 @@ class UserList extends React.Component<
               user.FullName ? user.FullName.toLowerCase().indexOf(newProps.term) > -1 : false,
             )
           : newProps.users,
-    } as UserList['state']
+    }
   }
   public handleSearch = (text: string) => {
     this.props.searchUsers(text)

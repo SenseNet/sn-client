@@ -211,11 +211,11 @@ export const breadcrumb: Reducer<BreadcrumbItemType[]> = (state = [], action: An
       const result = action.result as Actions.PromiseReturns<typeof Actions.loadContent>
       if (result) {
         if (result.d.Path.indexOf('Default_Site') === -1 && state.filter(e => e.id === result.d.Id).length === 0) {
-          const element = {
-            name: result.d.DisplayName,
+          const element: BreadcrumbItemType = {
+            name: result.d.DisplayName || result.d.Name,
             id: result.d.Id,
             path: result.d.Path,
-          } as BreadcrumbItemType
+          }
           return [...state, element]
         } else if (state.filter(e => e.id === result.d.Id).length > 0) {
           const index = state.findIndex(e => e.id === result.d.Id) + 1

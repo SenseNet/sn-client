@@ -62,7 +62,7 @@ class EditorPage extends Component<
     return {
       ...lastState,
       documentId: id,
-    } as EditorPage['state']
+    }
   }
   public componentDidMount() {
     setTimeout(() => {

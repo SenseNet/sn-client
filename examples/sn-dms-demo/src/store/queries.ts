@@ -8,6 +8,27 @@ import { rootStateType } from './rootReducer'
 
 export type QueryType = 'Private' | 'Public' | 'NonDefined'
 
+export const queriesRequested = createAction((idOrPath: string | number, queryType = 'Private') => ({
+  type: 'SN_DMS_DEMO_QUERIES_REQUESTED',
+  idOrPath,
+  queryType,
+}))
+
+export const queriesReceived = createAction((receivedQueries: Query[]) => ({
+  type: 'SN_DMS_DEMO_QUERIES_RECEIVED',
+  receivedQueries,
+}))
+
+export const select = createAction(<T extends Query>(selected: T[]) => ({
+  type: 'SN_DMS_DEMO_QUERIES_SELECT',
+  selected,
+}))
+
+export const setActive = createAction(<T extends Query>(active?: T) => ({
+  type: 'SN_DMS_DEMO_QUERIES_SET_ACTIVE',
+  active,
+}))
+
 export const saveQuery = createAction(
   (idOrPath: string | number, query: string, displayName: string, queryType = 'Private') => ({
     type: 'SN_DMS_SAVE_QUERY',
@@ -50,27 +71,6 @@ export const getQueries = createAction((idOrPath: string | number, queryType = '
     })
     options.dispatch(queriesReceived(q.d.results))
   },
-}))
-
-export const queriesRequested = createAction((idOrPath: string | number, queryType = 'Private') => ({
-  type: 'SN_DMS_DEMO_QUERIES_REQUESTED',
-  idOrPath,
-  queryType,
-}))
-
-export const queriesReceived = createAction((receivedQueries: Query[]) => ({
-  type: 'SN_DMS_DEMO_QUERIES_RECEIVED',
-  receivedQueries,
-}))
-
-export const select = createAction(<T extends Query>(selected: T[]) => ({
-  type: 'SN_DMS_DEMO_QUERIES_SELECT',
-  selected,
-}))
-
-export const setActive = createAction(<T extends Query>(active?: T) => ({
-  type: 'SN_DMS_DEMO_QUERIES_SET_ACTIVE',
-  active,
 }))
 
 export interface QueriesType {
