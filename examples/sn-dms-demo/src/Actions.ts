@@ -77,6 +77,17 @@ export const setEditedFirst = (edited: boolean) => ({
   edited,
 })
 
+export const loadListActions = (idOrPath: number | string, scenario?: string) => ({
+  type: 'LOAD_LIST_ACTIONS',
+  idOrPath,
+  scenario,
+})
+
+export const setListActions = (actions: ActionModel[]) => ({
+  type: 'SET_LIST_ACTIONS',
+  actions,
+})
+
 export const getListActions = (idOrPath: number | string, scenario?: string, customActions?: ActionModel[]) => ({
   type: 'GET_LIST_ACTIONS',
   async inject(options: IInjectableActionCallbackParams<rootStateType>) {
@@ -96,16 +107,6 @@ export const getListActions = (idOrPath: number | string, scenario?: string, cus
   },
 })
 
-export const loadListActions = (idOrPath: number | string, scenario?: string) => ({
-  type: 'LOAD_LIST_ACTIONS',
-  idOrPath,
-  scenario,
-})
-
-export const setListActions = (actions: ActionModel[]) => ({
-  type: 'SET_LIST_ACTIONS',
-  actions,
-})
 export const loadUserActions = (idOrPath: number | string, scenario?: string, customActions?: ActionModel[]) => ({
   type: 'LOAD_USER_ACTIONS',
   async payload(repository: Repository) {
@@ -126,6 +127,16 @@ export const loadUserActions = (idOrPath: number | string, scenario?: string, cu
 export type ExtendedUploadProgressInfo = UploadProgressInfo & { content?: GenericContent; visible?: boolean }
 
 export const changedContent: GenericContent[] = []
+
+export const updateUploadItem = (uploadItem: ExtendedUploadProgressInfo) => ({
+  type: 'UPLOAD_UPDATE_ITEM',
+  uploadItem,
+})
+
+export const addUploadItem = (uploadItem: ExtendedUploadProgressInfo) => ({
+  type: 'UPLOAD_ADD_ITEM',
+  uploadItem,
+})
 
 export const trackUploadProgress = async <T extends GenericContent>(
   currentValue: ExtendedUploadProgressInfo,
@@ -207,16 +218,6 @@ export const uploadDataTransfer = <T extends SnFile>(
       }
     })
   },
-})
-
-export const addUploadItem = (uploadItem: ExtendedUploadProgressInfo) => ({
-  type: 'UPLOAD_ADD_ITEM',
-  uploadItem,
-})
-
-export const updateUploadItem = (uploadItem: ExtendedUploadProgressInfo) => ({
-  type: 'UPLOAD_UPDATE_ITEM',
-  uploadItem,
 })
 
 export const removeUploadItem = (uploadItem: ExtendedUploadProgressInfo) => ({
