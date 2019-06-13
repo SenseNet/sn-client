@@ -4,12 +4,15 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
     'plugin:cypress/recommended',
+    'plugin:import/recommended',
+    'plugin:import/react',
+    'plugin:import/typescript',
     'prettier',
     'prettier/react',
     'prettier/@typescript-eslint',
   ],
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'prettier', 'react', 'cypress', 'jsdoc', 'react-hooks'],
+  plugins: ['@typescript-eslint', 'prettier', 'react', 'cypress', 'jsdoc', 'import', 'react-hooks'],
   env: { browser: true, node: true, es6: true, jest: true, 'cypress/globals': true },
   parserOptions: {
     ecmaVersion: 6,
@@ -53,6 +56,8 @@ module.exports = {
     'require-jsdoc': 1,
     'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks
     'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
+    'import/no-unresolved': 'off',
+    'import/order': 'error',
   },
   overrides: [
     {
