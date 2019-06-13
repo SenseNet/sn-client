@@ -6,6 +6,4 @@ examples/**/build/*
 examples/**/storybook-static/*
 apps/**/bundle/*
 
-
-packages/*
 examples/sn-react-redux-todo-app/*
