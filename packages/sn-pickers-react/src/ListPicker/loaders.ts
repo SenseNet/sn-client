@@ -29,31 +29,6 @@ export const defaultLoadParentODataOptions: ODataParams<GenericContent> = {
 }
 
 /**
- * Loads the picker items from the repository.
- */
-export const loadItems = async <T extends GenericContentWithIsParent>({
-  path,
-  repository,
-  itemsODataOptions: itemsODataOptionsArgs,
-  parentODataOptions,
-  parentId,
-}: LoadItemsOptions<T>) => {
-  const itemsODataOptions = { ...defaultLoadItemsODataOptions, ...itemsODataOptionsArgs }
-  const itemsResult = await repository.loadCollection<T>({
-    path,
-    oDataOptions: itemsODataOptions,
-  })
-  const items = itemsResult.d.results.map(item => {
-    return { ...item, isParent: false }
-  })
-  const parentResult = await getParent<T>(items[0], repository, parentODataOptions, parentId)
-  if (!parentResult) {
-    return items
-  }
-  return [{ ...parentResult.d, isParent: true }, ...items]
-}
-
-/**
  *  Loads the content of the passed in parentId or gets the parent of the item prop
  * @template T
  * @param {T} item
@@ -85,4 +60,29 @@ async function getParent<T extends GenericContent>(
     idOrPath: parentId!,
     oDataOptions: parentODataOptions,
   })
+}
+
+/**
+ * Loads the picker items from the repository.
+ */
+export const loadItems = async <T extends GenericContentWithIsParent>({
+  path,
+  repository,
+  itemsODataOptions: itemsODataOptionsArgs,
+  parentODataOptions,
+  parentId,
+}: LoadItemsOptions<T>) => {
+  const itemsODataOptions = { ...defaultLoadItemsODataOptions, ...itemsODataOptionsArgs }
+  const itemsResult = await repository.loadCollection<T>({
+    path,
+    oDataOptions: itemsODataOptions,
+  })
+  const items = itemsResult.d.results.map(item => {
+    return { ...item, isParent: false }
+  })
+  const parentResult = await getParent<T>(items[0], repository, parentODataOptions, parentId)
+  if (!parentResult) {
+    return items
+  }
+  return [{ ...parentResult.d, isParent: true }, ...items]
 }
