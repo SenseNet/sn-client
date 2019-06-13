@@ -9,7 +9,7 @@ import React from 'react'
 import { ExtendedUploadProgressInfo } from '../../Actions'
 import { icons } from '../../assets/icons'
 import { resources } from '../../assets/resources'
-import theme from '../../assets/theme'
+import { theme } from '../../assets/theme'
 
 export interface UploadBarItemProps {
   item: ExtendedUploadProgressInfo

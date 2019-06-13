@@ -11,7 +11,7 @@ import React from 'react'
 import MediaQuery from 'react-responsive'
 import { ExtendedUploadProgressInfo } from '../../Actions'
 import { resources } from '../../assets/resources'
-import theme from '../../assets/theme'
+import { theme } from '../../assets/theme'
 import { UploadBarItem } from './UploadBarItem'
 
 export interface UploadBarProps {

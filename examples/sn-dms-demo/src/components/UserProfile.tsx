@@ -94,7 +94,7 @@ class UserProfile extends React.Component<
     return {
       ...lastState,
       userName: newProps.user ? newProps.user.Name : '',
-    } as UserProfile['state']
+    }
   }
 
   public handleRowDoubleClick(_e: React.MouseEvent, content: GenericContent) {

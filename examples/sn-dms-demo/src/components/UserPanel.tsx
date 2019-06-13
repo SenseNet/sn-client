@@ -4,8 +4,7 @@ import { fullName, userAvatarPath, userContent, userLanguage, userName } from '@
 import React from 'react'
 import { connect } from 'react-redux'
 import { rootStateType } from '../store/rootReducer'
-
-const defaultAvatar = require('../assets/no-avatar.jpg')
+import defaultAvatar from '../assets/no-avatar.jpg'
 
 const mapStateToProps = (state: rootStateType) => {
   return {

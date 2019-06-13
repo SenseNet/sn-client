@@ -8,7 +8,7 @@ import { Icon, iconType } from '@sensenet/icons-react'
 import React from 'react'
 import { v1 } from 'uuid'
 import { resources } from '../../assets/resources'
-import theme from '../../assets/theme'
+import { theme } from '../../assets/theme'
 
 const styles = {
   menuItem: {
