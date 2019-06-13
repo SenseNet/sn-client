@@ -126,7 +126,7 @@ export class ContentList<T extends GenericContent> extends React.Component<Conte
       itemCount,
       hasSelected: selectedCount > 0,
       isAllSelected: itemCount === selectedCount,
-    } as ContentListState
+    }
   }
 
   public handleSelectAllClick() {

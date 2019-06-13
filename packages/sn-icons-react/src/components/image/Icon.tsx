@@ -31,7 +31,7 @@ export class ImageIcon extends React.Component<ImageIconProps, {}> {
     const { iconName, size, style, onClick } = this.props
     const imgSize = size ? size : 16
 
-    const image = require(`../../../assets/img/icons/${imgSize}/${iconName}.png`)
+    const image = import(`../../../assets/img/icons/${imgSize}/${iconName}.png`)
 
     const styler = {
       backgroundImage: `url(${image})`,
