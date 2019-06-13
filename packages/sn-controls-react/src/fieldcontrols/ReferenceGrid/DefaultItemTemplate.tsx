@@ -45,7 +45,7 @@ export class DefaultItemTemplate extends Component<DefaultItemTemplateProps, {}>
     const { content, repositoryUrl } = this.props
     return (
       <ListItem key={content.Id} button={false}>
-        {content.Type !== undefined ? (
+        {content.Type ? (
           content.Type === 'User' ? (
             <ListItemAvatar>
               {<Avatar alt={content['FullName']} src={`${repositoryUrl}${content['Avatar'].Url}`} />}

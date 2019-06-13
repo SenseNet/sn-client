@@ -25,7 +25,6 @@ interface AvatarPickerProps {
   repository: Repository
   path: string
   allowedTypes?: string[]
-  selected: GenericContent
   repositoryUrl: string
   renderIcon: (name: string) => JSX.Element
 }

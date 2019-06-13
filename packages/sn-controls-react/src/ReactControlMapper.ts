@@ -24,7 +24,6 @@ import { ReactClientFieldSetting, ReactClientFieldSettingProps } from './fieldco
 import { ReactDateTimeFieldSetting } from './fieldcontrols/DateTimeFieldSetting'
 import { ReactLongTextFieldSetting } from './fieldcontrols/LongTextFieldSetting'
 import { ReactNumberFieldSetting } from './fieldcontrols/Number/NumberFieldSetting'
-import { ReactPasswordFieldSetting } from './fieldcontrols/Password/PasswordFieldSetting'
 import { ReactReferenceFieldSetting } from './fieldcontrols/ReferenceFieldSetting'
 import { ReactShortTextFieldSetting } from './fieldcontrols/ShortText/ShortTextFieldSetting'
 import * as ViewControls from './viewcontrols'
@@ -34,11 +33,13 @@ import * as ViewControls from './viewcontrols'
  */
 
 const clientConfigFactory = (fieldSettings: FieldSetting) => {
-  const defaultSetting = {} as ReactClientFieldSettingProps
-  defaultSetting.key = fieldSettings.Name
-  defaultSetting.name = fieldSettings.Name as any
-  defaultSetting.readOnly = fieldSettings.ReadOnly || false
-  defaultSetting.required = fieldSettings.Compulsory || false
+  const defaultSetting: ReactClientFieldSettingProps = {
+    key: fieldSettings.Name,
+    name: fieldSettings.Name as any,
+    readOnly: fieldSettings.ReadOnly || false,
+    required: fieldSettings.Compulsory || false,
+    onChange: (field, value) => console.log({ field, value }),
+  }
   defaultSetting['data-placeHolderText'] = fieldSettings.DisplayName || ''
   defaultSetting['data-labelText'] = fieldSettings.DisplayName || ''
   defaultSetting['data-typeName'] = fieldSettings.Type || ''
@@ -103,7 +104,7 @@ export const reactControlMapper = (repository: Repository) =>
       return FieldControls.Password
     })
     .setClientControlFactory(PasswordFieldSetting, setting => {
-      const passwordSettings = clientConfigFactory(setting) as ReactPasswordFieldSetting
+      const passwordSettings = clientConfigFactory(setting) as ReactShortTextFieldSetting
       return passwordSettings
     })
     .setupFieldSettingDefault(DateTimeFieldSetting, () => {

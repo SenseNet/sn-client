@@ -3,9 +3,8 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import React from 'react'
 import { connect } from 'react-redux'
+import debounce from 'lodash.debounce'
 import { RootReducerType, setActivePages } from '../../store'
-
-const debounce = require('lodash.debounce')
 
 /**
  * maps state fields from the store to component props

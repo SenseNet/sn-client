@@ -30,6 +30,41 @@ export const resetDocumentData = () => ({
 })
 
 /**
+ * Action that updates the store with the received document data
+ * @param document The received document data
+ */
+export const documentReceivedAction = (document: DocumentData) => ({
+  type: 'SN_DOCVIEWER_DOCUMENT_DATA_RECEIVED',
+  document,
+})
+
+/**
+ * Action that updates the store with a document receive error
+ * @param error The error message
+ */
+export const documentReceiveErrorAction = (error: any) => ({
+  type: 'SN_DOCVIEWER_DOCUMENT_DATA_RECEIVE_ERROR',
+  error,
+})
+
+/**
+ * Action that updates the store with the given permission values
+ * @param canEdit 'Can edit' permission value
+ * @param canHideRedaction 'Can hide redaction' permission value
+ * @param canHideWatermark 'Can hide watermark' permission value
+ */
+export const documentPermissionsReceived = (
+  canEdit: boolean,
+  canHideRedaction: boolean,
+  canHideWatermark: boolean,
+) => ({
+  type: 'SN_DOCVEWER_DOCUMENT_PERMISSIONS_RECEIVED',
+  canEdit,
+  canHideRedaction,
+  canHideWatermark,
+})
+
+/**
  * Thunk action that polls document data from the specified API
  * @param hostName the host name, e.g. 'https://my-sensenet-site.com'
  * @param idOrPath Id or full path for the document, e.g.: 'Root/Sites/MySite/MyDocLib/('doc.docx')
@@ -72,24 +107,6 @@ export const pollDocumentData = (hostName: string, idOrPath: string | number, ve
 })
 
 /**
- * Action that updates the store with the received document data
- * @param document The received document data
- */
-export const documentReceivedAction = (document: DocumentData) => ({
-  type: 'SN_DOCVIEWER_DOCUMENT_DATA_RECEIVED',
-  document,
-})
-
-/**
- * Action that updates the store with a document receive error
- * @param error The error message
- */
-export const documentReceiveErrorAction = (error: any) => ({
-  type: 'SN_DOCVIEWER_DOCUMENT_DATA_RECEIVE_ERROR',
-  error,
-})
-
-/**
  * Action that updates a provided shape data
  * @param shapeType the type of the shape
  * @param shapeGuid the unique identifyer for the shape
@@ -120,23 +137,6 @@ export const removeShape = <K extends keyof Shapes>(shapeType: K, shapeGuid: str
 export const setPollInterval = (pollInterval: number) => ({
   type: 'SN_DOCVIEWER_DOCUMENT_SET_POLL_INTERVAL',
   pollInterval,
-})
-
-/**
- * Action that updates the store with the given permission values
- * @param canEdit 'Can edit' permission value
- * @param canHideRedaction 'Can hide redaction' permission value
- * @param canHideWatermark 'Can hide watermark' permission value
- */
-export const documentPermissionsReceived = (
-  canEdit: boolean,
-  canHideRedaction: boolean,
-  canHideWatermark: boolean,
-) => ({
-  type: 'SN_DOCVEWER_DOCUMENT_PERMISSIONS_RECEIVED',
-  canEdit,
-  canHideRedaction,
-  canHideWatermark,
 })
 
 /**
@@ -214,10 +214,10 @@ export const applyShapeRotations = <T extends Shape>(
       const newX = oldX * cos - oldY * sin
       const newY = oldY * cos + oldX * sin
       return {
-        ...(s as {}),
+        ...s,
         x: newX + page.size.height / 2,
         y: newY + page.size.width / 2,
-      } as T
+      }
     }
     return s
   }),
@@ -240,7 +240,7 @@ export const defaultState: DocumentStateType = {
     idOrPath: 0,
     pageAttributes: [],
     pageCount: -1,
-  } as DocumentData,
+  },
   error: undefined,
   isLoading: true,
   idOrPath: undefined,

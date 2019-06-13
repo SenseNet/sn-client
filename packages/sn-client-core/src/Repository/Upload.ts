@@ -345,6 +345,7 @@ export class Upload {
           const pathToCreate = PathHelper.joinPaths(currentPath, segment)
           if (!createdDirectories.has(pathToCreate)) {
             await this.webkitDirectoryHandler(
+              // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
               { name: segment } as WebKitDirectoryEntry,
               currentPath,
               options as UploadOptions<T>,

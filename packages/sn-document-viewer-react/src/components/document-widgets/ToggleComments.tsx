@@ -5,8 +5,6 @@ import { componentType } from '../../services'
 import { RootReducerType, showComments } from '../../store'
 import { ToggleBase } from './ToggleBase'
 
-type CommentProps = componentType<typeof mapStateToProps, typeof mapDispatchToProps>
-
 /**
  * Represents a comment toggler component
  */
@@ -36,6 +34,8 @@ export const mapStateToProps = (state: RootReducerType) => {
 export const mapDispatchToProps = {
   setValue: showComments,
 }
+
+type CommentProps = componentType<typeof mapStateToProps, typeof mapDispatchToProps>
 
 const connectedComponent = connect(
   mapStateToProps,

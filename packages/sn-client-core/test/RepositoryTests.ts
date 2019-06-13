@@ -593,15 +593,15 @@ describe('Repository', () => {
     })
 
     it('Custom action', async () => {
-      interface ICustomActionBodyType {
+      interface CustomActionBodyType {
         Name: string
         Value: string
       }
-      interface ICustomActionReturnType {
+      interface CustomActionReturnType {
         Result: any
       }
 
-      const actionResult = await repository.executeAction<ICustomActionBodyType, ICustomActionReturnType>({
+      const actionResult = await repository.executeAction<CustomActionBodyType, CustomActionReturnType>({
         idOrPath: 'Path/to/content',
         method: 'POST',
         name: 'MyOdataCustomAction',

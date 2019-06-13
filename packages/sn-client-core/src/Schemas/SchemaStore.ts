@@ -40,6 +40,7 @@ export class SchemaStore {
     const keys = new Set([...currentFieldSettingsMap.keys(), ...parentFieldSettingsMap.keys()])
 
     return Array.from(keys).map(key => {
+      // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
       return {
         ...parentFieldSettingsMap.get(key),
         ...currentFieldSettingsMap.get(key),

@@ -9,7 +9,6 @@ import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
 import { ReactLongTextFieldSetting } from '../LongTextFieldSetting'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
-import { ReactTextareaFieldSetting } from './TextareaFieldSetting'
 
 /**
  * Interface for Textarea properties
@@ -17,8 +16,7 @@ import { ReactTextareaFieldSetting } from './TextareaFieldSetting'
 export interface TextareaProps<T extends GenericContent, K extends keyof T>
   extends ReactClientFieldSettingProps<T, K>,
     ReactClientFieldSetting<T, K>,
-    ReactLongTextFieldSetting<T, K>,
-    ReactTextareaFieldSetting<T, K> {}
+    ReactLongTextFieldSetting<T, K> {}
 /**
  * Interface for Textarea state
  */
