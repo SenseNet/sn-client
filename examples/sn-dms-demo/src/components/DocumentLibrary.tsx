@@ -168,7 +168,7 @@ class DocumentLibrary extends React.Component<
     }
     return {
       ...lastState,
-    } as DocumentLibrary['state']
+    }
   }
 
   public handleFileDrop(ev: React.DragEvent) {

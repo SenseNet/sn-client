@@ -2,10 +2,9 @@ import { GoogleOauthProvider } from '@sensenet/authentication-google'
 import { Actions } from '@sensenet/redux'
 import React from 'react'
 import { connect } from 'react-redux'
-
-const normal = require('../assets/google-signin-buttons/btn_google_signin_dark_normal_web.png')
-const focused = require('../assets/google-signin-buttons/btn_google_signin_dark_focus_web.png')
-const pressed = require('../assets/google-signin-buttons/btn_google_signin_dark_pressed_web.png')
+import normal from '../assets/google-signin-buttons/btn_google_signin_dark_normal_web.png'
+import focused from '../assets/google-signin-buttons/btn_google_signin_dark_focus_web.png'
+import pressed from '../assets/google-signin-buttons/btn_google_signin_dark_pressed_web.png'
 
 const styles = {
   googleAuthButton: {

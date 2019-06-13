@@ -1,6 +1,7 @@
 import React from 'react'
 import MediaQuery from 'react-responsive'
 import { Link } from 'react-router-dom'
+import sensenetLogo from '../assets/logo.png'
 
 const styles = {
   logo: {
@@ -41,8 +42,6 @@ const styles = {
     fontSize: 14,
   },
 }
-
-const sensenetLogo = require('../assets/logo.png')
 
 const appBarLogo = (props: { style?: React.CSSProperties }) => (
   <MediaQuery minDeviceWidth={700}>

@@ -40,16 +40,12 @@ export const mapDispatchToProps = {
   openDialog,
 }
 
-export interface DmsViewerProps extends RouteComponentProps<any> {
-  /**/
-}
-
 export interface DmsViewerState {
   documentId: number
 }
 
 export class DmsViewerComponent extends React.Component<
-  DmsViewerProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
+  RouteComponentProps<any> & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   DmsViewerState
 > {
   public state = { documentId: 0 }

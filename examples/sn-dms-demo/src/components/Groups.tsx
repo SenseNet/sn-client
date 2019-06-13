@@ -118,7 +118,7 @@ class Groups extends Component<
     return {
       ...lastState,
       groupName: newProps.group ? newProps.group.Name : '',
-    } as Groups['state']
+    }
   }
   public render() {
     const { ancestors, group, isAdmin, isLoading, loggedinUser, match } = this.props

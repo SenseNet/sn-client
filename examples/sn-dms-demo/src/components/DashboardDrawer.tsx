@@ -198,7 +198,7 @@ class DashboardDrawer extends Component<
     }
     return {
       ...lastState,
-    } as DashboardDrawer['state']
+    }
   }
   public handleMenuItemClick = (_e: React.MouseEvent, action: ActionModel) => {
     if ((action as any).Action) {
