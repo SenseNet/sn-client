@@ -10,15 +10,13 @@ import { GenericContent } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { renderIconDefault } from '../icon'
-import { ReactBooleanFieldSetting } from './BooleanFieldSetting'
 
 /**
  * Interface for Boolean properties
  */
 export interface BooleanProps<T extends GenericContent, K extends keyof T>
   extends ReactClientFieldSettingProps<T, K>,
-    ReactClientFieldSetting<T, K>,
-    ReactBooleanFieldSetting<T, K> {}
+    ReactClientFieldSetting<T, K> {}
 /**
  * Interface for Boolean state
  */

@@ -46,13 +46,19 @@ const emptyContent = {
   DisplayName: ADD_REFERENCE,
   Icon: '',
   Id: -1,
-} as GenericContent
+  Path: '',
+  Type: '',
+  Name: 'AddReference',
+}
 
 const changeContent = {
   DisplayName: CHANGE_REFERENCE,
   Icon: '',
   Id: -2,
-} as GenericContent
+  Path: '',
+  Type: '',
+  Name: 'ChangeReference',
+}
 
 /**
  * Interface for RefernceGrid properties
