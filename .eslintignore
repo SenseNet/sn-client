@@ -5,3 +5,5 @@ packages/**/dist/*
 examples/**/build/*
 examples/**/storybook-static/*
 apps/**/bundle/*
+
+examples/sn-react-redux-todo-app/*

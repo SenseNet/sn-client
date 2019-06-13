@@ -58,6 +58,7 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'warn', // Checks effect dependencies
     'import/no-unresolved': 'off',
     'import/order': 'error',
+    'object-shorthand': 'error',
   },
   overrides: [
     {

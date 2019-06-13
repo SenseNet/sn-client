@@ -114,7 +114,7 @@ class Users extends Component<ReturnType<typeof mapStateToProps> & typeof mapDis
     return {
       ...lastState,
       userName: newProps.currentItem ? newProps.currentItem.Name : '',
-    } as Users['state']
+    }
   }
   public handleDeleteUsers = () => {
     const users = this.props.selectedUsers

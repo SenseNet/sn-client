@@ -2,14 +2,13 @@ import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
 import TableCell from '@material-ui/core/TableCell'
 import { Content } from '@sensenet/client-core'
-import { ActionModel, GenericContent, Group, SchemaStore } from '@sensenet/default-content-types'
+import { ActionModel, GenericContent, SchemaStore } from '@sensenet/default-content-types'
 import { Icon } from '@sensenet/icons-react'
 import { ContentList } from '@sensenet/list-controls-react'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
-import * as DMSActions from '../../../Actions'
-import { closeActionMenu, openActionMenu } from '../../../Actions'
+import { closeActionMenu, openActionMenu, openDialog, closeDialog } from '../../../Actions'
 import { icons } from '../../../assets/icons'
 import { resources } from '../../../assets/resources'
 import { customSchema } from '../../../assets/schema'
@@ -32,7 +31,7 @@ interface MembersListProps extends RouteComponentProps<any> {
 
 const mapStateToProps = (state: rootStateType) => {
   return {
-    currentGroup: state.dms.usersAndGroups.group.currentGroup || ({} as Group),
+    currentGroup: state.dms.usersAndGroups.group.currentGroup || undefined,
     childrenOptions: state.dms.usersAndGroups.user.userlistOptions,
     hostName: state.sensenet.session.repository ? state.sensenet.session.repository.repositoryUrl : '',
     selected: state.dms.usersAndGroups.user.selected,
@@ -47,8 +46,8 @@ const mapDispatchToProps = {
   closeActionMenu,
   selectUser,
   updateChildrenOptions,
-  openDialog: DMSActions.openDialog,
-  closeDialog: DMSActions.closeDialog,
+  openDialog,
+  closeDialog,
   setActive,
 }
 
@@ -58,7 +57,7 @@ class MembersList extends Component<
 > {
   public handleDeleteClick = (content: GenericContent) => {
     this.props.openDialog(
-      <RemoveUserFromGroupDialog user={content} groups={[this.props.currentGroup]} />,
+      <RemoveUserFromGroupDialog user={content} groups={this.props.currentGroup ? [this.props.currentGroup] : []} />,
       resources.DELETE,
       this.props.closeDialog,
     )
@@ -149,7 +148,7 @@ class MembersList extends Component<
                 )
               }
             case 'Actions':
-              if (this.isGroupAdmin(this.props.currentGroup.Actions as ActionModel[])) {
+              if (this.props.currentGroup && this.isGroupAdmin(this.props.currentGroup.Actions as ActionModel[])) {
                 return (
                   <TableCell padding="checkbox" style={{ width: 260 }}>
                     <Button style={styles.deleteButton} onClick={() => this.handleDeleteClick(props.content)}>
@@ -170,12 +169,17 @@ class MembersList extends Component<
             <Checkbox
               checked={selected.find((i: GenericContent) => i.Id === content.Id) ? true : false}
               disabled={
-                this.isGroupAdmin(this.props.currentGroup.Actions as ActionModel[]) &&
-                (content.Type === 'User' || content.Type === 'Group')
+                !this.props.currentGroup ||
+                (this.isGroupAdmin(this.props.currentGroup.Actions as ActionModel[]) &&
+                  (content.Type === 'User' || content.Type === 'Group'))
                   ? false
                   : true
               }
-              style={this.isGroupAdmin(this.props.currentGroup.Actions as ActionModel[]) ? { cursor: 'normal' } : {}}
+              style={
+                !this.props.currentGroup || this.isGroupAdmin(this.props.currentGroup.Actions as ActionModel[])
+                  ? { cursor: 'normal' }
+                  : {}
+              }
             />
           )
         }}

@@ -15,6 +15,30 @@ export interface SharingEntry {
   ShareDate: string
 }
 
+export const shareFailed = createAction((idOrPath: string | number, error: any) => ({
+  type: 'DMS_SHARE_FAILED',
+  idOrPath,
+  error,
+}))
+
+export const sharingEntryReceived = createAction((idOrPath: number | string, entry: SharingEntry) => ({
+  type: 'DMS_SHARING_ENTRY_RECEIVED',
+  idOrPath,
+  entry,
+}))
+
+export const sharingEntriesReceived = createAction((idOrPath: number | string, entries: SharingEntry[]) => ({
+  type: 'DMS_SHARING_ENTRIES_RECEIVED',
+  idOrPath,
+  entries,
+}))
+
+export const getSharingEntriesFailed = createAction((idOrPath: string | number, error: any) => ({
+  type: 'DMS_GET_SHARING_ENTRIES_FAILED',
+  idOrPath,
+  error,
+}))
+
 export const share = createAction(
   (
     idOrPath: number | string,
@@ -42,24 +66,6 @@ export const share = createAction(
   }),
 )
 
-export const shareFailed = createAction((idOrPath: string | number, error: any) => ({
-  type: 'DMS_SHARE_FAILED',
-  idOrPath,
-  error,
-}))
-
-export const sharingEntryReceived = createAction((idOrPath: number | string, entry: SharingEntry) => ({
-  type: 'DMS_SHARING_ENTRY_RECEIVED',
-  idOrPath,
-  entry,
-}))
-
-export const sharingEntriesReceived = createAction((idOrPath: number | string, entries: SharingEntry[]) => ({
-  type: 'DMS_SHARING_ENTRIES_RECEIVED',
-  idOrPath,
-  entries,
-}))
-
 const loadLock = new Semaphore(1)
 export const getSharingEntries = createAction((idOrPath: number | string) => ({
   type: 'DMS_GET_SHARING_ENTRIES',
@@ -80,12 +86,6 @@ export const getSharingEntries = createAction((idOrPath: number | string) => ({
       loadLock.release()
     }
   },
-}))
-
-export const getSharingEntriesFailed = createAction((idOrPath: string | number, error: any) => ({
-  type: 'DMS_GET_SHARING_ENTRIES_FAILED',
-  idOrPath,
-  error,
 }))
 
 export type SharingStateType = Record<string | number, Record<string, SharingEntry>>

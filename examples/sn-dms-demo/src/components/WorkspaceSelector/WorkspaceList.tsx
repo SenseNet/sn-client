@@ -101,7 +101,7 @@ class WorkspaceList extends React.Component<
               ...newProps.workspaces.filter(ws => newProps.favorites.indexOf(ws.Id) === -1),
             ],
       term: newProps.term,
-    } as WorkspaceList['state']
+    }
   }
   public handleSearch = (text: string) => {
     this.props.searchWorkspaces(text)
