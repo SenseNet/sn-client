@@ -23,8 +23,6 @@ interface DeleteUserFromGroupProps {
   group: Group
 }
 
-interface DeleteUserFromGroupState {}
-
 const mapStateToProps = () => {
   return {}
 }
@@ -35,8 +33,7 @@ const mapDispatchToProps = {
 }
 
 class DeleteUserFromGroup extends React.Component<
-  DeleteUserFromGroupProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
-  DeleteUserFromGroupState
+  DeleteUserFromGroupProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 > {
   public handleClick = () => {
     this.props.openDialog(

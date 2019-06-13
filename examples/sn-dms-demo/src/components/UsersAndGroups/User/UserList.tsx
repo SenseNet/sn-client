@@ -9,8 +9,7 @@ import { compile } from 'path-to-regexp'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
-import * as DMSActions from '../../../Actions'
-import { closeActionMenu, openActionMenu } from '../../../Actions'
+import { closeActionMenu, openActionMenu, openDialog, closeDialog } from '../../../Actions'
 import { icons } from '../../../assets/icons'
 import { resources } from '../../../assets/resources'
 import { customSchema } from '../../../assets/schema'
@@ -28,23 +27,25 @@ const styles = {
   },
 }
 
-const rootItems = [
+const rootItems: GenericContent[] = [
   {
     Name: 'IMS',
     DisplayName: 'Users and Groups',
     Path: '/Root/IMS',
     Icon: 'folder',
     Id: 3,
+    Type: 'Folder',
     IsFolder: true,
-  } as GenericContent,
+  },
   {
     Name: 'Workspaces',
     DisplayName: 'Workspaces',
     Path: '/Root/Sites/Default_Site/workspaces',
     Icon: 'folder',
     Id: 3778,
+    Type: 'Folder',
     IsFolder: true,
-  } as GenericContent,
+  },
 ]
 
 interface UserListProps extends RouteComponentProps<any> {
@@ -68,8 +69,8 @@ const mapDispatchToProps = {
   closeActionMenu,
   selectUser,
   updateUserListOptions,
-  openDialog: DMSActions.openDialog,
-  closeDialog: DMSActions.closeDialog,
+  openDialog,
+  closeDialog,
   setActive,
 }
 
