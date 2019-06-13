@@ -4,7 +4,7 @@ import { action } from '@storybook/addon-actions'
 import { array, boolean, select, text, withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
 import React from 'react'
-
+import contentListNotes from '../notes/listcontrols/ContentList.md'
 import { icons } from '../assets/icons'
 import { customSchema } from './ViewControl.stories'
 
@@ -12,8 +12,6 @@ const orderDirectionOptions = {
   asc: 'asc',
   desc: 'desc',
 }
-
-import contentListNotes from '../notes/listcontrols/ContentList.md'
 
 const items = [
   {
