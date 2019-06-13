@@ -37,6 +37,7 @@ export class Boolean<T extends GenericContent, K extends keyof T> extends Compon
    * constructor
    * @param {object} props
    */
+  // eslint-disable-next-line @typescript-eslint/ban-types
   constructor(props: Boolean<T, K>['props']) {
     super(props)
     this.state = {

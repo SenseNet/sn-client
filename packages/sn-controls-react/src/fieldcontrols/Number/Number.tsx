@@ -32,6 +32,7 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
   NumberProps<T, K>,
   NumberState<T, K>
 > {
+  // eslint-disable-next-line @typescript-eslint/ban-types
   constructor(props: Number<T, K>['props']) {
     super(props)
     this.state = {
