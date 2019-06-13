@@ -19,7 +19,7 @@ export interface CommanderRouteParams {
   rightParent?: string
 }
 
-export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRouteParams>> = props => {
+export const CommanderComponent: React.FunctionComponent<RouteComponentProps<CommanderRouteParams>> = props => {
   const contentRouter = useContentRouting()
   const repo = useRepository()
 
@@ -210,4 +210,4 @@ export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRou
   )
 }
 
-export default withRouter(Commander)
+export default withRouter(CommanderComponent)

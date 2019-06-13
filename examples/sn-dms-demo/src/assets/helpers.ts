@@ -42,11 +42,11 @@ export const versionName = (versionChar: string) => {
   }
 }
 
-export const arrayComparer = (array1: any[], array2: any[]) =>
-  uniqueResultOne(array1, array2).concat(uniqueResultTwo(array1, array2))
-
 const uniqueResultOne = (array1: any[], array2: any[]) => array1.filter(obj => !array2.some(obj2 => obj.Id === obj2.Id))
 const uniqueResultTwo = (array1: any[], array2: any[]) => array2.filter(obj => !array1.some(obj2 => obj.Id === obj2.Id))
+
+export const arrayComparer = (array1: any[], array2: any[]) =>
+  uniqueResultOne(array1, array2).concat(uniqueResultTwo(array1, array2))
 
 export const arrayDiff = (a1: Group[], a2: Group[]) =>
   a1.filter(item1 => !a2.some(item2 => item2.Id === item1.Id && item2.Name === item1.Name))

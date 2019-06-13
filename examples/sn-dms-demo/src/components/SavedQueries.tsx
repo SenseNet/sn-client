@@ -73,7 +73,7 @@ class SavedQueries extends React.Component<
                   {
                     Name: 'ExecuteQuery',
                     DisplayName: 'Execute Query',
-                    Icon: 'query_execute',
+                    Icon: 'queryExecute',
                     ClientAction: true,
                     Forbidden: false,
                     IncludeBackUrl: 0,
@@ -102,7 +102,7 @@ class SavedQueries extends React.Component<
                   {
                     Name: 'ExecuteQuery',
                     DisplayName: 'Execute Query',
-                    Icon: 'query_execute',
+                    Icon: 'queryExecute',
                     ClientAction: true,
                     Forbidden: false,
                     IncludeBackUrl: 1,

@@ -2,7 +2,6 @@ import { Injectable } from '@furystack/inject'
 import { MetadataAction, Repository } from '@sensenet/client-core'
 import { ObservableValue } from '@sensenet/client-utils'
 import { ActionModel, GenericContent } from '@sensenet/default-content-types'
-import { CommandPaletteItem } from '../../store/CommandPalette'
 import { CommandProvider } from '../CommandProviderManager'
 import { LocalizationService } from '../LocalizationService'
 import { SelectionService } from '../SelectionService'
@@ -58,6 +57,7 @@ export class CustomActionCommandProvider implements CommandProvider {
           secondaryText: localization.executeSecondaryText.replace('{0}', content.Name).replace('{1}', a.Name),
           content,
           hits: [filteredTerm],
+          url: '',
           openAction: () =>
             this.onExecuteAction.setValue({
               action: a,
@@ -65,7 +65,7 @@ export class CustomActionCommandProvider implements CommandProvider {
               metadata: actionMetadata || functionMetadata,
               method: actionMetadata ? 'POST' : 'GET',
             }),
-        } as CommandPaletteItem
+        }
       })
   }
 
