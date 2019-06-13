@@ -29,6 +29,7 @@ import ShareDialog from '../Dialogs/ShareDialog'
 import VersionsDialog from '../Dialogs/VersionsDialog'
 import PathPickerDialog from '../Pickers/PathPickerDialog'
 import { UPLOAD_FILE_BUTTON_ID, UPLOAD_FOLDER_BUTTON_ID } from '../Upload/UploadButton'
+import { isCallableAction } from '../CallableAction'
 
 const mapStateToProps = (state: rootStateType) => {
   return {
@@ -164,8 +165,8 @@ class ActionMenu extends React.Component<
     this.setState({ anchorEl: null })
   }
   public handleMenuItemClick(_e: React.MouseEvent, action: ActionModel) {
-    if ((action as any).Action) {
-      ;(action as any).Action()
+    if (isCallableAction(action)) {
+      action.Action()
     } else {
       const content = this.props.currentContent
       if (!content) {

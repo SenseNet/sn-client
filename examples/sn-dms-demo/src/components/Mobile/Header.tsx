@@ -11,6 +11,7 @@ import { rootStateType } from '../../store/rootReducer'
 import AppBarLogo from '../AppBarLogo'
 import AddNewDialog from '../Dialogs/AddNewDialog'
 import { Search } from '../Search/Search'
+import { CallableActionModel } from '../CallableAction'
 
 const styles = {
   appBar: {
@@ -53,10 +54,6 @@ interface MobileHeaderState {
   open: boolean
   addNewOptions: ActionModel[]
   currentContent: GenericContent | null
-}
-
-interface a extends ActionModel {
-  [key: string]: any
 }
 
 class MobileHeader extends React.Component<
@@ -118,7 +115,7 @@ class MobileHeader extends React.Component<
     const optionList: ActionModel[] = []
     const folderList: ActionModel[] = []
     if (lastState.addNewOptions.length !== newProps.actions.length) {
-      newProps.actions.map((action: a) => {
+      newProps.actions.map((action: CallableActionModel) => {
         const contentType = action.Url.includes('ContentType') ? getContentTypeFromUrl(action.Url) : null
         const extension = contentType === 'File' ? getExtensionFromUrl(action.Url) : null
         const displayName =
@@ -126,7 +123,7 @@ class MobileHeader extends React.Component<
         const newDisplayName =
           action.DisplayName.indexOf('New') === -1 ? `New ${action.DisplayName.toLowerCase()}` : action.DisplayName
         action.DisplayName = newDisplayName
-        action['Action'] = () => {
+        action.Action = () => {
           newProps.closeActionMenu()
           newProps.openDialog(
             <AddNewDialog
