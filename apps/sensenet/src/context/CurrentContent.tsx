@@ -26,7 +26,7 @@ export const CurrentContentProvider: React.FunctionComponent<{
       }),
     ]
     return () => subscriptions.forEach(s => s.dispose())
-  }, [repo, content])
+  }, [repo, content, injector])
 
   const [error, setError] = useState<Error | undefined>()
 
@@ -48,7 +48,7 @@ export const CurrentContentProvider: React.FunctionComponent<{
       })()
     }
     return () => ac.abort()
-  }, [repo, props.idOrPath, reloadToken])
+  }, [repo, props.idOrPath, reloadToken, props, loadLock])
 
   if (error) {
     throw error

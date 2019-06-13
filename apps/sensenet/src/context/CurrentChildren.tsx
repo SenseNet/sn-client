@@ -44,7 +44,7 @@ export const CurrentChildrenProvider: React.FunctionComponent = props => {
       }
     })()
     return () => ac.abort()
-  }, [currentContent.Path, loadSettings.loadChildrenSettings, repo, reloadToken])
+  }, [currentContent.Path, loadSettings.loadChildrenSettings, repo, reloadToken, loadLock])
 
   const handleCreate = (c: Created) => {
     if ((c.content as GenericContent).ParentId === currentContent.Id) {
@@ -81,7 +81,19 @@ export const CurrentChildrenProvider: React.FunctionComponent = props => {
     ]
 
     return () => subscriptions.forEach(s => s.dispose())
-  }, [currentContent, repo, children])
+  }, [
+    currentContent,
+    repo,
+    children,
+    eventHub.onCustomActionExecuted,
+    eventHub.onContentCreated,
+    eventHub.onContentCopied,
+    eventHub.onContentMoved,
+    eventHub.onContentModified,
+    eventHub.onContentDeleted,
+    handleCreate,
+    uploadTracker.onUploadProgress,
+  ])
 
   if (error) {
     throw error

@@ -26,11 +26,11 @@ export const LocalizationProvider: React.FunctionComponent = props => {
       setCurrentValues(v)
     })
     return () => observable.dispose()
-  }, [])
+  }, [localizationService.currentValues])
 
   useEffect(() => {
     localizationService.load(personalSettings.language)
-  }, [personalSettings.language])
+  }, [localizationService, personalSettings.language])
 
   return (
     <LocalizationContext.Provider
