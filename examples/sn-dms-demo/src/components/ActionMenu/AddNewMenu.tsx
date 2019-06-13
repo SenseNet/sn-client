@@ -6,6 +6,7 @@ import { getContentTypeFromUrl, getExtensionFromUrl } from '../../assets/helpers
 import { rootStateType } from '../../store/rootReducer'
 import AddNewDialog from '../Dialogs/AddNewDialog'
 import { AddNewButton } from '../Menu/AddNewButton'
+import { CallableActionModel } from '../CallableAction'
 
 const mapStateToProps = (state: rootStateType) => {
   return {
@@ -30,10 +31,6 @@ interface AddNemMenuProps {
 interface AddNemMenuState {
   addNewOptions: ActionModel[]
   currentContent: GenericContent | null
-}
-
-interface a extends ActionModel {
-  [key: string]: any
 }
 
 class AddNewMenu extends React.Component<
@@ -61,7 +58,7 @@ class AddNewMenu extends React.Component<
     const optionList: ActionModel[] = []
     const folderList: ActionModel[] = []
     if (lastState.addNewOptions.length !== newProps.actions.length) {
-      newProps.actions.map((action: a) => {
+      newProps.actions.map((action: CallableActionModel) => {
         const contentType = action.Url.includes('ContentType') ? getContentTypeFromUrl(action.Url) : null
         const extension = contentType && contentType.indexOf('File') > -1 ? getExtensionFromUrl(action.Url) : null
         const displayName =
