@@ -1,8 +1,6 @@
-import { Store } from '@sensenet/redux'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { withStore } from '../../__tests__/TestHelper'
-import { rootStateType } from '../../store/rootReducer'
 import UserPanel from '../UserPanel'
 
 it('renders without crashing', () => {
@@ -13,7 +11,7 @@ it('renders without crashing', () => {
       sensenet: {
         session: {
           repository: {
-            RepositoryUrl: 'https://dmsservice.demo.sensenet.com',
+            repositoryUrl: 'https://dmsservice.demo.sensenet.com',
           },
           user: {
             fullName: 'Alba Monday',
@@ -24,7 +22,7 @@ it('renders without crashing', () => {
         },
       },
     },
-  } as Partial<Store.CreateStoreOptions<rootStateType>>
+  }
 
   ReactDOM.render(withStore(<UserPanel />, options), div)
 })
