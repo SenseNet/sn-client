@@ -17,7 +17,6 @@ import SearchTwoTone from '@material-ui/icons/SearchTwoTone'
 import SettingsTwoTone from '@material-ui/icons/SettingsTwoTone'
 import Warning from '@material-ui/icons/Warning'
 import WebAssetTwoTone from '@material-ui/icons/WebAssetTwoTone'
-import { Repository } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { File as SnFile, GenericContent, Schema, User } from '@sensenet/default-content-types'
 import React from 'react'
@@ -25,6 +24,7 @@ import { useInjector, useRepository } from '../hooks'
 import { EventLogEntry } from '../services/EventService'
 import { isContentFromType } from '../utils/isContentFromType'
 import { UserAvatar } from './UserAvatar'
+import { Repository } from '@sensenet/client-core'
 
 export interface IconOptions {
   style?: React.CSSProperties
@@ -35,6 +35,8 @@ export interface IconOptions {
 export interface IconResolver<T> {
   get: (item: T, options: IconOptions) => JSX.Element | null
 }
+
+/* eslint-disable react/display-name */
 
 export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   {
@@ -158,10 +160,9 @@ export const IconComponent: React.FunctionComponent<{
   item: any
   defaultIcon?: JSX.Element
   style?: React.CSSProperties
-  repository?: Repository
 }> = props => {
   const injector = useInjector()
-  const repo = props.repository || useRepository()
+  const repo = useRepository()
 
   const options: IconOptions = { style: props.style, injector, repo }
   const resolvers = [
