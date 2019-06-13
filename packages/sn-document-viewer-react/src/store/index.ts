@@ -1,8 +1,9 @@
-import { compose, Store } from 'redux'
-import { Action, applyMiddleware, createStore } from 'redux'
+import { compose, Store, Action, applyMiddleware, createStore } from 'redux'
 import { ReduxDiMiddleware } from 'redux-di-middleware'
 import { DocumentViewerSettings } from '../models'
 import { rootReducer, RootReducerType } from './RootReducer'
+
+const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 /**
  * gets a configuration object for the Store instance
@@ -13,12 +14,10 @@ export const getStoreConfig = (settings: DocumentViewerSettings) => {
   di.setInjectable(settings)
   return {
     rootReducer,
-    preloadedState: { sensenetDocumentViewer: { documentState: { isLoading: true } } } as RootReducerType,
+    preloadedState: { sensenetDocumentViewer: { documentState: { isLoading: true } } },
     enhancer: composeEnhancers(applyMiddleware(di.getMiddleware())),
   }
 }
-
-const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 /**
  * returns a Store object for a Document Viewer instance
