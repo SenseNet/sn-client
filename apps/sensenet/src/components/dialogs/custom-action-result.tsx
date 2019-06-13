@@ -41,7 +41,7 @@ export const CustomActionResultDialog: React.FunctionComponent = () => {
       setReadOnly(true)
     })
     return () => observer.dispose()
-  }, [])
+  }, [customActionsService.onActionExecuted])
 
   return (
     <Dialog open={isVisible} onClose={() => setIsVisible(false)} fullWidth={true}>

@@ -19,7 +19,7 @@ const SettingsEditor: React.FunctionComponent = () => {
 
   useEffect(() => {
     setupModel(localization.values, repo)
-  }, [localization.values])
+  }, [localization.values, repo])
 
   return (
     <CurrentContentContext.Provider

@@ -78,7 +78,7 @@ const Setup: React.StatelessComponent = () => {
 
       setSettings(response.d.results.filter(setting => !Object.keys(localization.descriptions).includes(setting.Path)))
     })()
-  }, [repo])
+  }, [localization.descriptions, repo])
 
   return (
     <div style={{ padding: '1em', margin: '1em', height: '100%', overflow: 'auto' }}>

@@ -34,7 +34,7 @@ export const ExploreComponent: React.FunctionComponent<RouteComponentProps<{ fol
     return () => {
       historyChangeListener()
     }
-  }, [leftParentId])
+  }, [leftParentId, props.history, props.match.path])
 
   return (
     <div style={{ display: 'flex', width: '100%', height: '100%', flexDirection: 'column' }}>

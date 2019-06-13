@@ -46,16 +46,16 @@ export const CurrentChildrenProvider: React.FunctionComponent = props => {
     return () => ac.abort()
   }, [currentContent.Path, loadSettings.loadChildrenSettings, repo, reloadToken, loadLock])
 
-  const handleCreate = (c: Created) => {
-    if ((c.content as GenericContent).ParentId === currentContent.Id) {
-      requestReload()
-    }
-    if (parent && PathHelper.isAncestorOf(currentContent.Path, c.content.Path)) {
-      requestReload()
-    }
-  }
-
   useEffect(() => {
+    const handleCreate = (c: Created) => {
+      if ((c.content as GenericContent).ParentId === currentContent.Id) {
+        requestReload()
+      }
+      if (parent && PathHelper.isAncestorOf(currentContent.Path, c.content.Path)) {
+        requestReload()
+      }
+    }
+
     const subscriptions = [
       eventHub.onCustomActionExecuted.subscribe(requestReload),
       eventHub.onContentCreated.subscribe(handleCreate),
@@ -91,7 +91,6 @@ export const CurrentChildrenProvider: React.FunctionComponent = props => {
     eventHub.onContentMoved,
     eventHub.onContentModified,
     eventHub.onContentDeleted,
-    handleCreate,
     uploadTracker.onUploadProgress,
   ])
 

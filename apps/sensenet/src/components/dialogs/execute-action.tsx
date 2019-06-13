@@ -34,7 +34,7 @@ export const ExecuteActionDialog: React.FunctionComponent = () => {
 
   useEffect(() => {
     uri && postBodyCache.set(uri.toString(), postBody)
-  }, [postBody])
+  }, [postBody, uri])
 
   useEffect(() => {
     const stored = uri && postBodyCache.get(uri.toString())
@@ -61,7 +61,7 @@ export const ExecuteActionDialog: React.FunctionComponent = () => {
       }),
     ]
     return () => observables.forEach(o => o.dispose())
-  }, [])
+  }, [customActionService.onExecuteAction])
 
   return (
     <Dialog

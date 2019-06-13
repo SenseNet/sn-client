@@ -4,7 +4,7 @@ import Close from '@material-ui/icons/Close'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState, useCallback } from 'react'
 import {
   CurrentAncestorsContext,
   CurrentChildrenContext,
@@ -83,15 +83,24 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
 
   useEffect(() => {
     props.onActiveItemChange && props.onActiveItemChange(activeContent)
-  }, [activeContent])
+  }, [activeContent, props])
 
   useEffect(() => {
     isFocused && props.onFocus && props.onFocus()
-  }, [isFocused])
+  }, [isFocused, props])
 
   useEffect(() => {
     props.onSelectionChange && props.onSelectionChange(selected)
-  }, [selected])
+  }, [props, selected])
+
+  const isReferenceField = useCallback(
+    (fieldName: string) => {
+      const refWhiteList = ['AllowedChildTypes']
+      const setting = repo.schemas.getSchemaByName('GenericContent').FieldSettings.find(f => f.Name === fieldName)
+      return refWhiteList.indexOf(fieldName) !== -1 || (setting && setting.Type === 'ReferenceFieldSetting') || false
+    },
+    [repo.schemas],
+  )
 
   useEffect(() => {
     const currentField =
@@ -112,7 +121,9 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
     })
     setCurrentOrder(currentOrder)
     setCurrentDirection(currentDirection)
-  }, [currentOrder, currentDirection])
+    // loadSettings can NOT be added :(
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentOrder, currentDirection, personalSettings.content.fields, repo.schemas, isReferenceField])
 
   useEffect(() => {
     setSelected([])
@@ -139,12 +150,6 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
     } else {
       props.onActivateItem(item)
     }
-  }
-
-  const isReferenceField = (fieldName: string) => {
-    const refWhiteList = ['AllowedChildTypes']
-    const setting = repo.schemas.getSchemaByName('GenericContent').FieldSettings.find(f => f.Name === fieldName)
-    return refWhiteList.indexOf(fieldName) !== -1 || (setting && setting.Type === 'ReferenceFieldSetting') || false
   }
 
   return (

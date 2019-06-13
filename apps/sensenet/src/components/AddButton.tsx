@@ -37,7 +37,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
 
   useEffect(() => {
     !props.parent && setParent(parentContext)
-  }, [parentContext])
+  }, [parentContext, props.parent])
 
   useEffect(() => {
     if (showSelectType) {
@@ -53,7 +53,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
           })
         })
     }
-  }, [parent.Id, showSelectType])
+  }, [localization.errorGettingAllowedContentTypes, logger, parent.Id, repo, showSelectType])
 
   return (
     <div>

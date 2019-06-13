@@ -39,7 +39,7 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
   useEffect(() => {
     setUrl(repo.configuration.repositoryUrl)
     existingRepo && existingRepo.loginName && setUserName(existingRepo.loginName)
-  }, [repo.configuration.repositoryUrl])
+  }, [existingRepo, repo.configuration.repositoryUrl])
 
   const handleSubmit = async (ev: React.FormEvent) => {
     ev.preventDefault()

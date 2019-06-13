@@ -93,7 +93,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
   useEffect(() => {
     setUri(getMonacoModelUri(props.content))
     setLanguage(contentRouter.getMonacoLanguage(props.content))
-  }, [props.content])
+  }, [contentRouter, props.content])
 
   useEffect(() => {
     setUri(getMonacoModelUri(props.content))
@@ -120,7 +120,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
         setError(error)
       }
     })()
-  }, [props.content.Id])
+  }, [contentRouter, props, props.content.Id, repo])
 
   if (error) {
     throw error
