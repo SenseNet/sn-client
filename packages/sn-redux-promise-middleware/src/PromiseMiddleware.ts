@@ -51,7 +51,7 @@ export const promiseMiddleware: <TService>(service: TService) => Middleware = se
         return next({
           ...(action as object),
           type: `${actionType}_${suffixes.loading}`,
-        } as typeof action)
+        })
       }
       return next(action)
     }
