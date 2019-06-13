@@ -149,7 +149,7 @@ export const loadContent = <T extends GenericContent = GenericContent>(
 ) => ({
   type: 'LOAD_CONTENT',
   payload: (repository: Repository) => {
-    const o = {} as ODataParams<T>
+    const o: ODataParams<T> = {}
     switch (typeof options.expand) {
       case 'undefined':
         o.expand = 'Workspace'
