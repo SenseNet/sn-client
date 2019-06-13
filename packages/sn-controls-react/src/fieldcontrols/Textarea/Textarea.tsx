@@ -2,14 +2,14 @@
  * @module FieldControls
  */
 import React, { Component } from 'react'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
-import { ReactLongTextFieldSetting } from '../LongTextFieldSetting'
-import { ReactTextareaFieldSetting } from './TextareaFieldSetting'
 
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
+import { ReactLongTextFieldSetting } from '../LongTextFieldSetting'
+import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
+import { ReactTextareaFieldSetting } from './TextareaFieldSetting'
 
 /**
  * Interface for Textarea properties

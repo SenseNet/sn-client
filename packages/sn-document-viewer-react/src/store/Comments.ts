@@ -1,8 +1,8 @@
 import { Reducer } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
-import { RootReducerType } from '.'
 import { Comment, CommentWithoutCreatedByAndId, DocumentViewerSettings } from '../models'
 import { showComments } from './Viewer'
+import { RootReducerType } from '.'
 
 export interface CommentsState {
   items: Comment[]

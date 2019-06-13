@@ -20,11 +20,11 @@ import WebAssetTwoTone from '@material-ui/icons/WebAssetTwoTone'
 import { PathHelper } from '@sensenet/client-utils'
 import { File as SnFile, GenericContent, Schema, User } from '@sensenet/default-content-types'
 import React from 'react'
+import { Repository } from '@sensenet/client-core'
 import { useInjector, useRepository } from '../hooks'
 import { EventLogEntry } from '../services/EventService'
 import { isContentFromType } from '../utils/isContentFromType'
 import { UserAvatar } from './UserAvatar'
-import { Repository } from '@sensenet/client-core'
 
 export interface IconOptions {
   style?: React.CSSProperties

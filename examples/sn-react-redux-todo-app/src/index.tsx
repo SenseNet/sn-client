@@ -1,12 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Root } from './components/Root'
 import './index.css'
 
 import { Repository } from '@sensenet/client-core'
 import { Reducers, Store } from '@sensenet/redux'
 import { combineReducers } from 'redux'
-import { todoListReducer } from './reducers/todos'
 
 import lightBlue from '@material-ui/core/colors/lightBlue'
 import pink from '@material-ui/core/colors/pink'
@@ -15,6 +13,8 @@ import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 import { JwtService } from '@sensenet/authentication-jwt'
 import { Provider } from 'react-redux'
 import { ReduxDiMiddleware } from 'redux-di-middleware'
+import { todoListReducer } from './reducers/todos'
+import { Root } from './components/Root'
 
 const muiTheme = createMuiTheme({
   palette: {

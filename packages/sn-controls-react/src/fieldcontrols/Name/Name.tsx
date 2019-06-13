@@ -2,14 +2,14 @@
  * @module FieldControls
  */
 import React, { Component } from 'react'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
-import { ReactShortTextFieldSetting } from '../ShortText/ShortTextFieldSetting'
-import { ReactNameFieldSetting } from './NameFieldSetting'
 
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
+import { ReactShortTextFieldSetting } from '../ShortText/ShortTextFieldSetting'
+import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
+import { ReactNameFieldSetting } from './NameFieldSetting'
 
 /**
  * Interface for Name properties

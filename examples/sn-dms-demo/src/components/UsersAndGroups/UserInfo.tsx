@@ -3,14 +3,12 @@ import Paper from '@material-ui/core/Paper'
 import { Icon } from '@sensenet/icons-react'
 import React from 'react'
 import { connect } from 'react-redux'
+import Typography from '@material-ui/core/Typography'
 import * as DMSActions from '../../Actions'
 import { rootStateType } from '../../store/rootReducer'
 import EditPropertiesDialog from '../Dialogs/EditPropertiesDialog'
-
-import Typography from '@material-ui/core/Typography'
 import { resources } from '../../assets/resources'
-
-const defaultAvatar = require('../../assets/no-avatar.jpg')
+import defaultAvatar from '../../assets/no-avatar.jpg'
 
 const styles = {
   container: {
@@ -62,8 +60,6 @@ const styles = {
   },
 }
 
-interface UserInfoProps {}
-
 const mapStateToProps = (state: rootStateType) => {
   return {
     user: state.dms.usersAndGroups.user.currentUser,
@@ -78,10 +74,7 @@ const mapDispatchToProps = {
   closeDialog: DMSActions.closeDialog,
 }
 
-class UserInfo extends React.Component<
-  UserInfoProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
-  {}
-> {
+class UserInfo extends React.Component<{} & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps, {}> {
   public handleEditClick = () => {
     this.props.user &&
       this.props.openDialog(

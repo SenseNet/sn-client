@@ -2,8 +2,6 @@
  * @module FieldControls
  */
 import React, { Component } from 'react'
-import { ReactChoiceFieldSetting } from '../ChoiceFieldSetting'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControl from '@material-ui/core/FormControl'
@@ -13,6 +11,8 @@ import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import TextField from '@material-ui/core/TextField'
 import { GenericContent } from '@sensenet/default-content-types'
+import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
+import { ReactChoiceFieldSetting } from '../ChoiceFieldSetting'
 
 /**
  * Interface for CheckboxGroup properties

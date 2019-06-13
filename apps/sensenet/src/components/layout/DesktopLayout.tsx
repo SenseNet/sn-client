@@ -1,6 +1,6 @@
 import CssBaseline from '@material-ui/core/CssBaseline'
-import React, { useState } from 'react'
-import { useContext } from 'react'
+import React, { useState, useContext } from 'react'
+
 import snLogo from '../../assets/sensenet_logo_transparent.png'
 import { ResponsivePersonalSetttings } from '../../context'
 import { DesktopAppBar } from '../appbar/DesktopAppBar'

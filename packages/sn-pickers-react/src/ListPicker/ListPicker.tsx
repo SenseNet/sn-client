@@ -5,9 +5,9 @@ import ListItemText from '@material-ui/core/ListItemText'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import React from 'react'
-import { useListPicker } from '.'
 import { ListPickerProps } from './ListPickerProps'
 import { GenericContentWithIsParent } from './types'
+import { useListPicker } from '.'
 
 /**
  * Represents a list picker component.

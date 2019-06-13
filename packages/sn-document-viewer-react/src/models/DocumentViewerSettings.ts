@@ -1,6 +1,6 @@
 import { Injector } from '@furystack/inject'
-import { DocumentData, PreviewImageData } from '.'
 import { Comment, CommentWithoutCreatedByAndId } from './Comment'
+import { DocumentData, PreviewImageData } from '.'
 
 /**
  * Main settings for the Document Viewer component

@@ -1,7 +1,7 @@
 import { Repository } from '@sensenet/client-core'
 import { commentsStateReducer, rootReducer as sensenetDocumentViewerReducer } from '@sensenet/document-viewer-react'
-import { Store } from '@sensenet/redux'
-import { Reducers } from '@sensenet/redux'
+import { Store, Reducers } from '@sensenet/redux'
+
 import { CreateStoreOptions } from '@sensenet/redux/dist/Store'
 import React from 'react'
 import { Provider } from 'react-redux'
@@ -37,6 +37,7 @@ export const withStore = (component: JSX.Element, options?: Partial<CreateStoreO
       },
     },
   }
+  // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
   const store = Store.createSensenetStore({ ...defaultOptions, ...options } as CreateStoreOptions<rootStateType>)
 
   return <Provider store={store}>{component}</Provider>

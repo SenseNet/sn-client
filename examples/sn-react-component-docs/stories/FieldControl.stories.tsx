@@ -4,10 +4,7 @@ import { withActions } from '@storybook/addon-actions/dist/preview'
 import { boolean, date, number, select, text, withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
 import React from 'react'
-
 import { Repository } from '@sensenet/client-core'
-import { customSchema } from './ViewControl.stories'
-
 import {
   AllowedChildTypes,
   AutoComplete,
@@ -32,6 +29,31 @@ import {
   TimePicker,
 } from '@sensenet/controls-react/src'
 import { GenericContent, User } from '@sensenet/default-content-types/src'
+import shorttextNotes from '../notes/fieldcontrols/ShortText.md'
+import displaynameNotes from '../notes/fieldcontrols/DisplayName.md'
+import checkboxgroupNotes from '../notes/fieldcontrols/CheckboxGroup.md'
+import dropdownlistNotes from '../notes/fieldcontrols/DropDownList.md'
+import radiobuttongroupNotes from '../notes/fieldcontrols/RadioButtonGroup.md'
+import datetimepickerNotes from '../notes/fieldcontrols/DateTimePicker.md'
+import datepickerNotes from '../notes/fieldcontrols/DatePicker.md'
+import timepickerNotes from '../notes/fieldcontrols/TimePicker.md'
+import textareasNotes from '../notes/fieldcontrols/Textarea.md'
+import richtextNotes from '../notes/fieldcontrols/RichTextEditor.md'
+import nameNotes from '../notes/fieldcontrols/Name.md'
+import filenameNotes from '../notes/fieldcontrols/FileName.md'
+import passwordNotes from '../notes/fieldcontrols/Password.md'
+import numberNotes from '../notes/fieldcontrols/Number.md'
+import tagsInputNotes from '../notes/fieldcontrols/TagsInput.md'
+import autocompleteNotes from '../notes/fieldcontrols/AutoComplete.md'
+import fileUploadNotes from '../notes/fieldcontrols/FileUpload.md'
+import referenceGridNotes from '../notes/fieldcontrols/ReferenceGrid.md'
+import avatarNotes from '../notes/fieldcontrols/Avatar.md'
+import approvingModeChoiceNotes from '../notes/fieldcontrols/ApprovingModeChoice.md'
+import versioningModeChoiceNotes from '../notes/fieldcontrols/VersioningModeChoice.md'
+import versioningModeNotes from '../notes/fieldcontrols/VersioningMode.md'
+import colorPickerNotes from '../notes/fieldcontrols/ColorPicker.md'
+import allowedTypeNotes from '../notes/fieldcontrols/AllowedChildTypes.md'
+import { customSchema } from './ViewControl.stories'
 
 /**
  * Date knob
@@ -72,31 +94,6 @@ const testContent: GenericContent = {
   Path: '/Root/Sites/Default_Site',
   Type: 'GenericContent',
 }
-
-import shorttextNotes from '../notes/fieldcontrols/ShortText.md'
-import displaynameNotes from '../notes/fieldcontrols/DisplayName.md'
-import checkboxgroupNotes from '../notes/fieldcontrols/CheckboxGroup.md'
-import dropdownlistNotes from '../notes/fieldcontrols/DropDownList.md'
-import radiobuttongroupNotes from '../notes/fieldcontrols/RadioButtonGroup.md'
-import datetimepickerNotes from '../notes/fieldcontrols/DateTimePicker.md'
-import datepickerNotes from '../notes/fieldcontrols/DatePicker.md'
-import timepickerNotes from '../notes/fieldcontrols/TimePicker.md'
-import textareasNotes from '../notes/fieldcontrols/Textarea.md'
-import richtextNotes from '../notes/fieldcontrols/RichTextEditor.md'
-import nameNotes from '../notes/fieldcontrols/Name.md'
-import filenameNotes from '../notes/fieldcontrols/FileName.md'
-import passwordNotes from '../notes/fieldcontrols/Password.md'
-import numberNotes from '../notes/fieldcontrols/Number.md'
-import tagsInputNotes from '../notes/fieldcontrols/TagsInput.md'
-import autocompleteNotes from '../notes/fieldcontrols/AutoComplete.md'
-import fileUploadNotes from '../notes/fieldcontrols/FileUpload.md'
-import referenceGridNotes from '../notes/fieldcontrols/ReferenceGrid.md'
-import avatarNotes from '../notes/fieldcontrols/Avatar.md'
-import approvingModeChoiceNotes from '../notes/fieldcontrols/ApprovingModeChoice.md'
-import versioningModeChoiceNotes from '../notes/fieldcontrols/VersioningModeChoice.md'
-import versioningModeNotes from '../notes/fieldcontrols/VersioningMode.md'
-import colorPickerNotes from '../notes/fieldcontrols/ColorPicker.md'
-import allowedTypeNotes from '../notes/fieldcontrols/AllowedChildTypes.md'
 
 storiesOf('FieldControls.AllowedChildTypes', module)
   .addDecorator(withKnobs)

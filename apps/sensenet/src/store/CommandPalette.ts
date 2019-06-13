@@ -3,8 +3,8 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { createAction, isFromAction } from '@sensenet/redux'
 import { Reducer } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
-import { rootStateType } from '.'
 import { CommandProviderManager } from '../services/CommandProviderManager'
+import { rootStateType } from '.'
 
 export interface CommandPaletteItem {
   primaryText: string

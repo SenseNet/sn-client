@@ -2,8 +2,6 @@
  * @module FieldControls
  */
 import React, { Component } from 'react'
-import { ReactChoiceFieldSetting } from '../ChoiceFieldSetting'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -14,6 +12,8 @@ import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import { GenericContent } from '@sensenet/default-content-types'
+import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
+import { ReactChoiceFieldSetting } from '../ChoiceFieldSetting'
 
 /**
  * Interface for DropDownList properties
