@@ -21,13 +21,13 @@ import { withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
 import React from 'react'
 
-const showcaseNotes = require('../notes/search/Showcase.md')
-const advancedSearchNotes = require('../notes/search/AdvancedSearch.md')
-const presetFieldNotes = require('../notes/search/PresetField.md')
-const referenceFieldNotes = require('../notes/search/ReferenceField.md')
-const textFieldNotes = require('../notes/search/TextField.md')
-const nestedTextFieldNotes = require('../notes/search/NestedTextField.md')
-const typeFieldNotes = require('../notes/search/TypeField.md')
+import showcaseNotes from '../notes/search/Showcase.md'
+import advancedSearchNotes from '../notes/search/AdvancedSearch.md'
+import presetFieldNotes from '../notes/search/PresetField.md'
+import referenceFieldNotes from '../notes/search/ReferenceField.md'
+import textFieldNotes from '../notes/search/TextField.md'
+import nestedTextFieldNotes from '../notes/search/NestedTextField.md'
+import typeFieldNotes from '../notes/search/TypeField.md'
 
 storiesOf('Search', module)
   .addDecorator(withKnobs)

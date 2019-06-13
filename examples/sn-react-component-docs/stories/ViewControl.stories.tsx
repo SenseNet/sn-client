@@ -1513,13 +1513,15 @@ export const testRepository = new Repository({
   sessionLifetime: 'expiration',
 })
 export const testFieldsOfAContent = {}
-export const testFolder = {
+export const testFolder: Folder = {
   Id: 1,
   Name: 'LoremIpsum',
   DisplayName: 'Lorem Ipsum',
-} as Folder
+  Path: '/Root/Example/Folder',
+  Type: 'Folder',
+}
 
-export const testFile = {
+export const testFile: File = {
   Id: 1,
   Name: 'LoremIpsum.docx',
   DisplayName: 'LoremIpsum.docx',
@@ -1529,11 +1531,11 @@ export const testFile = {
   Index: 42,
   Description:
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec iaculis lectus, sed blandit urna. Nullam in auctor odio, eu eleifend diam. Curabitur rutrum ullamcorper nunc, sit amet consectetur turpis elementum ac. Aenean lorem lorem, feugiat sit amet sem at, accumsan cursus leo.',
-} as File
+}
 
-const newViewNotes = require('../notes/viewcontrols/NewView.md')
-const editViewNotes = require('../notes/viewcontrols/EditView.md')
-const browseViewNotes = require('../notes/viewcontrols/BrowseView.md')
+import newViewNotes from '../notes/viewcontrols/NewView.md'
+import editViewNotes from '../notes/viewcontrols/EditView.md'
+import browseViewNotes from '../notes/viewcontrols/BrowseView.md'
 
 storiesOf('ViewControls', module)
   .addDecorator(withKnobs)

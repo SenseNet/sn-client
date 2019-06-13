@@ -5,7 +5,6 @@ import { array, boolean, select, text, withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
 import React from 'react'
 
-import { ActionModel } from '@sensenet/default-content-types'
 import { icons } from '../assets/icons'
 import { customSchema } from './ViewControl.stories'
 
@@ -14,7 +13,7 @@ const orderDirectionOptions = {
   desc: 'desc',
 }
 
-const contentListNotes = require('../notes/listcontrols/ContentList.md')
+import contentListNotes from '../notes/listcontrols/ContentList.md'
 
 const items = [
   {
@@ -27,12 +26,12 @@ const items = [
         DisplayName: 'Rename',
         Icon: 'rename',
         Name: 'Rename',
-      } as ActionModel,
+      },
       {
         DisplayName: 'Delete',
         Icon: 'delete',
         Name: 'Delete',
-      } as ActionModel,
+      },
     ],
     Id: 1,
     Path: '/Root/Profiles/Public/alba/Document_Library/Sample-folder',
@@ -49,17 +48,17 @@ const items = [
         DisplayName: 'Preview',
         Icon: 'preview',
         Name: 'Preview',
-      } as ActionModel,
+      },
       {
         DisplayName: 'Download',
         Icon: 'download',
         Name: 'Browse',
-      } as ActionModel,
+      },
       {
         DisplayName: 'Delete',
         Icon: 'delete',
         Name: 'Delete',
-      } as ActionModel,
+      },
     ],
     Id: 2,
     Path: '/Root/Profiles/Public/alba/Document_Library/Sample-document.docx',

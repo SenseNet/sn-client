@@ -1,4 +1,4 @@
-import { Content, ODataCollectionResponse, ODataParams, ODataResponse, Repository } from '@sensenet/client-core'
+import { Content, ODataCollectionResponse, ODataParams, Repository } from '@sensenet/client-core'
 import { debounce, ValueObserver } from '@sensenet/client-utils'
 import { ActionModel, GenericContent, Group, User } from '@sensenet/default-content-types'
 import { createAction } from '@sensenet/redux'
@@ -9,10 +9,149 @@ import { arrayComparer, arrayDiff } from '../../assets/helpers'
 import { rootStateType } from '../../store/rootReducer'
 
 const eventObservables: Array<ValueObserver<any>> = []
+export const changedContent: GenericContent[] = []
 
 export const startLoading = (idOrPath: number | string) => ({
   type: 'DMS_USERSANDGROUPS_LOADING',
   idOrPath,
+})
+
+export const setUser: <T extends User = User>(content: T) => Action & { content: T } = <T>(content: T) => ({
+  type: 'DMS_USERSANDGROUPS_SET_USER',
+  content,
+})
+
+export const setMemberships = (items: ODataCollectionResponse<GenericContent>) => ({
+  type: 'DMS_USERSANDGROUPS_SET_MEMBERSHIPS',
+  items,
+})
+
+export const setAncestors = <T extends GenericContent>(ancestors: T[]) => ({
+  type: 'DMS_USERSANDGROUPS_SET_ANCESTORS',
+  ancestors,
+})
+
+export const setError = (error?: any) => ({
+  type: 'DMS_USERSANDGROUPS_SET_ERROR',
+  error,
+})
+
+export const finishLoading = () => ({
+  type: 'DMS_USERSANDGROUPS_FINISH_LOADING',
+})
+
+export const setGroupOptions = <T extends GenericContent>(odataOptions: ODataParams<T>) => ({
+  type: 'DMS_USERSANDGROUPS_SET_GROUP_OPTIONS',
+  odataOptions,
+})
+
+export const setGroups = (groups: ODataCollectionResponse<Group>) => ({
+  type: 'DMS_USERSANDGROUPS_SET_GROUPS',
+  groups,
+})
+
+export const searchGroups = (text: string) => ({
+  type: 'DMS_USERSANDGROUPS_SEARCH_GROUPS',
+  text,
+})
+
+export const clearSelection = () => ({
+  type: 'DMS_USERSANDGROUPS_CLEAR_SELECTION',
+})
+
+export const clearUserSelection = () => ({
+  type: 'DMS_USERSANDGROUPS_CLEAR_USER_SELECTION',
+})
+
+export const setAllowedChildTypes = createAction((types: GenericContent[]) => ({
+  type: 'DMS_DOCLIB_SET_ALLOWED_TYPES',
+  types,
+}))
+
+export const selectUser = (users: User[] | GenericContent) => {
+  return {
+    type: 'DMS_USERSANDGROUPS_SELECT_USER',
+    users,
+  }
+}
+
+export const deselectUser = (id: number) => ({
+  type: 'DMS_USERSANDGROUPS_DESELECT_USER',
+  id,
+})
+
+export const setMembers = (members: GenericContent[]) => ({
+  type: 'DMS_USERSANDGROUPS_SET_MEMBERS',
+  members,
+})
+
+export const setItems = (items: GenericContent[]) => ({
+  type: 'DMS_USERSANDGROUPS_SET_ITEMS',
+  items,
+})
+
+export const isAdmin = (admin: boolean = false) => ({
+  type: 'DMS_USER_ISADMIN',
+  admin,
+})
+
+export const setActive = <T extends GenericContent>(active?: T) => ({
+  type: 'DMS_USERSANDGROUPS_SET_ACTIVE',
+  active,
+})
+
+export const setChildrenOptions = <T extends GenericContent>(odataOptions: ODataParams<T>) => ({
+  type: 'DMS_USERSANDGROUPS_SET_CHILDREN_OPTIONS',
+  odataOptions,
+})
+
+export const updateGroupList = (groups: ODataCollectionResponse<Group>) => ({
+  type: 'DMS_USERSANDGROUPS_UPDATE_GROUPS',
+  groups,
+})
+
+export const startLoadingChildren = createAction((idOrPath: number | string) => ({
+  type: 'DMS_USERSANDGROUPS_LOADING_CHILDREN',
+  idOrPath,
+}))
+
+export const selectGroup = (groups: GenericContent[] | GenericContent) => {
+  return {
+    type: 'DMS_USERSANDGROUPS_SELECT_GROUP',
+    groups,
+  }
+}
+
+export const deselectGroup = (id: number) => ({
+  type: 'DMS_USERSANDGROUPS_DESELECT_GROUP',
+  id,
+})
+
+export const setUsers = (users: ODataCollectionResponse<Group>) => ({
+  type: 'DMS_USERSANDGROUPS_SET_USERS',
+  users,
+})
+
+export const searchUsers = (text: string) => ({
+  type: 'DMS_USERSANDGROUPS_SEARCH_USERS',
+  text,
+})
+
+export const setGroupAncestors = <T extends GenericContent>(ancestors: T[]) => ({
+  type: 'DMS_USERSANDGROUPS_SET_GROUPANCESTORS',
+  ancestors,
+})
+export const finishLoadingChildren = createAction(() => ({
+  type: 'DMS_USERSANDGROUPS_FINISH_LOADING_CHILDREN',
+}))
+
+export const setGroup: <T extends Group = Group>(content: T, items: T[]) => Action & { content: T; items: T[] } = <T>(
+  content: T,
+  items: T[],
+) => ({
+  type: 'DMS_USERSANDGROUPS_SET_GROUP',
+  content,
+  items,
 })
 
 export const loadUser = <T extends User = User>(idOrPath: number | string, userOptions?: ODataParams<T>) => ({
@@ -43,7 +182,7 @@ export const loadUser = <T extends User = User>(idOrPath: number | string, userO
 
       eventObservables.push(
         eventHub.onCustomActionExecuted.subscribe(() => {
-          emitChange({ Id: newUser.d.Id } as User)
+          emitChange({ Id: newUser.d.Id, Path: newUser.d.Path, Type: newUser.d.Type, Name: newUser.d.Name })
         }),
         eventHub.onContentCreated.subscribe(value => emitChange(value.content)),
         eventHub.onContentModified.subscribe(value => {
@@ -113,35 +252,6 @@ export const loadUser = <T extends User = User>(idOrPath: number | string, userO
   },
 })
 
-export const setUser: <T extends User = User>(content: T) => Action & { content: T } = <T>(content: T) => ({
-  type: 'DMS_USERSANDGROUPS_SET_USER',
-  content,
-})
-
-export const setMemberships = (items: ODataCollectionResponse<GenericContent>) => ({
-  type: 'DMS_USERSANDGROUPS_SET_MEMBERSHIPS',
-  items,
-})
-
-export const setAncestors = <T extends GenericContent>(ancestors: T[]) => ({
-  type: 'DMS_USERSANDGROUPS_SET_ANCESTORS',
-  ancestors,
-})
-
-export const setError = (error?: any) => ({
-  type: 'DMS_USERSANDGROUPS_SET_ERROR',
-  error,
-})
-
-export const finishLoading = () => ({
-  type: 'DMS_USERSANDGROUPS_FINISH_LOADING',
-})
-
-export const setGroupOptions = <T extends GenericContent>(odataOptions: ODataParams<T>) => ({
-  type: 'DMS_USERSANDGROUPS_SET_GROUP_OPTIONS',
-  odataOptions,
-})
-
 export const userIsAdmin = (userPath: string) => ({
   type: 'DMS_USER_ISADMIN',
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
@@ -157,16 +267,6 @@ export const userIsAdmin = (userPath: string) => ({
     const admin = groups.find(group => group.Name === 'DMSAdmins')
     options.dispatch(isAdmin(admin ? true : false))
   },
-})
-
-export const isAdmin = (admin: boolean = false) => ({
-  type: 'DMS_USER_ISADMIN',
-  admin,
-})
-
-export const setActive = <T extends GenericContent>(active?: T) => ({
-  type: 'DMS_USERSANDGROUPS_SET_ACTIVE',
-  active,
 })
 
 export const updateChildrenOptions = <T extends GenericContent>(o: ODataParams<T>) => ({
@@ -210,51 +310,6 @@ export const updateChildrenOptions = <T extends GenericContent>(o: ODataParams<T
   },
 })
 
-export const setChildrenOptions = <T extends GenericContent>(odataOptions: ODataParams<T>) => ({
-  type: 'DMS_USERSANDGROUPS_SET_CHILDREN_OPTIONS',
-  odataOptions,
-})
-
-export const removeMemberFromGroups = (contentIds: number[], groups: Group[]) => ({
-  type: 'DMS_USERSANDGROUPS_REMOVE_MEMBER',
-  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
-    const currentState = options.getState()
-    const repository = options.getInjectable(Repository)
-    options.dispatch(
-      startLoading(
-        currentState.dms.usersAndGroups.user.currentUser ? currentState.dms.usersAndGroups.user.currentUser.Id : '',
-      ),
-    )
-    try {
-      const remove = groups.map(async group => {
-        return await repository.security.removeMembers(group.Id, contentIds)
-      })
-      await Promise.all(remove)
-    } catch (error) {
-      options.dispatch(setError(error))
-    } finally {
-      const comparedList = arrayComparer(groups, currentState.dms.usersAndGroups.user.memberships.d.results)
-      options.dispatch(updateGroupList({ d: { __count: comparedList.length, results: comparedList } }))
-      options.dispatch(loadUser(contentIds[0]))
-      options.dispatch(finishLoading())
-      options.dispatch(getGroups(currentState.dms.usersAndGroups.user.memberships))
-      options.dispatch(loadGroup(groups[0].Id, { select: ['Members', 'Actions'], expand: ['Members', 'Actions'] }))
-    }
-  },
-})
-
-export const selectGroup = (groups: GenericContent[] | GenericContent) => {
-  return {
-    type: 'DMS_USERSANDGROUPS_SELECT_GROUP',
-    groups,
-  }
-}
-
-export const deselectGroup = (id: number) => ({
-  type: 'DMS_USERSANDGROUPS_DESELECT_GROUP',
-  id,
-})
-
 export const getGroups = (memberships: ODataCollectionResponse<Group>) => ({
   type: 'DMS_USERSANDGROUPS_GET_GROUPS',
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
@@ -292,23 +347,6 @@ export const getGroups = (memberships: ODataCollectionResponse<Group>) => ({
     }
   },
 })
-export const setGroups = (groups: ODataCollectionResponse<Group>) => ({
-  type: 'DMS_USERSANDGROUPS_SET_GROUPS',
-  groups,
-})
-
-export const searchGroups = (text: string) => ({
-  type: 'DMS_USERSANDGROUPS_SEARCH_GROUPS',
-  text,
-})
-
-export const clearSelection = () => ({
-  type: 'DMS_USERSANDGROUPS_CLEAR_SELECTION',
-})
-
-export const clearUserSelection = () => ({
-  type: 'DMS_USERSANDGROUPS_CLEAR_USER_SELECTION',
-})
 
 export const addUserToGroups = (user: User, groups: Group[]) => ({
   type: 'DMS_USERSANDGROUPS_ADD_USER_TO_GROUPS',
@@ -335,42 +373,6 @@ export const addUserToGroups = (user: User, groups: Group[]) => ({
     }
   },
 })
-
-export const addUsersToGroups = (users: number[], groups: Group[]) => ({
-  type: 'DMS_USERSANDGROUPS_ADD_USERS_TO_GROUPS',
-  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
-    const currentState = options.getState()
-    const repository = options.getInjectable(Repository) as Repository
-    options.dispatch(
-      startLoading(
-        currentState.dms.usersAndGroups.user.currentUser ? currentState.dms.usersAndGroups.user.currentUser.Id : '',
-      ),
-    )
-    try {
-      const add = groups.map(async group => {
-        return await repository.security.addMembers(group.Id, users)
-      })
-      await Promise.all(add)
-    } catch (error) {
-      options.dispatch(setError(error))
-    } finally {
-      options.dispatch(finishLoading())
-      options.dispatch(loadGroup(groups[0].Id, { select: ['Members', 'Actions'], expand: ['Members', 'Actions'] }))
-      const comparedList = arrayComparer(groups, currentState.dms.usersAndGroups.user.memberships.d.results)
-      options.dispatch(updateGroupList({ d: { __count: comparedList.length, results: comparedList } }))
-    }
-  },
-})
-
-export const updateGroupList = (groups: ODataCollectionResponse<Group>) => ({
-  type: 'DMS_USERSANDGROUPS_UPDATE_GROUPS',
-  groups,
-})
-
-export const startLoadingChildren = createAction((idOrPath: number | string) => ({
-  type: 'DMS_USERSANDGROUPS_LOADING_CHILDREN',
-  idOrPath,
-}))
 
 export const updateGroupListOptions = createAction(<T extends GenericContent>(odataOptions: ODataParams<T>) => ({
   type: 'DMS_USERSANDGROUPS_UPDATE_GROUPLIST_OPTIONS',
@@ -441,9 +443,19 @@ export const updateUserListOptions = createAction(<T extends GenericContent>(oda
   },
 }))
 
-export const finishLoadingChildren = createAction(() => ({
-  type: 'DMS_USERSANDGROUPS_FINISH_LOADING_CHILDREN',
-}))
+// eslint-disable-next-line require-jsdoc
+function methodToDebounce(getState: () => rootStateType, dispatch: Dispatch) {
+  const currentContent = getState().dms.usersAndGroups.group.parent
+  changedContent.forEach(content => {
+    if (currentContent && currentContent.Id === content.ParentId) {
+      dispatch(updateGroupListOptions({}))
+      dispatch(updateUserListOptions({}))
+      changedContent.length = 0
+      return
+    }
+  })
+}
+export const debounceReloadOnProgress = debounce(methodToDebounce, 300)
 
 export const loadGroup = <T extends Group = Group>(idOrPath: number | string, groupOptions?: ODataParams<T>) => ({
   type: 'DMS_USERSANDGROUPS_LOAD_GROUP',
@@ -452,25 +464,24 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
     if (prevState.group.currentGroup && prevState.group.currentGroup.Id.toString() === idOrPath) {
       return
     }
-
     eventObservables.forEach(o => o.dispose())
     eventObservables.length = 0
-
     const eventHub = options.getInjectable(EventHub)
-
     options.dispatch(startLoading(idOrPath))
-
     try {
       const repository = options.getInjectable(Repository)
       const newGroup = await repository.load<T>({
         idOrPath,
         oDataOptions: groupOptions,
       })
-      let items = {} as ODataCollectionResponse<Content>
-      let realGroup = {} as ODataResponse<T>
+      const realGroup = await repository.load<T>({
+        idOrPath: `${newGroup.d.Path}/Groups`,
+        oDataOptions: groupOptions,
+      })
+
       const WS_TYPES = ['ProjectWorkspace', 'DocumentWorkspace', 'SalesWorkspace']
       if (WS_TYPES.indexOf(newGroup.d.Type) > -1) {
-        items = await repository.loadCollection({
+        const items = await repository.loadCollection({
           path: idOrPath as string,
           oDataOptions: {
             select: [
@@ -490,13 +501,9 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
             orderby: ['DisplayName' as any, 'asc'],
           },
         })
-        realGroup = await repository.load<T>({
-          idOrPath: `${newGroup.d.Path}/Groups`,
-          oDataOptions: groupOptions,
-        })
         options.dispatch(setGroup(realGroup.d, items.d.results))
       } else if (newGroup.d.Type !== 'Group') {
-        items = await repository.loadCollection({
+        const items = await repository.loadCollection({
           path: idOrPath as string,
           oDataOptions: {
             select: [
@@ -532,8 +539,11 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
         eventHub.onCustomActionExecuted.subscribe(() => {
           emitChange({
             Id: realGroup.d ? realGroup.d.Id : newGroup.d.Id,
-            ParentId: realGroup.d ? realGroup.d.ParentId : null,
-          } as Group)
+            Type: realGroup.d.Type,
+            Name: realGroup.d.Name,
+            Path: realGroup.d.Path,
+            ParentId: realGroup.d ? realGroup.d.ParentId : undefined,
+          })
         }),
         eventHub.onContentCreated.subscribe(value => emitChange(value.content)),
         eventHub.onContentModified.subscribe(value => {
@@ -564,18 +574,58 @@ export const loadGroup = <T extends Group = Group>(idOrPath: number | string, gr
   },
 })
 
-export const setGroup: <T extends Group = Group>(content: T, items: T[]) => Action & { content: T; items: T[] } = <T>(
-  content: T,
-  items: T[],
-) => ({
-  type: 'DMS_USERSANDGROUPS_SET_GROUP',
-  content,
-  items,
+export const removeMemberFromGroups = (contentIds: number[], groups: Group[]) => ({
+  type: 'DMS_USERSANDGROUPS_REMOVE_MEMBER',
+  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
+    const currentState = options.getState()
+    const repository = options.getInjectable(Repository)
+    options.dispatch(
+      startLoading(
+        currentState.dms.usersAndGroups.user.currentUser ? currentState.dms.usersAndGroups.user.currentUser.Id : '',
+      ),
+    )
+    try {
+      const remove = groups.map(async group => {
+        return await repository.security.removeMembers(group.Id, contentIds)
+      })
+      await Promise.all(remove)
+    } catch (error) {
+      options.dispatch(setError(error))
+    } finally {
+      const comparedList = arrayComparer(groups, currentState.dms.usersAndGroups.user.memberships.d.results)
+      options.dispatch(updateGroupList({ d: { __count: comparedList.length, results: comparedList } }))
+      options.dispatch(loadUser(contentIds[0]))
+      options.dispatch(finishLoading())
+      options.dispatch(getGroups(currentState.dms.usersAndGroups.user.memberships))
+      options.dispatch(loadGroup(groups[0].Id, { select: ['Members', 'Actions'], expand: ['Members', 'Actions'] }))
+    }
+  },
 })
 
-export const setGroupAncestors = <T extends GenericContent>(ancestors: T[]) => ({
-  type: 'DMS_USERSANDGROUPS_SET_GROUPANCESTORS',
-  ancestors,
+export const addUsersToGroups = (users: number[], groups: Group[]) => ({
+  type: 'DMS_USERSANDGROUPS_ADD_USERS_TO_GROUPS',
+  inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
+    const currentState = options.getState()
+    const repository = options.getInjectable(Repository) as Repository
+    options.dispatch(
+      startLoading(
+        currentState.dms.usersAndGroups.user.currentUser ? currentState.dms.usersAndGroups.user.currentUser.Id : '',
+      ),
+    )
+    try {
+      const add = groups.map(async group => {
+        return await repository.security.addMembers(group.Id, users)
+      })
+      await Promise.all(add)
+    } catch (error) {
+      options.dispatch(setError(error))
+    } finally {
+      options.dispatch(finishLoading())
+      options.dispatch(loadGroup(groups[0].Id, { select: ['Members', 'Actions'], expand: ['Members', 'Actions'] }))
+      const comparedList = arrayComparer(groups, currentState.dms.usersAndGroups.user.memberships.d.results)
+      options.dispatch(updateGroupList({ d: { __count: comparedList.length, results: comparedList } }))
+    }
+  },
 })
 
 export const getUsers = () => ({
@@ -606,16 +656,6 @@ export const getUsers = () => ({
   },
 })
 
-export const setUsers = (users: ODataCollectionResponse<Group>) => ({
-  type: 'DMS_USERSANDGROUPS_SET_USERS',
-  users,
-})
-
-export const searchUsers = (text: string) => ({
-  type: 'DMS_USERSANDGROUPS_SEARCH_USERS',
-  text,
-})
-
 export const getAllowedTypes = createAction(<T extends GenericContent[]>(odataOptions?: ODataParams<T>) => ({
   type: 'DMS_DOCLIB_GET_ALLOWED_TYPES',
   odataOptions,
@@ -641,46 +681,3 @@ export const getAllowedTypes = createAction(<T extends GenericContent[]>(odataOp
     }
   },
 }))
-
-export const setAllowedChildTypes = createAction((types: GenericContent[]) => ({
-  type: 'DMS_DOCLIB_SET_ALLOWED_TYPES',
-  types,
-}))
-
-export const selectUser = (users: User[] | GenericContent) => {
-  return {
-    type: 'DMS_USERSANDGROUPS_SELECT_USER',
-    users,
-  }
-}
-
-export const deselectUser = (id: number) => ({
-  type: 'DMS_USERSANDGROUPS_DESELECT_USER',
-  id,
-})
-
-export const setMembers = (members: GenericContent[]) => ({
-  type: 'DMS_USERSANDGROUPS_SET_MEMBERS',
-  members,
-})
-
-export const setItems = (items: GenericContent[]) => ({
-  type: 'DMS_USERSANDGROUPS_SET_ITEMS',
-  items,
-})
-
-export const changedContent: GenericContent[] = []
-
-// eslint-disable-next-line require-jsdoc
-function methodToDebounce(getState: () => rootStateType, dispatch: Dispatch) {
-  const currentContent = getState().dms.usersAndGroups.group.parent
-  changedContent.forEach(content => {
-    if (currentContent && currentContent.Id === content.ParentId) {
-      dispatch(updateGroupListOptions({}))
-      dispatch(updateUserListOptions({}))
-      changedContent.length = 0
-      return
-    }
-  })
-}
-export const debounceReloadOnProgress = debounce(methodToDebounce, 300)

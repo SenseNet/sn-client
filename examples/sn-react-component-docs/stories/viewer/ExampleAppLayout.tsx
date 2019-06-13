@@ -45,6 +45,20 @@ import Help from '@material-ui/icons/Help'
 import Send from '@material-ui/icons/Send'
 
 /**
+ * Changes the url to the one with host in it
+ * @param {DocumentData} documentData
+ * @returns {(value: Comment) => Comment}
+ */
+function changeCreatedByUrlToCurrent(documentData: DocumentData): (value: Comment) => Comment {
+  return comment => {
+    return {
+      ...comment,
+      createdBy: { ...comment.createdBy, avatarUrl: `${documentData.hostName}${comment.createdBy.avatarUrl}` },
+    }
+  }
+}
+
+/**
  * Adds a globally unique ID to the shape
  */
 const addGuidToShape = <T extends Shape>(shape: T) => {
@@ -246,20 +260,6 @@ export const exampleSettings = new DocumentViewerSettings({
     }
   },
 })
-
-/**
- * Changes the url to the one with host in it
- * @param {DocumentData} documentData
- * @returns {(value: Comment) => Comment}
- */
-function changeCreatedByUrlToCurrent(documentData: DocumentData): (value: Comment) => Comment {
-  return comment => {
-    return {
-      ...comment,
-      createdBy: { ...comment.createdBy, avatarUrl: `${documentData.hostName}${comment.createdBy.avatarUrl}` },
-    }
-  }
-}
 
 const localStorageKey = 'sn-docviewer-example'
 

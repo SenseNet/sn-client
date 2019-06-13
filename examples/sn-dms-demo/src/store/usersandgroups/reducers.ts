@@ -77,7 +77,7 @@ export const selected: Reducer<GenericContent[]> = (state = [], action: AnyActio
 
 export const loadChunkSize = 25
 
-const defaultOptions = {
+const defaultOptions: ODataParams<GenericContent & User & Group> = {
   select: [
     'Id',
     'Path',
@@ -98,14 +98,14 @@ const defaultOptions = {
   filter: `isOf('Group')`,
   scenario: 'DMSListItem',
   top: loadChunkSize,
-} as ODataParams<GenericContent>
+}
 
-const defaultUserOptions = {
+const defaultUserOptions: ODataParams<GenericContent & User> = {
   select: ['Id', 'Path', 'Name', 'Type', 'ParentId', 'Actions', 'Avatar', 'DisplayName', 'FullName', 'Icon', 'Email'],
   orderby: ['FullName', 'asc'] as any,
   filter: `isOf('User')`,
   top: loadChunkSize,
-} as ODataParams<GenericContent>
+}
 
 export const grouplistOptions: Reducer<ODataParams<GenericContent>> = (state = defaultOptions, action: AnyAction) => {
   switch (action.type) {
