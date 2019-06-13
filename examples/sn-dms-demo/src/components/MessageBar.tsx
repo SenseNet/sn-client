@@ -5,10 +5,9 @@ import { Icon, iconType } from '@sensenet/icons-react'
 import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
+import groupBy from 'lodash.groupby'
 import { LogEntry, readLogEntries } from '../store/actionlog/actions'
 import { rootStateType } from '../store/rootReducer'
-
-const groupBy: typeof import('lodash.groupby') = require('lodash.groupby')
 
 const styles = {
   window: {
@@ -118,7 +117,7 @@ class MessageBar extends React.Component<
     }
     return {
       digestedMessageEntries: msgSegments,
-    } as MessageBar['state']
+    }
   }
 
   public render() {

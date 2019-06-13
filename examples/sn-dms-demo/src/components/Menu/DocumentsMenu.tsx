@@ -10,8 +10,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
-import * as DMSActions from '../../Actions'
-import { removeUploadItem, uploadFileList } from '../../Actions'
+import { removeUploadItem, uploadFileList, handleDrawerMenu } from '../../Actions'
 import { updateChildrenOptions } from '../../store/documentlibrary/actions'
 import { rootStateType } from '../../store/rootReducer'
 import AddNewMenu from '../ActionMenu/AddNewMenu'
@@ -118,7 +117,7 @@ const mapStateToProps = (state: rootStateType) => {
 const mapDispatchToProps = {
   uploadFileList,
   updateChildrenOptions,
-  handleDrawerMenu: DMSActions.handleDrawerMenu,
+  handleDrawerMenu,
 }
 
 const subMenu = [
