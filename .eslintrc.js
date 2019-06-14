@@ -70,6 +70,7 @@ module.exports = {
     'prefer-const': 'error',
     'prefer-spread': 'error',
     'no-shadow': 'error',
+    '@typescript-eslint/no-useless-constructor': 'error',
   },
   overrides: [
     {

@@ -40,9 +40,6 @@ class Sensenet extends React.Component<SensenetProps & ReturnType<typeof mapStat
   public name: string = ''
   public password: string = ''
 
-  constructor(props: Sensenet['props']) {
-    super(props)
-  }
   public render() {
     // if (this.props.loginState === LoginState.Pending
     //   || (this.props.loginState === LoginState.Authenticated && this.props.currentUserId === ConstantContent.VISITOR_USER.Id)) {
