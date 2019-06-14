@@ -67,6 +67,7 @@ module.exports = {
     'prefer-arrow-callback': 'error',
     'prefer-rest-params': 'error',
     'no-var': 'error',
+    'prefer-const': 'error',
   },
   overrides: [
     {
