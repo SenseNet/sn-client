@@ -97,9 +97,9 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
           },
         })
         setItems(children.d.results)
-      } catch (error) {
+      } catch (err) {
         if (!ac.signal.aborted) {
-          setError(error)
+          setError(err)
         }
       }
     })()

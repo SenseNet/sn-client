@@ -35,9 +35,9 @@ export const CurrentChildrenProvider: React.FunctionComponent = props => {
           oDataOptions: loadSettings.loadChildrenSettings,
         })
         setChildren(childrenResult.d.results)
-      } catch (error) {
+      } catch (err) {
         if (!ac.signal.aborted) {
-          setError(error)
+          setError(err)
         }
       } finally {
         loadLock.release()

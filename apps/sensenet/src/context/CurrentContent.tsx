@@ -38,9 +38,9 @@ export const CurrentContentProvider: React.FunctionComponent<{
           const response = await repo.load({ idOrPath: props.idOrPath, requestInit: { signal: ac.signal } })
           setContent(response.d)
           props.onContentLoaded && props.onContentLoaded(response.d)
-        } catch (error) {
+        } catch (err) {
           if (!ac.signal.aborted) {
-            setError(error)
+            setError(err)
           }
         } finally {
           loadLock.release()

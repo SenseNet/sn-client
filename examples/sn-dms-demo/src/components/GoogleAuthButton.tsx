@@ -2,9 +2,9 @@ import { GoogleOauthProvider } from '@sensenet/authentication-google'
 import { Actions } from '@sensenet/redux'
 import React from 'react'
 import { connect } from 'react-redux'
-import normal from '../assets/google-signin-buttons/btn_google_signin_dark_normal_web.png'
-import focused from '../assets/google-signin-buttons/btn_google_signin_dark_focus_web.png'
-import pressed from '../assets/google-signin-buttons/btn_google_signin_dark_pressed_web.png'
+import normalImage from '../assets/google-signin-buttons/btn_google_signin_dark_normal_web.png'
+import focusedImage from '../assets/google-signin-buttons/btn_google_signin_dark_focus_web.png'
+import pressedImage from '../assets/google-signin-buttons/btn_google_signin_dark_pressed_web.png'
 
 const styles = {
   googleAuthButton: {
@@ -34,7 +34,7 @@ class GoogleAuthButton extends React.Component<
     super(props)
 
     this.state = {
-      buttonImage: normal,
+      buttonImage: normalImage,
     }
 
     this.handleButtonClick = this.handleButtonClick.bind(this)
@@ -48,22 +48,22 @@ class GoogleAuthButton extends React.Component<
   }
   public handleButtonMouseOver() {
     this.setState({
-      buttonImage: focused,
+      buttonImage: focusedImage,
     })
   }
   public handleButtonMouseOut() {
     this.setState({
-      buttonImage: normal,
+      buttonImage: normalImage,
     })
   }
   public handleButtonMouseDown() {
     this.setState({
-      buttonImage: pressed,
+      buttonImage: pressedImage,
     })
   }
   public handleButtonMouseUp() {
     this.setState({
-      buttonImage: normal,
+      buttonImage: normalImage,
     })
   }
   public render() {
