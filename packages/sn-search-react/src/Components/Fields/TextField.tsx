@@ -37,7 +37,7 @@ export const TextField = <T extends GenericContent>(props: TextFieldProps<T> & M
     <MaterialTextField
       type="text"
       onChange={ev => {
-        const value = ev.currentTarget.value
+        const { value } = ev.currentTarget
         const query = new Query(q => (value ? q.equals(props.fieldName, `*${value}*`) : q))
         return props.onQueryChange(props.fieldKey || props.fieldName, query, value)
       }}

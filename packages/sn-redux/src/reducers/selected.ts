@@ -39,7 +39,7 @@ export const selectedContentItems: Reducer<
     }
     case 'SELECT_CONTENT': {
       const obj: any = {}
-      const content = (action as ReturnType<typeof selectContent>).content
+      const { content } = action as ReturnType<typeof selectContent>
       obj[content.Id] = content
       return (Object as any).assign({}, state, obj)
     }

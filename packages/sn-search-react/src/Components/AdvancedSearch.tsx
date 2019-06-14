@@ -73,7 +73,7 @@ export class AdvancedSearch<T extends GenericContent = GenericContent> extends C
       const filteredQueries = fieldQueryArray.filter(f => f.toString().length > 0)
 
       filteredQueries.map((fieldQuery, currentIndex) => {
-        const queryRef = q.queryRef
+        const { queryRef } = q
         new QueryExpression(queryRef).query(fieldQuery)
         if (currentIndex < filteredQueries.length - 1) {
           return new QueryOperators(queryRef).and

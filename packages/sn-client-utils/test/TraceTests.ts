@@ -108,7 +108,7 @@ export const traceTests = describe('Trace tests', () => {
         isAsync: true,
         onFinished: traceData => {
           expect(args).toEqual(traceData.methodArguments)
-          const returned = traceData.returned
+          const { returned } = traceData
           expect(returned).toBe(1 + 2 + 3)
           observer.dispose()
           done()

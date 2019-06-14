@@ -129,7 +129,7 @@ export const loadMore = createAction((count: number = loadChunkSize) => ({
       currentDocLibState.items.d.results.length < currentDocLibState.items.d.__count
     ) {
       const repository = options.getInjectable(Repository)
-      const parentIdOrPath = currentDocLibState.parentIdOrPath
+      const { parentIdOrPath } = currentDocLibState
       options.dispatch(startLoadingChildren(parentIdOrPath ? parentIdOrPath : ''))
 
       const items = await repository.loadCollection({

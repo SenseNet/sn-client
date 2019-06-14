@@ -42,7 +42,7 @@ export const promiseMiddlewareTest = describe('PromiseMiddleware', () => {
     } as PromiseMiddlewareAction<typeof customApi, any>)
 
     const subscription = store.subscribe(() => {
-      const actions: Action[] = store.getState().actions
+      const { actions } = store.getState()
       if (actions.find(a => a.type === 'EXAMPLE_ACTION_SUCCESS')) {
         subscription()
         done()
@@ -67,7 +67,7 @@ export const promiseMiddlewareTest = describe('PromiseMiddleware', () => {
     } as PromiseMiddlewareAction<undefined, any>)
 
     const subscription = store.subscribe(() => {
-      const actions: Action[] = store.getState().actions
+      const { actions } = store.getState()
       if (actions.find(a => a.type === 'EXAMPLE_ACTION_FAILURE')) {
         subscription()
         done()

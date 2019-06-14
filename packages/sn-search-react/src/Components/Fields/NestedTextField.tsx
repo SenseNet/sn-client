@@ -27,7 +27,7 @@ export const NestedTextField = <T extends GenericContent>(props: NestedTextField
     <MaterialTextField
       type="text"
       onChange={ev => {
-        const value = ev.currentTarget.value
+        const { value } = ev.currentTarget
         const query = new Query(q => (value ? q.equalsNested(props.fieldName, props.nestedFieldName, value) : q))
         return props.onQueryChange(props.fieldKey || props.fieldName, query, value)
       }}

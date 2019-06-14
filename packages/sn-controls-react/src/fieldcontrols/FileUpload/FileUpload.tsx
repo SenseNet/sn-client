@@ -95,9 +95,9 @@ export class FileUpload<T extends GenericContent, K extends keyof T> extends Com
    * Handles input changes. Dispatches a redux action to change field value in the state tree.
    * @param e
    */
-  public handleChange(e: React.ChangeEvent) {
+  public handleChange(e: React.ChangeEvent<{ value: string }>) {
     const { onChange } = this.props
-    const value = e.target['value']
+    const { value } = e.target
     this.setState({ value })
     onChange(this.props.name, value)
   }

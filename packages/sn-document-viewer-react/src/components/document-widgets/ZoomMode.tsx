@@ -82,7 +82,7 @@ export class ZoomWidgetComponent extends React.Component<
    * renders the component
    */
   public render() {
-    const localization = this.props.localization
+    const { localization } = this.props
     return (
       <div style={{ display: 'inline-block' }}>
         <IconButton onClick={ev => this.openZoomMenu(ev)} title={localization.zoomMode}>

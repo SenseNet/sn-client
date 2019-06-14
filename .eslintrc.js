@@ -72,6 +72,7 @@ module.exports = {
     'no-shadow': 'error',
     '@typescript-eslint/no-useless-constructor': 'error',
     'prefer-template': 'error',
+    'prefer-destructuring': ['error', { array: false, object: true }],
   },
   overrides: [
     {

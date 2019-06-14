@@ -16,7 +16,7 @@ export function collect(connect: any, monitor: any) {
 
 export const rowTarget = {
   drop(props: any, monitor: any, component: any) {
-    const content = monitor.getItem().content
+    const { content } = monitor.getItem()
     const dragId = content.Id
     const dropId = props.content.Id
     const { selected, selectedContentItems } = component.props

@@ -94,7 +94,7 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
         ),
       )
       if (items.length === 1 && items[0]) {
-        const item = items[0]
+        const [item] = items
         this.setState({
           inputValue: item.DisplayName || item.Name,
           selected: item,
