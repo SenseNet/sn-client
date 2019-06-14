@@ -5,8 +5,6 @@ import { TokenStoreType } from '../src/TokenStoreType'
 import { MockStorage } from './__Mocks__/MockStorage'
 import { MockTokenFactory } from './__Mocks__/MockTokenFactory'
 
-declare var global: any
-
 describe('TokenStore', () => {
   let documentInstance: Document
   let inMemory: TokenStore

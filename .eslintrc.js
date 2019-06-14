@@ -66,6 +66,7 @@ module.exports = {
     yoda: 'error',
     'prefer-arrow-callback': 'error',
     'prefer-rest-params': 'error',
+    'no-var': 'error',
   },
   overrides: [
     {

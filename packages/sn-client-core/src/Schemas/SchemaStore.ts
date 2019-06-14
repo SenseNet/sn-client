@@ -20,7 +20,7 @@ export class SchemaStore {
    * @param type {string} The name of the Content Type;
    * @returns {Schemas.Schema}
    * ```ts
-   * var genericContentSchema = SenseNet.Content.getSchema(Content);
+   * const genericContentSchema = SenseNet.Content.getSchema(Content);
    * ```
    */
   public getSchema<TType>(currentType: new (...args: any[]) => TType): Schema {
