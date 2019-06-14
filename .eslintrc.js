@@ -60,6 +60,12 @@ module.exports = {
     'import/order': 'error',
     'object-shorthand': 'error',
     'dot-notation': 'error',
+    'no-caller': 'error',
+    'no-useless-concat': 'error',
+    radix: 'error',
+    yoda: 'error',
+    'prefer-arrow-callback': 'error',
+    'prefer-rest-params': 'error',
   },
   overrides: [
     {
