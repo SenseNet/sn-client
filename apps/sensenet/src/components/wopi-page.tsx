@@ -10,14 +10,21 @@ const WopiPage: React.FunctionComponent<RouteComponentProps<{ documentId?: strin
   const [wopiData, setWopiData] = useState<ODataWopiResponse | null>(null)
 
   useEffect(() => {
+    const ac = new AbortController()
     ;(async () => {
       if (!props.match.params.documentId) {
         throw Error('Invalid url')
       }
-      const response = await repo.getWopiData({ idOrPath: parseInt(props.match.params.documentId, 10) })
+      const response = await repo.getWopiData({
+        idOrPath: parseInt(props.match.params.documentId, 10),
+        requestInit: {
+          signal: ac.signal,
+        },
+      })
       setWopiData(response)
       formElement.current && formElement.current.submit()
     })()
+    return () => ac.abort()
   }, [props.match.params.documentId, repo])
 
   if (!wopiData) return <FullScreenLoader />

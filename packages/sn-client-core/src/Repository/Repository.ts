@@ -410,11 +410,13 @@ export class Repository implements Disposable {
   public async getWopiData(options: {
     idOrPath: string | number
     odataOptions?: ODataParams<GenericContent>
+    requestInit?: RequestInit
   }): Promise<ODataWopiResponse> {
     return await this.executeAction<{}, ODataWopiResponse>({
       idOrPath: options.idOrPath,
       method: 'GET',
       name: 'GetWopiData',
+      requestInit: options.requestInit,
       oDataOptions: {
         ...options.odataOptions,
         action: 'edit',
