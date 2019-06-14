@@ -229,7 +229,7 @@ export const exampleSettings = new DocumentViewerSettings({
     return
   },
   getDocumentData: async documentData => {
-    const docData = await fetch(`${documentData.hostName}/odata.svc/` + documentData.idOrPath, {
+    const docData = await fetch(`${documentData.hostName}/odata.svc/${documentData.idOrPath}`, {
       credentials: 'include',
     })
 

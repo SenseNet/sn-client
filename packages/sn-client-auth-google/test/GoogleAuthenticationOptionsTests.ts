@@ -15,7 +15,7 @@ describe('Google Authentication Options', () => {
     )
     expect(options).toBeInstanceOf(GoogleAuthenticationOptions)
     expect(options.clientId).toBe(exampleClientId)
-    expect(options.redirectUri).toBe(exampleOrigin + '/')
+    expect(options.redirectUri).toBe(`${exampleOrigin}/`)
     expect(options.scope).toEqual(['email', 'profile'])
   })
   it('can be constructed with valid specified parameters', () => {

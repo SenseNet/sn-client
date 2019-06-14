@@ -36,7 +36,7 @@ export const newMenuItems = [
   { name: 'folder', ext: '' },
 ]
 
-export const createNewFileName = () => Chance().word() + '.png'
+export const createNewFileName = () => `${Chance().word()}.png`
 
 export const openNew = (action: string) => {
   cy.contains('Documents').click()

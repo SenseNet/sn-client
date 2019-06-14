@@ -145,7 +145,7 @@ class DocumentsMenu extends React.Component<
   public handleMenuItemClick = (title: string) => {
     this.props.updateChildrenOptions({ query: '' })
     if (this.props.currentWorkspace) {
-      this.props.history.push(`/documents/${btoa(this.props.currentWorkspace.Path + '/Document_Library')}`)
+      this.props.history.push(`/documents/${btoa(`${this.props.currentWorkspace.Path}/Document_Library`)}`)
     } else {
       this.props.history.push('/documents/')
     }

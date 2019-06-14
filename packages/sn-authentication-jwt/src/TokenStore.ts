@@ -58,7 +58,7 @@ export class TokenStore {
   }
 
   private getTokenFromCookie(key: string, document: Document): Token {
-    const prefix = key + '='
+    const prefix = `${key}=`
     if (document && document.cookie) {
       const cookieVal = document.cookie
         .split(';')

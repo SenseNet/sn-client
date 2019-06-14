@@ -68,7 +68,7 @@ const Setup: React.StatelessComponent = () => {
       const response = await repo.loadCollection({
         path: ConstantContent.PORTAL_ROOT.Path,
         oDataOptions: {
-          query: new Query(q => q.typeIs(Settings)).toString() + ' .AUTOFILTERS:OFF',
+          query: `${new Query(q => q.typeIs(Settings)).toString()} .AUTOFILTERS:OFF`,
         },
       })
 

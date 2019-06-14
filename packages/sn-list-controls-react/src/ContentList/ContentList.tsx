@@ -236,7 +236,7 @@ export class ContentList<T extends GenericContent> extends React.Component<Conte
                 key={item.Id}
                 hover={true}
                 className={`${isActive ? 'active' : ''} ${isSelected ? 'selected' : ''} ${item.Type &&
-                  'type-' + item.Type.toLowerCase()}`}
+                  `type-${item.Type.toLowerCase()}`}`}
                 selected={isActive}
                 onClick={e => {
                   this.props.onRequestActiveItemChange && this.props.onRequestActiveItemChange(item)

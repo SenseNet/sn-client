@@ -162,18 +162,18 @@ class DashboardComponent extends React.Component<
                           path="/documents"
                           component={(props: RouteComponentProps<any>) => (
                             <Switch>
-                              <Route path={props.match.url + '/shared'}>
+                              <Route path={`${props.match.url}/shared`}>
                                 <Shared />
                               </Route>
 
-                              <Route path={props.match.url + '/savedqueries'}>
+                              <Route path={`${props.match.url}/savedqueries`}>
                                 <SavedQueries />
                               </Route>
-                              <Route path={props.match.url + '/trash'}>
+                              <Route path={`${props.match.url}/trash`}>
                                 <Trash />
                               </Route>
                               <Route
-                                path={'/' + PathHelper.joinPaths(props.match.url, '/:folderPath?/:otherActions*')}
+                                path={`/${PathHelper.joinPaths(props.match.url, '/:folderPath?/:otherActions*')}`}
                                 exact={true}
                                 component={() => (
                                   <div>
@@ -189,7 +189,7 @@ class DashboardComponent extends React.Component<
                           component={() => (
                             <Switch>
                               <Route
-                                path={'/' + PathHelper.joinPaths('/users', '/:folderPath?/:otherActions*')}
+                                path={`/${PathHelper.joinPaths('/users', '/:folderPath?/:otherActions*')}`}
                                 exact={true}
                                 component={() => (
                                   <div>
@@ -205,7 +205,7 @@ class DashboardComponent extends React.Component<
                           component={() => (
                             <Switch>
                               <Route
-                                path={'/' + PathHelper.joinPaths('/groups', '/:folderPath?/:otherActions*')}
+                                path={`/${PathHelper.joinPaths('/groups', '/:folderPath?/:otherActions*')}`}
                                 exact={true}
                                 component={() => (
                                   <div>
@@ -237,18 +237,18 @@ class DashboardComponent extends React.Component<
                         path="/documents"
                         component={(props: RouteComponentProps<any>) => (
                           <Switch>
-                            <Route path={props.match.url + '/shared'}>
+                            <Route path={`${props.match.url}/shared`}>
                               <Shared />
                             </Route>
 
-                            <Route path={props.match.url + '/savedqueries'}>
+                            <Route path={`${props.match.url}/savedqueries`}>
                               <SavedQueries />
                             </Route>
-                            <Route path={props.match.url + '/trash'}>
+                            <Route path={`${props.match.url}/trash`}>
                               <Trash />
                             </Route>
                             <Route
-                              path={'/' + PathHelper.joinPaths(props.match.url)}
+                              path={`/${PathHelper.joinPaths(props.match.url)}`}
                               exact={true}
                               component={() => (
                                 <div>
@@ -264,7 +264,7 @@ class DashboardComponent extends React.Component<
                         component={() => (
                           <Switch>
                             <Route
-                              path={'/' + PathHelper.joinPaths('/users', '/:folderPath?/:otherActions*')}
+                              path={`/${PathHelper.joinPaths('/users', '/:folderPath?/:otherActions*')}`}
                               exact={true}
                               component={() => (
                                 <div>
@@ -280,7 +280,7 @@ class DashboardComponent extends React.Component<
                         component={() => (
                           <Switch>
                             <Route
-                              path={'/' + PathHelper.joinPaths('/groups', '/:folderPath?/:otherActions*')}
+                              path={`/${PathHelper.joinPaths('/groups', '/:folderPath?/:otherActions*')}`}
                               exact={true}
                               component={() => (
                                 <div>
