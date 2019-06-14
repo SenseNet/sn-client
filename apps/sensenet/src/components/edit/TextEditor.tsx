@@ -76,11 +76,11 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
         },
       })
       setSavedTextValue(textValue)
-    } catch (error) {
+    } catch (err) {
       logger.error({
         message: localization.saveFailedNotification.replace('{0}', props.content.DisplayName || props.content.Name),
         data: {
-          details: { error },
+          details: { error: err },
         },
       })
     }
@@ -93,7 +93,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
   useEffect(() => {
     setUri(getMonacoModelUri(props.content))
     setLanguage(contentRouter.getMonacoLanguage(props.content))
-  }, [props.content])
+  }, [contentRouter, props.content])
 
   useEffect(() => {
     setUri(getMonacoModelUri(props.content))
@@ -116,11 +116,11 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
             setSavedTextValue(text)
           }
         }
-      } catch (error) {
-        setError(error)
+      } catch (err) {
+        setError(err)
       }
     })()
-  }, [props.content.Id])
+  }, [contentRouter, props, props.content.Id, repo])
 
   if (error) {
     throw error
@@ -134,7 +134,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
           try {
             ev.preventDefault()
             saveContent()
-          } catch (error) {
+          } catch {
             /** */
           }
         }

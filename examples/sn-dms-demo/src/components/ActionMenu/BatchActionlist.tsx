@@ -130,7 +130,6 @@ class BatchActionlist extends React.Component<
     this.props.closeActionMenu()
     currentContent &&
       this.props.openActionMenu(options, currentContent, currentContent.Id.toString(), e.currentTarget, {
-        // tslint:disable-next-line:no-string-literal
         top: (e.target as HTMLElement).offsetTop + 100,
         left: (e.target as HTMLElement).offsetLeft + 100,
       })

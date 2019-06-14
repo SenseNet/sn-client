@@ -10,6 +10,6 @@ export const PersonalSettingsContextProvider: React.StatelessComponent = props =
     settingsService.currentValue.subscribe(s => {
       setSettings(s)
     })
-  }, [])
+  }, [settingsService.currentValue])
   return <PersonalSettingsContext.Provider value={settings}>{props.children}</PersonalSettingsContext.Provider>
 }

@@ -6,9 +6,9 @@ import { Actions, Reducers } from '@sensenet/redux'
 import React from 'react'
 import { connect } from 'react-redux'
 import { HashRouter as Router, Route } from 'react-router-dom'
-import { rootStateType } from '..'
-import { repository } from '..'
-import Login from '../containers/Login'
+import { rootStateType, repository } from '..'
+
+import LoginView from '../containers/Login'
 import VisibleTodoList from '../containers/VisibleTodoList'
 import { fetch } from '../reducers/todos'
 import { FilterMenu } from './FilterMenu'
@@ -50,6 +50,7 @@ class App extends React.Component<ReturnType<typeof mapStateToProps> & typeof ma
   constructor(props) {
     super(props)
     this.state = {
+      // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
       content: { Status: 'active' as any, Path: '/Root/Sites/Default_Site/tasks', Type: 'Task' } as Task,
       // params: this.props,
       loginState: LoginState.Pending,
@@ -121,7 +122,7 @@ class App extends React.Component<ReturnType<typeof mapStateToProps> & typeof ma
     } else {
       return (
         <div>
-          <Login />
+          <LoginView />
         </div>
       )
     }

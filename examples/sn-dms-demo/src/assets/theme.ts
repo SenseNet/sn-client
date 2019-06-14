@@ -52,5 +52,3 @@ export const theme = createMuiTheme({
     borderRadius: 2,
   },
 })
-
-export default theme

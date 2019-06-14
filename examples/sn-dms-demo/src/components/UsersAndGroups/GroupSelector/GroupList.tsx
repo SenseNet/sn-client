@@ -95,7 +95,7 @@ class GroupList extends React.Component<
       selected: newProps.selected,
       term: newProps.term,
       members: newProps.memberships.d.results,
-    } as GroupList['state']
+    }
   }
   public handleSearch = (text: string) => {
     this.props.searchGroups(text)

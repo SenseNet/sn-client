@@ -18,8 +18,6 @@
  * ```
  */
 
-// tslint:disable:naming-convention
-
 export enum VersioningMode {
   Option0 = '0',
   Option1 = '1',

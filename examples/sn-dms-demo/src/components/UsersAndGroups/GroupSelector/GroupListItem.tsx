@@ -89,9 +89,6 @@ class GroupListItem extends React.Component<
   public state = {
     selected: this.props.selected,
   }
-  constructor(props: GroupListItem['props']) {
-    super(props)
-  }
   public checkboxClick = (group: Group) => {
     const index = this.props.groups.findIndex(g => g.Id === group.Id)
     index === -1

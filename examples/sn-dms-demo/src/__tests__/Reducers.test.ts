@@ -1,4 +1,3 @@
-import { GenericContent } from '@sensenet/default-content-types'
 import { resources } from '../assets/resources'
 import * as DMSReducers from '../Reducers'
 
@@ -208,7 +207,7 @@ describe('breadcrumb reducer', () => {
     expect(
       DMSReducers.breadcrumb(undefined, {
         type: 'LOAD_CONTENT_SUCCESS',
-        payload: { d: { Path: '/Default_Site' } as GenericContent },
+        payload: { d: { Path: '/Default_Site' } },
       }),
     ).toEqual([])
   })
@@ -216,7 +215,7 @@ describe('breadcrumb reducer', () => {
     expect(
       DMSReducers.breadcrumb(undefined, {
         type: 'LOAD_CONTENT_SUCCESS',
-        payload: { d: { DisplayName: 'aaa', Id: 1, Path: '/aaa' } as GenericContent },
+        payload: { d: { DisplayName: 'aaa', Id: 1, Path: '/aaa' } },
       }),
     ).toEqual([])
   })
@@ -224,7 +223,7 @@ describe('breadcrumb reducer', () => {
     expect(
       DMSReducers.breadcrumb([{ name: 'aaa', id: 1, path: '/aaa' }, { name: 'bbb', id: 2, path: '/bbb' }], {
         type: 'LOAD_CONTENT_SUCCESS',
-        payload: { d: { DisplayName: 'aaa', Id: 1, Path: '/aaa' } as GenericContent },
+        payload: { d: { DisplayName: 'aaa', Id: 1, Path: '/aaa' } },
       }),
     ).toEqual([{ id: 1, name: 'aaa', path: '/aaa' }, { id: 2, name: 'bbb', path: '/bbb' }])
   })

@@ -70,6 +70,7 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
     this.state = {
       content: this.props.content,
       schema: controlMapper.getFullSchemaForContentType(this.props.contentTypeName as any, 'edit'),
+      // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
       saveableContent: {} as T,
     }
 
@@ -89,11 +90,9 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
    * @param {SytheticEvent} event
    */
   public handleInputChange(field: keyof T, value: T[K]) {
-    this.state.content[field] = value
-    this.state.saveableContent[field] = value
-
     this.setState({
-      content: this.props.content,
+      content: { ...this.state.content, [field]: value },
+      saveableContent: { ...this.state.saveableContent, [field]: value },
     })
   }
   /**
@@ -102,8 +101,8 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
    * @return {any} value of the input or null
    */
   public getFieldValue(name: string | undefined) {
-    if (name && this.props.content[name]) {
-      return this.props.content[name]
+    if (name && this.state.content[name]) {
+      return this.state.content[name]
     }
   }
   /**
@@ -135,8 +134,9 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
             }
             fieldSetting.clientSettings['data-actionName'] = 'edit'
             fieldSetting.clientSettings['data-fieldValue'] = that.getFieldValue(fieldSetting.clientSettings.name)
+            // eslint-disable-next-line dot-notation
             fieldSetting.clientSettings['content'] = this.state.content
-            fieldSetting.clientSettings['value'] = that.getFieldValue(fieldSetting.clientSettings.name)
+            fieldSetting.clientSettings.value = that.getFieldValue(fieldSetting.clientSettings.name)
             fieldSetting.clientSettings.onChange = that.handleInputChange as any
             fieldSetting.clientSettings['data-repositoryUrl'] = this.props.repositoryUrl || ''
             fieldSetting.clientSettings['data-renderIcon'] = this.props.renderIcon || undefined

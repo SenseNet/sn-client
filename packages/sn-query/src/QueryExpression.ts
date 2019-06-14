@@ -107,11 +107,7 @@ export class QueryExpression<TReturns> extends QuerySegment<TReturns> {
    * @param { TReturns[K] } value The value that will be checked. You can use '?' and '*' wildcards
    * @returns { QueryOperator<TReturns> } The Next query operator (fluent)
    */
-  public equalsNested<K extends keyof TReturns>(
-    fieldName: K | '_Text',
-    nestedFieldName: string,
-    value: string,
-  ) {
+  public equalsNested<K extends keyof TReturns>(fieldName: K | '_Text', nestedFieldName: string, value: string) {
     this.stringValue = `${fieldName}:{{${nestedFieldName}:${value.toString()}}}`
     this.segmentType = 'equalsNested'
     return this.finialize()
@@ -125,11 +121,7 @@ export class QueryExpression<TReturns> extends QuerySegment<TReturns> {
    * @returns { QueryOperator<TReturns> } The Next query operator (fluent)
    */
 
-  public notEqualsNested<K extends keyof TReturns>(
-    fieldName: K | '_Text',
-    nestedFieldName: string,
-    value: string,
-  ) {
+  public notEqualsNested<K extends keyof TReturns>(fieldName: K | '_Text', nestedFieldName: string, value: string) {
     this.stringValue = `NOT(${fieldName}:{{${nestedFieldName}:${value.toString()}}})`
     this.segmentType = 'notEqualsNested'
     return this.finialize()

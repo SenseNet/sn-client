@@ -1,5 +1,4 @@
-import { useContext } from 'react'
-import React from 'react'
+import React, { useContext } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { CurrentAncestorsContext, CurrentContentContext } from '../context'
 import { useContentRouting } from '../hooks'
@@ -14,15 +13,12 @@ export const ContentBreadcrumbsComponent: React.FunctionComponent<
 
   return (
     <Breadcrumbs
-      content={ancestors.map(
-        content =>
-          ({
-            displayName: content.DisplayName || content.Name,
-            title: content.Path,
-            url: contentRouter.getPrimaryActionUrl(content),
-            content,
-          } as BreadcrumbItem),
-      )}
+      content={ancestors.map(content => ({
+        displayName: content.DisplayName || content.Name,
+        title: content.Path,
+        url: contentRouter.getPrimaryActionUrl(content),
+        content,
+      }))}
       currentContent={{
         displayName: parent.DisplayName || parent.Name,
         title: parent.Path,

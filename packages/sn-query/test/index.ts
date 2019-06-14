@@ -1,8 +1,6 @@
 import 'jest'
 import { Query } from '../src'
 
-// tslint:disable:variable-name
-// tslint:disable:completed-docs
 class Task {
   public Id!: number
   public Name!: string
@@ -12,7 +10,6 @@ class Task {
   public Approvable!: boolean
   public Description!: string
 }
-// tslint:enable:variable-name
 describe('Query', () => {
   it('Can be constructed', () => {
     const query = new Query(q => q)

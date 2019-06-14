@@ -10,8 +10,7 @@ import { compile } from 'path-to-regexp'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { closeActionMenu, openActionMenu } from '../../../Actions'
-import * as DMSActions from '../../../Actions'
+import { closeActionMenu, openActionMenu, openDialog, closeDialog } from '../../../Actions'
 import { icons } from '../../../assets/icons'
 import { resources } from '../../../assets/resources'
 import { customSchema } from '../../../assets/schema'
@@ -30,7 +29,7 @@ const styles = {
   },
 }
 
-const rootItems = [
+const rootItems: GenericContent[] = [
   {
     Name: 'IMS',
     DisplayName: 'Users and Groups',
@@ -38,7 +37,8 @@ const rootItems = [
     Icon: 'folder',
     Id: 3,
     IsFolder: true,
-  } as GenericContent,
+    Type: 'Folder',
+  },
   {
     Name: 'Workspaces',
     DisplayName: 'Workspaces',
@@ -46,7 +46,8 @@ const rootItems = [
     Icon: 'folder',
     Id: 3778,
     IsFolder: true,
-  } as GenericContent,
+    Type: 'Folder',
+  },
 ]
 
 interface GroupListProps extends RouteComponentProps<any> {
@@ -71,8 +72,8 @@ const mapDispatchToProps = {
   closeActionMenu,
   selectGroup,
   updateGroupListOptions,
-  openDialog: DMSActions.openDialog,
-  closeDialog: DMSActions.closeDialog,
+  openDialog,
+  closeDialog,
   setActive,
   updateContent,
 }
@@ -220,7 +221,6 @@ class GroupList extends Component<ReturnType<typeof mapStateToProps> & typeof ma
                 )
               }
             case 'Actions':
-              // tslint:disable-next-line:no-string-literal
               if (this.isGroupAdmin(props.content.Actions as ActionModel[]) && props.content.Type === 'Group') {
                 return (
                   <TableCell padding="checkbox" style={{ width: 160 }}>

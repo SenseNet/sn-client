@@ -26,23 +26,23 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
     props.dialogProps.onClose && props.dialogProps.onClose(ev, 'backdropClick')
   }
 
-  const localizations = useLocalization().copyMoveContentDialog
-  const [localization, setLocalization] = useState(localizations[props.operation])
-
-  useEffect(() => {
-    setLocalization(localizations[props.operation])
-  }, [props.operation])
-
-  useEffect(() => {
-    props.dialogProps.open === true && list.navigateTo(props.currentParent)
-  }, [props.dialogProps.open])
-
   const repo = useRepository()
   const list = useListPicker({
     repository: repo,
     currentPath: props.currentParent.Path,
     itemsODataOptions: { filter: '' },
   })
+
+  const localizations = useLocalization().copyMoveContentDialog
+  const [localization, setLocalization] = useState(localizations[props.operation])
+
+  useEffect(() => {
+    setLocalization(localizations[props.operation])
+  }, [localizations, props.operation])
+
+  useEffect(() => {
+    props.dialogProps.open === true && list.navigateTo(props.currentParent)
+  }, [list, props.currentParent, props.dialogProps.open])
 
   const logger = useLogger('CopyDialog')
 
@@ -93,7 +93,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
           autoFocus={true}
           disabled={
             (list.selectedItem && list.selectedItem.Path === props.content[0].Path) ||
-            (list.selectedItem && list.selectedItem.Path === '/' + PathHelper.getParentPath(props.content[0].Path))
+            (list.selectedItem && list.selectedItem.Path === `/${PathHelper.getParentPath(props.content[0].Path)}`)
           }
           onClick={async ev => {
             handleClose(ev)
@@ -130,11 +130,11 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
 
                 if (result.d.errors.length === 1) {
                   logger.warning({
-                    message:
-                      localization.copyFailedNotification
-                        .replace('{0}', result.d.errors[0].content.Name)
-                        .replace('{1}', list.selectedItem.DisplayName || list.selectedItem.Name) +
-                      `\r\n${result.d.errors[0].error.message.value}`,
+                    message: `${localization.copyFailedNotification
+                      .replace('{0}', result.d.errors[0].content.Name)
+                      .replace('{1}', list.selectedItem.DisplayName || list.selectedItem.Name)}\r\n${
+                      result.d.errors[0].error.message.value
+                    }`,
                     data: {
                       details: result,
                       ...(props.content.length === 1

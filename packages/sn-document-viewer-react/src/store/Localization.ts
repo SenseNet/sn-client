@@ -146,6 +146,7 @@ export const localizationReducer: Reducer<LocalizationStateType> = (state = defa
         ...action.localization,
       }
     }
+    default:
+      return state
   }
-  return state
 }

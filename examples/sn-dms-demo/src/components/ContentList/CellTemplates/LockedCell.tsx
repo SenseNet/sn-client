@@ -61,20 +61,16 @@ class LockedCell extends React.Component<LockedCellProps & ReturnType<typeof map
     status: this.getStatus(this.props.content),
   }
   public lockedByName = (content: GenericContent | null) => {
-    // tslint:disable-next-line:no-string-literal
-    const checkedOutTo = content ? content['CheckedOutTo'] : null
-    // tslint:disable-next-line:no-string-literal
+    const checkedOutTo = content ? content.CheckedOutTo : null
     if (checkedOutTo ? (checkedOutTo as User).Name === this.props.currentUserName : false) {
       return 'Me'
     } else {
-      // tslint:disable-next-line:no-string-literal
       return (checkedOutTo as User).FullName
     }
   }
   public render() {
     const { content } = this.props
-    // tslint:disable-next-line:no-string-literal
-    const checkedOutBy = content ? (content['CheckedOutTo'] ? this.lockedByName(content) : null) : null
+    const checkedOutBy = content ? (content.CheckedOutTo ? this.lockedByName(content) : null) : null
     return (
       <TableCell style={styles.cell}>
         {content ? (

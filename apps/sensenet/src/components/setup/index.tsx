@@ -68,7 +68,7 @@ const Setup: React.StatelessComponent = () => {
       const response = await repo.loadCollection({
         path: ConstantContent.PORTAL_ROOT.Path,
         oDataOptions: {
-          query: new Query(q => q.typeIs(Settings)).toString() + ' .AUTOFILTERS:OFF',
+          query: `${new Query(q => q.typeIs(Settings)).toString()} .AUTOFILTERS:OFF`,
         },
       })
 
@@ -78,7 +78,7 @@ const Setup: React.StatelessComponent = () => {
 
       setSettings(response.d.results.filter(setting => !Object.keys(localization.descriptions).includes(setting.Path)))
     })()
-  }, [repo])
+  }, [localization.descriptions, repo])
 
   return (
     <div style={{ padding: '1em', margin: '1em', height: '100%', overflow: 'auto' }}>

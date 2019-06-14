@@ -41,8 +41,9 @@ export const loginState: Reducer<LoginState> = (state = LoginState.Pending, acti
   switch (action.type) {
     case 'USER_LOGIN_STATE_CHANGED':
       return action.loginState
+    default:
+      return state
   }
-  return state
 }
 /**
  * Reducer to handle Actions on the loginError property in the session object.

@@ -38,7 +38,7 @@ export const ErrorReport: React.FunctionComponent<{ dismiss?: () => void; error:
         window.location.replace('/')
       })()
     }
-  }, [isSending])
+  }, [description, evtService.values, isSending, props.error, sendLog])
 
   return (
     <Dialog open={true} BackdropProps={{ style: { background: 'black' } }} fullWidth={true}>

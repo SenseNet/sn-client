@@ -3,8 +3,8 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { createAction, isFromAction } from '@sensenet/redux'
 import { Reducer } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
-import { rootStateType } from '.'
 import { CommandProviderManager } from '../services/CommandProviderManager'
+import { rootStateType } from '.'
 
 export interface CommandPaletteItem {
   primaryText: string
@@ -35,7 +35,6 @@ export const setInputValue = createAction((value: string) => ({ type: 'SET_COMMA
 
 export const updateItemsFromTerm = createAction((value: string, repo: Repository) => ({
   type: 'UPDATE_ITEMS_FROM_TERM',
-  // tslint:disable-next-line: no-unnecessary-type-annotation
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const commandProviderManager = options.getInjectable(CommandProviderManager)
     const items = await commandProviderManager.getItems(value, repo)

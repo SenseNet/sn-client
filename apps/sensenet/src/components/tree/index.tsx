@@ -39,21 +39,21 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
 
   const update = () => setReloadToken(Math.random())
 
-  const handleCreate = (c: Created) => {
-    if (
-      opened &&
-      (c.content as GenericContent).IsFolder &&
-      PathHelper.getParentPath(c.content.Path) === PathHelper.trimSlashes(props.parentPath)
-    ) {
-      update()
-    }
-  }
-
   useEffect(() => {
     ancestors && ancestors.length && setAncestorPaths(ancestors.map(a => a.Path))
   }, [ancestors])
 
   useEffect(() => {
+    const handleCreate = (c: Created) => {
+      if (
+        opened &&
+        (c.content as GenericContent).IsFolder &&
+        PathHelper.getParentPath(c.content.Path) === PathHelper.trimSlashes(props.parentPath)
+      ) {
+        update()
+      }
+    }
+
     const subscriptions = [
       eventHub.onContentCreated.subscribe(handleCreate),
       eventHub.onContentCopied.subscribe(handleCreate),
@@ -70,7 +70,17 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
       }),
     ]
     return () => subscriptions.forEach(s => s.dispose())
-  }, [props.parentPath, repo, opened, items])
+  }, [
+    props.parentPath,
+    repo,
+    opened,
+    items,
+    eventHub.onContentCreated,
+    eventHub.onContentCopied,
+    eventHub.onContentMoved,
+    eventHub.onContentModified,
+    eventHub.onContentDeleted,
+  ])
 
   useEffect(() => {
     const ac = new AbortController()
@@ -87,14 +97,14 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
           },
         })
         setItems(children.d.results)
-      } catch (error) {
+      } catch (err) {
         if (!ac.signal.aborted) {
-          setError(error)
+          setError(err)
         }
       }
     })()
     return () => ac.abort()
-  }, [reloadToken])
+  }, [props.loadOptions, props.parentPath, reloadToken, repo])
 
   if (error) {
     throw error

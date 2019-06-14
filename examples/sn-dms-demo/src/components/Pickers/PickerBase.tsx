@@ -66,10 +66,6 @@ const styles = {
 }
 
 class Picker extends React.Component<ReturnType<typeof mapStateToProps>, {}> {
-  constructor(props: Picker['props']) {
-    super(props)
-  }
-
   public handleClose = () => {
     this.props.onClose()
   }

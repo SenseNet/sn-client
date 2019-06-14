@@ -65,7 +65,7 @@ export const SessionContextProvider: React.FunctionComponent = props => {
     ]
     repo.authentication.checkForUpdate()
     return () => observables.forEach(o => o.dispose())
-  }, [repo])
+  }, [loadLock, logger, repo])
   return (
     <SessionContext.Provider value={{ state, currentUser: user, groups }}>{props.children}</SessionContext.Provider>
   )

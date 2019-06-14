@@ -29,7 +29,6 @@ export interface TextFieldProps<T> {
  * Component for searching simple text fragments in a specified field
  * @param props
  */
-// tslint:disable-next-line:variable-name
 export const TextField = <T extends GenericContent>(props: TextFieldProps<T> & MaterialTextFieldProps) => {
   const displayName = (props.fieldSetting && props.fieldSetting.DisplayName) || props.label
   const description = (props.fieldSetting && props.fieldSetting.Description) || ''
@@ -38,7 +37,7 @@ export const TextField = <T extends GenericContent>(props: TextFieldProps<T> & M
     <MaterialTextField
       type="text"
       onChange={ev => {
-        const value = ev.currentTarget.value
+        const { value } = ev.currentTarget
         const query = new Query(q => (value ? q.equals(props.fieldName, `*${value}*`) : q))
         return props.onQueryChange(props.fieldKey || props.fieldName, query, value)
       }}

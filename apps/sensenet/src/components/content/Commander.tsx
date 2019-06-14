@@ -19,7 +19,7 @@ export interface CommanderRouteParams {
   rightParent?: string
 }
 
-export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRouteParams>> = props => {
+export const CommanderComponent: React.FunctionComponent<RouteComponentProps<CommanderRouteParams>> = props => {
   const contentRouter = useContentRouting()
   const repo = useRepository()
 
@@ -54,7 +54,7 @@ export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRou
     return () => {
       historyChangeListener()
     }
-  }, [leftParentId, rightParentId])
+  }, [leftParentId, props.history, props.match.path, rightParentId])
 
   useEffect(() => {
     if (
@@ -63,7 +63,14 @@ export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRou
     ) {
       props.history.push(`/${btoa(repo.configuration.repositoryUrl)}/browse/${leftParentId}/${rightParentId}`)
     }
-  }, [leftParentId, rightParentId])
+  }, [
+    leftParentId,
+    props.history,
+    props.match.params.folderId,
+    props.match.params.rightParent,
+    repo.configuration.repositoryUrl,
+    rightParentId,
+  ])
 
   const [isCopyOpened, setIsCopyOpened] = useState(false)
   const [copyMoveOperation, setCopyMoveOperation] = useState<'copy' | 'move'>('copy')
@@ -203,4 +210,4 @@ export const Commander: React.FunctionComponent<RouteComponentProps<CommanderRou
   )
 }
 
-export default withRouter(Commander)
+export default withRouter(CommanderComponent)

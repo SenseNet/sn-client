@@ -4,7 +4,7 @@ import { combineReducers } from 'redux'
 import { dms } from '../Reducers'
 import { wopi } from './wopi/reducers'
 
-const sensenet = Reducers.sensenet
+const { sensenet } = Reducers
 
 export const rootReducer = combineReducers({
   sensenet,

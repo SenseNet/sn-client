@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 /**
  * @module FieldControls
  */
@@ -32,6 +33,7 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
   NumberProps<T, K>,
   NumberState<T, K>
 > {
+  // eslint-disable-next-line @typescript-eslint/ban-types
   constructor(props: Number<T, K>['props']) {
     super(props)
     this.state = {
@@ -46,9 +48,9 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
    * @param {string} name
    * @param {event} event
    */
-  public handleChange(e: React.ChangeEvent) {
+  public handleChange(e: React.ChangeEvent<{ value: string }>) {
     const { name, onChange } = this.props
-    const value = e.target['value']
+    const { value } = e.target
     onChange(name, value)
   }
   /**

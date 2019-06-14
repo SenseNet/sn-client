@@ -1,4 +1,3 @@
-// tslint:disable
 export interface WebKitFileSystem {
   readonly name: string
   readonly root: WebKitDirectoryEntry
@@ -18,7 +17,7 @@ export interface WebKitDirectoryEntry extends WebKitEntry {
   createReader(): WebKitDirectoryReader
 }
 
-declare var WebKitDirectoryEntry: {
+declare const WebKitDirectoryEntry: {
   prototype: WebKitDirectoryEntry
   new (): WebKitDirectoryEntry
 }
@@ -27,7 +26,7 @@ export interface WebKitDirectoryReader {
   readEntries(successCallback: WebKitEntriesCallback, errorCallback?: WebKitErrorCallback): void
 }
 
-export declare var WebKitDirectoryReader: {
+export declare const WebKitDirectoryReader: {
   prototype: WebKitDirectoryReader
   new (): WebKitDirectoryReader
 }
@@ -40,7 +39,7 @@ export interface WebKitEntry {
   readonly name: string
 }
 
-declare var WebKitEntry: {
+declare const WebKitEntry: {
   prototype: WebKitEntry
   new (): WebKitEntry
 }

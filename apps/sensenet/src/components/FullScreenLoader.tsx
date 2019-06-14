@@ -6,11 +6,14 @@ export interface FullScreenLoaderProps {
   onFinishLoading?: () => void
 }
 
-export const FullScreenLoader: React.FunctionComponent<FullScreenLoaderProps> = props => {
+export const FullScreenLoader: React.FunctionComponent<FullScreenLoaderProps> = ({
+  onStartLoading,
+  onFinishLoading,
+}) => {
   useEffect(() => {
-    props.onStartLoading && props.onStartLoading()
-    return () => props.onFinishLoading && props.onFinishLoading()
-  }, [])
+    onStartLoading && onStartLoading()
+    return () => onFinishLoading && onFinishLoading()
+  }, [onFinishLoading, onStartLoading])
 
   return (
     <div style={{ width: '100%', height: '100%', display: 'flex' }}>

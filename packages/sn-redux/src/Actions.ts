@@ -149,7 +149,7 @@ export const loadContent = <T extends GenericContent = GenericContent>(
 ) => ({
   type: 'LOAD_CONTENT',
   payload: (repository: Repository) => {
-    const o = {} as ODataParams<T>
+    const o: ODataParams<T> = {}
     switch (typeof options.expand) {
       case 'undefined':
         o.expand = 'Workspace'
@@ -475,7 +475,6 @@ export const uploadRequest = <T extends Content>(
   propertyName: string = 'Binary',
 ) => ({
   type: 'UPLOAD_CONTENT',
-  // tslint:disable:completed-docs
   payload: async (repository: Repository) => {
     const data = await repository.upload.file<T>({
       binaryPropertyName: propertyName,

@@ -24,7 +24,7 @@ export const List: React.FunctionComponent<{
   values: Array<ILeveledLogEntry<any>>
   style?: React.CSSProperties
 }> = props => {
-  const filter = useContext(EventListFilterContext).filter
+  const { filter } = useContext(EventListFilterContext)
   const [effectiveValues, setEffectiveValues] = useState<Array<ILeveledLogEntry<any>>>([])
 
   const localization = useLocalization().eventList.list

@@ -14,7 +14,6 @@ describe('SchemaStore', () => {
     const store = new SchemaStore()
     const newSchemaArray: Schema[] = []
     store.setSchemas(newSchemaArray)
-    // tslint:disable-next-line:no-string-literal
     expect(store['schemas']).toBe(newSchemaArray)
   })
 
@@ -22,7 +21,6 @@ describe('SchemaStore', () => {
     const store = new SchemaStore()
     store.setSchemas(DefaultSchemaStore)
     const schema = store.getSchema(User)
-    // tslint:disable-next-line:no-string-literal
     expect(schema.ContentTypeName).toBe('User')
   })
 
@@ -30,7 +28,6 @@ describe('SchemaStore', () => {
     const store = new SchemaStore()
     store.setSchemas(DefaultSchemaStore)
     const schema = store.getSchemaByName('User')
-    // tslint:disable-next-line:no-string-literal
     expect(schema.ContentTypeName).toBe('User')
   })
 
@@ -51,7 +48,6 @@ describe('SchemaStore', () => {
   })
 
   it('Should be able to merge field settings', () => {
-    // tslint:disable-next-line:no-string-literal
     const mergeAction = new SchemaStore()['mergeFieldSettings']
 
     const result = mergeAction(

@@ -11,8 +11,6 @@
  *
  */ /** */
 
-// tslint:disable:naming-convention
-
 import { ActionModel } from './ActionModel'
 import * as ComplexTypes from './ComplexTypes'
 import * as Enums from './Enums'

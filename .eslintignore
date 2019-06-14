@@ -1,0 +1,9 @@
+packages/**/node_modules/*
+examples/**/node_modules/*
+apps/**/node_modules/*
+packages/**/dist/*
+examples/**/build/*
+examples/**/storybook-static/*
+apps/**/bundle/*
+
+examples/sn-react-redux-todo-app/*

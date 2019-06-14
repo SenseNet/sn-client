@@ -39,7 +39,7 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
   useEffect(() => {
     setUrl(repo.configuration.repositoryUrl)
     existingRepo && existingRepo.loginName && setUserName(existingRepo.loginName)
-  }, [repo.configuration.repositoryUrl])
+  }, [existingRepo, repo.configuration.repositoryUrl])
 
   const handleSubmit = async (ev: React.FormEvent) => {
     ev.preventDefault()
@@ -94,11 +94,11 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
           message: localization.loginFailedNotification.replace('{0}', userName).replace('{1}', url),
         })
       }
-    } catch (error) {
+    } catch (err) {
       logger.error({
         message: localization.loginErrorNotification.replace('{0}', userName).replace('{1}', url),
         data: {
-          details: { error },
+          details: { error: err },
         },
       })
     }

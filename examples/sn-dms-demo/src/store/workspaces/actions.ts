@@ -3,6 +3,20 @@ import { User, Workspace } from '@sensenet/default-content-types'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
 import { rootStateType } from '../../store/rootReducer'
 
+export const loadWorkspaces = () => ({
+  type: 'LOAD_WORKSPACES',
+})
+
+export const setWorkspaces = (workspaces: Workspace[]) => ({
+  type: 'SET_WORKSPACES',
+  workspaces,
+})
+
+export const setFavoriteWorkspaces = (workspaces: Workspace[]) => ({
+  type: 'SET_FAVORITE_WORKSPACES',
+  workspaces,
+})
+
 export const getWorkspaces = () => ({
   type: 'GET_WORKSPACES',
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
@@ -20,15 +34,6 @@ export const getWorkspaces = () => ({
       options.dispatch(setWorkspaces(workspaces.d.results))
     }
   },
-})
-
-export const loadWorkspaces = () => ({
-  type: 'LOAD_WORKSPACES',
-})
-
-export const setWorkspaces = (workspaces: Workspace[]) => ({
-  type: 'SET_WORKSPACES',
-  workspaces,
 })
 
 export const loadFavoriteWorkspaces = (userName: string) => ({
@@ -51,11 +56,6 @@ export const loadFavoriteWorkspaces = (userName: string) => ({
   },
 })
 
-export const setFavoriteWorkspaces = (workspaces: Workspace[]) => ({
-  type: 'SET_FAVORITE_WORKSPACES',
-  workspaces,
-})
-
 export const followWorkspace = (userName: string, contentId: number, followed: number[]) => ({
   type: 'FOLLOW_WORKSPACE',
   contentId,
@@ -64,7 +64,7 @@ export const followWorkspace = (userName: string, contentId: number, followed: n
       idOrPath: `/Root/IMS/Public/${userName}`,
       content: {
         FollowedWorkspaces: [...followed, contentId],
-      } as Partial<User>,
+      },
       oDataOptions: { select: 'FollowedWorkspaces', expand: 'FollowedWorkspaces' },
     }),
 })
@@ -77,8 +77,9 @@ export const unfollowWorkspace = (userName: string, contentId: number, followed:
       idOrPath: `/Root/IMS/Public/${userName}`,
       content: {
         FollowedWorkspaces:
-          followed.length === 1 && followed[0] === contentId ? null : [...followed.filter(item => item !== contentId)],
-      } as Partial<User>,
+          (followed.length > 0 && followed.includes(contentId) && [...followed.filter(item => item !== contentId)]) ||
+          followed,
+      },
       oDataOptions: { select: 'FollowedWorkspaces', expand: 'FollowedWorkspaces' },
     }),
 })

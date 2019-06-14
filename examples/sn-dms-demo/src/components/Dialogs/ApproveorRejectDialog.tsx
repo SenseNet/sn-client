@@ -117,7 +117,6 @@ class RestoreVersionDialog extends React.Component<
   }
   public handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
-      // tslint:disable-next-line:no-string-literal
       rejectReason: (e.target as HTMLInputElement).value,
     })
   }

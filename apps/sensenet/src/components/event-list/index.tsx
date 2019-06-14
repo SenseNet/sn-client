@@ -27,7 +27,7 @@ const EventList: React.FunctionComponent<RouteComponentProps<{ eventGuid?: strin
   useEffect(() => {
     const observable = eventService.values.subscribe(values => setEvents(values))
     return () => observable.dispose()
-  }, [])
+  }, [eventService.values])
 
   return (
     <FilterContextProvider>

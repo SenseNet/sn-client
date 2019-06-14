@@ -20,7 +20,7 @@ export class SchemaStore {
    * @param type {string} The name of the Content Type;
    * @returns {Schemas.Schema}
    * ```ts
-   * var genericContentSchema = SenseNet.Content.getSchema(Content);
+   * const genericContentSchema = SenseNet.Content.getSchema(Content);
    * ```
    */
   public getSchema<TType>(currentType: new (...args: any[]) => TType): Schema {
@@ -40,6 +40,7 @@ export class SchemaStore {
     const keys = new Set([...currentFieldSettingsMap.keys(), ...parentFieldSettingsMap.keys()])
 
     return Array.from(keys).map(key => {
+      // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
       return {
         ...parentFieldSettingsMap.get(key),
         ...currentFieldSettingsMap.get(key),

@@ -5,8 +5,7 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import Typography from '@material-ui/core/Typography'
-import React from 'react'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
 import { useInjector, useLocalization, useLogger, useRepository, useTheme } from '../../hooks'
 import { CustomActionCommandProvider } from '../../services/CommandProviders/CustomActionCommandProvider'
@@ -34,7 +33,7 @@ export const ExecuteActionDialog: React.FunctionComponent = () => {
 
   useEffect(() => {
     uri && postBodyCache.set(uri.toString(), postBody)
-  }, [postBody])
+  }, [postBody, uri])
 
   useEffect(() => {
     const stored = uri && postBodyCache.get(uri.toString())
@@ -61,7 +60,7 @@ export const ExecuteActionDialog: React.FunctionComponent = () => {
       }),
     ]
     return () => observables.forEach(o => o.dispose())
-  }, [])
+  }, [customActionService.onExecuteAction])
 
   return (
     <Dialog

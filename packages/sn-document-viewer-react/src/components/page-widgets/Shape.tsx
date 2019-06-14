@@ -6,8 +6,6 @@ import { Annotation, Shape, Shapes } from '../../models'
 import { componentType, Dimensions } from '../../services'
 import { removeShape, RootReducerType, updateShapeData } from '../../store'
 
-// tslint:disable:max-classes-per-file
-
 /**
  * Defined the component's own properties
  */
@@ -116,6 +114,7 @@ abstract class ShapeComponent<T extends Shape = Shape> extends React.Component<
       case 'Delete':
         this.props.canEdit && this.props.removeShape(this.props.shapeType, this.props.shape.guid)
         break
+      // no default
     }
   }
 

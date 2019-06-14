@@ -1,4 +1,3 @@
-// tslint:disable:no-unused-variable
 ;(global as any).addEventListener = () => undefined
 ;(global as any).removeEventListener = () => undefined
 ;(global as any).querySelector = () => ({

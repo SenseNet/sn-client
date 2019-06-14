@@ -1,6 +1,5 @@
 /**
  * @module ViewControls
- *
  */
 import React, { Component, createElement } from 'react'
 
@@ -64,6 +63,7 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
     this.state = {
       schema: controlMapper.getFullSchemaForContentType(this.props.contentTypeName, 'new'),
       dataSource: [],
+      // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
       content: {} as T,
     }
 

@@ -25,6 +25,7 @@ export class ODataUrlBuilder {
       }
     }
     params = params.filter(param => param && param.toString().length > 0)
+    // eslint-disable-next-line prefer-spread
     return [...new Set([].concat.apply([], params as any))] as ODataFieldParameter<T>
   }
 
@@ -55,7 +56,6 @@ export class ODataUrlBuilder {
     options.top = options.top || config.defaultTop
 
     const segments: Array<{ name: string; value: string }> = []
-    // tslint:disable-next-line:forin
     for (const key in options) {
       const name = this.ODATA_PARAMS.indexOf(key) > -1 ? `$${key}` : key
       const plainValue = (options as any)[key]

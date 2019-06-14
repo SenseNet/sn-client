@@ -3,8 +3,7 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import { useEffect, useState } from 'react'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
 import { useInjector, useLocalization, useTheme } from '../../hooks'
 import { CustomActionCommandProvider } from '../../services/CommandProviders/CustomActionCommandProvider'
@@ -41,7 +40,7 @@ export const CustomActionResultDialog: React.FunctionComponent = () => {
       setReadOnly(true)
     })
     return () => observer.dispose()
-  }, [])
+  }, [customActionsService.onActionExecuted])
 
   return (
     <Dialog open={isVisible} onClose={() => setIsVisible(false)} fullWidth={true}>
