@@ -120,9 +120,9 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
     if (this.props.fieldSetting.AllowedTypes) {
       new QueryOperators(query).and.query(q2 => {
         ;(this.props.fieldSetting.AllowedTypes as string[]).map((allowedType, index, array) => {
-          new QueryExpression(q2['queryRef']).term(`TypeIs:${allowedType}`)
+          new QueryExpression(q2.queryRef).term(`TypeIs:${allowedType}`)
           if (index < array.length - 1) {
-            return new QueryOperators(q2['queryRef']).or
+            return new QueryOperators(q2.queryRef).or
           }
         })
         return q2
@@ -132,9 +132,9 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
     if (this.props.fieldSetting.SelectionRoots && this.props.fieldSetting.SelectionRoots.length) {
       new QueryOperators(query).and.query(q2 => {
         ;(this.props.fieldSetting.SelectionRoots as string[]).forEach((root, index, array) => {
-          new QueryExpression(q2['queryRef']).inTree(root)
+          new QueryExpression(q2.queryRef).inTree(root)
           if (index < array.length - 1) {
-            return new QueryOperators(q2['queryRef']).or
+            return new QueryOperators(q2.queryRef).or
           }
         })
         return q2

@@ -63,8 +63,7 @@ export class QuerySegment<TReturns> {
     return this.stringValue
   }
 
-  constructor(protected readonly queryRef: Query<TReturns>) {}
-
+  constructor(readonly queryRef: Query<TReturns>) {}
   /**
    * Finializes the Query segment
    */

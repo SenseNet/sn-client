@@ -68,6 +68,7 @@ export class DisplayName<T extends GenericContent, K extends keyof T> extends Co
    */
   public handleChange(e: React.ChangeEvent) {
     const { name, onChange } = this.props
+    // eslint-disable-next-line dot-notation
     const value = e.target['value']
     onChange(name, value)
   }

@@ -119,7 +119,7 @@ class RemoveUsersFromGroupDialog extends React.Component<
                 <ul style={styles.list}>
                   {selected.map((user: User) => (
                     <li key={user.Id} style={styles.listItem}>
-                      {user['FullName'] || user['DisplayName']}
+                      {user.FullName || user.DisplayName}
                     </li>
                   ))}
                 </ul>

@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 /**
  * @module sn-controls-react
  */

@@ -94,7 +94,7 @@ class DisplayNameMobileCell extends React.Component<
   }
 
   public lockedByName = (content: GenericContent) => {
-    const checkedOutTo = content ? content['CheckedOutTo'] : null
+    const checkedOutTo = content ? content.CheckedOutTo : null
     if (checkedOutTo && (checkedOutTo as User).Name === this.props.currentUserName) {
       return 'Me'
     } else {

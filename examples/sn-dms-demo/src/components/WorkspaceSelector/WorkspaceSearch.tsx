@@ -67,7 +67,7 @@ class WorkspaceSearch extends React.Component<
     this.handleKeyup = this.handleKeyup.bind(this)
   }
   public handleKeyup = (e: any) => {
-    this.props.handleKeyup(e.target['value'])
+    this.props.handleKeyup(e.target.value)
   }
   public closeDropdown = () => {
     this.props.closeDropDown(false)
