@@ -59,6 +59,7 @@ module.exports = {
     'import/no-unresolved': 'off',
     'import/order': 'error',
     'object-shorthand': 'error',
+    'dot-notation': 'error',
   },
   overrides: [
     {
@@ -67,6 +68,7 @@ module.exports = {
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/no-non-null-assertion': 'off',
         '@typescript-eslint/no-object-literal-type-assertion': 'off',
+        'dot-notation': 'off',
       },
     },
   ],
