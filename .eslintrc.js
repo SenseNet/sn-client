@@ -68,6 +68,7 @@ module.exports = {
     'prefer-rest-params': 'error',
     'no-var': 'error',
     'prefer-const': 'error',
+    'prefer-spread': 'error',
   },
   overrides: [
     {

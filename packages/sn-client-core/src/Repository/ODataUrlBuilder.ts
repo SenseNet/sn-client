@@ -25,6 +25,7 @@ export class ODataUrlBuilder {
       }
     }
     params = params.filter(param => param && param.toString().length > 0)
+    // eslint-disable-next-line prefer-spread
     return [...new Set([].concat.apply([], params as any))] as ODataFieldParameter<T>
   }
 

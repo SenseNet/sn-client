@@ -1,3 +1,4 @@
+/* eslint-disable prefer-spread */
 import React from 'react'
 import '../../assets/css/animated-background.css'
 
