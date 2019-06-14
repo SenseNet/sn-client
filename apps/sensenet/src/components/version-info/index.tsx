@@ -138,7 +138,7 @@ export const VersionInfo: React.FunctionComponent = () => {
                                     {`${component.ComponentId} ${component.Version}`}&nbsp;
                                     <a
                                       href={`https://nuget.org/packages/${component.ComponentId}`}
-                                      // eslint-disable-next-line react/jsx-no-target-blank
+                                      rel="noopener noreferrer"
                                       target="_blank">
                                       {device === 'mobile'
                                         ? ''
