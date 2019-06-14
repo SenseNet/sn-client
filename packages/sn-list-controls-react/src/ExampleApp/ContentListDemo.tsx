@@ -51,8 +51,9 @@ export class ContentListDemo extends React.Component<{}, ContentListDemoState> {
               </Tooltip>
             </TableCell>
           )
+        default:
+          return null
       }
-      return null
     },
   }
 

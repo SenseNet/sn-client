@@ -73,6 +73,7 @@ module.exports = {
     '@typescript-eslint/no-useless-constructor': 'error',
     'prefer-template': 'error',
     'prefer-destructuring': ['error', { array: false, object: true }],
+    'default-case': 'error',
   },
   overrides: [
     {

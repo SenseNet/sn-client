@@ -114,6 +114,7 @@ abstract class ShapeComponent<T extends Shape = Shape> extends React.Component<
       case 'Delete':
         this.props.canEdit && this.props.removeShape(this.props.shapeType, this.props.shape.guid)
         break
+      // no default
     }
   }
 

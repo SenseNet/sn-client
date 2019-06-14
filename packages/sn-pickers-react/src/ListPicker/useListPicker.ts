@@ -26,6 +26,7 @@ function reducer<T extends GenericContent>(state: State<T>, action: Action<T>) {
     case NAVIGATE_TO: {
       return { ...state, ...setParentIdAndPath(action.payload.node, action.payload.parent) }
     }
+    // no default
   }
 }
 

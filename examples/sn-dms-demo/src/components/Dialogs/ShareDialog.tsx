@@ -197,6 +197,7 @@ class ShareDialog extends React.Component<
         return <span>{resources.SHARE_LINK_POSTFIX_VIEW}</span>
       case 'Edit':
         return <span>{resources.SHARE_LINK_POSTFIX_EDIT}</span>
+      // no default
     }
   }
 

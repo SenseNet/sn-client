@@ -306,6 +306,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
                       </CurrentContentContext.Provider>
                     </TableCell>
                   )
+                // no default
               }
               if (
                 typeof fieldOptions.content[fieldOptions.field] === 'object' &&

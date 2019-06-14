@@ -392,8 +392,9 @@ export const uploads: Reducer<{ uploads: ExtendedUploadProgressInfo[]; showProgr
         ...state,
         showProgress: false,
       }
+    default:
+      return state
   }
-  return state
 }
 
 export const activeMenuItem: Reducer<string, Action & { itemName?: string }> = (
@@ -445,8 +446,9 @@ export const viewer: Reducer<{ isOpened: boolean; currentDocumentId: number }, A
         ...state,
         isOpened: false,
       }
+    default:
+      return state
   }
-  return state
 }
 
 export const isOpened: Reducer<boolean> = (state = false, action: AnyAction) => {
@@ -455,8 +457,9 @@ export const isOpened: Reducer<boolean> = (state = false, action: AnyAction) => 
       return true
     case 'CLOSE_DIALOG':
       return false
+    default:
+      return state
   }
-  return state
 }
 
 export const onClose: Reducer<() => void | undefined> = (state = () => undefined, action: AnyAction) => {
@@ -465,8 +468,9 @@ export const onClose: Reducer<() => void | undefined> = (state = () => undefined
       return action.onClose
     case 'CLOSE_DIALOG':
       return null
+    default:
+      return state
   }
-  return state
 }
 
 export const dialogContent: Reducer<React.Component | undefined> = (
@@ -478,8 +482,9 @@ export const dialogContent: Reducer<React.Component | undefined> = (
       return action.content
     case 'CLOSE_DIALOG':
       return state
+    default:
+      return state
   }
-  return state
 }
 
 export const dialogTitle: Reducer<string> = (state = '', action: AnyAction) => {
@@ -488,8 +493,9 @@ export const dialogTitle: Reducer<string> = (state = '', action: AnyAction) => {
       return action.title
     case 'CLOSE_DIALOG':
       return {}
+    default:
+      return state
   }
-  return state
 }
 
 export const dialog = combineReducers({
