@@ -30,6 +30,8 @@ const values = {
     delete: 'Delete',
     open: 'Open',
     download: 'Download',
+    wopiEdit: 'Open in online editor',
+    wopiRead: 'View in online editor',
   },
   contentInfoDialog: {
     dialogTitle: 'Info about {0}',
