@@ -13,9 +13,10 @@ export const allWorkspaces: Reducer<Workspace[]> = (state = [], action: AnyActio
 
 export const favorites: Reducer<number[]> = (state = [], action: AnyAction) => {
   switch (action.type) {
-    case 'SET_FAVORITE_WORKSPACES':
+    case 'SET_FAVORITE_WORKSPACES': {
       const items = (action as ReturnType<typeof setFavoriteWorkspaces>).workspaces
       return items.map(item => item.Id)
+    }
     case 'FOLLOW_WORKSPACE_SUCCESS':
       return [...state, action.contentId]
     case 'UNFOLLOW_WORKSPACE_SUCCESS':

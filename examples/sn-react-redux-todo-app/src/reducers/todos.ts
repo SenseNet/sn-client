@@ -119,7 +119,7 @@ export const todoListReducer = (
       return { ...state, isFetching: false, allTasks: (action as ReturnType<typeof finishFetching>).tasks }
     case 'FETCHING_ERROR':
       return { ...state, isFetching: false, error: (action as ReturnType<typeof fetchingError>).error }
-    case 'UPDATE_FILTER':
+    case 'UPDATE_FILTER': {
       const filter = (action as ReturnType<typeof updateFilter>).filter || state.filter || 'all'
       return {
         ...state,
@@ -130,6 +130,7 @@ export const todoListReducer = (
             )
           : state.allTasks,
       }
+    }
     case 'TODO_UPDATED': {
       const updateAction = action as ReturnType<typeof todoUpdated>
       return {
@@ -142,12 +143,13 @@ export const todoListReducer = (
         }),
       }
     }
-    case 'TODO_REMOVED':
+    case 'TODO_REMOVED': {
       const a = action as ReturnType<typeof todoRemoved>
       return {
         ...state,
         allTasks: state.allTasks.filter(t => t.Id !== a.todo.Id),
       }
+    }
     case 'SELECT_TASK':
       return {
         ...state,

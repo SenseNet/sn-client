@@ -125,6 +125,12 @@ interface SettingsMenuProps extends RouteComponentProps<any> {
   matches: boolean
 }
 
+const mapStateToProps = (state: rootStateType) => {
+  return {
+    subactive: state.dms.menu.activeSubmenu,
+  }
+}
+
 const mapDispatchToProps = {
   handleDrawerMenu: DMSActions.handleDrawerMenu,
 }
@@ -191,12 +197,6 @@ class SettingsMenu extends React.Component<
         </div>
       </div>
     )
-  }
-}
-
-const mapStateToProps = (state: rootStateType) => {
-  return {
-    subactive: state.dms.menu.activeSubmenu,
   }
 }
 

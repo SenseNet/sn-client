@@ -93,7 +93,8 @@ export const VersionInfo: React.FunctionComponent = () => {
                           secondary={
                             <a
                               href={`https://github.com/SenseNet/sn-client/tree/${process.env.GIT_BRANCH}`}
-                              target="_blank">
+                              target="_blank"
+                              rel="noopener noreferrer">
                               {process.env.GIT_BRANCH}
                             </a>
                           }
@@ -105,7 +106,8 @@ export const VersionInfo: React.FunctionComponent = () => {
                           secondary={
                             <a
                               href={`https://github.com/SenseNet/sn-client/commit/${process.env.GIT_COMMITHASH}`}
-                              target="_blank">
+                              target="_blank"
+                              rel="noopener noreferrer">
                               {process.env.GIT_COMMITHASH}
                             </a>
                           }
@@ -134,7 +136,10 @@ export const VersionInfo: React.FunctionComponent = () => {
                                 isUpdateAvailable ? (
                                   <>
                                     {`${component.ComponentId} ${component.Version}`}&nbsp;
-                                    <a href={`https://nuget.org/packages/${component.ComponentId}`} target="_blank">
+                                    <a
+                                      href={`https://nuget.org/packages/${component.ComponentId}`}
+                                      rel="noopener noreferrer"
+                                      target="_blank">
                                       {device === 'mobile'
                                         ? ''
                                         : localization.updateAvailable

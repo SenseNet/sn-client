@@ -2,8 +2,6 @@ import { Middleware } from 'redux'
 import { isPromiseMiddlewareAction } from './IsPromiseMiddlewareAction'
 import { PromiseMiddlewareFailedAction, PromiseMiddlewareSucceededAction } from './Types'
 
-// tslint:disable:completed-docs
-
 export const suffixes = {
   loading: 'LOADING',
   success: 'SUCCESS',
@@ -53,7 +51,7 @@ export const promiseMiddleware: <TService>(service: TService) => Middleware = se
         return next({
           ...(action as object),
           type: `${actionType}_${suffixes.loading}`,
-        } as typeof action)
+        })
       }
       return next(action)
     }

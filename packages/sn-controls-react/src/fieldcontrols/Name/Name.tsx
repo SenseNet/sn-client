@@ -1,14 +1,15 @@
+/* eslint-disable dot-notation */
 /**
  * @module FieldControls
  */
 import React, { Component } from 'react'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
-import { ReactShortTextFieldSetting } from '../ShortText/ShortTextFieldSetting'
-import { ReactNameFieldSetting } from './NameFieldSetting'
 
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { GenericContent } from '@sensenet/default-content-types'
+import { ReactClientFieldSettingProps, ReactClientFieldSetting } from '../ClientFieldSetting'
+import { ReactShortTextFieldSetting } from '../ShortText/ShortTextFieldSetting'
+import { ReactNameFieldSetting } from './NameFieldSetting'
 
 /**
  * Interface for Name properties
@@ -56,9 +57,9 @@ export class Name<T extends GenericContent, K extends keyof T> extends Component
    * Handles input changes. Dispatches a redux action to change field value in the state tree.
    * @param e
    */
-  public handleChange(e: React.ChangeEvent) {
+  public handleChange(e: React.ChangeEvent<{ value: string }>) {
     const { onChange } = this.props
-    const value = (e.target as HTMLInputElement).value
+    const { value } = e.target as HTMLInputElement
     this.setState({ value })
     onChange(this.props.name, value as any)
   }

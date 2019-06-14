@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 /**
  * @module FieldControls
  */
@@ -186,7 +187,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
       },
     })
     const { label } = this.state
-    const results = references.d.results
+    const { results } = references.d
     this.setState({
       fieldValue: results.map((item: GenericContent) => ({
         value: item['Id'],

@@ -8,7 +8,6 @@ import { ODataResponse } from '../src/Models/ODataResponse'
 import { ConstantContent } from '../src/Repository/ConstantContent'
 import { isExtendedError } from '../src/Repository/Repository'
 
-// tslint:disable:completed-docs
 declare const global: any
 global.window = {}
 describe('Repository', () => {
@@ -39,7 +38,6 @@ describe('Repository', () => {
       done()
     }
     const fetchRepo = new Repository()
-      // tslint:disable-next-line:no-string-literal
     ;(fetchRepo as any).fetchMethod()
   })
 
@@ -61,7 +59,6 @@ describe('Repository', () => {
       repository.awaitReadyState = async () => {
         done("Shouldn't be called")
       }
-      // tslint:disable-next-line:no-string-literal
       repository['fetchMethod'] = (async () => {
         done()
       }) as any
@@ -512,7 +509,6 @@ describe('Repository', () => {
     })
   })
 
-  // tslint:disable
   /**
    * If there is an API change and these cases breaks, please update them in the **readme.md** as well.
    */
@@ -597,15 +593,15 @@ describe('Repository', () => {
     })
 
     it('Custom action', async () => {
-      interface ICustomActionBodyType {
+      interface CustomActionBodyType {
         Name: string
         Value: string
       }
-      interface ICustomActionReturnType {
+      interface CustomActionReturnType {
         Result: any
       }
 
-      const actionResult = await repository.executeAction<ICustomActionBodyType, ICustomActionReturnType>({
+      const actionResult = await repository.executeAction<CustomActionBodyType, CustomActionReturnType>({
         idOrPath: 'Path/to/content',
         method: 'POST',
         name: 'MyOdataCustomAction',
@@ -616,8 +612,6 @@ describe('Repository', () => {
       })
       console.log(actionResult.Result)
     })
-
-    // tslint:enable
   })
 
   describe('#reloadSchema', () => {

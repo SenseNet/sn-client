@@ -87,9 +87,9 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
     if (this.props['data-allowedTypes']) {
       new QueryOperators(query).and.query(q2 => {
         ;(this.props['data-allowedTypes'] as string[]).map((allowedType, index, array) => {
-          new QueryExpression(q2['queryRef']).term(`TypeIs:${allowedType}`)
+          new QueryExpression(q2.queryRef).term(`TypeIs:${allowedType}`)
           if (index < array.length - 1) {
-            new QueryOperators(q2['queryRef']).or
+            return new QueryOperators(q2.queryRef).or
           }
         })
         return q2
@@ -99,14 +99,13 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
     if (this.props['data-selectionRoot'] && this.props['data-selectionRoot'].length) {
       new QueryOperators(query).and.query(q2 => {
         ;(this.props['data-selectionRoot'] as string[]).forEach((root, index, array) => {
-          new QueryExpression(q2['queryRef']).inTree(root)
+          new QueryExpression(q2.queryRef).inTree(root)
           if (index < array.length - 1) {
-            new QueryOperators(q2['queryRef']).or
+            return new QueryOperators(q2.queryRef).or
           }
         })
         return q2
       })
-      // tslint:enable
     }
 
     this.setState({
@@ -134,8 +133,6 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
           items: values.d.results,
           isOpened: values.d.results.length > 0 ? true : false,
         })
-
-        // tslint:disable-next-line:variable-name
       } catch (_e) {
         /** */
       } finally {
@@ -178,7 +175,7 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
                 value={this.state.selected.length > 0 ? this.getContentById(this.state.selected[0])[displayName] : ''}
                 type="text"
                 onChange={async e => {
-                  this.setState({ inputValue: e.target['value'] })
+                  this.setState({ inputValue: e.target.value })
                   e.persist()
                   await this.handleInputChange(e)
                 }}

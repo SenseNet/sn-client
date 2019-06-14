@@ -33,7 +33,6 @@ import { GridPlaceholder } from './Loaders/GridPlaceholder'
 import { SearchResultsHeader } from './SearchResultsHeader'
 import { UploadBar } from './Upload/UploadBar'
 
-// tslint:disable-next-line:variable-name
 const ConnectedUploadBar = connect(
   (state: rootStateType) => ({
     items: state.dms.uploads.uploads,
@@ -169,7 +168,7 @@ class DocumentLibrary extends React.Component<
     }
     return {
       ...lastState,
-    } as DocumentLibrary['state']
+    }
   }
 
   public handleFileDrop(ev: React.DragEvent) {
@@ -213,7 +212,7 @@ class DocumentLibrary extends React.Component<
 
   private updateLoading = debounce((value: boolean) => {
     this.setState({
-      showLoader: value && !Boolean(this.props.childrenOptions.skip),
+      showLoader: value && !this.props.childrenOptions.skip,
     })
   }, 300)
 

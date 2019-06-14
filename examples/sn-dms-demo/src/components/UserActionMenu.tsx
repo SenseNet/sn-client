@@ -66,7 +66,7 @@ class UserActionMenu extends React.Component<
     return {
       ...lastState,
       userName: newProps.loggedinUser.userName,
-    } as UserActionMenu['state']
+    }
   }
   public handleClick = (e: React.MouseEvent<HTMLElement>) => {
     const { actions, loggedinUser } = this.props

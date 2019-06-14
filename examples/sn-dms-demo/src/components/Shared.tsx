@@ -3,7 +3,6 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import React from 'react'
 
-// tslint:disable-next-line:variable-name
 export const Shared: React.StatelessComponent = () => {
   return (
     <AppBar position="static" style={{ background: '#fff' }}>

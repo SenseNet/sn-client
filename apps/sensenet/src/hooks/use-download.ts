@@ -1,4 +1,3 @@
-import { Repository } from '@sensenet/client-core'
 import { File, GenericContent } from '@sensenet/default-content-types'
 import { isContentFromType } from '../utils/isContentFromType'
 import { useRepository } from './use-repository'
@@ -15,7 +14,8 @@ const downloadFile = (name: string, repositoryUrl: string) => {
   fakeClick(saveLink)
 }
 
-export const useDownload = (content: GenericContent, repo: Repository = useRepository()) => {
+export const useDownload = (content: GenericContent) => {
+  const repo = useRepository()
   const isFile = isContentFromType(content, File, repo.schemas)
   return {
     isFile,

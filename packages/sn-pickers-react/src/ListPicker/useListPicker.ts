@@ -5,6 +5,19 @@ import { useAsync } from 'react-async'
 import { loadItems } from './loaders'
 import { Action, GenericContentWithIsParent, NAVIGATE_TO, SET_SELECTED_ITEM, State } from './types'
 
+const setParentIdAndPath = <T extends GenericContent>(node: T, parent?: T) => {
+  return parent && parent.Id === node.Id
+    ? { parentId: parent.ParentId, path: parent.Path }
+    : { parentId: node.ParentId, path: node.Path }
+}
+
+/**
+ * Reducer to modify the state of the list picker
+ * @template T
+ * @param {State<T>} state
+ * @param {Action<T>} action
+ * @returns a new state
+ */
 function reducer<T extends GenericContent>(state: State<T>, action: Action<T>) {
   switch (action.type) {
     case SET_SELECTED_ITEM: {
@@ -13,13 +26,8 @@ function reducer<T extends GenericContent>(state: State<T>, action: Action<T>) {
     case NAVIGATE_TO: {
       return { ...state, ...setParentIdAndPath(action.payload.node, action.payload.parent) }
     }
+    // no default
   }
-}
-
-const setParentIdAndPath = <T extends GenericContent>(node: T, parent?: T) => {
-  return parent && parent.Id === node.Id
-    ? { parentId: parent.ParentId, path: parent.Path }
-    : { parentId: node.ParentId, path: node.Path }
 }
 
 /**

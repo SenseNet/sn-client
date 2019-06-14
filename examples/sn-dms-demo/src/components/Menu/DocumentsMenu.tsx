@@ -10,8 +10,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
-import * as DMSActions from '../../Actions'
-import { removeUploadItem, uploadFileList } from '../../Actions'
+import { removeUploadItem, uploadFileList, handleDrawerMenu } from '../../Actions'
 import { updateChildrenOptions } from '../../store/documentlibrary/actions'
 import { rootStateType } from '../../store/rootReducer'
 import AddNewMenu from '../ActionMenu/AddNewMenu'
@@ -118,7 +117,7 @@ const mapStateToProps = (state: rootStateType) => {
 const mapDispatchToProps = {
   uploadFileList,
   updateChildrenOptions,
-  handleDrawerMenu: DMSActions.handleDrawerMenu,
+  handleDrawerMenu,
 }
 
 const subMenu = [
@@ -146,7 +145,7 @@ class DocumentsMenu extends React.Component<
   public handleMenuItemClick = (title: string) => {
     this.props.updateChildrenOptions({ query: '' })
     if (this.props.currentWorkspace) {
-      this.props.history.push(`/documents/${btoa(this.props.currentWorkspace.Path + '/Document_Library')}`)
+      this.props.history.push(`/documents/${btoa(`${this.props.currentWorkspace.Path}/Document_Library`)}`)
     } else {
       this.props.history.push('/documents/')
     }

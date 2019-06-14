@@ -296,7 +296,11 @@ class SearchDocuments extends React.Component<
                                   this.handleFieldQueryChanged('owner', query, plainValue, options.updateQuery)
                                 }
                                 value={this.props.searchState.owner}
-                                nestedFieldName={this.props.searchState.owner && this.props.searchState.owner.indexOf('@') > -1 ? 'LoginName' : 'Name'}
+                                nestedFieldName={
+                                  this.props.searchState.owner && this.props.searchState.owner.indexOf('@') > -1
+                                    ? 'LoginName'
+                                    : 'Name'
+                                }
                               />
                             </SearchRow>
                             <SearchRow title="Shared with">

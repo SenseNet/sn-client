@@ -14,10 +14,7 @@
     "content management"
   ],
   "scripts": {
-    "fix": "npm run fix:prettier && npm run fix:tslint",
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
-    "fix:tslint": "tslint --fix --project .",
-    "lint": "tslint --project .",
     "build:webpack": "rimraf bundle && webpack",
     "start": "webpack-dev-server --progress"
   },

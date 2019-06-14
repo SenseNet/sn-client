@@ -23,8 +23,7 @@ import MaterialTextField from '@material-ui/core/TextField'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import { ODataCollectionResponse, Repository } from '@sensenet/client-core'
-import { ReferenceFieldSetting } from '@sensenet/default-content-types'
-import { File as SnFile, Folder, GenericContent, User } from '@sensenet/default-content-types'
+import { ReferenceFieldSetting, File as SnFile, Folder, GenericContent, User } from '@sensenet/default-content-types'
 import { Icon, iconType, MaterialIcon } from '@sensenet/icons-react'
 import { Query } from '@sensenet/query'
 import React from 'react'
@@ -50,7 +49,6 @@ try {
     }
   }
 } catch (error) {
-  // tslint:disable-next-line:no-console
   console.warn('Failed to parse stored settings')
 }
 
@@ -378,7 +376,7 @@ export class ExampleApp extends React.Component<{}, ExampleComponentState> {
           <DialogContent>
             <DialogContentText>
               This example application is a showcase for the{' '}
-              <a href="http://npmjs.com/package/@sensenet/search-react" target="_blank">
+              <a href="http://npmjs.com/package/@sensenet/search-react" target="_blank" rel="noopener noreferrer">
                 @sensenet/search-react
               </a>{' '}
               package and demonstrates the basic functionality with some predefined field filters and an example query
@@ -388,7 +386,7 @@ export class ExampleApp extends React.Component<{}, ExampleComponentState> {
               check that
               <li>
                 Your{' '}
-                <a href="https://community.sensenet.com/docs/cors/" target="_blank">
+                <a href="https://community.sensenet.com/docs/cors/" target="_blank" rel="noopener noreferrer">
                   CORS
                 </a>{' '}
                 settings are correct

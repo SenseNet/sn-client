@@ -1,8 +1,0 @@
-{
-  "extends": ["../../tslint.json"],
-  "rules":{
-    "completed-docs":false,
-    "max-classes-per-file":false,
-    "variable-name":false
-  }
-}

@@ -75,13 +75,16 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
       })
       .then(r => {
         setError('')
-        setResult(r.d.results), setCount(r.d.__count)
+        setResult(r.d.results)
+        setCount(r.d.__count)
       })
       .catch(e => {
         setError(e.message)
         logger.warning({ message: 'Error executing search', data: { details: { error: e }, isDismissed: true } })
       })
-  }, [reloadToken, loadSettingsContext.loadChildrenSettings])
+    // loadSettings should be excluded :(
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reloadToken, contentQuery, repo, personalSettings.commandPalette.wrapQuery, logger])
 
   useEffect(() => {
     ;(async () => {
@@ -102,7 +105,16 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
         scrollLock.release()
       }
     })()
-  }, [scrollToken])
+    // 'result' should be excluded!
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    contentQuery,
+    loadSettingsContext.loadChildrenSettings,
+    personalSettings.commandPalette.wrapQuery,
+    repo,
+    scrollLock,
+    scrollToken,
+  ])
 
   return (
     <div style={{ padding: '1em', margin: '1em', height: '100%', width: '100%' }}>

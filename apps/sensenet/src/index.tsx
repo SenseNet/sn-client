@@ -15,6 +15,7 @@ import {
   ResponsiveContextProvider,
   SessionContextProvider,
   ThemeProvider,
+  snInjector,
 } from './context'
 import { LoggerContextProvider } from './context/LoggerContext'
 import { CommandProviderManager } from './services/CommandProviderManager'
@@ -38,9 +39,6 @@ Commit '${process.env.GIT_COMMITHASH}' `,
   'color: #16AAA6; border-bottom: 1px solid black',
 )
 
-// tslint:disable-next-line: no-string-literal
-const injector = diMiddleware['injector']
-
 diMiddleware
   .getInjectable(CommandProviderManager)
   .RegisterProviders(
@@ -56,7 +54,7 @@ diMiddleware
 ReactDOM.render(
   <CssBaseline>
     <Provider store={store}>
-      <InjectorContext.Provider value={injector}>
+      <InjectorContext.Provider value={snInjector}>
         <LoggerContextProvider>
           <PersonalSettingsContextProvider>
             <LocalizationProvider>

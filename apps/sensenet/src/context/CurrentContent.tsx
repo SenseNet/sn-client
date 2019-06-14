@@ -26,7 +26,7 @@ export const CurrentContentProvider: React.FunctionComponent<{
       }),
     ]
     return () => subscriptions.forEach(s => s.dispose())
-  }, [repo, content])
+  }, [repo, content, injector])
 
   const [error, setError] = useState<Error | undefined>()
 
@@ -38,9 +38,9 @@ export const CurrentContentProvider: React.FunctionComponent<{
           const response = await repo.load({ idOrPath: props.idOrPath, requestInit: { signal: ac.signal } })
           setContent(response.d)
           props.onContentLoaded && props.onContentLoaded(response.d)
-        } catch (error) {
+        } catch (err) {
           if (!ac.signal.aborted) {
-            setError(error)
+            setError(err)
           }
         } finally {
           loadLock.release()
@@ -48,7 +48,7 @@ export const CurrentContentProvider: React.FunctionComponent<{
       })()
     }
     return () => ac.abort()
-  }, [repo, props.idOrPath, reloadToken])
+  }, [repo, props.idOrPath, reloadToken, props, loadLock])
 
   if (error) {
     throw error

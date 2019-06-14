@@ -198,7 +198,7 @@ class DashboardDrawer extends Component<
     }
     return {
       ...lastState,
-    } as DashboardDrawer['state']
+    }
   }
   public handleMenuItemClick = (_e: React.MouseEvent, action: ActionModel) => {
     if ((action as any).Action) {
@@ -208,7 +208,7 @@ class DashboardDrawer extends Component<
         case 'Logout':
           this.props.logout()
           break
-        case 'Profile':
+        case 'Profile': {
           const { currentContent } = this.props
           const userPath = compile('/users/:folderPath?/:otherActions*')({
             folderPath: btoa(currentContent && currentContent.ParentId ? currentContent.ParentId.toString() : ''),
@@ -219,6 +219,7 @@ class DashboardDrawer extends Component<
           this.props.closeActionMenu()
           this.props.handleDrawerMenu(false)
           break
+        }
         default:
           this.props.handleDrawerMenu(false)
           break

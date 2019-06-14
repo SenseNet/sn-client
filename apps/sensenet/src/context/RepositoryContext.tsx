@@ -42,7 +42,7 @@ export const RepositoryContextProviderComponent: React.FunctionComponent<
       })
       setRepo(newRepo)
     }
-  }, [settings.lastRepository, props.match.params.repo])
+  }, [settings.lastRepository, props.match.params.repo, repo.configuration.repositoryUrl, injector, logger])
 
   return <RepositoryContext.Provider value={repo}>{props.children}</RepositoryContext.Provider>
 }

@@ -39,7 +39,7 @@ export class AddNewButton extends React.Component<AddNewButtonProps, {}> {
         onClick={this.handleButtonClick}>
         <Icon type={iconType.materialui} iconName="add" style={{ fontSize: 20, marginRight: 5, color: '#fff' }} />
         {this.props.contentType
-          ? resources.ADD_NEW + ' ' + resources[this.props.contentType.toUpperCase()]
+          ? `${resources.ADD_NEW} ${resources[this.props.contentType.toUpperCase()]}`
           : resources.ADD_NEW}
       </Button>
     )

@@ -30,9 +30,10 @@ export const ids: Reducer<number[], PromiseMiddlewareSucceededAction<any>> = (st
       } else {
         return state
       }
-    case 'DELETE_CONTENT_SUCCESS':
+    case 'DELETE_CONTENT_SUCCESS': {
       const deletedIds = (action.result as PromiseReturns<typeof deleteContent>).d.results.map(d => d.Id)
       return [...state.filter(id => !deletedIds.includes(id))]
+    }
     case 'DELETE_BATCH_SUCCESS':
     case 'MOVE_BATCH_SUCCESS':
       if (action.result.d.results.length > 0) {
@@ -60,9 +61,10 @@ export const entities: Reducer<GenericContent[], PromiseMiddlewareSucceededActio
   switch (action.type) {
     case 'DELETE_CONTENT_SUCCESS':
     case 'DELETE_BATCH_SUCCESS':
-    case 'MOVE_BATCH_SUCCESS':
+    case 'MOVE_BATCH_SUCCESS': {
       const deletedIds = (action.result as PromiseReturns<typeof deleteContent>).d.results.map(i => i.Id)
       return [...state.filter(item => !deletedIds.includes(item.Id))]
+    }
     case 'UPDATE_CONTENT_SUCCESS':
       return state.map(c => {
         if (c.Id === (action.result as PromiseReturns<typeof updateContent>).d.Id) {
@@ -71,7 +73,7 @@ export const entities: Reducer<GenericContent[], PromiseMiddlewareSucceededActio
         return c
       })
     case 'CREATE_CONTENT_SUCCESS':
-    case 'UPLOAD_CONTENT_SUCCESS':
+    case 'UPLOAD_CONTENT_SUCCESS': {
       const newContent = (action.result as PromiseReturns<typeof uploadRequest> | PromiseReturns<typeof createContent>)
         .d as GenericContent
       return state.find(item => item.Id === newContent.Id) !== undefined
@@ -82,6 +84,7 @@ export const entities: Reducer<GenericContent[], PromiseMiddlewareSucceededActio
             return c
           })
         : [newContent, ...state]
+    }
     case 'FETCH_CONTENT_SUCCESS':
       return [...((action.result as PromiseReturns<typeof requestContent>).d.results as GenericContent[])]
     default:

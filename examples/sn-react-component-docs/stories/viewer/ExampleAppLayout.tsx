@@ -45,6 +45,20 @@ import Help from '@material-ui/icons/Help'
 import Send from '@material-ui/icons/Send'
 
 /**
+ * Changes the url to the one with host in it
+ * @param {DocumentData} documentData
+ * @returns {(value: Comment) => Comment}
+ */
+function changeCreatedByUrlToCurrent(documentData: DocumentData): (value: Comment) => Comment {
+  return comment => {
+    return {
+      ...comment,
+      createdBy: { ...comment.createdBy, avatarUrl: `${documentData.hostName}${comment.createdBy.avatarUrl}` },
+    }
+  }
+}
+
+/**
  * Adds a globally unique ID to the shape
  */
 const addGuidToShape = <T extends Shape>(shape: T) => {
@@ -215,7 +229,7 @@ export const exampleSettings = new DocumentViewerSettings({
     return
   },
   getDocumentData: async documentData => {
-    const docData = await fetch(`${documentData.hostName}/odata.svc/` + documentData.idOrPath, {
+    const docData = await fetch(`${documentData.hostName}/odata.svc/${documentData.idOrPath}`, {
       credentials: 'include',
     })
 
@@ -246,15 +260,6 @@ export const exampleSettings = new DocumentViewerSettings({
     }
   },
 })
-
-function changeCreatedByUrlToCurrent(documentData: DocumentData): (value: Comment) => Comment {
-  return comment => {
-    return {
-      ...comment,
-      createdBy: { ...comment.createdBy, avatarUrl: `${documentData.hostName}${comment.createdBy.avatarUrl}` },
-    }
-  }
-}
 
 const localStorageKey = 'sn-docviewer-example'
 
@@ -317,19 +322,16 @@ class ExampleAppLayout extends React.Component<
                   <ToggleThumbnailsWidget />
                   <Download
                     download={doc => {
-                      // tslint:disable-next-line:no-console
                       console.log('Download triggered', doc)
                     }}
                   />
                   <Print
                     print={doc => {
-                      // tslint:disable-next-line:no-console
                       console.log('Print triggered', doc)
                     }}
                   />
                   <Share
                     share={doc => {
-                      // tslint:disable-next-line:no-console
                       console.log('Share triggered', doc)
                     }}
                   />
@@ -430,12 +432,15 @@ class ExampleAppLayout extends React.Component<
                       <ul>
                         <li>
                           you are using sensenet{' '}
-                          <a href="https://community.sensenet.com/docs/install-sn-from-nuget/" target="_blank">
+                          <a
+                            href="https://community.sensenet.com/docs/install-sn-from-nuget/"
+                            target="_blank"
+                            rel="noopener noreferrer">
                             7.0+
                           </a>
                         </li>
                         <li>
-                          <a href="https://community.sensenet.com/docs/cors/" target="_blank">
+                          <a href="https://community.sensenet.com/docs/cors/" target="_blank" rel="noopener noreferrer">
                             CORS
                           </a>{' '}
                           is allowed for the current host

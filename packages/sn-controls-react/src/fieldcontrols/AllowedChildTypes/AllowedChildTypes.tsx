@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 import CircularProgress from '@material-ui/core/CircularProgress'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import FormControl from '@material-ui/core/FormControl'
@@ -122,18 +123,15 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       anchorEl: null as any,
       getMenuItem: (item: T, select: (item: T) => void) => (
         <ListItem key={item.Id} value={item.Id} onClick={() => select(item)} style={{ margin: 0 }}>
-          <ListItemIcon
-            style={{ margin: 0 }}
-            children={
-              this.props['data-renderIcon']
-                ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
-                : renderIconDefault(
-                    item.Icon && typeicons[item.Icon.toLowerCase()]
-                      ? typeicons[item.Icon.toLowerCase()]
-                      : typeicons['contenttype'],
-                  )
-            }
-          />
+          <ListItemIcon style={{ margin: 0 }}>
+            {this.props['data-renderIcon']
+              ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+              : renderIconDefault(
+                  item.Icon && typeicons[item.Icon.toLowerCase()]
+                    ? typeicons[item.Icon.toLowerCase()]
+                    : typeicons['contenttype'],
+                )}
+          </ListItemIcon>
           <ListItemText primary={item.DisplayName} />
         </ListItem>
       ),
@@ -296,18 +294,15 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
             <List dense={true}>
               {this.state.items.map((item, index) => (
                 <ListItem key={index}>
-                  <ListItemIcon
-                    style={{ margin: 0 }}
-                    children={
-                      this.props['data-renderIcon']
-                        ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
-                        : renderIconDefault(
-                            item.Icon && typeicons[item.Icon.toLowerCase()]
-                              ? typeicons[item.Icon.toLowerCase()]
-                              : typeicons['contenttype'],
-                          )
-                    }
-                  />
+                  <ListItemIcon style={{ margin: 0 }}>
+                    {this.props['data-renderIcon']
+                      ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+                      : renderIconDefault(
+                          item.Icon && typeicons[item.Icon.toLowerCase()]
+                            ? typeicons[item.Icon.toLowerCase()]
+                            : typeicons['contenttype'],
+                        )}
+                  </ListItemIcon>
                   <ListItemText primary={item.DisplayName} />
                   {this.state.removeable ? (
                     <ListItemSecondaryAction>
@@ -379,18 +374,15 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
             <List dense={true}>
               {this.state.items.map((item, index) => (
                 <ListItem key={index}>
-                  <ListItemIcon
-                    style={{ margin: 0 }}
-                    children={
-                      this.props['data-renderIcon']
-                        ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
-                        : renderIconDefault(
-                            item.Icon && typeicons[item.Icon.toLowerCase()]
-                              ? typeicons[item.Icon.toLowerCase()]
-                              : typeicons['contenttype'],
-                          )
-                    }
-                  />
+                  <ListItemIcon style={{ margin: 0 }}>
+                    {this.props['data-renderIcon']
+                      ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+                      : renderIconDefault(
+                          item.Icon && typeicons[item.Icon.toLowerCase()]
+                            ? typeicons[item.Icon.toLowerCase()]
+                            : typeicons['contenttype'],
+                        )}
+                  </ListItemIcon>
                   <ListItemText primary={item.DisplayName} />
                   {this.state.removeable ? (
                     <ListItemSecondaryAction>
@@ -463,18 +455,15 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
             <List dense={true}>
               {this.state.items.map((item, index) => (
                 <ListItem key={index}>
-                  <ListItemIcon
-                    style={{ margin: 0 }}
-                    children={
-                      this.props['data-renderIcon']
-                        ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
-                        : renderIconDefault(
-                            item.Icon && typeicons[item.Icon.toLowerCase()]
-                              ? typeicons[item.Icon.toLowerCase()]
-                              : typeicons['contenttype'],
-                          )
-                    }
-                  />
+                  <ListItemIcon style={{ margin: 0 }}>
+                    {this.props['data-renderIcon']
+                      ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+                      : renderIconDefault(
+                          item.Icon && typeicons[item.Icon.toLowerCase()]
+                            ? typeicons[item.Icon.toLowerCase()]
+                            : typeicons['contenttype'],
+                        )}
+                  </ListItemIcon>
                   <ListItemText primary={item.DisplayName} />
                 </ListItem>
               ))}
@@ -489,18 +478,15 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
               <List dense={true}>
                 {this.state.items.map((item, index) => (
                   <ListItem key={index}>
-                    <ListItemIcon
-                      style={{ margin: 0 }}
-                      children={
-                        this.props['data-renderIcon']
-                          ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
-                          : renderIconDefault(
-                              item.Icon && typeicons[item.Icon.toLowerCase()]
-                                ? typeicons[item.Icon.toLowerCase()]
-                                : typeicons['contenttype'],
-                            )
-                      }
-                    />
+                    <ListItemIcon style={{ margin: 0 }}>
+                      {this.props['data-renderIcon']
+                        ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+                        : renderIconDefault(
+                            item.Icon && typeicons[item.Icon.toLowerCase()]
+                              ? typeicons[item.Icon.toLowerCase()]
+                              : typeicons['contenttype'],
+                          )}
+                    </ListItemIcon>
                     <ListItemText primary={item.DisplayName} />
                   </ListItem>
                 ))}

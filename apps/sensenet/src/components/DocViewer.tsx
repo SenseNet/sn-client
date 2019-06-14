@@ -1,7 +1,6 @@
 import { DocumentViewer } from '@sensenet/document-viewer-react'
 import React from 'react'
-import { RouteComponentProps } from 'react-router'
-import { withRouter } from 'react-router'
+import { RouteComponentProps, withRouter } from 'react-router'
 import { CurrentContentProvider } from '../context'
 import { useInjector, useRepository, useSelectionService } from '../hooks'
 import { getViewerSettings } from '../services/GetViewerSettings'

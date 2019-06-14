@@ -15,34 +15,6 @@ export interface SharingEntry {
   ShareDate: string
 }
 
-export const share = createAction(
-  (
-    idOrPath: number | string,
-    token: string,
-    level: SharingEntry['Level'],
-    mode: SharingEntry['Mode'],
-    sendNotification: boolean = false,
-  ) => ({
-    type: 'DMS_SHARE_CONTENT',
-    // tslint:disable-next-line: no-unnecessary-type-annotation
-    inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
-      const repo = options.getInjectable(Repository)
-      try {
-        const entry = await repo.executeAction<{}, SharingEntry>({
-          method: 'POST',
-          name: 'Share',
-          oDataOptions: {},
-          idOrPath,
-          body: { token, level, mode, sendNotification },
-        })
-        options.dispatch(sharingEntryReceived(idOrPath, entry))
-      } catch (error) {
-        options.dispatch(shareFailed(idOrPath, error))
-      }
-    },
-  }),
-)
-
 export const shareFailed = createAction((idOrPath: string | number, error: any) => ({
   type: 'DMS_SHARE_FAILED',
   idOrPath,
@@ -61,10 +33,42 @@ export const sharingEntriesReceived = createAction((idOrPath: number | string, e
   entries,
 }))
 
+export const getSharingEntriesFailed = createAction((idOrPath: string | number, error: any) => ({
+  type: 'DMS_GET_SHARING_ENTRIES_FAILED',
+  idOrPath,
+  error,
+}))
+
+export const share = createAction(
+  (
+    idOrPath: number | string,
+    token: string,
+    level: SharingEntry['Level'],
+    mode: SharingEntry['Mode'],
+    sendNotification: boolean = false,
+  ) => ({
+    type: 'DMS_SHARE_CONTENT',
+    inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
+      const repo = options.getInjectable(Repository)
+      try {
+        const entry = await repo.executeAction<{}, SharingEntry>({
+          method: 'POST',
+          name: 'Share',
+          oDataOptions: {},
+          idOrPath,
+          body: { token, level, mode, sendNotification },
+        })
+        options.dispatch(sharingEntryReceived(idOrPath, entry))
+      } catch (error) {
+        options.dispatch(shareFailed(idOrPath, error))
+      }
+    },
+  }),
+)
+
 const loadLock = new Semaphore(1)
 export const getSharingEntries = createAction((idOrPath: number | string) => ({
   type: 'DMS_GET_SHARING_ENTRIES',
-  // tslint:disable-next-line: no-unnecessary-type-annotation
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const repo = options.getInjectable(Repository)
     try {
@@ -82,12 +86,6 @@ export const getSharingEntries = createAction((idOrPath: number | string) => ({
       loadLock.release()
     }
   },
-}))
-
-export const getSharingEntriesFailed = createAction((idOrPath: string | number, error: any) => ({
-  type: 'DMS_GET_SHARING_ENTRIES_FAILED',
-  idOrPath,
-  error,
 }))
 
 export type SharingStateType = Record<string | number, Record<string, SharingEntry>>

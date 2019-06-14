@@ -16,9 +16,19 @@
   "devDependencies": {
     "@types/enzyme": "^3.9.3",
     "@types/jest": "^24.0.13",
+    "@typescript-eslint/eslint-plugin": "^1.10.2",
+    "@typescript-eslint/parser": "^1.10.2",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.13.2",
     "enzyme-to-json": "^3.3.5",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^4.3.0",
+    "eslint-plugin-cypress": "^2.2.1",
+    "eslint-plugin-import": "^2.17.3",
+    "eslint-plugin-jsdoc": "^8.0.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.13.0",
+    "eslint-plugin-react-hooks": "^1.6.0",
     "husky": "^2.3.0",
     "jest": "^24.8.0",
     "lerna": "^3.14.1",
@@ -28,10 +38,6 @@
     "start-server-and-test": "^1.9.1",
     "ts-jest": "^24.0.2",
     "tslib": "^1.9.3",
-    "tslint": "^5.16.0",
-    "tslint-config-prettier": "^1.18.0",
-    "tslint-consistent-codestyle": "1.15.1",
-    "tslint-react": "^4.0.0",
     "typescript": "^3.5.1",
     "wait-on": "^3.2.0"
   },
@@ -46,12 +52,11 @@
     "build:dms": "yarn && yarn build && yarn workspace sn-dms-demo run build:webpack",
     "build:sn-app": "yarn && yarn build && yarn workspace @sensenet/sn-app run build:webpack",
     "build:docs": "yarn && yarn build && yarn workspace sn-react-component-docs run build-storybook",
-    "clean:packages": "rimraf ./packages/**/dist ./packages/**/tsconfig.tsbuildinfo",
+    "clean:packages": "rimraf ./packages/**/dist ./packages/**/tsconfig.tsbuildinfo ./packages/tsconfig.tsbuildinfo",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "clean": "lerna clean",
-    "fix": "lerna run fix --parallel",
-    "lint": "lerna run lint"
+    "lint": "eslint . --ext .tsx,.ts --cache"
   },
   "husky": {
     "hooks": {
@@ -61,7 +66,7 @@
   "lint-staged": {
     "linters": {
       "*.{ts,tsx}": [
-        "tslint --fix",
+        "eslint --ext .tsx,.ts --cache --fix",
         "prettier --write",
         "git add"
       ],

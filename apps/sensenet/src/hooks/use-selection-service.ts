@@ -1,5 +1,8 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { InjectorContext } from '../context'
 import { SelectionService } from '../services/SelectionService'
 
-export const useSelectionService = () => useContext(InjectorContext).getInstance(SelectionService)
+export const useSelectionService = () => {
+  const [selectionService] = useState(useContext(InjectorContext).getInstance(SelectionService))
+  return selectionService
+}

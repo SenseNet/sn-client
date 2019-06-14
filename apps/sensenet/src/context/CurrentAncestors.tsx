@@ -38,7 +38,14 @@ export const CurrentAncestorsProvider: React.FunctionComponent = props => {
       }),
     ]
     return () => subscriptions.forEach(s => s.dispose())
-  }, [repo.configuration.repositoryUrl])
+  }, [
+    ancestors,
+    eventHub.onContentDeleted,
+    eventHub.onContentModified,
+    eventHub.onContentMoved,
+    repo.configuration.repositoryUrl,
+    requestReload,
+  ])
   const [error, setError] = useState<Error | undefined>()
 
   useEffect(() => {
@@ -59,16 +66,16 @@ export const CurrentAncestorsProvider: React.FunctionComponent = props => {
           },
         })
         setAncestors(ancestorsResult.d.results)
-      } catch (error) {
+      } catch (err) {
         if (!ac.signal.aborted) {
-          setError(error)
+          setError(err)
         }
       } finally {
         loadLock.release()
       }
     })()
     return () => ac.abort()
-  }, [currentContent.Id, reloadToken])
+  }, [currentContent.Id, loadLock, reloadToken, repo])
 
   if (error) {
     throw error

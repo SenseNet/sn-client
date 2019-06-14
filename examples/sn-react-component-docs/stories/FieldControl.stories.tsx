@@ -4,10 +4,7 @@ import { withActions } from '@storybook/addon-actions/dist/preview'
 import { boolean, date, number, select, text, withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
 import React from 'react'
-
 import { Repository } from '@sensenet/client-core'
-import { customSchema } from './ViewControl.stories'
-
 import {
   AllowedChildTypes,
   AutoComplete,
@@ -32,6 +29,39 @@ import {
   TimePicker,
 } from '@sensenet/controls-react/src'
 import { GenericContent, User } from '@sensenet/default-content-types/src'
+import shorttextNotes from '../notes/fieldcontrols/ShortText.md'
+import displaynameNotes from '../notes/fieldcontrols/DisplayName.md'
+import checkboxgroupNotes from '../notes/fieldcontrols/CheckboxGroup.md'
+import dropdownlistNotes from '../notes/fieldcontrols/DropDownList.md'
+import radiobuttongroupNotes from '../notes/fieldcontrols/RadioButtonGroup.md'
+import datetimepickerNotes from '../notes/fieldcontrols/DateTimePicker.md'
+import datepickerNotes from '../notes/fieldcontrols/DatePicker.md'
+import timepickerNotes from '../notes/fieldcontrols/TimePicker.md'
+import textareasNotes from '../notes/fieldcontrols/Textarea.md'
+import richtextNotes from '../notes/fieldcontrols/RichTextEditor.md'
+import nameNotes from '../notes/fieldcontrols/Name.md'
+import filenameNotes from '../notes/fieldcontrols/FileName.md'
+import passwordNotes from '../notes/fieldcontrols/Password.md'
+import numberNotes from '../notes/fieldcontrols/Number.md'
+import tagsInputNotes from '../notes/fieldcontrols/TagsInput.md'
+import autocompleteNotes from '../notes/fieldcontrols/AutoComplete.md'
+import fileUploadNotes from '../notes/fieldcontrols/FileUpload.md'
+import referenceGridNotes from '../notes/fieldcontrols/ReferenceGrid.md'
+import avatarNotes from '../notes/fieldcontrols/Avatar.md'
+import approvingModeChoiceNotes from '../notes/fieldcontrols/ApprovingModeChoice.md'
+import versioningModeChoiceNotes from '../notes/fieldcontrols/VersioningModeChoice.md'
+import versioningModeNotes from '../notes/fieldcontrols/VersioningMode.md'
+import colorPickerNotes from '../notes/fieldcontrols/ColorPicker.md'
+import allowedTypeNotes from '../notes/fieldcontrols/AllowedChildTypes.md'
+import { customSchema } from './ViewControl.stories'
+
+/**
+ * Date knob
+ */
+function dateKnob(name: string, defaultValue = new Date()) {
+  const stringTimestamp = date(name, defaultValue)
+  return new Date(stringTimestamp).toISOString()
+}
 
 export const testRepository = new Repository({
   repositoryUrl: 'https://dmsservice.demo.sensenet.com',
@@ -47,9 +77,9 @@ const currencyOptions = {
   JPY: '¥',
 }
 
-const tagsInputDataSource = [
-  { DisplayName: 'Alba Monday', Id: 1, Type: 'User' } as User,
-  { DisplayName: 'Terry Cherry', Id: 2, Type: 'User' } as User,
+const tagsInputDataSource: User[] = [
+  { Path: 'Root/Users/Alba', Name: 'Alba Monday', DisplayName: 'Alba Monday', Id: 1, Type: 'User' },
+  { Path: 'Root/Users/Terry', Name: 'Terry Cherry', DisplayName: 'Terry Cherry', Id: 2, Type: 'User' },
 ]
 
 const referenceGridDataSource = [
@@ -58,36 +88,12 @@ const referenceGridDataSource = [
   { DisplayName: 'Duis et lorem.doc', Id: 4085, IsFolder: false, Children: [], Type: 'File' },
 ]
 
-const testContent = {
+const testContent: GenericContent = {
   Name: 'Document_Library',
   Id: 4808,
   Path: '/Root/Sites/Default_Site',
-} as GenericContent
-
-const shorttextNotes = require('../notes/fieldcontrols/ShortText.md')
-const displaynameNotes = require('../notes/fieldcontrols/DisplayName.md')
-const checkboxgroupNotes = require('../notes/fieldcontrols/CheckboxGroup.md')
-const dropdownlistNotes = require('../notes/fieldcontrols/DropDownList.md')
-const radiobuttongroupNotes = require('../notes/fieldcontrols/RadioButtonGroup.md')
-const datetimepickerNotes = require('../notes/fieldcontrols/DateTimePicker.md')
-const datepickerNotes = require('../notes/fieldcontrols/DatePicker.md')
-const timepickerNotes = require('../notes/fieldcontrols/TimePicker.md')
-const textareasNotes = require('../notes/fieldcontrols/Textarea.md')
-const richtextNotes = require('../notes/fieldcontrols/RichTextEditor.md')
-const nameNotes = require('../notes/fieldcontrols/Name.md')
-const filenameNotes = require('../notes/fieldcontrols/FileName.md')
-const passwordNotes = require('../notes/fieldcontrols/Password.md')
-const numberNotes = require('../notes/fieldcontrols/Number.md')
-const tagsInputNotes = require('../notes/fieldcontrols/TagsInput.md')
-const autocompleteNotes = require('../notes/fieldcontrols/AutoComplete.md')
-const fileUploadNotes = require('../notes/fieldcontrols/FileUpload.md')
-const referenceGridNotes = require('../notes/fieldcontrols/ReferenceGrid.md')
-const avatarNotes = require('../notes/fieldcontrols/Avatar.md')
-const approvingModeChoiceNotes = require('../notes/fieldcontrols/ApprovingModeChoice.md')
-const versioningModeChoiceNotes = require('../notes/fieldcontrols/VersioningModeChoice.md')
-const versioningModeNotes = require('../notes/fieldcontrols/VersioningMode.md')
-const colorPickerNotes = require('../notes/fieldcontrols/ColorPicker.md')
-const allowedTypeNotes = require('../notes/fieldcontrols/AllowedChildTypes.md')
+  Type: 'GenericContent',
+}
 
 storiesOf('FieldControls.AllowedChildTypes', module)
   .addDecorator(withKnobs)
@@ -99,7 +105,7 @@ storiesOf('FieldControls.AllowedChildTypes', module)
       <div>
         <div style={{ fontStyle: 'italic', fontSize: 13 }}>
           To see this control in action, please login at{' '}
-          <a target="_blank" href="https://devservice.demo.sensenet.com">
+          <a target="_blank" href="https://devservice.demo.sensenet.com" rel="noopener noreferrer ">
             https://devservice.demo.sensenet.com
           </a>
         </div>
@@ -116,8 +122,8 @@ storiesOf('FieldControls.AllowedChildTypes', module)
           content={testContent}
           data-defaultValue={
             [
-              { Name: 'Folder', DisplayName: 'Folder', Icon: 'Folder' } as GenericContent,
-              { Name: 'File', DisplayName: 'File', Icon: 'file' } as GenericContent,
+              { Name: 'Folder', DisplayName: 'Folder', Icon: 'Folder' },
+              { Name: 'File', DisplayName: 'File', Icon: 'file' },
             ] as any
           }
         />
@@ -131,7 +137,7 @@ storiesOf('FieldControls.AllowedChildTypes', module)
       <div>
         <div style={{ fontStyle: 'italic', fontSize: 13 }}>
           To see this control in action, please login at{' '}
-          <a target="_blank" href="https://devservice.demo.sensenet.com">
+          <a target="_blank" href="https://devservice.demo.sensenet.com" rel="noopener noreferrer ">
             https://devservice.demo.sensenet.com
           </a>
         </div>
@@ -157,7 +163,7 @@ storiesOf('FieldControls.AllowedChildTypes', module)
       <div>
         <div style={{ fontStyle: 'italic', fontSize: 13 }}>
           To see this control in action, please login at{' '}
-          <a target="_blank" href="https://devservice.demo.sensenet.com">
+          <a target="_blank" href="https://devservice.demo.sensenet.com" rel="noopener noreferrer ">
             https://devservice.demo.sensenet.com
           </a>
         </div>
@@ -259,15 +265,15 @@ storiesOf('FieldControls.Avatar', module)
         dataSource={referenceGridDataSource}
         repository={testRepository}
         data-selectionRoot={['/demoavatars']}
-        content={
-          {
-            DisplayName: 'Alba Monday',
-            Id: 4,
-            Icon: 'user',
-            Type: 'User',
-            Avatar: { Url: 'https://devservice.demo.sensenet.comRoot/Sites/Default_Site/demoavatars/alba.jpg' },
-          } as User
-        }
+        content={{
+          Name: 'Alba Monday',
+          Path: 'Root/Users/Alba',
+          DisplayName: 'Alba Monday',
+          Id: 4,
+          Icon: 'user',
+          Type: 'User',
+          Avatar: { Url: 'https://devservice.demo.sensenet.com/Root/Sites/Default_Site/demoavatars/alba.jpg' },
+        }}
       />
     ),
     { notes: { markdown: avatarNotes } },
@@ -287,15 +293,15 @@ storiesOf('FieldControls.Avatar', module)
         repository={testRepository}
         data-fieldValue="/Root/Sites/Default_Site/demoavatars/alba.jpg"
         data-selectionRoot={['/demoavatars']}
-        content={
-          {
-            DisplayName: 'Alba Monday',
-            Id: 4,
-            Icon: 'user',
-            Type: 'User',
-            Avatar: { Url: 'https://devservice.demo.sensenet.comRoot/Sites/Default_Site/demoavatars/alba.jpg' },
-          } as User
-        }
+        content={{
+          Name: 'Alba Monday',
+          Path: 'Root/Users/Alba',
+          DisplayName: 'Alba Monday',
+          Id: 4,
+          Icon: 'user',
+          Type: 'User',
+          Avatar: { Url: 'https://devservice.demo.sensenet.com/Root/Sites/Default_Site/demoavatars/alba.jpg' },
+        }}
       />
     ),
     { notes: { markdown: avatarNotes } },
@@ -312,15 +318,15 @@ storiesOf('FieldControls.Avatar', module)
         onChange={action('change')}
         dataSource={tagsInputDataSource}
         repository={testRepository}
-        content={
-          {
-            DisplayName: 'Alba Monday',
-            Id: 4,
-            Icon: 'user',
-            Type: 'User',
-            Avatar: { Url: 'https://devservice.demo.sensenet.comRoot/Sites/Default_Site/demoavatars/alba.jpg' },
-          } as User
-        }
+        content={{
+          Name: 'Alba Monday',
+          Path: 'Root/Users/Alba',
+          DisplayName: 'Alba Monday',
+          Id: 4,
+          Icon: 'user',
+          Type: 'User',
+          Avatar: { Url: 'https://devservice.demo.sensenet.com/Root/Sites/Default_Site/demoavatars/alba.jpg' },
+        }}
       />
     ),
     { notes: { markdown: avatarNotes } },
@@ -1246,15 +1252,15 @@ storiesOf('FieldControls.ReferenceGrid', module)
         data-actionName="browse"
         data-labelText={text('Label', 'ReferenceGrid label')}
         className={text('Additional class name', 'reference-field')}
-        data-fieldValue={
-          {
-            DisplayName: 'Alba Monday',
-            Id: 4,
-            Icon: 'user',
-            Type: 'User',
-            Avatar: { Url: 'https://devservice.demo.sensenet.comRoot/Sites/Default_Site/demoavatars/alba.jpg' },
-          } as User
-        }
+        data-fieldValue={{
+          Name: 'Alba Monday',
+          Path: 'Root/Users/Alba',
+          DisplayName: 'Alba Monday',
+          Id: 4,
+          Icon: 'user',
+          Type: 'User',
+          Avatar: { Url: 'https://devservice.demo.sensenet.com/Root/Sites/Default_Site/demoavatars/alba.jpg' },
+        }}
         onChange={action('change')}
         name="Name"
         dataSource={tagsInputDataSource}
@@ -1570,8 +1576,3 @@ storiesOf('FieldControls.TimePicker', module)
     ),
     { notes: { markdown: timepickerNotes } },
   )
-
-function dateKnob(name: string, defaultValue = new Date()) {
-  const stringTimestamp = date(name, defaultValue)
-  return new Date(stringTimestamp).toISOString()
-}

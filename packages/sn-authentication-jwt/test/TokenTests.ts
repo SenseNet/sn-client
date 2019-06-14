@@ -1,8 +1,6 @@
 import { Token } from '../src/Token'
 import { MockTokenFactory } from './__Mocks__/MockTokenFactory'
 
-// tslint:disable:completed-docs
-
 describe('Token', () => {
   it('should be constructed', () => {
     const t = MockTokenFactory.CreateValid()

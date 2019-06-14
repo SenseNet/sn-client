@@ -1,7 +1,5 @@
 import { IdentityKind } from '@sensenet/default-content-types'
 
-// tslint:disable:completed-docs
-
 /**
  * Response model for gettins permission identities
  */

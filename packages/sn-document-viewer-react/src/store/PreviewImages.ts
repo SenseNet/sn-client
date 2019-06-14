@@ -1,10 +1,9 @@
-import { Action } from 'redux'
-import { Reducer } from 'redux'
+import { Action, Reducer } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
-import { RootReducerType } from '.'
 import { DocumentData, DocumentViewerSettings, PreviewImageData } from '../models'
 import { ImageUtil } from '../services'
 import { getComments } from './Comments'
+import { RootReducerType } from '.'
 
 /**
  * Preview images store model definition

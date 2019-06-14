@@ -9,6 +9,7 @@ import React from 'react'
 import { ZoomWidgetComponent } from '../src/components/document-widgets/ZoomMode'
 import { defaultLocalization } from '../src/store/Localization'
 
+// eslint-disable-next-line require-jsdoc
 function getComponentWithProps(props?: Partial<ZoomWidgetComponent['props']>) {
   return shallow(
     <ZoomWidgetComponent

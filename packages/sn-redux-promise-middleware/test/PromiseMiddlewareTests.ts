@@ -1,5 +1,5 @@
 import 'jest'
-import { Action, applyMiddleware, createStore, Unsubscribe } from 'redux'
+import { applyMiddleware, createStore } from 'redux'
 import { promiseMiddleware } from '../src/PromiseMiddleware'
 import { PromiseMiddlewareAction } from '../src/Types'
 
@@ -41,9 +41,8 @@ export const promiseMiddlewareTest = describe('PromiseMiddleware', () => {
       },
     } as PromiseMiddlewareAction<typeof customApi, any>)
 
-    let subscription!: Unsubscribe
-    subscription = store.subscribe(() => {
-      const actions: Action[] = store.getState().actions
+    const subscription = store.subscribe(() => {
+      const { actions } = store.getState()
       if (actions.find(a => a.type === 'EXAMPLE_ACTION_SUCCESS')) {
         subscription()
         done()
@@ -67,9 +66,8 @@ export const promiseMiddlewareTest = describe('PromiseMiddleware', () => {
       },
     } as PromiseMiddlewareAction<undefined, any>)
 
-    let subscription!: Unsubscribe
-    subscription = store.subscribe(() => {
-      const actions: Action[] = store.getState().actions
+    const subscription = store.subscribe(() => {
+      const { actions } = store.getState()
       if (actions.find(a => a.type === 'EXAMPLE_ACTION_FAILURE')) {
         subscription()
         done()

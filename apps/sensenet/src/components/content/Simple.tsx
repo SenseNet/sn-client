@@ -31,7 +31,7 @@ export const SimpleListComponent: React.FunctionComponent<RouteComponentProps<{ 
     return () => {
       historyChangeListener()
     }
-  }, [leftParentId])
+  }, [leftParentId, props.history, props.match.path])
 
   return (
     <div style={{ display: 'flex', width: '100%', height: '100%' }}>

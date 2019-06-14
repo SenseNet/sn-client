@@ -102,7 +102,6 @@ class Users extends Component<ReturnType<typeof mapStateToProps> & typeof mapDis
     } catch (error) {
       /** Cannot parse current folder from URL */
       return compile(newProps.match.path)({ folderPath: '' })
-      // tslint:disable-next-line:no-empty
     }
   }
   public static getDerivedStateFromProps(newProps: Users['props'], lastState: Users['state']) {
@@ -115,7 +114,7 @@ class Users extends Component<ReturnType<typeof mapStateToProps> & typeof mapDis
     return {
       ...lastState,
       userName: newProps.currentItem ? newProps.currentItem.Name : '',
-    } as Users['state']
+    }
   }
   public handleDeleteUsers = () => {
     const users = this.props.selectedUsers

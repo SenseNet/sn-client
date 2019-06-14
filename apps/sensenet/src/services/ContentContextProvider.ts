@@ -36,6 +36,9 @@ export class ContentContextProvider {
             } else if (content.Name.endsWith('.md')) {
               return 'markdown'
             }
+            break
+          default:
+            return ''
         }
       }
     }

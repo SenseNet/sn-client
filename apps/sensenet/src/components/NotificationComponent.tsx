@@ -5,9 +5,8 @@ import IconButton from '@material-ui/core/IconButton'
 import Snackbar from '@material-ui/core/Snackbar'
 import Close from '@material-ui/icons/Close'
 import { sleepAsync } from '@sensenet/client-utils'
-import React from 'react'
-import { useContext, useEffect, useState } from 'react'
-import { ResponsiveContext } from '../context'
+import React, { useContext, useEffect, useState } from 'react'
+import { ResponsiveContext, RepositoryContext } from '../context'
 import { useInjector } from '../hooks'
 import { EventLogEntry, EventService } from '../services/EventService'
 import { RepositoryManager } from '../services/RepositoryManager'
@@ -62,7 +61,7 @@ export const NotificationComponent: React.FunctionComponent = () => {
       setValues(Array.from(Object.entries(change))),
     )
     return () => subscription.dispose()
-  }, [])
+  }, [eventService.notificationValues])
 
   return (
     <div>
@@ -94,11 +93,9 @@ export const NotificationComponent: React.FunctionComponent = () => {
             autoHideDuration={(item.data && item.data.autoHideDuration) || getAutoHideDuration(item)}
             message={
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <Icon
-                  repository={repoManager.getRepository(item.data.relatedRepository)}
-                  item={item.data.relatedContent || item}
-                  style={{ marginRight: '1em' }}
-                />
+                <RepositoryContext.Provider value={repoManager.getRepository(item.data.relatedRepository)}>
+                  <Icon item={item.data.relatedContent || item} style={{ marginRight: '1em' }} />
+                </RepositoryContext.Provider>
                 <div
                   title={item.message}
                   style={{ overflow: 'hidden', textOverflow: 'ellipsis', wordBreak: 'break-word' }}>

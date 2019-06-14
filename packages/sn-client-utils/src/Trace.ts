@@ -122,12 +122,15 @@ export class Trace {
     return (objectTrace.methodMappings.get(method.name) as any) as MethodMapping<TReturns, TArgs>
   }
 
-  private static traceStart<TReturns, TArgs extends any[]>(methodTrace: MethodMapping<TReturns, TArgs>, args: TArgs[]) {
+  private static traceStart<TReturns, TArgs extends any[]>(
+    methodTrace: MethodMapping<TReturns, TArgs[]>,
+    args: TArgs[],
+  ) {
     const startDateTime = new Date()
     const traceValue = {
       methodArguments: args,
       startDateTime,
-    } as TraceMethodCall<TArgs>
+    }
     methodTrace.callObservable.setValue(traceValue)
     return traceValue
   }

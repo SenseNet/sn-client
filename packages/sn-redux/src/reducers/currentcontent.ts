@@ -76,10 +76,11 @@ export const fields: Reducer<{}> = (state = {}, action) => {
   switch (action.type) {
     case 'LOAD_CONTENT_SUCCESS':
       return {}
-    case 'CHANGE_FIELD_VALUE':
+    case 'CHANGE_FIELD_VALUE': {
       const f: any = state
       f[action.name] = action.value
       return f
+    }
     default:
       return state
   }

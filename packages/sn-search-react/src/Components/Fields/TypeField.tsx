@@ -72,11 +72,10 @@ export class TypeField extends Component<TypeFieldProps, TypeFieldState> {
     const selected = this.props.types.filter(typeName => values.indexOf(typeName.name) > -1)
     const query = new Query(q => {
       selected.map((contentType, currentIndex) => {
-        // tslint:disable
-        const queryRef = q['queryRef']
+        const { queryRef } = q
         new QueryExpression(queryRef).typeIs(contentType)
         if (currentIndex < selected.length - 1) {
-          new QueryOperators(queryRef).or
+          return new QueryOperators(queryRef).or
         }
       })
       return q

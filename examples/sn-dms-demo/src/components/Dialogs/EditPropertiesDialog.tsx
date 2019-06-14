@@ -46,10 +46,12 @@ interface EditPropertiesDialogState {
 
 const LoadableEditView = Loadable({
   loader: async () => {
-    const module = await import(/* webpackChunkName: "controls-react" */ '@sensenet/controls-react/dist/viewcontrols/EditView')
+    const module = await import(
+      /* webpackChunkName: "controls-react" */ '@sensenet/controls-react/dist/viewcontrols/EditView'
+    )
     return module.EditView
   },
-  loading: () => <FullScreenLoader />,
+  loading: FullScreenLoader,
 })
 
 class EditPropertiesDialog extends React.Component<
@@ -71,6 +73,7 @@ class EditPropertiesDialog extends React.Component<
       const schema = dmsInjector.getInstance(Repository).schemas.getSchemaByName(newProps.contentTypeName)
       const editableFields = schema.FieldSettings.filter(field => field.VisibleEdit).map(field => field.Name)
       editableFields.push('Icon')
+      // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
       const options = {
         select: editableFields,
         metadata: 'no',

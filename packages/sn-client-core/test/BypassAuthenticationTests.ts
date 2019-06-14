@@ -1,8 +1,6 @@
 import 'jest'
 import { BypassAuthentication } from '../src'
 
-// tslint:disable:completed-docs
-
 describe('BypassAuthentication', () => {
   it('Should be constructed', () => {
     const auth = new BypassAuthentication()

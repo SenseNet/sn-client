@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -56,7 +57,7 @@ export interface AvatarProps<T extends GenericContent, K extends keyof T>
 export interface AvatarState<T extends GenericContent, _K extends keyof T> {
   fieldValue: any
   pickerIsOpen: boolean
-  selected: GenericContent
+  selected?: GenericContent
 }
 
 export class Avatar<T extends GenericContent, K extends keyof T> extends Component<
@@ -126,19 +127,19 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
   }
   public handleCancelClick = () => {
     this.setState({
-      selected: {} as GenericContent,
+      selected: undefined,
     })
     this.handleDialogClose()
   }
   public handleOkClick = () => {
     const { name, onChange } = this.props
     const content = this.state.selected
-    if (content.Path && this.state.fieldValue !== content.Path) {
+    if (content && content.Path && this.state.fieldValue !== content.Path) {
       onChange(name, content.Path as any)
 
       this.setState({
         fieldValue: content.Path,
-        selected: {} as GenericContent,
+        selected: undefined,
       })
     }
     this.handleDialogClose()
@@ -202,9 +203,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                   }
                   allowedTypes={this.props['data-allowedTypes']}
                   repository={this.props.repository}
-                  // tslint:disable-next-line: no-unnecessary-type-annotation
                   select={(content: GenericContent) => this.selectItem(content)}
-                  selected={this.state.selected}
                   repositoryUrl={this.props.repository.configuration.repositoryUrl}
                   renderIcon={this.props['data-renderIcon'] ? this.props['data-renderIcon'] : renderIconDefault}
                 />
@@ -261,9 +260,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                   }
                   allowedTypes={this.props['data-allowedTypes']}
                   repository={this.props.repository}
-                  // tslint:disable-next-line: no-unnecessary-type-annotation
                   select={(content: GenericContent) => this.selectItem(content)}
-                  selected={this.state.selected}
                   repositoryUrl={this.props.repository.configuration.repositoryUrl}
                   renderIcon={this.props['data-renderIcon'] ? this.props['data-renderIcon'] : renderIconDefault}
                 />

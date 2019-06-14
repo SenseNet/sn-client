@@ -1,10 +1,9 @@
 import { Reducer } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
-import { RootReducerType } from '.'
 import { Comment, CommentWithoutCreatedByAndId, DocumentViewerSettings } from '../models'
 import { showComments } from './Viewer'
+import { RootReducerType } from '.'
 
-// tslint:disable: completed-docs
 export interface CommentsState {
   items: Comment[]
   selectedCommentId: string
@@ -76,6 +75,9 @@ export const deleteComment = (id: string) => ({
   },
 })
 
+/**
+ * Set selected comment id action
+ */
 export function setSelectedCommentId(id: string) {
   return {
     type: SET_SELECTED_COMMENT_ID,
@@ -83,6 +85,9 @@ export function setSelectedCommentId(id: string) {
   }
 }
 
+/**
+ * Toggle isCreateCommentActive action
+ */
 export function toggleIsCreateCommentActive(isActive: boolean) {
   return {
     type: TOGGLE_IS_CREATE_COMMENT_ACTIVE,
@@ -90,6 +95,9 @@ export function toggleIsCreateCommentActive(isActive: boolean) {
   }
 }
 
+/**
+ * Toggle isPlacingCommentMarker action
+ */
 export function toggleIsPlacingCommentMarker(isPlacing: boolean) {
   return {
     type: TOGGLE_IS_PLACING_COMMENT_MARKER,

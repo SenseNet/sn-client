@@ -14,7 +14,7 @@ export interface ReactClientFieldSettingProps<T extends GenericContent = Generic
   /**
    * Called when the icon is clicked
    */
-  onChange: (field: keyof T, value: T[K]) => void
+  onChange: (field: keyof T, value: string) => void
   /**
    * Unique key of the field control
    */
