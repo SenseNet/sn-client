@@ -491,7 +491,7 @@ storiesOf('FieldControls.DatePicker', module)
         labelText={text('Label', 'DatePicker label')}
         value="2013-03-26T03:55:00"
         onChange={action('change')}
-        data-displayMode={select('Display mode', ['relative', 'calendar', 'raw'], 'relative')}
+        displayMode={select('Display mode', ['relative', 'calendar', 'raw'], 'relative')}
         className={text('Additional class name', 'datepicker-field')}
         name="ModificationDate"
       />
@@ -549,7 +549,7 @@ storiesOf('FieldControls.DateTimePicker', module)
         labelText={text('Label', 'DateTimePicker label')}
         value="2018-10-03T03:55:00"
         onChange={action('change')}
-        data-displayMode={select('Display mode', ['relative', 'calendar', 'raw'], 'relative')}
+        displayMode={select('Display mode', ['relative', 'calendar', 'raw'], 'relative')}
         className={text('Additional class name', 'datetimepicker-field')}
         name="Name"
       />

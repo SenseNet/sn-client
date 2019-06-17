@@ -112,8 +112,8 @@ export const reactControlMapper = (repository: Repository) =>
     })
     .setClientControlFactory(DateTimeFieldSetting, setting => {
       const dateTimeSettings = clientConfigFactory(setting) as ReactDateTimeFieldSetting
-      dateTimeSettings['data-dateTimeMode'] = setting.DateTimeMode as any
-      dateTimeSettings['data-precision'] = setting.Precision as any
+      dateTimeSettings.dateTimeMode = setting.DateTimeMode as any
+      dateTimeSettings.precision = setting.Precision as any
       return dateTimeSettings
     })
     .setupFieldSettingDefault(ChoiceFieldSetting, setting => {
