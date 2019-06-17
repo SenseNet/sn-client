@@ -1,4 +1,8 @@
 const values = {
+  dashboard: {
+    globalDashboardTitle: 'Dashboard',
+    repositoryDashboardTitle: 'Repository Dashboard',
+  },
   addButton: {
     tooltip: 'Create or upload content',
     new: 'New...',
