@@ -119,7 +119,7 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
               })}
             </FormGroup>
             {this.props['data-allowExtraValue'] ? <TextField placeholder="Extra value" /> : null}
-            <FormHelperText>{this.props['data-hintText']}</FormHelperText>
+            <FormHelperText>{this.props.hintText}</FormHelperText>
             <FormHelperText>{this.props['data-errorText']}</FormHelperText>
           </FormControl>
         )
@@ -150,7 +150,7 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
               })}
             </FormGroup>
             {this.props['data-allowExtraValue'] ? <TextField placeholder="Extra value" /> : null}
-            <FormHelperText>{this.props['data-hintText']}</FormHelperText>
+            <FormHelperText>{this.props.hintText}</FormHelperText>
             <FormHelperText>{this.props['data-errorText']}</FormHelperText>
           </FormControl>
         )

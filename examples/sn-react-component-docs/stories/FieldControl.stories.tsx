@@ -117,7 +117,7 @@ storiesOf('FieldControls.AllowedChildTypes', module)
           className={text('Additional class name', 'allowedChildTypes-field')}
           data-errorText={text('Error text')}
           onChange={action('change')}
-          data-hintText={text('Hint', 'AllowedChildTypes hint')}
+          hintText={text('Hint', 'AllowedChildTypes hint')}
           repository={testRepository}
           content={testContent}
         />
@@ -143,7 +143,7 @@ storiesOf('FieldControls.AllowedChildTypes', module)
           className={text('Additional class name', 'allowedChildTypes-field')}
           data-errorText={text('Error text')}
           onChange={action('change')}
-          data-hintText={text('Hint', 'AllowedChildTypes hint')}
+          hintText={text('Hint', 'AllowedChildTypes hint')}
           repository={testRepository}
           content={testContent}
         />
@@ -169,7 +169,7 @@ storiesOf('FieldControls.AllowedChildTypes', module)
           className={text('Additional class name', 'allowedChildTypes-field')}
           data-errorText={text('Error text')}
           onChange={action('change')}
-          data-hintText={text('Hint', 'AllowedChildTypes hint')}
+          hintText={text('Hint', 'AllowedChildTypes hint')}
           repository={testRepository}
           content={testContent}
         />
@@ -195,7 +195,7 @@ storiesOf('FieldControls.AutoComplete', module)
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
         onChange={action('change')}
-        data-hintText={text('Hint', 'AutoComplete hint')}
+        hintText={text('Hint', 'AutoComplete hint')}
         dataSource={tagsInputDataSource}
         repository={testRepository}
       />
@@ -215,7 +215,7 @@ storiesOf('FieldControls.AutoComplete', module)
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
         onChange={action('change')}
-        data-hintText={text('Hint', 'AutoComplete hint')}
+        hintText={text('Hint', 'AutoComplete hint')}
         dataSource={tagsInputDataSource}
         repository={testRepository}
         data-fieldValue={[2]}
@@ -255,7 +255,7 @@ storiesOf('FieldControls.Avatar', module)
         readOnly={boolean('Readonly', false)}
         className={text('Additional class name', 'avatar-field')}
         onChange={action('change')}
-        data-hintText={text('Hint', 'Avatar hint')}
+        hintText={text('Hint', 'Avatar hint')}
         dataSource={referenceGridDataSource}
         repository={testRepository}
         data-repository={testRepository}
@@ -283,7 +283,7 @@ storiesOf('FieldControls.Avatar', module)
         readOnly={boolean('Readonly', false)}
         className={text('Additional class name', 'avatar-field')}
         onChange={action('change')}
-        data-hintText={text('Hint', 'Avatar hint')}
+        hintText={text('Hint', 'Avatar hint')}
         dataSource={referenceGridDataSource}
         repository={testRepository}
         data-repository={testRepository}
@@ -343,7 +343,7 @@ storiesOf('FieldControls.CheckboxGroup', module)
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         data-errorText={text('Error text', '')}
-        data-hintText={text('Hint', 'Checkboxgroup hint')}
+        hintText={text('Hint', 'Checkboxgroup hint')}
         data-allowExtraValue={boolean('Allow extra value', false)}
         name="VersioningMode"
       />
@@ -363,7 +363,7 @@ storiesOf('FieldControls.CheckboxGroup', module)
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         data-errorText={text('Error text', '')}
-        data-hintText={text('Hint', 'Checkboxgroup hint')}
+        hintText={text('Hint', 'Checkboxgroup hint')}
         data-allowExtraValue={boolean('Allow extra value', false)}
         name="VersioningMode"
       />
@@ -401,7 +401,7 @@ storiesOf('FieldControls.ColorPicker', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'colorpicker-field')}
         data-errorText={text('Error text')}
-        data-hintText={text('Hint', 'ColorPicker hint')}
+        hintText={text('Hint', 'ColorPicker hint')}
         name={'Color' as any}
         palette={['#D0021B', '#F5A623', '#F8E71C', '#8B572A', '#7ED321', '#417505']}
       />
@@ -419,7 +419,7 @@ storiesOf('FieldControls.ColorPicker', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'colorpicker-field')}
         data-errorText={text('Error text')}
-        data-hintText={text('Hint', 'ColorPicker hint')}
+        hintText={text('Hint', 'ColorPicker hint')}
         data-fieldValue="#D0021B"
         name={'Color' as any}
         palette={['#D0021B', '#F5A623', '#F8E71C', '#8B572A', '#7ED321', '#417505']}
@@ -459,7 +459,7 @@ storiesOf('FieldControls.DatePicker', module)
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
         defaultValue={dateKnob('Default value')}
-        data-hintText={text('Hint', 'DatePicker hint')}
+        hintText={text('Hint', 'DatePicker hint')}
         name="ModificationDate"
       />
     ),
@@ -478,7 +478,7 @@ storiesOf('FieldControls.DatePicker', module)
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
         value={dateKnob('Value')}
-        data-hintText={text('Hint', 'DatePicker hint')}
+        hintText={text('Hint', 'DatePicker hint')}
         name="ModificationDate"
       />
     ),
@@ -517,7 +517,7 @@ storiesOf('FieldControls.DateTimePicker', module)
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
         defaultValue={dateKnob('Default value')}
-        data-hintText={text('Hint', 'DateTimePicker hint')}
+        hintText={text('Hint', 'DateTimePicker hint')}
         name="Name"
       />
     ),
@@ -536,7 +536,7 @@ storiesOf('FieldControls.DateTimePicker', module)
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
         value={dateKnob('Value')}
-        data-hintText={text('Hint', 'DateTimePicker hint')}
+        hintText={text('Hint', 'DateTimePicker hint')}
         name="Name"
       />
     ),
@@ -575,7 +575,7 @@ storiesOf('FieldControls.DisplayName', module)
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
         onChange={action('change')}
-        data-hintText={text('Hint', 'DisplayName hint')}
+        hintText={text('Hint', 'DisplayName hint')}
         name="Name"
       />
     ),
@@ -594,7 +594,7 @@ storiesOf('FieldControls.DisplayName', module)
         value={text('Value', 'DisplayName value')}
         actionName="edit"
         onChange={action('change')}
-        data-hintText={text('Hint', 'DisplayName hint')}
+        hintText={text('Hint', 'DisplayName hint')}
         name="Name"
       />
     ),
@@ -631,7 +631,7 @@ storiesOf('FieldControls.DropDownList', module)
         className={text('Additional class name', 'dropdownlist-field')}
         data-errorText={text('Error text')}
         onChange={action('change')}
-        data-hintText={text('Hint', 'DropDownList hint')}
+        hintText={text('Hint', 'DropDownList hint')}
         options={[{ Text: 'option1', Value: 1 }, { Text: 'option2', Value: 2 }, { Text: 'option3', Value: 3 }]}
         name="Version"
       />
@@ -651,7 +651,7 @@ storiesOf('FieldControls.DropDownList', module)
         data-fieldValue={[3]}
         actionName="edit"
         onChange={action('change')}
-        data-hintText={text('Hint', 'DropDownList hint')}
+        hintText={text('Hint', 'DropDownList hint')}
         options={[{ Text: 'option1', Value: 1 }, { Text: 'option2', Value: 2 }, { Text: 'option3', Value: 3 }]}
         name="VersioningMode"
       />
@@ -684,7 +684,7 @@ storiesOf('FieldControls.DropDownList', module)
         data-fieldValue={[3]}
         actionName="edit"
         onChange={action('change')}
-        data-hintText={text('Hint', 'It shows the approval mode of the current content.')}
+        hintText={text('Hint', 'It shows the approval mode of the current content.')}
         options={[{ Text: 'Inherited (Off)', Value: 1 }, { Text: 'Off', Value: 2 }, { Text: 'On', Value: 3 }]}
         name="ApprovingMode"
       />
@@ -702,7 +702,7 @@ storiesOf('FieldControls.DropDownList', module)
         data-fieldValue={[3]}
         actionName="edit"
         onChange={action('change')}
-        data-hintText={text(
+        hintText={text(
           'Hint',
           'Specify whether the system should create a new version whenever you create or modify a content below this content.',
         )}
@@ -729,7 +729,7 @@ storiesOf('FieldControls.DropDownList', module)
         data-fieldValue={[3]}
         actionName="edit"
         onChange={action('change')}
-        data-hintText={text('Hint', 'It shows the versioning mode of the current content.')}
+        hintText={text('Hint', 'It shows the versioning mode of the current content.')}
         options={[
           { Text: 'Inherited', Value: 1 },
           { Text: 'None', Value: 2 },
@@ -759,7 +759,7 @@ storiesOf('FieldControls.FileName', module)
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
         onChange={action('change')}
-        data-hintText={text('Hint', 'FileName hint')}
+        hintText={text('Hint', 'FileName hint')}
         data-extension={text('Extension', 'docx')}
         name="Name"
       />
@@ -779,7 +779,7 @@ storiesOf('FieldControls.FileName', module)
         value={text('Value', 'filename.docx')}
         actionName="edit"
         onChange={action('change')}
-        data-hintText={text('Hint', 'FileName hint')}
+        hintText={text('Hint', 'FileName hint')}
         name="Name"
       />
     ),
@@ -813,7 +813,7 @@ storiesOf('FieldControls.FileUpload', module)
         onChange={action('change')}
         className={text('Additional class name', 'fileupload-field')}
         data-placeHolderText={text('Placeholder', 'placeholder')}
-        data-hintText={text('Hint', 'FileUpload hint')}
+        hintText={text('Hint', 'FileUpload hint')}
         name="Name"
         data-repository={testRepository}
       />
@@ -838,7 +838,7 @@ storiesOf('FieldControls.Name', module)
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
         onChange={action('change')}
-        data-hintText={text('Hint', 'Name hint')}
+        hintText={text('Hint', 'Name hint')}
         name="Name"
       />
     ),
@@ -857,7 +857,7 @@ storiesOf('FieldControls.Name', module)
         value={text('Value', 'Name value')}
         actionName="edit"
         onChange={action('change')}
-        data-hintText={text('Hint', 'Name hint')}
+        hintText={text('Hint', 'Name hint')}
         name="Name"
       />
     ),
@@ -895,7 +895,7 @@ storiesOf('FieldControls.Number', module)
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
         onChange={action('change')}
-        data-hintText={text('Hint', 'Number hint')}
+        hintText={text('Hint', 'Number hint')}
         max={number('Maximum value')}
         min={number('Minimum value')}
         data-decimal={boolean('Decimal', false)}
@@ -922,7 +922,7 @@ storiesOf('FieldControls.Number', module)
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
         onChange={action('change')}
-        data-hintText={text('Hint', 'Number hint')}
+        hintText={text('Hint', 'Number hint')}
         max={number('Maximum value')}
         min={number('Minimum value')}
         data-decimal={boolean('Decimal', true)}
@@ -949,7 +949,7 @@ storiesOf('FieldControls.Number', module)
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
         onChange={action('change')}
-        data-hintText={text('Hint', 'Number hint')}
+        hintText={text('Hint', 'Number hint')}
         max={number('Maximum value')}
         min={number('Minimum value')}
         data-decimal={boolean('Decimal', false)}
@@ -976,7 +976,7 @@ storiesOf('FieldControls.Number', module)
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
         onChange={action('change')}
-        data-hintText={text('Hint', 'Number hint')}
+        hintText={text('Hint', 'Number hint')}
         max={number('Maximum value')}
         min={number('Minimum value')}
         data-decimal={boolean('Decimal', true)}
@@ -1020,7 +1020,7 @@ storiesOf('FieldControls.Number', module)
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
         onChange={action('change')}
-        data-hintText={text('Hint', 'Currency hint')}
+        hintText={text('Hint', 'Currency hint')}
         max={number('Maximum value')}
         min={number('Minimum value')}
         data-isCurrency={boolean('Currency', true)}
@@ -1043,7 +1043,7 @@ storiesOf('FieldControls.Number', module)
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
         onChange={action('change')}
-        data-hintText={text('Hint', 'Currency hint')}
+        hintText={text('Hint', 'Currency hint')}
         max={number('Maximum value')}
         min={number('Minimum value')}
         data-isCurrency={boolean('Currency', true)}
@@ -1066,7 +1066,7 @@ storiesOf('FieldControls.Number', module)
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
         onChange={action('change')}
-        data-hintText={text('Hint', 'Currency hint')}
+        hintText={text('Hint', 'Currency hint')}
         max={number('Maximum value')}
         min={number('Minimum value')}
         data-isCurrency={boolean('Currency', true)}
@@ -1093,7 +1093,7 @@ storiesOf('FieldControls.Password', module)
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
         onChange={action('change')}
-        data-hintText={text('Hint', 'Password hint')}
+        hintText={text('Hint', 'Password hint')}
         name="Name"
       />
     ),
@@ -1112,7 +1112,7 @@ storiesOf('FieldControls.Password', module)
         value={text('Value', 'Password value')}
         actionName="edit"
         onChange={action('change')}
-        data-hintText={text('Hint', 'Password hint')}
+        hintText={text('Hint', 'Password hint')}
         name="Name"
       />
     ),
@@ -1135,7 +1135,7 @@ storiesOf('FieldControls.RadioButtonGroup', module)
         className={text('Additional class name', 'radiobuttongroup-field')}
         data-errorText={text('Error text')}
         onChange={action('change')}
-        data-hintText={text('Hint', 'RadioButtonGroup hint')}
+        hintText={text('Hint', 'RadioButtonGroup hint')}
         options={[
           {
             Value: '0',
@@ -1172,7 +1172,7 @@ storiesOf('FieldControls.RadioButtonGroup', module)
         data-fieldValue={[3]}
         actionName="edit"
         onChange={action('change')}
-        data-hintText={text('Hint', 'RadioButtonGroup hint')}
+        hintText={text('Hint', 'RadioButtonGroup hint')}
         options={[{ Text: 'option1', Value: 1 }, { Text: 'option2', Value: 2 }, { Text: 'option3', Value: 3 }]}
         name="VersioningMode"
       />
@@ -1286,7 +1286,7 @@ storiesOf('FieldControls.RichTextEditor', module)
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
         onChange={action('change')}
-        data-hintText={text('Hint', 'RichTextEditor hint')}
+        hintText={text('Hint', 'RichTextEditor hint')}
         name="Description"
       />
     ),
@@ -1305,7 +1305,7 @@ storiesOf('FieldControls.RichTextEditor', module)
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
         onChange={action('change')}
-        data-hintText={text('Hint', 'RichTextEditor hint')}
+        hintText={text('Hint', 'RichTextEditor hint')}
         name="Description"
       />
     ),
@@ -1346,7 +1346,7 @@ storiesOf('FieldControls.ShortText', module)
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
         onChange={action('change')}
-        data-hintText={text('Hint', 'Shorttext hint')}
+        hintText={text('Hint', 'Shorttext hint')}
         name="Name"
       />
     ),
@@ -1365,7 +1365,7 @@ storiesOf('FieldControls.ShortText', module)
         value={text('Value', 'ShortText value')}
         actionName="edit"
         onChange={action('change')}
-        data-hintText={text('Hint', 'Shorttext hint')}
+        hintText={text('Hint', 'Shorttext hint')}
         name="Name"
       />
     ),
@@ -1402,7 +1402,7 @@ storiesOf('FieldControls.TagsInput', module)
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
         onChange={action('change')}
-        data-hintText={text('Hint', 'TagsInput hint')}
+        hintText={text('Hint', 'TagsInput hint')}
         dataSource={tagsInputDataSource}
         repository={testRepository}
         data-allowMultiple={boolean('Allow multiple selection', false)}
@@ -1424,7 +1424,7 @@ storiesOf('FieldControls.TagsInput', module)
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
         onChange={action('change')}
-        data-hintText={text('Hint', 'TagsInput hint')}
+        hintText={text('Hint', 'TagsInput hint')}
         dataSource={tagsInputDataSource}
         repository={testRepository}
         data-allowMultiple={boolean('Allow multiple selection', false)}
@@ -1471,7 +1471,7 @@ storiesOf('FieldControls.Textarea', module)
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
         onChange={action('change')}
-        data-hintText={text('Hint', 'Textarea hint')}
+        hintText={text('Hint', 'Textarea hint')}
         name="Description"
       />
     ),
@@ -1494,7 +1494,7 @@ storiesOf('FieldControls.Textarea', module)
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec iaculis lectus, sed blandit urna. Nullam in auctor odio, eu eleifend diam. Curabitur rutrum ullamcorper nunc, sit amet consectetur turpis elementum ac. Aenean lorem lorem, feugiat sit amet sem at, accumsan cursus leo.',
         )}
         onChange={action('change')}
-        data-hintText={text('Hint', 'Textarea hint')}
+        hintText={text('Hint', 'Textarea hint')}
         name="Description"
       />
     ),
@@ -1536,7 +1536,7 @@ storiesOf('FieldControls.TimePicker', module)
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
         defaultValue={dateKnob('Default value')}
-        data-hintText={text('Hint', 'TimePicker hint')}
+        hintText={text('Hint', 'TimePicker hint')}
         name="ModificationDate"
       />
     ),
@@ -1555,7 +1555,7 @@ storiesOf('FieldControls.TimePicker', module)
         data-placeHolderText={text('Placeholder', 'placeholder')}
         data-errorText={text('Error text')}
         value={dateKnob('Value')}
-        data-hintText={text('Hint', 'TimePicker hint')}
+        hintText={text('Hint', 'TimePicker hint')}
         name="ModificationDate"
       />
     ),

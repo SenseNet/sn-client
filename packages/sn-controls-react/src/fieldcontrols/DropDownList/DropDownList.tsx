@@ -123,7 +123,7 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
                 )
               })}
             </Select>
-            <FormHelperText>{this.props['data-hintText']}</FormHelperText>
+            <FormHelperText>{this.props.hintText}</FormHelperText>
             <FormHelperText>{this.props['data-errorText']}</FormHelperText>
           </FormControl>
         )
@@ -154,7 +154,7 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
                 )
               })}
             </Select>
-            <FormHelperText>{this.props['data-hintText']}</FormHelperText>
+            <FormHelperText>{this.props.hintText}</FormHelperText>
             <FormHelperText>{this.props['data-errorText']}</FormHelperText>
           </FormControl>
         )

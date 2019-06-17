@@ -96,7 +96,7 @@ export class RadioButtonGroup<T extends GenericContent, K extends keyof T> exten
                 )
               })}
             </RadioGroup>
-            <FormHelperText>{this.props['data-hintText']}</FormHelperText>
+            <FormHelperText>{this.props['hintText']}</FormHelperText>
             <FormHelperText>{this.props['data-errorText']}</FormHelperText>
           </FormControl>
         )
@@ -126,7 +126,7 @@ export class RadioButtonGroup<T extends GenericContent, K extends keyof T> exten
                 )
               })}
             </RadioGroup>
-            <FormHelperText>{this.props['data-hintText']}</FormHelperText>
+            <FormHelperText>{this.props['hintText']}</FormHelperText>
             <FormHelperText>{this.props['data-errorText']}</FormHelperText>
           </FormControl>
         )

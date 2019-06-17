@@ -95,7 +95,7 @@ export class ShortText<T extends GenericContent, K extends keyof T> extends Comp
             error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
             fullWidth={true}
             onChange={e => this.handleChange(e)}
-            helperText={this.props['data-hintText']}
+            helperText={this.props['hintText']}
           />
         )
       case 'new':
@@ -116,7 +116,7 @@ export class ShortText<T extends GenericContent, K extends keyof T> extends Comp
             disabled={this.props.readOnly}
             error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
             fullWidth={true}
-            helperText={this.props['data-hintText']}
+            helperText={this.props['hintText']}
             onChange={e => this.handleChange(e)}
           />
         )

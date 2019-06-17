@@ -132,7 +132,7 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
             error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
             fullWidth={true}
             onChange={e => this.handleChange(e)}
-            helperText={this.props['data-hintText']}
+            helperText={this.props['hintText']}
           />
         )
       case 'new':
@@ -158,7 +158,7 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
             error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
             fullWidth={true}
             onChange={e => this.handleChange(e)}
-            helperText={this.props['data-hintText']}
+            helperText={this.props['hintText']}
           />
         )
       case 'browse':

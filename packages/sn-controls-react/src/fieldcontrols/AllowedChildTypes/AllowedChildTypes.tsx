@@ -372,7 +372,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                   </List>
                 </Paper>
               </ClickAwayListener>
-              <FormHelperText>{this.props['data-hintText']}</FormHelperText>
+              <FormHelperText>{this.props['hintText']}</FormHelperText>
               <FormHelperText>{this.props['data-errorText']}</FormHelperText>
             </div>
           </FormControl>
@@ -447,7 +447,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                   </List>
                 </Paper>
               </ClickAwayListener>
-              <FormHelperText>{this.props['data-hintText']}</FormHelperText>
+              <FormHelperText>{this.props['hintText']}</FormHelperText>
               <FormHelperText>{this.props['data-errorText']}</FormHelperText>
             </div>
           </FormControl>

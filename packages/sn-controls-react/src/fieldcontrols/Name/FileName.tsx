@@ -125,7 +125,7 @@ export class FileName<T extends GenericContent, K extends keyof T> extends Compo
             required={this.props.required}
             disabled={this.props.readOnly}
             fullWidth={true}
-            helperText={this.props['data-hintText']}
+            helperText={this.props.hintText}
           />
         )
       case 'new':
@@ -151,7 +151,7 @@ export class FileName<T extends GenericContent, K extends keyof T> extends Compo
             required={this.props.required}
             disabled={this.props.readOnly}
             fullWidth={true}
-            helperText={this.props['data-hintText']}
+            helperText={this.props.hintText}
           />
         )
       case 'browse':

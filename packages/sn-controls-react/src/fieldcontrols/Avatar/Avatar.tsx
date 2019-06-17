@@ -186,7 +186,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                 />
               )}
             </List>
-            {this.props['data-hintText'] ? <FormHelperText>{this.props['data-hintText']}</FormHelperText> : null}
+            {this.props.hintText ? <FormHelperText>{this.props.hintText}</FormHelperText> : null}
             {this.props['data-errorText'] ? <FormHelperText>{this.props['data-errorText']}</FormHelperText> : null}
 
             <Dialog onClose={this.handleDialogClose} open={this.state.pickerIsOpen}>
@@ -243,7 +243,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                 />
               )}
             </List>
-            {this.props['data-hintText'] ? <FormHelperText>{this.props['data-hintText']}</FormHelperText> : null}
+            {this.props.hintText ? <FormHelperText>{this.props.hintText}</FormHelperText> : null}
             {this.props['data-errorText'] ? <FormHelperText>{this.props['data-errorText']}</FormHelperText> : null}
 
             <Dialog onClose={this.handleDialogClose} open={this.state.pickerIsOpen}>

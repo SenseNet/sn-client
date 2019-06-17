@@ -21,7 +21,7 @@ import {
 import { Component } from 'react'
 import * as FieldControls from './fieldcontrols'
 import { ReactChoiceFieldSetting } from './fieldcontrols/ChoiceFieldSetting'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from './fieldcontrols/ClientFieldSetting'
+import { ReactClientFieldSetting } from './fieldcontrols/ClientFieldSetting'
 import { ReactDateTimeFieldSetting } from './fieldcontrols/DateTimeFieldSetting'
 import { ReactLongTextFieldSetting } from './fieldcontrols/LongTextFieldSetting'
 import { ReactNumberFieldSetting } from './fieldcontrols/Number/NumberFieldSetting'
@@ -34,17 +34,17 @@ import * as ViewControls from './viewcontrols'
  */
 
 const clientConfigFactory = (fieldSettings: FieldSetting) => {
-  const defaultSetting: ReactClientFieldSettingProps = {
+  const defaultSetting: ReactClientFieldSetting = {
     key: fieldSettings.Name,
     name: fieldSettings.Name as any,
     readOnly: fieldSettings.ReadOnly || false,
     required: fieldSettings.Compulsory || false,
     onChange: (field, value) => console.log({ field, value }),
+    hintText: fieldSettings.Description || '',
   }
   defaultSetting['data-placeHolderText'] = fieldSettings.DisplayName || ''
   defaultSetting['data-labelText'] = fieldSettings.DisplayName || ''
   defaultSetting['data-typeName'] = fieldSettings.Type || ''
-  defaultSetting['data-hintText'] = fieldSettings.Description || ''
   return defaultSetting
 }
 

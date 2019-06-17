@@ -71,7 +71,7 @@ export class Boolean<T extends GenericContent, K extends keyof T> extends Compon
               control={<Checkbox checked={this.state.value} onChange={this.handleChange} />}
               label={this.props['data-labelText']}
             />
-            {this.props['data-hintText'] ? <FormHelperText>{this.props['data-hintText']}</FormHelperText> : null}
+            {this.props.hintText ? <FormHelperText>{this.props.hintText}</FormHelperText> : null}
             {this.props['data-errorText'] ? <FormHelperText>{this.props['data-errorText']}</FormHelperText> : null}
           </FormControl>
         )
@@ -85,7 +85,7 @@ export class Boolean<T extends GenericContent, K extends keyof T> extends Compon
               control={<Checkbox checked={this.state.value} onChange={this.handleChange} />}
               label={this.props['data-labelText']}
             />
-            {this.props['data-hintText'] ? <FormHelperText>{this.props['data-hintText']}</FormHelperText> : null}
+            {this.props.hintText ? <FormHelperText>{this.props.hintText}</FormHelperText> : null}
             {this.props['data-errorText'] ? <FormHelperText>{this.props['data-errorText']}</FormHelperText> : null}
           </FormControl>
         )

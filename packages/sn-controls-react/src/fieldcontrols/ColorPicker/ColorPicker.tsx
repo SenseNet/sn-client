@@ -151,7 +151,7 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
                 </div>
               </ClickAwayListener>
             ) : null}
-            <FormHelperText>{this.props['data-hintText']}</FormHelperText>
+            <FormHelperText>{this.props.hintText}</FormHelperText>
             <FormHelperText>{this.props['data-errorText']}</FormHelperText>
           </FormControl>
         )

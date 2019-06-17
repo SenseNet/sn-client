@@ -60,7 +60,7 @@ export interface ReactClientFieldSetting<T extends GenericContent = GenericConte
   /**
    * Text of the hint that could be displayed after the field control
    */
-  'data-hintText'?: string
+  hintText?: string
   /**
    * Text of the placeholder
    */
