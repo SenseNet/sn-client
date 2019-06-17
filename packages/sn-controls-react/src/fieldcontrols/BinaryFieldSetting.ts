@@ -11,15 +11,11 @@ import { ReactClientFieldSetting } from './ClientFieldSetting'
 export interface ReactBinaryFieldSetting<T extends GenericContent = GenericContent, K extends keyof T = 'Name'>
   extends ReactClientFieldSetting<T, K> {
   /**
-   * Path of the folder where the file should be uploaded
-   */
-  'data-onChange'?: () => void
-  /**
    * Path of the folder where the file will be uploaded.
    */
-  'data-uploadFolderPath'?: string
+  uploadFolderPath?: string
   /**
    * Repository object.
    */
-  'data-repository': Repository
+  repository: Repository
 }

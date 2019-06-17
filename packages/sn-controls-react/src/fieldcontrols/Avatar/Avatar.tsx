@@ -7,9 +7,8 @@ import InputLabel from '@material-ui/core/InputLabel'
 import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
 import { PathHelper } from '@sensenet/client-utils'
-import { GenericContent } from '@sensenet/default-content-types'
+import { GenericContent, User } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { renderIconDefault } from '../icon'
 import { ReactAvatarFieldSetting } from './AvatarFieldSetting'
 import { AvatarPicker } from './AvatarPicker'
@@ -43,14 +42,6 @@ const CANCEL = 'Cancel'
 const DEFAULT_AVATAR_PATH = '/Root/Sites/Default_Site/demoavatars/Admin.png'
 
 /**
- * Interface for Avatar properties
- */
-export interface AvatarProps<T extends GenericContent, K extends keyof T>
-  extends ReactClientFieldSettingProps<T, K>,
-    ReactClientFieldSetting<T, K>,
-    ReactAvatarFieldSetting<T, K> {}
-
-/**
  * Interface for Avatar state
  */
 export interface AvatarState<T extends GenericContent, _K extends keyof T> {
@@ -60,7 +51,7 @@ export interface AvatarState<T extends GenericContent, _K extends keyof T> {
 }
 
 export class Avatar<T extends GenericContent, K extends keyof T> extends Component<
-  AvatarProps<T, K>,
+  ReactAvatarFieldSetting<T, K>,
   AvatarState<T, K>
 > {
   /**
@@ -94,17 +85,18 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
    * @return {GenericContent[]}
    */
   public async getSelected() {
+    //TODO: Check this. This is throwing an error now.
     const loadPath = this.props.content
       ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props.content.Path), '/', this.props.name.toString())
       : ''
-    const references = await this.props['data-repository'].loadCollection({
+    const references = await this.props.repository.loadCollection<User>({
       path: loadPath,
       oDataOptions: {
         select: 'all',
       },
     })
     this.setState({
-      fieldValue: references.d.Avatar.Url.length > 0 ? references.d.Avatar.Url : '',
+      fieldValue: references.d.results[0].Avatar && references.d.results[0].Avatar.Url,
     })
     return references
   }
@@ -176,7 +168,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                 itemTemplate(this.state.fieldValue)
               ) : (
                 <DefaultAvatarTemplate
-                  repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
+                  repositoryUrl={this.props.repository.configuration.repositoryUrl}
                   url={this.state.fieldValue}
                   add={this.addItem}
                   remove={this.removeItem}
@@ -200,9 +192,9 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                       : `/Root/Profiles/Public/${this.props.content.Name}/Document_Library`
                   }
                   allowedTypes={this.props.allowedTypes}
-                  repository={this.props['data-repository']}
+                  repository={this.props.repository}
                   select={content => this.selectItem(content)}
-                  repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
+                  repositoryUrl={this.props.repository.configuration.repositoryUrl}
                   renderIcon={this.props.renderIcon ? this.props.renderIcon : renderIconDefault}
                 />
                 <DialogActions>
@@ -233,7 +225,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                 itemTemplate(this.state.fieldValue)
               ) : (
                 <DefaultAvatarTemplate
-                  repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
+                  repositoryUrl={this.props.repository.configuration.repositoryUrl}
                   add={this.addItem}
                   actionName="new"
                   readOnly={this.props.readOnly}
@@ -251,11 +243,12 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                   {AVATAR_PICKER_TITLE}
                 </Typography>
                 <AvatarPicker
+                  // TODO: review this uploadFolderPath
                   path={this.props.selectionRoot ? this.props.selectionRoot[0] : this.props['data-uploadFolderPath']}
                   allowedTypes={this.props.allowedTypes}
-                  repository={this.props['data-repository']}
+                  repository={this.props.repository}
                   select={content => this.selectItem(content)}
-                  repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
+                  repositoryUrl={this.props.repository.configuration.repositoryUrl}
                   renderIcon={this.props.renderIcon ? this.props.renderIcon : renderIconDefault}
                 />
                 <DialogActions>
@@ -278,7 +271,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
               dense={true}
               style={this.state.fieldValue.length > 0 ? styles.listContainer : { ...styles.listContainer, width: 200 }}>
               <DefaultAvatarTemplate
-                repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
+                repositoryUrl={this.props.repository.configuration.repositoryUrl}
                 url={this.state.fieldValue}
                 add={this.addItem}
                 actionName="browse"
@@ -297,7 +290,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
               dense={true}
               style={this.state.fieldValue.length > 0 ? styles.listContainer : { ...styles.listContainer, width: 200 }}>
               <DefaultAvatarTemplate
-                repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
+                repositoryUrl={this.props.repository.configuration.repositoryUrl}
                 url={this.state.fieldValue}
                 add={this.addItem}
                 actionName="browse"

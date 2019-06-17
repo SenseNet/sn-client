@@ -89,7 +89,7 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
    */
   public render() {
     const fieldSettings = this.state.schema.fieldMappings
-    const { onSubmit, repository, path, columns, contentTypeName, extension, title, submitCallback } = this.props
+    const { onSubmit, path, columns, contentTypeName, extension, title, submitCallback } = this.props
     const { schema } = this.state
     return (
       <form
@@ -112,9 +112,6 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
         )}
         <Grid container={true} spacing={2}>
           {fieldSettings.map(fieldSetting => {
-            if (fieldSetting.clientSettings.typeName === 'ReferenceFieldSetting') {
-              fieldSetting.clientSettings['data-repository'] = repository
-            }
             if (
               contentTypeName.indexOf('File') > -1 &&
               extension &&
@@ -124,8 +121,8 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
             }
             fieldSetting.clientSettings.onChange = this.handleInputChange as any
             fieldSetting.clientSettings.actionName = 'new'
+            // TODO: review this uploadFolderPath
             fieldSetting.clientSettings['data-uploadFolderPath'] = this.props.uploadFolderPath || ''
-            fieldSetting.clientSettings['data-repository'] = this.props.repository
             fieldSetting.clientSettings.renderIcon = this.props.renderIcon || undefined
             if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
               fieldSetting.fieldSettings.Type = 'NumberFieldSetting'

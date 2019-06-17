@@ -257,7 +257,6 @@ storiesOf('FieldControls.Avatar', module)
         hintText={text('Hint', 'Avatar hint')}
         dataSource={referenceGridDataSource}
         repository={testRepository}
-        data-repository={testRepository}
         selectionRoot={['/demoavatars']}
         content={{
           Name: 'Alba Monday',
@@ -285,7 +284,6 @@ storiesOf('FieldControls.Avatar', module)
         hintText={text('Hint', 'Avatar hint')}
         dataSource={referenceGridDataSource}
         repository={testRepository}
-        data-repository={testRepository}
         data-fieldValue="/Root/Sites/Default_Site/demoavatars/alba.jpg"
         selectionRoot={['/demoavatars']}
         content={{
@@ -814,7 +812,7 @@ storiesOf('FieldControls.FileUpload', module)
         placeHolderText={text('Placeholder', 'placeholder')}
         hintText={text('Hint', 'FileUpload hint')}
         name="Name"
-        data-repository={testRepository}
+        repository={testRepository}
       />
     ),
     { notes: { markdown: fileUploadNotes } },
@@ -1212,7 +1210,6 @@ storiesOf('FieldControls.ReferenceGrid', module)
         data-fieldValue={undefined}
         dataSource={referenceGridDataSource}
         repository={testRepository}
-        data-repository={testRepository}
         selectionRoot={['/workspaces']}
         allowedTypes={['File']}
       />
@@ -1234,7 +1231,6 @@ storiesOf('FieldControls.ReferenceGrid', module)
         name="Name"
         dataSource={referenceGridDataSource}
         repository={testRepository}
-        data-repository={testRepository}
         selectionRoot={['/workspaces']}
         allowedTypes={['File']}
         allowMultiple={true}
@@ -1261,7 +1257,6 @@ storiesOf('FieldControls.ReferenceGrid', module)
         onChange={action('change')}
         name="Name"
         dataSource={tagsInputDataSource}
-        data-repository={testRepository}
         repository={testRepository}
       />
     ),

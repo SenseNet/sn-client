@@ -12,12 +12,11 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
-import { ODataBatchResponse, ODataCollectionResponse, ODataParams, Repository } from '@sensenet/client-core'
+import { ODataBatchResponse, ODataCollectionResponse, ODataParams } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
 import React, { Component } from 'react'
 import { typeicons } from '../../assets/icons'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { renderIconDefault } from '../icon'
 import { ReactAllowedChildTypesFieldSetting } from './AllowedChildTypesFieldSettings'
 
@@ -59,13 +58,6 @@ const compare = (a: GenericContent, b: GenericContent) => {
 }
 
 /**
- * Interface for AllowedChildTypes properties
- */
-export interface AllowedChildTypesProps<T extends GenericContent, K extends keyof T>
-  extends ReactClientFieldSettingProps<T, K>,
-    ReactClientFieldSetting<T, K>,
-    ReactAllowedChildTypesFieldSetting<T, K> {}
-/**
  * Interface for AllowedChildTypes state
  */
 export interface AllowedChildTypesState<T extends GenericContent> {
@@ -88,14 +80,10 @@ export interface AllowedChildTypesState<T extends GenericContent> {
  */
 @Radium
 export class AllowedChildTypes<T extends GenericContent, K extends keyof T> extends Component<
-  AllowedChildTypesProps<T, K>,
+  ReactAllowedChildTypesFieldSetting<T, K>,
   AllowedChildTypesState<T>
 > {
-  /**
-   * constructor
-   * @param {object} props
-   */
-  constructor(props: AllowedChildTypesProps<T, K>) {
+  constructor(props: AllowedChildTypes<T, K>['props']) {
     super(props)
     /**
      * @type {object}
@@ -157,9 +145,8 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
   }
   private willUnmount: boolean = false
   private async getAllowedChildTypes() {
-    const repo: Repository = this.props['data-repository'] || this.props.repository
     try {
-      const result = await repo.load<T>({
+      const result = await this.props.repository.load<T>({
         idOrPath: this.props.content.Id,
         oDataOptions: {
           select: 'EffectiveAllowedChildTypes',
@@ -170,7 +157,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
         return
       }
 
-      const allowedChildTypesFromCTD = await repo.executeAction<
+      const allowedChildTypesFromCTD = await this.props.repository.executeAction<
         ODataParams<GenericContent>,
         ODataBatchResponse<GenericContent>
       >({
@@ -206,9 +193,8 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
     }
   }
   private async getAllContentTypes() {
-    const repo: Repository = this.props['data-repository'] || this.props.repository
     try {
-      const result = (await repo.executeAction({
+      const result = (await this.props.repository.executeAction({
         idOrPath: this.props.content.Id,
         name: 'GetAllContentTypes',
         method: 'GET',

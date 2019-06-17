@@ -125,13 +125,6 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
         }}>
         <Grid container={true} spacing={2}>
           {fieldSettings.map(fieldSetting => {
-            if (
-              fieldSetting.clientSettings.typeName === 'ReferenceFieldSetting' ||
-              (fieldSetting.clientSettings.typeName === 'NullFieldSetting' &&
-                fieldSetting.fieldSettings.Name === 'AllowedChildTypes')
-            ) {
-              fieldSetting.clientSettings['data-repository'] = this.props.repository
-            }
             fieldSetting.clientSettings.actionName = 'edit'
             fieldSetting.clientSettings['data-fieldValue'] = that.getFieldValue(fieldSetting.clientSettings.name)
             // eslint-disable-next-line dot-notation
@@ -143,8 +136,8 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
               fieldSetting.clientSettings.typeName === 'NullFieldSetting' &&
               fieldSetting.fieldSettings.Name === 'Avatar'
             ) {
+              //TODO: review this upload folder path
               fieldSetting.clientSettings['data-uploadFolderPath'] = this.props.uploadFolderPath || ''
-              fieldSetting.clientSettings['data-repository'] = this.props.repository
             }
             if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
               fieldSetting.fieldSettings.Type = 'NumberFieldSetting'

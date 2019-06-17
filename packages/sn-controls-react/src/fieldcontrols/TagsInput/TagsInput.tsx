@@ -150,8 +150,8 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
     allowedTypes.map(type => {
       typeQuery += ` +TypeIs:${type}`
     })
-    const repo = this.props['data-repository'] || this.props.repository
-    const req = await repo.loadCollection({
+
+    const req = await this.props.repository.loadCollection({
       path: '/Root',
       oDataOptions: {
         query: `(${pathQuery}) AND${typeQuery}`,
@@ -178,26 +178,26 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
    * @return {any[]}
    */
   public async getSelected() {
-    const repo = this.props['data-repository'] || this.props.repository
     const loadPath = this.props.content
       ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props.content.Path), '/', this.props.name.toString())
       : ''
-    const references = await repo.loadCollection({
+    const references = await this.props.repository.loadCollection<T>({
       path: loadPath,
       oDataOptions: {
         select: 'all',
       },
     })
     const { label } = this.state
-    const results = references.d.results ? references.d.results : [references.d]
-    this.setState({
-      fieldValue: results.map((item: GenericContent) => ({
-        value: item.Id,
-        label: item[label],
-        avatar: isUser(item) ? item.Avatar : undefined,
-        type: item.Type || 'GenericContent',
-      })),
-    })
+    // TODO: Review this.
+    // const results = references.d.results ? references.d.results : [references.d]
+    // this.setState({
+    //   fieldValue: results.map((item: GenericContent) => ({
+    //     value: item.Id,
+    //     label: item[label],
+    //     avatar: isUser(item) ? item.Avatar : undefined,
+    //     type: item.Type || 'GenericContent',
+    //   })),
+    // })
 
     if (this.props.dataSource && this.props.dataSource.length > 0) {
       this.setState({
@@ -238,7 +238,6 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
    * @return {ReactElement} markup
    */
   public render() {
-    const repo = this.props['data-repository'] || this.props.repository
     switch (this.props.actionName) {
       case 'edit':
         return (
@@ -263,8 +262,10 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
                             alt={this.getContentById(content.value).label}
                             src={
                               this.getContentById(content.value).avatar.Url
-                                ? `${repo.configuration.repositoryUrl}${this.getContentById(content.value).avatar.Url}`
-                                : `${repo.configuration.repositoryUrl}${DEFAULT_AVATAR_PATH}`
+                                ? `${this.props.repository.configuration.repositoryUrl}${
+                                    this.getContentById(content.value).avatar.Url
+                                  }`
+                                : `${this.props.repository.configuration.repositoryUrl}${DEFAULT_AVATAR_PATH}`
                             }
                           />
                         }
@@ -321,8 +322,10 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
                             alt={this.getContentById(content.value).label}
                             src={
                               this.getContentById(content.value).avatar.Url
-                                ? `${repo.configuration.repositoryUrl}${this.getContentById(content.value).avatar.Url}`
-                                : `${repo.configuration.repositoryUrl}${DEFAULT_AVATAR_PATH}`
+                                ? `${this.props.repository.configuration.repositoryUrl}${
+                                    this.getContentById(content.value).avatar.Url
+                                  }`
+                                : `${this.props.repository.configuration.repositoryUrl}${DEFAULT_AVATAR_PATH}`
                             }
                           />
                         }

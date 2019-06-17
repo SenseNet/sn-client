@@ -118,21 +118,20 @@ export class FileUpload<T extends GenericContent, K extends keyof T> extends Com
    * handles change event on the fileupload input
    */
   public handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (this.props['data-onChange']) {
-      this.props['data-onChange']()
-    }
+    // TODO: Do we need this?
+    // if (this.props.onChange) {
+    //   this.props.onChange()
+    // }
     e.persist()
     e.target.files &&
-      (await this.props['data-repository'].upload.fromFileList({
+      (await this.props.repository.upload.fromFileList({
         fileList: e.target.files,
         createFolders: true,
         binaryPropertyName: 'Binary',
         overwrite: true,
-        parentPath: this.props['data-uploadFolderPath'] ? this.props['data-uploadFolderPath'] : '',
+        parentPath: this.props.uploadFolderPath ? this.props.uploadFolderPath : '',
       }))
-    const newValue = `${this.props['data-uploadFolderPath']}/${this.getNameFromPath(
-      (e.target as HTMLInputElement).value,
-    )}`
+    const newValue = `${this.props.uploadFolderPath}/${this.getNameFromPath(e.target.value)}`
     this.setState({
       value: newValue,
     })
