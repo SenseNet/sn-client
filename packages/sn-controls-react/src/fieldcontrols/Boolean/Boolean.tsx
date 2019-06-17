@@ -66,13 +66,13 @@ export class Boolean<T extends GenericContent, K extends keyof T> extends Compon
             className={this.props.className}
             component={'fieldset' as 'div'}
             required={this.props.required}
-            error={this.props['data-errorText'] !== undefined && this.props['data-errorText'].length > 0}>
+            error={this.props.errorText !== undefined && this.props.errorText.length > 0}>
             <FormControlLabel
               control={<Checkbox checked={this.state.value} onChange={this.handleChange} />}
               label={this.props.labelText}
             />
             {this.props.hintText ? <FormHelperText>{this.props.hintText}</FormHelperText> : null}
-            {this.props['data-errorText'] ? <FormHelperText>{this.props['data-errorText']}</FormHelperText> : null}
+            {this.props.errorText ? <FormHelperText>{this.props.errorText}</FormHelperText> : null}
           </FormControl>
         )
       case 'new':
@@ -80,13 +80,13 @@ export class Boolean<T extends GenericContent, K extends keyof T> extends Compon
           <FormControl
             className={this.props.className}
             required={this.props.required}
-            error={this.props['data-errorText'] !== undefined && this.props['data-errorText'].length > 0}>
+            error={this.props.errorText !== undefined && this.props.errorText.length > 0}>
             <FormControlLabel
               control={<Checkbox checked={this.state.value} onChange={this.handleChange} />}
               label={this.props.labelText}
             />
             {this.props.hintText ? <FormHelperText>{this.props.hintText}</FormHelperText> : null}
-            {this.props['data-errorText'] ? <FormHelperText>{this.props['data-errorText']}</FormHelperText> : null}
+            {this.props.errorText ? <FormHelperText>{this.props.errorText}</FormHelperText> : null}
           </FormControl>
         )
       case 'browse':

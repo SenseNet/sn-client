@@ -115,9 +115,7 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
           <FormControl className={this.props.className}>
             <TextField
               label={
-                this.props['data-errorText'] && this.props['data-errorText'].length > 0
-                  ? this.props['data-errorText']
-                  : this.props.labelText
+                this.props.errorText && this.props.errorText.length > 0 ? this.props.errorText : this.props.labelText
               }
               type="text"
               name={this.props.name as string}
@@ -126,7 +124,7 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
               required={this.props.required}
               disabled={this.props.readOnly}
               value={this.state.value}
-              error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
+              error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
               onClick={this.openPicker}
               InputProps={{
                 startAdornment: (
@@ -152,7 +150,7 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
               </ClickAwayListener>
             ) : null}
             <FormHelperText>{this.props.hintText}</FormHelperText>
-            <FormHelperText>{this.props['data-errorText']}</FormHelperText>
+            <FormHelperText>{this.props.errorText}</FormHelperText>
           </FormControl>
         )
       case 'browse':
@@ -163,9 +161,7 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
               name={this.props.name as string}
               id={this.props.name as string}
               label={
-                this.props['data-errorText'] && this.props['data-errorText'].length > 0
-                  ? this.props['data-errorText']
-                  : this.props.labelText
+                this.props.errorText && this.props.errorText.length > 0 ? this.props.errorText : this.props.labelText
               }
               className={this.props.className}
               disabled={true}

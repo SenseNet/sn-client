@@ -274,7 +274,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
               ) : null}
             </List>
             {this.props['hintText'] ? <FormHelperText>{this.props['hintText']}</FormHelperText> : null}
-            {this.props['data-errorText'] ? <FormHelperText>{this.props['data-errorText']}</FormHelperText> : null}
+            {this.props['errorText'] ? <FormHelperText>{this.props['errorText']}</FormHelperText> : null}
 
             <Dialog onClose={this.handleDialogClose} open={this.state.pickerIsOpen}>
               <div style={styles.dialog}>
@@ -352,7 +352,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
               ) : null}
             </List>
             {this.props['hintText'] ? <FormHelperText>{this.props['hintText']}</FormHelperText> : null}
-            {this.props['data-errorText'] ? <FormHelperText>{this.props['data-errorText']}</FormHelperText> : null}
+            {this.props['errorText'] ? <FormHelperText>{this.props['errorText']}</FormHelperText> : null}
 
             <Dialog onClose={this.handleDialogClose} open={this.state.pickerIsOpen}>
               <div style={styles.dialog}>

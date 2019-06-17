@@ -101,7 +101,7 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
           <FormControl
             fullWidth={true}
             required={this.props.required}
-            error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}>
+            error={this.props.errorText && this.props.errorText.length > 0 ? true : false}>
             <InputLabel htmlFor={this.props.name as string}>{this.props.labelText}</InputLabel>
             <Select
               onChange={this.handleChange}
@@ -124,7 +124,7 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
               })}
             </Select>
             <FormHelperText>{this.props.hintText}</FormHelperText>
-            <FormHelperText>{this.props['data-errorText']}</FormHelperText>
+            <FormHelperText>{this.props.errorText}</FormHelperText>
           </FormControl>
         )
       case 'new':
@@ -132,7 +132,7 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
           <FormControl
             fullWidth={true}
             required={this.props.required}
-            error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}>
+            error={this.props.errorText && this.props.errorText.length > 0 ? true : false}>
             <InputLabel htmlFor={this.props.name as string}>{this.props.labelText}</InputLabel>
             <Select
               onChange={this.handleChange}
@@ -155,7 +155,7 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
               })}
             </Select>
             <FormHelperText>{this.props.hintText}</FormHelperText>
-            <FormHelperText>{this.props['data-errorText']}</FormHelperText>
+            <FormHelperText>{this.props.errorText}</FormHelperText>
           </FormControl>
         )
       case 'browse':

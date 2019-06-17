@@ -121,7 +121,7 @@ export class FileName<T extends GenericContent, K extends keyof T> extends Compo
               ),
             }}
             autoFocus={true}
-            error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
+            error={this.props['errorText'] && this.props['errorText'].length > 0 ? true : false}
             required={this.props.required}
             disabled={this.props.readOnly}
             fullWidth={true}
@@ -147,7 +147,7 @@ export class FileName<T extends GenericContent, K extends keyof T> extends Compo
               ),
             }}
             autoFocus={true}
-            error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
+            error={this.props['errorText'] && this.props['errorText'].length > 0 ? true : false}
             required={this.props.required}
             disabled={this.props.readOnly}
             fullWidth={true}

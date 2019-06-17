@@ -129,7 +129,7 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
               min: this.props.min ? this.props.min : null,
             }}
             id={this.props.name as string}
-            error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
+            error={this.props['errorText'] && this.props['errorText'].length > 0 ? true : false}
             fullWidth={true}
             onChange={e => this.handleChange(e)}
             helperText={this.props['hintText']}
@@ -155,7 +155,7 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
               min: this.props.min ? this.props.min : null,
             }}
             id={this.props.name as string}
-            error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
+            error={this.props['errorText'] && this.props['errorText'].length > 0 ? true : false}
             fullWidth={true}
             onChange={e => this.handleChange(e)}
             helperText={this.props['hintText']}

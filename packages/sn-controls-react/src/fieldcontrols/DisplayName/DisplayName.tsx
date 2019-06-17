@@ -90,7 +90,7 @@ export class DisplayName<T extends GenericContent, K extends keyof T> extends Co
             defaultValue={this.state.value}
             required={this.props.required}
             disabled={this.props.readOnly}
-            error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
+            error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
             fullWidth={true}
             autoFocus={true}
             onChange={e => this.handleChange(e)}
@@ -108,7 +108,7 @@ export class DisplayName<T extends GenericContent, K extends keyof T> extends Co
             defaultValue={this.props.defaultValue as any}
             required={this.props.required}
             disabled={this.props.readOnly}
-            error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
+            error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
             fullWidth={true}
             autoFocus={true}
             onChange={e => this.handleChange(e)}

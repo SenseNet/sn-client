@@ -122,7 +122,7 @@ export class RichTextEditor<T extends GenericContent, K extends keyof T> extends
           <FormControl
             component={'fieldset' as 'div'}
             fullWidth={true}
-            error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
+            error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
             required={this.props.required}
             className={this.props.className}>
             <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
@@ -137,7 +137,7 @@ export class RichTextEditor<T extends GenericContent, K extends keyof T> extends
               theme="snow"
             />
             <FormHelperText>{this.props.hintText}</FormHelperText>
-            <FormHelperText>{this.props['data-errorText']}</FormHelperText>
+            <FormHelperText>{this.props.errorText}</FormHelperText>
           </FormControl>
         )
       case 'new':
@@ -145,7 +145,7 @@ export class RichTextEditor<T extends GenericContent, K extends keyof T> extends
           <FormControl
             component={'fieldset' as 'div'}
             fullWidth={true}
-            error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
+            error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
             required={this.props.required}
             className={this.props.className}>
             <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
@@ -160,7 +160,7 @@ export class RichTextEditor<T extends GenericContent, K extends keyof T> extends
               theme="snow"
             />
             <FormHelperText>{this.props.hintText}</FormHelperText>
-            <FormHelperText>{this.props['data-errorText']}</FormHelperText>
+            <FormHelperText>{this.props.errorText}</FormHelperText>
           </FormControl>
         )
       case 'browse':

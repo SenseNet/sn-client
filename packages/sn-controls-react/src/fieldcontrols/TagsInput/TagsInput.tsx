@@ -295,7 +295,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
               ))}
             </Select>
             <FormHelperText>{this.props['hintText']}</FormHelperText>
-            <FormHelperText>{this.props['data-errorText']}</FormHelperText>
+            <FormHelperText>{this.props['errorText']}</FormHelperText>
           </FormControl>
         )
       case 'new':
@@ -353,7 +353,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
               ))}
             </Select>
             <FormHelperText>{this.props['hintText']}</FormHelperText>
-            <FormHelperText>{this.props['data-errorText']}</FormHelperText>
+            <FormHelperText>{this.props['errorText']}</FormHelperText>
           </FormControl>
         )
       case 'browse':

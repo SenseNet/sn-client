@@ -115,7 +115,7 @@ storiesOf('FieldControls.AllowedChildTypes', module)
           name="Name"
           labelText={text('Label', 'AllowedChildTypes label')}
           className={text('Additional class name', 'allowedChildTypes-field')}
-          data-errorText={text('Error text')}
+          errorText={text('Error text')}
           onChange={action('change')}
           hintText={text('Hint', 'AllowedChildTypes hint')}
           repository={testRepository}
@@ -141,7 +141,7 @@ storiesOf('FieldControls.AllowedChildTypes', module)
           name="Name"
           labelText={text('Label', 'AllowedChildTypes label')}
           className={text('Additional class name', 'allowedChildTypes-field')}
-          data-errorText={text('Error text')}
+          errorText={text('Error text')}
           onChange={action('change')}
           hintText={text('Hint', 'AllowedChildTypes hint')}
           repository={testRepository}
@@ -167,7 +167,7 @@ storiesOf('FieldControls.AllowedChildTypes', module)
           name="Name"
           labelText={text('Label', 'AllowedChildTypes label')}
           className={text('Additional class name', 'allowedChildTypes-field')}
-          data-errorText={text('Error text')}
+          errorText={text('Error text')}
           onChange={action('change')}
           hintText={text('Hint', 'AllowedChildTypes hint')}
           repository={testRepository}
@@ -193,7 +193,7 @@ storiesOf('FieldControls.AutoComplete', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'autocomplete-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         onChange={action('change')}
         hintText={text('Hint', 'AutoComplete hint')}
         dataSource={tagsInputDataSource}
@@ -213,7 +213,7 @@ storiesOf('FieldControls.AutoComplete', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'autoomplete-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         onChange={action('change')}
         hintText={text('Hint', 'AutoComplete hint')}
         dataSource={tagsInputDataSource}
@@ -342,7 +342,7 @@ storiesOf('FieldControls.CheckboxGroup', module)
         data-allowMultiple={boolean('Allow multiple', false)}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
-        data-errorText={text('Error text', '')}
+        errorText={text('Error text', '')}
         hintText={text('Hint', 'Checkboxgroup hint')}
         data-allowExtraValue={boolean('Allow extra value', false)}
         name="VersioningMode"
@@ -362,7 +362,7 @@ storiesOf('FieldControls.CheckboxGroup', module)
         data-allowMultiple={boolean('Allow multiple', false)}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
-        data-errorText={text('Error text', '')}
+        errorText={text('Error text', '')}
         hintText={text('Hint', 'Checkboxgroup hint')}
         data-allowExtraValue={boolean('Allow extra value', false)}
         name="VersioningMode"
@@ -400,7 +400,7 @@ storiesOf('FieldControls.ColorPicker', module)
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'colorpicker-field')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         hintText={text('Hint', 'ColorPicker hint')}
         name={'Color' as any}
         palette={['#D0021B', '#F5A623', '#F8E71C', '#8B572A', '#7ED321', '#417505']}
@@ -418,7 +418,7 @@ storiesOf('FieldControls.ColorPicker', module)
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'colorpicker-field')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         hintText={text('Hint', 'ColorPicker hint')}
         data-fieldValue="#D0021B"
         name={'Color' as any}
@@ -457,7 +457,7 @@ storiesOf('FieldControls.DatePicker', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'datepicker-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         defaultValue={dateKnob('Default value')}
         hintText={text('Hint', 'DatePicker hint')}
         name="ModificationDate"
@@ -476,7 +476,7 @@ storiesOf('FieldControls.DatePicker', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'datepicker-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         value={dateKnob('Value')}
         hintText={text('Hint', 'DatePicker hint')}
         name="ModificationDate"
@@ -515,7 +515,7 @@ storiesOf('FieldControls.DateTimePicker', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'datetimepicker-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         defaultValue={dateKnob('Default value')}
         hintText={text('Hint', 'DateTimePicker hint')}
         name="Name"
@@ -534,7 +534,7 @@ storiesOf('FieldControls.DateTimePicker', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'datetimepicker-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         value={dateKnob('Value')}
         hintText={text('Hint', 'DateTimePicker hint')}
         name="Name"
@@ -573,7 +573,7 @@ storiesOf('FieldControls.DisplayName', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'displayname-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         onChange={action('change')}
         hintText={text('Hint', 'DisplayName hint')}
         name="Name"
@@ -590,7 +590,7 @@ storiesOf('FieldControls.DisplayName', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'displayname-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         value={text('Value', 'DisplayName value')}
         actionName="edit"
         onChange={action('change')}
@@ -629,7 +629,7 @@ storiesOf('FieldControls.DropDownList', module)
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'dropdownlist-field')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         onChange={action('change')}
         hintText={text('Hint', 'DropDownList hint')}
         options={[{ Text: 'option1', Value: 1 }, { Text: 'option2', Value: 2 }, { Text: 'option3', Value: 3 }]}
@@ -647,7 +647,7 @@ storiesOf('FieldControls.DropDownList', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'dropdownlist-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         data-fieldValue={[3]}
         actionName="edit"
         onChange={action('change')}
@@ -757,7 +757,7 @@ storiesOf('FieldControls.FileName', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'filename-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         onChange={action('change')}
         hintText={text('Hint', 'FileName hint')}
         data-extension={text('Extension', 'docx')}
@@ -775,7 +775,7 @@ storiesOf('FieldControls.FileName', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'filename-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         value={text('Value', 'filename.docx')}
         actionName="edit"
         onChange={action('change')}
@@ -836,7 +836,7 @@ storiesOf('FieldControls.Name', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'name-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         onChange={action('change')}
         hintText={text('Hint', 'Name hint')}
         name="Name"
@@ -853,7 +853,7 @@ storiesOf('FieldControls.Name', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'name-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         value={text('Value', 'Name value')}
         actionName="edit"
         onChange={action('change')}
@@ -893,7 +893,7 @@ storiesOf('FieldControls.Number', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'number-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         onChange={action('change')}
         hintText={text('Hint', 'Number hint')}
         max={number('Maximum value')}
@@ -920,7 +920,7 @@ storiesOf('FieldControls.Number', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'number-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         onChange={action('change')}
         hintText={text('Hint', 'Number hint')}
         max={number('Maximum value')}
@@ -947,7 +947,7 @@ storiesOf('FieldControls.Number', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'number-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         onChange={action('change')}
         hintText={text('Hint', 'Number hint')}
         max={number('Maximum value')}
@@ -974,7 +974,7 @@ storiesOf('FieldControls.Number', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'number-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         onChange={action('change')}
         hintText={text('Hint', 'Number hint')}
         max={number('Maximum value')}
@@ -1018,7 +1018,7 @@ storiesOf('FieldControls.Number', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'currency-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         onChange={action('change')}
         hintText={text('Hint', 'Currency hint')}
         max={number('Maximum value')}
@@ -1041,7 +1041,7 @@ storiesOf('FieldControls.Number', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'currency-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         onChange={action('change')}
         hintText={text('Hint', 'Currency hint')}
         max={number('Maximum value')}
@@ -1064,7 +1064,7 @@ storiesOf('FieldControls.Number', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'currency-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         onChange={action('change')}
         hintText={text('Hint', 'Currency hint')}
         max={number('Maximum value')}
@@ -1091,7 +1091,7 @@ storiesOf('FieldControls.Password', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'pasword-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         onChange={action('change')}
         hintText={text('Hint', 'Password hint')}
         name="Name"
@@ -1108,7 +1108,7 @@ storiesOf('FieldControls.Password', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'password-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         value={text('Value', 'Password value')}
         actionName="edit"
         onChange={action('change')}
@@ -1133,7 +1133,7 @@ storiesOf('FieldControls.RadioButtonGroup', module)
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'radiobuttongroup-field')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         onChange={action('change')}
         hintText={text('Hint', 'RadioButtonGroup hint')}
         options={[
@@ -1168,7 +1168,7 @@ storiesOf('FieldControls.RadioButtonGroup', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'radiobuttongroup-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         data-fieldValue={[3]}
         actionName="edit"
         onChange={action('change')}
@@ -1228,7 +1228,7 @@ storiesOf('FieldControls.ReferenceGrid', module)
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'reference-field')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         data-fieldValue={[{ DisplayName: 'Aenean semper.docx', Id: 4, Icon: 'word', Type: 'File' }]}
         actionName="edit"
         onChange={action('change')}
@@ -1284,7 +1284,7 @@ storiesOf('FieldControls.RichTextEditor', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'richtext-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         onChange={action('change')}
         hintText={text('Hint', 'RichTextEditor hint')}
         name="Description"
@@ -1303,7 +1303,7 @@ storiesOf('FieldControls.RichTextEditor', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'richtext-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         onChange={action('change')}
         hintText={text('Hint', 'RichTextEditor hint')}
         name="Description"
@@ -1344,7 +1344,7 @@ storiesOf('FieldControls.ShortText', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'shorttext-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         onChange={action('change')}
         hintText={text('Hint', 'Shorttext hint')}
         name="Name"
@@ -1361,7 +1361,7 @@ storiesOf('FieldControls.ShortText', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'shorttext-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         value={text('Value', 'ShortText value')}
         actionName="edit"
         onChange={action('change')}
@@ -1400,7 +1400,7 @@ storiesOf('FieldControls.TagsInput', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'tagsinput-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         onChange={action('change')}
         hintText={text('Hint', 'TagsInput hint')}
         dataSource={tagsInputDataSource}
@@ -1422,7 +1422,7 @@ storiesOf('FieldControls.TagsInput', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'tagsinput-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         onChange={action('change')}
         hintText={text('Hint', 'TagsInput hint')}
         dataSource={tagsInputDataSource}
@@ -1469,7 +1469,7 @@ storiesOf('FieldControls.Textarea', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'textarea-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         onChange={action('change')}
         hintText={text('Hint', 'Textarea hint')}
         name="Description"
@@ -1488,7 +1488,7 @@ storiesOf('FieldControls.Textarea', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'textarea-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         value={text(
           'Value',
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec iaculis lectus, sed blandit urna. Nullam in auctor odio, eu eleifend diam. Curabitur rutrum ullamcorper nunc, sit amet consectetur turpis elementum ac. Aenean lorem lorem, feugiat sit amet sem at, accumsan cursus leo.',
@@ -1534,7 +1534,7 @@ storiesOf('FieldControls.TimePicker', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'timepicker-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         defaultValue={dateKnob('Default value')}
         hintText={text('Hint', 'TimePicker hint')}
         name="ModificationDate"
@@ -1553,7 +1553,7 @@ storiesOf('FieldControls.TimePicker', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'timepicker-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
-        data-errorText={text('Error text')}
+        errorText={text('Error text')}
         value={dateKnob('Value')}
         hintText={text('Hint', 'TimePicker hint')}
         name="ModificationDate"

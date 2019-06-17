@@ -72,7 +72,7 @@ export interface ReactClientFieldSetting<T extends GenericContent = GenericConte
   /**
    * Text of the error message
    */
-  'data-errorText'?: string
+  errorText?: string
   /**
    * Name of the fieldcontrol type
    */

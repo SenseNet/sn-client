@@ -82,8 +82,8 @@ export class ShortText<T extends GenericContent, K extends keyof T> extends Comp
             name={this.props.name as string}
             id={this.props.name as string}
             label={
-              this.props['data-errorText'] && this.props['data-errorText'].length > 0
-                ? this.props['data-errorText']
+              this.props['errorText'] && this.props['errorText'].length > 0
+                ? this.props['errorText']
                 : this.props['labelText']
             }
             className={this.props.className}
@@ -92,7 +92,7 @@ export class ShortText<T extends GenericContent, K extends keyof T> extends Comp
             value={this.props.value}
             required={this.props.required}
             disabled={this.props.readOnly}
-            error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
+            error={this.props['errorText'] && this.props['errorText'].length > 0 ? true : false}
             fullWidth={true}
             onChange={e => this.handleChange(e)}
             helperText={this.props['hintText']}
@@ -104,8 +104,8 @@ export class ShortText<T extends GenericContent, K extends keyof T> extends Comp
             name={this.props.name as string}
             id={this.props.name as string}
             label={
-              this.props['data-errorText'] && this.props['data-errorText'].length > 0
-                ? this.props['data-errorText']
+              this.props['errorText'] && this.props['errorText'].length > 0
+                ? this.props['errorText']
                 : this.props['labelText']
             }
             className={this.props.className}
@@ -114,7 +114,7 @@ export class ShortText<T extends GenericContent, K extends keyof T> extends Comp
             defaultValue={this.props['defaultValue'] ? this.props['defaultValue'].toString() : ''}
             required={this.props.required}
             disabled={this.props.readOnly}
-            error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
+            error={this.props['errorText'] && this.props['errorText'].length > 0 ? true : false}
             fullWidth={true}
             helperText={this.props['hintText']}
             onChange={e => this.handleChange(e)}

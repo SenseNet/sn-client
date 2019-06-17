@@ -89,7 +89,7 @@ export class Textarea<T extends GenericContent, K extends keyof T> extends Compo
             value={this.props.value}
             required={this.props.required}
             disabled={this.props.readOnly}
-            error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
+            error={this.props['errorText'] && this.props['errorText'].length > 0 ? true : false}
             multiline={true}
             fullWidth={true}
           />
@@ -106,7 +106,7 @@ export class Textarea<T extends GenericContent, K extends keyof T> extends Compo
             defaultValue={this.props['defaultValue'] ? this.props['defaultValue'].toString() : ''}
             required={this.props.required}
             disabled={this.props.readOnly}
-            error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
+            error={this.props['errorText'] && this.props['errorText'].length > 0 ? true : false}
             multiline={true}
             fullWidth={true}
           />

@@ -98,7 +98,7 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
             className={this.props.className}
             component={'fieldset' as 'div'}
             required={this.props.required}
-            error={this.props['data-errorText'] !== undefined && this.props['data-errorText'].length > 0}>
+            error={this.props['errorText'] !== undefined && this.props['errorText'].length > 0}>
             <FormLabel component={'legend' as 'label'}>{this.props['labelText']}</FormLabel>
             <FormGroup>
               {this.props.options.map(option => {
@@ -120,7 +120,7 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
             </FormGroup>
             {this.props['data-allowExtraValue'] ? <TextField placeholder="Extra value" /> : null}
             <FormHelperText>{this.props.hintText}</FormHelperText>
-            <FormHelperText>{this.props['data-errorText']}</FormHelperText>
+            <FormHelperText>{this.props['errorText']}</FormHelperText>
           </FormControl>
         )
       case 'new':
@@ -129,7 +129,7 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
             className={this.props.className}
             component={'fieldset' as 'div'}
             required={this.props.required}
-            error={this.props['data-errorText'] !== undefined && this.props['data-errorText'].length > 0}>
+            error={this.props['errorText'] !== undefined && this.props['errorText'].length > 0}>
             <FormLabel component={'legend' as 'label'}>{this.props['labelText']}</FormLabel>
             <FormGroup>
               {this.props.options.map(option => {
@@ -151,7 +151,7 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
             </FormGroup>
             {this.props['data-allowExtraValue'] ? <TextField placeholder="Extra value" /> : null}
             <FormHelperText>{this.props.hintText}</FormHelperText>
-            <FormHelperText>{this.props['data-errorText']}</FormHelperText>
+            <FormHelperText>{this.props['errorText']}</FormHelperText>
           </FormControl>
         )
       case 'browse':

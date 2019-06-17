@@ -102,7 +102,7 @@ export class Password<T extends GenericContent, K extends keyof T> extends Compo
               defaultValue={this.state.value}
               required={this.props.required}
               disabled={this.props.readOnly}
-              error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
+              error={this.props['errorText'] && this.props['errorText'].length > 0 ? true : false}
               fullWidth={true}
               endAdornment={
                 <InputAdornment position="end">
@@ -115,7 +115,7 @@ export class Password<T extends GenericContent, K extends keyof T> extends Compo
               }
             />
             <FormHelperText>{this.props['hintText']}</FormHelperText>
-            <FormHelperText>{this.props['data-errorText']}</FormHelperText>
+            <FormHelperText>{this.props['errorText']}</FormHelperText>
           </FormControl>
         )
       case 'new':
@@ -132,7 +132,7 @@ export class Password<T extends GenericContent, K extends keyof T> extends Compo
               defaultValue={this.state.value}
               required={this.props.required}
               disabled={this.props.readOnly}
-              error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
+              error={this.props['errorText'] && this.props['errorText'].length > 0 ? true : false}
               fullWidth={true}
               onChange={e => this.handleChange(e)}
               endAdornment={
@@ -146,7 +146,7 @@ export class Password<T extends GenericContent, K extends keyof T> extends Compo
               }
             />
             <FormHelperText>{this.props['hintText']}</FormHelperText>
-            <FormHelperText>{this.props['data-errorText']}</FormHelperText>
+            <FormHelperText>{this.props['errorText']}</FormHelperText>
           </FormControl>
         )
       default:

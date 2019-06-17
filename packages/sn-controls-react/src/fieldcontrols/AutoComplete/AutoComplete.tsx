@@ -181,9 +181,7 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
                 }}
                 autoFocus={true}
                 label={
-                  this.props['data-errorText'] && this.props['data-errorText'].length > 0
-                    ? this.props['data-errorText']
-                    : this.props.labelText
+                  this.props.errorText && this.props.errorText.length > 0 ? this.props.errorText : this.props.labelText
                 }
                 placeholder={this.props.placeHolderText}
                 InputProps={{
@@ -199,7 +197,7 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
                 style={this.props.style}
                 required={this.props.required}
                 disabled={this.props.readOnly}
-                error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
+                error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
                 fullWidth={true}
                 helperText={this.props.hintText}
               />
