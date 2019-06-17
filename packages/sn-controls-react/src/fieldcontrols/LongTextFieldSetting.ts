@@ -12,14 +12,14 @@ export interface ReactLongTextFieldSetting<T extends GenericContent = GenericCon
   /**
    * Defines the maximum length of the inserted text: 0 to infinite.
    */
-  'data-maxLength'?: number
+  maxLength?: number
   /**
    * Defines the minimum length of the inserted text: 0 to infinite.
    */
-  'data-minLength'?: number
+  minLength?: number
   /**
    * defines the rendering mode of the input box.
    * @default LongText
    */
-  'data-textType': 'LongText' | 'RichText' | 'AdvancedRichText'
+  textType: 'LongText' | 'RichText' | 'AdvancedRichText'
 }

@@ -178,8 +178,8 @@ export const reactControlMapper = (repository: Repository) =>
     })
     .setClientControlFactory(LongTextFieldSetting, setting => {
       const longTextSettings = clientConfigFactory(setting) as ReactLongTextFieldSetting
-      longTextSettings['data-minLength'] = setting.MinLength
-      longTextSettings['data-maxLength'] = setting.MaxLength
+      longTextSettings.minLength = setting.MinLength
+      longTextSettings.maxLength = setting.MaxLength
       return longTextSettings
     })
     .setupFieldSettingDefault(NullFieldSetting, setting => {
