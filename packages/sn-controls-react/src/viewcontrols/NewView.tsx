@@ -112,7 +112,7 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
         )}
         <Grid container={true} spacing={2}>
           {fieldSettings.map(fieldSetting => {
-            if (fieldSetting.clientSettings['data-typeName'] === 'ReferenceFieldSetting') {
+            if (fieldSetting.clientSettings.typeName === 'ReferenceFieldSetting') {
               fieldSetting.clientSettings['data-repository'] = repository
             }
             if (
@@ -136,9 +136,9 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
                 item={true}
                 xs={12}
                 sm={12}
-                md={fieldSetting.clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                lg={fieldSetting.clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                xl={fieldSetting.clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                md={fieldSetting.clientSettings.typeName === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                lg={fieldSetting.clientSettings.typeName === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                xl={fieldSetting.clientSettings.typeName === 'LongTextFieldSetting' || !columns ? 12 : 6}
                 key={fieldSetting.clientSettings.name}>
                 {createElement(fieldSetting.controlType, {
                   ...fieldSetting.clientSettings,

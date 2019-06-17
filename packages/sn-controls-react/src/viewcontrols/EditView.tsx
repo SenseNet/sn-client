@@ -126,8 +126,8 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
         <Grid container={true} spacing={2}>
           {fieldSettings.map(fieldSetting => {
             if (
-              fieldSetting.clientSettings['data-typeName'] === 'ReferenceFieldSetting' ||
-              (fieldSetting.clientSettings['data-typeName'] === 'NullFieldSetting' &&
+              fieldSetting.clientSettings.typeName === 'ReferenceFieldSetting' ||
+              (fieldSetting.clientSettings.typeName === 'NullFieldSetting' &&
                 fieldSetting.fieldSettings.Name === 'AllowedChildTypes')
             ) {
               fieldSetting.clientSettings['data-repository'] = this.props.repository
@@ -141,7 +141,7 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
             fieldSetting.clientSettings['data-repositoryUrl'] = this.props.repositoryUrl || ''
             fieldSetting.clientSettings['data-renderIcon'] = this.props.renderIcon || undefined
             if (
-              fieldSetting.clientSettings['data-typeName'] === 'NullFieldSetting' &&
+              fieldSetting.clientSettings.typeName === 'NullFieldSetting' &&
               fieldSetting.fieldSettings.Name === 'Avatar'
             ) {
               fieldSetting.clientSettings['data-uploadFolderPath'] = this.props.uploadFolderPath || ''
@@ -155,9 +155,9 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
                 item={true}
                 xs={12}
                 sm={12}
-                md={fieldSetting.clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                lg={fieldSetting.clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                xl={fieldSetting.clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                md={fieldSetting.clientSettings.typeName === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                lg={fieldSetting.clientSettings.typeName === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                xl={fieldSetting.clientSettings.typeName === 'LongTextFieldSetting' || !columns ? 12 : 6}
                 key={fieldSetting.clientSettings.name}>
                 {createElement(fieldSetting.controlType, {
                   ...fieldSetting.clientSettings,

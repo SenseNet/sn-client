@@ -43,7 +43,7 @@ const clientConfigFactory = (fieldSettings: FieldSetting) => {
     placeHolderText: fieldSettings.DisplayName || '',
     labelText: fieldSettings.DisplayName || '',
   }
-  defaultSetting['data-typeName'] = fieldSettings.Type || ''
+  defaultSetting.typeName = fieldSettings.Type || ''
   return defaultSetting
 }
 

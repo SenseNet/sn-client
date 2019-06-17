@@ -87,7 +87,7 @@ export class BrowseView extends Component<BrowseViewProps, BrowseViewState> {
               fieldSetting.fieldSettings.Type = 'NumberFieldSetting'
             }
             if (
-              fieldSetting.clientSettings['data-typeName'] === 'NullFieldSetting' &&
+              fieldSetting.clientSettings.typeName === 'NullFieldSetting' &&
               fieldSetting.fieldSettings.Name === 'AllowedChildTypes'
             ) {
               fieldSetting.clientSettings['data-renderIcon'] = this.props.renderIcon || undefined
