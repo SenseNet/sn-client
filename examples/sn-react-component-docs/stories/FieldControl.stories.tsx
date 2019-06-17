@@ -113,7 +113,7 @@ storiesOf('FieldControls.AllowedChildTypes', module)
         <AllowedChildTypes
           actionName="new"
           name="Name"
-          data-labelText={text('Label', 'AllowedChildTypes label')}
+          labelText={text('Label', 'AllowedChildTypes label')}
           className={text('Additional class name', 'allowedChildTypes-field')}
           data-errorText={text('Error text')}
           onChange={action('change')}
@@ -139,7 +139,7 @@ storiesOf('FieldControls.AllowedChildTypes', module)
         <AllowedChildTypes
           actionName="edit"
           name="Name"
-          data-labelText={text('Label', 'AllowedChildTypes label')}
+          labelText={text('Label', 'AllowedChildTypes label')}
           className={text('Additional class name', 'allowedChildTypes-field')}
           data-errorText={text('Error text')}
           onChange={action('change')}
@@ -165,7 +165,7 @@ storiesOf('FieldControls.AllowedChildTypes', module)
         <AllowedChildTypes
           actionName="browse"
           name="Name"
-          data-labelText={text('Label', 'AllowedChildTypes label')}
+          labelText={text('Label', 'AllowedChildTypes label')}
           className={text('Additional class name', 'allowedChildTypes-field')}
           data-errorText={text('Error text')}
           onChange={action('change')}
@@ -188,7 +188,7 @@ storiesOf('FieldControls.AutoComplete', module)
       <AutoComplete
         actionName="new"
         name="Name"
-        data-labelText={text('Label', 'AutoComplete label')}
+        labelText={text('Label', 'AutoComplete label')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'autocomplete-field')}
@@ -208,7 +208,7 @@ storiesOf('FieldControls.AutoComplete', module)
       <AutoComplete
         actionName="edit"
         name="Name"
-        data-labelText={text('Label', 'AutoComplete label')}
+        labelText={text('Label', 'AutoComplete label')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'autoomplete-field')}
@@ -230,7 +230,7 @@ storiesOf('FieldControls.AutoComplete', module)
         data-textType="LongText"
         name="Name"
         actionName="browse"
-        data-labelText={text('Label', 'AutoComplete label')}
+        labelText={text('Label', 'AutoComplete label')}
         className={text('Additional class name', 'autocomplete-field')}
         data-fieldValue={[1, 2]}
         onChange={action('change')}
@@ -251,7 +251,7 @@ storiesOf('FieldControls.Avatar', module)
       <Avatar
         actionName="new"
         name="Name"
-        data-labelText={text('Label', 'Avatar label')}
+        labelText={text('Label', 'Avatar label')}
         readOnly={boolean('Readonly', false)}
         className={text('Additional class name', 'avatar-field')}
         onChange={action('change')}
@@ -279,7 +279,7 @@ storiesOf('FieldControls.Avatar', module)
       <Avatar
         actionName="edit"
         name="Name"
-        data-labelText={text('Label', 'Avatar label')}
+        labelText={text('Label', 'Avatar label')}
         readOnly={boolean('Readonly', false)}
         className={text('Additional class name', 'avatar-field')}
         onChange={action('change')}
@@ -308,7 +308,7 @@ storiesOf('FieldControls.Avatar', module)
       <Avatar
         name="Name"
         actionName="browse"
-        data-labelText={text('Label', 'Avatar label')}
+        labelText={text('Label', 'Avatar label')}
         className={text('Additional class name', 'avatar-field')}
         data-fieldValue="/Root/Sites/Default_Site/demoavatars/alba.jpg"
         onChange={action('change')}
@@ -335,7 +335,7 @@ storiesOf('FieldControls.CheckboxGroup', module)
     'new mode',
     () => (
       <CheckboxGroup
-        data-labelText={text('Label', 'Checkboxgroup label')}
+        labelText={text('Label', 'Checkboxgroup label')}
         actionName="new"
         onChange={action('change')}
         options={[{ Text: 'option1', Value: 1 }, { Text: 'option2', Value: 2 }, { Text: 'option3', Value: 3 }]}
@@ -354,7 +354,7 @@ storiesOf('FieldControls.CheckboxGroup', module)
     'edit mode',
     () => (
       <CheckboxGroup
-        data-labelText={text('Label', 'Checkboxgroup label')}
+        labelText={text('Label', 'Checkboxgroup label')}
         actionName="edit"
         onChange={action('change')}
         options={[{ Text: 'option1', Value: 1 }, { Text: 'option2', Value: 2 }, { Text: 'option3', Value: 3 }]}
@@ -374,7 +374,7 @@ storiesOf('FieldControls.CheckboxGroup', module)
     'browse mode',
     () => (
       <CheckboxGroup
-        data-labelText={text('Label', 'Checkboxgroup label')}
+        labelText={text('Label', 'Checkboxgroup label')}
         actionName="browse"
         onChange={action('change')}
         options={[{ Text: 'option1', Value: 1 }, { Text: 'option2', Value: 2 }, { Text: 'option3', Value: 3 }]}
@@ -394,7 +394,7 @@ storiesOf('FieldControls.ColorPicker', module)
     'new mode',
     () => (
       <ColorPicker
-        data-labelText={text('Label', 'ColorPicker label')}
+        labelText={text('Label', 'ColorPicker label')}
         actionName="new"
         onChange={action('change')}
         readOnly={boolean('Readonly', false)}
@@ -412,7 +412,7 @@ storiesOf('FieldControls.ColorPicker', module)
     'edit mode',
     () => (
       <ColorPicker
-        data-labelText={text('Label', 'ColorPicker label')}
+        labelText={text('Label', 'ColorPicker label')}
         actionName="edit"
         onChange={action('change')}
         readOnly={boolean('Readonly', false)}
@@ -431,7 +431,7 @@ storiesOf('FieldControls.ColorPicker', module)
     'browse mode',
     () => (
       <ColorPicker
-        data-labelText={text('Label', 'ColorPicker label')}
+        labelText={text('Label', 'ColorPicker label')}
         actionName="browse"
         className={text('Additional class name', 'colorpicker-field')}
         name={'Color' as any}
@@ -451,7 +451,7 @@ storiesOf('FieldControls.DatePicker', module)
     () => (
       <DatePicker
         actionName="new"
-        data-labelText={text('Label', 'DatePicker label')}
+        labelText={text('Label', 'DatePicker label')}
         onChange={action('change')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
@@ -470,7 +470,7 @@ storiesOf('FieldControls.DatePicker', module)
     () => (
       <DatePicker
         actionName="edit"
-        data-labelText={text('Label', 'DatePicker label')}
+        labelText={text('Label', 'DatePicker label')}
         onChange={action('change')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
@@ -489,7 +489,7 @@ storiesOf('FieldControls.DatePicker', module)
     () => (
       <DatePicker
         actionName="browse"
-        data-labelText={text('Label', 'DatePicker label')}
+        labelText={text('Label', 'DatePicker label')}
         value="2013-03-26T03:55:00"
         onChange={action('change')}
         data-displayMode={select('Display mode', ['relative', 'calendar', 'raw'], 'relative')}
@@ -509,7 +509,7 @@ storiesOf('FieldControls.DateTimePicker', module)
     () => (
       <DateTimePicker
         actionName="new"
-        data-labelText={text('Label', 'DateTimePicker label')}
+        labelText={text('Label', 'DateTimePicker label')}
         onChange={action('change')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
@@ -528,7 +528,7 @@ storiesOf('FieldControls.DateTimePicker', module)
     () => (
       <DateTimePicker
         actionName="edit"
-        data-labelText={text('Label', 'DateTimePicker label')}
+        labelText={text('Label', 'DateTimePicker label')}
         onChange={action('change')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
@@ -547,7 +547,7 @@ storiesOf('FieldControls.DateTimePicker', module)
     () => (
       <DateTimePicker
         actionName="browse"
-        data-labelText={text('Label', 'DateTimePicker label')}
+        labelText={text('Label', 'DateTimePicker label')}
         value="2018-10-03T03:55:00"
         onChange={action('change')}
         data-displayMode={select('Display mode', ['relative', 'calendar', 'raw'], 'relative')}
@@ -567,7 +567,7 @@ storiesOf('FieldControls.DisplayName', module)
     () => (
       <DisplayName
         actionName="new"
-        data-labelText={text('Label', 'DisplayName label')}
+        labelText={text('Label', 'DisplayName label')}
         defaultValue={text('Default value', 'DisplayName default value')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
@@ -585,7 +585,7 @@ storiesOf('FieldControls.DisplayName', module)
     'edit mode',
     () => (
       <DisplayName
-        data-labelText={text('Label', 'DisplayName label')}
+        labelText={text('Label', 'DisplayName label')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'displayname-field')}
@@ -605,7 +605,7 @@ storiesOf('FieldControls.DisplayName', module)
     () => (
       <DisplayName
         actionName="browse"
-        data-labelText={text('Label', 'DisplayName label')}
+        labelText={text('Label', 'DisplayName label')}
         className={text('Additional class name', 'displayname-field')}
         value={text('Value', 'DisplayName value')}
         onChange={action('change')}
@@ -624,7 +624,7 @@ storiesOf('FieldControls.DropDownList', module)
     () => (
       <DropDownList
         actionName="new"
-        data-labelText={text('Label', 'DropDownList label')}
+        labelText={text('Label', 'DropDownList label')}
         defaultValue={'2'}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
@@ -642,7 +642,7 @@ storiesOf('FieldControls.DropDownList', module)
     'edit mode',
     () => (
       <DropDownList
-        data-labelText={text('Label', 'DropDownList label')}
+        labelText={text('Label', 'DropDownList label')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'dropdownlist-field')}
@@ -663,7 +663,7 @@ storiesOf('FieldControls.DropDownList', module)
     () => (
       <DropDownList
         actionName="browse"
-        data-labelText={text('Label', 'DropDownList label')}
+        labelText={text('Label', 'DropDownList label')}
         className={text('Additional class name', 'dropdownlist-field')}
         data-fieldValue={text('Value', [2])}
         onChange={action('change')}
@@ -677,7 +677,7 @@ storiesOf('FieldControls.DropDownList', module)
     'ApprovingModeChoice',
     () => (
       <DropDownList
-        data-labelText={text('Label', 'ApprovingModeChoice label')}
+        labelText={text('Label', 'ApprovingModeChoice label')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'approvingmodechoice-field')}
@@ -695,7 +695,7 @@ storiesOf('FieldControls.DropDownList', module)
     'VersioningModeChoice',
     () => (
       <DropDownList
-        data-labelText={text('Label', 'Version history')}
+        labelText={text('Label', 'Version history')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'versioningmodechoice-field')}
@@ -722,7 +722,7 @@ storiesOf('FieldControls.DropDownList', module)
     'VersioningMode',
     () => (
       <DropDownList
-        data-labelText={text('Label', 'Versioning for current content')}
+        labelText={text('Label', 'Versioning for current content')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'versioningmodechoice-field')}
@@ -751,7 +751,7 @@ storiesOf('FieldControls.FileName', module)
     () => (
       <FileName
         actionName="new"
-        data-labelText={text('Label', 'FileName label')}
+        labelText={text('Label', 'FileName label')}
         defaultValue={text('Default value', 'FileName default value')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
@@ -770,7 +770,7 @@ storiesOf('FieldControls.FileName', module)
     'edit mode',
     () => (
       <FileName
-        data-labelText={text('Label', 'FileName label')}
+        labelText={text('Label', 'FileName label')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'filename-field')}
@@ -790,7 +790,7 @@ storiesOf('FieldControls.FileName', module)
     () => (
       <FileName
         actionName="browse"
-        data-labelText={text('Label', 'FileName label')}
+        labelText={text('Label', 'FileName label')}
         className={text('Additional class name', 'filename-field')}
         value={text('Value', 'Lorem-ipsum.docx')}
         onChange={action('change')}
@@ -809,7 +809,7 @@ storiesOf('FieldControls.FileUpload', module)
     () => (
       <FileUpload
         actionName="new"
-        data-labelText={text('Label', 'FileUpload label')}
+        labelText={text('Label', 'FileUpload label')}
         onChange={action('change')}
         className={text('Additional class name', 'fileupload-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
@@ -830,7 +830,7 @@ storiesOf('FieldControls.Name', module)
     () => (
       <Name
         actionName="new"
-        data-labelText={text('Label', 'Name label')}
+        labelText={text('Label', 'Name label')}
         defaultValue={text('Default value', 'Name default value')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
@@ -848,7 +848,7 @@ storiesOf('FieldControls.Name', module)
     'edit mode',
     () => (
       <Name
-        data-labelText={text('Label', 'Name label')}
+        labelText={text('Label', 'Name label')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'name-field')}
@@ -868,7 +868,7 @@ storiesOf('FieldControls.Name', module)
     () => (
       <Name
         actionName="browse"
-        data-labelText={text('Label', 'Name label')}
+        labelText={text('Label', 'Name label')}
         className={text('Additional class name', 'name-field')}
         value={text('Value', 'Name value')}
         onChange={action('change')}
@@ -887,7 +887,7 @@ storiesOf('FieldControls.Number', module)
     () => (
       <Number
         actionName="new"
-        data-labelText={text('Label', 'Number label')}
+        labelText={text('Label', 'Number label')}
         defaultValue={number('Default value', 2)}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
@@ -914,7 +914,7 @@ storiesOf('FieldControls.Number', module)
     () => (
       <Number
         actionName="new"
-        data-labelText={text('Label', 'Number label')}
+        labelText={text('Label', 'Number label')}
         defaultValue={number('Default value', 2.1)}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
@@ -941,7 +941,7 @@ storiesOf('FieldControls.Number', module)
     () => (
       <Number
         actionName="edit"
-        data-labelText={text('Label', 'Number label')}
+        labelText={text('Label', 'Number label')}
         value={number('Value', 4)}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
@@ -968,7 +968,7 @@ storiesOf('FieldControls.Number', module)
     () => (
       <Number
         actionName="edit"
-        data-labelText={text('Label', 'Number label')}
+        labelText={text('Label', 'Number label')}
         value={number('Value', 4.45)}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
@@ -995,7 +995,7 @@ storiesOf('FieldControls.Number', module)
     () => (
       <Number
         actionName="browse"
-        data-labelText={text('Label', 'Number label')}
+        labelText={text('Label', 'Number label')}
         value={number('Value', 4)}
         className={text('Additional class name', 'number-field')}
         onChange={action('change')}
@@ -1012,7 +1012,7 @@ storiesOf('FieldControls.Number', module)
     () => (
       <Number
         actionName="new"
-        data-labelText={text('Label', 'Currency label')}
+        labelText={text('Label', 'Currency label')}
         defaultValue={number('Default value', 2.1)}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
@@ -1035,7 +1035,7 @@ storiesOf('FieldControls.Number', module)
     () => (
       <Number
         actionName="edit"
-        data-labelText={text('Label', 'Currency label')}
+        labelText={text('Label', 'Currency label')}
         value={number('Value', 4)}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
@@ -1058,7 +1058,7 @@ storiesOf('FieldControls.Number', module)
     () => (
       <Number
         actionName="browse"
-        data-labelText={text('Label', 'Currency label')}
+        labelText={text('Label', 'Currency label')}
         value={number('Value', 4.45)}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
@@ -1086,7 +1086,7 @@ storiesOf('FieldControls.Password', module)
     () => (
       <Password
         actionName="new"
-        data-labelText={text('Label', 'Password label')}
+        labelText={text('Label', 'Password label')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'pasword-field')}
@@ -1103,7 +1103,7 @@ storiesOf('FieldControls.Password', module)
     'edit mode',
     () => (
       <Password
-        data-labelText={text('Label', 'Password label')}
+        labelText={text('Label', 'Password label')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'password-field')}
@@ -1128,7 +1128,7 @@ storiesOf('FieldControls.RadioButtonGroup', module)
     () => (
       <RadioButtonGroup
         actionName="new"
-        data-labelText={text('Label', 'RadioButtonGroup label')}
+        labelText={text('Label', 'RadioButtonGroup label')}
         defaultValue={'3'}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
@@ -1163,7 +1163,7 @@ storiesOf('FieldControls.RadioButtonGroup', module)
     'edit mode',
     () => (
       <RadioButtonGroup
-        data-labelText={text('Label', 'RadioButtonGroup label')}
+        labelText={text('Label', 'RadioButtonGroup label')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'radiobuttongroup-field')}
@@ -1184,7 +1184,7 @@ storiesOf('FieldControls.RadioButtonGroup', module)
     () => (
       <RadioButtonGroup
         actionName="browse"
-        data-labelText={text('Label', 'RadioButtonGroup label')}
+        labelText={text('Label', 'RadioButtonGroup label')}
         className={text('Additional class name', 'radiobuttongroup-field')}
         data-fieldValue={text('Value', [2])}
         onChange={action('change')}
@@ -1204,7 +1204,7 @@ storiesOf('FieldControls.ReferenceGrid', module)
     () => (
       <ReferenceGrid
         actionName="new"
-        data-labelText={text('Label', 'ReferenceGrid label')}
+        labelText={text('Label', 'ReferenceGrid label')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'reference-field')}
@@ -1224,7 +1224,7 @@ storiesOf('FieldControls.ReferenceGrid', module)
     'edit mode',
     () => (
       <ReferenceGrid
-        data-labelText={text('Label', 'ReferenceGrid label')}
+        labelText={text('Label', 'ReferenceGrid label')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'reference-field')}
@@ -1248,7 +1248,7 @@ storiesOf('FieldControls.ReferenceGrid', module)
     () => (
       <ReferenceGrid
         actionName="browse"
-        data-labelText={text('Label', 'ReferenceGrid label')}
+        labelText={text('Label', 'ReferenceGrid label')}
         className={text('Additional class name', 'reference-field')}
         data-fieldValue={{
           Name: 'Alba Monday',
@@ -1278,7 +1278,7 @@ storiesOf('FieldControls.RichTextEditor', module)
     () => (
       <RichTextEditor
         actionName="new"
-        data-labelText={text('Label', 'RichTextEditor label')}
+        labelText={text('Label', 'RichTextEditor label')}
         defaultValue={text('Default value', 'RichTextEditor default value')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
@@ -1297,7 +1297,7 @@ storiesOf('FieldControls.RichTextEditor', module)
     () => (
       <RichTextEditor
         actionName="edit"
-        data-labelText={text('Label', 'RichTextEditor label')}
+        labelText={text('Label', 'RichTextEditor label')}
         value={text('Value', 'RichTextEditor value')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
@@ -1316,7 +1316,7 @@ storiesOf('FieldControls.RichTextEditor', module)
     () => (
       <RichTextEditor
         actionName="browse"
-        data-labelText={text('Label', 'RichTextEditor label')}
+        labelText={text('Label', 'RichTextEditor label')}
         value={text(
           'Value',
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec iaculis lectus, sed blandit urna. Nullam in auctor odio, eu eleifend diam. Curabitur rutrum ullamcorper nunc, sit amet consectetur turpis elementum ac. Aenean lorem lorem, feugiat sit amet sem at, accumsan cursus leo.',
@@ -1338,7 +1338,7 @@ storiesOf('FieldControls.ShortText', module)
     () => (
       <ShortText
         actionName="new"
-        data-labelText={text('Label', 'ShortText label')}
+        labelText={text('Label', 'ShortText label')}
         defaultValue={text('Default value', 'ShortText default value')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
@@ -1356,7 +1356,7 @@ storiesOf('FieldControls.ShortText', module)
     'edit mode',
     () => (
       <ShortText
-        data-labelText={text('Label', 'ShortText label')}
+        labelText={text('Label', 'ShortText label')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'shorttext-field')}
@@ -1376,7 +1376,7 @@ storiesOf('FieldControls.ShortText', module)
     () => (
       <ShortText
         actionName="browse"
-        data-labelText={text('Label', 'ShortText label')}
+        labelText={text('Label', 'ShortText label')}
         className={text('Additional class name', 'shorttext-field')}
         value={text('Value', 'ShortText value')}
         onChange={action('change')}
@@ -1395,7 +1395,7 @@ storiesOf('FieldControls.TagsInput', module)
     () => (
       <TagsInput
         actionName="new"
-        data-labelText={text('Label', 'TagsInput label')}
+        labelText={text('Label', 'TagsInput label')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'tagsinput-field')}
@@ -1417,7 +1417,7 @@ storiesOf('FieldControls.TagsInput', module)
     () => (
       <TagsInput
         actionName="edit"
-        data-labelText={text('Label', 'TagsInput label')}
+        labelText={text('Label', 'TagsInput label')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'tagsinput-field')}
@@ -1440,7 +1440,7 @@ storiesOf('FieldControls.TagsInput', module)
     () => (
       <TagsInput
         actionName="browse"
-        data-labelText={text('Label', 'TagsInput label')}
+        labelText={text('Label', 'TagsInput label')}
         className={text('Additional class name', 'tagsinput-field')}
         data-fieldValue={[tagsInputDataSource[0], tagsInputDataSource[1]]}
         onChange={action('change')}
@@ -1463,7 +1463,7 @@ storiesOf('FieldControls.Textarea', module)
       <Textarea
         actionName="new"
         data-textType="LongText"
-        data-labelText={text('Label', 'Textarea label')}
+        labelText={text('Label', 'Textarea label')}
         defaultValue={text('Default value', 'Textarea default value')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
@@ -1483,7 +1483,7 @@ storiesOf('FieldControls.Textarea', module)
       <Textarea
         data-textType="LongText"
         actionName="edit"
-        data-labelText={text('Label', 'Textarea label')}
+        labelText={text('Label', 'Textarea label')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'textarea-field')}
@@ -1506,7 +1506,7 @@ storiesOf('FieldControls.Textarea', module)
       <Textarea
         data-textType="LongText"
         actionName="browse"
-        data-labelText={text('Label', 'Textarea label')}
+        labelText={text('Label', 'Textarea label')}
         className={text('Additional class name', 'textarea-field')}
         value={text(
           'Value',
@@ -1528,7 +1528,7 @@ storiesOf('FieldControls.TimePicker', module)
     () => (
       <TimePicker
         actionName="new"
-        data-labelText={text('Label', 'TimePicker label')}
+        labelText={text('Label', 'TimePicker label')}
         onChange={action('change')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
@@ -1547,7 +1547,7 @@ storiesOf('FieldControls.TimePicker', module)
     () => (
       <TimePicker
         actionName="edit"
-        data-labelText={text('Label', 'TimePicker label')}
+        labelText={text('Label', 'TimePicker label')}
         onChange={action('change')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
@@ -1566,7 +1566,7 @@ storiesOf('FieldControls.TimePicker', module)
     () => (
       <TimePicker
         actionName="browse"
-        data-labelText={text('Label', 'TimePicker label')}
+        labelText={text('Label', 'TimePicker label')}
         value={text('Value', '03:50:00')}
         onChange={action('change')}
         className={text('Additional class name', 'timepicker-field')}

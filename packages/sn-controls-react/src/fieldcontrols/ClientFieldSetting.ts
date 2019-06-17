@@ -68,7 +68,7 @@ export interface ReactClientFieldSetting<T extends GenericContent = GenericConte
   /**
    * Text of the label
    */
-  'data-labelText'?: string
+  labelText?: string
   /**
    * Text of the error message
    */

@@ -96,7 +96,7 @@ export class DatePicker<T extends GenericContent, K extends keyof T> extends Rea
               <MUIDatePicker
                 value={value}
                 onChange={this.handleDateChange}
-                label={this.props['data-labelText']}
+                label={this.props.labelText}
                 id={this.props.name as string}
                 disabled={readOnly}
                 placeholder={this.props.placeHolderText}
@@ -113,7 +113,7 @@ export class DatePicker<T extends GenericContent, K extends keyof T> extends Rea
               <MUIDatePicker
                 value={value}
                 onChange={this.handleDateChange}
-                label={this.props['data-labelText']}
+                label={this.props.labelText}
                 id={this.props.name as string}
                 disabled={readOnly}
                 placeholder={this.props.placeHolderText}
@@ -126,14 +126,14 @@ export class DatePicker<T extends GenericContent, K extends keyof T> extends Rea
       case 'browse':
         return (
           <div>
-            <label>{this.props['data-labelText']}</label>
+            <label>{this.props.labelText}</label>
             <p>{this.props['data-fieldValue']}</p>
           </div>
         )
       default:
         return (
           <div>
-            <label>{this.props['data-labelText']}</label>
+            <label>{this.props.labelText}</label>
             <p>{this.props['data-fieldValue']}</p>
           </div>
         )

@@ -69,7 +69,7 @@ export class Boolean<T extends GenericContent, K extends keyof T> extends Compon
             error={this.props['data-errorText'] !== undefined && this.props['data-errorText'].length > 0}>
             <FormControlLabel
               control={<Checkbox checked={this.state.value} onChange={this.handleChange} />}
-              label={this.props['data-labelText']}
+              label={this.props.labelText}
             />
             {this.props.hintText ? <FormHelperText>{this.props.hintText}</FormHelperText> : null}
             {this.props['data-errorText'] ? <FormHelperText>{this.props['data-errorText']}</FormHelperText> : null}
@@ -83,7 +83,7 @@ export class Boolean<T extends GenericContent, K extends keyof T> extends Compon
             error={this.props['data-errorText'] !== undefined && this.props['data-errorText'].length > 0}>
             <FormControlLabel
               control={<Checkbox checked={this.state.value} onChange={this.handleChange} />}
-              label={this.props['data-labelText']}
+              label={this.props.labelText}
             />
             {this.props.hintText ? <FormHelperText>{this.props.hintText}</FormHelperText> : null}
             {this.props['data-errorText'] ? <FormHelperText>{this.props['data-errorText']}</FormHelperText> : null}
@@ -93,7 +93,7 @@ export class Boolean<T extends GenericContent, K extends keyof T> extends Compon
         return this.props['data-fieldValue'].length > 0 ? (
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
             <InputLabel shrink={true} htmlFor={name as string}>
-              {this.props['data-labelText']}
+              {this.props.labelText}
             </InputLabel>
             {this.props['data-renderIcon']
               ? this.props['data-renderIcon'](this.state.value ? 'check' : 'not_interested')
@@ -104,7 +104,7 @@ export class Boolean<T extends GenericContent, K extends keyof T> extends Compon
         return this.props['data-fieldValue'].length > 0 ? (
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
             <InputLabel shrink={true} htmlFor={name as string}>
-              {this.props['data-labelText']}
+              {this.props.labelText}
             </InputLabel>
             {this.props['data-renderIcon']
               ? this.props['data-renderIcon'](this.state.value ? 'check' : 'not_interested')

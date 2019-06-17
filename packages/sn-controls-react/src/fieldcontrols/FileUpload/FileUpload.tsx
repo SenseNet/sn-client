@@ -154,7 +154,7 @@ export class FileUpload<T extends GenericContent, K extends keyof T> extends Com
             component={'fieldset' as 'div'}
             required={this.props.required}>
             <label style={styles.label} htmlFor={this.props.name as string}>
-              {this.props['data-labelText']}
+              {this.props['labelText']}
             </label>
             {this.props['data-innerComponent'] ? (
               this.props['data-innerComponent'](
@@ -201,7 +201,7 @@ export class FileUpload<T extends GenericContent, K extends keyof T> extends Com
             component={'fieldset' as 'div'}
             required={this.props.required}>
             <label style={styles.label} htmlFor={this.props.name as string}>
-              {this.props['data-labelText']}
+              {this.props['labelText']}
             </label>
             <Typography variant="body1" style={styles.value}>
               {this.state.filename.length > 0 ? this.state.filename : this.props['placeHolderText']}

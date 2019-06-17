@@ -183,7 +183,7 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
                 label={
                   this.props['data-errorText'] && this.props['data-errorText'].length > 0
                     ? this.props['data-errorText']
-                    : this.props['data-labelText']
+                    : this.props.labelText
                 }
                 placeholder={this.props.placeHolderText}
                 InputProps={{
@@ -228,7 +228,7 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
       case 'browse':
         return this.props['data-fieldValue'].length > 0 ? (
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
+            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <FormGroup>
               {this.props['data-fieldValue'].map((value: T[K], index: number) => (
                 <FormControl component={'fieldset' as 'div'} key={index}>
@@ -246,7 +246,7 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
       default:
         return this.props['data-fieldValue'].length > 0 ? (
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
+            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <FormGroup>
               {this.props['data-fieldValue'].map((value: T[K], index: number) => (
                 <FormControl component={'fieldset' as 'div'} key={index}>

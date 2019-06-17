@@ -114,7 +114,7 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
           <TextField
             name={this.props.name as string}
             type="number"
-            label={this.props['data-labelText']}
+            label={this.props['labelText']}
             className={this.props.className}
             style={this.props.style}
             value={this.props['data-fieldValue']}
@@ -140,7 +140,7 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
           <TextField
             name={this.props.name as string}
             type="number"
-            label={this.props['data-labelText']}
+            label={this.props['labelText']}
             className={this.props.className}
             style={this.props.style}
             defaultValue={this.props['defaultValue'] as any}
@@ -165,7 +165,7 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
         return this.props.value ? (
           <div className={this.props.className}>
             <Typography variant="caption" gutterBottom={true}>
-              {this.props['data-labelText']}
+              {this.props['labelText']}
             </Typography>
             <Typography variant="body1" gutterBottom={true}>
               {this.props['data-isCurrency'] ? (this.props['data-currency'] ? this.props['data-currency'] : '$') : null}
@@ -178,7 +178,7 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
         return this.props.value ? (
           <div className={this.props.className}>
             <Typography variant="caption" gutterBottom={true}>
-              {this.props['data-labelText']}
+              {this.props['labelText']}
             </Typography>
             <Typography variant="body1" gutterBottom={true}>
               {this.props['data-isCurrency'] ? (this.props['data-currency'] ? this.props['data-currency'] : '$') : null}

@@ -99,7 +99,7 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
             component={'fieldset' as 'div'}
             required={this.props.required}
             error={this.props['data-errorText'] !== undefined && this.props['data-errorText'].length > 0}>
-            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
+            <FormLabel component={'legend' as 'label'}>{this.props['labelText']}</FormLabel>
             <FormGroup>
               {this.props.options.map(option => {
                 return (
@@ -130,7 +130,7 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
             component={'fieldset' as 'div'}
             required={this.props.required}
             error={this.props['data-errorText'] !== undefined && this.props['data-errorText'].length > 0}>
-            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
+            <FormLabel component={'legend' as 'label'}>{this.props['labelText']}</FormLabel>
             <FormGroup>
               {this.props.options.map(option => {
                 return (
@@ -157,7 +157,7 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
       case 'browse':
         return this.props['data-fieldValue'].length > 0 ? (
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
+            <FormLabel component={'legend' as 'label'}>{this.props['labelText']}</FormLabel>
             <FormGroup>
               {this.props['data-fieldValue'].map((value: T[K], index: number) => (
                 <FormControl component={'fieldset' as 'div'} key={index}>
@@ -175,7 +175,7 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
       default:
         return this.props['data-fieldValue'].length > 0 ? (
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
+            <FormLabel component={'legend' as 'label'}>{this.props['labelText']}</FormLabel>
             <FormGroup>
               {this.props['data-fieldValue'].map((value: T[K], index: number) => (
                 <FormControl component={'fieldset' as 'div'} key={index}>

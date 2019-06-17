@@ -168,7 +168,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
             component={'fieldset' as 'div'}
             required={required}>
             <InputLabel shrink={true} htmlFor={name as string}>
-              {this.props['data-labelText']}
+              {this.props['labelText']}
             </InputLabel>
             <List
               dense={true}
@@ -225,7 +225,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
             component={'fieldset' as 'div'}
             required={required}>
             <InputLabel shrink={true} htmlFor={name as string}>
-              {this.props['data-labelText']}
+              {this.props['labelText']}
             </InputLabel>
             <List
               dense={true}
@@ -277,7 +277,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
         return this.props['data-fieldValue'].length > 0 ? (
           <FormControl className={className} style={styles.root as any}>
             <InputLabel shrink={true} htmlFor={name as string}>
-              {this.props['data-labelText']}
+              {this.props['labelText']}
             </InputLabel>
             <List
               dense={true}
@@ -296,7 +296,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
         return this.props['data-fieldValue'].length > 0 ? (
           <FormControl className={className} style={styles.root as any}>
             <InputLabel shrink={true} htmlFor={name as string}>
-              {this.props['data-labelText']}
+              {this.props['labelText']}
             </InputLabel>
             <List
               dense={true}

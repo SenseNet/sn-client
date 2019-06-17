@@ -305,7 +305,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       case 'edit':
         return (
           <FormControl className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
+            <FormLabel component={'legend' as 'label'}>{this.props['labelText']}</FormLabel>
             <List dense={true}>
               {this.state.items.map((item, index) => (
                 <ListItem key={index}>
@@ -380,7 +380,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       case 'new':
         return (
           <FormControl className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
+            <FormLabel component={'legend' as 'label'}>{this.props['labelText']}</FormLabel>
             <List dense={true}>
               {this.state.items.map((item, index) => (
                 <ListItem key={index}>
@@ -455,7 +455,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       case 'browse':
         return (
           <FormControl className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
+            <FormLabel component={'legend' as 'label'}>{this.props['labelText']}</FormLabel>
             <List dense={true}>
               {this.state.items.map((item, index) => (
                 <ListItem key={index}>
@@ -478,7 +478,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
         return (
           <div>
             <FormControl className={this.props.className}>
-              <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
+              <FormLabel component={'legend' as 'label'}>{this.props['labelText']}</FormLabel>
               <List dense={true}>
                 {this.state.items.map((item, index) => (
                   <ListItem key={index}>

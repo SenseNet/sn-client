@@ -125,7 +125,7 @@ export class RichTextEditor<T extends GenericContent, K extends keyof T> extends
             error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
             required={this.props.required}
             className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
+            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <ReactQuill
               className={this.props.className}
               style={{ ...this.props.style, ...{ background: '#fff', marginTop: 10 } }}
@@ -148,7 +148,7 @@ export class RichTextEditor<T extends GenericContent, K extends keyof T> extends
             error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
             required={this.props.required}
             className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
+            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <ReactQuill
               className={this.props.className}
               style={{ ...this.props.style, ...{ background: '#fff', marginTop: 10 } }}
@@ -167,7 +167,7 @@ export class RichTextEditor<T extends GenericContent, K extends keyof T> extends
         return this.props.value && this.props.value.length > 0 ? (
           <div className={this.props.className}>
             <Typography variant="caption" gutterBottom={true}>
-              {this.props['data-labelText']}
+              {this.props.labelText}
             </Typography>
             <Typography variant="body1" gutterBottom={true}>
               <div dangerouslySetInnerHTML={{ __html: this.props.value }} />
@@ -178,7 +178,7 @@ export class RichTextEditor<T extends GenericContent, K extends keyof T> extends
         return this.props.value && this.props.value.length > 0 ? (
           <div className={this.props.className}>
             <Typography variant="caption" gutterBottom={true}>
-              {this.props['data-labelText']}
+              {this.props.labelText}
             </Typography>
             <Typography variant="body1" gutterBottom={true}>
               <div dangerouslySetInnerHTML={{ __html: this.props.value }} />

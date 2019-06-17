@@ -102,7 +102,7 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
             fullWidth={true}
             required={this.props.required}
             error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}>
-            <InputLabel htmlFor={this.props.name as string}>{this.props['data-labelText']}</InputLabel>
+            <InputLabel htmlFor={this.props.name as string}>{this.props.labelText}</InputLabel>
             <Select
               onChange={this.handleChange}
               inputProps={
@@ -133,7 +133,7 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
             fullWidth={true}
             required={this.props.required}
             error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}>
-            <InputLabel htmlFor={this.props.name as string}>{this.props['data-labelText']}</InputLabel>
+            <InputLabel htmlFor={this.props.name as string}>{this.props.labelText}</InputLabel>
             <Select
               onChange={this.handleChange}
               inputProps={
@@ -161,7 +161,7 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
       case 'browse':
         return this.props['data-fieldValue'] ? (
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
+            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <FormGroup>
               {this.props['data-fieldValue'].map((value: any, index: number) => (
                 <FormControl component={'fieldset' as 'div'} key={index}>
@@ -179,7 +179,7 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
       default:
         return this.props['data-fieldValue'] ? (
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
+            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <FormGroup>
               {this.props['data-fieldValue'].map((value: any, index: number) => (
                 <FormControl component={'fieldset' as 'div'} key={index}>

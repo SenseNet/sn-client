@@ -90,7 +90,7 @@ export class Name<T extends GenericContent, K extends keyof T> extends Component
             label={
               this.props['data-errorText'] && this.props['data-errorText'].length > 0
                 ? this.props['data-errorText']
-                : this.props['data-labelText']
+                : this.props['labelText']
             }
             className={this.props.className}
             placeholder={this.props['placeHolderText']}
@@ -112,7 +112,7 @@ export class Name<T extends GenericContent, K extends keyof T> extends Component
             label={
               this.props['data-errorText'] && this.props['data-errorText'].length > 0
                 ? this.props['data-errorText']
-                : this.props['data-labelText']
+                : this.props['labelText']
             }
             className={this.props.className}
             placeholder={this.props['placeHolderText']}
@@ -129,7 +129,7 @@ export class Name<T extends GenericContent, K extends keyof T> extends Component
         return this.props.value && this.props.value.length > 0 ? (
           <div className={this.props.className}>
             <Typography variant="caption" gutterBottom={true}>
-              {this.props['data-labelText']}
+              {this.props['labelText']}
             </Typography>
             <Typography variant="body1" gutterBottom={true}>
               {this.props.value}
@@ -140,7 +140,7 @@ export class Name<T extends GenericContent, K extends keyof T> extends Component
         return this.props.value && this.props.value.length > 0 ? (
           <div className={this.props.className}>
             <Typography variant="caption" gutterBottom={true}>
-              {this.props['data-labelText']}
+              {this.props['labelText']}
             </Typography>
             <Typography variant="body1" gutterBottom={true}>
               {this.props.value}

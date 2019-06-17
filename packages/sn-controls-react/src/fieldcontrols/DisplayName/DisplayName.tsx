@@ -83,7 +83,7 @@ export class DisplayName<T extends GenericContent, K extends keyof T> extends Co
           <TextField
             name={this.props.name as string}
             id={this.props.name as string}
-            label={this.props['data-labelText']}
+            label={this.props.labelText}
             className={this.props.className}
             placeholder={this.props.placeHolderText}
             style={this.props.style}
@@ -101,7 +101,7 @@ export class DisplayName<T extends GenericContent, K extends keyof T> extends Co
           <TextField
             name={this.props.name as string}
             id={this.props.name as string}
-            label={this.props['data-labelText']}
+            label={this.props.labelText}
             className={this.props.className}
             placeholder={this.props.placeHolderText}
             style={this.props.style}
@@ -118,7 +118,7 @@ export class DisplayName<T extends GenericContent, K extends keyof T> extends Co
         return this.props.value && this.props.value.length > 0 ? (
           <div className={this.props.className}>
             <Typography variant="caption" gutterBottom={true}>
-              {this.props['data-labelText']}
+              {this.props.labelText}
             </Typography>
             <Typography variant="body1" gutterBottom={true}>
               {this.props.value}
@@ -129,7 +129,7 @@ export class DisplayName<T extends GenericContent, K extends keyof T> extends Co
         return this.props.value && this.props.value.length > 0 ? (
           <div className={this.props.className}>
             <Typography variant="caption" gutterBottom={true}>
-              {this.props['data-labelText']}
+              {this.props.labelText}
             </Typography>
             <Typography variant="body1" gutterBottom={true}>
               {this.props.value}

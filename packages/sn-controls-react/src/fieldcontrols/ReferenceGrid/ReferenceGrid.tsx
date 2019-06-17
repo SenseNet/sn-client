@@ -232,7 +232,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
             component={'fieldset' as 'div'}
             required={required}>
             <InputLabel shrink={true} htmlFor={name as string}>
-              {this.props['data-labelText']}
+              {this.props['labelText']}
             </InputLabel>
             <List
               dense={true}
@@ -310,7 +310,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
             component={'fieldset' as 'div'}
             required={required}>
             <InputLabel shrink={true} htmlFor={name as string}>
-              {this.props['data-labelText']}
+              {this.props['labelText']}
             </InputLabel>
             <List
               dense={true}
@@ -383,7 +383,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
         return this.state.fieldValue.length > 0 ? (
           <FormControl className={className} style={styles.root as any}>
             <InputLabel shrink={true} htmlFor={name as string}>
-              {this.props['data-labelText']}
+              {this.props['labelText']}
             </InputLabel>
             <FormGroup>
               <List dense={true} style={styles.listContainer}>
@@ -407,7 +407,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
         return this.state.fieldValue.length > 0 ? (
           <FormControl className={className} style={styles.root as any}>
             <InputLabel shrink={true} htmlFor={name as string}>
-              {this.props['data-labelText']}
+              {this.props['labelText']}
             </InputLabel>
             <FormGroup>
               <List dense={true} style={styles.listContainer}>

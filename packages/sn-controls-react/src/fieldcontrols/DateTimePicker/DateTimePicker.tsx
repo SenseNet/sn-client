@@ -88,7 +88,7 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
               <MUIDateTimePicker
                 value={dateValue}
                 onChange={this.handleDateChange}
-                label={this.props['data-labelText']}
+                label={this.props.labelText}
                 id={this.props.name}
                 disabled={readOnly}
                 placeholder={this.props.placeHolderText}
@@ -105,7 +105,7 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
               <MUIDateTimePicker
                 value={dateValue}
                 onChange={this.handleDateChange}
-                label={this.props['data-labelText']}
+                label={this.props.labelText}
                 id={this.props.name}
                 disabled={readOnly}
                 placeholder={this.props.placeHolderText}
@@ -118,14 +118,14 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
       case 'browse':
         return (
           <div>
-            <label>{this.props['data-labelText']}</label>
+            <label>{this.props.labelText}</label>
             <p>{this.props['data-fieldValue']}</p>
           </div>
         )
       default:
         return (
           <div>
-            <label>{this.props['data-labelText']}</label>
+            <label>{this.props.labelText}</label>
             <p>{this.props['data-fieldValue']}</p>
           </div>
         )

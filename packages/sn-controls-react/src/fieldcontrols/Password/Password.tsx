@@ -91,7 +91,7 @@ export class Password<T extends GenericContent, K extends keyof T> extends Compo
       case 'edit':
         return (
           <FormControl className={this.props.className}>
-            <InputLabel htmlFor={this.props.name as string}>{this.props['data-labelText']}</InputLabel>
+            <InputLabel htmlFor={this.props.name as string}>{this.props['labelText']}</InputLabel>
             <Input
               type={this.state.showPassword ? 'text' : 'password'}
               name={this.props.name as string}
@@ -121,7 +121,7 @@ export class Password<T extends GenericContent, K extends keyof T> extends Compo
       case 'new':
         return (
           <FormControl className={this.props.className}>
-            <InputLabel htmlFor={this.props.name as string}>{this.props['data-labelText']}</InputLabel>
+            <InputLabel htmlFor={this.props.name as string}>{this.props['labelText']}</InputLabel>
             <Input
               type={this.state.showPassword ? 'text' : 'password'}
               name={this.props.name as string}
@@ -152,7 +152,7 @@ export class Password<T extends GenericContent, K extends keyof T> extends Compo
       default:
         return (
           <div>
-            <label>{this.props['data-labelText']}</label>
+            <label>{this.props['labelText']}</label>
           </div>
         )
     }

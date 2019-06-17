@@ -117,7 +117,7 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
               label={
                 this.props['data-errorText'] && this.props['data-errorText'].length > 0
                   ? this.props['data-errorText']
-                  : this.props['data-labelText']
+                  : this.props.labelText
               }
               type="text"
               name={this.props.name as string}
@@ -165,7 +165,7 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
               label={
                 this.props['data-errorText'] && this.props['data-errorText'].length > 0
                   ? this.props['data-errorText']
-                  : this.props['data-labelText']
+                  : this.props.labelText
               }
               className={this.props.className}
               disabled={true}
@@ -185,7 +185,7 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
       default:
         return (
           <div>
-            <label>{this.props['data-labelText']}</label>
+            <label>{this.props.labelText}</label>
           </div>
         )
     }
