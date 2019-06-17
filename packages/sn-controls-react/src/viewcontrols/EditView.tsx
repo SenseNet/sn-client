@@ -138,7 +138,6 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
             fieldSetting.clientSettings['content'] = this.state.content
             fieldSetting.clientSettings.value = that.getFieldValue(fieldSetting.clientSettings.name)
             fieldSetting.clientSettings.onChange = that.handleInputChange as any
-            fieldSetting.clientSettings['data-repositoryUrl'] = this.props.repositoryUrl || ''
             fieldSetting.clientSettings['data-renderIcon'] = this.props.renderIcon || undefined
             if (
               fieldSetting.clientSettings.typeName === 'NullFieldSetting' &&

@@ -126,7 +126,6 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
             fieldSetting.clientSettings.actionName = 'new'
             fieldSetting.clientSettings['data-uploadFolderPath'] = this.props.uploadFolderPath || ''
             fieldSetting.clientSettings['data-repository'] = this.props.repository
-            fieldSetting.clientSettings['data-repositoryUrl'] = repository.configuration.repositoryUrl
             fieldSetting.clientSettings['data-renderIcon'] = this.props.renderIcon || undefined
             if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
               fieldSetting.fieldSettings.Type = 'NumberFieldSetting'
