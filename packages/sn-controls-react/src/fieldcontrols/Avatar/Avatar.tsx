@@ -74,15 +74,15 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
       fieldValue:
         this.props['data-fieldValue'] && this.props['data-fieldValue'].length > 0
           ? this.props['data-fieldValue']
-          : this.props['data-defaultValue']
-          ? this.props['data-defaultValue']
+          : this.props['defaultValue']
+          ? this.props['defaultValue']
           : [],
       pickerIsOpen: false,
       selected:
         this.props['data-fieldValue'] && this.props['data-fieldValue'].length > 0
           ? this.props['data-fieldValue']
-          : this.props['data-defaultValue']
-          ? this.props['data-defaultValue']
+          : this.props['defaultValue']
+          ? this.props['defaultValue']
           : [],
     }
     this.getSelected = this.getSelected.bind(this)

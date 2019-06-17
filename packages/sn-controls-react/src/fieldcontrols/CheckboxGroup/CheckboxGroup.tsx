@@ -42,7 +42,7 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
   constructor(props: CheckboxGroup<T, K>['props']) {
     super(props)
     this.state = {
-      value: this.props['data-fieldValue'] || this.props['data-defaultValue'] || [],
+      value: this.props['data-fieldValue'] || this.props['defaultValue'] || [],
     }
     this.handleChange = this.handleChange.bind(this)
   }

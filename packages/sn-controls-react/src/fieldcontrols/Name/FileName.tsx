@@ -73,8 +73,8 @@ export class FileName<T extends GenericContent, K extends keyof T> extends Compo
         .slice(0, -1)
         .join('.')
     } else {
-      if (this.props['data-defaultValue']) {
-        return this.props['data-defaultValue']
+      if (this.props['defaultValue']) {
+        return this.props['defaultValue']
       } else {
         return ''
       }

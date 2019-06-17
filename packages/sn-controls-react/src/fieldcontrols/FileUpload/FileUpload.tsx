@@ -84,8 +84,8 @@ export class FileUpload<T extends GenericContent, K extends keyof T> extends Com
     if (value) {
       return value.replace(/<[^>]*>/g, '')
     } else {
-      if (this.props['data-defaultValue']) {
-        return this.props['data-defaultValue']
+      if (this.props['defaultValue']) {
+        return this.props['defaultValue']
       } else {
         return ''
       }

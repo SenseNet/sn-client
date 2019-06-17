@@ -39,7 +39,7 @@ export class Boolean<T extends GenericContent, K extends keyof T> extends Compon
   constructor(props: Boolean<T, K>['props']) {
     super(props)
     this.state = {
-      value: this.props['data-fieldValue'] || this.props['data-defaultValue'] || false,
+      value: this.props['data-fieldValue'] || this.props.defaultValue || false,
     }
     this.handleChange = this.handleChange.bind(this)
   }

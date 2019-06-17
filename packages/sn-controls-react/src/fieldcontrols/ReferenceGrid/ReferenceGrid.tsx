@@ -98,13 +98,13 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
         value = [this.props['data-fieldValue']]
         selected = [this.props['data-fieldValue']]
       }
-    } else if (this.props['data-defaultValue']) {
+    } else if (this.props['defaultValue']) {
       if (this.props['data-allowMultiple']) {
-        value = this.props['data-defaultValue']
-        selected = this.props['data-defaultValue']
+        value = this.props['defaultValue']
+        selected = this.props['defaultValue']
       } else {
-        value = [this.props['data-defaultValue']]
-        selected = [this.props['data-defaultValue']]
+        value = [this.props['defaultValue']]
+        selected = [this.props['defaultValue']]
       }
     } else {
       value = []

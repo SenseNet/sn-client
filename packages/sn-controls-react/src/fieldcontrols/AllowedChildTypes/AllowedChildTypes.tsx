@@ -143,8 +143,8 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
     if (value && value.length > 0) {
       return value
     } else {
-      if (this.props['data-defaultValue']) {
-        return this.props['data-defaultValue']
+      if (this.props['defaultValue']) {
+        return this.props['defaultValue']
       } else {
         return []
       }

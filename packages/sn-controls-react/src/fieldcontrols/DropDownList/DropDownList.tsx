@@ -45,7 +45,7 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
      * @type {object}
      */
     this.state = {
-      value: this.props['data-fieldValue'] || this.props['data-defaultValue'] || [],
+      value: this.props['data-fieldValue'] || this.props.defaultValue || [],
     }
   }
   /**

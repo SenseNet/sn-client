@@ -96,8 +96,8 @@ export class RichTextEditor<T extends GenericContent, K extends keyof T> extends
     if (value) {
       return value
     } else {
-      if (this.props['data-defaultValue']) {
-        return this.props['data-defaultValue']
+      if (this.props.defaultValue) {
+        return this.props.defaultValue
       } else {
         return ''
       }
@@ -152,7 +152,7 @@ export class RichTextEditor<T extends GenericContent, K extends keyof T> extends
             <ReactQuill
               className={this.props.className}
               style={{ ...this.props.style, ...{ background: '#fff', marginTop: 10 } }}
-              defaultValue={(this.props['data-defaultValue'] as unknown) as string}
+              defaultValue={(this.props.defaultValue as unknown) as string}
               readOnly={this.props.readOnly}
               modules={modules}
               formats={formats}

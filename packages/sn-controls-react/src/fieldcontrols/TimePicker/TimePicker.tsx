@@ -42,7 +42,7 @@ export class TimePicker<T extends GenericContent, K extends keyof T> extends Rea
      * @property {string} value default value
      */
     this.state = {
-      value: props['data-fieldValue'] ? props['data-fieldValue'] : props['data-defaultValue'],
+      value: props['data-fieldValue'] ? props['data-fieldValue'] : props.defaultValue,
     }
   }
 

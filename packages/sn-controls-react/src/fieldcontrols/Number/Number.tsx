@@ -39,7 +39,7 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
     this.state = {
       value: this.props['data-fieldValue']
         ? (this.setValue(this.props['data-fieldValue']) as any)
-        : this.setValue(this.props['data-defaultValue'] as any),
+        : this.setValue(this.props['defaultValue'] as any),
     }
     this.handleChange = this.handleChange.bind(this)
   }
@@ -61,8 +61,8 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
     if (value) {
       return value
     } else {
-      if (this.props['data-defaultValue']) {
-        return this.props['data-defaultValue']
+      if (this.props['defaultValue']) {
+        return this.props['defaultValue']
       } else {
         return null
       }
@@ -143,7 +143,7 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
             label={this.props['data-labelText']}
             className={this.props.className}
             style={this.props.style}
-            defaultValue={this.props['data-defaultValue'] as any}
+            defaultValue={this.props['defaultValue'] as any}
             required={this.props.required}
             disabled={this.props.readOnly}
             InputProps={{

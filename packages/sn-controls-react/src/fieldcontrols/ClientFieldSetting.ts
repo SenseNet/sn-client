@@ -51,7 +51,7 @@ export interface ReactClientFieldSetting<T extends GenericContent = GenericConte
   /**
    * Default value of the empty field control
    */
-  'data-defaultValue'?: T[K] & { toString: () => string }
+  defaultValue?: T[K] & { toString: () => string }
   /**
    * Display mode of the field control
    * @default browse
