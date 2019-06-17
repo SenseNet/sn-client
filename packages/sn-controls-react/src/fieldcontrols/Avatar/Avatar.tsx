@@ -195,11 +195,11 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                 </Typography>
                 <AvatarPicker
                   path={
-                    this.props['data-selectionRoot']
-                      ? this.props['data-selectionRoot'][0]
+                    this.props.selectionRoot
+                      ? this.props.selectionRoot[0]
                       : `/Root/Profiles/Public/${this.props.content.Name}/Document_Library`
                   }
-                  allowedTypes={this.props['data-allowedTypes']}
+                  allowedTypes={this.props.allowedTypes}
                   repository={this.props['data-repository']}
                   select={content => this.selectItem(content)}
                   repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}
@@ -251,12 +251,8 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
                   {AVATAR_PICKER_TITLE}
                 </Typography>
                 <AvatarPicker
-                  path={
-                    this.props['data-selectionRoot']
-                      ? this.props['data-selectionRoot'][0]
-                      : this.props['data-uploadFolderPath']
-                  }
-                  allowedTypes={this.props['data-allowedTypes']}
+                  path={this.props.selectionRoot ? this.props.selectionRoot[0] : this.props['data-uploadFolderPath']}
+                  allowedTypes={this.props.allowedTypes}
                   repository={this.props['data-repository']}
                   select={content => this.selectItem(content)}
                   repositoryUrl={this.props['data-repository'].configuration.repositoryUrl}

@@ -227,7 +227,6 @@ storiesOf('FieldControls.AutoComplete', module)
     'browse mode',
     () => (
       <AutoComplete
-        data-textType="LongText"
         name="Name"
         actionName="browse"
         labelText={text('Label', 'AutoComplete label')}
@@ -259,7 +258,7 @@ storiesOf('FieldControls.Avatar', module)
         dataSource={referenceGridDataSource}
         repository={testRepository}
         data-repository={testRepository}
-        data-selectionRoot={['/demoavatars']}
+        selectionRoot={['/demoavatars']}
         content={{
           Name: 'Alba Monday',
           Path: 'Root/Users/Alba',
@@ -288,7 +287,7 @@ storiesOf('FieldControls.Avatar', module)
         repository={testRepository}
         data-repository={testRepository}
         data-fieldValue="/Root/Sites/Default_Site/demoavatars/alba.jpg"
-        data-selectionRoot={['/demoavatars']}
+        selectionRoot={['/demoavatars']}
         content={{
           Name: 'Alba Monday',
           Path: 'Root/Users/Alba',
@@ -1214,8 +1213,8 @@ storiesOf('FieldControls.ReferenceGrid', module)
         dataSource={referenceGridDataSource}
         repository={testRepository}
         data-repository={testRepository}
-        data-selectionRoot={['/workspaces']}
-        data-allowedTypes={['File']}
+        selectionRoot={['/workspaces']}
+        allowedTypes={['File']}
       />
     ),
     { notes: { markdown: referenceGridNotes } },
@@ -1236,9 +1235,9 @@ storiesOf('FieldControls.ReferenceGrid', module)
         dataSource={referenceGridDataSource}
         repository={testRepository}
         data-repository={testRepository}
-        data-selectionRoot={['/workspaces']}
-        data-allowedTypes={['File']}
-        data-allowMultiple={true}
+        selectionRoot={['/workspaces']}
+        allowedTypes={['File']}
+        allowMultiple={true}
       />
     ),
     { notes: { markdown: referenceGridNotes } },
@@ -1405,7 +1404,7 @@ storiesOf('FieldControls.TagsInput', module)
         hintText={text('Hint', 'TagsInput hint')}
         dataSource={tagsInputDataSource}
         repository={testRepository}
-        data-allowMultiple={boolean('Allow multiple selection', false)}
+        allowMultiple={boolean('Allow multiple selection', false)}
         name="ModifiedBy"
         content={testContent}
       />
@@ -1427,7 +1426,7 @@ storiesOf('FieldControls.TagsInput', module)
         hintText={text('Hint', 'TagsInput hint')}
         dataSource={tagsInputDataSource}
         repository={testRepository}
-        data-allowMultiple={boolean('Allow multiple selection', false)}
+        allowMultiple={boolean('Allow multiple selection', false)}
         data-fieldValue={[tagsInputDataSource[1]]}
         name="ModifiedBy"
         content={testContent}
@@ -1462,7 +1461,7 @@ storiesOf('FieldControls.Textarea', module)
     () => (
       <Textarea
         actionName="new"
-        data-textType="LongText"
+        textType="LongText"
         labelText={text('Label', 'Textarea label')}
         defaultValue={text('Default value', 'Textarea default value')}
         readOnly={boolean('Readonly', false)}
@@ -1481,7 +1480,7 @@ storiesOf('FieldControls.Textarea', module)
     'edit mode',
     () => (
       <Textarea
-        data-textType="LongText"
+        textType="LongText"
         actionName="edit"
         labelText={text('Label', 'Textarea label')}
         readOnly={boolean('Readonly', false)}
@@ -1504,7 +1503,7 @@ storiesOf('FieldControls.Textarea', module)
     'browse mode',
     () => (
       <Textarea
-        data-textType="LongText"
+        textType="LongText"
         actionName="browse"
         labelText={text('Label', 'Textarea label')}
         className={text('Additional class name', 'textarea-field')}

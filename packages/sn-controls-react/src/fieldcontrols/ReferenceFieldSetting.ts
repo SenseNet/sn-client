@@ -14,21 +14,21 @@ export interface ReactReferenceFieldSetting<T extends GenericContent = GenericCo
    * Defines whether multiple references are allowed or only a single content can be referenced
    * @default false
    */
-  'data-allowMultiple'?: boolean
+  allowMultiple?: boolean
   /**
    * Allowed content types can be defined by explicitely listing type names in Type elements
    * @default all
    */
-  'data-allowedTypes'?: string[]
+  allowedTypes?: string[]
   /**
    * Allowed location of referable content can be defined by listing paths in Path elements
    * @default /Root
    */
-  'data-selectionRoot'?: string[]
+  selectionRoot?: string[]
   /**
    * Default name of content items displayed in a reference field
    */
-  'data-defaultDisplayName'?: string
+  defaultDisplayName?: string
   /**
    * Datasource of a reference field with the optional items that can be chosen
    */

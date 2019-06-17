@@ -84,9 +84,9 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
     const term = `*${e.target['value']}*`
     const query = new Query(q => q.query(q2 => q2.equals('Name', term).or.equals('DisplayName', term)))
 
-    if (this.props['data-allowedTypes']) {
+    if (this.props.allowedTypes) {
       new QueryOperators(query).and.query(q2 => {
-        ;(this.props['data-allowedTypes'] as string[]).map((allowedType, index, array) => {
+        ;(this.props.allowedTypes as string[]).map((allowedType, index, array) => {
           new QueryExpression(q2.queryRef).term(`TypeIs:${allowedType}`)
           if (index < array.length - 1) {
             return new QueryOperators(q2.queryRef).or
@@ -96,9 +96,9 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
       })
     }
 
-    if (this.props['data-selectionRoot'] && this.props['data-selectionRoot'].length) {
+    if (this.props.selectionRoot && this.props.selectionRoot.length) {
       new QueryOperators(query).and.query(q2 => {
-        ;(this.props['data-selectionRoot'] as string[]).forEach((root, index, array) => {
+        ;(this.props.selectionRoot as string[]).forEach((root, index, array) => {
           new QueryExpression(q2.queryRef).inTree(root)
           if (index < array.length - 1) {
             return new QueryOperators(q2.queryRef).or
@@ -160,7 +160,7 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
    * @return {ReactElement} markup
    */
   public render() {
-    const displayName = this.props['data-defaultDisplayName'] || 'DisplayName'
+    const displayName = this.props.defaultDisplayName || 'DisplayName'
     switch (this.props.actionName) {
       case 'edit':
       case 'new':

@@ -90,7 +90,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
           avatar: suggestion.Avatar || {},
           type: suggestion.Type || 'GenericContent',
         })),
-        label: this.props['data-defaultDisplayName'] || 'DisplayName',
+        label: this.props.defaultDisplayName || 'DisplayName',
         fieldValue: this.props.dataSource
           ? this.props.dataSource.map(data => ({
               value: data.Id,
@@ -107,7 +107,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
     } else {
       this.state = {
         dataSource: [],
-        label: this.props['data-defaultDisplayName'] || 'DisplayName',
+        label: this.props.defaultDisplayName || 'DisplayName',
         fieldValue: this.props['data-fieldValue'] ? this.props['data-fieldValue'] : [],
       }
       this.search()
@@ -123,7 +123,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
     let s = selected
     const selectedContent = this.getContentById(event.target.value as number)
 
-    this.props['data-allowMultiple'] !== undefined && this.props['data-allowMultiple']
+    this.props.allowMultiple !== undefined && this.props.allowMultiple
       ? this.isSelected(selectedContent)
         ? (s = selected)
         : s.push(selectedContent)
@@ -139,8 +139,8 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
    * @param path
    */
   public async search(): Promise<ODataCollectionResponse<Content>> {
-    const selectionRoot = this.props['data-selectionRoot'] || []
-    const allowedTypes = this.props['data-allowedTypes'] || ['GenericContent']
+    const selectionRoot = this.props.selectionRoot || []
+    const allowedTypes = this.props.allowedTypes || ['GenericContent']
 
     let pathQuery = ''
     selectionRoot.map((selectionPath, index) => {

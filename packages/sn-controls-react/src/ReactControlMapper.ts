@@ -148,11 +148,11 @@ export const reactControlMapper = (repository: Repository) =>
     })
     .setClientControlFactory(ReferenceFieldSetting, setting => {
       const referenceSettings = clientConfigFactory(setting) as ReactReferenceFieldSetting
-      referenceSettings['data-allowMultiple'] = setting.AllowMultiple
-      referenceSettings['data-allowedTypes'] = setting.AllowedTypes
-      referenceSettings['data-selectionRoot'] = setting.SelectionRoots
+      referenceSettings.allowMultiple = setting.AllowMultiple
+      referenceSettings.allowedTypes = setting.AllowedTypes
+      referenceSettings.selectionRoot = setting.SelectionRoots
       referenceSettings.defaultValue = setting.DefaultValue
-      referenceSettings['data-defaultDisplayName'] =
+      referenceSettings.defaultDisplayName =
         setting.AllowedTypes !== undefined
           ? setting.AllowedTypes.indexOf('User') > -1
             ? 'FullName'
@@ -206,7 +206,7 @@ export const reactControlMapper = (repository: Repository) =>
     .setClientControlFactory(NullFieldSetting, setting => {
       if (setting.SelectionRoots) {
         const avatarSettings = clientConfigFactory(setting) as ReactReferenceFieldSetting
-        avatarSettings['data-selectionRoot'] = setting.SelectionRoots
+        avatarSettings.selectionRoot = setting.SelectionRoots
         return avatarSettings
         // TODO: FIX this! this is probably not working
         // eslint-disable-next-line dot-notation

@@ -91,7 +91,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
     let value
     let selected
     if (this.props['data-fieldValue']) {
-      if (this.props['data-allowMultiple']) {
+      if (this.props.allowMultiple) {
         value = this.props['data-fieldValue']
         selected = this.props['data-fieldValue']
       } else {
@@ -99,7 +99,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
         selected = [this.props['data-fieldValue']]
       }
     } else if (this.props.defaultValue) {
-      if (this.props['data-allowMultiple']) {
+      if (this.props.allowMultiple) {
         value = this.props.defaultValue
         selected = this.props.defaultValue
       } else {
@@ -113,7 +113,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
 
     this.state = {
       fieldValue: value,
-      itemLabel: this.props['data-defaultDisplayName'] || 'DisplayName',
+      itemLabel: this.props.defaultDisplayName || 'DisplayName',
       pickerIsOpen: false,
       selected,
     }
@@ -189,7 +189,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
   public handleOkClick = () => {
     const { name, onChange } = this.props
     const value =
-      this.state.selected.length > 0 && !this.props['data-allowMultiple']
+      this.state.selected.length > 0 && !this.props.allowMultiple
         ? this.state.selected
         : this.state.fieldValue.concat(this.state.selected)
     onChange(name, value.map((item: GenericContent) => item.Id))
@@ -201,7 +201,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
     this.handleDialogClose()
   }
   public selectItem = (content: GenericContent) => {
-    this.state.selected.length > 0 && !this.props['data-allowMultiple']
+    this.state.selected.length > 0 && !this.props.allowMultiple
       ? this.setState({
           selected:
             this.state.selected.findIndex((c: GenericContent) => content.Id === c.Id) > -1
@@ -250,7 +250,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                       actionName="edit"
                       readOnly={this.props.readOnly}
                       repositoryUrl={repo.configuration.repositoryUrl}
-                      multiple={this.props['data-allowMultiple'] ? this.props['data-allowMultiple'] : false}
+                      multiple={this.props.allowMultiple ? this.props.allowMultiple : false}
                       renderIcon={this.props.renderIcon}
                     />
                   )
@@ -259,16 +259,14 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
               {!this.props.readOnly ? (
                 <DefaultItemTemplate
                   content={
-                    this.state.fieldValue.length > 0 &&
-                    this.props['data-allowMultiple'] &&
-                    !this.props['data-allowMultiple']
+                    this.state.fieldValue.length > 0 && this.props.allowMultiple && !this.props.allowMultiple
                       ? changeContent
                       : emptyContent
                   }
                   add={this.addItem}
                   actionName="edit"
                   repositoryUrl={repo.configuration.repositoryUrl}
-                  multiple={this.props['data-allowMultiple'] ? this.props['data-allowMultiple'] : false}
+                  multiple={this.props.allowMultiple ? this.props.allowMultiple : false}
                   renderIcon={this.props.renderIcon}
                 />
               ) : null}
@@ -282,8 +280,8 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                   {REFERENCE_PICKER_TITLE}
                 </Typography>
                 <ReferencePicker
-                  path={this.props['data-selectionRoot'] ? this.props['data-selectionRoot'][0] : '/Root'}
-                  allowedTypes={this.props['data-allowedTypes']}
+                  path={this.props.selectionRoot ? this.props.selectionRoot[0] : '/Root'}
+                  allowedTypes={this.props.allowedTypes}
                   repository={repo}
                   select={content => this.selectItem(content)}
                   selected={this.state.selected}
@@ -328,7 +326,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                       actionName="new"
                       readOnly={this.props.readOnly}
                       repositoryUrl={repo.configuration.repositoryUrl}
-                      multiple={this.props['data-allowMultiple'] ? this.props['data-allowMultiple'] : false}
+                      multiple={this.props.allowMultiple ? this.props.allowMultiple : false}
                       renderIcon={this.props.renderIcon}
                     />
                   )
@@ -337,16 +335,14 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
               {!this.props.readOnly ? (
                 <DefaultItemTemplate
                   content={
-                    this.state.fieldValue.length > 0 &&
-                    this.props['data-allowMultiple'] &&
-                    !this.props['data-allowMultiple']
+                    this.state.fieldValue.length > 0 && this.props.allowMultiple && !this.props.allowMultiple
                       ? changeContent
                       : emptyContent
                   }
                   add={this.addItem}
                   actionName="new"
                   repositoryUrl={repo.configuration.repositoryUrl}
-                  multiple={this.props['data-allowMultiple'] ? this.props['data-allowMultiple'] : false}
+                  multiple={this.props.allowMultiple ? this.props.allowMultiple : false}
                   renderIcon={this.props.renderIcon}
                 />
               ) : null}
@@ -360,8 +356,8 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                   {REFERENCE_PICKER_TITLE}
                 </Typography>
                 <ReferencePicker
-                  path={this.props['data-selectionRoot'] ? this.props['data-selectionRoot'][0] : '/Root'}
-                  allowedTypes={this.props['data-allowedTypes']}
+                  path={this.props.selectionRoot ? this.props.selectionRoot[0] : '/Root'}
+                  allowedTypes={this.props.allowedTypes}
                   repository={repo}
                   select={content => this.selectItem(content)}
                   selected={this.state.selected}
@@ -395,7 +391,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                     key={item.Id}
                     actionName="browse"
                     repositoryUrl={repo.configuration.repositoryUrl}
-                    multiple={this.props['data-allowMultiple'] ? this.props['data-allowMultiple'] : false}
+                    multiple={this.props.allowMultiple ? this.props.allowMultiple : false}
                     renderIcon={this.props.renderIcon}
                   />
                 ))}
@@ -419,7 +415,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
                     key={item.Id}
                     actionName="browse"
                     repositoryUrl={repo.configuration.repositoryUrl}
-                    multiple={this.props['data-allowMultiple'] ? this.props['data-allowMultiple'] : false}
+                    multiple={this.props.allowMultiple ? this.props.allowMultiple : false}
                     renderIcon={this.props.renderIcon}
                   />
                 ))}
