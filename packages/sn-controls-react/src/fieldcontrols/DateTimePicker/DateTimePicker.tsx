@@ -80,7 +80,7 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
   public render() {
     const { dateValue } = this.state
     const { readOnly, required } = this.props
-    switch (this.props['data-actionName']) {
+    switch (this.props.actionName) {
       case 'edit':
         return (
           <MuiPickersUtilsProvider utils={MomentUtils}>

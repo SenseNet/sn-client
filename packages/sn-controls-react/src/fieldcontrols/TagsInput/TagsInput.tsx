@@ -100,7 +100,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
             }))
           : [],
       }
-      if (this.props['data-actionName'] !== 'new') {
+      if (this.props['actionName'] !== 'new') {
         this.getSelected()
         this.handleChange = this.handleChange.bind(this)
       }
@@ -167,7 +167,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
         type: suggestion['Type'] || 'GenericContent',
       })),
     })
-    if (this.props['data-actionName'] !== 'new') {
+    if (this.props['actionName'] !== 'new') {
       this.getSelected()
       this.handleChange = this.handleChange.bind(this)
     }
@@ -239,7 +239,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
    */
   public render() {
     const repo = this.props['data-repository'] || this.props.repository
-    switch (this.props['data-actionName']) {
+    switch (this.props['actionName']) {
       case 'edit':
         return (
           <FormControl

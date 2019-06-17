@@ -88,7 +88,7 @@ export class DatePicker<T extends GenericContent, K extends keyof T> extends Rea
   public render() {
     const { value } = this.state
     const { readOnly, required } = this.props
-    switch (this.props['data-actionName']) {
+    switch (this.props.actionName) {
       case 'edit':
         return (
           <MuiPickersUtilsProvider utils={MomentUtils}>

@@ -108,7 +108,7 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
    * @return {ReactElement} markup
    */
   public render() {
-    switch (this.props['data-actionName']) {
+    switch (this.props.actionName) {
       case 'edit':
       case 'new':
         return (

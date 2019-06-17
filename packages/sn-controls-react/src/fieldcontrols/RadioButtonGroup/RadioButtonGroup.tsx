@@ -69,7 +69,7 @@ export class RadioButtonGroup<T extends GenericContent, K extends keyof T> exten
    * @return {ReactElement} markup
    */
   public render() {
-    switch (this.props['data-actionName']) {
+    switch (this.props['actionName']) {
       case 'edit':
         return (
           <FormControl

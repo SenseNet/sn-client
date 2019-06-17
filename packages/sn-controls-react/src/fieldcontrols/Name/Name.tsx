@@ -81,7 +81,7 @@ export class Name<T extends GenericContent, K extends keyof T> extends Component
    * @return {ReactElement} markup
    */
   public render() {
-    switch (this.props['data-actionName']) {
+    switch (this.props['actionName']) {
       case 'edit':
         return (
           <TextField

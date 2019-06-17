@@ -118,7 +118,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
       selected,
     }
     this.getSelected = this.getSelected.bind(this)
-    if (this.props['data-actionName'] === 'edit') {
+    if (this.props['actionName'] === 'edit') {
       this.getSelected()
     }
   }
@@ -222,7 +222,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
   public render() {
     const { className, name, required, itemTemplate } = this.props
     const repo = this.props['data-repository'] ? this.props['data-repository'] : this.props.repository
-    switch (this.props['data-actionName']) {
+    switch (this.props['actionName']) {
       case 'edit':
         return (
           <FormControl

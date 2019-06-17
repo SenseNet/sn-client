@@ -161,7 +161,7 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
    */
   public render() {
     const displayName = this.props['data-defaultDisplayName'] || 'DisplayName'
-    switch (this.props['data-actionName']) {
+    switch (this.props.actionName) {
       case 'edit':
       case 'new':
         return (

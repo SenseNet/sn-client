@@ -86,7 +86,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
           : [],
     }
     this.getSelected = this.getSelected.bind(this)
-    if (this.props['data-actionName'] === 'edit') {
+    if (this.props['actionName'] === 'edit') {
       this.getSelected()
     }
   }
@@ -158,7 +158,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
   }
   public render() {
     const { className, name, required, itemTemplate } = this.props
-    switch (this.props['data-actionName']) {
+    switch (this.props['actionName']) {
       case 'edit':
         return (
           <FormControl

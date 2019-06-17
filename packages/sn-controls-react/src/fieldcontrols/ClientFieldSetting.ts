@@ -56,7 +56,7 @@ export interface ReactClientFieldSetting<T extends GenericContent = GenericConte
    * Display mode of the field control
    * @default browse
    */
-  'data-actionName'?: 'new' | 'edit' | 'browse'
+  actionName?: 'new' | 'edit' | 'browse'
   /**
    * Text of the hint that could be displayed after the field control
    */

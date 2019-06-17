@@ -87,7 +87,7 @@ export class Password<T extends GenericContent, K extends keyof T> extends Compo
    * @return {ReactElement} markup
    */
   public render() {
-    switch (this.props['data-actionName']) {
+    switch (this.props['actionName']) {
       case 'edit':
         return (
           <FormControl className={this.props.className}>

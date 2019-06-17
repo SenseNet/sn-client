@@ -190,7 +190,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       const typeResults = result.d.EffectiveAllowedChildTypes as T[]
 
       const types =
-        this.props['data-actionName'] !== 'new'
+        this.props['actionName'] !== 'new'
           ? typeResults.length === 0
             ? allowedChildTypesFromCTD.d.results
             : (result.d.EffectiveAllowedChildTypes as T[])
@@ -199,7 +199,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       this.setState({
         effectiveAllowedChildTypes: typeResults,
         items: types,
-        removeable: typeResults.length === 0 || this.props['data-actionName'] === 'new' ? false : true,
+        removeable: typeResults.length === 0 || this.props['actionName'] === 'new' ? false : true,
         value: types.map((t: T) => t.Name),
       })
     } catch (_e) {
@@ -301,7 +301,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
    * @return {ReactElement} markup
    */
   public render() {
-    switch (this.props['data-actionName']) {
+    switch (this.props['actionName']) {
       case 'edit':
         return (
           <FormControl className={this.props.className}>
