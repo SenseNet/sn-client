@@ -115,8 +115,8 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       getMenuItem: (item: T, select: (item: T) => void) => (
         <ListItem key={item.Id} value={item.Id} onClick={() => select(item)} style={{ margin: 0 }}>
           <ListItemIcon style={{ margin: 0 }}>
-            {this.props['data-renderIcon']
-              ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+            {this.props.renderIcon
+              ? this.props.renderIcon(item.Icon ? item.Icon.toLowerCase() : 'contenttype')
               : renderIconDefault(
                   item.Icon && typeicons[item.Icon.toLowerCase()]
                     ? typeicons[item.Icon.toLowerCase()]
@@ -310,8 +310,8 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
               {this.state.items.map((item, index) => (
                 <ListItem key={index}>
                   <ListItemIcon style={{ margin: 0 }}>
-                    {this.props['data-renderIcon']
-                      ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+                    {this.props.renderIcon
+                      ? this.props.renderIcon(item.Icon ? item.Icon.toLowerCase() : 'contenttype')
                       : renderIconDefault(
                           item.Icon && typeicons[item.Icon.toLowerCase()]
                             ? typeicons[item.Icon.toLowerCase()]
@@ -322,9 +322,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                   {this.state.removeable ? (
                     <ListItemSecondaryAction>
                       <IconButton aria-label="Remove" onClick={() => this.handleRemove(item)}>
-                        {this.props['data-renderIcon']
-                          ? this.props['data-renderIcon']('delete')
-                          : renderIconDefault('delete')}
+                        {this.props.renderIcon ? this.props.renderIcon('delete') : renderIconDefault('delete')}
                       </IconButton>
                     </ListItemSecondaryAction>
                   ) : null}
@@ -357,7 +355,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                   style={styles.button}
                   disabled={this.state.selected && this.state.selected.Name.length > 0 ? false : true}
                   onClick={this.handleAddClick}>
-                  {this.props['data-renderIcon'] ? this.props['data-renderIcon']('add') : renderIconDefault('add')}
+                  {this.props.renderIcon ? this.props.renderIcon('add') : renderIconDefault('add')}
                 </IconButton>
               </Paper>
               <ClickAwayListener onClickAway={this.handleClickAway}>
@@ -385,8 +383,8 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
               {this.state.items.map((item, index) => (
                 <ListItem key={index}>
                   <ListItemIcon style={{ margin: 0 }}>
-                    {this.props['data-renderIcon']
-                      ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+                    {this.props.renderIcon
+                      ? this.props.renderIcon(item.Icon ? item.Icon.toLowerCase() : 'contenttype')
                       : renderIconDefault(
                           item.Icon && typeicons[item.Icon.toLowerCase()]
                             ? typeicons[item.Icon.toLowerCase()]
@@ -397,9 +395,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                   {this.state.removeable ? (
                     <ListItemSecondaryAction>
                       <IconButton aria-label="Remove" onClick={() => this.handleRemove(item)}>
-                        {this.props['data-renderIcon']
-                          ? this.props['data-renderIcon']('delete')
-                          : renderIconDefault('delete')}
+                        {this.props.renderIcon ? this.props.renderIcon('delete') : renderIconDefault('delete')}
                       </IconButton>
                     </ListItemSecondaryAction>
                   ) : null}
@@ -432,7 +428,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                   style={styles.button}
                   disabled={this.state.selected && this.state.selected.Name.length > 0 ? false : true}
                   onClick={this.handleAddClick}>
-                  {this.props['data-renderIcon'] ? this.props['data-renderIcon']('add') : renderIconDefault('add')}
+                  {this.props.renderIcon ? this.props.renderIcon('add') : renderIconDefault('add')}
                 </IconButton>
               </Paper>
               <ClickAwayListener onClickAway={this.handleClickAway}>
@@ -460,8 +456,8 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
               {this.state.items.map((item, index) => (
                 <ListItem key={index}>
                   <ListItemIcon style={{ margin: 0 }}>
-                    {this.props['data-renderIcon']
-                      ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+                    {this.props.renderIcon
+                      ? this.props.renderIcon(item.Icon ? item.Icon.toLowerCase() : 'contenttype')
                       : renderIconDefault(
                           item.Icon && typeicons[item.Icon.toLowerCase()]
                             ? typeicons[item.Icon.toLowerCase()]
@@ -483,8 +479,8 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                 {this.state.items.map((item, index) => (
                   <ListItem key={index}>
                     <ListItemIcon style={{ margin: 0 }}>
-                      {this.props['data-renderIcon']
-                        ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+                      {this.props.renderIcon
+                        ? this.props.renderIcon(item.Icon ? item.Icon.toLowerCase() : 'contenttype')
                         : renderIconDefault(
                             item.Icon && typeicons[item.Icon.toLowerCase()]
                               ? typeicons[item.Icon.toLowerCase()]

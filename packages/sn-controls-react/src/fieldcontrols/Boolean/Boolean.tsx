@@ -95,8 +95,8 @@ export class Boolean<T extends GenericContent, K extends keyof T> extends Compon
             <InputLabel shrink={true} htmlFor={name as string}>
               {this.props.labelText}
             </InputLabel>
-            {this.props['data-renderIcon']
-              ? this.props['data-renderIcon'](this.state.value ? 'check' : 'not_interested')
+            {this.props.renderIcon
+              ? this.props.renderIcon(this.state.value ? 'check' : 'not_interested')
               : renderIconDefault(this.state.value ? 'check' : 'not_interested')}
           </FormControl>
         ) : null
@@ -106,8 +106,8 @@ export class Boolean<T extends GenericContent, K extends keyof T> extends Compon
             <InputLabel shrink={true} htmlFor={name as string}>
               {this.props.labelText}
             </InputLabel>
-            {this.props['data-renderIcon']
-              ? this.props['data-renderIcon'](this.state.value ? 'check' : 'not_interested')
+            {this.props.renderIcon
+              ? this.props.renderIcon(this.state.value ? 'check' : 'not_interested')
               : renderIconDefault(this.state.value ? 'check' : 'not_interested')}
           </FormControl>
         ) : null

@@ -103,8 +103,8 @@ export class Password<T extends GenericContent, K extends keyof T> extends Compo
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton aria-label="Toggle password visibility" onClick={this.handleClickShowPassword}>
-                    {this.props['data-renderIcon']
-                      ? this.props['data-renderIcon'](this.state.showPassword ? 'visibility_off' : 'visibility')
+                    {this.props.renderIcon
+                      ? this.props.renderIcon(this.state.showPassword ? 'visibility_off' : 'visibility')
                       : renderIconDefault(this.state.showPassword ? 'visibility_off' : 'visibility')}
                   </IconButton>
                 </InputAdornment>
@@ -134,8 +134,8 @@ export class Password<T extends GenericContent, K extends keyof T> extends Compo
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton aria-label="Toggle password visibility" onClick={this.handleClickShowPassword}>
-                    {this.props['data-renderIcon']
-                      ? this.props['data-renderIcon'](this.state.showPassword ? 'visibility_off' : 'visibility')
+                    {this.props.renderIcon
+                      ? this.props.renderIcon(this.state.showPassword ? 'visibility_off' : 'visibility')
                       : renderIconDefault(this.state.showPassword ? 'visibility_off' : 'visibility')}
                   </IconButton>
                 </InputAdornment>

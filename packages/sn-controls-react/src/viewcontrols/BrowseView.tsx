@@ -82,7 +82,7 @@ export class BrowseView extends Component<BrowseViewProps, BrowseViewState> {
           {fieldSettings.map(fieldSetting => {
             fieldSetting.clientSettings.actionName = 'browse'
             fieldSetting.clientSettings.value = that.getFieldValue(fieldSetting.clientSettings.name)
-            fieldSetting.clientSettings['data-renderIcon'] = this.props.renderIcon || undefined
+            fieldSetting.clientSettings.renderIcon = this.props.renderIcon || undefined
             if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
               fieldSetting.fieldSettings.Type = 'NumberFieldSetting'
             }
@@ -90,7 +90,7 @@ export class BrowseView extends Component<BrowseViewProps, BrowseViewState> {
               fieldSetting.clientSettings.typeName === 'NullFieldSetting' &&
               fieldSetting.fieldSettings.Name === 'AllowedChildTypes'
             ) {
-              fieldSetting.clientSettings['data-renderIcon'] = this.props.renderIcon || undefined
+              fieldSetting.clientSettings.renderIcon = this.props.renderIcon || undefined
             }
             return (
               <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12} key={fieldSetting.clientSettings.key}>

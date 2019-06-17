@@ -275,8 +275,8 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
                     ) : (
                       <Chip
                         icon={
-                          this.props['data-renderIcon']
-                            ? this.props['data-renderIcon'](this.getContentById(content.value).type.toLowerCase())
+                          this.props.renderIcon
+                            ? this.props.renderIcon(this.getContentById(content.value).type.toLowerCase())
                             : renderIconDefault(this.getContentById(content.value).type.toLowerCase())
                         }
                         key={content.value.toString()}
@@ -335,8 +335,8 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
                         key={content.value.toString()}
                         label="{this.getContentById(fvalue).label}"
                         icon={
-                          this.props['data-renderIcon']
-                            ? this.props['data-renderIcon'](this.getContentById(content.value).type.toLowerCase())
+                          this.props.renderIcon
+                            ? this.props.renderIcon(this.getContentById(content.value).type.toLowerCase())
                             : renderIconDefault(this.getContentById(content.value).type.toLowerCase())
                         }
                         onDelete={() => this.handleDelete(content.value)}

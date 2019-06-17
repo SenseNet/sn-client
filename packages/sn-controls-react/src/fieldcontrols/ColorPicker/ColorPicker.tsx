@@ -129,8 +129,8 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    {this.props['data-renderIcon']
-                      ? this.props['data-renderIcon']('lens')
+                    {this.props.renderIcon
+                      ? this.props.renderIcon('lens')
                       : renderIconDefault('lens', this.state.value)}
                   </InputAdornment>
                 ),
@@ -169,8 +169,8 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    {this.props['data-renderIcon']
-                      ? this.props['data-renderIcon']('lens')
+                    {this.props.renderIcon
+                      ? this.props.renderIcon('lens')
                       : renderIconDefault('lens', this.state.value)}
                   </InputAdornment>
                 ),
