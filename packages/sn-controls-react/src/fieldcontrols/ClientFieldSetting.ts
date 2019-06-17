@@ -64,7 +64,7 @@ export interface ReactClientFieldSetting<T extends GenericContent = GenericConte
   /**
    * Text of the placeholder
    */
-  'data-placeHolderText'?: string
+  placeHolderText?: string
   /**
    * Text of the label
    */

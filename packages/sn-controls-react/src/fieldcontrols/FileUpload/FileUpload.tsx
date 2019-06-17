@@ -163,7 +163,7 @@ export class FileUpload<T extends GenericContent, K extends keyof T> extends Com
               )
             ) : (
               <Typography variant="body1" style={styles.value}>
-                {this.state.filename.length > 0 ? this.state.filename : this.props['data-placeHolderText']}
+                {this.state.filename.length > 0 ? this.state.filename : this.props['placeHolderText']}
               </Typography>
             )}
             <div style={{ display: 'table-row' }}>
@@ -204,7 +204,7 @@ export class FileUpload<T extends GenericContent, K extends keyof T> extends Com
               {this.props['data-labelText']}
             </label>
             <Typography variant="body1" style={styles.value}>
-              {this.state.filename.length > 0 ? this.state.filename : this.props['data-placeHolderText']}
+              {this.state.filename.length > 0 ? this.state.filename : this.props['placeHolderText']}
             </Typography>
             <div style={{ position: 'relative' }}>
               <InputLabel htmlFor="raised-button-file" style={{ transform: 'translate(0, 4px) scale(1)' }}>

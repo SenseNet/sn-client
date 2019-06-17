@@ -93,7 +93,7 @@ export class Name<T extends GenericContent, K extends keyof T> extends Component
                 : this.props['data-labelText']
             }
             className={this.props.className}
-            placeholder={this.props['data-placeHolderText']}
+            placeholder={this.props['placeHolderText']}
             style={this.props.style}
             value={this.props.value}
             required={this.props.required}
@@ -115,7 +115,7 @@ export class Name<T extends GenericContent, K extends keyof T> extends Component
                 : this.props['data-labelText']
             }
             className={this.props.className}
-            placeholder={this.props['data-placeHolderText']}
+            placeholder={this.props['placeHolderText']}
             style={this.props.style}
             defaultValue={this.props['defaultValue'] ? this.props['defaultValue'].toString() : ''}
             required={this.props.required}

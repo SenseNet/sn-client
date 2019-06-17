@@ -185,7 +185,7 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
                     ? this.props['data-errorText']
                     : this.props['data-labelText']
                 }
-                placeholder={this.props['data-placeHolderText']}
+                placeholder={this.props.placeHolderText}
                 InputProps={{
                   endAdornment: this.state.isLoading ? (
                     <InputAdornment position="end">

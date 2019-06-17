@@ -109,7 +109,7 @@ export class FileName<T extends GenericContent, K extends keyof T> extends Compo
             id={this.props.name as string}
             label={this.props['data-labelText']}
             className={this.props.className}
-            placeholder={this.props['data-placeHolderText']}
+            placeholder={this.props['placeHolderText']}
             style={this.props.style}
             defaultValue={this.state.value}
             onChange={e => this.handleChange(e)}
@@ -135,7 +135,7 @@ export class FileName<T extends GenericContent, K extends keyof T> extends Compo
             id={this.props.name as string}
             label={this.props['data-labelText']}
             className={this.props.className}
-            placeholder={this.props['data-placeHolderText']}
+            placeholder={this.props['placeHolderText']}
             style={this.props.style}
             defaultValue={this.state.value}
             onChange={e => this.handleChange(e)}

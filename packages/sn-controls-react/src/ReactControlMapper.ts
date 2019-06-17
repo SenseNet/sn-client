@@ -41,8 +41,8 @@ const clientConfigFactory = (fieldSettings: FieldSetting) => {
     required: fieldSettings.Compulsory || false,
     onChange: (field, value) => console.log({ field, value }),
     hintText: fieldSettings.Description || '',
+    placeHolderText: fieldSettings.DisplayName || '',
   }
-  defaultSetting['data-placeHolderText'] = fieldSettings.DisplayName || ''
   defaultSetting['data-labelText'] = fieldSettings.DisplayName || ''
   defaultSetting['data-typeName'] = fieldSettings.Type || ''
   return defaultSetting

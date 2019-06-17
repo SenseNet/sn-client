@@ -91,7 +91,7 @@ export class TimePicker<T extends GenericContent, K extends keyof T> extends Rea
                 label={this.props['data-labelText']}
                 id={this.props.name as string}
                 disabled={readOnly}
-                placeholder={this.props['data-placeHolderText']}
+                placeholder={this.props.placeHolderText}
                 required={required}
                 fullWidth={true}
               />
@@ -108,7 +108,7 @@ export class TimePicker<T extends GenericContent, K extends keyof T> extends Rea
                 label={this.props['data-labelText']}
                 id={this.props.name as string}
                 disabled={readOnly}
-                placeholder={this.props['data-placeHolderText']}
+                placeholder={this.props.placeHolderText}
                 required={required}
                 fullWidth={true}
               />

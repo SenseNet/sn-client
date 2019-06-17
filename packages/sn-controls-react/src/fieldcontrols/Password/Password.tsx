@@ -97,7 +97,7 @@ export class Password<T extends GenericContent, K extends keyof T> extends Compo
               name={this.props.name as string}
               id={this.props.name as string}
               className={this.props.className}
-              placeholder={this.props['data-placeHolderText']}
+              placeholder={this.props['placeHolderText']}
               style={this.props.style}
               defaultValue={this.state.value}
               required={this.props.required}
@@ -127,7 +127,7 @@ export class Password<T extends GenericContent, K extends keyof T> extends Compo
               name={this.props.name as string}
               id={this.props.name as string}
               className={this.props.className}
-              placeholder={this.props['data-placeHolderText']}
+              placeholder={this.props['placeHolderText']}
               style={this.props.style}
               defaultValue={this.state.value}
               required={this.props.required}

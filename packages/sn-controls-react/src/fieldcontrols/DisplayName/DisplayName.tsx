@@ -85,7 +85,7 @@ export class DisplayName<T extends GenericContent, K extends keyof T> extends Co
             id={this.props.name as string}
             label={this.props['data-labelText']}
             className={this.props.className}
-            placeholder={this.props['data-placeHolderText']}
+            placeholder={this.props.placeHolderText}
             style={this.props.style}
             defaultValue={this.state.value}
             required={this.props.required}
@@ -103,7 +103,7 @@ export class DisplayName<T extends GenericContent, K extends keyof T> extends Co
             id={this.props.name as string}
             label={this.props['data-labelText']}
             className={this.props.className}
-            placeholder={this.props['data-placeHolderText']}
+            placeholder={this.props.placeHolderText}
             style={this.props.style}
             defaultValue={this.props.defaultValue as any}
             required={this.props.required}
