@@ -13,17 +13,18 @@ export interface ReactChoiceFieldSetting<T extends GenericContent = GenericConte
    * Allows multiple selection
    * @default false
    */
-  'data-allowMultiple'?: boolean
+  allowMultiple?: boolean
   /**
    * Allows to add an extra value to the field
    * @default false
    */
-  'data-allowExtraValue'?: boolean
+  allowExtraValue?: boolean
+  //TODO?? This is not used.
   /**
    * Specifies the type of the field control which will handle the current field ('DropDown','RadioButtons','CheckBoxes').
    * @default dropDown
    */
-  'data-displayChoices'?: 'dropDown' | 'radioButtons' | 'checkBoxes'
+  displayChoices?: 'dropDown' | 'radioButtons' | 'checkBoxes'
   /**
    * List of the optional options
    */

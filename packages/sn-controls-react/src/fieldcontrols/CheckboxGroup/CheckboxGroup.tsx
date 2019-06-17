@@ -54,7 +54,7 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
     const newValue = event.target['value']
     const checked = value
     const index = value.indexOf(newValue)
-    if (this.props['data-allowMultiple']) {
+    if (this.props.allowMultiple) {
       if (index > -1) {
         checked.splice(index, 1)
       } else {
@@ -118,7 +118,7 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
                 )
               })}
             </FormGroup>
-            {this.props['data-allowExtraValue'] ? <TextField placeholder="Extra value" /> : null}
+            {this.props.allowExtraValue ? <TextField placeholder="Extra value" /> : null}
             <FormHelperText>{this.props.hintText}</FormHelperText>
             <FormHelperText>{this.props.errorText}</FormHelperText>
           </FormControl>
@@ -149,7 +149,7 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
                 )
               })}
             </FormGroup>
-            {this.props['data-allowExtraValue'] ? <TextField placeholder="Extra value" /> : null}
+            {this.props.allowExtraValue ? <TextField placeholder="Extra value" /> : null}
             <FormHelperText>{this.props.hintText}</FormHelperText>
             <FormHelperText>{this.props.errorText}</FormHelperText>
           </FormControl>

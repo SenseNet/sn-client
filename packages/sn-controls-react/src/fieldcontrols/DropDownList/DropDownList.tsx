@@ -112,7 +112,7 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
                 } as any
               }
               value={this.state.value[0]}
-              multiple={this.props['data-allowMultiple']}
+              multiple={this.props.allowMultiple}
               autoWidth={true}
               fullWidth={true}>
               {this.props.options.map(option => {
@@ -143,7 +143,7 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
                 } as any
               }
               value={this.state.value as any}
-              multiple={this.props['data-allowMultiple']}
+              multiple={this.props.allowMultiple}
               autoWidth={true}
               fullWidth={true}>
               {this.props.options.map(option => {

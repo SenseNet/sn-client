@@ -338,12 +338,12 @@ storiesOf('FieldControls.CheckboxGroup', module)
         actionName="new"
         onChange={action('change')}
         options={[{ Text: 'option1', Value: 1 }, { Text: 'option2', Value: 2 }, { Text: 'option3', Value: 3 }]}
-        data-allowMultiple={boolean('Allow multiple', false)}
+        allowMultiple={boolean('Allow multiple', false)}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         errorText={text('Error text', '')}
         hintText={text('Hint', 'Checkboxgroup hint')}
-        data-allowExtraValue={boolean('Allow extra value', false)}
+        allowExtraValue={boolean('Allow extra value', false)}
         name="VersioningMode"
       />
     ),
@@ -358,12 +358,12 @@ storiesOf('FieldControls.CheckboxGroup', module)
         onChange={action('change')}
         options={[{ Text: 'option1', Value: 1 }, { Text: 'option2', Value: 2 }, { Text: 'option3', Value: 3 }]}
         data-fieldValue={[3]}
-        data-allowMultiple={boolean('Allow multiple', false)}
+        allowMultiple={boolean('Allow multiple', false)}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         errorText={text('Error text', '')}
         hintText={text('Hint', 'Checkboxgroup hint')}
-        data-allowExtraValue={boolean('Allow extra value', false)}
+        allowExtraValue={boolean('Allow extra value', false)}
         name="VersioningMode"
       />
     ),

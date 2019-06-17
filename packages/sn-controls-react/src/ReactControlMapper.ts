@@ -134,8 +134,8 @@ export const reactControlMapper = (repository: Repository) =>
     })
     .setClientControlFactory(ChoiceFieldSetting, setting => {
       const choiceSettings = clientConfigFactory(setting) as ReactChoiceFieldSetting
-      choiceSettings['data-allowExtraValue'] = setting.AllowExtraValue
-      choiceSettings['data-allowMultiple'] = setting.AllowMultiple
+      choiceSettings.allowExtraValue = setting.AllowExtraValue
+      choiceSettings.allowMultiple = setting.AllowMultiple
       choiceSettings.options = setting.Options || []
       return choiceSettings
     })
