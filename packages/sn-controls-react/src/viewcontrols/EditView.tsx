@@ -9,7 +9,7 @@ import { ControlSchema } from '@sensenet/control-mapper'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 import React, { Component, createElement } from 'react'
 import MediaQuery from 'react-responsive'
-import { ReactClientFieldSettingProps } from '../fieldcontrols/ClientFieldSetting'
+import { ReactClientFieldSetting } from '../fieldcontrols/ClientFieldSetting'
 import { reactControlMapper } from '../ReactControlMapper'
 import { styles } from './EditViewStyles'
 
@@ -34,7 +34,7 @@ export interface EditViewProps<T extends GenericContent = GenericContent> {
  */
 export interface EditViewState<T extends GenericContent = GenericContent> {
   content: T
-  schema: ControlSchema<React.Component<any, any, any>, ReactClientFieldSettingProps>
+  schema: ControlSchema<React.Component<any, any, any>, ReactClientFieldSetting>
   saveableContent: T
 }
 
@@ -132,7 +132,7 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
             ) {
               fieldSetting.clientSettings['data-repository'] = this.props.repository
             }
-            fieldSetting.clientSettings['data-actionName'] = 'edit'
+            fieldSetting.clientSettings.actionName = 'edit'
             fieldSetting.clientSettings['data-fieldValue'] = that.getFieldValue(fieldSetting.clientSettings.name)
             // eslint-disable-next-line dot-notation
             fieldSetting.clientSettings['content'] = this.state.content

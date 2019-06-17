@@ -10,7 +10,7 @@ import { Repository } from '@sensenet/client-core'
 import { ControlSchema } from '@sensenet/control-mapper'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 import MediaQuery from 'react-responsive'
-import { ReactClientFieldSettingProps } from '../fieldcontrols/ClientFieldSetting'
+import { ReactClientFieldSetting } from '../fieldcontrols/ClientFieldSetting'
 import { reactControlMapper } from '../ReactControlMapper'
 import { styles } from './NewViewStyles'
 
@@ -35,7 +35,7 @@ export interface NewViewProps<T extends GenericContent = GenericContent> {
  * Interface for NewView state
  */
 export interface NewViewState<T extends GenericContent = GenericContent> {
-  schema: ControlSchema<React.Component<any, any, any>, ReactClientFieldSettingProps>
+  schema: ControlSchema<React.Component<any, any, any>, ReactClientFieldSetting>
   dataSource: GenericContent[]
   content: T
 }
@@ -123,7 +123,7 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
               fieldSetting.clientSettings['data-extension'] = extension
             }
             fieldSetting.clientSettings.onChange = this.handleInputChange as any
-            fieldSetting.clientSettings['data-actionName'] = 'new'
+            fieldSetting.clientSettings.actionName = 'new'
             fieldSetting.clientSettings['data-uploadFolderPath'] = this.props.uploadFolderPath || ''
             fieldSetting.clientSettings['data-repository'] = this.props.repository
             fieldSetting.clientSettings['data-repositoryUrl'] = repository.configuration.repositoryUrl

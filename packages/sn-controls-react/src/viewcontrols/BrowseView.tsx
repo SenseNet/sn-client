@@ -9,7 +9,7 @@ import { Repository } from '@sensenet/client-core'
 import { ControlSchema } from '@sensenet/control-mapper'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { Component, createElement } from 'react'
-import { ReactClientFieldSettingProps } from '../fieldcontrols/ClientFieldSetting'
+import { ReactClientFieldSetting } from '../fieldcontrols/ClientFieldSetting'
 import { reactControlMapper } from '../ReactControlMapper'
 import { styles } from './BrowseViewStyles'
 
@@ -26,7 +26,7 @@ export interface BrowseViewProps {
  */
 export interface BrowseViewState {
   content: GenericContent
-  schema: ControlSchema<React.Component<any, any, any>, ReactClientFieldSettingProps>
+  schema: ControlSchema<React.Component<any, any, any>, ReactClientFieldSetting>
 }
 
 /**
@@ -81,7 +81,7 @@ export class BrowseView extends Component<BrowseViewProps, BrowseViewState> {
             {this.props.content.DisplayName}
           </Typography>
           {fieldSettings.map(fieldSetting => {
-            fieldSetting['data-actionName'] = 'browse'
+            fieldSetting.clientSettings.actionName = 'browse'
             fieldSetting['value'] = that.getFieldValue(fieldSetting.clientSettings.name)
             fieldSetting.clientSettings['data-renderIcon'] = this.props.renderIcon || undefined
             if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
