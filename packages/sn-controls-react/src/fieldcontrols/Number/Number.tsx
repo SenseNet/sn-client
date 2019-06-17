@@ -1,4 +1,3 @@
-/* eslint-disable dot-notation */
 /**
  * @module FieldControls
  */
@@ -39,7 +38,7 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
     this.state = {
       value: this.props['data-fieldValue']
         ? (this.setValue(this.props['data-fieldValue']) as any)
-        : this.setValue(this.props['defaultValue'] as any),
+        : this.setValue(this.props.defaultValue as any),
     }
     this.handleChange = this.handleChange.bind(this)
   }
@@ -61,8 +60,8 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
     if (value) {
       return value
     } else {
-      if (this.props['defaultValue']) {
-        return this.props['defaultValue']
+      if (this.props.defaultValue) {
+        return this.props.defaultValue
       } else {
         return null
       }
@@ -108,13 +107,13 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
    * @return {ReactElement} markup
    */
   public render() {
-    switch (this.props['actionName']) {
+    switch (this.props.actionName) {
       case 'edit':
         return (
           <TextField
             name={this.props.name as string}
             type="number"
-            label={this.props['labelText']}
+            label={this.props.labelText}
             className={this.props.className}
             style={this.props.style}
             value={this.props['data-fieldValue']}
@@ -129,10 +128,10 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
               min: this.props.min ? this.props.min : null,
             }}
             id={this.props.name as string}
-            error={this.props['errorText'] && this.props['errorText'].length > 0 ? true : false}
+            error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
             fullWidth={true}
             onChange={e => this.handleChange(e)}
-            helperText={this.props['hintText']}
+            helperText={this.props.hintText}
           />
         )
       case 'new':
@@ -140,10 +139,10 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
           <TextField
             name={this.props.name as string}
             type="number"
-            label={this.props['labelText']}
+            label={this.props.labelText}
             className={this.props.className}
             style={this.props.style}
-            defaultValue={this.props['defaultValue'] as any}
+            defaultValue={this.props.defaultValue as any}
             required={this.props.required}
             disabled={this.props.readOnly}
             InputProps={{
@@ -155,17 +154,17 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
               min: this.props.min ? this.props.min : null,
             }}
             id={this.props.name as string}
-            error={this.props['errorText'] && this.props['errorText'].length > 0 ? true : false}
+            error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
             fullWidth={true}
             onChange={e => this.handleChange(e)}
-            helperText={this.props['hintText']}
+            helperText={this.props.hintText}
           />
         )
       case 'browse':
         return this.props.value ? (
           <div className={this.props.className}>
             <Typography variant="caption" gutterBottom={true}>
-              {this.props['labelText']}
+              {this.props.labelText}
             </Typography>
             <Typography variant="body1" gutterBottom={true}>
               {this.props['data-isCurrency'] ? (this.props['data-currency'] ? this.props['data-currency'] : '$') : null}
@@ -178,7 +177,7 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
         return this.props.value ? (
           <div className={this.props.className}>
             <Typography variant="caption" gutterBottom={true}>
-              {this.props['labelText']}
+              {this.props.labelText}
             </Typography>
             <Typography variant="body1" gutterBottom={true}>
               {this.props['data-isCurrency'] ? (this.props['data-currency'] ? this.props['data-currency'] : '$') : null}

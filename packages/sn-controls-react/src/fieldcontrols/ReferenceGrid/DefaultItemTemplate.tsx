@@ -1,4 +1,3 @@
-/* eslint-disable dot-notation */
 import Avatar from '@material-ui/core/Avatar'
 import Icon from '@material-ui/core/Icon'
 import IconButton from '@material-ui/core/IconButton'
@@ -11,6 +10,7 @@ import InsertDriveFile from '@material-ui/icons/InsertDriveFile'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
 import { renderIconDefault } from '../icon'
+import { isUser } from '../type-guards'
 
 const styles = {
   icon: {
@@ -47,9 +47,9 @@ export class DefaultItemTemplate extends Component<DefaultItemTemplateProps, {}>
     return (
       <ListItem key={content.Id} button={false}>
         {content.Type ? (
-          content.Type === 'User' ? (
+          isUser(content) ? (
             <ListItemAvatar>
-              {<Avatar alt={content['FullName']} src={`${repositoryUrl}${content['Avatar'].Url}`} />}
+              {<Avatar alt={content.FullName} src={content.Avatar ? `${repositoryUrl}${content.Avatar.Url}` : ''} />}
             </ListItemAvatar>
           ) : (
             <ListItemIcon style={styles.icon}>

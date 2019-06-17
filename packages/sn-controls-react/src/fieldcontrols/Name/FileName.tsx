@@ -1,4 +1,3 @@
-/* eslint-disable dot-notation */
 /**
  * @module FieldControls
  */
@@ -52,8 +51,10 @@ export class FileName<T extends GenericContent, K extends keyof T> extends Compo
       error: '',
       extension: this.props['data-extension']
         ? this.props['data-extension']
-        : this.props['content']
-        ? this.getExtensionFromValue(this.props['content'].Name)
+        : // eslint-disable-next-line dot-notation
+        this.props['content']
+        ? // eslint-disable-next-line dot-notation
+          this.getExtensionFromValue(this.props['content'].Name)
         : this.props.value && this.props.value.indexOf('.') > -1
         ? this.getExtensionFromValue(this.props.value)
         : '',
@@ -73,8 +74,8 @@ export class FileName<T extends GenericContent, K extends keyof T> extends Compo
         .slice(0, -1)
         .join('.')
     } else {
-      if (this.props['defaultValue']) {
-        return this.props['defaultValue']
+      if (this.props.defaultValue) {
+        return this.props.defaultValue
       } else {
         return ''
       }
@@ -86,6 +87,7 @@ export class FileName<T extends GenericContent, K extends keyof T> extends Compo
    */
   public handleChange(e: React.ChangeEvent) {
     const { onChange } = this.props
+    // eslint-disable-next-line dot-notation
     const value = `${e.target['value']}.${this.state.extension}`
     onChange(this.props.name, value as any)
   }
@@ -101,15 +103,15 @@ export class FileName<T extends GenericContent, K extends keyof T> extends Compo
    * @return {ReactElement} markup
    */
   public render() {
-    switch (this.props['actionName']) {
+    switch (this.props.actionName) {
       case 'edit':
         return (
           <TextField
             name={this.props.name as string}
             id={this.props.name as string}
-            label={this.props['labelText']}
+            label={this.props.labelText}
             className={this.props.className}
-            placeholder={this.props['placeHolderText']}
+            placeholder={this.props.placeHolderText}
             style={this.props.style}
             defaultValue={this.state.value}
             onChange={e => this.handleChange(e)}
@@ -121,7 +123,7 @@ export class FileName<T extends GenericContent, K extends keyof T> extends Compo
               ),
             }}
             autoFocus={true}
-            error={this.props['errorText'] && this.props['errorText'].length > 0 ? true : false}
+            error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
             required={this.props.required}
             disabled={this.props.readOnly}
             fullWidth={true}
@@ -133,9 +135,9 @@ export class FileName<T extends GenericContent, K extends keyof T> extends Compo
           <TextField
             name={this.props.name as string}
             id={this.props.name as string}
-            label={this.props['labelText']}
+            label={this.props.labelText}
             className={this.props.className}
-            placeholder={this.props['placeHolderText']}
+            placeholder={this.props.placeHolderText}
             style={this.props.style}
             defaultValue={this.state.value}
             onChange={e => this.handleChange(e)}
@@ -147,7 +149,7 @@ export class FileName<T extends GenericContent, K extends keyof T> extends Compo
               ),
             }}
             autoFocus={true}
-            error={this.props['errorText'] && this.props['errorText'].length > 0 ? true : false}
+            error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
             required={this.props.required}
             disabled={this.props.readOnly}
             fullWidth={true}
@@ -158,7 +160,7 @@ export class FileName<T extends GenericContent, K extends keyof T> extends Compo
         return this.props.value && this.props.value.length > 0 ? (
           <div className={this.props.className}>
             <Typography variant="caption" gutterBottom={true}>
-              {this.props['labelText']}
+              {this.props.labelText}
             </Typography>
             <Typography variant="body1" gutterBottom={true}>
               {this.props.value}
@@ -169,7 +171,7 @@ export class FileName<T extends GenericContent, K extends keyof T> extends Compo
         return this.props.value && this.props.value.length > 0 ? (
           <div className={this.props.className}>
             <Typography variant="caption" gutterBottom={true}>
-              {this.props['labelText']}
+              {this.props.labelText}
             </Typography>
             <Typography variant="body1" gutterBottom={true}>
               {this.props.value}

@@ -1,4 +1,3 @@
-/* eslint-disable dot-notation */
 /**
  * @module sn-controls-react
  */
@@ -152,7 +151,7 @@ export const reactControlMapper = (repository: Repository) =>
       referenceSettings['data-allowMultiple'] = setting.AllowMultiple
       referenceSettings['data-allowedTypes'] = setting.AllowedTypes
       referenceSettings['data-selectionRoot'] = setting.SelectionRoots
-      referenceSettings['defaultValue'] = setting.DefaultValue
+      referenceSettings.defaultValue = setting.DefaultValue
       referenceSettings['data-defaultDisplayName'] =
         setting.AllowedTypes !== undefined
           ? setting.AllowedTypes.indexOf('User') > -1
@@ -198,7 +197,7 @@ export const reactControlMapper = (repository: Repository) =>
         return FieldControls.AllowedChildTypes
       } else if (setting.Name === 'UrlList') {
         return FieldControls.Textarea
-      } else if (setting['FieldClassName'].indexOf('BooleanField') > -1) {
+      } else if (setting.FieldClassName.indexOf('BooleanField') > -1) {
         return FieldControls.Boolean
       } else {
         return FieldControls.ShortText
@@ -209,8 +208,11 @@ export const reactControlMapper = (repository: Repository) =>
         const avatarSettings = clientConfigFactory(setting) as ReactReferenceFieldSetting
         avatarSettings['data-selectionRoot'] = setting.SelectionRoots
         return avatarSettings
+        // TODO: FIX this! this is probably not working
+        // eslint-disable-next-line dot-notation
       } else if (setting['Palette']) {
         const colorPickerSettings = clientConfigFactory(setting) as ReactShortTextFieldSetting
+        // eslint-disable-next-line dot-notation
         colorPickerSettings['palette'] = setting['Palette']
         return colorPickerSettings
       } else {

@@ -1,4 +1,3 @@
-/* eslint-disable dot-notation */
 /**
  * @module FieldControls
  */
@@ -62,19 +61,16 @@ export class Password<T extends GenericContent, K extends keyof T> extends Compo
     if (value) {
       return value.replace(/<[^>]*>/g, '')
     } else {
-      if (this.props['defaultValue']) {
-        return this.props['defaultValue']
+      if (this.props.defaultValue) {
+        return this.props.defaultValue
       } else {
         return ''
       }
     }
   }
-  /**
-   * handle change event on an input
-   * @param {SytheticEvent} event
-   */
-  public handleChange(event: React.ChangeEvent) {
-    this.setState({ value: event.target['value'] })
+
+  public handleChange(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
+    this.setState({ value: event.target.value })
   }
   /**
    * handle clicking on show password icon
@@ -87,22 +83,22 @@ export class Password<T extends GenericContent, K extends keyof T> extends Compo
    * @return {ReactElement} markup
    */
   public render() {
-    switch (this.props['actionName']) {
+    switch (this.props.actionName) {
       case 'edit':
         return (
           <FormControl className={this.props.className}>
-            <InputLabel htmlFor={this.props.name as string}>{this.props['labelText']}</InputLabel>
+            <InputLabel htmlFor={this.props.name as string}>{this.props.labelText}</InputLabel>
             <Input
               type={this.state.showPassword ? 'text' : 'password'}
               name={this.props.name as string}
               id={this.props.name as string}
               className={this.props.className}
-              placeholder={this.props['placeHolderText']}
+              placeholder={this.props.placeHolderText}
               style={this.props.style}
               defaultValue={this.state.value}
               required={this.props.required}
               disabled={this.props.readOnly}
-              error={this.props['errorText'] && this.props['errorText'].length > 0 ? true : false}
+              error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
               fullWidth={true}
               endAdornment={
                 <InputAdornment position="end">
@@ -114,25 +110,25 @@ export class Password<T extends GenericContent, K extends keyof T> extends Compo
                 </InputAdornment>
               }
             />
-            <FormHelperText>{this.props['hintText']}</FormHelperText>
-            <FormHelperText>{this.props['errorText']}</FormHelperText>
+            <FormHelperText>{this.props.hintText}</FormHelperText>
+            <FormHelperText>{this.props.errorText}</FormHelperText>
           </FormControl>
         )
       case 'new':
         return (
           <FormControl className={this.props.className}>
-            <InputLabel htmlFor={this.props.name as string}>{this.props['labelText']}</InputLabel>
+            <InputLabel htmlFor={this.props.name as string}>{this.props.labelText}</InputLabel>
             <Input
               type={this.state.showPassword ? 'text' : 'password'}
               name={this.props.name as string}
               id={this.props.name as string}
               className={this.props.className}
-              placeholder={this.props['placeHolderText']}
+              placeholder={this.props.placeHolderText}
               style={this.props.style}
               defaultValue={this.state.value}
               required={this.props.required}
               disabled={this.props.readOnly}
-              error={this.props['errorText'] && this.props['errorText'].length > 0 ? true : false}
+              error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
               fullWidth={true}
               onChange={e => this.handleChange(e)}
               endAdornment={
@@ -145,14 +141,14 @@ export class Password<T extends GenericContent, K extends keyof T> extends Compo
                 </InputAdornment>
               }
             />
-            <FormHelperText>{this.props['hintText']}</FormHelperText>
-            <FormHelperText>{this.props['errorText']}</FormHelperText>
+            <FormHelperText>{this.props.hintText}</FormHelperText>
+            <FormHelperText>{this.props.errorText}</FormHelperText>
           </FormControl>
         )
       default:
         return (
           <div>
-            <label>{this.props['labelText']}</label>
+            <label>{this.props.labelText}</label>
           </div>
         )
     }

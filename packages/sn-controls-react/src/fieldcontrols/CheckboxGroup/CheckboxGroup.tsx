@@ -1,4 +1,3 @@
-/* eslint-disable dot-notation */
 /**
  * @module FieldControls
  */
@@ -42,7 +41,7 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
   constructor(props: CheckboxGroup<T, K>['props']) {
     super(props)
     this.state = {
-      value: this.props['data-fieldValue'] || this.props['defaultValue'] || [],
+      value: this.props['data-fieldValue'] || this.props.defaultValue || [],
     }
     this.handleChange = this.handleChange.bind(this)
   }
@@ -51,6 +50,7 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
    */
   public handleChange = (event: React.ChangeEvent) => {
     const { value } = this.state
+    // eslint-disable-next-line dot-notation
     const newValue = event.target['value']
     const checked = value
     const index = value.indexOf(newValue)
@@ -91,15 +91,15 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
    * @return {ReactElement} markup
    */
   public render() {
-    switch (this.props['actionName']) {
+    switch (this.props.actionName) {
       case 'edit':
         return (
           <FormControl
             className={this.props.className}
             component={'fieldset' as 'div'}
             required={this.props.required}
-            error={this.props['errorText'] !== undefined && this.props['errorText'].length > 0}>
-            <FormLabel component={'legend' as 'label'}>{this.props['labelText']}</FormLabel>
+            error={this.props.errorText !== undefined && this.props.errorText.length > 0}>
+            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <FormGroup>
               {this.props.options.map(option => {
                 return (
@@ -120,7 +120,7 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
             </FormGroup>
             {this.props['data-allowExtraValue'] ? <TextField placeholder="Extra value" /> : null}
             <FormHelperText>{this.props.hintText}</FormHelperText>
-            <FormHelperText>{this.props['errorText']}</FormHelperText>
+            <FormHelperText>{this.props.errorText}</FormHelperText>
           </FormControl>
         )
       case 'new':
@@ -129,8 +129,8 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
             className={this.props.className}
             component={'fieldset' as 'div'}
             required={this.props.required}
-            error={this.props['errorText'] !== undefined && this.props['errorText'].length > 0}>
-            <FormLabel component={'legend' as 'label'}>{this.props['labelText']}</FormLabel>
+            error={this.props.errorText !== undefined && this.props.errorText.length > 0}>
+            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <FormGroup>
               {this.props.options.map(option => {
                 return (
@@ -151,13 +151,13 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
             </FormGroup>
             {this.props['data-allowExtraValue'] ? <TextField placeholder="Extra value" /> : null}
             <FormHelperText>{this.props.hintText}</FormHelperText>
-            <FormHelperText>{this.props['errorText']}</FormHelperText>
+            <FormHelperText>{this.props.errorText}</FormHelperText>
           </FormControl>
         )
       case 'browse':
         return this.props['data-fieldValue'].length > 0 ? (
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props['labelText']}</FormLabel>
+            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <FormGroup>
               {this.props['data-fieldValue'].map((value: T[K], index: number) => (
                 <FormControl component={'fieldset' as 'div'} key={index}>
@@ -175,7 +175,7 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
       default:
         return this.props['data-fieldValue'].length > 0 ? (
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props['labelText']}</FormLabel>
+            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <FormGroup>
               {this.props['data-fieldValue'].map((value: T[K], index: number) => (
                 <FormControl component={'fieldset' as 'div'} key={index}>

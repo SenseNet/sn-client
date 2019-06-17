@@ -1,4 +1,3 @@
-/* eslint-disable dot-notation */
 /**
  * @module FieldControls
  */
@@ -24,6 +23,8 @@ export interface TextareaProps<T extends GenericContent, K extends keyof T>
 export interface TextareaState {
   value: string
 }
+
+// TODO: FIX THIS! this is not working as expected.
 /**
  * Field control that represents a LongText field. Available values will be populated from the FieldSettings.
  */
@@ -56,8 +57,8 @@ export class Textarea<T extends GenericContent, K extends keyof T> extends Compo
     if (value) {
       return value.replace(/<[^>]*>/g, '')
     } else {
-      if (this.props['defaultValue']) {
-        return this.props['defaultValue']
+      if (this.props.defaultValue) {
+        return this.props.defaultValue
       } else {
         return ''
       }
@@ -67,29 +68,30 @@ export class Textarea<T extends GenericContent, K extends keyof T> extends Compo
    * handle change event on an input
    * @param {SytheticEvent} event
    */
-  public handleChange(event: React.ChangeEvent) {
-    this.setState({ value: event.target['value'] })
-    this.props.onChange(this.props.name, event.target['value'])
+  public handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
+    this.setState({ value: event.target.value })
+    this.props.onChange(this.props.name, event.target.value)
   }
   /**
    * render
    * @return {ReactElement} markup
    */
   public render() {
-    switch (this.props['actionName']) {
+    switch (this.props.actionName) {
       case 'edit':
         return (
           <TextField
+            onChange={this.handleChange}
             name={this.props.name as string}
             id={this.props.name as string}
-            label={this.props['labelText']}
+            label={this.props.labelText}
             className={this.props.className}
-            placeholder={this.props['placeHolderText']}
+            placeholder={this.props.placeHolderText}
             style={this.props.style}
-            value={this.props.value}
+            value={this.state.value}
             required={this.props.required}
             disabled={this.props.readOnly}
-            error={this.props['errorText'] && this.props['errorText'].length > 0 ? true : false}
+            error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
             multiline={true}
             fullWidth={true}
           />
@@ -97,16 +99,17 @@ export class Textarea<T extends GenericContent, K extends keyof T> extends Compo
       case 'new':
         return (
           <TextField
+            onChange={this.handleChange}
             name={this.props.name as string}
             id={this.props.name as string}
-            label={this.props['labelText']}
+            label={this.props.labelText}
             className={this.props.className}
-            placeholder={this.props['placeHolderText']}
+            placeholder={this.props.placeHolderText}
             style={this.props.style}
-            defaultValue={this.props['defaultValue'] ? this.props['defaultValue'].toString() : ''}
+            value={this.state.value}
             required={this.props.required}
             disabled={this.props.readOnly}
-            error={this.props['errorText'] && this.props['errorText'].length > 0 ? true : false}
+            error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
             multiline={true}
             fullWidth={true}
           />
@@ -115,7 +118,7 @@ export class Textarea<T extends GenericContent, K extends keyof T> extends Compo
         return this.props.value && this.props.value.length > 0 ? (
           <div className={this.props.className}>
             <Typography variant="caption" gutterBottom={true}>
-              {this.props['labelText']}
+              {this.props.labelText}
             </Typography>
             <Typography variant="body1" gutterBottom={true}>
               {this.props.value}
@@ -126,7 +129,7 @@ export class Textarea<T extends GenericContent, K extends keyof T> extends Compo
         return this.props.value && this.props.value.length > 0 ? (
           <div className={this.props.className}>
             <Typography variant="caption" gutterBottom={true}>
-              {this.props['labelText']}
+              {this.props.labelText}
             </Typography>
             <Typography variant="body1" gutterBottom={true}>
               {this.props.value}

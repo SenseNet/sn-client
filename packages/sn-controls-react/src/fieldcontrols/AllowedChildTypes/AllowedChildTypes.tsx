@@ -1,4 +1,3 @@
-/* eslint-disable dot-notation */
 import CircularProgress from '@material-ui/core/CircularProgress'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import FormControl from '@material-ui/core/FormControl'
@@ -121,7 +120,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
               : renderIconDefault(
                   item.Icon && typeicons[item.Icon.toLowerCase()]
                     ? typeicons[item.Icon.toLowerCase()]
-                    : typeicons['contenttype'],
+                    : typeicons.contenttype,
                 )}
           </ListItemIcon>
           <ListItemText primary={item.DisplayName} />
@@ -143,8 +142,8 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
     if (value && value.length > 0) {
       return value
     } else {
-      if (this.props['defaultValue']) {
-        return this.props['defaultValue']
+      if (this.props.defaultValue) {
+        return this.props.defaultValue
       } else {
         return []
       }
@@ -161,7 +160,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
     const repo: Repository = this.props['data-repository'] || this.props.repository
     try {
       const result = await repo.load<T>({
-        idOrPath: this.props['content'].Id,
+        idOrPath: this.props.content.Id,
         oDataOptions: {
           select: 'EffectiveAllowedChildTypes',
           expand: 'EffectiveAllowedChildTypes',
@@ -175,7 +174,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
         ODataParams<GenericContent>,
         ODataBatchResponse<GenericContent>
       >({
-        idOrPath: this.props['content'].Id,
+        idOrPath: this.props.content.Id,
         name: 'GetAllowedChildTypesFromCTD',
         method: 'GET',
         body: {
@@ -190,7 +189,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       const typeResults = result.d.EffectiveAllowedChildTypes as T[]
 
       const types =
-        this.props['actionName'] !== 'new'
+        this.props.actionName !== 'new'
           ? typeResults.length === 0
             ? allowedChildTypesFromCTD.d.results
             : (result.d.EffectiveAllowedChildTypes as T[])
@@ -199,7 +198,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       this.setState({
         effectiveAllowedChildTypes: typeResults,
         items: types,
-        removeable: typeResults.length === 0 || this.props['actionName'] === 'new' ? false : true,
+        removeable: typeResults.length === 0 || this.props.actionName === 'new' ? false : true,
         value: types.map((t: T) => t.Name),
       })
     } catch (_e) {
@@ -210,7 +209,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
     const repo: Repository = this.props['data-repository'] || this.props.repository
     try {
       const result = (await repo.executeAction({
-        idOrPath: this.props['content'].Id,
+        idOrPath: this.props.content.Id,
         name: 'GetAllContentTypes',
         method: 'GET',
         oDataOptions: {
@@ -243,6 +242,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
     }
   }
   public handleInputChange = (e: React.ChangeEvent) => {
+    // eslint-disable-next-line dot-notation
     const term = e.target['value']
     this.setState({
       filteredList: this.state.allCTDs.filter(ctd => {
@@ -301,11 +301,11 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
    * @return {ReactElement} markup
    */
   public render() {
-    switch (this.props['actionName']) {
+    switch (this.props.actionName) {
       case 'edit':
         return (
           <FormControl className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props['labelText']}</FormLabel>
+            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <List dense={true}>
               {this.state.items.map((item, index) => (
                 <ListItem key={index}>
@@ -315,7 +315,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                       : renderIconDefault(
                           item.Icon && typeicons[item.Icon.toLowerCase()]
                             ? typeicons[item.Icon.toLowerCase()]
-                            : typeicons['contenttype'],
+                            : typeicons.contenttype,
                         )}
                   </ListItemIcon>
                   <ListItemText primary={item.DisplayName} />
@@ -372,15 +372,15 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                   </List>
                 </Paper>
               </ClickAwayListener>
-              <FormHelperText>{this.props['hintText']}</FormHelperText>
-              <FormHelperText>{this.props['errorText']}</FormHelperText>
+              <FormHelperText>{this.props.hintText}</FormHelperText>
+              <FormHelperText>{this.props.errorText}</FormHelperText>
             </div>
           </FormControl>
         )
       case 'new':
         return (
           <FormControl className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props['labelText']}</FormLabel>
+            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <List dense={true}>
               {this.state.items.map((item, index) => (
                 <ListItem key={index}>
@@ -390,7 +390,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                       : renderIconDefault(
                           item.Icon && typeicons[item.Icon.toLowerCase()]
                             ? typeicons[item.Icon.toLowerCase()]
-                            : typeicons['contenttype'],
+                            : typeicons.contenttype,
                         )}
                   </ListItemIcon>
                   <ListItemText primary={item.DisplayName} />
@@ -447,15 +447,15 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                   </List>
                 </Paper>
               </ClickAwayListener>
-              <FormHelperText>{this.props['hintText']}</FormHelperText>
-              <FormHelperText>{this.props['errorText']}</FormHelperText>
+              <FormHelperText>{this.props.hintText}</FormHelperText>
+              <FormHelperText>{this.props.errorText}</FormHelperText>
             </div>
           </FormControl>
         )
       case 'browse':
         return (
           <FormControl className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props['labelText']}</FormLabel>
+            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <List dense={true}>
               {this.state.items.map((item, index) => (
                 <ListItem key={index}>
@@ -465,7 +465,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                       : renderIconDefault(
                           item.Icon && typeicons[item.Icon.toLowerCase()]
                             ? typeicons[item.Icon.toLowerCase()]
-                            : typeicons['contenttype'],
+                            : typeicons.contenttype,
                         )}
                   </ListItemIcon>
                   <ListItemText primary={item.DisplayName} />
@@ -478,7 +478,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
         return (
           <div>
             <FormControl className={this.props.className}>
-              <FormLabel component={'legend' as 'label'}>{this.props['labelText']}</FormLabel>
+              <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
               <List dense={true}>
                 {this.state.items.map((item, index) => (
                   <ListItem key={index}>
@@ -488,7 +488,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                         : renderIconDefault(
                             item.Icon && typeicons[item.Icon.toLowerCase()]
                               ? typeicons[item.Icon.toLowerCase()]
-                              : typeicons['contenttype'],
+                              : typeicons.contenttype,
                           )}
                     </ListItemIcon>
                     <ListItemText primary={item.DisplayName} />

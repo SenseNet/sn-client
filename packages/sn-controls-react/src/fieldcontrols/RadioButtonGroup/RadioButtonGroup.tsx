@@ -1,4 +1,3 @@
-/* eslint-disable dot-notation */
 /**
  * @module FieldControls
  */
@@ -25,7 +24,7 @@ export interface RadioButtonGroupProps<T extends GenericContent, K extends keyof
  * Interface for RadioButton state
  */
 export interface RadioButtonGroupState {
-  value: any[]
+  value: string
 }
 /**
  * Field control that represents a Choice field. Available values will be populated from the FieldSettings.
@@ -34,56 +33,39 @@ export class RadioButtonGroup<T extends GenericContent, K extends keyof T> exten
   RadioButtonGroupProps<T, K>,
   RadioButtonGroupState
 > {
-  /**
-   * constructor
-   * @param {object} props
-   */
   constructor(props: RadioButtonGroupProps<T, K>) {
     super(props)
     this.state = {
-      value: this.props['data-fieldValue'] || this.props['defaultValue'] || [this.props.options[0].Value],
+      value: this.props['data-fieldValue'] || this.props.defaultValue || this.props.options[0].Value,
     }
-    this.handleChange = this.handleChange.bind(this)
   }
   /**
    * set selected value
    */
-  public handleChange = (event: React.ChangeEvent) => {
-    const { value } = this.state
-    const newValue = event.target['value']
-    const checked = value
-    const index = value.indexOf(newValue.toString())
-
-    if (index > -1) {
-      checked.splice(index, 1)
-    } else {
-      checked[0] = newValue
-    }
-    this.setState({
-      value: checked,
-    })
-    this.props.onChange(this.props.name, checked as any)
+  public handleChange = (_event: React.ChangeEvent<{}>, value: string) => {
+    this.setState({ value })
+    this.props.onChange(this.props.name, value)
   }
   /**
    * render
    * @return {ReactElement} markup
    */
   public render() {
-    switch (this.props['actionName']) {
+    switch (this.props.actionName) {
       case 'edit':
         return (
           <FormControl
             component={'fieldset' as 'div'}
             fullWidth={true}
-            error={this.props['errorText'] && this.props['errorText'].length > 0 ? true : false}
+            error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
             required={this.props.required}
             className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props['labelText']}</FormLabel>
+            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <RadioGroup
-              aria-label={this.props['labelText']}
+              aria-label={this.props.labelText}
               name={this.props.name as string}
-              value={this.state.value[0].toString()}
-              onChange={this.handleChange as any}>
+              value={this.state.value}
+              onChange={this.handleChange}>
               {this.props.options.map(option => {
                 return (
                   <FormControlLabel
@@ -96,8 +78,8 @@ export class RadioButtonGroup<T extends GenericContent, K extends keyof T> exten
                 )
               })}
             </RadioGroup>
-            <FormHelperText>{this.props['hintText']}</FormHelperText>
-            <FormHelperText>{this.props['errorText']}</FormHelperText>
+            <FormHelperText>{this.props.hintText}</FormHelperText>
+            <FormHelperText>{this.props.errorText}</FormHelperText>
           </FormControl>
         )
       case 'new':
@@ -105,14 +87,14 @@ export class RadioButtonGroup<T extends GenericContent, K extends keyof T> exten
           <FormControl
             component={'fieldset' as 'div'}
             fullWidth={true}
-            error={this.props['errorText'] && this.props['errorText'].length > 0 ? true : false}
+            error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
             required={this.props.required}
             className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props['labelText']}</FormLabel>
+            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <RadioGroup
-              aria-label={this.props['labelText']}
+              aria-label={this.props.labelText}
               name={this.props.name as string}
-              value={this.state.value.toString()}
+              value={this.state.value}
               onChange={this.handleChange as any}>
               {this.props.options.map(option => {
                 return (
@@ -126,14 +108,14 @@ export class RadioButtonGroup<T extends GenericContent, K extends keyof T> exten
                 )
               })}
             </RadioGroup>
-            <FormHelperText>{this.props['hintText']}</FormHelperText>
-            <FormHelperText>{this.props['errorText']}</FormHelperText>
+            <FormHelperText>{this.props.hintText}</FormHelperText>
+            <FormHelperText>{this.props.errorText}</FormHelperText>
           </FormControl>
         )
       case 'browse':
         return this.props['data-fieldValue'].length > 0 ? (
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props['labelText']}</FormLabel>
+            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <FormGroup>
               {this.props['data-fieldValue'].map((value: any, index: number) => (
                 <FormControl key={index} component={'fieldset' as 'div'}>
@@ -151,7 +133,7 @@ export class RadioButtonGroup<T extends GenericContent, K extends keyof T> exten
       default:
         return this.props['data-fieldValue'].length > 0 ? (
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props['labelText']}</FormLabel>
+            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <FormGroup>
               {this.props['data-fieldValue'].map((value: any, index: number) => (
                 <FormControl key={index} component={'fieldset' as 'div'}>

@@ -1,4 +1,3 @@
-/* eslint-disable dot-notation */
 /**
  * @module FieldControls
  */
@@ -20,6 +19,7 @@ import React, { Component } from 'react'
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { renderIconDefault } from '../icon'
 import { ReactReferenceFieldSetting } from '../ReferenceFieldSetting'
+import { isUser } from '../type-guards'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -93,14 +93,14 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
         label: this.props['data-defaultDisplayName'] || 'DisplayName',
         fieldValue: this.props.dataSource
           ? this.props.dataSource.map(data => ({
-              value: data['Id'],
-              label: data['DisplayName'],
-              avatar: data['Avatar'] || {},
-              type: data['Type'] || 'GenericContent',
+              value: data.Id,
+              label: data.DisplayName,
+              avatar: data.Avatar || {},
+              type: data.Type || 'GenericContent',
             }))
           : [],
       }
-      if (this.props['actionName'] !== 'new') {
+      if (this.props.actionName !== 'new') {
         this.getSelected()
         this.handleChange = this.handleChange.bind(this)
       }
@@ -161,13 +161,13 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
     const { label } = this.state
     this.setState({
       dataSource: req.d.results.map((suggestion: GenericContent) => ({
-        value: suggestion['Id'],
-        label: suggestion[label] || suggestion['DisplayName'],
-        avatar: suggestion['Avatar'] || {},
-        type: suggestion['Type'] || 'GenericContent',
+        value: suggestion.Id,
+        label: suggestion[label] || suggestion.DisplayName,
+        avatar: isUser(suggestion) ? suggestion.Avatar : undefined,
+        type: suggestion.Type || 'GenericContent',
       })),
     })
-    if (this.props['actionName'] !== 'new') {
+    if (this.props.actionName !== 'new') {
       this.getSelected()
       this.handleChange = this.handleChange.bind(this)
     }
@@ -179,8 +179,8 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
    */
   public async getSelected() {
     const repo = this.props['data-repository'] || this.props.repository
-    const loadPath = this.props['content']
-      ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props['content'].Path), '/', this.props.name.toString())
+    const loadPath = this.props.content
+      ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props.content.Path), '/', this.props.name.toString())
       : ''
     const references = await repo.loadCollection({
       path: loadPath,
@@ -192,20 +192,20 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
     const results = references.d.results ? references.d.results : [references.d]
     this.setState({
       fieldValue: results.map((item: GenericContent) => ({
-        value: item['Id'],
+        value: item.Id,
         label: item[label],
-        avatar: item['Avatar'] || {},
-        type: item['Type'] || 'GenericContent',
+        avatar: isUser(item) ? item.Avatar : undefined,
+        type: item.Type || 'GenericContent',
       })),
     })
 
     if (this.props.dataSource && this.props.dataSource.length > 0) {
       this.setState({
         fieldValue: this.props.dataSource.map((item: GenericContent) => ({
-          value: item['Id'],
+          value: item.Id,
           label: item[label],
-          avatar: item['Avatar'] || {},
-          type: item['Type'] || 'GenericContent',
+          avatar: isUser(item) ? item.Avatar : undefined,
+          type: item.Type || 'GenericContent',
         })),
       })
     }
@@ -239,7 +239,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
    */
   public render() {
     const repo = this.props['data-repository'] || this.props.repository
-    switch (this.props['actionName']) {
+    switch (this.props.actionName) {
       case 'edit':
         return (
           <FormControl
@@ -248,7 +248,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
             key={this.props.name as string}
             component={'fieldset' as 'div'}
             required={this.props.required}>
-            <InputLabel htmlFor={this.props.name as string}>{this.props['labelText']}</InputLabel>
+            <InputLabel htmlFor={this.props.name as string}>{this.props.labelText}</InputLabel>
             <Select
               value={this.state.fieldValue}
               onChange={e => this.handleChange(e)}
@@ -294,8 +294,8 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
                 </MenuItem>
               ))}
             </Select>
-            <FormHelperText>{this.props['hintText']}</FormHelperText>
-            <FormHelperText>{this.props['errorText']}</FormHelperText>
+            <FormHelperText>{this.props.hintText}</FormHelperText>
+            <FormHelperText>{this.props.errorText}</FormHelperText>
           </FormControl>
         )
       case 'new':
@@ -306,7 +306,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
             key={this.props.name as string}
             component={'fieldset' as 'div'}
             required={this.props.required}>
-            <InputLabel htmlFor={this.props.name as string}>{this.props['labelText']}</InputLabel>
+            <InputLabel htmlFor={this.props.name as string}>{this.props.labelText}</InputLabel>
             <Select
               value={this.state.fieldValue}
               onChange={e => this.handleChange(e)}
@@ -352,14 +352,14 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
                 </MenuItem>
               ))}
             </Select>
-            <FormHelperText>{this.props['hintText']}</FormHelperText>
-            <FormHelperText>{this.props['errorText']}</FormHelperText>
+            <FormHelperText>{this.props.hintText}</FormHelperText>
+            <FormHelperText>{this.props.errorText}</FormHelperText>
           </FormControl>
         )
       case 'browse':
         return this.props['data-fieldValue'].length > 0 ? (
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props['labelText']}</FormLabel>
+            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <FormGroup>
               {this.state.fieldValue.map((content: any, index: number) => (
                 <FormControl key={index} component={'fieldset' as 'div'}>
@@ -377,7 +377,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
       default:
         return this.props['data-fieldValue'].length > 0 ? (
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props['labelText']}</FormLabel>
+            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <FormGroup>
               {this.state.fieldValue.map((content: any, index: number) => (
                 <FormControl key={index} component={'fieldset' as 'div'}>
