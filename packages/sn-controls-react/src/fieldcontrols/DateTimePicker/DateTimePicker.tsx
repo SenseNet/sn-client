@@ -7,20 +7,10 @@ import {
   MaterialUiPickersDate,
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers'
-
 import moment from 'moment'
 import React, { Fragment } from 'react'
-
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactDateTimeFieldSetting } from '../DateTimeFieldSetting'
 
-/**
- * Interface for DateTimePicker properties
- */
-export interface DateTimePickerProps
-  extends ReactClientFieldSettingProps,
-    ReactClientFieldSetting,
-    ReactDateTimeFieldSetting {}
 /**
  * Interface for DateTimePicker state
  */
@@ -31,12 +21,12 @@ export interface DateTimePickerState {
 /**
  * Field control that represents a DateTime field. Available values will be populated from the FieldSettings.
  */
-export class DateTimePicker extends React.Component<DateTimePickerProps, DateTimePickerState> {
+export class DateTimePicker extends React.Component<ReactDateTimeFieldSetting, DateTimePickerState> {
   /**
    * constructor
    * @param {object} props
    */
-  constructor(props: DateTimePickerProps) {
+  constructor(props: DateTimePicker['props']) {
     super(props)
     /**
      * @type {object}
@@ -69,7 +59,7 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
       dateValue: date,
       value: moment.utc(date).toISOString(),
     })
-    this.props.onChange(this.props.name, this.state.value)
+    this.props.fieldOnChange(this.props.fieldName, this.state.value)
   }
   /**
    * render
@@ -87,7 +77,7 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
                 value={dateValue}
                 onChange={this.handleDateChange}
                 label={this.props.labelText}
-                id={this.props.name}
+                id={this.props.fieldName}
                 disabled={readOnly}
                 placeholder={this.props.placeHolderText}
                 required={required}
@@ -104,7 +94,7 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
                 value={dateValue}
                 onChange={this.handleDateChange}
                 label={this.props.labelText}
-                id={this.props.name}
+                id={this.props.fieldName}
                 disabled={readOnly}
                 placeholder={this.props.placeHolderText}
                 required={required}

@@ -7,18 +7,8 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
-import { ReactShortTextFieldSetting } from '../ShortText/ShortTextFieldSetting'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactNameFieldSetting } from './NameFieldSetting'
 
-/**
- * Interface for Name properties
- */
-export interface NameProps<T extends GenericContent, K extends keyof T>
-  extends ReactClientFieldSettingProps<T, K>,
-    ReactClientFieldSetting<T, K>,
-    ReactShortTextFieldSetting<T, K>,
-    ReactNameFieldSetting<T, K> {}
 /**
  * Interface for Name state
  */
@@ -31,12 +21,11 @@ export interface NameState {
  * Field control that represents a ShortText field. Available values will be populated from the FieldSettings.
  */
 @Radium
-export class Name<T extends GenericContent, K extends keyof T> extends Component<NameProps<T, K>, NameState> {
-  /**
-   * constructor
-   * @param {object} props
-   */
-  constructor(props: NameProps<T, K>) {
+export class Name<T extends GenericContent, K extends keyof T> extends Component<
+  ReactNameFieldSetting<T, K>,
+  NameState
+> {
+  constructor(props: Name<T, K>['props']) {
     super(props)
     /**
      * @type {object}
@@ -70,10 +59,10 @@ export class Name<T extends GenericContent, K extends keyof T> extends Component
    * @param e
    */
   public handleChange(e: React.ChangeEvent<{ value: string }>) {
-    const { onChange } = this.props
+    const { fieldOnChange: onChange } = this.props
     const { value } = e.target
     this.setState({ value })
-    onChange(this.props.name, value)
+    onChange(this.props.fieldName, value)
   }
   /**
    * render
@@ -84,8 +73,8 @@ export class Name<T extends GenericContent, K extends keyof T> extends Component
       case 'edit':
         return (
           <TextField
-            name={this.props.name as string}
-            id={this.props.name as string}
+            name={this.props.fieldName as string}
+            id={this.props.fieldName as string}
             label={
               this.props.errorText && this.props.errorText.length > 0 ? this.props.errorText : this.props.labelText
             }
@@ -104,8 +93,8 @@ export class Name<T extends GenericContent, K extends keyof T> extends Component
       case 'new':
         return (
           <TextField
-            name={this.props.name as string}
-            id={this.props.name as string}
+            name={this.props.fieldName as string}
+            id={this.props.fieldName as string}
             label={
               this.props.errorText && this.props.errorText.length > 0 ? this.props.errorText : this.props.labelText
             }

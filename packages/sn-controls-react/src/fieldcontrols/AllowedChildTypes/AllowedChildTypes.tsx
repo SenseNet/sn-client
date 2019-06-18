@@ -280,7 +280,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       })
     }
     console.log(newValue)
-    this.props.onChange(this.props.name, newValue as any)
+    this.props.fieldOnChange(this.props.fieldName, newValue as any)
   }
   /**
    * render

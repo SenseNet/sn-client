@@ -1553,11 +1553,9 @@ storiesOf('ViewControls', module)
     ),
     { notes: { markdown: newViewNotes } },
   )
-  .add(
-    'edit view',
-    () => <EditView content={object('Content', testFile)} repository={testRepository} contentTypeName="File" />,
-    { notes: { markdown: editViewNotes } },
-  )
+  .add('edit view', () => <EditView content={object('Content', testFile)} repository={testRepository} />, {
+    notes: { markdown: editViewNotes },
+  })
   .add('browse view', () => <BrowseView content={object('Content', testFile)} repository={testRepository} />, {
     notes: { markdown: browseViewNotes },
   })

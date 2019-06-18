@@ -3,21 +3,11 @@
  */
 import MomentUtils from '@date-io/moment'
 import { MaterialUiPickersDate, TimePicker as MUITimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
-
 import { GenericContent } from '@sensenet/default-content-types'
 import moment from 'moment'
 import React, { Fragment } from 'react'
-
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactDateTimeFieldSetting } from '../DateTimeFieldSetting'
 
-/**
- * Interface for TimePicker properties
- */
-export interface TimePickerProps<T extends GenericContent, K extends keyof T>
-  extends ReactClientFieldSettingProps<T, K>,
-    ReactClientFieldSetting<T, K>,
-    ReactDateTimeFieldSetting<T, K> {}
 /**
  * Interface for TimePicker state
  */
@@ -28,14 +18,14 @@ export interface TimePickerState {
  * Field control that represents a DateTime field. Available values will be populated from the FieldSettings.
  */
 export class TimePicker<T extends GenericContent, K extends keyof T> extends React.Component<
-  TimePickerProps<T, K>,
+  ReactDateTimeFieldSetting<T, K>,
   TimePickerState
 > {
   /**
    * constructor
    * @param {object} props
    */
-  constructor(props: TimePickerProps<T, K>) {
+  constructor(props: TimePicker<T, K>['props']) {
     super(props)
     /**
      * @type {object}
@@ -71,7 +61,7 @@ export class TimePicker<T extends GenericContent, K extends keyof T> extends Rea
     this.setState({
       value: moment.utc(date),
     })
-    this.props.onChange(this.props.name, moment.utc(date) as any)
+    this.props.fieldOnChange(this.props.fieldName, moment.utc(date) as any)
   }
   /**
    * render
@@ -89,7 +79,7 @@ export class TimePicker<T extends GenericContent, K extends keyof T> extends Rea
                 value={value}
                 onChange={this.handleDateChange}
                 label={this.props.labelText}
-                id={this.props.name as string}
+                id={this.props.fieldName as string}
                 disabled={readOnly}
                 placeholder={this.props.placeHolderText}
                 required={required}
@@ -106,7 +96,7 @@ export class TimePicker<T extends GenericContent, K extends keyof T> extends Rea
                 value={value}
                 onChange={this.handleDateChange}
                 label={this.props.labelText}
-                id={this.props.name as string}
+                id={this.props.fieldName as string}
                 disabled={readOnly}
                 placeholder={this.props.placeHolderText}
                 required={required}

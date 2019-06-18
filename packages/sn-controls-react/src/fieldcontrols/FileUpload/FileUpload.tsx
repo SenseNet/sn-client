@@ -11,7 +11,6 @@ import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
 import React, { Component } from 'react'
 import { ReactBinaryFieldSetting } from '../BinaryFieldSetting'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 
 const styles = {
   root: {
@@ -32,13 +31,6 @@ const styles = {
 }
 
 /**
- * Interface for FileUpload properties
- */
-export interface FileUploadProps<T extends GenericContent, K extends keyof T>
-  extends ReactClientFieldSettingProps<T, K>,
-    ReactClientFieldSetting<T, K>,
-    ReactBinaryFieldSetting<T, K> {}
-/**
  * Interface for FileUpload state
  */
 export interface FileUploadState {
@@ -52,14 +44,14 @@ export interface FileUploadState {
  */
 @Radium
 export class FileUpload<T extends GenericContent, K extends keyof T> extends Component<
-  FileUploadProps<T, K>,
+  ReactBinaryFieldSetting<T, K>,
   FileUploadState
 > {
   /**
    * constructor
    * @param {object} props
    */
-  constructor(props: FileUploadProps<T, K>) {
+  constructor(props: FileUpload<T, K>['props']) {
     super(props)
     /**
      * @type {object}
@@ -95,10 +87,10 @@ export class FileUpload<T extends GenericContent, K extends keyof T> extends Com
    * @param e
    */
   public handleChange(e: React.ChangeEvent<{ value: string }>) {
-    const { onChange } = this.props
+    const { fieldOnChange: onChange, fieldName: name } = this.props
     const { value } = e.target
     this.setState({ value })
-    onChange(this.props.name, value)
+    onChange(name, value)
   }
   /**
    * Removes the saved reference
@@ -135,7 +127,7 @@ export class FileUpload<T extends GenericContent, K extends keyof T> extends Com
     this.setState({
       value: newValue,
     })
-    this.props.onChange('Avatar' as any, newValue as any)
+    this.props.fieldOnChange('Avatar' as any, newValue as any)
   }
   /**
    * render
@@ -148,10 +140,10 @@ export class FileUpload<T extends GenericContent, K extends keyof T> extends Com
           <FormControl
             className={this.props.className}
             style={styles.root as any}
-            key={this.props.name as string}
+            key={this.props.fieldName as string}
             component={'fieldset' as 'div'}
             required={this.props.required}>
-            <label style={styles.label} htmlFor={this.props.name as string}>
+            <label style={styles.label} htmlFor={this.props.fieldName as string}>
               {this.props.labelText}
             </label>
             <Typography variant="body1" style={styles.value}>
@@ -189,10 +181,10 @@ export class FileUpload<T extends GenericContent, K extends keyof T> extends Com
           <FormControl
             className={this.props.className}
             style={styles.root as any}
-            key={this.props.name as string}
+            key={this.props.fieldName as string}
             component={'fieldset' as 'div'}
             required={this.props.required}>
-            <label style={styles.label} htmlFor={this.props.name as string}>
+            <label style={styles.label} htmlFor={this.props.fieldName as string}>
               {this.props.labelText}
             </label>
             <Typography variant="body1" style={styles.value}>

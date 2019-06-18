@@ -8,7 +8,6 @@ import {
   BooleanFieldSetting,
   ChoiceFieldSetting,
   DateTimeFieldSetting,
-  FieldSetting,
   IntegerFieldSetting,
   LongTextFieldSetting,
   NullFieldSetting,
@@ -17,67 +16,24 @@ import {
   ReferenceFieldSetting,
   ShortTextFieldSetting,
 } from '@sensenet/default-content-types'
-import { Component } from 'react'
+import { ComponentType } from 'react'
 import * as FieldControls from './fieldcontrols'
-import { ReactChoiceFieldSetting } from './fieldcontrols/ChoiceFieldSetting'
 import { ReactClientFieldSetting } from './fieldcontrols/ClientFieldSetting'
-import { ReactDateTimeFieldSetting } from './fieldcontrols/DateTimeFieldSetting'
-import { ReactLongTextFieldSetting } from './fieldcontrols/LongTextFieldSetting'
-import { ReactNumberFieldSetting } from './fieldcontrols/Number/NumberFieldSetting'
-import { ReactReferenceFieldSetting } from './fieldcontrols/ReferenceFieldSetting'
-import { ReactShortTextFieldSetting } from './fieldcontrols/ShortText/ShortTextFieldSetting'
-import * as ViewControls from './viewcontrols'
-
-/**
- * @description A client config instance, used to create a defaul mapping between the basic React props and sensenet ECM fields.
- */
-
-const clientConfigFactory = (fieldSettings: FieldSetting) => {
-  const defaultSetting: ReactClientFieldSetting = {
-    key: fieldSettings.Name,
-    name: fieldSettings.Name as any,
-    readOnly: fieldSettings.ReadOnly || false,
-    required: fieldSettings.Compulsory || false,
-    onChange: (field, value) => console.log({ field, value }),
-    hintText: fieldSettings.Description || '',
-    placeHolderText: fieldSettings.DisplayName || '',
-    labelText: fieldSettings.DisplayName || '',
-  }
-  defaultSetting.typeName = fieldSettings.Type || ''
-  return defaultSetting
-}
 
 /**
  * A static Control Mapper instance, used to create the mapping between sensenet ECM ContentTypes and FieldSettings and React components.
  */
-export const reactControlMapper = (repository: Repository) =>
-  new ControlMapper(repository, Component, clientConfigFactory, ViewControls.EditView, FieldControls.ShortText)
+export const reactControlMapper = (repository: Repository) => {
+  const controlMapper: ControlMapper<ComponentType, ComponentType<ReactClientFieldSetting>> = new ControlMapper<
+    ComponentType,
+    ComponentType<ReactClientFieldSetting>
+  >(repository, () => null, () => null)
+  controlMapper
     .setupFieldSettingDefault(NumberFieldSetting, () => {
       return FieldControls.Number
     })
-    .setClientControlFactory(NumberFieldSetting, setting => {
-      const numberSettings = clientConfigFactory(setting) as ReactNumberFieldSetting
-      numberSettings.digits = setting.Digits
-      numberSettings.step = setting.Step
-      numberSettings.isPercentage = setting.ShowAsPercentage
-      numberSettings.decimal = true
-      numberSettings.max = setting.MaxValue
-      numberSettings.min = setting.MinValue
-      // TODO: currency
-      return numberSettings
-    })
     .setupFieldSettingDefault(IntegerFieldSetting, () => {
       return FieldControls.Number
-    })
-    .setClientControlFactory(IntegerFieldSetting, setting => {
-      const numberSettings = clientConfigFactory(setting) as ReactNumberFieldSetting
-      numberSettings.step = setting.Step
-      numberSettings.isPercentage = setting.ShowAsPercentage
-      numberSettings.decimal = false
-      numberSettings.max = setting.MaxValue
-      numberSettings.min = setting.MinValue
-      // TODO: currency
-      return numberSettings
     })
     .setupFieldSettingDefault(ShortTextFieldSetting, setting => {
       switch (setting.ControlHint) {
@@ -93,28 +49,11 @@ export const reactControlMapper = (repository: Repository) =>
           return FieldControls.ShortText
       }
     })
-    .setClientControlFactory(ShortTextFieldSetting, setting => {
-      const shortTextSettings = clientConfigFactory(setting) as ReactShortTextFieldSetting
-      shortTextSettings.minLength = setting.MinLength
-      shortTextSettings.maxLength = setting.MaxLength
-      shortTextSettings.regex = setting.Regex
-      return shortTextSettings
-    })
     .setupFieldSettingDefault(PasswordFieldSetting, () => {
       return FieldControls.Password
     })
-    .setClientControlFactory(PasswordFieldSetting, setting => {
-      const passwordSettings = clientConfigFactory(setting) as ReactShortTextFieldSetting
-      return passwordSettings
-    })
     .setupFieldSettingDefault(DateTimeFieldSetting, () => {
       return FieldControls.DateTimePicker
-    })
-    .setClientControlFactory(DateTimeFieldSetting, setting => {
-      const dateTimeSettings = clientConfigFactory(setting) as ReactDateTimeFieldSetting
-      dateTimeSettings.dateTimeMode = setting.DateTimeMode as any
-      dateTimeSettings.precision = setting.Precision as any
-      return dateTimeSettings
     })
     .setupFieldSettingDefault(ChoiceFieldSetting, setting => {
       switch (setting.DisplayChoice) {
@@ -132,33 +71,12 @@ export const reactControlMapper = (repository: Repository) =>
           }
       }
     })
-    .setClientControlFactory(ChoiceFieldSetting, setting => {
-      const choiceSettings = clientConfigFactory(setting) as ReactChoiceFieldSetting
-      choiceSettings.allowExtraValue = setting.AllowExtraValue
-      choiceSettings.allowMultiple = setting.AllowMultiple
-      choiceSettings.options = setting.Options || []
-      return choiceSettings
-    })
     .setupFieldSettingDefault(ReferenceFieldSetting, setting => {
       if (setting.AllowedTypes && setting.AllowedTypes.indexOf('User') !== -1 && setting.AllowMultiple) {
         return FieldControls.TagsInput
       } else {
         return FieldControls.ReferenceGrid
       }
-    })
-    .setClientControlFactory(ReferenceFieldSetting, setting => {
-      const referenceSettings = clientConfigFactory(setting) as ReactReferenceFieldSetting
-      referenceSettings.allowMultiple = setting.AllowMultiple
-      referenceSettings.allowedTypes = setting.AllowedTypes
-      referenceSettings.selectionRoot = setting.SelectionRoots
-      referenceSettings.defaultValue = setting.DefaultValue
-      referenceSettings.defaultDisplayName =
-        setting.AllowedTypes !== undefined
-          ? setting.AllowedTypes.indexOf('User') > -1
-            ? 'FullName'
-            : 'DisplayName'
-          : 'DisplayName'
-      return referenceSettings
     })
     .setupFieldSettingDefault(LongTextFieldSetting, setting => {
       switch (setting.TextType) {
@@ -175,12 +93,6 @@ export const reactControlMapper = (repository: Repository) =>
             return FieldControls.RichTextEditor
           }
       }
-    })
-    .setClientControlFactory(LongTextFieldSetting, setting => {
-      const longTextSettings = clientConfigFactory(setting) as ReactLongTextFieldSetting
-      longTextSettings.minLength = setting.MinLength
-      longTextSettings.maxLength = setting.MaxLength
-      return longTextSettings
     })
     .setupFieldSettingDefault(NullFieldSetting, setting => {
       if (setting.Name === 'Avatar') {
@@ -203,23 +115,9 @@ export const reactControlMapper = (repository: Repository) =>
         return FieldControls.ShortText
       }
     })
-    .setClientControlFactory(NullFieldSetting, setting => {
-      if (setting.SelectionRoots) {
-        const avatarSettings = clientConfigFactory(setting) as ReactReferenceFieldSetting
-        avatarSettings.selectionRoot = setting.SelectionRoots
-        return avatarSettings
-        // TODO: FIX this! this is probably not working
-        // eslint-disable-next-line dot-notation
-      } else if (setting['Palette']) {
-        const colorPickerSettings = clientConfigFactory(setting) as ReactShortTextFieldSetting
-        // eslint-disable-next-line dot-notation
-        colorPickerSettings['palette'] = setting['Palette']
-        return colorPickerSettings
-      } else {
-        const nullFieldSettings = clientConfigFactory(setting) as ReactClientFieldSetting
-        return nullFieldSettings
-      }
-    })
     .setupFieldSettingDefault(BooleanFieldSetting, () => {
       return FieldControls.Boolean
     })
+
+  return controlMapper
+}

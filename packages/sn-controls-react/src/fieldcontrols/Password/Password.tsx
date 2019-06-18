@@ -10,17 +10,9 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import InputLabel from '@material-ui/core/InputLabel'
 import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { renderIconDefault } from '../icon'
 import { ReactShortTextFieldSetting } from '../ShortText/ShortTextFieldSetting'
 
-/**
- * Interface for Password properties
- */
-export interface PasswordProps<T extends GenericContent, K extends keyof T>
-  extends ReactClientFieldSettingProps<T, K>,
-    ReactClientFieldSetting<T, K>,
-    ReactShortTextFieldSetting<T, K> {}
 /**
  * Interface for Password state
  */
@@ -33,14 +25,14 @@ export interface PasswordState {
  */
 @Radium
 export class Password<T extends GenericContent, K extends keyof T> extends Component<
-  PasswordProps<T, K>,
+  ReactShortTextFieldSetting<T, K>,
   PasswordState
 > {
   /**
    * constructor
    * @param {object} props
    */
-  constructor(props: PasswordProps<T, K>) {
+  constructor(props: Password<T, K>['props']) {
     super(props)
     /**
      * @type {object}
@@ -87,11 +79,11 @@ export class Password<T extends GenericContent, K extends keyof T> extends Compo
       case 'edit':
         return (
           <FormControl className={this.props.className}>
-            <InputLabel htmlFor={this.props.name as string}>{this.props.labelText}</InputLabel>
+            <InputLabel htmlFor={this.props.fieldName as string}>{this.props.labelText}</InputLabel>
             <Input
               type={this.state.showPassword ? 'text' : 'password'}
-              name={this.props.name as string}
-              id={this.props.name as string}
+              name={this.props.fieldName as string}
+              id={this.props.fieldName as string}
               className={this.props.className}
               placeholder={this.props.placeHolderText}
               style={this.props.style}
@@ -117,11 +109,11 @@ export class Password<T extends GenericContent, K extends keyof T> extends Compo
       case 'new':
         return (
           <FormControl className={this.props.className}>
-            <InputLabel htmlFor={this.props.name as string}>{this.props.labelText}</InputLabel>
+            <InputLabel htmlFor={this.props.fieldName as string}>{this.props.labelText}</InputLabel>
             <Input
               type={this.state.showPassword ? 'text' : 'password'}
-              name={this.props.name as string}
-              id={this.props.name as string}
+              name={this.props.fieldName as string}
+              id={this.props.fieldName as string}
               className={this.props.className}
               placeholder={this.props.placeHolderText}
               style={this.props.style}

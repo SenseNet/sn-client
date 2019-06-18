@@ -10,14 +10,8 @@ import Radium from 'radium'
 import React, { Component } from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
+import { ReactClientFieldSetting } from '../ClientFieldSetting'
 
-/**
- * Interface for RichTextEditor properties
- */
-export interface RichTextEditorProps<T extends GenericContent, K extends keyof T>
-  extends ReactClientFieldSettingProps<T, K>,
-    ReactClientFieldSetting<T, K> {}
 /**
  * Interface for RichTextEditor state
  */
@@ -69,14 +63,14 @@ const formats = [
  */
 @Radium
 export class RichTextEditor<T extends GenericContent, K extends keyof T> extends Component<
-  RichTextEditorProps<T, K>,
+  ReactClientFieldSetting<T, K>,
   RichTextEditorState
 > {
   /**
    * constructor
    * @param {object} props
    */
-  constructor(props: RichTextEditorProps<T, K>) {
+  constructor(props: RichTextEditor<T, K>['props']) {
     super(props)
     /**
      * @type {object}
@@ -109,7 +103,7 @@ export class RichTextEditor<T extends GenericContent, K extends keyof T> extends
    */
   public handleChange(value: string) {
     this.setState({ value })
-    this.props.onChange(this.props.name, value as any)
+    this.props.fieldOnChange(this.props.fieldName, value as any)
   }
   /**
    * render

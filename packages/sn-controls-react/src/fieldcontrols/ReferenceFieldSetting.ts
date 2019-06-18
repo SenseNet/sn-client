@@ -1,7 +1,6 @@
 /**
  * @module FieldControls
  */
-import { Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
@@ -33,10 +32,6 @@ export interface ReactReferenceFieldSetting<T extends GenericContent = GenericCo
    * Datasource of a reference field with the optional items that can be chosen
    */
   dataSource: any[]
-  /**
-   * Connected repository
-   */
-  repository: Repository
   /**
    * Current content
    */

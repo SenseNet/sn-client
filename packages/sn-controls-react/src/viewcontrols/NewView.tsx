@@ -1,7 +1,7 @@
 /**
  * @module ViewControls
  */
-import React, { Component, createElement } from 'react'
+import React, { Component, createElement, ComponentType } from 'react'
 
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
@@ -10,8 +10,8 @@ import { Repository } from '@sensenet/client-core'
 import { ControlSchema } from '@sensenet/control-mapper'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 import MediaQuery from 'react-responsive'
-import { ReactClientFieldSetting } from '../fieldcontrols/ClientFieldSetting'
 import { reactControlMapper } from '../ReactControlMapper'
+import { ReactClientFieldSetting } from '../fieldcontrols/ClientFieldSetting'
 import { styles } from './NewViewStyles'
 
 /**
@@ -35,9 +35,10 @@ export interface NewViewProps<T extends GenericContent = GenericContent> {
  * Interface for NewView state
  */
 export interface NewViewState<T extends GenericContent = GenericContent> {
-  schema: ControlSchema<React.Component<any, any, any>, ReactClientFieldSetting>
+  schema: ControlSchema<ComponentType, ComponentType<ReactClientFieldSetting>>
   dataSource: GenericContent[]
   content: T
+  controlMapper: ReturnType<typeof reactControlMapper>
 }
 
 /**
@@ -65,6 +66,7 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
       dataSource: [],
       // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
       content: {} as T,
+      controlMapper,
     }
 
     this.handleInputChange = this.handleInputChange.bind(this)
@@ -89,7 +91,7 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
    */
   public render() {
     const fieldSettings = this.state.schema.fieldMappings
-    const { onSubmit, path, columns, contentTypeName, extension, title, submitCallback } = this.props
+    const { onSubmit, path, columns, title, submitCallback } = this.props
     const { schema } = this.state
     return (
       <form
@@ -112,33 +114,45 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
         )}
         <Grid container={true} spacing={2}>
           {fieldSettings.map(fieldSetting => {
-            if (
-              contentTypeName.indexOf('File') > -1 &&
-              extension &&
-              fieldSetting.fieldSettings.ControlHint === 'sn:FileName'
-            ) {
-              fieldSetting.clientSettings.extension = extension
-            }
-            fieldSetting.clientSettings.onChange = this.handleInputChange as any
-            fieldSetting.clientSettings.actionName = 'new'
-            // TODO: review this uploadFolderPath
-            fieldSetting.clientSettings['data-uploadFolderPath'] = this.props.uploadFolderPath || ''
-            fieldSetting.clientSettings.renderIcon = this.props.renderIcon || undefined
-            if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
-              fieldSetting.fieldSettings.Type = 'NumberFieldSetting'
-            }
+            // if (
+            //   contentTypeName.indexOf('File') > -1 &&
+            //   extension &&
+            //   fieldSetting.fieldSettings.ControlHint === 'sn:FileName'
+            // ) {
+            //   fieldSetting.clientSettings['extension'] = extension
+            // }
+            // fieldSetting.clientSettings.onChange = this.handleInputChange as any
+            // fieldSetting.clientSettings.actionName = 'new'
+            // // TODO: review this uploadFolderPath
+            // fieldSetting.clientSettings['data-uploadFolderPath'] = this.props.uploadFolderPath || ''
+            // fieldSetting.clientSettings.renderIcon = this.props.renderIcon || undefined
+            // if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
+            //   fieldSetting.fieldSettings.Type = 'NumberFieldSetting'
+            // }
             return (
               <Grid
                 item={true}
                 xs={12}
                 sm={12}
-                md={fieldSetting.clientSettings.typeName === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                lg={fieldSetting.clientSettings.typeName === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                xl={fieldSetting.clientSettings.typeName === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                key={fieldSetting.clientSettings.name}>
-                {createElement(fieldSetting.controlType, {
+                md={fieldSetting.fieldSettings.Name === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                lg={fieldSetting.fieldSettings.Name === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                xl={fieldSetting.fieldSettings.Name === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                key={fieldSetting.fieldSettings.Name}>
+                {createElement(
+                  this.state.controlMapper.getControlForContentField(
+                    this.props.contentTypeName,
+                    fieldSetting.fieldSettings.Name,
+                    'new',
+                  ),
+                  {
+                    fieldName: fieldSetting.fieldSettings.Name as keyof GenericContent,
+                    repository: this.props.repository,
+                    fieldOnChange: this.handleInputChange,
+                  },
+                )}
+                {/* {createElement(fieldSetting.controlType, {
                   ...fieldSetting.clientSettings,
-                })}
+                })} */}
               </Grid>
             )
           })}

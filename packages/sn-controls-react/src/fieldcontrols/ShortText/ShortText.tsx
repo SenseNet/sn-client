@@ -6,17 +6,8 @@ import React, { Component } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { GenericContent } from '@sensenet/default-content-types'
-import Radium from 'radium'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactShortTextFieldSetting } from './ShortTextFieldSetting'
 
-/**
- * Interface for ShortText properties
- */
-export interface ShortTextProps<T extends GenericContent, K extends keyof T>
-  extends ReactClientFieldSettingProps<T, K>,
-    ReactClientFieldSetting<T, K>,
-    ReactShortTextFieldSetting<T, K> {}
 /**
  * Interface for ShortText properties
  */
@@ -26,16 +17,16 @@ export interface ShortTextState {
 /**
  * Field control that represents a ShortText field. Available values will be populated from the FieldSettings.
  */
-@Radium
+// @Radium
 export class ShortText<T extends GenericContent, K extends keyof T> extends Component<
-  ShortTextProps<T, K>,
+  ReactShortTextFieldSetting<T, K>,
   ShortTextState
 > {
   /**
    * constructor
    * @param {object} props
    */
-  constructor(props: ShortTextProps<T, K>) {
+  constructor(props: ShortText<T, K>['props']) {
     super(props)
     /**
      * @type {object}
@@ -65,9 +56,9 @@ export class ShortText<T extends GenericContent, K extends keyof T> extends Comp
    * @param e
    */
   public handleChange(e: React.ChangeEvent<{ value: string }>) {
-    const { name, onChange } = this.props
+    const { fieldName, fieldOnChange: onChange } = this.props
     const { value } = e.target
-    onChange(name, value)
+    onChange(fieldName, value)
   }
   /**
    * render
@@ -78,8 +69,8 @@ export class ShortText<T extends GenericContent, K extends keyof T> extends Comp
       case 'edit':
         return (
           <TextField
-            name={this.props.name as string}
-            id={this.props.name as string}
+            name={this.props.fieldName as string}
+            id={this.props.fieldName as string}
             label={
               this.props.errorText && this.props.errorText.length > 0 ? this.props.errorText : this.props.labelText
             }
@@ -98,8 +89,8 @@ export class ShortText<T extends GenericContent, K extends keyof T> extends Comp
       case 'new':
         return (
           <TextField
-            name={this.props.name as string}
-            id={this.props.name as string}
+            name={this.props.fieldName as string}
+            id={this.props.fieldName as string}
             label={
               this.props.errorText && this.props.errorText.length > 0 ? this.props.errorText : this.props.labelText
             }

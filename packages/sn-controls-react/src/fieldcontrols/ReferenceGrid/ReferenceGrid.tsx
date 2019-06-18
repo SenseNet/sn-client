@@ -10,7 +10,6 @@ import Typography from '@material-ui/core/Typography'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 // import { isUser } from '../type-guards'
 import { DefaultItemTemplate } from './DefaultItemTemplate'
 import { ReactReferenceGridFieldSetting } from './ReferenceGridFieldSettings'
@@ -62,13 +61,6 @@ const changeContent = {
 }
 
 /**
- * Interface for RefernceGrid properties
- */
-export interface ReferenceGridProps<T extends GenericContent, K extends keyof T>
-  extends ReactClientFieldSettingProps<T, K>,
-    ReactClientFieldSetting<T, K>,
-    ReactReferenceGridFieldSetting<T, K> {}
-/**
  * Interface for ReferenceGrid state
  */
 export interface ReferenceGridState<T extends GenericContent, _K extends keyof T> {
@@ -79,7 +71,7 @@ export interface ReferenceGridState<T extends GenericContent, _K extends keyof T
 }
 
 export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends Component<
-  ReferenceGridProps<T, K>,
+  ReactReferenceGridFieldSetting<T, K>,
   ReferenceGridState<T, K>
 > {
   /**
@@ -128,7 +120,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
    */
   public async getSelected() {
     const loadPath = this.props.content
-      ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props.content.Path), '/', this.props.name.toString())
+      ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props.content.Path), '/', this.props.fieldName.toString())
       : ''
     const references = await this.props.repository.loadCollection<T>({
       path: loadPath,
@@ -158,7 +150,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
    * Removes the chosen item from the grid and the field value
    */
   public removeItem = (id: number) => {
-    const { name, onChange } = this.props
+    const { fieldName: name, fieldOnChange: onChange } = this.props
     const value =
       this.state.fieldValue.length > 1 ? this.state.fieldValue.filter((item: GenericContent) => item.Id !== id) : []
     onChange(name, value.map((item: GenericContent) => item.Id))
@@ -186,7 +178,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
     this.handleDialogClose()
   }
   public handleOkClick = () => {
-    const { name, onChange } = this.props
+    const { fieldName: name, fieldOnChange: onChange } = this.props
     const value =
       this.state.selected.length > 0 && !this.props.allowMultiple
         ? this.state.selected
@@ -219,17 +211,17 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
    * @return {ReactElement} markup
    */
   public render() {
-    const { className, name, required, itemTemplate, repository } = this.props
+    const { className, fieldName: name, required, itemTemplate, repository } = this.props
     switch (this.props.actionName) {
       case 'edit':
         return (
           <FormControl
             className={className}
             style={styles.root as any}
-            key={name as string}
+            key={name.toString()}
             component={'fieldset' as 'div'}
             required={required}>
-            <InputLabel shrink={true} htmlFor={name as string}>
+            <InputLabel shrink={true} htmlFor={name.toString()}>
               {this.props.labelText}
             </InputLabel>
             <List

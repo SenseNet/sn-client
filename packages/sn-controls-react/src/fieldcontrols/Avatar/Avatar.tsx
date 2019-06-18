@@ -87,7 +87,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
   public async getSelected() {
     //TODO: Check this. This is throwing an error now.
     const loadPath = this.props.content
-      ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props.content.Path), '/', this.props.name.toString())
+      ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props.content.Path), '/', this.props.fieldName.toString())
       : ''
     const references = await this.props.repository.loadCollection<User>({
       path: loadPath,
@@ -104,7 +104,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
    * Removes the item and clears the field value
    */
   public removeItem = () => {
-    const { name, onChange } = this.props
+    const { fieldName: name, fieldOnChange: onChange } = this.props
     onChange(name, DEFAULT_AVATAR_PATH as any)
     this.setState({
       fieldValue: '',
@@ -122,7 +122,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
     this.handleDialogClose()
   }
   public handleOkClick = () => {
-    const { name, onChange } = this.props
+    const { fieldName: name, fieldOnChange: onChange } = this.props
     const content = this.state.selected
     if (content && content.Path && this.state.fieldValue !== content.Path) {
       onChange(name, content.Path as any)
@@ -148,17 +148,17 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
     })
   }
   public render() {
-    const { className, name, required, itemTemplate } = this.props
+    const { className, fieldName: name, required, itemTemplate } = this.props
     switch (this.props.actionName) {
       case 'edit':
         return (
           <FormControl
             className={className}
             style={styles.root as any}
-            key={name as string}
+            key={name.toString()}
             component={'fieldset' as 'div'}
             required={required}>
-            <InputLabel shrink={true} htmlFor={name as string}>
+            <InputLabel shrink={true} htmlFor={name.toString()}>
               {this.props.labelText}
             </InputLabel>
             <List
@@ -212,10 +212,10 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
           <FormControl
             className={className}
             style={styles.root as any}
-            key={name as string}
+            key={name.toString()}
             component={'fieldset' as 'div'}
             required={required}>
-            <InputLabel shrink={true} htmlFor={name as string}>
+            <InputLabel shrink={true} htmlFor={name.toString()}>
               {this.props.labelText}
             </InputLabel>
             <List
@@ -264,7 +264,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
       case 'browse':
         return this.props.value.length > 0 ? (
           <FormControl className={className} style={styles.root as any}>
-            <InputLabel shrink={true} htmlFor={name as string}>
+            <InputLabel shrink={true} htmlFor={name.toString()}>
               {this.props.labelText}
             </InputLabel>
             <List
@@ -283,7 +283,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
       default:
         return this.props.value.length > 0 ? (
           <FormControl className={className} style={styles.root as any}>
-            <InputLabel shrink={true} htmlFor={name as string}>
+            <InputLabel shrink={true} htmlFor={name.toString()}>
               {this.props.labelText}
             </InputLabel>
             <List

@@ -11,16 +11,8 @@ import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import TextField from '@material-ui/core/TextField'
 import { GenericContent } from '@sensenet/default-content-types'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactChoiceFieldSetting } from '../ChoiceFieldSetting'
 
-/**
- * Interface for CheckboxGroup properties
- */
-export interface CheckboxGroupProps<T extends GenericContent, K extends keyof T>
-  extends ReactClientFieldSettingProps<T, K>,
-    ReactClientFieldSetting<T, K>,
-    ReactChoiceFieldSetting<T, K> {}
 /**
  * Interface for CheckboxGroup state
  */
@@ -31,7 +23,7 @@ export interface CheckboxGroupState<T extends GenericContent, _K extends keyof T
  * Field control that represents a Choice field. Available values will be populated from the FieldSettings.
  */
 export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends Component<
-  CheckboxGroupProps<T, K>,
+  ReactChoiceFieldSetting<T, K>,
   CheckboxGroupState<T, K>
 > {
   /**
@@ -70,7 +62,7 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
     this.setState({
       value: checked,
     })
-    this.props.onChange(this.props.name, checked as any)
+    this.props.fieldOnChange(this.props.fieldName, checked as any)
   }
   /**
    * returns if an item is checked or not

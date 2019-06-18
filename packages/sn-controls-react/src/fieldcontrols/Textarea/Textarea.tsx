@@ -2,21 +2,12 @@
  * @module FieldControls
  */
 import React, { Component } from 'react'
-
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
 import { ReactLongTextFieldSetting } from '../LongTextFieldSetting'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 
-/**
- * Interface for Textarea properties
- */
-export interface TextareaProps<T extends GenericContent, K extends keyof T>
-  extends ReactClientFieldSettingProps<T, K>,
-    ReactClientFieldSetting<T, K>,
-    ReactLongTextFieldSetting<T, K> {}
 /**
  * Interface for Textarea state
  */
@@ -30,14 +21,14 @@ export interface TextareaState {
  */
 @Radium
 export class Textarea<T extends GenericContent, K extends keyof T> extends Component<
-  TextareaProps<T, K>,
+  ReactLongTextFieldSetting<T, K>,
   TextareaState
 > {
   /**
    * constructor
    * @param {object} props
    */
-  constructor(props: TextareaProps<T, K>) {
+  constructor(props: Textarea<T, K>['props']) {
     super(props)
     /**
      * @type {object}
@@ -70,7 +61,7 @@ export class Textarea<T extends GenericContent, K extends keyof T> extends Compo
    */
   public handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
     this.setState({ value: event.target.value })
-    this.props.onChange(this.props.name, event.target.value)
+    this.props.fieldOnChange(this.props.fieldName, event.target.value)
   }
   /**
    * render
@@ -82,8 +73,8 @@ export class Textarea<T extends GenericContent, K extends keyof T> extends Compo
         return (
           <TextField
             onChange={this.handleChange}
-            name={this.props.name as string}
-            id={this.props.name as string}
+            name={this.props.fieldName as string}
+            id={this.props.fieldName as string}
             label={this.props.labelText}
             className={this.props.className}
             placeholder={this.props.placeHolderText}
@@ -100,8 +91,8 @@ export class Textarea<T extends GenericContent, K extends keyof T> extends Compo
         return (
           <TextField
             onChange={this.handleChange}
-            name={this.props.name as string}
-            id={this.props.name as string}
+            name={this.props.fieldName as string}
+            id={this.props.fieldName as string}
             label={this.props.labelText}
             className={this.props.className}
             placeholder={this.props.placeHolderText}

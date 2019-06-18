@@ -16,7 +16,6 @@ import { Content, ODataCollectionResponse } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { renderIconDefault } from '../icon'
 import { ReactReferenceFieldSetting } from '../ReferenceFieldSetting'
 import { isUser } from '../type-guards'
@@ -48,13 +47,6 @@ const styles = {
 }
 
 /**
- * Interface for TagsInput properties
- */
-export interface TagsInputProps<T extends GenericContent, K extends keyof T>
-  extends ReactClientFieldSettingProps<T, K>,
-    ReactClientFieldSetting<T, K>,
-    ReactReferenceFieldSetting<T, K> {}
-/**
  * Interface for TagsInput state
  */
 export interface TagsInputState<T extends GenericContent, _K extends keyof T> {
@@ -66,14 +58,14 @@ export interface TagsInputState<T extends GenericContent, _K extends keyof T> {
  * Field control that represents a Reference field. Available values will be populated from the FieldSettings.
  */
 export class TagsInput<T extends GenericContent, K extends keyof T> extends Component<
-  TagsInputProps<T, K>,
+  ReactReferenceFieldSetting<T, K>,
   TagsInputState<T, K>
 > {
   /**
    * constructor
    * @param {object} props
    */
-  constructor(props: TagsInputProps<T, K>) {
+  constructor(props: TagsInput<T, K>['props']) {
     super(props)
     /**
      * @type {object}
@@ -118,7 +110,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
    * handles input changes
    */
   public handleChange = (event: React.ChangeEvent<{ name?: string; value: unknown }>) => {
-    const { name, onChange } = this.props
+    const { fieldName, fieldOnChange: onChange } = this.props
     const selected = this.state.fieldValue
     let s = selected
     const selectedContent = this.getContentById(event.target.value as number)
@@ -132,7 +124,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
     this.setState({
       fieldValue: s,
     })
-    onChange(name, s.map((content: any) => content.value))
+    onChange(fieldName, s.map((content: any) => content.value))
   }
   /**
    * returns referencefields' datasource
@@ -179,7 +171,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
    */
   public async getSelected() {
     const loadPath = this.props.content
-      ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props.content.Path), '/', this.props.name.toString())
+      ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props.content.Path), '/', this.props.fieldName.toString())
       : ''
     const references = await this.props.repository.loadCollection<T>({
       path: loadPath,
@@ -225,13 +217,13 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
     return this.state.fieldValue.indexOf(id) > -1
   }
   public handleDelete = (id: number) => {
-    const { name, onChange } = this.props
+    const { fieldName, fieldOnChange: onChange } = this.props
     const newValue = this.state.fieldValue.filter((item: any) => item.value !== id)
     this.setState({
       fieldValue: newValue,
     })
 
-    onChange(name, newValue.map((content: any) => content.value))
+    onChange(fieldName, newValue.map((content: any) => content.value))
   }
   /**
    * render
@@ -244,14 +236,14 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
           <FormControl
             className={this.props.className}
             style={styles.root as any}
-            key={this.props.name as string}
+            key={this.props.fieldName as string}
             component={'fieldset' as 'div'}
             required={this.props.required}>
-            <InputLabel htmlFor={this.props.name as string}>{this.props.labelText}</InputLabel>
+            <InputLabel htmlFor={this.props.fieldName as string}>{this.props.labelText}</InputLabel>
             <Select
               value={this.state.fieldValue}
               onChange={e => this.handleChange(e)}
-              input={<Input id={this.props.name as string} fullWidth={true} />}
+              input={<Input id={this.props.fieldName as string} fullWidth={true} />}
               renderValue={() => (
                 <div style={styles.chips as any}>
                   {this.state.fieldValue.map((content: any) =>
@@ -304,14 +296,14 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
           <FormControl
             className={this.props.className}
             style={styles.root as any}
-            key={this.props.name as string}
+            key={this.props.fieldName as string}
             component={'fieldset' as 'div'}
             required={this.props.required}>
-            <InputLabel htmlFor={this.props.name as string}>{this.props.labelText}</InputLabel>
+            <InputLabel htmlFor={this.props.fieldName as string}>{this.props.labelText}</InputLabel>
             <Select
               value={this.state.fieldValue}
               onChange={e => this.handleChange(e)}
-              input={<Input id={this.props.name as string} fullWidth={true} />}
+              input={<Input id={this.props.fieldName as string} fullWidth={true} />}
               renderValue={() => (
                 <div style={styles.chips as any}>
                   {this.state.fieldValue.map((content: any) =>

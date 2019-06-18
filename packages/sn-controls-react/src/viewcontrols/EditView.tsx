@@ -7,10 +7,10 @@ import Grid from '@material-ui/core/Grid'
 import { Repository } from '@sensenet/client-core'
 import { ControlSchema } from '@sensenet/control-mapper'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
-import React, { Component, createElement } from 'react'
+import React, { Component, createElement, ComponentType } from 'react'
 import MediaQuery from 'react-responsive'
-import { ReactClientFieldSetting } from '../fieldcontrols/ClientFieldSetting'
 import { reactControlMapper } from '../ReactControlMapper'
+import { ReactClientFieldSetting } from '../fieldcontrols/ClientFieldSetting'
 import { styles } from './EditViewStyles'
 
 /**
@@ -22,11 +22,9 @@ export interface EditViewProps<T extends GenericContent = GenericContent> {
   repository: Repository
   renderIcon?: (name: string) => JSX.Element
   schema?: Schema
-  contentTypeName: string
   columns?: boolean
   handleCancel?: () => void
   submitCallback?: () => void
-  repositoryUrl?: string
   uploadFolderPath?: string
 }
 /**
@@ -34,8 +32,9 @@ export interface EditViewProps<T extends GenericContent = GenericContent> {
  */
 export interface EditViewState<T extends GenericContent = GenericContent> {
   content: T
-  schema: ControlSchema<React.Component<any, any, any>, ReactClientFieldSetting>
+  schema: ControlSchema<ComponentType, ComponentType<ReactClientFieldSetting>>
   saveableContent: T
+  controlMapper: ReturnType<typeof reactControlMapper>
 }
 
 /**
@@ -46,10 +45,7 @@ export interface EditViewState<T extends GenericContent = GenericContent> {
  *  <EditView content={selectedContent} onSubmit={editSubmitClick} />
  * ```
  */
-export class EditView<T extends GenericContent, K extends keyof T> extends Component<
-  EditViewProps<T>,
-  EditViewState<T>
-> {
+export class EditView<T extends GenericContent> extends Component<EditViewProps<T>, EditViewState<T>> {
   /**
    * property
    * @property {string} displayName
@@ -69,9 +65,10 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
     const controlMapper = reactControlMapper(this.props.repository)
     this.state = {
       content: this.props.content,
-      schema: controlMapper.getFullSchemaForContentType(this.props.contentTypeName as any, 'edit'),
+      schema: controlMapper.getFullSchemaForContentType(this.props.content.Type, 'edit'),
       // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
       saveableContent: {} as T,
+      controlMapper,
     }
 
     this.handleInputChange = this.handleInputChange.bind(this)
@@ -87,21 +84,19 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
   }
   /**
    * handle change event on an input
-   * @param {SytheticEvent} event
    */
-  public handleInputChange(field: keyof T, value: T[K]) {
+  public handleInputChange(field: keyof T, value: any) {
     this.setState({
       content: { ...this.state.content, [field]: value },
       saveableContent: { ...this.state.saveableContent, [field]: value },
     })
   }
   /**
-   * eturns a value of an input
+   * Returns a value of an input
    * @param {string} name name of the input
-   * @return {any} value of the input or null
    */
   public getFieldValue(name: string | undefined) {
-    if (name && this.state.content[name]) {
+    if (name && this.state.content[name] != null) {
       return this.state.content[name]
     }
   }
@@ -125,34 +120,48 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
         }}>
         <Grid container={true} spacing={2}>
           {fieldSettings.map(fieldSetting => {
-            fieldSetting.clientSettings.actionName = 'edit'
-            // eslint-disable-next-line dot-notation
-            fieldSetting.clientSettings['content'] = this.state.content
-            fieldSetting.clientSettings.value = that.getFieldValue(fieldSetting.clientSettings.name)
-            fieldSetting.clientSettings.onChange = that.handleInputChange as any
-            fieldSetting.clientSettings.renderIcon = this.props.renderIcon || undefined
-            if (
-              fieldSetting.clientSettings.typeName === 'NullFieldSetting' &&
-              fieldSetting.fieldSettings.Name === 'Avatar'
-            ) {
-              //TODO: review this upload folder path
-              fieldSetting.clientSettings['data-uploadFolderPath'] = this.props.uploadFolderPath || ''
-            }
-            if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
-              fieldSetting.fieldSettings.Type = 'NumberFieldSetting'
-            }
+            // fieldSetting.actionName = 'edit'
+            // // eslint-disable-next-line dot-notation
+            // fieldSetting.clientSettings['content'] = this.state.content
+            // fieldSetting.clientSettings.value = that.getFieldValue(fieldSetting.clientSettings.name)
+            // fieldSetting.clientSettings.onChange = that.handleInputChange as any
+            // fieldSetting.clientSettings.renderIcon = this.props.renderIcon || undefined
+            // if (isAvatarFieldSettings<T, K, S>(fieldSetting.clientSettings, fieldSetting.fieldSettings.Name)) {
+            //   fieldSetting.clientSettings.selectionRoot = (this.props.uploadFolderPath && [
+            //     this.props.uploadFolderPath,
+            //   ]) || ['']
+            // }
+            // if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
+            //   fieldSetting.fieldSettings.Type = 'NumberFieldSetting'
+            // }
+
+            const fieldControl = createElement(
+              this.state.controlMapper.getControlForContentField(
+                this.props.content.Type,
+                fieldSetting.fieldSettings.Name,
+                'edit',
+              ),
+              {
+                fieldName: fieldSetting.fieldSettings.Name as keyof GenericContent,
+                repository: this.props.repository,
+                placeHolderText: fieldSetting.fieldSettings.DisplayName,
+                actionName: 'edit',
+                value: this.getFieldValue(fieldSetting.fieldSettings.Name),
+                fieldOnChange: this.handleInputChange,
+              },
+            )
+
             return (
               <Grid
                 item={true}
                 xs={12}
                 sm={12}
-                md={fieldSetting.clientSettings.typeName === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                lg={fieldSetting.clientSettings.typeName === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                xl={fieldSetting.clientSettings.typeName === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                key={fieldSetting.clientSettings.name}>
-                {createElement(fieldSetting.controlType, {
-                  ...fieldSetting.clientSettings,
-                })}
+                /** todo: WAT */
+                md={fieldSetting.fieldSettings.Name === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                lg={fieldSetting.fieldSettings.Name === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                xl={fieldSetting.fieldSettings.Name === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                key={fieldSetting.fieldSettings.Name}>
+                {fieldControl}
               </Grid>
             )
           })}

@@ -7,16 +7,8 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactDisplayNameFieldSetting } from './DisplayNameFieldSetting'
 
-/**
- * Interface for DisplayName properties
- */
-export interface DisplayNameProps<T extends GenericContent, K extends keyof T>
-  extends ReactClientFieldSettingProps<T, K>,
-    ReactClientFieldSetting<T, K>,
-    ReactDisplayNameFieldSetting<T, K> {}
 /**
  * Interface for DisplayName state
  */
@@ -28,14 +20,14 @@ export interface DisplayNameState {
  */
 @Radium
 export class DisplayName<T extends GenericContent, K extends keyof T> extends Component<
-  DisplayNameProps<T, K>,
+  ReactDisplayNameFieldSetting<T, K>,
   DisplayNameState
 > {
   /**
    * constructor
    * @param {object} props
    */
-  constructor(props: DisplayNameProps<T, K>) {
+  constructor(props: DisplayName<T, K>['props']) {
     super(props)
     /**
      * @type {object}
@@ -67,7 +59,7 @@ export class DisplayName<T extends GenericContent, K extends keyof T> extends Co
    * @param e
    */
   public handleChange(e: React.ChangeEvent<{ value: string }>) {
-    const { name, onChange } = this.props
+    const { fieldName: name, fieldOnChange: onChange } = this.props
     // eslint-disable-next-line dot-notation
     const { value } = e.target
     onChange(name, value)
@@ -81,8 +73,8 @@ export class DisplayName<T extends GenericContent, K extends keyof T> extends Co
       case 'edit':
         return (
           <TextField
-            name={this.props.name as string}
-            id={this.props.name as string}
+            name={this.props.fieldName as string}
+            id={this.props.fieldName as string}
             label={this.props.labelText}
             className={this.props.className}
             placeholder={this.props.placeHolderText}
@@ -99,8 +91,8 @@ export class DisplayName<T extends GenericContent, K extends keyof T> extends Co
       case 'new':
         return (
           <TextField
-            name={this.props.name as string}
-            id={this.props.name as string}
+            name={this.props.fieldName as string}
+            id={this.props.fieldName as string}
             label={this.props.labelText}
             className={this.props.className}
             placeholder={this.props.placeHolderText}

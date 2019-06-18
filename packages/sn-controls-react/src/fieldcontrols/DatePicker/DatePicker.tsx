@@ -3,21 +3,11 @@
  */
 import MomentUtils from '@date-io/moment'
 import { DatePicker as MUIDatePicker, MaterialUiPickersDate, MuiPickersUtilsProvider } from '@material-ui/pickers'
-
 import { GenericContent } from '@sensenet/default-content-types'
 import moment from 'moment'
 import React, { Fragment } from 'react'
-
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactDateTimeFieldSetting } from '../DateTimeFieldSetting'
 
-/**
- * Interface for DatePicker properties
- */
-export interface DatePickerProps<T extends GenericContent, K extends keyof T>
-  extends ReactClientFieldSettingProps<T, K>,
-    ReactClientFieldSetting<T, K>,
-    ReactDateTimeFieldSetting<T, K> {}
 /**
  * Interface for DatePicker state
  */
@@ -29,7 +19,7 @@ export interface DatePickerState<T extends GenericContent, _K extends keyof T> {
  * Field control that represents a Date field. Available values will be populated from the FieldSettings.
  */
 export class DatePicker<T extends GenericContent, K extends keyof T> extends React.Component<
-  DatePickerProps<T, K>,
+  ReactDateTimeFieldSetting<T, K>,
   DatePickerState<T, K>
 > {
   /**
@@ -79,7 +69,7 @@ export class DatePicker<T extends GenericContent, K extends keyof T> extends Rea
       dateValue: date,
       value: moment.utc(date),
     })
-    this.props.onChange(this.props.name, moment.utc(date) as any)
+    this.props.fieldOnChange(this.props.fieldName, moment.utc(date) as any)
   }
   /**
    * render
@@ -97,7 +87,7 @@ export class DatePicker<T extends GenericContent, K extends keyof T> extends Rea
                 value={value}
                 onChange={this.handleDateChange}
                 label={this.props.labelText}
-                id={this.props.name as string}
+                id={this.props.fieldName as string}
                 disabled={readOnly}
                 placeholder={this.props.placeHolderText}
                 required={required}
@@ -114,7 +104,7 @@ export class DatePicker<T extends GenericContent, K extends keyof T> extends Rea
                 value={value}
                 onChange={this.handleDateChange}
                 label={this.props.labelText}
-                id={this.props.name as string}
+                id={this.props.fieldName as string}
                 disabled={readOnly}
                 placeholder={this.props.placeHolderText}
                 required={required}

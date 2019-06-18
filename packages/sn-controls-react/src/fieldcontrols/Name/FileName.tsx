@@ -8,16 +8,8 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactFileNameFieldSetting } from './FileNameFieldSetting'
 
-/**
- * Interface for FileName properties
- */
-export interface FileNameProps<T extends GenericContent, K extends keyof T>
-  extends ReactClientFieldSettingProps<T, K>,
-    ReactClientFieldSetting<T, K>,
-    ReactFileNameFieldSetting<T, K> {}
 /**
  * Interface for FileName state
  */
@@ -32,14 +24,14 @@ export interface FileNameState {
  */
 @Radium
 export class FileName<T extends GenericContent, K extends keyof T> extends Component<
-  FileNameProps<T, K>,
+  ReactFileNameFieldSetting<T, K>,
   FileNameState
 > {
   /**
    * constructor
    * @param {object} props
    */
-  constructor(props: FileNameProps<T, K>) {
+  constructor(props: FileName<T, K>['props']) {
     super(props)
     /**
      * @type {object}
@@ -86,10 +78,10 @@ export class FileName<T extends GenericContent, K extends keyof T> extends Compo
    * @param e
    */
   public handleChange(e: React.ChangeEvent) {
-    const { onChange } = this.props
+    const { fieldOnChange: onChange } = this.props
     // eslint-disable-next-line dot-notation
     const value = `${e.target['value']}.${this.state.extension}`
-    onChange(this.props.name, value as any)
+    onChange(this.props.fieldName, value as any)
   }
 
   /**
@@ -107,8 +99,8 @@ export class FileName<T extends GenericContent, K extends keyof T> extends Compo
       case 'edit':
         return (
           <TextField
-            name={this.props.name as string}
-            id={this.props.name as string}
+            name={this.props.fieldName as string}
+            id={this.props.fieldName as string}
             label={this.props.labelText}
             className={this.props.className}
             placeholder={this.props.placeHolderText}
@@ -133,8 +125,8 @@ export class FileName<T extends GenericContent, K extends keyof T> extends Compo
       case 'new':
         return (
           <TextField
-            name={this.props.name as string}
-            id={this.props.name as string}
+            name={this.props.fieldName as string}
+            id={this.props.fieldName as string}
             label={this.props.labelText}
             className={this.props.className}
             placeholder={this.props.placeHolderText}

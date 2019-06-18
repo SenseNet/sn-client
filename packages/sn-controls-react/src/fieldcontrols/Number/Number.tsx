@@ -7,16 +7,8 @@ import Typography from '@material-ui/core/Typography'
 import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
 import React, { Component } from 'react'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactNumberFieldSetting } from './NumberFieldSetting'
 
-/**
- * Interface for Number properties
- */
-export interface NumberProps<T extends GenericContent, K extends keyof T>
-  extends ReactClientFieldSettingProps<T, K>,
-    ReactClientFieldSetting<T, K>,
-    ReactNumberFieldSetting<T, K> {}
 /**
  * Interface for Number state
  */
@@ -29,7 +21,7 @@ export interface NumberState {
  */
 @Radium
 export class Number<T extends GenericContent, K extends keyof T = 'Name'> extends Component<
-  NumberProps<T, K>,
+  ReactNumberFieldSetting<T, K>,
   NumberState
 > {
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -44,7 +36,7 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
   }
 
   public handleChange(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) {
-    const { name, onChange } = this.props
+    const { fieldName: name, fieldOnChange: onChange } = this.props
     const { value } = e.target
     this.setState({ value })
     onChange(name, value)
@@ -104,7 +96,7 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
       case 'edit':
         return (
           <TextField
-            name={this.props.name as string}
+            name={this.props.fieldName as string}
             type="number"
             label={this.props.labelText}
             className={this.props.className}
@@ -120,7 +112,7 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
               max: this.props.max ? this.props.max : null,
               min: this.props.min ? this.props.min : null,
             }}
-            id={this.props.name as string}
+            id={this.props.fieldName as string}
             error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
             fullWidth={true}
             onChange={this.handleChange}
@@ -130,7 +122,7 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
       case 'new':
         return (
           <TextField
-            name={this.props.name as string}
+            name={this.props.fieldName as string}
             type="number"
             label={this.props.labelText}
             className={this.props.className}
@@ -146,7 +138,7 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
               max: this.props.max ? this.props.max : null,
               min: this.props.min ? this.props.min : null,
             }}
-            id={this.props.name as string}
+            id={this.props.fieldName as string}
             error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
             fullWidth={true}
             onChange={this.handleChange}

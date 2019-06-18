@@ -7,9 +7,9 @@ import Typography from '@material-ui/core/Typography'
 import { Repository } from '@sensenet/client-core'
 import { ControlSchema } from '@sensenet/control-mapper'
 import { GenericContent } from '@sensenet/default-content-types'
-import React, { Component, createElement } from 'react'
-import { ReactClientFieldSetting } from '../fieldcontrols/ClientFieldSetting'
+import React, { Component, createElement, ComponentType } from 'react'
 import { reactControlMapper } from '../ReactControlMapper'
+import { ReactClientFieldSetting } from '../fieldcontrols/ClientFieldSetting'
 import { styles } from './BrowseViewStyles'
 
 /**
@@ -25,7 +25,8 @@ export interface BrowseViewProps {
  */
 export interface BrowseViewState {
   content: GenericContent
-  schema: ControlSchema<React.Component<any, any, any>, ReactClientFieldSetting>
+  schema: ControlSchema<ComponentType, ComponentType<ReactClientFieldSetting>>
+  controlMapper: ReturnType<typeof reactControlMapper>
 }
 
 /**
@@ -52,6 +53,7 @@ export class BrowseView extends Component<BrowseViewProps, BrowseViewState> {
     this.state = {
       content: this.props.content,
       schema: controlMapper.getFullSchemaForContentType(this.props.content.Type, 'view'),
+      controlMapper,
     }
   }
   /**
@@ -72,7 +74,7 @@ export class BrowseView extends Component<BrowseViewProps, BrowseViewState> {
    */
   public render() {
     const fieldSettings = this.state.schema.fieldMappings
-    const that = this
+    // const that = this
     return (
       <Grid container={true} spacing={2}>
         <div style={styles.container}>
@@ -80,23 +82,36 @@ export class BrowseView extends Component<BrowseViewProps, BrowseViewState> {
             {this.props.content.DisplayName}
           </Typography>
           {fieldSettings.map(fieldSetting => {
-            fieldSetting.clientSettings.actionName = 'browse'
-            fieldSetting.clientSettings.value = that.getFieldValue(fieldSetting.clientSettings.name)
-            fieldSetting.clientSettings.renderIcon = this.props.renderIcon || undefined
-            if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
-              fieldSetting.fieldSettings.Type = 'NumberFieldSetting'
-            }
-            if (
-              fieldSetting.clientSettings.typeName === 'NullFieldSetting' &&
-              fieldSetting.fieldSettings.Name === 'AllowedChildTypes'
-            ) {
-              fieldSetting.clientSettings.renderIcon = this.props.renderIcon || undefined
-            }
+            // fieldSetting.actionName = 'browse'
+            // fieldSetting.clientSettings.value = that.getFieldValue(fieldSetting.clientSettings.name)
+            // fieldSetting.clientSettings.renderIcon = this.props.renderIcon || undefined
+            // if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
+            //   fieldSetting.fieldSettings.Type = 'NumberFieldSetting'
+            // }
+            // if (
+            //   fieldSetting.clientSettings.typeName === 'NullFieldSetting' &&
+            //   fieldSetting.fieldSettings.Name === 'AllowedChildTypes'
+            // ) {
+            //   fieldSetting.clientSettings.renderIcon = this.props.renderIcon || undefined
+            // }
             return (
-              <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12} key={fieldSetting.clientSettings.key}>
-                {createElement(fieldSetting.controlType, {
-                  ...fieldSetting.clientSettings,
-                })}
+              <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12} key={fieldSetting.fieldSettings.Name}>
+                {createElement(() => null, {})}
+
+                {createElement(
+                  this.state.controlMapper.getControlForContentField(
+                    this.props.content.Type,
+                    fieldSetting.fieldSettings.Name,
+                    'view',
+                  ),
+                  {
+                    fieldName: fieldSetting.fieldSettings.Name as keyof GenericContent,
+                    repository: this.props.repository,
+                    fieldOnChange: () => {
+                      /** */
+                    },
+                  },
+                )}
               </Grid>
             )
           })}

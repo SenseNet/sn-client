@@ -112,11 +112,11 @@ storiesOf('FieldControls.AllowedChildTypes', module)
         <br />
         <AllowedChildTypes
           actionName="new"
-          name="Name"
+          fieldName="Name"
           labelText={text('Label', 'AllowedChildTypes label')}
           className={text('Additional class name', 'allowedChildTypes-field')}
           errorText={text('Error text')}
-          onChange={action('change')}
+          fieldOnChange={action('change')}
           hintText={text('Hint', 'AllowedChildTypes hint')}
           repository={testRepository}
           content={testContent}
@@ -138,11 +138,11 @@ storiesOf('FieldControls.AllowedChildTypes', module)
         <br />
         <AllowedChildTypes
           actionName="edit"
-          name="Name"
+          fieldName="Name"
           labelText={text('Label', 'AllowedChildTypes label')}
           className={text('Additional class name', 'allowedChildTypes-field')}
           errorText={text('Error text')}
-          onChange={action('change')}
+          fieldOnChange={action('change')}
           hintText={text('Hint', 'AllowedChildTypes hint')}
           repository={testRepository}
           content={testContent}
@@ -164,11 +164,11 @@ storiesOf('FieldControls.AllowedChildTypes', module)
         <br />
         <AllowedChildTypes
           actionName="browse"
-          name="Name"
+          fieldName="Name"
           labelText={text('Label', 'AllowedChildTypes label')}
           className={text('Additional class name', 'allowedChildTypes-field')}
           errorText={text('Error text')}
-          onChange={action('change')}
+          fieldOnChange={action('change')}
           hintText={text('Hint', 'AllowedChildTypes hint')}
           repository={testRepository}
           content={testContent}
@@ -187,14 +187,14 @@ storiesOf('FieldControls.AutoComplete', module)
     () => (
       <AutoComplete
         actionName="new"
-        name="Name"
+        fieldName="Name"
         labelText={text('Label', 'AutoComplete label')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'autocomplete-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
         errorText={text('Error text')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'AutoComplete hint')}
         dataSource={tagsInputDataSource}
         repository={testRepository}
@@ -207,14 +207,14 @@ storiesOf('FieldControls.AutoComplete', module)
     () => (
       <AutoComplete
         actionName="edit"
-        name="Name"
+        fieldName="Name"
         labelText={text('Label', 'AutoComplete label')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'autoomplete-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
         errorText={text('Error text')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'AutoComplete hint')}
         dataSource={tagsInputDataSource}
         repository={testRepository}
@@ -227,12 +227,12 @@ storiesOf('FieldControls.AutoComplete', module)
     'browse mode',
     () => (
       <AutoComplete
-        name="Name"
+        fieldName="Name"
         actionName="browse"
         labelText={text('Label', 'AutoComplete label')}
         className={text('Additional class name', 'autocomplete-field')}
         value={[1, 2]}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         dataSource={tagsInputDataSource}
         repository={testRepository}
       />
@@ -249,11 +249,11 @@ storiesOf('FieldControls.Avatar', module)
     () => (
       <Avatar
         actionName="new"
-        name="Name"
+        fieldName="Name"
         labelText={text('Label', 'Avatar label')}
         readOnly={boolean('Readonly', false)}
         className={text('Additional class name', 'avatar-field')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'Avatar hint')}
         dataSource={referenceGridDataSource}
         repository={testRepository}
@@ -276,11 +276,11 @@ storiesOf('FieldControls.Avatar', module)
     () => (
       <Avatar
         actionName="edit"
-        name="Name"
+        fieldName="Name"
         labelText={text('Label', 'Avatar label')}
         readOnly={boolean('Readonly', false)}
         className={text('Additional class name', 'avatar-field')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'Avatar hint')}
         dataSource={referenceGridDataSource}
         repository={testRepository}
@@ -303,12 +303,12 @@ storiesOf('FieldControls.Avatar', module)
     'browse mode',
     () => (
       <Avatar
-        name="Name"
+        fieldName="Name"
         actionName="browse"
         labelText={text('Label', 'Avatar label')}
         className={text('Additional class name', 'avatar-field')}
         value="/Root/Sites/Default_Site/demoavatars/alba.jpg"
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         dataSource={tagsInputDataSource}
         repository={testRepository}
         content={{
@@ -334,7 +334,7 @@ storiesOf('FieldControls.CheckboxGroup', module)
       <CheckboxGroup
         labelText={text('Label', 'Checkboxgroup label')}
         actionName="new"
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         options={[{ Text: 'option1', Value: 1 }, { Text: 'option2', Value: 2 }, { Text: 'option3', Value: 3 }]}
         allowMultiple={boolean('Allow multiple', false)}
         readOnly={boolean('Readonly', false)}
@@ -342,7 +342,7 @@ storiesOf('FieldControls.CheckboxGroup', module)
         errorText={text('Error text', '')}
         hintText={text('Hint', 'Checkboxgroup hint')}
         allowExtraValue={boolean('Allow extra value', false)}
-        name="VersioningMode"
+        fieldName="VersioningMode"
       />
     ),
     { notes: { markdown: checkboxgroupNotes } },
@@ -353,7 +353,7 @@ storiesOf('FieldControls.CheckboxGroup', module)
       <CheckboxGroup
         labelText={text('Label', 'Checkboxgroup label')}
         actionName="edit"
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         options={[{ Text: 'option1', Value: 1 }, { Text: 'option2', Value: 2 }, { Text: 'option3', Value: 3 }]}
         value={[3]}
         allowMultiple={boolean('Allow multiple', false)}
@@ -362,7 +362,7 @@ storiesOf('FieldControls.CheckboxGroup', module)
         errorText={text('Error text', '')}
         hintText={text('Hint', 'Checkboxgroup hint')}
         allowExtraValue={boolean('Allow extra value', false)}
-        name="VersioningMode"
+        fieldName="VersioningMode"
       />
     ),
     { notes: { markdown: checkboxgroupNotes } },
@@ -373,10 +373,10 @@ storiesOf('FieldControls.CheckboxGroup', module)
       <CheckboxGroup
         labelText={text('Label', 'Checkboxgroup label')}
         actionName="browse"
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         options={[{ Text: 'option1', Value: 1 }, { Text: 'option2', Value: 2 }, { Text: 'option3', Value: 3 }]}
         value={3}
-        name="VersioningMode"
+        fieldName="VersioningMode"
       />
     ),
     { notes: { markdown: checkboxgroupNotes } },
@@ -392,13 +392,13 @@ storiesOf('FieldControls.ColorPicker', module)
       <ColorPicker
         labelText={text('Label', 'ColorPicker label')}
         actionName="new"
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'colorpicker-field')}
         errorText={text('Error text')}
         hintText={text('Hint', 'ColorPicker hint')}
-        name={'Color' as any}
+        fieldName={'Color' as any}
         palette={['#D0021B', '#F5A623', '#F8E71C', '#8B572A', '#7ED321', '#417505']}
       />
     ),
@@ -410,14 +410,14 @@ storiesOf('FieldControls.ColorPicker', module)
       <ColorPicker
         labelText={text('Label', 'ColorPicker label')}
         actionName="edit"
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'colorpicker-field')}
         errorText={text('Error text')}
         hintText={text('Hint', 'ColorPicker hint')}
         value="#D0021B"
-        name={'Color' as any}
+        fieldName={'Color' as any}
         palette={['#D0021B', '#F5A623', '#F8E71C', '#8B572A', '#7ED321', '#417505']}
       />
     ),
@@ -430,9 +430,9 @@ storiesOf('FieldControls.ColorPicker', module)
         labelText={text('Label', 'ColorPicker label')}
         actionName="browse"
         className={text('Additional class name', 'colorpicker-field')}
-        name={'Color' as any}
+        fieldName={'Color' as any}
         value="#D0021B"
-        onChange={action('change')}
+        fieldOnChange={action('change')}
       />
     ),
     { notes: { markdown: colorPickerNotes } },
@@ -448,7 +448,7 @@ storiesOf('FieldControls.DatePicker', module)
       <DatePicker
         actionName="new"
         labelText={text('Label', 'DatePicker label')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'datepicker-field')}
@@ -456,7 +456,7 @@ storiesOf('FieldControls.DatePicker', module)
         errorText={text('Error text')}
         defaultValue={dateKnob('Default value')}
         hintText={text('Hint', 'DatePicker hint')}
-        name="ModificationDate"
+        fieldName="ModificationDate"
       />
     ),
     { notes: { markdown: datepickerNotes } },
@@ -467,7 +467,7 @@ storiesOf('FieldControls.DatePicker', module)
       <DatePicker
         actionName="edit"
         labelText={text('Label', 'DatePicker label')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'datepicker-field')}
@@ -475,7 +475,7 @@ storiesOf('FieldControls.DatePicker', module)
         errorText={text('Error text')}
         value={dateKnob('Value')}
         hintText={text('Hint', 'DatePicker hint')}
-        name="ModificationDate"
+        fieldName="ModificationDate"
       />
     ),
     { notes: { markdown: datepickerNotes } },
@@ -487,10 +487,10 @@ storiesOf('FieldControls.DatePicker', module)
         actionName="browse"
         labelText={text('Label', 'DatePicker label')}
         value="2013-03-26T03:55:00"
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         displayMode={select('Display mode', ['relative', 'calendar', 'raw'], 'relative')}
         className={text('Additional class name', 'datepicker-field')}
-        name="ModificationDate"
+        fieldName="ModificationDate"
       />
     ),
     { notes: { markdown: datepickerNotes } },
@@ -506,7 +506,7 @@ storiesOf('FieldControls.DateTimePicker', module)
       <DateTimePicker
         actionName="new"
         labelText={text('Label', 'DateTimePicker label')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'datetimepicker-field')}
@@ -514,7 +514,7 @@ storiesOf('FieldControls.DateTimePicker', module)
         errorText={text('Error text')}
         defaultValue={dateKnob('Default value')}
         hintText={text('Hint', 'DateTimePicker hint')}
-        name="Name"
+        fieldName="Name"
       />
     ),
     { notes: { markdown: datetimepickerNotes } },
@@ -525,7 +525,7 @@ storiesOf('FieldControls.DateTimePicker', module)
       <DateTimePicker
         actionName="edit"
         labelText={text('Label', 'DateTimePicker label')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'datetimepicker-field')}
@@ -533,7 +533,7 @@ storiesOf('FieldControls.DateTimePicker', module)
         errorText={text('Error text')}
         value={dateKnob('Value')}
         hintText={text('Hint', 'DateTimePicker hint')}
-        name="Name"
+        fieldName="Name"
       />
     ),
     { notes: { markdown: datetimepickerNotes } },
@@ -545,10 +545,10 @@ storiesOf('FieldControls.DateTimePicker', module)
         actionName="browse"
         labelText={text('Label', 'DateTimePicker label')}
         value="2018-10-03T03:55:00"
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         displayMode={select('Display mode', ['relative', 'calendar', 'raw'], 'relative')}
         className={text('Additional class name', 'datetimepicker-field')}
-        name="Name"
+        fieldName="Name"
       />
     ),
     { notes: { markdown: datetimepickerNotes } },
@@ -570,9 +570,9 @@ storiesOf('FieldControls.DisplayName', module)
         className={text('Additional class name', 'displayname-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
         errorText={text('Error text')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'DisplayName hint')}
-        name="Name"
+        fieldName="Name"
       />
     ),
     { notes: { markdown: displaynameNotes } },
@@ -589,9 +589,9 @@ storiesOf('FieldControls.DisplayName', module)
         errorText={text('Error text')}
         value={text('Value', 'DisplayName value')}
         actionName="edit"
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'DisplayName hint')}
-        name="Name"
+        fieldName="Name"
       />
     ),
     { notes: { markdown: displaynameNotes } },
@@ -604,8 +604,8 @@ storiesOf('FieldControls.DisplayName', module)
         labelText={text('Label', 'DisplayName label')}
         className={text('Additional class name', 'displayname-field')}
         value={text('Value', 'DisplayName value')}
-        onChange={action('change')}
-        name="Name"
+        fieldOnChange={action('change')}
+        fieldName="Name"
       />
     ),
     { notes: { markdown: displaynameNotes } },
@@ -626,10 +626,10 @@ storiesOf('FieldControls.DropDownList', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'dropdownlist-field')}
         errorText={text('Error text')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'DropDownList hint')}
         options={[{ Text: 'option1', Value: 1 }, { Text: 'option2', Value: 2 }, { Text: 'option3', Value: 3 }]}
-        name="Version"
+        fieldName="Version"
       />
     ),
     { notes: { markdown: dropdownlistNotes } },
@@ -646,10 +646,10 @@ storiesOf('FieldControls.DropDownList', module)
         errorText={text('Error text')}
         value={[3]}
         actionName="edit"
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'DropDownList hint')}
         options={[{ Text: 'option1', Value: 1 }, { Text: 'option2', Value: 2 }, { Text: 'option3', Value: 3 }]}
-        name="VersioningMode"
+        fieldName="VersioningMode"
       />
     ),
     { notes: { markdown: dropdownlistNotes } },
@@ -662,9 +662,9 @@ storiesOf('FieldControls.DropDownList', module)
         labelText={text('Label', 'DropDownList label')}
         className={text('Additional class name', 'dropdownlist-field')}
         value={text('Value', [2])}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         options={[{ Text: 'option1', Value: 1 }, { Text: 'option2', Value: 2 }, { Text: 'option3', Value: 3 }]}
-        name="VersioningMode"
+        fieldName="VersioningMode"
       />
     ),
     { notes: { markdown: dropdownlistNotes } },
@@ -679,10 +679,10 @@ storiesOf('FieldControls.DropDownList', module)
         className={text('Additional class name', 'approvingmodechoice-field')}
         value={[3]}
         actionName="edit"
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'It shows the approval mode of the current content.')}
         options={[{ Text: 'Inherited (Off)', Value: 1 }, { Text: 'Off', Value: 2 }, { Text: 'On', Value: 3 }]}
-        name="ApprovingMode"
+        fieldName="ApprovingMode"
       />
     ),
     { notes: { markdown: approvingModeChoiceNotes } },
@@ -697,7 +697,7 @@ storiesOf('FieldControls.DropDownList', module)
         className={text('Additional class name', 'versioningmodechoice-field')}
         value={[3]}
         actionName="edit"
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text(
           'Hint',
           'Specify whether the system should create a new version whenever you create or modify a content below this content.',
@@ -708,7 +708,7 @@ storiesOf('FieldControls.DropDownList', module)
           { Text: 'Major only', Value: 3 },
           { Text: 'Major and minor', Value: 4 },
         ]}
-        name="VersioningMode"
+        fieldName="VersioningMode"
       />
     ),
     { notes: { markdown: versioningModeChoiceNotes } },
@@ -724,7 +724,7 @@ storiesOf('FieldControls.DropDownList', module)
         className={text('Additional class name', 'versioningmodechoice-field')}
         value={[3]}
         actionName="edit"
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'It shows the versioning mode of the current content.')}
         options={[
           { Text: 'Inherited', Value: 1 },
@@ -732,7 +732,7 @@ storiesOf('FieldControls.DropDownList', module)
           { Text: 'Major only', Value: 3 },
           { Text: 'Major and minor', Value: 4 },
         ]}
-        name="VersioningMode"
+        fieldName="VersioningMode"
       />
     ),
     { notes: { markdown: versioningModeNotes } },
@@ -754,10 +754,10 @@ storiesOf('FieldControls.FileName', module)
         className={text('Additional class name', 'filename-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
         errorText={text('Error text')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'FileName hint')}
         extension={text('Extension', 'docx')}
-        name="Name"
+        fieldName="Name"
       />
     ),
     { notes: { markdown: filenameNotes } },
@@ -774,9 +774,9 @@ storiesOf('FieldControls.FileName', module)
         errorText={text('Error text')}
         value={text('Value', 'filename.docx')}
         actionName="edit"
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'FileName hint')}
-        name="Name"
+        fieldName="Name"
       />
     ),
     { notes: { markdown: filenameNotes } },
@@ -789,8 +789,8 @@ storiesOf('FieldControls.FileName', module)
         labelText={text('Label', 'FileName label')}
         className={text('Additional class name', 'filename-field')}
         value={text('Value', 'Lorem-ipsum.docx')}
-        onChange={action('change')}
-        name="Name"
+        fieldOnChange={action('change')}
+        fieldName="Name"
       />
     ),
     { notes: { markdown: filenameNotes } },
@@ -806,11 +806,11 @@ storiesOf('FieldControls.FileUpload', module)
       <FileUpload
         actionName="new"
         labelText={text('Label', 'FileUpload label')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         className={text('Additional class name', 'fileupload-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
         hintText={text('Hint', 'FileUpload hint')}
-        name="Name"
+        fieldName="Name"
         repository={testRepository}
       />
     ),
@@ -833,9 +833,9 @@ storiesOf('FieldControls.Name', module)
         className={text('Additional class name', 'name-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
         errorText={text('Error text')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'Name hint')}
-        name="Name"
+        fieldName="Name"
       />
     ),
     { notes: { markdown: nameNotes } },
@@ -852,9 +852,9 @@ storiesOf('FieldControls.Name', module)
         errorText={text('Error text')}
         value={text('Value', 'Name value')}
         actionName="edit"
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'Name hint')}
-        name="Name"
+        fieldName="Name"
       />
     ),
     { notes: { markdown: nameNotes } },
@@ -867,8 +867,8 @@ storiesOf('FieldControls.Name', module)
         labelText={text('Label', 'Name label')}
         className={text('Additional class name', 'name-field')}
         value={text('Value', 'Name value')}
-        onChange={action('change')}
-        name="Name"
+        fieldOnChange={action('change')}
+        fieldName="Name"
       />
     ),
     { notes: { markdown: nameNotes } },
@@ -890,7 +890,7 @@ storiesOf('FieldControls.Number', module)
         className={text('Additional class name', 'number-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
         errorText={text('Error text')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'Number hint')}
         max={number('Maximum value')}
         min={number('Minimum value')}
@@ -900,7 +900,7 @@ storiesOf('FieldControls.Number', module)
         isPercentage={boolean('Percentage', false)}
         isCurrency={boolean('Currency', false)}
         currency={select('Currency symbol', currencyOptions, '$')}
-        name="Index"
+        fieldName="Index"
       />
     ),
     { notes: { markdown: numberNotes } },
@@ -917,7 +917,7 @@ storiesOf('FieldControls.Number', module)
         className={text('Additional class name', 'number-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
         errorText={text('Error text')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'Number hint')}
         max={number('Maximum value')}
         min={number('Minimum value')}
@@ -927,7 +927,7 @@ storiesOf('FieldControls.Number', module)
         isPercentage={boolean('Percentage', false)}
         isCurrency={boolean('Currency', false)}
         currency={select('Currency symbol', currencyOptions, '$')}
-        name="Index"
+        fieldName="Index"
       />
     ),
     { notes: { markdown: numberNotes } },
@@ -944,7 +944,7 @@ storiesOf('FieldControls.Number', module)
         className={text('Additional class name', 'number-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
         errorText={text('Error text')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'Number hint')}
         max={number('Maximum value')}
         min={number('Minimum value')}
@@ -954,7 +954,7 @@ storiesOf('FieldControls.Number', module)
         isPercentage={boolean('Percentage', false)}
         isCurrency={boolean('Currency', false)}
         currency={select('Currency symbol', currencyOptions, '$')}
-        name="Index"
+        fieldName="Index"
       />
     ),
     { notes: { markdown: numberNotes } },
@@ -971,7 +971,7 @@ storiesOf('FieldControls.Number', module)
         className={text('Additional class name', 'number-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
         errorText={text('Error text')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'Number hint')}
         max={number('Maximum value')}
         min={number('Minimum value')}
@@ -981,7 +981,7 @@ storiesOf('FieldControls.Number', module)
         isPercentage={boolean('Percentage', false)}
         isCurrency={boolean('Currency', false)}
         currency={select('Currency symbol', currencyOptions, '$')}
-        name="Index"
+        fieldName="Index"
       />
     ),
     { notes: { markdown: numberNotes } },
@@ -994,11 +994,11 @@ storiesOf('FieldControls.Number', module)
         labelText={text('Label', 'Number label')}
         value={number('Value', 4)}
         className={text('Additional class name', 'number-field')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         isPercentage={boolean('Percentage', false)}
         isCurrency={boolean('Currency', false)}
         currency={select('Currency symbol', currencyOptions, '$')}
-        name="Index"
+        fieldName="Index"
       />
     ),
     { notes: { markdown: numberNotes } },
@@ -1015,13 +1015,13 @@ storiesOf('FieldControls.Number', module)
         className={text('Additional class name', 'currency-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
         errorText={text('Error text')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'Currency hint')}
         max={number('Maximum value')}
         min={number('Minimum value')}
         isCurrency={boolean('Currency', true)}
         currency={select('Currency symbol', currencyOptions, '$')}
-        name="Index"
+        fieldName="Index"
       />
     ),
     { notes: { markdown: numberNotes } },
@@ -1038,13 +1038,13 @@ storiesOf('FieldControls.Number', module)
         className={text('Additional class name', 'currency-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
         errorText={text('Error text')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'Currency hint')}
         max={number('Maximum value')}
         min={number('Minimum value')}
         isCurrency={boolean('Currency', true)}
         currency={select('Currency symbol', currencyOptions, '$')}
-        name="Index"
+        fieldName="Index"
       />
     ),
     { notes: { markdown: numberNotes } },
@@ -1061,13 +1061,13 @@ storiesOf('FieldControls.Number', module)
         className={text('Additional class name', 'currency-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
         errorText={text('Error text')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'Currency hint')}
         max={number('Maximum value')}
         min={number('Minimum value')}
         isCurrency={boolean('Currency', true)}
         currency={select('Currency symbol', currencyOptions, '$')}
-        name="Index"
+        fieldName="Index"
       />
     ),
     { notes: { markdown: numberNotes } },
@@ -1088,9 +1088,9 @@ storiesOf('FieldControls.Password', module)
         className={text('Additional class name', 'pasword-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
         errorText={text('Error text')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'Password hint')}
-        name="Name"
+        fieldName="Name"
       />
     ),
     { notes: { markdown: passwordNotes } },
@@ -1107,9 +1107,9 @@ storiesOf('FieldControls.Password', module)
         errorText={text('Error text')}
         value={text('Value', 'Password value')}
         actionName="edit"
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'Password hint')}
-        name="Name"
+        fieldName="Name"
       />
     ),
     { notes: { markdown: passwordNotes } },
@@ -1130,7 +1130,7 @@ storiesOf('FieldControls.RadioButtonGroup', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'radiobuttongroup-field')}
         errorText={text('Error text')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'RadioButtonGroup hint')}
         options={[
           {
@@ -1150,7 +1150,7 @@ storiesOf('FieldControls.RadioButtonGroup', module)
             Text: 'Major and minor',
           },
         ]}
-        name="Version"
+        fieldName="Version"
       />
     ),
     { notes: { markdown: radiobuttongroupNotes } },
@@ -1167,10 +1167,10 @@ storiesOf('FieldControls.RadioButtonGroup', module)
         errorText={text('Error text')}
         value={text('Value', '3')}
         actionName="edit"
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'RadioButtonGroup hint')}
         options={[{ Text: 'option1', Value: 1 }, { Text: 'option2', Value: 2 }, { Text: 'option3', Value: 3 }]}
-        name="VersioningMode"
+        fieldName="VersioningMode"
       />
     ),
     { notes: { markdown: radiobuttongroupNotes } },
@@ -1183,9 +1183,9 @@ storiesOf('FieldControls.RadioButtonGroup', module)
         labelText={text('Label', 'RadioButtonGroup label')}
         className={text('Additional class name', 'radiobuttongroup-field')}
         value={text('Value', [2])}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         options={[{ Text: 'option1', Value: 1 }, { Text: 'option2', Value: 2 }, { Text: 'option3', Value: 3 }]}
-        name="VersioningMode"
+        fieldName="VersioningMode"
       />
     ),
     { notes: { markdown: radiobuttongroupNotes } },
@@ -1204,8 +1204,8 @@ storiesOf('FieldControls.ReferenceGrid', module)
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'reference-field')}
-        onChange={action('change')}
-        name="Name"
+        fieldOnChange={action('change')}
+        fieldName="Name"
         value={undefined}
         dataSource={referenceGridDataSource}
         repository={testRepository}
@@ -1226,8 +1226,8 @@ storiesOf('FieldControls.ReferenceGrid', module)
         errorText={text('Error text')}
         value={[{ DisplayName: 'Aenean semper.docx', Id: 4, Icon: 'word', Type: 'File' }]}
         actionName="edit"
-        onChange={action('change')}
-        name="Name"
+        fieldOnChange={action('change')}
+        fieldName="Name"
         dataSource={referenceGridDataSource}
         repository={testRepository}
         selectionRoot={['/workspaces']}
@@ -1253,8 +1253,8 @@ storiesOf('FieldControls.ReferenceGrid', module)
           Type: 'User',
           Avatar: { Url: 'https://dmsservice.demo.sensenet.com/Root/Sites/Default_Site/demoavatars/alba.jpg' },
         }}
-        onChange={action('change')}
-        name="Name"
+        fieldOnChange={action('change')}
+        fieldName="Name"
         dataSource={tagsInputDataSource}
         repository={testRepository}
       />
@@ -1278,9 +1278,9 @@ storiesOf('FieldControls.RichTextEditor', module)
         className={text('Additional class name', 'richtext-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
         errorText={text('Error text')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'RichTextEditor hint')}
-        name="Description"
+        fieldName="Description"
       />
     ),
     { notes: { markdown: richtextNotes } },
@@ -1297,9 +1297,9 @@ storiesOf('FieldControls.RichTextEditor', module)
         className={text('Additional class name', 'richtext-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
         errorText={text('Error text')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'RichTextEditor hint')}
-        name="Description"
+        fieldName="Description"
       />
     ),
     { notes: { markdown: richtextNotes } },
@@ -1315,8 +1315,8 @@ storiesOf('FieldControls.RichTextEditor', module)
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec iaculis lectus, sed blandit urna. Nullam in auctor odio, eu eleifend diam. Curabitur rutrum ullamcorper nunc, sit amet consectetur turpis elementum ac. Aenean lorem lorem, feugiat sit amet sem at, accumsan cursus leo.',
         )}
         className={text('Additional class name', 'richtext-field')}
-        name="Description"
-        onChange={action('change')}
+        fieldName="Description"
+        fieldOnChange={action('change')}
       />
     ),
     { notes: { markdown: richtextNotes } },
@@ -1338,9 +1338,9 @@ storiesOf('FieldControls.ShortText', module)
         className={text('Additional class name', 'shorttext-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
         errorText={text('Error text')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'Shorttext hint')}
-        name="Name"
+        fieldName="Name"
       />
     ),
     { notes: { markdown: shorttextNotes } },
@@ -1357,9 +1357,9 @@ storiesOf('FieldControls.ShortText', module)
         errorText={text('Error text')}
         value={text('Value', 'ShortText value')}
         actionName="edit"
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'Shorttext hint')}
-        name="Name"
+        fieldName="Name"
       />
     ),
     { notes: { markdown: shorttextNotes } },
@@ -1372,8 +1372,8 @@ storiesOf('FieldControls.ShortText', module)
         labelText={text('Label', 'ShortText label')}
         className={text('Additional class name', 'shorttext-field')}
         value={text('Value', 'ShortText value')}
-        onChange={action('change')}
-        name="Name"
+        fieldOnChange={action('change')}
+        fieldName="Name"
       />
     ),
     { notes: { markdown: shorttextNotes } },
@@ -1394,12 +1394,12 @@ storiesOf('FieldControls.TagsInput', module)
         className={text('Additional class name', 'tagsinput-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
         errorText={text('Error text')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'TagsInput hint')}
         dataSource={tagsInputDataSource}
         repository={testRepository}
         allowMultiple={boolean('Allow multiple selection', false)}
-        name="ModifiedBy"
+        fieldName="ModifiedBy"
         content={testContent}
       />
     ),
@@ -1416,13 +1416,13 @@ storiesOf('FieldControls.TagsInput', module)
         className={text('Additional class name', 'tagsinput-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
         errorText={text('Error text')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'TagsInput hint')}
         dataSource={tagsInputDataSource}
         repository={testRepository}
         allowMultiple={boolean('Allow multiple selection', false)}
         value={[tagsInputDataSource[1]]}
-        name="ModifiedBy"
+        fieldName="ModifiedBy"
         content={testContent}
       />
     ),
@@ -1436,10 +1436,10 @@ storiesOf('FieldControls.TagsInput', module)
         labelText={text('Label', 'TagsInput label')}
         className={text('Additional class name', 'tagsinput-field')}
         value={[tagsInputDataSource[0], tagsInputDataSource[1]]}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         repository={testRepository}
         dataSource={tagsInputDataSource}
-        name="ModifiedBy"
+        fieldName="ModifiedBy"
         content={testContent}
       />
     ),
@@ -1463,9 +1463,9 @@ storiesOf('FieldControls.Textarea', module)
         className={text('Additional class name', 'textarea-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
         errorText={text('Error text')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'Textarea hint')}
-        name="Description"
+        fieldName="Description"
       />
     ),
     { notes: { markdown: textareasNotes } },
@@ -1486,9 +1486,9 @@ storiesOf('FieldControls.Textarea', module)
           'Value',
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec iaculis lectus, sed blandit urna. Nullam in auctor odio, eu eleifend diam. Curabitur rutrum ullamcorper nunc, sit amet consectetur turpis elementum ac. Aenean lorem lorem, feugiat sit amet sem at, accumsan cursus leo.',
         )}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         hintText={text('Hint', 'Textarea hint')}
-        name="Description"
+        fieldName="Description"
       />
     ),
     { notes: { markdown: textareasNotes } },
@@ -1505,8 +1505,8 @@ storiesOf('FieldControls.Textarea', module)
           'Value',
           'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec iaculis lectus, sed blandit urna. Nullam in auctor odio, eu eleifend diam. Curabitur rutrum ullamcorper nunc, sit amet consectetur turpis elementum ac. Aenean lorem lorem, feugiat sit amet sem at, accumsan cursus leo.',
         )}
-        onChange={action('change')}
-        name="Description"
+        fieldOnChange={action('change')}
+        fieldName="Description"
       />
     ),
     { notes: { markdown: textareasNotes } },
@@ -1522,7 +1522,7 @@ storiesOf('FieldControls.TimePicker', module)
       <TimePicker
         actionName="new"
         labelText={text('Label', 'TimePicker label')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'timepicker-field')}
@@ -1530,7 +1530,7 @@ storiesOf('FieldControls.TimePicker', module)
         errorText={text('Error text')}
         defaultValue={dateKnob('Default value')}
         hintText={text('Hint', 'TimePicker hint')}
-        name="ModificationDate"
+        fieldName="ModificationDate"
       />
     ),
     { notes: { markdown: timepickerNotes } },
@@ -1541,7 +1541,7 @@ storiesOf('FieldControls.TimePicker', module)
       <TimePicker
         actionName="edit"
         labelText={text('Label', 'TimePicker label')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'timepicker-field')}
@@ -1549,7 +1549,7 @@ storiesOf('FieldControls.TimePicker', module)
         errorText={text('Error text')}
         value={dateKnob('Value')}
         hintText={text('Hint', 'TimePicker hint')}
-        name="ModificationDate"
+        fieldName="ModificationDate"
       />
     ),
     { notes: { markdown: timepickerNotes } },
@@ -1561,9 +1561,9 @@ storiesOf('FieldControls.TimePicker', module)
         actionName="browse"
         labelText={text('Label', 'TimePicker label')}
         value={text('Value', '03:50:00')}
-        onChange={action('change')}
+        fieldOnChange={action('change')}
         className={text('Additional class name', 'timepicker-field')}
-        name="ModificationDate"
+        fieldName="ModificationDate"
       />
     ),
     { notes: { markdown: timepickerNotes } },

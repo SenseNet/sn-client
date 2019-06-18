@@ -2,7 +2,6 @@
  * @module FieldControls
  */
 import React, { Component } from 'react'
-
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormGroup from '@material-ui/core/FormGroup'
@@ -12,16 +11,8 @@ import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import { GenericContent } from '@sensenet/default-content-types'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactChoiceFieldSetting } from '../ChoiceFieldSetting'
 
-/**
- * Interface for DropDownList properties
- */
-export interface DropDownListProps<T extends GenericContent, K extends keyof T>
-  extends ReactClientFieldSettingProps<T, K>,
-    ReactClientFieldSetting<T, K>,
-    ReactChoiceFieldSetting<T, K> {}
 /**
  * Interface for DropDownList state
  */
@@ -32,14 +23,14 @@ export interface DropDownListState<T extends GenericContent, K extends keyof T> 
  * Field control that represents a Choice field. Available values will be populated from the FieldSettings.
  */
 export class DropDownList<T extends GenericContent, K extends keyof T> extends Component<
-  DropDownListProps<T, K>,
+  ReactChoiceFieldSetting<T, K>,
   DropDownListState<T, K>
 > {
   /**
    * constructor
    * @param {object} props
    */
-  constructor(props: DropDownListProps<T, K>) {
+  constructor(props: DropDownList<T, K>['props']) {
     super(props)
     /**
      * @type {object}
@@ -53,7 +44,7 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
    */
   public handleChange = (event: React.ChangeEvent<{ name?: string; value: unknown }>) => {
     this.setState({ value: event.target.value as any })
-    this.props.onChange(this.props.name, event.target.value as any)
+    this.props.fieldOnChange(this.props.fieldName, event.target.value as any)
   }
   /**
    * returns selected options value
@@ -102,13 +93,13 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
             fullWidth={true}
             required={this.props.required}
             error={this.props.errorText && this.props.errorText.length > 0 ? true : false}>
-            <InputLabel htmlFor={this.props.name as string}>{this.props.labelText}</InputLabel>
+            <InputLabel htmlFor={this.props.fieldName as string}>{this.props.labelText}</InputLabel>
             <Select
               onChange={this.handleChange}
               inputProps={
                 {
-                  name: this.props.name,
-                  id: this.props.name,
+                  name: this.props.fieldName,
+                  id: this.props.fieldName,
                 } as any
               }
               value={this.state.value[0]}
@@ -133,13 +124,13 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
             fullWidth={true}
             required={this.props.required}
             error={this.props.errorText && this.props.errorText.length > 0 ? true : false}>
-            <InputLabel htmlFor={this.props.name as string}>{this.props.labelText}</InputLabel>
+            <InputLabel htmlFor={this.props.fieldName as string}>{this.props.labelText}</InputLabel>
             <Select
               onChange={this.handleChange}
               inputProps={
                 {
-                  name: this.props.name,
-                  id: this.props.name,
+                  name: this.props.fieldName,
+                  id: this.props.fieldName,
                 } as any
               }
               value={this.state.value as any}

@@ -11,7 +11,6 @@ import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
 import React, { Component } from 'react'
 import { SketchPicker } from 'react-color'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactColorPickerFieldSetting } from './ColorPickerFieldSetting'
 
 const style = {
@@ -30,13 +29,6 @@ const renderIconDefault = (name: string, color: string) => {
 }
 
 /**
- * Interface for ColorPicker properties
- */
-export interface ColorPickerProps<T extends GenericContent, K extends keyof T>
-  extends ReactClientFieldSettingProps<T, K>,
-    ReactClientFieldSetting<T, K>,
-    ReactColorPickerFieldSetting<T, K> {}
-/**
  * Interface for ColorPicker state
  */
 export interface ColorPickerState {
@@ -48,14 +40,14 @@ export interface ColorPickerState {
  */
 @Radium
 export class ColorPicker<T extends GenericContent, K extends keyof T> extends Component<
-  ColorPickerProps<T, K>,
+  ReactColorPickerFieldSetting<T, K>,
   ColorPickerState
 > {
   /**
    * constructor
    * @param {object} props
    */
-  constructor(props: ColorPickerProps<T, K>) {
+  constructor(props: ColorPicker<T, K>['props']) {
     super(props)
     /**
      * @type {object}
@@ -90,7 +82,7 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
    * @param {SytheticEvent} event
    */
   public handleChange(color: any) {
-    this.props.onChange(this.props.name, color.hex)
+    this.props.fieldOnChange(this.props.fieldName, color.hex)
     this.setState({ value: color.hex })
   }
   public openPicker() {
@@ -118,8 +110,8 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
                 this.props.errorText && this.props.errorText.length > 0 ? this.props.errorText : this.props.labelText
               }
               type="text"
-              name={this.props.name as string}
-              id={this.props.name as string}
+              name={this.props.fieldName.toString()}
+              id={this.props.fieldName.toString()}
               className={this.props.className}
               required={this.props.required}
               disabled={this.props.readOnly}
@@ -158,8 +150,8 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
           <FormControl className={this.props.className}>
             <TextField
               type="text"
-              name={this.props.name as string}
-              id={this.props.name as string}
+              name={this.props.fieldName as string}
+              id={this.props.fieldName as string}
               label={
                 this.props.errorText && this.props.errorText.length > 0 ? this.props.errorText : this.props.labelText
               }

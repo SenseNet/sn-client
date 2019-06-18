@@ -2,19 +2,20 @@
  * @module FieldControls
  */
 import { GenericContent } from '@sensenet/default-content-types'
+import { Repository } from '@sensenet/client-core'
 
 /**
  * Interface for ReactClientFieldSetting properties
  */
-export interface ReactClientFieldSettingProps<T extends GenericContent = GenericContent, K extends keyof T = 'Name'> {
+export interface ReactClientFieldSettingProps<T extends GenericContent = GenericContent> {
   /**
    * Unique name of the field control
    */
-  name: K
+  fieldName: keyof T
   /**
    * Called when the icon is clicked
    */
-  onChange: (field: keyof T, value: string) => void
+  fieldOnChange: (field: keyof T, value: any) => void
   /**
    * Unique key of the field control
    */
@@ -47,7 +48,7 @@ export interface ReactClientFieldSettingProps<T extends GenericContent = Generic
  * Interface for ClientFieldSetting properties
  */
 export interface ReactClientFieldSetting<T extends GenericContent = GenericContent, K extends keyof T = 'Name'>
-  extends ReactClientFieldSettingProps<T, K> {
+  extends ReactClientFieldSettingProps<T> {
   /**
    * Default value of the empty field control
    */
@@ -81,4 +82,8 @@ export interface ReactClientFieldSetting<T extends GenericContent = GenericConte
    * Function for rendering an icon by an iconname given as an input prop
    */
   renderIcon?: (name: string) => JSX.Element
+  /**
+   * Connected repository
+   */
+  repository: Repository
 }

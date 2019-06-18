@@ -11,16 +11,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
 import debounce from 'lodash.debounce'
 import React, { Component } from 'react'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactReferenceFieldSetting } from '../ReferenceFieldSetting'
-
-/**
- * Interface for AutoComplete properties
- */
-export interface AutoCompleteProps<T extends GenericContent, K extends keyof T>
-  extends ReactClientFieldSettingProps<T, K>,
-    ReactClientFieldSetting<T, K>,
-    ReactReferenceFieldSetting<T, K> {}
 
 /**
  * State object for the AutoComplete component
@@ -40,7 +31,7 @@ export interface AutoCompleteState<T extends GenericContent> {
  * Field control that represents a AutoComplete field. Available values will be populated from the FieldSettings.
  */
 export class AutoComplete<T extends GenericContent = GenericContent, K extends keyof T = 'Name'> extends Component<
-  AutoCompleteProps<T, K>,
+  ReactReferenceFieldSetting<T, K>,
   AutoCompleteState<T>
 > {
   /**
@@ -152,7 +143,7 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
       isOpened: false,
       isLoading: false,
     })
-    const { name, onChange } = this.props
+    const { fieldName: name, fieldOnChange: onChange } = this.props
     onChange(name, item.Id as any)
   }
   /**
@@ -168,7 +159,7 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
           <div ref={ref => ref && this.state.anchorEl !== ref && this.setState({ anchorEl: ref })}>
             <FormControl
               className={this.props.className}
-              key={this.props.name as string}
+              key={this.props.fieldName as string}
               component={'fieldset' as 'div'}
               required={this.props.required}>
               <TextField
@@ -191,8 +182,8 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
                     </InputAdornment>
                   ) : null,
                 }}
-                name={this.props.name as string}
-                id={this.props.name as string}
+                name={this.props.fieldName as string}
+                id={this.props.fieldName as string}
                 className={this.props.className}
                 style={this.props.style}
                 required={this.props.required}

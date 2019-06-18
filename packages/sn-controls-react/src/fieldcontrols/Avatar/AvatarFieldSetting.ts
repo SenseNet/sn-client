@@ -7,7 +7,7 @@ import { ReactReferenceGridFieldSetting } from '../ReferenceGrid/ReferenceGridFi
 /**
  * Interface for ReactAvatarFieldSetting
  */
-export interface ReactAvatarFieldSetting<T extends User, K extends keyof T>
+export interface ReactAvatarFieldSetting<T extends User = User, K extends keyof T = 'Avatar'>
   extends ReactReferenceGridFieldSetting<T, K> {
   /**
    * Component that will displayed as an item in the list

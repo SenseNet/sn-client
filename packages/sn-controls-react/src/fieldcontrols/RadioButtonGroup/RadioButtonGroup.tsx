@@ -11,15 +11,7 @@ import RadioGroup from '@material-ui/core/RadioGroup'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
 import { ReactChoiceFieldSetting } from '../ChoiceFieldSetting'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 
-/**
- * Interface for RadioButton properties
- */
-export interface RadioButtonGroupProps<T extends GenericContent, K extends keyof T>
-  extends ReactClientFieldSettingProps<T, K>,
-    ReactClientFieldSetting<T, K>,
-    ReactChoiceFieldSetting<T, K> {}
 /**
  * Interface for RadioButton state
  */
@@ -30,10 +22,10 @@ export interface RadioButtonGroupState {
  * Field control that represents a Choice field. Available values will be populated from the FieldSettings.
  */
 export class RadioButtonGroup<T extends GenericContent, K extends keyof T> extends Component<
-  RadioButtonGroupProps<T, K>,
+  ReactChoiceFieldSetting<T, K>,
   RadioButtonGroupState
 > {
-  constructor(props: RadioButtonGroupProps<T, K>) {
+  constructor(props: RadioButtonGroup<T, K>['props']) {
     super(props)
     this.state = {
       value: this.props.value || this.props.defaultValue || this.props.options[0].Value,
@@ -44,7 +36,7 @@ export class RadioButtonGroup<T extends GenericContent, K extends keyof T> exten
    */
   public handleChange = (_event: React.ChangeEvent<{}>, value: string) => {
     this.setState({ value })
-    this.props.onChange(this.props.name, value)
+    this.props.fieldOnChange(this.props.fieldName, value)
   }
   /**
    * render
@@ -63,7 +55,7 @@ export class RadioButtonGroup<T extends GenericContent, K extends keyof T> exten
             <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <RadioGroup
               aria-label={this.props.labelText}
-              name={this.props.name as string}
+              name={this.props.fieldName as string}
               value={this.state.value}
               onChange={this.handleChange}>
               {this.props.options.map(option => {
@@ -93,7 +85,7 @@ export class RadioButtonGroup<T extends GenericContent, K extends keyof T> exten
             <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <RadioGroup
               aria-label={this.props.labelText}
-              name={this.props.name as string}
+              name={this.props.fieldName as string}
               value={this.state.value}
               onChange={this.handleChange as any}>
               {this.props.options.map(option => {
