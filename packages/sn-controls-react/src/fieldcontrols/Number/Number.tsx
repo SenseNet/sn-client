@@ -20,8 +20,8 @@ export interface NumberProps<T extends GenericContent, K extends keyof T>
 /**
  * Interface for Number state
  */
-export interface NumberState<T extends GenericContent, K extends keyof T> {
-  value: T[K]
+export interface NumberState {
+  value: string
 }
 
 /**
@@ -30,7 +30,7 @@ export interface NumberState<T extends GenericContent, K extends keyof T> {
 @Radium
 export class Number<T extends GenericContent, K extends keyof T = 'Name'> extends Component<
   NumberProps<T, K>,
-  NumberState<T, K>
+  NumberState
 > {
   // eslint-disable-next-line @typescript-eslint/ban-types
   constructor(props: Number<T, K>['props']) {
@@ -42,14 +42,11 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
     }
     this.handleChange = this.handleChange.bind(this)
   }
-  /**
-   * handle changes
-   * @param {string} name
-   * @param {event} event
-   */
-  public handleChange(e: React.ChangeEvent<{ value: string }>) {
+
+  public handleChange(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) {
     const { name, onChange } = this.props
     const { value } = e.target
+    this.setState({ value })
     onChange(name, value)
   }
   /**
@@ -80,25 +77,21 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
    * Returns steps value by decimal and step settings
    */
   public defineStepValue = () => {
-    return this.props['data-decimal'] && this.props['data-step'] === undefined
-      ? 0.1
-      : this.props['data-step']
-      ? this.props['data-step']
-      : 1
+    return this.props.decimal && this.props.step === undefined ? 0.1 : this.props.step ? this.props.step : 1
   }
   /**
    * Returns inputadornment by currency and percentage settings
    */
   public defineCurrency = () => {
     let currency: any
-    if (this.props['data-isCurrency']) {
-      currency = this.props['data-currency'] ? (
-        <InputAdornment position="start">{this.props['data-currency']}</InputAdornment>
+    if (this.props.isCurrency) {
+      currency = this.props.currency ? (
+        <InputAdornment position="start">{this.props.currency}</InputAdornment>
       ) : (
         <InputAdornment position="start">$</InputAdornment>
       )
     } else {
-      currency = this.props['data-isPercentage'] ? <InputAdornment position="start">%</InputAdornment> : null
+      currency = this.props.isPercentage ? <InputAdornment position="start">%</InputAdornment> : null
     }
     return currency
   }
@@ -116,7 +109,7 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
             label={this.props.labelText}
             className={this.props.className}
             style={this.props.style}
-            value={this.props.value}
+            value={this.state.value}
             required={this.props.required}
             disabled={this.props.readOnly}
             InputProps={{
@@ -130,7 +123,7 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
             id={this.props.name as string}
             error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
             fullWidth={true}
-            onChange={e => this.handleChange(e)}
+            onChange={this.handleChange}
             helperText={this.props.hintText}
           />
         )
@@ -156,33 +149,33 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
             id={this.props.name as string}
             error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
             fullWidth={true}
-            onChange={e => this.handleChange(e)}
+            onChange={this.handleChange}
             helperText={this.props.hintText}
           />
         )
       case 'browse':
-        return this.props.value ? (
+        return this.state.value ? (
           <div className={this.props.className}>
             <Typography variant="caption" gutterBottom={true}>
               {this.props.labelText}
             </Typography>
             <Typography variant="body1" gutterBottom={true}>
-              {this.props['data-isCurrency'] ? (this.props['data-currency'] ? this.props['data-currency'] : '$') : null}
-              {this.props['data-isPercentage'] ? '%' : null}
-              {this.props.value}
+              {this.props.isCurrency ? (this.props.currency ? this.props.currency : '$') : null}
+              {this.props.isPercentage ? '%' : null}
+              {this.state.value}
             </Typography>
           </div>
         ) : null
       default:
-        return this.props.value ? (
+        return this.state.value ? (
           <div className={this.props.className}>
             <Typography variant="caption" gutterBottom={true}>
               {this.props.labelText}
             </Typography>
             <Typography variant="body1" gutterBottom={true}>
-              {this.props['data-isCurrency'] ? (this.props['data-currency'] ? this.props['data-currency'] : '$') : null}
-              {this.props['data-isPercentage'] ? '%' : null}
-              {this.props.value}
+              {this.props.isCurrency ? (this.props.currency ? this.props.currency : '$') : null}
+              {this.props.isPercentage ? '%' : null}
+              {this.state.value}
             </Typography>
           </div>
         ) : null

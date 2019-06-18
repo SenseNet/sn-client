@@ -28,29 +28,30 @@ export interface ReactNumberFieldSetting<T extends GenericContent = GenericConte
    * Sets wether the number will be a decimal or a simple integer
    * @default false
    */
-  'data-decimal'?: boolean
+  decimal?: boolean
+  // Digits is not wired in the number control. Remove?
   /**
    * Specifies the number of the displayed decimals
    * @default 2
    */
-  'data-digits'?: number
+  digits?: number
   /**
    * Specifies the value used to increment or decrement fieldcontrol's value
    */
-  'data-step'?: number
+  step?: number
   /**
    * Specifies wether the control displays a percentage
    * @default false
    */
-  'data-isPercentage'?: boolean
+  isPercentage?: boolean
   /**
    * Specifies wether the control displays a currency
    * @default false
    */
-  'data-isCurrency'?: boolean
+  isCurrency?: boolean
   /**
    * Specifies currency
    * @default USD
    */
-  'data-currency'?: currencies
+  currency?: currencies
 }

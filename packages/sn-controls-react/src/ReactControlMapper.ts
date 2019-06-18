@@ -57,10 +57,10 @@ export const reactControlMapper = (repository: Repository) =>
     })
     .setClientControlFactory(NumberFieldSetting, setting => {
       const numberSettings = clientConfigFactory(setting) as ReactNumberFieldSetting
-      numberSettings['data-digits'] = setting.Digits
-      numberSettings['data-step'] = setting.Step
-      numberSettings['data-isPercentage'] = setting.ShowAsPercentage
-      numberSettings['data-decimal'] = true
+      numberSettings.digits = setting.Digits
+      numberSettings.step = setting.Step
+      numberSettings.isPercentage = setting.ShowAsPercentage
+      numberSettings.decimal = true
       numberSettings.max = setting.MaxValue
       numberSettings.min = setting.MinValue
       // TODO: currency
@@ -71,9 +71,9 @@ export const reactControlMapper = (repository: Repository) =>
     })
     .setClientControlFactory(IntegerFieldSetting, setting => {
       const numberSettings = clientConfigFactory(setting) as ReactNumberFieldSetting
-      numberSettings['data-step'] = setting.Step
-      numberSettings['data-isPercentage'] = setting.ShowAsPercentage
-      numberSettings['data-decimal'] = false
+      numberSettings.step = setting.Step
+      numberSettings.isPercentage = setting.ShowAsPercentage
+      numberSettings.decimal = false
       numberSettings.max = setting.MaxValue
       numberSettings.min = setting.MinValue
       // TODO: currency

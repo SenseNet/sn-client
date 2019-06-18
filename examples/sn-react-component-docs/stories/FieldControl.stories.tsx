@@ -894,12 +894,12 @@ storiesOf('FieldControls.Number', module)
         hintText={text('Hint', 'Number hint')}
         max={number('Maximum value')}
         min={number('Minimum value')}
-        data-decimal={boolean('Decimal', false)}
-        data-digits={number('Digits', 2)}
-        data-step={number('Step', 1)}
-        data-isPercentage={boolean('Percentage', false)}
-        data-isCurrency={boolean('Currency', false)}
-        data-currency={select('Currency symbol', currencyOptions, '$')}
+        decimal={boolean('Decimal', false)}
+        digits={number('Digits', 2)}
+        step={number('Step', 1)}
+        isPercentage={boolean('Percentage', false)}
+        isCurrency={boolean('Currency', false)}
+        currency={select('Currency symbol', currencyOptions, '$')}
         name="Index"
       />
     ),
@@ -921,12 +921,12 @@ storiesOf('FieldControls.Number', module)
         hintText={text('Hint', 'Number hint')}
         max={number('Maximum value')}
         min={number('Minimum value')}
-        data-decimal={boolean('Decimal', true)}
-        data-digits={number('Digits', 2)}
-        data-step={number('Step', 0.01)}
-        data-isPercentage={boolean('Percentage', false)}
-        data-isCurrency={boolean('Currency', false)}
-        data-currency={select('Currency symbol', currencyOptions, '$')}
+        decimal={boolean('Decimal', true)}
+        digits={number('Digits', 2)}
+        step={number('Step', 0.01)}
+        isPercentage={boolean('Percentage', false)}
+        isCurrency={boolean('Currency', false)}
+        currency={select('Currency symbol', currencyOptions, '$')}
         name="Index"
       />
     ),
@@ -948,12 +948,12 @@ storiesOf('FieldControls.Number', module)
         hintText={text('Hint', 'Number hint')}
         max={number('Maximum value')}
         min={number('Minimum value')}
-        data-decimal={boolean('Decimal', false)}
-        data-digits={number('Digits', 2)}
-        data-step={number('Step', 1)}
-        data-isPercentage={boolean('Percentage', false)}
-        data-isCurrency={boolean('Currency', false)}
-        data-currency={select('Currency symbol', currencyOptions, '$')}
+        decimal={boolean('Decimal', false)}
+        digits={number('Digits', 2)}
+        step={number('Step', 1)}
+        isPercentage={boolean('Percentage', false)}
+        isCurrency={boolean('Currency', false)}
+        currency={select('Currency symbol', currencyOptions, '$')}
         name="Index"
       />
     ),
@@ -975,12 +975,12 @@ storiesOf('FieldControls.Number', module)
         hintText={text('Hint', 'Number hint')}
         max={number('Maximum value')}
         min={number('Minimum value')}
-        data-decimal={boolean('Decimal', true)}
-        data-digits={number('Digits', 2)}
-        data-step={number('Step', 1.12)}
-        data-isPercentage={boolean('Percentage', false)}
-        data-isCurrency={boolean('Currency', false)}
-        data-currency={select('Currency symbol', currencyOptions, '$')}
+        decimal={boolean('Decimal', true)}
+        digits={number('Digits', 2)}
+        step={number('Step', 1.12)}
+        isPercentage={boolean('Percentage', false)}
+        isCurrency={boolean('Currency', false)}
+        currency={select('Currency symbol', currencyOptions, '$')}
         name="Index"
       />
     ),
@@ -995,9 +995,9 @@ storiesOf('FieldControls.Number', module)
         value={number('Value', 4)}
         className={text('Additional class name', 'number-field')}
         onChange={action('change')}
-        data-isPercentage={boolean('Percentage', false)}
-        data-isCurrency={boolean('Currency', false)}
-        data-currency={select('Currency symbol', currencyOptions, '$')}
+        isPercentage={boolean('Percentage', false)}
+        isCurrency={boolean('Currency', false)}
+        currency={select('Currency symbol', currencyOptions, '$')}
         name="Index"
       />
     ),
@@ -1019,8 +1019,8 @@ storiesOf('FieldControls.Number', module)
         hintText={text('Hint', 'Currency hint')}
         max={number('Maximum value')}
         min={number('Minimum value')}
-        data-isCurrency={boolean('Currency', true)}
-        data-currency={select('Currency symbol', currencyOptions, '$')}
+        isCurrency={boolean('Currency', true)}
+        currency={select('Currency symbol', currencyOptions, '$')}
         name="Index"
       />
     ),
@@ -1042,8 +1042,8 @@ storiesOf('FieldControls.Number', module)
         hintText={text('Hint', 'Currency hint')}
         max={number('Maximum value')}
         min={number('Minimum value')}
-        data-isCurrency={boolean('Currency', true)}
-        data-currency={select('Currency symbol', currencyOptions, '$')}
+        isCurrency={boolean('Currency', true)}
+        currency={select('Currency symbol', currencyOptions, '$')}
         name="Index"
       />
     ),
@@ -1065,8 +1065,8 @@ storiesOf('FieldControls.Number', module)
         hintText={text('Hint', 'Currency hint')}
         max={number('Maximum value')}
         min={number('Minimum value')}
-        data-isCurrency={boolean('Currency', true)}
-        data-currency={select('Currency symbol', currencyOptions, '$')}
+        isCurrency={boolean('Currency', true)}
+        currency={select('Currency symbol', currencyOptions, '$')}
         name="Index"
       />
     ),
