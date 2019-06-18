@@ -18,6 +18,7 @@ import {
 import { useInjector, useLocalization } from '../../hooks'
 import { RepositoryManager } from '../../services/RepositoryManager'
 import { Icon } from '../Icon'
+import { ContentContextMenu } from '../ContentContextMenu'
 import { EventListFilterContext } from './filter-context'
 
 export const List: React.FunctionComponent<{
