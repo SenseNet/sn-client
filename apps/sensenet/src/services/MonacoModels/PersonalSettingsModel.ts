@@ -17,6 +17,71 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
         fileMatch: [uriString],
         schema: {
           definitions: {
+            dashboardSection: {
+              $id: '#/dashboardSection',
+              type: 'object',
+              title: 'Query widget',
+              default: null,
+              required: ['type', 'title', 'settings'],
+              properties: {
+                type: {
+                  $id: '#/dashboardSection/properties/type',
+                  type: 'string',
+                  enum: ['query', 'markdown'],
+                  title: 'The Type Schema',
+                  default: '',
+                  examples: ['query'],
+                  pattern: '^(.*)$',
+                },
+                title: {
+                  $id: '#/dashboardSection/properties/title',
+                  type: 'string',
+                  title: 'The Title Schema',
+                  default: '',
+                  examples: ['Query Title'],
+                  pattern: '^(.*)$',
+                },
+                if: { properties: { type: 'query' } },
+                then: {
+                  settings: {
+                    $id: '#/dashboardSection/properties/settings',
+                    type: 'object',
+                    title: 'The Settings Schema',
+                    required: ['term', 'showColumnNames', 'columns'],
+                    properties: {
+                      term: {
+                        $id: '#/dashboardSection/properties/settings/properties/term',
+                        type: 'string',
+                        title: 'The Term Schema',
+                        default: '',
+                        examples: ['+alba'],
+                        pattern: '^(.*)$',
+                      },
+                      showColumnNames: {
+                        $id: '#/dashboardSection/properties/settings/properties/showColumnNames',
+                        type: 'boolean',
+                        title: 'The Showcolumnnames Schema',
+                        default: false,
+                        examples: [true],
+                      },
+                      columns: {
+                        $id: '#/dashboardSection/properties/settings/properties/columns',
+                        type: 'array',
+                        title: 'The Columns Schema',
+                        items: {
+                          $id: '#/items/properties/settings/properties/columns/items',
+                          type: 'string',
+                          title: 'The Items Schema',
+                          default: '',
+                          examples: ['DisplayName', 'Path'],
+                          pattern: '^(.*)$',
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
             drawer: {
               type: 'object',
               description: language.personalSettings.drawer,
@@ -49,6 +114,11 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                 displayName: {
                   type: 'string',
                   description: language.personalSettings.repositoryDisplayName,
+                },
+                dashboard: {
+                  type: 'array',
+                  description: 'Dashboard Section',
+                  items: { $ref: '#definitions/dashboardSection' },
                 },
               },
             },
