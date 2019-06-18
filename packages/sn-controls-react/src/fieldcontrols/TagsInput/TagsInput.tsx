@@ -108,7 +108,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
       this.state = {
         dataSource: [],
         label: this.props.defaultDisplayName || 'DisplayName',
-        fieldValue: this.props['data-fieldValue'] ? this.props['data-fieldValue'] : [],
+        fieldValue: this.props.value ? this.props.value : [],
       }
       this.search()
     }
@@ -360,7 +360,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
           </FormControl>
         )
       case 'browse':
-        return this.props['data-fieldValue'].length > 0 ? (
+        return this.props.value.length > 0 ? (
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
             <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <FormGroup>
@@ -378,7 +378,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
           </FormControl>
         ) : null
       default:
-        return this.props['data-fieldValue'].length > 0 ? (
+        return this.props.value.length > 0 ? (
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
             <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <FormGroup>

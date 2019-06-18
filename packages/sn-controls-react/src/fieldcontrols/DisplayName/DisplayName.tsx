@@ -42,7 +42,7 @@ export class DisplayName<T extends GenericContent, K extends keyof T> extends Co
      * @property {string} value input value
      */
     this.state = {
-      value: this.setValue(this.props['data-fieldValue']).toString(),
+      value: this.setValue(this.props.value).toString(),
     }
 
     this.handleChange = this.handleChange.bind(this)

@@ -39,7 +39,7 @@ export class Boolean<T extends GenericContent, K extends keyof T> extends Compon
   constructor(props: Boolean<T, K>['props']) {
     super(props)
     this.state = {
-      value: this.props['data-fieldValue'] || this.props.defaultValue || false,
+      value: this.props.value || this.props.defaultValue || false,
     }
     this.handleChange = this.handleChange.bind(this)
   }
@@ -90,7 +90,7 @@ export class Boolean<T extends GenericContent, K extends keyof T> extends Compon
           </FormControl>
         )
       case 'browse':
-        return this.props['data-fieldValue'].length > 0 ? (
+        return this.props.value.length > 0 ? (
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
             <InputLabel shrink={true} htmlFor={name as string}>
               {this.props.labelText}
@@ -101,7 +101,7 @@ export class Boolean<T extends GenericContent, K extends keyof T> extends Compon
           </FormControl>
         ) : null
       default:
-        return this.props['data-fieldValue'].length > 0 ? (
+        return this.props.value.length > 0 ? (
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
             <InputLabel shrink={true} htmlFor={name as string}>
               {this.props.labelText}

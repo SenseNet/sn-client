@@ -90,7 +90,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
      * @property {string} value input value
      */
     this.state = {
-      value: this.setValue(this.props['data-fieldValue']) as string[],
+      value: this.setValue(this.props.value) as string[],
       effectiveAllowedChildTypes: [],
       allowedTypesOnCTD: [],
       items: [],

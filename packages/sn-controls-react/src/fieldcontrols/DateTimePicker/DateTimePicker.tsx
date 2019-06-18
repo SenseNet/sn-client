@@ -43,10 +43,8 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
      * @property {string} value default value
      */
     this.state = {
-      dateValue: props['data-fieldValue']
-        ? moment(this.setValue(props['data-fieldValue']))
-        : moment(this.setValue(props.defaultValue as string)),
-      value: props['data-fieldValue'] ? props['data-fieldValue'] : props.defaultValue,
+      dateValue: props.value ? moment(this.setValue(props.value)) : moment(this.setValue(props.defaultValue as string)),
+      value: props.value ? props.value : props.defaultValue,
     }
     this.handleDateChange = this.handleDateChange.bind(this)
   }
@@ -119,14 +117,14 @@ export class DateTimePicker extends React.Component<DateTimePickerProps, DateTim
         return (
           <div>
             <label>{this.props.labelText}</label>
-            <p>{this.props['data-fieldValue']}</p>
+            <p>{this.props.value}</p>
           </div>
         )
       default:
         return (
           <div>
             <label>{this.props.labelText}</label>
-            <p>{this.props['data-fieldValue']}</p>
+            <p>{this.props.value}</p>
           </div>
         )
     }

@@ -36,7 +36,7 @@ export class RadioButtonGroup<T extends GenericContent, K extends keyof T> exten
   constructor(props: RadioButtonGroupProps<T, K>) {
     super(props)
     this.state = {
-      value: this.props['data-fieldValue'] || this.props.defaultValue || this.props.options[0].Value,
+      value: this.props.value || this.props.defaultValue || this.props.options[0].Value,
     }
   }
   /**
@@ -113,11 +113,11 @@ export class RadioButtonGroup<T extends GenericContent, K extends keyof T> exten
           </FormControl>
         )
       case 'browse':
-        return this.props['data-fieldValue'].length > 0 ? (
+        return this.props.value.length > 0 ? (
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
             <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <FormGroup>
-              {this.props['data-fieldValue'].map((value: any, index: number) => (
+              {this.props.value.map((value: any, index: number) => (
                 <FormControl key={index} component={'fieldset' as 'div'}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
@@ -131,11 +131,11 @@ export class RadioButtonGroup<T extends GenericContent, K extends keyof T> exten
           </FormControl>
         ) : null
       default:
-        return this.props['data-fieldValue'].length > 0 ? (
+        return this.props.value.length > 0 ? (
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
             <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <FormGroup>
-              {this.props['data-fieldValue'].map((value: any, index: number) => (
+              {this.props.value.map((value: any, index: number) => (
                 <FormControl key={index} component={'fieldset' as 'div'}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}

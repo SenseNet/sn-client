@@ -218,7 +218,7 @@ storiesOf('FieldControls.AutoComplete', module)
         hintText={text('Hint', 'AutoComplete hint')}
         dataSource={tagsInputDataSource}
         repository={testRepository}
-        data-fieldValue={[2]}
+        value={[2]}
       />
     ),
     { notes: { markdown: autocompleteNotes } },
@@ -231,7 +231,7 @@ storiesOf('FieldControls.AutoComplete', module)
         actionName="browse"
         labelText={text('Label', 'AutoComplete label')}
         className={text('Additional class name', 'autocomplete-field')}
-        data-fieldValue={[1, 2]}
+        value={[1, 2]}
         onChange={action('change')}
         dataSource={tagsInputDataSource}
         repository={testRepository}
@@ -284,7 +284,7 @@ storiesOf('FieldControls.Avatar', module)
         hintText={text('Hint', 'Avatar hint')}
         dataSource={referenceGridDataSource}
         repository={testRepository}
-        data-fieldValue="/Root/Sites/Default_Site/demoavatars/alba.jpg"
+        value="/Root/Sites/Default_Site/demoavatars/alba.jpg"
         selectionRoot={['/demoavatars']}
         content={{
           Name: 'Alba Monday',
@@ -307,7 +307,7 @@ storiesOf('FieldControls.Avatar', module)
         actionName="browse"
         labelText={text('Label', 'Avatar label')}
         className={text('Additional class name', 'avatar-field')}
-        data-fieldValue="/Root/Sites/Default_Site/demoavatars/alba.jpg"
+        value="/Root/Sites/Default_Site/demoavatars/alba.jpg"
         onChange={action('change')}
         dataSource={tagsInputDataSource}
         repository={testRepository}
@@ -355,7 +355,7 @@ storiesOf('FieldControls.CheckboxGroup', module)
         actionName="edit"
         onChange={action('change')}
         options={[{ Text: 'option1', Value: 1 }, { Text: 'option2', Value: 2 }, { Text: 'option3', Value: 3 }]}
-        data-fieldValue={[3]}
+        value={[3]}
         allowMultiple={boolean('Allow multiple', false)}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
@@ -375,7 +375,6 @@ storiesOf('FieldControls.CheckboxGroup', module)
         actionName="browse"
         onChange={action('change')}
         options={[{ Text: 'option1', Value: 1 }, { Text: 'option2', Value: 2 }, { Text: 'option3', Value: 3 }]}
-        data-fieldValue={[3]}
         value={3}
         name="VersioningMode"
       />
@@ -417,7 +416,7 @@ storiesOf('FieldControls.ColorPicker', module)
         className={text('Additional class name', 'colorpicker-field')}
         errorText={text('Error text')}
         hintText={text('Hint', 'ColorPicker hint')}
-        data-fieldValue="#D0021B"
+        value="#D0021B"
         name={'Color' as any}
         palette={['#D0021B', '#F5A623', '#F8E71C', '#8B572A', '#7ED321', '#417505']}
       />
@@ -645,7 +644,7 @@ storiesOf('FieldControls.DropDownList', module)
         className={text('Additional class name', 'dropdownlist-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
         errorText={text('Error text')}
-        data-fieldValue={[3]}
+        value={[3]}
         actionName="edit"
         onChange={action('change')}
         hintText={text('Hint', 'DropDownList hint')}
@@ -662,7 +661,7 @@ storiesOf('FieldControls.DropDownList', module)
         actionName="browse"
         labelText={text('Label', 'DropDownList label')}
         className={text('Additional class name', 'dropdownlist-field')}
-        data-fieldValue={text('Value', [2])}
+        value={text('Value', [2])}
         onChange={action('change')}
         options={[{ Text: 'option1', Value: 1 }, { Text: 'option2', Value: 2 }, { Text: 'option3', Value: 3 }]}
         name="VersioningMode"
@@ -678,7 +677,7 @@ storiesOf('FieldControls.DropDownList', module)
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'approvingmodechoice-field')}
-        data-fieldValue={[3]}
+        value={[3]}
         actionName="edit"
         onChange={action('change')}
         hintText={text('Hint', 'It shows the approval mode of the current content.')}
@@ -696,7 +695,7 @@ storiesOf('FieldControls.DropDownList', module)
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'versioningmodechoice-field')}
-        data-fieldValue={[3]}
+        value={[3]}
         actionName="edit"
         onChange={action('change')}
         hintText={text(
@@ -723,7 +722,7 @@ storiesOf('FieldControls.DropDownList', module)
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'versioningmodechoice-field')}
-        data-fieldValue={[3]}
+        value={[3]}
         actionName="edit"
         onChange={action('change')}
         hintText={text('Hint', 'It shows the versioning mode of the current content.')}
@@ -1166,7 +1165,7 @@ storiesOf('FieldControls.RadioButtonGroup', module)
         className={text('Additional class name', 'radiobuttongroup-field')}
         placeHolderText={text('Placeholder', 'placeholder')}
         errorText={text('Error text')}
-        data-fieldValue={[3]}
+        value={text('Value', '3')}
         actionName="edit"
         onChange={action('change')}
         hintText={text('Hint', 'RadioButtonGroup hint')}
@@ -1183,7 +1182,7 @@ storiesOf('FieldControls.RadioButtonGroup', module)
         actionName="browse"
         labelText={text('Label', 'RadioButtonGroup label')}
         className={text('Additional class name', 'radiobuttongroup-field')}
-        data-fieldValue={text('Value', [2])}
+        value={text('Value', [2])}
         onChange={action('change')}
         options={[{ Text: 'option1', Value: 1 }, { Text: 'option2', Value: 2 }, { Text: 'option3', Value: 3 }]}
         name="VersioningMode"
@@ -1207,7 +1206,7 @@ storiesOf('FieldControls.ReferenceGrid', module)
         className={text('Additional class name', 'reference-field')}
         onChange={action('change')}
         name="Name"
-        data-fieldValue={undefined}
+        value={undefined}
         dataSource={referenceGridDataSource}
         repository={testRepository}
         selectionRoot={['/workspaces']}
@@ -1225,7 +1224,7 @@ storiesOf('FieldControls.ReferenceGrid', module)
         required={boolean('Required', false)}
         className={text('Additional class name', 'reference-field')}
         errorText={text('Error text')}
-        data-fieldValue={[{ DisplayName: 'Aenean semper.docx', Id: 4, Icon: 'word', Type: 'File' }]}
+        value={[{ DisplayName: 'Aenean semper.docx', Id: 4, Icon: 'word', Type: 'File' }]}
         actionName="edit"
         onChange={action('change')}
         name="Name"
@@ -1245,7 +1244,7 @@ storiesOf('FieldControls.ReferenceGrid', module)
         actionName="browse"
         labelText={text('Label', 'ReferenceGrid label')}
         className={text('Additional class name', 'reference-field')}
-        data-fieldValue={{
+        value={{
           Name: 'Alba Monday',
           Path: 'Root/Users/Alba',
           DisplayName: 'Alba Monday',
@@ -1422,7 +1421,7 @@ storiesOf('FieldControls.TagsInput', module)
         dataSource={tagsInputDataSource}
         repository={testRepository}
         allowMultiple={boolean('Allow multiple selection', false)}
-        data-fieldValue={[tagsInputDataSource[1]]}
+        value={[tagsInputDataSource[1]]}
         name="ModifiedBy"
         content={testContent}
       />
@@ -1436,7 +1435,7 @@ storiesOf('FieldControls.TagsInput', module)
         actionName="browse"
         labelText={text('Label', 'TagsInput label')}
         className={text('Additional class name', 'tagsinput-field')}
-        data-fieldValue={[tagsInputDataSource[0], tagsInputDataSource[1]]}
+        value={[tagsInputDataSource[0], tagsInputDataSource[1]]}
         onChange={action('change')}
         repository={testRepository}
         dataSource={tagsInputDataSource}

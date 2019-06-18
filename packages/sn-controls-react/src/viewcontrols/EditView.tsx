@@ -126,7 +126,6 @@ export class EditView<T extends GenericContent, K extends keyof T> extends Compo
         <Grid container={true} spacing={2}>
           {fieldSettings.map(fieldSetting => {
             fieldSetting.clientSettings.actionName = 'edit'
-            fieldSetting.clientSettings['data-fieldValue'] = that.getFieldValue(fieldSetting.clientSettings.name)
             // eslint-disable-next-line dot-notation
             fieldSetting.clientSettings['content'] = this.state.content
             fieldSetting.clientSettings.value = that.getFieldValue(fieldSetting.clientSettings.name)

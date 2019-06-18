@@ -43,12 +43,12 @@ export class DatePicker<T extends GenericContent, K extends keyof T> extends Rea
      * @property {string} value default value
      */
     this.state = {
-      dateValue: props['data-fieldValue']
-        ? moment(this.setValue(props['data-fieldValue']))
+      dateValue: props.value
+        ? moment(this.setValue(props.value))
         : props.defaultValue
         ? moment(this.setValue(props.defaultValue.toString()))
         : moment(),
-      value: props['data-fieldValue'] ? props['data-fieldValue'] : props.defaultValue,
+      value: props.value ? props.value : props.defaultValue,
     }
     this.handleDateChange = this.handleDateChange.bind(this)
   }
@@ -127,14 +127,14 @@ export class DatePicker<T extends GenericContent, K extends keyof T> extends Rea
         return (
           <div>
             <label>{this.props.labelText}</label>
-            <p>{this.props['data-fieldValue']}</p>
+            <p>{this.props.value}</p>
           </div>
         )
       default:
         return (
           <div>
             <label>{this.props.labelText}</label>
-            <p>{this.props['data-fieldValue']}</p>
+            <p>{this.props.value}</p>
           </div>
         )
     }

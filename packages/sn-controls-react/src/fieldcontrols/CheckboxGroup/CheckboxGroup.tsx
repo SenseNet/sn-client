@@ -41,7 +41,7 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
   constructor(props: CheckboxGroup<T, K>['props']) {
     super(props)
     this.state = {
-      value: this.props['data-fieldValue'] || this.props.defaultValue || [],
+      value: this.props.value || this.props.defaultValue || [],
     }
     this.handleChange = this.handleChange.bind(this)
   }
@@ -155,11 +155,11 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
           </FormControl>
         )
       case 'browse':
-        return this.props['data-fieldValue'].length > 0 ? (
+        return this.props.value.length > 0 ? (
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
             <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <FormGroup>
-              {this.props['data-fieldValue'].map((value: T[K], index: number) => (
+              {this.props.value.map((value: T[K], index: number) => (
                 <FormControl component={'fieldset' as 'div'} key={index}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
@@ -173,11 +173,11 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
           </FormControl>
         ) : null
       default:
-        return this.props['data-fieldValue'].length > 0 ? (
+        return this.props.value.length > 0 ? (
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
             <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <FormGroup>
-              {this.props['data-fieldValue'].map((value: T[K], index: number) => (
+              {this.props.value.map((value: T[K], index: number) => (
                 <FormControl component={'fieldset' as 'div'} key={index}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}

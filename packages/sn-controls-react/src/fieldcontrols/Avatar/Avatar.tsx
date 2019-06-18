@@ -62,15 +62,15 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
     super(props)
     this.state = {
       fieldValue:
-        this.props['data-fieldValue'] && this.props['data-fieldValue'].length > 0
-          ? this.props['data-fieldValue']
+        this.props.value && this.props.value.length > 0
+          ? this.props.value
           : this.props.defaultValue
           ? this.props.defaultValue
           : [],
       pickerIsOpen: false,
       selected:
-        this.props['data-fieldValue'] && this.props['data-fieldValue'].length > 0
-          ? this.props['data-fieldValue']
+        this.props.value && this.props.value.length > 0
+          ? this.props.value
           : this.props.defaultValue
           ? this.props.defaultValue
           : [],
@@ -262,7 +262,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
           </FormControl>
         )
       case 'browse':
-        return this.props['data-fieldValue'].length > 0 ? (
+        return this.props.value.length > 0 ? (
           <FormControl className={className} style={styles.root as any}>
             <InputLabel shrink={true} htmlFor={name as string}>
               {this.props.labelText}
@@ -281,7 +281,7 @@ export class Avatar<T extends GenericContent, K extends keyof T> extends Compone
           </FormControl>
         ) : null
       default:
-        return this.props['data-fieldValue'].length > 0 ? (
+        return this.props.value.length > 0 ? (
           <FormControl className={className} style={styles.root as any}>
             <InputLabel shrink={true} htmlFor={name as string}>
               {this.props.labelText}

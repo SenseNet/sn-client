@@ -45,7 +45,7 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
      * @type {object}
      */
     this.state = {
-      value: this.props['data-fieldValue'] || this.props.defaultValue || [],
+      value: this.props.value || this.props.defaultValue || [],
     }
   }
   /**
@@ -159,11 +159,11 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
           </FormControl>
         )
       case 'browse':
-        return this.props['data-fieldValue'] ? (
+        return this.props.value ? (
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
             <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <FormGroup>
-              {this.props['data-fieldValue'].map((value: any, index: number) => (
+              {this.props.value.map((value: any, index: number) => (
                 <FormControl component={'fieldset' as 'div'} key={index}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
@@ -177,11 +177,11 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
           </FormControl>
         ) : null
       default:
-        return this.props['data-fieldValue'] ? (
+        return this.props.value ? (
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
             <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <FormGroup>
-              {this.props['data-fieldValue'].map((value: any, index: number) => (
+              {this.props.value.map((value: any, index: number) => (
                 <FormControl component={'fieldset' as 'div'} key={index}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}

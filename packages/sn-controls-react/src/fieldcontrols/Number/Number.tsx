@@ -36,8 +36,8 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
   constructor(props: Number<T, K>['props']) {
     super(props)
     this.state = {
-      value: this.props['data-fieldValue']
-        ? (this.setValue(this.props['data-fieldValue']) as any)
+      value: this.props.value
+        ? (this.setValue(this.props.value) as any)
         : this.setValue(this.props.defaultValue as any),
     }
     this.handleChange = this.handleChange.bind(this)
@@ -116,7 +116,7 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
             label={this.props.labelText}
             className={this.props.className}
             style={this.props.style}
-            value={this.props['data-fieldValue']}
+            value={this.props.value}
             required={this.props.required}
             disabled={this.props.readOnly}
             InputProps={{

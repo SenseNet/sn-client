@@ -46,7 +46,7 @@ export class FileName<T extends GenericContent, K extends keyof T> extends Compo
      * @property {string} value input value
      */
     this.state = {
-      value: this.setValue(this.props['data-fieldValue']).toString(),
+      value: this.setValue(this.props.value).toString(),
       isValid: this.props.required ? false : true,
       error: '',
       extension: this.props['data-extension']

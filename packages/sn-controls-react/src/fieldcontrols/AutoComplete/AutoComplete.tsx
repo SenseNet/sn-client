@@ -57,7 +57,7 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
     isOpened: false,
     isLoading: false,
     items: this.props.dataSource || [],
-    selected: this.props['data-fieldValue'] || [],
+    selected: this.props.value || [],
     anchorEl: null as any,
     getMenuItem: (item: T, select: (item: T) => void) => (
       <MenuItem key={item.Id} value={item.Id} onClick={() => select(item)}>
@@ -224,11 +224,11 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
           </div>
         )
       case 'browse':
-        return this.props['data-fieldValue'].length > 0 ? (
+        return this.props.value.length > 0 ? (
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
             <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <FormGroup>
-              {this.props['data-fieldValue'].map((value: T[K], index: number) => (
+              {this.props.value.map((value: T[K], index: number) => (
                 <FormControl component={'fieldset' as 'div'} key={index}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
@@ -242,11 +242,11 @@ export class AutoComplete<T extends GenericContent = GenericContent, K extends k
           </FormControl>
         ) : null
       default:
-        return this.props['data-fieldValue'].length > 0 ? (
+        return this.props.value.length > 0 ? (
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
             <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <FormGroup>
-              {this.props['data-fieldValue'].map((value: T[K], index: number) => (
+              {this.props.value.map((value: T[K], index: number) => (
                 <FormControl component={'fieldset' as 'div'} key={index}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}

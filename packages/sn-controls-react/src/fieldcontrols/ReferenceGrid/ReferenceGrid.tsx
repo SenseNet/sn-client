@@ -90,13 +90,13 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
     super(props)
     let value
     let selected
-    if (this.props['data-fieldValue']) {
+    if (this.props.value) {
       if (this.props.allowMultiple) {
-        value = this.props['data-fieldValue']
-        selected = this.props['data-fieldValue']
+        ;({ value } = this.props)
+        selected = this.props.value
       } else {
-        value = [this.props['data-fieldValue']]
-        selected = [this.props['data-fieldValue']]
+        value = [this.props.value]
+        selected = [this.props.value]
       }
     } else if (this.props.defaultValue) {
       if (this.props.allowMultiple) {
