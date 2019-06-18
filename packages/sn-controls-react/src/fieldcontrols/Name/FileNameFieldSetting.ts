@@ -9,5 +9,5 @@ import { ReactNameFieldSetting } from './NameFieldSetting'
  */
 export interface ReactFileNameFieldSetting<T extends GenericContent = GenericContent, K extends keyof T = 'Name'>
   extends ReactNameFieldSetting<T, K> {
-  'data-extension'?: string
+  extension?: string
 }

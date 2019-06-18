@@ -117,7 +117,7 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
               extension &&
               fieldSetting.fieldSettings.ControlHint === 'sn:FileName'
             ) {
-              fieldSetting.clientSettings['data-extension'] = extension
+              fieldSetting.clientSettings.extension = extension
             }
             fieldSetting.clientSettings.onChange = this.handleInputChange as any
             fieldSetting.clientSettings.actionName = 'new'

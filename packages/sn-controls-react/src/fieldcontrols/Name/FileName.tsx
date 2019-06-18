@@ -49,8 +49,8 @@ export class FileName<T extends GenericContent, K extends keyof T> extends Compo
       value: this.setValue(this.props.value).toString(),
       isValid: this.props.required ? false : true,
       error: '',
-      extension: this.props['data-extension']
-        ? this.props['data-extension']
+      extension: this.props.extension
+        ? this.props.extension
         : // eslint-disable-next-line dot-notation
         this.props['content']
         ? // eslint-disable-next-line dot-notation
@@ -144,7 +144,7 @@ export class FileName<T extends GenericContent, K extends keyof T> extends Compo
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <span>{`.${this.props['data-extension']}`}</span>
+                  <span>{`.${this.props.extension}`}</span>
                 </InputAdornment>
               ),
             }}

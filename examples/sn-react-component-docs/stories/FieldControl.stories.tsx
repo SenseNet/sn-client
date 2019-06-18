@@ -756,7 +756,7 @@ storiesOf('FieldControls.FileName', module)
         errorText={text('Error text')}
         onChange={action('change')}
         hintText={text('Hint', 'FileName hint')}
-        data-extension={text('Extension', 'docx')}
+        extension={text('Extension', 'docx')}
         name="Name"
       />
     ),

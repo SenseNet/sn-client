@@ -154,16 +154,10 @@ export class FileUpload<T extends GenericContent, K extends keyof T> extends Com
             <label style={styles.label} htmlFor={this.props.name as string}>
               {this.props.labelText}
             </label>
-            {this.props['data-innerComponent'] ? (
-              this.props['data-innerComponent'](
-                this.state.filename,
-                `${this.props['data-folderPath']}/${this.state.filename}`,
-              )
-            ) : (
-              <Typography variant="body1" style={styles.value}>
-                {this.state.filename.length > 0 ? this.state.filename : this.props.placeHolderText}
-              </Typography>
-            )}
+            <Typography variant="body1" style={styles.value}>
+              {this.state.filename.length > 0 ? this.state.filename : this.props.placeHolderText}
+            </Typography>
+
             <div style={{ display: 'table-row' }}>
               <div style={{ position: 'relative', display: 'table-cell', minWidth: 100 }}>
                 <InputLabel htmlFor="raised-button-file" style={{ transform: 'translate(0, 4px) scale(1)' }}>
