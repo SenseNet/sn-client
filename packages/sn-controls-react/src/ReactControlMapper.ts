@@ -95,9 +95,9 @@ export const reactControlMapper = (repository: Repository) =>
     })
     .setClientControlFactory(ShortTextFieldSetting, setting => {
       const shortTextSettings = clientConfigFactory(setting) as ReactShortTextFieldSetting
-      shortTextSettings['data-minLength'] = setting.MinLength
-      shortTextSettings['data-maxLength'] = setting.MaxLength
-      shortTextSettings['data-regex'] = setting.Regex
+      shortTextSettings.minLength = setting.MinLength
+      shortTextSettings.maxLength = setting.MaxLength
+      shortTextSettings.regex = setting.Regex
       return shortTextSettings
     })
     .setupFieldSettingDefault(PasswordFieldSetting, () => {

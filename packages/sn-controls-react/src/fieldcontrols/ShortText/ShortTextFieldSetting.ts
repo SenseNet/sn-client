@@ -9,16 +9,17 @@ import { ReactClientFieldSetting } from '../ClientFieldSetting'
  */
 export interface ReactShortTextFieldSetting<T extends GenericContent = GenericContent, K extends keyof T = 'Name'>
   extends ReactClientFieldSetting<T, K> {
+  // TODO: add these props to shorttext
   /**
    * Maximum length of the text
    */
-  'data-maxLength'?: number
+  maxLength?: number
   /**
    * Minimum length of the text
    */
-  'data-minLength'?: number
+  minLength?: number
   /**
    * Contains common regular expression against which the Field is validated
    */
-  'data-regex'?: string
+  regex?: string
 }
