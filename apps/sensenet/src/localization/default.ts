@@ -283,6 +283,12 @@ const values = {
       closeButton: 'Close',
     },
   },
+  wopi: {
+    errorOpeningFileTitle: `Error opening file for online editing`,
+    errorOpeningFileText: 'There was an error during opening the file for online editing.',
+    tryOpenRead: 'View',
+    goBack: 'Go back',
+  },
 }
 
 export default values

@@ -131,7 +131,7 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
                         return <DocumentViewerComponent />
                       }}
                     />
-                    <Route path="/:repo/wopi/:documentId">
+                    <Route path="/:repo/wopi/:documentId/:action?">
                       <WopiPage />
                     </Route>
                     <Route

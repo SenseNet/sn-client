@@ -1,8 +1,22 @@
 import { Repository } from '@sensenet/client-core'
-import { ContentType, File as SnFile, GenericContent, Resource, Settings } from '@sensenet/default-content-types'
+import {
+  ContentType,
+  File as SnFile,
+  GenericContent,
+  Resource,
+  Settings,
+  ActionModel,
+} from '@sensenet/default-content-types'
 import { isContentFromType } from '../utils/isContentFromType'
 
-export type RouteType = 'Browse' | 'EditProperties' | 'EditBinary' | 'Preview' | 'PersonalSettings'
+export type RouteType =
+  | 'Browse'
+  | 'EditProperties'
+  | 'EditBinary'
+  | 'Preview'
+  | 'PersonalSettings'
+  | 'WopiEdit'
+  | 'WopiRead'
 
 export class ContentContextProvider {
   public getMonacoLanguage(content: GenericContent) {
@@ -67,11 +81,33 @@ export class ContentContextProvider {
     ) {
       return 'Preview'
     }
+
+    if (
+      content.Actions &&
+      (content.Actions as any[]).length > 0 &&
+      (content.Actions as ActionModel[]).find(a => a.Name === 'WopiOpenEdit')
+    ) {
+      return 'WopiEdit'
+    }
+
+    if (
+      content.Actions &&
+      (content.Actions as any[]).length > 0 &&
+      (content.Actions as ActionModel[]).find(a => a.Name === 'WopiOpenView')
+    ) {
+      return 'WopiRead'
+    }
+
     return 'EditProperties'
   }
 
   public getActionUrl<T extends GenericContent>(content: T, routeType: RouteType) {
     const repoSegment = btoa(this.repository.configuration.repositoryUrl)
+
+    if (routeType.startsWith('Wopi')) {
+      return `/${repoSegment}/wopi/${content.Id}/${routeType === 'WopiEdit' ? 'edit' : 'read'}`
+    }
+
     return `/${repoSegment}/${routeType}/${content.Id}`
   }
   public getPrimaryActionUrl<T extends GenericContent>(content: T) {

@@ -44,8 +44,10 @@ export const ContentContextMenuComponent: React.FunctionComponent<
 
   const wopiOpen = useCallback(async () => {
     props.onClose && props.onClose()
-    props.history.push(`/${btoa(repo.configuration.repositoryUrl)}/wopi/${content.Id}`)
-  }, [content.Id, props, repo.configuration.repositoryUrl])
+    props.history.push(
+      `/${btoa(repo.configuration.repositoryUrl)}/wopi/${content.Id}/${wopi.isWriteAwailable ? 'edit' : 'view'}`,
+    )
+  }, [content.Id, props, repo.configuration.repositoryUrl, wopi.isWriteAwailable])
 
   return (
     <div onKeyDown={ev => ev.stopPropagation()} onKeyPress={ev => ev.stopPropagation()}>
