@@ -190,6 +190,11 @@ export interface GetParentGroupsOptions<T> {
    * Optional OData options
    */
   oDataOptions?: ODataParams<T>
+
+  /**
+   * Optional request init params
+   */
+  requestInit?: RequestInit
 }
 
 /**
@@ -476,6 +481,7 @@ export class Security {
         directOnly: options.directOnly,
       },
       oDataOptions: options.oDataOptions,
+      requestInit: options.requestInit,
     })
 
   /**

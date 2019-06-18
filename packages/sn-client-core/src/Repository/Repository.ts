@@ -409,6 +409,7 @@ export class Repository implements Disposable {
    */
   public async getWopiData(options: {
     idOrPath: string | number
+    action?: 'edit' | 'view'
     odataOptions?: ODataParams<GenericContent>
     requestInit?: RequestInit
   }): Promise<ODataWopiResponse> {
@@ -419,7 +420,7 @@ export class Repository implements Disposable {
       requestInit: options.requestInit,
       oDataOptions: {
         ...options.odataOptions,
-        action: 'edit',
+        action: options.action || 'edit',
       } as any,
     })
   }
