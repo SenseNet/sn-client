@@ -20,6 +20,7 @@ export const SessionContextProvider: React.FunctionComponent = props => {
   const [groups, setGroups] = useState<Group[]>([])
 
   useEffect(() => {
+    const ac = new AbortController()
     const observables = [
       repo.authentication.state.subscribe(s => {
         setState(s)
@@ -46,25 +47,33 @@ export const SessionContextProvider: React.FunctionComponent = props => {
             oDataOptions: {
               select: ['Name'],
             },
+            requestInit: {
+              signal: ac.signal,
+            },
           })
           setGroups(result.d.results)
         } catch (error) {
-          setGroups([])
-          logger.debug({
-            message: `User groups could not be loaded.`,
-            data: {
-              relatedRepository: repo.configuration.repositoryUrl,
-              relatedContent: usr,
-              error: isExtendedError(error) ? repo.getErrorFromResponse(error.response) : error,
-            },
-          })
+          if (!ac.signal.aborted) {
+            setGroups([])
+            logger.debug({
+              message: `User groups could not be loaded.`,
+              data: {
+                relatedRepository: repo.configuration.repositoryUrl,
+                relatedContent: usr,
+                error: isExtendedError(error) ? repo.getErrorFromResponse(error.response) : error,
+              },
+            })
+          }
         } finally {
           loadLock.release()
         }
       }, true),
     ]
     repo.authentication.checkForUpdate()
-    return () => observables.forEach(o => o.dispose())
+    return () => {
+      observables.forEach(o => o.dispose())
+      ac.abort()
+    }
   }, [loadLock, logger, repo])
   return (
     <SessionContext.Provider value={{ state, currentUser: user, groups }}>{props.children}</SessionContext.Provider>
