@@ -30,6 +30,8 @@ const values = {
     delete: 'Delete',
     open: 'Open',
     download: 'Download',
+    wopiEdit: 'Open in online editor',
+    wopiRead: 'View in online editor',
   },
   contentInfoDialog: {
     dialogTitle: 'Info about {0}',
@@ -280,6 +282,12 @@ const values = {
       title: `Custom action results`,
       closeButton: 'Close',
     },
+  },
+  wopi: {
+    errorOpeningFileTitle: `Error opening file for online editing`,
+    errorOpeningFileText: 'There was an error during opening the file for online editing.',
+    tryOpenRead: 'View',
+    goBack: 'Go back',
   },
 }
 

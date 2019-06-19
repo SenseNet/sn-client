@@ -5,6 +5,7 @@ import { LoadSettingsContextProvider } from '../context'
 import { usePersonalSettings, useSession } from '../hooks'
 import { ErrorBoundary } from './ErrorBoundary'
 import { FullScreenLoader } from './FullScreenLoader'
+import { WopiPage } from './wopi-page'
 
 const ExploreComponent = lazy(async () => await import(/* webpackChunkName: "content" */ './content'))
 const DashboardComponent = lazy(async () => await import(/* webpackChunkName: "dashboard" */ './dashboard'))
@@ -130,6 +131,9 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
                         return <DocumentViewerComponent />
                       }}
                     />
+                    <Route path="/:repo/wopi/:documentId/:action?">
+                      <WopiPage />
+                    </Route>
                     <Route
                       path="/"
                       render={() => {

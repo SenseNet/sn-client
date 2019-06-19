@@ -117,7 +117,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
           ? [[currentOrder as any, order as any]]
           : [['DisplayName', 'asc']],
       select: personalSettings.content.fields,
-      expand: personalSettings.content.fields.filter(f => isReferenceField(f)),
+      expand: personalSettings.content.fields.filter(f => f === 'Actions' || isReferenceField(f)),
     })
     setCurrentOrder(currentOrder)
     setCurrentDirection(currentDirection)
