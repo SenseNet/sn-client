@@ -40,16 +40,7 @@ export const defaultSettings: PersonalSettingsType = {
     drawer: {
       enabled: true,
       type: 'mini-variant',
-      items: [
-        'Search',
-        'Content',
-        'Users and Groups',
-        'Content Types',
-        'Localization',
-        'Setup',
-        'Version info',
-        'Dashboard',
-      ],
+      items: ['Search', 'Content', 'Users and Groups', 'Content Types', 'Localization', 'Setup', 'Version info'],
     },
     commandPalette: { enabled: true, wrapQuery: '${0} .AUTOFILTERS:OFF' },
   },

@@ -22,14 +22,6 @@ export interface DrawerItem {
 
 export const defaultDrawerItems: DrawerItem[] = [
   {
-    name: 'Dashboard',
-    primaryText: 'dashboardTitle',
-    secondaryText: 'dashboardSecondaryText',
-    url: '/dashboard',
-    icon: <DashboardTwoTone />,
-    requiredGroupPath: '/Root/IMS/BuiltIn/Portal/Operators',
-  },
-  {
     name: 'Search',
     primaryText: 'searchTitle',
     secondaryText: 'searchSecondaryText',

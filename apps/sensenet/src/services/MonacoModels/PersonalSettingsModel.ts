@@ -40,7 +40,6 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                       'Trash',
                       'Users and Groups',
                       'Version info',
-                      'Dashboard',
                     ],
                   },
                 },
