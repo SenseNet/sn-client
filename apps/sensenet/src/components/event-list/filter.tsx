@@ -1,4 +1,4 @@
-import { ILeveledLogEntry, LogLevel } from '@furystack/logging'
+import { LogLevel } from '@furystack/logging'
 import FormControl from '@material-ui/core/FormControl'
 import IconButton from '@material-ui/core/IconButton'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -7,17 +7,16 @@ import Select from '@material-ui/core/Select'
 import TextField from '@material-ui/core/TextField'
 import Delete from '@material-ui/icons/Delete'
 import { debounce } from '@sensenet/client-utils'
-import { useContext } from 'react'
-import React from 'react'
-import { InjectorContext, LocalizationContext } from '../../context'
-import { EventService } from '../../services/EventService'
+import React, { useContext } from 'react'
+
+import { useEventService, useLocalization } from '../../hooks'
 import { Icon } from '../Icon'
 import { EventListFilterContext } from './filter-context'
 
 export const Filter: React.FunctionComponent<{ style?: React.CSSProperties }> = props => {
   const f = useContext(EventListFilterContext)
-  const service = useContext(InjectorContext).getInstance(EventService)
-  const localization = useContext(LocalizationContext).values.eventList.filter
+  const service = useEventService()
+  const localization = useLocalization().eventList.filter
 
   const updateTerm = debounce((term: string) => {
     f.setFilter({ ...f.filter, term })
@@ -48,7 +47,7 @@ export const Filter: React.FunctionComponent<{ style?: React.CSSProperties }> = 
             f.filter.logLevel ? (
               <Icon
                 // style={{ marginRight: 9, height: 16 }}
-                item={{ message: '', level: f.filter.logLevel } as ILeveledLogEntry<any>}
+                item={{ message: '', level: f.filter.logLevel }}
               />
             ) : null
           }

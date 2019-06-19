@@ -33,21 +33,24 @@ export class QueryCommandProvider implements CommandProvider {
       },
     })
     return [
-      ...result.d.results.map(
-        content =>
-          ({
-            primaryText: content.DisplayName || content.Name,
-            secondaryText: content.Path,
-            url: ctx.getPrimaryActionUrl(content),
-            content,
-            icon: content.Icon,
-          } as CommandPaletteItem),
-      ),
+      ...result.d.results.map(content => ({
+        primaryText: content.DisplayName || content.Name,
+        secondaryText: content.Path,
+        url: ctx.getPrimaryActionUrl(content),
+        content,
+        icon: content.Icon,
+        hits: query
+          .substr(1)
+          .replace(/\*/g, ' ')
+          .replace(/\?/g, ' ')
+          .split(' '),
+      })),
       {
         primaryText: this.localization.currentValues.getValue().search.openInSearchTitle,
         secondaryText: this.localization.currentValues.getValue().search.openInSearchDescription,
         url: `/${btoa(repo.configuration.repositoryUrl)}/search/${encodeURIComponent(query)}`,
         content: { Type: 'Search' } as any,
+        hits: [],
       },
     ]
   }

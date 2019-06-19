@@ -8,13 +8,13 @@ exports[`DownloadWidget component Should render without crashing 1`] = `
     }
   }
 >
-  <WithStyles(IconButton)
+  <WithStyles(ForwardRef(IconButton))
     color="inherit"
     id="CloudDownload"
     onClick={[Function]}
     title=""
   >
-    <pure(CloudDownloadIcon) />
-  </WithStyles(IconButton)>
+    <CloudDownloadIcon />
+  </WithStyles(ForwardRef(IconButton))>
 </div>
 `;

@@ -14,7 +14,7 @@ export const SecondaryActionsMenu: React.FunctionComponent<{
   return (
     <div style={props.style}>
       <IconButton
-        buttonRef={r => setRef(r)}
+        ref={r => setRef(r)}
         onClick={ev => {
           ev.preventDefault()
           ev.stopPropagation()

@@ -9,11 +9,11 @@ const stories = storiesOf('Icon', module)
   .addDecorator(withKnobs)
   .addDecorator(withA11y)
 
-const defaultNotes = require('../notes/icon/Default.md')
-const materialuiNotes = require('../notes/icon/Materialui.md')
-const fontawesomeNotes = require('../notes/icon/FontAwesome.md')
-const flaticonNotes = require('../notes/icon/Flaticon.md')
-const imageNotes = require('../notes/icon/Image.md')
+import defaultNotes from '../notes/icon/Default.md'
+import materialuiNotes from '../notes/icon/Materialui.md'
+import fontawesomeNotes from '../notes/icon/FontAwesome.md'
+import flaticonNotes from '../notes/icon/Flaticon.md'
+import imageNotes from '../notes/icon/Image.md'
 
 stories
   .add(

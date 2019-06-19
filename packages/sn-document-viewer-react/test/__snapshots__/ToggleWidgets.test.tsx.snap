@@ -8,7 +8,7 @@ exports[`Component ToggleBase should render without crashing 1`] = `
     }
   }
 >
-  <WithStyles(IconButton)
+  <WithStyles(ForwardRef(IconButton))
     color="primary"
     onClick={[Function]}
     style={
@@ -21,7 +21,7 @@ exports[`Component ToggleBase should render without crashing 1`] = `
     <span>
       Some children
     </span>
-  </WithStyles(IconButton)>
+  </WithStyles(ForwardRef(IconButton))>
 </div>
 `;
 
@@ -33,7 +33,7 @@ exports[`Component ToggleRedaction should render without crashing 1`] = `
   showRedaction={true}
   title="Test"
 >
-  <pure(PictureInPictureIcon) />
+  <PictureInPictureIcon />
 </Component>
 `;
 
@@ -43,7 +43,7 @@ exports[`Component ToggleShapes should render without crashing 1`] = `
   setValue={[MockFunction]}
   title="Test"
 >
-  <pure(DashboardIcon) />
+  <DashboardIcon />
 </Component>
 `;
 
@@ -91,6 +91,6 @@ exports[`Component ToggleWatermark should render without crashing 1`] = `
   setValue={[MockFunction]}
   title="Test"
 >
-  <pure(BrandingWatermarkIcon) />
+  <BrandingWatermarkIcon />
 </Component>
 `;

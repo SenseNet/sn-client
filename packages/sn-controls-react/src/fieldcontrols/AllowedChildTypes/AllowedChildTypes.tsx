@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 import CircularProgress from '@material-ui/core/CircularProgress'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import FormControl from '@material-ui/core/FormControl'
@@ -12,7 +13,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
-import { ODataCollectionResponse, Repository } from '@sensenet/client-core'
+import { ODataBatchResponse, ODataCollectionResponse, ODataParams, Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
 import React, { Component } from 'react'
@@ -72,7 +73,7 @@ export interface AllowedChildTypesState<T extends GenericContent> {
   value: string[]
   effectiveAllowedChildTypes: T[]
   allowedTypesOnCTD: T[]
-  items: T[]
+  items: GenericContent[]
   removeable: boolean
   allCTDs: T[]
   isLoading: boolean
@@ -112,21 +113,17 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       inputValue: '',
       isOpened: false,
       anchorEl: null as any,
-      // tslint:disable-next-line: no-unnecessary-type-annotation
       getMenuItem: (item: T, select: (item: T) => void) => (
         <ListItem key={item.Id} value={item.Id} onClick={() => select(item)} style={{ margin: 0 }}>
-          <ListItemIcon
-            style={{ margin: 0 }}
-            children={
-              this.props['data-renderIcon']
-                ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
-                : renderIconDefault(
-                    item.Icon && typeicons[item.Icon.toLowerCase()]
-                      ? typeicons[item.Icon.toLowerCase()]
-                      : typeicons['contenttype'],
-                  )
-            }
-          />
+          <ListItemIcon style={{ margin: 0 }}>
+            {this.props['data-renderIcon']
+              ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+              : renderIconDefault(
+                  item.Icon && typeicons[item.Icon.toLowerCase()]
+                    ? typeicons[item.Icon.toLowerCase()]
+                    : typeicons['contenttype'],
+                )}
+          </ListItemIcon>
           <ListItemText primary={item.DisplayName} />
         </ListItem>
       ),
@@ -161,7 +158,6 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
   }
   private willUnmount: boolean = false
   private async getAllowedChildTypes() {
-    // tslint:disable-next-line: no-unnecessary-type-annotation
     const repo: Repository = this.props['data-repository'] || this.props.repository
     try {
       const result = await repo.load<T>({
@@ -175,7 +171,10 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
         return
       }
 
-      const allowedChildTypesFromCTD = await repo.executeAction({
+      const allowedChildTypesFromCTD = await repo.executeAction<
+        ODataParams<GenericContent>,
+        ODataBatchResponse<GenericContent>
+      >({
         idOrPath: this.props['content'].Id,
         name: 'GetAllowedChildTypesFromCTD',
         method: 'GET',
@@ -184,14 +183,18 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
         },
       })
 
+      if (!allowedChildTypesFromCTD) {
+        throw Error('Allowed child types not found')
+      }
+
       const typeResults = result.d.EffectiveAllowedChildTypes as T[]
 
       const types =
         this.props['data-actionName'] !== 'new'
           ? typeResults.length === 0
-            ? allowedChildTypesFromCTD['d'].results
-            : result.d.EffectiveAllowedChildTypes
-          : allowedChildTypesFromCTD['d'].results
+            ? allowedChildTypesFromCTD.d.results
+            : (result.d.EffectiveAllowedChildTypes as T[])
+          : allowedChildTypesFromCTD.d.results
 
       this.setState({
         effectiveAllowedChildTypes: typeResults,
@@ -204,7 +207,6 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
     }
   }
   private async getAllContentTypes() {
-    // tslint:disable-next-line: no-unnecessary-type-annotation
     const repo: Repository = this.props['data-repository'] || this.props.repository
     try {
       const result = (await repo.executeAction({
@@ -307,18 +309,15 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
             <List dense={true}>
               {this.state.items.map((item, index) => (
                 <ListItem key={index}>
-                  <ListItemIcon
-                    style={{ margin: 0 }}
-                    children={
-                      this.props['data-renderIcon']
-                        ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
-                        : renderIconDefault(
-                            item.Icon && typeicons[item.Icon.toLowerCase()]
-                              ? typeicons[item.Icon.toLowerCase()]
-                              : typeicons['contenttype'],
-                          )
-                    }
-                  />
+                  <ListItemIcon style={{ margin: 0 }}>
+                    {this.props['data-renderIcon']
+                      ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+                      : renderIconDefault(
+                          item.Icon && typeicons[item.Icon.toLowerCase()]
+                            ? typeicons[item.Icon.toLowerCase()]
+                            : typeicons['contenttype'],
+                        )}
+                  </ListItemIcon>
                   <ListItemText primary={item.DisplayName} />
                   {this.state.removeable ? (
                     <ListItemSecondaryAction>
@@ -385,18 +384,15 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
             <List dense={true}>
               {this.state.items.map((item, index) => (
                 <ListItem key={index}>
-                  <ListItemIcon
-                    style={{ margin: 0 }}
-                    children={
-                      this.props['data-renderIcon']
-                        ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
-                        : renderIconDefault(
-                            item.Icon && typeicons[item.Icon.toLowerCase()]
-                              ? typeicons[item.Icon.toLowerCase()]
-                              : typeicons['contenttype'],
-                          )
-                    }
-                  />
+                  <ListItemIcon style={{ margin: 0 }}>
+                    {this.props['data-renderIcon']
+                      ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+                      : renderIconDefault(
+                          item.Icon && typeicons[item.Icon.toLowerCase()]
+                            ? typeicons[item.Icon.toLowerCase()]
+                            : typeicons['contenttype'],
+                        )}
+                  </ListItemIcon>
                   <ListItemText primary={item.DisplayName} />
                   {this.state.removeable ? (
                     <ListItemSecondaryAction>
@@ -463,18 +459,15 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
             <List dense={true}>
               {this.state.items.map((item, index) => (
                 <ListItem key={index}>
-                  <ListItemIcon
-                    style={{ margin: 0 }}
-                    children={
-                      this.props['data-renderIcon']
-                        ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
-                        : renderIconDefault(
-                            item.Icon && typeicons[item.Icon.toLowerCase()]
-                              ? typeicons[item.Icon.toLowerCase()]
-                              : typeicons['contenttype'],
-                          )
-                    }
-                  />
+                  <ListItemIcon style={{ margin: 0 }}>
+                    {this.props['data-renderIcon']
+                      ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+                      : renderIconDefault(
+                          item.Icon && typeicons[item.Icon.toLowerCase()]
+                            ? typeicons[item.Icon.toLowerCase()]
+                            : typeicons['contenttype'],
+                        )}
+                  </ListItemIcon>
                   <ListItemText primary={item.DisplayName} />
                 </ListItem>
               ))}
@@ -489,18 +482,15 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
               <List dense={true}>
                 {this.state.items.map((item, index) => (
                   <ListItem key={index}>
-                    <ListItemIcon
-                      style={{ margin: 0 }}
-                      children={
-                        this.props['data-renderIcon']
-                          ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
-                          : renderIconDefault(
-                              item.Icon && typeicons[item.Icon.toLowerCase()]
-                                ? typeicons[item.Icon.toLowerCase()]
-                                : typeicons['contenttype'],
-                            )
-                      }
-                    />
+                    <ListItemIcon style={{ margin: 0 }}>
+                      {this.props['data-renderIcon']
+                        ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+                        : renderIconDefault(
+                            item.Icon && typeicons[item.Icon.toLowerCase()]
+                              ? typeicons[item.Icon.toLowerCase()]
+                              : typeicons['contenttype'],
+                          )}
+                    </ListItemIcon>
                     <ListItemText primary={item.DisplayName} />
                   </ListItem>
                 ))}

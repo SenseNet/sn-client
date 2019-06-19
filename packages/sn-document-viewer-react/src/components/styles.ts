@@ -16,8 +16,6 @@ export const styles = {
   },
 }
 
-// tslint:disable: completed-docs
-
 export const CommentsContainer = styled.div`
   display: flex;
   padding: 15px;

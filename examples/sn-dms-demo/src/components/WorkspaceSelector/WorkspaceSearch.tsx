@@ -67,8 +67,7 @@ class WorkspaceSearch extends React.Component<
     this.handleKeyup = this.handleKeyup.bind(this)
   }
   public handleKeyup = (e: any) => {
-    // tslint:disable-next-line:no-string-literal
-    this.props.handleKeyup(e.target['value'])
+    this.props.handleKeyup(e.target.value)
   }
   public closeDropdown = () => {
     this.props.closeDropDown(false)

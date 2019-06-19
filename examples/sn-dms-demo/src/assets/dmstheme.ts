@@ -1,5 +1,5 @@
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
-import theme from './theme'
+import { theme } from './theme'
 
 export const dmsTheme = createMuiTheme({
   ...theme,
@@ -14,9 +14,18 @@ export const dmsTheme = createMuiTheme({
         marginBottom: 10,
       },
     },
-    MuiGrid: {
-      'spacing-xs-16': {
-        marginBottom: 0,
+    MuiDialogContent: {
+      root: {
+        padding: '0 24px 24px',
+        '&:first-child': {
+          paddingTop: 24,
+        },
+      },
+    },
+    MuiListItem: {
+      gutters: {
+        paddingLeft: 0,
+        paddingRight: 0,
       },
     },
     MuiListItemText: {

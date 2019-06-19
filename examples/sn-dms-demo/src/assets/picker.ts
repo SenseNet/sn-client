@@ -25,15 +25,13 @@ export const pickerTheme = createMuiTheme({
       },
     },
     MuiTypography: {
-      title: {
+      h6: {
         fontFamily: 'Raleway Semibold',
         fontSize: 18,
         flex: 1,
+        paddingLeft: theme.spacing(2),
       },
-      h6: {
-        paddingLeft: theme.spacing.unit * 2,
-      },
-      subheading: {
+      subtitle1: {
         fontFamily: 'Raleway Medium',
         fontSize: 15,
         '&.selected, &.active': {
@@ -109,7 +107,6 @@ export const pickerTheme = createMuiTheme({
     MuiListItemIcon: {
       root: {
         color: '#b0b0b0',
-        marginRight: 10,
       },
     },
     MuiDialogActions: {
@@ -123,18 +120,11 @@ export const pickerTheme = createMuiTheme({
           color: '#016D9E',
         },
       },
-      action: {
+      spacing: {
         margin: 0,
       },
     },
     MuiButton: {
-      raised: {
-        [theme.breakpoints.down('md')]: {
-          background: '#fff',
-          color: '#016D9E',
-          boxShadow: 'none',
-        },
-      },
       contained: {
         [theme.breakpoints.down('md')]: {
           background: '#fff',
@@ -142,6 +132,6 @@ export const pickerTheme = createMuiTheme({
           boxShadow: 'none',
         },
       },
-    } as any,
+    },
   },
 })

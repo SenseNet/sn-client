@@ -45,7 +45,7 @@ export class DisplayNameCell<T extends GenericContent> extends Component<Display
         : false
 
     return (
-      <TableCell className="display-name" padding="checkbox">
+      <TableCell className="display-name">
         <div style={{ display: 'flex', alignItems: 'center' }}>
           {isImage ? (
             <img src={`${hostName}${content.Path}`} style={{ marginRight: '.5em', maxWidth: 24, maxHeight: 24 }} />

@@ -7,13 +7,15 @@ import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
+import { OauthProvider } from '@sensenet/authentication-jwt'
 import { userRegistration } from '../Actions'
 import GoogleReCaptcha from '../components/GoogleReCaptcha'
-import LoginTabs from '../components/LoginTabs'
+import ConnectedLoginTabs from '../components/LoginTabs'
 import { OauthRow } from '../components/OAuthRow'
 import { WelcomeMessage } from '../components/WelcomeMessage'
-// tslint:disable-next-line:no-var-requires
-const logo = require('../assets/logo.png')
+import { resources } from '../assets/resources'
+import { rootStateType } from '../store/rootReducer'
+import logo from '../assets/logo.png'
 
 const styles = {
   button: {
@@ -41,10 +43,6 @@ const styles = {
     textAlign: 'center' as any,
   },
 }
-
-import { OauthProvider } from '@sensenet/authentication-jwt'
-import { resources } from '../assets/resources'
-import { rootStateType } from '../store/rootReducer'
 
 const mapStateToProps = (state: rootStateType) => {
   return {
@@ -131,7 +129,7 @@ class Registration extends React.Component<
     })
   }
   public validateEmail(text: string) {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     return re.test(text)
   }
   public handlePasswordBlur(e: React.FocusEvent<HTMLInputElement>) {
@@ -156,7 +154,7 @@ class Registration extends React.Component<
     })
   }
   public validatePassword(text: string) {
-    const re = /^([a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]*[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]){3}[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]*$/
+    const re = /^([a-zA-Z0-9!@#$%^&*)(+=._-]*[a-zA-Z0-9!@#$%^&*)(+=._-]){3}[a-zA-Z0-9!@#$%^&*)(+=._-]*$/
     return re.test(text)
   }
   public handleConfirmPasswordBlur(e: React.FocusEvent<HTMLInputElement>) {
@@ -256,7 +254,7 @@ class Registration extends React.Component<
           </MediaQuery>
         </div>
 
-        <LoginTabs />
+        <ConnectedLoginTabs />
         <WelcomeMessage />
 
         <div>

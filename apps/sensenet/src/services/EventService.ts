@@ -42,8 +42,8 @@ export class EventService {
   public add(...notifications: Array<EventLogEntry<any>>) {
     // const newValues = this.values.getValue().push())
     this.values.setValue([
-      ...this.values.getValue(),
       ...notifications.map(n => ({ ...n, data: { ...n.data, guid: v1(), added: new Date().toISOString() } })),
+      ...this.values.getValue(),
     ])
     this.updateChanges()
   }

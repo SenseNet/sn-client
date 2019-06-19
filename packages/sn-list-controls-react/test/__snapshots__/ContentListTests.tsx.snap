@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ContentList component Selection and active item changes Event bindings should render with custom selection control 1`] = `
-<WithStyles(Table)>
-  <WithStyles(TableHead)>
-    <WithStyles(TableRow)>
-      <WithStyles(TableCell)
+<WithStyles(ForwardRef(Table))>
+  <WithStyles(ForwardRef(TableHead))>
+    <WithStyles(ForwardRef(TableRow))>
+      <WithStyles(ForwardRef(TableCell))
         key="selectAll"
         padding="checkbox"
         style={
@@ -14,35 +14,34 @@ exports[`ContentList component Selection and active item changes Event bindings 
           }
         }
       >
-        <WithStyles(Checkbox)
+        <WithStyles(ForwardRef(Checkbox))
           checked={false}
           className="select-all"
           indeterminate={false}
           onChange={[Function]}
         />
-      </WithStyles(TableCell)>
-      <WithStyles(TableCell)
+      </WithStyles(ForwardRef(TableCell))>
+      <WithStyles(ForwardRef(TableCell))
         align="inherit"
         className="DisplayName"
         key="DisplayName"
-        padding="checkbox"
       >
         <WithStyles(Tooltip)
           title="Content name. You can set any name you prefer without any restrictions."
         >
-          <WithStyles(TableSortLabel)
+          <WithStyles(ForwardRef(TableSortLabel))
             active={true}
             direction="asc"
             onClick={[Function]}
           >
             Display Name
-          </WithStyles(TableSortLabel)>
+          </WithStyles(ForwardRef(TableSortLabel))>
         </WithStyles(Tooltip)>
-      </WithStyles(TableCell)>
-    </WithStyles(TableRow)>
-  </WithStyles(TableHead)>
-  <WithStyles(TableBody)>
-    <WithStyles(TableRow)
+      </WithStyles(ForwardRef(TableCell))>
+    </WithStyles(ForwardRef(TableRow))>
+  </WithStyles(ForwardRef(TableHead))>
+  <WithStyles(ForwardRef(TableBody))>
+    <WithStyles(ForwardRef(TableRow))
       className="  type-folder"
       hover={true}
       key="1"
@@ -52,12 +51,12 @@ exports[`ContentList component Selection and active item changes Event bindings 
       onTouchEnd={[Function]}
       selected={false}
     >
-      <WithStyles(TableCell)
+      <WithStyles(ForwardRef(TableCell))
         key="select"
         padding="checkbox"
       >
         <div />
-      </WithStyles(TableCell)>
+      </WithStyles(ForwardRef(TableCell))>
       <Component
         content={
           Object {
@@ -1058,16 +1057,16 @@ exports[`ContentList component Selection and active item changes Event bindings 
           }
         }
       />
-    </WithStyles(TableRow)>
-  </WithStyles(TableBody)>
-</WithStyles(Table)>
+    </WithStyles(ForwardRef(TableRow))>
+  </WithStyles(ForwardRef(TableBody))>
+</WithStyles(ForwardRef(Table))>
 `;
 
 exports[`ContentList component Selection and active item changes Event bindings should render with custom selection control and selection 1`] = `
-<WithStyles(Table)>
-  <WithStyles(TableHead)>
-    <WithStyles(TableRow)>
-      <WithStyles(TableCell)
+<WithStyles(ForwardRef(Table))>
+  <WithStyles(ForwardRef(TableHead))>
+    <WithStyles(ForwardRef(TableRow))>
+      <WithStyles(ForwardRef(TableCell))
         key="selectAll"
         padding="checkbox"
         style={
@@ -1077,35 +1076,34 @@ exports[`ContentList component Selection and active item changes Event bindings 
           }
         }
       >
-        <WithStyles(Checkbox)
+        <WithStyles(ForwardRef(Checkbox))
           checked={true}
           className="select-all"
           indeterminate={false}
           onChange={[Function]}
         />
-      </WithStyles(TableCell)>
-      <WithStyles(TableCell)
+      </WithStyles(ForwardRef(TableCell))>
+      <WithStyles(ForwardRef(TableCell))
         align="inherit"
         className="DisplayName"
         key="DisplayName"
-        padding="checkbox"
       >
         <WithStyles(Tooltip)
           title="Content name. You can set any name you prefer without any restrictions."
         >
-          <WithStyles(TableSortLabel)
+          <WithStyles(ForwardRef(TableSortLabel))
             active={true}
             direction="asc"
             onClick={[Function]}
           >
             Display Name
-          </WithStyles(TableSortLabel)>
+          </WithStyles(ForwardRef(TableSortLabel))>
         </WithStyles(Tooltip)>
-      </WithStyles(TableCell)>
-    </WithStyles(TableRow)>
-  </WithStyles(TableHead)>
-  <WithStyles(TableBody)>
-    <WithStyles(TableRow)
+      </WithStyles(ForwardRef(TableCell))>
+    </WithStyles(ForwardRef(TableRow))>
+  </WithStyles(ForwardRef(TableHead))>
+  <WithStyles(ForwardRef(TableBody))>
+    <WithStyles(ForwardRef(TableRow))
       className=" selected type-folder"
       hover={true}
       key="1"
@@ -1115,12 +1113,12 @@ exports[`ContentList component Selection and active item changes Event bindings 
       onTouchEnd={[Function]}
       selected={false}
     >
-      <WithStyles(TableCell)
+      <WithStyles(ForwardRef(TableCell))
         key="select"
         padding="checkbox"
       >
         <div />
-      </WithStyles(TableCell)>
+      </WithStyles(ForwardRef(TableCell))>
       <Component
         content={
           Object {
@@ -2132,37 +2130,36 @@ exports[`ContentList component Selection and active item changes Event bindings 
           ]
         }
       />
-    </WithStyles(TableRow)>
-  </WithStyles(TableBody)>
-</WithStyles(Table)>
+    </WithStyles(ForwardRef(TableRow))>
+  </WithStyles(ForwardRef(TableBody))>
+</WithStyles(ForwardRef(Table))>
 `;
 
 exports[`ContentList component Selection and active item changes Event bindings should render without crashing with setting displayRowCheckbox to false 1`] = `
-<WithStyles(Table)>
-  <WithStyles(TableHead)>
-    <WithStyles(TableRow)>
-      <WithStyles(TableCell)
+<WithStyles(ForwardRef(Table))>
+  <WithStyles(ForwardRef(TableHead))>
+    <WithStyles(ForwardRef(TableRow))>
+      <WithStyles(ForwardRef(TableCell))
         align="inherit"
         className="DisplayName"
         key="DisplayName"
-        padding="checkbox"
       >
         <WithStyles(Tooltip)
           title="Content name. You can set any name you prefer without any restrictions."
         >
-          <WithStyles(TableSortLabel)
+          <WithStyles(ForwardRef(TableSortLabel))
             active={true}
             direction="asc"
             onClick={[Function]}
           >
             Display Name
-          </WithStyles(TableSortLabel)>
+          </WithStyles(ForwardRef(TableSortLabel))>
         </WithStyles(Tooltip)>
-      </WithStyles(TableCell)>
-    </WithStyles(TableRow)>
-  </WithStyles(TableHead)>
-  <WithStyles(TableBody)>
-    <WithStyles(TableRow)
+      </WithStyles(ForwardRef(TableCell))>
+    </WithStyles(ForwardRef(TableRow))>
+  </WithStyles(ForwardRef(TableHead))>
+  <WithStyles(ForwardRef(TableBody))>
+    <WithStyles(ForwardRef(TableRow))
       className="  type-folder"
       hover={true}
       key="1"
@@ -3172,16 +3169,16 @@ exports[`ContentList component Selection and active item changes Event bindings 
         }
         selected={Array []}
       />
-    </WithStyles(TableRow)>
-  </WithStyles(TableBody)>
-</WithStyles(Table)>
+    </WithStyles(ForwardRef(TableRow))>
+  </WithStyles(ForwardRef(TableBody))>
+</WithStyles(ForwardRef(Table))>
 `;
 
 exports[`ContentList component Selection and active item changes Event bindings should render without crashing without fieldsToDisplay 1`] = `
-<WithStyles(Table)>
-  <WithStyles(TableHead)>
-    <WithStyles(TableRow)>
-      <WithStyles(TableCell)
+<WithStyles(ForwardRef(Table))>
+  <WithStyles(ForwardRef(TableHead))>
+    <WithStyles(ForwardRef(TableRow))>
+      <WithStyles(ForwardRef(TableCell))
         key="selectAll"
         padding="checkbox"
         style={
@@ -3191,17 +3188,17 @@ exports[`ContentList component Selection and active item changes Event bindings 
           }
         }
       >
-        <WithStyles(Checkbox)
+        <WithStyles(ForwardRef(Checkbox))
           checked={false}
           className="select-all"
           indeterminate={false}
           onChange={[Function]}
         />
-      </WithStyles(TableCell)>
-    </WithStyles(TableRow)>
-  </WithStyles(TableHead)>
-  <WithStyles(TableBody)>
-    <WithStyles(TableRow)
+      </WithStyles(ForwardRef(TableCell))>
+    </WithStyles(ForwardRef(TableRow))>
+  </WithStyles(ForwardRef(TableHead))>
+  <WithStyles(ForwardRef(TableBody))>
+    <WithStyles(ForwardRef(TableRow))
       className="  type-folder"
       hover={true}
       key="1"
@@ -3211,25 +3208,25 @@ exports[`ContentList component Selection and active item changes Event bindings 
       onTouchEnd={[Function]}
       selected={false}
     >
-      <WithStyles(TableCell)
+      <WithStyles(ForwardRef(TableCell))
         key="select"
         padding="checkbox"
       >
-        <WithStyles(Checkbox)
+        <WithStyles(ForwardRef(Checkbox))
           checked={false}
           onChange={[Function]}
         />
-      </WithStyles(TableCell)>
-    </WithStyles(TableRow)>
-  </WithStyles(TableBody)>
-</WithStyles(Table)>
+      </WithStyles(ForwardRef(TableCell))>
+    </WithStyles(ForwardRef(TableRow))>
+  </WithStyles(ForwardRef(TableBody))>
+</WithStyles(ForwardRef(Table))>
 `;
 
 exports[`ContentList component Selection and active item changes Event bindings should render without crashing without icons 1`] = `
-<WithStyles(Table)>
-  <WithStyles(TableHead)>
-    <WithStyles(TableRow)>
-      <WithStyles(TableCell)
+<WithStyles(ForwardRef(Table))>
+  <WithStyles(ForwardRef(TableHead))>
+    <WithStyles(ForwardRef(TableRow))>
+      <WithStyles(ForwardRef(TableCell))
         key="selectAll"
         padding="checkbox"
         style={
@@ -3239,35 +3236,34 @@ exports[`ContentList component Selection and active item changes Event bindings 
           }
         }
       >
-        <WithStyles(Checkbox)
+        <WithStyles(ForwardRef(Checkbox))
           checked={false}
           className="select-all"
           indeterminate={false}
           onChange={[Function]}
         />
-      </WithStyles(TableCell)>
-      <WithStyles(TableCell)
+      </WithStyles(ForwardRef(TableCell))>
+      <WithStyles(ForwardRef(TableCell))
         align="inherit"
         className="DisplayName"
         key="DisplayName"
-        padding="checkbox"
       >
         <WithStyles(Tooltip)
           title="Content name. You can set any name you prefer without any restrictions."
         >
-          <WithStyles(TableSortLabel)
+          <WithStyles(ForwardRef(TableSortLabel))
             active={true}
             direction="asc"
             onClick={[Function]}
           >
             Display Name
-          </WithStyles(TableSortLabel)>
+          </WithStyles(ForwardRef(TableSortLabel))>
         </WithStyles(Tooltip)>
-      </WithStyles(TableCell)>
-    </WithStyles(TableRow)>
-  </WithStyles(TableHead)>
-  <WithStyles(TableBody)>
-    <WithStyles(TableRow)
+      </WithStyles(ForwardRef(TableCell))>
+    </WithStyles(ForwardRef(TableRow))>
+  </WithStyles(ForwardRef(TableHead))>
+  <WithStyles(ForwardRef(TableBody))>
+    <WithStyles(ForwardRef(TableRow))
       className="  type-folder"
       hover={true}
       key="1"
@@ -3277,15 +3273,15 @@ exports[`ContentList component Selection and active item changes Event bindings 
       onTouchEnd={[Function]}
       selected={false}
     >
-      <WithStyles(TableCell)
+      <WithStyles(ForwardRef(TableCell))
         key="select"
         padding="checkbox"
       >
-        <WithStyles(Checkbox)
+        <WithStyles(ForwardRef(Checkbox))
           checked={false}
           onChange={[Function]}
         />
-      </WithStyles(TableCell)>
+      </WithStyles(ForwardRef(TableCell))>
       <Component
         content={
           Object {
@@ -4285,16 +4281,16 @@ exports[`ContentList component Selection and active item changes Event bindings 
         }
         selected={Array []}
       />
-    </WithStyles(TableRow)>
-  </WithStyles(TableBody)>
-</WithStyles(Table)>
+    </WithStyles(ForwardRef(TableRow))>
+  </WithStyles(ForwardRef(TableBody))>
+</WithStyles(ForwardRef(Table))>
 `;
 
 exports[`ContentList component Selection and active item changes Event bindings should render without crashing without orderBy 1`] = `
-<WithStyles(Table)>
-  <WithStyles(TableHead)>
-    <WithStyles(TableRow)>
-      <WithStyles(TableCell)
+<WithStyles(ForwardRef(Table))>
+  <WithStyles(ForwardRef(TableHead))>
+    <WithStyles(ForwardRef(TableRow))>
+      <WithStyles(ForwardRef(TableCell))
         key="selectAll"
         padding="checkbox"
         style={
@@ -4304,35 +4300,34 @@ exports[`ContentList component Selection and active item changes Event bindings 
           }
         }
       >
-        <WithStyles(Checkbox)
+        <WithStyles(ForwardRef(Checkbox))
           checked={false}
           className="select-all"
           indeterminate={false}
           onChange={[Function]}
         />
-      </WithStyles(TableCell)>
-      <WithStyles(TableCell)
+      </WithStyles(ForwardRef(TableCell))>
+      <WithStyles(ForwardRef(TableCell))
         align="inherit"
         className="DisplayName"
         key="DisplayName"
-        padding="checkbox"
       >
         <WithStyles(Tooltip)
           title="Content name. You can set any name you prefer without any restrictions."
         >
-          <WithStyles(TableSortLabel)
+          <WithStyles(ForwardRef(TableSortLabel))
             active={true}
             direction="asc"
             onClick={[Function]}
           >
             Display Name
-          </WithStyles(TableSortLabel)>
+          </WithStyles(ForwardRef(TableSortLabel))>
         </WithStyles(Tooltip)>
-      </WithStyles(TableCell)>
-    </WithStyles(TableRow)>
-  </WithStyles(TableHead)>
-  <WithStyles(TableBody)>
-    <WithStyles(TableRow)
+      </WithStyles(ForwardRef(TableCell))>
+    </WithStyles(ForwardRef(TableRow))>
+  </WithStyles(ForwardRef(TableHead))>
+  <WithStyles(ForwardRef(TableBody))>
+    <WithStyles(ForwardRef(TableRow))
       className="  type-folder"
       hover={true}
       key="1"
@@ -4342,15 +4337,15 @@ exports[`ContentList component Selection and active item changes Event bindings 
       onTouchEnd={[Function]}
       selected={false}
     >
-      <WithStyles(TableCell)
+      <WithStyles(ForwardRef(TableCell))
         key="select"
         padding="checkbox"
       >
-        <WithStyles(Checkbox)
+        <WithStyles(ForwardRef(Checkbox))
           checked={false}
           onChange={[Function]}
         />
-      </WithStyles(TableCell)>
+      </WithStyles(ForwardRef(TableCell))>
       <Component
         content={
           Object {
@@ -5350,16 +5345,16 @@ exports[`ContentList component Selection and active item changes Event bindings 
         }
         selected={Array []}
       />
-    </WithStyles(TableRow)>
-  </WithStyles(TableBody)>
-</WithStyles(Table)>
+    </WithStyles(ForwardRef(TableRow))>
+  </WithStyles(ForwardRef(TableBody))>
+</WithStyles(ForwardRef(Table))>
 `;
 
 exports[`ContentList component Selection and active item changes Event bindings should render without crashing without orderDirection 1`] = `
-<WithStyles(Table)>
-  <WithStyles(TableHead)>
-    <WithStyles(TableRow)>
-      <WithStyles(TableCell)
+<WithStyles(ForwardRef(Table))>
+  <WithStyles(ForwardRef(TableHead))>
+    <WithStyles(ForwardRef(TableRow))>
+      <WithStyles(ForwardRef(TableCell))
         key="selectAll"
         padding="checkbox"
         style={
@@ -5369,35 +5364,34 @@ exports[`ContentList component Selection and active item changes Event bindings 
           }
         }
       >
-        <WithStyles(Checkbox)
+        <WithStyles(ForwardRef(Checkbox))
           checked={false}
           className="select-all"
           indeterminate={false}
           onChange={[Function]}
         />
-      </WithStyles(TableCell)>
-      <WithStyles(TableCell)
+      </WithStyles(ForwardRef(TableCell))>
+      <WithStyles(ForwardRef(TableCell))
         align="inherit"
         className="DisplayName"
         key="DisplayName"
-        padding="checkbox"
       >
         <WithStyles(Tooltip)
           title="Content name. You can set any name you prefer without any restrictions."
         >
-          <WithStyles(TableSortLabel)
+          <WithStyles(ForwardRef(TableSortLabel))
             active={true}
             direction="asc"
             onClick={[Function]}
           >
             Display Name
-          </WithStyles(TableSortLabel)>
+          </WithStyles(ForwardRef(TableSortLabel))>
         </WithStyles(Tooltip)>
-      </WithStyles(TableCell)>
-    </WithStyles(TableRow)>
-  </WithStyles(TableHead)>
-  <WithStyles(TableBody)>
-    <WithStyles(TableRow)
+      </WithStyles(ForwardRef(TableCell))>
+    </WithStyles(ForwardRef(TableRow))>
+  </WithStyles(ForwardRef(TableHead))>
+  <WithStyles(ForwardRef(TableBody))>
+    <WithStyles(ForwardRef(TableRow))
       className="  type-folder"
       hover={true}
       key="1"
@@ -5407,15 +5401,15 @@ exports[`ContentList component Selection and active item changes Event bindings 
       onTouchEnd={[Function]}
       selected={false}
     >
-      <WithStyles(TableCell)
+      <WithStyles(ForwardRef(TableCell))
         key="select"
         padding="checkbox"
       >
-        <WithStyles(Checkbox)
+        <WithStyles(ForwardRef(Checkbox))
           checked={false}
           onChange={[Function]}
         />
-      </WithStyles(TableCell)>
+      </WithStyles(ForwardRef(TableCell))>
       <Component
         content={
           Object {
@@ -6415,16 +6409,16 @@ exports[`ContentList component Selection and active item changes Event bindings 
         }
         selected={Array []}
       />
-    </WithStyles(TableRow)>
-  </WithStyles(TableBody)>
-</WithStyles(Table)>
+    </WithStyles(ForwardRef(TableRow))>
+  </WithStyles(ForwardRef(TableBody))>
+</WithStyles(ForwardRef(Table))>
 `;
 
 exports[`ContentList component Selection and active item changes Event bindings should render without crashing without selected 1`] = `
-<WithStyles(Table)>
-  <WithStyles(TableHead)>
-    <WithStyles(TableRow)>
-      <WithStyles(TableCell)
+<WithStyles(ForwardRef(Table))>
+  <WithStyles(ForwardRef(TableHead))>
+    <WithStyles(ForwardRef(TableRow))>
+      <WithStyles(ForwardRef(TableCell))
         key="selectAll"
         padding="checkbox"
         style={
@@ -6434,35 +6428,34 @@ exports[`ContentList component Selection and active item changes Event bindings 
           }
         }
       >
-        <WithStyles(Checkbox)
+        <WithStyles(ForwardRef(Checkbox))
           checked={false}
           className="select-all"
           indeterminate={false}
           onChange={[Function]}
         />
-      </WithStyles(TableCell)>
-      <WithStyles(TableCell)
+      </WithStyles(ForwardRef(TableCell))>
+      <WithStyles(ForwardRef(TableCell))
         align="inherit"
         className="DisplayName"
         key="DisplayName"
-        padding="checkbox"
       >
         <WithStyles(Tooltip)
           title="Content name. You can set any name you prefer without any restrictions."
         >
-          <WithStyles(TableSortLabel)
+          <WithStyles(ForwardRef(TableSortLabel))
             active={true}
             direction="asc"
             onClick={[Function]}
           >
             Display Name
-          </WithStyles(TableSortLabel)>
+          </WithStyles(ForwardRef(TableSortLabel))>
         </WithStyles(Tooltip)>
-      </WithStyles(TableCell)>
-    </WithStyles(TableRow)>
-  </WithStyles(TableHead)>
-  <WithStyles(TableBody)>
-    <WithStyles(TableRow)
+      </WithStyles(ForwardRef(TableCell))>
+    </WithStyles(ForwardRef(TableRow))>
+  </WithStyles(ForwardRef(TableHead))>
+  <WithStyles(ForwardRef(TableBody))>
+    <WithStyles(ForwardRef(TableRow))
       className="  type-folder"
       hover={true}
       key="1"
@@ -6472,15 +6465,15 @@ exports[`ContentList component Selection and active item changes Event bindings 
       onTouchEnd={[Function]}
       selected={false}
     >
-      <WithStyles(TableCell)
+      <WithStyles(ForwardRef(TableCell))
         key="select"
         padding="checkbox"
       >
-        <WithStyles(Checkbox)
+        <WithStyles(ForwardRef(Checkbox))
           checked={false}
           onChange={[Function]}
         />
-      </WithStyles(TableCell)>
+      </WithStyles(ForwardRef(TableCell))>
       <Component
         content={
           Object {
@@ -7480,16 +7473,16 @@ exports[`ContentList component Selection and active item changes Event bindings 
           }
         }
       />
-    </WithStyles(TableRow)>
-  </WithStyles(TableBody)>
-</WithStyles(Table)>
+    </WithStyles(ForwardRef(TableRow))>
+  </WithStyles(ForwardRef(TableBody))>
+</WithStyles(ForwardRef(Table))>
 `;
 
 exports[`ContentList component Selection and active item changes Event bindings should render without crashing without selected undefined 1`] = `
-<WithStyles(Table)>
-  <WithStyles(TableHead)>
-    <WithStyles(TableRow)>
-      <WithStyles(TableCell)
+<WithStyles(ForwardRef(Table))>
+  <WithStyles(ForwardRef(TableHead))>
+    <WithStyles(ForwardRef(TableRow))>
+      <WithStyles(ForwardRef(TableCell))
         key="selectAll"
         padding="checkbox"
         style={
@@ -7499,35 +7492,34 @@ exports[`ContentList component Selection and active item changes Event bindings 
           }
         }
       >
-        <WithStyles(Checkbox)
+        <WithStyles(ForwardRef(Checkbox))
           checked={false}
           className="select-all"
           indeterminate={false}
           onChange={[Function]}
         />
-      </WithStyles(TableCell)>
-      <WithStyles(TableCell)
+      </WithStyles(ForwardRef(TableCell))>
+      <WithStyles(ForwardRef(TableCell))
         align="inherit"
         className="DisplayName"
         key="DisplayName"
-        padding="checkbox"
       >
         <WithStyles(Tooltip)
           title="Content name. You can set any name you prefer without any restrictions."
         >
-          <WithStyles(TableSortLabel)
+          <WithStyles(ForwardRef(TableSortLabel))
             active={true}
             direction="asc"
             onClick={[Function]}
           >
             Display Name
-          </WithStyles(TableSortLabel)>
+          </WithStyles(ForwardRef(TableSortLabel))>
         </WithStyles(Tooltip)>
-      </WithStyles(TableCell)>
-    </WithStyles(TableRow)>
-  </WithStyles(TableHead)>
-  <WithStyles(TableBody)>
-    <WithStyles(TableRow)
+      </WithStyles(ForwardRef(TableCell))>
+    </WithStyles(ForwardRef(TableRow))>
+  </WithStyles(ForwardRef(TableHead))>
+  <WithStyles(ForwardRef(TableBody))>
+    <WithStyles(ForwardRef(TableRow))
       className="  type-folder"
       hover={true}
       key="1"
@@ -7537,15 +7529,15 @@ exports[`ContentList component Selection and active item changes Event bindings 
       onTouchEnd={[Function]}
       selected={false}
     >
-      <WithStyles(TableCell)
+      <WithStyles(ForwardRef(TableCell))
         key="select"
         padding="checkbox"
       >
-        <WithStyles(Checkbox)
+        <WithStyles(ForwardRef(Checkbox))
           checked={false}
           onChange={[Function]}
         />
-      </WithStyles(TableCell)>
+      </WithStyles(ForwardRef(TableCell))>
       <Component
         content={
           Object {
@@ -8545,7 +8537,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
           }
         }
       />
-    </WithStyles(TableRow)>
-  </WithStyles(TableBody)>
-</WithStyles(Table)>
+    </WithStyles(ForwardRef(TableRow))>
+  </WithStyles(ForwardRef(TableBody))>
+</WithStyles(ForwardRef(Table))>
 `;

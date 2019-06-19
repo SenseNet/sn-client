@@ -2,8 +2,6 @@
  * @module FieldControls
  */
 import React, { Component } from 'react'
-import { ReactChoiceFieldSetting } from '../ChoiceFieldSetting'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -14,6 +12,8 @@ import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import { GenericContent } from '@sensenet/default-content-types'
+import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
+import { ReactChoiceFieldSetting } from '../ChoiceFieldSetting'
 
 /**
  * Interface for DropDownList properties
@@ -51,9 +51,9 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
   /**
    * sets the selected value in the state
    */
-  public handleChange = (event: React.ChangeEvent) => {
-    this.setState({ value: event.target['value'] })
-    this.props.onChange(this.props.name, event.target['value'])
+  public handleChange = (event: React.ChangeEvent<{ name?: string; value: unknown }>) => {
+    this.setState({ value: event.target.value as any })
+    this.props.onChange(this.props.name, event.target.value as any)
   }
   /**
    * returns selected options value

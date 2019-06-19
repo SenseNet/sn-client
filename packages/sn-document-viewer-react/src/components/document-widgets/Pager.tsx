@@ -1,16 +1,13 @@
 import IconButton from '@material-ui/core/IconButton'
 import TextField from '@material-ui/core/TextField'
-
 import FirstPage from '@material-ui/icons/FirstPage'
 import LastPage from '@material-ui/icons/LastPage'
 import NavigateBefore from '@material-ui/icons/NavigateBefore'
 import NavigateNext from '@material-ui/icons/NavigateNext'
 import React from 'react'
 import { connect } from 'react-redux'
+import debounce from 'lodash.debounce'
 import { RootReducerType, setActivePages } from '../../store'
-
-// tslint:disable-next-line:no-var-requires
-const debounce = require('lodash.debounce')
 
 /**
  * maps state fields from the store to component props

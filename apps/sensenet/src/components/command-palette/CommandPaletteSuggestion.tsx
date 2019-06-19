@@ -9,9 +9,10 @@ import { ResponsiveContext } from '../../context'
 import { CommandPaletteItem } from '../../store/CommandPalette'
 import { Icon } from '../Icon'
 
-export const getMatchParts = (text: string, term: string) => {
-  const matchValue = match(term, text)
-  const parseValue = parse(term, matchValue)
+export const getMatchParts = (hits: string[], term: string) => {
+  const matchValueArr = match(term, hits.join(' '))
+
+  const parseValue = parse(term, matchValueArr as number[] | number[][])
 
   return parseValue.map((part, index) =>
     part.highlight ? <strong key={String(index)}>{part.text}</strong> : <span key={String(index)}>{part.text}</span>,
@@ -34,8 +35,8 @@ export const CommandPaletteSuggestion: React.FunctionComponent<{
         </ListItemIcon>
       ) : null}
       <ListItemText
-        primary={getMatchParts(params.query, suggestion.primaryText)}
-        secondary={getMatchParts(params.query, suggestion.secondaryText)}
+        primary={getMatchParts(suggestion.hits, suggestion.primaryText)}
+        secondary={getMatchParts(suggestion.hits, suggestion.secondaryText)}
         secondaryTypographyProps={{
           style: {
             textOverflow: 'ellipsis',

@@ -1,6 +1,5 @@
 /**
  * @module ViewControls
- *
  */
 import React, { Component, createElement } from 'react'
 
@@ -36,7 +35,7 @@ export interface NewViewProps<T extends GenericContent = GenericContent> {
  * Interface for NewView state
  */
 export interface NewViewState<T extends GenericContent = GenericContent> {
-  schema: ControlSchema<React.Component, ReactClientFieldSettingProps>
+  schema: ControlSchema<React.Component<any, any, any>, ReactClientFieldSettingProps>
   dataSource: GenericContent[]
   content: T
 }
@@ -64,6 +63,7 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
     this.state = {
       schema: controlMapper.getFullSchemaForContentType(this.props.contentTypeName, 'new'),
       dataSource: [],
+      // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
       content: {} as T,
     }
 
@@ -110,7 +110,7 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
         ) : (
           title
         )}
-        <Grid container={true} spacing={24}>
+        <Grid container={true} spacing={2}>
           {fieldSettings.map(fieldSetting => {
             if (fieldSetting.clientSettings['data-typeName'] === 'ReferenceFieldSetting') {
               fieldSetting.clientSettings['data-repository'] = repository

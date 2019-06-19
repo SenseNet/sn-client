@@ -15,7 +15,7 @@ export class QuerySegment<TReturns> {
    * @returns {string} The escaped value
    */
   protected escapeValue(value: string): string {
-    return value.replace(/([\!\+\&\|\(\)\[\]\{\}\^\~\:\"])/g, '\\$1')
+    return value.replace(/([!+&|()[\]{}^~:"])/g, '\\$1')
   }
 
   /**
@@ -63,8 +63,7 @@ export class QuerySegment<TReturns> {
     return this.stringValue
   }
 
-  constructor(protected readonly queryRef: Query<TReturns>) {}
-
+  constructor(readonly queryRef: Query<TReturns>) {}
   /**
    * Finializes the Query segment
    */

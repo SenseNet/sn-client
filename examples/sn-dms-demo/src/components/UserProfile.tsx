@@ -81,7 +81,6 @@ class UserProfile extends React.Component<
     } catch (error) {
       /** Cannot parse current folder from URL */
       return compile(newProps.match.path)({ folderPath: '' })
-      // tslint:disable-next-line:no-empty
     }
   }
 
@@ -95,7 +94,7 @@ class UserProfile extends React.Component<
     return {
       ...lastState,
       userName: newProps.user ? newProps.user.Name : '',
-    } as UserProfile['state']
+    }
   }
 
   public handleRowDoubleClick(_e: React.MouseEvent, content: GenericContent) {
@@ -254,7 +253,6 @@ class UserProfile extends React.Component<
                             )
                           }
                         case 'Actions':
-                          // tslint:disable-next-line:no-string-literal
                           if (
                             this.isGroupAdmin(props.content.Actions as ActionModel[]) &&
                             this.isExplicitMember(props.content)

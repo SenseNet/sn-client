@@ -14,17 +14,15 @@ import {
   CurrentAncestorsContext,
   CurrentChildrenContext,
   CurrentContentContext,
-  InjectorContext,
   LoadSettingsContext,
-  LocalizationContext,
-  RepositoryContext,
 } from '../../context'
+import { useInjector, useLocalization, useRepository } from '../../hooks'
 import { CollectionComponent } from '../ContentListPanel'
 
 const Search: React.FunctionComponent<RouteComponentProps> = props => {
-  const repo = useContext(RepositoryContext)
-  const localization = useContext(LocalizationContext).values.search
-  const injector = useContext(InjectorContext)
+  const repo = useRepository()
+  const localization = useLocalization().search
+  const injector = useInjector()
 
   const [onlyPublic, setOnlyPublic] = useState(false)
   const [queries, setQueries] = useState<Query[]>([])
@@ -47,7 +45,7 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
       eventHub.onContentDeleted.subscribe(() => requestReload()),
     ]
     return () => subscriptions.forEach(s => s.dispose())
-  }, [repo])
+  }, [injector, repo, requestReload])
 
   useEffect(() => {
     repo
@@ -63,7 +61,7 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
         body: undefined,
       })
       .then(result => setQueries(result.d.results))
-  }, [reloadToken, loadSettingsContext.loadChildrenSettings])
+  }, [reloadToken, loadSettingsContext.loadChildrenSettings, repo, onlyPublic])
   return (
     <div style={{ padding: '1em', margin: '1em', overflow: 'hidden' }}>
       <div>

@@ -42,6 +42,7 @@ export class ControlMapper<TControlBaseType, TClientControlSettings> {
           return s.VisibleEdit !== FieldVisibility.Hide
         case 'view':
           return s.VisibleBrowse !== FieldVisibility.Hide
+        // no default
       }
     }).sort((fs1, fs2) => (fs1.FieldIndex || 0) - (fs2.FieldIndex || 0))
     return schema

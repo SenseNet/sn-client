@@ -3,9 +3,8 @@ import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
+import { useInjector, useRepository } from '../hooks'
 import { CurrentContentContext } from './CurrentContent'
-import { InjectorContext } from './InjectorContext'
-import { RepositoryContext } from './RepositoryContext'
 export const CurrentAncestorsContext = React.createContext<GenericContent[]>([])
 
 export const CurrentAncestorsProvider: React.FunctionComponent = props => {
@@ -13,8 +12,8 @@ export const CurrentAncestorsProvider: React.FunctionComponent = props => {
   const [loadLock] = useState(new Semaphore(1))
 
   const [ancestors, setAncestors] = useState<GenericContent[]>([])
-  const repo = useContext(RepositoryContext)
-  const injector = useContext(InjectorContext)
+  const repo = useRepository()
+  const injector = useInjector()
   const eventHub = injector.getEventHub(repo.configuration.repositoryUrl)
   const [reloadToken, setReloadToken] = useState(1)
 
@@ -39,7 +38,14 @@ export const CurrentAncestorsProvider: React.FunctionComponent = props => {
       }),
     ]
     return () => subscriptions.forEach(s => s.dispose())
-  }, [repo.configuration.repositoryUrl])
+  }, [
+    ancestors,
+    eventHub.onContentDeleted,
+    eventHub.onContentModified,
+    eventHub.onContentMoved,
+    repo.configuration.repositoryUrl,
+    requestReload,
+  ])
   const [error, setError] = useState<Error | undefined>()
 
   useEffect(() => {
@@ -60,16 +66,16 @@ export const CurrentAncestorsProvider: React.FunctionComponent = props => {
           },
         })
         setAncestors(ancestorsResult.d.results)
-      } catch (error) {
+      } catch (err) {
         if (!ac.signal.aborted) {
-          setError(error)
+          setError(err)
         }
       } finally {
         loadLock.release()
       }
     })()
     return () => ac.abort()
-  }, [currentContent.Id, reloadToken])
+  }, [currentContent.Id, loadLock, reloadToken, repo])
 
   if (error) {
     throw error

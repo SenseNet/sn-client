@@ -14,7 +14,7 @@ export interface ReactClientFieldSettingProps<T extends GenericContent = Generic
   /**
    * Called when the icon is clicked
    */
-  onChange: (field: keyof T, value: T[K]) => void
+  onChange: (field: keyof T, value: string) => void
   /**
    * Unique key of the field control
    */
@@ -51,7 +51,7 @@ export interface ReactClientFieldSetting<T extends GenericContent = GenericConte
   /**
    * Default value of the empty field control
    */
-  'data-defaultValue'?: T[K] | any[] | null
+  'data-defaultValue'?: T[K] & { toString: () => string }
   /**
    * Display mode of the field control
    * @default browse
