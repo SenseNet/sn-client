@@ -2,6 +2,7 @@ import { LogLevel } from '@furystack/logging'
 import { Repository } from '@sensenet/client-core'
 import { editor, languages, Uri } from 'monaco-editor'
 import defaultLanguage from '../../localization/default'
+import { widgetTypes } from '../PersonalSettings'
 
 export const setupModel = (language = defaultLanguage, repo: Repository) => {
   const personalSettingsPath = `sensenet://PersonalSettings/PersonalSettings`
@@ -22,65 +23,95 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
               type: 'object',
               title: 'Query widget',
               default: null,
-              required: ['type', 'title', 'settings'],
+              required: ['widgetType', 'title'],
               properties: {
-                type: {
-                  $id: '#/dashboardSection/properties/type',
+                widgetType: {
+                  $id: '#/dashboardSection/properties/widgetType',
                   type: 'string',
-                  enum: ['query', 'markdown'],
-                  title: 'The Type Schema',
-                  default: '',
-                  examples: ['query'],
-                  pattern: '^(.*)$',
+                  enum: [...widgetTypes],
+                  title: 'Type of the widget',
+                  default: 'markdown',
+                  examples: ['query', 'markdown'],
                 },
                 title: {
                   $id: '#/dashboardSection/properties/title',
                   type: 'string',
-                  title: 'The Title Schema',
+                  title: 'Widget title',
                   default: '',
-                  examples: ['Query Title'],
                   pattern: '^(.*)$',
                 },
-                if: { properties: { type: 'query' } },
-                then: {
-                  settings: {
-                    $id: '#/dashboardSection/properties/settings',
-                    type: 'object',
-                    title: 'The Settings Schema',
-                    required: ['term', 'showColumnNames', 'columns'],
+              },
+              allOf: [
+                {
+                  if: { properties: { widgetType: { const: 'query' } } },
+                  then: {
+                    required: ['settings'],
                     properties: {
-                      term: {
-                        $id: '#/dashboardSection/properties/settings/properties/term',
-                        type: 'string',
-                        title: 'The Term Schema',
-                        default: '',
-                        examples: ['+alba'],
-                        pattern: '^(.*)$',
-                      },
-                      showColumnNames: {
-                        $id: '#/dashboardSection/properties/settings/properties/showColumnNames',
-                        type: 'boolean',
-                        title: 'The Showcolumnnames Schema',
-                        default: false,
-                        examples: [true],
-                      },
-                      columns: {
-                        $id: '#/dashboardSection/properties/settings/properties/columns',
-                        type: 'array',
-                        title: 'The Columns Schema',
-                        items: {
-                          $id: '#/items/properties/settings/properties/columns/items',
-                          type: 'string',
-                          title: 'The Items Schema',
-                          default: '',
-                          examples: ['DisplayName', 'Path'],
-                          pattern: '^(.*)$',
+                      settings: {
+                        $id: '#/dashboardSection/properties/querySettings',
+                        type: 'object',
+                        title: 'Settings for the Query widget',
+                        required: ['term', 'showColumnNames', 'columns'],
+                        properties: {
+                          term: {
+                            $id: '#/dashboardSection/properties/querySettings/properties/term',
+                            type: 'string',
+                            title: 'The Query term',
+                            default: '',
+                            examples: ['+alba'],
+                            pattern: '^(.*)$',
+                          },
+                          showColumnNames: {
+                            $id: '#/dashboardSection/properties/querySettings/properties/showColumnNames',
+                            type: 'boolean',
+                            title: 'Show column names',
+                            default: false,
+                            examples: [true],
+                          },
+                          columns: {
+                            $id: '#/dashboardSection/properties/querySettings/properties/columns',
+                            type: 'array',
+                            title: 'Columns to display',
+                            items: {
+                              $id: '#/dashboardSection/properties/querySettings/properties/columns/items',
+                              type: 'string',
+                              title: 'The Items Schema',
+                              default: '',
+                              examples: ['DisplayName', 'Path'],
+                              pattern: '^(.*)$',
+                            },
+                          },
                         },
                       },
                     },
                   },
                 },
-              },
+                {
+                  if: { properties: { widgetType: { const: 'markdown' } } },
+                  then: {
+                    required: ['settings'],
+                    properties: {
+                      settings: {
+                        type: 'object',
+                        title: 'Settings for the Markdown widget',
+                        required: ['content'],
+                        properties: {
+                          content: {
+                            $id: '#/dashboardSection/properties/markdownSettings/properties/term',
+                            type: 'string',
+                            title: 'The Markdown content',
+                            default: '',
+                            examples: [
+                              "### Hey I'm a Paragraph \r\n Hey, I'm not",
+                              '![jeeeee](https://imgix.ranker.com/user_node_img/50088/1001748292/original/like-a-turtle-and-part-fish-photo-u4?w=650&q=50&fm=pjpg&fit=crop&crop=faces "teknőc e")',
+                            ],
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              ],
             },
             drawer: {
               type: 'object',
@@ -117,7 +148,7 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                 },
                 dashboard: {
                   type: 'array',
-                  description: 'Dashboard Section',
+                  description: 'The customized Dashboard for the Repository',
                   items: { $ref: '#definitions/dashboardSection' },
                 },
               },
@@ -180,6 +211,22 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
             tablet: { $ref: '#/definitions/settings' },
             desktop: { $ref: '#/definitions/settings' },
             repositories: { $ref: '#/definitions/repositories' },
+            dashboards: {
+              type: 'object',
+              title: 'The default Dashboard definitions',
+              properties: {
+                globalDefault: {
+                  type: 'array',
+                  description: 'The customized Dashboard for the Repository',
+                  items: { $ref: '#definitions/dashboardSection' },
+                },
+                repositoryDefault: {
+                  type: 'array',
+                  description: 'The customized Dashboard for the Repository',
+                  items: { $ref: '#definitions/dashboardSection' },
+                },
+              },
+            },
             lastRepository: { type: 'string', description: language.personalSettings.lastRepository },
             eventLogSize: { type: 'number', description: language.personalSettings.eventLogSize },
             logLevel: {

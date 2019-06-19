@@ -1,7 +1,6 @@
 const values = {
   dashboard: {
-    globalDashboardTitle: 'Dashboard',
-    repositoryDashboardTitle: 'Repository Dashboard',
+    errorLoadingWidget: 'Error loading widget :(',
   },
   addButton: {
     tooltip: 'Create or upload content',

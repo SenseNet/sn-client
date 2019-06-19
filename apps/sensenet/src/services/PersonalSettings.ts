@@ -4,6 +4,7 @@ import { ObservableValue, deepMerge } from '@sensenet/client-utils'
 
 import { GenericContent } from '@sensenet/default-content-types'
 import { PlatformDependent } from '../context'
+import { tuple } from '../utils/tuple'
 
 const settingsKey = `SN-APP-USER-SETTINGS`
 
@@ -21,9 +22,32 @@ export interface UiSettings {
   }
 }
 
+export const widgetTypes = tuple('markdown', 'query')
+
+export interface Widget<T> {
+  title: string
+  widgetType: typeof widgetTypes[number]
+  settings: T
+}
+
+export interface MarkdownWidget extends Widget<{ content: string }> {
+  widgetType: 'markdown'
+}
+
+export interface QueryWidget
+  extends Widget<{ columns: Array<keyof GenericContent>; showColumnNames: boolean; term: string }> {
+  widgetType: 'query'
+}
+
+export type WidgetSection = Array<MarkdownWidget | QueryWidget>
+
 export type PersonalSettingsType = PlatformDependent<UiSettings> & {
-  repositories: Array<{ url: string; loginName?: string; displayName?: string }>
+  repositories: Array<{ url: string; loginName?: string; displayName?: string; dashboard?: WidgetSection }>
   lastRepository: string
+  dashboards: {
+    globalDefault: WidgetSection
+    repositoryDefault: WidgetSection
+  }
   eventLogSize: number
   sendLogWithCrashReports: boolean
   logLevel: Array<keyof typeof LogLevel>
@@ -31,6 +55,28 @@ export type PersonalSettingsType = PlatformDependent<UiSettings> & {
 }
 
 export const defaultSettings: PersonalSettingsType = {
+  dashboards: {
+    globalDefault: [
+      {
+        title: 'Global Dashboard',
+        widgetType: 'markdown',
+        settings: {
+          content:
+            '# alma \\r\\n áááá [jeeeee](https://imgix.ranker.com/user_node_img/50088/1001748292/original/like-a-turtle-and-part-fish-photo-u4?w=650&q=50&fm=pjpg&fit=crop&crop=faces "teknőc e")',
+        },
+      },
+      {
+        title: 'Example Query',
+        widgetType: 'query',
+        settings: {
+          columns: ['Name', 'Id', 'Path'],
+          showColumnNames: false,
+          term: '+alba',
+        },
+      },
+    ],
+    repositoryDefault: [],
+  },
   default: {
     theme: 'dark',
     content: {

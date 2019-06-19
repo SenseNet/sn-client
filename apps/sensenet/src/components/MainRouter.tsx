@@ -1,8 +1,8 @@
 import { LoginState } from '@sensenet/client-core'
 import React, { lazy, Suspense } from 'react'
 import { Route, RouteComponentProps, Switch, withRouter } from 'react-router'
-import { LoadSettingsContextProvider } from '../context'
-import { usePersonalSettings, useSession, useLocalization } from '../hooks'
+import { LoadSettingsContextProvider, RepositoryContext } from '../context'
+import { usePersonalSettings, useSession } from '../hooks'
 import { ErrorBoundary } from './ErrorBoundary'
 import { FullScreenLoader } from './FullScreenLoader'
 import { WopiPage } from './wopi-page'
@@ -31,8 +31,6 @@ const PersonalSettingsEditor = lazy(
 const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
   const sessionContext = useSession()
   const personalSettings = usePersonalSettings()
-
-  const localization = useLocalization().dashboard
 
   return (
     <ErrorBoundary>
@@ -140,13 +138,17 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
                     <Route
                       path="/:repo/"
                       render={() => {
-                        return <DashboardComponent title={localization.repositoryDashboardTitle} settings={{}} />
+                        return (
+                          <RepositoryContext.Consumer>
+                            {repo => <DashboardComponent repository={repo} />}
+                          </RepositoryContext.Consumer>
+                        )
                       }}
                     />
                     <Route
                       path="/"
                       render={() => {
-                        return <DashboardComponent title={localization.globalDashboardTitle} settings={{}} />
+                        return <DashboardComponent />
                       }}
                     />
                   </Switch>
