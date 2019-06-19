@@ -4,8 +4,6 @@ import 'jest'
 import { ODataUrlBuilder } from '../src/Repository/ODataUrlBuilder'
 import { Repository } from '../src/Repository/Repository'
 
-// tslint:disable:completed-docs
-
 describe('ODataUrlBuilder', () => {
   describe('#buildUrlParamString()', () => {
     let repo: Repository

@@ -1,10 +1,8 @@
+/* eslint-disable dot-notation */
 /**
  * @module FieldControls
  */
 import React, { Component } from 'react'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
-import { ReactPasswordFieldSetting } from './PasswordFieldSetting'
-
 import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import IconButton from '@material-ui/core/IconButton'
@@ -13,7 +11,9 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import InputLabel from '@material-ui/core/InputLabel'
 import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
+import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { renderIconDefault } from '../icon'
+import { ReactShortTextFieldSetting } from '../ShortText/ShortTextFieldSetting'
 
 /**
  * Interface for Password properties
@@ -21,7 +21,7 @@ import { renderIconDefault } from '../icon'
 export interface PasswordProps<T extends GenericContent, K extends keyof T>
   extends ReactClientFieldSettingProps<T, K>,
     ReactClientFieldSetting<T, K>,
-    ReactPasswordFieldSetting<T, K> {}
+    ReactShortTextFieldSetting<T, K> {}
 /**
  * Interface for Password state
  */

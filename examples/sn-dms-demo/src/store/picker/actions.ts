@@ -33,3 +33,5 @@ export const setBackLink = (state: boolean) => ({
   type: 'SET_BACKLINK',
   state,
 })
+
+export const reloadPickerItems = () => ({ type: 'RELOAD_PICKER_ITEMS' })

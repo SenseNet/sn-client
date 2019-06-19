@@ -15,6 +15,20 @@ import {
 import { v1 } from 'uuid'
 
 /**
+ * Concatenates avatar url with host
+ * @param {DocumentData} documentData
+ * @returns {(value: Comment) => Comment}
+ */
+function changeCreatedByUrlToCurrent(documentData: DocumentData): (value: Comment) => Comment {
+  return comment => {
+    return {
+      ...comment,
+      createdBy: { ...comment.createdBy, avatarUrl: `${documentData.hostName}${comment.createdBy.avatarUrl}` },
+    }
+  }
+}
+
+/**
  * Adds a globally unique ID to the shape
  */
 const addGuidToShape = <T extends Shape>(shape: T) => {
@@ -162,11 +176,3 @@ export const getViewerSettings = (repo: Repository) =>
       },
     },
   })
-function changeCreatedByUrlToCurrent(documentData: DocumentData): (value: Comment) => Comment {
-  return comment => {
-    return {
-      ...comment,
-      createdBy: { ...comment.createdBy, avatarUrl: `${documentData.hostName}${comment.createdBy.avatarUrl}` },
-    }
-  }
-}

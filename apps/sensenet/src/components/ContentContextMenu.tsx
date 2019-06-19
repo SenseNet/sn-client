@@ -5,18 +5,17 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Menu, { MenuProps } from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
+import CloudDownloadTwoTone from '@material-ui/icons/CloudDownloadTwoTone'
 import Create from '@material-ui/icons/Create'
 import Delete from '@material-ui/icons/Delete'
 import FileMove from '@material-ui/icons/FileCopy'
 import FileCopy from '@material-ui/icons/FileCopyOutlined'
 import Info from '@material-ui/icons/Info'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useCallback } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { ContentRoutingContext, CurrentContentContext, LocalizationContext, ResponsiveContext } from '../context'
-import { ContentInfoDialog } from './ContentInfoDialog'
-import { CopyMoveDialog } from './CopyMoveDialog'
-import { DeleteContentDialog } from './DeleteContentDialog'
-import { EditPropertiesDialog } from './EditPropertiesDialog'
+import { CurrentContentContext, ResponsiveContext } from '../context'
+import { useContentRouting, useLocalization, useRepository, useDownload, useWopi } from '../hooks'
+import { ContentInfoDialog, CopyMoveDialog, DeleteContentDialog, EditPropertiesDialog } from './dialogs'
 import { Icon } from './Icon'
 
 export const ContentContextMenuComponent: React.FunctionComponent<
@@ -30,13 +29,23 @@ export const ContentContextMenuComponent: React.FunctionComponent<
 > = props => {
   const content = useContext(CurrentContentContext)
   const device = useContext(ResponsiveContext)
-  const routing = useContext(ContentRoutingContext)
-  const localization = useContext(LocalizationContext).values.contentContextMenu
+  const routing = useContentRouting()
+  const localization = useLocalization().contentContextMenu
   const [isDeleteOpened, setIsDeleteOpened] = useState(false)
   const [isEditPropertiesOpened, setIsEditPropertiesOpened] = useState(false)
   const [isInfoDialogOpened, setIsInfoDialogOpened] = useState(false)
   const [isCopyDialogOpened, setIsCopyDialogOpened] = useState(false)
   const [copyMoveOperation, setCopyMoveOperation] = useState<'copy' | 'move'>('copy')
+  const repo = useRepository()
+  const download = useDownload(content)
+  const wopi = useWopi(content)
+
+  const wopiOpen = useCallback(async () => {
+    props.onClose && props.onClose()
+    props.history.push(
+      `/${btoa(repo.configuration.repositoryUrl)}/wopi/${content.Id}/${wopi.isWriteAwailable ? 'edit' : 'view'}`,
+    )
+  }, [content.Id, props, repo.configuration.repositoryUrl, wopi.isWriteAwailable])
 
   return (
     <div onKeyDown={ev => ev.stopPropagation()} onKeyPress={ev => ev.stopPropagation()}>
@@ -52,12 +61,14 @@ export const ContentContextMenuComponent: React.FunctionComponent<
         content={content}
         dialogProps={{ open: isInfoDialogOpened, onClose: () => setIsInfoDialogOpened(false) }}
       />
-      <CopyMoveDialog
-        content={[content]}
-        currentParent={content}
-        dialogProps={{ open: isCopyDialogOpened, onClose: () => setIsCopyDialogOpened(false) }}
-        operation={copyMoveOperation}
-      />
+      {isCopyDialogOpened ? (
+        <CopyMoveDialog
+          content={[content]}
+          currentParent={content}
+          dialogProps={{ open: isCopyDialogOpened, onClose: () => setIsCopyDialogOpened(false) }}
+          operation={copyMoveOperation}
+        />
+      ) : null}
       {device === 'mobile' ? (
         <Drawer
           anchor="bottom"
@@ -82,6 +93,27 @@ export const ContentContextMenuComponent: React.FunctionComponent<
               </ListItemIcon>
               <ListItemText primary={localization.open} />
             </ListItem>
+            {wopi.isWriteAwailable || wopi.isReadAwailable ? (
+              <ListItem button={true} onClick={() => props.history.push(routing.getPrimaryActionUrl(content))}>
+                <ListItemIcon>
+                  <Icon item={content} />
+                </ListItemIcon>
+                <ListItemText primary={wopi.isWriteAwailable ? localization.wopiEdit : localization.wopiRead} />
+              </ListItem>
+            ) : null}
+            {download.isFile ? (
+              <ListItem
+                button={true}
+                onClick={() => {
+                  download.download()
+                  props.onClose && props.onClose()
+                }}>
+                <ListItemIcon>
+                  <CloudDownloadTwoTone />
+                </ListItemIcon>
+                {localization.download}
+              </ListItem>
+            ) : null}
             <ListItem
               button={true}
               onClick={() => {
@@ -157,6 +189,29 @@ export const ContentContextMenuComponent: React.FunctionComponent<
             </ListItemIcon>
             {localization.open}
           </MenuItem>
+
+          {wopi.isWriteAwailable || wopi.isReadAwailable ? (
+            <MenuItem button={true} onClick={wopiOpen}>
+              <ListItemIcon>
+                <Icon item={content} />
+              </ListItemIcon>
+              {wopi.isWriteAwailable ? localization.wopiEdit : localization.wopiRead}
+            </MenuItem>
+          ) : null}
+
+          {download.isFile ? (
+            <MenuItem
+              button={true}
+              onClick={() => {
+                download.download()
+                props.onClose && props.onClose()
+              }}>
+              <ListItemIcon>
+                <CloudDownloadTwoTone />
+              </ListItemIcon>
+              {localization.download}
+            </MenuItem>
+          ) : null}
           <MenuItem
             onClick={() => {
               props.onClose && props.onClose()

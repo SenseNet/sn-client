@@ -77,7 +77,7 @@ export const selected: Reducer<GenericContent[]> = (state = [], action: AnyActio
 
 export const loadChunkSize = 25
 
-const defaultOptions = {
+const defaultOptions: ODataParams<GenericContent & User & Group> = {
   select: [
     'Id',
     'Path',
@@ -98,14 +98,14 @@ const defaultOptions = {
   filter: `isOf('Group')`,
   scenario: 'DMSListItem',
   top: loadChunkSize,
-} as ODataParams<GenericContent>
+}
 
-const defaultUserOptions = {
+const defaultUserOptions: ODataParams<GenericContent & User> = {
   select: ['Id', 'Path', 'Name', 'Type', 'ParentId', 'Actions', 'Avatar', 'DisplayName', 'FullName', 'Icon', 'Email'],
   orderby: ['FullName', 'asc'] as any,
   filter: `isOf('User')`,
   top: loadChunkSize,
-} as ODataParams<GenericContent>
+}
 
 export const grouplistOptions: Reducer<ODataParams<GenericContent>> = (state = defaultOptions, action: AnyAction) => {
   switch (action.type) {
@@ -212,9 +212,10 @@ export const selectedGroups: Reducer<GenericContent[]> = (state = [], action: An
   switch (action.type) {
     case 'DMS_USERSANDGROUPS_SELECT_GROUP':
       return [...action.groups]
-    case 'DMS_USERSANDGROUPS_DESELECT_GROUP':
+    case 'DMS_USERSANDGROUPS_DESELECT_GROUP': {
       const index = state.findIndex(data => data.Id === action.id)
       return [...state.slice(0, index), ...state.slice(index + 1)]
+    }
     case 'DMS_USERSANDGROUPS_CLEAR_SELECTION':
     case 'DMS_USERSANDGROUPS_SEARCH_GROUPS':
       return []
@@ -243,12 +244,13 @@ export const searchTerm: Reducer<string> = (state = '', action: AnyAction) => {
 
 export const currentGroup: Reducer<Group | null> = (state = null, action: AnyAction) => {
   switch (action.type) {
-    case 'DMS_USERSANDGROUPS_SET_GROUP':
+    case 'DMS_USERSANDGROUPS_SET_GROUP': {
       const g = action.content
       if (action.content.Name === 'Root') {
         g.DisplayName = 'Groups'
       }
       return g
+    }
     default:
       return state
   }

@@ -1,9 +1,7 @@
-import { Store } from '@sensenet/redux'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { MemoryRouter } from 'react-router-dom'
 import { withStore } from '../../__tests__/TestHelper'
-import { rootStateType } from '../../store/rootReducer'
 import BreadCrumb from '../BreadCrumb'
 
 it('renders without crashing', () => {
@@ -21,7 +19,7 @@ it('renders without crashing', () => {
         ],
       },
     },
-  } as Partial<Store.CreateStoreOptions<rootStateType>>
+  }
   ReactDOM.render(
     withStore(
       <MemoryRouter>

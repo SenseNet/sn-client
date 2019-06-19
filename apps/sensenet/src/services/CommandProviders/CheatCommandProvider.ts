@@ -16,6 +16,7 @@ export class CheatCommandProvider implements CommandProvider {
         Name: '',
         Type: 'DoomCheatContent',
       },
+      hits: ['iddqd'],
     },
     'pot of gold': {
       primaryText: 'cheat enabled you wascally wabbit',
@@ -28,6 +29,7 @@ export class CheatCommandProvider implements CommandProvider {
         Name: '',
         Type: 'WarCheatContent',
       },
+      hits: ['pot of gold'],
     },
   }
 

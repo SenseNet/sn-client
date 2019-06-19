@@ -47,7 +47,6 @@ export const eventHubTests = describe('EventHub', () => {
         expect(c.content).toEqual(mockContent)
         done()
       })
-      // tslint:disable-next-line:no-string-literal
       repository['fetch'] = async () =>
         ({
           ok: true,
@@ -69,7 +68,6 @@ export const eventHubTests = describe('EventHub', () => {
         expect(c.content).toEqual(mockContent)
         done()
       })
-      // tslint:disable-next-line:no-string-literal
       repository['fetch'] = async () =>
         ({
           ok: false,
@@ -95,7 +93,6 @@ export const eventHubTests = describe('EventHub', () => {
         expect(c.content).toEqual(mockContent)
         done()
       })
-      // tslint:disable-next-line:no-string-literal
       repository['fetch'] = async () =>
         ({
           ok: true,
@@ -121,7 +118,6 @@ export const eventHubTests = describe('EventHub', () => {
         expect(c.content).toEqual(mockContent)
         done()
       })
-      // tslint:disable-next-line:no-string-literal
       repository['fetch'] = async () =>
         ({
           ok: true,
@@ -147,7 +143,6 @@ export const eventHubTests = describe('EventHub', () => {
         expect(c.content).toEqual({ Id: 321 })
         done()
       })
-      // tslint:disable-next-line:no-string-literal
       repository['fetch'] = async () =>
         ({
           ok: false,
@@ -169,7 +164,6 @@ export const eventHubTests = describe('EventHub', () => {
         expect(c.content).toEqual({ Path: 'Root/Example/Path1' })
         done()
       })
-      // tslint:disable-next-line:no-string-literal
       repository['fetch'] = async () =>
         ({
           ok: false,
@@ -193,7 +187,6 @@ export const eventHubTests = describe('EventHub', () => {
         expect(c.content).toEqual(mockContent)
         done()
       })
-      // tslint:disable-next-line:no-string-literal
       repository['fetch'] = async () =>
         ({
           ok: true,
@@ -214,7 +207,6 @@ export const eventHubTests = describe('EventHub', () => {
         expect(c.content).toEqual(mockContent)
         done()
       })
-      // tslint:disable-next-line:no-string-literal
       repository['fetch'] = async () =>
         ({
           ok: false,
@@ -239,7 +231,6 @@ export const eventHubTests = describe('EventHub', () => {
         expect(c.content).toEqual(mockContent)
         done()
       })
-      // tslint:disable-next-line:no-string-literal
       repository['fetch'] = async () =>
         ({
           ok: true,
@@ -261,7 +252,6 @@ export const eventHubTests = describe('EventHub', () => {
       expect(c.content).toEqual(mockContent)
       done()
     })
-    // tslint:disable-next-line:no-string-literal
     repository['fetch'] = async () =>
       ({
         ok: false,
@@ -287,7 +277,6 @@ export const eventHubTests = describe('EventHub', () => {
         expect(c.contentData).toEqual(mockContent)
         done()
       })
-      // tslint:disable-next-line:no-string-literal
       repository['fetch'] = async () =>
         ({
           ok: true,
@@ -311,7 +300,6 @@ export const eventHubTests = describe('EventHub', () => {
         expect(c.content).toEqual(mockContent)
         done()
       })
-      // tslint:disable-next-line:no-string-literal
       repository['fetch'] = async () =>
         ({
           ok: true,
@@ -340,7 +328,6 @@ export const eventHubTests = describe('EventHub', () => {
         expect(c.content).toEqual({ Id: 123 })
         done()
       })
-      // tslint:disable-next-line:no-string-literal
       repository['fetch'] = async () =>
         ({
           ok: false,
@@ -361,7 +348,6 @@ export const eventHubTests = describe('EventHub', () => {
         expect(c.content).toEqual({ Path: 'Root/Example/Path1' })
         done()
       })
-      // tslint:disable-next-line:no-string-literal
       repository['fetch'] = async () =>
         ({
           ok: false,
@@ -384,7 +370,6 @@ export const eventHubTests = describe('EventHub', () => {
         expect(c.content).toEqual(mockContent)
         done()
       })
-      // tslint:disable-next-line:no-string-literal
       repository['fetch'] = async () =>
         ({
           ok: true,
@@ -409,7 +394,6 @@ export const eventHubTests = describe('EventHub', () => {
         expect(c.content).toEqual(mockContent)
         done()
       })
-      // tslint:disable-next-line:no-string-literal
       repository['fetch'] = async () =>
         ({
           ok: true,
@@ -439,7 +423,6 @@ export const eventHubTests = describe('EventHub', () => {
         expect(c.content).toEqual({ Id: 123 })
         done()
       })
-      // tslint:disable-next-line:no-string-literal
       repository['fetch'] = async () =>
         ({
           ok: false,
@@ -461,7 +444,6 @@ export const eventHubTests = describe('EventHub', () => {
         expect(c.content).toEqual({ Path: 'Root/Example/Path1' })
         done()
       })
-      // tslint:disable-next-line:no-string-literal
       repository['fetch'] = async () =>
         ({
           ok: false,
@@ -485,7 +467,6 @@ export const eventHubTests = describe('EventHub', () => {
         expect(c.content).toEqual(mockContent)
         done()
       })
-      // tslint:disable-next-line:no-string-literal
       repository['fetch'] = async () =>
         ({
           ok: true,
@@ -509,7 +490,6 @@ export const eventHubTests = describe('EventHub', () => {
         expect(c.payload).toEqual(payload)
         done()
       })
-      // tslint:disable-next-line:no-string-literal
       repository['fetch'] = async () =>
         ({
           ok: false,
@@ -540,7 +520,6 @@ export const eventHubTests = describe('EventHub', () => {
         expect(c).toEqual(mockResponse)
         done()
       })
-      // tslint:disable-next-line:no-string-literal
       repository['fetch'] = async () =>
         ({
           ok: true,
@@ -562,7 +541,6 @@ export const eventHubTests = describe('EventHub', () => {
         expect(c.payload).toEqual(payload)
         done()
       })
-      // tslint:disable-next-line:no-string-literal
       repository['fetch'] = async () =>
         ({
           ok: false,
@@ -582,6 +560,7 @@ export const eventHubTests = describe('EventHub', () => {
       Id: 4037,
       Length: 18431,
       Name: 'LICENSE',
+      // eslint-disable-next-line @typescript-eslint/camelcase
       Thumbnail_url: '/Root/Sites/Default_Site/Workspace/Document_Library/LICENSE',
       Type: 'File',
       Url: '/Root/Sites/Default_Site/Workspace/Document_Library/LICENSE',
@@ -592,7 +571,6 @@ export const eventHubTests = describe('EventHub', () => {
         expect(response).toEqual(mockAnswer)
         done()
       })
-      // tslint:disable-next-line:no-string-literal
       repository['fetch'] = async () =>
         ({
           ok: true,
@@ -618,7 +596,6 @@ export const eventHubTests = describe('EventHub', () => {
       }
       const onUploadFailed = jest.fn()
       eventHub.onUploadFailed.subscribe(onUploadFailed)
-      // tslint:disable-next-line:no-string-literal
       repository['fetch'] = async () =>
         ({
           ok: false,
@@ -645,7 +622,6 @@ export const eventHubTests = describe('EventHub', () => {
         expect(response).toEqual(mockAnswer)
         done()
       })
-      // tslint:disable-next-line:no-string-literal
       repository['fetch'] = async () =>
         ({
           ok: true,
@@ -671,7 +647,6 @@ export const eventHubTests = describe('EventHub', () => {
       }
       const onUploadFailed = jest.fn()
       eventHub.onUploadFailed.subscribe(onUploadFailed)
-      // tslint:disable-next-line:no-string-literal
       repository['fetch'] = async () =>
         ({
           ok: false,

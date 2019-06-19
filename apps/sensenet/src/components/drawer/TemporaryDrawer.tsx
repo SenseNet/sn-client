@@ -11,16 +11,10 @@ import Settings from '@material-ui/icons/Settings'
 import { PathHelper } from '@sensenet/client-utils'
 import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
-import { matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
-import { Link } from 'react-router-dom'
-import {
-  LocalizationContext,
-  PersonalSettingsContext,
-  RepositoryContext,
-  ResponsivePersonalSetttings,
-  SessionContext,
-  ThemeContext,
-} from '../../context'
+import { matchPath, NavLink, RouteComponentProps, Link } from 'react-router-dom'
+
+import { ResponsivePersonalSetttings } from '../../context'
+import { useLocalization, usePersonalSettings, useRepository, useSession, useTheme } from '../../hooks'
 import { LogoutButton } from '../LogoutButton'
 import { UserAvatar } from '../UserAvatar'
 import { getAllowedDrawerItems } from './Items'
@@ -29,16 +23,16 @@ const TemporaryDrawer: React.FunctionComponent<
   RouteComponentProps & { isOpened: boolean; onClose: () => void; onOpen: () => void }
 > = props => {
   const settings = useContext(ResponsivePersonalSetttings)
-  const personalSettings = useContext(PersonalSettingsContext)
-  const repo = useContext(RepositoryContext)
-  const theme = useContext(ThemeContext)
-  const session = useContext(SessionContext)
+  const personalSettings = usePersonalSettings()
+  const repo = useRepository()
+  const theme = useTheme()
+  const session = useSession()
   const [items, setItems] = useState(getAllowedDrawerItems(session.groups))
   const [currentRepoEntry, setCurrentRepoEntry] = useState(
     personalSettings.repositories.find(r => r.url === PathHelper.trimSlashes(repo.configuration.repositoryUrl)),
   )
 
-  const localization = useContext(LocalizationContext).values.drawer
+  const localization = useLocalization().drawer
 
   useEffect(
     () =>

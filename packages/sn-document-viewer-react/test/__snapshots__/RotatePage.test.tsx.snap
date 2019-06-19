@@ -12,19 +12,19 @@ exports[`RotatePage component Should render without crashing 1`] = `
     }
   }
 >
-  <WithStyles(IconButton)
+  <WithStyles(ForwardRef(IconButton))
     title="rotatePageLeft"
   >
-    <pure(RotateLeftIcon)
+    <RotateLeftIcon
       onClick={[Function]}
     />
-  </WithStyles(IconButton)>
-  <WithStyles(IconButton)
+  </WithStyles(ForwardRef(IconButton))>
+  <WithStyles(ForwardRef(IconButton))
     title="rotatePageRight"
   >
-    <pure(RotateRightIcon)
+    <RotateRightIcon
       onClick={[Function]}
     />
-  </WithStyles(IconButton)>
+  </WithStyles(ForwardRef(IconButton))>
 </div>
 `;

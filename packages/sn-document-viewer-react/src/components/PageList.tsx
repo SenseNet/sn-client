@@ -1,13 +1,11 @@
 import Grid from '@material-ui/core/Grid'
 import React from 'react'
 import { connect } from 'react-redux'
+import debounce from 'lodash.debounce'
 import { DraftCommentMarker, PreviewImageData } from '../models'
 import { componentType, ImageUtil } from '../services'
 import { RootReducerType, ZoomMode } from '../store'
 import { Page } from './'
-
-// tslint:disable-next-line:no-var-requires
-const debounce = require('lodash.debounce')
 
 /**
  * maps state fields from the store to component props

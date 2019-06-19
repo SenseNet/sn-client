@@ -10,7 +10,7 @@ import Login from '../Login'
 it('renders without crashing', () => {
   const div = document.createElement('div')
 
-  const options = {
+  const options: Partial<Store.CreateStoreOptions<rootStateType>> = {
     persistedState: {
       sensenet: {
         currentcontent: {
@@ -40,7 +40,7 @@ it('renders without crashing', () => {
         },
       },
     },
-  } as Partial<Store.CreateStoreOptions<rootStateType>>
+  }
 
   ReactDOM.render(
     withStore(

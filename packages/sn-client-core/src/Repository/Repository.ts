@@ -1,5 +1,5 @@
 import { Disposable, PathHelper } from '@sensenet/client-utils'
-import { ActionModel, ContentType, Schema } from '@sensenet/default-content-types'
+import { ActionModel, ContentType, Schema, GenericContent } from '@sensenet/default-content-types'
 import { AuthenticationService } from '../Authentication/AuthenticationService'
 import { BypassAuthentication } from '../Authentication/BypassAuthentication'
 import { Content } from '../Models/Content'
@@ -20,6 +20,7 @@ import {
   PutOptions,
 } from '../Models/RequestOptions'
 import { SchemaStore } from '../Schemas/SchemaStore'
+import { ODataParams } from '../Models/ODataParams'
 import { ConstantContent } from './ConstantContent'
 import { ODataUrlBuilder } from './ODataUrlBuilder'
 import { RepositoryConfiguration } from './RepositoryConfiguration'
@@ -406,13 +407,20 @@ export class Repository implements Disposable {
    * Returns data for loading Office document for editing
    * @param idOrPath Id or path of the document
    */
-  public async getWopiData(idOrPath: string | number): Promise<ODataWopiResponse> {
+  public async getWopiData(options: {
+    idOrPath: string | number
+    action?: 'edit' | 'view'
+    odataOptions?: ODataParams<GenericContent>
+    requestInit?: RequestInit
+  }): Promise<ODataWopiResponse> {
     return await this.executeAction<{}, ODataWopiResponse>({
-      idOrPath,
+      idOrPath: options.idOrPath,
       method: 'GET',
       name: 'GetWopiData',
+      requestInit: options.requestInit,
       oDataOptions: {
-        action: 'edit',
+        ...options.odataOptions,
+        action: options.action || 'edit',
       } as any,
     })
   }
@@ -422,7 +430,7 @@ export class Repository implements Disposable {
    */
   public async executeAction<TBodyType, TReturns>(options: ActionOptions<TBodyType, any>): Promise<TReturns> {
     const contextPath = PathHelper.getContentUrl(options.idOrPath)
-    const params = ODataUrlBuilder.buildUrlParamString(this.configuration, options.oDataOptions)
+    let params = ODataUrlBuilder.buildUrlParamString(this.configuration, options.oDataOptions)
     const path = PathHelper.joinPaths(
       this.configuration.repositoryUrl,
       this.configuration.oDataToken,
@@ -436,6 +444,11 @@ export class Repository implements Disposable {
     }
     if (options.method === 'POST') {
       requestOptions.body = JSON.stringify(options.body)
+    } else {
+      options.body &&
+        Object.keys(options.body).forEach(
+          key => (params += `&${key}=${encodeURIComponent((options.body as any)[key])}`),
+        )
     }
     const response = await this.fetch(`${path}?${params}`, requestOptions)
     if (!response.ok) {

@@ -5,8 +5,6 @@ import { LoginResponse } from '../src/LoginResponse'
 import { RefreshResponse } from '../src/RefreshResponse'
 import { MockTokenFactory } from './__Mocks__/MockTokenFactory'
 
-// tslint:disable:completed-docs
-// tslint:disable:no-string-literal
 export const jwtServiceTests = describe('JwtService', () => {
   let repo: Repository
   let jwtService: JwtService

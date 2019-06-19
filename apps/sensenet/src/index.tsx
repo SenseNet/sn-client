@@ -15,10 +15,12 @@ import {
   ResponsiveContextProvider,
   SessionContextProvider,
   ThemeProvider,
+  snInjector,
 } from './context'
 import { LoggerContextProvider } from './context/LoggerContext'
 import { CommandProviderManager } from './services/CommandProviderManager'
 import { CheatCommandProvider } from './services/CommandProviders/CheatCommandProvider'
+import { CustomActionCommandProvider } from './services/CommandProviders/CustomActionCommandProvider'
 import { HelpCommandProvider } from './services/CommandProviders/HelpCommandProvider'
 import { HistoryCommandProvider } from './services/CommandProviders/HistoryCommandProvider'
 import { InFolderSearchCommandProvider } from './services/CommandProviders/InFolderSearchCommandProvider'
@@ -37,13 +39,11 @@ Commit '${process.env.GIT_COMMITHASH}' `,
   'color: #16AAA6; border-bottom: 1px solid black',
 )
 
-// tslint:disable-next-line: no-string-literal
-const injector = diMiddleware['injector']
-
 diMiddleware
   .getInjectable(CommandProviderManager)
   .RegisterProviders(
     CheatCommandProvider,
+    CustomActionCommandProvider,
     HelpCommandProvider,
     HistoryCommandProvider,
     InFolderSearchCommandProvider,
@@ -54,7 +54,7 @@ diMiddleware
 ReactDOM.render(
   <CssBaseline>
     <Provider store={store}>
-      <InjectorContext.Provider value={injector}>
+      <InjectorContext.Provider value={snInjector}>
         <LoggerContextProvider>
           <PersonalSettingsContextProvider>
             <LocalizationProvider>

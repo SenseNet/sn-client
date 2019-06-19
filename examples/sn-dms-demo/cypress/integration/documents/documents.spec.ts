@@ -66,8 +66,8 @@ context('The documents page', () => {
       newMenuItems.forEach(item => {
         openNew(item.name)
         const displayName = Chance().word()
-        cy.get('#DisplayName').type(displayName + '{enter}')
-        cy.contains(displayName + item.ext + ' ' + resources.CREATE_CONTENT_SUCCESS_MESSAGE).should('exist')
+        cy.get('#DisplayName').type(`${displayName}{enter}`)
+        cy.contains(`${displayName + item.ext} ${resources.CREATE_CONTENT_SUCCESS_MESSAGE}`).should('exist')
         cy.contains(displayName + item.ext).should('exist')
         cy.get('[aria-label="Close"]').click()
       })
@@ -79,6 +79,7 @@ context('The documents page', () => {
     const newName = createNewFileName()
     uploadNewFileAndOpenContextMenuItem(currentUser.email, fileName, contextMenuItems.rename)
     // wait for input to be focused
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000)
     cy.get('.rename')
       .clear()
@@ -141,7 +142,7 @@ context('The documents page', () => {
     )
     cy.contains('div[data-cy="editProperties"] button', 'Submit').click()
     cy.contains(resources.EDIT_PROPERTIES_SUCCESS_MESSAGE.replace('{contentName}', fileName)).should('exist')
-    openContextMenuItem(properties.displayName.value + '.png', contextMenuItems.editProperties)
+    openContextMenuItem(`${properties.displayName.value}.png`, contextMenuItems.editProperties)
     Object.keys(properties).forEach(key => {
       cy.get(properties[key].selector).should(key === 'keywords' ? 'have.text' : 'have.value', properties[key].value)
     })
@@ -159,6 +160,7 @@ context('The documents page', () => {
     cy.contains('div[data-cy="editProperties"] button', 'Submit').click()
     openContextMenuItem(fileName, contextMenuItems.undoChanges)
     cy.contains(resources.UNDOCHECKOUT_SUCCESS_MESSAGE.replace('{contentName}', fileName)).should('exist')
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000) // wait for undo
     openContextMenuItem(fileName, contextMenuItems.editProperties)
     cy.get('#Watermark').should('not.have.value', 'sometext')

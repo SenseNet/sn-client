@@ -1,14 +1,15 @@
+/* eslint-disable dot-notation */
 /**
  * @module FieldControls
  */
 import React, { Component } from 'react'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
-import { ReactShortTextFieldSetting } from './ShortTextFieldSetting'
 
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
+import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
+import { ReactShortTextFieldSetting } from './ShortTextFieldSetting'
 
 /**
  * Interface for ShortText properties
@@ -64,9 +65,9 @@ export class ShortText<T extends GenericContent, K extends keyof T> extends Comp
    * Handles input changes. Dispatches a redux action to change field value in the state tree.
    * @param e
    */
-  public handleChange(e: React.ChangeEvent) {
+  public handleChange(e: React.ChangeEvent<{ value: string }>) {
     const { name, onChange } = this.props
-    const value = e.target['value']
+    const { value } = e.target
     onChange(name, value)
   }
   /**

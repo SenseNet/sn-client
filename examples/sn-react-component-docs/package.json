@@ -7,10 +7,7 @@
   "scripts": {
     "build-storybook": "build-storybook -c .storybook --quiet",
     "start": "start-storybook --static-dir assets",
-    "fix": "npm run fix:prettier && npm run fix:tslint",
-    "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
-    "fix:tslint": "tslint --fix --project .",
-    "lint": "tslint --project ."
+    "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write"
   },
   "repository": {
     "type": "git",

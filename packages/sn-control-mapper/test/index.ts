@@ -9,9 +9,6 @@ import {
 import 'jest'
 import { ControlMapper } from '../src'
 
-// tslint:disable:max-classes-per-file
-// tslint:disable:completed-docs
-
 class ExampleControlBase {}
 
 class ExampleDefaultControl extends ExampleControlBase {}

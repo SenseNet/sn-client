@@ -10,6 +10,18 @@ const values = {
   },
   commandPalette: {
     title: 'Show Command Palette',
+    help: {
+      readMeTitle: 'ReadMe',
+      readMeDescription: 'Opens the latest readme.md file from GitHub in a new window',
+      communitySiteTitle: 'Visit the Community Site',
+      communitySiteDescription: 'Opens http://community.sensenet.com in a new window',
+      gitterTitle: 'Chat on Gitter',
+      gitterDescription: 'If you have any unanswered question about the product you can ask us on Gitter',
+    },
+    customAction: {
+      executePrimaryText: '{0} 👉 {1}',
+      executeSecondaryText: "Execute custom action '{1}' on content '{0}'",
+    },
   },
   contentContextMenu: {
     editProperties: 'Edit properties',
@@ -17,6 +29,9 @@ const values = {
     move: 'Move',
     delete: 'Delete',
     open: 'Open',
+    download: 'Download',
+    wopiEdit: 'Open in online editor',
+    wopiRead: 'View in online editor',
   },
   contentInfoDialog: {
     dialogTitle: 'Info about {0}',
@@ -96,8 +111,8 @@ const values = {
     greetings: 'Greetings, {0}!',
     loggingInTo: 'Logging in to {0}...',
     loginSuccessNotification: `Logged in with user '{0} to repository '{1}'`,
-    loginFailedNotification: `Failed to log in with user '{0} to repository '{1}'`,
-    loginErrorNotification: `There was an error during login with user '{0} to repository '{1}'`,
+    loginFailedNotification: `Failed to log in with user '{0}' to repository '{1}'`,
+    loginErrorNotification: `There was an error during login with user '{0}' to repository '{1}'`,
   },
   logout: {
     logoutButtonTitle: 'Log out',
@@ -254,6 +269,25 @@ const values = {
       '/Root/System/Settings/UserProfile.settings':
         'When a user is created, and the profile feature is enabled (in the app configuration), they automatically get a profile – a workspace dedicated to the user’s personal documents and tasks. In this setting section you can customize the content type and the place of this profile. ',
     },
+  },
+  customActions: {
+    executeCustomActionDialog: {
+      title: `Execute custom action '{0}' on content '{1}'`,
+      noParameters: 'The action does not have any parameters',
+      cancelButton: 'Cancel',
+      executeButton: 'Execute',
+      executingAction: `Executing custom action...`,
+    },
+    resultsDialog: {
+      title: `Custom action results`,
+      closeButton: 'Close',
+    },
+  },
+  wopi: {
+    errorOpeningFileTitle: `Error opening file for online editing`,
+    errorOpeningFileText: 'There was an error during opening the file for online editing.',
+    tryOpenRead: 'View',
+    goBack: 'Go back',
   },
 }
 

@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -46,13 +47,19 @@ const emptyContent = {
   DisplayName: ADD_REFERENCE,
   Icon: '',
   Id: -1,
-} as GenericContent
+  Path: '',
+  Type: '',
+  Name: 'AddReference',
+}
 
 const changeContent = {
   DisplayName: CHANGE_REFERENCE,
   Icon: '',
   Id: -2,
-} as GenericContent
+  Path: '',
+  Type: '',
+  Name: 'ChangeReference',
+}
 
 /**
  * Interface for RefernceGrid properties

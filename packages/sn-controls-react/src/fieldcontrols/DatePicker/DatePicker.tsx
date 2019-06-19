@@ -2,12 +2,12 @@
  * @module FieldControls
  */
 import MomentUtils from '@date-io/moment'
+import { DatePicker as MUIDatePicker, MaterialUiPickersDate, MuiPickersUtilsProvider } from '@material-ui/pickers'
+
 import { GenericContent } from '@sensenet/default-content-types'
-import { DatePicker as MUIDatePicker } from 'material-ui-pickers'
-import { MuiPickersUtilsProvider } from 'material-ui-pickers'
 import moment from 'moment'
-import React from 'react'
-import { Fragment } from 'react'
+import React, { Fragment } from 'react'
+
 import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { ReactDateTimeFieldSetting } from '../DateTimeFieldSetting'
 
@@ -22,8 +22,8 @@ export interface DatePickerProps<T extends GenericContent, K extends keyof T>
  * Interface for DatePicker state
  */
 export interface DatePickerState<T extends GenericContent, _K extends keyof T> {
-  dateValue: Date
-  value: moment.Moment
+  dateValue: MaterialUiPickersDate
+  value: MaterialUiPickersDate
 }
 /**
  * Field control that represents a Date field. Available values will be populated from the FieldSettings.
@@ -44,10 +44,10 @@ export class DatePicker<T extends GenericContent, K extends keyof T> extends Rea
      */
     this.state = {
       dateValue: props['data-fieldValue']
-        ? new Date(this.setValue(props['data-fieldValue']))
+        ? moment(this.setValue(props['data-fieldValue']))
         : props['data-defaultValue']
-        ? new Date(this.setValue(props['data-defaultValue'].toString()))
-        : new Date(),
+        ? moment(this.setValue(props['data-defaultValue'].toString()))
+        : moment(),
       value: props['data-fieldValue'] ? props['data-fieldValue'] : props['data-defaultValue'],
     }
     this.handleDateChange = this.handleDateChange.bind(this)
@@ -69,9 +69,12 @@ export class DatePicker<T extends GenericContent, K extends keyof T> extends Rea
   }
   /**
    * handle changes
-   * @param {Date} date
+   * @param {MaterialUiPickersDate} date
    */
-  public handleDateChange = (date: Date) => {
+  public handleDateChange = (date: MaterialUiPickersDate) => {
+    if (!date) {
+      return
+    }
     this.setState({
       dateValue: date,
       value: moment.utc(date),

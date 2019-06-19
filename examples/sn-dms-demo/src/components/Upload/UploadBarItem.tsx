@@ -9,7 +9,7 @@ import React from 'react'
 import { ExtendedUploadProgressInfo } from '../../Actions'
 import { icons } from '../../assets/icons'
 import { resources } from '../../assets/resources'
-import theme from '../../assets/theme'
+import { theme } from '../../assets/theme'
 
 export interface UploadBarItemProps {
   item: ExtendedUploadProgressInfo
@@ -75,7 +75,6 @@ export class UploadBarItem extends React.Component<UploadBarItemProps, UploadBar
               {this.state.displayName}
             </div>
           }
-          inset={true}
           style={{ padding: '0 25px 0 14px' }}
           title={this.state.displayName}
         />

@@ -2,7 +2,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import Paper from '@material-ui/core/Paper'
 import React = require('react')
 import { connect } from 'react-redux'
-import { DocumentData, DraftCommentMarker, PreviewImageData } from '../models'
+import { DocumentData, DraftCommentMarker } from '../models'
 import { componentType, ImageUtil } from '../services'
 import { previewAvailable, RootReducerType, ZoomMode } from '../store'
 import { ShapesWidget } from './page-widgets'
@@ -16,8 +16,7 @@ const mapStateToProps = (state: RootReducerType, ownProps: { imageIndex: number 
   return {
     documentData: state.sensenetDocumentViewer.documentState.document as DocumentData,
     version: state.sensenetDocumentViewer.documentState.version,
-    page:
-      state.sensenetDocumentViewer.previewImages.AvailableImages[ownProps.imageIndex - 1] || ({} as PreviewImageData),
+    page: state.sensenetDocumentViewer.previewImages.AvailableImages[ownProps.imageIndex - 1] || {},
     activePages: state.sensenetDocumentViewer.viewer.activePages,
     showWatermark: state.sensenetDocumentViewer.viewer.showWatermark,
     pollInterval: state.sensenetDocumentViewer.previewImages.pollInterval,

@@ -44,7 +44,6 @@ export class SearchBarComponent extends React.Component<
    * @param page
    */
   public evaluateSearch() {
-    // tslint:disable-next-line:no-console
     console.log('Search triggered', this.state.searchValue)
   }
 

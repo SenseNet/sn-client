@@ -1,9 +1,8 @@
+/* eslint-disable dot-notation */
 /**
  * @module FieldControls
  */
 import React, { Component } from 'react'
-import { ReactChoiceFieldSetting } from '../ChoiceFieldSetting'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControl from '@material-ui/core/FormControl'
@@ -13,6 +12,8 @@ import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import TextField from '@material-ui/core/TextField'
 import { GenericContent } from '@sensenet/default-content-types'
+import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
+import { ReactChoiceFieldSetting } from '../ChoiceFieldSetting'
 
 /**
  * Interface for CheckboxGroup properties
@@ -77,7 +78,6 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
    */
   public isChecked(item: number | string) {
     let checked = false
-    // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < this.state.value.length; i++) {
       if (this.state.value[i].toString() === item.toString()) {
         checked = true

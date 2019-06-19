@@ -5,7 +5,14 @@ import { sleepAsync } from '@sensenet/client-utils'
 import { Folder, PortalSettings, User } from '@sensenet/default-content-types'
 import { GenericContent } from '@sensenet/default-content-types/src'
 import { Query } from '@sensenet/query'
-import { AdvancedSearch, PresetField, ReferenceField, TextField, TypeField } from '@sensenet/search-react/src'
+import {
+  AdvancedSearch,
+  NestedTextField,
+  PresetField,
+  ReferenceField,
+  TextField,
+  TypeField,
+} from '@sensenet/search-react/src'
 import { ExampleApp } from '@sensenet/search-react/src/ExampleApp'
 import { withA11y } from '@storybook/addon-a11y'
 import { action } from '@storybook/addon-actions'
@@ -14,12 +21,13 @@ import { withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
 import React from 'react'
 
-const showcaseNotes = require('../notes/search/Showcase.md')
-const advancedSearchNotes = require('../notes/search/AdvancedSearch.md')
-const presetFieldNotes = require('../notes/search/PresetField.md')
-const referenceFieldNotes = require('../notes/search/ReferenceField.md')
-const textFieldNotes = require('../notes/search/TextField.md')
-const typeFieldNotes = require('../notes/search/TypeField.md')
+import showcaseNotes from '../notes/search/Showcase.md'
+import advancedSearchNotes from '../notes/search/AdvancedSearch.md'
+import presetFieldNotes from '../notes/search/PresetField.md'
+import referenceFieldNotes from '../notes/search/ReferenceField.md'
+import textFieldNotes from '../notes/search/TextField.md'
+import nestedTextFieldNotes from '../notes/search/NestedTextField.md'
+import typeFieldNotes from '../notes/search/TypeField.md'
 
 storiesOf('Search', module)
   .addDecorator(withKnobs)
@@ -135,6 +143,24 @@ storiesOf('Search', module)
       />
     ),
     { notes: { markdown: textFieldNotes } },
+  )
+  .add(
+    'Nested Text field',
+    () => (
+      <AdvancedSearch
+        schema={null as any}
+        onQueryChanged={action('queryChanged')}
+        fields={() => (
+          <NestedTextField
+            placeholder="Type something to filter...."
+            fieldName="Owner"
+            nestedFieldName="DisplayName"
+            onQueryChange={action('onQueryChange')}
+          />
+        )}
+      />
+    ),
+    { notes: { markdown: nestedTextFieldNotes } },
   )
   .add(
     'Type field',

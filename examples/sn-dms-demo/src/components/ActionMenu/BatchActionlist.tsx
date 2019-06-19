@@ -45,11 +45,11 @@ const styles = {
   },
   menuItem: {
     padding: '6px 15px',
+    minHeight: 24,
     fontSize: '0.9rem',
   },
   actionIcon: {
     color: '#016D9E',
-    marginRight: 14,
   },
 }
 
@@ -130,7 +130,6 @@ class BatchActionlist extends React.Component<
     this.props.closeActionMenu()
     currentContent &&
       this.props.openActionMenu(options, currentContent, currentContent.Id.toString(), e.currentTarget, {
-        // tslint:disable-next-line:no-string-literal
         top: (e.target as HTMLElement).offsetTop + 100,
         left: (e.target as HTMLElement).offsetLeft + 100,
       })

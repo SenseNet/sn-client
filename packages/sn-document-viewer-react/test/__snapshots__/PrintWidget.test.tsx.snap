@@ -8,13 +8,13 @@ exports[`DownloadWidget component Should render without crashing 1`] = `
     }
   }
 >
-  <WithStyles(IconButton)
+  <WithStyles(ForwardRef(IconButton))
     color="inherit"
     id="Print"
     onClick={[Function]}
     title=""
   >
-    <pure(PrintIcon) />
-  </WithStyles(IconButton)>
+    <PrintIcon />
+  </WithStyles(ForwardRef(IconButton))>
 </div>
 `;

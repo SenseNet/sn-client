@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ReferenceField Component Container Should be rendered without error 1`] = `
-<WithStyles(Paper)
+<WithStyles(ForwardRef(Paper))
   square={true}
   style={
     Object {
@@ -10,7 +10,7 @@ exports[`ReferenceField Component Container Should be rendered without error 1`]
     }
   }
 >
-  <WithStyles(List)
+  <WithStyles(ForwardRef(List))
     component="nav"
     id="1"
     key="1"
@@ -23,29 +23,25 @@ exports[`ReferenceField Component Container Should be rendered without error 1`]
     <span>
       a
     </span>
-  </WithStyles(List)>
-</WithStyles(Paper)>
+  </WithStyles(ForwardRef(List))>
+</WithStyles(ForwardRef(Paper))>
 `;
 
 exports[`ReferenceField Component InputField Should be rendered without error 1`] = `
-<TextField
+<WithStyles(ForwardRef(TextField))
   onChange={[Function]}
-  required={false}
-  select={false}
   type="text"
   value=""
-  variant="standard"
 />
 `;
 
 exports[`ReferenceField Component Suggestion Should be rendered without error 1`] = `
-<WithStyles(ListItem)
-  component="div"
+<WithStyles(ForwardRef(ListItem))
   key="1"
   selected={true}
   value={1}
 >
-  <WithStyles(ListItemText)
+  <WithStyles(ForwardRef(ListItemText))
     primary={
       Array [
         <strong>
@@ -70,5 +66,5 @@ exports[`ReferenceField Component Suggestion Should be rendered without error 1`
       ]
     }
   />
-</WithStyles(ListItem)>
+</WithStyles(ForwardRef(ListItem))>
 `;

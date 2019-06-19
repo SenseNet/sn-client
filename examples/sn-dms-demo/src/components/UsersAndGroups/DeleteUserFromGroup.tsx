@@ -18,14 +18,10 @@ const styles = {
   },
 }
 
-// tslint:disable-next-line:no-empty-interface
 interface DeleteUserFromGroupProps {
   user: User | null
   group: Group
 }
-
-// tslint:disable-next-line:no-empty-interface
-interface DeleteUserFromGroupState {}
 
 const mapStateToProps = () => {
   return {}
@@ -37,8 +33,7 @@ const mapDispatchToProps = {
 }
 
 class DeleteUserFromGroup extends React.Component<
-  DeleteUserFromGroupProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
-  DeleteUserFromGroupState
+  DeleteUserFromGroupProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps
 > {
   public handleClick = () => {
     this.props.openDialog(

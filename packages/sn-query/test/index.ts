@@ -1,8 +1,6 @@
 import 'jest'
 import { Query } from '../src'
 
-// tslint:disable:variable-name
-// tslint:disable:completed-docs
 class Task {
   public Id!: number
   public Name!: string
@@ -12,7 +10,6 @@ class Task {
   public Approvable!: boolean
   public Description!: string
 }
-// tslint:enable:variable-name
 describe('Query', () => {
   it('Can be constructed', () => {
     const query = new Query(q => q)
@@ -75,6 +72,14 @@ describe('Query', () => {
     it('NotEquals', () => {
       const queryInstance = new Query(q => q.notEquals('DisplayName', 'test'))
       expect(queryInstance.toString()).toBe("NOT(DisplayName:'test')")
+    })
+    it('EqualsNested', () => {
+      const queryInstance = new Query(q => q.equalsNested('Owner', 'DisplayName', 'test'))
+      expect(queryInstance.toString()).toBe('Owner:{{DisplayName:test}}')
+    })
+    it('NotEqualsNested', () => {
+      const queryInstance = new Query(q => q.notEqualsNested('Owner', 'DisplayName', 'test'))
+      expect(queryInstance.toString()).toBe('NOT(Owner:{{DisplayName:test}})')
     })
     it('Between exclusive', () => {
       const queryInstance = new Query(q => q.between('Index', 1, 5))

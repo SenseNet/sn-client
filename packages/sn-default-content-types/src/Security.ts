@@ -1,5 +1,3 @@
-// tslint:disable:naming-convention
-
 /**
  * Provides metadata about identity kind.
  */

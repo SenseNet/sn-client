@@ -89,7 +89,6 @@ export class Token {
   /**
    * Returns the Token in string format (in a base64 encoded, dot separated header and payload)
    */
-  // tslint:disable-next-line:naming-convention
   public toString() {
     return `${this.headerEncoded}.${this.payloadEncoded}`
   }
