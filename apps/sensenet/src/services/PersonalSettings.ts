@@ -68,22 +68,28 @@ export const defaultSettings: PersonalSettingsType = {
         title: 'Global Dashboard',
         widgetType: 'markdown',
         settings: {
-          content:
-            '# alma \\r\\n áááá [jeeeee](https://imgix.ranker.com/user_node_img/50088/1001748292/original/like-a-turtle-and-part-fish-photo-u4?w=650&q=50&fm=pjpg&fit=crop&crop=faces "teknőc e")',
-        },
-      },
-      {
-        title: 'Example Query',
-        widgetType: 'query',
-        settings: {
-          columns: ['Name', 'Id', 'Path'],
-          showColumnNames: false,
-          top: 3,
-          query: '+alba',
+          content: 'This is an example global dashboard.',
         },
       },
     ],
-    repositoryDefault: [],
+    repositoryDefault: [
+      {
+        title: 'Repository Dashboard',
+        widgetType: 'markdown',
+        settings: {
+          content: 'This is an example Repository dashboard.',
+        },
+      },
+      {
+        title: 'Users',
+        widgetType: 'query',
+        settings: {
+          columns: ['DisplayName'],
+          showColumnNames: false,
+          query: "TypeIs:'User'",
+        },
+      },
+    ],
   },
   default: {
     theme: 'dark',
