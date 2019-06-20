@@ -1,5 +1,4 @@
 import BuildTwoTone from '@material-ui/icons/BuildTwoTone'
-import DashboardTwoTone from '@material-ui/icons/DashboardTwoTone'
 import InfoTwoTone from '@material-ui/icons/InfoTwoTone'
 import LanguageTwoTone from '@material-ui/icons/LanguageTwoTone'
 import PeopleTwoTone from '@material-ui/icons/PeopleTwoTone'
