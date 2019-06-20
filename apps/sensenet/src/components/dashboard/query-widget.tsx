@@ -5,7 +5,7 @@ import { ConstantContent, ODataParams } from '@sensenet/client-core'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { QueryWidget as QueryWidgetModel } from '../../services/PersonalSettings'
 import { useRepository, useContentRouting } from '../../hooks'
-import { CollectionComponent } from '../ContentListPanel'
+import { CollectionComponent, isReferenceField } from '../ContentListPanel'
 import {
   CurrentContentContext,
   CurrentChildrenContext,
@@ -24,9 +24,9 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
       query: props.settings.query,
       top: props.settings.top,
       select: ['Actions', ...props.settings.columns],
-      expand: ['Actions', ...props.settings.columns],
+      expand: ['Actions', ...props.settings.columns.filter(f => isReferenceField(f, repo))],
     })
-  }, [props.settings.columns, props.settings.query, props.settings.top])
+  }, [props.settings.columns, props.settings.query, props.settings.top, repo])
 
   useEffect(() => {
     if (loadChildrenSettings.query) {
@@ -58,7 +58,7 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
                 setLoadChildrenSettings: newSettings => {
                   setLoadChildrenSettings({
                     ...loadChildrenSettings,
-                    ...newSettings,
+                    orderby: newSettings.orderby,
                   })
                 },
                 setLoadSettings: () => ({}),
