@@ -1,4 +1,7 @@
 const values = {
+  dashboard: {
+    errorLoadingWidget: 'Error loading widget :(',
+  },
   addButton: {
     tooltip: 'Create or upload content',
     new: 'New...',
