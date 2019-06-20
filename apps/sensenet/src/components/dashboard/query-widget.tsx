@@ -12,12 +12,14 @@ import {
   CurrentAncestorsContext,
   LoadSettingsContext,
 } from '../../context'
+import { useStringReplace } from '../../hooks/use-string-replace'
 
 const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & RouteComponentProps> = props => {
   const [items, setItems] = useState<GenericContent[]>([])
   const [loadChildrenSettings, setLoadChildrenSettings] = useState<ODataParams<GenericContent>>({})
   const repo = useRepository()
   const contentRouter = useContentRouting()
+  const replacedTitle = useStringReplace(props.title)
 
   useEffect(() => {
     setLoadChildrenSettings({
@@ -44,7 +46,7 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
   return (
     <div style={{ minHeight: 250 }}>
       <Typography gutterBottom={true} variant="h5">
-        {props.title}
+        {replacedTitle}
       </Typography>
 
       <CurrentContentContext.Provider value={ConstantContent.PORTAL_ROOT}>

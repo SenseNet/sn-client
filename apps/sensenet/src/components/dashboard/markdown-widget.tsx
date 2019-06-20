@@ -1,41 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React from 'react'
 import { Typography } from '@material-ui/core'
 import ReactMarkdown from 'react-markdown'
 import { MarkdownWidget as MarkdownWidgetModel } from '../../services/PersonalSettings'
-import { SessionContext } from '../../context'
-import { useRepository, usePersonalSettings } from '../../hooks'
+import { useStringReplace } from '../../hooks/use-string-replace'
 
 export const MarkdownWidget: React.FunctionComponent<MarkdownWidgetModel> = props => {
-  const [replacedContent, setReplacedContent] = useState('')
-  const session = useContext(SessionContext)
-  const repo = useRepository()
-  const personalSettings = usePersonalSettings()
-
-  useEffect(() => {
-    const currentRepo = personalSettings.repositories.find(r => r.url === repo.configuration.repositoryUrl)
-
-    const newReplacedContent = props.settings.content
-      .replace(
-        '{currentUserName}',
-        session.currentUser.FullName || session.currentUser.DisplayName || session.currentUser.Name,
-      )
-      .replace(
-        '{currentRepositoryName}',
-        currentRepo && currentRepo.displayName
-          ? currentRepo.displayName
-          : repo.configuration.repositoryUrl || repo.configuration.repositoryUrl,
-      )
-      .replace('{currentRepositoryUrl}', repo.configuration.repositoryUrl)
-
-    setReplacedContent(newReplacedContent)
-  }, [
-    personalSettings.repositories,
-    props.settings.content,
-    repo.configuration.repositoryUrl,
-    session.currentUser.DisplayName,
-    session.currentUser.FullName,
-    session.currentUser.Name,
-  ])
+  const replacedContent = useStringReplace(props.settings.content)
+  const replacedTitle = useStringReplace(props.title)
 
   return (
     <div>
@@ -44,7 +15,7 @@ export const MarkdownWidget: React.FunctionComponent<MarkdownWidgetModel> = prop
         title={props.title}
         gutterBottom={true}
         style={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
-        {props.title}
+        {replacedTitle}
       </Typography>
       <div style={{ overflow: 'auto' }}>
         <ReactMarkdown escapeHtml={false} source={replacedContent} />
