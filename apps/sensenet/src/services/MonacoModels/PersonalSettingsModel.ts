@@ -25,7 +25,7 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
               default: null,
               required: ['widgetType', 'title'],
               properties: {
-                width: {
+                minWidth: {
                   $id: '#/dashboardSection/properties/widgetType',
                   type: 'number',
                   title: 'The minimum width of the widget in pixels',

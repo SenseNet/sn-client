@@ -27,7 +27,7 @@ export interface Widget<T> {
   title: string
   widgetType: typeof widgetTypes[number]
   settings: T
-  width?: number
+  minWidth?: number
 }
 
 export interface MarkdownWidget extends Widget<{ content: string }> {

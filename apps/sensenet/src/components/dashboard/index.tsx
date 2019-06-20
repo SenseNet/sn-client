@@ -39,7 +39,7 @@ const Dashboard: React.FunctionComponent<DashboardProps> = ({ repository }) => {
               flex: 1,
               margin: '1em',
               padding: '1em',
-              minWidth: widget.width || 250,
+              minWidth: widget.minWidth || 250,
               overflow: 'hidden',
             }}>
             {widgetComponent}
