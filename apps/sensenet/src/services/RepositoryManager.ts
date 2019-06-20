@@ -45,7 +45,18 @@ export class RepositoryManager {
         repositoryUrl,
       },
       (input: RequestInfo, init?: RequestInit) => {
-        this.injector.getInstance(RequestCounterService).countRequest(new URL(input.toString()).hostname)
+        try {
+          this.injector
+            .getInstance(RequestCounterService)
+            .countRequest(new URL(input.toString()).hostname, init && init.method === 'POST' ? 'POST' : 'GET')
+        } catch (error) {
+          this.injector.getInstance(RequestCounterService).resetToday()
+          this.injector.logger.warning({
+            scope: 'RepositoryManager',
+            message: 'Failed to log the request count :(',
+            data: { details: { error } },
+          })
+        }
         return fetch(input, init)
       },
     )

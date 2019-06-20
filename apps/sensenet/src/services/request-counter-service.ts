@@ -4,8 +4,14 @@ import { ScopedLogger } from '@furystack/logging'
 
 interface RequestCounterRecord {
   all: number
+  GET: number
+  POST: number
   sites: {
-    [key: string]: number
+    [key: string]: {
+      all: number
+      GET: number
+      POST: number
+    }
   }
 }
 
@@ -20,6 +26,8 @@ export class RequestCounterService implements IDisposable {
 
   private readonly defaultState: RequestCounterRecord = {
     all: 0,
+    GET: 0,
+    POST: 0,
     sites: {},
   }
 
@@ -38,10 +46,25 @@ export class RequestCounterService implements IDisposable {
     return `SN-${this.constructor.name}-${new Date().toISOString().split('T')[0]}`
   }
 
-  public countRequest(site: string) {
+  public countRequest(site: string, type: 'GET' | 'POST') {
     this.currentState.all += 1
-    this.currentState.sites[site] ? (this.currentState.sites[site] += 1) : (this.currentState.sites[site] = 1)
+    this.currentState[type] += 1
+
+    if (!this.currentState.sites[site]) {
+      this.currentState.sites[site] = {
+        all: 0,
+        GET: 0,
+        POST: 0,
+      }
+    }
+
+    this.currentState.sites[site].all += 1
+    this.currentState.sites[site][type] += 1
     this.hasChanged = true
+  }
+
+  public resetToday() {
+    localStorage.removeItem(this.getStorageKey())
   }
 
   private read() {
