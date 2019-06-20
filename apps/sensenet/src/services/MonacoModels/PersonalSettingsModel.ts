@@ -25,6 +25,13 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
               default: null,
               required: ['widgetType', 'title'],
               properties: {
+                width: {
+                  $id: '#/dashboardSection/properties/widgetType',
+                  type: 'number',
+                  title: 'The minimum width of the widget in pixels',
+                  default: 250,
+                  examples: [250, 500],
+                },
                 widgetType: {
                   $id: '#/dashboardSection/properties/widgetType',
                   type: 'string',
@@ -51,12 +58,12 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                         $id: '#/dashboardSection/properties/querySettings',
                         type: 'object',
                         title: 'Settings for the Query widget',
-                        required: ['term', 'showColumnNames', 'columns'],
+                        required: ['query', 'columns'],
                         properties: {
-                          term: {
+                          query: {
                             $id: '#/dashboardSection/properties/querySettings/properties/term',
                             type: 'string',
-                            title: 'The Query term',
+                            title: 'The content query',
                             default: '',
                             examples: ['+alba'],
                             pattern: '^(.*)$',
@@ -68,17 +75,39 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                             default: false,
                             examples: [true],
                           },
+                          top: {
+                            $id: '#/dashboardSection/properties/querySettings/properties/showColumnNames',
+                            type: 'number',
+                            title: 'Limits the number of hits',
+                            default: 10,
+                            examples: [5, 10, 20],
+                          },
+                          showOpenInSearch: {
+                            $id: '#/dashboardSection/properties/querySettings/properties/showOpenInSearch',
+                            type: 'boolean',
+                            title: 'Display a link to the Search view',
+                            default: false,
+                            examples: [true],
+                          },
+                          showRefresh: {
+                            $id: '#/dashboardSection/properties/querySettings/properties/showRefresh',
+                            type: 'boolean',
+                            title: 'Display a refresh button',
+                            default: false,
+                            examples: [true, false],
+                          },
                           columns: {
                             $id: '#/dashboardSection/properties/querySettings/properties/columns',
                             type: 'array',
                             title: 'Columns to display',
+                            uniqueItems: true,
                             items: {
-                              $id: '#/dashboardSection/properties/querySettings/properties/columns/items',
-                              type: 'string',
-                              title: 'The Items Schema',
-                              default: '',
-                              examples: ['DisplayName', 'Path'],
-                              pattern: '^(.*)$',
+                              enum: [
+                                'Actions',
+                                'Type',
+                                /** ToDo: check for other displayable system fields */
+                                ...repo.schemas.getSchemaByName('GenericContent').FieldSettings.map(f => f.Name),
+                              ],
                             },
                           },
                         },

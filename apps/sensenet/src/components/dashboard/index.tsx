@@ -10,25 +10,42 @@ export interface DashboardProps {
   repository?: Repository
 }
 
-const Dashboard: React.FunctionComponent<DashboardProps> = ({ repository }) => {
-  const widgets = useWidgets(repository).map(widget => {
-    switch (widget.widgetType) {
-      case 'markdown':
-        return <MarkdownWidget {...widget} />
-      case 'query':
-        return <QueryWidget {...widget} />
-      default:
+export const getWidgetComponent = (widget: ReturnType<typeof useWidgets>[0], repo?: Repository) => {
+  switch (widget.widgetType) {
+    case 'markdown':
+      return <MarkdownWidget {...widget} />
+    case 'query':
+      if (!repo) {
         return <ErrorWidget {...widget} />
-    }
-  })
+      }
+      return <QueryWidget {...widget} />
+    default:
+      return <ErrorWidget {...widget} />
+  }
+}
+
+const Dashboard: React.FunctionComponent<DashboardProps> = ({ repository }) => {
+  const widgets = useWidgets(repository)
 
   return (
-    <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-      {widgets.map((widget, i) => (
-        <Paper key={i} style={{ flex: 1, margin: '1em', padding: '1em', minWidth: 250, overflow: 'hidden' }}>
-          {widget}
-        </Paper>
-      ))}
+    <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%', height: '100%', overflow: 'auto' }}>
+      {widgets.map((widget, i) => {
+        const widgetComponent = getWidgetComponent(widget, repository)
+
+        return (
+          <Paper
+            key={i}
+            style={{
+              flex: 1,
+              margin: '1em',
+              padding: '1em',
+              minWidth: widget.width || 250,
+              overflow: 'hidden',
+            }}>
+            {widgetComponent}
+          </Paper>
+        )
+      })}
     </div>
   )
 }

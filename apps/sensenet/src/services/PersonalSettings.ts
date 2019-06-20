@@ -1,7 +1,6 @@
 import { Injectable } from '@furystack/inject'
 import { LogLevel } from '@furystack/logging'
 import { ObservableValue, deepMerge } from '@sensenet/client-utils'
-
 import { GenericContent } from '@sensenet/default-content-types'
 import { PlatformDependent } from '../context'
 import { tuple } from '../utils/tuple'
@@ -28,18 +27,26 @@ export interface Widget<T> {
   title: string
   widgetType: typeof widgetTypes[number]
   settings: T
+  width?: number
 }
 
 export interface MarkdownWidget extends Widget<{ content: string }> {
   widgetType: 'markdown'
 }
 
-export interface QueryWidget
-  extends Widget<{ columns: Array<keyof GenericContent>; showColumnNames: boolean; term: string }> {
+export interface QueryWidget<T extends GenericContent>
+  extends Widget<{
+    columns: Array<keyof T>
+    showColumnNames: boolean
+    showRefresh?: boolean
+    showOpenInSearch?: boolean
+    top?: number
+    query: string
+  }> {
   widgetType: 'query'
 }
 
-export type WidgetSection = Array<MarkdownWidget | QueryWidget>
+export type WidgetSection = Array<MarkdownWidget | QueryWidget<GenericContent>>
 
 export type PersonalSettingsType = PlatformDependent<UiSettings> & {
   repositories: Array<{ url: string; loginName?: string; displayName?: string; dashboard?: WidgetSection }>
@@ -71,7 +78,8 @@ export const defaultSettings: PersonalSettingsType = {
         settings: {
           columns: ['Name', 'Id', 'Path'],
           showColumnNames: false,
-          term: '+alba',
+          top: 3,
+          query: '+alba',
         },
       },
     ],
