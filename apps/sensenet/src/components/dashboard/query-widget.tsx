@@ -6,7 +6,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { ConstantContent, ODataParams } from '@sensenet/client-core'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { QueryWidget as QueryWidgetModel } from '../../services/PersonalSettings'
-import { useRepository, useContentRouting, useLocalization } from '../../hooks'
+import { useRepository, useContentRouting, useLocalization, useSelectionService } from '../../hooks'
 import { CollectionComponent, isReferenceField } from '../ContentListPanel'
 import {
   CurrentContentContext,
@@ -25,6 +25,7 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
   const contentRouter = useContentRouting()
   const replacedTitle = useStringReplace(props.title)
   const localization = useLocalization().dashboard
+  const selectionService = useSelectionService()
 
   useEffect(() => {
     setLoadChildrenSettings({
@@ -119,6 +120,12 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
                 }}
                 onTabRequest={() => {
                   /** */
+                }}
+                onSelectionChange={sel => {
+                  selectionService.selection.setValue(sel)
+                }}
+                onActiveItemChange={item => {
+                  selectionService.activeContent.setValue(item)
                 }}
               />
               {error ? <Typography color="error">{error}</Typography> : null}
