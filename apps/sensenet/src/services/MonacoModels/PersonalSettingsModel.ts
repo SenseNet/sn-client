@@ -111,6 +111,13 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                             default: false,
                             examples: [true, false],
                           },
+                          countOnly: {
+                            $id: '#/dashboardSection/properties/querySettings/properties/countOnly',
+                            type: 'boolean',
+                            title: 'Display the content count instead of a list',
+                            default: false,
+                            examples: [true],
+                          },
                           columns: {
                             $id: '#/dashboardSection/properties/querySettings/properties/columns',
                             type: 'array',

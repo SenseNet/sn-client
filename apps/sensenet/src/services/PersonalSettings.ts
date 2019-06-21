@@ -44,6 +44,7 @@ export interface QueryWidget<T extends GenericContent>
     top?: number
     query: string
     emptyPlaceholderText?: string
+    countOnly?: boolean
   }> {
   widgetType: 'query'
 }

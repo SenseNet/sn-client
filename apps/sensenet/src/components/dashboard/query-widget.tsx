@@ -21,6 +21,7 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
   const [loadChildrenSettings, setLoadChildrenSettings] = useState<ODataParams<GenericContent>>({})
   const [error, setError] = useState('')
   const [refreshToken, setRefreshToken] = useState(Math.random())
+  const [count, setCount] = useState(0)
   const repo = useRepository()
   const contentRouter = useContentRouting()
   const replacedTitle = useStringReplace(props.title)
@@ -30,11 +31,12 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
   useEffect(() => {
     setLoadChildrenSettings({
       query: props.settings.query,
-      top: props.settings.top,
+      top: props.settings.countOnly ? 1 : props.settings.top,
+      inlinecount: 'allpages',
       select: ['Actions', ...props.settings.columns],
       expand: ['Actions', ...props.settings.columns.filter(f => isReferenceField(f, repo))],
     })
-  }, [props.settings.columns, props.settings.query, props.settings.top, repo])
+  }, [props.settings.columns, props.settings.countOnly, props.settings.query, props.settings.top, repo])
 
   useEffect(() => {
     const ac = new AbortController()
@@ -50,6 +52,7 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
               signal: ac.signal,
             },
           })
+          setCount(result.d.__count)
           setItems(result.d.results)
         } catch (e) {
           if (!ac.signal.aborted) {
@@ -62,11 +65,18 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
   }, [repo, loadChildrenSettings, refreshToken])
 
   return (
-    <div>
-      <div style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '0.35em' }}>
-        <Typography variant="h5" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-          {replacedTitle}
-        </Typography>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'flex-start',
+          marginBottom: props.settings.showColumnNames ? '0.35em' : '.5em',
+        }}>
+        <Tooltip title={replacedTitle}>
+          <Typography variant="h5" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            {replacedTitle}
+          </Typography>
+        </Tooltip>
         <div style={{ flex: 1 }} />
         <Tooltip title={localization.refresh}>
           <IconButton onClick={() => setRefreshToken(Math.random())} style={{ padding: '0', margin: '0 0 0 1em' }}>
@@ -85,57 +95,78 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
           </IconButton>
         </Tooltip>
       </div>
-      <CurrentContentContext.Provider value={ConstantContent.PORTAL_ROOT}>
-        <CurrentChildrenContext.Provider value={items}>
-          <CurrentAncestorsContext.Provider value={[]}>
-            <LoadSettingsContext.Provider
-              value={{
-                loadAncestorsSettings: {},
-                loadSettings: {},
-                loadChildrenSettings,
-                setLoadChildrenSettings: newSettings => {
-                  setLoadChildrenSettings({
-                    ...loadChildrenSettings,
-                    orderby: newSettings.orderby,
-                  })
-                },
-                setLoadSettings: () => ({}),
-                setLoadAncestorsSettings: () => ({}),
-              }}>
-              <CollectionComponent
-                disableSelection={!props.settings.enableSelection}
-                hideHeader={!props.settings.showColumnNames}
-                fieldsToDisplay={props.settings.columns}
-                style={{
-                  height: 'calc(100% - 75px)',
-                  overflow: 'auto',
-                }}
-                enableBreadcrumbs={false}
-                parentId={0}
-                onParentChange={() => {
-                  // props.history.push(contentRouter.getPrimaryActionUrl(p))
-                }}
-                onActivateItem={p => {
-                  props.history.push(contentRouter.getPrimaryActionUrl(p))
-                }}
-                onTabRequest={() => {
-                  /** */
-                }}
-                onSelectionChange={sel => {
-                  selectionService.selection.setValue(sel)
-                }}
-                onActiveItemChange={item => {
-                  selectionService.activeContent.setValue(item)
-                }}
-              />
-              {error ? <Typography color="error">{error}</Typography> : null}
-              {items && items.length === 0 && props.settings.emptyPlaceholderText ? (
-                <Typography style={{ textAlign: 'center' }}>{props.settings.emptyPlaceholderText}</Typography>
-              ) : null}
-            </LoadSettingsContext.Provider>
-          </CurrentAncestorsContext.Provider>
-        </CurrentChildrenContext.Provider>
-      </CurrentContentContext.Provider>
+      {props.settings.countOnly ? (
+        <div
+          style={{
+            minHeight: 100,
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <Typography variant="h2">{count}</Typography>
+        </div>
+      ) : (
+        <CurrentContentContext.Provider value={ConstantContent.PORTAL_ROOT}>
+          <CurrentChildrenContext.Provider value={items}>
+            <CurrentAncestorsContext.Provider value={[]}>
+              <LoadSettingsContext.Provider
+                value={{
+                  loadAncestorsSettings: {},
+                  loadSettings: {},
+                  loadChildrenSettings,
+                  setLoadChildrenSettings: newSettings => {
+                    setLoadChildrenSettings({
+                      ...loadChildrenSettings,
+                      orderby: newSettings.orderby,
+                    })
+                  },
+                  setLoadSettings: () => ({}),
+                  setLoadAncestorsSettings: () => ({}),
+                }}>
+                <CollectionComponent
+                  disableSelection={!props.settings.enableSelection}
+                  hideHeader={!props.settings.showColumnNames}
+                  fieldsToDisplay={props.settings.columns}
+                  style={{
+                    overflow: 'auto',
+                    height: props.settings.countOnly || items.length < 1 ? 0 : '100%',
+                  }}
+                  enableBreadcrumbs={false}
+                  parentId={0}
+                  onParentChange={() => {
+                    // props.history.push(contentRouter.getPrimaryActionUrl(p))
+                  }}
+                  onActivateItem={p => {
+                    props.history.push(contentRouter.getPrimaryActionUrl(p))
+                  }}
+                  onTabRequest={() => {
+                    /** */
+                  }}
+                  onSelectionChange={sel => {
+                    selectionService.selection.setValue(sel)
+                  }}
+                  onActiveItemChange={item => {
+                    selectionService.activeContent.setValue(item)
+                  }}
+                />
+                {error ? <Typography color="error">{error}</Typography> : null}
+                {items && items.length === 0 && props.settings.emptyPlaceholderText ? (
+                  <div
+                    style={{
+                      height: '100%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <Typography style={{ textAlign: 'center' }}>{props.settings.emptyPlaceholderText}</Typography>
+                  </div>
+                ) : null}
+              </LoadSettingsContext.Provider>
+            </CurrentAncestorsContext.Provider>
+          </CurrentChildrenContext.Provider>
+        </CurrentContentContext.Provider>
+      )}
     </div>
   )
 }
