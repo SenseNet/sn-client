@@ -43,6 +43,7 @@ export interface QueryWidget<T extends GenericContent>
     enableSelection?: boolean
     top?: number
     query: string
+    emptyPlaceholderText?: string
   }> {
   widgetType: 'query'
 }

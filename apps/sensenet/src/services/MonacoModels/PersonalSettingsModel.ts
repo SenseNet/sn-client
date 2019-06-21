@@ -68,6 +68,14 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                             examples: ['+alba'],
                             pattern: '^(.*)$',
                           },
+                          emptyPlaceholderText: {
+                            $id: '#/dashboardSection/properties/querySettings/properties/term',
+                            type: 'string',
+                            title: 'The text that will be displayed if the query has no hits',
+                            default: '',
+                            examples: ['No results.'],
+                            pattern: '^(.*)$',
+                          },
                           showColumnNames: {
                             $id: '#/dashboardSection/properties/querySettings/properties/showColumnNames',
                             type: 'boolean',
@@ -76,7 +84,7 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                             examples: [true],
                           },
                           top: {
-                            $id: '#/dashboardSection/properties/querySettings/properties/showColumnNames',
+                            $id: '#/dashboardSection/properties/querySettings/properties/top',
                             type: 'number',
                             title: 'Limits the number of hits',
                             default: 10,

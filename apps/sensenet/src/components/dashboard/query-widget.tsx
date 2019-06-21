@@ -121,6 +121,9 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
                 }}
               />
               {error ? <Typography color="error">{error}</Typography> : null}
+              {items && items.length === 0 && props.settings.emptyPlaceholderText ? (
+                <Typography style={{ textAlign: 'center' }}>{props.settings.emptyPlaceholderText}</Typography>
+              ) : null}
             </LoadSettingsContext.Provider>
           </CurrentAncestorsContext.Provider>
         </CurrentChildrenContext.Provider>
