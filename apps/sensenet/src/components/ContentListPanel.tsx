@@ -293,7 +293,11 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
             fieldComponent={fieldOptions => {
               switch (fieldOptions.field) {
                 case 'Icon':
-                  return <Icon item={fieldOptions.content} />
+                  return (
+                    <TableCell>
+                      <Icon item={fieldOptions.content} />
+                    </TableCell>
+                  )
                 case 'Email' as any:
                   return (
                     <TableCell>
