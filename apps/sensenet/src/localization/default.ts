@@ -1,6 +1,8 @@
 const values = {
   dashboard: {
     errorLoadingWidget: 'Error loading widget :(',
+    refresh: 'Refresh',
+    openInSearch: 'Open in Search',
   },
   addButton: {
     tooltip: 'Create or upload content',

@@ -40,6 +40,7 @@ export class RepositoryManager {
           'PageCount' as any,
           'Binary',
           'CreationDate',
+          'Avatar',
         ],
         ...config,
         repositoryUrl,

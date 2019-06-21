@@ -73,7 +73,7 @@ export const isReferenceField = (fieldName: string, repo: Repository) => {
 }
 
 export const CollectionComponent: React.FunctionComponent<CollectionComponentProps> = props => {
-  const parent = useContext(CurrentContentContext)
+  const parentContent = useContext(CurrentContentContext)
   const children = useContext(CurrentChildrenContext)
   const ancestors = useContext(CurrentAncestorsContext)
   const device = useContext(ResponsiveContext)
@@ -127,7 +127,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
 
   useEffect(() => {
     setSelected([])
-  }, [parent])
+  }, [parentContent])
 
   useEffect(() => {
     setIsContextMenuOpened(false)
@@ -155,7 +155,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
   return (
     <div style={{ ...props.style }} {...props.containerProps}>
       {props.enableBreadcrumbs ? <ContentBreadcrumbs onItemClick={i => props.onParentChange(i.content)} /> : null}
-      <DropFileArea parent={parent} style={{ height: '100%', overflow: 'hidden' }}>
+      <DropFileArea parentContent={parentContent} style={{ height: '100%', overflow: 'hidden' }}>
         <div
           style={{
             ...(isFocused ? {} : { opacity: 0.8 }),

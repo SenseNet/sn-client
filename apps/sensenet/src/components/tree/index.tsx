@@ -117,7 +117,7 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
           const isOpened = opened.includes(content.Id) || (ancestorPaths && ancestorPaths.includes(content.Path))
           return (
             <div key={content.Id}>
-              <DropFileArea parent={content}>
+              <DropFileArea parentContent={content}>
                 <ListItem
                   onContextMenu={ev => {
                     setContextMenuItem(content)
