@@ -292,6 +292,25 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
             }}
             fieldComponent={fieldOptions => {
               switch (fieldOptions.field) {
+                case 'Icon':
+                  return <Icon item={fieldOptions.content} />
+                case 'Email' as any:
+                  return (
+                    <TableCell>
+                      <a href={`mailto:${fieldOptions.content[fieldOptions.field]}`}>
+                        {fieldOptions.content[fieldOptions.field]}
+                      </a>
+                    </TableCell>
+                  )
+                case 'Phone' as any:
+                  return (
+                    <TableCell>
+                      <a href={`tel:${fieldOptions.content[fieldOptions.field]}`}>
+                        {fieldOptions.content[fieldOptions.field]}
+                      </a>
+                    </TableCell>
+                  )
+
                 case 'DisplayName':
                   return (
                     <DisplayNameComponent
