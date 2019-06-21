@@ -82,7 +82,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
   const [selected, setSelected] = useState<GenericContent[]>([])
   const [isFocused, setIsFocused] = useState(true)
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
-  const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
+  const [contextMenuAnchor, setContextMenuAnchor] = useState<{ top: number; left: number }>({ top: 0, left: 0 })
   const [showDelete, setShowDelete] = useState(false)
   const repo = useRepository()
   const loadSettings = useContext(LoadSettingsContext)
@@ -287,7 +287,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
             onItemContextMenu={(ev, item) => {
               ev.preventDefault()
               setActiveContent(item)
-              setContextMenuAnchor(ev.currentTarget as HTMLElement)
+              setContextMenuAnchor({ top: ev.clientY, left: ev.clientX })
               setIsContextMenuOpened(true)
             }}
             fieldComponent={fieldOptions => {
@@ -386,7 +386,8 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
               <ContentContextMenu
                 menuProps={{
                   disablePortal: true,
-                  anchorEl: contextMenuAnchor,
+                  anchorReference: 'anchorPosition',
+                  anchorPosition: contextMenuAnchor,
                   BackdropProps: {
                     onClick: () => setIsContextMenuOpened(false),
                     onContextMenu: ev => ev.preventDefault(),
