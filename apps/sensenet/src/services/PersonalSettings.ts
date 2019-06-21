@@ -40,6 +40,7 @@ export interface QueryWidget<T extends GenericContent>
     showColumnNames: boolean
     showRefresh?: boolean
     showOpenInSearch?: boolean
+    enableSelection?: boolean
     top?: number
     query: string
   }> {

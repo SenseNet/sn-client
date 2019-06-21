@@ -67,6 +67,8 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
                 setLoadAncestorsSettings: () => ({}),
               }}>
               <CollectionComponent
+                disableSelection={!props.settings.enableSelection}
+                hideHeader={!props.settings.showColumnNames}
                 fieldsToDisplay={props.settings.columns}
                 style={{
                   height: 'calc(100% - 75px)',

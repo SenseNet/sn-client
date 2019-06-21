@@ -26,6 +26,8 @@ import { SelectionControl } from './SelectionControl'
 
 export interface CollectionComponentProps {
   enableBreadcrumbs?: boolean
+  hideHeader?: boolean
+  disableSelection?: boolean
   parentId: number
   onParentChange: (newParent: GenericContent) => void
   onTabRequest: () => void
@@ -244,6 +246,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
             }
           }}>
           <ContentList<GenericContent>
+            hideHeader={props.hideHeader}
             items={children}
             schema={repo.schemas.getSchema(GenericContent)}
             onRequestActiveItemChange={setActiveContent}
@@ -279,7 +282,9 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
               }
             }}
             onItemDoubleClick={(_ev, item) => handleActivateItem(item)}
-            getSelectionControl={(isSelected, content) => <SelectionControl {...{ isSelected, content }} />}
+            getSelectionControl={(isSelected, content) =>
+              props.disableSelection ? <span /> : <SelectionControl {...{ isSelected, content }} />
+            }
             onItemContextMenu={(ev, item) => {
               ev.preventDefault()
               setActiveContent(item)

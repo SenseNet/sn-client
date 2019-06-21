@@ -96,6 +96,13 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                             default: false,
                             examples: [true, false],
                           },
+                          enableSelection: {
+                            $id: '#/dashboardSection/properties/querySettings/properties/enableSelection',
+                            type: 'boolean',
+                            title: 'Enable content selection',
+                            default: false,
+                            examples: [true, false],
+                          },
                           columns: {
                             $id: '#/dashboardSection/properties/querySettings/properties/columns',
                             type: 'array',
