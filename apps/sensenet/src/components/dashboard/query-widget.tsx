@@ -61,19 +61,20 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
   }, [repo, loadChildrenSettings, refreshToken])
 
   return (
-    <div style={{ minHeight: 250 }}>
-      <div style={{ display: 'flex' }}>
-        <Typography gutterBottom={true} variant="h5">
+    <div>
+      <div style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '0.35em' }}>
+        <Typography variant="h5" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {replacedTitle}
         </Typography>
         <div style={{ flex: 1 }} />
         <Tooltip title={localization.refresh}>
-          <IconButton onClick={() => setRefreshToken(Math.random())}>
+          <IconButton onClick={() => setRefreshToken(Math.random())} style={{ padding: '0', margin: '0 0 0 1em' }}>
             <Refresh />
           </IconButton>
         </Tooltip>
         <Tooltip title={localization.openInSearch}>
           <IconButton
+            style={{ padding: '0', margin: '0 0 0 1em' }}
             onClick={() =>
               props.history.push(
                 `/${btoa(repo.configuration.repositoryUrl)}/search/${encodeURIComponent(props.settings.query)}`,
