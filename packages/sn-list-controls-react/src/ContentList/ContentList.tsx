@@ -102,7 +102,7 @@ export interface ContentListProps<T extends GenericContent> {
   checkboxProps?: CheckboxProps
 
   /**
-   *
+   * Optional custom selection component
    */
   getSelectionControl?: (selected: boolean, content: T) => JSX.Element
 

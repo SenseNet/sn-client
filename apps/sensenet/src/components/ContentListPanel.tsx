@@ -282,9 +282,8 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
               }
             }}
             onItemDoubleClick={(_ev, item) => handleActivateItem(item)}
-            getSelectionControl={(isSelected, content) =>
-              props.disableSelection ? <span /> : <SelectionControl {...{ isSelected, content }} />
-            }
+            displayRowCheckbox={!props.disableSelection}
+            getSelectionControl={(isSelected, content) => <SelectionControl {...{ isSelected, content }} />}
             onItemContextMenu={(ev, item) => {
               ev.preventDefault()
               setActiveContent(item)
