@@ -154,25 +154,16 @@ export class RichTextEditor extends Component<ReactClientFieldSetting, RichTextE
           </FormControl>
         )
       case 'browse':
-        return this.props.value && this.props.value.length > 0 ? (
-          <div className={this.props.className}>
-            <Typography variant="caption" gutterBottom={true}>
-              {this.props.labelText}
-            </Typography>
-            <Typography variant="body1" gutterBottom={true}>
-              <div dangerouslySetInnerHTML={{ __html: this.props.value }} />
-            </Typography>
-          </div>
-        ) : null
       default:
         return this.props.value && this.props.value.length > 0 ? (
           <div className={this.props.className}>
             <Typography variant="caption" gutterBottom={true}>
               {this.props.labelText}
             </Typography>
-            <Typography variant="body1" gutterBottom={true}>
-              <div dangerouslySetInnerHTML={{ __html: this.props.value }} />
-            </Typography>
+            {/* This needs to be reviewed!
+             variant="body1" means p. this works when the value doesn't contains html
+             and NOT when value contains html tags!*/}
+            <Typography variant="body1" gutterBottom={true} dangerouslySetInnerHTML={{ __html: this.props.value }} />
           </div>
         ) : null
     }
