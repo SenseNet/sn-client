@@ -75,6 +75,7 @@
     "react": "^16.8.2",
     "react-autosuggest": "^9.4.3",
     "react-dom": "^16.8.2",
+    "react-markdown": "^4.0.8",
     "react-monaco-editor": "^0.26.1",
     "react-redux": "^7.0.3",
     "react-responsive": "^6.1.2",

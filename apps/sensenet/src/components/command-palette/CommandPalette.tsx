@@ -12,7 +12,7 @@ import Autosuggest, {
 } from 'react-autosuggest'
 import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { LocalizationContext, RepositoryContext } from '../../context'
+import { LocalizationContext, RepositoryContext, ThemeContext } from '../../context'
 import { rootStateType } from '../../store'
 import {
   clearItems,
@@ -136,75 +136,79 @@ export class CommandPaletteComponent extends React.Component<
 
     return (
       <ClickAwayListener onClickAway={this.props.close}>
-        <div
-          style={{
-            flex: 1,
-            display: 'flex',
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-            border: this.props.isOpened ? '1px solid #13a5ad' : '',
-            backgroundColor: this.props.isOpened ? 'rgba(255,255,255,.10)' : 'transparent',
-          }}>
-          {this.props.isOpened ? null : (
-            <LocalizationContext.Consumer>
-              {localization => (
-                <Tooltip style={{}} placeholder="bottom-end" title={localization.values.commandPalette.title}>
-                  <IconButton onClick={this.props.open} style={{ padding: undefined }}>
-                    <KeyboardArrowRightTwoTone />
-                    {'_'}
-                  </IconButton>
-                </Tooltip>
+        <ThemeContext.Consumer>
+          {theme => (
+            <div
+              style={{
+                flex: 1,
+                display: 'flex',
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+                border: this.props.isOpened ? '1px solid #13a5ad' : '',
+                backgroundColor: this.props.isOpened ? 'rgba(255,255,255,.10)' : 'transparent',
+              }}>
+              {this.props.isOpened ? null : (
+                <LocalizationContext.Consumer>
+                  {localization => (
+                    <Tooltip style={{}} placeholder="bottom-end" title={localization.values.commandPalette.title}>
+                      <IconButton onClick={this.props.open} style={{ padding: undefined }}>
+                        <KeyboardArrowRightTwoTone />
+                        {'_'}
+                      </IconButton>
+                    </Tooltip>
+                  )}
+                </LocalizationContext.Consumer>
               )}
-            </LocalizationContext.Consumer>
-          )}
 
-          <div
-            ref={r => (r ? (this.containerRef = r) : null)}
-            style={{
-              overflow: 'visible',
-              transition:
-                'width cubic-bezier(0.230, 1.000, 0.320, 1.000) 350ms, opacity cubic-bezier(0.230, 1.000, 0.320, 1.000) 250ms',
-              opacity: this.props.isOpened ? 1 : 0,
-              width: this.props.isOpened ? '100%' : 0,
-            }}>
-            <Autosuggest<CommandPaletteItem>
-              theme={{
-                suggestionsList: {
-                  listStyle: 'none',
-                  margin: 0,
-                  padding: 0,
-                },
-                input: {
-                  width: '100%',
-                  padding: '5px',
-                  fontFamily: 'monospace',
-                  color: 'white',
-                  backgroundColor: 'transparent',
-                  border: 'none',
-                  margin: '.3em 0',
-                },
-                inputFocused: {
-                  outlineWidth: 0,
-                },
-              }}
-              alwaysRenderSuggestions={this.state.delayedOpened}
-              suggestions={this.props.items}
-              highlightFirstSuggestion={true}
-              onSuggestionSelected={this.handleSelectSuggestion}
-              onSuggestionsFetchRequested={e => this.handleSuggestionsFetchRequested(e, this.context)}
-              onSuggestionsClearRequested={this.props.clearItems}
-              getSuggestionValue={s => s.primaryText}
-              renderSuggestion={(s, params) => <CommandPaletteSuggestion suggestion={s} params={params} />}
-              renderSuggestionsContainer={s => (
-                <CommandPaletteHitsContainer
-                  {...s}
-                  width={(this.containerRef && this.containerRef.scrollWidth) || 100}
+              <div
+                ref={r => (r ? (this.containerRef = r) : null)}
+                style={{
+                  overflow: 'visible',
+                  transition:
+                    'width cubic-bezier(0.230, 1.000, 0.320, 1.000) 350ms, opacity cubic-bezier(0.230, 1.000, 0.320, 1.000) 250ms',
+                  opacity: this.props.isOpened ? 1 : 0,
+                  width: this.props.isOpened ? '100%' : 0,
+                }}>
+                <Autosuggest<CommandPaletteItem>
+                  theme={{
+                    suggestionsList: {
+                      listStyle: 'none',
+                      margin: 0,
+                      padding: 0,
+                    },
+                    input: {
+                      width: '100%',
+                      padding: '5px',
+                      fontFamily: 'monospace',
+                      color: theme.palette.text.primary,
+                      backgroundColor: 'transparent',
+                      border: 'none',
+                      margin: '.3em 0',
+                    },
+                    inputFocused: {
+                      outlineWidth: 0,
+                    },
+                  }}
+                  alwaysRenderSuggestions={this.state.delayedOpened}
+                  suggestions={this.props.items}
+                  highlightFirstSuggestion={true}
+                  onSuggestionSelected={this.handleSelectSuggestion}
+                  onSuggestionsFetchRequested={e => this.handleSuggestionsFetchRequested(e, this.context)}
+                  onSuggestionsClearRequested={this.props.clearItems}
+                  getSuggestionValue={s => s.primaryText}
+                  renderSuggestion={(s, params) => <CommandPaletteSuggestion suggestion={s} params={params} />}
+                  renderSuggestionsContainer={s => (
+                    <CommandPaletteHitsContainer
+                      {...s}
+                      width={(this.containerRef && this.containerRef.scrollWidth) || 100}
+                    />
+                  )}
+                  inputProps={inputProps}
                 />
-              )}
-              inputProps={inputProps}
-            />
-          </div>
-        </div>
+              </div>
+            </div>
+          )}
+        </ThemeContext.Consumer>
       </ClickAwayListener>
     )
   }

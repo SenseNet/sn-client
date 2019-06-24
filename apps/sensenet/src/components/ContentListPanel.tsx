@@ -4,7 +4,8 @@ import Close from '@material-ui/icons/Close'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
-import React, { useContext, useEffect, useState, useCallback } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { Repository } from '@sensenet/client-core'
 import {
   CurrentAncestorsContext,
   CurrentChildrenContext,
@@ -63,6 +64,12 @@ export const DisplayNameComponent: React.FunctionComponent<{
   )
 }
 
+export const isReferenceField = (fieldName: string, repo: Repository) => {
+  const refWhiteList = ['AllowedChildTypes']
+  const setting = repo.schemas.getSchemaByName('GenericContent').FieldSettings.find(f => f.Name === fieldName)
+  return refWhiteList.indexOf(fieldName) !== -1 || (setting && setting.Type === 'ReferenceFieldSetting') || false
+}
+
 export const CollectionComponent: React.FunctionComponent<CollectionComponentProps> = props => {
   const parent = useContext(CurrentContentContext)
   const children = useContext(CurrentChildrenContext)
@@ -93,15 +100,6 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
     props.onSelectionChange && props.onSelectionChange(selected)
   }, [props, selected])
 
-  const isReferenceField = useCallback(
-    (fieldName: string) => {
-      const refWhiteList = ['AllowedChildTypes']
-      const setting = repo.schemas.getSchemaByName('GenericContent').FieldSettings.find(f => f.Name === fieldName)
-      return refWhiteList.indexOf(fieldName) !== -1 || (setting && setting.Type === 'ReferenceFieldSetting') || false
-    },
-    [repo.schemas],
-  )
-
   useEffect(() => {
     const currentField =
       (loadSettings.loadChildrenSettings.orderby && loadSettings.loadChildrenSettings.orderby[0][0]) || 'DisplayName'
@@ -117,7 +115,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
           ? [[currentOrder as any, order as any]]
           : [['DisplayName', 'asc']],
       select: personalSettings.content.fields,
-      expand: personalSettings.content.fields.filter(f => isReferenceField(f)),
+      expand: personalSettings.content.fields.filter(f => f === 'Actions' || isReferenceField(f, repo)),
     })
     setCurrentOrder(currentOrder)
     setCurrentDirection(currentDirection)
@@ -310,7 +308,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
               }
               if (
                 typeof fieldOptions.content[fieldOptions.field] === 'object' &&
-                isReferenceField(fieldOptions.field)
+                isReferenceField(fieldOptions.field, repo)
               ) {
                 const expectedContent = fieldOptions.content[fieldOptions.field] as GenericContent
                 if (

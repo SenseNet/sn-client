@@ -1,10 +1,11 @@
 import { LoginState } from '@sensenet/client-core'
 import React, { lazy, Suspense } from 'react'
 import { Route, RouteComponentProps, Switch, withRouter } from 'react-router'
-import { LoadSettingsContextProvider } from '../context'
+import { LoadSettingsContextProvider, RepositoryContext } from '../context'
 import { usePersonalSettings, useSession } from '../hooks'
 import { ErrorBoundary } from './ErrorBoundary'
 import { FullScreenLoader } from './FullScreenLoader'
+import { WopiPage } from './wopi-page'
 
 const ExploreComponent = lazy(async () => await import(/* webpackChunkName: "content" */ './content'))
 const DashboardComponent = lazy(async () => await import(/* webpackChunkName: "dashboard" */ './dashboard'))
@@ -30,6 +31,7 @@ const PersonalSettingsEditor = lazy(
 const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
   const sessionContext = useSession()
   const personalSettings = usePersonalSettings()
+
   return (
     <ErrorBoundary>
       <Route
@@ -128,6 +130,19 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
                       path="/:repo/preview/:documentId?"
                       render={() => {
                         return <DocumentViewerComponent />
+                      }}
+                    />
+                    <Route path="/:repo/wopi/:documentId/:action?">
+                      <WopiPage />
+                    </Route>
+                    <Route
+                      path="/:repo/"
+                      render={() => {
+                        return (
+                          <RepositoryContext.Consumer>
+                            {repo => <DashboardComponent repository={repo} />}
+                          </RepositoryContext.Consumer>
+                        )
                       }}
                     />
                     <Route

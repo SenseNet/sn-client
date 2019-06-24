@@ -1,9 +1,9 @@
 import { Injectable } from '@furystack/inject'
 import { LogLevel } from '@furystack/logging'
 import { ObservableValue, deepMerge } from '@sensenet/client-utils'
-
 import { GenericContent } from '@sensenet/default-content-types'
 import { PlatformDependent } from '../context'
+import { tuple } from '../utils/tuple'
 
 const settingsKey = `SN-APP-USER-SETTINGS`
 
@@ -21,9 +21,40 @@ export interface UiSettings {
   }
 }
 
+export const widgetTypes = tuple('markdown', 'query')
+
+export interface Widget<T> {
+  title: string
+  widgetType: typeof widgetTypes[number]
+  settings: T
+  minWidth?: number
+}
+
+export interface MarkdownWidget extends Widget<{ content: string }> {
+  widgetType: 'markdown'
+}
+
+export interface QueryWidget<T extends GenericContent>
+  extends Widget<{
+    columns: Array<keyof T>
+    showColumnNames: boolean
+    showRefresh?: boolean
+    showOpenInSearch?: boolean
+    top?: number
+    query: string
+  }> {
+  widgetType: 'query'
+}
+
+export type WidgetSection = Array<MarkdownWidget | QueryWidget<GenericContent>>
+
 export type PersonalSettingsType = PlatformDependent<UiSettings> & {
-  repositories: Array<{ url: string; loginName?: string; displayName?: string }>
+  repositories: Array<{ url: string; loginName?: string; displayName?: string; dashboard?: WidgetSection }>
   lastRepository: string
+  dashboards: {
+    globalDefault: WidgetSection
+    repositoryDefault: WidgetSection
+  }
   eventLogSize: number
   sendLogWithCrashReports: boolean
   logLevel: Array<keyof typeof LogLevel>
@@ -31,6 +62,35 @@ export type PersonalSettingsType = PlatformDependent<UiSettings> & {
 }
 
 export const defaultSettings: PersonalSettingsType = {
+  dashboards: {
+    globalDefault: [
+      {
+        title: 'Global Dashboard',
+        widgetType: 'markdown',
+        settings: {
+          content: 'This is an example global dashboard.',
+        },
+      },
+    ],
+    repositoryDefault: [
+      {
+        title: 'Repository Dashboard',
+        widgetType: 'markdown',
+        settings: {
+          content: 'This is an example Repository dashboard.',
+        },
+      },
+      {
+        title: 'Users',
+        widgetType: 'query',
+        settings: {
+          columns: ['DisplayName'],
+          showColumnNames: false,
+          query: "TypeIs:'User'",
+        },
+      },
+    ],
+  },
   default: {
     theme: 'dark',
     content: {
@@ -40,7 +100,7 @@ export const defaultSettings: PersonalSettingsType = {
     drawer: {
       enabled: true,
       type: 'mini-variant',
-      items: ['Content', 'Search', 'Version info'],
+      items: ['Search', 'Content', 'Users and Groups', 'Content Types', 'Localization', 'Setup', 'Version info'],
     },
     commandPalette: { enabled: true, wrapQuery: '${0} .AUTOFILTERS:OFF' },
   },
