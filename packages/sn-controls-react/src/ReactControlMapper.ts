@@ -7,6 +7,7 @@ import { ControlMapper } from '@sensenet/control-mapper'
 import {
   BooleanFieldSetting,
   ChoiceFieldSetting,
+  CurrencyFieldSetting,
   DateTimeFieldSetting,
   IntegerFieldSetting,
   LongTextFieldSetting,
@@ -30,6 +31,9 @@ export const reactControlMapper = (repository: Repository) => {
   >(repository, () => null, () => null)
   controlMapper
     .setupFieldSettingDefault(NumberFieldSetting, () => {
+      return FieldControls.Number
+    })
+    .setupFieldSettingDefault(CurrencyFieldSetting, () => {
       return FieldControls.Number
     })
     .setupFieldSettingDefault(IntegerFieldSetting, () => {

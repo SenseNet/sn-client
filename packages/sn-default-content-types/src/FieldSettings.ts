@@ -189,3 +189,5 @@ export class PasswordFieldSetting extends ShortTextFieldSetting {
 export class CaptchaFieldSetting extends FieldSetting {}
 
 export class BooleanFieldSetting extends FieldSetting {}
+
+export class CurrencyFieldSetting extends NumberFieldSetting {}
