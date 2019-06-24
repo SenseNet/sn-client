@@ -84,11 +84,10 @@ export const reactControlMapper = (repository: Repository) => {
     })
     .setupFieldSettingDefault(LongTextFieldSetting, setting => {
       switch (setting.TextType) {
-        case 'LongText' as any:
+        case 'LongText':
           return FieldControls.Textarea
-        case 'RichText' as any:
-          return FieldControls.RichTextEditor
-        case 'AdvancedRichText' as any:
+        case 'RichText':
+        case 'AdvancedRichText':
           return FieldControls.RichTextEditor
         default:
           if (setting.ControlHint === 'sn:QueryBuilder') {

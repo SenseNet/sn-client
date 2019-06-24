@@ -58,13 +58,10 @@ export enum DateTimePrecision {
   Day,
 }
 /**
- * Enum for LongText field editor values.
+ * Type for LongText field editor values.
  */
-export enum TextType {
-  LongText,
-  RichText,
-  AdvancedRichText,
-}
+export type TextType = 'LongText' | 'RichText' | 'AdvancedRichText'
+
 /**
  * Enum for HyperLink field href values.
  */
