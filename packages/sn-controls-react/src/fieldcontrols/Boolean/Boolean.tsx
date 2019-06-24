@@ -84,18 +84,8 @@ export class Boolean<T extends GenericContent, K extends keyof T> extends Compon
           </FormControl>
         )
       case 'browse':
-        return this.props.value.length > 0 ? (
-          <FormControl component={'fieldset' as 'div'} className={this.props.className}>
-            <InputLabel shrink={true} htmlFor={name as string}>
-              {this.props.labelText}
-            </InputLabel>
-            {this.props.renderIcon
-              ? this.props.renderIcon(this.state.value ? 'check' : 'not_interested')
-              : renderIconDefault(this.state.value ? 'check' : 'not_interested')}
-          </FormControl>
-        ) : null
       default:
-        return this.props.value.length > 0 ? (
+        return this.props.value != undefined ? (
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
             <InputLabel shrink={true} htmlFor={name as string}>
               {this.props.labelText}
