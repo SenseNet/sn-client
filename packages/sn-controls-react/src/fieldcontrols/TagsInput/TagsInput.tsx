@@ -49,7 +49,7 @@ const styles = {
 /**
  * Interface for TagsInput state
  */
-export interface TagsInputState<T extends GenericContent, _K extends keyof T> {
+export interface TagsInputState {
   label: string
   dataSource: any[]
   fieldValue: any
@@ -57,15 +57,12 @@ export interface TagsInputState<T extends GenericContent, _K extends keyof T> {
 /**
  * Field control that represents a Reference field. Available values will be populated from the FieldSettings.
  */
-export class TagsInput<T extends GenericContent, K extends keyof T> extends Component<
-  ReactReferenceFieldSetting<T, K>,
-  TagsInputState<T, K>
-> {
+export class TagsInput extends Component<ReactReferenceFieldSetting, TagsInputState> {
   /**
    * constructor
    * @param {object} props
    */
-  constructor(props: TagsInput<T, K>['props']) {
+  constructor(props: TagsInput['props']) {
     super(props)
     /**
      * @type {object}
@@ -173,7 +170,7 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
     const loadPath = this.props.content
       ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props.content.Path), '/', this.props.fieldName.toString())
       : ''
-    const references = await this.props.repository.loadCollection<T>({
+    const references = await this.props.repository.loadCollection({
       path: loadPath,
       oDataOptions: {
         select: 'all',

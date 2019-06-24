@@ -7,7 +7,6 @@ import FormHelperText from '@material-ui/core/FormHelperText'
 import Icon from '@material-ui/core/Icon'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
-import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
 import React, { Component } from 'react'
 import { SketchPicker } from 'react-color'
@@ -39,15 +38,12 @@ export interface ColorPickerState {
  * Field control that represents a Color field. Available values will be populated from the FieldSettings.
  */
 @Radium
-export class ColorPicker<T extends GenericContent, K extends keyof T> extends Component<
-  ReactColorPickerFieldSetting<T, K>,
-  ColorPickerState
-> {
+export class ColorPicker extends Component<ReactColorPickerFieldSetting, ColorPickerState> {
   /**
    * constructor
    * @param {object} props
    */
-  constructor(props: ColorPicker<T, K>['props']) {
+  constructor(props: ColorPicker['props']) {
     super(props)
     /**
      * @type {object}

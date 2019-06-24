@@ -3,7 +3,6 @@
  */
 import MomentUtils from '@date-io/moment'
 import { MaterialUiPickersDate, TimePicker as MUITimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
-import { GenericContent } from '@sensenet/default-content-types'
 import moment from 'moment'
 import React, { Fragment } from 'react'
 import { ReactDateTimeFieldSetting } from '../DateTimeFieldSetting'
@@ -17,15 +16,12 @@ export interface TimePickerState {
 /**
  * Field control that represents a DateTime field. Available values will be populated from the FieldSettings.
  */
-export class TimePicker<T extends GenericContent, K extends keyof T> extends React.Component<
-  ReactDateTimeFieldSetting<T, K>,
-  TimePickerState
-> {
+export class TimePicker extends React.Component<ReactDateTimeFieldSetting, TimePickerState> {
   /**
    * constructor
    * @param {object} props
    */
-  constructor(props: TimePicker<T, K>['props']) {
+  constructor(props: TimePicker['props']) {
     super(props)
     /**
      * @type {object}

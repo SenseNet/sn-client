@@ -80,7 +80,7 @@ export interface AllowedChildTypesState<T extends GenericContent> {
  */
 @Radium
 export class AllowedChildTypes<T extends GenericContent, K extends keyof T> extends Component<
-  ReactAllowedChildTypesFieldSetting<T, K>,
+  ReactAllowedChildTypesFieldSetting,
   AllowedChildTypesState<T>
 > {
   constructor(props: AllowedChildTypes<T, K>['props']) {
@@ -279,7 +279,6 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
         removeable: true,
       })
     }
-    console.log(newValue)
     this.props.fieldOnChange(this.props.fieldName, newValue as any)
   }
   /**

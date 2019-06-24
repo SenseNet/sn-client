@@ -8,7 +8,6 @@ import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
-import { GenericContent } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
 import { ReactChoiceFieldSetting } from '../ChoiceFieldSetting'
 
@@ -21,11 +20,8 @@ export interface RadioButtonGroupState {
 /**
  * Field control that represents a Choice field. Available values will be populated from the FieldSettings.
  */
-export class RadioButtonGroup<T extends GenericContent, K extends keyof T> extends Component<
-  ReactChoiceFieldSetting<T, K>,
-  RadioButtonGroupState
-> {
-  constructor(props: RadioButtonGroup<T, K>['props']) {
+export class RadioButtonGroup extends Component<ReactChoiceFieldSetting, RadioButtonGroupState> {
+  constructor(props: RadioButtonGroup['props']) {
     super(props)
     this.state = {
       value: this.props.value || this.props.defaultValue || this.props.options[0].Value,

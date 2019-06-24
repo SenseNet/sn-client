@@ -4,7 +4,6 @@
 import React, { Component } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
 import { ReactLongTextFieldSetting } from '../LongTextFieldSetting'
 
@@ -20,15 +19,12 @@ export interface TextareaState {
  * Field control that represents a LongText field. Available values will be populated from the FieldSettings.
  */
 @Radium
-export class Textarea<T extends GenericContent, K extends keyof T> extends Component<
-  ReactLongTextFieldSetting<T, K>,
-  TextareaState
-> {
+export class Textarea extends Component<ReactLongTextFieldSetting, TextareaState> {
   /**
    * constructor
    * @param {object} props
    */
-  constructor(props: Textarea<T, K>['props']) {
+  constructor(props: Textarea['props']) {
     super(props)
     /**
      * @type {object}

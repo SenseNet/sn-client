@@ -23,7 +23,7 @@ export interface DropDownListState<T extends GenericContent, K extends keyof T> 
  * Field control that represents a Choice field. Available values will be populated from the FieldSettings.
  */
 export class DropDownList<T extends GenericContent, K extends keyof T> extends Component<
-  ReactChoiceFieldSetting<T, K>,
+  ReactChoiceFieldSetting,
   DropDownListState<T, K>
 > {
   /**

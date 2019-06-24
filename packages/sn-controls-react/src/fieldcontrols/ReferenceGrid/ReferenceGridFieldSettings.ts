@@ -7,8 +7,7 @@ import { ReactReferenceFieldSetting } from '../ReferenceFieldSetting'
 /**
  * Interface for ReactReferenceGridFieldSetting properties
  */
-export interface ReactReferenceGridFieldSetting<T extends GenericContent, K extends keyof T>
-  extends ReactReferenceFieldSetting<T, K> {
+export interface ReactReferenceGridFieldSetting extends ReactReferenceFieldSetting {
   /**
    * Component that will displayed as an item in the list
    */

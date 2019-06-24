@@ -10,27 +10,23 @@ import FormGroup from '@material-ui/core/FormGroup'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import TextField from '@material-ui/core/TextField'
-import { GenericContent } from '@sensenet/default-content-types'
 import { ReactChoiceFieldSetting } from '../ChoiceFieldSetting'
 
 /**
  * Interface for CheckboxGroup state
  */
-export interface CheckboxGroupState<T extends GenericContent, _K extends keyof T> {
+export interface CheckboxGroupState {
   value: any[]
 }
 /**
  * Field control that represents a Choice field. Available values will be populated from the FieldSettings.
  */
-export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends Component<
-  ReactChoiceFieldSetting<T, K>,
-  CheckboxGroupState<T, K>
-> {
+export class CheckboxGroup extends Component<ReactChoiceFieldSetting, CheckboxGroupState> {
   /**
    * constructor
    * @param {object} props
    */
-  constructor(props: CheckboxGroup<T, K>['props']) {
+  constructor(props: CheckboxGroup['props']) {
     super(props)
     this.state = {
       value: this.props.value || this.props.defaultValue || [],
@@ -151,7 +147,7 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
             <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <FormGroup>
-              {this.props.value.map((value: T[K], index: number) => (
+              {this.props.value.map((value: unknown, index: number) => (
                 <FormControl component={'fieldset' as 'div'} key={index}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
@@ -169,7 +165,7 @@ export class CheckboxGroup<T extends GenericContent, K extends keyof T> extends 
           <FormControl component={'fieldset' as 'div'} className={this.props.className}>
             <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
             <FormGroup>
-              {this.props.value.map((value: T[K], index: number) => (
+              {this.props.value.map((value: unknown, index: number) => (
                 <FormControl component={'fieldset' as 'div'} key={index}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}

@@ -1,14 +1,12 @@
 /**
  * @module FieldControls
  */
-import { GenericContent } from '@sensenet/default-content-types'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
  * Interface for LongTextFieldSetting properties
  */
-export interface ReactLongTextFieldSetting<T extends GenericContent = GenericContent, K extends keyof T = 'Name'>
-  extends ReactClientFieldSetting<T, K> {
+export interface ReactLongTextFieldSetting extends ReactClientFieldSetting {
   /**
    * Defines the maximum length of the inserted text: 0 to infinite.
    */

@@ -5,7 +5,6 @@ import React, { Component } from 'react'
 
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import { GenericContent } from '@sensenet/default-content-types'
 import { ReactShortTextFieldSetting } from './ShortTextFieldSetting'
 
 /**
@@ -18,15 +17,12 @@ export interface ShortTextState {
  * Field control that represents a ShortText field. Available values will be populated from the FieldSettings.
  */
 // @Radium
-export class ShortText<T extends GenericContent, K extends keyof T> extends Component<
-  ReactShortTextFieldSetting<T, K>,
-  ShortTextState
-> {
+export class ShortText extends Component<ReactShortTextFieldSetting, ShortTextState> {
   /**
    * constructor
    * @param {object} props
    */
-  constructor(props: ShortText<T, K>['props']) {
+  constructor(props: ShortText['props']) {
     super(props)
     /**
      * @type {object}

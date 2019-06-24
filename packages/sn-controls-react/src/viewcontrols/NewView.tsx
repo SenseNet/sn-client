@@ -82,7 +82,7 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
    * handle change event on an input
    * @param {SytheticEvent} event
    */
-  public handleInputChange(field: keyof T, value: T[K]) {
+  public handleInputChange(field: string, value: T[K]) {
     ;(this.state.content as T)[field] = value
   }
   /**
@@ -145,14 +145,13 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
                     'new',
                   ),
                   {
-                    fieldName: fieldSetting.fieldSettings.Name as keyof GenericContent,
+                    actionName: 'new',
+                    fieldName: fieldSetting.fieldSettings.Name,
                     repository: this.props.repository,
+                    renderIcon: this.props.renderIcon,
                     fieldOnChange: this.handleInputChange,
                   },
                 )}
-                {/* {createElement(fieldSetting.controlType, {
-                  ...fieldSetting.clientSettings,
-                })} */}
               </Grid>
             )
           })}

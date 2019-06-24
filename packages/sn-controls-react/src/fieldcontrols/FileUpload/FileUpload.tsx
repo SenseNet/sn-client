@@ -7,7 +7,6 @@ import FormControl from '@material-ui/core/FormControl'
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel/InputLabel'
 import Typography from '@material-ui/core/Typography'
-import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
 import React, { Component } from 'react'
 import { ReactBinaryFieldSetting } from '../BinaryFieldSetting'
@@ -43,15 +42,12 @@ export interface FileUploadState {
  * Field control that represents a FileUpload field. Available values will be populated from the FieldSettings.
  */
 @Radium
-export class FileUpload<T extends GenericContent, K extends keyof T> extends Component<
-  ReactBinaryFieldSetting<T, K>,
-  FileUploadState
-> {
+export class FileUpload extends Component<ReactBinaryFieldSetting, FileUploadState> {
   /**
    * constructor
    * @param {object} props
    */
-  constructor(props: FileUpload<T, K>['props']) {
+  constructor(props: FileUpload['props']) {
     super(props)
     /**
      * @type {object}

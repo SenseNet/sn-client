@@ -1,7 +1,6 @@
 /**
  * @module ViewControls
- *
- */ /** */
+ */
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import { Repository } from '@sensenet/client-core'
@@ -85,7 +84,7 @@ export class EditView<T extends GenericContent> extends Component<EditViewProps<
   /**
    * handle change event on an input
    */
-  public handleInputChange(field: keyof T, value: any) {
+  public handleInputChange(field: string, value: any) {
     this.setState({
       content: { ...this.state.content, [field]: value },
       saveableContent: { ...this.state.saveableContent, [field]: value },
@@ -142,7 +141,7 @@ export class EditView<T extends GenericContent> extends Component<EditViewProps<
                 'edit',
               ),
               {
-                fieldName: fieldSetting.fieldSettings.Name as keyof GenericContent,
+                fieldName: fieldSetting.fieldSettings.Name,
                 repository: this.props.repository,
                 placeHolderText: fieldSetting.fieldSettings.DisplayName,
                 actionName: 'edit',

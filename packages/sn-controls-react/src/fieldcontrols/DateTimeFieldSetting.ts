@@ -1,15 +1,13 @@
 /**
  * @module FieldControls
  */
-import { GenericContent } from '@sensenet/default-content-types'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 //TODO?? These fields are not wired in! Not used anywhere.
 /**
  * Interface for DateTimeFieldSetting properties
  */
-export interface ReactDateTimeFieldSetting<T extends GenericContent = GenericContent, K extends keyof T = 'Name'>
-  extends ReactClientFieldSetting<T, K> {
+export interface ReactDateTimeFieldSetting extends ReactClientFieldSetting {
   /**
    * Defines the presentation mode of the stored value: None, Date and DateAndTime. This only controls the behavior of the DatePicker Field Control.
    * @default none

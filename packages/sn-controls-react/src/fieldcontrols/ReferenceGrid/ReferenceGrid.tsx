@@ -63,22 +63,19 @@ const changeContent = {
 /**
  * Interface for ReferenceGrid state
  */
-export interface ReferenceGridState<T extends GenericContent, _K extends keyof T> {
+export interface ReferenceGridState {
   fieldValue: any
   itemLabel: string
   pickerIsOpen: boolean
   selected: any
 }
 
-export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends Component<
-  ReactReferenceGridFieldSetting<T, K>,
-  ReferenceGridState<T, K>
-> {
+export class ReferenceGrid extends Component<ReactReferenceGridFieldSetting, ReferenceGridState> {
   /**
    * constructor
    * @param {object} props
    */
-  constructor(props: ReferenceGrid<T, K>['props']) {
+  constructor(props: ReferenceGrid['props']) {
     super(props)
     let value
     let selected
@@ -122,7 +119,7 @@ export class ReferenceGrid<T extends GenericContent, K extends keyof T> extends 
     const loadPath = this.props.content
       ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props.content.Path), '/', this.props.fieldName.toString())
       : ''
-    const references = await this.props.repository.loadCollection<T>({
+    const references = await this.props.repository.loadCollection({
       path: loadPath,
       oDataOptions: {
         select: 'all',

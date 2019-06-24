@@ -1,7 +1,6 @@
 /**
  * @module FieldControls
  */
-import { GenericContent } from '@sensenet/default-content-types'
 import { ReactClientFieldSetting } from '../ClientFieldSetting'
 
 enum currencies {
@@ -14,8 +13,7 @@ enum currencies {
 /**
  * Interface for NumberFieldSetting properties
  */
-export interface ReactNumberFieldSetting<T extends GenericContent = GenericContent, K extends keyof T = 'Name'>
-  extends ReactClientFieldSetting<T, K> {
+export interface ReactNumberFieldSetting extends ReactClientFieldSetting {
   /**
    * Defines the allowed maximum value of the input data
    */

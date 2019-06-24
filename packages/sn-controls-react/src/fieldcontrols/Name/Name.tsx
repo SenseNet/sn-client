@@ -5,7 +5,6 @@ import React, { Component } from 'react'
 
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
 import { ReactNameFieldSetting } from './NameFieldSetting'
 
@@ -21,11 +20,8 @@ export interface NameState {
  * Field control that represents a ShortText field. Available values will be populated from the FieldSettings.
  */
 @Radium
-export class Name<T extends GenericContent, K extends keyof T> extends Component<
-  ReactNameFieldSetting<T, K>,
-  NameState
-> {
-  constructor(props: Name<T, K>['props']) {
+export class Name extends Component<ReactNameFieldSetting, NameState> {
+  constructor(props: Name['props']) {
     super(props)
     /**
      * @type {object}

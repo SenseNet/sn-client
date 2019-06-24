@@ -81,19 +81,19 @@ export class BrowseView extends Component<BrowseViewProps, BrowseViewState> {
           <Typography variant="h5" gutterBottom={true}>
             {this.props.content.DisplayName}
           </Typography>
-          {fieldSettings.map(fieldSetting => {
+          {fieldSettings.map(field => {
             return (
-              <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12} key={fieldSetting.fieldSettings.Name}>
+              <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12} key={field.fieldSettings.Name}>
                 {createElement(
                   this.state.controlMapper.getControlForContentField(
                     this.props.content.Type,
-                    fieldSetting.fieldSettings.Name,
+                    field.fieldSettings.Name,
                     'browse',
                   ),
                   {
-                    fieldName: fieldSetting.fieldSettings.Name as keyof GenericContent,
+                    fieldName: field.fieldSettings.Name,
                     actionName: 'browse',
-                    value: this.getFieldValue(fieldSetting.fieldSettings.Name),
+                    value: this.getFieldValue(field.fieldSettings.Name),
                     repository: this.props.repository,
                     renderIcon: this.props.renderIcon,
                     fieldOnChange: () => {

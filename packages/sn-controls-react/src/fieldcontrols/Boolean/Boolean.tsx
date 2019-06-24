@@ -6,7 +6,6 @@ import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import InputLabel from '@material-ui/core/InputLabel'
-import { GenericContent } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
 import { ReactClientFieldSetting } from '../ClientFieldSetting'
 import { renderIconDefault } from '../icon'
@@ -14,23 +13,20 @@ import { renderIconDefault } from '../icon'
 /**
  * Interface for Boolean state
  */
-export interface BooleanState<T extends GenericContent, _K extends keyof T> {
+export interface BooleanState {
   value: boolean
 }
 
 /**
  * Field control that represents a Choice field. Available values will be populated from the FieldSettings.
  */
-export class Boolean<T extends GenericContent, K extends keyof T> extends Component<
-  ReactClientFieldSetting<T, K>,
-  BooleanState<T, K>
-> {
+export class Boolean extends Component<ReactClientFieldSetting, BooleanState> {
   /**
    * constructor
    * @param {object} props
    */
   // eslint-disable-next-line @typescript-eslint/ban-types
-  constructor(props: Boolean<T, K>['props']) {
+  constructor(props: Boolean['props']) {
     super(props)
     this.state = {
       value: this.props.value || this.props.defaultValue || false,

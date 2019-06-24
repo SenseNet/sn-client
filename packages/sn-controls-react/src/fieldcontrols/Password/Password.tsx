@@ -8,7 +8,6 @@ import IconButton from '@material-ui/core/IconButton'
 import Input from '@material-ui/core/Input'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import InputLabel from '@material-ui/core/InputLabel'
-import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
 import { renderIconDefault } from '../icon'
 import { ReactShortTextFieldSetting } from '../ShortText/ShortTextFieldSetting'
@@ -24,15 +23,12 @@ export interface PasswordState {
  * Field control that represents a Password field. Available values will be populated from the FieldSettings.
  */
 @Radium
-export class Password<T extends GenericContent, K extends keyof T> extends Component<
-  ReactShortTextFieldSetting<T, K>,
-  PasswordState
-> {
+export class Password extends Component<ReactShortTextFieldSetting, PasswordState> {
   /**
    * constructor
    * @param {object} props
    */
-  constructor(props: Password<T, K>['props']) {
+  constructor(props: Password['props']) {
     super(props)
     /**
      * @type {object}

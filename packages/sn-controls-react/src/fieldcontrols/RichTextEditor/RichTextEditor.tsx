@@ -5,7 +5,6 @@ import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import Typography from '@material-ui/core/Typography'
-import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
 import React, { Component } from 'react'
 import ReactQuill from 'react-quill'
@@ -62,15 +61,12 @@ const formats = [
  * Field control that represents a LongText field. Available values will be populated from the FieldSettings.
  */
 @Radium
-export class RichTextEditor<T extends GenericContent, K extends keyof T> extends Component<
-  ReactClientFieldSetting<T, K>,
-  RichTextEditorState
-> {
+export class RichTextEditor extends Component<ReactClientFieldSetting, RichTextEditorState> {
   /**
    * constructor
    * @param {object} props
    */
-  constructor(props: RichTextEditor<T, K>['props']) {
+  constructor(props: RichTextEditor['props']) {
     super(props)
     /**
      * @type {object}

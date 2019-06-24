@@ -31,7 +31,7 @@ export interface AutoCompleteState<T extends GenericContent> {
  * Field control that represents a AutoComplete field. Available values will be populated from the FieldSettings.
  */
 export class AutoComplete<T extends GenericContent = GenericContent, K extends keyof T = 'Name'> extends Component<
-  ReactReferenceFieldSetting<T, K>,
+  ReactReferenceFieldSetting,
   AutoCompleteState<T>
 > {
   /**

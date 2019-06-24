@@ -5,7 +5,6 @@ import React, { Component } from 'react'
 
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
 import { ReactDisplayNameFieldSetting } from './DisplayNameFieldSetting'
 
@@ -19,15 +18,12 @@ export interface DisplayNameState {
  * Field control that represents a ShortText field. Available values will be populated from the FieldSettings.
  */
 @Radium
-export class DisplayName<T extends GenericContent, K extends keyof T> extends Component<
-  ReactDisplayNameFieldSetting<T, K>,
-  DisplayNameState
-> {
+export class DisplayName extends Component<ReactDisplayNameFieldSetting, DisplayNameState> {
   /**
    * constructor
    * @param {object} props
    */
-  constructor(props: DisplayName<T, K>['props']) {
+  constructor(props: DisplayName['props']) {
     super(props)
     /**
      * @type {object}

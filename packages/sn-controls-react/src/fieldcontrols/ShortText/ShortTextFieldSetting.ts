@@ -1,14 +1,12 @@
 /**
  * @module FieldControls
  */
-import { GenericContent } from '@sensenet/default-content-types'
 import { ReactClientFieldSetting } from '../ClientFieldSetting'
 
 /**
  * Interface for ShortTextFieldSetting properties
  */
-export interface ReactShortTextFieldSetting<T extends GenericContent = GenericContent, K extends keyof T = 'Name'>
-  extends ReactClientFieldSetting<T, K> {
+export interface ReactShortTextFieldSetting extends ReactClientFieldSetting {
   // TODO: add these props to shorttext
   /**
    * Maximum length of the text

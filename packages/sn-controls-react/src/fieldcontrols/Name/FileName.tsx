@@ -6,7 +6,6 @@ import React, { Component } from 'react'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
 import { ReactFileNameFieldSetting } from './FileNameFieldSetting'
 
@@ -23,15 +22,12 @@ export interface FileNameState {
  * Field control that represents a ShortText field. Available values will be populated from the FieldSettings.
  */
 @Radium
-export class FileName<T extends GenericContent, K extends keyof T> extends Component<
-  ReactFileNameFieldSetting<T, K>,
-  FileNameState
-> {
+export class FileName extends Component<ReactFileNameFieldSetting, FileNameState> {
   /**
    * constructor
    * @param {object} props
    */
-  constructor(props: FileName<T, K>['props']) {
+  constructor(props: FileName['props']) {
     super(props)
     /**
      * @type {object}

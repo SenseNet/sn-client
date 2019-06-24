@@ -3,7 +3,6 @@
  */
 import MomentUtils from '@date-io/moment'
 import { DatePicker as MUIDatePicker, MaterialUiPickersDate, MuiPickersUtilsProvider } from '@material-ui/pickers'
-import { GenericContent } from '@sensenet/default-content-types'
 import moment from 'moment'
 import React, { Fragment } from 'react'
 import { ReactDateTimeFieldSetting } from '../DateTimeFieldSetting'
@@ -11,22 +10,19 @@ import { ReactDateTimeFieldSetting } from '../DateTimeFieldSetting'
 /**
  * Interface for DatePicker state
  */
-export interface DatePickerState<T extends GenericContent, _K extends keyof T> {
+export interface DatePickerState {
   dateValue: MaterialUiPickersDate
   value: MaterialUiPickersDate
 }
 /**
  * Field control that represents a Date field. Available values will be populated from the FieldSettings.
  */
-export class DatePicker<T extends GenericContent, K extends keyof T> extends React.Component<
-  ReactDateTimeFieldSetting<T, K>,
-  DatePickerState<T, K>
-> {
+export class DatePicker extends React.Component<ReactDateTimeFieldSetting, DatePickerState> {
   /**
    * constructor
    * @param {object} props
    */
-  constructor(props: DatePicker<T, K>['props']) {
+  constructor(props: DatePicker['props']) {
     super(props)
     /**
      * @type {object}

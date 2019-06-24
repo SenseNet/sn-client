@@ -44,21 +44,18 @@ const DEFAULT_AVATAR_PATH = '/Root/Sites/Default_Site/demoavatars/Admin.png'
 /**
  * Interface for Avatar state
  */
-export interface AvatarState<T extends GenericContent, _K extends keyof T> {
+export interface AvatarState {
   fieldValue: any
   pickerIsOpen: boolean
   selected?: GenericContent
 }
 
-export class Avatar<T extends GenericContent, K extends keyof T> extends Component<
-  ReactAvatarFieldSetting<T, K>,
-  AvatarState<T, K>
-> {
+export class Avatar extends Component<ReactAvatarFieldSetting, AvatarState> {
   /**
    * constructor
    * @param {object} props
    */
-  constructor(props: Avatar<T, K>['props']) {
+  constructor(props: Avatar['props']) {
     super(props)
     this.state = {
       fieldValue:

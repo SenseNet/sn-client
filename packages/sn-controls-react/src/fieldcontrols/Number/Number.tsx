@@ -4,7 +4,6 @@
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
 import React, { Component } from 'react'
 import { ReactNumberFieldSetting } from './NumberFieldSetting'
@@ -20,12 +19,9 @@ export interface NumberState {
  * Field control that represents a Number field. Available values will be populated from the FieldSettings.
  */
 @Radium
-export class Number<T extends GenericContent, K extends keyof T = 'Name'> extends Component<
-  ReactNumberFieldSetting<T, K>,
-  NumberState
-> {
+export class Number extends Component<ReactNumberFieldSetting, NumberState> {
   // eslint-disable-next-line @typescript-eslint/ban-types
-  constructor(props: Number<T, K>['props']) {
+  constructor(props: Number['props']) {
     super(props)
     this.state = {
       value: this.props.value
@@ -45,7 +41,7 @@ export class Number<T extends GenericContent, K extends keyof T = 'Name'> extend
    * convert incoming default value string to proper format
    * @param {string} value
    */
-  public setValue(value: T[K]) {
+  public setValue(value: string) {
     if (value) {
       return value
     } else {

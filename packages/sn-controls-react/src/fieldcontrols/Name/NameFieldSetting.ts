@@ -1,14 +1,12 @@
 /**
  * @module FieldControls
  */
-import { GenericContent } from '@sensenet/default-content-types'
 import { ReactShortTextFieldSetting } from '../ShortText/ShortTextFieldSetting'
 
 /**
  * Interface for NameFieldSetting properties
  */
-export interface ReactNameFieldSetting<T extends GenericContent = GenericContent, K extends keyof T = 'Name'>
-  extends ReactShortTextFieldSetting<T, K> {
+export interface ReactNameFieldSetting extends ReactShortTextFieldSetting {
   /**
    * When set to "true", the Field Control will not set the Content's DisplayName even if the DisplayName Field Control is not present in the Content View
    * @default false
