@@ -335,6 +335,7 @@ storiesOf('FieldControls.CheckboxGroup', module)
         labelText={text('Label', 'Checkboxgroup label')}
         actionName="new"
         fieldOnChange={action('change')}
+        repository={testRepository}
         options={[{ Text: 'option1', Value: 1 }, { Text: 'option2', Value: 2 }, { Text: 'option3', Value: 3 }]}
         allowMultiple={boolean('Allow multiple', false)}
         readOnly={boolean('Readonly', false)}
@@ -354,6 +355,7 @@ storiesOf('FieldControls.CheckboxGroup', module)
         labelText={text('Label', 'Checkboxgroup label')}
         actionName="edit"
         fieldOnChange={action('change')}
+        repository={testRepository}
         options={[{ Text: 'option1', Value: 1 }, { Text: 'option2', Value: 2 }, { Text: 'option3', Value: 3 }]}
         value={[3]}
         allowMultiple={boolean('Allow multiple', false)}
@@ -373,6 +375,7 @@ storiesOf('FieldControls.CheckboxGroup', module)
       <CheckboxGroup
         labelText={text('Label', 'Checkboxgroup label')}
         actionName="browse"
+        repository={testRepository}
         fieldOnChange={action('change')}
         options={[{ Text: 'option1', Value: 1 }, { Text: 'option2', Value: 2 }, { Text: 'option3', Value: 3 }]}
         value={3}
@@ -392,6 +395,7 @@ storiesOf('FieldControls.ColorPicker', module)
       <ColorPicker
         labelText={text('Label', 'ColorPicker label')}
         actionName="new"
+        repository={testRepository}
         fieldOnChange={action('change')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
@@ -410,6 +414,7 @@ storiesOf('FieldControls.ColorPicker', module)
       <ColorPicker
         labelText={text('Label', 'ColorPicker label')}
         actionName="edit"
+        repository={testRepository}
         fieldOnChange={action('change')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
@@ -429,6 +434,7 @@ storiesOf('FieldControls.ColorPicker', module)
       <ColorPicker
         labelText={text('Label', 'ColorPicker label')}
         actionName="browse"
+        repository={testRepository}
         className={text('Additional class name', 'colorpicker-field')}
         fieldName={'Color' as any}
         value="#D0021B"
@@ -447,6 +453,7 @@ storiesOf('FieldControls.DatePicker', module)
     () => (
       <DatePicker
         actionName="new"
+        repository={testRepository}
         labelText={text('Label', 'DatePicker label')}
         fieldOnChange={action('change')}
         readOnly={boolean('Readonly', false)}
@@ -466,6 +473,7 @@ storiesOf('FieldControls.DatePicker', module)
     () => (
       <DatePicker
         actionName="edit"
+        repository={testRepository}
         labelText={text('Label', 'DatePicker label')}
         fieldOnChange={action('change')}
         readOnly={boolean('Readonly', false)}
@@ -485,6 +493,7 @@ storiesOf('FieldControls.DatePicker', module)
     () => (
       <DatePicker
         actionName="browse"
+        repository={testRepository}
         labelText={text('Label', 'DatePicker label')}
         value="2013-03-26T03:55:00"
         fieldOnChange={action('change')}
@@ -505,6 +514,7 @@ storiesOf('FieldControls.DateTimePicker', module)
     () => (
       <DateTimePicker
         actionName="new"
+        repository={testRepository}
         labelText={text('Label', 'DateTimePicker label')}
         fieldOnChange={action('change')}
         readOnly={boolean('Readonly', false)}
@@ -524,6 +534,7 @@ storiesOf('FieldControls.DateTimePicker', module)
     () => (
       <DateTimePicker
         actionName="edit"
+        repository={testRepository}
         labelText={text('Label', 'DateTimePicker label')}
         fieldOnChange={action('change')}
         readOnly={boolean('Readonly', false)}
@@ -543,6 +554,7 @@ storiesOf('FieldControls.DateTimePicker', module)
     () => (
       <DateTimePicker
         actionName="browse"
+        repository={testRepository}
         labelText={text('Label', 'DateTimePicker label')}
         value="2018-10-03T03:55:00"
         fieldOnChange={action('change')}
@@ -563,6 +575,7 @@ storiesOf('FieldControls.DisplayName', module)
     () => (
       <DisplayName
         actionName="new"
+        repository={testRepository}
         labelText={text('Label', 'DisplayName label')}
         defaultValue={text('Default value', 'DisplayName default value')}
         readOnly={boolean('Readonly', false)}
@@ -582,6 +595,7 @@ storiesOf('FieldControls.DisplayName', module)
     () => (
       <DisplayName
         labelText={text('Label', 'DisplayName label')}
+        repository={testRepository}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'displayname-field')}
@@ -601,6 +615,7 @@ storiesOf('FieldControls.DisplayName', module)
     () => (
       <DisplayName
         actionName="browse"
+        repository={testRepository}
         labelText={text('Label', 'DisplayName label')}
         className={text('Additional class name', 'displayname-field')}
         value={text('Value', 'DisplayName value')}
@@ -620,6 +635,7 @@ storiesOf('FieldControls.DropDownList', module)
     () => (
       <DropDownList
         actionName="new"
+        repository={testRepository}
         labelText={text('Label', 'DropDownList label')}
         defaultValue={'2'}
         readOnly={boolean('Readonly', false)}
@@ -639,6 +655,7 @@ storiesOf('FieldControls.DropDownList', module)
     () => (
       <DropDownList
         labelText={text('Label', 'DropDownList label')}
+        repository={testRepository}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'dropdownlist-field')}
@@ -659,6 +676,7 @@ storiesOf('FieldControls.DropDownList', module)
     () => (
       <DropDownList
         actionName="browse"
+        repository={testRepository}
         labelText={text('Label', 'DropDownList label')}
         className={text('Additional class name', 'dropdownlist-field')}
         value={text('Value', [2])}
@@ -674,6 +692,7 @@ storiesOf('FieldControls.DropDownList', module)
     () => (
       <DropDownList
         labelText={text('Label', 'ApprovingModeChoice label')}
+        repository={testRepository}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'approvingmodechoice-field')}
@@ -692,6 +711,7 @@ storiesOf('FieldControls.DropDownList', module)
     () => (
       <DropDownList
         labelText={text('Label', 'Version history')}
+        repository={testRepository}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'versioningmodechoice-field')}
@@ -719,6 +739,7 @@ storiesOf('FieldControls.DropDownList', module)
     () => (
       <DropDownList
         labelText={text('Label', 'Versioning for current content')}
+        repository={testRepository}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'versioningmodechoice-field')}
@@ -747,6 +768,7 @@ storiesOf('FieldControls.FileName', module)
     () => (
       <FileName
         actionName="new"
+        repository={testRepository}
         labelText={text('Label', 'FileName label')}
         defaultValue={text('Default value', 'FileName default value')}
         readOnly={boolean('Readonly', false)}
@@ -767,6 +789,7 @@ storiesOf('FieldControls.FileName', module)
     () => (
       <FileName
         labelText={text('Label', 'FileName label')}
+        repository={testRepository}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'filename-field')}
@@ -786,6 +809,7 @@ storiesOf('FieldControls.FileName', module)
     () => (
       <FileName
         actionName="browse"
+        repository={testRepository}
         labelText={text('Label', 'FileName label')}
         className={text('Additional class name', 'filename-field')}
         value={text('Value', 'Lorem-ipsum.docx')}
@@ -826,6 +850,7 @@ storiesOf('FieldControls.Name', module)
     () => (
       <Name
         actionName="new"
+        repository={testRepository}
         labelText={text('Label', 'Name label')}
         defaultValue={text('Default value', 'Name default value')}
         readOnly={boolean('Readonly', false)}
@@ -845,6 +870,7 @@ storiesOf('FieldControls.Name', module)
     () => (
       <Name
         labelText={text('Label', 'Name label')}
+        repository={testRepository}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'name-field')}
@@ -864,6 +890,7 @@ storiesOf('FieldControls.Name', module)
     () => (
       <Name
         actionName="browse"
+        repository={testRepository}
         labelText={text('Label', 'Name label')}
         className={text('Additional class name', 'name-field')}
         value={text('Value', 'Name value')}
@@ -883,6 +910,7 @@ storiesOf('FieldControls.Number', module)
     () => (
       <Number
         actionName="new"
+        repository={testRepository}
         labelText={text('Label', 'Number label')}
         defaultValue={number('Default value', 2)}
         readOnly={boolean('Readonly', false)}
@@ -910,6 +938,7 @@ storiesOf('FieldControls.Number', module)
     () => (
       <Number
         actionName="new"
+        repository={testRepository}
         labelText={text('Label', 'Number label')}
         defaultValue={number('Default value', 2.1)}
         readOnly={boolean('Readonly', false)}
@@ -937,6 +966,7 @@ storiesOf('FieldControls.Number', module)
     () => (
       <Number
         actionName="edit"
+        repository={testRepository}
         labelText={text('Label', 'Number label')}
         value={number('Value', 4)}
         readOnly={boolean('Readonly', false)}
@@ -964,6 +994,7 @@ storiesOf('FieldControls.Number', module)
     () => (
       <Number
         actionName="edit"
+        repository={testRepository}
         labelText={text('Label', 'Number label')}
         value={number('Value', 4.45)}
         readOnly={boolean('Readonly', false)}
@@ -991,6 +1022,7 @@ storiesOf('FieldControls.Number', module)
     () => (
       <Number
         actionName="browse"
+        repository={testRepository}
         labelText={text('Label', 'Number label')}
         value={number('Value', 4)}
         className={text('Additional class name', 'number-field')}
@@ -1008,6 +1040,7 @@ storiesOf('FieldControls.Number', module)
     () => (
       <Number
         actionName="new"
+        repository={testRepository}
         labelText={text('Label', 'Currency label')}
         defaultValue={number('Default value', 2.1)}
         readOnly={boolean('Readonly', false)}
@@ -1031,6 +1064,7 @@ storiesOf('FieldControls.Number', module)
     () => (
       <Number
         actionName="edit"
+        repository={testRepository}
         labelText={text('Label', 'Currency label')}
         value={number('Value', 4)}
         readOnly={boolean('Readonly', false)}
@@ -1054,6 +1088,7 @@ storiesOf('FieldControls.Number', module)
     () => (
       <Number
         actionName="browse"
+        repository={testRepository}
         labelText={text('Label', 'Currency label')}
         value={number('Value', 4.45)}
         readOnly={boolean('Readonly', false)}
@@ -1082,6 +1117,7 @@ storiesOf('FieldControls.Password', module)
     () => (
       <Password
         actionName="new"
+        repository={testRepository}
         labelText={text('Label', 'Password label')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
@@ -1100,6 +1136,7 @@ storiesOf('FieldControls.Password', module)
     () => (
       <Password
         labelText={text('Label', 'Password label')}
+        repository={testRepository}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'password-field')}
@@ -1124,6 +1161,7 @@ storiesOf('FieldControls.RadioButtonGroup', module)
     () => (
       <RadioButtonGroup
         actionName="new"
+        repository={testRepository}
         labelText={text('Label', 'RadioButtonGroup label')}
         defaultValue={'3'}
         readOnly={boolean('Readonly', false)}
@@ -1160,6 +1198,7 @@ storiesOf('FieldControls.RadioButtonGroup', module)
     () => (
       <RadioButtonGroup
         labelText={text('Label', 'RadioButtonGroup label')}
+        repository={testRepository}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'radiobuttongroup-field')}
@@ -1180,6 +1219,7 @@ storiesOf('FieldControls.RadioButtonGroup', module)
     () => (
       <RadioButtonGroup
         actionName="browse"
+        repository={testRepository}
         labelText={text('Label', 'RadioButtonGroup label')}
         className={text('Additional class name', 'radiobuttongroup-field')}
         value={text('Value', [2])}
@@ -1271,6 +1311,7 @@ storiesOf('FieldControls.RichTextEditor', module)
     () => (
       <RichTextEditor
         actionName="new"
+        repository={testRepository}
         labelText={text('Label', 'RichTextEditor label')}
         defaultValue={text('Default value', 'RichTextEditor default value')}
         readOnly={boolean('Readonly', false)}
@@ -1290,6 +1331,7 @@ storiesOf('FieldControls.RichTextEditor', module)
     () => (
       <RichTextEditor
         actionName="edit"
+        repository={testRepository}
         labelText={text('Label', 'RichTextEditor label')}
         value={text('Value', 'RichTextEditor value')}
         readOnly={boolean('Readonly', false)}
@@ -1309,6 +1351,7 @@ storiesOf('FieldControls.RichTextEditor', module)
     () => (
       <RichTextEditor
         actionName="browse"
+        repository={testRepository}
         labelText={text('Label', 'RichTextEditor label')}
         value={text(
           'Value',
@@ -1331,6 +1374,7 @@ storiesOf('FieldControls.ShortText', module)
     () => (
       <ShortText
         actionName="new"
+        repository={testRepository}
         labelText={text('Label', 'ShortText label')}
         defaultValue={text('Default value', 'ShortText default value')}
         readOnly={boolean('Readonly', false)}
@@ -1350,6 +1394,7 @@ storiesOf('FieldControls.ShortText', module)
     () => (
       <ShortText
         labelText={text('Label', 'ShortText label')}
+        repository={testRepository}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
         className={text('Additional class name', 'shorttext-field')}
@@ -1369,6 +1414,7 @@ storiesOf('FieldControls.ShortText', module)
     () => (
       <ShortText
         actionName="browse"
+        repository={testRepository}
         labelText={text('Label', 'ShortText label')}
         className={text('Additional class name', 'shorttext-field')}
         value={text('Value', 'ShortText value')}
@@ -1456,6 +1502,7 @@ storiesOf('FieldControls.Textarea', module)
       <Textarea
         actionName="new"
         textType="LongText"
+        repository={testRepository}
         labelText={text('Label', 'Textarea label')}
         defaultValue={text('Default value', 'Textarea default value')}
         readOnly={boolean('Readonly', false)}
@@ -1476,6 +1523,7 @@ storiesOf('FieldControls.Textarea', module)
       <Textarea
         textType="LongText"
         actionName="edit"
+        repository={testRepository}
         labelText={text('Label', 'Textarea label')}
         readOnly={boolean('Readonly', false)}
         required={boolean('Required', false)}
@@ -1499,6 +1547,7 @@ storiesOf('FieldControls.Textarea', module)
       <Textarea
         textType="LongText"
         actionName="browse"
+        repository={testRepository}
         labelText={text('Label', 'Textarea label')}
         className={text('Additional class name', 'textarea-field')}
         value={text(
@@ -1521,6 +1570,7 @@ storiesOf('FieldControls.TimePicker', module)
     () => (
       <TimePicker
         actionName="new"
+        repository={testRepository}
         labelText={text('Label', 'TimePicker label')}
         fieldOnChange={action('change')}
         readOnly={boolean('Readonly', false)}
@@ -1540,6 +1590,7 @@ storiesOf('FieldControls.TimePicker', module)
     () => (
       <TimePicker
         actionName="edit"
+        repository={testRepository}
         labelText={text('Label', 'TimePicker label')}
         fieldOnChange={action('change')}
         readOnly={boolean('Readonly', false)}
@@ -1559,6 +1610,7 @@ storiesOf('FieldControls.TimePicker', module)
     () => (
       <TimePicker
         actionName="browse"
+        repository={testRepository}
         labelText={text('Label', 'TimePicker label')}
         value={text('Value', '03:50:00')}
         fieldOnChange={action('change')}
