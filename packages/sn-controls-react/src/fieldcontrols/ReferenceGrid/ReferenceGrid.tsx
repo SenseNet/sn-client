@@ -11,8 +11,8 @@ import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
 // import { isUser } from '../type-guards'
+import { ReactReferenceGridFieldSetting } from '../field-settings/ReferenceGridFieldSettings'
 import { DefaultItemTemplate } from './DefaultItemTemplate'
-import { ReactReferenceGridFieldSetting } from './ReferenceGridFieldSettings'
 import { ReferencePicker } from './ReferencePicker'
 
 const styles = {

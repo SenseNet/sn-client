@@ -9,7 +9,7 @@ import { ControlSchema } from '@sensenet/control-mapper'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { Component, createElement, ComponentType } from 'react'
 import { reactControlMapper } from '../ReactControlMapper'
-import { ReactClientFieldSetting } from '../fieldcontrols/ClientFieldSetting'
+import { ReactClientFieldSetting } from '../fieldcontrols/field-settings/ClientFieldSetting'
 import { styles } from './BrowseViewStyles'
 
 /**

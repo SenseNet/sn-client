@@ -17,7 +17,7 @@ import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
 import { renderIconDefault } from '../icon'
-import { ReactReferenceFieldSetting } from '../ReferenceFieldSetting'
+import { ReactReferenceFieldSetting } from '../field-settings/ReferenceFieldSetting'
 import { isUser } from '../type-guards'
 
 const ITEM_HEIGHT = 48

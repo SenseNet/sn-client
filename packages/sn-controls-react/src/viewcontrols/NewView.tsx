@@ -11,7 +11,7 @@ import { ControlSchema } from '@sensenet/control-mapper'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 import MediaQuery from 'react-responsive'
 import { reactControlMapper } from '../ReactControlMapper'
-import { ReactClientFieldSetting } from '../fieldcontrols/ClientFieldSetting'
+import { ReactClientFieldSetting } from '../fieldcontrols/field-settings/ClientFieldSetting'
 import { styles } from './NewViewStyles'
 
 /**

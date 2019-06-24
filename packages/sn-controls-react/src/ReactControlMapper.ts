@@ -19,7 +19,7 @@ import {
 } from '@sensenet/default-content-types'
 import { ComponentType } from 'react'
 import * as FieldControls from './fieldcontrols'
-import { ReactClientFieldSetting } from './fieldcontrols/ClientFieldSetting'
+import { ReactClientFieldSetting } from './fieldcontrols/field-settings/ClientFieldSetting'
 
 /**
  * A static Control Mapper instance, used to create the mapping between sensenet ECM ContentTypes and FieldSettings and React components.

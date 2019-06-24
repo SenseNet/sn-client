@@ -9,7 +9,7 @@ import { GenericContent, Schema } from '@sensenet/default-content-types'
 import React, { Component, createElement, ComponentType } from 'react'
 import MediaQuery from 'react-responsive'
 import { reactControlMapper } from '../ReactControlMapper'
-import { ReactClientFieldSetting } from '../fieldcontrols/ClientFieldSetting'
+import { ReactClientFieldSetting } from '../fieldcontrols/field-settings/ClientFieldSetting'
 import { styles } from './EditViewStyles'
 
 /**

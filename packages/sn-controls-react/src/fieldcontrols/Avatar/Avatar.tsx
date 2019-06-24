@@ -10,7 +10,7 @@ import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent, User } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
 import { renderIconDefault } from '../icon'
-import { ReactAvatarFieldSetting } from './AvatarFieldSetting'
+import { ReactAvatarFieldSetting } from '../field-settings/AvatarFieldSetting'
 import { AvatarPicker } from './AvatarPicker'
 import { DefaultAvatarTemplate } from './DefaultAvatarTemplate'
 
