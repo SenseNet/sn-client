@@ -52,7 +52,7 @@ export class BrowseView extends Component<BrowseViewProps, BrowseViewState> {
     const controlMapper = reactControlMapper(this.props.repository)
     this.state = {
       content: this.props.content,
-      schema: controlMapper.getFullSchemaForContentType(this.props.content.Type, 'view'),
+      schema: controlMapper.getFullSchemaForContentType(this.props.content.Type, 'browse'),
       controlMapper,
     }
   }
@@ -82,31 +82,20 @@ export class BrowseView extends Component<BrowseViewProps, BrowseViewState> {
             {this.props.content.DisplayName}
           </Typography>
           {fieldSettings.map(fieldSetting => {
-            // fieldSetting.actionName = 'browse'
-            // fieldSetting.clientSettings.value = that.getFieldValue(fieldSetting.clientSettings.name)
-            // fieldSetting.clientSettings.renderIcon = this.props.renderIcon || undefined
-            // if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
-            //   fieldSetting.fieldSettings.Type = 'NumberFieldSetting'
-            // }
-            // if (
-            //   fieldSetting.clientSettings.typeName === 'NullFieldSetting' &&
-            //   fieldSetting.fieldSettings.Name === 'AllowedChildTypes'
-            // ) {
-            //   fieldSetting.clientSettings.renderIcon = this.props.renderIcon || undefined
-            // }
             return (
               <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12} key={fieldSetting.fieldSettings.Name}>
-                {createElement(() => null, {})}
-
                 {createElement(
                   this.state.controlMapper.getControlForContentField(
                     this.props.content.Type,
                     fieldSetting.fieldSettings.Name,
-                    'view',
+                    'browse',
                   ),
                   {
                     fieldName: fieldSetting.fieldSettings.Name as keyof GenericContent,
+                    actionName: 'browse',
+                    value: this.getFieldValue(fieldSetting.fieldSettings.Name),
                     repository: this.props.repository,
+                    renderIcon: this.props.renderIcon,
                     fieldOnChange: () => {
                       /** */
                     },

@@ -5,7 +5,7 @@ import { ControlSchema } from './ControlSchema'
 /**
  * Type that defines an action name for control schema generation
  */
-export type ActionName = 'new' | 'edit' | 'view'
+export type ActionName = 'new' | 'edit' | 'browse'
 
 /**
  * Class that handles control mappings between a sensenet Repository schemas and a generic control set
@@ -21,7 +21,7 @@ export class ControlMapper<TControlBaseType, TFieldControlBaseType> {
    * Method for getting a specified Schema object for a content type.
    * The FieldSettings will be filtered based on the provided actionName.
    * @param contentType The type of the content (e.g. ContentTypes.Task)
-   * @param actionName The name of the action. Can be 'new' / 'view' / 'edit'
+   * @param actionName The name of the action. Can be 'new' / 'browse' / 'edit'
    */
   private getTypeSchema(contentTypeName: string, actionName: ActionName): Schema {
     const schema = this.repository.schemas.getSchemaByName(contentTypeName)
@@ -38,7 +38,7 @@ export class ControlMapper<TControlBaseType, TFieldControlBaseType> {
           return s.VisibleNew !== FieldVisibility.Hide
         case 'edit':
           return s.VisibleEdit !== FieldVisibility.Hide
-        case 'view':
+        case 'browse':
           return s.VisibleBrowse !== FieldVisibility.Hide
         // no default
       }
@@ -122,7 +122,7 @@ export class ControlMapper<TControlBaseType, TFieldControlBaseType> {
    * Retrieves an assigned Control constructor for a specified content's specified field
    * @param contentType The type of the content (e.g. ContentTypes.Task)
    * @param fieldName The name of the field (must be one of the ContentType's fields), e.g. 'DisplayName'
-   * @param actionName The name of the Action (can be 'new' / 'edit' / 'view')
+   * @param actionName The name of the Action (can be 'new' / 'edit' / 'browse')
    * @returns The assigned Control constructor or the default Field control
    */
   public getControlForContentField(
@@ -144,7 +144,7 @@ export class ControlMapper<TControlBaseType, TFieldControlBaseType> {
   /**
    * Gets the full ControlSchema object for a specific ContentType
    * @param contentType The type of the Content (e.g. ContentTypes.Task)
-   * @param actionName The name of the Action (can be 'new' / 'edit' / 'view')
+   * @param actionName The name of the Action (can be 'new' / 'edit' / 'browse')
    * @returns the fully created ControlSchema
    */
   public getFullSchemaForContentType(
