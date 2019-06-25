@@ -109,20 +109,13 @@ export class DatePicker extends React.Component<ReactDateTimeFieldSetting, DateP
             </Fragment>
           </MuiPickersUtilsProvider>
         )
-      case 'browse':
-        return (
-          <div>
-            <label>{this.props.labelText}</label>
-            <p>{this.props.value}</p>
-          </div>
-        )
       default:
-        return (
+        return this.props.value ? (
           <div>
             <label>{this.props.labelText}</label>
             <p>{this.props.value}</p>
           </div>
-        )
+        ) : null
     }
   }
 }

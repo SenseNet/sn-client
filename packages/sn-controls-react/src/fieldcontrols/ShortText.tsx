@@ -103,16 +103,6 @@ export class ShortText extends Component<ReactShortTextFieldSetting, ShortTextSt
           />
         )
       case 'browse':
-        return this.props.value && this.props.value.length > 0 ? (
-          <div className={this.props.className}>
-            <Typography variant="caption" gutterBottom={true}>
-              {this.props.labelText}
-            </Typography>
-            <Typography variant="body1" gutterBottom={true}>
-              {this.props.value}
-            </Typography>
-          </div>
-        ) : null
       default:
         return this.props.value && this.props.value.length > 0 ? (
           <div className={this.props.className}>

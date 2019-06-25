@@ -101,20 +101,13 @@ export class TimePicker extends React.Component<ReactDateTimeFieldSetting, TimeP
             </Fragment>
           </MuiPickersUtilsProvider>
         )
-      case 'browse':
-        return (
-          <div>
-            <label>{this.props.labelText}</label>
-            <p>{this.props.value}</p>
-          </div>
-        )
       default:
-        return (
+        return this.props.value ? (
           <div>
             <label>{this.props.labelText}</label>
             <p>{this.props.value}</p>
           </div>
-        )
+        ) : null
     }
   }
 }

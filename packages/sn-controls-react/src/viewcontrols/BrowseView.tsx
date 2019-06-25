@@ -26,35 +26,16 @@ export interface BrowseViewProps {
 export interface BrowseViewState {
   content: GenericContent
   schema: ControlSchema<ComponentType, ComponentType<ReactClientFieldSetting>>
-  controlMapper: ReturnType<typeof reactControlMapper>
 }
 
 /**
  * View Control for browsing a Content, works with a single Content and based on the ReactControlMapper
- *
- * Usage:
- * ```html
- *  <BrowseView content={content} />
- * ```
  */
 export class BrowseView extends Component<BrowseViewProps, BrowseViewState> {
-  /**
-   * constructor
-   * @param {object} props
-   */
-  constructor(props: any) {
-    super(props)
-    /**
-     * @type {object}
-     * @property {any} content selected Content
-     * @property {any} schema schema object of the selected Content's Content Type
-     */
-    const controlMapper = reactControlMapper(this.props.repository)
-    this.state = {
-      content: this.props.content,
-      schema: controlMapper.getFullSchemaForContentType(this.props.content.Type, 'browse'),
-      controlMapper,
-    }
+  protected ControlMapper = reactControlMapper(this.props.repository)
+  state = {
+    content: this.props.content,
+    schema: this.ControlMapper.getFullSchemaForContentType(this.props.content.Type, 'browse'),
   }
   /**
    * returns a value of an input
@@ -68,30 +49,26 @@ export class BrowseView extends Component<BrowseViewProps, BrowseViewState> {
       return null
     }
   }
-  /**
-   * render
-   * @return {ReactElement} markup
-   */
+
   public render() {
-    const fieldSettings = this.state.schema.fieldMappings
-    // const that = this
     return (
       <Grid container={true} spacing={2}>
         <div style={styles.container}>
           <Typography variant="h5" gutterBottom={true}>
             {this.props.content.DisplayName}
           </Typography>
-          {fieldSettings.map(field => {
+          {this.state.schema.fieldMappings.map(field => {
             return (
               <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12} key={field.fieldSettings.Name}>
                 {createElement(
-                  this.state.controlMapper.getControlForContentField(
+                  this.ControlMapper.getControlForContentField(
                     this.props.content.Type,
                     field.fieldSettings.Name,
                     'browse',
                   ),
                   {
                     fieldName: field.fieldSettings.Name,
+                    labelText: field.fieldSettings.DisplayName,
                     actionName: 'browse',
                     value: this.getFieldValue(field.fieldSettings.Name),
                     repository: this.props.repository,
