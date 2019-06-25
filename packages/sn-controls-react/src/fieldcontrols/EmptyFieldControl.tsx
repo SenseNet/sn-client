@@ -2,7 +2,7 @@
  * @module FieldControls
  */
 import { Component } from 'react'
-import { ReactClientFieldSetting } from './field-settings/ClientFieldSetting'
+import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
  * Field control that represents obsolete fieldcontrols.

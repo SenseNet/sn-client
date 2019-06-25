@@ -9,7 +9,7 @@ import { GenericContent, Schema } from '@sensenet/default-content-types'
 import React, { Component, createElement, ComponentType } from 'react'
 import MediaQuery from 'react-responsive'
 import { reactControlMapper } from '../ReactControlMapper'
-import { ReactClientFieldSetting } from '../fieldcontrols/field-settings/ClientFieldSetting'
+import { ReactClientFieldSetting } from '../fieldcontrols/ClientFieldSetting'
 import { styles } from './EditViewStyles'
 
 /**
@@ -99,10 +99,7 @@ export class EditView<T extends GenericContent> extends Component<EditViewProps<
       return this.state.content[name]
     }
   }
-  /**
-   * render
-   * @return {ReactElement} markup
-   */
+
   public render() {
     const fieldSettings = this.state.schema.fieldMappings
     const that = this
@@ -118,7 +115,7 @@ export class EditView<T extends GenericContent> extends Component<EditViewProps<
           return this.props.submitCallback ? this.props.submitCallback() : null
         }}>
         <Grid container={true} spacing={2}>
-          {fieldSettings.map(fieldSetting => {
+          {fieldSettings.map(field => {
             // fieldSetting.actionName = 'edit'
             // // eslint-disable-next-line dot-notation
             // fieldSetting.clientSettings['content'] = this.state.content
@@ -137,15 +134,15 @@ export class EditView<T extends GenericContent> extends Component<EditViewProps<
             const fieldControl = createElement(
               this.state.controlMapper.getControlForContentField(
                 this.props.content.Type,
-                fieldSetting.fieldSettings.Name,
+                field.fieldSettings.Name,
                 'edit',
               ),
               {
-                fieldName: fieldSetting.fieldSettings.Name,
                 repository: this.props.repository,
-                placeHolderText: fieldSetting.fieldSettings.DisplayName,
+                settings: field.fieldSettings,
+                content: this.state.content,
                 actionName: 'edit',
-                value: this.getFieldValue(fieldSetting.fieldSettings.Name),
+                renderIcon: this.props.renderIcon,
                 fieldOnChange: this.handleInputChange,
               },
             )
@@ -155,11 +152,10 @@ export class EditView<T extends GenericContent> extends Component<EditViewProps<
                 item={true}
                 xs={12}
                 sm={12}
-                /** todo: WAT */
-                md={fieldSetting.fieldSettings.Name === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                lg={fieldSetting.fieldSettings.Name === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                xl={fieldSetting.fieldSettings.Name === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                key={fieldSetting.fieldSettings.Name}>
+                md={field.fieldSettings.Name === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                lg={field.fieldSettings.Name === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                xl={field.fieldSettings.Name === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                key={field.fieldSettings.Name}>
                 {fieldControl}
               </Grid>
             )

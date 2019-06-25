@@ -9,7 +9,8 @@ import InputLabel from '@material-ui/core/InputLabel/InputLabel'
 import Typography from '@material-ui/core/Typography'
 import Radium from 'radium'
 import React, { Component } from 'react'
-import { ReactBinaryFieldSetting } from './field-settings/BinaryFieldSetting'
+import { BinaryFieldSetting } from '@sensenet/default-content-types'
+import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 const styles = {
   root: {
@@ -42,7 +43,7 @@ export interface FileUploadState {
  * Field control that represents a FileUpload field. Available values will be populated from the FieldSettings.
  */
 @Radium
-export class FileUpload extends Component<ReactBinaryFieldSetting, FileUploadState> {
+export class FileUpload extends Component<ReactClientFieldSetting<BinaryFieldSetting>, FileUploadState> {
   /**
    * constructor
    * @param {object} props
@@ -54,10 +55,10 @@ export class FileUpload extends Component<ReactBinaryFieldSetting, FileUploadSta
      * @property {string} value input value
      */
     this.state = {
-      value: this.setValue(this.props.value).toString(),
+      value: this.setValue(this.props.content[this.props.settings.Name]).toString(),
       error: '',
-      filename: this.props.value || '',
-      buttonText: this.props.value ? 'Change' : 'Add',
+      filename: this.props.content[this.props.settings.Name] || '',
+      buttonText: this.props.content[this.props.settings.Name] ? 'Change' : 'Add',
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -71,8 +72,8 @@ export class FileUpload extends Component<ReactBinaryFieldSetting, FileUploadSta
     if (value) {
       return value.replace(/<[^>]*>/g, '')
     } else {
-      if (this.props.defaultValue) {
-        return this.props.defaultValue
+      if (this.props.settings.DefaultValue) {
+        return this.props.settings.DefaultValue
       } else {
         return ''
       }
@@ -83,10 +84,9 @@ export class FileUpload extends Component<ReactBinaryFieldSetting, FileUploadSta
    * @param e
    */
   public handleChange(e: React.ChangeEvent<{ value: string }>) {
-    const { fieldOnChange: onChange, fieldName: name } = this.props
     const { value } = e.target
     this.setState({ value })
-    onChange(name, value)
+    this.props.fieldOnChange && this.props.fieldOnChange(name, value)
   }
   /**
    * Removes the saved reference
@@ -106,10 +106,9 @@ export class FileUpload extends Component<ReactBinaryFieldSetting, FileUploadSta
    * handles change event on the fileupload input
    */
   public handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    // TODO: Do we need this?
-    // if (this.props.onChange) {
-    //   this.props.onChange()
-    // }
+    if (!this.props.repository) {
+      throw new Error('You must pass a repository to this control')
+    }
     e.persist()
     e.target.files &&
       (await this.props.repository.upload.fromFileList({
@@ -117,13 +116,13 @@ export class FileUpload extends Component<ReactBinaryFieldSetting, FileUploadSta
         createFolders: true,
         binaryPropertyName: 'Binary',
         overwrite: true,
-        parentPath: this.props.uploadFolderPath ? this.props.uploadFolderPath : '',
+        parentPath: '',
       }))
-    const newValue = `${this.props.uploadFolderPath}/${this.getNameFromPath(e.target.value)}`
+    const newValue = `${this.getNameFromPath(e.target.value)}`
     this.setState({
       value: newValue,
     })
-    this.props.fieldOnChange('Avatar' as any, newValue as any)
+    this.props.fieldOnChange && this.props.fieldOnChange('Avatar', newValue)
   }
   /**
    * render
@@ -134,16 +133,15 @@ export class FileUpload extends Component<ReactBinaryFieldSetting, FileUploadSta
       case 'edit':
         return (
           <FormControl
-            className={this.props.className}
             style={styles.root as any}
-            key={this.props.fieldName as string}
+            key={this.props.settings.Name}
             component={'fieldset' as 'div'}
-            required={this.props.required}>
-            <label style={styles.label} htmlFor={this.props.fieldName as string}>
-              {this.props.labelText}
+            required={this.props.settings.Compulsory}>
+            <label style={styles.label} htmlFor={this.props.settings.Name}>
+              {this.props.settings.DisplayName}
             </label>
             <Typography variant="body1" style={styles.value}>
-              {this.state.filename.length > 0 ? this.state.filename : this.props.placeHolderText}
+              {this.state.filename.length > 0 ? this.state.filename : this.props.settings.DisplayName}
             </Typography>
 
             <div style={{ display: 'table-row' }}>
@@ -175,16 +173,15 @@ export class FileUpload extends Component<ReactBinaryFieldSetting, FileUploadSta
       case 'new':
         return (
           <FormControl
-            className={this.props.className}
             style={styles.root as any}
-            key={this.props.fieldName as string}
+            key={this.props.settings.Name}
             component={'fieldset' as 'div'}
-            required={this.props.required}>
-            <label style={styles.label} htmlFor={this.props.fieldName as string}>
-              {this.props.labelText}
+            required={this.props.settings.Compulsory}>
+            <label style={styles.label} htmlFor={this.props.settings.Name}>
+              {this.props.settings.DisplayName}
             </label>
             <Typography variant="body1" style={styles.value}>
-              {this.state.filename.length > 0 ? this.state.filename : this.props.placeHolderText}
+              {this.state.filename.length > 0 ? this.state.filename : this.props.settings.DisplayName}
             </Typography>
             <div style={{ position: 'relative' }}>
               <InputLabel htmlFor="raised-button-file" style={{ transform: 'translate(0, 4px) scale(1)' }}>

@@ -10,7 +10,8 @@ import FormGroup from '@material-ui/core/FormGroup'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import TextField from '@material-ui/core/TextField'
-import { ReactChoiceFieldSetting } from './field-settings/ChoiceFieldSetting'
+import { ChoiceFieldSetting } from '@sensenet/default-content-types'
+import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
  * Interface for CheckboxGroup state
@@ -21,7 +22,7 @@ export interface CheckboxGroupState {
 /**
  * Field control that represents a Choice field. Available values will be populated from the FieldSettings.
  */
-export class CheckboxGroup extends Component<ReactChoiceFieldSetting, CheckboxGroupState> {
+export class CheckboxGroup extends Component<ReactClientFieldSetting<ChoiceFieldSetting>, CheckboxGroupState> {
   /**
    * constructor
    * @param {object} props
@@ -29,7 +30,7 @@ export class CheckboxGroup extends Component<ReactChoiceFieldSetting, CheckboxGr
   constructor(props: CheckboxGroup['props']) {
     super(props)
     this.state = {
-      value: this.props.value || this.props.defaultValue || [],
+      value: this.props.content[this.props.settings.Name] || this.props.settings.DefaultValue || [],
     }
     this.handleChange = this.handleChange.bind(this)
   }
@@ -42,7 +43,7 @@ export class CheckboxGroup extends Component<ReactChoiceFieldSetting, CheckboxGr
     const newValue = event.target['value']
     const checked = value
     const index = value.indexOf(newValue)
-    if (this.props.allowMultiple) {
+    if (this.props.settings.AllowMultiple) {
       if (index > -1) {
         checked.splice(index, 1)
       } else {
@@ -58,7 +59,7 @@ export class CheckboxGroup extends Component<ReactChoiceFieldSetting, CheckboxGr
     this.setState({
       value: checked,
     })
-    this.props.fieldOnChange(this.props.fieldName, checked as any)
+    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, checked as any)
   }
   /**
    * returns if an item is checked or not
@@ -79,17 +80,14 @@ export class CheckboxGroup extends Component<ReactChoiceFieldSetting, CheckboxGr
    * @return {ReactElement} markup
    */
   public render() {
+    const options = this.props.settings.Options || []
     switch (this.props.actionName) {
       case 'edit':
         return (
-          <FormControl
-            className={this.props.className}
-            component={'fieldset' as 'div'}
-            required={this.props.required}
-            error={this.props.errorText !== undefined && this.props.errorText.length > 0}>
-            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
+          <FormControl component={'fieldset' as 'div'} required={this.props.settings.Compulsory}>
+            <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
             <FormGroup>
-              {this.props.options.map(option => {
+              {options.map(option => {
                 return (
                   <FormControlLabel
                     key={option.Value}
@@ -98,7 +96,7 @@ export class CheckboxGroup extends Component<ReactChoiceFieldSetting, CheckboxGr
                         checked={this.isChecked(option.Value)}
                         onChange={this.handleChange}
                         value={option.Value.toString()}
-                        disabled={this.props.readOnly}
+                        disabled={this.props.settings.ReadOnly}
                       />
                     }
                     label={option.Text}
@@ -106,21 +104,16 @@ export class CheckboxGroup extends Component<ReactChoiceFieldSetting, CheckboxGr
                 )
               })}
             </FormGroup>
-            {this.props.allowExtraValue ? <TextField placeholder="Extra value" /> : null}
-            <FormHelperText>{this.props.hintText}</FormHelperText>
-            <FormHelperText>{this.props.errorText}</FormHelperText>
+            {this.props.settings.AllowExtraValue ? <TextField placeholder="Extra value" /> : null}
+            <FormHelperText>{this.props.settings.Description}</FormHelperText>
           </FormControl>
         )
       case 'new':
         return (
-          <FormControl
-            className={this.props.className}
-            component={'fieldset' as 'div'}
-            required={this.props.required}
-            error={this.props.errorText !== undefined && this.props.errorText.length > 0}>
-            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
+          <FormControl component={'fieldset' as 'div'} required={this.props.settings.Compulsory}>
+            <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
             <FormGroup>
-              {this.props.options.map(option => {
+              {options.map(option => {
                 return (
                   <FormControlLabel
                     key={option.Value}
@@ -129,7 +122,7 @@ export class CheckboxGroup extends Component<ReactChoiceFieldSetting, CheckboxGr
                         checked={this.isChecked(option.Value)}
                         onChange={this.handleChange}
                         value={option.Value.toString()}
-                        disabled={this.props.readOnly}
+                        disabled={this.props.settings.ReadOnly}
                       />
                     }
                     label={option.Text}
@@ -137,23 +130,21 @@ export class CheckboxGroup extends Component<ReactChoiceFieldSetting, CheckboxGr
                 )
               })}
             </FormGroup>
-            {this.props.allowExtraValue ? <TextField placeholder="Extra value" /> : null}
-            <FormHelperText>{this.props.hintText}</FormHelperText>
-            <FormHelperText>{this.props.errorText}</FormHelperText>
+            {this.props.settings.AllowExtraValue ? <TextField placeholder="Extra value" /> : null}
+            <FormHelperText>{this.props.settings.Description}</FormHelperText>
           </FormControl>
         )
       case 'browse':
-        return this.props.value.length > 0 ? (
-          <FormControl component={'fieldset' as 'div'} className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
+        return this.props.content[this.props.settings.Name].length > 0 ? (
+          <FormControl component={'fieldset' as 'div'}>
+            <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
             <FormGroup>
-              {this.props.value.map((value: unknown, index: number) => (
+              {this.props.content[this.props.settings.Name].map((value: unknown, index: number) => (
                 <FormControl component={'fieldset' as 'div'} key={index}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
-                    label={this.props.options.find(item => item.Value === value).Text}
+                    label={options.find(item => item.Value === value)!.Text}
                     control={<span />}
-                    key={this.props.options.find(item => item.Value === value).Name}
                   />
                 </FormControl>
               ))}
@@ -161,17 +152,16 @@ export class CheckboxGroup extends Component<ReactChoiceFieldSetting, CheckboxGr
           </FormControl>
         ) : null
       default:
-        return this.props.value.length > 0 ? (
-          <FormControl component={'fieldset' as 'div'} className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
+        return this.props.content[this.props.settings.Name].length > 0 ? (
+          <FormControl component={'fieldset' as 'div'}>
+            <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
             <FormGroup>
-              {this.props.value.map((value: unknown, index: number) => (
+              {this.props.content[this.props.settings.Name].map((value: unknown, index: number) => (
                 <FormControl component={'fieldset' as 'div'} key={index}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
-                    label={this.props.options.find(item => item.Value === value).Text}
+                    label={options.find(item => item.Value === value)!.Text}
                     control={<span />}
-                    key={this.props.options.find(item => item.Value === value).Name}
                   />
                 </FormControl>
               ))}

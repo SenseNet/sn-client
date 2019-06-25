@@ -7,7 +7,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import InputLabel from '@material-ui/core/InputLabel'
 import React, { Component } from 'react'
-import { ReactClientFieldSetting } from './field-settings/ClientFieldSetting'
+import { ReactClientFieldSetting } from './ClientFieldSetting'
 import { renderIconDefault } from './icon'
 
 /**
@@ -29,7 +29,7 @@ export class Boolean extends Component<ReactClientFieldSetting, BooleanState> {
   constructor(props: Boolean['props']) {
     super(props)
     this.state = {
-      value: this.props.value || this.props.defaultValue || false,
+      value: this.props.content[this.props.settings.Name] || this.props.settings.DefaultValue || false,
     }
     this.handleChange = this.handleChange.bind(this)
   }
@@ -42,7 +42,7 @@ export class Boolean extends Component<ReactClientFieldSetting, BooleanState> {
     this.setState({
       value: newValue,
     })
-    this.props.fieldOnChange(this.props.fieldName, newValue as any)
+    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, newValue as any)
   }
   /**
    * render
@@ -52,39 +52,34 @@ export class Boolean extends Component<ReactClientFieldSetting, BooleanState> {
     switch (this.props.actionName) {
       case 'edit':
         return (
-          <FormControl
-            className={this.props.className}
-            component={'fieldset' as 'div'}
-            required={this.props.required}
-            error={this.props.errorText !== undefined && this.props.errorText.length > 0}>
+          <FormControl component={'fieldset' as 'div'} required={this.props.settings.Compulsory}>
             <FormControlLabel
               control={<Checkbox checked={this.state.value} onChange={this.handleChange} />}
-              label={this.props.labelText}
+              label={this.props.settings.DisplayName}
             />
-            {this.props.hintText ? <FormHelperText>{this.props.hintText}</FormHelperText> : null}
-            {this.props.errorText ? <FormHelperText>{this.props.errorText}</FormHelperText> : null}
+            {this.props.settings.Description ? (
+              <FormHelperText>{this.props.settings.Description}</FormHelperText>
+            ) : null}
           </FormControl>
         )
       case 'new':
         return (
-          <FormControl
-            className={this.props.className}
-            required={this.props.required}
-            error={this.props.errorText !== undefined && this.props.errorText.length > 0}>
+          <FormControl required={this.props.settings.Compulsory}>
             <FormControlLabel
               control={<Checkbox checked={this.state.value} onChange={this.handleChange} />}
-              label={this.props.labelText}
+              label={this.props.settings.DisplayName}
             />
-            {this.props.hintText ? <FormHelperText>{this.props.hintText}</FormHelperText> : null}
-            {this.props.errorText ? <FormHelperText>{this.props.errorText}</FormHelperText> : null}
+            {this.props.settings.Description ? (
+              <FormHelperText>{this.props.settings.Description}</FormHelperText>
+            ) : null}
           </FormControl>
         )
       case 'browse':
       default:
-        return this.props.value != undefined ? (
-          <FormControl component={'fieldset' as 'div'} className={this.props.className}>
+        return this.props.content[this.props.settings.Name] != undefined ? (
+          <FormControl component={'fieldset' as 'div'}>
             <InputLabel shrink={true} htmlFor={name as string}>
-              {this.props.labelText}
+              {this.props.settings.DisplayName}
             </InputLabel>
             {this.props.renderIcon
               ? this.props.renderIcon(this.state.value ? 'check' : 'not_interested')

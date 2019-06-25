@@ -8,8 +8,9 @@ import {
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers'
 import moment from 'moment'
-import React, { Fragment } from 'react'
-import { ReactDateTimeFieldSetting } from './field-settings/DateTimeFieldSetting'
+import React from 'react'
+import { DateTimeFieldSetting } from '@sensenet/default-content-types'
+import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
  * Interface for DateTimePicker state
@@ -21,29 +22,24 @@ export interface DateTimePickerState {
 /**
  * Field control that represents a DateTime field. Available values will be populated from the FieldSettings.
  */
-export class DateTimePicker extends React.Component<ReactDateTimeFieldSetting, DateTimePickerState> {
-  /**
-   * constructor
-   * @param {object} props
-   */
-  constructor(props: DateTimePicker['props']) {
-    super(props)
-    /**
-     * @type {object}
-     * @property {string} value default value
-     */
-    this.state = {
-      dateValue: props.value ? moment(this.setValue(props.value)) : moment(this.setValue(props.defaultValue as string)),
-      value: props.value ? props.value : props.defaultValue,
-    }
-    this.handleDateChange = this.handleDateChange.bind(this)
+export class DateTimePicker extends React.Component<
+  ReactClientFieldSetting<DateTimeFieldSetting>,
+  DateTimePickerState
+> {
+  state = {
+    dateValue: this.props.content[this.props.settings.Name]
+      ? moment(this.setValue(this.props.content[this.props.settings.Name]))
+      : moment(this.setValue(this.props.settings.DefaultValue)),
+    value: this.props.content[this.props.settings.Name]
+      ? this.props.content[this.props.settings.Name]
+      : this.props.settings.DefaultValue,
   }
 
   /**
    * convert string to proper date format
    * @param {string} value
    */
-  public setValue(value: string) {
+  public setValue(value?: string) {
     // TODO: check datetimemode and return a value based on this property
     return value || new Date().toISOString()
   }
@@ -59,56 +55,34 @@ export class DateTimePicker extends React.Component<ReactDateTimeFieldSetting, D
       dateValue: date,
       value: moment.utc(date).toISOString(),
     })
-    this.props.fieldOnChange(this.props.fieldName, this.state.value)
+    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, this.state.value)
   }
-  /**
-   * render
-   * @return {ReactElement} markup
-   */
+
   public render() {
     const { dateValue } = this.state
-    const { readOnly, required } = this.props
     switch (this.props.actionName) {
       case 'edit':
-        return (
-          <MuiPickersUtilsProvider utils={MomentUtils}>
-            <Fragment>
-              <MUIDateTimePicker
-                value={dateValue}
-                onChange={this.handleDateChange}
-                label={this.props.labelText}
-                id={this.props.fieldName}
-                disabled={readOnly}
-                placeholder={this.props.placeHolderText}
-                required={required}
-                fullWidth={true}
-              />
-            </Fragment>
-          </MuiPickersUtilsProvider>
-        )
       case 'new':
         return (
           <MuiPickersUtilsProvider utils={MomentUtils}>
-            <Fragment>
-              <MUIDateTimePicker
-                value={dateValue}
-                onChange={this.handleDateChange}
-                label={this.props.labelText}
-                id={this.props.fieldName}
-                disabled={readOnly}
-                placeholder={this.props.placeHolderText}
-                required={required}
-                fullWidth={true}
-              />
-            </Fragment>
+            <MUIDateTimePicker
+              value={dateValue}
+              onChange={this.handleDateChange}
+              label={this.props.settings.DisplayName}
+              id={this.props.settings.Name}
+              disabled={this.props.settings.ReadOnly}
+              placeholder={this.props.settings.DisplayName}
+              required={this.props.settings.Compulsory}
+              fullWidth={true}
+            />
           </MuiPickersUtilsProvider>
         )
       case 'browse':
       default:
-        return this.props.value ? (
+        return this.props.content[this.props.settings.Name] ? (
           <div>
-            <label>{this.props.labelText}</label>
-            <p>{this.props.value}</p>
+            <label>{this.props.settings.DisplayName}</label>
+            <p>{this.props.content[this.props.settings.Name]}</p>
           </div>
         ) : null
     }

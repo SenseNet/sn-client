@@ -5,7 +5,8 @@ import MomentUtils from '@date-io/moment'
 import { DatePicker as MUIDatePicker, MaterialUiPickersDate, MuiPickersUtilsProvider } from '@material-ui/pickers'
 import moment from 'moment'
 import React, { Fragment } from 'react'
-import { ReactDateTimeFieldSetting } from './field-settings/DateTimeFieldSetting'
+import { DateTimeFieldSetting } from '@sensenet/default-content-types'
+import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
  * Interface for DatePicker state
@@ -17,26 +18,16 @@ export interface DatePickerState {
 /**
  * Field control that represents a Date field. Available values will be populated from the FieldSettings.
  */
-export class DatePicker extends React.Component<ReactDateTimeFieldSetting, DatePickerState> {
-  /**
-   * constructor
-   * @param {object} props
-   */
-  constructor(props: DatePicker['props']) {
-    super(props)
-    /**
-     * @type {object}
-     * @property {string} value default value
-     */
-    this.state = {
-      dateValue: props.value
-        ? moment(this.setValue(props.value))
-        : props.defaultValue
-        ? moment(this.setValue(props.defaultValue.toString()))
-        : moment(),
-      value: props.value ? props.value : props.defaultValue,
-    }
-    this.handleDateChange = this.handleDateChange.bind(this)
+export class DatePicker extends React.Component<ReactClientFieldSetting<DateTimeFieldSetting>, DatePickerState> {
+  state = {
+    dateValue: this.props.content[this.props.settings.Name]
+      ? moment(this.setValue(this.props.content[this.props.settings.Name]))
+      : this.props.settings.DefaultValue
+      ? moment(this.setValue(this.props.settings.DefaultValue))
+      : moment(),
+    value: this.props.content[this.props.settings.Name]
+      ? this.props.content[this.props.settings.Name]
+      : this.props.settings.DefaultValue,
   }
 
   /**
@@ -65,33 +56,13 @@ export class DatePicker extends React.Component<ReactDateTimeFieldSetting, DateP
       dateValue: date,
       value: moment.utc(date),
     })
-    this.props.fieldOnChange(this.props.fieldName, moment.utc(date) as any)
+    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, moment.utc(date) as any)
   }
-  /**
-   * render
-   * @return {ReactElement} markup
-   */
+
   public render() {
     const { value } = this.state
-    const { readOnly, required } = this.props
     switch (this.props.actionName) {
       case 'edit':
-        return (
-          <MuiPickersUtilsProvider utils={MomentUtils}>
-            <Fragment>
-              <MUIDatePicker
-                value={value}
-                onChange={this.handleDateChange}
-                label={this.props.labelText}
-                id={this.props.fieldName as string}
-                disabled={readOnly}
-                placeholder={this.props.placeHolderText}
-                required={required}
-                fullWidth={true}
-              />
-            </Fragment>
-          </MuiPickersUtilsProvider>
-        )
       case 'new':
         return (
           <MuiPickersUtilsProvider utils={MomentUtils}>
@@ -99,21 +70,21 @@ export class DatePicker extends React.Component<ReactDateTimeFieldSetting, DateP
               <MUIDatePicker
                 value={value}
                 onChange={this.handleDateChange}
-                label={this.props.labelText}
-                id={this.props.fieldName as string}
-                disabled={readOnly}
-                placeholder={this.props.placeHolderText}
-                required={required}
+                label={this.props.settings.DisplayName}
+                id={this.props.settings.Name as string}
+                disabled={this.props.settings.ReadOnly}
+                placeholder={this.props.settings.DisplayName}
+                required={this.props.settings.Compulsory}
                 fullWidth={true}
               />
             </Fragment>
           </MuiPickersUtilsProvider>
         )
       default:
-        return this.props.value ? (
+        return this.props.content[this.props.settings.Name] ? (
           <div>
-            <label>{this.props.labelText}</label>
-            <p>{this.props.value}</p>
+            <label>{this.props.settings.DisplayName}</label>
+            <p>{this.props.content[this.props.settings.Name]}</p>
           </div>
         ) : null
     }

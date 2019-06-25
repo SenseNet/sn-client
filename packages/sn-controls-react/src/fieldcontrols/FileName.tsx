@@ -2,12 +2,10 @@
  * @module FieldControls
  */
 import React, { Component } from 'react'
-
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import Radium from 'radium'
-import { ReactFileNameFieldSetting } from './field-settings/FileNameFieldSetting'
+import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
  * Interface for FileName state
@@ -21,8 +19,7 @@ export interface FileNameState {
 /**
  * Field control that represents a ShortText field. Available values will be populated from the FieldSettings.
  */
-@Radium
-export class FileName extends Component<ReactFileNameFieldSetting, FileNameState> {
+export class FileName extends Component<ReactClientFieldSetting, FileNameState> {
   /**
    * constructor
    * @param {object} props
@@ -34,18 +31,18 @@ export class FileName extends Component<ReactFileNameFieldSetting, FileNameState
      * @property {string} value input value
      */
     this.state = {
-      value: this.setValue(this.props.value).toString(),
-      isValid: this.props.required ? false : true,
+      value: this.setValue(this.props.content[this.props.settings.Name]).toString(),
+      isValid: this.props.settings.Compulsory ? false : true,
       error: '',
-      extension: this.props.extension
-        ? this.props.extension
-        : // eslint-disable-next-line dot-notation
-        this.props['content']
-        ? // eslint-disable-next-line dot-notation
-          this.getExtensionFromValue(this.props['content'].Name)
-        : this.props.value && this.props.value.indexOf('.') > -1
-        ? this.getExtensionFromValue(this.props.value)
-        : '',
+      //REVIEW THIS
+      // extension: this.props.extension
+      //   ? this.props.extension
+      //   : this.props.content
+      //   ? this.getExtensionFromValue(this.props.content.Name)
+      //   : this.props.content[this.props.settings.Name] && this.props.content[this.props.settings.Name].indexOf('.') > -1
+      //   ? this.getExtensionFromValue(this.props.content[this.props.settings.Name])
+      //   : '',
+      extension: '',
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -62,8 +59,8 @@ export class FileName extends Component<ReactFileNameFieldSetting, FileNameState
         .slice(0, -1)
         .join('.')
     } else {
-      if (this.props.defaultValue) {
-        return this.props.defaultValue
+      if (this.props.settings.DefaultValue) {
+        return this.props.settings.DefaultValue
       } else {
         return ''
       }
@@ -74,10 +71,9 @@ export class FileName extends Component<ReactFileNameFieldSetting, FileNameState
    * @param e
    */
   public handleChange(e: React.ChangeEvent) {
-    const { fieldOnChange: onChange } = this.props
     // eslint-disable-next-line dot-notation
     const value = `${e.target['value']}.${this.state.extension}`
-    onChange(this.props.fieldName, value as any)
+    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, value)
   }
 
   /**
@@ -95,12 +91,10 @@ export class FileName extends Component<ReactFileNameFieldSetting, FileNameState
       case 'edit':
         return (
           <TextField
-            name={this.props.fieldName as string}
-            id={this.props.fieldName as string}
-            label={this.props.labelText}
-            className={this.props.className}
-            placeholder={this.props.placeHolderText}
-            style={this.props.style}
+            name={this.props.settings.Name as string}
+            id={this.props.settings.Name as string}
+            label={this.props.settings.DisplayName}
+            placeholder={this.props.settings.DisplayName}
             defaultValue={this.state.value}
             onChange={e => this.handleChange(e)}
             InputProps={{
@@ -111,58 +105,56 @@ export class FileName extends Component<ReactFileNameFieldSetting, FileNameState
               ),
             }}
             autoFocus={true}
-            error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
-            required={this.props.required}
-            disabled={this.props.readOnly}
+            required={this.props.settings.Compulsory}
+            disabled={this.props.settings.ReadOnly}
             fullWidth={true}
-            helperText={this.props.hintText}
+            helperText={this.props.settings.Description}
           />
         )
       case 'new':
         return (
           <TextField
-            name={this.props.fieldName as string}
-            id={this.props.fieldName as string}
-            label={this.props.labelText}
-            className={this.props.className}
-            placeholder={this.props.placeHolderText}
-            style={this.props.style}
+            name={this.props.settings.Name as string}
+            id={this.props.settings.Name as string}
+            label={this.props.settings.DisplayName}
+            placeholder={this.props.settings.DisplayName}
             defaultValue={this.state.value}
             onChange={e => this.handleChange(e)}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <span>{`.${this.props.extension}`}</span>
+                  <span>{`.${this.state.extension}`}</span>
                 </InputAdornment>
               ),
             }}
             autoFocus={true}
-            error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
-            required={this.props.required}
-            disabled={this.props.readOnly}
+            required={this.props.settings.Compulsory}
+            disabled={this.props.settings.ReadOnly}
             fullWidth={true}
-            helperText={this.props.hintText}
+            helperText={this.props.settings.Description}
           />
         )
       case 'browse':
-        return this.props.value && this.props.value.length > 0 ? (
-          <div className={this.props.className}>
+        return this.props.content[this.props.settings.Name] &&
+          this.props.content[this.props.settings.Name].length > 0 ? (
+          <div>
             <Typography variant="caption" gutterBottom={true}>
-              {this.props.labelText}
+              {this.props.settings.DisplayName}
             </Typography>
             <Typography variant="body1" gutterBottom={true}>
-              {this.props.value}
+              {this.props.content[this.props.settings.Name]}
             </Typography>
           </div>
         ) : null
       default:
-        return this.props.value && this.props.value.length > 0 ? (
-          <div className={this.props.className}>
+        return this.props.content[this.props.settings.Name] &&
+          this.props.content[this.props.settings.Name].length > 0 ? (
+          <div>
             <Typography variant="caption" gutterBottom={true}>
-              {this.props.labelText}
+              {this.props.settings.DisplayName}
             </Typography>
             <Typography variant="body1" gutterBottom={true}>
-              {this.props.value}
+              {this.props.content[this.props.settings.Name]}
             </Typography>
           </div>
         ) : null

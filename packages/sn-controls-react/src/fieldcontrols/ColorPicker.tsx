@@ -10,7 +10,7 @@ import TextField from '@material-ui/core/TextField'
 import Radium from 'radium'
 import React, { Component } from 'react'
 import { SketchPicker } from 'react-color'
-import { ReactColorPickerFieldSetting } from './field-settings/ColorPickerFieldSetting'
+import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 const style = {
   input: {
@@ -38,7 +38,7 @@ export interface ColorPickerState {
  * Field control that represents a Color field. Available values will be populated from the FieldSettings.
  */
 @Radium
-export class ColorPicker extends Component<ReactColorPickerFieldSetting, ColorPickerState> {
+export class ColorPicker extends Component<ReactClientFieldSetting, ColorPickerState> {
   /**
    * constructor
    * @param {object} props
@@ -50,7 +50,7 @@ export class ColorPicker extends Component<ReactColorPickerFieldSetting, ColorPi
      * @property {string} value input value
      */
     this.state = {
-      value: this.setValue(this.props.value).toString(),
+      value: this.setValue(this.props.content[this.props.settings.Name]).toString(),
       pickerIsOpen: false,
     }
 
@@ -66,8 +66,8 @@ export class ColorPicker extends Component<ReactColorPickerFieldSetting, ColorPi
     if (value) {
       return value.replace(/<[^>]*>/g, '')
     } else {
-      if (this.props.defaultValue) {
-        return this.props.defaultValue
+      if (this.props.settings.DefaultValue) {
+        return this.props.settings.DefaultValue
       } else {
         return '#016d9e'
       }
@@ -78,7 +78,7 @@ export class ColorPicker extends Component<ReactColorPickerFieldSetting, ColorPi
    * @param {SytheticEvent} event
    */
   public handleChange(color: any) {
-    this.props.fieldOnChange(this.props.fieldName, color.hex)
+    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, color.hex)
     this.setState({ value: color.hex })
   }
   public openPicker() {
@@ -100,19 +100,15 @@ export class ColorPicker extends Component<ReactColorPickerFieldSetting, ColorPi
       case 'edit':
       case 'new':
         return (
-          <FormControl className={this.props.className}>
+          <FormControl>
             <TextField
-              label={
-                this.props.errorText && this.props.errorText.length > 0 ? this.props.errorText : this.props.labelText
-              }
+              label={this.props.settings.DisplayName}
               type="text"
-              name={this.props.fieldName.toString()}
-              id={this.props.fieldName.toString()}
-              className={this.props.className}
-              required={this.props.required}
-              disabled={this.props.readOnly}
+              name={this.props.settings.Name}
+              id={this.props.settings.Name}
+              required={this.props.settings.Compulsory}
+              disabled={this.props.settings.ReadOnly}
               value={this.state.value}
-              error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
               onClick={this.openPicker}
               InputProps={{
                 startAdornment: (
@@ -131,27 +127,22 @@ export class ColorPicker extends Component<ReactColorPickerFieldSetting, ColorPi
                     color={this.state.value}
                     onChangeComplete={this.handleChange}
                     onSwatchHover={this.handleChange}
-                    presetColors={this.props.palette ? this.props.palette : []}
                     disableAlpha={true}
                   />
                 </div>
               </ClickAwayListener>
             ) : null}
-            <FormHelperText>{this.props.hintText}</FormHelperText>
-            <FormHelperText>{this.props.errorText}</FormHelperText>
+            <FormHelperText>{this.props.settings.Description}</FormHelperText>
           </FormControl>
         )
       case 'browse':
         return (
-          <FormControl className={this.props.className}>
+          <FormControl>
             <TextField
               type="text"
-              name={this.props.fieldName as string}
-              id={this.props.fieldName as string}
-              label={
-                this.props.errorText && this.props.errorText.length > 0 ? this.props.errorText : this.props.labelText
-              }
-              className={this.props.className}
+              name={this.props.settings.Name}
+              id={this.props.settings.Name}
+              label={this.props.settings.DisplayName}
               disabled={true}
               value={this.state.value}
               InputProps={{
@@ -169,7 +160,7 @@ export class ColorPicker extends Component<ReactColorPickerFieldSetting, ColorPi
       default:
         return (
           <div>
-            <label>{this.props.labelText}</label>
+            <label>{this.props.settings.DisplayName}</label>
           </div>
         )
     }

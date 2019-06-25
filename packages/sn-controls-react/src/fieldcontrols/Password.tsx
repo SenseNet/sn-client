@@ -10,7 +10,7 @@ import InputAdornment from '@material-ui/core/InputAdornment'
 import InputLabel from '@material-ui/core/InputLabel'
 import Radium from 'radium'
 import { renderIconDefault } from './icon'
-import { ReactShortTextFieldSetting } from './field-settings/ShortTextFieldSetting'
+import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
  * Interface for Password state
@@ -23,7 +23,7 @@ export interface PasswordState {
  * Field control that represents a Password field. Available values will be populated from the FieldSettings.
  */
 @Radium
-export class Password extends Component<ReactShortTextFieldSetting, PasswordState> {
+export class Password extends Component<ReactClientFieldSetting, PasswordState> {
   /**
    * constructor
    * @param {object} props
@@ -49,8 +49,8 @@ export class Password extends Component<ReactShortTextFieldSetting, PasswordStat
     if (value) {
       return value.replace(/<[^>]*>/g, '')
     } else {
-      if (this.props.defaultValue) {
-        return this.props.defaultValue
+      if (this.props.settings.DefaultValue) {
+        return this.props.settings.DefaultValue
       } else {
         return ''
       }
@@ -73,52 +73,19 @@ export class Password extends Component<ReactShortTextFieldSetting, PasswordStat
   public render() {
     switch (this.props.actionName) {
       case 'edit':
-        return (
-          <FormControl className={this.props.className}>
-            <InputLabel htmlFor={this.props.fieldName as string}>{this.props.labelText}</InputLabel>
-            <Input
-              type={this.state.showPassword ? 'text' : 'password'}
-              name={this.props.fieldName as string}
-              id={this.props.fieldName as string}
-              className={this.props.className}
-              placeholder={this.props.placeHolderText}
-              style={this.props.style}
-              defaultValue={this.state.value}
-              required={this.props.required}
-              disabled={this.props.readOnly}
-              error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
-              fullWidth={true}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton aria-label="Toggle password visibility" onClick={this.handleClickShowPassword}>
-                    {this.props.renderIcon
-                      ? this.props.renderIcon(this.state.showPassword ? 'visibility_off' : 'visibility')
-                      : renderIconDefault(this.state.showPassword ? 'visibility_off' : 'visibility')}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-            <FormHelperText>{this.props.hintText}</FormHelperText>
-            <FormHelperText>{this.props.errorText}</FormHelperText>
-          </FormControl>
-        )
       case 'new':
         return (
-          <FormControl className={this.props.className}>
-            <InputLabel htmlFor={this.props.fieldName as string}>{this.props.labelText}</InputLabel>
+          <FormControl>
+            <InputLabel htmlFor={this.props.settings.Name as string}>{this.props.settings.DisplayName}</InputLabel>
             <Input
               type={this.state.showPassword ? 'text' : 'password'}
-              name={this.props.fieldName as string}
-              id={this.props.fieldName as string}
-              className={this.props.className}
-              placeholder={this.props.placeHolderText}
-              style={this.props.style}
+              name={this.props.settings.Name as string}
+              id={this.props.settings.Name as string}
+              placeholder={this.props.settings.DisplayName}
               defaultValue={this.state.value}
-              required={this.props.required}
-              disabled={this.props.readOnly}
-              error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
+              required={this.props.settings.Compulsory}
+              disabled={this.props.settings.ReadOnly}
               fullWidth={true}
-              onChange={e => this.handleChange(e)}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton aria-label="Toggle password visibility" onClick={this.handleClickShowPassword}>
@@ -129,14 +96,13 @@ export class Password extends Component<ReactShortTextFieldSetting, PasswordStat
                 </InputAdornment>
               }
             />
-            <FormHelperText>{this.props.hintText}</FormHelperText>
-            <FormHelperText>{this.props.errorText}</FormHelperText>
+            <FormHelperText>{this.props.settings.Description}</FormHelperText>
           </FormControl>
         )
       default:
         return (
           <div>
-            <label>{this.props.labelText}</label>
+            <label>{this.props.settings.DisplayName}</label>
           </div>
         )
     }

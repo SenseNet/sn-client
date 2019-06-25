@@ -5,7 +5,8 @@ import MomentUtils from '@date-io/moment'
 import { MaterialUiPickersDate, TimePicker as MUITimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
 import moment from 'moment'
 import React, { Fragment } from 'react'
-import { ReactDateTimeFieldSetting } from './field-settings/DateTimeFieldSetting'
+import { DateTimeFieldSetting } from '@sensenet/default-content-types'
+import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
  * Interface for TimePicker state
@@ -16,20 +17,9 @@ export interface TimePickerState {
 /**
  * Field control that represents a DateTime field. Available values will be populated from the FieldSettings.
  */
-export class TimePicker extends React.Component<ReactDateTimeFieldSetting, TimePickerState> {
-  /**
-   * constructor
-   * @param {object} props
-   */
-  constructor(props: TimePicker['props']) {
-    super(props)
-    /**
-     * @type {object}
-     * @property {string} value default value
-     */
-    this.state = {
-      value: props.value ? props.value : props.defaultValue,
-    }
+export class TimePicker extends React.Component<ReactClientFieldSetting<DateTimeFieldSetting>, TimePickerState> {
+  state = {
+    value: this.props.content[this.props.settings.Name] || this.props.settings.DefaultValue,
   }
 
   /**
@@ -46,6 +36,7 @@ export class TimePicker extends React.Component<ReactDateTimeFieldSetting, TimeP
     }
     return date
   }
+
   /**
    * handle changes
    * @param {MaterialUiPickersDate} date
@@ -57,33 +48,13 @@ export class TimePicker extends React.Component<ReactDateTimeFieldSetting, TimeP
     this.setState({
       value: moment.utc(date),
     })
-    this.props.fieldOnChange(this.props.fieldName, moment.utc(date) as any)
+    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, moment.utc(date) as any)
   }
-  /**
-   * render
-   * @return {ReactElement} markup
-   */
+
   public render() {
     const { value } = this.state
-    const { readOnly, required } = this.props
     switch (this.props.actionName) {
       case 'edit':
-        return (
-          <MuiPickersUtilsProvider utils={MomentUtils}>
-            <Fragment>
-              <MUITimePicker
-                value={value}
-                onChange={this.handleDateChange}
-                label={this.props.labelText}
-                id={this.props.fieldName as string}
-                disabled={readOnly}
-                placeholder={this.props.placeHolderText}
-                required={required}
-                fullWidth={true}
-              />
-            </Fragment>
-          </MuiPickersUtilsProvider>
-        )
       case 'new':
         return (
           <MuiPickersUtilsProvider utils={MomentUtils}>
@@ -91,21 +62,21 @@ export class TimePicker extends React.Component<ReactDateTimeFieldSetting, TimeP
               <MUITimePicker
                 value={value}
                 onChange={this.handleDateChange}
-                label={this.props.labelText}
-                id={this.props.fieldName as string}
-                disabled={readOnly}
-                placeholder={this.props.placeHolderText}
-                required={required}
+                label={this.props.settings.DisplayName}
+                id={this.props.settings.Name as string}
+                disabled={this.props.settings.ReadOnly}
+                placeholder={this.props.settings.DisplayName}
+                required={this.props.settings.Compulsory}
                 fullWidth={true}
               />
             </Fragment>
           </MuiPickersUtilsProvider>
         )
       default:
-        return this.props.value ? (
+        return this.props.content[this.props.settings.Name] ? (
           <div>
-            <label>{this.props.labelText}</label>
-            <p>{this.props.value}</p>
+            <label>{this.props.settings.DisplayName}</label>
+            <p>{this.props.content[this.props.settings.Name]}</p>
           </div>
         ) : null
     }

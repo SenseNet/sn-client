@@ -5,7 +5,8 @@ import React, { Component } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import Radium from 'radium'
-import { ReactLongTextFieldSetting } from './field-settings/LongTextFieldSetting'
+import { LongTextFieldSetting } from '@sensenet/default-content-types'
+import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
  * Interface for Textarea state
@@ -19,7 +20,7 @@ export interface TextareaState {
  * Field control that represents a LongText field. Available values will be populated from the FieldSettings.
  */
 @Radium
-export class Textarea extends Component<ReactLongTextFieldSetting, TextareaState> {
+export class Textarea extends Component<ReactClientFieldSetting<LongTextFieldSetting>, TextareaState> {
   /**
    * constructor
    * @param {object} props
@@ -31,7 +32,7 @@ export class Textarea extends Component<ReactLongTextFieldSetting, TextareaState
      * @property {string} value input value
      */
     this.state = {
-      value: this.setValue(this.props.value).toString(),
+      value: this.setValue(this.props.content[this.props.settings.Name]).toString(),
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -44,8 +45,8 @@ export class Textarea extends Component<ReactLongTextFieldSetting, TextareaState
     if (value) {
       return value.replace(/<[^>]*>/g, '')
     } else {
-      if (this.props.defaultValue) {
-        return this.props.defaultValue
+      if (this.props.settings.DefaultValue) {
+        return this.props.settings.DefaultValue
       } else {
         return ''
       }
@@ -57,7 +58,7 @@ export class Textarea extends Component<ReactLongTextFieldSetting, TextareaState
    */
   public handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
     this.setState({ value: event.target.value })
-    this.props.fieldOnChange(this.props.fieldName, event.target.value)
+    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, event.target.value)
   }
   /**
    * render
@@ -66,50 +67,31 @@ export class Textarea extends Component<ReactLongTextFieldSetting, TextareaState
   public render() {
     switch (this.props.actionName) {
       case 'edit':
-        return (
-          <TextField
-            onChange={this.handleChange}
-            name={this.props.fieldName as string}
-            id={this.props.fieldName as string}
-            label={this.props.labelText}
-            className={this.props.className}
-            placeholder={this.props.placeHolderText}
-            style={this.props.style}
-            value={this.state.value}
-            required={this.props.required}
-            disabled={this.props.readOnly}
-            error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
-            multiline={true}
-            fullWidth={true}
-          />
-        )
       case 'new':
         return (
           <TextField
             onChange={this.handleChange}
-            name={this.props.fieldName as string}
-            id={this.props.fieldName as string}
-            label={this.props.labelText}
-            className={this.props.className}
-            placeholder={this.props.placeHolderText}
-            style={this.props.style}
+            name={this.props.settings.Name}
+            id={this.props.settings.Name}
+            label={this.props.settings.DisplayName}
+            placeholder={this.props.settings.DisplayName}
             value={this.state.value}
-            required={this.props.required}
-            disabled={this.props.readOnly}
-            error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
+            required={this.props.settings.Compulsory}
+            disabled={this.props.settings.ReadOnly}
             multiline={true}
             fullWidth={true}
           />
         )
       case 'browse':
       default:
-        return this.props.value && this.props.value.length > 0 ? (
-          <div className={this.props.className}>
+        return this.props.content[this.props.settings.Name] &&
+          this.props.content[this.props.settings.Name].length > 0 ? (
+          <div>
             <Typography variant="caption" gutterBottom={true}>
-              {this.props.labelText}
+              {this.props.settings.DisplayName}
             </Typography>
             <Typography variant="body1" gutterBottom={true}>
-              {this.props.value}
+              {this.props.content[this.props.settings.Name]}
             </Typography>
           </div>
         ) : null

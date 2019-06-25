@@ -18,7 +18,7 @@ import Radium from 'radium'
 import React, { Component } from 'react'
 import { typeicons } from '../assets/icons'
 import { renderIconDefault } from './icon'
-import { ReactAllowedChildTypesFieldSetting } from './field-settings/AllowedChildTypesFieldSettings'
+import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 const INPUT_PLACEHOLDER = 'Start typing to add another type'
 const ITEM_HEIGHT = 48
@@ -80,7 +80,7 @@ export interface AllowedChildTypesState<T extends GenericContent> {
  */
 @Radium
 export class AllowedChildTypes<T extends GenericContent, K extends keyof T> extends Component<
-  ReactAllowedChildTypesFieldSetting,
+  ReactClientFieldSetting,
   AllowedChildTypesState<T>
 > {
   constructor(props: AllowedChildTypes<T, K>['props']) {
@@ -90,7 +90,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
      * @property {string} value input value
      */
     this.state = {
-      value: this.setValue(this.props.value) as string[],
+      value: this.setValue(this.props.content[this.props.settings.Name]),
       effectiveAllowedChildTypes: [],
       allowedTypesOnCTD: [],
       items: [],
@@ -128,10 +128,10 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
    */
   public setValue(value: string) {
     if (value && value.length > 0) {
-      return value
+      return [value]
     } else {
-      if (this.props.defaultValue) {
-        return this.props.defaultValue
+      if (this.props.settings.DefaultValue) {
+        return [this.props.settings.DefaultValue]
       } else {
         return []
       }
@@ -145,6 +145,9 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
   }
   private willUnmount: boolean = false
   private async getAllowedChildTypes() {
+    if (!this.props.repository) {
+      throw new Error('You must pass a repository to this control')
+    }
     try {
       const result = await this.props.repository.load<T>({
         idOrPath: this.props.content.Id,
@@ -193,6 +196,9 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
     }
   }
   private async getAllContentTypes() {
+    if (!this.props.repository) {
+      throw new Error('You must pass a repository to this control')
+    }
     try {
       const result = (await this.props.repository.executeAction({
         idOrPath: this.props.content.Id,
@@ -279,18 +285,15 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
         removeable: true,
       })
     }
-    this.props.fieldOnChange(this.props.fieldName, newValue as any)
+    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, newValue as any)
   }
-  /**
-   * render
-   * @return {ReactElement} markup
-   */
+
   public render() {
     switch (this.props.actionName) {
       case 'edit':
         return (
-          <FormControl className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
+          <FormControl>
+            <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
             <List dense={true}>
               {this.state.items.map((item, index) => (
                 <ListItem key={index}>
@@ -355,15 +358,14 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                   </List>
                 </Paper>
               </ClickAwayListener>
-              <FormHelperText>{this.props.hintText}</FormHelperText>
-              <FormHelperText>{this.props.errorText}</FormHelperText>
+              <FormHelperText>{this.props.settings.Description}</FormHelperText>
             </div>
           </FormControl>
         )
       case 'new':
         return (
-          <FormControl className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
+          <FormControl>
+            <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
             <List dense={true}>
               {this.state.items.map((item, index) => (
                 <ListItem key={index}>
@@ -428,15 +430,14 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                   </List>
                 </Paper>
               </ClickAwayListener>
-              <FormHelperText>{this.props.hintText}</FormHelperText>
-              <FormHelperText>{this.props.errorText}</FormHelperText>
+              <FormHelperText>{this.props.settings.Description}</FormHelperText>
             </div>
           </FormControl>
         )
       case 'browse':
         return (
-          <FormControl className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
+          <FormControl>
+            <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
             <List dense={true}>
               {this.state.items.map((item, index) => (
                 <ListItem key={index}>
@@ -458,8 +459,8 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       default:
         return (
           <div>
-            <FormControl className={this.props.className}>
-              <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
+            <FormControl>
+              <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
               <List dense={true}>
                 {this.state.items.map((item, index) => (
                   <ListItem key={index}>

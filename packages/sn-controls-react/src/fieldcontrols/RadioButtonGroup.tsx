@@ -9,7 +9,8 @@ import FormLabel from '@material-ui/core/FormLabel'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import React, { Component } from 'react'
-import { ReactChoiceFieldSetting } from './field-settings/ChoiceFieldSetting'
+import { ChoiceFieldSetting } from '@sensenet/default-content-types'
+import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
  * Interface for RadioButton state
@@ -20,11 +21,14 @@ export interface RadioButtonGroupState {
 /**
  * Field control that represents a Choice field. Available values will be populated from the FieldSettings.
  */
-export class RadioButtonGroup extends Component<ReactChoiceFieldSetting, RadioButtonGroupState> {
+export class RadioButtonGroup extends Component<ReactClientFieldSetting<ChoiceFieldSetting>, RadioButtonGroupState> {
   constructor(props: RadioButtonGroup['props']) {
     super(props)
     this.state = {
-      value: this.props.value || this.props.defaultValue || this.props.options[0].Value,
+      value:
+        this.props.content[this.props.settings.Name] ||
+        this.props.settings.DefaultValue ||
+        this.props.settings.Options![0].Value,
     }
   }
   /**
@@ -32,102 +36,51 @@ export class RadioButtonGroup extends Component<ReactChoiceFieldSetting, RadioBu
    */
   public handleChange = (_event: React.ChangeEvent<{}>, value: string) => {
     this.setState({ value })
-    this.props.fieldOnChange(this.props.fieldName, value)
+    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, value)
   }
-  /**
-   * render
-   * @return {ReactElement} markup
-   */
+
   public render() {
     switch (this.props.actionName) {
       case 'edit':
-        return (
-          <FormControl
-            component={'fieldset' as 'div'}
-            fullWidth={true}
-            error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
-            required={this.props.required}
-            className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
-            <RadioGroup
-              aria-label={this.props.labelText}
-              name={this.props.fieldName as string}
-              value={this.state.value}
-              onChange={this.handleChange}>
-              {this.props.options.map(option => {
-                return (
-                  <FormControlLabel
-                    key={option.Value}
-                    value={option.Value.toString()}
-                    control={<Radio />}
-                    label={option.Text}
-                    disabled={this.props.readOnly}
-                  />
-                )
-              })}
-            </RadioGroup>
-            <FormHelperText>{this.props.hintText}</FormHelperText>
-            <FormHelperText>{this.props.errorText}</FormHelperText>
-          </FormControl>
-        )
       case 'new':
         return (
-          <FormControl
-            component={'fieldset' as 'div'}
-            fullWidth={true}
-            error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
-            required={this.props.required}
-            className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
+          <FormControl component={'fieldset' as 'div'} fullWidth={true} required={this.props.settings.Compulsory}>
+            <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
             <RadioGroup
-              aria-label={this.props.labelText}
-              name={this.props.fieldName as string}
+              aria-label={this.props.settings.DisplayName}
+              name={this.props.settings.Name as string}
               value={this.state.value}
-              onChange={this.handleChange as any}>
-              {this.props.options.map(option => {
-                return (
-                  <FormControlLabel
-                    key={option.Value}
-                    value={option.Value.toString()}
-                    control={<Radio />}
-                    label={option.Text}
-                    disabled={this.props.readOnly}
-                  />
-                )
-              })}
+              onChange={this.handleChange}>
+              {this.props.settings.Options &&
+                this.props.settings.Options.map(option => {
+                  return (
+                    <FormControlLabel
+                      key={option.Value}
+                      value={option.Value.toString()}
+                      control={<Radio />}
+                      label={option.Text}
+                      disabled={this.props.settings.ReadOnly}
+                    />
+                  )
+                })}
             </RadioGroup>
-            <FormHelperText>{this.props.hintText}</FormHelperText>
-            <FormHelperText>{this.props.errorText}</FormHelperText>
+            <FormHelperText>{this.props.settings.Description}</FormHelperText>
           </FormControl>
         )
       case 'browse':
-        return this.props.value.length > 0 ? (
-          <FormControl component={'fieldset' as 'div'} className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
-            <FormGroup>
-              {this.props.value.map((value: any, index: number) => (
-                <FormControl key={index} component={'fieldset' as 'div'}>
-                  <FormControlLabel
-                    style={{ marginLeft: 0 }}
-                    label={this.props.options.find(item => item.Value === value).Text}
-                    control={<span />}
-                    key={value}
-                  />
-                </FormControl>
-              ))}
-            </FormGroup>
-          </FormControl>
-        ) : null
       default:
-        return this.props.value.length > 0 ? (
-          <FormControl component={'fieldset' as 'div'} className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
+        return this.props.content[this.props.settings.Name].length > 0 ? (
+          <FormControl component={'fieldset' as 'div'}>
+            <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
             <FormGroup>
-              {this.props.value.map((value: any, index: number) => (
+              {this.props.content[this.props.settings.Name].map((value: any, index: number) => (
                 <FormControl key={index} component={'fieldset' as 'div'}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
-                    label={this.props.options.find(item => item.Value === value).Text}
+                    label={
+                      this.props.settings.Options &&
+                      this.props.settings.Options.find(item => item.Value === value)!.Text
+                    }
                     control={<span />}
                     key={value}
                   />

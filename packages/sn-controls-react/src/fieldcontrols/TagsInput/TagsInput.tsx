@@ -14,10 +14,10 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import { Content, ODataCollectionResponse } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
-import { GenericContent } from '@sensenet/default-content-types'
+import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
 import { renderIconDefault } from '../icon'
-import { ReactReferenceFieldSetting } from '../field-settings/ReferenceFieldSetting'
+import { ReactClientFieldSetting } from '../ClientFieldSetting'
 import { isUser } from '../type-guards'
 
 const ITEM_HEIGHT = 48
@@ -57,7 +57,7 @@ export interface TagsInputState {
 /**
  * Field control that represents a Reference field. Available values will be populated from the FieldSettings.
  */
-export class TagsInput extends Component<ReactReferenceFieldSetting, TagsInputState> {
+export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldSetting>, TagsInputState> {
   /**
    * constructor
    * @param {object} props
@@ -71,48 +71,47 @@ export class TagsInput extends Component<ReactReferenceFieldSetting, TagsInputSt
      */
 
     this.search = this.search.bind(this)
-    if (this.props.dataSource && this.props.dataSource.length > 0) {
-      this.state = {
-        dataSource: this.props.dataSource.map(suggestion => ({
-          value: suggestion.Id,
-          label: suggestion.DisplayName,
-          avatar: suggestion.Avatar || {},
-          type: suggestion.Type || 'GenericContent',
-        })),
-        label: this.props.defaultDisplayName || 'DisplayName',
-        fieldValue: this.props.dataSource
-          ? this.props.dataSource.map(data => ({
-              value: data.Id,
-              label: data.DisplayName,
-              avatar: data.Avatar || {},
-              type: data.Type || 'GenericContent',
-            }))
-          : [],
-      }
-      if (this.props.actionName !== 'new') {
-        this.getSelected()
-        this.handleChange = this.handleChange.bind(this)
-      }
-    } else {
-      this.state = {
-        dataSource: [],
-        label: this.props.defaultDisplayName || 'DisplayName',
-        fieldValue: this.props.value ? this.props.value : [],
-      }
-      this.search()
-    }
+    // if (this.props.dataSource && this.props.dataSource.length > 0) {
+    //   this.state = {
+    //     dataSource: this.props.dataSource.map(suggestion => ({
+    //       value: suggestion.Id,
+    //       label: suggestion.DisplayName,
+    //       avatar: suggestion.Avatar || {},
+    //       type: suggestion.Type || 'GenericContent',
+    //     })),
+    //     label: this.props.defaultDisplayName || 'DisplayName',
+    //     fieldValue: this.props.dataSource
+    //       ? this.props.dataSource.map(data => ({
+    //           value: data.Id,
+    //           label: data.DisplayName,
+    //           avatar: data.Avatar || {},
+    //           type: data.Type || 'GenericContent',
+    //         }))
+    //       : [],
+    //   }
+    //   if (this.props.actionName !== 'new') {
+    //     this.getSelected()
+    //     this.handleChange = this.handleChange.bind(this)
+    //   }
+    // } else {
+    //   this.state = {
+    //     dataSource: [],
+    //     label: this.props.defaultDisplayName || 'DisplayName',
+    //     fieldValue: this.props.content[this.props.settings.Name] ? this.props.content[this.props.settings.Name] : [],
+    //   }
+    //   this.search()
+    // }
     this.getSelected = this.getSelected.bind(this)
   }
   /**
    * handles input changes
    */
   public handleChange = (event: React.ChangeEvent<{ name?: string; value: unknown }>) => {
-    const { fieldName, fieldOnChange: onChange } = this.props
     const selected = this.state.fieldValue
     let s = selected
     const selectedContent = this.getContentById(event.target.value as number)
 
-    this.props.allowMultiple !== undefined && this.props.allowMultiple
+    this.props.settings.AllowMultiple !== undefined && this.props.settings.AllowMultiple
       ? this.isSelected(selectedContent)
         ? (s = selected)
         : s.push(selectedContent)
@@ -121,15 +120,19 @@ export class TagsInput extends Component<ReactReferenceFieldSetting, TagsInputSt
     this.setState({
       fieldValue: s,
     })
-    onChange(fieldName, s.map((content: any) => content.value))
+    this.props.fieldOnChange &&
+      this.props.fieldOnChange(this.props.settings.Name, s.map((content: any) => content.value))
   }
   /**
    * returns referencefields' datasource
    * @param path
    */
   public async search(): Promise<ODataCollectionResponse<Content>> {
-    const selectionRoot = this.props.selectionRoot || []
-    const allowedTypes = this.props.allowedTypes || ['GenericContent']
+    if (!this.props.repository) {
+      throw new Error('You must pass a repository to this control')
+    }
+    const selectionRoot = this.props.settings.SelectionRoots || []
+    const allowedTypes = this.props.settings.AllowedTypes || ['GenericContent']
 
     let pathQuery = ''
     selectionRoot.map((selectionPath, index) => {
@@ -167,8 +170,15 @@ export class TagsInput extends Component<ReactReferenceFieldSetting, TagsInputSt
    * @return {any[]}
    */
   public async getSelected() {
+    if (!this.props.repository) {
+      throw new Error('You must pass a repository to this control')
+    }
     const loadPath = this.props.content
-      ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props.content.Path), '/', this.props.fieldName.toString())
+      ? PathHelper.joinPaths(
+          PathHelper.getContentUrl(this.props.content.Path),
+          '/',
+          this.props.settings.Name.toString(),
+        )
       : ''
     const references = await this.props.repository.loadCollection({
       path: loadPath,
@@ -176,7 +186,6 @@ export class TagsInput extends Component<ReactReferenceFieldSetting, TagsInputSt
         select: 'all',
       },
     })
-    const { label } = this.state
     // TODO: Review this.
     // const results = references.d.results ? references.d.results : [references.d]
     // this.setState({
@@ -188,16 +197,16 @@ export class TagsInput extends Component<ReactReferenceFieldSetting, TagsInputSt
     //   })),
     // })
 
-    if (this.props.dataSource && this.props.dataSource.length > 0) {
-      this.setState({
-        fieldValue: this.props.dataSource.map((item: GenericContent) => ({
-          value: item.Id,
-          label: item[label],
-          avatar: isUser(item) ? item.Avatar : undefined,
-          type: item.Type || 'GenericContent',
-        })),
-      })
-    }
+    // if (this.props.dataSource && this.props.dataSource.length > 0) {
+    //   this.setState({
+    //     fieldValue: this.props.dataSource.map((item: GenericContent) => ({
+    //       value: item.Id,
+    //       label: item[label],
+    //       avatar: isUser(item) ? item.Avatar : undefined,
+    //       type: item.Type || 'GenericContent',
+    //     })),
+    //   })
+    // }
 
     return references
   }
@@ -214,13 +223,13 @@ export class TagsInput extends Component<ReactReferenceFieldSetting, TagsInputSt
     return this.state.fieldValue.indexOf(id) > -1
   }
   public handleDelete = (id: number) => {
-    const { fieldName, fieldOnChange: onChange } = this.props
     const newValue = this.state.fieldValue.filter((item: any) => item.value !== id)
     this.setState({
       fieldValue: newValue,
     })
 
-    onChange(fieldName, newValue.map((content: any) => content.value))
+    this.props.fieldOnChange &&
+      this.props.fieldOnChange(this.props.settings.Name, newValue.map((content: any) => content.value))
   }
   /**
    * render
@@ -231,16 +240,15 @@ export class TagsInput extends Component<ReactReferenceFieldSetting, TagsInputSt
       case 'edit':
         return (
           <FormControl
-            className={this.props.className}
             style={styles.root as any}
-            key={this.props.fieldName as string}
+            key={this.props.settings.Name}
             component={'fieldset' as 'div'}
-            required={this.props.required}>
-            <InputLabel htmlFor={this.props.fieldName as string}>{this.props.labelText}</InputLabel>
+            required={this.props.settings.Compulsory}>
+            <InputLabel htmlFor={this.props.settings.Name}>{this.props.settings.DisplayName}</InputLabel>
             <Select
               value={this.state.fieldValue}
               onChange={e => this.handleChange(e)}
-              input={<Input id={this.props.fieldName as string} fullWidth={true} />}
+              input={<Input id={this.props.settings.Name} fullWidth={true} />}
               renderValue={() => (
                 <div style={styles.chips as any}>
                   {this.state.fieldValue.map((content: any) =>
@@ -251,10 +259,10 @@ export class TagsInput extends Component<ReactReferenceFieldSetting, TagsInputSt
                             alt={this.getContentById(content.value).label}
                             src={
                               this.getContentById(content.value).avatar.Url
-                                ? `${this.props.repository.configuration.repositoryUrl}${
+                                ? `${this.props.repository!.configuration.repositoryUrl}${
                                     this.getContentById(content.value).avatar.Url
                                   }`
-                                : `${this.props.repository.configuration.repositoryUrl}${DEFAULT_AVATAR_PATH}`
+                                : `${this.props.repository!.configuration.repositoryUrl}${DEFAULT_AVATAR_PATH}`
                             }
                           />
                         }
@@ -284,23 +292,21 @@ export class TagsInput extends Component<ReactReferenceFieldSetting, TagsInputSt
                 </MenuItem>
               ))}
             </Select>
-            <FormHelperText>{this.props.hintText}</FormHelperText>
-            <FormHelperText>{this.props.errorText}</FormHelperText>
+            <FormHelperText>{this.props.settings.Description}</FormHelperText>
           </FormControl>
         )
       case 'new':
         return (
           <FormControl
-            className={this.props.className}
             style={styles.root as any}
-            key={this.props.fieldName as string}
+            key={this.props.settings.Name as string}
             component={'fieldset' as 'div'}
-            required={this.props.required}>
-            <InputLabel htmlFor={this.props.fieldName as string}>{this.props.labelText}</InputLabel>
+            required={this.props.settings.Compulsory}>
+            <InputLabel htmlFor={this.props.settings.Name as string}>{this.props.settings.DisplayName}</InputLabel>
             <Select
               value={this.state.fieldValue}
               onChange={e => this.handleChange(e)}
-              input={<Input id={this.props.fieldName as string} fullWidth={true} />}
+              input={<Input id={this.props.settings.Name as string} fullWidth={true} />}
               renderValue={() => (
                 <div style={styles.chips as any}>
                   {this.state.fieldValue.map((content: any) =>
@@ -311,10 +317,10 @@ export class TagsInput extends Component<ReactReferenceFieldSetting, TagsInputSt
                             alt={this.getContentById(content.value).label}
                             src={
                               this.getContentById(content.value).avatar.Url
-                                ? `${this.props.repository.configuration.repositoryUrl}${
+                                ? `${this.props.repository!.configuration.repositoryUrl}${
                                     this.getContentById(content.value).avatar.Url
                                   }`
-                                : `${this.props.repository.configuration.repositoryUrl}${DEFAULT_AVATAR_PATH}`
+                                : `${this.props.repository!.configuration.repositoryUrl}${DEFAULT_AVATAR_PATH}`
                             }
                           />
                         }
@@ -344,32 +350,14 @@ export class TagsInput extends Component<ReactReferenceFieldSetting, TagsInputSt
                 </MenuItem>
               ))}
             </Select>
-            <FormHelperText>{this.props.hintText}</FormHelperText>
-            <FormHelperText>{this.props.errorText}</FormHelperText>
+            <FormHelperText>{this.props.settings.Description}</FormHelperText>
           </FormControl>
         )
       case 'browse':
-        return this.props.value.length > 0 ? (
-          <FormControl component={'fieldset' as 'div'} className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
-            <FormGroup>
-              {this.state.fieldValue.map((content: any, index: number) => (
-                <FormControl key={index} component={'fieldset' as 'div'}>
-                  <FormControlLabel
-                    style={{ marginLeft: 0 }}
-                    label={this.state.dataSource.find(item => item.value === content.value).label}
-                    control={<span />}
-                    key={content.value}
-                  />
-                </FormControl>
-              ))}
-            </FormGroup>
-          </FormControl>
-        ) : null
       default:
-        return this.props.value.length > 0 ? (
-          <FormControl component={'fieldset' as 'div'} className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
+        return this.props.content[this.props.settings.Name].length > 0 ? (
+          <FormControl component={'fieldset' as 'div'}>
+            <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
             <FormGroup>
               {this.state.fieldValue.map((content: any, index: number) => (
                 <FormControl key={index} component={'fieldset' as 'div'}>

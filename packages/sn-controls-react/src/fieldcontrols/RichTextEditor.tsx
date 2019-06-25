@@ -9,7 +9,7 @@ import Radium from 'radium'
 import React, { Component } from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
-import { ReactClientFieldSetting } from './field-settings/ClientFieldSetting'
+import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
  * Interface for RichTextEditor state
@@ -73,7 +73,7 @@ export class RichTextEditor extends Component<ReactClientFieldSetting, RichTextE
      * @property {string} value input value
      */
     this.state = {
-      value: this.setValue(this.props.value).toString(),
+      value: this.setValue(this.props.content[this.props.settings.Name]).toString(),
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -86,8 +86,8 @@ export class RichTextEditor extends Component<ReactClientFieldSetting, RichTextE
     if (value) {
       return value
     } else {
-      if (this.props.defaultValue) {
-        return this.props.defaultValue
+      if (this.props.settings.DefaultValue) {
+        return this.props.settings.DefaultValue
       } else {
         return ''
       }
@@ -99,7 +99,7 @@ export class RichTextEditor extends Component<ReactClientFieldSetting, RichTextE
    */
   public handleChange(value: string) {
     this.setState({ value })
-    this.props.fieldOnChange(this.props.fieldName, value as any)
+    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, value as any)
   }
   /**
    * render
@@ -108,62 +108,38 @@ export class RichTextEditor extends Component<ReactClientFieldSetting, RichTextE
   public render() {
     switch (this.props.actionName) {
       case 'edit':
-        return (
-          <FormControl
-            component={'fieldset' as 'div'}
-            fullWidth={true}
-            error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
-            required={this.props.required}
-            className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
-            <ReactQuill
-              className={this.props.className}
-              style={{ ...this.props.style, ...{ background: '#fff', marginTop: 10 } }}
-              value={this.state.value}
-              readOnly={this.props.readOnly}
-              modules={modules}
-              formats={formats}
-              onChange={this.handleChange}
-              theme="snow"
-            />
-            <FormHelperText>{this.props.hintText}</FormHelperText>
-            <FormHelperText>{this.props.errorText}</FormHelperText>
-          </FormControl>
-        )
       case 'new':
         return (
-          <FormControl
-            component={'fieldset' as 'div'}
-            fullWidth={true}
-            error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
-            required={this.props.required}
-            className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
+          <FormControl component={'fieldset' as 'div'} fullWidth={true} required={this.props.settings.Compulsory}>
+            <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
             <ReactQuill
-              className={this.props.className}
-              style={{ ...this.props.style, ...{ background: '#fff', marginTop: 10 } }}
-              defaultValue={(this.props.defaultValue as unknown) as string}
-              readOnly={this.props.readOnly}
+              style={{ background: '#fff', marginTop: 10 }}
+              defaultValue={(this.props.settings.DefaultValue as unknown) as string}
+              readOnly={this.props.settings.ReadOnly}
               modules={modules}
               formats={formats}
               onChange={this.handleChange}
               theme="snow"
             />
-            <FormHelperText>{this.props.hintText}</FormHelperText>
-            <FormHelperText>{this.props.errorText}</FormHelperText>
+            <FormHelperText>{this.props.settings.Description}</FormHelperText>
           </FormControl>
         )
       case 'browse':
       default:
-        return this.props.value && this.props.value.length > 0 ? (
-          <div className={this.props.className}>
+        return this.props.content[this.props.settings.Name] &&
+          this.props.content[this.props.settings.Name].length > 0 ? (
+          <div>
             <Typography variant="caption" gutterBottom={true}>
-              {this.props.labelText}
+              {this.props.settings.DisplayName}
             </Typography>
             {/* This needs to be reviewed!
              variant="body1" means p. this works when the value doesn't contains html
              and NOT when value contains html tags!*/}
-            <Typography variant="body1" gutterBottom={true} dangerouslySetInnerHTML={{ __html: this.props.value }} />
+            <Typography
+              variant="body1"
+              gutterBottom={true}
+              dangerouslySetInnerHTML={{ __html: this.props.content[this.props.settings.Name] }}
+            />
           </div>
         ) : null
     }

@@ -11,7 +11,7 @@ import { ControlSchema } from '@sensenet/control-mapper'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 import MediaQuery from 'react-responsive'
 import { reactControlMapper } from '../ReactControlMapper'
-import { ReactClientFieldSetting } from '../fieldcontrols/field-settings/ClientFieldSetting'
+import { ReactClientFieldSetting } from '../fieldcontrols/ClientFieldSetting'
 import { styles } from './NewViewStyles'
 
 /**
@@ -113,7 +113,7 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
           title
         )}
         <Grid container={true} spacing={2}>
-          {fieldSettings.map(fieldSetting => {
+          {fieldSettings.map(field => {
             // if (
             //   contentTypeName.indexOf('File') > -1 &&
             //   extension &&
@@ -134,19 +134,20 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
                 item={true}
                 xs={12}
                 sm={12}
-                md={fieldSetting.fieldSettings.Name === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                lg={fieldSetting.fieldSettings.Name === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                xl={fieldSetting.fieldSettings.Name === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                key={fieldSetting.fieldSettings.Name}>
+                md={field.fieldSettings.Name === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                lg={field.fieldSettings.Name === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                xl={field.fieldSettings.Name === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                key={field.fieldSettings.Name}>
                 {createElement(
                   this.state.controlMapper.getControlForContentField(
                     this.props.contentTypeName,
-                    fieldSetting.fieldSettings.Name,
+                    field.fieldSettings.Name,
                     'new',
                   ),
                   {
                     actionName: 'new',
-                    fieldName: fieldSetting.fieldSettings.Name,
+                    settings: field.fieldSettings,
+                    content: this.state.content,
                     repository: this.props.repository,
                     renderIcon: this.props.renderIcon,
                     fieldOnChange: this.handleInputChange,

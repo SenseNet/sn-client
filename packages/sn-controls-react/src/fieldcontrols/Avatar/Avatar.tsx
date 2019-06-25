@@ -7,10 +7,10 @@ import InputLabel from '@material-ui/core/InputLabel'
 import List from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
 import { PathHelper } from '@sensenet/client-utils'
-import { GenericContent, User } from '@sensenet/default-content-types'
+import { GenericContent, User, ReferenceFieldSetting } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
 import { renderIconDefault } from '../icon'
-import { ReactAvatarFieldSetting } from '../field-settings/AvatarFieldSetting'
+import { ReactClientFieldSetting } from '../ClientFieldSetting'
 import { AvatarPicker } from './AvatarPicker'
 import { DefaultAvatarTemplate } from './DefaultAvatarTemplate'
 
@@ -50,7 +50,7 @@ export interface AvatarState {
   selected?: GenericContent
 }
 
-export class Avatar extends Component<ReactAvatarFieldSetting, AvatarState> {
+export class Avatar extends Component<ReactClientFieldSetting<ReferenceFieldSetting>, AvatarState> {
   /**
    * constructor
    * @param {object} props
@@ -59,17 +59,17 @@ export class Avatar extends Component<ReactAvatarFieldSetting, AvatarState> {
     super(props)
     this.state = {
       fieldValue:
-        this.props.value && this.props.value.length > 0
-          ? this.props.value
-          : this.props.defaultValue
-          ? this.props.defaultValue
+        this.props.content[this.props.settings.Name] && this.props.content[this.props.settings.Name].length > 0
+          ? this.props.content[this.props.settings.Name]
+          : this.props.settings.DefaultValue
+          ? this.props.settings.DefaultValue
           : [],
       pickerIsOpen: false,
       selected:
-        this.props.value && this.props.value.length > 0
-          ? this.props.value
-          : this.props.defaultValue
-          ? this.props.defaultValue
+        this.props.content[this.props.settings.Name] && this.props.content[this.props.settings.Name].length > 0
+          ? this.props.content[this.props.settings.Name]
+          : this.props.settings.DefaultValue
+          ? this.props.settings.DefaultValue
           : [],
     }
     this.getSelected = this.getSelected.bind(this)
@@ -82,9 +82,16 @@ export class Avatar extends Component<ReactAvatarFieldSetting, AvatarState> {
    * @return {GenericContent[]}
    */
   public async getSelected() {
+    if (!this.props.repository) {
+      throw new Error('You must pass a repository to this control')
+    }
     //TODO: Check this. This is throwing an error now.
     const loadPath = this.props.content
-      ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props.content.Path), '/', this.props.fieldName.toString())
+      ? PathHelper.joinPaths(
+          PathHelper.getContentUrl(this.props.content.Path),
+          '/',
+          this.props.settings.Name.toString(),
+        )
       : ''
     const references = await this.props.repository.loadCollection<User>({
       path: loadPath,
@@ -101,8 +108,7 @@ export class Avatar extends Component<ReactAvatarFieldSetting, AvatarState> {
    * Removes the item and clears the field value
    */
   public removeItem = () => {
-    const { fieldName: name, fieldOnChange: onChange } = this.props
-    onChange(name, DEFAULT_AVATAR_PATH as any)
+    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, DEFAULT_AVATAR_PATH)
     this.setState({
       fieldValue: '',
     })
@@ -119,10 +125,9 @@ export class Avatar extends Component<ReactAvatarFieldSetting, AvatarState> {
     this.handleDialogClose()
   }
   public handleOkClick = () => {
-    const { fieldName: name, fieldOnChange: onChange } = this.props
     const content = this.state.selected
     if (content && content.Path && this.state.fieldValue !== content.Path) {
-      onChange(name, content.Path as any)
+      this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, content.Path)
 
       this.setState({
         fieldValue: content.Path,
@@ -145,53 +150,51 @@ export class Avatar extends Component<ReactAvatarFieldSetting, AvatarState> {
     })
   }
   public render() {
-    const { className, fieldName: name, required, itemTemplate } = this.props
     switch (this.props.actionName) {
       case 'edit':
         return (
           <FormControl
-            className={className}
             style={styles.root as any}
-            key={name.toString()}
+            key={this.props.settings.Name}
             component={'fieldset' as 'div'}
-            required={required}>
-            <InputLabel shrink={true} htmlFor={name.toString()}>
-              {this.props.labelText}
+            required={this.props.settings.Compulsory}>
+            <InputLabel shrink={true} htmlFor={this.props.settings.Name}>
+              {this.props.settings.DisplayName}
             </InputLabel>
             <List
               dense={true}
               style={this.state.fieldValue.length > 0 ? styles.listContainer : { ...styles.listContainer, width: 150 }}>
-              {itemTemplate ? (
-                itemTemplate(this.state.fieldValue)
-              ) : (
+              {
                 <DefaultAvatarTemplate
-                  repositoryUrl={this.props.repository.configuration.repositoryUrl}
+                  repositoryUrl={this.props.repository!.configuration.repositoryUrl}
                   url={this.state.fieldValue}
                   add={this.addItem}
                   remove={this.removeItem}
                   actionName="edit"
                   renderIcon={this.props.renderIcon ? this.props.renderIcon : renderIconDefault}
                 />
-              )}
+              }
             </List>
-            {this.props.hintText ? <FormHelperText>{this.props.hintText}</FormHelperText> : null}
-            {this.props.errorText ? <FormHelperText>{this.props.errorText}</FormHelperText> : null}
+            {this.props.settings.Description ? (
+              <FormHelperText>{this.props.settings.Description}</FormHelperText>
+            ) : null}
 
             <Dialog onClose={this.handleDialogClose} open={this.state.pickerIsOpen}>
               <div style={styles.dialog}>
                 <Typography variant="h5" gutterBottom={true}>
                   {AVATAR_PICKER_TITLE}
                 </Typography>
+                {/* REVIEW AVATAR PICKER PROPS*/}
                 <AvatarPicker
                   path={
-                    this.props.selectionRoot
-                      ? this.props.selectionRoot[0]
+                    this.props.settings.SelectionRoots
+                      ? this.props.settings.SelectionRoots[0]
                       : `/Root/Profiles/Public/${this.props.content.Name}/Document_Library`
                   }
-                  allowedTypes={this.props.allowedTypes}
-                  repository={this.props.repository}
+                  allowedTypes={this.props.settings.AllowedTypes}
+                  repository={this.props.repository!}
                   select={content => this.selectItem(content)}
-                  repositoryUrl={this.props.repository.configuration.repositoryUrl}
+                  repositoryUrl={this.props.repository!.configuration.repositoryUrl}
                   renderIcon={this.props.renderIcon ? this.props.renderIcon : renderIconDefault}
                 />
                 <DialogActions>
@@ -207,32 +210,30 @@ export class Avatar extends Component<ReactAvatarFieldSetting, AvatarState> {
       case 'new':
         return (
           <FormControl
-            className={className}
             style={styles.root as any}
-            key={name.toString()}
+            key={this.props.settings.Name}
             component={'fieldset' as 'div'}
-            required={required}>
-            <InputLabel shrink={true} htmlFor={name.toString()}>
-              {this.props.labelText}
+            required={this.props.settings.Compulsory}>
+            <InputLabel shrink={true} htmlFor={this.props.settings.Name}>
+              {this.props.settings.DisplayName}
             </InputLabel>
             <List
               dense={true}
               style={this.state.fieldValue.length > 0 ? styles.listContainer : { ...styles.listContainer, width: 200 }}>
-              {itemTemplate ? (
-                itemTemplate(this.state.fieldValue)
-              ) : (
+              {
                 <DefaultAvatarTemplate
-                  repositoryUrl={this.props.repository.configuration.repositoryUrl}
+                  repositoryUrl={this.props.repository!.configuration.repositoryUrl}
                   add={this.addItem}
                   actionName="new"
-                  readOnly={this.props.readOnly}
+                  readOnly={this.props.settings.ReadOnly}
                   remove={this.removeItem}
                   renderIcon={this.props.renderIcon ? this.props.renderIcon : renderIconDefault}
                 />
-              )}
+              }
             </List>
-            {this.props.hintText ? <FormHelperText>{this.props.hintText}</FormHelperText> : null}
-            {this.props.errorText ? <FormHelperText>{this.props.errorText}</FormHelperText> : null}
+            {this.props.settings.Description ? (
+              <FormHelperText>{this.props.settings.Description}</FormHelperText>
+            ) : null}
 
             <Dialog onClose={this.handleDialogClose} open={this.state.pickerIsOpen}>
               <div style={styles.dialog}>
@@ -241,11 +242,15 @@ export class Avatar extends Component<ReactAvatarFieldSetting, AvatarState> {
                 </Typography>
                 <AvatarPicker
                   // TODO: review this uploadFolderPath
-                  path={this.props.selectionRoot ? this.props.selectionRoot[0] : this.props['data-uploadFolderPath']}
-                  allowedTypes={this.props.allowedTypes}
-                  repository={this.props.repository}
+                  path={
+                    this.props.settings.SelectionRoots
+                      ? this.props.settings.SelectionRoots[0]
+                      : this.props['data-uploadFolderPath']
+                  }
+                  allowedTypes={this.props.settings.AllowedTypes}
+                  repository={this.props.repository!}
                   select={content => this.selectItem(content)}
-                  repositoryUrl={this.props.repository.configuration.repositoryUrl}
+                  repositoryUrl={this.props.repository!.configuration.repositoryUrl}
                   renderIcon={this.props.renderIcon ? this.props.renderIcon : renderIconDefault}
                 />
                 <DialogActions>
@@ -259,16 +264,16 @@ export class Avatar extends Component<ReactAvatarFieldSetting, AvatarState> {
           </FormControl>
         )
       case 'browse':
-        return this.props.value.length > 0 ? (
-          <FormControl className={className} style={styles.root as any}>
-            <InputLabel shrink={true} htmlFor={name.toString()}>
-              {this.props.labelText}
+        return this.props.content[this.props.settings.Name].length > 0 ? (
+          <FormControl style={styles.root as any}>
+            <InputLabel shrink={true} htmlFor={this.props.settings.Name}>
+              {this.props.settings.DisplayName}
             </InputLabel>
             <List
               dense={true}
               style={this.state.fieldValue.length > 0 ? styles.listContainer : { ...styles.listContainer, width: 200 }}>
               <DefaultAvatarTemplate
-                repositoryUrl={this.props.repository.configuration.repositoryUrl}
+                repositoryUrl={this.props.repository!.configuration.repositoryUrl}
                 url={this.state.fieldValue}
                 add={this.addItem}
                 actionName="browse"
@@ -278,16 +283,16 @@ export class Avatar extends Component<ReactAvatarFieldSetting, AvatarState> {
           </FormControl>
         ) : null
       default:
-        return this.props.value.length > 0 ? (
-          <FormControl className={className} style={styles.root as any}>
-            <InputLabel shrink={true} htmlFor={name.toString()}>
-              {this.props.labelText}
+        return this.props.content[this.props.settings.Name].length > 0 ? (
+          <FormControl style={styles.root as any}>
+            <InputLabel shrink={true} htmlFor={this.props.settings.Name}>
+              {this.props.settings.DisplayName}
             </InputLabel>
             <List
               dense={true}
               style={this.state.fieldValue.length > 0 ? styles.listContainer : { ...styles.listContainer, width: 200 }}>
               <DefaultAvatarTemplate
-                repositoryUrl={this.props.repository.configuration.repositoryUrl}
+                repositoryUrl={this.props.repository!.configuration.repositoryUrl}
                 url={this.state.fieldValue}
                 add={this.addItem}
                 actionName="browse"

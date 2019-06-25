@@ -1,12 +1,13 @@
 /**
  * @module FieldControls
  */
-import InputAdornment from '@material-ui/core/InputAdornment'
+// import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import Radium from 'radium'
 import React, { Component } from 'react'
-import { ReactNumberFieldSetting } from './field-settings/NumberFieldSetting'
+import { NumberFieldSetting } from '@sensenet/default-content-types'
+import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
  * Interface for Number state
@@ -19,23 +20,20 @@ export interface NumberState {
  * Field control that represents a Number field. Available values will be populated from the FieldSettings.
  */
 @Radium
-export class Number extends Component<ReactNumberFieldSetting, NumberState> {
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  constructor(props: Number['props']) {
+export class NumberComponent extends Component<ReactClientFieldSetting<NumberFieldSetting>, NumberState> {
+  constructor(props: NumberComponent['props']) {
     super(props)
     this.state = {
-      value: this.props.value
-        ? (this.setValue(this.props.value) as any)
-        : this.setValue(this.props.defaultValue as any),
+      value: this.props.content[this.props.settings.Name]
+        ? (this.setValue(this.props.content[this.props.settings.Name]) as any)
+        : this.setValue(this.props.settings.DefaultValue as any),
     }
     this.handleChange = this.handleChange.bind(this)
   }
 
   public handleChange(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) {
-    const { fieldName: name, fieldOnChange: onChange } = this.props
-    const { value } = e.target
-    this.setState({ value })
-    onChange(name, value)
+    this.setState({ value: e.target.value })
+    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, e.target.value)
   }
   /**
    * convert incoming default value string to proper format
@@ -45,8 +43,8 @@ export class Number extends Component<ReactNumberFieldSetting, NumberState> {
     if (value) {
       return value
     } else {
-      if (this.props.defaultValue) {
-        return this.props.defaultValue
+      if (this.props.settings.DefaultValue) {
+        return this.props.settings.DefaultValue
       } else {
         return null
       }
@@ -59,29 +57,39 @@ export class Number extends Component<ReactNumberFieldSetting, NumberState> {
    * @param {number} value
    */
   public isValid(value: number) {
-    return this.props.min && value > this.props.min && (this.props.max && value < this.props.max)
+    return (
+      this.props.settings.MinValue &&
+      value > this.props.settings.MinValue &&
+      (this.props.settings.MaxValue && value < this.props.settings.MaxValue)
+    )
   }
   /**
    * Returns steps value by decimal and step settings
    */
   public defineStepValue = () => {
-    return this.props.decimal && this.props.step === undefined ? 0.1 : this.props.step ? this.props.step : 1
+    return Number.isInteger(this.props.content[this.props.settings.Name]) && this.props.settings.Step === undefined
+      ? 1
+      : this.props.settings.Step
+      ? this.props.settings.Step
+      : 0.1
   }
   /**
    * Returns inputadornment by currency and percentage settings
    */
   public defineCurrency = () => {
-    let currency: any
-    if (this.props.isCurrency) {
-      currency = this.props.currency ? (
-        <InputAdornment position="start">{this.props.currency}</InputAdornment>
-      ) : (
-        <InputAdornment position="start">$</InputAdornment>
-      )
-    } else {
-      currency = this.props.isPercentage ? <InputAdornment position="start">%</InputAdornment> : null
-    }
-    return currency
+    // TODO: REVIEW this
+    // let currency: any
+    // if (this.props.settings) {
+    //   currency = this.props.currency ? (
+    //     <InputAdornment position="start">{this.props.currency}</InputAdornment>
+    //   ) : (
+    //     <InputAdornment position="start">$</InputAdornment>
+    //   )
+    // } else {
+    //   currency = this.props.isPercentage ? <InputAdornment position="start">%</InputAdornment> : null
+    // }
+    // return currency
+    return ''
   }
   /**
    * render
@@ -90,79 +98,39 @@ export class Number extends Component<ReactNumberFieldSetting, NumberState> {
   public render() {
     switch (this.props.actionName) {
       case 'edit':
-        return (
-          <TextField
-            name={this.props.fieldName as string}
-            type="number"
-            label={this.props.labelText}
-            className={this.props.className}
-            style={this.props.style}
-            value={this.state.value}
-            required={this.props.required}
-            disabled={this.props.readOnly}
-            InputProps={{
-              startAdornment: this.defineCurrency(),
-            }}
-            inputProps={{
-              step: this.defineStepValue(),
-              max: this.props.max ? this.props.max : null,
-              min: this.props.min ? this.props.min : null,
-            }}
-            id={this.props.fieldName as string}
-            error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
-            fullWidth={true}
-            onChange={this.handleChange}
-            helperText={this.props.hintText}
-          />
-        )
       case 'new':
         return (
           <TextField
-            name={this.props.fieldName as string}
+            name={this.props.settings.Name}
             type="number"
-            label={this.props.labelText}
-            className={this.props.className}
-            style={this.props.style}
-            defaultValue={this.props.defaultValue as any}
-            required={this.props.required}
-            disabled={this.props.readOnly}
+            label={this.props.settings.DisplayName}
+            value={this.state.value}
+            required={this.props.settings.Compulsory}
+            disabled={this.props.settings.ReadOnly}
             InputProps={{
               startAdornment: this.defineCurrency(),
             }}
             inputProps={{
               step: this.defineStepValue(),
-              max: this.props.max ? this.props.max : null,
-              min: this.props.min ? this.props.min : null,
+              max: this.props.settings.MaxValue ? this.props.settings.MaxValue : null,
+              min: this.props.settings.MinValue ? this.props.settings.MinValue : null,
             }}
-            id={this.props.fieldName as string}
-            error={this.props.errorText && this.props.errorText.length > 0 ? true : false}
+            id={this.props.settings.Name}
             fullWidth={true}
             onChange={this.handleChange}
-            helperText={this.props.hintText}
+            helperText={this.props.settings.Description}
           />
         )
       case 'browse':
-        return this.state.value ? (
-          <div className={this.props.className}>
-            <Typography variant="caption" gutterBottom={true}>
-              {this.props.labelText}
-            </Typography>
-            <Typography variant="body1" gutterBottom={true}>
-              {this.props.isCurrency ? (this.props.currency ? this.props.currency : '$') : null}
-              {this.props.isPercentage ? '%' : null}
-              {this.state.value}
-            </Typography>
-          </div>
-        ) : null
       default:
         return this.state.value ? (
-          <div className={this.props.className}>
+          <div>
             <Typography variant="caption" gutterBottom={true}>
-              {this.props.labelText}
+              {this.props.settings.DisplayName}
             </Typography>
             <Typography variant="body1" gutterBottom={true}>
-              {this.props.isCurrency ? (this.props.currency ? this.props.currency : '$') : null}
-              {this.props.isPercentage ? '%' : null}
+              {/* {this.props.isCurrency ? (this.props.currency ? this.props.currency : '$') : null} */}
+              {this.props.settings.ShowAsPercentage ? '%' : null}
               {this.state.value}
             </Typography>
           </div>

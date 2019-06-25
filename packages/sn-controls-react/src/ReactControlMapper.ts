@@ -19,7 +19,7 @@ import {
 } from '@sensenet/default-content-types'
 import { ComponentType } from 'react'
 import * as FieldControls from './fieldcontrols'
-import { ReactClientFieldSetting } from './fieldcontrols/field-settings/ClientFieldSetting'
+import { ReactClientFieldSetting } from './fieldcontrols/ClientFieldSetting'
 
 /**
  * A static Control Mapper instance, used to create the mapping between sensenet ECM ContentTypes and FieldSettings and React components.
@@ -31,13 +31,13 @@ export const reactControlMapper = (repository: Repository) => {
   >(repository, () => null, () => null)
   controlMapper
     .setupFieldSettingDefault(NumberFieldSetting, () => {
-      return FieldControls.Number
+      return FieldControls.NumberComponent
     })
     .setupFieldSettingDefault(CurrencyFieldSetting, () => {
-      return FieldControls.Number
+      return FieldControls.NumberComponent
     })
     .setupFieldSettingDefault(IntegerFieldSetting, () => {
-      return FieldControls.Number
+      return FieldControls.NumberComponent
     })
     .setupFieldSettingDefault(ShortTextFieldSetting, setting => {
       switch (setting.ControlHint) {

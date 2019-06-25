@@ -10,8 +10,8 @@ import FormLabel from '@material-ui/core/FormLabel'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
-import { GenericContent } from '@sensenet/default-content-types'
-import { ReactChoiceFieldSetting } from './field-settings/ChoiceFieldSetting'
+import { GenericContent, ChoiceFieldSetting } from '@sensenet/default-content-types'
+import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
  * Interface for DropDownList state
@@ -23,7 +23,7 @@ export interface DropDownListState<T extends GenericContent, K extends keyof T> 
  * Field control that represents a Choice field. Available values will be populated from the FieldSettings.
  */
 export class DropDownList<T extends GenericContent, K extends keyof T> extends Component<
-  ReactChoiceFieldSetting,
+  ReactClientFieldSetting<ChoiceFieldSetting>,
   DropDownListState<T, K>
 > {
   /**
@@ -36,7 +36,7 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
      * @type {object}
      */
     this.state = {
-      value: this.props.value || this.props.defaultValue || [],
+      value: this.props.content[this.props.settings.Name] || this.props.settings.DefaultValue || [],
     }
   }
   /**
@@ -44,14 +44,14 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
    */
   public handleChange = (event: React.ChangeEvent<{ name?: string; value: unknown }>) => {
     this.setState({ value: event.target.value as any })
-    this.props.fieldOnChange(this.props.fieldName, event.target.value as any)
+    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, event.target.value as any)
   }
   /**
    * returns selected options value
    */
   public getSelectedValue() {
     let selected
-    this.props.options.map(option => {
+    this.props.settings.Options!.map(option => {
       if (option.Selected) {
         selected = option.Value
       }
@@ -64,21 +64,19 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
    * @param {any} value
    */
   public getTextByValue(value: any) {
-    let text = ''
     if (value) {
-      this.props.options.map(option => {
+      this.props.settings.Options!.map(option => {
         if (option.Value === value.toString()) {
-          text = option.Text
+          return option.Text
         }
       })
     } else {
-      this.props.options.map(option => {
+      this.props.settings.Options!.map(option => {
         if (option.Selected) {
-          text = option.Text
+          return option.Text
         }
       })
     }
-    return text
   }
 
   /**
@@ -89,24 +87,21 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
     switch (this.props.actionName) {
       case 'edit':
         return (
-          <FormControl
-            fullWidth={true}
-            required={this.props.required}
-            error={this.props.errorText && this.props.errorText.length > 0 ? true : false}>
-            <InputLabel htmlFor={this.props.fieldName as string}>{this.props.labelText}</InputLabel>
+          <FormControl fullWidth={true} required={this.props.settings.Compulsory}>
+            <InputLabel htmlFor={this.props.settings.Name as string}>{this.props.settings.DisplayName}</InputLabel>
             <Select
               onChange={this.handleChange}
               inputProps={
                 {
-                  name: this.props.fieldName,
-                  id: this.props.fieldName,
+                  name: this.props.settings.Name,
+                  id: this.props.settings.Name,
                 } as any
               }
               value={this.state.value[0]}
-              multiple={this.props.allowMultiple}
+              multiple={this.props.settings.AllowMultiple}
               autoWidth={true}
               fullWidth={true}>
-              {this.props.options.map(option => {
+              {this.props.settings.Options!.map(option => {
                 return (
                   <MenuItem key={option.Value} value={option.Value}>
                     {option.Text}
@@ -114,30 +109,26 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
                 )
               })}
             </Select>
-            <FormHelperText>{this.props.hintText}</FormHelperText>
-            <FormHelperText>{this.props.errorText}</FormHelperText>
+            <FormHelperText>{this.props.settings.Description}</FormHelperText>
           </FormControl>
         )
       case 'new':
         return (
-          <FormControl
-            fullWidth={true}
-            required={this.props.required}
-            error={this.props.errorText && this.props.errorText.length > 0 ? true : false}>
-            <InputLabel htmlFor={this.props.fieldName as string}>{this.props.labelText}</InputLabel>
+          <FormControl fullWidth={true} required={this.props.settings.Compulsory}>
+            <InputLabel htmlFor={this.props.settings.Name as string}>{this.props.settings.DisplayName}</InputLabel>
             <Select
               onChange={this.handleChange}
               inputProps={
                 {
-                  name: this.props.fieldName,
-                  id: this.props.fieldName,
+                  name: this.props.settings.Name,
+                  id: this.props.settings.Name,
                 } as any
               }
               value={this.state.value as any}
-              multiple={this.props.allowMultiple}
+              multiple={this.props.settings.AllowMultiple}
               autoWidth={true}
               fullWidth={true}>
-              {this.props.options.map(option => {
+              {this.props.settings.Options!.map(option => {
                 return (
                   <MenuItem key={option.Value} value={option.Value}>
                     {option.Text}
@@ -145,20 +136,19 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
                 )
               })}
             </Select>
-            <FormHelperText>{this.props.hintText}</FormHelperText>
-            <FormHelperText>{this.props.errorText}</FormHelperText>
+            <FormHelperText>{this.props.settings.Description}</FormHelperText>
           </FormControl>
         )
       case 'browse':
-        return this.props.value ? (
-          <FormControl component={'fieldset' as 'div'} className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
+        return this.props.content[this.props.settings.Name] ? (
+          <FormControl component={'fieldset' as 'div'}>
+            <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
             <FormGroup>
-              {this.props.value.map((value: any, index: number) => (
+              {this.props.content[this.props.settings.Name].map((value: any, index: number) => (
                 <FormControl component={'fieldset' as 'div'} key={index}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
-                    label={this.props.options.find(item => item.Value === value).Text}
+                    label={this.props.settings.Options!.find(item => item.Value === value)!.Text}
                     control={<span />}
                     key={value}
                   />
@@ -168,15 +158,15 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
           </FormControl>
         ) : null
       default:
-        return this.props.value ? (
-          <FormControl component={'fieldset' as 'div'} className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props.labelText}</FormLabel>
+        return this.props.content[this.props.settings.Name] ? (
+          <FormControl component={'fieldset' as 'div'}>
+            <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
             <FormGroup>
-              {this.props.value.map((value: any, index: number) => (
+              {this.props.content[this.props.settings.Name].map((value: any, index: number) => (
                 <FormControl component={'fieldset' as 'div'} key={index}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
-                    label={this.props.options.find(item => item.Value === value).Text}
+                    label={this.props.settings.Options!.find(item => item.Value === value)!.Text}
                     control={<span />}
                     key={value}
                   />
