@@ -50,7 +50,7 @@ export interface AvatarState {
   selected?: GenericContent
 }
 
-export class Avatar extends Component<ReactClientFieldSetting<ReferenceFieldSetting>, AvatarState> {
+export class Avatar extends Component<ReactClientFieldSetting<ReferenceFieldSetting, User>, AvatarState> {
   /**
    * constructor
    * @param {object} props
@@ -93,14 +93,14 @@ export class Avatar extends Component<ReactClientFieldSetting<ReferenceFieldSett
           this.props.settings.Name.toString(),
         )
       : ''
-    const references = await this.props.repository.loadCollection<User>({
-      path: loadPath,
+    const references = await this.props.repository.load<User>({
+      idOrPath: loadPath,
       oDataOptions: {
         select: 'all',
       },
     })
     this.setState({
-      fieldValue: references.d.results[0].Avatar && references.d.results[0].Avatar.Url,
+      fieldValue: references.d.Avatar && references.d.Avatar.Url,
     })
     return references
   }
@@ -264,36 +264,22 @@ export class Avatar extends Component<ReactClientFieldSetting<ReferenceFieldSett
           </FormControl>
         )
       case 'browse':
-        return this.props.content[this.props.settings.Name].length > 0 ? (
-          <FormControl style={styles.root as any}>
-            <InputLabel shrink={true} htmlFor={this.props.settings.Name}>
-              {this.props.settings.DisplayName}
-            </InputLabel>
-            <List
-              dense={true}
-              style={this.state.fieldValue.length > 0 ? styles.listContainer : { ...styles.listContainer, width: 200 }}>
-              <DefaultAvatarTemplate
-                repositoryUrl={this.props.repository!.configuration.repositoryUrl}
-                url={this.state.fieldValue}
-                add={this.addItem}
-                actionName="browse"
-                renderIcon={this.props.renderIcon ? this.props.renderIcon : renderIconDefault}
-              />
-            </List>
-          </FormControl>
-        ) : null
       default:
-        return this.props.content[this.props.settings.Name].length > 0 ? (
+        return this.props.content[this.props.settings.Name] ? (
           <FormControl style={styles.root as any}>
             <InputLabel shrink={true} htmlFor={this.props.settings.Name}>
               {this.props.settings.DisplayName}
             </InputLabel>
             <List
               dense={true}
-              style={this.state.fieldValue.length > 0 ? styles.listContainer : { ...styles.listContainer, width: 200 }}>
+              style={
+                this.props.content[this.props.settings.Name].Url
+                  ? styles.listContainer
+                  : { ...styles.listContainer, width: 200 }
+              }>
               <DefaultAvatarTemplate
                 repositoryUrl={this.props.repository!.configuration.repositoryUrl}
-                url={this.state.fieldValue}
+                url={this.props.content[this.props.settings.Name].Url}
                 add={this.addItem}
                 actionName="browse"
                 renderIcon={this.props.renderIcon ? this.props.renderIcon : renderIconDefault}
