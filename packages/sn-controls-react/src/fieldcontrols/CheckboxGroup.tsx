@@ -13,6 +13,7 @@ import TextField from '@material-ui/core/TextField'
 import { ChoiceFieldSetting } from '@sensenet/default-content-types'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
+// TODO(Zoli): Review this. It's value should be determind by the allowmultiple setting
 /**
  * Interface for CheckboxGroup state
  */
@@ -135,22 +136,6 @@ export class CheckboxGroup extends Component<ReactClientFieldSetting<ChoiceField
           </FormControl>
         )
       case 'browse':
-        return this.props.content[this.props.settings.Name].length > 0 ? (
-          <FormControl component={'fieldset' as 'div'}>
-            <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
-            <FormGroup>
-              {this.props.content[this.props.settings.Name].map((value: unknown, index: number) => (
-                <FormControl component={'fieldset' as 'div'} key={index}>
-                  <FormControlLabel
-                    style={{ marginLeft: 0 }}
-                    label={options.find(item => item.Value === value)!.Text}
-                    control={<span />}
-                  />
-                </FormControl>
-              ))}
-            </FormGroup>
-          </FormControl>
-        ) : null
       default:
         return this.props.content[this.props.settings.Name].length > 0 ? (
           <FormControl component={'fieldset' as 'div'}>
