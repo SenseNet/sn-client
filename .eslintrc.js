@@ -85,5 +85,11 @@ module.exports = {
         'dot-notation': 'off',
       },
     },
+    {
+      files: ['examples/sn-react-component-docs/**/*.{ts,tsx}'],
+      rules: {
+        'require-jsdoc': 'off',
+      },
+    },
   ],
 }
