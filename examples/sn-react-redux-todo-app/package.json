@@ -1,14 +1,11 @@
 {
   "name": "sn-react-redux-todo-app",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "Todo app with React and Redux built upon Sense/Net ECM",
   "main": "index.tsx",
   "private": true,
   "scripts": {
-    "fix": "npm run fix:prettier && npm run fix:tslint",
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
-    "fix:tslint": "tslint --fix --project .",
-    "lint": "tslint --project .",
     "build:webpack": "rimraf bundle && webpack",
     "start": "webpack-dev-server"
   },
@@ -33,12 +30,12 @@
     }
   },
   "dependencies": {
-    "@material-ui/core": "^3.6.2",
-    "@material-ui/icons": "^3.0.1",
-    "@sensenet/authentication-google": "^2.0.8",
-    "@sensenet/client-core": "^2.0.1",
-    "@sensenet/controls-react": "^2.7.0",
-    "@sensenet/redux": "^5.1.9",
+    "@material-ui/core": "^4.0.1",
+    "@material-ui/icons": "^4.0.1",
+    "@sensenet/authentication-google": "^2.0.9",
+    "@sensenet/client-core": "^2.1.0",
+    "@sensenet/controls-react": "^2.8.0",
+    "@sensenet/redux": "^5.1.10",
     "material-ui-pickers": "^2.0.4",
     "radium": "^0.25.0",
     "react": "^16.8.4",
@@ -49,16 +46,16 @@
     "redux-di-middleware": "^4.0.1"
   },
   "devDependencies": {
-    "@types/react": "^16.7.14",
-    "@types/react-dom": "^16.0.7",
-    "@types/react-redux": "^7.0.1",
-    "@types/react-router-dom": "^4.3.1",
+    "@types/react": "^16.8.19",
+    "@types/react-dom": "^16.8.4",
+    "@types/react-redux": "^7.0.9",
+    "@types/react-router-dom": "^4.3.3",
     "@types/redux-logger": "^3.0.6",
     "awesome-typescript-loader": "^5.2.1",
-    "copy-webpack-plugin": "^5.0.0",
+    "copy-webpack-plugin": "^5.0.3",
     "source-map-loader": "^0.2.4",
-    "webpack": "^4.19.1",
-    "webpack-cli": "^3.1.1",
-    "webpack-dev-server": "^3.1.8"
+    "webpack": "^4.32.2",
+    "webpack-cli": "^3.3.2",
+    "webpack-dev-server": "^3.4.1"
   }
 }

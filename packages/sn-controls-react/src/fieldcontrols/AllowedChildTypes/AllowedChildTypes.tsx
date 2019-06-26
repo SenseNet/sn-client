@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 import CircularProgress from '@material-ui/core/CircularProgress'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import FormControl from '@material-ui/core/FormControl'
@@ -12,6 +13,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
+import { ODataBatchResponse, ODataCollectionResponse, ODataParams, Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
 import React, { Component } from 'react'
@@ -71,7 +73,7 @@ export interface AllowedChildTypesState<T extends GenericContent> {
   value: string[]
   effectiveAllowedChildTypes: T[]
   allowedTypesOnCTD: T[]
-  items: T[]
+  items: GenericContent[]
   removeable: boolean
   allCTDs: T[]
   isLoading: boolean
@@ -111,21 +113,17 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       inputValue: '',
       isOpened: false,
       anchorEl: null as any,
-      // tslint:disable-next-line: no-unnecessary-type-annotation
       getMenuItem: (item: T, select: (item: T) => void) => (
         <ListItem key={item.Id} value={item.Id} onClick={() => select(item)} style={{ margin: 0 }}>
-          <ListItemIcon
-            style={{ margin: 0 }}
-            children={
-              this.props['data-renderIcon']
-                ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
-                : renderIconDefault(
-                    item.Icon && typeicons[item.Icon.toLowerCase()]
-                      ? typeicons[item.Icon.toLowerCase()]
-                      : typeicons['contenttype'],
-                  )
-            }
-          />
+          <ListItemIcon style={{ margin: 0 }}>
+            {this.props['data-renderIcon']
+              ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+              : renderIconDefault(
+                  item.Icon && typeicons[item.Icon.toLowerCase()]
+                    ? typeicons[item.Icon.toLowerCase()]
+                    : typeicons['contenttype'],
+                )}
+          </ListItemIcon>
           <ListItemText primary={item.DisplayName} />
         </ListItem>
       ),
@@ -160,8 +158,9 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
   }
   private willUnmount: boolean = false
   private async getAllowedChildTypes() {
+    const repo: Repository = this.props['data-repository'] || this.props.repository
     try {
-      const result = await this.props['data-repository'].load<T>({
+      const result = await repo.load<T>({
         idOrPath: this.props['content'].Id,
         oDataOptions: {
           select: 'EffectiveAllowedChildTypes',
@@ -172,7 +171,10 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
         return
       }
 
-      const allowedChildTypesFromCTD = await this.props['data-repository'].executeAction({
+      const allowedChildTypesFromCTD = await repo.executeAction<
+        ODataParams<GenericContent>,
+        ODataBatchResponse<GenericContent>
+      >({
         idOrPath: this.props['content'].Id,
         name: 'GetAllowedChildTypesFromCTD',
         method: 'GET',
@@ -181,32 +183,40 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
         },
       })
 
+      if (!allowedChildTypesFromCTD) {
+        throw Error('Allowed child types not found')
+      }
+
+      const typeResults = result.d.EffectiveAllowedChildTypes as T[]
+
+      const types =
+        this.props['data-actionName'] !== 'new'
+          ? typeResults.length === 0
+            ? allowedChildTypesFromCTD.d.results
+            : (result.d.EffectiveAllowedChildTypes as T[])
+          : allowedChildTypesFromCTD.d.results
+
       this.setState({
-        effectiveAllowedChildTypes: result.d.EffectiveAllowedChildTypes,
-        allowedTypesOnCTD: allowedChildTypesFromCTD['d'].results,
-        items:
-          this.props['data-actionName'] !== 'new'
-            ? result.d.EffectiveAllowedChildTypes.length === 0
-              ? allowedChildTypesFromCTD['d'].results
-              : result.d.EffectiveAllowedChildTypes
-            : allowedChildTypesFromCTD['d'].results,
-        removeable:
-          result.d.EffectiveAllowedChildTypes.length === 0 || this.props['data-actionName'] === 'new' ? false : true,
+        effectiveAllowedChildTypes: typeResults,
+        items: types,
+        removeable: typeResults.length === 0 || this.props['data-actionName'] === 'new' ? false : true,
+        value: types.map((t: T) => t.Name),
       })
     } catch (_e) {
       console.log(_e)
     }
   }
   private async getAllContentTypes() {
+    const repo: Repository = this.props['data-repository'] || this.props.repository
     try {
-      const result = await this.props['data-repository'].executeAction({
+      const result = (await repo.executeAction({
         idOrPath: this.props['content'].Id,
         name: 'GetAllContentTypes',
         method: 'GET',
         oDataOptions: {
           select: ['Name', 'DisplayName', 'Icon'],
         },
-      })
+      })) as ODataCollectionResponse<T>
       if (this.willUnmount) {
         return
       }
@@ -264,10 +274,11 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
   }
   private handleAddClick = () => {
     const { items, selected, value } = this.state
+    const newValue = selected ? [...value, selected.Name] : value
     if (this.state.removeable) {
       this.setState({
         items: selected ? [...items, selected] : items,
-        value: selected ? [...value, selected.Name] : value,
+        value: newValue,
         selected: null,
         inputValue: '',
         filteredList: this.state.allCTDs,
@@ -282,7 +293,8 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
         removeable: true,
       })
     }
-    this.props.onChange(this.props.name, value as any)
+    console.log(newValue)
+    this.props.onChange(this.props.name, newValue as any)
   }
   /**
    * render
@@ -297,18 +309,15 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
             <List dense={true}>
               {this.state.items.map((item, index) => (
                 <ListItem key={index}>
-                  <ListItemIcon
-                    style={{ margin: 0 }}
-                    children={
-                      this.props['data-renderIcon']
-                        ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
-                        : renderIconDefault(
-                            item.Icon && typeicons[item.Icon.toLowerCase()]
-                              ? typeicons[item.Icon.toLowerCase()]
-                              : typeicons['contenttype'],
-                          )
-                    }
-                  />
+                  <ListItemIcon style={{ margin: 0 }}>
+                    {this.props['data-renderIcon']
+                      ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+                      : renderIconDefault(
+                          item.Icon && typeicons[item.Icon.toLowerCase()]
+                            ? typeicons[item.Icon.toLowerCase()]
+                            : typeicons['contenttype'],
+                        )}
+                  </ListItemIcon>
                   <ListItemText primary={item.DisplayName} />
                   {this.state.removeable ? (
                     <ListItemSecondaryAction>
@@ -375,18 +384,15 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
             <List dense={true}>
               {this.state.items.map((item, index) => (
                 <ListItem key={index}>
-                  <ListItemIcon
-                    style={{ margin: 0 }}
-                    children={
-                      this.props['data-renderIcon']
-                        ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
-                        : renderIconDefault(
-                            item.Icon && typeicons[item.Icon.toLowerCase()]
-                              ? typeicons[item.Icon.toLowerCase()]
-                              : typeicons['contenttype'],
-                          )
-                    }
-                  />
+                  <ListItemIcon style={{ margin: 0 }}>
+                    {this.props['data-renderIcon']
+                      ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+                      : renderIconDefault(
+                          item.Icon && typeicons[item.Icon.toLowerCase()]
+                            ? typeicons[item.Icon.toLowerCase()]
+                            : typeicons['contenttype'],
+                        )}
+                  </ListItemIcon>
                   <ListItemText primary={item.DisplayName} />
                   {this.state.removeable ? (
                     <ListItemSecondaryAction>
@@ -453,18 +459,15 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
             <List dense={true}>
               {this.state.items.map((item, index) => (
                 <ListItem key={index}>
-                  <ListItemIcon
-                    style={{ margin: 0 }}
-                    children={
-                      this.props['data-renderIcon']
-                        ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
-                        : renderIconDefault(
-                            item.Icon && typeicons[item.Icon.toLowerCase()]
-                              ? typeicons[item.Icon.toLowerCase()]
-                              : typeicons['contenttype'],
-                          )
-                    }
-                  />
+                  <ListItemIcon style={{ margin: 0 }}>
+                    {this.props['data-renderIcon']
+                      ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+                      : renderIconDefault(
+                          item.Icon && typeicons[item.Icon.toLowerCase()]
+                            ? typeicons[item.Icon.toLowerCase()]
+                            : typeicons['contenttype'],
+                        )}
+                  </ListItemIcon>
                   <ListItemText primary={item.DisplayName} />
                 </ListItem>
               ))}
@@ -479,18 +482,15 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
               <List dense={true}>
                 {this.state.items.map((item, index) => (
                   <ListItem key={index}>
-                    <ListItemIcon
-                      style={{ margin: 0 }}
-                      children={
-                        this.props['data-renderIcon']
-                          ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
-                          : renderIconDefault(
-                              item.Icon && typeicons[item.Icon.toLowerCase()]
-                                ? typeicons[item.Icon.toLowerCase()]
-                                : typeicons['contenttype'],
-                            )
-                      }
-                    />
+                    <ListItemIcon style={{ margin: 0 }}>
+                      {this.props['data-renderIcon']
+                        ? this.props['data-renderIcon'](item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+                        : renderIconDefault(
+                            item.Icon && typeicons[item.Icon.toLowerCase()]
+                              ? typeicons[item.Icon.toLowerCase()]
+                              : typeicons['contenttype'],
+                          )}
+                    </ListItemIcon>
                     <ListItemText primary={item.DisplayName} />
                   </ListItem>
                 ))}

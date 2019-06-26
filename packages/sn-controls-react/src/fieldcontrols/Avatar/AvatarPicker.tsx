@@ -25,7 +25,6 @@ interface AvatarPickerProps {
   repository: Repository
   path: string
   allowedTypes?: string[]
-  selected: GenericContent
   repositoryUrl: string
   renderIcon: (name: string) => JSX.Element
 }
@@ -38,6 +37,9 @@ const pickerItemOptions: ODataParams<Folder> = {
   orderby: [['IsFolder', 'desc'], 'DisplayName'],
 }
 
+/**
+ * Represents an avatar picker component
+ */
 export function AvatarPicker(props: AvatarPickerProps) {
   const { items, selectedItem, setSelectedItem, path, navigateTo, reload, isLoading, error } = useListPicker<
     GenericContent
@@ -117,7 +119,9 @@ export function AvatarPicker(props: AvatarPickerProps) {
               {node.IsFolder || node.IsFolder === undefined ? (
                 <ListItemIcon>{props.renderIcon(iconName(node))}</ListItemIcon>
               ) : (
-                <Avatar src={`${props.repositoryUrl}${node.Path}`} />
+                <ListItemIcon>
+                  <Avatar src={`${props.repositoryUrl}${node.Path}`} />
+                </ListItemIcon>
               )}
               <ListItemText primary={node.DisplayName} />
             </ListItem>

@@ -16,6 +16,7 @@ import { ListToolbar } from '../components/ListToolbar'
 import {
   loadMore,
   loadParent,
+  resetSearchValues,
   select,
   setActive,
   updateChildrenOptions,
@@ -32,7 +33,6 @@ import { GridPlaceholder } from './Loaders/GridPlaceholder'
 import { SearchResultsHeader } from './SearchResultsHeader'
 import { UploadBar } from './Upload/UploadBar'
 
-// tslint:disable-next-line:variable-name
 const ConnectedUploadBar = connect(
   (state: rootStateType) => ({
     items: state.dms.uploads.uploads,
@@ -74,6 +74,7 @@ const mapDispatchToProps = {
   updateChildrenOptions,
   updateContent,
   updateSearchValues,
+  resetSearchValues,
 }
 
 interface DocumentLibraryProps extends RouteComponentProps<any> {
@@ -167,7 +168,7 @@ class DocumentLibrary extends React.Component<
     }
     return {
       ...lastState,
-    } as DocumentLibrary['state']
+    }
   }
 
   public handleFileDrop(ev: React.DragEvent) {
@@ -183,6 +184,8 @@ class DocumentLibrary extends React.Component<
   }
 
   public handleRowDoubleClick(_e: React.MouseEvent, content: GenericContent) {
+    this.props.resetSearchValues()
+    this.props.updateChildrenOptions({ query: '' })
     if (content.IsFolder) {
       const newPath = compile(this.props.match.path)({ folderPath: btoa(content.Path) })
       this.props.history.push(newPath)
@@ -209,7 +212,7 @@ class DocumentLibrary extends React.Component<
 
   private updateLoading = debounce((value: boolean) => {
     this.setState({
-      showLoader: value && !Boolean(this.props.childrenOptions.skip),
+      showLoader: value && !this.props.childrenOptions.skip,
     })
   }, 300)
 

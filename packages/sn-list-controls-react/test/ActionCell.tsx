@@ -27,7 +27,6 @@ describe('ActionCell component', () => {
       />,
     )
     const iconButton = component.find(IconButton)
-    // tslint:disable-next-line: no-unused-expression
     iconButton.props().onClick!({} as any)
   })
 })

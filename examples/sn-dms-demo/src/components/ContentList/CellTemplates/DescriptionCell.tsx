@@ -9,7 +9,7 @@ export interface DescriptionCellProps<T extends GenericContent> {
 export class DescriptionCell<T extends GenericContent> extends Component<DescriptionCellProps<T>> {
   public render() {
     return (
-      <TableCell padding="checkbox">
+      <TableCell>
         <div dangerouslySetInnerHTML={{ __html: this.props.content.Description || '' }} />
       </TableCell>
     )

@@ -4,9 +4,6 @@ import { connect } from 'react-redux'
 import { rootStateType } from '../store/rootReducer'
 
 class GoogleReCaptcha extends React.Component<{ verify?: (response: any) => void }, { recaptchaResponse: any }> {
-  constructor(props: GoogleReCaptcha['props']) {
-    super(props)
-  }
   public onChange(response: any) {
     this.setState({
       recaptchaResponse: response,
@@ -15,14 +12,10 @@ class GoogleReCaptcha extends React.Component<{ verify?: (response: any) => void
       this.props.verify(response)
     }
   }
+
   public render() {
     return (
-      <ReCAPTCHA
-        // tslint:disable-next-line:jsx-no-string-ref
-        ref="recaptcha"
-        sitekey={process.env.REACT_APP_RECAPTCHA_KEY || ''}
-        onChange={response => this.onChange(response)}
-      />
+      <ReCAPTCHA sitekey={process.env.REACT_APP_RECAPTCHA_KEY || ''} onChange={response => this.onChange(response)} />
     )
   }
 }

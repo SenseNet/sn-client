@@ -1,13 +1,10 @@
 {
   "name": "@sensenet/redux-promise-middleware",
-  "version": "2.1.7",
+  "version": "2.1.8",
   "description": "Redux middleware for async sensenet functions",
   "main": "dist/index.js",
   "scripts": {
-    "fix": "npm run fix:prettier && npm run fix:tslint",
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
-    "fix:tslint": "tslint --fix --project .",
-    "lint": "tslint --project .",
     "build": "tsc -b"
   },
   "files": [

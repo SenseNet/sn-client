@@ -114,10 +114,6 @@ class DashboardComponent extends React.Component<
     currentScope: 'documents',
   }
 
-  constructor(props: DashboardComponent['props']) {
-    super(props)
-  }
-
   public static getDerivedStateFromProps(
     newProps: DashboardComponent['props'],
     lastState: DashboardComponent['state'],
@@ -164,21 +160,20 @@ class DashboardComponent extends React.Component<
                       <Switch>
                         <Route
                           path="/documents"
-                          // tslint:disable-next-line: no-unnecessary-type-annotation
                           component={(props: RouteComponentProps<any>) => (
                             <Switch>
-                              <Route path={props.match.url + '/shared'}>
+                              <Route path={`${props.match.url}/shared`}>
                                 <Shared />
                               </Route>
 
-                              <Route path={props.match.url + '/savedqueries'}>
+                              <Route path={`${props.match.url}/savedqueries`}>
                                 <SavedQueries />
                               </Route>
-                              <Route path={props.match.url + '/trash'}>
+                              <Route path={`${props.match.url}/trash`}>
                                 <Trash />
                               </Route>
                               <Route
-                                path={'/' + PathHelper.joinPaths(props.match.url, '/:folderPath?/:otherActions*')}
+                                path={`/${PathHelper.joinPaths(props.match.url, '/:folderPath?/:otherActions*')}`}
                                 exact={true}
                                 component={() => (
                                   <div>
@@ -194,7 +189,7 @@ class DashboardComponent extends React.Component<
                           component={() => (
                             <Switch>
                               <Route
-                                path={'/' + PathHelper.joinPaths('/users', '/:folderPath?/:otherActions*')}
+                                path={`/${PathHelper.joinPaths('/users', '/:folderPath?/:otherActions*')}`}
                                 exact={true}
                                 component={() => (
                                   <div>
@@ -210,7 +205,7 @@ class DashboardComponent extends React.Component<
                           component={() => (
                             <Switch>
                               <Route
-                                path={'/' + PathHelper.joinPaths('/groups', '/:folderPath?/:otherActions*')}
+                                path={`/${PathHelper.joinPaths('/groups', '/:folderPath?/:otherActions*')}`}
                                 exact={true}
                                 component={() => (
                                   <div>
@@ -240,21 +235,20 @@ class DashboardComponent extends React.Component<
                     <Switch>
                       <Route
                         path="/documents"
-                        // tslint:disable-next-line: no-unnecessary-type-annotation
                         component={(props: RouteComponentProps<any>) => (
                           <Switch>
-                            <Route path={props.match.url + '/shared'}>
+                            <Route path={`${props.match.url}/shared`}>
                               <Shared />
                             </Route>
 
-                            <Route path={props.match.url + '/savedqueries'}>
+                            <Route path={`${props.match.url}/savedqueries`}>
                               <SavedQueries />
                             </Route>
-                            <Route path={props.match.url + '/trash'}>
+                            <Route path={`${props.match.url}/trash`}>
                               <Trash />
                             </Route>
                             <Route
-                              path={'/' + PathHelper.joinPaths(props.match.url)}
+                              path={`/${PathHelper.joinPaths(props.match.url)}`}
                               exact={true}
                               component={() => (
                                 <div>
@@ -270,7 +264,7 @@ class DashboardComponent extends React.Component<
                         component={() => (
                           <Switch>
                             <Route
-                              path={'/' + PathHelper.joinPaths('/users', '/:folderPath?/:otherActions*')}
+                              path={`/${PathHelper.joinPaths('/users', '/:folderPath?/:otherActions*')}`}
                               exact={true}
                               component={() => (
                                 <div>
@@ -286,7 +280,7 @@ class DashboardComponent extends React.Component<
                         component={() => (
                           <Switch>
                             <Route
-                              path={'/' + PathHelper.joinPaths('/groups', '/:folderPath?/:otherActions*')}
+                              path={`/${PathHelper.joinPaths('/groups', '/:folderPath?/:otherActions*')}`}
                               exact={true}
                               component={() => (
                                 <div>
@@ -315,14 +309,14 @@ class DashboardComponent extends React.Component<
               />
               {matches ? (
                 <Dialog open={isDialogOpen} onClose={closeDialog} maxWidth="md">
-                  <DialogContent children={dialogContent} />
+                  <DialogContent>{dialogContent}</DialogContent>
                   <IconButton onClick={closeDialog} style={styles.dialogClose as any}>
                     <Icon type={iconType.materialui} iconName="close" />
                   </IconButton>
                 </Dialog>
               ) : (
                 <Drawer open={isDialogOpen} anchor="bottom" onClose={closeDialog}>
-                  <DialogContent children={dialogContent} />
+                  <DialogContent>{dialogContent}</DialogContent>
                   <Button onClick={closeDialog} style={styles.dialogCloseMobile as any}>
                     Cancel
                   </Button>

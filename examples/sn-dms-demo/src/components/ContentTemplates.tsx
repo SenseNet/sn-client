@@ -4,7 +4,6 @@ import Typography from '@material-ui/core/Typography'
 
 import React from 'react'
 
-// tslint:disable-next-line:variable-name
 export const ContentTemplates: React.StatelessComponent = () => {
   return (
     <AppBar position="static" style={{ background: '#fff' }}>

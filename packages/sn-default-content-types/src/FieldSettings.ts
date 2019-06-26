@@ -73,7 +73,12 @@ export enum UrlFormat {
   Picture,
 }
 
-// tslint:disable-next-line:only-arrow-functions
+/**
+ * Check if field setting is type of param
+ * @template T
+ * @param {FieldSetting} setting
+ * @param {new () => T} type
+ */
 export function isFieldSettingOfType<T extends FieldSetting>(setting: FieldSetting, type: new () => T): setting is T {
   return setting.Type === type.name
 }
@@ -87,7 +92,7 @@ export class FieldSetting {
   public Icon?: string
   public ReadOnly?: boolean
   public Compulsory?: boolean
-  public DefaultValue?: string | any[]
+  public DefaultValue?: string
   public OutputMethod?: OutputMethod
   public Visible?: boolean
   public VisibleBrowse?: FieldVisibility

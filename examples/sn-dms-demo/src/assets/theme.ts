@@ -32,7 +32,6 @@ export const theme = createMuiTheme({
     },
   },
   typography: {
-    useNextVariants: true,
     fontSize: 14,
     fontFamily: 'Raleway Regular',
     button: {
@@ -40,7 +39,9 @@ export const theme = createMuiTheme({
       fontSize: 14,
       textTransform: 'none',
       letterSpacing: '.1em',
-      minWidth: 50,
+    },
+    body1: {
+      color: '#000',
     },
     h5: {
       fontFamily: 'Raleway SemiBold',
@@ -51,5 +52,3 @@ export const theme = createMuiTheme({
     borderRadius: 2,
   },
 })
-
-export default theme

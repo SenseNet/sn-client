@@ -13,10 +13,9 @@ import {
   ContentRoutingContext,
   ContentRoutingContextProvider,
   CurrentContentContext,
-  InjectorContext,
-  LocalizationContext,
   RepositoryContext,
 } from '../../context'
+import { useInjector, useLocalization } from '../../hooks'
 import { RepositoryManager } from '../../services/RepositoryManager'
 import { Icon } from '../Icon'
 import { EventListFilterContext } from './filter-context'
@@ -25,12 +24,12 @@ export const List: React.FunctionComponent<{
   values: Array<ILeveledLogEntry<any>>
   style?: React.CSSProperties
 }> = props => {
-  const filter = useContext(EventListFilterContext).filter
+  const { filter } = useContext(EventListFilterContext)
   const [effectiveValues, setEffectiveValues] = useState<Array<ILeveledLogEntry<any>>>([])
 
-  const localization = useContext(LocalizationContext).values.eventList.list
+  const localization = useLocalization().eventList.list
 
-  const repositoryManager = useContext(InjectorContext).getInstance(RepositoryManager)
+  const repositoryManager = useInjector().getInstance(RepositoryManager)
 
   useEffect(() => {
     setEffectiveValues(

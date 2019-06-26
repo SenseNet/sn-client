@@ -1,4 +1,5 @@
 export * from './Components/AdvancedSearch'
+export * from './Components/Fields/NestedTextField'
 export * from './Components/Fields/PresetField'
 export * from './Components/Fields/ReferenceField'
 export * from './Components/Fields/TextField'

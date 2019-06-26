@@ -39,8 +39,9 @@ export const icons = {
   group: 'supervised_user_circle',
   orgunit: 'supervised_user_circle',
   query: 'library_books',
-  query_execute: 'play_arrow',
+  queryExecute: 'play_arrow',
   workspacesales: 'workspace-with-two-horizontal-windows',
   workspaceproject: 'workspace-with-two-horizontal-windows',
   workspacedocument: 'workspace-with-two-horizontal-windows',
+  office: 'logo-office',
 } as any

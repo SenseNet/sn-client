@@ -40,18 +40,12 @@ export const mapDispatchToProps = {
   openDialog,
 }
 
-// tslint:disable-next-line:no-empty-interface
-export interface DmsViewerProps extends RouteComponentProps<any> {
-  /**/
-}
-
-// tslint:disable-next-line:no-empty-interface
 export interface DmsViewerState {
   documentId: number
 }
 
 export class DmsViewerComponent extends React.Component<
-  DmsViewerProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
+  RouteComponentProps<any> & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps,
   DmsViewerState
 > {
   public state = { documentId: 0 }
@@ -143,19 +137,16 @@ export class DmsViewerComponent extends React.Component<
                           <ToggleThumbnailsWidget />
                           <Download
                             download={doc => {
-                              // tslint:disable-next-line:no-console
                               console.log('Download triggered', doc)
                             }}
                           />
                           <Print
                             print={doc => {
-                              // tslint:disable-next-line:no-console
                               console.log('Print triggered', doc)
                             }}
                           />
                           <Share
                             share={() => {
-                              // tslint:disable-next-line:no-console
                               // console.log('Share triggered', doc)
                               this.props.openDialog(<ShareDialog currentContent={this.props.currentContent || null} />)
                             }}

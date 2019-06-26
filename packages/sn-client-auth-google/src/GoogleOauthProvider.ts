@@ -118,6 +118,7 @@ export class GoogleOauthProvider implements OauthProvider {
         let location: Location | null = null
         await Retrier.create(async () => {
           try {
+            // eslint-disable-next-line prefer-destructuring
             location = ((ev.srcElement as HTMLIFrameElement).contentDocument as Document).location
             return true
           } catch (error) {

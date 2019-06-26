@@ -11,6 +11,19 @@ import {
 import { ActionModel, GenericContent, Task, User } from '@sensenet/default-content-types'
 import * as Actions from '../src/Actions'
 
+const jwtMockResponse = {
+  ok: true,
+  status: 200,
+  json: async () => {
+    return {
+      access:
+        'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzZW5zZW5ldC10b2tlbi1zZXJ2aWNlIiwic3ViIjoic2Vuc2VuZXQiLCJhdWQiOiJjbGllbnQiLCJleHAiOjE1MTk4MzM0MDQsImlhdCI6MTUxOTgzMzEwNCwibmJmIjoxNTE5ODMzMTA0LCJuYW1lIjoiUHVibGljXFxhbGJhQHNlbnNlbmV0LmNvbSIsImp0aSI6ImUyMTgyOGQxOWVlMjQwNDM4MTAzMTZhMjkwZjQ3YzkxIn0',
+      refresh:
+        'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzZW5zZW5ldC10b2tlbi1zZXJ2aWNlIiwic3ViIjoic2Vuc2VuZXQiLCJhdWQiOiJjbGllbnQiLCJleHAiOjE1MTk5MTk4MDQsImlhdCI6MTUxOTgzMzEwNCwibmJmIjoxNTE5ODMzNDA0LCJuYW1lIjoiUHVibGljXFxhbGJhQHNlbnNlbmV0LmNvbSIsImp0aSI6IjgzZDZmNzA0NjNmNTQ4YWZhN2U4ZDAxMmIyMGRiYzRiIn0',
+    }
+  },
+} as Response
+
 const repository = new Repository(
   { repositoryUrl: 'https://dmsservice.demo.sensenet.com/' },
   async () => jwtMockResponse,
@@ -60,6 +73,7 @@ const uploadResponse = {
       Id: 4037,
       Length: 18431,
       Name: 'LICENSE',
+      // eslint-disable-next-line @typescript-eslint/camelcase
       Thumbnail_url: '/Root/Sites/Default_Site/Workspace/Document_Library/LICENSE',
       Type: 'File',
       Url: '/Root/Sites/Default_Site/Workspace/Document_Library/LICENSE',
@@ -67,22 +81,8 @@ const uploadResponse = {
   },
 } as Response
 
-const jwtMockResponse = {
-  ok: true,
-  status: 200,
-  json: async () => {
-    return {
-      access:
-        'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzZW5zZW5ldC10b2tlbi1zZXJ2aWNlIiwic3ViIjoic2Vuc2VuZXQiLCJhdWQiOiJjbGllbnQiLCJleHAiOjE1MTk4MzM0MDQsImlhdCI6MTUxOTgzMzEwNCwibmJmIjoxNTE5ODMzMTA0LCJuYW1lIjoiUHVibGljXFxhbGJhQHNlbnNlbmV0LmNvbSIsImp0aSI6ImUyMTgyOGQxOWVlMjQwNDM4MTAzMTZhMjkwZjQ3YzkxIn0',
-      refresh:
-        'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzZW5zZW5ldC10b2tlbi1zZXJ2aWNlIiwic3ViIjoic2Vuc2VuZXQiLCJhdWQiOiJjbGllbnQiLCJleHAiOjE1MTk5MTk4MDQsImlhdCI6MTUxOTgzMzEwNCwibmJmIjoxNTE5ODMzNDA0LCJuYW1lIjoiUHVibGljXFxhbGJhQHNlbnNlbmV0LmNvbSIsImp0aSI6IjgzZDZmNzA0NjNmNTQ4YWZhN2U4ZDAxMmIyMGRiYzRiIn0',
-    }
-  },
-} as Response
-
 describe('Actions', () => {
   const path = '/workspaces/project'
-  // tslint:disable-next-line:variable-name
   let repo: Repository
   beforeEach(() => {
     repo = new Repository({ repositoryUrl: 'https://dmsservice.demo.sensenet.com/' }, async () => contentMockResponse)
@@ -573,8 +573,7 @@ describe('Actions', () => {
           expect(Actions.userLogin('alba', 'alba')).toHaveProperty('type', 'USER_LOGIN')
         })
         it('should return mockdata', () => {
-          // tslint:disable-next-line:no-unused-expression
-          expect(data).toBeFalsy
+          expect(data).toBeFalsy()
         })
       })
     })
@@ -596,8 +595,7 @@ describe('Actions', () => {
           expect(Actions.userLoginGoogle(googleOauthProvider)).toHaveProperty('type', 'USER_LOGIN_GOOGLE')
         })
         it('should return mockdata', () => {
-          // tslint:disable-next-line:no-unused-expression
-          expect(data).toBeTruthy
+          expect(data).toBeTruthy()
         })
       })
     })
@@ -614,8 +612,7 @@ describe('Actions', () => {
           expect(Actions.userLoginGoogle(googleOauthProvider2)).toHaveProperty('type', 'USER_LOGIN_GOOGLE')
         })
         it('should return mockdata', () => {
-          // tslint:disable-next-line:no-unused-expression
-          expect(data).toBeFalsy
+          expect(data).toBeFalsy()
         })
       })
     })
@@ -635,8 +632,7 @@ describe('Actions', () => {
           expect(Actions.userLogout()).toHaveProperty('type', 'USER_LOGOUT')
         })
         it('should return mockdata', () => {
-          // tslint:disable-next-line:no-unused-expression
-          expect(data).toBeTruthy
+          expect(data).toBeTruthy()
         })
       })
     })

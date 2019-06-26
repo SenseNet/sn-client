@@ -25,8 +25,6 @@
  * ```
  */ /** */
 
-// tslint:disable:naming-convention
-
 export class ChoiceOption {
   public Value!: string
   public Text?: string

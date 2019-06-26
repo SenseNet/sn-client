@@ -13,7 +13,7 @@ export const deepMerge = <T>(target: T, ...sources: Array<DeepPartial<T> | undef
   if (!sources.length) {
     return target
   }
-  const merged = { ...target } as T
+  const merged = { ...target }
   for (const source of sources) {
     if (!source) {
       continue
@@ -22,7 +22,7 @@ export const deepMerge = <T>(target: T, ...sources: Array<DeepPartial<T> | undef
     for (const key of keys) {
       if (!(source[key] instanceof Array) && typeof source[key] === 'object' && typeof target[key] === 'object') {
         merged[key] = deepMerge(target[key], source[key])
-      } else if (source[key]) {
+      } else if (source[key] !== undefined) {
         ;(merged[key] as any) = source[key]
       }
     }

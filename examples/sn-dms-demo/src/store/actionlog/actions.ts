@@ -37,7 +37,6 @@ export const readLogEntries = createAction((entries: LogEntry[]) => ({
 
 export const initLog = createAction(() => ({
   type: 'SN_DMS_INIT_LOG',
-  // tslint:disable-next-line: no-unnecessary-type-annotation
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const repository = options.getInjectable(Repository)
     const eventHub = new EventHub(repository)

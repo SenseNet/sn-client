@@ -8,7 +8,9 @@ before_install:
   - export PATH="$HOME/.yarn/bin:$PATH"
 
 cache:
-  yarn: true
+  - yarn
+  - directories:
+      - node_modules
 
 jobs:
   allow_failures:
@@ -35,16 +37,16 @@ jobs:
       name: 'DMS'
       install: yarn && npm install netlify-cli -g
       script: yarn build && yarn dms build:webpack
-      after_success: netlify deploy --site 12d988ec-f023-45e1-9f49-d05f8b309c42 --auth $NETLIFY_ACCESS_TOKEN --dir ./examples/sn-dms-demo/build --message $TRAVIS_PULL_REQUEST
+      after_success: wait-on $SN_BOT_URL -l -t 60000 && netlify deploy --site 12d988ec-f023-45e1-9f49-d05f8b309c42 --auth $NETLIFY_ACCESS_TOKEN --dir ./examples/sn-dms-demo/build --message $TRAVIS_PULL_REQUEST
 
     - if: type = pull_request
       name: 'Component docs'
       install: yarn && npm install netlify-cli -g
       script: yarn build && yarn storybook build-storybook
-      after_success: netlify deploy --site 2e86544e-b4b5-4f40-b1a0-a5d34367a03f --auth $NETLIFY_ACCESS_TOKEN --dir ./examples/sn-react-component-docs/storybook-static --message $TRAVIS_PULL_REQUEST
+      after_success: wait-on $SN_BOT_URL -l -t 60000 && netlify deploy --site 2e86544e-b4b5-4f40-b1a0-a5d34367a03f --auth $NETLIFY_ACCESS_TOKEN --dir ./examples/sn-react-component-docs/storybook-static --message $TRAVIS_PULL_REQUEST
 
     - if: type = pull_request
       name: 'Sn app'
       install: yarn && npm install netlify-cli -g
       script: yarn build && yarn snapp build:webpack
-      after_success: netlify deploy --site eddadc9d-3e2d-42ab-a0c6-81b9d58fce84 --auth $NETLIFY_ACCESS_TOKEN --dir ./apps/sensenet/bundle/assets --message $TRAVIS_PULL_REQUEST
+      after_success: wait-on $SN_BOT_URL -l -t 60000 && netlify deploy --site eddadc9d-3e2d-42ab-a0c6-81b9d58fce84 --auth $NETLIFY_ACCESS_TOKEN --dir ./apps/sensenet/bundle/assets --message $TRAVIS_PULL_REQUEST

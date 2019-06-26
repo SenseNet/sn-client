@@ -8,37 +8,37 @@ exports[`ZoomMode component should render without crashing 1`] = `
     }
   }
 >
-  <WithStyles(IconButton)
+  <WithStyles(ForwardRef(IconButton))
     onClick={[Function]}
     title="Zoom mode"
   >
-    <pure(ZoomOutIcon) />
-  </WithStyles(IconButton)>
-  <WithStyles(Menu)
+    <ZoomOutIcon />
+  </WithStyles(ForwardRef(IconButton))>
+  <WithStyles(ForwardRef(Menu))
     id="zoom-menu"
     onClose={[Function]}
     open={false}
   >
-    <WithStyles(MenuItem)
+    <WithStyles(ForwardRef(MenuItem))
       onClick={[Function]}
     >
-      <pure(ZoomOutMapIcon) />
+      <ZoomOutMapIcon />
          
       Fit
        
-    </WithStyles(MenuItem)>
-    <WithStyles(MenuItem)
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(MenuItem))
       onClick={[Function]}
     >
-      <pure(AspectRatioIcon) />
+      <AspectRatioIcon />
         
       Original size
        
-    </WithStyles(MenuItem)>
-    <WithStyles(MenuItem)
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(MenuItem))
       onClick={[Function]}
     >
-      <pure(CodeIcon)
+      <CodeIcon
         style={
           Object {
             "transform": "rotate(90deg)",
@@ -48,45 +48,45 @@ exports[`ZoomMode component should render without crashing 1`] = `
          
       Fit height
        
-    </WithStyles(MenuItem)>
-    <WithStyles(MenuItem)
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(MenuItem))
       onClick={[Function]}
     >
-      <pure(CodeIcon) />
+      <CodeIcon />
          
       Fit width
        
-    </WithStyles(MenuItem)>
-    <WithStyles(Divider)
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(Divider))
       light={true}
     />
       
     Custom
      
     <br />
-    <WithStyles(MobileStepper)
+    <WithStyles(ForwardRef(MobileStepper))
       activeStep={0}
       backButton={
-        <WithStyles(IconButton)
+        <ForwardRef(WithStyles)
           disabled={true}
           onClickCapture={[Function]}
         >
-          <pure(ZoomOutIcon) />
-        </WithStyles(IconButton)>
+          <Memo />
+        </ForwardRef(WithStyles)>
       }
       nextButton={
-        <WithStyles(IconButton)
+        <ForwardRef(WithStyles)
           disabled={false}
           onClickCapture={[Function]}
         >
-          <pure(ZoomInIcon) />
-        </WithStyles(IconButton)>
+          <Memo />
+        </ForwardRef(WithStyles)>
       }
       position="static"
       steps={6}
       variant="progress"
     />
-  </WithStyles(Menu)>
+  </WithStyles(ForwardRef(Menu))>
 </div>
 `;
 
@@ -98,37 +98,37 @@ exports[`ZoomMode component should render without crashing 2`] = `
     }
   }
 >
-  <WithStyles(IconButton)
+  <WithStyles(ForwardRef(IconButton))
     onClick={[Function]}
     title="Zoom mode"
   >
-    <pure(ZoomInIcon) />
-  </WithStyles(IconButton)>
-  <WithStyles(Menu)
+    <ZoomInIcon />
+  </WithStyles(ForwardRef(IconButton))>
+  <WithStyles(ForwardRef(Menu))
     id="zoom-menu"
     onClose={[Function]}
     open={false}
   >
-    <WithStyles(MenuItem)
+    <WithStyles(ForwardRef(MenuItem))
       onClick={[Function]}
     >
-      <pure(ZoomOutMapIcon) />
+      <ZoomOutMapIcon />
          
       Fit
        
-    </WithStyles(MenuItem)>
-    <WithStyles(MenuItem)
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(MenuItem))
       onClick={[Function]}
     >
-      <pure(AspectRatioIcon) />
+      <AspectRatioIcon />
         
       Original size
        
-    </WithStyles(MenuItem)>
-    <WithStyles(MenuItem)
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(MenuItem))
       onClick={[Function]}
     >
-      <pure(CodeIcon)
+      <CodeIcon
         style={
           Object {
             "transform": "rotate(90deg)",
@@ -138,45 +138,45 @@ exports[`ZoomMode component should render without crashing 2`] = `
          
       Fit height
        
-    </WithStyles(MenuItem)>
-    <WithStyles(MenuItem)
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(MenuItem))
       onClick={[Function]}
     >
-      <pure(CodeIcon) />
+      <CodeIcon />
          
       Fit width
        
-    </WithStyles(MenuItem)>
-    <WithStyles(Divider)
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(Divider))
       light={true}
     />
       
     Custom
      
     <br />
-    <WithStyles(MobileStepper)
+    <WithStyles(ForwardRef(MobileStepper))
       activeStep={1}
       backButton={
-        <WithStyles(IconButton)
+        <ForwardRef(WithStyles)
           disabled={false}
           onClickCapture={[Function]}
         >
-          <pure(ZoomOutIcon) />
-        </WithStyles(IconButton)>
+          <Memo />
+        </ForwardRef(WithStyles)>
       }
       nextButton={
-        <WithStyles(IconButton)
+        <ForwardRef(WithStyles)
           disabled={false}
           onClickCapture={[Function]}
         >
-          <pure(ZoomInIcon) />
-        </WithStyles(IconButton)>
+          <Memo />
+        </ForwardRef(WithStyles)>
       }
       position="static"
       steps={6}
       variant="progress"
     />
-  </WithStyles(Menu)>
+  </WithStyles(ForwardRef(Menu))>
 </div>
 `;
 
@@ -188,37 +188,37 @@ exports[`ZoomMode component should render without crashing 3`] = `
     }
   }
 >
-  <WithStyles(IconButton)
+  <WithStyles(ForwardRef(IconButton))
     onClick={[Function]}
     title="Zoom mode"
   >
-    <pure(ZoomOutMapIcon) />
-  </WithStyles(IconButton)>
-  <WithStyles(Menu)
+    <ZoomOutMapIcon />
+  </WithStyles(ForwardRef(IconButton))>
+  <WithStyles(ForwardRef(Menu))
     id="zoom-menu"
     onClose={[Function]}
     open={false}
   >
-    <WithStyles(MenuItem)
+    <WithStyles(ForwardRef(MenuItem))
       onClick={[Function]}
     >
-      <pure(ZoomOutMapIcon) />
+      <ZoomOutMapIcon />
          
       Fit
        
-    </WithStyles(MenuItem)>
-    <WithStyles(MenuItem)
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(MenuItem))
       onClick={[Function]}
     >
-      <pure(AspectRatioIcon) />
+      <AspectRatioIcon />
         
       Original size
        
-    </WithStyles(MenuItem)>
-    <WithStyles(MenuItem)
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(MenuItem))
       onClick={[Function]}
     >
-      <pure(CodeIcon)
+      <CodeIcon
         style={
           Object {
             "transform": "rotate(90deg)",
@@ -228,45 +228,45 @@ exports[`ZoomMode component should render without crashing 3`] = `
          
       Fit height
        
-    </WithStyles(MenuItem)>
-    <WithStyles(MenuItem)
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(MenuItem))
       onClick={[Function]}
     >
-      <pure(CodeIcon) />
+      <CodeIcon />
          
       Fit width
        
-    </WithStyles(MenuItem)>
-    <WithStyles(Divider)
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(Divider))
       light={true}
     />
       
     Custom
      
     <br />
-    <WithStyles(MobileStepper)
+    <WithStyles(ForwardRef(MobileStepper))
       activeStep={1}
       backButton={
-        <WithStyles(IconButton)
+        <ForwardRef(WithStyles)
           disabled={false}
           onClickCapture={[Function]}
         >
-          <pure(ZoomOutIcon) />
-        </WithStyles(IconButton)>
+          <Memo />
+        </ForwardRef(WithStyles)>
       }
       nextButton={
-        <WithStyles(IconButton)
+        <ForwardRef(WithStyles)
           disabled={false}
           onClickCapture={[Function]}
         >
-          <pure(ZoomInIcon) />
-        </WithStyles(IconButton)>
+          <Memo />
+        </ForwardRef(WithStyles)>
       }
       position="static"
       steps={6}
       variant="progress"
     />
-  </WithStyles(Menu)>
+  </WithStyles(ForwardRef(Menu))>
 </div>
 `;
 
@@ -278,43 +278,43 @@ exports[`ZoomMode component should render without crashing 4`] = `
     }
   }
 >
-  <WithStyles(IconButton)
+  <WithStyles(ForwardRef(IconButton))
     onClick={[Function]}
     title="Zoom mode"
   >
-    <pure(CodeIcon)
+    <CodeIcon
       style={
         Object {
           "transform": "rotate(90deg)",
         }
       }
     />
-  </WithStyles(IconButton)>
-  <WithStyles(Menu)
+  </WithStyles(ForwardRef(IconButton))>
+  <WithStyles(ForwardRef(Menu))
     id="zoom-menu"
     onClose={[Function]}
     open={false}
   >
-    <WithStyles(MenuItem)
+    <WithStyles(ForwardRef(MenuItem))
       onClick={[Function]}
     >
-      <pure(ZoomOutMapIcon) />
+      <ZoomOutMapIcon />
          
       Fit
        
-    </WithStyles(MenuItem)>
-    <WithStyles(MenuItem)
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(MenuItem))
       onClick={[Function]}
     >
-      <pure(AspectRatioIcon) />
+      <AspectRatioIcon />
         
       Original size
        
-    </WithStyles(MenuItem)>
-    <WithStyles(MenuItem)
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(MenuItem))
       onClick={[Function]}
     >
-      <pure(CodeIcon)
+      <CodeIcon
         style={
           Object {
             "transform": "rotate(90deg)",
@@ -324,45 +324,45 @@ exports[`ZoomMode component should render without crashing 4`] = `
          
       Fit height
        
-    </WithStyles(MenuItem)>
-    <WithStyles(MenuItem)
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(MenuItem))
       onClick={[Function]}
     >
-      <pure(CodeIcon) />
+      <CodeIcon />
          
       Fit width
        
-    </WithStyles(MenuItem)>
-    <WithStyles(Divider)
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(Divider))
       light={true}
     />
       
     Custom
      
     <br />
-    <WithStyles(MobileStepper)
+    <WithStyles(ForwardRef(MobileStepper))
       activeStep={1}
       backButton={
-        <WithStyles(IconButton)
+        <ForwardRef(WithStyles)
           disabled={false}
           onClickCapture={[Function]}
         >
-          <pure(ZoomOutIcon) />
-        </WithStyles(IconButton)>
+          <Memo />
+        </ForwardRef(WithStyles)>
       }
       nextButton={
-        <WithStyles(IconButton)
+        <ForwardRef(WithStyles)
           disabled={false}
           onClickCapture={[Function]}
         >
-          <pure(ZoomInIcon) />
-        </WithStyles(IconButton)>
+          <Memo />
+        </ForwardRef(WithStyles)>
       }
       position="static"
       steps={6}
       variant="progress"
     />
-  </WithStyles(Menu)>
+  </WithStyles(ForwardRef(Menu))>
 </div>
 `;
 
@@ -374,37 +374,37 @@ exports[`ZoomMode component should render without crashing 5`] = `
     }
   }
 >
-  <WithStyles(IconButton)
+  <WithStyles(ForwardRef(IconButton))
     onClick={[Function]}
     title="Zoom mode"
   >
-    <pure(CodeIcon) />
-  </WithStyles(IconButton)>
-  <WithStyles(Menu)
+    <CodeIcon />
+  </WithStyles(ForwardRef(IconButton))>
+  <WithStyles(ForwardRef(Menu))
     id="zoom-menu"
     onClose={[Function]}
     open={false}
   >
-    <WithStyles(MenuItem)
+    <WithStyles(ForwardRef(MenuItem))
       onClick={[Function]}
     >
-      <pure(ZoomOutMapIcon) />
+      <ZoomOutMapIcon />
          
       Fit
        
-    </WithStyles(MenuItem)>
-    <WithStyles(MenuItem)
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(MenuItem))
       onClick={[Function]}
     >
-      <pure(AspectRatioIcon) />
+      <AspectRatioIcon />
         
       Original size
        
-    </WithStyles(MenuItem)>
-    <WithStyles(MenuItem)
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(MenuItem))
       onClick={[Function]}
     >
-      <pure(CodeIcon)
+      <CodeIcon
         style={
           Object {
             "transform": "rotate(90deg)",
@@ -414,45 +414,45 @@ exports[`ZoomMode component should render without crashing 5`] = `
          
       Fit height
        
-    </WithStyles(MenuItem)>
-    <WithStyles(MenuItem)
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(MenuItem))
       onClick={[Function]}
     >
-      <pure(CodeIcon) />
+      <CodeIcon />
          
       Fit width
        
-    </WithStyles(MenuItem)>
-    <WithStyles(Divider)
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(Divider))
       light={true}
     />
       
     Custom
      
     <br />
-    <WithStyles(MobileStepper)
+    <WithStyles(ForwardRef(MobileStepper))
       activeStep={1}
       backButton={
-        <WithStyles(IconButton)
+        <ForwardRef(WithStyles)
           disabled={false}
           onClickCapture={[Function]}
         >
-          <pure(ZoomOutIcon) />
-        </WithStyles(IconButton)>
+          <Memo />
+        </ForwardRef(WithStyles)>
       }
       nextButton={
-        <WithStyles(IconButton)
+        <ForwardRef(WithStyles)
           disabled={false}
           onClickCapture={[Function]}
         >
-          <pure(ZoomInIcon) />
-        </WithStyles(IconButton)>
+          <Memo />
+        </ForwardRef(WithStyles)>
       }
       position="static"
       steps={6}
       variant="progress"
     />
-  </WithStyles(Menu)>
+  </WithStyles(ForwardRef(Menu))>
 </div>
 `;
 
@@ -464,37 +464,37 @@ exports[`ZoomMode component should render without crashing 6`] = `
     }
   }
 >
-  <WithStyles(IconButton)
+  <WithStyles(ForwardRef(IconButton))
     onClick={[Function]}
     title="Zoom mode"
   >
-    <pure(AspectRatioIcon) />
-  </WithStyles(IconButton)>
-  <WithStyles(Menu)
+    <AspectRatioIcon />
+  </WithStyles(ForwardRef(IconButton))>
+  <WithStyles(ForwardRef(Menu))
     id="zoom-menu"
     onClose={[Function]}
     open={false}
   >
-    <WithStyles(MenuItem)
+    <WithStyles(ForwardRef(MenuItem))
       onClick={[Function]}
     >
-      <pure(ZoomOutMapIcon) />
+      <ZoomOutMapIcon />
          
       Fit
        
-    </WithStyles(MenuItem)>
-    <WithStyles(MenuItem)
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(MenuItem))
       onClick={[Function]}
     >
-      <pure(AspectRatioIcon) />
+      <AspectRatioIcon />
         
       Original size
        
-    </WithStyles(MenuItem)>
-    <WithStyles(MenuItem)
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(MenuItem))
       onClick={[Function]}
     >
-      <pure(CodeIcon)
+      <CodeIcon
         style={
           Object {
             "transform": "rotate(90deg)",
@@ -504,45 +504,45 @@ exports[`ZoomMode component should render without crashing 6`] = `
          
       Fit height
        
-    </WithStyles(MenuItem)>
-    <WithStyles(MenuItem)
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(MenuItem))
       onClick={[Function]}
     >
-      <pure(CodeIcon) />
+      <CodeIcon />
          
       Fit width
        
-    </WithStyles(MenuItem)>
-    <WithStyles(Divider)
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(Divider))
       light={true}
     />
       
     Custom
      
     <br />
-    <WithStyles(MobileStepper)
+    <WithStyles(ForwardRef(MobileStepper))
       activeStep={1}
       backButton={
-        <WithStyles(IconButton)
+        <ForwardRef(WithStyles)
           disabled={false}
           onClickCapture={[Function]}
         >
-          <pure(ZoomOutIcon) />
-        </WithStyles(IconButton)>
+          <Memo />
+        </ForwardRef(WithStyles)>
       }
       nextButton={
-        <WithStyles(IconButton)
+        <ForwardRef(WithStyles)
           disabled={false}
           onClickCapture={[Function]}
         >
-          <pure(ZoomInIcon) />
-        </WithStyles(IconButton)>
+          <Memo />
+        </ForwardRef(WithStyles)>
       }
       position="static"
       steps={6}
       variant="progress"
     />
-  </WithStyles(Menu)>
+  </WithStyles(ForwardRef(Menu))>
 </div>
 `;
 
@@ -554,37 +554,37 @@ exports[`ZoomMode component should render without crashing 7`] = `
     }
   }
 >
-  <WithStyles(IconButton)
+  <WithStyles(ForwardRef(IconButton))
     onClick={[Function]}
     title="Zoom mode"
   >
-    <pure(ErrorIcon) />
-  </WithStyles(IconButton)>
-  <WithStyles(Menu)
+    <ErrorIcon />
+  </WithStyles(ForwardRef(IconButton))>
+  <WithStyles(ForwardRef(Menu))
     id="zoom-menu"
     onClose={[Function]}
     open={false}
   >
-    <WithStyles(MenuItem)
+    <WithStyles(ForwardRef(MenuItem))
       onClick={[Function]}
     >
-      <pure(ZoomOutMapIcon) />
+      <ZoomOutMapIcon />
          
       Fit
        
-    </WithStyles(MenuItem)>
-    <WithStyles(MenuItem)
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(MenuItem))
       onClick={[Function]}
     >
-      <pure(AspectRatioIcon) />
+      <AspectRatioIcon />
         
       Original size
        
-    </WithStyles(MenuItem)>
-    <WithStyles(MenuItem)
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(MenuItem))
       onClick={[Function]}
     >
-      <pure(CodeIcon)
+      <CodeIcon
         style={
           Object {
             "transform": "rotate(90deg)",
@@ -594,44 +594,44 @@ exports[`ZoomMode component should render without crashing 7`] = `
          
       Fit height
        
-    </WithStyles(MenuItem)>
-    <WithStyles(MenuItem)
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(MenuItem))
       onClick={[Function]}
     >
-      <pure(CodeIcon) />
+      <CodeIcon />
          
       Fit width
        
-    </WithStyles(MenuItem)>
-    <WithStyles(Divider)
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(Divider))
       light={true}
     />
       
     Custom
      
     <br />
-    <WithStyles(MobileStepper)
+    <WithStyles(ForwardRef(MobileStepper))
       activeStep={1}
       backButton={
-        <WithStyles(IconButton)
+        <ForwardRef(WithStyles)
           disabled={false}
           onClickCapture={[Function]}
         >
-          <pure(ZoomOutIcon) />
-        </WithStyles(IconButton)>
+          <Memo />
+        </ForwardRef(WithStyles)>
       }
       nextButton={
-        <WithStyles(IconButton)
+        <ForwardRef(WithStyles)
           disabled={false}
           onClickCapture={[Function]}
         >
-          <pure(ZoomInIcon) />
-        </WithStyles(IconButton)>
+          <Memo />
+        </ForwardRef(WithStyles)>
       }
       position="static"
       steps={6}
       variant="progress"
     />
-  </WithStyles(Menu)>
+  </WithStyles(ForwardRef(Menu))>
 </div>
 `;

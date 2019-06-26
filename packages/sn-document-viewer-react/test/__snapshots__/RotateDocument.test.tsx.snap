@@ -8,7 +8,7 @@ exports[`RotateDocument component Should render without crashing 1`] = `
     }
   }
 >
-  <WithStyles(IconButton)
+  <WithStyles(ForwardRef(IconButton))
     id="RotateLeft"
     onClick={[Function]}
     style={
@@ -19,14 +19,14 @@ exports[`RotateDocument component Should render without crashing 1`] = `
     }
     title="rotateDocumentLeft"
   >
-    <pure(RotateLeftIcon) />
-  </WithStyles(IconButton)>
-  <WithStyles(IconButton)
+    <RotateLeftIcon />
+  </WithStyles(ForwardRef(IconButton))>
+  <WithStyles(ForwardRef(IconButton))
     id="RotateRight"
     onClick={[Function]}
     title="rotateDocumentRight"
   >
-    <pure(RotateRightIcon)
+    <RotateRightIcon
       style={
         Object {
           "border": "2px solid",
@@ -34,6 +34,6 @@ exports[`RotateDocument component Should render without crashing 1`] = `
         }
       }
     />
-  </WithStyles(IconButton)>
+  </WithStyles(ForwardRef(IconButton))>
 </div>
 `;

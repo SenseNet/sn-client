@@ -5,9 +5,6 @@ import { JSDOM } from 'jsdom'
 import { addGoogleAuth } from '../src'
 import { GoogleOauthProvider } from '../src/GoogleOauthProvider'
 
-// tslint:disable:no-string-literal
-// tslint:disable:completed-docs
-
 describe('GoogleOauthProvider', () => {
   const exampleOrigin = 'http://example.origin.com'
   let repo: Repository

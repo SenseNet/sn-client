@@ -4,7 +4,8 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Menu from '@material-ui/icons/Menu'
 import React, { useContext } from 'react'
 import { connect } from 'react-redux'
-import { ResponsiveContext, ResponsivePersonalSetttings, ThemeContext } from '../../context'
+import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
+import { useTheme } from '../../hooks'
 import { rootStateType } from '../../store'
 import { CommandPalette } from '../command-palette/CommandPalette'
 import { RepositorySelector } from '../RepositorySelector'
@@ -17,7 +18,7 @@ const DesktopAppBar: React.StatelessComponent<
   ReturnType<typeof mapStateToProps> & { openDrawer?: () => void }
 > = props => {
   const device = useContext(ResponsiveContext)
-  const theme = useContext(ThemeContext)
+  const theme = useTheme()
   const personalSettings = useContext(ResponsivePersonalSetttings)
 
   return (

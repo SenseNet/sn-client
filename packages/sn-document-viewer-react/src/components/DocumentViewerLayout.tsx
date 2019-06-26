@@ -12,9 +12,9 @@ import {
   toggleIsCreateCommentActive,
   toggleIsPlacingCommentMarker,
 } from '../store/Comments'
-import { CommentsContainer, PageList } from './'
 import Comment from './comment/Comment'
 import { CreateComment } from './comment/CreateComment'
+import { CommentsContainer, PageList } from './'
 
 /**
  * maps state fields from the store to component props

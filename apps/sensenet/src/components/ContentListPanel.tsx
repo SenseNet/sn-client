@@ -5,19 +5,20 @@ import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
 import React, { useContext, useEffect, useState } from 'react'
+import { Repository } from '@sensenet/client-core'
 import {
   CurrentAncestorsContext,
   CurrentChildrenContext,
   CurrentContentContext,
   LoadSettingsContext,
-  RepositoryContext,
   ResponsiveContext,
   ResponsivePersonalSetttings,
   ResponsivePlatforms,
 } from '../context'
+import { useRepository } from '../hooks'
 import { ContentBreadcrumbs } from './ContentBreadcrumbs'
 import { ContentContextMenu } from './ContentContextMenu'
-import { DeleteContentDialog } from './DeleteContentDialog'
+import { DeleteContentDialog } from './dialogs'
 import { DropFileArea } from './DropFileArea'
 import { Icon } from './Icon'
 import { SecondaryActionsMenu } from './SecondaryActionsMenu'
@@ -28,6 +29,7 @@ export interface CollectionComponentProps {
   parentId: number
   onParentChange: (newParent: GenericContent) => void
   onTabRequest: () => void
+  onActiveItemChange?: (item: GenericContent) => void
   onActivateItem: (item: GenericContent) => void
   style?: React.CSSProperties
   containerRef?: (r: HTMLDivElement | null) => void
@@ -62,6 +64,12 @@ export const DisplayNameComponent: React.FunctionComponent<{
   )
 }
 
+export const isReferenceField = (fieldName: string, repo: Repository) => {
+  const refWhiteList = ['AllowedChildTypes']
+  const setting = repo.schemas.getSchemaByName('GenericContent').FieldSettings.find(f => f.Name === fieldName)
+  return refWhiteList.indexOf(fieldName) !== -1 || (setting && setting.Type === 'ReferenceFieldSetting') || false
+}
+
 export const CollectionComponent: React.FunctionComponent<CollectionComponentProps> = props => {
   const parent = useContext(CurrentContentContext)
   const children = useContext(CurrentChildrenContext)
@@ -74,19 +82,23 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
   const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
   const [showDelete, setShowDelete] = useState(false)
-  const repo = useContext(RepositoryContext)
+  const repo = useRepository()
   const loadSettings = useContext(LoadSettingsContext)
 
   const [currentOrder, setCurrentOrder] = useState<keyof GenericContent>('DisplayName')
   const [currentDirection, setCurrentDirection] = useState<'asc' | 'desc'>('asc')
 
   useEffect(() => {
+    props.onActiveItemChange && props.onActiveItemChange(activeContent)
+  }, [activeContent, props])
+
+  useEffect(() => {
     isFocused && props.onFocus && props.onFocus()
-  }, [isFocused])
+  }, [isFocused, props])
 
   useEffect(() => {
     props.onSelectionChange && props.onSelectionChange(selected)
-  }, [selected])
+  }, [props, selected])
 
   useEffect(() => {
     const currentField =
@@ -103,11 +115,13 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
           ? [[currentOrder as any, order as any]]
           : [['DisplayName', 'asc']],
       select: personalSettings.content.fields,
-      expand: personalSettings.content.fields.filter(f => isReferenceField(f)),
+      expand: personalSettings.content.fields.filter(f => f === 'Actions' || isReferenceField(f, repo)),
     })
     setCurrentOrder(currentOrder)
     setCurrentDirection(currentDirection)
-  }, [currentOrder, currentDirection])
+    // loadSettings can NOT be added :(
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentOrder, currentDirection, personalSettings.content.fields, repo.schemas, isReferenceField])
 
   useEffect(() => {
     setSelected([])
@@ -134,12 +148,6 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
     } else {
       props.onActivateItem(item)
     }
-  }
-
-  const isReferenceField = (fieldName: string) => {
-    const refWhiteList = ['AllowedChildTypes']
-    const setting = repo.schemas.getSchemaByName('GenericContent').FieldSettings.find(f => f.Name === fieldName)
-    return refWhiteList.indexOf(fieldName) !== -1 || (setting && setting.Type === 'ReferenceFieldSetting') || false
   }
 
   return (
@@ -296,10 +304,11 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
                       </CurrentContentContext.Provider>
                     </TableCell>
                   )
+                // no default
               }
               if (
                 typeof fieldOptions.content[fieldOptions.field] === 'object' &&
-                isReferenceField(fieldOptions.field)
+                isReferenceField(fieldOptions.field, repo)
               ) {
                 const expectedContent = fieldOptions.content[fieldOptions.field] as GenericContent
                 if (

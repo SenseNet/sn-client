@@ -11,7 +11,7 @@ import { compile } from 'path-to-regexp'
 import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
-import { RouteComponentProps, withRouter } from 'react-router-dom'
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom'
 import { v1 } from 'uuid'
 import * as DMSActions from '../../Actions'
 import { downloadFile } from '../../assets/helpers'
@@ -29,6 +29,7 @@ import ShareDialog from '../Dialogs/ShareDialog'
 import VersionsDialog from '../Dialogs/VersionsDialog'
 import PathPickerDialog from '../Pickers/PathPickerDialog'
 import { UPLOAD_FILE_BUTTON_ID, UPLOAD_FOLDER_BUTTON_ID } from '../Upload/UploadButton'
+import { isCallableAction } from '../CallableAction'
 
 const mapStateToProps = (state: rootStateType) => {
   return {
@@ -89,6 +90,7 @@ const styles = {
   },
   menuItem: {
     padding: '6px 15px',
+    minHeight: 24,
     fontSize: '0.9rem',
     fontFamily: 'Raleway Medium',
   },
@@ -102,7 +104,14 @@ const styles = {
   },
   actionIcon: {
     color: '#016D9E',
-    marginRight: 14,
+  },
+  openInEditorLink: {
+    color: '#000',
+    textDecoration: 'none' as any,
+  },
+  openInEditorLinkHovered: {
+    color: '#016d9e',
+    textDecoration: 'none' as any,
   },
 }
 
@@ -156,8 +165,8 @@ class ActionMenu extends React.Component<
     this.setState({ anchorEl: null })
   }
   public handleMenuItemClick(_e: React.MouseEvent, action: ActionModel) {
-    if ((action as any).Action) {
-      ;(action as any).Action()
+    if (isCallableAction(action)) {
+      action.Action()
     } else {
       const content = this.props.currentContent
       if (!content) {
@@ -180,7 +189,7 @@ class ActionMenu extends React.Component<
             this.props.openDialog(<DeleteDialog content={[content]} />, resources.DELETE, this.props.closeDialog)
           }
           break
-        case 'Preview':
+        case 'Preview': {
           this.handleClose()
           const newPath = compile(this.props.match.path)({
             folderPath: this.props.match.params.folderPath || btoa(this.props.id as any),
@@ -188,15 +197,17 @@ class ActionMenu extends React.Component<
           })
           this.props.history.push(newPath)
           break
+        }
         case 'Logout':
           this.handleClose()
           this.props.logout()
           break
-        case 'Browse':
+        case 'Browse': {
           this.handleClose()
           const path = this.props.currentContent ? this.props.currentContent.Path : ''
           downloadFile(path, this.props.hostName)
           break
+        }
         case 'Versions':
           this.handleClose()
           this.props.currentContent &&
@@ -210,7 +221,7 @@ class ActionMenu extends React.Component<
           this.handleClose()
           this.props.currentContent && this.props.openDialog(<ShareDialog currentContent={this.props.currentContent} />)
           break
-        case 'Profile':
+        case 'Profile': {
           this.handleClose()
           const user = this.props.currentUser
           const userPath = compile('/users/:folderPath?/:otherActions*')({
@@ -220,6 +231,7 @@ class ActionMenu extends React.Component<
           this.props.history.push(userPath)
           this.props.chooseMenuItem('profile')
           break
+        }
         case 'Edit':
           this.handleClose()
           content &&
@@ -301,12 +313,14 @@ class ActionMenu extends React.Component<
             () => this.props.closePicker() && this.props.deselectPickeritem(),
           )
           break
-        case 'ExecuteQuery':
+        case 'ExecuteQuery': {
           const query = content as Query
           this.props.history.replace(`/documents?query=${query.Query}&queryName=${query.DisplayName || query.Name}`)
           this.props.closeActionMenu()
           break
-
+        }
+        case 'OpenInEditor':
+          return null
         default:
           console.log(`${action.Name} is clicked`)
           this.handleClose()
@@ -329,7 +343,7 @@ class ActionMenu extends React.Component<
   }
 
   public render() {
-    const { actions, open, position } = this.props
+    const { actions, open, position, currentContent } = this.props
     return (
       <MediaQuery minDeviceWidth={700}>
         {matches => {
@@ -342,19 +356,22 @@ class ActionMenu extends React.Component<
               anchorPosition={position}
               TransitionComponent={Fade}>
               {actions.map((action, index) => {
+                const displayName = resources[action.DisplayName.replace(/ /g, '').toUpperCase()]
                 let iconFileType
                 switch (action.Icon) {
                   case 'word':
                   case 'excel':
                   case 'acrobat':
                   case 'powerpoint':
+                  case 'office':
                     iconFileType = iconType.flaticon
                     break
                   default:
                     iconFileType = iconType.materialui
                     break
                 }
-                return (
+                return actions.findIndex(a => a.Name === 'WopiOpenEdit') > -1 &&
+                  action.Name === 'WopiOpenView' ? null : (
                   <MenuItem
                     key={index}
                     onClick={event => this.handleMenuItemClick(event, action)}
@@ -367,7 +384,7 @@ class ActionMenu extends React.Component<
                       e.currentTarget.style.fontWeight = 'normal'
                     }}
                     style={styles.menuItem}
-                    title={action.DisplayName}>
+                    title={displayName}>
                     <ListItemIcon style={styles.actionIcon}>
                       <Icon
                         type={iconFileType}
@@ -400,7 +417,21 @@ class ActionMenu extends React.Component<
                         ) : null}
                       </Icon>
                     </ListItemIcon>
-                    {action.DisplayName}
+                    {action.Name.indexOf('Wopi') > -1 ? (
+                      <Link
+                        onClick={this.handleClose}
+                        to={`/wopi/${btoa(currentContent ? currentContent.Id.toString() : '')}`}
+                        target="_blank"
+                        onMouseOver={e => this.handleMouseEnter(e, 'OpenInEditor')}
+                        onMouseLeave={this.handleMouseLeave}
+                        style={
+                          this.isHovered('OpenInEditor') ? styles.openInEditorLinkHovered : styles.openInEditorLink
+                        }>
+                        {displayName}
+                      </Link>
+                    ) : (
+                      displayName
+                    )}
                   </MenuItem>
                 )
               })}
@@ -409,6 +440,7 @@ class ActionMenu extends React.Component<
             <Drawer anchor="bottom" open={open} onClose={this.handleClose}>
               <List>
                 {actions.map((action, index) => {
+                  const displayName = resources[action.DisplayName.replace(/ /g, '').toUpperCase()]
                   if (action.Name === 'uploadFile') {
                     const uploadFileButtonId = `${UPLOAD_FILE_BUTTON_ID}-${v1()}`
                     return (
@@ -488,6 +520,7 @@ class ActionMenu extends React.Component<
                     case 'excel':
                     case 'acrobat':
                     case 'powerpoint':
+                    case 'office':
                       iconFileType = iconType.flaticon
                       break
                     default:
@@ -507,7 +540,7 @@ class ActionMenu extends React.Component<
                         e.currentTarget.style.fontWeight = 'normal'
                       }}
                       style={styles.menuItemMobile}
-                      title={action.DisplayName}>
+                      title={displayName}>
                       <ListItemIcon style={styles.actionIcon}>
                         <Icon
                           type={iconFileType}
@@ -589,7 +622,7 @@ class ActionMenu extends React.Component<
                           ) : null}
                         </Icon>
                       </ListItemIcon>
-                      {action.DisplayName}
+                      {resources(action.Name.toUpperCase())}
                     </MenuItem>
                   )
                 })}

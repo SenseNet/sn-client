@@ -11,7 +11,7 @@ describe('Header', () => {
   it('renders without crashing', () => {
     const div = document.createElement('div')
 
-    const options = {
+    const options: Partial<Store.CreateStoreOptions<rootStateType>> = {
       persistedState: {
         sensenet: {
           currentcontent: {
@@ -40,7 +40,7 @@ describe('Header', () => {
           },
         },
       },
-    } as Partial<Store.CreateStoreOptions<rootStateType>>
+    }
     ReactDOM.render(
       withStore(
         <MemoryRouter>

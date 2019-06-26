@@ -3,21 +3,20 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { Created } from '@sensenet/repository-events'
 import React, { useContext, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
+import { useInjector, useRepository } from '../hooks'
 import { UploadTracker } from '../services/UploadTracker'
 import { CurrentContentContext } from './CurrentContent'
-import { InjectorContext } from './InjectorContext'
 import { LoadSettingsContext } from './LoadSettingsContext'
-import { RepositoryContext } from './RepositoryContext'
 export const CurrentChildrenContext = React.createContext<GenericContent[]>([])
 
 export const CurrentChildrenProvider: React.FunctionComponent = props => {
   const currentContent = useContext(CurrentContentContext)
-  const injector = useContext(InjectorContext)
+  const injector = useInjector()
   const [children, setChildren] = useState<GenericContent[]>([])
   const [loadLock] = useState(new Semaphore(1))
 
   const [reloadToken, setReloadToken] = useState(1)
-  const repo = useContext(RepositoryContext)
+  const repo = useRepository()
   const eventHub = injector.getEventHub(repo.configuration.repositoryUrl)
   const uploadTracker = injector.getInstance(UploadTracker)
   const loadSettings = useContext(LoadSettingsContext)
@@ -36,27 +35,27 @@ export const CurrentChildrenProvider: React.FunctionComponent = props => {
           oDataOptions: loadSettings.loadChildrenSettings,
         })
         setChildren(childrenResult.d.results)
-      } catch (error) {
+      } catch (err) {
         if (!ac.signal.aborted) {
-          setError(error)
+          setError(err)
         }
       } finally {
         loadLock.release()
       }
     })()
     return () => ac.abort()
-  }, [currentContent.Path, loadSettings.loadChildrenSettings, repo, reloadToken])
-
-  const handleCreate = (c: Created) => {
-    if ((c.content as GenericContent).ParentId === currentContent.Id) {
-      requestReload()
-    }
-    if (parent && PathHelper.isAncestorOf(currentContent.Path, c.content.Path)) {
-      requestReload()
-    }
-  }
+  }, [currentContent.Path, loadSettings.loadChildrenSettings, repo, reloadToken, loadLock])
 
   useEffect(() => {
+    const handleCreate = (c: Created) => {
+      if ((c.content as GenericContent).ParentId === currentContent.Id) {
+        requestReload()
+      }
+      if (parent && PathHelper.isAncestorOf(currentContent.Path, c.content.Path)) {
+        requestReload()
+      }
+    }
+
     const subscriptions = [
       eventHub.onCustomActionExecuted.subscribe(requestReload),
       eventHub.onContentCreated.subscribe(handleCreate),
@@ -67,9 +66,9 @@ export const CurrentChildrenProvider: React.FunctionComponent = props => {
           requestReload()
         }
       }),
-      uploadTracker.onUploadProgress.subscribe(pr => {
-        if (pr.completed && pr.createdContent) {
-          if (PathHelper.getParentPath(pr.createdContent.Url) === PathHelper.trimSlashes(currentContent.Path)) {
+      uploadTracker.onUploadProgress.subscribe(({ progress }) => {
+        if (progress.completed && progress.createdContent) {
+          if (PathHelper.getParentPath(progress.createdContent.Url) === PathHelper.trimSlashes(currentContent.Path)) {
             requestReload()
           }
         }
@@ -82,7 +81,18 @@ export const CurrentChildrenProvider: React.FunctionComponent = props => {
     ]
 
     return () => subscriptions.forEach(s => s.dispose())
-  }, [currentContent, repo, children])
+  }, [
+    currentContent,
+    repo,
+    children,
+    eventHub.onCustomActionExecuted,
+    eventHub.onContentCreated,
+    eventHub.onContentCopied,
+    eventHub.onContentMoved,
+    eventHub.onContentModified,
+    eventHub.onContentDeleted,
+    uploadTracker.onUploadProgress,
+  ])
 
   if (error) {
     throw error

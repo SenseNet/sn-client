@@ -7,10 +7,12 @@ import Add from '@material-ui/icons/Add'
 import CloudUpload from '@material-ui/icons/CloudUpload'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
-import { CurrentContentContext, InjectorContext, LocalizationContext, RepositoryContext } from '../context'
-import { LoggerContext } from '../context/LoggerContext'
+import { UploadProgressInfo } from '@sensenet/client-core'
+import { ObservableValue } from '@sensenet/client-utils'
+import { CurrentContentContext } from '../context'
+import { useInjector, useLocalization, useLogger, useRepository } from '../hooks'
 import { UploadTracker } from '../services/UploadTracker'
-import { AddDialog } from './AddDialog'
+import { AddDialog } from './dialogs/add'
 import { Icon } from './Icon'
 
 export interface AddButtonProps {
@@ -18,8 +20,8 @@ export interface AddButtonProps {
 }
 
 export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
-  const injector = useContext(InjectorContext)
-  const repo = useContext(RepositoryContext)
+  const injector = useInjector()
+  const repo = useRepository()
   const parentContext = useContext(CurrentContentContext)
   const [parent, setParent] = useState(parentContext)
   const [showSelectType, setShowSelectType] = useState(false)
@@ -28,8 +30,8 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   const [showAddNewDialog, setShowAddNewDialog] = useState(false)
   const [selectedSchema, setSelectedSchema] = useState<Schema>(repo.schemas.getSchemaByName('GenericContent'))
 
-  const localization = useContext(LocalizationContext).values.addButton
-  const logger = useContext(LoggerContext).withScope('AddButton')
+  const localization = useLocalization().addButton
+  const logger = useLogger('AddButton')
 
   useEffect(() => {
     props.parent && setParent(props.parent)
@@ -37,7 +39,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
 
   useEffect(() => {
     !props.parent && setParent(parentContext)
-  }, [parentContext])
+  }, [parentContext, props.parent])
 
   useEffect(() => {
     if (showSelectType) {
@@ -53,7 +55,16 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
           })
         })
     }
-  }, [parent.Id, showSelectType])
+  }, [localization.errorGettingAllowedContentTypes, logger, parent.Id, repo, showSelectType])
+
+  const [progressObservable] = useState(new ObservableValue<UploadProgressInfo>())
+
+  useEffect(() => {
+    const subscription = progressObservable.subscribe(p =>
+      injector.getInstance(UploadTracker).onUploadProgress.setValue({ progress: p, repo }),
+    )
+    return () => subscription.dispose()
+  }, [injector, progressObservable, repo])
 
   return (
     <div>
@@ -99,7 +110,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
                     createFolders: true,
                     binaryPropertyName: 'Binary',
                     overwrite: false,
-                    progressObservable: injector.getInstance(UploadTracker).onUploadProgress,
+                    progressObservable,
                   })
               }}
               type="file"

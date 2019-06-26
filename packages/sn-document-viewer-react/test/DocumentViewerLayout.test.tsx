@@ -5,7 +5,7 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 import { CreateComment, PageList } from '../src/components'
-import CommentComponent from '../src/components/comment/Comment'
+import ConnectedCommentComponent from '../src/components/comment/Comment'
 import { DocumentViewerLayout, DocumentViewerLayoutComponent } from '../src/components/DocumentViewerLayout'
 import { getCommentsSuccess, rootReducer, setSelectedCommentId } from '../src/store'
 import { examplePreviewComment } from './__Mocks__/viewercontext'
@@ -122,7 +122,7 @@ describe('Document Viewer Layout component', () => {
         {'some children'}
       </DocumentViewerLayoutComponent>,
     )
-    expect(wrapper.find(CommentComponent).exists()).toBeTruthy()
+    expect(wrapper.find(ConnectedCommentComponent).exists()).toBeTruthy()
   })
 
   it("should remove draft comment markers on CreateComment's handlePlaceMarkerClick", () => {

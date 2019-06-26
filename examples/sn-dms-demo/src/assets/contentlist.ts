@@ -1,5 +1,5 @@
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
-import theme from './theme'
+import { theme } from './theme'
 
 export const defaultCell: React.CSSProperties = {
   color: '#666',

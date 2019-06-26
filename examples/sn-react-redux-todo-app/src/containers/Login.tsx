@@ -50,9 +50,7 @@ export class Login extends React.Component<typeof mapDispatchToProps, {}> {
         <form
           onSubmit={e => {
             e.preventDefault()
-            // tslint:disable-next-line:no-string-literal
             const name = document.getElementById('LoginName')['value']
-            // tslint:disable-next-line:no-string-literal
             const password = document.getElementById('Password')['value']
             this.props.onSubmit(name, password)
           }}>

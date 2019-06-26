@@ -123,7 +123,6 @@ export const createSensenetStore = <T>(options: CreateStoreOptions<T>) => {
     enhancerArray = [...options.enhancers]
   }
 
-  // tslint:disable-next-line:no-string-literal
   const composeEnhancers =
     (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ && options.devTools
       ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__

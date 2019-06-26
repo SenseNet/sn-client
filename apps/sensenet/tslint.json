@@ -1,7 +1,0 @@
-{
-  "extends": ["../../tslint.json"],
-  "rules": {
-    "completed-docs": false,
-    "variable-name": false
-  }
-}

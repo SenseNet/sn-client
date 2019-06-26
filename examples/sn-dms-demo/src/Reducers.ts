@@ -52,7 +52,7 @@ export const isRegistering: Reducer<boolean> = (state = false, action: AnyAction
 
 export const registrationDone: Reducer<boolean> = (state = false, action: AnyAction) => {
   switch (action.type) {
-    case 'USER_REGISTRATION_SUCCESS':
+    case 'USER_REGISTRATION_REQUEST_SUCCESS':
       return true
     case 'USER_REGISTRATION_REQUEST':
     case 'USER_REGISTRATION_FAILURE':
@@ -93,11 +93,12 @@ export const open: Reducer<boolean> = (state = false, action: AnyAction) => {
 
 export const actions: Reducer<ActionModel[]> = (state = [], action: AnyAction) => {
   switch (action.type) {
-    case 'LOAD_CONTENT_ACTIONS_SUCCESS':
+    case 'LOAD_CONTENT_ACTIONS_SUCCESS': {
       const result: { d: { Actions: ActionModel[] } } = (action.result as Actions.PromiseReturns<
         typeof Actions.loadContentActions
       >) as any
       return result && result.d.Actions ? result.d.Actions : []
+    }
     case 'OPEN_ACTIONMENU':
       return action.actions || []
     default:
@@ -149,13 +150,14 @@ export const position: Reducer<{ top: number; left: number }, Action & { positio
 
 export const rootId: Reducer<number | null> = (state = null, action: AnyAction) => {
   switch (action.type) {
-    case 'LOAD_CONTENT_SUCCESS':
+    case 'LOAD_CONTENT_SUCCESS': {
       const result = action.result as Actions.PromiseReturns<typeof Actions.loadContent>
       if (!state && result && result.d.Path.indexOf('Default_Site') === -1) {
         return result.d.Id
       } else {
         return state
       }
+    }
     default:
       return state
   }
@@ -205,15 +207,15 @@ export interface BreadcrumbItemType {
 
 export const breadcrumb: Reducer<BreadcrumbItemType[]> = (state = [], action: AnyAction) => {
   switch (action.type) {
-    case 'LOAD_CONTENT_SUCCESS':
+    case 'LOAD_CONTENT_SUCCESS': {
       const result = action.result as Actions.PromiseReturns<typeof Actions.loadContent>
       if (result) {
         if (result.d.Path.indexOf('Default_Site') === -1 && state.filter(e => e.id === result.d.Id).length === 0) {
-          const element = {
-            name: result.d.DisplayName,
+          const element: BreadcrumbItemType = {
+            name: result.d.DisplayName || result.d.Name,
             id: result.d.Id,
             path: result.d.Path,
-          } as BreadcrumbItemType
+          }
           return [...state, element]
         } else if (state.filter(e => e.id === result.d.Id).length > 0) {
           const index = state.findIndex(e => e.id === result.d.Id) + 1
@@ -221,6 +223,7 @@ export const breadcrumb: Reducer<BreadcrumbItemType[]> = (state = [], action: An
         }
       }
       return state
+    }
     default:
       return state
   }
@@ -251,9 +254,10 @@ export const isSelectionModeOn: Reducer<boolean> = (state = false, action: AnyAc
 
 export const userActions: Reducer<ActionModel[]> = (state = [], action: AnyAction) => {
   switch (action.type) {
-    case 'LOAD_USER_ACTIONS_SUCCESS':
+    case 'LOAD_USER_ACTIONS_SUCCESS': {
       const result = action.result as Actions.PromiseReturns<typeof loadUserActions>
       return result ? result.d.Actions : []
+    }
     default:
       return state
   }
@@ -261,9 +265,10 @@ export const userActions: Reducer<ActionModel[]> = (state = [], action: AnyActio
 
 export const addNewTypes: Reducer<ActionModel[]> = (state = [], action: AnyAction) => {
   switch (action.type) {
-    case 'LOAD_TYPES_TO_ADDNEW_LIST_SUCCESS':
+    case 'LOAD_TYPES_TO_ADDNEW_LIST_SUCCESS': {
       const result = action.result as Actions.PromiseReturns<typeof loadTypesToAddNewList>
       return result ? result.d.Actions : []
+    }
     default:
       return state
   }
@@ -283,12 +288,13 @@ export const breadcrumbActions: Reducer<{ actions: ActionModel[]; idOrPath: numb
   action: AnyAction,
 ) => {
   switch (action.type) {
-    case 'LOAD_BREADCRUMB_ACTIONS_SUCCESS':
+    case 'LOAD_BREADCRUMB_ACTIONS_SUCCESS': {
       const result = action.result.actions
       return {
         actions: result ? (result as ActionModel[]) : [],
         idOrPath: action.result.idOrPath,
       }
+    }
     default:
       return state
   }
@@ -386,8 +392,9 @@ export const uploads: Reducer<{ uploads: ExtendedUploadProgressInfo[]; showProgr
         ...state,
         showProgress: false,
       }
+    default:
+      return state
   }
-  return state
 }
 
 export const activeMenuItem: Reducer<string, Action & { itemName?: string }> = (
@@ -439,8 +446,9 @@ export const viewer: Reducer<{ isOpened: boolean; currentDocumentId: number }, A
         ...state,
         isOpened: false,
       }
+    default:
+      return state
   }
-  return state
 }
 
 export const isOpened: Reducer<boolean> = (state = false, action: AnyAction) => {
@@ -449,8 +457,9 @@ export const isOpened: Reducer<boolean> = (state = false, action: AnyAction) => 
       return true
     case 'CLOSE_DIALOG':
       return false
+    default:
+      return state
   }
-  return state
 }
 
 export const onClose: Reducer<() => void | undefined> = (state = () => undefined, action: AnyAction) => {
@@ -459,8 +468,9 @@ export const onClose: Reducer<() => void | undefined> = (state = () => undefined
       return action.onClose
     case 'CLOSE_DIALOG':
       return null
+    default:
+      return state
   }
-  return state
 }
 
 export const dialogContent: Reducer<React.Component | undefined> = (
@@ -472,8 +482,9 @@ export const dialogContent: Reducer<React.Component | undefined> = (
       return action.content
     case 'CLOSE_DIALOG':
       return state
+    default:
+      return state
   }
-  return state
 }
 
 export const dialogTitle: Reducer<string> = (state = '', action: AnyAction) => {
@@ -482,8 +493,9 @@ export const dialogTitle: Reducer<string> = (state = '', action: AnyAction) => {
       return action.title
     case 'CLOSE_DIALOG':
       return {}
+    default:
+      return state
   }
-  return state
 }
 
 export const dialog = combineReducers({
@@ -495,9 +507,10 @@ export const dialog = combineReducers({
 
 export const versions = (state: GenericContent[] = [], action: AnyAction) => {
   switch (action.type) {
-    case 'LOAD_VERSIONS_SUCCESS':
+    case 'LOAD_VERSIONS_SUCCESS': {
       const versionItems = (action.result as Actions.PromiseReturns<typeof loadVersions>).d.results
       return versionItems
+    }
     default:
       return state
   }

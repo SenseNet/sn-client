@@ -75,7 +75,10 @@ export class QueryExpression<TReturns> extends QuerySegment<TReturns> {
    * @param { TReturns[K] } value The value that will be checked. You can use '?' and '*' wildcards
    * @returns { QueryOperator<TReturns> } The Next query operator (fluent)
    */
-  public equals<K extends keyof TReturns>(fieldName: K | '_Text', value: TReturns[K]) {
+  public equals<K extends keyof TReturns, KValue extends TReturns[K] & { toString: () => string }>(
+    fieldName: K | '_Text',
+    value: KValue,
+  ) {
     this.stringValue = `${fieldName}:'${this.escapeValue(value.toString())}'`
     this.segmentType = 'equals'
     return this.finialize()
@@ -88,9 +91,39 @@ export class QueryExpression<TReturns> extends QuerySegment<TReturns> {
    * @returns { QueryOperator<TReturns> } The Next query operator (fluent)
    */
 
-  public notEquals<K extends keyof TReturns>(fieldName: K, value: TReturns[K]) {
+  public notEquals<K extends keyof TReturns, KValue extends TReturns[K] & { toString: () => string }>(
+    fieldName: K,
+    value: KValue,
+  ) {
     this.stringValue = `NOT(${fieldName}:'${this.escapeValue(value.toString())}')`
     this.segmentType = 'notEquals'
+    return this.finialize()
+  }
+
+  /**
+   * Field equality check on nested  field query expression (e.g. +FieldName:{{NestedFieldName:'value'}})
+   * @param { K } fieldName The name of the Field to be checked
+   * @param { K } nestedFieldName The name of the nested Field to be checked
+   * @param { TReturns[K] } value The value that will be checked. You can use '?' and '*' wildcards
+   * @returns { QueryOperator<TReturns> } The Next query operator (fluent)
+   */
+  public equalsNested<K extends keyof TReturns>(fieldName: K | '_Text', nestedFieldName: string, value: string) {
+    this.stringValue = `${fieldName}:{{${nestedFieldName}:${value.toString()}}}`
+    this.segmentType = 'equalsNested'
+    return this.finialize()
+  }
+
+  /**
+   * Field equality check on nested field and NOT operator combination (e.g. +NOT(FieldName:{{NestedFieldName:'value'}}))
+   * @param { K } fieldName The name of the Field to be checked
+   * @param { K } nestedFieldName The name of the nested Field to be checked
+   * @param { TReturns[K] } value The value that will be checked. You can use '?' and '*' wildcards
+   * @returns { QueryOperator<TReturns> } The Next query operator (fluent)
+   */
+
+  public notEqualsNested<K extends keyof TReturns>(fieldName: K | '_Text', nestedFieldName: string, value: string) {
+    this.stringValue = `NOT(${fieldName}:{{${nestedFieldName}:${value.toString()}}})`
+    this.segmentType = 'notEqualsNested'
     return this.finialize()
   }
 
@@ -102,10 +135,10 @@ export class QueryExpression<TReturns> extends QuerySegment<TReturns> {
    * @param { boolean } minimumInclusive Lower limit will be inclusive / exclusive
    * @param { boolean } maximumInclusive Upper limit will be inclusive / exclusive
    */
-  public between<K extends keyof TReturns>(
+  public between<K extends keyof TReturns, KValue extends TReturns[K] & { toString: () => string }>(
     fieldName: K,
-    minValue: TReturns[K],
-    maxValue: TReturns[K],
+    minValue: KValue,
+    maxValue: KValue,
     minimumInclusive: boolean = false,
     maximumInclusive: boolean = false,
   ) {
@@ -122,9 +155,9 @@ export class QueryExpression<TReturns> extends QuerySegment<TReturns> {
    * @param { TReturns[K] } minValue The minimum allowed value
    * @param { boolean } minimumInclusive Lower limit will be inclusive / exclusive
    */
-  public greatherThan<K extends keyof TReturns>(
+  public greatherThan<K extends keyof TReturns, KValue extends TReturns[K] & { toString: () => string }>(
     fieldName: K,
-    minValue: TReturns[K],
+    minValue: KValue,
     minimumInclusive: boolean = false,
   ) {
     this.stringValue = `${fieldName}:>${minimumInclusive ? '=' : ''}'${this.escapeValue(minValue.toString())}'`
@@ -138,7 +171,11 @@ export class QueryExpression<TReturns> extends QuerySegment<TReturns> {
    * @param { TReturns[K] } maxValue The maximum allowed value
    * @param { boolean } maximumInclusive Upper limit will be inclusive / exclusive
    */
-  public lessThan<K extends keyof TReturns>(fieldName: K, maxValue: TReturns[K], maximumInclusive: boolean = false) {
+  public lessThan<K extends keyof TReturns, KValue extends TReturns[K] & { toString: () => string }>(
+    fieldName: K,
+    maxValue: KValue,
+    maximumInclusive: boolean = false,
+  ) {
     this.stringValue = `${fieldName}:<${maximumInclusive ? '=' : ''}'${this.escapeValue(maxValue.toString())}'`
     this.segmentType = 'lessThan'
     return this.finialize()

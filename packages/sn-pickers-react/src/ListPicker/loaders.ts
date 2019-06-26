@@ -29,6 +29,40 @@ export const defaultLoadParentODataOptions: ODataParams<GenericContent> = {
 }
 
 /**
+ *  Loads the content of the passed in parentId or gets the parent of the item prop
+ * @template T
+ * @param {T} item
+ * @param {Repository} repository
+ * @param {ODataParams<T>} [parentODataOptionsArgs]
+ * @param {number} [parentId]
+ * @returns the parent content
+ */
+async function getParent<T extends GenericContent>(
+  item: T,
+  repository: Repository,
+  parentODataOptionsArgs?: ODataParams<T>,
+  parentId?: number,
+) {
+  // We don't want to query with 0
+  if (parentId === 0) {
+    return
+  }
+  const parentODataOptions = { ...defaultLoadParentODataOptions, ...parentODataOptionsArgs }
+  if (parentId == null && item.ParentId) {
+    // We need the parent's parent
+    const itemParent = await repository.load<T>({
+      idOrPath: item.ParentId,
+      oDataOptions: parentODataOptions,
+    })
+    return await repository.load<T>({ idOrPath: itemParent.d.ParentId!, oDataOptions: parentODataOptions })
+  }
+  return await repository.load<T>({
+    idOrPath: parentId!,
+    oDataOptions: parentODataOptions,
+  })
+}
+
+/**
  * Loads the picker items from the repository.
  */
 export const loadItems = async <T extends GenericContentWithIsParent>({
@@ -46,34 +80,9 @@ export const loadItems = async <T extends GenericContentWithIsParent>({
   const items = itemsResult.d.results.map(item => {
     return { ...item, isParent: false }
   })
-  const parentResult = await getParent<T>(items, repository, parentODataOptions, parentId)
+  const parentResult = await getParent<T>(items[0], repository, parentODataOptions, parentId)
   if (!parentResult) {
     return items
   }
   return [{ ...parentResult.d, isParent: true }, ...items]
-}
-
-async function getParent<T extends GenericContent>(
-  items: T[],
-  repository: Repository,
-  parentODataOptionsArgs?: ODataParams<T>,
-  parentId?: number,
-) {
-  // We don't want to query with 0
-  if (parentId === 0) {
-    return
-  }
-  const parentODataOptions = { ...defaultLoadParentODataOptions, ...parentODataOptionsArgs }
-  if (parentId == null && items[0].ParentId) {
-    // We need the parent's parent
-    const itemParent = await repository.load<T>({
-      idOrPath: items[0].ParentId,
-      oDataOptions: parentODataOptions,
-    })
-    return await repository.load<T>({ idOrPath: itemParent.d.ParentId!, oDataOptions: parentODataOptions })
-  }
-  return await repository.load<T>({
-    idOrPath: parentId!,
-    oDataOptions: parentODataOptions,
-  })
 }

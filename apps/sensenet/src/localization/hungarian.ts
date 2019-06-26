@@ -47,6 +47,15 @@ const values: DeepPartial<typeof import('./default').default> = {
     versionInfoSecondaryText: 'Információk a telepített csomagokról és a verzióikról',
     personalSettingsTitle: 'Személyes beállítások',
     personalSettingsSecondaryText: 'Az alkalmazás testreszabása',
+    contentTypesTitle: 'Tartalom típusok',
+    contentTypesSecondaryText: 'Tartalom típusok kezelése',
+    localizationTitle: 'Nyelvi fájlok',
+    localizationSecondaryText: 'Nyelvi fájlok kezelése',
+    trashTitle: 'Kuka',
+    trashSecondaryText: 'Törölt elemek kezelése',
+    dashboardTitle: 'Irányítópult',
+    dashboardSecondaryText:
+      'Olyan egyoldalas vizuális felület, amelynek segítségével a felhasználó első ránézésre monitorozhatja legfontosabb céljainak vagy elvárásainak megvalósulását',
   },
   editPropertiesDialog: {
     dialogTitle: '{0} tulajdonságainak szerkesztése',

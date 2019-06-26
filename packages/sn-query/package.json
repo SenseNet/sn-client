@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/query",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "Client side content query builder package for sensenet",
   "main": "dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -9,10 +9,7 @@
     "src"
   ],
   "scripts": {
-    "fix": "npm run fix:prettier && npm run fix:tslint",
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
-    "fix:tslint": "tslint --fix --project .",
-    "lint": "tslint --project .",
     "build": "tsc -b"
   },
   "repository": {

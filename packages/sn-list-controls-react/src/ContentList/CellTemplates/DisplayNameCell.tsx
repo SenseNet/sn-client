@@ -21,7 +21,7 @@ export class DisplayNameCell<T extends GenericContent> extends React.Component<D
         : iconType.materialui
 
     return (
-      <TableCell className="display-name" padding="checkbox">
+      <TableCell className="display-name">
         <div style={{ display: 'flex', alignItems: 'center' }}>
           {icon ? <Icon type={type} iconName={icon} style={{ marginRight: '.5em' }} /> : null}
           <div>{this.props.content.DisplayName || this.props.content.Name}</div>

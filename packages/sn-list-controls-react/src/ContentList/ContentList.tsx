@@ -126,7 +126,7 @@ export class ContentList<T extends GenericContent> extends React.Component<Conte
       itemCount,
       hasSelected: selectedCount > 0,
       isAllSelected: itemCount === selectedCount,
-    } as ContentListState
+    }
   }
 
   public handleSelectAllClick() {
@@ -166,6 +166,7 @@ export class ContentList<T extends GenericContent> extends React.Component<Conte
         break
       case 'ModificationDate':
         return <DateCell date={props.content.ModificationDate as string} />
+      // no default
     }
     const field: any = props.content[props.field]
     if (field && field.Id && field.Path && field.DisplayName) {
@@ -209,8 +210,7 @@ export class ContentList<T extends GenericContent> extends React.Component<Conte
                     <TableCell
                       key={field as string}
                       align={isNumeric ? 'right' : 'inherit'}
-                      className={field as string}
-                      padding="checkbox">
+                      className={field as string}>
                       <Tooltip title={description}>
                         <TableSortLabel
                           active={orderBy === field}
@@ -237,7 +237,7 @@ export class ContentList<T extends GenericContent> extends React.Component<Conte
                 key={item.Id}
                 hover={true}
                 className={`${isActive ? 'active' : ''} ${isSelected ? 'selected' : ''} ${item.Type &&
-                  'type-' + item.Type.toLowerCase()}`}
+                  `type-${item.Type.toLowerCase()}`}`}
                 selected={isActive}
                 onClick={e => {
                   this.props.onRequestActiveItemChange && this.props.onRequestActiveItemChange(item)

@@ -16,7 +16,7 @@ describe('AdvancedSearch component', () => {
   })
 
   it('updateQuery() should trigger the onQueryChanged callback with the updated query', done => {
-    let hasChanged: boolean = false
+    let hasChanged = false
     shallow(
       <AdvancedSearch
         fields={options => {
@@ -36,7 +36,7 @@ describe('AdvancedSearch component', () => {
   })
 
   it('updateQuery() should trigger the debounced onQueryChanged callback with an aggregated query', done => {
-    let hasChanged: boolean = false
+    let hasChanged = false
     shallow(
       <AdvancedSearch
         fields={options => {

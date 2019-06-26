@@ -1,4 +1,7 @@
 const values = {
+  dashboard: {
+    errorLoadingWidget: 'Error loading widget :(',
+  },
   addButton: {
     tooltip: 'Create or upload content',
     new: 'New...',
@@ -10,6 +13,18 @@ const values = {
   },
   commandPalette: {
     title: 'Show Command Palette',
+    help: {
+      readMeTitle: 'ReadMe',
+      readMeDescription: 'Opens the latest readme.md file from GitHub in a new window',
+      communitySiteTitle: 'Visit the Community Site',
+      communitySiteDescription: 'Opens http://community.sensenet.com in a new window',
+      gitterTitle: 'Chat on Gitter',
+      gitterDescription: 'If you have any unanswered question about the product you can ask us on Gitter',
+    },
+    customAction: {
+      executePrimaryText: '{0} 👉 {1}',
+      executeSecondaryText: "Execute custom action '{1}' on content '{0}'",
+    },
   },
   contentContextMenu: {
     editProperties: 'Edit properties',
@@ -17,6 +32,9 @@ const values = {
     move: 'Move',
     delete: 'Delete',
     open: 'Open',
+    download: 'Download',
+    wopiEdit: 'Open in online editor',
+    wopiRead: 'View in online editor',
   },
   contentInfoDialog: {
     dialogTitle: 'Info about {0}',
@@ -66,7 +84,7 @@ const values = {
     personalSettingsTitle: 'Edit personal settings',
     personalSettingsSecondaryText: 'Customize the application behavior',
     contentTitle: 'Content',
-    contentSecondaryText: 'Explore the content of the repository',
+    contentSecondaryText: 'Explore and manage your content in the repository',
     searchTitle: 'Search',
     searchSecondaryText: 'Execute custom searches, build and save queries',
     usersAndGroupsTitle: 'Users and groups',
@@ -75,6 +93,14 @@ const values = {
     setupSecondaryText: 'Configure the sensenet system',
     versionInfoTitle: 'Version Info',
     versionInfoSecondaryText: 'Detailed version information about the current sensenet installation',
+    contentTypesTitle: 'Content Types',
+    contentTypesSecondaryText: 'Manage content types',
+    localizationTitle: 'Localization',
+    localizationSecondaryText: 'Manage string resources',
+    trashTitle: 'Trash',
+    trashSecondaryText: 'Manage deleted items here: restore content or purge them permanently',
+    dashboardTitle: 'Dashboard',
+    dashboardSecondaryText: 'Repository overview',
     expand: 'Expand',
     collapse: 'Collapse',
   },
@@ -96,8 +122,8 @@ const values = {
     greetings: 'Greetings, {0}!',
     loggingInTo: 'Logging in to {0}...',
     loginSuccessNotification: `Logged in with user '{0} to repository '{1}'`,
-    loginFailedNotification: `Failed to log in with user '{0} to repository '{1}'`,
-    loginErrorNotification: `There was an error during login with user '{0} to repository '{1}'`,
+    loginFailedNotification: `Failed to log in with user '{0}' to repository '{1}'`,
+    loginErrorNotification: `There was an error during login with user '{0}' to repository '{1}'`,
   },
   logout: {
     logoutButtonTitle: 'Log out',
@@ -254,6 +280,25 @@ const values = {
       '/Root/System/Settings/UserProfile.settings':
         'When a user is created, and the profile feature is enabled (in the app configuration), they automatically get a profile – a workspace dedicated to the user’s personal documents and tasks. In this setting section you can customize the content type and the place of this profile. ',
     },
+  },
+  customActions: {
+    executeCustomActionDialog: {
+      title: `Execute custom action '{0}' on content '{1}'`,
+      noParameters: 'The action does not have any parameters',
+      cancelButton: 'Cancel',
+      executeButton: 'Execute',
+      executingAction: `Executing custom action...`,
+    },
+    resultsDialog: {
+      title: `Custom action results`,
+      closeButton: 'Close',
+    },
+  },
+  wopi: {
+    errorOpeningFileTitle: `Error opening file for online editing`,
+    errorOpeningFileText: 'There was an error during opening the file for online editing.',
+    tryOpenRead: 'View',
+    goBack: 'Go back',
   },
 }
 

@@ -1,22 +1,17 @@
 import { deepMerge } from '@sensenet/client-utils'
 import React, { useContext, useEffect, useState } from 'react'
-import {
-  CurrentContentContext,
-  InjectorContext,
-  LocalizationContext,
-  PersonalSettingsContext,
-  RepositoryContext,
-} from '../../context'
+import { CurrentContentContext, LocalizationContext } from '../../context'
+import { useInjector, usePersonalSettings, useRepository } from '../../hooks'
 import { setupModel } from '../../services/MonacoModels/PersonalSettingsModel'
 import { defaultSettings, PersonalSettings } from '../../services/PersonalSettings'
 import { TextEditor } from './TextEditor'
 
 const SettingsEditor: React.FunctionComponent = () => {
-  const injector = useContext(InjectorContext)
+  const injector = useInjector()
   const service = injector.getInstance(PersonalSettings)
-  const settings = useContext(PersonalSettingsContext)
+  const settings = usePersonalSettings()
   const localization = useContext(LocalizationContext)
-  const repo = useContext(RepositoryContext)
+  const repo = useRepository()
   const [editorContent] = useState({
     Type: 'PersonalSettings',
     Name: `PersonalSettings`,
@@ -24,7 +19,7 @@ const SettingsEditor: React.FunctionComponent = () => {
 
   useEffect(() => {
     setupModel(localization.values, repo)
-  }, [localization.values])
+  }, [localization.values, repo])
 
   return (
     <CurrentContentContext.Provider
@@ -33,7 +28,7 @@ const SettingsEditor: React.FunctionComponent = () => {
         content={editorContent as any}
         loadContent={async () => JSON.stringify(settings, undefined, 3)}
         saveContent={async (_c, v) => {
-          await service.setValue(deepMerge(defaultSettings, JSON.parse(v)))
+          await service.setValue(deepMerge({ ...defaultSettings }, JSON.parse(v)))
         }}
       />
     </CurrentContentContext.Provider>

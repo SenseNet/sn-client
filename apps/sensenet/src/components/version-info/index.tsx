@@ -13,15 +13,16 @@ import Update from '@material-ui/icons/Update'
 import { ConstantContent } from '@sensenet/client-core'
 import React, { useContext, useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
-import { LocalizationContext, RepositoryContext, ResponsiveContext, ThemeContext } from '../../context'
+import { ResponsiveContext } from '../../context'
+import { useLocalization, useRepository, useTheme } from '../../hooks'
 import { ComponentInfo } from './component-info'
 import { VersionInfo as VersionInfoModel } from './version-info-models'
 
 export const VersionInfo: React.FunctionComponent = () => {
-  const repo = useContext(RepositoryContext)
+  const repo = useRepository()
   const [versionInfo, setVersionInfo] = useState<VersionInfoModel | undefined>()
-  const theme = useContext(ThemeContext)
-  const localization = useContext(LocalizationContext).values.versionInfo
+  const theme = useTheme()
+  const localization = useLocalization().versionInfo
   const device = useContext(ResponsiveContext)
 
   const [showRaw, setShowRaw] = useState(false)
@@ -92,7 +93,8 @@ export const VersionInfo: React.FunctionComponent = () => {
                           secondary={
                             <a
                               href={`https://github.com/SenseNet/sn-client/tree/${process.env.GIT_BRANCH}`}
-                              target="_blank">
+                              target="_blank"
+                              rel="noopener noreferrer">
                               {process.env.GIT_BRANCH}
                             </a>
                           }
@@ -104,7 +106,8 @@ export const VersionInfo: React.FunctionComponent = () => {
                           secondary={
                             <a
                               href={`https://github.com/SenseNet/sn-client/commit/${process.env.GIT_COMMITHASH}`}
-                              target="_blank">
+                              target="_blank"
+                              rel="noopener noreferrer">
                               {process.env.GIT_COMMITHASH}
                             </a>
                           }
@@ -133,7 +136,10 @@ export const VersionInfo: React.FunctionComponent = () => {
                                 isUpdateAvailable ? (
                                   <>
                                     {`${component.ComponentId} ${component.Version}`}&nbsp;
-                                    <a href={`https://nuget.org/packages/${component.ComponentId}`} target="_blank">
+                                    <a
+                                      href={`https://nuget.org/packages/${component.ComponentId}`}
+                                      rel="noopener noreferrer"
+                                      target="_blank">
                                       {device === 'mobile'
                                         ? ''
                                         : localization.updateAvailable

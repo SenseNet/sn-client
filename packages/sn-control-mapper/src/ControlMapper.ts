@@ -29,6 +29,12 @@ export class ControlMapper<TControlBaseType, TClientControlSettings> {
     const schema = this.repository.schemas.getSchemaByName(contentTypeName)
 
     schema.FieldSettings = schema.FieldSettings.filter(s => {
+      if (
+        (contentTypeName === 'Folder' && s.Name === 'AllowedChildTypes') ||
+        (contentTypeName === 'SystemFolder' && s.Name === 'AllowedChildTypes')
+      ) {
+        return null
+      }
       switch (actionName) {
         case 'new':
           return s.VisibleNew !== FieldVisibility.Hide
@@ -36,6 +42,7 @@ export class ControlMapper<TControlBaseType, TClientControlSettings> {
           return s.VisibleEdit !== FieldVisibility.Hide
         case 'view':
           return s.VisibleBrowse !== FieldVisibility.Hide
+        // no default
       }
     }).sort((fs1, fs2) => (fs1.FieldIndex || 0) - (fs2.FieldIndex || 0))
     return schema

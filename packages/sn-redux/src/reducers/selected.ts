@@ -11,9 +11,10 @@ export const selectedIds: Reducer<number[]> = (state = [], action) => {
   switch (action.type) {
     case 'SELECT_CONTENT':
       return [...state, action.content.Id]
-    case 'DESELECT_CONTENT':
+    case 'DESELECT_CONTENT': {
       const index = state.indexOf(action.content.Id)
       return [...state.slice(0, index), ...state.slice(index + 1)]
+    }
     case 'CLEAR_SELECTION':
       return []
     default:
@@ -31,15 +32,17 @@ export const selectedContentItems: Reducer<
   ReturnType<typeof selectContent | typeof deSelectContent | typeof clearSelection>
 > = (state = {}, action) => {
   switch (action.type) {
-    case 'DESELECT_CONTENT':
+    case 'DESELECT_CONTENT': {
       const res = Object.assign({}, state)
       delete res[(action as ReturnType<typeof deSelectContent>).content.Id]
       return res
-    case 'SELECT_CONTENT':
+    }
+    case 'SELECT_CONTENT': {
       const obj: any = {}
-      const content = (action as ReturnType<typeof selectContent>).content
+      const { content } = action as ReturnType<typeof selectContent>
       obj[content.Id] = content
       return (Object as any).assign({}, state, obj)
+    }
     case 'CLEAR_SELECTION':
       return {}
     default:

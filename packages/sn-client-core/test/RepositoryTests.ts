@@ -1,14 +1,13 @@
 import { using } from '@sensenet/client-utils'
 import { ActionModel, ContentType, User } from '@sensenet/default-content-types'
 import 'jest'
-import { ActionOptions, Repository } from '../src'
+import { ActionOptions, ODataWopiResponse, Repository } from '../src'
 import { Content } from '../src/Models/Content'
 import { ODataCollectionResponse } from '../src/Models/ODataCollectionResponse'
 import { ODataResponse } from '../src/Models/ODataResponse'
 import { ConstantContent } from '../src/Repository/ConstantContent'
 import { isExtendedError } from '../src/Repository/Repository'
 
-// tslint:disable:completed-docs
 declare const global: any
 global.window = {}
 describe('Repository', () => {
@@ -39,7 +38,6 @@ describe('Repository', () => {
       done()
     }
     const fetchRepo = new Repository()
-      // tslint:disable-next-line:no-string-literal
     ;(fetchRepo as any).fetchMethod()
   })
 
@@ -61,7 +59,6 @@ describe('Repository', () => {
       repository.awaitReadyState = async () => {
         done("Shouldn't be called")
       }
-      // tslint:disable-next-line:no-string-literal
       repository['fetchMethod'] = (async () => {
         done()
       }) as any
@@ -442,6 +439,40 @@ describe('Repository', () => {
       })
     })
 
+    describe('#getWopiData()', () => {
+      it('should resolve on success', async () => {
+        ;(mockResponse as any).ok = true
+        mockResponse.json = async () => {
+          return {
+            accesstoken: 'aaa',
+            expiration: 120.0,
+            actionUrl: 'https://test.com',
+            faviconUrl: 'https://test.com/wv/resources/1033/FavIcon_Word.ico',
+          }
+        }
+        const response = await repository.getWopiData({ idOrPath: 'Root/Sites/Default_Site' })
+        expect(response).toEqual({
+          accesstoken: 'aaa',
+          expiration: 120.0,
+          actionUrl: 'https://test.com',
+          faviconUrl: 'https://test.com/wv/resources/1033/FavIcon_Word.ico',
+        } as ODataWopiResponse)
+      })
+      it('should throw on unsuccessfull request', done => {
+        ;(mockResponse as any).ok = false
+        ;(mockResponse as any).statusText = ':('
+        repository
+          .getWopiData({ idOrPath: 'Root/Sites/Default_Site' })
+          .then(() => {
+            done('Should throw')
+          })
+          .catch(err => {
+            expect(err.message).toBe(':(')
+            done()
+          })
+      })
+    })
+
     describe('#executeAction()', () => {
       it('should resolve on success', async () => {
         ;(mockResponse as any).ok = true
@@ -478,7 +509,6 @@ describe('Repository', () => {
     })
   })
 
-  // tslint:disable
   /**
    * If there is an API change and these cases breaks, please update them in the **readme.md** as well.
    */
@@ -563,15 +593,15 @@ describe('Repository', () => {
     })
 
     it('Custom action', async () => {
-      interface ICustomActionBodyType {
+      interface CustomActionBodyType {
         Name: string
         Value: string
       }
-      interface ICustomActionReturnType {
+      interface CustomActionReturnType {
         Result: any
       }
 
-      const actionResult = await repository.executeAction<ICustomActionBodyType, ICustomActionReturnType>({
+      const actionResult = await repository.executeAction<CustomActionBodyType, CustomActionReturnType>({
         idOrPath: 'Path/to/content',
         method: 'POST',
         name: 'MyOdataCustomAction',
@@ -582,8 +612,6 @@ describe('Repository', () => {
       })
       console.log(actionResult.Result)
     })
-
-    // tslint:enable
   })
 
   describe('#reloadSchema', () => {

@@ -1,7 +1,8 @@
 import Divider from '@material-ui/core/Divider'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import MenuItem from '@material-ui/core/MenuItem'
-import MenuList from '@material-ui/core/MenuList'
 import withStyles, { StyleRulesCallback } from '@material-ui/core/styles/withStyles'
 import { Icon, iconType } from '@sensenet/icons-react'
 import React from 'react'
@@ -67,15 +68,11 @@ const styles: StyleRulesCallback = () => ({
   },
   root: {
     color: '#666',
-    paddingLeft: 0,
-    paddingRight: 0,
   },
   selected: {
     backgroundColor: '#fff !important',
     color: '#016d9e',
     fontWeight: 600,
-    paddingLeft: 0,
-    paddingRight: 0,
   },
   open: {
     display: 'block',
@@ -83,12 +80,7 @@ const styles: StyleRulesCallback = () => ({
   closed: {
     display: 'none',
   },
-  submenu: {
-    padding: 0,
-  },
   submenuItem: {
-    paddingLeft: 0,
-    paddingRight: 0,
     borderTop: 'solid 1px rgba(0, 0, 0, 0.08)',
   },
   submenuIcon: {
@@ -142,46 +134,47 @@ class ContentTypesMenu extends React.Component<
     const { active, subactive, classes, item } = this.props
     return (
       <div>
-        <MenuItem
+        <ListItem
           selected={active}
+          button={true}
           classes={{ root: classes.root, selected: classes.selected }}
           onClick={() => this.handleMenuItemClick('contenttypes')}>
-          <Icon
-            className={active ? classes.iconWhiteActive : classes.iconWhite}
-            color="primary"
-            type={iconType.materialui}
-            iconName={item.icon}
-          />
-          <ListItemText
-            classes={{ primary: active ? classes.primaryActive : classes.primary }}
-            inset={true}
-            primary={item.title}
-          />
-        </MenuItem>
+          <ListItemIcon>
+            <Icon
+              className={active ? classes.iconWhiteActive : classes.iconWhite}
+              color="primary"
+              type={iconType.materialui}
+              iconName={item.icon}
+            />
+          </ListItemIcon>
+          <ListItemText classes={{ primary: active ? classes.primaryActive : classes.primary }} primary={item.title} />
+        </ListItem>
         <div className={active ? classes.open : classes.closed}>
           <Divider />
           <AddNewButton contentType="ContentType" onClick={e => console.log(e)} />
-          <MenuList className={classes.submenu}>
+          <List className={classes.submenu}>
             {subMenu.map((menuitem, index) => {
               return (
-                <MenuItem
+                <ListItem
                   className={classes.submenuItem}
+                  button={true}
                   key={index}
                   onClick={() => this.handleSubmenuItemClick(menuitem.name)}>
-                  <Icon
-                    className={subactive === menuitem.name ? classes.submenuIconActive : classes.submenuIcon}
-                    type={iconType.materialui}
-                    iconName={menuitem.icon}
-                  />
+                  <ListItemIcon>
+                    <Icon
+                      className={subactive === menuitem.name ? classes.submenuIconActive : classes.submenuIcon}
+                      type={iconType.materialui}
+                      iconName={menuitem.icon}
+                    />
+                  </ListItemIcon>
                   <ListItemText
                     classes={{ primary: subactive === menuitem.name ? classes.primarySubActive : classes.primarySub }}
-                    inset={true}
                     primary={menuitem.title}
                   />
-                </MenuItem>
+                </ListItem>
               )
             })}
-          </MenuList>
+          </List>
         </div>
       </div>
     )

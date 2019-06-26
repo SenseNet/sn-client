@@ -37,7 +37,7 @@ const LoadableNewView = Loadable({
   loader: async () =>
     (await import(/* webpackChunkName: "controls-react" */ '@sensenet/controls-react/dist/viewcontrols/NewView'))
       .NewView,
-  loading: () => <FullScreenLoader />,
+  loading: FullScreenLoader,
 })
 
 class AddNewDialog extends React.Component<

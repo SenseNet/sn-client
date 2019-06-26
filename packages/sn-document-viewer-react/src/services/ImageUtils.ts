@@ -66,12 +66,13 @@ export class ImageUtil {
           width: width * zoomHeight * relativeZoomLevel,
           height: height * zoomHeight * relativeZoomLevel,
         }
-      case 'fit':
+      case 'fit': {
         const zoom = Math.min(zoomWidth, zoomHeight)
         return {
           width: width * zoom + fitRelativeZoomLevel * width * zoom * fitRelativeZoomLevelScale,
           height: height * zoom + fitRelativeZoomLevel * height * zoom * fitRelativeZoomLevelScale,
         }
+      }
       default:
         return { width: width * relativeZoomLevel, height: height * relativeZoomLevel }
     }

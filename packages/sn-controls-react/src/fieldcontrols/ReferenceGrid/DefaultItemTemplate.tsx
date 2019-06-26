@@ -1,3 +1,4 @@
+/* eslint-disable dot-notation */
 import Avatar from '@material-ui/core/Avatar'
 import Icon from '@material-ui/core/Icon'
 import IconButton from '@material-ui/core/IconButton'
@@ -45,7 +46,7 @@ export class DefaultItemTemplate extends Component<DefaultItemTemplateProps, {}>
     const { content, repositoryUrl } = this.props
     return (
       <ListItem key={content.Id} button={false}>
-        {content.Type !== undefined ? (
+        {content.Type ? (
           content.Type === 'User' ? (
             <ListItemAvatar>
               {<Avatar alt={content['FullName']} src={`${repositoryUrl}${content['Avatar'].Url}`} />}

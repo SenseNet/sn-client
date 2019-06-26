@@ -1,7 +1,8 @@
-import { Injectable } from '@furystack/inject'
+import { Injectable, Injector } from '@furystack/inject'
 import { FormsAuthenticationService, LoginState, Repository } from '@sensenet/client-core'
 import { RepositoryConfiguration } from '@sensenet/client-core/dist/Repository/RepositoryConfiguration'
 import { EventHub } from '@sensenet/repository-events'
+import { RequestCounterService } from './request-counter-service'
 
 @Injectable({ lifetime: 'singleton' })
 export class RepositoryManager {
@@ -21,27 +22,44 @@ export class RepositoryManager {
     if (existing) {
       return existing
     }
-    const instance = new Repository({
-      ...{
-        sessionLifetime: 'expiration',
+    const instance = new Repository(
+      {
+        ...{
+          sessionLifetime: 'expiration',
+        },
+        requiredSelect: [
+          'Id',
+          'Path',
+          'Name',
+          'Type',
+          'DisplayName',
+          'Icon',
+          'IsFolder',
+          'ParentId',
+          'Version',
+          'PageCount' as any,
+          'Binary',
+          'CreationDate',
+        ],
+        ...config,
+        repositoryUrl,
       },
-      requiredSelect: [
-        'Id',
-        'Path',
-        'Name',
-        'Type',
-        'DisplayName',
-        'Icon',
-        'IsFolder',
-        'ParentId',
-        'Version',
-        'PageCount' as any,
-        'Binary',
-        'CreationDate',
-      ],
-      ...config,
-      repositoryUrl,
-    })
+      (input: RequestInfo, init?: RequestInit) => {
+        try {
+          this.injector
+            .getInstance(RequestCounterService)
+            .countRequest(new URL(input.toString()).hostname, init && init.method === 'POST' ? 'POST' : 'GET')
+        } catch (error) {
+          this.injector.getInstance(RequestCounterService).resetToday()
+          this.injector.logger.warning({
+            scope: 'RepositoryManager',
+            message: 'Failed to log the request count :(',
+            data: { details: { error } },
+          })
+        }
+        return fetch(input, init)
+      },
+    )
 
     FormsAuthenticationService.Setup(instance, {
       select: 'all',
@@ -54,4 +72,6 @@ export class RepositoryManager {
     })
     return instance
   }
+
+  constructor(private readonly injector: Injector) {}
 }

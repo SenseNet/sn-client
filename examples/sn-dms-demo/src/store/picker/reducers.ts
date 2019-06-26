@@ -1,7 +1,6 @@
 import { GenericContent } from '@sensenet/default-content-types'
-import { createContent, PromiseReturns } from '@sensenet/redux/dist/Actions'
 import { AnyAction, combineReducers, Reducer } from 'redux'
-import { GenericContentWithIsParent } from '../../../../../packages/sn-pickers-react/dist'
+import { GenericContentWithIsParent } from '@sensenet/pickers-react'
 
 export const pickerIsOpened: Reducer<boolean> = (state = false, action: AnyAction) => {
   switch (action.type) {
@@ -45,11 +44,12 @@ export const pickerParent: Reducer<GenericContent | null> = (state = null, actio
   }
 }
 
-export const pickerItems: Reducer<GenericContent[]> = (state = [], action: AnyAction) => {
+export const shouldReload: Reducer<boolean> = (state = false, action: AnyAction) => {
   switch (action.type) {
     case 'CREATE_CONTENT_SUCCESS':
-      const newContent = (action.result as PromiseReturns<typeof createContent>).d
-      return [...state, newContent]
+      return true
+    case 'RELOAD_PICKER_ITEMS':
+      return false
     default:
       return state
   }
@@ -98,7 +98,7 @@ export const picker = combineReducers({
   pickerOnClose,
   content: pickerContent,
   parent: pickerParent,
-  items: pickerItems,
+  shouldReload,
   selected: pickerSelected,
   closestWorkspace,
   backLink,

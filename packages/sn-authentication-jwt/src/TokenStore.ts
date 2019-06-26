@@ -58,7 +58,7 @@ export class TokenStore {
   }
 
   private getTokenFromCookie(key: string, document: Document): Token {
-    const prefix = key + '='
+    const prefix = `${key}=`
     if (document && document.cookie) {
       const cookieVal = document.cookie
         .split(';')
@@ -99,6 +99,7 @@ export class TokenStore {
         case TokenStoreType.ExpirationCookie:
         case TokenStoreType.SessionCookie:
           return this.getTokenFromCookie(storeKey, this.documentRef as Document)
+        // no default
       }
     } catch (err) {
       //
@@ -130,6 +131,7 @@ export class TokenStore {
       case TokenStoreType.SessionCookie:
         this.setTokenToCookie(storeKey, token, TokenPersist.Session, this.documentRef as Document)
         break
+      // no default
     }
   }
 

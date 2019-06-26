@@ -15,14 +15,8 @@ import Autosuggest from 'react-autosuggest'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { Link, NavLink } from 'react-router-dom'
 import logo from '../assets/sensenet-icon-32.png'
-import {
-  InjectorContext,
-  LocalizationContext,
-  PersonalSettingsContext,
-  RepositoryContext,
-  ResponsiveContext,
-  ThemeContext,
-} from '../context'
+import { ResponsiveContext } from '../context'
+import { useInjector, useLocalization, usePersonalSettings, useRepository, useTheme } from '../hooks'
 import { RepositoryManager } from '../services/RepositoryManager'
 import { getMatchParts } from './command-palette/CommandPaletteSuggestion'
 import { UserAvatar } from './UserAvatar'
@@ -30,22 +24,24 @@ import { UserAvatar } from './UserAvatar'
 export const RepositorySelectorComponent: React.FunctionComponent<
   RouteComponentProps & { alwaysOpened?: boolean }
 > = props => {
-  const settings = useContext(PersonalSettingsContext)
-  const repo = useContext(RepositoryContext)
-  const theme = useContext(ThemeContext)
+  const settings = usePersonalSettings()
+  const repo = useRepository()
+  const theme = useTheme()
   const device = useContext(ResponsiveContext)
   const [isActive, setIsActive] = useState(props.alwaysOpened || false)
   const [lastRepositoryName, setLastRepositoryName] = useState('')
+  const [lastRepositoryUrl, setLastRepositoryUrl] = useState('')
   const [inputValue, setInputValue] = useState(settings.lastRepository)
   const [filteredSuggestions, setFilteredSuggestions] = useState<Array<typeof settings.repositories[0]>>([])
-  const repoManager = useContext(InjectorContext).getInstance(RepositoryManager)
+  const repoManager = useInjector().getInstance(RepositoryManager)
 
-  const localization = useContext(LocalizationContext).values.repositorySelector
+  const localization = useLocalization().repositorySelector
 
   useEffect(() => {
     const lastRepo = settings.repositories.find(r => r.url === repo.configuration.repositoryUrl)
     if (lastRepo) {
       setLastRepositoryName(lastRepo.displayName || lastRepo.url)
+      setLastRepositoryUrl(lastRepo.url)
     }
   }, [repo, settings])
 
@@ -63,11 +59,19 @@ export const RepositorySelectorComponent: React.FunctionComponent<
         <Link to="/">
           <img src={logo} style={{ marginRight: '.5em', filter: 'drop-shadow(0px 0px 3px black)' }} />
         </Link>
-        <div
+        <Link
+          to={`/${btoa(lastRepositoryUrl)}`}
           title={lastRepositoryName}
-          style={{ flexShrink: 1, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
+          style={{
+            flexShrink: 1,
+            textOverflow: 'ellipsis',
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textDecoration: 'none',
+            color: theme.palette.text.primary,
+          }}>
           {lastRepositoryName}
-        </div>
+        </Link>
         <IconButton onClick={() => setIsActive(true)}>
           <KeyboardArrowDown />
         </IconButton>
@@ -195,8 +199,8 @@ export const RepositorySelectorComponent: React.FunctionComponent<
                   )}
                 </ListItemIcon>
                 <ListItemText
-                  primary={getMatchParts(params.query || '', suggestion.displayName || suggestion.url)}
-                  secondary={suggestion.displayName ? getMatchParts(params.query || '', suggestion.url) : undefined}
+                  primary={getMatchParts([params.query || ''], suggestion.displayName || suggestion.url)}
+                  secondary={suggestion.displayName ? getMatchParts([params.query || ''], suggestion.url) : undefined}
                   secondaryTypographyProps={{
                     style: {
                       textOverflow: 'ellipsis',

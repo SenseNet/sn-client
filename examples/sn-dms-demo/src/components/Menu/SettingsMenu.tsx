@@ -1,6 +1,7 @@
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import MenuItem from '@material-ui/core/MenuItem'
-import MenuList from '@material-ui/core/MenuList'
 import withStyles, { StyleRulesCallback } from '@material-ui/core/styles/withStyles'
 import { Icon, iconType } from '@sensenet/icons-react'
 import React from 'react'
@@ -72,15 +73,11 @@ const styles: StyleRulesCallback = () => ({
   },
   root: {
     color: '#666',
-    paddingLeft: 0,
-    paddingRight: 0,
   },
   selected: {
     backgroundColor: '#fff !important',
     color: '#016d9e',
     fontWeight: 600,
-    paddingLeft: 0,
-    paddingRight: 0,
   },
   rootMobile: {
     color: '#666',
@@ -100,12 +97,7 @@ const styles: StyleRulesCallback = () => ({
   closed: {
     display: 'none',
   },
-  submenu: {
-    padding: 0,
-  },
   submenuItem: {
-    paddingLeft: 0,
-    paddingRight: 0,
     borderTop: 'solid 1px rgba(0, 0, 0, 0.08)',
   },
   submenuIcon: {
@@ -133,6 +125,12 @@ interface SettingsMenuProps extends RouteComponentProps<any> {
   matches: boolean
 }
 
+const mapStateToProps = (state: rootStateType) => {
+  return {
+    subactive: state.dms.menu.activeSubmenu,
+  }
+}
+
 const mapDispatchToProps = {
   handleDrawerMenu: DMSActions.handleDrawerMenu,
 }
@@ -154,57 +152,51 @@ class SettingsMenu extends React.Component<
     const { active, subactive, classes, item, matches } = this.props
     return (
       <div>
-        <MenuItem
+        <ListItem
           selected={active}
+          button={true}
           classes={
             matches
               ? { root: classes.root, selected: classes.selected }
               : { root: classes.rootMobile, selected: classes.selectedMobile }
           }
           onClick={() => this.handleMenuItemClick('settings')}>
-          <Icon
-            className={active ? classes.iconWhiteActive : classes.iconWhite}
-            color="primary"
-            type={iconType.materialui}
-            iconName={item.icon}
-          />
-          <ListItemText
-            classes={{ primary: active ? classes.primaryActive : classes.primary }}
-            inset={true}
-            primary={item.title}
-          />
-        </MenuItem>
+          <ListItemIcon>
+            <Icon
+              className={active ? classes.iconWhiteActive : classes.iconWhite}
+              color="primary"
+              type={iconType.materialui}
+              iconName={item.icon}
+            />
+          </ListItemIcon>
+          <ListItemText classes={{ primary: active ? classes.primaryActive : classes.primary }} primary={item.title} />
+        </ListItem>
         <div className={active ? classes.open : classes.closed}>
-          <MenuList className={classes.submenu}>
-            {subMenu.map((menuitem, index) => {
+          <List className={classes.submenu}>
+            {subMenu.map((menuItem, index) => {
               return (
-                <MenuItem
+                <ListItem
                   className={classes.submenuItem}
                   key={index}
-                  onClick={() => this.handleSubmenuItemClick(menuitem.name)}>
-                  <Icon
-                    className={subactive === menuitem.name ? classes.submenuIconActive : classes.submenuIcon}
-                    type={iconType.materialui}
-                    iconName={menuitem.icon}
-                  />
+                  onClick={() => this.handleSubmenuItemClick(menuItem.name)}>
+                  <ListItemIcon>
+                    <Icon
+                      className={subactive === menuItem.name ? classes.submenuIconActive : classes.submenuIcon}
+                      type={iconType.materialui}
+                      iconName={menuItem.icon}
+                    />
+                  </ListItemIcon>
                   <ListItemText
-                    classes={{ primary: subactive === menuitem.name ? classes.primarySubActive : classes.primarySub }}
-                    inset={true}
-                    primary={menuitem.title}
+                    classes={{ primary: subactive === menuItem.name ? classes.primarySubActive : classes.primarySub }}
+                    primary={menuItem.title}
                   />
-                </MenuItem>
+                </ListItem>
               )
             })}
-          </MenuList>
+          </List>
         </div>
       </div>
     )
-  }
-}
-
-const mapStateToProps = (state: rootStateType) => {
-  return {
-    subactive: state.dms.menu.activeSubmenu,
   }
 }
 

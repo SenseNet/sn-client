@@ -1,14 +1,11 @@
 {
   "name": "@sensenet/icons-react",
-  "version": "1.2.10",
+  "version": "1.2.11",
   "description": "A React component rendering icons for sensenet.",
   "main": "dist/index.js",
   "typings": "./dist/index.d.ts",
   "scripts": {
-    "fix": "npm run fix:prettier && npm run fix:tslint",
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
-    "fix:tslint": "tslint --fix --project .",
-    "lint": "tslint --project .",
     "build": "tsc -b"
   },
   "files": [
@@ -35,14 +32,14 @@
   },
   "homepage": "https://sensenet.com",
   "dependencies": {
-    "@material-ui/core": "^3.9.3",
-    "@material-ui/icons": "^3.0.2",
+    "@material-ui/core": "^4.0.1",
+    "@material-ui/icons": "^4.0.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   },
   "devDependencies": {
-    "@types/node": "^11.10.4",
-    "@types/react": "^16.7.14",
+    "@types/node": "^12.0.3",
+    "@types/react": "^16.8.19",
     "prop-types": "^15.6.2"
   },
   "publishConfig": {

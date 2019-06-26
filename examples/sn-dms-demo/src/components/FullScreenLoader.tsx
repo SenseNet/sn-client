@@ -1,8 +1,7 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
 import React from 'react'
 
-// tslint:disable-next-line:variable-name
-export const FullScreenLoader: React.StatelessComponent = () => (
+export const FullScreenLoader = () => (
   <div>
     <div
       className="overlay"

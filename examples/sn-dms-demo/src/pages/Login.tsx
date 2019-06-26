@@ -7,16 +7,21 @@ import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { Redirect } from 'react-router-dom'
-import LoginTabs from '../components/LoginTabs'
+import { GoogleOauthProvider } from '@sensenet/authentication-google'
+import { OauthProvider } from '@sensenet/authentication-jwt'
+import { LoginState } from '@sensenet/client-core'
+import ConnectedLoginTabs from '../components/LoginTabs'
 import { OauthRow } from '../components/OAuthRow'
 import { WelcomeMessage } from '../components/WelcomeMessage'
-
-// tslint:disable-next-line:no-var-requires
-const logo = require('../assets/logo.png')
+import { resources } from '../assets/resources'
+import { FullScreenLoader } from '../components/FullScreenLoader'
+import { rootStateType } from '../store/rootReducer'
+import logo from '../assets/logo.png'
 
 const styles = {
   button: {
-    margin: '30px 0',
+    margin: '30px auto',
+    display: 'block',
   },
   formControl: {
     marginTop: '20px 0px',
@@ -32,13 +37,6 @@ const styles = {
     textAlign: 'center' as any,
   },
 }
-
-import { GoogleOauthProvider } from '@sensenet/authentication-google'
-import { OauthProvider } from '@sensenet/authentication-jwt'
-import { LoginState } from '@sensenet/client-core'
-import { resources } from '../assets/resources'
-import { FullScreenLoader } from '../components/FullScreenLoader'
-import { rootStateType } from '../store/rootReducer'
 
 const mapStateToProps = (state: rootStateType) => {
   return {
@@ -137,7 +135,7 @@ class Login extends React.Component<
   }
 
   public validateEmail(text: string) {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     return re.test(text)
   }
 
@@ -179,8 +177,9 @@ class Login extends React.Component<
   }
 
   public componentDidMount() {
-    // tslint:disable-next-line:no-unused-expression
-    this.props.isRegistered ? this.props.clear() : false
+    if (this.props.isRegistered) {
+      this.props.clear()
+    }
   }
 
   public render() {
@@ -210,7 +209,7 @@ class Login extends React.Component<
           </MediaQuery>
         </div>
 
-        <LoginTabs />
+        <ConnectedLoginTabs />
         <WelcomeMessage />
 
         <div>

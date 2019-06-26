@@ -64,17 +64,6 @@ export function CreateComment(props: CreateCommentProps) {
     )
   }
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const errorText = validate()
-    if (errorText) {
-      setErrorMessage(errorText)
-      return
-    }
-    props.createComment(props.inputValue)
-    clearState()
-  }
-
   const clearState = () => {
     props.handlePlaceMarkerClick(false)
     props.handleInputValueChange('')
@@ -90,6 +79,17 @@ export function CreateComment(props: CreateCommentProps) {
       return localization.markerRequiredError
     }
     return undefined
+  }
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const errorText = validate()
+    if (errorText) {
+      setErrorMessage(errorText)
+      return
+    }
+    props.createComment(props.inputValue)
+    clearState()
   }
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,15 +1,15 @@
+/* eslint-disable dot-notation */
 /**
  * @module FieldControls
  */
 import React, { Component } from 'react'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
-import { ReactLongTextFieldSetting } from '../LongTextFieldSetting'
-import { ReactTextareaFieldSetting } from './TextareaFieldSetting'
 
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { GenericContent } from '@sensenet/default-content-types'
 import Radium from 'radium'
+import { ReactLongTextFieldSetting } from '../LongTextFieldSetting'
+import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 
 /**
  * Interface for Textarea properties
@@ -17,8 +17,7 @@ import Radium from 'radium'
 export interface TextareaProps<T extends GenericContent, K extends keyof T>
   extends ReactClientFieldSettingProps<T, K>,
     ReactClientFieldSetting<T, K>,
-    ReactLongTextFieldSetting<T, K>,
-    ReactTextareaFieldSetting<T, K> {}
+    ReactLongTextFieldSetting<T, K> {}
 /**
  * Interface for Textarea state
  */

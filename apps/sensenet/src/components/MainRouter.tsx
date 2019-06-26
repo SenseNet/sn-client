@@ -1,9 +1,11 @@
 import { LoginState } from '@sensenet/client-core'
-import React, { lazy, Suspense, useContext } from 'react'
+import React, { lazy, Suspense } from 'react'
 import { Route, RouteComponentProps, Switch, withRouter } from 'react-router'
-import { LoadSettingsContextProvider, PersonalSettingsContext, SessionContext } from '../context'
+import { LoadSettingsContextProvider, RepositoryContext } from '../context'
+import { usePersonalSettings, useSession } from '../hooks'
 import { ErrorBoundary } from './ErrorBoundary'
 import { FullScreenLoader } from './FullScreenLoader'
+import { WopiPage } from './wopi-page'
 
 const ExploreComponent = lazy(async () => await import(/* webpackChunkName: "content" */ './content'))
 const DashboardComponent = lazy(async () => await import(/* webpackChunkName: "dashboard" */ './dashboard'))
@@ -27,8 +29,9 @@ const PersonalSettingsEditor = lazy(
 )
 
 const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
-  const sessionContext = useContext(SessionContext)
-  const personalSettings = useContext(PersonalSettingsContext)
+  const sessionContext = useSession()
+  const personalSettings = usePersonalSettings()
+
   return (
     <ErrorBoundary>
       <Route
@@ -49,6 +52,12 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
                   }}
                 />
                 <Route
+                  path="/:repo/login"
+                  render={() => {
+                    return <LoginComponent />
+                  }}
+                />
+                <Route
                   path="/events/:eventGuid?"
                   render={() => {
                     return <EventListComponent />
@@ -56,9 +65,9 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
                 />
 
                 {/** Requires login */}
-                {sessionContext.debouncedState === LoginState.Unauthenticated || !personalSettings.lastRepository ? (
+                {sessionContext.state === LoginState.Unauthenticated || !personalSettings.lastRepository ? (
                   <LoginComponent />
-                ) : sessionContext.debouncedState === LoginState.Authenticated ? (
+                ) : sessionContext.state === LoginState.Authenticated ? (
                   <Switch>
                     <Route
                       path="/:repo/browse/:folderId?/:rightParent?"
@@ -121,6 +130,19 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
                       path="/:repo/preview/:documentId?"
                       render={() => {
                         return <DocumentViewerComponent />
+                      }}
+                    />
+                    <Route path="/:repo/wopi/:documentId/:action?">
+                      <WopiPage />
+                    </Route>
+                    <Route
+                      path="/:repo/"
+                      render={() => {
+                        return (
+                          <RepositoryContext.Consumer>
+                            {repo => <DashboardComponent repository={repo} />}
+                          </RepositoryContext.Consumer>
+                        )
                       }}
                     />
                     <Route

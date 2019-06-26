@@ -1,6 +1,7 @@
 /**
  * @module FieldControls
  */
+import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import Icon from '@material-ui/core/Icon'
@@ -21,7 +22,7 @@ const style = {
     position: 'absolute',
     left: '24px',
     top: '20px',
-  },
+  } as React.CSSProperties,
 }
 
 const renderIconDefault = (name: string, color: string) => {
@@ -66,7 +67,8 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
     }
 
     this.handleChange = this.handleChange.bind(this)
-    this.togglePicker = this.togglePicker.bind(this)
+    this.openPicker = this.openPicker.bind(this)
+    this.closePicker = this.closePicker.bind(this)
   }
   /**
    * convert incoming default value string to proper format
@@ -91,12 +93,15 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
     this.props.onChange(this.props.name, color.hex)
     this.setState({ value: color.hex })
   }
-  public togglePicker() {
-    if (!this.props.readOnly) {
-      this.setState({
-        pickerIsOpen: !this.state.pickerIsOpen,
-      })
-    }
+  public openPicker() {
+    this.setState({
+      pickerIsOpen: true,
+    })
+  }
+  public closePicker() {
+    this.setState({
+      pickerIsOpen: false,
+    })
   }
   /**
    * render
@@ -105,70 +110,24 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
   public render() {
     switch (this.props['data-actionName']) {
       case 'edit':
-        return (
-          <FormControl className={this.props.className}>
-            <TextField
-              label={
-                this.props['data-errorText'] && this.props['data-errorText'].length > 0
-                  ? this.props['data-errorText']
-                  : this.props['data-labelText']
-              }
-              type="text"
-              name={this.props.name as string}
-              id={this.props.name as string}
-              className={this.props.className}
-              required={this.props.required}
-              disabled={this.props.readOnly}
-              value={this.state.value}
-              error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
-              onClick={this.togglePicker}
-              onBlur={this.togglePicker}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    {this.props['data-renderIcon']
-                      ? this.props['data-renderIcon']('lens')
-                      : renderIconDefault('lens', this.state.value)}
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <div
-              style={
-                this.state.pickerIsOpen
-                  ? { ...{ display: 'block' }, ...(style.pickerContainer as any) }
-                  : { ...{ display: 'none' }, ...(style.pickerContainer as any) }
-              }>
-              <SketchPicker
-                color={this.state.value}
-                onChangeComplete={this.handleChange}
-                onSwatchHover={this.handleChange}
-                presetColors={this.props.palette ? this.props.palette : []}
-              />
-            </div>
-            <FormHelperText>{this.props['data-hintText']}</FormHelperText>
-            <FormHelperText>{this.props['data-errorText']}</FormHelperText>
-          </FormControl>
-        )
       case 'new':
         return (
           <FormControl className={this.props.className}>
             <TextField
-              type="text"
-              name={this.props.name as string}
-              id={this.props.name as string}
               label={
                 this.props['data-errorText'] && this.props['data-errorText'].length > 0
                   ? this.props['data-errorText']
                   : this.props['data-labelText']
               }
+              type="text"
+              name={this.props.name as string}
+              id={this.props.name as string}
               className={this.props.className}
               required={this.props.required}
               disabled={this.props.readOnly}
               value={this.state.value}
               error={this.props['data-errorText'] && this.props['data-errorText'].length > 0 ? true : false}
-              onClick={this.togglePicker}
-              onBlur={this.togglePicker}
+              onClick={this.openPicker}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -179,19 +138,19 @@ export class ColorPicker<T extends GenericContent, K extends keyof T> extends Co
                 ),
               }}
             />
-            <div
-              style={
-                this.state.pickerIsOpen
-                  ? { ...{ display: 'block' }, ...(style.pickerContainer as any) }
-                  : { ...{ display: 'none' }, ...(style.pickerContainer as any) }
-              }>
-              <SketchPicker
-                color={this.state.value}
-                onChangeComplete={this.handleChange}
-                onSwatchHover={this.handleChange}
-                presetColors={this.props.palette ? this.props.palette : []}
-              />
-            </div>
+            {this.state.pickerIsOpen ? (
+              <ClickAwayListener onClickAway={this.closePicker}>
+                <div style={style.pickerContainer}>
+                  <SketchPicker
+                    color={this.state.value}
+                    onChangeComplete={this.handleChange}
+                    onSwatchHover={this.handleChange}
+                    presetColors={this.props.palette ? this.props.palette : []}
+                    disableAlpha={true}
+                  />
+                </div>
+              </ClickAwayListener>
+            ) : null}
             <FormHelperText>{this.props['data-hintText']}</FormHelperText>
             <FormHelperText>{this.props['data-errorText']}</FormHelperText>
           </FormControl>

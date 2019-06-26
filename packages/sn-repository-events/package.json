@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/repository-events",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Client side repository event observables for sensenet",
   "main": "dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -9,10 +9,7 @@
     "src"
   ],
   "scripts": {
-    "fix": "npm run fix:prettier && npm run fix:tslint",
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
-    "fix:tslint": "tslint --fix --project .",
-    "lint": "tslint --project .",
     "build": "tsc -b"
   },
   "repository": {
@@ -37,7 +34,7 @@
   },
   "homepage": "https://sensenet.com",
   "dependencies": {
-    "@sensenet/client-core": "^2.0.1",
-    "@sensenet/client-utils": "^1.6.1"
+    "@sensenet/client-core": "^2.1.0",
+    "@sensenet/client-utils": "^1.6.2"
   }
 }
