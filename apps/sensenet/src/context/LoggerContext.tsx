@@ -1,8 +1,8 @@
-import { ILogger, LoggerCollection } from '@furystack/logging'
+import { Logger, LoggerCollection } from '@furystack/logging'
 import React from 'react'
 import { useInjector } from '../hooks'
 
-export const LoggerContext = React.createContext<ILogger>(new LoggerCollection())
+export const LoggerContext = React.createContext<Logger>(new LoggerCollection())
 
 export const LoggerContextProvider: React.FunctionComponent = ({ children }) => {
   const injector = useInjector()
