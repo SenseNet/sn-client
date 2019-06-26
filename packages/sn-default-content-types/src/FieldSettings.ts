@@ -182,6 +182,15 @@ export class PasswordFieldSetting extends ShortTextFieldSetting {
   public PasswordHistoryLength?: number
 }
 
+export class ColorFieldSetting extends TextFieldSetting {
+  /**
+   * Semicolon separated list of colors in hexadecimal format.
+   * @example "#ff0000;#f0d0c9;#e2a293;#d4735e;#65281a"
+   * @type {string}
+   * @memberof ColorFieldSetting
+   */
+  public Palette?: string
+}
 // Used in User
 export class CaptchaFieldSetting extends FieldSetting {}
 

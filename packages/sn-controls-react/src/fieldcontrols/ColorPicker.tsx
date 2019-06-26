@@ -10,6 +10,7 @@ import TextField from '@material-ui/core/TextField'
 import Radium from 'radium'
 import React, { Component } from 'react'
 import { SketchPicker } from 'react-color'
+import { ColorFieldSetting } from '@sensenet/default-content-types'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 const style = {
@@ -38,7 +39,7 @@ export interface ColorPickerState {
  * Field control that represents a Color field. Available values will be populated from the FieldSettings.
  */
 @Radium
-export class ColorPicker extends Component<ReactClientFieldSetting, ColorPickerState> {
+export class ColorPicker extends Component<ReactClientFieldSetting<ColorFieldSetting>, ColorPickerState> {
   /**
    * constructor
    * @param {object} props

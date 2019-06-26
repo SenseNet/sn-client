@@ -7,6 +7,7 @@ import { ControlMapper } from '@sensenet/control-mapper'
 import {
   BooleanFieldSetting,
   ChoiceFieldSetting,
+  ColorFieldSetting,
   CurrencyFieldSetting,
   DateTimeFieldSetting,
   IntegerFieldSetting,
@@ -38,6 +39,9 @@ export const reactControlMapper = (repository: Repository) => {
     })
     .setupFieldSettingDefault(IntegerFieldSetting, () => {
       return FieldControls.NumberComponent
+    })
+    .setupFieldSettingDefault(ColorFieldSetting, () => {
+      return FieldControls.ColorPicker
     })
     .setupFieldSettingDefault(ShortTextFieldSetting, setting => {
       switch (setting.ControlHint) {
@@ -100,8 +104,6 @@ export const reactControlMapper = (repository: Repository) => {
     .setupFieldSettingDefault(NullFieldSetting, setting => {
       if (setting.Name === 'Avatar') {
         return FieldControls.Avatar
-      } else if (setting.Name === 'Color') {
-        return FieldControls.ColorPicker
       } else if (
         ['SiteRelativeUrl', 'UploadBinary', 'ButtonList', 'ReferenceDropDown', 'PageTemplateSelector'].indexOf(
           setting.Name,
