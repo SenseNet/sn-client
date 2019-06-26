@@ -4,7 +4,7 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import withStyles, { StyleRulesCallback } from '@material-ui/core/styles/withStyles'
+import withStyles from '@material-ui/core/styles/withStyles'
 import { ActionModel } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
 import { Actions } from '@sensenet/redux'
@@ -92,9 +92,9 @@ const menu: Array<{
 
 const drawerWidth = 185
 
-const styles: StyleRulesCallback = () => ({
+const styles = () => ({
   drawerPaper: {
-    position: 'relative',
+    position: 'relative' as 'relative',
     width: drawerWidth,
     padding: '0 10px',
   },
