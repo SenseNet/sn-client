@@ -6,6 +6,7 @@ import { useRepository } from './use-repository'
 export const useVersionInfo = () => {
   const [versionInfo, setVersionInfo] = useState<VersionInfo | undefined>()
   const [nugetManifests, setNugetManifests] = useState<any[]>([])
+  const [hasUpdates, setHasUpdates] = useState(false)
   const repo = useRepository()
 
   useEffect(() => {
@@ -33,22 +34,28 @@ export const useVersionInfo = () => {
       const loadedManifests = (await Promise.all(nugetPromises)).filter(m => m)
       setNugetManifests(loadedManifests)
 
+      let hasOneUpdate = false
+
       result.Components = result.Components.map(component => {
         const nugetManifest = loadedManifests.find(
           m =>
             m['@id'] ===
             `https://api.nuget.org/v3/registration3-gz-semver2/${component.ComponentId.toLocaleLowerCase()}/index.json`,
         )
+        const updateAvailable = nugetManifest ? nugetManifest.items[0].upper > component.Version : false
+        if (updateAvailable) {
+          hasOneUpdate = true
+        }
         return {
           ...component,
           NugetManifest: nugetManifest,
-          IsUpdateAvailable: nugetManifest ? nugetManifest.items[0].upper > component.Version : false,
+          IsUpdateAvailable: updateAvailable,
         }
       })
-
+      setHasUpdates(hasOneUpdate)
       setVersionInfo(result)
     })()
   }, [repo])
 
-  return { versionInfo, nugetManifests }
+  return { versionInfo, nugetManifests, hasUpdates }
 }
