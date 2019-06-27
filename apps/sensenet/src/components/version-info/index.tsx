@@ -24,7 +24,7 @@ export const VersionInfo: React.FunctionComponent = () => {
 
   const [showRaw, setShowRaw] = useState(false)
 
-  const { versionInfo, nugetManifests } = useVersionInfo()
+  const { versionInfo } = useVersionInfo()
 
   return (
     <div style={{ padding: '1em', margin: '1em', overflow: 'hidden', height: '100%' }}>
