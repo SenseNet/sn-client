@@ -1717,7 +1717,7 @@ export const customSchema = [
       } as FieldSettings.CaptchaFieldSetting,
       {
         Type: 'ReferenceFieldSetting',
-        AllowMultiple: false,
+        AllowMultiple: true,
         AllowedTypes: ['User'],
         SelectionRoots: ['/Root/IMS'],
         Name: 'Manager',

@@ -22,7 +22,7 @@ import {
   Textarea,
   TimePicker,
 } from '@sensenet/controls-react/src'
-import { GenericContent, VersioningMode } from '@sensenet/default-content-types/src'
+import { GenericContent, User, VersioningMode } from '@sensenet/default-content-types/src'
 import shorttextNotes from '../notes/fieldcontrols/ShortText.md'
 import displaynameNotes from '../notes/fieldcontrols/DisplayName.md'
 import checkboxgroupNotes from '../notes/fieldcontrols/CheckboxGroup.md'
@@ -68,7 +68,7 @@ const testContent: GenericContent = {
   Index: 42,
 }
 
-const userContent = {
+const userContent: User = {
   Name: 'Alba Monday',
   Path: 'Root/IMS/Public/alba',
   DisplayName: 'Alba Monday',
@@ -77,6 +77,14 @@ const userContent = {
   Type: 'User',
   BirthDate: new Date(2000, 5, 15).toISOString(),
   Avatar: { Url: '/Root/Sites/Default_Site/demoavatars/alba.jpg' },
+  Manager: {
+    Name: 'Business Cat',
+    Path: 'Root/IMS/Public/businesscat',
+    DisplayName: 'Business Cat',
+    Id: 4,
+    Icon: 'user',
+    Type: 'User',
+  },
 }
 
 const PleaseLogin = () => (
@@ -405,9 +413,9 @@ fieldControlStory({
     <DynamicControl
       actionName={actionName}
       repository={testRepository}
-      content={testContent}
+      content={userContent}
       component={TagsInput}
-      fieldName="ModifiedBy"
+      fieldName="Manager"
     />
   ),
   markdown: tagsInputNotes,
