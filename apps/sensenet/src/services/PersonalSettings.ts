@@ -21,7 +21,7 @@ export interface UiSettings {
   }
 }
 
-export const widgetTypes = tuple('markdown', 'query')
+export const widgetTypes = tuple('markdown', 'query', 'updates')
 
 export interface Widget<T> {
   title: string
@@ -32,6 +32,10 @@ export interface Widget<T> {
 
 export interface MarkdownWidget extends Widget<{ content: string }> {
   widgetType: 'markdown'
+}
+
+export interface UpdatesWidget extends Widget<undefined> {
+  widgetType: 'updates'
 }
 
 export interface QueryWidget<T extends GenericContent>
@@ -49,7 +53,7 @@ export interface QueryWidget<T extends GenericContent>
   widgetType: 'query'
 }
 
-export type WidgetSection = Array<MarkdownWidget | QueryWidget<GenericContent>>
+export type WidgetSection = Array<MarkdownWidget | QueryWidget<GenericContent> | UpdatesWidget>
 
 export type PersonalSettingsType = PlatformDependent<UiSettings> & {
   repositories: Array<{ url: string; loginName?: string; displayName?: string; dashboard?: WidgetSection }>

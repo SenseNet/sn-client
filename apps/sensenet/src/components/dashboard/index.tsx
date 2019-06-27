@@ -5,6 +5,7 @@ import { useWidgets } from '../../hooks'
 import { ErrorWidget } from './error-widget'
 import { QueryWidget } from './query-widget'
 import { MarkdownWidget } from './markdown-widget'
+import { UpdatesWidget } from './updates-widget'
 
 export interface DashboardProps {
   repository?: Repository
@@ -19,6 +20,11 @@ export const getWidgetComponent = (widget: ReturnType<typeof useWidgets>[0], rep
         return <ErrorWidget {...widget} />
       }
       return <QueryWidget {...widget} />
+    case 'updates':
+      if (!repo) {
+        return <ErrorWidget {...widget} />
+      }
+      return <UpdatesWidget {...widget} />
     default:
       return <ErrorWidget {...widget} />
   }

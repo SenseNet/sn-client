@@ -38,7 +38,7 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                   enum: [...widgetTypes],
                   title: language.personalSettings.dashboard.widgetType,
                   default: 'markdown',
-                  examples: ['query', 'markdown'],
+                  examples: ['query', 'markdown', 'updates'],
                 },
                 title: {
                   $id: '#/dashboardSection/properties/title',
