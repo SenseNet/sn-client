@@ -67,7 +67,7 @@ export class GoogleOauthProvider implements OauthProvider {
    * @returns {Promise<string>} A promise that will be resolved with an id_token or rejected in case of any error or interruption
    */
   private async getTokenFromPrompt(loginReqUrl: string): Promise<string> {
-    return new Promise<string>(async (resolve, reject) => {
+    return new Promise<string>((resolve, reject) => {
       this.popup = this.windowInstance.open(
         loginReqUrl,
         '_blank',

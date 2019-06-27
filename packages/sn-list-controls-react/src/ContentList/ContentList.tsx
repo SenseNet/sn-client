@@ -166,7 +166,8 @@ export class ContentList<T extends GenericContent> extends React.Component<Conte
         break
       case 'ModificationDate':
         return <DateCell date={props.content.ModificationDate as string} />
-      // no default
+      default:
+        break
     }
     const field: any = props.content[props.field]
     if (field && field.Id && field.Path && field.DisplayName) {

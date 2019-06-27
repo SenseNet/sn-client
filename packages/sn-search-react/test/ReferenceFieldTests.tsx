@@ -153,7 +153,9 @@ describe('ReferenceField Component', () => {
     it('Should be rendered without error', () => {
       expect(
         shallow(
-          <ReferenceFieldContainer query="" containerProps={{ id: '1', key: '1', ref: null as any, style: {} }}>
+          <ReferenceFieldContainer
+            query=""
+            containerProps={{ id: '1', key: '1', ref: null as any, className: '', role: '' }}>
             <span>a</span>
           </ReferenceFieldContainer>,
         ),

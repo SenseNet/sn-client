@@ -85,7 +85,7 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
         })
         if (props.match.path === '/login') {
           await sleepAsync(1800)
-          props.history.push('/')
+          props.history.push(`/${btoa(repoToLogin.configuration.repositoryUrl)}`)
         }
       } else {
         setIsInProgress(false)

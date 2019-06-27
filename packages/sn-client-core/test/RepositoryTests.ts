@@ -450,7 +450,7 @@ describe('Repository', () => {
             faviconUrl: 'https://test.com/wv/resources/1033/FavIcon_Word.ico',
           }
         }
-        const response = await repository.getWopiData('Root/Sites/Default_Site')
+        const response = await repository.getWopiData({ idOrPath: 'Root/Sites/Default_Site' })
         expect(response).toEqual({
           accesstoken: 'aaa',
           expiration: 120.0,
@@ -462,7 +462,7 @@ describe('Repository', () => {
         ;(mockResponse as any).ok = false
         ;(mockResponse as any).statusText = ':('
         repository
-          .getWopiData('Root/Sites/Default_Site')
+          .getWopiData({ idOrPath: 'Root/Sites/Default_Site' })
           .then(() => {
             done('Should throw')
           })

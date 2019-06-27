@@ -11,11 +11,10 @@ import Delete from '@material-ui/icons/Delete'
 import FileMove from '@material-ui/icons/FileCopy'
 import FileCopy from '@material-ui/icons/FileCopyOutlined'
 import Info from '@material-ui/icons/Info'
-import React, { useContext, useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { CurrentContentContext, ResponsiveContext } from '../context'
-import { useContentRouting, useLocalization } from '../hooks'
-import { useDownload } from '../hooks/use-download'
+import { useContentRouting, useDownload, useLocalization, useRepository, useWopi } from '../hooks'
 import { ContentInfoDialog, CopyMoveDialog, DeleteContentDialog, EditPropertiesDialog } from './dialogs'
 import { Icon } from './Icon'
 
@@ -37,7 +36,16 @@ export const ContentContextMenuComponent: React.FunctionComponent<
   const [isInfoDialogOpened, setIsInfoDialogOpened] = useState(false)
   const [isCopyDialogOpened, setIsCopyDialogOpened] = useState(false)
   const [copyMoveOperation, setCopyMoveOperation] = useState<'copy' | 'move'>('copy')
+  const repo = useRepository()
   const download = useDownload(content)
+  const wopi = useWopi(content)
+
+  const wopiOpen = useCallback(async () => {
+    props.onClose && props.onClose()
+    props.history.push(
+      `/${btoa(repo.configuration.repositoryUrl)}/wopi/${content.Id}/${wopi.isWriteAwailable ? 'edit' : 'view'}`,
+    )
+  }, [content.Id, props, repo.configuration.repositoryUrl, wopi.isWriteAwailable])
 
   return (
     <div onKeyDown={ev => ev.stopPropagation()} onKeyPress={ev => ev.stopPropagation()}>
@@ -85,6 +93,14 @@ export const ContentContextMenuComponent: React.FunctionComponent<
               </ListItemIcon>
               <ListItemText primary={localization.open} />
             </ListItem>
+            {wopi.isWriteAwailable || wopi.isReadAwailable ? (
+              <ListItem button={true} onClick={() => props.history.push(routing.getPrimaryActionUrl(content))}>
+                <ListItemIcon>
+                  <Icon item={content} />
+                </ListItemIcon>
+                <ListItemText primary={wopi.isWriteAwailable ? localization.wopiEdit : localization.wopiRead} />
+              </ListItem>
+            ) : null}
             {download.isFile ? (
               <ListItem
                 button={true}
@@ -173,6 +189,16 @@ export const ContentContextMenuComponent: React.FunctionComponent<
             </ListItemIcon>
             {localization.open}
           </MenuItem>
+
+          {wopi.isWriteAwailable || wopi.isReadAwailable ? (
+            <MenuItem button={true} onClick={wopiOpen}>
+              <ListItemIcon>
+                <Icon item={content} />
+              </ListItemIcon>
+              {wopi.isWriteAwailable ? localization.wopiEdit : localization.wopiRead}
+            </MenuItem>
+          ) : null}
+
           {download.isFile ? (
             <MenuItem
               button={true}

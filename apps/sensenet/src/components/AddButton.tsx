@@ -7,6 +7,8 @@ import Add from '@material-ui/icons/Add'
 import CloudUpload from '@material-ui/icons/CloudUpload'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
+import { UploadProgressInfo } from '@sensenet/client-core'
+import { ObservableValue } from '@sensenet/client-utils'
 import { CurrentContentContext } from '../context'
 import { useInjector, useLocalization, useLogger, useRepository } from '../hooks'
 import { UploadTracker } from '../services/UploadTracker'
@@ -55,6 +57,15 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
     }
   }, [localization.errorGettingAllowedContentTypes, logger, parent.Id, repo, showSelectType])
 
+  const [progressObservable] = useState(new ObservableValue<UploadProgressInfo>())
+
+  useEffect(() => {
+    const subscription = progressObservable.subscribe(p =>
+      injector.getInstance(UploadTracker).onUploadProgress.setValue({ progress: p, repo }),
+    )
+    return () => subscription.dispose()
+  }, [injector, progressObservable, repo])
+
   return (
     <div>
       <Tooltip title={localization.tooltip} placement="top-end">
@@ -99,7 +110,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
                     createFolders: true,
                     binaryPropertyName: 'Binary',
                     overwrite: false,
-                    progressObservable: injector.getInstance(UploadTracker).onUploadProgress,
+                    progressObservable,
                   })
               }}
               type="file"

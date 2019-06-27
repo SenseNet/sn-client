@@ -1,14 +1,25 @@
 import CloudUploadTwoTone from '@material-ui/icons/CloudUploadTwoTone'
 import { GenericContent } from '@sensenet/default-content-types'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { UploadProgressInfo } from '@sensenet/client-core'
+import { ObservableValue } from '@sensenet/client-utils'
 import { useInjector, useRepository, useTheme } from '../hooks'
 import { UploadTracker } from '../services/UploadTracker'
 
 export const DropFileArea: React.FunctionComponent<{ parent: GenericContent; style?: React.CSSProperties }> = props => {
   const [isDragOver, setDragOver] = useState(false)
+
   const injector = useInjector()
   const repo = useRepository()
   const theme = useTheme()
+  const [progressObservable] = useState(new ObservableValue<UploadProgressInfo>())
+
+  useEffect(() => {
+    const subscription = progressObservable.subscribe(p =>
+      injector.getInstance(UploadTracker).onUploadProgress.setValue({ progress: p, repo }),
+    )
+    return () => subscription.dispose()
+  }, [injector, progressObservable, repo])
 
   return (
     <div
@@ -45,7 +56,7 @@ export const DropFileArea: React.FunctionComponent<{ parent: GenericContent; sty
           event: new DragEvent('drop', { dataTransfer: ev.dataTransfer }),
           overwrite: false,
           parentPath: props.parent ? props.parent.Path : '',
-          progressObservable: injector.getInstance(UploadTracker).onUploadProgress,
+          progressObservable,
         })
       }}>
       <div

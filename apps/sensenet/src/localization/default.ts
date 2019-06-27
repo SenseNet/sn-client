@@ -1,4 +1,7 @@
 const values = {
+  dashboard: {
+    errorLoadingWidget: 'Error loading widget :(',
+  },
   addButton: {
     tooltip: 'Create or upload content',
     new: 'New...',
@@ -30,6 +33,8 @@ const values = {
     delete: 'Delete',
     open: 'Open',
     download: 'Download',
+    wopiEdit: 'Open in online editor',
+    wopiRead: 'View in online editor',
   },
   contentInfoDialog: {
     dialogTitle: 'Info about {0}',
@@ -79,7 +84,7 @@ const values = {
     personalSettingsTitle: 'Edit personal settings',
     personalSettingsSecondaryText: 'Customize the application behavior',
     contentTitle: 'Content',
-    contentSecondaryText: 'Explore the content of the repository',
+    contentSecondaryText: 'Explore and manage your content in the repository',
     searchTitle: 'Search',
     searchSecondaryText: 'Execute custom searches, build and save queries',
     usersAndGroupsTitle: 'Users and groups',
@@ -88,6 +93,14 @@ const values = {
     setupSecondaryText: 'Configure the sensenet system',
     versionInfoTitle: 'Version Info',
     versionInfoSecondaryText: 'Detailed version information about the current sensenet installation',
+    contentTypesTitle: 'Content Types',
+    contentTypesSecondaryText: 'Manage content types',
+    localizationTitle: 'Localization',
+    localizationSecondaryText: 'Manage string resources',
+    trashTitle: 'Trash',
+    trashSecondaryText: 'Manage deleted items here: restore content or purge them permanently',
+    dashboardTitle: 'Dashboard',
+    dashboardSecondaryText: 'Repository overview',
     expand: 'Expand',
     collapse: 'Collapse',
   },
@@ -280,6 +293,12 @@ const values = {
       title: `Custom action results`,
       closeButton: 'Close',
     },
+  },
+  wopi: {
+    errorOpeningFileTitle: `Error opening file for online editing`,
+    errorOpeningFileText: 'There was an error during opening the file for online editing.',
+    tryOpenRead: 'View',
+    goBack: 'Go back',
   },
 }
 

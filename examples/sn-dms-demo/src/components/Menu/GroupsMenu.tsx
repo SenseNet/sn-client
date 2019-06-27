@@ -2,7 +2,7 @@ import Divider from '@material-ui/core/Divider'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import withStyles, { StyleRulesCallback } from '@material-ui/core/styles/withStyles'
+import withStyles from '@material-ui/core/styles/withStyles'
 import { Icon, iconType } from '@sensenet/icons-react'
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
@@ -13,7 +13,7 @@ import { rootStateType } from '../../store/rootReducer'
 import AddNewDialog from '../Dialogs/AddNewDialog'
 import { AddNewButton } from './AddNewButton'
 
-const styles: StyleRulesCallback = () => ({
+const styles = () => ({
   primary: {
     color: '#666',
     fontFamily: 'Raleway Semibold',

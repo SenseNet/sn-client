@@ -1,19 +1,19 @@
 import { Injectable } from '@furystack/inject'
 import { LogLevel } from '@furystack/logging'
-import { UploadProgressInfo } from '@sensenet/client-core'
+import { Repository, UploadProgressInfo } from '@sensenet/client-core'
 import { ObservableValue } from '@sensenet/client-utils'
 import { EventService } from './EventService'
 import { LocalizationService } from './LocalizationService'
 
 @Injectable({ lifetime: 'singleton' })
 export class UploadTracker {
-  public onUploadProgress: ObservableValue<UploadProgressInfo> = new ObservableValue()
+  public onUploadProgress: ObservableValue<{ progress: UploadProgressInfo; repo: Repository }> = new ObservableValue()
 
   /**
    *
    */
   constructor(eventService: EventService, localization: LocalizationService) {
-    this.onUploadProgress.subscribe(progress => {
+    this.onUploadProgress.subscribe(({ progress, repo }) => {
       if (progress.completed) {
         eventService.add({
           scope: 'UploadTracker',
@@ -22,6 +22,9 @@ export class UploadTracker {
             .getValue()
             .uploadProgress.contentUploaded.replace('{0}', progress.file.name),
           data: {
+            details: { progress },
+            relatedContent: progress.createdContent,
+            relatedRepository: repo.configuration.repositoryUrl,
             multiple: true,
             digestMessage: localization.currentValues.getValue().uploadProgress.contentUploadedMultiple,
           },

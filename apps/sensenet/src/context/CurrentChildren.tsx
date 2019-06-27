@@ -66,9 +66,9 @@ export const CurrentChildrenProvider: React.FunctionComponent = props => {
           requestReload()
         }
       }),
-      uploadTracker.onUploadProgress.subscribe(pr => {
-        if (pr.completed && pr.createdContent) {
-          if (PathHelper.getParentPath(pr.createdContent.Url) === PathHelper.trimSlashes(currentContent.Path)) {
+      uploadTracker.onUploadProgress.subscribe(({ progress }) => {
+        if (progress.completed && progress.createdContent) {
+          if (PathHelper.getParentPath(progress.createdContent.Url) === PathHelper.trimSlashes(currentContent.Path)) {
             requestReload()
           }
         }

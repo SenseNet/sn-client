@@ -40,6 +40,7 @@ export class EventHub implements Disposable {
    */
   public dispose() {
     for (const key in this) {
+      // eslint-disable-next-line no-prototype-builtins
       if (this.hasOwnProperty(key) && typeof (this[key] as any).dispose === 'function') {
         ;(this[key] as any).dispose()
       }

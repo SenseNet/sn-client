@@ -1,4 +1,4 @@
-import { ILeveledLogEntry } from '@furystack/logging'
+import { LeveledLogEntry } from '@furystack/logging'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import KeyboardBackspace from '@material-ui/icons/KeyboardBackspace'
@@ -16,13 +16,13 @@ const EventList: React.FunctionComponent<RouteComponentProps<{ eventGuid?: strin
   const theme = useTheme()
   const eventService = useEventService()
   const localization = useLocalization().eventList.details
-  let currentEvent: ILeveledLogEntry<any> | undefined
+  let currentEvent: LeveledLogEntry<any> | undefined
 
   if (props.match.params.eventGuid) {
     currentEvent = eventService.values.getValue().find(ev => ev.data.guid === props.match.params.eventGuid)
   }
 
-  const [events, setEvents] = useState<Array<ILeveledLogEntry<any>>>(eventService.values.getValue())
+  const [events, setEvents] = useState<Array<LeveledLogEntry<any>>>(eventService.values.getValue())
 
   useEffect(() => {
     const observable = eventService.values.subscribe(values => setEvents(values))
