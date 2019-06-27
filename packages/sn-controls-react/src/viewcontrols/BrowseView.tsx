@@ -41,6 +41,7 @@ export function BrowseView(props: BrowseViewProps) {
                   settings: field.fieldSettings,
                   content: props.content,
                   renderIcon: props.renderIcon,
+                  repository: props.repository,
                 },
               )}
             </Grid>

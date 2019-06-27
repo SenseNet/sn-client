@@ -46,7 +46,8 @@ export class NumberComponent extends Component<ReactClientFieldSetting<NumberFie
       if (this.props.settings.DefaultValue) {
         return this.props.settings.DefaultValue
       } else {
-        return null
+        // return value empty string to clear the input
+        return ''
       }
     }
   }

@@ -140,41 +140,36 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
           </FormControl>
         )
       case 'browse':
-        return this.props.content[this.props.settings.Name] ? (
+      default: {
+        const value = this.props.content[this.props.settings.Name]
+        return value ? (
           <FormControl component={'fieldset' as 'div'}>
             <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
             <FormGroup>
-              {this.props.content[this.props.settings.Name].map((value: any, index: number) => (
-                <FormControl component={'fieldset' as 'div'} key={index}>
+              {Array.isArray(value) ? (
+                value.map((val: any, index: number) => (
+                  <FormControl component={'fieldset' as 'div'} key={index}>
+                    <FormControlLabel
+                      style={{ marginLeft: 0 }}
+                      label={this.props.settings.Options!.find(item => item.Value === val)!.Text}
+                      control={<span />}
+                      key={val}
+                    />
+                  </FormControl>
+                ))
+              ) : (
+                <FormControl component={'fieldset' as 'div'}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
                     label={this.props.settings.Options!.find(item => item.Value === value)!.Text}
                     control={<span />}
-                    key={value}
                   />
                 </FormControl>
-              ))}
+              )}
             </FormGroup>
           </FormControl>
         ) : null
-      default:
-        return this.props.content[this.props.settings.Name] ? (
-          <FormControl component={'fieldset' as 'div'}>
-            <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
-            <FormGroup>
-              {this.props.content[this.props.settings.Name].map((value: any, index: number) => (
-                <FormControl component={'fieldset' as 'div'} key={index}>
-                  <FormControlLabel
-                    style={{ marginLeft: 0 }}
-                    label={this.props.settings.Options!.find(item => item.Value === value)!.Text}
-                    control={<span />}
-                    key={value}
-                  />
-                </FormControl>
-              ))}
-            </FormGroup>
-          </FormControl>
-        ) : null
+      }
     }
   }
 }
