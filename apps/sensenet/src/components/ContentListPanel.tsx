@@ -4,7 +4,7 @@ import Close from '@material-ui/icons/Close'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
-import React, { useContext, useEffect, useState, useCallback } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import {
   CurrentAncestorsContext,
   CurrentChildrenContext,

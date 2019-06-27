@@ -10,6 +10,7 @@ import {
   ColorFieldSetting,
   CurrencyFieldSetting,
   DateTimeFieldSetting,
+  DateTimeMode,
   IntegerFieldSetting,
   LongTextFieldSetting,
   NullFieldSetting,
@@ -17,7 +18,6 @@ import {
   PasswordFieldSetting,
   ReferenceFieldSetting,
   ShortTextFieldSetting,
-  DateTimeMode,
 } from '@sensenet/default-content-types'
 import { ComponentType } from 'react'
 import * as FieldControls from './fieldcontrols'

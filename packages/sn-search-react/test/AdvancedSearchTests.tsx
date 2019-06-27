@@ -1,5 +1,5 @@
 import { SchemaStore } from '@sensenet/client-core/dist/Schemas/SchemaStore'
-import { GenericContent, SchemaStore as defaultSchemas } from '@sensenet/default-content-types'
+import { SchemaStore as defaultSchemas, GenericContent } from '@sensenet/default-content-types'
 import { Query } from '@sensenet/query'
 import { shallow } from 'enzyme'
 

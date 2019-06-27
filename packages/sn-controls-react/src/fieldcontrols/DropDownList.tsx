@@ -10,7 +10,7 @@ import FormLabel from '@material-ui/core/FormLabel'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
-import { GenericContent, ChoiceFieldSetting } from '@sensenet/default-content-types'
+import { ChoiceFieldSetting, GenericContent } from '@sensenet/default-content-types'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**

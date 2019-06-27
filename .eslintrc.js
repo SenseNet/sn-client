@@ -74,6 +74,7 @@ module.exports = {
     'prefer-template': 'error',
     'prefer-destructuring': ['error', { array: false, object: true }],
     'default-case': 'error',
+    'sort-imports': ['error', { ignoreCase: true, ignoreDeclarationSort: true }],
   },
   overrides: [
     {

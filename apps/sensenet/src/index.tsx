@@ -14,8 +14,8 @@ import {
   RepositoryContextProvider,
   ResponsiveContextProvider,
   SessionContextProvider,
-  ThemeProvider,
   snInjector,
+  ThemeProvider,
 } from './context'
 import { LoggerContextProvider } from './context/LoggerContext'
 import { CommandProviderManager } from './services/CommandProviderManager'

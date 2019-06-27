@@ -1,5 +1,5 @@
 import React, { ComponentType } from 'react'
-import { reactControlMapper, ReactClientFieldSetting } from '@sensenet/controls-react'
+import { ReactClientFieldSetting, reactControlMapper } from '@sensenet/controls-react'
 import { ActionName } from '@sensenet/control-mapper'
 import { Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'

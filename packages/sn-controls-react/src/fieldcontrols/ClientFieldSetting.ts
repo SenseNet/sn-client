@@ -2,7 +2,7 @@
  * @module FieldControls
  */
 import { Repository } from '@sensenet/client-core'
-import { GenericContent, FieldSetting } from '@sensenet/default-content-types'
+import { FieldSetting, GenericContent } from '@sensenet/default-content-types'
 
 /**
  * Interface for ClientFieldSetting properties

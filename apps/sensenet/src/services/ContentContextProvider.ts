@@ -1,5 +1,5 @@
 import { Repository } from '@sensenet/client-core'
-import { ContentType, File as SnFile, GenericContent, Resource, Settings } from '@sensenet/default-content-types'
+import { ContentType, GenericContent, Resource, Settings, File as SnFile } from '@sensenet/default-content-types'
 import { isContentFromType } from '../utils/isContentFromType'
 
 export type RouteType = 'Browse' | 'EditProperties' | 'EditBinary' | 'Preview' | 'PersonalSettings'

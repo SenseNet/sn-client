@@ -3,8 +3,8 @@
  */
 import MomentUtils from '@date-io/moment'
 import {
-  DateTimePicker as MUIDateTimePicker,
   MaterialUiPickersDate,
+  DateTimePicker as MUIDateTimePicker,
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers'
 import moment from 'moment'

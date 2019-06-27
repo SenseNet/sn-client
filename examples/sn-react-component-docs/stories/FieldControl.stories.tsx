@@ -2,7 +2,11 @@
 import React from 'react'
 import { Repository } from '@sensenet/client-core'
 import {
+  AllowedChildTypes,
+  Avatar,
+  CheckboxGroup,
   ColorPicker,
+  DatePicker,
   DateTimePicker,
   DisplayName,
   DropDownList,
@@ -17,10 +21,6 @@ import {
   TagsInput,
   Textarea,
   TimePicker,
-  Avatar,
-  CheckboxGroup,
-  AllowedChildTypes,
-  DatePicker,
 } from '@sensenet/controls-react/src'
 import { GenericContent, VersioningMode } from '@sensenet/default-content-types/src'
 import shorttextNotes from '../notes/fieldcontrols/ShortText.md'
