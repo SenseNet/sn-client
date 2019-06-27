@@ -3,6 +3,7 @@ import { reactControlMapper, ReactClientFieldSetting } from '@sensenet/controls-
 import { ActionName } from '@sensenet/control-mapper'
 import { Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
+import { object } from '@storybook/addon-knobs'
 
 interface Options {
   actionName: ActionName
@@ -15,5 +16,13 @@ interface Options {
 export function DynamicControl({ actionName, repository, content, component, fieldName }: Options) {
   const schema = reactControlMapper(repository).getFullSchemaForContentType(content.Type, actionName)
   const settings = schema.fieldMappings.find(a => a.fieldSettings.Name === fieldName)!.fieldSettings
-  return component ? React.createElement(component, { settings, actionName, repository, content }) : null
+
+  return component
+    ? React.createElement(component, {
+        settings: object('settings', settings),
+        actionName,
+        repository,
+        content: object('content', content),
+      })
+    : null
 }
