@@ -17,6 +17,7 @@ import {
   PasswordFieldSetting,
   ReferenceFieldSetting,
   ShortTextFieldSetting,
+  DateTimeMode,
 } from '@sensenet/default-content-types'
 import { ComponentType } from 'react'
 import * as FieldControls from './fieldcontrols'
@@ -60,7 +61,10 @@ export const reactControlMapper = (repository: Repository) => {
     .setupFieldSettingDefault(PasswordFieldSetting, () => {
       return FieldControls.Password
     })
-    .setupFieldSettingDefault(DateTimeFieldSetting, () => {
+    .setupFieldSettingDefault(DateTimeFieldSetting, setting => {
+      if (setting.DateTimeMode && setting.DateTimeMode === DateTimeMode.Date) {
+        return FieldControls.DatePicker
+      }
       return FieldControls.DateTimePicker
     })
     .setupFieldSettingDefault(ChoiceFieldSetting, setting => {

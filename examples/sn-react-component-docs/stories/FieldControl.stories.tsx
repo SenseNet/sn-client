@@ -20,6 +20,7 @@ import {
   Avatar,
   CheckboxGroup,
   AllowedChildTypes,
+  DatePicker,
 } from '@sensenet/controls-react/src'
 import { GenericContent, VersioningMode } from '@sensenet/default-content-types/src'
 import shorttextNotes from '../notes/fieldcontrols/ShortText.md'
@@ -28,7 +29,7 @@ import checkboxgroupNotes from '../notes/fieldcontrols/CheckboxGroup.md'
 import dropdownlistNotes from '../notes/fieldcontrols/DropDownList.md'
 import radiobuttongroupNotes from '../notes/fieldcontrols/RadioButtonGroup.md'
 import datetimepickerNotes from '../notes/fieldcontrols/DateTimePicker.md'
-// import datepickerNotes from '../notes/fieldcontrols/DatePicker.md'
+import datepickerNotes from '../notes/fieldcontrols/DatePicker.md'
 import timepickerNotes from '../notes/fieldcontrols/TimePicker.md'
 import textareasNotes from '../notes/fieldcontrols/Textarea.md'
 import richtextNotes from '../notes/fieldcontrols/RichTextEditor.md'
@@ -74,6 +75,7 @@ const userContent = {
   Id: 4,
   Icon: 'user',
   Type: 'User',
+  BirthDate: new Date(2000, 5, 15).toISOString(),
   Avatar: { Url: '/Root/Sites/Default_Site/demoavatars/alba.jpg' },
 }
 
@@ -208,20 +210,19 @@ fieldControlStory({
   storyName: 'FieldControls.ColorPicker',
 })
 
-// TODO? This control is not mapped in control mapper. Do we need this?
-// fieldControlStory({
-//   component: actionName => (
-//     <DynamicControl
-//       actionName={actionName}
-//       repository={testRepository}
-//       content={testContent}
-//       component={DatePicker}
-//       fieldName="ModificationDate"
-//     />
-//   ),
-//   markdown: datepickerNotes,
-//   storyName: 'FieldControls.DatePicker',
-// })
+fieldControlStory({
+  component: actionName => (
+    <DynamicControl
+      actionName={actionName}
+      repository={testRepository}
+      content={userContent}
+      component={DatePicker}
+      fieldName="BirthDate"
+    />
+  ),
+  markdown: datepickerNotes,
+  storyName: 'FieldControls.DatePicker',
+})
 
 fieldControlStory({
   component: actionName => (
