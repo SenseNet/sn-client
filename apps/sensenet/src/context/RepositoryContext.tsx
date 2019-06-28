@@ -32,9 +32,7 @@ export const RepositoryContextProviderComponent: React.FunctionComponent<
       repoUrl && repoUrl.length && repoUrl !== repo.configuration.repositoryUrl && injector.getRepository(repoUrl)
     if (newRepo) {
       logger.debug({
-        message: `Swithed from repository ${repo.configuration.repositoryUrl} to ${
-          newRepo.configuration.repositoryUrl
-        }`,
+        message: `Swithed from repository ${repo.configuration.repositoryUrl} to ${newRepo.configuration.repositoryUrl}`,
         data: {
           digestMessage: 'Repository switched {count} times',
           multiple: true,

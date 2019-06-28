@@ -506,10 +506,10 @@ class ActionMenu extends React.Component<
                           type="file"
                           onChange={ev => this.handleUpload(ev)}
                           style={{ display: 'none' }}
-                          {...{
+                          {...({
                             directory: '',
                             webkitdirectory: '',
-                          } as any}
+                          } as any)}
                         />
                       </label>
                     )
