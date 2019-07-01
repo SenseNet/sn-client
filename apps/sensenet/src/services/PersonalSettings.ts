@@ -75,7 +75,7 @@ export const defaultSettings: PersonalSettingsType = {
         title: 'Welcome back, {currentUserName}',
         widgetType: 'markdown',
         settings: {
-          content: 'This is an example global dashboard.',
+          content: "It's a great day to do admin stuff!",
         },
       },
     ],
@@ -84,7 +84,7 @@ export const defaultSettings: PersonalSettingsType = {
         title: 'Welcome back, {currentUserName}',
         widgetType: 'markdown',
         settings: {
-          content: 'This is an example global dashboard.',
+          content: "It's a great day to do admin stuff!",
         },
         minWidth: {
           default: '100%',
