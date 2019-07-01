@@ -13,8 +13,7 @@ import Update from '@material-ui/icons/Update'
 import React, { useContext, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
 import { ResponsiveContext } from '../../context'
-import { useLocalization, useTheme } from '../../hooks'
-import { useVersionInfo } from '../../hooks/use-version-info'
+import { useLocalization, useTheme, useVersionInfo } from '../../hooks'
 import { ComponentInfo } from './component-info'
 
 export const VersionInfo: React.FunctionComponent = () => {

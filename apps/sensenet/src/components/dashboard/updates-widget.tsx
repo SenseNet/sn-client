@@ -1,8 +1,7 @@
 import React from 'react'
 import { Typography } from '@material-ui/core'
 import { Widget } from '../../services/PersonalSettings'
-import { useStringReplace } from '../../hooks/use-string-replace'
-import { useVersionInfo } from '../../hooks/use-version-info'
+import { useStringReplace, useVersionInfo } from '../../hooks'
 
 export const UpdatesWidget: React.FunctionComponent<Widget<undefined>> = props => {
   const replacedTitle = useStringReplace(props.title)

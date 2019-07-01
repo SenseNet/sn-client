@@ -6,7 +6,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { ConstantContent, ODataParams } from '@sensenet/client-core'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { QueryWidget as QueryWidgetModel } from '../../services/PersonalSettings'
-import { useRepository, useContentRouting, useLocalization, useSelectionService } from '../../hooks'
+import { useRepository, useContentRouting, useLocalization, useSelectionService, useStringReplace } from '../../hooks'
 import { CollectionComponent, isReferenceField } from '../ContentListPanel'
 import {
   CurrentContentContext,
@@ -14,7 +14,6 @@ import {
   CurrentAncestorsContext,
   LoadSettingsContext,
 } from '../../context'
-import { useStringReplace } from '../../hooks/use-string-replace'
 
 const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & RouteComponentProps> = props => {
   const [items, setItems] = useState<GenericContent[]>([])
