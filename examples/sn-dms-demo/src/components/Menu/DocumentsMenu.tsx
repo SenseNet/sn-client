@@ -3,7 +3,7 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import withStyles, { StyleRulesCallback } from '@material-ui/core/styles/withStyles'
+import withStyles from '@material-ui/core/styles/withStyles'
 import { Content, UploadProgressInfo } from '@sensenet/client-core'
 import { Icon, iconType } from '@sensenet/icons-react'
 import React from 'react'
@@ -16,7 +16,7 @@ import { rootStateType } from '../../store/rootReducer'
 import AddNewMenu from '../ActionMenu/AddNewMenu'
 import { UploadButton } from '../Upload/UploadButton'
 
-const styles: StyleRulesCallback = () => ({
+const styles = () => ({
   primary: {
     color: '#666',
     fontFamily: 'Raleway Semibold',

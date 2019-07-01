@@ -11,9 +11,11 @@ exports[`ReferenceField Component Container Should be rendered without error 1`]
   }
 >
   <WithStyles(ForwardRef(List))
+    className=""
     component="nav"
     id="1"
     key="1"
+    role=""
     style={
       Object {
         "padding": 0,

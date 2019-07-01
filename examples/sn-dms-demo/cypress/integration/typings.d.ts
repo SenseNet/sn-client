@@ -6,6 +6,7 @@ declare global {
   interface Window {
     repository: Repository
   }
+  // eslint-disable-next-line no-redeclare
   namespace Cypress {
     interface Chainable {
       login: (email: string, password: string) => Cypress.Chainable<boolean>
