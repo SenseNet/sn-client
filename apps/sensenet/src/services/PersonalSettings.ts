@@ -27,7 +27,7 @@ export interface Widget<T> {
   title: string
   widgetType: typeof widgetTypes[number]
   settings: T
-  minWidth?: number
+  minWidth?: PlatformDependent<number | string>
 }
 
 export interface MarkdownWidget extends Widget<{ content: string }> {
@@ -72,7 +72,7 @@ export const defaultSettings: PersonalSettingsType = {
   dashboards: {
     globalDefault: [
       {
-        title: 'Global Dashboard',
+        title: 'Welcome back, {currentUserName}',
         widgetType: 'markdown',
         settings: {
           content: 'This is an example global dashboard.',
@@ -81,19 +81,116 @@ export const defaultSettings: PersonalSettingsType = {
     ],
     repositoryDefault: [
       {
-        title: 'Repository Dashboard',
+        title: 'Welcome back, {currentUserName}',
         widgetType: 'markdown',
         settings: {
-          content: 'This is an example Repository dashboard.',
+          content: 'This is an example global dashboard.',
+        },
+        minWidth: {
+          default: '100%',
         },
       },
       {
-        title: 'Users',
+        title: 'Packages to update',
+        widgetType: 'updates',
+        minWidth: {
+          default: '100%',
+        },
+        settings: undefined,
+      },
+      {
+        title: 'Number of users',
         widgetType: 'query',
+        minWidth: {
+          default: 250,
+          desktop: 420,
+        },
         settings: {
-          columns: ['DisplayName'],
+          query: "+TypeIs:'User'",
+          columns: [],
+          countOnly: true,
           showColumnNames: false,
-          query: "TypeIs:'User'",
+          showOpenInSearch: false,
+          showRefresh: false,
+        },
+      },
+      {
+        title: 'Number of content items',
+        widgetType: 'query',
+        minWidth: {
+          default: 250,
+          desktop: 420,
+        },
+        settings: {
+          query: "+TypeIs:'GenericContent'",
+          columns: [],
+          countOnly: true,
+          showColumnNames: false,
+        },
+      },
+      {
+        title: 'Updates since yesterday',
+        widgetType: 'query',
+        minWidth: {
+          default: 250,
+          desktop: 420,
+        },
+        settings: {
+          query: '+ModificationDate:>@@Yesterday@@',
+          columns: [],
+          countOnly: true,
+          showColumnNames: false,
+          showOpenInSearch: true,
+        },
+      },
+      {
+        title: 'Docs owned by me',
+        widgetType: 'query',
+        minWidth: {
+          default: '100%',
+        },
+        settings: {
+          query: "+(Owner:@@CurrentUser@@ AND TypeIs:'File')",
+          columns: [],
+          countOnly: true,
+          showColumnNames: false,
+          showOpenInSearch: false,
+        },
+      },
+      {
+        title: 'Docs shared with me',
+        widgetType: 'query',
+        minWidth: {
+          default: '100%',
+        },
+        settings: {
+          query: '+SharedWith:@@CurrentUser@@',
+          columns: [],
+          countOnly: true,
+          showColumnNames: false,
+          showOpenInSearch: false,
+        },
+      },
+      {
+        title: 'Tutorials and documentation',
+        widgetType: 'markdown',
+        settings: {
+          content:
+            '[Overview](https://index.hu) \n\n [Getting started](https://index.hu) \n\n [Tutorials](https://index.hu) \n\n [Example apps](https://index.hu) \n\n [Content Delivery API](https://index.hu) \n\n [Images API](https://index.hu) \n\n [Content management API](https://index.hu) \n\n [Content preview API](https://index.hu) \n\n ',
+        },
+        minWidth: {
+          default: '100%',
+        },
+      },
+      {
+        title: 'Have any questions?',
+        widgetType: 'markdown',
+        settings: {
+          content:
+            "<div style='text-align:center;'><a target='_blank' href='https://index.hu' style='text-decoration: none;'><button class='MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-contained'>Contact us</button></a></div>",
+        },
+        minWidth: {
+          default: '100%',
         },
       },
     ],

@@ -3,6 +3,11 @@ const values = {
     errorLoadingWidget: 'Error loading widget :(',
     refresh: 'Refresh',
     openInSearch: 'Open in Search',
+    updates: {
+      title: 'Packages to update',
+      allUpToDate: 'All packages are up to date',
+      view: 'View',
+    },
   },
   addButton: {
     tooltip: 'Create or upload content',

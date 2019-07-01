@@ -71,28 +71,34 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
           alignItems: 'flex-start',
           marginBottom: props.settings.showColumnNames ? '0.35em' : '.5em',
         }}>
-        <Tooltip title={replacedTitle}>
-          <Typography variant="h5" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-            {replacedTitle}
-          </Typography>
-        </Tooltip>
+        {replacedTitle ? (
+          <Tooltip title={replacedTitle}>
+            <Typography variant="h5" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              {replacedTitle}
+            </Typography>
+          </Tooltip>
+        ) : null}
         <div style={{ flex: 1 }} />
-        <Tooltip title={localization.refresh}>
-          <IconButton onClick={() => setRefreshToken(Math.random())} style={{ padding: '0', margin: '0 0 0 1em' }}>
-            <Refresh />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title={localization.openInSearch}>
-          <IconButton
-            style={{ padding: '0', margin: '0 0 0 1em' }}
-            onClick={() =>
-              props.history.push(
-                `/${btoa(repo.configuration.repositoryUrl)}/search/${encodeURIComponent(props.settings.query)}`,
-              )
-            }>
-            <OpenInNewTwoTone />
-          </IconButton>
-        </Tooltip>
+        {props.settings.showRefresh ? (
+          <Tooltip title={localization.refresh}>
+            <IconButton onClick={() => setRefreshToken(Math.random())} style={{ padding: '0', margin: '0 0 0 1em' }}>
+              <Refresh />
+            </IconButton>
+          </Tooltip>
+        ) : null}
+        {props.settings.showOpenInSearch ? (
+          <Tooltip title={localization.openInSearch}>
+            <IconButton
+              style={{ padding: '0', margin: '0 0 0 1em' }}
+              onClick={() =>
+                props.history.push(
+                  `/${btoa(repo.configuration.repositoryUrl)}/search/${encodeURIComponent(props.settings.query)}`,
+                )
+              }>
+              <OpenInNewTwoTone />
+            </IconButton>
+          </Tooltip>
+        ) : null}
       </div>
       {props.settings.countOnly ? (
         <div

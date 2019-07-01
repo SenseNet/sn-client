@@ -27,10 +27,15 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
               properties: {
                 minWidth: {
                   $id: '#/dashboardSection/properties/widgetType',
-                  type: 'number',
+                  type: 'object',
                   title: language.personalSettings.dashboard.minWidth,
-                  default: 250,
-                  examples: [250, 500],
+                  properties: {
+                    default: { type: ['number', 'string'], default: 250 },
+                    mobile: { type: ['number', 'string'] },
+                    tablet: { type: ['number', 'string'] },
+                    desktop: { type: ['number', 'string'] },
+                  },
+                  default: { default: 250 },
                 },
                 widgetType: {
                   $id: '#/dashboardSection/properties/widgetType',
