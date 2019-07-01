@@ -10,7 +10,6 @@ import {
   ColorFieldSetting,
   CurrencyFieldSetting,
   DateTimeFieldSetting,
-  DateTimeMode,
   IntegerFieldSetting,
   LongTextFieldSetting,
   NullFieldSetting,
@@ -48,8 +47,6 @@ export const reactControlMapper = (repository: Repository) => {
       switch (setting.ControlHint) {
         case 'sn:Name':
           return FieldControls.Name
-        case 'sn:DisplayName':
-          return FieldControls.DisplayName
         case 'sn:FileName':
           return FieldControls.FileName
         case 'sn:ColorPicker':
@@ -61,11 +58,8 @@ export const reactControlMapper = (repository: Repository) => {
     .setupFieldSettingDefault(PasswordFieldSetting, () => {
       return FieldControls.Password
     })
-    .setupFieldSettingDefault(DateTimeFieldSetting, setting => {
-      if (setting.DateTimeMode && setting.DateTimeMode === DateTimeMode.Date) {
-        return FieldControls.DatePicker
-      }
-      return FieldControls.DateTimePicker
+    .setupFieldSettingDefault(DateTimeFieldSetting, () => {
+      return FieldControls.DatePicker
     })
     .setupFieldSettingDefault(ChoiceFieldSetting, setting => {
       switch (setting.DisplayChoice) {
@@ -119,13 +113,13 @@ export const reactControlMapper = (repository: Repository) => {
       } else if (setting.Name === 'UrlList') {
         return FieldControls.Textarea
       } else if (setting.FieldClassName.indexOf('BooleanField') > -1) {
-        return FieldControls.Boolean
+        return FieldControls.BooleanComponent
       } else {
         return FieldControls.ShortText
       }
     })
     .setupFieldSettingDefault(BooleanFieldSetting, () => {
-      return FieldControls.Boolean
+      return FieldControls.BooleanComponent
     })
 
   return controlMapper

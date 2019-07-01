@@ -49,7 +49,12 @@ export class DefaultItemTemplate extends Component<DefaultItemTemplateProps, {}>
         {content.Type ? (
           isUser(content) ? (
             <ListItemAvatar>
-              {<Avatar alt={content.FullName} src={content.Avatar ? `${repositoryUrl}${content.Avatar.Url}` : ''} />}
+              {
+                <Avatar
+                  alt={content.FullName}
+                  src={content.Avatar && content.Avatar.Url ? `${repositoryUrl}${content.Avatar.Url}` : ''}
+                />
+              }
             </ListItemAvatar>
           ) : (
             <ListItemIcon style={styles.icon}>
@@ -61,7 +66,7 @@ export class DefaultItemTemplate extends Component<DefaultItemTemplateProps, {}>
         ) : null}
         <ListItemText
           primary={content.DisplayName}
-          style={content.Id < 0 ? { textAlign: 'right' } : { textAlign: 'left' }}
+          style={content.Id < 0 ? { textAlign: 'right', paddingRight: 16 } : { textAlign: 'left' }}
         />
         {this.props.actionName && this.props.actionName !== 'browse' && !this.props.readOnly ? (
           <ListItemSecondaryAction>

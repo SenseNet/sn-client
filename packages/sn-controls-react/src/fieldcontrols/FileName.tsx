@@ -31,7 +31,7 @@ export class FileName extends Component<ReactClientFieldSetting, FileNameState> 
      * @property {string} value input value
      */
     this.state = {
-      value: this.setValue(this.props.content[this.props.settings.Name]).toString(),
+      value: (this.props.content && this.setValue(this.props.content[this.props.settings.Name]).toString()) || '',
       isValid: this.props.settings.Compulsory ? false : true,
       error: '',
       //REVIEW THIS
@@ -135,19 +135,9 @@ export class FileName extends Component<ReactClientFieldSetting, FileNameState> 
           />
         )
       case 'browse':
-        return this.props.content[this.props.settings.Name] &&
-          this.props.content[this.props.settings.Name].length > 0 ? (
-          <div>
-            <Typography variant="caption" gutterBottom={true}>
-              {this.props.settings.DisplayName}
-            </Typography>
-            <Typography variant="body1" gutterBottom={true}>
-              {this.props.content[this.props.settings.Name]}
-            </Typography>
-          </div>
-        ) : null
       default:
-        return this.props.content[this.props.settings.Name] &&
+        return this.props.content &&
+          this.props.content[this.props.settings.Name] &&
           this.props.content[this.props.settings.Name].length > 0 ? (
           <div>
             <Typography variant="caption" gutterBottom={true}>

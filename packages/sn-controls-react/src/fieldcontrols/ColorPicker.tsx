@@ -7,7 +7,6 @@ import FormHelperText from '@material-ui/core/FormHelperText'
 import Icon from '@material-ui/core/Icon'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
-import Radium from 'radium'
 import React, { Component } from 'react'
 import { SketchPicker } from 'react-color'
 import { ColorFieldSetting } from '@sensenet/default-content-types'
@@ -38,7 +37,6 @@ export interface ColorPickerState {
 /**
  * Field control that represents a Color field. Available values will be populated from the FieldSettings.
  */
-@Radium
 export class ColorPicker extends Component<ReactClientFieldSetting<ColorFieldSetting>, ColorPickerState> {
   /**
    * constructor
@@ -51,7 +49,7 @@ export class ColorPicker extends Component<ReactClientFieldSetting<ColorFieldSet
      * @property {string} value input value
      */
     this.state = {
-      value: this.setValue(this.props.content[this.props.settings.Name]).toString(),
+      value: (this.props.content && this.setValue(this.props.content[this.props.settings.Name])) || '',
       pickerIsOpen: false,
     }
 

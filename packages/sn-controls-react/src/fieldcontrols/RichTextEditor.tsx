@@ -5,7 +5,6 @@ import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import Typography from '@material-ui/core/Typography'
-import Radium from 'radium'
 import React, { Component } from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
@@ -60,7 +59,6 @@ const formats = [
 /**
  * Field control that represents a LongText field. Available values will be populated from the FieldSettings.
  */
-@Radium
 export class RichTextEditor extends Component<ReactClientFieldSetting, RichTextEditorState> {
   /**
    * constructor
@@ -73,26 +71,13 @@ export class RichTextEditor extends Component<ReactClientFieldSetting, RichTextE
      * @property {string} value input value
      */
     this.state = {
-      value: this.setValue(this.props.content[this.props.settings.Name]).toString(),
+      value:
+        (this.props.content && this.props.content[this.props.settings.Name]) || this.props.settings.DefaultValue || '',
     }
 
     this.handleChange = this.handleChange.bind(this)
   }
-  /**
-   * returns default value of an input
-   * @param {string} value
-   */
-  public setValue(value: string) {
-    if (value) {
-      return value
-    } else {
-      if (this.props.settings.DefaultValue) {
-        return this.props.settings.DefaultValue
-      } else {
-        return ''
-      }
-    }
-  }
+
   /**
    * handle change event on an input
    * @param {SytheticEvent} event
@@ -114,11 +99,12 @@ export class RichTextEditor extends Component<ReactClientFieldSetting, RichTextE
             <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
             <ReactQuill
               style={{ background: '#fff', marginTop: 10 }}
-              defaultValue={(this.props.settings.DefaultValue as unknown) as string}
+              defaultValue={this.props.settings.DefaultValue}
               readOnly={this.props.settings.ReadOnly}
               modules={modules}
               formats={formats}
               onChange={this.handleChange}
+              value={this.state.value}
               theme="snow"
             />
             <FormHelperText>{this.props.settings.Description}</FormHelperText>
@@ -126,7 +112,8 @@ export class RichTextEditor extends Component<ReactClientFieldSetting, RichTextE
         )
       case 'browse':
       default:
-        return this.props.content[this.props.settings.Name] &&
+        return this.props.content &&
+          this.props.content[this.props.settings.Name] &&
           this.props.content[this.props.settings.Name].length > 0 ? (
           <div>
             <Typography variant="caption" gutterBottom={true}>

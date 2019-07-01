@@ -8,7 +8,6 @@ import IconButton from '@material-ui/core/IconButton'
 import Input from '@material-ui/core/Input'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import InputLabel from '@material-ui/core/InputLabel'
-import Radium from 'radium'
 import { renderIconDefault } from './icon'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
@@ -22,7 +21,6 @@ export interface PasswordState {
 /**
  * Field control that represents a Password field. Available values will be populated from the FieldSettings.
  */
-@Radium
 export class Password extends Component<ReactClientFieldSetting, PasswordState> {
   /**
    * constructor
@@ -40,21 +38,6 @@ export class Password extends Component<ReactClientFieldSetting, PasswordState> 
     }
 
     this.handleChange = this.handleChange.bind(this)
-  }
-  /**
-   * convert incoming default value string to proper format
-   * @param {string} value
-   */
-  public setValue(value: string) {
-    if (value) {
-      return value.replace(/<[^>]*>/g, '')
-    } else {
-      if (this.props.settings.DefaultValue) {
-        return this.props.settings.DefaultValue
-      } else {
-        return ''
-      }
-    }
   }
 
   public handleChange(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {

@@ -7,7 +7,6 @@ import FormControl from '@material-ui/core/FormControl'
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel/InputLabel'
 import Typography from '@material-ui/core/Typography'
-import Radium from 'radium'
 import React, { Component } from 'react'
 import { BinaryFieldSetting } from '@sensenet/default-content-types'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
@@ -42,7 +41,6 @@ export interface FileUploadState {
 /**
  * Field control that represents a FileUpload field. Available values will be populated from the FieldSettings.
  */
-@Radium
 export class FileUpload extends Component<ReactClientFieldSetting<BinaryFieldSetting>, FileUploadState> {
   /**
    * constructor
@@ -55,10 +53,10 @@ export class FileUpload extends Component<ReactClientFieldSetting<BinaryFieldSet
      * @property {string} value input value
      */
     this.state = {
-      value: this.setValue(this.props.content[this.props.settings.Name]).toString(),
+      value: (this.props.content && this.setValue(this.props.content[this.props.settings.Name])) || '',
       error: '',
-      filename: this.props.content[this.props.settings.Name] || '',
-      buttonText: this.props.content[this.props.settings.Name] ? 'Change' : 'Add',
+      filename: (this.props.content && this.props.content[this.props.settings.Name]) || '',
+      buttonText: this.props.content && this.props.content[this.props.settings.Name] ? 'Change' : 'Add',
     }
 
     this.handleChange = this.handleChange.bind(this)

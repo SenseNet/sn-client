@@ -20,16 +20,19 @@ export interface BooleanState {
 /**
  * Field control that represents a Choice field. Available values will be populated from the FieldSettings.
  */
-export class Boolean extends Component<ReactClientFieldSetting, BooleanState> {
+export class BooleanComponent extends Component<ReactClientFieldSetting, BooleanState> {
   /**
    * constructor
    * @param {object} props
    */
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  constructor(props: Boolean['props']) {
+
+  constructor(props: BooleanComponent['props']) {
     super(props)
     this.state = {
-      value: this.props.content[this.props.settings.Name] || this.props.settings.DefaultValue || false,
+      value:
+        this.props.content && this.props.content[this.props.settings.Name] != null
+          ? this.props.content[this.props.settings.Name]
+          : this.props.settings.DefaultValue,
     }
     this.handleChange = this.handleChange.bind(this)
   }
@@ -42,7 +45,7 @@ export class Boolean extends Component<ReactClientFieldSetting, BooleanState> {
     this.setState({
       value: newValue,
     })
-    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, newValue as any)
+    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, newValue)
   }
   /**
    * render
@@ -51,17 +54,6 @@ export class Boolean extends Component<ReactClientFieldSetting, BooleanState> {
   public render() {
     switch (this.props.actionName) {
       case 'edit':
-        return (
-          <FormControl component={'fieldset' as 'div'} required={this.props.settings.Compulsory}>
-            <FormControlLabel
-              control={<Checkbox checked={this.state.value} onChange={this.handleChange} />}
-              label={this.props.settings.DisplayName}
-            />
-            {this.props.settings.Description ? (
-              <FormHelperText>{this.props.settings.Description}</FormHelperText>
-            ) : null}
-          </FormControl>
-        )
       case 'new':
         return (
           <FormControl required={this.props.settings.Compulsory}>
@@ -76,7 +68,7 @@ export class Boolean extends Component<ReactClientFieldSetting, BooleanState> {
         )
       case 'browse':
       default:
-        return this.props.content[this.props.settings.Name] != undefined ? (
+        return this.props.content && this.props.content[this.props.settings.Name] != null ? (
           <FormControl component={'fieldset' as 'div'}>
             <InputLabel shrink={true} htmlFor={name as string}>
               {this.props.settings.DisplayName}

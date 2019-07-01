@@ -9,7 +9,7 @@ import { FieldSetting, GenericContent } from '@sensenet/default-content-types'
  */
 export interface ReactClientFieldSetting<T = FieldSetting, S = GenericContent> {
   settings: T
-  content: S
+  content?: S
   /**
    * Display mode of the field control
    * @default browse

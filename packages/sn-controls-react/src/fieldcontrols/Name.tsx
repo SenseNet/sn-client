@@ -5,7 +5,6 @@ import React, { Component } from 'react'
 
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import Radium from 'radium'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
@@ -19,7 +18,6 @@ export interface NameState {
 /**
  * Field control that represents a ShortText field. Available values will be populated from the FieldSettings.
  */
-@Radium
 export class Name extends Component<ReactClientFieldSetting, NameState> {
   constructor(props: Name['props']) {
     super(props)
@@ -28,7 +26,7 @@ export class Name extends Component<ReactClientFieldSetting, NameState> {
      * @property {string} value input value
      */
     this.state = {
-      value: this.setValue(this.props.content[this.props.settings.Name]).toString(),
+      value: (this.props.content && this.setValue(this.props.content[this.props.settings.Name])) || '',
       isValid: this.props.settings.Compulsory ? false : true,
       error: '',
     }
@@ -73,7 +71,7 @@ export class Name extends Component<ReactClientFieldSetting, NameState> {
             id={this.props.settings.Name}
             label={this.props.settings.DisplayName}
             placeholder={this.props.settings.DisplayName}
-            value={this.props.content[this.props.settings.Name]}
+            value={this.state.value}
             required={this.props.settings.Compulsory}
             disabled={this.props.settings.ReadOnly}
             fullWidth={true}
@@ -83,7 +81,8 @@ export class Name extends Component<ReactClientFieldSetting, NameState> {
         )
       case 'browse':
       default:
-        return this.props.content[this.props.settings.Name] &&
+        return this.props.content &&
+          this.props.content[this.props.settings.Name] &&
           this.props.content[this.props.settings.Name].length > 0 ? (
           <div>
             <Typography variant="caption" gutterBottom={true}>

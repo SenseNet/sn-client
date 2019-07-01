@@ -12,9 +12,8 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
-import { ODataBatchResponse, ODataCollectionResponse, ODataParams } from '@sensenet/client-core'
-import { GenericContent } from '@sensenet/default-content-types'
-import Radium from 'radium'
+import { ODataCollectionResponse } from '@sensenet/client-core'
+import { ContentType, GenericContent } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
 import { typeicons } from '../assets/icons'
 import { renderIconDefault } from './icon'
@@ -45,6 +44,12 @@ const styles = {
     overflow: 'auto',
     zIndex: 10,
   },
+  ddIsOpened: {
+    display: 'block',
+  },
+  ddIsClosed: {
+    display: 'none',
+  },
 }
 
 const compare = (a: GenericContent, b: GenericContent) => {
@@ -60,37 +65,30 @@ const compare = (a: GenericContent, b: GenericContent) => {
 /**
  * Interface for AllowedChildTypes state
  */
-export interface AllowedChildTypesState<T extends GenericContent> {
+export interface AllowedChildTypesState {
   value: string[]
-  effectiveAllowedChildTypes: T[]
-  allowedTypesOnCTD: T[]
-  items: GenericContent[]
+  effectiveAllowedChildTypes: ContentType[]
+  allowedTypesOnCTD: ContentType[]
+  items: ContentType[]
   removeable: boolean
-  allCTDs: T[]
+  allCTDs: ContentType[]
   isLoading: boolean
   inputValue: string
   isOpened: boolean
   anchorEl: HTMLElement
-  getMenuItem: (item: T, select: (item: T) => void) => JSX.Element
-  filteredList: T[]
-  selected: T | null
+  getMenuItem: (item: ContentType, select: (item: ContentType) => void) => JSX.Element
+  filteredList: ContentType[]
+  selected: ContentType | null
 }
 /**
  * Field control that represents an AllowedChildTypes field. Available values will be populated from the FieldSettings.
  */
-@Radium
-export class AllowedChildTypes<T extends GenericContent, K extends keyof T> extends Component<
-  ReactClientFieldSetting,
-  AllowedChildTypesState<T>
-> {
-  constructor(props: AllowedChildTypes<T, K>['props']) {
+export class AllowedChildTypes extends Component<ReactClientFieldSetting, AllowedChildTypesState> {
+  constructor(props: AllowedChildTypes['props']) {
     super(props)
-    /**
-     * @type {object}
-     * @property {string} value input value
-     */
     this.state = {
-      value: this.setValue(this.props.content[this.props.settings.Name]),
+      value:
+        (this.props.content && this.props.content[this.props.settings.Name]) || this.props.settings.DefaultValue || [],
       effectiveAllowedChildTypes: [],
       allowedTypesOnCTD: [],
       items: [],
@@ -100,7 +98,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       inputValue: '',
       isOpened: false,
       anchorEl: null as any,
-      getMenuItem: (item: T, select: (item: T) => void) => (
+      getMenuItem: (item: ContentType, select: (item: ContentType) => void) => (
         <ListItem key={item.Id} value={item.Id} onClick={() => select(item)} style={{ margin: 0 }}>
           <ListItemIcon style={{ margin: 0 }}>
             {this.props.renderIcon
@@ -122,103 +120,91 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
     this.getAllowedChildTypes()
     this.getAllContentTypes()
   }
-  /**
-   * convert incoming default value string to proper format
-   * @param {string} value
-   */
-  public setValue(value: string) {
-    if (value && value.length > 0) {
-      return [value]
-    } else {
-      if (this.props.settings.DefaultValue) {
-        return [this.props.settings.DefaultValue]
-      } else {
-        return []
-      }
-    }
-  }
+
   /**
    * component will unmount
    */
   public componentWillUnmount() {
     this.willUnmount = true
   }
+
   private willUnmount: boolean = false
+
   private async getAllowedChildTypes() {
     if (!this.props.repository) {
       throw new Error('You must pass a repository to this control')
     }
-    try {
-      const result = await this.props.repository.load<T>({
-        idOrPath: this.props.content.Id,
-        oDataOptions: {
-          select: 'EffectiveAllowedChildTypes',
-          expand: 'EffectiveAllowedChildTypes',
-        },
-      })
-      if (this.willUnmount) {
-        return
-      }
-
-      const allowedChildTypesFromCTD = await this.props.repository.executeAction<
-        ODataParams<GenericContent>,
-        ODataBatchResponse<GenericContent>
-      >({
-        idOrPath: this.props.content.Id,
-        name: 'GetAllowedChildTypesFromCTD',
-        method: 'GET',
-        body: {
-          select: ['Name', 'DisplayName', 'Icon'],
-        },
-      })
-
-      if (!allowedChildTypesFromCTD) {
-        throw Error('Allowed child types not found')
-      }
-
-      const typeResults = result.d.EffectiveAllowedChildTypes as T[]
-
-      const types =
-        this.props.actionName !== 'new'
-          ? typeResults.length === 0
-            ? allowedChildTypesFromCTD.d.results
-            : (result.d.EffectiveAllowedChildTypes as T[])
-          : allowedChildTypesFromCTD.d.results
-
-      this.setState({
-        effectiveAllowedChildTypes: typeResults,
-        items: types,
-        removeable: typeResults.length === 0 || this.props.actionName === 'new' ? false : true,
-        value: types.map((t: T) => t.Name),
-      })
-    } catch (_e) {
-      console.log(_e)
+    if (!this.props.content) {
+      throw new Error('You must pass a content to this control to see the allowed child types.')
     }
+
+    const result = await this.props.repository.load<GenericContent>({
+      idOrPath: this.props.content.Id,
+      oDataOptions: {
+        select: 'EffectiveAllowedChildTypes',
+        expand: 'EffectiveAllowedChildTypes',
+      },
+    })
+    if (this.willUnmount) {
+      return
+    }
+
+    const allowedChildTypesFromCTD = (await this.props.repository.executeAction({
+      idOrPath: this.props.content.Id,
+      name: 'GetAllowedChildTypesFromCTD',
+      method: 'GET',
+      body: {
+        select: ['Name', 'DisplayName', 'Icon'],
+      },
+    })) as ODataCollectionResponse<ContentType>
+
+    const typeResults = result.d.EffectiveAllowedChildTypes as ContentType[]
+
+    const types = this.getTypes(typeResults, allowedChildTypesFromCTD)
+
+    this.setState({
+      effectiveAllowedChildTypes: typeResults,
+      items: types,
+      removeable: typeResults.length === 0 || this.props.actionName !== 'new',
+      value: types.map((t: ContentType) => t.Name),
+    })
   }
+
+  private getTypes(typeResults: ContentType[], allowedChildTypesFromCTD: ODataCollectionResponse<ContentType>) {
+    if (this.props.actionName === 'new') {
+      return allowedChildTypesFromCTD.d.results.length
+        ? allowedChildTypesFromCTD.d.results
+        : (this.props.content && this.props.content[this.props.settings.Name]) || this.props.settings.DefaultValue
+    }
+    return typeResults.length ? typeResults : allowedChildTypesFromCTD.d.results
+  }
+
   private async getAllContentTypes() {
     if (!this.props.repository) {
       throw new Error('You must pass a repository to this control')
     }
-    try {
-      const result = (await this.props.repository.executeAction({
-        idOrPath: this.props.content.Id,
-        name: 'GetAllContentTypes',
-        method: 'GET',
-        oDataOptions: {
-          select: ['Name', 'DisplayName', 'Icon'],
-        },
-      })) as ODataCollectionResponse<T>
-      if (this.willUnmount) {
-        return
-      }
-      this.setState({
-        allCTDs: result.d.results.sort(compare),
-        filteredList: result.d.results.sort(compare),
-      })
-    } catch (_e) {
-      console.log(_e)
+
+    if (!this.props.content) {
+      throw new Error('You must pass a content to this control to see the allowed child types.')
     }
+
+    const result = (await this.props.repository.executeAction({
+      idOrPath: this.props.content.Id,
+      name: 'GetAllContentTypes',
+      method: 'GET',
+      oDataOptions: {
+        select: ['Name', 'DisplayName', 'Icon'],
+      },
+    })) as ODataCollectionResponse<ContentType>
+    if (this.willUnmount) {
+      return
+    }
+    this.setState({
+      allCTDs: result.d.results.sort(compare),
+      filteredList: result.d.results.sort(compare),
+    })
   }
+
   public handleRemove = (item: GenericContent) => {
     const { items } = this.state
     const index = items.findIndex(i => item.Name === i.Name)
@@ -233,9 +219,9 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       })
     }
   }
-  public handleInputChange = (e: React.ChangeEvent) => {
-    // eslint-disable-next-line dot-notation
-    const term = e.target['value']
+
+  public handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) => {
+    const term = e.target.value
     this.setState({
       filteredList: this.state.allCTDs.filter(ctd => {
         return ctd.DisplayName && ctd.DisplayName.toLowerCase().includes(term.toLowerCase())
@@ -248,10 +234,12 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       })
     }
   }
+
   private handleClickAway() {
     this.setState({ isOpened: false })
   }
-  private handleSelect(item: T) {
+
+  public handleSelect(item: ContentType) {
     this.setState({
       inputValue: item.DisplayName || '',
       isOpened: false,
@@ -259,12 +247,14 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       selected: item,
     })
   }
-  private handleOnClick = () => {
+
+  public handleOnClick = () => {
     this.setState({
       isOpened: true,
     })
   }
-  private handleAddClick = () => {
+
+  public handleAddClick = () => {
     const { items, selected, value } = this.state
     const newValue = selected ? [...value, selected.Name] : value
     if (this.state.removeable) {
@@ -320,13 +310,11 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
             <div
               ref={(ref: HTMLDivElement) => ref && this.state.anchorEl !== ref && this.setState({ anchorEl: ref })}
               style={{ position: 'relative' }}>
-              <Paper style={styles.inputContainer as any} elevation={0}>
+              <div style={styles.inputContainer as any}>
                 <TextField
                   type="text"
                   onClick={this.handleOnClick}
-                  onChange={e => {
-                    this.handleInputChange(e)
-                  }}
+                  onChange={this.handleInputChange}
                   placeholder={INPUT_PLACEHOLDER}
                   InputProps={{
                     endAdornment: this.state.isLoading ? (
@@ -345,10 +333,14 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                   onClick={this.handleAddClick}>
                   {this.props.renderIcon ? this.props.renderIcon('add') : renderIconDefault('add')}
                 </IconButton>
-              </Paper>
+              </div>
               <ClickAwayListener onClickAway={this.handleClickAway}>
                 <Paper
-                  style={{ ...{ display: this.state.isOpened ? 'block' : 'none' }, ...(styles.listContainer as any) }}>
+                  style={
+                    this.state.isOpened
+                      ? { ...styles.ddIsOpened, ...(styles.listContainer as any) }
+                      : { ...styles.ddIsClosed, ...(styles.listContainer as any) }
+                  }>
                   <List>
                     {this.state.filteredList.length > 0 ? (
                       this.state.filteredList.map((item: any) => this.state.getMenuItem(item, this.handleSelect))
@@ -392,13 +384,11 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
             <div
               ref={(ref: HTMLDivElement) => ref && this.state.anchorEl !== ref && this.setState({ anchorEl: ref })}
               style={{ position: 'relative' }}>
-              <Paper style={styles.inputContainer as any} elevation={0}>
+              <div style={styles.inputContainer as any}>
                 <TextField
                   type="text"
                   onClick={this.handleOnClick}
-                  onChange={e => {
-                    this.handleInputChange(e)
-                  }}
+                  onChange={this.handleInputChange}
                   placeholder={INPUT_PLACEHOLDER}
                   InputProps={{
                     endAdornment: this.state.isLoading ? (
@@ -417,10 +407,14 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
                   onClick={this.handleAddClick}>
                   {this.props.renderIcon ? this.props.renderIcon('add') : renderIconDefault('add')}
                 </IconButton>
-              </Paper>
+              </div>
               <ClickAwayListener onClickAway={this.handleClickAway}>
                 <Paper
-                  style={{ ...{ display: this.state.isOpened ? 'block' : 'none' }, ...(styles.listContainer as any) }}>
+                  style={
+                    this.state.isOpened
+                      ? { ...styles.ddIsOpened, ...(styles.listContainer as any) }
+                      : { ...styles.ddIsClosed, ...(styles.listContainer as any) }
+                  }>
                   <List>
                     {this.state.filteredList.length > 0 ? (
                       this.state.filteredList.map((item: any) => this.state.getMenuItem(item, this.handleSelect))

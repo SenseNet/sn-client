@@ -3,12 +3,12 @@ import React from 'react'
 import { Repository } from '@sensenet/client-core'
 import {
   AllowedChildTypes,
+  AutoComplete,
   Avatar,
+  BooleanComponent,
   CheckboxGroup,
   ColorPicker,
   DatePicker,
-  DateTimePicker,
-  DisplayName,
   DropDownList,
   FileName,
   Name,
@@ -22,7 +22,7 @@ import {
   Textarea,
   TimePicker,
 } from '@sensenet/controls-react/src'
-import { GenericContent, User, VersioningMode } from '@sensenet/default-content-types/src'
+import { GenericContent, Group, Task, User, VersioningMode } from '@sensenet/default-content-types/src'
 import shorttextNotes from '../notes/fieldcontrols/ShortText.md'
 import displaynameNotes from '../notes/fieldcontrols/DisplayName.md'
 import checkboxgroupNotes from '../notes/fieldcontrols/CheckboxGroup.md'
@@ -38,8 +38,7 @@ import filenameNotes from '../notes/fieldcontrols/FileName.md'
 import passwordNotes from '../notes/fieldcontrols/Password.md'
 import numberNotes from '../notes/fieldcontrols/Number.md'
 import tagsInputNotes from '../notes/fieldcontrols/TagsInput.md'
-// import autocompleteNotes from '../notes/fieldcontrols/AutoComplete.md'
-// import fileUploadNotes from '../notes/fieldcontrols/FileUpload.md'
+import autocompleteNotes from '../notes/fieldcontrols/AutoComplete.md'
 import referenceGridNotes from '../notes/fieldcontrols/ReferenceGrid.md'
 import avatarNotes from '../notes/fieldcontrols/Avatar.md'
 // import approvingModeChoiceNotes from '../notes/fieldcontrols/ApprovingModeChoice.md'
@@ -52,14 +51,29 @@ import { DynamicControl } from './dynamic-control'
 import { fieldControlStory } from './field-control-story'
 
 export const testRepository = new Repository({
-  repositoryUrl: 'https://dmsservice.demo.sensenet.com',
+  repositoryUrl: 'https://devservice.demo.sensenet.com',
   requiredSelect: ['Id', 'Path', 'Name', 'Type', 'ParentId', 'DisplayName'] as any,
   schemas: customSchema,
   sessionLifetime: 'expiration',
 })
 
+const taskContent: Task = {
+  Id: 2344,
+  Name: 'Task',
+  Path: '/Root/Sites/Default_Site',
+  Type: 'Task',
+  TaskCompletion: 20,
+}
+
 const testContent: GenericContent = {
   Name: 'Document_Library',
+  DisplayName: 'Document Library',
+  Description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu mi arcu.
+  Praesent vel ante vel nulla ornare bibendum et nec libero.
+  Proin ornare imperdiet ex luctus cursus. Cras turpis quam, faucibus et ante sed, egestas mollis nisi.
+  Maecenas sit amet tempus justo. Etiam id metus diam.
+  Curabitur semper facilisis odio, eu vehicula nibh auctor a.
+  Donec eleifend aliquam massa, vel dictum erat suscipit quis.`,
   Id: 4808,
   Path: '/Root/Sites/Default_Site',
   Type: 'GenericContent',
@@ -72,26 +86,33 @@ const userContent: User = {
   Name: 'Alba Monday',
   Path: 'Root/IMS/Public/alba',
   DisplayName: 'Alba Monday',
-  Id: 4,
-  Icon: 'user',
+  Id: 4804,
   Type: 'User',
   BirthDate: new Date(2000, 5, 15).toISOString(),
   Avatar: { Url: '/Root/Sites/Default_Site/demoavatars/alba.jpg' },
+  Enabled: true,
   Manager: {
     Name: 'Business Cat',
     Path: 'Root/IMS/Public/businesscat',
     DisplayName: 'Business Cat',
-    Id: 4,
-    Icon: 'user',
+    Id: 4810,
     Type: 'User',
   },
 }
 
+const groupContent: Group = {
+  Id: 4815,
+  Type: 'Group',
+  Name: 'DMSAdmins',
+  Path: '/Root/IMS/Public/DMSAdmins',
+  Members: [userContent],
+}
+
 const PleaseLogin = () => (
   <div style={{ fontStyle: 'italic', fontSize: 13 }}>
-    To see this control in action, please login at
-    <a target="_blank" href="https://dmsservice.demo.sensenet.com/" rel="noopener noreferrer">
-      https://dmsservice.demo.sensenet.com/
+    To see this control in action, please login at{' '}
+    <a target="_blank" href="https://devservice.demo.sensenet.com/" rel="noopener noreferrer">
+      https://devservice.demo.sensenet.com/
     </a>
   </div>
 )
@@ -114,67 +135,19 @@ fieldControlStory({
   storyName: 'FieldControls.AllowedChildTypes',
 })
 
-// storiesOf('FieldControls.AutoComplete', module)
-//   .addDecorator(withKnobs)
-//   .addDecorator(withA11y)
-//   .addDecorator(withActions('change'))
-//   .add(
-//     'new mode',
-//     () => (
-//       <AutoComplete
-//         actionName="new"
-//         fieldName="Name"
-//         labelText={text('Label', 'AutoComplete label')}
-//         readOnly={boolean('Readonly', false)}
-//         required={boolean('Required', false)}
-//         className={text('Additional class name', 'autocomplete-field')}
-//         placeHolderText={text('Placeholder', 'placeholder')}
-//         errorText={text('Error text')}
-//         fieldOnChange={action('change')}
-//         hintText={text('Hint', 'AutoComplete hint')}
-//         dataSource={tagsInputDataSource}
-//         repository={testRepository}
-//       />
-//     ),
-//     { notes: { markdown: autocompleteNotes } },
-//   )
-//   .add(
-//     'edit mode',
-//     () => (
-//       <AutoComplete
-//         actionName="edit"
-//         fieldName="Name"
-//         labelText={text('Label', 'AutoComplete label')}
-//         readOnly={boolean('Readonly', false)}
-//         required={boolean('Required', false)}
-//         className={text('Additional class name', 'autoomplete-field')}
-//         placeHolderText={text('Placeholder', 'placeholder')}
-//         errorText={text('Error text')}
-//         fieldOnChange={action('change')}
-//         hintText={text('Hint', 'AutoComplete hint')}
-//         dataSource={tagsInputDataSource}
-//         repository={testRepository}
-//         value={[2]}
-//       />
-//     ),
-//     { notes: { markdown: autocompleteNotes } },
-//   )
-//   .add(
-//     'browse mode',
-//     () => (
-//       <AutoComplete
-//         fieldName="Name"
-//         actionName="browse"
-//         labelText={text('Label', 'AutoComplete label')}
-//         className={text('Additional class name', 'autocomplete-field')}
-//         value={[1, 2]}
-//         fieldOnChange={action('change')}
-//         dataSource={tagsInputDataSource}
-//         repository={testRepository}
-//       />
-//     ),
-//     { notes: { markdown: autocompleteNotes } },
-//   )
+fieldControlStory({
+  component: actionName => (
+    <DynamicControl
+      actionName={actionName}
+      repository={testRepository}
+      content={groupContent}
+      component={AutoComplete}
+      fieldName="Members"
+    />
+  ),
+  markdown: autocompleteNotes,
+  storyName: 'FieldControls.AutoComplete',
+})
 
 fieldControlStory({
   component: actionName => (
@@ -188,6 +161,20 @@ fieldControlStory({
   ),
   markdown: avatarNotes,
   storyName: 'FieldControls.Avatar',
+})
+
+fieldControlStory({
+  component: actionName => (
+    <DynamicControl
+      actionName={actionName}
+      repository={testRepository}
+      content={userContent}
+      component={BooleanComponent}
+      fieldName="Enabled"
+    />
+  ),
+  markdown: '',
+  storyName: 'FieldControls.Boolean',
 })
 
 fieldControlStory({
@@ -238,7 +225,7 @@ fieldControlStory({
       actionName={actionName}
       repository={testRepository}
       content={testContent}
-      component={DateTimePicker}
+      component={DatePicker}
       fieldName="ModificationDate"
     />
   ),
@@ -248,13 +235,7 @@ fieldControlStory({
 
 fieldControlStory({
   component: actionName => (
-    <DynamicControl
-      actionName={actionName}
-      repository={testRepository}
-      content={testContent}
-      component={DisplayName}
-      fieldName="Name"
-    />
+    <DynamicControl actionName={actionName} repository={testRepository} content={testContent} fieldName="DisplayName" />
   ),
   markdown: displaynameNotes,
   storyName: 'FieldControls.DisplayName',
@@ -323,7 +304,6 @@ fieldControlStory({
   storyName: 'FieldControls.Name',
 })
 
-//TODO: example with currency
 fieldControlStory({
   component: actionName => (
     <DynamicControl
@@ -336,6 +316,20 @@ fieldControlStory({
   ),
   markdown: numberNotes,
   storyName: 'FieldControls.Number',
+})
+
+fieldControlStory({
+  component: actionName => (
+    <DynamicControl
+      actionName={actionName}
+      repository={testRepository}
+      content={taskContent}
+      component={NumberComponent}
+      fieldName="TaskCompletion"
+    />
+  ),
+  markdown: '',
+  storyName: 'FieldControls.Number.Percantage',
 })
 
 fieldControlStory({
@@ -359,7 +353,7 @@ fieldControlStory({
       repository={testRepository}
       content={testContent}
       component={RadioButtonGroup}
-      fieldName="Version"
+      fieldName="VersioningMode"
     />
   ),
   markdown: radiobuttongroupNotes,
@@ -371,9 +365,9 @@ fieldControlStory({
     <DynamicControl
       actionName={actionName}
       repository={testRepository}
-      content={testContent}
+      content={groupContent}
       component={ReferenceGrid}
-      fieldName="Name"
+      fieldName="Members"
     />
   ),
   markdown: referenceGridNotes,
@@ -413,9 +407,9 @@ fieldControlStory({
     <DynamicControl
       actionName={actionName}
       repository={testRepository}
-      content={userContent}
+      content={groupContent}
       component={TagsInput}
-      fieldName="Manager"
+      fieldName="Members"
     />
   ),
   markdown: tagsInputNotes,

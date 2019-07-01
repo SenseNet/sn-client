@@ -36,7 +36,8 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
      * @type {object}
      */
     this.state = {
-      value: this.props.content[this.props.settings.Name] || this.props.settings.DefaultValue || [],
+      value:
+        (this.props.content && this.props.content[this.props.settings.Name]) || this.props.settings.DefaultValue || [],
     }
   }
   /**
@@ -141,7 +142,7 @@ export class DropDownList<T extends GenericContent, K extends keyof T> extends C
         )
       case 'browse':
       default: {
-        const value = this.props.content[this.props.settings.Name]
+        const value = this.props.content && this.props.content[this.props.settings.Name]
         return value ? (
           <FormControl component={'fieldset' as 'div'}>
             <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>

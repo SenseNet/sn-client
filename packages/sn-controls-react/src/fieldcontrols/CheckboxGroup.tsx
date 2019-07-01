@@ -18,49 +18,39 @@ import { ReactClientFieldSetting } from './ClientFieldSetting'
  * Interface for CheckboxGroup state
  */
 export interface CheckboxGroupState {
-  value: any[]
+  value: any
 }
 /**
  * Field control that represents a Choice field. Available values will be populated from the FieldSettings.
  */
 export class CheckboxGroup extends Component<ReactClientFieldSetting<ChoiceFieldSetting>, CheckboxGroupState> {
-  /**
-   * constructor
-   * @param {object} props
-   */
-  constructor(props: CheckboxGroup['props']) {
-    super(props)
-    this.state = {
-      value: this.props.content[this.props.settings.Name] || this.props.settings.DefaultValue || [],
-    }
-    this.handleChange = this.handleChange.bind(this)
+  state: CheckboxGroupState = {
+    value:
+      (this.props.content && this.props.content[this.props.settings.Name]) || this.props.settings.DefaultValue || [],
   }
   /**
    * set selected value
    */
-  public handleChange = (event: React.ChangeEvent) => {
+  public handleChange = (_event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     const { value } = this.state
-    // eslint-disable-next-line dot-notation
-    const newValue = event.target['value']
-    const checked = value
-    const index = value.indexOf(newValue)
+    const index = value.indexOf(checked)
     if (this.props.settings.AllowMultiple) {
       if (index > -1) {
-        checked.splice(index, 1)
+        value.splice(index, 1)
       } else {
-        checked.push(newValue)
+        value.push(checked)
       }
     } else {
       if (index > -1) {
-        checked.splice(index, 1)
+        value.splice(index, 1)
       } else {
-        checked[0] = newValue
+        value[0] = checked
       }
     }
     this.setState({
       value: checked,
     })
-    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, checked as any)
+    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, checked)
   }
   /**
    * returns if an item is checked or not
@@ -136,23 +126,36 @@ export class CheckboxGroup extends Component<ReactClientFieldSetting<ChoiceField
           </FormControl>
         )
       case 'browse':
-      default:
-        return this.props.content[this.props.settings.Name].length > 0 ? (
+      default: {
+        const value = this.props.content && this.props.content[this.props.settings.Name]
+        return value ? (
           <FormControl component={'fieldset' as 'div'}>
             <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
             <FormGroup>
-              {this.props.content[this.props.settings.Name].map((value: unknown, index: number) => (
-                <FormControl component={'fieldset' as 'div'} key={index}>
+              {Array.isArray(value) ? (
+                value.map((val: any, index: number) => (
+                  <FormControl component={'fieldset' as 'div'} key={index}>
+                    <FormControlLabel
+                      style={{ marginLeft: 0 }}
+                      label={this.props.settings.Options!.find(item => item.Value === val)!.Text}
+                      control={<span />}
+                      key={val}
+                    />
+                  </FormControl>
+                ))
+              ) : (
+                <FormControl component={'fieldset' as 'div'}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
-                    label={options.find(item => item.Value === value)!.Text}
+                    label={this.props.settings.Options!.find(item => item.Value === value)!.Text}
                     control={<span />}
                   />
                 </FormControl>
-              ))}
+              )}
             </FormGroup>
           </FormControl>
         ) : null
+      }
     }
   }
 }

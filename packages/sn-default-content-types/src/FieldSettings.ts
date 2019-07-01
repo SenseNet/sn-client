@@ -196,4 +196,12 @@ export class CaptchaFieldSetting extends FieldSetting {}
 
 export class BooleanFieldSetting extends FieldSetting {}
 
-export class CurrencyFieldSetting extends NumberFieldSetting {}
+export class CurrencyFieldSetting extends NumberFieldSetting {
+  /**
+   * Provides region information for specific cultures
+   * @type {string}
+   * @example 'en-US'
+   * @memberof CurrencyFieldSetting
+   */
+  public Format?: string
+}

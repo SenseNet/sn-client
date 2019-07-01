@@ -26,9 +26,7 @@ export class RadioButtonGroup extends Component<ReactClientFieldSetting<ChoiceFi
     super(props)
     this.state = {
       value:
-        this.props.content[this.props.settings.Name] ||
-        this.props.settings.DefaultValue ||
-        this.props.settings.Options![0].Value,
+        (this.props.content && this.props.content[this.props.settings.Name]) || this.props.settings.DefaultValue || '',
     }
   }
   /**
@@ -48,7 +46,7 @@ export class RadioButtonGroup extends Component<ReactClientFieldSetting<ChoiceFi
             <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
             <RadioGroup
               aria-label={this.props.settings.DisplayName}
-              name={this.props.settings.Name as string}
+              name={this.props.settings.Name}
               value={this.state.value}
               onChange={this.handleChange}>
               {this.props.settings.Options &&
@@ -68,27 +66,36 @@ export class RadioButtonGroup extends Component<ReactClientFieldSetting<ChoiceFi
           </FormControl>
         )
       case 'browse':
-      default:
-        return this.props.content[this.props.settings.Name].length > 0 ? (
+      default: {
+        const value = this.props.content && this.props.content[this.props.settings.Name]
+        return value ? (
           <FormControl component={'fieldset' as 'div'}>
             <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
             <FormGroup>
-              {this.props.content[this.props.settings.Name].map((value: any, index: number) => (
-                <FormControl key={index} component={'fieldset' as 'div'}>
+              {Array.isArray(value) ? (
+                value.map((val: any, index: number) => (
+                  <FormControl component={'fieldset' as 'div'} key={index}>
+                    <FormControlLabel
+                      style={{ marginLeft: 0 }}
+                      label={this.props.settings.Options!.find(item => item.Value === val)!.Text}
+                      control={<span />}
+                      key={val}
+                    />
+                  </FormControl>
+                ))
+              ) : (
+                <FormControl component={'fieldset' as 'div'}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
-                    label={
-                      this.props.settings.Options &&
-                      this.props.settings.Options.find(item => item.Value === value)!.Text
-                    }
+                    label={this.props.settings.Options!.find(item => item.Value === value)!.Text}
                     control={<span />}
-                    key={value}
                   />
                 </FormControl>
-              ))}
+              )}
             </FormGroup>
           </FormControl>
         ) : null
+      }
     }
   }
 }

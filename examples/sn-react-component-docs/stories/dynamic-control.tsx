@@ -9,20 +9,19 @@ interface Options {
   actionName: ActionName
   repository: Repository
   content: GenericContent
-  component: ComponentType<ReactClientFieldSetting>
+  component?: ComponentType<ReactClientFieldSetting>
   fieldName: string
 }
 
 export function DynamicControl({ actionName, repository, content, component, fieldName }: Options) {
   const schema = reactControlMapper(repository).getFullSchemaForContentType(content.Type, actionName)
   const settings = schema.fieldMappings.find(a => a.fieldSettings.Name === fieldName)!.fieldSettings
-
-  return component
-    ? React.createElement(component, {
-        settings: object('settings', settings),
-        actionName,
-        repository,
-        content: object('content', content),
-      })
-    : null
+  const componentToRender =
+    component || reactControlMapper(repository).getControlForContentField(content.Type, fieldName, actionName)
+  return React.createElement(componentToRender, {
+    settings: object('settings', settings),
+    actionName,
+    repository,
+    content: actionName !== 'new' ? object('content', content) : undefined,
+  })
 }

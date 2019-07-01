@@ -2,91 +2,85 @@
  * @module FieldControls
  */
 import MomentUtils from '@date-io/moment'
-import { MaterialUiPickersDate, DatePicker as MUIDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
+import {
+  DateTimePicker,
+  MaterialUiPickersDate,
+  DatePicker as MUIDatePicker,
+  MuiPickersUtilsProvider,
+} from '@material-ui/pickers'
 import moment from 'moment'
-import React, { Fragment } from 'react'
-import { DateTimeFieldSetting } from '@sensenet/default-content-types'
+import React, { useState } from 'react'
+import { DateTimeFieldSetting, DateTimeMode } from '@sensenet/default-content-types'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
  * Interface for DatePicker state
  */
-export interface DatePickerState {
-  dateValue: MaterialUiPickersDate
+export interface State {
   value: MaterialUiPickersDate
 }
 /**
  * Field control that represents a Date field. Available values will be populated from the FieldSettings.
  */
-export class DatePicker extends React.Component<ReactClientFieldSetting<DateTimeFieldSetting>, DatePickerState> {
-  state = {
-    dateValue: this.props.content[this.props.settings.Name]
-      ? moment(this.setValue(this.props.content[this.props.settings.Name]))
-      : this.props.settings.DefaultValue
-      ? moment(this.setValue(this.props.settings.DefaultValue))
-      : moment(),
-    value: this.props.content[this.props.settings.Name]
-      ? this.props.content[this.props.settings.Name]
-      : this.props.settings.DefaultValue,
-  }
+export function DatePicker(props: ReactClientFieldSetting<DateTimeFieldSetting>) {
+  const initialState =
+    props.content && props.content[props.settings.Name]
+      ? props.content[props.settings.Name]
+      : props.settings.DefaultValue || moment()
+  const [value, setValue] = useState(initialState)
 
-  /**
-   * convert string to proper date format
-   * @param {string} value
-   */
-  public setValue(value: string) {
-    // TODO: check datetimemode and return a value based on this property
-    let date = ''
-    if (value) {
-      date = value.split('T')[0]
-    } else {
-      date = new Date().toISOString().split('T')[0]
-    }
-    return date
-  }
-  /**
-   * handle changes
-   * @param {MaterialUiPickersDate} date
-   */
-  public handleDateChange = (date: MaterialUiPickersDate) => {
+  const handleDateChange = (date: MaterialUiPickersDate) => {
     if (!date) {
       return
     }
-    this.setState({
-      dateValue: date,
-      value: moment.utc(date),
-    })
-    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, moment.utc(date) as any)
+    setValue(date)
+    props.fieldOnChange && props.fieldOnChange(props.settings.Name, moment.utc(date))
   }
 
-  public render() {
-    const { value } = this.state
-    switch (this.props.actionName) {
-      case 'edit':
-      case 'new':
-        return (
-          <MuiPickersUtilsProvider utils={MomentUtils}>
-            <Fragment>
-              <MUIDatePicker
-                value={value}
-                onChange={this.handleDateChange}
-                label={this.props.settings.DisplayName}
-                id={this.props.settings.Name as string}
-                disabled={this.props.settings.ReadOnly}
-                placeholder={this.props.settings.DisplayName}
-                required={this.props.settings.Compulsory}
-                fullWidth={true}
-              />
-            </Fragment>
-          </MuiPickersUtilsProvider>
-        )
-      default:
-        return this.props.content[this.props.settings.Name] ? (
-          <div>
-            <label>{this.props.settings.DisplayName}</label>
-            <p>{this.props.content[this.props.settings.Name]}</p>
-          </div>
-        ) : null
-    }
+  switch (props.actionName) {
+    case 'edit':
+    case 'new':
+      return (
+        <MuiPickersUtilsProvider utils={MomentUtils}>
+          {props.settings.DateTimeMode === DateTimeMode.Date ? (
+            <MUIDatePicker
+              value={value}
+              onChange={handleDateChange}
+              label={props.settings.DisplayName}
+              id={props.settings.Name as string}
+              disabled={props.settings.ReadOnly}
+              placeholder={props.settings.DisplayName}
+              required={props.settings.Compulsory}
+              fullWidth={true}
+            />
+          ) : (
+            <DateTimePicker
+              value={value}
+              onChange={handleDateChange}
+              label={props.settings.DisplayName}
+              id={props.settings.Name}
+              disabled={props.settings.ReadOnly}
+              placeholder={props.settings.DisplayName}
+              required={props.settings.Compulsory}
+              fullWidth={true}
+            />
+          )}
+        </MuiPickersUtilsProvider>
+      )
+    default:
+      return props.content && props.content[props.settings.Name] ? (
+        <div>
+          <label>{props.settings.DisplayName}</label>
+          {props.settings.DateTimeMode === DateTimeMode.Date ? (
+            <p>
+              {moment(props.content[props.settings.Name])
+                .format('LL')
+                .toLocaleString()}
+            </p>
+          ) : (
+            <p>{moment(props.content[props.settings.Name]).toLocaleString()}</p>
+          )}
+        </div>
+      ) : null
   }
 }

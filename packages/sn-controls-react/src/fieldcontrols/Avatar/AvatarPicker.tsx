@@ -24,8 +24,6 @@ interface AvatarPickerProps {
   select: (content: GenericContent) => void
   repository: Repository
   path: string
-  allowedTypes?: string[]
-  repositoryUrl: string
   renderIcon: (name: string) => JSX.Element
 }
 
@@ -120,7 +118,7 @@ export function AvatarPicker(props: AvatarPickerProps) {
                 <ListItemIcon>{props.renderIcon(iconName(node))}</ListItemIcon>
               ) : (
                 <ListItemIcon>
-                  <Avatar src={`${props.repositoryUrl}${node.Path}`} />
+                  <Avatar src={`${props.repository.configuration.repositoryUrl}${node.Path}`} />
                 </ListItemIcon>
               )}
               <ListItemText primary={node.DisplayName} />
