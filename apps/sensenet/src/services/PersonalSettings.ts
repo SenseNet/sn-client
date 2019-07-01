@@ -101,10 +101,7 @@ export const defaultSettings: PersonalSettingsType = {
       {
         title: 'Number of users',
         widgetType: 'query',
-        minWidth: {
-          default: 250,
-          desktop: 420,
-        },
+        minWidth: { default: '30%' },
         settings: {
           query: "+TypeIs:'User'",
           columns: [],
@@ -117,10 +114,7 @@ export const defaultSettings: PersonalSettingsType = {
       {
         title: 'Number of content items',
         widgetType: 'query',
-        minWidth: {
-          default: 250,
-          desktop: 420,
-        },
+        minWidth: { default: '30%' },
         settings: {
           query: "+TypeIs:'GenericContent'",
           columns: [],
@@ -132,8 +126,7 @@ export const defaultSettings: PersonalSettingsType = {
         title: 'Updates since yesterday',
         widgetType: 'query',
         minWidth: {
-          default: 250,
-          desktop: 420,
+          default: '30%',
         },
         settings: {
           query: '+ModificationDate:>@@Yesterday@@',
