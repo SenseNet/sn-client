@@ -154,7 +154,7 @@ export const defaultSettings: PersonalSettingsType = {
           columns: [],
           countOnly: true,
           showColumnNames: false,
-          showOpenInSearch: false,
+          showOpenInSearch: true,
         },
       },
       {
@@ -168,18 +168,29 @@ export const defaultSettings: PersonalSettingsType = {
           columns: [],
           countOnly: true,
           showColumnNames: false,
-          showOpenInSearch: false,
+          showOpenInSearch: true,
         },
       },
       {
-        title: 'Tutorials and documentation',
+        title: 'Tutorials',
         widgetType: 'markdown',
         settings: {
           content:
-            '[Overview](https://index.hu) \n\n [Getting started](https://index.hu) \n\n [Tutorials](https://index.hu) \n\n [Example apps](https://index.hu) \n\n [Content Delivery API](https://index.hu) \n\n [Images API](https://index.hu) \n\n [Content management API](https://index.hu) \n\n [Content preview API](https://index.hu) \n\n ',
+            '[Overview](https://index.hu) \n\n [Getting started](https://index.hu) \n\n [Tutorials](https://index.hu) \n\n [Example apps](https://index.hu) \n\n ',
         },
         minWidth: {
-          default: '100%',
+          default: '45%',
+        },
+      },
+      {
+        title: 'API documentation',
+        widgetType: 'markdown',
+        settings: {
+          content:
+            ' [Content Delivery API](https://index.hu) \n\n [Images API](https://index.hu) \n\n [Content management API](https://index.hu) \n\n [Content preview API](https://index.hu) \n\n',
+        },
+        minWidth: {
+          default: '45%',
         },
       },
       {

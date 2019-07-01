@@ -33,7 +33,7 @@ export const UpdatesWidget: React.FunctionComponent<Widget<undefined>> = props =
             {versionInfo &&
               versionInfo.Components.filter(v => v.IsUpdateAvailable).map(info => (
                 <ListItem key={info.ComponentId}>
-                  <ListItemAvatar style={{ minWidth: 16 }}>
+                  <ListItemAvatar style={{ minWidth: 24 }}>
                     <div style={{ width: 8, height: 8, backgroundColor: theme.palette.text.secondary }} />
                   </ListItemAvatar>
                   <ListItemText
@@ -46,7 +46,7 @@ export const UpdatesWidget: React.FunctionComponent<Widget<undefined>> = props =
                       rel="noopener noreferrer"
                       style={{ textDecoration: 'none' }}
                       href={`https://www.nuget.org/packages/${info.ComponentId}`}>
-                      <Button>{localization.view}</Button>
+                      <Button variant="contained">{localization.view}</Button>
                     </a>
                   </ListItemSecondaryAction>
                 </ListItem>
