@@ -10,47 +10,20 @@ import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import Update from '@material-ui/icons/Update'
-import { ConstantContent } from '@sensenet/client-core'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
 import { ResponsiveContext } from '../../context'
-import { useLocalization, useRepository, useTheme } from '../../hooks'
+import { useLocalization, useTheme, useVersionInfo } from '../../hooks'
 import { ComponentInfo } from './component-info'
-import { VersionInfo as VersionInfoModel } from './version-info-models'
 
 export const VersionInfo: React.FunctionComponent = () => {
-  const repo = useRepository()
-  const [versionInfo, setVersionInfo] = useState<VersionInfoModel | undefined>()
   const theme = useTheme()
   const localization = useLocalization().versionInfo
   const device = useContext(ResponsiveContext)
 
   const [showRaw, setShowRaw] = useState(false)
-  const [nugetManifests, setNugetManifests] = useState<any[]>([])
 
-  useEffect(() => {
-    ;(async () => {
-      const result = await repo.executeAction<undefined, VersionInfoModel>({
-        idOrPath: ConstantContent.PORTAL_ROOT.Path,
-        body: undefined,
-        method: 'GET',
-        name: 'GetVersionInfo',
-      })
-      setVersionInfo(result)
-
-      const nugetPromises = result.Components.map(async component => {
-        const response = await fetch(
-          `https://api.nuget.org/v3/registration3-gz-semver2/${component.ComponentId.toLowerCase()}/index.json`,
-        )
-        if (response.ok) {
-          const nugetManifest = await response.json()
-          return nugetManifest
-        }
-      })
-      const loadedManifests = await Promise.all(nugetPromises)
-      setNugetManifests(loadedManifests.filter(m => m))
-    })()
-  }, [repo])
+  const { versionInfo } = useVersionInfo()
 
   return (
     <div style={{ padding: '1em', margin: '1em', overflow: 'hidden', height: '100%' }}>
@@ -123,12 +96,8 @@ export const VersionInfo: React.FunctionComponent = () => {
                   <ExpansionPanelDetails>
                     <List style={{ width: '100%' }}>
                       {versionInfo.Components.map((component, index) => {
-                        const isUpdateAvailable = nugetManifests.find(
-                          m =>
-                            m['@id'] ===
-                              `https://api.nuget.org/v3/registration3-gz-semver2/${component.ComponentId.toLocaleLowerCase()}/index.json` &&
-                            m.items[0].upper > component.Version,
-                        )
+                        const isUpdateAvailable = component.IsUpdateAvailable
+                        const nugetManifest = component.NugetManifest
                         return (
                           <ListItem key={index}>
                             <ListItemText
@@ -144,7 +113,7 @@ export const VersionInfo: React.FunctionComponent = () => {
                                         ? ''
                                         : localization.updateAvailable
                                             .replace('{0}', component.Version)
-                                            .replace('{1}', isUpdateAvailable.items[0].upper)}
+                                            .replace('{1}', nugetManifest.items[0].upper)}
                                       <Update style={{ height: 20, marginLeft: 3, verticalAlign: 'text-bottom' }} />
                                     </a>
                                   </>
