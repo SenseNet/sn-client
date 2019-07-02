@@ -34,7 +34,7 @@ export class AutoComplete extends Component<ReactClientFieldSetting<ReferenceFie
    * state initialization
    */
   public state: AutoCompleteState = {
-    inputValue: this.props.content && this.props.content[this.props.settings.Name][0].DisplayName,
+    inputValue: (this.props.content && this.props.content[this.props.settings.Name][0].DisplayName) || '',
     isOpened: false,
     isLoading: false,
     selected: this.props.content && this.props.content[this.props.settings.Name],
