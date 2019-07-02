@@ -1,4 +1,4 @@
-import { Disposable, PathHelper } from '@sensenet/client-utils'
+import { Disposable, PathHelper, tuple } from '@sensenet/client-utils'
 import { ActionModel, ContentType, Schema, GenericContent } from '@sensenet/default-content-types'
 import { AuthenticationService } from '../Authentication/AuthenticationService'
 import { BypassAuthentication } from '../Authentication/BypassAuthentication'
@@ -21,6 +21,7 @@ import {
 } from '../Models/RequestOptions'
 import { SchemaStore } from '../Schemas/SchemaStore'
 import { ODataParams } from '../Models/ODataParams'
+import { ODataContent, FromOdataParams } from '../Models/OdataContent'
 import { ConstantContent } from './ConstantContent'
 import { ODataUrlBuilder } from './ODataUrlBuilder'
 import { RepositoryConfiguration } from './RepositoryConfiguration'
@@ -130,9 +131,7 @@ export class Repository implements Disposable {
    * it will be transformed to an item path.
    * @param options Options for the Load request
    */
-  public async load<TContentType extends Content>(
-    options: LoadOptions<TContentType>,
-  ): Promise<ODataResponse<TContentType>> {
+  public async load<TContentType extends Content>(options: LoadOptions<TContentType>) {
     const contentPath = PathHelper.getContentUrl(options.idOrPath)
     const params = ODataUrlBuilder.buildUrlParamString(this.configuration, options.oDataOptions)
     const path = PathHelper.joinPaths(this.configuration.repositoryUrl, this.configuration.oDataToken, contentPath)
@@ -144,7 +143,26 @@ export class Repository implements Disposable {
     if (!response.ok) {
       throw await this.getErrorFromResponse(response)
     }
-    return await response.json()
+
+    // const select = ODataUrlBuilder.combineSelect<TContentType>(this.configuration, options.oDataOptions)
+
+    // type selectType = typeof options['oDataOptions'] extends undefined
+    //   ? never
+    //   : typeof options['oDataOptions']['select']
+
+    // const selectTuple = tuple(...select)
+    // const expandTuple =
+    //   options.oDataOptions && options.oDataOptions.expand
+    //     ? tuple(...options.oDataOptions.expand)
+    //     : this.configuration.defaultExpand
+    //     ? tuple(...this.configuration.defaultExpand)
+    //     : tuple(...([] as any[]))
+
+    if (options.oDataOptions) {
+      const alma: FromOdataParams<TContentType, NonNullable<typeof options.oDataOptions>> = await response.json()
+    }
+
+    return (await response.json()) as ODataResponse<TContentType> // ToDo: Type cast here
   }
 
   /**

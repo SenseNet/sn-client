@@ -163,8 +163,8 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
       const result = await repo.load<T>({
         idOrPath: this.props['content'].Id,
         oDataOptions: {
-          select: 'EffectiveAllowedChildTypes',
-          expand: 'EffectiveAllowedChildTypes',
+          select: ['EffectiveAllowedChildTypes'],
+          expand: ['EffectiveAllowedChildTypes'],
         },
       })
       if (this.willUnmount) {
@@ -187,7 +187,7 @@ export class AllowedChildTypes<T extends GenericContent, K extends keyof T> exte
         throw Error('Allowed child types not found')
       }
 
-      const typeResults = result.d.EffectiveAllowedChildTypes as T[]
+      const typeResults = result.d.EffectiveAllowedChildTypes
 
       const types =
         this.props['data-actionName'] !== 'new'

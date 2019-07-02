@@ -97,7 +97,7 @@ export class ExampleApp extends React.Component<{}, ExampleComponentState> {
     const response = await repo.loadCollection<GenericContent>({
       path: demoData.idOrPath as string, // ToDo: query by Id in client-core
       oDataOptions: {
-        select: 'all',
+        select: [],
         metadata: 'no',
         inlinecount: 'allpages',
         query: this.state.fullQuery,

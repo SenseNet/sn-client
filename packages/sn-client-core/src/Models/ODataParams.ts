@@ -3,13 +3,9 @@
  */
 
 /**
- * Defines an OData field parameter
- */
-export type ODataFieldParameter<T> = Array<keyof T> | keyof T
-/**
  * Defines an OData Order parameter
  */
-export type ODataOrderParameter<T> = keyof T | Array<keyof T | [keyof T, 'asc' | 'desc']>
+export type ODataOrderParameter<T> = [keyof T, 'asc' | 'desc']
 
 /**
  * Defines a metadata type for OData requests
@@ -32,11 +28,11 @@ export interface ODataParams<T> {
   /**
    * The field(s) to be include in a $select list. Can be a field (e.g. 'DisplayName'), an array of fields (e.g. ['Name', 'Type']) or 'all'
    */
-  select?: ODataFieldParameter<T> | 'all'
+  select?: Array<keyof T>
   /**
    * The field(s) to be include in an $expand list. Can be a reference field (e.g. 'Owner') or an array of fields (e.g. ['CreatedBy', 'ModifiecBy'])
    */
-  expand?: ODataFieldParameter<T>
+  expand?: Array<keyof T>
 
   /**
    * Sets the OData $orderby parameter. Usage example

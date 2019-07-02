@@ -141,7 +141,7 @@ export class JwtService implements AuthenticationService {
    */
   constructor(
     public readonly repository: Repository,
-    private readonly userLoadOptions: ODataParams<User> = { select: 'all' },
+    private readonly userLoadOptions: ODataParams<User> = {},
     private readonly latencyCompensationMs: number = 5000,
   ) {
     this.repository.authentication = this

@@ -31,7 +31,7 @@ export class FormsAuthenticationService implements AuthenticationService {
    */
   public currentUser: ObservableValue<User> = new ObservableValue<User>(ConstantContent.VISITOR_USER)
 
-  constructor(private repository: Repository, private readonly userLoadOptions: ODataParams<User> = { select: 'all' }) {
+  constructor(private repository: Repository, private readonly userLoadOptions: ODataParams<User> = {}) {
     this.repository.authentication = this
   }
 

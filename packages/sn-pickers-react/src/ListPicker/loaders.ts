@@ -17,7 +17,7 @@ export const defaultLoadItemsODataOptions: ODataParams<GenericContent> = {
   select: ['DisplayName', 'Path', 'Id'],
   filter: "(isOf('Folder') and not isOf('SystemFolder'))",
   metadata: 'no',
-  orderby: 'DisplayName',
+  orderby: ['DisplayName', 'asc'],
 }
 
 /**
@@ -38,7 +38,7 @@ export const defaultLoadParentODataOptions: ODataParams<GenericContent> = {
  * @returns the parent content
  */
 async function getParent<T extends GenericContent>(
-  item: T,
+  item: T & { ParentId: number },
   repository: Repository,
   parentODataOptionsArgs?: ODataParams<T>,
   parentId?: number,
@@ -52,7 +52,10 @@ async function getParent<T extends GenericContent>(
     // We need the parent's parent
     const itemParent = await repository.load<T>({
       idOrPath: item.ParentId,
-      oDataOptions: parentODataOptions,
+      oDataOptions: {
+        ...parentODataOptions,
+        select: [...(parentODataOptions.select || []), 'ParentId'],
+      },
     })
     return await repository.load<T>({ idOrPath: itemParent.d.ParentId!, oDataOptions: parentODataOptions })
   }

@@ -1,4 +1,4 @@
-import { ODataFieldParameter, ODataParams } from '../Models/ODataParams'
+import { ODataParams } from '../Models/ODataParams'
 import { RepositoryConfiguration } from './RepositoryConfiguration'
 
 /**
@@ -18,15 +18,16 @@ export class ODataUrlBuilder {
     'format',
     'inlinecount',
   ]
-  private static combineODataFieldParameters<T>(...params: Array<ODataFieldParameter<T>>): ODataFieldParameter<T> {
-    for (let param of params) {
-      if (typeof param === 'string') {
-        param = [param]
-      }
-    }
-    params = params.filter(param => param && param.toString().length > 0)
+  public static combineODataFieldParameters<T>(...params: any[]) {
     // eslint-disable-next-line prefer-spread
-    return [...new Set([].concat.apply([], params as any))] as ODataFieldParameter<T>
+    return [...new Set([].concat.apply([], params))] as Array<keyof T>
+  }
+
+  public static combineSelect<T>(config: RepositoryConfiguration, options?: ODataParams<T>) {
+    return this.combineODataFieldParameters<T>(
+      config.requiredSelect,
+      (options && options.select) || config.defaultSelect,
+    )
   }
 
   /**
@@ -42,17 +43,11 @@ export class ODataUrlBuilder {
       options = {}
     }
 
-    if (config.requiredSelect === 'all' || config.defaultSelect === 'all' || options.select === 'all') {
-      options.select = undefined
-    } else {
-      options.select = this.combineODataFieldParameters<any>(
-        config.requiredSelect,
-        options.select || config.defaultSelect,
-      ) as any
-    }
+    const select = this.combineSelect<T>(config, options)
+    options.select = select.length ? select : undefined
     options.metadata = options.metadata || config.defaultMetadata
     options.inlinecount = options.inlinecount || config.defaultInlineCount
-    options.expand = options.expand || (config.defaultExpand as any)
+    options.expand = options.expand || (config.defaultExpand as Array<keyof T>)
     options.top = options.top || config.defaultTop
 
     const segments: Array<{ name: string; value: string }> = []

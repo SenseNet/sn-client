@@ -112,7 +112,7 @@
 /**
  */
 import { GoogleOauthProvider } from '@sensenet/authentication-google'
-import { Content, LoginState, ODataFieldParameter, ODataParams, Repository } from '@sensenet/client-core'
+import { Content, LoginState, ODataParams, Repository } from '@sensenet/client-core'
 import { RepositoryConfiguration } from '@sensenet/client-core/dist/Repository/RepositoryConfiguration'
 import { GenericContent, User } from '@sensenet/default-content-types'
 import { PromiseMiddlewareAction } from '@sensenet/redux-promise-middleware'
@@ -156,9 +156,9 @@ export const loadContent = <T extends GenericContent = GenericContent>(
         break
       case 'string':
         if (options.expand === 'Workspace') {
-          o.expand = 'Workspace'
+          o.expand = ['Workspace']
         } else {
-          o.expand = [options.expand, 'Workspace'] as ODataFieldParameter<T>
+          o.expand = [options.expand, 'Workspace']
         }
         break
       default:

@@ -1,5 +1,6 @@
 import { GenericContent, Schema, SchemaStore } from '@sensenet/default-content-types'
-import { ODataFieldParameter, ODataMetadataType } from '../Models/ODataParams'
+import { ODataMetadataType } from '../Models/ODataParams'
+import { ExpandableFields } from '../Models/OdataContent'
 
 /**
  * Class that contains basic configuration for a sensenet Repository
@@ -40,12 +41,12 @@ export class RepositoryConfiguration {
   /**
    * This parameter describes what fields should be included in the OData $select statements by default
    */
-  public defaultSelect: ODataFieldParameter<GenericContent> | 'all' = ['DisplayName', 'Description', 'Icon']
+  public defaultSelect: Array<keyof GenericContent> = ['DisplayName', 'Description', 'Icon']
 
   /**
    * This parameter describes what fields should always be included in the OData $select statements
    */
-  public requiredSelect: ODataFieldParameter<GenericContent> | 'all' = ['Id', 'Path', 'Name', 'Type']
+  public requiredSelect: Array<keyof GenericContent> = ['Id', 'Path', 'Name', 'Type']
 
   /**
    * This field sets the default OData $metadata value
@@ -60,7 +61,7 @@ export class RepositoryConfiguration {
   /**
    * This field describes what fields should be expanded on every OData request by default
    */
-  public defaultExpand: ODataFieldParameter<GenericContent> | undefined = undefined
+  public defaultExpand?: ExpandableFields<GenericContent> = undefined
 
   /**
    * This field sets up a default OData $top parameter

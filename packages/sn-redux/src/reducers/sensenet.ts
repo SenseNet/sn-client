@@ -19,7 +19,7 @@ export const currentworkspace: Reducer<Workspace | null> = (state = null, action
     case 'LOAD_CONTENT_SUCCESS': {
       const workspace = (action.result as PromiseReturns<typeof loadContent>).d.Workspace
       if (workspace && (workspace as any).Id) {
-        return (action.result as PromiseReturns<typeof loadContent>).d.Workspace as Workspace
+        return ((action.result as PromiseReturns<typeof loadContent>).d.Workspace as unknown) as Workspace
       }
       return state
     }
