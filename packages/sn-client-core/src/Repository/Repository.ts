@@ -1,4 +1,4 @@
-import { Disposable, PathHelper, tuple } from '@sensenet/client-utils'
+import { Disposable, PathHelper } from '@sensenet/client-utils'
 import { ActionModel, ContentType, Schema, GenericContent } from '@sensenet/default-content-types'
 import { AuthenticationService } from '../Authentication/AuthenticationService'
 import { BypassAuthentication } from '../Authentication/BypassAuthentication'
@@ -21,7 +21,7 @@ import {
 } from '../Models/RequestOptions'
 import { SchemaStore } from '../Schemas/SchemaStore'
 import { ODataParams } from '../Models/ODataParams'
-import { ODataContent, FromOdataParams } from '../Models/OdataContent'
+import { FromOdataParams } from '../Models/OdataContent'
 import { ConstantContent } from './ConstantContent'
 import { ODataUrlBuilder } from './ODataUrlBuilder'
 import { RepositoryConfiguration } from './RepositoryConfiguration'
@@ -158,9 +158,10 @@ export class Repository implements Disposable {
     //     ? tuple(...this.configuration.defaultExpand)
     //     : tuple(...([] as any[]))
 
-    if (options.oDataOptions) {
-      const alma: FromOdataParams<TContentType, NonNullable<typeof options.oDataOptions>> = await response.json()
-    }
+    // ToDo: Similar to Repository and merged params
+    // if (options.oDataOptions) {
+    //   const alma: FromOdataParams<TContentType, NonNullable<typeof options.oDataOptions>> = await response.json()
+    // }
 
     return (await response.json()) as ODataResponse<TContentType> // ToDo: Type cast here
   }
