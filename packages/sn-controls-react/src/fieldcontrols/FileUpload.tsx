@@ -7,8 +7,10 @@ import FormControl from '@material-ui/core/FormControl'
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel/InputLabel'
 import Typography from '@material-ui/core/Typography'
-import React, { Component } from 'react'
-import { BinaryFieldSetting } from '@sensenet/default-content-types'
+import React, { useEffect, useState } from 'react'
+import { BinaryFieldSetting, File } from '@sensenet/default-content-types'
+import { PathHelper } from '@sensenet/client-utils'
+import { ODataResponse } from '@sensenet/client-core'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 const styles = {
@@ -29,175 +31,119 @@ const styles = {
   },
 }
 
-/**
- * Interface for FileUpload state
- */
-export interface FileUploadState {
-  value: string
-  error: string
-  filename: string
-  buttonText: string
+interface FileName {
+  IsValid: boolean
+  FullFileName: string
+  FileNameWithoutExtension: string
+  Extension: string
 }
+
+interface Binary {
+  IsEmpty: boolean
+  IsModified: boolean
+  Id: number
+  FileId: number
+  Size: number
+  FileName: FileName
+  ContentType: string
+  Checksum?: any
+  Timestamp: number
+  BlobProvider?: any
+  BlobProviderData?: any
+}
+
 /**
  * Field control that represents a FileUpload field. Available values will be populated from the FieldSettings.
  */
-export class FileUpload extends Component<ReactClientFieldSetting<BinaryFieldSetting>, FileUploadState> {
-  /**
-   * constructor
-   * @param {object} props
-   */
-  constructor(props: FileUpload['props']) {
-    super(props)
-    /**
-     * @type {object}
-     * @property {string} value input value
-     */
-    this.state = {
-      value: (this.props.content && this.setValue(this.props.content[this.props.settings.Name])) || '',
-      error: '',
-      filename: (this.props.content && this.props.content[this.props.settings.Name]) || '',
-      buttonText: this.props.content && this.props.content[this.props.settings.Name] ? 'Change' : 'Add',
-    }
-
-    this.handleChange = this.handleChange.bind(this)
-    this.handleUpload = this.handleUpload.bind(this)
-  }
-  /**
-   * convert incoming default value string to proper format
-   * @param {string} value
-   */
-  public setValue(value: string) {
-    if (value) {
-      return value.replace(/<[^>]*>/g, '')
-    } else {
-      if (this.props.settings.DefaultValue) {
-        return this.props.settings.DefaultValue
-      } else {
-        return ''
+export function FileUpload(props: ReactClientFieldSetting<BinaryFieldSetting, File>) {
+  const [fileName, setFileName] = useState('')
+  useEffect(() => {
+    // eslint-disable-next-line require-jsdoc
+    async function fetchData() {
+      if (!props.repository) {
+        throw new Error('You must pass a repository to this control')
       }
+      if (!props.content) {
+        return
+      }
+      const loadPath = PathHelper.joinPaths(PathHelper.getContentUrl(props.content.Path), '/', props.settings.Name)
+      const binaryField = ((await props.repository.load({ idOrPath: loadPath })) as unknown) as ODataResponse<{
+        Binary: Binary
+      }>
+      setFileName(binaryField.d.Binary.FileName.FullFileName)
     }
-  }
-  /**
-   * Handles input changes. Dispatches a redux action to change field value in the state tree.
-   * @param e
-   */
-  public handleChange(e: React.ChangeEvent<{ value: string }>) {
-    const { value } = e.target
-    this.setState({ value })
-    this.props.fieldOnChange && this.props.fieldOnChange(name, value)
-  }
-  /**
-   * Removes the saved reference
-   */
-  public removeValue = () => {
-    this.setState({
-      value: '',
-      filename: '',
-      buttonText: 'Upload',
-    })
-  }
+    fetchData()
+  }, [props.content, props.repository, props.settings.Name])
+
   /**
    * returns a name from the given path
    */
-  public getNameFromPath = (path: string) => path.replace(/^.*[\\/]/, '')
+  const getNameFromPath = (path: string) => path.replace(/^.*[\\/]/, '')
   /**
    * handles change event on the fileupload input
    */
-  public handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!this.props.repository) {
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!props.repository) {
       throw new Error('You must pass a repository to this control')
     }
+    if (!props.content) {
+      throw new Error('There needs to be a content to be able to upload')
+    }
     e.persist()
-    e.target.files &&
-      (await this.props.repository.upload.fromFileList({
-        fileList: e.target.files,
-        createFolders: true,
-        binaryPropertyName: 'Binary',
-        overwrite: true,
-        parentPath: '',
-      }))
-    const newValue = `${this.getNameFromPath(e.target.value)}`
-    this.setState({
-      value: newValue,
+    if (!e.target.files) {
+      return
+    }
+    await props.repository.upload.file({
+      parentPath: PathHelper.getParentPath(props.content.Path),
+      file: e.target.files[0],
+      fileName: props.content.Name,
+      overwrite: true,
+      contentTypeName: props.content.Type,
+      binaryPropertyName: 'Binary',
     })
-    this.props.fieldOnChange && this.props.fieldOnChange('Avatar', newValue)
-  }
-  /**
-   * render
-   * @return {ReactElement} markup
-   */
-  public render() {
-    switch (this.props.actionName) {
-      case 'edit':
-        return (
-          <FormControl
-            style={styles.root as any}
-            key={this.props.settings.Name}
-            component={'fieldset' as 'div'}
-            required={this.props.settings.Compulsory}>
-            <label style={styles.label} htmlFor={this.props.settings.Name}>
-              {this.props.settings.DisplayName}
-            </label>
-            <Typography variant="body1" style={styles.value}>
-              {this.state.filename.length > 0 ? this.state.filename : this.props.settings.DisplayName}
-            </Typography>
 
-            <div style={{ display: 'table-row' }}>
-              <div style={{ position: 'relative', display: 'table-cell', minWidth: 100 }}>
-                <InputLabel htmlFor="raised-button-file" style={{ transform: 'translate(0, 4px) scale(1)' }}>
-                  <Button variant="contained" component="span" color="primary">
-                    {this.state.buttonText}
-                  </Button>
-                </InputLabel>
-              </div>
-              <div style={{ display: 'table-cell' }}>
-                <Button
-                  component="span"
-                  color="secondary"
-                  style={{ transform: 'translate(0, 4px) scale(1)' }}
-                  onClick={() => this.removeValue()}>
-                  Remove
-                </Button>
-              </div>
-            </div>
-            <Input
-              style={{ display: 'none' }}
-              id="raised-button-file"
-              type="file"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.handleUpload(e)}
-            />
-          </FormControl>
-        )
-      case 'new':
-        return (
-          <FormControl
-            style={styles.root as any}
-            key={this.props.settings.Name}
-            component={'fieldset' as 'div'}
-            required={this.props.settings.Compulsory}>
-            <label style={styles.label} htmlFor={this.props.settings.Name}>
-              {this.props.settings.DisplayName}
-            </label>
-            <Typography variant="body1" style={styles.value}>
-              {this.state.filename.length > 0 ? this.state.filename : this.props.settings.DisplayName}
-            </Typography>
-            <div style={{ position: 'relative' }}>
+    const newValue = `${getNameFromPath(e.target.value)}`
+    setFileName(newValue)
+    props.fieldOnChange && props.fieldOnChange(props.settings.Name, newValue)
+  }
+
+  switch (props.actionName) {
+    case 'edit':
+      return (
+        <FormControl
+          style={styles.root as any}
+          key={props.settings.Name}
+          component={'fieldset' as 'div'}
+          required={props.settings.Compulsory}>
+          <label style={styles.label} htmlFor={props.settings.Name}>
+            {props.settings.DisplayName}
+          </label>
+          <Typography variant="body1" gutterBottom={true}>
+            {fileName}
+          </Typography>
+          <div style={{ display: 'table-row' }}>
+            <div style={{ position: 'relative', display: 'table-cell', minWidth: 100 }}>
               <InputLabel htmlFor="raised-button-file" style={{ transform: 'translate(0, 4px) scale(1)' }}>
                 <Button variant="contained" component="span" color="primary">
                   Upload
                 </Button>
               </InputLabel>
             </div>
-            <Input
-              style={{ display: 'none' }}
-              id="raised-button-file"
-              type="file"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.handleUpload(e)}
-            />
-          </FormControl>
-        )
-      default:
-        return null
-    }
+          </div>
+          <Input style={{ display: 'none' }} id="raised-button-file" type="file" onChange={handleUpload} />
+        </FormControl>
+      )
+    case 'browse':
+    default:
+      return (
+        <div>
+          <Typography variant="caption" gutterBottom={true}>
+            {props.settings.DisplayName}
+          </Typography>
+          <Typography variant="body1" gutterBottom={true}>
+            {fileName}
+          </Typography>
+        </div>
+      )
   }
 }

@@ -11,6 +11,7 @@ import {
   DatePicker,
   DropDownList,
   FileName,
+  FileUpload,
   Name,
   NumberComponent,
   Password,
@@ -22,7 +23,7 @@ import {
   Textarea,
   TimePicker,
 } from '@sensenet/controls-react/src'
-import { GenericContent, Group, Task, User, VersioningMode } from '@sensenet/default-content-types/src'
+import { GenericContent, Group, Image, Task, User, VersioningMode } from '@sensenet/default-content-types/src'
 import shorttextNotes from '../notes/fieldcontrols/ShortText.md'
 import displaynameNotes from '../notes/fieldcontrols/DisplayName.md'
 import checkboxgroupNotes from '../notes/fieldcontrols/CheckboxGroup.md'
@@ -39,6 +40,7 @@ import passwordNotes from '../notes/fieldcontrols/Password.md'
 import numberNotes from '../notes/fieldcontrols/Number.md'
 import tagsInputNotes from '../notes/fieldcontrols/TagsInput.md'
 import autocompleteNotes from '../notes/fieldcontrols/AutoComplete.md'
+import fileUploadNotes from '../notes/fieldcontrols/FileUpload.md'
 import referenceGridNotes from '../notes/fieldcontrols/ReferenceGrid.md'
 import avatarNotes from '../notes/fieldcontrols/Avatar.md'
 // import approvingModeChoiceNotes from '../notes/fieldcontrols/ApprovingModeChoice.md'
@@ -49,6 +51,7 @@ import allowedTypeNotes from '../notes/fieldcontrols/AllowedChildTypes.md'
 import { customSchema } from './custom-schema'
 import { DynamicControl } from './dynamic-control'
 import { fieldControlStory } from './field-control-story'
+import { PleaseLogin } from './PleaseLogin'
 
 export const testRepository = new Repository({
   repositoryUrl: 'https://devservice.demo.sensenet.com',
@@ -63,6 +66,15 @@ const taskContent: Task = {
   Path: '/Root/Sites/Default_Site',
   Type: 'Task',
   TaskCompletion: 20,
+}
+
+const fileContent: Image = {
+  Id: 3777,
+  Path: '/Root/Sites/Default_Site/infos/images/approving_enabled.png',
+  Name: 'approving_enabled.png',
+  DisplayName: 'approving_enabled.png',
+  Type: 'Image',
+  Icon: 'image',
 }
 
 const testContent: GenericContent = {
@@ -108,27 +120,18 @@ const groupContent: Group = {
   Members: [userContent],
 }
 
-const PleaseLogin = () => (
-  <div style={{ fontStyle: 'italic', fontSize: 13 }}>
-    To see this control in action, please login at{' '}
-    <a target="_blank" href="https://devservice.demo.sensenet.com/" rel="noopener noreferrer">
-      https://devservice.demo.sensenet.com/
-    </a>
-  </div>
-)
-
 fieldControlStory({
   component: actionName => (
     <div>
-      <PleaseLogin />
-      <br />
-      <DynamicControl
-        actionName={actionName}
-        repository={testRepository}
-        content={testContent}
-        component={AllowedChildTypes}
-        fieldName="AllowedChildTypes"
-      />
+      <PleaseLogin>
+        <DynamicControl
+          actionName={actionName}
+          repository={testRepository}
+          content={testContent}
+          component={AllowedChildTypes}
+          fieldName="AllowedChildTypes"
+        />
+      </PleaseLogin>
     </div>
   ),
   markdown: allowedTypeNotes,
@@ -137,13 +140,17 @@ fieldControlStory({
 
 fieldControlStory({
   component: actionName => (
-    <DynamicControl
-      actionName={actionName}
-      repository={testRepository}
-      content={groupContent}
-      component={AutoComplete}
-      fieldName="Members"
-    />
+    <div>
+      <PleaseLogin>
+        <DynamicControl
+          actionName={actionName}
+          repository={testRepository}
+          content={groupContent}
+          component={AutoComplete}
+          fieldName="Members"
+        />
+      </PleaseLogin>
+    </div>
   ),
   markdown: autocompleteNotes,
   storyName: 'FieldControls.AutoComplete',
@@ -151,13 +158,17 @@ fieldControlStory({
 
 fieldControlStory({
   component: actionName => (
-    <DynamicControl
-      actionName={actionName}
-      repository={testRepository}
-      content={userContent}
-      component={Avatar}
-      fieldName="Avatar"
-    />
+    <div>
+      <PleaseLogin>
+        <DynamicControl
+          actionName={actionName}
+          repository={testRepository}
+          content={userContent}
+          component={Avatar}
+          fieldName="Avatar"
+        />
+      </PleaseLogin>
+    </div>
   ),
   markdown: avatarNotes,
   storyName: 'FieldControls.Avatar',
@@ -269,26 +280,23 @@ fieldControlStory({
   storyName: 'FieldControls.FileName',
 })
 
-// storiesOf('FieldControls.FileUpload', module)
-//   .addDecorator(withKnobs)
-//   .addDecorator(withA11y)
-//   .addDecorator(withActions('change'))
-//   .add(
-//     'new mode',
-//     () => (
-//       <FileUpload
-//         actionName="new"
-//         labelText={text('Label', 'FileUpload label')}
-//         fieldOnChange={action('change')}
-//         className={text('Additional class name', 'fileupload-field')}
-//         placeHolderText={text('Placeholder', 'placeholder')}
-//         hintText={text('Hint', 'FileUpload hint')}
-//         fieldName="Name"
-//         repository={testRepository}
-//       />
-//     ),
-//     { notes: { markdown: fileUploadNotes } },
-//   )
+fieldControlStory({
+  component: actionName => (
+    <div>
+      <PleaseLogin>
+        <DynamicControl
+          actionName={actionName}
+          repository={testRepository}
+          content={fileContent}
+          component={FileUpload}
+          fieldName="Binary"
+        />
+      </PleaseLogin>
+    </div>
+  ),
+  markdown: fileUploadNotes,
+  storyName: 'FieldControls.FileUpload',
+})
 
 fieldControlStory({
   component: actionName => (
@@ -362,13 +370,17 @@ fieldControlStory({
 
 fieldControlStory({
   component: actionName => (
-    <DynamicControl
-      actionName={actionName}
-      repository={testRepository}
-      content={groupContent}
-      component={ReferenceGrid}
-      fieldName="Members"
-    />
+    <div>
+      <PleaseLogin>
+        <DynamicControl
+          actionName={actionName}
+          repository={testRepository}
+          content={groupContent}
+          component={ReferenceGrid}
+          fieldName="Members"
+        />
+      </PleaseLogin>
+    </div>
   ),
   markdown: referenceGridNotes,
   storyName: 'FieldControls.ReferenceGrid',
@@ -404,13 +416,17 @@ fieldControlStory({
 
 fieldControlStory({
   component: actionName => (
-    <DynamicControl
-      actionName={actionName}
-      repository={testRepository}
-      content={groupContent}
-      component={TagsInput}
-      fieldName="Members"
-    />
+    <div>
+      <PleaseLogin>
+        <DynamicControl
+          actionName={actionName}
+          repository={testRepository}
+          content={groupContent}
+          component={TagsInput}
+          fieldName="Members"
+        />
+      </PleaseLogin>
+    </div>
   ),
   markdown: tagsInputNotes,
   storyName: 'FieldControls.TagsInput',

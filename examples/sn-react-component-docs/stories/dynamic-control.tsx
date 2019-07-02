@@ -15,11 +15,14 @@ interface Options {
 
 export function DynamicControl({ actionName, repository, content, component, fieldName }: Options) {
   const schema = reactControlMapper(repository).getFullSchemaForContentType(content.Type, actionName)
-  const settings = schema.fieldMappings.find(a => a.fieldSettings.Name === fieldName)!.fieldSettings
+  const fieldMapping = schema.fieldMappings.find(a => a.fieldSettings.Name === fieldName)
+  if (!fieldMapping) {
+    return <p>{`${actionName} view is not available for this component!`}</p>
+  }
   const componentToRender =
     component || reactControlMapper(repository).getControlForContentField(content.Type, fieldName, actionName)
   return React.createElement(componentToRender, {
-    settings: object('settings', settings),
+    settings: object('settings', fieldMapping.fieldSettings),
     actionName,
     repository,
     content: actionName !== 'new' ? object('content', content) : undefined,

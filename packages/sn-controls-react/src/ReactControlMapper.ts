@@ -5,6 +5,7 @@
 import { Repository } from '@sensenet/client-core'
 import { ControlMapper } from '@sensenet/control-mapper'
 import {
+  BinaryFieldSetting,
   BooleanFieldSetting,
   ChoiceFieldSetting,
   ColorFieldSetting,
@@ -42,6 +43,9 @@ export const reactControlMapper = (repository: Repository) => {
     })
     .setupFieldSettingDefault(ColorFieldSetting, () => {
       return FieldControls.ColorPicker
+    })
+    .setupFieldSettingDefault(BinaryFieldSetting, () => {
+      return FieldControls.FileUpload
     })
     .setupFieldSettingDefault(ShortTextFieldSetting, setting => {
       switch (setting.ControlHint) {
