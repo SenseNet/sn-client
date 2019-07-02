@@ -12,7 +12,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Paper from '@material-ui/core/Paper'
 import TextField from '@material-ui/core/TextField'
-import { ODataCollectionResponse } from '@sensenet/client-core'
+import { ConstantContent, ODataCollectionResponse } from '@sensenet/client-core'
 import { ContentType, GenericContent } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
 import { typeicons } from '../assets/icons'
@@ -184,12 +184,8 @@ export class AllowedChildTypes extends Component<ReactClientFieldSetting, Allowe
       throw new Error('You must pass a repository to this control')
     }
 
-    if (!this.props.content) {
-      throw new Error('You must pass a content to this control to see the allowed child types.')
-    }
-
     const result = (await this.props.repository.executeAction({
-      idOrPath: this.props.content.Id,
+      idOrPath: ConstantContent.PORTAL_ROOT.Id,
       name: 'GetAllContentTypes',
       method: 'GET',
       oDataOptions: {
@@ -281,178 +277,9 @@ export class AllowedChildTypes extends Component<ReactClientFieldSetting, Allowe
   public render() {
     switch (this.props.actionName) {
       case 'edit':
-        return (
-          <FormControl>
-            <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
-            <List dense={true}>
-              {this.state.items.map((item, index) => (
-                <ListItem key={index}>
-                  <ListItemIcon style={{ margin: 0 }}>
-                    {this.props.renderIcon
-                      ? this.props.renderIcon(item.Icon ? item.Icon.toLowerCase() : 'contenttype')
-                      : renderIconDefault(
-                          item.Icon && typeicons[item.Icon.toLowerCase()]
-                            ? typeicons[item.Icon.toLowerCase()]
-                            : typeicons.contenttype,
-                        )}
-                  </ListItemIcon>
-                  <ListItemText primary={item.DisplayName} />
-                  {this.state.removeable ? (
-                    <ListItemSecondaryAction>
-                      <IconButton aria-label="Remove" onClick={() => this.handleRemove(item)}>
-                        {this.props.renderIcon ? this.props.renderIcon('delete') : renderIconDefault('delete')}
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  ) : null}
-                </ListItem>
-              ))}
-            </List>
-            <div
-              ref={(ref: HTMLDivElement) => ref && this.state.anchorEl !== ref && this.setState({ anchorEl: ref })}
-              style={{ position: 'relative' }}>
-              <div style={styles.inputContainer as any}>
-                <TextField
-                  type="text"
-                  onClick={this.handleOnClick}
-                  onChange={this.handleInputChange}
-                  placeholder={INPUT_PLACEHOLDER}
-                  InputProps={{
-                    endAdornment: this.state.isLoading ? (
-                      <InputAdornment position="end">
-                        <CircularProgress size={16} />
-                      </InputAdornment>
-                    ) : null,
-                  }}
-                  fullWidth={true}
-                  value={this.state.inputValue}
-                  style={styles.input}
-                />
-                <IconButton
-                  style={styles.button}
-                  disabled={this.state.selected && this.state.selected.Name.length > 0 ? false : true}
-                  onClick={this.handleAddClick}>
-                  {this.props.renderIcon ? this.props.renderIcon('add') : renderIconDefault('add')}
-                </IconButton>
-              </div>
-              <ClickAwayListener onClickAway={this.handleClickAway}>
-                <Paper
-                  style={
-                    this.state.isOpened
-                      ? { ...styles.ddIsOpened, ...(styles.listContainer as any) }
-                      : { ...styles.ddIsClosed, ...(styles.listContainer as any) }
-                  }>
-                  <List>
-                    {this.state.filteredList.length > 0 ? (
-                      this.state.filteredList.map((item: any) => this.state.getMenuItem(item, this.handleSelect))
-                    ) : (
-                      <ListItem>No hits</ListItem>
-                    )}
-                  </List>
-                </Paper>
-              </ClickAwayListener>
-              <FormHelperText>{this.props.settings.Description}</FormHelperText>
-            </div>
-          </FormControl>
-        )
       case 'new':
         return (
-          <FormControl>
-            <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
-            <List dense={true}>
-              {this.state.items.map((item, index) => (
-                <ListItem key={index}>
-                  <ListItemIcon style={{ margin: 0 }}>
-                    {this.props.renderIcon
-                      ? this.props.renderIcon(item.Icon ? item.Icon.toLowerCase() : 'contenttype')
-                      : renderIconDefault(
-                          item.Icon && typeicons[item.Icon.toLowerCase()]
-                            ? typeicons[item.Icon.toLowerCase()]
-                            : typeicons.contenttype,
-                        )}
-                  </ListItemIcon>
-                  <ListItemText primary={item.DisplayName} />
-                  {this.state.removeable ? (
-                    <ListItemSecondaryAction>
-                      <IconButton aria-label="Remove" onClick={() => this.handleRemove(item)}>
-                        {this.props.renderIcon ? this.props.renderIcon('delete') : renderIconDefault('delete')}
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  ) : null}
-                </ListItem>
-              ))}
-            </List>
-            <div
-              ref={(ref: HTMLDivElement) => ref && this.state.anchorEl !== ref && this.setState({ anchorEl: ref })}
-              style={{ position: 'relative' }}>
-              <div style={styles.inputContainer as any}>
-                <TextField
-                  type="text"
-                  onClick={this.handleOnClick}
-                  onChange={this.handleInputChange}
-                  placeholder={INPUT_PLACEHOLDER}
-                  InputProps={{
-                    endAdornment: this.state.isLoading ? (
-                      <InputAdornment position="end">
-                        <CircularProgress size={16} />
-                      </InputAdornment>
-                    ) : null,
-                  }}
-                  fullWidth={true}
-                  value={this.state.inputValue}
-                  style={styles.input}
-                />
-                <IconButton
-                  style={styles.button}
-                  disabled={this.state.selected && this.state.selected.Name.length > 0 ? false : true}
-                  onClick={this.handleAddClick}>
-                  {this.props.renderIcon ? this.props.renderIcon('add') : renderIconDefault('add')}
-                </IconButton>
-              </div>
-              <ClickAwayListener onClickAway={this.handleClickAway}>
-                <Paper
-                  style={
-                    this.state.isOpened
-                      ? { ...styles.ddIsOpened, ...(styles.listContainer as any) }
-                      : { ...styles.ddIsClosed, ...(styles.listContainer as any) }
-                  }>
-                  <List>
-                    {this.state.filteredList.length > 0 ? (
-                      this.state.filteredList.map((item: any) => this.state.getMenuItem(item, this.handleSelect))
-                    ) : (
-                      <ListItem>No hits</ListItem>
-                    )}
-                  </List>
-                </Paper>
-              </ClickAwayListener>
-              <FormHelperText>{this.props.settings.Description}</FormHelperText>
-            </div>
-          </FormControl>
-        )
-      case 'browse':
-        return (
-          <FormControl>
-            <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
-            <List dense={true}>
-              {this.state.items.map((item, index) => (
-                <ListItem key={index}>
-                  <ListItemIcon style={{ margin: 0 }}>
-                    {this.props.renderIcon
-                      ? this.props.renderIcon(item.Icon ? item.Icon.toLowerCase() : 'contenttype')
-                      : renderIconDefault(
-                          item.Icon && typeicons[item.Icon.toLowerCase()]
-                            ? typeicons[item.Icon.toLowerCase()]
-                            : typeicons.contenttype,
-                        )}
-                  </ListItemIcon>
-                  <ListItemText primary={item.DisplayName} />
-                </ListItem>
-              ))}
-            </List>
-          </FormControl>
-        )
-      default:
-        return (
-          <div>
+          <ClickAwayListener onClickAway={this.handleClickAway}>
             <FormControl>
               <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
               <List dense={true}>
@@ -468,11 +295,84 @@ export class AllowedChildTypes extends Component<ReactClientFieldSetting, Allowe
                           )}
                     </ListItemIcon>
                     <ListItemText primary={item.DisplayName} />
+                    {this.state.removeable ? (
+                      <ListItemSecondaryAction>
+                        <IconButton aria-label="Remove" onClick={() => this.handleRemove(item)}>
+                          {this.props.renderIcon ? this.props.renderIcon('delete') : renderIconDefault('delete')}
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    ) : null}
                   </ListItem>
                 ))}
               </List>
+              <div
+                ref={(ref: HTMLDivElement) => ref && this.state.anchorEl !== ref && this.setState({ anchorEl: ref })}
+                style={{ position: 'relative' }}>
+                <div style={styles.inputContainer as any}>
+                  <TextField
+                    type="text"
+                    onClick={this.handleOnClick}
+                    onChange={this.handleInputChange}
+                    placeholder={INPUT_PLACEHOLDER}
+                    InputProps={{
+                      endAdornment: this.state.isLoading ? (
+                        <InputAdornment position="end">
+                          <CircularProgress size={16} />
+                        </InputAdornment>
+                      ) : null,
+                    }}
+                    fullWidth={true}
+                    value={this.state.inputValue}
+                    style={styles.input}
+                  />
+                  <IconButton
+                    style={styles.button}
+                    disabled={this.state.selected && this.state.selected.Name.length > 0 ? false : true}
+                    onClick={this.handleAddClick}>
+                    {this.props.renderIcon ? this.props.renderIcon('add') : renderIconDefault('add')}
+                  </IconButton>
+                </div>
+                <Paper
+                  style={
+                    this.state.isOpened
+                      ? { ...styles.ddIsOpened, ...(styles.listContainer as any) }
+                      : { ...styles.ddIsClosed, ...(styles.listContainer as any) }
+                  }>
+                  <List>
+                    {this.state.filteredList.length > 0 ? (
+                      this.state.filteredList.map((item: any) => this.state.getMenuItem(item, this.handleSelect))
+                    ) : (
+                      <ListItem>No hits</ListItem>
+                    )}
+                  </List>
+                </Paper>
+                <FormHelperText>{this.props.settings.Description}</FormHelperText>
+              </div>
             </FormControl>
-          </div>
+          </ClickAwayListener>
+        )
+      case 'browse':
+      default:
+        return (
+          <FormControl>
+            <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
+            <List dense={true}>
+              {this.state.items.map((item, index) => (
+                <ListItem key={index}>
+                  <ListItemIcon style={{ margin: 0 }}>
+                    {this.props.renderIcon
+                      ? this.props.renderIcon(item.Icon ? item.Icon.toLowerCase() : 'contenttype')
+                      : renderIconDefault(
+                          item.Icon && typeicons[item.Icon.toLowerCase()]
+                            ? typeicons[item.Icon.toLowerCase()]
+                            : typeicons.contenttype,
+                        )}
+                  </ListItemIcon>
+                  <ListItemText primary={item.DisplayName} />
+                </ListItem>
+              ))}
+            </List>
+          </FormControl>
         )
     }
   }

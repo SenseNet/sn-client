@@ -1,7 +1,6 @@
 /**
  * @module FieldControls
  */
-// import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import React, { Component } from 'react'
@@ -27,7 +26,7 @@ export class NumberComponent extends Component<
     value:
       (this.props.content && this.props.content[this.props.settings.Name]) != null
         ? this.props.content![this.props.settings.Name]
-        : this.props.settings.DefaultValue,
+        : this.props.settings.DefaultValue || '',
   }
 
   public handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) => {
@@ -45,7 +44,10 @@ export class NumberComponent extends Component<
     if (!this.props.content) {
       return 1
     }
-    return Number.isInteger(this.props.content[this.props.settings.Name]) ? 1 : 0.1
+    return Number.isInteger(this.props.content[this.props.settings.Name]) ||
+      this.props.settings.Type === 'IntegerFieldSetting'
+      ? 1
+      : 0.1
   }
 
   /**
