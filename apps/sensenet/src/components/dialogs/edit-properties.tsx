@@ -16,7 +16,7 @@ export const EditPropertiesDialog: React.FunctionComponent<{
   const logger = useLogger('EditPropertiesDialog')
 
   return (
-    <Dialog {...props.dialogProps}>
+    <Dialog {...props.dialogProps} disablePortal>
       <DialogTitle>
         {localization.dialogTitle.replace('{0}', props.content.DisplayName || props.content.Name)}{' '}
       </DialogTitle>
