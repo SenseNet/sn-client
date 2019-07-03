@@ -112,7 +112,7 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
 
   return (
     <div style={props.style}>
-      <List dense={true}>
+      <List style={{ paddingTop: 0, paddingBottom: 0 }}>
         {items.map(content => {
           const isOpened = opened.includes(content.Id) || (ancestorPaths && ancestorPaths.includes(content.Path))
           return (
@@ -136,7 +136,11 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
                   <ListItemIcon>
                     <Icon item={content} />
                   </ListItemIcon>
-                  <ListItemText style={{ padding: 0 }} inset={true} primary={content.DisplayName || content.Name} />
+                  <ListItemText
+                    style={{ padding: 0, margin: 0 }}
+                    inset={true}
+                    primary={content.DisplayName || content.Name}
+                  />
                 </ListItem>
               </DropFileArea>
               <Collapse style={{ marginLeft: '1em' }} in={isOpened} timeout="auto" unmountOnExit={true}>

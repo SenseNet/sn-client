@@ -51,7 +51,6 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
   return (
     <Paper style={{ flexGrow: 0, flexShrink: 0 }}>
       <List
-        dense={true}
         style={{
           width: opened ? 330 : 55,
           height: '100%',
@@ -62,7 +61,6 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
           justifyContent: 'space-between',
           flexDirection: 'column',
           backgroundColor: theme.palette.background.default, // '#222',
-          paddingTop: '1em',
           transition: 'width 100ms ease-in-out',
         }}>
         <div style={{ paddingTop: '1em' }}>
