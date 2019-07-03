@@ -5,9 +5,8 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import { Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
-import React, { createElement } from 'react'
+import React, { createElement, ReactElement } from 'react'
 import { reactControlMapper } from '../ReactControlMapper'
-import { styles } from './BrowseViewStyles'
 
 /**
  * Interface for BrowseView properties
@@ -15,7 +14,7 @@ import { styles } from './BrowseViewStyles'
 export interface BrowseViewProps {
   content: GenericContent
   repository: Repository
-  renderIcon?: (name: string) => JSX.Element
+  renderIcon?: (name: string) => ReactElement
 }
 
 /**
@@ -27,7 +26,7 @@ export function BrowseView(props: BrowseViewProps) {
 
   return (
     <Grid container={true} spacing={2}>
-      <div style={styles.container}>
+      <div style={{ margin: 12 }}>
         <Typography variant="h5" gutterBottom={true}>
           {props.content.DisplayName}
         </Typography>

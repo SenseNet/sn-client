@@ -1,43 +1,37 @@
 /**
  * @module ViewControls
  */
-import React, { Component, ComponentType, createElement } from 'react'
-
+import React, { Component, ComponentType, createElement, ReactElement } from 'react'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import { Repository } from '@sensenet/client-core'
 import { ControlSchema } from '@sensenet/control-mapper'
-import { GenericContent, Schema } from '@sensenet/default-content-types'
+import { ContentType } from '@sensenet/default-content-types'
 import MediaQuery from 'react-responsive'
 import { reactControlMapper } from '../ReactControlMapper'
 import { ReactClientFieldSetting } from '../fieldcontrols/ClientFieldSetting'
-import { styles } from './NewViewStyles'
 
 /**
  * Interface for NewView properties
  */
-export interface NewViewProps<T extends GenericContent = GenericContent> {
-  onSubmit?: (path: string, content: T, contentTypeName: string) => void
+export interface NewViewProps {
+  onSubmit?: (path: string, content: ContentType, contentTypeName: string) => void
   repository: Repository
-  renderIcon?: (name: string) => JSX.Element
-  schema?: Schema
+  renderIcon?: (name: string) => ReactElement
   path: string
   contentTypeName: string
-  extension?: string
-  columns?: string[]
   handleCancel?: () => void
   submitCallback?: () => void
   title?: string
-  uploadFolderPath?: string
+  extension?: string
 }
 /**
  * Interface for NewView state
  */
-export interface NewViewState<T extends GenericContent = GenericContent> {
+export interface NewViewState {
   schema: ControlSchema<ComponentType, ComponentType<ReactClientFieldSetting>>
-  dataSource: GenericContent[]
-  content: T
+  content: ContentType
   controlMapper: ReturnType<typeof reactControlMapper>
 }
 
@@ -49,57 +43,36 @@ export interface NewViewState<T extends GenericContent = GenericContent> {
  *  <NewView content={content} onSubmit={createSubmitClick} />
  * ```
  */
-export class NewView<T extends GenericContent, K extends keyof T> extends Component<NewViewProps<T>, NewViewState> {
-  /**
-   * constructor
-   * @param {object} props
-   */
+export class NewView extends Component<NewViewProps, NewViewState> {
   constructor(props: any) {
     super(props)
-    /**
-     * @type {object}
-     * @property {any} content empty base Content
-     */
     const controlMapper = reactControlMapper(this.props.repository)
     this.state = {
       schema: controlMapper.getFullSchemaForContentType(this.props.contentTypeName, 'new'),
-      dataSource: [],
       // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
-      content: {} as T,
+      content: {} as ContentType,
       controlMapper,
     }
 
     this.handleInputChange = this.handleInputChange.bind(this)
-    this.handleCancel = this.handleCancel.bind(this)
   }
-  /**
-   * handle cancle button click
-   */
-  public handleCancel() {
-    return this.props.handleCancel ? this.props.handleCancel() : null
+
+  public handleInputChange(field: string, value: unknown) {
+    this.setState({
+      content: { ...this.state.content, [field]: value },
+    })
   }
-  /**
-   * handle change event on an input
-   * @param {SytheticEvent} event
-   */
-  public handleInputChange(field: string, value: T[K]) {
-    ;(this.state.content as T)[field] = value
-  }
-  /**
-   * render
-   * @return {ReactElement} markup
-   */
+
   public render() {
-    const fieldSettings = this.state.schema.fieldMappings
-    const { onSubmit, path, columns, title, submitCallback } = this.props
+    const { onSubmit, path, title, submitCallback } = this.props
     const { schema } = this.state
     return (
       <form
-        style={styles.container}
+        style={{ margin: '0 auto' }}
         onSubmit={e => {
           e.preventDefault()
           if (onSubmit) {
-            onSubmit(path, this.state.content as T, schema.schema.ContentTypeName)
+            onSubmit(path, this.state.content, schema.schema.ContentTypeName)
           }
           if (submitCallback) {
             submitCallback()
@@ -113,30 +86,15 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
           title
         )}
         <Grid container={true} spacing={2}>
-          {fieldSettings.map(field => {
-            // if (
-            //   contentTypeName.indexOf('File') > -1 &&
-            //   extension &&
-            //   fieldSetting.fieldSettings.ControlHint === 'sn:FileName'
-            // ) {
-            //   fieldSetting.clientSettings['extension'] = extension
-            // }
-            // fieldSetting.clientSettings.onChange = this.handleInputChange as any
-            // fieldSetting.clientSettings.actionName = 'new'
-            // // TODO: review this uploadFolderPath
-            // fieldSetting.clientSettings['data-uploadFolderPath'] = this.props.uploadFolderPath || ''
-            // fieldSetting.clientSettings.renderIcon = this.props.renderIcon || undefined
-            // if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
-            //   fieldSetting.fieldSettings.Type = 'NumberFieldSetting'
-            // }
+          {this.state.schema.fieldMappings.map(field => {
             return (
               <Grid
                 item={true}
                 xs={12}
                 sm={12}
-                md={field.fieldSettings.Name === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                lg={field.fieldSettings.Name === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                xl={field.fieldSettings.Name === 'LongTextFieldSetting' || !columns ? 12 : 6}
+                md={field.fieldSettings.Name === 'LongTextFieldSetting' ? 12 : 6}
+                lg={field.fieldSettings.Name === 'LongTextFieldSetting' ? 12 : 6}
+                xl={field.fieldSettings.Name === 'LongTextFieldSetting' ? 12 : 6}
                 key={field.fieldSettings.Name}>
                 {createElement(
                   this.state.controlMapper.getControlForContentField(
@@ -147,7 +105,6 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
                   {
                     actionName: 'new',
                     settings: field.fieldSettings,
-                    content: this.state.content,
                     repository: this.props.repository,
                     renderIcon: this.props.renderIcon,
                     fieldOnChange: this.handleInputChange,
@@ -160,7 +117,10 @@ export class NewView<T extends GenericContent, K extends keyof T> extends Compon
             <MediaQuery minDeviceWidth={700}>
               {matches =>
                 matches ? (
-                  <Button color="default" style={{ marginRight: 20 }} onClick={() => this.handleCancel()}>
+                  <Button
+                    color="default"
+                    style={{ marginRight: 20 }}
+                    onClick={() => this.props.handleCancel && this.props.handleCancel()}>
                     Cancel
                   </Button>
                 ) : null

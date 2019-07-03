@@ -19,9 +19,9 @@ export const testRepository = new Repository({
 
 export const testFile: File = {
   Id: 1,
-  Name: 'LoremIpsum.docx',
-  DisplayName: 'LoremIpsum.docx',
-  Path: '/Root/Profiles/MyProfile/DocumentLibrary',
+  Name: 'Sample-document.docx',
+  DisplayName: 'Sample-document.docx',
+  Path: '/Root/Profiles/Public/alba/Document_Library/Sample-document.docx',
   Watermark: 'sensenet',
   Type: 'File',
   Index: 42,
