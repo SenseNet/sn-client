@@ -21,17 +21,21 @@ export interface UiSettings {
   }
 }
 
-export const widgetTypes = tuple('markdown', 'query')
+export const widgetTypes = tuple('markdown', 'query', 'updates')
 
 export interface Widget<T> {
   title: string
   widgetType: typeof widgetTypes[number]
   settings: T
-  minWidth?: number
+  minWidth?: PlatformDependent<number | string>
 }
 
 export interface MarkdownWidget extends Widget<{ content: string }> {
   widgetType: 'markdown'
+}
+
+export interface UpdatesWidget extends Widget<undefined> {
+  widgetType: 'updates'
 }
 
 export interface QueryWidget<T extends GenericContent>
@@ -40,13 +44,16 @@ export interface QueryWidget<T extends GenericContent>
     showColumnNames: boolean
     showRefresh?: boolean
     showOpenInSearch?: boolean
+    enableSelection?: boolean
     top?: number
     query: string
+    emptyPlaceholderText?: string
+    countOnly?: boolean
   }> {
   widgetType: 'query'
 }
 
-export type WidgetSection = Array<MarkdownWidget | QueryWidget<GenericContent>>
+export type WidgetSection = Array<MarkdownWidget | QueryWidget<GenericContent> | UpdatesWidget>
 
 export type PersonalSettingsType = PlatformDependent<UiSettings> & {
   repositories: Array<{ url: string; loginName?: string; displayName?: string; dashboard?: WidgetSection }>
@@ -65,28 +72,129 @@ export const defaultSettings: PersonalSettingsType = {
   dashboards: {
     globalDefault: [
       {
-        title: 'Global Dashboard',
+        title: 'Welcome back, {currentUserName}',
         widgetType: 'markdown',
         settings: {
-          content: 'This is an example global dashboard.',
+          content: "It's a great day to do admin stuff!",
         },
       },
     ],
     repositoryDefault: [
       {
-        title: 'Repository Dashboard',
+        title: 'Welcome back, {currentUserName}',
         widgetType: 'markdown',
         settings: {
-          content: 'This is an example Repository dashboard.',
+          content: "It's a great day to do admin stuff!",
+        },
+        minWidth: {
+          default: '100%',
         },
       },
       {
-        title: 'Users',
+        title: 'Packages to update',
+        widgetType: 'updates',
+        minWidth: {
+          default: '100%',
+        },
+        settings: undefined,
+      },
+      {
+        title: 'Number of users',
         widgetType: 'query',
+        minWidth: { default: '30%' },
         settings: {
-          columns: ['DisplayName'],
+          query: "+TypeIs:'User'",
+          columns: [],
+          countOnly: true,
           showColumnNames: false,
-          query: "TypeIs:'User'",
+          showOpenInSearch: false,
+          showRefresh: false,
+        },
+      },
+      {
+        title: 'Number of content items',
+        widgetType: 'query',
+        minWidth: { default: '30%' },
+        settings: {
+          query: "+TypeIs:'GenericContent'",
+          columns: [],
+          countOnly: true,
+          showColumnNames: false,
+        },
+      },
+      {
+        title: 'Updates since yesterday',
+        widgetType: 'query',
+        minWidth: {
+          default: '30%',
+        },
+        settings: {
+          query: '+ModificationDate:>@@Yesterday@@',
+          columns: [],
+          countOnly: true,
+          showColumnNames: false,
+          showOpenInSearch: true,
+        },
+      },
+      {
+        title: 'Docs owned by me',
+        widgetType: 'query',
+        minWidth: {
+          default: '100%',
+        },
+        settings: {
+          query: "+(Owner:@@CurrentUser@@ AND TypeIs:'File')",
+          columns: [],
+          countOnly: true,
+          showColumnNames: false,
+          showOpenInSearch: true,
+        },
+      },
+      {
+        title: 'Docs shared with me',
+        widgetType: 'query',
+        minWidth: {
+          default: '100%',
+        },
+        settings: {
+          query: '+SharedWith:@@CurrentUser@@',
+          columns: [],
+          countOnly: true,
+          showColumnNames: false,
+          showOpenInSearch: true,
+        },
+      },
+      {
+        title: 'Tutorials',
+        widgetType: 'markdown',
+        settings: {
+          content:
+            '[Overview](https://index.hu) \n\n [Getting started](https://index.hu) \n\n [Tutorials](https://index.hu) \n\n [Example apps](https://index.hu) \n\n ',
+        },
+        minWidth: {
+          default: '45%',
+        },
+      },
+      {
+        title: 'API documentation',
+        widgetType: 'markdown',
+        settings: {
+          content:
+            ' [Content Delivery API](https://index.hu) \n\n [Images API](https://index.hu) \n\n [Content management API](https://index.hu) \n\n [Content preview API](https://index.hu) \n\n',
+        },
+        minWidth: {
+          default: '45%',
+        },
+      },
+      {
+        title: 'Have any questions?',
+        widgetType: 'markdown',
+        settings: {
+          content:
+            "<div style='text-align:center;'><a target='_blank' href='https://index.hu' style='text-decoration: none;'><button class='MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-contained'>Contact us</button></a></div>",
+        },
+        minWidth: {
+          default: '100%',
         },
       },
     ],

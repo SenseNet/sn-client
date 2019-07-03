@@ -53,6 +53,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
   return (
     <Dialog
       fullWidth={true}
+      disablePortal
       {...props.dialogProps}
       onClick={ev => ev.stopPropagation()}
       onDoubleClick={ev => ev.stopPropagation()}>

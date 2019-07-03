@@ -43,6 +43,8 @@ export interface Component {
   Version: string
   AcceptableVersion: string
   Description: string
+  IsUpdateAvailable?: boolean
+  NugetManifest?: any
 }
 
 /**

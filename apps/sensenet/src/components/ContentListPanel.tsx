@@ -26,6 +26,8 @@ import { SelectionControl } from './SelectionControl'
 
 export interface CollectionComponentProps {
   enableBreadcrumbs?: boolean
+  hideHeader?: boolean
+  disableSelection?: boolean
   parentId: number
   onParentChange: (newParent: GenericContent) => void
   onTabRequest: () => void
@@ -71,7 +73,7 @@ export const isReferenceField = (fieldName: string, repo: Repository) => {
 }
 
 export const CollectionComponent: React.FunctionComponent<CollectionComponentProps> = props => {
-  const parent = useContext(CurrentContentContext)
+  const parentContent = useContext(CurrentContentContext)
   const children = useContext(CurrentChildrenContext)
   const ancestors = useContext(CurrentAncestorsContext)
   const device = useContext(ResponsiveContext)
@@ -80,7 +82,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
   const [selected, setSelected] = useState<GenericContent[]>([])
   const [isFocused, setIsFocused] = useState(true)
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
-  const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
+  const [contextMenuAnchor, setContextMenuAnchor] = useState<{ top: number; left: number }>({ top: 0, left: 0 })
   const [showDelete, setShowDelete] = useState(false)
   const repo = useRepository()
   const loadSettings = useContext(LoadSettingsContext)
@@ -125,7 +127,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
 
   useEffect(() => {
     setSelected([])
-  }, [parent])
+  }, [parentContent])
 
   useEffect(() => {
     setIsContextMenuOpened(false)
@@ -153,7 +155,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
   return (
     <div style={{ ...props.style }} {...props.containerProps}>
       {props.enableBreadcrumbs ? <ContentBreadcrumbs onItemClick={i => props.onParentChange(i.content)} /> : null}
-      <DropFileArea parent={parent} style={{ height: '100%', overflow: 'hidden' }}>
+      <DropFileArea parentContent={parentContent} style={{ height: '100%', overflow: 'hidden' }}>
         <div
           style={{
             ...(isFocused ? {} : { opacity: 0.8 }),
@@ -244,6 +246,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
             }
           }}>
           <ContentList<GenericContent>
+            hideHeader={props.hideHeader}
             items={children}
             schema={repo.schemas.getSchema(GenericContent)}
             onRequestActiveItemChange={setActiveContent}
@@ -279,15 +282,39 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
               }
             }}
             onItemDoubleClick={(_ev, item) => handleActivateItem(item)}
+            displayRowCheckbox={!props.disableSelection}
             getSelectionControl={(isSelected, content) => <SelectionControl {...{ isSelected, content }} />}
             onItemContextMenu={(ev, item) => {
               ev.preventDefault()
               setActiveContent(item)
-              setContextMenuAnchor(ev.currentTarget as HTMLElement)
+              setContextMenuAnchor({ top: ev.clientY, left: ev.clientX })
               setIsContextMenuOpened(true)
             }}
             fieldComponent={fieldOptions => {
               switch (fieldOptions.field) {
+                case 'Icon':
+                  return (
+                    <TableCell>
+                      <Icon item={fieldOptions.content} />
+                    </TableCell>
+                  )
+                case 'Email' as any:
+                  return (
+                    <TableCell>
+                      <a href={`mailto:${fieldOptions.content[fieldOptions.field]}`}>
+                        {fieldOptions.content[fieldOptions.field]}
+                      </a>
+                    </TableCell>
+                  )
+                case 'Phone' as any:
+                  return (
+                    <TableCell>
+                      <a href={`tel:${fieldOptions.content[fieldOptions.field]}`}>
+                        {fieldOptions.content[fieldOptions.field]}
+                      </a>
+                    </TableCell>
+                  )
+
                 case 'DisplayName':
                   return (
                     <DisplayNameComponent
@@ -359,7 +386,8 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
               <ContentContextMenu
                 menuProps={{
                   disablePortal: true,
-                  anchorEl: contextMenuAnchor,
+                  anchorReference: 'anchorPosition',
+                  anchorPosition: contextMenuAnchor,
                   BackdropProps: {
                     onClick: () => setIsContextMenuOpened(false),
                     onContextMenu: ev => ev.preventDefault(),
