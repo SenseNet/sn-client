@@ -24,7 +24,6 @@ const GenericContentEditor: React.FunctionComponent<RouteComponentProps<{ conten
               <>
                 {content && content.Id === contentId ? (
                   <EditView
-                    schema={repo.schemas.getSchemaByName(content.Type)}
                     content={content}
                     repository={repo}
                     onSubmit={(id, c) => {
