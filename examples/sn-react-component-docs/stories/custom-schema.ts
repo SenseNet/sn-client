@@ -1086,7 +1086,7 @@ export const customSchema = [
         Compulsory: false,
         OutputMethod: 0,
         Visible: false,
-        VisibleBrowse: 1,
+        VisibleBrowse: 0,
         VisibleEdit: 0,
         VisibleNew: 0,
         DefaultOrder: 0,

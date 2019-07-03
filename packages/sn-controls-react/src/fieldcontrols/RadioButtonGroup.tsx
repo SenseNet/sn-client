@@ -26,7 +26,9 @@ export class RadioButtonGroup extends Component<ReactClientFieldSetting<ChoiceFi
     super(props)
     this.state = {
       value:
-        (this.props.content && this.props.content[this.props.settings.Name]) || this.props.settings.DefaultValue || '',
+        (this.props.content && this.props.content[this.props.settings.Name][0]) ||
+        this.props.settings.DefaultValue ||
+        '',
     }
   }
   /**
@@ -67,31 +69,18 @@ export class RadioButtonGroup extends Component<ReactClientFieldSetting<ChoiceFi
         )
       case 'browse':
       default: {
-        const value = this.props.content && this.props.content[this.props.settings.Name]
+        const value = this.props.content && this.props.content[this.props.settings.Name][0]
         return value ? (
           <FormControl component={'fieldset' as 'div'}>
             <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
             <FormGroup>
-              {Array.isArray(value) ? (
-                value.map((val: any, index: number) => (
-                  <FormControl component={'fieldset' as 'div'} key={index}>
-                    <FormControlLabel
-                      style={{ marginLeft: 0 }}
-                      label={this.props.settings.Options!.find(item => item.Value === val)!.Text}
-                      control={<span />}
-                      key={val}
-                    />
-                  </FormControl>
-                ))
-              ) : (
-                <FormControl component={'fieldset' as 'div'}>
-                  <FormControlLabel
-                    style={{ marginLeft: 0 }}
-                    label={this.props.settings.Options!.find(item => item.Value === value)!.Text}
-                    control={<span />}
-                  />
-                </FormControl>
-              )}
+              <FormControl component={'fieldset' as 'div'}>
+                <FormControlLabel
+                  style={{ marginLeft: 0 }}
+                  label={this.props.settings.Options!.find(item => item.Value === value)!.Text}
+                  control={<span />}
+                />
+              </FormControl>
             </FormGroup>
           </FormControl>
         ) : null

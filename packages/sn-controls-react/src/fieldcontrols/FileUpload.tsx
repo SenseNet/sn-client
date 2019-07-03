@@ -58,6 +58,7 @@ interface Binary {
 export function FileUpload(props: ReactClientFieldSetting<BinaryFieldSetting, File>) {
   const [fileName, setFileName] = useState('')
   useEffect(() => {
+    const ac = new AbortController()
     // eslint-disable-next-line require-jsdoc
     async function fetchData() {
       if (!props.repository) {
@@ -67,12 +68,16 @@ export function FileUpload(props: ReactClientFieldSetting<BinaryFieldSetting, Fi
         return
       }
       const loadPath = PathHelper.joinPaths(PathHelper.getContentUrl(props.content.Path), '/', props.settings.Name)
-      const binaryField = ((await props.repository.load({ idOrPath: loadPath })) as unknown) as ODataResponse<{
+      const binaryField = ((await props.repository.load({
+        idOrPath: loadPath,
+        requestInit: { signal: ac.signal },
+      })) as unknown) as ODataResponse<{
         Binary: Binary
       }>
       setFileName(binaryField.d.Binary.FileName.FullFileName)
     }
     fetchData()
+    return () => ac.abort()
   }, [props.content, props.repository, props.settings.Name])
 
   /**
