@@ -12,7 +12,7 @@ import { customSchema } from './custom-schema'
 
 export const testRepository = new Repository({
   repositoryUrl: 'https://devservice.demo.sensenet.com',
-  requiredSelect: ['Id', 'Path', 'Name', 'Type', 'ParentId', 'DisplayName'] as any,
+  requiredSelect: ['Id', 'Path', 'Name', 'Type', 'ParentId', 'DisplayName'],
   schemas: customSchema,
   sessionLifetime: 'expiration',
 })
@@ -25,7 +25,7 @@ export const testFile: File = {
   Watermark: 'sensenet',
   Type: 'File',
   Index: 42,
-  VersioningMode: VersioningMode.Option0,
+  VersioningMode: [VersioningMode.Option0],
   AllowedChildTypes: [1, 2],
   Description:
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec iaculis lectus, sed blandit urna. Nullam in auctor odio, eu eleifend diam. Curabitur rutrum ullamcorper nunc, sit amet consectetur turpis elementum ac. Aenean lorem lorem, feugiat sit amet sem at, accumsan cursus leo.',

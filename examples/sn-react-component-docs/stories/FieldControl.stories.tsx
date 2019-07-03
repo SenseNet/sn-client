@@ -90,7 +90,7 @@ const testContent: GenericContent = {
   Id: 4808,
   Path: '/Root/Sites/Default_Site',
   Type: 'GenericContent',
-  VersioningMode: VersioningMode.Option0,
+  VersioningMode: [VersioningMode.Option0, VersioningMode.Option1],
   ModificationDate: new Date().toISOString(),
   Index: 42,
 }
