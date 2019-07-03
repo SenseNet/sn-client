@@ -4,7 +4,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import { ODataParams } from '@sensenet/client-core'
-import { PathHelper } from '@sensenet/client-utils'
+import { PathHelper, sleepAsync } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Created } from '@sensenet/repository-events'
 import React, { useContext, useEffect, useState } from 'react'
@@ -36,6 +36,7 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
   const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
   const [error, setError] = useState<Error | undefined>()
+  const [isLoading, setIsLoading] = useState(false)
 
   const update = () => setReloadToken(Math.random())
 
@@ -86,6 +87,7 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
     const ac = new AbortController()
     ;(async () => {
       try {
+        setIsLoading(true)
         const children = await repo.loadCollection({
           path: props.parentPath,
           requestInit: {
@@ -101,6 +103,9 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
         if (!ac.signal.aborted) {
           setError(err)
         }
+      } finally {
+        await sleepAsync(300)
+        if (!ac.signal.aborted) setIsLoading(false)
       }
     })()
     return () => ac.abort()
@@ -128,6 +133,9 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
                   button={true}
                   selected={props.activeItemId === content.Id}
                   onClick={() => {
+                    if (isLoading) {
+                      return
+                    }
                     props.onItemClick && props.onItemClick(content)
                     setOpened(
                       isOpened ? opened.filter(o => o !== content.Id) : Array.from(new Set([...opened, content.Id])),
