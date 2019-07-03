@@ -39,23 +39,6 @@ const modules = {
   ],
 }
 
-const formats = [
-  'header',
-  'font',
-  'size',
-  'bold',
-  'italic',
-  'underline',
-  'strike',
-  'blockquote',
-  'list',
-  'bullet',
-  'indent',
-  'link',
-  'image',
-  'video',
-]
-
 /**
  * Field control that represents a LongText field. Available values will be populated from the FieldSettings.
  */
@@ -102,7 +85,6 @@ export class RichTextEditor extends Component<ReactClientFieldSetting, RichTextE
               defaultValue={this.props.settings.DefaultValue}
               readOnly={this.props.settings.ReadOnly}
               modules={modules}
-              formats={formats}
               onChange={this.handleChange}
               value={this.state.value}
               theme="snow"
@@ -119,14 +101,8 @@ export class RichTextEditor extends Component<ReactClientFieldSetting, RichTextE
             <Typography variant="caption" gutterBottom={true}>
               {this.props.settings.DisplayName}
             </Typography>
-            {/* This needs to be reviewed!
-             variant="body1" means p. this works when the value doesn't contains html
-             and NOT when value contains html tags!*/}
-            <Typography
-              variant="body1"
-              gutterBottom={true}
-              dangerouslySetInnerHTML={{ __html: this.props.content[this.props.settings.Name] }}
-            />
+
+            <div dangerouslySetInnerHTML={{ __html: this.props.content[this.props.settings.Name] }} />
           </div>
         ) : null
     }

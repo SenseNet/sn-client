@@ -135,7 +135,7 @@ export class AllowedChildTypes extends Component<ReactClientFieldSetting, Allowe
       throw new Error('You must pass a repository to this control')
     }
     if (!this.props.content) {
-      throw new Error('You must pass a content to this control to see the allowed child types.')
+      return
     }
 
     const result = await this.props.repository.load<GenericContent>({

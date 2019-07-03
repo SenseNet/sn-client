@@ -16,6 +16,7 @@ import {
   NumberComponent,
   Password,
   RadioButtonGroup,
+  reactControlMapper,
   ReferenceGrid,
   RichTextEditor,
   ShortText,
@@ -267,15 +268,19 @@ fieldControlStory({
 })
 
 fieldControlStory({
-  component: actionName => (
-    <DynamicControl
-      actionName={actionName}
-      repository={testRepository}
-      content={testContent}
-      component={FileName}
-      fieldName="Name"
-    />
-  ),
+  component: actionName => {
+    const schema = reactControlMapper(testRepository).getFullSchemaForContentType('File', actionName)
+    const fieldMapping = schema.fieldMappings.find(a => a.fieldSettings.Name === 'DisplayName')
+    return (
+      <FileName
+        actionName={actionName}
+        repository={testRepository}
+        content={actionName !== 'new' ? fileContent : undefined}
+        extension="jpg"
+        settings={fieldMapping!.fieldSettings}
+      />
+    )
+  },
   markdown: filenameNotes,
   storyName: 'FieldControls.FileName',
 })

@@ -4,16 +4,15 @@
 import React, { useState } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-// import { TextFieldSetting } from '@sensenet/default-content-types'
+import { TextFieldSetting } from '@sensenet/default-content-types'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
-// TODO: implement TextFieldSetting MinLength, MaxLength
 /**
  * Field control that represents a ShortText field. Available values will be populated from the FieldSettings.
  */
-export function ShortText(props: ReactClientFieldSetting) {
+export function ShortText(props: ReactClientFieldSetting<TextFieldSetting>) {
   const [value, setValue] = useState(
-    (props.content && props.content[props.settings.Name]) || props.settings.DefaultValue,
+    (props.content && props.content[props.settings.Name]) || props.settings.DefaultValue || '',
   )
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) => {
@@ -34,6 +33,7 @@ export function ShortText(props: ReactClientFieldSetting) {
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}
           defaultValue={props.settings.DefaultValue}
+          inputProps={{ minLength: props.settings.MinLength, maxLength: props.settings.MaxLength }}
           fullWidth={true}
           onChange={handleChange}
           helperText={props.settings.Description}
