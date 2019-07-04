@@ -1,16 +1,16 @@
 import React from 'react'
 import WbSunnyTwoTone from '@material-ui/icons/WbSunnyTwoTone'
 import {
-  Typography,
+  Button,
   List,
   ListItem,
-  ListItemText,
   ListItemAvatar,
   ListItemSecondaryAction,
-  Button,
+  ListItemText,
+  Typography,
 } from '@material-ui/core'
 import { Widget } from '../../services/PersonalSettings'
-import { useStringReplace, useVersionInfo, useLocalization, useTheme } from '../../hooks'
+import { useLocalization, useStringReplace, useTheme, useVersionInfo } from '../../hooks'
 
 export const UpdatesWidget: React.FunctionComponent<Widget<undefined>> = props => {
   const replacedTitle = useStringReplace(props.title)

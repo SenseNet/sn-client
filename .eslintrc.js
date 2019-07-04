@@ -74,6 +74,7 @@ module.exports = {
     'prefer-template': 'error',
     'prefer-destructuring': ['error', { array: false, object: true }],
     'default-case': 'error',
+    'sort-imports': ['error', { ignoreCase: true, ignoreDeclarationSort: true }],
   },
   overrides: [
     {
@@ -83,6 +84,12 @@ module.exports = {
         '@typescript-eslint/no-non-null-assertion': 'off',
         '@typescript-eslint/no-object-literal-type-assertion': 'off',
         'dot-notation': 'off',
+      },
+    },
+    {
+      files: ['examples/sn-react-component-docs/**/*.{ts,tsx}'],
+      rules: {
+        'require-jsdoc': 'off',
       },
     },
   ],

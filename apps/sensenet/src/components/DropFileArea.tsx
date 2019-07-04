@@ -1,6 +1,6 @@
 import CloudUploadTwoTone from '@material-ui/icons/CloudUploadTwoTone'
 import { GenericContent } from '@sensenet/default-content-types'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { UploadProgressInfo } from '@sensenet/client-core'
 import { ObservableValue } from '@sensenet/client-utils'
 import { useInjector, useRepository, useTheme } from '../hooks'

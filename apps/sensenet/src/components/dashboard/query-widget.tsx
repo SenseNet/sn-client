@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react'
-import { Typography, IconButton, Tooltip } from '@material-ui/core'
+import React, { useEffect, useState } from 'react'
+import { IconButton, Tooltip, Typography } from '@material-ui/core'
 import Refresh from '@material-ui/icons/RefreshTwoTone'
 import OpenInNewTwoTone from '@material-ui/icons/OpenInNewTwoTone'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ConstantContent, ODataParams } from '@sensenet/client-core'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { QueryWidget as QueryWidgetModel } from '../../services/PersonalSettings'
-import { useRepository, useContentRouting, useLocalization, useSelectionService, useStringReplace } from '../../hooks'
+import { useContentRouting, useLocalization, useRepository, useSelectionService, useStringReplace } from '../../hooks'
 import { CollectionComponent, isReferenceField } from '../ContentListPanel'
 import {
-  CurrentContentContext,
-  CurrentChildrenContext,
   CurrentAncestorsContext,
+  CurrentChildrenContext,
+  CurrentContentContext,
   LoadSettingsContext,
 } from '../../context'
 

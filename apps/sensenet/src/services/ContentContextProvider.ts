@@ -1,11 +1,11 @@
 import { Repository } from '@sensenet/client-core'
 import {
+  ActionModel,
   ContentType,
-  File as SnFile,
   GenericContent,
   Resource,
   Settings,
-  ActionModel,
+  File as SnFile,
 } from '@sensenet/default-content-types'
 import { isContentFromType } from '../utils/isContentFromType'
 

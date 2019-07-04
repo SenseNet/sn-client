@@ -227,6 +227,10 @@ export interface UploadFileOptions<T> extends UploadOptions<T> {
    * The File instance
    */
   file: File
+  /**
+   * The name of the File object. Overwriting this can be used to change a content's binary.
+   */
+  fileName?: string
 }
 
 /**

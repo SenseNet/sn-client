@@ -1,9 +1,9 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { ODataWopiResponse } from '@sensenet/client-core'
-import { Typography, Button } from '@material-ui/core'
+import { Button, Typography } from '@material-ui/core'
 import { isExtendedError } from '@sensenet/client-core/dist/Repository/Repository'
-import { useRepository, useLogger, useLocalization } from '../hooks'
+import { useLocalization, useLogger, useRepository } from '../hooks'
 import { FullScreenLoader } from './FullScreenLoader'
 
 const WopiPage: React.FunctionComponent<RouteComponentProps<{ documentId?: string; action?: string }>> = props => {
