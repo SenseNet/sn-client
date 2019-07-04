@@ -1,7 +1,7 @@
 import { CurrencyFieldSetting, FieldSetting, GenericContent, User } from '@sensenet/default-content-types'
 
 /**
- * Typeguard for user. let typescript know that the content is a User.
+ * Typeguard for user. Lets typescript know that the content is a User.
  * @param {GenericContent} content
  * @returns {content is User}
  */
