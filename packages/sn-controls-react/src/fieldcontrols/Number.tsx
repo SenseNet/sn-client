@@ -7,6 +7,7 @@ import React, { Component } from 'react'
 import { CurrencyFieldSetting, NumberFieldSetting } from '@sensenet/default-content-types'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
+import { isCurrencyFieldSetting } from './type-guards'
 
 /**
  * Interface for Number state
@@ -51,13 +52,12 @@ export class NumberComponent extends Component<
   }
 
   /**
-   * Returns inputadornment by currency and percentage settings
+   * Returns inputadornment by currency
    */
   public defineCurrency = () => {
-    // Todo: Currency
-    // if ((this.props.settings as CurrencyFieldSetting).Format != null) {
-    //   return <InputAdornment position="start">{this.props.content[this.props.settings.Name]}</InputAdornment>
-    // }
+    if (isCurrencyFieldSetting(this.props.settings) && this.props.settings.Format) {
+      return <InputAdornment position="start">{this.props.settings.Format}</InputAdornment>
+    }
     return null
   }
 
@@ -98,7 +98,11 @@ export class NumberComponent extends Component<
               {this.props.settings.DisplayName}
             </Typography>
             <Typography variant="body1" gutterBottom={true}>
-              {/* {this.props.isCurrency ? (this.props.currency ? this.props.currency : '$') : null} */}
+              {isCurrencyFieldSetting(this.props.settings)
+                ? this.props.settings.Format
+                  ? this.props.settings.Format
+                  : '$'
+                : null}
               {this.state.value}
               {this.props.settings.ShowAsPercentage ? '%' : null}
             </Typography>

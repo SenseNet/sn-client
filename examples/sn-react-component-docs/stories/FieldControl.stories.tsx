@@ -78,7 +78,7 @@ const fileContent: Image = {
   Icon: 'image',
 }
 
-const testContent: GenericContent = {
+const testContent: GenericContent & { ExpectedRevenue: number } = {
   Name: 'Document_Library',
   DisplayName: 'Document Library',
   Description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu mi arcu.
@@ -93,6 +93,7 @@ const testContent: GenericContent = {
   VersioningMode: [VersioningMode.Option0, VersioningMode.Option1],
   ModificationDate: new Date().toISOString(),
   Index: 42,
+  ExpectedRevenue: 21.0,
 }
 
 const userContent: User = {
@@ -341,8 +342,22 @@ fieldControlStory({
       fieldName="TaskCompletion"
     />
   ),
-  markdown: '',
+  markdown: numberNotes,
   storyName: 'FieldControls.Number.Percantage',
+})
+
+fieldControlStory({
+  component: actionName => (
+    <DynamicControl
+      actionName={actionName}
+      repository={testRepository}
+      content={testContent}
+      component={NumberComponent}
+      fieldName="ExpectedRevenue"
+    />
+  ),
+  markdown: numberNotes,
+  storyName: 'FieldControls.Number.Currency',
 })
 
 fieldControlStory({
