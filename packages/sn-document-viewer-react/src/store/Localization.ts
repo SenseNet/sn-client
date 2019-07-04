@@ -78,7 +78,7 @@ export const defaultLocalization: LocalizationStateType = {
   saveChanges: 'Save changes',
   loadingDocument: 'Preview image generation is in progress',
   errorLoadingDocument: [
-    { state: PreviewState.Empty, message: "The document doesn't have any preview images", details: '' },
+    { state: PreviewState.Empty, message: "No preview available, because the document is empty!", details: '' },
     {
       code: 500,
       state: PreviewState.Empty,
@@ -92,11 +92,11 @@ export const defaultLocalization: LocalizationStateType = {
       message: 'Ooops! Something went wrong...',
       details: `You don't have permission to see this document \r\n The document you are trying to open has been deleted \r\n The document has been moved to another place `,
     },
-    { state: PreviewState.UploadFailure, message: 'Failed to upload', details: '' },
-    { state: PreviewState.UploadFailure2, message: 'Failed to upload', details: '' },
+    { state: PreviewState.UploadFailure, message: 'Error during preview generation! No preview available.', details: '' },
+    { state: PreviewState.UploadFailure2, message: 'Error during preview generation! No preview available.', details: '' },
     {
       state: PreviewState.ExtensionFailure,
-      message: 'Failed to generate preview images due to an extension error',
+      message: 'No preview available, because this type of file is not supported!',
       details: '',
     },
     { state: PreviewState.NoPreviewProviderEnabled, message: 'There is no preview provider enabled', details: '' },
