@@ -41,4 +41,10 @@ export interface ReactClientFieldSetting<T = FieldSetting, S = GenericContent> {
    * @example 'jpg'
    */
   extension?: string
+
+  /**
+   * Used in Avatar control. You can specify a path for the content to be uploaded.
+   * @example '/Root/Sites/Default_Site/demoavatars'
+   */
+  uploadFolderPath?: string
 }

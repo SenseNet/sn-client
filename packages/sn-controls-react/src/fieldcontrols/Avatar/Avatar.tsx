@@ -49,9 +49,7 @@ export interface AvatarState {
   selected?: GenericContent
 }
 
-type Props = ReactClientFieldSetting<ReferenceFieldSetting, User> & { uploadFolderpath: string }
-
-export class Avatar extends Component<Props, AvatarState> {
+export class Avatar extends Component<ReactClientFieldSetting<ReferenceFieldSetting, User>, AvatarState> {
   state: AvatarState = {
     fieldValue:
       this.props.content &&
@@ -116,54 +114,6 @@ export class Avatar extends Component<Props, AvatarState> {
   public render() {
     switch (this.props.actionName) {
       case 'edit':
-        return (
-          <FormControl
-            style={styles.root as any}
-            key={this.props.settings.Name}
-            component={'fieldset' as 'div'}
-            required={this.props.settings.Compulsory}>
-            <InputLabel shrink={true} htmlFor={this.props.settings.Name}>
-              {this.props.settings.DisplayName}
-            </InputLabel>
-            <List
-              dense={true}
-              style={this.state.fieldValue.length > 0 ? styles.listContainer : { ...styles.listContainer, width: 150 }}>
-              {
-                <DefaultAvatarTemplate
-                  repositoryUrl={this.props.repository!.configuration.repositoryUrl}
-                  url={this.state.fieldValue}
-                  add={this.addItem}
-                  remove={this.removeItem}
-                  actionName="edit"
-                  renderIcon={this.props.renderIcon ? this.props.renderIcon : renderIconDefault}
-                />
-              }
-            </List>
-            {this.props.settings.Description ? (
-              <FormHelperText>{this.props.settings.Description}</FormHelperText>
-            ) : null}
-
-            <Dialog onClose={this.handleDialogClose} open={this.state.pickerIsOpen}>
-              <div style={styles.dialog}>
-                <Typography variant="h5" gutterBottom={true}>
-                  {AVATAR_PICKER_TITLE}
-                </Typography>
-                <AvatarPicker
-                  path={this.props.settings.SelectionRoots ? this.props.settings.SelectionRoots[0] : ''}
-                  repository={this.props.repository!}
-                  select={content => this.selectItem(content)}
-                  renderIcon={this.props.renderIcon ? this.props.renderIcon : renderIconDefault}
-                />
-                <DialogActions>
-                  <Button onClick={this.handleCancelClick}>{CANCEL}</Button>
-                  <Button variant="contained" onClick={this.handleOkClick} color="secondary">
-                    {OK}
-                  </Button>
-                </DialogActions>
-              </div>
-            </Dialog>
-          </FormControl>
-        )
       case 'new':
         return (
           <FormControl
@@ -181,7 +131,7 @@ export class Avatar extends Component<Props, AvatarState> {
                 <DefaultAvatarTemplate
                   repositoryUrl={this.props.repository!.configuration.repositoryUrl}
                   add={this.addItem}
-                  actionName="new"
+                  actionName={this.props.actionName}
                   readOnly={this.props.settings.ReadOnly}
                   url={this.state.fieldValue}
                   remove={this.removeItem}
@@ -199,7 +149,11 @@ export class Avatar extends Component<Props, AvatarState> {
                   {AVATAR_PICKER_TITLE}
                 </Typography>
                 <AvatarPicker
-                  path={this.props.settings.SelectionRoots ? this.props.settings.SelectionRoots[0] : ''}
+                  path={
+                    this.props.uploadFolderPath ||
+                    (this.props.settings.SelectionRoots && this.props.settings.SelectionRoots[0]) ||
+                    ''
+                  }
                   repository={this.props.repository!}
                   select={content => this.selectItem(content)}
                   renderIcon={this.props.renderIcon ? this.props.renderIcon : renderIconDefault}

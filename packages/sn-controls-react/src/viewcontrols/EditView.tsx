@@ -21,6 +21,7 @@ export interface EditViewProps {
   renderIcon?: (name: string) => ReactElement
   handleCancel?: () => void
   submitCallback?: () => void
+  uploadFolderpath?: string
 }
 /**
  * Interface for EditView state
@@ -99,6 +100,7 @@ export class EditView extends Component<EditViewProps, EditViewState> {
                 actionName: 'edit',
                 renderIcon: this.props.renderIcon,
                 fieldOnChange: this.handleInputChange,
+                uploadFolderPath: this.props.uploadFolderpath,
               },
             )
 

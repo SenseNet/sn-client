@@ -25,6 +25,7 @@ export interface NewViewProps {
   submitCallback?: () => void
   title?: string
   extension?: string
+  uploadFolderpath?: string
 }
 /**
  * Interface for NewView state
@@ -109,6 +110,7 @@ export class NewView extends Component<NewViewProps, NewViewState> {
                     renderIcon: this.props.renderIcon,
                     fieldOnChange: this.handleInputChange,
                     extension: this.props.extension,
+                    uploadFolderPath: this.props.uploadFolderpath,
                   },
                 )}
               </Grid>
