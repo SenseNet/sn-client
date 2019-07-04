@@ -35,4 +35,10 @@ export interface ReactClientFieldSetting<T = FieldSetting, S = GenericContent> {
    * On change callback to see when a field value is changed.
    */
   fieldOnChange?: (field: string, value: any) => void
+
+  /**
+   * Property for FileName control. Used in new view mostly.
+   * @example 'jpg'
+   */
+  extension?: string
 }

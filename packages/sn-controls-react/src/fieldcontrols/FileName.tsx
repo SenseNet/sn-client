@@ -8,16 +8,9 @@ import Typography from '@material-ui/core/Typography'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
- * Interface for FileName state
- */
-export interface FileNameState {
-  value: string
-  isValid: boolean
-}
-/**
  * Field control that represents a FileName field. Available values will be populated from the FieldSettings.
  */
-export function FileName(props: ReactClientFieldSetting & { extension?: string }) {
+export function FileName(props: ReactClientFieldSetting) {
   const valueInitialState =
     (props.content &&
       props.content[props.settings.Name]

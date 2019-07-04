@@ -108,6 +108,7 @@ export class NewView extends Component<NewViewProps, NewViewState> {
                     repository: this.props.repository,
                     renderIcon: this.props.renderIcon,
                     fieldOnChange: this.handleInputChange,
+                    extension: this.props.extension,
                   },
                 )}
               </Grid>
