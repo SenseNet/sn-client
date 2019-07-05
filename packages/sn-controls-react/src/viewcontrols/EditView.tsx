@@ -97,6 +97,7 @@ export class EditView extends Component<EditViewProps, EditViewState> {
                 repository: this.props.repository,
                 settings: field.fieldSettings,
                 content: this.state.content,
+                fieldValue: (this.state.content as any)[field.fieldSettings.Name],
                 actionName: 'edit',
                 renderIcon: this.props.renderIcon,
                 fieldOnChange: this.handleInputChange,

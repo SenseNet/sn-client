@@ -78,7 +78,7 @@ const fileContent: Image = {
   Icon: 'image',
 }
 
-const testContent: GenericContent & { ExpectedRevenue: number } = {
+const testContent: GenericContent & { ExpectedRevenue: number; Color: string } = {
   Name: 'Document_Library',
   DisplayName: 'Document Library',
   Description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu mi arcu.
@@ -90,10 +90,11 @@ const testContent: GenericContent & { ExpectedRevenue: number } = {
   Id: 4808,
   Path: '/Root/Sites/Default_Site',
   Type: 'GenericContent',
-  VersioningMode: [VersioningMode.Option0, VersioningMode.Option1],
+  VersioningMode: [VersioningMode.Option1],
   ModificationDate: new Date().toISOString(),
   Index: 42,
   ExpectedRevenue: 21.0,
+  Color: '#016d9e',
 }
 
 const userContent: User = {
@@ -278,6 +279,7 @@ fieldControlStory({
         repository={testRepository}
         content={actionName !== 'new' ? fileContent : undefined}
         extension="jpg"
+        fieldValue={actionName !== 'new' ? fileContent.DisplayName : undefined}
         settings={fieldMapping!.fieldSettings}
       />
     )

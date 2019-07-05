@@ -12,8 +12,8 @@ import { ReactClientFieldSetting } from './ClientFieldSetting'
  */
 export function FileName(props: ReactClientFieldSetting) {
   const valueInitialState =
-    (props.content &&
-      props.content[props.settings.Name]
+    (props.fieldValue &&
+      props.fieldValue
         .replace(/<[^>]*>/g, '')
         .split('.')
         .slice(0, -1)
@@ -23,8 +23,8 @@ export function FileName(props: ReactClientFieldSetting) {
   const [value, setValue] = useState(valueInitialState)
 
   const getExtension = () => {
-    if (props.content && props.content[props.settings.Name] && props.content[props.settings.Name].indexOf('.') > -1) {
-      return props.content[props.settings.Name].substr(props.content[props.settings.Name].lastIndexOf('.') + 1)
+    if (props.fieldValue && props.fieldValue.indexOf('.') > -1) {
+      return props.fieldValue.substr(props.fieldValue.lastIndexOf('.') + 1)
     }
     if (props.extension) {
       return props.extension
@@ -67,13 +67,13 @@ export function FileName(props: ReactClientFieldSetting) {
       )
     case 'browse':
     default:
-      return props.content && props.content[props.settings.Name] ? (
+      return props.fieldValue ? (
         <div>
           <Typography variant="caption" gutterBottom={true}>
             {props.settings.DisplayName}
           </Typography>
           <Typography variant="body1" gutterBottom={true}>
-            {props.content[props.settings.Name]}
+            {props.fieldValue}
           </Typography>
         </div>
       ) : null

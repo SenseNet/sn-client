@@ -12,14 +12,14 @@ import { ReactClientFieldSetting } from './ClientFieldSetting'
  * Interface for TimePicker state
  */
 export interface TimePickerState {
-  value: moment.Moment
+  value: string
 }
 /**
  * Field control that represents a DateTime field. Available values will be populated from the FieldSettings.
  */
 export class TimePicker extends React.Component<ReactClientFieldSetting<DateTimeFieldSetting>, TimePickerState> {
-  state = {
-    value: (this.props.content && this.props.content[this.props.settings.Name]) || this.props.settings.DefaultValue,
+  state: TimePickerState = {
+    value: this.props.fieldValue || this.props.settings.DefaultValue || moment().toISOString(),
   }
 
   /**
@@ -31,7 +31,7 @@ export class TimePicker extends React.Component<ReactClientFieldSetting<DateTime
       return
     }
     this.setState({
-      value: moment.utc(date),
+      value: moment.utc(date).toString(),
     })
     this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, moment.utc(date))
   }
@@ -58,10 +58,10 @@ export class TimePicker extends React.Component<ReactClientFieldSetting<DateTime
           </MuiPickersUtilsProvider>
         )
       default:
-        return this.props.content && this.props.content[this.props.settings.Name] ? (
+        return this.props.fieldValue ? (
           <div>
             <label>{this.props.settings.DisplayName}</label>
-            <p>{moment(this.props.content[this.props.settings.Name]).format('HH:mm:ss')}</p>
+            <p>{moment(this.props.fieldValue).format('HH:mm:ss')}</p>
           </div>
         ) : null
     }

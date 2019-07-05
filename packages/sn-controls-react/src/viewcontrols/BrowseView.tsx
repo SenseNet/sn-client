@@ -39,6 +39,7 @@ export function BrowseView(props: BrowseViewProps) {
                   actionName: 'browse',
                   settings: field.fieldSettings,
                   content: props.content,
+                  fieldValue: (props.content as any)[field.fieldSettings.Name],
                   renderIcon: props.renderIcon,
                   repository: props.repository,
                 },

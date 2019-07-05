@@ -1,7 +1,6 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormGroup from '@material-ui/core/FormGroup'
 import FormLabel from '@material-ui/core/FormLabel'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import Menu from '@material-ui/core/Menu'
@@ -34,10 +33,10 @@ export class AutoComplete extends Component<ReactClientFieldSetting<ReferenceFie
    * state initialization
    */
   public state: AutoCompleteState = {
-    inputValue: (this.props.content && this.props.content[this.props.settings.Name][0].DisplayName) || '',
+    inputValue: this.props.fieldValue || '',
     isOpened: false,
     isLoading: false,
-    selected: this.props.content && this.props.content[this.props.settings.Name],
+    selected: [],
     anchorEl: null as any,
     items: [],
   }
@@ -189,23 +188,12 @@ export class AutoComplete extends Component<ReactClientFieldSetting<ReferenceFie
         )
       case 'browse':
       default: {
-        const value = this.props.content && this.props.content[this.props.settings.Name]
-        return value ? (
+        return this.props.fieldValue ? (
           <FormControl component={'fieldset' as 'div'}>
             <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
-            <FormGroup>
-              {Array.isArray(value) ? (
-                value.map((val: GenericContent) => (
-                  <FormControl component={'fieldset' as 'div'} key={val.Id}>
-                    <FormControlLabel style={{ marginLeft: 0 }} label={val.DisplayName} control={<span />} />
-                  </FormControl>
-                ))
-              ) : (
-                <FormControl component={'fieldset' as 'div'}>
-                  <FormControlLabel style={{ marginLeft: 0 }} label={value.DisplayName} control={<span />} />
-                </FormControl>
-              )}
-            </FormGroup>
+            <FormControl component={'fieldset' as 'div'}>
+              <FormControlLabel style={{ marginLeft: 0 }} label={this.props.fieldValue} control={<span />} />
+            </FormControl>
           </FormControl>
         ) : null
       }

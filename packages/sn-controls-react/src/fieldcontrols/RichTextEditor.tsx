@@ -9,7 +9,6 @@ import React, { Component } from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
-
 /**
  * Interface for RichTextEditor state
  */
@@ -49,13 +48,8 @@ export class RichTextEditor extends Component<ReactClientFieldSetting, RichTextE
    */
   constructor(props: RichTextEditor['props']) {
     super(props)
-    /**
-     * @type {object}
-     * @property {string} value input value
-     */
     this.state = {
-      value:
-        (this.props.content && this.props.content[this.props.settings.Name]) || this.props.settings.DefaultValue || '',
+      value: this.props.fieldValue || this.props.settings.DefaultValue || '',
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -94,15 +88,13 @@ export class RichTextEditor extends Component<ReactClientFieldSetting, RichTextE
         )
       case 'browse':
       default:
-        return this.props.content &&
-          this.props.content[this.props.settings.Name] &&
-          this.props.content[this.props.settings.Name].length > 0 ? (
+        return this.props.fieldValue ? (
           <div>
             <Typography variant="caption" gutterBottom={true}>
               {this.props.settings.DisplayName}
             </Typography>
 
-            <div dangerouslySetInnerHTML={{ __html: this.props.content[this.props.settings.Name] }} />
+            <div dangerouslySetInnerHTML={{ __html: this.props.fieldValue }} />
           </div>
         ) : null
     }

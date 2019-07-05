@@ -19,7 +19,11 @@ export function CheckboxGroup(props: ReactClientFieldSetting<ChoiceFieldSetting>
   const initialState =
     props.settings.Options &&
     props.settings.Options.map(item =>
-      props.content && props.content[props.settings.Name].some((val: string) => val === item.Value)
+      props.fieldValue && Array.isArray(props.fieldValue)
+        ? props.fieldValue.some((val: string) => val === item.Value)
+          ? { ...item, Selected: true }
+          : { ...item, Selected: false }
+        : item.Value === props.fieldValue
         ? { ...item, Selected: true }
         : { ...item, Selected: false },
     )
@@ -66,13 +70,12 @@ export function CheckboxGroup(props: ReactClientFieldSetting<ChoiceFieldSetting>
       )
     case 'browse':
     default: {
-      const value = props.content && props.content[props.settings.Name]
-      return value ? (
+      return props.fieldValue ? (
         <FormControl component={'fieldset' as 'div'}>
           <FormLabel component={'legend' as 'label'}>{props.settings.DisplayName}</FormLabel>
           <FormGroup>
-            {Array.isArray(value) ? (
-              value.map((val: any, index: number) => (
+            {Array.isArray(props.fieldValue) ? (
+              props.fieldValue.map((val: any, index: number) => (
                 <FormControl component={'fieldset' as 'div'} key={index}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
@@ -86,7 +89,7 @@ export function CheckboxGroup(props: ReactClientFieldSetting<ChoiceFieldSetting>
               <FormControl component={'fieldset' as 'div'}>
                 <FormControlLabel
                   style={{ marginLeft: 0 }}
-                  label={props.settings.Options!.find(item => item.Value === value)!.Text}
+                  label={props.settings.Options!.find(item => item.Value === (props.fieldValue as string))!.Text}
                   control={<span />}
                 />
               </FormControl>

@@ -20,7 +20,7 @@ export interface TextareaState {
 export class Textarea extends Component<ReactClientFieldSetting<LongTextFieldSetting>, TextareaState> {
   state = {
     value:
-      (this.props.content && this.props.content[this.props.settings.Name].replace(/<[^>]*>/g, '')) ||
+      (this.props.fieldValue && this.props.fieldValue.replace(/<[^>]*>/g, '')) ||
       this.props.settings.DefaultValue ||
       '',
   }
@@ -53,15 +53,13 @@ export class Textarea extends Component<ReactClientFieldSetting<LongTextFieldSet
         )
       case 'browse':
       default:
-        return this.props.content &&
-          this.props.content[this.props.settings.Name] &&
-          this.props.content[this.props.settings.Name].length > 0 ? (
+        return this.props.fieldValue ? (
           <div>
             <Typography variant="caption" gutterBottom={true}>
               {this.props.settings.DisplayName}
             </Typography>
             <Typography variant="body1" gutterBottom={true}>
-              {this.props.content[this.props.settings.Name]}
+              {this.props.fieldValue}
             </Typography>
           </div>
         ) : null

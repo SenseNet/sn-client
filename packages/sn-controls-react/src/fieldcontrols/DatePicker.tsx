@@ -14,27 +14,18 @@ import { DateTimeFieldSetting, DateTimeMode } from '@sensenet/default-content-ty
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
- * Interface for DatePicker state
- */
-export interface State {
-  value: MaterialUiPickersDate
-}
-/**
  * Field control that represents a Date field. Available values will be populated from the FieldSettings.
  */
 export function DatePicker(props: ReactClientFieldSetting<DateTimeFieldSetting>) {
-  const initialState =
-    props.content && props.content[props.settings.Name]
-      ? props.content[props.settings.Name]
-      : props.settings.DefaultValue || moment()
+  const initialState = props.fieldValue || props.settings.DefaultValue || moment().toISOString()
   const [value, setValue] = useState(initialState)
 
   const handleDateChange = (date: MaterialUiPickersDate) => {
     if (!date) {
       return
     }
-    setValue(date)
-    props.fieldOnChange && props.fieldOnChange(props.settings.Name, moment.utc(date))
+    setValue(date.toISOString())
+    props.fieldOnChange && props.fieldOnChange(props.settings.Name, moment.utc(date).toISOString())
   }
 
   switch (props.actionName) {
@@ -68,17 +59,17 @@ export function DatePicker(props: ReactClientFieldSetting<DateTimeFieldSetting>)
         </MuiPickersUtilsProvider>
       )
     default:
-      return props.content && props.content[props.settings.Name] ? (
+      return props.fieldValue ? (
         <div>
           <label>{props.settings.DisplayName}</label>
           {props.settings.DateTimeMode === DateTimeMode.Date ? (
             <p>
-              {moment(props.content[props.settings.Name])
+              {moment(props.fieldValue)
                 .format('LL')
                 .toLocaleString()}
             </p>
           ) : (
-            <p>{moment(props.content[props.settings.Name]).toLocaleString()}</p>
+            <p>{moment(props.fieldValue).toLocaleString()}</p>
           )}
         </div>
       ) : null

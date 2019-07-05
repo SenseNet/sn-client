@@ -1,4 +1,7 @@
-export const typeicons = {
+interface Icons {
+  [key: string]: string
+}
+export const typeicons: Icons = {
   contenttype: 'assignment',
   content: 'insert_drive_file',
   webcontent: 'insert_drive_file',

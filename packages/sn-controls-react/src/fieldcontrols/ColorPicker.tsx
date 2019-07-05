@@ -49,7 +49,7 @@ export class ColorPicker extends Component<ReactClientFieldSetting<ColorFieldSet
      * @property {string} value input value
      */
     this.state = {
-      value: (this.props.content && this.setValue(this.props.content[this.props.settings.Name])) || '',
+      value: (this.props.fieldValue && this.setValue(this.props.fieldValue)) || '',
       pickerIsOpen: false,
     }
 

@@ -7,6 +7,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import InputLabel from '@material-ui/core/InputLabel'
 import React, { Component } from 'react'
+import { FieldSetting } from '@sensenet/default-content-types'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 import { renderIconDefault } from './icon'
 
@@ -20,21 +21,9 @@ export interface BooleanState {
 /**
  * Field control that represents a Choice field. Available values will be populated from the FieldSettings.
  */
-export class BooleanComponent extends Component<ReactClientFieldSetting, BooleanState> {
-  /**
-   * constructor
-   * @param {object} props
-   */
-
-  constructor(props: BooleanComponent['props']) {
-    super(props)
-    this.state = {
-      value:
-        this.props.content && this.props.content[this.props.settings.Name] != null
-          ? this.props.content[this.props.settings.Name]
-          : this.props.settings.DefaultValue,
-    }
-    this.handleChange = this.handleChange.bind(this)
+export class BooleanComponent extends Component<ReactClientFieldSetting<FieldSetting>, BooleanState> {
+  state = {
+    value: this.props.fieldValue != null ? !!this.props.fieldValue : !!this.props.settings.DefaultValue,
   }
   /**
    * set selected value
@@ -68,14 +57,14 @@ export class BooleanComponent extends Component<ReactClientFieldSetting, Boolean
         )
       case 'browse':
       default:
-        return this.props.content && this.props.content[this.props.settings.Name] != null ? (
+        return this.props.fieldValue != null ? (
           <FormControl component={'fieldset' as 'div'}>
-            <InputLabel shrink={true} htmlFor={name as string}>
+            <InputLabel shrink={true} htmlFor={this.props.settings.Name}>
               {this.props.settings.DisplayName}
             </InputLabel>
             {this.props.renderIcon
-              ? this.props.renderIcon(this.state.value ? 'check' : 'not_interested')
-              : renderIconDefault(this.state.value ? 'check' : 'not_interested')}
+              ? this.props.renderIcon(this.props.fieldValue ? 'check' : 'not_interested')
+              : renderIconDefault(this.props.fieldValue ? 'check' : 'not_interested')}
           </FormControl>
         ) : null
     }

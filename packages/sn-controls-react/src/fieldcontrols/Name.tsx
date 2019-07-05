@@ -26,7 +26,7 @@ export class Name extends Component<ReactClientFieldSetting, NameState> {
      * @property {string} value input value
      */
     this.state = {
-      value: (this.props.content && this.setValue(this.props.content[this.props.settings.Name])) || '',
+      value: (this.props.fieldValue && this.setValue(this.props.fieldValue)) || '',
       isValid: this.props.settings.Compulsory ? false : true,
       error: '',
     }
@@ -81,15 +81,13 @@ export class Name extends Component<ReactClientFieldSetting, NameState> {
         )
       case 'browse':
       default:
-        return this.props.content &&
-          this.props.content[this.props.settings.Name] &&
-          this.props.content[this.props.settings.Name].length > 0 ? (
+        return this.props.fieldValue ? (
           <div>
             <Typography variant="caption" gutterBottom={true}>
               {this.props.settings.DisplayName}
             </Typography>
             <Typography variant="body1" gutterBottom={true}>
-              {this.props.content[this.props.settings.Name]}
+              {this.props.fieldValue}
             </Typography>
           </div>
         ) : null

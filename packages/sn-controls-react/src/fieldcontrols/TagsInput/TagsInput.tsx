@@ -64,10 +64,7 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
     }
     this.state = {
       dataSource: [],
-      fieldValue:
-        this.props.content && this.props.content[this.props.settings.Name]
-          ? this.props.content[this.props.settings.Name]
-          : [],
+      fieldValue: [],
     }
     this.search()
   }
@@ -130,11 +127,7 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
       throw new Error('You must pass a repository to this control')
     }
     const loadPath = this.props.content
-      ? PathHelper.joinPaths(
-          PathHelper.getContentUrl(this.props.content.Path),
-          '/',
-          this.props.settings.Name.toString(),
-        )
+      ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props.content.Path), '/', this.props.settings.Name)
       : ''
     const references = await this.props.repository.loadCollection<GenericContent>({
       path: loadPath,
@@ -228,11 +221,11 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
         )
       case 'browse':
       default:
-        return this.props.content && this.props.content[this.props.settings.Name].length > 0 ? (
+        return this.props.fieldValue ? (
           <FormControl component={'fieldset' as 'div'}>
             <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
             <FormGroup>
-              {this.props.content[this.props.settings.Name].map((content: GenericContent, index: number) => (
+              {(this.props.fieldValue as any).map((content: GenericContent, index: number) => (
                 <FormControl key={index} component={'fieldset' as 'div'}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}

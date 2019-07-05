@@ -52,11 +52,9 @@ export interface AvatarState {
 export class Avatar extends Component<ReactClientFieldSetting<ReferenceFieldSetting, User>, AvatarState> {
   state: AvatarState = {
     fieldValue:
-      this.props.content &&
-      this.props.content[this.props.settings.Name] &&
-      this.props.content[this.props.settings.Name].Url
-        ? this.props.content[this.props.settings.Name].Url
-        : this.props.settings.DefaultValue || '',
+      (this.props.content && this.props.content.Avatar && this.props.content.Avatar.Url) ||
+      this.props.settings.DefaultValue ||
+      '',
     pickerIsOpen: false,
     selected: undefined,
   }
@@ -170,21 +168,17 @@ export class Avatar extends Component<ReactClientFieldSetting<ReferenceFieldSett
         )
       case 'browse':
       default:
-        return this.props.content && this.props.content[this.props.settings.Name] ? (
+        return this.props.content && this.props.content.Avatar ? (
           <FormControl style={styles.root as any}>
             <InputLabel shrink={true} htmlFor={this.props.settings.Name}>
               {this.props.settings.DisplayName}
             </InputLabel>
             <List
               dense={true}
-              style={
-                this.props.content[this.props.settings.Name].Url
-                  ? styles.listContainer
-                  : { ...styles.listContainer, width: 200 }
-              }>
+              style={this.props.content.Avatar.Url ? styles.listContainer : { ...styles.listContainer, width: 200 }}>
               <DefaultAvatarTemplate
                 repositoryUrl={this.props.repository!.configuration.repositoryUrl}
-                url={this.props.content[this.props.settings.Name].Url}
+                url={this.props.content.Avatar.Url}
                 add={this.addItem}
                 actionName="browse"
                 renderIcon={this.props.renderIcon ? this.props.renderIcon : renderIconDefault}

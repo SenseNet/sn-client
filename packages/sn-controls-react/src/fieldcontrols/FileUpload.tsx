@@ -8,7 +8,7 @@ import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel/InputLabel'
 import Typography from '@material-ui/core/Typography'
 import React, { useEffect, useState } from 'react'
-import { BinaryFieldSetting, File } from '@sensenet/default-content-types'
+import { BinaryFieldSetting } from '@sensenet/default-content-types'
 import { PathHelper } from '@sensenet/client-utils'
 import { ODataResponse } from '@sensenet/client-core'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
@@ -55,7 +55,7 @@ interface Binary {
 /**
  * Field control that represents a FileUpload field. Available values will be populated from the FieldSettings.
  */
-export function FileUpload(props: ReactClientFieldSetting<BinaryFieldSetting, File>) {
+export function FileUpload(props: ReactClientFieldSetting<BinaryFieldSetting>) {
   const [fileName, setFileName] = useState('')
   useEffect(() => {
     const ac = new AbortController()

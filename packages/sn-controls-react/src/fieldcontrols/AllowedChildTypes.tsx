@@ -87,8 +87,7 @@ export class AllowedChildTypes extends Component<ReactClientFieldSetting, Allowe
   constructor(props: AllowedChildTypes['props']) {
     super(props)
     this.state = {
-      value:
-        (this.props.content && this.props.content[this.props.settings.Name]) || this.props.settings.DefaultValue || [],
+      value: [],
       effectiveAllowedChildTypes: [],
       allowedTypesOnCTD: [],
       items: [],
@@ -172,9 +171,7 @@ export class AllowedChildTypes extends Component<ReactClientFieldSetting, Allowe
 
   private getTypes(typeResults: ContentType[], allowedChildTypesFromCTD: ODataCollectionResponse<ContentType>) {
     if (this.props.actionName === 'new') {
-      return allowedChildTypesFromCTD.d.results.length
-        ? allowedChildTypesFromCTD.d.results
-        : (this.props.content && this.props.content[this.props.settings.Name]) || this.props.settings.DefaultValue
+      return (allowedChildTypesFromCTD.d.results.length && allowedChildTypesFromCTD.d.results) || []
     }
     return typeResults.length ? typeResults : allowedChildTypesFromCTD.d.results
   }

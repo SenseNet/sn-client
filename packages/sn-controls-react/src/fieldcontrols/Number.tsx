@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography'
 import React, { Component } from 'react'
 import { CurrencyFieldSetting, NumberFieldSetting } from '@sensenet/default-content-types'
 import InputAdornment from '@material-ui/core/InputAdornment'
+import { toNumber } from '@sensenet/client-utils'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 import { isCurrencyFieldSetting } from './type-guards'
 
@@ -13,7 +14,7 @@ import { isCurrencyFieldSetting } from './type-guards'
  * Interface for Number state
  */
 export interface NumberState {
-  value: string
+  value: number | string
 }
 
 /**
@@ -25,9 +26,9 @@ export class NumberComponent extends Component<
 > {
   state: NumberState = {
     value:
-      (this.props.content && this.props.content[this.props.settings.Name]) != null
-        ? this.props.content![this.props.settings.Name]
-        : this.props.settings.DefaultValue || '',
+      this.props.fieldValue != null
+        ? this.props.fieldValue
+        : (this.props.settings.DefaultValue && Number.parseInt(this.props.settings.DefaultValue, 10)) || '',
   }
 
   public handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) => {
@@ -42,11 +43,10 @@ export class NumberComponent extends Component<
     if (this.props.settings.Step) {
       return this.props.settings.Step
     }
-    if (!this.props.content) {
+    if (!this.props.fieldValue) {
       return 1
     }
-    return Number.isInteger(this.props.content[this.props.settings.Name]) ||
-      this.props.settings.Type === 'IntegerFieldSetting'
+    return Number.isInteger(toNumber(this.props.fieldValue)!) || this.props.settings.Type === 'IntegerFieldSetting'
       ? 1
       : 0.1
   }
@@ -92,7 +92,7 @@ export class NumberComponent extends Component<
         )
       case 'browse':
       default:
-        return this.state.value ? (
+        return this.props.fieldValue ? (
           <div>
             <Typography variant="caption" gutterBottom={true}>
               {this.props.settings.DisplayName}
@@ -103,7 +103,7 @@ export class NumberComponent extends Component<
                   ? this.props.settings.Format
                   : '$'
                 : null}
-              {this.state.value}
+              {this.props.fieldValue}
               {this.props.settings.ShowAsPercentage ? '%' : null}
             </Typography>
           </div>

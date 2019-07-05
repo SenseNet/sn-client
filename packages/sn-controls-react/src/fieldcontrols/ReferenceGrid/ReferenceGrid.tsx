@@ -79,16 +79,16 @@ export class ReferenceGrid extends Component<ReactClientFieldSetting<ReferenceFi
     super(props)
     let value
     let selected
-    if (!this.props.content) {
+    if (!this.props.fieldValue) {
       value = []
       selected = []
-    } else if (this.props.content[this.props.settings.Name]) {
+    } else if (this.props.fieldValue) {
       if (this.props.settings.AllowMultiple) {
-        value = this.props.content[this.props.settings.Name]
-        selected = this.props.content[this.props.settings.Name]
+        value = this.props.fieldValue
+        selected = this.props.fieldValue
       } else {
-        value = [this.props.content[this.props.settings.Name]]
-        selected = [this.props.content[this.props.settings.Name]]
+        value = [this.props.fieldValue]
+        selected = [this.props.fieldValue]
       }
     } else if (this.props.settings.DefaultValue) {
       if (this.props.settings.AllowMultiple) {
@@ -365,14 +365,14 @@ export class ReferenceGrid extends Component<ReactClientFieldSetting<ReferenceFi
         )
       case 'browse':
       default: {
-        return this.props.content && this.props.content[this.props.settings.Name] ? (
+        return this.props.fieldValue ? (
           <FormControl style={styles.root as any}>
             <InputLabel shrink={true} htmlFor={this.props.settings.Name}>
               {this.props.settings.DisplayName}
             </InputLabel>
             <FormGroup>
               <List dense={true} style={styles.listContainer}>
-                {this.props.content[this.props.settings.Name].map((item: GenericContent) => (
+                {(this.props.fieldValue as any).map((item: GenericContent) => (
                   <DefaultItemTemplate
                     content={item}
                     remove={this.removeItem}
