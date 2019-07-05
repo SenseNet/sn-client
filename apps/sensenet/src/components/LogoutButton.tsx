@@ -39,12 +39,13 @@ export const LogoutButton: React.FunctionComponent<{
     <div>
       {session.state !== LoginState.Authenticated ? null : (
         <Tooltip placement="bottom-end" title={localization.logoutButtonTitle}>
-          <IconButton
+          <Button
             onClick={() => {
               setShowLogout(true)
-            }}>
+            }}
+            style={{ minWidth: 20, paddingTop: 4, paddingBottom: 4, borderRadius: 0 }}>
             <PowerSettingsNew style={{ ...props.buttonStyle, color: theme.palette.text.primary }} />
-          </IconButton>
+          </Button>
         </Tooltip>
       )}
       <Dialog open={showLogout} onClose={() => setShowLogout(false)}>
