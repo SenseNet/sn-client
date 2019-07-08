@@ -1,0 +1,147 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Textarea field control in browse view should show the displayname and fieldValue when fieldValue is provided 1`] = `
+<div>
+  <WithStyles(ForwardRef(Typography))
+    gutterBottom={true}
+    variant="caption"
+  >
+    Description of the field
+  </WithStyles(ForwardRef(Typography))>
+  <div
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "<h1>Hello World</h1>",
+      }
+    }
+  />
+</div>
+`;
+
+exports[`Textarea field control in edit/new view should set all the props 1`] = `
+<WithStyles(ForwardRef(FormControl))
+  component="fieldset"
+  fullWidth={true}
+  required={true}
+>
+  <WithStyles(WithFormControlContext(ForwardRef(FormLabel)))
+    component="legend"
+  >
+    Description of the field
+  </WithStyles(WithFormControlContext(ForwardRef(FormLabel)))>
+  <Quill
+    defaultValue="defaultValue"
+    modules={
+      Object {
+        "toolbar": Array [
+          Array [
+            "bold",
+            "italic",
+            "underline",
+            "strike",
+          ],
+          Array [
+            "blockquote",
+            "code-block",
+          ],
+          Array [
+            Object {
+              "header": 1,
+            },
+            Object {
+              "header": 2,
+            },
+          ],
+          Array [
+            Object {
+              "list": "ordered",
+            },
+            Object {
+              "list": "bullet",
+            },
+          ],
+          Array [
+            Object {
+              "script": "sub",
+            },
+            Object {
+              "script": "super",
+            },
+          ],
+          Array [
+            Object {
+              "indent": "-1",
+            },
+            Object {
+              "indent": "+1",
+            },
+          ],
+          Array [
+            Object {
+              "direction": "rtl",
+            },
+          ],
+          Array [
+            Object {
+              "size": Array [
+                "small",
+                false,
+                "large",
+                "huge",
+              ],
+            },
+          ],
+          Array [
+            Object {
+              "header": Array [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                false,
+              ],
+            },
+          ],
+          Array [
+            Object {
+              "color": Array [],
+            },
+            Object {
+              "background": Array [],
+            },
+          ],
+          Array [
+            Object {
+              "font": Array [],
+            },
+          ],
+          Array [
+            Object {
+              "align": Array [],
+            },
+          ],
+          Array [
+            "clean",
+          ],
+        ],
+      }
+    }
+    onChange={[Function]}
+    placeholder="Description of the field"
+    readOnly={true}
+    style={
+      Object {
+        "background": "#fff",
+        "marginTop": 10,
+      }
+    }
+    theme="snow"
+    value="Hello World"
+  />
+  <WithStyles(WithFormControlContext(ForwardRef(FormHelperText)))>
+    description
+  </WithStyles(WithFormControlContext(ForwardRef(FormHelperText)))>
+</WithStyles(ForwardRef(FormControl))>
+`;
