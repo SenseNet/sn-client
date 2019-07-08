@@ -1,6 +1,6 @@
 import Button from '@material-ui/core/Button'
 import { PathHelper } from '@sensenet/client-utils'
-import { ActionModel, File as SnFile, GenericContent, Settings } from '@sensenet/default-content-types'
+import { ActionModel, GenericContent, Settings, File as SnFile } from '@sensenet/default-content-types'
 import { Uri } from 'monaco-editor'
 import React, { useContext, useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'

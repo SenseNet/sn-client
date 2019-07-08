@@ -11,7 +11,7 @@ import Settings from '@material-ui/icons/Settings'
 import { PathHelper } from '@sensenet/client-utils'
 import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
-import { matchPath, NavLink, RouteComponentProps, Link } from 'react-router-dom'
+import { Link, matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
 
 import { ResponsivePersonalSetttings } from '../../context'
 import { useLocalization, usePersonalSettings, useRepository, useSession, useTheme } from '../../hooks'

@@ -1,17 +1,8 @@
 import { Repository } from '@sensenet/client-core'
-import {
-  ChoiceFieldSetting,
-  FieldSetting,
-  FieldVisibility,
-  ShortTextFieldSetting,
-  Task,
-} from '@sensenet/default-content-types'
-import 'jest'
+import { ChoiceFieldSetting, FieldVisibility, ShortTextFieldSetting, Task } from '@sensenet/default-content-types'
 import { ControlMapper } from '../src'
 
 class ExampleControlBase {}
-
-class ExampleDefaultControl extends ExampleControlBase {}
 
 class ExampleModifiedControl extends ExampleControlBase {}
 
@@ -19,9 +10,7 @@ class ExampleModifiedControl2 extends ExampleControlBase {}
 
 class ExampleDefaultFieldControl extends ExampleControlBase {}
 
-class ExampleClientSetting {
-  constructor(public readonly setting: FieldSetting) {}
-}
+class ExampleClientSetting {}
 
 export const controlMapperTests = describe('ControlMapper', () => {
   let mapper: ControlMapper<ExampleControlBase, ExampleClientSetting>
@@ -29,13 +18,7 @@ export const controlMapperTests = describe('ControlMapper', () => {
 
   beforeEach(() => {
     repository = new Repository({}, async () => ({} as any))
-    mapper = new ControlMapper(
-      repository,
-      ExampleControlBase,
-      setting => new ExampleClientSetting(setting),
-      ExampleDefaultControl,
-      ExampleDefaultFieldControl,
-    )
+    mapper = new ControlMapper(repository, ExampleControlBase, ExampleDefaultFieldControl)
   })
 
   it('Should be constructed', () => {
@@ -43,24 +26,13 @@ export const controlMapperTests = describe('ControlMapper', () => {
   })
 
   it('Should be constructed with BaseType and ClientControlSettingsFactory', () => {
-    const newMapper = new ControlMapper(repository, ExampleControlBase, setting => new ExampleClientSetting(setting))
-    expect(newMapper).toBeInstanceOf(ControlMapper)
-  })
-
-  it('Should be constructed with all parameters', () => {
-    const newMapper = new ControlMapper(
-      repository,
-      ExampleControlBase,
-      setting => new ExampleClientSetting(setting),
-      ExampleDefaultControl,
-      ExampleDefaultFieldControl,
-    )
+    const newMapper = new ControlMapper(repository, ExampleControlBase, ExampleClientSetting)
     expect(newMapper).toBeInstanceOf(ControlMapper)
   })
 
   it('Should return correct Default Control for ContentTypes', () => {
     const controlType = mapper.getControlForContentType('Task')
-    expect(controlType).toBe(ExampleDefaultControl)
+    expect(controlType).toBe(ExampleControlBase)
   })
 
   it('Should return correct explicit defined Control for ContentTypes', () => {
@@ -122,29 +94,11 @@ export const controlMapperTests = describe('ControlMapper', () => {
     expect(control2).toBe(ExampleDefaultFieldControl)
   })
 
-  it('CreateClientSetting should run with defult factory method by default', () => {
-    const fieldSetting = { DisplayName: 'TestField' } as ShortTextFieldSetting
-    const clientSetting = mapper.createClientSetting(fieldSetting)
-    expect(clientSetting.setting.DisplayName).toBe(fieldSetting.DisplayName)
-  })
-
-  it('CreateClientSetting should be able to run with an overridden factory method', () => {
-    const fieldSetting = { DisplayName: 'TestField', Type: 'ShortTextFieldSetting' } as ShortTextFieldSetting
-    mapper.setClientControlFactory(ShortTextFieldSetting, setting => {
-      setting.DisplayName = (setting.DisplayName || '').toUpperCase()
-      return new ExampleClientSetting(setting)
-    })
-
-    const clientSetting = mapper.createClientSetting(fieldSetting)
-    expect(clientSetting.setting.DisplayName).toBe('TESTFIELD')
-  })
-
   it('GetAllMappingsForContentTye filtered to View should be able to return all mappings', () => {
-    const fullMapping = mapper.getFullSchemaForContentType('Task', 'view').fieldMappings
+    const fullMapping = mapper.getFullSchemaForContentType('Task', 'browse').fieldMappings
     expect(fullMapping.length).toBeGreaterThan(0)
     fullMapping.forEach(m => {
-      expect(m.clientSettings.setting.VisibleBrowse).not.toBe(FieldVisibility.Hide)
-      expect(m.clientSettings).toBeInstanceOf(ExampleClientSetting)
+      expect(m.fieldSettings.VisibleBrowse).not.toBe(FieldVisibility.Hide)
       expect(m.controlType).toBe(ExampleDefaultFieldControl)
     })
   })
@@ -153,8 +107,7 @@ export const controlMapperTests = describe('ControlMapper', () => {
     const fullMapping = mapper.getFullSchemaForContentType('Task', 'edit').fieldMappings
     expect(fullMapping.length).toBeGreaterThan(0)
     fullMapping.forEach(m => {
-      expect(m.clientSettings.setting.VisibleEdit).not.toBe(FieldVisibility.Hide)
-      expect(m.clientSettings).toBeInstanceOf(ExampleClientSetting)
+      expect(m.fieldSettings.VisibleEdit).not.toBe(FieldVisibility.Hide)
       expect(m.controlType).toBe(ExampleDefaultFieldControl)
     })
   })
@@ -163,8 +116,7 @@ export const controlMapperTests = describe('ControlMapper', () => {
     const fullMapping = mapper.getFullSchemaForContentType('Task', 'new').fieldMappings
     expect(fullMapping.length).toBeGreaterThan(0)
     fullMapping.forEach(m => {
-      expect(m.clientSettings.setting.VisibleNew).not.toBe(FieldVisibility.Hide)
-      expect(m.clientSettings).toBeInstanceOf(ExampleClientSetting)
+      expect(m.fieldSettings.VisibleNew).not.toBe(FieldVisibility.Hide)
       expect(m.controlType).toBe(ExampleDefaultFieldControl)
     })
   })
@@ -173,7 +125,7 @@ export const controlMapperTests = describe('ControlMapper', () => {
     const mapping = mapper.getFullSchemaForContentType('Folder', 'new').fieldMappings
     expect(mapping.length).toBeGreaterThan(0)
     mapping.forEach(m => {
-      expect(m.clientSettings.setting.Name).not.toBe('AllowedChildTypes')
+      expect(m.fieldSettings.Name).not.toBe('AllowedChildTypes')
     })
   })
 
@@ -181,7 +133,7 @@ export const controlMapperTests = describe('ControlMapper', () => {
     const mapping = mapper.getFullSchemaForContentType('SystemFolder', 'new').fieldMappings
     expect(mapping.length).toBeGreaterThan(0)
     mapping.forEach(m => {
-      expect(m.clientSettings.setting.Name).not.toBe('AllowedChildTypes')
+      expect(m.fieldSettings.Name).not.toBe('AllowedChildTypes')
     })
   })
 })

@@ -1,6 +1,6 @@
 import { Injectable } from '@furystack/inject'
 import { LogLevel } from '@furystack/logging'
-import { ObservableValue, deepMerge } from '@sensenet/client-utils'
+import { deepMerge, ObservableValue } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { PlatformDependent } from '../context'
 import { tuple } from '../utils/tuple'

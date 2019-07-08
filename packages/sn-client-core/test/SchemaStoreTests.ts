@@ -1,4 +1,4 @@
-import { Schema, SchemaStore as DefaultSchemaStore, User } from '@sensenet/default-content-types'
+import { SchemaStore as DefaultSchemaStore, Schema, User } from '@sensenet/default-content-types'
 import 'jest'
 import { SchemaStore } from '../src/Schemas/SchemaStore'
 

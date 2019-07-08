@@ -1,5 +1,5 @@
 import { Disposable, PathHelper } from '@sensenet/client-utils'
-import { ActionModel, ContentType, Schema, GenericContent } from '@sensenet/default-content-types'
+import { ActionModel, ContentType, GenericContent, Schema } from '@sensenet/default-content-types'
 import { AuthenticationService } from '../Authentication/AuthenticationService'
 import { BypassAuthentication } from '../Authentication/BypassAuthentication'
 import { Content } from '../Models/Content'

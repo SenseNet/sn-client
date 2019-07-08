@@ -1,4 +1,3 @@
-/* eslint-disable dot-notation */
 /**
  * @module FieldControls
  */
@@ -15,11 +14,11 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import { Content, ODataCollectionResponse } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
-import { GenericContent } from '@sensenet/default-content-types'
+import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
-import { ReactClientFieldSetting, ReactClientFieldSettingProps } from '../ClientFieldSetting'
 import { renderIconDefault } from '../icon'
-import { ReactReferenceFieldSetting } from '../ReferenceFieldSetting'
+import { ReactClientFieldSetting } from '../ClientFieldSetting'
+import { isUser } from '../type-guards'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -48,99 +47,58 @@ const styles = {
 }
 
 /**
- * Interface for TagsInput properties
- */
-export interface TagsInputProps<T extends GenericContent, K extends keyof T>
-  extends ReactClientFieldSettingProps<T, K>,
-    ReactClientFieldSetting<T, K>,
-    ReactReferenceFieldSetting<T, K> {}
-/**
  * Interface for TagsInput state
  */
-export interface TagsInputState<T extends GenericContent, _K extends keyof T> {
-  label: string
-  dataSource: any[]
-  fieldValue: any
+export interface TagsInputState {
+  dataSource: GenericContent[]
+  fieldValue: GenericContent[]
 }
 /**
  * Field control that represents a Reference field. Available values will be populated from the FieldSettings.
  */
-export class TagsInput<T extends GenericContent, K extends keyof T> extends Component<
-  TagsInputProps<T, K>,
-  TagsInputState<T, K>
-> {
-  /**
-   * constructor
-   * @param {object} props
-   */
-  constructor(props: TagsInputProps<T, K>) {
+export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldSetting>, TagsInputState> {
+  constructor(props: TagsInput['props']) {
     super(props)
-    /**
-     * @type {object}
-     * @property {any[]} chips array of chips input value
-     * @property {any[]} dataSource array of data for autocomplete
-     */
-
-    this.search = this.search.bind(this)
-    if (this.props.dataSource && this.props.dataSource.length > 0) {
-      this.state = {
-        dataSource: this.props.dataSource.map(suggestion => ({
-          value: suggestion.Id,
-          label: suggestion.DisplayName,
-          avatar: suggestion.Avatar || {},
-          type: suggestion.Type || 'GenericContent',
-        })),
-        label: this.props['data-defaultDisplayName'] || 'DisplayName',
-        fieldValue: this.props.dataSource
-          ? this.props.dataSource.map(data => ({
-              value: data['Id'],
-              label: data['DisplayName'],
-              avatar: data['Avatar'] || {},
-              type: data['Type'] || 'GenericContent',
-            }))
-          : [],
-      }
-      if (this.props['data-actionName'] !== 'new') {
-        this.getSelected()
-        this.handleChange = this.handleChange.bind(this)
-      }
-    } else {
-      this.state = {
-        dataSource: [],
-        label: this.props['data-defaultDisplayName'] || 'DisplayName',
-        fieldValue: this.props['data-fieldValue'] ? this.props['data-fieldValue'] : [],
-      }
-      this.search()
+    if (this.props.actionName === 'edit') {
+      this.getSelected()
     }
-    this.getSelected = this.getSelected.bind(this)
+    this.state = {
+      dataSource: [],
+      fieldValue:
+        this.props.content && this.props.content[this.props.settings.Name]
+          ? this.props.content[this.props.settings.Name]
+          : [],
+    }
+    this.search()
   }
-  /**
-   * handles input changes
-   */
-  public handleChange = (event: React.ChangeEvent<{ name?: string; value: unknown }>) => {
-    const { name, onChange } = this.props
+
+  public handleChange = (event: React.ChangeEvent<{ name?: string; value: number }>) => {
     const selected = this.state.fieldValue
     let s = selected
-    const selectedContent = this.getContentById(event.target.value as number)
+    const selectedContent = this.getContentById(event.target.value)
 
-    this.props['data-allowMultiple'] !== undefined && this.props['data-allowMultiple']
-      ? this.isSelected(selectedContent)
+    this.props.settings.AllowMultiple !== undefined && this.props.settings.AllowMultiple && selectedContent
+      ? this.state.fieldValue.includes(selectedContent)
         ? (s = selected)
         : s.push(selectedContent)
-      : (s = [selectedContent])
+      : (s = [selectedContent!])
 
     this.setState({
       fieldValue: s,
     })
-    onChange(name, s.map((content: any) => content.value))
+    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, s.map(content => content.Id))
   }
+
   /**
    * returns referencefields' datasource
    * @param path
    */
   public async search(): Promise<ODataCollectionResponse<Content>> {
-    const selectionRoot = this.props['data-selectionRoot'] || []
-    const allowedTypes = this.props['data-allowedTypes'] || ['GenericContent']
+    if (!this.props.repository) {
+      throw new Error('You must pass a repository to this control')
+    }
+    const selectionRoot = this.props.settings.SelectionRoots || []
+    const allowedTypes = this.props.settings.AllowedTypes || ['GenericContent']
 
     let pathQuery = ''
     selectionRoot.map((selectionPath, index) => {
@@ -150,242 +108,137 @@ export class TagsInput<T extends GenericContent, K extends keyof T> extends Comp
     allowedTypes.map(type => {
       typeQuery += ` +TypeIs:${type}`
     })
-    const repo = this.props['data-repository'] || this.props.repository
-    const req = await repo.loadCollection({
+
+    const req = await this.props.repository.loadCollection({
       path: '/Root',
       oDataOptions: {
         query: `(${pathQuery}) AND${typeQuery}`,
         select: 'all',
       },
     })
-    const { label } = this.state
     this.setState({
-      dataSource: req.d.results.map((suggestion: GenericContent) => ({
-        value: suggestion['Id'],
-        label: suggestion[label] || suggestion['DisplayName'],
-        avatar: suggestion['Avatar'] || {},
-        type: suggestion['Type'] || 'GenericContent',
-      })),
+      dataSource: req.d.results,
     })
-    if (this.props['data-actionName'] !== 'new') {
+    if (this.props.actionName === 'edit') {
       this.getSelected()
-      this.handleChange = this.handleChange.bind(this)
     }
     return req
   }
-  /**
-   * getSelected
-   * @return {any[]}
-   */
+
   public async getSelected() {
-    const repo = this.props['data-repository'] || this.props.repository
-    const loadPath = this.props['content']
-      ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props['content'].Path), '/', this.props.name.toString())
+    if (!this.props.repository) {
+      throw new Error('You must pass a repository to this control')
+    }
+    const loadPath = this.props.content
+      ? PathHelper.joinPaths(
+          PathHelper.getContentUrl(this.props.content.Path),
+          '/',
+          this.props.settings.Name.toString(),
+        )
       : ''
-    const references = await repo.loadCollection({
+    const references = await this.props.repository.loadCollection<GenericContent>({
       path: loadPath,
       oDataOptions: {
         select: 'all',
       },
     })
-    const { label } = this.state
-    const results = references.d.results ? references.d.results : [references.d]
+
     this.setState({
-      fieldValue: results.map((item: GenericContent) => ({
-        value: item['Id'],
-        label: item[label],
-        avatar: item['Avatar'] || {},
-        type: item['Type'] || 'GenericContent',
-      })),
+      fieldValue: references.d.results,
     })
 
-    if (this.props.dataSource && this.props.dataSource.length > 0) {
-      this.setState({
-        fieldValue: this.props.dataSource.map((item: GenericContent) => ({
-          value: item['Id'],
-          label: item[label],
-          avatar: item['Avatar'] || {},
-          type: item['Type'] || 'GenericContent',
-        })),
-      })
-    }
-
-    return references
+    return references.d.results
   }
   /**
    * returns a content by its id
    */
   public getContentById = (id: number) => {
-    return this.state.dataSource.find(item => item.value === id)
+    return this.state.dataSource.find(item => item.Id === id)
   }
-  /**
-   * returns whether the content with the given id is selected or not
-   */
-  public isSelected = (id: number) => {
-    return this.state.fieldValue.indexOf(id) > -1
-  }
+
   public handleDelete = (id: number) => {
-    const { name, onChange } = this.props
-    const newValue = this.state.fieldValue.filter((item: any) => item.value !== id)
+    const newValue = this.state.fieldValue.filter(item => item.Id !== id)
     this.setState({
       fieldValue: newValue,
     })
 
-    onChange(name, newValue.map((content: any) => content.value))
+    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, newValue.map(content => content.Id))
   }
-  /**
-   * render
-   * @return {ReactElement} markup
-   */
+
   public render() {
-    const repo = this.props['data-repository'] || this.props.repository
-    switch (this.props['data-actionName']) {
+    switch (this.props.actionName) {
       case 'edit':
-        return (
-          <FormControl
-            className={this.props.className}
-            style={styles.root as any}
-            key={this.props.name as string}
-            component={'fieldset' as 'div'}
-            required={this.props.required}>
-            <InputLabel htmlFor={this.props.name as string}>{this.props['data-labelText']}</InputLabel>
-            <Select
-              value={this.state.fieldValue}
-              onChange={e => this.handleChange(e)}
-              input={<Input id={this.props.name as string} fullWidth={true} />}
-              renderValue={() => (
-                <div style={styles.chips as any}>
-                  {this.state.fieldValue.map((content: any) =>
-                    this.getContentById(content.value).type === 'User' && this.getContentById(content.value).avatar ? (
-                      <Chip
-                        avatar={
-                          <Avatar
-                            alt={this.getContentById(content.value).label}
-                            src={
-                              this.getContentById(content.value).avatar.Url
-                                ? `${repo.configuration.repositoryUrl}${this.getContentById(content.value).avatar.Url}`
-                                : `${repo.configuration.repositoryUrl}${DEFAULT_AVATAR_PATH}`
-                            }
-                          />
-                        }
-                        key={content.value.toString()}
-                        label={this.getContentById(content.value).label}
-                        onDelete={() => this.handleDelete(content.value)}
-                      />
-                    ) : (
-                      <Chip
-                        icon={
-                          this.props['data-renderIcon']
-                            ? this.props['data-renderIcon'](this.getContentById(content.value).type.toLowerCase())
-                            : renderIconDefault(this.getContentById(content.value).type.toLowerCase())
-                        }
-                        key={content.value.toString()}
-                        label={this.getContentById(content.value).label}
-                        onDelete={() => this.handleDelete(content.value)}
-                      />
-                    ),
-                  )}
-                </div>
-              )}
-              MenuProps={menuProps}>
-              {this.state.dataSource.map(content => (
-                <MenuItem key={content.value} value={content.value}>
-                  {content.label}
-                </MenuItem>
-              ))}
-            </Select>
-            <FormHelperText>{this.props['data-hintText']}</FormHelperText>
-            <FormHelperText>{this.props['data-errorText']}</FormHelperText>
-          </FormControl>
-        )
       case 'new':
         return (
           <FormControl
-            className={this.props.className}
             style={styles.root as any}
-            key={this.props.name as string}
+            key={this.props.settings.Name}
             component={'fieldset' as 'div'}
-            required={this.props.required}>
-            <InputLabel htmlFor={this.props.name as string}>{this.props['data-labelText']}</InputLabel>
+            required={this.props.settings.Compulsory}>
+            <InputLabel htmlFor={this.props.settings.Name}>{this.props.settings.DisplayName}</InputLabel>
             <Select
               value={this.state.fieldValue}
-              onChange={e => this.handleChange(e)}
-              input={<Input id={this.props.name as string} fullWidth={true} />}
+              onChange={this.handleChange}
+              input={<Input id={this.props.settings.Name} fullWidth={true} />}
               renderValue={() => (
                 <div style={styles.chips as any}>
-                  {this.state.fieldValue.map((content: any) =>
-                    this.getContentById(content.value).type === 'User' && this.getContentById(content.value).avatar ? (
-                      <Chip
-                        avatar={
-                          <Avatar
-                            alt={this.getContentById(content.value).label}
-                            src={
-                              this.getContentById(content.value).avatar.Url
-                                ? `${repo.configuration.repositoryUrl}${this.getContentById(content.value).avatar.Url}`
-                                : `${repo.configuration.repositoryUrl}${DEFAULT_AVATAR_PATH}`
-                            }
-                          />
-                        }
-                        key={content.value.toString()}
-                        label={this.getContentById(content.value).label}
-                        onDelete={() => this.handleDelete(content.value)}
-                      />
-                    ) : (
-                      <Chip
-                        key={content.value.toString()}
-                        label="{this.getContentById(fvalue).label}"
-                        icon={
-                          this.props['data-renderIcon']
-                            ? this.props['data-renderIcon'](this.getContentById(content.value).type.toLowerCase())
-                            : renderIconDefault(this.getContentById(content.value).type.toLowerCase())
-                        }
-                        onDelete={() => this.handleDelete(content.value)}
-                      />
-                    ),
-                  )}
+                  {this.state.fieldValue &&
+                    this.state.fieldValue.map(content =>
+                      isUser(content) ? (
+                        <Chip
+                          avatar={
+                            <Avatar
+                              alt={content.DisplayName}
+                              src={
+                                content.Avatar && content.Avatar.Url
+                                  ? `${this.props.repository!.configuration.repositoryUrl}${content.Avatar.Url}`
+                                  : `${this.props.repository!.configuration.repositoryUrl}${DEFAULT_AVATAR_PATH}`
+                              }
+                            />
+                          }
+                          key={content.Id}
+                          label={content.DisplayName}
+                          onDelete={() => this.handleDelete(content.Id)}
+                        />
+                      ) : (
+                        <Chip
+                          key={content.Id}
+                          label={content.DisplayName}
+                          icon={
+                            this.props.renderIcon
+                              ? this.props.renderIcon(content.Type.toLowerCase())
+                              : renderIconDefault(content.Type.toLowerCase())
+                          }
+                          onDelete={() => this.handleDelete(content.Id)}
+                        />
+                      ),
+                    )}
                 </div>
               )}
               MenuProps={menuProps}>
-              {this.state.dataSource.map(content => (
-                <MenuItem key={content.value} value={content.value}>
-                  {content.label}
-                </MenuItem>
-              ))}
+              {this.state.dataSource &&
+                this.state.dataSource.map(content => (
+                  <MenuItem key={content.Id} value={content.Id}>
+                    {content.DisplayName}
+                  </MenuItem>
+                ))}
             </Select>
-            <FormHelperText>{this.props['data-hintText']}</FormHelperText>
-            <FormHelperText>{this.props['data-errorText']}</FormHelperText>
+            <FormHelperText>{this.props.settings.Description}</FormHelperText>
           </FormControl>
         )
       case 'browse':
-        return this.props['data-fieldValue'].length > 0 ? (
-          <FormControl component={'fieldset' as 'div'} className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
-            <FormGroup>
-              {this.state.fieldValue.map((content: any, index: number) => (
-                <FormControl key={index} component={'fieldset' as 'div'}>
-                  <FormControlLabel
-                    style={{ marginLeft: 0 }}
-                    label={this.state.dataSource.find(item => item.value === content.value).label}
-                    control={<span />}
-                    key={content.value}
-                  />
-                </FormControl>
-              ))}
-            </FormGroup>
-          </FormControl>
-        ) : null
       default:
-        return this.props['data-fieldValue'].length > 0 ? (
-          <FormControl component={'fieldset' as 'div'} className={this.props.className}>
-            <FormLabel component={'legend' as 'label'}>{this.props['data-labelText']}</FormLabel>
+        return this.props.content && this.props.content[this.props.settings.Name].length > 0 ? (
+          <FormControl component={'fieldset' as 'div'}>
+            <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
             <FormGroup>
-              {this.state.fieldValue.map((content: any, index: number) => (
+              {this.props.content[this.props.settings.Name].map((content: GenericContent, index: number) => (
                 <FormControl key={index} component={'fieldset' as 'div'}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
-                    label={this.state.dataSource.find(item => item.value === content.value).label}
+                    label={content.DisplayName}
                     control={<span />}
-                    key={content.value}
+                    key={content.Id}
                   />
                 </FormControl>
               ))}

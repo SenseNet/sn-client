@@ -115,9 +115,9 @@ export class GenericContent {
   /* You can get which content types are effective allowed to be created under this content. If there is no local setting, the global setting takes effect. */
   public EffectiveAllowedChildTypes?: ContentListReferenceField<GenericContent>
   /* It shows the versioning mode of the current content. */
-  public VersioningMode?: Enums.VersioningMode
+  public VersioningMode?: Enums.VersioningMode[]
   /* Specify whether the system should create a new version whenever you create or modify a content below this content. */
-  public InheritableVersioningMode?: Enums.InheritableVersioningMode
+  public InheritableVersioningMode?: Enums.InheritableVersioningMode[]
   /* Content creator. */
   public CreatedBy?: ContentReferenceField<GenericContent>
   /* Content creation date. */
@@ -127,9 +127,9 @@ export class GenericContent {
   /* Content was last modified on this date. */
   public ModificationDate?: string
   /* It shows the approval mode of the current content. */
-  public ApprovingMode?: Enums.ApprovingMode
+  public ApprovingMode?: Enums.ApprovingMode[]
   /* Specify whether new or changed content below the current one should remain in a draft state until they have been approved. */
-  public InheritableApprovingMode?: Enums.InheritableApprovingMode
+  public InheritableApprovingMode?: Enums.InheritableApprovingMode[]
   /* It shows whether the content is checked out or not. */
   public Locked?: boolean
   /* The user currently locking the content. */
@@ -137,7 +137,7 @@ export class GenericContent {
   /* You can disable trash for this content and its children. If set, you can not restore deleted content. */
   public TrashDisabled?: boolean
   /* State of multi-step saving. */
-  public SavingState?: Enums.SavingState
+  public SavingState?: Enums.SavingState[]
   /* You can set extra data in this field which is useful when extending a content. */
   public ExtensionData?: string
   /* Set this, if you would like to override the default browse application. */

@@ -6,7 +6,7 @@ import { storiesOf } from '@storybook/react'
 import React from 'react'
 import contentListNotes from '../notes/listcontrols/ContentList.md'
 import { icons } from '../assets/icons'
-import { customSchema } from './ViewControl.stories'
+import { customSchema } from './custom-schema'
 
 const orderDirectionOptions = {
   asc: 'asc',

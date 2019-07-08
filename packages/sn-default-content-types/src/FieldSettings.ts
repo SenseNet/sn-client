@@ -58,13 +58,10 @@ export enum DateTimePrecision {
   Day,
 }
 /**
- * Enum for LongText field editor values.
+ * Type for LongText field editor values.
  */
-export enum TextType {
-  LongText,
-  RichText,
-  AdvancedRichText,
-}
+export type TextType = 'LongText' | 'RichText' | 'AdvancedRichText'
+
 /**
  * Enum for HyperLink field href values.
  */
@@ -185,7 +182,26 @@ export class PasswordFieldSetting extends ShortTextFieldSetting {
   public PasswordHistoryLength?: number
 }
 
+export class ColorFieldSetting extends TextFieldSetting {
+  /**
+   * Semicolon separated list of colors in hexadecimal format.
+   * @example "#ff0000;#f0d0c9;#e2a293;#d4735e;#65281a"
+   * @type {string}
+   * @memberof ColorFieldSetting
+   */
+  public Palette?: string
+}
 // Used in User
 export class CaptchaFieldSetting extends FieldSetting {}
 
 export class BooleanFieldSetting extends FieldSetting {}
+
+export class CurrencyFieldSetting extends NumberFieldSetting {
+  /**
+   * Provides region information for specific cultures
+   * @type {string}
+   * @example 'en-US'
+   * @memberof CurrencyFieldSetting
+   */
+  public Format?: string
+}

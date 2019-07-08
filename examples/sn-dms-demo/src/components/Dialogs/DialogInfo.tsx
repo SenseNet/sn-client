@@ -124,7 +124,11 @@ class DialogInfo extends React.Component<{ classes: any } & DialogInfoProps, {}>
                 <TableBody>
                   <TableRow className={classes.tableRow}>
                     <TableCell className={matches ? classes.tableCell : classes.tableCellMobile} padding="none">
-                      {currentContent ? resources.VERSIONING[currentContent.VersioningMode || ''] : ''}
+                      {currentContent
+                        ? resources.VERSIONING[
+                            (currentContent.VersioningMode && currentContent.VersioningMode[0]) || ''
+                          ]
+                        : ''}
                     </TableCell>
                     <TableCell className={matches ? classes.tableCell : classes.tableCellMobile} padding="none">
                       {currentContent ? currentContent.Path : ''}

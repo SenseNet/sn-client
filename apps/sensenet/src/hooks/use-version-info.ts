@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { ConstantContent } from '@sensenet/client-core'
 import { VersionInfo } from '../components/version-info/version-info-models'
 import { useRepository } from './use-repository'
