@@ -29,6 +29,7 @@ export function Textarea(props: ReactClientFieldSetting<LongTextFieldSetting>) {
           name={props.settings.Name}
           id={props.settings.Name}
           label={props.settings.DisplayName}
+          defaultValue={props.settings.DefaultValue}
           placeholder={props.settings.DisplayName}
           value={value}
           required={props.settings.Compulsory}

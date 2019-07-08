@@ -32,6 +32,7 @@ export function TimePicker(props: ReactClientFieldSetting<DateTimeFieldSetting>)
           <MUITimePicker
             value={value}
             name={props.settings.Name}
+            defaultValue={props.settings.DefaultValue}
             onChange={handleDateChange}
             label={props.settings.DisplayName}
             id={props.settings.Name}

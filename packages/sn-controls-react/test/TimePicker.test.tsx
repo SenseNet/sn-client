@@ -52,6 +52,7 @@ describe('Time picker field control', () => {
         />,
       )
       expect(wrapper.find(MUITimePicker).prop('value')).toBe(value)
+      expect(wrapper.find(MUITimePicker).prop('defaultValue')).toBe('defaultValue')
       expect(wrapper.find(MUITimePicker).prop('name')).toBe(defaultSettings.Name)
       expect(wrapper.find(MUITimePicker).prop('id')).toBe(defaultSettings.Name)
       expect(wrapper.find(MUITimePicker).prop('label')).toBe(defaultSettings.DisplayName)

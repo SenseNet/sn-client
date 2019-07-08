@@ -51,6 +51,7 @@ describe('Textarea field control', () => {
         />,
       )
       expect(wrapper.find(TextField).prop('value')).toBe(value)
+      expect(wrapper.find(TextField).prop('defaultValue')).toBe('defaultValue')
       expect(wrapper.find(TextField).prop('name')).toBe(defaultSettings.Name)
       expect(wrapper.find(TextField).prop('id')).toBe(defaultSettings.Name)
       expect(wrapper.find(TextField).prop('label')).toBe(defaultSettings.DisplayName)
