@@ -42,7 +42,9 @@ export const ExploreComponent: React.FunctionComponent<RouteComponentProps<{ fol
         <CurrentContentProvider idOrPath={leftParentId}>
           <CurrentChildrenProvider>
             <CurrentAncestorsProvider>
-              <ContentBreadcrumbs />
+              <div style={{ marginTop: '13px', paddingBottom: '12px', borderBottom: '1px solid rgba(128,128,128,.2)' }}>
+                <ContentBreadcrumbs />
+              </div>
               <div style={{ display: 'flex', width: '100%', height: '100%' }}>
                 <Tree
                   style={{

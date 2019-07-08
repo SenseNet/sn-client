@@ -73,9 +73,9 @@ const TemporaryDrawer: React.FunctionComponent<
           {items
             .filter(i => settings.drawer.items && settings.drawer.items.indexOf(i.name) !== -1)
             .map(item => {
-              const isActive = matchPath(props.location.pathname, item.url)
+              const isActive = matchPath(props.location.pathname, `/:repositoryId${item.url}`)
               return isActive ? (
-                <ListItem button={true} disabled={true} key={item.name}>
+                <ListItem button={true} selected key={item.name}>
                   <Tooltip
                     title={
                       <React.Fragment>

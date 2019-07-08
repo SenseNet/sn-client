@@ -51,7 +51,6 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
   return (
     <Paper style={{ flexGrow: 0, flexShrink: 0 }}>
       <List
-        dense={true}
         style={{
           width: opened ? 330 : 55,
           height: '100%',
@@ -62,16 +61,15 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
           justifyContent: 'space-between',
           flexDirection: 'column',
           backgroundColor: theme.palette.background.default, // '#222',
-          paddingTop: '1em',
           transition: 'width 100ms ease-in-out',
         }}>
         <div style={{ paddingTop: '1em' }}>
           {items
             .filter(i => settings.drawer.items && settings.drawer.items.indexOf(i.name) !== -1)
             .map(item => {
-              const isActive = matchPath(props.location.pathname, item.url)
+              const isActive = matchPath(props.location.pathname, `/:repositoryId${item.url}`)
               return isActive ? (
-                <ListItem button={true} disabled={true} key={item.name}>
+                <ListItem button={true} key={item.name} selected>
                   <Tooltip
                     title={
                       <React.Fragment>

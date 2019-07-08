@@ -6,6 +6,8 @@ import { Icon } from './Icon'
 export const SelectionControl: React.FunctionComponent<{ isSelected: boolean; content: GenericContent }> = ({
   isSelected,
   content,
-}) => {
-  return isSelected ? <Checkbox checked={true} /> : <Icon item={content} style={{ marginLeft: '.4em' }} />
-}
+}) => (
+  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 40, height: 40 }}>
+    {isSelected ? <Checkbox checked={true} /> : <Icon item={content} />}
+  </div>
+)
