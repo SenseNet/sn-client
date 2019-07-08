@@ -46,8 +46,6 @@ describe('Textarea field control', () => {
             ReadOnly: true,
             Compulsory: true,
             DefaultValue: 'defaultValue',
-            MinLength: 2,
-            MaxLength: 12,
             Description: 'description',
           }}
         />,
