@@ -33,7 +33,11 @@ export function RadioButtonGroup(props: ReactClientFieldSetting<ChoiceFieldSetti
     case 'edit':
     case 'new':
       return (
-        <FormControl component={'fieldset' as 'div'} fullWidth={true} required={props.settings.Compulsory}>
+        <FormControl
+          component={'fieldset' as 'div'}
+          fullWidth={true}
+          required={props.settings.Compulsory}
+          disabled={props.settings.ReadOnly}>
           <FormLabel component={'legend' as 'label'}>{props.settings.DisplayName}</FormLabel>
           <RadioGroup
             aria-label={props.settings.DisplayName}
@@ -43,13 +47,7 @@ export function RadioButtonGroup(props: ReactClientFieldSetting<ChoiceFieldSetti
             {props.settings.Options &&
               props.settings.Options.map(option => {
                 return (
-                  <FormControlLabel
-                    key={option.Value}
-                    value={option.Value}
-                    control={<Radio />}
-                    label={option.Text}
-                    disabled={props.settings.ReadOnly}
-                  />
+                  <FormControlLabel key={option.Value} value={option.Value} control={<Radio />} label={option.Text} />
                 )
               })}
           </RadioGroup>
@@ -65,7 +63,7 @@ export function RadioButtonGroup(props: ReactClientFieldSetting<ChoiceFieldSetti
             <FormControl component={'fieldset' as 'div'}>
               <FormControlLabel
                 style={{ marginLeft: 0 }}
-                label={props.settings.Options!.find(item => item.Value === value)!.Text}
+                label={props.settings.Options ? props.settings.Options.find(item => item.Value === value)!.Text : value}
                 control={<span />}
               />
             </FormControl>
