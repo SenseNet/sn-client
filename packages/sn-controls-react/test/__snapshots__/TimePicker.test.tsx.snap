@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Time picker field control in browse view should show the displayname and fieldValue when fieldValue is provided 1`] = `
+<div>
+  <WithStyles(ForwardRef(Typography))
+    gutterBottom={true}
+    variant="caption"
+  >
+    Modification Date
+  </WithStyles(ForwardRef(Typography))>
+  <WithStyles(ForwardRef(Typography))
+    gutterBottom={true}
+    variant="body1"
+  >
+    08:48:55
+  </WithStyles(ForwardRef(Typography))>
+</div>
+`;
+
+exports[`Time picker field control in edit/new view should set all the props 1`] = `
+<MuiPickersUtilsProvider
+  utils={[Function]}
+>
+  <WrappedPurePicker
+    ampm={true}
+    disabled={true}
+    fullWidth={true}
+    id="ModificationDate"
+    invalidDateMessage="Invalid Time Format"
+    label="Modification Date"
+    name="ModificationDate"
+    onChange={[Function]}
+    openTo="hours"
+    placeholder="Modification Date"
+    required={true}
+    value="1973-11-27T07:48:55.324Z"
+    views={
+      Array [
+        "hours",
+        "minutes",
+      ]
+    }
+  />
+</MuiPickersUtilsProvider>
+`;
