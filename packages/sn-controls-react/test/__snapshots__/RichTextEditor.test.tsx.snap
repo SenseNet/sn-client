@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Textarea field control in browse view should show the displayname and fieldValue when fieldValue is provided 1`] = `
+exports[`Rich text editor field control in browse view should show the displayname and fieldValue when fieldValue is provided 1`] = `
 <div>
   <WithStyles(ForwardRef(Typography))
     gutterBottom={true}
@@ -18,7 +18,7 @@ exports[`Textarea field control in browse view should show the displayname and f
 </div>
 `;
 
-exports[`Textarea field control in edit/new view should set all the props 1`] = `
+exports[`Rich text editor field control in edit/new view should set all the props 1`] = `
 <WithStyles(ForwardRef(FormControl))
   component="fieldset"
   fullWidth={true}
