@@ -15,5 +15,5 @@ export function isUser(content: GenericContent): content is User {
  * @returns {fieldSetting is CurrencyFieldSetting}
  */
 export function isCurrencyFieldSetting(fieldSetting: FieldSetting): fieldSetting is CurrencyFieldSetting {
-  return Object.prototype.hasOwnProperty.call(fieldSetting, 'Format')
+  return Object.prototype.hasOwnProperty.call(fieldSetting, 'Format') || fieldSetting.Type === 'CurrencyFieldSetting'
 }

@@ -3,7 +3,7 @@
  */
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { CurrencyFieldSetting, NumberFieldSetting } from '@sensenet/default-content-types'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import { toNumber } from '@sensenet/client-utils'
@@ -11,103 +11,83 @@ import { ReactClientFieldSetting } from './ClientFieldSetting'
 import { isCurrencyFieldSetting } from './type-guards'
 
 /**
- * Interface for Number state
- */
-export interface NumberState {
-  value: number | string
-}
-
-/**
  * Field control that represents a Number field. Available values will be populated from the FieldSettings.
  */
-export class NumberComponent extends Component<
-  ReactClientFieldSetting<NumberFieldSetting | CurrencyFieldSetting>,
-  NumberState
-> {
-  state: NumberState = {
-    value:
-      this.props.fieldValue != null
-        ? this.props.fieldValue
-        : (this.props.settings.DefaultValue && Number.parseInt(this.props.settings.DefaultValue, 10)) || '',
-  }
+export function NumberComponent(props: ReactClientFieldSetting<NumberFieldSetting | CurrencyFieldSetting>) {
+  const initialState =
+    props.fieldValue != null
+      ? props.fieldValue
+      : (props.settings.DefaultValue && Number.parseInt(props.settings.DefaultValue, 10)) || ''
+  const [value, setValue] = useState(initialState)
 
-  public handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) => {
-    this.setState({ value: e.target.value })
-    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, e.target.value)
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) => {
+    setValue(e.target.value)
+    props.fieldOnChange && props.fieldOnChange(props.settings.Name, e.target.value)
   }
 
   /**
    * Returns steps value by decimal and step settings
    */
-  public defineStepValue = () => {
-    if (this.props.settings.Step) {
-      return this.props.settings.Step
+  const defineStepValue = () => {
+    if (props.settings.Step) {
+      return props.settings.Step
     }
-    if (!this.props.fieldValue) {
+    if (!props.fieldValue) {
       return 1
     }
-    return Number.isInteger(toNumber(this.props.fieldValue)!) || this.props.settings.Type === 'IntegerFieldSetting'
-      ? 1
-      : 0.1
+    return Number.isInteger(toNumber(props.fieldValue)!) || props.settings.Type === 'IntegerFieldSetting' ? 1 : 0.1
   }
 
   /**
    * Returns inputadornment by currency
    */
-  public defineCurrency = () => {
-    if (isCurrencyFieldSetting(this.props.settings) && this.props.settings.Format) {
-      return <InputAdornment position="start">{this.props.settings.Format}</InputAdornment>
+  const defineCurrency = () => {
+    if (isCurrencyFieldSetting(props.settings) && props.settings.Format) {
+      return <InputAdornment position="start">{props.settings.Format}</InputAdornment>
     }
     return null
   }
 
-  public render() {
-    switch (this.props.actionName) {
-      case 'edit':
-      case 'new':
-        return (
-          <TextField
-            name={this.props.settings.Name}
-            type="number"
-            label={this.props.settings.DisplayName}
-            value={this.state.value}
-            required={this.props.settings.Compulsory}
-            disabled={this.props.settings.ReadOnly}
-            InputProps={{
-              startAdornment: this.defineCurrency(),
-              endAdornment: this.props.settings.ShowAsPercentage ? (
-                <InputAdornment position="end">%</InputAdornment>
-              ) : null,
-            }}
-            inputProps={{
-              step: this.defineStepValue(),
-              max: this.props.settings.MaxValue,
-              min: this.props.settings.MinValue,
-            }}
-            id={this.props.settings.Name}
-            fullWidth={true}
-            onChange={this.handleChange}
-            helperText={this.props.settings.Description}
-          />
-        )
-      case 'browse':
-      default:
-        return this.props.fieldValue ? (
-          <div>
-            <Typography variant="caption" gutterBottom={true}>
-              {this.props.settings.DisplayName}
-            </Typography>
-            <Typography variant="body1" gutterBottom={true}>
-              {isCurrencyFieldSetting(this.props.settings)
-                ? this.props.settings.Format
-                  ? this.props.settings.Format
-                  : '$'
-                : null}
-              {this.props.fieldValue}
-              {this.props.settings.ShowAsPercentage ? '%' : null}
-            </Typography>
-          </div>
-        ) : null
-    }
+  switch (props.actionName) {
+    case 'edit':
+    case 'new':
+      return (
+        <TextField
+          name={props.settings.Name}
+          type="number"
+          label={props.settings.DisplayName}
+          value={value}
+          required={props.settings.Compulsory}
+          disabled={props.settings.ReadOnly}
+          placeholder={props.settings.DisplayName}
+          InputProps={{
+            startAdornment: defineCurrency(),
+            endAdornment: props.settings.ShowAsPercentage ? <InputAdornment position="end">%</InputAdornment> : null,
+          }}
+          inputProps={{
+            step: defineStepValue(),
+            max: props.settings.MaxValue,
+            min: props.settings.MinValue,
+          }}
+          id={props.settings.Name}
+          fullWidth={true}
+          onChange={handleChange}
+          helperText={props.settings.Description}
+        />
+      )
+    case 'browse':
+    default:
+      return props.fieldValue ? (
+        <div>
+          <Typography variant="caption" gutterBottom={true}>
+            {props.settings.DisplayName}
+          </Typography>
+          <Typography variant="body1" gutterBottom={true}>
+            {isCurrencyFieldSetting(props.settings) ? (props.settings.Format ? props.settings.Format : '$') : null}
+            {props.fieldValue}
+            {props.settings.ShowAsPercentage ? '%' : null}
+          </Typography>
+        </div>
+      ) : null
   }
 }
