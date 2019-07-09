@@ -13,7 +13,7 @@ import { PathHelper } from '@sensenet/client-utils'
 import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import { Link, matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
-import { ResponsivePersonalSetttings } from '../../context'
+import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
 import { useLocalization, usePersonalSettings, useRepository, useSession, useTheme } from '../../hooks'
 import { LogoutButton } from '../LogoutButton'
 import { UserAvatar } from '../UserAvatar'
@@ -25,6 +25,7 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
   const theme = useTheme()
   const session = useSession()
   const repo = useRepository()
+  const device = useContext(ResponsiveContext)
 
   const [opened, setOpened] = useState(settings.drawer.type === 'permanent')
   const [items, setItems] = useState(getAllowedDrawerItems(session.groups))
@@ -133,11 +134,13 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
                   secondary={(currentRepoEntry && currentRepoEntry.displayName) || repo.configuration.repositoryUrl}
                 />
                 <ListItemSecondaryAction>
-                  <Link to={`/personalSettings`} style={{ textDecoration: 'none' }}>
-                    <IconButton title={localization.personalSettingsTitle}>
-                      <Settings />
-                    </IconButton>
-                  </Link>
+                  {device === 'mobile' ? null : (
+                    <Link to={`/personalSettings`} style={{ textDecoration: 'none' }}>
+                      <IconButton title={localization.personalSettingsTitle}>
+                        <Settings />
+                      </IconButton>
+                    </Link>
+                  )}
                   <LogoutButton />
                 </ListItemSecondaryAction>
               </ListItem>
