@@ -3,7 +3,7 @@ import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
-import { useInjector, useRepository } from '../hooks'
+import { useInjector, useLogger, useRepository } from '../hooks'
 import { CurrentContentContext } from './CurrentContent'
 export const CurrentAncestorsContext = React.createContext<GenericContent[]>([])
 
@@ -16,6 +16,8 @@ export const CurrentAncestorsProvider: React.FunctionComponent = props => {
   const injector = useInjector()
   const eventHub = injector.getEventHub(repo.configuration.repositoryUrl)
   const [reloadToken, setReloadToken] = useState(1)
+
+  const logger = useLogger('CurrentAncestorsProvider')
 
   const requestReload = debounce(() => setReloadToken(Math.random()), 100)
 
@@ -78,7 +80,10 @@ export const CurrentAncestorsProvider: React.FunctionComponent = props => {
   }, [currentContent.Id, loadLock, reloadToken, repo])
 
   if (error) {
-    throw error
+    logger.warning({
+      message: `Error loading ancestors. ${error.toString()}`,
+      data: { details: { error }, relatedContent: currentContent, relatedRepository: repo.configuration.repositoryUrl },
+    })
   }
   return <CurrentAncestorsContext.Provider value={ancestors}>{props.children}</CurrentAncestorsContext.Provider>
 }
