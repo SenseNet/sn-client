@@ -81,7 +81,7 @@ export const CurrentAncestorsProvider: React.FunctionComponent = props => {
 
   if (error) {
     logger.warning({
-      message: `Error loading ancestors. ${error.toString()}`,
+      message: `Error loading ancestors. ${error.message}`,
       data: { details: { error }, relatedContent: currentContent, relatedRepository: repo.configuration.repositoryUrl },
     })
   }
