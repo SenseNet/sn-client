@@ -1,4 +1,5 @@
 export * from './use-content-routing'
+export * from './use-command-palette'
 export * from './use-download'
 export * from './use-event-service'
 export * from './use-injector'

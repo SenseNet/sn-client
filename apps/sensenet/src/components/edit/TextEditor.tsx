@@ -162,6 +162,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
         value={textValue}
         onChange={v => setTextValue(v)}
         options={{
+          readOnly: platform === 'mobile',
           automaticLayout: true,
           minimap: {
             enabled: platform === 'desktop' ? true : false,

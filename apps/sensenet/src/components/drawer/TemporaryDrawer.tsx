@@ -13,7 +13,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import { Link, matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
 
-import { ResponsivePersonalSetttings } from '../../context'
+import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
 import { useLocalization, usePersonalSettings, useRepository, useSession, useTheme } from '../../hooks'
 import { LogoutButton } from '../LogoutButton'
 import { UserAvatar } from '../UserAvatar'
@@ -23,6 +23,7 @@ const TemporaryDrawer: React.FunctionComponent<
   RouteComponentProps & { isOpened: boolean; onClose: () => void; onOpen: () => void }
 > = props => {
   const settings = useContext(ResponsivePersonalSetttings)
+  const device = useContext(ResponsiveContext)
   const personalSettings = usePersonalSettings()
   const repo = useRepository()
   const theme = useTheme()
@@ -124,11 +125,13 @@ const TemporaryDrawer: React.FunctionComponent<
               secondaryTypographyProps={{ style: { overflow: 'hidden', textOverflow: 'ellipsis' } }}
             />
             <ListItemSecondaryAction>
-              <Link to={`/personalSettings`} style={{ textDecoration: 'none' }} onClick={() => props.onClose()}>
-                <IconButton title={localization.personalSettingsTitle}>
-                  <Settings />
-                </IconButton>
-              </Link>
+              {device === 'mobile' ? null : (
+                <Link to={`/personalSettings`} style={{ textDecoration: 'none' }} onClick={() => props.onClose()}>
+                  <IconButton title={localization.personalSettingsTitle}>
+                    <Settings />
+                  </IconButton>
+                </Link>
+              )}
               <LogoutButton onLoggedOut={() => props.onClose()} />
             </ListItemSecondaryAction>
           </ListItem>
