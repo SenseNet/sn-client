@@ -48,7 +48,8 @@ export const CurrentContentProvider: React.FunctionComponent<{
       })()
     }
     return () => ac.abort()
-  }, [repo, props.idOrPath, reloadToken, props, loadLock])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [repo, props.idOrPath, reloadToken, loadLock])
 
   if (error) {
     throw error
