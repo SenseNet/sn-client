@@ -37,7 +37,7 @@ export function DropDownList(props: ReactClientFieldSetting<ChoiceFieldSetting>)
     case 'edit':
     case 'new':
       return (
-        <FormControl fullWidth={true} required={props.settings.Compulsory}>
+        <FormControl fullWidth={true} required={props.settings.Compulsory} disabled={props.settings.ReadOnly}>
           <InputLabel htmlFor={props.settings.Name}>{props.settings.DisplayName}</InputLabel>
           <Select
             onChange={handleChange}
@@ -48,8 +48,10 @@ export function DropDownList(props: ReactClientFieldSetting<ChoiceFieldSetting>)
               } as any
             }
             value={value}
+            name={props.settings.Name}
             multiple={props.settings.AllowMultiple}
             autoWidth={true}
+            defaultValue={props.settings.DefaultValue}
             fullWidth={true}>
             {props.settings.Options!.map(option => {
               return (
