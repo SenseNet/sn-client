@@ -1,96 +1,65 @@
 /**
  * @module FieldControls
  */
-import React, { Component } from 'react'
-
+import React, { useState } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
-/**
- * Interface for Name state
- */
-export interface NameState {
-  value: string
-  isValid: boolean
-  error: string
-}
+const invalidCharacters = ['%', '\\', '*', '~']
 /**
  * Field control that represents a ShortText field. Available values will be populated from the FieldSettings.
  */
-export class Name extends Component<ReactClientFieldSetting, NameState> {
-  constructor(props: Name['props']) {
-    super(props)
-    /**
-     * @type {object}
-     * @property {string} value input value
-     */
-    this.state = {
-      value: (this.props.fieldValue && this.setValue(this.props.fieldValue)) || '',
-      isValid: this.props.settings.Compulsory ? false : true,
-      error: '',
-    }
+export function Name(props: ReactClientFieldSetting) {
+  const initialState =
+    (props.fieldValue && props.fieldValue.replace(/<[^>]*>/g, '')) || props.settings.DefaultValue || ''
+  const [value, setValue] = useState(initialState)
+  const [isValid, setIsValid] = useState(true)
 
-    this.handleChange = this.handleChange.bind(this)
-  }
-  /**
-   * convert incoming default value string to proper format
-   * @param {string} value
-   */
-  public setValue(value: string) {
-    if (value) {
-      return value.replace(/<[^>]*>/g, '')
-    } else {
-      if (this.props.settings.DefaultValue) {
-        return this.props.settings.DefaultValue
-      } else {
-        return ''
-      }
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setIsValid(true)
+    setValue(event.target.value)
+    if (invalidCharacters.some(c => event.target.value.includes(c))) {
+      setIsValid(false)
+      return
     }
+    props.fieldOnChange && props.fieldOnChange(props.settings.Name, event.target.value)
   }
-  /**
-   * Handles input changes. Dispatches a redux action to change field value in the state tree.
-   * @param e
-   */
-  public handleChange(e: React.ChangeEvent<{ value: string }>) {
-    const { value } = e.target
-    this.setState({ value })
-    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, value)
-  }
-  /**
-   * render
-   * @return {ReactElement} markup
-   */
-  public render() {
-    switch (this.props.actionName) {
-      case 'edit':
-      case 'new':
-        return (
-          <TextField
-            name={this.props.settings.Name}
-            id={this.props.settings.Name}
-            label={this.props.settings.DisplayName}
-            placeholder={this.props.settings.DisplayName}
-            value={this.state.value}
-            required={this.props.settings.Compulsory}
-            disabled={this.props.settings.ReadOnly}
-            fullWidth={true}
-            onChange={this.handleChange}
-            helperText={this.props.settings.Description}
-          />
-        )
-      case 'browse':
-      default:
-        return this.props.fieldValue ? (
-          <div>
-            <Typography variant="caption" gutterBottom={true}>
-              {this.props.settings.DisplayName}
-            </Typography>
-            <Typography variant="body1" gutterBottom={true}>
-              {this.props.fieldValue}
-            </Typography>
-          </div>
-        ) : null
-    }
+
+  switch (props.actionName) {
+    case 'edit':
+    case 'new':
+      return (
+        <TextField
+          name={props.settings.Name}
+          id={props.settings.Name}
+          label={props.settings.DisplayName}
+          placeholder={props.settings.DisplayName}
+          defaultValue={props.settings.DefaultValue}
+          value={value}
+          required={props.settings.Compulsory}
+          disabled={props.settings.ReadOnly}
+          fullWidth={true}
+          onChange={handleChange}
+          error={!isValid}
+          helperText={
+            isValid
+              ? props.settings.Description
+              : `The Name field can't contain these characters: ${invalidCharacters.join(',')}`
+          }
+        />
+      )
+    case 'browse':
+    default:
+      return props.fieldValue ? (
+        <div>
+          <Typography variant="caption" gutterBottom={true}>
+            {props.settings.DisplayName}
+          </Typography>
+          <Typography variant="body1" gutterBottom={true}>
+            {props.fieldValue}
+          </Typography>
+        </div>
+      ) : null
   }
 }
