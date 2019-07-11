@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Color field control in browse view should show the displayname and fieldValue when fieldValue is provided 1`] = `
+<WithStyles(ForwardRef(FormControl))>
+  <WithStyles(ForwardRef(TextField))
+    InputProps={
+      Object {
+        "startAdornment": <ForwardRef(WithStyles)
+          position="start"
+        >
+          <ForwardRef(WithStyles)
+            style={
+              Object {
+                "color": "#016d9e",
+              }
+            }
+          >
+            lens
+          </ForwardRef(WithStyles)>
+        </ForwardRef(WithStyles)>,
+      }
+    }
+    disabled={true}
+    id="Color"
+    label="Color"
+    name="Color"
+    type="text"
+    value="#016d9e"
+  />
+</WithStyles(ForwardRef(FormControl))>
+`;
+
+exports[`Color field control in edit/new view should set all the props 1`] = `
+<WithStyles(ForwardRef(FormControl))>
+  <WithStyles(ForwardRef(TextField))
+    InputProps={
+      Object {
+        "startAdornment": <ForwardRef(WithStyles)
+          position="start"
+        >
+          <ForwardRef(WithStyles)
+            style={
+              Object {
+                "color": "#016d9e",
+              }
+            }
+          >
+            lens
+          </ForwardRef(WithStyles)>
+        </ForwardRef(WithStyles)>,
+      }
+    }
+    defaultValue="defaultValue"
+    disabled={true}
+    helperText="Color"
+    id="Color"
+    label="Color"
+    name="Color"
+    onClick={[Function]}
+    placeholder="Color"
+    required={true}
+    type="text"
+    value="#016d9e"
+  />
+  <WithStyles(WithFormControlContext(ForwardRef(FormHelperText)))>
+    Color
+  </WithStyles(WithFormControlContext(ForwardRef(FormHelperText)))>
+</WithStyles(ForwardRef(FormControl))>
+`;
