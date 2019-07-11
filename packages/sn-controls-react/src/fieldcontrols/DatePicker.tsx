@@ -11,6 +11,7 @@ import {
 import moment from 'moment'
 import React, { useState } from 'react'
 import { DateTimeFieldSetting, DateTimeMode } from '@sensenet/default-content-types'
+import Typography from '@material-ui/core/Typography'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
@@ -24,7 +25,7 @@ export function DatePicker(props: ReactClientFieldSetting<DateTimeFieldSetting>)
     if (!date) {
       return
     }
-    setValue(date.toISOString())
+    setValue(moment.utc(date).toISOString())
     props.fieldOnChange && props.fieldOnChange(props.settings.Name, moment.utc(date).toISOString())
   }
 
@@ -37,8 +38,10 @@ export function DatePicker(props: ReactClientFieldSetting<DateTimeFieldSetting>)
             <MUIDatePicker
               value={value}
               onChange={handleDateChange}
+              name={props.settings.Name}
+              defaultValue={props.settings.DefaultValue}
               label={props.settings.DisplayName}
-              id={props.settings.Name as string}
+              id={props.settings.Name}
               disabled={props.settings.ReadOnly}
               placeholder={props.settings.DisplayName}
               required={props.settings.Compulsory}
@@ -49,6 +52,8 @@ export function DatePicker(props: ReactClientFieldSetting<DateTimeFieldSetting>)
               value={value}
               onChange={handleDateChange}
               label={props.settings.DisplayName}
+              name={props.settings.Name}
+              defaultValue={props.settings.DefaultValue}
               id={props.settings.Name}
               disabled={props.settings.ReadOnly}
               placeholder={props.settings.DisplayName}
@@ -61,15 +66,19 @@ export function DatePicker(props: ReactClientFieldSetting<DateTimeFieldSetting>)
     default:
       return props.fieldValue ? (
         <div>
-          <label>{props.settings.DisplayName}</label>
+          <Typography variant="caption" gutterBottom={true}>
+            {props.settings.DisplayName}
+          </Typography>
           {props.settings.DateTimeMode === DateTimeMode.Date ? (
-            <p>
+            <Typography variant="body1" gutterBottom={true}>
               {moment(props.fieldValue)
                 .format('LL')
                 .toLocaleString()}
-            </p>
+            </Typography>
           ) : (
-            <p>{moment(props.fieldValue).toLocaleString()}</p>
+            <Typography variant="body1" gutterBottom={true}>
+              {moment(props.fieldValue).toLocaleString()}
+            </Typography>
           )}
         </div>
       ) : null

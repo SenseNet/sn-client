@@ -47,7 +47,6 @@ describe('Time picker field control', () => {
             ReadOnly: true,
             Compulsory: true,
             DefaultValue: 'defaultValue',
-            Description: 'description',
           }}
         />,
       )
