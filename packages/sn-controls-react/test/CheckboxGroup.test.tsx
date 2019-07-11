@@ -22,7 +22,7 @@ const defaultSettings = {
   ],
 }
 
-describe('Drop down list field control', () => {
+describe('Check box group field control', () => {
   describe('in browse view', () => {
     it('should render null when no fieldValue is provided', () => {
       const wrapper = shallow(<CheckboxGroup actionName="browse" settings={defaultSettings} />)

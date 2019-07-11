@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Drop down list field control in edit/new view should set all the props 1`] = `
+exports[`Check box group field control in edit/new view should set all the props 1`] = `
 <CheckboxGroup
   actionName="edit"
   fieldValue="0"
