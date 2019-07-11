@@ -6,67 +6,47 @@ import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import InputLabel from '@material-ui/core/InputLabel'
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { FieldSetting } from '@sensenet/default-content-types'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 import { renderIconDefault } from './icon'
 
 /**
- * Interface for Boolean state
+ * Field control that represents a Boolean field.
  */
-export interface BooleanState {
-  value: boolean
-}
+export function BooleanComponent(props: ReactClientFieldSetting<FieldSetting>) {
+  const initialState = props.fieldValue != null ? !!props.fieldValue : !!props.settings.DefaultValue
+  const [value, setValue] = useState(initialState)
 
-/**
- * Field control that represents a Choice field. Available values will be populated from the FieldSettings.
- */
-export class BooleanComponent extends Component<ReactClientFieldSetting<FieldSetting>, BooleanState> {
-  state = {
-    value: this.props.fieldValue != null ? !!this.props.fieldValue : !!this.props.settings.DefaultValue,
+  const handleChange = () => {
+    setValue(!value)
+    props.fieldOnChange && props.fieldOnChange(props.settings.Name, !value)
   }
-  /**
-   * set selected value
-   */
-  public handleChange = () => {
-    const { value } = this.state
-    const newValue = !value
-    this.setState({
-      value: newValue,
-    })
-    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, newValue)
-  }
-  /**
-   * render
-   * @return {ReactElement} markup
-   */
-  public render() {
-    switch (this.props.actionName) {
-      case 'edit':
-      case 'new':
-        return (
-          <FormControl required={this.props.settings.Compulsory}>
-            <FormControlLabel
-              control={<Checkbox checked={this.state.value} onChange={this.handleChange} />}
-              label={this.props.settings.DisplayName}
-            />
-            {this.props.settings.Description ? (
-              <FormHelperText>{this.props.settings.Description}</FormHelperText>
-            ) : null}
-          </FormControl>
-        )
-      case 'browse':
-      default:
-        return this.props.fieldValue != null ? (
-          <FormControl component={'fieldset' as 'div'}>
-            <InputLabel shrink={true} htmlFor={this.props.settings.Name}>
-              {this.props.settings.DisplayName}
-            </InputLabel>
-            {this.props.renderIcon
-              ? this.props.renderIcon(this.props.fieldValue ? 'check' : 'not_interested')
-              : renderIconDefault(this.props.fieldValue ? 'check' : 'not_interested')}
-          </FormControl>
-        ) : null
-    }
+
+  switch (props.actionName) {
+    case 'edit':
+    case 'new':
+      return (
+        <FormControl required={props.settings.Compulsory} disabled={props.settings.ReadOnly}>
+          <FormControlLabel
+            name={props.settings.Name}
+            control={<Checkbox checked={value} onChange={handleChange} />}
+            label={props.settings.DisplayName}
+          />
+          <FormHelperText>{props.settings.Description}</FormHelperText>
+        </FormControl>
+      )
+    case 'browse':
+    default:
+      return props.fieldValue != null ? (
+        <FormControl component={'fieldset' as 'div'}>
+          <InputLabel shrink={true} htmlFor={props.settings.Name}>
+            {props.settings.DisplayName}
+          </InputLabel>
+          {props.renderIcon
+            ? props.renderIcon(props.fieldValue ? 'check' : 'not_interested')
+            : renderIconDefault(props.fieldValue ? 'check' : 'not_interested')}
+        </FormControl>
+      ) : null
   }
 }
