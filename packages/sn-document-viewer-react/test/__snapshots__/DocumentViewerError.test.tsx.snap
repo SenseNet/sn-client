@@ -114,7 +114,7 @@ exports[`Document Viewer Error component should render without crashing 1`] = `
       }
       variant="h5"
     >
-      The document doesn't have any preview images
+      No preview available, because the document is empty!
     </WithStyles(ForwardRef(Typography))>
     <WithStyles(ForwardRef(Typography))
       align="center"

@@ -1,26 +1,26 @@
 import { Injectable } from '@furystack/inject'
-import { ConstantContent, Repository } from '@sensenet/client-core'
+import { ConstantContent } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Query } from '@sensenet/query'
-import { CommandPaletteItem } from '../../store/CommandPalette'
-import { CommandProvider } from '../CommandProviderManager'
+import { CommandProvider, SearchOptions } from '../CommandProviderManager'
 import { ContentContextProvider } from '../ContentContextProvider'
+import { CommandPaletteItem } from '../../hooks'
 
 @Injectable({ lifetime: 'singleton' })
 export class InFolderSearchCommandProvider implements CommandProvider {
-  public shouldExec(searchTerm: string): boolean {
-    return searchTerm[0] === '/'
+  public shouldExec({ term }: SearchOptions): boolean {
+    return term[0] === '/'
   }
 
-  public async getItems(path: string, repo: Repository): Promise<CommandPaletteItem[]> {
-    const currentPath = PathHelper.trimSlashes(path)
+  public async getItems(options: SearchOptions): Promise<CommandPaletteItem[]> {
+    const currentPath = PathHelper.trimSlashes(options.term)
     const segments = currentPath.split('/')
-    const ctx = new ContentContextProvider(repo)
+    const ctx = new ContentContextProvider(options.repository)
     const parentPath = PathHelper.trimSlashes(
       PathHelper.joinPaths(...segments.slice(0, segments.length - 1)) || currentPath,
     )
-    const result = await repo.loadCollection<GenericContent>({
+    const result = await options.repository.loadCollection<GenericContent>({
       path: ConstantContent.PORTAL_ROOT.Path,
       oDataOptions: {
         query: new Query(q =>
@@ -38,7 +38,7 @@ export class InFolderSearchCommandProvider implements CommandProvider {
       secondaryText: content.Path,
       content,
       url: ctx.getPrimaryActionUrl(content),
-      hits: [path],
+      hits: [options.term],
     }))
   }
 }

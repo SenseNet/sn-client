@@ -3,23 +3,17 @@ import IconButton from '@material-ui/core/IconButton'
 import Toolbar from '@material-ui/core/Toolbar'
 import Menu from '@material-ui/icons/Menu'
 import React, { useContext } from 'react'
-import { connect } from 'react-redux'
 import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
-import { useTheme } from '../../hooks'
-import { rootStateType } from '../../store'
+import { useCommandPalette, useTheme } from '../../hooks'
 import { CommandPalette } from '../command-palette/CommandPalette'
 import { RepositorySelector } from '../RepositorySelector'
 
-const mapStateToProps = (state: rootStateType) => ({
-  commandPaletteOpened: state.commandPalette.isOpened,
-})
-
-const DesktopAppBar: React.StatelessComponent<
-  ReturnType<typeof mapStateToProps> & { openDrawer?: () => void }
-> = props => {
+export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }> = props => {
   const device = useContext(ResponsiveContext)
   const theme = useTheme()
   const personalSettings = useContext(ResponsivePersonalSetttings)
+
+  const commandPalette = useCommandPalette()
 
   return (
     <AppBar position="sticky" style={{ backgroundColor: theme.palette.background.paper }}>
@@ -31,7 +25,7 @@ const DesktopAppBar: React.StatelessComponent<
             textDecoration: 'none',
             overflow: 'hidden',
             alignItems: 'center',
-            flexGrow: props.commandPaletteOpened ? 0 : 1,
+            flexGrow: commandPalette.isOpened ? 0 : 1,
           }}>
           {personalSettings.drawer.type === 'temporary' ? (
             <IconButton
@@ -41,15 +35,11 @@ const DesktopAppBar: React.StatelessComponent<
               <Menu />
             </IconButton>
           ) : null}
-          {device !== 'desktop' && props.commandPaletteOpened ? null : <RepositorySelector />}
+          {device !== 'desktop' && commandPalette.isOpened ? null : <RepositorySelector />}
         </div>
 
-        {personalSettings.commandPalette.enabled ? <CommandPalette /> : <div style={{ flex: 1 }} />}
+        {personalSettings.commandPalette.enabled ? <CommandPalette {...commandPalette} /> : <div style={{ flex: 1 }} />}
       </Toolbar>
     </AppBar>
   )
 }
-
-const connectedComponent = connect(mapStateToProps)(DesktopAppBar)
-
-export { connectedComponent as DesktopAppBar }
