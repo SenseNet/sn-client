@@ -12,7 +12,7 @@ exports[`Date/Date time field control in browse view should show the displayname
     gutterBottom={true}
     variant="body1"
   >
-    November 27, 1973
+    April 15, 1912
   </WithStyles(ForwardRef(Typography))>
 </div>
 `;
@@ -29,7 +29,7 @@ exports[`Date/Date time field control in browse view should show the displayname
     gutterBottom={true}
     variant="body1"
   >
-    Tue Nov 27 1973 08:48:55 GMT+0100
+    Mon Apr 15 1912 03:10:00 GMT+0100
   </WithStyles(ForwardRef(Typography))>
 </div>
 `;
@@ -57,7 +57,7 @@ exports[`Date/Date time field control in edit/new view should set all the props 
     placeholder="Modification Date"
     required={true}
     showTabs={true}
-    value="1973-11-27T07:48:55.323Z"
+    value="1912-04-15T02:10:00.000Z"
     views={
       Array [
         "year",
@@ -92,7 +92,7 @@ exports[`Date/Date time field control in edit/new view should set all the props 
     openTo="date"
     placeholder="Modification Date"
     required={true}
-    value="1973-11-27T07:48:55.323Z"
+    value="1912-04-15T02:10:00.000Z"
     views={
       Array [
         "year",

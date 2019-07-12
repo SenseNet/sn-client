@@ -6,16 +6,17 @@ import { DateTimeMode } from '@sensenet/default-content-types'
 import moment from 'moment'
 import { DatePicker } from '../src/fieldcontrols/DatePicker'
 
+const defaultSettings = {
+  DateTimeMode: 2,
+  Name: 'ModificationDate',
+  FieldClassName: 'SenseNet.ContentRepository.Fields.DateTimeField',
+  DisplayName: 'Modification Date',
+  Description: 'Content was last modified on this date.',
+  Type: 'DateTimeFieldSetting',
+}
+const value = new Date(Date.UTC(1912, 3, 15, 2, 10)).toISOString()
+
 describe('Date/Date time field control', () => {
-  const defaultSettings = {
-    DateTimeMode: 2,
-    Name: 'ModificationDate',
-    FieldClassName: 'SenseNet.ContentRepository.Fields.DateTimeField',
-    DisplayName: 'Modification Date',
-    Description: 'Content was last modified on this date.',
-    Type: 'DateTimeFieldSetting',
-  }
-  const value = new Date(123234535323).toISOString()
   describe('in browse view', () => {
     it('should show the displayname and fieldValue when fieldValue is provided', () => {
       const wrapper = shallow(<DatePicker fieldValue={value} actionName="browse" settings={defaultSettings} />)
@@ -33,6 +34,7 @@ describe('Date/Date time field control', () => {
       ).toBe(moment(value).toLocaleString())
       expect(wrapper).toMatchSnapshot()
     })
+
     it('should show the displayname and fieldValue as date when fieldValue is provided and set as date', () => {
       const wrapper = shallow(
         <DatePicker
@@ -59,6 +61,7 @@ describe('Date/Date time field control', () => {
       )
       expect(wrapper).toMatchSnapshot()
     })
+
     it('should render null when no fieldValue is provided', () => {
       const wrapper = shallow(<DatePicker actionName="browse" settings={defaultSettings} />)
       expect(wrapper.get(0)).toBeFalsy()
@@ -88,6 +91,7 @@ describe('Date/Date time field control', () => {
       expect(wrapper.find(DateTimePicker).prop('disabled')).toBeTruthy()
       expect(wrapper).toMatchSnapshot()
     })
+
     it('should set all the props for date', () => {
       const wrapper = shallow(
         <DatePicker
@@ -112,6 +116,7 @@ describe('Date/Date time field control', () => {
       expect(wrapper.find(MUIDatePicker).prop('disabled')).toBeTruthy()
       expect(wrapper).toMatchSnapshot()
     })
+
     it('should call on change when input changes', () => {
       const fieldOnChange = jest.fn()
       const wrapper = shallow(<DatePicker actionName="edit" fieldOnChange={fieldOnChange} settings={defaultSettings} />)

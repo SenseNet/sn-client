@@ -12,7 +12,7 @@ exports[`Time picker field control in browse view should show the displayname an
     gutterBottom={true}
     variant="body1"
   >
-    08:48:55
+    10:46:00
   </WithStyles(ForwardRef(Typography))>
 </div>
 `;
@@ -34,7 +34,7 @@ exports[`Time picker field control in edit/new view should set all the props 1`]
     openTo="hours"
     placeholder="Modification Date"
     required={true}
-    value="1973-11-27T07:48:55.324Z"
+    value="2001-09-11T08:46:00.000Z"
     views={
       Array [
         "hours",

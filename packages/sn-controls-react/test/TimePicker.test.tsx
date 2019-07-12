@@ -5,16 +5,17 @@ import moment from 'moment'
 import { TimePicker as MUITimePicker } from '@material-ui/pickers'
 import { TimePicker } from '../src/fieldcontrols/TimePicker'
 
+const value = new Date(Date.UTC(2001, 8, 11, 8, 46)).toISOString()
+const defaultSettings = {
+  Name: 'ModificationDate',
+  Type: 'DateTimeFieldSetting',
+  DisplayName: 'Modification Date',
+  FieldClassName: 'SenseNet.ContentRepository.Fields.DateTimeField',
+}
+
 describe('Time picker field control', () => {
-  const defaultSettings = {
-    Name: 'ModificationDate',
-    Type: 'DateTimeFieldSetting',
-    DisplayName: 'Modification Date',
-    FieldClassName: 'SenseNet.ContentRepository.Fields.DateTimeField',
-  }
   describe('in browse view', () => {
     it('should show the displayname and fieldValue when fieldValue is provided', () => {
-      const value = new Date(123234535323).toISOString()
       const wrapper = shallow(<TimePicker fieldValue={value} actionName="browse" settings={defaultSettings} />)
       expect(
         wrapper
@@ -37,7 +38,6 @@ describe('Time picker field control', () => {
   })
   describe('in edit/new view', () => {
     it('should set all the props', () => {
-      const value = new Date(123234535324).toISOString()
       const wrapper = shallow(
         <TimePicker
           fieldValue={value}
