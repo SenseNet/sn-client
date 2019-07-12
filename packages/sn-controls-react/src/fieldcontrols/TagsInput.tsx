@@ -12,13 +12,12 @@ import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
-import { Content, ODataCollectionResponse } from '@sensenet/client-core'
 import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
-import { renderIconDefault } from '../icon'
-import { ReactClientFieldSetting } from '../ClientFieldSetting'
-import { isUser } from '../type-guards'
+import { renderIconDefault } from './icon'
+import { ReactClientFieldSetting } from './ClientFieldSetting'
+import { isUser } from './type-guards'
 
 const ITEM_HEIGHT = 48
 const ITEM_PADDING_TOP = 8
@@ -66,7 +65,9 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
       dataSource: [],
       fieldValue: [],
     }
-    this.search()
+    if (this.props.actionName !== 'browse') {
+      this.search()
+    }
   }
 
   public handleChange = (event: React.ChangeEvent<{ name?: string; value: number }>) => {
@@ -86,61 +87,64 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
     this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, s.map(content => content.Id))
   }
 
-  /**
-   * returns referencefields' datasource
-   * @param path
-   */
-  public async search(): Promise<ODataCollectionResponse<Content>> {
-    if (!this.props.repository) {
-      throw new Error('You must pass a repository to this control')
-    }
-    const selectionRoot = this.props.settings.SelectionRoots || []
-    const allowedTypes = this.props.settings.AllowedTypes || ['GenericContent']
+  public async search() {
+    try {
+      if (!this.props.repository) {
+        throw new Error('You must pass a repository to this control')
+      }
+      const selectionRoot = this.props.settings.SelectionRoots || []
+      const allowedTypes = this.props.settings.AllowedTypes || ['GenericContent']
 
-    let pathQuery = ''
-    selectionRoot.map((selectionPath, index) => {
-      pathQuery += index === 0 ? `InTree:${selectionPath}` : `OR InTree:${selectionPath}`
-    })
-    let typeQuery = ''
-    allowedTypes.map(type => {
-      typeQuery += ` +TypeIs:${type}`
-    })
+      let pathQuery = ''
+      selectionRoot.map((selectionPath, index) => {
+        pathQuery += index === 0 ? `InTree:${selectionPath}` : `OR InTree:${selectionPath}`
+      })
+      let typeQuery = ''
+      allowedTypes.map(type => {
+        typeQuery += ` +TypeIs:${type}`
+      })
 
-    const req = await this.props.repository.loadCollection({
-      path: '/Root',
-      oDataOptions: {
-        query: `(${pathQuery}) AND${typeQuery}`,
-        select: 'all',
-      },
-    })
-    this.setState({
-      dataSource: req.d.results,
-    })
-    if (this.props.actionName === 'edit') {
-      this.getSelected()
+      const req = await this.props.repository.loadCollection({
+        path: '/Root',
+        oDataOptions: {
+          query: `(${pathQuery}) AND${typeQuery}`,
+          select: 'all',
+        },
+      })
+      this.setState({
+        dataSource: req.d.results,
+      })
+      if (this.props.actionName === 'edit') {
+        this.getSelected()
+      }
+      return req
+    } catch (error) {
+      console.error(error.mesage)
     }
-    return req
   }
 
   public async getSelected() {
-    if (!this.props.repository) {
-      throw new Error('You must pass a repository to this control')
+    try {
+      if (!this.props.repository) {
+        throw new Error('You must pass a repository to this control')
+      }
+      const loadPath = this.props.content
+        ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props.content.Path), '/', this.props.settings.Name)
+        : ''
+      const references = await this.props.repository.loadCollection<GenericContent>({
+        path: loadPath,
+        oDataOptions: {
+          select: 'all',
+        },
+      })
+
+      this.setState({
+        fieldValue: references.d.results,
+      })
+      return references.d.results
+    } catch (error) {
+      console.error(error.message)
     }
-    const loadPath = this.props.content
-      ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props.content.Path), '/', this.props.settings.Name)
-      : ''
-    const references = await this.props.repository.loadCollection<GenericContent>({
-      path: loadPath,
-      oDataOptions: {
-        select: 'all',
-      },
-    })
-
-    this.setState({
-      fieldValue: references.d.results,
-    })
-
-    return references.d.results
   }
   /**
    * returns a content by its id
