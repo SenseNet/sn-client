@@ -17,23 +17,6 @@ exports[`Date/Date time field control in browse view should show the displayname
 </div>
 `;
 
-exports[`Date/Date time field control in browse view should show the displayname and fieldValue when fieldValue is provided 1`] = `
-<div>
-  <WithStyles(ForwardRef(Typography))
-    gutterBottom={true}
-    variant="caption"
-  >
-    Modification Date
-  </WithStyles(ForwardRef(Typography))>
-  <WithStyles(ForwardRef(Typography))
-    gutterBottom={true}
-    variant="body1"
-  >
-    Mon Apr 15 1912 03:10:00 GMT+0100
-  </WithStyles(ForwardRef(Typography))>
-</div>
-`;
-
 exports[`Date/Date time field control in edit/new view should set all the props 1`] = `
 <MuiPickersUtilsProvider
   utils={[Function]}

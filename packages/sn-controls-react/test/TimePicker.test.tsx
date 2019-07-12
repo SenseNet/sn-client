@@ -29,7 +29,6 @@ describe('Time picker field control', () => {
           .last()
           .text(),
       ).toBe(moment(value).format('HH:mm:ss'))
-      expect(wrapper).toMatchSnapshot()
     })
     it('should render null when no fieldValue is provided', () => {
       const wrapper = shallow(<TimePicker actionName="browse" settings={defaultSettings} />)

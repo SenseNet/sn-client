@@ -33,7 +33,6 @@ describe('Date/Date time field control', () => {
           .last()
           .text(),
       ).toBe(moment(value).toLocaleString())
-      expect(wrapper).toMatchSnapshot()
     })
 
     it('should show the displayname and fieldValue as date when fieldValue is provided and set as date', () => {
