@@ -5,7 +5,7 @@ import moment from 'moment'
 import { TimePicker as MUITimePicker } from '@material-ui/pickers'
 import { TimePicker } from '../src/fieldcontrols/TimePicker'
 
-const value = new Date(Date.UTC(2001, 8, 11, 8, 46)).toISOString()
+const value = '2001-09-11T08:46:00.000Z'
 const defaultSettings = {
   Name: 'ModificationDate',
   Type: 'DateTimeFieldSetting',

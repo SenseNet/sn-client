@@ -14,7 +14,8 @@ const defaultSettings = {
   Description: 'Content was last modified on this date.',
   Type: 'DateTimeFieldSetting',
 }
-const value = new Date(Date.UTC(1912, 3, 15, 2, 10)).toISOString()
+
+const value = '1912-04-15T02:10:00.000Z'
 
 describe('Date/Date time field control', () => {
   describe('in browse view', () => {
