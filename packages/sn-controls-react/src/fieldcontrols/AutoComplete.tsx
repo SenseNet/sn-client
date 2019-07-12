@@ -1,68 +1,35 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
 import FormControl from '@material-ui/core/FormControl'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormLabel from '@material-ui/core/FormLabel'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import TextField from '@material-ui/core/TextField'
 import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
 import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
-import debounce from 'lodash.debounce'
-import React, { Component } from 'react'
+// import debounce from 'lodash.debounce'
+import React, { useRef, useState } from 'react'
+import Typography from '@material-ui/core/Typography'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
-
-/**
- * State object for the AutoComplete component
- */
-export interface AutoCompleteState {
-  inputValue: string
-  isLoading: boolean
-  isOpened: boolean
-  term?: string
-  items: GenericContent[]
-  selected?: GenericContent[]
-  anchorEl: HTMLElement
-}
 
 /**
  * Field control that represents a AutoComplete field. Available values will be populated from the FieldSettings.
  */
-export class AutoComplete extends Component<ReactClientFieldSetting<ReferenceFieldSetting>, AutoCompleteState> {
-  /**
-   * state initialization
-   */
-  public state: AutoCompleteState = {
-    inputValue: this.props.fieldValue || '',
-    isOpened: false,
-    isLoading: false,
-    selected: [],
-    anchorEl: null as any,
-    items: [],
-  }
-  private willUnmount: boolean = false
-  /**
-   * component will unmount
-   */
-  public componentWillUnmount() {
-    this.willUnmount = true
-  }
+export function AutoComplete(props: ReactClientFieldSetting<ReferenceFieldSetting>) {
+  const [isLoading, setIsLoading] = useState(false)
+  const [isOpened, setIsOpened] = useState(false)
+  const [value, setValue] = useState(props.fieldValue || props.settings.DefaultValue || '')
+  const anchorEl = useRef(null)
+  const [items, setItems] = useState<GenericContent[]>([])
 
-  constructor(props: AutoComplete['props']) {
-    super(props)
-    const handleInputChange = this.handleInputChange.bind(this)
-    this.handleInputChange = debounce(handleInputChange, 500)
-    this.handleSelect = this.handleSelect.bind(this)
-    this.handleClickAway = this.handleClickAway.bind(this)
-  }
-
-  private async handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) {
+  const handleInputChange = async (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>,
+  ) => {
     const term = `*${e.target.value}*`
     const query = new Query(q => q.query(q2 => q2.equals('Name', term).or.equals('DisplayName', term)))
 
     new QueryOperators(query).and.query(q2 => {
-      this.props.settings.AllowedTypes &&
-        this.props.settings.AllowedTypes.map((allowedType, index, array) => {
+      props.settings.AllowedTypes &&
+        props.settings.AllowedTypes.map((allowedType, index, array) => {
           new QueryExpression(q2.queryRef).term(`TypeIs:${allowedType}`)
           if (index < array.length - 1) {
             return new QueryOperators(q2.queryRef).or
@@ -72,8 +39,8 @@ export class AutoComplete extends Component<ReactClientFieldSetting<ReferenceFie
     })
 
     new QueryOperators(query).and.query(q2 => {
-      this.props.settings.SelectionRoots &&
-        this.props.settings.SelectionRoots.forEach((root, index, array) => {
+      props.settings.SelectionRoots &&
+        props.settings.SelectionRoots.forEach((root, index, array) => {
           new QueryExpression(q2.queryRef).inTree(root)
           if (index < array.length - 1) {
             return new QueryOperators(q2.queryRef).or
@@ -82,121 +49,109 @@ export class AutoComplete extends Component<ReactClientFieldSetting<ReferenceFie
       return q2
     })
 
-    this.setState({
-      isLoading: true,
-    })
-    if (!this.props.repository) {
-      throw new Error('You must pass a repository to this control')
-    }
     try {
-      const values = await this.props.repository.loadCollection({
+      if (!props.repository) {
+        throw new Error('You must pass a repository to this control')
+      }
+      setIsLoading(true)
+
+      const values = await props.repository.loadCollection<GenericContent>({
         path: '/Root',
         oDataOptions: {
           query: query.toString(),
           select: 'all',
         },
       })
-      if (this.willUnmount) {
-        return
-      }
-      this.setState({
-        items: values.d.results,
-        isOpened: values.d.results.length > 0 ? true : false,
-      })
+      setIsOpened(!!values.d.results.length)
+      setItems(values.d.results)
     } catch (_e) {
       /** */
     } finally {
-      !this.willUnmount && this.setState({ isLoading: false })
+      setIsLoading(false)
     }
   }
 
-  private handleClickAway() {
-    this.setState({ isOpened: false })
+  const handleClickAway = () => {
+    setIsOpened(false)
   }
 
-  private handleSelect(item: GenericContent) {
-    this.setState({
-      inputValue: item.DisplayName || '',
-      selected: [item],
-      isOpened: false,
-      isLoading: false,
-    })
-    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, item.Id)
+  const handleSelect = (item: GenericContent) => {
+    setValue(item.DisplayName || '')
+    setIsOpened(false)
+    props.fieldOnChange && props.fieldOnChange(props.settings.Name, item.Id)
   }
 
-  public render() {
-    switch (this.props.actionName) {
-      case 'edit':
-      case 'new':
-        return (
-          <div ref={ref => ref && this.state.anchorEl !== ref && this.setState({ anchorEl: ref })}>
-            <FormControl
-              key={this.props.settings.Name}
-              component={'fieldset' as 'div'}
-              required={this.props.settings.Compulsory}>
-              <TextField
-                value={this.state.inputValue}
-                type="text"
-                onChange={async e => {
-                  this.setState({ inputValue: e.target.value })
-                  e.persist()
-                  await this.handleInputChange(e)
-                }}
-                autoFocus={true}
-                label={this.props.settings.DisplayName}
-                placeholder={this.props.settings.DisplayName}
-                InputProps={{
-                  endAdornment: this.state.isLoading ? (
-                    <InputAdornment position="end">
-                      <CircularProgress size={16} />
-                    </InputAdornment>
-                  ) : null,
-                }}
-                name={this.props.settings.Name}
-                id={this.props.settings.Name}
-                required={this.props.settings.Compulsory}
-                disabled={this.props.settings.ReadOnly}
-                fullWidth={true}
-                helperText={this.props.settings.Description}
-              />
-              <Menu
-                BackdropProps={{
-                  onClick: this.handleClickAway,
-                  style: { background: 'none' },
-                }}
-                autoFocus={false}
-                open={this.state.isOpened}
-                anchorEl={this.state.anchorEl}
-                PaperProps={{
-                  style: {
-                    marginTop: '45px',
-                    minWidth: '250px',
-                  },
-                }}>
-                {this.state.items.length > 0 ? (
-                  this.state.items.map(item => (
-                    <MenuItem key={item.Id} value={item.Id} onClick={() => this.handleSelect(item)}>
-                      {item.DisplayName}
-                    </MenuItem>
-                  ))
-                ) : (
-                  <MenuItem>No hits</MenuItem>
-                )}
-              </Menu>
-            </FormControl>
-          </div>
-        )
-      case 'browse':
-      default: {
-        return this.props.fieldValue ? (
-          <FormControl component={'fieldset' as 'div'}>
-            <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
-            <FormControl component={'fieldset' as 'div'}>
-              <FormControlLabel style={{ marginLeft: 0 }} label={this.props.fieldValue} control={<span />} />
-            </FormControl>
+  switch (props.actionName) {
+    case 'edit':
+    case 'new':
+      return (
+        <div ref={anchorEl}>
+          <FormControl key={props.settings.Name} component={'fieldset' as 'div'} required={props.settings.Compulsory}>
+            <TextField
+              value={value}
+              type="text"
+              onChange={async e => {
+                setValue(e.target.value)
+                e.persist()
+                await handleInputChange(e)
+              }}
+              autoFocus={true}
+              label={props.settings.DisplayName}
+              placeholder={props.settings.DisplayName}
+              InputProps={{
+                endAdornment: isLoading ? (
+                  <InputAdornment position="end">
+                    <CircularProgress size={16} />
+                  </InputAdornment>
+                ) : null,
+              }}
+              name={props.settings.Name}
+              id={props.settings.Name}
+              required={props.settings.Compulsory}
+              disabled={props.settings.ReadOnly}
+              fullWidth={true}
+              helperText={props.settings.Description}
+            />
+            <Menu
+              BackdropProps={{
+                onClick: handleClickAway,
+                style: { background: 'none' },
+              }}
+              autoFocus={false}
+              disableAutoFocusItem={true}
+              open={isOpened}
+              anchorEl={anchorEl.current}
+              PaperProps={{
+                style: {
+                  marginTop: '45px',
+                  minWidth: '250px',
+                },
+              }}>
+              {items.length > 0 ? (
+                items.map(item => (
+                  <MenuItem key={item.Id} value={item.Id} onClick={() => handleSelect(item)}>
+                    {item.DisplayName}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem>No hits</MenuItem>
+              )}
+            </Menu>
           </FormControl>
-        ) : null
-      }
+        </div>
+      )
+    case 'browse':
+    default: {
+      return props.fieldValue ? (
+        <div>
+          <Typography variant="caption" gutterBottom={true}>
+            {props.settings.DisplayName}
+          </Typography>
+          <Typography variant="body1" gutterBottom={true}>
+            {props.fieldValue}
+          </Typography>
+        </div>
+      ) : null
     }
   }
 }
