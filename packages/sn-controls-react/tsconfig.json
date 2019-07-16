@@ -17,6 +17,9 @@
     },
     {
       "path": "../sn-redux"
+    },
+    {
+      "path": "../sn-search-react"
     }
   ]
 }
