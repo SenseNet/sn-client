@@ -12,7 +12,7 @@ exports[`Auto complete field control in browse view should show the displayname 
     gutterBottom={true}
     variant="body1"
   >
-    Hello World
+    Alba Monday
   </WithStyles(ForwardRef(Typography))>
 </div>
 `;

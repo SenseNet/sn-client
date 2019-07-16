@@ -1,27 +1,26 @@
 import React from 'react'
 import { mount, shallow } from 'enzyme'
 import Typography from '@material-ui/core/Typography'
-import TextField from '@material-ui/core/TextField'
-import { sleepAsync } from '@sensenet/client-utils'
+import { ReferenceField } from '@sensenet/search-react'
 import { AutoComplete } from '../src/fieldcontrols/AutoComplete'
 
-// const userContent = {
-//   Name: 'Alba Monday',
-//   Path: 'Root/IMS/Public/alba',
-//   DisplayName: 'Alba Monday',
-//   Id: 4804,
-//   Type: 'User',
-//   BirthDate: new Date(2000, 5, 15).toISOString(),
-//   Avatar: { Url: '/Root/Sites/Default_Site/demoavatars/alba.jpg' },
-//   Enabled: true,
-//   Manager: {
-//     Name: 'Business Cat',
-//     Path: 'Root/IMS/Public/businesscat',
-//     DisplayName: 'Business Cat',
-//     Id: 4810,
-//     Type: 'User',
-//   },
-// }
+const userContent = {
+  Name: 'Alba Monday',
+  Path: 'Root/IMS/Public/alba',
+  DisplayName: 'Alba Monday',
+  Id: 4804,
+  Type: 'User',
+  BirthDate: new Date(2000, 5, 15).toISOString(),
+  Avatar: { Url: '/Root/Sites/Default_Site/demoavatars/alba.jpg' },
+  Enabled: true,
+  Manager: {
+    Name: 'Business Cat',
+    Path: 'Root/IMS/Public/businesscat',
+    DisplayName: 'Business Cat',
+    Id: 4810,
+    Type: 'User',
+  },
+}
 
 const defaultSettings = {
   Type: 'ReferenceFieldSetting',
@@ -33,17 +32,18 @@ const defaultSettings = {
   Description: 'The members of this group.',
 }
 
-// const repository = {
-//   loadCollection: jest.fn(() => {
-//     return { d: { results: [userContent] } }
-//   }),
-// } as any
+const repository = {
+  loadCollection: jest.fn(() => {
+    return { d: { results: [userContent] } }
+  }),
+} as any
 
 describe('Auto complete field control', () => {
   describe('in browse view', () => {
     it('should show the displayname and fieldValue when fieldValue is provided', () => {
-      const value = 'Hello World'
-      const wrapper = shallow(<AutoComplete fieldValue={value} actionName="browse" settings={defaultSettings} />)
+      const wrapper = shallow(
+        <AutoComplete fieldValue={[userContent] as any} actionName="browse" settings={defaultSettings} />,
+      )
       expect(
         wrapper
           .find(Typography)
@@ -55,7 +55,7 @@ describe('Auto complete field control', () => {
           .find(Typography)
           .last()
           .text(),
-      ).toBe(value)
+      ).toBe(userContent.DisplayName)
       expect(wrapper).toMatchSnapshot()
     })
 
@@ -65,10 +65,30 @@ describe('Auto complete field control', () => {
     })
   })
   describe('in edit/new view', () => {
-    it.only('should throw an error when no repository is provided', async () => {
+    it('should throw an error when no repository is provided', async () => {
+      // Don't show console errors when tests runs
+      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => jest.fn())
       const wrapper = mount(<AutoComplete actionName="edit" settings={defaultSettings} />)
-      wrapper.find(TextField).simulate('change', { target: { value: 'so' } })
-      await sleepAsync(1000)
+      wrapper.find(ReferenceField).prop('fetchItems')({} as any)
+      expect(consoleSpy).toBeCalled()
+      // Restore console.errors
+      jest.restoreAllMocks()
+    })
+
+    it('should call onchange when an item is selected', async () => {
+      const fieldOnChange = jest.fn()
+      const wrapper = mount(
+        <AutoComplete
+          actionName="edit"
+          fieldOnChange={fieldOnChange}
+          repository={repository}
+          settings={defaultSettings}
+        />,
+      )
+      wrapper.find(ReferenceField).prop('fetchItems')({ addSegment: jest.fn() } as any)
+      const onChange = wrapper.find(ReferenceField).prop('onChange')
+      onChange && onChange(userContent)
+      expect(fieldOnChange).toBeCalled()
     })
   })
 })
