@@ -34,6 +34,10 @@ function getFieldValue({ actionName, content, component, fieldName }: Options) {
     return array('fieldValue', content[fieldName])
   }
 
+  if (typeof content[fieldName] === 'object') {
+    return object('fieldValue', content[fieldName])
+  }
+
   return text('fieldValue', content[fieldName])
 }
 
