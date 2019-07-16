@@ -3,7 +3,7 @@ import { ReactClientFieldSetting, reactControlMapper } from '@sensenet/controls-
 import { ActionName } from '@sensenet/control-mapper'
 import { Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
-import { array, boolean, number, object, text } from '@storybook/addon-knobs'
+import { boolean, number, object, text } from '@storybook/addon-knobs'
 
 interface Options {
   actionName: ActionName
@@ -18,10 +18,6 @@ function getFieldValue({ actionName, content, component, fieldName }: Options) {
     return undefined
   }
 
-  if (component && component.displayName === 'AutoComplete') {
-    return text('fieldValue', content[fieldName][0].DisplayName)
-  }
-
   if (component && component.displayName === 'Boolean') {
     return boolean('fieldValue', content[fieldName])
   }
@@ -30,11 +26,7 @@ function getFieldValue({ actionName, content, component, fieldName }: Options) {
     return number('fieldValue', content[fieldName])
   }
 
-  if (Array.isArray(content[fieldName])) {
-    return array('fieldValue', content[fieldName])
-  }
-
-  if (typeof content[fieldName] === 'object') {
+  if (typeof content[fieldName] === 'object' || Array.isArray(content[fieldName])) {
     return object('fieldValue', content[fieldName])
   }
 
