@@ -62,8 +62,5 @@ exports[`Color field control in edit/new view should set all the props 1`] = `
     type="text"
     value="#016d9e"
   />
-  <WithStyles(WithFormControlContext(ForwardRef(FormHelperText)))>
-    Color
-  </WithStyles(WithFormControlContext(ForwardRef(FormHelperText)))>
 </WithStyles(ForwardRef(FormControl))>
 `;

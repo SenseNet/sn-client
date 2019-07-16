@@ -3,7 +3,6 @@
  */
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import FormControl from '@material-ui/core/FormControl'
-import FormHelperText from '@material-ui/core/FormHelperText'
 import Icon from '@material-ui/core/Icon'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
@@ -76,7 +75,6 @@ export function ColorPicker(props: ReactClientFieldSetting<ColorFieldSetting>) {
               </div>
             </ClickAwayListener>
           ) : null}
-          <FormHelperText>{props.settings.Description}</FormHelperText>
         </FormControl>
       )
     case 'browse':
