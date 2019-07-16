@@ -26,6 +26,7 @@ export interface ReferenceFieldProps<T> {
   defaultValueIdOrPath?: string | number
   fetchItems: (fetchQuery: Query<T>) => Promise<T[]>
   onQueryChange: (key: string, query: Query<T>) => void
+  onChange?: (item: T) => void
   renderSuggestion?: RenderSuggestion<T>
   autoSuggestProps?: Partial<AutosuggestProps<T>>
 }
@@ -144,6 +145,7 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
   }
 
   private handleSelect(item: T) {
+    this.props.onChange && this.props.onChange(item)
     this.setState({
       inputValue: item.DisplayName || item.Name,
       selected: item,
