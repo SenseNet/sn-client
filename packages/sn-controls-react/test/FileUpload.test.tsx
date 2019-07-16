@@ -1,8 +1,9 @@
 import React from 'react'
-import { mount } from 'enzyme'
+import { mount, shallow } from 'enzyme'
 import { Image } from '@sensenet/default-content-types'
 import Typography from '@material-ui/core/Typography'
 import { sleepAsync } from '@sensenet/client-utils'
+import Input from '@material-ui/core/Input'
 import { errorMessages, FileUpload } from '../src/fieldcontrols/FileUpload'
 
 const defaultSettings = {
@@ -70,9 +71,9 @@ describe('File upload field control', () => {
     ).toBe(fileContent.Name)
   })
 
-  it.skip('should handle uploads from input', async () => {
+  it('should handle uploads from input', async () => {
     const fieldOnChange = jest.fn()
-    const wrapper = mount(
+    const wrapper = shallow(
       <FileUpload
         actionName="edit"
         settings={defaultSettings}
@@ -81,9 +82,32 @@ describe('File upload field control', () => {
         content={fileContent}
       />,
     )
-    wrapper.find('input').simulate('change', { target: { files: [], value: 'somePath' } })
+
+    wrapper.find(Input).simulate('change', { target: { files: [], value: 'somePath' }, persist: jest.fn() })
     await sleepAsync(0)
     expect(fieldOnChange).toBeCalled()
     expect(repository.upload.file).toBeCalled()
+  })
+
+  it('should throw error when no content is provided in upload', async () => {
+    // Don't show console errors when tests runs
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => jest.fn())
+    const wrapper = shallow(<FileUpload actionName="edit" settings={defaultSettings} repository={repository} />)
+    wrapper.find(Input).simulate('change', { target: { files: [], value: 'somePath' }, persist: jest.fn() })
+    await sleepAsync(0)
+    expect(consoleSpy).toBeCalledWith(errorMessages.contentToUpload)
+    // Restore console.errors
+    jest.restoreAllMocks()
+  })
+
+  it('should throw error when no repository is provided in upload', async () => {
+    // Don't show console errors when tests runs
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => jest.fn())
+    const wrapper = shallow(<FileUpload actionName="edit" settings={defaultSettings} />)
+    wrapper.find(Input).simulate('change', { target: { files: [], value: 'somePath' }, persist: jest.fn() })
+    await sleepAsync(0)
+    expect(consoleSpy).toBeCalledWith(errorMessages.repository)
+    // Restore console.errors
+    jest.restoreAllMocks()
   })
 })
