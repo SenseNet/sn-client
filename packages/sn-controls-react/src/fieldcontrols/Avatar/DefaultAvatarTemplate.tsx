@@ -21,10 +21,10 @@ const CHANGE_AVATAR = 'Change avatar'
 const REMOVE_AVATAR = 'Remove avatar'
 
 interface DefaultAvatarTemplateProps {
-  repositoryUrl: string
-  add: () => void
+  repositoryUrl?: string
+  add?: () => void
   url?: string
-  remove?: (url: string) => void
+  remove?: () => void
   actionName?: 'new' | 'edit' | 'browse'
   readOnly?: boolean
   renderIcon: (name: string) => JSX.Element
@@ -34,11 +34,6 @@ interface DefaultAvatarTemplateProps {
  * Represents a default component for Avatar control.
  */
 export function DefaultAvatarTemplate(props: DefaultAvatarTemplateProps) {
-  const handlRemoveIconClick = (url: string) => () => {
-    if (props.remove) {
-      props.remove(url)
-    }
-  }
   const { actionName, readOnly, repositoryUrl, url } = props
   return (
     <ListItem button={true} style={styles.listItem}>
@@ -57,7 +52,7 @@ export function DefaultAvatarTemplate(props: DefaultAvatarTemplateProps) {
               <IconButton title={CHANGE_AVATAR} onClick={props.add}>
                 {props.renderIcon('refresh')}
               </IconButton>
-              <IconButton title={REMOVE_AVATAR} onClick={handlRemoveIconClick(url)}>
+              <IconButton title={REMOVE_AVATAR} onClick={() => props.remove && props.remove()}>
                 {props.renderIcon('remove_circle')}
               </IconButton>
             </div>
