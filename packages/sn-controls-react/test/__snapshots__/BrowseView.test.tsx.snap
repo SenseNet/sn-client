@@ -20,6 +20,55 @@ exports[`Browse view component should render all the controls for Generic conten
     </WithStyles(ForwardRef(Typography))>
     <WithStyles(ForwardRef(Grid))
       item={true}
+      key="ModificationDate"
+      lg={12}
+      md={12}
+      sm={12}
+      xl={12}
+      xs={12}
+    >
+      <DatePicker
+        actionName="browse"
+        content={
+          Object {
+            "AllowedChildTypes": Array [
+              1,
+              2,
+            ],
+            "Description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec iaculis lectus, sed blandit urna. Nullam in auctor odio, eu eleifend diam. Curabitur rutrum ullamcorper nunc, sit amet consectetur turpis elementum ac. Aenean lorem lorem, feugiat sit amet sem at, accumsan cursus leo.",
+            "DisplayName": "Sample-document.docx",
+            "Id": 1,
+            "Index": 42,
+            "Name": "Sample-document.docx",
+            "Path": "/Root/Profiles/Public/alba/Document_Library/Sample-document.docx",
+            "Type": "File",
+            "VersioningMode": Array [
+              "0",
+            ],
+          }
+        }
+        repository="[repository]"
+        settings={
+          Object {
+            "Compulsory": false,
+            "DateTimeMode": 2,
+            "DefaultOrder": 0,
+            "Description": "Content was last modified on this date.",
+            "DisplayName": "Modification Date",
+            "FieldClassName": "SenseNet.ContentRepository.Fields.DateTimeField",
+            "Name": "ModificationDate",
+            "ReadOnly": false,
+            "Type": "DateTimeFieldSetting",
+            "Visible": false,
+            "VisibleBrowse": 0,
+            "VisibleEdit": 0,
+            "VisibleNew": 0,
+          }
+        }
+      />
+    </WithStyles(ForwardRef(Grid))>
+    <WithStyles(ForwardRef(Grid))
+      item={true}
       key="DisplayName"
       lg={12}
       md={12}
@@ -62,61 +111,6 @@ exports[`Browse view component should render all the controls for Generic conten
             "ReadOnly": false,
             "Type": "ShortTextFieldSetting",
             "Visible": false,
-            "VisibleBrowse": 0,
-            "VisibleEdit": 0,
-            "VisibleNew": 0,
-          }
-        }
-      />
-    </WithStyles(ForwardRef(Grid))>
-    <WithStyles(ForwardRef(Grid))
-      item={true}
-      key="Manager"
-      lg={12}
-      md={12}
-      sm={12}
-      xl={12}
-      xs={12}
-    >
-      <TagsInput
-        actionName="browse"
-        content={
-          Object {
-            "AllowedChildTypes": Array [
-              1,
-              2,
-            ],
-            "Description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis nec iaculis lectus, sed blandit urna. Nullam in auctor odio, eu eleifend diam. Curabitur rutrum ullamcorper nunc, sit amet consectetur turpis elementum ac. Aenean lorem lorem, feugiat sit amet sem at, accumsan cursus leo.",
-            "DisplayName": "Sample-document.docx",
-            "Id": 1,
-            "Index": 42,
-            "Name": "Sample-document.docx",
-            "Path": "/Root/Profiles/Public/alba/Document_Library/Sample-document.docx",
-            "Type": "File",
-            "VersioningMode": Array [
-              "0",
-            ],
-          }
-        }
-        repository="[repository]"
-        settings={
-          Object {
-            "AllowMultiple": true,
-            "AllowedTypes": Array [
-              "User",
-            ],
-            "Compulsory": false,
-            "DefaultOrder": 0,
-            "Description": "Manager of the user.",
-            "DisplayName": "Manager",
-            "FieldClassName": "SenseNet.ContentRepository.Fields.ReferenceField",
-            "Name": "Manager",
-            "ReadOnly": false,
-            "SelectionRoots": Array [
-              "/Root/IMS",
-            ],
-            "Type": "ReferenceFieldSetting",
-            "Visible": true,
             "VisibleBrowse": 0,
             "VisibleEdit": 0,
             "VisibleNew": 0,
@@ -749,14 +743,14 @@ exports[`Browse view component should render all the controls for Generic conten
     </WithStyles(ForwardRef(Grid))>
     <WithStyles(ForwardRef(Grid))
       item={true}
-      key="ModificationDate"
+      key="Manager"
       lg={12}
       md={12}
       sm={12}
       xl={12}
       xs={12}
     >
-      <DatePicker
+      <TagsInput
         actionName="browse"
         content={
           Object {
@@ -779,16 +773,22 @@ exports[`Browse view component should render all the controls for Generic conten
         repository="[repository]"
         settings={
           Object {
+            "AllowMultiple": true,
+            "AllowedTypes": Array [
+              "User",
+            ],
             "Compulsory": false,
-            "DateTimeMode": 2,
             "DefaultOrder": 0,
-            "Description": "Content was last modified on this date.",
-            "DisplayName": "Modification Date",
-            "FieldClassName": "SenseNet.ContentRepository.Fields.DateTimeField",
-            "Name": "ModificationDate",
+            "Description": "Manager of the user.",
+            "DisplayName": "Manager",
+            "FieldClassName": "SenseNet.ContentRepository.Fields.ReferenceField",
+            "Name": "Manager",
             "ReadOnly": false,
-            "Type": "DateTimeFieldSetting",
-            "Visible": false,
+            "SelectionRoots": Array [
+              "/Root/IMS",
+            ],
+            "Type": "ReferenceFieldSetting",
+            "Visible": true,
             "VisibleBrowse": 0,
             "VisibleEdit": 0,
             "VisibleNew": 0,
