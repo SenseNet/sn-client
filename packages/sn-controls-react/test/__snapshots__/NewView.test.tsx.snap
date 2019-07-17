@@ -1031,7 +1031,7 @@ exports[`New view component should render all components 1`] = `
       xl={12}
       xs={12}
     >
-      <MediaQuery
+      <MediaQueryContextConsumer
         minDeviceWidth={700}
       >
         <WithStyles(ForwardRef(Button))
@@ -1045,7 +1045,7 @@ exports[`New view component should render all components 1`] = `
         >
           Cancel
         </WithStyles(ForwardRef(Button))>
-      </MediaQuery>
+      </MediaQueryContextConsumer>
       <WithStyles(ForwardRef(Button))
         color="secondary"
         type="submit"
