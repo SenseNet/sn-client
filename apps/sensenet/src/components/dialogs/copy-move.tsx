@@ -42,7 +42,8 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
 
   useEffect(() => {
     props.dialogProps.open === true && list.navigateTo(props.currentParent)
-  }, [list, props.currentParent, props.dialogProps.open])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.currentParent.Path, props.dialogProps.open])
 
   const logger = useLogger('CopyDialog')
 
