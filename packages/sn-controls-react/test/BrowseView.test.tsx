@@ -2,9 +2,9 @@ import React from 'react'
 import { Repository } from '@sensenet/client-core'
 import { GenericContent, VersioningMode } from '@sensenet/default-content-types'
 import { shallow } from 'enzyme'
-import toJson from 'enzyme-to-json'
 import { BrowseView } from '../src/viewcontrols/BrowseView'
-import { schema } from './Mocks/schema'
+import { schema } from './__mocks__/schema'
+import { json } from './__mocks__/snapshotSerializer'
 
 export const testRepository = new Repository({
   repositoryUrl: 'https://devservice.demo.sensenet.com',
@@ -29,21 +29,6 @@ export const testFile: GenericContent = {
 describe('Browse view component', () => {
   it('should render all the controls for Generic content', () => {
     const wrapper = shallow(<BrowseView content={testFile} repository={testRepository}></BrowseView>)
-    // Do not render the repository, because of the schema it grows big
-    const json = toJson(wrapper, {
-      mode: 'shallow',
-      noKey: false,
-      map: info => {
-        if (!info.props) {
-          return info
-        }
-        if (info.props.repository) {
-          info.props.repository = '[repository]'
-        }
-
-        return info
-      },
-    })
-    expect(json).toMatchSnapshot({})
+    expect(json(wrapper)).toMatchSnapshot()
   })
 })
