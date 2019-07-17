@@ -49,6 +49,7 @@ describe('Short text field control', () => {
             MinLength: 2,
             MaxLength: 12,
             Description: 'description',
+            Regex: '(^\\d*([-\\s\\+\\(\\)]\\d*)*$)?',
           }}
         />,
       )

@@ -28,6 +28,7 @@ exports[`Short text field control in edit/new view should set all the props 1`] 
     Object {
       "maxLength": 12,
       "minLength": 2,
+      "pattern": "(^\\\\d*([-\\\\s\\\\+\\\\(\\\\)]\\\\d*)*$)?",
     }
   }
   label="Display name"
