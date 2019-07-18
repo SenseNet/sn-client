@@ -15,68 +15,6 @@ exports[`New view component should render all components 1`] = `
   >
     <WithStyles(ForwardRef(Grid))
       item={true}
-      key="InheritableVersioningMode"
-      lg={6}
-      md={6}
-      sm={12}
-      xl={6}
-      xs={12}
-    >
-      <CheckboxGroup
-        actionName="new"
-        fieldOnChange={[Function]}
-        repository="[repository]"
-        settings={
-          Object {
-            "AllowExtraValue": false,
-            "AllowMultiple": true,
-            "Compulsory": false,
-            "ControlHint": "sn:VersioningModeChoice",
-            "DefaultOrder": 0,
-            "Description": "Specify whether the system should create a new version whenever you create or modify a content below this content.",
-            "DisplayChoice": "",
-            "DisplayName": "Version history",
-            "EnumTypeName": "",
-            "FieldClassName": "SenseNet.ContentRepository.Fields.InheritableVersioningModeField",
-            "Name": "InheritableVersioningMode",
-            "Options": Array [
-              Object {
-                "Enabled": true,
-                "Selected": true,
-                "Text": "Inherited",
-                "Value": "0",
-              },
-              Object {
-                "Enabled": true,
-                "Selected": false,
-                "Text": "None",
-                "Value": "1",
-              },
-              Object {
-                "Enabled": true,
-                "Selected": false,
-                "Text": "Major only",
-                "Value": "2",
-              },
-              Object {
-                "Enabled": true,
-                "Selected": false,
-                "Text": "Major and minor",
-                "Value": "3",
-              },
-            ],
-            "ReadOnly": false,
-            "Type": "ChoiceFieldSetting",
-            "Visible": false,
-            "VisibleBrowse": 0,
-            "VisibleEdit": 0,
-            "VisibleNew": 0,
-          }
-        }
-      />
-    </WithStyles(ForwardRef(Grid))>
-    <WithStyles(ForwardRef(Grid))
-      item={true}
       key="DisplayName"
       lg={6}
       md={6}
@@ -101,6 +39,44 @@ exports[`New view component should render all components 1`] = `
             "ReadOnly": false,
             "Type": "ShortTextFieldSetting",
             "Visible": false,
+            "VisibleBrowse": 0,
+            "VisibleEdit": 0,
+            "VisibleNew": 0,
+          }
+        }
+      />
+    </WithStyles(ForwardRef(Grid))>
+    <WithStyles(ForwardRef(Grid))
+      item={true}
+      key="Manager"
+      lg={6}
+      md={6}
+      sm={12}
+      xl={6}
+      xs={12}
+    >
+      <TagsInput
+        actionName="new"
+        fieldOnChange={[Function]}
+        repository="[repository]"
+        settings={
+          Object {
+            "AllowMultiple": true,
+            "AllowedTypes": Array [
+              "User",
+            ],
+            "Compulsory": false,
+            "DefaultOrder": 0,
+            "Description": "Manager of the user.",
+            "DisplayName": "Manager",
+            "FieldClassName": "SenseNet.ContentRepository.Fields.ReferenceField",
+            "Name": "Manager",
+            "ReadOnly": false,
+            "SelectionRoots": Array [
+              "/Root/IMS",
+            ],
+            "Type": "ReferenceFieldSetting",
+            "Visible": true,
             "VisibleBrowse": 0,
             "VisibleEdit": 0,
             "VisibleNew": 0,
@@ -458,35 +434,59 @@ exports[`New view component should render all components 1`] = `
     </WithStyles(ForwardRef(Grid))>
     <WithStyles(ForwardRef(Grid))
       item={true}
-      key="Manager"
+      key="InheritableVersioningMode"
       lg={6}
       md={6}
       sm={12}
       xl={6}
       xs={12}
     >
-      <TagsInput
+      <CheckboxGroup
         actionName="new"
         fieldOnChange={[Function]}
         repository="[repository]"
         settings={
           Object {
+            "AllowExtraValue": false,
             "AllowMultiple": true,
-            "AllowedTypes": Array [
-              "User",
-            ],
             "Compulsory": false,
+            "ControlHint": "sn:VersioningModeChoice",
             "DefaultOrder": 0,
-            "Description": "Manager of the user.",
-            "DisplayName": "Manager",
-            "FieldClassName": "SenseNet.ContentRepository.Fields.ReferenceField",
-            "Name": "Manager",
-            "ReadOnly": false,
-            "SelectionRoots": Array [
-              "/Root/IMS",
+            "Description": "Specify whether the system should create a new version whenever you create or modify a content below this content.",
+            "DisplayChoice": "",
+            "DisplayName": "Version history",
+            "EnumTypeName": "",
+            "FieldClassName": "SenseNet.ContentRepository.Fields.InheritableVersioningModeField",
+            "Name": "InheritableVersioningMode",
+            "Options": Array [
+              Object {
+                "Enabled": true,
+                "Selected": true,
+                "Text": "Inherited",
+                "Value": "0",
+              },
+              Object {
+                "Enabled": true,
+                "Selected": false,
+                "Text": "None",
+                "Value": "1",
+              },
+              Object {
+                "Enabled": true,
+                "Selected": false,
+                "Text": "Major only",
+                "Value": "2",
+              },
+              Object {
+                "Enabled": true,
+                "Selected": false,
+                "Text": "Major and minor",
+                "Value": "3",
+              },
             ],
-            "Type": "ReferenceFieldSetting",
-            "Visible": true,
+            "ReadOnly": false,
+            "Type": "ChoiceFieldSetting",
+            "Visible": false,
             "VisibleBrowse": 0,
             "VisibleEdit": 0,
             "VisibleNew": 0,
