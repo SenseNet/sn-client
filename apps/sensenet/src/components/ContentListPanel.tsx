@@ -92,15 +92,18 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
 
   useEffect(() => {
     props.onActiveItemChange && props.onActiveItemChange(activeContent)
-  }, [activeContent, props])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeContent])
 
   useEffect(() => {
     isFocused && props.onFocus && props.onFocus()
-  }, [isFocused, props])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFocused])
 
   useEffect(() => {
     props.onSelectionChange && props.onSelectionChange(selected)
-  }, [props, selected])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selected])
 
   useEffect(() => {
     const currentField =
@@ -127,7 +130,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
 
   useEffect(() => {
     setSelected([])
-  }, [parentContent])
+  }, [parentContent.Id])
 
   useEffect(() => {
     setIsContextMenuOpened(false)
@@ -165,7 +168,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
             outline: 'none',
           }}
           tabIndex={0}
-          onFocus={() => {
+          onClick={() => {
             setIsFocused(true)
           }}
           onBlur={ev => {
@@ -258,6 +261,10 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
               setCurrentDirection(dir)
             }}
             onItemClick={(ev, content) => {
+              if (device !== 'desktop' && activeContent.Id === content.Id) {
+                handleActivateItem(content)
+                return
+              }
               if (ev.ctrlKey) {
                 if (selected.find(s => s.Id === content.Id)) {
                   setSelected(selected.filter(s => s.Id !== content.Id))

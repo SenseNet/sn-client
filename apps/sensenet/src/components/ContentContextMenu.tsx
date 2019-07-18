@@ -13,7 +13,8 @@ import FileCopy from '@material-ui/icons/FileCopyOutlined'
 import Info from '@material-ui/icons/Info'
 import React, { useCallback, useContext, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { CurrentContentContext, ResponsiveContext } from '../context'
+import { ConstantContent } from '@sensenet/client-core'
+import { CurrentContentContext, CurrentContentProvider, ResponsiveContext } from '../context'
 import { useContentRouting, useDownload, useLocalization, useRepository, useWopi } from '../hooks'
 import { ContentInfoDialog, CopyMoveDialog, DeleteContentDialog, EditPropertiesDialog } from './dialogs'
 import { Icon } from './Icon'
@@ -62,12 +63,18 @@ export const ContentContextMenuComponent: React.FunctionComponent<
         dialogProps={{ open: isInfoDialogOpened, onClose: () => setIsInfoDialogOpened(false) }}
       />
       {isCopyDialogOpened ? (
-        <CopyMoveDialog
-          content={[content]}
-          currentParent={content}
-          dialogProps={{ open: isCopyDialogOpened, onClose: () => setIsCopyDialogOpened(false) }}
-          operation={copyMoveOperation}
-        />
+        <CurrentContentProvider idOrPath={content.ParentId || ConstantContent.PORTAL_ROOT.Path}>
+          <CurrentContentContext.Consumer>
+            {parent => (
+              <CopyMoveDialog
+                content={[content]}
+                currentParent={parent}
+                dialogProps={{ open: isCopyDialogOpened, onClose: () => setIsCopyDialogOpened(false) }}
+                operation={copyMoveOperation}
+              />
+            )}
+          </CurrentContentContext.Consumer>
+        </CurrentContentProvider>
       ) : null}
       {device === 'mobile' ? (
         <Drawer

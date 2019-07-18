@@ -7,7 +7,7 @@ import { PersonalSettings } from './PersonalSettings'
 export class EventLogger extends AbstractLogger {
   public async addEntry<T>(entry: LeveledLogEntry<T>): Promise<void> {
     if (
-      this.personalSettings.currentValue.getValue().logLevel.includes(LogLevel[entry.level] as keyof typeof LogLevel)
+      this.personalSettings.effectiveValue.getValue().logLevel.includes(LogLevel[entry.level] as keyof typeof LogLevel)
     ) {
       this.eventService.add(entry)
     }
