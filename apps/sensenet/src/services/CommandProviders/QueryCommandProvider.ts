@@ -21,7 +21,7 @@ export class QueryCommandProvider implements CommandProvider {
 
   public async getItems(options: SearchOptions): Promise<CommandPaletteItem[]> {
     const ctx = new ContentContextProvider(options.repository)
-    const extendedQuery = this.personalSettings.currentValue
+    const extendedQuery = this.personalSettings.effectiveValue
       .getValue()
       .default.commandPalette.wrapQuery.replace('{0}', options.term)
     const result = await options.repository.loadCollection<GenericContent>({

@@ -141,6 +141,8 @@ const values = {
     logoutCancel: 'Cancel',
   },
   personalSettings: {
+    defaults: 'Defaults',
+    showDefaults: 'Show defaults',
     title: 'Personal settings',
     drawer: 'Options for the left drawer',
     drawerEnable: 'Enable or disable the drawer',

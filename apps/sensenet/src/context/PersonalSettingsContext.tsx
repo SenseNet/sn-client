@@ -5,11 +5,11 @@ export const PersonalSettingsContext = React.createContext(defaultSettings)
 export const PersonalSettingsContextProvider: React.StatelessComponent = props => {
   const di = useInjector()
   const settingsService = di.getInstance(PersonalSettings)
-  const [settings, setSettings] = useState(settingsService.currentValue.getValue())
+  const [settings, setSettings] = useState(settingsService.effectiveValue.getValue())
   useEffect(() => {
-    settingsService.currentValue.subscribe(s => {
+    settingsService.effectiveValue.subscribe(s => {
       setSettings(s)
     })
-  }, [settingsService.currentValue])
+  }, [settingsService.effectiveValue])
   return <PersonalSettingsContext.Provider value={settings}>{props.children}</PersonalSettingsContext.Provider>
 }
