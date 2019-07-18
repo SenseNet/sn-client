@@ -272,7 +272,6 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
             },
           },
           type: 'object',
-          required: ['default', 'repositories', 'lastRepository'],
           properties: {
             default: { $ref: '#/definitions/settings' },
             mobile: { $ref: '#/definitions/settings' },
