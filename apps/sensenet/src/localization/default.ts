@@ -143,6 +143,13 @@ const values = {
   personalSettings: {
     defaults: 'Defaults',
     showDefaults: 'Show defaults',
+    restoreDefaults: 'Restore defaults',
+    restoreDialogTitle: 'Really restore defaults?',
+    restoreDialogTText:
+      'Are you sure you want to restore the default settings? Your log will also be cleared and you will be signed out from all repositories.',
+    cancel: 'Cancel',
+    restore: 'Restore',
+    restoringDefaultsProgress: 'Restoring the default settings...',
     title: 'Personal settings',
     drawer: 'Options for the left drawer',
     drawerEnable: 'Enable or disable the drawer',
