@@ -130,43 +130,47 @@ export class AllowedChildTypes extends Component<ReactClientFieldSetting, Allowe
   private willUnmount: boolean = false
 
   private async getAllowedChildTypes() {
-    if (!this.props.repository) {
-      throw new Error('You must pass a repository to this control')
+    try {
+      if (!this.props.repository) {
+        throw new Error('You must pass a repository to this control')
+      }
+      if (!this.props.content) {
+        return
+      }
+
+      const result = await this.props.repository.load<GenericContent>({
+        idOrPath: this.props.content.Id,
+        oDataOptions: {
+          select: 'EffectiveAllowedChildTypes',
+          expand: 'EffectiveAllowedChildTypes',
+        },
+      })
+      if (this.willUnmount) {
+        return
+      }
+
+      const allowedChildTypesFromCTD = (await this.props.repository.executeAction({
+        idOrPath: this.props.content.Id,
+        name: 'GetAllowedChildTypesFromCTD',
+        method: 'GET',
+        body: {
+          select: ['Name', 'DisplayName', 'Icon'],
+        },
+      })) as ODataCollectionResponse<ContentType>
+
+      const typeResults = result.d.EffectiveAllowedChildTypes as ContentType[]
+
+      const types = this.getTypes(typeResults, allowedChildTypesFromCTD)
+
+      this.setState({
+        effectiveAllowedChildTypes: typeResults,
+        items: types,
+        removeable: typeResults.length === 0 || this.props.actionName !== 'new',
+        value: types.map((t: ContentType) => t.Name),
+      })
+    } catch (error) {
+      console.error(error.message)
     }
-    if (!this.props.content) {
-      return
-    }
-
-    const result = await this.props.repository.load<GenericContent>({
-      idOrPath: this.props.content.Id,
-      oDataOptions: {
-        select: 'EffectiveAllowedChildTypes',
-        expand: 'EffectiveAllowedChildTypes',
-      },
-    })
-    if (this.willUnmount) {
-      return
-    }
-
-    const allowedChildTypesFromCTD = (await this.props.repository.executeAction({
-      idOrPath: this.props.content.Id,
-      name: 'GetAllowedChildTypesFromCTD',
-      method: 'GET',
-      body: {
-        select: ['Name', 'DisplayName', 'Icon'],
-      },
-    })) as ODataCollectionResponse<ContentType>
-
-    const typeResults = result.d.EffectiveAllowedChildTypes as ContentType[]
-
-    const types = this.getTypes(typeResults, allowedChildTypesFromCTD)
-
-    this.setState({
-      effectiveAllowedChildTypes: typeResults,
-      items: types,
-      removeable: typeResults.length === 0 || this.props.actionName !== 'new',
-      value: types.map((t: ContentType) => t.Name),
-    })
   }
 
   private getTypes(typeResults: ContentType[], allowedChildTypesFromCTD: ODataCollectionResponse<ContentType>) {
@@ -177,25 +181,29 @@ export class AllowedChildTypes extends Component<ReactClientFieldSetting, Allowe
   }
 
   private async getAllContentTypes() {
-    if (!this.props.repository) {
-      throw new Error('You must pass a repository to this control')
-    }
+    try {
+      if (!this.props.repository) {
+        throw new Error('You must pass a repository to this control')
+      }
 
-    const result = (await this.props.repository.executeAction({
-      idOrPath: ConstantContent.PORTAL_ROOT.Id,
-      name: 'GetAllContentTypes',
-      method: 'GET',
-      oDataOptions: {
-        select: ['Name', 'DisplayName', 'Icon'],
-      },
-    })) as ODataCollectionResponse<ContentType>
-    if (this.willUnmount) {
-      return
+      const result = (await this.props.repository.executeAction({
+        idOrPath: ConstantContent.PORTAL_ROOT.Id,
+        name: 'GetAllContentTypes',
+        method: 'GET',
+        oDataOptions: {
+          select: ['Name', 'DisplayName', 'Icon'],
+        },
+      })) as ODataCollectionResponse<ContentType>
+      if (this.willUnmount) {
+        return
+      }
+      this.setState({
+        allCTDs: result.d.results.sort(compare),
+        filteredList: result.d.results.sort(compare),
+      })
+    } catch (error) {
+      console.error(error.message)
     }
-    this.setState({
-      allCTDs: result.d.results.sort(compare),
-      filteredList: result.d.results.sort(compare),
-    })
   }
 
   public handleRemove = (item: GenericContent) => {
@@ -268,7 +276,7 @@ export class AllowedChildTypes extends Component<ReactClientFieldSetting, Allowe
         removeable: true,
       })
     }
-    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, newValue as any)
+    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, newValue)
   }
 
   public render() {
@@ -350,7 +358,7 @@ export class AllowedChildTypes extends Component<ReactClientFieldSetting, Allowe
         )
       case 'browse':
       default:
-        return (
+        return this.state.items.length ? (
           <FormControl>
             <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
             <List dense={true}>
@@ -370,7 +378,7 @@ export class AllowedChildTypes extends Component<ReactClientFieldSetting, Allowe
               ))}
             </List>
           </FormControl>
-        )
+        ) : null
     }
   }
 }
