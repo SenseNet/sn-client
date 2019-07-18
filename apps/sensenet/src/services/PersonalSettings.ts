@@ -243,7 +243,8 @@ export class PersonalSettings {
 
   public async getLocalUserSettingsValue(): Promise<Partial<PersonalSettingsType>> {
     try {
-      return JSON.parse(localStorage.getItem(`${settingsKey}`) as string)
+      const stored = localStorage.getItem(`${settingsKey}`) as string
+      return JSON.parse(stored || '{}')
     } catch {
       /** */
     }
