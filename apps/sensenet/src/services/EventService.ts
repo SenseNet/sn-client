@@ -35,7 +35,7 @@ export class EventService {
 
   private storeChanges = debounce(() => {
     const values = [...this.values.getValue()]
-    const entries = values.slice(values.length - this.personalSettings.currentValue.getValue().eventLogSize)
+    const entries = values.slice(values.length - this.personalSettings.effectiveValue.getValue().eventLogSize)
     localStorage.setItem(EventService.storageKey, JSON.stringify(entries))
   }, EventService.storageDebounceInterval)
 

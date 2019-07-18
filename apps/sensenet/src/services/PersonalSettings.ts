@@ -237,22 +237,27 @@ export class PersonalSettings {
 
   private async init() {
     const currentUserSettings = await this.getLocalUserSettingsValue()
-    this.currentValue.setValue(deepMerge(defaultSettings, currentUserSettings))
+    this.userValue.setValue(currentUserSettings)
+    this.effectiveValue.setValue(deepMerge(defaultSettings, currentUserSettings))
   }
 
   public async getLocalUserSettingsValue(): Promise<Partial<PersonalSettingsType>> {
     try {
-      return JSON.parse(localStorage.getItem(`${settingsKey}`) as string)
+      const stored = localStorage.getItem(`${settingsKey}`) as string
+      return JSON.parse(stored || '{}')
     } catch {
       /** */
     }
     return {}
   }
 
-  public currentValue = new ObservableValue(defaultSettings)
+  public effectiveValue = new ObservableValue(defaultSettings)
 
-  public async setValue(settings: PersonalSettingsType) {
-    this.currentValue.setValue({ ...settings })
+  public userValue = new ObservableValue<Partial<PersonalSettingsType>>({})
+
+  public async setPersonalSettingsValue(settings: Partial<PersonalSettingsType>) {
+    this.userValue.setValue(settings)
+    this.effectiveValue.setValue(deepMerge(defaultSettings, settings))
     localStorage.setItem(`${settingsKey}`, JSON.stringify(settings))
   }
 }

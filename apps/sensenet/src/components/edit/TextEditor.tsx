@@ -31,6 +31,7 @@ export interface TextEditorProps {
   content: SnFile
   loadContent?: (content: SnFile) => Promise<string>
   saveContent?: (content: SnFile, value: string) => Promise<void>
+  additionalButtons?: JSX.Element
 }
 
 export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
@@ -141,7 +142,12 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
       }}>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <ContentBreadcrumbs />
-        <div>
+        <div
+          style={{
+            display: 'flex',
+            marginRight: '1em',
+          }}>
+          {props.additionalButtons ? props.additionalButtons : null}
           <Button disabled={!hasChanges} onClick={() => setTextValue(savedTextValue)}>
             {localization.reset}
           </Button>
