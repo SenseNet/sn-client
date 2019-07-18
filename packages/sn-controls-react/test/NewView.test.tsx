@@ -2,10 +2,29 @@ import React from 'react'
 import { Repository } from '@sensenet/client-core'
 import { GenericContent, VersioningMode } from '@sensenet/default-content-types'
 import { shallow } from 'enzyme'
+import Typography from '@material-ui/core/Typography'
 import { NewView } from '../src/viewcontrols'
-import { CheckboxGroup } from '../src/fieldcontrols'
+import {
+  AllowedChildTypes,
+  Avatar,
+  BooleanComponent,
+  CheckboxGroup,
+  ColorPicker,
+  DatePicker,
+  DropDownList,
+  EmptyFieldControl,
+  FileName,
+  Name,
+  NumberComponent,
+  Password,
+  RadioButtonGroup,
+  ReferenceGrid,
+  RichTextEditor,
+  ShortText,
+  TagsInput,
+  Textarea,
+} from '../src/fieldcontrols'
 import { schema } from './__mocks__/schema'
-import { json } from './__mocks__/snapshotSerializer'
 
 export const testRepository = new Repository({
   repositoryUrl: 'https://devservice.demo.sensenet.com',
@@ -30,9 +49,31 @@ export const testFile: GenericContent = {
 describe('New view component', () => {
   it('should render all components', () => {
     const wrapper = shallow(
-      <NewView repository={testRepository} contentTypeName="GenericContent" path={testFile.Path}></NewView>,
+      <NewView
+        repository={testRepository}
+        showTitle={true}
+        contentTypeName="GenericContent"
+        path={testFile.Path}></NewView>,
     )
-    expect(json(wrapper)).toMatchSnapshot()
+    expect(wrapper.find(Typography).text()).toBe('New $Ctd-GenericContent,DisplayName')
+    expect(wrapper.find(FileName)).toHaveLength(1)
+    expect(wrapper.find(TagsInput)).toHaveLength(1)
+    expect(wrapper.find(ReferenceGrid)).toHaveLength(1)
+    expect(wrapper.find(Name)).toHaveLength(1)
+    expect(wrapper.find(ShortText)).toHaveLength(2)
+    expect(wrapper.find(EmptyFieldControl)).toHaveLength(1)
+    expect(wrapper.find(RichTextEditor)).toHaveLength(2)
+    expect(wrapper.find(Password)).toHaveLength(1)
+    expect(wrapper.find(BooleanComponent)).toHaveLength(2)
+    expect(wrapper.find(NumberComponent)).toHaveLength(3)
+    expect(wrapper.find(AllowedChildTypes)).toHaveLength(1)
+    expect(wrapper.find(CheckboxGroup)).toHaveLength(2)
+    expect(wrapper.find(DatePicker)).toHaveLength(1)
+    expect(wrapper.find(DropDownList)).toHaveLength(2)
+    expect(wrapper.find(RadioButtonGroup)).toHaveLength(1)
+    expect(wrapper.find(Textarea)).toHaveLength(2)
+    expect(wrapper.find(Avatar)).toHaveLength(1)
+    expect(wrapper.find(ColorPicker)).toHaveLength(2)
   })
   it('should handle change', () => {
     const submitCallback = jest.fn()

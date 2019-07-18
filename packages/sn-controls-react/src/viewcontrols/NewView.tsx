@@ -21,7 +21,7 @@ export interface NewViewProps {
   contentTypeName: string
   handleCancel?: () => void
   submitCallback?: () => void
-  title?: string
+  showTitle?: boolean
   extension?: string
   uploadFolderpath?: string
 }
@@ -51,11 +51,11 @@ export function NewView(props: NewViewProps) {
 
   return (
     <form style={{ margin: '0 auto' }} onSubmit={handleSubmit}>
-      {props.title !== undefined ? (
+      {props.showTitle && (
         <Typography variant="h5" gutterBottom={true}>
           {`New ${schema.schema.DisplayName}`}
         </Typography>
-      ) : null}
+      )}
       <Grid container={true} spacing={2}>
         {schema.fieldMappings.map(field => {
           return (
