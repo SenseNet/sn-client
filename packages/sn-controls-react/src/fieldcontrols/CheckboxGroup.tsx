@@ -15,7 +15,7 @@ import { ReactClientFieldSetting } from './ClientFieldSetting'
 /**
  * Field control that represents a Choice field. Available values will be populated from the FieldSettings.
  */
-export function CheckboxGroup(props: ReactClientFieldSetting<ChoiceFieldSetting>) {
+export const CheckboxGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>> = props => {
   const initialState =
     props.settings.Options &&
     props.settings.Options.map(item =>

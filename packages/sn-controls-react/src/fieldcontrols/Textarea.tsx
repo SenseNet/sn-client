@@ -10,7 +10,7 @@ import { ReactClientFieldSetting } from './ClientFieldSetting'
 /**
  * Field control that represents a LongText field. Available values will be populated from the FieldSettings.
  */
-export function Textarea(props: ReactClientFieldSetting<LongTextFieldSetting>) {
+export const Textarea: React.FC<ReactClientFieldSetting<LongTextFieldSetting>> = props => {
   const initialState =
     (props.fieldValue && props.fieldValue.replace(/<[^>]*>/g, '')) || props.settings.DefaultValue || ''
   const [value, setValue] = useState(initialState)

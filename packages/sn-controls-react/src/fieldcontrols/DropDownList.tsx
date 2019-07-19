@@ -16,7 +16,7 @@ import { ReactClientFieldSetting } from './ClientFieldSetting'
 /**
  * Field control that represents a Choice field. Available values will be populated from the FieldSettings.
  */
-export function DropDownList(props: ReactClientFieldSetting<ChoiceFieldSetting>) {
+export const DropDownList: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>> = props => {
   const getInitialstate = () => {
     if (!props.fieldValue) {
       return props.settings.AllowMultiple ? [''] : ''

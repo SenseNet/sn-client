@@ -1,6 +1,7 @@
 interface Icons {
   [key: string]: string
 }
+
 export const typeicons: Icons = {
   contenttype: 'assignment',
   content: 'insert_drive_file',

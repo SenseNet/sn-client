@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Check box group field control in edit/new view should set all the props 1`] = `
-<CheckboxGroup
+<Component
   actionName="edit"
   fieldValue="0"
   settings={
@@ -2682,5 +2682,5 @@ exports[`Check box group field control in edit/new view should set all the props
       </fieldset>
     </ForwardRef(FormControl)>
   </WithStyles(ForwardRef(FormControl))>
-</CheckboxGroup>
+</Component>
 `;

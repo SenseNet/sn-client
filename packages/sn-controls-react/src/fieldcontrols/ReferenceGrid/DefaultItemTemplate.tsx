@@ -26,7 +26,7 @@ interface DefaultItemTemplateProps {
 /**
  * Represents a default renderer for reference grid row
  */
-export function DefaultItemTemplate(props: DefaultItemTemplateProps) {
+export const DefaultItemTemplate: React.FC<DefaultItemTemplateProps> = props => {
   const { content, repositoryUrl } = props
   return (
     <ListItem key={content.Id} button={false}>

@@ -15,7 +15,7 @@ import { ReactClientFieldSetting } from './ClientFieldSetting'
 /**
  * Field control that represents a Choice field. Available values will be populated from the FieldSettings.
  */
-export function RadioButtonGroup(props: ReactClientFieldSetting<ChoiceFieldSetting>) {
+export const RadioButtonGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>> = props => {
   const getInitialState = () => {
     if (!props.fieldValue) {
       return ''

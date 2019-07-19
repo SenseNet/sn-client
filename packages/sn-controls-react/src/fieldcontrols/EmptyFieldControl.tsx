@@ -5,6 +5,6 @@
 /**
  * Field control that represents obsolete fieldcontrols.
  */
-export function EmptyFieldControl() {
+export const EmptyFieldControl = () => {
   return null
 }

@@ -35,7 +35,7 @@ const modules = {
 /**
  * Field control that represents a LongText field. Available values will be populated from the FieldSettings.
  */
-export function RichTextEditor(props: ReactClientFieldSetting) {
+export const RichTextEditor: React.FC<ReactClientFieldSetting> = props => {
   const initialState = props.fieldValue || props.settings.DefaultValue || ''
   const [value, setValue] = useState(initialState)
 

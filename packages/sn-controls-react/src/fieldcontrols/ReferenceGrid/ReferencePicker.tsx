@@ -40,7 +40,7 @@ const createTypeFilterString = (allowedTypes: string[]) => {
 /**
  * Represents a reference picker component
  */
-export function ReferencePicker(props: ReferencePickerProps) {
+export const ReferencePicker: React.FC<ReferencePickerProps> = props => {
   const pickerItemOptions: ODataParams<Folder> = {
     select: ['DisplayName', 'Path', 'Id', 'Children/IsFolder', 'IsFolder', 'Avatar', 'Icon'] as any,
     expand: ['Children'] as any,

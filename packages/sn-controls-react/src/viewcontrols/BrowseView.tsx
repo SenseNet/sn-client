@@ -20,7 +20,7 @@ export interface BrowseViewProps {
 /**
  * View Control for browsing a Content, works with a single Content and based on the ReactControlMapper
  */
-export function BrowseView(props: BrowseViewProps) {
+export const BrowseView: React.FC<BrowseViewProps> = props => {
   const controlMapper = reactControlMapper(props.repository)
   const schema = controlMapper.getFullSchemaForContentType(props.content.Type, 'browse')
 

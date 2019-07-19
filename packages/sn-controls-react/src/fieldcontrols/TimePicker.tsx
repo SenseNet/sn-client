@@ -12,7 +12,7 @@ import { ReactClientFieldSetting } from './ClientFieldSetting'
 /**
  * Field control that represents a DateTime field. Available values will be populated from the FieldSettings.
  */
-export function TimePicker(props: ReactClientFieldSetting<DateTimeFieldSetting>) {
+export const TimePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>> = props => {
   const initialState = props.fieldValue || props.settings.DefaultValue || moment().toISOString()
   const [value, setValue] = useState(initialState)
 

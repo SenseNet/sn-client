@@ -8,7 +8,7 @@ import { ReactClientFieldSetting } from '.'
 /**
  * Represents an autocomplete component
  */
-export function AutoComplete(props: ReactClientFieldSetting<ReferenceFieldSetting>) {
+export const AutoComplete: React.FC<ReactClientFieldSetting<ReferenceFieldSetting>> = props => {
   const defaultValue = (props.fieldValue && (props.fieldValue as any)[0].Id) || props.settings.DefaultValue
   const fetchItems = async (fetchQuery: Query<GenericContent>) => {
     try {

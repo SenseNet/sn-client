@@ -34,7 +34,7 @@ export interface NewViewProps {
  *  <NewView content={content} onSubmit={createSubmitClick} />
  * ```
  */
-export function NewView(props: NewViewProps) {
+export const NewView: React.FC<NewViewProps> = props => {
   const controlMapper = reactControlMapper(props.repository)
   const schema = controlMapper.getFullSchemaForContentType(props.contentTypeName, 'new')
   const [content, setContent] = useState({})

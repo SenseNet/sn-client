@@ -33,7 +33,7 @@ interface DefaultAvatarTemplateProps {
 /**
  * Represents a default component for Avatar control.
  */
-export function DefaultAvatarTemplate(props: DefaultAvatarTemplateProps) {
+export const DefaultAvatarTemplate: React.FC<DefaultAvatarTemplateProps> = props => {
   const { actionName, readOnly, repositoryUrl, url } = props
   return (
     <ListItem button={true} style={styles.listItem}>

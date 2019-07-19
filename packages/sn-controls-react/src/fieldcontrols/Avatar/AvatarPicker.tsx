@@ -38,7 +38,7 @@ const pickerItemOptions: ODataParams<Folder> = {
 /**
  * Represents an avatar picker component
  */
-export function AvatarPicker(props: AvatarPickerProps) {
+export const AvatarPicker: React.FC<AvatarPickerProps> = props => {
   const { items, selectedItem, setSelectedItem, path, navigateTo, reload, isLoading, error } = useListPicker<User>({
     repository: props.repository,
     currentPath: props.path,

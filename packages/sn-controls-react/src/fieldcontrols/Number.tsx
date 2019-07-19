@@ -13,7 +13,7 @@ import { isCurrencyFieldSetting } from './type-guards'
 /**
  * Field control that represents a Number field. Available values will be populated from the FieldSettings.
  */
-export function NumberComponent(props: ReactClientFieldSetting<NumberFieldSetting | CurrencyFieldSetting>) {
+export const NumberComponent: React.FC<ReactClientFieldSetting<NumberFieldSetting | CurrencyFieldSetting>> = props => {
   const initialState =
     props.fieldValue != null
       ? props.fieldValue

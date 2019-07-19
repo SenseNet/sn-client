@@ -10,7 +10,7 @@ import { ReactClientFieldSetting } from './ClientFieldSetting'
 /**
  * Field control that represents a FileName field. Available values will be populated from the FieldSettings.
  */
-export function FileName(props: ReactClientFieldSetting) {
+export const FileName: React.FC<ReactClientFieldSetting> = props => {
   const valueInitialState =
     (props.fieldValue &&
       props.fieldValue

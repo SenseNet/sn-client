@@ -10,7 +10,7 @@ const invalidCharacters = ['%', '\\', '*', '~']
 /**
  * Field control that represents a ShortText field. Available values will be populated from the FieldSettings.
  */
-export function Name(props: ReactClientFieldSetting) {
+export const Name: React.FC<ReactClientFieldSetting> = props => {
   const initialState =
     (props.fieldValue && props.fieldValue.replace(/<[^>]*>/g, '')) || props.settings.DefaultValue || ''
   const [value, setValue] = useState(initialState)

@@ -15,7 +15,7 @@ import { ReactClientFieldSetting } from './ClientFieldSetting'
 /**
  * Field control that represents a Password field. Available values will be populated from the FieldSettings.
  */
-export function Password(props: ReactClientFieldSetting) {
+export const Password: React.FC<ReactClientFieldSetting> = props => {
   const [showPassword, setShowPassword] = useState(false)
 
   switch (props.actionName) {

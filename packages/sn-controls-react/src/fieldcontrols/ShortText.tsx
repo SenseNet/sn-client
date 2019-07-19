@@ -10,7 +10,7 @@ import { ReactClientFieldSetting } from './ClientFieldSetting'
 /**
  * Field control that represents a ShortText field. Available values will be populated from the FieldSettings.
  */
-export function ShortText(props: ReactClientFieldSetting<ShortTextFieldSetting>) {
+export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>> = props => {
   const [value, setValue] = useState(props.fieldValue || props.settings.DefaultValue || '')
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) => {

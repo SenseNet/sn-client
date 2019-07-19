@@ -14,7 +14,7 @@ import { renderIconDefault } from './icon'
 /**
  * Field control that represents a Boolean field.
  */
-export function BooleanComponent(props: ReactClientFieldSetting<FieldSetting>) {
+export const BooleanComponent: React.FC<ReactClientFieldSetting<FieldSetting>> = props => {
   const initialState = props.fieldValue != null ? !!props.fieldValue : !!props.settings.DefaultValue
   const [value, setValue] = useState(initialState)
 
