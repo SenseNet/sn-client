@@ -95,7 +95,7 @@ const testContent: GenericContent & { ExpectedRevenue: number; Color: string; Pa
   Index: 42,
   ExpectedRevenue: 21.0,
   Color: '#016d9e',
-  Password: 'password'
+  Password: 'password',
 }
 
 const userContent: User = {
