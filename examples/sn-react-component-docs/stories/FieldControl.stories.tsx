@@ -78,7 +78,7 @@ const fileContent: Image = {
   Icon: 'image',
 }
 
-const testContent: GenericContent & { ExpectedRevenue: number; Color: string } = {
+const testContent: GenericContent & { ExpectedRevenue: number; Color: string; Password: string } = {
   Name: 'Document_Library',
   DisplayName: 'Document Library',
   Description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu mi arcu.
@@ -95,6 +95,7 @@ const testContent: GenericContent & { ExpectedRevenue: number; Color: string } =
   Index: 42,
   ExpectedRevenue: 21.0,
   Color: '#016d9e',
+  Password: 'password'
 }
 
 const userContent: User = {
