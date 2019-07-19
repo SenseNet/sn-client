@@ -30,7 +30,7 @@ const WellKnownContentCard: React.FunctionComponent<{
       }}
       style={{
         width: 330,
-        height: 250,
+        height: 300,
         margin: '0.5em',
         display: 'flex',
         flexDirection: 'column',
@@ -68,6 +68,7 @@ const Setup: React.StatelessComponent = () => {
       const response = await repo.loadCollection({
         path: ConstantContent.PORTAL_ROOT.Path,
         oDataOptions: {
+          orderby: [['Index' as any, 'asc']],
           query: `${new Query(q => q.typeIs(Settings)).toString()} .AUTOFILTERS:OFF`,
         },
       })
