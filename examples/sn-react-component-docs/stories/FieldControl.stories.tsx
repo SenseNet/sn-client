@@ -369,7 +369,7 @@ fieldControlStory({
       repository={testRepository}
       content={testContent}
       component={Password}
-      fieldName="Name"
+      fieldName="Password"
     />
   ),
   markdown: passwordNotes,
