@@ -5,13 +5,14 @@ import React, { useState } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { ShortTextFieldSetting } from '@sensenet/default-content-types'
+import { changeJScriptValue } from '../helpers'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
  * Field control that represents a ShortText field. Available values will be populated from the FieldSettings.
  */
 export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>> = props => {
-  const [value, setValue] = useState(props.fieldValue || props.settings.DefaultValue || '')
+  const [value, setValue] = useState(props.fieldValue || changeJScriptValue(props.settings.DefaultValue) || '')
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) => {
     setValue(e.target.value)
@@ -30,7 +31,7 @@ export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>>
           value={value}
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}
-          defaultValue={props.settings.DefaultValue}
+          defaultValue={changeJScriptValue(props.settings.DefaultValue)}
           inputProps={{
             minLength: props.settings.MinLength,
             maxLength: props.settings.MaxLength,

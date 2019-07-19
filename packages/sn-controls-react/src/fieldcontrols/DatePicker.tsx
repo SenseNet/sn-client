@@ -12,13 +12,14 @@ import moment from 'moment'
 import React, { useState } from 'react'
 import { DateTimeFieldSetting, DateTimeMode } from '@sensenet/default-content-types'
 import Typography from '@material-ui/core/Typography'
+import { changeJScriptValue } from '../helpers'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
  * Field control that represents a Date field. Available values will be populated from the FieldSettings.
  */
 export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>> = props => {
-  const initialState = props.fieldValue || props.settings.DefaultValue || moment().toISOString()
+  const initialState = props.fieldValue || changeJScriptValue(props.settings.DefaultValue) || moment().toISOString()
   const [value, setValue] = useState(initialState)
 
   const handleDateChange = (date: MaterialUiPickersDate) => {
@@ -39,7 +40,7 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
               value={value}
               onChange={handleDateChange}
               name={props.settings.Name}
-              defaultValue={props.settings.DefaultValue}
+              defaultValue={changeJScriptValue(props.settings.DefaultValue)}
               label={props.settings.DisplayName}
               id={props.settings.Name}
               disabled={props.settings.ReadOnly}
@@ -53,7 +54,7 @@ export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>>
               onChange={handleDateChange}
               label={props.settings.DisplayName}
               name={props.settings.Name}
-              defaultValue={props.settings.DefaultValue}
+              defaultValue={changeJScriptValue(props.settings.DefaultValue)}
               id={props.settings.Name}
               disabled={props.settings.ReadOnly}
               placeholder={props.settings.DisplayName}

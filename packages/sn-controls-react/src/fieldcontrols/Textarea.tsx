@@ -5,6 +5,7 @@ import React, { useState } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { LongTextFieldSetting } from '@sensenet/default-content-types'
+import { changeJScriptValue } from '../helpers'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
@@ -12,7 +13,9 @@ import { ReactClientFieldSetting } from './ClientFieldSetting'
  */
 export const Textarea: React.FC<ReactClientFieldSetting<LongTextFieldSetting>> = props => {
   const initialState =
-    (props.fieldValue && props.fieldValue.replace(/<[^>]*>/g, '')) || props.settings.DefaultValue || ''
+    (props.fieldValue && props.fieldValue.replace(/<[^>]*>/g, '')) ||
+    changeJScriptValue(props.settings.DefaultValue) ||
+    ''
   const [value, setValue] = useState(initialState)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -29,7 +32,7 @@ export const Textarea: React.FC<ReactClientFieldSetting<LongTextFieldSetting>> =
           name={props.settings.Name}
           id={props.settings.Name}
           label={props.settings.DisplayName}
-          defaultValue={props.settings.DefaultValue}
+          defaultValue={changeJScriptValue(props.settings.DefaultValue)}
           placeholder={props.settings.DisplayName}
           value={value}
           required={props.settings.Compulsory}

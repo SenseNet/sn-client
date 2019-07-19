@@ -3,13 +3,15 @@ import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content
 import { ReferenceField } from '@sensenet/search-react'
 import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
 import Typography from '@material-ui/core/Typography'
+import { changeJScriptValue } from '../helpers'
 import { ReactClientFieldSetting } from '.'
 
 /**
  * Represents an autocomplete component
  */
 export const AutoComplete: React.FC<ReactClientFieldSetting<ReferenceFieldSetting>> = props => {
-  const defaultValue = (props.fieldValue && (props.fieldValue as any)[0].Id) || props.settings.DefaultValue
+  const defaultValue =
+    (props.fieldValue && (props.fieldValue as any)[0].Id) || changeJScriptValue(props.settings.DefaultValue)
   const fetchItems = async (fetchQuery: Query<GenericContent>) => {
     try {
       if (!props.repository) {

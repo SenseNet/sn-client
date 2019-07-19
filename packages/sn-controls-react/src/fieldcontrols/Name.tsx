@@ -4,6 +4,7 @@
 import React, { useState } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
+import { changeJScriptValue } from '../helpers'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 const invalidCharacters = ['%', '\\', '*', '~']
@@ -12,7 +13,9 @@ const invalidCharacters = ['%', '\\', '*', '~']
  */
 export const Name: React.FC<ReactClientFieldSetting> = props => {
   const initialState =
-    (props.fieldValue && props.fieldValue.replace(/<[^>]*>/g, '')) || props.settings.DefaultValue || ''
+    (props.fieldValue && props.fieldValue.replace(/<[^>]*>/g, '')) ||
+    changeJScriptValue(props.settings.DefaultValue) ||
+    ''
   const [value, setValue] = useState(initialState)
   const [isValid, setIsValid] = useState(true)
 
@@ -35,7 +38,7 @@ export const Name: React.FC<ReactClientFieldSetting> = props => {
           id={props.settings.Name}
           label={props.settings.DisplayName}
           placeholder={props.settings.DisplayName}
-          defaultValue={props.settings.DefaultValue}
+          defaultValue={changeJScriptValue(props.settings.DefaultValue)}
           value={value}
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}

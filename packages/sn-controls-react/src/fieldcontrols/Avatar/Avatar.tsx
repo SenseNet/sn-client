@@ -10,6 +10,7 @@ import { ReferenceFieldSetting, User } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
 import { renderIconDefault } from '../icon'
 import { ReactClientFieldSetting } from '../ClientFieldSetting'
+import { changeJScriptValue } from '../../helpers'
 import { AvatarPicker } from './AvatarPicker'
 import { DefaultAvatarTemplate } from './DefaultAvatarTemplate'
 
@@ -51,7 +52,10 @@ export interface AvatarState {
 
 export class Avatar extends Component<ReactClientFieldSetting<ReferenceFieldSetting, User>, AvatarState> {
   state: AvatarState = {
-    fieldValue: (this.props.fieldValue && (this.props.fieldValue as any).Url) || this.props.settings.DefaultValue || '',
+    fieldValue:
+      (this.props.fieldValue && (this.props.fieldValue as any).Url) ||
+      changeJScriptValue(this.props.settings.DefaultValue) ||
+      '',
     pickerIsOpen: false,
     selected: undefined,
   }

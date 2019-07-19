@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import React, { useState } from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
+import { changeJScriptValue } from '../helpers'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 const modules = {
@@ -36,7 +37,7 @@ const modules = {
  * Field control that represents a LongText field. Available values will be populated from the FieldSettings.
  */
 export const RichTextEditor: React.FC<ReactClientFieldSetting> = props => {
-  const initialState = props.fieldValue || props.settings.DefaultValue || ''
+  const initialState = props.fieldValue || changeJScriptValue(props.settings.DefaultValue) || ''
   const [value, setValue] = useState(initialState)
 
   const handleChange = (changedValue: string) => {
@@ -52,7 +53,7 @@ export const RichTextEditor: React.FC<ReactClientFieldSetting> = props => {
           <FormLabel component={'legend' as 'label'}>{props.settings.DisplayName}</FormLabel>
           <ReactQuill
             style={{ background: '#fff', marginTop: 10 }}
-            defaultValue={props.settings.DefaultValue}
+            defaultValue={changeJScriptValue(props.settings.DefaultValue)}
             placeholder={props.settings.DisplayName}
             readOnly={props.settings.ReadOnly}
             modules={modules}
