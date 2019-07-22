@@ -76,6 +76,7 @@ const fileContent: Image = {
   DisplayName: 'approving_enabled.png',
   Type: 'Image',
   Icon: 'image',
+  RateAvg: 32.5,
 }
 
 const testContent: GenericContent & { ExpectedRevenue: number; Color: string; Password: string } = {
@@ -361,6 +362,20 @@ fieldControlStory({
   ),
   markdown: numberNotes,
   storyName: 'FieldControls.Number.Currency',
+})
+
+fieldControlStory({
+  component: actionName => (
+    <DynamicControl
+      actionName={actionName}
+      repository={testRepository}
+      content={fileContent}
+      component={NumberComponent}
+      fieldName="RateAvg"
+    />
+  ),
+  markdown: numberNotes,
+  storyName: 'FieldControls.Number.Double',
 })
 
 fieldControlStory({
