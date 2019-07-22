@@ -151,6 +151,7 @@ export class Avatar extends Component<ReactClientFieldSetting<ReferenceFieldSett
                   path={
                     this.props.uploadFolderPath ||
                     (this.props.settings.SelectionRoots && this.props.settings.SelectionRoots[0]) ||
+                    this.state.fieldValue.substring(0, this.state.fieldValue.lastIndexOf('/')) ||
                     ''
                   }
                   repository={this.props.repository!}
