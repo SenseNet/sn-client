@@ -53,6 +53,26 @@ export const Content: React.FunctionComponent<RouteComponentProps<{ browseData: 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const navigateSecondary = useCallback(
+    (itm: GenericContent) => {
+      const newBrowseData = {
+        ...browseData,
+        secondaryContent: itm.Id,
+      }
+      setBrowseData(newBrowseData)
+      refreshUrl(newBrowseData)
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  )
+
+  const setLoadChildrenSettings = useCallback((s: ODataParams<GenericContent>) => {
+    const newBrowseData: BrowseData = { ...browseData, loadChildrenSettings: s }
+    setBrowseData(newBrowseData)
+    refreshUrl(newBrowseData)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const openItem = useCallback(
     (itm: GenericContent) => {
       props.history.push(contentRouter.getPrimaryActionUrl(itm))
@@ -68,11 +88,7 @@ export const Content: React.FunctionComponent<RouteComponentProps<{ browseData: 
         loadSettings: {},
         setLoadAncestorsSettings: () => ({}),
         setLoadSettings: () => ({}),
-        setLoadChildrenSettings: s => {
-          const newBrowseData: BrowseData = { ...browseData, loadChildrenSettings: s }
-          setBrowseData(newBrowseData)
-          refreshUrl(newBrowseData)
-        },
+        setLoadChildrenSettings,
       }}>
       {browseData.type === 'commander' ? (
         <Commander
@@ -80,14 +96,7 @@ export const Content: React.FunctionComponent<RouteComponentProps<{ browseData: 
           rightParent={browseData.secondaryContent || browseData.root || ConstantContent.PORTAL_ROOT.Id}
           onActivateItem={openItem}
           onNavigateLeft={navigate}
-          onNavigateRight={_itm => {
-            const newBrowseData = {
-              ...browseData,
-              secondaryContent: _itm.Id,
-            }
-            setBrowseData(newBrowseData)
-            refreshUrl(newBrowseData)
-          }}
+          onNavigateRight={navigateSecondary}
         />
       ) : browseData.type === 'explorer' ? (
         <Explore
