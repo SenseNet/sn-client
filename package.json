@@ -96,8 +96,12 @@
       "<rootDir>/packages/sn-search-react",
       "<rootDir>/packages/sn-redux-promise-middleware",
       "<rootDir>/packages/sn-pickers-react",
+      "<rootDir>/packages/sn-controls-react",
       "<rootDir>/packages/sn-icons-react"
     ],
+    "moduleNameMapper": {
+      "\\.css$": "<rootDir>/jest/cssTransform.js"
+    },
     "transform": {
       "^.+\\.(ts|tsx)$": "ts-jest",
       "^.+\\.css$": "<rootDir>/jest/cssTransform.js",

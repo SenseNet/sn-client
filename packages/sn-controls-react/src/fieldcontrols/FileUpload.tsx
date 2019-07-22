@@ -8,7 +8,7 @@ import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel/InputLabel'
 import Typography from '@material-ui/core/Typography'
 import React, { useEffect, useState } from 'react'
-import { BinaryFieldSetting, File } from '@sensenet/default-content-types'
+import { BinaryFieldSetting } from '@sensenet/default-content-types'
 import { PathHelper } from '@sensenet/client-utils'
 import { ODataResponse } from '@sensenet/client-core'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
@@ -52,29 +52,39 @@ interface Binary {
   BlobProviderData?: any
 }
 
+export const errorMessages = {
+  repository: 'You must pass a repository to this control.',
+  contentToFetch: 'There needs to be a content to get the name of the binary field.',
+  contentToUpload: 'There needs to be a content to be able to upload.',
+}
+
 /**
  * Field control that represents a FileUpload field. Available values will be populated from the FieldSettings.
  */
-export function FileUpload(props: ReactClientFieldSetting<BinaryFieldSetting, File>) {
+export const FileUpload: React.FC<ReactClientFieldSetting<BinaryFieldSetting>> = props => {
   const [fileName, setFileName] = useState('')
   useEffect(() => {
     const ac = new AbortController()
     // eslint-disable-next-line require-jsdoc
     async function fetchData() {
-      if (!props.repository) {
-        throw new Error('You must pass a repository to this control')
+      try {
+        if (!props.repository) {
+          throw new Error(errorMessages.repository)
+        }
+        if (!props.content) {
+          throw new Error(errorMessages.contentToFetch)
+        }
+        const loadPath = PathHelper.joinPaths(PathHelper.getContentUrl(props.content.Path), '/', props.settings.Name)
+        const binaryField = ((await props.repository.load({
+          idOrPath: loadPath,
+          requestInit: { signal: ac.signal },
+        })) as unknown) as ODataResponse<{
+          Binary: Binary
+        }>
+        setFileName(binaryField.d.Binary.FileName.FullFileName)
+      } catch (error) {
+        console.error(error.message)
       }
-      if (!props.content) {
-        return
-      }
-      const loadPath = PathHelper.joinPaths(PathHelper.getContentUrl(props.content.Path), '/', props.settings.Name)
-      const binaryField = ((await props.repository.load({
-        idOrPath: loadPath,
-        requestInit: { signal: ac.signal },
-      })) as unknown) as ODataResponse<{
-        Binary: Binary
-      }>
-      setFileName(binaryField.d.Binary.FileName.FullFileName)
     }
     fetchData()
     return () => ac.abort()
@@ -88,28 +98,32 @@ export function FileUpload(props: ReactClientFieldSetting<BinaryFieldSetting, Fi
    * handles change event on the fileupload input
    */
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!props.repository) {
-      throw new Error('You must pass a repository to this control')
-    }
-    if (!props.content) {
-      throw new Error('There needs to be a content to be able to upload')
-    }
-    e.persist()
-    if (!e.target.files) {
-      return
-    }
-    await props.repository.upload.file({
-      parentPath: PathHelper.getParentPath(props.content.Path),
-      file: e.target.files[0],
-      fileName: props.content.Name,
-      overwrite: true,
-      contentTypeName: props.content.Type,
-      binaryPropertyName: 'Binary',
-    })
+    try {
+      if (!props.repository) {
+        throw new Error(errorMessages.repository)
+      }
+      if (!props.content) {
+        throw new Error(errorMessages.contentToUpload)
+      }
+      e.persist()
+      if (!e.target.files) {
+        return
+      }
+      await props.repository.upload.file({
+        parentPath: PathHelper.getParentPath(props.content.Path),
+        file: e.target.files[0],
+        fileName: props.content.Name,
+        overwrite: true,
+        contentTypeName: props.content.Type,
+        binaryPropertyName: 'Binary',
+      })
 
-    const newValue = `${getNameFromPath(e.target.value)}`
-    setFileName(newValue)
-    props.fieldOnChange && props.fieldOnChange(props.settings.Name, newValue)
+      const newValue = `${getNameFromPath(e.target.value)}`
+      setFileName(newValue)
+      props.fieldOnChange && props.fieldOnChange(props.settings.Name, newValue)
+    } catch (error) {
+      console.error(error.message)
+    }
   }
 
   switch (props.actionName) {

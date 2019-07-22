@@ -5,26 +5,27 @@ import React, { useState } from 'react'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
+import { changeJScriptValue } from '../helpers'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
  * Field control that represents a FileName field. Available values will be populated from the FieldSettings.
  */
-export function FileName(props: ReactClientFieldSetting) {
+export const FileName: React.FC<ReactClientFieldSetting> = props => {
   const valueInitialState =
-    (props.content &&
-      props.content[props.settings.Name]
+    (props.fieldValue &&
+      props.fieldValue
         .replace(/<[^>]*>/g, '')
         .split('.')
         .slice(0, -1)
         .join('.')) ||
-    props.settings.DefaultValue ||
+    changeJScriptValue(props.settings.DefaultValue) ||
     ''
   const [value, setValue] = useState(valueInitialState)
 
   const getExtension = () => {
-    if (props.content && props.content[props.settings.Name] && props.content[props.settings.Name].indexOf('.') > -1) {
-      return props.content[props.settings.Name].substr(props.content[props.settings.Name].lastIndexOf('.') + 1)
+    if (props.fieldValue && props.fieldValue.indexOf('.') > -1) {
+      return props.fieldValue.substr(props.fieldValue.lastIndexOf('.') + 1)
     }
     if (props.extension) {
       return props.extension
@@ -34,9 +35,8 @@ export function FileName(props: ReactClientFieldSetting) {
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const fileName = `${event.target.value}.${getExtension()}`
-    setValue(fileName)
-    props.fieldOnChange && props.fieldOnChange(props.settings.Name, fileName)
+    setValue(event.target.value)
+    props.fieldOnChange && props.fieldOnChange(props.settings.Name, `${event.target.value}.${getExtension()}`)
   }
 
   switch (props.actionName) {
@@ -49,7 +49,7 @@ export function FileName(props: ReactClientFieldSetting) {
           label={props.settings.DisplayName}
           placeholder={props.settings.DisplayName}
           value={value}
-          defaultValue={props.settings.DefaultValue}
+          defaultValue={changeJScriptValue(props.settings.DefaultValue)}
           onChange={handleChange}
           InputProps={{
             endAdornment: (
@@ -67,13 +67,13 @@ export function FileName(props: ReactClientFieldSetting) {
       )
     case 'browse':
     default:
-      return props.content && props.content[props.settings.Name] ? (
+      return props.fieldValue ? (
         <div>
           <Typography variant="caption" gutterBottom={true}>
             {props.settings.DisplayName}
           </Typography>
           <Typography variant="body1" gutterBottom={true}>
-            {props.content[props.settings.Name]}
+            {props.fieldValue}
           </Typography>
         </div>
       ) : null

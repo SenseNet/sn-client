@@ -28,7 +28,6 @@ export const AddDialog: React.FunctionComponent<AddDialogProps> = ({ dialogProps
           repository={repo}
           contentTypeName={schema.ContentTypeName}
           path={parent.Path}
-          title=""
           onSubmit={async (parentPath, content) => {
             try {
               const created = await repo.post({

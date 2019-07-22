@@ -54,14 +54,6 @@ export class EditView extends Component<EditViewProps, EditViewState> {
     }
 
     this.handleInputChange = this.handleInputChange.bind(this)
-    this.handleCancel = this.handleCancel.bind(this)
-  }
-
-  /**
-   * handle cancle button click
-   */
-  public handleCancel() {
-    return this.props.handleCancel ? this.props.handleCancel() : null
   }
 
   /**
@@ -97,6 +89,7 @@ export class EditView extends Component<EditViewProps, EditViewState> {
                 repository: this.props.repository,
                 settings: field.fieldSettings,
                 content: this.state.content,
+                fieldValue: (this.state.content as any)[field.fieldSettings.Name],
                 actionName: 'edit',
                 renderIcon: this.props.renderIcon,
                 fieldOnChange: this.handleInputChange,
@@ -119,13 +112,12 @@ export class EditView extends Component<EditViewProps, EditViewState> {
           })}
           <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12} style={{ textAlign: 'right' }}>
             <MediaQuery minDeviceWidth={700}>
-              {matches =>
-                matches ? (
-                  <Button color="default" style={{ marginRight: 20 }} onClick={() => this.handleCancel()}>
-                    Cancel
-                  </Button>
-                ) : null
-              }
+              <Button
+                color="default"
+                style={{ marginRight: 20 }}
+                onClick={() => this.props.handleCancel && this.props.handleCancel()}>
+                Cancel
+              </Button>
             </MediaQuery>
             <Button type="submit" variant="contained" color="secondary">
               Submit

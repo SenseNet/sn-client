@@ -11,30 +11,23 @@ import {
 import moment from 'moment'
 import React, { useState } from 'react'
 import { DateTimeFieldSetting, DateTimeMode } from '@sensenet/default-content-types'
+import Typography from '@material-ui/core/Typography'
+import { changeJScriptValue } from '../helpers'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
- * Interface for DatePicker state
- */
-export interface State {
-  value: MaterialUiPickersDate
-}
-/**
  * Field control that represents a Date field. Available values will be populated from the FieldSettings.
  */
-export function DatePicker(props: ReactClientFieldSetting<DateTimeFieldSetting>) {
-  const initialState =
-    props.content && props.content[props.settings.Name]
-      ? props.content[props.settings.Name]
-      : props.settings.DefaultValue || moment()
+export const DatePicker: React.FC<ReactClientFieldSetting<DateTimeFieldSetting>> = props => {
+  const initialState = props.fieldValue || changeJScriptValue(props.settings.DefaultValue) || moment().toISOString()
   const [value, setValue] = useState(initialState)
 
   const handleDateChange = (date: MaterialUiPickersDate) => {
     if (!date) {
       return
     }
-    setValue(date)
-    props.fieldOnChange && props.fieldOnChange(props.settings.Name, moment.utc(date))
+    setValue(moment.utc(date).toISOString())
+    props.fieldOnChange && props.fieldOnChange(props.settings.Name, moment.utc(date).toISOString())
   }
 
   switch (props.actionName) {
@@ -46,8 +39,10 @@ export function DatePicker(props: ReactClientFieldSetting<DateTimeFieldSetting>)
             <MUIDatePicker
               value={value}
               onChange={handleDateChange}
+              name={props.settings.Name}
+              defaultValue={changeJScriptValue(props.settings.DefaultValue)}
               label={props.settings.DisplayName}
-              id={props.settings.Name as string}
+              id={props.settings.Name}
               disabled={props.settings.ReadOnly}
               placeholder={props.settings.DisplayName}
               required={props.settings.Compulsory}
@@ -58,6 +53,8 @@ export function DatePicker(props: ReactClientFieldSetting<DateTimeFieldSetting>)
               value={value}
               onChange={handleDateChange}
               label={props.settings.DisplayName}
+              name={props.settings.Name}
+              defaultValue={changeJScriptValue(props.settings.DefaultValue)}
               id={props.settings.Name}
               disabled={props.settings.ReadOnly}
               placeholder={props.settings.DisplayName}
@@ -68,17 +65,21 @@ export function DatePicker(props: ReactClientFieldSetting<DateTimeFieldSetting>)
         </MuiPickersUtilsProvider>
       )
     default:
-      return props.content && props.content[props.settings.Name] ? (
+      return props.fieldValue ? (
         <div>
-          <label>{props.settings.DisplayName}</label>
+          <Typography variant="caption" gutterBottom={true}>
+            {props.settings.DisplayName}
+          </Typography>
           {props.settings.DateTimeMode === DateTimeMode.Date ? (
-            <p>
-              {moment(props.content[props.settings.Name])
+            <Typography variant="body1" gutterBottom={true}>
+              {moment(props.fieldValue)
                 .format('LL')
                 .toLocaleString()}
-            </p>
+            </Typography>
           ) : (
-            <p>{moment(props.content[props.settings.Name]).toLocaleString()}</p>
+            <Typography variant="body1" gutterBottom={true}>
+              {moment(props.fieldValue).toLocaleString()}
+            </Typography>
           )}
         </div>
       ) : null

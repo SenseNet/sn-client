@@ -15,9 +15,13 @@ export interface ReactClientFieldSetting<T = FieldSetting, S = GenericContent> {
    */
   settings: T
   /**
-   * Content to get field values from.
+   * Content to used by controls that needs to access the repository.
    */
   content?: S
+  /**
+   * The value of the field.
+   */
+  fieldValue?: string
   /**
    * Display mode of the field control
    * @default browse
