@@ -67,7 +67,7 @@ describe('Name field control', () => {
       wrapper.find(TextField).simulate('change', { target: { value: 'Hello World' } })
       expect(fieldOnChange).toBeCalled()
     })
-    it('should show error message when invalid character typed', () => {
+    it('should show error message when invalid character is typed', () => {
       const fieldOnChange = jest.fn()
       const wrapper = shallow(<Name actionName="edit" fieldOnChange={fieldOnChange} settings={defaultSettings} />)
       wrapper.find(TextField).simulate('change', { target: { value: 'Hello World%' } })

@@ -48,7 +48,7 @@ describe('Check box group field control', () => {
       ).toBe(defaultSettings.Options[2].Text)
     })
 
-    it('should show fieldValue it is passed as a string', () => {
+    it('should show fieldValue when it is passed as a string', () => {
       const wrapper = shallow(<CheckboxGroup actionName="browse" settings={defaultSettings} fieldValue="0" />)
       expect(wrapper.find(FormControlLabel)).toHaveLength(1)
       expect(wrapper.find(FormControlLabel).prop('label')).toBe(defaultSettings.Options[0].Text)

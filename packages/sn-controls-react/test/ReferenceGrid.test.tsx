@@ -147,7 +147,7 @@ describe('Reference grid field control', () => {
       expect(updatedWrapper.find(DefaultItemTemplate)).toHaveLength(4)
     })
 
-    it('should remove all the items when selected a new item with allow multiple false', async () => {
+    it('should remove all the items when a new item is selected with allow multiple false', async () => {
       const fieldOnChange = jest.fn()
       const wrapper = shallow(
         <ReferenceGrid
