@@ -16,7 +16,10 @@ const GenericContentEditor: React.FunctionComponent<RouteComponentProps<{ conten
 
   return (
     <div style={{ width: '100%', height: '100%', padding: '1em', overflow: 'auto' }}>
-      <CurrentContentProvider idOrPath={contentId} onContentLoaded={c => selectionService.activeContent.setValue(c)}>
+      <CurrentContentProvider
+        idOrPath={contentId}
+        onContentLoaded={c => selectionService.activeContent.setValue(c)}
+        oDataOptions={{ select: 'all' }}>
         <CurrentAncestorsProvider>
           <ContentBreadcrumbs />
           <CurrentContentContext.Consumer>
