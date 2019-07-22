@@ -78,9 +78,7 @@ describe('Tags input field control', () => {
 
     it('should show an empty input field when no content is passed', async () => {
       const consoleSpy = jest.spyOn(console, 'error')
-      const wrapper = shallow(
-        <TagsInput actionName="new" settings={defaultSettings} repository={repository}></TagsInput>,
-      )
+      const wrapper = shallow(<TagsInput actionName="new" settings={defaultSettings} repository={repository} />)
       expect(consoleSpy).not.toBeCalled()
       await sleepAsync(0)
       const updatedWrapper = wrapper.update()
@@ -90,11 +88,7 @@ describe('Tags input field control', () => {
     it('should show the value of the field when content is passed', async () => {
       const consoleSpy = jest.spyOn(console, 'error')
       const wrapper = mount(
-        <TagsInput
-          actionName="edit"
-          settings={defaultSettings}
-          content={userContent}
-          repository={repository}></TagsInput>,
+        <TagsInput actionName="edit" settings={defaultSettings} content={userContent} repository={repository} />,
       )
       expect(consoleSpy).not.toBeCalled()
       await sleepAsync(0)
@@ -110,7 +104,8 @@ describe('Tags input field control', () => {
           settings={defaultSettings}
           content={userContent}
           fieldOnChange={fieldOnChange}
-          repository={repository}></TagsInput>,
+          repository={repository}
+        />,
       )
       await sleepAsync(0)
       const updatedWrapper = wrapper.update()
@@ -125,11 +120,7 @@ describe('Tags input field control', () => {
     it('should handle selection change', async () => {
       const fieldOnChange = jest.fn()
       const wrapper = mount(
-        <TagsInput
-          actionName="new"
-          settings={defaultSettings}
-          fieldOnChange={fieldOnChange}
-          repository={repository}></TagsInput>,
+        <TagsInput actionName="new" settings={defaultSettings} fieldOnChange={fieldOnChange} repository={repository} />,
       )
       await sleepAsync(0)
       const updatedWrapper = wrapper.update()

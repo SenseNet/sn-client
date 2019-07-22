@@ -49,11 +49,7 @@ export const testFile: GenericContent = {
 describe('New view component', () => {
   it('should render all components', () => {
     const wrapper = shallow(
-      <NewView
-        repository={testRepository}
-        showTitle={true}
-        contentTypeName="GenericContent"
-        path={testFile.Path}></NewView>,
+      <NewView repository={testRepository} showTitle={true} contentTypeName="GenericContent" path={testFile.Path} />,
     )
     expect(wrapper.find(Typography).text()).toBe('New $Ctd-GenericContent,DisplayName')
     expect(wrapper.find(FileName)).toHaveLength(1)
@@ -84,7 +80,8 @@ describe('New view component', () => {
         submitCallback={submitCallback}
         onSubmit={onSubmit}
         contentTypeName="GenericContent"
-        path={testFile.Path}></NewView>,
+        path={testFile.Path}
+      />,
     )
     const onChange = wrapper
       .find(CheckboxGroup)

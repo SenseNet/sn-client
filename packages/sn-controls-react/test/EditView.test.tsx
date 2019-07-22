@@ -47,7 +47,7 @@ export const testFile: GenericContent = {
 
 describe('Edit view component', () => {
   it('should render all components', () => {
-    const wrapper = shallow(<EditView repository={testRepository} content={testFile}></EditView>)
+    const wrapper = shallow(<EditView repository={testRepository} content={testFile} />)
     expect(wrapper.find(FileName)).toHaveLength(1)
     expect(wrapper.find(TagsInput)).toHaveLength(1)
     expect(wrapper.find(ReferenceGrid)).toHaveLength(1)
@@ -71,11 +71,7 @@ describe('Edit view component', () => {
     const submitCallback = jest.fn()
     const onSubmit = jest.fn()
     const wrapper = shallow(
-      <EditView
-        repository={testRepository}
-        submitCallback={submitCallback}
-        onSubmit={onSubmit}
-        content={testFile}></EditView>,
+      <EditView repository={testRepository} submitCallback={submitCallback} onSubmit={onSubmit} content={testFile} />,
     )
     const onChange = wrapper
       .find(CheckboxGroup)

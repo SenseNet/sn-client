@@ -48,7 +48,7 @@ export const testFile: GenericContent = {
 
 describe('Browse view component', () => {
   it('should render all the controls for Generic content', () => {
-    const wrapper = shallow(<BrowseView content={testFile} repository={testRepository}></BrowseView>)
+    const wrapper = shallow(<BrowseView content={testFile} repository={testRepository} />)
     expect(wrapper.find(Typography).text()).toBe(testFile.DisplayName)
     expect(wrapper.find(FileName)).toHaveLength(1)
     expect(wrapper.find(TagsInput)).toHaveLength(1)

@@ -62,7 +62,8 @@ export const AutoComplete: React.FC<ReactClientFieldSetting<ReferenceFieldSettin
           fieldName={props.settings.Name as any}
           defaultValueIdOrPath={defaultValue}
           onChange={item => props.fieldOnChange && props.fieldOnChange(props.settings.Name, item)}
-          fetchItems={fetchItems as any}></ReferenceField>
+          fetchItems={fetchItems as any}
+        />
       )
     case 'browse':
     default: {
