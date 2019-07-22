@@ -17,7 +17,7 @@ import {
   LoadSettingsContext,
 } from '../../context'
 import { useInjector, useLocalization, useRepository } from '../../hooks'
-import { CollectionComponent } from '../ContentListPanel'
+import { CollectionComponent } from '../content-list'
 
 const Search: React.FunctionComponent<RouteComponentProps> = props => {
   const repo = useRepository()

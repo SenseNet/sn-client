@@ -10,7 +10,7 @@ import {
 } from '../../context'
 import { useRepository, useSelectionService } from '../../hooks'
 import { AddButton } from '../AddButton'
-import { CollectionComponent } from '../ContentListPanel'
+import { CollectionComponent } from '../content-list'
 import { AddDialog, CopyMoveDialog } from '../dialogs'
 
 export const CommanderComponent: React.FunctionComponent<{

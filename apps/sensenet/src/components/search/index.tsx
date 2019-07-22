@@ -22,7 +22,7 @@ import {
   ResponsivePersonalSetttings,
 } from '../../context'
 import { useContentRouting, useLocalization, useLogger, useRepository } from '../../hooks'
-import { CollectionComponent } from '../ContentListPanel'
+import { CollectionComponent } from '../content-list'
 
 const loadCount = 20
 

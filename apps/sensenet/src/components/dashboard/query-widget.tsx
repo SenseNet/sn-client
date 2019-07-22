@@ -7,7 +7,7 @@ import { ConstantContent, ODataParams } from '@sensenet/client-core'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { QueryWidget as QueryWidgetModel } from '../../services/PersonalSettings'
 import { useContentRouting, useLocalization, useRepository, useSelectionService, useStringReplace } from '../../hooks'
-import { CollectionComponent, isReferenceField } from '../ContentListPanel'
+import { CollectionComponent, isReferenceField } from '../content-list'
 import {
   CurrentAncestorsContext,
   CurrentChildrenContext,

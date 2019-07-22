@@ -1,6 +1,3 @@
-import TableCell from '@material-ui/core/TableCell'
-import Check from '@material-ui/icons/Check'
-import Close from '@material-ui/icons/Close'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
@@ -13,16 +10,20 @@ import {
   LoadSettingsContext,
   ResponsiveContext,
   ResponsivePersonalSetttings,
-  ResponsivePlatforms,
-} from '../context'
-import { useRepository } from '../hooks'
-import { ContentBreadcrumbs } from './ContentBreadcrumbs'
-import { ContentContextMenu } from './ContentContextMenu'
-import { DeleteContentDialog } from './dialogs'
-import { DropFileArea } from './DropFileArea'
-import { Icon } from './Icon'
-import { SecondaryActionsMenu } from './SecondaryActionsMenu'
-import { SelectionControl } from './SelectionControl'
+} from '../../context'
+import { useRepository } from '../../hooks'
+import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
+import { ContentContextMenu } from '../ContentContextMenu'
+import { DeleteContentDialog } from '../dialogs'
+import { DropFileArea } from '../DropFileArea'
+import { SelectionControl } from '../SelectionControl'
+import { IconField } from './icon-field'
+import { EmailField } from './email-field'
+import { PhoneField } from './phone-field'
+import { DisplayNameComponent } from './display-name-field'
+import { ActionsField } from './actions-field'
+import { ReferenceField } from './reference-field'
+import { BooleanField } from './boolean-field'
 
 export interface CollectionComponentProps {
   enableBreadcrumbs?: boolean
@@ -40,30 +41,6 @@ export interface CollectionComponentProps {
   onSelectionChange?: (sel: GenericContent[]) => void
   onFocus?: () => void
   containerProps?: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
-}
-
-export const DisplayNameComponent: React.FunctionComponent<{
-  content: GenericContent
-  device: ResponsivePlatforms
-  isActive: boolean
-}> = ({ content, device, isActive }) => {
-  return (
-    <TableCell padding={'none'}>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}>
-        {content.DisplayName || content.Name}
-        {device === 'mobile' && isActive ? (
-          <CurrentContentContext.Provider value={content}>
-            <SecondaryActionsMenu style={{ float: 'right' }} />
-          </CurrentContentContext.Provider>
-        ) : null}
-      </div>
-    </TableCell>
-  )
 }
 
 export const isReferenceField = (fieldName: string, repo: Repository) => {
@@ -298,30 +275,14 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
               setIsContextMenuOpened(true)
             }}
             fieldComponent={fieldOptions => {
+              // eslint-disable-next-line default-case
               switch (fieldOptions.field) {
                 case 'Icon':
-                  return (
-                    <TableCell>
-                      <Icon item={fieldOptions.content} />
-                    </TableCell>
-                  )
+                  return <IconField content={fieldOptions.content} />
                 case 'Email' as any:
-                  return (
-                    <TableCell>
-                      <a href={`mailto:${fieldOptions.content[fieldOptions.field]}`}>
-                        {fieldOptions.content[fieldOptions.field]}
-                      </a>
-                    </TableCell>
-                  )
+                  return <EmailField mail={fieldOptions.content[fieldOptions.field] as string} />
                 case 'Phone' as any:
-                  return (
-                    <TableCell>
-                      <a href={`tel:${fieldOptions.content[fieldOptions.field]}`}>
-                        {fieldOptions.content[fieldOptions.field]}
-                      </a>
-                    </TableCell>
-                  )
-
+                  return <PhoneField phoneNo={fieldOptions.content[fieldOptions.field] as string} />
                 case 'DisplayName':
                   return (
                     <DisplayNameComponent
@@ -331,13 +292,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
                     />
                   )
                 case 'Actions':
-                  return (
-                    <TableCell style={{ width: '64px' }}>
-                      <CurrentContentContext.Provider value={fieldOptions.content}>
-                        <SecondaryActionsMenu />
-                      </CurrentContentContext.Provider>
-                    </TableCell>
-                  )
+                  return <ActionsField content={fieldOptions.content} />
                 // no default
               }
               if (
@@ -352,34 +307,12 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
                   expectedContent.Name &&
                   expectedContent.Path
                 ) {
-                  return (
-                    <TableCell padding={'none'}>
-                      <div style={{ display: 'flex', alignItems: 'center' }}>
-                        {' '}
-                        <Icon item={expectedContent as GenericContent} />
-                        <div style={{ marginLeft: '1em' }}>
-                          {(expectedContent as GenericContent).DisplayName || (expectedContent as GenericContent).Name}
-                        </div>
-                      </div>
-                    </TableCell>
-                  )
+                  return <ReferenceField content={expectedContent} />
                 }
                 return null
               }
               if (typeof fieldOptions.content[fieldOptions.field] === 'boolean') {
-                if (fieldOptions.content[fieldOptions.field] === true) {
-                  return (
-                    <TableCell>
-                      <Check color="secondary" />
-                    </TableCell>
-                  )
-                } else if (fieldOptions.content[fieldOptions.field] === false) {
-                  return (
-                    <TableCell>
-                      <Close color="error" />
-                    </TableCell>
-                  )
-                }
+                return <BooleanField value={fieldOptions.content[fieldOptions.field] as boolean | undefined} />
               }
               return null
             }}

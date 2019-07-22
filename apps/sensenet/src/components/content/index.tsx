@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ConstantContent, ODataParams } from '@sensenet/client-core'
-import { LoadSettingsContext } from '../../context'
+import { LoadSettingsContext, ResponsivePersonalSetttings } from '../../context'
 import { useContentRouting, useLogger, useRepository } from '../../hooks'
 import Commander from './Commander'
 import { Explore } from './Explore'
@@ -18,11 +18,11 @@ export interface BrowseData {
 
 export const Content: React.FunctionComponent<RouteComponentProps<{ browseData: string }>> = props => {
   const repo = useRepository()
-
+  const settings = useContext(ResponsivePersonalSetttings)
   const logger = useLogger('Browse view')
 
   const [browseData, setBrowseData] = useState<BrowseData>({
-    type: 'commander',
+    type: settings.content.browseType,
   })
   const contentRouter = useContentRouting()
 

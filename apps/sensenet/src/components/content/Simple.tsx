@@ -8,7 +8,7 @@ import {
 } from '../../context'
 import { useSelectionService } from '../../hooks'
 import { AddButton } from '../AddButton'
-import { CollectionComponent } from '../ContentListPanel'
+import { CollectionComponent } from '../content-list'
 
 export interface SimpleListComponentProps {
   parent: number | string

@@ -10,7 +10,7 @@ import {
 import { useSelectionService } from '../../hooks'
 import { AddButton } from '../AddButton'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
-import { CollectionComponent } from '../ContentListPanel'
+import { CollectionComponent } from '../content-list'
 import { Tree } from '../tree/index'
 
 export interface ExploreComponentProps {
