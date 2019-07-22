@@ -5,7 +5,6 @@ import Checkbox from '@material-ui/core/Checkbox'
 import FormControl from '@material-ui/core/FormControl'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormHelperText from '@material-ui/core/FormHelperText'
-import InputLabel from '@material-ui/core/InputLabel'
 import React, { useState } from 'react'
 import { FieldSetting } from '@sensenet/default-content-types'
 import { changeJScriptValue } from '../helpers'
@@ -40,14 +39,12 @@ export const BooleanComponent: React.FC<ReactClientFieldSetting<FieldSetting>> =
     case 'browse':
     default:
       return props.fieldValue != null ? (
-        <FormControl component={'fieldset' as 'div'}>
-          <InputLabel shrink={true} htmlFor={props.settings.Name}>
-            {props.settings.DisplayName}
-          </InputLabel>
+        <div style={{ display: 'flex' }}>
+          <span>{props.settings.DisplayName}</span>
           {props.renderIcon
             ? props.renderIcon(props.fieldValue ? 'check' : 'not_interested')
             : renderIconDefault(props.fieldValue ? 'check' : 'not_interested')}
-        </FormControl>
+        </div>
       ) : null
   }
 }
