@@ -35,9 +35,8 @@ export const FileName: React.FC<ReactClientFieldSetting> = props => {
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const fileName = `${event.target.value}.${getExtension()}`
-    setValue(fileName)
-    props.fieldOnChange && props.fieldOnChange(props.settings.Name, fileName)
+    setValue(event.target.value)
+    props.fieldOnChange && props.fieldOnChange(props.settings.Name, `${event.target.value}.${getExtension()}`)
   }
 
   switch (props.actionName) {
