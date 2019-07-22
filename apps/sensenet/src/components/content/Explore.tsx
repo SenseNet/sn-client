@@ -1,45 +1,31 @@
 import { ConstantContent } from '@sensenet/client-core'
-import React, { useEffect, useState } from 'react'
-import { matchPath, RouteComponentProps, withRouter } from 'react-router'
+import React from 'react'
+import { GenericContent } from '@sensenet/default-content-types'
 import {
   CurrentAncestorsProvider,
   CurrentChildrenProvider,
   CurrentContentProvider,
   LoadSettingsContextProvider,
 } from '../../context'
-import { useContentRouting, useSelectionService } from '../../hooks'
+import { useSelectionService } from '../../hooks'
 import { AddButton } from '../AddButton'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { CollectionComponent } from '../ContentListPanel'
 import { Tree } from '../tree/index'
-import { CommanderRouteParams } from './Commander'
 
-export const ExploreComponent: React.FunctionComponent<RouteComponentProps<{ folderId?: string }>> = props => {
-  const getLeftFromPath = (params: CommanderRouteParams) =>
-    parseInt(params.folderId as string, 10) || ConstantContent.PORTAL_ROOT.Id
+export interface ExploreComponentProps {
+  parent: number | string
+  onNavigate: (newParent: GenericContent) => void
+  onActivateItem: (item: GenericContent) => void
+}
 
+export const Explore: React.FunctionComponent<ExploreComponentProps> = props => {
   const selectionService = useSelectionService()
-
-  const contentRouter = useContentRouting()
-  const [leftParentId, setLeftParentId] = useState(getLeftFromPath(props.match.params))
-  useEffect(() => {
-    const historyChangeListener = props.history.listen(location => {
-      const match = matchPath(location.pathname, props.match.path)
-      if (match) {
-        if (getLeftFromPath(match.params) !== leftParentId) {
-          setLeftParentId(getLeftFromPath(match.params))
-        }
-      }
-    })
-    return () => {
-      historyChangeListener()
-    }
-  }, [leftParentId, props.history, props.match.path])
 
   return (
     <div style={{ display: 'flex', width: '100%', height: '100%', flexDirection: 'column' }}>
       <LoadSettingsContextProvider>
-        <CurrentContentProvider idOrPath={leftParentId}>
+        <CurrentContentProvider idOrPath={props.parent}>
           <CurrentChildrenProvider>
             <CurrentAncestorsProvider>
               <div style={{ marginTop: '13px', paddingBottom: '12px', borderBottom: '1px solid rgba(128,128,128,.2)' }}>
@@ -59,26 +45,20 @@ export const ExploreComponent: React.FunctionComponent<RouteComponentProps<{ fol
                   }}
                   onItemClick={item => {
                     selectionService.activeContent.setValue(item)
-                    setLeftParentId(item.Id)
-                    props.history.push(contentRouter.getPrimaryActionUrl(item))
+                    props.onNavigate(item)
                   }}
-                  activeItemId={leftParentId}
+                  activeItemIdOrPath={props.parent}
                 />
 
                 <CollectionComponent
                   enableBreadcrumbs={false}
-                  onActivateItem={item => {
-                    props.history.push(contentRouter.getPrimaryActionUrl(item))
-                  }}
+                  onActivateItem={props.onActivateItem}
                   style={{ flexGrow: 7, flexShrink: 0, maxHeight: '100%' }}
-                  onParentChange={p => {
-                    setLeftParentId(p.Id)
-                    props.history.push(contentRouter.getPrimaryActionUrl(p))
-                  }}
+                  onParentChange={props.onNavigate}
                   onSelectionChange={sel => {
                     selectionService.selection.setValue(sel)
                   }}
-                  parentId={leftParentId}
+                  parentIdOrPath={props.parent}
                   onTabRequest={() => {
                     /** */
                   }}
@@ -94,7 +74,3 @@ export const ExploreComponent: React.FunctionComponent<RouteComponentProps<{ fol
     </div>
   )
 }
-
-const routed = withRouter(ExploreComponent)
-
-export { routed as Explore }

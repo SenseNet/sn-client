@@ -138,7 +138,7 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
                     height: props.settings.countOnly || items.length < 1 ? 0 : '100%',
                   }}
                   enableBreadcrumbs={false}
-                  parentId={0}
+                  parentIdOrPath={0}
                   onParentChange={() => {
                     // props.history.push(contentRouter.getPrimaryActionUrl(p))
                   }}

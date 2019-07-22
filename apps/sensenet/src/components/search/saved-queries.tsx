@@ -98,7 +98,7 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
                     overflow: 'auto',
                   }}
                   enableBreadcrumbs={false}
-                  parentId={0}
+                  parentIdOrPath={0}
                   onParentChange={() => {
                     // ignore, only queries will be listed
                   }}

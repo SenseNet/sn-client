@@ -182,17 +182,61 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                 items: {
                   description: language.personalSettings.drawerItems,
                   type: 'array',
-                  uniqueItems: true,
                   items: {
-                    enum: [
-                      'Content',
-                      'Content Types',
-                      'Localization',
-                      'Search',
-                      'Setup',
-                      'Trash',
-                      'Users and Groups',
-                      'Version info',
+                    type: 'object',
+                    properties: {
+                      title: { type: 'string', description: language.personalSettings.drawerItemTitle },
+                      description: { type: 'string', description: language.personalSettings.drawerItemDescription },
+                      icon: { type: 'string', description: language.personalSettings.drawerItemDescription },
+                      itemType: {
+                        type: 'string',
+                        enum: [
+                          'Content', // -> root
+                          'Query', //
+                          // 'Content Types', // Query
+                          // 'Localization', // Query
+                          'Search', // Custom
+                          'Setup', // Custom
+                          'Trash', // Custom
+                          'Users and Groups', // Content
+                          'Version info', // Custom
+                        ],
+                      },
+                    },
+                    allOf: [
+                      {
+                        if: { properties: { itemType: { const: 'Content' } } },
+                        then: {
+                          properties: {
+                            root: { type: 'string', description: language.drawer.contentRootDescription },
+                          },
+                          required: ['root'],
+                        },
+                      },
+                      {
+                        if: { properties: { itemType: { const: 'Query' } } },
+                        then: {
+                          properties: {
+                            term: { type: 'string', description: language.drawer.contentRootDescription },
+                            columns: {
+                              type: 'array',
+                              title: language.personalSettings.dashboard.queryWidget.columns,
+                              uniqueItems: true,
+                              examples: [['DisplayName', 'CreatedBy']],
+                              items: {
+                                enum: [
+                                  'Actions',
+                                  'Type',
+                                  /** ToDo: check for other displayable system fields */
+                                  ...repo.schemas.getSchemaByName('GenericContent').FieldSettings.map(f => f.Name),
+                                ],
+                              },
+                            },
+                          },
+                          required: ['term'],
+                        },
+                        required: ['itemType', 'title'],
+                      },
                     ],
                   },
                 },

@@ -70,9 +70,9 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
                 ) : sessionContext.state === LoginState.Authenticated ? (
                   <Switch>
                     <Route
-                      path="/:repo/browse/:folderId?/:rightParent?"
-                      render={() => {
-                        return <ExploreComponent />
+                      path="/:repo/browse/:browseData?"
+                      render={routeProps => {
+                        return <ExploreComponent {...routeProps} />
                       }}
                     />
                     <Route

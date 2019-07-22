@@ -28,7 +28,7 @@ export interface CollectionComponentProps {
   enableBreadcrumbs?: boolean
   hideHeader?: boolean
   disableSelection?: boolean
-  parentId: number
+  parentIdOrPath: number | string
   onParentChange: (newParent: GenericContent) => void
   onTabRequest: () => void
   onActiveItemChange?: (item: GenericContent) => void
