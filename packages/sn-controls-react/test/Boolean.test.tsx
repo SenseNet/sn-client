@@ -5,7 +5,6 @@ import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import Checkbox from '@material-ui/core/Checkbox'
 import { act } from 'react-dom/test-utils'
-import InputLabel from '@material-ui/core/InputLabel'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import { BooleanComponent } from '../src/fieldcontrols/Boolean'
 
@@ -22,7 +21,7 @@ describe('Boolean field control', () => {
       const wrapper = shallow(
         <BooleanComponent fieldValue={true as any} actionName="browse" settings={defaultSettings} />,
       )
-      expect(wrapper.find(InputLabel).text()).toBe(defaultSettings.DisplayName)
+      expect(wrapper.find('span').text()).toBe(defaultSettings.DisplayName)
       expect(wrapper.find(Icon).text()).toBe('check')
       expect(wrapper).toMatchSnapshot()
     })
