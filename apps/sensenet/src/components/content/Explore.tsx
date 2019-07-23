@@ -30,7 +30,7 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
           <CurrentChildrenProvider>
             <CurrentAncestorsProvider root={props.rootPath}>
               <div style={{ marginTop: '13px', paddingBottom: '12px', borderBottom: '1px solid rgba(128,128,128,.2)' }}>
-                <ContentBreadcrumbs />
+                <ContentBreadcrumbs onItemClick={i => props.onNavigate(i.content)} />
               </div>
               <div style={{ display: 'flex', width: '100%', height: '100%' }}>
                 <Tree
