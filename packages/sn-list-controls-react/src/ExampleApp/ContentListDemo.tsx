@@ -113,7 +113,7 @@ export class ContentListDemo extends React.Component<{}, ContentListDemoState> {
   public render() {
     return (
       <Paper style={{ marginTop: '1em' }}>
-        <ContentList<GenericContent>
+        <ContentList
           {...this.state}
           onRequestOrderChange={this.handleOrderChange}
           onRequestSelectionChange={this.handleSelectionChange}

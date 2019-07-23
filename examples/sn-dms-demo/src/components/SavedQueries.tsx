@@ -55,7 +55,7 @@ class SavedQueries extends React.Component<
       <div style={{ padding: '2em' }}>
         <MuiThemeProvider theme={contentListTheme}>
           <Typography variant="h5">Saved Queries</Typography>
-          <ContentList<Query>
+          <ContentList
             schema={{ FieldSettings: [] } as any}
             selected={this.props.selected}
             onRequestSelectionChange={this.props.select}
