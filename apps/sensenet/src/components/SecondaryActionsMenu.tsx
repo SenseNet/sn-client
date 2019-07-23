@@ -1,36 +1,39 @@
 import IconButton from '@material-ui/core/IconButton'
 import MoreHoriz from '@material-ui/icons/MoreHoriz'
-import React, { useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import { ContentContextMenu } from './ContentContextMenu'
 
 export const SecondaryActionsMenu: React.FunctionComponent<{
   style?: React.CSSProperties
 }> = props => {
   const [isOpened, setIsOpened] = useState(false)
-  const [ref, setRef] = useState<HTMLElement | null>(null)
+  const buttonRef = useRef<HTMLButtonElement>(null)
+
+  const onButtonClick = useCallback((ev: React.MouseEvent<HTMLElement>) => {
+    ev.preventDefault()
+    ev.stopPropagation()
+    setIsOpened(true)
+  }, [])
+
+  const close = useCallback(() => setIsOpened(false), [])
+  const open = useCallback(() => setIsOpened(true), [])
+  const preventDefault = useCallback((ev: React.SyntheticEvent) => ev.preventDefault(), [])
 
   return (
     <div style={props.style}>
-      <IconButton
-        ref={r => setRef(r)}
-        onClick={ev => {
-          ev.preventDefault()
-          ev.stopPropagation()
-          setRef(ev.currentTarget)
-          setIsOpened(true)
-        }}>
+      <IconButton ref={buttonRef} onClick={onButtonClick}>
         <MoreHoriz />
       </IconButton>
       <ContentContextMenu
         isOpened={isOpened}
-        onOpen={() => setIsOpened(true)}
-        onClose={() => setIsOpened(false)}
+        onOpen={open}
+        onClose={close}
         menuProps={{
-          anchorEl: ref,
+          anchorEl: buttonRef.current,
           disablePortal: true,
           BackdropProps: {
-            onClick: () => setIsOpened(false),
-            onContextMenu: ev => ev.preventDefault(),
+            onClick: close,
+            onContextMenu: preventDefault,
           },
         }}
         drawerProps={{}}
