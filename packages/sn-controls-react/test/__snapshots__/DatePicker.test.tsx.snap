@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Date/Date time field control in browse view should show the displayname and fieldValue as date when fieldValue is provided and set as date 1`] = `
+<div>
+  <WithStyles(ForwardRef(Typography))
+    gutterBottom={true}
+    variant="caption"
+  >
+    Modification Date
+  </WithStyles(ForwardRef(Typography))>
+  <WithStyles(ForwardRef(Typography))
+    gutterBottom={true}
+    variant="body1"
+  >
+    April 15, 1912
+  </WithStyles(ForwardRef(Typography))>
+</div>
+`;
+
+exports[`Date/Date time field control in edit/new view should set all the props 1`] = `
+<MuiPickersUtilsProvider
+  utils={[Function]}
+>
+  <WrappedPurePicker
+    allowKeyboardControl={true}
+    ampm={true}
+    defaultValue="defaultValue"
+    disabled={true}
+    fullWidth={true}
+    id="ModificationDate"
+    invalidDateMessage="Invalid Date Format"
+    label="Modification Date"
+    maxDate={2100-01-01T00:00:00.000Z}
+    maxDateMessage="Date should not be after maximal date"
+    minDate={1900-01-01T00:00:00.000Z}
+    minDateMessage="Date should not be before minimal date"
+    name="ModificationDate"
+    onChange={[Function]}
+    openTo="date"
+    placeholder="Modification Date"
+    required={true}
+    showTabs={true}
+    value="1912-04-15T02:10:00.000Z"
+    views={
+      Array [
+        "year",
+        "date",
+        "hours",
+        "minutes",
+      ]
+    }
+    wider={true}
+  />
+</MuiPickersUtilsProvider>
+`;
+
+exports[`Date/Date time field control in edit/new view should set all the props for date 1`] = `
+<MuiPickersUtilsProvider
+  utils={[Function]}
+>
+  <WrappedPurePicker
+    allowKeyboardControl={true}
+    defaultValue="defaultValue"
+    disabled={true}
+    fullWidth={true}
+    id="ModificationDate"
+    invalidDateMessage="Invalid Date Format"
+    label="Modification Date"
+    maxDate={2100-01-01T00:00:00.000Z}
+    maxDateMessage="Date should not be after maximal date"
+    minDate={1900-01-01T00:00:00.000Z}
+    minDateMessage="Date should not be before minimal date"
+    name="ModificationDate"
+    onChange={[Function]}
+    openTo="date"
+    placeholder="Modification Date"
+    required={true}
+    value="1912-04-15T02:10:00.000Z"
+    views={
+      Array [
+        "year",
+        "date",
+      ]
+    }
+  />
+</MuiPickersUtilsProvider>
+`;

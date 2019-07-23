@@ -41,7 +41,7 @@ storiesOf('ViewControls', module)
         path="/Root/Profiles/MyProfile/DocumentLibrary"
         repository={testRepository}
         contentTypeName="File"
-        title={text('Title', 'File')}
+        showTitle={true}
         extension={text('Extension', 'docx')}
       />
     ),

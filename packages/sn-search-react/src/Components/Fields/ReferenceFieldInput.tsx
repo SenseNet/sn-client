@@ -7,7 +7,18 @@ import { InputProps } from 'react-autosuggest'
  * @param inputProps
  */
 export const ReferenceFieldInput: React.FunctionComponent<InputProps<{}>> = inputProps => {
-  const { classes, ref, defaultValue, onChange, displayName, name, description, helperText, ...other } = inputProps
+  const {
+    classes,
+    inputRef = () => {},
+    ref,
+    defaultValue,
+    onChange,
+    displayName,
+    name,
+    description,
+    helperText,
+    ...other
+  } = inputProps
 
   return (
     <TextField
@@ -17,6 +28,12 @@ export const ReferenceFieldInput: React.FunctionComponent<InputProps<{}>> = inpu
       title={description}
       helperText={helperText}
       value={inputProps.value}
+      InputProps={{
+        inputRef: node => {
+          ref(node)
+          inputRef(node)
+        },
+      }}
       onChange={ev => inputProps.onChange(ev, { method: 'type', newValue: ev.currentTarget.value })}
       {...other}
     />

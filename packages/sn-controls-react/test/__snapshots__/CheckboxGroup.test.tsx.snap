@@ -1,0 +1,2686 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Check box group field control in edit/new view should set all the props 1`] = `
+<Component
+  actionName="edit"
+  fieldValue="0"
+  settings={
+    Object {
+      "Compulsory": false,
+      "DefaultValue": "0",
+      "Description": "It shows the versioning mode of the current content.",
+      "DisplayName": "Versioning Mode For Current Content",
+      "FieldClassName": "SenseNet.ContentRepository.Fields.VersioningModeField",
+      "Name": "VersioningMode",
+      "Options": Array [
+        Object {
+          "Enabled": true,
+          "Selected": true,
+          "Text": "Inherited",
+          "Value": "0",
+        },
+        Object {
+          "Enabled": true,
+          "Selected": false,
+          "Text": "None",
+          "Value": "1",
+        },
+        Object {
+          "Enabled": true,
+          "Selected": false,
+          "Text": "Major only",
+          "Value": "2",
+        },
+        Object {
+          "Enabled": true,
+          "Selected": false,
+          "Text": "Major and minor",
+          "Value": "3",
+        },
+      ],
+      "ReadOnly": true,
+      "Type": "ChoiceFieldSetting",
+    }
+  }
+>
+  <WithStyles(ForwardRef(FormControl))
+    component="fieldset"
+    disabled={true}
+    required={false}
+  >
+    <ForwardRef(FormControl)
+      classes={
+        Object {
+          "fullWidth": "MuiFormControl-fullWidth",
+          "marginDense": "MuiFormControl-marginDense",
+          "marginNormal": "MuiFormControl-marginNormal",
+          "root": "MuiFormControl-root",
+        }
+      }
+      component="fieldset"
+      disabled={true}
+      required={false}
+    >
+      <fieldset
+        className="MuiFormControl-root"
+      >
+        <WithStyles(WithFormControlContext(ForwardRef(FormLabel)))
+          component="legend"
+        >
+          <WithFormControlContext(ForwardRef(FormLabel))
+            classes={
+              Object {
+                "asterisk": "MuiFormLabel-asterisk",
+                "disabled": "Mui-disabled",
+                "error": "Mui-error",
+                "filled": "MuiFormLabel-filled",
+                "focused": "Mui-focused",
+                "required": "Mui-required",
+                "root": "MuiFormLabel-root",
+              }
+            }
+            component="legend"
+          >
+            <ForwardRef(FormLabel)
+              classes={
+                Object {
+                  "asterisk": "MuiFormLabel-asterisk",
+                  "disabled": "Mui-disabled",
+                  "error": "Mui-error",
+                  "filled": "MuiFormLabel-filled",
+                  "focused": "Mui-focused",
+                  "required": "Mui-required",
+                  "root": "MuiFormLabel-root",
+                }
+              }
+              component="legend"
+              muiFormControl={
+                Object {
+                  "adornedStart": false,
+                  "disabled": true,
+                  "error": false,
+                  "filled": false,
+                  "focused": false,
+                  "margin": "none",
+                  "onBlur": [Function],
+                  "onEmpty": [Function],
+                  "onFilled": [Function],
+                  "onFocus": [Function],
+                  "required": false,
+                  "variant": "standard",
+                }
+              }
+            >
+              <legend
+                className="MuiFormLabel-root Mui-disabled"
+              >
+                Versioning Mode For Current Content
+              </legend>
+            </ForwardRef(FormLabel)>
+          </WithFormControlContext(ForwardRef(FormLabel))>
+        </WithStyles(WithFormControlContext(ForwardRef(FormLabel)))>
+        <WithStyles(ForwardRef(FormGroup))>
+          <ForwardRef(FormGroup)
+            classes={
+              Object {
+                "root": "MuiFormGroup-root",
+                "row": "MuiFormGroup-row",
+              }
+            }
+          >
+            <div
+              className="MuiFormGroup-root"
+            >
+              <WithStyles(WithFormControlContext(ForwardRef(FormControlLabel)))
+                control={
+                  <ForwardRef(WithStyles)
+                    checked={true}
+                    onChange={[Function]}
+                    value="0"
+                  />
+                }
+                key="0"
+                label="Inherited"
+              >
+                <WithFormControlContext(ForwardRef(FormControlLabel))
+                  classes={
+                    Object {
+                      "disabled": "Mui-disabled",
+                      "label": "MuiFormControlLabel-label",
+                      "labelPlacementBottom": "MuiFormControlLabel-labelPlacementBottom",
+                      "labelPlacementStart": "MuiFormControlLabel-labelPlacementStart",
+                      "labelPlacementTop": "MuiFormControlLabel-labelPlacementTop",
+                      "root": "MuiFormControlLabel-root",
+                    }
+                  }
+                  control={
+                    <ForwardRef(WithStyles)
+                      checked={true}
+                      onChange={[Function]}
+                      value="0"
+                    />
+                  }
+                  label="Inherited"
+                >
+                  <ForwardRef(FormControlLabel)
+                    classes={
+                      Object {
+                        "disabled": "Mui-disabled",
+                        "label": "MuiFormControlLabel-label",
+                        "labelPlacementBottom": "MuiFormControlLabel-labelPlacementBottom",
+                        "labelPlacementStart": "MuiFormControlLabel-labelPlacementStart",
+                        "labelPlacementTop": "MuiFormControlLabel-labelPlacementTop",
+                        "root": "MuiFormControlLabel-root",
+                      }
+                    }
+                    control={
+                      <ForwardRef(WithStyles)
+                        checked={true}
+                        onChange={[Function]}
+                        value="0"
+                      />
+                    }
+                    label="Inherited"
+                    muiFormControl={
+                      Object {
+                        "adornedStart": false,
+                        "disabled": true,
+                        "error": false,
+                        "filled": false,
+                        "focused": false,
+                        "margin": "none",
+                        "onBlur": [Function],
+                        "onEmpty": [Function],
+                        "onFilled": [Function],
+                        "onFocus": [Function],
+                        "required": false,
+                        "variant": "standard",
+                      }
+                    }
+                  >
+                    <label
+                      className="MuiFormControlLabel-root Mui-disabled"
+                    >
+                      <WithStyles(ForwardRef(Checkbox))
+                        checked={true}
+                        disabled={true}
+                        onChange={[Function]}
+                        value="0"
+                      >
+                        <ForwardRef(Checkbox)
+                          checked={true}
+                          classes={
+                            Object {
+                              "checked": "Mui-checked",
+                              "colorPrimary": "MuiCheckbox-colorPrimary",
+                              "colorSecondary": "MuiCheckbox-colorSecondary",
+                              "disabled": "Mui-disabled",
+                              "indeterminate": "MuiCheckbox-indeterminate",
+                              "root": "MuiCheckbox-root",
+                            }
+                          }
+                          disabled={true}
+                          onChange={[Function]}
+                          value="0"
+                        >
+                          <WithStyles(WithFormControlContext(ForwardRef(SwitchBase)))
+                            checked={true}
+                            checkedIcon={<Memo />}
+                            classes={
+                              Object {
+                                "checked": "Mui-checked",
+                                "disabled": "Mui-disabled",
+                                "root": "MuiCheckbox-root MuiCheckbox-colorSecondary",
+                              }
+                            }
+                            color="secondary"
+                            disabled={true}
+                            icon={<Memo />}
+                            inputProps={
+                              Object {
+                                "data-indeterminate": false,
+                              }
+                            }
+                            onChange={[Function]}
+                            type="checkbox"
+                            value="0"
+                          >
+                            <WithFormControlContext(ForwardRef(SwitchBase))
+                              checked={true}
+                              checkedIcon={<Memo />}
+                              classes={
+                                Object {
+                                  "checked": "PrivateSwitchBase-checked-27 Mui-checked",
+                                  "disabled": "PrivateSwitchBase-disabled-28 Mui-disabled",
+                                  "input": "PrivateSwitchBase-input-29",
+                                  "root": "PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary",
+                                }
+                              }
+                              color="secondary"
+                              disabled={true}
+                              icon={<Memo />}
+                              inputProps={
+                                Object {
+                                  "data-indeterminate": false,
+                                }
+                              }
+                              onChange={[Function]}
+                              type="checkbox"
+                              value="0"
+                            >
+                              <ForwardRef(SwitchBase)
+                                checked={true}
+                                checkedIcon={<Memo />}
+                                classes={
+                                  Object {
+                                    "checked": "PrivateSwitchBase-checked-27 Mui-checked",
+                                    "disabled": "PrivateSwitchBase-disabled-28 Mui-disabled",
+                                    "input": "PrivateSwitchBase-input-29",
+                                    "root": "PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary",
+                                  }
+                                }
+                                color="secondary"
+                                disabled={true}
+                                icon={<Memo />}
+                                inputProps={
+                                  Object {
+                                    "data-indeterminate": false,
+                                  }
+                                }
+                                muiFormControl={
+                                  Object {
+                                    "adornedStart": false,
+                                    "disabled": true,
+                                    "error": false,
+                                    "filled": false,
+                                    "focused": false,
+                                    "margin": "none",
+                                    "onBlur": [Function],
+                                    "onEmpty": [Function],
+                                    "onFilled": [Function],
+                                    "onFocus": [Function],
+                                    "required": false,
+                                    "variant": "standard",
+                                  }
+                                }
+                                onChange={[Function]}
+                                type="checkbox"
+                                value="0"
+                              >
+                                <WithStyles(ForwardRef(IconButton))
+                                  className="PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-checked-27 Mui-checked PrivateSwitchBase-disabled-28 Mui-disabled"
+                                  color="secondary"
+                                  component="span"
+                                  disabled={true}
+                                  onBlur={[Function]}
+                                  onFocus={[Function]}
+                                  tabIndex={null}
+                                >
+                                  <ForwardRef(IconButton)
+                                    className="PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-checked-27 Mui-checked PrivateSwitchBase-disabled-28 Mui-disabled"
+                                    classes={
+                                      Object {
+                                        "colorInherit": "MuiIconButton-colorInherit",
+                                        "colorPrimary": "MuiIconButton-colorPrimary",
+                                        "colorSecondary": "MuiIconButton-colorSecondary",
+                                        "disabled": "Mui-disabled",
+                                        "edgeEnd": "MuiIconButton-edgeEnd",
+                                        "edgeStart": "MuiIconButton-edgeStart",
+                                        "label": "MuiIconButton-label",
+                                        "root": "MuiIconButton-root",
+                                        "sizeSmall": "MuiIconButton-sizeSmall",
+                                      }
+                                    }
+                                    color="secondary"
+                                    component="span"
+                                    disabled={true}
+                                    onBlur={[Function]}
+                                    onFocus={[Function]}
+                                    tabIndex={null}
+                                  >
+                                    <WithStyles(ForwardRef(ButtonBase))
+                                      centerRipple={true}
+                                      className="MuiIconButton-root PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-checked-27 Mui-checked PrivateSwitchBase-disabled-28 Mui-disabled MuiIconButton-colorSecondary Mui-disabled"
+                                      component="span"
+                                      disabled={true}
+                                      focusRipple={true}
+                                      onBlur={[Function]}
+                                      onFocus={[Function]}
+                                      tabIndex={null}
+                                    >
+                                      <ForwardRef(ButtonBase)
+                                        centerRipple={true}
+                                        className="MuiIconButton-root PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-checked-27 Mui-checked PrivateSwitchBase-disabled-28 Mui-disabled MuiIconButton-colorSecondary Mui-disabled"
+                                        classes={
+                                          Object {
+                                            "disabled": "Mui-disabled",
+                                            "focusVisible": "Mui-focusVisible",
+                                            "root": "MuiButtonBase-root",
+                                          }
+                                        }
+                                        component="span"
+                                        disabled={true}
+                                        focusRipple={true}
+                                        onBlur={[Function]}
+                                        onFocus={[Function]}
+                                        tabIndex={null}
+                                      >
+                                        <span
+                                          aria-disabled={true}
+                                          className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-checked-27 Mui-checked PrivateSwitchBase-disabled-28 Mui-disabled MuiIconButton-colorSecondary Mui-disabled Mui-disabled"
+                                          onBlur={[Function]}
+                                          onDragLeave={[Function]}
+                                          onFocus={[Function]}
+                                          onKeyDown={[Function]}
+                                          onKeyUp={[Function]}
+                                          onMouseDown={[Function]}
+                                          onMouseLeave={[Function]}
+                                          onMouseUp={[Function]}
+                                          onTouchEnd={[Function]}
+                                          onTouchMove={[Function]}
+                                          onTouchStart={[Function]}
+                                          tabIndex={-1}
+                                        >
+                                          <span
+                                            className="MuiIconButton-label"
+                                          >
+                                            <ForwardRef>
+                                              <WithStyles(ForwardRef(SvgIcon))>
+                                                <ForwardRef(SvgIcon)
+                                                  classes={
+                                                    Object {
+                                                      "colorAction": "MuiSvgIcon-colorAction",
+                                                      "colorDisabled": "MuiSvgIcon-colorDisabled",
+                                                      "colorError": "MuiSvgIcon-colorError",
+                                                      "colorPrimary": "MuiSvgIcon-colorPrimary",
+                                                      "colorSecondary": "MuiSvgIcon-colorSecondary",
+                                                      "fontSizeInherit": "MuiSvgIcon-fontSizeInherit",
+                                                      "fontSizeLarge": "MuiSvgIcon-fontSizeLarge",
+                                                      "fontSizeSmall": "MuiSvgIcon-fontSizeSmall",
+                                                      "root": "MuiSvgIcon-root",
+                                                    }
+                                                  }
+                                                >
+                                                  <svg
+                                                    aria-hidden="true"
+                                                    className="MuiSvgIcon-root"
+                                                    focusable="false"
+                                                    role="presentation"
+                                                    viewBox="0 0 24 24"
+                                                  >
+                                                    <path
+                                                      d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+                                                    />
+                                                  </svg>
+                                                </ForwardRef(SvgIcon)>
+                                              </WithStyles(ForwardRef(SvgIcon))>
+                                            </ForwardRef>
+                                            <input
+                                              checked={true}
+                                              className="PrivateSwitchBase-input-29"
+                                              data-indeterminate={false}
+                                              disabled={true}
+                                              onChange={[Function]}
+                                              type="checkbox"
+                                              value="0"
+                                            />
+                                          </span>
+                                        </span>
+                                      </ForwardRef(ButtonBase)>
+                                    </WithStyles(ForwardRef(ButtonBase))>
+                                  </ForwardRef(IconButton)>
+                                </WithStyles(ForwardRef(IconButton))>
+                              </ForwardRef(SwitchBase)>
+                            </WithFormControlContext(ForwardRef(SwitchBase))>
+                          </WithStyles(WithFormControlContext(ForwardRef(SwitchBase)))>
+                        </ForwardRef(Checkbox)>
+                      </WithStyles(ForwardRef(Checkbox))>
+                      <WithStyles(ForwardRef(Typography))
+                        className="MuiFormControlLabel-label Mui-disabled"
+                        component="span"
+                      >
+                        <ForwardRef(Typography)
+                          className="MuiFormControlLabel-label Mui-disabled"
+                          classes={
+                            Object {
+                              "alignCenter": "MuiTypography-alignCenter",
+                              "alignJustify": "MuiTypography-alignJustify",
+                              "alignLeft": "MuiTypography-alignLeft",
+                              "alignRight": "MuiTypography-alignRight",
+                              "body1": "MuiTypography-body1",
+                              "body2": "MuiTypography-body2",
+                              "button": "MuiTypography-button",
+                              "caption": "MuiTypography-caption",
+                              "colorError": "MuiTypography-colorError",
+                              "colorInherit": "MuiTypography-colorInherit",
+                              "colorPrimary": "MuiTypography-colorPrimary",
+                              "colorSecondary": "MuiTypography-colorSecondary",
+                              "colorTextPrimary": "MuiTypography-colorTextPrimary",
+                              "colorTextSecondary": "MuiTypography-colorTextSecondary",
+                              "displayBlock": "MuiTypography-displayBlock",
+                              "displayInline": "MuiTypography-displayInline",
+                              "gutterBottom": "MuiTypography-gutterBottom",
+                              "h1": "MuiTypography-h1",
+                              "h2": "MuiTypography-h2",
+                              "h3": "MuiTypography-h3",
+                              "h4": "MuiTypography-h4",
+                              "h5": "MuiTypography-h5",
+                              "h6": "MuiTypography-h6",
+                              "noWrap": "MuiTypography-noWrap",
+                              "overline": "MuiTypography-overline",
+                              "paragraph": "MuiTypography-paragraph",
+                              "root": "MuiTypography-root",
+                              "srOnly": "MuiTypography-srOnly",
+                              "subtitle1": "MuiTypography-subtitle1",
+                              "subtitle2": "MuiTypography-subtitle2",
+                            }
+                          }
+                          component="span"
+                          theme={
+                            Object {
+                              "breakpoints": Object {
+                                "between": [Function],
+                                "down": [Function],
+                                "keys": Array [
+                                  "xs",
+                                  "sm",
+                                  "md",
+                                  "lg",
+                                  "xl",
+                                ],
+                                "only": [Function],
+                                "up": [Function],
+                                "values": Object {
+                                  "lg": 1280,
+                                  "md": 960,
+                                  "sm": 600,
+                                  "xl": 1920,
+                                  "xs": 0,
+                                },
+                                "width": [Function],
+                              },
+                              "direction": "ltr",
+                              "mixins": Object {
+                                "gutters": [Function],
+                                "toolbar": Object {
+                                  "@media (min-width:0px) and (orientation: landscape)": Object {
+                                    "minHeight": 48,
+                                  },
+                                  "@media (min-width:600px)": Object {
+                                    "minHeight": 64,
+                                  },
+                                  "minHeight": 56,
+                                },
+                              },
+                              "overrides": Object {},
+                              "palette": Object {
+                                "action": Object {
+                                  "active": "rgba(0, 0, 0, 0.54)",
+                                  "disabled": "rgba(0, 0, 0, 0.26)",
+                                  "disabledBackground": "rgba(0, 0, 0, 0.12)",
+                                  "hover": "rgba(0, 0, 0, 0.08)",
+                                  "hoverOpacity": 0.08,
+                                  "selected": "rgba(0, 0, 0, 0.14)",
+                                },
+                                "augmentColor": [Function],
+                                "background": Object {
+                                  "default": "#fafafa",
+                                  "paper": "#fff",
+                                },
+                                "common": Object {
+                                  "black": "#000",
+                                  "white": "#fff",
+                                },
+                                "contrastThreshold": 3,
+                                "divider": "rgba(0, 0, 0, 0.12)",
+                                "error": Object {
+                                  "contrastText": "#fff",
+                                  "dark": "#d32f2f",
+                                  "light": "#e57373",
+                                  "main": "#f44336",
+                                },
+                                "getContrastText": [Function],
+                                "grey": Object {
+                                  "100": "#f5f5f5",
+                                  "200": "#eeeeee",
+                                  "300": "#e0e0e0",
+                                  "400": "#bdbdbd",
+                                  "50": "#fafafa",
+                                  "500": "#9e9e9e",
+                                  "600": "#757575",
+                                  "700": "#616161",
+                                  "800": "#424242",
+                                  "900": "#212121",
+                                  "A100": "#d5d5d5",
+                                  "A200": "#aaaaaa",
+                                  "A400": "#303030",
+                                  "A700": "#616161",
+                                },
+                                "primary": Object {
+                                  "contrastText": "#fff",
+                                  "dark": "#303f9f",
+                                  "light": "#7986cb",
+                                  "main": "#3f51b5",
+                                },
+                                "secondary": Object {
+                                  "contrastText": "#fff",
+                                  "dark": "#c51162",
+                                  "light": "#ff4081",
+                                  "main": "#f50057",
+                                },
+                                "text": Object {
+                                  "disabled": "rgba(0, 0, 0, 0.38)",
+                                  "hint": "rgba(0, 0, 0, 0.38)",
+                                  "primary": "rgba(0, 0, 0, 0.87)",
+                                  "secondary": "rgba(0, 0, 0, 0.54)",
+                                },
+                                "tonalOffset": 0.2,
+                                "type": "light",
+                              },
+                              "props": Object {},
+                              "shadows": Array [
+                                "none",
+                                "0px 1px 3px 0px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 2px 1px -1px rgba(0,0,0,0.12)",
+                                "0px 1px 5px 0px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 3px 1px -2px rgba(0,0,0,0.12)",
+                                "0px 1px 8px 0px rgba(0,0,0,0.2),0px 3px 4px 0px rgba(0,0,0,0.14),0px 3px 3px -2px rgba(0,0,0,0.12)",
+                                "0px 2px 4px -1px rgba(0,0,0,0.2),0px 4px 5px 0px rgba(0,0,0,0.14),0px 1px 10px 0px rgba(0,0,0,0.12)",
+                                "0px 3px 5px -1px rgba(0,0,0,0.2),0px 5px 8px 0px rgba(0,0,0,0.14),0px 1px 14px 0px rgba(0,0,0,0.12)",
+                                "0px 3px 5px -1px rgba(0,0,0,0.2),0px 6px 10px 0px rgba(0,0,0,0.14),0px 1px 18px 0px rgba(0,0,0,0.12)",
+                                "0px 4px 5px -2px rgba(0,0,0,0.2),0px 7px 10px 1px rgba(0,0,0,0.14),0px 2px 16px 1px rgba(0,0,0,0.12)",
+                                "0px 5px 5px -3px rgba(0,0,0,0.2),0px 8px 10px 1px rgba(0,0,0,0.14),0px 3px 14px 2px rgba(0,0,0,0.12)",
+                                "0px 5px 6px -3px rgba(0,0,0,0.2),0px 9px 12px 1px rgba(0,0,0,0.14),0px 3px 16px 2px rgba(0,0,0,0.12)",
+                                "0px 6px 6px -3px rgba(0,0,0,0.2),0px 10px 14px 1px rgba(0,0,0,0.14),0px 4px 18px 3px rgba(0,0,0,0.12)",
+                                "0px 6px 7px -4px rgba(0,0,0,0.2),0px 11px 15px 1px rgba(0,0,0,0.14),0px 4px 20px 3px rgba(0,0,0,0.12)",
+                                "0px 7px 8px -4px rgba(0,0,0,0.2),0px 12px 17px 2px rgba(0,0,0,0.14),0px 5px 22px 4px rgba(0,0,0,0.12)",
+                                "0px 7px 8px -4px rgba(0,0,0,0.2),0px 13px 19px 2px rgba(0,0,0,0.14),0px 5px 24px 4px rgba(0,0,0,0.12)",
+                                "0px 7px 9px -4px rgba(0,0,0,0.2),0px 14px 21px 2px rgba(0,0,0,0.14),0px 5px 26px 4px rgba(0,0,0,0.12)",
+                                "0px 8px 9px -5px rgba(0,0,0,0.2),0px 15px 22px 2px rgba(0,0,0,0.14),0px 6px 28px 5px rgba(0,0,0,0.12)",
+                                "0px 8px 10px -5px rgba(0,0,0,0.2),0px 16px 24px 2px rgba(0,0,0,0.14),0px 6px 30px 5px rgba(0,0,0,0.12)",
+                                "0px 8px 11px -5px rgba(0,0,0,0.2),0px 17px 26px 2px rgba(0,0,0,0.14),0px 6px 32px 5px rgba(0,0,0,0.12)",
+                                "0px 9px 11px -5px rgba(0,0,0,0.2),0px 18px 28px 2px rgba(0,0,0,0.14),0px 7px 34px 6px rgba(0,0,0,0.12)",
+                                "0px 9px 12px -6px rgba(0,0,0,0.2),0px 19px 29px 2px rgba(0,0,0,0.14),0px 7px 36px 6px rgba(0,0,0,0.12)",
+                                "0px 10px 13px -6px rgba(0,0,0,0.2),0px 20px 31px 3px rgba(0,0,0,0.14),0px 8px 38px 7px rgba(0,0,0,0.12)",
+                                "0px 10px 13px -6px rgba(0,0,0,0.2),0px 21px 33px 3px rgba(0,0,0,0.14),0px 8px 40px 7px rgba(0,0,0,0.12)",
+                                "0px 10px 14px -6px rgba(0,0,0,0.2),0px 22px 35px 3px rgba(0,0,0,0.14),0px 8px 42px 7px rgba(0,0,0,0.12)",
+                                "0px 11px 14px -7px rgba(0,0,0,0.2),0px 23px 36px 3px rgba(0,0,0,0.14),0px 9px 44px 8px rgba(0,0,0,0.12)",
+                                "0px 11px 15px -7px rgba(0,0,0,0.2),0px 24px 38px 3px rgba(0,0,0,0.14),0px 9px 46px 8px rgba(0,0,0,0.12)",
+                              ],
+                              "shape": Object {
+                                "borderRadius": 4,
+                              },
+                              "spacing": [Function],
+                              "transitions": Object {
+                                "create": [Function],
+                                "duration": Object {
+                                  "complex": 375,
+                                  "enteringScreen": 225,
+                                  "leavingScreen": 195,
+                                  "short": 250,
+                                  "shorter": 200,
+                                  "shortest": 150,
+                                  "standard": 300,
+                                },
+                                "easing": Object {
+                                  "easeIn": "cubic-bezier(0.4, 0, 1, 1)",
+                                  "easeInOut": "cubic-bezier(0.4, 0, 0.2, 1)",
+                                  "easeOut": "cubic-bezier(0.0, 0, 0.2, 1)",
+                                  "sharp": "cubic-bezier(0.4, 0, 0.6, 1)",
+                                },
+                                "getAutoHeightDuration": [Function],
+                              },
+                              "typography": Object {
+                                "body1": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "1rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0.00938em",
+                                  "lineHeight": 1.5,
+                                },
+                                "body2": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "0.875rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0.01071em",
+                                  "lineHeight": 1.43,
+                                },
+                                "button": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "0.875rem",
+                                  "fontWeight": 500,
+                                  "letterSpacing": "0.02857em",
+                                  "lineHeight": 1.75,
+                                  "textTransform": "uppercase",
+                                },
+                                "caption": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "0.75rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0.03333em",
+                                  "lineHeight": 1.66,
+                                },
+                                "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                "fontSize": 14,
+                                "fontWeightBold": 700,
+                                "fontWeightLight": 300,
+                                "fontWeightMedium": 500,
+                                "fontWeightRegular": 400,
+                                "h1": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "6rem",
+                                  "fontWeight": 300,
+                                  "letterSpacing": "-0.01562em",
+                                  "lineHeight": 1,
+                                },
+                                "h2": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "3.75rem",
+                                  "fontWeight": 300,
+                                  "letterSpacing": "-0.00833em",
+                                  "lineHeight": 1,
+                                },
+                                "h3": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "3rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0em",
+                                  "lineHeight": 1.04,
+                                },
+                                "h4": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "2.125rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0.00735em",
+                                  "lineHeight": 1.17,
+                                },
+                                "h5": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "1.5rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0em",
+                                  "lineHeight": 1.33,
+                                },
+                                "h6": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "1.25rem",
+                                  "fontWeight": 500,
+                                  "letterSpacing": "0.0075em",
+                                  "lineHeight": 1.6,
+                                },
+                                "htmlFontSize": 16,
+                                "overline": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "0.75rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0.08333em",
+                                  "lineHeight": 2.66,
+                                  "textTransform": "uppercase",
+                                },
+                                "pxToRem": [Function],
+                                "round": [Function],
+                                "subtitle1": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "1rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0.00938em",
+                                  "lineHeight": 1.75,
+                                },
+                                "subtitle2": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "0.875rem",
+                                  "fontWeight": 500,
+                                  "letterSpacing": "0.00714em",
+                                  "lineHeight": 1.57,
+                                },
+                              },
+                              "zIndex": Object {
+                                "appBar": 1100,
+                                "drawer": 1200,
+                                "mobileStepper": 1000,
+                                "modal": 1300,
+                                "snackbar": 1400,
+                                "tooltip": 1500,
+                              },
+                            }
+                          }
+                        >
+                          <span
+                            className="MuiTypography-root MuiFormControlLabel-label Mui-disabled MuiTypography-body1"
+                          >
+                            Inherited
+                          </span>
+                        </ForwardRef(Typography)>
+                      </WithStyles(ForwardRef(Typography))>
+                    </label>
+                  </ForwardRef(FormControlLabel)>
+                </WithFormControlContext(ForwardRef(FormControlLabel))>
+              </WithStyles(WithFormControlContext(ForwardRef(FormControlLabel)))>
+              <WithStyles(WithFormControlContext(ForwardRef(FormControlLabel)))
+                control={
+                  <ForwardRef(WithStyles)
+                    checked={false}
+                    onChange={[Function]}
+                    value="1"
+                  />
+                }
+                key="1"
+                label="None"
+              >
+                <WithFormControlContext(ForwardRef(FormControlLabel))
+                  classes={
+                    Object {
+                      "disabled": "Mui-disabled",
+                      "label": "MuiFormControlLabel-label",
+                      "labelPlacementBottom": "MuiFormControlLabel-labelPlacementBottom",
+                      "labelPlacementStart": "MuiFormControlLabel-labelPlacementStart",
+                      "labelPlacementTop": "MuiFormControlLabel-labelPlacementTop",
+                      "root": "MuiFormControlLabel-root",
+                    }
+                  }
+                  control={
+                    <ForwardRef(WithStyles)
+                      checked={false}
+                      onChange={[Function]}
+                      value="1"
+                    />
+                  }
+                  label="None"
+                >
+                  <ForwardRef(FormControlLabel)
+                    classes={
+                      Object {
+                        "disabled": "Mui-disabled",
+                        "label": "MuiFormControlLabel-label",
+                        "labelPlacementBottom": "MuiFormControlLabel-labelPlacementBottom",
+                        "labelPlacementStart": "MuiFormControlLabel-labelPlacementStart",
+                        "labelPlacementTop": "MuiFormControlLabel-labelPlacementTop",
+                        "root": "MuiFormControlLabel-root",
+                      }
+                    }
+                    control={
+                      <ForwardRef(WithStyles)
+                        checked={false}
+                        onChange={[Function]}
+                        value="1"
+                      />
+                    }
+                    label="None"
+                    muiFormControl={
+                      Object {
+                        "adornedStart": false,
+                        "disabled": true,
+                        "error": false,
+                        "filled": false,
+                        "focused": false,
+                        "margin": "none",
+                        "onBlur": [Function],
+                        "onEmpty": [Function],
+                        "onFilled": [Function],
+                        "onFocus": [Function],
+                        "required": false,
+                        "variant": "standard",
+                      }
+                    }
+                  >
+                    <label
+                      className="MuiFormControlLabel-root Mui-disabled"
+                    >
+                      <WithStyles(ForwardRef(Checkbox))
+                        checked={false}
+                        disabled={true}
+                        onChange={[Function]}
+                        value="1"
+                      >
+                        <ForwardRef(Checkbox)
+                          checked={false}
+                          classes={
+                            Object {
+                              "checked": "Mui-checked",
+                              "colorPrimary": "MuiCheckbox-colorPrimary",
+                              "colorSecondary": "MuiCheckbox-colorSecondary",
+                              "disabled": "Mui-disabled",
+                              "indeterminate": "MuiCheckbox-indeterminate",
+                              "root": "MuiCheckbox-root",
+                            }
+                          }
+                          disabled={true}
+                          onChange={[Function]}
+                          value="1"
+                        >
+                          <WithStyles(WithFormControlContext(ForwardRef(SwitchBase)))
+                            checked={false}
+                            checkedIcon={<Memo />}
+                            classes={
+                              Object {
+                                "checked": "Mui-checked",
+                                "disabled": "Mui-disabled",
+                                "root": "MuiCheckbox-root MuiCheckbox-colorSecondary",
+                              }
+                            }
+                            color="secondary"
+                            disabled={true}
+                            icon={<Memo />}
+                            inputProps={
+                              Object {
+                                "data-indeterminate": false,
+                              }
+                            }
+                            onChange={[Function]}
+                            type="checkbox"
+                            value="1"
+                          >
+                            <WithFormControlContext(ForwardRef(SwitchBase))
+                              checked={false}
+                              checkedIcon={<Memo />}
+                              classes={
+                                Object {
+                                  "checked": "PrivateSwitchBase-checked-27 Mui-checked",
+                                  "disabled": "PrivateSwitchBase-disabled-28 Mui-disabled",
+                                  "input": "PrivateSwitchBase-input-29",
+                                  "root": "PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary",
+                                }
+                              }
+                              color="secondary"
+                              disabled={true}
+                              icon={<Memo />}
+                              inputProps={
+                                Object {
+                                  "data-indeterminate": false,
+                                }
+                              }
+                              onChange={[Function]}
+                              type="checkbox"
+                              value="1"
+                            >
+                              <ForwardRef(SwitchBase)
+                                checked={false}
+                                checkedIcon={<Memo />}
+                                classes={
+                                  Object {
+                                    "checked": "PrivateSwitchBase-checked-27 Mui-checked",
+                                    "disabled": "PrivateSwitchBase-disabled-28 Mui-disabled",
+                                    "input": "PrivateSwitchBase-input-29",
+                                    "root": "PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary",
+                                  }
+                                }
+                                color="secondary"
+                                disabled={true}
+                                icon={<Memo />}
+                                inputProps={
+                                  Object {
+                                    "data-indeterminate": false,
+                                  }
+                                }
+                                muiFormControl={
+                                  Object {
+                                    "adornedStart": false,
+                                    "disabled": true,
+                                    "error": false,
+                                    "filled": false,
+                                    "focused": false,
+                                    "margin": "none",
+                                    "onBlur": [Function],
+                                    "onEmpty": [Function],
+                                    "onFilled": [Function],
+                                    "onFocus": [Function],
+                                    "required": false,
+                                    "variant": "standard",
+                                  }
+                                }
+                                onChange={[Function]}
+                                type="checkbox"
+                                value="1"
+                              >
+                                <WithStyles(ForwardRef(IconButton))
+                                  className="PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled"
+                                  color="secondary"
+                                  component="span"
+                                  disabled={true}
+                                  onBlur={[Function]}
+                                  onFocus={[Function]}
+                                  tabIndex={null}
+                                >
+                                  <ForwardRef(IconButton)
+                                    className="PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled"
+                                    classes={
+                                      Object {
+                                        "colorInherit": "MuiIconButton-colorInherit",
+                                        "colorPrimary": "MuiIconButton-colorPrimary",
+                                        "colorSecondary": "MuiIconButton-colorSecondary",
+                                        "disabled": "Mui-disabled",
+                                        "edgeEnd": "MuiIconButton-edgeEnd",
+                                        "edgeStart": "MuiIconButton-edgeStart",
+                                        "label": "MuiIconButton-label",
+                                        "root": "MuiIconButton-root",
+                                        "sizeSmall": "MuiIconButton-sizeSmall",
+                                      }
+                                    }
+                                    color="secondary"
+                                    component="span"
+                                    disabled={true}
+                                    onBlur={[Function]}
+                                    onFocus={[Function]}
+                                    tabIndex={null}
+                                  >
+                                    <WithStyles(ForwardRef(ButtonBase))
+                                      centerRipple={true}
+                                      className="MuiIconButton-root PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled MuiIconButton-colorSecondary Mui-disabled"
+                                      component="span"
+                                      disabled={true}
+                                      focusRipple={true}
+                                      onBlur={[Function]}
+                                      onFocus={[Function]}
+                                      tabIndex={null}
+                                    >
+                                      <ForwardRef(ButtonBase)
+                                        centerRipple={true}
+                                        className="MuiIconButton-root PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled MuiIconButton-colorSecondary Mui-disabled"
+                                        classes={
+                                          Object {
+                                            "disabled": "Mui-disabled",
+                                            "focusVisible": "Mui-focusVisible",
+                                            "root": "MuiButtonBase-root",
+                                          }
+                                        }
+                                        component="span"
+                                        disabled={true}
+                                        focusRipple={true}
+                                        onBlur={[Function]}
+                                        onFocus={[Function]}
+                                        tabIndex={null}
+                                      >
+                                        <span
+                                          aria-disabled={true}
+                                          className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled MuiIconButton-colorSecondary Mui-disabled Mui-disabled"
+                                          onBlur={[Function]}
+                                          onDragLeave={[Function]}
+                                          onFocus={[Function]}
+                                          onKeyDown={[Function]}
+                                          onKeyUp={[Function]}
+                                          onMouseDown={[Function]}
+                                          onMouseLeave={[Function]}
+                                          onMouseUp={[Function]}
+                                          onTouchEnd={[Function]}
+                                          onTouchMove={[Function]}
+                                          onTouchStart={[Function]}
+                                          tabIndex={-1}
+                                        >
+                                          <span
+                                            className="MuiIconButton-label"
+                                          >
+                                            <ForwardRef>
+                                              <WithStyles(ForwardRef(SvgIcon))>
+                                                <ForwardRef(SvgIcon)
+                                                  classes={
+                                                    Object {
+                                                      "colorAction": "MuiSvgIcon-colorAction",
+                                                      "colorDisabled": "MuiSvgIcon-colorDisabled",
+                                                      "colorError": "MuiSvgIcon-colorError",
+                                                      "colorPrimary": "MuiSvgIcon-colorPrimary",
+                                                      "colorSecondary": "MuiSvgIcon-colorSecondary",
+                                                      "fontSizeInherit": "MuiSvgIcon-fontSizeInherit",
+                                                      "fontSizeLarge": "MuiSvgIcon-fontSizeLarge",
+                                                      "fontSizeSmall": "MuiSvgIcon-fontSizeSmall",
+                                                      "root": "MuiSvgIcon-root",
+                                                    }
+                                                  }
+                                                >
+                                                  <svg
+                                                    aria-hidden="true"
+                                                    className="MuiSvgIcon-root"
+                                                    focusable="false"
+                                                    role="presentation"
+                                                    viewBox="0 0 24 24"
+                                                  >
+                                                    <path
+                                                      d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+                                                    />
+                                                  </svg>
+                                                </ForwardRef(SvgIcon)>
+                                              </WithStyles(ForwardRef(SvgIcon))>
+                                            </ForwardRef>
+                                            <input
+                                              checked={false}
+                                              className="PrivateSwitchBase-input-29"
+                                              data-indeterminate={false}
+                                              disabled={true}
+                                              onChange={[Function]}
+                                              type="checkbox"
+                                              value="1"
+                                            />
+                                          </span>
+                                        </span>
+                                      </ForwardRef(ButtonBase)>
+                                    </WithStyles(ForwardRef(ButtonBase))>
+                                  </ForwardRef(IconButton)>
+                                </WithStyles(ForwardRef(IconButton))>
+                              </ForwardRef(SwitchBase)>
+                            </WithFormControlContext(ForwardRef(SwitchBase))>
+                          </WithStyles(WithFormControlContext(ForwardRef(SwitchBase)))>
+                        </ForwardRef(Checkbox)>
+                      </WithStyles(ForwardRef(Checkbox))>
+                      <WithStyles(ForwardRef(Typography))
+                        className="MuiFormControlLabel-label Mui-disabled"
+                        component="span"
+                      >
+                        <ForwardRef(Typography)
+                          className="MuiFormControlLabel-label Mui-disabled"
+                          classes={
+                            Object {
+                              "alignCenter": "MuiTypography-alignCenter",
+                              "alignJustify": "MuiTypography-alignJustify",
+                              "alignLeft": "MuiTypography-alignLeft",
+                              "alignRight": "MuiTypography-alignRight",
+                              "body1": "MuiTypography-body1",
+                              "body2": "MuiTypography-body2",
+                              "button": "MuiTypography-button",
+                              "caption": "MuiTypography-caption",
+                              "colorError": "MuiTypography-colorError",
+                              "colorInherit": "MuiTypography-colorInherit",
+                              "colorPrimary": "MuiTypography-colorPrimary",
+                              "colorSecondary": "MuiTypography-colorSecondary",
+                              "colorTextPrimary": "MuiTypography-colorTextPrimary",
+                              "colorTextSecondary": "MuiTypography-colorTextSecondary",
+                              "displayBlock": "MuiTypography-displayBlock",
+                              "displayInline": "MuiTypography-displayInline",
+                              "gutterBottom": "MuiTypography-gutterBottom",
+                              "h1": "MuiTypography-h1",
+                              "h2": "MuiTypography-h2",
+                              "h3": "MuiTypography-h3",
+                              "h4": "MuiTypography-h4",
+                              "h5": "MuiTypography-h5",
+                              "h6": "MuiTypography-h6",
+                              "noWrap": "MuiTypography-noWrap",
+                              "overline": "MuiTypography-overline",
+                              "paragraph": "MuiTypography-paragraph",
+                              "root": "MuiTypography-root",
+                              "srOnly": "MuiTypography-srOnly",
+                              "subtitle1": "MuiTypography-subtitle1",
+                              "subtitle2": "MuiTypography-subtitle2",
+                            }
+                          }
+                          component="span"
+                          theme={
+                            Object {
+                              "breakpoints": Object {
+                                "between": [Function],
+                                "down": [Function],
+                                "keys": Array [
+                                  "xs",
+                                  "sm",
+                                  "md",
+                                  "lg",
+                                  "xl",
+                                ],
+                                "only": [Function],
+                                "up": [Function],
+                                "values": Object {
+                                  "lg": 1280,
+                                  "md": 960,
+                                  "sm": 600,
+                                  "xl": 1920,
+                                  "xs": 0,
+                                },
+                                "width": [Function],
+                              },
+                              "direction": "ltr",
+                              "mixins": Object {
+                                "gutters": [Function],
+                                "toolbar": Object {
+                                  "@media (min-width:0px) and (orientation: landscape)": Object {
+                                    "minHeight": 48,
+                                  },
+                                  "@media (min-width:600px)": Object {
+                                    "minHeight": 64,
+                                  },
+                                  "minHeight": 56,
+                                },
+                              },
+                              "overrides": Object {},
+                              "palette": Object {
+                                "action": Object {
+                                  "active": "rgba(0, 0, 0, 0.54)",
+                                  "disabled": "rgba(0, 0, 0, 0.26)",
+                                  "disabledBackground": "rgba(0, 0, 0, 0.12)",
+                                  "hover": "rgba(0, 0, 0, 0.08)",
+                                  "hoverOpacity": 0.08,
+                                  "selected": "rgba(0, 0, 0, 0.14)",
+                                },
+                                "augmentColor": [Function],
+                                "background": Object {
+                                  "default": "#fafafa",
+                                  "paper": "#fff",
+                                },
+                                "common": Object {
+                                  "black": "#000",
+                                  "white": "#fff",
+                                },
+                                "contrastThreshold": 3,
+                                "divider": "rgba(0, 0, 0, 0.12)",
+                                "error": Object {
+                                  "contrastText": "#fff",
+                                  "dark": "#d32f2f",
+                                  "light": "#e57373",
+                                  "main": "#f44336",
+                                },
+                                "getContrastText": [Function],
+                                "grey": Object {
+                                  "100": "#f5f5f5",
+                                  "200": "#eeeeee",
+                                  "300": "#e0e0e0",
+                                  "400": "#bdbdbd",
+                                  "50": "#fafafa",
+                                  "500": "#9e9e9e",
+                                  "600": "#757575",
+                                  "700": "#616161",
+                                  "800": "#424242",
+                                  "900": "#212121",
+                                  "A100": "#d5d5d5",
+                                  "A200": "#aaaaaa",
+                                  "A400": "#303030",
+                                  "A700": "#616161",
+                                },
+                                "primary": Object {
+                                  "contrastText": "#fff",
+                                  "dark": "#303f9f",
+                                  "light": "#7986cb",
+                                  "main": "#3f51b5",
+                                },
+                                "secondary": Object {
+                                  "contrastText": "#fff",
+                                  "dark": "#c51162",
+                                  "light": "#ff4081",
+                                  "main": "#f50057",
+                                },
+                                "text": Object {
+                                  "disabled": "rgba(0, 0, 0, 0.38)",
+                                  "hint": "rgba(0, 0, 0, 0.38)",
+                                  "primary": "rgba(0, 0, 0, 0.87)",
+                                  "secondary": "rgba(0, 0, 0, 0.54)",
+                                },
+                                "tonalOffset": 0.2,
+                                "type": "light",
+                              },
+                              "props": Object {},
+                              "shadows": Array [
+                                "none",
+                                "0px 1px 3px 0px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 2px 1px -1px rgba(0,0,0,0.12)",
+                                "0px 1px 5px 0px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 3px 1px -2px rgba(0,0,0,0.12)",
+                                "0px 1px 8px 0px rgba(0,0,0,0.2),0px 3px 4px 0px rgba(0,0,0,0.14),0px 3px 3px -2px rgba(0,0,0,0.12)",
+                                "0px 2px 4px -1px rgba(0,0,0,0.2),0px 4px 5px 0px rgba(0,0,0,0.14),0px 1px 10px 0px rgba(0,0,0,0.12)",
+                                "0px 3px 5px -1px rgba(0,0,0,0.2),0px 5px 8px 0px rgba(0,0,0,0.14),0px 1px 14px 0px rgba(0,0,0,0.12)",
+                                "0px 3px 5px -1px rgba(0,0,0,0.2),0px 6px 10px 0px rgba(0,0,0,0.14),0px 1px 18px 0px rgba(0,0,0,0.12)",
+                                "0px 4px 5px -2px rgba(0,0,0,0.2),0px 7px 10px 1px rgba(0,0,0,0.14),0px 2px 16px 1px rgba(0,0,0,0.12)",
+                                "0px 5px 5px -3px rgba(0,0,0,0.2),0px 8px 10px 1px rgba(0,0,0,0.14),0px 3px 14px 2px rgba(0,0,0,0.12)",
+                                "0px 5px 6px -3px rgba(0,0,0,0.2),0px 9px 12px 1px rgba(0,0,0,0.14),0px 3px 16px 2px rgba(0,0,0,0.12)",
+                                "0px 6px 6px -3px rgba(0,0,0,0.2),0px 10px 14px 1px rgba(0,0,0,0.14),0px 4px 18px 3px rgba(0,0,0,0.12)",
+                                "0px 6px 7px -4px rgba(0,0,0,0.2),0px 11px 15px 1px rgba(0,0,0,0.14),0px 4px 20px 3px rgba(0,0,0,0.12)",
+                                "0px 7px 8px -4px rgba(0,0,0,0.2),0px 12px 17px 2px rgba(0,0,0,0.14),0px 5px 22px 4px rgba(0,0,0,0.12)",
+                                "0px 7px 8px -4px rgba(0,0,0,0.2),0px 13px 19px 2px rgba(0,0,0,0.14),0px 5px 24px 4px rgba(0,0,0,0.12)",
+                                "0px 7px 9px -4px rgba(0,0,0,0.2),0px 14px 21px 2px rgba(0,0,0,0.14),0px 5px 26px 4px rgba(0,0,0,0.12)",
+                                "0px 8px 9px -5px rgba(0,0,0,0.2),0px 15px 22px 2px rgba(0,0,0,0.14),0px 6px 28px 5px rgba(0,0,0,0.12)",
+                                "0px 8px 10px -5px rgba(0,0,0,0.2),0px 16px 24px 2px rgba(0,0,0,0.14),0px 6px 30px 5px rgba(0,0,0,0.12)",
+                                "0px 8px 11px -5px rgba(0,0,0,0.2),0px 17px 26px 2px rgba(0,0,0,0.14),0px 6px 32px 5px rgba(0,0,0,0.12)",
+                                "0px 9px 11px -5px rgba(0,0,0,0.2),0px 18px 28px 2px rgba(0,0,0,0.14),0px 7px 34px 6px rgba(0,0,0,0.12)",
+                                "0px 9px 12px -6px rgba(0,0,0,0.2),0px 19px 29px 2px rgba(0,0,0,0.14),0px 7px 36px 6px rgba(0,0,0,0.12)",
+                                "0px 10px 13px -6px rgba(0,0,0,0.2),0px 20px 31px 3px rgba(0,0,0,0.14),0px 8px 38px 7px rgba(0,0,0,0.12)",
+                                "0px 10px 13px -6px rgba(0,0,0,0.2),0px 21px 33px 3px rgba(0,0,0,0.14),0px 8px 40px 7px rgba(0,0,0,0.12)",
+                                "0px 10px 14px -6px rgba(0,0,0,0.2),0px 22px 35px 3px rgba(0,0,0,0.14),0px 8px 42px 7px rgba(0,0,0,0.12)",
+                                "0px 11px 14px -7px rgba(0,0,0,0.2),0px 23px 36px 3px rgba(0,0,0,0.14),0px 9px 44px 8px rgba(0,0,0,0.12)",
+                                "0px 11px 15px -7px rgba(0,0,0,0.2),0px 24px 38px 3px rgba(0,0,0,0.14),0px 9px 46px 8px rgba(0,0,0,0.12)",
+                              ],
+                              "shape": Object {
+                                "borderRadius": 4,
+                              },
+                              "spacing": [Function],
+                              "transitions": Object {
+                                "create": [Function],
+                                "duration": Object {
+                                  "complex": 375,
+                                  "enteringScreen": 225,
+                                  "leavingScreen": 195,
+                                  "short": 250,
+                                  "shorter": 200,
+                                  "shortest": 150,
+                                  "standard": 300,
+                                },
+                                "easing": Object {
+                                  "easeIn": "cubic-bezier(0.4, 0, 1, 1)",
+                                  "easeInOut": "cubic-bezier(0.4, 0, 0.2, 1)",
+                                  "easeOut": "cubic-bezier(0.0, 0, 0.2, 1)",
+                                  "sharp": "cubic-bezier(0.4, 0, 0.6, 1)",
+                                },
+                                "getAutoHeightDuration": [Function],
+                              },
+                              "typography": Object {
+                                "body1": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "1rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0.00938em",
+                                  "lineHeight": 1.5,
+                                },
+                                "body2": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "0.875rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0.01071em",
+                                  "lineHeight": 1.43,
+                                },
+                                "button": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "0.875rem",
+                                  "fontWeight": 500,
+                                  "letterSpacing": "0.02857em",
+                                  "lineHeight": 1.75,
+                                  "textTransform": "uppercase",
+                                },
+                                "caption": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "0.75rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0.03333em",
+                                  "lineHeight": 1.66,
+                                },
+                                "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                "fontSize": 14,
+                                "fontWeightBold": 700,
+                                "fontWeightLight": 300,
+                                "fontWeightMedium": 500,
+                                "fontWeightRegular": 400,
+                                "h1": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "6rem",
+                                  "fontWeight": 300,
+                                  "letterSpacing": "-0.01562em",
+                                  "lineHeight": 1,
+                                },
+                                "h2": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "3.75rem",
+                                  "fontWeight": 300,
+                                  "letterSpacing": "-0.00833em",
+                                  "lineHeight": 1,
+                                },
+                                "h3": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "3rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0em",
+                                  "lineHeight": 1.04,
+                                },
+                                "h4": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "2.125rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0.00735em",
+                                  "lineHeight": 1.17,
+                                },
+                                "h5": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "1.5rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0em",
+                                  "lineHeight": 1.33,
+                                },
+                                "h6": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "1.25rem",
+                                  "fontWeight": 500,
+                                  "letterSpacing": "0.0075em",
+                                  "lineHeight": 1.6,
+                                },
+                                "htmlFontSize": 16,
+                                "overline": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "0.75rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0.08333em",
+                                  "lineHeight": 2.66,
+                                  "textTransform": "uppercase",
+                                },
+                                "pxToRem": [Function],
+                                "round": [Function],
+                                "subtitle1": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "1rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0.00938em",
+                                  "lineHeight": 1.75,
+                                },
+                                "subtitle2": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "0.875rem",
+                                  "fontWeight": 500,
+                                  "letterSpacing": "0.00714em",
+                                  "lineHeight": 1.57,
+                                },
+                              },
+                              "zIndex": Object {
+                                "appBar": 1100,
+                                "drawer": 1200,
+                                "mobileStepper": 1000,
+                                "modal": 1300,
+                                "snackbar": 1400,
+                                "tooltip": 1500,
+                              },
+                            }
+                          }
+                        >
+                          <span
+                            className="MuiTypography-root MuiFormControlLabel-label Mui-disabled MuiTypography-body1"
+                          >
+                            None
+                          </span>
+                        </ForwardRef(Typography)>
+                      </WithStyles(ForwardRef(Typography))>
+                    </label>
+                  </ForwardRef(FormControlLabel)>
+                </WithFormControlContext(ForwardRef(FormControlLabel))>
+              </WithStyles(WithFormControlContext(ForwardRef(FormControlLabel)))>
+              <WithStyles(WithFormControlContext(ForwardRef(FormControlLabel)))
+                control={
+                  <ForwardRef(WithStyles)
+                    checked={false}
+                    onChange={[Function]}
+                    value="2"
+                  />
+                }
+                key="2"
+                label="Major only"
+              >
+                <WithFormControlContext(ForwardRef(FormControlLabel))
+                  classes={
+                    Object {
+                      "disabled": "Mui-disabled",
+                      "label": "MuiFormControlLabel-label",
+                      "labelPlacementBottom": "MuiFormControlLabel-labelPlacementBottom",
+                      "labelPlacementStart": "MuiFormControlLabel-labelPlacementStart",
+                      "labelPlacementTop": "MuiFormControlLabel-labelPlacementTop",
+                      "root": "MuiFormControlLabel-root",
+                    }
+                  }
+                  control={
+                    <ForwardRef(WithStyles)
+                      checked={false}
+                      onChange={[Function]}
+                      value="2"
+                    />
+                  }
+                  label="Major only"
+                >
+                  <ForwardRef(FormControlLabel)
+                    classes={
+                      Object {
+                        "disabled": "Mui-disabled",
+                        "label": "MuiFormControlLabel-label",
+                        "labelPlacementBottom": "MuiFormControlLabel-labelPlacementBottom",
+                        "labelPlacementStart": "MuiFormControlLabel-labelPlacementStart",
+                        "labelPlacementTop": "MuiFormControlLabel-labelPlacementTop",
+                        "root": "MuiFormControlLabel-root",
+                      }
+                    }
+                    control={
+                      <ForwardRef(WithStyles)
+                        checked={false}
+                        onChange={[Function]}
+                        value="2"
+                      />
+                    }
+                    label="Major only"
+                    muiFormControl={
+                      Object {
+                        "adornedStart": false,
+                        "disabled": true,
+                        "error": false,
+                        "filled": false,
+                        "focused": false,
+                        "margin": "none",
+                        "onBlur": [Function],
+                        "onEmpty": [Function],
+                        "onFilled": [Function],
+                        "onFocus": [Function],
+                        "required": false,
+                        "variant": "standard",
+                      }
+                    }
+                  >
+                    <label
+                      className="MuiFormControlLabel-root Mui-disabled"
+                    >
+                      <WithStyles(ForwardRef(Checkbox))
+                        checked={false}
+                        disabled={true}
+                        onChange={[Function]}
+                        value="2"
+                      >
+                        <ForwardRef(Checkbox)
+                          checked={false}
+                          classes={
+                            Object {
+                              "checked": "Mui-checked",
+                              "colorPrimary": "MuiCheckbox-colorPrimary",
+                              "colorSecondary": "MuiCheckbox-colorSecondary",
+                              "disabled": "Mui-disabled",
+                              "indeterminate": "MuiCheckbox-indeterminate",
+                              "root": "MuiCheckbox-root",
+                            }
+                          }
+                          disabled={true}
+                          onChange={[Function]}
+                          value="2"
+                        >
+                          <WithStyles(WithFormControlContext(ForwardRef(SwitchBase)))
+                            checked={false}
+                            checkedIcon={<Memo />}
+                            classes={
+                              Object {
+                                "checked": "Mui-checked",
+                                "disabled": "Mui-disabled",
+                                "root": "MuiCheckbox-root MuiCheckbox-colorSecondary",
+                              }
+                            }
+                            color="secondary"
+                            disabled={true}
+                            icon={<Memo />}
+                            inputProps={
+                              Object {
+                                "data-indeterminate": false,
+                              }
+                            }
+                            onChange={[Function]}
+                            type="checkbox"
+                            value="2"
+                          >
+                            <WithFormControlContext(ForwardRef(SwitchBase))
+                              checked={false}
+                              checkedIcon={<Memo />}
+                              classes={
+                                Object {
+                                  "checked": "PrivateSwitchBase-checked-27 Mui-checked",
+                                  "disabled": "PrivateSwitchBase-disabled-28 Mui-disabled",
+                                  "input": "PrivateSwitchBase-input-29",
+                                  "root": "PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary",
+                                }
+                              }
+                              color="secondary"
+                              disabled={true}
+                              icon={<Memo />}
+                              inputProps={
+                                Object {
+                                  "data-indeterminate": false,
+                                }
+                              }
+                              onChange={[Function]}
+                              type="checkbox"
+                              value="2"
+                            >
+                              <ForwardRef(SwitchBase)
+                                checked={false}
+                                checkedIcon={<Memo />}
+                                classes={
+                                  Object {
+                                    "checked": "PrivateSwitchBase-checked-27 Mui-checked",
+                                    "disabled": "PrivateSwitchBase-disabled-28 Mui-disabled",
+                                    "input": "PrivateSwitchBase-input-29",
+                                    "root": "PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary",
+                                  }
+                                }
+                                color="secondary"
+                                disabled={true}
+                                icon={<Memo />}
+                                inputProps={
+                                  Object {
+                                    "data-indeterminate": false,
+                                  }
+                                }
+                                muiFormControl={
+                                  Object {
+                                    "adornedStart": false,
+                                    "disabled": true,
+                                    "error": false,
+                                    "filled": false,
+                                    "focused": false,
+                                    "margin": "none",
+                                    "onBlur": [Function],
+                                    "onEmpty": [Function],
+                                    "onFilled": [Function],
+                                    "onFocus": [Function],
+                                    "required": false,
+                                    "variant": "standard",
+                                  }
+                                }
+                                onChange={[Function]}
+                                type="checkbox"
+                                value="2"
+                              >
+                                <WithStyles(ForwardRef(IconButton))
+                                  className="PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled"
+                                  color="secondary"
+                                  component="span"
+                                  disabled={true}
+                                  onBlur={[Function]}
+                                  onFocus={[Function]}
+                                  tabIndex={null}
+                                >
+                                  <ForwardRef(IconButton)
+                                    className="PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled"
+                                    classes={
+                                      Object {
+                                        "colorInherit": "MuiIconButton-colorInherit",
+                                        "colorPrimary": "MuiIconButton-colorPrimary",
+                                        "colorSecondary": "MuiIconButton-colorSecondary",
+                                        "disabled": "Mui-disabled",
+                                        "edgeEnd": "MuiIconButton-edgeEnd",
+                                        "edgeStart": "MuiIconButton-edgeStart",
+                                        "label": "MuiIconButton-label",
+                                        "root": "MuiIconButton-root",
+                                        "sizeSmall": "MuiIconButton-sizeSmall",
+                                      }
+                                    }
+                                    color="secondary"
+                                    component="span"
+                                    disabled={true}
+                                    onBlur={[Function]}
+                                    onFocus={[Function]}
+                                    tabIndex={null}
+                                  >
+                                    <WithStyles(ForwardRef(ButtonBase))
+                                      centerRipple={true}
+                                      className="MuiIconButton-root PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled MuiIconButton-colorSecondary Mui-disabled"
+                                      component="span"
+                                      disabled={true}
+                                      focusRipple={true}
+                                      onBlur={[Function]}
+                                      onFocus={[Function]}
+                                      tabIndex={null}
+                                    >
+                                      <ForwardRef(ButtonBase)
+                                        centerRipple={true}
+                                        className="MuiIconButton-root PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled MuiIconButton-colorSecondary Mui-disabled"
+                                        classes={
+                                          Object {
+                                            "disabled": "Mui-disabled",
+                                            "focusVisible": "Mui-focusVisible",
+                                            "root": "MuiButtonBase-root",
+                                          }
+                                        }
+                                        component="span"
+                                        disabled={true}
+                                        focusRipple={true}
+                                        onBlur={[Function]}
+                                        onFocus={[Function]}
+                                        tabIndex={null}
+                                      >
+                                        <span
+                                          aria-disabled={true}
+                                          className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled MuiIconButton-colorSecondary Mui-disabled Mui-disabled"
+                                          onBlur={[Function]}
+                                          onDragLeave={[Function]}
+                                          onFocus={[Function]}
+                                          onKeyDown={[Function]}
+                                          onKeyUp={[Function]}
+                                          onMouseDown={[Function]}
+                                          onMouseLeave={[Function]}
+                                          onMouseUp={[Function]}
+                                          onTouchEnd={[Function]}
+                                          onTouchMove={[Function]}
+                                          onTouchStart={[Function]}
+                                          tabIndex={-1}
+                                        >
+                                          <span
+                                            className="MuiIconButton-label"
+                                          >
+                                            <ForwardRef>
+                                              <WithStyles(ForwardRef(SvgIcon))>
+                                                <ForwardRef(SvgIcon)
+                                                  classes={
+                                                    Object {
+                                                      "colorAction": "MuiSvgIcon-colorAction",
+                                                      "colorDisabled": "MuiSvgIcon-colorDisabled",
+                                                      "colorError": "MuiSvgIcon-colorError",
+                                                      "colorPrimary": "MuiSvgIcon-colorPrimary",
+                                                      "colorSecondary": "MuiSvgIcon-colorSecondary",
+                                                      "fontSizeInherit": "MuiSvgIcon-fontSizeInherit",
+                                                      "fontSizeLarge": "MuiSvgIcon-fontSizeLarge",
+                                                      "fontSizeSmall": "MuiSvgIcon-fontSizeSmall",
+                                                      "root": "MuiSvgIcon-root",
+                                                    }
+                                                  }
+                                                >
+                                                  <svg
+                                                    aria-hidden="true"
+                                                    className="MuiSvgIcon-root"
+                                                    focusable="false"
+                                                    role="presentation"
+                                                    viewBox="0 0 24 24"
+                                                  >
+                                                    <path
+                                                      d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+                                                    />
+                                                  </svg>
+                                                </ForwardRef(SvgIcon)>
+                                              </WithStyles(ForwardRef(SvgIcon))>
+                                            </ForwardRef>
+                                            <input
+                                              checked={false}
+                                              className="PrivateSwitchBase-input-29"
+                                              data-indeterminate={false}
+                                              disabled={true}
+                                              onChange={[Function]}
+                                              type="checkbox"
+                                              value="2"
+                                            />
+                                          </span>
+                                        </span>
+                                      </ForwardRef(ButtonBase)>
+                                    </WithStyles(ForwardRef(ButtonBase))>
+                                  </ForwardRef(IconButton)>
+                                </WithStyles(ForwardRef(IconButton))>
+                              </ForwardRef(SwitchBase)>
+                            </WithFormControlContext(ForwardRef(SwitchBase))>
+                          </WithStyles(WithFormControlContext(ForwardRef(SwitchBase)))>
+                        </ForwardRef(Checkbox)>
+                      </WithStyles(ForwardRef(Checkbox))>
+                      <WithStyles(ForwardRef(Typography))
+                        className="MuiFormControlLabel-label Mui-disabled"
+                        component="span"
+                      >
+                        <ForwardRef(Typography)
+                          className="MuiFormControlLabel-label Mui-disabled"
+                          classes={
+                            Object {
+                              "alignCenter": "MuiTypography-alignCenter",
+                              "alignJustify": "MuiTypography-alignJustify",
+                              "alignLeft": "MuiTypography-alignLeft",
+                              "alignRight": "MuiTypography-alignRight",
+                              "body1": "MuiTypography-body1",
+                              "body2": "MuiTypography-body2",
+                              "button": "MuiTypography-button",
+                              "caption": "MuiTypography-caption",
+                              "colorError": "MuiTypography-colorError",
+                              "colorInherit": "MuiTypography-colorInherit",
+                              "colorPrimary": "MuiTypography-colorPrimary",
+                              "colorSecondary": "MuiTypography-colorSecondary",
+                              "colorTextPrimary": "MuiTypography-colorTextPrimary",
+                              "colorTextSecondary": "MuiTypography-colorTextSecondary",
+                              "displayBlock": "MuiTypography-displayBlock",
+                              "displayInline": "MuiTypography-displayInline",
+                              "gutterBottom": "MuiTypography-gutterBottom",
+                              "h1": "MuiTypography-h1",
+                              "h2": "MuiTypography-h2",
+                              "h3": "MuiTypography-h3",
+                              "h4": "MuiTypography-h4",
+                              "h5": "MuiTypography-h5",
+                              "h6": "MuiTypography-h6",
+                              "noWrap": "MuiTypography-noWrap",
+                              "overline": "MuiTypography-overline",
+                              "paragraph": "MuiTypography-paragraph",
+                              "root": "MuiTypography-root",
+                              "srOnly": "MuiTypography-srOnly",
+                              "subtitle1": "MuiTypography-subtitle1",
+                              "subtitle2": "MuiTypography-subtitle2",
+                            }
+                          }
+                          component="span"
+                          theme={
+                            Object {
+                              "breakpoints": Object {
+                                "between": [Function],
+                                "down": [Function],
+                                "keys": Array [
+                                  "xs",
+                                  "sm",
+                                  "md",
+                                  "lg",
+                                  "xl",
+                                ],
+                                "only": [Function],
+                                "up": [Function],
+                                "values": Object {
+                                  "lg": 1280,
+                                  "md": 960,
+                                  "sm": 600,
+                                  "xl": 1920,
+                                  "xs": 0,
+                                },
+                                "width": [Function],
+                              },
+                              "direction": "ltr",
+                              "mixins": Object {
+                                "gutters": [Function],
+                                "toolbar": Object {
+                                  "@media (min-width:0px) and (orientation: landscape)": Object {
+                                    "minHeight": 48,
+                                  },
+                                  "@media (min-width:600px)": Object {
+                                    "minHeight": 64,
+                                  },
+                                  "minHeight": 56,
+                                },
+                              },
+                              "overrides": Object {},
+                              "palette": Object {
+                                "action": Object {
+                                  "active": "rgba(0, 0, 0, 0.54)",
+                                  "disabled": "rgba(0, 0, 0, 0.26)",
+                                  "disabledBackground": "rgba(0, 0, 0, 0.12)",
+                                  "hover": "rgba(0, 0, 0, 0.08)",
+                                  "hoverOpacity": 0.08,
+                                  "selected": "rgba(0, 0, 0, 0.14)",
+                                },
+                                "augmentColor": [Function],
+                                "background": Object {
+                                  "default": "#fafafa",
+                                  "paper": "#fff",
+                                },
+                                "common": Object {
+                                  "black": "#000",
+                                  "white": "#fff",
+                                },
+                                "contrastThreshold": 3,
+                                "divider": "rgba(0, 0, 0, 0.12)",
+                                "error": Object {
+                                  "contrastText": "#fff",
+                                  "dark": "#d32f2f",
+                                  "light": "#e57373",
+                                  "main": "#f44336",
+                                },
+                                "getContrastText": [Function],
+                                "grey": Object {
+                                  "100": "#f5f5f5",
+                                  "200": "#eeeeee",
+                                  "300": "#e0e0e0",
+                                  "400": "#bdbdbd",
+                                  "50": "#fafafa",
+                                  "500": "#9e9e9e",
+                                  "600": "#757575",
+                                  "700": "#616161",
+                                  "800": "#424242",
+                                  "900": "#212121",
+                                  "A100": "#d5d5d5",
+                                  "A200": "#aaaaaa",
+                                  "A400": "#303030",
+                                  "A700": "#616161",
+                                },
+                                "primary": Object {
+                                  "contrastText": "#fff",
+                                  "dark": "#303f9f",
+                                  "light": "#7986cb",
+                                  "main": "#3f51b5",
+                                },
+                                "secondary": Object {
+                                  "contrastText": "#fff",
+                                  "dark": "#c51162",
+                                  "light": "#ff4081",
+                                  "main": "#f50057",
+                                },
+                                "text": Object {
+                                  "disabled": "rgba(0, 0, 0, 0.38)",
+                                  "hint": "rgba(0, 0, 0, 0.38)",
+                                  "primary": "rgba(0, 0, 0, 0.87)",
+                                  "secondary": "rgba(0, 0, 0, 0.54)",
+                                },
+                                "tonalOffset": 0.2,
+                                "type": "light",
+                              },
+                              "props": Object {},
+                              "shadows": Array [
+                                "none",
+                                "0px 1px 3px 0px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 2px 1px -1px rgba(0,0,0,0.12)",
+                                "0px 1px 5px 0px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 3px 1px -2px rgba(0,0,0,0.12)",
+                                "0px 1px 8px 0px rgba(0,0,0,0.2),0px 3px 4px 0px rgba(0,0,0,0.14),0px 3px 3px -2px rgba(0,0,0,0.12)",
+                                "0px 2px 4px -1px rgba(0,0,0,0.2),0px 4px 5px 0px rgba(0,0,0,0.14),0px 1px 10px 0px rgba(0,0,0,0.12)",
+                                "0px 3px 5px -1px rgba(0,0,0,0.2),0px 5px 8px 0px rgba(0,0,0,0.14),0px 1px 14px 0px rgba(0,0,0,0.12)",
+                                "0px 3px 5px -1px rgba(0,0,0,0.2),0px 6px 10px 0px rgba(0,0,0,0.14),0px 1px 18px 0px rgba(0,0,0,0.12)",
+                                "0px 4px 5px -2px rgba(0,0,0,0.2),0px 7px 10px 1px rgba(0,0,0,0.14),0px 2px 16px 1px rgba(0,0,0,0.12)",
+                                "0px 5px 5px -3px rgba(0,0,0,0.2),0px 8px 10px 1px rgba(0,0,0,0.14),0px 3px 14px 2px rgba(0,0,0,0.12)",
+                                "0px 5px 6px -3px rgba(0,0,0,0.2),0px 9px 12px 1px rgba(0,0,0,0.14),0px 3px 16px 2px rgba(0,0,0,0.12)",
+                                "0px 6px 6px -3px rgba(0,0,0,0.2),0px 10px 14px 1px rgba(0,0,0,0.14),0px 4px 18px 3px rgba(0,0,0,0.12)",
+                                "0px 6px 7px -4px rgba(0,0,0,0.2),0px 11px 15px 1px rgba(0,0,0,0.14),0px 4px 20px 3px rgba(0,0,0,0.12)",
+                                "0px 7px 8px -4px rgba(0,0,0,0.2),0px 12px 17px 2px rgba(0,0,0,0.14),0px 5px 22px 4px rgba(0,0,0,0.12)",
+                                "0px 7px 8px -4px rgba(0,0,0,0.2),0px 13px 19px 2px rgba(0,0,0,0.14),0px 5px 24px 4px rgba(0,0,0,0.12)",
+                                "0px 7px 9px -4px rgba(0,0,0,0.2),0px 14px 21px 2px rgba(0,0,0,0.14),0px 5px 26px 4px rgba(0,0,0,0.12)",
+                                "0px 8px 9px -5px rgba(0,0,0,0.2),0px 15px 22px 2px rgba(0,0,0,0.14),0px 6px 28px 5px rgba(0,0,0,0.12)",
+                                "0px 8px 10px -5px rgba(0,0,0,0.2),0px 16px 24px 2px rgba(0,0,0,0.14),0px 6px 30px 5px rgba(0,0,0,0.12)",
+                                "0px 8px 11px -5px rgba(0,0,0,0.2),0px 17px 26px 2px rgba(0,0,0,0.14),0px 6px 32px 5px rgba(0,0,0,0.12)",
+                                "0px 9px 11px -5px rgba(0,0,0,0.2),0px 18px 28px 2px rgba(0,0,0,0.14),0px 7px 34px 6px rgba(0,0,0,0.12)",
+                                "0px 9px 12px -6px rgba(0,0,0,0.2),0px 19px 29px 2px rgba(0,0,0,0.14),0px 7px 36px 6px rgba(0,0,0,0.12)",
+                                "0px 10px 13px -6px rgba(0,0,0,0.2),0px 20px 31px 3px rgba(0,0,0,0.14),0px 8px 38px 7px rgba(0,0,0,0.12)",
+                                "0px 10px 13px -6px rgba(0,0,0,0.2),0px 21px 33px 3px rgba(0,0,0,0.14),0px 8px 40px 7px rgba(0,0,0,0.12)",
+                                "0px 10px 14px -6px rgba(0,0,0,0.2),0px 22px 35px 3px rgba(0,0,0,0.14),0px 8px 42px 7px rgba(0,0,0,0.12)",
+                                "0px 11px 14px -7px rgba(0,0,0,0.2),0px 23px 36px 3px rgba(0,0,0,0.14),0px 9px 44px 8px rgba(0,0,0,0.12)",
+                                "0px 11px 15px -7px rgba(0,0,0,0.2),0px 24px 38px 3px rgba(0,0,0,0.14),0px 9px 46px 8px rgba(0,0,0,0.12)",
+                              ],
+                              "shape": Object {
+                                "borderRadius": 4,
+                              },
+                              "spacing": [Function],
+                              "transitions": Object {
+                                "create": [Function],
+                                "duration": Object {
+                                  "complex": 375,
+                                  "enteringScreen": 225,
+                                  "leavingScreen": 195,
+                                  "short": 250,
+                                  "shorter": 200,
+                                  "shortest": 150,
+                                  "standard": 300,
+                                },
+                                "easing": Object {
+                                  "easeIn": "cubic-bezier(0.4, 0, 1, 1)",
+                                  "easeInOut": "cubic-bezier(0.4, 0, 0.2, 1)",
+                                  "easeOut": "cubic-bezier(0.0, 0, 0.2, 1)",
+                                  "sharp": "cubic-bezier(0.4, 0, 0.6, 1)",
+                                },
+                                "getAutoHeightDuration": [Function],
+                              },
+                              "typography": Object {
+                                "body1": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "1rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0.00938em",
+                                  "lineHeight": 1.5,
+                                },
+                                "body2": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "0.875rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0.01071em",
+                                  "lineHeight": 1.43,
+                                },
+                                "button": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "0.875rem",
+                                  "fontWeight": 500,
+                                  "letterSpacing": "0.02857em",
+                                  "lineHeight": 1.75,
+                                  "textTransform": "uppercase",
+                                },
+                                "caption": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "0.75rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0.03333em",
+                                  "lineHeight": 1.66,
+                                },
+                                "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                "fontSize": 14,
+                                "fontWeightBold": 700,
+                                "fontWeightLight": 300,
+                                "fontWeightMedium": 500,
+                                "fontWeightRegular": 400,
+                                "h1": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "6rem",
+                                  "fontWeight": 300,
+                                  "letterSpacing": "-0.01562em",
+                                  "lineHeight": 1,
+                                },
+                                "h2": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "3.75rem",
+                                  "fontWeight": 300,
+                                  "letterSpacing": "-0.00833em",
+                                  "lineHeight": 1,
+                                },
+                                "h3": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "3rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0em",
+                                  "lineHeight": 1.04,
+                                },
+                                "h4": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "2.125rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0.00735em",
+                                  "lineHeight": 1.17,
+                                },
+                                "h5": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "1.5rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0em",
+                                  "lineHeight": 1.33,
+                                },
+                                "h6": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "1.25rem",
+                                  "fontWeight": 500,
+                                  "letterSpacing": "0.0075em",
+                                  "lineHeight": 1.6,
+                                },
+                                "htmlFontSize": 16,
+                                "overline": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "0.75rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0.08333em",
+                                  "lineHeight": 2.66,
+                                  "textTransform": "uppercase",
+                                },
+                                "pxToRem": [Function],
+                                "round": [Function],
+                                "subtitle1": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "1rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0.00938em",
+                                  "lineHeight": 1.75,
+                                },
+                                "subtitle2": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "0.875rem",
+                                  "fontWeight": 500,
+                                  "letterSpacing": "0.00714em",
+                                  "lineHeight": 1.57,
+                                },
+                              },
+                              "zIndex": Object {
+                                "appBar": 1100,
+                                "drawer": 1200,
+                                "mobileStepper": 1000,
+                                "modal": 1300,
+                                "snackbar": 1400,
+                                "tooltip": 1500,
+                              },
+                            }
+                          }
+                        >
+                          <span
+                            className="MuiTypography-root MuiFormControlLabel-label Mui-disabled MuiTypography-body1"
+                          >
+                            Major only
+                          </span>
+                        </ForwardRef(Typography)>
+                      </WithStyles(ForwardRef(Typography))>
+                    </label>
+                  </ForwardRef(FormControlLabel)>
+                </WithFormControlContext(ForwardRef(FormControlLabel))>
+              </WithStyles(WithFormControlContext(ForwardRef(FormControlLabel)))>
+              <WithStyles(WithFormControlContext(ForwardRef(FormControlLabel)))
+                control={
+                  <ForwardRef(WithStyles)
+                    checked={false}
+                    onChange={[Function]}
+                    value="3"
+                  />
+                }
+                key="3"
+                label="Major and minor"
+              >
+                <WithFormControlContext(ForwardRef(FormControlLabel))
+                  classes={
+                    Object {
+                      "disabled": "Mui-disabled",
+                      "label": "MuiFormControlLabel-label",
+                      "labelPlacementBottom": "MuiFormControlLabel-labelPlacementBottom",
+                      "labelPlacementStart": "MuiFormControlLabel-labelPlacementStart",
+                      "labelPlacementTop": "MuiFormControlLabel-labelPlacementTop",
+                      "root": "MuiFormControlLabel-root",
+                    }
+                  }
+                  control={
+                    <ForwardRef(WithStyles)
+                      checked={false}
+                      onChange={[Function]}
+                      value="3"
+                    />
+                  }
+                  label="Major and minor"
+                >
+                  <ForwardRef(FormControlLabel)
+                    classes={
+                      Object {
+                        "disabled": "Mui-disabled",
+                        "label": "MuiFormControlLabel-label",
+                        "labelPlacementBottom": "MuiFormControlLabel-labelPlacementBottom",
+                        "labelPlacementStart": "MuiFormControlLabel-labelPlacementStart",
+                        "labelPlacementTop": "MuiFormControlLabel-labelPlacementTop",
+                        "root": "MuiFormControlLabel-root",
+                      }
+                    }
+                    control={
+                      <ForwardRef(WithStyles)
+                        checked={false}
+                        onChange={[Function]}
+                        value="3"
+                      />
+                    }
+                    label="Major and minor"
+                    muiFormControl={
+                      Object {
+                        "adornedStart": false,
+                        "disabled": true,
+                        "error": false,
+                        "filled": false,
+                        "focused": false,
+                        "margin": "none",
+                        "onBlur": [Function],
+                        "onEmpty": [Function],
+                        "onFilled": [Function],
+                        "onFocus": [Function],
+                        "required": false,
+                        "variant": "standard",
+                      }
+                    }
+                  >
+                    <label
+                      className="MuiFormControlLabel-root Mui-disabled"
+                    >
+                      <WithStyles(ForwardRef(Checkbox))
+                        checked={false}
+                        disabled={true}
+                        onChange={[Function]}
+                        value="3"
+                      >
+                        <ForwardRef(Checkbox)
+                          checked={false}
+                          classes={
+                            Object {
+                              "checked": "Mui-checked",
+                              "colorPrimary": "MuiCheckbox-colorPrimary",
+                              "colorSecondary": "MuiCheckbox-colorSecondary",
+                              "disabled": "Mui-disabled",
+                              "indeterminate": "MuiCheckbox-indeterminate",
+                              "root": "MuiCheckbox-root",
+                            }
+                          }
+                          disabled={true}
+                          onChange={[Function]}
+                          value="3"
+                        >
+                          <WithStyles(WithFormControlContext(ForwardRef(SwitchBase)))
+                            checked={false}
+                            checkedIcon={<Memo />}
+                            classes={
+                              Object {
+                                "checked": "Mui-checked",
+                                "disabled": "Mui-disabled",
+                                "root": "MuiCheckbox-root MuiCheckbox-colorSecondary",
+                              }
+                            }
+                            color="secondary"
+                            disabled={true}
+                            icon={<Memo />}
+                            inputProps={
+                              Object {
+                                "data-indeterminate": false,
+                              }
+                            }
+                            onChange={[Function]}
+                            type="checkbox"
+                            value="3"
+                          >
+                            <WithFormControlContext(ForwardRef(SwitchBase))
+                              checked={false}
+                              checkedIcon={<Memo />}
+                              classes={
+                                Object {
+                                  "checked": "PrivateSwitchBase-checked-27 Mui-checked",
+                                  "disabled": "PrivateSwitchBase-disabled-28 Mui-disabled",
+                                  "input": "PrivateSwitchBase-input-29",
+                                  "root": "PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary",
+                                }
+                              }
+                              color="secondary"
+                              disabled={true}
+                              icon={<Memo />}
+                              inputProps={
+                                Object {
+                                  "data-indeterminate": false,
+                                }
+                              }
+                              onChange={[Function]}
+                              type="checkbox"
+                              value="3"
+                            >
+                              <ForwardRef(SwitchBase)
+                                checked={false}
+                                checkedIcon={<Memo />}
+                                classes={
+                                  Object {
+                                    "checked": "PrivateSwitchBase-checked-27 Mui-checked",
+                                    "disabled": "PrivateSwitchBase-disabled-28 Mui-disabled",
+                                    "input": "PrivateSwitchBase-input-29",
+                                    "root": "PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary",
+                                  }
+                                }
+                                color="secondary"
+                                disabled={true}
+                                icon={<Memo />}
+                                inputProps={
+                                  Object {
+                                    "data-indeterminate": false,
+                                  }
+                                }
+                                muiFormControl={
+                                  Object {
+                                    "adornedStart": false,
+                                    "disabled": true,
+                                    "error": false,
+                                    "filled": false,
+                                    "focused": false,
+                                    "margin": "none",
+                                    "onBlur": [Function],
+                                    "onEmpty": [Function],
+                                    "onFilled": [Function],
+                                    "onFocus": [Function],
+                                    "required": false,
+                                    "variant": "standard",
+                                  }
+                                }
+                                onChange={[Function]}
+                                type="checkbox"
+                                value="3"
+                              >
+                                <WithStyles(ForwardRef(IconButton))
+                                  className="PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled"
+                                  color="secondary"
+                                  component="span"
+                                  disabled={true}
+                                  onBlur={[Function]}
+                                  onFocus={[Function]}
+                                  tabIndex={null}
+                                >
+                                  <ForwardRef(IconButton)
+                                    className="PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled"
+                                    classes={
+                                      Object {
+                                        "colorInherit": "MuiIconButton-colorInherit",
+                                        "colorPrimary": "MuiIconButton-colorPrimary",
+                                        "colorSecondary": "MuiIconButton-colorSecondary",
+                                        "disabled": "Mui-disabled",
+                                        "edgeEnd": "MuiIconButton-edgeEnd",
+                                        "edgeStart": "MuiIconButton-edgeStart",
+                                        "label": "MuiIconButton-label",
+                                        "root": "MuiIconButton-root",
+                                        "sizeSmall": "MuiIconButton-sizeSmall",
+                                      }
+                                    }
+                                    color="secondary"
+                                    component="span"
+                                    disabled={true}
+                                    onBlur={[Function]}
+                                    onFocus={[Function]}
+                                    tabIndex={null}
+                                  >
+                                    <WithStyles(ForwardRef(ButtonBase))
+                                      centerRipple={true}
+                                      className="MuiIconButton-root PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled MuiIconButton-colorSecondary Mui-disabled"
+                                      component="span"
+                                      disabled={true}
+                                      focusRipple={true}
+                                      onBlur={[Function]}
+                                      onFocus={[Function]}
+                                      tabIndex={null}
+                                    >
+                                      <ForwardRef(ButtonBase)
+                                        centerRipple={true}
+                                        className="MuiIconButton-root PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled MuiIconButton-colorSecondary Mui-disabled"
+                                        classes={
+                                          Object {
+                                            "disabled": "Mui-disabled",
+                                            "focusVisible": "Mui-focusVisible",
+                                            "root": "MuiButtonBase-root",
+                                          }
+                                        }
+                                        component="span"
+                                        disabled={true}
+                                        focusRipple={true}
+                                        onBlur={[Function]}
+                                        onFocus={[Function]}
+                                        tabIndex={null}
+                                      >
+                                        <span
+                                          aria-disabled={true}
+                                          className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled MuiIconButton-colorSecondary Mui-disabled Mui-disabled"
+                                          onBlur={[Function]}
+                                          onDragLeave={[Function]}
+                                          onFocus={[Function]}
+                                          onKeyDown={[Function]}
+                                          onKeyUp={[Function]}
+                                          onMouseDown={[Function]}
+                                          onMouseLeave={[Function]}
+                                          onMouseUp={[Function]}
+                                          onTouchEnd={[Function]}
+                                          onTouchMove={[Function]}
+                                          onTouchStart={[Function]}
+                                          tabIndex={-1}
+                                        >
+                                          <span
+                                            className="MuiIconButton-label"
+                                          >
+                                            <ForwardRef>
+                                              <WithStyles(ForwardRef(SvgIcon))>
+                                                <ForwardRef(SvgIcon)
+                                                  classes={
+                                                    Object {
+                                                      "colorAction": "MuiSvgIcon-colorAction",
+                                                      "colorDisabled": "MuiSvgIcon-colorDisabled",
+                                                      "colorError": "MuiSvgIcon-colorError",
+                                                      "colorPrimary": "MuiSvgIcon-colorPrimary",
+                                                      "colorSecondary": "MuiSvgIcon-colorSecondary",
+                                                      "fontSizeInherit": "MuiSvgIcon-fontSizeInherit",
+                                                      "fontSizeLarge": "MuiSvgIcon-fontSizeLarge",
+                                                      "fontSizeSmall": "MuiSvgIcon-fontSizeSmall",
+                                                      "root": "MuiSvgIcon-root",
+                                                    }
+                                                  }
+                                                >
+                                                  <svg
+                                                    aria-hidden="true"
+                                                    className="MuiSvgIcon-root"
+                                                    focusable="false"
+                                                    role="presentation"
+                                                    viewBox="0 0 24 24"
+                                                  >
+                                                    <path
+                                                      d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"
+                                                    />
+                                                  </svg>
+                                                </ForwardRef(SvgIcon)>
+                                              </WithStyles(ForwardRef(SvgIcon))>
+                                            </ForwardRef>
+                                            <input
+                                              checked={false}
+                                              className="PrivateSwitchBase-input-29"
+                                              data-indeterminate={false}
+                                              disabled={true}
+                                              onChange={[Function]}
+                                              type="checkbox"
+                                              value="3"
+                                            />
+                                          </span>
+                                        </span>
+                                      </ForwardRef(ButtonBase)>
+                                    </WithStyles(ForwardRef(ButtonBase))>
+                                  </ForwardRef(IconButton)>
+                                </WithStyles(ForwardRef(IconButton))>
+                              </ForwardRef(SwitchBase)>
+                            </WithFormControlContext(ForwardRef(SwitchBase))>
+                          </WithStyles(WithFormControlContext(ForwardRef(SwitchBase)))>
+                        </ForwardRef(Checkbox)>
+                      </WithStyles(ForwardRef(Checkbox))>
+                      <WithStyles(ForwardRef(Typography))
+                        className="MuiFormControlLabel-label Mui-disabled"
+                        component="span"
+                      >
+                        <ForwardRef(Typography)
+                          className="MuiFormControlLabel-label Mui-disabled"
+                          classes={
+                            Object {
+                              "alignCenter": "MuiTypography-alignCenter",
+                              "alignJustify": "MuiTypography-alignJustify",
+                              "alignLeft": "MuiTypography-alignLeft",
+                              "alignRight": "MuiTypography-alignRight",
+                              "body1": "MuiTypography-body1",
+                              "body2": "MuiTypography-body2",
+                              "button": "MuiTypography-button",
+                              "caption": "MuiTypography-caption",
+                              "colorError": "MuiTypography-colorError",
+                              "colorInherit": "MuiTypography-colorInherit",
+                              "colorPrimary": "MuiTypography-colorPrimary",
+                              "colorSecondary": "MuiTypography-colorSecondary",
+                              "colorTextPrimary": "MuiTypography-colorTextPrimary",
+                              "colorTextSecondary": "MuiTypography-colorTextSecondary",
+                              "displayBlock": "MuiTypography-displayBlock",
+                              "displayInline": "MuiTypography-displayInline",
+                              "gutterBottom": "MuiTypography-gutterBottom",
+                              "h1": "MuiTypography-h1",
+                              "h2": "MuiTypography-h2",
+                              "h3": "MuiTypography-h3",
+                              "h4": "MuiTypography-h4",
+                              "h5": "MuiTypography-h5",
+                              "h6": "MuiTypography-h6",
+                              "noWrap": "MuiTypography-noWrap",
+                              "overline": "MuiTypography-overline",
+                              "paragraph": "MuiTypography-paragraph",
+                              "root": "MuiTypography-root",
+                              "srOnly": "MuiTypography-srOnly",
+                              "subtitle1": "MuiTypography-subtitle1",
+                              "subtitle2": "MuiTypography-subtitle2",
+                            }
+                          }
+                          component="span"
+                          theme={
+                            Object {
+                              "breakpoints": Object {
+                                "between": [Function],
+                                "down": [Function],
+                                "keys": Array [
+                                  "xs",
+                                  "sm",
+                                  "md",
+                                  "lg",
+                                  "xl",
+                                ],
+                                "only": [Function],
+                                "up": [Function],
+                                "values": Object {
+                                  "lg": 1280,
+                                  "md": 960,
+                                  "sm": 600,
+                                  "xl": 1920,
+                                  "xs": 0,
+                                },
+                                "width": [Function],
+                              },
+                              "direction": "ltr",
+                              "mixins": Object {
+                                "gutters": [Function],
+                                "toolbar": Object {
+                                  "@media (min-width:0px) and (orientation: landscape)": Object {
+                                    "minHeight": 48,
+                                  },
+                                  "@media (min-width:600px)": Object {
+                                    "minHeight": 64,
+                                  },
+                                  "minHeight": 56,
+                                },
+                              },
+                              "overrides": Object {},
+                              "palette": Object {
+                                "action": Object {
+                                  "active": "rgba(0, 0, 0, 0.54)",
+                                  "disabled": "rgba(0, 0, 0, 0.26)",
+                                  "disabledBackground": "rgba(0, 0, 0, 0.12)",
+                                  "hover": "rgba(0, 0, 0, 0.08)",
+                                  "hoverOpacity": 0.08,
+                                  "selected": "rgba(0, 0, 0, 0.14)",
+                                },
+                                "augmentColor": [Function],
+                                "background": Object {
+                                  "default": "#fafafa",
+                                  "paper": "#fff",
+                                },
+                                "common": Object {
+                                  "black": "#000",
+                                  "white": "#fff",
+                                },
+                                "contrastThreshold": 3,
+                                "divider": "rgba(0, 0, 0, 0.12)",
+                                "error": Object {
+                                  "contrastText": "#fff",
+                                  "dark": "#d32f2f",
+                                  "light": "#e57373",
+                                  "main": "#f44336",
+                                },
+                                "getContrastText": [Function],
+                                "grey": Object {
+                                  "100": "#f5f5f5",
+                                  "200": "#eeeeee",
+                                  "300": "#e0e0e0",
+                                  "400": "#bdbdbd",
+                                  "50": "#fafafa",
+                                  "500": "#9e9e9e",
+                                  "600": "#757575",
+                                  "700": "#616161",
+                                  "800": "#424242",
+                                  "900": "#212121",
+                                  "A100": "#d5d5d5",
+                                  "A200": "#aaaaaa",
+                                  "A400": "#303030",
+                                  "A700": "#616161",
+                                },
+                                "primary": Object {
+                                  "contrastText": "#fff",
+                                  "dark": "#303f9f",
+                                  "light": "#7986cb",
+                                  "main": "#3f51b5",
+                                },
+                                "secondary": Object {
+                                  "contrastText": "#fff",
+                                  "dark": "#c51162",
+                                  "light": "#ff4081",
+                                  "main": "#f50057",
+                                },
+                                "text": Object {
+                                  "disabled": "rgba(0, 0, 0, 0.38)",
+                                  "hint": "rgba(0, 0, 0, 0.38)",
+                                  "primary": "rgba(0, 0, 0, 0.87)",
+                                  "secondary": "rgba(0, 0, 0, 0.54)",
+                                },
+                                "tonalOffset": 0.2,
+                                "type": "light",
+                              },
+                              "props": Object {},
+                              "shadows": Array [
+                                "none",
+                                "0px 1px 3px 0px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 2px 1px -1px rgba(0,0,0,0.12)",
+                                "0px 1px 5px 0px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 3px 1px -2px rgba(0,0,0,0.12)",
+                                "0px 1px 8px 0px rgba(0,0,0,0.2),0px 3px 4px 0px rgba(0,0,0,0.14),0px 3px 3px -2px rgba(0,0,0,0.12)",
+                                "0px 2px 4px -1px rgba(0,0,0,0.2),0px 4px 5px 0px rgba(0,0,0,0.14),0px 1px 10px 0px rgba(0,0,0,0.12)",
+                                "0px 3px 5px -1px rgba(0,0,0,0.2),0px 5px 8px 0px rgba(0,0,0,0.14),0px 1px 14px 0px rgba(0,0,0,0.12)",
+                                "0px 3px 5px -1px rgba(0,0,0,0.2),0px 6px 10px 0px rgba(0,0,0,0.14),0px 1px 18px 0px rgba(0,0,0,0.12)",
+                                "0px 4px 5px -2px rgba(0,0,0,0.2),0px 7px 10px 1px rgba(0,0,0,0.14),0px 2px 16px 1px rgba(0,0,0,0.12)",
+                                "0px 5px 5px -3px rgba(0,0,0,0.2),0px 8px 10px 1px rgba(0,0,0,0.14),0px 3px 14px 2px rgba(0,0,0,0.12)",
+                                "0px 5px 6px -3px rgba(0,0,0,0.2),0px 9px 12px 1px rgba(0,0,0,0.14),0px 3px 16px 2px rgba(0,0,0,0.12)",
+                                "0px 6px 6px -3px rgba(0,0,0,0.2),0px 10px 14px 1px rgba(0,0,0,0.14),0px 4px 18px 3px rgba(0,0,0,0.12)",
+                                "0px 6px 7px -4px rgba(0,0,0,0.2),0px 11px 15px 1px rgba(0,0,0,0.14),0px 4px 20px 3px rgba(0,0,0,0.12)",
+                                "0px 7px 8px -4px rgba(0,0,0,0.2),0px 12px 17px 2px rgba(0,0,0,0.14),0px 5px 22px 4px rgba(0,0,0,0.12)",
+                                "0px 7px 8px -4px rgba(0,0,0,0.2),0px 13px 19px 2px rgba(0,0,0,0.14),0px 5px 24px 4px rgba(0,0,0,0.12)",
+                                "0px 7px 9px -4px rgba(0,0,0,0.2),0px 14px 21px 2px rgba(0,0,0,0.14),0px 5px 26px 4px rgba(0,0,0,0.12)",
+                                "0px 8px 9px -5px rgba(0,0,0,0.2),0px 15px 22px 2px rgba(0,0,0,0.14),0px 6px 28px 5px rgba(0,0,0,0.12)",
+                                "0px 8px 10px -5px rgba(0,0,0,0.2),0px 16px 24px 2px rgba(0,0,0,0.14),0px 6px 30px 5px rgba(0,0,0,0.12)",
+                                "0px 8px 11px -5px rgba(0,0,0,0.2),0px 17px 26px 2px rgba(0,0,0,0.14),0px 6px 32px 5px rgba(0,0,0,0.12)",
+                                "0px 9px 11px -5px rgba(0,0,0,0.2),0px 18px 28px 2px rgba(0,0,0,0.14),0px 7px 34px 6px rgba(0,0,0,0.12)",
+                                "0px 9px 12px -6px rgba(0,0,0,0.2),0px 19px 29px 2px rgba(0,0,0,0.14),0px 7px 36px 6px rgba(0,0,0,0.12)",
+                                "0px 10px 13px -6px rgba(0,0,0,0.2),0px 20px 31px 3px rgba(0,0,0,0.14),0px 8px 38px 7px rgba(0,0,0,0.12)",
+                                "0px 10px 13px -6px rgba(0,0,0,0.2),0px 21px 33px 3px rgba(0,0,0,0.14),0px 8px 40px 7px rgba(0,0,0,0.12)",
+                                "0px 10px 14px -6px rgba(0,0,0,0.2),0px 22px 35px 3px rgba(0,0,0,0.14),0px 8px 42px 7px rgba(0,0,0,0.12)",
+                                "0px 11px 14px -7px rgba(0,0,0,0.2),0px 23px 36px 3px rgba(0,0,0,0.14),0px 9px 44px 8px rgba(0,0,0,0.12)",
+                                "0px 11px 15px -7px rgba(0,0,0,0.2),0px 24px 38px 3px rgba(0,0,0,0.14),0px 9px 46px 8px rgba(0,0,0,0.12)",
+                              ],
+                              "shape": Object {
+                                "borderRadius": 4,
+                              },
+                              "spacing": [Function],
+                              "transitions": Object {
+                                "create": [Function],
+                                "duration": Object {
+                                  "complex": 375,
+                                  "enteringScreen": 225,
+                                  "leavingScreen": 195,
+                                  "short": 250,
+                                  "shorter": 200,
+                                  "shortest": 150,
+                                  "standard": 300,
+                                },
+                                "easing": Object {
+                                  "easeIn": "cubic-bezier(0.4, 0, 1, 1)",
+                                  "easeInOut": "cubic-bezier(0.4, 0, 0.2, 1)",
+                                  "easeOut": "cubic-bezier(0.0, 0, 0.2, 1)",
+                                  "sharp": "cubic-bezier(0.4, 0, 0.6, 1)",
+                                },
+                                "getAutoHeightDuration": [Function],
+                              },
+                              "typography": Object {
+                                "body1": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "1rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0.00938em",
+                                  "lineHeight": 1.5,
+                                },
+                                "body2": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "0.875rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0.01071em",
+                                  "lineHeight": 1.43,
+                                },
+                                "button": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "0.875rem",
+                                  "fontWeight": 500,
+                                  "letterSpacing": "0.02857em",
+                                  "lineHeight": 1.75,
+                                  "textTransform": "uppercase",
+                                },
+                                "caption": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "0.75rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0.03333em",
+                                  "lineHeight": 1.66,
+                                },
+                                "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                "fontSize": 14,
+                                "fontWeightBold": 700,
+                                "fontWeightLight": 300,
+                                "fontWeightMedium": 500,
+                                "fontWeightRegular": 400,
+                                "h1": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "6rem",
+                                  "fontWeight": 300,
+                                  "letterSpacing": "-0.01562em",
+                                  "lineHeight": 1,
+                                },
+                                "h2": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "3.75rem",
+                                  "fontWeight": 300,
+                                  "letterSpacing": "-0.00833em",
+                                  "lineHeight": 1,
+                                },
+                                "h3": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "3rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0em",
+                                  "lineHeight": 1.04,
+                                },
+                                "h4": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "2.125rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0.00735em",
+                                  "lineHeight": 1.17,
+                                },
+                                "h5": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "1.5rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0em",
+                                  "lineHeight": 1.33,
+                                },
+                                "h6": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "1.25rem",
+                                  "fontWeight": 500,
+                                  "letterSpacing": "0.0075em",
+                                  "lineHeight": 1.6,
+                                },
+                                "htmlFontSize": 16,
+                                "overline": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "0.75rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0.08333em",
+                                  "lineHeight": 2.66,
+                                  "textTransform": "uppercase",
+                                },
+                                "pxToRem": [Function],
+                                "round": [Function],
+                                "subtitle1": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "1rem",
+                                  "fontWeight": 400,
+                                  "letterSpacing": "0.00938em",
+                                  "lineHeight": 1.75,
+                                },
+                                "subtitle2": Object {
+                                  "fontFamily": "\\"Roboto\\", \\"Helvetica\\", \\"Arial\\", sans-serif",
+                                  "fontSize": "0.875rem",
+                                  "fontWeight": 500,
+                                  "letterSpacing": "0.00714em",
+                                  "lineHeight": 1.57,
+                                },
+                              },
+                              "zIndex": Object {
+                                "appBar": 1100,
+                                "drawer": 1200,
+                                "mobileStepper": 1000,
+                                "modal": 1300,
+                                "snackbar": 1400,
+                                "tooltip": 1500,
+                              },
+                            }
+                          }
+                        >
+                          <span
+                            className="MuiTypography-root MuiFormControlLabel-label Mui-disabled MuiTypography-body1"
+                          >
+                            Major and minor
+                          </span>
+                        </ForwardRef(Typography)>
+                      </WithStyles(ForwardRef(Typography))>
+                    </label>
+                  </ForwardRef(FormControlLabel)>
+                </WithFormControlContext(ForwardRef(FormControlLabel))>
+              </WithStyles(WithFormControlContext(ForwardRef(FormControlLabel)))>
+            </div>
+          </ForwardRef(FormGroup)>
+        </WithStyles(ForwardRef(FormGroup))>
+        <WithStyles(WithFormControlContext(ForwardRef(FormHelperText)))>
+          <WithFormControlContext(ForwardRef(FormHelperText))
+            classes={
+              Object {
+                "contained": "MuiFormHelperText-contained",
+                "disabled": "Mui-disabled",
+                "error": "Mui-error",
+                "filled": "MuiFormHelperText-filled",
+                "focused": "Mui-focused",
+                "marginDense": "MuiFormHelperText-marginDense",
+                "required": "Mui-required",
+                "root": "MuiFormHelperText-root",
+              }
+            }
+          >
+            <ForwardRef(FormHelperText)
+              classes={
+                Object {
+                  "contained": "MuiFormHelperText-contained",
+                  "disabled": "Mui-disabled",
+                  "error": "Mui-error",
+                  "filled": "MuiFormHelperText-filled",
+                  "focused": "Mui-focused",
+                  "marginDense": "MuiFormHelperText-marginDense",
+                  "required": "Mui-required",
+                  "root": "MuiFormHelperText-root",
+                }
+              }
+              muiFormControl={
+                Object {
+                  "adornedStart": false,
+                  "disabled": true,
+                  "error": false,
+                  "filled": false,
+                  "focused": false,
+                  "margin": "none",
+                  "onBlur": [Function],
+                  "onEmpty": [Function],
+                  "onFilled": [Function],
+                  "onFocus": [Function],
+                  "required": false,
+                  "variant": "standard",
+                }
+              }
+            >
+              <p
+                className="MuiFormHelperText-root Mui-disabled"
+              >
+                It shows the versioning mode of the current content.
+              </p>
+            </ForwardRef(FormHelperText)>
+          </WithFormControlContext(ForwardRef(FormHelperText))>
+        </WithStyles(WithFormControlContext(ForwardRef(FormHelperText)))>
+      </fieldset>
+    </ForwardRef(FormControl)>
+  </WithStyles(ForwardRef(FormControl))>
+</Component>
+`;

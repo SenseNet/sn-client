@@ -11,7 +11,6 @@ import { PathHelper } from '@sensenet/client-utils'
 import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
 import React, { Component } from 'react'
 import { ReactClientFieldSetting } from '../ClientFieldSetting'
-import { isUser } from '../type-guards'
 import { DefaultItemTemplate } from './DefaultItemTemplate'
 import { ReferencePicker } from './ReferencePicker'
 
@@ -26,13 +25,6 @@ const styles = {
   listContainer: {
     display: 'block',
     marginTop: 10,
-  },
-  closeButton: {
-    position: 'absolute',
-    right: 0,
-  },
-  icon: {
-    marginRight: 0,
   },
 }
 
@@ -64,94 +56,60 @@ const changeContent = {
  * Interface for ReferenceGrid state
  */
 export interface ReferenceGridState {
-  fieldValue: any
-  itemLabel: string
+  fieldValue: GenericContent[]
   pickerIsOpen: boolean
-  selected: any
+  selected: GenericContent[]
 }
 
 export class ReferenceGrid extends Component<ReactClientFieldSetting<ReferenceFieldSetting>, ReferenceGridState> {
-  /**
-   * constructor
-   * @param {object} props
-   */
   constructor(props: ReferenceGrid['props']) {
     super(props)
-    let value
-    let selected
-    if (!this.props.content) {
-      value = []
-      selected = []
-    } else if (this.props.content[this.props.settings.Name]) {
-      if (this.props.settings.AllowMultiple) {
-        value = this.props.content[this.props.settings.Name]
-        selected = this.props.content[this.props.settings.Name]
-      } else {
-        value = [this.props.content[this.props.settings.Name]]
-        selected = [this.props.content[this.props.settings.Name]]
-      }
-    } else if (this.props.settings.DefaultValue) {
-      if (this.props.settings.AllowMultiple) {
-        value = this.props.settings.DefaultValue
-        selected = this.props.settings.DefaultValue
-      } else {
-        value = [this.props.settings.DefaultValue]
-        selected = [this.props.settings.DefaultValue]
-      }
-    }
 
     this.state = {
-      fieldValue: value,
-      itemLabel: 'DisplayName',
+      fieldValue: [],
       pickerIsOpen: false,
-      selected,
+      selected: [],
     }
     if (this.props.actionName === 'edit') {
       this.getSelected()
     }
   }
-  /**
-   * getSelected
-   * @return {GenericContent[]}
-   */
+
   public async getSelected() {
-    if (!this.props.repository) {
-      throw new Error('You must pass a repository to this control')
+    try {
+      if (!this.props.repository) {
+        throw new Error('You must pass a repository to this control')
+      }
+      const loadPath = this.props.content
+        ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props.content.Path), '/', this.props.settings.Name)
+        : ''
+      const references = await this.props.repository.loadCollection({
+        path: loadPath,
+        oDataOptions: {
+          select: 'all',
+        },
+      })
+
+      const { results } = references.d
+
+      this.setState({
+        fieldValue: results,
+        selected: results,
+      })
+    } catch (error) {
+      console.error(error.message)
     }
-    const loadPath = this.props.content
-      ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props.content.Path), '/', this.props.settings.Name)
-      : ''
-    const references = await this.props.repository.loadCollection({
-      path: loadPath,
-      oDataOptions: {
-        select: 'all',
-      },
-    })
-
-    const { results } = references.d
-
-    this.setState({
-      fieldValue: results.map((item: GenericContent) => ({
-        DisplayName: item.DisplayName,
-        Icon: item.Icon,
-        Id: item.Id,
-        Avatar: isUser(item) ? item.Avatar : undefined,
-        Type: item.Type,
-      })),
-    })
-    return references
   }
 
   /**
    * Removes the chosen item from the grid and the field value
    */
   public removeItem = (id: number) => {
-    const value =
-      this.state.fieldValue.length > 1 ? this.state.fieldValue.filter((item: GenericContent) => item.Id !== id) : []
-    this.props.fieldOnChange &&
-      this.props.fieldOnChange(this.props.settings.Name, value.map((item: GenericContent) => item.Id))
+    const value = this.state.fieldValue.length > 1 ? this.state.fieldValue.filter(item => item.Id !== id) : []
+    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, value.map(item => item.Id))
     this.setState({
       fieldValue: value,
+      selected: value,
     })
   }
 
@@ -163,52 +121,46 @@ export class ReferenceGrid extends Component<ReactClientFieldSetting<ReferenceFi
       pickerIsOpen: true,
     })
   }
+
   public handleDialogClose = () => {
     this.setState({
       pickerIsOpen: false,
     })
   }
+
   public handleCancelClick = () => {
     this.setState({
-      selected: [],
+      selected: this.state.fieldValue,
     })
     this.handleDialogClose()
   }
+
   public handleOkClick = () => {
-    const value =
-      this.state.selected.length > 0 && !this.props.settings.AllowMultiple
-        ? this.state.selected
-        : this.state.fieldValue.concat(this.state.selected)
     this.props.fieldOnChange &&
-      this.props.fieldOnChange(this.props.settings.Name, value.map((item: GenericContent) => item.Id))
+      this.props.fieldOnChange(this.props.settings.Name, this.state.selected.map((item: GenericContent) => item.Id))
 
     this.setState({
-      fieldValue: value,
-      selected: [],
+      fieldValue: this.state.selected,
     })
     this.handleDialogClose()
   }
+
   public selectItem = (content: GenericContent) => {
     this.state.selected.length > 0 && !this.props.settings.AllowMultiple
       ? this.setState({
-          selected:
-            this.state.selected.findIndex((c: GenericContent) => content.Id === c.Id) > -1
-              ? this.state.selected
-              : [content],
+          selected: this.state.selected.findIndex(c => content.Id === c.Id) > -1 ? this.state.selected : [content],
         })
       : this.setState({
           selected:
-            this.state.selected.findIndex((c: GenericContent) => content.Id === c.Id) > -1
-              ? this.state.selected.filter((c: GenericContent) => content.Id !== c.Id)
+            this.state.selected.findIndex(c => content.Id === c.Id) > -1
+              ? this.state.selected.filter(c => content.Id !== c.Id)
               : [...this.state.selected, content],
         })
   }
-  /**
-   * render
-   * @return {ReactElement} markup
-   */
+
   public render() {
     switch (this.props.actionName) {
+      case 'new':
       case 'edit':
         return (
           <FormControl
@@ -234,9 +186,9 @@ export class ReferenceGrid extends Component<ReactClientFieldSetting<ReferenceFi
                       remove={this.removeItem}
                       add={this.addItem}
                       key={item.Id}
-                      actionName="edit"
+                      actionName={this.props.actionName}
                       readOnly={this.props.settings.ReadOnly}
-                      repositoryUrl={this.props.repository!.configuration.repositoryUrl}
+                      repositoryUrl={this.props.repository ? this.props.repository.configuration.repositoryUrl : ''}
                       multiple={this.props.settings.AllowMultiple ? this.props.settings.AllowMultiple : false}
                       renderIcon={this.props.renderIcon}
                     />
@@ -247,96 +199,20 @@ export class ReferenceGrid extends Component<ReactClientFieldSetting<ReferenceFi
                   content={
                     this.state.fieldValue &&
                     this.state.fieldValue.length > 0 &&
-                    this.props.settings.AllowMultiple &&
+                    this.props.settings.AllowMultiple != null &&
                     !this.props.settings.AllowMultiple
                       ? changeContent
                       : emptyContent
                   }
                   add={this.addItem}
-                  actionName="edit"
-                  repositoryUrl={this.props.repository!.configuration.repositoryUrl}
+                  actionName={this.props.actionName}
+                  repositoryUrl={this.props.repository ? this.props.repository.configuration.repositoryUrl : ''}
                   multiple={this.props.settings.AllowMultiple ? this.props.settings.AllowMultiple : false}
                   renderIcon={this.props.renderIcon}
                 />
               ) : null}
             </List>
-            {this.props.settings.Description ? (
-              <FormHelperText>{this.props.settings.Description}</FormHelperText>
-            ) : null}
-
-            <Dialog onClose={this.handleDialogClose} open={this.state.pickerIsOpen}>
-              <div style={styles.dialog}>
-                <Typography variant="h5" gutterBottom={true}>
-                  {REFERENCE_PICKER_TITLE}
-                </Typography>
-                <ReferencePicker
-                  path={this.props.settings.SelectionRoots ? this.props.settings.SelectionRoots[0] : '/Root'}
-                  allowedTypes={this.props.settings.AllowedTypes}
-                  repository={this.props.repository!}
-                  select={content => this.selectItem(content)}
-                  selected={this.state.selected}
-                  renderIcon={this.props.renderIcon}
-                />
-                <DialogActions>
-                  <Button variant="contained" onClick={this.handleOkClick} color="primary">
-                    {OK}
-                  </Button>
-                  <Button variant="contained" onClick={this.handleCancelClick} color="secondary">
-                    {CANCEL}
-                  </Button>
-                </DialogActions>
-              </div>
-            </Dialog>
-          </FormControl>
-        )
-      case 'new':
-        return (
-          <FormControl
-            style={styles.root as any}
-            key={this.props.settings.Name}
-            component={'fieldset' as 'div'}
-            required={this.props.settings.Compulsory}>
-            <InputLabel shrink={true} htmlFor={this.props.settings.Name}>
-              {this.props.settings.DisplayName}
-            </InputLabel>
-            <List
-              dense={true}
-              style={this.state.fieldValue.length > 0 ? styles.listContainer : { ...styles.listContainer, width: 200 }}>
-              {this.state.fieldValue.map((item: GenericContent) => {
-                return (
-                  <DefaultItemTemplate
-                    content={item}
-                    remove={this.removeItem}
-                    add={this.addItem}
-                    key={item.Id}
-                    actionName="new"
-                    readOnly={this.props.settings.ReadOnly}
-                    repositoryUrl={this.props.repository!.configuration.repositoryUrl}
-                    multiple={this.props.settings.AllowMultiple ? this.props.settings.AllowMultiple : false}
-                    renderIcon={this.props.renderIcon}
-                  />
-                )
-              })}
-              {!this.props.settings.ReadOnly ? (
-                <DefaultItemTemplate
-                  content={
-                    this.state.fieldValue.length > 0 &&
-                    this.props.settings.AllowMultiple &&
-                    !this.props.settings.AllowMultiple
-                      ? changeContent
-                      : emptyContent
-                  }
-                  add={this.addItem}
-                  actionName="new"
-                  repositoryUrl={this.props.repository!.configuration.repositoryUrl}
-                  multiple={this.props.settings.AllowMultiple ? this.props.settings.AllowMultiple : false}
-                  renderIcon={this.props.renderIcon}
-                />
-              ) : null}
-            </List>
-            {this.props.settings.Description ? (
-              <FormHelperText>{this.props.settings.Description}</FormHelperText>
-            ) : null}
+            <FormHelperText>{this.props.settings.Description}</FormHelperText>
 
             <Dialog onClose={this.handleDialogClose} open={this.state.pickerIsOpen}>
               <div style={styles.dialog}>
@@ -365,21 +241,21 @@ export class ReferenceGrid extends Component<ReactClientFieldSetting<ReferenceFi
         )
       case 'browse':
       default: {
-        return this.props.content && this.props.content[this.props.settings.Name] ? (
+        return this.props.fieldValue ? (
           <FormControl style={styles.root as any}>
             <InputLabel shrink={true} htmlFor={this.props.settings.Name}>
               {this.props.settings.DisplayName}
             </InputLabel>
             <FormGroup>
               <List dense={true} style={styles.listContainer}>
-                {this.props.content[this.props.settings.Name].map((item: GenericContent) => (
+                {(this.props.fieldValue as any).map((item: GenericContent) => (
                   <DefaultItemTemplate
                     content={item}
                     remove={this.removeItem}
                     add={this.addItem}
                     key={item.Id}
                     actionName="browse"
-                    repositoryUrl={this.props.repository!.configuration.repositoryUrl}
+                    repositoryUrl={this.props.repository ? this.props.repository.configuration.repositoryUrl : ''}
                     multiple={this.props.settings.AllowMultiple ? this.props.settings.AllowMultiple : false}
                     renderIcon={this.props.renderIcon}
                   />

@@ -76,9 +76,10 @@ const fileContent: Image = {
   DisplayName: 'approving_enabled.png',
   Type: 'Image',
   Icon: 'image',
+  RateAvg: 32.5,
 }
 
-const testContent: GenericContent & { ExpectedRevenue: number } = {
+const testContent: GenericContent & { ExpectedRevenue: number; Color: string; Password: string } = {
   Name: 'Document_Library',
   DisplayName: 'Document Library',
   Description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu mi arcu.
@@ -90,10 +91,12 @@ const testContent: GenericContent & { ExpectedRevenue: number } = {
   Id: 4808,
   Path: '/Root/Sites/Default_Site',
   Type: 'GenericContent',
-  VersioningMode: [VersioningMode.Option0, VersioningMode.Option1],
+  VersioningMode: [VersioningMode.Option1],
   ModificationDate: new Date().toISOString(),
   Index: 42,
   ExpectedRevenue: 21.0,
+  Color: '#016d9e',
+  Password: 'password',
 }
 
 const userContent: User = {
@@ -278,6 +281,7 @@ fieldControlStory({
         repository={testRepository}
         content={actionName !== 'new' ? fileContent : undefined}
         extension="jpg"
+        fieldValue={actionName !== 'new' ? fileContent.DisplayName : undefined}
         settings={fieldMapping!.fieldSettings}
       />
     )
@@ -365,9 +369,23 @@ fieldControlStory({
     <DynamicControl
       actionName={actionName}
       repository={testRepository}
+      content={fileContent}
+      component={NumberComponent}
+      fieldName="RateAvg"
+    />
+  ),
+  markdown: numberNotes,
+  storyName: 'FieldControls.Number.Double',
+})
+
+fieldControlStory({
+  component: actionName => (
+    <DynamicControl
+      actionName={actionName}
+      repository={testRepository}
       content={testContent}
       component={Password}
-      fieldName="Name"
+      fieldName="Password"
     />
   ),
   markdown: passwordNotes,

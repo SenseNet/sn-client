@@ -75,6 +75,13 @@ module.exports = {
     'prefer-destructuring': ['error', { array: false, object: true }],
     'default-case': 'error',
     'sort-imports': ['error', { ignoreCase: true, ignoreDeclarationSort: true }],
+    'react/self-closing-comp': [
+      'error',
+      {
+        component: true,
+        html: true,
+      },
+    ],
   },
   overrides: [
     {

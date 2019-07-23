@@ -31,6 +31,11 @@ exports[`ReferenceField Component Container Should be rendered without error 1`]
 
 exports[`ReferenceField Component InputField Should be rendered without error 1`] = `
 <WithStyles(ForwardRef(TextField))
+  InputProps={
+    Object {
+      "inputRef": [Function],
+    }
+  }
   onChange={[Function]}
   type="text"
   value=""
@@ -39,9 +44,9 @@ exports[`ReferenceField Component InputField Should be rendered without error 1`
 
 exports[`ReferenceField Component Suggestion Should be rendered without error 1`] = `
 <WithStyles(ForwardRef(ListItem))
+  button={true}
   key="1"
   selected={true}
-  value={1}
 >
   <WithStyles(ForwardRef(ListItemText))
     primary={
