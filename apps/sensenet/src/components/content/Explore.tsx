@@ -17,6 +17,7 @@ export interface ExploreComponentProps {
   parent: number | string
   onNavigate: (newParent: GenericContent) => void
   onActivateItem: (item: GenericContent) => void
+  rootPath?: string
 }
 
 export const Explore: React.FunctionComponent<ExploreComponentProps> = props => {
@@ -27,7 +28,7 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
       <LoadSettingsContextProvider>
         <CurrentContentProvider idOrPath={props.parent}>
           <CurrentChildrenProvider>
-            <CurrentAncestorsProvider>
+            <CurrentAncestorsProvider root={props.rootPath}>
               <div style={{ marginTop: '13px', paddingBottom: '12px', borderBottom: '1px solid rgba(128,128,128,.2)' }}>
                 <ContentBreadcrumbs />
               </div>
@@ -39,7 +40,7 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
                     borderRight: '1px solid rgba(128,128,128,.2)',
                     overflow: 'auto',
                   }}
-                  parentPath={ConstantContent.PORTAL_ROOT.Path}
+                  parentPath={props.rootPath || ConstantContent.PORTAL_ROOT.Path}
                   loadOptions={{
                     orderby: [['DisplayName', 'asc'], ['Name', 'asc']],
                   }}

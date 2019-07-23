@@ -14,6 +14,7 @@ export interface SimpleListComponentProps {
   parent: number | string
   onNavigate: (newParent: GenericContent) => void
   onActivateItem: (item: GenericContent) => void
+  rootPath?: string
 }
 
 export const SimpleList: React.FunctionComponent<SimpleListComponentProps> = props => {
@@ -24,7 +25,7 @@ export const SimpleList: React.FunctionComponent<SimpleListComponentProps> = pro
       <LoadSettingsContextProvider>
         <CurrentContentProvider idOrPath={props.parent}>
           <CurrentChildrenProvider>
-            <CurrentAncestorsProvider>
+            <CurrentAncestorsProvider root={props.rootPath}>
               <CollectionComponent
                 enableBreadcrumbs={true}
                 onActivateItem={props.onActivateItem}

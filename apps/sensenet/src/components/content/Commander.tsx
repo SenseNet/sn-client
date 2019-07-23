@@ -13,13 +13,16 @@ import { AddButton } from '../AddButton'
 import { CollectionComponent } from '../content-list'
 import { AddDialog, CopyMoveDialog } from '../dialogs'
 
-export const CommanderComponent: React.FunctionComponent<{
+export interface CommanderComponentProps {
   leftParent: number | string
   rightParent: number | string
   onNavigateLeft: (newParent: GenericContent) => void
   onNavigateRight: (newParent: GenericContent) => void
   onActivateItem: (item: GenericContent) => void
-}> = props => {
+  rootPath: string
+}
+
+export const CommanderComponent: React.FunctionComponent<CommanderComponentProps> = props => {
   const repo = useRepository()
 
   const selectionService = useSelectionService()
@@ -80,7 +83,7 @@ export const CommanderComponent: React.FunctionComponent<{
             }}
           </CurrentContentContext.Consumer>
           <CurrentChildrenProvider>
-            <CurrentAncestorsProvider>
+            <CurrentAncestorsProvider root={props.rootPath}>
               <CollectionComponent
                 onFocus={() => {
                   setActivePanel('left')

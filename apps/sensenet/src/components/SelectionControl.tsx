@@ -8,7 +8,7 @@ export const SelectionControl: React.FunctionComponent<{ isSelected: boolean; co
   content,
 }) => (
   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 40, height: 40 }}>
-    <Checkbox checked={true} style={{ display: isSelected ? 'block' : 'none' }} />
-    <Icon item={content} style={{ display: isSelected ? 'none' : 'block' }} />
+    <Checkbox checked={true} style={{ display: isSelected ? undefined : 'none' }} />
+    <Icon item={content} style={{ display: isSelected ? 'none' : undefined }} />
   </div>
 )

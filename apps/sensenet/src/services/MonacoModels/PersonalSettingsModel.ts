@@ -2,7 +2,9 @@ import { LogLevel } from '@furystack/logging'
 import { Repository } from '@sensenet/client-core'
 import { editor, languages, Uri } from 'monaco-editor'
 import defaultLanguage from '../../localization/default'
-import { widgetTypes } from '../PersonalSettings'
+import { DrawerItemType, widgetTypes } from '../PersonalSettings'
+import { BrowseType } from '../../components/content'
+import { wellKnownIconNames } from '../../components/Icon'
 
 export const setupModel = (language = defaultLanguage, repo: Repository) => {
   const personalSettingsPath = `sensenet://PersonalSettings/PersonalSettings`
@@ -185,21 +187,19 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                   items: {
                     type: 'object',
                     properties: {
-                      title: { type: 'string', description: language.personalSettings.drawerItemTitle },
-                      description: { type: 'string', description: language.personalSettings.drawerItemDescription },
-                      icon: { type: 'string', description: language.personalSettings.drawerItemDescription },
                       itemType: {
                         type: 'string',
                         enum: [
-                          'Content', // -> root
-                          'Query', //
-                          // 'Content Types', // Query
-                          // 'Localization', // Query
-                          'Search', // Custom
-                          'Setup', // Custom
-                          'Trash', // Custom
-                          'Users and Groups', // Content
-                          'Version info', // Custom
+                          ...DrawerItemType,
+                          // 'Content', // -> root
+                          // 'Query', //
+                          // // 'Content Types', // Query
+                          // // 'Localization', // Query
+                          // 'Search', // Custom
+                          // 'Setup', // Custom
+                          // 'Trash', // Custom
+                          // // 'Users and Groups', // Content
+                          // 'Version info', // Custom
                         ],
                       },
                     },
@@ -208,34 +208,69 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                         if: { properties: { itemType: { const: 'Content' } } },
                         then: {
                           properties: {
-                            root: { type: 'string', description: language.drawer.contentRootDescription },
+                            settings: {
+                              type: 'object',
+                              properties: {
+                                root: { type: 'string', description: language.drawer.contentRootDescription },
+                                title: { type: 'string', description: language.personalSettings.drawerItemTitle },
+                                description: {
+                                  type: 'string',
+                                  description: language.personalSettings.drawerItemDescription,
+                                },
+                                icon: {
+                                  type: 'string',
+                                  enum: [...wellKnownIconNames],
+                                  description: language.personalSettings.drawerItemDescription,
+                                },
+                                browseType: {
+                                  description: language.personalSettings.contentBrowseType,
+                                  enum: [...BrowseType],
+                                },
+                              },
+                              required: ['root', 'title', 'icon'],
+                            },
                           },
-                          required: ['root'],
+                          required: ['settings'],
                         },
                       },
                       {
                         if: { properties: { itemType: { const: 'Query' } } },
                         then: {
                           properties: {
-                            term: { type: 'string', description: language.drawer.contentRootDescription },
-                            columns: {
-                              type: 'array',
-                              title: language.personalSettings.dashboard.queryWidget.columns,
-                              uniqueItems: true,
-                              examples: [['DisplayName', 'CreatedBy']],
-                              items: {
-                                enum: [
-                                  'Actions',
-                                  'Type',
-                                  /** ToDo: check for other displayable system fields */
-                                  ...repo.schemas.getSchemaByName('GenericContent').FieldSettings.map(f => f.Name),
-                                ],
+                            settings: {
+                              type: 'object',
+                              properties: {
+                                term: { type: 'string', description: language.drawer.contentRootDescription },
+                                columns: {
+                                  type: 'array',
+                                  title: language.personalSettings.dashboard.queryWidget.columns,
+                                  uniqueItems: true,
+                                  examples: [['DisplayName', 'CreatedBy']],
+                                  items: {
+                                    enum: [
+                                      'Actions',
+                                      'Type',
+                                      /** ToDo: check for other displayable system fields */
+                                      ...repo.schemas.getSchemaByName('GenericContent').FieldSettings.map(f => f.Name),
+                                    ],
+                                  },
+                                },
+                                title: { type: 'string', description: language.personalSettings.drawerItemTitle },
+                                description: {
+                                  type: 'string',
+                                  description: language.personalSettings.drawerItemDescription,
+                                },
+                                icon: {
+                                  type: 'string',
+                                  enum: [...wellKnownIconNames],
+                                  description: language.personalSettings.drawerItemDescription,
+                                },
                               },
+                              required: ['title', 'icon', 'term'],
                             },
                           },
-                          required: ['term'],
+                          required: ['settings'],
                         },
-                        required: ['itemType', 'title'],
                       },
                     ],
                   },
@@ -287,7 +322,7 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
               properties: {
                 browseType: {
                   description: language.personalSettings.contentBrowseType,
-                  enum: ['simple', 'commander', 'explorer'],
+                  enum: [...BrowseType],
                 },
                 fields: {
                   description: language.personalSettings.contentFields,

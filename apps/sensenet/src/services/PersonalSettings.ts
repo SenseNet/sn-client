@@ -4,25 +4,25 @@ import { deepMerge, ObservableValue } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { PlatformDependent } from '../context'
 import { tuple } from '../utils/tuple'
+import { BrowseType } from '../components/content'
 
 const settingsKey = `SN-APP-USER-SETTINGS`
 
 export interface UiSettings {
   theme: 'dark' | 'light'
   content: {
-    browseType: 'explorer' | 'commander' | 'simple'
+    browseType: typeof BrowseType[number]
     fields: Array<keyof GenericContent>
   }
   commandPalette: { enabled: boolean; wrapQuery: string }
   drawer: {
     enabled: boolean
     type: 'temporary' | 'permanent' | 'mini-variant'
-    items: string[]
+    items: Array<DrawerItem<any>>
   }
 }
 
 export const widgetTypes = tuple('markdown', 'query', 'updates')
-
 export interface Widget<T> {
   title: string
   widgetType: typeof widgetTypes[number]
@@ -54,6 +54,59 @@ export interface QueryWidget<T extends GenericContent>
 }
 
 export type WidgetSection = Array<MarkdownWidget | QueryWidget<GenericContent> | UpdatesWidget>
+
+export const DrawerItemType = tuple(
+  'Content',
+  'Query',
+  'Content Types',
+  'Query',
+  'Localization',
+  'Search',
+  'Setup',
+  'Trash',
+  'Version info',
+  'Users and groups',
+)
+
+export interface DrawerItem<T> {
+  /** */
+  settings: T
+  itemType: typeof DrawerItemType[number]
+}
+
+export interface ContentDrawerItem
+  extends DrawerItem<{
+    root: string
+    title: string
+    description?: string
+    icon: string
+    browseType: typeof BrowseType[number]
+  }> {
+  itemType: 'Content'
+}
+
+export interface QueryDrawerItem
+  extends DrawerItem<{
+    title: string
+    description?: string
+    icon: string
+    term: string
+    columns: Array<keyof GenericContent>
+  }> {
+  itemType: 'Query'
+}
+
+export interface BuiltinDrawerItem extends DrawerItem<undefined> {
+  itemType:
+    | 'Content Types'
+    | 'Query'
+    | 'Localization'
+    | 'Search'
+    | 'Setup'
+    | 'Trash'
+    | 'Version info'
+    | 'Users and groups'
+}
 
 export type PersonalSettingsType = PlatformDependent<UiSettings> & {
   repositories: Array<{ url: string; loginName?: string; displayName?: string; dashboard?: WidgetSection }>
@@ -208,7 +261,17 @@ export const defaultSettings: PersonalSettingsType = {
     drawer: {
       enabled: true,
       type: 'mini-variant',
-      items: ['Search', 'Content', 'Users and Groups', 'Content Types', 'Localization', 'Setup', 'Version info'],
+      // ToDo: presets
+      // items: ['Search', 'Content', 'Users and Groups', 'Content Types', 'Localization', 'Setup', 'Version info'],
+      items: [
+        { itemType: 'Search', settings: undefined },
+        { itemType: 'Content', settings: { root: '/Root' } },
+        { itemType: 'Users and groups', settings: undefined },
+        { itemType: 'Content Types', settings: undefined },
+        { itemType: 'Localization', settings: undefined },
+        { itemType: 'Setup', settings: undefined },
+        { itemType: 'Version info', settings: undefined },
+      ],
     },
     commandPalette: { enabled: true, wrapQuery: '${0} .AUTOFILTERS:OFF' },
   },

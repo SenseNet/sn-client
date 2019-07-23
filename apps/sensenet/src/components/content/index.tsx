@@ -4,17 +4,23 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { ConstantContent, ODataParams } from '@sensenet/client-core'
 import { LoadSettingsContext, ResponsivePersonalSetttings } from '../../context'
 import { useContentRouting, useLogger, useRepository } from '../../hooks'
+import { tuple } from '../../utils/tuple'
 import Commander from './Commander'
 import { Explore } from './Explore'
 import { SimpleList } from './Simple'
 
+export const BrowseType = tuple('commander', 'explorer', 'simple')
+
 export interface BrowseData {
-  type: 'commander' | 'explorer' | 'simple'
-  root?: number | string
+  type: typeof BrowseType[number]
+  root?: string
   currentContent?: number | string
   secondaryContent?: number | string // right parent
   loadChildrenSettings?: ODataParams<GenericContent>
 }
+
+export const encodeBrowseData = (data: BrowseData) => encodeURIComponent(btoa(JSON.stringify(data)))
+export const decodeBrowseData = (encoded: string) => JSON.parse(atob(decodeURIComponent(encoded))) as BrowseData
 
 export const Content: React.FunctionComponent<RouteComponentProps<{ browseData: string }>> = props => {
   const repo = useRepository()
@@ -28,7 +34,7 @@ export const Content: React.FunctionComponent<RouteComponentProps<{ browseData: 
 
   useEffect(() => {
     try {
-      const data = JSON.parse(atob(decodeURIComponent(props.match.params.browseData)))
+      const data = decodeBrowseData(props.match.params.browseData)
       setBrowseData(data)
     } catch (error) {
       logger.warning({ message: 'Wrong link :(' })
@@ -36,22 +42,24 @@ export const Content: React.FunctionComponent<RouteComponentProps<{ browseData: 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [logger, props.match.params.browseData])
 
-  const refreshUrl = useCallback((data: BrowseData) => {
-    props.history.push(
-      `/${btoa(repo.configuration.repositoryUrl)}/browse/${encodeURIComponent(btoa(JSON.stringify(data)))}`,
-    )
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const refreshUrl = useCallback(
+    (data: BrowseData) => {
+      props.history.push(`/${btoa(repo.configuration.repositoryUrl)}/browse/${encodeBrowseData(data)}`)
+    },
+    [props.history, repo.configuration.repositoryUrl],
+  )
 
-  const navigate = useCallback((itm: GenericContent) => {
-    const newBrowseData = {
-      ...browseData,
-      currentContent: itm.Id,
-    }
-    setBrowseData(newBrowseData)
-    refreshUrl(newBrowseData)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const navigate = useCallback(
+    (itm: GenericContent) => {
+      const newBrowseData = {
+        ...browseData,
+        currentContent: itm.Id,
+      }
+      setBrowseData(newBrowseData)
+      refreshUrl(newBrowseData)
+    },
+    [browseData, refreshUrl],
+  )
 
   const navigateSecondary = useCallback(
     (itm: GenericContent) => {
@@ -62,16 +70,17 @@ export const Content: React.FunctionComponent<RouteComponentProps<{ browseData: 
       setBrowseData(newBrowseData)
       refreshUrl(newBrowseData)
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    [browseData, refreshUrl],
   )
 
-  const setLoadChildrenSettings = useCallback((s: ODataParams<GenericContent>) => {
-    const newBrowseData: BrowseData = { ...browseData, loadChildrenSettings: s }
-    setBrowseData(newBrowseData)
-    refreshUrl(newBrowseData)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const setLoadChildrenSettings = useCallback(
+    (s: ODataParams<GenericContent>) => {
+      const newBrowseData: BrowseData = { ...browseData, loadChildrenSettings: s }
+      setBrowseData(newBrowseData)
+      refreshUrl(newBrowseData)
+    },
+    [browseData, refreshUrl],
+  )
 
   const openItem = useCallback(
     (itm: GenericContent) => {
@@ -92,6 +101,7 @@ export const Content: React.FunctionComponent<RouteComponentProps<{ browseData: 
       }}>
       {browseData.type === 'commander' ? (
         <Commander
+          rootPath={browseData.root || ConstantContent.PORTAL_ROOT.Path}
           leftParent={browseData.currentContent || browseData.root || ConstantContent.PORTAL_ROOT.Id}
           rightParent={browseData.secondaryContent || browseData.root || ConstantContent.PORTAL_ROOT.Id}
           onActivateItem={openItem}
@@ -100,12 +110,14 @@ export const Content: React.FunctionComponent<RouteComponentProps<{ browseData: 
         />
       ) : browseData.type === 'explorer' ? (
         <Explore
+          rootPath={browseData.root || ConstantContent.PORTAL_ROOT.Path}
           onNavigate={navigate}
           onActivateItem={openItem}
           parent={browseData.currentContent || browseData.root || ConstantContent.PORTAL_ROOT.Id}
         />
       ) : (
         <SimpleList
+          rootPath={browseData.root || ConstantContent.PORTAL_ROOT.Path}
           onNavigate={navigate}
           onActivateItem={openItem}
           parent={browseData.currentContent || browseData.root || ConstantContent.PORTAL_ROOT.Id}
