@@ -27,9 +27,7 @@ export const AddDialog: React.FunctionComponent<AddDialogProps> = ({ dialogProps
           handleCancel={handleClose}
           repository={repo}
           contentTypeName={schema.ContentTypeName}
-          schema={schema}
           path={parent.Path}
-          title=""
           onSubmit={async (parentPath, content) => {
             try {
               const created = await repo.post({

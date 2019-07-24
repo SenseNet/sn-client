@@ -3,7 +3,7 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import React from 'react'
 import { connect } from 'react-redux'
-import debounce from 'lodash.debounce'
+import { debounce } from '@sensenet/client-utils'
 import { RootReducerType, setActivePages } from '../../store'
 
 /**

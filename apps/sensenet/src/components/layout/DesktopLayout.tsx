@@ -1,5 +1,5 @@
 import CssBaseline from '@material-ui/core/CssBaseline'
-import React, { useState, useContext } from 'react'
+import React, { useContext, useState } from 'react'
 
 import snLogo from '../../assets/sensenet_logo_transparent.png'
 import { ResponsivePersonalSetttings } from '../../context'

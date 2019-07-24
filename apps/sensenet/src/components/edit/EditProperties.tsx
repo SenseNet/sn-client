@@ -16,7 +16,10 @@ const GenericContentEditor: React.FunctionComponent<RouteComponentProps<{ conten
 
   return (
     <div style={{ width: '100%', height: '100%', padding: '1em', overflow: 'auto' }}>
-      <CurrentContentProvider idOrPath={contentId} onContentLoaded={c => selectionService.activeContent.setValue(c)}>
+      <CurrentContentProvider
+        idOrPath={contentId}
+        onContentLoaded={c => selectionService.activeContent.setValue(c)}
+        oDataOptions={{ select: 'all' }}>
         <CurrentAncestorsProvider>
           <ContentBreadcrumbs />
           <CurrentContentContext.Consumer>
@@ -24,10 +27,8 @@ const GenericContentEditor: React.FunctionComponent<RouteComponentProps<{ conten
               <>
                 {content && content.Id === contentId ? (
                   <EditView
-                    schema={repo.schemas.getSchemaByName(content.Type)}
                     content={content}
                     repository={repo}
-                    contentTypeName={content.Type}
                     onSubmit={(id, c) => {
                       repo
                         .patch({

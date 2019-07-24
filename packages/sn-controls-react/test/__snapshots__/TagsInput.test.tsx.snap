@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tags input field control in browse view should show all the content passed as fieldValue 1`] = `
+<WithStyles(ForwardRef(FormControl))
+  component="fieldset"
+>
+  <WithStyles(WithFormControlContext(ForwardRef(FormLabel)))
+    component="legend"
+  >
+    Members
+  </WithStyles(WithFormControlContext(ForwardRef(FormLabel)))>
+  <WithStyles(ForwardRef(FormGroup))>
+    <WithStyles(ForwardRef(FormControl))
+      component="fieldset"
+      key="0"
+    >
+      <WithStyles(WithFormControlContext(ForwardRef(FormControlLabel)))
+        control={<span />}
+        key="4804"
+        label="Alba Monday"
+        style={
+          Object {
+            "marginLeft": 0,
+          }
+        }
+      />
+    </WithStyles(ForwardRef(FormControl))>
+  </WithStyles(ForwardRef(FormGroup))>
+</WithStyles(ForwardRef(FormControl))>
+`;

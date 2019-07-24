@@ -1,7 +1,7 @@
 import Grid from '@material-ui/core/Grid'
 import React from 'react'
 import { connect } from 'react-redux'
-import debounce from 'lodash.debounce'
+import { debounce } from '@sensenet/client-utils'
 import { DraftCommentMarker, PreviewImageData } from '../models'
 import { componentType, ImageUtil } from '../services'
 import { RootReducerType, ZoomMode } from '../store'

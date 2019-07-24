@@ -10,37 +10,14 @@ import Autosuggest, {
   SuggestionSelectedEventData,
   SuggestionsFetchRequestedParams,
 } from 'react-autosuggest'
-import { connect } from 'react-redux'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { LocalizationContext, RepositoryContext, ThemeContext } from '../../context'
-import { rootStateType } from '../../store'
-import {
-  clearItems,
-  close,
-  CommandPaletteItem,
-  open,
-  setInputValue,
-  updateItemsFromTerm,
-} from '../../store/CommandPalette'
+import { CommandPaletteItem, useCommandPalette } from '../../hooks'
 import { CommandPaletteHitsContainer } from './CommandPaletteHitsContainer'
 import { CommandPaletteSuggestion } from './CommandPaletteSuggestion'
 
-const mapStateToProps = (state: rootStateType) => ({
-  isOpened: state.commandPalette.isOpened,
-  items: state.commandPalette.items,
-  inputValue: state.commandPalette.inputValue,
-})
-
-const mapDispatchToProps = {
-  open,
-  close,
-  setInputValue,
-  updateItemsFromTerm,
-  clearItems,
-}
-
 export class CommandPaletteComponent extends React.Component<
-  ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & RouteComponentProps,
+  RouteComponentProps & ReturnType<typeof useCommandPalette>,
   { delayedOpened: boolean }
 > {
   private containerRef?: HTMLDivElement
@@ -55,14 +32,14 @@ export class CommandPaletteComponent extends React.Component<
       ev.preventDefault()
       if (ev.shiftKey) {
         this.props.setInputValue('>')
-        this.props.open()
+        this.props.setIsOpened(true)
       } else {
         this.props.setInputValue('')
-        this.props.open()
+        this.props.setIsOpened(true)
       }
     } else {
       if (ev.key === 'Escape') {
-        this.props.close()
+        this.props.setIsOpened(false)
       }
     }
   }
@@ -76,7 +53,8 @@ export class CommandPaletteComponent extends React.Component<
   }
 
   private handleSuggestionsFetchRequested = debounce((options: SuggestionsFetchRequestedParams, repo: Repository) => {
-    this.props.updateItemsFromTerm(options.value, repo)
+    this.props.setRepository(repo)
+    this.props.setInputValue(options.value)
   }, 200)
 
   public componentDidMount() {
@@ -103,7 +81,7 @@ export class CommandPaletteComponent extends React.Component<
     } else {
       this.props.history.push(suggestion.suggestion.url)
     }
-    this.props.close()
+    this.props.setIsOpened(false)
   }
 
   private setDelayedOpenedState = debounce((value: boolean) => {
@@ -131,11 +109,11 @@ export class CommandPaletteComponent extends React.Component<
       id: 'CommandBoxInput',
       autoFocus: true,
       spellCheck: false,
-      onBlur: this.props.close,
+      onBlur: () => this.props.setIsOpened(false),
     }
 
     return (
-      <ClickAwayListener onClickAway={this.props.close}>
+      <ClickAwayListener onClickAway={() => this.props.setIsOpened(false)}>
         <ThemeContext.Consumer>
           {theme => (
             <div
@@ -151,7 +129,7 @@ export class CommandPaletteComponent extends React.Component<
                 <LocalizationContext.Consumer>
                   {localization => (
                     <Tooltip style={{}} placeholder="bottom-end" title={localization.values.commandPalette.title}>
-                      <IconButton onClick={this.props.open} style={{ padding: undefined }}>
+                      <IconButton onClick={() => this.props.setIsOpened(true)} style={{ padding: undefined }}>
                         <KeyboardArrowRightTwoTone />
                         {'_'}
                       </IconButton>
@@ -194,7 +172,7 @@ export class CommandPaletteComponent extends React.Component<
                   highlightFirstSuggestion={true}
                   onSuggestionSelected={this.handleSelectSuggestion}
                   onSuggestionsFetchRequested={e => this.handleSuggestionsFetchRequested(e, this.context)}
-                  onSuggestionsClearRequested={this.props.clearItems}
+                  onSuggestionsClearRequested={() => this.props.setItems([])}
                   getSuggestionValue={s => s.primaryText}
                   renderSuggestion={(s, params) => <CommandPaletteSuggestion suggestion={s} params={params} />}
                   renderSuggestionsContainer={s => (
@@ -214,10 +192,6 @@ export class CommandPaletteComponent extends React.Component<
   }
 }
 
-const connectedComponent = withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(CommandPaletteComponent),
-)
-export { connectedComponent as CommandPalette }
+const routed = withRouter(CommandPaletteComponent)
+
+export { routed as CommandPalette }

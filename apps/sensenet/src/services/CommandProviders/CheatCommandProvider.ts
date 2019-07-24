@@ -1,6 +1,6 @@
 import { Injectable } from '@furystack/inject'
-import { CommandPaletteItem } from '../../store/CommandPalette'
-import { CommandProvider } from '../CommandProviderManager'
+import { CommandProvider, SearchOptions } from '../CommandProviderManager'
+import { CommandPaletteItem } from '../../hooks'
 
 @Injectable({ lifetime: 'singleton' })
 export class CheatCommandProvider implements CommandProvider {
@@ -33,10 +33,10 @@ export class CheatCommandProvider implements CommandProvider {
     },
   }
 
-  public shouldExec(term: string) {
-    return Object.keys(this.items).indexOf(term) !== -1
+  public shouldExec(options: SearchOptions) {
+    return Object.keys(this.items).indexOf(options.term) !== -1
   }
-  public async getItems(term: string): Promise<CommandPaletteItem[]> {
-    return (this.items as any)[term]
+  public async getItems(options: SearchOptions): Promise<CommandPaletteItem[]> {
+    return (this.items as any)[options.term]
   }
 }

@@ -90,7 +90,7 @@ export class Upload {
   private getFormDataFromOptions(options: UploadFileOptions<any>) {
     const formData = new FormData()
     formData.append('ChunkToken', '0*0*False*False')
-    formData.append('FileName', options.file.name)
+    formData.append('FileName', options.fileName || options.file.name)
     formData.append('Overwrite', options.overwrite.toString())
     formData.append('PropertyName', options.binaryPropertyName.toString())
     formData.append('FileLength', options.file.size.toString())

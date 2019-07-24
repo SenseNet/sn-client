@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`File name field control in browse view should show the displayname and fieldValue when fieldValue is provided 1`] = `
+<div>
+  <WithStyles(ForwardRef(Typography))
+    gutterBottom={true}
+    variant="caption"
+  >
+    Display name
+  </WithStyles(ForwardRef(Typography))>
+  <WithStyles(ForwardRef(Typography))
+    gutterBottom={true}
+    variant="body1"
+  >
+    approving_enabled.png
+  </WithStyles(ForwardRef(Typography))>
+</div>
+`;
+
+exports[`File name field control in edit/new view should set all the props 1`] = `
+<WithStyles(ForwardRef(TextField))
+  InputProps={
+    Object {
+      "endAdornment": <ForwardRef(WithStyles)
+        position="end"
+      >
+        <span>
+          .png
+        </span>
+      </ForwardRef(WithStyles)>,
+    }
+  }
+  autoFocus={true}
+  defaultValue="defaultValue"
+  disabled={true}
+  fullWidth={true}
+  helperText="description"
+  id="DisplayName"
+  label="Display name"
+  name="DisplayName"
+  onChange={[Function]}
+  placeholder="Display name"
+  required={true}
+  value="approving_enabled"
+/>
+`;

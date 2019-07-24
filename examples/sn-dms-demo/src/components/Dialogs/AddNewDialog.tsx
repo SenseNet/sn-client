@@ -73,13 +73,12 @@ class AddNewDialog extends React.Component<
               <RepositoryContext.Consumer>
                 {repository => (
                   <LoadableNewView
-                    schema={schema}
                     path={parentPath}
                     repository={repository}
                     contentTypeName={contentTypeName}
                     handleCancel={() => this.handleCancel()}
                     onSubmit={createContent}
-                    title={title}
+                    showTitle={!!title}
                     extension={extension}
                     submitCallback={this.submitCallback}
                   />

@@ -2,13 +2,9 @@
   "extends": "../../tsconfig-base.json",
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "src",
-    "suppressImplicitAnyIndexErrors": true,
-    "experimentalDecorators": true
+    "rootDir": "src"
   },
-  "include": [
-    "src"
-  ],
+  "include": ["src"],
   "references": [
     {
       "path": "../sn-client-core"
@@ -21,6 +17,9 @@
     },
     {
       "path": "../sn-redux"
+    },
+    {
+      "path": "../sn-search-react"
     }
   ]
 }

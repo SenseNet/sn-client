@@ -102,9 +102,14 @@ export interface ContentListProps<T extends GenericContent> {
   checkboxProps?: CheckboxProps
 
   /**
-   *
+   * Optional custom selection component
    */
   getSelectionControl?: (selected: boolean, content: T) => JSX.Element
+
+  /**
+   * Setting to hide the table headers
+   */
+  hideHeader?: boolean
 }
 
 export interface ContentListState {
@@ -166,7 +171,8 @@ export class ContentList<T extends GenericContent> extends React.Component<Conte
         break
       case 'ModificationDate':
         return <DateCell date={props.content.ModificationDate as string} />
-      // no default
+      default:
+        break
     }
     const field: any = props.content[props.field]
     if (field && field.Id && field.Path && field.DisplayName) {
@@ -186,48 +192,50 @@ export class ContentList<T extends GenericContent> extends React.Component<Conte
     const orderBy = this.props.orderBy ? this.props.orderBy : 'DisplayName'
     return (
       <Table>
-        <TableHead>
-          <TableRow>
-            {this.props.displayRowCheckbox !== false ? (
-              <TableCell padding="checkbox" key="selectAll" style={{ width: '30px', paddingRight: 0 }}>
-                <Checkbox
-                  className="select-all"
-                  indeterminate={this.state.hasSelected && !this.state.isAllSelected}
-                  checked={this.state.isAllSelected}
-                  onChange={this.handleSelectAllClick}
-                />
-              </TableCell>
-            ) : null}
-            {this.props.fieldsToDisplay
-              ? this.props.fieldsToDisplay.map(field => {
-                  const fieldSetting = this.props.schema.FieldSettings.find(s => s.Name === field)
-                  const isNumeric =
-                    fieldSetting &&
-                    (fieldSetting.Type === 'IntegerFieldSetting' || fieldSetting.Type === 'NumberFieldSetting')
-                  const description = (fieldSetting && fieldSetting.Description) || field
-                  const displayName = (fieldSetting && fieldSetting.DisplayName) || field
-                  return (
-                    <TableCell
-                      key={field as string}
-                      align={isNumeric ? 'right' : 'inherit'}
-                      className={field as string}>
-                      <Tooltip title={description}>
-                        <TableSortLabel
-                          active={orderBy === field}
-                          direction={orderDirection}
-                          onClick={() =>
-                            this.props.onRequestOrderChange &&
-                            this.props.onRequestOrderChange(field, orderDirection === 'asc' ? 'desc' : 'asc')
-                          }>
-                          {displayName}
-                        </TableSortLabel>
-                      </Tooltip>
-                    </TableCell>
-                  )
-                })
-              : null}
-          </TableRow>
-        </TableHead>
+        {this.props.hideHeader ? null : (
+          <TableHead>
+            <TableRow>
+              {this.props.displayRowCheckbox !== false ? (
+                <TableCell padding="checkbox" key="selectAll" style={{ width: '30px', paddingRight: 0 }}>
+                  <Checkbox
+                    className="select-all"
+                    indeterminate={this.state.hasSelected && !this.state.isAllSelected}
+                    checked={this.state.isAllSelected}
+                    onChange={this.handleSelectAllClick}
+                  />
+                </TableCell>
+              ) : null}
+              {this.props.fieldsToDisplay
+                ? this.props.fieldsToDisplay.map(field => {
+                    const fieldSetting = this.props.schema.FieldSettings.find(s => s.Name === field)
+                    const isNumeric =
+                      fieldSetting &&
+                      (fieldSetting.Type === 'IntegerFieldSetting' || fieldSetting.Type === 'NumberFieldSetting')
+                    const description = (fieldSetting && fieldSetting.Description) || field
+                    const displayName = (fieldSetting && fieldSetting.DisplayName) || field
+                    return (
+                      <TableCell
+                        key={field as string}
+                        align={isNumeric ? 'right' : 'inherit'}
+                        className={field as string}>
+                        <Tooltip title={description}>
+                          <TableSortLabel
+                            active={orderBy === field}
+                            direction={orderDirection}
+                            onClick={() =>
+                              this.props.onRequestOrderChange &&
+                              this.props.onRequestOrderChange(field, orderDirection === 'asc' ? 'desc' : 'asc')
+                            }>
+                            {displayName}
+                          </TableSortLabel>
+                        </Tooltip>
+                      </TableCell>
+                    )
+                  })
+                : null}
+            </TableRow>
+          </TableHead>
+        )}
         <TableBody>
           {this.props.items.map(item => {
             const isSelected = selected.find(s => s.Id === item.Id) ? true : false

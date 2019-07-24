@@ -1,15 +1,15 @@
 import { Injectable } from '@furystack/inject'
-import { CommandPaletteItem } from '../../store/CommandPalette'
-import { CommandProvider } from '../CommandProviderManager'
+import { CommandProvider, SearchOptions } from '../CommandProviderManager'
 import { LocalizationService } from '../LocalizationService'
+import { CommandPaletteItem } from '../../hooks'
 
 @Injectable({ lifetime: 'transient' })
 export class HelpCommandProvider implements CommandProvider {
-  public shouldExec(term: string) {
+  public shouldExec({ term }: SearchOptions) {
     return term === '?' || term === 'help'
   }
 
-  public async getItems(term: string): Promise<CommandPaletteItem[]> {
+  public async getItems({ term }: SearchOptions): Promise<CommandPaletteItem[]> {
     return [
       {
         primaryText: this.localizationService.currentValues.getValue().commandPalette.help.readMeTitle,

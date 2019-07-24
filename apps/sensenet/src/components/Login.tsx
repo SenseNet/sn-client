@@ -8,21 +8,23 @@ import { ConstantContent, FormsAuthenticationService } from '@sensenet/client-co
 import { Retrier, sleepAsync } from '@sensenet/client-utils'
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { useInjector, useLocalization, usePersonalSettings, useRepository, useSession, useTheme } from '../hooks'
-import { PersonalSettings } from '../services/PersonalSettings'
+import { useInjector, useLocalization, useRepository, useSession, useTheme } from '../hooks'
+import { PersonalSettings, PersonalSettingsType } from '../services/PersonalSettings'
 import { UserAvatar } from './UserAvatar'
 
 export const Login: React.FunctionComponent<RouteComponentProps> = props => {
   const injector = useInjector()
   const repo = useRepository()
   const theme = useTheme()
-  const personalSettings = usePersonalSettings()
+  const personalSettings = injector.getInstance(PersonalSettings).userValue.getValue()
   const session = useSession()
   const settingsManager = injector.getInstance(PersonalSettings)
 
   const logger = injector.logger.withScope('LoginComponent')
 
-  const existingRepo = personalSettings.repositories.find(r => r.url === repo.configuration.repositoryUrl)
+  const repositories: PersonalSettingsType['repositories'] = personalSettings.repositories || []
+
+  const existingRepo = repositories.find(r => r.url === repo.configuration.repositoryUrl)
 
   const [userName, setUserName] = useState((existingRepo && existingRepo.loginName) || '')
   const [password, setPassword] = useState('')
@@ -51,11 +53,11 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
       setSuccess(result)
       if (result) {
         setError(undefined)
-        const existing = personalSettings.repositories.find(i => i.url === url)
+        const existing = repositories.find(i => i.url === url)
         if (!existing) {
-          personalSettings.repositories.push({ url, loginName: userName })
+          repositories.push({ url, loginName: userName })
         } else {
-          personalSettings.repositories = personalSettings.repositories.map(r => {
+          personalSettings.repositories = repositories.map(r => {
             if (r.url === url) {
               r.loginName = userName
             }
@@ -63,7 +65,7 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
           })
         }
         ;(repoToLogin.authentication as FormsAuthenticationService).getCurrentUser()
-        settingsManager.setValue(personalSettings)
+        settingsManager.setPersonalSettingsValue({ ...personalSettings, repositories })
         await Retrier.create(
           async () => repoToLogin.authentication.currentUser.getValue().Id !== ConstantContent.VISITOR_USER.Id,
         )

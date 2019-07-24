@@ -1,4 +1,4 @@
-import { ILeveledLogEntry, LogLevel } from '@furystack/logging'
+import { LeveledLogEntry, LogLevel } from '@furystack/logging'
 import IconButton from '@material-ui/core/IconButton'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -21,11 +21,11 @@ import { Icon } from '../Icon'
 import { EventListFilterContext } from './filter-context'
 
 export const List: React.FunctionComponent<{
-  values: Array<ILeveledLogEntry<any>>
+  values: Array<LeveledLogEntry<any>>
   style?: React.CSSProperties
 }> = props => {
   const { filter } = useContext(EventListFilterContext)
-  const [effectiveValues, setEffectiveValues] = useState<Array<ILeveledLogEntry<any>>>([])
+  const [effectiveValues, setEffectiveValues] = useState<Array<LeveledLogEntry<any>>>([])
 
   const localization = useLocalization().eventList.list
 

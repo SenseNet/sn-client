@@ -1,4 +1,4 @@
-import { GenericContent, File, ActionModel } from '@sensenet/default-content-types'
+import { ActionModel, File, GenericContent } from '@sensenet/default-content-types'
 import { isContentFromType } from '../utils/isContentFromType'
 import { useRepository } from './use-repository'
 export const useWopi = (content: GenericContent) => {

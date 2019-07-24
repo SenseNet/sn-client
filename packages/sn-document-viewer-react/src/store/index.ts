@@ -1,4 +1,4 @@
-import { compose, Store, Action, applyMiddleware, createStore } from 'redux'
+import { Action, applyMiddleware, compose, createStore, Store } from 'redux'
 import { ReduxDiMiddleware } from 'redux-di-middleware'
 import { DocumentViewerSettings } from '../models'
 import { rootReducer, RootReducerType } from './RootReducer'

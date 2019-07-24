@@ -11,9 +11,9 @@ import Settings from '@material-ui/icons/Settings'
 import { PathHelper } from '@sensenet/client-utils'
 import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
-import { matchPath, NavLink, RouteComponentProps, Link } from 'react-router-dom'
+import { Link, matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
 
-import { ResponsivePersonalSetttings } from '../../context'
+import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
 import { useLocalization, usePersonalSettings, useRepository, useSession, useTheme } from '../../hooks'
 import { LogoutButton } from '../LogoutButton'
 import { UserAvatar } from '../UserAvatar'
@@ -23,6 +23,7 @@ const TemporaryDrawer: React.FunctionComponent<
   RouteComponentProps & { isOpened: boolean; onClose: () => void; onOpen: () => void }
 > = props => {
   const settings = useContext(ResponsivePersonalSetttings)
+  const device = useContext(ResponsiveContext)
   const personalSettings = usePersonalSettings()
   const repo = useRepository()
   const theme = useTheme()
@@ -73,9 +74,9 @@ const TemporaryDrawer: React.FunctionComponent<
           {items
             .filter(i => settings.drawer.items && settings.drawer.items.indexOf(i.name) !== -1)
             .map(item => {
-              const isActive = matchPath(props.location.pathname, item.url)
+              const isActive = matchPath(props.location.pathname, `/:repositoryId${item.url}`)
               return isActive ? (
-                <ListItem button={true} disabled={true} key={item.name}>
+                <ListItem button={true} selected key={item.name}>
                   <Tooltip
                     title={
                       <React.Fragment>
@@ -124,11 +125,13 @@ const TemporaryDrawer: React.FunctionComponent<
               secondaryTypographyProps={{ style: { overflow: 'hidden', textOverflow: 'ellipsis' } }}
             />
             <ListItemSecondaryAction>
-              <Link to={`/personalSettings`} style={{ textDecoration: 'none' }} onClick={() => props.onClose()}>
-                <IconButton title={localization.personalSettingsTitle}>
-                  <Settings />
-                </IconButton>
-              </Link>
+              {device === 'mobile' ? null : (
+                <Link to={`/personalSettings`} style={{ textDecoration: 'none' }} onClick={() => props.onClose()}>
+                  <IconButton title={localization.personalSettingsTitle}>
+                    <Settings />
+                  </IconButton>
+                </Link>
+              )}
               <LogoutButton onLoggedOut={() => props.onClose()} />
             </ListItemSecondaryAction>
           </ListItem>

@@ -1,43 +1,29 @@
 /**
  * @module ViewControls
  */
-import React, { Component, createElement } from 'react'
-
+import React, { createElement, ReactElement, useState } from 'react'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import { Repository } from '@sensenet/client-core'
-import { ControlSchema } from '@sensenet/control-mapper'
-import { GenericContent, Schema } from '@sensenet/default-content-types'
+import { ContentType } from '@sensenet/default-content-types'
 import MediaQuery from 'react-responsive'
-import { ReactClientFieldSettingProps } from '../fieldcontrols/ClientFieldSetting'
 import { reactControlMapper } from '../ReactControlMapper'
-import { styles } from './NewViewStyles'
 
 /**
  * Interface for NewView properties
  */
-export interface NewViewProps<T extends GenericContent = GenericContent> {
-  onSubmit?: (path: string, content: T, contentTypeName: string) => void
+export interface NewViewProps {
+  onSubmit?: (path: string, content: ContentType, contentTypeName: string) => void
   repository: Repository
-  renderIcon?: (name: string) => JSX.Element
-  schema?: Schema
+  renderIcon?: (name: string) => ReactElement
   path: string
   contentTypeName: string
-  extension?: string
-  columns?: string[]
   handleCancel?: () => void
   submitCallback?: () => void
-  title?: string
-  uploadFolderPath?: string
-}
-/**
- * Interface for NewView state
- */
-export interface NewViewState<T extends GenericContent = GenericContent> {
-  schema: ControlSchema<React.Component<any, any, any>, ReactClientFieldSettingProps>
-  dataSource: GenericContent[]
-  content: T
+  showTitle?: boolean
+  extension?: string
+  uploadFolderpath?: string
 }
 
 /**
@@ -48,120 +34,68 @@ export interface NewViewState<T extends GenericContent = GenericContent> {
  *  <NewView content={content} onSubmit={createSubmitClick} />
  * ```
  */
-export class NewView<T extends GenericContent, K extends keyof T> extends Component<NewViewProps<T>, NewViewState> {
-  /**
-   * constructor
-   * @param {object} props
-   */
-  constructor(props: any) {
-    super(props)
-    /**
-     * @type {object}
-     * @property {any} content empty base Content
-     */
-    const controlMapper = reactControlMapper(this.props.repository)
-    this.state = {
-      schema: controlMapper.getFullSchemaForContentType(this.props.contentTypeName, 'new'),
-      dataSource: [],
-      // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
-      content: {} as T,
-    }
+export const NewView: React.FC<NewViewProps> = props => {
+  const controlMapper = reactControlMapper(props.repository)
+  const schema = controlMapper.getFullSchemaForContentType(props.contentTypeName, 'new')
+  const [content, setContent] = useState({})
 
-    this.handleInputChange = this.handleInputChange.bind(this)
-    this.handleCancel = this.handleCancel.bind(this)
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    props.onSubmit && props.onSubmit(props.path, content as any, schema.schema.ContentTypeName)
+    props.submitCallback && props.submitCallback()
   }
-  /**
-   * handle cancle button click
-   */
-  public handleCancel() {
-    return this.props.handleCancel ? this.props.handleCancel() : null
+
+  const handleInputChange = (field: string, value: unknown) => {
+    setContent({ ...content, [field]: value })
   }
-  /**
-   * handle change event on an input
-   * @param {SytheticEvent} event
-   */
-  public handleInputChange(field: keyof T, value: T[K]) {
-    ;(this.state.content as T)[field] = value
-  }
-  /**
-   * render
-   * @return {ReactElement} markup
-   */
-  public render() {
-    const fieldSettings = this.state.schema.fieldMappings
-    const { onSubmit, repository, path, columns, contentTypeName, extension, title, submitCallback } = this.props
-    const { schema } = this.state
-    return (
-      <form
-        style={styles.container}
-        onSubmit={e => {
-          e.preventDefault()
-          if (onSubmit) {
-            onSubmit(path, this.state.content as T, schema.schema.ContentTypeName)
-          }
-          if (submitCallback) {
-            submitCallback()
-          }
-        }}>
-        {title !== undefined ? (
-          <Typography variant="h5" gutterBottom={true}>
-            {`New ${schema.schema.DisplayName}`}
-          </Typography>
-        ) : (
-          title
-        )}
-        <Grid container={true} spacing={2}>
-          {fieldSettings.map(fieldSetting => {
-            if (fieldSetting.clientSettings['data-typeName'] === 'ReferenceFieldSetting') {
-              fieldSetting.clientSettings['data-repository'] = repository
-            }
-            if (
-              contentTypeName.indexOf('File') > -1 &&
-              extension &&
-              fieldSetting.fieldSettings.ControlHint === 'sn:FileName'
-            ) {
-              fieldSetting.clientSettings['data-extension'] = extension
-            }
-            fieldSetting.clientSettings.onChange = this.handleInputChange as any
-            fieldSetting.clientSettings['data-actionName'] = 'new'
-            fieldSetting.clientSettings['data-uploadFolderPath'] = this.props.uploadFolderPath || ''
-            fieldSetting.clientSettings['data-repository'] = this.props.repository
-            fieldSetting.clientSettings['data-repositoryUrl'] = repository.configuration.repositoryUrl
-            fieldSetting.clientSettings['data-renderIcon'] = this.props.renderIcon || undefined
-            if (fieldSetting.fieldSettings.Type === 'CurrencyFieldSetting') {
-              fieldSetting.fieldSettings.Type = 'NumberFieldSetting'
-            }
-            return (
-              <Grid
-                item={true}
-                xs={12}
-                sm={12}
-                md={fieldSetting.clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                lg={fieldSetting.clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                xl={fieldSetting.clientSettings['data-typeName'] === 'LongTextFieldSetting' || !columns ? 12 : 6}
-                key={fieldSetting.clientSettings.name}>
-                {createElement(fieldSetting.controlType, {
-                  ...fieldSetting.clientSettings,
-                })}
-              </Grid>
-            )
-          })}
-          <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12} style={{ textAlign: 'right' }}>
-            <MediaQuery minDeviceWidth={700}>
-              {matches =>
-                matches ? (
-                  <Button color="default" style={{ marginRight: 20 }} onClick={() => this.handleCancel()}>
-                    Cancel
-                  </Button>
-                ) : null
-              }
-            </MediaQuery>
-            <Button type="submit" variant="contained" color="secondary">
-              Submit
+
+  return (
+    <form style={{ margin: '0 auto' }} onSubmit={handleSubmit}>
+      {props.showTitle && (
+        <Typography variant="h5" gutterBottom={true}>
+          {`New ${schema.schema.DisplayName}`}
+        </Typography>
+      )}
+      <Grid container={true} spacing={2}>
+        {schema.fieldMappings.map(field => {
+          return (
+            <Grid
+              item={true}
+              xs={12}
+              sm={12}
+              md={field.fieldSettings.Name === 'LongTextFieldSetting' ? 12 : 6}
+              lg={field.fieldSettings.Name === 'LongTextFieldSetting' ? 12 : 6}
+              xl={field.fieldSettings.Name === 'LongTextFieldSetting' ? 12 : 6}
+              key={field.fieldSettings.Name}>
+              {createElement(
+                controlMapper.getControlForContentField(props.contentTypeName, field.fieldSettings.Name, 'new'),
+                {
+                  actionName: 'new',
+                  settings: field.fieldSettings,
+                  repository: props.repository,
+                  renderIcon: props.renderIcon,
+                  fieldOnChange: handleInputChange,
+                  extension: props.extension,
+                  uploadFolderPath: props.uploadFolderpath,
+                },
+              )}
+            </Grid>
+          )
+        })}
+        <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12} style={{ textAlign: 'right' }}>
+          <MediaQuery minDeviceWidth={700}>
+            <Button
+              color="default"
+              style={{ marginRight: 20 }}
+              onClick={() => props.handleCancel && props.handleCancel()}>
+              Cancel
             </Button>
-          </Grid>
+          </MediaQuery>
+          <Button type="submit" variant="contained" color="secondary">
+            Submit
+          </Button>
         </Grid>
-      </form>
-    )
-  }
+      </Grid>
+    </form>
+  )
 }

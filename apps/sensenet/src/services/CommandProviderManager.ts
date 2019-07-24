@@ -1,10 +1,17 @@
 import { Injectable, Injector } from '@furystack/inject'
 import { Repository } from '@sensenet/client-core'
-import { CommandPaletteItem } from '../store/CommandPalette'
+import { CommandPaletteItem } from '../hooks'
+import { ResponsivePlatforms } from '../context'
 
 export interface CommandProvider {
-  shouldExec: (term: string) => boolean
-  getItems: (term: string, repo: Repository) => Promise<CommandPaletteItem[]>
+  shouldExec: (options: SearchOptions) => boolean
+  getItems: (options: SearchOptions) => Promise<CommandPaletteItem[]>
+}
+
+export interface SearchOptions {
+  term: string
+  repository: Repository
+  device: ResponsivePlatforms
 }
 
 @Injectable({ lifetime: 'singleton' })
@@ -19,8 +26,8 @@ export class CommandProviderManager {
     }
   }
 
-  public async getItems(term: string, repo: Repository) {
-    const promises = this.Providers.filter(p => p.shouldExec(term)).map(provider => provider.getItems(term, repo))
+  public async getItems(options: SearchOptions) {
+    const promises = this.Providers.filter(p => p.shouldExec(options)).map(provider => provider.getItems(options))
     const results = await Promise.all(promises)
     return results.reduce((acc, val) => acc.concat(val), []) // flattern
   }

@@ -1,10 +1,10 @@
 import { Injectable } from '@furystack/inject'
-import { ILeveledLogEntry, LogLevel } from '@furystack/logging'
+import { LeveledLogEntry, LogLevel } from '@furystack/logging'
 import { debounce, ObservableValue } from '@sensenet/client-utils'
 import { v1 } from 'uuid'
 import { PersonalSettings } from './PersonalSettings'
 
-export type EventLogEntry<T> = ILeveledLogEntry<T & { guid: string; isDismissed?: boolean }>
+export type EventLogEntry<T> = LeveledLogEntry<T & { guid: string; isDismissed?: boolean }>
 
 @Injectable({ lifetime: 'singleton' })
 export class EventService {
@@ -35,7 +35,7 @@ export class EventService {
 
   private storeChanges = debounce(() => {
     const values = [...this.values.getValue()]
-    const entries = values.slice(values.length - this.personalSettings.currentValue.getValue().eventLogSize)
+    const entries = values.slice(values.length - this.personalSettings.effectiveValue.getValue().eventLogSize)
     localStorage.setItem(EventService.storageKey, JSON.stringify(entries))
   }, EventService.storageDebounceInterval)
 

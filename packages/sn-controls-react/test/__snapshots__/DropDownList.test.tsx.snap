@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Drop down list field control in edit/new view should set all the props 1`] = `
+<WithStyles(ForwardRef(FormControl))
+  disabled={true}
+  fullWidth={true}
+  required={true}
+>
+  <WithStyles(WithFormControlContext(ForwardRef(InputLabel)))
+    htmlFor="VersioningMode"
+  >
+    Versioning Mode For Current Content
+  </WithStyles(WithFormControlContext(ForwardRef(InputLabel)))>
+  <WithStyles(WithFormControlContext(ForwardRef(Select)))
+    autoWidth={true}
+    defaultValue="0"
+    fullWidth={true}
+    inputProps={
+      Object {
+        "id": "VersioningMode",
+        "name": "VersioningMode",
+      }
+    }
+    name="VersioningMode"
+    onChange={[Function]}
+    value="0"
+  >
+    <WithStyles(ForwardRef(MenuItem))
+      key="0"
+      value="0"
+    >
+      Inherited
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(MenuItem))
+      key="1"
+      value="1"
+    >
+      None
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(MenuItem))
+      key="2"
+      value="2"
+    >
+      Major only
+    </WithStyles(ForwardRef(MenuItem))>
+    <WithStyles(ForwardRef(MenuItem))
+      key="3"
+      value="3"
+    >
+      Major and minor
+    </WithStyles(ForwardRef(MenuItem))>
+  </WithStyles(WithFormControlContext(ForwardRef(Select)))>
+  <WithStyles(WithFormControlContext(ForwardRef(FormHelperText)))>
+    It shows the versioning mode of the current content.
+  </WithStyles(WithFormControlContext(ForwardRef(FormHelperText)))>
+</WithStyles(ForwardRef(FormControl))>
+`;

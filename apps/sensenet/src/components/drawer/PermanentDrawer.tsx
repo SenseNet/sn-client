@@ -13,7 +13,7 @@ import { PathHelper } from '@sensenet/client-utils'
 import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import { Link, matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
-import { ResponsivePersonalSetttings } from '../../context'
+import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
 import { useLocalization, usePersonalSettings, useRepository, useSession, useTheme } from '../../hooks'
 import { LogoutButton } from '../LogoutButton'
 import { UserAvatar } from '../UserAvatar'
@@ -25,6 +25,7 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
   const theme = useTheme()
   const session = useSession()
   const repo = useRepository()
+  const device = useContext(ResponsiveContext)
 
   const [opened, setOpened] = useState(settings.drawer.type === 'permanent')
   const [items, setItems] = useState(getAllowedDrawerItems(session.groups))
@@ -51,7 +52,6 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
   return (
     <Paper style={{ flexGrow: 0, flexShrink: 0 }}>
       <List
-        dense={true}
         style={{
           width: opened ? 330 : 55,
           height: '100%',
@@ -62,16 +62,15 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
           justifyContent: 'space-between',
           flexDirection: 'column',
           backgroundColor: theme.palette.background.default, // '#222',
-          paddingTop: '1em',
           transition: 'width 100ms ease-in-out',
         }}>
         <div style={{ paddingTop: '1em' }}>
           {items
             .filter(i => settings.drawer.items && settings.drawer.items.indexOf(i.name) !== -1)
             .map(item => {
-              const isActive = matchPath(props.location.pathname, item.url)
+              const isActive = matchPath(props.location.pathname, `/:repositoryId${item.url}`)
               return isActive ? (
-                <ListItem button={true} disabled={true} key={item.name}>
+                <ListItem button={true} key={item.name} selected>
                   <Tooltip
                     title={
                       <React.Fragment>
@@ -135,11 +134,13 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
                   secondary={(currentRepoEntry && currentRepoEntry.displayName) || repo.configuration.repositoryUrl}
                 />
                 <ListItemSecondaryAction>
-                  <Link to={`/personalSettings`} style={{ textDecoration: 'none' }}>
-                    <IconButton title={localization.personalSettingsTitle}>
-                      <Settings />
-                    </IconButton>
-                  </Link>
+                  {device === 'mobile' ? null : (
+                    <Link to={`/personalSettings`} style={{ textDecoration: 'none' }}>
+                      <IconButton title={localization.personalSettingsTitle}>
+                        <Settings />
+                      </IconButton>
+                    </Link>
+                  )}
                   <LogoutButton />
                 </ListItemSecondaryAction>
               </ListItem>

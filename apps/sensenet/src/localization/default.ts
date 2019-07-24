@@ -1,6 +1,13 @@
 const values = {
   dashboard: {
     errorLoadingWidget: 'Error loading widget :(',
+    refresh: 'Refresh',
+    openInSearch: 'Open in Search',
+    updates: {
+      title: 'Packages to update',
+      allUpToDate: 'All packages are up to date',
+      view: 'View',
+    },
   },
   addButton: {
     tooltip: 'Create or upload content',
@@ -134,6 +141,15 @@ const values = {
     logoutCancel: 'Cancel',
   },
   personalSettings: {
+    defaults: 'Defaults',
+    showDefaults: 'Show defaults',
+    restoreDefaults: 'Restore defaults',
+    restoreDialogTitle: 'Really restore defaults?',
+    restoreDialogTText:
+      'Are you sure you want to restore the default settings? Your log will also be cleared and you will be signed out from all repositories.',
+    cancel: 'Cancel',
+    restore: 'Restore',
+    restoringDefaultsProgress: 'Restoring the default settings...',
     title: 'Personal settings',
     drawer: 'Options for the left drawer',
     drawerEnable: 'Enable or disable the drawer',
@@ -156,6 +172,28 @@ const values = {
     themeTitle: 'Select a dark or a light theme',
     eventLogSize: 'Number of entries to store in the Event Log',
     sendLogWithCrashReports: 'Send log data with crash reports by default',
+    dashboard: {
+      widgetName: 'Widget',
+      minWidth: 'The minimum width of the widget in pixels',
+      widgetType: 'Type of the widget',
+      title: 'Widget title',
+      queryWidget: {
+        settings: 'Settings for the Query widget',
+        query: 'The content query expression',
+        emptyPlaceholderText: 'The text that will be displayed if the query has no hits',
+        showColumnNames: 'Show or hide column names',
+        top: 'Limits the number of hits',
+        showOpenInSearch: 'Option for a button to open the query in the Search view',
+        showRefresh: 'Option for a refresh button',
+        enableSelection: 'Enable content selection',
+        countOnly: 'Displays only the hits count instead of a content list',
+        columns: 'Array of columns to display',
+      },
+      markdownWidget: {
+        settings: 'Settings for the Markdown Widget',
+        content: 'The Markdown content to display',
+      },
+    },
   },
   repositorySelector: {
     loggedInAs: 'You are currently logged in as {0}',

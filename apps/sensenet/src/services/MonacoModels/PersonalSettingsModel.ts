@@ -21,29 +21,34 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
             dashboardSection: {
               $id: '#/dashboardSection',
               type: 'object',
-              title: 'Query widget',
+              title: language.personalSettings.dashboard.widgetName,
               default: null,
               required: ['widgetType', 'title'],
               properties: {
                 minWidth: {
                   $id: '#/dashboardSection/properties/widgetType',
-                  type: 'number',
-                  title: 'The minimum width of the widget in pixels',
-                  default: 250,
-                  examples: [250, 500],
+                  type: 'object',
+                  title: language.personalSettings.dashboard.minWidth,
+                  properties: {
+                    default: { type: ['number', 'string'], default: 250 },
+                    mobile: { type: ['number', 'string'] },
+                    tablet: { type: ['number', 'string'] },
+                    desktop: { type: ['number', 'string'] },
+                  },
+                  default: { default: 250 },
                 },
                 widgetType: {
                   $id: '#/dashboardSection/properties/widgetType',
                   type: 'string',
                   enum: [...widgetTypes],
-                  title: 'Type of the widget',
+                  title: language.personalSettings.dashboard.widgetType,
                   default: 'markdown',
-                  examples: ['query', 'markdown'],
+                  examples: ['query', 'markdown', 'updates'],
                 },
                 title: {
                   $id: '#/dashboardSection/properties/title',
                   type: 'string',
-                  title: 'Widget title',
+                  title: language.personalSettings.dashboard.title,
                   default: '',
                   pattern: '^(.*)$',
                 },
@@ -57,50 +62,73 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                       settings: {
                         $id: '#/dashboardSection/properties/querySettings',
                         type: 'object',
-                        title: 'Settings for the Query widget',
+                        title: language.personalSettings.dashboard.queryWidget.settings,
                         required: ['query', 'columns'],
                         properties: {
                           query: {
                             $id: '#/dashboardSection/properties/querySettings/properties/term',
                             type: 'string',
-                            title: 'The content query',
+                            title: language.personalSettings.dashboard.queryWidget.query,
                             default: '',
                             examples: ['+alba'],
+                            pattern: '^(.*)$',
+                          },
+                          emptyPlaceholderText: {
+                            $id: '#/dashboardSection/properties/querySettings/properties/emptyPlaceholderText',
+                            type: 'string',
+                            title: language.personalSettings.dashboard.queryWidget.emptyPlaceholderText,
+                            default: '',
+                            examples: ['No results.'],
                             pattern: '^(.*)$',
                           },
                           showColumnNames: {
                             $id: '#/dashboardSection/properties/querySettings/properties/showColumnNames',
                             type: 'boolean',
-                            title: 'Show column names',
+                            title: language.personalSettings.dashboard.queryWidget.showColumnNames,
                             default: false,
                             examples: [true],
                           },
                           top: {
-                            $id: '#/dashboardSection/properties/querySettings/properties/showColumnNames',
+                            $id: '#/dashboardSection/properties/querySettings/properties/top',
                             type: 'number',
-                            title: 'Limits the number of hits',
+                            title: language.personalSettings.dashboard.queryWidget.top,
                             default: 10,
                             examples: [5, 10, 20],
                           },
                           showOpenInSearch: {
                             $id: '#/dashboardSection/properties/querySettings/properties/showOpenInSearch',
                             type: 'boolean',
-                            title: 'Display a link to the Search view',
+                            title: language.personalSettings.dashboard.queryWidget.showOpenInSearch,
                             default: false,
                             examples: [true],
                           },
                           showRefresh: {
                             $id: '#/dashboardSection/properties/querySettings/properties/showRefresh',
                             type: 'boolean',
-                            title: 'Display a refresh button',
+                            title: language.personalSettings.dashboard.queryWidget.showRefresh,
                             default: false,
                             examples: [true, false],
+                          },
+                          enableSelection: {
+                            $id: '#/dashboardSection/properties/querySettings/properties/enableSelection',
+                            type: 'boolean',
+                            title: language.personalSettings.dashboard.queryWidget.enableSelection,
+                            default: false,
+                            examples: [true, false],
+                          },
+                          countOnly: {
+                            $id: '#/dashboardSection/properties/querySettings/properties/countOnly',
+                            type: 'boolean',
+                            title: language.personalSettings.dashboard.queryWidget.countOnly,
+                            default: false,
+                            examples: [true],
                           },
                           columns: {
                             $id: '#/dashboardSection/properties/querySettings/properties/columns',
                             type: 'array',
-                            title: 'Columns to display',
+                            title: language.personalSettings.dashboard.queryWidget.columns,
                             uniqueItems: true,
+                            examples: [['DisplayName', 'CreatedBy']],
                             items: {
                               enum: [
                                 'Actions',
@@ -122,13 +150,13 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                     properties: {
                       settings: {
                         type: 'object',
-                        title: 'Settings for the Markdown widget',
+                        title: language.personalSettings.dashboard.markdownWidget.settings,
                         required: ['content'],
                         properties: {
                           content: {
                             $id: '#/dashboardSection/properties/markdownSettings/properties/term',
                             type: 'string',
-                            title: 'The Markdown content',
+                            title: language.personalSettings.dashboard.markdownWidget.content,
                             default: '',
                             examples: [
                               "### Hey I'm a Paragraph \r\n Hey, I'm not",
@@ -244,7 +272,6 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
             },
           },
           type: 'object',
-          required: ['default', 'repositories', 'lastRepository'],
           properties: {
             default: { $ref: '#/definitions/settings' },
             mobile: { $ref: '#/definitions/settings' },

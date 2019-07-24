@@ -1,6 +1,6 @@
 import { Repository } from '@sensenet/client-core'
 import { commentsStateReducer, rootReducer as sensenetDocumentViewerReducer } from '@sensenet/document-viewer-react'
-import { Store, Reducers } from '@sensenet/redux'
+import { Reducers, Store } from '@sensenet/redux'
 
 import { CreateStoreOptions } from '@sensenet/redux/dist/Store'
 import React from 'react'
