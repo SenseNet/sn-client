@@ -1,13 +1,11 @@
 {
   "private": true,
   "version": "2019.7.0",
-  "workspaces": {
-    "packages": [
-      "packages/*",
-      "examples/*",
-      "apps/*"
-    ]
-  },
+  "workspaces": [
+    "packages/*",
+    "examples/*",
+    "apps/*"
+  ],
   "config": {
     "commitizen": {
       "path": "sensenet-kfi-cz-conventional-changelog"
@@ -64,19 +62,14 @@
     }
   },
   "lint-staged": {
-    "linters": {
-      "*.{ts,tsx}": [
-        "eslint --ext .tsx,.ts --cache --fix",
-        "prettier --write",
-        "git add"
-      ],
-      "*.{js,jsx}": [
-        "prettier --write",
-        "git add"
-      ]
-    },
-    "ignore": [
-      "*.d.ts"
+    "*.{ts,tsx}": [
+      "eslint --ext .tsx,.ts --cache --fix",
+      "prettier --write",
+      "git add"
+    ],
+    "*.{js,jsx}": [
+      "prettier --write",
+      "git add"
     ]
   },
   "jest": {
