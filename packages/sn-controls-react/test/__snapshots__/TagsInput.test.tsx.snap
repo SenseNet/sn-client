@@ -4,17 +4,17 @@ exports[`Tags input field control in browse view should show all the content pas
 <WithStyles(ForwardRef(FormControl))
   component="fieldset"
 >
-  <WithStyles(WithFormControlContext(ForwardRef(FormLabel)))
+  <WithStyles(ForwardRef(FormLabel))
     component="legend"
   >
     Members
-  </WithStyles(WithFormControlContext(ForwardRef(FormLabel)))>
+  </WithStyles(ForwardRef(FormLabel))>
   <WithStyles(ForwardRef(FormGroup))>
     <WithStyles(ForwardRef(FormControl))
       component="fieldset"
       key="0"
     >
-      <WithStyles(WithFormControlContext(ForwardRef(FormControlLabel)))
+      <WithStyles(ForwardRef(FormControlLabel))
         control={<span />}
         key="4804"
         label="Alba Monday"

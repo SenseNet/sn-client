@@ -22,7 +22,7 @@ exports[`Boolean field control in edit/new view should set all the props 1`] = `
   disabled={true}
   required={true}
 >
-  <WithStyles(WithFormControlContext(ForwardRef(FormControlLabel)))
+  <WithStyles(ForwardRef(FormControlLabel))
     control={
       <ForwardRef(WithStyles)
         checked={true}
@@ -32,8 +32,8 @@ exports[`Boolean field control in edit/new view should set all the props 1`] = `
     label="Enabled"
     name="Enabled"
   />
-  <WithStyles(WithFormControlContext(ForwardRef(FormHelperText)))>
+  <WithStyles(ForwardRef(FormHelperText))>
     User account is enabled.
-  </WithStyles(WithFormControlContext(ForwardRef(FormHelperText)))>
+  </WithStyles(ForwardRef(FormHelperText))>
 </WithStyles(ForwardRef(FormControl))>
 `;
