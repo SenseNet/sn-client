@@ -1,5 +1,5 @@
 import { LoginState } from '@sensenet/client-core'
-import React, { lazy, Suspense } from 'react'
+import React, { lazy, Suspense, useEffect, useRef } from 'react'
 import { Route, RouteComponentProps, Switch, withRouter } from 'react-router'
 import { LoadSettingsContextProvider, RepositoryContext } from '../context'
 import { usePersonalSettings, useSession } from '../hooks'
@@ -28,9 +28,27 @@ const PersonalSettingsEditor = lazy(
   async () => await import(/* webpackChunkName: "PersonalSettingsEditor" */ './edit/PersonalSettingsEditor'),
 )
 
-const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
+const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
   const sessionContext = useSession()
   const personalSettings = usePersonalSettings()
+  const previousLocation = useRef<string>()
+
+  useEffect(() => {
+    const listen = props.history.listen(location => {
+      /**
+       *  Do not add preview locations to previousLocation
+       *  this way the user can go back to the location where she
+       *  opened the viewer.
+       * */
+      if (location.pathname.includes('/Preview')) {
+        return
+      }
+      previousLocation.current = location.pathname
+    })
+    return () => {
+      listen()
+    }
+  }, [props.history])
 
   return (
     <ErrorBoundary>
@@ -129,7 +147,7 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
                     <Route
                       path="/:repo/preview/:documentId?"
                       render={() => {
-                        return <DocumentViewerComponent />
+                        return <DocumentViewerComponent previousLocation={previousLocation.current} />
                       }}
                     />
                     <Route path="/:repo/wopi/:documentId/:action?">
