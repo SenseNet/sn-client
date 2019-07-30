@@ -4,16 +4,16 @@ exports[`Radio button group field control in browse view should show the display
 <WithStyles(ForwardRef(FormControl))
   component="fieldset"
 >
-  <WithStyles(WithFormControlContext(ForwardRef(FormLabel)))
+  <WithStyles(ForwardRef(FormLabel))
     component="legend"
   >
     Versioning Mode For Current Content
-  </WithStyles(WithFormControlContext(ForwardRef(FormLabel)))>
+  </WithStyles(ForwardRef(FormLabel))>
   <WithStyles(ForwardRef(FormGroup))>
     <WithStyles(ForwardRef(FormControl))
       component="fieldset"
     >
-      <WithStyles(WithFormControlContext(ForwardRef(FormControlLabel)))
+      <WithStyles(ForwardRef(FormControlLabel))
         control={<span />}
         label="Major only"
         style={
@@ -34,44 +34,44 @@ exports[`Radio button group field control in edit/new view should set all the pr
   fullWidth={true}
   required={true}
 >
-  <WithStyles(WithFormControlContext(ForwardRef(FormLabel)))
+  <WithStyles(ForwardRef(FormLabel))
     component="legend"
   >
     Versioning Mode For Current Content
-  </WithStyles(WithFormControlContext(ForwardRef(FormLabel)))>
+  </WithStyles(ForwardRef(FormLabel))>
   <ForwardRef(RadioGroup)
     aria-label="Versioning Mode For Current Content"
     name="VersioningMode"
     onChange={[Function]}
     value="1"
   >
-    <WithStyles(WithFormControlContext(ForwardRef(FormControlLabel)))
+    <WithStyles(ForwardRef(FormControlLabel))
       control={<ForwardRef(WithStyles) />}
       key="0"
       label="Inherited"
       value="0"
     />
-    <WithStyles(WithFormControlContext(ForwardRef(FormControlLabel)))
+    <WithStyles(ForwardRef(FormControlLabel))
       control={<ForwardRef(WithStyles) />}
       key="1"
       label="None"
       value="1"
     />
-    <WithStyles(WithFormControlContext(ForwardRef(FormControlLabel)))
+    <WithStyles(ForwardRef(FormControlLabel))
       control={<ForwardRef(WithStyles) />}
       key="2"
       label="Major only"
       value="2"
     />
-    <WithStyles(WithFormControlContext(ForwardRef(FormControlLabel)))
+    <WithStyles(ForwardRef(FormControlLabel))
       control={<ForwardRef(WithStyles) />}
       key="3"
       label="Major and minor"
       value="3"
     />
   </ForwardRef(RadioGroup)>
-  <WithStyles(WithFormControlContext(ForwardRef(FormHelperText)))>
+  <WithStyles(ForwardRef(FormHelperText))>
     It shows the versioning mode of the current content.
-  </WithStyles(WithFormControlContext(ForwardRef(FormHelperText)))>
+  </WithStyles(ForwardRef(FormHelperText))>
 </WithStyles(ForwardRef(FormControl))>
 `;

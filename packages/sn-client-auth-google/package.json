@@ -40,7 +40,7 @@
     "@sensenet/client-utils": "^1.6.3"
   },
   "devDependencies": {
-    "@types/jsdom": "^12.2.3",
+    "@types/jsdom": "^12.2.4",
     "jsdom": "^15.1.1"
   }
 }

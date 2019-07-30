@@ -6,12 +6,12 @@ exports[`Drop down list field control in edit/new view should set all the props 
   fullWidth={true}
   required={true}
 >
-  <WithStyles(WithFormControlContext(ForwardRef(InputLabel)))
+  <WithStyles(ForwardRef(InputLabel))
     htmlFor="VersioningMode"
   >
     Versioning Mode For Current Content
-  </WithStyles(WithFormControlContext(ForwardRef(InputLabel)))>
-  <WithStyles(WithFormControlContext(ForwardRef(Select)))
+  </WithStyles(ForwardRef(InputLabel))>
+  <WithStyles(ForwardRef(Select))
     autoWidth={true}
     defaultValue="0"
     fullWidth={true}
@@ -49,9 +49,9 @@ exports[`Drop down list field control in edit/new view should set all the props 
     >
       Major and minor
     </WithStyles(ForwardRef(MenuItem))>
-  </WithStyles(WithFormControlContext(ForwardRef(Select)))>
-  <WithStyles(WithFormControlContext(ForwardRef(FormHelperText)))>
+  </WithStyles(ForwardRef(Select))>
+  <WithStyles(ForwardRef(FormHelperText))>
     It shows the versioning mode of the current content.
-  </WithStyles(WithFormControlContext(ForwardRef(FormHelperText)))>
+  </WithStyles(ForwardRef(FormHelperText))>
 </WithStyles(ForwardRef(FormControl))>
 `;
