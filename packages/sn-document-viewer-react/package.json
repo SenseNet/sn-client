@@ -25,7 +25,7 @@
   "license": "GPL-2.0",
   "homepage": "https://sensenet.com",
   "dependencies": {
-    "@material-ui/core": "^4.2.1",
+    "@material-ui/core": "^4.3.0",
     "@material-ui/icons": "^4.0.1",
     "@sensenet/client-utils": "^1.6.3",
     "@sensenet/control-mapper": "^2.0.0",
