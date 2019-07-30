@@ -15,6 +15,10 @@ import { CurrentContentContext } from '../../context'
 import { useContentRouting, useLocalization, useRepository } from '../../hooks'
 import { ContentContextMenu } from '../ContentContextMenu'
 
+const SETUP_DOCS_URL = 'https://community.sensenet.com/docs/admin-ui/setup/'
+
+const createAnchorFromName = (displayName: string) => `#${displayName.replace('.', '-').toLocaleLowerCase()}`
+
 const WellKnownContentCard: React.FunctionComponent<{
   settings: Settings
   onContextMenu: (ev: React.MouseEvent) => void
@@ -30,7 +34,7 @@ const WellKnownContentCard: React.FunctionComponent<{
       }}
       style={{
         width: 330,
-        height: 250,
+        height: 320,
         margin: '0.5em',
         display: 'flex',
         flexDirection: 'column',
@@ -46,7 +50,11 @@ const WellKnownContentCard: React.FunctionComponent<{
         <Link to={contentRouter.getPrimaryActionUrl(settings)} style={{ textDecoration: 'none' }}>
           <Button size="small">{localization.edit}</Button>
         </Link>
-        <Button size="small">{localization.learnMore}</Button>
+        <a
+          href={`${SETUP_DOCS_URL}${createAnchorFromName(settings.DisplayName ? settings.DisplayName : '')}`}
+          style={{ textDecoration: 'none' }}>
+          <Button size="small">{localization.learnMore}</Button>
+        </a>
       </CardActions>
     </Card>
   )
@@ -68,6 +76,7 @@ const Setup: React.StatelessComponent = () => {
       const response = await repo.loadCollection({
         path: ConstantContent.PORTAL_ROOT.Path,
         oDataOptions: {
+          orderby: [['Index' as any, 'asc']],
           query: `${new Query(q => q.typeIs(Settings)).toString()} .AUTOFILTERS:OFF`,
         },
       })

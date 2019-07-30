@@ -40,6 +40,6 @@
     "semaphore-async-await": "^1.5.1"
   },
   "devDependencies": {
-    "@types/node": "^12.0.3"
+    "@types/node": "^12.6.8"
   }
 }

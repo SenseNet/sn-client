@@ -12,7 +12,7 @@ it('renders without crashing', () => {
         session: {
           repository: {
             repositoryUrl: 'https://dmsservice.demo.sensenet.com',
-          },
+          } as any,
           user: {
             fullName: 'Alba Monday',
             userAvatarPath: '/Root/Sites/Default_Site/demoavatars/alba.jpg',
