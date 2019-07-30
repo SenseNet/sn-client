@@ -24,11 +24,11 @@ exports[`Rich text editor field control in edit/new view should set all the prop
   fullWidth={true}
   required={true}
 >
-  <WithStyles(WithFormControlContext(ForwardRef(FormLabel)))
+  <WithStyles(ForwardRef(FormLabel))
     component="legend"
   >
     Description of the field
-  </WithStyles(WithFormControlContext(ForwardRef(FormLabel)))>
+  </WithStyles(ForwardRef(FormLabel))>
   <Quill
     defaultValue="defaultValue"
     modules={
@@ -140,8 +140,8 @@ exports[`Rich text editor field control in edit/new view should set all the prop
     theme="snow"
     value="Hello World"
   />
-  <WithStyles(WithFormControlContext(ForwardRef(FormHelperText)))>
+  <WithStyles(ForwardRef(FormHelperText))>
     description
-  </WithStyles(WithFormControlContext(ForwardRef(FormHelperText)))>
+  </WithStyles(ForwardRef(FormHelperText))>
 </WithStyles(ForwardRef(FormControl))>
 `;

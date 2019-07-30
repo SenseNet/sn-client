@@ -37,6 +37,7 @@ exports[`Date/Date time field control in edit/new view should set all the props 
     name="ModificationDate"
     onChange={[Function]}
     openTo="date"
+    orientation="portrait"
     placeholder="Modification Date"
     required={true}
     showTabs={true}
