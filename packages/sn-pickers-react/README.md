@@ -1,13 +1,15 @@
-# `@sensenet/pickers-react`
+# @sensenet/pickers-react
 
-## List picker component
+[![NPM version](https://img.shields.io/npm/v/@sensenet/pickers-react.svg?style=flat)](https://www.npmjs.com/package/@sensenet/pickers-react)
+[![NPM downloads](https://img.shields.io/npm/dt/@sensenet/pickers-react.svg?style=flat)](https://www.npmjs.com/package/@sensenet/pickers-react)
+[![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 
-> This is a basic component to view list of items from the repository.
+## Install
 
-## Installation
-
-```shell
+```bash
+# Yarn
 yarn add @sensenet/pickers-react
-```
 
-For usage see the [example](./example).
+# NPM
+npm install @sensenet/pickers-react
+```
