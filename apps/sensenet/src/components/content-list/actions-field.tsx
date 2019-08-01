@@ -1,15 +1,13 @@
-import { GenericContent } from '@sensenet/default-content-types'
-import { TableCell } from '@material-ui/core'
+import { IconButton, TableCell } from '@material-ui/core'
 import React from 'react'
-import { CurrentContentContext } from '../../context'
-import { SecondaryActionsMenu } from '../SecondaryActionsMenu'
+import MoreHoriz from '@material-ui/icons/MoreHoriz'
 
-export const ActionsField: React.FC<{ content: GenericContent }> = ({ content }) => {
+export const ActionsField: React.FC<{ onOpen: (ev: React.MouseEvent<HTMLButtonElement>) => void }> = ({ onOpen }) => {
   return (
     <TableCell style={{ width: '64px' }}>
-      <CurrentContentContext.Provider value={content}>
-        <SecondaryActionsMenu />
-      </CurrentContentContext.Provider>
+      <IconButton onClick={onOpen}>
+        <MoreHoriz />
+      </IconButton>
     </TableCell>
   )
 }

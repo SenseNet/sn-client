@@ -59,7 +59,11 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
   const [selected, setSelected] = useState<GenericContent[]>([])
   const [isFocused, setIsFocused] = useState(true)
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
-  const [contextMenuAnchor, setContextMenuAnchor] = useState<{ top: number; left: number }>({ top: 0, left: 0 })
+  const [contextMenuAnchor, setContextMenuAnchor] = useState<{ top: number; left: number }>({
+    top: 0,
+    left: 0,
+  })
+
   const [showDelete, setShowDelete] = useState(false)
   const repo = useRepository()
   const loadSettings = useContext(LoadSettingsContext)
@@ -305,7 +309,17 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
                     />
                   )
                 case 'Actions':
-                  return <ActionsField content={fieldOptions.content} />
+                  return (
+                    <ActionsField
+                      onOpen={ev => {
+                        ev.preventDefault()
+                        ev.stopPropagation()
+                        setActiveContent(fieldOptions.content)
+                        setContextMenuAnchor({ top: ev.clientY, left: ev.clientX })
+                        setIsContextMenuOpened(true)
+                      }}
+                    />
+                  )
                 // no default
               }
               if (
