@@ -13,3 +13,7 @@ yarn add @sensenet/pickers-react
 # NPM
 npm install @sensenet/pickers-react
 ```
+
+## Usage
+
+See examples and usage in [storybook](https://sn-react-component-docs-dev.netlify.com/?path=/story/listpicker--connected-to-repository)

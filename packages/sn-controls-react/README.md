@@ -37,16 +37,12 @@ View Controls are almost the same as the .ascx [Content Views](http://wiki.sense
 
 ```tsx
 import { NewView } from '@sensenet/controls-react'
-import createBrowserHistory from 'history/createBrowserHistory'
-const history = createBrowserHistory()
 
 // content: Content | required  | empty Content Object
-// history: history Object made with createBrowserHistory() | optional | called after submit | default: window.history.back()
-// onSubmit: Function | optional | called on submit event | default: window.history.back()
+// onSubmit: Function | optional | called on submit event
 
 <NewView
 content={content}
-history={history}
 onSubmit={() => {})} />
 ```
 
@@ -54,16 +50,12 @@ onSubmit={() => {})} />
 
 ```tsx
 import { EditView } from '@sensenet/controls-react'
-import createBrowserHistory from 'history/createBrowserHistory'
-const history = createBrowserHistory()
 
 // content: Content | required  | empty Content Object
-// history: history Object made with createBrowserHistory() | optional | called after submit | default: window.history.back()
-// onSubmit: Function | optional | called on submit event | default: window.history.back()
+// onSubmit: Function | optional | called on submit event
 
 <EditView
 content={content}
-history={history}
 onSubmit={() => {})} />
 ```
 

@@ -25,9 +25,9 @@ npm install @sensenet/redux-promise-middleware
 
 ```Typescript
 import { Repository } from '@sensenet/client-core'
-import promiseMiddleware from '@sensenet/redux-promise-middleware'
+import { promiseMiddleware } from '@sensenet/redux-promise-middleware'
 
-const repository = new Repository({ repositoryUrl: 'https://mySensenetSite.com' }, async () => ({ ok: true } as any))
+const repository = new Repository({ repositoryUrl: 'https://mySensenetSite.com' })
 
 ...
 

@@ -18,7 +18,7 @@ npm install @sensenet/list-controls-react
 
 ## Usage
 
-You can check additional usage examples from the [example app](https://sn-list-controls-react.netlify.com/) and from the [tests](https://github.com/SenseNet/sn-list-controls-react/tree/master/src/Tests).
+You can check additional usage examples from the [example app](https://sn-react-component-docs-dev.netlify.com/?path=/story/listcontrols--contentlist) and from the [tests](https://github.com/SenseNet/sn-client/tree/master/packages/sn-list-controls-react/test).
 
 ## Running the example application
 

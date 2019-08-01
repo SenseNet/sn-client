@@ -131,14 +131,14 @@ const deleteResult = await repository.delete({
 You can define and execute your custom OData actions by the following way:
 
 ```ts
-interface ICustomActionBodyType {
+interface CustomActionBodyType {
   Name: string
   Value: string
 }
-interface ICustomActionReturnType {
+interface CustomActionReturnType {
   Result: any
 }
-const actionResult = await repository.executeAction<ICustomActionBodyType, ICustomActionReturnType>({
+const actionResult = await repository.executeAction<CustomActionBodyType, CustomActionReturnType>({
   idOrPath: 'Path/to/content',
   method: 'POST',
   name: 'MyOdataCustomAction',

@@ -41,3 +41,6 @@ The available events are:
 - onCustomActionFailed
 - onContentMoved
 - onContentMoveFailed
+- onContentCopyFailed
+- onUploadFinished
+- onUploadFailed

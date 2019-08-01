@@ -15,3 +15,7 @@ yarn add @sensenet/search-react
 # NPM
 npm install @sensenet/search-react
 ```
+
+## Usage
+
+For usage and examples check [our Storybook](https://sn-react-component-docs-dev.netlify.com/?path=/story/search--showcase)

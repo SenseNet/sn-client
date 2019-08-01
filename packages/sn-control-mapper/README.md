@@ -25,13 +25,8 @@ import { ControlMapper } from '@sensenet/control-mapper'
 const repository = new Repository({
   /** repository settings */
 })
-const mapper = new ControlMapper(
-  repository,
-  ExampleControlBase,
-  setting => new ExampleClientSetting(setting),
-  ExampleDefaultControl,
-  ExampleDefaultFieldControl,
-)
+
+const mapper = new ControlMapper(repository, ExampleDefaultControl, ExampleDefaultFieldControl)
   .setupFieldSettingDefault(NumberFieldSetting, setting => MyNumberFieldImplementation)
   .setupFieldSettingDefault(PasswordFieldSetting, setting => MyPasswordFieldImplementation)
 ```
