@@ -19,6 +19,8 @@ export interface CommanderComponentProps {
   onNavigateLeft: (newParent: GenericContent) => void
   onNavigateRight: (newParent: GenericContent) => void
   onActivateItem: (item: GenericContent) => void
+  fieldsToDisplay?: Array<keyof GenericContent>
+
   rootPath: string
 }
 
@@ -100,6 +102,7 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
                 }}
                 onTabRequest={() => _rightPanelRef && _rightPanelRef.focus()}
                 onActiveItemChange={item => selectionService.activeContent.setValue(item)}
+                fieldsToDisplay={props.fieldsToDisplay}
               />
             </CurrentAncestorsProvider>
           </CurrentChildrenProvider>
@@ -129,6 +132,7 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
                 }}
                 onTabRequest={() => _leftPanelRef && _leftPanelRef.focus()}
                 onActiveItemChange={item => selectionService.activeContent.setValue(item)}
+                fieldsToDisplay={props.fieldsToDisplay}
               />
             </CurrentAncestorsProvider>
           </CurrentChildrenProvider>

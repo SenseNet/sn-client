@@ -17,6 +17,7 @@ export interface BrowseData {
   currentContent?: number | string
   secondaryContent?: number | string // right parent
   loadChildrenSettings?: ODataParams<GenericContent>
+  fieldsToDisplay?: Array<keyof GenericContent>
 }
 
 export const encodeBrowseData = (data: BrowseData) => encodeURIComponent(btoa(JSON.stringify(data)))
@@ -107,6 +108,7 @@ export const Content: React.FunctionComponent<RouteComponentProps<{ browseData: 
           onActivateItem={openItem}
           onNavigateLeft={navigate}
           onNavigateRight={navigateSecondary}
+          fieldsToDisplay={browseData.fieldsToDisplay}
         />
       ) : browseData.type === 'explorer' ? (
         <Explore
@@ -114,6 +116,7 @@ export const Content: React.FunctionComponent<RouteComponentProps<{ browseData: 
           onNavigate={navigate}
           onActivateItem={openItem}
           parent={browseData.currentContent || browseData.root || ConstantContent.PORTAL_ROOT.Id}
+          fieldsToDisplay={browseData.fieldsToDisplay}
         />
       ) : (
         <SimpleList
@@ -121,6 +124,7 @@ export const Content: React.FunctionComponent<RouteComponentProps<{ browseData: 
           onNavigate={navigate}
           onActivateItem={openItem}
           parent={browseData.currentContent || browseData.root || ConstantContent.PORTAL_ROOT.Id}
+          fieldsToDisplay={browseData.fieldsToDisplay}
         />
       )}
     </LoadSettingsContext.Provider>

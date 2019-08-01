@@ -14,6 +14,7 @@ export interface SimpleListComponentProps {
   parent: number | string
   onNavigate: (newParent: GenericContent) => void
   onActivateItem: (item: GenericContent) => void
+  fieldsToDisplay?: Array<keyof GenericContent>
   rootPath?: string
 }
 
@@ -39,6 +40,7 @@ export const SimpleList: React.FunctionComponent<SimpleListComponentProps> = pro
                   selectionService.selection.setValue(sel)
                 }}
                 onActiveItemChange={item => selectionService.activeContent.setValue(item)}
+                fieldsToDisplay={props.fieldsToDisplay}
               />
               <AddButton />
             </CurrentAncestorsProvider>

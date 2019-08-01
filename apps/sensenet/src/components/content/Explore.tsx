@@ -17,6 +17,7 @@ export interface ExploreComponentProps {
   parent: number | string
   onNavigate: (newParent: GenericContent) => void
   onActivateItem: (item: GenericContent) => void
+  fieldsToDisplay?: Array<keyof GenericContent>
   rootPath?: string
 }
 
@@ -63,6 +64,7 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
                   onTabRequest={() => {
                     /** */
                   }}
+                  fieldsToDisplay={props.fieldsToDisplay}
                   onActiveItemChange={item => selectionService.activeContent.setValue(item)}
                 />
 

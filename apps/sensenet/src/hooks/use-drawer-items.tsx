@@ -85,6 +85,7 @@ export const useDrawerItems = () => {
           return `/browse/${encodeBrowseData({
             type: settings.content.browseType,
             root: '/Root/IMS',
+            fieldsToDisplay: ['DisplayName', 'Type'],
           })}`
         case 'Content Types':
           return `/search/${encodeURIComponent('+TypeIs:ContentType')}`
