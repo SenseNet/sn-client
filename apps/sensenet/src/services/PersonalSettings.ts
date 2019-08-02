@@ -261,8 +261,6 @@ export const defaultSettings: PersonalSettingsType = {
     drawer: {
       enabled: true,
       type: 'mini-variant',
-      // ToDo: presets
-      // items: ['Search', 'Content', 'Users and Groups', 'Content Types', 'Localization', 'Setup', 'Version info'],
       items: [
         { itemType: 'Search', settings: undefined },
         { itemType: 'Content', settings: { root: '/Root' } },

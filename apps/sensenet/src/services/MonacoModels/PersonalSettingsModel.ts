@@ -135,7 +135,6 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                               enum: [
                                 'Actions',
                                 'Type',
-                                /** ToDo: check for other displayable system fields */
                                 ...repo.schemas.getSchemaByName('GenericContent').FieldSettings.map(f => f.Name),
                               ],
                             },
@@ -250,7 +249,6 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                                     enum: [
                                       'Actions',
                                       'Type',
-                                      /** ToDo: check for other displayable system fields */
                                       ...repo.schemas.getSchemaByName('GenericContent').FieldSettings.map(f => f.Name),
                                     ],
                                   },
@@ -332,7 +330,6 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                     enum: [
                       'Actions',
                       'Type',
-                      /** ToDo: check for other displayable system fields */
                       ...repo.schemas.getSchemaByName('GenericContent').FieldSettings.map(f => f.Name),
                     ],
                   },
