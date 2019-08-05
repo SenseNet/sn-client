@@ -284,7 +284,7 @@ export class ContentList extends Folder {
   /* If checked new emails and attachments with the same name will overwrite existing items in list. Otherwise increment suffix is used in the name of new mail items. */
   public OverwriteFiles?: boolean
   /* Select the appropriate option to group attachment files under folders or email content or not. */
-  public GroupAttachments?: Enums.GroupAttachments
+  public GroupAttachments?: Enums.GroupAttachments[]
   /* A separate .eml file will be created for every incoming email. */
   public SaveOriginalEmail?: boolean
   /* Select the workflow to be executed on every incoming email. */
@@ -401,9 +401,9 @@ export class SmartFolder extends Folder {
   /* Please give a query here that you want to use for collecting the children of this smart folder. */
   public Query?: string
   /* If autofilters are enabled, system content will be filtered from the query. */
-  public EnableAutofilters?: Enums.EnableAutofilters
+  public EnableAutofilters?: Enums.EnableAutofilters[]
   /* If lifespan filter is enabled, only valid content will be in the result. */
-  public EnableLifespanFilter?: Enums.EnableLifespanFilter
+  public EnableLifespanFilter?: Enums.EnableLifespanFilter[]
 }
 /**
  * System Folders provide a way to store configuration and logic.
@@ -449,7 +449,7 @@ export class Workspace extends Folder {
  */
 export class Site extends Workspace {
   /* Please define the default language of this site. */
-  public Language?: Enums.Language
+  public Language?: Enums.Language[]
   /* Enable this to allow user browser settings override default site language settings. */
   public EnableClientBasedCulture?: boolean
   /* Enable this to allow user language settings override default site language settings. */
@@ -508,7 +508,7 @@ export class Memo extends ListItem {
   /* Please set the due date of the memo. */
   public Date?: string
   /* Type of the memo. */
-  public MemoType?: Enums.MemoType
+  public MemoType?: Enums.MemoType[]
   /* A list of content this memo pertains to. */
   public SeeAlso?: ContentListReferenceField<GenericContent>
 }
@@ -520,8 +520,8 @@ export class Task extends ListItem {
   public DueDate?: string
   /* List of internal stakeholders. */
   public AssignedTo?: ContentListReferenceField<User>
-  public Priority?: Enums.Priority
-  public Status?: Enums.Status
+  public Priority?: Enums.Priority[]
+  public Status?: Enums.Status[]
   /* Completion percentage of the task. */
   public TaskCompletion?: number
   /* Number of remaining days. */
@@ -537,7 +537,7 @@ export class Query extends GenericContent {
   /* Query text. */
   public Query?: string
   /* Public queries are stored under the workspace, private queries are stored under the user profile. */
-  public QueryType?: Enums.QueryType
+  public QueryType?: Enums.QueryType[]
 }
 /**
  * The basic user type of the Sense/Net ECMS. Use it for intranet and extranet users.
@@ -575,9 +575,9 @@ export class User extends GenericContent {
   /* Phone number. (e.g. +123456789 or 1234). */
   public Phone?: string
   /* Select one. */
-  public Gender?: Enums.Gender
+  public Gender?: Enums.Gender[]
   /* Select one. */
-  public MaritalStatus?: Enums.MaritalStatus
+  public MaritalStatus?: Enums.MaritalStatus[]
   public BirthDate?: string
   /* List of educations - e.g. high school, university. */
   public Education?: string
@@ -587,7 +587,7 @@ export class User extends GenericContent {
   /* http://www.linkedin.com/USERNAME. */
   public LinkedInURL?: string
   /* Language used to display texts on the site, if it is available. */
-  public Language?: Enums.Language
+  public Language?: Enums.Language[]
   /* List of workspaces followed by the user. */
   public FollowedWorkspaces?: ContentListReferenceField<Workspace>
   /* Path of the user's personal workspace. */
