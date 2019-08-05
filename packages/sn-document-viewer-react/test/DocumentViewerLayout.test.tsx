@@ -29,6 +29,7 @@ describe('Document Viewer Layout component', () => {
     comments: [],
     createComment: jest.fn(),
     localization: {} as any,
+    pageCount: 12,
     setSelectedCommentId: jest.fn(),
     getComments: jest.fn(),
     selectedCommentId: '',

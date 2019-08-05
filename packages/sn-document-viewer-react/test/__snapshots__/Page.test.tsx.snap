@@ -3,7 +3,6 @@
 exports[`Page component Should render thumbnails without crashing 1`] = `
 <WithStyles(ForwardRef(Paper))
   elevation={8}
-  id="EL1"
   style={
     Object {
       "margin": 8,
@@ -49,7 +48,6 @@ exports[`Page component Should render thumbnails without crashing 1`] = `
 exports[`Page component Should render without crashing 1`] = `
 <WithStyles(ForwardRef(Paper))
   elevation={8}
-  id="EL1"
   style={
     Object {
       "margin": 8,
