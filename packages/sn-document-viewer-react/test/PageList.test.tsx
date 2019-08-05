@@ -13,7 +13,7 @@ describe('PageList component', () => {
         zoomLevel={1}
         fitRelativeZoomLevel={1}
         onPageClick={() => jest.fn}
-        elementNamePrefix="Page-"
+        elementName="Page"
         images="preview"
         tolerance={0}
         padding={8}
