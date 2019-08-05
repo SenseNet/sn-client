@@ -28,6 +28,7 @@ const mapStateToProps = (state: RootReducerType) => {
     showThumbnails: state.sensenetDocumentViewer.viewer.showThumbnails,
     showComments: state.sensenetDocumentViewer.viewer.showComments,
     comments: state.comments.items,
+    pageCount: state.sensenetDocumentViewer.documentState.document.pageCount,
     isCreateCommentActive: state.comments.isCreateCommentActive,
     isPlacingCommentMarker: state.comments.isPlacingCommentMarker,
     selectedCommentId: state.comments.selectedCommentId,
@@ -63,6 +64,19 @@ export interface DocumentLayoutState {
   createCommentValue: string
 }
 
+const THUMBNAIL_PADDING = 16
+const THUMBNAIL_NAME = 'Thumbnail'
+const PAGE_PADDING = 8
+const PAGE_NAME = 'Page'
+
+interface ScrollToOptions {
+  containerId: string
+  index: number
+  itemName: string
+  padding: number
+  smoothScroll: boolean
+}
+
 /**
  * Component for the main DocumentViewer layout
  */
@@ -96,31 +110,38 @@ export class DocumentViewerLayoutComponent extends React.Component<
   /** scrolls the viewer to focus to the page with the provided index */
   public scrollTo(index: number, smoothScroll: boolean = true) {
     this.setState({ ...this.state, activePage: index }, () => {
-      const pagesContainer = document.getElementById('sn-document-viewer-pages')
-      const activePage = document.getElementById(`Page-${index}`)
+      this.scrollToImage({
+        containerId: 'sn-document-viewer-pages',
+        itemName: PAGE_NAME,
+        padding: PAGE_PADDING,
+        index,
+        smoothScroll,
+      })
 
-      if (pagesContainer && pagesContainer.scrollTo && activePage) {
-        pagesContainer.scrollTo({
-          top: activePage.offsetTop - 8,
-          behavior: smoothScroll ? 'smooth' : 'auto',
-        })
-      }
-
-      const thumbnailsContainer = document.getElementById('sn-document-viewer-thumbnails')
-      const activeThumbnail = document.getElementById(`Thumbnail-${index}`)
-
-      if (thumbnailsContainer && thumbnailsContainer.scrollTo && activeThumbnail) {
-        thumbnailsContainer.scrollTo({
-          top: activeThumbnail.offsetTop - 16,
-          behavior: 'smooth',
-        })
-      }
+      this.scrollToImage({
+        containerId: 'sn-document-viewer-thumbnails',
+        itemName: THUMBNAIL_NAME,
+        padding: THUMBNAIL_PADDING,
+        index,
+        smoothScroll,
+      })
 
       if (this.props.activePages[0] !== index) {
         this.props.setActivePages([index])
         this.props.getComments()
       }
     })
+  }
+
+  private scrollToImage({ containerId, index, itemName, padding, smoothScroll }: ScrollToOptions) {
+    const container = document.getElementById(containerId)
+    const item = document.querySelector(`.${itemName}`)
+    if (container && container.scrollTo && item) {
+      container.scrollTo({
+        top: (item.clientHeight + padding * 4) * (index - 1),
+        behavior: smoothScroll ? 'smooth' : 'auto',
+      })
+    }
   }
 
   private handleMarkerCreation(draftCommentMarker: DraftCommentMarker) {
@@ -236,10 +257,10 @@ export class DocumentViewerLayoutComponent extends React.Component<
               fitRelativeZoomLevel={0}
               zoomLevel={1}
               onPageClick={(_ev, index) => this.scrollTo(index)}
-              elementNamePrefix="Thumbnail-"
+              elementName={THUMBNAIL_NAME}
               images="thumbnail"
               tolerance={0}
-              padding={16}
+              padding={THUMBNAIL_PADDING}
               activePage={this.state.activePage}
             />
           </Drawer>
@@ -251,10 +272,10 @@ export class DocumentViewerLayoutComponent extends React.Component<
             zoomLevel={this.props.customZoomLevel}
             fitRelativeZoomLevel={this.props.fitRelativeZoomLevel}
             onPageClick={(_ev, index) => this.scrollTo(index)}
-            elementNamePrefix="Page-"
+            elementName={PAGE_NAME}
             images="preview"
             tolerance={0}
-            padding={8}
+            padding={PAGE_PADDING}
             activePage={this.state.activePage}
           />
           <Drawer
