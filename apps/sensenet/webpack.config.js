@@ -45,6 +45,7 @@ module.exports = {
     new TsConfigWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './index.html',
+      favicon: './src/assets/favicon.ico',
     }),
     new MonacoWebpackPlugin({
       languages: ['json', 'javascript', 'xml', 'html'],
