@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Time picker field control in edit/new view should set all the props 1`] = `
+<MuiPickersUtilsProvider
+  utils={[Function]}
+>
+  <WrappedPurePicker
+    ampm={true}
+    defaultValue="defaultValue"
+    disabled={true}
+    fullWidth={true}
+    id="ModificationDate"
+    invalidDateMessage="Invalid Time Format"
+    label="Modification Date"
+    name="ModificationDate"
+    onChange={[Function]}
+    openTo="hours"
+    placeholder="Modification Date"
+    required={true}
+    value="2001-09-11T08:46:00.000Z"
+    views={
+      Array [
+        "hours",
+        "minutes",
+      ]
+    }
+  />
+</MuiPickersUtilsProvider>
+`;

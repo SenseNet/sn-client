@@ -8,7 +8,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import { ODataParams, Repository } from '@sensenet/client-core'
-import { Folder, GenericContent } from '@sensenet/default-content-types'
+import { Folder, User } from '@sensenet/default-content-types'
 import { useListPicker } from '@sensenet/pickers-react'
 import React, { useEffect, useRef, useState } from 'react'
 
@@ -21,7 +21,7 @@ const styles: { [index: string]: React.CSSProperties } = {
 
 interface AvatarPickerProps {
   change?: () => void
-  select: (content: GenericContent) => void
+  select: (content: User) => void
   repository: Repository
   path: string
   renderIcon: (name: string) => JSX.Element
@@ -38,10 +38,8 @@ const pickerItemOptions: ODataParams<Folder> = {
 /**
  * Represents an avatar picker component
  */
-export function AvatarPicker(props: AvatarPickerProps) {
-  const { items, selectedItem, setSelectedItem, path, navigateTo, reload, isLoading, error } = useListPicker<
-    GenericContent
-  >({
+export const AvatarPicker: React.FC<AvatarPickerProps> = props => {
+  const { items, selectedItem, setSelectedItem, path, navigateTo, reload, isLoading, error } = useListPicker<User>({
     repository: props.repository,
     currentPath: props.path,
     itemsODataOptions: pickerItemOptions,
@@ -49,7 +47,7 @@ export function AvatarPicker(props: AvatarPickerProps) {
   const input = useRef<HTMLInputElement>(null)
   const [showLoading, setShowLoading] = useState(false)
 
-  // Wait to show spinner
+  // Wait to show spinner to prevent content jumping
   useEffect(() => {
     const timer = window.setTimeout(() => {
       setShowLoading(isLoading)
@@ -75,9 +73,9 @@ export function AvatarPicker(props: AvatarPickerProps) {
     reload()
   }
 
-  const iconName = (node: GenericContent) => (node.IsFolder ? 'folder' : 'arrow_upward')
+  const iconName = (node: User) => (node.IsFolder ? 'folder' : 'arrow_upward')
 
-  const onClickHandler = (_e: React.MouseEvent, node: GenericContent) => {
+  const onClickHandler = (_e: React.MouseEvent, node: User) => {
     setSelectedItem(node)
     if (node.Type === 'Image') {
       props.select(node)

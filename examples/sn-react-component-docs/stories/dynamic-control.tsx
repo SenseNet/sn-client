@@ -3,7 +3,7 @@ import { ReactClientFieldSetting, reactControlMapper } from '@sensenet/controls-
 import { ActionName } from '@sensenet/control-mapper'
 import { Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
-import { object } from '@storybook/addon-knobs'
+import { boolean, number, object, text } from '@storybook/addon-knobs'
 
 interface Options {
   actionName: ActionName
@@ -11,6 +11,26 @@ interface Options {
   content: GenericContent
   component?: ComponentType<ReactClientFieldSetting>
   fieldName: string
+}
+
+function getFieldValue({ actionName, content, component, fieldName }: Options) {
+  if (actionName === 'new') {
+    return undefined
+  }
+
+  if (component && component.displayName === 'Boolean') {
+    return boolean('fieldValue', content[fieldName])
+  }
+
+  if (component && component.displayName === 'Number') {
+    return number('fieldValue', content[fieldName])
+  }
+
+  if (typeof content[fieldName] === 'object' || Array.isArray(content[fieldName])) {
+    return object('fieldValue', content[fieldName])
+  }
+
+  return text('fieldValue', content[fieldName])
 }
 
 export function DynamicControl({ actionName, repository, content, component, fieldName }: Options) {
@@ -26,5 +46,6 @@ export function DynamicControl({ actionName, repository, content, component, fie
     actionName,
     repository,
     content: actionName !== 'new' ? object('content', content) : undefined,
+    fieldValue: getFieldValue({ actionName, content, component: componentToRender, fieldName, repository }),
   })
 }

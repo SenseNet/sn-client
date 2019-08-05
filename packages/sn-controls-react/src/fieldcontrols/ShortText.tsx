@@ -4,16 +4,15 @@
 import React, { useState } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import { TextFieldSetting } from '@sensenet/default-content-types'
+import { ShortTextFieldSetting } from '@sensenet/default-content-types'
+import { changeJScriptValue } from '../helpers'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
 /**
  * Field control that represents a ShortText field. Available values will be populated from the FieldSettings.
  */
-export function ShortText(props: ReactClientFieldSetting<TextFieldSetting>) {
-  const [value, setValue] = useState(
-    (props.content && props.content[props.settings.Name]) || props.settings.DefaultValue || '',
-  )
+export const ShortText: React.FC<ReactClientFieldSetting<ShortTextFieldSetting>> = props => {
+  const [value, setValue] = useState(props.fieldValue || changeJScriptValue(props.settings.DefaultValue) || '')
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) => {
     setValue(e.target.value)
@@ -32,8 +31,12 @@ export function ShortText(props: ReactClientFieldSetting<TextFieldSetting>) {
           value={value}
           required={props.settings.Compulsory}
           disabled={props.settings.ReadOnly}
-          defaultValue={props.settings.DefaultValue}
-          inputProps={{ minLength: props.settings.MinLength, maxLength: props.settings.MaxLength }}
+          defaultValue={changeJScriptValue(props.settings.DefaultValue)}
+          inputProps={{
+            minLength: props.settings.MinLength,
+            maxLength: props.settings.MaxLength,
+            pattern: props.settings.Regex,
+          }}
           fullWidth={true}
           onChange={handleChange}
           helperText={props.settings.Description}
@@ -41,13 +44,13 @@ export function ShortText(props: ReactClientFieldSetting<TextFieldSetting>) {
       )
     case 'browse':
     default:
-      return value ? (
+      return props.fieldValue ? (
         <div>
           <Typography variant="caption" gutterBottom={true}>
             {props.settings.DisplayName}
           </Typography>
           <Typography variant="body1" gutterBottom={true}>
-            {value}
+            {props.fieldValue}
           </Typography>
         </div>
       ) : null

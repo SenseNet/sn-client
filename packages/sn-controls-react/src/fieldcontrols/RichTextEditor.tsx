@@ -5,17 +5,11 @@ import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import FormLabel from '@material-ui/core/FormLabel'
 import Typography from '@material-ui/core/Typography'
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
+import { changeJScriptValue } from '../helpers'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
-
-/**
- * Interface for RichTextEditor state
- */
-export interface RichTextEditorState {
-  value: string
-}
 
 const modules = {
   toolbar: [
@@ -42,69 +36,43 @@ const modules = {
 /**
  * Field control that represents a LongText field. Available values will be populated from the FieldSettings.
  */
-export class RichTextEditor extends Component<ReactClientFieldSetting, RichTextEditorState> {
-  /**
-   * constructor
-   * @param {object} props
-   */
-  constructor(props: RichTextEditor['props']) {
-    super(props)
-    /**
-     * @type {object}
-     * @property {string} value input value
-     */
-    this.state = {
-      value:
-        (this.props.content && this.props.content[this.props.settings.Name]) || this.props.settings.DefaultValue || '',
-    }
+export const RichTextEditor: React.FC<ReactClientFieldSetting> = props => {
+  const initialState = props.fieldValue || changeJScriptValue(props.settings.DefaultValue) || ''
+  const [value, setValue] = useState(initialState)
 
-    this.handleChange = this.handleChange.bind(this)
+  const handleChange = (changedValue: string) => {
+    setValue(changedValue)
+    props.fieldOnChange && props.fieldOnChange(props.settings.Name, changedValue)
   }
 
-  /**
-   * handle change event on an input
-   * @param {SytheticEvent} event
-   */
-  public handleChange(value: string) {
-    this.setState({ value })
-    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, value as any)
-  }
-  /**
-   * render
-   * @return {ReactElement} markup
-   */
-  public render() {
-    switch (this.props.actionName) {
-      case 'edit':
-      case 'new':
-        return (
-          <FormControl component={'fieldset' as 'div'} fullWidth={true} required={this.props.settings.Compulsory}>
-            <FormLabel component={'legend' as 'label'}>{this.props.settings.DisplayName}</FormLabel>
-            <ReactQuill
-              style={{ background: '#fff', marginTop: 10 }}
-              defaultValue={this.props.settings.DefaultValue}
-              readOnly={this.props.settings.ReadOnly}
-              modules={modules}
-              onChange={this.handleChange}
-              value={this.state.value}
-              theme="snow"
-            />
-            <FormHelperText>{this.props.settings.Description}</FormHelperText>
-          </FormControl>
-        )
-      case 'browse':
-      default:
-        return this.props.content &&
-          this.props.content[this.props.settings.Name] &&
-          this.props.content[this.props.settings.Name].length > 0 ? (
-          <div>
-            <Typography variant="caption" gutterBottom={true}>
-              {this.props.settings.DisplayName}
-            </Typography>
-
-            <div dangerouslySetInnerHTML={{ __html: this.props.content[this.props.settings.Name] }} />
-          </div>
-        ) : null
-    }
+  switch (props.actionName) {
+    case 'edit':
+    case 'new':
+      return (
+        <FormControl component={'fieldset' as 'div'} fullWidth={true} required={props.settings.Compulsory}>
+          <FormLabel component={'legend' as 'label'}>{props.settings.DisplayName}</FormLabel>
+          <ReactQuill
+            style={{ background: '#fff', marginTop: 10 }}
+            defaultValue={changeJScriptValue(props.settings.DefaultValue)}
+            placeholder={props.settings.DisplayName}
+            readOnly={props.settings.ReadOnly}
+            modules={modules}
+            onChange={handleChange}
+            value={value}
+            theme="snow"
+          />
+          <FormHelperText>{props.settings.Description}</FormHelperText>
+        </FormControl>
+      )
+    case 'browse':
+    default:
+      return props.fieldValue ? (
+        <div>
+          <Typography variant="caption" gutterBottom={true}>
+            {props.settings.DisplayName}
+          </Typography>
+          <div dangerouslySetInnerHTML={{ __html: props.fieldValue }} />
+        </div>
+      ) : null
   }
 }

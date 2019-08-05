@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Boolean field control in browse view should show the displayname and fieldValue when fieldValue is provided 1`] = `
+<div
+  style={
+    Object {
+      "display": "flex",
+    }
+  }
+>
+  <span>
+    Enabled
+  </span>
+  <WithStyles(ForwardRef(Icon))>
+    check
+  </WithStyles(ForwardRef(Icon))>
+</div>
+`;
+
+exports[`Boolean field control in edit/new view should set all the props 1`] = `
+<WithStyles(ForwardRef(FormControl))
+  disabled={true}
+  required={true}
+>
+  <WithStyles(ForwardRef(FormControlLabel))
+    control={
+      <ForwardRef(WithStyles)
+        checked={true}
+        onChange={[Function]}
+      />
+    }
+    label="Enabled"
+    name="Enabled"
+  />
+  <WithStyles(ForwardRef(FormHelperText))>
+    User account is enabled.
+  </WithStyles(ForwardRef(FormHelperText))>
+</WithStyles(ForwardRef(FormControl))>
+`;
