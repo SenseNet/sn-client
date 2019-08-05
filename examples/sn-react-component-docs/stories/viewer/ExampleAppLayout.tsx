@@ -24,7 +24,7 @@ import {
   ToggleShapesWidget,
   ToggleThumbnailsWidget,
   ZoomInOutWidget,
-} from '@sensenet/document-viewer-react'
+} from '@sensenet/document-viewer-react/src'
 import { v1 } from 'uuid'
 
 import Button from '@material-ui/core/Button'
