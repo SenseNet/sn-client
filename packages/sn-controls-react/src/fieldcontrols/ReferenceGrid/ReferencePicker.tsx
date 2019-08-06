@@ -46,7 +46,7 @@ export const ReferencePicker: React.FC<ReferencePickerProps> = props => {
     expand: ['Children'] as any,
     filter: props.allowedTypes
       ? createTypeFilterString(props.allowedTypes)
-      : "(isOf('Folder') and not isOf('SystemFolder'))",
+      : "(isOf('GenericContent') and not isOf('SystemFolder'))",
     metadata: 'no',
     orderby: 'DisplayName',
   }

@@ -41,7 +41,7 @@ const userContent = {
 }
 
 const repository: any = {
-  loadCollection: jest.fn(() => {
+  load: jest.fn(() => {
     return { d: { results: [userContent, { Id: 2123, Name: 'Jon Doe', Type: 'User', Path: '/' }] } }
   }),
   configuration: {
