@@ -6,7 +6,6 @@ import PeopleTwoTone from '@material-ui/icons/PeopleTwoTone'
 import PublicTwoTone from '@material-ui/icons/PublicTwoTone'
 import SearchTwoTone from '@material-ui/icons/SearchTwoTone'
 import WidgetsTwoTone from '@material-ui/icons/WidgetsTwoTone'
-import { DrawerItem } from '../components/drawer/Items'
 import { Icon } from '../components/Icon'
 import {
   BuiltinDrawerItem,
@@ -17,8 +16,18 @@ import {
 import { ResponsivePersonalSetttings } from '../context'
 import { encodeBrowseData } from '../components/content'
 import { encodeQueryData } from '../components/search'
+import DefaultLocalization from '../localization/default'
 import { useSession } from './use-session'
 import { useLocalization } from './use-localization'
+
+export interface DrawerItem {
+  name: string
+  primaryText: keyof (typeof DefaultLocalization.drawer.titles)
+  secondaryText: keyof (typeof DefaultLocalization.drawer.descriptions)
+  url: string
+  icon: JSX.Element
+  requiredGroupPath: string
+}
 
 export const useDrawerItems = () => {
   const session = useSession()
