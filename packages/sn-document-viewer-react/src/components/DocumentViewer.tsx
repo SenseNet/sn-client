@@ -77,7 +77,11 @@ export class DocumentViewerComponent extends React.Component<docViewerComponentT
       this.props.documentIdOrPath !== newProps.documentIdOrPath ||
       this.props.version !== newProps.version
     ) {
-      this.props.pollDocumentData(this.props.hostName, this.props.documentIdOrPath, this.props.version)
+      this.props.pollDocumentData(
+        newProps.hostName || this.props.hostName,
+        newProps.documentIdOrPath || this.props.documentIdOrPath,
+        newProps.version || this.props.version,
+      )
     }
     if (this.props.localization) {
       this.props.setLocalization(this.props.localization)

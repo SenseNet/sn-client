@@ -63,12 +63,8 @@ describe('Document Viewer component', () => {
         {'some children'}
       </DocumentViewerComponent>,
     )
-    wrapper.setProps({ documentIdOrPath: 2 })
-    expect(pollDocumentData).toBeCalled()
-    expect(setLocalization).toBeCalled()
-
-    wrapper.setProps({ version: 2 })
-    expect(pollDocumentData).toBeCalled()
+    wrapper.setProps({ documentIdOrPath: 2, hostName: 'host2', version: 'v2' })
+    expect(pollDocumentData).lastCalledWith('host2', 2, 'v2') // ensure that poll document is called with new props
     expect(setLocalization).toBeCalled()
   })
 })
