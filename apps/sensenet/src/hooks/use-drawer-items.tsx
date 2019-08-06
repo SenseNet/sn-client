@@ -92,18 +92,24 @@ export const useDrawerItems = () => {
         case 'Content':
           return `/browse/${encodeBrowseData({
             type: (item.settings && item.settings.browseType) || settings.content.browseType,
-            root: (item.settings && item.settings.root) || '/Root',
-            secondaryContent: (item.settings && item.settings.root) || '/Root',
-            fieldsToDisplay: item.settings.columns,
+            root: (item.settings && item.settings.root) || '/Root/Content',
+            secondaryContent: (item.settings && item.settings.root) || '/Root/Content',
+            fieldsToDisplay: item.settings.columns || settings.content.fields,
           })}`
         case 'Users and groups':
-          return `/browse/${encodeBrowseData({
-            type: settings.content.browseType,
-            root: '/Root/IMS',
-            fieldsToDisplay: ['DisplayName', 'Type'],
+          return `/search/${encodeQueryData({
+            title: localization.titles['Users and groups'],
+            term: "+TypeIs:'User' OR TypeIs:'Group'",
+            hideSearchBar: true,
+            fieldsToDisplay: ['DisplayName', 'ModificationDate', 'ModifiedBy', 'Actions'],
           })}`
         case 'Content Types':
-          return `/search/${encodeURIComponent('+TypeIs:ContentType')}`
+          return `/search/${encodeQueryData({
+            title: localization.titles['Content Types'],
+            term: "+TypeIs:'ContentType'",
+            hideSearchBar: true,
+            fieldsToDisplay: ['DisplayName', 'Description', 'ParentTypeName' as any, 'ModificationDate', 'ModifiedBy'],
+          })}`
         case 'Query':
           return `/search/${encodeQueryData({
             term: item.settings.term,
@@ -112,9 +118,10 @@ export const useDrawerItems = () => {
             fieldsToDisplay: item.settings.columns,
           })}`
         case 'Localization':
-          return `/browse/${encodeBrowseData({
-            type: settings.content.browseType,
-            root: '/Root/Localization',
+          return `/search/${encodeQueryData({
+            term: "+TypeIs:'Resource'",
+            title: localization.titles.Localization,
+            hideSearchBar: true,
           })}`
         case 'Trash':
           return '' // ToDO
@@ -129,7 +136,7 @@ export const useDrawerItems = () => {
 
       return '/'
     },
-    [settings.content.browseType],
+    [localization.titles, settings.content.browseType, settings.content.fields],
   )
 
   const getItemFromSettings = useCallback(
