@@ -83,18 +83,20 @@ export class ReferenceGrid extends Component<ReactClientFieldSetting<ReferenceFi
       const loadPath = this.props.content
         ? PathHelper.joinPaths(PathHelper.getContentUrl(this.props.content.Path), '/', this.props.settings.Name)
         : ''
-      const references = await this.props.repository.loadCollection({
-        path: loadPath,
+      const references = await this.props.repository.load({
+        idOrPath: loadPath,
         oDataOptions: {
           select: 'all',
         },
       })
-
-      const { results } = references.d
+      let result = [references.d]
+      if (Object.prototype.hasOwnProperty.call(references.d, 'results')) {
+        result = (references.d as any).results
+      }
 
       this.setState({
-        fieldValue: results,
-        selected: results,
+        fieldValue: result,
+        selected: result,
       })
     } catch (error) {
       console.error(error.message)
