@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ConstantContent, ODataParams } from '@sensenet/client-core'
-import { LoadSettingsContext, ResponsivePersonalSetttings } from '../../context'
+import { ResponsivePersonalSetttings } from '../../context'
 import { useContentRouting, useLogger, useRepository } from '../../hooks'
 import { tuple } from '../../utils/tuple'
 import Commander from './Commander'
@@ -74,15 +74,6 @@ export const Content: React.FunctionComponent<RouteComponentProps<{ browseData: 
     [browseData, refreshUrl],
   )
 
-  const setLoadChildrenSettings = useCallback(
-    (s: ODataParams<GenericContent>) => {
-      const newBrowseData: BrowseData = { ...browseData, loadChildrenSettings: s }
-      setBrowseData(newBrowseData)
-      refreshUrl(newBrowseData)
-    },
-    [browseData, refreshUrl],
-  )
-
   const openItem = useCallback(
     (itm: GenericContent) => {
       props.history.push(contentRouter.getPrimaryActionUrl(itm))
@@ -91,15 +82,7 @@ export const Content: React.FunctionComponent<RouteComponentProps<{ browseData: 
   )
 
   return (
-    <LoadSettingsContext.Provider
-      value={{
-        loadAncestorsSettings: {},
-        loadChildrenSettings: browseData.loadChildrenSettings || {},
-        loadSettings: {},
-        setLoadAncestorsSettings: () => ({}),
-        setLoadSettings: () => ({}),
-        setLoadChildrenSettings,
-      }}>
+    <>
       {browseData.type === 'commander' ? (
         <Commander
           rootPath={browseData.root || ConstantContent.PORTAL_ROOT.Path}
@@ -127,7 +110,7 @@ export const Content: React.FunctionComponent<RouteComponentProps<{ browseData: 
           fieldsToDisplay={browseData.fieldsToDisplay}
         />
       )}
-    </LoadSettingsContext.Provider>
+    </>
   )
 }
 

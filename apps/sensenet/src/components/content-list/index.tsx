@@ -100,14 +100,14 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
         loadSettings.loadChildrenSettings.orderby && loadSettings.loadChildrenSettings.orderby.length === 1
           ? [[currentOrder as any, order as any]]
           : [['DisplayName', 'asc']],
-      select: personalSettings.content.fields,
-      expand: personalSettings.content.fields.filter(f => f === 'Actions' || isReferenceField(f, repo)),
+      select: props.fieldsToDisplay, // personalSettings.content.fields,
+      expand: (props.fieldsToDisplay || []).filter(f => f === 'Actions' || isReferenceField(f, repo)), // personalSettings.content.fields.filter(f => f === 'Actions' || isReferenceField(f, repo)),
     })
     setCurrentOrder(currentOrder)
     setCurrentDirection(currentDirection)
     // loadSettings can NOT be added :(
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentOrder, currentDirection, personalSettings.content.fields, repo.schemas, isReferenceField])
+  }, [parentContent, currentOrder, currentDirection, personalSettings.content.fields, repo.schemas, isReferenceField])
 
   useEffect(() => {
     setSelected([])

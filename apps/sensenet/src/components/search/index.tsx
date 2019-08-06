@@ -96,6 +96,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
       })
       .catch(e => {
         setError(e.message)
+        setResult([])
         logger.warning({ message: 'Error executing search', data: { details: { error: e }, isDismissed: true } })
       })
     // loadSettings should be excluded :(
