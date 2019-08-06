@@ -97,15 +97,7 @@ export interface QueryDrawerItem
 }
 
 export interface BuiltinDrawerItem extends DrawerItem<undefined> {
-  itemType:
-    | 'Content Types'
-    | 'Query'
-    | 'Localization'
-    | 'Search'
-    | 'Setup'
-    | 'Trash'
-    | 'Version info'
-    | 'Users and groups'
+  itemType: 'Content Types' | 'Localization' | 'Search' | 'Setup' | 'Trash' | 'Version info' | 'Users and groups'
 }
 
 export type PersonalSettingsType = PlatformDependent<UiSettings> & {

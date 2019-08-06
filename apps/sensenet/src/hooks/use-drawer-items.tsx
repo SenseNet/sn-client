@@ -89,6 +89,8 @@ export const useDrawerItems = () => {
           })}`
         case 'Content Types':
           return `/search/${encodeURIComponent('+TypeIs:ContentType')}`
+        case 'Query':
+          return `/search/${encodeURIComponent(item.settings.term)}`
         case 'Localization':
           return `/browse/${encodeBrowseData({
             type: settings.content.browseType,
