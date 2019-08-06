@@ -42,8 +42,6 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
     [personalSettings, repo],
   )
 
-  // useEffect(() => setItems(getAllowedDrawerItems(session.groups)), [session.groups])
-
   if (!settings.drawer.enabled) {
     return null
   }

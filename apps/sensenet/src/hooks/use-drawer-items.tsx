@@ -66,7 +66,7 @@ export const useDrawerItems = () => {
       case 'Version info':
         return <InfoTwoTone />
       default:
-        return <Icon item={item} />
+        return <Icon item={item.settings && item.settings.icon ? { ContentTypeName: item.settings.icon } : { item }} />
     }
   }, [])
 
