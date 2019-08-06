@@ -25,21 +25,38 @@ import { useContentRouting, useLocalization, useLogger, useRepository } from '..
 import { CollectionComponent } from '../content-list'
 
 const loadCount = 20
+export interface QueryData {
+  term: string
+  title?: string
+  fieldsToDisplay?: Array<keyof GenericContent>
+}
 
-const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> = props => {
+export const encodeQueryData = (data: QueryData) => encodeURIComponent(btoa(JSON.stringify(data)))
+export const decodeQueryData = (encoded?: string) =>
+  encoded ? (JSON.parse(atob(decodeURIComponent(encoded))) as QueryData) : { term: '' }
+
+const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }>> = props => {
   const repo = useRepository()
   const contentRouter = useContentRouting()
 
+  const logger = useLogger('Search')
+  const [queryData, setQueryData] = useState<QueryData>(decodeQueryData(props.match.params.queryData))
+
   const localization = useLocalization().search
-  const [contentQuery, setContentQuery] = useState(decodeURIComponent(props.match.params.query || ''))
   const [reloadToken, setReloadToken] = useState(Math.random())
   const [scrollToken, setScrollToken] = useState(Math.random())
-
   const [scrollLock] = useState(new Semaphore(1))
-
   const [requestReload] = useState(() => debounce(() => setReloadToken(Math.random()), 250))
 
-  const logger = useLogger('Search')
+  useEffect(() => {
+    try {
+      const data = decodeQueryData(props.match.params.queryData || '{}')
+      setQueryData(data)
+    } catch (error) {
+      logger.warning({ message: 'Wrong link :(' })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [logger, props.match.params.queryData])
 
   const [requestScroll] = useState(() =>
     debounce((div: HTMLDivElement, total: number, loaded: number, update: (token: number) => void) => {
@@ -61,15 +78,13 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
   const [savePublic, setSavePublic] = useState(false)
 
   useEffect(() => {
-    props.history.push(
-      generatePath(props.match.path, { ...props.match.params, query: encodeURIComponent(contentQuery) || undefined }),
-    )
+    props.history.push(generatePath(props.match.path, { ...props.match.params, queryData: encodeQueryData(queryData) }))
     repo
       .loadCollection({
         path: ConstantContent.PORTAL_ROOT.Path,
         oDataOptions: {
           ...loadSettingsContext.loadChildrenSettings,
-          query: personalSettings.commandPalette.wrapQuery.replace('{0}', contentQuery),
+          query: personalSettings.commandPalette.wrapQuery.replace('{0}', queryData.term),
           top: loadCount,
         },
       })
@@ -84,7 +99,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
       })
     // loadSettings should be excluded :(
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reloadToken, contentQuery, repo, personalSettings.commandPalette.wrapQuery, logger])
+  }, [reloadToken, queryData.term, repo, personalSettings.commandPalette.wrapQuery, logger])
 
   useEffect(() => {
     ;(async () => {
@@ -94,7 +109,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
           path: ConstantContent.PORTAL_ROOT.Path,
           oDataOptions: {
             ...loadSettingsContext.loadChildrenSettings,
-            query: personalSettings.commandPalette.wrapQuery.replace('{0}', contentQuery),
+            query: personalSettings.commandPalette.wrapQuery.replace('{0}', queryData.term),
             top: loadCount,
             skip: result.length,
           },
@@ -108,7 +123,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
     // 'result' should be excluded!
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    contentQuery,
+    queryData.term,
     loadSettingsContext.loadChildrenSettings,
     personalSettings.commandPalette.wrapQuery,
     repo,
@@ -118,16 +133,19 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
 
   return (
     <div style={{ padding: '1em', margin: '1em', height: '100%', width: '100%' }}>
-      <Typography variant="h5">{localization.title}</Typography>
+      <Typography variant="h5">{queryData.title || localization.title}</Typography>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <div style={{ marginLeft: '1em', width: '100%', display: 'flex' }}>
           <TextField
             label={localization.queryLabel}
             helperText={localization.queryHelperText}
-            defaultValue={contentQuery}
+            defaultValue={queryData.term}
             fullWidth={true}
             onChange={ev => {
-              setContentQuery(ev.target.value)
+              if (queryData.term !== ev.target.value) {
+                setQueryData({ ...queryData, term: ev.target.value })
+              }
+              // setContentQuery(ev.target.value)
               requestReload()
             }}
           />
@@ -136,7 +154,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
             title={localization.saveQuery}
             onClick={() => {
               setIsSaveOpened(true)
-              setSaveName(`Search results for '${contentQuery}'`)
+              setSaveName(`Search results for '${queryData.term}'`)
             }}>
             <Save style={{ marginRight: 8 }} />
             {localization.saveQuery}
@@ -146,7 +164,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
             <DialogContent style={{ minWidth: 450 }}>
               <TextField
                 fullWidth={true}
-                defaultValue={`Search results for '${contentQuery}'`}
+                defaultValue={`Search results for '${queryData.term}'`}
                 onChange={ev => setSaveName(ev.currentTarget.value)}
               />
               <br />
@@ -169,7 +187,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
                         select: ['DisplayName', 'Query'],
                       },
                       body: {
-                        query: contentQuery,
+                        query: queryData.term,
                         displayName: saveName,
                         queryType: savePublic ? 'Public' : 'Private',
                       },

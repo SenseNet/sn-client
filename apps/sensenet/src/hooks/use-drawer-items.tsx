@@ -16,6 +16,7 @@ import {
 } from '../services/PersonalSettings'
 import { ResponsivePersonalSetttings } from '../context'
 import { encodeBrowseData } from '../components/content'
+import { encodeQueryData } from '../components/search'
 import { useSession } from './use-session'
 import { useLocalization } from './use-localization'
 
@@ -52,7 +53,11 @@ export const useDrawerItems = () => {
       case 'Search':
         return <SearchTwoTone />
       case 'Content':
-        return item.settings.icon ? <Icon item={{ ContentType: item.settings.icon }} /> : <PublicTwoTone />
+        return item.settings && item.settings.icon ? (
+          <Icon item={{ ContentTypeName: item.settings.icon }} />
+        ) : (
+          <PublicTwoTone />
+        )
       case 'Users and groups':
         return <PeopleTwoTone />
       case 'Content Types':
@@ -77,9 +82,9 @@ export const useDrawerItems = () => {
           return '/saved-queries'
         case 'Content':
           return `/browse/${encodeBrowseData({
-            type: item.settings.browseType || settings.content.browseType,
-            root: item.settings.root,
-            secondaryContent: item.settings.root,
+            type: (item.settings && item.settings.browseType) || settings.content.browseType,
+            root: (item.settings && item.settings.root) || '/Root',
+            secondaryContent: (item.settings && item.settings.root) || '/Root',
           })}`
         case 'Users and groups':
           return `/browse/${encodeBrowseData({
@@ -90,7 +95,12 @@ export const useDrawerItems = () => {
         case 'Content Types':
           return `/search/${encodeURIComponent('+TypeIs:ContentType')}`
         case 'Query':
-          return `/search/${encodeURIComponent(item.settings.term)}`
+          return `/search/${encodeQueryData({
+            term: item.settings.term,
+            title: item.settings.title,
+            // ToDo
+            // fieldsToDisplay: item.settings.fieldsToDisplay,
+          })}`
         case 'Localization':
           return `/browse/${encodeBrowseData({
             type: settings.content.browseType,
