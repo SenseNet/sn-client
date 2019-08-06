@@ -43,7 +43,6 @@ import Typography from '@material-ui/core/Typography'
 import FolderOpen from '@material-ui/icons/FolderOpen'
 import Help from '@material-ui/icons/Help'
 import Send from '@material-ui/icons/Send'
-import console = require('console')
 import { PathHelper } from '@sensenet/client-utils'
 
 /**
