@@ -20,6 +20,19 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
         fileMatch: [uriString],
         schema: {
           definitions: {
+            columns: {
+              type: 'array',
+              title: language.personalSettings.dashboard.queryWidget.columns,
+              uniqueItems: true,
+              examples: [['DisplayName', 'CreatedBy']],
+              items: {
+                enum: [
+                  'Actions',
+                  'Type',
+                  ...repo.schemas.getSchemaByName('GenericContent').FieldSettings.map(f => f.Name),
+                ],
+              },
+            },
             dashboardSection: {
               $id: '#/dashboardSection',
               type: 'object',
@@ -126,18 +139,7 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                             examples: [true],
                           },
                           columns: {
-                            $id: '#/dashboardSection/properties/querySettings/properties/columns',
-                            type: 'array',
-                            title: language.personalSettings.dashboard.queryWidget.columns,
-                            uniqueItems: true,
-                            examples: [['DisplayName', 'CreatedBy']],
-                            items: {
-                              enum: [
-                                'Actions',
-                                'Type',
-                                ...repo.schemas.getSchemaByName('GenericContent').FieldSettings.map(f => f.Name),
-                              ],
-                            },
+                            $ref: '#/definitions/columns',
                           },
                         },
                       },
@@ -188,18 +190,7 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                     properties: {
                       itemType: {
                         type: 'string',
-                        enum: [
-                          ...DrawerItemType,
-                          // 'Content', // -> root
-                          // 'Query', //
-                          // // 'Content Types', // Query
-                          // // 'Localization', // Query
-                          // 'Search', // Custom
-                          // 'Setup', // Custom
-                          // 'Trash', // Custom
-                          // // 'Users and Groups', // Content
-                          // 'Version info', // Custom
-                        ],
+                        enum: [...DrawerItemType],
                       },
                     },
                     allOf: [
@@ -212,6 +203,7 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                               properties: {
                                 root: { type: 'string', description: language.drawer.contentRootDescription },
                                 title: { type: 'string', description: language.personalSettings.drawerItemTitle },
+                                columns: { $ref: '#/definitions/columns' },
                                 description: {
                                   type: 'string',
                                   description: language.personalSettings.drawerItemDescription,
@@ -240,19 +232,7 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                               type: 'object',
                               properties: {
                                 term: { type: 'string', description: language.drawer.contentRootDescription },
-                                columns: {
-                                  type: 'array',
-                                  title: language.personalSettings.dashboard.queryWidget.columns,
-                                  uniqueItems: true,
-                                  examples: [['DisplayName', 'CreatedBy']],
-                                  items: {
-                                    enum: [
-                                      'Actions',
-                                      'Type',
-                                      ...repo.schemas.getSchemaByName('GenericContent').FieldSettings.map(f => f.Name),
-                                    ],
-                                  },
-                                },
+                                columns: { $ref: '#/definitions/columns' },
                                 title: { type: 'string', description: language.personalSettings.drawerItemTitle },
                                 description: {
                                   type: 'string',
@@ -322,18 +302,7 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                   description: language.personalSettings.contentBrowseType,
                   enum: [...BrowseType],
                 },
-                fields: {
-                  description: language.personalSettings.contentFields,
-                  type: 'array',
-                  uniqueItems: true,
-                  items: {
-                    enum: [
-                      'Actions',
-                      'Type',
-                      ...repo.schemas.getSchemaByName('GenericContent').FieldSettings.map(f => f.Name),
-                    ],
-                  },
-                },
+                fields: { $ref: '#/definitions/columns' },
               },
             },
             settings: {
