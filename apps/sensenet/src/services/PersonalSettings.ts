@@ -80,6 +80,7 @@ export interface ContentDrawerItem
     title: string
     description?: string
     icon: string
+    columns?: Array<keyof GenericContent>
     browseType: typeof BrowseType[number]
   }> {
   itemType: 'Content'

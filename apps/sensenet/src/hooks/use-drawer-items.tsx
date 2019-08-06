@@ -94,6 +94,7 @@ export const useDrawerItems = () => {
             type: (item.settings && item.settings.browseType) || settings.content.browseType,
             root: (item.settings && item.settings.root) || '/Root',
             secondaryContent: (item.settings && item.settings.root) || '/Root',
+            fieldsToDisplay: item.settings.columns,
           })}`
         case 'Users and groups':
           return `/browse/${encodeBrowseData({
@@ -108,8 +109,7 @@ export const useDrawerItems = () => {
             term: item.settings.term,
             title: item.settings.title,
             hideSearchBar: true,
-            // ToDo
-            // fieldsToDisplay: item.settings.fieldsToDisplay,
+            fieldsToDisplay: item.settings.columns,
           })}`
         case 'Localization':
           return `/browse/${encodeBrowseData({

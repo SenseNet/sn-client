@@ -229,6 +229,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
                 onScroll: ev => requestScroll(ev.currentTarget, count, result.length, setScrollToken),
               }}
               enableBreadcrumbs={false}
+              fieldsToDisplay={queryData.fieldsToDisplay}
               parentIdOrPath={0}
               onParentChange={p => {
                 props.history.push(contentRouter.getPrimaryActionUrl(p))
