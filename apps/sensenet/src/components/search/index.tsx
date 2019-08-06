@@ -28,6 +28,7 @@ const loadCount = 20
 export interface QueryData {
   term: string
   title?: string
+  hideSearchBar?: boolean
   fieldsToDisplay?: Array<keyof GenericContent>
 }
 
@@ -135,77 +136,79 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
     <div style={{ padding: '1em', margin: '1em', height: '100%', width: '100%' }}>
       <Typography variant="h5">{queryData.title || localization.title}</Typography>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <div style={{ marginLeft: '1em', width: '100%', display: 'flex' }}>
-          <TextField
-            label={localization.queryLabel}
-            helperText={localization.queryHelperText}
-            defaultValue={queryData.term}
-            fullWidth={true}
-            onChange={ev => {
-              if (queryData.term !== ev.target.value) {
-                setQueryData({ ...queryData, term: ev.target.value })
-              }
-              // setContentQuery(ev.target.value)
-              requestReload()
-            }}
-          />
-          <Button
-            style={{ flexShrink: 0 }}
-            title={localization.saveQuery}
-            onClick={() => {
-              setIsSaveOpened(true)
-              setSaveName(`Search results for '${queryData.term}'`)
-            }}>
-            <Save style={{ marginRight: 8 }} />
-            {localization.saveQuery}
-          </Button>
-          <Dialog open={isSaveOpened} onClose={() => setIsSaveOpened(false)}>
-            <DialogTitle>{localization.saveQuery}</DialogTitle>
-            <DialogContent style={{ minWidth: 450 }}>
-              <TextField
-                fullWidth={true}
-                defaultValue={`Search results for '${queryData.term}'`}
-                onChange={ev => setSaveName(ev.currentTarget.value)}
-              />
-              <br />
-              <FormControlLabel
-                label={localization.public}
-                control={<Checkbox onChange={ev => setSavePublic(ev.target.checked)} />}
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={() => setIsSaveOpened(false)}>{localization.cancel}</Button>
-              <Button
-                onClick={() => {
-                  repo
-                    .executeAction<any, ODataResponse<GenericContent>>({
-                      idOrPath:
-                        repo.authentication.currentUser.getValue().ProfilePath || ConstantContent.PORTAL_ROOT.Path,
-                      name: 'SaveQuery',
-                      method: 'POST',
-                      oDataOptions: {
-                        select: ['DisplayName', 'Query'],
-                      },
-                      body: {
-                        query: queryData.term,
-                        displayName: saveName,
-                        queryType: savePublic ? 'Public' : 'Private',
-                      },
-                    })
-                    .then(c => {
-                      setIsSaveOpened(false)
-                      logger.information({
-                        message: `Query '${c.d.DisplayName || c.d.Name}' saved`,
-                        data: { relatedContent: c.d, details: c },
+        {queryData.hideSearchBar ? null : (
+          <div style={{ marginLeft: '1em', width: '100%', display: 'flex' }}>
+            <TextField
+              label={localization.queryLabel}
+              helperText={localization.queryHelperText}
+              defaultValue={queryData.term}
+              fullWidth={true}
+              onChange={ev => {
+                if (queryData.term !== ev.target.value) {
+                  setQueryData({ ...queryData, term: ev.target.value })
+                }
+                // setContentQuery(ev.target.value)
+                requestReload()
+              }}
+            />
+            <Button
+              style={{ flexShrink: 0 }}
+              title={localization.saveQuery}
+              onClick={() => {
+                setIsSaveOpened(true)
+                setSaveName(`Search results for '${queryData.term}'`)
+              }}>
+              <Save style={{ marginRight: 8 }} />
+              {localization.saveQuery}
+            </Button>
+            <Dialog open={isSaveOpened} onClose={() => setIsSaveOpened(false)}>
+              <DialogTitle>{localization.saveQuery}</DialogTitle>
+              <DialogContent style={{ minWidth: 450 }}>
+                <TextField
+                  fullWidth={true}
+                  defaultValue={`Search results for '${queryData.term}'`}
+                  onChange={ev => setSaveName(ev.currentTarget.value)}
+                />
+                <br />
+                <FormControlLabel
+                  label={localization.public}
+                  control={<Checkbox onChange={ev => setSavePublic(ev.target.checked)} />}
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => setIsSaveOpened(false)}>{localization.cancel}</Button>
+                <Button
+                  onClick={() => {
+                    repo
+                      .executeAction<any, ODataResponse<GenericContent>>({
+                        idOrPath:
+                          repo.authentication.currentUser.getValue().ProfilePath || ConstantContent.PORTAL_ROOT.Path,
+                        name: 'SaveQuery',
+                        method: 'POST',
+                        oDataOptions: {
+                          select: ['DisplayName', 'Query'],
+                        },
+                        body: {
+                          query: queryData.term,
+                          displayName: saveName,
+                          queryType: savePublic ? 'Public' : 'Private',
+                        },
                       })
-                    })
-                }}
-                color="primary">
-                {localization.save}
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </div>
+                      .then(c => {
+                        setIsSaveOpened(false)
+                        logger.information({
+                          message: `Query '${c.d.DisplayName || c.d.Name}' saved`,
+                          data: { relatedContent: c.d, details: c },
+                        })
+                      })
+                  }}
+                  color="primary">
+                  {localization.save}
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
+        )}
       </div>
 
       {error ? (

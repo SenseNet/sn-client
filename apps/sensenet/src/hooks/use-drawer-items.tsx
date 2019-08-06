@@ -107,6 +107,7 @@ export const useDrawerItems = () => {
           return `/search/${encodeQueryData({
             term: item.settings.term,
             title: item.settings.title,
+            hideSearchBar: true,
             // ToDo
             // fieldsToDisplay: item.settings.fieldsToDisplay,
           })}`
