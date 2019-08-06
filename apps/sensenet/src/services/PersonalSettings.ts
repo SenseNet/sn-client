@@ -256,7 +256,7 @@ export const defaultSettings: PersonalSettingsType = {
       type: 'mini-variant',
       items: [
         { itemType: 'Search', settings: undefined },
-        { itemType: 'Content', settings: { root: '/Root' } },
+        { itemType: 'Content', settings: { root: '/Root/Content' } },
         { itemType: 'Users and groups', settings: undefined },
         { itemType: 'Content Types', settings: undefined },
         { itemType: 'Localization', settings: undefined },
