@@ -1,6 +1,7 @@
 import Paper from '@material-ui/core/Paper'
 import React, { useContext, useState } from 'react'
 import { Repository } from '@sensenet/client-core'
+import { RouteComponentProps } from 'react-router-dom'
 import { useWidgets } from '../../hooks'
 import { ResponsiveContext } from '../../context'
 import { ErrorWidget } from './error-widget'
@@ -31,8 +32,11 @@ export const getWidgetComponent = (widget: ReturnType<typeof useWidgets>[0], rep
   }
 }
 
-const Dashboard: React.FunctionComponent<DashboardProps> = ({ repository }) => {
-  const widgets = useWidgets(repository)
+const Dashboard: React.FunctionComponent<DashboardProps & RouteComponentProps<{ dashboardName?: string }>> = ({
+  repository,
+  match,
+}) => {
+  const widgets = useWidgets(repository, match.params.dashboardName)
   const platform = useContext(ResponsiveContext)
   const [defaultMinWidth] = useState(250)
 

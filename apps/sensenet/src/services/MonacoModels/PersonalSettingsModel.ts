@@ -250,6 +250,28 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                           required: ['settings'],
                         },
                       },
+                      {
+                        if: { properties: { itemType: { const: 'Dashboard' } } },
+                        then: {
+                          properties: {
+                            settings: {
+                              type: 'object',
+                              properties: {
+                                title: { type: 'string' },
+                                description: { type: 'string' },
+                                dashboardName: { $data: '#/definitions/dashboards' },
+                                icon: {
+                                  type: 'string',
+                                  enum: [...wellKnownIconNames],
+                                  description: language.personalSettings.drawerItemDescription,
+                                },
+                              },
+                              required: ['dashboardName', 'title', 'icon'],
+                            },
+                          },
+                          required: ['settings'],
+                        },
+                      },
                     ],
                   },
                 },
@@ -315,14 +337,6 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                 commandPalette: { $ref: '#/definitions/commandPalette' },
               },
             },
-          },
-          type: 'object',
-          properties: {
-            default: { $ref: '#/definitions/settings' },
-            mobile: { $ref: '#/definitions/settings' },
-            tablet: { $ref: '#/definitions/settings' },
-            desktop: { $ref: '#/definitions/settings' },
-            repositories: { $ref: '#/definitions/repositories' },
             dashboards: {
               type: 'object',
               title: 'The default Dashboard definitions',
@@ -338,6 +352,22 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                   items: { $ref: '#definitions/dashboardSection' },
                 },
               },
+              additionalProperties: {
+                type: 'array',
+                description: 'Custom dashboard with custom name',
+                items: { $ref: '#definitions/dashboardSection' },
+              },
+            },
+          },
+          type: 'object',
+          properties: {
+            default: { $ref: '#/definitions/settings' },
+            mobile: { $ref: '#/definitions/settings' },
+            tablet: { $ref: '#/definitions/settings' },
+            desktop: { $ref: '#/definitions/settings' },
+            repositories: { $ref: '#/definitions/repositories' },
+            dashboards: {
+              $ref: '#/definitions/dashboards',
             },
             lastRepository: { type: 'string', description: language.personalSettings.lastRepository },
             eventLogSize: { type: 'number', description: language.personalSettings.eventLogSize },

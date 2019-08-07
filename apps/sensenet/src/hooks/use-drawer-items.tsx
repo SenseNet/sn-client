@@ -6,10 +6,12 @@ import PeopleTwoTone from '@material-ui/icons/PeopleTwoTone'
 import PublicTwoTone from '@material-ui/icons/PublicTwoTone'
 import SearchTwoTone from '@material-ui/icons/SearchTwoTone'
 import WidgetsTwoTone from '@material-ui/icons/WidgetsTwoTone'
+import { DashboardTwoTone } from '@material-ui/icons'
 import { Icon } from '../components/Icon'
 import {
   BuiltinDrawerItem,
   ContentDrawerItem,
+  DashboardDrawerItem,
   DrawerItem as DrawerItemSetting,
   QueryDrawerItem,
 } from '../services/PersonalSettings'
@@ -57,35 +59,42 @@ export const useDrawerItems = () => {
     [localization],
   )
 
-  const getIconFromSetting = useCallback((item: ContentDrawerItem | QueryDrawerItem | BuiltinDrawerItem) => {
-    switch (item.itemType) {
-      case 'Search':
-        return <SearchTwoTone />
-      case 'Content':
-        return item.settings && item.settings.icon ? (
-          <Icon item={{ ContentTypeName: item.settings.icon }} />
-        ) : (
-          <PublicTwoTone />
-        )
-      case 'Users and groups':
-        return <PeopleTwoTone />
-      case 'Content Types':
-        return <WidgetsTwoTone />
-      case 'Localization':
-        return <LanguageTwoTone />
-      case 'Trash':
-        return <InfoTwoTone />
-      case 'Setup':
-        return <BuildTwoTone />
-      case 'Version info':
-        return <InfoTwoTone />
-      default:
-        return <Icon item={item.settings && item.settings.icon ? { ContentTypeName: item.settings.icon } : { item }} />
-    }
-  }, [])
+  const getIconFromSetting = useCallback(
+    (item: ContentDrawerItem | QueryDrawerItem | BuiltinDrawerItem | DashboardDrawerItem) => {
+      switch (item.itemType) {
+        case 'Search':
+          return <SearchTwoTone />
+        case 'Content':
+          return item.settings && item.settings.icon ? (
+            <Icon item={{ ContentTypeName: item.settings.icon }} />
+          ) : (
+            <PublicTwoTone />
+          )
+        case 'Users and groups':
+          return <PeopleTwoTone />
+        case 'Content Types':
+          return <WidgetsTwoTone />
+        case 'Localization':
+          return <LanguageTwoTone />
+        case 'Trash':
+          return <InfoTwoTone />
+        case 'Setup':
+          return <BuildTwoTone />
+        case 'Version info':
+          return <InfoTwoTone />
+        case 'Dashboard':
+          return <DashboardTwoTone />
+        default:
+          return (
+            <Icon item={item.settings && item.settings.icon ? { ContentTypeName: item.settings.icon } : { item }} />
+          )
+      }
+    },
+    [],
+  )
 
   const getUrlFromSetting = useCallback(
-    (item: ContentDrawerItem | QueryDrawerItem | BuiltinDrawerItem) => {
+    (item: ContentDrawerItem | QueryDrawerItem | BuiltinDrawerItem | DashboardDrawerItem) => {
       switch (item.itemType) {
         case 'Search':
           return '/saved-queries'
@@ -129,6 +138,8 @@ export const useDrawerItems = () => {
           return '/setup'
         case 'Version info':
           return '/info'
+        case 'Dashboard':
+          return `/dashboard/${encodeURIComponent(item.settings.dashboardName)}`
         default:
           // return ''
           break

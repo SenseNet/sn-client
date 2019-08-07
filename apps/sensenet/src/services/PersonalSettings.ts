@@ -66,6 +66,7 @@ export const DrawerItemType = tuple(
   'Trash',
   'Version info',
   'Users and groups',
+  'Dashboard',
 )
 
 export interface DrawerItem<T> {
@@ -97,6 +98,16 @@ export interface QueryDrawerItem
   itemType: 'Query'
 }
 
+export interface DashboardDrawerItem
+  extends DrawerItem<{
+    dashboardName: string
+    title: string
+    description?: string
+    icon: string
+  }> {
+  itemType: 'Dashboard'
+}
+
 export interface BuiltinDrawerItem extends DrawerItem<undefined> {
   itemType: 'Content Types' | 'Localization' | 'Search' | 'Setup' | 'Trash' | 'Version info' | 'Users and groups'
 }
@@ -107,7 +118,7 @@ export type PersonalSettingsType = PlatformDependent<UiSettings> & {
   dashboards: {
     globalDefault: WidgetSection
     repositoryDefault: WidgetSection
-  }
+  } & { [key: string]: WidgetSection }
   eventLogSize: number
   sendLogWithCrashReports: boolean
   logLevel: Array<keyof typeof LogLevel>

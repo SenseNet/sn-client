@@ -154,19 +154,29 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
                       <WopiPage />
                     </Route>
                     <Route
-                      path="/:repo/"
-                      render={() => {
+                      path="/:repo/dashboard/:dashboardName?"
+                      render={routeParams => {
                         return (
                           <RepositoryContext.Consumer>
-                            {repo => <DashboardComponent repository={repo} />}
+                            {repo => <DashboardComponent repository={repo} {...routeParams} />}
+                          </RepositoryContext.Consumer>
+                        )
+                      }}
+                    />
+                    <Route
+                      path="/:repo/"
+                      render={routeParams => {
+                        return (
+                          <RepositoryContext.Consumer>
+                            {repo => <DashboardComponent repository={repo} {...routeParams} />}
                           </RepositoryContext.Consumer>
                         )
                       }}
                     />
                     <Route
                       path="/"
-                      render={() => {
-                        return <DashboardComponent />
+                      render={routeParams => {
+                        return <DashboardComponent {...routeParams} />
                       }}
                     />
                   </Switch>
