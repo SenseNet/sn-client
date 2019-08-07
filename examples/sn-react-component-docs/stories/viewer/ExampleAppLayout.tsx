@@ -127,8 +127,8 @@ export const exampleSettings = new DocumentViewerSettings({
     },
     getPreviewComments: async (documentData, page) => {
       const response = await fetch(
-        `${encodeURI(documentData.hostName)}/odata.svc/${encodeURI(
-          documentData.idOrPath.toString(),
+        `${encodeURI(documentData.hostName)}/odata.svc/${PathHelper.getContentUrl(
+          documentData.idOrPath,
         )}/GetPreviewComments?page=${page}`,
         { method: 'GET', credentials: 'include' },
       )
@@ -141,8 +141,8 @@ export const exampleSettings = new DocumentViewerSettings({
   },
   canEditDocument: async documentData => {
     const response = await fetch(
-      `${encodeURI(documentData.hostName)}/odata.svc/${encodeURI(
-        documentData.idOrPath.toString(),
+      `${encodeURI(documentData.hostName)}/odata.svc/${PathHelper.getContentUrl(
+        documentData.idOrPath,
       )}/HasPermission?permissions=Save`,
       { method: 'GET', credentials: 'include' },
     )
