@@ -117,7 +117,7 @@ const values = {
     saveFailedNotification: `There was an error during updating content '{0}'`,
   },
   login: {
-    loginTitle: 'Login',
+    loginTitle: "It's good to see you!",
     loginButtonTitle: 'Login',
     userNameLabel: 'UserName',
     userNameHelperText: "Enter the user name you've registered with",
@@ -128,6 +128,7 @@ const values = {
     loginFailed: 'Login failed.',
     greetings: 'Greetings, {0}!',
     loggingInTo: 'Logging in to {0}...',
+    youCanLogInWith: 'You can also log in with',
     loginSuccessNotification: `Logged in with user '{0} to repository '{1}'`,
     loginFailedNotification: `Failed to log in with user '{0}' to repository '{1}'`,
     loginErrorNotification: `There was an error during login with user '{0}' to repository '{1}'`,
