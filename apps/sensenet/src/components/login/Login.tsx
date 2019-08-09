@@ -3,34 +3,32 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { ConstantContent, FormsAuthenticationService } from '@sensenet/client-core'
-import { Icon, iconType } from '@sensenet/icons-react'
 import { Retrier, sleepAsync } from '@sensenet/client-utils'
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { Container, createStyles, Grid, makeStyles, Theme } from '@material-ui/core'
-import { useInjector, useLocalization, useRepository, useSession, useTheme } from '../hooks'
-import { PersonalSettings, PersonalSettingsType } from '../services/PersonalSettings'
-import { UserAvatar } from './UserAvatar'
+import { Container, createStyles, Grid, Link, makeStyles, Theme } from '@material-ui/core'
+import { useInjector, useLocalization, useRepository, useSession, useTheme } from '../../hooks'
+import { PersonalSettings, PersonalSettingsType } from '../../services/PersonalSettings'
+import { UserAvatar } from '../UserAvatar'
+import { GoogleAuthButton } from './GoogleAuthButton'
+import { OAuthButton } from './OAuthButton'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    oAuthButton: {
-      borderRadius: 0,
-    },
-    leftIcon: {
-      marginRight: theme.spacing(1),
-    },
     paper: {
       marginTop: theme.spacing(10),
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
     },
-    submit: {
+    marginTopBottom: {
       margin: theme.spacing(2, 0, 2),
     },
     middleText: {
       margin: theme.spacing(2, 0, 3),
+    },
+    link: {
+      margin: theme.spacing(1),
     },
   }),
 )
@@ -243,7 +241,12 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
               }}
             />
             {error ? <Typography style={{ color: theme.palette.error.main }}>{error}</Typography> : null}
-            <Button fullWidth={true} className={classes.submit} variant="contained" color="primary" type="submit">
+            <Button
+              fullWidth={true}
+              className={classes.marginTopBottom}
+              variant="contained"
+              color="primary"
+              type="submit">
               <Typography variant="button">{localization.loginButtonTitle}</Typography>
             </Button>
           </form>
@@ -252,18 +255,29 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
           {localization.youCanLogInWith}
         </Typography>
         <Grid container={true} direction="row" justify="space-between" alignItems="center">
-          {['github', 'google', 'facebook'].map(icon => (
-            <Button key={icon} disabled={true} variant="outlined" color="default" className={classes.oAuthButton}>
-              <Icon
-                type={iconType.fontawesome}
-                color="inherit"
-                fontSize="inherit"
-                iconName={icon}
-                classes={{ root: classes.leftIcon }}
-              />
-              {icon}
-            </Button>
-          ))}
+          <Grid item={true}>
+            <OAuthButton iconName="github" buttonText="Github" buttonProps={{ disabled: true }} />
+          </Grid>
+          <Grid item={true}>
+            <GoogleAuthButton />
+          </Grid>
+          <Grid item={true}>
+            <OAuthButton iconName="facebook" buttonText="Facebook" buttonProps={{ disabled: true }} />
+          </Grid>
+        </Grid>
+        <Grid container={true} direction="row" className={classes.marginTopBottom} justify="space-around">
+          <Link title={localization.logInWithSso} href="#" className={classes.link}>
+            {localization.logInWithSso}
+          </Link>
+          <Link title={localization.resetPassword} href="#" className={classes.link}>
+            {localization.resetPassword}
+          </Link>
+          <Link title={localization.resendConfirmation} href="#" className={classes.link}>
+            {localization.resendConfirmation}
+          </Link>
+          <Link title={localization.unlockAccount} href="#" className={classes.link}>
+            {localization.unlockAccount}
+          </Link>
         </Grid>
       </div>
     </Container>
