@@ -133,6 +133,8 @@ const values = {
     resetPassword: 'Reset password',
     resendConfirmation: 'Resend confirmation',
     unlockAccount: 'Unlock account',
+    newToSensenet: 'New to Sensenet?',
+    signUp: 'Sign up',
     loginSuccessNotification: `Logged in with user '{0} to repository '{1}'`,
     loginFailedNotification: `Failed to log in with user '{0}' to repository '{1}'`,
     loginErrorNotification: `There was an error during login with user '{0}' to repository '{1}'`,
