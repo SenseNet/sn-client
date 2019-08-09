@@ -203,9 +203,8 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
                 margin="normal"
                 label={localization.userNameLabel}
                 name="userName"
-                helperText={
-                  inputState.userName.isValid ? localization.userNameHelperText : inputState.userName.errorMessage
-                }
+                helperText={!inputState.userName.isValid ? inputState.userName.errorMessage : ''}
+                placeholder={localization.userNameHelperText}
                 error={!inputState.userName.isValid}
                 fullWidth={true}
                 value={userName}
@@ -223,9 +222,8 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
                 fullWidth={true}
                 type="password"
                 error={!inputState.password.isValid}
-                helperText={
-                  inputState.password.isValid ? localization.passwordHelperText : inputState.password.errorMessage
-                }
+                helperText={!inputState.password.isValid ? inputState.password.errorMessage : ''}
+                placeholder={localization.passwordHelperText}
                 onInvalid={handleInvalid}
                 onChange={ev => {
                   clearInputError(ev)
@@ -238,9 +236,8 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
                 name="repository"
                 label={localization.repositoryLabel}
                 error={!inputState.repository.isValid}
-                helperText={
-                  inputState.repository.isValid ? localization.repositoryHelperText : inputState.repository.errorMessage
-                }
+                placeholder={localization.repositoryHelperText}
+                helperText={!inputState.repository.isValid ? inputState.repository.errorMessage : ''}
                 fullWidth={true}
                 type="url"
                 value={url}
