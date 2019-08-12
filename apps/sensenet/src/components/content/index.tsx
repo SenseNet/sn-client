@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { GenericContent } from '@sensenet/default-content-types'
-import { ConstantContent, ODataParams } from '@sensenet/client-core'
+import { ConstantContent } from '@sensenet/client-core'
 import { ResponsivePersonalSetttings } from '../../context'
 import { useContentRouting, useLogger, useRepository } from '../../hooks'
 import { tuple } from '../../utils/tuple'
@@ -16,7 +16,6 @@ export interface BrowseData {
   root?: string
   currentContent?: number | string
   secondaryContent?: number | string // right parent
-  loadChildrenSettings?: ODataParams<GenericContent>
   fieldsToDisplay?: Array<keyof GenericContent>
 }
 

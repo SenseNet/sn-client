@@ -22,7 +22,7 @@ import {
   ResponsivePersonalSetttings,
 } from '../../context'
 import { useContentRouting, useLocalization, useLogger, useRepository } from '../../hooks'
-import { CollectionComponent } from '../content-list'
+import { CollectionComponent, isReferenceField } from '../content-list'
 
 const loadCount = 20
 export interface QueryData {
@@ -86,6 +86,9 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
         path: ConstantContent.PORTAL_ROOT.Path,
         oDataOptions: {
           ...loadSettingsContext.loadChildrenSettings,
+          select: queryData.fieldsToDisplay,
+          expand: (queryData.fieldsToDisplay || []).filter(f => f === 'Actions' || isReferenceField(f, repo)),
+
           query: personalSettings.commandPalette.wrapQuery.replace('{0}', queryData.term),
           top: loadCount,
         },
@@ -112,7 +115,9 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
     // props.match.path,
     // props.match.params,
     queryData,
-    // loadSettingsContext.loadChildrenSettings,
+    loadSettingsContext.loadChildrenSettings.orderby,
+    loadSettingsContext.loadChildrenSettings.select,
+    loadSettingsContext.loadChildrenSettings.expand,
   ])
 
   useEffect(() => {
