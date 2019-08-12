@@ -159,7 +159,7 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
           {localization.newToSensenet} <Link href="#">{localization.signUp}</Link>
         </Grid>
       </Grid>
-      <Container maxWidth="sm">
+      <Container maxWidth="xs">
         <div className={classes.paper}>
           <Typography variant="h4" color="textSecondary">
             {localization.loginTitle}
