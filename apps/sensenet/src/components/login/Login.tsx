@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     link: {
       margin: theme.spacing(1),
+      color: '#26a69a !important',
     },
   }),
 )
@@ -156,7 +157,10 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
     <>
       <Grid container={true} direction="row-reverse" className={classes.signUp}>
         <Grid item={true}>
-          {localization.newToSensenet} <Link href="#">{localization.signUp}</Link>
+          {localization.newToSensenet}{' '}
+          <Link href="#" underline="always" className={classes.link}>
+            {localization.signUp}
+          </Link>
         </Grid>
       </Grid>
       <Container maxWidth="xs">
@@ -273,17 +277,17 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
             </Grid>
           </Grid>
           <Grid container={true} direction="row" className={classes.marginTopBottom} justify="space-around">
-            <Link title={localization.logInWithSso} href="#" className={classes.link}>
-              {localization.logInWithSso}
+            <Link href="#" title={localization.logInWithSso} underline="always" className={classes.link}>
+              <Typography variant="body2">{localization.logInWithSso}</Typography>
             </Link>
-            <Link title={localization.resetPassword} href="#" className={classes.link}>
-              {localization.resetPassword}
+            <Link href="#" title={localization.resetPassword} underline="always" className={classes.link}>
+              <Typography variant="body2">{localization.resetPassword}</Typography>
             </Link>
-            <Link title={localization.tutorials} href="#" className={classes.link}>
-              {localization.tutorials}
+            <Link href="#" title={localization.tutorials} underline="always" className={classes.link}>
+              <Typography variant="body2">{localization.tutorials}</Typography>
             </Link>
-            <Link title={localization.help} href="#" className={classes.link}>
-              {localization.help}
+            <Link href="#" title={localization.help} underline="always" className={classes.link}>
+              <Typography variant="body2">{localization.help}</Typography>
             </Link>
           </Grid>
         </div>
