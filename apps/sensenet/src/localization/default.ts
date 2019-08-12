@@ -133,7 +133,7 @@ const values = {
     resetPassword: 'Reset password',
     resendConfirmation: 'Resend confirmation',
     unlockAccount: 'Unlock account',
-    newToSensenet: 'New to Sensenet?',
+    newToSensenet: 'New to sensenet?',
     help: 'Help',
     tutorials: 'Tutorials',
     signUp: 'Sign up',
