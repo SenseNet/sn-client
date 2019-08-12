@@ -16,7 +16,7 @@ const SavedQueriesComponent = lazy(
 const IamComponent = lazy(async () => await import(/* webpackChunkName: "iam" */ './iam'))
 const SetupComponent = lazy(async () => await import(/* webpackChunkName: "setup" */ './setup'))
 
-const LoginComponent = lazy(async () => await import(/* webpackChunkName: "Login" */ './Login'))
+const LoginComponent = lazy(async () => await import(/* webpackChunkName: "Login" */ './login/Login'))
 const EditBinary = lazy(async () => await import(/* webpackChunkName: "editBinary" */ './edit/EditBinary'))
 const EditProperties = lazy(async () => await import(/* webpackChunkName: "editProperties" */ './edit/EditProperties'))
 const DocumentViewerComponent = lazy(async () => await import(/* webpackChunkName: "DocViewer" */ './DocViewer'))
