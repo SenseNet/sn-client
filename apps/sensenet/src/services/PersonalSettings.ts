@@ -275,7 +275,7 @@ export const defaultSettings: PersonalSettingsType = {
         { itemType: 'Version info', settings: undefined },
       ],
     },
-    commandPalette: { enabled: true, wrapQuery: '${0} .AUTOFILTERS:OFF' },
+    commandPalette: { enabled: true, wrapQuery: '{0} .AUTOFILTERS:OFF' },
   },
   mobile: {
     drawer: {
