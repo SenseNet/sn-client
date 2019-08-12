@@ -4,25 +4,25 @@ import { deepMerge, ObservableValue } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { PlatformDependent } from '../context'
 import { tuple } from '../utils/tuple'
+import { BrowseType } from '../components/content'
 
 const settingsKey = `SN-APP-USER-SETTINGS`
 
 export interface UiSettings {
   theme: 'dark' | 'light'
   content: {
-    browseType: 'explorer' | 'commander' | 'simple'
+    browseType: typeof BrowseType[number]
     fields: Array<keyof GenericContent>
   }
   commandPalette: { enabled: boolean; wrapQuery: string }
   drawer: {
     enabled: boolean
     type: 'temporary' | 'permanent' | 'mini-variant'
-    items: string[]
+    items: Array<DrawerItem<any>>
   }
 }
 
 export const widgetTypes = tuple('markdown', 'query', 'updates')
-
 export interface Widget<T> {
   title: string
   widgetType: typeof widgetTypes[number]
@@ -55,13 +55,70 @@ export interface QueryWidget<T extends GenericContent>
 
 export type WidgetSection = Array<MarkdownWidget | QueryWidget<GenericContent> | UpdatesWidget>
 
+export const DrawerItemType = tuple(
+  'Content',
+  'Query',
+  'Content Types',
+  'Query',
+  'Localization',
+  'Search',
+  'Setup',
+  'Trash',
+  'Version info',
+  'Users and groups',
+  'Dashboard',
+)
+
+export interface DrawerItem<T> {
+  /** */
+  settings: T
+  itemType: typeof DrawerItemType[number]
+}
+
+export interface ContentDrawerItem
+  extends DrawerItem<{
+    root: string
+    title: string
+    description?: string
+    icon: string
+    columns?: Array<keyof GenericContent>
+    browseType: typeof BrowseType[number]
+  }> {
+  itemType: 'Content'
+}
+
+export interface QueryDrawerItem
+  extends DrawerItem<{
+    title: string
+    description?: string
+    icon: string
+    term: string
+    columns: Array<keyof GenericContent>
+  }> {
+  itemType: 'Query'
+}
+
+export interface DashboardDrawerItem
+  extends DrawerItem<{
+    dashboardName: string
+    title: string
+    description?: string
+    icon: string
+  }> {
+  itemType: 'Dashboard'
+}
+
+export interface BuiltinDrawerItem extends DrawerItem<undefined> {
+  itemType: 'Content Types' | 'Localization' | 'Search' | 'Setup' | 'Trash' | 'Version info' | 'Users and groups'
+}
+
 export type PersonalSettingsType = PlatformDependent<UiSettings> & {
   repositories: Array<{ url: string; loginName?: string; displayName?: string; dashboard?: WidgetSection }>
   lastRepository: string
   dashboards: {
     globalDefault: WidgetSection
     repositoryDefault: WidgetSection
-  }
+  } & { [key: string]: WidgetSection }
   eventLogSize: number
   sendLogWithCrashReports: boolean
   logLevel: Array<keyof typeof LogLevel>
@@ -208,9 +265,17 @@ export const defaultSettings: PersonalSettingsType = {
     drawer: {
       enabled: true,
       type: 'mini-variant',
-      items: ['Search', 'Content', 'Users and Groups', 'Content Types', 'Localization', 'Setup', 'Version info'],
+      items: [
+        { itemType: 'Search', settings: undefined },
+        { itemType: 'Content', settings: { root: '/Root/Content' } },
+        { itemType: 'Users and groups', settings: undefined },
+        { itemType: 'Content Types', settings: undefined },
+        { itemType: 'Localization', settings: undefined },
+        { itemType: 'Setup', settings: undefined },
+        { itemType: 'Version info', settings: undefined },
+      ],
     },
-    commandPalette: { enabled: true, wrapQuery: '${0} .AUTOFILTERS:OFF' },
+    commandPalette: { enabled: true, wrapQuery: '{0} .AUTOFILTERS:OFF' },
   },
   mobile: {
     drawer: {
@@ -241,10 +306,54 @@ export class PersonalSettings {
     this.effectiveValue.setValue(deepMerge(defaultSettings, currentUserSettings))
   }
 
+  private async checkDrawerItems(settings: Partial<PersonalSettingsType>): Promise<Partial<PersonalSettingsType>> {
+    if (
+      settings.default &&
+      settings.default.drawer &&
+      settings.default.drawer.items &&
+      settings.default.drawer.items.find(i => typeof i === 'string')
+    ) {
+      ;(settings.default.drawer.items as any) = undefined
+    }
+
+    if (
+      settings.desktop &&
+      settings.desktop.drawer &&
+      settings.desktop.drawer.items &&
+      settings.desktop.drawer.items.find(i => typeof i === 'string')
+    ) {
+      ;(settings.desktop.drawer.items as any) = undefined
+    }
+
+    if (
+      settings.tablet &&
+      settings.tablet.drawer &&
+      settings.tablet.drawer.items &&
+      settings.tablet.drawer.items.find(i => typeof i === 'string')
+    ) {
+      ;(settings.tablet.drawer.items as any) = undefined
+    }
+
+    if (
+      settings.mobile &&
+      settings.mobile.drawer &&
+      settings.mobile.drawer.items &&
+      settings.mobile.drawer.items.find(i => typeof i === 'string')
+    ) {
+      ;(settings.mobile.drawer.items as any) = undefined
+    }
+
+    return settings
+  }
+
+  private async checkValues(settings: Partial<PersonalSettingsType>): Promise<Partial<PersonalSettingsType>> {
+    return await this.checkDrawerItems(settings)
+  }
+
   public async getLocalUserSettingsValue(): Promise<Partial<PersonalSettingsType>> {
     try {
-      const stored = localStorage.getItem(`${settingsKey}`) as string
-      return JSON.parse(stored || '{}')
+      const stored = JSON.parse((localStorage.getItem(`${settingsKey}`) as string) || '{}')
+      return await this.checkValues(stored)
     } catch {
       /** */
     }

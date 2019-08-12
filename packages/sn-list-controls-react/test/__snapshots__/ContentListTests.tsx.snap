@@ -4316,7 +4316,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
           title="Content name. You can set any name you prefer without any restrictions."
         >
           <WithStyles(ForwardRef(TableSortLabel))
-            active={true}
+            active={false}
             direction="asc"
             onClick={[Function]}
           >
@@ -5381,7 +5381,6 @@ exports[`ContentList component Selection and active item changes Event bindings 
         >
           <WithStyles(ForwardRef(TableSortLabel))
             active={true}
-            direction="asc"
             onClick={[Function]}
           >
             Display Name

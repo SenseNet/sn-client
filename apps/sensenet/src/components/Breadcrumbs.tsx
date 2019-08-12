@@ -49,7 +49,6 @@ const Breadcrumbs: React.FunctionComponent<BreadcrumbProps & RouteComponentProps
             <KeyboardArrowRight style={{ verticalAlign: 'middle', height: '16px' }} />
           </DropFileArea>
         ))}
-        {/* TODO: Make a component of this */}
         <DropFileArea parentContent={props.currentContent.content} style={{ display: 'inline-block' }}>
           <Tooltip title={props.currentContent.content.Path || '/'}>
             <Button

@@ -7,7 +7,7 @@ import { ConstantContent, ODataParams } from '@sensenet/client-core'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { QueryWidget as QueryWidgetModel } from '../../services/PersonalSettings'
 import { useContentRouting, useLocalization, useRepository, useSelectionService, useStringReplace } from '../../hooks'
-import { CollectionComponent, isReferenceField } from '../ContentListPanel'
+import { CollectionComponent, isReferenceField } from '../content-list'
 import {
   CurrentAncestorsContext,
   CurrentChildrenContext,
@@ -138,7 +138,7 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
                     height: props.settings.countOnly || items.length < 1 ? 0 : '100%',
                   }}
                   enableBreadcrumbs={false}
-                  parentId={0}
+                  parentIdOrPath={0}
                   onParentChange={() => {
                     // props.history.push(contentRouter.getPrimaryActionUrl(p))
                   }}

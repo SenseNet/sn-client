@@ -88,17 +88,17 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
                 ) : sessionContext.state === LoginState.Authenticated ? (
                   <Switch>
                     <Route
-                      path="/:repo/browse/:folderId?/:rightParent?"
-                      render={() => {
-                        return <ExploreComponent />
+                      path="/:repo/browse/:browseData?"
+                      render={routeProps => {
+                        return <ExploreComponent {...routeProps} />
                       }}
                     />
                     <Route
-                      path="/:repo/search/:query?"
-                      render={() => {
+                      path="/:repo/search/:queryData?"
+                      render={routeProps => {
                         return (
                           <LoadSettingsContextProvider>
-                            <SearchComponent />
+                            <SearchComponent {...routeProps} />
                           </LoadSettingsContextProvider>
                         )
                       }}
@@ -154,19 +154,29 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
                       <WopiPage />
                     </Route>
                     <Route
-                      path="/:repo/"
-                      render={() => {
+                      path="/:repo/dashboard/:dashboardName?"
+                      render={routeParams => {
                         return (
                           <RepositoryContext.Consumer>
-                            {repo => <DashboardComponent repository={repo} />}
+                            {repo => <DashboardComponent repository={repo} {...routeParams} />}
+                          </RepositoryContext.Consumer>
+                        )
+                      }}
+                    />
+                    <Route
+                      path="/:repo/"
+                      render={routeParams => {
+                        return (
+                          <RepositoryContext.Consumer>
+                            {repo => <DashboardComponent repository={repo} {...routeParams} />}
                           </RepositoryContext.Consumer>
                         )
                       }}
                     />
                     <Route
                       path="/"
-                      render={() => {
-                        return <DashboardComponent />
+                      render={routeParams => {
+                        return <DashboardComponent {...routeParams} />
                       }}
                     />
                   </Switch>

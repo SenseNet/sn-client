@@ -1,7 +1,7 @@
 import Checkbox from '@material-ui/core/Checkbox'
 import TableRow from '@material-ui/core/TableRow'
 import TableSortLabel from '@material-ui/core/TableSortLabel'
-import { GenericContent, SchemaStore } from '@sensenet/default-content-types'
+import { SchemaStore } from '@sensenet/default-content-types'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { ActionsCell, DateCell, ReferenceCell } from '../src/ContentList/CellTemplates'
@@ -16,7 +16,7 @@ describe('ContentList component', () => {
   describe('Initialization', () => {
     it('Should render without crashing with bare minimum props', () => {
       const component = shallow(
-        <ContentList<GenericContent>
+        <ContentList
           items={[]}
           schema={genericSchema}
           fieldsToDisplay={['DisplayName']}
@@ -31,7 +31,7 @@ describe('ContentList component', () => {
 
     it('Should render with a few content', () => {
       const component = shallow(
-        <ContentList<GenericContent>
+        <ContentList
           items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
           schema={genericSchema}
           fieldsToDisplay={['DisplayName']}
@@ -48,7 +48,7 @@ describe('ContentList component', () => {
   describe('Selection and active item changes', () => {
     it('Should render with a selected content and the corresponding class should be appear', () => {
       const component = shallow(
-        <ContentList<GenericContent>
+        <ContentList
           items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
           schema={genericSchema}
           fieldsToDisplay={['DisplayName']}
@@ -72,7 +72,7 @@ describe('ContentList component', () => {
 
     it('Clicking on a selection box should default behavior', () => {
       const component = shallow(
-        <ContentList<GenericContent>
+        <ContentList
           items={[
             { Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' },
             { Id: 2, Name: '2', Path: '2', DisplayName: 'B', Type: 'Folder' },
@@ -95,7 +95,7 @@ describe('ContentList component', () => {
 
     it('Clicking on a selection box should add a content to the selection if not selected', (done: jest.DoneCallback) => {
       const component = shallow(
-        <ContentList<GenericContent>
+        <ContentList
           items={[
             { Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' },
             { Id: 2, Name: '2', Path: '2', DisplayName: 'B', Type: 'Folder' },
@@ -123,7 +123,7 @@ describe('ContentList component', () => {
 
     it('Clicking on a selection box should remove a content from the selection if selected', (done: jest.DoneCallback) => {
       const component = shallow(
-        <ContentList<GenericContent>
+        <ContentList
           items={[
             { Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' },
             { Id: 2, Name: '2', Path: '2', DisplayName: 'B', Type: 'Folder' },
@@ -155,7 +155,7 @@ describe('ContentList component', () => {
         { Id: 2, Name: '2', Path: '2', DisplayName: 'B', Type: 'Folder' },
       ]
       const component = shallow(
-        <ContentList<GenericContent>
+        <ContentList
           items={items}
           schema={genericSchema}
           fieldsToDisplay={['DisplayName', 'Type']}
@@ -184,7 +184,7 @@ describe('ContentList component', () => {
         { Id: 2, Name: '2', Path: '2', DisplayName: 'B', Type: 'Folder' },
       ]
       const component = shallow(
-        <ContentList<GenericContent>
+        <ContentList
           items={items}
           schema={genericSchema}
           fieldsToDisplay={['DisplayName', 'Type']}
@@ -209,7 +209,7 @@ describe('ContentList component', () => {
 
     it('Should render with an active content and the corresponding class should be appear', () => {
       const component = shallow(
-        <ContentList<GenericContent>
+        <ContentList
           items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
           schema={genericSchema}
           fieldsToDisplay={['DisplayName', 'Type']}
@@ -232,7 +232,7 @@ describe('ContentList component', () => {
 
     it('Clicking on a row should trigger an active item change, if the callback is provided', (done: jest.DoneCallback) => {
       const component = shallow(
-        <ContentList<GenericContent>
+        <ContentList
           items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
           schema={genericSchema}
           fieldsToDisplay={['DisplayName', 'Type']}
@@ -261,7 +261,7 @@ describe('ContentList component', () => {
     describe('Actions', () => {
       it("Actions component shouldn't be added by if actions are selected but not expanded on the content", () => {
         const component = shallow(
-          <ContentList<GenericContent>
+          <ContentList
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
             fieldsToDisplay={['Actions', 'Type']}
@@ -278,7 +278,7 @@ describe('ContentList component', () => {
 
       it('Actions component should be added by if actions are selected and expanded on the content', () => {
         const component = mount(
-          <ContentList<GenericContent>
+          <ContentList
             items={[
               { Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder', Actions: [{ Name: 'Example' } as any] },
             ]}
@@ -296,7 +296,7 @@ describe('ContentList component', () => {
       })
       it('onRequestActionsMenu should be triggered on click if actions are expanded', (done: jest.DoneCallback) => {
         const component = mount(
-          <ContentList<GenericContent>
+          <ContentList
             items={[
               { Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder', Actions: [{ Name: 'Example' } as any] },
             ]}
@@ -323,7 +323,7 @@ describe('ContentList component', () => {
     describe('Date field', () => {
       it('Should be added for modification date', () => {
         const component = mount(
-          <ContentList<GenericContent>
+          <ContentList
             items={[
               { Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder', ModificationDate: '2018-02-03T11:11Z' },
             ]}
@@ -345,7 +345,7 @@ describe('ContentList component', () => {
     describe('Reference field', () => {
       it('Should be added for referemces', () => {
         const component = mount(
-          <ContentList<GenericContent>
+          <ContentList
             items={[
               {
                 Id: 1,
@@ -374,7 +374,7 @@ describe('ContentList component', () => {
     describe('Field with a custom field component', () => {
       it('Should be added for references', () => {
         const component = mount(
-          <ContentList<GenericContent>
+          <ContentList
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
             fieldsToDisplay={['DisplayName', 'Name']}
@@ -406,7 +406,7 @@ describe('ContentList component', () => {
     describe('Event bindings', () => {
       it('should fire onItemClick when the row is clicked', (done: jest.DoneCallback) => {
         const component = mount(
-          <ContentList<GenericContent>
+          <ContentList
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
             fieldsToDisplay={['DisplayName', 'Type']}
@@ -434,7 +434,7 @@ describe('ContentList component', () => {
 
       it('should fire onItemDoubleClick  when the row is double-clicked', (done: jest.DoneCallback) => {
         const component = mount(
-          <ContentList<GenericContent>
+          <ContentList
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
             fieldsToDisplay={['DisplayName', 'Type']}
@@ -461,7 +461,7 @@ describe('ContentList component', () => {
       })
       it('should fire onItemTap when the row is tapped', (done: jest.DoneCallback) => {
         const component = mount(
-          <ContentList<GenericContent>
+          <ContentList
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
             fieldsToDisplay={['DisplayName', 'Type']}
@@ -488,7 +488,7 @@ describe('ContentList component', () => {
       })
       it('should fire onItemContextMenu  when the context menu is triggered', (done: jest.DoneCallback) => {
         const component = mount(
-          <ContentList<GenericContent>
+          <ContentList
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
             fieldsToDisplay={['DisplayName', 'Type']}
@@ -515,7 +515,7 @@ describe('ContentList component', () => {
       })
       it('should request order change when the header is clicked', (done: jest.DoneCallback) => {
         const component = mount(
-          <ContentList<GenericContent>
+          <ContentList
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
             fieldsToDisplay={['DisplayName', 'Type']}
@@ -536,7 +536,7 @@ describe('ContentList component', () => {
       })
       it('should request order change and invert the direction', (done: jest.DoneCallback) => {
         const component = mount(
-          <ContentList<GenericContent>
+          <ContentList
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
             fieldsToDisplay={['DisplayName', 'Type']}
@@ -557,7 +557,7 @@ describe('ContentList component', () => {
       })
       it('should render without crashing with setting displayRowCheckbox to false', () => {
         const component = shallow(
-          <ContentList<GenericContent>
+          <ContentList
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
             fieldsToDisplay={['DisplayName']}
@@ -573,7 +573,7 @@ describe('ContentList component', () => {
       })
       it('should render without crashing without selected', () => {
         const component = shallow(
-          <ContentList<GenericContent>
+          <ContentList
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
             fieldsToDisplay={['DisplayName']}
@@ -588,7 +588,7 @@ describe('ContentList component', () => {
       })
       it('should render without crashing without selected undefined', () => {
         const component = shallow(
-          <ContentList<GenericContent>
+          <ContentList
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
             selected={undefined}
@@ -604,7 +604,7 @@ describe('ContentList component', () => {
       })
       it('should render with custom selection control', () => {
         const component = shallow(
-          <ContentList<GenericContent>
+          <ContentList
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
             selected={undefined}
@@ -622,7 +622,7 @@ describe('ContentList component', () => {
       it('should render with custom selection control and selection', () => {
         const content = { Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }
         const component = shallow(
-          <ContentList<GenericContent>
+          <ContentList
             items={[content]}
             schema={genericSchema}
             selected={[content]}
@@ -639,7 +639,7 @@ describe('ContentList component', () => {
       })
       it('should render without crashing without orderBy', () => {
         const component = shallow(
-          <ContentList<GenericContent>
+          <ContentList
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
             fieldsToDisplay={['DisplayName']}
@@ -654,7 +654,7 @@ describe('ContentList component', () => {
       })
       it('should render without crashing without orderDirection', () => {
         const component = shallow(
-          <ContentList<GenericContent>
+          <ContentList
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
             fieldsToDisplay={['DisplayName']}
@@ -669,7 +669,7 @@ describe('ContentList component', () => {
       })
       it('should render without crashing without icons', () => {
         const component = shallow(
-          <ContentList<GenericContent>
+          <ContentList
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
             fieldsToDisplay={['DisplayName']}
@@ -684,7 +684,7 @@ describe('ContentList component', () => {
       })
       it('should render without crashing without fieldsToDisplay', () => {
         const component = shallow(
-          <ContentList<GenericContent>
+          <ContentList
             items={[{ Id: 1, Name: '1', Path: '1', DisplayName: 'A', Type: 'Folder' }]}
             schema={genericSchema}
             selected={[]}

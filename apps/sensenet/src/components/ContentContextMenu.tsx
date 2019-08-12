@@ -50,18 +50,33 @@ export const ContentContextMenuComponent: React.FunctionComponent<
 
   return (
     <div onKeyDown={ev => ev.stopPropagation()} onKeyPress={ev => ev.stopPropagation()}>
-      <DeleteContentDialog
-        dialogProps={{ open: isDeleteOpened, disablePortal: true, onClose: () => setIsDeleteOpened(false) }}
-        content={[content]}
-      />
-      <EditPropertiesDialog
-        content={content}
-        dialogProps={{ open: isEditPropertiesOpened, onClose: () => setIsEditPropertiesOpened(false) }}
-      />
-      <ContentInfoDialog
-        content={content}
-        dialogProps={{ open: isInfoDialogOpened, onClose: () => setIsInfoDialogOpened(false) }}
-      />
+      {isDeleteOpened ? (
+        <DeleteContentDialog
+          dialogProps={{
+            open: isDeleteOpened,
+            disablePortal: true,
+            onClose: () => setIsDeleteOpened(false),
+            keepMounted: false,
+          }}
+          content={[content]}
+        />
+      ) : null}
+      {isEditPropertiesOpened ? (
+        <EditPropertiesDialog
+          content={content}
+          dialogProps={{
+            open: isEditPropertiesOpened,
+            onClose: () => setIsEditPropertiesOpened(false),
+            keepMounted: false,
+          }}
+        />
+      ) : null}
+      {isInfoDialogOpened ? (
+        <ContentInfoDialog
+          content={content}
+          dialogProps={{ open: isInfoDialogOpened, onClose: () => setIsInfoDialogOpened(false), keepMounted: false }}
+        />
+      ) : null}
       {isCopyDialogOpened ? (
         <CurrentContentProvider idOrPath={content.ParentId || ConstantContent.PORTAL_ROOT.Path}>
           <CurrentContentContext.Consumer>
@@ -69,7 +84,11 @@ export const ContentContextMenuComponent: React.FunctionComponent<
               <CopyMoveDialog
                 content={[content]}
                 currentParent={parent}
-                dialogProps={{ open: isCopyDialogOpened, onClose: () => setIsCopyDialogOpened(false) }}
+                dialogProps={{
+                  open: isCopyDialogOpened,
+                  onClose: () => setIsCopyDialogOpened(false),
+                  keepMounted: false,
+                }}
                 operation={copyMoveOperation}
               />
             )}

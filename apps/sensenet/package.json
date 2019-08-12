@@ -74,6 +74,7 @@
     "@sensenet/redux": "^5.1.11",
     "@sensenet/repository-events": "^1.4.3",
     "autosuggest-highlight": "^3.1.1",
+    "moment": "^2.24.0",
     "monaco-editor": "^0.17.0",
     "react": "^16.8.2",
     "react-autosuggest": "^9.4.3",

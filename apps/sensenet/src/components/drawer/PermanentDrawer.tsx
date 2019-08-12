@@ -14,10 +14,9 @@ import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import { Link, matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
 import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
-import { useLocalization, usePersonalSettings, useRepository, useSession, useTheme } from '../../hooks'
+import { useDrawerItems, useLocalization, usePersonalSettings, useRepository, useSession, useTheme } from '../../hooks'
 import { LogoutButton } from '../LogoutButton'
 import { UserAvatar } from '../UserAvatar'
-import { getAllowedDrawerItems } from './Items'
 
 const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
   const settings = useContext(ResponsivePersonalSetttings)
@@ -28,7 +27,7 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
   const device = useContext(ResponsiveContext)
 
   const [opened, setOpened] = useState(settings.drawer.type === 'permanent')
-  const [items, setItems] = useState(getAllowedDrawerItems(session.groups))
+  const items = useDrawerItems()
   const localization = useLocalization().drawer
 
   const [currentRepoEntry, setCurrentRepoEntry] = useState(
@@ -42,8 +41,6 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
       ),
     [personalSettings, repo],
   )
-
-  useEffect(() => setItems(getAllowedDrawerItems(session.groups)), [session.groups])
 
   if (!settings.drawer.enabled) {
     return null
@@ -65,54 +62,42 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
           transition: 'width 100ms ease-in-out',
         }}>
         <div style={{ paddingTop: '1em' }}>
-          {items
-            .filter(i => settings.drawer.items && settings.drawer.items.indexOf(i.name) !== -1)
-            .map(item => {
-              const isActive = matchPath(props.location.pathname, `/:repositoryId${item.url}`)
-              return isActive ? (
-                <ListItem button={true} key={item.name} selected>
+          {items.map((item, index) => {
+            const isActive = matchPath(props.location.pathname, `/:repositoryId${item.url}`)
+            return isActive ? (
+              <ListItem button={true} key={index} selected>
+                <Tooltip
+                  title={
+                    <React.Fragment>
+                      {item.primaryText} <br /> {item.secondaryText}
+                    </React.Fragment>
+                  }
+                  placement="right">
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                </Tooltip>
+                {opened ? <ListItemText primary={item.primaryText} secondary={item.secondaryText} /> : null}
+              </ListItem>
+            ) : (
+              <NavLink
+                to={`/${btoa(repo.configuration.repositoryUrl)}${item.url}`}
+                activeStyle={{ opacity: 1 }}
+                style={{ textDecoration: 'none', opacity: 0.54 }}
+                key={index}>
+                <ListItem button={true}>
                   <Tooltip
                     title={
                       <React.Fragment>
-                        {localization[item.primaryText]} <br /> {localization[item.secondaryText]}
+                        {item.primaryText} <br /> {item.secondaryText}
                       </React.Fragment>
                     }
                     placement="right">
                     <ListItemIcon>{item.icon}</ListItemIcon>
                   </Tooltip>
-                  {opened ? (
-                    <ListItemText
-                      primary={localization[item.primaryText]}
-                      secondary={localization[item.secondaryText]}
-                    />
-                  ) : null}
+                  {opened ? <ListItemText primary={item.primaryText} secondary={item.secondaryText} /> : null}
                 </ListItem>
-              ) : (
-                <NavLink
-                  to={`/${btoa(repo.configuration.repositoryUrl)}${item.url}`}
-                  activeStyle={{ opacity: 1 }}
-                  style={{ textDecoration: 'none', opacity: 0.54 }}
-                  key={item.name}>
-                  <ListItem button={true}>
-                    <Tooltip
-                      title={
-                        <React.Fragment>
-                          {localization[item.primaryText]} <br /> {localization[item.secondaryText]}
-                        </React.Fragment>
-                      }
-                      placement="right">
-                      <ListItemIcon>{item.icon}</ListItemIcon>
-                    </Tooltip>
-                    {opened ? (
-                      <ListItemText
-                        primary={localization[item.primaryText]}
-                        secondary={localization[item.secondaryText]}
-                      />
-                    ) : null}
-                  </ListItem>
-                </NavLink>
-              )
-            })}
+              </NavLink>
+            )
+          })}
         </div>
         <div>
           {opened ? (
