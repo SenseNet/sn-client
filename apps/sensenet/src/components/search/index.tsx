@@ -79,6 +79,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
   const [savePublic, setSavePublic] = useState(false)
 
   useEffect(() => {
+    setResult([])
     props.history.push(generatePath(props.match.path, { ...props.match.params, queryData: encodeQueryData(queryData) }))
     repo
       .loadCollection({
@@ -101,7 +102,18 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
       })
     // loadSettings should be excluded :(
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reloadToken, queryData.term, repo, personalSettings.commandPalette.wrapQuery, logger])
+  }, [
+    reloadToken,
+    queryData.term,
+    repo,
+    personalSettings.commandPalette.wrapQuery,
+    logger,
+    // props.history.location,
+    // props.match.path,
+    // props.match.params,
+    queryData,
+    // loadSettingsContext.loadChildrenSettings,
+  ])
 
   useEffect(() => {
     ;(async () => {
@@ -122,16 +134,9 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
         scrollLock.release()
       }
     })()
-    // 'result' should be excluded!
+    // Infinite loader fx, only lock-related stuff should be included as dependency!
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    queryData.term,
-    loadSettingsContext.loadChildrenSettings,
-    personalSettings.commandPalette.wrapQuery,
-    repo,
-    scrollLock,
-    scrollToken,
-  ])
+  }, [scrollLock, scrollToken])
 
   return (
     <div style={{ padding: '1em', margin: '1em', height: '100%', width: '100%' }}>
