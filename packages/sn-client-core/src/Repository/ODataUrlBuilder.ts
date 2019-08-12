@@ -68,6 +68,6 @@ export class ODataUrlBuilder {
       }
     }
 
-    return segments.map(s => `${s.name}=${s.value}`).join('&')
+    return segments.map(s => `${s.name}=${encodeURIComponent(s.value)}`).join('&')
   }
 }
