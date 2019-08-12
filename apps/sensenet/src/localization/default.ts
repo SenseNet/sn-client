@@ -134,6 +134,8 @@ const values = {
     resendConfirmation: 'Resend confirmation',
     unlockAccount: 'Unlock account',
     newToSensenet: 'New to Sensenet?',
+    help: 'Help',
+    tutorials: 'Tutorials',
     signUp: 'Sign up',
     loginSuccessNotification: `Logged in with user '{0} to repository '{1}'`,
     loginFailedNotification: `Failed to log in with user '{0}' to repository '{1}'`,

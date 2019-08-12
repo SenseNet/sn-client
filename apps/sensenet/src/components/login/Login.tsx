@@ -279,11 +279,11 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
             <Link title={localization.resetPassword} href="#" className={classes.link}>
               {localization.resetPassword}
             </Link>
-            <Link title={localization.resendConfirmation} href="#" className={classes.link}>
-              {localization.resendConfirmation}
+            <Link title={localization.tutorials} href="#" className={classes.link}>
+              {localization.tutorials}
             </Link>
-            <Link title={localization.unlockAccount} href="#" className={classes.link}>
-              {localization.unlockAccount}
+            <Link title={localization.help} href="#" className={classes.link}>
+              {localization.help}
             </Link>
           </Grid>
         </div>
