@@ -64,10 +64,10 @@ export class ODataUrlBuilder {
         parsedValue = plainValue.map(v => (v.join && v.join(' ')) || v).join(',')
       }
       if (name && parsedValue && parsedValue.toString().length) {
-        segments.push({ name, value: encodeURIComponent(parsedValue) })
+        segments.push({ name, value: parsedValue })
       }
     }
 
-    return segments.map(s => `${s.name}=${s.value}`).join('&')
+    return segments.map(s => `${s.name}=${encodeURIComponent(s.value)}`).join('&')
   }
 }
