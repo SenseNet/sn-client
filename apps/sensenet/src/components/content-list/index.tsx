@@ -24,6 +24,7 @@ import { DisplayNameComponent } from './display-name-field'
 import { ActionsField } from './actions-field'
 import { ReferenceField } from './reference-field'
 import { BooleanField } from './boolean-field'
+import { DateField } from './date-field'
 
 export interface CollectionComponentProps {
   enableBreadcrumbs?: boolean
@@ -322,6 +323,13 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
                   )
                 // no default
               }
+              if (
+                fieldOptions.fieldSetting &&
+                fieldOptions.fieldSetting.FieldClassName === 'SenseNet.ContentRepository.Fields.DateTimeField'
+              ) {
+                return <DateField date={fieldOptions.content[fieldOptions.field] as string} />
+              }
+
               if (
                 typeof fieldOptions.content[fieldOptions.field] === 'object' &&
                 isReferenceField(fieldOptions.field, repo)
