@@ -28,6 +28,9 @@ const useStyles = makeStyles((theme: Theme) =>
       marginTop: theme.spacing(3),
       paddingRight: theme.spacing(3),
     },
+    title: {
+      margin: theme.spacing(2, 0, 3),
+    },
     middleText: {
       margin: theme.spacing(2, 0, 3),
     },
@@ -165,7 +168,7 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
       </Grid>
       <Container maxWidth="xs">
         <div className={classes.paper}>
-          <Typography variant="h4" color="textSecondary">
+          <Typography variant="h4" color="textSecondary" className={classes.title}>
             {localization.loginTitle}
           </Typography>
           {isInProgress ? (
