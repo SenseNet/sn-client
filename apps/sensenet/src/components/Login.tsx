@@ -33,6 +33,11 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
 
   const [success, setSuccess] = useState(false)
   const [progressValue, setProgressValue] = useState(0)
+  const [inputState, setInputState] = useState({
+    userName: { isValid: true, errorMessage: '' },
+    password: { isValid: true, errorMessage: '' },
+    repository: { isValid: true, errorMessage: '' },
+  })
 
   const [error, setError] = useState<string | undefined>()
 
@@ -106,6 +111,21 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
     }
   }
 
+  const handleInvalid = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    ev.preventDefault()
+    setInputState({
+      ...inputState,
+      [ev.target.name]: {
+        isValid: ev.target.validity.valid,
+        errorMessage: ev.target.validationMessage,
+      },
+    })
+  }
+
+  const clearInputError = (ev: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) => {
+    setInputState({ ...inputState, [ev.target.name]: { isValid: true, errorMessage: '' } })
+  }
+
   return (
     <div style={{ width: '100%', height: '100%', display: 'flex' }}>
       <Paper
@@ -150,33 +170,51 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
               required={true}
               margin="normal"
               label={localization.userNameLabel}
-              helperText={localization.userNameHelperText}
+              name="userName"
+              helperText={
+                inputState.userName.isValid ? localization.userNameHelperText : inputState.userName.errorMessage
+              }
+              error={!inputState.userName.isValid}
               fullWidth={true}
               value={userName}
+              onInvalid={handleInvalid}
               onChange={ev => {
+                clearInputError(ev)
                 setUserName(ev.target.value)
               }}
             />
             <TextField
               required={true}
               margin="dense"
+              name="password"
               label={localization.passwordLabel}
               fullWidth={true}
               type="password"
-              helperText={localization.passwordHelperText}
+              error={!inputState.password.isValid}
+              helperText={
+                inputState.password.isValid ? localization.passwordHelperText : inputState.password.errorMessage
+              }
+              onInvalid={handleInvalid}
               onChange={ev => {
+                clearInputError(ev)
                 setPassword(ev.target.value)
               }}
             />
             <TextField
               margin="dense"
               required={true}
+              name="repository"
               label={localization.repositoryLabel}
-              helperText={localization.repositoryHelperText}
+              error={!inputState.repository.isValid}
+              helperText={
+                inputState.repository.isValid ? localization.repositoryHelperText : inputState.repository.errorMessage
+              }
               fullWidth={true}
               type="url"
               value={url}
+              onInvalid={handleInvalid}
               onChange={ev => {
+                clearInputError(ev)
                 setUrl(ev.target.value)
               }}
             />

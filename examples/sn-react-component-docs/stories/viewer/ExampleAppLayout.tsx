@@ -24,7 +24,7 @@ import {
   ToggleShapesWidget,
   ToggleThumbnailsWidget,
   ZoomInOutWidget,
-} from '@sensenet/document-viewer-react'
+} from '@sensenet/document-viewer-react/src'
 import { v1 } from 'uuid'
 
 import Button from '@material-ui/core/Button'
@@ -43,6 +43,7 @@ import Typography from '@material-ui/core/Typography'
 import FolderOpen from '@material-ui/icons/FolderOpen'
 import Help from '@material-ui/icons/Help'
 import Send from '@material-ui/icons/Send'
+import { PathHelper } from '@sensenet/client-utils'
 
 /**
  * Changes the url to the one with host in it
@@ -96,11 +97,14 @@ const mapDispatchToProps = {}
 export const exampleSettings = new DocumentViewerSettings({
   commentActions: {
     addPreviewComment: async (documentData, comment) => {
-      const response = await fetch(`${documentData.hostName}/odata.svc/${documentData.idOrPath}/AddPreviewComment`, {
-        method: 'POST',
-        body: JSON.stringify({ ...comment }),
-        credentials: 'include',
-      })
+      const response = await fetch(
+        `${documentData.hostName}/odata.svc/${PathHelper.getContentUrl(documentData.idOrPath)}/AddPreviewComment`,
+        {
+          method: 'POST',
+          body: JSON.stringify({ ...comment }),
+          credentials: 'include',
+        },
+      )
       if (response.ok) {
         const responseBody = await response.json()
         return [responseBody].map(changeCreatedByUrlToCurrent(documentData))[0]
@@ -108,11 +112,14 @@ export const exampleSettings = new DocumentViewerSettings({
       throw new Error('Network response was not ok.')
     },
     deletePreviewComment: async (documentData, commentId) => {
-      const response = await fetch(`${documentData.hostName}/odata.svc/${documentData.idOrPath}/DeletePreviewComment`, {
-        method: 'POST',
-        body: JSON.stringify({ id: commentId }),
-        credentials: 'include',
-      })
+      const response = await fetch(
+        `${documentData.hostName}/odata.svc/${PathHelper.getContentUrl(documentData.idOrPath)}/DeletePreviewComment`,
+        {
+          method: 'POST',
+          body: JSON.stringify({ id: commentId }),
+          credentials: 'include',
+        },
+      )
       if (response.ok) {
         const responseBody = await response.json()
         return responseBody
@@ -120,8 +127,8 @@ export const exampleSettings = new DocumentViewerSettings({
     },
     getPreviewComments: async (documentData, page) => {
       const response = await fetch(
-        `${encodeURI(documentData.hostName)}/odata.svc/${encodeURI(
-          documentData.idOrPath.toString(),
+        `${encodeURI(documentData.hostName)}/odata.svc/${PathHelper.getContentUrl(
+          documentData.idOrPath,
         )}/GetPreviewComments?page=${page}`,
         { method: 'GET', credentials: 'include' },
       )
@@ -134,8 +141,8 @@ export const exampleSettings = new DocumentViewerSettings({
   },
   canEditDocument: async documentData => {
     const response = await fetch(
-      `${encodeURI(documentData.hostName)}/odata.svc/${encodeURI(
-        documentData.idOrPath.toString(),
+      `${encodeURI(documentData.hostName)}/odata.svc/${PathHelper.getContentUrl(
+        documentData.idOrPath,
       )}/HasPermission?permissions=Save`,
       { method: 'GET', credentials: 'include' },
     )
@@ -157,7 +164,7 @@ export const exampleSettings = new DocumentViewerSettings({
           .filter(p => p !== undefined),
       ),
     }
-    await fetch(`${documentData.hostName}/odata.svc/${documentData.idOrPath}`, {
+    await fetch(`${documentData.hostName}/odata.svc/${PathHelper.getContentUrl(documentData.idOrPath)}`, {
       method: 'PATCH',
       body: JSON.stringify(reqBody),
       credentials: 'include',
@@ -165,7 +172,9 @@ export const exampleSettings = new DocumentViewerSettings({
   },
   canHideWatermark: async documentData => {
     const response = await fetch(
-      `${documentData.hostName}/odata.svc/${documentData.idOrPath}/HasPermission?permissions=PreviewWithoutWatermark`,
+      `${documentData.hostName}/odata.svc/${PathHelper.getContentUrl(
+        documentData.idOrPath,
+      )}/HasPermission?permissions=PreviewWithoutWatermark`,
       { credentials: 'include' },
     )
     if (response.ok) {
@@ -175,7 +184,9 @@ export const exampleSettings = new DocumentViewerSettings({
   },
   canHideRedaction: async documentData => {
     const response = await fetch(
-      `${documentData.hostName}/odata.svc/${documentData.idOrPath}/HasPermission?permissions=PreviewWithoutRedaction`,
+      `${documentData.hostName}/odata.svc/${PathHelper.getContentUrl(
+        documentData.idOrPath,
+      )}/HasPermission?permissions=PreviewWithoutRedaction`,
       { credentials: 'include' },
     )
     if (response.ok) {
@@ -184,8 +195,11 @@ export const exampleSettings = new DocumentViewerSettings({
     return false
   },
   getExistingPreviewImages: async (documentData, version) => {
+    console.log(documentData)
     const response = await fetch(
-      `${documentData.hostName}/odata.svc/${documentData.idOrPath}/GetExistingPreviewImages?version=${version}`,
+      `${documentData.hostName}/odata.svc/${PathHelper.getContentUrl(
+        documentData.idOrPath,
+      )}/GetExistingPreviewImages?version=${version}`,
       { method: 'POST', credentials: 'include' },
     )
     const availablePreviews = ((await response.json()) as Array<PreviewImageData & { PreviewAvailable?: string }>).map(
@@ -208,7 +222,9 @@ export const exampleSettings = new DocumentViewerSettings({
   },
   isPreviewAvailable: async (documentData, version, page) => {
     const response = await fetch(
-      `${documentData.hostName}/odata.svc/${documentData.idOrPath}/PreviewAvailable?version=${version}`,
+      `${documentData.hostName}/odata.svc/${PathHelper.getContentUrl(
+        documentData.idOrPath,
+      )}/PreviewAvailable?version=${version}`,
       {
         method: 'POST',
         body: JSON.stringify({ page }),
@@ -229,9 +245,12 @@ export const exampleSettings = new DocumentViewerSettings({
     return
   },
   getDocumentData: async documentData => {
-    const docData = await fetch(`${documentData.hostName}/odata.svc/${documentData.idOrPath}`, {
-      credentials: 'include',
-    })
+    const docData = await fetch(
+      `${documentData.hostName}/odata.svc/${PathHelper.getContentUrl(documentData.idOrPath)}`,
+      {
+        credentials: 'include',
+      },
+    )
 
     if (!docData.ok) {
       const e = new Error('Error fetching document')

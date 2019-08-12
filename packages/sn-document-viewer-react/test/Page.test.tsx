@@ -9,7 +9,7 @@ describe('Page component', () => {
     onClick: jest.fn(),
     imageIndex: 1,
     image: 'preview',
-    elementNamePrefix: 'EL',
+    elementName: 'EL',
     zoomMode: 'fit',
     zoomLevel: 0,
     viewportWidth: 1024,
