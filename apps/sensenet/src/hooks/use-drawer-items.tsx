@@ -7,6 +7,8 @@ import PublicTwoTone from '@material-ui/icons/PublicTwoTone'
 import SearchTwoTone from '@material-ui/icons/SearchTwoTone'
 import WidgetsTwoTone from '@material-ui/icons/WidgetsTwoTone'
 import { DashboardTwoTone } from '@material-ui/icons'
+import { Group, User } from '@sensenet/default-content-types'
+import { Query } from '@sensenet/query'
 import { Icon } from '../components/Icon'
 import {
   BuiltinDrawerItem,
@@ -108,7 +110,12 @@ export const useDrawerItems = () => {
         case 'Users and groups':
           return `/search/${encodeQueryData({
             title: localization.titles['Users and groups'],
-            term: "+TypeIs:'User' OR TypeIs:'Group'",
+            term: new Query(q =>
+              q
+                .typeIs(User)
+                .or.typeIs(Group)
+                .and.inTree('/Root/IMS'),
+            ).toString(), // "+TypeIs:'User' OR TypeIs:'Group' AND InTree:'/Root/IMS'",
             hideSearchBar: true,
             fieldsToDisplay: ['DisplayName', 'ModificationDate', 'ModifiedBy', 'Actions'],
           })}`
