@@ -101,8 +101,8 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
         loadSettings.loadChildrenSettings.orderby && loadSettings.loadChildrenSettings.orderby.length === 1
           ? [[currentOrder as any, order as any]]
           : [['DisplayName', 'asc']],
-      select: props.fieldsToDisplay,
-      expand: (props.fieldsToDisplay || []).filter(f => f === 'Actions' || isReferenceField(f, repo)),
+      select: ['Actions', ...(props.fieldsToDisplay || [])],
+      expand: ['Actions', ...(props.fieldsToDisplay || []).filter(f => isReferenceField(f, repo))],
     })
     setCurrentOrder(currentOrder)
     setCurrentDirection(currentDirection)

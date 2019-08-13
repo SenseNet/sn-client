@@ -14,6 +14,7 @@ import {
   CurrentContentContext,
   LoadSettingsContext,
 } from '../../context'
+import { encodeQueryData } from '../search'
 
 const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & RouteComponentProps> = props => {
   const [items, setItems] = useState<GenericContent[]>([])
@@ -92,7 +93,9 @@ const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & Ro
               style={{ padding: '0', margin: '0 0 0 1em' }}
               onClick={() =>
                 props.history.push(
-                  `/${btoa(repo.configuration.repositoryUrl)}/search/${encodeURIComponent(props.settings.query)}`,
+                  `/${btoa(repo.configuration.repositoryUrl)}/search/${encodeQueryData({
+                    term: props.settings.query,
+                  })}`,
                 )
               }>
               <OpenInNewTwoTone />

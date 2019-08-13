@@ -86,9 +86,8 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
         path: ConstantContent.PORTAL_ROOT.Path,
         oDataOptions: {
           ...loadSettingsContext.loadChildrenSettings,
-          select: queryData.fieldsToDisplay,
-          expand: (queryData.fieldsToDisplay || []).filter(f => f === 'Actions' || isReferenceField(f, repo)),
-
+          select: ['Actions', ...(queryData.fieldsToDisplay || [])],
+          expand: ['Actions', ...(queryData.fieldsToDisplay || []).filter(f => isReferenceField(f, repo))],
           query: personalSettings.commandPalette.wrapQuery.replace('{0}', queryData.term),
           top: loadCount,
         },

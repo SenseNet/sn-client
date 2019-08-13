@@ -12,7 +12,7 @@ import { SimpleList } from './Simple'
 export const BrowseType = tuple('commander', 'explorer', 'simple')
 
 export interface BrowseData {
-  type: typeof BrowseType[number]
+  type?: typeof BrowseType[number]
   root?: string
   currentContent?: number | string
   secondaryContent?: number | string // right parent
@@ -35,7 +35,10 @@ export const Content: React.FunctionComponent<RouteComponentProps<{ browseData: 
   useEffect(() => {
     try {
       const data = decodeBrowseData(props.match.params.browseData)
-      setBrowseData(data)
+      setBrowseData({
+        ...browseData,
+        ...data,
+      })
     } catch (error) {
       logger.warning({ message: 'Wrong link :(' })
     }

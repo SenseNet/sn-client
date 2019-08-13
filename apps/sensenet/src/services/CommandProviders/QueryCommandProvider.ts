@@ -6,6 +6,7 @@ import { ContentContextProvider } from '../ContentContextProvider'
 import { LocalizationService } from '../LocalizationService'
 import { PersonalSettings } from '../PersonalSettings'
 import { CommandPaletteItem } from '../../hooks'
+import { encodeQueryData } from '../../components/search'
 
 @Injectable({ lifetime: 'singleton' })
 export class QueryCommandProvider implements CommandProvider {
@@ -48,7 +49,9 @@ export class QueryCommandProvider implements CommandProvider {
       {
         primaryText: this.localization.currentValues.getValue().search.openInSearchTitle,
         secondaryText: this.localization.currentValues.getValue().search.openInSearchDescription,
-        url: `/${btoa(options.repository.configuration.repositoryUrl)}/search/${encodeURIComponent(options.term)}`,
+        url: `/${btoa(options.repository.configuration.repositoryUrl)}/search/${encodeQueryData({
+          term: options.term,
+        })}`,
         content: { Type: 'Search' } as any,
         hits: [],
       },
