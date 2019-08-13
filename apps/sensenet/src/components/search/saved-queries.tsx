@@ -18,6 +18,7 @@ import {
 } from '../../context'
 import { useInjector, useLocalization, useRepository } from '../../hooks'
 import { CollectionComponent } from '../content-list'
+import { encodeQueryData } from '.'
 
 const Search: React.FunctionComponent<RouteComponentProps> = props => {
   const repo = useRepository()
@@ -104,9 +105,9 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
                   }}
                   onActivateItem={p => {
                     props.history.push(
-                      `/${btoa(repo.configuration.repositoryUrl)}/search/${encodeURIComponent(
-                        (p as Query).Query || '',
-                      )}`,
+                      `/${btoa(repo.configuration.repositoryUrl)}/search/${encodeQueryData({
+                        term: (p as Query).Query || '',
+                      })}`,
                     )
                   }}
                   onTabRequest={() => {
