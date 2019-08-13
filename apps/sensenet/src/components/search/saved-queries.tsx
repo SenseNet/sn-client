@@ -81,7 +81,7 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
         <Tooltip title={localization.newSearch}>
           <Link
             style={{ textDecoration: 'none', position: 'fixed', bottom: '2em', right: '2em' }}
-            to={`/${repoToken}/search`}>
+            to={`/${repoToken}/search/${encodeQueryData({ term: '' })}`}>
             <Fab color="primary" title={localization.newSearch}>
               <SearchIcon />
             </Fab>
