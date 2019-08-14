@@ -160,7 +160,7 @@ export const defaultSettings: PersonalSettingsType = {
         widgetType: 'query',
         minWidth: { default: '30%' },
         settings: {
-          query: "+TypeIs:'User'",
+          query: "+(TypeIs:'User' AND InTree:'/Root/IMS/Public')",
           columns: [],
           countOnly: true,
           showColumnNames: false,
