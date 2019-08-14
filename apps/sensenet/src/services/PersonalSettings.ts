@@ -248,7 +248,7 @@ export const defaultSettings: PersonalSettingsType = {
         widgetType: 'markdown',
         settings: {
           content:
-            "<div style='text-align:center;'><a target='_blank' href='https://index.hu' style='text-decoration: none;'><button style='margin-bottom: 2em' class='MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-contained'>Contact us</button></a></div>",
+            "<div style='text-align:center;'><a target='_blank' href='https://www.sensenet.com/contact' style='text-decoration: none;'><button style='margin-bottom: 2em' class='MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-contained'>Contact us</button></a></div>",
         },
         minWidth: {
           default: '100%',
