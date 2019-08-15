@@ -11,7 +11,7 @@ import Save from '@material-ui/icons/Save'
 import { ConstantContent, ODataResponse } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { generatePath, RouteComponentProps, withRouter } from 'react-router'
 import Semaphore from 'semaphore-async-await'
 import {
@@ -25,6 +25,7 @@ import { useContentRouting, useLocalization, useLogger, useRepository } from '..
 import { CollectionComponent, isReferenceField } from '../content-list'
 
 const loadCount = 20
+const searchDebounceTime = 400
 export interface QueryData {
   term: string
   title?: string
@@ -44,10 +45,15 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
   const [queryData, setQueryData] = useState<QueryData>(decodeQueryData(props.match.params.queryData))
 
   const localization = useLocalization().search
-  const [reloadToken, setReloadToken] = useState(Math.random())
   const [scrollToken, setScrollToken] = useState(Math.random())
   const [scrollLock] = useState(new Semaphore(1))
-  const [requestReload] = useState(() => debounce(() => setReloadToken(Math.random()), 250))
+  const [loadLock] = useState(new Semaphore(1))
+  const requestReload = useCallback(
+    debounce((qd: QueryData, term: string) => {
+      setQueryData({ ...qd, term })
+    }, searchDebounceTime),
+    [],
+  )
 
   useEffect(() => {
     try {
@@ -79,41 +85,46 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
   const [savePublic, setSavePublic] = useState(false)
 
   useEffect(() => {
-    setResult([])
-    props.history.push(generatePath(props.match.path, { ...props.match.params, queryData: encodeQueryData(queryData) }))
-    repo
-      .loadCollection({
-        path: ConstantContent.PORTAL_ROOT.Path,
-        oDataOptions: {
-          ...loadSettingsContext.loadChildrenSettings,
-          select: ['Actions', ...(queryData.fieldsToDisplay || [])],
-          expand: ['Actions', ...(queryData.fieldsToDisplay || []).filter(f => isReferenceField(f, repo))],
-          query: personalSettings.commandPalette.wrapQuery.replace('{0}', queryData.term),
-          top: loadCount,
-        },
-      })
-      .then(r => {
+    const ac = new AbortController()
+    ;(async () => {
+      await loadLock.acquire()
+      try {
+        setResult([])
+        props.history.push(
+          generatePath(props.match.path, { ...props.match.params, queryData: encodeQueryData(queryData) }),
+        )
+
+        const r = await repo.loadCollection({
+          path: ConstantContent.PORTAL_ROOT.Path,
+          oDataOptions: {
+            ...loadSettingsContext.loadChildrenSettings,
+            select: ['Actions', ...(queryData.fieldsToDisplay || [])],
+            expand: ['Actions', ...(queryData.fieldsToDisplay || []).filter(f => isReferenceField(f, repo))],
+            query: personalSettings.commandPalette.wrapQuery.replace('{0}', queryData.term),
+            top: loadCount,
+          },
+          requestInit: { signal: ac.signal },
+        })
         setError('')
         setResult(r.d.results)
         setCount(r.d.__count)
-      })
-      .catch(e => {
-        setError(e.message)
-        setResult([])
-        logger.warning({ message: 'Error executing search', data: { details: { error: e }, isDismissed: true } })
-      })
+      } catch (e) {
+        if (!ac.signal.aborted) {
+          setError(e.message)
+          setResult([])
+          logger.warning({ message: 'Error executing search', data: { details: { error: e }, isDismissed: true } })
+        }
+      } finally {
+        loadLock.release()
+      }
+    })()
     // loadSettings should be excluded :(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    reloadToken,
     queryData.term,
     repo,
     personalSettings.commandPalette.wrapQuery,
     logger,
-    // props.history.location,
-    // props.match.path,
-    // props.match.params,
-    queryData,
     loadSettingsContext.loadChildrenSettings.orderby,
     loadSettingsContext.loadChildrenSettings.select,
     loadSettingsContext.loadChildrenSettings.expand,
@@ -127,6 +138,8 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
           path: ConstantContent.PORTAL_ROOT.Path,
           oDataOptions: {
             ...loadSettingsContext.loadChildrenSettings,
+            select: ['Actions', ...(queryData.fieldsToDisplay || [])],
+            expand: ['Actions', ...(queryData.fieldsToDisplay || []).filter(f => isReferenceField(f, repo))],
             query: personalSettings.commandPalette.wrapQuery.replace('{0}', queryData.term),
             top: loadCount,
             skip: result.length,
@@ -155,10 +168,9 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
               fullWidth={true}
               onChange={ev => {
                 if (queryData.term !== ev.target.value) {
-                  setQueryData({ ...queryData, term: ev.target.value })
+                  // setQueryData({ ...queryData, term: ev.target.value })
+                  requestReload(queryData, ev.target.value)
                 }
-                // setContentQuery(ev.target.value)
-                requestReload()
               }}
             />
             <Button
