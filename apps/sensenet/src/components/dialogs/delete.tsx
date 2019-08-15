@@ -72,23 +72,50 @@ export const DeleteContentDialog: React.FunctionComponent<{
             onClick={async ev => {
               try {
                 setIsDeleteInProgress(true)
-                await repo.delete({
+                const result = await repo.delete({
                   idOrPath: props.content.map(c => c.Path),
                   permanent,
                 })
-                logger.information({
-                  message:
-                    props.content.length > 1
-                      ? localization.deleteMultipleSuccessNotification.replace('{0}', props.content.length.toString())
-                      : localization.deleteSuccessNotification.replace(
-                          '{0}',
-                          props.content[0].DisplayName || props.content[0].Name,
-                        ),
-                  data: {
-                    relatedContent: props.content.length > 1 ? undefined : props.content[0],
-                    relatedRepository: repo.configuration.repositoryUrl,
-                  },
-                })
+                if (result.d.results.length) {
+                  logger.information({
+                    message:
+                      result.d.results.length > 1
+                        ? localization.deleteMultipleSuccessNotification.replace(
+                            '{0}',
+                            result.d.results.length.toString(),
+                          )
+                        : localization.deleteSuccessNotification.replace('{0}', result.d.results[0].Name),
+                    data: {
+                      relatedContent: props.content.length > 1 ? undefined : props.content[0],
+                      relatedRepository: repo.configuration.repositoryUrl,
+                    },
+                  })
+                }
+                if (result.d.errors.length) {
+                  logger.warning({
+                    message:
+                      result.d.errors.length > 1
+                        ? localization.deleteMultipleContentFailedNotification.replace(
+                            '{0}',
+                            result.d.errors.length.toString(),
+                          )
+                        : localization.deleteSingleContentFailedNotification
+                            .replace(
+                              '{0}',
+                              (props.content.find(c => c.Id == result.d.errors[0].content.Id) as GenericContent)
+                                .DisplayName ||
+                                (props.content.find(c => c.Id == result.d.errors[0].content.Id) as GenericContent)
+                                  .Name ||
+                                result.d.errors[0].content.Name,
+                            )
+                            .replace('{1}', result.d.errors[0].error.message.value),
+                    data: {
+                      relatedContent: props.content.length > 1 ? undefined : props.content[0],
+                      details: result.d.errors,
+                      relatedRepository: repo.configuration.repositoryUrl,
+                    },
+                  })
+                }
               } catch (error) {
                 logger.error({
                   message: localization.deleteFailedNotification,

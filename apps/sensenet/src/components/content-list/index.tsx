@@ -69,8 +69,13 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
   const repo = useRepository()
   const loadSettings = useContext(LoadSettingsContext)
 
-  const [currentOrder, setCurrentOrder] = useState<keyof GenericContent>('DisplayName')
-  const [currentDirection, setCurrentDirection] = useState<'asc' | 'desc'>('asc')
+  const [currentOrder, setCurrentOrder] = useState<keyof GenericContent>(
+    ((loadSettings.loadChildrenSettings.orderby &&
+      loadSettings.loadChildrenSettings.orderby[0][0]) as keyof GenericContent) || 'DisplayName',
+  )
+  const [currentDirection, setCurrentDirection] = useState<'asc' | 'desc'>(
+    (loadSettings.loadChildrenSettings.orderby && (loadSettings.loadChildrenSettings.orderby[0][1] as any)) || 'asc',
+  )
 
   useEffect(() => {
     props.onActiveItemChange && props.onActiveItemChange(activeContent)
@@ -88,24 +93,10 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
   }, [selected])
 
   useEffect(() => {
-    const currentField =
-      (loadSettings.loadChildrenSettings.orderby && loadSettings.loadChildrenSettings.orderby[0][0]) || 'DisplayName'
-    let order: 'asc' | 'desc' =
-      (loadSettings.loadChildrenSettings.orderby && (loadSettings.loadChildrenSettings.orderby[0][1] as any)) || 'asc'
-
-    if (currentOrder === currentField) {
-      order = order === 'asc' ? 'desc' : 'asc'
-    }
     loadSettings.setLoadChildrenSettings({
-      orderby:
-        loadSettings.loadChildrenSettings.orderby && loadSettings.loadChildrenSettings.orderby.length === 1
-          ? [[currentOrder as any, order as any]]
-          : [['DisplayName', 'asc']],
-      select: ['Actions', ...(props.fieldsToDisplay || [])],
-      expand: ['Actions', ...(props.fieldsToDisplay || []).filter(f => isReferenceField(f, repo))],
+      ...loadSettings.loadChildrenSettings,
+      orderby: [[currentOrder as any, currentDirection as any]],
     })
-    setCurrentOrder(currentOrder)
-    setCurrentDirection(currentDirection)
     // loadSettings can NOT be added :(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [parentContent, currentOrder, currentDirection, personalSettings.content.fields, repo.schemas, isReferenceField])
