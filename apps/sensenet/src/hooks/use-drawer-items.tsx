@@ -115,7 +115,7 @@ export const useDrawerItems = () => {
                 .typeIs(User)
                 .or.typeIs(Group)
                 .and.inTree('/Root/IMS'),
-            ).toString(), // "+TypeIs:'User' OR TypeIs:'Group' AND InTree:'/Root/IMS'",
+            ).toString(),
             hideSearchBar: true,
             fieldsToDisplay: ['DisplayName', 'ModificationDate', 'ModifiedBy', 'Actions'],
           })}`
