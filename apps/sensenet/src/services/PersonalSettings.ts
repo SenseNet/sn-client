@@ -124,9 +124,12 @@ export const PermissionType = tuple(
 )
 
 export interface DrawerItem<T> {
-  /** */
   settings?: T
   itemType: typeof DrawerItemType[number]
+  permissions?: Array<{
+    path: string
+    role: typeof PermissionType[number]
+  }>
 }
 
 export interface ContentDrawerItem
@@ -139,10 +142,6 @@ export interface ContentDrawerItem
     browseType: typeof BrowseType[number]
   }> {
   itemType: 'Content'
-  permissions?: Array<{
-    path: string
-    role: typeof PermissionType[number]
-  }>
 }
 
 export interface QueryDrawerItem
@@ -325,11 +324,27 @@ export const defaultSettings: PersonalSettingsType = {
       type: 'mini-variant',
       items: [
         { itemType: 'Search', settings: undefined },
-        { itemType: 'Content', settings: { root: '/Root/Content' } },
-        { itemType: 'Users and groups', settings: undefined },
-        { itemType: 'Content Types', settings: undefined },
-        { itemType: 'Localization', settings: undefined },
-        { itemType: 'Setup', settings: undefined },
+        {
+          itemType: 'Content',
+          settings: { root: '/Root/Content' },
+          permissions: [{ path: '/Root/Content', role: 'Open' }],
+        },
+        {
+          itemType: 'Users and groups',
+          settings: undefined,
+          permissions: [{ path: '/Root/IMS/Public', role: 'AddNew' }],
+        },
+        {
+          itemType: 'Content Types',
+          settings: undefined,
+          permissions: [{ path: '/Root/System/ContentTypes', role: 'AddNew' }],
+        },
+        {
+          itemType: 'Localization',
+          settings: undefined,
+          permissions: [{ path: '/Root/Localization', role: 'AddNew' }],
+        },
+        { itemType: 'Setup', settings: undefined, permissions: [{ path: '/Root/System/Settings', role: 'Open' }] },
         { itemType: 'Version info', settings: undefined },
       ],
     },

@@ -23,6 +23,7 @@ import { encodeQueryData } from '../components/search'
 import DefaultLocalization from '../localization/default'
 import { useSession } from './use-session'
 import { useLocalization } from './use-localization'
+import { useRepository } from './use-repository'
 
 export interface DrawerItem {
   name: string
@@ -37,6 +38,7 @@ export const useDrawerItems = () => {
   const session = useSession()
   const settings = useContext(ResponsivePersonalSetttings)
   const localization = useLocalization().drawer
+  const repo = useRepository()
 
   const [drawerItems, setDrawerItems] = useState<DrawerItem[]>([])
 
@@ -173,8 +175,26 @@ export const useDrawerItems = () => {
   )
 
   useEffect(() => {
-    setDrawerItems(settings.drawer.items.map(item => getItemFromSettings(item)))
-  }, [getItemFromSettings, session, settings])
+    settings.drawer.items
+      .filterAsync(async item => {
+        if (!item.permissions || !item.permissions.length) {
+          return true
+        }
+        try {
+          for (const permission of item.permissions) {
+            const hasPermission = await repo.security.hasPermission(permission.path, [permission.role])
+            if (!hasPermission) {
+              return false
+            }
+          }
+        } catch (error) {
+          return false
+        }
+
+        return true
+      })
+      .then(items => setDrawerItems(items.map(item => getItemFromSettings(item))))
+  }, [getItemFromSettings, repo.security, session, settings])
 
   return drawerItems
 }
