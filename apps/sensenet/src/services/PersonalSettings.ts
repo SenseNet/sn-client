@@ -226,7 +226,7 @@ export const defaultSettings: PersonalSettingsType = {
         widgetType: 'markdown',
         settings: {
           content:
-            '[Overview](https://index.hu) \n\n [Getting started](https://index.hu) \n\n [Tutorials](https://index.hu) \n\n [Example apps](https://index.hu) \n\n ',
+            '[Overview](https://community.sensenet.com/docs/concepts/overview) \n\n [Getting started](https://community.sensenet.com/docs/tutorials/getting-started) \n\n [Tutorials](https://community.sensenet.com/tutorials) \n\n [Example apps](https://community.sensenet.com/docs/examples) \n\n ',
         },
         minWidth: {
           default: '45%',
@@ -237,7 +237,7 @@ export const defaultSettings: PersonalSettingsType = {
         widgetType: 'markdown',
         settings: {
           content:
-            ' [Content Delivery API](https://index.hu) \n\n [Images API](https://index.hu) \n\n [Content management API](https://index.hu) \n\n [Content preview API](https://index.hu) \n\n',
+            ' [REST API](https://community.sensenet.com/docs/odata-rest-api/) \n\n [User Management API](https://community.sensenet.com/docs/odata-rest-api/) \n\n [Content management API](https://community.sensenet.com/docs/odata-rest-api/) \n\n [Content preview API](https://community.sensenet.com/docs/built-in-odata-actions-and-functions/) \n\n',
         },
         minWidth: {
           default: '45%',
