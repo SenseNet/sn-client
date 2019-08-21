@@ -3,11 +3,11 @@ import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
-import { useInjector, useRepository } from '../hooks'
+import { useInjector, useLogger, useRepository } from '../hooks'
 import { CurrentContentContext } from './CurrentContent'
 export const CurrentAncestorsContext = React.createContext<GenericContent[]>([])
 
-export const CurrentAncestorsProvider: React.FunctionComponent = props => {
+export const CurrentAncestorsProvider: React.FunctionComponent<{ root?: number | string }> = props => {
   const currentContent = useContext(CurrentContentContext)
   const [loadLock] = useState(new Semaphore(1))
 
@@ -16,6 +16,8 @@ export const CurrentAncestorsProvider: React.FunctionComponent = props => {
   const injector = useInjector()
   const eventHub = injector.getEventHub(repo.configuration.repositoryUrl)
   const [reloadToken, setReloadToken] = useState(1)
+
+  const logger = useLogger('CurrentAncestorsProvider')
 
   const requestReload = debounce(() => setReloadToken(Math.random()), 100)
 
@@ -53,19 +55,24 @@ export const CurrentAncestorsProvider: React.FunctionComponent = props => {
     ;(async () => {
       try {
         await loadLock.acquire()
-        const ancestorsResult = await repo.executeAction<undefined, ODataCollectionResponse<GenericContent>>({
-          idOrPath: currentContent.Id,
-          method: 'GET',
-          name: 'Ancestors',
-          body: undefined,
-          requestInit: {
-            signal: ac.signal,
-          },
-          oDataOptions: {
-            orderby: [['Path', 'asc']],
-          },
-        })
-        setAncestors(ancestorsResult.d.results)
+        if ((props.root && currentContent.Id === props.root) || currentContent.Path == props.root) {
+          setAncestors([])
+        } else {
+          const ancestorsResult = await repo.executeAction<undefined, ODataCollectionResponse<GenericContent>>({
+            idOrPath: currentContent.Id,
+            method: 'GET',
+            name: 'Ancestors',
+            body: undefined,
+            requestInit: {
+              signal: ac.signal,
+            },
+            oDataOptions: {
+              orderby: [['Path', 'asc']],
+            },
+          })
+          const rootIndex = ancestorsResult.d.results.findIndex(a => a.Id === props.root || a.Path === props.root)
+          setAncestors(rootIndex > 0 ? ancestorsResult.d.results.slice(rootIndex) : ancestorsResult.d.results)
+        }
       } catch (err) {
         if (!ac.signal.aborted) {
           setError(err)
@@ -75,10 +82,13 @@ export const CurrentAncestorsProvider: React.FunctionComponent = props => {
       }
     })()
     return () => ac.abort()
-  }, [currentContent.Id, loadLock, reloadToken, repo])
+  }, [currentContent.Id, currentContent.Path, loadLock, props.root, reloadToken, repo])
 
   if (error) {
-    throw error
+    logger.warning({
+      message: `Error loading ancestors. ${error.message}`,
+      data: { details: { error }, relatedContent: currentContent, relatedRepository: repo.configuration.repositoryUrl },
+    })
   }
   return <CurrentAncestorsContext.Provider value={ancestors}>{props.children}</CurrentAncestorsContext.Provider>
 }

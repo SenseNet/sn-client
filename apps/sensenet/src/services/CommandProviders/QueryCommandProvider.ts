@@ -1,11 +1,12 @@
 import { Injectable, Injector } from '@furystack/inject'
-import { ConstantContent, Repository } from '@sensenet/client-core'
+import { ConstantContent } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
-import { CommandPaletteItem } from '../../store/CommandPalette'
-import { CommandProvider } from '../CommandProviderManager'
+import { CommandProvider, SearchOptions } from '../CommandProviderManager'
 import { ContentContextProvider } from '../ContentContextProvider'
 import { LocalizationService } from '../LocalizationService'
 import { PersonalSettings } from '../PersonalSettings'
+import { CommandPaletteItem } from '../../hooks'
+import { encodeQueryData } from '../../components/search'
 
 @Injectable({ lifetime: 'singleton' })
 export class QueryCommandProvider implements CommandProvider {
@@ -15,16 +16,16 @@ export class QueryCommandProvider implements CommandProvider {
     private readonly localization: LocalizationService,
   ) {}
 
-  public shouldExec(searchTerm: string): boolean {
-    return searchTerm[0] === '+'
+  public shouldExec(options: SearchOptions): boolean {
+    return options.term[0] === '+'
   }
 
-  public async getItems(query: string, repo: Repository): Promise<CommandPaletteItem[]> {
-    const ctx = new ContentContextProvider(repo)
-    const extendedQuery = this.personalSettings.currentValue
+  public async getItems(options: SearchOptions): Promise<CommandPaletteItem[]> {
+    const ctx = new ContentContextProvider(options.repository)
+    const extendedQuery = this.personalSettings.effectiveValue
       .getValue()
-      .default.commandPalette.wrapQuery.replace('{0}', query)
-    const result = await repo.loadCollection<GenericContent>({
+      .default.commandPalette.wrapQuery.replace('{0}', options.term)
+    const result = await options.repository.loadCollection<GenericContent>({
       path: ConstantContent.PORTAL_ROOT.Path,
       oDataOptions: {
         query: extendedQuery,
@@ -39,7 +40,7 @@ export class QueryCommandProvider implements CommandProvider {
         url: ctx.getPrimaryActionUrl(content),
         content,
         icon: content.Icon,
-        hits: query
+        hits: options.term
           .substr(1)
           .replace(/\*/g, ' ')
           .replace(/\?/g, ' ')
@@ -48,7 +49,9 @@ export class QueryCommandProvider implements CommandProvider {
       {
         primaryText: this.localization.currentValues.getValue().search.openInSearchTitle,
         secondaryText: this.localization.currentValues.getValue().search.openInSearchDescription,
-        url: `/${btoa(repo.configuration.repositoryUrl)}/search/${encodeURIComponent(query)}`,
+        url: `/${btoa(options.repository.configuration.repositoryUrl)}/search/${encodeQueryData({
+          term: options.term,
+        })}`,
         content: { Type: 'Search' } as any,
         hits: [],
       },

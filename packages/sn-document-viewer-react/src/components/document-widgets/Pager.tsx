@@ -6,7 +6,7 @@ import NavigateBefore from '@material-ui/icons/NavigateBefore'
 import NavigateNext from '@material-ui/icons/NavigateNext'
 import React from 'react'
 import { connect } from 'react-redux'
-import debounce from 'lodash.debounce'
+import { debounce } from '@sensenet/client-utils'
 import { RootReducerType, setActivePages } from '../../store'
 
 /**

@@ -1,29 +1,51 @@
 import { Injector } from '@furystack/inject'
 import { LogLevel } from '@furystack/logging'
-import Avatar from '@material-ui/core/Avatar'
-import BugReport from '@material-ui/icons/BugReport'
-import CodeTwoTone from '@material-ui/icons/CodeTwoTone'
-import CommentTwoTone from '@material-ui/icons/CommentTwoTone'
-import DeleteTwoTone from '@material-ui/icons/DeleteTwoTone'
-import Error from '@material-ui/icons/Error'
-import FolderTwoTone from '@material-ui/icons/FolderTwoTone'
-import FormatPaintTwoTone from '@material-ui/icons/FormatPaintTwoTone'
-import GroupTwoTone from '@material-ui/icons/GroupTwoTone'
-import Info from '@material-ui/icons/Info'
-import InsertDriveFileTwoTone from '@material-ui/icons/InsertDriveFileTwoTone'
-import ListAltTwoTone from '@material-ui/icons/ListAltTwoTone'
-import PublicTwoTone from '@material-ui/icons/PublicTwoTone'
-import SearchTwoTone from '@material-ui/icons/SearchTwoTone'
-import SettingsTwoTone from '@material-ui/icons/SettingsTwoTone'
-import Warning from '@material-ui/icons/Warning'
-import WebAssetTwoTone from '@material-ui/icons/WebAssetTwoTone'
+import {
+  AllInboxTwoTone,
+  AssignmentTwoTone,
+  BallotTwoTone,
+  BugReport,
+  CalendarTodayTwoTone,
+  CodeTwoTone,
+  CommentTwoTone,
+  DeleteTwoTone,
+  DescriptionTwoTone,
+  DomainTwoTone,
+  ErrorTwoTone,
+  EventTwoTone,
+  FolderOutlined,
+  FolderTwoTone,
+  FormatPaintTwoTone,
+  GridOnTwoTone,
+  GroupTwoTone,
+  Info,
+  InsertDriveFileTwoTone,
+  LanguageTwoTone,
+  LibraryBooksTwoTone,
+  LinkTwoTone,
+  ListAltTwoTone,
+  PersonTwoTone,
+  PhotoLibraryTwoTone,
+  PhotoTwoTone,
+  PictureAsPdfTwoTone,
+  PresentToAllTwoTone,
+  PublicTwoTone,
+  SearchTwoTone,
+  SettingsTwoTone,
+  TextFormat,
+  Warning,
+  WebAssetTwoTone,
+  WidgetsTwoTone,
+} from '@material-ui/icons'
 import { PathHelper } from '@sensenet/client-utils'
-import { File as SnFile, GenericContent, Schema, User } from '@sensenet/default-content-types'
+import { GenericContent, File as SnFile, User } from '@sensenet/default-content-types'
 import React from 'react'
 import { Repository } from '@sensenet/client-core'
+import { Avatar } from '@material-ui/core'
 import { useInjector, useRepository } from '../hooks'
 import { EventLogEntry } from '../services/EventService'
 import { isContentFromType } from '../utils/isContentFromType'
+import { tuple } from '../utils/tuple'
 import { UserAvatar } from './UserAvatar'
 
 export interface IconOptions {
@@ -93,6 +115,47 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   { get: (item, options) => (item.Type === 'Search' ? <SearchTwoTone style={options.style} /> : null) },
   { get: (item, options) => (item.Type === 'Comment' ? <CommentTwoTone style={options.style} /> : null) },
   { get: (item, options) => (item.Type === 'EventLog' ? <ListAltTwoTone style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'ImageLibrary' ? <PhotoLibraryTwoTone style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'Image' ? <PhotoTwoTone style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'EventList' ? <CalendarTodayTwoTone style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'CalendarEvent' ? <EventTwoTone style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'DocumentLibrary' ? <LibraryBooksTwoTone style={options.style} /> : null) },
+  {
+    get: (item, options) =>
+      item.Type === 'File' && item.Icon === 'excel' ? <GridOnTwoTone style={options.style} /> : null,
+  },
+  {
+    get: (item, options) =>
+      item.Type === 'File' && item.Icon === 'word' ? <DescriptionTwoTone style={options.style} /> : null,
+  },
+  {
+    get: (item, options) =>
+      item.Type === 'File' && item.Icon === 'powerpoint' ? <PresentToAllTwoTone style={options.style} /> : null,
+  },
+  {
+    get: (item, options) =>
+      item.Type === 'File' && item.Icon === 'adobe' ? <PictureAsPdfTwoTone style={options.style} /> : null,
+  },
+  { get: (item, options) => (item.Type === 'LinkList' ? <ListAltTwoTone style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'Link' ? <LinkTwoTone style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'MemoList' ? <ListAltTwoTone style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'Memo' ? <AssignmentTwoTone style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'TaskList' ? <ListAltTwoTone style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'Task' ? <BallotTwoTone style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'Domain' ? <DomainTwoTone style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'User' ? <PersonTwoTone style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'Group' ? <GroupTwoTone style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'SystemFolder' ? <FolderOutlined style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'Resources' ? <LanguageTwoTone style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'Resource' ? <TextFormat style={options.style} /> : null) },
+  { get: (item, options) => (item.Type === 'ContentType' ? <WidgetsTwoTone style={options.style} /> : null) },
+  {
+    get: (item, options) => (item.Type === 'OrganizationalUnit' ? <GroupTwoTone style={options.style} /> : null),
+  },
+  {
+    get: (item, options) =>
+      item.Type && item.Type.indexOf('Workspace') > -1 ? <AllInboxTwoTone style={options.style} /> : null,
+  },
   {
     get: (item, options) =>
       item.Type && item.Type.indexOf('Settings') !== -1 ? <SettingsTwoTone style={options.style} /> : null,
@@ -117,16 +180,78 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   },
 ]
 
-export const defaultSchemaResolvers: Array<IconResolver<Schema>> = [
+export const wellKnownIconNames = tuple(
+  'Folder',
+  'File',
+  'ImageLibrary',
+  'EventList',
+  'CalendarEvent',
+  'DocumentLibrary',
+  'LinkList',
+  'Link',
+  'MemoList',
+  'Memo',
+  'TaskList',
+  'Task',
+  'User',
+  'Group',
+  'ContentType',
+  'SystemFolder',
+  'Resource',
+  'OrganizationalUnit',
+  'Workspace',
+)
+
+export const defaultSchemaResolvers: Array<IconResolver<{ ContentTypeName: typeof wellKnownIconNames[number] }>> = [
   {
     get: (item, options) => {
-      return item.ContentTypeName === 'Folder' ? <FolderTwoTone style={{ ...options.style }} /> : null
+      switch (item.ContentTypeName) {
+        case 'Folder':
+          return <FolderTwoTone style={{ ...options.style }} />
+        case 'File':
+          return <InsertDriveFileTwoTone style={{ ...options.style }} />
+        case 'ImageLibrary':
+          return <PhotoLibraryTwoTone style={options.style} />
+        case 'EventList':
+          return <CalendarTodayTwoTone style={options.style} />
+        case 'CalendarEvent':
+          return <EventTwoTone style={options.style} />
+        case 'DocumentLibrary':
+          return <LibraryBooksTwoTone style={options.style} />
+        case 'LinkList':
+          return <ListAltTwoTone style={options.style} />
+        case 'Link':
+          return <LinkTwoTone style={options.style} />
+        case 'MemoList':
+          return <ListAltTwoTone style={options.style} />
+        case 'Memo':
+          return <AssignmentTwoTone style={options.style} />
+        case 'TaskList':
+          return <ListAltTwoTone style={options.style} />
+        case 'Task':
+          return <BallotTwoTone style={options.style} />
+        case 'User':
+          return <PersonTwoTone style={options.style} />
+        case 'Group':
+          return <GroupTwoTone style={options.style} />
+        case 'ContentType':
+          return <WidgetsTwoTone style={options.style} />
+        case 'SystemFolder':
+          return <FolderOutlined style={options.style} />
+        case 'Resource':
+          return <TextFormat style={options.style} />
+        case 'OrganizationalUnit':
+          return <GroupTwoTone style={options.style} />
+        default:
+          return null
+      }
     },
   },
   {
-    get: (item, options) => {
-      return item.ContentTypeName === 'File' ? <InsertDriveFileTwoTone style={{ ...options.style }} /> : null
-    },
+    get: (item, options) =>
+      item.ContentTypeName && item.ContentTypeName.indexOf('Workspace') > -1 ? (
+        <AllInboxTwoTone style={options.style} />
+      ) : null,
   },
 ]
 
@@ -134,7 +259,7 @@ export const defaultNotificationResolvers: Array<IconResolver<EventLogEntry<any>
   {
     get: (item, options) => {
       return item.level === LogLevel.Fatal || item.level === LogLevel.Error ? (
-        <Error style={{ ...options.style }} />
+        <ErrorTwoTone style={{ ...options.style }} />
       ) : null
     },
   },

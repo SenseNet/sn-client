@@ -2,7 +2,9 @@ import { LogLevel } from '@furystack/logging'
 import { Repository } from '@sensenet/client-core'
 import { editor, languages, Uri } from 'monaco-editor'
 import defaultLanguage from '../../localization/default'
-import { widgetTypes } from '../PersonalSettings'
+import { DrawerItemType, widgetTypes } from '../PersonalSettings'
+import { BrowseType } from '../../components/content'
+import { wellKnownIconNames } from '../../components/Icon'
 
 export const setupModel = (language = defaultLanguage, repo: Repository) => {
   const personalSettingsPath = `sensenet://PersonalSettings/PersonalSettings`
@@ -18,32 +20,50 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
         fileMatch: [uriString],
         schema: {
           definitions: {
+            columns: {
+              type: 'array',
+              title: language.personalSettings.dashboard.queryWidget.columns,
+              uniqueItems: true,
+              examples: [['DisplayName', 'CreatedBy']],
+              items: {
+                enum: [
+                  'Actions',
+                  'Type',
+                  ...repo.schemas.getSchemaByName('GenericContent').FieldSettings.map(f => f.Name),
+                ],
+              },
+            },
             dashboardSection: {
               $id: '#/dashboardSection',
               type: 'object',
-              title: 'Query widget',
+              title: language.personalSettings.dashboard.widgetName,
               default: null,
               required: ['widgetType', 'title'],
               properties: {
                 minWidth: {
                   $id: '#/dashboardSection/properties/widgetType',
-                  type: 'number',
-                  title: 'The minimum width of the widget in pixels',
-                  default: 250,
-                  examples: [250, 500],
+                  type: 'object',
+                  title: language.personalSettings.dashboard.minWidth,
+                  properties: {
+                    default: { type: ['number', 'string'], default: 250 },
+                    mobile: { type: ['number', 'string'] },
+                    tablet: { type: ['number', 'string'] },
+                    desktop: { type: ['number', 'string'] },
+                  },
+                  default: { default: 250 },
                 },
                 widgetType: {
                   $id: '#/dashboardSection/properties/widgetType',
                   type: 'string',
                   enum: [...widgetTypes],
-                  title: 'Type of the widget',
+                  title: language.personalSettings.dashboard.widgetType,
                   default: 'markdown',
-                  examples: ['query', 'markdown'],
+                  examples: ['query', 'markdown', 'updates'],
                 },
                 title: {
                   $id: '#/dashboardSection/properties/title',
                   type: 'string',
-                  title: 'Widget title',
+                  title: language.personalSettings.dashboard.title,
                   default: '',
                   pattern: '^(.*)$',
                 },
@@ -57,58 +77,69 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                       settings: {
                         $id: '#/dashboardSection/properties/querySettings',
                         type: 'object',
-                        title: 'Settings for the Query widget',
+                        title: language.personalSettings.dashboard.queryWidget.settings,
                         required: ['query', 'columns'],
                         properties: {
                           query: {
                             $id: '#/dashboardSection/properties/querySettings/properties/term',
                             type: 'string',
-                            title: 'The content query',
+                            title: language.personalSettings.dashboard.queryWidget.query,
                             default: '',
                             examples: ['+alba'],
+                            pattern: '^(.*)$',
+                          },
+                          emptyPlaceholderText: {
+                            $id: '#/dashboardSection/properties/querySettings/properties/emptyPlaceholderText',
+                            type: 'string',
+                            title: language.personalSettings.dashboard.queryWidget.emptyPlaceholderText,
+                            default: '',
+                            examples: ['No results.'],
                             pattern: '^(.*)$',
                           },
                           showColumnNames: {
                             $id: '#/dashboardSection/properties/querySettings/properties/showColumnNames',
                             type: 'boolean',
-                            title: 'Show column names',
+                            title: language.personalSettings.dashboard.queryWidget.showColumnNames,
                             default: false,
                             examples: [true],
                           },
                           top: {
-                            $id: '#/dashboardSection/properties/querySettings/properties/showColumnNames',
+                            $id: '#/dashboardSection/properties/querySettings/properties/top',
                             type: 'number',
-                            title: 'Limits the number of hits',
+                            title: language.personalSettings.dashboard.queryWidget.top,
                             default: 10,
                             examples: [5, 10, 20],
                           },
                           showOpenInSearch: {
                             $id: '#/dashboardSection/properties/querySettings/properties/showOpenInSearch',
                             type: 'boolean',
-                            title: 'Display a link to the Search view',
+                            title: language.personalSettings.dashboard.queryWidget.showOpenInSearch,
                             default: false,
                             examples: [true],
                           },
                           showRefresh: {
                             $id: '#/dashboardSection/properties/querySettings/properties/showRefresh',
                             type: 'boolean',
-                            title: 'Display a refresh button',
+                            title: language.personalSettings.dashboard.queryWidget.showRefresh,
                             default: false,
                             examples: [true, false],
                           },
+                          enableSelection: {
+                            $id: '#/dashboardSection/properties/querySettings/properties/enableSelection',
+                            type: 'boolean',
+                            title: language.personalSettings.dashboard.queryWidget.enableSelection,
+                            default: false,
+                            examples: [true, false],
+                          },
+                          countOnly: {
+                            $id: '#/dashboardSection/properties/querySettings/properties/countOnly',
+                            type: 'boolean',
+                            title: language.personalSettings.dashboard.queryWidget.countOnly,
+                            default: false,
+                            examples: [true],
+                          },
                           columns: {
-                            $id: '#/dashboardSection/properties/querySettings/properties/columns',
-                            type: 'array',
-                            title: 'Columns to display',
-                            uniqueItems: true,
-                            items: {
-                              enum: [
-                                'Actions',
-                                'Type',
-                                /** ToDo: check for other displayable system fields */
-                                ...repo.schemas.getSchemaByName('GenericContent').FieldSettings.map(f => f.Name),
-                              ],
-                            },
+                            $ref: '#/definitions/columns',
                           },
                         },
                       },
@@ -122,13 +153,13 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                     properties: {
                       settings: {
                         type: 'object',
-                        title: 'Settings for the Markdown widget',
+                        title: language.personalSettings.dashboard.markdownWidget.settings,
                         required: ['content'],
                         properties: {
                           content: {
                             $id: '#/dashboardSection/properties/markdownSettings/properties/term',
                             type: 'string',
-                            title: 'The Markdown content',
+                            title: language.personalSettings.dashboard.markdownWidget.content,
                             default: '',
                             examples: [
                               "### Hey I'm a Paragraph \r\n Hey, I'm not",
@@ -154,17 +185,93 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                 items: {
                   description: language.personalSettings.drawerItems,
                   type: 'array',
-                  uniqueItems: true,
                   items: {
-                    enum: [
-                      'Content',
-                      'Content Types',
-                      'Localization',
-                      'Search',
-                      'Setup',
-                      'Trash',
-                      'Users and Groups',
-                      'Version info',
+                    type: 'object',
+                    properties: {
+                      itemType: {
+                        type: 'string',
+                        enum: [...DrawerItemType],
+                      },
+                    },
+                    allOf: [
+                      {
+                        if: { properties: { itemType: { const: 'Content' } } },
+                        then: {
+                          properties: {
+                            settings: {
+                              type: 'object',
+                              properties: {
+                                root: { type: 'string', description: language.drawer.contentRootDescription },
+                                title: { type: 'string', description: language.personalSettings.drawerItemTitle },
+                                columns: { $ref: '#/definitions/columns' },
+                                description: {
+                                  type: 'string',
+                                  description: language.personalSettings.drawerItemDescription,
+                                },
+                                icon: {
+                                  type: 'string',
+                                  enum: [...wellKnownIconNames],
+                                  description: language.personalSettings.drawerItemDescription,
+                                },
+                                browseType: {
+                                  description: language.personalSettings.contentBrowseType,
+                                  enum: [...BrowseType],
+                                },
+                              },
+                              required: ['root', 'title', 'icon'],
+                            },
+                          },
+                          required: ['settings'],
+                        },
+                      },
+                      {
+                        if: { properties: { itemType: { const: 'Query' } } },
+                        then: {
+                          properties: {
+                            settings: {
+                              type: 'object',
+                              properties: {
+                                term: { type: 'string', description: language.drawer.contentRootDescription },
+                                columns: { $ref: '#/definitions/columns' },
+                                title: { type: 'string', description: language.personalSettings.drawerItemTitle },
+                                description: {
+                                  type: 'string',
+                                  description: language.personalSettings.drawerItemDescription,
+                                },
+                                icon: {
+                                  type: 'string',
+                                  enum: [...wellKnownIconNames],
+                                  description: language.personalSettings.drawerItemDescription,
+                                },
+                              },
+                              required: ['title', 'icon', 'term'],
+                            },
+                          },
+                          required: ['settings'],
+                        },
+                      },
+                      {
+                        if: { properties: { itemType: { const: 'Dashboard' } } },
+                        then: {
+                          properties: {
+                            settings: {
+                              type: 'object',
+                              properties: {
+                                title: { type: 'string' },
+                                description: { type: 'string' },
+                                dashboardName: { $data: '#/definitions/dashboards' },
+                                icon: {
+                                  type: 'string',
+                                  enum: [...wellKnownIconNames],
+                                  description: language.personalSettings.drawerItemDescription,
+                                },
+                              },
+                              required: ['dashboardName', 'title', 'icon'],
+                            },
+                          },
+                          required: ['settings'],
+                        },
+                      },
                     ],
                   },
                 },
@@ -215,21 +322,9 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
               properties: {
                 browseType: {
                   description: language.personalSettings.contentBrowseType,
-                  enum: ['simple', 'commander', 'explorer'],
+                  enum: [...BrowseType],
                 },
-                fields: {
-                  description: language.personalSettings.contentFields,
-                  type: 'array',
-                  uniqueItems: true,
-                  items: {
-                    enum: [
-                      'Actions',
-                      'Type',
-                      /** ToDo: check for other displayable system fields */
-                      ...repo.schemas.getSchemaByName('GenericContent').FieldSettings.map(f => f.Name),
-                    ],
-                  },
-                },
+                fields: { $ref: '#/definitions/columns' },
               },
             },
             settings: {
@@ -242,15 +337,6 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                 commandPalette: { $ref: '#/definitions/commandPalette' },
               },
             },
-          },
-          type: 'object',
-          required: ['default', 'repositories', 'lastRepository'],
-          properties: {
-            default: { $ref: '#/definitions/settings' },
-            mobile: { $ref: '#/definitions/settings' },
-            tablet: { $ref: '#/definitions/settings' },
-            desktop: { $ref: '#/definitions/settings' },
-            repositories: { $ref: '#/definitions/repositories' },
             dashboards: {
               type: 'object',
               title: 'The default Dashboard definitions',
@@ -266,6 +352,22 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                   items: { $ref: '#definitions/dashboardSection' },
                 },
               },
+              additionalProperties: {
+                type: 'array',
+                description: 'Custom dashboard with custom name',
+                items: { $ref: '#definitions/dashboardSection' },
+              },
+            },
+          },
+          type: 'object',
+          properties: {
+            default: { $ref: '#/definitions/settings' },
+            mobile: { $ref: '#/definitions/settings' },
+            tablet: { $ref: '#/definitions/settings' },
+            desktop: { $ref: '#/definitions/settings' },
+            repositories: { $ref: '#/definitions/repositories' },
+            dashboards: {
+              $ref: '#/definitions/dashboards',
             },
             lastRepository: { type: 'string', description: language.personalSettings.lastRepository },
             eventLogSize: { type: 'number', description: language.personalSettings.eventLogSize },

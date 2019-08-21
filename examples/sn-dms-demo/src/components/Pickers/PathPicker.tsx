@@ -9,7 +9,7 @@ import { GenericContentWithIsParent, useListPicker } from '@sensenet/pickers-rea
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { dmsInjector } from '../../DmsRepository'
-import { deselectPickeritem, selectPickerItem, reloadPickerItems } from '../../store/picker/actions'
+import { deselectPickeritem, reloadPickerItems, selectPickerItem } from '../../store/picker/actions'
 import { rootStateType } from '../../store/rootReducer'
 
 interface PathPickerProps {

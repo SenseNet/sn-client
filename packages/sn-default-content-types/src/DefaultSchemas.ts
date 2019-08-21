@@ -2068,7 +2068,7 @@ export const SchemaStore: Schema[] = [
       } as FieldSettings.ShortTextFieldSetting,
       {
         Type: 'LongTextFieldSetting',
-        TextType: FieldSettings.TextType.RichText,
+        TextType: 'RichText',
         Name: 'Body',
         FieldClassName: 'SenseNet.ContentRepository.Fields.LongTextField',
         DisplayName: 'Body',
@@ -3429,7 +3429,7 @@ export const SchemaStore: Schema[] = [
       } as FieldSettings.DateTimeFieldSetting,
       {
         Type: 'LongTextFieldSetting',
-        TextType: FieldSettings.TextType.LongText,
+        TextType: 'LongText',
         Name: 'Education',
         FieldClassName: 'SenseNet.ContentRepository.Fields.LongTextField',
         DisplayName: 'Education',

@@ -11,7 +11,7 @@ import Save from '@material-ui/icons/Save'
 import { ConstantContent, ODataResponse } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { generatePath, RouteComponentProps, withRouter } from 'react-router'
 import Semaphore from 'semaphore-async-await'
 import {
@@ -22,24 +22,48 @@ import {
   ResponsivePersonalSetttings,
 } from '../../context'
 import { useContentRouting, useLocalization, useLogger, useRepository } from '../../hooks'
-import { CollectionComponent } from '../ContentListPanel'
+import { CollectionComponent, isReferenceField } from '../content-list'
 
 const loadCount = 20
+const searchDebounceTime = 400
+export interface QueryData {
+  term: string
+  title?: string
+  hideSearchBar?: boolean
+  fieldsToDisplay?: Array<keyof GenericContent>
+}
 
-const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> = props => {
+export const encodeQueryData = (data: QueryData) => encodeURIComponent(btoa(JSON.stringify(data)))
+export const decodeQueryData = (encoded?: string) =>
+  encoded ? (JSON.parse(atob(decodeURIComponent(encoded))) as QueryData) : { term: '' }
+
+const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }>> = props => {
   const repo = useRepository()
   const contentRouter = useContentRouting()
 
-  const localization = useLocalization().search
-  const [contentQuery, setContentQuery] = useState(decodeURIComponent(props.match.params.query || ''))
-  const [reloadToken, setReloadToken] = useState(Math.random())
-  const [scrollToken, setScrollToken] = useState(Math.random())
-
-  const [scrollLock] = useState(new Semaphore(1))
-
-  const [requestReload] = useState(() => debounce(() => setReloadToken(Math.random()), 250))
-
   const logger = useLogger('Search')
+  const [queryData, setQueryData] = useState<QueryData>(decodeQueryData(props.match.params.queryData))
+
+  const localization = useLocalization().search
+  const [scrollToken, setScrollToken] = useState(Math.random())
+  const [scrollLock] = useState(new Semaphore(1))
+  const [loadLock] = useState(new Semaphore(1))
+  const requestReload = useCallback(
+    debounce((qd: QueryData, term: string) => {
+      setQueryData({ ...qd, term })
+    }, searchDebounceTime),
+    [],
+  )
+
+  useEffect(() => {
+    try {
+      const data = decodeQueryData(props.match.params.queryData || '{}')
+      setQueryData(data)
+    } catch (error) {
+      logger.warning({ message: 'Wrong link :(' })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [logger, props.match.params.queryData])
 
   const [requestScroll] = useState(() =>
     debounce((div: HTMLDivElement, total: number, loaded: number, update: (token: number) => void) => {
@@ -61,30 +85,50 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
   const [savePublic, setSavePublic] = useState(false)
 
   useEffect(() => {
-    props.history.push(
-      generatePath(props.match.path, { ...props.match.params, query: encodeURIComponent(contentQuery) || undefined }),
-    )
-    repo
-      .loadCollection({
-        path: ConstantContent.PORTAL_ROOT.Path,
-        oDataOptions: {
-          ...loadSettingsContext.loadChildrenSettings,
-          query: personalSettings.commandPalette.wrapQuery.replace('{0}', contentQuery),
-          top: loadCount,
-        },
-      })
-      .then(r => {
+    const ac = new AbortController()
+    ;(async () => {
+      await loadLock.acquire()
+      try {
+        setResult([])
+        props.history.push(
+          generatePath(props.match.path, { ...props.match.params, queryData: encodeQueryData(queryData) }),
+        )
+
+        const r = await repo.loadCollection({
+          path: ConstantContent.PORTAL_ROOT.Path,
+          oDataOptions: {
+            ...loadSettingsContext.loadChildrenSettings,
+            select: ['Actions', ...(queryData.fieldsToDisplay || [])],
+            expand: ['Actions', ...(queryData.fieldsToDisplay || []).filter(f => isReferenceField(f, repo))],
+            query: personalSettings.commandPalette.wrapQuery.replace('{0}', queryData.term),
+            top: loadCount,
+          },
+          requestInit: { signal: ac.signal },
+        })
         setError('')
         setResult(r.d.results)
         setCount(r.d.__count)
-      })
-      .catch(e => {
-        setError(e.message)
-        logger.warning({ message: 'Error executing search', data: { details: { error: e }, isDismissed: true } })
-      })
+      } catch (e) {
+        if (!ac.signal.aborted) {
+          setError(e.message)
+          setResult([])
+          logger.warning({ message: 'Error executing search', data: { details: { error: e }, isDismissed: true } })
+        }
+      } finally {
+        loadLock.release()
+      }
+    })()
     // loadSettings should be excluded :(
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reloadToken, contentQuery, repo, personalSettings.commandPalette.wrapQuery, logger])
+  }, [
+    queryData.term,
+    repo,
+    personalSettings.commandPalette.wrapQuery,
+    logger,
+    loadSettingsContext.loadChildrenSettings.orderby,
+    loadSettingsContext.loadChildrenSettings.select,
+    loadSettingsContext.loadChildrenSettings.expand,
+  ])
 
   useEffect(() => {
     ;(async () => {
@@ -94,7 +138,9 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
           path: ConstantContent.PORTAL_ROOT.Path,
           oDataOptions: {
             ...loadSettingsContext.loadChildrenSettings,
-            query: personalSettings.commandPalette.wrapQuery.replace('{0}', contentQuery),
+            select: ['Actions', ...(queryData.fieldsToDisplay || [])],
+            expand: ['Actions', ...(queryData.fieldsToDisplay || []).filter(f => isReferenceField(f, repo))],
+            query: personalSettings.commandPalette.wrapQuery.replace('{0}', queryData.term),
             top: loadCount,
             skip: result.length,
           },
@@ -105,89 +151,86 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
         scrollLock.release()
       }
     })()
-    // 'result' should be excluded!
+    // Infinite loader fx, only lock-related stuff should be included as dependency!
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    contentQuery,
-    loadSettingsContext.loadChildrenSettings,
-    personalSettings.commandPalette.wrapQuery,
-    repo,
-    scrollLock,
-    scrollToken,
-  ])
+  }, [scrollLock, scrollToken])
 
   return (
     <div style={{ padding: '1em', margin: '1em', height: '100%', width: '100%' }}>
-      <Typography variant="h5">{localization.title}</Typography>
+      <Typography variant="h5">{queryData.title || localization.title}</Typography>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <div style={{ marginLeft: '1em', width: '100%', display: 'flex' }}>
-          <TextField
-            label={localization.queryLabel}
-            helperText={localization.queryHelperText}
-            defaultValue={contentQuery}
-            fullWidth={true}
-            onChange={ev => {
-              setContentQuery(ev.target.value)
-              requestReload()
-            }}
-          />
-          <Button
-            style={{ flexShrink: 0 }}
-            title={localization.saveQuery}
-            onClick={() => {
-              setIsSaveOpened(true)
-              setSaveName(`Search results for '${contentQuery}'`)
-            }}>
-            <Save style={{ marginRight: 8 }} />
-            {localization.saveQuery}
-          </Button>
-          <Dialog open={isSaveOpened} onClose={() => setIsSaveOpened(false)}>
-            <DialogTitle>{localization.saveQuery}</DialogTitle>
-            <DialogContent style={{ minWidth: 450 }}>
-              <TextField
-                fullWidth={true}
-                defaultValue={`Search results for '${contentQuery}'`}
-                onChange={ev => setSaveName(ev.currentTarget.value)}
-              />
-              <br />
-              <FormControlLabel
-                label={localization.public}
-                control={<Checkbox onChange={ev => setSavePublic(ev.target.checked)} />}
-              />
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={() => setIsSaveOpened(false)}>{localization.cancel}</Button>
-              <Button
-                onClick={() => {
-                  repo
-                    .executeAction<any, ODataResponse<GenericContent>>({
-                      idOrPath:
-                        repo.authentication.currentUser.getValue().ProfilePath || ConstantContent.PORTAL_ROOT.Path,
-                      name: 'SaveQuery',
-                      method: 'POST',
-                      oDataOptions: {
-                        select: ['DisplayName', 'Query'],
-                      },
-                      body: {
-                        query: contentQuery,
-                        displayName: saveName,
-                        queryType: savePublic ? 'Public' : 'Private',
-                      },
-                    })
-                    .then(c => {
-                      setIsSaveOpened(false)
-                      logger.information({
-                        message: `Query '${c.d.DisplayName || c.d.Name}' saved`,
-                        data: { relatedContent: c.d, details: c },
+        {queryData.hideSearchBar ? null : (
+          <div style={{ marginLeft: '1em', width: '100%', display: 'flex' }}>
+            <TextField
+              label={localization.queryLabel}
+              helperText={localization.queryHelperText}
+              defaultValue={queryData.term}
+              fullWidth={true}
+              onChange={ev => {
+                if (queryData.term !== ev.target.value) {
+                  // setQueryData({ ...queryData, term: ev.target.value })
+                  requestReload(queryData, ev.target.value)
+                }
+              }}
+            />
+            <Button
+              style={{ flexShrink: 0 }}
+              title={localization.saveQuery}
+              onClick={() => {
+                setIsSaveOpened(true)
+                setSaveName(`Search results for '${queryData.term}'`)
+              }}>
+              <Save style={{ marginRight: 8 }} />
+              {localization.saveQuery}
+            </Button>
+            <Dialog open={isSaveOpened} onClose={() => setIsSaveOpened(false)}>
+              <DialogTitle>{localization.saveQuery}</DialogTitle>
+              <DialogContent style={{ minWidth: 450 }}>
+                <TextField
+                  fullWidth={true}
+                  defaultValue={`Search results for '${queryData.term}'`}
+                  onChange={ev => setSaveName(ev.currentTarget.value)}
+                />
+                <br />
+                <FormControlLabel
+                  label={localization.public}
+                  control={<Checkbox onChange={ev => setSavePublic(ev.target.checked)} />}
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={() => setIsSaveOpened(false)}>{localization.cancel}</Button>
+                <Button
+                  onClick={() => {
+                    repo
+                      .executeAction<any, ODataResponse<GenericContent>>({
+                        idOrPath:
+                          repo.authentication.currentUser.getValue().ProfilePath || ConstantContent.PORTAL_ROOT.Path,
+                        name: 'SaveQuery',
+                        method: 'POST',
+                        oDataOptions: {
+                          select: ['DisplayName', 'Query'],
+                        },
+                        body: {
+                          query: queryData.term,
+                          displayName: saveName,
+                          queryType: savePublic ? 'Public' : 'Private',
+                        },
                       })
-                    })
-                }}
-                color="primary">
-                {localization.save}
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </div>
+                      .then(c => {
+                        setIsSaveOpened(false)
+                        logger.information({
+                          message: `Query '${c.d.DisplayName || c.d.Name}' saved`,
+                          data: { relatedContent: c.d, details: c },
+                        })
+                      })
+                  }}
+                  color="primary">
+                  {localization.save}
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
+        )}
       </div>
 
       {error ? (
@@ -208,7 +251,8 @@ const Search: React.FunctionComponent<RouteComponentProps<{ query?: string }>> =
                 onScroll: ev => requestScroll(ev.currentTarget, count, result.length, setScrollToken),
               }}
               enableBreadcrumbs={false}
-              parentId={0}
+              fieldsToDisplay={queryData.fieldsToDisplay}
+              parentIdOrPath={0}
               onParentChange={p => {
                 props.history.push(contentRouter.getPrimaryActionUrl(p))
               }}

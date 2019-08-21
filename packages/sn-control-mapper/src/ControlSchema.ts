@@ -1,13 +1,14 @@
 import { FieldSetting, Schema } from '@sensenet/default-content-types'
+import { ActionName } from './ControlMapper'
 
 /**
  * Defines a control schema association
  */
-export class ControlSchema<TControlBaseType, TClientControlSettings> {
+export class ControlSchema<TControlBaseType, TFieldControlBaseType> {
   /**
    * The type of the content type control
    */
-  public contentTypeControl!: new (...args: any[]) => TControlBaseType
+  public contentTypeControl!: TControlBaseType
   /**
    * The assicoated Schema object from sensenet
    */
@@ -17,7 +18,7 @@ export class ControlSchema<TControlBaseType, TClientControlSettings> {
    */
   public fieldMappings!: Array<{
     fieldSettings: FieldSetting
-    controlType: new (...args: any[]) => TControlBaseType
-    clientSettings: TClientControlSettings
+    actionName: ActionName
+    controlType: TFieldControlBaseType
   }>
 }

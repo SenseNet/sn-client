@@ -30,9 +30,9 @@ const Breadcrumbs: React.FunctionComponent<BreadcrumbProps & RouteComponentProps
 
   return (
     <>
-      <Typography variant="h5" style={{ paddingLeft: '.5em' }}>
+      <Typography variant="h5" style={{ padding: '.5em' }}>
         {props.content.map((item, key) => (
-          <DropFileArea key={key} parent={item.content} style={{ display: 'inline-block' }}>
+          <DropFileArea key={key} parentContent={item.content} style={{ display: 'inline-block' }}>
             <Tooltip title={item.title}>
               <Button
                 onClick={ev => props.onItemClick(ev, item)}
@@ -49,8 +49,7 @@ const Breadcrumbs: React.FunctionComponent<BreadcrumbProps & RouteComponentProps
             <KeyboardArrowRight style={{ verticalAlign: 'middle', height: '16px' }} />
           </DropFileArea>
         ))}
-        {/* TODO: Make a component of this */}
-        <DropFileArea parent={props.currentContent.content} style={{ display: 'inline-block' }}>
+        <DropFileArea parentContent={props.currentContent.content} style={{ display: 'inline-block' }}>
           <Tooltip title={props.currentContent.content.Path || '/'}>
             <Button
               onClick={ev => props.onItemClick(ev, props.currentContent)}

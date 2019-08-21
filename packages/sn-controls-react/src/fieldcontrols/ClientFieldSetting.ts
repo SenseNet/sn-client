@@ -1,88 +1,54 @@
 /**
  * @module FieldControls
  */
-import { GenericContent } from '@sensenet/default-content-types'
-
-/**
- * Interface for ReactClientFieldSetting properties
- */
-export interface ReactClientFieldSettingProps<T extends GenericContent = GenericContent, K extends keyof T = 'Name'> {
-  /**
-   * Unique name of the field control
-   */
-  name: K
-  /**
-   * Called when the icon is clicked
-   */
-  onChange: (field: keyof T, value: string) => void
-  /**
-   * Unique key of the field control
-   */
-  key?: string
-  /**
-   * React style object
-   */
-  style?: object
-  /**
-   * Value of the field control
-   */
-  value?: any
-  /**
-   * Defining whether the field's data can be edited
-   */
-  readOnly?: boolean
-  /**
-   * Defining whether the field has to contain any data
-   * @default false
-   */
-  required?: boolean
-  /**
-   * Additional class name
-   * @default false
-   */
-  className?: string
-}
+import { Repository } from '@sensenet/client-core'
+import { FieldSetting, GenericContent } from '@sensenet/default-content-types'
+import { ActionName } from '@sensenet/control-mapper'
+import { ReactElement } from 'react'
 
 /**
  * Interface for ClientFieldSetting properties
  */
-export interface ReactClientFieldSetting<T extends GenericContent = GenericContent, K extends keyof T = 'Name'>
-  extends ReactClientFieldSettingProps<T, K> {
+export interface ReactClientFieldSetting<T = FieldSetting, S = GenericContent> {
   /**
-   * Default value of the empty field control
+   * Field settings for controls.
    */
-  'data-defaultValue'?: T[K] & { toString: () => string }
+  settings: T
+  /**
+   * Content to used by controls that needs to access the repository.
+   */
+  content?: S
+  /**
+   * The value of the field.
+   */
+  fieldValue?: string
   /**
    * Display mode of the field control
    * @default browse
    */
-  'data-actionName'?: 'new' | 'edit' | 'browse'
-  /**
-   * Text of the hint that could be displayed after the field control
-   */
-  'data-hintText'?: string
-  /**
-   * Text of the placeholder
-   */
-  'data-placeHolderText'?: string
-  /**
-   * Text of the label
-   */
-  'data-labelText'?: string
-  /**
-   * Text of the error message
-   */
-  'data-errorText'?: string
-  /**
-   * Name of the fieldcontrol type
-   */
-  'data-typeName'?: string
-  /**
-   * Url of the repository
-   */
-  'data-repositoryUrl'?: string
+  actionName?: ActionName
   /**
    * Function for rendering an icon by an iconname given as an input prop
    */
-  'data-renderIcon'?: (name: string) => JSX.Element
+  renderIcon?: (name: string) => ReactElement
+  /**
+   * Connected repository
+   */
+  repository?: Repository
+  /**
+   * On change callback to see when a field value is changed.
+   */
+  fieldOnChange?: (field: string, value: any) => void
+
+  /**
+   * Property for FileName control. Used in new view mostly.
+   * @example 'jpg'
+   */
+  extension?: string
+
+  /**
+   * Used in Avatar control. You can specify a path for the content to be uploaded.
+   * @example '/Root/Sites/Default_Site/demoavatars'
+   */
+  uploadFolderPath?: string
 }

@@ -1,32 +1,31 @@
 import TableCell from '@material-ui/core/TableCell'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
-import React from 'react'
+import React, { useState } from 'react'
 
-export interface DisplayNameCellProps<T extends GenericContent> {
+export interface DisplayNameCellProps<T extends GenericContent = GenericContent> {
   content: T
   isSelected: boolean
   icons: any
 }
 
-export class DisplayNameCell<T extends GenericContent> extends React.Component<DisplayNameCellProps<T>> {
-  public render() {
-    const icon = this.props.content.Icon && this.props.icons[this.props.content.Icon.toLowerCase() as any]
-    const type =
-      this.props.content.Icon === 'word' ||
-      this.props.content.Icon === 'excel' ||
-      this.props.content.Icon === 'acrobat' ||
-      this.props.content.Icon === 'powerpoint'
-        ? iconType.flaticon
-        : iconType.materialui
+export const DisplayNameCell: React.FC<DisplayNameCellProps> = props => {
+  const [icon] = useState(props.content.Icon && props.icons[props.content.Icon.toLowerCase() as any])
+  const [type] = useState(
+    props.content.Icon === 'word' ||
+      props.content.Icon === 'excel' ||
+      props.content.Icon === 'acrobat' ||
+      props.content.Icon === 'powerpoint'
+      ? iconType.flaticon
+      : iconType.materialui,
+  )
 
-    return (
-      <TableCell className="display-name">
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          {icon ? <Icon type={type} iconName={icon} style={{ marginRight: '.5em' }} /> : null}
-          <div>{this.props.content.DisplayName || this.props.content.Name}</div>
-        </div>
-      </TableCell>
-    )
-  }
+  return (
+    <TableCell className="display-name">
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        {icon ? <Icon type={type} iconName={icon} style={{ marginRight: '.5em' }} /> : null}
+        <div>{props.content.DisplayName || props.content.Name}</div>
+      </div>
+    </TableCell>
+  )
 }

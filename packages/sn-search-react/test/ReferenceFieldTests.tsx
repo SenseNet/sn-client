@@ -1,6 +1,6 @@
 import TextField from '@material-ui/core/TextField'
 import { SchemaStore } from '@sensenet/client-core/dist/Schemas/SchemaStore'
-import { GenericContent, ReferenceFieldSetting, SchemaStore as defaultSchemas } from '@sensenet/default-content-types'
+import { SchemaStore as defaultSchemas, GenericContent, ReferenceFieldSetting } from '@sensenet/default-content-types'
 import { shallow } from 'enzyme'
 import React from 'react'
 import Autosuggest from 'react-autosuggest'
@@ -153,7 +153,9 @@ describe('ReferenceField Component', () => {
     it('Should be rendered without error', () => {
       expect(
         shallow(
-          <ReferenceFieldContainer query="" containerProps={{ id: '1', key: '1', ref: null as any, style: {} }}>
+          <ReferenceFieldContainer
+            query=""
+            containerProps={{ id: '1', key: '1', ref: null as any, className: '', role: '' }}>
             <span>a</span>
           </ReferenceFieldContainer>,
         ),

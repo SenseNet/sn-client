@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Short text field control in browse view should show the displayname and fieldValue when fieldValue is provided 1`] = `
+<div>
+  <WithStyles(ForwardRef(Typography))
+    gutterBottom={true}
+    variant="caption"
+  >
+    Display name
+  </WithStyles(ForwardRef(Typography))>
+  <WithStyles(ForwardRef(Typography))
+    gutterBottom={true}
+    variant="body1"
+  >
+    Hello World
+  </WithStyles(ForwardRef(Typography))>
+</div>
+`;
+
+exports[`Short text field control in edit/new view should set all the props 1`] = `
+<WithStyles(ForwardRef(TextField))
+  defaultValue="defaultValue"
+  disabled={true}
+  fullWidth={true}
+  helperText="description"
+  id="DisplayName"
+  inputProps={
+    Object {
+      "maxLength": 12,
+      "minLength": 2,
+      "pattern": "(^\\\\d*([-\\\\s\\\\+\\\\(\\\\)]\\\\d*)*$)?",
+    }
+  }
+  label="Display name"
+  name="DisplayName"
+  onChange={[Function]}
+  placeholder="Display name"
+  required={true}
+  value="Hello World"
+/>
+`;

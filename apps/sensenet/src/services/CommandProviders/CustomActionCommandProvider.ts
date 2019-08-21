@@ -1,8 +1,8 @@
 import { Injectable } from '@furystack/inject'
-import { MetadataAction, Repository } from '@sensenet/client-core'
+import { MetadataAction } from '@sensenet/client-core'
 import { ObservableValue } from '@sensenet/client-utils'
 import { ActionModel, GenericContent } from '@sensenet/default-content-types'
-import { CommandProvider } from '../CommandProviderManager'
+import { CommandProvider, SearchOptions } from '../CommandProviderManager'
 import { LocalizationService } from '../LocalizationService'
 import { SelectionService } from '../SelectionService'
 
@@ -17,17 +17,19 @@ export class CustomActionCommandProvider implements CommandProvider {
 
   public onActionExecuted = new ObservableValue<{ content: GenericContent; action: ActionModel; response: any }>()
 
-  public shouldExec(term: string) {
-    return this.selectionService.activeContent.getValue() && term.length > 2 && term.startsWith('>') ? true : false
+  public shouldExec(options: SearchOptions) {
+    return this.selectionService.activeContent.getValue() && options.term.length > 2 && options.term.startsWith('>')
+      ? true
+      : false
   }
-  public async getItems(_term: string, repo: Repository) {
+  public async getItems(options: SearchOptions) {
     const content = this.selectionService.activeContent.getValue()
     const localization = this.localization.currentValues.getValue().commandPalette.customAction
-    const filteredTerm = _term.substr(1).toLowerCase()
+    const filteredTerm = options.term.substr(1).toLowerCase()
     if (!content) {
       return []
     }
-    const result = await repo.load<GenericContent>({
+    const result = await options.repository.load<GenericContent>({
       idOrPath: content.Id,
       oDataOptions: {
         metadata: 'full',

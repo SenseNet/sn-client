@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/query",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "Client side content query builder package for sensenet",
   "main": "dist/index.js",
   "typings": "./dist/index.d.ts",

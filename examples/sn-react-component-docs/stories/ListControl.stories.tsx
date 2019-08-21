@@ -4,16 +4,17 @@ import { action } from '@storybook/addon-actions'
 import { array, boolean, select, text, withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
 import React from 'react'
+import { ActionModel, GenericContent } from '@sensenet/default-content-types'
 import contentListNotes from '../notes/listcontrols/ContentList.md'
 import { icons } from '../assets/icons'
-import { customSchema } from './ViewControl.stories'
+import { customSchema } from './custom-schema'
 
 const orderDirectionOptions = {
   asc: 'asc',
   desc: 'desc',
 }
 
-const items = [
+const items: GenericContent[] = [
   {
     DisplayName: 'Sample folder',
     Name: 'SampleFolder',
@@ -30,7 +31,7 @@ const items = [
         Icon: 'delete',
         Name: 'Delete',
       },
-    ],
+    ] as ActionModel[],
     Id: 1,
     Path: '/Root/Profiles/Public/alba/Document_Library/Sample-folder',
     Type: 'Folder',
@@ -57,7 +58,7 @@ const items = [
         Icon: 'delete',
         Name: 'Delete',
       },
-    ],
+    ] as ActionModel[],
     Id: 2,
     Path: '/Root/Profiles/Public/alba/Document_Library/Sample-document.docx',
     Type: 'File',

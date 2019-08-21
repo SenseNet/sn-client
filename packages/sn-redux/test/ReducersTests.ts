@@ -1,5 +1,5 @@
 import { Content, LoginState, ODataBatchResponse, ODataParams, Repository } from '@sensenet/client-core'
-import { ActionModel, GenericContent, Status, Task, User, Workspace } from '@sensenet/default-content-types'
+import { ActionModel, GenericContent, Status, User, Workspace } from '@sensenet/default-content-types'
 import * as Reducers from '../src/reducers'
 
 const defaultAction = {
@@ -262,10 +262,10 @@ describe('Reducers', () => {
           Id: 5145,
           DisplayName: 'Some Article',
           Status: Status.active,
-          Name: 'SomeArtice',
+          Name: 'SomeArticle',
           Path: '',
           Type: 'Task',
-        } as Task,
+        },
         {
           Id: 5146,
           Displayname: 'Other Article',
@@ -307,7 +307,7 @@ describe('Reducers', () => {
           Name: 'SomeArticle',
           Path: '',
           Type: 'Task',
-        } as Task,
+        },
         {
           Id: 5146,
           Displayname: 'Other Article',
@@ -352,10 +352,10 @@ describe('Reducers', () => {
           Id: 5122,
           DisplayName: 'Some Article',
           Status: Status.active,
-          Name: 'SomeArtice',
+          Name: 'SomeArticle',
           Path: '',
           Type: 'Task',
-        } as Task,
+        },
         {
           Id: 5146,
           Displayname: 'Other Article',
@@ -387,7 +387,7 @@ describe('Reducers', () => {
           Name: 'SomeArticle',
           Path: '',
           Type: 'Task',
-        } as Task,
+        },
         {
           Id: 5146,
           Displayname: 'Other Article',
@@ -407,7 +407,7 @@ describe('Reducers', () => {
           Name: 'SomeArticle',
           Path: '',
           Type: 'Task',
-        } as Task,
+        },
         {
           Id: 5146,
           Displayname: 'Other Article',
@@ -455,7 +455,7 @@ describe('Reducers', () => {
           Name: 'SomeArticle',
           Path: '',
           Type: 'Task',
-        } as Task,
+        },
         {
           Id: 5146,
           Displayname: 'Other Article',
@@ -504,10 +504,10 @@ describe('Reducers', () => {
           Id: 5145,
           DisplayName: 'Some Article',
           Status: Status.active,
-          Name: 'SomeArtice',
+          Name: 'SomeArticle',
           Path: '',
           Type: 'Task',
-        } as Task,
+        },
         {
           Id: 5122,
           Displayname: 'Other Article',
@@ -532,10 +532,10 @@ describe('Reducers', () => {
           Id: 5145,
           DisplayName: 'Some Article',
           Status: Status.active,
-          Name: 'SomeArtice',
+          Name: 'SomeArticle',
           Path: '',
           Type: 'Task',
-        } as Task,
+        },
       ])
     })
     it('should handle DELETE_CONTENT_SUCCESS', () => {
@@ -544,10 +544,10 @@ describe('Reducers', () => {
           Id: 5145,
           DisplayName: 'Some Article',
           Status: Status.active,
-          Name: 'SomeArtice',
+          Name: 'SomeArticle',
           Path: '',
           Type: 'Task',
-        } as Task,
+        },
         {
           Id: 5122,
           Displayname: 'Other Article',
@@ -572,10 +572,10 @@ describe('Reducers', () => {
           Id: 5145,
           DisplayName: 'Some Article',
           Status: Status.active,
-          Name: 'SomeArtice',
+          Name: 'SomeArticle',
           Path: '',
           Type: 'Task',
-        } as Task,
+        },
       ])
     })
     it('should handle a custom Action', () => {
@@ -959,7 +959,7 @@ describe('Reducers', () => {
       const content = {
         Path: '/Root/Sites/Default_Site/tasks',
         Status: Status.active,
-      } as Task
+      }
       const action = {
         type: 'LOAD_CONTENT_SUCCESS',
         payload: content,
@@ -999,7 +999,7 @@ describe('Reducers', () => {
       const content = {
         Path: '/Root/Sites/Default_Site/tasks',
         Status: Status.active,
-      } as Task
+      }
       const action = {
         type: 'LOAD_CONTENT_SUCCESS',
         result: { d: content },
@@ -1016,7 +1016,7 @@ describe('Reducers', () => {
         Path: '/Root/Sites/Default_Site/tasks',
         Status: Status.active,
         Id: 1,
-      } as Task
+      }
       const action = {
         type: 'SELECT_CONTENT',
         content,
@@ -1028,7 +1028,7 @@ describe('Reducers', () => {
         Path: '/Root/Sites/Default_Site/tasks',
         Status: Status.active,
         Id: 2,
-      } as Task
+      }
       const action = {
         type: 'SELECT_CONTENT',
         content,
@@ -1040,7 +1040,7 @@ describe('Reducers', () => {
         Path: '/Root/Sites/Default_Site/tasks',
         Status: Status.active,
         Id: 2,
-      } as Task
+      }
       const action = {
         type: 'DESELECT_CONTENT',
         content,
@@ -1052,7 +1052,7 @@ describe('Reducers', () => {
         Path: '/Root/Sites/Default_Site/tasks',
         Status: Status.active,
         Id: 1,
-      } as Task
+      }
       const action = {
         type: 'DESELECT_CONTENT',
         content,
@@ -1075,7 +1075,7 @@ describe('Reducers', () => {
         Path: '/Root/Sites/Default_Site/tasks',
         Status: Status.active,
         Id: 1,
-      } as Task
+      }
       const action = {
         type: 'SELECT_CONTENT',
         content,
@@ -1094,7 +1094,7 @@ describe('Reducers', () => {
         Path: '/Root/Sites/Default_Site/tasks',
         Status: Status.active,
         Id: 2,
-      } as Task
+      }
       const action = {
         type: 'SELECT_CONTENT',
         content,
@@ -1125,7 +1125,7 @@ describe('Reducers', () => {
         Path: '/Root/Sites/Default_Site/tasks',
         Status: Status.active,
         Id: 2,
-      } as Task
+      }
       const action = {
         type: 'DESELECT_CONTENT',
         content,
@@ -1150,7 +1150,7 @@ describe('Reducers', () => {
         Path: '/Root/Sites/Default_Site/tasks',
         Status: Status.active,
         Id: 1,
-      } as Task
+      }
       const action = {
         type: 'DESELECT_CONTENT',
         content,

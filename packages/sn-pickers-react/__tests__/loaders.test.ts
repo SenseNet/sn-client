@@ -54,4 +54,12 @@ describe('loadItems function', () => {
     expect(repository.load).not.toBeCalled()
     expect(items).toHaveLength(1)
   })
+
+  it('should add root as a parent', async () => {
+    repository.load = jest.fn(() => {
+      return { d: { ...mockContent, ParentId: 0 } }
+    })
+    const items = await loadItems({ repository, path: '' })
+    expect(items).toHaveLength(1)
+  })
 })

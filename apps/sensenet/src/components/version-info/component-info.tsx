@@ -33,7 +33,9 @@ export const ComponentInfo: React.FunctionComponent<{ component: Component; upda
           </div>
           <div style={{ paddingLeft: '1em' }}>
             <Typography style={itemStyle}>{props.component.Version}</Typography>
-            <Typography style={itemStyle}>{props.update ? props.update.items[0].upper : '-'}</Typography>
+            <Typography style={itemStyle}>
+              {props.update && props.update.items ? props.update.items[0].upper : '-'}
+            </Typography>
             <Typography style={itemStyle}>{props.component.Description}</Typography>
           </div>
         </div>

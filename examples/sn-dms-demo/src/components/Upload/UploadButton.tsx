@@ -183,10 +183,10 @@ export class UploadButton extends React.Component<UploadButtonProps, UploadButto
                 id={this.uploadFolderButtonId}
                 type="file"
                 onChange={ev => this.handleUpload(ev)}
-                {...{
+                {...({
                   directory: '',
                   webkitdirectory: '',
-                } as any}
+                } as any)}
               />
             </div>
           ) : null}

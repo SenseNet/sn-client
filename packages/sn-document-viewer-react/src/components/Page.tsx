@@ -40,7 +40,7 @@ export interface OwnProps {
   imageIndex: number
   viewportHeight: number
   viewportWidth: number
-  elementNamePrefix: string
+  elementName: string
   zoomMode: ZoomMode
   zoomLevel: number
   fitRelativeZoomLevel: number
@@ -164,9 +164,11 @@ export class PageComponent extends React.Component<
    * renders the component
    */
   public render() {
-    const elementName = `${this.props.elementNamePrefix}${this.props.page.Index}`
     return (
-      <Paper elevation={this.state.isActive ? 8 : 2} id={elementName} style={{ margin: this.props.margin }}>
+      <Paper
+        elevation={this.state.isActive ? 8 : 2}
+        className={this.props.elementName}
+        style={{ margin: this.props.margin }}>
         <div
           style={{
             padding: 0,

@@ -5,7 +5,6 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew'
@@ -39,12 +38,13 @@ export const LogoutButton: React.FunctionComponent<{
     <div>
       {session.state !== LoginState.Authenticated ? null : (
         <Tooltip placement="bottom-end" title={localization.logoutButtonTitle}>
-          <IconButton
+          <Button
             onClick={() => {
               setShowLogout(true)
-            }}>
+            }}
+            style={{ minWidth: 20, paddingTop: 4, paddingBottom: 4, borderRadius: 0 }}>
             <PowerSettingsNew style={{ ...props.buttonStyle, color: theme.palette.text.primary }} />
-          </IconButton>
+          </Button>
         </Tooltip>
       )}
       <Dialog open={showLogout} onClose={() => setShowLogout(false)}>

@@ -1,7 +1,7 @@
 import Grid from '@material-ui/core/Grid'
 import React from 'react'
 import { connect } from 'react-redux'
-import debounce from 'lodash.debounce'
+import { debounce } from '@sensenet/client-utils'
 import { DraftCommentMarker, PreviewImageData } from '../models'
 import { componentType, ImageUtil } from '../services'
 import { RootReducerType, ZoomMode } from '../store'
@@ -30,7 +30,7 @@ export interface PageListProps {
   tolerance: number
   padding: number
   id: string
-  elementNamePrefix: string
+  elementName: string
   zoomMode: ZoomMode
   zoomLevel: number
   fitRelativeZoomLevel: number
@@ -237,7 +237,7 @@ export class PageListComponent extends React.Component<
               zoomMode={this.props.zoomMode}
               zoomLevel={this.props.zoomLevel}
               fitRelativeZoomLevel={this.props.fitRelativeZoomLevel}
-              elementNamePrefix={this.props.elementNamePrefix}
+              elementName={this.props.elementName}
               image={this.props.images}
               margin={this.props.padding}
             />

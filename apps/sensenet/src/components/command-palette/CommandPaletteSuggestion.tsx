@@ -6,8 +6,8 @@ import parse from 'autosuggest-highlight/parse'
 import React, { useContext } from 'react'
 import { RenderSuggestionParams } from 'react-autosuggest'
 import { ResponsiveContext } from '../../context'
-import { CommandPaletteItem } from '../../store/CommandPalette'
 import { Icon } from '../Icon'
+import { CommandPaletteItem } from '../../hooks'
 
 export const getMatchParts = (hits: string[], term: string) => {
   const matchValueArr = match(term, hits.join(' '))

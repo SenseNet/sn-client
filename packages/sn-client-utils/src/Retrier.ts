@@ -81,6 +81,7 @@ export class Retrier {
       if (this.options.onTry) {
         this.options.onTry()
       }
+      // eslint-disable-next-line require-atomic-updates
       succeeded = await this.callback()
       if (!succeeded) {
         await this.wait(this.options.RetryIntervalMs)

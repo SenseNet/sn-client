@@ -1,4 +1,4 @@
-import { ConstantContent } from '@sensenet/client-core'
+import { ConstantContent, ODataParams } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
@@ -8,6 +8,7 @@ export const CurrentContentContext = React.createContext<GenericContent>(Constan
 export const CurrentContentProvider: React.FunctionComponent<{
   idOrPath: number | string
   onContentLoaded?: (content: GenericContent) => void
+  oDataOptions?: ODataParams<GenericContent>
 }> = props => {
   const [loadLock] = useState(new Semaphore(1))
   const [content, setContent] = useState<GenericContent>(ConstantContent.PORTAL_ROOT)
@@ -35,7 +36,11 @@ export const CurrentContentProvider: React.FunctionComponent<{
     if (props.idOrPath) {
       ;(async () => {
         try {
-          const response = await repo.load({ idOrPath: props.idOrPath, requestInit: { signal: ac.signal } })
+          const response = await repo.load({
+            idOrPath: props.idOrPath,
+            requestInit: { signal: ac.signal },
+            oDataOptions: props.oDataOptions,
+          })
           setContent(response.d)
           props.onContentLoaded && props.onContentLoaded(response.d)
         } catch (err) {
@@ -48,7 +53,8 @@ export const CurrentContentProvider: React.FunctionComponent<{
       })()
     }
     return () => ac.abort()
-  }, [repo, props.idOrPath, reloadToken, props, loadLock])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [repo, props.idOrPath, reloadToken, loadLock])
 
   if (error) {
     throw error

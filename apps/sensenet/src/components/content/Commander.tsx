@@ -1,7 +1,6 @@
 import { ConstantContent } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useEffect, useState } from 'react'
-import { matchPath, RouteComponentProps, withRouter } from 'react-router'
 import {
   CurrentAncestorsProvider,
   CurrentChildrenProvider,
@@ -9,68 +8,32 @@ import {
   CurrentContentProvider,
   LoadSettingsContextProvider,
 } from '../../context'
-import { useContentRouting, useRepository, useSelectionService } from '../../hooks'
+import { useRepository, useSelectionService } from '../../hooks'
 import { AddButton } from '../AddButton'
-import { CollectionComponent } from '../ContentListPanel'
+import { CollectionComponent } from '../content-list'
 import { AddDialog, CopyMoveDialog } from '../dialogs'
 
-export interface CommanderRouteParams {
-  folderId?: string
-  rightParent?: string
+export interface CommanderComponentProps {
+  leftParent: number | string
+  rightParent: number | string
+  onNavigateLeft: (newParent: GenericContent) => void
+  onNavigateRight: (newParent: GenericContent) => void
+  onActivateItem: (item: GenericContent) => void
+  fieldsToDisplay?: Array<keyof GenericContent>
+
+  rootPath: string
 }
 
-export const CommanderComponent: React.FunctionComponent<RouteComponentProps<CommanderRouteParams>> = props => {
-  const contentRouter = useContentRouting()
+export const CommanderComponent: React.FunctionComponent<CommanderComponentProps> = props => {
   const repo = useRepository()
 
   const selectionService = useSelectionService()
-
-  const getLeftFromPath = (params: CommanderRouteParams) =>
-    parseInt(params.folderId as string, 10) || ConstantContent.PORTAL_ROOT.Id
-  const getRightFromPath = (params: CommanderRouteParams) =>
-    parseInt(params.rightParent as string, 10) || ConstantContent.PORTAL_ROOT.Id
-
-  const [leftParentId, setLeftParentId] = useState(getLeftFromPath(props.match.params))
-  const [rightParentId, setRightParentId] = useState(getRightFromPath(props.match.params))
 
   const [_leftPanelRef, setLeftPanelRef] = useState<null | any>(null)
   const [_rightPanelRef, setRightPanelRef] = useState<null | any>(null)
 
   const [activePanel, setActivePanel] = useState<'left' | 'right'>('left')
   const [activeParent, setActiveParent] = useState<GenericContent>(null as any)
-
-  useEffect(() => {
-    const historyChangeListener = props.history.listen(location => {
-      const match = matchPath(location.pathname, props.match.path)
-      if (match) {
-        if (getLeftFromPath(match.params) !== leftParentId) {
-          setLeftParentId(getLeftFromPath(match.params))
-        }
-        if (getRightFromPath(match.params) !== rightParentId) {
-          setRightParentId(getRightFromPath(match.params))
-        }
-      }
-    })
-    return () => {
-      historyChangeListener()
-    }
-  }, [leftParentId, props.history, props.match.path, rightParentId])
-
-  useEffect(() => {
-    if (
-      props.match.params.folderId !== leftParentId.toString() ||
-      props.match.params.rightParent !== rightParentId.toString()
-    ) {
-      props.history.push(`/${btoa(repo.configuration.repositoryUrl)}/browse/${leftParentId}/${rightParentId}`)
-    }
-  }, [
-    leftParentId,
-    props.history,
-    props.match.params.folderId,
-    props.match.params.rightParent,
-    repo.configuration.repositoryUrl,
-    rightParentId,
-  ])
 
   const [isCopyOpened, setIsCopyOpened] = useState(false)
   const [copyMoveOperation, setCopyMoveOperation] = useState<'copy' | 'move'>('copy')
@@ -114,7 +77,7 @@ export const CommanderComponent: React.FunctionComponent<RouteComponentProps<Com
       }}
       style={{ display: 'flex', width: '100%', height: '100%' }}>
       <LoadSettingsContextProvider>
-        <CurrentContentProvider idOrPath={leftParentId}>
+        <CurrentContentProvider idOrPath={props.leftParent}>
           <CurrentContentContext.Consumer>
             {lp => {
               setLeftParent(lp)
@@ -122,32 +85,29 @@ export const CommanderComponent: React.FunctionComponent<RouteComponentProps<Com
             }}
           </CurrentContentContext.Consumer>
           <CurrentChildrenProvider>
-            <CurrentAncestorsProvider>
+            <CurrentAncestorsProvider root={props.rootPath}>
               <CollectionComponent
                 onFocus={() => {
                   setActivePanel('left')
                 }}
                 enableBreadcrumbs={true}
-                onActivateItem={item => {
-                  props.history.push(contentRouter.getPrimaryActionUrl(item))
-                }}
+                onActivateItem={props.onActivateItem}
                 containerRef={r => setLeftPanelRef(r)}
                 style={{ width: '100%', maxHeight: '100%' }}
-                parentId={leftParentId}
-                onParentChange={p => {
-                  setLeftParentId(p.Id)
-                }}
+                parentIdOrPath={props.leftParent}
+                onParentChange={props.onNavigateLeft}
                 onSelectionChange={sel => {
                   setLeftSelection(sel)
                   selectionService.selection.setValue(sel)
                 }}
                 onTabRequest={() => _rightPanelRef && _rightPanelRef.focus()}
                 onActiveItemChange={item => selectionService.activeContent.setValue(item)}
+                fieldsToDisplay={props.fieldsToDisplay}
               />
             </CurrentAncestorsProvider>
           </CurrentChildrenProvider>
         </CurrentContentProvider>
-        <CurrentContentProvider idOrPath={rightParentId}>
+        <CurrentContentProvider idOrPath={props.rightParent}>
           <CurrentContentContext.Consumer>
             {rp => {
               setRightParent(rp)
@@ -161,21 +121,18 @@ export const CommanderComponent: React.FunctionComponent<RouteComponentProps<Com
                 onFocus={() => {
                   setActivePanel('right')
                 }}
-                onActivateItem={item => {
-                  props.history.push(contentRouter.getPrimaryActionUrl(item))
-                }}
+                onActivateItem={props.onActivateItem}
                 containerRef={r => setRightPanelRef(r)}
-                parentId={rightParentId}
+                parentIdOrPath={props.rightParent}
                 style={{ width: '100%', borderLeft: '1px solid rgba(255,255,255,0.3)', maxHeight: '100%' }}
-                onParentChange={p2 => {
-                  setRightParentId(p2.Id)
-                }}
+                onParentChange={props.onNavigateRight}
                 onSelectionChange={sel => {
                   setRightSelection(sel)
                   selectionService.selection.setValue(sel)
                 }}
                 onTabRequest={() => _leftPanelRef && _leftPanelRef.focus()}
                 onActiveItemChange={item => selectionService.activeContent.setValue(item)}
+                fieldsToDisplay={props.fieldsToDisplay}
               />
             </CurrentAncestorsProvider>
           </CurrentChildrenProvider>
@@ -210,4 +167,4 @@ export const CommanderComponent: React.FunctionComponent<RouteComponentProps<Com
   )
 }
 
-export default withRouter(CommanderComponent)
+export default CommanderComponent
