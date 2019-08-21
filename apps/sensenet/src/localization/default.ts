@@ -61,6 +61,8 @@ const values = {
     cancelButton: 'Cancel',
     deleteSuccessNotification: `Content '{0}' has been deleted succesfully`,
     deleteMultipleSuccessNotification: `{0} content deleted succesfully`,
+    deleteSingleContentFailedNotification: `There was an error deleting content '{0}': {1}`,
+    deleteMultipleContentFailedNotification: `There was an error deleting {0} content.`,
     deleteFailedNotification: `There was an error during content deletion.`,
   },
   copyMoveContentDialog: {

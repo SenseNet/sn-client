@@ -105,7 +105,7 @@ export const useDrawerItems = () => {
             type: (item.settings && item.settings.browseType) || settings.content.browseType,
             root: (item.settings && item.settings.root) || '/Root/Content',
             secondaryContent: (item.settings && item.settings.root) || '/Root/Content',
-            fieldsToDisplay: item.settings.columns || settings.content.fields,
+            fieldsToDisplay: (item.settings && item.settings.columns) || settings.content.fields,
           })}`
         case 'Users and groups':
           return `/search/${encodeQueryData({
@@ -115,7 +115,7 @@ export const useDrawerItems = () => {
                 .typeIs(User)
                 .or.typeIs(Group)
                 .and.inTree('/Root/IMS'),
-            ).toString(), // "+TypeIs:'User' OR TypeIs:'Group' AND InTree:'/Root/IMS'",
+            ).toString(),
             hideSearchBar: true,
             fieldsToDisplay: ['DisplayName', 'ModificationDate', 'ModifiedBy', 'Actions'],
           })}`
@@ -128,10 +128,10 @@ export const useDrawerItems = () => {
           })}`
         case 'Query':
           return `/search/${encodeQueryData({
-            term: item.settings.term,
-            title: item.settings.title,
+            term: (item.settings && item.settings.term) || '',
+            title: item.settings && item.settings.title,
             hideSearchBar: true,
-            fieldsToDisplay: item.settings.columns,
+            fieldsToDisplay: item.settings && item.settings.columns,
           })}`
         case 'Localization':
           return `/search/${encodeQueryData({
@@ -146,7 +146,7 @@ export const useDrawerItems = () => {
         case 'Version info':
           return '/info'
         case 'Dashboard':
-          return `/dashboard/${encodeURIComponent(item.settings.dashboardName)}`
+          return `/dashboard/${encodeURIComponent(item.settings ? item.settings.dashboardName : '')}`
         default:
           // return ''
           break

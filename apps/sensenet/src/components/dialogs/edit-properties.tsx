@@ -8,7 +8,7 @@ export const EditPropertiesDialog: React.FunctionComponent<{
   content: GenericContent
 }> = props => {
   return (
-    <Dialog {...props.dialogProps} disablePortal>
+    <Dialog {...props.dialogProps} disablePortal fullScreen>
       <EditPropertiesDialogBody contentId={props.content.Id} dialogProps={props.dialogProps} />
     </Dialog>
   )

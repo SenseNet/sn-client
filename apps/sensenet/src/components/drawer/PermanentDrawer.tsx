@@ -61,7 +61,7 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
           backgroundColor: theme.palette.background.default, // '#222',
           transition: 'width 100ms ease-in-out',
         }}>
-        <div style={{ paddingTop: '1em' }}>
+        <div style={{ paddingTop: '1em', overflowY: 'auto', overflowX: 'hidden' }}>
           {items.map((item, index) => {
             const isActive = matchPath(props.location.pathname, `/:repositoryId${item.url}`)
             return isActive ? (
