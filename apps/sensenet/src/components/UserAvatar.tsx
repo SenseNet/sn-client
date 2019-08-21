@@ -21,6 +21,8 @@ export const UserAvatar: React.StatelessComponent<{
     )
   }
   return (
-    <Avatar style={props.style}>{(props.user.DisplayName && props.user.DisplayName[0]) || props.user.Name[0]}</Avatar>
+    <Avatar style={props.style}>
+      {(props.user.DisplayName && props.user.DisplayName[0]) || (props.user.Name && props.user.Name[0]) || 'U'}
+    </Avatar>
   )
 }

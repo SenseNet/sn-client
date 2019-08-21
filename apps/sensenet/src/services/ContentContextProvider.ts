@@ -8,6 +8,7 @@ import {
   File as SnFile,
 } from '@sensenet/default-content-types'
 import { isContentFromType } from '../utils/isContentFromType'
+import { encodeBrowseData } from '../components/content'
 
 export type RouteType =
   | 'Browse'
@@ -108,6 +109,9 @@ export class ContentContextProvider {
       return `/${repoSegment}/wopi/${content.Id}/${routeType === 'WopiEdit' ? 'edit' : 'read'}`
     }
 
+    if (routeType === 'Browse') {
+      return `/${repoSegment}/${routeType}/${encodeBrowseData({ currentContent: content.Id })}`
+    }
     return `/${repoSegment}/${routeType}/${content.Id}`
   }
   public getPrimaryActionUrl<T extends GenericContent>(content: T) {

@@ -17,7 +17,7 @@ import { Icon } from '../Icon'
 export interface TreeProps {
   parentPath: string
   onItemClick?: (item: GenericContent) => void
-  activeItemId?: number
+  activeItemIdOrPath?: number | string
   loadOptions?: ODataParams<GenericContent>
   style?: React.CSSProperties
 }
@@ -131,7 +131,7 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
                     ev.preventDefault()
                   }}
                   button={true}
-                  selected={props.activeItemId === content.Id}
+                  selected={props.activeItemIdOrPath === content.Id || props.activeItemIdOrPath === content.Path}
                   onClick={() => {
                     if (isLoading) {
                       return
@@ -153,7 +153,11 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
               </DropFileArea>
               <Collapse style={{ marginLeft: '1em' }} in={isOpened} timeout="auto" unmountOnExit={true}>
                 {isOpened ? (
-                  <Tree parentPath={content.Path} onItemClick={props.onItemClick} activeItemId={props.activeItemId} />
+                  <Tree
+                    parentPath={content.Path}
+                    onItemClick={props.onItemClick}
+                    activeItemIdOrPath={props.activeItemIdOrPath}
+                  />
                 ) : null}
               </Collapse>
             </div>

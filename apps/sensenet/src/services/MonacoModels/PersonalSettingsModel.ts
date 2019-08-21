@@ -2,7 +2,9 @@ import { LogLevel } from '@furystack/logging'
 import { Repository } from '@sensenet/client-core'
 import { editor, languages, Uri } from 'monaco-editor'
 import defaultLanguage from '../../localization/default'
-import { widgetTypes } from '../PersonalSettings'
+import { DrawerItemType, widgetTypes } from '../PersonalSettings'
+import { BrowseType } from '../../components/content'
+import { wellKnownIconNames } from '../../components/Icon'
 
 export const setupModel = (language = defaultLanguage, repo: Repository) => {
   const personalSettingsPath = `sensenet://PersonalSettings/PersonalSettings`
@@ -18,6 +20,19 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
         fileMatch: [uriString],
         schema: {
           definitions: {
+            columns: {
+              type: 'array',
+              title: language.personalSettings.dashboard.queryWidget.columns,
+              uniqueItems: true,
+              examples: [['DisplayName', 'CreatedBy']],
+              items: {
+                enum: [
+                  'Actions',
+                  'Type',
+                  ...repo.schemas.getSchemaByName('GenericContent').FieldSettings.map(f => f.Name),
+                ],
+              },
+            },
             dashboardSection: {
               $id: '#/dashboardSection',
               type: 'object',
@@ -124,19 +139,7 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                             examples: [true],
                           },
                           columns: {
-                            $id: '#/dashboardSection/properties/querySettings/properties/columns',
-                            type: 'array',
-                            title: language.personalSettings.dashboard.queryWidget.columns,
-                            uniqueItems: true,
-                            examples: [['DisplayName', 'CreatedBy']],
-                            items: {
-                              enum: [
-                                'Actions',
-                                'Type',
-                                /** ToDo: check for other displayable system fields */
-                                ...repo.schemas.getSchemaByName('GenericContent').FieldSettings.map(f => f.Name),
-                              ],
-                            },
+                            $ref: '#/definitions/columns',
                           },
                         },
                       },
@@ -182,17 +185,93 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                 items: {
                   description: language.personalSettings.drawerItems,
                   type: 'array',
-                  uniqueItems: true,
                   items: {
-                    enum: [
-                      'Content',
-                      'Content Types',
-                      'Localization',
-                      'Search',
-                      'Setup',
-                      'Trash',
-                      'Users and Groups',
-                      'Version info',
+                    type: 'object',
+                    properties: {
+                      itemType: {
+                        type: 'string',
+                        enum: [...DrawerItemType],
+                      },
+                    },
+                    allOf: [
+                      {
+                        if: { properties: { itemType: { const: 'Content' } } },
+                        then: {
+                          properties: {
+                            settings: {
+                              type: 'object',
+                              properties: {
+                                root: { type: 'string', description: language.drawer.contentRootDescription },
+                                title: { type: 'string', description: language.personalSettings.drawerItemTitle },
+                                columns: { $ref: '#/definitions/columns' },
+                                description: {
+                                  type: 'string',
+                                  description: language.personalSettings.drawerItemDescription,
+                                },
+                                icon: {
+                                  type: 'string',
+                                  enum: [...wellKnownIconNames],
+                                  description: language.personalSettings.drawerItemDescription,
+                                },
+                                browseType: {
+                                  description: language.personalSettings.contentBrowseType,
+                                  enum: [...BrowseType],
+                                },
+                              },
+                              required: ['root', 'title', 'icon'],
+                            },
+                          },
+                          required: ['settings'],
+                        },
+                      },
+                      {
+                        if: { properties: { itemType: { const: 'Query' } } },
+                        then: {
+                          properties: {
+                            settings: {
+                              type: 'object',
+                              properties: {
+                                term: { type: 'string', description: language.drawer.contentRootDescription },
+                                columns: { $ref: '#/definitions/columns' },
+                                title: { type: 'string', description: language.personalSettings.drawerItemTitle },
+                                description: {
+                                  type: 'string',
+                                  description: language.personalSettings.drawerItemDescription,
+                                },
+                                icon: {
+                                  type: 'string',
+                                  enum: [...wellKnownIconNames],
+                                  description: language.personalSettings.drawerItemDescription,
+                                },
+                              },
+                              required: ['title', 'icon', 'term'],
+                            },
+                          },
+                          required: ['settings'],
+                        },
+                      },
+                      {
+                        if: { properties: { itemType: { const: 'Dashboard' } } },
+                        then: {
+                          properties: {
+                            settings: {
+                              type: 'object',
+                              properties: {
+                                title: { type: 'string' },
+                                description: { type: 'string' },
+                                dashboardName: { $data: '#/definitions/dashboards' },
+                                icon: {
+                                  type: 'string',
+                                  enum: [...wellKnownIconNames],
+                                  description: language.personalSettings.drawerItemDescription,
+                                },
+                              },
+                              required: ['dashboardName', 'title', 'icon'],
+                            },
+                          },
+                          required: ['settings'],
+                        },
+                      },
                     ],
                   },
                 },
@@ -243,21 +322,9 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
               properties: {
                 browseType: {
                   description: language.personalSettings.contentBrowseType,
-                  enum: ['simple', 'commander', 'explorer'],
+                  enum: [...BrowseType],
                 },
-                fields: {
-                  description: language.personalSettings.contentFields,
-                  type: 'array',
-                  uniqueItems: true,
-                  items: {
-                    enum: [
-                      'Actions',
-                      'Type',
-                      /** ToDo: check for other displayable system fields */
-                      ...repo.schemas.getSchemaByName('GenericContent').FieldSettings.map(f => f.Name),
-                    ],
-                  },
-                },
+                fields: { $ref: '#/definitions/columns' },
               },
             },
             settings: {
@@ -270,14 +337,6 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                 commandPalette: { $ref: '#/definitions/commandPalette' },
               },
             },
-          },
-          type: 'object',
-          properties: {
-            default: { $ref: '#/definitions/settings' },
-            mobile: { $ref: '#/definitions/settings' },
-            tablet: { $ref: '#/definitions/settings' },
-            desktop: { $ref: '#/definitions/settings' },
-            repositories: { $ref: '#/definitions/repositories' },
             dashboards: {
               type: 'object',
               title: 'The default Dashboard definitions',
@@ -293,6 +352,22 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                   items: { $ref: '#definitions/dashboardSection' },
                 },
               },
+              additionalProperties: {
+                type: 'array',
+                description: 'Custom dashboard with custom name',
+                items: { $ref: '#definitions/dashboardSection' },
+              },
+            },
+          },
+          type: 'object',
+          properties: {
+            default: { $ref: '#/definitions/settings' },
+            mobile: { $ref: '#/definitions/settings' },
+            tablet: { $ref: '#/definitions/settings' },
+            desktop: { $ref: '#/definitions/settings' },
+            repositories: { $ref: '#/definitions/repositories' },
+            dashboards: {
+              $ref: '#/definitions/dashboards',
             },
             lastRepository: { type: 'string', description: language.personalSettings.lastRepository },
             eventLogSize: { type: 'number', description: language.personalSettings.eventLogSize },

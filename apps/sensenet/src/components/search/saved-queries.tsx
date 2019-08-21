@@ -17,7 +17,8 @@ import {
   LoadSettingsContext,
 } from '../../context'
 import { useInjector, useLocalization, useRepository } from '../../hooks'
-import { CollectionComponent } from '../ContentListPanel'
+import { CollectionComponent } from '../content-list'
+import { encodeQueryData } from '.'
 
 const Search: React.FunctionComponent<RouteComponentProps> = props => {
   const repo = useRepository()
@@ -80,7 +81,7 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
         <Tooltip title={localization.newSearch}>
           <Link
             style={{ textDecoration: 'none', position: 'fixed', bottom: '2em', right: '2em' }}
-            to={`/${repoToken}/search`}>
+            to={`/${repoToken}/search/${encodeQueryData({ term: '' })}`}>
             <Fab color="primary" title={localization.newSearch}>
               <SearchIcon />
             </Fab>
@@ -98,15 +99,15 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
                     overflow: 'auto',
                   }}
                   enableBreadcrumbs={false}
-                  parentId={0}
+                  parentIdOrPath={0}
                   onParentChange={() => {
                     // ignore, only queries will be listed
                   }}
                   onActivateItem={p => {
                     props.history.push(
-                      `/${btoa(repo.configuration.repositoryUrl)}/search/${encodeURIComponent(
-                        (p as Query).Query || '',
-                      )}`,
+                      `/${btoa(repo.configuration.repositoryUrl)}/search/${encodeQueryData({
+                        term: (p as Query).Query || '',
+                      })}`,
                     )
                   }}
                   onTabRequest={() => {

@@ -1,5 +1,5 @@
 import { LoginState } from '@sensenet/client-core'
-import React, { lazy, Suspense } from 'react'
+import React, { lazy, Suspense, useEffect, useRef } from 'react'
 import { Route, RouteComponentProps, Switch, withRouter } from 'react-router'
 import { LoadSettingsContextProvider, RepositoryContext } from '../context'
 import { usePersonalSettings, useSession } from '../hooks'
@@ -16,7 +16,7 @@ const SavedQueriesComponent = lazy(
 const IamComponent = lazy(async () => await import(/* webpackChunkName: "iam" */ './iam'))
 const SetupComponent = lazy(async () => await import(/* webpackChunkName: "setup" */ './setup'))
 
-const LoginComponent = lazy(async () => await import(/* webpackChunkName: "Login" */ './Login'))
+const LoginComponent = lazy(async () => await import(/* webpackChunkName: "Login" */ './login/Login'))
 const EditBinary = lazy(async () => await import(/* webpackChunkName: "editBinary" */ './edit/EditBinary'))
 const EditProperties = lazy(async () => await import(/* webpackChunkName: "editProperties" */ './edit/EditProperties'))
 const DocumentViewerComponent = lazy(async () => await import(/* webpackChunkName: "DocViewer" */ './DocViewer'))
@@ -28,9 +28,27 @@ const PersonalSettingsEditor = lazy(
   async () => await import(/* webpackChunkName: "PersonalSettingsEditor" */ './edit/PersonalSettingsEditor'),
 )
 
-const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
+const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
   const sessionContext = useSession()
   const personalSettings = usePersonalSettings()
+  const previousLocation = useRef<string>()
+
+  useEffect(() => {
+    const listen = props.history.listen(location => {
+      /**
+       *  Do not add preview locations to previousLocation
+       *  this way the user can go back to the location where she
+       *  opened the viewer.
+       * */
+      if (location.pathname.includes('/Preview')) {
+        return
+      }
+      previousLocation.current = location.pathname
+    })
+    return () => {
+      listen()
+    }
+  }, [props.history])
 
   return (
     <ErrorBoundary>
@@ -70,17 +88,17 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
                 ) : sessionContext.state === LoginState.Authenticated ? (
                   <Switch>
                     <Route
-                      path="/:repo/browse/:folderId?/:rightParent?"
-                      render={() => {
-                        return <ExploreComponent />
+                      path="/:repo/browse/:browseData?"
+                      render={routeProps => {
+                        return <ExploreComponent {...routeProps} />
                       }}
                     />
                     <Route
-                      path="/:repo/search/:query?"
-                      render={() => {
+                      path="/:repo/search/:queryData?"
+                      render={routeProps => {
                         return (
                           <LoadSettingsContextProvider>
-                            <SearchComponent />
+                            <SearchComponent {...routeProps} />
                           </LoadSettingsContextProvider>
                         )
                       }}
@@ -129,26 +147,36 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = () => {
                     <Route
                       path="/:repo/preview/:documentId?"
                       render={() => {
-                        return <DocumentViewerComponent />
+                        return <DocumentViewerComponent previousLocation={previousLocation.current} />
                       }}
                     />
                     <Route path="/:repo/wopi/:documentId/:action?">
                       <WopiPage />
                     </Route>
                     <Route
-                      path="/:repo/"
-                      render={() => {
+                      path="/:repo/dashboard/:dashboardName?"
+                      render={routeParams => {
                         return (
                           <RepositoryContext.Consumer>
-                            {repo => <DashboardComponent repository={repo} />}
+                            {repo => <DashboardComponent repository={repo} {...routeParams} />}
+                          </RepositoryContext.Consumer>
+                        )
+                      }}
+                    />
+                    <Route
+                      path="/:repo/"
+                      render={routeParams => {
+                        return (
+                          <RepositoryContext.Consumer>
+                            {repo => <DashboardComponent repository={repo} {...routeParams} />}
                           </RepositoryContext.Consumer>
                         )
                       }}
                     />
                     <Route
                       path="/"
-                      render={() => {
-                        return <DashboardComponent />
+                      render={routeParams => {
+                        return <DashboardComponent {...routeParams} />
                       }}
                     />
                   </Switch>

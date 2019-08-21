@@ -1,55 +1,38 @@
-import { ConstantContent } from '@sensenet/client-core'
-import React, { useEffect, useState } from 'react'
-import { matchPath, RouteComponentProps, withRouter } from 'react-router'
+import React from 'react'
+import { GenericContent } from '@sensenet/default-content-types'
 import {
   CurrentAncestorsProvider,
   CurrentChildrenProvider,
   CurrentContentProvider,
   LoadSettingsContextProvider,
 } from '../../context'
-import { useContentRouting, useSelectionService } from '../../hooks'
+import { useSelectionService } from '../../hooks'
 import { AddButton } from '../AddButton'
-import { CollectionComponent } from '../ContentListPanel'
-import { CommanderRouteParams } from './Commander'
+import { CollectionComponent } from '../content-list'
 
-export const SimpleListComponent: React.FunctionComponent<RouteComponentProps<{ folderId?: string }>> = props => {
-  const getLeftFromPath = (params: CommanderRouteParams) =>
-    parseInt(params.folderId as string, 10) || ConstantContent.PORTAL_ROOT.Id
-  const [leftParentId, setLeftParentId] = useState(getLeftFromPath(props.match.params))
-  const contentRouter = useContentRouting()
+export interface SimpleListComponentProps {
+  parent: number | string
+  onNavigate: (newParent: GenericContent) => void
+  onActivateItem: (item: GenericContent) => void
+  fieldsToDisplay?: Array<keyof GenericContent>
+  rootPath?: string
+}
+
+export const SimpleList: React.FunctionComponent<SimpleListComponentProps> = props => {
   const selectionService = useSelectionService()
-
-  useEffect(() => {
-    const historyChangeListener = props.history.listen(location => {
-      const match = matchPath(location.pathname, props.match.path)
-      if (match) {
-        if (getLeftFromPath(match.params) !== leftParentId) {
-          setLeftParentId(getLeftFromPath(match.params))
-        }
-      }
-    })
-    return () => {
-      historyChangeListener()
-    }
-  }, [leftParentId, props.history, props.match.path])
 
   return (
     <div style={{ display: 'flex', width: '100%', height: '100%' }}>
       <LoadSettingsContextProvider>
-        <CurrentContentProvider idOrPath={leftParentId}>
+        <CurrentContentProvider idOrPath={props.parent}>
           <CurrentChildrenProvider>
-            <CurrentAncestorsProvider>
+            <CurrentAncestorsProvider root={props.rootPath}>
               <CollectionComponent
                 enableBreadcrumbs={true}
-                onActivateItem={item => {
-                  props.history.push(contentRouter.getPrimaryActionUrl(item))
-                }}
+                onActivateItem={props.onActivateItem}
                 style={{ flexGrow: 1, flexShrink: 0, maxHeight: '100%', width: '100%' }}
-                onParentChange={p => {
-                  setLeftParentId(p.Id)
-                  props.history.push(contentRouter.getPrimaryActionUrl(p))
-                }}
-                parentId={leftParentId}
+                onParentChange={props.onNavigate}
+                parentIdOrPath={props.parent}
                 onTabRequest={() => {
                   /** */
                 }}
@@ -57,6 +40,7 @@ export const SimpleListComponent: React.FunctionComponent<RouteComponentProps<{ 
                   selectionService.selection.setValue(sel)
                 }}
                 onActiveItemChange={item => selectionService.activeContent.setValue(item)}
+                fieldsToDisplay={props.fieldsToDisplay}
               />
               <AddButton />
             </CurrentAncestorsProvider>
@@ -66,6 +50,3 @@ export const SimpleListComponent: React.FunctionComponent<RouteComponentProps<{ 
     </div>
   )
 }
-
-const connected = withRouter(SimpleListComponent)
-export { connected as SimpleList }

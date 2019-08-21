@@ -14,7 +14,7 @@ export const LoadSettingsContext = React.createContext<{
 export const LoadSettingsContextProvider: React.FunctionComponent = props => {
   const [loadSettings, setLoadSettings] = useState<ODataParams<GenericContent>>({})
   const [loadChildrenSettings, setLoadChildrenSettings] = useState<ODataParams<GenericContent>>({
-    orderby: [['DisplayName', 'asc'], ['Name', 'asc']],
+    orderby: [['DisplayName', 'asc']],
     select: 'all',
     expand: 'CreatedBy',
   })

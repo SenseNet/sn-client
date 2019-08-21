@@ -64,7 +64,7 @@ export const UpdatesWidget: React.FunctionComponent<Widget<undefined>> = props =
             <Typography gutterBottom style={{ fontStyle: 'italic' }}>
               {localization.allUpToDate}
             </Typography>
-            <WbSunnyTwoTone style={{ width: 200, height: 200, marginTop: '1em' }} />
+            <WbSunnyTwoTone style={{ width: 200, height: 200, margin: '1em' }} />
           </div>
         )}
       </div>

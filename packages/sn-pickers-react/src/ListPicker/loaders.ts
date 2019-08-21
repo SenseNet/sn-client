@@ -54,6 +54,10 @@ async function getParent<T extends GenericContent>(
       idOrPath: item.ParentId,
       oDataOptions: parentODataOptions,
     })
+    // No need to return anything with /Root
+    if (itemParent.d.ParentId === 0) {
+      return
+    }
     return await repository.load<T>({ idOrPath: itemParent.d.ParentId!, oDataOptions: parentODataOptions })
   }
   return await repository.load<T>({
