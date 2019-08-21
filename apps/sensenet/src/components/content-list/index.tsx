@@ -25,6 +25,7 @@ import { ActionsField } from './actions-field'
 import { ReferenceField } from './reference-field'
 import { BooleanField } from './boolean-field'
 import { DateField } from './date-field'
+import { DescriptionField } from './description-field'
 
 export interface CollectionComponentProps {
   enableBreadcrumbs?: boolean
@@ -300,6 +301,8 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
                       isActive={activeContent && fieldOptions.content.Id === activeContent.Id}
                     />
                   )
+                case 'Description':
+                  return <DescriptionField text={fieldOptions.content[fieldOptions.field] as string} />
                 case 'Actions':
                   return (
                     <ActionsField

@@ -286,11 +286,19 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
             <Link href="#" title={localization.resetPassword} underline="always" className={classes.link}>
               <Typography variant="body2">{localization.resetPassword}</Typography>
             </Link>
-            <Link href="#" title={localization.tutorials} underline="always" className={classes.link}>
-              <Typography variant="body2">{localization.tutorials}</Typography>
-            </Link>
-            <Link href="#" title={localization.help} underline="always" className={classes.link}>
+            <Link
+              href="https://community.sensenet.com/tags/#admin+ui"
+              title={localization.help}
+              underline="always"
+              className={classes.link}>
               <Typography variant="body2">{localization.help}</Typography>
+            </Link>
+            <Link
+              href="https://sensenet.com/contact"
+              title={localization.contactUs}
+              underline="always"
+              className={classes.link}>
+              <Typography variant="body2">{localization.contactUs}</Typography>
             </Link>
           </Grid>
         </div>
