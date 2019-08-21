@@ -9,6 +9,10 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
+    - name: GitHub Action for Yarn
+      uses: Borales/actions-yarn@1.1.0
+      with:
+        args: install
     - name: ESLint checks
       uses: gimenete/eslint-action@1.0
 
