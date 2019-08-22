@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Document Regenerate Previews component Should trigger regeneration on button click 1`] = `
+<div
+  style={
+    Object {
+      "alignContent": "center",
+      "alignItems": "center",
+      "display": "flex",
+      "height": "100%",
+      "justifyContent": "space-around",
+    }
+  }
+>
+  <Component
+    style={
+      Object {
+        "position": "fixed",
+        "top": 0,
+      }
+    }
+  >
+    <span />
+  </Component>
+  <div
+    style={
+      Object {
+        "alignItems": "center",
+        "display": "flex",
+        "flexDirection": "column",
+        "justifyContent": "space-between",
+        "margin": ".5em 0 .6em 0",
+        "maxWidth": 500,
+      }
+    }
+  >
+    <WithStyles(ForwardRef(Typography))
+      align="center"
+      color="textSecondary"
+      gutterBottom={true}
+      variant="subtitle1"
+    />
+    <WithStyles(ForwardRef(Button))
+      disabled={true}
+      onClick={[Function]}
+      variant="contained"
+    >
+      <WithStyles(ForwardRef(CircularProgress))
+        size={24}
+        style={
+          Object {
+            "marginRight": "1em",
+          }
+        }
+      />
+    </WithStyles(ForwardRef(Button))>
+  </div>
+</div>
+`;
+
+exports[`Document Regenerate Previews component should render without crashing 1`] = `
+<div
+  style={
+    Object {
+      "alignContent": "center",
+      "alignItems": "center",
+      "display": "flex",
+      "height": "100%",
+      "justifyContent": "space-around",
+    }
+  }
+>
+  <Component
+    style={
+      Object {
+        "position": "fixed",
+        "top": 0,
+      }
+    }
+  >
+    <span />
+  </Component>
+  <div
+    style={
+      Object {
+        "alignItems": "center",
+        "display": "flex",
+        "flexDirection": "column",
+        "justifyContent": "space-between",
+        "margin": ".5em 0 .6em 0",
+        "maxWidth": 500,
+      }
+    }
+  >
+    <WithStyles(ForwardRef(Typography))
+      align="center"
+      color="textSecondary"
+      gutterBottom={true}
+      variant="subtitle1"
+    />
+    <WithStyles(ForwardRef(Button))
+      disabled={false}
+      onClick={[Function]}
+      variant="contained"
+    />
+  </div>
+</div>
+`;

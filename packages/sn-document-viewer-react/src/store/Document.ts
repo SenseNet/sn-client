@@ -1,5 +1,6 @@
 import { Reducer } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
+import { sleepAsync } from '@sensenet/client-utils'
 import { PreviewState } from '../Enums'
 import { DocumentData, DocumentViewerSettings, PreviewImageData, Shape, Shapes } from '../models'
 import { Dimensions, ImageUtil } from '../services'
@@ -190,6 +191,24 @@ export const saveChanges = () => ({
     } catch (error) {
       options.dispatch(saveChangesError(error))
     }
+  },
+})
+
+/**
+ * Thunk action to call the RegeneratePreviews endpoint for the current document and start polling the preview images
+ */
+export const regeneratePreviews = () => ({
+  type: 'SN_DOCVIEWER_REGENERATE_PREVIEWS_INJECTABLE_ACTION',
+  inject: async (options: IInjectableActionCallbackParams<RootReducerType>) => {
+    const api = options.getInjectable(DocumentViewerSettings)
+    const docData = options.getState().sensenetDocumentViewer.documentState.document as DocumentData
+    try {
+      await api.regeneratePreviews(docData)
+    } catch (error) {
+      // ignore -> reload
+    }
+    await sleepAsync(options.getState().sensenetDocumentViewer.documentState.pollInterval)
+    options.dispatch(pollDocumentData(docData.hostName, docData.idOrPath))
   },
 })
 

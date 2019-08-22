@@ -95,6 +95,15 @@ const mapDispatchToProps = {}
  * Settings object for the Document Viewer Example component
  */
 export const exampleSettings = new DocumentViewerSettings({
+  regeneratePreviews: async documentData => {
+    await fetch(
+      `${documentData.hostName}/odata.svc/${PathHelper.getContentUrl(documentData.idOrPath)}/RegeneratePreviews`,
+      {
+        method: 'POST',
+        credentials: 'include',
+      },
+    )
+  },
   commentActions: {
     addPreviewComment: async (documentData, comment) => {
       const response = await fetch(

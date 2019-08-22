@@ -30,7 +30,7 @@ export enum PreviewState {
   /**
    * Failed to upload 2 (?)
    */
-  UploadFailure2 = -4,
+  Postponed = -4,
 
   /**
    * There is no preview provider enabled

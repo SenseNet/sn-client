@@ -25,42 +25,37 @@ const mapStateToProps = (state: RootReducerType) => {
  */
 const mapDispatchToProps = {}
 
-class DocumentViewerLoadingComponent extends React.Component<
+export const DocumentViewerLoadingComponent: React.FC<
   componentType<typeof mapStateToProps, typeof mapDispatchToProps, DocumentViewerLoadingProps>
-> {
-  /**
-   * renders the component
-   */
-  public render() {
-    return (
+> = props => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-around',
+        alignContent: 'center',
+        alignItems: 'center',
+        height: '100%',
+      }}>
+      <LayoutAppBar style={{ position: 'fixed', top: 0 }}>
+        <span />
+      </LayoutAppBar>
       <div
         style={{
           display: 'flex',
-          justifyContent: 'space-around',
-          alignContent: 'center',
+          justifyContent: 'space-between',
           alignItems: 'center',
-          height: '100%',
+          flexDirection: 'column',
+          maxWidth: 500,
+          margin: '.5em 0 .6em 0',
         }}>
-        <LayoutAppBar style={{ position: 'fixed', top: 0 }}>
-          <span />
-        </LayoutAppBar>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flexDirection: 'column',
-            maxWidth: 500,
-            margin: '.5em 0 .6em 0',
-          }}>
-          <img src={this.props.image} />
-          <Typography variant="h5" color="textSecondary" align="center" style={{ fontWeight: 'bolder' }}>
-            {this.props.loadingDocument}
-          </Typography>
-        </div>
+        <img src={props.image} />
+        <Typography variant="h5" color="textSecondary" align="center" style={{ fontWeight: 'bolder' }}>
+          {props.loadingDocument}
+        </Typography>
       </div>
-    )
-  }
+    </div>
+  )
 }
 
 const connectedComponent = connect(

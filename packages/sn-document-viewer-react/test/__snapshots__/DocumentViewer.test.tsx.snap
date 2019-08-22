@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Document Viewer component should render a loading component while loading 1`] = `
-<Connect(DocumentViewerLoadingComponent)
+<Connect(Component)
   image="loader.gif"
 />
 `;
