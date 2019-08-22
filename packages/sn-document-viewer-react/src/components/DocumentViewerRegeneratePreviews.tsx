@@ -25,7 +25,7 @@ const mapDispatchToProps = {
   regeneratePreviews,
 }
 
-const DocumentViewerRegeneratePreviewsComponent: React.FC<
+export const DocumentViewerRegeneratePreviewsComponent: React.FC<
   componentType<typeof mapStateToProps, typeof mapDispatchToProps>
 > = props => {
   const [isRegenerating, setIsRegenerating] = useState(false)
