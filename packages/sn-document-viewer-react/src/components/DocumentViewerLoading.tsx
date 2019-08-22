@@ -25,7 +25,7 @@ const mapStateToProps = (state: RootReducerType) => {
  */
 const mapDispatchToProps = {}
 
-class DocumentViewerLoadingComponent extends React.Component<
+export class DocumentViewerLoadingComponent extends React.Component<
   componentType<typeof mapStateToProps, typeof mapDispatchToProps, DocumentViewerLoadingProps>
 > {
   /**
