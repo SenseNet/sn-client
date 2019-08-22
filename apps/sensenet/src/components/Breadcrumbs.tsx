@@ -10,20 +10,21 @@ import { ContentContextMenu } from './ContentContextMenu'
 import { DropFileArea } from './DropFileArea'
 import { Icon } from './Icon'
 
-export interface BreadcrumbItem {
+export interface BreadcrumbItem<T extends GenericContent> {
   url: string
   displayName: string
   title: string
-  content: GenericContent
+  content: T
 }
 
-export interface BreadcrumbProps {
-  content: BreadcrumbItem[]
-  currentContent: BreadcrumbItem
-  onItemClick: (event: React.MouseEvent, item: BreadcrumbItem) => void
+export interface BreadcrumbProps<T extends GenericContent> {
+  content: Array<BreadcrumbItem<T>>
+  currentContent: BreadcrumbItem<T>
+  onItemClick: (event: React.MouseEvent, item: BreadcrumbItem<T>) => void
 }
 
-const Breadcrumbs: React.FunctionComponent<BreadcrumbProps & RouteComponentProps> = props => {
+// eslint-disable-next-line require-jsdoc
+function Breadcrumbs<T extends GenericContent>(props: BreadcrumbProps<T> & RouteComponentProps) {
   const [contextMenuItem, setContextMenuItem] = useState<GenericContent | null>(null)
   const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
