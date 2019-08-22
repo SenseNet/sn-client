@@ -63,12 +63,15 @@ export interface DocumentViewerSettingsOptions {
     addPreviewComment: (document: DocumentData, comment: CommentWithoutCreatedByAndId) => Promise<Comment>
     deletePreviewComment: (document: DocumentData, commentId: string) => Promise<{ modified: boolean }>
   }
+
+  regeneratePreviews: (document: DocumentData) => Promise<void>
 }
 
 /**
  * A Document Viewer Settings object that will be used as a singleton service
  */
 export class DocumentViewerSettings implements DocumentViewerSettingsOptions {
+  public regeneratePreviews!: (document: DocumentData) => Promise<void>
   public injector = new Injector()
 
   public commentActions!: {
@@ -96,6 +99,7 @@ export class DocumentViewerSettings implements DocumentViewerSettingsOptions {
     page: number,
     showWatermark: boolean,
   ) => Promise<PreviewImageData | undefined>
+
   constructor(options: DocumentViewerSettingsOptions) {
     Object.assign(this, options)
   }
