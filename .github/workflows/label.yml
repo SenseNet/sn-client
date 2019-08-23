@@ -10,15 +10,3 @@ jobs:
     - uses: actions/labeler@v2
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
-      admin:
-      - apps/sensenet/**/*
-      
-      dms:
-      - examples/sn-dms-demo/**/*
-
-      storybook:
-      - examples/sn-react-component-docs/**/*
-
-      github-workflows:
-      - .github/workflows/**/*
-
