@@ -586,7 +586,7 @@ describe('Actions', () => {
       expect(Actions.userLoginGoogle(googleOauthProvider).type).toBe('USER_LOGIN_GOOGLE')
     })
     describe('serviceChecks()', () => {
-      describe('Given provider.login() resolves', async () => {
+      describe('Given provider.login() resolves', () => {
         let data: boolean
         beforeEach(async () => {
           data = await Actions.userLoginGoogle(googleOauthProvider, 'gasgsdagsdagd.dgsgfshdfhs').payload()
