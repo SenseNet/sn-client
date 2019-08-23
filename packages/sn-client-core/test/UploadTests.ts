@@ -5,8 +5,8 @@ import { Repository } from '../src/Repository/Repository'
 declare const global: any
 
 global.File = class {
-  public size: number = 1024
-  public namme: string = 'file.txt'
+  public size = 1024
+  public namme = 'file.txt'
   public slice() {
     return ''
   }

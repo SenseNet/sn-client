@@ -127,7 +127,7 @@ export class AllowedChildTypes extends Component<ReactClientFieldSetting, Allowe
     this.willUnmount = true
   }
 
-  private willUnmount: boolean = false
+  private willUnmount = false
 
   private async getAllowedChildTypes() {
     try {

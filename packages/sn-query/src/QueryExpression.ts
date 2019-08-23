@@ -139,8 +139,8 @@ export class QueryExpression<TReturns> extends QuerySegment<TReturns> {
     fieldName: K,
     minValue: KValue,
     maxValue: KValue,
-    minimumInclusive: boolean = false,
-    maximumInclusive: boolean = false,
+    minimumInclusive = false,
+    maximumInclusive = false,
   ) {
     this.stringValue = `${fieldName}:${minimumInclusive ? '[' : '{'}'${this.escapeValue(
       minValue.toString(),
@@ -158,7 +158,7 @@ export class QueryExpression<TReturns> extends QuerySegment<TReturns> {
   public greatherThan<K extends keyof TReturns, KValue extends TReturns[K] & { toString: () => string }>(
     fieldName: K,
     minValue: KValue,
-    minimumInclusive: boolean = false,
+    minimumInclusive = false,
   ) {
     this.stringValue = `${fieldName}:>${minimumInclusive ? '=' : ''}'${this.escapeValue(minValue.toString())}'`
     this.segmentType = 'greatherThan'
@@ -174,7 +174,7 @@ export class QueryExpression<TReturns> extends QuerySegment<TReturns> {
   public lessThan<K extends keyof TReturns, KValue extends TReturns[K] & { toString: () => string }>(
     fieldName: K,
     maxValue: KValue,
-    maximumInclusive: boolean = false,
+    maximumInclusive = false,
   ) {
     this.stringValue = `${fieldName}:<${maximumInclusive ? '=' : ''}'${this.escapeValue(maxValue.toString())}'`
     this.segmentType = 'lessThan'

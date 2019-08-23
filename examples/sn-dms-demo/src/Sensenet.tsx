@@ -37,8 +37,8 @@ export interface SensenetProps {
 }
 
 class Sensenet extends React.Component<SensenetProps & ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps> {
-  public name: string = ''
-  public password: string = ''
+  public name = ''
+  public password = ''
 
   public render() {
     // if (this.props.loginState === LoginState.Pending
