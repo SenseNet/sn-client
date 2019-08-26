@@ -12,8 +12,9 @@ import ExpandMore from '@material-ui/icons/ExpandMore'
 import Update from '@material-ui/icons/Update'
 import React, { useContext, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
+import { useVersionInfo } from '@sensenet/hooks-react'
 import { ResponsiveContext } from '../../context'
-import { useLocalization, useTheme, useVersionInfo } from '../../hooks'
+import { useLocalization, useTheme } from '../../hooks'
 import { ComponentInfo } from './component-info'
 
 export const VersionInfo: React.FunctionComponent = () => {

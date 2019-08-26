@@ -1,6 +1,6 @@
 import React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { CurrentAncestorsProvider, CurrentContentContext, CurrentContentProvider } from '../../context'
+import { CurrentAncestorsProvider, CurrentContentContext, CurrentContentProvider } from '@sensenet/hooks-react'
 import { useSelectionService } from '../../hooks'
 import { FullScreenLoader } from '../FullScreenLoader'
 import { TextEditor } from './TextEditor'

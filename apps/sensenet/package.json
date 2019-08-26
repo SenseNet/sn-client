@@ -71,6 +71,7 @@
     "@sensenet/list-controls-react": "^1.3.10",
     "@sensenet/pickers-react": "^1.2.3",
     "@sensenet/query": "^1.1.8",
+    "@sensenet/hooks-react": "^0.1.0",
     "@sensenet/redux": "^5.1.12",
     "@sensenet/repository-events": "^1.4.4",
     "autosuggest-highlight": "^3.1.1",

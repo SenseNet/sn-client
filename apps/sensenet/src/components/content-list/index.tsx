@@ -8,10 +8,9 @@ import {
   CurrentChildrenContext,
   CurrentContentContext,
   LoadSettingsContext,
-  ResponsiveContext,
-  ResponsivePersonalSetttings,
-} from '../../context'
-import { useRepository } from '../../hooks'
+  useRepository,
+} from '@sensenet/hooks-react'
+import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { ContentContextMenu } from '../ContentContextMenu'
 import { DeleteContentDialog } from '../dialogs'

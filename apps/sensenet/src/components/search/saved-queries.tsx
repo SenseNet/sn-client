@@ -15,8 +15,10 @@ import {
   CurrentChildrenContext,
   CurrentContentContext,
   LoadSettingsContext,
-} from '../../context'
-import { useInjector, useLocalization, useRepository } from '../../hooks'
+  useInjector,
+  useRepository,
+} from '@sensenet/hooks-react'
+import { useLocalization } from '../../hooks'
 import { CollectionComponent } from '../content-list'
 import { encodeQueryData } from '.'
 

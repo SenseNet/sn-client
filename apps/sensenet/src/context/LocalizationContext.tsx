@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { useInjector, usePersonalSettings } from '../hooks'
+import { useInjector } from '@sensenet/hooks-react'
+import { usePersonalSettings } from '../hooks'
 import DefaultLocalization from '../localization/default'
 import { LocalizationService } from '../services/LocalizationService'
 

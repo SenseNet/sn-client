@@ -2,7 +2,7 @@ import { ConstantContent, ODataParams } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
-import { useInjector, useRepository } from '../hooks'
+import { useRepository, useRepositoryEvents } from '../hooks'
 
 export const CurrentContentContext = React.createContext<GenericContent>(ConstantContent.PORTAL_ROOT)
 export const CurrentContentProvider: React.FunctionComponent<{
@@ -13,12 +13,11 @@ export const CurrentContentProvider: React.FunctionComponent<{
   const [loadLock] = useState(new Semaphore(1))
   const [content, setContent] = useState<GenericContent>(ConstantContent.PORTAL_ROOT)
   const repo = useRepository()
-  const injector = useInjector()
   const [reloadToken, setReloadToken] = useState(1)
   const reload = () => setReloadToken(Math.random())
+  const events = useRepositoryEvents()
 
   useEffect(() => {
-    const events = injector.getEventHub(repo.configuration.repositoryUrl)
     const subscriptions = [
       events.onContentModified.subscribe(c => {
         if (c.content.Id === content.Id) {
@@ -27,7 +26,7 @@ export const CurrentContentProvider: React.FunctionComponent<{
       }),
     ]
     return () => subscriptions.forEach(s => s.dispose())
-  }, [repo, content, injector])
+  }, [content.Id, events.onContentModified])
 
   const [error, setError] = useState<Error | undefined>()
 

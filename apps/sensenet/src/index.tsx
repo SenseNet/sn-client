@@ -1,23 +1,22 @@
 import CssBaseline from '@material-ui/core/CssBaseline'
+import { Injector } from '@furystack/inject'
+import { VerboseConsoleLogger } from '@furystack/logging'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
+import { InjectorContext, LoggerContextProvider, SessionContextProvider } from '@sensenet/hooks-react'
 import { HashRouter, Route } from 'react-router-dom'
 import { DesktopLayout } from './components/layout/DesktopLayout'
 import { MainRouter } from './components/MainRouter'
 import { NotificationComponent } from './components/NotificationComponent'
 import {
   ContentRoutingContextProvider,
-  InjectorContext,
   LocalizationProvider,
   PersonalSettingsContextProvider,
   RepositoryContextProvider,
   ResponsiveContextProvider,
-  SessionContextProvider,
-  snInjector,
   ThemeProvider,
 } from './context'
-import { LoggerContextProvider } from './context/LoggerContext'
 import { CommandProviderManager } from './services/CommandProviderManager'
 import { CheatCommandProvider } from './services/CommandProviders/CheatCommandProvider'
 import { CustomActionCommandProvider } from './services/CommandProviders/CustomActionCommandProvider'
@@ -31,6 +30,7 @@ import './style.css'
 import theme from './theme'
 import './utils/errorToJson'
 import './utils/InjectorExtensions'
+import { EventLogger } from './services/EventLogger'
 
 console.log(
   `%c@sensenet app v${process.env.APP_VERSION}
@@ -38,6 +38,10 @@ Branch ${process.env.GIT_BRANCH}
 Commit '${process.env.GIT_COMMITHASH}' `,
   'color: #16AAA6; border-bottom: 1px solid black',
 )
+
+export const snInjector = new Injector()
+snInjector.options.owner = 'SnApp'
+snInjector.useLogging(VerboseConsoleLogger, EventLogger)
 
 diMiddleware
   .getInjectable(CommandProviderManager)

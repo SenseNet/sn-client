@@ -20,7 +20,3 @@ Injector.prototype.getRepository = function(url, config) {
   this.setExplicitInstance(repo)
   return repo
 }
-
-Injector.prototype.getEventHub = function(name) {
-  return this.getInstance(RepositoryManager).getEventHub(name)
-}

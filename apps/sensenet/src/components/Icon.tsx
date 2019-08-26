@@ -42,9 +42,8 @@ import { GenericContent, File as SnFile, User } from '@sensenet/default-content-
 import React from 'react'
 import { Repository } from '@sensenet/client-core'
 import { Avatar } from '@material-ui/core'
-import { useInjector, useRepository } from '../hooks'
+import { useInjector, useRepository } from '@sensenet/hooks-react'
 import { EventLogEntry } from '../services/EventService'
-import { isContentFromType } from '../utils/isContentFromType'
 import { tuple } from '../utils/tuple'
 import { UserAvatar } from './UserAvatar'
 
@@ -90,7 +89,7 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   },
   {
     get: (item, options) =>
-      isContentFromType(item, SnFile, options.repo.schemas) &&
+      options.repo.schemas.isContentFromType(item, SnFile) &&
       (item as SnFile).PageCount &&
       (item as any).PageCount > 0 ? (
         <img

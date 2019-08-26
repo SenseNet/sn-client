@@ -5,7 +5,8 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import React, { useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
-import { useInjector, useLocalization, useTheme } from '../../hooks'
+import { useInjector } from '@sensenet/hooks-react'
+import { useLocalization, useTheme } from '../../hooks'
 import { CustomActionCommandProvider } from '../../services/CommandProviders/CustomActionCommandProvider'
 
 export const CustomActionResultDialog: React.FunctionComponent = () => {

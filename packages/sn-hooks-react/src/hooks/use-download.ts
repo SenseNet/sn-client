@@ -1,5 +1,4 @@
 import { File, GenericContent } from '@sensenet/default-content-types'
-import { isContentFromType } from '../utils/isContentFromType'
 import { useRepository } from './use-repository'
 
 const fakeClick = (obj: EventTarget) => {
@@ -16,7 +15,7 @@ const downloadFile = (name: string, repositoryUrl: string) => {
 
 export const useDownload = (content: GenericContent) => {
   const repo = useRepository()
-  const isFile = isContentFromType(content, File, repo.schemas)
+  const isFile = repo.schemas.isContentFromType(content, File)
   return {
     isFile,
     download: () => downloadFile(content.Path, repo.configuration.repositoryUrl),

@@ -3,7 +3,7 @@ import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
-import { useInjector, useLogger, useRepository } from '../hooks'
+import { useLogger, useRepository, useRepositoryEvents } from '../hooks'
 import { CurrentContentContext } from './CurrentContent'
 export const CurrentAncestorsContext = React.createContext<GenericContent[]>([])
 
@@ -13,8 +13,7 @@ export const CurrentAncestorsProvider: React.FunctionComponent<{ root?: number |
 
   const [ancestors, setAncestors] = useState<GenericContent[]>([])
   const repo = useRepository()
-  const injector = useInjector()
-  const eventHub = injector.getEventHub(repo.configuration.repositoryUrl)
+  const eventHub = useRepositoryEvents()
   const [reloadToken, setReloadToken] = useState(1)
 
   const logger = useLogger('CurrentAncestorsProvider')

@@ -3,22 +3,19 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { Created } from '@sensenet/repository-events'
 import React, { useContext, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
-import { useInjector, useRepository } from '../hooks'
-import { UploadTracker } from '../services/UploadTracker'
+import { useRepository, useRepositoryEvents } from '../hooks'
 import { CurrentContentContext } from './CurrentContent'
 import { LoadSettingsContext } from './LoadSettingsContext'
 export const CurrentChildrenContext = React.createContext<GenericContent[]>([])
 
 export const CurrentChildrenProvider: React.FunctionComponent = props => {
   const currentContent = useContext(CurrentContentContext)
-  const injector = useInjector()
   const [children, setChildren] = useState<GenericContent[]>([])
   const [loadLock] = useState(new Semaphore(1))
 
   const [reloadToken, setReloadToken] = useState(1)
   const repo = useRepository()
-  const eventHub = injector.getEventHub(repo.configuration.repositoryUrl)
-  const uploadTracker = injector.getInstance(UploadTracker)
+  const eventHub = useRepositoryEvents()
   const loadSettings = useContext(LoadSettingsContext)
 
   const requestReload = () => setReloadToken(Math.random())
@@ -66,11 +63,10 @@ export const CurrentChildrenProvider: React.FunctionComponent = props => {
           requestReload()
         }
       }),
-      uploadTracker.onUploadProgress.subscribe(({ progress }) => {
-        if (progress.completed && progress.createdContent) {
-          if (PathHelper.getParentPath(progress.createdContent.Url) === PathHelper.trimSlashes(currentContent.Path)) {
-            requestReload()
-          }
+
+      eventHub.onUploadFinished.subscribe(data => {
+        if (PathHelper.getParentPath(data.Url) === PathHelper.trimSlashes(currentContent.Path)) {
+          requestReload()
         }
       }),
       eventHub.onContentDeleted.subscribe(d => {
@@ -91,7 +87,7 @@ export const CurrentChildrenProvider: React.FunctionComponent = props => {
     eventHub.onContentMoved,
     eventHub.onContentModified,
     eventHub.onContentDeleted,
-    uploadTracker.onUploadProgress,
+    eventHub.onUploadFinished,
   ])
 
   if (error) {

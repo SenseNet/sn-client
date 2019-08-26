@@ -9,6 +9,7 @@ import WidgetsTwoTone from '@material-ui/icons/WidgetsTwoTone'
 import { DashboardTwoTone } from '@material-ui/icons'
 import { Group, User } from '@sensenet/default-content-types'
 import { Query } from '@sensenet/query'
+import { useSession } from '@sensenet/hooks-react'
 import { Icon } from '../components/Icon'
 import {
   BuiltinDrawerItem,
@@ -21,7 +22,6 @@ import { ResponsivePersonalSetttings } from '../context'
 import { encodeBrowseData } from '../components/content'
 import { encodeQueryData } from '../components/search'
 import DefaultLocalization from '../localization/default'
-import { useSession } from './use-session'
 import { useLocalization } from './use-localization'
 
 export interface DrawerItem {

@@ -19,9 +19,11 @@ import {
   CurrentChildrenContext,
   CurrentContentContext,
   LoadSettingsContext,
-  ResponsivePersonalSetttings,
-} from '../../context'
-import { useContentRouting, useLocalization, useLogger, useRepository } from '../../hooks'
+  useLogger,
+  useRepository,
+} from '@sensenet/hooks-react'
+import { ResponsivePersonalSetttings } from '../../context'
+import { useContentRouting, useLocalization } from '../../hooks'
 import { CollectionComponent, isReferenceField } from '../content-list'
 
 const loadCount = 20
