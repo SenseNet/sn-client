@@ -21,7 +21,7 @@ exports[`Date/Date time field control in edit/new view should set all the props 
 <MuiPickersUtilsProvider
   utils={[Function]}
 >
-  <WrappedPurePicker
+  <PickerWithState
     allowKeyboardControl={true}
     ampm={true}
     defaultValue="defaultValue"
@@ -59,7 +59,7 @@ exports[`Date/Date time field control in edit/new view should set all the props 
 <MuiPickersUtilsProvider
   utils={[Function]}
 >
-  <WrappedPurePicker
+  <PickerWithState
     allowKeyboardControl={true}
     defaultValue="defaultValue"
     disabled={true}

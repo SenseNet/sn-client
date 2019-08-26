@@ -37,7 +37,6 @@ export const withStore = (component: JSX.Element, options?: Partial<CreateStoreO
       },
     },
   }
-  // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
   const store = Store.createSensenetStore({ ...defaultOptions, ...options } as CreateStoreOptions<rootStateType>)
 
   return <Provider store={store}>{component}</Provider>

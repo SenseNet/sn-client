@@ -73,7 +73,7 @@ export const rotateImages = (imageIndexes: number[], amount: number) => ({
  * @param documentData
  * @param version
  */
-export const getAvailableImages = (documentData: DocumentData, version: string = 'V1.0A') => ({
+export const getAvailableImages = (documentData: DocumentData, version = 'V1.0A') => ({
   type: 'SN_GET_AVAILABLE_IMAGES_INJECTABLE_ACTION',
   inject: async (options: IInjectableActionCallbackParams<RootReducerType>) => {
     options.dispatch(getAvailabelImagesAction(documentData))
@@ -159,7 +159,7 @@ export const setPagePollInterval = (pollInterval: number) => ({
  * @param version
  * @param page
  */
-export const previewAvailable = (documentData: DocumentData, version: string = 'V1.0A', page: number = 1) => ({
+export const previewAvailable = (documentData: DocumentData, version = 'V1.0A', page = 1) => ({
   type: 'SN_DOCVIEWER_PREVIEW_AVAILABLE_INJECTABLE_ACTION',
   inject: async (options: IInjectableActionCallbackParams<RootReducerType>) => {
     options.dispatch(previewAvailableAction(documentData, version, page))

@@ -4,7 +4,7 @@ exports[`Time picker field control in edit/new view should set all the props 1`]
 <MuiPickersUtilsProvider
   utils={[Function]}
 >
-  <WrappedPurePicker
+  <PickerWithState
     ampm={true}
     defaultValue="defaultValue"
     disabled={true}

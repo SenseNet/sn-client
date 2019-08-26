@@ -30,7 +30,7 @@
     "@sensenet/default-content-types": "^2.0.0",
     "@sensenet/query": "^1.1.8",
     "semaphore-async-await": "^1.5.1",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "@types/uuid": "^3.4.5"
