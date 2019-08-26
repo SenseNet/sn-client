@@ -62,7 +62,7 @@ abstract class ShapeComponent<T extends Shape = Shape> extends React.Component<
    * @param offsetX optional X offset
    * @param offsetY optional Y offset
    */
-  protected getShapeDimensions(shape: Shape, offsetX: number = 0, offsetY: number = 0): React.CSSProperties {
+  protected getShapeDimensions(shape: Shape, offsetX = 0, offsetY = 0): React.CSSProperties {
     return {
       top: shape.y * this.props.zoomRatio + offsetY * this.props.zoomRatio,
       left: shape.x * this.props.zoomRatio + offsetX * this.props.zoomRatio,

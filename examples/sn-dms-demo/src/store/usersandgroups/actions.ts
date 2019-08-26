@@ -90,7 +90,7 @@ export const setItems = (items: GenericContent[]) => ({
   items,
 })
 
-export const isAdmin = (admin: boolean = false) => ({
+export const isAdmin = (admin = false) => ({
   type: 'DMS_USER_ISADMIN',
   admin,
 })
