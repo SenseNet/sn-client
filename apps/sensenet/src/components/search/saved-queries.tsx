@@ -17,6 +17,7 @@ import {
   LoadSettingsContext,
   useInjector,
   useRepository,
+  useRepositoryEvents,
 } from '@sensenet/hooks-react'
 import { useLocalization } from '../../hooks'
 import { CollectionComponent } from '../content-list'
@@ -35,12 +36,13 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
   const [requestReload] = useState(() => debounce(() => setReloadToken(Math.random()), 250))
   const loadSettingsContext = useContext(LoadSettingsContext)
 
+  const eventHub = useRepositoryEvents()
+
   useEffect(() => {
     setRepoToken(btoa(repo.configuration.repositoryUrl))
   }, [repo.configuration.repositoryUrl])
 
   useEffect(() => {
-    const eventHub = injector.getEventHub(repo.configuration.repositoryUrl)
     const subscriptions = [
       eventHub.onContentModified.subscribe(() => requestReload()),
       eventHub.onContentCopied.subscribe(() => requestReload()),
@@ -48,7 +50,15 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
       eventHub.onContentDeleted.subscribe(() => requestReload()),
     ]
     return () => subscriptions.forEach(s => s.dispose())
-  }, [injector, repo, requestReload])
+  }, [
+    eventHub.onContentCopied,
+    eventHub.onContentCreated,
+    eventHub.onContentDeleted,
+    eventHub.onContentModified,
+    injector,
+    repo,
+    requestReload,
+  ])
 
   useEffect(() => {
     repo

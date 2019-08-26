@@ -1,7 +1,6 @@
 import { Injector } from '@furystack/inject/dist/Injector'
 import { Repository } from '@sensenet/client-core'
 import { RepositoryConfiguration } from '@sensenet/client-core/dist/Repository/RepositoryConfiguration'
-import { EventHub } from '@sensenet/repository-events'
 import { RepositoryManager } from '../services/RepositoryManager'
 
 declare module '@furystack/inject/dist/Injector' {
@@ -10,7 +9,6 @@ declare module '@furystack/inject/dist/Injector' {
    */
   interface Injector {
     getRepository: (url: string, config?: RepositoryConfiguration) => Repository
-    getEventHub: (url: string) => EventHub
   }
 }
 
