@@ -170,7 +170,6 @@ export const useDrawerItems = () => {
           return true
         }
         try {
-          console.log(item.itemType)
           for (const permission of item.permissions) {
             const actions = await repo.getActions({ idOrPath: permission.path })
             if (actions.d.Actions && actions.d.Actions.findIndex(action => action.Name === permission.action) === -1) {
