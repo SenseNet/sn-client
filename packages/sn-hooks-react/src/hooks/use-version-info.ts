@@ -74,6 +74,9 @@ export interface VersionInfo {
   InstalledPackages: Package[]
 }
 
+/**
+ * Returns the current repository's Version Info values and also checks if the installed components has an updated version on https://nuget.org
+ */
 export const useVersionInfo = () => {
   const [versionInfo, setVersionInfo] = useState<VersionInfo | undefined>()
   const [nugetManifests, setNugetManifests] = useState<any[]>([])

@@ -1,5 +1,10 @@
 import { ActionModel, File, GenericContent } from '@sensenet/default-content-types'
 import { useRepository } from './use-repository'
+
+/**
+ * Returns if the current content can be opened in WOPI for read or write.
+ * @param content The content to check
+ */
 export const useWopi = (content: GenericContent) => {
   const repo = useRepository()
 
@@ -17,7 +22,13 @@ export const useWopi = (content: GenericContent) => {
       (content.Actions as ActionModel[]).find(a => a.Name === 'WopiOpenView'))
 
   return {
+    /**
+     * The file can be opened for read with WOPI
+     */
     isReadAwailable,
+    /**
+     * The file can be opened for write with WOPI
+     */
     isWriteAwailable,
   }
 }
