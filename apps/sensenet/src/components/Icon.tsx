@@ -37,14 +37,13 @@ import {
   WebAssetTwoTone,
   WidgetsTwoTone,
 } from '@material-ui/icons'
-import { PathHelper } from '@sensenet/client-utils'
+import { PathHelper, tuple } from '@sensenet/client-utils'
 import { GenericContent, File as SnFile, User } from '@sensenet/default-content-types'
 import React from 'react'
 import { Repository } from '@sensenet/client-core'
 import { Avatar } from '@material-ui/core'
 import { useInjector, useRepository } from '@sensenet/hooks-react'
 import { EventLogEntry } from '../services/EventService'
-import { tuple } from '../utils/tuple'
 import { UserAvatar } from './UserAvatar'
 
 export interface IconOptions {

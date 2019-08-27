@@ -1,9 +1,8 @@
 import { Injectable } from '@furystack/inject'
 import { LogLevel } from '@furystack/logging'
-import { deepMerge, ObservableValue } from '@sensenet/client-utils'
+import { deepMerge, ObservableValue, tuple } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { PlatformDependent } from '../context'
-import { tuple } from '../utils/tuple'
 import { BrowseType } from '../components/content'
 
 const settingsKey = `SN-APP-USER-SETTINGS`
