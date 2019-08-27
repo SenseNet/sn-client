@@ -88,8 +88,8 @@ export class SchemaStore {
         return true
       }
       currentSchema = this.getSchemaByName(currentSchema.ParentTypeName || '')
-    } while (currentSchema.ContentTypeName && currentSchema.ContentTypeName !== 'GenericContent')
-    return false
+    } while (currentSchema.ContentTypeName && currentSchema.ContentTypeName !== GenericContent.name)
+    return contentType.name === GenericContent.name
   }
 
   /**
@@ -104,6 +104,8 @@ export class SchemaStore {
         return true
       }
       currentSchema = this.getSchemaByName(currentSchema.ParentTypeName || '')
-    } while (currentSchema.ContentTypeName && currentSchema.ContentTypeName !== 'GenericContent')
+    } while (currentSchema.ContentTypeName && currentSchema.ContentTypeName !== GenericContent.name)
+
+    return parent === GenericContent.name
   }
 }
