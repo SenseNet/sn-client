@@ -20,16 +20,16 @@ npm install @sensenet/hooks-react
 
 You can use the custom hooks in a similar way as the build-in React hooks, respecting the [Rules of Hooks](https://reactjs.org/docs/hooks-rules.html).
 
-### Custom contexts
+### Custom contexts and Providers
 
-- CurrentAncestors
-- CurrentChildren
-- CurrentContent
+- CurrentAncestors and CurrentAncestorsProvider
+- CurrentChildren and CurrentChildrenProvider
+- CurrentContent and CurrentContentProvider
 - InjectorContext
-- LoadSettingsContext
-- LoggerContext
+- LoadSettingsContext and LoadSettingsContextProvider
+- LoggerContext and LoggerContextProvider
 - RepositoryContext
-- SessionContext
+- SessionContext and SessionContextProvider
 
 ### Custom hooks
 
