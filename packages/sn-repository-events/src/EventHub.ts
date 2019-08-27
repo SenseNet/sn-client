@@ -226,7 +226,6 @@ export class EventHub implements Disposable {
             contentArgs = [contentArgs]
           }
           const contents = contentArgs.map(v => {
-            // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
             return isNaN(v as number) ? { Path: v } : ({ Id: parseInt(v as string, 10) } as Content)
           })
           for (const c of contents) {
@@ -270,7 +269,6 @@ export class EventHub implements Disposable {
             contentArgs = [contentArgs]
           }
           const contents = contentArgs.map(v => {
-            // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
             return isNaN(v as number) ? { Path: v } : ({ Id: parseInt(v as string, 10) } as Content)
           })
           for (const c of contents) {
@@ -312,7 +310,6 @@ export class EventHub implements Disposable {
             contentArgs = [contentArgs]
           }
           const contents = contentArgs.map(v => {
-            // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
             return isNaN(v as number) ? { Path: v } : ({ Id: parseInt(v as string, 10) } as Content)
           })
           for (const c of contents) {

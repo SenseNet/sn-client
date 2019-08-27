@@ -57,7 +57,7 @@ export class Token {
   /**
    * Indicates if the Token is valid based on it's ExpirationTime and NotBefore values.
    */
-  public IsValid(excludeNotBefore: boolean = false): boolean {
+  public IsValid(excludeNotBefore = false): boolean {
     const now = new Date()
     return this._tokenPayload && this.ExpirationTime > now && (excludeNotBefore || this.NotBefore < now)
   }

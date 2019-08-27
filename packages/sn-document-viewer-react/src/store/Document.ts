@@ -71,7 +71,7 @@ export const documentPermissionsReceived = (
  * @param idOrPath Id or full path for the document, e.g.: 'Root/Sites/MySite/MyDocLib/('doc.docx')
  * @param version The document version
  */
-export const pollDocumentData = (hostName: string, idOrPath: string | number, version: string = 'V1.0A') => ({
+export const pollDocumentData = (hostName: string, idOrPath: string | number, version = 'V1.0A') => ({
   type: 'SN_POLL_DOCUMENT_DATA_INJECTABLE_ACTION',
   inject: async (options: IInjectableActionCallbackParams<RootReducerType>) => {
     const api = options.getInjectable(DocumentViewerSettings)

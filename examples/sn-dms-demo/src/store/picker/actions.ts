@@ -2,7 +2,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 
 export const openPicker = (
   content: JSX.Element | React.Component | Element | null = null,
-  mode: string = 'move',
+  mode = 'move',
   onClose?: () => void,
 ) => ({
   type: 'OPEN_PICKER',

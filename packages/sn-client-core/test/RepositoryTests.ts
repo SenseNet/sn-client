@@ -532,30 +532,27 @@ describe('Repository', () => {
     })
 
     it('Load', async () => {
-      const user = await repository.load<User>({
+      await repository.load<User>({
         idOrPath: '/Root/IMS/BuiltIn/Portal/Visitor', // you can also load by content Id
         oDataOptions: {
           expand: ['CreatedBy'],
           select: 'all',
         },
       })
-      console.log(user) // {d: { /*(...retrieved user data)*/ }}
     })
 
     it('Load collection', async () => {
-      const portalUsers = await repository.loadCollection<User>({
+      await repository.loadCollection<User>({
         path: '/Root/IMS/BuiltIn/Portal',
         oDataOptions: {
           query: 'TypeIs:User',
           orderby: ['LoginName'],
         },
       })
-      console.log('Count: ', portalUsers.d.__count)
-      console.log('Users: ', portalUsers.d.results)
     })
 
     it('POST/PATCH/PUT', async () => {
-      const createdUser = await repository.post<User>({
+      await repository.post<User>({
         parentPath: 'Root/Parent',
         contentType: 'User',
         content: {
@@ -563,33 +560,27 @@ describe('Repository', () => {
           /** ...additional content data */
         },
       })
-      console.log(createdUser) // {d: { /*(...created user data)*/ }}
 
       // you can use PUT in the similar way
-      const lockedUser = await repository.patch<User>({
+      await repository.patch<User>({
         idOrPath: 'Root/Path/To/User',
         content: {
           Locked: true,
         },
       })
-      console.log(lockedUser) // {d: { /*(...locked user data)*/ }}
     })
 
     it('Batch operations', async () => {
       // you can use move in the similar way
-      const copyResult = await repository.copy({
+      await repository.copy({
         idOrPath: [45, 'Root/Path/To/Content'],
         targetPath: 'Root/Target/Path',
       })
-      console.log('Success: ', copyResult.d.results)
-      console.log('Errors: ', copyResult.d.errors)
 
-      const deleteResult = await repository.delete({
+      await repository.delete({
         idOrPath: 'Root/Path/To/Content/To/Delete',
         permanent: true,
       })
-      console.log('Success: ', deleteResult.d.results)
-      console.log('Errors: ', deleteResult.d.errors)
     })
 
     it('Custom action', async () => {
@@ -601,7 +592,7 @@ describe('Repository', () => {
         Result: any
       }
 
-      const actionResult = await repository.executeAction<CustomActionBodyType, CustomActionReturnType>({
+      await repository.executeAction<CustomActionBodyType, CustomActionReturnType>({
         idOrPath: 'Path/to/content',
         method: 'POST',
         name: 'MyOdataCustomAction',
@@ -610,7 +601,6 @@ describe('Repository', () => {
           Value: 'Bar',
         },
       })
-      console.log(actionResult.Result)
     })
   })
 
