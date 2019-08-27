@@ -302,7 +302,7 @@ export const defaultSettings: PersonalSettingsType = {
         {
           itemType: 'Content',
           settings: { root: '/Root/Content' },
-          permissions: [{ path: '/Root/Content', action: 'Edit' }],
+          permissions: [{ path: '/Root/Content', action: 'Add' }],
         },
         {
           itemType: 'Users and groups',
@@ -319,7 +319,7 @@ export const defaultSettings: PersonalSettingsType = {
           settings: undefined,
           permissions: [{ path: '/Root/Localization', action: 'Add' }],
         },
-        { itemType: 'Setup', settings: undefined, permissions: [{ path: '/Root/System/Settings', action: 'Edit' }] },
+        { itemType: 'Setup', settings: undefined, permissions: [{ path: '/Root/System/Settings', action: 'Browse' }] },
         {
           itemType: 'Version info',
           settings: undefined,
