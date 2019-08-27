@@ -4,12 +4,32 @@ import React, { useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
 import { useRepository, useRepositoryEvents } from '../hooks'
 
+/**
+ * Returns a given content as current content
+ */
 export const CurrentContentContext = React.createContext<GenericContent>(ConstantContent.PORTAL_ROOT)
-export const CurrentContentProvider: React.FunctionComponent<{
+
+export interface CurrentContentProviderProps {
+  /**
+   * The Id or Path for the current content item
+   */
   idOrPath: number | string
+  /**
+   * Optional callback that will be triggered when the content loads
+   */
   onContentLoaded?: (content: GenericContent) => void
+  /**
+   * Optional OData options for loading the content
+   */
   oDataOptions?: ODataParams<GenericContent>
-}> = props => {
+}
+
+/**
+ * Provider component for the CurrentContentContext component.
+ * Loads a content from the Repository with the given Id or Path.
+ * Has to be wrapped with a **RepositoryContext**
+ */
+export const CurrentContentProvider: React.FunctionComponent<CurrentContentProviderProps> = props => {
   const [loadLock] = useState(new Semaphore(1))
   const [content, setContent] = useState<GenericContent>(ConstantContent.PORTAL_ROOT)
   const repo = useRepository()

@@ -5,9 +5,24 @@ import React, { useContext, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
 import { useLogger, useRepository, useRepositoryEvents } from '../hooks'
 import { CurrentContentContext } from './CurrentContent'
+
+/**
+ * Context that will return with the current content's ancestors
+ */
 export const CurrentAncestorsContext = React.createContext<GenericContent[]>([])
 
-export const CurrentAncestorsProvider: React.FunctionComponent<{ root?: number | string }> = props => {
+export interface CurrentAncestorsProviderProps {
+  /**
+   * An optional root Path or ID. The top ancestor will be a content with the provided value.
+   */
+  root?: number | string
+}
+
+/**
+ * Provider component for the CurrentAncestorsContext component.
+ * Loads an ancestor list from the Repository. Has to be wrapped with a **CurrentContentContext** and a **RepositoryContext**
+ */
+export const CurrentAncestorsProvider: React.FunctionComponent<CurrentAncestorsProviderProps> = props => {
   const currentContent = useContext(CurrentContentContext)
   const [loadLock] = useState(new Semaphore(1))
 

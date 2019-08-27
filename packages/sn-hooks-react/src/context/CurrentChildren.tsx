@@ -6,8 +6,17 @@ import Semaphore from 'semaphore-async-await'
 import { useRepository, useRepositoryEvents } from '../hooks'
 import { CurrentContentContext } from './CurrentContent'
 import { LoadSettingsContext } from './LoadSettingsContext'
+
+/**
+ * Context that will return with a list of a current content's children
+ */
 export const CurrentChildrenContext = React.createContext<GenericContent[]>([])
 
+/**
+ * Provider component for the CurrentChildrenContext component
+ * Loads the children of the current content.
+ * Loads an ancestor list from the Repository. Has to be wrapped with a **CurrentContentContext** and a **RepositoryContext**
+ */
 export const CurrentChildrenProvider: React.FunctionComponent = props => {
   const currentContent = useContext(CurrentContentContext)
   const [children, setChildren] = useState<GenericContent[]>([])
