@@ -22,7 +22,7 @@ import { RetrierOptions } from './RetrierOptions'
  * ```
  */
 export class Retrier {
-  private isRunning: boolean = false
+  private isRunning = false
 
   /**
    * Factory method for creating a Retrier

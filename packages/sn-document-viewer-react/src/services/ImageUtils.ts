@@ -40,8 +40,8 @@ export class ImageUtil {
     viewPort: Dimensions,
     image: Dimensions & { rotation: number },
     zoomMode: ZoomMode,
-    relativeZoomLevel: number = 1,
-    fitRelativeZoomLevel: number = 0,
+    relativeZoomLevel = 1,
+    fitRelativeZoomLevel = 0,
   ): Dimensions {
     if (zoomMode === 'custom') {
       relativeZoomLevel = (relativeZoomLevel + 1) / 4

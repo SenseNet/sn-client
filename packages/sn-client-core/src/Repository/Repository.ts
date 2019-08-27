@@ -81,7 +81,7 @@ export class Repository implements Disposable {
    * @param {RequestInfo} input The RequestInfo object
    * @param {RequestInit} init Optional init parameters
    */
-  public async fetch(info: RequestInfo, init?: RequestInit, awaitReadyState: boolean = true): Promise<Response> {
+  public async fetch(info: RequestInfo, init?: RequestInit, awaitReadyState = true): Promise<Response> {
     if (awaitReadyState) {
       await this.awaitReadyState()
     }

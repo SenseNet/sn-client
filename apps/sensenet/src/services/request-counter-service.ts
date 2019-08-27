@@ -31,7 +31,7 @@ export class RequestCounterService implements IDisposable {
     sites: {},
   }
 
-  private hasChanged: boolean = false
+  private hasChanged = false
 
   private currentState: RequestCounterRecord = { ...this.defaultState }
 

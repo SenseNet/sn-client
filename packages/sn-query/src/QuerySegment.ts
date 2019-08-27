@@ -21,14 +21,14 @@ export class QuerySegment<TReturns> {
   /**
    * The String value of the current Query expression
    */
-  protected stringValue: string = ''
+  protected stringValue = ''
 
   /**
    * A '.SORT' Content Query segment
    * @param {K} field The name of the field
    * @param {boolean} reverse Sort in reverse order, false by default
    */
-  public sort<K extends keyof TReturns>(field: K, reverse: boolean = false) {
+  public sort<K extends keyof TReturns>(field: K, reverse = false) {
     this.stringValue = ` .${reverse ? 'REVERSESORT' : 'SORT'}:${field}`
     this.segmentType = 'sort'
     return this.finializeSegment()
