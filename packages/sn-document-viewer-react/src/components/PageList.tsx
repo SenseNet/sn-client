@@ -76,7 +76,7 @@ export class PageListComponent extends React.Component<
     visiblePages: this.props.pages.slice(0, 3),
   }
 
-  private canUpdate: boolean = false
+  private canUpdate = false
   private viewPort?: Element
   private onResize!: () => void
   private onScroll!: () => void

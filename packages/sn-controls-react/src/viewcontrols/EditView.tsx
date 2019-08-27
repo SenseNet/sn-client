@@ -48,7 +48,6 @@ export class EditView extends Component<EditViewProps, EditViewState> {
     this.state = {
       content: this.props.content,
       schema: controlMapper.getFullSchemaForContentType(this.props.content.Type, 'edit'),
-      // eslint-disable-next-line @typescript-eslint/no-object-literal-type-assertion
       saveableContent: {} as ContentType,
       controlMapper,
     }

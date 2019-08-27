@@ -108,7 +108,7 @@ export class DocumentViewerLayoutComponent extends React.Component<
   }
 
   /** scrolls the viewer to focus to the page with the provided index */
-  public scrollTo(index: number, smoothScroll: boolean = true) {
+  public scrollTo(index: number, smoothScroll = true) {
     this.setState({ ...this.state, activePage: index }, () => {
       this.scrollToImage({
         containerId: 'sn-document-viewer-pages',
