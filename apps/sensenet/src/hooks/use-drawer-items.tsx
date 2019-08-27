@@ -22,6 +22,7 @@ import DefaultLocalization from '../localization/default'
 import { useSession } from './use-session'
 import { useLocalization } from './use-localization'
 import { useRepository } from './use-repository'
+import console = require('console')
 export interface DrawerItem {
   name: string
   primaryText: keyof (typeof DefaultLocalization.drawer.titles)
@@ -172,7 +173,8 @@ export const useDrawerItems = () => {
         try {
           for (const permission of item.permissions) {
             const actions = await repo.getActions({ idOrPath: permission.path })
-            if (actions.d.Actions && actions.d.Actions.findIndex(action => action.Name === permission.action) === -1) {
+            const actionIndex = actions.d.Actions.findIndex(action => action.Name === permission.action)
+            if (actionIndex === -1 || actions.d.Actions[actionIndex].Forbidden) {
               return false
             }
           }
