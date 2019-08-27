@@ -82,6 +82,7 @@ describe('SchemaStore', () => {
       const store = new SchemaStore()
       store.setSchemas(DefaultSchemaStore)
       expect(store.schemaIsDescendantOf(SnFile.name, GenericContent.name)).toBeTruthy()
+      expect(store.schemaIsDescendantOf(SnFile.name, SnFile.name)).toBeTruthy()
       expect(store.schemaIsDescendantOf(Image.name, File.name)).toBeTruthy()
       expect(store.schemaIsDescendantOf(Image.name, GenericContent.name)).toBeTruthy()
       expect(store.schemaIsDescendantOf(UserProfile.name, GenericContent.name)).toBeTruthy()
@@ -100,6 +101,7 @@ describe('SchemaStore', () => {
     it('Should be return true for descendants', () => {
       const store = new SchemaStore()
       store.setSchemas(DefaultSchemaStore)
+      expect(store.isContentFromType({ Type: SnFile.name } as GenericContent, SnFile)).toBeTruthy()
       expect(store.isContentFromType({ Type: SnFile.name } as GenericContent, GenericContent)).toBeTruthy()
       expect(store.isContentFromType({ Type: Image.name } as GenericContent, SnFile)).toBeTruthy()
       expect(store.isContentFromType({ Type: Image.name } as GenericContent, GenericContent)).toBeTruthy()
