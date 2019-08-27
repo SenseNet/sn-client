@@ -69,58 +69,33 @@ export const DrawerItemType = tuple(
   'Dashboard',
 )
 
-export const PermissionType = tuple(
-  'See',
-  'Preview',
-  'PreviewWithoutWatermark',
-  'PreviewWithoutRedaction',
-  'Open',
-  'OpenMinor',
-  'Save',
-  'Publish',
-  'ForceCheckin',
-  'AddNew',
-  'Approve',
-  'Delete',
-  'RecallOldVersion',
-  'DeleteOldVersion',
-  'SeePermissions',
+export const ActionType = tuple(
+  'Browse',
+  'Edit',
+  'GetPermissions',
   'SetPermissions',
-  'RunApplication',
-  'ManageListsAndWorkspaces',
-  'TakeOwnership',
-  'Custom01',
-  'Custom02',
-  'Custom03',
-  'Custom04',
-  'Custom05',
-  'Custom06',
-  'Custom07',
-  'Custom08',
-  'Custom09',
-  'Custom10',
-  'Custom11',
-  'Custom12',
-  'Custom13',
-  'Custom14',
-  'Custom15',
-  'Custom16',
-  'Custom17',
-  'Custom18',
-  'Custom19',
-  'Custom20',
-  'Custom21',
-  'Custom22',
-  'Custom23',
-  'Custom24',
-  'Custom25',
-  'Custom26',
-  'Custom27',
-  'Custom28',
-  'Custom29',
-  'Custom30',
-  'Custom31',
-  'Custom32',
+  'Reject',
+  'RestoreVersion',
+  'Purge',
+  'ShareContent',
+  'Rename',
+  'GetAllContentTypes',
+  'GetAllowedUsers',
+  'GetQueries',
+  'Approve',
+  'Checkout',
+  'CopyTo',
+  'MoveTo',
+  'Publish',
+  'SaveQuery',
+  'SetPermissions',
+  'Share',
+  'Delete',
+  'UndoCheckOut',
+  'Versions',
+  'CheckIn',
+  'Add',
+  'Upload',
 )
 
 export interface DrawerItem<T> {
@@ -128,7 +103,7 @@ export interface DrawerItem<T> {
   itemType: typeof DrawerItemType[number]
   permissions?: Array<{
     path: string
-    role: typeof PermissionType[number]
+    action: typeof ActionType[number]
   }>
 }
 
@@ -162,7 +137,7 @@ export interface DashboardDrawerItem
     description?: string
     icon: string
   }> {
-  itemType: 'Dashboard'
+  itemType: 'Dashboard' | 'Users and groups'
 }
 
 export interface BuiltinDrawerItem extends DrawerItem<undefined> {
@@ -327,25 +302,29 @@ export const defaultSettings: PersonalSettingsType = {
         {
           itemType: 'Content',
           settings: { root: '/Root/Content' },
-          permissions: [{ path: '/Root/Content', role: 'Open' }],
+          permissions: [{ path: '/Root/Content', action: 'Edit' }],
         },
         {
           itemType: 'Users and groups',
           settings: undefined,
-          permissions: [{ path: '/Root/IMS/Public', role: 'AddNew' }],
+          permissions: [{ path: '/Root/IMS/Public', action: 'Add' }],
         },
         {
           itemType: 'Content Types',
           settings: undefined,
-          permissions: [{ path: '/Root/System/ContentTypes', role: 'AddNew' }],
+          permissions: [{ path: '/Root/System/Schema/ContentTypes', action: 'Add' }],
         },
         {
           itemType: 'Localization',
           settings: undefined,
-          permissions: [{ path: '/Root/Localization', role: 'AddNew' }],
+          permissions: [{ path: '/Root/Localization', action: 'Add' }],
         },
-        { itemType: 'Setup', settings: undefined, permissions: [{ path: '/Root/System/Settings', role: 'Open' }] },
-        { itemType: 'Version info', settings: undefined },
+        { itemType: 'Setup', settings: undefined, permissions: [{ path: '/Root/System/Settings', action: 'Edit' }] },
+        {
+          itemType: 'Version info',
+          settings: undefined,
+          permissions: [{ path: '/Root/(apps)/PortalRoot/GetVersionInfo', action: 'Browse' }],
+        },
       ],
     },
     commandPalette: { enabled: true, wrapQuery: '{0} .AUTOFILTERS:OFF' },

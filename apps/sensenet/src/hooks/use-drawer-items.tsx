@@ -7,8 +7,6 @@ import PublicTwoTone from '@material-ui/icons/PublicTwoTone'
 import SearchTwoTone from '@material-ui/icons/SearchTwoTone'
 import WidgetsTwoTone from '@material-ui/icons/WidgetsTwoTone'
 import { DashboardTwoTone } from '@material-ui/icons'
-import { Group, User } from '@sensenet/default-content-types'
-import { Query } from '@sensenet/query'
 import { Icon } from '../components/Icon'
 import {
   BuiltinDrawerItem,
@@ -24,7 +22,6 @@ import DefaultLocalization from '../localization/default'
 import { useSession } from './use-session'
 import { useLocalization } from './use-localization'
 import { useRepository } from './use-repository'
-
 export interface DrawerItem {
   name: string
   primaryText: keyof (typeof DefaultLocalization.drawer.titles)
@@ -110,20 +107,13 @@ export const useDrawerItems = () => {
             fieldsToDisplay: (item.settings && item.settings.columns) || settings.content.fields,
           })}`
         case 'Users and groups':
-          return `/search/${encodeQueryData({
-            title: localization.titles['Users and groups'],
-            term: new Query(q =>
-              q
-                .typeIs(User)
-                .or.typeIs(Group)
-                .and.inTree('/Root/IMS'),
-            ).toString(),
-            hideSearchBar: true,
+          return `/browse/${encodeBrowseData({
+            type: 'simple',
+            root: '/Root/IMS/Public',
             fieldsToDisplay: ['DisplayName', 'ModificationDate', 'ModifiedBy', 'Actions'],
           })}`
         case 'Content Types':
           return `/search/${encodeQueryData({
-            title: localization.titles['Content Types'],
             term: "+TypeIs:'ContentType'",
             hideSearchBar: true,
             fieldsToDisplay: ['DisplayName', 'Description', 'ParentTypeName' as any, 'ModificationDate', 'ModifiedBy'],
@@ -136,10 +126,9 @@ export const useDrawerItems = () => {
             fieldsToDisplay: item.settings && item.settings.columns,
           })}`
         case 'Localization':
-          return `/search/${encodeQueryData({
-            term: "+TypeIs:'Resource'",
-            title: localization.titles.Localization,
-            hideSearchBar: true,
+          return `/browse/${encodeBrowseData({
+            type: 'simple',
+            root: '/Root/Localization',
           })}`
         case 'Trash':
           return '' // ToDO
@@ -156,7 +145,7 @@ export const useDrawerItems = () => {
 
       return '/'
     },
-    [localization.titles, settings.content.browseType, settings.content.fields],
+    [settings.content.browseType, settings.content.fields],
   )
 
   const getItemFromSettings = useCallback(
@@ -181,20 +170,20 @@ export const useDrawerItems = () => {
           return true
         }
         try {
+          console.log(item.itemType)
           for (const permission of item.permissions) {
-            const hasPermission = await repo.security.hasPermission(permission.path, [permission.role])
-            if (!hasPermission) {
+            const actions = await repo.getActions({ idOrPath: permission.path })
+            if (actions.d.Actions && actions.d.Actions.findIndex(action => action.Name === permission.action) === -1) {
               return false
             }
           }
         } catch (error) {
           return false
         }
-
         return true
       })
       .then(items => setDrawerItems(items.map(item => getItemFromSettings(item))))
-  }, [getItemFromSettings, repo.security, session, settings])
+  }, [getItemFromSettings, repo, repo.security, session, settings])
 
   return drawerItems
 }
