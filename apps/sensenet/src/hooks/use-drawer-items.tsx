@@ -22,7 +22,6 @@ import DefaultLocalization from '../localization/default'
 import { useSession } from './use-session'
 import { useLocalization } from './use-localization'
 import { useRepository } from './use-repository'
-import console = require('console')
 export interface DrawerItem {
   name: string
   primaryText: keyof (typeof DefaultLocalization.drawer.titles)
