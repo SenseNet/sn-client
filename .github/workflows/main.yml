@@ -3,7 +3,7 @@ name: CI
 on: [push]
 
 jobs:
-  build:
+  install:
 
     runs-on: ubuntu-latest
     
@@ -13,8 +13,19 @@ jobs:
       uses: Borales/actions-yarn@1.1.0
       with:
         args: install
+        
+  lint:
+    needs: install
+    steps:
     - name: ESLint
       uses: Borales/actions-yarn@1.1.0
       with:
         args: lint
-
+        
+  build:
+     needs: install
+     steps:
+     - name: ESLint
+       uses: Borales/actions-yarn@1.1.0
+       with:
+         args: lint
