@@ -9,22 +9,11 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
-    - name: Yarn install
+    - name: install, build and test
       uses: Borales/actions-yarn@1.1.0
       with:
-        args: install
-        
-    - name: ESLint
-      uses: Borales/actions-yarn@1.1.0
-      with:
-        args: lint
-        
-     - name: Build
-       uses: Borales/actions-yarn@1.1.0
-       with:
-         args: build
-      
-     - name: Test
-       uses: Borales/actions-yarn@1.1.0
-       with:
-         args: test --coverage
+        args: |
+          install
+          build
+          lint
+          test
