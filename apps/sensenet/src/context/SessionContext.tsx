@@ -27,7 +27,7 @@ export const SessionContextProvider: React.FunctionComponent = props => {
       }, true),
       repo.authentication.currentUser.subscribe(async usr => {
         logger.debug({
-          message: `Current user chagned.`,
+          message: `Current user changed.`,
           data: {
             relatedRepository: repo.configuration.repositoryUrl,
             relatedContent: usr,

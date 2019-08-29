@@ -2,7 +2,7 @@ import { LogLevel } from '@furystack/logging'
 import { Repository } from '@sensenet/client-core'
 import { editor, languages, Uri } from 'monaco-editor'
 import defaultLanguage from '../../localization/default'
-import { DrawerItemType, widgetTypes } from '../PersonalSettings'
+import { ActionType, DrawerItemType, widgetTypes } from '../PersonalSettings'
 import { BrowseType } from '../../components/content'
 import { wellKnownIconNames } from '../../components/Icon'
 
@@ -191,6 +191,22 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                       itemType: {
                         type: 'string',
                         enum: [...DrawerItemType],
+                      },
+                      permissions: {
+                        type: 'array',
+                        description: language.personalSettings.drawerItemPermissions,
+                        items: {
+                          type: 'object',
+                          properties: {
+                            path: { type: 'string', description: language.personalSettings.drawerItemPermissionPath },
+                            role: {
+                              type: 'string',
+                              description: language.personalSettings.drawerItemPermissionPath,
+                              enum: [...ActionType],
+                            },
+                          },
+                          required: ['path', 'role'],
+                        },
                       },
                     },
                     allOf: [
