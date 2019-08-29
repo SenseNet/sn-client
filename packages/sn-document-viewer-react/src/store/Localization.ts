@@ -27,6 +27,8 @@ export interface LocalizationStateType {
   lastPage: string
   saveChanges: string
   loadingDocument: string
+  regeneratePreviews: string
+  regenerateButton: string
   errorLoadingDocument: Array<{ state: PreviewState; message: string; details: string; code?: number }>
   errorLoadingDetails: string
   reloadPage: string
@@ -77,6 +79,8 @@ export const defaultLocalization: LocalizationStateType = {
   lastPage: 'Last page',
   saveChanges: 'Save changes',
   loadingDocument: 'Preview image generation is in progress',
+  regeneratePreviews: 'The preview images are not generated yet. Do you want to generate them?',
+  regenerateButton: 'Generate',
   errorLoadingDocument: [
     { state: PreviewState.Empty, message: 'No preview available, because the document is empty!', details: '' },
     {
@@ -98,8 +102,8 @@ export const defaultLocalization: LocalizationStateType = {
       details: '',
     },
     {
-      state: PreviewState.UploadFailure2,
-      message: 'Error during preview generation! No preview available.',
+      state: PreviewState.Postponed,
+      message: 'The preview image generation has been postponed.',
       details: '',
     },
     {

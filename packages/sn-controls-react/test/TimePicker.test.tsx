@@ -62,7 +62,7 @@ describe('Time picker field control', () => {
     it('should call on change when input changes', () => {
       const fieldOnChange = jest.fn()
       const wrapper = shallow(<TimePicker actionName="edit" fieldOnChange={fieldOnChange} settings={defaultSettings} />)
-      wrapper.find('WrappedPurePicker').simulate('change', new Date(123234538324).toISOString())
+      wrapper.find('PickerWithState').simulate('change', new Date(123234538324).toISOString())
       expect(fieldOnChange).toBeCalled()
     })
   })

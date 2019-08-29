@@ -38,6 +38,14 @@ function changeCreatedByUrlToCurrent(documentData: DocumentData): (value: Commen
 
 export const getViewerSettings = (repo: Repository) =>
   new DocumentViewerSettings({
+    regeneratePreviews: async documentData => {
+      repo.executeAction({
+        idOrPath: documentData.idOrPath,
+        method: 'POST',
+        body: undefined,
+        name: 'RegeneratePreviews',
+      })
+    },
     saveChanges: async (documentData, pages) => {
       const reqBody = {
         Shapes: JSON.stringify([

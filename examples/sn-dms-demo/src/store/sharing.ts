@@ -45,7 +45,7 @@ export const share = createAction(
     token: string,
     level: SharingEntry['Level'],
     mode: SharingEntry['Mode'],
-    sendNotification: boolean = false,
+    sendNotification = false,
   ) => ({
     type: 'DMS_SHARE_CONTENT',
     inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {

@@ -99,6 +99,9 @@ export const examplePreviewComment: Comment = {
  * Default settings for document viewer context
  */
 export const defaultSettings = new DocumentViewerSettings({
+  regeneratePreviews: async () => {
+    /** */
+  },
   canEditDocument: async () => true,
   canHideRedaction: async () => true,
   canHideWatermark: async () => true,
