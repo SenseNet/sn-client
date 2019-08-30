@@ -68,10 +68,42 @@ export const DrawerItemType = tuple(
   'Dashboard',
 )
 
+export const ActionType = tuple(
+  'Browse',
+  'Edit',
+  'GetPermissions',
+  'SetPermissions',
+  'Reject',
+  'RestoreVersion',
+  'Purge',
+  'ShareContent',
+  'Rename',
+  'GetAllContentTypes',
+  'GetAllowedUsers',
+  'GetQueries',
+  'Approve',
+  'Checkout',
+  'CopyTo',
+  'MoveTo',
+  'Publish',
+  'SaveQuery',
+  'SetPermissions',
+  'Share',
+  'Delete',
+  'UndoCheckOut',
+  'Versions',
+  'CheckIn',
+  'Add',
+  'Upload',
+)
+
 export interface DrawerItem<T> {
-  /** */
   settings?: T
   itemType: typeof DrawerItemType[number]
+  permissions?: Array<{
+    path: string
+    action: typeof ActionType[number]
+  }>
 }
 
 export interface ContentDrawerItem
@@ -104,7 +136,7 @@ export interface DashboardDrawerItem
     description?: string
     icon: string
   }> {
-  itemType: 'Dashboard'
+  itemType: 'Dashboard' | 'Users and groups'
 }
 
 export interface BuiltinDrawerItem extends DrawerItem<undefined> {
@@ -266,12 +298,32 @@ export const defaultSettings: PersonalSettingsType = {
       type: 'mini-variant',
       items: [
         { itemType: 'Search', settings: undefined },
-        { itemType: 'Content', settings: { root: '/Root/Content' } },
-        { itemType: 'Users and groups', settings: undefined },
-        { itemType: 'Content Types', settings: undefined },
-        { itemType: 'Localization', settings: undefined },
-        { itemType: 'Setup', settings: undefined },
-        { itemType: 'Version info', settings: undefined },
+        {
+          itemType: 'Content',
+          settings: { root: '/Root/Content' },
+          permissions: [{ path: '/Root/Content', action: 'Add' }],
+        },
+        {
+          itemType: 'Users and groups',
+          settings: undefined,
+          permissions: [{ path: '/Root/IMS/Public', action: 'Add' }],
+        },
+        {
+          itemType: 'Content Types',
+          settings: undefined,
+          permissions: [{ path: '/Root/System/Schema/ContentTypes', action: 'Add' }],
+        },
+        {
+          itemType: 'Localization',
+          settings: undefined,
+          permissions: [{ path: '/Root/Localization', action: 'Add' }],
+        },
+        { itemType: 'Setup', settings: undefined, permissions: [{ path: '/Root/System/Settings', action: 'Browse' }] },
+        {
+          itemType: 'Version info',
+          settings: undefined,
+          permissions: [{ path: '/Root/(apps)/PortalRoot/GetVersionInfo', action: 'Browse' }],
+        },
       ],
     },
     commandPalette: { enabled: true, wrapQuery: '{0} .AUTOFILTERS:OFF' },
