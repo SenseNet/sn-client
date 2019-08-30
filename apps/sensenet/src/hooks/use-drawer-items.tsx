@@ -7,8 +7,6 @@ import PublicTwoTone from '@material-ui/icons/PublicTwoTone'
 import SearchTwoTone from '@material-ui/icons/SearchTwoTone'
 import WidgetsTwoTone from '@material-ui/icons/WidgetsTwoTone'
 import { DashboardTwoTone, DeleteTwoTone } from '@material-ui/icons'
-import { Group, User } from '@sensenet/default-content-types'
-import { Query } from '@sensenet/query'
 import { Icon } from '../components/Icon'
 import {
   BuiltinDrawerItem,
