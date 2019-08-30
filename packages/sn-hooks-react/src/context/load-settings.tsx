@@ -35,7 +35,14 @@ export interface LoadSettingsContextProps {
 /**
  * Context that stores load settings for OData requests
  */
-export const LoadSettingsContext = React.createContext<LoadSettingsContextProps>(null as any)
+export const LoadSettingsContext = React.createContext<LoadSettingsContextProps>({
+  setLoadSettings: () => undefined,
+  setLoadChildrenSettings: () => undefined,
+  setLoadAncestorsSettings: () => undefined,
+  loadAncestorsSettings: {},
+  loadChildrenSettings: {},
+  loadSettings: {},
+})
 
 /**
  * Provider for the LoadSettingsContext. Sets up default loading settings.

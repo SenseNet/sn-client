@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Session matches snapshot 1`] = `
+<ContextProvider
+  value={
+    Object {
+      "currentUser": Object {
+        "DisplayName": "Visitor",
+        "Domain": "BuiltIn",
+        "Id": 6,
+        "LoginName": "Visitor",
+        "Name": "Visitor",
+        "Path": "/Root/IMS/BuiltIn/Portal/Visitor",
+        "Type": "User",
+      },
+      "groups": Array [],
+      "state": "Unknown",
+    }
+  }
+/>
+`;
