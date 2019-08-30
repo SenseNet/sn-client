@@ -20,7 +20,7 @@ declare global {
     /**
      * Returns a promise with a new array of elements that meets the specified async callback
      */
-    filterAsync: (callbackFn: (entry: T) => Promise<boolean>) => T[]
+    filterAsync: (callbackFn: (entry: T) => Promise<boolean>) => Promise<T[]>
   }
 }
 ;(Array.prototype as any).filterAsync = function(callbackFn: (entry: any) => Promise<boolean>) {
