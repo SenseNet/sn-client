@@ -106,10 +106,13 @@ export const Content: React.FunctionComponent<RouteComponentProps<{ browseData: 
       ) : (
         <SimpleList
           rootPath={browseData.root || ConstantContent.PORTAL_ROOT.Path}
-          onNavigate={navigate}
-          onActivateItem={openItem}
+          collectionComponentProps={{
+            onActivateItem: openItem,
+            onParentChange: navigate,
+            fieldsToDisplay: browseData.fieldsToDisplay,
+            parentIdOrPath: browseData.currentContent || browseData.root || ConstantContent.PORTAL_ROOT.Id,
+          }}
           parent={browseData.currentContent || browseData.root || ConstantContent.PORTAL_ROOT.Id}
-          fieldsToDisplay={browseData.fieldsToDisplay}
         />
       )}
     </>
