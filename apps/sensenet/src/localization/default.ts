@@ -119,6 +119,9 @@ const values = {
     collapse: 'Collapse',
     queryTermDescription: 'The Query term',
   },
+  trash: {
+    title: 'Trash',
+  },
   editPropertiesDialog: {
     dialogTitle: 'Edit {0}',
     saveSuccessNotification: `Content '{0}' has been updated.`,
