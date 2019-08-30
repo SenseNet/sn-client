@@ -121,6 +121,9 @@ const values = {
   },
   trash: {
     title: 'Trash',
+    retentionTime: 'Minimum retention time (in days)',
+    sizeQuota: 'Size quota',
+    capacity: 'Trashbag capacity',
   },
   editPropertiesDialog: {
     dialogTitle: 'Edit {0}',

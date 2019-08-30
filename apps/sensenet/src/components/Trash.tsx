@@ -1,17 +1,21 @@
-import React from 'react'
-import { createStyles, makeStyles, Theme, Typography } from '@material-ui/core'
+import React, { useState } from 'react'
+import { createStyles, Grid, IconButton, makeStyles, Theme, Typography } from '@material-ui/core'
 import { GenericContent, TrashBin } from '@sensenet/default-content-types'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { ConstantContent } from '@sensenet/client-core'
+import { Settings } from '@material-ui/icons'
 import { useQuery } from '../hooks/use-query'
 import { CurrentAncestorsContext, CurrentChildrenContext, CurrentContentContext, LoadSettingsContext } from '../context'
 import { useContentRouting, useLocalization, useSelectionService } from '../hooks'
 import { useLoadContent } from '../hooks/use-loadContent'
 import { CollectionComponent } from './content-list'
+import { EditPropertiesDialog } from './dialogs'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: { padding: theme.spacing(2), margin: theme.spacing(2), height: '100%', width: '100%' },
+    title: { display: 'flex', alignItems: 'center' },
+    grow: { flexGrow: 1 },
   }),
 )
 
@@ -22,17 +26,39 @@ const Trash: React.FC<RouteComponentProps> = props => {
     columns,
     query: '+TypeIs: TrashBag',
   })
+  const [isEditPropertiesOpened, setIsEditPropertiesOpened] = useState(false)
   const contentRouter = useContentRouting()
   const selectionService = useSelectionService()
   const localization = useLocalization().trash
-  const trash = useLoadContent<TrashBin>({ idOrPath: '/Root/Trash' })
+  const trash = useLoadContent<TrashBin>({ idOrPath: '/Root/Trash', oDataOptions: { select: 'all' } })
   const classes = useStyles()
+  const infos = [
+    { title: localization.retentionTime, value: trash.content && trash.content.MinRetentionTime },
+    { title: localization.sizeQuota, value: trash.content && trash.content.SizeQuota },
+    { title: localization.capacity, value: trash.content && trash.content.BagCapacity },
+  ]
 
   return (
     <div className={classes.root}>
-      <Typography variant="h5">{localization.title}</Typography>
+      <Grid container={true} spacing={2} alignItems="center">
+        <Grid item={true} className={classes.title}>
+          <Typography variant="h5">{localization.title}</Typography>
+          <IconButton onClick={() => setIsEditPropertiesOpened(!isEditPropertiesOpened)}>
+            <Settings />
+          </IconButton>
+        </Grid>
+        <Grid item={true} className={classes.grow} />
+        {trash.content
+          ? infos.map(info => (
+              <Grid item={true} key={info.title}>
+                <Typography>
+                  {info.title} : {info.value}
+                </Typography>
+              </Grid>
+            ))
+          : null}
+      </Grid>
       <CurrentContentContext.Provider value={ConstantContent.PORTAL_ROOT}>
-        {trash.content ? trash.content.Path : null}
         <CurrentChildrenContext.Provider value={items}>
           <CurrentAncestorsContext.Provider value={[]}>
             <LoadSettingsContext.Provider
@@ -80,6 +106,16 @@ const Trash: React.FC<RouteComponentProps> = props => {
           </CurrentAncestorsContext.Provider>
         </CurrentChildrenContext.Provider>
       </CurrentContentContext.Provider>
+      {trash.content ? (
+        <EditPropertiesDialog
+          content={trash.content}
+          dialogProps={{
+            open: isEditPropertiesOpened,
+            onClose: () => setIsEditPropertiesOpened(false),
+            keepMounted: false,
+          }}
+        />
+      ) : null}
     </div>
   )
 }
