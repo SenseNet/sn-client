@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react'
-import { LoggerContext } from '../context/LoggerContext'
+import { LoggerContext } from '../context/logger'
 
 /**
  * Returns a scoped Logger instance from the LoggerContext.

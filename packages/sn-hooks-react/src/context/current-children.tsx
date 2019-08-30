@@ -4,8 +4,8 @@ import { Created } from '@sensenet/repository-events'
 import React, { useContext, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
 import { useRepository, useRepositoryEvents } from '../hooks'
-import { CurrentContentContext } from './CurrentContent'
-import { LoadSettingsContext } from './LoadSettingsContext'
+import { CurrentContentContext } from './current-content'
+import { LoadSettingsContext } from './load-settings'
 
 /**
  * Context that will return with a list of a current content's children

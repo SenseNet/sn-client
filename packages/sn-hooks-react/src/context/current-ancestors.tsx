@@ -4,7 +4,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'
 import { useLogger, useRepository, useRepositoryEvents } from '../hooks'
-import { CurrentContentContext } from './CurrentContent'
+import { CurrentContentContext } from './current-content'
 
 /**
  * Context that will return with the current content's ancestors
