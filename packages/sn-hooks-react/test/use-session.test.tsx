@@ -4,7 +4,7 @@ import { useSession } from '../src/hooks'
 
 const SessionDump = () => {
   const i = useSession()
-  return <div>{JSON.stringify(i.constructor.name)}</div>
+  return <div>{JSON.stringify(i.constructor)}</div>
 }
 
 describe('Session', () => {
