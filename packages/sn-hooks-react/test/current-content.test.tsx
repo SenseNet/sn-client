@@ -19,7 +19,7 @@ describe('CurrentContent', () => {
           ({
             ok: true,
             json: async () => ({
-              _d: {
+              d: {
                 /** */
                 Id: 1,
               },

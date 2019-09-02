@@ -2,6 +2,6 @@
 
 exports[`Version Info Should match the snapshot 1`] = `
 <div>
-  "Object"
+  {"nugetManifests":[],"hasUpdates":false}
 </div>
 `;
