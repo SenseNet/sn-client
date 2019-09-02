@@ -26,7 +26,6 @@ export const useLoadContent = <T extends GenericContent>({ idOrPath, oDataOption
             oDataOptions,
           })
           setContent(response.d)
-          // props.onContentLoaded && props.onContentLoaded(response.d)
         } catch (err) {
           if (!ac.signal.aborted) {
             setError(err)
