@@ -1,15 +1,11 @@
 import React from 'react'
-import { mount, shallow } from 'enzyme'
+import { mount } from 'enzyme'
+import { act } from 'react-dom/test-utils'
 import { SessionContextProvider } from '../src/context/session'
 import { useRepository } from '../src/hooks'
 
 describe('Session', () => {
-  it('matches snapshot', () => {
-    const p = shallow(<SessionContextProvider />)
-    expect(p).toMatchSnapshot()
-  })
-
-  it('Should update the current user state on repository auth.state change', () => {
+  it('Should update the current user state on repository auth.state change', async () => {
     const MockElement: React.FC = () => {
       const repo = useRepository()
       repo.authentication.currentUser.setValue({
@@ -20,13 +16,12 @@ describe('Session', () => {
       })
       return <div />
     }
-
-    const m = mount(
-      <SessionContextProvider>
-        <MockElement />
-      </SessionContextProvider>,
-    )
-
-    m.unmount()
+    await act(async () => {
+      mount(
+        <SessionContextProvider>
+          <MockElement />
+        </SessionContextProvider>,
+      )
+    })
   })
 })
