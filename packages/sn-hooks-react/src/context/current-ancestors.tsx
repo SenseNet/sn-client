@@ -33,24 +33,22 @@ export const CurrentAncestorsProvider: React.FunctionComponent<CurrentAncestorsP
 
   const logger = useLogger('CurrentAncestorsProvider')
 
-  const requestReload = debounce(() => setReloadToken(Math.random()), 100)
+  const requestReload = debounce((newId: number) => {
+    if (ancestors.map(a => a.Id).includes(newId)) {
+      setReloadToken(Math.random())
+    }
+  }, 100)
 
   useEffect(() => {
     const subscriptions = [
       eventHub.onContentModified.subscribe(mod => {
-        if (ancestors.map(a => a.Id).includes(mod.content.Id)) {
-          requestReload()
-        }
+        requestReload(mod.content.Id)
       }),
       eventHub.onContentMoved.subscribe(move => {
-        if (ancestors.map(a => a.Id).includes(move.content.Id)) {
-          requestReload()
-        }
+        requestReload(move.content.Id)
       }),
       eventHub.onContentDeleted.subscribe(del => {
-        if (ancestors.map(a => a.Id).includes(del.contentData.Id)) {
-          requestReload()
-        }
+        requestReload(del.contentData.Id)
       }),
     ]
     return () => subscriptions.forEach(s => s.dispose())
