@@ -17,9 +17,9 @@ const TrashHeader: React.FC<props> = ({ trash, iconClickHandler }) => {
   const localization = useLocalization().trash
   const classes = useStyles()
   const infos = [
-    { title: localization.retentionTime, value: trash.MinRetentionTime },
-    { title: localization.sizeQuota, value: trash.SizeQuota },
-    { title: localization.capacity, value: trash.BagCapacity },
+    { title: localization.retentionTime, value: trash.MinRetentionTime, unit: localization.retentionTimeUnit },
+    { title: localization.sizeQuota, value: trash.SizeQuota, unit: localization.sizeQuotaUnit },
+    { title: localization.capacity, value: trash.BagCapacity, unit: localization.capacityUnit },
   ]
 
   return (
@@ -34,7 +34,7 @@ const TrashHeader: React.FC<props> = ({ trash, iconClickHandler }) => {
       {infos.map(info => (
         <Grid item={true} key={info.title}>
           <Typography>
-            {info.title} : {info.value}
+            {info.title} : {info.value} {info.unit}
           </Typography>
         </Grid>
       ))}

@@ -122,9 +122,12 @@ const values = {
   },
   trash: {
     title: 'Trash',
-    retentionTime: 'Minimum retention time (in days)',
+    retentionTime: 'Minimum retention time',
+    retentionTimeUnit: 'day(s)',
     sizeQuota: 'Size quota',
+    sizeQuotaUnit: 'MB',
     capacity: 'Trashbag capacity',
+    capacityUnit: 'content',
   },
   editPropertiesDialog: {
     dialogTitle: 'Edit {0}',

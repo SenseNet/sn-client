@@ -8,7 +8,7 @@ import TrashHeader from './TrashHeader'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: { padding: theme.spacing(2), margin: theme.spacing(2), height: '100%', width: '100%' },
+    root: { margin: theme.spacing(2), height: '92vh' },
     title: { display: 'flex', alignItems: 'center' },
     grow: { flexGrow: 1 },
   }),
