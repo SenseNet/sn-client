@@ -56,6 +56,7 @@ const values = {
     deletingContent: 'Deleting content...',
     dialogContent: 'You are going to delete the following content:',
     permanentlyLabel: 'Permanently',
+    deletePermanently: 'Delete permanently',
     permanentlyHint: "Don't move to trash, delete immediately",
     deleteButton: 'Delete',
     cancelButton: 'Cancel',
