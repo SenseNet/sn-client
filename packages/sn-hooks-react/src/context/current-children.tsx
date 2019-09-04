@@ -55,9 +55,9 @@ export const CurrentChildrenProvider: React.FunctionComponent = props => {
   useEffect(() => {
     const handleCreate = (c: Created) => {
       if ((c.content as GenericContent).ParentId === currentContent.Id) {
-        requestReload()
+        return requestReload()
       }
-      if (parent && PathHelper.isAncestorOf(currentContent.Path, c.content.Path)) {
+      if (PathHelper.isAncestorOf(currentContent.Path, c.content.Path)) {
         requestReload()
       }
     }
@@ -68,7 +68,7 @@ export const CurrentChildrenProvider: React.FunctionComponent = props => {
       eventHub.onContentCopied.subscribe(handleCreate),
       eventHub.onContentMoved.subscribe(handleCreate),
       eventHub.onContentModified.subscribe(mod => {
-        if (children.map(c => c.Id).includes(mod.content.Id)) {
+        if (children.some(c => c.Id === mod.content.Id)) {
           requestReload()
         }
       }),

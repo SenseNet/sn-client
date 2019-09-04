@@ -1,7 +1,91 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`CurrentChildren Can be mounted 1`] = `
+<Component>
+  <div>
+    Id: 
+    1
+  </div>
+</Component>
+`;
+
 exports[`CurrentChildren matches snapshot 1`] = `
 <ContextProvider
   value={Array []}
 />
+`;
+
+exports[`CurrentChildren reloads when new content is created 1`] = `
+<Component>
+  <div
+    key="1"
+  >
+    Id: 
+    1
+    , Name: 
+    name
+  </div>
+</Component>
+`;
+
+exports[`CurrentChildren reloads when new content is created 2`] = `
+<Component>
+  <div
+    key="1"
+  >
+    Id: 
+    1
+    , Name: 
+    name
+  </div>
+  <div
+    key="123"
+  >
+    Id: 
+    123
+    , Name: 
+    something
+  </div>
+</Component>
+`;
+
+exports[`CurrentChildren reloads when new content is deleted 1`] = `
+<Component>
+  <div
+    key="1"
+  >
+    Id: 
+    1
+    , Name: 
+    name
+  </div>
+</Component>
+`;
+
+exports[`CurrentChildren reloads when new content is deleted 2`] = `<Component />`;
+
+exports[`CurrentChildren reloads when new content is uploaded under current content 1`] = `
+<Component>
+  <div
+    key="1"
+  >
+    Id: 
+    1
+    , Name: 
+    name
+  </div>
+</Component>
+`;
+
+exports[`CurrentChildren reloads when new content is uploaded under current content 2`] = `
+<Component>
+  <div
+    key="1"
+  >
+    Id: 
+    1
+    , Name: 
+    name
+  </div>
+</Component>
 `;
