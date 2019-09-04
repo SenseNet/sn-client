@@ -8,7 +8,7 @@ type DeleteButtonProps = Pick<CommentPropType, 'deleteComment' | 'id' | 'localiz
 /**
  * Represents a delete button with confirmation dialog
  */
-export const DeleteButton = (props: DeleteButtonProps) => {
+export const DeleteButton: React.FC<DeleteButtonProps> = props => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   const handleClick = () => {

@@ -30,6 +30,7 @@
     "@sensenet/client-utils": "^1.6.4",
     "@sensenet/control-mapper": "^2.0.1",
     "@sensenet/default-content-types": "^2.0.0",
+    "@sensenet/hooks-react": "0.1.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-redux": "^7.0.3",
