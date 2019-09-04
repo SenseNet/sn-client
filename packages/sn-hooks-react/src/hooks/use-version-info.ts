@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { ConstantContent } from '@sensenet/client-core'
-import { useRepository } from './use-repository' /** */
+import { useRepository } from './use-repository'
+
 /*
  * The type of a specific package
  */
