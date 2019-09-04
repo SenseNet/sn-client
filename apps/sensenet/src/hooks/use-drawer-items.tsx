@@ -8,6 +8,7 @@ import SearchTwoTone from '@material-ui/icons/SearchTwoTone'
 import WidgetsTwoTone from '@material-ui/icons/WidgetsTwoTone'
 import { DashboardTwoTone } from '@material-ui/icons'
 import { useRepository, useSession } from '@sensenet/hooks-react'
+import { LoginState } from '@sensenet/client-core'
 import { Icon } from '../components/Icon'
 import {
   BuiltinDrawerItem,
@@ -165,6 +166,7 @@ export const useDrawerItems = () => {
 
   useEffect(() => {
     settings.drawer.items
+      .filter(() => session.state === LoginState.Authenticated)
       .filterAsync(async item => {
         if (!item.permissions || !item.permissions.length) {
           return true
