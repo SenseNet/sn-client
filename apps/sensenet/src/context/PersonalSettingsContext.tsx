@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { useInjector } from '../hooks'
+import { useInjector } from '@sensenet/hooks-react'
 import { defaultSettings, PersonalSettings } from '../services/PersonalSettings'
+
 export const PersonalSettingsContext = React.createContext(defaultSettings)
 export const PersonalSettingsContextProvider: React.StatelessComponent = props => {
   const di = useInjector()

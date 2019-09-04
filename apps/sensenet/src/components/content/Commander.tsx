@@ -7,8 +7,9 @@ import {
   CurrentContentContext,
   CurrentContentProvider,
   LoadSettingsContextProvider,
-} from '../../context'
-import { useRepository, useSelectionService } from '../../hooks'
+  useRepository,
+} from '@sensenet/hooks-react'
+import { useSelectionService } from '../../hooks'
 import { AddButton } from '../AddButton'
 import { CollectionComponent } from '../content-list'
 import { AddDialog, CopyMoveDialog } from '../dialogs'

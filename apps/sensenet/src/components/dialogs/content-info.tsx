@@ -5,8 +5,9 @@ import Drawer from '@material-ui/core/Drawer'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useContext } from 'react'
 import { BrowseView } from '@sensenet/controls-react'
+import { useRepository } from '@sensenet/hooks-react'
 import { ResponsiveContext } from '../../context'
-import { useLocalization, useRepository } from '../../hooks'
+import { useLocalization } from '../../hooks'
 
 export const ContentInfoDialog: React.FunctionComponent<{
   dialogProps: DialogProps

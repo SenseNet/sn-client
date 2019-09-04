@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useDownload() for file contents 1`] = `
+<DownloadDump
+  content={
+    Object {
+      "Id": 1,
+      "Name": "",
+      "Path": "",
+      "Type": "File",
+    }
+  }
+>
+  <div
+    onClick={[Function]}
+  >
+    IsFile: 
+  </div>
+</DownloadDump>
+`;
+
+exports[`useDownload() for non-file contents 1`] = `
+<DownloadDump
+  content={
+    Object {
+      "Id": 1,
+      "Name": "",
+      "Path": "",
+      "Type": "User",
+    }
+  }
+>
+  <div
+    onClick={[Function]}
+  >
+    IsFile: 
+  </div>
+</DownloadDump>
+`;

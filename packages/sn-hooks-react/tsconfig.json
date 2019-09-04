@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig-base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src"
+  },
+  "include": ["src"],
+  "references": [
+    { "path": "../sn-default-content-types" },
+    { "path": "../sn-client-core" },
+    { "path": "../sn-client-utils" },
+    { "path": "../sn-repository-events" }
+  ]
+}

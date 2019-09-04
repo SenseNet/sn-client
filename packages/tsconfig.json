@@ -10,6 +10,7 @@
     { "path": "./sn-controls-react" },
     { "path": "./sn-default-content-types" },
     { "path": "./sn-document-viewer-react" },
+    { "path": "./sn-hooks-react" },
     { "path": "./sn-icons-react" },
     { "path": "./sn-list-controls-react" },
     { "path": "./sn-pickers-react" },

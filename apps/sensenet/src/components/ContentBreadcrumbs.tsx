@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
+import { CurrentAncestorsContext, CurrentContentContext } from '@sensenet/hooks-react'
 import { GenericContent } from '@sensenet/default-content-types'
-import { CurrentAncestorsContext, CurrentContentContext } from '../context'
 import { useContentRouting } from '../hooks'
 import Breadcrumbs, { BreadcrumbItem } from './Breadcrumbs'
 

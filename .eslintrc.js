@@ -50,7 +50,7 @@ module.exports = {
     '@typescript-eslint/no-parameter-properties': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
-    '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
+    '@typescript-eslint/array-type': ['error', { default: 'array-simple', readonly: 'array-simple' }],
     'no-unused-expressions': ['error', { allowShortCircuit: true, allowTernary: true }],
     'prettier/prettier': 'error',
     'require-jsdoc': 1,
