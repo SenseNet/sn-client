@@ -1,4 +1,3 @@
-import { Repository } from '@sensenet/client-core'
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { RepositoryContext, useInjector, useLogger } from '@sensenet/hooks-react'
@@ -11,7 +10,7 @@ export const RepositoryContextProviderComponent: React.FunctionComponent<
 > = props => {
   const injector = useInjector()
   const settings = usePersonalSettings()
-  const [repo, setRepo] = useState(new Repository())
+  const [repo, setRepo] = useState(injector.getRepository(settings.lastRepository))
   const logger = useLogger('RepositoryContext')
 
   useEffect(() => {
