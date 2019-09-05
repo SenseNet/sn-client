@@ -2,7 +2,7 @@ import { Reducer } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
 import { sleepAsync } from '@sensenet/client-utils'
 import { PreviewState } from '../Enums'
-import { DocumentData, DocumentViewerSettings, PreviewImageData, Shape, Shapes } from '../models'
+import { DocumentData, DocumentViewerApiSettings, PreviewImageData, Shape, Shapes } from '../models'
 import { Dimensions, ImageUtil } from '../services'
 import { getAvailableImages } from './PreviewImages'
 import { RootReducerType } from './RootReducer'
@@ -74,12 +74,12 @@ export const documentPermissionsReceived = (
 export const pollDocumentData = (hostName: string, idOrPath: string | number, version = 'V1.0A') => ({
   type: 'SN_POLL_DOCUMENT_DATA_INJECTABLE_ACTION',
   inject: async (options: IInjectableActionCallbackParams<RootReducerType>) => {
-    const api = options.getInjectable(DocumentViewerSettings)
+    const api = options.getInjectable<DocumentViewerApiSettings>(null as any)
     options.dispatch(resetDocumentData())
     let docData: DocumentData | undefined
     while (!docData || docData.pageCount === PreviewState.Loading) {
       try {
-        docData = await api.getDocumentData({ idOrPath, hostName, version })
+        docData = await api.getDocumentData({ idOrPath, hostName, version, abortController: new AbortController() })
         if (!docData || docData.pageCount === PreviewState.Loading) {
           await new Promise<void>(resolve =>
             setTimeout(() => {
@@ -94,9 +94,9 @@ export const pollDocumentData = (hostName: string, idOrPath: string | number, ve
     }
     try {
       const [canEdit, canHideRedaction, canHideWatermark] = await Promise.all([
-        await api.canEditDocument(docData),
-        await api.canHideRedaction(docData),
-        await api.canHideWatermark(docData),
+        await api.canEditDocument({ document: docData, abortController: new AbortController() }),
+        await api.canHideRedaction({ document: docData, abortController: new AbortController() }),
+        await api.canHideWatermark({ document: docData, abortController: new AbortController() }),
       ])
       options.dispatch(documentPermissionsReceived(canEdit, canHideRedaction, canHideWatermark))
     } catch (error) {
@@ -180,7 +180,7 @@ export const rotateShapesForPages = (pages: Array<{ index: number; size: Dimensi
 export const saveChanges = () => ({
   type: 'SN_DOCVIEWER_SAVE_CHANGES_INJECTABLE_ACTION',
   inject: async (options: IInjectableActionCallbackParams<RootReducerType>) => {
-    const api = options.getInjectable(DocumentViewerSettings)
+    const api = options.getInjectable<any>({} as any)
     options.dispatch(saveChangesRequest())
     try {
       await api.saveChanges(
@@ -200,7 +200,7 @@ export const saveChanges = () => ({
 export const regeneratePreviews = () => ({
   type: 'SN_DOCVIEWER_REGENERATE_PREVIEWS_INJECTABLE_ACTION',
   inject: async (options: IInjectableActionCallbackParams<RootReducerType>) => {
-    const api = options.getInjectable(DocumentViewerSettings)
+    const api = options.getInjectable<any>({} as any)
     const docData = options.getState().sensenetDocumentViewer.documentState.document as DocumentData
     try {
       await api.regeneratePreviews(docData)

@@ -1,5 +1,5 @@
 export * from './DocumentData'
-export * from './DocumentViewerSettings'
+export * from './DocumentViewerApiSettings'
 export * from './PageAttribute'
 export * from './PreviewImageData'
 export * from './Shapes'
