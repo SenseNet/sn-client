@@ -5,17 +5,16 @@ import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
 import Collapse from '@material-ui/core/Collapse'
 import Typography from '@material-ui/core/Typography'
-import React, { FunctionComponent, useState } from 'react'
-import { connect } from 'react-redux'
+import React, { useContext, useState } from 'react'
 import { Comment as CommentType } from '../../models/Comment'
 import { componentType } from '../../services'
 import { deleteComment, RootReducerType } from '../../store'
 import { setSelectedCommentId } from '../../store/Comments'
+import { LocalizationContext } from '../../context/localization-context'
 import { DeleteButton } from './DeleteCommentButton'
 import { StyledCard } from './style'
 
 const mapStateToProps = (state: RootReducerType) => ({
-  localization: state.sensenetDocumentViewer.localization,
   selectedCommentId: state.comments.selectedCommentId,
   host: state.sensenetDocumentViewer.documentState.document.hostName,
 })
@@ -35,9 +34,10 @@ const MAX_TEXT_LENGTH = 160
 /**
  * Represents a single comment component.
  */
-export const CommentComponent: FunctionComponent<CommentPropType> = props => {
+export const Comment: React.FC<CommentPropType> = props => {
   const isLongText = props.text && props.text.length > MAX_TEXT_LENGTH
   const [isOpen, setIsOpen] = useState(!isLongText)
+  const localization = useContext(LocalizationContext)
   const isSelected = () => props.selectedCommentId === props.id
 
   return (
@@ -51,7 +51,7 @@ export const CommentComponent: FunctionComponent<CommentPropType> = props => {
           props.host === props.createdBy.avatarUrl ? (
             <Avatar />
           ) : (
-            <Avatar src={props.createdBy.avatarUrl} alt={props.localization.avatarAlt} />
+            <Avatar src={props.createdBy.avatarUrl} alt={localization.avatarAlt} />
           )
         }
         title={props.createdBy.displayName}
@@ -65,7 +65,7 @@ export const CommentComponent: FunctionComponent<CommentPropType> = props => {
         {isLongText ? (
           <>
             <Button size="small" onClick={() => setIsOpen(!isOpen)}>
-              {isOpen ? props.localization.showLess || 'Show less' : props.localization.showMore || 'Show more'}
+              {isOpen ? localization.showLess || 'Show less' : localization.showMore || 'Show more'}
             </Button>
             {isOpen ? <DeleteButton {...props} /> : null}
           </>
@@ -76,8 +76,3 @@ export const CommentComponent: FunctionComponent<CommentPropType> = props => {
     </StyledCard>
   )
 }
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(CommentComponent)

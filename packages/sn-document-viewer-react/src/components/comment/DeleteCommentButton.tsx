@@ -1,15 +1,18 @@
-import Button from '@material-ui/core/Button'
-import React, { useState } from 'react'
+import { Button } from '@material-ui/core'
+import React, { useContext, useState } from 'react'
 import { ConfirmationDialog } from '../ConfirmationDialog'
+import { LocalizationContext } from '../../context/localization-context'
 import { CommentPropType } from './Comment'
 
-type DeleteButtonProps = Pick<CommentPropType, 'deleteComment' | 'id' | 'localization'>
+type DeleteButtonProps = Pick<CommentPropType, 'deleteComment' | 'id'>
 
 /**
  * Represents a delete button with confirmation dialog
  */
 export const DeleteButton: React.FC<DeleteButtonProps> = props => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+
+  const localization = useContext(LocalizationContext)
 
   const handleClick = () => {
     setIsDialogOpen(true)
@@ -25,15 +28,15 @@ export const DeleteButton: React.FC<DeleteButtonProps> = props => {
   return (
     <>
       <Button color="primary" size="small" onClick={handleClick}>
-        {props.localization.delete || 'delete'}
+        {localization.delete || 'delete'}
       </Button>
       <ConfirmationDialog
-        dialogTitle={props.localization.deleteCommentDialogTitle}
-        cancelButtonText={props.localization.cancelButton}
-        okButtonText={props.localization.okButton}
+        dialogTitle={localization.deleteCommentDialogTitle}
+        cancelButtonText={localization.cancelButton}
+        okButtonText={localization.okButton}
         isOpen={isDialogOpen}
         onClose={handleDialogClose}>
-        {props.localization.deleteCommentDialogBody}
+        {localization.deleteCommentDialogBody}
       </ConfirmationDialog>
     </>
   )

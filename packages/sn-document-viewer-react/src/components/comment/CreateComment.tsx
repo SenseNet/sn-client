@@ -1,20 +1,15 @@
-import Button from '@material-ui/core/Button'
-import FormControl from '@material-ui/core/FormControl'
-import FormHelperText from '@material-ui/core/FormHelperText'
-import IconButton from '@material-ui/core/IconButton'
-import InputAdornment from '@material-ui/core/InputAdornment'
-import TextField from '@material-ui/core/TextField'
 import Tooltip from '@material-ui/core/Tooltip'
 import React, { useState } from 'react'
+import { Button, FormControl, FormHelperText, IconButton, InputAdornment, TextField } from '@material-ui/core'
 import { DraftCommentMarker } from '../../models'
-import { LocalizationStateType } from '../../store/Localization'
+import { LocalizationType } from '../../context/localization-context'
 import { StyledButtonContainer, StyledForm, StyledSvgIcon } from './style'
 
 /**
  * Localization keys for create comment component
  */
 export type CreateCommentLocalization = Pick<
-  LocalizationStateType,
+  LocalizationType,
   | 'commentInputPlaceholder'
   | 'addComment'
   | 'submit'
