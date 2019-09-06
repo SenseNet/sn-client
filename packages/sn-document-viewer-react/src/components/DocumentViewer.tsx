@@ -9,6 +9,7 @@ import { DocumentViewerApiSettingsProvider } from '../context/api-settings'
 import { ViewerSettingsContext } from '../context/viewer-settings'
 import { DocumentDataContext, DocumentDataProvider } from '../context/document-data'
 import { defaultLocalization, LocalizationContext, LocalizationType } from '../context/localization-context'
+import { DocumentPermissionsContextProvider } from '../context/document-permissions'
 import { DocumentViewerError } from './DocumentViewerError'
 import { DocumentViewerLayout } from './DocumentViewerLayout'
 import { DocumentViewerLoading } from './DocumentViewerLoading'
@@ -68,22 +69,24 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = props => {
         <ViewerSettingsContext.Provider value={props}>
           <ThemeProvider theme={props.theme || defaultTheme}>
             <DocumentDataProvider>
-              <DocumentDataContext.Consumer>
-                {docData => {
-                  if (docData.pageCount === PreviewState.Loading)
-                    return <DocumentViewerLoading image={props.loaderImage || loaderImage} />
-                  if (docData.pageCount === PreviewState.Postponed) {
-                    return <DocumentViewerRegeneratePreviews />
-                  } else if (docData.pageCount < 0 || docData.error) {
-                    return <DocumentViewerError />
-                  }
-                  return (
-                    <DocumentViewerLayout drawerSlideProps={props.drawerSlideProps}>
-                      {props.children}
-                    </DocumentViewerLayout>
-                  )
-                }}
-              </DocumentDataContext.Consumer>
+              <DocumentPermissionsContextProvider>
+                <DocumentDataContext.Consumer>
+                  {docData => {
+                    if (docData.pageCount === PreviewState.Loading)
+                      return <DocumentViewerLoading image={props.loaderImage || loaderImage} />
+                    if (docData.pageCount === PreviewState.Postponed) {
+                      return <DocumentViewerRegeneratePreviews />
+                    } else if (docData.pageCount < 0 || docData.error) {
+                      return <DocumentViewerError />
+                    }
+                    return (
+                      <DocumentViewerLayout drawerSlideProps={props.drawerSlideProps}>
+                        {props.children}
+                      </DocumentViewerLayout>
+                    )
+                  }}
+                </DocumentDataContext.Consumer>
+              </DocumentPermissionsContextProvider>
             </DocumentDataProvider>
           </ThemeProvider>
         </ViewerSettingsContext.Provider>

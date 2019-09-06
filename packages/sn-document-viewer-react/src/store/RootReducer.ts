@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux'
 import { documentStateReducer, DocumentStateType } from './Document'
-import { localizationReducer, LocalizationStateType } from './Localization'
 
 import { CommentsState, commentsStateReducer } from './Comments'
 import { previewImagesReducer, PreviewImagesStateType } from './PreviewImages'
@@ -26,11 +25,6 @@ export interface RootReducerType {
      * Reducer for the viewer state and settings
      */
     viewer: ViewerStateType
-
-    /**
-     * Reducer for the localized string resources
-     */
-    localization: LocalizationStateType
   }
 }
 
@@ -41,7 +35,6 @@ export const sensenetDocumentViewerReducer = combineReducers({
   documentState: documentStateReducer,
   previewImages: previewImagesReducer,
   viewer: viewerStateReducer,
-  localization: localizationReducer,
 })
 
 /**

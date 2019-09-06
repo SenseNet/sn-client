@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { sleepAsync } from '@sensenet/client-utils'
 import { DocumentData } from '../models'
 import { PreviewState } from '../Enums'
 import { DocumentViewerApiSettingsContext } from './api-settings'
@@ -26,20 +27,25 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
   const api = useContext(DocumentViewerApiSettingsContext)
   const doc = useContext(ViewerSettingsContext)
 
-  const [docDoata, setDocData] = useState(defaultDocumentData)
+  const [docData, setDocData] = useState(defaultDocumentData)
 
   useEffect(() => {
     const ac = new AbortController()
     ;(async () => {
       try {
         setDocData(defaultDocumentData)
-        const result = await api.getDocumentData({
-          hostName: doc.hostName,
-          idOrPath: doc.documentIdOrPath,
-          version: doc.version,
-          abortController: ac,
-        })
-        setDocData(result)
+        while (docData.pageCount === PreviewState.Loading && !ac.signal.aborted) {
+          const result = await api.getDocumentData({
+            hostName: doc.hostName,
+            idOrPath: doc.documentIdOrPath,
+            version: doc.version,
+            abortController: ac,
+          })
+          setDocData(result)
+          if (result.pageCount === PreviewState.Loading) {
+            await sleepAsync(4000)
+          }
+        }
       } catch (error) {
         /** */
         if (!ac.signal.aborted) {
@@ -48,7 +54,8 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
         }
       }
     })()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [api, doc.documentIdOrPath, doc.hostName, doc.version])
 
-  return <DocumentDataContext.Provider value={docDoata}>{children}</DocumentDataContext.Provider>
+  return <DocumentDataContext.Provider value={docData}>{children}</DocumentDataContext.Provider>
 }
