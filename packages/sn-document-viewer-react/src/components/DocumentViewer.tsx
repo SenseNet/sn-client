@@ -10,6 +10,8 @@ import { ViewerSettingsContext } from '../context/viewer-settings'
 import { DocumentDataContext, DocumentDataProvider } from '../context/document-data'
 import { defaultLocalization, LocalizationContext, LocalizationType } from '../context/localization-context'
 import { DocumentPermissionsContextProvider } from '../context/document-permissions'
+import { ViewerState } from '../models/viewer-state'
+import { ViewerStateProvider } from '../context/viewer-state'
 import { DocumentViewerError } from './DocumentViewerError'
 import { DocumentViewerLayout } from './DocumentViewerLayout'
 import { DocumentViewerLoading } from './DocumentViewerLoading'
@@ -53,9 +55,14 @@ export interface DocumentViewerProps {
   api?: DocumentViewerApiSettings
 
   /**
-   *
+   * Overrideable localized string resources
    */
   localization?: LocalizationType
+
+  /**
+   * The default state of the Document Viewer
+   */
+  defaultState?: ViewerState
 }
 
 export const DocumentViewer: React.FC<DocumentViewerProps> = props => {
@@ -80,9 +87,11 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = props => {
                       return <DocumentViewerError />
                     }
                     return (
-                      <DocumentViewerLayout drawerSlideProps={props.drawerSlideProps}>
-                        {props.children}
-                      </DocumentViewerLayout>
+                      <ViewerStateProvider options={props.defaultState}>
+                        <DocumentViewerLayout drawerSlideProps={props.drawerSlideProps}>
+                          {props.children}
+                        </DocumentViewerLayout>
+                      </ViewerStateProvider>
                     )
                   }}
                 </DocumentDataContext.Consumer>
