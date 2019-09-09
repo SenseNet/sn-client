@@ -9,13 +9,15 @@ import Delete from '@material-ui/icons/Delete'
 import { debounce } from '@sensenet/client-utils'
 import React, { useContext } from 'react'
 
-import { useEventService, useLocalization } from '../../hooks'
+import { useInjector } from '@sensenet/hooks-react'
+import { useLocalization } from '../../hooks'
 import { Icon } from '../Icon'
+import { EventService } from '../../services/EventService'
 import { EventListFilterContext } from './filter-context'
 
 export const Filter: React.FunctionComponent<{ style?: React.CSSProperties }> = props => {
   const f = useContext(EventListFilterContext)
-  const service = useEventService()
+  const service = useInjector().getInstance(EventService)
   const localization = useLocalization().eventList.filter
 
   const updateTerm = debounce((term: string) => {
@@ -77,7 +79,11 @@ export const Filter: React.FunctionComponent<{ style?: React.CSSProperties }> = 
           alignSelf: 'flex-end',
         }}
         title={localization.clear}
-        onClick={() => confirm(localization.confirmClear) && service.clear()}>
+        onClick={() => {
+          if (confirm(localization.confirmClear)) {
+            service.clear()
+          }
+        }}>
         <Delete />
       </IconButton>
     </div>

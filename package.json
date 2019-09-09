@@ -85,6 +85,7 @@
       "<rootDir>/packages/sn-redux",
       "<rootDir>/packages/sn-repository-events",
       "<rootDir>/packages/sn-document-viewer-react",
+      "<rootDir>/packages/sn-hooks-react",
       "<rootDir>/packages/sn-list-controls-react",
       "<rootDir>/packages/sn-query",
       "<rootDir>/packages/sn-search-react",

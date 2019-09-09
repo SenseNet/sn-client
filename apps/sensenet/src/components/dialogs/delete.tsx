@@ -14,10 +14,10 @@ import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import { GenericContent, TrashBag } from '@sensenet/default-content-types'
 import React, { useContext, useState } from 'react'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { ResponsiveContext } from '../../context'
-import { useLocalization, useLogger, useRepository } from '../../hooks'
+import { useLocalization } from '../../hooks'
 import { Icon } from '../Icon'
-import { isContentFromType } from '../../utils/isContentFromType'
 
 export const DeleteContentDialog: React.FunctionComponent<{
   content: GenericContent[]
@@ -29,7 +29,7 @@ export const DeleteContentDialog: React.FunctionComponent<{
   const repo = useRepository()
   const localization = useLocalization().deleteContentDialog
   const logger = useLogger('DeleteContentDialog')
-  const isTrashBag = !!props.content.length && isContentFromType(props.content[0], TrashBag)
+  const isTrashBag = !!props.content.length && repo.schemas.isContentFromType(props.content[0], TrashBag)
 
   return (
     <Dialog {...props.dialogProps} onClick={ev => ev.stopPropagation()} onDoubleClick={ev => ev.stopPropagation()}>

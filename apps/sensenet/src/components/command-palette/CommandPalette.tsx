@@ -11,7 +11,8 @@ import Autosuggest, {
   SuggestionsFetchRequestedParams,
 } from 'react-autosuggest'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { LocalizationContext, RepositoryContext, ThemeContext } from '../../context'
+import { RepositoryContext } from '@sensenet/hooks-react'
+import { LocalizationContext, ThemeContext } from '../../context'
 import { CommandPaletteItem, useCommandPalette } from '../../hooks'
 import { CommandPaletteHitsContainer } from './CommandPaletteHitsContainer'
 import { CommandPaletteSuggestion } from './CommandPaletteSuggestion'
@@ -24,7 +25,7 @@ export class CommandPaletteComponent extends React.Component<
 
   public state: { delayedOpened: boolean } = { delayedOpened: false }
 
-  public static contextType = RepositoryContext
+  public static contextType: React.Context<Repository> = RepositoryContext
 
   private handleKeyUp(ev: KeyboardEvent) {
     if (ev.key.toLowerCase() === 'p' && ev.ctrlKey) {

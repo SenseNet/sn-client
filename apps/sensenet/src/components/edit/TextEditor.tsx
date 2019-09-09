@@ -5,16 +5,17 @@ import { Uri } from 'monaco-editor'
 import React, { useContext, useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
 import { Prompt } from 'react-router'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
+import { Repository } from '@sensenet/client-core'
 import { ResponsiveContext } from '../../context'
-import { useContentRouting, useLocalization, useLogger, useRepository, useTheme } from '../../hooks'
-import { isContentFromType } from '../../utils/isContentFromType'
+import { useContentRouting, useLocalization, useTheme } from '../../hooks'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 
-export const getMonacoModelUri = (content: GenericContent, action?: ActionModel) => {
-  if (isContentFromType(content, Settings) || content.Type === 'PersonalSettings') {
+export const getMonacoModelUri = (content: GenericContent, repo: Repository, action?: ActionModel) => {
+  if (repo.schemas.isContentFromType(content, Settings) || content.Type === 'PersonalSettings') {
     return Uri.parse(`sensenet://${content.Type}/${content.Name}`)
   }
-  if (isContentFromType(content, SnFile)) {
+  if (repo.schemas.isContentFromType(content, SnFile)) {
     if (content.Binary) {
       return Uri.parse(`sensenet://${content.Type}/${content.Binary.__mediaresource.content_type}`)
     }
@@ -45,7 +46,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
   const [savedTextValue, setSavedTextValue] = useState('')
   const [language, setLanguage] = useState(contentRouter.getMonacoLanguage(props.content))
   const localization = useLocalization().textEditor
-  const [uri, setUri] = useState<any>(getMonacoModelUri(props.content))
+  const [uri, setUri] = useState<any>(getMonacoModelUri(props.content, repo))
   const [hasChanges, setHasChanges] = useState(false)
   const logger = useLogger('TextEditor')
 
@@ -92,12 +93,12 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
   }, [textValue, savedTextValue])
 
   useEffect(() => {
-    setUri(getMonacoModelUri(props.content))
+    setUri(getMonacoModelUri(props.content, repo))
     setLanguage(contentRouter.getMonacoLanguage(props.content))
-  }, [contentRouter, props.content])
+  }, [contentRouter, props.content, repo])
 
   useEffect(() => {
-    setUri(getMonacoModelUri(props.content))
+    setUri(getMonacoModelUri(props.content, repo))
     setLanguage(contentRouter.getMonacoLanguage(props.content))
     ;(async () => {
       try {

@@ -1,9 +1,8 @@
 import { Injectable } from '@furystack/inject'
 import { LogLevel } from '@furystack/logging'
-import { deepMerge, ObservableValue } from '@sensenet/client-utils'
+import { deepMerge, ObservableValue, tuple } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { PlatformDependent } from '../context'
-import { tuple } from '../utils/tuple'
 import { BrowseType } from '../components/content'
 
 const settingsKey = `SN-APP-USER-SETTINGS`
@@ -353,17 +352,7 @@ export const defaultSettings: PersonalSettingsType = {
 
 @Injectable({ lifetime: 'singleton' })
 export class PersonalSettings {
-  constructor() {
-    this.init()
-  }
-
-  private async init() {
-    const currentUserSettings = await this.getLocalUserSettingsValue()
-    this.userValue.setValue(currentUserSettings)
-    this.effectiveValue.setValue(deepMerge(defaultSettings, currentUserSettings))
-  }
-
-  private async checkDrawerItems(settings: Partial<PersonalSettingsType>): Promise<Partial<PersonalSettingsType>> {
+  private checkDrawerItems(settings: Partial<PersonalSettingsType>): Partial<PersonalSettingsType> {
     if (
       settings.default &&
       settings.default.drawer &&
@@ -403,25 +392,25 @@ export class PersonalSettings {
     return settings
   }
 
-  private async checkValues(settings: Partial<PersonalSettingsType>): Promise<Partial<PersonalSettingsType>> {
-    return await this.checkDrawerItems(settings)
+  private checkValues(settings: Partial<PersonalSettingsType>): Partial<PersonalSettingsType> {
+    return this.checkDrawerItems(settings)
   }
 
-  public async getLocalUserSettingsValue(): Promise<Partial<PersonalSettingsType>> {
+  public getLocalUserSettingsValue(): Partial<PersonalSettingsType> {
     try {
       const stored = JSON.parse((localStorage.getItem(`${settingsKey}`) as string) || '{}')
-      return await this.checkValues(stored)
+      return this.checkValues(stored)
     } catch {
       /** */
     }
     return {}
   }
 
-  public effectiveValue = new ObservableValue(defaultSettings)
+  public userValue = new ObservableValue<Partial<PersonalSettingsType>>(this.getLocalUserSettingsValue())
 
-  public userValue = new ObservableValue<Partial<PersonalSettingsType>>({})
+  public effectiveValue = new ObservableValue(deepMerge(defaultSettings, this.userValue.getValue()))
 
-  public async setPersonalSettingsValue(settings: Partial<PersonalSettingsType>) {
+  public setPersonalSettingsValue(settings: Partial<PersonalSettingsType>) {
     this.userValue.setValue(settings)
     this.effectiveValue.setValue(deepMerge(defaultSettings, settings))
     localStorage.setItem(`${settingsKey}`, JSON.stringify(settings))

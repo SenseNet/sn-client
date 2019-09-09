@@ -5,15 +5,16 @@ import OpenInNewTwoTone from '@material-ui/icons/OpenInNewTwoTone'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ConstantContent, ODataParams } from '@sensenet/client-core'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { QueryWidget as QueryWidgetModel } from '../../services/PersonalSettings'
-import { useContentRouting, useLocalization, useRepository, useSelectionService, useStringReplace } from '../../hooks'
-import { CollectionComponent, isReferenceField } from '../content-list'
 import {
   CurrentAncestorsContext,
   CurrentChildrenContext,
   CurrentContentContext,
   LoadSettingsContext,
-} from '../../context'
+  useRepository,
+} from '@sensenet/hooks-react'
+import { QueryWidget as QueryWidgetModel } from '../../services/PersonalSettings'
+import { useContentRouting, useLocalization, useSelectionService, useStringReplace } from '../../hooks'
+import { CollectionComponent, isReferenceField } from '../content-list'
 import { encodeQueryData } from '../search'
 
 const QueryWidget: React.FunctionComponent<QueryWidgetModel<GenericContent> & RouteComponentProps> = props => {

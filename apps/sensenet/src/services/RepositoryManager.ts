@@ -1,22 +1,11 @@
 import { Injectable, Injector } from '@furystack/inject'
 import { FormsAuthenticationService, LoginState, Repository } from '@sensenet/client-core'
 import { RepositoryConfiguration } from '@sensenet/client-core/dist/Repository/RepositoryConfiguration'
-import { EventHub } from '@sensenet/repository-events'
 import { RequestCounterService } from './request-counter-service'
 
 @Injectable({ lifetime: 'singleton' })
 export class RepositoryManager {
   private repos: Map<string, Repository> = new Map()
-  private eventHubs: Map<string, EventHub> = new Map()
-  public getEventHub(repositoryUrl: string) {
-    const existing = this.eventHubs.get(repositoryUrl)
-    if (existing) {
-      return existing
-    }
-    const instance = new EventHub(this.getRepository(repositoryUrl))
-    this.eventHubs.set(repositoryUrl, instance)
-    return instance
-  }
   public getRepository(repositoryUrl: string, config?: RepositoryConfiguration) {
     const existing = this.repos.get(repositoryUrl)
     if (existing) {

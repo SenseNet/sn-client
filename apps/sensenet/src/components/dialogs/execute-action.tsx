@@ -7,7 +7,8 @@ import LinearProgress from '@material-ui/core/LinearProgress'
 import Typography from '@material-ui/core/Typography'
 import React, { useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
-import { useInjector, useLocalization, useLogger, useRepository, useTheme } from '../../hooks'
+import { useInjector, useLogger, useRepository } from '@sensenet/hooks-react'
+import { useLocalization, useTheme } from '../../hooks'
 import { CustomActionCommandProvider } from '../../services/CommandProviders/CustomActionCommandProvider'
 import { createCustomActionModel } from '../../services/MonacoModels/create-custom-action-model'
 import { getMonacoModelUri } from '../edit/TextEditor'
@@ -56,11 +57,11 @@ export const ExecuteActionDialog: React.FunctionComponent = () => {
       customActionService.onExecuteAction.subscribe(value => {
         setIsVisible(true)
         setActionValue(value)
-        setUri(getMonacoModelUri(value.content, value.action))
+        setUri(getMonacoModelUri(value.content, repo, value.action))
       }),
     ]
     return () => observables.forEach(o => o.dispose())
-  }, [customActionService.onExecuteAction])
+  }, [customActionService.onExecuteAction, repo])
 
   return (
     <Dialog

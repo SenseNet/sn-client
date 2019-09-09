@@ -1,5 +1,4 @@
-import { useContext } from 'react'
-import { InjectorContext } from '../context'
+import { useInjector } from '@sensenet/hooks-react'
 import { EventService } from '../services/EventService'
 
-export const useEventService = () => useContext(InjectorContext).getInstance(EventService)
+export const useEventService = () => useInjector().getInstance(EventService)

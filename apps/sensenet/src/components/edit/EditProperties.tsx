@@ -3,8 +3,14 @@ import { isExtendedError } from '@sensenet/client-core/dist/Repository/Repositor
 import { EditView } from '@sensenet/controls-react'
 import React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { CurrentAncestorsProvider, CurrentContentContext, CurrentContentProvider } from '../../context'
-import { useLocalization, useLogger, useRepository, useSelectionService } from '../../hooks'
+import {
+  CurrentAncestorsProvider,
+  CurrentContentContext,
+  CurrentContentProvider,
+  useLogger,
+  useRepository,
+} from '@sensenet/hooks-react'
+import { useLocalization, useSelectionService } from '../../hooks'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 
 const GenericContentEditor: React.FunctionComponent<RouteComponentProps<{ contentId?: string }>> = props => {

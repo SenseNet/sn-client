@@ -10,7 +10,8 @@ import RefreshTwoTone from '@material-ui/icons/RefreshTwoTone'
 import { Repository } from '@sensenet/client-core'
 import { ExtendedError, isExtendedError } from '@sensenet/client-core/dist/Repository/Repository'
 import React from 'react'
-import { InjectorContext, LocalizationContext } from '../context'
+import { InjectorContext } from '@sensenet/hooks-react'
+import { LocalizationContext } from '../context'
 import { ErrorReport } from './ErrorReport'
 
 export interface ErrorBoundaryState {
@@ -22,7 +23,7 @@ export interface ErrorBoundaryState {
 }
 
 export class ErrorBoundary extends React.Component<{}, ErrorBoundaryState> {
-  public static contextType = InjectorContext
+  public static contextType: React.Context<Injector> = InjectorContext
 
   public state: ErrorBoundaryState = { hasError: false, sendFeedback: false, isOpened: true }
   public static getDerivedStateFromError(error: any) {

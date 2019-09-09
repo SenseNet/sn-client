@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LoadSettings matches snapshot 1`] = `
+<ContextProvider
+  value={
+    Object {
+      "loadAncestorsSettings": Object {},
+      "loadChildrenSettings": Object {
+        "expand": "CreatedBy",
+        "orderby": Array [
+          Array [
+            "DisplayName",
+            "asc",
+          ],
+        ],
+        "select": "all",
+      },
+      "loadSettings": Object {},
+      "setLoadAncestorsSettings": [Function],
+      "setLoadChildrenSettings": [Function],
+      "setLoadSettings": [Function],
+    }
+  }
+/>
+`;

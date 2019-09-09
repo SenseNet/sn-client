@@ -68,4 +68,44 @@ export class SchemaStore {
     this.byNameSchemaCache.set(contentTypeName, schema)
     return Object.assign({}, schema)
   }
+
+  /**
+   * Returns a boolean value that indicates if the specified content is an instance or descendant of a given content constructor
+   * @param content The given content to check
+   * @param contentType The content type constructor
+   */
+  public isContentFromType<T extends typeof GenericContent>(
+    content: GenericContent,
+    contentType: T,
+  ): content is InstanceType<T> {
+    if (content.Type === contentType.name) {
+      return true
+    }
+
+    let currentSchema = this.getSchemaByName(content.Type)
+    do {
+      if (currentSchema.ContentTypeName === contentType.name) {
+        return true
+      }
+      currentSchema = this.getSchemaByName(currentSchema.ParentTypeName || '')
+    } while (currentSchema.ContentTypeName && currentSchema.ContentTypeName !== GenericContent.name)
+    return contentType.name === GenericContent.name
+  }
+
+  /**
+   * Returns if a given content type is a descendant of an another content type
+   * @param child The child content name
+   * @param parent The parent content name
+   */
+  public schemaIsDescendantOf(child: string, parent: string) {
+    let currentSchema = this.getSchemaByName(child)
+    do {
+      if (currentSchema.ContentTypeName === parent) {
+        return true
+      }
+      currentSchema = this.getSchemaByName(currentSchema.ParentTypeName || '')
+    } while (currentSchema.ContentTypeName && currentSchema.ContentTypeName !== GenericContent.name)
+
+    return parent === GenericContent.name
+  }
 }

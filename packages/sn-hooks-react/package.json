@@ -1,0 +1,39 @@
+{
+  "name": "@sensenet/hooks-react",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "keywords": [
+    "sensenet",
+    "ecm",
+    "react",
+    "hooks"
+  ],
+  "scripts": {
+    "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
+    "build": "tsc -b"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
+  "license": "GPL-2.0",
+  "homepage": "https://sensenet.com",
+  "dependencies": {
+    "@sensenet/default-content-types": "^2.0.0",
+    "@sensenet/client-core": "^2.2.0",
+    "@sensenet/client-utils": "^1.6.4",
+    "@sensenet/repository-events": "^1.4.4",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.2",
+    "@types/react-dom": "^16.9.0"
+  }
+}

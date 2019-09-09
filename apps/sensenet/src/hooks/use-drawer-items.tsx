@@ -7,6 +7,8 @@ import PublicTwoTone from '@material-ui/icons/PublicTwoTone'
 import SearchTwoTone from '@material-ui/icons/SearchTwoTone'
 import WidgetsTwoTone from '@material-ui/icons/WidgetsTwoTone'
 import { DashboardTwoTone, DeleteTwoTone } from '@material-ui/icons'
+import { useRepository, useSession } from '@sensenet/hooks-react'
+import { LoginState } from '@sensenet/client-core'
 import { Icon } from '../components/Icon'
 import {
   BuiltinDrawerItem,
@@ -19,9 +21,8 @@ import { ResponsivePersonalSetttings } from '../context'
 import { encodeBrowseData } from '../components/content'
 import { encodeQueryData } from '../components/search'
 import DefaultLocalization from '../localization/default'
-import { useSession } from './use-session'
 import { useLocalization } from './use-localization'
-import { useRepository } from './use-repository'
+
 export interface DrawerItem {
   name: string
   primaryText: keyof (typeof DefaultLocalization.drawer.titles)
@@ -165,6 +166,7 @@ export const useDrawerItems = () => {
 
   useEffect(() => {
     settings.drawer.items
+      .filter(() => session.state === LoginState.Authenticated)
       .filterAsync(async item => {
         if (!item.permissions || !item.permissions.length) {
           return true
