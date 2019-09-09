@@ -1,6 +1,6 @@
 import Typography from '@material-ui/core/Typography'
-import React, { useContext } from 'react'
-import { LocalizationContext } from '../context/localization-context'
+import React from 'react'
+import { useLocalization } from '../hooks'
 import { LayoutAppBar } from './LayoutAppBar'
 
 interface DocumentViewerLoadingProps {
@@ -8,7 +8,7 @@ interface DocumentViewerLoadingProps {
 }
 
 export const DocumentViewerLoading: React.FC<DocumentViewerLoadingProps> = props => {
-  const localization = useContext(LocalizationContext)
+  const localization = useLocalization()
 
   return (
     <div

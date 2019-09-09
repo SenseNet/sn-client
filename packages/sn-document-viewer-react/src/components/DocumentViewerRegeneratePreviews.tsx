@@ -1,17 +1,15 @@
 import Typography from '@material-ui/core/Typography'
 import { Button, CircularProgress } from '@material-ui/core'
-import React, { useContext, useState } from 'react'
-import { LocalizationContext } from '../context/localization-context'
-import { DocumentViewerApiSettingsContext } from '../context/api-settings'
-import { DocumentDataContext } from '../context/document-data'
+import React, { useState } from 'react'
+import { useDocumentData, useDocumentViewerApi, useLocalization } from '../hooks'
 import { LayoutAppBar } from './LayoutAppBar'
 
 export const DocumentViewerRegeneratePreviews: React.FC = () => {
   const [isRegenerating, setIsRegenerating] = useState(false)
-  const localization = useContext(LocalizationContext)
+  const localization = useLocalization()
 
-  const api = useContext(DocumentViewerApiSettingsContext)
-  const document = useContext(DocumentDataContext)
+  const api = useDocumentViewerApi()
+  const document = useDocumentData()
 
   /**
    * renders the component

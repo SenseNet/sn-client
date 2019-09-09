@@ -1,15 +1,14 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { Typography } from '@material-ui/core'
-import { DocumentDataContext } from '../context/document-data'
-import { LocalizationContext } from '../context/localization-context'
+import { useDocumentData, useLocalization } from '../hooks'
 import { LayoutAppBar } from '.'
 
 /**
  * Component to display viewer related errors
  */
 export const DocumentViewerError: React.FC = () => {
-  const docData = useContext(DocumentDataContext)
-  const localization = useContext(LocalizationContext)
+  const docData = useDocumentData()
+  const localization = useLocalization()
 
   return (
     <div

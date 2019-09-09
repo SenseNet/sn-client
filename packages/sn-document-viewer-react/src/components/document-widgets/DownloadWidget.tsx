@@ -1,9 +1,8 @@
 import IconButton from '@material-ui/core/IconButton'
 import CloudDownload from '@material-ui/icons/CloudDownload'
-import React, { useContext } from 'react'
+import React from 'react'
 import { DocumentData } from '../../models'
-import { LocalizationContext } from '../../context/localization-context'
-import { DocumentDataContext } from '../../context/document-data'
+import { useDocumentData, useLocalization } from '../../hooks'
 
 /**
  * Own properties for the Share component
@@ -16,8 +15,8 @@ export interface DownloadProps {
  * Component that allows active page rotation
  */
 export const Download: React.FC<DownloadProps> = props => {
-  const localization = useContext(LocalizationContext)
-  const document = useContext(DocumentDataContext)
+  const localization = useLocalization()
+  const document = useDocumentData()
   return (
     <div style={{ display: 'inline-block' }}>
       <IconButton

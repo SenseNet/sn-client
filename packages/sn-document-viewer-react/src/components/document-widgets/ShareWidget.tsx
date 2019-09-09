@@ -1,62 +1,27 @@
 import IconButton from '@material-ui/core/IconButton'
-import Share from '@material-ui/icons/Share'
+import ShareIcon from '@material-ui/icons/Share'
 import React from 'react'
-import { connect } from 'react-redux'
 import { DocumentData } from '../../models'
-import { componentType } from '../../services'
-import { RootReducerType } from '../../store'
-
-/**
- * maps state fields from the store to component props
- * @param state the redux state
- */
-export const mapStateToProps = (state: RootReducerType) => {
-  return {
-    title: state.sensenetDocumentViewer.localization.share,
-    document: state.sensenetDocumentViewer.documentState.document,
-  }
-}
-
-/**
- * maps state actions from the store to component props
- * @param state the redux state
- */
-export const mapDispatchToProps = {}
+import { useDocumentData, useLocalization } from '../../hooks'
 
 /**
  * Own properties for the Share component
  */
-export interface OwnProps {
+export interface ShareProps {
   share: (document: DocumentData) => void
 }
 
 /**
  * Component that allows active page rotation
  */
-export class ShareComponent extends React.Component<
-  componentType<typeof mapStateToProps, typeof mapDispatchToProps, OwnProps>
-> {
-  /**
-   * renders the component
-   */
-  public render() {
-    return (
-      <div style={{ display: 'inline-block' }}>
-        <IconButton
-          color="inherit"
-          title={this.props.title}
-          onClick={() => this.props.share(this.props.document)}
-          id="Share">
-          <Share />
-        </IconButton>
-      </div>
-    )
-  }
+export const Share: React.FC<ShareProps> = props => {
+  const localization = useLocalization()
+  const document = useDocumentData()
+  return (
+    <div style={{ display: 'inline-block' }}>
+      <IconButton color="inherit" title={localization.share} onClick={() => props.share(document)} id="Share">
+        <ShareIcon />
+      </IconButton>
+    </div>
+  )
 }
-
-const connectedComponent = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ShareComponent)
-
-export { connectedComponent as Share }

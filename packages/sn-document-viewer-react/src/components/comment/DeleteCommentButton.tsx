@@ -1,7 +1,7 @@
 import { Button } from '@material-ui/core'
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { ConfirmationDialog } from '../ConfirmationDialog'
-import { LocalizationContext } from '../../context/localization-context'
+import { useLocalization } from '../../hooks'
 import { CommentPropType } from './Comment'
 
 type DeleteButtonProps = Pick<CommentPropType, 'deleteComment' | 'id'>
@@ -12,7 +12,7 @@ type DeleteButtonProps = Pick<CommentPropType, 'deleteComment' | 'id'>
 export const DeleteButton: React.FC<DeleteButtonProps> = props => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
-  const localization = useContext(LocalizationContext)
+  const localization = useLocalization()
 
   const handleClick = () => {
     setIsDialogOpen(true)

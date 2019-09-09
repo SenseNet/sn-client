@@ -1,9 +1,8 @@
 import IconButton from '@material-ui/core/IconButton'
-import Print from '@material-ui/icons/Print'
-import React, { useContext } from 'react'
+import PrintIcon from '@material-ui/icons/Print'
+import React from 'react'
 import { DocumentData } from '../../models'
-import { LocalizationContext } from '../../context/localization-context'
-import { DocumentDataContext } from '../../context/document-data'
+import { useDocumentData, useLocalization } from '../../hooks'
 
 /**
  * Own properties for the Print component
@@ -15,13 +14,13 @@ export interface PrintProps {
 /**
  * Component that allows active page rotation
  */
-export const PrintComponent: React.FC<PrintProps> = props => {
-  const localization = useContext(LocalizationContext)
-  const document = useContext(DocumentDataContext)
+export const Print: React.FC<PrintProps> = props => {
+  const localization = useLocalization()
+  const document = useDocumentData()
   return (
     <div style={{ display: 'inline-block' }}>
       <IconButton color="inherit" title={localization.print} onClick={() => props.print(document)} id="Print">
-        <Print />
+        <PrintIcon />
       </IconButton>
     </div>
   )

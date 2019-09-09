@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { DocumentDataContext } from './document-data'
-import { DocumentViewerApiSettingsContext } from './api-settings'
+import React, { useEffect, useState } from 'react'
+import { useDocumentData, useDocumentViewerApi } from '../hooks'
 
 export const DocumentPermissionsContext = React.createContext({
   canEdit: false,
@@ -9,8 +8,8 @@ export const DocumentPermissionsContext = React.createContext({
 })
 
 export const DocumentPermissionsContextProvider: React.FC = ({ children }) => {
-  const document = useContext(DocumentDataContext)
-  const api = useContext(DocumentViewerApiSettingsContext)
+  const document = useDocumentData()
+  const api = useDocumentViewerApi()
   const [canEdit, setcanEdit] = useState(false)
   const [canHideRedaction, setcancanHideRedaction] = useState(false)
   const [canHideWatermark, setcanHideWatermark] = useState(false)

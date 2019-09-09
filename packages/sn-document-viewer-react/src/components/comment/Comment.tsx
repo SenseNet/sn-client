@@ -5,12 +5,12 @@ import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
 import Collapse from '@material-ui/core/Collapse'
 import Typography from '@material-ui/core/Typography'
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { Comment as CommentType } from '../../models/Comment'
 import { componentType } from '../../services'
 import { deleteComment, RootReducerType } from '../../store'
 import { setSelectedCommentId } from '../../store/Comments'
-import { LocalizationContext } from '../../context/localization-context'
+import { useLocalization } from '../../hooks'
 import { DeleteButton } from './DeleteCommentButton'
 import { StyledCard } from './style'
 
@@ -37,7 +37,7 @@ const MAX_TEXT_LENGTH = 160
 export const Comment: React.FC<CommentPropType> = props => {
   const isLongText = props.text && props.text.length > MAX_TEXT_LENGTH
   const [isOpen, setIsOpen] = useState(!isLongText)
-  const localization = useContext(LocalizationContext)
+  const localization = useLocalization()
   const isSelected = () => props.selectedCommentId === props.id
 
   return (

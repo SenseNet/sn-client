@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { sleepAsync } from '@sensenet/client-utils'
 import { DocumentData } from '../models'
 import { PreviewState } from '../Enums'
-import { DocumentViewerApiSettingsContext } from './api-settings'
-import { ViewerSettingsContext } from './viewer-settings'
+import { useDocumentViewerApi, useViewerSettings } from '../hooks'
 
 const defaultDocumentData: DocumentData = {
   documentName: '',
@@ -24,8 +23,8 @@ const defaultDocumentData: DocumentData = {
 export const DocumentDataContext = React.createContext(defaultDocumentData)
 
 export const DocumentDataProvider: React.FC = ({ children }) => {
-  const api = useContext(DocumentViewerApiSettingsContext)
-  const doc = useContext(ViewerSettingsContext)
+  const api = useDocumentViewerApi()
+  const doc = useViewerSettings()
 
   const [docData, setDocData] = useState(defaultDocumentData)
 

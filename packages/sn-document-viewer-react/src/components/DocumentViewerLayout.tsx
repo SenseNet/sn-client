@@ -12,7 +12,7 @@ import {
   toggleIsCreateCommentActive,
   toggleIsPlacingCommentMarker,
 } from '../store/Comments'
-import Comment from './comment/Comment'
+import { Comment } from './comment'
 import { CreateComment } from './comment/CreateComment'
 import { CommentsContainer, PageList } from './'
 

@@ -1,6 +1,6 @@
 import { Reducer } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
-import { Comment, CommentWithoutCreatedByAndId, DocumentViewerSettings } from '../models'
+import { Comment, CommentWithoutCreatedByAndId, DocumentViewerApiSettings } from '../models'
 import { showComments } from './Viewer'
 import { RootReducerType } from '.'
 
@@ -39,11 +39,12 @@ export const deleteCommentSuccess = (id: string) => ({
 export const getComments = () => ({
   type: GET_COMMENTS_REQUEST,
   inject: async (options: IInjectableActionCallbackParams<RootReducerType>) => {
-    const api = options.getInjectable(DocumentViewerSettings)
-    const comments = await api.commentActions.getPreviewComments(
-      options.getState().sensenetDocumentViewer.documentState.document,
-      options.getState().sensenetDocumentViewer.viewer.activePages[0],
-    )
+    const api = options.getInjectable<DocumentViewerApiSettings>({} as any)
+    const comments = await api.commentActions.getPreviewComments({
+      document: options.getState().sensenetDocumentViewer.documentState.document,
+      page: options.getState().sensenetDocumentViewer.viewer.activePages[0],
+      abortController: new AbortController(),
+    })
     options.dispatch(getCommentsSuccess(comments))
     if (comments.length) {
       options.dispatch(showComments(true))
@@ -54,7 +55,7 @@ export const getComments = () => ({
 export const createComment = (comment: CommentWithoutCreatedByAndId) => ({
   type: CREATE_COMMENT_REQUEST,
   inject: async (options: IInjectableActionCallbackParams<RootReducerType>) => {
-    const api = options.getInjectable(DocumentViewerSettings)
+    const api = options.getInjectable<any>({} as any)
     const result = await api.commentActions.addPreviewComment(
       options.getState().sensenetDocumentViewer.documentState.document,
       comment,
@@ -66,7 +67,7 @@ export const createComment = (comment: CommentWithoutCreatedByAndId) => ({
 export const deleteComment = (id: string) => ({
   type: DELETE_COMMENT_REQUEST,
   inject: async (options: IInjectableActionCallbackParams<RootReducerType>) => {
-    const api = options.getInjectable(DocumentViewerSettings)
+    const api = options.getInjectable<any>({} as any)
     const result = await api.commentActions.deletePreviewComment(
       options.getState().sensenetDocumentViewer.documentState.document,
       id,
