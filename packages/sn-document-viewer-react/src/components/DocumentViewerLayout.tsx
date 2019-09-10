@@ -3,7 +3,7 @@ import { SlideProps } from '@material-ui/core/Slide'
 import Typography from '@material-ui/core/Typography'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { DraftCommentMarker } from '../models'
-import { useLocalization, useViewerState } from '../hooks'
+import { useDocumentData, useDocumentViewerApi, useLocalization, useViewerState } from '../hooks'
 import { CommentsContext, CommentsContextProvider } from '../context/comments'
 import { Comment } from './comment'
 import { CreateComment } from './comment/CreateComment'
@@ -38,6 +38,8 @@ interface ScrollToOptions {
 export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = props => {
   const viewerState = useViewerState()
   const localization = useLocalization()
+  const api = useDocumentViewerApi()
+  const docData = useDocumentData()
 
   const [selectedCommentId, setSelectedCommentId] = useState<string | undefined>()
 
@@ -104,13 +106,17 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = props =
 
   const createComment = useCallback(
     (text: string) => {
-      if (!draftCommentMarker || !viewerState.activePages[0]) {
+      if (!draftCommentMarker || !viewerState.activePages[0] || !viewerState.activePages[0]) {
         return
       }
-      props.createComment({ page: viewerState.activePages[0], text, ...draftCommentMarker })
+      api.commentActions.addPreviewComment({
+        document: docData,
+        comment: { ...draftCommentMarker, text, page: viewerState.activePages[0] },
+        abortController: new AbortController(),
+      })
       viewerState.updateState({ isPlacingCommentMarker: false })
     },
-    [draftCommentMarker, props, viewerState],
+    [api.commentActions, docData, draftCommentMarker, viewerState],
   )
 
   return (
@@ -139,7 +145,7 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = props =
           PaperProps={{
             style: {
               position: 'relative',
-              width: this.state.thumbnaislVisibility ? '200px' : 0,
+              width: viewerState.showThumbnails ? '200px' : 0,
               height: '100%',
               overflow: 'hidden',
             },
