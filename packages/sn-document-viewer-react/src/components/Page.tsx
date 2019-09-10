@@ -1,41 +1,18 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Paper from '@material-ui/core/Paper'
 import React = require('react')
-import { connect } from 'react-redux'
-import { DocumentData, DraftCommentMarker } from '../models'
-import { componentType, ImageUtil } from '../services'
-import { previewAvailable, RootReducerType, ZoomMode } from '../store'
+import { useCallback, useEffect, useState } from 'react'
+import { DraftCommentMarker } from '../models'
+import { ImageUtil } from '../services'
+import { ZoomMode } from '../models/viewer-state'
+import { usePreviewImage, useViewerState } from '../hooks'
 import { ShapesWidget } from './page-widgets'
 import { MARKER_SIZE } from './page-widgets/style'
 
 /**
- * maps state fields from the store to component props
- * @param state the redux state
- */
-const mapStateToProps = (state: RootReducerType, ownProps: { imageIndex: number }) => {
-  return {
-    documentData: state.sensenetDocumentViewer.documentState.document as DocumentData,
-    version: state.sensenetDocumentViewer.documentState.version,
-    page: state.sensenetDocumentViewer.previewImages.AvailableImages[ownProps.imageIndex - 1] || {},
-    activePages: state.sensenetDocumentViewer.viewer.activePages,
-    showWatermark: state.sensenetDocumentViewer.viewer.showWatermark,
-    pollInterval: state.sensenetDocumentViewer.previewImages.pollInterval,
-    isPlacingCommentMarker: state.comments.isPlacingCommentMarker,
-  }
-}
-
-/**
- * maps state actions from the store to component props
- * @param state the redux state
- */
-const mapDispatchToProps = {
-  previewAvailable,
-}
-
-/**
  * Defined the component's own properties
  */
-export interface OwnProps {
+export interface PageProps {
   showWidgets: boolean
   imageIndex: number
   viewportHeight: number
@@ -50,170 +27,179 @@ export interface OwnProps {
   handleMarkerCreation?: (coordinates: DraftCommentMarker) => void
 }
 
-/**
- * State model for the Page component
- */
-export interface PageState {
-  imgSrc: string
-  pageWidth: number
-  pageHeight: number
-  isActive: boolean
-  imageWidth: string
-  imageHeight: string
-  imageTransform: string
-  zoomRatio: number
-  isPolling: boolean
-  draftCommentMarker?: DraftCommentMarker
-}
+export const Page: React.FC<PageProps> = props => {
+  const viewerState = useViewerState()
+  const page = usePreviewImage(props.imageIndex)
 
-/**
- * Represents a Page component that show the preview image on a Paper component
- * @extends {React.Component<componentType<typeof mapStateToProps, typeof mapDispatchToProps, OwnProps>, PageState>}
- */
-export class PageComponent extends React.Component<
-  componentType<typeof mapStateToProps, typeof mapDispatchToProps, OwnProps>,
-  PageState
-> {
-  constructor(props: PageComponent['props']) {
-    super(props)
-    this.state = {} as any
-  }
+  const [isActive, setIsActive] = React.useState(page.image && viewerState.activePages.includes(page.image.Index))
+  useEffect(() => {
+    setIsActive(page.image && viewerState.activePages.includes(page.image.Index))
+  }, [page.image, viewerState.activePages])
 
-  /** event before the component did unmount */
-  public componentWillUnmount() {
-    this.stopPolling()
-  }
+  const [imgUrl, setImgUrl] = useState(
+    (page.image && (props.image === 'preview' ? page.image.PreviewImageUrl : page.image.ThumbnailImageUrl)) || '',
+  )
+  useEffect(() => {
+    setImgUrl(
+      (page.image && (props.image === 'preview' ? page.image.PreviewImageUrl : page.image.ThumbnailImageUrl)) || '',
+    )
+  }, [page.image, props.image])
 
-  private stopPolling() {
-    if (this.pollPreview) {
-      clearInterval(this.pollPreview)
-      this.pollPreview = undefined
-    }
-  }
+  const [imageRotation, setImageRotation] = useState(
+    ImageUtil.normalizeDegrees((page.image && page.image.Attributes && page.image.Attributes.degree) || 0),
+  )
 
-  private handleMarkerPlacement(event: React.MouseEvent) {
-    if (!this.props.isPlacingCommentMarker) {
-      return
-    }
-    const draftCommentMarker = {
-      x: event.nativeEvent.offsetX / this.state.zoomRatio - MARKER_SIZE,
-      y: event.nativeEvent.offsetY / this.state.zoomRatio - MARKER_SIZE,
-      id: 'draft',
-    }
-    this.setState({
-      ...this.state,
-      draftCommentMarker,
-    })
-    this.props.handleMarkerCreation && this.props.handleMarkerCreation(draftCommentMarker)
-  }
+  const [imageRotationRads, setImageRotationRads] = useState(((imageRotation % 180) * Math.PI) / 180)
 
-  private pollPreview?: number = (setInterval(() => {
-    if (this.state.isPolling) {
-      this.props.previewAvailable(this.props.documentData, this.props.version, this.props.imageIndex)
-    }
-  }, this.props.pollInterval) as any) as number
+  useEffect(() => {
+    const newRotation = ImageUtil.normalizeDegrees(
+      (page.image && page.image.Attributes && page.image.Attributes.degree) || 0,
+    )
+    setImageRotation(newRotation)
+    setImageRotationRads(((newRotation % 180) * Math.PI) / 180)
+  }, [page.image])
 
-  /**
-   * Returns a derived state from the specified props
-   * @param props The props for state creation
-   */
-  public static getDerivedStateFromProps(props: PageComponent['props'], state: PageState): PageState {
-    const imageRotation = ImageUtil.normalizeDegrees((props.page.Attributes && props.page.Attributes.degree) || 0)
-    const imageRotationRads = ((imageRotation % 180) * Math.PI) / 180
-    const imgSrc = (props.image === 'preview' ? props.page.PreviewImageUrl : props.page.ThumbnailImageUrl) || ''
-    const relativePageSize = ImageUtil.getImageSize(
+  const [relativeImageSize, setRelativeImageSize] = useState(
+    ImageUtil.getImageSize(
       {
         width: props.viewportWidth,
         height: props.viewportHeight,
       },
       {
-        width: props.page.Width,
-        height: props.page.Height,
-        rotation: (props.page.Attributes && props.page.Attributes.degree) || 0,
+        width: (page.image && page.image.Width) || 0,
+        height: (page.image && page.image.Height) || 0,
+        rotation: (page.image && page.image.Attributes && page.image.Attributes.degree) || 0,
       },
       props.zoomMode,
       props.zoomLevel,
       props.fitRelativeZoomLevel,
+    ),
+  )
+
+  useEffect(() => {
+    setRelativeImageSize(
+      ImageUtil.getImageSize(
+        {
+          width: props.viewportWidth,
+          height: props.viewportHeight,
+        },
+        {
+          width: (page.image && page.image.Width) || 0,
+          height: (page.image && page.image.Height) || 0,
+          rotation: (page.image && page.image.Attributes && page.image.Attributes.degree) || 0,
+        },
+        props.zoomMode,
+        props.zoomLevel,
+        props.fitRelativeZoomLevel,
+      ),
     )
-    const boundingBox = ImageUtil.getRotatedBoundingBoxSize(
+  }, [
+    page.image,
+    props.fitRelativeZoomLevel,
+    props.viewportHeight,
+    props.viewportWidth,
+    props.zoomLevel,
+    props.zoomMode,
+  ])
+
+  const [boundingBox, setBoundingBox] = useState(
+    ImageUtil.getRotatedBoundingBoxSize(
       {
-        width: props.page.Width,
-        height: props.page.Height,
+        width: (page.image && page.image.Width) || 0,
+        height: (page.image && page.image.Height) || 0,
       },
       imageRotation,
+    ),
+  )
+
+  useEffect(() => {
+    setBoundingBox(
+      ImageUtil.getRotatedBoundingBoxSize(
+        {
+          width: (page.image && page.image.Width) || 0,
+          height: (page.image && page.image.Height) || 0,
+        },
+        imageRotation,
+      ),
     )
+  }, [imageRotation, page.image])
 
-    const maxDiff = (relativePageSize.height - relativePageSize.width) / 2
-    const diffHeight = Math.sin(imageRotationRads) * maxDiff
+  const [diffHeight, setDiffHeight] = useState(
+    Math.sin(imageRotationRads) * ((relativeImageSize.height - relativeImageSize.width) / 2),
+  )
 
-    return {
-      draftCommentMarker: props.isPlacingCommentMarker ? state.draftCommentMarker : undefined,
-      isActive: props.activePages.indexOf(props.page.Index) >= 0,
-      imgSrc,
-      pageWidth: relativePageSize.width,
-      pageHeight: relativePageSize.height,
-      zoomRatio: relativePageSize.height / props.page.Height,
-      imageWidth: `${100 * boundingBox.zoomRatio}%`,
-      imageHeight: `${100 * boundingBox.zoomRatio}%`,
-      imageTransform: `translateY(${diffHeight}px) rotate(${imageRotation}deg)`,
-      isPolling: !(imgSrc ? true : false),
-    }
-  }
+  useEffect(() => {
+    setDiffHeight(Math.sin(imageRotationRads) * ((relativeImageSize.height - relativeImageSize.width) / 2))
+  }, [imageRotationRads, relativeImageSize.height, relativeImageSize.width])
 
-  /**
-   * renders the component
-   */
-  public render() {
-    return (
-      <Paper
-        elevation={this.state.isActive ? 8 : 2}
-        className={this.props.elementName}
-        style={{ margin: this.props.margin }}>
-        <div
-          style={{
-            padding: 0,
-            overflow: 'hidden',
-            width: this.state.pageWidth - 2 * this.props.margin,
-            height: this.state.pageHeight - 2 * this.props.margin,
-            position: 'relative',
-          }}
-          onClick={ev => {
-            this.props.onClick(ev)
-            this.handleMarkerPlacement(ev)
-          }}>
-          {this.props.showWidgets ? (
-            <div>
-              <ShapesWidget
-                draftCommentMarker={this.state.draftCommentMarker}
-                zoomRatio={this.state.zoomRatio}
-                page={this.props.page}
-                viewPort={{ height: this.state.pageHeight, width: this.state.pageWidth }}
-              />
-            </div>
-          ) : null}
-          <span style={{ display: 'flex', justifyContent: 'center' }}>
-            {this.state.imgSrc ? (
-              <img
-                src={`${this.state.imgSrc}${this.props.showWatermark ? '?watermark=true' : ''}`}
-                style={{
-                  transition: 'transform .1s ease-in-out',
-                  width: this.state.imageWidth,
-                  height: this.state.imageHeight,
-                  transform: this.state.imageTransform,
-                }}
-              />
-            ) : (
-              <CircularProgress style={{ marginTop: '50%' }} />
-            )}
-          </span>
-        </div>
-      </Paper>
-    )
-  }
+  const [imageTransform, setImageTransform] = useState(`translateY(${diffHeight}px) rotate(${imageRotation}deg)`)
+
+  useEffect(() => {
+    setImageTransform(`translateY(${diffHeight}px) rotate(${imageRotation}deg)`)
+  }, [diffHeight, imageRotation])
+
+  const [draftCommentMarker, setDraftCommentMarker] = useState<DraftCommentMarker | undefined>()
+
+  const handleMarkerPlacement = useCallback(
+    (event: React.MouseEvent) => {
+      if (!viewerState.isPlacingCommentMarker) {
+        return
+      }
+      const newCommentMarker = {
+        x:
+          event.nativeEvent.offsetX / (relativeImageSize.height / ((page.image && page.image.Height) || 1)) -
+          MARKER_SIZE,
+        y:
+          event.nativeEvent.offsetY / (relativeImageSize.height / ((page.image && page.image.Height) || 1)) -
+          MARKER_SIZE,
+        id: 'draft',
+      }
+      setDraftCommentMarker(newCommentMarker)
+      props.handleMarkerCreation && props.handleMarkerCreation(newCommentMarker)
+    },
+    [page.image, props, relativeImageSize.height, viewerState.isPlacingCommentMarker],
+  )
+
+  return (
+    <Paper elevation={isActive ? 8 : 2} className={props.elementName} style={{ margin: props.margin }}>
+      <div
+        style={{
+          padding: 0,
+          overflow: 'hidden',
+          width: relativeImageSize.width - 2 * props.margin,
+          height: relativeImageSize.height - 2 * props.margin,
+          position: 'relative',
+        }}
+        onClick={ev => {
+          props.onClick(ev)
+          handleMarkerPlacement(ev)
+        }}>
+        {page.image && props.showWidgets ? (
+          <div>
+            <ShapesWidget
+              draftCommentMarker={draftCommentMarker}
+              zoomRatio={relativeImageSize.height / page.image.Height}
+              page={page.image}
+              viewPort={{ height: relativeImageSize.height, width: relativeImageSize.width }}
+            />
+          </div>
+        ) : null}
+        <span style={{ display: 'flex', justifyContent: 'center' }}>
+          {imgUrl ? (
+            <img
+              src={`${imgUrl}${viewerState.showWatermark ? '?watermark=true' : ''}`}
+              style={{
+                transition: 'transform .1s ease-in-out',
+                width: `${100 * boundingBox.zoomRatio}%`,
+                height: `${100 * boundingBox.zoomRatio}%`,
+                transform: imageTransform,
+              }}
+            />
+          ) : (
+            <CircularProgress style={{ marginTop: '50%' }} />
+          )}
+        </span>
+      </div>
+    </Paper>
+  )
 }
-
-const connectedComponent = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(PageComponent)
-export { connectedComponent as Page }

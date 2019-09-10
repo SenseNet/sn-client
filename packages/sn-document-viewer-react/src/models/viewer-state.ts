@@ -51,4 +51,9 @@ export interface ViewerState {
    * True if there are any changes on the document
    */
   hasChanges: boolean
+
+  /**
+   * Variable that indicates if a comment marker placing is in progress
+   */
+  isPlacingCommentMarker: boolean
 }

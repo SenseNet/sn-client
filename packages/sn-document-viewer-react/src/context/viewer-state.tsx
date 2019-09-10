@@ -15,6 +15,7 @@ export const defaultViewerState: ViewerState & {
   fitRelativeZoomLevel: 0,
   showComments: false,
   hasChanges: false,
+  isPlacingCommentMarker: false,
   updateState: () => {
     /** */
   },
