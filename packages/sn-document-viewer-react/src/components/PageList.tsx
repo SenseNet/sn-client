@@ -1,27 +1,11 @@
 import Grid from '@material-ui/core/Grid'
-import React from 'react'
-import { connect } from 'react-redux'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { debounce } from '@sensenet/client-utils'
 import { DraftCommentMarker, PreviewImageData } from '../models'
-import { componentType, ImageUtil } from '../services'
-import { RootReducerType, ZoomMode } from '../store'
+import { Dimensions, ImageUtil } from '../services'
+import { ZoomMode } from '../models/viewer-state'
+import { usePreviewImages } from '../hooks'
 import { Page } from './'
-
-/**
- * maps state fields from the store to component props
- * @param state the redux state
- */
-const mapStateToProps = (state: RootReducerType) => {
-  return {
-    pages: state.sensenetDocumentViewer.previewImages.AvailableImages,
-  }
-}
-
-/**
- * maps state actions from the store to component props
- * @param state the redux state
- */
-const mapDispatchToProps = {}
 
 /**
  * Defines the own properties for the PageList component
@@ -42,82 +26,58 @@ export interface PageListProps {
   handleMarkerCreation?: (coordinates: DraftCommentMarker) => void
 }
 
-/**
- * Type definition for the PageList component's State
- */
-export interface PageListState {
-  marginTop: number
-  marginBottom: number
-  scrollState: number
-  pagesToSkip: number
-  pagesToTake: number
-  viewportWidth: number
-  viewportHeight: number
-  visiblePages: PreviewImageData[]
-}
+export const PageList: React.FC<PageListProps> = props => {
+  const [marginTop, setMarginTop] = useState(0)
+  const [marginBottom, setMarginBottom] = useState(0)
 
-/**
- * Represents list of pages in a Grid component
- * @extends {React.Component<componentType<typeof mapStateToProps, typeof mapDispatchToProps, PageListProps>, PageListState>}
- */
-export class PageListComponent extends React.Component<
-  componentType<typeof mapStateToProps, typeof mapDispatchToProps, PageListProps>,
-  PageListState
-> {
-  /** the component state */
-  public state: PageListState = {
-    marginTop: 0,
-    marginBottom: 0,
-    scrollState: 0,
-    pagesToSkip: 0,
-    viewportWidth: 110,
-    viewportHeight: 110,
-    pagesToTake: 32,
-    visiblePages: this.props.pages.slice(0, 3),
-  }
+  const [visiblePages, setVisiblePages] = useState<PreviewImageData[]>([])
 
-  private canUpdate = false
-  private viewPort?: Element
-  private onResize!: () => void
-  private onScroll!: () => void
+  const [scrollState, setScrollState] = useState(0)
 
-  /** event that will be triggered before mounting the component */
-  public componentWillMount() {
-    this.onResize = debounce(() => this.setupViewPort(), 50).bind(this)
-    addEventListener('resize', this.onResize)
-    this.onResize()
-    this.canUpdate = true
-  }
+  const viewportElement = useRef<HTMLElement>()
+  const [resizeToken, setResizeToken] = useState(0)
+  const [viewport, setViewport] = useState<Dimensions>({ width: 0, height: 0 })
 
-  /** event that will be triggered after mounting the component */
-  public componentDidMount() {
-    this.setupViewPort()
-    this.onScroll = debounce(() => this.setupVisiblePages(this.props), 10).bind(this)
-    this.viewPort && this.viewPort.addEventListener('scroll', this.onScroll)
-    this.onScroll()
-  }
+  const pages = usePreviewImages()
 
-  /** event that will be triggered before unmounting the component */
-  public componentWillUnmount() {
-    removeEventListener('resize', this.onResize)
-    this.viewPort && this.viewPort.removeEventListener('scroll', this.onScroll)
-    this.canUpdate = false
-  }
+  const requestResize = useCallback(
+    debounce(() => {
+      setResizeToken(Math.random())
+    }, 100),
+    [],
+  )
 
-  /** triggered when the component will receive props */
-  public componentWillReceiveProps(newProps: this['props']) {
-    this.setupVisiblePages(newProps, newProps.activePage !== this.props.activePage ? newProps.activePage : undefined)
-  }
+  useEffect(() => {
+    const currentViewport = viewportElement.current
+    if (currentViewport) {
+      currentViewport.addEventListener('scroll', requestResize)
+    }
+    return () => currentViewport && currentViewport.removeEventListener('scroll', requestResize)
+  }, [requestResize, viewportElement])
 
-  private setupVisiblePages(props: this['props'], pageNo?: number) {
-    if (!props.pages.length || !this.canUpdate) {
+  useEffect(() => {
+    addEventListener('resize', requestResize)
+    return () => removeEventListener('resize', requestResize)
+  }, [requestResize])
+
+  useEffect(() => {
+    if (viewportElement && viewportElement.current) {
+      setViewport({
+        height: viewportElement.current.clientHeight - props.padding * 2,
+        width: viewportElement.current.clientWidth - props.padding * 2,
+      })
+    }
+  }, [props.padding, resizeToken, viewportElement])
+
+  useEffect(() => {
+    if (!pages.imageData.length) {
       return
     }
 
     let defaultWidth!: number
     let defaultHeight!: number
 
-    const pages = props.pages.map(p => {
+    const _visiblePages = pages.imageData.map(p => {
       if ((p && !defaultWidth) || !defaultHeight) {
         ;[defaultWidth, defaultHeight] = [p.Width, p.Height]
       }
@@ -128,8 +88,8 @@ export class PageListComponent extends React.Component<
 
       const relativeSize = ImageUtil.getImageSize(
         {
-          width: this.state.viewportWidth,
-          height: this.state.viewportHeight,
+          width: viewport.width,
+          height: viewport.height,
         },
         {
           width: p.Width,
@@ -148,108 +108,80 @@ export class PageListComponent extends React.Component<
       }
     })
 
-    const scrollState = (this.viewPort && this.viewPort.scrollTop) || 0
-    let marginTop = 0
-    let pagesToSkip = 0
+    setScrollState((viewportElement.current && viewportElement.current.scrollTop) || 0)
+    let _marginTop = 0
+    let _pagesToSkip = 0
 
     while (
-      pageNo !== undefined
-        ? pagesToSkip < pageNo - 1
-        : pages[pagesToSkip] && marginTop + pages[pagesToSkip].Height + props.tolerance < scrollState
+      pages.imageData[_pagesToSkip] &&
+      _marginTop + pages.imageData[_pagesToSkip].Height + props.tolerance < scrollState
     ) {
-      marginTop += pages[pagesToSkip].Height + props.padding * 2
-      pagesToSkip++
+      _marginTop += pages.imageData[_pagesToSkip].Height + props.padding * 2
+      _pagesToSkip++
     }
 
-    let pagesToTake = 1
-    let pagesHeight = 0
+    let _pagesToTake = 1
+    let _pagesHeight = 0
 
-    while (pages[pagesToSkip + pagesToTake] && pagesHeight < this.state.viewportHeight + props.tolerance) {
-      pagesHeight += pages[pagesToSkip + pagesToTake].Height + props.padding * 2
-      pagesToTake++
+    while (pages.imageData[_pagesToSkip + _pagesToTake] && _pagesHeight < viewport.height + props.tolerance) {
+      _pagesHeight += pages.imageData[_pagesToSkip + _pagesToTake].Height + props.padding * 2
+      _pagesToTake++
     }
 
-    let marginBottom = 0
-    for (let i = pagesToSkip + pagesToTake - 1; i < pages.length - 1; i++) {
-      marginBottom += pages[i].Height + props.padding * 2
+    let _marginBottom = 0
+    for (let i = _pagesToSkip + _pagesToTake - 1; i < pages.imageData.length - 1; i++) {
+      _marginBottom += pages.imageData[i].Height + props.padding * 2
     }
 
-    if (pagesToSkip !== this.state.pagesToSkip || pagesToTake !== this.state.pagesToTake) {
-      this.setState({
-        ...this.state,
-        marginTop,
-        marginBottom,
-        pagesToSkip,
-        pagesToTake,
-        scrollState,
-        visiblePages: pages.slice(pagesToSkip, pagesToSkip + pagesToTake),
-      })
-      // this.forceUpdate()
-    }
-  }
+    setMarginTop(_marginTop)
+    setMarginBottom(_marginBottom)
 
-  private setupViewPort() {
-    if (!this.viewPort) {
-      this.viewPort = document.querySelector(`#${this.props.id}`) || undefined
-    }
-    if (this.canUpdate && this.viewPort) {
-      const newHeight = this.viewPort.clientHeight - this.props.padding * 2
-      const newWidth = this.viewPort.clientWidth - this.props.padding * 2
-      if (!this.state || newHeight !== this.state.viewportHeight || newWidth !== this.state.viewportWidth) {
-        this.setState({
-          ...this.state,
-          visiblePages: this.state.visiblePages,
-          viewportHeight: newHeight,
-          viewportWidth: newWidth,
-        })
-        this.forceUpdate()
-      }
-    }
-  }
+    setVisiblePages(_visiblePages.slice(_pagesToSkip, _pagesToSkip + _pagesToTake))
+  }, [
+    pages.imageData,
+    props.fitRelativeZoomLevel,
+    props.padding,
+    props.tolerance,
+    props.zoomLevel,
+    props.zoomMode,
+    scrollState,
+    viewport.height,
+    viewport.width,
+  ])
 
-  /**
-   * renders the component
-   */
-  public render() {
-    return (
-      <Grid
-        item={true}
-        style={{ ...this.props.style, flexGrow: 1, flexShrink: 1, overflow: 'auto', height: '100%' }}
-        id={this.props.id}>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingTop: this.state.marginTop || 0,
-            paddingBottom: this.state.marginBottom || 0,
-          }}>
-          {this.state.visiblePages.map(value => (
-            <Page
-              handleMarkerCreation={this.props.handleMarkerCreation}
-              showWidgets={this.props.showWidgets}
-              viewportWidth={this.state.viewportWidth}
-              viewportHeight={this.state.viewportHeight}
-              key={value.Index}
-              imageIndex={value.Index}
-              onClick={ev => this.props.onPageClick(ev, value.Index)}
-              zoomMode={this.props.zoomMode}
-              zoomLevel={this.props.zoomLevel}
-              fitRelativeZoomLevel={this.props.fitRelativeZoomLevel}
-              elementName={this.props.elementName}
-              image={this.props.images}
-              margin={this.props.padding}
-            />
-          ))}
-        </div>
-      </Grid>
-    )
-  }
+  return (
+    <Grid
+      item={true}
+      style={{ ...props.style, flexGrow: 1, flexShrink: 1, overflow: 'auto', height: '100%' }}
+      id={props.id}
+      innerRef={viewportElement}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          paddingTop: marginTop || 0,
+          paddingBottom: marginBottom || 0,
+        }}>
+        {visiblePages.map(page => (
+          <Page
+            handleMarkerCreation={props.handleMarkerCreation}
+            showWidgets={props.showWidgets}
+            viewportWidth={viewport.width}
+            viewportHeight={viewport.height}
+            key={page.Index}
+            imageIndex={page.Index}
+            onClick={ev => props.onPageClick(ev, page.Index)}
+            zoomMode={props.zoomMode}
+            zoomLevel={props.zoomLevel}
+            fitRelativeZoomLevel={props.fitRelativeZoomLevel}
+            elementName={props.elementName}
+            image={props.images}
+            margin={props.padding}
+          />
+        ))}
+      </div>
+    </Grid>
+  )
 }
-
-const connectedComponent = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(PageListComponent)
-export { connectedComponent as PageList }
