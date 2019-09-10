@@ -7,10 +7,13 @@ import { useInjector, useRepository } from '@sensenet/hooks-react'
 import { useTheme } from '../hooks'
 import { UploadTracker } from '../services/UploadTracker'
 
-export const DropFileArea: React.FunctionComponent<{
+type Props = {
   parentContent: GenericContent
+  onDrop?: (event: React.DragEvent) => void
   style?: React.CSSProperties
-}> = props => {
+}
+
+export const DropFileArea: React.FunctionComponent<Props> = props => {
   const [isDragOver, setDragOver] = useState(false)
 
   const injector = useInjector()
@@ -54,14 +57,16 @@ export const DropFileArea: React.FunctionComponent<{
         ev.stopPropagation()
         ev.preventDefault()
         setDragOver(false)
-        repo.upload.fromDropEvent({
-          binaryPropertyName: 'Binary',
-          createFolders: true,
-          event: new DragEvent('drop', { dataTransfer: ev.dataTransfer }),
-          overwrite: false,
-          parentPath: props.parentContent ? props.parentContent.Path : '',
-          progressObservable,
-        })
+        props.onDrop
+          ? props.onDrop(ev)
+          : repo.upload.fromDropEvent({
+              binaryPropertyName: 'Binary',
+              createFolders: true,
+              event: new DragEvent('drop', { dataTransfer: ev.dataTransfer }),
+              overwrite: false,
+              parentPath: props.parentContent ? props.parentContent.Path : '',
+              progressObservable,
+            })
       }}>
       <div
         style={{

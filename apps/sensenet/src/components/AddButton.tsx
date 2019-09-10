@@ -14,6 +14,7 @@ import { useLocalization } from '../hooks'
 import { UploadTracker } from '../services/UploadTracker'
 import { AddDialog } from './dialogs/add'
 import { Icon } from './Icon'
+import { UploadDialog } from './dialogs/upload/upload-dialog'
 
 export interface AddButtonProps {
   parent?: GenericContent
@@ -28,6 +29,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   const [allowedChildTypes, setAllowedChildTypes] = useState<Schema[]>([])
 
   const [showAddNewDialog, setShowAddNewDialog] = useState(false)
+  const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false)
   const [selectedSchema, setSelectedSchema] = useState<Schema>(repo.schemas.getSchemaByName('GenericContent'))
 
   const localization = useLocalization().addButton
@@ -88,7 +90,12 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
         </Typography>
         <div
           style={{ display: 'flex', alignItems: 'flex-start', flexWrap: 'wrap', maxHeight: '512px', overflow: 'auto' }}>
-          <Button key="Upload">
+          <Button
+            key="Upload"
+            onClick={() => {
+              setShowSelectType(false)
+              setIsUploadDialogOpen(true)
+            }}>
             <label htmlFor="upload_file_input">
               <div
                 style={{
@@ -99,26 +106,6 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
               </div>
             </label>
           </Button>
-          <div style={{ visibility: 'hidden', display: 'none' }}>
-            <input
-              onChange={ev => {
-                setShowSelectType(false)
-                ev.target.files &&
-                  repo.upload.fromFileList({
-                    parentPath: parent.Path,
-                    fileList: ev.target.files,
-                    createFolders: true,
-                    binaryPropertyName: 'Binary',
-                    overwrite: false,
-                    progressObservable,
-                  })
-              }}
-              type="file"
-              accept=""
-              multiple={true}
-              id="upload_file_input"
-            />
-          </div>
           {allowedChildTypes.map(childType => (
             <Button
               key={childType.ContentTypeName}
@@ -144,6 +131,13 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
         dialogProps={{
           open: showAddNewDialog,
           onClose: () => setShowAddNewDialog(false),
+        }}
+      />
+      <UploadDialog
+        content={parent}
+        dialogProps={{
+          open: isUploadDialogOpen,
+          onClose: () => setIsUploadDialogOpen(false),
         }}
       />
     </div>
