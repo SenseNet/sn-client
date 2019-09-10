@@ -3,7 +3,7 @@ import { IInjectableActionCallbackParams } from 'redux-di-middleware'
 import { sleepAsync } from '@sensenet/client-utils'
 import { PreviewState } from '../Enums'
 import { DocumentData, DocumentViewerApiSettings, PreviewImageData, Shape, Shapes } from '../models'
-import { Dimensions, ImageUtil } from '../services'
+import { Dimensions } from '../services'
 import { getAvailableImages } from './PreviewImages'
 import { RootReducerType } from './RootReducer'
 
@@ -213,36 +213,6 @@ export const regeneratePreviews = () => ({
 })
 
 /**
- * helper method to apply shape rotations
- * @param shapes the shape(s) to rotate
- * @param degree the rotation angle in degrees
- * @param pages the page info
- */
-export const applyShapeRotations = <T extends Shape>(
-  shapes: T[],
-  degree: number,
-  pages: Array<{ index: number; size: Dimensions }>,
-) => [
-  ...shapes.map(s => {
-    const page = pages.find(p => p.index === s.imageIndex)
-    if (page) {
-      const angle = (Math.PI / 180) * ImageUtil.normalizeDegrees(degree)
-      const [sin, cos] = [Math.sin(angle), Math.cos(angle)]
-      const oldX = s.x - page.size.height / 2
-      const oldY = s.y - page.size.width / 2
-      const newX = oldX * cos - oldY * sin
-      const newY = oldY * cos + oldX * sin
-      return {
-        ...s,
-        x: newX + page.size.height / 2,
-        y: newY + page.size.width / 2,
-      }
-    }
-    return s
-  }),
-]
-
-/**
  * The default state data for the Document
  */
 export const defaultState: DocumentStateType = {
@@ -335,11 +305,6 @@ export const documentStateReducer: Reducer<DocumentStateType> = (state = default
         hasChanges: true,
         document: state.document && {
           ...state.document,
-          shapes: {
-            annotations: applyShapeRotations(state.document.shapes.annotations, action.degree, action.pages),
-            highlights: applyShapeRotations(state.document.shapes.highlights, action.degree, action.pages),
-            redactions: applyShapeRotations(state.document.shapes.redactions, action.degree, action.pages),
-          },
         },
       }
     case 'SN_DOCVEWER_DOCUMENT_PERMISSIONS_RECEIVED':

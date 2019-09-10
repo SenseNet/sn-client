@@ -4,7 +4,6 @@ import { ViewerState } from '../models/viewer-state'
 
 export const defaultViewerState: ViewerState & {
   updateState: (newState: DeepPartial<ViewerState>) => void
-  hasChanges: boolean
 } = {
   activePages: [1],
   zoomMode: 'fit',

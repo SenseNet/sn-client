@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { sleepAsync } from '@sensenet/client-utils'
+import React, { useCallback, useEffect, useState } from 'react'
+import { DeepPartial, sleepAsync } from '@sensenet/client-utils'
 import { DocumentData } from '../models'
 import { PreviewState } from '../Enums'
 import { useDocumentViewerApi, useViewerSettings } from '../hooks'
 
-const defaultDocumentData: DocumentData = {
+const defaultDocumentData: DocumentData & { updateDocumentData: (newData: DeepPartial<DocumentData>) => void } = {
   documentName: '',
   documentType: '',
   fileSizekB: 0,
@@ -18,15 +18,16 @@ const defaultDocumentData: DocumentData = {
     redactions: [],
   },
   error: undefined,
+  updateDocumentData: () => undefined,
 }
 
-export const DocumentDataContext = React.createContext(defaultDocumentData)
+export const DocumentDataContext = React.createContext<typeof defaultDocumentData>(defaultDocumentData)
 
 export const DocumentDataProvider: React.FC = ({ children }) => {
   const api = useDocumentViewerApi()
   const doc = useViewerSettings()
 
-  const [docData, setDocData] = useState(defaultDocumentData)
+  const [docData, setDocData] = useState<DocumentData>(defaultDocumentData)
 
   useEffect(() => {
     const ac = new AbortController()
@@ -56,5 +57,14 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [api, doc.documentIdOrPath, doc.hostName, doc.version])
 
-  return <DocumentDataContext.Provider value={docData}>{children}</DocumentDataContext.Provider>
+  const updateDocumentData = useCallback(
+    (newDocData: Partial<DocumentData>) => {
+      setDocData({ ...docData, ...newDocData })
+    },
+    [docData],
+  )
+
+  return (
+    <DocumentDataContext.Provider value={{ ...docData, updateDocumentData }}>{children}</DocumentDataContext.Provider>
+  )
 }

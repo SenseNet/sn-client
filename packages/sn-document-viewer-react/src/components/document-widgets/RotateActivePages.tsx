@@ -3,45 +3,23 @@ import RotateLeft from '@material-ui/icons/RotateLeft'
 import RotateRight from '@material-ui/icons/RotateRight'
 
 import React, { useCallback } from 'react'
-import { PreviewImageData } from '../../models'
-import { RootReducerType, rotateImages } from '../../store'
-import { useLocalization, useViewerState } from '../../hooks'
-
-/**
- * maps state fields from the store to component props
- * @param state the redux state
- */
-export const mapStateToProps = (state: RootReducerType) => {
-  return {
-    pages: state.sensenetDocumentViewer.previewImages.AvailableImages as PreviewImageData[],
-    activePages: state.sensenetDocumentViewer.viewer.activePages,
-  }
-}
-
-/**
- * maps state actions from the store to component props
- * @param state the redux state
- */
-export const mapDispatchToProps = {
-  rotateImages,
-}
-
+import { useLocalization, usePreviewImages, useViewerState } from '../../hooks'
+import { ROTATION_AMOUNT } from '../page-widgets/RotatePage'
 /**
  * Component that allows active page rotation
  */
-export const RotateActivePagesComponent: React.FC = () => {
+export const RotateActivePagesWidget: React.FC = () => {
   const localization = useLocalization()
   const viewerState = useViewerState()
+  const images = usePreviewImages()
 
   const rotateDocumentLeft = useCallback(() => {
-    // ToDo
-    // props.rotateImages(viewerState.activePages, -90)
-  }, [])
+    images.rotateImages(viewerState.activePages, -ROTATION_AMOUNT)
+  }, [images, viewerState.activePages])
 
   const rotateDocumentRight = useCallback(() => {
-    // ToDo
-    // props.rotateImages(viewerState.activePages, 90)
-  }, [])
+    images.rotateImages(viewerState.activePages, ROTATION_AMOUNT)
+  }, [images, viewerState.activePages])
 
   /**
    * renders the component

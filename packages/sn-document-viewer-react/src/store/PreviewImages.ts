@@ -1,6 +1,6 @@
 import { Action, Reducer } from 'redux'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
-import { DocumentData, DocumentViewerSettings, PreviewImageData } from '../models'
+import { DocumentData, PreviewImageData } from '../models'
 import { ImageUtil } from '../services'
 import { getComments } from './Comments'
 import { RootReducerType } from '.'
@@ -77,7 +77,7 @@ export const getAvailableImages = (documentData: DocumentData, version = 'V1.0A'
   type: 'SN_GET_AVAILABLE_IMAGES_INJECTABLE_ACTION',
   inject: async (options: IInjectableActionCallbackParams<RootReducerType>) => {
     options.dispatch(getAvailabelImagesAction(documentData))
-    const docViewerSettings = options.getInjectable(DocumentViewerSettings)
+    const docViewerSettings = options.getInjectable<any>({} as any)
     let docData: PreviewImageData[] | undefined
     try {
       const state = options.getState()
@@ -90,7 +90,7 @@ export const getAvailableImages = (documentData: DocumentData, version = 'V1.0A'
       options.dispatch(availabelImagesReceiveErrorAction(error.message || Error('Error getting preview images')))
       return
     }
-    options.dispatch(availabelImagesReceivedAction(docData))
+    options.dispatch(availabelImagesReceivedAction(docData as any))
     options.dispatch(getComments())
   },
 })
@@ -163,7 +163,7 @@ export const previewAvailable = (documentData: DocumentData, version = 'V1.0A', 
   type: 'SN_DOCVIEWER_PREVIEW_AVAILABLE_INJECTABLE_ACTION',
   inject: async (options: IInjectableActionCallbackParams<RootReducerType>) => {
     options.dispatch(previewAvailableAction(documentData, version, page))
-    const docViewerApi = options.getInjectable(DocumentViewerSettings)
+    const docViewerApi = options.getInjectable<any>({} as any)
     let docData: PreviewImageData | undefined
     try {
       const state = options.getState()

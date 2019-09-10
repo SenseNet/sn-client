@@ -46,4 +46,9 @@ export interface ViewerState {
    * Determines if comments are shown
    */
   showComments: boolean
+
+  /**
+   * True if there are any changes on the document
+   */
+  hasChanges: boolean
 }
