@@ -13,7 +13,7 @@ import {
 /**
  * Document widget component for saving document state
  */
-export const SaveDocument: React.FC = () => {
+export const SaveWidget: React.FC = () => {
   const api = useDocumentViewerApi()
   const document = useDocumentData()
   const permissions = useDocumentPermissions()
@@ -22,7 +22,7 @@ export const SaveDocument: React.FC = () => {
   const localization = useLocalization()
 
   const save = useCallback(() => {
-    permissions.canEdit && api.saveChanges({ document, pages, abortController: new AbortController() })
+    permissions.canEdit && api.saveChanges({ document, pages: pages.imageData, abortController: new AbortController() })
   }, [api, document, pages, permissions.canEdit])
 
   return (

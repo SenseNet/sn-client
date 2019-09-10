@@ -19,7 +19,7 @@ import { ZoomMode } from '../../models/viewer-state'
 /**
  * Document widget component for modifying the zoom mode / level
  */
-export const ZoomWidget: React.FC = () => {
+export const ZoomModeWidget: React.FC = () => {
   const localization = useLocalization()
   const viewerState = useViewerState()
 

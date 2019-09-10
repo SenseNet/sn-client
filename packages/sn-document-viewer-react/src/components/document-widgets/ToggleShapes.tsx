@@ -6,7 +6,7 @@ import { ToggleBase } from './ToggleBase'
 /**
  * Document widget component that toggles the displaying of the shapes
  */
-export const ToggleShapesComponent: React.FC = () => {
+export const ToggleShapesWidget: React.FC = () => {
   const localization = useLocalization()
   const viewerState = useViewerState()
 
