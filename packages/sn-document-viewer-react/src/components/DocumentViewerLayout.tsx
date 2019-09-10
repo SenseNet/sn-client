@@ -1,58 +1,16 @@
 import Drawer from '@material-ui/core/Drawer'
 import { SlideProps } from '@material-ui/core/Slide'
 import Typography from '@material-ui/core/Typography'
-import React = require('react')
-import { connect } from 'react-redux'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { DraftCommentMarker } from '../models'
-import { componentType } from '../services'
-import { createComment, RootReducerType, setActivePages, setThumbnails } from '../store'
-import {
-  getComments,
-  setSelectedCommentId,
-  toggleIsCreateCommentActive,
-  toggleIsPlacingCommentMarker,
-} from '../store/Comments'
+import { useLocalization, useViewerState } from '../hooks'
+import { CommentsContext, CommentsContextProvider } from '../context/comments'
 import { Comment } from './comment'
 import { CreateComment } from './comment/CreateComment'
 import { CommentsContainer, PageList } from './'
 
-/**
- * maps state fields from the store to component props
- * @param state the redux state
- */
-const mapStateToProps = (state: RootReducerType) => {
-  return {
-    activePages: state.sensenetDocumentViewer.viewer.activePages,
-    zoomMode: state.sensenetDocumentViewer.viewer.zoomMode,
-    customZoomLevel: state.sensenetDocumentViewer.viewer.customZoomLevel,
-    showThumbnails: state.sensenetDocumentViewer.viewer.showThumbnails,
-    showComments: state.sensenetDocumentViewer.viewer.showComments,
-    comments: state.comments.items,
-    pageCount: state.sensenetDocumentViewer.documentState.document.pageCount,
-    isCreateCommentActive: state.comments.isCreateCommentActive,
-    isPlacingCommentMarker: state.comments.isPlacingCommentMarker,
-    selectedCommentId: state.comments.selectedCommentId,
-    fitRelativeZoomLevel: state.sensenetDocumentViewer.viewer.fitRelativeZoomLevel,
-    localization: state.sensenetDocumentViewer.localization,
-  }
-}
-
-/**
- * maps state actions from the store to component props
- * @param state the redux state
- */
-const mapDispatchToProps = {
-  setActivePages,
-  getComments,
-  setThumbnails,
-  createComment,
-  setSelectedCommentId,
-  toggleIsCreateCommentActive,
-  toggleIsPlacingCommentMarker,
-}
-
 /** Props definition for the Document Viewer layout */
-export interface DocumentLayoutOwnProps {
+export interface DocumentViewerLayoutProps {
   drawerSlideProps?: Partial<SlideProps>
 }
 
@@ -77,63 +35,41 @@ interface ScrollToOptions {
   smoothScroll: boolean
 }
 
-/**
- * Component for the main DocumentViewer layout
- */
-export class DocumentViewerLayoutComponent extends React.Component<
-  componentType<typeof mapStateToProps, typeof mapDispatchToProps, DocumentLayoutOwnProps>,
-  DocumentLayoutState
-> {
-  constructor(props: DocumentViewerLayoutComponent['props']) {
-    super(props)
-    this.state = {
-      activePage: 1,
-      thumbnaislVisibility: this.props.showThumbnails,
-      createCommentValue: '',
-    }
-    this.commentsContainerRef = React.createRef()
-    this.createComment = this.createComment.bind(this)
-    this.handleKeyUp = this.handleKeyUp.bind(this)
-    this.handleMarkerCreation = this.handleMarkerCreation.bind(this)
-  }
+export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = props => {
+  const viewerState = useViewerState()
+  const localization = useLocalization()
 
-  private commentsContainerRef: React.RefObject<HTMLDivElement>
+  const [selectedCommentId, setSelectedCommentId] = useState<string | undefined>()
 
-  public componentDidMount() {
-    document.addEventListener('keyup', this.handleKeyUp)
-  }
+  const [createCommentValue, setCreateCommentValue] = useState('')
 
-  public componentWillUnmount() {
-    document.removeEventListener('keyup', this.handleKeyUp)
-  }
+  const commentsContainerRef = useRef<HTMLDivElement>()
 
-  /** scrolls the viewer to focus to the page with the provided index */
-  public scrollTo(index: number, smoothScroll = true) {
-    this.setState({ ...this.state, activePage: index }, () => {
-      this.scrollToImage({
-        containerId: 'sn-document-viewer-pages',
-        itemName: PAGE_NAME,
-        padding: PAGE_PADDING,
-        index,
-        smoothScroll,
-      })
+  const [draftCommentMarker, setDraftCommentMarker] = useState<DraftCommentMarker>()
 
-      this.scrollToImage({
-        containerId: 'sn-document-viewer-thumbnails',
-        itemName: THUMBNAIL_NAME,
-        padding: THUMBNAIL_PADDING,
-        index,
-        smoothScroll,
-      })
-
-      if (this.props.activePages[0] !== index) {
-        this.props.setActivePages([index])
-        this.props.getComments()
+  const handleKeyUp = useCallback(
+    (ev: KeyboardEvent) => {
+      if (ev.key !== 'Escape') {
+        return
       }
-    })
-  }
+      if (viewerState.isPlacingCommentMarker) {
+        return viewerState.updateState({ isPlacingCommentMarker: false })
+      }
+      if (viewerState.isCreateCommentActive) {
+        viewerState.updateState({ isCreateCommentActive: false })
+      }
+      setSelectedCommentId(undefined)
+      setCreateCommentValue('')
+    },
+    [viewerState],
+  )
 
-  private scrollToImage({ containerId, index, itemName, padding, smoothScroll }: ScrollToOptions) {
+  useEffect(() => {
+    document.addEventListener('keyup', handleKeyUp)
+    return () => document.removeEventListener('keyup', handleKeyUp)
+  }, [handleKeyUp])
+
+  const scrollToImage = useCallback(({ containerId, index, itemName, padding, smoothScroll }: ScrollToOptions) => {
     const container = document.getElementById(containerId)
     const item = document.querySelector(`.${itemName}`)
     if (container && container.scrollTo && item) {
@@ -142,182 +78,145 @@ export class DocumentViewerLayoutComponent extends React.Component<
         behavior: smoothScroll ? 'smooth' : 'auto',
       })
     }
-  }
+  }, [])
 
-  private handleMarkerCreation(draftCommentMarker: DraftCommentMarker) {
-    this.setState({ ...this.state, draftCommentMarker })
-  }
+  const scrollTo = useCallback(
+    (index: number, smoothScroll = true) => {
+      viewerState.updateState({ activePages: [index] })
+      scrollToImage({
+        containerId: 'sn-document-viewer-pages',
+        itemName: PAGE_NAME,
+        padding: PAGE_PADDING,
+        index,
+        smoothScroll,
+      })
 
-  private createComment(text: string) {
-    if (!this.state.draftCommentMarker || !this.state.activePage) {
-      return
-    }
-    this.props.createComment({ page: this.state.activePage, text, ...this.state.draftCommentMarker })
-    this.toggleIsPlacingCommentMarker(false)
-  }
+      scrollToImage({
+        containerId: 'sn-document-viewer-thumbnails',
+        itemName: THUMBNAIL_NAME,
+        padding: THUMBNAIL_PADDING,
+        index,
+        smoothScroll,
+      })
+    },
+    [scrollToImage, viewerState],
+  )
 
-  private toggleIsPlacingCommentMarker(isPlacingCommentMarker = !this.props.isPlacingCommentMarker) {
-    this.props.toggleIsPlacingCommentMarker(isPlacingCommentMarker)
-    this.setState({ ...this.state, draftCommentMarker: undefined })
-  }
-
-  private handleKeyUp(ev: KeyboardEvent) {
-    if (ev.key !== 'Escape') {
-      return
-    }
-    if (this.props.isPlacingCommentMarker) {
-      return this.toggleIsPlacingCommentMarker(false)
-    }
-    if (this.props.isCreateCommentActive) {
-      this.props.toggleIsCreateCommentActive(false)
-    }
-    this.props.setSelectedCommentId('')
-    this.setState({ ...this.state, createCommentValue: '' })
-  }
-
-  /** triggered when the component will receive props */
-  public componentWillReceiveProps(newProps: this['props']) {
-    if (
-      this.props.activePages[0] !== newProps.activePages[0] ||
-      this.props.fitRelativeZoomLevel !== newProps.fitRelativeZoomLevel
-    ) {
-      this.scrollTo(newProps.activePages[0], this.props.fitRelativeZoomLevel === newProps.fitRelativeZoomLevel)
-      this.toggleIsPlacingCommentMarker(false)
-    }
-    if (this.props.showThumbnails !== newProps.showThumbnails) {
-      if (newProps.showThumbnails) {
-        this.setState({
-          ...this.state,
-          thumbnaislVisibility: true,
-        })
-        window.dispatchEvent(new Event('resize'))
-      } else {
-        setTimeout(() => {
-          this.setState({
-            ...this.state,
-            thumbnaislVisibility: false,
-          })
-          window.dispatchEvent(new Event('resize'))
-        }, 200)
-      }
-    }
-    if (this.props.selectedCommentId !== newProps.selectedCommentId) {
-      const selectedCommentNode = document.getElementById(newProps.selectedCommentId)
-      if (!selectedCommentNode) {
+  const createComment = useCallback(
+    (text: string) => {
+      if (!draftCommentMarker || !viewerState.activePages[0]) {
         return
       }
-      this.commentsContainerRef.current &&
-        this.commentsContainerRef.current.scrollTo({
-          top: selectedCommentNode.offsetTop - selectedCommentNode.scrollHeight,
-          behavior: 'smooth',
-        })
-    }
-  }
+      props.createComment({ page: viewerState.activePages[0], text, ...draftCommentMarker })
+      viewerState.updateState({ isPlacingCommentMarker: false })
+    },
+    [draftCommentMarker, props, viewerState],
+  )
 
-  /**
-   * renders the component
-   */
-  public render() {
-    return (
+  return (
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+      }}>
+      {props.children}
       <div
         style={{
-          width: '100%',
-          height: '100%',
           display: 'flex',
-          flexDirection: 'column',
+          height: '100%',
+          width: '100%',
+          overflow: 'hidden',
+          zIndex: 0,
+          position: 'relative',
         }}>
-        {this.props.children}
-        <div
-          style={{
-            display: 'flex',
-            height: '100%',
-            width: '100%',
-            overflow: 'hidden',
-            zIndex: 0,
-            position: 'relative',
+        <Drawer
+          variant={'persistent'}
+          open={viewerState.showThumbnails}
+          anchor="left"
+          SlideProps={props.drawerSlideProps}
+          PaperProps={{
+            style: {
+              position: 'relative',
+              width: this.state.thumbnaislVisibility ? '200px' : 0,
+              height: '100%',
+              overflow: 'hidden',
+            },
           }}>
-          <Drawer
-            variant={'persistent'}
-            open={this.props.showThumbnails}
-            anchor="left"
-            SlideProps={this.props.drawerSlideProps}
-            PaperProps={{
-              style: {
-                position: 'relative',
-                width: this.state.thumbnaislVisibility ? '200px' : 0,
-                height: '100%',
-                overflow: 'hidden',
-              },
-            }}>
-            <PageList
-              showWidgets={false}
-              style={{ minWidth: 200, marginRight: '-16px', paddingRight: 0 }}
-              id="sn-document-viewer-thumbnails"
-              zoomMode="fit"
-              fitRelativeZoomLevel={0}
-              zoomLevel={1}
-              onPageClick={(_ev, index) => this.scrollTo(index)}
-              elementName={THUMBNAIL_NAME}
-              images="thumbnail"
-              tolerance={0}
-              padding={THUMBNAIL_PADDING}
-              activePage={this.state.activePage}
-            />
-          </Drawer>
           <PageList
-            handleMarkerCreation={this.handleMarkerCreation}
-            showWidgets={true}
-            id="sn-document-viewer-pages"
-            zoomMode={this.props.zoomMode}
-            zoomLevel={this.props.customZoomLevel}
-            fitRelativeZoomLevel={this.props.fitRelativeZoomLevel}
-            onPageClick={(_ev, index) => this.scrollTo(index)}
-            elementName={PAGE_NAME}
-            images="preview"
+            showWidgets={false}
+            style={{ minWidth: 200, marginRight: '-16px', paddingRight: 0 }}
+            id="sn-document-viewer-thumbnails"
+            zoomMode="fit"
+            fitRelativeZoomLevel={0}
+            zoomLevel={1}
+            onPageClick={(_ev, index) => scrollTo(index)}
+            elementName={THUMBNAIL_NAME}
+            images="thumbnail"
             tolerance={0}
-            padding={PAGE_PADDING}
-            activePage={this.state.activePage}
+            padding={THUMBNAIL_PADDING}
+            activePage={viewerState.activePages[0]}
           />
-          <Drawer
-            variant={'persistent'}
-            open={this.props.showComments}
-            anchor="right"
-            SlideProps={this.props.drawerSlideProps}
-            PaperProps={{
-              style: {
-                position: 'relative',
-                width: this.props.showComments ? '340px' : 0,
-                height: '100%',
-                overflow: 'hidden',
-              },
-            }}>
-            <CommentsContainer ref={this.commentsContainerRef}>
-              <Typography variant="h4">{this.props.localization.commentSideBarTitle}</Typography>
-              <CreateComment
-                isActive={this.props.isCreateCommentActive}
-                handleIsActive={isActive => this.props.toggleIsCreateCommentActive(isActive)}
-                draftCommentMarker={this.state.draftCommentMarker}
-                handlePlaceMarkerClick={isPlacing => this.toggleIsPlacingCommentMarker(isPlacing)}
-                isPlacingMarker={this.props.isPlacingCommentMarker}
-                localization={this.props.localization}
-                createComment={this.createComment}
-                inputValue={this.state.createCommentValue}
-                handleInputValueChange={value => this.setState({ ...this.state, createCommentValue: value })}
-              />
-              {this.props.comments.map(comment => (
-                <Comment key={comment.id} {...comment} />
-              ))}
-            </CommentsContainer>
-          </Drawer>
-        </div>
+        </Drawer>
+        <PageList
+          handleMarkerCreation={setDraftCommentMarker}
+          showWidgets={true}
+          id="sn-document-viewer-pages"
+          zoomMode={viewerState.zoomMode}
+          zoomLevel={viewerState.customZoomLevel}
+          fitRelativeZoomLevel={viewerState.fitRelativeZoomLevel}
+          onPageClick={(_ev, index) => scrollTo(index)}
+          elementName={PAGE_NAME}
+          images="preview"
+          tolerance={0}
+          padding={PAGE_PADDING}
+          activePage={viewerState.activePages[0]}
+        />
+        <Drawer
+          variant={'persistent'}
+          open={viewerState.showComments}
+          anchor="right"
+          SlideProps={props.drawerSlideProps}
+          PaperProps={{
+            style: {
+              position: 'relative',
+              width: viewerState.showComments ? '340px' : 0,
+              height: '100%',
+              overflow: 'hidden',
+            },
+          }}>
+          <CommentsContainer ref={commentsContainerRef as any}>
+            <Typography variant="h4">{localization.commentSideBarTitle}</Typography>
+            <CreateComment
+              isActive={viewerState.isCreateCommentActive}
+              handleIsActive={isActive => viewerState.updateState({ isCreateCommentActive: isActive })}
+              draftCommentMarker={draftCommentMarker}
+              handlePlaceMarkerClick={isPlacingCommentMarker => viewerState.updateState({ isPlacingCommentMarker })}
+              isPlacingMarker={viewerState.isPlacingCommentMarker}
+              localization={localization}
+              createComment={createComment}
+              inputValue={createCommentValue}
+              handleInputValueChange={value => setCreateCommentValue(value)}
+            />
+            <CommentsContextProvider page={viewerState.activePages[0]}>
+              <CommentsContext.Consumer>
+                {commentsContext =>
+                  commentsContext.comments.map(comment => (
+                    <Comment
+                      key={comment.id}
+                      {...comment}
+                      selectedId={selectedCommentId}
+                      select={() => setSelectedCommentId(comment.id)}
+                      comment={comment}
+                    />
+                  ))
+                }
+              </CommentsContext.Consumer>
+            </CommentsContextProvider>
+          </CommentsContainer>
+        </Drawer>
       </div>
-    )
-  }
+    </div>
+  )
 }
-
-const connectedComponent = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(DocumentViewerLayoutComponent)
-
-export { connectedComponent as DocumentViewerLayout }

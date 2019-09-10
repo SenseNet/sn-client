@@ -13,7 +13,7 @@ export interface CreatedByUser {
 /**
  * Comment object
  */
-export interface Comment {
+export interface CommentData {
   id: string
   createdBy: CreatedByUser
   page: number
@@ -25,9 +25,9 @@ export interface Comment {
 /**
  * Comment object without the created by User
  */
-export type CommentWithoutCreatedByAndId = Omit<Comment, 'createdBy' | 'id'>
+export type CommentWithoutCreatedByAndId = Omit<CommentData, 'createdBy' | 'id'>
 
 /**
  * Coordinates for marker
  */
-export type DraftCommentMarker = Pick<Comment, 'x' | 'y' | 'id'>
+export type DraftCommentMarker = Pick<CommentData, 'x' | 'y' | 'id'>

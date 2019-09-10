@@ -56,4 +56,9 @@ export interface ViewerState {
    * Variable that indicates if a comment marker placing is in progress
    */
   isPlacingCommentMarker: boolean
+
+  /**
+   * Indicates if the user is creating a comment at the moment
+   */
+  isCreateCommentActive: boolean
 }

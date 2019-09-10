@@ -1,17 +1,21 @@
 import { Button } from '@material-ui/core'
 import React, { useState } from 'react'
 import { ConfirmationDialog } from '../ConfirmationDialog'
-import { useLocalization } from '../../hooks'
-import { CommentPropType } from './Comment'
+import { useDocumentData, useDocumentViewerApi, useLocalization } from '../../hooks'
+import { CommentData } from '../../models/Comment'
 
-type DeleteButtonProps = Pick<CommentPropType, 'deleteComment' | 'id'>
+// type DeleteButtonProps = Pick<CommentPropType, 'deleteComment' | 'id'>
+export interface DeleteButtonProps {
+  comment: CommentData
+}
 
 /**
  * Represents a delete button with confirmation dialog
  */
 export const DeleteButton: React.FC<DeleteButtonProps> = props => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-
+  const api = useDocumentViewerApi()
+  const document = useDocumentData()
   const localization = useLocalization()
 
   const handleClick = () => {
@@ -20,7 +24,11 @@ export const DeleteButton: React.FC<DeleteButtonProps> = props => {
 
   const handleDialogClose = (isCanceled: boolean) => {
     if (!isCanceled) {
-      props.deleteComment(props.id)
+      api.commentActions.deletePreviewComment({
+        document,
+        commentId: props.comment.id,
+        abortController: new AbortController(),
+      })
     }
     setIsDialogOpen(false)
   }

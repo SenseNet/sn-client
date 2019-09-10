@@ -1,4 +1,4 @@
-import { Comment, CommentWithoutCreatedByAndId } from './Comment'
+import { CommentData, CommentWithoutCreatedByAndId } from './Comment'
 import { DocumentData, PreviewImageData } from '.'
 
 /**
@@ -69,12 +69,12 @@ export interface DocumentViewerApiSettings {
       document: DocumentData
       page: number
       abortController: AbortController
-    }) => Promise<Comment[]>
+    }) => Promise<CommentData[]>
     addPreviewComment: (options: {
       document: DocumentData
       comment: CommentWithoutCreatedByAndId
       abortController: AbortController
-    }) => Promise<Comment>
+    }) => Promise<CommentData>
     deletePreviewComment: (options: {
       document: DocumentData
       commentId: string

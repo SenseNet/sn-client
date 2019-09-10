@@ -5,60 +5,53 @@ import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
 import Collapse from '@material-ui/core/Collapse'
 import Typography from '@material-ui/core/Typography'
-import React, { useState } from 'react'
-import { Comment as CommentType } from '../../models/Comment'
-import { componentType } from '../../services'
-import { deleteComment, RootReducerType } from '../../store'
-import { setSelectedCommentId } from '../../store/Comments'
-import { useLocalization } from '../../hooks'
+import React, { useEffect, useState } from 'react'
+import { CommentData } from '../../models/Comment'
+import { useLocalization, useViewerSettings } from '../../hooks'
 import { DeleteButton } from './DeleteCommentButton'
 import { StyledCard } from './style'
-
-const mapStateToProps = (state: RootReducerType) => ({
-  selectedCommentId: state.comments.selectedCommentId,
-  host: state.sensenetDocumentViewer.documentState.document.hostName,
-})
-
-const mapDispatchToProps = {
-  deleteComment,
-  setSelectedCommentId,
-}
 
 /**
  * Comment prop type
  */
-export type CommentPropType = componentType<typeof mapStateToProps, typeof mapDispatchToProps, CommentType>
+export interface CommentProps {
+  comment: CommentData
+  selectedId?: string
+  select: () => void
+}
 
 const MAX_TEXT_LENGTH = 160
 
 /**
  * Represents a single comment component.
  */
-export const Comment: React.FC<CommentPropType> = props => {
-  const isLongText = props.text && props.text.length > MAX_TEXT_LENGTH
+export const Comment: React.FC<CommentProps> = props => {
+  const isLongText = props.comment.text && props.comment.text.length > MAX_TEXT_LENGTH
   const [isOpen, setIsOpen] = useState(!isLongText)
   const localization = useLocalization()
-  const isSelected = () => props.selectedCommentId === props.id
+  const settings = useViewerSettings()
+
+  const [isSelected, setIsSelected] = useState(props.selectedId === props.comment.id)
+
+  useEffect(() => {
+    setIsSelected(props.selectedId === props.comment.id)
+  }, [props.comment.id, props.selectedId])
 
   return (
-    <StyledCard
-      id={props.id}
-      isSelected={isSelected()}
-      raised={isSelected()}
-      onClick={() => props.setSelectedCommentId(props.id)}>
+    <StyledCard id={props.comment.id} isSelected={isSelected} raised={isSelected} onClick={props.select}>
       <CardHeader
         avatar={
-          props.host === props.createdBy.avatarUrl ? (
+          settings.hostName === props.comment.createdBy.avatarUrl ? (
             <Avatar />
           ) : (
-            <Avatar src={props.createdBy.avatarUrl} alt={localization.avatarAlt} />
+            <Avatar src={props.comment.createdBy.avatarUrl} alt={localization.avatarAlt} />
           )
         }
-        title={props.createdBy.displayName}
+        title={props.comment.createdBy.displayName}
       />
       <Collapse in={isOpen} timeout="auto" collapsedHeight={isOpen ? '0px' : '78px'}>
         <CardContent>
-          <Typography style={{ wordBreak: 'break-word' }}>{props.text}</Typography>
+          <Typography style={{ wordBreak: 'break-word' }}>{props.comment.text}</Typography>
         </CardContent>
       </Collapse>
       <CardActions>
@@ -67,10 +60,10 @@ export const Comment: React.FC<CommentPropType> = props => {
             <Button size="small" onClick={() => setIsOpen(!isOpen)}>
               {isOpen ? localization.showLess || 'Show less' : localization.showMore || 'Show more'}
             </Button>
-            {isOpen ? <DeleteButton {...props} /> : null}
+            {isOpen ? <DeleteButton comment={props.comment} /> : null}
           </>
         ) : (
-          <DeleteButton {...props} />
+          <DeleteButton comment={props.comment} />
         )}
       </CardActions>
     </StyledCard>
