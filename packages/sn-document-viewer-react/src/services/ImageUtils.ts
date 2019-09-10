@@ -1,4 +1,4 @@
-import { ZoomMode } from '../store'
+import { ZoomMode } from '../models/viewer-state'
 
 /** Dimensions model that defines a specified width and height */
 export interface Dimensions {
