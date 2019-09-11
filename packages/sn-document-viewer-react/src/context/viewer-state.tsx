@@ -30,10 +30,12 @@ export const ViewerStateProvider: React.FC<{ options?: Partial<typeof defaultVie
     setState(deepMerge({ ...defaultViewerState }, props.options))
   }, [props.options])
 
-  const updateState = useCallback((newState: DeepPartial<typeof defaultViewerState>) => {
-    setState(deepMerge({ ...state }, newState))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const updateState = useCallback(
+    (newState: DeepPartial<typeof defaultViewerState>) => {
+      setState(deepMerge({ ...state }, newState))
+    },
+    [state],
+  )
 
   return <ViewerStateContext.Provider value={{ ...state, updateState }}>{props.children}</ViewerStateContext.Provider>
 }
