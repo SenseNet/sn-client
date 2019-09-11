@@ -1,6 +1,6 @@
 import { Shape } from '../models/Shapes'
 import { PreviewImageData } from '../models'
-import { ImageUtil } from './ImageUtils'
+import { ImageUtil } from './image-utils'
 
 /**
  * helper method to apply shape rotations

@@ -16,6 +16,7 @@ export const defaultViewerState: ViewerState & {
   showComments: false,
   hasChanges: false,
   isPlacingCommentMarker: false,
+  isCreateCommentActive: false,
   updateState: () => {
     /** */
   },

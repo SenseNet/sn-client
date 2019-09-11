@@ -6,7 +6,7 @@ import { v1 } from 'uuid'
 import { Repository } from '@sensenet/client-core'
 import {
   Annotation,
-  Comment,
+  CommentData,
   CommentWithoutCreatedByAndId,
   DocumentData,
   DocumentViewerApiSettings,
@@ -29,7 +29,7 @@ const addGuidToShape = <T extends Shape>(shape: T) => {
  * @param {DocumentData} documentData
  * @returns {(value: Comment) => Comment}
  */
-function changeCreatedByUrlToCurrent(documentData: DocumentData): (value: Comment) => Comment {
+function changeCreatedByUrlToCurrent(documentData: DocumentData): (value: CommentData) => CommentData {
   return comment => {
     return {
       ...comment,
@@ -197,7 +197,7 @@ export const createDefaultApiSettings: (repo: Repository) => DocumentViewerApiSe
   },
   commentActions: {
     addPreviewComment: async ({ document, comment, abortController }) => {
-      const response = await repo.executeAction<CommentWithoutCreatedByAndId, Comment>({
+      const response = await repo.executeAction<CommentWithoutCreatedByAndId, CommentData>({
         idOrPath: document.idOrPath,
         body: comment,
         name: 'AddPreviewComment',
@@ -221,7 +221,7 @@ export const createDefaultApiSettings: (repo: Repository) => DocumentViewerApiSe
       return response
     },
     getPreviewComments: async ({ document, page, abortController }) => {
-      const response = await repo.executeAction<any, Comment[]>({
+      const response = await repo.executeAction<any, CommentData[]>({
         idOrPath: document.idOrPath,
         name: 'GetPreviewComments',
         method: 'GET',

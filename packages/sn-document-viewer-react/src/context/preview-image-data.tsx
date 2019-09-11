@@ -7,9 +7,7 @@ import {
   useViewerSettings,
   useViewerState,
 } from '../hooks'
-import { ImageUtil } from '../services/ImageUtils'
-import console = require('console')
-import { applyShapeRotations } from '../services/applyShapeRotations'
+import { applyShapeRotations, ImageUtil } from '../services'
 
 export const PreviewImageDataContext = React.createContext<{
   imageData: PreviewImageData[]
