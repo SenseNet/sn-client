@@ -3,17 +3,14 @@ import React, { useCallback, useEffect } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { Close } from '@material-ui/icons'
 import { Button } from '@material-ui/core'
-import { CurrentContentProvider, useInjector, useRepository } from '@sensenet/hooks-react'
+import { CurrentContentProvider, useRepository } from '@sensenet/hooks-react'
 import { useLocalization, useSelectionService, useTheme } from '../hooks'
-import { getViewerSettings } from '../services/GetViewerSettings'
 
 const DocViewer: React.FunctionComponent<
   RouteComponentProps<{ documentId: string }> & { previousLocation?: string }
 > = props => {
   const documentId = parseInt(props.match.params.documentId, 10)
-  const injector = useInjector()
   const repo = useRepository()
-  injector.setExplicitInstance(getViewerSettings(repo))
   const selectionService = useSelectionService()
   const localization = useLocalization()
   const theme = useTheme()

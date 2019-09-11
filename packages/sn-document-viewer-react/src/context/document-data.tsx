@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { DeepPartial, sleepAsync } from '@sensenet/client-utils'
+import { deepMerge, DeepPartial, sleepAsync } from '@sensenet/client-utils'
+import Semaphore from 'semaphore-async-await'
 import { DocumentData } from '../models'
 import { PreviewState } from '../Enums'
 import { useDocumentViewerApi, useViewerSettings } from '../hooks'
@@ -28,11 +29,13 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
   const doc = useViewerSettings()
 
   const [docData, setDocData] = useState<DocumentData>(defaultDocumentData)
+  const [loadLock] = useState(new Semaphore(1))
 
   useEffect(() => {
     const ac = new AbortController()
     ;(async () => {
       try {
+        await loadLock.acquire()
         setDocData(defaultDocumentData)
         while (docData.pageCount === PreviewState.Loading && !ac.signal.aborted) {
           const result = await api.getDocumentData({
@@ -44,6 +47,8 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
           setDocData(result)
           if (result.pageCount === PreviewState.Loading) {
             await sleepAsync(4000)
+          } else {
+            break
           }
         }
       } catch (error) {
@@ -52,6 +57,8 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
           setDocData({ ...defaultDocumentData, pageCount: PreviewState.ClientFailure, error: error.toString() })
           throw error
         }
+      } finally {
+        loadLock.release()
       }
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -59,10 +66,14 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
 
   const updateDocumentData = useCallback(
     (newDocData: Partial<DocumentData>) => {
-      setDocData({ ...docData, ...newDocData })
+      setDocData(deepMerge(docData, newDocData))
     },
     [docData],
   )
+
+  if (!docData.idOrPath) {
+    return null
+  }
 
   return (
     <DocumentDataContext.Provider value={{ ...docData, updateDocumentData }}>{children}</DocumentDataContext.Provider>
