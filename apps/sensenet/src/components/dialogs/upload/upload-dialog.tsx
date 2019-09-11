@@ -59,6 +59,14 @@ export const UploadDialog: React.FunctionComponent<{
     setFiles(files.filter(f => f !== file))
   }
 
+  const addFiles = (fileList: FileList) => {
+    const noDuplicateFiles =
+      files && files.length
+        ? [...files, ...[...fileList].filter(file => !files.some(f2 => f2.size === file.size && f2.name === file.name))]
+        : [...fileList]
+    setFiles(noDuplicateFiles)
+  }
+
   return (
     <Dialog {...props.dialogProps} disablePortal fullScreen>
       <DialogTitle disableTypography>
@@ -75,11 +83,7 @@ export const UploadDialog: React.FunctionComponent<{
         ) : null}
       </DialogTitle>
       <DialogContent>
-        <DropFileArea
-          parentContent={props.content}
-          onDrop={ev =>
-            files ? setFiles([...files, ...ev.dataTransfer.files]) : setFiles([...ev.dataTransfer.files])
-          }>
+        <DropFileArea parentContent={props.content} onDrop={ev => addFiles(ev.dataTransfer.files)}>
           <Grid
             onClick={() => inputFile.current && inputFile.current.click()}
             container
@@ -104,7 +108,7 @@ export const UploadDialog: React.FunctionComponent<{
         </DropFileArea>
       </DialogContent>
       <input
-        onChange={ev => (files ? setFiles([...files, ...ev.target.files!]) : setFiles([...ev.target.files!]))}
+        onChange={ev => ev.target.files && addFiles(ev.target.files)}
         style={{ display: 'none' }}
         ref={inputFile}
         type="file"
