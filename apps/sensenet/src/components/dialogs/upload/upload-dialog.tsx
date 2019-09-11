@@ -8,17 +8,14 @@ import {
   DialogTitle,
   Grid,
   IconButton,
-  List,
-  ListItem,
-  ListItemText,
   makeStyles,
   Theme,
   Typography,
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 import NoteAddSharpIcon from '@material-ui/icons/NoteAddSharp'
-import filesize from 'filesize'
 import { DropFileArea } from '../../DropFileArea'
+import { FileList } from './file-list'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -32,17 +29,15 @@ const useStyles = makeStyles((theme: Theme) =>
       fontSize: '4rem',
     },
     grid: {
-      height: '90vh',
+      minHeight: '90vh',
       border: 'dashed',
+      borderColor: theme.palette.grey[500],
     },
     body1: {
       fontSize: '2.5rem',
     },
     body2: {
       fontSize: '2rem',
-    },
-    listRoot: {
-      width: '100%',
     },
   }),
 )
@@ -56,6 +51,13 @@ export const UploadDialog: React.FunctionComponent<{
   const [files, setFiles] = useState<File[]>()
 
   const isFileAdded = files && !!files.length
+
+  const removeItem = (file: File) => {
+    if (!files) {
+      return
+    }
+    setFiles(files.filter(f => f !== file))
+  }
 
   return (
     <Dialog {...props.dialogProps} disablePortal fullScreen>
@@ -83,16 +85,10 @@ export const UploadDialog: React.FunctionComponent<{
             container
             justify={isFileAdded ? 'flex-start' : 'center'}
             direction="column"
-            alignItems="center"
+            alignItems={isFileAdded ? 'stretch' : 'center'}
             className={classes.grid}>
             {isFileAdded ? (
-              <List className={classes.listRoot}>
-                {[...files!].map(file => (
-                  <ListItem key={file.lastModified}>
-                    <ListItemText primary={file.name} secondary={filesize(file.size)} />
-                  </ListItem>
-                ))}
-              </List>
+              <FileList files={files!} removeItem={removeItem} />
             ) : (
               <>
                 <NoteAddSharpIcon className={classes.icon} />

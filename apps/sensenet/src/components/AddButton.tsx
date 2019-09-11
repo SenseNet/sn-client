@@ -96,15 +96,13 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
               setShowSelectType(false)
               setIsUploadDialogOpen(true)
             }}>
-            <label htmlFor="upload_file_input">
-              <div
-                style={{
-                  width: 90,
-                }}>
-                <CloudUpload style={{ height: 38, width: 38 }} />
-                <Typography variant="body1">{localization.upload}</Typography>
-              </div>
-            </label>
+            <div
+              style={{
+                width: 90,
+              }}>
+              <CloudUpload style={{ height: 38, width: 38 }} />
+              <Typography variant="body1">{localization.upload}</Typography>
+            </div>
           </Button>
           {allowedChildTypes.map(childType => (
             <Button
