@@ -1,15 +1,7 @@
-import { configureStore } from '@sensenet/document-viewer-react'
 import React from 'react'
-import { Provider } from 'react-redux'
-import { ExampleAppLayout, exampleSettings } from './ExampleAppLayout'
-
-const store = configureStore(exampleSettings)
+import { ExampleAppLayout } from './ExampleAppLayout'
 
 /**
  * Showcase application for document viewer
  */
-export const ViewerExampleApp = () => (
-  <Provider store={store}>
-    <ExampleAppLayout />
-  </Provider>
-)
+export const ViewerExampleApp = () => <ExampleAppLayout />

@@ -6,8 +6,9 @@ import CardHeader from '@material-ui/core/CardHeader'
 import Collapse from '@material-ui/core/Collapse'
 import Typography from '@material-ui/core/Typography'
 import React, { useEffect, useState } from 'react'
+import { useRepository } from '@sensenet/hooks-react'
 import { CommentData } from '../../models/Comment'
-import { useComments, useLocalization, useViewerSettings } from '../../hooks'
+import { useComments, useLocalization } from '../../hooks'
 import { DeleteButton } from './DeleteCommentButton'
 import { StyledCard } from './style'
 
@@ -27,8 +28,8 @@ export const Comment: React.FC<CommentProps> = props => {
   const isLongText = props.comment.text && props.comment.text.length > MAX_TEXT_LENGTH
   const [isOpen, setIsOpen] = useState(!isLongText)
   const localization = useLocalization()
-  const settings = useViewerSettings()
   const comments = useComments()
+  const repo = useRepository()
 
   const [isSelected, setIsSelected] = useState(props.comment.id === comments.activeCommentId)
 
@@ -40,7 +41,7 @@ export const Comment: React.FC<CommentProps> = props => {
     <StyledCard id={props.comment.id} isSelected={isSelected} raised={isSelected} onClick={comments.setActiveComment}>
       <CardHeader
         avatar={
-          settings.hostName === props.comment.createdBy.avatarUrl ? (
+          repo.configuration.repositoryUrl === props.comment.createdBy.avatarUrl ? (
             <Avatar />
           ) : (
             <Avatar src={props.comment.createdBy.avatarUrl} alt={localization.avatarAlt} />

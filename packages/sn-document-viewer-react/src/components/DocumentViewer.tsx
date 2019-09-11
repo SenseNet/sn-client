@@ -23,10 +23,6 @@ import { DocumentViewerRegeneratePreviews } from './DocumentViewerRegeneratePrev
  */
 export interface DocumentViewerProps {
   /**
-   * The Sensenet Host's URL (e.g.: https://my-sensenet-instance.net)
-   */
-  hostName: string
-  /**
    * The document's Id or Path to preview
    */
   documentIdOrPath: string | number

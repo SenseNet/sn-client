@@ -148,16 +148,19 @@ export const createDefaultApiSettings: (repo: Repository) => DocumentViewerApiSe
   canEditDocument: async ({ document, abortController }) => {
     const response = await repo.security.hasPermission(document.idOrPath, ['Save'], undefined, {
       signal: abortController.signal,
+      credentials: 'include',
     })
     return response
   },
   canHideRedaction: async ({ document, abortController }) =>
     await repo.security.hasPermission(document.idOrPath, ['PreviewWithoutRedaction'], undefined, {
       signal: abortController.signal,
+      credentials: 'include',
     }),
   canHideWatermark: async ({ document, abortController }) =>
     await repo.security.hasPermission(document.idOrPath, ['PreviewWithoutWatermark'], undefined, {
       signal: abortController.signal,
+      credentials: 'include',
     }),
   getExistingPreviewImages: async ({ document, version, abortController }) => {
     if (document.pageCount < -1) {

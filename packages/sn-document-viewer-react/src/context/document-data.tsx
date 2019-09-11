@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { deepMerge, DeepPartial, sleepAsync } from '@sensenet/client-utils'
 import Semaphore from 'semaphore-async-await'
+import { useRepository } from '@sensenet/hooks-react'
 import { DocumentData } from '../models'
 import { PreviewState } from '../Enums'
 import { useDocumentViewerApi, useViewerSettings } from '../hooks'
@@ -27,6 +28,7 @@ export const DocumentDataContext = React.createContext<typeof defaultDocumentDat
 export const DocumentDataProvider: React.FC = ({ children }) => {
   const api = useDocumentViewerApi()
   const doc = useViewerSettings()
+  const repo = useRepository()
 
   const [docData, setDocData] = useState<DocumentData>(defaultDocumentData)
   const [loadLock] = useState(new Semaphore(1))
@@ -39,7 +41,7 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
         setDocData(defaultDocumentData)
         while (docData.pageCount === PreviewState.Loading && !ac.signal.aborted) {
           const result = await api.getDocumentData({
-            hostName: doc.hostName,
+            hostName: repo.configuration.repositoryUrl,
             idOrPath: doc.documentIdOrPath,
             version: doc.version,
             abortController: ac,
@@ -62,7 +64,7 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
       }
     })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [api, doc.documentIdOrPath, doc.hostName, doc.version])
+  }, [api, doc.documentIdOrPath, repo.configuration.repositoryUrl, doc.version])
 
   const updateDocumentData = useCallback(
     (newDocData: Partial<DocumentData>) => {
