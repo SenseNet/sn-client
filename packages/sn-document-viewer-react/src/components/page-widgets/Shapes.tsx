@@ -53,6 +53,10 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = props => {
     //ToDo
   }, [])
 
+  const removeShape = useCallback((..._args: any[]) => {
+    //ToDo
+  }, [])
+
   const onDrop = useCallback(
     (ev: React.DragEvent<HTMLElement>, page: PreviewImageData) => {
       if (permissions.canEdit) {
@@ -91,6 +95,10 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = props => {
           shapes.redactions.map((redaction, index) => {
             return (
               <ShapeRedaction
+                customZoomLevel={viewerState.customZoomLevel}
+                updateShapeData={updateShapeData}
+                removeShape={removeShape}
+                zoomMode={viewerState.zoomMode}
                 shapeType="redactions"
                 shape={redaction}
                 canEdit={permissions.canEdit}
@@ -104,6 +112,10 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = props => {
           shapes.annotations.map((annotation, index) => {
             return (
               <ShapeAnnotation
+                customZoomLevel={viewerState.customZoomLevel}
+                updateShapeData={updateShapeData}
+                removeShape={removeShape}
+                zoomMode={viewerState.zoomMode}
                 shapeType="annotations"
                 shape={annotation}
                 canEdit={permissions.canEdit}
@@ -117,6 +129,10 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = props => {
           shapes.highlights.map((highlight, index) => {
             return (
               <ShapeHighlight
+                customZoomLevel={viewerState.customZoomLevel}
+                updateShapeData={updateShapeData}
+                removeShape={removeShape}
+                zoomMode={viewerState.zoomMode}
                 shapeType="highlights"
                 shape={highlight}
                 canEdit={permissions.canEdit}

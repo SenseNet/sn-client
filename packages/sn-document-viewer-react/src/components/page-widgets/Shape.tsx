@@ -1,48 +1,29 @@
 import IconButton from '@material-ui/core/IconButton'
 import Delete from '@material-ui/icons/Delete'
 import React from 'react'
-import { connect } from 'react-redux'
 import { Annotation, Shape, Shapes } from '../../models'
-import { componentType, Dimensions } from '../../services'
-import { removeShape, RootReducerType, updateShapeData } from '../../store'
+import { Dimensions } from '../../services'
+import { ZoomMode } from '../../models/viewer-state'
 
 /**
  * Defined the component's own properties
  */
-export interface OwnProps<T extends Shape> {
+export interface ShapeProps<T extends Shape> {
   shape: T
   shapeType: keyof Shapes
   canEdit: boolean
   zoomRatio: number
   additionalOffset?: Dimensions
-}
-
-/**
- * maps state fields from the store to component props
- * @param state the redux state
- */
-const mapStateToProps = (state: RootReducerType) => {
-  return {
-    zoomMode: state.sensenetDocumentViewer.viewer.zoomMode,
-    zoomLevel: state.sensenetDocumentViewer.viewer.customZoomLevel,
-  }
-}
-
-/**
- * maps state actions from the store to component props
- * @param state the redux state
- */
-const mapDispatchToProps = {
-  updateShapeData,
-  removeShape,
+  zoomMode: ZoomMode
+  customZoomLevel: number
+  updateShapeData: (shapeType: keyof Shapes, guid: string, shape: T) => void
+  removeShape: (shapeType: keyof Shapes, guid: string) => void
 }
 
 /**
  * Class for displaying Shapes on a document page
  */
-abstract class ShapeComponent<T extends Shape = Shape> extends React.Component<
-  componentType<typeof mapStateToProps, typeof mapDispatchToProps, OwnProps<T>>
-> {
+abstract class ShapeComponent<T extends Shape = Shape> extends React.Component<ShapeProps<T>> {
   /** the component state */
   public state = {
     focused: false,
@@ -149,7 +130,7 @@ abstract class ShapeComponent<T extends Shape = Shape> extends React.Component<
   }
 }
 
-class ShapeRedaction extends ShapeComponent {
+export class ShapeRedaction extends ShapeComponent {
   /** type of the Shape */
   public readonly shapeType = 'redactions'
 
@@ -176,12 +157,7 @@ class ShapeRedaction extends ShapeComponent {
   }
 }
 
-const shapeRedaction = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ShapeRedaction)
-
-class ShapeAnnotation extends ShapeComponent<Annotation> {
+export class ShapeAnnotation extends ShapeComponent<Annotation> {
   /** type of the Shape */
   public readonly shapeType = 'annotations'
 
@@ -251,12 +227,7 @@ class ShapeAnnotation extends ShapeComponent<Annotation> {
   }
 }
 
-const shapeAnnotation = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ShapeAnnotation)
-
-class ShapeHighlight extends ShapeComponent {
+export class ShapeHighlight extends ShapeComponent {
   /** type of the Shape */
   public readonly shapeType = 'highlights'
 
@@ -283,10 +254,3 @@ class ShapeHighlight extends ShapeComponent {
     }
   }
 }
-
-const shapeHighlight = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ShapeHighlight)
-
-export { shapeAnnotation as ShapeAnnotation, shapeHighlight as ShapeHighlight, shapeRedaction as ShapeRedaction }
