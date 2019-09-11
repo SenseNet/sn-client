@@ -11,9 +11,8 @@ import { applyShapeRotations, ImageUtil } from '../services'
 
 export const PreviewImageDataContext = React.createContext<{
   imageData: PreviewImageData[]
-  updateImageData: (newData: PreviewImageData[]) => void
   rotateImages: (indexes: number[], amount: number) => void
-}>({ imageData: [], updateImageData: () => undefined, rotateImages: () => undefined })
+}>({ imageData: [], rotateImages: () => undefined })
 
 export const PreviewImageDataContextProvider: React.FC = props => {
   const viewerSettings = useViewerSettings()
@@ -43,15 +42,15 @@ export const PreviewImageDataContextProvider: React.FC = props => {
     })()
 
     return () => abortController.abort()
-  }, [api, document, viewerSettings.documentIdOrPath, viewerSettings.version, viewerState.showWatermark])
-
-  const updateImageData = useCallback(
-    (newImageData: PreviewImageData[]) => {
-      setPreviewImages(newImageData)
-      viewerState.updateState({ hasChanges: true })
-    },
-    [viewerState],
-  )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    api,
+    document.idOrPath,
+    document.hostName,
+    viewerSettings.documentIdOrPath,
+    viewerSettings.version,
+    viewerState.showWatermark,
+  ])
 
   const rotateImages = useCallback(
     (imageIndexes: number[], amount: number) => {
@@ -90,7 +89,6 @@ export const PreviewImageDataContextProvider: React.FC = props => {
     <PreviewImageDataContext.Provider
       value={{
         imageData: previewImages,
-        updateImageData,
         rotateImages,
       }}>
       {props.children}

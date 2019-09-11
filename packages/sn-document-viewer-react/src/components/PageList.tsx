@@ -47,13 +47,18 @@ export const PageList: React.FC<PageListProps> = props => {
     [],
   )
 
+  const onScroll = useCallback(() => {
+    requestResize()
+    setScrollState((viewportElement.current && viewportElement.current.scrollTop) || 0)
+  }, [requestResize])
+
   useEffect(() => {
     const currentViewport = viewportElement.current
     if (currentViewport) {
-      currentViewport.addEventListener('scroll', requestResize)
+      currentViewport.addEventListener('scroll', onScroll)
     }
-    return () => currentViewport && currentViewport.removeEventListener('scroll', requestResize)
-  }, [requestResize, viewportElement])
+    return () => currentViewport && currentViewport.removeEventListener('scroll', onScroll)
+  }, [onScroll, viewportElement])
 
   useEffect(() => {
     addEventListener('resize', requestResize)
@@ -108,29 +113,28 @@ export const PageList: React.FC<PageListProps> = props => {
       }
     })
 
-    setScrollState((viewportElement.current && viewportElement.current.scrollTop) || 0)
     let _marginTop = 0
     let _pagesToSkip = 0
 
     while (
-      pages.imageData[_pagesToSkip] &&
-      _marginTop + pages.imageData[_pagesToSkip].Height + props.tolerance < scrollState
+      _visiblePages[_pagesToSkip] &&
+      _marginTop + _visiblePages[_pagesToSkip].Height + props.tolerance < scrollState
     ) {
-      _marginTop += pages.imageData[_pagesToSkip].Height + props.padding * 2
+      _marginTop += _visiblePages[_pagesToSkip].Height + props.padding * 2
       _pagesToSkip++
     }
 
     let _pagesToTake = 1
     let _pagesHeight = 0
 
-    while (pages.imageData[_pagesToSkip + _pagesToTake] && _pagesHeight < viewport.height + props.tolerance) {
-      _pagesHeight += pages.imageData[_pagesToSkip + _pagesToTake].Height + props.padding * 2
+    while (_visiblePages[_pagesToSkip + _pagesToTake] && _pagesHeight < viewport.height + props.tolerance) {
+      _pagesHeight += _visiblePages[_pagesToSkip + _pagesToTake].Height + props.padding * 2
       _pagesToTake++
     }
 
     let _marginBottom = 0
-    for (let i = _pagesToSkip + _pagesToTake - 1; i < pages.imageData.length - 1; i++) {
-      _marginBottom += pages.imageData[i].Height + props.padding * 2
+    for (let i = _pagesToSkip + _pagesToTake - 1; i < _visiblePages.length - 1; i++) {
+      _marginBottom += _visiblePages[i].Height + props.padding * 2
     }
 
     setMarginTop(_marginTop)

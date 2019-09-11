@@ -129,7 +129,7 @@ export const Page: React.FC<PageProps> = props => {
   )
 
   useEffect(() => {
-    setDiffHeight(Math.sin(imageRotationRads) * ((relativeImageSize.height - relativeImageSize.width) / 2))
+    setDiffHeight(Math.sin(imageRotationRads) * ((relativeImageSize.height - relativeImageSize.width) / 2) || 0)
   }, [imageRotationRads, relativeImageSize.height, relativeImageSize.width])
 
   const [imageTransform, setImageTransform] = useState(`translateY(${diffHeight}px) rotate(${imageRotation}deg)`)

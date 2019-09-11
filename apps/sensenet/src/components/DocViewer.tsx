@@ -3,14 +3,13 @@ import React, { useCallback, useEffect } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { Close } from '@material-ui/icons'
 import { Button } from '@material-ui/core'
-import { CurrentContentProvider, useRepository } from '@sensenet/hooks-react'
+import { CurrentContentProvider } from '@sensenet/hooks-react'
 import { useLocalization, useSelectionService, useTheme } from '../hooks'
 
 const DocViewer: React.FunctionComponent<
   RouteComponentProps<{ documentId: string }> & { previousLocation?: string }
 > = props => {
   const documentId = parseInt(props.match.params.documentId, 10)
-  const repo = useRepository()
   const selectionService = useSelectionService()
   const localization = useLocalization()
   const theme = useTheme()
@@ -35,12 +34,11 @@ const DocViewer: React.FunctionComponent<
   if (isNaN(documentId)) {
     throw Error(`Invalid document Id: ${documentId}`)
   }
-  const hostName = repo.configuration.repositoryUrl
 
   return (
     <div style={{ overflow: 'hidden', width: '100%', height: '100%', position: 'fixed' }}>
       <CurrentContentProvider idOrPath={documentId} onContentLoaded={c => selectionService.activeContent.setValue(c)}>
-        <DocumentViewer documentIdOrPath={documentId} hostName={hostName}>
+        <DocumentViewer documentIdOrPath={documentId}>
           <Button
             style={{ placeSelf: 'flex-end', position: 'relative', top: '1em', right: '4.5em' }}
             onClick={closeViewer}>
