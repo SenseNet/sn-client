@@ -1,3 +1,4 @@
+export * from './useComments'
 export * from './useDocumentData'
 export * from './useDocumentPermissions'
 export * from './useDocumentViewerApi'

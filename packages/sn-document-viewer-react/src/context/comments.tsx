@@ -6,9 +6,13 @@ import { DocumentViewerApiSettings } from '../models'
 export const CommentsContext = React.createContext<
   {
     comments: CommentData[]
+    activeCommentId?: string
+    setActiveComment: (commentId?: string) => void
   } & DocumentViewerApiSettings['commentActions']
 >({
   comments: [],
+  activeCommentId: undefined,
+  setActiveComment: () => undefined,
   addPreviewComment: async () => undefined as any,
   deletePreviewComment: async () => undefined as any,
   getPreviewComments: async () => undefined as any,
@@ -18,6 +22,7 @@ export const CommentsContextProvider: React.FC<{ page: number }> = ({ page, chil
   const api = useDocumentViewerApi()
   const document = useDocumentData()
   const [comments, setComments] = useState<CommentData[]>([])
+  const [activeCommentId, setActiveComment] = useState<string | undefined>(undefined)
 
   useEffect(() => {
     const abortController = new AbortController()
@@ -29,5 +34,9 @@ export const CommentsContextProvider: React.FC<{ page: number }> = ({ page, chil
     return () => abortController.abort()
   }, [api.commentActions, document, page])
 
-  return <CommentsContext.Provider value={{ ...api.commentActions, comments }}>{children}</CommentsContext.Provider>
+  return (
+    <CommentsContext.Provider value={{ ...api.commentActions, comments, activeCommentId, setActiveComment }}>
+      {children}
+    </CommentsContext.Provider>
+  )
 }

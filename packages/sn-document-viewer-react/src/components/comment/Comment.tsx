@@ -7,7 +7,7 @@ import Collapse from '@material-ui/core/Collapse'
 import Typography from '@material-ui/core/Typography'
 import React, { useEffect, useState } from 'react'
 import { CommentData } from '../../models/Comment'
-import { useLocalization, useViewerSettings } from '../../hooks'
+import { useComments, useLocalization, useViewerSettings } from '../../hooks'
 import { DeleteButton } from './DeleteCommentButton'
 import { StyledCard } from './style'
 
@@ -16,8 +16,6 @@ import { StyledCard } from './style'
  */
 export interface CommentProps {
   comment: CommentData
-  selectedId?: string
-  select: () => void
 }
 
 const MAX_TEXT_LENGTH = 160
@@ -30,15 +28,16 @@ export const Comment: React.FC<CommentProps> = props => {
   const [isOpen, setIsOpen] = useState(!isLongText)
   const localization = useLocalization()
   const settings = useViewerSettings()
+  const comments = useComments()
 
-  const [isSelected, setIsSelected] = useState(props.selectedId === props.comment.id)
+  const [isSelected, setIsSelected] = useState(props.comment.id === comments.activeCommentId)
 
   useEffect(() => {
-    setIsSelected(props.selectedId === props.comment.id)
-  }, [props.comment.id, props.selectedId])
+    setIsSelected(props.comment.id === comments.activeCommentId)
+  }, [comments.activeCommentId, props.comment.id])
 
   return (
-    <StyledCard id={props.comment.id} isSelected={isSelected} raised={isSelected} onClick={props.select}>
+    <StyledCard id={props.comment.id} isSelected={isSelected} raised={isSelected} onClick={comments.setActiveComment}>
       <CardHeader
         avatar={
           settings.hostName === props.comment.createdBy.avatarUrl ? (

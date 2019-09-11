@@ -3,7 +3,7 @@ import { SlideProps } from '@material-ui/core/Slide'
 import Typography from '@material-ui/core/Typography'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { DraftCommentMarker } from '../models'
-import { useDocumentData, useDocumentViewerApi, useLocalization, useViewerState } from '../hooks'
+import { useComments, useDocumentData, useDocumentViewerApi, useLocalization, useViewerState } from '../hooks'
 import { CommentsContext, CommentsContextProvider } from '../context/comments'
 import { Comment } from './comment'
 import { CreateComment } from './comment/CreateComment'
@@ -41,11 +41,10 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = props =
   const api = useDocumentViewerApi()
   const docData = useDocumentData()
 
-  const [selectedCommentId, setSelectedCommentId] = useState<string | undefined>()
-
   const [createCommentValue, setCreateCommentValue] = useState('')
 
   const commentsContainerRef = useRef<HTMLDivElement>()
+  const comments = useComments()
 
   const [draftCommentMarker, setDraftCommentMarker] = useState<DraftCommentMarker>()
 
@@ -60,10 +59,10 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = props =
       if (viewerState.isCreateCommentActive) {
         viewerState.updateState({ isCreateCommentActive: false })
       }
-      setSelectedCommentId(undefined)
+      comments.setActiveComment(undefined)
       setCreateCommentValue('')
     },
-    [viewerState],
+    [comments, viewerState],
   )
 
   useEffect(() => {
@@ -208,15 +207,7 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = props =
             <CommentsContextProvider page={viewerState.activePages[0]}>
               <CommentsContext.Consumer>
                 {commentsContext =>
-                  commentsContext.comments.map(comment => (
-                    <Comment
-                      key={comment.id}
-                      {...comment}
-                      selectedId={selectedCommentId}
-                      select={() => setSelectedCommentId(comment.id)}
-                      comment={comment}
-                    />
-                  ))
+                  commentsContext.comments.map(comment => <Comment key={comment.id} {...comment} comment={comment} />)
                 }
               </CommentsContext.Consumer>
             </CommentsContextProvider>

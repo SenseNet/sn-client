@@ -10,7 +10,7 @@ import {
   Shapes,
 } from '../../models'
 import { Dimensions } from '../../services'
-import { useDocumentData, useDocumentPermissions, useViewerState } from '../../hooks'
+import { useComments, useDocumentData, useDocumentPermissions, useViewerState } from '../../hooks'
 import { ShapeAnnotation, ShapeHighlight, ShapeRedaction } from './Shape'
 import { CommentMarker, ShapesContainer } from './style'
 
@@ -22,49 +22,7 @@ export interface ShapesWidgetProps {
   page: PreviewImageData
   zoomRatio: number
   draftCommentMarker?: DraftCommentMarker
-  selectedCommentId?: string
-  setSelectedCommentId: (id: string) => void
 }
-
-/**
- * maps state fields from the store to component props
- * @param state the redux state
- */
-// export const mapStateToProps = (state: RootReducerType, ownProps: OwnProps) => {
-//   const commentMarkers = state.comments.items
-//     .filter(comment => comment.page === ownProps.page.Index)
-//     .map(comment => {
-//       return { x: comment.x, y: comment.y, id: comment.id }
-//     })
-//   ownProps.draftCommentMarker && commentMarkers.push(ownProps.draftCommentMarker)
-//   return {
-//     showShapes: state.sensenetDocumentViewer.viewer.showShapes,
-//     showRedactions: state.sensenetDocumentViewer.viewer.showRedaction,
-//     showComments: state.sensenetDocumentViewer.viewer.showComments,
-//     canHideRedactions: state.sensenetDocumentViewer.documentState.canHideRedaction,
-//     redactions: state.sensenetDocumentViewer.documentState.document.shapes.redactions.filter(
-//       r => r.imageIndex === ownProps.page.Index,
-//     ) as Redaction[],
-//     highlights: state.sensenetDocumentViewer.documentState.document.shapes.highlights.filter(
-//       r => r.imageIndex === ownProps.page.Index,
-//     ) as Highlight[],
-//     annotations: state.sensenetDocumentViewer.documentState.document.shapes.annotations.filter(
-//       r => r.imageIndex === ownProps.page.Index,
-//     ) as Annotation[],
-//     commentMarkers,
-//     selectedCommentId: state.comments.selectedCommentId,
-//     canEdit: state.sensenetDocumentViewer.documentState.canEdit,
-//   }
-// }
-
-// /**
-//  * maps state actions from the store to component props
-//  * @param state the redux state
-//  */
-// export const mapDispatchToProps = {
-//   updateShapeData,
-//   setSelectedCommentId,
-// }
 
 /**
  * Page widget component for displaying shapes on a page
@@ -73,6 +31,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = props => {
   const permissions = useDocumentPermissions()
   const viewerState = useViewerState()
   const docData = useDocumentData()
+  const comments = useComments()
 
   const [shapes, setShapes] = useState({
     redactions: docData.shapes.redactions.filter(r => r.imageIndex === props.page.Index) as Redaction[],
@@ -119,8 +78,8 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = props => {
       {viewerState.showComments &&
         commentMarkers.map(marker => (
           <CommentMarker
-            onClick={() => props.setSelectedCommentId(marker.id)}
-            isSelected={marker.id === props.selectedCommentId}
+            onClick={() => comments.setActiveComment(marker.id)}
+            isSelected={marker.id === comments.activeCommentId}
             zoomRatio={props.zoomRatio}
             marker={marker}
             key={marker.id}
