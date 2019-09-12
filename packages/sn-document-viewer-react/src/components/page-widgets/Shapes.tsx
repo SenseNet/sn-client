@@ -1,16 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import {
-  Annotation,
-  CommentData,
-  DraftCommentMarker,
-  Highlight,
-  PreviewImageData,
-  Redaction,
-  Shape,
-  Shapes,
-} from '../../models'
+import { Annotation, DraftCommentMarker, Highlight, PreviewImageData, Redaction, Shape, Shapes } from '../../models'
 import { Dimensions } from '../../services'
-import { useComments, useDocumentData, useDocumentPermissions, useViewerState } from '../../hooks'
+import { useCommentDraft, useComments, useDocumentData, useDocumentPermissions, useViewerState } from '../../hooks'
 import { ShapeAnnotation, ShapeHighlight, ShapeRedaction } from './Shape'
 import { CommentMarker, ShapesContainer } from './style'
 
@@ -32,6 +23,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = props => {
   const viewerState = useViewerState()
   const docData = useDocumentData()
   const comments = useComments()
+  const commentDraft = useCommentDraft()
 
   const [shapes, setShapes] = useState({
     redactions: docData.shapes.redactions.filter(r => r.imageIndex === props.page.Index) as Redaction[],
@@ -46,8 +38,6 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = props => {
       annotations: docData.shapes.annotations.filter(r => r.imageIndex === props.page.Index) as Annotation[],
     })
   }, [docData.shapes.annotations, docData.shapes.highlights, docData.shapes.redactions, props.page.Index])
-
-  const [commentMarkers] = useState<CommentData[]>([])
 
   const updateShapeData = useCallback((..._args: any[]) => {
     //ToDo
@@ -80,7 +70,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = props => {
   return (
     <ShapesContainer>
       {viewerState.showComments &&
-        commentMarkers.map(marker => (
+        [...comments.comments, ...(commentDraft.draft ? [commentDraft.draft] : [])].map(marker => (
           <CommentMarker
             onClick={() => comments.setActiveComment(marker.id)}
             isSelected={marker.id === comments.activeCommentId}

@@ -38,7 +38,11 @@ export const Comment: React.FC<CommentProps> = props => {
   }, [comments.activeCommentId, props.comment.id])
 
   return (
-    <StyledCard id={props.comment.id} isSelected={isSelected} raised={isSelected} onClick={comments.setActiveComment}>
+    <StyledCard
+      id={props.comment.id}
+      isSelected={isSelected}
+      raised={isSelected}
+      onClick={() => comments.setActiveComment(props.comment.id)}>
       <CardHeader
         avatar={
           repo.configuration.repositoryUrl === props.comment.createdBy.avatarUrl ? (

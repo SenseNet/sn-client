@@ -2,10 +2,9 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import Paper from '@material-ui/core/Paper'
 import React = require('react')
 import { useCallback, useEffect, useState } from 'react'
-import { DraftCommentMarker } from '../models'
 import { ImageUtil } from '../services'
 import { ZoomMode } from '../models/viewer-state'
-import { usePreviewImage, useViewerState } from '../hooks'
+import { useCommentDraft, usePreviewImage, useViewerState } from '../hooks'
 import { ShapesWidget } from './page-widgets'
 import { MARKER_SIZE } from './page-widgets/style'
 
@@ -24,12 +23,12 @@ export interface PageProps {
   onClick: (ev: React.MouseEvent<HTMLElement>) => any
   margin: number
   image: 'preview' | 'thumbnail'
-  handleMarkerCreation?: (coordinates: DraftCommentMarker) => void
 }
 
 export const Page: React.FC<PageProps> = props => {
   const viewerState = useViewerState()
   const page = usePreviewImage(props.imageIndex)
+  const commentDraft = useCommentDraft()
 
   const [isActive, setIsActive] = React.useState(page.image && viewerState.activePages.includes(page.image.Index))
   useEffect(() => {
@@ -138,8 +137,6 @@ export const Page: React.FC<PageProps> = props => {
     setImageTransform(`translateY(${diffHeight}px) rotate(${imageRotation}deg)`)
   }, [diffHeight, imageRotation])
 
-  const [draftCommentMarker, setDraftCommentMarker] = useState<DraftCommentMarker | undefined>()
-
   const handleMarkerPlacement = useCallback(
     (event: React.MouseEvent) => {
       if (!viewerState.isPlacingCommentMarker) {
@@ -154,10 +151,9 @@ export const Page: React.FC<PageProps> = props => {
           MARKER_SIZE,
         id: 'draft',
       }
-      setDraftCommentMarker(newCommentMarker)
-      props.handleMarkerCreation && props.handleMarkerCreation(newCommentMarker)
+      commentDraft.setDraft(newCommentMarker)
     },
-    [page.image, props, relativeImageSize.height, viewerState.isPlacingCommentMarker],
+    [commentDraft, page.image, relativeImageSize.height, viewerState.isPlacingCommentMarker],
   )
 
   return (
@@ -177,7 +173,7 @@ export const Page: React.FC<PageProps> = props => {
         {page.image && props.showWidgets ? (
           <div>
             <ShapesWidget
-              draftCommentMarker={draftCommentMarker}
+              draftCommentMarker={commentDraft.draft}
               zoomRatio={relativeImageSize.height / page.image.Height}
               page={page.image}
               viewPort={{ height: relativeImageSize.height, width: relativeImageSize.width }}

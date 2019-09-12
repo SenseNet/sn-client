@@ -13,6 +13,7 @@ import { DocumentPermissionsContextProvider } from '../context/document-permissi
 import { ViewerState } from '../models/viewer-state'
 import { ViewerStateProvider } from '../context/viewer-state'
 import { PreviewImageDataContextProvider } from '../context/preview-image-data'
+import { CommentDraftProvider } from '../context/comment-draft'
 import { DocumentViewerError } from './DocumentViewerError'
 import { DocumentViewerLayout } from './DocumentViewerLayout'
 import { DocumentViewerLoading } from './DocumentViewerLoading'
@@ -86,9 +87,11 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = props => {
                       }
                       return (
                         <ViewerStateProvider options={props.defaultState}>
-                          <DocumentViewerLayout drawerSlideProps={props.drawerSlideProps}>
-                            {props.children}
-                          </DocumentViewerLayout>
+                          <CommentDraftProvider>
+                            <DocumentViewerLayout drawerSlideProps={props.drawerSlideProps}>
+                              {props.children}
+                            </DocumentViewerLayout>
+                          </CommentDraftProvider>
                         </ViewerStateProvider>
                       )
                     }}

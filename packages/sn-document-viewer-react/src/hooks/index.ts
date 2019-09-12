@@ -1,3 +1,4 @@
+export * from './useCommentDraft'
 export * from './useComments'
 export * from './useDocumentData'
 export * from './useDocumentPermissions'

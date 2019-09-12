@@ -3,7 +3,14 @@ import { SlideProps } from '@material-ui/core/Slide'
 import Typography from '@material-ui/core/Typography'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { DraftCommentMarker } from '../models'
-import { useComments, useDocumentData, useDocumentViewerApi, useLocalization, useViewerState } from '../hooks'
+import {
+  useCommentDraft,
+  useComments,
+  useDocumentData,
+  useDocumentViewerApi,
+  useLocalization,
+  useViewerState,
+} from '../hooks'
 import { CommentsContext, CommentsContextProvider } from '../context/comments'
 import { Comment } from './comment'
 import { CreateComment } from './comment/CreateComment'
@@ -45,8 +52,7 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = props =
 
   const commentsContainerRef = useRef<HTMLDivElement>()
   const comments = useComments()
-
-  const [draftCommentMarker, setDraftCommentMarker] = useState<DraftCommentMarker>()
+  const commentDraft = useCommentDraft()
 
   const handleKeyUp = useCallback(
     (ev: KeyboardEvent) => {
@@ -105,17 +111,17 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = props =
 
   const createComment = useCallback(
     (text: string) => {
-      if (!draftCommentMarker || !viewerState.activePages[0] || !viewerState.activePages[0]) {
+      if (!commentDraft.draft || !viewerState.activePages[0] || !viewerState.activePages[0]) {
         return
       }
       api.commentActions.addPreviewComment({
         document: docData,
-        comment: { ...draftCommentMarker, text, page: viewerState.activePages[0] },
+        comment: { ...commentDraft.draft, text, page: viewerState.activePages[0] },
         abortController: new AbortController(),
       })
       viewerState.updateState({ isPlacingCommentMarker: false })
     },
-    [api.commentActions, docData, draftCommentMarker, viewerState],
+    [api.commentActions, commentDraft.draft, docData, viewerState],
   )
 
   return (
@@ -165,7 +171,6 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = props =
           />
         </Drawer>
         <PageList
-          handleMarkerCreation={setDraftCommentMarker}
           showWidgets={true}
           id="sn-document-viewer-pages"
           zoomMode={viewerState.zoomMode}
@@ -191,27 +196,25 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = props =
               overflow: 'hidden',
             },
           }}>
-          <CommentsContainer ref={commentsContainerRef as any}>
-            <Typography variant="h4">{localization.commentSideBarTitle}</Typography>
-            <CreateComment
-              isActive={viewerState.isCreateCommentActive}
-              handleIsActive={isActive => viewerState.updateState({ isCreateCommentActive: isActive })}
-              draftCommentMarker={draftCommentMarker}
-              handlePlaceMarkerClick={isPlacingCommentMarker => viewerState.updateState({ isPlacingCommentMarker })}
-              isPlacingMarker={viewerState.isPlacingCommentMarker}
-              localization={localization}
-              createComment={createComment}
-              inputValue={createCommentValue}
-              handleInputValueChange={value => setCreateCommentValue(value)}
-            />
-            <CommentsContextProvider page={viewerState.activePages[0]}>
+          <CommentsContextProvider page={viewerState.activePages[0]}>
+            <CommentsContainer ref={commentsContainerRef as any}>
+              <Typography variant="h4">{localization.commentSideBarTitle}</Typography>
+              <CreateComment
+                isActive={viewerState.isCreateCommentActive}
+                handleIsActive={isActive => viewerState.updateState({ isCreateCommentActive: isActive })}
+                localization={localization}
+                createComment={createComment}
+                inputValue={createCommentValue}
+                handleInputValueChange={value => setCreateCommentValue(value)}
+              />
+
               <CommentsContext.Consumer>
                 {commentsContext =>
-                  commentsContext.comments.map(comment => <Comment key={comment.id} {...comment} comment={comment} />)
+                  commentsContext.comments.map(comment => <Comment key={comment.id} comment={comment} />)
                 }
               </CommentsContext.Consumer>
-            </CommentsContextProvider>
-          </CommentsContainer>
+            </CommentsContainer>
+          </CommentsContextProvider>
         </Drawer>
       </div>
     </div>

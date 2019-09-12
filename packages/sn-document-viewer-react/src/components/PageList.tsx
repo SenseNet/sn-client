@@ -1,10 +1,11 @@
 import Grid from '@material-ui/core/Grid'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { debounce } from '@sensenet/client-utils'
-import { DraftCommentMarker, PreviewImageData } from '../models'
+import { PreviewImageData } from '../models'
 import { Dimensions, ImageUtil } from '../services'
 import { ZoomMode } from '../models/viewer-state'
-import { usePreviewImages } from '../hooks'
+import { usePreviewImages, useViewerState } from '../hooks'
+import { CommentsContextProvider } from '../context/comments'
 import { Page } from './'
 
 /**
@@ -23,18 +24,15 @@ export interface PageListProps {
   onPageClick: (ev: React.MouseEvent<HTMLElement>, pageIndex: number) => void
   style?: React.CSSProperties
   showWidgets: boolean
-  handleMarkerCreation?: (coordinates: DraftCommentMarker) => void
 }
 
 export const PageList: React.FC<PageListProps> = props => {
   const [marginTop, setMarginTop] = useState(0)
   const [marginBottom, setMarginBottom] = useState(0)
-
   const [visiblePages, setVisiblePages] = useState<PreviewImageData[]>([])
-
   const [scrollState, setScrollState] = useState(0)
-
   const viewportElement = useRef<HTMLElement>()
+  const viewerState = useViewerState()
   const [resizeToken, setResizeToken] = useState(0)
   const [viewport, setViewport] = useState<Dimensions>({ width: 0, height: 0 })
 
@@ -139,8 +137,12 @@ export const PageList: React.FC<PageListProps> = props => {
 
     setMarginTop(_marginTop)
     setMarginBottom(_marginBottom)
-
-    setVisiblePages(_visiblePages.slice(_pagesToSkip, _pagesToSkip + _pagesToTake))
+    const newVisiblePages = _visiblePages.slice(_pagesToSkip, _pagesToSkip + _pagesToTake)
+    setVisiblePages(newVisiblePages)
+    if (!newVisiblePages.find(p => p.Index === viewerState.activePages[0])) {
+      viewerState.updateState({ activePages: [newVisiblePages[0].Index] })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     pages.imageData,
     props.fitRelativeZoomLevel,
@@ -149,6 +151,7 @@ export const PageList: React.FC<PageListProps> = props => {
     props.zoomLevel,
     props.zoomMode,
     scrollState,
+    viewerState.activePages,
     viewport.height,
     viewport.width,
   ])
@@ -169,21 +172,21 @@ export const PageList: React.FC<PageListProps> = props => {
           paddingBottom: marginBottom || 0,
         }}>
         {visiblePages.map(page => (
-          <Page
-            handleMarkerCreation={props.handleMarkerCreation}
-            showWidgets={props.showWidgets}
-            viewportWidth={viewport.width}
-            viewportHeight={viewport.height}
-            key={page.Index}
-            imageIndex={page.Index}
-            onClick={ev => props.onPageClick(ev, page.Index)}
-            zoomMode={props.zoomMode}
-            zoomLevel={props.zoomLevel}
-            fitRelativeZoomLevel={props.fitRelativeZoomLevel}
-            elementName={props.elementName}
-            image={props.images}
-            margin={props.padding}
-          />
+          <CommentsContextProvider page={page.Index} key={page.Index}>
+            <Page
+              showWidgets={props.showWidgets}
+              viewportWidth={viewport.width}
+              viewportHeight={viewport.height}
+              imageIndex={page.Index}
+              onClick={ev => props.onPageClick(ev, page.Index)}
+              zoomMode={props.zoomMode}
+              zoomLevel={props.zoomLevel}
+              fitRelativeZoomLevel={props.fitRelativeZoomLevel}
+              elementName={props.elementName}
+              image={props.images}
+              margin={props.padding}
+            />
+          </CommentsContextProvider>
         ))}
       </div>
     </Grid>
