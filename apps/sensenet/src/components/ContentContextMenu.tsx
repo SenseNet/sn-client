@@ -14,8 +14,15 @@ import Info from '@material-ui/icons/Info'
 import React, { useCallback, useContext, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { ConstantContent } from '@sensenet/client-core'
-import { CurrentContentContext, CurrentContentProvider, ResponsiveContext } from '../context'
-import { useContentRouting, useDownload, useLocalization, useRepository, useWopi } from '../hooks'
+import {
+  CurrentContentContext,
+  CurrentContentProvider,
+  useDownload,
+  useRepository,
+  useWopi,
+} from '@sensenet/hooks-react'
+import { ResponsiveContext } from '../context'
+import { useContentRouting, useLocalization } from '../hooks'
 import { ContentInfoDialog, CopyMoveDialog, DeleteContentDialog, EditPropertiesDialog } from './dialogs'
 import { Icon } from './Icon'
 

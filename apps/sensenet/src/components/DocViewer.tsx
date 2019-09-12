@@ -3,8 +3,8 @@ import React, { useCallback, useEffect } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { Close } from '@material-ui/icons'
 import { Button } from '@material-ui/core'
-import { CurrentContentProvider } from '../context'
-import { useInjector, useLocalization, useRepository, useSelectionService, useTheme } from '../hooks'
+import { CurrentContentProvider, useInjector, useRepository } from '@sensenet/hooks-react'
+import { useLocalization, useSelectionService, useTheme } from '../hooks'
 import { getViewerSettings } from '../services/GetViewerSettings'
 
 const DocViewer: React.FunctionComponent<

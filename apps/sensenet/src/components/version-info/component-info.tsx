@@ -4,8 +4,8 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import Typography from '@material-ui/core/Typography'
 import Info from '@material-ui/icons/Info'
 import React, { useState } from 'react'
+import { Component } from '@sensenet/hooks-react'
 import { useLocalization } from '../../hooks'
-import { Component } from './version-info-models'
 
 export const ComponentInfo: React.FunctionComponent<{ component: Component; update?: any }> = props => {
   const [isOpened, setIsOpened] = useState(false)

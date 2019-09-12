@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Logger matches snapshot 1`] = `
+<ContextProvider
+  value={
+    LoggerCollection {
+      "loggers": Array [],
+      "withScope": [Function],
+    }
+  }
+/>
+`;

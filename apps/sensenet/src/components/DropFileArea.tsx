@@ -3,7 +3,8 @@ import { GenericContent } from '@sensenet/default-content-types'
 import React, { useEffect, useState } from 'react'
 import { UploadProgressInfo } from '@sensenet/client-core'
 import { ObservableValue } from '@sensenet/client-utils'
-import { useInjector, useRepository, useTheme } from '../hooks'
+import { useInjector, useRepository } from '@sensenet/hooks-react'
+import { useTheme } from '../hooks'
 import { UploadTracker } from '../services/UploadTracker'
 
 export const DropFileArea: React.FunctionComponent<{

@@ -1,9 +1,8 @@
 import { useContext, useEffect, useState } from 'react'
 import { GenericContent } from '@sensenet/default-content-types'
+import { useInjector, useRepository } from '@sensenet/hooks-react'
 import { CommandProviderManager } from '../services/CommandProviderManager'
 import { ResponsiveContext } from '../context'
-import { useInjector } from './use-injector'
-import { useRepository } from './use-repository'
 
 export interface CommandPaletteItem {
   primaryText: string

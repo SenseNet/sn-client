@@ -1,11 +1,10 @@
-import { useContext, useEffect, useState } from 'react'
-import { SessionContext } from '../context'
-import { useRepository } from './use-repository'
+import { useEffect, useState } from 'react'
+import { useRepository, useSession } from '@sensenet/hooks-react'
 import { usePersonalSettings } from './use-personal-settings'
 
 export const useStringReplace = (content: string) => {
   const [replacedContent, setReplacedContent] = useState('')
-  const session = useContext(SessionContext)
+  const session = useSession()
   const repo = useRepository()
   const personalSettings = usePersonalSettings()
 
