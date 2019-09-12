@@ -4,7 +4,7 @@ import React = require('react')
 import { useCallback, useEffect, useState } from 'react'
 import { ImageUtil } from '../services'
 import { ZoomMode } from '../models/viewer-state'
-import { useCommentDraft, usePreviewImage, useViewerState } from '../hooks'
+import { useCommentState, usePreviewImage, useViewerState } from '../hooks'
 import { ShapesWidget } from './page-widgets'
 import { MARKER_SIZE } from './page-widgets/style'
 
@@ -28,7 +28,7 @@ export interface PageProps {
 export const Page: React.FC<PageProps> = props => {
   const viewerState = useViewerState()
   const page = usePreviewImage(props.imageIndex)
-  const commentDraft = useCommentDraft()
+  const commentState = useCommentState()
 
   const [isActive, setIsActive] = React.useState(page.image && viewerState.activePages.includes(page.image.Index))
   useEffect(() => {
@@ -151,9 +151,9 @@ export const Page: React.FC<PageProps> = props => {
           MARKER_SIZE,
         id: 'draft',
       }
-      commentDraft.setDraft(newCommentMarker)
+      commentState.setDraft(newCommentMarker)
     },
-    [commentDraft, page.image, relativeImageSize.height, viewerState.isPlacingCommentMarker],
+    [commentState, page.image, relativeImageSize.height, viewerState.isPlacingCommentMarker],
   )
 
   return (
@@ -173,7 +173,7 @@ export const Page: React.FC<PageProps> = props => {
         {page.image && props.showWidgets ? (
           <div>
             <ShapesWidget
-              draftCommentMarker={commentDraft.draft}
+              draftCommentMarker={commentState.draft}
               zoomRatio={relativeImageSize.height / page.image.Height}
               page={page.image}
               viewPort={{ height: relativeImageSize.height, width: relativeImageSize.width }}

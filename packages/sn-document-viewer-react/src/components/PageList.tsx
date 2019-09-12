@@ -139,9 +139,6 @@ export const PageList: React.FC<PageListProps> = props => {
     setMarginBottom(_marginBottom)
     const newVisiblePages = _visiblePages.slice(_pagesToSkip, _pagesToSkip + _pagesToTake)
     setVisiblePages(newVisiblePages)
-    if (!newVisiblePages.find(p => p.Index === viewerState.activePages[0])) {
-      viewerState.updateState({ activePages: [newVisiblePages[0].Index] })
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     pages.imageData,
@@ -155,6 +152,16 @@ export const PageList: React.FC<PageListProps> = props => {
     viewport.height,
     viewport.width,
   ])
+
+  const updateScrollState = useCallback(
+    debounce(() => {
+      if (props.images === 'preview')
+        viewerState.updateState({ activePages: [(visiblePages[0] && visiblePages[0].Index) || 1] })
+    }, 100),
+    [viewerState, visiblePages],
+  )
+
+  useEffect(updateScrollState, [scrollState])
 
   return (
     <Grid

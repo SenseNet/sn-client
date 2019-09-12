@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import React, { useEffect, useState } from 'react'
 import { useRepository } from '@sensenet/hooks-react'
 import { CommentData } from '../../models/Comment'
-import { useComments, useLocalization } from '../../hooks'
+import { useCommentState, useLocalization } from '../../hooks'
 import { DeleteButton } from './DeleteCommentButton'
 import { StyledCard } from './style'
 
@@ -28,21 +28,21 @@ export const Comment: React.FC<CommentProps> = props => {
   const isLongText = props.comment.text && props.comment.text.length > MAX_TEXT_LENGTH
   const [isOpen, setIsOpen] = useState(!isLongText)
   const localization = useLocalization()
-  const comments = useComments()
+  const commentState = useCommentState()
   const repo = useRepository()
 
-  const [isSelected, setIsSelected] = useState(props.comment.id === comments.activeCommentId)
+  const [isSelected, setIsSelected] = useState(props.comment.id === commentState.activeCommentId)
 
   useEffect(() => {
-    setIsSelected(props.comment.id === comments.activeCommentId)
-  }, [comments.activeCommentId, props.comment.id])
+    setIsSelected(props.comment.id === commentState.activeCommentId)
+  }, [commentState.activeCommentId, props.comment.id])
 
   return (
     <StyledCard
       id={props.comment.id}
       isSelected={isSelected}
       raised={isSelected}
-      onClick={() => comments.setActiveComment(props.comment.id)}>
+      onClick={() => commentState.setActiveComment(props.comment.id)}>
       <CardHeader
         avatar={
           repo.configuration.repositoryUrl === props.comment.createdBy.avatarUrl ? (

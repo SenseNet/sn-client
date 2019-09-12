@@ -3,14 +3,7 @@ import { SlideProps } from '@material-ui/core/Slide'
 import Typography from '@material-ui/core/Typography'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { DraftCommentMarker } from '../models'
-import {
-  useCommentDraft,
-  useComments,
-  useDocumentData,
-  useDocumentViewerApi,
-  useLocalization,
-  useViewerState,
-} from '../hooks'
+import { useCommentState, useDocumentData, useDocumentViewerApi, useLocalization, useViewerState } from '../hooks'
 import { CommentsContext, CommentsContextProvider } from '../context/comments'
 import { Comment } from './comment'
 import { CreateComment } from './comment/CreateComment'
@@ -51,8 +44,7 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = props =
   const [createCommentValue, setCreateCommentValue] = useState('')
 
   const commentsContainerRef = useRef<HTMLDivElement>()
-  const comments = useComments()
-  const commentDraft = useCommentDraft()
+  const commentState = useCommentState()
 
   const handleKeyUp = useCallback(
     (ev: KeyboardEvent) => {
@@ -65,10 +57,10 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = props =
       if (viewerState.isCreateCommentActive) {
         viewerState.updateState({ isCreateCommentActive: false })
       }
-      comments.setActiveComment(undefined)
+      commentState.setActiveComment(undefined)
       setCreateCommentValue('')
     },
-    [comments, viewerState],
+    [commentState, viewerState],
   )
 
   useEffect(() => {
@@ -111,17 +103,17 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = props =
 
   const createComment = useCallback(
     (text: string) => {
-      if (!commentDraft.draft || !viewerState.activePages[0] || !viewerState.activePages[0]) {
+      if (!commentState.draft || !viewerState.activePages[0] || !viewerState.activePages[0]) {
         return
       }
       api.commentActions.addPreviewComment({
         document: docData,
-        comment: { ...commentDraft.draft, text, page: viewerState.activePages[0] },
+        comment: { ...commentState.draft, text, page: viewerState.activePages[0] },
         abortController: new AbortController(),
       })
       viewerState.updateState({ isPlacingCommentMarker: false })
     },
-    [api.commentActions, commentDraft.draft, docData, viewerState],
+    [api.commentActions, commentState.draft, docData, viewerState],
   )
 
   return (

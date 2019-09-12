@@ -2,7 +2,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import React, { useCallback, useState } from 'react'
 import { Button, FormControl, FormHelperText, IconButton, InputAdornment, TextField } from '@material-ui/core'
 import { LocalizationType } from '../../context/localization-context'
-import { useCommentDraft, useViewerState } from '../../hooks'
+import { useCommentState, useViewerState } from '../../hooks'
 import { StyledButtonContainer, StyledForm, StyledSvgIcon } from './style'
 
 /**
@@ -48,26 +48,26 @@ const defaultLocalization: CreateCommentLocalization = {
 export function CreateComment(props: CreateCommentProps) {
   const [errorMessage, setErrorMessage] = useState<string | undefined>()
   const localization = { ...defaultLocalization, ...props.localization }
-  const commentDraft = useCommentDraft()
+  const commentState = useCommentState()
   const viewerState = useViewerState()
 
   const clearState = useCallback(() => {
-    commentDraft.setDraft(undefined)
+    commentState.setDraft(undefined)
     viewerState.updateState({ isPlacingCommentMarker: false })
     props.handleInputValueChange('')
     setErrorMessage(undefined)
     props.handleIsActive(!props.isActive)
-  }, [commentDraft, props, viewerState])
+  }, [commentState, props, viewerState])
 
   const validate = useCallback(() => {
     if (!props.inputValue) {
       return localization.inputRequiredError
     }
-    if (!commentDraft.draft) {
+    if (!commentState.draft) {
       return localization.markerRequiredError
     }
     return undefined
-  }, [commentDraft.draft, localization.inputRequiredError, localization.markerRequiredError, props.inputValue])
+  }, [commentState.draft, localization.inputRequiredError, localization.markerRequiredError, props.inputValue])
 
   const handleSubmit = useCallback(
     (event: React.FormEvent<HTMLFormElement>) => {
@@ -89,7 +89,7 @@ export function CreateComment(props: CreateCommentProps) {
   }
 
   const hasError = () => {
-    return !!errorMessage || (!!errorMessage && !commentDraft.draft)
+    return !!errorMessage || (!!errorMessage && !commentState.draft)
   }
 
   if (!props.isActive) {
