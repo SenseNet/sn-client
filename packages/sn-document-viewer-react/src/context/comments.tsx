@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Trace } from '@sensenet/client-utils'
-import { useDocumentData, useDocumentViewerApi } from '../hooks'
+import { useDocumentData, useDocumentViewerApi, useViewerState } from '../hooks'
 import { CommentData } from '../models/Comment'
 import { DocumentViewerApiSettings } from '../models'
 
@@ -22,17 +22,19 @@ export const CommentsContext = React.createContext<
 export const CommentsContextProvider: React.FC<{ page: number }> = ({ page, children }) => {
   const api = useDocumentViewerApi()
   const document = useDocumentData()
+  const viewerState = useViewerState()
   const [comments, setComments] = useState<CommentData[]>([])
   const [activeCommentId, setActiveComment] = useState<string | undefined>(undefined)
   useEffect(() => {
     const abortController = new AbortController()
     ;(async () => {
-      /** */
-      const result = await api.commentActions.getPreviewComments({ document, page, abortController })
-      setComments(result)
+      if (viewerState.showComments) {
+        const result = await api.commentActions.getPreviewComments({ document, page, abortController })
+        setComments(result)
+      }
     })()
     return () => abortController.abort()
-  }, [api.commentActions, document, page])
+  }, [api.commentActions, document, page, viewerState.showComments])
 
   useEffect(() => {
     const disposables = [
@@ -43,6 +45,7 @@ export const CommentsContextProvider: React.FC<{ page: number }> = ({ page, chil
         onFinished: async ({ returned }) => {
           const a = await returned
           setComments([...comments, a])
+          viewerState.updateState({ isPlacingCommentMarker: false })
         },
       }),
       Trace.method({
@@ -59,7 +62,7 @@ export const CommentsContextProvider: React.FC<{ page: number }> = ({ page, chil
     ]
 
     return () => disposables.forEach(d => d.dispose())
-  }, [api.commentActions, comments])
+  }, [api.commentActions, comments, viewerState])
 
   return (
     <CommentsContext.Provider
