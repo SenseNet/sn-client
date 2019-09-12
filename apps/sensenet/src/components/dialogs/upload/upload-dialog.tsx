@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { DialogProps } from '@material-ui/core/Dialog'
 import { GenericContent } from '@sensenet/default-content-types'
 import {
@@ -42,13 +42,20 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
-export const UploadDialog: React.FunctionComponent<{
+type Props = {
   dialogProps: DialogProps
   content: GenericContent
-}> = props => {
+  files?: File[]
+}
+
+export const UploadDialog: React.FunctionComponent<Props> = props => {
   const classes = useStyles()
   const inputFile = useRef<HTMLInputElement>(null)
-  const [files, setFiles] = useState<File[]>()
+  const [files, setFiles] = useState<File[] | undefined>()
+
+  useEffect(() => {
+    setFiles(props.files)
+  }, [props.files])
 
   const isFileAdded = files && !!files.length
 
