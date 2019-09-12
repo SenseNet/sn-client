@@ -11,9 +11,10 @@ import {
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 import filesize from 'filesize'
+import { FileWithFullPath } from './helper'
 
 type Props = {
-  files: File[]
+  files: FileWithFullPath[]
   removeItem: (file: File) => void
 }
 
@@ -47,7 +48,11 @@ export const FileList: React.FC<Props> = props => {
       {[...props.files].map(file => (
         <ListItem key={file.lastModified} className={classes.listItem}>
           <div className={classes.square} />
-          <ListItemText primary={file.name} className={classes.listItemText} secondary={filesize(file.size)} />
+          <ListItemText
+            primary={file.fullPath || file.name}
+            className={classes.listItemText}
+            secondary={filesize(file.size)}
+          />
           <ListItemSecondaryAction>
             <IconButton
               edge="end"
