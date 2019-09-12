@@ -81,7 +81,6 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = props =
 
   const scrollTo = useCallback(
     (index: number, smoothScroll = true) => {
-      viewerState.updateState({ activePages: [index] })
       scrollToImage({
         containerId: 'sn-document-viewer-pages',
         itemName: PAGE_NAME,
@@ -98,8 +97,15 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = props =
         smoothScroll,
       })
     },
-    [scrollToImage, viewerState],
+    [scrollToImage],
   )
+
+  useEffect(() => {
+    const observer = viewerState.onPageChange.subscribe(p => {
+      scrollTo(p)
+    })
+    return () => observer.dispose()
+  }, [scrollTo, viewerState.onPageChange])
 
   const createComment = useCallback(
     (text: string) => {

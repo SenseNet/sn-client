@@ -17,14 +17,17 @@ export const DocumentTitlePager: React.FC = () => {
 
   const setPage = debounce((index: number) => {
     viewerState.updateState({ activePages: [index] })
+    viewerState.onPageChange.setValue(index)
   }, 200)
+
+  const [currentPage, setCurrentPage] = useState()
 
   const gotoPage = (page: string | number) => {
     let pageInt = typeof page === 'string' ? parseInt(page, 10) : page
     if (!isNaN(pageInt)) {
       pageInt = Math.max(pageInt, 1)
       pageInt = Math.min(pageInt, documentData.pageCount)
-      setPage(pageInt)
+      setCurrentPage(pageInt)
     }
   }
 
@@ -40,11 +43,15 @@ export const DocumentTitlePager: React.FC = () => {
           {documentData.documentName}&nbsp;
         </div>
         {isFocused ? (
-          <form onSubmit={event => event.preventDefault()}>
+          <form
+            onSubmit={ev => {
+              ev.preventDefault()
+              setPage(currentPage)
+            }}>
             <TextField
               style={{ flexShrink: 0 }}
               title={localization.gotoPage}
-              value={viewerState.activePages[0]}
+              value={currentPage}
               onChange={ev => gotoPage(ev.currentTarget.value)}
               type="number"
               required={true}

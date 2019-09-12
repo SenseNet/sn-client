@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { deepMerge, DeepPartial } from '@sensenet/client-utils'
+import { deepMerge, DeepPartial, ObservableValue } from '@sensenet/client-utils'
 import { ViewerState } from '../models/viewer-state'
 
 export const defaultViewerState: ViewerState & {
@@ -17,6 +17,7 @@ export const defaultViewerState: ViewerState & {
   hasChanges: false,
   isPlacingCommentMarker: false,
   isCreateCommentActive: false,
+  onPageChange: new ObservableValue(1),
   updateState: () => {
     /** */
   },

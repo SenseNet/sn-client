@@ -1,3 +1,5 @@
+import { ObservableValue } from '@sensenet/client-utils'
+
 /**
  * The zoom type definitions
  */
@@ -61,4 +63,9 @@ export interface ViewerState {
    * Indicates if the user is creating a comment at the moment
    */
   isCreateCommentActive: boolean
+
+  /**
+   *
+   */
+  onPageChange: ObservableValue<number>
 }
