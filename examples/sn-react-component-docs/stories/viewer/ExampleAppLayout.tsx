@@ -7,12 +7,14 @@ import {
   LayoutAppBar,
   Print,
   RotateActivePagesWidget,
+  SaveWidget,
   SearchBar,
   Share,
   ToggleCommentsWidget,
   ToggleShapesWidget,
   ToggleThumbnailsWidget,
   ZoomInOutWidget,
+  ZoomModeWidget,
 } from '@sensenet/document-viewer-react/src'
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
@@ -97,7 +99,9 @@ export const ExampleAppLayout: React.FC = () => {
                     }}
                   />
                   <ZoomInOutWidget />
+                  <ZoomModeWidget />
                   <RotateActivePagesWidget />
+                  <SaveWidget />
                 </div>
                 <DocumentTitlePager />
                 <div style={{ display: 'flex', flexShrink: 0 }}>

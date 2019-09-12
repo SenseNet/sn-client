@@ -3,7 +3,7 @@ import { Annotation, DraftCommentMarker, Highlight, PreviewImageData, Redaction,
 import { Dimensions } from '../../services'
 import { useComments, useCommentState, useDocumentData, useDocumentPermissions, useViewerState } from '../../hooks'
 import { ShapeAnnotation, ShapeHighlight, ShapeRedaction } from './Shape'
-import { CommentMarker, ShapesContainer } from './style'
+import { CommentMarker } from './style'
 
 /**
  * Defined the component's own properties
@@ -39,16 +39,35 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = props => {
     })
   }, [docData.shapes.annotations, docData.shapes.highlights, docData.shapes.redactions, props.page.Index])
 
-  const updateShapeData = useCallback((..._args: any[]) => {
-    //ToDo
-  }, [])
+  const removeShape = useCallback(
+    (shapeType: keyof typeof shapes, guid: string) => {
+      const patchedShapeList = shapes[shapeType].filter(s => s.guid !== guid)
+      const patchValue: any = {}
+      patchValue[shapeType] = patchedShapeList
+      setShapes({ ...shapes, ...patchValue })
+      viewerState.updateState({ hasChanges: true })
+    },
+    [shapes, viewerState],
+  )
 
-  const removeShape = useCallback((..._args: any[]) => {
-    //ToDo
-  }, [])
+  const updateShapeData = useCallback(
+    (shapeType: keyof typeof shapes, guid: string, shapeChange: Shape | Annotation) => {
+      const patchedShapeList = (shapes[shapeType] as Shape[]).map(s => {
+        if (s.guid === guid) {
+          return { ...s, ...shapeChange }
+        }
+        return s
+      })
+      const patchValue: any = {}
+      patchValue[shapeType] = patchedShapeList
+      setShapes({ ...shapes, ...patchValue })
+      viewerState.updateState({ hasChanges: true })
+    },
+    [shapes, viewerState],
+  )
 
   const onDrop = useCallback(
-    (ev: React.DragEvent<HTMLElement>, page: PreviewImageData) => {
+    (ev: React.DragEvent<HTMLElement>) => {
       if (permissions.canEdit) {
         ev.preventDefault()
         const shapeData = JSON.parse(ev.dataTransfer.getData('shape')) as {
@@ -59,16 +78,26 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = props => {
         const boundingBox = ev.currentTarget.getBoundingClientRect()
         updateShapeData(shapeData.type, shapeData.shape.guid, {
           ...shapeData.shape,
-          imageIndex: page.Index,
+          imageIndex: props.page.Index,
           x: (ev.clientX - boundingBox.left - shapeData.offset.width) * (1 / props.zoomRatio),
           y: (ev.clientY - boundingBox.top - shapeData.offset.height) * (1 / props.zoomRatio),
         })
       }
     },
-    [permissions.canEdit, props.zoomRatio, updateShapeData],
+    [permissions.canEdit, props.page.Index, props.zoomRatio, updateShapeData],
   )
   return (
-    <ShapesContainer>
+    <div
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        zIndex: 1,
+      }}
+      onDrop={onDrop}
+      onDragOver={ev => ev.preventDefault()}>
       {viewerState.showComments &&
         [...comments.comments, ...(commentState.draft ? [commentState.draft] : [])].map(marker => (
           <CommentMarker
@@ -79,7 +108,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = props => {
             key={marker.id}
           />
         ))}
-      <div onDrop={ev => onDrop(ev, props.page)} onDragOver={ev => ev.preventDefault()}>
+      <div>
         {permissions.canHideRedaction &&
           viewerState.showRedaction &&
           shapes.redactions.map((redaction, index) => {
@@ -132,6 +161,6 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = props => {
             )
           })}
       </div>
-    </ShapesContainer>
+    </div>
   )
 }

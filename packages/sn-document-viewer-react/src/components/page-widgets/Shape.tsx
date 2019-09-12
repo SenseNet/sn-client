@@ -187,7 +187,7 @@ export class ShapeAnnotation extends ShapeComponent<Annotation> {
             onDragStart={this.state.onDragStart}
             onMouseUp={this.state.onResized}
             style={{
-              ...this.getShapeDimensions(this.props.shape, -120, 0),
+              ...this.getShapeDimensions(this.props.shape, 0, 0),
               position: 'absolute',
               resize: this.props.canEdit ? 'both' : 'none',
               overflow: 'hidden',
