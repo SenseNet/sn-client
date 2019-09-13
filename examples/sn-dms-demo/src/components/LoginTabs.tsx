@@ -70,4 +70,4 @@ export class LoginTabs extends React.Component<RouteComponentProps<any> & { clas
   }
 }
 
-export default withRouter<any>(withStyles(style, { withTheme: true })(LoginTabs))
+export default withRouter<any, any>(withStyles(style, { withTheme: true })(LoginTabs))
