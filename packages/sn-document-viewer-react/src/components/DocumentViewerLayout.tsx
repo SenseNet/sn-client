@@ -39,7 +39,7 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = props =
   const viewerState = useViewerState()
   const localization = useLocalization()
   const api = useDocumentViewerApi()
-  const docData = useDocumentData()
+  const { documentData } = useDocumentData()
 
   const [createCommentValue, setCreateCommentValue] = useState('')
 
@@ -113,13 +113,13 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = props =
         return
       }
       api.commentActions.addPreviewComment({
-        document: docData,
+        document: documentData,
         comment: { ...commentState.draft, text, page: viewerState.activePages[0] },
         abortController: new AbortController(),
       })
       viewerState.updateState({ isPlacingCommentMarker: false })
     },
-    [api.commentActions, commentState.draft, docData, viewerState],
+    [api.commentActions, commentState.draft, documentData, viewerState],
   )
 
   return (

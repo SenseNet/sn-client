@@ -16,10 +16,10 @@ export interface PrintProps {
  */
 export const Print: React.FC<PrintProps> = props => {
   const localization = useLocalization()
-  const document = useDocumentData()
+  const { documentData } = useDocumentData()
   return (
     <div style={{ display: 'inline-block' }}>
-      <IconButton color="inherit" title={localization.print} onClick={() => props.print(document)} id="Print">
+      <IconButton color="inherit" title={localization.print} onClick={() => props.print(documentData)} id="Print">
         <PrintIcon />
       </IconButton>
     </div>

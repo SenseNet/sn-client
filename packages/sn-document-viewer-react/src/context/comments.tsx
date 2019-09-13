@@ -17,19 +17,19 @@ export const CommentsContext = React.createContext<
 
 export const CommentsContextProvider: React.FC<{ page: number }> = ({ page, children }) => {
   const api = useDocumentViewerApi()
-  const document = useDocumentData()
+  const { documentData } = useDocumentData()
   const viewerState = useViewerState()
   const [comments, setComments] = useState<CommentData[]>([])
   useEffect(() => {
     const abortController = new AbortController()
     ;(async () => {
       if (viewerState.showComments) {
-        const result = await api.commentActions.getPreviewComments({ document, page, abortController })
+        const result = await api.commentActions.getPreviewComments({ document: documentData, page, abortController })
         setComments(result)
       }
     })()
     return () => abortController.abort()
-  }, [api.commentActions, document, page, viewerState.showComments])
+  }, [api.commentActions, documentData, page, viewerState.showComments])
 
   useEffect(() => {
     const disposables = [

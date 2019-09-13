@@ -77,12 +77,12 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = props => {
               <DocumentPermissionsContextProvider>
                 <PreviewImageDataContextProvider>
                   <DocumentDataContext.Consumer>
-                    {docData => {
-                      if (docData.pageCount === PreviewState.Loading)
+                    {({ documentData }) => {
+                      if (documentData.pageCount === PreviewState.Loading)
                         return <DocumentViewerLoading image={props.loaderImage || loaderImage} />
-                      if (docData.pageCount === PreviewState.Postponed) {
+                      if (documentData.pageCount === PreviewState.Postponed) {
                         return <DocumentViewerRegeneratePreviews />
-                      } else if (docData.pageCount < 0 || docData.error) {
+                      } else if (documentData.pageCount < 0 || documentData.error) {
                         return <DocumentViewerError />
                       }
                       return (

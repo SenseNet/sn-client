@@ -15,15 +15,20 @@ import {
  */
 export const SaveWidget: React.FC = () => {
   const api = useDocumentViewerApi()
-  const document = useDocumentData()
+  const { documentData } = useDocumentData()
   const permissions = useDocumentPermissions()
   const pages = usePreviewImages()
   const viewerState = useViewerState()
   const localization = useLocalization()
 
   const save = useCallback(() => {
-    permissions.canEdit && api.saveChanges({ document, pages: pages.imageData, abortController: new AbortController() })
-  }, [api, document, pages, permissions.canEdit])
+    permissions.canEdit &&
+      api.saveChanges({
+        document: documentData,
+        pages: pages.imageData,
+        abortController: new AbortController(),
+      })
+  }, [api, documentData, pages, permissions.canEdit])
 
   return (
     <div style={{ display: 'inline-block' }}>

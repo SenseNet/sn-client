@@ -15,7 +15,7 @@ export interface DeleteButtonProps {
 export const DeleteButton: React.FC<DeleteButtonProps> = props => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const api = useDocumentViewerApi()
-  const document = useDocumentData()
+  const { documentData } = useDocumentData()
   const localization = useLocalization()
 
   const handleClick = () => {
@@ -25,7 +25,7 @@ export const DeleteButton: React.FC<DeleteButtonProps> = props => {
   const handleDialogClose = (isCanceled: boolean) => {
     if (!isCanceled) {
       api.commentActions.deletePreviewComment({
-        document,
+        document: documentData,
         commentId: props.comment.id,
         abortController: new AbortController(),
       })

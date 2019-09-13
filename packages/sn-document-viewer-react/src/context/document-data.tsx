@@ -6,7 +6,7 @@ import { DocumentData } from '../models'
 import { PreviewState } from '../Enums'
 import { useDocumentViewerApi, useViewerSettings } from '../hooks'
 
-const defaultDocumentData: DocumentData & { updateDocumentData: (newData: DeepPartial<DocumentData>) => void } = {
+const defaultDocumentData: DocumentData = {
   documentName: '',
   documentType: '',
   fileSizekB: 0,
@@ -20,17 +20,19 @@ const defaultDocumentData: DocumentData & { updateDocumentData: (newData: DeepPa
     redactions: [],
   },
   error: undefined,
-  updateDocumentData: () => undefined,
 }
 
-export const DocumentDataContext = React.createContext<typeof defaultDocumentData>(defaultDocumentData)
+export const DocumentDataContext = React.createContext<{
+  documentData: DocumentData
+  updateDocumentData: (data: DeepPartial<DocumentData>) => void
+}>({ documentData: defaultDocumentData, updateDocumentData: () => undefined })
 
 export const DocumentDataProvider: React.FC = ({ children }) => {
   const api = useDocumentViewerApi()
   const doc = useViewerSettings()
   const repo = useRepository()
 
-  const [docData, setDocData] = useState<DocumentData>(defaultDocumentData)
+  const [documentData, setDocumentData] = useState<DocumentData>(defaultDocumentData)
   const [loadLock] = useState(new Semaphore(1))
 
   useEffect(() => {
@@ -38,15 +40,15 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
     ;(async () => {
       try {
         await loadLock.acquire()
-        setDocData(defaultDocumentData)
-        while (docData.pageCount === PreviewState.Loading && !ac.signal.aborted) {
+        setDocumentData(defaultDocumentData)
+        while (documentData.pageCount === PreviewState.Loading && !ac.signal.aborted) {
           const result = await api.getDocumentData({
             hostName: repo.configuration.repositoryUrl,
             idOrPath: doc.documentIdOrPath,
             version: doc.version,
             abortController: ac,
           })
-          setDocData(result)
+          setDocumentData(result)
           if (result.pageCount === PreviewState.Loading) {
             await sleepAsync(4000)
           } else {
@@ -56,7 +58,7 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
       } catch (error) {
         /** */
         if (!ac.signal.aborted) {
-          setDocData({ ...defaultDocumentData, pageCount: PreviewState.ClientFailure, error: error.toString() })
+          setDocumentData({ ...defaultDocumentData, pageCount: PreviewState.ClientFailure, error: error.toString() })
           throw error
         }
       } finally {
@@ -67,17 +69,26 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
   }, [api, doc.documentIdOrPath, repo.configuration.repositoryUrl, doc.version])
 
   const updateDocumentData = useCallback(
-    (newDocData: Partial<DocumentData>) => {
-      setDocData(deepMerge(docData, newDocData))
+    async (newDocData: Partial<DocumentData>) => {
+      const merged = deepMerge(documentData, newDocData)
+      if (JSON.stringify(documentData) !== JSON.stringify(merged)) {
+        try {
+          await loadLock.acquire()
+          setDocumentData(merged)
+          console.log(documentData, merged)
+        } finally {
+          loadLock.release()
+        }
+      }
     },
-    [docData],
+    [documentData, loadLock],
   )
 
-  if (!docData.idOrPath) {
+  if (!documentData.idOrPath) {
     return null
   }
 
   return (
-    <DocumentDataContext.Provider value={{ ...docData, updateDocumentData }}>{children}</DocumentDataContext.Provider>
+    <DocumentDataContext.Provider value={{ documentData, updateDocumentData }}>{children}</DocumentDataContext.Provider>
   )
 }

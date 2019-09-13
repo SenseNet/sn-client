@@ -21,49 +21,50 @@ export interface ShapesWidgetProps {
 export const ShapesWidget: React.FC<ShapesWidgetProps> = props => {
   const permissions = useDocumentPermissions()
   const viewerState = useViewerState()
-  const docData = useDocumentData()
+  const { documentData, updateDocumentData } = useDocumentData()
   const comments = useComments()
   const commentState = useCommentState()
 
-  const [shapes, setShapes] = useState({
-    redactions: docData.shapes.redactions.filter(r => r.imageIndex === props.page.Index) as Redaction[],
-    highlights: docData.shapes.highlights.filter(r => r.imageIndex === props.page.Index) as Highlight[],
-    annotations: docData.shapes.annotations.filter(r => r.imageIndex === props.page.Index) as Annotation[],
+  const [visibleShapes, setVisibleShapes] = useState({
+    redactions: documentData.shapes.redactions.filter(r => r.imageIndex === props.page.Index) as Redaction[],
+    highlights: documentData.shapes.highlights.filter(r => r.imageIndex === props.page.Index) as Highlight[],
+    annotations: documentData.shapes.annotations.filter(r => r.imageIndex === props.page.Index) as Annotation[],
   })
 
   useEffect(() => {
-    setShapes({
-      redactions: docData.shapes.redactions.filter(r => r.imageIndex === props.page.Index) as Redaction[],
-      highlights: docData.shapes.highlights.filter(r => r.imageIndex === props.page.Index) as Highlight[],
-      annotations: docData.shapes.annotations.filter(r => r.imageIndex === props.page.Index) as Annotation[],
+    setVisibleShapes({
+      redactions: documentData.shapes.redactions.filter(r => r.imageIndex === props.page.Index) as Redaction[],
+      highlights: documentData.shapes.highlights.filter(r => r.imageIndex === props.page.Index) as Highlight[],
+      annotations: documentData.shapes.annotations.filter(r => r.imageIndex === props.page.Index) as Annotation[],
     })
-  }, [docData.shapes.annotations, docData.shapes.highlights, docData.shapes.redactions, props.page.Index])
+  }, [
+    documentData.shapes.annotations,
+    documentData.shapes.highlights,
+    documentData.shapes.redactions,
+    props.page.Index,
+  ])
 
   const removeShape = useCallback(
-    (shapeType: keyof typeof shapes, guid: string) => {
-      const patchedShapeList = shapes[shapeType].filter(s => s.guid !== guid)
-      const patchValue: any = {}
-      patchValue[shapeType] = patchedShapeList
-      setShapes({ ...shapes, ...patchValue })
+    (shapeType: keyof Shapes, guid: string) => {
+      ;(documentData.shapes as any)[shapeType] = documentData.shapes[shapeType].filter(s => s.guid !== guid)
+      updateDocumentData(documentData)
       viewerState.updateState({ hasChanges: true })
     },
-    [shapes, viewerState],
+    [documentData, updateDocumentData, viewerState],
   )
 
   const updateShapeData = useCallback(
-    (shapeType: keyof typeof shapes, guid: string, shapeChange: Shape | Annotation) => {
-      const patchedShapeList = (shapes[shapeType] as Shape[]).map(s => {
+    (shapeType: keyof Shapes, guid: string, shapeChange: Shape | Annotation) => {
+      ;(documentData.shapes as any)[shapeType] = (documentData.shapes[shapeType] as Shape[]).map(s => {
         if (s.guid === guid) {
           return { ...s, ...shapeChange }
         }
         return s
       })
-      const patchValue: any = {}
-      patchValue[shapeType] = patchedShapeList
-      setShapes({ ...shapes, ...patchValue })
       viewerState.updateState({ hasChanges: true })
+      updateDocumentData(documentData)
     },
-    [shapes, viewerState],
+    [documentData, updateDocumentData, viewerState],
   )
 
   const onDrop = useCallback(
@@ -111,7 +112,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = props => {
       <div>
         {permissions.canHideRedaction &&
           viewerState.showRedaction &&
-          shapes.redactions.map((redaction, index) => {
+          visibleShapes.redactions.map((redaction, index) => {
             return (
               <ShapeRedaction
                 customZoomLevel={viewerState.customZoomLevel}
@@ -128,7 +129,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = props => {
           })}
 
         {viewerState.showShapes &&
-          shapes.annotations.map((annotation, index) => {
+          visibleShapes.annotations.map((annotation, index) => {
             return (
               <ShapeAnnotation
                 customZoomLevel={viewerState.customZoomLevel}
@@ -145,7 +146,7 @@ export const ShapesWidget: React.FC<ShapesWidgetProps> = props => {
           })}
 
         {viewerState.showShapes &&
-          shapes.highlights.map((highlight, index) => {
+          visibleShapes.highlights.map((highlight, index) => {
             return (
               <ShapeHighlight
                 customZoomLevel={viewerState.customZoomLevel}
