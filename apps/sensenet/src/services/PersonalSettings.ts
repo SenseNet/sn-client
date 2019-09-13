@@ -309,6 +309,11 @@ export const defaultSettings: PersonalSettingsType = {
           permissions: [{ path: '/Root/IMS/Public', action: 'Add' }],
         },
         {
+          itemType: 'Trash',
+          settings: undefined,
+          permissions: [{ path: '/Root/Trash', action: 'Edit' }],
+        },
+        {
           itemType: 'Content Types',
           settings: undefined,
           permissions: [{ path: '/Root/System/Schema/ContentTypes', action: 'Add' }],
