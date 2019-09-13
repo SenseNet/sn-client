@@ -1,5 +1,4 @@
 import React from 'react'
-import { GenericContent } from '@sensenet/default-content-types'
 import {
   CurrentAncestorsProvider,
   CurrentChildrenProvider,
@@ -8,14 +7,12 @@ import {
 } from '@sensenet/hooks-react'
 import { useSelectionService } from '../../hooks'
 import { AddButton } from '../AddButton'
-import { CollectionComponent } from '../content-list'
+import { CollectionComponent, CollectionComponentProps } from '../content-list'
 
 export interface SimpleListComponentProps {
   parent: number | string
-  onNavigate: (newParent: GenericContent) => void
-  onActivateItem: (item: GenericContent) => void
-  fieldsToDisplay?: Array<keyof GenericContent>
   rootPath?: string
+  collectionComponentProps?: Partial<CollectionComponentProps>
 }
 
 export const SimpleList: React.FunctionComponent<SimpleListComponentProps> = props => {
@@ -29,18 +26,15 @@ export const SimpleList: React.FunctionComponent<SimpleListComponentProps> = pro
             <CurrentAncestorsProvider root={props.rootPath}>
               <CollectionComponent
                 enableBreadcrumbs={true}
-                onActivateItem={props.onActivateItem}
+                onActivateItem={() => null}
                 style={{ flexGrow: 1, flexShrink: 0, maxHeight: '100%', width: '100%' }}
-                onParentChange={props.onNavigate}
+                onParentChange={() => null}
                 parentIdOrPath={props.parent}
-                onTabRequest={() => {
-                  /** */
-                }}
                 onSelectionChange={sel => {
                   selectionService.selection.setValue(sel)
                 }}
                 onActiveItemChange={item => selectionService.activeContent.setValue(item)}
-                fieldsToDisplay={props.fieldsToDisplay}
+                {...props.collectionComponentProps}
               />
               <AddButton />
             </CurrentAncestorsProvider>
