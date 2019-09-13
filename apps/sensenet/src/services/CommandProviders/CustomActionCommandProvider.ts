@@ -40,7 +40,11 @@ export class CustomActionCommandProvider implements CommandProvider {
     const actions = (result.d.Actions as ActionModel[]) || []
 
     return actions
-      .filter(a => a.Name.toLowerCase().includes(filteredTerm) || a.DisplayName.toLowerCase().includes(filteredTerm))
+      .filter(
+        a =>
+          (a.Name.toLowerCase().includes(filteredTerm) && a.IsODataAction) ||
+          (a.DisplayName.toLowerCase().includes(filteredTerm) && a.IsODataAction),
+      )
       .map(a => {
         const actionMetadata =
           result.d.__metadata &&
