@@ -6,7 +6,7 @@ import PeopleTwoTone from '@material-ui/icons/PeopleTwoTone'
 import PublicTwoTone from '@material-ui/icons/PublicTwoTone'
 import SearchTwoTone from '@material-ui/icons/SearchTwoTone'
 import WidgetsTwoTone from '@material-ui/icons/WidgetsTwoTone'
-import { DashboardTwoTone } from '@material-ui/icons'
+import { DashboardTwoTone, DeleteTwoTone } from '@material-ui/icons'
 import { useRepository, useSession } from '@sensenet/hooks-react'
 import { LoginState } from '@sensenet/client-core'
 import { Icon } from '../components/Icon'
@@ -79,7 +79,7 @@ export const useDrawerItems = () => {
         case 'Localization':
           return <LanguageTwoTone />
         case 'Trash':
-          return <InfoTwoTone />
+          return <DeleteTwoTone />
         case 'Setup':
           return <BuildTwoTone />
         case 'Version info':
@@ -132,7 +132,7 @@ export const useDrawerItems = () => {
             root: '/Root/Localization',
           })}`
         case 'Trash':
-          return '' // ToDO
+          return '/trash'
         case 'Setup':
           return '/setup'
         case 'Version info':
