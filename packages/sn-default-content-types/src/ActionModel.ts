@@ -35,4 +35,8 @@ export interface ActionModel {
    * Shows if the action is forbidden
    */
   Forbidden: boolean
+  /**
+   * Shows if the action is an ODataAction
+   */
+  IsODataAction: boolean
 }
