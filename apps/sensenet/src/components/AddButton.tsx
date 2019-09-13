@@ -7,11 +7,8 @@ import Add from '@material-ui/icons/Add'
 import CloudUpload from '@material-ui/icons/CloudUpload'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
-import { UploadProgressInfo } from '@sensenet/client-core'
-import { ObservableValue } from '@sensenet/client-utils'
-import { CurrentContentContext, useInjector, useLogger, useRepository } from '@sensenet/hooks-react'
+import { CurrentContentContext, useLogger, useRepository } from '@sensenet/hooks-react'
 import { useLocalization } from '../hooks'
-import { UploadTracker } from '../services/UploadTracker'
 import { AddDialog } from './dialogs/add'
 import { Icon } from './Icon'
 import { UploadDialog } from './dialogs/upload/upload-dialog'
@@ -21,7 +18,6 @@ export interface AddButtonProps {
 }
 
 export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
-  const injector = useInjector()
   const repo = useRepository()
   const parentContext = useContext(CurrentContentContext)
   const [parent, setParent] = useState(parentContext)
@@ -58,15 +54,6 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
         })
     }
   }, [localization.errorGettingAllowedContentTypes, logger, parent.Id, repo, showSelectType])
-
-  const [progressObservable] = useState(new ObservableValue<UploadProgressInfo>())
-
-  useEffect(() => {
-    const subscription = progressObservable.subscribe(p =>
-      injector.getInstance(UploadTracker).onUploadProgress.setValue({ progress: p, repo }),
-    )
-    return () => subscription.dispose()
-  }, [injector, progressObservable, repo])
 
   return (
     <div>

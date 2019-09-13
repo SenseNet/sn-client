@@ -2,6 +2,7 @@ import React from 'react'
 import {
   createStyles,
   IconButton,
+  LinearProgress,
   List,
   ListItem,
   ListItemSecondaryAction,
@@ -37,6 +38,9 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: theme.palette.type === 'dark' ? theme.palette.grey[400] : theme.palette.grey[600],
       margin: theme.spacing(1),
     },
+    progress: {
+      flexGrow: 3,
+    },
   }),
 )
 
@@ -53,6 +57,14 @@ export const FileList: React.FC<Props> = props => {
             className={classes.listItemText}
             secondary={filesize(file.size)}
           />
+          {file.progress && file.progress.chunkCount != null && file.progress.uploadedChunks != null ? (
+            <LinearProgress
+              variant="determinate"
+              className={classes.progress}
+              value={(file.progress.chunkCount * 100) / file.progress.uploadedChunks!}
+            />
+          ) : null}
+
           <ListItemSecondaryAction>
             <IconButton
               edge="end"

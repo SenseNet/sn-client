@@ -1,4 +1,10 @@
-import { WebKitDirectoryEntry, WebKitDirectoryReader, WebKitEntry, WebKitFileEntry } from '@sensenet/client-core'
+import {
+  UploadProgressInfo,
+  WebKitDirectoryEntry,
+  WebKitDirectoryReader,
+  WebKitEntry,
+  WebKitFileEntry,
+} from '@sensenet/client-core'
 
 /**
  * Wrap readEntries in a promise to make working with readEntries easier
@@ -51,4 +57,4 @@ export async function getAllFileEntries(dataTransferItemList: DataTransferItemLi
   return fileEntries as WebKitFileEntry[]
 }
 
-export type FileWithFullPath = File & { fullPath?: string }
+export type FileWithFullPath = File & { fullPath?: string; progress?: Omit<UploadProgressInfo, 'file'> }

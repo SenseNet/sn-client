@@ -15,6 +15,9 @@ import {
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 import NoteAddSharpIcon from '@material-ui/icons/NoteAddSharp'
+import { useRepository } from '@sensenet/hooks-react'
+import { ObservableValue } from '@sensenet/client-utils'
+import { UploadProgressInfo } from '@sensenet/client-core'
 import { DropFileArea } from '../../DropFileArea'
 import { FileList } from './file-list'
 import { FileWithFullPath, getAllFileEntries } from './helper'
@@ -54,12 +57,34 @@ type Props = {
 
 export const UploadDialog: React.FunctionComponent<Props> = props => {
   const classes = useStyles()
+  const repository = useRepository()
   const inputFile = useRef<HTMLInputElement>(null)
-  const [files, setFiles] = useState<FileWithFullPath[] | undefined>()
+  const [files, setFiles] = useState<FileWithFullPath[]>()
+  const [progressObservable] = useState(new ObservableValue<UploadProgressInfo>())
 
   useEffect(() => {
     setFiles(props.files)
   }, [props.files])
+
+  useEffect(() => {
+    const disposable = progressObservable.subscribe(progressInfo => {
+      if (!files) {
+        return
+      }
+
+      setFiles(
+        files.map(f => {
+          if (f.lastModified === progressInfo.file.lastModified) {
+            const { file, ...progress } = progressInfo
+            const updated = Object.assign(f, { progress })
+            return updated
+          }
+          return f
+        }),
+      )
+    })
+    return () => disposable.dispose()
+  }, [files, progressObservable])
 
   const isFileAdded = files && !!files.length
 
@@ -95,6 +120,21 @@ export const UploadDialog: React.FunctionComponent<Props> = props => {
       )
     })
     addFiles(await Promise.all(result))
+  }
+
+  const upload = () => {
+    if (!files) {
+      return
+    }
+
+    repository.upload.fromFileList({
+      parentPath: props.content.Path,
+      fileList: files as any,
+      createFolders: true,
+      binaryPropertyName: 'Binary',
+      overwrite: false,
+      progressObservable,
+    })
   }
 
   return (
@@ -137,7 +177,7 @@ export const UploadDialog: React.FunctionComponent<Props> = props => {
           </Grid>
         </DropFileArea>
         <Grid container justify="flex-end">
-          <Button color="primary" variant="contained">
+          <Button color="primary" variant="contained" onClick={() => upload()}>
             Upload
           </Button>
         </Grid>
