@@ -392,7 +392,7 @@ export class Repository implements Disposable {
       this.configuration.repositoryUrl,
       this.configuration.oDataToken,
       contextPath,
-      'GetAllowedChildTypesFromCTD',
+      'EffectiveAllowedChildTypes',
     )
     const response = await this.fetch(`${path}?${params}`, {
       credentials: 'include',
