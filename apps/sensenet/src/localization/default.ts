@@ -56,6 +56,7 @@ const values = {
     deletingContent: 'Deleting content...',
     dialogContent: 'You are going to delete the following content:',
     permanentlyLabel: 'Permanently',
+    deletePermanently: 'Delete permanently',
     permanentlyHint: "Don't move to trash, delete immediately",
     deleteButton: 'Delete',
     cancelButton: 'Cancel',
@@ -118,6 +119,15 @@ const values = {
     expand: 'Expand',
     collapse: 'Collapse',
     queryTermDescription: 'The Query term',
+  },
+  trash: {
+    title: 'Trash',
+    retentionTime: 'Minimum retention time',
+    retentionTimeUnit: 'day(s)',
+    sizeQuota: 'Size quota',
+    sizeQuotaUnit: 'MB',
+    capacity: 'Trashbag capacity',
+    capacityUnit: 'content',
   },
   editPropertiesDialog: {
     dialogTitle: 'Edit {0}',

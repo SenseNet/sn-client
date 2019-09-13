@@ -1,6 +1,5 @@
 import { Content, Repository, UploadFileOptions, UploadResponse } from '@sensenet/client-core'
 import { User } from '@sensenet/default-content-types'
-import { Omit } from 'cypress/types/lodash'
 
 declare global {
   interface Window {
