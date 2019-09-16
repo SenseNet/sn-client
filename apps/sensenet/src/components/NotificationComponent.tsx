@@ -74,7 +74,7 @@ export const NotificationComponent: React.FunctionComponent = () => {
             open={item.data.isDismissed !== true && dismisses.indexOf(item.data.guid) === -1}
             anchorOrigin={{
               vertical: 'bottom',
-              horizontal: 'right',
+              horizontal: 'center',
             }}
             style={{
               marginBottom:
