@@ -16,10 +16,10 @@ export interface ShareProps {
  */
 export const Share: React.FC<ShareProps> = props => {
   const localization = useLocalization()
-  const document = useDocumentData()
+  const { documentData } = useDocumentData()
   return (
     <div style={{ display: 'inline-block' }}>
-      <IconButton color="inherit" title={localization.share} onClick={() => props.share(document)} id="Share">
+      <IconButton color="inherit" title={localization.share} onClick={() => props.share(documentData)} id="Share">
         <ShareIcon />
       </IconButton>
     </div>

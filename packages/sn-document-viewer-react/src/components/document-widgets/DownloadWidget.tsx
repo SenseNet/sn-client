@@ -16,13 +16,13 @@ export interface DownloadProps {
  */
 export const Download: React.FC<DownloadProps> = props => {
   const localization = useLocalization()
-  const document = useDocumentData()
+  const { documentData } = useDocumentData()
   return (
     <div style={{ display: 'inline-block' }}>
       <IconButton
         color="inherit"
         title={localization.download}
-        onClick={() => props.download(document)}
+        onClick={() => props.download(documentData)}
         id="CloudDownload">
         <CloudDownload />
       </IconButton>

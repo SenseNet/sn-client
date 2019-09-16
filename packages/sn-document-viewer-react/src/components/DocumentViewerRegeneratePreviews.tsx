@@ -9,7 +9,7 @@ export const DocumentViewerRegeneratePreviews: React.FC = () => {
   const localization = useLocalization()
 
   const api = useDocumentViewerApi()
-  const document = useDocumentData()
+  const { documentData } = useDocumentData()
 
   /**
    * renders the component
@@ -43,7 +43,7 @@ export const DocumentViewerRegeneratePreviews: React.FC = () => {
           disabled={isRegenerating}
           onClick={() => {
             setIsRegenerating(true)
-            api.regeneratePreviews({ document, abortController: new AbortController() })
+            api.regeneratePreviews({ document: documentData, abortController: new AbortController() })
           }}>
           {isRegenerating && <CircularProgress size={24} style={{ marginRight: '1em' }} />}
           {localization.regenerateButton}

@@ -8,7 +8,7 @@ export const DocumentPermissionsContext = React.createContext({
 })
 
 export const DocumentPermissionsContextProvider: React.FC = ({ children }) => {
-  const document = useDocumentData()
+  const { documentData } = useDocumentData()
   const api = useDocumentViewerApi()
   const [canEdit, setcanEdit] = useState(false)
   const [canHideRedaction, setcancanHideRedaction] = useState(false)
@@ -19,9 +19,9 @@ export const DocumentPermissionsContextProvider: React.FC = ({ children }) => {
     ;(async () => {
       try {
         /** */
-        const canEditPromise = api.canEditDocument({ document, abortController })
-        const cancanHideRedactionPromise = api.canHideRedaction({ document, abortController })
-        const canHideWatermarkPromise = api.canHideWatermark({ document, abortController })
+        const canEditPromise = api.canEditDocument({ document: documentData, abortController })
+        const cancanHideRedactionPromise = api.canHideRedaction({ document: documentData, abortController })
+        const canHideWatermarkPromise = api.canHideWatermark({ document: documentData, abortController })
 
         const [canEditValue, cancanHideRedactionValue, canHideWatermarkValue] = await Promise.all([
           canEditPromise,
@@ -37,7 +37,7 @@ export const DocumentPermissionsContextProvider: React.FC = ({ children }) => {
         }
       }
     })()
-  }, [api, document])
+  }, [api, documentData])
 
   return (
     <DocumentPermissionsContext.Provider

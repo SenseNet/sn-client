@@ -11,4 +11,5 @@ export interface MetadataAction {
     type: string
     required: boolean
   }>
+  isODataAction: boolean
 }

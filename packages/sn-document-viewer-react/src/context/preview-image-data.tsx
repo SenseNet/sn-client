@@ -17,7 +17,7 @@ export const PreviewImageDataContext = React.createContext<{
 export const PreviewImageDataContextProvider: React.FC = props => {
   const viewerSettings = useViewerSettings()
   const api = useDocumentViewerApi()
-  const document = useDocumentData()
+  const { documentData, updateDocumentData } = useDocumentData()
   const viewerState = useViewerState()
   const permissions = useDocumentPermissions()
   const [previewImages, setPreviewImages] = useState<PreviewImageData[]>([])
@@ -28,7 +28,7 @@ export const PreviewImageDataContextProvider: React.FC = props => {
       try {
         setPreviewImages([])
         const images = await api.getExistingPreviewImages({
-          document,
+          document: documentData,
           version: viewerSettings.version || '',
           showWatermark: viewerState.showWatermark,
           abortController,
@@ -45,8 +45,8 @@ export const PreviewImageDataContextProvider: React.FC = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     api,
-    document.idOrPath,
-    document.hostName,
+    documentData.idOrPath,
+    documentData.hostName,
     viewerSettings.documentIdOrPath,
     viewerSettings.version,
     viewerState.showWatermark,
@@ -69,11 +69,11 @@ export const PreviewImageDataContextProvider: React.FC = props => {
           }
         }
 
-        document.updateDocumentData({
+        updateDocumentData({
           shapes: {
-            annotations: applyShapeRotations(document.shapes.annotations, amount, img),
-            highlights: applyShapeRotations(document.shapes.highlights, amount, img),
-            redactions: applyShapeRotations(document.shapes.redactions, amount, img),
+            annotations: applyShapeRotations(documentData.shapes.annotations, amount, img),
+            highlights: applyShapeRotations(documentData.shapes.highlights, amount, img),
+            redactions: applyShapeRotations(documentData.shapes.redactions, amount, img),
           },
         })
 
@@ -82,7 +82,7 @@ export const PreviewImageDataContextProvider: React.FC = props => {
       setPreviewImages(newImages)
       viewerState.updateState({ hasChanges: true })
     },
-    [document, permissions.canEdit, previewImages, viewerState],
+    [documentData, updateDocumentData, permissions.canEdit, previewImages, viewerState],
   )
 
   return (

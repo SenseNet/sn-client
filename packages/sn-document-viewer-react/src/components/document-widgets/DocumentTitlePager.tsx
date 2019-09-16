@@ -11,7 +11,7 @@ import { useDocumentData, useLocalization, useViewerState } from '../../hooks'
 export const DocumentTitlePager: React.FC = () => {
   const [isFocused, setIsFocused] = useState(false)
 
-  const documentData = useDocumentData()
+  const { documentData } = useDocumentData()
   const viewerState = useViewerState()
   const localization = useLocalization()
 

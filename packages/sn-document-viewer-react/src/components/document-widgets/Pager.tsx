@@ -19,18 +19,18 @@ export interface PagerState {
 export const PagerWidget: React.FC = () => {
   const viewerState = useViewerState()
   const localization = useLocalization()
-  const document = useDocumentData()
+  const { documentData } = useDocumentData()
 
   const [currentPage, setCurrentPage] = useState(viewerState.activePages[0] || 1)
-  const [lastPage, setLastPage] = useState(document.pageCount || 1)
+  const [lastPage, setLastPage] = useState(documentData.pageCount || 1)
 
   useEffect(() => {
     setCurrentPage(viewerState.activePages[0] || 1)
   }, [viewerState.activePages])
 
   useEffect(() => {
-    setLastPage(document.pageCount || 1)
-  }, [document.pageCount])
+    setLastPage(documentData.pageCount || 1)
+  }, [documentData.pageCount])
 
   const gotoPage = useCallback(
     (pageNo: number) => {

@@ -22,19 +22,19 @@ export interface CommentContextProviderProps {
 
 export const CommentsContextProvider: React.FC<CommentContextProviderProps> = ({ page, children, images }) => {
   const api = useDocumentViewerApi()
-  const document = useDocumentData()
+  const { documentData } = useDocumentData()
   const viewerState = useViewerState()
   const [comments, setComments] = useState<CommentData[]>([])
   useEffect(() => {
     const abortController = new AbortController()
     ;(async () => {
       if (viewerState.showComments && images === 'preview') {
-        const result = await api.commentActions.getPreviewComments({ document, page, abortController })
+        const result = await api.commentActions.getPreviewComments({ document: documentData, page, abortController })
         setComments(result)
       }
     })()
     return () => abortController.abort()
-  }, [api.commentActions, document, images, page, viewerState.showComments])
+  }, [api.commentActions, documentData, images, page, viewerState.showComments])
 
   useEffect(() => {
     const disposables = [
