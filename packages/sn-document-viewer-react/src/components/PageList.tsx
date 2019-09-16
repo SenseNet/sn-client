@@ -179,7 +179,7 @@ export const PageList: React.FC<PageListProps> = props => {
           paddingBottom: marginBottom || 0,
         }}>
         {visiblePages.map(page => (
-          <CommentsContextProvider page={page.Index} key={page.Index}>
+          <CommentsContextProvider page={page.Index} key={page.Index} images={props.images}>
             <Page
               showWidgets={props.showWidgets}
               viewportWidth={viewport.width}

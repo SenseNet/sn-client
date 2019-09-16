@@ -194,7 +194,7 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = props =
               overflow: 'hidden',
             },
           }}>
-          <CommentsContextProvider page={viewerState.activePages[0]}>
+          <CommentsContextProvider page={viewerState.activePages[0]} images="preview">
             <CommentsContainer ref={commentsContainerRef as any}>
               <Typography variant="h4">{localization.commentSideBarTitle}</Typography>
               <CreateComment

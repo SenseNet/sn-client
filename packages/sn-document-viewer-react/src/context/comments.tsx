@@ -15,7 +15,12 @@ export const CommentsContext = React.createContext<
   getPreviewComments: async () => undefined as any,
 })
 
-export const CommentsContextProvider: React.FC<{ page: number }> = ({ page, children }) => {
+export interface CommentContextProviderProps {
+  page: number
+  images: 'preview' | 'thumbnail'
+}
+
+export const CommentsContextProvider: React.FC<CommentContextProviderProps> = ({ page, children, images }) => {
   const api = useDocumentViewerApi()
   const document = useDocumentData()
   const viewerState = useViewerState()
@@ -23,13 +28,13 @@ export const CommentsContextProvider: React.FC<{ page: number }> = ({ page, chil
   useEffect(() => {
     const abortController = new AbortController()
     ;(async () => {
-      if (viewerState.showComments) {
+      if (viewerState.showComments && images === 'preview') {
         const result = await api.commentActions.getPreviewComments({ document, page, abortController })
         setComments(result)
       }
     })()
     return () => abortController.abort()
-  }, [api.commentActions, document, page, viewerState.showComments])
+  }, [api.commentActions, document, images, page, viewerState.showComments])
 
   useEffect(() => {
     const disposables = [
