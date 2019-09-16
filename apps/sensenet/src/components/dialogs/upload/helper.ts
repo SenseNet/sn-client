@@ -57,4 +57,23 @@ export async function getAllFileEntries(dataTransferItemList: DataTransferItemLi
   return fileEntries as WebKitFileEntry[]
 }
 
+export const getFilesFromDragEvent = async (event: React.DragEvent) => {
+  const items = await getAllFileEntries(event.dataTransfer.items)
+  const result: Array<Promise<FileWithFullPath>> = []
+  items.forEach(item => {
+    result.push(
+      new Promise<FileWithFullPath>(resolve => {
+        item.file(file => {
+          // No need to add fullPath to file if it wasn't in a folder
+          if (`/${file.name}` !== item.fullPath) {
+            ;(file as any).fullPath = item.fullPath
+          }
+          resolve(file as FileWithFullPath)
+        })
+      }),
+    )
+  })
+  return await Promise.all(result)
+}
+
 export type FileWithFullPath = File & { fullPath?: string; progress?: Omit<UploadProgressInfo, 'file'> }

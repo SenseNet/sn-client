@@ -3,6 +3,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
 import { useTheme } from '../hooks'
 import { UploadDialog } from './dialogs'
+import { FileWithFullPath, getFilesFromDragEvent } from './dialogs/upload/helper'
 
 type Props = {
   parentContent: GenericContent
@@ -13,8 +14,16 @@ type Props = {
 export const DropFileArea: React.FunctionComponent<Props> = props => {
   const [isDragOver, setDragOver] = useState(false)
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false)
-  const [files, setFiles] = useState<File[]>()
+  const [files, setFiles] = useState<FileWithFullPath[]>()
   const theme = useTheme()
+
+  const onDrop = async (event: React.DragEvent) => {
+    event.stopPropagation()
+    event.preventDefault()
+    setDragOver(false)
+    setFiles(await getFilesFromDragEvent(event))
+    props.onDrop ? props.onDrop(event) : setIsUploadDialogOpen(true)
+  }
 
   return (
     <>
@@ -42,13 +51,7 @@ export const DropFileArea: React.FunctionComponent<Props> = props => {
           ev.preventDefault()
           setDragOver(true)
         }}
-        onDrop={ev => {
-          ev.stopPropagation()
-          ev.preventDefault()
-          setDragOver(false)
-          setFiles([...ev.dataTransfer.files])
-          props.onDrop ? props.onDrop(ev) : setIsUploadDialogOpen(true)
-        }}>
+        onDrop={onDrop}>
         <div
           style={{
             width: '100%',

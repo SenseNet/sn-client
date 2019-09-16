@@ -20,7 +20,7 @@ import { ObservableValue } from '@sensenet/client-utils'
 import { UploadProgressInfo } from '@sensenet/client-core'
 import { DropFileArea } from '../../DropFileArea'
 import { FileList } from './file-list'
-import { FileWithFullPath, getAllFileEntries } from './helper'
+import { FileWithFullPath, getFilesFromDragEvent } from './helper'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -104,22 +104,8 @@ export const UploadDialog: React.FunctionComponent<Props> = props => {
   }
 
   const onDrop = async (event: React.DragEvent) => {
-    const items = await getAllFileEntries(event.dataTransfer.items)
-    const result: Array<Promise<FileWithFullPath>> = []
-    items.forEach(item => {
-      result.push(
-        new Promise<FileWithFullPath>(resolve => {
-          item.file(file => {
-            // No need to add fullPath to file if it wasn't in a folder
-            if (`/${file.name}` !== item.fullPath) {
-              ;(file as any).fullPath = item.fullPath
-            }
-            resolve(file as FileWithFullPath)
-          })
-        }),
-      )
-    })
-    addFiles(await Promise.all(result))
+    const result = await getFilesFromDragEvent(event)
+    addFiles(result)
   }
 
   const upload = () => {
