@@ -335,7 +335,9 @@ export class Upload {
   public async fromFileList<T extends Content = Content>(options: UploadFromFileListOptions<T>) {
     if (options.createFolders) {
       const directories = new Set(
-        Array.from(options.fileList).map(f => PathHelper.getParentPath((f as any).webkitRelativePath)),
+        Array.from(options.fileList).map(f =>
+          PathHelper.getParentPath((f as any).webkitRelativePath || (f as any).fullPath || ''),
+        ),
       )
       const directoriesBySegments = Array.from(directories).map(d => PathHelper.getSegments(d))
       const createdDirectories = new Set<string>()
