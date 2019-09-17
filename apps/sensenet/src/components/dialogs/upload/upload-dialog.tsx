@@ -60,6 +60,7 @@ export const UploadDialog: React.FunctionComponent<Props> = props => {
   const repository = useRepository()
   const inputFile = useRef<HTMLInputElement>(null)
   const [files, setFiles] = useState<FileWithFullPath[]>()
+  const [isUploadInProgress, setIsUploadInProgress] = useState(false)
   const [progressObservable] = useState(new ObservableValue<UploadProgressInfo>())
 
   useEffect(() => {
@@ -104,16 +105,20 @@ export const UploadDialog: React.FunctionComponent<Props> = props => {
   }
 
   const onDrop = async (event: React.DragEvent) => {
+    if (isUploadInProgress) {
+      return
+    }
     const result = await getFilesFromDragEvent(event)
     addFiles(result)
   }
 
-  const upload = () => {
+  const upload = async () => {
     if (!files) {
       return
     }
+    setIsUploadInProgress(true)
 
-    repository.upload.fromFileList({
+    await repository.upload.fromFileList({
       parentPath: props.content.Path,
       fileList: files as any,
       createFolders: true,
@@ -121,6 +126,8 @@ export const UploadDialog: React.FunctionComponent<Props> = props => {
       overwrite: false,
       progressObservable,
     })
+
+    setIsUploadInProgress(false)
   }
 
   return (
@@ -131,6 +138,7 @@ export const UploadDialog: React.FunctionComponent<Props> = props => {
         </Typography>
         {props.dialogProps.onClose ? (
           <IconButton
+            disabled={isUploadInProgress}
             aria-label="close"
             className={classes.closeButton}
             onClick={() => props.dialogProps.onClose && props.dialogProps.onClose({}, 'escapeKeyDown')}>
@@ -141,14 +149,19 @@ export const UploadDialog: React.FunctionComponent<Props> = props => {
       <DialogContent>
         <DropFileArea parentContent={props.content} onDrop={onDrop}>
           <Grid
-            onClick={() => inputFile.current && inputFile.current.click()}
+            onClick={() => {
+              if (isUploadInProgress) {
+                return
+              }
+              inputFile.current && inputFile.current.click()
+            }}
             container
             justify={isFileAdded ? 'flex-start' : 'center'}
             direction="column"
             alignItems={isFileAdded ? 'stretch' : 'center'}
             className={classes.grid}>
             {isFileAdded ? (
-              <FileList files={files!} removeItem={removeItem} />
+              <FileList files={files!} removeItem={removeItem} isUploadInProgress={isUploadInProgress} />
             ) : (
               <>
                 <NoteAddSharpIcon className={classes.icon} />
@@ -163,7 +176,7 @@ export const UploadDialog: React.FunctionComponent<Props> = props => {
           </Grid>
         </DropFileArea>
         <Grid container justify="flex-end">
-          <Button color="primary" variant="contained" onClick={() => upload()}>
+          <Button color="primary" disabled={isUploadInProgress} variant="contained" onClick={() => upload()}>
             Upload
           </Button>
         </Grid>

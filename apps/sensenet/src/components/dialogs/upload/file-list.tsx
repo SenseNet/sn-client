@@ -17,6 +17,7 @@ import { FileWithFullPath } from './helper'
 type Props = {
   files: FileWithFullPath[]
   removeItem: (file: File) => void
+  isUploadInProgress: boolean
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -64,9 +65,9 @@ export const FileList: React.FC<Props> = props => {
               value={(file.progress.uploadedChunks / file.progress.chunkCount) * 100}
             />
           ) : null}
-
           <ListItemSecondaryAction>
             <IconButton
+              disabled={props.isUploadInProgress}
               edge="end"
               aria-label="remove"
               onClick={ev => {
