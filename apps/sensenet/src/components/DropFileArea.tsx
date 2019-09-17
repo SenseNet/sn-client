@@ -21,7 +21,7 @@ export const DropFileArea: React.FunctionComponent<Props> = props => {
     event.stopPropagation()
     event.preventDefault()
     setDragOver(false)
-    setFiles(await getFilesFromDragEvent(event))
+    !props.onDrop && setFiles(await getFilesFromDragEvent(event))
     props.onDrop ? props.onDrop(event) : setIsUploadDialogOpen(true)
   }
 
