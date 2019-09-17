@@ -61,7 +61,7 @@ export const FileList: React.FC<Props> = props => {
             <LinearProgress
               variant="determinate"
               className={classes.progress}
-              value={(file.progress.chunkCount * 100) / file.progress.uploadedChunks!}
+              value={(file.progress.uploadedChunks / file.progress.chunkCount) * 100}
             />
           ) : null}
 
