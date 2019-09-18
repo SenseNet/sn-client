@@ -1,7 +1,8 @@
 import { GenericContent } from '@sensenet/default-content-types'
 import { TableCell } from '@material-ui/core'
 import React from 'react'
-import { CurrentContentContext, ResponsivePlatforms } from '../../context'
+import { CurrentContentContext } from '@sensenet/hooks-react'
+import { ResponsivePlatforms } from '../../context'
 import { SecondaryActionsMenu } from '../SecondaryActionsMenu'
 
 export const DisplayNameComponent: React.FunctionComponent<{

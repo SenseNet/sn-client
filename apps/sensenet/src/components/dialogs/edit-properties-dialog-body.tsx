@@ -5,8 +5,8 @@ import { isExtendedError } from '@sensenet/client-core/dist/Repository/Repositor
 import { DialogProps } from '@material-ui/core/Dialog'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ConstantContent } from '@sensenet/client-core'
-import { useLocalization, useLogger, useRepository, useSelectionService } from '../../hooks'
-import { CurrentContentContext, CurrentContentProvider } from '../../context'
+import { CurrentContentContext, CurrentContentProvider, useLogger, useRepository } from '@sensenet/hooks-react'
+import { useLocalization, useSelectionService } from '../../hooks'
 
 const EditPropertiesDialogBody: React.FunctionComponent<{
   contentId: number

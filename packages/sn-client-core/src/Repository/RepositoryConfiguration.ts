@@ -65,12 +65,12 @@ export class RepositoryConfiguration {
   /**
    * This field sets up a default OData $top parameter
    */
-  public defaultTop: number = 10000
+  public defaultTop = 10000
 
   /**
    * Chunk size for chunked uploads, must be equal to BinaryChunkSize setting at the backend
    */
-  public chunkSize: number = 10485760 // 10 mb
+  public chunkSize = 10485760 // 10 mb
 
   /**
    * An array of schemas

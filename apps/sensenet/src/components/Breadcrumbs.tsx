@@ -1,38 +1,39 @@
 import Button from '@material-ui/core/Button'
 import Tooltip from '@material-ui/core/Tooltip'
-import Typography from '@material-ui/core/Typography'
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
+import Breadcrumbs from '@material-ui/core/Breadcrumbs'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { CurrentContentContext } from '../context'
+import { CurrentContentContext } from '@sensenet/hooks-react'
 import { ContentContextMenu } from './ContentContextMenu'
 import { DropFileArea } from './DropFileArea'
 import { Icon } from './Icon'
 
-export interface BreadcrumbItem {
+export interface BreadcrumbItem<T extends GenericContent> {
   url: string
   displayName: string
   title: string
-  content: GenericContent
+  content: T
 }
 
-export interface BreadcrumbProps {
-  content: BreadcrumbItem[]
-  currentContent: BreadcrumbItem
-  onItemClick: (event: React.MouseEvent, item: BreadcrumbItem) => void
+export interface BreadcrumbProps<T extends GenericContent> {
+  items: Array<BreadcrumbItem<T>>
+  onItemClick: (event: React.MouseEvent, item: BreadcrumbItem<T>) => void
 }
 
-const Breadcrumbs: React.FunctionComponent<BreadcrumbProps & RouteComponentProps> = props => {
+/**
+ * Represents a breadcrumb component
+ */
+function BreadcrumbsComponent<T extends GenericContent>(props: BreadcrumbProps<T> & RouteComponentProps) {
   const [contextMenuItem, setContextMenuItem] = useState<GenericContent | null>(null)
   const [contextMenuAnchor, setContextMenuAnchor] = useState<HTMLElement | null>(null)
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
 
   return (
     <>
-      <Typography variant="h5" style={{ padding: '.5em' }}>
-        {props.content.map((item, key) => (
-          <DropFileArea key={key} parentContent={item.content} style={{ display: 'inline-block' }}>
+      <Breadcrumbs maxItems={5} aria-label="breadcrumb">
+        {props.items.map(item => (
+          <DropFileArea key={item.content.Id} parentContent={item.content} style={{ display: 'inline-block' }}>
             <Tooltip title={item.title}>
               <Button
                 onClick={ev => props.onItemClick(ev, item)}
@@ -46,25 +47,9 @@ const Breadcrumbs: React.FunctionComponent<BreadcrumbProps & RouteComponentProps
                 {item.displayName}
               </Button>
             </Tooltip>
-            <KeyboardArrowRight style={{ verticalAlign: 'middle', height: '16px' }} />
           </DropFileArea>
         ))}
-        <DropFileArea parentContent={props.currentContent.content} style={{ display: 'inline-block' }}>
-          <Tooltip title={props.currentContent.content.Path || '/'}>
-            <Button
-              onClick={ev => props.onItemClick(ev, props.currentContent)}
-              onContextMenu={ev => {
-                setContextMenuItem(props.currentContent.content)
-                setContextMenuAnchor(ev.currentTarget)
-                setIsContextMenuOpened(true)
-                ev.preventDefault()
-              }}>
-              <Icon item={props.currentContent.content} style={{ marginRight: '0.3em' }} />
-              {props.currentContent.displayName}
-            </Button>
-          </Tooltip>
-        </DropFileArea>
-      </Typography>
+      </Breadcrumbs>
       {contextMenuItem ? (
         <CurrentContentContext.Provider value={contextMenuItem}>
           <ContentContextMenu
@@ -84,6 +69,6 @@ const Breadcrumbs: React.FunctionComponent<BreadcrumbProps & RouteComponentProps
   )
 }
 
-const routed = withRouter(Breadcrumbs)
+const routed = withRouter(BreadcrumbsComponent)
 
 export default routed

@@ -4,7 +4,7 @@ import { Disposable } from '../../src/Disposable'
  * Defines a Mock Disposable class
  */
 export class MockDisposable implements Disposable {
-  private disposed: boolean = false
+  private disposed = false
   /**
    * Returns if the Disposable is already disposed
    */

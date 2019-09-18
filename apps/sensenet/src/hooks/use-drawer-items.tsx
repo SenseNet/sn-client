@@ -6,9 +6,9 @@ import PeopleTwoTone from '@material-ui/icons/PeopleTwoTone'
 import PublicTwoTone from '@material-ui/icons/PublicTwoTone'
 import SearchTwoTone from '@material-ui/icons/SearchTwoTone'
 import WidgetsTwoTone from '@material-ui/icons/WidgetsTwoTone'
-import { DashboardTwoTone } from '@material-ui/icons'
-import { Group, User } from '@sensenet/default-content-types'
-import { Query } from '@sensenet/query'
+import { DashboardTwoTone, DeleteTwoTone } from '@material-ui/icons'
+import { useRepository, useSession } from '@sensenet/hooks-react'
+import { LoginState } from '@sensenet/client-core'
 import { Icon } from '../components/Icon'
 import {
   BuiltinDrawerItem,
@@ -21,7 +21,6 @@ import { ResponsivePersonalSetttings } from '../context'
 import { encodeBrowseData } from '../components/content'
 import { encodeQueryData } from '../components/search'
 import DefaultLocalization from '../localization/default'
-import { useSession } from './use-session'
 import { useLocalization } from './use-localization'
 
 export interface DrawerItem {
@@ -37,6 +36,7 @@ export const useDrawerItems = () => {
   const session = useSession()
   const settings = useContext(ResponsivePersonalSetttings)
   const localization = useLocalization().drawer
+  const repo = useRepository()
 
   const [drawerItems, setDrawerItems] = useState<DrawerItem[]>([])
 
@@ -79,7 +79,7 @@ export const useDrawerItems = () => {
         case 'Localization':
           return <LanguageTwoTone />
         case 'Trash':
-          return <InfoTwoTone />
+          return <DeleteTwoTone />
         case 'Setup':
           return <BuildTwoTone />
         case 'Version info':
@@ -108,20 +108,13 @@ export const useDrawerItems = () => {
             fieldsToDisplay: (item.settings && item.settings.columns) || settings.content.fields,
           })}`
         case 'Users and groups':
-          return `/search/${encodeQueryData({
-            title: localization.titles['Users and groups'],
-            term: new Query(q =>
-              q
-                .typeIs(User)
-                .or.typeIs(Group)
-                .and.inTree('/Root/IMS'),
-            ).toString(),
-            hideSearchBar: true,
+          return `/browse/${encodeBrowseData({
+            type: 'simple',
+            root: '/Root/IMS/Public',
             fieldsToDisplay: ['DisplayName', 'ModificationDate', 'ModifiedBy', 'Actions'],
           })}`
         case 'Content Types':
           return `/search/${encodeQueryData({
-            title: localization.titles['Content Types'],
             term: "+TypeIs:'ContentType'",
             hideSearchBar: true,
             fieldsToDisplay: ['DisplayName', 'Description', 'ParentTypeName' as any, 'ModificationDate', 'ModifiedBy'],
@@ -134,13 +127,12 @@ export const useDrawerItems = () => {
             fieldsToDisplay: item.settings && item.settings.columns,
           })}`
         case 'Localization':
-          return `/search/${encodeQueryData({
-            term: "+TypeIs:'Resource'",
-            title: localization.titles.Localization,
-            hideSearchBar: true,
+          return `/browse/${encodeBrowseData({
+            type: 'simple',
+            root: '/Root/Localization',
           })}`
         case 'Trash':
-          return '' // ToDO
+          return '/trash'
         case 'Setup':
           return '/setup'
         case 'Version info':
@@ -154,7 +146,7 @@ export const useDrawerItems = () => {
 
       return '/'
     },
-    [localization.titles, settings.content.browseType, settings.content.fields],
+    [settings.content.browseType, settings.content.fields],
   )
 
   const getItemFromSettings = useCallback(
@@ -173,8 +165,27 @@ export const useDrawerItems = () => {
   )
 
   useEffect(() => {
-    setDrawerItems(settings.drawer.items.map(item => getItemFromSettings(item)))
-  }, [getItemFromSettings, session, settings])
+    settings.drawer.items
+      .filter(() => session.state === LoginState.Authenticated)
+      .filterAsync(async item => {
+        if (!item.permissions || !item.permissions.length) {
+          return true
+        }
+        try {
+          for (const permission of item.permissions) {
+            const actions = await repo.getActions({ idOrPath: permission.path })
+            const actionIndex = actions.d.Actions.findIndex(action => action.Name === permission.action)
+            if (actionIndex === -1 || actions.d.Actions[actionIndex].Forbidden) {
+              return false
+            }
+          }
+        } catch (error) {
+          return false
+        }
+        return true
+      })
+      .then(items => setDrawerItems(items.map(item => getItemFromSettings(item))))
+  }, [getItemFromSettings, repo, repo.security, session, settings])
 
   return drawerItems
 }

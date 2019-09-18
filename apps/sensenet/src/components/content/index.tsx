@@ -2,9 +2,10 @@ import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ConstantContent } from '@sensenet/client-core'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
+import { tuple } from '@sensenet/client-utils'
 import { ResponsivePersonalSetttings } from '../../context'
-import { useContentRouting, useLogger, useRepository } from '../../hooks'
-import { tuple } from '../../utils/tuple'
+import { useContentRouting } from '../../hooks'
 import Commander from './Commander'
 import { Explore } from './Explore'
 import { SimpleList } from './Simple'
@@ -106,10 +107,13 @@ export const Content: React.FunctionComponent<RouteComponentProps<{ browseData: 
       ) : (
         <SimpleList
           rootPath={browseData.root || ConstantContent.PORTAL_ROOT.Path}
-          onNavigate={navigate}
-          onActivateItem={openItem}
+          collectionComponentProps={{
+            onActivateItem: openItem,
+            onParentChange: navigate,
+            fieldsToDisplay: browseData.fieldsToDisplay,
+            parentIdOrPath: browseData.currentContent || browseData.root || ConstantContent.PORTAL_ROOT.Id,
+          }}
           parent={browseData.currentContent || browseData.root || ConstantContent.PORTAL_ROOT.Id}
-          fieldsToDisplay={browseData.fieldsToDisplay}
         />
       )}
     </>

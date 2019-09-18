@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useRepository } from '../hooks'
+import { useRepository } from '@sensenet/hooks-react'
 import { ContentContextProvider } from '../services/ContentContextProvider'
 
 export const ContentRoutingContext = React.createContext(null as any)

@@ -50,7 +50,7 @@ export class Versioning {
    */
   public checkIn<T extends Content = Content>(
     idOrPath: number | string,
-    checkInComments: string = '',
+    checkInComments = '',
     oDataOptions?: ODataParams<T>,
   ) {
     return this.repository.executeAction<{ checkInComments: string }, ODataResponse<T>>({
@@ -120,7 +120,7 @@ export class Versioning {
    */
   public reject<T extends Content = Content>(
     idOrPath: number | string,
-    rejectReason: string = '',
+    rejectReason = '',
     oDataOptions?: ODataParams<T>,
   ) {
     return this.repository.executeAction<{ rejectReason: string }, ODataResponse<T>>({
@@ -158,7 +158,7 @@ export class Versioning {
    */
   public restoreVersion<T extends Content = Content>(
     idOrPath: number | string,
-    version: string = '',
+    version = '',
     oDataOptions?: ODataParams<T>,
   ) {
     return this.repository.executeAction<{ version: string }, ODataResponse<T>>({

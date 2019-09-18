@@ -49,7 +49,7 @@ export const saveQuery = createAction(
   }),
 )
 
-export const getQueries = createAction((idOrPath: string | number, queryType = 'Private', force: boolean = false) => ({
+export const getQueries = createAction((idOrPath: string | number, queryType = 'Private', force = false) => ({
   type: 'SN_DMS_GET_QUERIES',
   inject: async (options: IInjectableActionCallbackParams<rootStateType>) => {
     const state = options.getState()

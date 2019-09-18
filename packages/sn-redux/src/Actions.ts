@@ -210,7 +210,7 @@ export const updateContent = <T extends Content = Content>(idOrPath: number | st
  * @param permanently {boolean} Defines whether the a Content must be moved to the Trash or deleted permanently.
  * @returns Returns an object with the deleted item or error  and dispatches the next action based on the response.
  */
-export const deleteContent = (idOrPath: number | string, permanently: boolean = false) => ({
+export const deleteContent = (idOrPath: number | string, permanently = false) => ({
   type: 'DELETE_CONTENT',
   payload: (repository: Repository) => repository.delete({ idOrPath, permanent: permanently }),
 })
@@ -220,7 +220,7 @@ export const deleteContent = (idOrPath: number | string, permanently: boolean = 
  * @param permanently {boolean} Defines whether Content must be moved to the Trash or deleted permanently.
  * @returns Returns an object with the deleted items or errors  and dispatches the next action based on the response.
  */
-export const deleteBatch = (contentItems: Array<number | string>, permanently: boolean = false) => ({
+export const deleteBatch = (contentItems: Array<number | string>, permanently = false) => ({
   type: 'DELETE_BATCH',
   payload: (repository: Repository) => repository.delete({ idOrPath: contentItems, permanent: permanently }),
 })
@@ -283,7 +283,7 @@ export const checkOut = <T extends Content = Content>(idOrPath: number | string,
  */
 export const checkIn = <T extends Content = Content>(
   idOrPath: number | string,
-  checkInComments: string = '',
+  checkInComments = '',
   options?: ODataParams<T>,
 ) => ({
   type: 'CHECKIN_CONTENT',
@@ -319,7 +319,7 @@ export const approve = <T extends Content = Content>(idOrPath: number | string, 
  */
 export const rejectContent = <T extends Content = Content>(
   idOrPath: number | string,
-  rejectReason: string = '',
+  rejectReason = '',
   options?: ODataParams<T>,
 ) => ({
   type: 'REJECT_CONTENT',
@@ -469,10 +469,10 @@ export const clearSelection = () => ({
 export const uploadRequest = <T extends Content>(
   parentPath: string,
   file: File,
-  contentTypeName: string = 'File',
-  overwrite: boolean = true,
+  contentTypeName = 'File',
+  overwrite = true,
   body?: {},
-  propertyName: string = 'Binary',
+  propertyName = 'Binary',
 ) => ({
   type: 'UPLOAD_CONTENT',
   payload: async (repository: Repository) => {

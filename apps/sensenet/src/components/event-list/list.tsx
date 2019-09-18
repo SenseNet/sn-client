@@ -9,13 +9,9 @@ import CompareArrows from '@material-ui/icons/CompareArrows'
 import OpenInNewTwoTone from '@material-ui/icons/OpenInNewTwoTone'
 import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import {
-  ContentRoutingContext,
-  ContentRoutingContextProvider,
-  CurrentContentContext,
-  RepositoryContext,
-} from '../../context'
-import { useInjector, useLocalization } from '../../hooks'
+import { CurrentContentContext, RepositoryContext, useInjector } from '@sensenet/hooks-react'
+import { ContentRoutingContext, ContentRoutingContextProvider } from '../../context'
+import { useLocalization } from '../../hooks'
 import { RepositoryManager } from '../../services/RepositoryManager'
 import { Icon } from '../Icon'
 import { EventListFilterContext } from './filter-context'

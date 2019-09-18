@@ -12,10 +12,11 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
-import { GenericContent } from '@sensenet/default-content-types'
+import { GenericContent, TrashBag } from '@sensenet/default-content-types'
 import React, { useContext, useState } from 'react'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { ResponsiveContext } from '../../context'
-import { useLocalization, useLogger, useRepository } from '../../hooks'
+import { useLocalization } from '../../hooks'
 import { Icon } from '../Icon'
 
 export const DeleteContentDialog: React.FunctionComponent<{
@@ -28,6 +29,7 @@ export const DeleteContentDialog: React.FunctionComponent<{
   const repo = useRepository()
   const localization = useLocalization().deleteContentDialog
   const logger = useLogger('DeleteContentDialog')
+  const isTrashBag = !!props.content.length && repo.schemas.isContentFromType(props.content[0], TrashBag)
 
   return (
     <Dialog {...props.dialogProps} onClick={ev => ev.stopPropagation()} onDoubleClick={ev => ev.stopPropagation()}>
@@ -51,15 +53,17 @@ export const DeleteContentDialog: React.FunctionComponent<{
         {isDeleteInProgress ? <LinearProgress /> : null}
       </DialogContent>
       <DialogActions style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <div>
-          <Tooltip title={localization.permanentlyHint}>
-            <FormControlLabel
-              style={{ marginLeft: '1em' }}
-              label={localization.permanentlyLabel}
-              control={<Checkbox disabled={isDeleteInProgress} onChange={ev => setPermanent(ev.target.checked)} />}
-            />
-          </Tooltip>
-        </div>
+        {!isTrashBag ? (
+          <div>
+            <Tooltip title={localization.permanentlyHint}>
+              <FormControlLabel
+                style={{ marginLeft: '1em' }}
+                label={localization.permanentlyLabel}
+                control={<Checkbox disabled={isDeleteInProgress} onChange={ev => setPermanent(ev.target.checked)} />}
+              />
+            </Tooltip>
+          </div>
+        ) : null}
         <div>
           <Button
             disabled={isDeleteInProgress}
@@ -128,7 +132,7 @@ export const DeleteContentDialog: React.FunctionComponent<{
                 props.dialogProps.onClose && props.dialogProps.onClose(ev, 'backdropClick')
               }
             }}>
-            {localization.deleteButton}
+            {isTrashBag ? localization.deletePermanently : localization.deleteButton}
           </Button>
         </div>
       </DialogActions>

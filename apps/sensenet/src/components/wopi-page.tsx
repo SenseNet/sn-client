@@ -3,7 +3,8 @@ import { RouteComponentProps, withRouter } from 'react-router'
 import { ODataWopiResponse } from '@sensenet/client-core'
 import { Button, Typography } from '@material-ui/core'
 import { isExtendedError } from '@sensenet/client-core/dist/Repository/Repository'
-import { useLocalization, useLogger, useRepository } from '../hooks'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
+import { useLocalization } from '../hooks'
 import { FullScreenLoader } from './FullScreenLoader'
 
 const WopiPage: React.FunctionComponent<RouteComponentProps<{ documentId?: string; action?: string }>> = props => {

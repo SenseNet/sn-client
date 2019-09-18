@@ -1,8 +1,8 @@
 import { LoginState } from '@sensenet/client-core'
 import React, { lazy, Suspense, useEffect, useRef } from 'react'
 import { Route, RouteComponentProps, Switch, withRouter } from 'react-router'
-import { LoadSettingsContextProvider, RepositoryContext } from '../context'
-import { usePersonalSettings, useSession } from '../hooks'
+import { LoadSettingsContextProvider, RepositoryContext, useSession } from '@sensenet/hooks-react'
+import { usePersonalSettings } from '../hooks'
 import { ErrorBoundary } from './ErrorBoundary'
 import { FullScreenLoader } from './FullScreenLoader'
 import { WopiPage } from './wopi-page'
@@ -22,6 +22,7 @@ const EditProperties = lazy(async () => await import(/* webpackChunkName: "editP
 const DocumentViewerComponent = lazy(async () => await import(/* webpackChunkName: "DocViewer" */ './DocViewer'))
 
 const VersionInfoComponent = lazy(async () => await import(/* webpackChunkName: "Version Info" */ './version-info'))
+const TrashComponent = lazy(async () => await import(/* webpackChunkName: "Trash" */ './trash/Trash'))
 const EventListComponent = lazy(async () => await import(/* webpackChunkName: "EventList" */ './event-list'))
 
 const PersonalSettingsEditor = lazy(
@@ -130,6 +131,12 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
                       path="/:repo/info"
                       render={() => {
                         return <VersionInfoComponent />
+                      }}
+                    />
+                    <Route
+                      path="/:repo/trash"
+                      render={() => {
+                        return <TrashComponent />
                       }}
                     />
                     <Route

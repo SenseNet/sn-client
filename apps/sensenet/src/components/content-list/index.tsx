@@ -8,10 +8,9 @@ import {
   CurrentChildrenContext,
   CurrentContentContext,
   LoadSettingsContext,
-  ResponsiveContext,
-  ResponsivePersonalSetttings,
-} from '../../context'
-import { useRepository } from '../../hooks'
+  useRepository,
+} from '@sensenet/hooks-react'
+import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { ContentContextMenu } from '../ContentContextMenu'
 import { DeleteContentDialog } from '../dialogs'
@@ -33,7 +32,7 @@ export interface CollectionComponentProps {
   disableSelection?: boolean
   parentIdOrPath: number | string
   onParentChange: (newParent: GenericContent) => void
-  onTabRequest: () => void
+  onTabRequest?: () => void
   onActiveItemChange?: (item: GenericContent) => void
   onActivateItem: (item: GenericContent) => void
   style?: React.CSSProperties
@@ -226,7 +225,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
         }
         case 'Tab':
           ev.preventDefault()
-          props.onTabRequest()
+          props.onTabRequest && props.onTabRequest()
           break
         default:
           if (ev.key.length === 1) {

@@ -6,8 +6,8 @@ import Snackbar from '@material-ui/core/Snackbar'
 import Close from '@material-ui/icons/Close'
 import { sleepAsync } from '@sensenet/client-utils'
 import React, { useContext, useEffect, useState } from 'react'
-import { RepositoryContext, ResponsiveContext } from '../context'
-import { useInjector } from '../hooks'
+import { RepositoryContext, useInjector } from '@sensenet/hooks-react'
+import { ResponsiveContext } from '../context'
 import { EventLogEntry, EventService } from '../services/EventService'
 import { RepositoryManager } from '../services/RepositoryManager'
 import { Icon } from './Icon'
@@ -74,7 +74,7 @@ export const NotificationComponent: React.FunctionComponent = () => {
             open={item.data.isDismissed !== true && dismisses.indexOf(item.data.guid) === -1}
             anchorOrigin={{
               vertical: 'bottom',
-              horizontal: 'right',
+              horizontal: 'center',
             }}
             style={{
               marginBottom:

@@ -11,10 +11,17 @@ import {
   FormControlLabel,
   Switch,
   Typography,
+  useTheme,
 } from '@material-ui/core'
 import MonacoEditor from 'react-monaco-editor'
-import { CurrentContentContext, LocalizationContext, ResponsiveContext } from '../../context'
-import { useEventService, useInjector, useLogger, useRepository, useTheme } from '../../hooks'
+import {
+  CurrentContentContext,
+  useInjector,
+  useLogger,
+  useRepository,
+  useRepositoryEvents,
+} from '@sensenet/hooks-react'
+import { LocalizationContext, ResponsiveContext } from '../../context'
 import { setupModel } from '../../services/MonacoModels/PersonalSettingsModel'
 import { defaultSettings, PersonalSettings } from '../../services/PersonalSettings'
 import { RepositoryManager } from '../../services/RepositoryManager'
@@ -28,7 +35,7 @@ const SettingsEditor: React.FunctionComponent = () => {
   const repo = useRepository()
   const theme = useTheme()
   const platform = useContext(ResponsiveContext)
-  const eventService = useEventService()
+  const eventService = useRepositoryEvents()
   const [editorContent] = useState({
     Type: 'PersonalSettings',
     Name: `PersonalSettings`,
@@ -75,7 +82,7 @@ const SettingsEditor: React.FunctionComponent = () => {
                   .repositories.map(repoEntry => rm.getRepository(repoEntry.url).authentication.logout())
 
                 await Promise.all(logoutPromises)
-                eventService.clear()
+                eventService.dispose() // ???
                 service.setPersonalSettingsValue({})
                 await sleepAsync(1000)
                 setIsResetting(false)

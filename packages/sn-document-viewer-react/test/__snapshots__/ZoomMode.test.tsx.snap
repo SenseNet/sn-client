@@ -71,7 +71,7 @@ exports[`ZoomMode component should render without crashing 1`] = `
           disabled={true}
           onClickCapture={[Function]}
         >
-          <Memo />
+          <Memo(ZoomOutIcon) />
         </ForwardRef(WithStyles)>
       }
       nextButton={
@@ -79,7 +79,7 @@ exports[`ZoomMode component should render without crashing 1`] = `
           disabled={false}
           onClickCapture={[Function]}
         >
-          <Memo />
+          <Memo(ZoomInIcon) />
         </ForwardRef(WithStyles)>
       }
       position="static"
@@ -161,7 +161,7 @@ exports[`ZoomMode component should render without crashing 2`] = `
           disabled={false}
           onClickCapture={[Function]}
         >
-          <Memo />
+          <Memo(ZoomOutIcon) />
         </ForwardRef(WithStyles)>
       }
       nextButton={
@@ -169,7 +169,7 @@ exports[`ZoomMode component should render without crashing 2`] = `
           disabled={false}
           onClickCapture={[Function]}
         >
-          <Memo />
+          <Memo(ZoomInIcon) />
         </ForwardRef(WithStyles)>
       }
       position="static"
@@ -251,7 +251,7 @@ exports[`ZoomMode component should render without crashing 3`] = `
           disabled={false}
           onClickCapture={[Function]}
         >
-          <Memo />
+          <Memo(ZoomOutIcon) />
         </ForwardRef(WithStyles)>
       }
       nextButton={
@@ -259,7 +259,7 @@ exports[`ZoomMode component should render without crashing 3`] = `
           disabled={false}
           onClickCapture={[Function]}
         >
-          <Memo />
+          <Memo(ZoomInIcon) />
         </ForwardRef(WithStyles)>
       }
       position="static"
@@ -347,7 +347,7 @@ exports[`ZoomMode component should render without crashing 4`] = `
           disabled={false}
           onClickCapture={[Function]}
         >
-          <Memo />
+          <Memo(ZoomOutIcon) />
         </ForwardRef(WithStyles)>
       }
       nextButton={
@@ -355,7 +355,7 @@ exports[`ZoomMode component should render without crashing 4`] = `
           disabled={false}
           onClickCapture={[Function]}
         >
-          <Memo />
+          <Memo(ZoomInIcon) />
         </ForwardRef(WithStyles)>
       }
       position="static"
@@ -437,7 +437,7 @@ exports[`ZoomMode component should render without crashing 5`] = `
           disabled={false}
           onClickCapture={[Function]}
         >
-          <Memo />
+          <Memo(ZoomOutIcon) />
         </ForwardRef(WithStyles)>
       }
       nextButton={
@@ -445,7 +445,7 @@ exports[`ZoomMode component should render without crashing 5`] = `
           disabled={false}
           onClickCapture={[Function]}
         >
-          <Memo />
+          <Memo(ZoomInIcon) />
         </ForwardRef(WithStyles)>
       }
       position="static"
@@ -527,7 +527,7 @@ exports[`ZoomMode component should render without crashing 6`] = `
           disabled={false}
           onClickCapture={[Function]}
         >
-          <Memo />
+          <Memo(ZoomOutIcon) />
         </ForwardRef(WithStyles)>
       }
       nextButton={
@@ -535,7 +535,7 @@ exports[`ZoomMode component should render without crashing 6`] = `
           disabled={false}
           onClickCapture={[Function]}
         >
-          <Memo />
+          <Memo(ZoomInIcon) />
         </ForwardRef(WithStyles)>
       }
       position="static"
@@ -617,7 +617,7 @@ exports[`ZoomMode component should render without crashing 7`] = `
           disabled={false}
           onClickCapture={[Function]}
         >
-          <Memo />
+          <Memo(ZoomOutIcon) />
         </ForwardRef(WithStyles)>
       }
       nextButton={
@@ -625,7 +625,7 @@ exports[`ZoomMode component should render without crashing 7`] = `
           disabled={false}
           onClickCapture={[Function]}
         >
-          <Memo />
+          <Memo(ZoomInIcon) />
         </ForwardRef(WithStyles)>
       }
       position="static"

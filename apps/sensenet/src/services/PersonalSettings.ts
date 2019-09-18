@@ -1,9 +1,8 @@
 import { Injectable } from '@furystack/inject'
 import { LogLevel } from '@furystack/logging'
-import { deepMerge, ObservableValue } from '@sensenet/client-utils'
+import { deepMerge, ObservableValue, tuple } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { PlatformDependent } from '../context'
-import { tuple } from '../utils/tuple'
 import { BrowseType } from '../components/content'
 
 const settingsKey = `SN-APP-USER-SETTINGS`
@@ -69,10 +68,42 @@ export const DrawerItemType = tuple(
   'Dashboard',
 )
 
+export const ActionType = tuple(
+  'Browse',
+  'Edit',
+  'GetPermissions',
+  'SetPermissions',
+  'Reject',
+  'RestoreVersion',
+  'Purge',
+  'ShareContent',
+  'Rename',
+  'GetAllContentTypes',
+  'GetAllowedUsers',
+  'GetQueries',
+  'Approve',
+  'Checkout',
+  'CopyTo',
+  'MoveTo',
+  'Publish',
+  'SaveQuery',
+  'SetPermissions',
+  'Share',
+  'Delete',
+  'UndoCheckOut',
+  'Versions',
+  'CheckIn',
+  'Add',
+  'Upload',
+)
+
 export interface DrawerItem<T> {
-  /** */
   settings?: T
   itemType: typeof DrawerItemType[number]
+  permissions?: Array<{
+    path: string
+    action: typeof ActionType[number]
+  }>
 }
 
 export interface ContentDrawerItem
@@ -105,7 +136,7 @@ export interface DashboardDrawerItem
     description?: string
     icon: string
   }> {
-  itemType: 'Dashboard'
+  itemType: 'Dashboard' | 'Users and groups'
 }
 
 export interface BuiltinDrawerItem extends DrawerItem<undefined> {
@@ -222,11 +253,11 @@ export const defaultSettings: PersonalSettingsType = {
         },
       },
       {
-        title: 'Tutorials',
+        title: 'Concepts & Tutorials',
         widgetType: 'markdown',
         settings: {
           content:
-            '[Overview](https://index.hu) \n\n [Getting started](https://index.hu) \n\n [Tutorials](https://index.hu) \n\n [Example apps](https://index.hu) \n\n ',
+            '<div>To get started with sensenet</div><br /><a style="color: #26a69a; line-height: 2rem" href="https://community.sensenet.com/docs/concepts/overview">Overview</a><br /><a style="color: #26a69a; line-height: 2rem" href="https://community.sensenet.com/docs/tutorials/getting-started">Getting started</a><br /><a href="https://community.sensenet.com/tutorials" style="color: #26a69a; line-height: 2rem">Tutorials</a><br /><a style="color: #26a69a; line-height: 2rem" href="https://community.sensenet.com/docs/examples">Example apps</a>',
         },
         minWidth: {
           default: '45%',
@@ -237,7 +268,7 @@ export const defaultSettings: PersonalSettingsType = {
         widgetType: 'markdown',
         settings: {
           content:
-            ' [Content Delivery API](https://index.hu) \n\n [Images API](https://index.hu) \n\n [Content management API](https://index.hu) \n\n [Content preview API](https://index.hu) \n\n',
+            '<div>Discover capabilites of the API</div><br /><a style="color: #26a69a; line-height: 2rem" href="https://community.sensenet.com/docs/odata-rest-api/">REST API</a><br /><a style="color: #26a69a; line-height: 2rem" href="https://community.sensenet.com/docs/odata-rest-api/">Content Management API</a><br /><a href="https://community.sensenet.com/docs/built-in-odata-actions-and-functions/" style="color: #26a69a; line-height: 2rem">Document Preview API</a><br /><a style="color: #26a69a; line-height: 2rem" href="https://community.sensenet.com/docs/odata-rest-api/">User Management API</a>',
         },
         minWidth: {
           default: '45%',
@@ -248,7 +279,7 @@ export const defaultSettings: PersonalSettingsType = {
         widgetType: 'markdown',
         settings: {
           content:
-            "<div style='text-align:center;'><a target='_blank' href='https://www.sensenet.com/contact' style='text-decoration: none;'><button style='margin-bottom: 2em' class='MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-contained'>Contact us</button></a></div>",
+            "<div style='text-align:center;'>If you need any help or further information, feel free to contact us!<br /><br /><a target='_blank' href='https://www.sensenet.com/contact' style='text-decoration: none;'><button style='margin-bottom: 2em' class='MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-contained MuiButton-containedPrimary'>Contact us</button></a></div>",
         },
         minWidth: {
           default: '100%',
@@ -267,12 +298,37 @@ export const defaultSettings: PersonalSettingsType = {
       type: 'mini-variant',
       items: [
         { itemType: 'Search', settings: undefined },
-        { itemType: 'Content', settings: { root: '/Root/Content' } },
-        { itemType: 'Users and groups', settings: undefined },
-        { itemType: 'Content Types', settings: undefined },
-        { itemType: 'Localization', settings: undefined },
-        { itemType: 'Setup', settings: undefined },
-        { itemType: 'Version info', settings: undefined },
+        {
+          itemType: 'Content',
+          settings: { root: '/Root/Content' },
+          permissions: [{ path: '/Root/Content', action: 'Add' }],
+        },
+        {
+          itemType: 'Users and groups',
+          settings: undefined,
+          permissions: [{ path: '/Root/IMS/Public', action: 'Add' }],
+        },
+        {
+          itemType: 'Trash',
+          settings: undefined,
+          permissions: [{ path: '/Root/Trash', action: 'Edit' }],
+        },
+        {
+          itemType: 'Content Types',
+          settings: undefined,
+          permissions: [{ path: '/Root/System/Schema/ContentTypes', action: 'Add' }],
+        },
+        {
+          itemType: 'Localization',
+          settings: undefined,
+          permissions: [{ path: '/Root/Localization', action: 'Add' }],
+        },
+        { itemType: 'Setup', settings: undefined, permissions: [{ path: '/Root/System/Settings', action: 'Browse' }] },
+        {
+          itemType: 'Version info',
+          settings: undefined,
+          permissions: [{ path: '/Root/(apps)/PortalRoot/GetVersionInfo', action: 'Browse' }],
+        },
       ],
     },
     commandPalette: { enabled: true, wrapQuery: '{0} .AUTOFILTERS:OFF' },
@@ -296,17 +352,7 @@ export const defaultSettings: PersonalSettingsType = {
 
 @Injectable({ lifetime: 'singleton' })
 export class PersonalSettings {
-  constructor() {
-    this.init()
-  }
-
-  private async init() {
-    const currentUserSettings = await this.getLocalUserSettingsValue()
-    this.userValue.setValue(currentUserSettings)
-    this.effectiveValue.setValue(deepMerge(defaultSettings, currentUserSettings))
-  }
-
-  private async checkDrawerItems(settings: Partial<PersonalSettingsType>): Promise<Partial<PersonalSettingsType>> {
+  private checkDrawerItems(settings: Partial<PersonalSettingsType>): Partial<PersonalSettingsType> {
     if (
       settings.default &&
       settings.default.drawer &&
@@ -346,25 +392,25 @@ export class PersonalSettings {
     return settings
   }
 
-  private async checkValues(settings: Partial<PersonalSettingsType>): Promise<Partial<PersonalSettingsType>> {
-    return await this.checkDrawerItems(settings)
+  private checkValues(settings: Partial<PersonalSettingsType>): Partial<PersonalSettingsType> {
+    return this.checkDrawerItems(settings)
   }
 
-  public async getLocalUserSettingsValue(): Promise<Partial<PersonalSettingsType>> {
+  public getLocalUserSettingsValue(): Partial<PersonalSettingsType> {
     try {
       const stored = JSON.parse((localStorage.getItem(`${settingsKey}`) as string) || '{}')
-      return await this.checkValues(stored)
+      return this.checkValues(stored)
     } catch {
       /** */
     }
     return {}
   }
 
-  public effectiveValue = new ObservableValue(defaultSettings)
+  public userValue = new ObservableValue<Partial<PersonalSettingsType>>(this.getLocalUserSettingsValue())
 
-  public userValue = new ObservableValue<Partial<PersonalSettingsType>>({})
+  public effectiveValue = new ObservableValue(deepMerge(defaultSettings, this.userValue.getValue()))
 
-  public async setPersonalSettingsValue(settings: Partial<PersonalSettingsType>) {
+  public setPersonalSettingsValue(settings: Partial<PersonalSettingsType>) {
     this.userValue.setValue(settings)
     this.effectiveValue.setValue(deepMerge(defaultSettings, settings))
     localStorage.setItem(`${settingsKey}`, JSON.stringify(settings))
