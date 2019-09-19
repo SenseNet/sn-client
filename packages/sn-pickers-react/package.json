@@ -36,7 +36,7 @@
     "@sensenet/default-content-types": "^2.0.1",
     "@sensenet/icons-react": "^1.2.13",
     "react": "^16.9.0",
-    "react-async": "^7.0.6"
+    "react-async": "^8.0.0"
   },
   "devDependencies": {
     "@types/react": "^16.9.2"

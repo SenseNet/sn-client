@@ -1,7 +1,7 @@
 import { ODataParams, Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Reducer, useReducer } from 'react'
-import { useAsync } from 'react-async'
+import { PromiseFn, useAsync } from 'react-async'
 import { loadItems } from './loaders'
 import { Action, GenericContentWithIsParent, NAVIGATE_TO, SET_SELECTED_ITEM, State } from './types'
 
@@ -56,7 +56,7 @@ export const useListPicker = <T extends GenericContentWithIsParent = GenericCont
   )
 
   const { data: items, isLoading, error, reload } = useAsync({
-    promiseFn: loadItems,
+    promiseFn: (loadItems as unknown) as PromiseFn<T[]>, // ToDo Checkme
     path,
     repository,
     itemsODataOptions: options.itemsODataOptions,

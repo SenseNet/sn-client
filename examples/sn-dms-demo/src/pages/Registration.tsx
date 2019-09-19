@@ -107,7 +107,7 @@ class Registration extends React.Component<
     this.handleConfirmPasswordBlur = this.handleConfirmPasswordBlur.bind(this)
     this.handleConfirmPasswordChange = this.handleConfirmPasswordChange.bind(this)
   }
-  public handleEmailBlur(e: React.FocusEvent<HTMLInputElement>) {
+  public handleEmailBlur(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) {
     if (this.validateEmail(e.target.value)) {
       this.setState({
         email: e.target.value,
@@ -132,7 +132,7 @@ class Registration extends React.Component<
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     return re.test(text)
   }
-  public handlePasswordBlur(e: React.FocusEvent<HTMLInputElement>) {
+  public handlePasswordBlur(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) {
     if (this.validatePassword(e.target.value)) {
       this.setState({
         password: e.target.value,
@@ -157,7 +157,7 @@ class Registration extends React.Component<
     const re = /^([a-zA-Z0-9!@#$%^&*)(+=._-]*[a-zA-Z0-9!@#$%^&*)(+=._-]){3}[a-zA-Z0-9!@#$%^&*)(+=._-]*$/
     return re.test(text)
   }
-  public handleConfirmPasswordBlur(e: React.FocusEvent<HTMLInputElement>) {
+  public handleConfirmPasswordBlur(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) {
     if (e.target.value.length !== 0 && this.confirmPasswords(e.target.value, this.state.password)) {
       this.setState({
         confirmpassword: e.target.value,
