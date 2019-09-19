@@ -5,12 +5,9 @@ import Dialog from '@material-ui/core/Dialog'
 import { sleepAsync } from '@sensenet/client-utils'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
-import { useAsync } from 'react-async'
 import { ReferenceGrid } from '../src/fieldcontrols/ReferenceGrid/ReferenceGrid'
 import { DefaultItemTemplate } from '../src/fieldcontrols/ReferenceGrid/DefaultItemTemplate'
 import { ReferencePicker } from '../src/fieldcontrols/ReferenceGrid/ReferencePicker'
-
-jest.mock('react-async')
 
 const defaultSettings = {
   Type: 'ReferenceFieldSetting',
@@ -120,7 +117,7 @@ describe('Reference grid field control', () => {
 
     it('should allow user to add a new row, when allow multiple is true', async () => {
       const fieldOnChange = jest.fn()
-      ;(useAsync as any).mockReturnValue({ data: undefined, isLoading: true })
+      // ;(useAsync as any).mockReturnValue({ data: undefined, isLoading: true })
       const wrapper = mount(
         <ReferenceGrid
           fieldOnChange={fieldOnChange}

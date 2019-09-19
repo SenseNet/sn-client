@@ -4,12 +4,9 @@ import InputLabel from '@material-ui/core/InputLabel'
 import Dialog from '@material-ui/core/Dialog'
 import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
-import { useAsync } from 'react-async'
 import { Avatar } from '../src/fieldcontrols/Avatar/Avatar'
 import { DefaultAvatarTemplate } from '../src/fieldcontrols/Avatar/DefaultAvatarTemplate'
 import { AvatarPicker } from '../src/fieldcontrols/Avatar/AvatarPicker'
-
-jest.mock('react-async')
 
 const defaultSettings = {
   Type: 'ReferenceFieldSetting',
@@ -65,7 +62,6 @@ describe('Avatar field control', () => {
   })
   describe('in edit/new view', () => {
     it('should open dialog when empty content is clicked', () => {
-      ;(useAsync as any).mockReturnValue({ data: undefined, isLoading: true })
       const wrapper = mount(<Avatar actionName="new" settings={defaultSettings} />)
       const changeButton = wrapper.find(IconButton).first()
       expect(changeButton.prop('title')).toBe('Add avatar')
@@ -103,7 +99,6 @@ describe('Avatar field control', () => {
         Type: 'User',
         Avatar: { Url: 'asd' },
       }
-      ;(useAsync as any).mockReturnValue({ data: [selectedContent], isLoading: false })
       const wrapper = mount(
         <Avatar
           actionName="edit"
