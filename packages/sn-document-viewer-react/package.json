@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/document-viewer-react",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "main": "dist/index.js",
   "typings": "./dist/index.d.ts",
   "files": [
@@ -27,10 +27,10 @@
   "dependencies": {
     "@material-ui/core": "^4.3.3",
     "@material-ui/icons": "^4.0.1",
-    "@sensenet/client-utils": "^1.6.4",
-    "@sensenet/control-mapper": "^2.0.1",
-    "@sensenet/default-content-types": "^2.0.0",
-    "@sensenet/hooks-react": "0.1.0",
+    "@sensenet/client-utils": "^1.6.5",
+    "@sensenet/control-mapper": "^2.0.2",
+    "@sensenet/default-content-types": "^2.0.1",
+    "@sensenet/hooks-react": "1.0.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-redux": "^7.0.3",
