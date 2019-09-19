@@ -76,6 +76,7 @@
     "@sensenet/redux": "^5.1.12",
     "@sensenet/repository-events": "^1.4.4",
     "autosuggest-highlight": "^3.1.1",
+    "clsx": "^1.0.4",
     "filesize": "^4.1.2",
     "moment": "^2.24.0",
     "monaco-editor": "^0.17.0",

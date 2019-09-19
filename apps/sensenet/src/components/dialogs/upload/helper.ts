@@ -76,4 +76,4 @@ export const getFilesFromDragEvent = async (event: React.DragEvent) => {
   return await Promise.all(result)
 }
 
-export type FileWithFullPath = File & { fullPath?: string; progress?: Omit<UploadProgressInfo, 'file'> }
+export type FileWithFullPath = File & { fullPath?: string; progress?: UploadProgressInfo }

@@ -76,8 +76,7 @@ export const UploadDialog: React.FunctionComponent<Props> = props => {
       setFiles(
         files.map(f => {
           if (f.lastModified === progressInfo.file.lastModified) {
-            const { file, ...progress } = progressInfo
-            const updated = Object.assign(f, { progress })
+            const updated = Object.assign(f, { progress: progressInfo })
             return updated
           }
           return f
@@ -86,6 +85,18 @@ export const UploadDialog: React.FunctionComponent<Props> = props => {
     })
     return () => disposable.dispose()
   }, [files, progressObservable])
+
+  useEffect(() => {
+    const handleBeforeunload = (event: BeforeUnloadEvent) => {
+      if (isUploadInProgress) {
+        event.preventDefault()
+        event.returnValue = ''
+      }
+    }
+
+    window.addEventListener('beforeunload', handleBeforeunload)
+    return () => window.removeEventListener('beforeunload', handleBeforeunload)
+  }, [isUploadInProgress])
 
   const isFileAdded = files && !!files.length
 
@@ -104,8 +115,18 @@ export const UploadDialog: React.FunctionComponent<Props> = props => {
     setFiles(noDuplicateFiles)
   }
 
+  const isUploadCompleted = () => {
+    return (
+      files &&
+      files.length &&
+      files.every(file => {
+        return file.progress && (file.progress.completed || file.progress.error)
+      })
+    )
+  }
+
   const onDrop = async (event: React.DragEvent) => {
-    if (isUploadInProgress) {
+    if (isUploadInProgress || isUploadCompleted()) {
       return
     }
     const result = await getFilesFromDragEvent(event)
@@ -118,16 +139,21 @@ export const UploadDialog: React.FunctionComponent<Props> = props => {
     }
     setIsUploadInProgress(true)
 
-    await repository.upload.fromFileList({
-      parentPath: props.content.Path,
-      fileList: files as any,
-      createFolders: true,
-      binaryPropertyName: 'Binary',
-      overwrite: false,
-      progressObservable,
-    })
-
-    setIsUploadInProgress(false)
+    try {
+      await repository.upload.fromFileList({
+        parentPath: props.content.Path,
+        fileList: files as any,
+        createFolders: true,
+        binaryPropertyName: 'Binary',
+        overwrite: false,
+        progressObservable,
+      })
+    } catch (error) {
+      // TODO: log with logger?
+      console.log(error.message)
+    } finally {
+      setIsUploadInProgress(false)
+    }
   }
 
   return (
@@ -150,7 +176,7 @@ export const UploadDialog: React.FunctionComponent<Props> = props => {
         <DropFileArea parentContent={props.content} onDrop={onDrop}>
           <Grid
             onClick={() => {
-              if (isUploadInProgress) {
+              if (isUploadInProgress || isUploadCompleted()) {
                 return
               }
               inputFile.current && inputFile.current.click()
@@ -176,9 +202,11 @@ export const UploadDialog: React.FunctionComponent<Props> = props => {
           </Grid>
         </DropFileArea>
         <Grid container justify="flex-end">
-          <Button color="primary" disabled={isUploadInProgress} variant="contained" onClick={() => upload()}>
-            Upload
-          </Button>
+          {isUploadCompleted() ? null : (
+            <Button color="primary" disabled={isUploadInProgress} variant="contained" onClick={() => upload()}>
+              Upload
+            </Button>
+          )}
         </Grid>
       </DialogContent>
       <input

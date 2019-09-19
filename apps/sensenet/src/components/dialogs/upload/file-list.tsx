@@ -2,17 +2,20 @@ import React from 'react'
 import {
   createStyles,
   IconButton,
-  LinearProgress,
   List,
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
   makeStyles,
   Theme,
+  Tooltip,
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
+import InfoIcon from '@material-ui/icons/Info'
 import filesize from 'filesize'
+import clsx from 'clsx'
 import { FileWithFullPath } from './helper'
+import { ProgressBar } from './progress-bar'
 
 type Props = {
   files: FileWithFullPath[]
@@ -31,6 +34,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginBottom: theme.spacing(1),
     },
     listItemText: {
+      flexBasis: theme.spacing(2),
       paddingLeft: theme.spacing(2),
     },
     square: {
@@ -39,8 +43,8 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: theme.palette.type === 'dark' ? theme.palette.grey[400] : theme.palette.grey[600],
       margin: theme.spacing(1),
     },
-    progress: {
-      flexGrow: 3,
+    infoPadding: {
+      paddingRight: theme.spacing(12.5),
     },
   }),
 )
@@ -51,21 +55,24 @@ export const FileList: React.FC<Props> = props => {
   return (
     <List className={classes.listRoot}>
       {[...props.files].map(file => (
-        <ListItem key={file.lastModified} className={classes.listItem}>
+        <ListItem
+          key={file.lastModified}
+          className={clsx(classes.listItem, { [classes.infoPadding]: file.progress && file.progress.error })}>
           <div className={classes.square} />
           <ListItemText
             primary={file.fullPath || file.name}
             className={classes.listItemText}
             secondary={filesize(file.size)}
           />
-          {file.progress && file.progress.chunkCount != null && file.progress.uploadedChunks != null ? (
-            <LinearProgress
-              variant="determinate"
-              className={classes.progress}
-              value={(file.progress.uploadedChunks / file.progress.chunkCount) * 100}
-            />
-          ) : null}
+          {file.progress ? <ProgressBar progress={file.progress} /> : null}
           <ListItemSecondaryAction>
+            {file.progress && file.progress.error ? (
+              <Tooltip title={file.progress.error.message}>
+                <IconButton aria-label="error info">
+                  <InfoIcon />
+                </IconButton>
+              </Tooltip>
+            ) : null}
             <IconButton
               disabled={props.isUploadInProgress}
               edge="end"
