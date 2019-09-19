@@ -180,7 +180,17 @@ export class Upload {
     })
 
     if (!initRequest.ok) {
-      throw await this.repository.getErrorFromResponse(initRequest)
+      const error = await this.repository.getErrorFromResponse(initRequest)
+      options.progressObservable &&
+        options.progressObservable.setValue({
+          guid,
+          file: options.file,
+          chunkCount,
+          uploadedChunks: 0,
+          completed: false,
+          error,
+        })
+      throw error
     }
 
     const chunkToken = await initRequest.text()
@@ -358,18 +368,16 @@ export class Upload {
         }
       }
 
-      await Promise.all(
-        Array.from(options.fileList).map(async file => {
-          await this.file({
-            ...(options as UploadOptions<T>),
-            parentPath: PathHelper.joinPaths(
-              options.parentPath,
-              PathHelper.getParentPath((file as any).webkitRelativePath),
-            ),
-            file,
-          })
-        }),
-      )
+      for (const file of Array.from(options.fileList)) {
+        await this.file({
+          ...(options as UploadOptions<T>),
+          parentPath: PathHelper.joinPaths(
+            options.parentPath,
+            PathHelper.getParentPath((file as any).webkitRelativePath),
+          ),
+          file,
+        })
+      }
     } else {
       const { fileList, createFolders, ...uploadOptions } = options
       for (const file of Array.from(options.fileList)) {
