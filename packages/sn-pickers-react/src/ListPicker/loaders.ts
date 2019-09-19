@@ -8,6 +8,7 @@ interface LoadItemsOptions<T> {
   repository: Repository
   itemsODataOptions?: ODataParams<T>
   parentODataOptions?: ODataParams<T>
+  abortController: AbortController
 }
 
 /**
@@ -75,11 +76,13 @@ export const loadItems = async <T extends GenericContentWithIsParent>({
   itemsODataOptions: itemsODataOptionsArgs,
   parentODataOptions,
   parentId,
+  abortController,
 }: LoadItemsOptions<T>) => {
   const itemsODataOptions = { ...defaultLoadItemsODataOptions, ...itemsODataOptionsArgs }
   const itemsResult = await repository.loadCollection<T>({
     path,
     oDataOptions: itemsODataOptions,
+    requestInit: { signal: abortController.signal },
   })
   const items = itemsResult.d.results.map(item => {
     return { ...item, isParent: false }

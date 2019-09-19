@@ -27,11 +27,13 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
     props.dialogProps.onClose && props.dialogProps.onClose(ev, 'backdropClick')
   }
 
+  const [itemsODataOptions] = useState({ filter: '' })
+
   const repo = useRepository()
   const list = useListPicker({
     repository: repo,
     currentPath: props.currentParent.Path,
-    itemsODataOptions: { filter: '' },
+    itemsODataOptions,
   })
 
   const localizations = useLocalization().copyMoveContentDialog
