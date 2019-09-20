@@ -12,6 +12,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { useListPicker } from '@sensenet/pickers-react'
 import React, { useEffect, useState } from 'react'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
+import ArrowUpward from '@material-ui/icons/ArrowUpward'
 import { useLocalization } from '../../hooks'
 import { Icon } from '../Icon'
 
@@ -85,9 +86,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
                   list.navigateTo(item)
                   list.reload()
                 }}>
-                <ListItemIcon>
-                  <Icon item={item} />
-                </ListItemIcon>
+                <ListItemIcon>{item.isParent ? <ArrowUpward /> : <Icon item={item} />}</ListItemIcon>
                 <ListItemText primary={item.isParent ? '...' : item.DisplayName} />
               </ListItem>
             ))}
