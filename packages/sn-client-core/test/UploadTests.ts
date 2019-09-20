@@ -86,8 +86,16 @@ describe('Upload', () => {
     })
 
     it('should throw on upload failure', done => {
-      fetchOk = false
-      repo.upload
+      const repository = new Repository(
+        {},
+        async () =>
+          ({
+            json: async () => {
+              throw 'error'
+            },
+          } as any),
+      )
+      repository.upload
         .textAsFile({
           binaryPropertyName: 'Binary',
           overwrite: true,
