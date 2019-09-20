@@ -4,7 +4,7 @@ import { createStyles, Theme } from '@material-ui/core'
 import { darken, lighten } from '@material-ui/core/styles'
 import { UploadProgressInfo } from '@sensenet/client-core'
 import clsx from 'clsx'
-import { useTheme } from '../../../hooks'
+import { useLocalization, useTheme } from '../../../hooks'
 
 const useStyles = makeStyles((theme: Theme) => {
   const getColor = (color: string) => (theme.palette.type === 'light' ? lighten(color, 0.62) : darken(color, 0.5))
@@ -52,6 +52,7 @@ type Props = {
 export const ProgressBar = (props: Props) => {
   const classes = useStyles()
   const theme = useTheme()
+  const localization = useLocalization().uploadProgress
   const inlineStyle: React.CSSProperties = { transform: '' }
 
   const getProgress = () => {
@@ -63,11 +64,11 @@ export const ProgressBar = (props: Props) => {
 
   const getProgressText = () => {
     if (props.progress.completed) {
-      return 'Upload completed'
+      return localization.uploadCompleted
     }
 
     if (props.progress.error) {
-      return 'Upload failed'
+      return localization.uploadFailed
     }
 
     return `${getProgress()}%`

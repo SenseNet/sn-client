@@ -18,6 +18,7 @@ import { ObservableValue } from '@sensenet/client-utils'
 import { UploadProgressInfo } from '@sensenet/client-core'
 import { Prompt, RouteComponentProps, withRouter } from 'react-router'
 import { DropFileArea } from '../../DropFileArea'
+import { useLocalization } from '../../../hooks'
 import { FileList } from './file-list'
 import { FileWithFullPath, getFilesFromDragEvent } from './helper'
 
@@ -53,6 +54,7 @@ const UploadDialog: React.FunctionComponent<
 > = props => {
   const classes = useStyles()
   const repository = useRepository()
+  const localization = useLocalization().uploadProgress
   const inputFile = useRef<HTMLInputElement>(null)
   const [files, setFiles] = useState<FileWithFullPath[] | undefined>(props.location.state && props.location.state.files)
   const [isUploadInProgress, setIsUploadInProgress] = useState(false)
@@ -91,7 +93,7 @@ const UploadDialog: React.FunctionComponent<
     const handleBeforeunload = (event: BeforeUnloadEvent) => {
       if (isUploadInProgress) {
         event.preventDefault()
-        event.returnValue = ''
+        event.returnValue = localization.blockNavigation
         return event
       }
       abortController.current.abort()
@@ -101,7 +103,7 @@ const UploadDialog: React.FunctionComponent<
     return () => {
       window.removeEventListener('beforeunload', handleBeforeunload)
     }
-  }, [isUploadInProgress])
+  }, [isUploadInProgress, localization.blockNavigation])
 
   const isFileAdded = files && !!files.length
 
@@ -166,7 +168,7 @@ const UploadDialog: React.FunctionComponent<
     <Dialog open={true} disablePortal fullScreen>
       <DialogTitle disableTypography>
         <Typography variant="h6" align="center">
-          Upload files
+          {localization.title}
         </Typography>
         <IconButton
           disabled={isUploadInProgress}
@@ -196,10 +198,10 @@ const UploadDialog: React.FunctionComponent<
               <>
                 <NoteAddSharpIcon className={classes.icon} />
                 <Typography variant="body1" className={classes.body1}>
-                  Select files to upload
+                  {localization.selectFilesToUpload}
                 </Typography>
                 <Typography variant="body2" className={classes.body2}>
-                  or drag and drop
+                  {localization.orDragAndDrop}
                 </Typography>
               </>
             )}
@@ -208,7 +210,7 @@ const UploadDialog: React.FunctionComponent<
         <Grid container justify="flex-end">
           {isUploadCompleted() ? null : (
             <Button color="primary" disabled={isUploadInProgress} variant="contained" onClick={() => upload()}>
-              Upload
+              {localization.uploadButton}
             </Button>
           )}
         </Grid>
@@ -221,7 +223,7 @@ const UploadDialog: React.FunctionComponent<
         accept=""
         multiple={true}
       />
-      <Prompt when={isUploadInProgress} message="Upload is in progress. Do you want to navigate away?" />
+      <Prompt when={isUploadInProgress} message={localization.blockNavigation} />
     </Dialog>
   )
 }
