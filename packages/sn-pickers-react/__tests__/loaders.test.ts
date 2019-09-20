@@ -32,7 +32,7 @@ describe('loadItems function', () => {
     expect(repository.loadCollection).toBeCalledWith({
       oDataOptions: defaultLoadItemsODataOptions,
       path: '',
-      abortController,
+      requestInit: { signal: abortController.signal },
     })
   })
 
