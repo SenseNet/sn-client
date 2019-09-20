@@ -112,14 +112,16 @@ export class Upload {
 
     const formData = this.getFormDataFromOptions(options)
     formData.append(options.file.name, options.file)
-    const response = await this.repository.fetch(this.getUploadUrl(options), {
-      ...options.requestInit,
-      credentials: 'include',
-      method: 'POST',
-      body: formData,
-    })
-    if (!response.ok) {
-      const error = response.json()
+
+    try {
+      const response = await this.repository.fetch(this.getUploadUrl(options), {
+        ...options.requestInit,
+        credentials: 'include',
+        method: 'POST',
+        body: formData,
+      })
+      const uploadResponse: UploadResponse = await response.json()
+
       options.progressObservable &&
         options.progressObservable.setValue({
           guid,
@@ -127,24 +129,19 @@ export class Upload {
           chunkCount: 1,
           uploadedChunks: 1,
           completed: true,
-          createdContent: options.progressObservable.getValue().createdContent,
+          createdContent: uploadResponse,
+        })
+      return uploadResponse
+    } catch (error) {
+      options.progressObservable &&
+        options.progressObservable.setValue({
+          guid,
+          file: options.file,
+          completed: false,
           error,
         })
-      throw await this.repository.getErrorFromResponse(response)
+      throw error
     }
-
-    const uploadResponse: UploadResponse = await response.json()
-
-    options.progressObservable &&
-      options.progressObservable.setValue({
-        guid,
-        file: options.file,
-        chunkCount: 1,
-        uploadedChunks: 1,
-        completed: true,
-        createdContent: uploadResponse,
-      })
-    return uploadResponse
   }
 
   public async uploadChunked<T>(options: UploadFileOptions<T>) {
@@ -168,19 +165,72 @@ export class Upload {
     formData.append(options.file.name, options.file.slice(0, this.repository.configuration.chunkSize))
     formData.append('UseChunk', 'true')
     formData.append('create', '1')
-    const initRequest = await this.repository.fetch(uploadPath, {
-      ...options.requestInit,
-      body: formData,
-      credentials: 'include',
-      method: 'POST',
-      headers: {
-        'Content-Range': `bytes 0-${this.repository.configuration.chunkSize - 1}/${options.file.size}`,
-        'Content-Disposition': `attachment; filename="${options.file.name}"`,
-      },
-    })
+    try {
+      const initRequest = await this.repository.fetch(uploadPath, {
+        ...options.requestInit,
+        body: formData,
+        credentials: 'include',
+        method: 'POST',
+        headers: {
+          'Content-Range': `bytes 0-${this.repository.configuration.chunkSize - 1}/${options.file.size}`,
+          'Content-Disposition': `attachment; filename="${options.file.name}"`,
+        },
+      })
 
-    if (!initRequest.ok) {
-      const error = await this.repository.getErrorFromResponse(initRequest)
+      const chunkToken = await initRequest.text()
+      let lastResponseContent: UploadResponse = {} as any
+
+      for (let i = 0; i <= chunkCount; i++) {
+        const start = i * this.repository.configuration.chunkSize
+        let end = start + this.repository.configuration.chunkSize
+        end = end > options.file.size ? options.file.size : end
+
+        const chunkFormData = new FormData()
+        const chunkData = options.file.slice(start, end)
+
+        chunkFormData.append('FileLength', options.file.size.toString())
+        chunkFormData.append('ChunkToken', chunkToken)
+        chunkFormData.append(options.file.name, chunkData)
+
+        const lastResponse = await this.repository.fetch(uploadPath, {
+          ...options.requestInit,
+          body: chunkFormData,
+          credentials: 'include',
+          method: 'POST',
+          headers: {
+            'Content-Range': `bytes ${start}-${end - 1}/${options.file.size}`,
+            'Content-Disposition': `attachment; filename="${options.file.name}"`,
+          },
+        })
+        if (lastResponse.ok) {
+          lastResponseContent = await lastResponse.json()
+          options.progressObservable &&
+            options.progressObservable.setValue({
+              guid,
+              file: options.file,
+              chunkCount,
+              uploadedChunks: i,
+              completed: i === chunkCount,
+              createdContent: lastResponseContent,
+            })
+        } else {
+          const error = await lastResponse.json()
+          options.progressObservable &&
+            options.progressObservable.setValue({
+              guid,
+              file: options.file,
+              chunkCount,
+              uploadedChunks: i,
+              completed: i === chunkCount,
+              createdContent: lastResponseContent,
+              error,
+            })
+          throw await this.repository.getErrorFromResponse(lastResponse)
+        }
+      }
+
+      return lastResponseContent
+    } catch (error) {
       options.progressObservable &&
         options.progressObservable.setValue({
           guid,
@@ -192,60 +242,6 @@ export class Upload {
         })
       throw error
     }
-
-    const chunkToken = await initRequest.text()
-    let lastResponseContent: UploadResponse = {} as any
-
-    for (let i = 0; i <= chunkCount; i++) {
-      const start = i * this.repository.configuration.chunkSize
-      let end = start + this.repository.configuration.chunkSize
-      end = end > options.file.size ? options.file.size : end
-
-      const chunkFormData = new FormData()
-      const chunkData = options.file.slice(start, end)
-
-      chunkFormData.append('FileLength', options.file.size.toString())
-      chunkFormData.append('ChunkToken', chunkToken)
-      chunkFormData.append(options.file.name, chunkData)
-
-      const lastResponse = await this.repository.fetch(uploadPath, {
-        ...options.requestInit,
-        body: chunkFormData,
-        credentials: 'include',
-        method: 'POST',
-        headers: {
-          'Content-Range': `bytes ${start}-${end - 1}/${options.file.size}`,
-          'Content-Disposition': `attachment; filename="${options.file.name}"`,
-        },
-      })
-      if (lastResponse.ok) {
-        lastResponseContent = await lastResponse.json()
-        options.progressObservable &&
-          options.progressObservable.setValue({
-            guid,
-            file: options.file,
-            chunkCount,
-            uploadedChunks: i,
-            completed: i === chunkCount,
-            createdContent: lastResponseContent,
-          })
-      } else {
-        const error = await lastResponse.json()
-        options.progressObservable &&
-          options.progressObservable.setValue({
-            guid,
-            file: options.file,
-            chunkCount,
-            uploadedChunks: i,
-            completed: i === chunkCount,
-            createdContent: lastResponseContent,
-            error,
-          })
-        throw await this.repository.getErrorFromResponse(lastResponse)
-      }
-    }
-
-    return lastResponseContent
   }
 
   private async webkitFileHandler<T extends Content>(
