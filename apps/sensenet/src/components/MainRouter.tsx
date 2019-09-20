@@ -143,7 +143,7 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
                       }}
                     />
                     <Route
-                      path="/upload"
+                      path="/:repo/upload/:uploadPath?"
                       render={uploadProps => {
                         return <UploadComponent {...uploadProps} />
                       }}
