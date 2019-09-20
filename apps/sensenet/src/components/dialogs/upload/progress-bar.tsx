@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme: Theme) => {
       display: 'flex',
       justifyContent: 'flex-end',
       alignItems: 'center',
+      flexBasis: 100,
     },
     bar: {
       width: '100%',
@@ -34,6 +35,7 @@ const useStyles = makeStyles((theme: Theme) => {
       backgroundColor: theme.palette.primary.main,
     },
     value: {
+      color: theme.palette.common.white,
       zIndex: 1,
       marginRight: theme.spacing(2),
     },
