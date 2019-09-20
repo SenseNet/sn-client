@@ -8,6 +8,12 @@ import IconButton from '@material-ui/core/IconButton'
 import { ReferenceGrid } from '../src/fieldcontrols/ReferenceGrid/ReferenceGrid'
 import { DefaultItemTemplate } from '../src/fieldcontrols/ReferenceGrid/DefaultItemTemplate'
 import { ReferencePicker } from '../src/fieldcontrols/ReferenceGrid/ReferencePicker'
+import '@sensenet/pickers-react'
+
+jest.mock('@sensenet/pickers-react', () => ({
+  loadItems: async () => [],
+  useListPicker: () => ({}),
+}))
 
 const defaultSettings = {
   Type: 'ReferenceFieldSetting',
