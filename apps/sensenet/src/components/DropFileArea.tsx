@@ -1,8 +1,9 @@
 import CloudUploadTwoTone from '@material-ui/icons/CloudUploadTwoTone'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
+import { Redirect } from 'react-router'
 import { useTheme } from '../hooks'
-import { UploadDialog } from './dialogs'
+// import { UploadDialog } from './dialogs'
 import { FileWithFullPath, getFilesFromDragEvent } from './dialogs/upload/helper'
 
 type Props = {
@@ -13,7 +14,7 @@ type Props = {
 
 export const DropFileArea: React.FunctionComponent<Props> = props => {
   const [isDragOver, setDragOver] = useState(false)
-  const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false)
+  // const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false)
   const [files, setFiles] = useState<FileWithFullPath[]>()
   const theme = useTheme()
 
@@ -22,7 +23,12 @@ export const DropFileArea: React.FunctionComponent<Props> = props => {
     event.preventDefault()
     setDragOver(false)
     !props.onDrop && setFiles(await getFilesFromDragEvent(event))
-    props.onDrop ? props.onDrop(event) : setIsUploadDialogOpen(true)
+    // props.onDrop ? props.onDrop(event) : setIsUploadDialogOpen(true)
+    props.onDrop && props.onDrop(event)
+  }
+
+  if (files) {
+    return <Redirect to={{ state: { content: props.parentContent, files }, pathname: '/upload' }} />
   }
 
   return (
@@ -66,14 +72,14 @@ export const DropFileArea: React.FunctionComponent<Props> = props => {
         </div>
         {props.children}
       </div>
-      <UploadDialog
+      {/* <UploadDialog
         content={props.parentContent}
         files={files}
         dialogProps={{
           open: isUploadDialogOpen,
           onClose: () => setIsUploadDialogOpen(false),
         }}
-      />
+      /> */}
     </>
   )
 }

@@ -8,10 +8,10 @@ import CloudUpload from '@material-ui/icons/CloudUpload'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
 import { CurrentContentContext, useLogger, useRepository } from '@sensenet/hooks-react'
+import { Redirect } from 'react-router'
 import { useLocalization } from '../hooks'
 import { AddDialog } from './dialogs/add'
 import { Icon } from './Icon'
-import { UploadDialog } from './dialogs/upload/upload-dialog'
 
 export interface AddButtonProps {
   parent?: GenericContent
@@ -54,6 +54,10 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
         })
     }
   }, [localization.errorGettingAllowedContentTypes, logger, parent.Id, repo, showSelectType])
+
+  if (isUploadDialogOpen) {
+    return <Redirect to={{ state: { content: parent }, pathname: '/upload' }} />
+  }
 
   return (
     <div>
@@ -116,13 +120,6 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
         dialogProps={{
           open: showAddNewDialog,
           onClose: () => setShowAddNewDialog(false),
-        }}
-      />
-      <UploadDialog
-        content={parent}
-        dialogProps={{
-          open: isUploadDialogOpen,
-          onClose: () => setIsUploadDialogOpen(false),
         }}
       />
     </div>

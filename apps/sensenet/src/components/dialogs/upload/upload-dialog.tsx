@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { DialogProps } from '@material-ui/core/Dialog'
 import { GenericContent } from '@sensenet/default-content-types'
 import {
   Button,
@@ -18,6 +17,7 @@ import NoteAddSharpIcon from '@material-ui/icons/NoteAddSharp'
 import { useRepository } from '@sensenet/hooks-react'
 import { ObservableValue } from '@sensenet/client-utils'
 import { UploadProgressInfo } from '@sensenet/client-core'
+import { RouteComponentProps, withRouter } from 'react-router'
 import { DropFileArea } from '../../DropFileArea'
 import { FileList } from './file-list'
 import { FileWithFullPath, getFilesFromDragEvent } from './helper'
@@ -49,42 +49,37 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
-type Props = {
-  dialogProps: DialogProps
-  content: GenericContent
-  files?: File[]
-}
-
-export const UploadDialog: React.FunctionComponent<Props> = props => {
+const UploadDialog: React.FunctionComponent<
+  RouteComponentProps<{}, {}, { content: GenericContent; files?: File[] }>
+> = props => {
   const classes = useStyles()
   const repository = useRepository()
   const inputFile = useRef<HTMLInputElement>(null)
   const [files, setFiles] = useState<FileWithFullPath[]>()
   const [isUploadInProgress, setIsUploadInProgress] = useState(false)
-  const [progressObservable] = useState(new ObservableValue<UploadProgressInfo>())
+  const progressObservable = useRef(new ObservableValue<UploadProgressInfo>())
 
   useEffect(() => {
-    setFiles(props.files)
-  }, [props.files])
+    setFiles(props.location.state.files)
+  }, [props.location.state.files])
 
   useEffect(() => {
-    const disposable = progressObservable.subscribe(progressInfo => {
-      if (!files) {
-        return
-      }
-
-      setFiles(
-        files.map(f => {
+    const disposable = progressObservable.current.subscribe(progressInfo => {
+      setFiles(ffiles => {
+        if (!ffiles) {
+          return undefined
+        }
+        return ffiles.map(f => {
           if (f.lastModified === progressInfo.file.lastModified) {
             const updated = Object.assign(f, { progress: progressInfo })
             return updated
           }
           return f
-        }),
-      )
+        })
+      })
     })
     return () => disposable.dispose()
-  }, [files, progressObservable])
+  }, [])
 
   useEffect(() => {
     const handleBeforeunload = (event: BeforeUnloadEvent) => {
@@ -141,12 +136,12 @@ export const UploadDialog: React.FunctionComponent<Props> = props => {
 
     try {
       await repository.upload.fromFileList({
-        parentPath: props.content.Path,
+        parentPath: props.location.state.content.Path,
         fileList: files as any,
         createFolders: true,
         binaryPropertyName: 'Binary',
         overwrite: false,
-        progressObservable,
+        progressObservable: progressObservable.current,
       })
     } catch (error) {
       // TODO: log with logger?
@@ -157,23 +152,21 @@ export const UploadDialog: React.FunctionComponent<Props> = props => {
   }
 
   return (
-    <Dialog {...props.dialogProps} disablePortal fullScreen>
+    <Dialog open={true} disablePortal fullScreen>
       <DialogTitle disableTypography>
         <Typography variant="h6" align="center">
           Upload files
         </Typography>
-        {props.dialogProps.onClose ? (
-          <IconButton
-            disabled={isUploadInProgress}
-            aria-label="close"
-            className={classes.closeButton}
-            onClick={() => props.dialogProps.onClose && props.dialogProps.onClose({}, 'escapeKeyDown')}>
-            <CloseIcon />
-          </IconButton>
-        ) : null}
+        <IconButton
+          disabled={isUploadInProgress}
+          aria-label="close"
+          className={classes.closeButton}
+          onClick={() => props.history.goBack()}>
+          <CloseIcon />
+        </IconButton>
       </DialogTitle>
       <DialogContent>
-        <DropFileArea parentContent={props.content} onDrop={onDrop}>
+        <DropFileArea parentContent={props.location.state.content} onDrop={onDrop}>
           <Grid
             onClick={() => {
               if (isUploadInProgress || isUploadCompleted()) {
@@ -220,3 +213,5 @@ export const UploadDialog: React.FunctionComponent<Props> = props => {
     </Dialog>
   )
 }
+
+export default withRouter(UploadDialog)
