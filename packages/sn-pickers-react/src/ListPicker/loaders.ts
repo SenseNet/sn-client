@@ -85,7 +85,7 @@ export const loadItems = async <T extends GenericContentWithIsParent>({
     requestInit: { signal: abortController.signal },
   })
   const items = itemsResult.d.results.map(item => {
-    return { ...item, isParent: false }
+    return { ...item, isParent: false } as T & { isParent: boolean }
   })
   const parentResult = await getParent<T>(items[0], repository, parentODataOptions, parentId)
   if (!parentResult) {
