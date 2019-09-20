@@ -368,16 +368,18 @@ export class Upload {
         }
       }
 
-      for (const file of Array.from(options.fileList)) {
-        await this.file({
-          ...(options as UploadOptions<T>),
-          parentPath: PathHelper.joinPaths(
-            options.parentPath,
-            PathHelper.getParentPath((file as any).webkitRelativePath),
-          ),
-          file,
-        })
-      }
+      await Promise.all(
+        Array.from(options.fileList).map(async file => {
+          await this.file({
+            ...(options as UploadOptions<T>),
+            parentPath: PathHelper.joinPaths(
+              options.parentPath,
+              PathHelper.getParentPath((file as any).webkitRelativePath),
+            ),
+            file,
+          })
+        }),
+      )
     } else {
       const { fileList, createFolders, ...uploadOptions } = options
       for (const file of Array.from(options.fileList)) {
