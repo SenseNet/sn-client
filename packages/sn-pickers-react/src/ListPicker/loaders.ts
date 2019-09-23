@@ -61,8 +61,12 @@ async function getParent<T extends GenericContent>(
     }
     return await repository.load<T>({ idOrPath: itemParent.d.ParentId!, oDataOptions: parentODataOptions })
   }
+
+  if (!parentId) {
+    return
+  }
   return await repository.load<T>({
-    idOrPath: parentId!,
+    idOrPath: parentId,
     oDataOptions: parentODataOptions,
   })
 }
