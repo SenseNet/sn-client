@@ -5,15 +5,10 @@ import Dialog from '@material-ui/core/Dialog'
 import { sleepAsync } from '@sensenet/client-utils'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
+import { act } from 'react-dom/test-utils'
 import { ReferenceGrid } from '../src/fieldcontrols/ReferenceGrid/ReferenceGrid'
 import { DefaultItemTemplate } from '../src/fieldcontrols/ReferenceGrid/DefaultItemTemplate'
 import { ReferencePicker } from '../src/fieldcontrols/ReferenceGrid/ReferencePicker'
-import '@sensenet/pickers-react'
-
-jest.mock('@sensenet/pickers-react', () => ({
-  loadItems: async () => [],
-  useListPicker: () => ({}),
-}))
 
 const defaultSettings = {
   Type: 'ReferenceFieldSetting',
@@ -47,6 +42,9 @@ const repository: any = {
   load: jest.fn(() => {
     return { d: { results: [userContent, { Id: 2123, Name: 'Jon Doe', Type: 'User', Path: '/' }] } }
   }),
+  loadCollection: () => {
+    return { d: { results: [] } }
+  },
   configuration: {
     repositoryUrl: 'url',
   },
@@ -123,31 +121,35 @@ describe('Reference grid field control', () => {
 
     it('should allow user to add a new row, when allow multiple is true', async () => {
       const fieldOnChange = jest.fn()
-      // ;(useAsync as any).mockReturnValue({ data: undefined, isLoading: true })
-      const wrapper = mount(
-        <ReferenceGrid
-          fieldOnChange={fieldOnChange}
-          actionName="edit"
-          repository={repository}
-          settings={{ ...defaultSettings, AllowMultiple: true }}
-        />,
-      )
-      await sleepAsync(0)
-      const updatedWrapper = wrapper.update()
+      let wrapper: any
+      await act(async () => {
+        wrapper = mount(
+          <ReferenceGrid
+            fieldOnChange={fieldOnChange}
+            actionName="edit"
+            repository={repository}
+            settings={{ ...defaultSettings, AllowMultiple: true }}
+          />,
+        )
+      })
 
-      updatedWrapper
+      wrapper
         .find(DefaultItemTemplate)
         .last()
         .find(IconButton)
         .simulate('click')
-      updatedWrapper.find(ReferencePicker).prop('select')({ Path: '/', Name: 'Jane Doe', Id: 1234, Type: 'User' })
-      updatedWrapper
+
+      await act(async () => {
+        wrapper.find(ReferencePicker).prop('select')({ Path: '/', Name: 'Jane Doe', Id: 1234, Type: 'User' })
+      })
+
+      wrapper
         .find(Dialog)
         .find(Button)
         .first()
         .simulate('click')
       expect(fieldOnChange).toBeCalled()
-      expect(updatedWrapper.find(DefaultItemTemplate)).toHaveLength(4)
+      expect(wrapper.find(DefaultItemTemplate)).toHaveLength(4)
     })
 
     it('should remove all the items when a new item is selected with allow multiple false', async () => {
