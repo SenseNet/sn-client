@@ -89,8 +89,11 @@ export const useListPicker = <T extends GenericContentWithIsParent = GenericCont
 
   const setSelectedItem = (node?: T) => dispatch({ type: SET_SELECTED_ITEM, payload: node })
 
-  const navigateTo = (node: T) =>
-    dispatch({ type: NAVIGATE_TO, payload: { node, parent: items && (items.find(c => c.isParent) as any) } })
+  const navigateTo = useCallback(
+    (node: T) =>
+      dispatch({ type: NAVIGATE_TO, payload: { node, parent: items && (items.find(c => c.isParent) as any) } }),
+    [items],
+  )
 
   return { items, selectedItem, setSelectedItem, navigateTo, path, isLoading, error, reload }
 }
