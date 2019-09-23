@@ -85,7 +85,10 @@ export const useListPicker = <T extends GenericContentWithIsParent = GenericCont
         setIsLoading(false)
       }
     })()
-  }, [options.itemsODataOptions, options.parentODataOptions, path, repository, reloadToken, parentId])
+    // It might be a case to change odata options without the path but it is unlikely. If you see bugs because of this then
+    // check out this https://stackoverflow.com/questions/54095994/react-useeffect-comparing-objects
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [path, repository, reloadToken, parentId])
 
   const setSelectedItem = (node?: T) => dispatch({ type: SET_SELECTED_ITEM, payload: node })
 
