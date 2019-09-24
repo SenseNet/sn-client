@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     listRoot: {
       padding: theme.spacing(2),
+      height: '100%',
     },
     listItem: {
       width: 'unset',

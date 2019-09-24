@@ -56,7 +56,13 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   }, [localization.errorGettingAllowedContentTypes, logger, parent.Id, repo, showSelectType])
 
   if (isUploadDialogOpen) {
-    return <Redirect to={{ state: { content: parent }, pathname: '/upload' }} />
+    return (
+      <Redirect
+        to={{
+          pathname: `/${btoa(repo.configuration.repositoryUrl)}/upload/${encodeURIComponent(parent.Path)}`,
+        }}
+      />
+    )
   }
 
   return (

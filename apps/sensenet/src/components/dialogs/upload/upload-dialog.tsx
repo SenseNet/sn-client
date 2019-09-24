@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { GenericContent } from '@sensenet/default-content-types'
 import {
   Button,
   createStyles,
@@ -17,8 +16,9 @@ import NoteAddSharpIcon from '@material-ui/icons/NoteAddSharp'
 import { useRepository } from '@sensenet/hooks-react'
 import { ObservableValue } from '@sensenet/client-utils'
 import { UploadProgressInfo } from '@sensenet/client-core'
-import { RouteComponentProps, withRouter } from 'react-router'
+import { Prompt, RouteComponentProps, withRouter } from 'react-router'
 import { DropFileArea } from '../../DropFileArea'
+import { useLocalization } from '../../../hooks'
 import { FileList } from './file-list'
 import { FileWithFullPath, getFilesFromDragEvent } from './helper'
 
@@ -50,18 +50,16 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 const UploadDialog: React.FunctionComponent<
-  RouteComponentProps<{}, {}, { content: GenericContent; files?: File[] }>
+  RouteComponentProps<{ uploadPath: string }, {}, { files?: File[] }>
 > = props => {
   const classes = useStyles()
   const repository = useRepository()
+  const localization = useLocalization().uploadProgress
   const inputFile = useRef<HTMLInputElement>(null)
-  const [files, setFiles] = useState<FileWithFullPath[]>()
+  const [files, setFiles] = useState<FileWithFullPath[] | undefined>(props.location.state && props.location.state.files)
   const [isUploadInProgress, setIsUploadInProgress] = useState(false)
   const progressObservable = useRef(new ObservableValue<UploadProgressInfo>())
-
-  useEffect(() => {
-    setFiles(props.location.state.files)
-  }, [props.location.state.files])
+  const abortController = useRef(new AbortController())
 
   useEffect(() => {
     const disposable = progressObservable.current.subscribe(progressInfo => {
@@ -78,20 +76,34 @@ const UploadDialog: React.FunctionComponent<
         })
       })
     })
-    return () => disposable.dispose()
+    return () => {
+      disposable.dispose()
+    }
   }, [])
+
+  useEffect(() => {
+    props.history.listen(listener => {
+      if (listener.pathname !== props.location.pathname) {
+        abortController.current.abort()
+      }
+    })
+  }, [props.history, props.location.pathname])
 
   useEffect(() => {
     const handleBeforeunload = (event: BeforeUnloadEvent) => {
       if (isUploadInProgress) {
         event.preventDefault()
-        event.returnValue = ''
+        event.returnValue = localization.blockNavigation
+        return event
       }
+      abortController.current.abort()
     }
 
     window.addEventListener('beforeunload', handleBeforeunload)
-    return () => window.removeEventListener('beforeunload', handleBeforeunload)
-  }, [isUploadInProgress])
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeunload)
+    }
+  }, [isUploadInProgress, localization.blockNavigation])
 
   const isFileAdded = files && !!files.length
 
@@ -136,12 +148,13 @@ const UploadDialog: React.FunctionComponent<
 
     try {
       await repository.upload.fromFileList({
-        parentPath: props.location.state.content.Path,
+        parentPath: decodeURIComponent(props.match.params.uploadPath),
         fileList: files as any,
         createFolders: true,
         binaryPropertyName: 'Binary',
         overwrite: false,
         progressObservable: progressObservable.current,
+        requestInit: { signal: abortController.current.signal },
       })
     } catch (error) {
       // TODO: log with logger?
@@ -155,7 +168,7 @@ const UploadDialog: React.FunctionComponent<
     <Dialog open={true} disablePortal fullScreen>
       <DialogTitle disableTypography>
         <Typography variant="h6" align="center">
-          Upload files
+          {localization.title}
         </Typography>
         <IconButton
           disabled={isUploadInProgress}
@@ -166,7 +179,7 @@ const UploadDialog: React.FunctionComponent<
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <DropFileArea parentContent={props.location.state.content} onDrop={onDrop}>
+        <DropFileArea onDrop={onDrop}>
           <Grid
             onClick={() => {
               if (isUploadInProgress || isUploadCompleted()) {
@@ -185,10 +198,10 @@ const UploadDialog: React.FunctionComponent<
               <>
                 <NoteAddSharpIcon className={classes.icon} />
                 <Typography variant="body1" className={classes.body1}>
-                  Select files to upload
+                  {localization.selectFilesToUpload}
                 </Typography>
                 <Typography variant="body2" className={classes.body2}>
-                  or drag and drop
+                  {localization.orDragAndDrop}
                 </Typography>
               </>
             )}
@@ -197,7 +210,7 @@ const UploadDialog: React.FunctionComponent<
         <Grid container justify="flex-end">
           {isUploadCompleted() ? null : (
             <Button color="primary" disabled={isUploadInProgress} variant="contained" onClick={() => upload()}>
-              Upload
+              {localization.uploadButton}
             </Button>
           )}
         </Grid>
@@ -210,6 +223,7 @@ const UploadDialog: React.FunctionComponent<
         accept=""
         multiple={true}
       />
+      <Prompt when={isUploadInProgress} message={localization.blockNavigation} />
     </Dialog>
   )
 }
