@@ -16,7 +16,7 @@ exports[`DocumentTitlePager component Should render the focused state without cr
         "overflow": "hidden",
       }
     }
-    title="TestDocument"
+    title=""
     variant="h6"
   >
     <div
@@ -28,7 +28,6 @@ exports[`DocumentTitlePager component Should render the focused state without cr
         }
       }
     >
-      TestDocument
        
     </div>
     <form
@@ -42,7 +41,7 @@ exports[`DocumentTitlePager component Should render the focused state without cr
         }
         inputProps={
           Object {
-            "max": 10,
+            "max": -1,
             "min": 1,
             "style": Object {
               "textAlign": "center",
@@ -57,9 +56,8 @@ exports[`DocumentTitlePager component Should render the focused state without cr
             "flexShrink": 0,
           }
         }
-        title="goto"
+        title="Goto page"
         type="number"
-        value={1}
       />
     </form>
   </WithStyles(ForwardRef(Typography))>
@@ -82,7 +80,7 @@ exports[`DocumentTitlePager component Should render the unfocused state without 
         "overflow": "hidden",
       }
     }
-    title="TestDocument"
+    title=""
     variant="h6"
   >
     <div
@@ -94,7 +92,6 @@ exports[`DocumentTitlePager component Should render the unfocused state without 
         }
       }
     >
-      TestDocument
        
     </div>
     <div
@@ -106,7 +103,7 @@ exports[`DocumentTitlePager component Should render the unfocused state without 
     >
       1
        / 
-      10
+      -1
     </div>
   </WithStyles(ForwardRef(Typography))>
 </ForwardRef(ClickAwayListener)>
