@@ -64,7 +64,7 @@ export const Filter: React.FunctionComponent<{ style?: React.CSSProperties }> = 
             {localization.levelAll}
           </MenuItem>
           {Object.entries(LogLevel)
-            .filter(entry => !isNaN(entry[1]))
+            .filter(entry => !isNaN(entry[1] as LogLevel))
             .map(entry => (
               <MenuItem key={entry[1]} value={entry[1]}>
                 {entry[0]}

@@ -92,7 +92,7 @@ class Login extends React.Component<
     this.buttonIsDisabled = this.buttonIsDisabled.bind(this)
   }
 
-  public handleEmailBlur(e: React.FocusEvent<HTMLInputElement>) {
+  public handleEmailBlur(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) {
     if (this.validateEmail(e.target.value)) {
       this.setState({
         email: e.target.value,
@@ -107,7 +107,7 @@ class Login extends React.Component<
     }
   }
 
-  public handlePasswordBlur(e: React.FocusEvent<HTMLInputElement>) {
+  public handlePasswordBlur(e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) {
     if (e.target.value.length > 0) {
       this.setState({
         password: e.target.value,
