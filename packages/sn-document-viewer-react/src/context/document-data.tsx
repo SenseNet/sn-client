@@ -22,10 +22,17 @@ const defaultDocumentData: DocumentData = {
   error: undefined,
 }
 
-export const DocumentDataContext = React.createContext<{
+export interface DocumentDataContextType {
   documentData: DocumentData
   updateDocumentData: (data: DeepPartial<DocumentData>) => void
-}>({ documentData: defaultDocumentData, updateDocumentData: () => undefined })
+}
+
+export const defaultDocumentDataContextValue: DocumentDataContextType = {
+  documentData: defaultDocumentData,
+  updateDocumentData: () => undefined,
+}
+
+export const DocumentDataContext = React.createContext<DocumentDataContextType>(defaultDocumentDataContextValue)
 
 export const DocumentDataProvider: React.FC = ({ children }) => {
   const api = useDocumentViewerApi()

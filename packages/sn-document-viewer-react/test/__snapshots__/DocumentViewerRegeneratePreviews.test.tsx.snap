@@ -97,12 +97,16 @@ exports[`Document Regenerate Previews component should render without crashing 1
       color="textSecondary"
       gutterBottom={true}
       variant="subtitle1"
-    />
+    >
+      The preview images are not generated yet. Do you want to generate them?
+    </WithStyles(ForwardRef(Typography))>
     <WithStyles(ForwardRef(Button))
       disabled={false}
       onClick={[Function]}
       variant="contained"
-    />
+    >
+      Generate
+    </WithStyles(ForwardRef(Button))>
   </div>
 </div>
 `;

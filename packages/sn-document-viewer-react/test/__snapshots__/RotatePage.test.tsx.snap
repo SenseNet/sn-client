@@ -13,14 +13,14 @@ exports[`RotatePage component Should render without crashing 1`] = `
   }
 >
   <WithStyles(ForwardRef(IconButton))
-    title="rotatePageLeft"
+    title="Rotate page left"
   >
     <RotateLeftIcon
       onClick={[Function]}
     />
   </WithStyles(ForwardRef(IconButton))>
   <WithStyles(ForwardRef(IconButton))
-    title="rotatePageRight"
+    title="Rotate page right"
   >
     <RotateRightIcon
       onClick={[Function]}

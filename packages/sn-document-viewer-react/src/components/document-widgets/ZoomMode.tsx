@@ -57,7 +57,7 @@ export const ZoomModeWidget: React.FC = () => {
 
   return (
     <div style={{ display: 'inline-block' }}>
-      <IconButton onClick={openZoomMenu} title={localization.zoomMode}>
+      <IconButton onClick={openZoomMenu} title={localization.zoomMode} innerRef={zoomMenuAnchor}>
         {(() => {
           switch (viewerState.zoomMode) {
             case 'custom':

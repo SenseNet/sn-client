@@ -139,10 +139,10 @@ describe('Create comment component', () => {
   it('should give an error message when input is filled but draftCommentMarker is undefined', () => {
     const wrapper = mount(
       <CommentStateContext.Provider value={{ ...defaultCommentState }}>
-        <CreateComment {...defaultProps} />
+        <CreateComment {...defaultProps} inputValue="Hello There" />
       </CommentStateContext.Provider>,
     )
-    wrapper.find(TextField).prop('onChange')({ target: { value: 'Hello There' } } as any)
+    ;(wrapper.find(TextField).prop('onChange') as any)({ target: { value: 'Hello There' } })
     wrapper
       .find(Button)
       .first()

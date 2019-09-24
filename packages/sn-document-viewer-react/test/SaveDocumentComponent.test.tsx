@@ -1,48 +1,30 @@
-import { shallow } from 'enzyme'
+import { mount, shallow } from 'enzyme'
 import React from 'react'
-import { SaveDocumentComponent } from '../src/components/document-widgets/SaveWidget'
+import { SaveWidget } from '../src/components/document-widgets/SaveWidget'
+import { defaultViewerState, ViewerStateContext } from '../src/context/viewer-state'
 import { exampleDocumentData, examplePreviewImageData } from './__Mocks__/viewercontext'
 
 describe('SaveDocumentComponent component', () => {
   it('Should render without crashing when has changes', () => {
-    const wrapper = shallow(
-      <SaveDocumentComponent
-        canEdit={true}
-        document={exampleDocumentData}
-        saveChanges="Save"
-        save={jest.fn()}
-        pages={[examplePreviewImageData]}
-        hasChanges={true}
-      />,
-    )
+    const wrapper = shallow(<SaveWidget />)
     expect(wrapper).toMatchSnapshot()
   })
 
   it('Should render without crashing when there are no changes', () => {
-    const wrapper = shallow(
-      <SaveDocumentComponent
-        canEdit={true}
-        document={exampleDocumentData}
-        saveChanges="Save"
-        save={jest.fn()}
-        pages={[examplePreviewImageData]}
-        hasChanges={false}
-      />,
+    const wrapper = mount(
+      <ViewerStateContext.Provider value={{ ...defaultViewerState, hasChanges: true }}>
+        <SaveWidget />
+      </ViewerStateContext.Provider>,
     )
     expect(wrapper).toMatchSnapshot()
   })
 
   it('Should trigger a save request when clicked', () => {
     const save = jest.fn()
-    const wrapper = shallow(
-      <SaveDocumentComponent
-        canEdit={true}
-        document={exampleDocumentData}
-        saveChanges="Save"
-        save={save}
-        pages={[examplePreviewImageData]}
-        hasChanges={true}
-      />,
+    const wrapper = mount(
+      <ViewerStateContext.Provider value={{ ...defaultViewerState, hasChanges: true }}>
+        <SaveWidget />
+      </ViewerStateContext.Provider>,
     )
     wrapper.find('#Save').simulate('click')
     expect(save).toBeCalled()

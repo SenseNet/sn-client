@@ -12,7 +12,7 @@ exports[`PagerWidget component Should render without crashing 1`] = `
     disabled={true}
     id="FirstPage"
     onClick={[Function]}
-    title="firstpage"
+    title="First page"
   >
     <FirstPageIcon />
   </WithStyles(ForwardRef(IconButton))>
@@ -20,7 +20,7 @@ exports[`PagerWidget component Should render without crashing 1`] = `
     disabled={true}
     id="NavigateBefore"
     onClick={[Function]}
-    title="previouspage"
+    title="Previous page"
   >
     <NavigateBeforeIcon />
   </WithStyles(ForwardRef(IconButton))>
@@ -32,31 +32,31 @@ exports[`PagerWidget component Should render without crashing 1`] = `
     }
     inputProps={
       Object {
-        "max": 10,
+        "max": -1,
         "min": 1,
       }
     }
     margin="dense"
     onChange={[Function]}
     required={true}
-    title="gotopage"
+    title="Goto page"
     type="number"
     value={1}
   />
   <WithStyles(ForwardRef(IconButton))
     color="primary"
-    disabled={false}
+    disabled={true}
     id="NavigateNext"
     onClick={[Function]}
-    title="nextpage"
+    title="Next page"
   >
     <NavigateNextIcon />
   </WithStyles(ForwardRef(IconButton))>
   <WithStyles(ForwardRef(IconButton))
-    disabled={false}
+    disabled={true}
     id="LastPage"
     onClick={[Function]}
-    title="lastpage"
+    title="Last page"
   >
     <LastPageIcon />
   </WithStyles(ForwardRef(IconButton))>
