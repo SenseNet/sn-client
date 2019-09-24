@@ -1,7 +1,6 @@
 import { Store } from 'redux'
-import { DocumentData, DocumentViewerSettings, PreviewImageData } from '../../src/models'
-import { Comment } from '../../src/models/Comment'
-import { configureStore, RootReducerType } from '../../src/store'
+import { DocumentData, DocumentViewerApiSettings, PreviewImageData } from '../../src/models'
+import { CommentData } from '../../src/models/Comment'
 
 /**
  * Example document data for document viewer context
@@ -80,7 +79,7 @@ export const examplePreviewImageData: PreviewImageData = {
 /**
  * Example preview comment
  */
-export const examplePreviewComment: Comment = {
+export const examplePreviewComment: CommentData = {
   createdBy: {
     avatarUrl: 'https://cdn.images.express.co.uk/img/dynamic/79/590x/486693_1.jpg',
     displayName: 'Alba',
@@ -98,7 +97,7 @@ export const examplePreviewComment: Comment = {
 /**
  * Default settings for document viewer context
  */
-export const defaultSettings = new DocumentViewerSettings({
+export const defaultSettings: DocumentViewerApiSettings = {
   regeneratePreviews: async () => {
     /** */
   },
@@ -116,103 +115,4 @@ export const defaultSettings = new DocumentViewerSettings({
     },
     getPreviewComments: async () => [examplePreviewComment],
   },
-})
-
-/**
- * Model interface for the text contetxt
- */
-export interface DocViewerTestContext {
-  /**
-   * A store instance
-   */
-  store: Store<RootReducerType>
-  /**
-   * The provided settings
-   */
-  settings: DocumentViewerSettings
 }
-
-/**
- * Helper method that allows you to execute tests within a provided context.
- * Usage:
- * ```ts
- * useTestContextWithSettings(
- * {
- *      // you can define the options that you want to override
- * },
- * (context)=>{
- *      // the internal test implementaion
- *      // you can access the preconfigured store and viewer settings on the context parameter
- * })
- * ```
- * @param {Partial<DocumentViewerSettings>} additionalSettings A partial settings object. The provided properties will override the default ones
- * @param {(context: DocViewerTestContext) => void} callback Callback for the internal test implemetation
- */
-export const useTestContextWithSettings = (
-  additionalSettings: Partial<DocumentViewerSettings>,
-  callback: (context: DocViewerTestContext) => void,
-) => {
-  const settings = new DocumentViewerSettings({
-    ...defaultSettings,
-    ...additionalSettings,
-  })
-  const store = configureStore(settings)
-  callback({ store, settings })
-}
-
-/**
- * Helper method that allows you to execute tests within a provided context.
- * Usage:
- * ```ts
- * useTestContext((context)=>{
- *      // the internal test implementaion
- *      // you can access the preconfigured store and viewer settings on the context parameter
- * })
- * ```
- * @param {(context: DocViewerTestContext) => void} callback Callback for the internal test implemetation
- */
-export const useTestContext = (callback: (context: DocViewerTestContext) => void) =>
-  useTestContextWithSettings({}, callback)
-
-/**
- * Helper method that allows you to execute tests within a provided context. Supports async / await
- * Usage:
- * ```ts
- * await useTestContextWithSettingsAsync(
- * {
- *      // you can define the options that you want to override
- * }, async (context)=>{
- *      // the internal test implementaion
- *      // you can access the preconfigured store and viewer settings on the context parameter
- *      await someAsyncOperation()
- * })
- * ```
- * @param {Partial<DocumentViewerSettings>} additionalSettings A partial settings object. The provided properties will override the default ones
- * @param {(context: DocViewerTestContext) => Promise<void>} callback Callback for the internal test implemetation
- */
-export const useTestContextWithSettingsAsync = async (
-  additionalSettings: Partial<DocumentViewerSettings>,
-  callback: (context: DocViewerTestContext) => Promise<void>,
-) => {
-  const settings = new DocumentViewerSettings({
-    ...defaultSettings,
-    ...additionalSettings,
-  })
-  const store = configureStore(settings)
-  await callback({ store, settings })
-}
-
-/**
- * Helper method that allows you to execute tests within a provided context.
- * Usage:
- * ```ts
- * await useTestContextAsync(async (context)=>{
- *      // the internal test implementaion
- *      // you can access the preconfigured store and viewer settings on the context parameter
- *      await someAsyncOperation()
- * })
- * ```
- * @param {(context: DocViewerTestContext) => Promise<void>} callback Callback for the internal test implemetation
- */
-export const useTestContextAsync = (callback: (context: DocViewerTestContext) => Promise<void>) =>
-  useTestContextWithSettingsAsync({}, callback)
