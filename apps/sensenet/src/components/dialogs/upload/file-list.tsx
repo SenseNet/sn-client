@@ -14,6 +14,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import InfoIcon from '@material-ui/icons/Info'
 import filesize from 'filesize'
 import clsx from 'clsx'
+import uuid from 'uuid/v1'
 import { FileWithFullPath } from './helper'
 import { ProgressBar } from './progress-bar'
 
@@ -57,7 +58,7 @@ export const FileList: React.FC<Props> = props => {
     <List className={classes.listRoot}>
       {[...props.files].map(file => (
         <ListItem
-          key={file.lastModified}
+          key={uuid()}
           className={clsx(classes.listItem, { [classes.infoPadding]: file.progress && file.progress.error })}>
           <div className={classes.square} />
           <ListItemText
