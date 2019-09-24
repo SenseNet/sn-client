@@ -11,14 +11,10 @@ import {
  * readEntries will return only some of the entries in a directory
  * e.g. Chrome returns at most 100 entries at a time
  */
-async function readEntriesPromise(directoryReader: WebKitDirectoryReader): Promise<WebKitEntry[] | undefined> {
-  try {
-    return await new Promise((resolve, reject) => {
-      directoryReader.readEntries(resolve, reject)
-    })
-  } catch (err) {
-    console.log(err)
-  }
+async function readEntriesPromise(directoryReader: WebKitDirectoryReader): Promise<WebKitEntry[]> {
+  return await new Promise((resolve, reject) => {
+    directoryReader.readEntries(resolve, reject)
+  })
 }
 
 /**
