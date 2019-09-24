@@ -33,9 +33,6 @@
     "@sensenet/hooks-react": "1.0.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
-    "react-redux": "^7.0.3",
-    "redux": "^4.0.4",
-    "redux-di-middleware": "^4.0.1",
     "styled-components": "^4.1.3"
   },
   "devDependencies": {
