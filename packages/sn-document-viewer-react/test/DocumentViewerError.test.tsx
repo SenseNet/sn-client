@@ -1,47 +1,26 @@
-import { shallow } from 'enzyme'
+import { mount } from 'enzyme'
 import React from 'react'
-import { DocumentViewerErrorComponent, getPreviewState } from '../src/components/DocumentViewerError'
-import { defaultLocalization } from '../src/store/Localization'
+import { DocumentViewerError } from '../src/components/DocumentViewerError'
+import { DocumentDataContext } from '../src/context/document-data'
+import { PreviewState } from '../src/Enums'
 import { exampleDocumentData } from './__Mocks__/viewercontext'
 
 describe('Document Viewer Error component', () => {
-  it('should render without crashing', () => {
-    const wrapper = shallow(<DocumentViewerErrorComponent previewState={0} {...defaultLocalization} error=":(" />)
+  it('matches snapshot wihtout provided context', () => {
+    const wrapper = mount(<DocumentViewerError />)
     expect(wrapper).toMatchSnapshot()
-
-    const wrapper2 = shallow(
-      <DocumentViewerErrorComponent
-        previewState={0}
-        {...defaultLocalization}
-        errorLoadingDocument={[{ code: 414, details: 'somestring', message: '', state: -4 }]}
-        error={{ status: 405 }}
-      />,
-    )
-    expect(wrapper2).toMatchSnapshot()
   })
 
-  describe('getPreviewState method', () => {
-    it('Should set the preview state to 1 when there is a document', () => {
-      const state = {
-        sensenetDocumentViewer: {
-          documentState: {
-            document: { ...exampleDocumentData },
-            idOrPath: true,
-          },
-        },
-      }
-      const previewState = getPreviewState(state as any)
-      expect(previewState).toBe(1)
-    })
-
-    it('Should set the preview state to -1 when there is no document', () => {
-      const state = {
-        sensenetDocumentViewer: {
-          documentState: {},
-        },
-      }
-      const previewState = getPreviewState(state as any)
-      expect(previewState).toBe(-1)
-    })
+  it('matches snapshot with provided context', () => {
+    const wrapper = mount(
+      <DocumentDataContext.Provider
+        value={{
+          documentData: { ...exampleDocumentData, pageCount: PreviewState.UploadFailure, error: ':(' },
+          updateDocumentData: async () => undefined,
+        }}>
+        <DocumentViewerError />
+      </DocumentDataContext.Provider>,
+    )
+    expect(wrapper).toMatchSnapshot()
   })
 })
