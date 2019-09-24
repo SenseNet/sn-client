@@ -76,9 +76,13 @@ storiesOf('ListControls', module)
         items={items}
         schema={customSchema.find(s => s.ContentTypeName === 'GenericContent')!}
         icons={icons}
-        fieldsToDisplay={array('Fields to display', ['DisplayName', 'Locked', 'ModificationDate', 'Actions'])}
-        orderBy={text('Order by', 'DisplayName')}
-        orderDirection={select('Order direction', orderDirectionOptions, 'asc')}
+        fieldsToDisplay={
+          array('Fields to display', ['DisplayName', 'Locked', 'ModificationDate', 'Actions']) as Array<
+            keyof GenericContent
+          >
+        }
+        orderBy={text('Order by', 'DisplayName') as keyof GenericContent}
+        orderDirection={select('Order direction', orderDirectionOptions, 'asc') as 'asc' | 'desc'}
         displayRowCheckbox={boolean('Display checkbox for selection', true)}
         onItemClick={action('item clicked')}
         onItemDoubleClick={action('item double-clicked')}
