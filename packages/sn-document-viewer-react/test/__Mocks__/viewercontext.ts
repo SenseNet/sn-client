@@ -1,4 +1,3 @@
-import { Store } from 'redux'
 import { DocumentData, DocumentViewerApiSettings, PreviewImageData } from '../../src/models'
 import { CommentData } from '../../src/models/Comment'
 
