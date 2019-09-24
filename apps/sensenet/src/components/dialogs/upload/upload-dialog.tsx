@@ -157,8 +157,7 @@ const UploadDialog: React.FunctionComponent<
         requestInit: { signal: abortController.current.signal },
       })
     } catch (error) {
-      // TODO: log with logger?
-      console.log(error.message)
+      console.error(error)
     } finally {
       setIsUploadInProgress(false)
     }
