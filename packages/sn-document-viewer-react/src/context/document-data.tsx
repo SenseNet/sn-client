@@ -65,6 +65,7 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
         loadLock.release()
       }
     })()
+    return () => ac.abort()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [api, doc.documentIdOrPath, repo.configuration.repositoryUrl, doc.version])
 

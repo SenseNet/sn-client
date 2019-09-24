@@ -1,35 +1,638 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Document Viewer component should render a loading component while loading 1`] = `
-<Connect(Component)
-  image="loader.gif"
-/>
+<Component
+  options={
+    Object {
+      "getDocumentData": [Function],
+    }
+  }
+>
+  <ContextProvider
+    value={
+      Object {
+        "addComment": "+ Add Comment",
+        "avatarAlt": "Picture of the commenter",
+        "cancelButton": "Cancel",
+        "commentInputPlaceholder": "Make a comment",
+        "commentSideBarTitle": "Comments",
+        "delete": "Delete",
+        "deleteCommentDialogBody": "1 comment is about to permanently deleted. <br /><strong>Warning: You can't undo this action.</strong>",
+        "deleteCommentDialogTitle": "Delete comment?",
+        "download": "Download",
+        "errorLoadingDetails": "The following error occured during opening a document: ",
+        "errorLoadingDocument": Array [
+          Object {
+            "details": "",
+            "message": "No preview available, because the document is empty!",
+            "state": 0,
+          },
+          Object {
+            "code": 500,
+            "details": "An unexpected error seems to have occured. Why not try refreshing your page? If the page still not working try to check back later.",
+            "message": "Ooops! Something went wrong...",
+            "state": 0,
+          },
+          Object {
+            "code": 404,
+            "details": "You don't have permission to see this document 
+ The document you are trying to open has been deleted 
+ The document has been moved to another place ",
+            "message": "Ooops! Something went wrong...",
+            "state": 0,
+          },
+          Object {
+            "details": "",
+            "message": "Error during preview generation! No preview available.",
+            "state": -3,
+          },
+          Object {
+            "details": "",
+            "message": "The preview image generation has been postponed.",
+            "state": -4,
+          },
+          Object {
+            "details": "",
+            "message": "No preview available, because this type of file is not supported!",
+            "state": -2,
+          },
+          Object {
+            "details": "",
+            "message": "There is no preview provider enabled",
+            "state": -5,
+          },
+        ],
+        "firstPage": "First page",
+        "gotoPage": "Goto page",
+        "inputRequiredError": "The comment text is a required field.",
+        "lastPage": "Last page",
+        "loadingDocument": "Preview image generation is in progress",
+        "markerRequiredError": "You must place the marker first.",
+        "markerTooltip": "You can put a marker with this button",
+        "nextPage": "Next page",
+        "okButton": "Ok",
+        "previousPage": "Previous page",
+        "print": "Print",
+        "regenerateButton": "Generate",
+        "regeneratePreviews": "The preview images are not generated yet. Do you want to generate them?",
+        "reloadPage": "Reload page",
+        "rotateDocumentLeft": "Rotate document left",
+        "rotateDocumentRight": "Rotate document right",
+        "rotatePageLeft": "Rotate page left",
+        "rotatePageRight": "Rotate page right",
+        "saveChanges": "Save changes",
+        "search": "Search",
+        "share": "Share",
+        "showLess": "+ Show less",
+        "showMore": "+ Show more",
+        "submit": "Submit",
+        "toggleComments": "Toggle comments",
+        "toggleRedaction": "Toggle redaction",
+        "toggleShapes": "Toggle shapes",
+        "toggleThumbnails": "Toggle thumbnails",
+        "toggleWatermark": "Toggle watermark",
+        "zoomMode": "Zoom mode",
+        "zoomModeFit": "Fit",
+        "zoomModeFitHeight": "Fit height",
+        "zoomModeFitWidth": "Fit width",
+        "zoomModeOriginalSize": "Original size",
+        "zooomModeCustom": "Custom",
+      }
+    }
+  >
+    <ContextProvider
+      value={
+        Object {
+          "api": Object {
+            "getDocumentData": [Function],
+          },
+          "documentIdOrPath": 1,
+          "theme": Object {},
+        }
+      }
+    >
+      <ThemeProvider
+        theme={Object {}}
+      >
+        <Component>
+          <Component>
+            <Component>
+              <ContextConsumer>
+                <Component />
+              </ContextConsumer>
+            </Component>
+          </Component>
+        </Component>
+      </ThemeProvider>
+    </ContextProvider>
+  </ContextProvider>
+</Component>
 `;
 
-exports[`Document Viewer component should render an error component if there were docViewer or preview images error 1`] = `
-<Connect(DocumentViewerErrorComponent)
-  error="error"
-/>
+exports[`Document Viewer component should render an error component if an error happens during fetching the document data 1`] = `
+<Component
+  options={
+    Object {
+      "getDocumentData": [Function],
+    }
+  }
+>
+  <ContextProvider
+    value={
+      Object {
+        "addComment": "+ Add Comment",
+        "avatarAlt": "Picture of the commenter",
+        "cancelButton": "Cancel",
+        "commentInputPlaceholder": "Make a comment",
+        "commentSideBarTitle": "Comments",
+        "delete": "Delete",
+        "deleteCommentDialogBody": "1 comment is about to permanently deleted. <br /><strong>Warning: You can't undo this action.</strong>",
+        "deleteCommentDialogTitle": "Delete comment?",
+        "download": "Download",
+        "errorLoadingDetails": "The following error occured during opening a document: ",
+        "errorLoadingDocument": Array [
+          Object {
+            "details": "",
+            "message": "No preview available, because the document is empty!",
+            "state": 0,
+          },
+          Object {
+            "code": 500,
+            "details": "An unexpected error seems to have occured. Why not try refreshing your page? If the page still not working try to check back later.",
+            "message": "Ooops! Something went wrong...",
+            "state": 0,
+          },
+          Object {
+            "code": 404,
+            "details": "You don't have permission to see this document 
+ The document you are trying to open has been deleted 
+ The document has been moved to another place ",
+            "message": "Ooops! Something went wrong...",
+            "state": 0,
+          },
+          Object {
+            "details": "",
+            "message": "Error during preview generation! No preview available.",
+            "state": -3,
+          },
+          Object {
+            "details": "",
+            "message": "The preview image generation has been postponed.",
+            "state": -4,
+          },
+          Object {
+            "details": "",
+            "message": "No preview available, because this type of file is not supported!",
+            "state": -2,
+          },
+          Object {
+            "details": "",
+            "message": "There is no preview provider enabled",
+            "state": -5,
+          },
+        ],
+        "firstPage": "First page",
+        "gotoPage": "Goto page",
+        "inputRequiredError": "The comment text is a required field.",
+        "lastPage": "Last page",
+        "loadingDocument": "Preview image generation is in progress",
+        "markerRequiredError": "You must place the marker first.",
+        "markerTooltip": "You can put a marker with this button",
+        "nextPage": "Next page",
+        "okButton": "Ok",
+        "previousPage": "Previous page",
+        "print": "Print",
+        "regenerateButton": "Generate",
+        "regeneratePreviews": "The preview images are not generated yet. Do you want to generate them?",
+        "reloadPage": "Reload page",
+        "rotateDocumentLeft": "Rotate document left",
+        "rotateDocumentRight": "Rotate document right",
+        "rotatePageLeft": "Rotate page left",
+        "rotatePageRight": "Rotate page right",
+        "saveChanges": "Save changes",
+        "search": "Search",
+        "share": "Share",
+        "showLess": "+ Show less",
+        "showMore": "+ Show more",
+        "submit": "Submit",
+        "toggleComments": "Toggle comments",
+        "toggleRedaction": "Toggle redaction",
+        "toggleShapes": "Toggle shapes",
+        "toggleThumbnails": "Toggle thumbnails",
+        "toggleWatermark": "Toggle watermark",
+        "zoomMode": "Zoom mode",
+        "zoomModeFit": "Fit",
+        "zoomModeFitHeight": "Fit height",
+        "zoomModeFitWidth": "Fit width",
+        "zoomModeOriginalSize": "Original size",
+        "zooomModeCustom": "Custom",
+      }
+    }
+  >
+    <ContextProvider
+      value={
+        Object {
+          "api": Object {
+            "getDocumentData": [Function],
+          },
+          "documentIdOrPath": 1,
+          "theme": Object {},
+        }
+      }
+    >
+      <ThemeProvider
+        theme={Object {}}
+      >
+        <Component>
+          <Component>
+            <Component>
+              <ContextConsumer>
+                <Component />
+              </ContextConsumer>
+            </Component>
+          </Component>
+        </Component>
+      </ThemeProvider>
+    </ContextProvider>
+  </ContextProvider>
+</Component>
 `;
 
-exports[`Document Viewer component should render an error component if there were docViewer or preview images error 2`] = `
-<Connect(DocumentViewerErrorComponent)
-  error="error"
-/>
+exports[`Document Viewer component should render an error component if an error happens during fetching the preview image data 1`] = `
+<Component
+  options={
+    Object {
+      "getExistingPreviewImages": [Function],
+    }
+  }
+>
+  <ContextProvider
+    value={
+      Object {
+        "addComment": "+ Add Comment",
+        "avatarAlt": "Picture of the commenter",
+        "cancelButton": "Cancel",
+        "commentInputPlaceholder": "Make a comment",
+        "commentSideBarTitle": "Comments",
+        "delete": "Delete",
+        "deleteCommentDialogBody": "1 comment is about to permanently deleted. <br /><strong>Warning: You can't undo this action.</strong>",
+        "deleteCommentDialogTitle": "Delete comment?",
+        "download": "Download",
+        "errorLoadingDetails": "The following error occured during opening a document: ",
+        "errorLoadingDocument": Array [
+          Object {
+            "details": "",
+            "message": "No preview available, because the document is empty!",
+            "state": 0,
+          },
+          Object {
+            "code": 500,
+            "details": "An unexpected error seems to have occured. Why not try refreshing your page? If the page still not working try to check back later.",
+            "message": "Ooops! Something went wrong...",
+            "state": 0,
+          },
+          Object {
+            "code": 404,
+            "details": "You don't have permission to see this document 
+ The document you are trying to open has been deleted 
+ The document has been moved to another place ",
+            "message": "Ooops! Something went wrong...",
+            "state": 0,
+          },
+          Object {
+            "details": "",
+            "message": "Error during preview generation! No preview available.",
+            "state": -3,
+          },
+          Object {
+            "details": "",
+            "message": "The preview image generation has been postponed.",
+            "state": -4,
+          },
+          Object {
+            "details": "",
+            "message": "No preview available, because this type of file is not supported!",
+            "state": -2,
+          },
+          Object {
+            "details": "",
+            "message": "There is no preview provider enabled",
+            "state": -5,
+          },
+        ],
+        "firstPage": "First page",
+        "gotoPage": "Goto page",
+        "inputRequiredError": "The comment text is a required field.",
+        "lastPage": "Last page",
+        "loadingDocument": "Preview image generation is in progress",
+        "markerRequiredError": "You must place the marker first.",
+        "markerTooltip": "You can put a marker with this button",
+        "nextPage": "Next page",
+        "okButton": "Ok",
+        "previousPage": "Previous page",
+        "print": "Print",
+        "regenerateButton": "Generate",
+        "regeneratePreviews": "The preview images are not generated yet. Do you want to generate them?",
+        "reloadPage": "Reload page",
+        "rotateDocumentLeft": "Rotate document left",
+        "rotateDocumentRight": "Rotate document right",
+        "rotatePageLeft": "Rotate page left",
+        "rotatePageRight": "Rotate page right",
+        "saveChanges": "Save changes",
+        "search": "Search",
+        "share": "Share",
+        "showLess": "+ Show less",
+        "showMore": "+ Show more",
+        "submit": "Submit",
+        "toggleComments": "Toggle comments",
+        "toggleRedaction": "Toggle redaction",
+        "toggleShapes": "Toggle shapes",
+        "toggleThumbnails": "Toggle thumbnails",
+        "toggleWatermark": "Toggle watermark",
+        "zoomMode": "Zoom mode",
+        "zoomModeFit": "Fit",
+        "zoomModeFitHeight": "Fit height",
+        "zoomModeFitWidth": "Fit width",
+        "zoomModeOriginalSize": "Original size",
+        "zooomModeCustom": "Custom",
+      }
+    }
+  >
+    <ContextProvider
+      value={
+        Object {
+          "api": Object {
+            "getExistingPreviewImages": [Function],
+          },
+          "documentIdOrPath": 1,
+          "theme": Object {},
+        }
+      }
+    >
+      <ThemeProvider
+        theme={Object {}}
+      >
+        <Component>
+          <Component>
+            <Component>
+              <ContextConsumer>
+                <Component />
+              </ContextConsumer>
+            </Component>
+          </Component>
+        </Component>
+      </ThemeProvider>
+    </ContextProvider>
+  </ContextProvider>
+</Component>
 `;
 
 exports[`Document Viewer component should render an error component if there were errors while preview generation 1`] = `
-<Connect(DocumentViewerErrorComponent)
-  error=""
-/>
+<Component
+  options={
+    Object {
+      "getDocumentData": [Function],
+    }
+  }
+>
+  <ContextProvider
+    value={
+      Object {
+        "addComment": "+ Add Comment",
+        "avatarAlt": "Picture of the commenter",
+        "cancelButton": "Cancel",
+        "commentInputPlaceholder": "Make a comment",
+        "commentSideBarTitle": "Comments",
+        "delete": "Delete",
+        "deleteCommentDialogBody": "1 comment is about to permanently deleted. <br /><strong>Warning: You can't undo this action.</strong>",
+        "deleteCommentDialogTitle": "Delete comment?",
+        "download": "Download",
+        "errorLoadingDetails": "The following error occured during opening a document: ",
+        "errorLoadingDocument": Array [
+          Object {
+            "details": "",
+            "message": "No preview available, because the document is empty!",
+            "state": 0,
+          },
+          Object {
+            "code": 500,
+            "details": "An unexpected error seems to have occured. Why not try refreshing your page? If the page still not working try to check back later.",
+            "message": "Ooops! Something went wrong...",
+            "state": 0,
+          },
+          Object {
+            "code": 404,
+            "details": "You don't have permission to see this document 
+ The document you are trying to open has been deleted 
+ The document has been moved to another place ",
+            "message": "Ooops! Something went wrong...",
+            "state": 0,
+          },
+          Object {
+            "details": "",
+            "message": "Error during preview generation! No preview available.",
+            "state": -3,
+          },
+          Object {
+            "details": "",
+            "message": "The preview image generation has been postponed.",
+            "state": -4,
+          },
+          Object {
+            "details": "",
+            "message": "No preview available, because this type of file is not supported!",
+            "state": -2,
+          },
+          Object {
+            "details": "",
+            "message": "There is no preview provider enabled",
+            "state": -5,
+          },
+        ],
+        "firstPage": "First page",
+        "gotoPage": "Goto page",
+        "inputRequiredError": "The comment text is a required field.",
+        "lastPage": "Last page",
+        "loadingDocument": "Preview image generation is in progress",
+        "markerRequiredError": "You must place the marker first.",
+        "markerTooltip": "You can put a marker with this button",
+        "nextPage": "Next page",
+        "okButton": "Ok",
+        "previousPage": "Previous page",
+        "print": "Print",
+        "regenerateButton": "Generate",
+        "regeneratePreviews": "The preview images are not generated yet. Do you want to generate them?",
+        "reloadPage": "Reload page",
+        "rotateDocumentLeft": "Rotate document left",
+        "rotateDocumentRight": "Rotate document right",
+        "rotatePageLeft": "Rotate page left",
+        "rotatePageRight": "Rotate page right",
+        "saveChanges": "Save changes",
+        "search": "Search",
+        "share": "Share",
+        "showLess": "+ Show less",
+        "showMore": "+ Show more",
+        "submit": "Submit",
+        "toggleComments": "Toggle comments",
+        "toggleRedaction": "Toggle redaction",
+        "toggleShapes": "Toggle shapes",
+        "toggleThumbnails": "Toggle thumbnails",
+        "toggleWatermark": "Toggle watermark",
+        "zoomMode": "Zoom mode",
+        "zoomModeFit": "Fit",
+        "zoomModeFitHeight": "Fit height",
+        "zoomModeFitWidth": "Fit width",
+        "zoomModeOriginalSize": "Original size",
+        "zooomModeCustom": "Custom",
+      }
+    }
+  >
+    <ContextProvider
+      value={
+        Object {
+          "api": Object {
+            "getDocumentData": [Function],
+          },
+          "documentIdOrPath": 1,
+          "theme": Object {},
+        }
+      }
+    >
+      <ThemeProvider
+        theme={Object {}}
+      >
+        <Component>
+          <Component>
+            <Component>
+              <ContextConsumer>
+                <Component />
+              </ContextConsumer>
+            </Component>
+          </Component>
+        </Component>
+      </ThemeProvider>
+    </ContextProvider>
+  </ContextProvider>
+</Component>
 `;
 
 exports[`Document Viewer component should render without crashing 1`] = `
-<ThemeProvider
-  theme={Object {}}
->
-  <Connect(DocumentViewerLayoutComponent)>
-    some children
-  </Connect(DocumentViewerLayoutComponent)>
-</ThemeProvider>
+<Component>
+  <ContextProvider
+    value={
+      Object {
+        "addComment": "+ Add Comment",
+        "avatarAlt": "Picture of the commenter",
+        "cancelButton": "Cancel",
+        "commentInputPlaceholder": "Make a comment",
+        "commentSideBarTitle": "Comments",
+        "delete": "Delete",
+        "deleteCommentDialogBody": "1 comment is about to permanently deleted. <br /><strong>Warning: You can't undo this action.</strong>",
+        "deleteCommentDialogTitle": "Delete comment?",
+        "download": "Download",
+        "errorLoadingDetails": "The following error occured during opening a document: ",
+        "errorLoadingDocument": Array [
+          Object {
+            "details": "",
+            "message": "No preview available, because the document is empty!",
+            "state": 0,
+          },
+          Object {
+            "code": 500,
+            "details": "An unexpected error seems to have occured. Why not try refreshing your page? If the page still not working try to check back later.",
+            "message": "Ooops! Something went wrong...",
+            "state": 0,
+          },
+          Object {
+            "code": 404,
+            "details": "You don't have permission to see this document 
+ The document you are trying to open has been deleted 
+ The document has been moved to another place ",
+            "message": "Ooops! Something went wrong...",
+            "state": 0,
+          },
+          Object {
+            "details": "",
+            "message": "Error during preview generation! No preview available.",
+            "state": -3,
+          },
+          Object {
+            "details": "",
+            "message": "The preview image generation has been postponed.",
+            "state": -4,
+          },
+          Object {
+            "details": "",
+            "message": "No preview available, because this type of file is not supported!",
+            "state": -2,
+          },
+          Object {
+            "details": "",
+            "message": "There is no preview provider enabled",
+            "state": -5,
+          },
+        ],
+        "firstPage": "First page",
+        "gotoPage": "Goto page",
+        "inputRequiredError": "The comment text is a required field.",
+        "lastPage": "Last page",
+        "loadingDocument": "Preview image generation is in progress",
+        "markerRequiredError": "You must place the marker first.",
+        "markerTooltip": "You can put a marker with this button",
+        "nextPage": "Next page",
+        "okButton": "Ok",
+        "previousPage": "Previous page",
+        "print": "Print",
+        "regenerateButton": "Generate",
+        "regeneratePreviews": "The preview images are not generated yet. Do you want to generate them?",
+        "reloadPage": "Reload page",
+        "rotateDocumentLeft": "Rotate document left",
+        "rotateDocumentRight": "Rotate document right",
+        "rotatePageLeft": "Rotate page left",
+        "rotatePageRight": "Rotate page right",
+        "saveChanges": "Save changes",
+        "search": "Search",
+        "share": "Share",
+        "showLess": "+ Show less",
+        "showMore": "+ Show more",
+        "submit": "Submit",
+        "toggleComments": "Toggle comments",
+        "toggleRedaction": "Toggle redaction",
+        "toggleShapes": "Toggle shapes",
+        "toggleThumbnails": "Toggle thumbnails",
+        "toggleWatermark": "Toggle watermark",
+        "zoomMode": "Zoom mode",
+        "zoomModeFit": "Fit",
+        "zoomModeFitHeight": "Fit height",
+        "zoomModeFitWidth": "Fit width",
+        "zoomModeOriginalSize": "Original size",
+        "zooomModeCustom": "Custom",
+      }
+    }
+  >
+    <ContextProvider
+      value={
+        Object {
+          "children": "some children",
+          "documentIdOrPath": 1,
+          "theme": Object {},
+        }
+      }
+    >
+      <ThemeProvider
+        theme={Object {}}
+      >
+        <Component>
+          <Component>
+            <Component>
+              <ContextConsumer>
+                <Component />
+              </ContextConsumer>
+            </Component>
+          </Component>
+        </Component>
+      </ThemeProvider>
+    </ContextProvider>
+  </ContextProvider>
+</Component>
 `;

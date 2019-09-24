@@ -50,7 +50,7 @@ export interface DocumentViewerProps {
   /**
    * Optional API method overrides if you has to use custom API
    */
-  api?: DocumentViewerApiSettings
+  api?: Partial<DocumentViewerApiSettings>
 
   /**
    * Overrideable localized string resources
