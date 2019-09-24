@@ -1,637 +1,1677 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ZoomMode component should render without crashing 1`] = `
-<div
-  style={
-    Object {
-      "display": "inline-block",
+<Component>
+  <div
+    style={
+      Object {
+        "display": "inline-block",
+      }
     }
-  }
->
-  <WithStyles(ForwardRef(IconButton))
-    onClick={[Function]}
-    title="Zoom mode"
   >
-    <ZoomOutIcon />
-  </WithStyles(ForwardRef(IconButton))>
-  <WithStyles(ForwardRef(Menu))
-    id="zoom-menu"
-    onClose={[Function]}
-    open={false}
-  >
-    <WithStyles(ForwardRef(MenuItem))
+    <WithStyles(ForwardRef(IconButton))
       onClick={[Function]}
+      title="Zoom mode"
     >
-      <ZoomOutMapIcon />
-         
-      Fit
-       
-    </WithStyles(ForwardRef(MenuItem))>
-    <WithStyles(ForwardRef(MenuItem))
-      onClick={[Function]}
-    >
-      <AspectRatioIcon />
-        
-      Original size
-       
-    </WithStyles(ForwardRef(MenuItem))>
-    <WithStyles(ForwardRef(MenuItem))
-      onClick={[Function]}
-    >
-      <CodeIcon
-        style={
+      <ForwardRef(IconButton)
+        classes={
           Object {
-            "transform": "rotate(90deg)",
+            "colorInherit": "MuiIconButton-colorInherit",
+            "colorPrimary": "MuiIconButton-colorPrimary",
+            "colorSecondary": "MuiIconButton-colorSecondary",
+            "disabled": "Mui-disabled",
+            "edgeEnd": "MuiIconButton-edgeEnd",
+            "edgeStart": "MuiIconButton-edgeStart",
+            "label": "MuiIconButton-label",
+            "root": "MuiIconButton-root",
+            "sizeSmall": "MuiIconButton-sizeSmall",
           }
         }
-      />
-         
-      Fit height
-       
-    </WithStyles(ForwardRef(MenuItem))>
-    <WithStyles(ForwardRef(MenuItem))
-      onClick={[Function]}
-    >
-      <CodeIcon />
-         
-      Fit width
-       
-    </WithStyles(ForwardRef(MenuItem))>
-    <WithStyles(ForwardRef(Divider))
-      light={true}
-    />
-      
-    Custom
-     
-    <br />
-    <WithStyles(ForwardRef(MobileStepper))
-      activeStep={0}
-      backButton={
-        <ForwardRef(WithStyles)
-          disabled={true}
-          onClickCapture={[Function]}
-        >
-          <Memo(ZoomOutIcon) />
-        </ForwardRef(WithStyles)>
-      }
-      nextButton={
-        <ForwardRef(WithStyles)
+        onClick={[Function]}
+        title="Zoom mode"
+      >
+        <WithStyles(ForwardRef(ButtonBase))
+          centerRipple={true}
+          className="MuiIconButton-root"
           disabled={false}
-          onClickCapture={[Function]}
+          focusRipple={true}
+          onClick={[Function]}
+          title="Zoom mode"
         >
-          <Memo(ZoomInIcon) />
-        </ForwardRef(WithStyles)>
-      }
-      position="static"
-      steps={6}
-      variant="progress"
-    />
-  </WithStyles(ForwardRef(Menu))>
-</div>
+          <ForwardRef(ButtonBase)
+            centerRipple={true}
+            className="MuiIconButton-root"
+            classes={
+              Object {
+                "disabled": "Mui-disabled",
+                "focusVisible": "Mui-focusVisible",
+                "root": "MuiButtonBase-root",
+              }
+            }
+            disabled={false}
+            focusRipple={true}
+            onClick={[Function]}
+            title="Zoom mode"
+          >
+            <button
+              className="MuiButtonBase-root MuiIconButton-root"
+              disabled={false}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onDragLeave={[Function]}
+              onFocus={[Function]}
+              onKeyDown={[Function]}
+              onKeyUp={[Function]}
+              onMouseDown={[Function]}
+              onMouseLeave={[Function]}
+              onMouseUp={[Function]}
+              onTouchEnd={[Function]}
+              onTouchMove={[Function]}
+              onTouchStart={[Function]}
+              tabIndex={0}
+              title="Zoom mode"
+              type="button"
+            >
+              <span
+                className="MuiIconButton-label"
+              >
+                <ForwardRef>
+                  <WithStyles(ForwardRef(SvgIcon))>
+                    <ForwardRef(SvgIcon)
+                      classes={
+                        Object {
+                          "colorAction": "MuiSvgIcon-colorAction",
+                          "colorDisabled": "MuiSvgIcon-colorDisabled",
+                          "colorError": "MuiSvgIcon-colorError",
+                          "colorPrimary": "MuiSvgIcon-colorPrimary",
+                          "colorSecondary": "MuiSvgIcon-colorSecondary",
+                          "fontSizeInherit": "MuiSvgIcon-fontSizeInherit",
+                          "fontSizeLarge": "MuiSvgIcon-fontSizeLarge",
+                          "fontSizeSmall": "MuiSvgIcon-fontSizeSmall",
+                          "root": "MuiSvgIcon-root",
+                        }
+                      }
+                    >
+                      <svg
+                        aria-hidden="true"
+                        className="MuiSvgIcon-root"
+                        focusable="false"
+                        role="presentation"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14zM7 9h5v1H7z"
+                        />
+                      </svg>
+                    </ForwardRef(SvgIcon)>
+                  </WithStyles(ForwardRef(SvgIcon))>
+                </ForwardRef>
+              </span>
+              <NoSsr>
+                <WithStyles(undefined)
+                  center={true}
+                >
+                  <ForwardRef(TouchRipple)
+                    center={true}
+                    classes={
+                      Object {
+                        "child": "MuiTouchRipple-child",
+                        "childLeaving": "MuiTouchRipple-childLeaving",
+                        "childPulsate": "MuiTouchRipple-childPulsate",
+                        "ripple": "MuiTouchRipple-ripple",
+                        "ripplePulsate": "MuiTouchRipple-ripplePulsate",
+                        "rippleVisible": "MuiTouchRipple-rippleVisible",
+                        "root": "MuiTouchRipple-root",
+                      }
+                    }
+                  >
+                    <span
+                      className="MuiTouchRipple-root"
+                    >
+                      <TransitionGroup
+                        childFactory={[Function]}
+                        component={null}
+                        exit={true}
+                      />
+                    </span>
+                  </ForwardRef(TouchRipple)>
+                </WithStyles(undefined)>
+              </NoSsr>
+            </button>
+          </ForwardRef(ButtonBase)>
+        </WithStyles(ForwardRef(ButtonBase))>
+      </ForwardRef(IconButton)>
+    </WithStyles(ForwardRef(IconButton))>
+    <WithStyles(ForwardRef(Menu))
+      id="zoom-menu"
+      onClose={[Function]}
+      open={false}
+    >
+      <ForwardRef(Menu)
+        classes={
+          Object {
+            "list": "MuiMenu-list",
+            "paper": "MuiMenu-paper",
+          }
+        }
+        id="zoom-menu"
+        onClose={[Function]}
+        open={false}
+      >
+        <WithStyles(ForwardRef(Popover))
+          PaperProps={
+            Object {
+              "classes": Object {
+                "root": "MuiMenu-paper",
+              },
+            }
+          }
+          anchorOrigin={
+            Object {
+              "horizontal": "left",
+              "vertical": "top",
+            }
+          }
+          getContentAnchorEl={[Function]}
+          id="zoom-menu"
+          onClose={[Function]}
+          onEntering={[Function]}
+          open={false}
+          transformOrigin={
+            Object {
+              "horizontal": "left",
+              "vertical": "top",
+            }
+          }
+          transitionDuration="auto"
+        >
+          <ForwardRef(Popover)
+            PaperProps={
+              Object {
+                "classes": Object {
+                  "root": "MuiMenu-paper",
+                },
+              }
+            }
+            anchorOrigin={
+              Object {
+                "horizontal": "left",
+                "vertical": "top",
+              }
+            }
+            classes={
+              Object {
+                "paper": "MuiPopover-paper",
+              }
+            }
+            getContentAnchorEl={[Function]}
+            id="zoom-menu"
+            onClose={[Function]}
+            onEntering={[Function]}
+            open={false}
+            transformOrigin={
+              Object {
+                "horizontal": "left",
+                "vertical": "top",
+              }
+            }
+            transitionDuration="auto"
+          >
+            <ForwardRef(Modal)
+              BackdropProps={
+                Object {
+                  "invisible": true,
+                }
+              }
+              id="zoom-menu"
+              onClose={[Function]}
+              open={false}
+            />
+          </ForwardRef(Popover)>
+        </WithStyles(ForwardRef(Popover))>
+      </ForwardRef(Menu)>
+    </WithStyles(ForwardRef(Menu))>
+  </div>
+</Component>
 `;
 
 exports[`ZoomMode component should render without crashing 2`] = `
-<div
-  style={
-    Object {
-      "display": "inline-block",
+<Component>
+  <div
+    style={
+      Object {
+        "display": "inline-block",
+      }
     }
-  }
->
-  <WithStyles(ForwardRef(IconButton))
-    onClick={[Function]}
-    title="Zoom mode"
   >
-    <ZoomInIcon />
-  </WithStyles(ForwardRef(IconButton))>
-  <WithStyles(ForwardRef(Menu))
-    id="zoom-menu"
-    onClose={[Function]}
-    open={false}
-  >
-    <WithStyles(ForwardRef(MenuItem))
+    <WithStyles(ForwardRef(IconButton))
       onClick={[Function]}
+      title="Zoom mode"
     >
-      <ZoomOutMapIcon />
-         
-      Fit
-       
-    </WithStyles(ForwardRef(MenuItem))>
-    <WithStyles(ForwardRef(MenuItem))
-      onClick={[Function]}
-    >
-      <AspectRatioIcon />
-        
-      Original size
-       
-    </WithStyles(ForwardRef(MenuItem))>
-    <WithStyles(ForwardRef(MenuItem))
-      onClick={[Function]}
-    >
-      <CodeIcon
-        style={
+      <ForwardRef(IconButton)
+        classes={
           Object {
-            "transform": "rotate(90deg)",
+            "colorInherit": "MuiIconButton-colorInherit",
+            "colorPrimary": "MuiIconButton-colorPrimary",
+            "colorSecondary": "MuiIconButton-colorSecondary",
+            "disabled": "Mui-disabled",
+            "edgeEnd": "MuiIconButton-edgeEnd",
+            "edgeStart": "MuiIconButton-edgeStart",
+            "label": "MuiIconButton-label",
+            "root": "MuiIconButton-root",
+            "sizeSmall": "MuiIconButton-sizeSmall",
           }
         }
-      />
-         
-      Fit height
-       
-    </WithStyles(ForwardRef(MenuItem))>
-    <WithStyles(ForwardRef(MenuItem))
-      onClick={[Function]}
+        onClick={[Function]}
+        title="Zoom mode"
+      >
+        <WithStyles(ForwardRef(ButtonBase))
+          centerRipple={true}
+          className="MuiIconButton-root"
+          disabled={false}
+          focusRipple={true}
+          onClick={[Function]}
+          title="Zoom mode"
+        >
+          <ForwardRef(ButtonBase)
+            centerRipple={true}
+            className="MuiIconButton-root"
+            classes={
+              Object {
+                "disabled": "Mui-disabled",
+                "focusVisible": "Mui-focusVisible",
+                "root": "MuiButtonBase-root",
+              }
+            }
+            disabled={false}
+            focusRipple={true}
+            onClick={[Function]}
+            title="Zoom mode"
+          >
+            <button
+              className="MuiButtonBase-root MuiIconButton-root"
+              disabled={false}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onDragLeave={[Function]}
+              onFocus={[Function]}
+              onKeyDown={[Function]}
+              onKeyUp={[Function]}
+              onMouseDown={[Function]}
+              onMouseLeave={[Function]}
+              onMouseUp={[Function]}
+              onTouchEnd={[Function]}
+              onTouchMove={[Function]}
+              onTouchStart={[Function]}
+              tabIndex={0}
+              title="Zoom mode"
+              type="button"
+            >
+              <span
+                className="MuiIconButton-label"
+              >
+                <ForwardRef>
+                  <WithStyles(ForwardRef(SvgIcon))>
+                    <ForwardRef(SvgIcon)
+                      classes={
+                        Object {
+                          "colorAction": "MuiSvgIcon-colorAction",
+                          "colorDisabled": "MuiSvgIcon-colorDisabled",
+                          "colorError": "MuiSvgIcon-colorError",
+                          "colorPrimary": "MuiSvgIcon-colorPrimary",
+                          "colorSecondary": "MuiSvgIcon-colorSecondary",
+                          "fontSizeInherit": "MuiSvgIcon-fontSizeInherit",
+                          "fontSizeLarge": "MuiSvgIcon-fontSizeLarge",
+                          "fontSizeSmall": "MuiSvgIcon-fontSizeSmall",
+                          "root": "MuiSvgIcon-root",
+                        }
+                      }
+                    >
+                      <svg
+                        aria-hidden="true"
+                        className="MuiSvgIcon-root"
+                        focusable="false"
+                        role="presentation"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                        />
+                        <path
+                          d="M12 10h-2v2H9v-2H7V9h2V7h1v2h2v1z"
+                        />
+                      </svg>
+                    </ForwardRef(SvgIcon)>
+                  </WithStyles(ForwardRef(SvgIcon))>
+                </ForwardRef>
+              </span>
+              <NoSsr>
+                <WithStyles(undefined)
+                  center={true}
+                >
+                  <ForwardRef(TouchRipple)
+                    center={true}
+                    classes={
+                      Object {
+                        "child": "MuiTouchRipple-child",
+                        "childLeaving": "MuiTouchRipple-childLeaving",
+                        "childPulsate": "MuiTouchRipple-childPulsate",
+                        "ripple": "MuiTouchRipple-ripple",
+                        "ripplePulsate": "MuiTouchRipple-ripplePulsate",
+                        "rippleVisible": "MuiTouchRipple-rippleVisible",
+                        "root": "MuiTouchRipple-root",
+                      }
+                    }
+                  >
+                    <span
+                      className="MuiTouchRipple-root"
+                    >
+                      <TransitionGroup
+                        childFactory={[Function]}
+                        component={null}
+                        exit={true}
+                      />
+                    </span>
+                  </ForwardRef(TouchRipple)>
+                </WithStyles(undefined)>
+              </NoSsr>
+            </button>
+          </ForwardRef(ButtonBase)>
+        </WithStyles(ForwardRef(ButtonBase))>
+      </ForwardRef(IconButton)>
+    </WithStyles(ForwardRef(IconButton))>
+    <WithStyles(ForwardRef(Menu))
+      id="zoom-menu"
+      onClose={[Function]}
+      open={false}
     >
-      <CodeIcon />
-         
-      Fit width
-       
-    </WithStyles(ForwardRef(MenuItem))>
-    <WithStyles(ForwardRef(Divider))
-      light={true}
-    />
-      
-    Custom
-     
-    <br />
-    <WithStyles(ForwardRef(MobileStepper))
-      activeStep={1}
-      backButton={
-        <ForwardRef(WithStyles)
-          disabled={false}
-          onClickCapture={[Function]}
+      <ForwardRef(Menu)
+        classes={
+          Object {
+            "list": "MuiMenu-list",
+            "paper": "MuiMenu-paper",
+          }
+        }
+        id="zoom-menu"
+        onClose={[Function]}
+        open={false}
+      >
+        <WithStyles(ForwardRef(Popover))
+          PaperProps={
+            Object {
+              "classes": Object {
+                "root": "MuiMenu-paper",
+              },
+            }
+          }
+          anchorOrigin={
+            Object {
+              "horizontal": "left",
+              "vertical": "top",
+            }
+          }
+          getContentAnchorEl={[Function]}
+          id="zoom-menu"
+          onClose={[Function]}
+          onEntering={[Function]}
+          open={false}
+          transformOrigin={
+            Object {
+              "horizontal": "left",
+              "vertical": "top",
+            }
+          }
+          transitionDuration="auto"
         >
-          <Memo(ZoomOutIcon) />
-        </ForwardRef(WithStyles)>
-      }
-      nextButton={
-        <ForwardRef(WithStyles)
-          disabled={false}
-          onClickCapture={[Function]}
-        >
-          <Memo(ZoomInIcon) />
-        </ForwardRef(WithStyles)>
-      }
-      position="static"
-      steps={6}
-      variant="progress"
-    />
-  </WithStyles(ForwardRef(Menu))>
-</div>
+          <ForwardRef(Popover)
+            PaperProps={
+              Object {
+                "classes": Object {
+                  "root": "MuiMenu-paper",
+                },
+              }
+            }
+            anchorOrigin={
+              Object {
+                "horizontal": "left",
+                "vertical": "top",
+              }
+            }
+            classes={
+              Object {
+                "paper": "MuiPopover-paper",
+              }
+            }
+            getContentAnchorEl={[Function]}
+            id="zoom-menu"
+            onClose={[Function]}
+            onEntering={[Function]}
+            open={false}
+            transformOrigin={
+              Object {
+                "horizontal": "left",
+                "vertical": "top",
+              }
+            }
+            transitionDuration="auto"
+          >
+            <ForwardRef(Modal)
+              BackdropProps={
+                Object {
+                  "invisible": true,
+                }
+              }
+              id="zoom-menu"
+              onClose={[Function]}
+              open={false}
+            />
+          </ForwardRef(Popover)>
+        </WithStyles(ForwardRef(Popover))>
+      </ForwardRef(Menu)>
+    </WithStyles(ForwardRef(Menu))>
+  </div>
+</Component>
 `;
 
 exports[`ZoomMode component should render without crashing 3`] = `
-<div
-  style={
-    Object {
-      "display": "inline-block",
+<Component>
+  <div
+    style={
+      Object {
+        "display": "inline-block",
+      }
     }
-  }
->
-  <WithStyles(ForwardRef(IconButton))
-    onClick={[Function]}
-    title="Zoom mode"
   >
-    <ZoomOutMapIcon />
-  </WithStyles(ForwardRef(IconButton))>
-  <WithStyles(ForwardRef(Menu))
-    id="zoom-menu"
-    onClose={[Function]}
-    open={false}
-  >
-    <WithStyles(ForwardRef(MenuItem))
+    <WithStyles(ForwardRef(IconButton))
       onClick={[Function]}
+      title="Zoom mode"
     >
-      <ZoomOutMapIcon />
-         
-      Fit
-       
-    </WithStyles(ForwardRef(MenuItem))>
-    <WithStyles(ForwardRef(MenuItem))
-      onClick={[Function]}
-    >
-      <AspectRatioIcon />
-        
-      Original size
-       
-    </WithStyles(ForwardRef(MenuItem))>
-    <WithStyles(ForwardRef(MenuItem))
-      onClick={[Function]}
-    >
-      <CodeIcon
-        style={
+      <ForwardRef(IconButton)
+        classes={
           Object {
-            "transform": "rotate(90deg)",
+            "colorInherit": "MuiIconButton-colorInherit",
+            "colorPrimary": "MuiIconButton-colorPrimary",
+            "colorSecondary": "MuiIconButton-colorSecondary",
+            "disabled": "Mui-disabled",
+            "edgeEnd": "MuiIconButton-edgeEnd",
+            "edgeStart": "MuiIconButton-edgeStart",
+            "label": "MuiIconButton-label",
+            "root": "MuiIconButton-root",
+            "sizeSmall": "MuiIconButton-sizeSmall",
           }
         }
-      />
-         
-      Fit height
-       
-    </WithStyles(ForwardRef(MenuItem))>
-    <WithStyles(ForwardRef(MenuItem))
-      onClick={[Function]}
+        onClick={[Function]}
+        title="Zoom mode"
+      >
+        <WithStyles(ForwardRef(ButtonBase))
+          centerRipple={true}
+          className="MuiIconButton-root"
+          disabled={false}
+          focusRipple={true}
+          onClick={[Function]}
+          title="Zoom mode"
+        >
+          <ForwardRef(ButtonBase)
+            centerRipple={true}
+            className="MuiIconButton-root"
+            classes={
+              Object {
+                "disabled": "Mui-disabled",
+                "focusVisible": "Mui-focusVisible",
+                "root": "MuiButtonBase-root",
+              }
+            }
+            disabled={false}
+            focusRipple={true}
+            onClick={[Function]}
+            title="Zoom mode"
+          >
+            <button
+              className="MuiButtonBase-root MuiIconButton-root"
+              disabled={false}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onDragLeave={[Function]}
+              onFocus={[Function]}
+              onKeyDown={[Function]}
+              onKeyUp={[Function]}
+              onMouseDown={[Function]}
+              onMouseLeave={[Function]}
+              onMouseUp={[Function]}
+              onTouchEnd={[Function]}
+              onTouchMove={[Function]}
+              onTouchStart={[Function]}
+              tabIndex={0}
+              title="Zoom mode"
+              type="button"
+            >
+              <span
+                className="MuiIconButton-label"
+              >
+                <ForwardRef>
+                  <WithStyles(ForwardRef(SvgIcon))>
+                    <ForwardRef(SvgIcon)
+                      classes={
+                        Object {
+                          "colorAction": "MuiSvgIcon-colorAction",
+                          "colorDisabled": "MuiSvgIcon-colorDisabled",
+                          "colorError": "MuiSvgIcon-colorError",
+                          "colorPrimary": "MuiSvgIcon-colorPrimary",
+                          "colorSecondary": "MuiSvgIcon-colorSecondary",
+                          "fontSizeInherit": "MuiSvgIcon-fontSizeInherit",
+                          "fontSizeLarge": "MuiSvgIcon-fontSizeLarge",
+                          "fontSizeSmall": "MuiSvgIcon-fontSizeSmall",
+                          "root": "MuiSvgIcon-root",
+                        }
+                      }
+                    >
+                      <svg
+                        aria-hidden="true"
+                        className="MuiSvgIcon-root"
+                        focusable="false"
+                        role="presentation"
+                        viewBox="0 0 24 24"
+                      >
+                        <defs>
+                          <path
+                            d="M0 0h24v24H0z"
+                            id="a"
+                          />
+                        </defs>
+                        <path
+                          d="M15 3l2.3 2.3-2.89 2.87 1.42 1.42L18.7 6.7 21 9V3zM3 9l2.3-2.3 2.87 2.89 1.42-1.42L6.7 5.3 9 3H3zm6 12l-2.3-2.3 2.89-2.87-1.42-1.42L5.3 17.3 3 15v6zm12-6l-2.3 2.3-2.87-2.89-1.42 1.42 2.89 2.87L15 21h6z"
+                        />
+                      </svg>
+                    </ForwardRef(SvgIcon)>
+                  </WithStyles(ForwardRef(SvgIcon))>
+                </ForwardRef>
+              </span>
+              <NoSsr>
+                <WithStyles(undefined)
+                  center={true}
+                >
+                  <ForwardRef(TouchRipple)
+                    center={true}
+                    classes={
+                      Object {
+                        "child": "MuiTouchRipple-child",
+                        "childLeaving": "MuiTouchRipple-childLeaving",
+                        "childPulsate": "MuiTouchRipple-childPulsate",
+                        "ripple": "MuiTouchRipple-ripple",
+                        "ripplePulsate": "MuiTouchRipple-ripplePulsate",
+                        "rippleVisible": "MuiTouchRipple-rippleVisible",
+                        "root": "MuiTouchRipple-root",
+                      }
+                    }
+                  >
+                    <span
+                      className="MuiTouchRipple-root"
+                    >
+                      <TransitionGroup
+                        childFactory={[Function]}
+                        component={null}
+                        exit={true}
+                      />
+                    </span>
+                  </ForwardRef(TouchRipple)>
+                </WithStyles(undefined)>
+              </NoSsr>
+            </button>
+          </ForwardRef(ButtonBase)>
+        </WithStyles(ForwardRef(ButtonBase))>
+      </ForwardRef(IconButton)>
+    </WithStyles(ForwardRef(IconButton))>
+    <WithStyles(ForwardRef(Menu))
+      id="zoom-menu"
+      onClose={[Function]}
+      open={false}
     >
-      <CodeIcon />
-         
-      Fit width
-       
-    </WithStyles(ForwardRef(MenuItem))>
-    <WithStyles(ForwardRef(Divider))
-      light={true}
-    />
-      
-    Custom
-     
-    <br />
-    <WithStyles(ForwardRef(MobileStepper))
-      activeStep={1}
-      backButton={
-        <ForwardRef(WithStyles)
-          disabled={false}
-          onClickCapture={[Function]}
+      <ForwardRef(Menu)
+        classes={
+          Object {
+            "list": "MuiMenu-list",
+            "paper": "MuiMenu-paper",
+          }
+        }
+        id="zoom-menu"
+        onClose={[Function]}
+        open={false}
+      >
+        <WithStyles(ForwardRef(Popover))
+          PaperProps={
+            Object {
+              "classes": Object {
+                "root": "MuiMenu-paper",
+              },
+            }
+          }
+          anchorOrigin={
+            Object {
+              "horizontal": "left",
+              "vertical": "top",
+            }
+          }
+          getContentAnchorEl={[Function]}
+          id="zoom-menu"
+          onClose={[Function]}
+          onEntering={[Function]}
+          open={false}
+          transformOrigin={
+            Object {
+              "horizontal": "left",
+              "vertical": "top",
+            }
+          }
+          transitionDuration="auto"
         >
-          <Memo(ZoomOutIcon) />
-        </ForwardRef(WithStyles)>
-      }
-      nextButton={
-        <ForwardRef(WithStyles)
-          disabled={false}
-          onClickCapture={[Function]}
-        >
-          <Memo(ZoomInIcon) />
-        </ForwardRef(WithStyles)>
-      }
-      position="static"
-      steps={6}
-      variant="progress"
-    />
-  </WithStyles(ForwardRef(Menu))>
-</div>
+          <ForwardRef(Popover)
+            PaperProps={
+              Object {
+                "classes": Object {
+                  "root": "MuiMenu-paper",
+                },
+              }
+            }
+            anchorOrigin={
+              Object {
+                "horizontal": "left",
+                "vertical": "top",
+              }
+            }
+            classes={
+              Object {
+                "paper": "MuiPopover-paper",
+              }
+            }
+            getContentAnchorEl={[Function]}
+            id="zoom-menu"
+            onClose={[Function]}
+            onEntering={[Function]}
+            open={false}
+            transformOrigin={
+              Object {
+                "horizontal": "left",
+                "vertical": "top",
+              }
+            }
+            transitionDuration="auto"
+          >
+            <ForwardRef(Modal)
+              BackdropProps={
+                Object {
+                  "invisible": true,
+                }
+              }
+              id="zoom-menu"
+              onClose={[Function]}
+              open={false}
+            />
+          </ForwardRef(Popover)>
+        </WithStyles(ForwardRef(Popover))>
+      </ForwardRef(Menu)>
+    </WithStyles(ForwardRef(Menu))>
+  </div>
+</Component>
 `;
 
 exports[`ZoomMode component should render without crashing 4`] = `
-<div
-  style={
-    Object {
-      "display": "inline-block",
-    }
-  }
->
-  <WithStyles(ForwardRef(IconButton))
-    onClick={[Function]}
-    title="Zoom mode"
-  >
-    <CodeIcon
-      style={
-        Object {
-          "transform": "rotate(90deg)",
-        }
+<Component>
+  <div
+    style={
+      Object {
+        "display": "inline-block",
       }
-    />
-  </WithStyles(ForwardRef(IconButton))>
-  <WithStyles(ForwardRef(Menu))
-    id="zoom-menu"
-    onClose={[Function]}
-    open={false}
+    }
   >
-    <WithStyles(ForwardRef(MenuItem))
+    <WithStyles(ForwardRef(IconButton))
       onClick={[Function]}
+      title="Zoom mode"
     >
-      <ZoomOutMapIcon />
-         
-      Fit
-       
-    </WithStyles(ForwardRef(MenuItem))>
-    <WithStyles(ForwardRef(MenuItem))
-      onClick={[Function]}
-    >
-      <AspectRatioIcon />
-        
-      Original size
-       
-    </WithStyles(ForwardRef(MenuItem))>
-    <WithStyles(ForwardRef(MenuItem))
-      onClick={[Function]}
-    >
-      <CodeIcon
-        style={
+      <ForwardRef(IconButton)
+        classes={
           Object {
-            "transform": "rotate(90deg)",
+            "colorInherit": "MuiIconButton-colorInherit",
+            "colorPrimary": "MuiIconButton-colorPrimary",
+            "colorSecondary": "MuiIconButton-colorSecondary",
+            "disabled": "Mui-disabled",
+            "edgeEnd": "MuiIconButton-edgeEnd",
+            "edgeStart": "MuiIconButton-edgeStart",
+            "label": "MuiIconButton-label",
+            "root": "MuiIconButton-root",
+            "sizeSmall": "MuiIconButton-sizeSmall",
           }
         }
-      />
-         
-      Fit height
-       
-    </WithStyles(ForwardRef(MenuItem))>
-    <WithStyles(ForwardRef(MenuItem))
-      onClick={[Function]}
+        onClick={[Function]}
+        title="Zoom mode"
+      >
+        <WithStyles(ForwardRef(ButtonBase))
+          centerRipple={true}
+          className="MuiIconButton-root"
+          disabled={false}
+          focusRipple={true}
+          onClick={[Function]}
+          title="Zoom mode"
+        >
+          <ForwardRef(ButtonBase)
+            centerRipple={true}
+            className="MuiIconButton-root"
+            classes={
+              Object {
+                "disabled": "Mui-disabled",
+                "focusVisible": "Mui-focusVisible",
+                "root": "MuiButtonBase-root",
+              }
+            }
+            disabled={false}
+            focusRipple={true}
+            onClick={[Function]}
+            title="Zoom mode"
+          >
+            <button
+              className="MuiButtonBase-root MuiIconButton-root"
+              disabled={false}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onDragLeave={[Function]}
+              onFocus={[Function]}
+              onKeyDown={[Function]}
+              onKeyUp={[Function]}
+              onMouseDown={[Function]}
+              onMouseLeave={[Function]}
+              onMouseUp={[Function]}
+              onTouchEnd={[Function]}
+              onTouchMove={[Function]}
+              onTouchStart={[Function]}
+              tabIndex={0}
+              title="Zoom mode"
+              type="button"
+            >
+              <span
+                className="MuiIconButton-label"
+              >
+                <ForwardRef
+                  style={
+                    Object {
+                      "transform": "rotate(90deg)",
+                    }
+                  }
+                >
+                  <WithStyles(ForwardRef(SvgIcon))
+                    style={
+                      Object {
+                        "transform": "rotate(90deg)",
+                      }
+                    }
+                  >
+                    <ForwardRef(SvgIcon)
+                      classes={
+                        Object {
+                          "colorAction": "MuiSvgIcon-colorAction",
+                          "colorDisabled": "MuiSvgIcon-colorDisabled",
+                          "colorError": "MuiSvgIcon-colorError",
+                          "colorPrimary": "MuiSvgIcon-colorPrimary",
+                          "colorSecondary": "MuiSvgIcon-colorSecondary",
+                          "fontSizeInherit": "MuiSvgIcon-fontSizeInherit",
+                          "fontSizeLarge": "MuiSvgIcon-fontSizeLarge",
+                          "fontSizeSmall": "MuiSvgIcon-fontSizeSmall",
+                          "root": "MuiSvgIcon-root",
+                        }
+                      }
+                      style={
+                        Object {
+                          "transform": "rotate(90deg)",
+                        }
+                      }
+                    >
+                      <svg
+                        aria-hidden="true"
+                        className="MuiSvgIcon-root"
+                        focusable="false"
+                        role="presentation"
+                        style={
+                          Object {
+                            "transform": "rotate(90deg)",
+                          }
+                        }
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
+                        />
+                      </svg>
+                    </ForwardRef(SvgIcon)>
+                  </WithStyles(ForwardRef(SvgIcon))>
+                </ForwardRef>
+              </span>
+              <NoSsr>
+                <WithStyles(undefined)
+                  center={true}
+                >
+                  <ForwardRef(TouchRipple)
+                    center={true}
+                    classes={
+                      Object {
+                        "child": "MuiTouchRipple-child",
+                        "childLeaving": "MuiTouchRipple-childLeaving",
+                        "childPulsate": "MuiTouchRipple-childPulsate",
+                        "ripple": "MuiTouchRipple-ripple",
+                        "ripplePulsate": "MuiTouchRipple-ripplePulsate",
+                        "rippleVisible": "MuiTouchRipple-rippleVisible",
+                        "root": "MuiTouchRipple-root",
+                      }
+                    }
+                  >
+                    <span
+                      className="MuiTouchRipple-root"
+                    >
+                      <TransitionGroup
+                        childFactory={[Function]}
+                        component={null}
+                        exit={true}
+                      />
+                    </span>
+                  </ForwardRef(TouchRipple)>
+                </WithStyles(undefined)>
+              </NoSsr>
+            </button>
+          </ForwardRef(ButtonBase)>
+        </WithStyles(ForwardRef(ButtonBase))>
+      </ForwardRef(IconButton)>
+    </WithStyles(ForwardRef(IconButton))>
+    <WithStyles(ForwardRef(Menu))
+      id="zoom-menu"
+      onClose={[Function]}
+      open={false}
     >
-      <CodeIcon />
-         
-      Fit width
-       
-    </WithStyles(ForwardRef(MenuItem))>
-    <WithStyles(ForwardRef(Divider))
-      light={true}
-    />
-      
-    Custom
-     
-    <br />
-    <WithStyles(ForwardRef(MobileStepper))
-      activeStep={1}
-      backButton={
-        <ForwardRef(WithStyles)
-          disabled={false}
-          onClickCapture={[Function]}
+      <ForwardRef(Menu)
+        classes={
+          Object {
+            "list": "MuiMenu-list",
+            "paper": "MuiMenu-paper",
+          }
+        }
+        id="zoom-menu"
+        onClose={[Function]}
+        open={false}
+      >
+        <WithStyles(ForwardRef(Popover))
+          PaperProps={
+            Object {
+              "classes": Object {
+                "root": "MuiMenu-paper",
+              },
+            }
+          }
+          anchorOrigin={
+            Object {
+              "horizontal": "left",
+              "vertical": "top",
+            }
+          }
+          getContentAnchorEl={[Function]}
+          id="zoom-menu"
+          onClose={[Function]}
+          onEntering={[Function]}
+          open={false}
+          transformOrigin={
+            Object {
+              "horizontal": "left",
+              "vertical": "top",
+            }
+          }
+          transitionDuration="auto"
         >
-          <Memo(ZoomOutIcon) />
-        </ForwardRef(WithStyles)>
-      }
-      nextButton={
-        <ForwardRef(WithStyles)
-          disabled={false}
-          onClickCapture={[Function]}
-        >
-          <Memo(ZoomInIcon) />
-        </ForwardRef(WithStyles)>
-      }
-      position="static"
-      steps={6}
-      variant="progress"
-    />
-  </WithStyles(ForwardRef(Menu))>
-</div>
+          <ForwardRef(Popover)
+            PaperProps={
+              Object {
+                "classes": Object {
+                  "root": "MuiMenu-paper",
+                },
+              }
+            }
+            anchorOrigin={
+              Object {
+                "horizontal": "left",
+                "vertical": "top",
+              }
+            }
+            classes={
+              Object {
+                "paper": "MuiPopover-paper",
+              }
+            }
+            getContentAnchorEl={[Function]}
+            id="zoom-menu"
+            onClose={[Function]}
+            onEntering={[Function]}
+            open={false}
+            transformOrigin={
+              Object {
+                "horizontal": "left",
+                "vertical": "top",
+              }
+            }
+            transitionDuration="auto"
+          >
+            <ForwardRef(Modal)
+              BackdropProps={
+                Object {
+                  "invisible": true,
+                }
+              }
+              id="zoom-menu"
+              onClose={[Function]}
+              open={false}
+            />
+          </ForwardRef(Popover)>
+        </WithStyles(ForwardRef(Popover))>
+      </ForwardRef(Menu)>
+    </WithStyles(ForwardRef(Menu))>
+  </div>
+</Component>
 `;
 
 exports[`ZoomMode component should render without crashing 5`] = `
-<div
-  style={
-    Object {
-      "display": "inline-block",
+<Component>
+  <div
+    style={
+      Object {
+        "display": "inline-block",
+      }
     }
-  }
->
-  <WithStyles(ForwardRef(IconButton))
-    onClick={[Function]}
-    title="Zoom mode"
   >
-    <CodeIcon />
-  </WithStyles(ForwardRef(IconButton))>
-  <WithStyles(ForwardRef(Menu))
-    id="zoom-menu"
-    onClose={[Function]}
-    open={false}
-  >
-    <WithStyles(ForwardRef(MenuItem))
+    <WithStyles(ForwardRef(IconButton))
       onClick={[Function]}
+      title="Zoom mode"
     >
-      <ZoomOutMapIcon />
-         
-      Fit
-       
-    </WithStyles(ForwardRef(MenuItem))>
-    <WithStyles(ForwardRef(MenuItem))
-      onClick={[Function]}
-    >
-      <AspectRatioIcon />
-        
-      Original size
-       
-    </WithStyles(ForwardRef(MenuItem))>
-    <WithStyles(ForwardRef(MenuItem))
-      onClick={[Function]}
-    >
-      <CodeIcon
-        style={
+      <ForwardRef(IconButton)
+        classes={
           Object {
-            "transform": "rotate(90deg)",
+            "colorInherit": "MuiIconButton-colorInherit",
+            "colorPrimary": "MuiIconButton-colorPrimary",
+            "colorSecondary": "MuiIconButton-colorSecondary",
+            "disabled": "Mui-disabled",
+            "edgeEnd": "MuiIconButton-edgeEnd",
+            "edgeStart": "MuiIconButton-edgeStart",
+            "label": "MuiIconButton-label",
+            "root": "MuiIconButton-root",
+            "sizeSmall": "MuiIconButton-sizeSmall",
           }
         }
-      />
-         
-      Fit height
-       
-    </WithStyles(ForwardRef(MenuItem))>
-    <WithStyles(ForwardRef(MenuItem))
-      onClick={[Function]}
+        onClick={[Function]}
+        title="Zoom mode"
+      >
+        <WithStyles(ForwardRef(ButtonBase))
+          centerRipple={true}
+          className="MuiIconButton-root"
+          disabled={false}
+          focusRipple={true}
+          onClick={[Function]}
+          title="Zoom mode"
+        >
+          <ForwardRef(ButtonBase)
+            centerRipple={true}
+            className="MuiIconButton-root"
+            classes={
+              Object {
+                "disabled": "Mui-disabled",
+                "focusVisible": "Mui-focusVisible",
+                "root": "MuiButtonBase-root",
+              }
+            }
+            disabled={false}
+            focusRipple={true}
+            onClick={[Function]}
+            title="Zoom mode"
+          >
+            <button
+              className="MuiButtonBase-root MuiIconButton-root"
+              disabled={false}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onDragLeave={[Function]}
+              onFocus={[Function]}
+              onKeyDown={[Function]}
+              onKeyUp={[Function]}
+              onMouseDown={[Function]}
+              onMouseLeave={[Function]}
+              onMouseUp={[Function]}
+              onTouchEnd={[Function]}
+              onTouchMove={[Function]}
+              onTouchStart={[Function]}
+              tabIndex={0}
+              title="Zoom mode"
+              type="button"
+            >
+              <span
+                className="MuiIconButton-label"
+              >
+                <ForwardRef>
+                  <WithStyles(ForwardRef(SvgIcon))>
+                    <ForwardRef(SvgIcon)
+                      classes={
+                        Object {
+                          "colorAction": "MuiSvgIcon-colorAction",
+                          "colorDisabled": "MuiSvgIcon-colorDisabled",
+                          "colorError": "MuiSvgIcon-colorError",
+                          "colorPrimary": "MuiSvgIcon-colorPrimary",
+                          "colorSecondary": "MuiSvgIcon-colorSecondary",
+                          "fontSizeInherit": "MuiSvgIcon-fontSizeInherit",
+                          "fontSizeLarge": "MuiSvgIcon-fontSizeLarge",
+                          "fontSizeSmall": "MuiSvgIcon-fontSizeSmall",
+                          "root": "MuiSvgIcon-root",
+                        }
+                      }
+                    >
+                      <svg
+                        aria-hidden="true"
+                        className="MuiSvgIcon-root"
+                        focusable="false"
+                        role="presentation"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"
+                        />
+                      </svg>
+                    </ForwardRef(SvgIcon)>
+                  </WithStyles(ForwardRef(SvgIcon))>
+                </ForwardRef>
+              </span>
+              <NoSsr>
+                <WithStyles(undefined)
+                  center={true}
+                >
+                  <ForwardRef(TouchRipple)
+                    center={true}
+                    classes={
+                      Object {
+                        "child": "MuiTouchRipple-child",
+                        "childLeaving": "MuiTouchRipple-childLeaving",
+                        "childPulsate": "MuiTouchRipple-childPulsate",
+                        "ripple": "MuiTouchRipple-ripple",
+                        "ripplePulsate": "MuiTouchRipple-ripplePulsate",
+                        "rippleVisible": "MuiTouchRipple-rippleVisible",
+                        "root": "MuiTouchRipple-root",
+                      }
+                    }
+                  >
+                    <span
+                      className="MuiTouchRipple-root"
+                    >
+                      <TransitionGroup
+                        childFactory={[Function]}
+                        component={null}
+                        exit={true}
+                      />
+                    </span>
+                  </ForwardRef(TouchRipple)>
+                </WithStyles(undefined)>
+              </NoSsr>
+            </button>
+          </ForwardRef(ButtonBase)>
+        </WithStyles(ForwardRef(ButtonBase))>
+      </ForwardRef(IconButton)>
+    </WithStyles(ForwardRef(IconButton))>
+    <WithStyles(ForwardRef(Menu))
+      id="zoom-menu"
+      onClose={[Function]}
+      open={false}
     >
-      <CodeIcon />
-         
-      Fit width
-       
-    </WithStyles(ForwardRef(MenuItem))>
-    <WithStyles(ForwardRef(Divider))
-      light={true}
-    />
-      
-    Custom
-     
-    <br />
-    <WithStyles(ForwardRef(MobileStepper))
-      activeStep={1}
-      backButton={
-        <ForwardRef(WithStyles)
-          disabled={false}
-          onClickCapture={[Function]}
+      <ForwardRef(Menu)
+        classes={
+          Object {
+            "list": "MuiMenu-list",
+            "paper": "MuiMenu-paper",
+          }
+        }
+        id="zoom-menu"
+        onClose={[Function]}
+        open={false}
+      >
+        <WithStyles(ForwardRef(Popover))
+          PaperProps={
+            Object {
+              "classes": Object {
+                "root": "MuiMenu-paper",
+              },
+            }
+          }
+          anchorOrigin={
+            Object {
+              "horizontal": "left",
+              "vertical": "top",
+            }
+          }
+          getContentAnchorEl={[Function]}
+          id="zoom-menu"
+          onClose={[Function]}
+          onEntering={[Function]}
+          open={false}
+          transformOrigin={
+            Object {
+              "horizontal": "left",
+              "vertical": "top",
+            }
+          }
+          transitionDuration="auto"
         >
-          <Memo(ZoomOutIcon) />
-        </ForwardRef(WithStyles)>
-      }
-      nextButton={
-        <ForwardRef(WithStyles)
-          disabled={false}
-          onClickCapture={[Function]}
-        >
-          <Memo(ZoomInIcon) />
-        </ForwardRef(WithStyles)>
-      }
-      position="static"
-      steps={6}
-      variant="progress"
-    />
-  </WithStyles(ForwardRef(Menu))>
-</div>
+          <ForwardRef(Popover)
+            PaperProps={
+              Object {
+                "classes": Object {
+                  "root": "MuiMenu-paper",
+                },
+              }
+            }
+            anchorOrigin={
+              Object {
+                "horizontal": "left",
+                "vertical": "top",
+              }
+            }
+            classes={
+              Object {
+                "paper": "MuiPopover-paper",
+              }
+            }
+            getContentAnchorEl={[Function]}
+            id="zoom-menu"
+            onClose={[Function]}
+            onEntering={[Function]}
+            open={false}
+            transformOrigin={
+              Object {
+                "horizontal": "left",
+                "vertical": "top",
+              }
+            }
+            transitionDuration="auto"
+          >
+            <ForwardRef(Modal)
+              BackdropProps={
+                Object {
+                  "invisible": true,
+                }
+              }
+              id="zoom-menu"
+              onClose={[Function]}
+              open={false}
+            />
+          </ForwardRef(Popover)>
+        </WithStyles(ForwardRef(Popover))>
+      </ForwardRef(Menu)>
+    </WithStyles(ForwardRef(Menu))>
+  </div>
+</Component>
 `;
 
 exports[`ZoomMode component should render without crashing 6`] = `
-<div
-  style={
-    Object {
-      "display": "inline-block",
+<Component>
+  <div
+    style={
+      Object {
+        "display": "inline-block",
+      }
     }
-  }
->
-  <WithStyles(ForwardRef(IconButton))
-    onClick={[Function]}
-    title="Zoom mode"
   >
-    <AspectRatioIcon />
-  </WithStyles(ForwardRef(IconButton))>
-  <WithStyles(ForwardRef(Menu))
-    id="zoom-menu"
-    onClose={[Function]}
-    open={false}
-  >
-    <WithStyles(ForwardRef(MenuItem))
+    <WithStyles(ForwardRef(IconButton))
       onClick={[Function]}
+      title="Zoom mode"
     >
-      <ZoomOutMapIcon />
-         
-      Fit
-       
-    </WithStyles(ForwardRef(MenuItem))>
-    <WithStyles(ForwardRef(MenuItem))
-      onClick={[Function]}
-    >
-      <AspectRatioIcon />
-        
-      Original size
-       
-    </WithStyles(ForwardRef(MenuItem))>
-    <WithStyles(ForwardRef(MenuItem))
-      onClick={[Function]}
-    >
-      <CodeIcon
-        style={
+      <ForwardRef(IconButton)
+        classes={
           Object {
-            "transform": "rotate(90deg)",
+            "colorInherit": "MuiIconButton-colorInherit",
+            "colorPrimary": "MuiIconButton-colorPrimary",
+            "colorSecondary": "MuiIconButton-colorSecondary",
+            "disabled": "Mui-disabled",
+            "edgeEnd": "MuiIconButton-edgeEnd",
+            "edgeStart": "MuiIconButton-edgeStart",
+            "label": "MuiIconButton-label",
+            "root": "MuiIconButton-root",
+            "sizeSmall": "MuiIconButton-sizeSmall",
           }
         }
-      />
-         
-      Fit height
-       
-    </WithStyles(ForwardRef(MenuItem))>
-    <WithStyles(ForwardRef(MenuItem))
-      onClick={[Function]}
+        onClick={[Function]}
+        title="Zoom mode"
+      >
+        <WithStyles(ForwardRef(ButtonBase))
+          centerRipple={true}
+          className="MuiIconButton-root"
+          disabled={false}
+          focusRipple={true}
+          onClick={[Function]}
+          title="Zoom mode"
+        >
+          <ForwardRef(ButtonBase)
+            centerRipple={true}
+            className="MuiIconButton-root"
+            classes={
+              Object {
+                "disabled": "Mui-disabled",
+                "focusVisible": "Mui-focusVisible",
+                "root": "MuiButtonBase-root",
+              }
+            }
+            disabled={false}
+            focusRipple={true}
+            onClick={[Function]}
+            title="Zoom mode"
+          >
+            <button
+              className="MuiButtonBase-root MuiIconButton-root"
+              disabled={false}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onDragLeave={[Function]}
+              onFocus={[Function]}
+              onKeyDown={[Function]}
+              onKeyUp={[Function]}
+              onMouseDown={[Function]}
+              onMouseLeave={[Function]}
+              onMouseUp={[Function]}
+              onTouchEnd={[Function]}
+              onTouchMove={[Function]}
+              onTouchStart={[Function]}
+              tabIndex={0}
+              title="Zoom mode"
+              type="button"
+            >
+              <span
+                className="MuiIconButton-label"
+              >
+                <ForwardRef>
+                  <WithStyles(ForwardRef(SvgIcon))>
+                    <ForwardRef(SvgIcon)
+                      classes={
+                        Object {
+                          "colorAction": "MuiSvgIcon-colorAction",
+                          "colorDisabled": "MuiSvgIcon-colorDisabled",
+                          "colorError": "MuiSvgIcon-colorError",
+                          "colorPrimary": "MuiSvgIcon-colorPrimary",
+                          "colorSecondary": "MuiSvgIcon-colorSecondary",
+                          "fontSizeInherit": "MuiSvgIcon-fontSizeInherit",
+                          "fontSizeLarge": "MuiSvgIcon-fontSizeLarge",
+                          "fontSizeSmall": "MuiSvgIcon-fontSizeSmall",
+                          "root": "MuiSvgIcon-root",
+                        }
+                      }
+                    >
+                      <svg
+                        aria-hidden="true"
+                        className="MuiSvgIcon-root"
+                        focusable="false"
+                        role="presentation"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M19 12h-2v3h-3v2h5v-5zM7 9h3V7H5v5h2V9zm14-6H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16.01H3V4.99h18v14.02z"
+                        />
+                      </svg>
+                    </ForwardRef(SvgIcon)>
+                  </WithStyles(ForwardRef(SvgIcon))>
+                </ForwardRef>
+              </span>
+              <NoSsr>
+                <WithStyles(undefined)
+                  center={true}
+                >
+                  <ForwardRef(TouchRipple)
+                    center={true}
+                    classes={
+                      Object {
+                        "child": "MuiTouchRipple-child",
+                        "childLeaving": "MuiTouchRipple-childLeaving",
+                        "childPulsate": "MuiTouchRipple-childPulsate",
+                        "ripple": "MuiTouchRipple-ripple",
+                        "ripplePulsate": "MuiTouchRipple-ripplePulsate",
+                        "rippleVisible": "MuiTouchRipple-rippleVisible",
+                        "root": "MuiTouchRipple-root",
+                      }
+                    }
+                  >
+                    <span
+                      className="MuiTouchRipple-root"
+                    >
+                      <TransitionGroup
+                        childFactory={[Function]}
+                        component={null}
+                        exit={true}
+                      />
+                    </span>
+                  </ForwardRef(TouchRipple)>
+                </WithStyles(undefined)>
+              </NoSsr>
+            </button>
+          </ForwardRef(ButtonBase)>
+        </WithStyles(ForwardRef(ButtonBase))>
+      </ForwardRef(IconButton)>
+    </WithStyles(ForwardRef(IconButton))>
+    <WithStyles(ForwardRef(Menu))
+      id="zoom-menu"
+      onClose={[Function]}
+      open={false}
     >
-      <CodeIcon />
-         
-      Fit width
-       
-    </WithStyles(ForwardRef(MenuItem))>
-    <WithStyles(ForwardRef(Divider))
-      light={true}
-    />
-      
-    Custom
-     
-    <br />
-    <WithStyles(ForwardRef(MobileStepper))
-      activeStep={1}
-      backButton={
-        <ForwardRef(WithStyles)
-          disabled={false}
-          onClickCapture={[Function]}
+      <ForwardRef(Menu)
+        classes={
+          Object {
+            "list": "MuiMenu-list",
+            "paper": "MuiMenu-paper",
+          }
+        }
+        id="zoom-menu"
+        onClose={[Function]}
+        open={false}
+      >
+        <WithStyles(ForwardRef(Popover))
+          PaperProps={
+            Object {
+              "classes": Object {
+                "root": "MuiMenu-paper",
+              },
+            }
+          }
+          anchorOrigin={
+            Object {
+              "horizontal": "left",
+              "vertical": "top",
+            }
+          }
+          getContentAnchorEl={[Function]}
+          id="zoom-menu"
+          onClose={[Function]}
+          onEntering={[Function]}
+          open={false}
+          transformOrigin={
+            Object {
+              "horizontal": "left",
+              "vertical": "top",
+            }
+          }
+          transitionDuration="auto"
         >
-          <Memo(ZoomOutIcon) />
-        </ForwardRef(WithStyles)>
-      }
-      nextButton={
-        <ForwardRef(WithStyles)
-          disabled={false}
-          onClickCapture={[Function]}
-        >
-          <Memo(ZoomInIcon) />
-        </ForwardRef(WithStyles)>
-      }
-      position="static"
-      steps={6}
-      variant="progress"
-    />
-  </WithStyles(ForwardRef(Menu))>
-</div>
+          <ForwardRef(Popover)
+            PaperProps={
+              Object {
+                "classes": Object {
+                  "root": "MuiMenu-paper",
+                },
+              }
+            }
+            anchorOrigin={
+              Object {
+                "horizontal": "left",
+                "vertical": "top",
+              }
+            }
+            classes={
+              Object {
+                "paper": "MuiPopover-paper",
+              }
+            }
+            getContentAnchorEl={[Function]}
+            id="zoom-menu"
+            onClose={[Function]}
+            onEntering={[Function]}
+            open={false}
+            transformOrigin={
+              Object {
+                "horizontal": "left",
+                "vertical": "top",
+              }
+            }
+            transitionDuration="auto"
+          >
+            <ForwardRef(Modal)
+              BackdropProps={
+                Object {
+                  "invisible": true,
+                }
+              }
+              id="zoom-menu"
+              onClose={[Function]}
+              open={false}
+            />
+          </ForwardRef(Popover)>
+        </WithStyles(ForwardRef(Popover))>
+      </ForwardRef(Menu)>
+    </WithStyles(ForwardRef(Menu))>
+  </div>
+</Component>
 `;
 
 exports[`ZoomMode component should render without crashing 7`] = `
-<div
-  style={
-    Object {
-      "display": "inline-block",
+<Component>
+  <div
+    style={
+      Object {
+        "display": "inline-block",
+      }
     }
-  }
->
-  <WithStyles(ForwardRef(IconButton))
-    onClick={[Function]}
-    title="Zoom mode"
   >
-    <ErrorIcon />
-  </WithStyles(ForwardRef(IconButton))>
-  <WithStyles(ForwardRef(Menu))
-    id="zoom-menu"
-    onClose={[Function]}
-    open={false}
-  >
-    <WithStyles(ForwardRef(MenuItem))
+    <WithStyles(ForwardRef(IconButton))
       onClick={[Function]}
+      title="Zoom mode"
     >
-      <ZoomOutMapIcon />
-         
-      Fit
-       
-    </WithStyles(ForwardRef(MenuItem))>
-    <WithStyles(ForwardRef(MenuItem))
-      onClick={[Function]}
-    >
-      <AspectRatioIcon />
-        
-      Original size
-       
-    </WithStyles(ForwardRef(MenuItem))>
-    <WithStyles(ForwardRef(MenuItem))
-      onClick={[Function]}
-    >
-      <CodeIcon
-        style={
+      <ForwardRef(IconButton)
+        classes={
           Object {
-            "transform": "rotate(90deg)",
+            "colorInherit": "MuiIconButton-colorInherit",
+            "colorPrimary": "MuiIconButton-colorPrimary",
+            "colorSecondary": "MuiIconButton-colorSecondary",
+            "disabled": "Mui-disabled",
+            "edgeEnd": "MuiIconButton-edgeEnd",
+            "edgeStart": "MuiIconButton-edgeStart",
+            "label": "MuiIconButton-label",
+            "root": "MuiIconButton-root",
+            "sizeSmall": "MuiIconButton-sizeSmall",
           }
         }
-      />
-         
-      Fit height
-       
-    </WithStyles(ForwardRef(MenuItem))>
-    <WithStyles(ForwardRef(MenuItem))
-      onClick={[Function]}
+        onClick={[Function]}
+        title="Zoom mode"
+      >
+        <WithStyles(ForwardRef(ButtonBase))
+          centerRipple={true}
+          className="MuiIconButton-root"
+          disabled={false}
+          focusRipple={true}
+          onClick={[Function]}
+          title="Zoom mode"
+        >
+          <ForwardRef(ButtonBase)
+            centerRipple={true}
+            className="MuiIconButton-root"
+            classes={
+              Object {
+                "disabled": "Mui-disabled",
+                "focusVisible": "Mui-focusVisible",
+                "root": "MuiButtonBase-root",
+              }
+            }
+            disabled={false}
+            focusRipple={true}
+            onClick={[Function]}
+            title="Zoom mode"
+          >
+            <button
+              className="MuiButtonBase-root MuiIconButton-root"
+              disabled={false}
+              onBlur={[Function]}
+              onClick={[Function]}
+              onDragLeave={[Function]}
+              onFocus={[Function]}
+              onKeyDown={[Function]}
+              onKeyUp={[Function]}
+              onMouseDown={[Function]}
+              onMouseLeave={[Function]}
+              onMouseUp={[Function]}
+              onTouchEnd={[Function]}
+              onTouchMove={[Function]}
+              onTouchStart={[Function]}
+              tabIndex={0}
+              title="Zoom mode"
+              type="button"
+            >
+              <span
+                className="MuiIconButton-label"
+              >
+                <ForwardRef>
+                  <WithStyles(ForwardRef(SvgIcon))>
+                    <ForwardRef(SvgIcon)
+                      classes={
+                        Object {
+                          "colorAction": "MuiSvgIcon-colorAction",
+                          "colorDisabled": "MuiSvgIcon-colorDisabled",
+                          "colorError": "MuiSvgIcon-colorError",
+                          "colorPrimary": "MuiSvgIcon-colorPrimary",
+                          "colorSecondary": "MuiSvgIcon-colorSecondary",
+                          "fontSizeInherit": "MuiSvgIcon-fontSizeInherit",
+                          "fontSizeLarge": "MuiSvgIcon-fontSizeLarge",
+                          "fontSizeSmall": "MuiSvgIcon-fontSizeSmall",
+                          "root": "MuiSvgIcon-root",
+                        }
+                      }
+                    >
+                      <svg
+                        aria-hidden="true"
+                        className="MuiSvgIcon-root"
+                        focusable="false"
+                        role="presentation"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"
+                        />
+                      </svg>
+                    </ForwardRef(SvgIcon)>
+                  </WithStyles(ForwardRef(SvgIcon))>
+                </ForwardRef>
+              </span>
+              <NoSsr>
+                <WithStyles(undefined)
+                  center={true}
+                >
+                  <ForwardRef(TouchRipple)
+                    center={true}
+                    classes={
+                      Object {
+                        "child": "MuiTouchRipple-child",
+                        "childLeaving": "MuiTouchRipple-childLeaving",
+                        "childPulsate": "MuiTouchRipple-childPulsate",
+                        "ripple": "MuiTouchRipple-ripple",
+                        "ripplePulsate": "MuiTouchRipple-ripplePulsate",
+                        "rippleVisible": "MuiTouchRipple-rippleVisible",
+                        "root": "MuiTouchRipple-root",
+                      }
+                    }
+                  >
+                    <span
+                      className="MuiTouchRipple-root"
+                    >
+                      <TransitionGroup
+                        childFactory={[Function]}
+                        component={null}
+                        exit={true}
+                      />
+                    </span>
+                  </ForwardRef(TouchRipple)>
+                </WithStyles(undefined)>
+              </NoSsr>
+            </button>
+          </ForwardRef(ButtonBase)>
+        </WithStyles(ForwardRef(ButtonBase))>
+      </ForwardRef(IconButton)>
+    </WithStyles(ForwardRef(IconButton))>
+    <WithStyles(ForwardRef(Menu))
+      id="zoom-menu"
+      onClose={[Function]}
+      open={false}
     >
-      <CodeIcon />
-         
-      Fit width
-       
-    </WithStyles(ForwardRef(MenuItem))>
-    <WithStyles(ForwardRef(Divider))
-      light={true}
-    />
-      
-    Custom
-     
-    <br />
-    <WithStyles(ForwardRef(MobileStepper))
-      activeStep={1}
-      backButton={
-        <ForwardRef(WithStyles)
-          disabled={false}
-          onClickCapture={[Function]}
+      <ForwardRef(Menu)
+        classes={
+          Object {
+            "list": "MuiMenu-list",
+            "paper": "MuiMenu-paper",
+          }
+        }
+        id="zoom-menu"
+        onClose={[Function]}
+        open={false}
+      >
+        <WithStyles(ForwardRef(Popover))
+          PaperProps={
+            Object {
+              "classes": Object {
+                "root": "MuiMenu-paper",
+              },
+            }
+          }
+          anchorOrigin={
+            Object {
+              "horizontal": "left",
+              "vertical": "top",
+            }
+          }
+          getContentAnchorEl={[Function]}
+          id="zoom-menu"
+          onClose={[Function]}
+          onEntering={[Function]}
+          open={false}
+          transformOrigin={
+            Object {
+              "horizontal": "left",
+              "vertical": "top",
+            }
+          }
+          transitionDuration="auto"
         >
-          <Memo(ZoomOutIcon) />
-        </ForwardRef(WithStyles)>
-      }
-      nextButton={
-        <ForwardRef(WithStyles)
-          disabled={false}
-          onClickCapture={[Function]}
-        >
-          <Memo(ZoomInIcon) />
-        </ForwardRef(WithStyles)>
-      }
-      position="static"
-      steps={6}
-      variant="progress"
-    />
-  </WithStyles(ForwardRef(Menu))>
-</div>
+          <ForwardRef(Popover)
+            PaperProps={
+              Object {
+                "classes": Object {
+                  "root": "MuiMenu-paper",
+                },
+              }
+            }
+            anchorOrigin={
+              Object {
+                "horizontal": "left",
+                "vertical": "top",
+              }
+            }
+            classes={
+              Object {
+                "paper": "MuiPopover-paper",
+              }
+            }
+            getContentAnchorEl={[Function]}
+            id="zoom-menu"
+            onClose={[Function]}
+            onEntering={[Function]}
+            open={false}
+            transformOrigin={
+              Object {
+                "horizontal": "left",
+                "vertical": "top",
+              }
+            }
+            transitionDuration="auto"
+          >
+            <ForwardRef(Modal)
+              BackdropProps={
+                Object {
+                  "invisible": true,
+                }
+              }
+              id="zoom-menu"
+              onClose={[Function]}
+              open={false}
+            />
+          </ForwardRef(Popover)>
+        </WithStyles(ForwardRef(Popover))>
+      </ForwardRef(Menu)>
+    </WithStyles(ForwardRef(Menu))>
+  </div>
+</Component>
 `;

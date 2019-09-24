@@ -2,8 +2,9 @@ import Button from '@material-ui/core/Button'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
+import { TextField } from '@material-ui/core'
 import { CreateComment, CreateCommentProps } from '../src/components'
-import { CommentStateContext, CommentStateProvider } from '../src/context/comment-states'
+import { CommentStateContext, CommentStateProvider, defaultCommentState } from '../src/context/comment-states'
 
 describe('Create comment component', () => {
   const defaultProps: CreateCommentProps = {
@@ -36,18 +37,47 @@ describe('Create comment component', () => {
   })
 
   it('should add comment when submit button is clicked', () => {
-    const wrapper = mount(<CreateComment {...defaultProps} inputValue="Hello" />)
+    const cc = jest.fn()
+    const wrapper = mount(
+      <CommentStateContext.Provider
+        value={{
+          ...defaultCommentState,
+          draft: {
+            id: 'asd',
+            x: 1,
+            y: 2,
+          },
+        }}>
+        <CreateComment {...defaultProps} inputValue="Hello" createComment={cc} />
+      </CommentStateContext.Provider>,
+    )
     wrapper
       .find(Button)
       .first()
       .simulate('submit')
-    expect(defaultProps.createComment).toBeCalled()
+    expect(cc).toBeCalled()
   })
 
   it('should add comment when form is submitted', () => {
-    const wrapper = mount(<CreateComment {...defaultProps} inputValue="Hello" />)
-    wrapper.find('form').simulate('submit')
-    expect(defaultProps.createComment).toBeCalled()
+    const cc = jest.fn()
+    const wrapper = mount(
+      <CommentStateContext.Provider
+        value={{
+          ...defaultCommentState,
+          draft: {
+            id: 'asd',
+            x: 1,
+            y: 2,
+          },
+        }}>
+        <CreateComment {...defaultProps} inputValue="Hello" createComment={cc} />
+      </CommentStateContext.Provider>,
+    )
+    wrapper
+      .find(Button)
+      .first()
+      .simulate('submit')
+    expect(cc).toBeCalled()
   })
 
   it('should handle cancel button click', () => {
@@ -86,7 +116,10 @@ describe('Create comment component', () => {
       .find('textarea')
       .first()
       .simulate('change', { target: { value: 'Hello' } })
-    wrapper.find('form').simulate('submit')
+    wrapper
+      .find(Button)
+      .first()
+      .simulate('submit')
     expect(defaultProps.handleInputValueChange).toBeCalledWith('Hello')
   })
 
@@ -96,24 +129,33 @@ describe('Create comment component', () => {
         <CreateComment {...defaultProps} />
       </CommentStateProvider>,
     )
-    wrapper.find('form').simulate('submit')
+    wrapper
+      .find(Button)
+      .first()
+      .simulate('submit')
     expect(wrapper.find(FormHelperText).text()).toEqual(defaultProps.localization!.inputRequiredError)
   })
 
   it('should give an error message when input is filled but draftCommentMarker is undefined', () => {
     const wrapper = mount(
-      <CommentStateContext.Provider value={{ setActiveComment: () => undefined, setDraft: () => undefined }}>
+      <CommentStateContext.Provider value={{ ...defaultCommentState }}>
         <CreateComment {...defaultProps} />
       </CommentStateContext.Provider>,
     )
-    wrapper.find('input').simulate('change', { target: { value: 'Hello There' } })
-    wrapper.find('form').simulate('submit')
+    wrapper.find(TextField).prop('onChange')({ target: { value: 'Hello There' } } as any)
+    wrapper
+      .find(Button)
+      .first()
+      .simulate('submit')
     expect(wrapper.find(FormHelperText).text()).toEqual(defaultProps.localization!.markerRequiredError)
   })
 
   it('should give an error message when draftCommentMarker is set but input is empty', () => {
     const wrapper = mount(<CreateComment {...defaultProps} />)
-    wrapper.find('form').simulate('submit')
+    wrapper
+      .find(Button)
+      .first()
+      .simulate('submit')
     expect(wrapper.find(FormHelperText).text()).toEqual(defaultProps.localization!.inputRequiredError)
   })
 })

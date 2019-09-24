@@ -4,16 +4,18 @@ import { useDocumentData, useDocumentViewerApi, useViewerState } from '../hooks'
 import { CommentData } from '../models/Comment'
 import { DocumentViewerApiSettings } from '../models'
 
-export const CommentsContext = React.createContext<
-  {
-    comments: CommentData[]
-  } & DocumentViewerApiSettings['commentActions']
->({
+export type CommentsContextType = {
+  comments: CommentData[]
+} & DocumentViewerApiSettings['commentActions']
+
+export const defaultCommentsContext: CommentsContextType = {
   comments: [],
   addPreviewComment: async () => undefined as any,
   deletePreviewComment: async () => undefined as any,
   getPreviewComments: async () => undefined as any,
-})
+}
+
+export const CommentsContext = React.createContext<CommentsContextType>(defaultCommentsContext)
 
 export interface CommentContextProviderProps {
   page: number
