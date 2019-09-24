@@ -1,6 +1,6 @@
 import RotateLeft from '@material-ui/icons/RotateLeft'
 import RotateRight from '@material-ui/icons/RotateRight'
-import { shallow } from 'enzyme'
+import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { RotatePageWidget, ROTATION_AMOUNT } from '../src/components/page-widgets/RotatePage'
 import { PreviewImageDataContext } from '../src/context/preview-image-data'
@@ -17,7 +17,7 @@ describe('RotatePage component', () => {
   it('RotateLeft should trigger a rotate to left', () => {
     const rotateImages = jest.fn()
 
-    const wrapper = shallow(
+    const wrapper = mount(
       <PreviewImageDataContext.Provider
         value={{
           imageData: [examplePreviewImageData],
@@ -33,7 +33,7 @@ describe('RotatePage component', () => {
 
   it('RotateRight should trigger a rotate to left', () => {
     const rotateImages = jest.fn()
-    const wrapper = shallow(
+    const wrapper = mount(
       <PreviewImageDataContext.Provider
         value={{
           imageData: [examplePreviewImageData],

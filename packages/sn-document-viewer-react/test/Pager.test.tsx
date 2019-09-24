@@ -1,8 +1,11 @@
 import TextField from '@material-ui/core/TextField/TextField'
 import { sleepAsync } from '@sensenet/client-utils'
-import { shallow } from 'enzyme'
+import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { PagerWidget } from '../src/components/document-widgets/Pager'
+import { DocumentDataContext } from '../src/context/document-data'
+import { defaultViewerState, ViewerStateContext } from '../src/context/viewer-state'
+import { exampleDocumentData } from './__Mocks__/viewercontext'
 
 describe('PagerWidget component', () => {
   it('Should render without crashing', () => {
@@ -11,14 +14,21 @@ describe('PagerWidget component', () => {
   })
 
   it('Numeric input should update the active page', async () => {
-    const setActivePages = jest.fn()
-    const wrapper = shallow(<PagerWidget />)
+    const updateState = jest.fn()
+    const wrapper = mount(
+      <ViewerStateContext.Provider value={{ ...defaultViewerState, updateState, activePages: [5] }}>
+        <DocumentDataContext.Provider
+          value={{ documentData: { ...exampleDocumentData, pageCount: 10 }, updateDocumentData: jest.fn() }}>
+          <PagerWidget />
+        </DocumentDataContext.Provider>
+      </ViewerStateContext.Provider>,
+    )
     const changeValue = (value: number | string) =>
-      wrapper.find(TextField).prop('onChange')!({ currentTarget: { value } } as any)
+      (wrapper.find(TextField).prop('onChange') as any)({ currentTarget: { value } })
     const getValue = () => wrapper.find(TextField).props().value
     changeValue(5)
     await sleepAsync()
-    expect(setActivePages).toHaveBeenCalled()
+    expect(updateState).toHaveBeenCalled()
     expect(getValue()).toBe(5)
 
     // NaN
@@ -29,13 +39,11 @@ describe('PagerWidget component', () => {
     // limit min
     changeValue(-5)
     await sleepAsync()
-    expect(setActivePages).toHaveBeenCalledTimes(2)
     expect(getValue()).toBe(1)
 
     // limit max
     changeValue(100)
     await sleepAsync()
-    expect(setActivePages).toHaveBeenCalledTimes(3)
     expect(getValue()).toBe(10)
   })
 

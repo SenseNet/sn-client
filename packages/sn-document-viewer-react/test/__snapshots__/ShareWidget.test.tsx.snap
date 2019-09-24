@@ -12,7 +12,7 @@ exports[`DownloadWidget component Should render without crashing 1`] = `
     color="inherit"
     id="Share"
     onClick={[Function]}
-    title=""
+    title="Share"
   >
     <ShareIcon />
   </WithStyles(ForwardRef(IconButton))>

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DownloadWidget component Should render without crashing 1`] = `
+exports[`Print component Should render without crashing 1`] = `
 <div
   style={
     Object {

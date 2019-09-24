@@ -2,7 +2,6 @@ import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { SaveWidget } from '../src/components/document-widgets/SaveWidget'
 import { defaultViewerState, ViewerStateContext } from '../src/context/viewer-state'
-import { exampleDocumentData, examplePreviewImageData } from './__Mocks__/viewercontext'
 
 describe('SaveDocumentComponent component', () => {
   it('Should render without crashing when has changes', () => {

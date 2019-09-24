@@ -2,7 +2,7 @@ import { shallow } from 'enzyme'
 import React from 'react'
 import { Print } from '../src/components/document-widgets/PrintWidget'
 
-describe('DownloadWidget component', () => {
+describe('Print component', () => {
   it('Should render without crashing', () => {
     const print = jest.fn()
     const wrapper = shallow(<Print print={print} />)
