@@ -2,6 +2,7 @@ import { SlideProps } from '@material-ui/core/Slide'
 import { Theme } from '@material-ui/core/styles'
 import React from 'react'
 import { ThemeProvider } from 'styled-components'
+import { deepMerge } from '@sensenet/client-utils'
 import loaderImage from '../../assets/loader.gif'
 import { defaultTheme, DocumentViewerApiSettings } from '../models'
 import { PreviewState } from '../Enums'
@@ -55,7 +56,7 @@ export interface DocumentViewerProps {
   /**
    * Overrideable localized string resources
    */
-  localization?: LocalizationType
+  localization?: Partial<LocalizationType>
 
   /**
    * The default state of the Document Viewer
@@ -66,11 +67,7 @@ export interface DocumentViewerProps {
 export const DocumentViewer: React.FC<DocumentViewerProps> = props => {
   return (
     <DocumentViewerApiSettingsProvider options={props.api}>
-      <LocalizationContext.Provider
-        value={{
-          ...defaultLocalization,
-          ...props.localization,
-        }}>
+      <LocalizationContext.Provider value={deepMerge(defaultLocalization, props.localization)}>
         <ViewerSettingsContext.Provider value={props}>
           <ThemeProvider theme={props.theme || defaultTheme}>
             <DocumentDataProvider>
