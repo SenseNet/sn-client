@@ -57,6 +57,8 @@ jspm_packages/
 # next.js build output
 .next
 
-
-#the generated bundle
+# the generated bundle
 bundle
+
+# Misc
+.DS_Store
