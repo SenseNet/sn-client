@@ -73,6 +73,7 @@
     "@sensenet/pickers-react": "^1.2.4",
     "@sensenet/query": "^1.1.9",
     "@sensenet/redux": "^5.1.13",
+    "@sensenet/hooks-react": "1.0.0",
     "@sensenet/repository-events": "^1.4.5",
     "autosuggest-highlight": "^3.1.1",
     "moment": "^2.24.0",
@@ -85,6 +86,7 @@
     "react-redux": "^7.0.3",
     "react-responsive": "^7.0.0",
     "redux": "^4.0.4",
+    "hooks-react": "1.0.0",
     "redux-di-middleware": "^4.0.1",
     "semaphore-async-await": "^1.5.1",
     "uuid": "^3.3.3"
