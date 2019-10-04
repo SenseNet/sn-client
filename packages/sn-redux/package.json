@@ -38,7 +38,8 @@
     "@sensenet/default-content-types": "^2.0.1",
     "@sensenet/redux-promise-middleware": "^2.1.9",
     "redux": "^4.0.4",
-    "redux-logger": "^3.0.6"
+    "redux-logger": "^3.0.6",
+    "tslib": "^1.9.3"
   },
   "devDependencies": {
     "@types/node": "^12.7.2",

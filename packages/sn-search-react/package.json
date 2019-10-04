@@ -33,10 +33,13 @@
     "@sensenet/default-content-types": "^2.0.1",
     "@sensenet/icons-react": "^1.2.13",
     "@sensenet/query": "^1.1.9",
+    "@sensenet/client-utils": "^1.6.5",
     "autosuggest-highlight": "^3.1.1",
     "react": "^16.9.0",
     "react-autosuggest": "^9.4.3",
-    "react-dom": "^16.9.0"
+    "react-dom": "^16.9.0",
+    "tslib": "^1.9.3"
+
   },
   "devDependencies": {
     "@types/autosuggest-highlight": "3.1.0",

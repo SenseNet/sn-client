@@ -30,7 +30,11 @@
     "@sensenet/default-content-types": "^2.0.1",
     "@sensenet/repository-events": "^1.4.5",
     "react": "^16.9.0",
-    "react-dom": "^16.9.0"
+    "react-dom": "^16.9.0",
+    "@furystack/inject":"^4.0.2",
+    "@furystack/logging":"^2.0.3",
+    "semaphore-async-await":"^1.5.1",
+    "tslib": "^1.9.3"
   },
   "devDependencies": {
     "@types/react": "^16.9.2",

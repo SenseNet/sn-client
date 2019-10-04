@@ -36,7 +36,6 @@
     "rimraf": "^3.0.0",
     "start-server-and-test": "^1.10.0",
     "ts-jest": "^24.0.2",
-    "tslib": "^1.9.3",
     "typescript": "^3.5.3",
     "wait-on": "^3.3.0"
   },
