@@ -35,10 +35,14 @@
     "@sensenet/client-core": "^2.2.1",
     "@sensenet/default-content-types": "^2.0.1",
     "@sensenet/icons-react": "^1.2.13",
+<<<<<<< HEAD
     "@sensenet/client-utils": "^1.6.5",
     "react": "^16.9.0",
     "react-async": "^7.0.6",
     "tslib": "^1.9.3"
+=======
+    "react": "^16.9.0"
+>>>>>>> 2280efe910998eae214d0027c277f2af8354c0c4
   },
   "devDependencies": {
     "@types/react": "^16.9.2"

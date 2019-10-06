@@ -4,6 +4,7 @@ import { Image } from '@sensenet/default-content-types'
 import Typography from '@material-ui/core/Typography'
 import { sleepAsync } from '@sensenet/client-utils'
 import Input from '@material-ui/core/Input'
+import { act } from 'react-dom/test-utils'
 import { errorMessages, FileUpload } from '../src/fieldcontrols/FileUpload'
 
 const defaultSettings = {
@@ -50,15 +51,14 @@ describe('File upload field control', () => {
     jest.restoreAllMocks()
   })
 
-  /*
-   * This tests throw error Warning: An update to FileUpload inside a test was not wrapped in act(...).
-   * follow https://github.com/testing-library/react-testing-library/issues/281 and check if react 16.9.0 is released
-   */
-  it.skip('should show the file name of the content in browse view', async () => {
-    const wrapper = mount(<FileUpload settings={defaultSettings} repository={repository} content={fileContent} />)
-    await sleepAsync(0)
+  it('should show the file name of the content in browse view', async () => {
+    let wrapper: any
+    await act(async () => {
+      wrapper = mount(<FileUpload settings={defaultSettings} repository={repository} content={fileContent} />)
+    })
     expect(
       wrapper
+        .update()
         .find(Typography)
         .first()
         .text(),
