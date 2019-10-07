@@ -23,6 +23,20 @@ If you run into trouble here, make sure your node, npm, and **_yarn_** are on th
 4.  `yarn build` to compile all the typescript packages
 5.  `yarn test` to run unit tests
 
+#### Branching
+
+We use [Gitflow workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow).
+
+This means that we use develop branch for the main development.
+
+When you start to work on a new feature or bug you:
+
+1. checkout develop
+2. pull latest develop
+3. create new branch from develop
+4. make some changes in code or documentation
+5. create a pull request to develop
+
 ### Running package script
 
 With yarn you can run any package scripts eg.: `test, build, lint`
