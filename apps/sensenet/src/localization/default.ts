@@ -291,6 +291,13 @@ const values = {
     sendingInProgress: 'Sending error report...',
   },
   uploadProgress: {
+    title: 'Upload files',
+    selectFilesToUpload: 'Select files to upload',
+    orDragAndDrop: 'or drag and drop',
+    uploadButton: 'Upload',
+    blockNavigation: 'Upload is in progress. Do you want to navigate away anyway?',
+    uploadCompleted: 'Upload completed',
+    uploadFailed: 'Upload failed',
     contentUploaded: `Content '{0}' has been uploaded succesfully`,
     contentUploadedMultiple: `Finished uploading {count} content.`,
   },

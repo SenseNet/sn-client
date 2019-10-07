@@ -4,7 +4,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Icon, iconType } from '@sensenet/icons-react'
-import React from 'react'
+import React, { useCallback } from 'react'
 import { ListPickerProps } from './ListPickerProps'
 import { GenericContentWithIsParent } from './types'
 import { useListPicker } from '.'
@@ -20,6 +20,42 @@ export function ListPickerComponent<T extends GenericContentWithIsParent = Gener
     parentODataOptions: props.parentODataOptions as any,
   })
 
+  const onClickHandler = useCallback(
+    (_event: React.MouseEvent, node: T) => {
+      setSelectedItem(node)
+      props.onSelectionChanged && props.onSelectionChanged(node)
+    },
+    [props, setSelectedItem],
+  )
+
+  const onDoubleClickHandler = useCallback(
+    (_event: React.MouseEvent, node: T) => {
+      navigateTo(node)
+      props.onNavigation && props.onNavigation(node.Path)
+    },
+    [navigateTo, props],
+  )
+
+  const defaultRenderer = useCallback(
+    (item: T) => {
+      return (
+        <ListItem key={item.Id} button={true} selected={selectedItem && item.Id === selectedItem.Id}>
+          <ListItemIcon>
+            <Icon
+              type={iconType.materialui}
+              iconName="folder"
+              style={{ color: item.isParent ? 'yellow' : 'primary' }}
+            />
+          </ListItemIcon>
+          <ListItemText primary={item.DisplayName} />
+        </ListItem>
+      )
+    },
+    [selectedItem],
+  )
+
+  const renderItem = props.renderItem || defaultRenderer
+
   if (isLoading) {
     return props.renderLoading ? props.renderLoading() : null
   }
@@ -27,29 +63,6 @@ export function ListPickerComponent<T extends GenericContentWithIsParent = Gener
   if (error) {
     return props.renderError ? props.renderError(error.message) : null
   }
-
-  const onClickHandler = (_event: React.MouseEvent, node: T) => {
-    setSelectedItem(node)
-    props.onSelectionChanged && props.onSelectionChanged(node)
-  }
-
-  const onDoubleClickHandler = (_event: React.MouseEvent, node: T) => {
-    navigateTo(node)
-    props.onNavigation && props.onNavigation(node.Path)
-  }
-
-  const defaultRenderer = (item: T) => {
-    return (
-      <ListItem key={item.Id} button={true} selected={selectedItem && item.Id === selectedItem.Id}>
-        <ListItemIcon>
-          <Icon type={iconType.materialui} iconName="folder" style={{ color: item.isParent ? 'yellow' : 'primary' }} />
-        </ListItemIcon>
-        <ListItemText primary={item.DisplayName} />
-      </ListItem>
-    )
-  }
-
-  const renderItem = props.renderItem || defaultRenderer
 
   return (
     <List>
