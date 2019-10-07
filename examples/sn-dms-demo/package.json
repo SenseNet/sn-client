@@ -43,7 +43,6 @@
     "@sensenet/redux": "^5.1.13",
     "@sensenet/repository-events": "^1.4.5",
     "@sensenet/search-react": "^1.2.9",
-    "fs-extra": "^8.1.0",
     "history": "^4.7.2",
     "lodash.groupby": "^4.6.0",
     "moment": "^2.22.2",
