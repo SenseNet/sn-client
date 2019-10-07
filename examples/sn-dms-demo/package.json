@@ -28,7 +28,6 @@
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write"
   },
   "dependencies": {
-
     "@material-ui/core": "^4.3.3",
     "@material-ui/icons": "^4.0.1",
     "@sensenet/authentication-google": "^2.0.12",
