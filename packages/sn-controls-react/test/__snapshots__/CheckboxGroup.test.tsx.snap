@@ -278,6 +278,15 @@ exports[`Check box group field control in edit/new view should set all the props
                                       <span
                                         className="MuiIconButton-label"
                                       >
+                                        <input
+                                          checked={true}
+                                          className="PrivateSwitchBase-input-29"
+                                          data-indeterminate={false}
+                                          disabled={true}
+                                          onChange={[Function]}
+                                          type="checkbox"
+                                          value="0"
+                                        />
                                         <ForwardRef>
                                           <WithStyles(ForwardRef(SvgIcon))>
                                             <ForwardRef(SvgIcon)
@@ -309,15 +318,6 @@ exports[`Check box group field control in edit/new view should set all the props
                                             </ForwardRef(SvgIcon)>
                                           </WithStyles(ForwardRef(SvgIcon))>
                                         </ForwardRef>
-                                        <input
-                                          checked={true}
-                                          className="PrivateSwitchBase-input-29"
-                                          data-indeterminate={false}
-                                          disabled={true}
-                                          onChange={[Function]}
-                                          type="checkbox"
-                                          value="0"
-                                        />
                                       </span>
                                     </span>
                                   </ForwardRef(ButtonBase)>
@@ -558,6 +558,15 @@ exports[`Check box group field control in edit/new view should set all the props
                                       <span
                                         className="MuiIconButton-label"
                                       >
+                                        <input
+                                          checked={false}
+                                          className="PrivateSwitchBase-input-29"
+                                          data-indeterminate={false}
+                                          disabled={true}
+                                          onChange={[Function]}
+                                          type="checkbox"
+                                          value="1"
+                                        />
                                         <ForwardRef>
                                           <WithStyles(ForwardRef(SvgIcon))>
                                             <ForwardRef(SvgIcon)
@@ -589,15 +598,6 @@ exports[`Check box group field control in edit/new view should set all the props
                                             </ForwardRef(SvgIcon)>
                                           </WithStyles(ForwardRef(SvgIcon))>
                                         </ForwardRef>
-                                        <input
-                                          checked={false}
-                                          className="PrivateSwitchBase-input-29"
-                                          data-indeterminate={false}
-                                          disabled={true}
-                                          onChange={[Function]}
-                                          type="checkbox"
-                                          value="1"
-                                        />
                                       </span>
                                     </span>
                                   </ForwardRef(ButtonBase)>
@@ -838,6 +838,15 @@ exports[`Check box group field control in edit/new view should set all the props
                                       <span
                                         className="MuiIconButton-label"
                                       >
+                                        <input
+                                          checked={false}
+                                          className="PrivateSwitchBase-input-29"
+                                          data-indeterminate={false}
+                                          disabled={true}
+                                          onChange={[Function]}
+                                          type="checkbox"
+                                          value="2"
+                                        />
                                         <ForwardRef>
                                           <WithStyles(ForwardRef(SvgIcon))>
                                             <ForwardRef(SvgIcon)
@@ -869,15 +878,6 @@ exports[`Check box group field control in edit/new view should set all the props
                                             </ForwardRef(SvgIcon)>
                                           </WithStyles(ForwardRef(SvgIcon))>
                                         </ForwardRef>
-                                        <input
-                                          checked={false}
-                                          className="PrivateSwitchBase-input-29"
-                                          data-indeterminate={false}
-                                          disabled={true}
-                                          onChange={[Function]}
-                                          type="checkbox"
-                                          value="2"
-                                        />
                                       </span>
                                     </span>
                                   </ForwardRef(ButtonBase)>
@@ -1118,6 +1118,15 @@ exports[`Check box group field control in edit/new view should set all the props
                                       <span
                                         className="MuiIconButton-label"
                                       >
+                                        <input
+                                          checked={false}
+                                          className="PrivateSwitchBase-input-29"
+                                          data-indeterminate={false}
+                                          disabled={true}
+                                          onChange={[Function]}
+                                          type="checkbox"
+                                          value="3"
+                                        />
                                         <ForwardRef>
                                           <WithStyles(ForwardRef(SvgIcon))>
                                             <ForwardRef(SvgIcon)
@@ -1149,15 +1158,6 @@ exports[`Check box group field control in edit/new view should set all the props
                                             </ForwardRef(SvgIcon)>
                                           </WithStyles(ForwardRef(SvgIcon))>
                                         </ForwardRef>
-                                        <input
-                                          checked={false}
-                                          className="PrivateSwitchBase-input-29"
-                                          data-indeterminate={false}
-                                          disabled={true}
-                                          onChange={[Function]}
-                                          type="checkbox"
-                                          value="3"
-                                        />
                                       </span>
                                     </span>
                                   </ForwardRef(ButtonBase)>

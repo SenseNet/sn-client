@@ -59,3 +59,6 @@ jspm_packages/
 
 # Typescript incremental build info files
 *.tsbuildinfo
+
+# Misc
+.DS_Store
