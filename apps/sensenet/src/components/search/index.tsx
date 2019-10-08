@@ -206,7 +206,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
                     repo
                       .executeAction<any, ODataResponse<GenericContent>>({
                         idOrPath:
-                          repo.authentication.currentUser.getValue().ProfilePath || ConstantContent.PORTAL_ROOT.Path,
+                          ConstantContent.PORTAL_ROOT.Path,
                         name: 'SaveQuery',
                         method: 'POST',
                         oDataOptions: {
@@ -215,7 +215,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
                         body: {
                           query: queryData.term,
                           displayName: saveName,
-                          queryType: savePublic ? 'Public' : 'Private',
+                          queryType: 'Public',
                         },
                       })
                       .then(c => {
