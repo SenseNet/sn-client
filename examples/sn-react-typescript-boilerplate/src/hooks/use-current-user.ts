@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { User } from '@sensenet/default-content-types'
-import { useRepository } from './use-repository'
+import { useRepository } from '@sensenet/hooks-react'
 
 /**
  * Custom hook that will return with the current user.
