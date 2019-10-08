@@ -7,11 +7,9 @@ import Add from '@material-ui/icons/Add'
 import CloudUpload from '@material-ui/icons/CloudUpload'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
-import { UploadProgressInfo } from '@sensenet/client-core'
-import { ObservableValue } from '@sensenet/client-utils'
-import { CurrentContentContext, useInjector, useLogger, useRepository } from '@sensenet/hooks-react'
+import { CurrentContentContext, useLogger, useRepository } from '@sensenet/hooks-react'
+import { Redirect } from 'react-router'
 import { useLocalization } from '../hooks'
-import { UploadTracker } from '../services/UploadTracker'
 import { AddDialog } from './dialogs/add'
 import { Icon } from './Icon'
 
@@ -20,7 +18,6 @@ export interface AddButtonProps {
 }
 
 export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
-  const injector = useInjector()
   const repo = useRepository()
   const parentContext = useContext(CurrentContentContext)
   const [parent, setParent] = useState(parentContext)
@@ -28,6 +25,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   const [allowedChildTypes, setAllowedChildTypes] = useState<Schema[]>([])
 
   const [showAddNewDialog, setShowAddNewDialog] = useState(false)
+  const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false)
   const [selectedSchema, setSelectedSchema] = useState<Schema>(repo.schemas.getSchemaByName('GenericContent'))
 
   const localization = useLocalization().addButton
@@ -57,14 +55,15 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
     }
   }, [localization.errorGettingAllowedContentTypes, logger, parent.Id, repo, showSelectType])
 
-  const [progressObservable] = useState(new ObservableValue<UploadProgressInfo>())
-
-  useEffect(() => {
-    const subscription = progressObservable.subscribe(p =>
-      injector.getInstance(UploadTracker).onUploadProgress.setValue({ progress: p, repo }),
+  if (isUploadDialogOpen) {
+    return (
+      <Redirect
+        to={{
+          pathname: `/${btoa(repo.configuration.repositoryUrl)}/upload/${encodeURIComponent(parent.Path)}`,
+        }}
+      />
     )
-    return () => subscription.dispose()
-  }, [injector, progressObservable, repo])
+  }
 
   return (
     <div>
@@ -88,37 +87,20 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
         </Typography>
         <div
           style={{ display: 'flex', alignItems: 'flex-start', flexWrap: 'wrap', maxHeight: '512px', overflow: 'auto' }}>
-          <Button key="Upload">
-            <label htmlFor="upload_file_input">
-              <div
-                style={{
-                  width: 90,
-                }}>
-                <CloudUpload style={{ height: 38, width: 38 }} />
-                <Typography variant="body1">{localization.upload}</Typography>
-              </div>
-            </label>
+          <Button
+            key="Upload"
+            onClick={() => {
+              setShowSelectType(false)
+              setIsUploadDialogOpen(true)
+            }}>
+            <div
+              style={{
+                width: 90,
+              }}>
+              <CloudUpload style={{ height: 38, width: 38 }} />
+              <Typography variant="body1">{localization.upload}</Typography>
+            </div>
           </Button>
-          <div style={{ visibility: 'hidden', display: 'none' }}>
-            <input
-              onChange={ev => {
-                setShowSelectType(false)
-                ev.target.files &&
-                  repo.upload.fromFileList({
-                    parentPath: parent.Path,
-                    fileList: ev.target.files,
-                    createFolders: true,
-                    binaryPropertyName: 'Binary',
-                    overwrite: false,
-                    progressObservable,
-                  })
-              }}
-              type="file"
-              accept=""
-              multiple={true}
-              id="upload_file_input"
-            />
-          </div>
           {allowedChildTypes.map(childType => (
             <Button
               key={childType.ContentTypeName}

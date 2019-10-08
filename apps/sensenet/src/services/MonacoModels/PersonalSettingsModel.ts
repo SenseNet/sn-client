@@ -393,7 +393,7 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
               items: {
                 enum: [
                   ...Object.entries(LogLevel)
-                    .filter(entry => !isNaN(entry[1]))
+                    .filter(entry => !isNaN(entry[1] as LogLevel))
                     .map(entry => entry[0]),
                 ],
               },

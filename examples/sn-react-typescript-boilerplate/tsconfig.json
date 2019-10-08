@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig-base.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "outDir": "dist",
+    "composite": false,
+    "jsx": "react",
+    "rootDir": "./src",
+    "forceConsistentCasingInFileNames": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "include": [
+    "src",
+    "../../typings"
+  ]
+}
