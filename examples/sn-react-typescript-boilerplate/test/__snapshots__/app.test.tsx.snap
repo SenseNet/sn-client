@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Layout Matches snapshot 1`] = `
+<div
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundImage": "url(sensenet_logo_transparent.png)",
+      "backgroundPosition": "center",
+      "backgroundRepeat": "no-repeat",
+      "backgroundSize": "auto",
+      "display": "flex",
+      "flexDirection": "column",
+      "height": "100%",
+      "justifyContent": "center",
+      "width": "100%",
+    }
+  }
+>
+  <CssBaseline />
+  <WithStyles(ForwardRef(Typography))
+    gutterBottom={true}
+    variant="h3"
+  >
+    Hello, 
+    Visitor
+     😎
+  </WithStyles(ForwardRef(Typography))>
+  <WithStyles(Tooltip)
+    title="Return to the Login screen and select another repository"
+  >
+    <WithStyles(ForwardRef(Button))
+      color="primary"
+      onClick={[Function]}
+      variant="outlined"
+    >
+      Log out 🚪
+    </WithStyles(ForwardRef(Button))>
+  </WithStyles(Tooltip)>
+</div>
+`;
