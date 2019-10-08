@@ -49,6 +49,7 @@
   "dependencies": {
     "@material-ui/core": "^4.2.0",
     "@sensenet/client-core": "^2.2.1",
+    "@sensenet/hooks-react": "^1.0.0",
     "@sensenet/default-content-types": "^2.0.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
