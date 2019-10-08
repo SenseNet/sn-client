@@ -2,7 +2,7 @@
 
 Thank you for checking out our project! :star2: :sunny: :deciduous_tree: :earth_americas:
 
-Please visit the [contribution guide](https://github.com/SenseNet/sensenet/blob/master/CONTRIBUTING.md) in our main repository for advices on how to help the community.
+Please visit the [contribution guide](https://github.com/SenseNet/sensenet/blob/master/CONTRIBUTING.md) in our main repository for advice on how to help the community.
 
 # Development Guide
 
@@ -27,13 +27,13 @@ If you run into trouble here, make sure your node, npm, and **_yarn_** are on th
 
 We use [Gitflow workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow).
 
-This means that we use develop branch for the main development.
+This means that we use a develop branch for the main development.
 
 When you start to work on a new feature or bug you:
 
 1. checkout develop
 2. pull latest develop
-3. create new branch from develop
+3. create a new branch from develop
 4. make some changes in code or documentation
 5. create a pull request to develop
 
@@ -65,4 +65,4 @@ To develop e2e tests:
 - Add test to `examples/sn-dms-demo/cypress/integration` with a spec.ts | spec.js file extension
 
 Running the tests locally will create a currentUser.json with a new test user. The tests are going to use this user.
-In order to use another user you can change the email and password of the current user or let the system create a new for you by deleting the json.
+In order to use another user, you can change the email and password of the current user or let the system create a new for you by deleting the JSON.
