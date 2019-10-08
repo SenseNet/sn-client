@@ -1,6 +1,6 @@
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import { sleepAsync } from '@sensenet/client-utils'
+import { act } from 'react-dom/test-utils'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { DocumentTitlePager } from '../src/components/document-widgets/DocumentTitlePager'
@@ -41,12 +41,16 @@ describe('DocumentTitlePager component', () => {
         </DocumentDataContext.Provider>
       </ViewerStateContext.Provider>,
     )
-    wrapper.find(Typography).simulate('click')
-    wrapper.update()
-    await sleepAsync(10)
-    const onChange = wrapper.find(TextField).prop('onChange')
-    onChange && onChange({ currentTarget: { value: '3' } } as any)
-    wrapper.find('form').simulate('submit')
+    act(() => {
+      wrapper.find(Typography).simulate('click')
+    })
+    act(() => {
+      const onChange = wrapper
+        .update()
+        .find(TextField)
+        .prop('onChange')
+      onChange && onChange({ currentTarget: { value: '3' } } as any)
+    })
     expect(updateState).toBeCalledWith({ activePages: [3] })
   })
 })

@@ -58,6 +58,7 @@ exports[`DocumentTitlePager component Should render the focused state without cr
         }
         title="Goto page"
         type="number"
+        value={1}
       />
     </form>
   </WithStyles(ForwardRef(Typography))>

@@ -22,7 +22,7 @@ export const DocumentTitlePager: React.FC = () => {
     [viewerState],
   )
 
-  const [currentPage, setCurrentPage] = useState()
+  const [currentPage, setCurrentPage] = useState(viewerState.activePages[0])
 
   const gotoPage = (page: string | number) => {
     let pageInt = typeof page === 'string' ? parseInt(page, 10) : page
@@ -30,6 +30,7 @@ export const DocumentTitlePager: React.FC = () => {
       pageInt = Math.max(pageInt, 1)
       pageInt = Math.min(pageInt, documentData.pageCount)
       setCurrentPage(pageInt)
+      setPage(pageInt)
     }
   }
 
@@ -48,7 +49,6 @@ export const DocumentTitlePager: React.FC = () => {
           <form
             onSubmit={ev => {
               ev.preventDefault()
-              setPage(currentPage)
             }}>
             <TextField
               style={{ flexShrink: 0 }}
@@ -70,7 +70,7 @@ export const DocumentTitlePager: React.FC = () => {
           </form>
         ) : (
           <div style={{ flexShrink: 0 }}>
-            {viewerState.activePages[0]} / {documentData.pageCount}
+            {currentPage} / {documentData.pageCount}
           </div>
         )}
       </Typography>
