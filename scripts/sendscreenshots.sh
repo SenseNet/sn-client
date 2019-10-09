@@ -12,7 +12,7 @@ sendSlackMessage() {
   https://slack.com/api/chat.postMessage
 }
 
-sendSlackMessage "There were e2e errors in $TRAVIS_BUILD_WEB_URL\nHere comes the screenshots 🤖"
+sendSlackMessage "There are e2e errors in $TRAVIS_BUILD_WEB_URL\nHere comes the screenshots of error 🤖"
 
 find $SCREENSHOTS_DIR -name '*.png' -type f | while IFS= read -r FILE; do
   echo "Uploading $FILE..."
