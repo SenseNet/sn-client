@@ -2,7 +2,7 @@
 
 **sensenet app** is a single page application that contains the most important CMS and the most useful admin functions.
 
-## 🔑 Login, change repository
+## 🔑 Login, change the repository
 
 To manage a repository, you have to login in first. You have to provide
 
@@ -20,7 +20,7 @@ If you want to log out from the current repository, you can do that with the 'Lo
 ## ⚙ Personal settings
 
 The application stores several settings in your browser's _local storage_ - like your repository history or some of your UI customizations.
-You can edit these with the "Personal settings" button at the bottom left of the drawer. The settings are stored in a JSON format, but you can ask for code completition with _ctrl+space_
+You can edit these with the "Personal settings" button at the bottom left of the drawer. The settings are stored in a JSON format, but you can ask for code completion with _ctrl+space_
 
 ### Responsive settings
 
