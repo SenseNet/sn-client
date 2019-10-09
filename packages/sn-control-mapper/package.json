@@ -35,6 +35,7 @@
   "homepage": "https://sensenet.com",
   "dependencies": {
     "@sensenet/client-core": "^2.2.1",
-    "@sensenet/default-content-types": "^2.0.1"
+    "@sensenet/default-content-types": "^2.0.1",
+    "tslib": "^1.9.3"
   }
 }
