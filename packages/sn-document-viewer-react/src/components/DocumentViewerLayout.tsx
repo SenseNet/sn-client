@@ -2,7 +2,6 @@ import Drawer from '@material-ui/core/Drawer'
 import { SlideProps } from '@material-ui/core/Slide'
 import Typography from '@material-ui/core/Typography'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { DraftCommentMarker } from '../models'
 import { useCommentState, useDocumentData, useDocumentViewerApi, useLocalization, useViewerState } from '../hooks'
 import { CommentsContext, CommentsContextProvider } from '../context/comments'
 import { Comment } from './comment'
@@ -12,14 +11,8 @@ import { CommentsContainer, PageList } from './'
 /** Props definition for the Document Viewer layout */
 export interface DocumentViewerLayoutProps {
   drawerSlideProps?: Partial<SlideProps>
-}
-
-/** State type definition for the DocumentViewerLayout component */
-export interface DocumentLayoutState {
-  draftCommentMarker?: DraftCommentMarker
-  activePage?: number
-  thumbnaislVisibility: boolean
-  createCommentValue: string
+  thumbnailPadding?: number
+  pagePadding?: number
 }
 
 const THUMBNAIL_PADDING = 16
@@ -38,6 +31,8 @@ interface ScrollToOptions {
 export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = props => {
   const viewerState = useViewerState()
   const localization = useLocalization()
+  const thumbnailPadding = props.thumbnailPadding != null ? props.thumbnailPadding : THUMBNAIL_PADDING
+  const pagePadding = props.pagePadding != null ? props.pagePadding : PAGE_PADDING
   const api = useDocumentViewerApi()
   const { documentData } = useDocumentData()
 
@@ -84,7 +79,7 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = props =
       scrollToImage({
         containerId: 'sn-document-viewer-pages',
         itemName: PAGE_NAME,
-        padding: PAGE_PADDING,
+        padding: pagePadding,
         index,
         smoothScroll,
       })
@@ -92,12 +87,12 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = props =
       scrollToImage({
         containerId: 'sn-document-viewer-thumbnails',
         itemName: THUMBNAIL_NAME,
-        padding: THUMBNAIL_PADDING,
+        padding: thumbnailPadding,
         index,
         smoothScroll,
       })
     },
-    [scrollToImage],
+    [pagePadding, scrollToImage, thumbnailPadding],
   )
 
   useEffect(() => {
@@ -164,7 +159,7 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = props =
             elementName={THUMBNAIL_NAME}
             images="thumbnail"
             tolerance={0}
-            padding={THUMBNAIL_PADDING}
+            padding={thumbnailPadding}
             activePage={viewerState.activePages[0]}
           />
         </Drawer>
@@ -178,7 +173,7 @@ export const DocumentViewerLayout: React.FC<DocumentViewerLayoutProps> = props =
           elementName={PAGE_NAME}
           images="preview"
           tolerance={0}
-          padding={PAGE_PADDING}
+          padding={pagePadding}
           activePage={viewerState.activePages[0]}
         />
         <Drawer
