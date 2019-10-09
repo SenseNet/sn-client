@@ -1,8 +1,8 @@
 import React from 'react'
 import { Button, CssBaseline, Tooltip, Typography } from '@material-ui/core'
+import { useRepository } from '@sensenet/hooks-react'
 import snLogo from './assets/sensenet_logo_transparent.png'
 import { useCurrentUser } from './hooks/use-current-user'
-import { useRepository } from './hooks/use-repository'
 
 /**
  * The main entry point of your app. You can start h@cking from here ;)
