@@ -29,13 +29,13 @@ We use [Gitflow workflow](https://www.atlassian.com/git/tutorials/comparing-work
 
 This means that we use develop branch for the main development.
 
-When you start to work on a new feature or bug you:
+When you start to work on a new feature or bug, you:
 
-1. checkout develop
-2. pull latest develop
-3. create new branch from develop
-4. make some changes in code or documentation
-5. create a pull request to develop
+1. Checkout develop
+2. Pull latest develop
+3. Create new branch from develop
+4. Make some changes in code or documentation
+5. Create a pull request to develop
 
 ### Running package script
 
