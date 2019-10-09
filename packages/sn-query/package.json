@@ -31,5 +31,8 @@
   "bugs": {
     "url": "https://github.com/SenseNet/sn-client/issues"
   },
-  "homepage": "https://sensenet.com"
+  "homepage": "https://sensenet.com",
+  "dependencies": {
+    "tslib": "^1.9.3"
+  }
 }
