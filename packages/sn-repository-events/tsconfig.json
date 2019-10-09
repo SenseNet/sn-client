@@ -5,5 +5,5 @@
     "rootDir": "src"
   },
   "include": ["src"],
-  "references": [{ "path": "../sn-client-core" }, { "path": "../sn-client-utils" }]
+  "references": [{ "path": "../sn-client-core" }, { "path": "../sn-client-utils" }, { "path": "../sn-default-content-types" }]
 }
