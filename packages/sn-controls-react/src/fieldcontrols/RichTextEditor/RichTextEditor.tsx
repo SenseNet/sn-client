@@ -8,8 +8,8 @@ import Typography from '@material-ui/core/Typography'
 import React, { useState } from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
-import { changeJScriptValue } from '../helpers'
-import { ReactClientFieldSetting } from './ClientFieldSetting'
+import { changeJScriptValue } from '../../helpers'
+import { ReactClientFieldSetting } from '../ClientFieldSetting'
 
 const modules = {
   toolbar: [
