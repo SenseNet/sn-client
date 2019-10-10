@@ -31,5 +31,8 @@
   },
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "license": "GPL-2.0",
-  "homepage": "https://sensenet.com"
+  "homepage": "https://sensenet.com",
+  "dependencies": {
+    "tslib": "^1.9.3"
+  }
 }

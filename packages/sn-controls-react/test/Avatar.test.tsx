@@ -4,12 +4,10 @@ import InputLabel from '@material-ui/core/InputLabel'
 import Dialog from '@material-ui/core/Dialog'
 import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
-import { useAsync } from 'react-async'
+import { act } from 'react-dom/test-utils'
 import { Avatar } from '../src/fieldcontrols/Avatar/Avatar'
 import { DefaultAvatarTemplate } from '../src/fieldcontrols/Avatar/DefaultAvatarTemplate'
 import { AvatarPicker } from '../src/fieldcontrols/Avatar/AvatarPicker'
-
-jest.mock('react-async')
 
 const defaultSettings = {
   Type: 'ReferenceFieldSetting',
@@ -64,13 +62,22 @@ describe('Avatar field control', () => {
     })
   })
   describe('in edit/new view', () => {
-    it('should open dialog when empty content is clicked', () => {
-      ;(useAsync as any).mockReturnValue({ data: undefined, isLoading: true })
-      const wrapper = mount(<Avatar actionName="new" settings={defaultSettings} />)
+    it('should open dialog when empty content is clicked', async () => {
+      let wrapper: any
+      await act(async () => {
+        wrapper = mount(<Avatar actionName="new" settings={defaultSettings} />)
+      })
       const changeButton = wrapper.find(IconButton).first()
       expect(changeButton.prop('title')).toBe('Add avatar')
-      changeButton.simulate('click')
-      expect(wrapper.find(Dialog).prop('open')).toBeTruthy()
+      await act(async () => {
+        changeButton.simulate('click')
+      })
+      expect(
+        wrapper
+          .update()
+          .find(Dialog)
+          .prop('open'),
+      ).toBeTruthy()
     })
     it('should remove the avatar when remove avatar is clicked', () => {
       const fieldOnChange = jest.fn()
@@ -94,7 +101,7 @@ describe('Avatar field control', () => {
       ).toBe('Add avatar')
     })
 
-    it('should handle avatar change', () => {
+    it('should handle avatar change', async () => {
       const fieldOnChange = jest.fn()
       const selectedContent = {
         Path: '/',
@@ -103,21 +110,25 @@ describe('Avatar field control', () => {
         Type: 'User',
         Avatar: { Url: 'asd' },
       }
-      ;(useAsync as any).mockReturnValue({ data: [selectedContent], isLoading: false })
-      const wrapper = mount(
-        <Avatar
-          actionName="edit"
-          fieldOnChange={fieldOnChange}
-          repository={repository}
-          fieldValue={userContent.Avatar as any}
-          settings={defaultSettings}
-        />,
-      )
+      let wrapper: any
+      await act(async () => {
+        wrapper = mount(
+          <Avatar
+            actionName="edit"
+            fieldOnChange={fieldOnChange}
+            repository={repository}
+            fieldValue={userContent.Avatar as any}
+            settings={defaultSettings}
+          />,
+        )
+      })
       wrapper
         .find(IconButton)
         .first()
         .simulate('click')
-      wrapper.find(AvatarPicker).prop('select')(selectedContent)
+      await act(async () => {
+        wrapper.find(AvatarPicker).prop('select')(selectedContent)
+      })
       wrapper
         .find(Button)
         .last()

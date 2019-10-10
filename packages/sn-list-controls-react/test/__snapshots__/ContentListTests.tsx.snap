@@ -26,7 +26,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
         className="DisplayName"
         key="DisplayName"
       >
-        <WithStyles(Tooltip)
+        <WithStyles(ForwardRef(Tooltip))
           title="Content name. You can set any name you prefer without any restrictions."
         >
           <WithStyles(ForwardRef(TableSortLabel))
@@ -36,7 +36,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
           >
             Display Name
           </WithStyles(ForwardRef(TableSortLabel))>
-        </WithStyles(Tooltip)>
+        </WithStyles(ForwardRef(Tooltip))>
       </WithStyles(ForwardRef(TableCell))>
     </WithStyles(ForwardRef(TableRow))>
   </WithStyles(ForwardRef(TableHead))>
@@ -1088,7 +1088,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
         className="DisplayName"
         key="DisplayName"
       >
-        <WithStyles(Tooltip)
+        <WithStyles(ForwardRef(Tooltip))
           title="Content name. You can set any name you prefer without any restrictions."
         >
           <WithStyles(ForwardRef(TableSortLabel))
@@ -1098,7 +1098,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
           >
             Display Name
           </WithStyles(ForwardRef(TableSortLabel))>
-        </WithStyles(Tooltip)>
+        </WithStyles(ForwardRef(Tooltip))>
       </WithStyles(ForwardRef(TableCell))>
     </WithStyles(ForwardRef(TableRow))>
   </WithStyles(ForwardRef(TableHead))>
@@ -2144,7 +2144,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
         className="DisplayName"
         key="DisplayName"
       >
-        <WithStyles(Tooltip)
+        <WithStyles(ForwardRef(Tooltip))
           title="Content name. You can set any name you prefer without any restrictions."
         >
           <WithStyles(ForwardRef(TableSortLabel))
@@ -2154,7 +2154,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
           >
             Display Name
           </WithStyles(ForwardRef(TableSortLabel))>
-        </WithStyles(Tooltip)>
+        </WithStyles(ForwardRef(Tooltip))>
       </WithStyles(ForwardRef(TableCell))>
     </WithStyles(ForwardRef(TableRow))>
   </WithStyles(ForwardRef(TableHead))>
@@ -3248,7 +3248,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
         className="DisplayName"
         key="DisplayName"
       >
-        <WithStyles(Tooltip)
+        <WithStyles(ForwardRef(Tooltip))
           title="Content name. You can set any name you prefer without any restrictions."
         >
           <WithStyles(ForwardRef(TableSortLabel))
@@ -3258,7 +3258,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
           >
             Display Name
           </WithStyles(ForwardRef(TableSortLabel))>
-        </WithStyles(Tooltip)>
+        </WithStyles(ForwardRef(Tooltip))>
       </WithStyles(ForwardRef(TableCell))>
     </WithStyles(ForwardRef(TableRow))>
   </WithStyles(ForwardRef(TableHead))>
@@ -4312,7 +4312,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
         className="DisplayName"
         key="DisplayName"
       >
-        <WithStyles(Tooltip)
+        <WithStyles(ForwardRef(Tooltip))
           title="Content name. You can set any name you prefer without any restrictions."
         >
           <WithStyles(ForwardRef(TableSortLabel))
@@ -4322,7 +4322,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
           >
             Display Name
           </WithStyles(ForwardRef(TableSortLabel))>
-        </WithStyles(Tooltip)>
+        </WithStyles(ForwardRef(Tooltip))>
       </WithStyles(ForwardRef(TableCell))>
     </WithStyles(ForwardRef(TableRow))>
   </WithStyles(ForwardRef(TableHead))>
@@ -5376,7 +5376,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
         className="DisplayName"
         key="DisplayName"
       >
-        <WithStyles(Tooltip)
+        <WithStyles(ForwardRef(Tooltip))
           title="Content name. You can set any name you prefer without any restrictions."
         >
           <WithStyles(ForwardRef(TableSortLabel))
@@ -5385,7 +5385,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
           >
             Display Name
           </WithStyles(ForwardRef(TableSortLabel))>
-        </WithStyles(Tooltip)>
+        </WithStyles(ForwardRef(Tooltip))>
       </WithStyles(ForwardRef(TableCell))>
     </WithStyles(ForwardRef(TableRow))>
   </WithStyles(ForwardRef(TableHead))>
@@ -6439,7 +6439,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
         className="DisplayName"
         key="DisplayName"
       >
-        <WithStyles(Tooltip)
+        <WithStyles(ForwardRef(Tooltip))
           title="Content name. You can set any name you prefer without any restrictions."
         >
           <WithStyles(ForwardRef(TableSortLabel))
@@ -6449,7 +6449,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
           >
             Display Name
           </WithStyles(ForwardRef(TableSortLabel))>
-        </WithStyles(Tooltip)>
+        </WithStyles(ForwardRef(Tooltip))>
       </WithStyles(ForwardRef(TableCell))>
     </WithStyles(ForwardRef(TableRow))>
   </WithStyles(ForwardRef(TableHead))>
@@ -7503,7 +7503,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
         className="DisplayName"
         key="DisplayName"
       >
-        <WithStyles(Tooltip)
+        <WithStyles(ForwardRef(Tooltip))
           title="Content name. You can set any name you prefer without any restrictions."
         >
           <WithStyles(ForwardRef(TableSortLabel))
@@ -7513,7 +7513,7 @@ exports[`ContentList component Selection and active item changes Event bindings 
           >
             Display Name
           </WithStyles(ForwardRef(TableSortLabel))>
-        </WithStyles(Tooltip)>
+        </WithStyles(ForwardRef(Tooltip))>
       </WithStyles(ForwardRef(TableCell))>
     </WithStyles(ForwardRef(TableRow))>
   </WithStyles(ForwardRef(TableHead))>
