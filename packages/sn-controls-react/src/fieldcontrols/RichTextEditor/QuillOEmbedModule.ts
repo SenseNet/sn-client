@@ -11,34 +11,37 @@ export default class QuillOEmbedModule {
     quill.clipboard.addMatcher(Node.TEXT_NODE, this.pasteHandler.bind(this))
   }
 
-  private pasteHandler(node: any, delta: DeltaStatic): DeltaStatic {
+  public pasteHandler(node: any, delta: DeltaStatic): DeltaStatic {
     if (delta.ops && QuillOEmbedModule.isValidUrl(node.data) && node.data.toLowerCase().indexOf('oembed') > -1) {
-      const { index } = this.quill.getSelection(true)
+      this.processRequest(node).then(() => {})
+    }
 
-      const formatParam = '&format=json'
-      const sizeParam = '&maxwidth=500&maxheight=500'
+    return delta
+  }
 
-      fetch(node.data + formatParam + sizeParam, {
+  public async processRequest(node: any) {
+    const { index } = this.quill.getSelection(true)
+
+    const formatParam = '&format=json'
+    const sizeParam = '&maxwidth=500&maxheight=500'
+
+    try {
+      const response = await fetch(node.data + formatParam + sizeParam, {
         headers: {
           Accept: 'application/json',
         },
       })
-        .then(response => response.json())
-        .then(json => this.insertEmbedFromJson(json, index))
-        .then(removeOriginal => {
-          if (removeOriginal) this.quill.deleteText(index + 1, node.data.length)
-        })
-        .catch(() => {
-          const targetUrl = new URL(node.data).searchParams.get('url')
+      const json = await response.json()
+      const removeOriginal = this.insertEmbedFromJson(json, index)
+      if (removeOriginal) this.quill.deleteText(index + 1, node.data.length)
+    } catch (e) {
+      const targetUrl = new URL(node.data).searchParams.get('url')
 
-          if (targetUrl && QuillOEmbedModule.isValidUrl(targetUrl)) {
-            this.quill.deleteText(index, node.data.length)
-            this.quill.insertText(index, targetUrl)
-          }
-        })
+      if (targetUrl && QuillOEmbedModule.isValidUrl(targetUrl)) {
+        this.quill.deleteText(index, node.data.length)
+        this.quill.insertText(index, targetUrl)
+      }
     }
-
-    return delta
   }
 
   private static isValidUrl(potentialUrl: string): boolean {
