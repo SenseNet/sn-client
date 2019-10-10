@@ -1,4 +1,4 @@
-import { shallow } from 'enzyme'
+import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { Button } from '@material-ui/core'
 import { DocumentViewerRegeneratePreviews } from '../src/components/DocumentViewerRegeneratePreviews'
@@ -13,7 +13,7 @@ describe('Document Regenerate Previews component', () => {
 
   it('Should trigger regeneration on button click', () => {
     const regeneratePreviews = jest.fn(async () => undefined)
-    const wrapper = shallow(
+    const wrapper = mount(
       <DocumentViewerApiSettingsContext.Provider value={{ ...defaultSettings, regeneratePreviews }}>
         <DocumentViewerRegeneratePreviews />
       </DocumentViewerApiSettingsContext.Provider>,
