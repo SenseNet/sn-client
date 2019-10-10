@@ -10,12 +10,12 @@ Please visit the [contribution guide](https://github.com/SenseNet/sensenet/blob/
 
 Please have the **_latest_** stable versions of the following on your machine
 
-- node
-- yarn
+- [**node**](https://nodejs.org/en/download/)
+- [**yarn**](https://yarnpkg.com/en/docs/install#windows-stable)
 
 ### Initial Setup
 
-If you run into trouble here, make sure your node, npm, and **_yarn_** are on the latest versions (yarn at least v1.3.2).
+If you run into trouble here, make sure your **_node_**, **_npm_**, and **_yarn_** are on the latest versions (yarn at least v1.3.2).
 
 1.  `git clone https://github.com/SenseNet/sn-client.git` _bonus_: use your own fork for this step
 2.  `cd sn-client`
@@ -65,4 +65,4 @@ To develop e2e tests:
 - Add test to `examples/sn-dms-demo/cypress/integration` with a spec.ts | spec.js file extension
 
 Running the tests locally will create a currentUser.json with a new test user. The tests are going to use this user.
-In order to use another user you can change the email and password of the current user or let the system create a new for you by deleting the json.
+In order to use another user you can change the email and password of the current user or let the system create a new one for you by deleting the json.
