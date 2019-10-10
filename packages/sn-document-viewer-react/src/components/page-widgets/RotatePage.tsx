@@ -43,12 +43,12 @@ export const RotatePageWidget: React.FC<RotatePageProps> = props => {
         right: 0,
         filter: 'drop-shadow(0 0 3px white) drop-shadow(0 0 5px white) drop-shadow(0 0 9px white)',
       }}>
-      <IconButton title={localization.rotatePageLeft}>
-        <RotateLeft onClick={rotatePageLeft} />
+      <IconButton onClick={rotatePageLeft} title={localization.rotatePageLeft}>
+        <RotateLeft />
       </IconButton>
 
-      <IconButton title={localization.rotatePageRight}>
-        <RotateRight onClick={rotatePageRight} />
+      <IconButton onClick={rotatePageRight} title={localization.rotatePageRight}>
+        <RotateRight />
       </IconButton>
     </div>
   )
