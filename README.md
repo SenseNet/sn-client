@@ -30,3 +30,5 @@ This repository is a monorepo that we manage using [Lerna](https://github.com/le
 | [@sensenet/redux](/packages/sn-redux)                                       | [![npm](https://img.shields.io/npm/v/@sensenet/redux.svg?maxAge=3600)](https://www.npmjs.com/package/@sensenet/redux)                                       |
 | [@sensenet/repository-events](/packages/sn-repository-events)               | [![npm](https://img.shields.io/npm/v/@sensenet/repository-events.svg?maxAge=3600)](https://www.npmjs.com/package/@sensenet/repository-events)               |
 | [@sensenet/search-react](/packages/sn-search-react)                         | [![npm](https://img.shields.io/npm/v/@sensenet/search-react.svg?maxAge=3600)](https://www.npmjs.com/package/@sensenet/search-react)                         |
+
+
