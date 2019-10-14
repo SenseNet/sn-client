@@ -5,7 +5,7 @@ import ReactQuill from 'react-quill'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import FormControl from '@material-ui/core/FormControl'
 import FormLabel from '@material-ui/core/FormLabel'
-import { RichTextEditor } from '../src/fieldcontrols/RichTextEditor'
+import { RichTextEditor } from '../src/fieldcontrols'
 
 describe('Rich text editor field control', () => {
   const defaultSettings = {
