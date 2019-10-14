@@ -1,6 +1,6 @@
 {
   "name": "sn-react-redux-todo-app",
-  "version": "2.0.11",
+  "version": "2.0.12",
   "description": "Todo app with React and Redux built upon Sense/Net ECM",
   "main": "index.tsx",
   "private": true,
@@ -32,10 +32,10 @@
   "dependencies": {
     "@material-ui/core": "^4.3.3",
     "@material-ui/icons": "^4.0.1",
-    "@sensenet/authentication-google": "^2.0.12",
-    "@sensenet/client-core": "^2.2.1",
-    "@sensenet/controls-react": "^3.1.1",
-    "@sensenet/redux": "^5.1.13",
+    "@sensenet/authentication-google": "^2.0.13",
+    "@sensenet/client-core": "^2.2.2",
+    "@sensenet/controls-react": "^3.2.0",
+    "@sensenet/redux": "^5.1.14",
     "material-ui-pickers": "^2.0.4",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
