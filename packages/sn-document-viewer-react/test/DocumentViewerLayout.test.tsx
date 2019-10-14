@@ -28,15 +28,6 @@ describe('Document Viewer Layout component', () => {
     document.body.appendChild(div)
   })
 
-  it('should match snapshot with thumbnails turned off', () => {
-    const wrapper2 = mount(
-      <ViewerStateContext.Provider value={{ ...defaultViewerState, showThumbnails: false }}>
-        <DocumentViewerLayout>{'some children'}</DocumentViewerLayout>
-      </ViewerStateContext.Provider>,
-    )
-    expect(wrapper2).toMatchSnapshot()
-  })
-
   it('should scroll to page when page changed', () => {
     const onPageChange = new ObservableValue(1)
     const scrollToMock = jest.fn()
