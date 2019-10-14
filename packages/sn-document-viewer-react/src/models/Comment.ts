@@ -1,4 +1,3 @@
-import { Omit } from 'react-redux'
 /**
  * User properties who created the comment
  */

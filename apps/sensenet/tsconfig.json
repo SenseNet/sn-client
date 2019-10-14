@@ -23,7 +23,6 @@
     { "path": "../../packages/sn-icons-react" },
     { "path": "../../packages/sn-list-controls-react" },
     { "path": "../../packages/sn-query" },
-    { "path": "../../packages/sn-redux" },
     { "path": "../../packages/sn-repository-events" }
   ]
 }

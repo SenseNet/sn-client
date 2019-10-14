@@ -21,7 +21,6 @@
     { "path": "../../packages/sn-list-controls-react" },
     { "path": "../../packages/sn-pickers-react" },
     { "path": "../../packages/sn-query" },
-    { "path": "../../packages/sn-redux" },
     { "path": "../../packages/sn-search-react" }
   ]
 }
