@@ -25,6 +25,7 @@
   "license": "GPL-2.0",
   "homepage": "https://sensenet.com",
   "dependencies": {
+    "@furystack/inject": "^4.0.2",
     "@material-ui/core": "^4.3.3",
     "@material-ui/icons": "^4.0.1",
     "@sensenet/client-utils": "^1.6.5",
@@ -33,8 +34,8 @@
     "@sensenet/hooks-react": "1.0.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
+    "semaphore-async-await": "^1.5.1",
     "styled-components": "^4.1.3",
-    "@furystack/inject": "^4.0.2",
     "tslib": "^1.9.3"
   },
   "devDependencies": {
