@@ -4,21 +4,24 @@ import React from 'react'
 import { ThemeProvider } from 'styled-components'
 import { deepMerge } from '@sensenet/client-utils'
 import loaderImage from '../../assets/loader.gif'
-import { defaultTheme, DocumentViewerApiSettings } from '../models'
-import { PreviewState } from '../Enums'
-import { DocumentViewerApiSettingsProvider } from '../context/api-settings'
-import { ViewerSettingsContext } from '../context/viewer-settings'
-import { DocumentDataContext, DocumentDataProvider } from '../context/document-data'
-import { defaultLocalization, LocalizationContext, LocalizationType } from '../context/localization-context'
-import { DocumentPermissionsContextProvider } from '../context/document-permissions'
-import { ViewerState } from '../models/viewer-state'
-import { ViewerStateProvider } from '../context/viewer-state'
-import { PreviewImageDataContextProvider } from '../context/preview-image-data'
-import { CommentStateProvider } from '../context/comment-states'
-import { DocumentViewerError } from './DocumentViewerError'
-import { DocumentViewerLayout } from './DocumentViewerLayout'
-import { DocumentViewerLoading } from './DocumentViewerLoading'
-import { DocumentViewerRegeneratePreviews } from './DocumentViewerRegeneratePreviews'
+import { DocumentViewerError, DocumentViewerLayout, DocumentViewerLoading, DocumentViewerRegeneratePreviews } from '.'
+import {
+  CommentStateProvider,
+  defaultLocalization,
+  defaultTheme,
+  DocumentDataContext,
+  DocumentDataProvider,
+  DocumentPermissionsContextProvider,
+  DocumentViewerApiSettings,
+  DocumentViewerApiSettingsProvider,
+  LocalizationContext,
+  LocalizationType,
+  PreviewImageDataContextProvider,
+  PreviewState,
+  ViewerSettingsContext,
+  ViewerState,
+  ViewerStateProvider,
+} from '..'
 
 /**
  * Defined the component's own properties
