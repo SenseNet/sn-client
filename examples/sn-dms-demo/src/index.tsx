@@ -5,21 +5,17 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { ReduxDiMiddleware } from 'redux-di-middleware'
-import { RepositoryContext } from './context/RepositoryContext'
+import { RepositoryContext } from '@sensenet/hooks-react'
 import { dmsInjector } from './DmsRepository'
 import './index.css'
 import registerServiceWorker from './registerServiceWorker'
 import Sensenet from './Sensenet'
 import { initLog } from './store/actionlog/actions'
 import { rootReducer } from './store/rootReducer'
-import { getViewerSettings } from './ViewerSettings'
 
 const repository = dmsInjector.getInstance(Repository)
 
-const viewerSettings = getViewerSettings(repository)
-
 const di = new ReduxDiMiddleware(dmsInjector)
-di.setInjectable(viewerSettings)
 
 const options = {
   repository,

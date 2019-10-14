@@ -53,51 +53,49 @@ describe('ZoomMode component', () => {
 
   it('should close ZoomMenu and sets the zoomMode to fit when ZoomOutMap clicked', () => {
     const setZoomMode = jest.fn()
-    const wrapper = getComponentWithProps({})
+    const wrapper = getComponentWithProps({ updateState: setZoomMode })
     wrapper.find(IconButton).simulate('click')
     wrapper
       .find(ZoomOutMap)
-      .parent()
+      .at(1)
       .simulate('click')
-    expect(setZoomMode).toBeCalledWith('fit')
+    expect(setZoomMode).toBeCalledWith({ zoomMode: 'fit' })
     expect(wrapper.find(Menu).prop('open')).toBeFalsy()
   })
 
   it('should close ZoomMenu and sets the zoomMode to originalSize when AspectRatio clicked', () => {
     const setZoomMode = jest.fn()
-    const wrapper = getComponentWithProps({ updateState: setZoomMode })
+    const wrapper = getComponentWithProps({ updateState: setZoomMode, zoomMode: 'originalSize' })
     wrapper.find(IconButton).simulate('click')
     wrapper
       .find(AspectRatio)
-      .parent()
+      .at(1)
       .simulate('click')
-    expect(setZoomMode).toBeCalledWith('originalSize')
+    expect(setZoomMode).toBeCalledWith({ zoomMode: 'originalSize' })
     expect(wrapper.find(Menu).prop('open')).toBeFalsy()
   })
 
   it('should close ZoomMenu and sets the zoomMode to fitHeight when reversed "Fit Height" clicked', () => {
     const setZoomMode = jest.fn()
-    const wrapper = getComponentWithProps({ updateState: setZoomMode })
+    const wrapper = getComponentWithProps({ updateState: setZoomMode, zoomMode: 'fitHeight' })
     wrapper.find(IconButton).simulate('click')
     wrapper
       .find(Code)
-      .first()
-      .parent()
+      .at(1)
       .simulate('click')
-    expect(setZoomMode).toBeCalledWith('fitHeight')
+    expect(setZoomMode).toBeCalledWith({ zoomMode: 'fitHeight' })
     expect(wrapper.find(Menu).prop('open')).toBeFalsy()
   })
 
   it('should close ZoomMenu and sets the zoomMode to fitWidth when "Fit Width" clicked', () => {
     const setZoomMode = jest.fn()
-    const wrapper = getComponentWithProps({ updateState: setZoomMode })
+    const wrapper = getComponentWithProps({ updateState: setZoomMode, zoomMode: 'fitWidth' })
     wrapper.find(IconButton).simulate('click')
     wrapper
       .find(Code)
-      .last()
-      .parent()
+      .at(2)
       .simulate('click')
-    expect(setZoomMode).toBeCalledWith('fitWidth')
+    expect(setZoomMode).toBeCalledWith({ zoomMode: 'fitWidth' })
     expect(wrapper.find(Menu).prop('open')).toBeFalsy()
   })
 

@@ -4,6 +4,7 @@ import React from 'react'
 import { Page, PageProps } from '../src/components/Page'
 import { defaultViewerState, ViewerStateContext } from '../src/context/viewer-state'
 import { PreviewImageDataContext } from '../src/context/preview-image-data'
+import { CommentStateContext } from '../src/context/comment-states'
 import { examplePreviewImageData } from './__Mocks__/viewercontext'
 
 describe('Page component', () => {
@@ -36,10 +37,10 @@ describe('Page component', () => {
   })
 
   it('Should render a loader when polling', () => {
-    const wrapper = shallow(
+    const wrapper = mount(
       <PreviewImageDataContext.Provider
         value={{
-          imageData: [examplePreviewImageData],
+          imageData: [{ ...examplePreviewImageData, PreviewImageUrl: undefined }],
           rotateImages: () => undefined,
         }}>
         <Page {...defaultProps} />,
@@ -59,21 +60,25 @@ describe('Page component', () => {
   })
 
   it('should handle marker placement', () => {
-    const updateState = jest.fn()
+    const setDraft = jest.fn()
     const wrapper = mount(
       <ViewerStateContext.Provider
         value={{
           ...defaultViewerState,
-          updateState,
           isPlacingCommentMarker: true,
         }}>
-        <Page {...defaultProps} />
+        <CommentStateContext.Provider value={{ setDraft } as any}>
+          <PreviewImageDataContext.Provider value={{ imageData: [examplePreviewImageData] } as any}>
+            <Page {...defaultProps} />
+          </PreviewImageDataContext.Provider>
+        </CommentStateContext.Provider>
       </ViewerStateContext.Provider>,
     )
+
     wrapper
       .find('div')
-      .first()
-      .simulate('click', { nativeEvent: { offsetX: 10, offsetY: 10 } })
-    expect(updateState).toBeCalledWith({ isPlacingCommentMarker: false })
+      .at(1)
+      .simulate('click', { nativeEvent: { offsetX: 3, offsetY: 3 } })
+    expect(setDraft).toBeCalledWith({ id: 'draft', x: -6, y: -6 })
   })
 })
