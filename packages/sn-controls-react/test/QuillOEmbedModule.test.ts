@@ -7,6 +7,10 @@ const richHtml = '<a href="https://example.com">Example</a>'
 const imageUrl = 'https://example.com'
 const oEmbedUrl = 'https://example.com/oembed?url=http%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DiwGFalTRHDA'
 
+/**
+ * Convenience function to allow simpler building of the fetch mock
+ * @param type type field in the simulated oEmbed response
+ */
 function getFetchResult(type: string) {
   return () =>
     Promise.resolve({
@@ -101,6 +105,9 @@ describe('QuillOEmbedModule', () => {
     expect(deleteSpy).toBeCalledWith(1, oEmbedUrl.length)
   })
 
+  /**
+   * Convenience function to test the same thing for oEmbed types rich and video
+   */
   async function testHtmlEmbed() {
     await module.processRequest({
       data: oEmbedUrl,
