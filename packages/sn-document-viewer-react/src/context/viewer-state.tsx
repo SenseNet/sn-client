@@ -18,9 +18,7 @@ export const defaultViewerState: ViewerState & {
   isPlacingCommentMarker: false,
   isCreateCommentActive: false,
   onPageChange: new ObservableValue(1),
-  updateState: () => {
-    /** */
-  },
+  updateState: () => {},
 }
 export const ViewerStateContext = React.createContext(defaultViewerState)
 

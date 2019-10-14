@@ -52,7 +52,7 @@ export interface DocumentViewerProps {
   theme?: Theme
 
   /**
-   * Optional API method overrides if you has to use custom API
+   * Optional API method overrides if you have to use custom API
    */
   api?: Partial<DocumentViewerApiSettings>
 

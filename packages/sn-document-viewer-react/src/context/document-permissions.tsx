@@ -18,7 +18,6 @@ export const DocumentPermissionsContextProvider: React.FC = ({ children }) => {
     const abortController = new AbortController()
     ;(async () => {
       try {
-        /** */
         const canEditPromise = api.canEditDocument({ document: documentData, abortController })
         const cancanHideRedactionPromise = api.canHideRedaction({ document: documentData, abortController })
         const canHideWatermarkPromise = api.canHideWatermark({ document: documentData, abortController })

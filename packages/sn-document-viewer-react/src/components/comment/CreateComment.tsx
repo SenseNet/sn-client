@@ -25,7 +25,6 @@ export type CreateCommentLocalization = Pick<
 export interface CreateCommentProps {
   createComment: (text: string) => void
   localization?: CreateCommentLocalization
-  // isPlacingMarker: boolean
   isActive: boolean
   handleIsActive: (isActive: boolean) => void
   inputValue: string

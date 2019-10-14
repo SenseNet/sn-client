@@ -27,7 +27,6 @@ const addGuidToShape = <T extends Shape>(shape: T) => {
 /**
  * Concatenates avatar url with host
  * @param {DocumentData} documentData
- * @returns {(value: Comment) => Comment}
  */
 function changeCreatedByUrlToCurrent(documentData: DocumentData): (value: CommentData) => CommentData {
   return comment => {

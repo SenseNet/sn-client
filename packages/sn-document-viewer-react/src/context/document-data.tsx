@@ -63,7 +63,6 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
           }
         }
       } catch (error) {
-        /** */
         if (!ac.signal.aborted) {
           setDocumentData({ ...defaultDocumentData, pageCount: PreviewState.ClientFailure, error: error.toString() })
           throw error
