@@ -17,8 +17,8 @@ export const defaultCommentState: CommentState = {
 export const CommentStateContext = React.createContext<CommentState>(defaultCommentState)
 
 export const CommentStateProvider: React.FC = ({ children }) => {
-  const [draft, setDraft] = useState<DraftCommentMarker | undefined>(undefined)
-  const [activeCommentId, setActiveComment] = useState<string | undefined>(undefined)
+  const [draft, setDraft] = useState<DraftCommentMarker>()
+  const [activeCommentId, setActiveComment] = useState<string>()
 
   return (
     <CommentStateContext.Provider value={{ draft, setDraft, activeCommentId, setActiveComment }}>

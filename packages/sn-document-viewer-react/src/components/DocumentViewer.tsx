@@ -4,24 +4,25 @@ import React from 'react'
 import { ThemeProvider } from 'styled-components'
 import { deepMerge } from '@sensenet/client-utils'
 import loaderImage from '../../assets/loader.gif'
-import { DocumentViewerError, DocumentViewerLayout, DocumentViewerLoading, DocumentViewerRegeneratePreviews } from '.'
+import { defaultTheme, DocumentViewerApiSettings, ViewerState } from '../models'
+import { PreviewState } from '../Enums'
 import {
   CommentStateProvider,
   defaultLocalization,
-  defaultTheme,
   DocumentDataContext,
   DocumentDataProvider,
   DocumentPermissionsContextProvider,
-  DocumentViewerApiSettings,
   DocumentViewerApiSettingsProvider,
   LocalizationContext,
   LocalizationType,
   PreviewImageDataContextProvider,
-  PreviewState,
   ViewerSettingsContext,
-  ViewerState,
   ViewerStateProvider,
-} from '..'
+} from '../context'
+import { DocumentViewerError } from './DocumentViewerError'
+import { DocumentViewerLayout } from './DocumentViewerLayout'
+import { DocumentViewerLoading } from './DocumentViewerLoading'
+import { DocumentViewerRegeneratePreviews } from './DocumentViewerRegeneratePreviews'
 
 /**
  * Defined the component's own properties
