@@ -13,6 +13,8 @@ function getFetchResult(type: string) {
           type,
           html: richHtml,
           url: imageUrl,
+          width: 42,
+          height: 42,
         }),
     })
 }
@@ -100,8 +102,8 @@ describe('QuillOEmbedModule', () => {
     })
 
     const expectedValue = {
-      height: undefined,
-      width: undefined,
+      height: 42,
+      width: 42,
       html: richHtml,
     }
 
@@ -139,5 +141,63 @@ describe('QuillOEmbedModule', () => {
 
     await module.processRequest({ data: oEmbedUrl })
     expect(deleteSpy).not.toBeCalled()
+  })
+
+  it('falls back to thumbnail_width/thumbnail_height if width/height are not present', async () => {
+    embedSpy.mockReset()
+
+    anyGlobal.fetch.mockImplementationOnce(() => {
+      return Promise.resolve({
+        json: () => {
+          return {
+            type: 'video',
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            thumbnail_width: 41,
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            thumbnail_height: 41,
+            html: richHtml,
+          }
+        },
+      })
+    })
+
+    await module.processRequest({ data: oEmbedUrl })
+    expect(embedSpy).toBeCalledWith(
+      0,
+      'oembed-wrapper',
+      {
+        html: richHtml,
+        width: 41,
+        height: 41,
+      },
+      'api',
+    )
+  })
+
+  it('falls back to width 500/height 500 if neither width/height nor thumbnail_width/thumbnail_height are present', async () => {
+    embedSpy.mockReset()
+
+    anyGlobal.fetch.mockImplementationOnce(() => {
+      return Promise.resolve({
+        json: () => {
+          return {
+            type: 'video',
+            html: richHtml,
+          }
+        },
+      })
+    })
+
+    await module.processRequest({ data: oEmbedUrl })
+    expect(embedSpy).toBeCalledWith(
+      0,
+      'oembed-wrapper',
+      {
+        html: richHtml,
+        width: 500,
+        height: 500,
+      },
+      'api',
+    )
   })
 })
