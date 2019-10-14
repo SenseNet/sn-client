@@ -33,6 +33,7 @@ exports[`Rich text editor field control in edit/new view should set all the prop
     defaultValue="defaultValue"
     modules={
       Object {
+        "oembed": true,
         "toolbar": Array [
           Array [
             "bold",
