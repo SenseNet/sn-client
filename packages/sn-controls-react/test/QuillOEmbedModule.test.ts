@@ -1,4 +1,6 @@
 import Quill from 'quill'
+import MutationObserver = require('./polyfills/MutationObserver')
+import getSelection = require('./polyfills/getSelection')
 import QuillOEmbedModule from '../src/fieldcontrols/RichTextEditor/QuillOEmbedModule'
 
 const richHtml = '<a href="https://example.com">Example</a>'
@@ -20,9 +22,12 @@ function getFetchResult(type: string) {
 }
 
 Quill.register('modules/oembed', QuillOEmbedModule)
+MutationObserver(global)
+getSelection(global)
 
 describe('QuillOEmbedModule', () => {
-  const quill = new Quill('div', {
+  const div = document.createElement('div')
+  const quill = new Quill(div, {
     modules: {
       oembed: true,
     },
