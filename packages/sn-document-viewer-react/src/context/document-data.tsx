@@ -82,7 +82,6 @@ export const DocumentDataProvider: React.FC = ({ children }) => {
         try {
           await loadLock.acquire()
           setDocumentData(merged)
-          console.log(documentData, merged)
         } finally {
           loadLock.release()
         }

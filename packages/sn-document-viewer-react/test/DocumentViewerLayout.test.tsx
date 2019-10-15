@@ -1,4 +1,3 @@
-import Drawer from '@material-ui/core/Drawer'
 import { ObservableValue } from '@sensenet/client-utils'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
@@ -47,28 +46,6 @@ describe('Document Viewer Layout component', () => {
 
     onPageChange.setValue(3)
     expect(scrollToMock).toBeCalled()
-  })
-
-  /**
-   * This test doesn't make any sense to me (Zoli)
-   */
-  it('should scroll to page when fitRelativeZoomLevel changed', () => {
-    const wrapper = mount(
-      <PreviewImageDataContextWrapper>
-        <DocumentViewerLayout>{'some children'}</DocumentViewerLayout>
-      </PreviewImageDataContextWrapper>,
-      {
-        wrappingComponent: ViewerStateContextWrapper,
-      },
-    )
-    const provider = wrapper.getWrappingComponent()
-    provider.setProps({ fitRelativeZoomLevel: 2 })
-
-    const paperProps = wrapper
-      .find(Drawer)
-      .first()
-      .prop('PaperProps')
-    expect(paperProps!.style!.width).toBe(0)
   })
 
   it('click on a page / thumbnail should scroll to the selected page', async () => {
