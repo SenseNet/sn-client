@@ -1,18 +1,57 @@
-import { useCallback } from 'react'
-import { usePreviewImages } from './usePreviewImages'
+import { useCallback, useEffect, useState } from 'react'
+import { sleepAsync } from '@sensenet/client-utils'
+import { useDocumentData, useDocumentViewerApi, usePreviewImages, useViewerSettings, useViewerState } from '.'
+
+const POLLING_INTERVAL = 3000
 
 export const usePreviewImage = (pageNo: number) => {
   const images = usePreviewImages()
-  const image = images.imageData.find(i => i.Index === pageNo)
+  const api = useDocumentViewerApi()
+  const { documentData } = useDocumentData()
+  const viewerSettings = useViewerSettings()
+  const viewerState = useViewerState()
+  const [previewImage, setPreviewImage] = useState(images.imageData.find(i => i.Index === pageNo))
   const { imageData, ...context } = { ...images }
 
-  // ToDo: Polling?
+  useEffect(() => {
+    setPreviewImage(images.imageData.find(i => i.Index === pageNo))
+  }, [images.imageData, pageNo])
+
+  useEffect(() => {
+    const abortController = new AbortController()
+    const getPreviewImageData = async () => {
+      try {
+        const preivewImageData = await api.isPreviewAvailable({
+          abortController,
+          document: documentData,
+          page: pageNo,
+          showWatermark: viewerState.showWatermark,
+          version: viewerSettings.version || '',
+        })
+        if (preivewImageData && preivewImageData.PreviewAvailable) {
+          setPreviewImage(preivewImageData)
+        } else {
+          await sleepAsync(POLLING_INTERVAL)
+          getPreviewImageData()
+        }
+      } catch (error) {
+        if (!abortController.signal.aborted) {
+          throw error
+        }
+      }
+    }
+
+    if (previewImage && !previewImage.PreviewImageUrl) {
+      getPreviewImageData()
+    }
+    return () => abortController.abort()
+  }, [api, documentData, pageNo, previewImage, viewerSettings.version, viewerState.showWatermark])
 
   const rotate = useCallback((amount: number) => images.rotateImages([pageNo], amount), [images, pageNo])
 
   return {
     ...context,
-    image,
+    image: previewImage,
     rotate,
   }
 }
