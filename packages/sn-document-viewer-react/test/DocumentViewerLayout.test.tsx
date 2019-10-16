@@ -168,10 +168,12 @@ describe('Document Viewer Layout component', () => {
   it('should abort commenting when esc was pushed', async () => {
     const updateState = jest.fn()
     mount(
-      <ViewerStateContext.Provider
-        value={{ ...defaultViewerState, showComments: true, isCreateCommentActive: true, updateState }}>
-        <DocumentViewerLayout>{'some children'}</DocumentViewerLayout>
-      </ViewerStateContext.Provider>,
+      <ThemeProvider theme={defaultTheme}>
+        <ViewerStateContext.Provider
+          value={{ ...defaultViewerState, showComments: true, isCreateCommentActive: true, updateState }}>
+          <DocumentViewerLayout>{'some children'}</DocumentViewerLayout>
+        </ViewerStateContext.Provider>
+      </ThemeProvider>,
     )
     await act(async () => {
       events.keyup({ key: 'Escape' })

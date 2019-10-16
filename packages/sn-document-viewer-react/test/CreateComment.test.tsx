@@ -1,10 +1,12 @@
 import Button from '@material-ui/core/Button'
 import FormHelperText from '@material-ui/core/FormHelperText'
-import { mount, shallow } from 'enzyme'
+import { mount } from 'enzyme'
 import React from 'react'
 import { TextField } from '@material-ui/core'
+import { ThemeProvider } from 'styled-components'
 import { CreateComment, CreateCommentProps } from '../src/components'
 import { CommentStateContext, CommentStateProvider, defaultCommentState } from '../src/context/comment-states'
+import { defaultTheme } from '../src/models'
 
 describe('Create comment component', () => {
   const defaultProps: CreateCommentProps = {
@@ -25,13 +27,19 @@ describe('Create comment component', () => {
   }
 
   it('should show add comment button when not active', () => {
-    const wrapper = shallow(<CreateComment {...defaultProps} isActive={false} />)
+    const wrapper = mount(<CreateComment {...defaultProps} isActive={false} />, {
+      wrappingComponent: ThemeProvider,
+      wrappingComponentProps: { theme: defaultTheme },
+    })
     expect(wrapper.find(Button).exists()).toBeTruthy()
     expect(wrapper.find(Button).length).toBe(1)
   })
 
   it('should handle isActive when add comment button is clicked', () => {
-    const wrapper = shallow(<CreateComment {...defaultProps} isActive={false} />)
+    const wrapper = mount(<CreateComment {...defaultProps} isActive={false} />, {
+      wrappingComponent: ThemeProvider,
+      wrappingComponentProps: { theme: defaultTheme },
+    })
     wrapper.find(Button).simulate('click')
     expect(defaultProps.handleIsActive).toBeCalled()
   })
@@ -50,6 +58,10 @@ describe('Create comment component', () => {
         }}>
         <CreateComment {...defaultProps} inputValue="Hello" createComment={cc} />
       </CommentStateContext.Provider>,
+      {
+        wrappingComponent: ThemeProvider,
+        wrappingComponentProps: { theme: defaultTheme },
+      },
     )
     wrapper
       .find(Button)
@@ -72,6 +84,10 @@ describe('Create comment component', () => {
         }}>
         <CreateComment {...defaultProps} inputValue="Hello" createComment={cc} />
       </CommentStateContext.Provider>,
+      {
+        wrappingComponent: ThemeProvider,
+        wrappingComponentProps: { theme: defaultTheme },
+      },
     )
     wrapper
       .find(Button)
@@ -81,7 +97,10 @@ describe('Create comment component', () => {
   })
 
   it('should handle cancel button click', () => {
-    const wrapper = mount(<CreateComment {...defaultProps} />)
+    const wrapper = mount(<CreateComment {...defaultProps} />, {
+      wrappingComponent: ThemeProvider,
+      wrappingComponentProps: { theme: defaultTheme },
+    })
     wrapper
       .find(Button)
       .last()
@@ -90,7 +109,10 @@ describe('Create comment component', () => {
   })
 
   it('should clear input value after submitted', () => {
-    const wrapper = mount(<CreateComment {...defaultProps} inputValue="Hello" />)
+    const wrapper = mount(<CreateComment {...defaultProps} inputValue="Hello" />, {
+      wrappingComponent: ThemeProvider,
+      wrappingComponentProps: { theme: defaultTheme },
+    })
     wrapper
       .find(Button)
       .first()
@@ -100,7 +122,10 @@ describe('Create comment component', () => {
   })
 
   it('should clear input value when cancel clicked', () => {
-    const wrapper = mount(<CreateComment {...defaultProps} inputValue="Hello" />)
+    const wrapper = mount(<CreateComment {...defaultProps} inputValue="Hello" />, {
+      wrappingComponent: ThemeProvider,
+      wrappingComponentProps: { theme: defaultTheme },
+    })
     wrapper
       .find(Button)
       .last()
@@ -111,7 +136,10 @@ describe('Create comment component', () => {
   })
 
   it('should handle input change', () => {
-    const wrapper = mount(<CreateComment {...defaultProps} />)
+    const wrapper = mount(<CreateComment {...defaultProps} />, {
+      wrappingComponent: ThemeProvider,
+      wrappingComponentProps: { theme: defaultTheme },
+    })
     wrapper
       .find('textarea')
       .first()
@@ -128,6 +156,10 @@ describe('Create comment component', () => {
       <CommentStateProvider>
         <CreateComment {...defaultProps} />
       </CommentStateProvider>,
+      {
+        wrappingComponent: ThemeProvider,
+        wrappingComponentProps: { theme: defaultTheme },
+      },
     )
     wrapper
       .find(Button)
@@ -141,6 +173,10 @@ describe('Create comment component', () => {
       <CommentStateContext.Provider value={{ ...defaultCommentState }}>
         <CreateComment {...defaultProps} inputValue="Hello There" />
       </CommentStateContext.Provider>,
+      {
+        wrappingComponent: ThemeProvider,
+        wrappingComponentProps: { theme: defaultTheme },
+      },
     )
     ;(wrapper.find(TextField).prop('onChange') as any)({ target: { value: 'Hello There' } })
     wrapper
@@ -151,7 +187,10 @@ describe('Create comment component', () => {
   })
 
   it('should give an error message when draftCommentMarker is set but input is empty', () => {
-    const wrapper = mount(<CreateComment {...defaultProps} />)
+    const wrapper = mount(<CreateComment {...defaultProps} />, {
+      wrappingComponent: ThemeProvider,
+      wrappingComponentProps: { theme: defaultTheme },
+    })
     wrapper
       .find(Button)
       .first()
