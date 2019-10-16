@@ -17,7 +17,7 @@ import { DocumentViewerRegeneratePreviews } from './DocumentViewerRegeneratePrev
 /**
  * Defined the component's own properties
  */
-export interface OwnProps {
+export interface OwnProps extends React.Props<any> {
   hostName: string
   documentIdOrPath: string | number
   version?: string
