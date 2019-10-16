@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/client-utils",
-  "version": "1.6.5",
+  "version": "1.6.6",
   "description": "General sensenet ECM independent client side utilities",
   "main": "dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -33,5 +33,8 @@
   "bugs": {
     "url": "https://github.com/SenseNet/sn-client/issues"
   },
-  "homepage": "https://sensenet.com"
+  "homepage": "https://sensenet.com",
+  "dependencies": {
+    "tslib": "^1.9.3"
+  }
 }

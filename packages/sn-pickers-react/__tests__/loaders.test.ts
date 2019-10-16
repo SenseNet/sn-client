@@ -27,20 +27,30 @@ const mockOdataOptions = {
 
 describe('loadItems function', () => {
   it('should load with default OData options', async () => {
-    await loadItems({ repository, path: '' })
-    expect(repository.loadCollection).toBeCalledWith({ oDataOptions: defaultLoadItemsODataOptions, path: '' })
+    const abortController = new AbortController()
+    await loadItems({ repository, path: '', abortController })
+    expect(repository.loadCollection).toBeCalledWith({
+      oDataOptions: defaultLoadItemsODataOptions,
+      path: '',
+      requestInit: { signal: abortController.signal },
+    })
   })
 
   it('should load with provided OData options', async () => {
-    await loadItems({ repository, path: '', itemsODataOptions: mockOdataOptions } as any)
-    expect(repository.loadCollection).toBeCalledWith({ oDataOptions: mockOdataOptions, path: '' })
+    const abortController = new AbortController()
+    await loadItems({ repository, path: '', itemsODataOptions: mockOdataOptions, abortController } as any)
+    expect(repository.loadCollection).toBeCalledWith({
+      oDataOptions: mockOdataOptions,
+      path: '',
+      requestInit: { signal: abortController.signal },
+    })
   })
 
   it('should load with parent when parentId is passed', async () => {
     repository.load = jest.fn(() => {
       return { d: mockContent }
     })
-    const items = await loadItems({ repository, path: '', parentId: 123 })
+    const items = await loadItems({ repository, path: '', parentId: 123, abortController: new AbortController() })
     expect(repository.load).toBeCalledTimes(1)
     expect(items).toHaveLength(2)
     expect(items[0]).toHaveProperty('isParent', true)
@@ -50,7 +60,7 @@ describe('loadItems function', () => {
     repository.load = jest.fn(() => {
       return { d: mockContent }
     })
-    const items = await loadItems({ repository, path: '', parentId: 0 })
+    const items = await loadItems({ repository, path: '', parentId: 0, abortController: new AbortController() })
     expect(repository.load).not.toBeCalled()
     expect(items).toHaveLength(1)
   })
@@ -59,7 +69,7 @@ describe('loadItems function', () => {
     repository.load = jest.fn(() => {
       return { d: { ...mockContent, ParentId: 0 } }
     })
-    const items = await loadItems({ repository, path: '' })
+    const items = await loadItems({ repository, path: '', abortController: new AbortController() })
     expect(items).toHaveLength(1)
   })
 })

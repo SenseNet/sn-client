@@ -8,6 +8,7 @@ interface LoadItemsOptions<T> {
   repository: Repository
   itemsODataOptions?: ODataParams<T>
   parentODataOptions?: ODataParams<T>
+  abortController: AbortController
 }
 
 /**
@@ -60,8 +61,12 @@ async function getParent<T extends GenericContent>(
     }
     return await repository.load<T>({ idOrPath: itemParent.d.ParentId!, oDataOptions: parentODataOptions })
   }
+
+  if (!parentId) {
+    return
+  }
   return await repository.load<T>({
-    idOrPath: parentId!,
+    idOrPath: parentId,
     oDataOptions: parentODataOptions,
   })
 }
@@ -75,14 +80,16 @@ export const loadItems = async <T extends GenericContentWithIsParent>({
   itemsODataOptions: itemsODataOptionsArgs,
   parentODataOptions,
   parentId,
+  abortController,
 }: LoadItemsOptions<T>) => {
   const itemsODataOptions = { ...defaultLoadItemsODataOptions, ...itemsODataOptionsArgs }
   const itemsResult = await repository.loadCollection<T>({
     path,
     oDataOptions: itemsODataOptions,
+    requestInit: { signal: abortController.signal },
   })
   const items = itemsResult.d.results.map(item => {
-    return { ...item, isParent: false }
+    return { ...item, isParent: false } as T & { isParent: boolean }
   })
   const parentResult = await getParent<T>(items[0], repository, parentODataOptions, parentId)
   if (!parentResult) {

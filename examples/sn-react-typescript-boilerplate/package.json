@@ -1,0 +1,58 @@
+{
+  "name": "@sensenet/react-typescript-boilerplate",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "keywords": [
+    "sensenet",
+    "cps",
+    "single page application",
+    "boilerplate",
+    "react",
+    "typescript"
+  ],
+  "scripts": {
+    "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
+    "build": "rimraf bundle && webpack",
+    "start": "webpack-dev-server --progress",
+    "test": "jest --coverage",
+    "lint": "eslint . --ext .tsx,.ts --cache"
+  },
+  "private": true,
+  "publishConfig": {
+    "access": "private"
+  },
+  "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
+  "license": "GPL-2.0",
+  "homepage": "https://sensenet.com",
+  "devDependencies": {
+    "@types/react": "^16.8.19",
+    "@types/react-dom": "^16.8.4",
+    "awesome-typescript-loader": "^5.2.1",
+    "css-loader": "^3.0.0",
+    "file-loader": "^4.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "rimraf": "^3.0.0",
+    "source-map-loader": "^0.2.4",
+    "style-loader": "^1.0.0",
+    "ts-config-webpack-plugin": "^1.3.1",
+    "typescript": "^3.5.2",
+    "url-loader": "^2.0.1",
+    "webpack": "^4.32.2",
+    "webpack-bundle-analyzer": "^3.3.2",
+    "webpack-cli": "^3.3.2",
+    "webpack-dev-server": "^3.4.1"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.2.0",
+    "@sensenet/client-core": "^2.2.2",
+    "@sensenet/default-content-types": "^2.0.2",
+    "@sensenet/hooks-react": "^1.0.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "tslib": "^1.9.3"
+  }
+}

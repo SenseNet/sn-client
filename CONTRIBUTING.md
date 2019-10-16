@@ -65,4 +65,5 @@ To develop e2e tests:
 - Add test to `examples/sn-dms-demo/cypress/integration` with a spec.ts | spec.js file extension
 
 Running the tests locally will create a currentUser.json with a new test user. The tests are going to use this user.
+
 In order to use another user, you can change the email and password of the current user or let the system create a new for you by deleting the JSON.
