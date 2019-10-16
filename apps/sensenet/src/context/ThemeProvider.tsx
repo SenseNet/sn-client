@@ -1,5 +1,5 @@
 import createMuiTheme, { ThemeOptions } from '@material-ui/core/styles/createMuiTheme'
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
+import { MuiThemeProvider } from '@material-ui/core/styles'
 import React, { useContext } from 'react'
 import { ResponsivePersonalSetttings } from './ResponsiveContextProvider'
 import { ThemeContext } from './ThemeContext'

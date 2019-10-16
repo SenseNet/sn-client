@@ -1,4 +1,4 @@
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
+import { MuiThemeProvider } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import { ActionModel, Query } from '@sensenet/default-content-types'
 import { ContentList } from '@sensenet/list-controls-react'
