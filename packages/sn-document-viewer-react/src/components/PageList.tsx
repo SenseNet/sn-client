@@ -82,7 +82,7 @@ export class PageListComponent extends React.Component<
   private onScroll!: () => void
 
   /** event that will be triggered before mounting the component */
-  public componentWillMount() {
+  public UNSAFE_componentWillMount() {
     this.onResize = debounce(() => this.setupViewPort(), 50).bind(this)
     addEventListener('resize', this.onResize)
     this.onResize()
@@ -105,7 +105,7 @@ export class PageListComponent extends React.Component<
   }
 
   /** triggered when the component will receive props */
-  public componentWillReceiveProps(newProps: this['props']) {
+  public UNSAFE_componentWillReceiveProps(newProps: this['props']) {
     this.setupVisiblePages(newProps, newProps.activePage !== this.props.activePage ? newProps.activePage : undefined)
   }
 
