@@ -140,7 +140,7 @@ class ActionMenu extends React.Component<
     this.handleMouseLeave = this.handleMouseLeave.bind(this)
     this.handleMenuItemClick = this.handleMenuItemClick.bind(this)
   }
-  public componentWillReceiveProps(nextProps: this['props']) {
+  public UNSAFE_componentWillReceiveProps(nextProps: this['props']) {
     if (nextProps.open === false) {
       this.setState({
         anchorEl: null,

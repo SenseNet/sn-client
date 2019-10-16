@@ -21,7 +21,7 @@ export class AuthorizedRouteComponent extends React.Component<AuthorizedRoutePro
     }
   }
 
-  public componentWillReceiveProps(newProps: this['props']) {
+  public UNSAFE_componentWillReceiveProps(newProps: this['props']) {
     this.checkIsAuthorized(newProps)
   }
 

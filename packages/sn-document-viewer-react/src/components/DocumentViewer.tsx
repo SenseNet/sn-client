@@ -73,7 +73,7 @@ export class DocumentViewerComponent extends React.Component<docViewerComponentT
   }
 
   /** triggered when the component will receive props */
-  public componentWillReceiveProps(newProps: this['props']) {
+  public UNSAFE_componentWillReceiveProps(newProps: this['props']) {
     if (
       this.props.hostName !== newProps.hostName ||
       this.props.documentIdOrPath !== newProps.documentIdOrPath ||
