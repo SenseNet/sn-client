@@ -25,6 +25,7 @@
     "preserveConstEnums": true,
     "allowSyntheticDefaultImports": true,
     "importHelpers": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "experimentalDecorators": true
   }
 }
