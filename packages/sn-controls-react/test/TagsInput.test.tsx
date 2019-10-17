@@ -88,7 +88,12 @@ describe('Tags input field control', () => {
     it('should show the value of the field when content is passed', async () => {
       const consoleSpy = jest.spyOn(console, 'error')
       const wrapper = mount(
-        <TagsInput actionName="edit" settings={defaultSettings} content={userContent} repository={repository} />,
+        <TagsInput
+          actionName="edit"
+          settings={{ ...defaultSettings, AllowMultiple: true }}
+          content={userContent}
+          repository={repository}
+        />,
       )
       expect(consoleSpy).not.toBeCalled()
       await sleepAsync(0)
@@ -101,7 +106,7 @@ describe('Tags input field control', () => {
       const wrapper = mount(
         <TagsInput
           actionName="edit"
-          settings={defaultSettings}
+          settings={{ ...defaultSettings, AllowMultiple: true }}
           content={userContent}
           fieldOnChange={fieldOnChange}
           repository={repository}
