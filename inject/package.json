@@ -1,0 +1,54 @@
+{
+  "name": "@furystack/inject",
+  "version": "4.0.2",
+  "description": "Core FuryStack package",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/furystack/core.git"
+  },
+  "keywords": [
+    "furystack",
+    "dependency injection"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "gallay.lajos@gmail.com",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/furystack/core.git"
+  },
+  "nyc": {
+    "exclude": [
+      "temp/test/**/*.*",
+      "temp/src/Types/**/*.*"
+    ],
+    "include": "temp/src/**/*.*",
+    "check-coverage": true,
+    "cache": true,
+    "all": true,
+    "reporter": [
+      "lcov",
+      "text-summary",
+      "json"
+    ]
+  },
+  "homepage": "https://github.com/furystack/core.git",
+  "dependencies": {
+    "@sensenet/client-utils": "^1.5.1",
+    "reflect-metadata": "^0.1.13"
+  },
+  "config": {
+    "commitizen": {
+      "path": "sensenet-kfi-cz-conventional-changelog"
+    }
+  },
+  "typings": "./dist/index.d.ts",
+  "gitHead": "1045d854bfd8c475b7035471d130d401417a2321"
+}
