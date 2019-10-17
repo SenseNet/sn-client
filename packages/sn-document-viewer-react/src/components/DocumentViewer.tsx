@@ -17,7 +17,7 @@ import { DocumentViewerRegeneratePreviews } from './DocumentViewerRegeneratePrev
 /**
  * Defined the component's own properties
  */
-export interface OwnProps {
+export interface OwnProps extends React.Props<any> {
   hostName: string
   documentIdOrPath: string | number
   version?: string
@@ -73,7 +73,7 @@ export class DocumentViewerComponent extends React.Component<docViewerComponentT
   }
 
   /** triggered when the component will receive props */
-  public componentWillReceiveProps(newProps: this['props']) {
+  public UNSAFE_componentWillReceiveProps(newProps: this['props']) {
     if (
       this.props.hostName !== newProps.hostName ||
       this.props.documentIdOrPath !== newProps.documentIdOrPath ||

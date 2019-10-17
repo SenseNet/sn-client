@@ -1,5 +1,5 @@
 import IconButton from '@material-ui/core/IconButton'
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
+import { MuiThemeProvider } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 
 import {
