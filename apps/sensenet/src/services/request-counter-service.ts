@@ -1,6 +1,6 @@
 import { Injectable, Injector } from '@furystack/inject'
 import { IDisposable } from 'monaco-editor'
-import { ScopedLogger } from '@furystack/logging'
+import { ScopedLogger } from '@sensenet/client-utils'
 
 interface RequestCounterRecord {
   all: number

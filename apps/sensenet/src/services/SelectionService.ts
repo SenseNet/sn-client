@@ -1,6 +1,5 @@
 import { Injectable, Injector } from '@furystack/inject'
-import { ScopedLogger } from '@furystack/logging'
-import { Disposable, ObservableValue } from '@sensenet/client-utils'
+import { Disposable, ObservableValue, ScopedLogger } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 
 /**

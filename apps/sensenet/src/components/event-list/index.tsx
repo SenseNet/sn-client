@@ -1,4 +1,4 @@
-import { LeveledLogEntry } from '@furystack/logging'
+import { LeveledLogEntry } from '@sensenet/client-utils'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import KeyboardBackspace from '@material-ui/icons/KeyboardBackspace'

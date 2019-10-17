@@ -58,7 +58,6 @@
   },
   "dependencies": {
     "@furystack/inject": "^4.0.2",
-    "@furystack/logging": "^2.0.3",
     "@material-ui/core": "^4.3.3",
     "@material-ui/icons": "^4.0.1",
     "@sensenet/authentication-google": "^2.0.13",

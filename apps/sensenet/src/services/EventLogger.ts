@@ -1,5 +1,5 @@
 import { Injectable } from '@furystack/inject'
-import { AbstractLogger, LeveledLogEntry, LogLevel } from '@furystack/logging'
+import { AbstractLogger, LeveledLogEntry, LogLevel } from '@sensenet/client-utils'
 import { EventService } from './EventService'
 import { PersonalSettings } from './PersonalSettings'
 

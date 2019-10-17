@@ -1,6 +1,5 @@
 import { Injectable } from '@furystack/inject'
-import { LeveledLogEntry, LogLevel } from '@furystack/logging'
-import { debounce, ObservableValue } from '@sensenet/client-utils'
+import { debounce, ObservableValue, LeveledLogEntry, LogLevel } from '@sensenet/client-utils'
 import { v1 } from 'uuid'
 import { PersonalSettings } from './PersonalSettings'
 

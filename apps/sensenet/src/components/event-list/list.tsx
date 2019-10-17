@@ -1,4 +1,4 @@
-import { LeveledLogEntry, LogLevel } from '@furystack/logging'
+import { LeveledLogEntry, LogLevel } from '@sensenet/client-utils'
 import IconButton from '@material-ui/core/IconButton'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'

@@ -1,4 +1,4 @@
-import { LogLevel } from '@furystack/logging'
+import { LogLevel } from '@sensenet/client-utils'
 import FormControl from '@material-ui/core/FormControl'
 import IconButton from '@material-ui/core/IconButton'
 import InputLabel from '@material-ui/core/InputLabel'

@@ -1,5 +1,5 @@
 import { Injector } from '@furystack/inject'
-import { VerboseConsoleLogger } from '@furystack/logging'
+import { VerboseConsoleLogger } from '@sensenet/client-utils'
 import { EventLogger } from './services/EventLogger'
 
 export const snInjector = new Injector()
