@@ -1,0 +1,54 @@
+{
+  "name": "@furystack/logging",
+  "version": "2.0.5",
+  "description": "Logging API for FuryStack package",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/furystack/furystack.git"
+  },
+  "keywords": [
+    "FuryStack",
+    "Logging"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "gallay.lajos@gmail.com",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/furystack/furystack.git"
+  },
+  "nyc": {
+    "exclude": [
+      "temp/test/**/*.*",
+      "temp/src/**/I*.js",
+      "**/index.js"
+    ],
+    "include": "temp/src/**/*.*",
+    "check-coverage": false,
+    "cache": true,
+    "all": true,
+    "reporter": [
+      "lcov",
+      "text-summary",
+      "json"
+    ]
+  },
+  "homepage": "https://github.com/furystack/furystack.git",
+  "dependencies": {
+    "@furystack/inject": "^4.0.2"
+  },
+  "config": {
+    "commitizen": {
+      "path": "sensenet-kfi-cz-conventional-changelog"
+    }
+  },
+  "typings": "./dist/index.d.ts",
+  "gitHead": "1045d854bfd8c475b7035471d130d401417a2321"
+}
