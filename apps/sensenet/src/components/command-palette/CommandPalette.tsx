@@ -28,7 +28,7 @@ export class CommandPaletteComponent extends React.Component<
   public static contextType: React.Context<Repository> = RepositoryContext
 
   private handleKeyUp(ev: KeyboardEvent) {
-    if (ev.key.toLowerCase() === 'p' && ev.ctrlKey) {
+    if (ev.key && ev.key.toLowerCase() === 'p' && ev.ctrlKey) {
       ev.stopImmediatePropagation()
       ev.preventDefault()
       if (ev.shiftKey) {
