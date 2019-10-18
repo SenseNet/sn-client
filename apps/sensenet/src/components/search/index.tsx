@@ -205,8 +205,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
                   onClick={() => {
                     repo
                       .executeAction<any, ODataResponse<GenericContent>>({
-                        idOrPath:
-                          ConstantContent.PORTAL_ROOT.Path,
+                        idOrPath: ConstantContent.PORTAL_ROOT.Path,
                         name: 'SaveQuery',
                         method: 'POST',
                         oDataOptions: {
