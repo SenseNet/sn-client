@@ -10,12 +10,12 @@ Please visit the [contribution guide](https://github.com/SenseNet/sensenet/blob/
 
 Please have the **_latest_** stable versions of the following on your machine
 
-- node
-- yarn
+- [**node**](https://nodejs.org/en/download/)
+- [**yarn**](https://yarnpkg.com/en/docs/install#windows-stable)
 
 ### Initial Setup
 
-If you run into trouble here, make sure your node, npm, and **_yarn_** are on the latest versions (yarn at least v1.3.2).
+If you run into trouble here, make sure your **_node_**, **_npm_**, and **_yarn_** are on the latest versions (yarn at least v1.3.2).
 
 1.  `git clone https://github.com/SenseNet/sn-client.git` _bonus_: use your own fork for this step
 2.  `cd sn-client`
@@ -29,13 +29,13 @@ We use [Gitflow workflow](https://www.atlassian.com/git/tutorials/comparing-work
 
 This means that we use a develop branch for the main development.
 
-When you start to work on a new feature or bug you:
+When you start to work on a new feature or bug, you:
 
-1. checkout develop
-2. pull latest develop
-3. create a new branch from develop
-4. make some changes in code or documentation
-5. create a pull request to develop
+1. Checkout develop
+2. Pull latest develop
+3. Create new branch from develop
+4. Make some changes in code or documentation
+5. Create a pull request to develop
 
 ### Running package script
 
