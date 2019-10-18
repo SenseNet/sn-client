@@ -1,0 +1,30 @@
+{
+  "name": "@sensenet/sn-docs",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "keywords": [
+    "sensenet",
+    "headless cms",
+    "cms",
+    "cps",
+    "documentation",
+    "content management"
+  ],
+  "scripts": {
+    "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
+    "build:webpack": "rimraf bundle && webpack",
+    "start": "webpack-dev-server --progress"
+  },
+  "private": true,
+  "publishConfig": {
+    "access": "private"
+  },
+  "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
+  "license": "GPL-2.0",
+  "homepage": "https://sensenet.com",
+  "typings": "./dist/index.d.ts"
+}

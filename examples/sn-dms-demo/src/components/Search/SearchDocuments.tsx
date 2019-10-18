@@ -95,7 +95,7 @@ const SearchRow: React.StatelessComponent<{ title: string }> = props => (
 )
 
 class SearchDocuments extends React.Component<
-  ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & { style?: React.CSSProperties },
+  ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & { style?: React.CSSProperties } & React.Props<any>,
   SearchDocumentsState
 > {
   constructor(props: SearchDocuments['props']) {

@@ -1,7 +1,7 @@
 import { ODataParams, Repository } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
-import { Reducer, useReducer } from 'react'
-import { useAsync } from 'react-async'
+import { Reducer, useCallback, useEffect, useReducer, useState } from 'react'
+import { AsyncReturnValue } from '@sensenet/client-utils'
 import { loadItems } from './loaders'
 import { Action, GenericContentWithIsParent, NAVIGATE_TO, SET_SELECTED_ITEM, State } from './types'
 
@@ -55,20 +55,48 @@ export const useListPicker = <T extends GenericContentWithIsParent = GenericCont
     },
   )
 
-  const { data: items, isLoading, error, reload } = useAsync({
-    promiseFn: loadItems,
-    path,
-    repository,
-    itemsODataOptions: options.itemsODataOptions,
-    parentODataOptions: options.parentODataOptions,
-    parentId,
-    watch: path,
-  })
+  const [reloadToken, setReloadToken] = useState(0)
+  const [items, setItems] = useState<AsyncReturnValue<typeof loadItems>>([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<Error | undefined>()
+  const reload = useCallback(() => {
+    setReloadToken(Math.random())
+  }, [])
+
+  useEffect(() => {
+    const abortController = new AbortController()
+    ;(async () => {
+      try {
+        setIsLoading(true)
+        const result = await loadItems({
+          path,
+          repository,
+          parentId,
+          itemsODataOptions: options.itemsODataOptions,
+          parentODataOptions: options.parentODataOptions,
+          abortController,
+        })
+        setItems(result)
+      } catch (e) {
+        if (!abortController.signal.aborted) {
+          setError(e)
+        }
+      } finally {
+        setIsLoading(false)
+      }
+    })()
+    // It might be a case to change odata options without the path but it is unlikely. If you see bugs because of this then
+    // check out this https://stackoverflow.com/questions/54095994/react-useeffect-comparing-objects
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [path, repository, reloadToken, parentId])
 
   const setSelectedItem = (node?: T) => dispatch({ type: SET_SELECTED_ITEM, payload: node })
 
-  const navigateTo = (node: T) =>
-    dispatch({ type: NAVIGATE_TO, payload: { node, parent: items && (items.find(c => c.isParent) as any) } })
+  const navigateTo = useCallback(
+    (node: T) =>
+      dispatch({ type: NAVIGATE_TO, payload: { node, parent: items && (items.find(c => c.isParent) as any) } }),
+    [items],
+  )
 
   return { items, selectedItem, setSelectedItem, navigateTo, path, isLoading, error, reload }
 }

@@ -66,4 +66,4 @@ To develop e2e tests:
 
 Running the tests locally will create a currentUser.json with a new test user. The tests are going to use this user.
 
-In order to use another user you can change the email and password of the current user or let the system create a new one for you by deleting the json.
+In order to use another user, you can change the email and password of the current user or let the system create a new for you by deleting the JSON.

@@ -10,6 +10,7 @@
     { "path": "../sn-control-mapper" },
     { "path": "../sn-default-content-types" },
     { "path": "../sn-icons-react" },
-    { "path": "../sn-query" }
+    { "path": "../sn-query" },
+    { "path": "../sn-client-utils" }
   ]
 }

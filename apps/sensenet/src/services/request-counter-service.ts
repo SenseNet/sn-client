@@ -18,7 +18,7 @@ interface RequestCounterRecord {
 @Injectable({ lifetime: 'singleton' })
 export class RequestCounterService implements IDisposable {
   private readonly logger: ScopedLogger
-  private readonly writeInterval: number
+  private readonly writeInterval: ReturnType<typeof setInterval>
   public dispose() {
     clearInterval(this.writeInterval)
     this.write()
