@@ -1,10 +1,8 @@
 import Button from '@material-ui/core/Button'
-import Checkbox from '@material-ui/core/Checkbox'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import Save from '@material-ui/icons/Save'
@@ -84,7 +82,6 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
   const [error, setError] = useState('')
 
   const [saveName, setSaveName] = useState('')
-  const [savePublic, setSavePublic] = useState(false)
 
   useEffect(() => {
     const ac = new AbortController()
@@ -193,11 +190,6 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
                   defaultValue={`Search results for '${queryData.term}'`}
                   onChange={ev => setSaveName(ev.currentTarget.value)}
                 />
-                <br />
-                <FormControlLabel
-                  label={localization.public}
-                  control={<Checkbox onChange={ev => setSavePublic(ev.target.checked)} />}
-                />
               </DialogContent>
               <DialogActions>
                 <Button onClick={() => setIsSaveOpened(false)}>{localization.cancel}</Button>
@@ -205,7 +197,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
                   onClick={() => {
                     repo
                       .executeAction<any, ODataResponse<GenericContent>>({
-                        idOrPath: ConstantContent.PORTAL_ROOT.Path,
+                        idOrPath: '/Root/Content', //INFO(Zoli): This is hard coded for now. Wont work with repositories that do not have Root/Content.
                         name: 'SaveQuery',
                         method: 'POST',
                         oDataOptions: {
