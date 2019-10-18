@@ -52,7 +52,7 @@ const mapDispatchToProps = {
 }
 
 /** Props definition for the Document Viewer layout */
-export interface DocumentLayoutOwnProps {
+export interface DocumentLayoutOwnProps extends React.Props<any> {
   drawerSlideProps?: Partial<SlideProps>
 }
 
@@ -77,13 +77,16 @@ interface ScrollToOptions {
   smoothScroll: boolean
 }
 
+type docViewerLayoutComponentType = componentType<
+  typeof mapStateToProps,
+  typeof mapDispatchToProps,
+  DocumentLayoutOwnProps
+>
+
 /**
  * Component for the main DocumentViewer layout
  */
-export class DocumentViewerLayoutComponent extends React.Component<
-  componentType<typeof mapStateToProps, typeof mapDispatchToProps, DocumentLayoutOwnProps>,
-  DocumentLayoutState
-> {
+export class DocumentViewerLayoutComponent extends React.Component<docViewerLayoutComponentType, DocumentLayoutState> {
   constructor(props: DocumentViewerLayoutComponent['props']) {
     super(props)
     this.state = {
@@ -176,7 +179,7 @@ export class DocumentViewerLayoutComponent extends React.Component<
   }
 
   /** triggered when the component will receive props */
-  public componentWillReceiveProps(newProps: this['props']) {
+  public UNSAFE_componentWillReceiveProps(newProps: this['props']) {
     if (
       this.props.activePages[0] !== newProps.activePages[0] ||
       this.props.fitRelativeZoomLevel !== newProps.fitRelativeZoomLevel

@@ -69,7 +69,13 @@ describe('Document Viewer Layout component', () => {
         {'some children'}
       </DocumentViewerLayoutComponent>,
     )
-    wrapper.setProps({ ...defaultProps, activePages: [3], children: '', drawerSlideProps: '', showThumbnails: true })
+    wrapper.setProps({
+      ...defaultProps,
+      activePages: [3],
+      children: '',
+      drawerSlideProps: '',
+      showThumbnails: true,
+    } as any)
     expect(setActivePages).toBeCalledWith([3])
   })
 
@@ -86,7 +92,7 @@ describe('Document Viewer Layout component', () => {
       drawerSlideProps: '',
       showThumbnails: false,
       fitRelativeZoomLevel: 2,
-    })
+    } as any)
     await sleepAsync()
     expect(setActivePages.mock.calls.length).toBe(0)
     const paperProps = wrapper

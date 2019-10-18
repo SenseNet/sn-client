@@ -26,7 +26,5 @@
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "license": "GPL-2.0",
   "homepage": "https://sensenet.com",
-  "devDependencies": {},
-  "dependencies": {},
   "typings": "./dist/index.d.ts"
 }
