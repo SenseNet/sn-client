@@ -51,6 +51,8 @@ const WellKnownContentCard: React.FunctionComponent<{
           <Button size="small">{localization.edit}</Button>
         </Link>
         <a
+          target="_blank"
+          rel="noopener noreferrer"
           href={`${SETUP_DOCS_URL}${createAnchorFromName(settings.DisplayName ? settings.DisplayName : '')}`}
           style={{ textDecoration: 'none' }}>
           <Button size="small">{localization.learnMore}</Button>

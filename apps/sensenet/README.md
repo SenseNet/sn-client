@@ -33,7 +33,7 @@ The repositories you've visited will be also saved in your Personal Settings - y
 ## 🌍 Content
 
 You can browse the whole repository with the **Content** menu.
-You can adjust the Content view in the personal setting's _" content"_ section.
+You can adjust the Content view in the personal setting's _"content"_ section.
 
 ## 🌈 Command palette
 
