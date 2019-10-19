@@ -1,4 +1,4 @@
-import { Injectable } from '@furystack/inject'
+import { Injectable } from '../index'
 
 import { AbstractLogger } from './abstract-logger'
 

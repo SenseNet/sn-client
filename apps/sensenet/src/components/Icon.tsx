@@ -1,4 +1,3 @@
-import { Injector } from '@furystack/inject'
 import {
   AllInboxTwoTone,
   AssignmentTwoTone,
@@ -36,7 +35,7 @@ import {
   WebAssetTwoTone,
   WidgetsTwoTone,
 } from '@material-ui/icons'
-import { PathHelper, tuple, LogLevel } from '@sensenet/client-utils'
+import { Injector, LogLevel, PathHelper, tuple } from '@sensenet/client-utils'
 import { GenericContent, File as SnFile, User } from '@sensenet/default-content-types'
 import React from 'react'
 import { Repository } from '@sensenet/client-core'

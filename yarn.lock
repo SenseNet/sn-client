@@ -1181,13 +1181,6 @@
     "@sensenet/client-utils" "^1.5.1"
     reflect-metadata "^0.1.13"
 
-"@furystack/logging@^2.0.3":
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/@furystack/logging/-/logging-2.0.4.tgz#bc5cef7be61f006b425b45934fbbe9b3e358babe"
-  integrity sha512-o8QJfOtayyqJ297Ccj275AfU+1SDU2MqKOyCydzffwVtUJR6g0+9HXYRa6y/keDVxX+tPhLMWIpeuxoSq3tmZA==
-  dependencies:
-    "@furystack/inject" "^4.0.2"
-
 "@hapi/address@2.x.x":
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.1.2.tgz#1c794cd6dbf2354d1eb1ef10e0303f573e1c7222"

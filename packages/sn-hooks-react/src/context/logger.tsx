@@ -1,7 +1,6 @@
 import { Logger, LoggerCollection } from '@sensenet/client-utils'
 import React from 'react'
 import { useInjector } from '../hooks'
-import './injector-extension'
 /**
  * Context for a Logger instance
  */

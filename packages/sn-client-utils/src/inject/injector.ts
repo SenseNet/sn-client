@@ -1,4 +1,5 @@
 import { Disposable } from '../Disposable'
+import { Logger, LoggerCollection } from '../index'
 import { defaultInjectableOptions } from './injectable'
 import { Constructable } from './constructable'
 
@@ -6,6 +7,24 @@ import { Constructable } from './constructable'
  * Container for injectable instances
  */
 export class Injector implements Disposable {
+  /**
+   * Returns the registered Logger instance
+   */
+  public get logger(): LoggerCollection {
+    return this.getInstance(LoggerCollection)
+  }
+
+  /**
+   * Registers a Logger service to the injector container with the provided loggers.
+   */
+  public useLogging(...loggers: Array<Constructable<Logger>>) {
+    const loggerInstances = loggers.map(l => this.getInstance(l))
+    const collection = this.getInstance(LoggerCollection)
+    collection.attachLogger(...loggerInstances)
+    this.setExplicitInstance(collection, LoggerCollection)
+    return this
+  }
+
   /**
    * Disposes the Injector object and all its disposable injectables
    */

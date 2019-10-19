@@ -108,7 +108,7 @@ methodTracer.dispose()
 
 ### Logging package
 
-#### Initializing with @furystack/inject
+#### Initializing with @sensenet-client-utils/inject
 
 You can start using the Logging service with an injector in the following way
 
@@ -145,7 +145,7 @@ or
 ```ts
 myLogger.verbose({
   message: 'My log message',
-  scope: '@furystack/logger/test',
+  scope: '@sensenet/client-utils/test',
   data: {
     foo: 1,
     bar: 42,

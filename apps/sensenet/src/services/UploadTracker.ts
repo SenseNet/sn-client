@@ -1,6 +1,5 @@
-import { Injectable } from '@furystack/inject'
 import { Repository, UploadProgressInfo } from '@sensenet/client-core'
-import { ObservableValue, LogLevel } from '@sensenet/client-utils'
+import { Injectable, LogLevel, ObservableValue } from '@sensenet/client-utils'
 import { EventService } from './EventService'
 import { LocalizationService } from './LocalizationService'
 

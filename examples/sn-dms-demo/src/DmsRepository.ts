@@ -1,4 +1,4 @@
-import { Injector } from '@furystack/inject'
+import { Injector } from '@sensenet/client-utils'
 import { addGoogleAuth } from '@sensenet/authentication-google'
 import { JwtService } from '@sensenet/authentication-jwt'
 import { FormsAuthenticationService, Repository } from '@sensenet/client-core'

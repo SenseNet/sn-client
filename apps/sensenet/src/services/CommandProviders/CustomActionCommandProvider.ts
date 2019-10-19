@@ -1,6 +1,5 @@
-import { Injectable } from '@furystack/inject'
 import { MetadataAction } from '@sensenet/client-core'
-import { ObservableValue } from '@sensenet/client-utils'
+import { Injectable, ObservableValue } from '@sensenet/client-utils'
 import { ActionModel, GenericContent } from '@sensenet/default-content-types'
 import { CommandProvider, SearchOptions } from '../CommandProviderManager'
 import { LocalizationService } from '../LocalizationService'
