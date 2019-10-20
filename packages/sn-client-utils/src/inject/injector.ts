@@ -1,4 +1,4 @@
-import { Disposable } from '../Disposable'
+import { Disposable } from '../disposable'
 import { Logger, LoggerCollection } from '../index'
 import { defaultInjectableOptions } from './injectable'
 import { Constructable } from './constructable'

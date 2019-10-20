@@ -162,6 +162,16 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
     this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, newValue.map(content => content.Id))
   }
 
+  /**
+   * Get proper value for the Select componet
+   */
+  public getValue() {
+    if (this.props.settings.AllowMultiple) {
+      return this.state.fieldValue.length ? this.state.fieldValue.map(c => c.Id) : []
+    }
+    return this.state.fieldValue.length ? this.state.fieldValue.map(c => c.Id)[0] : ''
+  }
+
   public render() {
     switch (this.props.actionName) {
       case 'edit':
@@ -174,8 +184,9 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
             required={this.props.settings.Compulsory}>
             <InputLabel htmlFor={this.props.settings.Name}>{this.props.settings.DisplayName}</InputLabel>
             <Select
-              value={this.state.fieldValue}
+              value={this.getValue()}
               onChange={this.handleChange}
+              multiple={this.props.settings.AllowMultiple}
               input={<Input id={this.props.settings.Name} fullWidth={true} />}
               renderValue={() => (
                 <div style={styles.chips as any}>
