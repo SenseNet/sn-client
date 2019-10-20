@@ -1173,7 +1173,7 @@
     unique-filename "^1.1.1"
     which "^1.3.1"
 
-"@furystack/inject@^4.0.1", "@furystack/inject@^4.0.2":
+"@furystack/inject@^4.0.1":
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@furystack/inject/-/inject-4.0.2.tgz#83b8af141ca3c2da52e8a9fb159f4ca36ea1d83b"
   integrity sha512-usjTfol0pQlsgIyC/ay6CKzOpz664NL87waGgqMdeGqh5DgFs/4yi54vA4VIYBG5WcPx8xcjjQV+mL08b7YYfA==
