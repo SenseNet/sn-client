@@ -4,7 +4,7 @@ import { AbstractLogger } from './abstract-logger'
 
 import { LeveledLogEntry } from './log-entries'
 
-import { Logger } from './Logger'
+import { Logger } from './logger'
 
 /**
 
