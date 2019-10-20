@@ -1,8 +1,6 @@
 import { Disposable, Injectable, Injector, using, usingAsync } from '../src'
 import 'reflect-metadata'
 
-// tslint:disable:max-classes-per-file
-
 describe('Injector', () => {
   it('Shold be constructed', () => {
     const i = new Injector()
@@ -48,7 +46,6 @@ describe('Injector', () => {
     const instance = new InstanceClass()
     parent.setExplicitInstance(instance)
     expect(i.getInstance(InstanceClass)).toBe(instance)
-    // tslint:disable-next-line:no-string-literal
     expect(parent['cachedSingletons'].get(InstanceClass)).toBe(instance)
   })
 
@@ -58,10 +55,7 @@ describe('Injector', () => {
     @Injectable({ lifetime: 'singleton' })
     class InstanceClass {}
     expect(i.getInstance(InstanceClass)).toBeInstanceOf(InstanceClass)
-    expect(
-      // tslint:disable-next-line:no-string-literal
-      parent['cachedSingletons'].get(InstanceClass),
-    ).toBeInstanceOf(InstanceClass)
+    expect(parent['cachedSingletons'].get(InstanceClass)).toBeInstanceOf(InstanceClass)
   })
 
   it('Should resolve parameters', () => {
@@ -127,7 +121,6 @@ describe('Injector', () => {
     using(new Injector(), i => {
       i.setExplicitInstance({}, Object)
       i.remove(Object)
-      // tslint:disable-next-line: no-string-literal
       expect(i['cachedSingletons'].size).toBe(0)
     })
   })

@@ -23,9 +23,6 @@ export abstract class AbstractLogger implements Logger {
      * @param entry The Log entry object
   
      */
-  protected constructor() {
-    // implement constructor
-  }
 
   public abstract addEntry<T>(entry: LeveledLogEntry<T>): Promise<void>
 

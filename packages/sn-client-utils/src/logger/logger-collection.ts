@@ -14,12 +14,6 @@ import { Logger } from './Logger'
 
 @Injectable({ lifetime: 'singleton' })
 export class LoggerCollection extends AbstractLogger {
-  /* eslint-disable @typescript-eslint/no-useless-constructor */
-  constructor() {
-    super()
-  }
-  /* eslint-enable @typescript-eslint/no-useless-constructor */
-
   public async addEntry<T>(entry: LeveledLogEntry<T>): Promise<void> {
     const promises = this.loggers.map(l => l.addEntry(entry))
 

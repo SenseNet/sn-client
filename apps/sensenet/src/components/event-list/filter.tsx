@@ -1,4 +1,3 @@
-import { LogLevel } from '@sensenet/client-utils'
 import FormControl from '@material-ui/core/FormControl'
 import IconButton from '@material-ui/core/IconButton'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -6,7 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import TextField from '@material-ui/core/TextField'
 import Delete from '@material-ui/icons/Delete'
-import { debounce } from '@sensenet/client-utils'
+import { debounce, LogLevel } from '@sensenet/client-utils'
 import React, { useContext } from 'react'
 
 import { useInjector } from '@sensenet/hooks-react'

@@ -153,12 +153,6 @@ export const verboseFormatter = <T>(entry: LeveledLogEntry<T>) => {
 
 @Injectable({ lifetime: 'scoped' })
 export class ConsoleLogger extends AbstractLogger {
-  /* eslint-disable @typescript-eslint/no-useless-constructor */
-  constructor() {
-    super()
-  }
-  /* eslint-enable @typescript-eslint/no-useless-constructor */
-
   public async addEntry<T>(entry: LeveledLogEntry<T>) {
     const data = defaultFormatter(entry)
 
@@ -168,12 +162,6 @@ export class ConsoleLogger extends AbstractLogger {
 
 @Injectable({ lifetime: 'scoped' })
 export class VerboseConsoleLogger extends AbstractLogger {
-  /* eslint-disable @typescript-eslint/no-useless-constructor */
-  constructor() {
-    super()
-  }
-  /* eslint-enable @typescript-eslint/no-useless-constructor */
-
   public async addEntry<T>(entry: LeveledLogEntry<T>) {
     const data = verboseFormatter(entry)
 
