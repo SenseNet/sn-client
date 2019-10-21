@@ -317,7 +317,7 @@ class SearchDocuments extends React.Component<
                           </div>
                           <Divider />
                           <div style={containerStyles}>
-                            <SearchRow title="Item name">
+                            <SearchRow title="Content name">
                               <TextField
                                 fullWidth={true}
                                 placeholder={resources.SEARCH_ITEMNAME_PLACEHOLDER}
