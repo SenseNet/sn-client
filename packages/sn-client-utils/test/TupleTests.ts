@@ -1,4 +1,4 @@
-import { tuple } from '../src/Tuple'
+import { tuple } from '../src'
 
 describe('Tuple', () => {
   it('Should return a Tuple object', () => {

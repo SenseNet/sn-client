@@ -46,7 +46,9 @@ exports[`Document Viewer Loading component should render without crashing 1`] = 
         }
       }
       variant="h5"
-    />
+    >
+      Preview image generation is in progress
+    </WithStyles(ForwardRef(Typography))>
   </div>
 </div>
 `;

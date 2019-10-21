@@ -1,50 +1,45 @@
-import { shallow } from 'enzyme'
+import { mount, shallow } from 'enzyme'
 import React from 'react'
-import { RotateDocumentComponent } from '../src/components/document-widgets/RotateDocument'
+import { RotateDocumentWidget } from '../src/components/document-widgets/RotateDocument'
+import { PreviewImageDataContext } from '../src/context/preview-image-data'
 import { examplePreviewImageData } from './__Mocks__/viewercontext'
 
 describe('RotateDocument component', () => {
-  const locals = {
-    rotateDocumentLeft: 'rotateDocumentLeft',
-    rotateDocumentRight: 'rotateDocumentRight',
-  }
   it('Should render without crashing', () => {
+    const rotateImages = jest.fn()
     const wrapper = shallow(
-      <RotateDocumentComponent
-        rotateImages={jest.fn()}
-        pages={[examplePreviewImageData]}
-        activePages={[1]}
-        {...locals}
-      />,
+      <PreviewImageDataContext.Provider value={{ imageData: [examplePreviewImageData], rotateImages }}>
+        <RotateDocumentWidget />
+      </PreviewImageDataContext.Provider>,
     )
     expect(wrapper).toMatchSnapshot()
   })
 
   it('RotateLeft should trigger a rotate to left', () => {
     const rotateImages = jest.fn()
-    const wrapper = shallow(
-      <RotateDocumentComponent
-        rotateImages={rotateImages}
-        pages={[examplePreviewImageData]}
-        activePages={[1]}
-        {...locals}
-      />,
+    const wrapper = mount(
+      <PreviewImageDataContext.Provider value={{ imageData: [examplePreviewImageData], rotateImages }}>
+        <RotateDocumentWidget />
+      </PreviewImageDataContext.Provider>,
     )
-    wrapper.find('#RotateLeft').simulate('click')
+    wrapper
+      .find('#RotateLeft')
+      .first()
+      .simulate('click')
     expect(rotateImages).toBeCalledWith([1], -90)
   })
 
   it('RotateRight should trigger a rotate to right', () => {
     const rotateImages = jest.fn()
-    const wrapper = shallow(
-      <RotateDocumentComponent
-        rotateImages={rotateImages}
-        pages={[examplePreviewImageData]}
-        activePages={[1]}
-        {...locals}
-      />,
+    const wrapper = mount(
+      <PreviewImageDataContext.Provider value={{ imageData: [examplePreviewImageData], rotateImages }}>
+        <RotateDocumentWidget />
+      </PreviewImageDataContext.Provider>,
     )
-    wrapper.find('#RotateRight').simulate('click')
+    wrapper
+      .find('#RotateRight')
+      .first()
+      .simulate('click')
     expect(rotateImages).toBeCalledWith([1], 90)
   })
 })

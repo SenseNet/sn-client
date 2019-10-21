@@ -1,4 +1,4 @@
-import { Injector } from '@furystack/inject/dist/Injector'
+import { Injector } from '@sensenet/client-utils'
 import React from 'react'
 
 /**

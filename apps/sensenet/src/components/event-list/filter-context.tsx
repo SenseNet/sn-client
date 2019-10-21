@@ -1,4 +1,4 @@
-import { LogLevel } from '@furystack/logging'
+import { LogLevel } from '@sensenet/client-utils'
 import React, { Dispatch, SetStateAction, useState } from 'react'
 
 export interface EventListFilter {

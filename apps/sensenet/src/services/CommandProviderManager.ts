@@ -1,4 +1,4 @@
-import { Injectable, Injector } from '@furystack/inject'
+import { Injectable, Injector } from '@sensenet/client-utils'
 import { Repository } from '@sensenet/client-core'
 import { CommandPaletteItem } from '../hooks'
 import { ResponsivePlatforms } from '../context'

@@ -1,18 +1,17 @@
 import { shallow } from 'enzyme'
 import React from 'react'
-import { PrintComponent } from '../src/components/document-widgets/PrintWidget'
-import { DocumentData } from '../src/models/DocumentData'
+import { Print } from '../src/components/document-widgets/PrintWidget'
 
-describe('DownloadWidget component', () => {
+describe('Print component', () => {
   it('Should render without crashing', () => {
     const print = jest.fn()
-    const wrapper = shallow(<PrintComponent print={print} title="" document={{} as DocumentData} />)
+    const wrapper = shallow(<Print print={print} />)
     expect(wrapper).toMatchSnapshot()
   })
 
   it('Should trigger a print request when clicked', () => {
     const print = jest.fn()
-    const wrapper = shallow(<PrintComponent print={print} title="" document={{} as DocumentData} />)
+    const wrapper = shallow(<Print print={print} />)
     wrapper.find('#Print').simulate('click')
     expect(print).toBeCalled()
   })

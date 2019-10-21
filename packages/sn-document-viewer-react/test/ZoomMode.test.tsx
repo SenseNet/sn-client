@@ -4,22 +4,21 @@ import SvgIcon from '@material-ui/core/SvgIcon'
 import AspectRatio from '@material-ui/icons/AspectRatio'
 import Code from '@material-ui/icons/Code'
 import ZoomOutMap from '@material-ui/icons/ZoomOutMap'
-import { mount, shallow } from 'enzyme'
+import { mount } from 'enzyme'
 import React from 'react'
-import { ZoomWidgetComponent } from '../src/components/document-widgets/ZoomMode'
-import { defaultLocalization } from '../src/store/Localization'
+import { ZoomModeWidget } from '../src/components/document-widgets/ZoomMode'
+import { defaultViewerState, ViewerStateContext } from '../src/context/viewer-state'
 
 // eslint-disable-next-line require-jsdoc
-function getComponentWithProps(props?: Partial<ZoomWidgetComponent['props']>) {
-  return shallow(
-    <ZoomWidgetComponent
-      localization={defaultLocalization}
-      customZoomLevel={0}
-      setZoomLevel={() => ({} as any)}
-      setZoomMode={() => ({} as any)}
-      zoomMode="custom"
-      {...props}
-    />,
+function getComponentWithProps(props?: Partial<typeof defaultViewerState>) {
+  return mount(
+    <ViewerStateContext.Provider
+      value={{
+        ...defaultViewerState,
+        ...props,
+      }}>
+      <ZoomModeWidget />
+    </ViewerStateContext.Provider>,
   )
 }
 describe('ZoomMode component', () => {
@@ -48,96 +47,87 @@ describe('ZoomMode component', () => {
 
   it('should open zoomMenu on icon click', () => {
     const wrapper = getComponentWithProps()
-    wrapper.find(IconButton).simulate('click', { currentTarget: IconButton })
+    wrapper.find(IconButton).simulate('click')
     expect(wrapper.find(Menu).prop('open')).toBeTruthy()
   })
 
   it('should close ZoomMenu and sets the zoomMode to fit when ZoomOutMap clicked', () => {
     const setZoomMode = jest.fn()
-    const wrapper = getComponentWithProps({ setZoomMode })
-    wrapper.find(IconButton).simulate('click', { currentTarget: IconButton })
+    const wrapper = getComponentWithProps({ updateState: setZoomMode })
+    wrapper.find(IconButton).simulate('click')
     wrapper
       .find(ZoomOutMap)
-      .parent()
+      .at(1)
       .simulate('click')
-    expect(setZoomMode).toBeCalledWith('fit')
+    expect(setZoomMode).toBeCalledWith({ zoomMode: 'fit' })
     expect(wrapper.find(Menu).prop('open')).toBeFalsy()
   })
 
   it('should close ZoomMenu and sets the zoomMode to originalSize when AspectRatio clicked', () => {
     const setZoomMode = jest.fn()
-    const wrapper = getComponentWithProps({ setZoomMode })
-    wrapper.find(IconButton).simulate('click', { currentTarget: IconButton })
+    const wrapper = getComponentWithProps({ updateState: setZoomMode, zoomMode: 'originalSize' })
+    wrapper.find(IconButton).simulate('click')
     wrapper
       .find(AspectRatio)
-      .parent()
+      .at(1)
       .simulate('click')
-    expect(setZoomMode).toBeCalledWith('originalSize')
+    expect(setZoomMode).toBeCalledWith({ zoomMode: 'originalSize' })
     expect(wrapper.find(Menu).prop('open')).toBeFalsy()
   })
 
   it('should close ZoomMenu and sets the zoomMode to fitHeight when reversed "Fit Height" clicked', () => {
     const setZoomMode = jest.fn()
-    const wrapper = getComponentWithProps({ setZoomMode })
-    wrapper.find(IconButton).simulate('click', { currentTarget: IconButton })
+    const wrapper = getComponentWithProps({ updateState: setZoomMode, zoomMode: 'fitHeight' })
+    wrapper.find(IconButton).simulate('click')
     wrapper
       .find(Code)
-      .first()
-      .parent()
+      .at(1)
       .simulate('click')
-    expect(setZoomMode).toBeCalledWith('fitHeight')
+    expect(setZoomMode).toBeCalledWith({ zoomMode: 'fitHeight' })
     expect(wrapper.find(Menu).prop('open')).toBeFalsy()
   })
 
   it('should close ZoomMenu and sets the zoomMode to fitWidth when "Fit Width" clicked', () => {
     const setZoomMode = jest.fn()
-    const wrapper = getComponentWithProps({ setZoomMode })
-    wrapper.find(IconButton).simulate('click', { currentTarget: IconButton })
+    const wrapper = getComponentWithProps({ updateState: setZoomMode, zoomMode: 'fitWidth' })
+    wrapper.find(IconButton).simulate('click')
     wrapper
       .find(Code)
-      .last()
-      .parent()
+      .at(2)
       .simulate('click')
-    expect(setZoomMode).toBeCalledWith('fitWidth')
+    expect(setZoomMode).toBeCalledWith({ zoomMode: 'fitWidth' })
     expect(wrapper.find(Menu).prop('open')).toBeFalsy()
   })
 
   it('should call setZoomLevel when ZoomIn clicked', async () => {
     const setZoomLevel = jest.fn()
-    const wrapper = mount(
-      <ZoomWidgetComponent
-        localization={defaultLocalization}
-        customZoomLevel={0}
-        setZoomLevel={setZoomLevel}
-        setZoomMode={jest.fn()}
-        zoomMode="custom"
-      />,
-    )
-    wrapper.find(IconButton).simulate('click', { currentTarget: IconButton })
+    const wrapper = getComponentWithProps({
+      customZoomLevel: 0,
+      updateState: setZoomLevel,
+      zoomMode: 'custom',
+    })
+    wrapper.find(IconButton).simulate('click')
     wrapper
       .find(SvgIcon)
       .last()
       .simulate('click')
-    expect(setZoomLevel).toBeCalledWith(1)
+    expect(setZoomLevel).toBeCalledWith({ customZoomLevel: 1 })
   })
 
   it('should call setZoomLevel when ZoomOut clicked', async () => {
     const setZoomLevel = jest.fn()
-    const wrapper = mount(
-      <ZoomWidgetComponent
-        localization={defaultLocalization}
-        customZoomLevel={5}
-        setZoomLevel={setZoomLevel}
-        setZoomMode={jest.fn()}
-        zoomMode="custom"
-      />,
-    )
-    wrapper.find(IconButton).simulate('click', { currentTarget: IconButton })
+    const wrapper = getComponentWithProps({
+      customZoomLevel: 5,
+      updateState: setZoomLevel,
+      zoomMode: 'custom',
+    })
+
+    wrapper.find(IconButton).simulate('click')
     wrapper
       .find(IconButton)
       .find(SvgIcon)
       .at(1)
       .simulate('click')
-    expect(setZoomLevel).toBeCalledWith(4)
+    expect(setZoomLevel).toBeCalledWith({ customZoomLevel: 6 })
   })
 })
