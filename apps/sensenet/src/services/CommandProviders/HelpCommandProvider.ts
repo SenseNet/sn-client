@@ -1,4 +1,4 @@
-import { Injectable } from '@furystack/inject'
+import { Injectable } from '@sensenet/client-utils'
 import { CommandProvider, SearchOptions } from '../CommandProviderManager'
 import { LocalizationService } from '../LocalizationService'
 import { CommandPaletteItem } from '../../hooks'

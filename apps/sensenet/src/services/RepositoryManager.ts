@@ -1,4 +1,4 @@
-import { Injectable, Injector } from '@furystack/inject'
+import { Injectable, Injector } from '@sensenet/client-utils'
 import { FormsAuthenticationService, LoginState, Repository } from '@sensenet/client-core'
 import { RepositoryConfiguration } from '@sensenet/client-core/dist/Repository/RepositoryConfiguration'
 import { RequestCounterService } from './request-counter-service'

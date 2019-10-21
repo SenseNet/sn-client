@@ -1,4 +1,4 @@
-import { LeveledLogEntry } from '@furystack/logging'
+import { LeveledLogEntry } from '@sensenet/client-utils'
 import React, { useContext } from 'react'
 import MonacoEditor, { MonacoDiffEditor } from 'react-monaco-editor'
 import { ResponsiveContext } from '../../context'

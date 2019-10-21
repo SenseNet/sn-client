@@ -1,4 +1,4 @@
-import { toNumber } from '../src/ToNumber'
+import { toNumber } from '../src'
 
 describe('toNumber', () => {
   it('Should give back undefined for undefined and null', () => {

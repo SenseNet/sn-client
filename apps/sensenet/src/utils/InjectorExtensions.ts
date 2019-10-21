@@ -1,9 +1,9 @@
-import { Injector } from '@furystack/inject/dist/Injector'
+import { Injector } from '@sensenet/client-utils/dist/inject/injector'
 import { Repository } from '@sensenet/client-core'
 import { RepositoryConfiguration } from '@sensenet/client-core/dist/Repository/RepositoryConfiguration'
 import { RepositoryManager } from '../services/RepositoryManager'
 
-declare module '@furystack/inject/dist/Injector' {
+declare module '@sensenet/client-utils/dist/inject/injector' {
   /**
    * Defines an extended Injector instance
    */

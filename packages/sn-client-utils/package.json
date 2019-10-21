@@ -35,6 +35,7 @@
   },
   "homepage": "https://sensenet.com",
   "dependencies": {
-    "tslib": "^1.9.3"
+    "tslib": "^1.9.3",
+    "reflect-metadata": "^0.1.13"
   }
 }
