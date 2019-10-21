@@ -1,4 +1,4 @@
-import { deepMerge } from '../src/DeepMerge'
+import { deepMerge } from '../src'
 
 describe('DeepMerge tests', () => {
   it('Should return the target object if no merge sources are defined', () => {

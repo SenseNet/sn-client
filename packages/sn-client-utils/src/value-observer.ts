@@ -1,5 +1,5 @@
-import { Disposable } from './Disposable'
-import { ObservableValue, ValueChangeCallback } from './ObservableValue'
+import { Disposable } from './disposable'
+import { ObservableValue, ValueChangeCallback } from './observable-value'
 
 /**
  * Defines a generic ValueObserver instance

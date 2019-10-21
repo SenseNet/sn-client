@@ -1,4 +1,4 @@
-import { RetrierOptions } from './RetrierOptions'
+import { RetrierOptions } from './retrier-options'
 
 /**
  * Utility class for retrying operations.

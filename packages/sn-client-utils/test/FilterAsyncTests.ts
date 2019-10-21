@@ -1,5 +1,4 @@
-import '../src/FilterAsync'
-import { sleepAsync } from '../src/SleepAsync'
+import { sleepAsync } from '../src'
 
 describe('FilterAsync', () => {
   it('Should return the original array in case of truthy values', async () => {

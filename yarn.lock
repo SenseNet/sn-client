@@ -1173,20 +1173,13 @@
     unique-filename "^1.1.1"
     which "^1.3.1"
 
-"@furystack/inject@^4.0.1", "@furystack/inject@^4.0.2":
+"@furystack/inject@^4.0.1":
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@furystack/inject/-/inject-4.0.2.tgz#83b8af141ca3c2da52e8a9fb159f4ca36ea1d83b"
   integrity sha512-usjTfol0pQlsgIyC/ay6CKzOpz664NL87waGgqMdeGqh5DgFs/4yi54vA4VIYBG5WcPx8xcjjQV+mL08b7YYfA==
   dependencies:
     "@sensenet/client-utils" "^1.5.1"
     reflect-metadata "^0.1.13"
-
-"@furystack/logging@^2.0.3":
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/@furystack/logging/-/logging-2.0.4.tgz#bc5cef7be61f006b425b45934fbbe9b3e358babe"
-  integrity sha512-o8QJfOtayyqJ297Ccj275AfU+1SDU2MqKOyCydzffwVtUJR6g0+9HXYRa6y/keDVxX+tPhLMWIpeuxoSq3tmZA==
-  dependencies:
-    "@furystack/inject" "^4.0.2"
 
 "@hapi/address@2.x.x":
   version "2.1.2"

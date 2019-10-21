@@ -1,5 +1,5 @@
-import { Disposable } from './Disposable'
-import { ValueObserver } from './ValueObserver'
+import { Disposable } from './disposable'
+import { ValueObserver } from './value-observer'
 
 /**
  * Callback type for observable value changes

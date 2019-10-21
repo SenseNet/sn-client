@@ -1,4 +1,4 @@
-import { Injector } from '@furystack/inject'
+import { Injector } from '@sensenet/client-utils'
 import { Comment, CommentWithoutCreatedByAndId } from './Comment'
 import { DocumentData, PreviewImageData } from '.'
 
