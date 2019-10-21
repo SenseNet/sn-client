@@ -1,15 +1,22 @@
-import Button from '@material-ui/core/Button'
+import { Button } from '@material-ui/core'
 import React, { useState } from 'react'
 import { ConfirmationDialog } from '../ConfirmationDialog'
-import { CommentPropType } from './Comment'
+import { useDocumentData, useDocumentViewerApi, useLocalization } from '../../hooks'
+import { CommentData } from '../../models/Comment'
 
-type DeleteButtonProps = Pick<CommentPropType, 'deleteComment' | 'id' | 'localization'>
+// type DeleteButtonProps = Pick<CommentPropType, 'deleteComment' | 'id'>
+export interface DeleteButtonProps {
+  comment: CommentData
+}
 
 /**
  * Represents a delete button with confirmation dialog
  */
-export const DeleteButton = (props: DeleteButtonProps) => {
+export const DeleteButton: React.FC<DeleteButtonProps> = props => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const api = useDocumentViewerApi()
+  const { documentData } = useDocumentData()
+  const localization = useLocalization()
 
   const handleClick = () => {
     setIsDialogOpen(true)
@@ -17,7 +24,11 @@ export const DeleteButton = (props: DeleteButtonProps) => {
 
   const handleDialogClose = (isCanceled: boolean) => {
     if (!isCanceled) {
-      props.deleteComment(props.id)
+      api.commentActions.deletePreviewComment({
+        document: documentData,
+        commentId: props.comment.id,
+        abortController: new AbortController(),
+      })
     }
     setIsDialogOpen(false)
   }
@@ -25,15 +36,15 @@ export const DeleteButton = (props: DeleteButtonProps) => {
   return (
     <>
       <Button color="primary" size="small" onClick={handleClick}>
-        {props.localization.delete || 'delete'}
+        {localization.delete || 'delete'}
       </Button>
       <ConfirmationDialog
-        dialogTitle={props.localization.deleteCommentDialogTitle}
-        cancelButtonText={props.localization.cancelButton}
-        okButtonText={props.localization.okButton}
+        dialogTitle={localization.deleteCommentDialogTitle}
+        cancelButtonText={localization.cancelButton}
+        okButtonText={localization.okButton}
         isOpen={isDialogOpen}
         onClose={handleDialogClose}>
-        {props.localization.deleteCommentDialogBody}
+        {localization.deleteCommentDialogBody}
       </ConfirmationDialog>
     </>
   )

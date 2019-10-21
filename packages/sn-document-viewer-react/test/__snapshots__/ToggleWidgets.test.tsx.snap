@@ -27,11 +27,9 @@ exports[`Component ToggleBase should render without crashing 1`] = `
 
 exports[`Component ToggleRedaction should render without crashing 1`] = `
 <Component
-  canHideRedaction={true}
   isVisible={true}
-  setValue={[MockFunction]}
-  showRedaction={true}
-  title="Test"
+  setValue={[Function]}
+  title="Toggle redaction"
 >
   <PictureInPictureIcon />
 </Component>
@@ -40,8 +38,8 @@ exports[`Component ToggleRedaction should render without crashing 1`] = `
 exports[`Component ToggleShapes should render without crashing 1`] = `
 <Component
   isVisible={true}
-  setValue={[MockFunction]}
-  title="Test"
+  setValue={[Function]}
+  title="Toggle shapes"
 >
   <DashboardIcon />
 </Component>
@@ -49,13 +47,13 @@ exports[`Component ToggleShapes should render without crashing 1`] = `
 
 exports[`Component ToggleThumbnails should render without crashing 1`] = `
 <Component
-  isVisible={true}
-  setValue={[MockFunction]}
-  title="Test"
+  isVisible={false}
+  setValue={[Function]}
+  title="Toggle thumbnails"
 >
   <svg
     enableBackground="new 0 0 1000 1000"
-    fill="#3c91f2"
+    fill="#707070"
     style={
       Object {
         "height": "1em",
@@ -86,10 +84,9 @@ exports[`Component ToggleThumbnails should render without crashing 1`] = `
 
 exports[`Component ToggleWatermark should render without crashing 1`] = `
 <Component
-  canHideWatermark={true}
-  isVisible={true}
-  setValue={[MockFunction]}
-  title="Test"
+  isVisible={false}
+  setValue={[Function]}
+  title="Toggle watermark"
 >
   <BrandingWatermarkIcon />
 </Component>

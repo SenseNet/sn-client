@@ -1,2 +1,2 @@
-export * from './ImageUtils'
-export * from './TypeHelpers'
+export * from './image-utils'
+export * from './apply-shape-rotations'

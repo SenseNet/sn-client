@@ -37,6 +37,7 @@
     "@sensenet/controls-react": "^3.2.0",
     "@sensenet/default-content-types": "^2.0.2",
     "@sensenet/document-viewer-react": "^1.2.2",
+    "@sensenet/hooks-react": "^1.0.1",
     "@sensenet/icons-react": "^1.2.14",
     "@sensenet/list-controls-react": "^1.3.12",
     "@sensenet/pickers-react": "^1.2.5",

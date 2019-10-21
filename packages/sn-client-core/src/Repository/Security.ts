@@ -329,6 +329,7 @@ export class Security {
       | 'Custom32'
     >,
     identityPath?: string,
+    requestInit?: RequestInit,
   ): Promise<boolean> {
     let params = `permissions=${permissions.join(',')}`
     if (identityPath) {
@@ -340,7 +341,7 @@ export class Security {
       this.repository.configuration.oDataToken,
       PathHelper.getContentUrl(contentIdOrPath),
     )
-    const response = await this.repository.fetch(`${path}/HasPermission?${params}`)
+    const response = await this.repository.fetch(`${path}/HasPermission?${params}`, requestInit)
     if (response.ok) {
       return (await response.text()) === 'true' || false
     } else {

@@ -2,16 +2,27 @@ import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import { mount } from 'enzyme'
 import React from 'react'
-import { ConfirmationDialog, DeleteButton } from '../src/components'
+import { ConfirmationDialog, DeleteButton, DeleteButtonProps } from '../src/components'
+import { DocumentViewerApiSettingsContext } from '../src/context/api-settings'
+import { DocumentViewerApiSettings } from '../src/models'
+import { defaultSettings } from './__Mocks__/viewercontext'
 
 describe('Delete comment button component', () => {
-  const defaultProps = {
-    localization: {
-      deleteCommentDialogTitle: 'delete comment dialog title',
-      deleteCommentDialogBody: 'delete comment dialog body',
-    } as any,
-    deleteComment: jest.fn(),
-    id: 'id',
+  const defaultProps: DeleteButtonProps = {
+    comment: {
+      createdBy: {
+        id: 123,
+        avatarUrl: 'https://google.com',
+        displayName: 'E',
+        path: '/Root/IMS/Public/E',
+        userName: 'E',
+      },
+      id: '1',
+      page: 1,
+      text: 'alma',
+      x: 0,
+      y: 0,
+    },
   }
 
   it('should open a confirmation dialog when clicked', () => {
@@ -21,17 +32,31 @@ describe('Delete comment button component', () => {
   })
 
   it('should call delete comment when confirmation comes back false', () => {
-    const deleteComment = jest.fn()
-    const wrapper = mount(<DeleteButton {...defaultProps} deleteComment={deleteComment} />)
+    const currentSettings: DocumentViewerApiSettings = {
+      ...defaultSettings,
+      commentActions: { ...defaultSettings.commentActions, deletePreviewComment: jest.fn() },
+    }
+    const wrapper = mount(
+      <DocumentViewerApiSettingsContext.Provider value={currentSettings}>
+        <DeleteButton {...defaultProps} />
+      </DocumentViewerApiSettingsContext.Provider>,
+    )
     wrapper.find(ConfirmationDialog).prop('onClose')(false)
-    expect(deleteComment).toBeCalled()
+    expect(currentSettings.commentActions.deletePreviewComment).toBeCalled()
   })
 
   it("shouldn't call delete comment when confirmation comes back true and closes dialog", () => {
-    const deleteComment = jest.fn()
-    const wrapper = mount(<DeleteButton {...defaultProps} deleteComment={deleteComment} />)
+    const currentSettings: DocumentViewerApiSettings = {
+      ...defaultSettings,
+      commentActions: { ...defaultSettings.commentActions, deletePreviewComment: jest.fn() },
+    }
+    const wrapper = mount(
+      <DocumentViewerApiSettingsContext.Provider value={currentSettings}>
+        <DeleteButton {...defaultProps} />
+      </DocumentViewerApiSettingsContext.Provider>,
+    )
     wrapper.find(ConfirmationDialog).prop('onClose')(true)
-    expect(deleteComment).not.toBeCalled()
+    expect(currentSettings.commentActions.deletePreviewComment).not.toBeCalled()
     expect(wrapper.find(Dialog).prop('open')).toBeFalsy()
   })
 })
