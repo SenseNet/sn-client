@@ -10,7 +10,7 @@
 [![Coverage](https://img.shields.io/codecov/c/github/SenseNet/sn-client.svg?style=flat)](https://codecov.io/gh/SenseNet/sn-client)
 [![Gitter chat](https://img.shields.io/gitter/room/SenseNet/sensenet.svg?style=flat)](https://gitter.im/SenseNet/sensenet)
 
-This repository is a monorepo that we manage using [Lerna](https://github.com/lerna/lerna). That means that we actually publish [several packages](/packages) to npm from the same codebase, including:
+This repository is a monorepo that we manage using [Lerna](https://github.com/lerna/lerna) . That means that we actually publish [several packages](/packages) to npm from the same codebase, including:
 
 | Package                                                                     | Version                                                                                                                                                     |
 | --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
