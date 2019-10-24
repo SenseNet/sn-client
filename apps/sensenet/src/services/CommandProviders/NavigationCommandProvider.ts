@@ -62,7 +62,7 @@ export class NavigationCommandProvider implements CommandProvider {
   private localizationValues: ReturnType<LocalizationService['currentValues']['getValue']>['navigationCommandProvider']
 
   public shouldExec(options: SearchOptions) {
-    const termLowerCase = options.term.toLocaleLowerCase()
+    const termLowerCase = options.term && options.term.toLocaleLowerCase()
     return (
       options.term.length > 0 &&
       this.getRoutes(options).find(

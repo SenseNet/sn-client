@@ -9,7 +9,7 @@ import { CommandPaletteItem } from '../../hooks'
 @Injectable({ lifetime: 'singleton' })
 export class InFolderSearchCommandProvider implements CommandProvider {
   public shouldExec({ term }: SearchOptions): boolean {
-    return term[0] === '/'
+    return term != null && term[0] === '/'
   }
 
   public async getItems(options: SearchOptions): Promise<CommandPaletteItem[]> {

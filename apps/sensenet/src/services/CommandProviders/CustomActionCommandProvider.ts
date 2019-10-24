@@ -17,7 +17,10 @@ export class CustomActionCommandProvider implements CommandProvider {
   public onActionExecuted = new ObservableValue<{ content: GenericContent; action: ActionModel; response: any }>()
 
   public shouldExec(options: SearchOptions) {
-    return this.selectionService.activeContent.getValue() && options.term.length > 2 && options.term.startsWith('>')
+    return this.selectionService.activeContent.getValue() &&
+      options.term &&
+      options.term.length > 2 &&
+      options.term.startsWith('>')
       ? true
       : false
   }
