@@ -102,7 +102,7 @@ export const pathHelperTests = describe('PathHelper', () => {
 
     it('should return the path itself for reference paths', () => {
       const contentUrl = PathHelper.getContentUrlByPath("/workspace('project')/Owner")
-      expect(contentUrl).toBe("workspace/('project')/Owner")
+      expect(contentUrl).toBe("workspace('project')/Owner")
     })
 
     it('should return an error message if the given argument is an empty string', () => {
@@ -150,7 +150,16 @@ export const pathHelperTests = describe('PathHelper', () => {
 
   describe('#getSegments()', () => {
     it('Should split the path to segments', () => {
-      expect(PathHelper.getSegments("Root/Example('Content1')")).toEqual(['Root', 'Example', "('Content1')"])
+      expect(PathHelper.getSegments("/Root/Example('Content1')")).toEqual(['Root', 'Example', "('Content1')"])
+    })
+    it('Should split the path to segments', () => {
+      expect(PathHelper.getSegments('/Root/Example(123)')).toEqual(['Root', 'Example', '(123)'])
+    })
+    it('Should split the path to segments', () => {
+      expect(PathHelper.getSegments('/Root/Example/100pages(3).pdf')).toEqual(['Root', 'Example', '100pages(3).pdf'])
+    })
+    it('should throw an error if the path is empty', () => {
+      expect(() => PathHelper.getSegments('')).toThrow()
     })
   })
 
