@@ -89,16 +89,20 @@ export class CustomActionCommandProvider implements CommandProvider {
   ) {}
 
   private addParametersForCustomActions(action: ActionModel) {
-    if (action.Name === 'Create') {
-      return {
-        parameters: [
-          { name: 'contentType', type: 'string', required: true },
-          { name: 'content', type: 'object', required: true },
-        ],
-      }
-    }
-    if (action.Name === 'Update') {
-      return { parameters: [{ name: 'content', type: 'object', required: true }] }
+    switch (action.Name) {
+      case 'Create':
+        return {
+          parameters: [
+            { name: 'contentType', type: 'string', required: true },
+            { name: 'content', type: 'object', required: true },
+          ],
+        }
+      case 'Update':
+        return { parameters: [{ name: 'content', type: 'object', required: true }] }
+      case 'Remove':
+        return { parameters: [{ name: 'isPermanent', type: 'boolean', required: true }] }
+      default:
+        return
     }
   }
 }

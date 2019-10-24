@@ -15,6 +15,9 @@ import { createCustomActionModel } from '../../services/MonacoModels/create-cust
 import { getMonacoModelUri } from '../edit/TextEditor'
 
 const postBodyCache = new Map<string, string>()
+const EDITOR_INITIAL_VALUE = `{
+
+}`
 
 export const ExecuteActionDialog: React.FunctionComponent = () => {
   const theme = useTheme()
@@ -27,7 +30,7 @@ export const ExecuteActionDialog: React.FunctionComponent = () => {
   const [actionValue, setActionValue] = useState(customActionService.onExecuteAction.getValue())
 
   const [isVisible, setIsVisible] = useState(false)
-  const [postBody, setPostBody] = useState('{}')
+  const [postBody, setPostBody] = useState(EDITOR_INITIAL_VALUE)
   const [uri, setUri] = useState<import('monaco-editor').Uri>()
 
   const [isExecuting, setIsExecuting] = useState(false)
@@ -42,7 +45,7 @@ export const ExecuteActionDialog: React.FunctionComponent = () => {
     if (stored) {
       setPostBody(stored)
     } else {
-      setPostBody('{}')
+      setPostBody(EDITOR_INITIAL_VALUE)
     }
     setError('')
   }, [uri])
@@ -83,8 +86,13 @@ export const ExecuteActionDialog: React.FunctionComponent = () => {
             content: parsedBody.content,
           })
         }
-        case 'Remove':
-          return await repo.delete({ idOrPath: actionValue.content.Id, permanent: false })
+        case 'Remove': {
+          const { isPermanent } = JSON.parse(postBody)
+          return await repo.delete({
+            idOrPath: actionValue.content.Id,
+            permanent: isPermanent == null ? false : isPermanent,
+          })
+        }
         case 'Update':
           return await repo.patch({ idOrPath: actionValue.content.Id, content: JSON.parse(postBody).content })
         default:
@@ -131,17 +139,17 @@ export const ExecuteActionDialog: React.FunctionComponent = () => {
           details: { actionValue, result },
         },
       })
+    setPostBody(EDITOR_INITIAL_VALUE)
     setIsVisible(!result)
   }
 
+  const onClose = () => {
+    setPostBody(EDITOR_INITIAL_VALUE)
+    setIsVisible(false)
+  }
+
   return (
-    <Dialog
-      open={isVisible}
-      onClose={() => setIsVisible(false)}
-      fullWidth={true}
-      onKeyUp={ev => {
-        ev.key === 'Escape' && setIsVisible(false)
-      }}>
+    <Dialog open={isVisible} onClose={onClose} fullWidth={true}>
       <DialogTitle>
         {localization.title
           .replace('{0}', (actionValue && (actionValue.action.DisplayName || actionValue.action.Name)) || '')
@@ -192,7 +200,7 @@ export const ExecuteActionDialog: React.FunctionComponent = () => {
         <div style={{ flex: 1, marginLeft: '1.5em' }}>
           {error ? <Typography color="error">{error}</Typography> : null}
         </div>
-        <Button onClick={() => setIsVisible(false)}>{localization.cancelButton}</Button>
+        <Button onClick={onClose}>{localization.cancelButton}</Button>
         <Button
           autoFocus={
             !(
