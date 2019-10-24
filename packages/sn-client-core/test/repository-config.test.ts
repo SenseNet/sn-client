@@ -1,4 +1,3 @@
-import 'jest'
 import { RepositoryConfiguration } from '../src/Repository/RepositoryConfiguration'
 
 declare const global: any

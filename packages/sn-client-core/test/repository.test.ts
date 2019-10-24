@@ -1,6 +1,5 @@
 import { using } from '@sensenet/client-utils'
 import { ActionModel, ContentType, User } from '@sensenet/default-content-types'
-import 'jest'
 import { ActionOptions, ODataWopiResponse, Repository } from '../src'
 import { Content } from '../src/Models/Content'
 import { ODataCollectionResponse } from '../src/Models/ODataCollectionResponse'

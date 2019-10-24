@@ -1,6 +1,5 @@
 import { GenericContent, Task } from '@sensenet/default-content-types'
 import { Query } from '@sensenet/query'
-import 'jest'
 import { ODataUrlBuilder } from '../src/Repository/ODataUrlBuilder'
 import { Repository } from '../src/Repository/Repository'
 

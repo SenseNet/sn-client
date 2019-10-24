@@ -377,6 +377,7 @@ describe('Upload', () => {
   describe('#fromFileList', () => {
     const file = {
       isFile: true,
+      size: 123,
       webkitRelativePath: '/example',
       file: (cb: (f: File) => void) => {
         cb(new File(['alma.txt'], 'alma'))
@@ -384,6 +385,7 @@ describe('Upload', () => {
     }
     const file2 = {
       isFile: true,
+      size: 123,
       webkitRelativePath: '/example/sub/',
       file: (cb: (f: File) => void) => {
         cb(new File(['alma.txt'], 'alma'))
@@ -391,6 +393,7 @@ describe('Upload', () => {
     }
     const file3 = {
       isFile: true,
+      size: 123,
       webkitRelativePath: '/example/sub/2',
       file: (cb: (f: File) => void) => {
         cb(new File(['alma.txt'], 'alma'))

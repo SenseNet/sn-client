@@ -9,7 +9,6 @@ import {
   User,
   UserProfile,
 } from '@sensenet/default-content-types'
-import 'jest'
 import { SchemaStore } from '../src/Schemas/SchemaStore'
 
 /**

@@ -1,5 +1,4 @@
 import { IdentityKind, Inheritance, PermissionLevel, PermissionValues } from '@sensenet/default-content-types'
-import 'jest'
 import { Repository } from '../src/Repository/Repository'
 import { Security } from '../src/Repository/Security'
 

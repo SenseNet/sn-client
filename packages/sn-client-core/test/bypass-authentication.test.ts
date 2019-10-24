@@ -1,4 +1,3 @@
-import 'jest'
 import { BypassAuthentication } from '../src'
 
 describe('BypassAuthentication', () => {

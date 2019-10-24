@@ -1,4 +1,3 @@
-import 'jest'
 import { Repository } from '../src/Repository/Repository'
 import { Versioning } from '../src/Repository/Versioning'
 

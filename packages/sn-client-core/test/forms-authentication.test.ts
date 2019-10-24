@@ -1,5 +1,4 @@
 import { User } from '@sensenet/default-content-types'
-import 'jest'
 import {
   ConstantContent,
   FormsAuthenticationService,
