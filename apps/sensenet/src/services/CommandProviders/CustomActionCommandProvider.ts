@@ -58,7 +58,11 @@ export class CustomActionCommandProvider implements CommandProvider {
           result.d.__metadata.functions &&
           result.d.__metadata.functions.find(fn => fn.name === a.Name)
 
-        this.addParametersForCustomActions(a, functionMetadata)
+        // merge custom parameters to function metadata
+        const customActionMetadata = functionMetadata && {
+          ...functionMetadata,
+          ...this.addParametersForCustomActions(a),
+        }
 
         return {
           primaryText: localization.executePrimaryText
@@ -72,7 +76,7 @@ export class CustomActionCommandProvider implements CommandProvider {
             this.onExecuteAction.setValue({
               action: a,
               content,
-              metadata: actionMetadata || functionMetadata,
+              metadata: actionMetadata || customActionMetadata,
               method: actionMetadata ? 'POST' : 'GET',
             }),
         }
@@ -84,15 +88,17 @@ export class CustomActionCommandProvider implements CommandProvider {
     private readonly localization: LocalizationService,
   ) {}
 
-  private addParametersForCustomActions(action: ActionModel, functionMetadata: MetadataAction | undefined) {
-    if (action.Name === 'Create' && functionMetadata) {
-      functionMetadata.parameters = [
-        { name: 'contentType', type: 'string', required: true },
-        { name: 'content', type: 'object', required: true },
-      ]
+  private addParametersForCustomActions(action: ActionModel) {
+    if (action.Name === 'Create') {
+      return {
+        parameters: [
+          { name: 'contentType', type: 'string', required: true },
+          { name: 'content', type: 'object', required: true },
+        ],
+      }
     }
-    if (action.Name === 'Update' && functionMetadata) {
-      functionMetadata.parameters = [{ name: 'content', type: 'object', required: true }]
+    if (action.Name === 'Update') {
+      return { parameters: [{ name: 'content', type: 'object', required: true }] }
     }
   }
 }
