@@ -58,6 +58,8 @@ export class CustomActionCommandProvider implements CommandProvider {
           result.d.__metadata.functions &&
           result.d.__metadata.functions.find(fn => fn.name === a.Name)
 
+        this.addParametersForCustomActions(a, functionMetadata)
+
         return {
           primaryText: localization.executePrimaryText
             .replace('{0}', content.DisplayName || content.Name)
@@ -81,4 +83,16 @@ export class CustomActionCommandProvider implements CommandProvider {
     private readonly selectionService: SelectionService,
     private readonly localization: LocalizationService,
   ) {}
+
+  private addParametersForCustomActions(action: ActionModel, functionMetadata: MetadataAction | undefined) {
+    if (action.Name === 'Create' && functionMetadata) {
+      functionMetadata.parameters = [
+        { name: 'contentType', type: 'string', required: true },
+        { name: 'content', type: 'object', required: true },
+      ]
+    }
+    if (action.Name === 'Update' && functionMetadata) {
+      functionMetadata.parameters = [{ name: 'content', type: 'object', required: true }]
+    }
+  }
 }
