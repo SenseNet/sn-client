@@ -12,5 +12,6 @@ export interface PreviewImageData {
   Width: number
   PreviewImageUrl?: string
   ThumbnailImageUrl?: string
+  PreviewAvailable?: string
   Attributes?: PageAttribute['options']
 }

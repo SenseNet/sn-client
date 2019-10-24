@@ -8,10 +8,9 @@ import {
   PutOptions,
   Repository,
   UploadFileOptions,
+  UploadResponse,
 } from '@sensenet/client-core'
-import { UploadResponse } from '@sensenet/client-core/dist/Repository/Upload'
-import { ObservableValue, Trace } from '@sensenet/client-utils'
-import { Disposable } from '@sensenet/client-utils/dist/Disposable'
+import { Disposable, ObservableValue, Trace } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import {
   ContentCopied,

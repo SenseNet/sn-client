@@ -12,4 +12,5 @@ export interface DocumentData {
   shapes: Shapes
   pageCount: number
   pageAttributes: PageAttribute[]
+  error?: string
 }

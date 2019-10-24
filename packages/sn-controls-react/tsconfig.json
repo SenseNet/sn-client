@@ -16,9 +16,6 @@
       "path": "../sn-control-mapper"
     },
     {
-      "path": "../sn-redux"
-    },
-    {
       "path": "../sn-search-react"
     }
   ]

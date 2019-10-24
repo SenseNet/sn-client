@@ -1,6 +1,5 @@
-import { Injectable } from '@furystack/inject'
 import { ConstantContent } from '@sensenet/client-core'
-import { PathHelper } from '@sensenet/client-utils'
+import { Injectable, PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Query } from '@sensenet/query'
 import { CommandProvider, SearchOptions } from '../CommandProviderManager'

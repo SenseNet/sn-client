@@ -3,10 +3,10 @@ import { shallow } from 'enzyme'
 import React from 'react'
 import {
   ToggleBase,
-  ToggleRedactionComponent,
-  ToggleShapesComponent,
-  ToggleThumbnailsComponent,
-  ToggleWatermarkComponent,
+  ToggleRedactionWidget,
+  ToggleShapesWidget,
+  ToggleThumbnailsWidget,
+  ToggleWatermarkWidget,
 } from '../src/components/document-widgets'
 
 describe('Component', () => {
@@ -20,43 +20,22 @@ describe('Component', () => {
   })
 
   it('ToggleRedaction should render without crashing', () => {
-    const wrapper = shallow(
-      <ToggleRedactionComponent
-        canHideRedaction={true}
-        showRedaction={true}
-        isVisible={true}
-        title="Test"
-        setValue={jest.fn()}>
-        <span>Some children</span>
-      </ToggleRedactionComponent>,
-    )
+    const wrapper = shallow(<ToggleRedactionWidget />)
     expect(wrapper).toMatchSnapshot()
   })
 
   it('ToggleShapes should render without crashing', () => {
-    const wrapper = shallow(
-      <ToggleShapesComponent isVisible={true} title="Test" setValue={jest.fn()}>
-        <span>Some children</span>
-      </ToggleShapesComponent>,
-    )
+    const wrapper = shallow(<ToggleShapesWidget />)
     expect(wrapper).toMatchSnapshot()
   })
 
   it('ToggleThumbnails should render without crashing', () => {
-    const wrapper = shallow(
-      <ToggleThumbnailsComponent isVisible={true} title="Test" setValue={jest.fn()}>
-        <span>Some children</span>
-      </ToggleThumbnailsComponent>,
-    )
+    const wrapper = shallow(<ToggleThumbnailsWidget />)
     expect(wrapper).toMatchSnapshot()
   })
 
   it('ToggleWatermark should render without crashing', () => {
-    const wrapper = shallow(
-      <ToggleWatermarkComponent canHideWatermark={true} isVisible={true} title="Test" setValue={jest.fn()}>
-        <span>Some children</span>
-      </ToggleWatermarkComponent>,
-    )
+    const wrapper = shallow(<ToggleWatermarkWidget />)
     expect(wrapper).toMatchSnapshot()
   })
 

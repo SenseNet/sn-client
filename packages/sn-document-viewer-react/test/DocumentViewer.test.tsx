@@ -1,70 +1,105 @@
-import { shallow } from 'enzyme'
+import { mount, shallow } from 'enzyme'
 import React from 'react'
-import { DocumentViewerComponent } from '../src/components/DocumentViewer'
+import { sleepAsync } from '@sensenet/client-utils'
+import { act } from 'react-dom/test-utils'
+import { DocumentViewer, DocumentViewerProps } from '../src/components/DocumentViewer'
+import { defaultSettings, exampleDocumentData, examplePreviewImageData } from './__Mocks__/viewercontext'
 
 /**
  * Tests for the Document Viewer main component
  */
 describe('Document Viewer component', () => {
-  const defaultProps: DocumentViewerComponent['props'] = {
+  const defaultProps: DocumentViewerProps = {
     documentIdOrPath: 1,
-    docViewerError: '',
-    hostName: 'host',
-    idOrPath: 1,
-    isLoading: false,
-    pollDocumentData: jest.fn(),
-    previewImagesError: '',
-    previewState: 1,
-    setLocalization: jest.fn(),
-    localization: {},
     theme: {} as any,
   }
 
   it('should render without crashing', () => {
-    const pollDocumentData = jest.fn()
-    const setLocalization = jest.fn()
-    const wrapper = shallow(
-      <DocumentViewerComponent {...defaultProps} pollDocumentData={pollDocumentData} setLocalization={setLocalization}>
-        {'some children'}
-      </DocumentViewerComponent>,
-    )
+    const wrapper = shallow(<DocumentViewer {...defaultProps}>{'some children'}</DocumentViewer>)
     expect(wrapper).toMatchSnapshot()
-    expect(pollDocumentData).toBeCalled()
-    expect(setLocalization).toBeCalled()
   })
 
   it('should render a loading component while loading', () => {
     const wrapper = shallow(
-      <DocumentViewerComponent {...defaultProps} isLoading={true} documentIdOrPath={0} localization={undefined} />,
+      <DocumentViewer
+        {...defaultProps}
+        api={{
+          getDocumentData: async () => ({
+            ...exampleDocumentData,
+            pageCount: -1,
+          }),
+        }}
+      />,
     )
     expect(wrapper).toMatchSnapshot()
   })
 
   describe('should render an error component', () => {
     it('if there were errors while preview generation', () => {
-      const wrapper = shallow(<DocumentViewerComponent {...defaultProps} previewState={-2} />)
+      const wrapper = shallow(
+        <DocumentViewer
+          {...defaultProps}
+          api={{
+            getDocumentData: async () => ({
+              ...exampleDocumentData,
+              pageCount: -2,
+            }),
+          }}
+        />,
+      )
       expect(wrapper).toMatchSnapshot()
     })
 
-    it('if there were docViewer or preview images error', () => {
-      const wrapper = shallow(<DocumentViewerComponent {...defaultProps} docViewerError={'error'} />)
+    it('if an error happens during fetching the document data', () => {
+      const wrapper = shallow(
+        <DocumentViewer
+          {...defaultProps}
+          api={{
+            getDocumentData: async () => Promise.reject(':('),
+          }}
+        />,
+      )
       expect(wrapper).toMatchSnapshot()
+    })
 
-      const wrapper2 = shallow(<DocumentViewerComponent {...defaultProps} previewImagesError={'error'} />)
-      expect(wrapper2).toMatchSnapshot()
+    it('if an error happens during fetching the preview image data', () => {
+      const wrapper = shallow(
+        <DocumentViewer
+          {...defaultProps}
+          api={{
+            getExistingPreviewImages: async () => Promise.reject(':('),
+          }}
+        />,
+      )
+      expect(wrapper).toMatchSnapshot()
     })
   })
 
-  it('should poll document data and set localization when new documentid is added or when the version changed', () => {
-    const pollDocumentData = jest.fn()
-    const setLocalization = jest.fn()
-    const wrapper = shallow(
-      <DocumentViewerComponent {...defaultProps} pollDocumentData={pollDocumentData} setLocalization={setLocalization}>
-        {'some children'}
-      </DocumentViewerComponent>,
-    )
-    wrapper.setProps({ documentIdOrPath: 2, hostName: 'host2', version: 'v2' })
-    expect(pollDocumentData).lastCalledWith('host2', 2, 'v2') // ensure that poll document is called with new props
-    expect(setLocalization).toBeCalled()
+  it('should fetch the document data and preview images when new documentid is added or when the version changed', async () => {
+    await act(async () => {
+      const getDocumentData = jest.fn(async () => exampleDocumentData)
+      const getExistingPreviewImages = jest.fn(async () => [examplePreviewImageData])
+      const wrapper = mount(
+        <DocumentViewer
+          {...defaultProps}
+          api={{
+            ...defaultSettings,
+            ...defaultProps.api,
+            getDocumentData,
+            getExistingPreviewImages,
+          }}>
+          {'some children'}
+        </DocumentViewer>,
+      )
+      wrapper.setProps({ documentIdOrPath: 2, hostName: 'host2', version: 'v2' })
+      await sleepAsync(10)
+      expect(getDocumentData).lastCalledWith({
+        abortController: expect.any(AbortController),
+        hostName: 'http://localhost',
+        idOrPath: 2,
+        version: 'v2',
+      }) // ensure that poll document is called with new props
+      expect(getExistingPreviewImages).toBeCalled()
+    })
   })
 })

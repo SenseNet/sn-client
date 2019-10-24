@@ -18,7 +18,7 @@ export interface ToggleBaseProps {
   /**
    * Function to set the isVisible's value
    */
-  setValue: (isVisible: boolean) => { type: string; isVisible: boolean }
+  setValue: (isVisible: boolean) => void
 }
 
 /**

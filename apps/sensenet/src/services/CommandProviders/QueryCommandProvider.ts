@@ -1,4 +1,4 @@
-import { Injectable, Injector } from '@furystack/inject'
+import { Injectable, Injector } from '@sensenet/client-utils'
 import { ConstantContent } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { CommandProvider, SearchOptions } from '../CommandProviderManager'

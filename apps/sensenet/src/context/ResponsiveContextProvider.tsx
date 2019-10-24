@@ -1,7 +1,6 @@
-import { deepMerge } from '@sensenet/client-utils'
+import { deepMerge, DeepPartial } from '@sensenet/client-utils'
 import React from 'react'
 import MediaQuery from 'react-responsive'
-import { DeepPartial } from 'redux'
 import { usePersonalSettings, useTheme } from '../hooks'
 import { defaultSettings } from '../services/PersonalSettings'
 

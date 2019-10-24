@@ -1,10 +1,5 @@
-import Button from '@material-ui/core/Button'
-import Dialog from '@material-ui/core/Dialog'
-import DialogActions from '@material-ui/core/DialogActions'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogContentText from '@material-ui/core/DialogContentText'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import React, { FunctionComponent } from 'react'
+import React from 'react'
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core'
 
 /**
  * Interface for confirmation dialog component properties
@@ -20,7 +15,7 @@ export interface ConfirmationDialogProps {
 /**
  * Represents a confirmation dialog
  */
-export const ConfirmationDialog: FunctionComponent<ConfirmationDialogProps> = props => {
+export const ConfirmationDialog: React.FC<ConfirmationDialogProps> = props => {
   const handleCancel = () => props.onClose(true)
   const handleOk = () => props.onClose(false)
   return (

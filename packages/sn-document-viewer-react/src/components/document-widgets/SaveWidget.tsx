@@ -1,65 +1,44 @@
 import IconButton from '@material-ui/core/IconButton'
 import Save from '@material-ui/icons/Save'
-import React from 'react'
-import { connect } from 'react-redux'
-import { DocumentData, PreviewImageData } from '../../models'
-import { componentType } from '../../services/TypeHelpers'
-import { RootReducerType, saveChanges } from '../../store'
-
-/**
- * maps state fields from the store to component props
- * @param state the redux state
- */
-export const mapStateToProps = (state: RootReducerType) => {
-  return {
-    saveChanges: state.sensenetDocumentViewer.localization.saveChanges,
-    document: state.sensenetDocumentViewer.documentState.document as DocumentData,
-    pages: state.sensenetDocumentViewer.previewImages.AvailableImages as PreviewImageData[],
-    canEdit: state.sensenetDocumentViewer.documentState.canEdit,
-    hasChanges:
-      state.sensenetDocumentViewer.documentState.hasChanges || state.sensenetDocumentViewer.previewImages.hasChanges,
-  }
-}
-
-/**
- * maps state actions from the store to component props
- * @param state the redux state
- */
-export const mapDispatchToProps = {
-  save: saveChanges as (document: DocumentData, pages: PreviewImageData[]) => void,
-}
+import React, { useCallback } from 'react'
+import {
+  useDocumentData,
+  useDocumentPermissions,
+  useDocumentViewerApi,
+  useLocalization,
+  usePreviewImages,
+  useViewerState,
+} from '../../hooks'
 
 /**
  * Document widget component for saving document state
  */
-export class SaveDocumentComponent extends React.Component<
-  componentType<typeof mapStateToProps, typeof mapDispatchToProps>
-> {
-  private save() {
-    this.props.canEdit && this.props.save(this.props.document, this.props.pages)
-  }
+export const SaveWidget: React.FC = () => {
+  const api = useDocumentViewerApi()
+  const { documentData } = useDocumentData()
+  const permissions = useDocumentPermissions()
+  const pages = usePreviewImages()
+  const viewerState = useViewerState()
+  const localization = useLocalization()
 
-  /**
-   * renders the component
-   */
-  public render() {
-    return (
-      <div style={{ display: 'inline-block' }}>
-        <IconButton
-          disabled={!this.props.hasChanges || !this.props.canEdit}
-          title={this.props.saveChanges}
-          onClick={() => this.save()}
-          id="Save">
-          <Save />
-        </IconButton>
-      </div>
-    )
-  }
+  const save = useCallback(() => {
+    permissions.canEdit &&
+      api.saveChanges({
+        document: documentData,
+        pages: pages.imageData,
+        abortController: new AbortController(),
+      })
+  }, [api, documentData, pages, permissions.canEdit])
+
+  return (
+    <div style={{ display: 'inline-block' }}>
+      <IconButton
+        disabled={!viewerState.hasChanges || !permissions.canEdit}
+        title={localization.saveChanges}
+        onClick={save}
+        id="Save">
+        <Save />
+      </IconButton>
+    </div>
+  )
 }
-
-const connectedComponent = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(SaveDocumentComponent)
-
-export { connectedComponent as SaveWidget }

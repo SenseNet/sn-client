@@ -1,259 +1,763 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Document Viewer Error component should render without crashing 1`] = `
-<div
-  style={
-    Object {
-      "alignContent": "center",
-      "alignItems": "center",
-      "display": "flex",
-      "height": "100%",
-      "justifyContent": "space-around",
-    }
-  }
->
-  <Component
-    style={
-      Object {
-        "position": "fixed",
-        "top": 0,
-      }
-    }
-  >
-    <span />
-  </Component>
+exports[`Document Viewer Error component matches snapshot wihtout provided context 1`] = `
+<Component>
   <div
     style={
       Object {
+        "alignContent": "center",
         "alignItems": "center",
         "display": "flex",
-        "flexDirection": "column",
-        "justifyContent": "space-between",
-        "margin": ".5em 0 .6em 0",
-        "maxWidth": 500,
+        "height": "100%",
+        "justifyContent": "space-around",
       }
     }
   >
-    <svg
-      height="290px"
-      version="1.1"
-      viewBox="0 0 442 240"
-      width="442px"
-      xmlns="http://www.w3.org/2000/svg"
+    <Component
+      style={
+        Object {
+          "position": "fixed",
+          "top": 0,
+        }
+      }
     >
-      <g
-        fill="none"
-        fillRule="evenodd"
-        id="Page-1"
-        stroke="none"
-        strokeWidth="1"
+      <WithStyles(ForwardRef(AppBar))
+        position="sticky"
+        style={
+          Object {
+            "position": "fixed",
+            "top": 0,
+            "zIndex": 1,
+          }
+        }
+      >
+        <ForwardRef(AppBar)
+          classes={
+            Object {
+              "colorDefault": "MuiAppBar-colorDefault",
+              "colorPrimary": "MuiAppBar-colorPrimary",
+              "colorSecondary": "MuiAppBar-colorSecondary",
+              "positionAbsolute": "MuiAppBar-positionAbsolute",
+              "positionFixed": "MuiAppBar-positionFixed",
+              "positionRelative": "MuiAppBar-positionRelative",
+              "positionStatic": "MuiAppBar-positionStatic",
+              "positionSticky": "MuiAppBar-positionSticky",
+              "root": "MuiAppBar-root",
+            }
+          }
+          position="sticky"
+          style={
+            Object {
+              "position": "fixed",
+              "top": 0,
+              "zIndex": 1,
+            }
+          }
+        >
+          <WithStyles(ForwardRef(Paper))
+            className="MuiAppBar-root MuiAppBar-positionSticky MuiAppBar-colorPrimary"
+            component="header"
+            elevation={4}
+            square={true}
+            style={
+              Object {
+                "position": "fixed",
+                "top": 0,
+                "zIndex": 1,
+              }
+            }
+          >
+            <ForwardRef(Paper)
+              className="MuiAppBar-root MuiAppBar-positionSticky MuiAppBar-colorPrimary"
+              classes={
+                Object {
+                  "elevation0": "MuiPaper-elevation0",
+                  "elevation1": "MuiPaper-elevation1",
+                  "elevation10": "MuiPaper-elevation10",
+                  "elevation11": "MuiPaper-elevation11",
+                  "elevation12": "MuiPaper-elevation12",
+                  "elevation13": "MuiPaper-elevation13",
+                  "elevation14": "MuiPaper-elevation14",
+                  "elevation15": "MuiPaper-elevation15",
+                  "elevation16": "MuiPaper-elevation16",
+                  "elevation17": "MuiPaper-elevation17",
+                  "elevation18": "MuiPaper-elevation18",
+                  "elevation19": "MuiPaper-elevation19",
+                  "elevation2": "MuiPaper-elevation2",
+                  "elevation20": "MuiPaper-elevation20",
+                  "elevation21": "MuiPaper-elevation21",
+                  "elevation22": "MuiPaper-elevation22",
+                  "elevation23": "MuiPaper-elevation23",
+                  "elevation24": "MuiPaper-elevation24",
+                  "elevation3": "MuiPaper-elevation3",
+                  "elevation4": "MuiPaper-elevation4",
+                  "elevation5": "MuiPaper-elevation5",
+                  "elevation6": "MuiPaper-elevation6",
+                  "elevation7": "MuiPaper-elevation7",
+                  "elevation8": "MuiPaper-elevation8",
+                  "elevation9": "MuiPaper-elevation9",
+                  "root": "MuiPaper-root",
+                  "rounded": "MuiPaper-rounded",
+                }
+              }
+              component="header"
+              elevation={4}
+              square={true}
+              style={
+                Object {
+                  "position": "fixed",
+                  "top": 0,
+                  "zIndex": 1,
+                }
+              }
+            >
+              <header
+                className="MuiPaper-root MuiPaper-elevation4 MuiAppBar-root MuiAppBar-positionSticky MuiAppBar-colorPrimary"
+                style={
+                  Object {
+                    "position": "fixed",
+                    "top": 0,
+                    "zIndex": 1,
+                  }
+                }
+              >
+                <WithStyles(ForwardRef(Toolbar))
+                  style={
+                    Object {
+                      "display": "flex",
+                      "justifyContent": "space-between",
+                    }
+                  }
+                >
+                  <ForwardRef(Toolbar)
+                    classes={
+                      Object {
+                        "dense": "MuiToolbar-dense",
+                        "gutters": "MuiToolbar-gutters",
+                        "regular": "MuiToolbar-regular",
+                        "root": "MuiToolbar-root",
+                      }
+                    }
+                    style={
+                      Object {
+                        "display": "flex",
+                        "justifyContent": "space-between",
+                      }
+                    }
+                  >
+                    <div
+                      className="MuiToolbar-root MuiToolbar-regular MuiToolbar-gutters"
+                      style={
+                        Object {
+                          "display": "flex",
+                          "justifyContent": "space-between",
+                        }
+                      }
+                    >
+                      <span />
+                    </div>
+                  </ForwardRef(Toolbar)>
+                </WithStyles(ForwardRef(Toolbar))>
+              </header>
+            </ForwardRef(Paper)>
+          </WithStyles(ForwardRef(Paper))>
+        </ForwardRef(AppBar)>
+      </WithStyles(ForwardRef(AppBar))>
+    </Component>
+    <div
+      style={
+        Object {
+          "alignItems": "center",
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "space-between",
+          "margin": ".5em 0 .6em 0",
+          "maxWidth": 500,
+        }
+      }
+    >
+      <svg
+        height="290px"
+        version="1.1"
+        viewBox="0 0 442 240"
+        width="442px"
+        xmlns="http://www.w3.org/2000/svg"
       >
         <g
-          id="No-provider"
-          transform="translate(-9.000000, 5.000000)"
+          fill="none"
+          fillRule="evenodd"
+          id="Page-1"
+          stroke="none"
+          strokeWidth="1"
         >
           <g
-            id="Document"
-            transform="translate(9.000000, 0.000000)"
+            id="No-provider"
+            transform="translate(-9.000000, 5.000000)"
           >
-            <ellipse
-              cx="221"
-              cy="230"
-              fill="#DFDFDF"
-              id="Oval-2"
-              rx="221"
-              ry="27"
-            />
-            <path
-              d="M129.868875,229.165007 L129.868875,6.81087018 C129.868875,3.49716168 132.555166,0.810870179 135.868875,0.810870179 L262.245476,0.810870179 C263.836775,0.810870179 265.362898,1.44301122 266.488117,2.56822949 L311.211391,47.2915035 C312.336609,48.4167218 312.96875,49.9428453 312.96875,51.5341442 L312.96875,229.724935 C312.96875,233.038644 310.282458,235.724935 306.96875,235.724935 C306.962205,235.724935 306.95566,235.724924 306.949115,235.724903 L135.84924,235.164975 C132.543214,235.154156 129.868875,232.47105 129.868875,229.165007 Z"
-              fill="#EEEEEE"
-              id="Path"
-              stroke="#A4A8AD"
-              strokeWidth="11"
-            />
-            <ellipse
-              cx="184"
-              cy="120.5"
-              fill="#A4A8AD"
-              id="Oval"
-              rx="9"
-              ry="10.5"
-            />
-            <ellipse
-              cx="259"
-              cy="120.5"
-              fill="#A4A8AD"
-              id="Oval-Copy"
-              rx="9"
-              ry="10.5"
-            />
-            <path
-              d="M203.877833,155.306526 C215.78965,143.944752 227.408534,143.944752 238.734486,155.306526"
-              id="Path-2"
-              stroke="#A4A8AD"
-              strokeLinecap="round"
-              strokeWidth="7"
-            />
-            <path
-              d="M262.50809,3.20349862 L262.50809,46.2114256 C262.50809,47.3159951 263.40352,48.2114256 264.50809,48.2114256 L308.124241,48.2114256"
-              id="Path-2"
-              stroke="#A4A8AD"
-              strokeWidth="11"
-            />
+            <g
+              id="Document"
+              transform="translate(9.000000, 0.000000)"
+            >
+              <ellipse
+                cx="221"
+                cy="230"
+                fill="#DFDFDF"
+                id="Oval-2"
+                rx="221"
+                ry="27"
+              />
+              <path
+                d="M129.868875,229.165007 L129.868875,6.81087018 C129.868875,3.49716168 132.555166,0.810870179 135.868875,0.810870179 L262.245476,0.810870179 C263.836775,0.810870179 265.362898,1.44301122 266.488117,2.56822949 L311.211391,47.2915035 C312.336609,48.4167218 312.96875,49.9428453 312.96875,51.5341442 L312.96875,229.724935 C312.96875,233.038644 310.282458,235.724935 306.96875,235.724935 C306.962205,235.724935 306.95566,235.724924 306.949115,235.724903 L135.84924,235.164975 C132.543214,235.154156 129.868875,232.47105 129.868875,229.165007 Z"
+                fill="#EEEEEE"
+                id="Path"
+                stroke="#A4A8AD"
+                strokeWidth="11"
+              />
+              <ellipse
+                cx="184"
+                cy="120.5"
+                fill="#A4A8AD"
+                id="Oval"
+                rx="9"
+                ry="10.5"
+              />
+              <ellipse
+                cx="259"
+                cy="120.5"
+                fill="#A4A8AD"
+                id="Oval-Copy"
+                rx="9"
+                ry="10.5"
+              />
+              <path
+                d="M203.877833,155.306526 C215.78965,143.944752 227.408534,143.944752 238.734486,155.306526"
+                id="Path-2"
+                stroke="#A4A8AD"
+                strokeLinecap="round"
+                strokeWidth="7"
+              />
+              <path
+                d="M262.50809,3.20349862 L262.50809,46.2114256 C262.50809,47.3159951 263.40352,48.2114256 264.50809,48.2114256 L308.124241,48.2114256"
+                id="Path-2"
+                stroke="#A4A8AD"
+                strokeWidth="11"
+              />
+            </g>
           </g>
         </g>
-      </g>
-    </svg>
-    <WithStyles(ForwardRef(Typography))
-      align="center"
-      color="textSecondary"
-      style={
-        Object {
-          "fontWeight": "bolder",
+      </svg>
+      <WithStyles(ForwardRef(Typography))
+        align="center"
+        color="textSecondary"
+        style={
+          Object {
+            "fontWeight": "bolder",
+          }
         }
-      }
-      variant="h5"
-    >
-      No preview available, because the document is empty!
-    </WithStyles(ForwardRef(Typography))>
-    <WithStyles(ForwardRef(Typography))
-      align="center"
-      color="textSecondary"
-      style={
-        Object {
-          "whiteSpace": "pre-wrap",
+        variant="h5"
+      >
+        <ForwardRef(Typography)
+          align="center"
+          classes={
+            Object {
+              "alignCenter": "MuiTypography-alignCenter",
+              "alignJustify": "MuiTypography-alignJustify",
+              "alignLeft": "MuiTypography-alignLeft",
+              "alignRight": "MuiTypography-alignRight",
+              "body1": "MuiTypography-body1",
+              "body2": "MuiTypography-body2",
+              "button": "MuiTypography-button",
+              "caption": "MuiTypography-caption",
+              "colorError": "MuiTypography-colorError",
+              "colorInherit": "MuiTypography-colorInherit",
+              "colorPrimary": "MuiTypography-colorPrimary",
+              "colorSecondary": "MuiTypography-colorSecondary",
+              "colorTextPrimary": "MuiTypography-colorTextPrimary",
+              "colorTextSecondary": "MuiTypography-colorTextSecondary",
+              "displayBlock": "MuiTypography-displayBlock",
+              "displayInline": "MuiTypography-displayInline",
+              "gutterBottom": "MuiTypography-gutterBottom",
+              "h1": "MuiTypography-h1",
+              "h2": "MuiTypography-h2",
+              "h3": "MuiTypography-h3",
+              "h4": "MuiTypography-h4",
+              "h5": "MuiTypography-h5",
+              "h6": "MuiTypography-h6",
+              "noWrap": "MuiTypography-noWrap",
+              "overline": "MuiTypography-overline",
+              "paragraph": "MuiTypography-paragraph",
+              "root": "MuiTypography-root",
+              "srOnly": "MuiTypography-srOnly",
+              "subtitle1": "MuiTypography-subtitle1",
+              "subtitle2": "MuiTypography-subtitle2",
+            }
+          }
+          color="textSecondary"
+          style={
+            Object {
+              "fontWeight": "bolder",
+            }
+          }
+          variant="h5"
+        >
+          <h5
+            className="MuiTypography-root MuiTypography-h5 MuiTypography-colorTextSecondary MuiTypography-alignCenter"
+            style={
+              Object {
+                "fontWeight": "bolder",
+              }
+            }
+          />
+        </ForwardRef(Typography)>
+      </WithStyles(ForwardRef(Typography))>
+      <WithStyles(ForwardRef(Typography))
+        align="center"
+        color="textSecondary"
+        style={
+          Object {
+            "whiteSpace": "pre-wrap",
+          }
         }
-      }
-      variant="subtitle1"
-    />
+        variant="subtitle1"
+      >
+        <ForwardRef(Typography)
+          align="center"
+          classes={
+            Object {
+              "alignCenter": "MuiTypography-alignCenter",
+              "alignJustify": "MuiTypography-alignJustify",
+              "alignLeft": "MuiTypography-alignLeft",
+              "alignRight": "MuiTypography-alignRight",
+              "body1": "MuiTypography-body1",
+              "body2": "MuiTypography-body2",
+              "button": "MuiTypography-button",
+              "caption": "MuiTypography-caption",
+              "colorError": "MuiTypography-colorError",
+              "colorInherit": "MuiTypography-colorInherit",
+              "colorPrimary": "MuiTypography-colorPrimary",
+              "colorSecondary": "MuiTypography-colorSecondary",
+              "colorTextPrimary": "MuiTypography-colorTextPrimary",
+              "colorTextSecondary": "MuiTypography-colorTextSecondary",
+              "displayBlock": "MuiTypography-displayBlock",
+              "displayInline": "MuiTypography-displayInline",
+              "gutterBottom": "MuiTypography-gutterBottom",
+              "h1": "MuiTypography-h1",
+              "h2": "MuiTypography-h2",
+              "h3": "MuiTypography-h3",
+              "h4": "MuiTypography-h4",
+              "h5": "MuiTypography-h5",
+              "h6": "MuiTypography-h6",
+              "noWrap": "MuiTypography-noWrap",
+              "overline": "MuiTypography-overline",
+              "paragraph": "MuiTypography-paragraph",
+              "root": "MuiTypography-root",
+              "srOnly": "MuiTypography-srOnly",
+              "subtitle1": "MuiTypography-subtitle1",
+              "subtitle2": "MuiTypography-subtitle2",
+            }
+          }
+          color="textSecondary"
+          style={
+            Object {
+              "whiteSpace": "pre-wrap",
+            }
+          }
+          variant="subtitle1"
+        >
+          <h6
+            className="MuiTypography-root MuiTypography-subtitle1 MuiTypography-colorTextSecondary MuiTypography-alignCenter"
+            style={
+              Object {
+                "whiteSpace": "pre-wrap",
+              }
+            }
+          >
+            The following error occured during opening a document: 
+          </h6>
+        </ForwardRef(Typography)>
+      </WithStyles(ForwardRef(Typography))>
+    </div>
   </div>
-</div>
+</Component>
 `;
 
-exports[`Document Viewer Error component should render without crashing 2`] = `
-<div
-  style={
-    Object {
-      "alignContent": "center",
-      "alignItems": "center",
-      "display": "flex",
-      "height": "100%",
-      "justifyContent": "space-around",
-    }
-  }
->
-  <Component
-    style={
-      Object {
-        "position": "fixed",
-        "top": 0,
-      }
-    }
-  >
-    <span />
-  </Component>
+exports[`Document Viewer Error component matches snapshot with provided context 1`] = `
+<Component>
   <div
     style={
       Object {
+        "alignContent": "center",
         "alignItems": "center",
         "display": "flex",
-        "flexDirection": "column",
-        "justifyContent": "space-between",
-        "margin": ".5em 0 .6em 0",
-        "maxWidth": 500,
+        "height": "100%",
+        "justifyContent": "space-around",
       }
     }
   >
-    <svg
-      height="290px"
-      version="1.1"
-      viewBox="0 0 442 240"
-      width="442px"
-      xmlns="http://www.w3.org/2000/svg"
+    <Component
+      style={
+        Object {
+          "position": "fixed",
+          "top": 0,
+        }
+      }
     >
-      <g
-        fill="none"
-        fillRule="evenodd"
-        id="Page-1"
-        stroke="none"
-        strokeWidth="1"
+      <WithStyles(ForwardRef(AppBar))
+        position="sticky"
+        style={
+          Object {
+            "position": "fixed",
+            "top": 0,
+            "zIndex": 1,
+          }
+        }
+      >
+        <ForwardRef(AppBar)
+          classes={
+            Object {
+              "colorDefault": "MuiAppBar-colorDefault",
+              "colorPrimary": "MuiAppBar-colorPrimary",
+              "colorSecondary": "MuiAppBar-colorSecondary",
+              "positionAbsolute": "MuiAppBar-positionAbsolute",
+              "positionFixed": "MuiAppBar-positionFixed",
+              "positionRelative": "MuiAppBar-positionRelative",
+              "positionStatic": "MuiAppBar-positionStatic",
+              "positionSticky": "MuiAppBar-positionSticky",
+              "root": "MuiAppBar-root",
+            }
+          }
+          position="sticky"
+          style={
+            Object {
+              "position": "fixed",
+              "top": 0,
+              "zIndex": 1,
+            }
+          }
+        >
+          <WithStyles(ForwardRef(Paper))
+            className="MuiAppBar-root MuiAppBar-positionSticky MuiAppBar-colorPrimary"
+            component="header"
+            elevation={4}
+            square={true}
+            style={
+              Object {
+                "position": "fixed",
+                "top": 0,
+                "zIndex": 1,
+              }
+            }
+          >
+            <ForwardRef(Paper)
+              className="MuiAppBar-root MuiAppBar-positionSticky MuiAppBar-colorPrimary"
+              classes={
+                Object {
+                  "elevation0": "MuiPaper-elevation0",
+                  "elevation1": "MuiPaper-elevation1",
+                  "elevation10": "MuiPaper-elevation10",
+                  "elevation11": "MuiPaper-elevation11",
+                  "elevation12": "MuiPaper-elevation12",
+                  "elevation13": "MuiPaper-elevation13",
+                  "elevation14": "MuiPaper-elevation14",
+                  "elevation15": "MuiPaper-elevation15",
+                  "elevation16": "MuiPaper-elevation16",
+                  "elevation17": "MuiPaper-elevation17",
+                  "elevation18": "MuiPaper-elevation18",
+                  "elevation19": "MuiPaper-elevation19",
+                  "elevation2": "MuiPaper-elevation2",
+                  "elevation20": "MuiPaper-elevation20",
+                  "elevation21": "MuiPaper-elevation21",
+                  "elevation22": "MuiPaper-elevation22",
+                  "elevation23": "MuiPaper-elevation23",
+                  "elevation24": "MuiPaper-elevation24",
+                  "elevation3": "MuiPaper-elevation3",
+                  "elevation4": "MuiPaper-elevation4",
+                  "elevation5": "MuiPaper-elevation5",
+                  "elevation6": "MuiPaper-elevation6",
+                  "elevation7": "MuiPaper-elevation7",
+                  "elevation8": "MuiPaper-elevation8",
+                  "elevation9": "MuiPaper-elevation9",
+                  "root": "MuiPaper-root",
+                  "rounded": "MuiPaper-rounded",
+                }
+              }
+              component="header"
+              elevation={4}
+              square={true}
+              style={
+                Object {
+                  "position": "fixed",
+                  "top": 0,
+                  "zIndex": 1,
+                }
+              }
+            >
+              <header
+                className="MuiPaper-root MuiPaper-elevation4 MuiAppBar-root MuiAppBar-positionSticky MuiAppBar-colorPrimary"
+                style={
+                  Object {
+                    "position": "fixed",
+                    "top": 0,
+                    "zIndex": 1,
+                  }
+                }
+              >
+                <WithStyles(ForwardRef(Toolbar))
+                  style={
+                    Object {
+                      "display": "flex",
+                      "justifyContent": "space-between",
+                    }
+                  }
+                >
+                  <ForwardRef(Toolbar)
+                    classes={
+                      Object {
+                        "dense": "MuiToolbar-dense",
+                        "gutters": "MuiToolbar-gutters",
+                        "regular": "MuiToolbar-regular",
+                        "root": "MuiToolbar-root",
+                      }
+                    }
+                    style={
+                      Object {
+                        "display": "flex",
+                        "justifyContent": "space-between",
+                      }
+                    }
+                  >
+                    <div
+                      className="MuiToolbar-root MuiToolbar-regular MuiToolbar-gutters"
+                      style={
+                        Object {
+                          "display": "flex",
+                          "justifyContent": "space-between",
+                        }
+                      }
+                    >
+                      <span />
+                    </div>
+                  </ForwardRef(Toolbar)>
+                </WithStyles(ForwardRef(Toolbar))>
+              </header>
+            </ForwardRef(Paper)>
+          </WithStyles(ForwardRef(Paper))>
+        </ForwardRef(AppBar)>
+      </WithStyles(ForwardRef(AppBar))>
+    </Component>
+    <div
+      style={
+        Object {
+          "alignItems": "center",
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "space-between",
+          "margin": ".5em 0 .6em 0",
+          "maxWidth": 500,
+        }
+      }
+    >
+      <svg
+        height="290px"
+        version="1.1"
+        viewBox="0 0 442 240"
+        width="442px"
+        xmlns="http://www.w3.org/2000/svg"
       >
         <g
-          id="No-provider"
-          transform="translate(-9.000000, 5.000000)"
+          fill="none"
+          fillRule="evenodd"
+          id="Page-1"
+          stroke="none"
+          strokeWidth="1"
         >
           <g
-            id="Document"
-            transform="translate(9.000000, 0.000000)"
+            id="No-provider"
+            transform="translate(-9.000000, 5.000000)"
           >
-            <ellipse
-              cx="221"
-              cy="230"
-              fill="#DFDFDF"
-              id="Oval-2"
-              rx="221"
-              ry="27"
-            />
-            <path
-              d="M129.868875,229.165007 L129.868875,6.81087018 C129.868875,3.49716168 132.555166,0.810870179 135.868875,0.810870179 L262.245476,0.810870179 C263.836775,0.810870179 265.362898,1.44301122 266.488117,2.56822949 L311.211391,47.2915035 C312.336609,48.4167218 312.96875,49.9428453 312.96875,51.5341442 L312.96875,229.724935 C312.96875,233.038644 310.282458,235.724935 306.96875,235.724935 C306.962205,235.724935 306.95566,235.724924 306.949115,235.724903 L135.84924,235.164975 C132.543214,235.154156 129.868875,232.47105 129.868875,229.165007 Z"
-              fill="#EEEEEE"
-              id="Path"
-              stroke="#A4A8AD"
-              strokeWidth="11"
-            />
-            <ellipse
-              cx="184"
-              cy="120.5"
-              fill="#A4A8AD"
-              id="Oval"
-              rx="9"
-              ry="10.5"
-            />
-            <ellipse
-              cx="259"
-              cy="120.5"
-              fill="#A4A8AD"
-              id="Oval-Copy"
-              rx="9"
-              ry="10.5"
-            />
-            <path
-              d="M203.877833,155.306526 C215.78965,143.944752 227.408534,143.944752 238.734486,155.306526"
-              id="Path-2"
-              stroke="#A4A8AD"
-              strokeLinecap="round"
-              strokeWidth="7"
-            />
-            <path
-              d="M262.50809,3.20349862 L262.50809,46.2114256 C262.50809,47.3159951 263.40352,48.2114256 264.50809,48.2114256 L308.124241,48.2114256"
-              id="Path-2"
-              stroke="#A4A8AD"
-              strokeWidth="11"
-            />
+            <g
+              id="Document"
+              transform="translate(9.000000, 0.000000)"
+            >
+              <ellipse
+                cx="221"
+                cy="230"
+                fill="#DFDFDF"
+                id="Oval-2"
+                rx="221"
+                ry="27"
+              />
+              <path
+                d="M129.868875,229.165007 L129.868875,6.81087018 C129.868875,3.49716168 132.555166,0.810870179 135.868875,0.810870179 L262.245476,0.810870179 C263.836775,0.810870179 265.362898,1.44301122 266.488117,2.56822949 L311.211391,47.2915035 C312.336609,48.4167218 312.96875,49.9428453 312.96875,51.5341442 L312.96875,229.724935 C312.96875,233.038644 310.282458,235.724935 306.96875,235.724935 C306.962205,235.724935 306.95566,235.724924 306.949115,235.724903 L135.84924,235.164975 C132.543214,235.154156 129.868875,232.47105 129.868875,229.165007 Z"
+                fill="#EEEEEE"
+                id="Path"
+                stroke="#A4A8AD"
+                strokeWidth="11"
+              />
+              <ellipse
+                cx="184"
+                cy="120.5"
+                fill="#A4A8AD"
+                id="Oval"
+                rx="9"
+                ry="10.5"
+              />
+              <ellipse
+                cx="259"
+                cy="120.5"
+                fill="#A4A8AD"
+                id="Oval-Copy"
+                rx="9"
+                ry="10.5"
+              />
+              <path
+                d="M203.877833,155.306526 C215.78965,143.944752 227.408534,143.944752 238.734486,155.306526"
+                id="Path-2"
+                stroke="#A4A8AD"
+                strokeLinecap="round"
+                strokeWidth="7"
+              />
+              <path
+                d="M262.50809,3.20349862 L262.50809,46.2114256 C262.50809,47.3159951 263.40352,48.2114256 264.50809,48.2114256 L308.124241,48.2114256"
+                id="Path-2"
+                stroke="#A4A8AD"
+                strokeWidth="11"
+              />
+            </g>
           </g>
         </g>
-      </g>
-    </svg>
-    <WithStyles(ForwardRef(Typography))
-      align="center"
-      color="textSecondary"
-      style={
-        Object {
-          "fontWeight": "bolder",
+      </svg>
+      <WithStyles(ForwardRef(Typography))
+        align="center"
+        color="textSecondary"
+        style={
+          Object {
+            "fontWeight": "bolder",
+          }
         }
-      }
-      variant="h5"
-    />
-    <WithStyles(ForwardRef(Typography))
-      align="center"
-      color="textSecondary"
-      style={
-        Object {
-          "whiteSpace": "pre-wrap",
+        variant="h5"
+      >
+        <ForwardRef(Typography)
+          align="center"
+          classes={
+            Object {
+              "alignCenter": "MuiTypography-alignCenter",
+              "alignJustify": "MuiTypography-alignJustify",
+              "alignLeft": "MuiTypography-alignLeft",
+              "alignRight": "MuiTypography-alignRight",
+              "body1": "MuiTypography-body1",
+              "body2": "MuiTypography-body2",
+              "button": "MuiTypography-button",
+              "caption": "MuiTypography-caption",
+              "colorError": "MuiTypography-colorError",
+              "colorInherit": "MuiTypography-colorInherit",
+              "colorPrimary": "MuiTypography-colorPrimary",
+              "colorSecondary": "MuiTypography-colorSecondary",
+              "colorTextPrimary": "MuiTypography-colorTextPrimary",
+              "colorTextSecondary": "MuiTypography-colorTextSecondary",
+              "displayBlock": "MuiTypography-displayBlock",
+              "displayInline": "MuiTypography-displayInline",
+              "gutterBottom": "MuiTypography-gutterBottom",
+              "h1": "MuiTypography-h1",
+              "h2": "MuiTypography-h2",
+              "h3": "MuiTypography-h3",
+              "h4": "MuiTypography-h4",
+              "h5": "MuiTypography-h5",
+              "h6": "MuiTypography-h6",
+              "noWrap": "MuiTypography-noWrap",
+              "overline": "MuiTypography-overline",
+              "paragraph": "MuiTypography-paragraph",
+              "root": "MuiTypography-root",
+              "srOnly": "MuiTypography-srOnly",
+              "subtitle1": "MuiTypography-subtitle1",
+              "subtitle2": "MuiTypography-subtitle2",
+            }
+          }
+          color="textSecondary"
+          style={
+            Object {
+              "fontWeight": "bolder",
+            }
+          }
+          variant="h5"
+        >
+          <h5
+            className="MuiTypography-root MuiTypography-h5 MuiTypography-colorTextSecondary MuiTypography-alignCenter"
+            style={
+              Object {
+                "fontWeight": "bolder",
+              }
+            }
+          />
+        </ForwardRef(Typography)>
+      </WithStyles(ForwardRef(Typography))>
+      <WithStyles(ForwardRef(Typography))
+        align="center"
+        color="textSecondary"
+        style={
+          Object {
+            "whiteSpace": "pre-wrap",
+          }
         }
-      }
-      variant="subtitle1"
-    />
+        variant="subtitle1"
+      >
+        <ForwardRef(Typography)
+          align="center"
+          classes={
+            Object {
+              "alignCenter": "MuiTypography-alignCenter",
+              "alignJustify": "MuiTypography-alignJustify",
+              "alignLeft": "MuiTypography-alignLeft",
+              "alignRight": "MuiTypography-alignRight",
+              "body1": "MuiTypography-body1",
+              "body2": "MuiTypography-body2",
+              "button": "MuiTypography-button",
+              "caption": "MuiTypography-caption",
+              "colorError": "MuiTypography-colorError",
+              "colorInherit": "MuiTypography-colorInherit",
+              "colorPrimary": "MuiTypography-colorPrimary",
+              "colorSecondary": "MuiTypography-colorSecondary",
+              "colorTextPrimary": "MuiTypography-colorTextPrimary",
+              "colorTextSecondary": "MuiTypography-colorTextSecondary",
+              "displayBlock": "MuiTypography-displayBlock",
+              "displayInline": "MuiTypography-displayInline",
+              "gutterBottom": "MuiTypography-gutterBottom",
+              "h1": "MuiTypography-h1",
+              "h2": "MuiTypography-h2",
+              "h3": "MuiTypography-h3",
+              "h4": "MuiTypography-h4",
+              "h5": "MuiTypography-h5",
+              "h6": "MuiTypography-h6",
+              "noWrap": "MuiTypography-noWrap",
+              "overline": "MuiTypography-overline",
+              "paragraph": "MuiTypography-paragraph",
+              "root": "MuiTypography-root",
+              "srOnly": "MuiTypography-srOnly",
+              "subtitle1": "MuiTypography-subtitle1",
+              "subtitle2": "MuiTypography-subtitle2",
+            }
+          }
+          color="textSecondary"
+          style={
+            Object {
+              "whiteSpace": "pre-wrap",
+            }
+          }
+          variant="subtitle1"
+        >
+          <h6
+            className="MuiTypography-root MuiTypography-subtitle1 MuiTypography-colorTextSecondary MuiTypography-alignCenter"
+            style={
+              Object {
+                "whiteSpace": "pre-wrap",
+              }
+            }
+          >
+            The following error occured during opening a document: 
+          </h6>
+        </ForwardRef(Typography)>
+      </WithStyles(ForwardRef(Typography))>
+    </div>
   </div>
-</div>
+</Component>
 `;

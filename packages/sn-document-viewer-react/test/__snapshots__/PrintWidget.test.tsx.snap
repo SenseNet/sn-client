@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DownloadWidget component Should render without crashing 1`] = `
+exports[`Print component Should render without crashing 1`] = `
 <div
   style={
     Object {
@@ -12,7 +12,7 @@ exports[`DownloadWidget component Should render without crashing 1`] = `
     color="inherit"
     id="Print"
     onClick={[Function]}
-    title=""
+    title="Print"
   >
     <PrintIcon />
   </WithStyles(ForwardRef(IconButton))>

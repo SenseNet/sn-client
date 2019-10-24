@@ -20,4 +20,4 @@ npm install @sensenet/document-viewer-react
 
 For the example application check [our storybook](https://sn-react-component-docs-dev.netlify.com/?path=/story/documentviewer--showcase-app)
 
-You can check out our [sn-dms-demo](https://github.com/SenseNet/sn-dms-demo) application for an example how to use the Document Viewer component in your React / Redux application.
+You can check out our [sn-dms-demo](https://github.com/SenseNet/sn-dms-demo) application for an example how to use the Document Viewer component in your React application.
