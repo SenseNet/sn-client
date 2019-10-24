@@ -1,0 +1,24 @@
+{
+  "extends": "../../tsconfig-base.json",
+  "compilerOptions": {
+    "noEmitOnError": false
+  },
+  "include": ["test"],
+  "references": [
+    {
+      "path": "../sn-client-core"
+    },
+    {
+      "path": "../sn-pickers-react"
+    },
+    {
+      "path": "../sn-control-mapper"
+    },
+    {
+      "path": "../sn-redux"
+    },
+    {
+      "path": "../sn-search-react"
+    }
+  ]
+}
