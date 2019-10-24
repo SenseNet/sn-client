@@ -64,7 +64,7 @@ export class NavigationCommandProvider implements CommandProvider {
   public shouldExec(options: SearchOptions) {
     const termLowerCase = options.term && options.term.toLocaleLowerCase()
     return (
-      options.term.length > 0 &&
+      options.term != null &&
       this.getRoutes(options).find(
         r =>
           r.primaryText.toLocaleLowerCase().includes(termLowerCase) ||
