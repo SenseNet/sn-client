@@ -27,9 +27,7 @@ export class JwtService implements AuthenticationService {
   public dispose() {
     this.state.dispose()
     this.currentUser.dispose()
-    for (const provider of this.oauthProviders) {
-      provider.dispose()
-    }
+    this.oauthProviders.forEach(provider => provider.dispose())
   }
 
   /**
@@ -211,7 +209,7 @@ export class JwtService implements AuthenticationService {
         return false
       }
     } finally {
-      await this.updateLock.release()
+      this.updateLock.release()
     }
   }
 

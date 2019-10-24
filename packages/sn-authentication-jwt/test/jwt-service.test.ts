@@ -1,5 +1,4 @@
 import { LoginState, Repository } from '@sensenet/client-core'
-import 'jest'
 import { JwtService } from '../src'
 import { LoginResponse } from '../src/LoginResponse'
 import { RefreshResponse } from '../src/RefreshResponse'
@@ -23,15 +22,11 @@ export const jwtServiceTests = describe('JwtService', () => {
     expect(jwtService2).toBeInstanceOf(JwtService)
   })
 
-  it('can be disposed with oauth providers', (done: jest.DoneCallback) => {
-    jwtService.oauthProviders.add({
-      login: null as any,
-      getToken: null as any,
-      dispose: () => {
-        done()
-      },
-    })
+  it('can be disposed with oauth providers', () => {
+    const dispose = jest.fn()
+    jwtService.oauthProviders.add({ dispose } as any)
     jwtService.dispose()
+    expect(dispose).toBeCalled()
   })
 
   describe('#checkForUpdate()', () => {
@@ -140,13 +135,14 @@ export const jwtServiceTests = describe('JwtService', () => {
 
   describe('#login()', () => {
     it('should update status to authenticated if response is ok', async () => {
-      repo['fetchMethod'] = async () => {
+      repo['fetchMethod'] = () => {
         return {
           ok: true,
-          json: async () =>
+          json: () =>
             ({
               access: MockTokenFactory.CreateValid().toString(),
               refresh: MockTokenFactory.CreateValid().toString(),
+              d: { results: [] },
             } as LoginResponse),
         }
       }
