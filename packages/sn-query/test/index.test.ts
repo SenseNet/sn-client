@@ -1,4 +1,3 @@
-import 'jest'
 import { Query } from '../src'
 
 class Task {
