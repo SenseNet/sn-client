@@ -30,7 +30,7 @@ export const promiseMiddlewareTest = describe('PromiseMiddleware', () => {
       (state: { actions: any[] } = { actions: [] }, action) => {
         return { actions: [...state.actions, action] }
       },
-      { actions: [] },
+      { actions: [] as any },
       applyMiddleware(m),
     )
     store.dispatch({
@@ -55,7 +55,7 @@ export const promiseMiddlewareTest = describe('PromiseMiddleware', () => {
       (state: { actions: any[] } = { actions: [] }, action) => {
         return { actions: [...state.actions, action] }
       },
-      { actions: [] },
+      { actions: [] as any },
       applyMiddleware(m),
     )
     store.dispatch({
