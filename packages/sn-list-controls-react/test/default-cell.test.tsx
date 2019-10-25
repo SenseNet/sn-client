@@ -1,5 +1,4 @@
 import { shallow } from 'enzyme'
-
 import React from 'react'
 import { DefaultCell } from '../src/ContentList/CellTemplates/DefaultCell'
 

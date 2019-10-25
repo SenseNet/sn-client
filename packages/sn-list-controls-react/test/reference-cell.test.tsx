@@ -1,5 +1,4 @@
 import { shallow } from 'enzyme'
-
 import React from 'react'
 import { ReferenceCell } from '../src/ContentList/CellTemplates/ReferenceCell'
 

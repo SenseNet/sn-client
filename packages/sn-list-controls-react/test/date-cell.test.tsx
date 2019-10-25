@@ -1,5 +1,4 @@
 import { shallow } from 'enzyme'
-
 import React from 'react'
 import { DateCell } from '../src/ContentList/CellTemplates/DateCell'
 
