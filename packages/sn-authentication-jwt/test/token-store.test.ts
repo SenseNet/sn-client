@@ -1,5 +1,5 @@
 import { TokenPersist } from '../src/TokenPersist'
-import { TokenStore, TokenType } from '../src/TokenStore'
+import { TokenStore } from '../src/TokenStore'
 import { TokenStoreType } from '../src/TokenStoreType'
 import { MockStorage } from './__Mocks__/MockStorage'
 import { MockTokenFactory } from './__Mocks__/MockTokenFactory'
@@ -18,7 +18,6 @@ describe('TokenStore', () => {
 
   describe('Storage initialization', () => {
     it('can be constructed without provided doc & store instances', () => {
-      const a = ''
       inMemory = new TokenStore('https://my_token_store', 'token_store_key_template', TokenPersist.Session)
       expect(inMemory).toBeInstanceOf(TokenStore)
       expect(inMemory.tokenStoreType).toEqual(TokenStoreType.SessionStorage)
