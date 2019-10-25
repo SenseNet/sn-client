@@ -1,4 +1,3 @@
-import 'jest'
 import { Action } from 'redux'
 import { isPromiseMiddlewareAction, PromiseMiddlewareAction } from '../src'
 

@@ -1,4 +1,3 @@
-import 'jest'
 import { isPromise } from '../src/IsPromise'
 
 export const isPromiseTest = describe('IsPromise', () => {

@@ -1,4 +1,3 @@
-import 'jest'
 import { applyMiddleware, createStore } from 'redux'
 import { promiseMiddleware } from '../src/PromiseMiddleware'
 import { PromiseMiddlewareAction } from '../src/Types'

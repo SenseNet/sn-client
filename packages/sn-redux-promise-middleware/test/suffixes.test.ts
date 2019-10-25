@@ -1,4 +1,3 @@
-import 'jest'
 import { suffixes } from '../src'
 
 export const suffixesTest = describe('suffixes', () => {
