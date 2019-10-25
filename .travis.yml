@@ -21,7 +21,7 @@ jobs:
       script: yarn lint
 
     - name: 'Unit Tests'
-      before_script: yarn build
+      before_script: export NODE_OPTIONS=–max_old_space_size=8192 && yarn build
       script: yarn test:coverage
       after_success: bash <(curl -s https://codecov.io/bash)
 
