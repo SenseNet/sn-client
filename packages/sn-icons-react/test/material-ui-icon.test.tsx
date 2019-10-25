@@ -1,9 +1,8 @@
 import { shallow } from 'enzyme'
-
-import 'jest'
 import React from 'react'
 import { Icon, iconType } from '../src/components/Icon'
 import { MaterialIcon } from '../src/components/materialui/Icon'
+
 /**
  * MaterialUI Icon Component tests
  */

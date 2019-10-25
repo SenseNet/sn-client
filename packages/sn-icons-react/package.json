@@ -36,12 +36,21 @@
     "@material-ui/icons": "^4.0.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
-    "tslib": "^1.9.3"
+    "tslib": "^1.10.0"
   },
   "devDependencies": {
-    "@types/node": "^12.7.2",
+    "@types/enzyme": "^3.10.3",
+    "@types/jest": "^24.0.19",
     "@types/react": "^16.9.2",
-    "prop-types": "^15.6.2"
+    "@types/react-dom": "^16.9.0",
+    "@types/node": "^12.11.7",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.15.1",
+    "enzyme-to-json": "^3.4.3",
+    "jest": "^24.9.0",
+    "prop-types": "^15.6.2",
+    "ts-jest": "^24.1.0",
+    "typescript": "3.6.4"
   },
   "publishConfig": {
     "access": "public"

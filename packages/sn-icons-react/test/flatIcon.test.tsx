@@ -1,9 +1,8 @@
 import { shallow } from 'enzyme'
-
-import 'jest'
 import React from 'react'
 import { FlatIcon } from '../src/components/flaticon/Icon'
 import { Icon, iconType } from '../src/components/Icon'
+
 /**
  * Flat Icon Component tests
  */

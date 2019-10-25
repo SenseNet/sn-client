@@ -1,8 +1,7 @@
 import { shallow } from 'enzyme'
-
-import 'jest'
 import React from 'react'
 import { Icon, iconType } from '../src/components/Icon'
+
 /**
  * Page Component tests
  */

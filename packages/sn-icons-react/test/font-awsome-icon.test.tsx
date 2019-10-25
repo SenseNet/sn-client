@@ -1,9 +1,8 @@
 import { shallow } from 'enzyme'
-
-import 'jest'
 import React from 'react'
 import { FontAwesomeIcon } from '../src/components/fontawesome/Icon'
 import { Icon, iconType } from '../src/components/Icon'
+
 /**
  * FontAwesome Icon Component tests
  */
