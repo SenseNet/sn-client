@@ -5,6 +5,9 @@ dist: bionic
 node_js:
   - node
 
+before_install:
+  - npm i -g yarn
+
 cache:
   - yarn
 
