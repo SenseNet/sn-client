@@ -3,6 +3,5 @@
   "compilerOptions": {
     "noEmitOnError": false
   },
-  "include": ["test"],
-  "references": [{ "path": "../sn-client-core" }, { "path": "../sn-default-content-types" }]
+  "include": ["test"]
 }

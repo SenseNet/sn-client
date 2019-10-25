@@ -3,11 +3,5 @@
   "compilerOptions": {
     "noEmitOnError": false
   },
-  "include": ["test", "../../typings"],
-  "references": [
-    { "path": "../sn-client-core" },
-    { "path": "../sn-client-utils" },
-    { "path": "../sn-control-mapper" },
-    { "path": "../sn-default-content-types" }
-  ]
+  "include": ["test", "../../typings"]
 }

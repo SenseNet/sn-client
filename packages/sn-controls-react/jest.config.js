@@ -1,20 +1,12 @@
 const pack = require('./package')
+const base = require('../../jest.base.config')
 
 module.exports = {
-  preset: 'ts-jest',
+  ...base,
   displayName: pack.name,
-  setupFilesAfterEnv: ['<rootDir>/test/setup.js'],
+  setupFilesAfterEnv: ['<rootDir>../../jest/setup.js'],
   moduleNameMapper: {
-    '\\.css$': '<rootDir>/test/cssTransform.js',
+    '\\.css$': '<rootDir>../../jest/cssTransform.js',
   },
-  coveragePathIgnorePatterns: ['<rootDir>/test/*'],
   snapshotSerializers: ['enzyme-to-json/serializer'],
-  globals: {
-    'ts-jest': {
-      tsConfig: '<rootDir>/tsconfig.test.json',
-      diagnostics: {
-        warnOnly: !process.env.CI,
-      },
-    },
-  },
 }
