@@ -1,5 +1,5 @@
 module.exports = {
-  coveragePathIgnorePatterns: ['<rootDir>/test/*'],
+  coveragePathIgnorePatterns: ['/node_modules/', 'index.ts', '[eE]xample.*'],
   globals: {
     'ts-jest': {
       tsConfig: '<rootDir>/tsconfig.test.json',
