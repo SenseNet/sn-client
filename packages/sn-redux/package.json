@@ -38,11 +38,16 @@
     "@sensenet/default-content-types": "^2.0.2",
     "@sensenet/redux-promise-middleware": "^2.1.10",
     "redux": "^4.0.4",
-    "redux-logger": "^3.0.6"
+    "redux-logger": "^3.0.6",
+    "tslib": "^1.10.0"
   },
   "devDependencies": {
-    "@types/node": "^12.7.2",
     "@types/redux-logger": "^3.0.6",
-    "redux-mock-store": "^1.5.3"
+    "@types/jest": "^24.0.19",
+    "@types/node": "^12.11.7",
+    "jest": "^24.9.0",
+    "redux-mock-store": "^1.5.3",
+    "ts-jest": "^24.1.0",
+    "typescript": "^3.6.4"
   }
 }
