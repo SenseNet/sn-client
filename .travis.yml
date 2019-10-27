@@ -13,6 +13,15 @@ jobs:
     - name: 'DMS e2e tests'
 
   include:
+    - stage: 'Tests'
+      name: 'Static linting'
+      script: yarn lint
+
+    - name: 'Unit Tests'
+      before_script: yarn build
+      script: yarn test:coverage
+      after_success: bash <(curl -s https://codecov.io/bash)
+
     - name: 'DMS e2e tests'
       if: type = cron
       before_script: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p && yarn build
