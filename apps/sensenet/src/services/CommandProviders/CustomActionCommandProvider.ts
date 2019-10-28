@@ -100,7 +100,7 @@ export class CustomActionCommandProvider implements CommandProvider {
       case 'Update':
         return { parameters: [{ name: 'content', type: 'object', required: true }] }
       case 'Remove':
-        return { parameters: [{ name: 'isPermanent', type: 'boolean', required: true }] }
+        return { parameters: [{ name: 'permanent', type: 'boolean', required: false }] }
       default:
         return
     }

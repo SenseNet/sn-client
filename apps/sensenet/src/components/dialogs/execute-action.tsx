@@ -87,10 +87,10 @@ export const ExecuteActionDialog: React.FunctionComponent = () => {
           })
         }
         case 'Remove': {
-          const { isPermanent } = JSON.parse(postBody)
+          const { permanent} = JSON.parse(postBody)
           return await repo.delete({
             idOrPath: actionValue.content.Id,
-            permanent: isPermanent == null ? false : isPermanent,
+            permanent: permanent== null ? false : permanent,
           })
         }
         case 'Update':
