@@ -45,7 +45,7 @@
     "build:docs": "yarn && yarn build && yarn workspace sn-react-component-docs run build-storybook",
     "clean:packages": "rimraf ./packages/**/dist ./packages/**/tsconfig.tsbuildinfo ./packages/tsconfig.tsbuildinfo",
     "test": "jest",
-    "test:coverage": "jest --coverage -w=2",
+    "test:coverage": "jest --coverage",
     "clean": "lerna clean",
     "lint": "eslint . --ext .tsx,.ts --cache"
   },
