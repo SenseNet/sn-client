@@ -10,9 +10,10 @@
 [![Coverage](https://img.shields.io/codecov/c/github/SenseNet/sn-client.svg?style=flat)](https://codecov.io/gh/SenseNet/sn-client)
 [![Gitter chat](https://img.shields.io/gitter/room/SenseNet/sensenet.svg?style=flat)](https://gitter.im/SenseNet/sensenet)
 
-This repository is a monorepo that we manage using [Lerna](https://github.com/lerna/lerna). That means that we actually publish [several packages](/packages) to npm from the same codebase, including:
+Este repositório é um monorepo que gerenciamos usando [Lerna](https://github.com/lerna/lerna). 
+Isso significa que publicamos [several packages](/packages) para npm da mesma base de código, incluindo:
 
-| Package                                                                     | Version                                                                                                                                                     |
+| Pacote                                                                      | Versão                                                                                                                                                     |
 | --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [@sensenet/authentication-google](/packages/sn-client-auth-google)          | [![npm](https://img.shields.io/npm/v/@sensenet/authentication-google.svg?maxAge=3600)](https://www.npmjs.com/package/@sensenet/authentication-google)       |
 | [@sensenet/authentication-jwt](/packages/sn-authentication-jwt)             | [![npm](https://img.shields.io/npm/v/@sensenet/authentication-jwt.svg?maxAge=3600)](https://www.npmjs.com/package/@sensenet/authentication-jwt)             |
@@ -31,4 +32,4 @@ This repository is a monorepo that we manage using [Lerna](https://github.com/le
 | [@sensenet/repository-events](/packages/sn-repository-events)               | [![npm](https://img.shields.io/npm/v/@sensenet/repository-events.svg?maxAge=3600)](https://www.npmjs.com/package/@sensenet/repository-events)               |
 | [@sensenet/search-react](/packages/sn-search-react)                         | [![npm](https://img.shields.io/npm/v/@sensenet/search-react.svg?maxAge=3600)](https://www.npmjs.com/package/@sensenet/search-react)                         |
 
-*This article can also be read in [Brazilian Portuguese](README-pt-BR.md).*
+*Este artigo foi traduzido do [Inglês](README.md) para [Português (Brasil)](README-pt-BR.md).*
