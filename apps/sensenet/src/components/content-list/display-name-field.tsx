@@ -1,7 +1,7 @@
 import { GenericContent } from '@sensenet/default-content-types'
 import { TableCell } from '@material-ui/core'
 import React from 'react'
-import { CurrentContentContext } from '@sensenet/hooks-react'
+import { CurrentContentProvider } from '@sensenet/hooks-react'
 import { ResponsivePlatforms } from '../../context'
 import { SecondaryActionsMenu } from '../SecondaryActionsMenu'
 
@@ -20,9 +20,11 @@ export const DisplayNameComponent: React.FunctionComponent<{
         }}>
         {content.DisplayName || content.Name}
         {device === 'mobile' && isActive ? (
-          <CurrentContentContext.Provider value={content}>
+          <CurrentContentProvider
+            idOrPath={content.Id}
+            oDataOptions={{ select: ['Actions'], metadata: 'full', expand: 'Actions' }}>
             <SecondaryActionsMenu style={{ float: 'right' }} />
-          </CurrentContentContext.Provider>
+          </CurrentContentProvider>
         ) : null}
       </div>
     </TableCell>

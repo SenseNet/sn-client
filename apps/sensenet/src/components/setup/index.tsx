@@ -11,7 +11,7 @@ import { Settings } from '@sensenet/default-content-types'
 import { Query } from '@sensenet/query'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { CurrentContentContext, useRepository } from '@sensenet/hooks-react'
+import { CurrentContentProvider, useRepository } from '@sensenet/hooks-react'
 import { useContentRouting, useLocalization } from '../../hooks'
 import { ContentContextMenu } from '../ContentContextMenu'
 
@@ -103,7 +103,9 @@ const Setup: React.StatelessComponent = () => {
             flexWrap: 'wrap',
             margin: '1em',
           }}>
-          <CurrentContentContext.Provider value={contextMenuItem || wellKnownSettings[0]}>
+          <CurrentContentProvider
+            idOrPath={(contextMenuItem && contextMenuItem.Id) || wellKnownSettings[0].Id}
+            oDataOptions={{ select: ['Actions'], metadata: 'full', expand: 'Actions' }}>
             <ContentContextMenu
               isOpened={isContextMenuOpened}
               onClose={() => setIsContextMenuOpened(false)}
@@ -115,7 +117,7 @@ const Setup: React.StatelessComponent = () => {
                 },
               }}
             />
-          </CurrentContentContext.Provider>
+          </CurrentContentProvider>
           {wellKnownSettings.map(s => (
             <WellKnownContentCard
               settings={s}

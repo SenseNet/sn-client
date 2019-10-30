@@ -4,7 +4,7 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { CurrentContentContext } from '@sensenet/hooks-react'
+import { CurrentContentProvider } from '@sensenet/hooks-react'
 import { ContentContextMenu } from './ContentContextMenu'
 import { DropFileArea } from './DropFileArea'
 import { Icon } from './Icon'
@@ -51,7 +51,9 @@ function BreadcrumbsComponent<T extends GenericContent>(props: BreadcrumbProps<T
         ))}
       </Breadcrumbs>
       {contextMenuItem ? (
-        <CurrentContentContext.Provider value={contextMenuItem}>
+        <CurrentContentProvider
+          idOrPath={contextMenuItem.Id}
+          oDataOptions={{ select: ['Actions'], metadata: 'full', expand: 'Actions' }}>
           <ContentContextMenu
             isOpened={isContextMenuOpened}
             menuProps={{
@@ -63,7 +65,7 @@ function BreadcrumbsComponent<T extends GenericContent>(props: BreadcrumbProps<T
             }}
             onClose={() => setIsContextMenuOpened(false)}
           />
-        </CurrentContentContext.Provider>
+        </CurrentContentProvider>
       ) : null}
     </>
   )

@@ -10,7 +10,7 @@ import { Created } from '@sensenet/repository-events'
 import React, { useContext, useEffect, useState } from 'react'
 import {
   CurrentAncestorsContext,
-  CurrentContentContext,
+  CurrentContentProvider,
   useRepository,
   useRepositoryEvents,
 } from '@sensenet/hooks-react'
@@ -168,7 +168,9 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
         })}
       </List>
       {contextMenuItem ? (
-        <CurrentContentContext.Provider value={contextMenuItem}>
+        <CurrentContentProvider
+          idOrPath={contextMenuItem.Id}
+          oDataOptions={{ select: ['Actions'], metadata: 'full', expand: 'Actions' }}>
           <ContentContextMenu
             isOpened={isContextMenuOpened}
             menuProps={{
@@ -180,7 +182,7 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
             }}
             onClose={() => setIsContextMenuOpened(false)}
           />
-        </CurrentContentContext.Provider>
+        </CurrentContentProvider>
       ) : null}
     </div>
   )

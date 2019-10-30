@@ -7,6 +7,7 @@ import {
   CurrentAncestorsContext,
   CurrentChildrenContext,
   CurrentContentContext,
+  CurrentContentProvider,
   LoadSettingsContext,
   useRepository,
 } from '@sensenet/hooks-react'
@@ -350,7 +351,9 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
             icons={{}}
           />
           {activeContent ? (
-            <CurrentContentContext.Provider value={activeContent}>
+            <CurrentContentProvider
+              idOrPath={activeContent.Id}
+              oDataOptions={{ select: ['Actions'], metadata: 'full', expand: 'Actions' }}>
               <ContentContextMenu
                 menuProps={{
                   disablePortal: true,
@@ -365,7 +368,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
                 onClose={() => setIsContextMenuOpened(false)}
                 onOpen={() => setIsContextMenuOpened(true)}
               />
-            </CurrentContentContext.Provider>
+            </CurrentContentProvider>
           ) : null}
         </div>
       </DropFileArea>
