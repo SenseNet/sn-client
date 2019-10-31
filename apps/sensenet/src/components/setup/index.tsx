@@ -13,7 +13,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CurrentContentProvider, useRepository } from '@sensenet/hooks-react'
 import { useContentRouting, useLocalization } from '../../hooks'
-import { ContentContextMenu } from '../ContentContextMenu'
+import { ContentContextMenu, CONTEXT_MENU_SCENARIO } from '../ContentContextMenu'
 
 const SETUP_DOCS_URL = 'https://community.sensenet.com/docs/admin-ui/setup/'
 
@@ -105,7 +105,12 @@ const Setup: React.StatelessComponent = () => {
           }}>
           <CurrentContentProvider
             idOrPath={(contextMenuItem && contextMenuItem.Id) || wellKnownSettings[0].Id}
-            oDataOptions={{ select: ['Actions'], metadata: 'full', expand: 'Actions' }}>
+            oDataOptions={{
+              select: ['Actions'],
+              metadata: 'full',
+              expand: 'Actions',
+              scenario: CONTEXT_MENU_SCENARIO,
+            }}>
             <ContentContextMenu
               isOpened={isContextMenuOpened}
               onClose={() => setIsContextMenuOpened(false)}

@@ -14,7 +14,7 @@ import {
   useRepository,
   useRepositoryEvents,
 } from '@sensenet/hooks-react'
-import { ContentContextMenu } from '../ContentContextMenu'
+import { ContentContextMenu, CONTEXT_MENU_SCENARIO } from '../ContentContextMenu'
 import { DropFileArea } from '../DropFileArea'
 import { Icon } from '../Icon'
 
@@ -170,7 +170,7 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
       {contextMenuItem ? (
         <CurrentContentProvider
           idOrPath={contextMenuItem.Id}
-          oDataOptions={{ select: ['Actions'], metadata: 'full', expand: 'Actions' }}>
+          oDataOptions={{ select: ['Actions'], metadata: 'full', expand: 'Actions', scenario: CONTEXT_MENU_SCENARIO }}>
           <ContentContextMenu
             isOpened={isContextMenuOpened}
             menuProps={{

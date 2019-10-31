@@ -26,6 +26,8 @@ import { useContentRouting, useLocalization } from '../hooks'
 import { ContentInfoDialog, CopyMoveDialog, DeleteContentDialog, EditPropertiesDialog } from './dialogs'
 import { Icon } from './Icon'
 
+export const CONTEXT_MENU_SCENARIO = 'ContextMenu'
+
 export const ContentContextMenuComponent: React.FunctionComponent<
   {
     isOpened: boolean
@@ -206,11 +208,11 @@ export const ContentContextMenuComponent: React.FunctionComponent<
               setIsInfoDialogOpened(true)
               props.onClose && props.onClose()
             }}>
-            <ListItemIcon>
-              <Info />
-            </ListItemIcon>
+                    <ListItemIcon>
+                      <Info />
+                    </ListItemIcon>
             <div style={{ flexGrow: 1 }}>{content.DisplayName || content.Name}</div>
-          </MenuItem>
+                  </MenuItem>
           <MenuItem
             button={true}
             onClick={() => {

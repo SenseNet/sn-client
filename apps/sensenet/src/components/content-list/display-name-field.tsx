@@ -4,6 +4,7 @@ import React from 'react'
 import { CurrentContentProvider } from '@sensenet/hooks-react'
 import { ResponsivePlatforms } from '../../context'
 import { SecondaryActionsMenu } from '../SecondaryActionsMenu'
+import { CONTEXT_MENU_SCENARIO } from '../ContentContextMenu'
 
 export const DisplayNameComponent: React.FunctionComponent<{
   content: GenericContent
@@ -22,7 +23,12 @@ export const DisplayNameComponent: React.FunctionComponent<{
         {device === 'mobile' && isActive ? (
           <CurrentContentProvider
             idOrPath={content.Id}
-            oDataOptions={{ select: ['Actions'], metadata: 'full', expand: 'Actions' }}>
+            oDataOptions={{
+              select: ['Actions'],
+              metadata: 'full',
+              expand: 'Actions',
+              scenario: CONTEXT_MENU_SCENARIO,
+            }}>
             <SecondaryActionsMenu style={{ float: 'right' }} />
           </CurrentContentProvider>
         ) : null}

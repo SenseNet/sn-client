@@ -13,7 +13,7 @@ import {
 } from '@sensenet/hooks-react'
 import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
-import { ContentContextMenu } from '../ContentContextMenu'
+import { ContentContextMenu, CONTEXT_MENU_SCENARIO } from '../ContentContextMenu'
 import { DeleteContentDialog } from '../dialogs'
 import { DropFileArea } from '../DropFileArea'
 import { SelectionControl } from '../SelectionControl'
@@ -353,7 +353,12 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
           {activeContent ? (
             <CurrentContentProvider
               idOrPath={activeContent.Id}
-              oDataOptions={{ select: ['Actions'], metadata: 'full', expand: 'Actions' }}>
+              oDataOptions={{
+                select: ['Actions'],
+                metadata: 'full',
+                expand: 'Actions',
+                scenario: CONTEXT_MENU_SCENARIO,
+              }}>
               <ContentContextMenu
                 menuProps={{
                   disablePortal: true,
