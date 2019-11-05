@@ -11,20 +11,17 @@ import Delete from '@material-ui/icons/Delete'
 import FileMove from '@material-ui/icons/FileCopy'
 import FileCopy from '@material-ui/icons/FileCopyOutlined'
 import Info from '@material-ui/icons/Info'
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { ConstantContent } from '@sensenet/client-core'
-import {
-  CurrentContentContext,
-  CurrentContentProvider,
-  useDownload,
-  useRepository,
-  useWopi,
-} from '@sensenet/hooks-react'
-import { ResponsiveContext } from '../context'
-import { useContentRouting, useLocalization } from '../hooks'
-import { ContentInfoDialog, CopyMoveDialog, DeleteContentDialog, EditPropertiesDialog } from './dialogs'
-import { Icon } from './Icon'
+import { CurrentContentContext, CurrentContentProvider, useDownload, useWopi } from '@sensenet/hooks-react'
+import { ActionModel } from '@sensenet/default-content-types'
+import { iconType, Icon as SnIcon } from '@sensenet/icons-react'
+import { ResponsiveContext } from '../../context'
+import { useContentRouting, useLocalization } from '../../hooks'
+import { ContentInfoDialog, CopyMoveDialog, DeleteContentDialog, EditPropertiesDialog } from '../dialogs'
+import { Icon } from '../Icon'
+import { icons } from './icons'
 
 export const CONTEXT_MENU_SCENARIO = 'ContextMenu'
 
@@ -46,16 +43,15 @@ export const ContentContextMenuComponent: React.FunctionComponent<
   const [isInfoDialogOpened, setIsInfoDialogOpened] = useState(false)
   const [isCopyDialogOpened, setIsCopyDialogOpened] = useState(false)
   const [copyMoveOperation, setCopyMoveOperation] = useState<'copy' | 'move'>('copy')
-  const repo = useRepository()
   const download = useDownload(content)
   const wopi = useWopi(content)
 
-  const wopiOpen = useCallback(async () => {
-    props.onClose && props.onClose()
-    props.history.push(
-      `/${btoa(repo.configuration.repositoryUrl)}/wopi/${content.Id}/${wopi.isWriteAwailable ? 'edit' : 'view'}`,
-    )
-  }, [content.Id, props, repo.configuration.repositoryUrl, wopi.isWriteAwailable])
+  // const wopiOpen = useCallback(async () => {
+  //   props.onClose && props.onClose()
+  //   props.history.push(
+  //     `/${btoa(repo.configuration.repositoryUrl)}/wopi/${content.Id}/${wopi.isWriteAwailable ? 'edit' : 'view'}`,
+  //   )
+  // }, [content.Id, props, repo.configuration.repositoryUrl, wopi.isWriteAwailable])
 
   return (
     <div onKeyDown={ev => ev.stopPropagation()} onKeyPress={ev => ev.stopPropagation()}>
@@ -201,95 +197,24 @@ export const ContentContextMenuComponent: React.FunctionComponent<
         </Drawer>
       ) : (
         <Menu open={props.isOpened} {...props.menuProps}>
-          <MenuItem
-            disableRipple={true}
-            style={{ display: 'flex', minWidth: 250, justifyContent: 'flex-start' }}
-            onClick={() => {
-              setIsInfoDialogOpened(true)
-              props.onClose && props.onClose()
-            }}>
+          {content.Actions &&
+            (content.Actions as ActionModel[]).map(action => {
+                return (
+                  <MenuItem key={action.Name} disableRipple={true}>
                     <ListItemIcon>
-                      <Info />
+                      <SnIcon
+                        type={iconType.materialui}
+                        iconName={
+                          action.Icon === 'Application'
+                            ? icons[action.Name.toLowerCase() as keyof typeof icons]
+                            : icons[action.Icon.toLowerCase() as keyof typeof icons]
+                        }
+                      />
                     </ListItemIcon>
-            <div style={{ flexGrow: 1 }}>{content.DisplayName || content.Name}</div>
+                    <div style={{ flexGrow: 1 }}>{action.DisplayName || action.Name}</div>
                   </MenuItem>
-          <MenuItem
-            button={true}
-            onClick={() => {
-              props.history.push(routing.getPrimaryActionUrl(content))
-              props.onClose && props.onClose()
-            }}>
-            <ListItemIcon>
-              <Icon item={content} />
-            </ListItemIcon>
-            {localization.open}
-          </MenuItem>
-
-          {wopi.isWriteAwailable || wopi.isReadAwailable ? (
-            <MenuItem button={true} onClick={wopiOpen}>
-              <ListItemIcon>
-                <Icon item={content} />
-              </ListItemIcon>
-              {wopi.isWriteAwailable ? localization.wopiEdit : localization.wopiRead}
-            </MenuItem>
-          ) : null}
-
-          {download.isFile ? (
-            <MenuItem
-              button={true}
-              onClick={() => {
-                download.download()
-                props.onClose && props.onClose()
-              }}>
-              <ListItemIcon>
-                <CloudDownloadTwoTone />
-              </ListItemIcon>
-              {localization.download}
-            </MenuItem>
-          ) : null}
-          <MenuItem
-            onClick={() => {
-              props.onClose && props.onClose()
-              setIsEditPropertiesOpened(true)
-            }}>
-            <ListItemIcon>
-              <Create />
-            </ListItemIcon>
-            {localization.editProperties}
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              setIsCopyDialogOpened(true)
-              props.onClose && props.onClose()
-            }}>
-            <ListItemIcon>
-              <FileCopy />
-            </ListItemIcon>
-            {localization.copy}
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              setCopyMoveOperation('move')
-              setIsCopyDialogOpened(true)
-              props.onClose && props.onClose()
-            }}>
-            <ListItemIcon>
-              <FileMove />
-            </ListItemIcon>
-            {localization.move}
-          </MenuItem>
-          <MenuItem
-            onClick={ev => {
-              ev.preventDefault()
-              ev.stopPropagation()
-              setIsDeleteOpened(true)
-              props.onClose && props.onClose()
-            }}>
-            <ListItemIcon>
-              <Delete />
-            </ListItemIcon>
-            {localization.delete}
-          </MenuItem>
+                )
+              })}
         </Menu>
       )}
     </div>

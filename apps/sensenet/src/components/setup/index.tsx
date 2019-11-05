@@ -13,7 +13,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CurrentContentProvider, useRepository } from '@sensenet/hooks-react'
 import { useContentRouting, useLocalization } from '../../hooks'
-import { ContentContextMenu, CONTEXT_MENU_SCENARIO } from '../ContentContextMenu'
+import { ContentContextMenu, CONTEXT_MENU_SCENARIO } from '../context-menu/content-context-menu'
 
 const SETUP_DOCS_URL = 'https://community.sensenet.com/docs/admin-ui/setup/'
 

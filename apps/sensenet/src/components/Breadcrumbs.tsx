@@ -5,7 +5,7 @@ import { GenericContent } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { CurrentContentProvider } from '@sensenet/hooks-react'
-import { ContentContextMenu, CONTEXT_MENU_SCENARIO } from './ContentContextMenu'
+import { ContentContextMenu, CONTEXT_MENU_SCENARIO } from './context-menu/content-context-menu'
 import { DropFileArea } from './DropFileArea'
 import { Icon } from './Icon'
 

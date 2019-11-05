@@ -4,7 +4,7 @@ import React from 'react'
 import { CurrentContentProvider } from '@sensenet/hooks-react'
 import { ResponsivePlatforms } from '../../context'
 import { SecondaryActionsMenu } from '../SecondaryActionsMenu'
-import { CONTEXT_MENU_SCENARIO } from '../ContentContextMenu'
+import { CONTEXT_MENU_SCENARIO } from '../context-menu/content-context-menu'
 
 export const DisplayNameComponent: React.FunctionComponent<{
   content: GenericContent

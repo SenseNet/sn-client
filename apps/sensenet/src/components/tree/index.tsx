@@ -14,7 +14,7 @@ import {
   useRepository,
   useRepositoryEvents,
 } from '@sensenet/hooks-react'
-import { ContentContextMenu, CONTEXT_MENU_SCENARIO } from '../ContentContextMenu'
+import { ContentContextMenu, CONTEXT_MENU_SCENARIO } from '../context-menu/content-context-menu'
 import { DropFileArea } from '../DropFileArea'
 import { Icon } from '../Icon'
 
