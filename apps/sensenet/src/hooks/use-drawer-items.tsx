@@ -25,8 +25,8 @@ import { useLocalization } from './use-localization'
 
 export interface DrawerItem {
   name: string
-  primaryText: keyof (typeof DefaultLocalization.drawer.titles)
-  secondaryText: keyof (typeof DefaultLocalization.drawer.descriptions)
+  primaryText: keyof typeof DefaultLocalization.drawer.titles
+  secondaryText: keyof typeof DefaultLocalization.drawer.descriptions
   url: string
   icon: JSX.Element
   requiredGroupPath: string

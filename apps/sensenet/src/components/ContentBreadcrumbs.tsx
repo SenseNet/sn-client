@@ -6,7 +6,9 @@ import { useContentRouting } from '../hooks'
 import Breadcrumbs, { BreadcrumbItem } from './Breadcrumbs'
 
 export const ContentBreadcrumbsComponent: React.FunctionComponent<
-  RouteComponentProps & { onItemClick?: (item: BreadcrumbItem<GenericContent>) => void }
+  RouteComponentProps & {
+    onItemClick?: (item: BreadcrumbItem<GenericContent>) => void
+  }
 > = props => {
   const ancestors = useContext(CurrentAncestorsContext)
   const parent = useContext(CurrentContentContext)

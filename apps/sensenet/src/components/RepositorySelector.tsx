@@ -23,7 +23,9 @@ import { getMatchParts } from './command-palette/CommandPaletteSuggestion'
 import { UserAvatar } from './UserAvatar'
 
 export const RepositorySelectorComponent: React.FunctionComponent<
-  RouteComponentProps & { alwaysOpened?: boolean }
+  RouteComponentProps & {
+    alwaysOpened?: boolean
+  }
 > = props => {
   const settings = usePersonalSettings()
   const repo = useRepository()

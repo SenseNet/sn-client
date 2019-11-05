@@ -6,7 +6,9 @@ import { usePersonalSettings } from '../hooks'
 export const lastRepositoryKey = 'sensenet-last-repository'
 
 export const RepositoryContextProviderComponent: React.FunctionComponent<
-  RouteComponentProps<{ repo?: string }>
+  RouteComponentProps<{
+    repo?: string
+  }>
 > = props => {
   const injector = useInjector()
   const settings = usePersonalSettings()

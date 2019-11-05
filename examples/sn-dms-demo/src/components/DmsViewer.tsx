@@ -19,7 +19,9 @@ import MediaQuery from 'react-responsive'
 import { Icon, iconType } from '@sensenet/icons-react'
 
 const DocViewer: React.FunctionComponent<
-  RouteComponentProps<{ documentId: string }> & { previousLocation?: string }
+  RouteComponentProps<{ documentId: string }> & {
+    previousLocation?: string
+  }
 > = props => {
   const documentId = parseInt(
     props.match.params.documentId && atob(decodeURIComponent(props.match.params.documentId)),

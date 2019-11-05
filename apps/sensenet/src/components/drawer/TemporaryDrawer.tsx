@@ -20,7 +20,11 @@ import { LogoutButton } from '../LogoutButton'
 import { UserAvatar } from '../UserAvatar'
 
 const TemporaryDrawer: React.FunctionComponent<
-  RouteComponentProps & { isOpened: boolean; onClose: () => void; onOpen: () => void }
+  RouteComponentProps & {
+    isOpened: boolean
+    onClose: () => void
+    onOpen: () => void
+  }
 > = props => {
   const settings = useContext(ResponsivePersonalSetttings)
   const device = useContext(ResponsiveContext)

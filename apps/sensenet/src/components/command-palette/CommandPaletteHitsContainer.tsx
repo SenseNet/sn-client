@@ -5,7 +5,9 @@ import { RenderSuggestionsContainerParams } from 'react-autosuggest'
 import { ResponsiveContext } from '../../context'
 
 export const CommandPaletteHitsContainer: React.FunctionComponent<
-  RenderSuggestionsContainerParams & { width: number }
+  RenderSuggestionsContainerParams & {
+    width: number
+  }
 > = options => {
   const device = useContext(ResponsiveContext)
   return (

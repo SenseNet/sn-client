@@ -7,7 +7,9 @@ import { CurrentContentProvider } from '@sensenet/hooks-react'
 import { useLocalization, useSelectionService, useTheme } from '../hooks'
 
 const DocViewer: React.FunctionComponent<
-  RouteComponentProps<{ documentId: string }> & { previousLocation?: string }
+  RouteComponentProps<{ documentId: string }> & {
+    previousLocation?: string
+  }
 > = props => {
   const documentId = parseInt(props.match.params.documentId, 10)
   const selectionService = useSelectionService()
