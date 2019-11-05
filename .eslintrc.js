@@ -93,7 +93,7 @@ module.exports = {
       },
     },
     {
-      files: ['examples/sn-react-component-docs/**/*.{ts,tsx}'],
+      files: ['examples/**/*.{ts,tsx}', 'apps/**/*.{ts,tsx}'],
       rules: {
         'require-jsdoc': 'off',
       },
