@@ -39,4 +39,9 @@ export interface ActionModel {
    * Shows if the action is an ODataAction
    */
   IsODataAction: boolean
+
+  /**
+   * List of scenarios
+   */
+  Scenario: string[] | null
 }
