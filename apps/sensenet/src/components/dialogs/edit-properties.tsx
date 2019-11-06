@@ -1,17 +1,80 @@
-import Dialog, { DialogProps } from '@material-ui/core/Dialog'
-import { GenericContent } from '@sensenet/default-content-types'
 import React from 'react'
-import { EditPropertiesDialogBody } from '.'
+import { DialogContent, DialogTitle } from '@material-ui/core'
+import { EditView } from '@sensenet/controls-react'
+import { isExtendedError } from '@sensenet/client-core/dist/Repository/Repository'
+import { GenericContent } from '@sensenet/default-content-types'
+import { ConstantContent } from '@sensenet/client-core'
+import { CurrentContentContext, CurrentContentProvider, useLogger, useRepository } from '@sensenet/hooks-react'
+import { useLocalization, useSelectionService } from '../../hooks'
+import { useDialog } from '.'
 
-export type EditPropertiesDialogProps = {
-  dialogProps?: DialogProps
-  content: GenericContent
+export type EditPropertiesProps = {
+  contentId: number
 }
 
-export const EditPropertiesDialog: React.FunctionComponent<EditPropertiesDialogProps> = props => {
+export const EditProperties: React.FunctionComponent<EditPropertiesProps> = props => {
+  const selectionService = useSelectionService()
+  const { closeLastDialog } = useDialog()
+  const repo = useRepository()
+  const localization = useLocalization().editPropertiesDialog
+  const logger = useLogger('EditPropertiesDialog')
+
+  const onSubmit = async (id: number, content: GenericContent) => {
+    try {
+      await repo.patch({
+        idOrPath: id,
+        content,
+      })
+      closeLastDialog()
+      logger.information({
+        message: localization.saveSuccessNotification.replace(
+          '{0}',
+          content.DisplayName || content.Name || content.DisplayName || content.Name,
+        ),
+        data: {
+          relatedContent: content,
+          content,
+          relatedRepository: repo.configuration.repositoryUrl,
+        },
+      })
+    } catch (error) {
+      logger.error({
+        message: localization.saveFailedNotification.replace(
+          '{0}',
+          content.DisplayName || content.Name || content.DisplayName || content.Name,
+        ),
+        data: {
+          relatedContent: content,
+          content,
+          relatedRepository: repo.configuration.repositoryUrl,
+          error: isExtendedError(error) ? repo.getErrorFromResponse(error.response) : error,
+        },
+      })
+    }
+  }
+
   return (
-    <Dialog {...props.dialogProps} open={true} disablePortal fullScreen>
-      <EditPropertiesDialogBody contentId={props.content.Id} dialogProps={props.dialogProps} />
-    </Dialog>
+    <CurrentContentProvider
+      idOrPath={props.contentId}
+      onContentLoaded={c => selectionService.activeContent.setValue(c)}
+      oDataOptions={{ select: 'all' }}>
+      <CurrentContentContext.Consumer>
+        {content =>
+          content.Id !== ConstantContent.PORTAL_ROOT.Id && (
+            <>
+              <DialogTitle>{localization.dialogTitle.replace('{0}', content.DisplayName || content.Name)} </DialogTitle>
+              <DialogContent>
+                <EditView
+                  content={content}
+                  repository={repo}
+                  handleCancel={() => closeLastDialog()}
+                  onSubmit={onSubmit}
+                />
+              </DialogContent>
+            </>
+          )
+        }
+      </CurrentContentContext.Consumer>
+    </CurrentContentProvider>
   )
 }

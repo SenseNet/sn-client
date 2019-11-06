@@ -16,7 +16,7 @@ import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { ContentContextMenu, CONTEXT_MENU_SCENARIO } from '../context-menu/content-context-menu'
 import { DropFileArea } from '../DropFileArea'
 import { SelectionControl } from '../SelectionControl'
-import { useDialogDispatch } from '../dialogs/dialog-provider'
+import { useDialog } from '../dialogs'
 import { IconField } from './icon-field'
 import { EmailField } from './email-field'
 import { PhoneField } from './phone-field'
@@ -51,6 +51,7 @@ export const isReferenceField = (fieldName: string, repo: Repository) => {
   return refWhiteList.indexOf(fieldName) !== -1 || (setting && setting.Type === 'ReferenceFieldSetting') || false
 }
 
+//TODO: Move this from index.ts to its own file and create a barrel
 export const CollectionComponent: React.FunctionComponent<CollectionComponentProps> = props => {
   const parentContent = useContext(CurrentContentContext)
   const children = useContext(CurrentChildrenContext)
@@ -66,7 +67,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
     left: 0,
   })
 
-  const dispatchDialogAction = useDialogDispatch()
+  const { openDialog } = useDialog()
   const repo = useRepository()
   const loadSettings = useContext(LoadSettingsContext)
 
@@ -221,7 +222,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
           break
         }
         case 'Delete': {
-          dispatchDialogAction({ type: 'PUSH_DIALOG', dialog: { name: 'delete', props: { content: selected } } })
+          openDialog({ name: 'delete', props: { content: selected } })
           break
         }
         case 'Tab':
@@ -235,17 +236,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
           }
       }
     },
-    [
-      activeContent,
-      ancestors,
-      children,
-      handleActivateItem,
-      dispatchDialogAction,
-      props,
-      runSearch,
-      searchString,
-      selected,
-    ],
+    [activeContent, children, props, selected, handleActivateItem, ancestors, openDialog, searchString, runSearch],
   )
 
   return (

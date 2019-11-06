@@ -1,26 +1,24 @@
 import React from 'react'
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core'
+import { Button, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core'
 import { BugReportTwoTone, RefreshTwoTone } from '@material-ui/icons'
 import { ErrorBoundaryState } from '../error-boundary'
 import { useLocalization } from '../../hooks'
-import { useDialogDispatch } from '.'
+import { useDialog } from '.'
 
 export function ErrorDialog(props: ErrorBoundaryState) {
-  const dispatchDialogAction = useDialogDispatch()
+  const { openDialog } = useDialog()
   const localization = useLocalization().errorBoundary
 
   const openErrorReportingDialog = () => {
-    dispatchDialogAction({
-      type: 'PUSH_DIALOG',
-      dialog: {
-        name: 'error-report',
-        props: { dismiss: () => dispatchDialogAction({ type: 'CLOSE_ALL_DIALOGS' }), error: props.error! },
-      },
+    openDialog({
+      name: 'error-report',
+      props: { error: props.error! },
+      dialogProps: { BackdropProps: { style: { background: 'black' } }, open: true },
     })
   }
 
   return (
-    <Dialog open={true} BackdropProps={{ style: { background: 'black' } }} fullWidth={true}>
+    <>
       <DialogTitle>{localization.title}</DialogTitle>
       <DialogContent>
         <DialogContentText>
@@ -48,7 +46,7 @@ export function ErrorDialog(props: ErrorBoundaryState) {
           </Button>
         </DialogActions>
       </DialogContent>
-    </Dialog>
+    </>
   )
 }
 

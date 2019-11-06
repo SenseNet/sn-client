@@ -20,7 +20,7 @@ import { iconType, Icon as SnIcon } from '@sensenet/icons-react'
 import { ResponsiveContext } from '../../context'
 import { useContentRouting, useLocalization } from '../../hooks'
 import { Icon } from '../Icon'
-import { useDialogDispatch } from '../dialogs/dialog-provider'
+import { useDialog } from '../dialogs'
 import { useLoadContent } from '../../hooks/use-loadContent'
 import { icons } from './icons'
 
@@ -41,7 +41,7 @@ export const ContentContextMenuComponent: React.FunctionComponent<
   const device = useContext(ResponsiveContext)
   const routing = useContentRouting()
   const localization = useLocalization().contentContextMenu
-  const dispatchDialogAction = useDialogDispatch()
+  const { openDialog } = useDialog()
   const download = useDownload(content)
   const wopi = useWopi(content)
 
@@ -55,20 +55,20 @@ export const ContentContextMenuComponent: React.FunctionComponent<
   const runAction = (actionName: string) => {
     switch (actionName) {
       case 'Delete':
-        dispatchDialogAction({ type: 'PUSH_DIALOG', dialog: { name: 'delete', props: { content: [content] } } })
+        openDialog({ name: 'delete', props: { content: [content] } })
         break
       case 'Edit':
-        dispatchDialogAction({ type: 'PUSH_DIALOG', dialog: { name: 'edit', props: { content } } })
+        openDialog({ name: 'edit', props: { contentId: content.Id } })
         break
       case 'Browse':
-        dispatchDialogAction({ type: 'PUSH_DIALOG', dialog: { name: 'info', props: { content } } })
+        openDialog({ name: 'info', props: { content } })
         break
       case 'MoveTo':
       case 'CopyTo': {
         const operation = actionName === 'CopyTo' ? 'copy' : 'move'
-        dispatchDialogAction({
-          type: 'PUSH_DIALOG',
-          dialog: { name: 'copy-move', props: { content: [content], currentParent: parent!, operation } },
+        openDialog({
+          name: 'copy-move',
+          props: { content: [content], currentParent: parent!, operation },
         })
         break
       }

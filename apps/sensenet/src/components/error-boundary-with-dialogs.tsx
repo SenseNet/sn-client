@@ -1,19 +1,20 @@
 import { useEffect } from 'react'
-import { useDialogDispatch } from './dialogs'
+import { useDialog } from './dialogs'
 import { ErrorBoundaryProps } from './error-boundary'
 
 /**
  * This component will not render anything, only make a call to dialog provider to open an error dialog.
  */
 export const ErrorBoundaryWithDialogs: ErrorBoundaryProps['FallbackComponent'] = props => {
-  const dispatchDialogAction = useDialogDispatch()
+  const { openDialog } = useDialog()
 
   useEffect(() => {
-    dispatchDialogAction({
-      type: 'PUSH_DIALOG',
-      dialog: { name: 'error', props: { error: props.error!, info: props.info } },
+    openDialog({
+      name: 'error',
+      props: { error: props.error!, info: props.info },
+      dialogProps: { BackdropProps: { style: { backgroundColor: 'black' } }, open: true },
     })
-  }, [dispatchDialogAction, props.error, props.info])
+  }, [openDialog, props.error, props.info])
 
   return null
 }

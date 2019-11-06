@@ -1,7 +1,6 @@
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
@@ -14,12 +13,14 @@ import SendTwoTone from '@material-ui/icons/SendTwoTone'
 import { sleepAsync } from '@sensenet/client-utils'
 import React, { useEffect, useState } from 'react'
 import { useEventService, useLocalization, usePersonalSettings } from '../../hooks'
+import { useDialog } from '.'
 
-export type ErrorReportProps = { dismiss?: () => void; error: Error }
+export type ErrorReportProps = { error: Error }
 
 export const ErrorReport: React.FunctionComponent<ErrorReportProps> = props => {
   const localization = useLocalization().errorReport
   const personalSettings = usePersonalSettings()
+  const { closeAllDialogs } = useDialog()
   const evtService = useEventService()
 
   const [description, setDescription] = useState('')
@@ -37,14 +38,14 @@ export const ErrorReport: React.FunctionComponent<ErrorReportProps> = props => {
           sendLog ? evtService.values.getValue() : null,
         )
         await sleepAsync(2500)
-        props.dismiss && props.dismiss()
+        closeAllDialogs()
         window.location.replace('/')
       })()
     }
-  }, [description, evtService.values, isSending, props, props.error, sendLog])
+  }, [closeAllDialogs, description, evtService.values, isSending, props, props.error, sendLog])
 
   return (
-    <Dialog open={true} BackdropProps={{ style: { background: 'black' } }} fullWidth={true}>
+    <>
       <DialogTitle>{localization.title}</DialogTitle>
       <DialogContent>
         {isSending ? (
@@ -74,7 +75,7 @@ export const ErrorReport: React.FunctionComponent<ErrorReportProps> = props => {
                 label={localization.allowLogSending}
               />
               <div>
-                <Button onClick={() => props.dismiss && props.dismiss()}>
+                <Button onClick={closeAllDialogs}>
                   <Clear />
                   {localization.cancel}
                 </Button>
@@ -91,7 +92,7 @@ export const ErrorReport: React.FunctionComponent<ErrorReportProps> = props => {
           </>
         )}
       </DialogContent>
-    </Dialog>
+    </>
   )
 }
 
