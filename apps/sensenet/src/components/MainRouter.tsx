@@ -3,9 +3,10 @@ import React, { lazy, Suspense, useEffect, useRef } from 'react'
 import { Route, RouteComponentProps, Switch, withRouter } from 'react-router'
 import { LoadSettingsContextProvider, RepositoryContext, useSession } from '@sensenet/hooks-react'
 import { usePersonalSettings } from '../hooks'
-import { ErrorBoundary } from './ErrorBoundary'
 import { FullScreenLoader } from './FullScreenLoader'
 import { WopiPage } from './wopi-page'
+import { ErrorBoundaryWithDialogs } from './error-boundary-with-dialogs'
+import { ErrorBoundary } from './error-boundary'
 
 const ExploreComponent = lazy(async () => await import(/* webpackChunkName: "content" */ './content'))
 const DashboardComponent = lazy(async () => await import(/* webpackChunkName: "dashboard" */ './dashboard'))
@@ -55,7 +56,7 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
   }, [props.history])
 
   return (
-    <ErrorBoundary>
+    <ErrorBoundary FallbackComponent={ErrorBoundaryWithDialogs}>
       <Route
         render={() => (
           <div style={{ width: '100%', height: '100%' }}>
