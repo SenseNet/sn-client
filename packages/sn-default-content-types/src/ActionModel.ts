@@ -43,5 +43,5 @@ export interface ActionModel {
   /**
    * List of scenarios
    */
-  Scenario: string[] | null
+  Scenario?: string[]
 }
