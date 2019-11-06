@@ -14,13 +14,14 @@ import Info from '@material-ui/icons/Info'
 import React, { useContext, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { ConstantContent } from '@sensenet/client-core'
-import { CurrentContentContext, CurrentContentProvider, useDownload, useWopi } from '@sensenet/hooks-react'
+import { CurrentContentContext, CurrentContentProvider, useDownload, useLogger, useWopi } from '@sensenet/hooks-react'
 import { ActionModel } from '@sensenet/default-content-types'
 import { iconType, Icon as SnIcon } from '@sensenet/icons-react'
 import { ResponsiveContext } from '../../context'
 import { useContentRouting, useLocalization } from '../../hooks'
-import { ContentInfoDialog, CopyMoveDialog, DeleteContentDialog, EditPropertiesDialog } from '../dialogs'
+import { ContentInfoDialog, CopyMoveDialog, EditPropertiesDialog } from '../dialogs'
 import { Icon } from '../Icon'
+import { useDialogDispatch } from '../dialogs/dialog-provider'
 import { icons } from './icons'
 
 export const CONTEXT_MENU_SCENARIO = 'ContextMenu'
@@ -35,10 +36,11 @@ export const ContentContextMenuComponent: React.FunctionComponent<
   } & RouteComponentProps
 > = props => {
   const content = useContext(CurrentContentContext)
+  const logger = useLogger('context-menu')
   const device = useContext(ResponsiveContext)
   const routing = useContentRouting()
   const localization = useLocalization().contentContextMenu
-  const [isDeleteOpened, setIsDeleteOpened] = useState(false)
+  const dispatchDialogAction = useDialogDispatch()
   const [isEditPropertiesOpened, setIsEditPropertiesOpened] = useState(false)
   const [isInfoDialogOpened, setIsInfoDialogOpened] = useState(false)
   const [isCopyDialogOpened, setIsCopyDialogOpened] = useState(false)
@@ -53,19 +55,18 @@ export const ContentContextMenuComponent: React.FunctionComponent<
   //   )
   // }, [content.Id, props, repo.configuration.repositoryUrl, wopi.isWriteAwailable])
 
+  const runAction = (actionName: string) => {
+    switch (actionName) {
+      case 'Delete':
+        dispatchDialogAction({ type: 'PUSH_DIALOG', dialog: { name: 'delete', props: { content: [content] } } })
+        break
+      default:
+        logger.warning({ message: `There is no action with name: ${actionName}` })
+    }
+  }
+
   return (
     <div onKeyDown={ev => ev.stopPropagation()} onKeyPress={ev => ev.stopPropagation()}>
-      {isDeleteOpened ? (
-        <DeleteContentDialog
-          dialogProps={{
-            open: isDeleteOpened,
-            disablePortal: true,
-            onClose: () => setIsDeleteOpened(false),
-            keepMounted: false,
-          }}
-          content={[content]}
-        />
-      ) : null}
       {isEditPropertiesOpened ? (
         <EditPropertiesDialog
           content={content}
@@ -185,7 +186,6 @@ export const ContentContextMenuComponent: React.FunctionComponent<
               onClick={ev => {
                 ev.preventDefault()
                 ev.stopPropagation()
-                setIsDeleteOpened(true)
                 props.onClose && props.onClose()
               }}>
               <ListItemIcon>
@@ -199,22 +199,28 @@ export const ContentContextMenuComponent: React.FunctionComponent<
         <Menu open={props.isOpened} {...props.menuProps}>
           {content.Actions &&
             (content.Actions as ActionModel[]).map(action => {
-                return (
-                  <MenuItem key={action.Name} disableRipple={true}>
-                    <ListItemIcon>
-                      <SnIcon
-                        type={iconType.materialui}
-                        iconName={
-                          action.Icon === 'Application'
-                            ? icons[action.Name.toLowerCase() as keyof typeof icons]
-                            : icons[action.Icon.toLowerCase() as keyof typeof icons]
-                        }
-                      />
-                    </ListItemIcon>
-                    <div style={{ flexGrow: 1 }}>{action.DisplayName || action.Name}</div>
-                  </MenuItem>
-                )
-              })}
+              return (
+                <MenuItem
+                  key={action.Name}
+                  disableRipple={true}
+                  onClick={() => {
+                    props.onClose && props.onClose()
+                    runAction(action.Name)
+                  }}>
+                  <ListItemIcon>
+                    <SnIcon
+                      type={iconType.materialui}
+                      iconName={
+                        action.Icon === 'Application'
+                          ? icons[action.Name.toLowerCase() as keyof typeof icons]
+                          : icons[action.Icon.toLowerCase() as keyof typeof icons]
+                      }
+                    />
+                  </ListItemIcon>
+                  <div style={{ flexGrow: 1 }}>{action.DisplayName || action.Name}</div>
+                </MenuItem>
+              )
+            })}
         </Menu>
       )}
     </div>

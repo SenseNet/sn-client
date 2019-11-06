@@ -15,8 +15,8 @@ import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { ContentContextMenu, CONTEXT_MENU_SCENARIO } from '../context-menu/content-context-menu'
 import { DropFileArea } from '../DropFileArea'
-import { DeleteContentDialog } from '../dialogs'
 import { SelectionControl } from '../SelectionControl'
+import { useDialogDispatch } from '../dialogs/dialog-provider'
 import { IconField } from './icon-field'
 import { EmailField } from './email-field'
 import { PhoneField } from './phone-field'
@@ -66,7 +66,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
     left: 0,
   })
 
-  const [showDelete, setShowDelete] = useState(false)
+  const dispatchDialogAction = useDialogDispatch()
   const repo = useRepository()
   const loadSettings = useContext(LoadSettingsContext)
 
@@ -221,7 +221,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
           break
         }
         case 'Delete': {
-          setShowDelete(true)
+          dispatchDialogAction({ type: 'PUSH_DIALOG', dialog: { name: 'delete', props: { content: selected } } })
           break
         }
         case 'Tab':
@@ -235,7 +235,17 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
           }
       }
     },
-    [activeContent, ancestors, children, handleActivateItem, props, runSearch, searchString, selected],
+    [
+      activeContent,
+      ancestors,
+      children,
+      handleActivateItem,
+      dispatchDialogAction,
+      props,
+      runSearch,
+      searchString,
+      selected,
+    ],
   )
 
   return (
@@ -377,7 +387,6 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
           ) : null}
         </div>
       </DropFileArea>
-      <DeleteContentDialog content={selected} dialogProps={{ open: showDelete, onClose: () => setShowDelete(false) }} />
     </div>
   )
 }

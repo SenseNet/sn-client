@@ -19,10 +19,12 @@ import { ResponsiveContext } from '../../context'
 import { useLocalization } from '../../hooks'
 import { Icon } from '../Icon'
 
-export const DeleteContentDialog: React.FunctionComponent<{
+export type DeleteContentDialogProps = {
   content: GenericContent[]
-  dialogProps: DialogProps
-}> = props => {
+  dialogProps?: DialogProps
+}
+
+export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogProps> = props => {
   const device = useContext(ResponsiveContext)
   const [isDeleteInProgress, setIsDeleteInProgress] = useState(false)
   const [permanent, setPermanent] = useState(false)
@@ -32,7 +34,11 @@ export const DeleteContentDialog: React.FunctionComponent<{
   const isTrashBag = !!props.content.length && repo.schemas.isContentFromType(props.content[0], TrashBag)
 
   return (
-    <Dialog {...props.dialogProps} onClick={ev => ev.stopPropagation()} onDoubleClick={ev => ev.stopPropagation()}>
+    <Dialog
+      {...props.dialogProps}
+      open={true}
+      onClick={ev => ev.stopPropagation()}
+      onDoubleClick={ev => ev.stopPropagation()}>
       {isDeleteInProgress ? (
         <DialogTitle>{localization.deletingContent}</DialogTitle>
       ) : (
@@ -67,7 +73,9 @@ export const DeleteContentDialog: React.FunctionComponent<{
         <div>
           <Button
             disabled={isDeleteInProgress}
-            onClick={ev => props.dialogProps.onClose && props.dialogProps.onClose(ev, 'backdropClick')}>
+            onClick={ev =>
+              props.dialogProps && props.dialogProps.onClose && props.dialogProps.onClose(ev, 'backdropClick')
+            }>
             {localization.cancelButton}
           </Button>
           <Button
@@ -129,7 +137,7 @@ export const DeleteContentDialog: React.FunctionComponent<{
                 })
               } finally {
                 setIsDeleteInProgress(false)
-                props.dialogProps.onClose && props.dialogProps.onClose(ev, 'backdropClick')
+                props.dialogProps && props.dialogProps.onClose && props.dialogProps.onClose(ev, 'backdropClick')
               }
             }}>
             {isTrashBag ? localization.deletePermanently : localization.deleteButton}
@@ -139,3 +147,5 @@ export const DeleteContentDialog: React.FunctionComponent<{
     </Dialog>
   )
 }
+
+export default DeleteContentDialog

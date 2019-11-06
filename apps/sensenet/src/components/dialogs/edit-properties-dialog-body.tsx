@@ -8,7 +8,7 @@ import { ConstantContent } from '@sensenet/client-core'
 import { CurrentContentContext, CurrentContentProvider, useLogger, useRepository } from '@sensenet/hooks-react'
 import { useLocalization, useSelectionService } from '../../hooks'
 
-const EditPropertiesDialogBody: React.FunctionComponent<{
+export const EditPropertiesDialogBody: React.FunctionComponent<{
   contentId: number
   dialogProps: DialogProps
 }> = props => {
@@ -78,5 +78,3 @@ const EditPropertiesDialogBody: React.FunctionComponent<{
     </CurrentContentProvider>
   )
 }
-
-export default EditPropertiesDialogBody

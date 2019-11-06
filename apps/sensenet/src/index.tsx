@@ -28,6 +28,8 @@ import theme from './theme'
 import './utils/errorToJson'
 import './utils/InjectorExtensions'
 import { snInjector } from './sn-injector'
+import { DialogProvider } from './components/dialogs/dialog-provider'
+import { Dialogs } from './components/dialogs'
 
 console.log(
   `%c@sensenet app v${process.env.APP_VERSION}
@@ -54,24 +56,27 @@ ReactDOM.render(
       <LoggerContextProvider>
         <PersonalSettingsContextProvider>
           <LocalizationProvider>
-            <HashRouter>
-              <Route path="/:repo?">
-                <RepositoryContextProvider>
-                  <ContentRoutingContextProvider>
-                    <SessionContextProvider>
-                      <ResponsiveContextProvider>
-                        <ThemeProvider theme={theme}>
-                          <DesktopLayout>
-                            <MainRouter />
-                            <NotificationComponent />
-                          </DesktopLayout>{' '}
-                        </ThemeProvider>
-                      </ResponsiveContextProvider>
-                    </SessionContextProvider>
-                  </ContentRoutingContextProvider>
-                </RepositoryContextProvider>
-              </Route>
-            </HashRouter>
+            <DialogProvider>
+              <HashRouter>
+                <Route path="/:repo?">
+                  <RepositoryContextProvider>
+                    <ContentRoutingContextProvider>
+                      <SessionContextProvider>
+                        <ResponsiveContextProvider>
+                          <ThemeProvider theme={theme}>
+                            <DesktopLayout>
+                              <MainRouter />
+                              <NotificationComponent />
+                              <Dialogs />
+                            </DesktopLayout>{' '}
+                          </ThemeProvider>
+                        </ResponsiveContextProvider>
+                      </SessionContextProvider>
+                    </ContentRoutingContextProvider>
+                  </RepositoryContextProvider>
+                </Route>
+              </HashRouter>
+            </DialogProvider>
           </LocalizationProvider>
         </PersonalSettingsContextProvider>
       </LoggerContextProvider>
