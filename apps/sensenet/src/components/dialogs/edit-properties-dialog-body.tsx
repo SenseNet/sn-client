@@ -10,7 +10,7 @@ import { useLocalization, useSelectionService } from '../../hooks'
 
 export const EditPropertiesDialogBody: React.FunctionComponent<{
   contentId: number
-  dialogProps: DialogProps
+  dialogProps?: DialogProps
 }> = props => {
   const selectionService = useSelectionService()
   const repo = useRepository()
@@ -23,7 +23,7 @@ export const EditPropertiesDialogBody: React.FunctionComponent<{
         idOrPath: id,
         content,
       })
-      props.dialogProps.onClose && props.dialogProps.onClose(null as any, 'backdropClick')
+      props.dialogProps && props.dialogProps.onClose && props.dialogProps.onClose(null as any, 'backdropClick')
       logger.information({
         message: localization.saveSuccessNotification.replace(
           '{0}',
@@ -66,7 +66,9 @@ export const EditPropertiesDialogBody: React.FunctionComponent<{
                   content={content}
                   repository={repo}
                   handleCancel={() =>
-                    props.dialogProps.onClose && props.dialogProps.onClose(null as any, 'backdropClick')
+                    props.dialogProps &&
+                    props.dialogProps.onClose &&
+                    props.dialogProps.onClose(null as any, 'backdropClick')
                   }
                   onSubmit={onSubmit}
                 />

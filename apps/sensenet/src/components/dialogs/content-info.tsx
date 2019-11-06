@@ -9,10 +9,12 @@ import { useRepository } from '@sensenet/hooks-react'
 import { ResponsiveContext } from '../../context'
 import { useLocalization } from '../../hooks'
 
-export const ContentInfoDialog: React.FunctionComponent<{
-  dialogProps: DialogProps
+export type ContentInfoDialogProps = {
+  dialogProps?: DialogProps
   content: GenericContent
-}> = props => {
+}
+
+export const ContentInfoDialog: React.FunctionComponent<ContentInfoDialogProps> = props => {
   const device = useContext(ResponsiveContext)
   const localization = useLocalization().contentInfoDialog
   const repo = useRepository()
@@ -28,7 +30,7 @@ export const ContentInfoDialog: React.FunctionComponent<{
   }
 
   return (
-    <Dialog {...props.dialogProps}>
+    <Dialog {...props.dialogProps} open={true}>
       <DialogTitle>
         {localization.dialogTitle.replace('{0}', props.content.DisplayName || props.content.Name)}
       </DialogTitle>

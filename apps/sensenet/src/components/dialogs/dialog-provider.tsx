@@ -1,11 +1,20 @@
 import React, { createContext } from 'react'
 import { ErrorBoundaryState } from '../error-boundary'
-import { DeleteContentDialogProps, ErrorReportProps } from '.'
+import {
+  ContentInfoDialogProps,
+  CopyMoveDialogProps,
+  DeleteContentDialogProps,
+  EditPropertiesDialogProps,
+  ErrorReportProps,
+} from '.'
 
 export type DialogWithProps =
   | { name: 'delete'; props: DeleteContentDialogProps }
   | { name: 'error-report'; props: ErrorReportProps }
   | { name: 'error'; props: ErrorBoundaryState }
+  | { name: 'edit'; props: EditPropertiesDialogProps }
+  | { name: 'info'; props: ContentInfoDialogProps }
+  | { name: 'copy-move'; props: CopyMoveDialogProps }
 
 export type DialogDispatch = (action: Action) => void
 

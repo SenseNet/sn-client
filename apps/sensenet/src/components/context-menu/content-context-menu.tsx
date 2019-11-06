@@ -11,17 +11,17 @@ import Delete from '@material-ui/icons/Delete'
 import FileMove from '@material-ui/icons/FileCopy'
 import FileCopy from '@material-ui/icons/FileCopyOutlined'
 import Info from '@material-ui/icons/Info'
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { ConstantContent } from '@sensenet/client-core'
-import { CurrentContentContext, CurrentContentProvider, useDownload, useLogger, useWopi } from '@sensenet/hooks-react'
+import { CurrentContentContext, useDownload, useLogger, useWopi } from '@sensenet/hooks-react'
 import { ActionModel } from '@sensenet/default-content-types'
 import { iconType, Icon as SnIcon } from '@sensenet/icons-react'
 import { ResponsiveContext } from '../../context'
 import { useContentRouting, useLocalization } from '../../hooks'
-import { ContentInfoDialog, CopyMoveDialog, EditPropertiesDialog } from '../dialogs'
 import { Icon } from '../Icon'
 import { useDialogDispatch } from '../dialogs/dialog-provider'
+import { useLoadContent } from '../../hooks/use-loadContent'
 import { icons } from './icons'
 
 export const CONTEXT_MENU_SCENARIO = 'ContextMenu'
@@ -36,15 +36,12 @@ export const ContentContextMenuComponent: React.FunctionComponent<
   } & RouteComponentProps
 > = props => {
   const content = useContext(CurrentContentContext)
+  const parent = useLoadContent({ idOrPath: content.ParentId || ConstantContent.PORTAL_ROOT.Path }).content
   const logger = useLogger('context-menu')
   const device = useContext(ResponsiveContext)
   const routing = useContentRouting()
   const localization = useLocalization().contentContextMenu
   const dispatchDialogAction = useDialogDispatch()
-  const [isEditPropertiesOpened, setIsEditPropertiesOpened] = useState(false)
-  const [isInfoDialogOpened, setIsInfoDialogOpened] = useState(false)
-  const [isCopyDialogOpened, setIsCopyDialogOpened] = useState(false)
-  const [copyMoveOperation, setCopyMoveOperation] = useState<'copy' | 'move'>('copy')
   const download = useDownload(content)
   const wopi = useWopi(content)
 
@@ -60,47 +57,29 @@ export const ContentContextMenuComponent: React.FunctionComponent<
       case 'Delete':
         dispatchDialogAction({ type: 'PUSH_DIALOG', dialog: { name: 'delete', props: { content: [content] } } })
         break
+      case 'Edit':
+        dispatchDialogAction({ type: 'PUSH_DIALOG', dialog: { name: 'edit', props: { content } } })
+        break
+      case 'Browse':
+        dispatchDialogAction({ type: 'PUSH_DIALOG', dialog: { name: 'info', props: { content } } })
+        break
+      case 'MoveTo':
+      case 'CopyTo': {
+        const operation = actionName === 'CopyTo' ? 'copy' : 'move'
+        dispatchDialogAction({
+          type: 'PUSH_DIALOG',
+          dialog: { name: 'copy-move', props: { content: [content], currentParent: parent!, operation } },
+        })
+        break
+      }
       default:
+        // TODO? proper warning message
         logger.warning({ message: `There is no action with name: ${actionName}` })
     }
   }
 
   return (
     <div onKeyDown={ev => ev.stopPropagation()} onKeyPress={ev => ev.stopPropagation()}>
-      {isEditPropertiesOpened ? (
-        <EditPropertiesDialog
-          content={content}
-          dialogProps={{
-            open: isEditPropertiesOpened,
-            onClose: () => setIsEditPropertiesOpened(false),
-            keepMounted: false,
-          }}
-        />
-      ) : null}
-      {isInfoDialogOpened ? (
-        <ContentInfoDialog
-          content={content}
-          dialogProps={{ open: isInfoDialogOpened, onClose: () => setIsInfoDialogOpened(false), keepMounted: false }}
-        />
-      ) : null}
-      {isCopyDialogOpened ? (
-        <CurrentContentProvider idOrPath={content.ParentId || ConstantContent.PORTAL_ROOT.Path}>
-          <CurrentContentContext.Consumer>
-            {parent => (
-              <CopyMoveDialog
-                content={[content]}
-                currentParent={parent}
-                dialogProps={{
-                  open: isCopyDialogOpened,
-                  onClose: () => setIsCopyDialogOpened(false),
-                  keepMounted: false,
-                }}
-                operation={copyMoveOperation}
-              />
-            )}
-          </CurrentContentContext.Consumer>
-        </CurrentContentProvider>
-      ) : null}
       {device === 'mobile' ? (
         <Drawer
           anchor="bottom"
@@ -111,7 +90,6 @@ export const ContentContextMenuComponent: React.FunctionComponent<
           <List>
             <ListItem
               onClick={() => {
-                setIsInfoDialogOpened(true)
                 props.onClose && props.onClose()
               }}>
               <ListItemIcon>
@@ -150,7 +128,6 @@ export const ContentContextMenuComponent: React.FunctionComponent<
               button={true}
               onClick={() => {
                 props.onClose && props.onClose()
-                setIsEditPropertiesOpened(true)
               }}>
               <ListItemIcon>
                 <Create />
@@ -160,8 +137,6 @@ export const ContentContextMenuComponent: React.FunctionComponent<
             <ListItem
               button={true}
               onClick={() => {
-                setCopyMoveOperation('copy')
-                setIsCopyDialogOpened(true)
                 props.onClose && props.onClose()
               }}>
               <ListItemIcon>
@@ -172,8 +147,6 @@ export const ContentContextMenuComponent: React.FunctionComponent<
             <ListItem
               button={true}
               onClick={() => {
-                setCopyMoveOperation('move')
-                setIsCopyDialogOpened(true)
                 props.onClose && props.onClose()
               }}>
               <ListItemIcon>

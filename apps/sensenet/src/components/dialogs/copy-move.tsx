@@ -19,38 +19,28 @@ import { Icon } from '../Icon'
 export interface CopyMoveDialogProps {
   currentParent: GenericContent
   content: GenericContent[]
-  dialogProps: DialogProps
+  dialogProps?: DialogProps
   operation: 'copy' | 'move'
 }
 
 export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = props => {
-  const handleClose = (ev: React.SyntheticEvent<{}, Event>) => {
-    props.dialogProps.onClose && props.dialogProps.onClose(ev, 'backdropClick')
-  }
-
-  const [itemsODataOptions] = useState({ filter: '' })
-
   const repo = useRepository()
   const list = useListPicker({
     repository: repo,
     currentPath: props.currentParent.Path,
-    itemsODataOptions,
+    itemsODataOptions: { filter: '' },
   })
-
   const localizations = useLocalization().copyMoveContentDialog
   const [localization, setLocalization] = useState(localizations[props.operation])
+  const logger = useLogger('CopyDialog')
+
+  const handleClose = (ev: React.SyntheticEvent<{}, Event>) => {
+    props.dialogProps && props.dialogProps.onClose && props.dialogProps.onClose(ev, 'backdropClick')
+  }
 
   useEffect(() => {
     setLocalization(localizations[props.operation])
   }, [localizations, props.operation])
-
-  useEffect(() => {
-    props.dialogProps.open === true && list.navigateTo(props.currentParent)
-    list.setSelectedItem(props.currentParent)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.currentParent.Path, props.dialogProps.open])
-
-  const logger = useLogger('CopyDialog')
 
   if (!parent || !props.content.length) {
     return null
@@ -61,6 +51,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
       fullWidth={true}
       disablePortal
       {...props.dialogProps}
+      open={true}
       onClick={ev => ev.stopPropagation()}
       onDoubleClick={ev => ev.stopPropagation()}>
       <DialogTitle>
