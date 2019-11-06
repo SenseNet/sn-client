@@ -18,7 +18,8 @@
   },
   "keywords": [
     "sensenet",
-    "ecm",
+    "cms",
+    "csp",
     "authentication",
     "JSON web token",
     "JWT",
