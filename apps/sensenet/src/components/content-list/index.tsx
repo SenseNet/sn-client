@@ -254,7 +254,6 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
       <DropFileArea parentContent={parentContent} style={{ height: '100%', overflow: 'hidden' }}>
         <div
           style={{
-            ...(isFocused ? {} : { opacity: 0.8 }),
             height: 'calc(100% - 36px)',
             overflow: 'auto',
             userSelect: 'none',
