@@ -151,7 +151,7 @@ export class JwtService implements AuthenticationService {
   }
 
   /**
-   * Updates the state based on a specific sensenet ECM Login Response
+   * Updates the state based on a specific sensenet Login Response
    * @param {LoginResponse} response
    */
   public handleAuthenticationResponse(response: LoginResponse): boolean {
