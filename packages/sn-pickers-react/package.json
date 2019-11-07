@@ -4,7 +4,8 @@
   "description": "Content picker components in react with sensenet.",
   "keywords": [
     "sensenet",
-    "ecm",
+    "cms",
+    "csp",
     "picker"
   ],
   "author": "Sense/Net <snteam@sensenet.com>",

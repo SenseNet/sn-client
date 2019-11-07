@@ -18,7 +18,8 @@
   },
   "keywords": [
     "sensenet",
-    "ecm",
+    "cms",
+    "csp",
     "content management",
     "content query",
     "lucene"
