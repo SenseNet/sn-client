@@ -1,6 +1,6 @@
 # @sensenet/search-react
 
-> Search UI Component for sensenet ECM
+> Search UI Component for sensenet
 
 [![NPM version](https://img.shields.io/npm/v/@sensenet/search-react.svg?style=flat)](https://www.npmjs.com/package/@sensenet/search-react)
 [![NPM downloads](https://img.shields.io/npm/dt/@sensenet/search-react.svg?style=flat)](https://www.npmjs.com/package/@sensenet/search-react)
