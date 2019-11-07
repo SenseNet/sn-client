@@ -16,13 +16,12 @@ import { RouteComponentProps, withRouter } from 'react-router'
 import { ConstantContent } from '@sensenet/client-core'
 import { CurrentContentContext, useDownload, useLogger, useWopi } from '@sensenet/hooks-react'
 import { ActionModel } from '@sensenet/default-content-types'
-import { iconType, Icon as SnIcon } from '@sensenet/icons-react'
 import { ResponsiveContext } from '../../context'
 import { useContentRouting, useLocalization } from '../../hooks'
 import { Icon } from '../Icon'
 import { useDialog } from '../dialogs'
 import { useLoadContent } from '../../hooks/use-loadContent'
-import { icons } from './icons'
+import { getIcon } from './icons'
 
 export const CONTEXT_MENU_SCENARIO = 'ContextMenu'
 
@@ -180,16 +179,7 @@ export const ContentContextMenuComponent: React.FunctionComponent<
                     props.onClose && props.onClose()
                     runAction(action.Name)
                   }}>
-                  <ListItemIcon>
-                    <SnIcon
-                      type={iconType.materialui}
-                      iconName={
-                        action.Icon === 'Application'
-                          ? icons[action.Name.toLowerCase() as keyof typeof icons]
-                          : icons[action.Icon.toLowerCase() as keyof typeof icons]
-                      }
-                    />
-                  </ListItemIcon>
+                  <ListItemIcon>{getIcon(action.Name.toLowerCase())}</ListItemIcon>
                   <div style={{ flexGrow: 1 }}>{action.DisplayName || action.Name}</div>
                 </MenuItem>
               )
