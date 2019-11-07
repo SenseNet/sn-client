@@ -1,7 +1,7 @@
 {
   "name": "sn-react-redux-todo-app",
   "version": "2.0.12",
-  "description": "Todo app with React and Redux built upon Sense/Net ECM",
+  "description": "Todo app with React and Redux built upon sensenet",
   "main": "index.tsx",
   "private": true,
   "scripts": {

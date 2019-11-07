@@ -18,7 +18,8 @@
   },
   "keywords": [
     "sensenet",
-    "ecm",
+    "cms",
+    "csp",
     "redux",
     "crud"
   ],

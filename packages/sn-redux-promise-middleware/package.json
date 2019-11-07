@@ -17,7 +17,8 @@
   },
   "keywords": [
     "sensenet",
-    "ecm",
+    "cms",
+    "csp",
     "redux",
     "async",
     "middleware",
