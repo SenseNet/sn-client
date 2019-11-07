@@ -3,7 +3,6 @@ import Checkbox from '@material-ui/core/Checkbox'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
-import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import TextField from '@material-ui/core/TextField'
@@ -11,7 +10,7 @@ import Typography from '@material-ui/core/Typography'
 import Clear from '@material-ui/icons/Clear'
 import SendTwoTone from '@material-ui/icons/SendTwoTone'
 import { sleepAsync } from '@sensenet/client-utils'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useEventService, useLocalization, usePersonalSettings } from '../../hooks'
 import { useDialog } from '.'
 
@@ -28,6 +27,11 @@ export const ErrorReport: React.FunctionComponent<ErrorReportProps> = props => {
 
   const [isSending, setIsSending] = useState(false)
 
+  const closeDialog = useCallback(() => {
+    closeAllDialogs()
+    window.location.replace('/')
+  }, [closeAllDialogs])
+
   useEffect(() => {
     if (isSending) {
       ;(async () => {
@@ -38,11 +42,10 @@ export const ErrorReport: React.FunctionComponent<ErrorReportProps> = props => {
           sendLog ? evtService.values.getValue() : null,
         )
         await sleepAsync(2500)
-        closeAllDialogs()
-        window.location.replace('/')
+        closeDialog()
       })()
     }
-  }, [closeAllDialogs, description, evtService.values, isSending, props, props.error, sendLog])
+  }, [closeDialog, description, evtService.values, isSending, props, props.error, sendLog])
 
   return (
     <>
@@ -55,15 +58,13 @@ export const ErrorReport: React.FunctionComponent<ErrorReportProps> = props => {
           </div>
         ) : (
           <>
-            <DialogContentText>
-              <TextField
-                fullWidth={true}
-                multiline={true}
-                label={localization.descriptionTitle}
-                helperText={localization.descriptionHelperText}
-                onChange={ev => setDescription(ev.target.value)}
-              />
-            </DialogContentText>
+            <TextField
+              fullWidth={true}
+              multiline={true}
+              label={localization.descriptionTitle}
+              helperText={localization.descriptionHelperText}
+              onChange={ev => setDescription(ev.target.value)}
+            />
             <DialogActions style={{ display: 'flex', justifyContent: 'space-between' }}>
               <FormControlLabel
                 control={
@@ -75,7 +76,7 @@ export const ErrorReport: React.FunctionComponent<ErrorReportProps> = props => {
                 label={localization.allowLogSending}
               />
               <div>
-                <Button onClick={closeAllDialogs}>
+                <Button onClick={() => closeDialog()}>
                   <Clear />
                   {localization.cancel}
                 </Button>

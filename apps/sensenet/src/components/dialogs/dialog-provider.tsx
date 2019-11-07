@@ -1,4 +1,4 @@
-import React, { createContext } from 'react'
+import React, { createContext, useCallback, useContext, useReducer } from 'react'
 import { DialogProps } from '@material-ui/core/Dialog'
 import { ErrorBoundaryState } from '../error-boundary'
 import {
@@ -17,32 +17,27 @@ export type DialogWithProps = (
   | { name: 'info'; props: ContentInfoDialogProps }
   | { name: 'copy-move'; props: CopyMoveDialogProps }) & { dialogProps?: DialogProps }
 
-type Dispatch = (action: Action) => void
-
 type Action = { type: 'PUSH_DIALOG'; dialog: DialogWithProps } | { type: 'POP_DIALOG' } | { type: 'CLOSE_ALL_DIALOGS' }
 
-type State = {
-  dialogs: DialogWithProps[]
-}
+const initialState: DialogWithProps[] = []
+const DialogContext = createContext<{ dialogs: typeof initialState; dispatch: React.Dispatch<Action> } | undefined>(
+  undefined,
+)
 
-const DialogContext = createContext<[State, Dispatch] | undefined>(undefined)
-
-const initialState: State = { dialogs: [] }
-
-function dialogReducer(state: State, action: Action) {
+function dialogReducer(state: typeof initialState, action: Action) {
   switch (action.type) {
     case 'PUSH_DIALOG': {
       // Get last dialog from a copy of dialogs
-      const currentModal = [...state.dialogs].slice(-1)[0]
+      const currentModal = [...state].slice(-1)[0]
       if (currentModal && currentModal.name === action.dialog.name) {
         return state
       }
-      return { dialogs: [...state.dialogs, action.dialog] }
+      return [...state, action.dialog]
     }
     case 'POP_DIALOG': {
-      const dialogsCopy = [...state.dialogs]
+      const dialogsCopy = [...state]
       dialogsCopy.pop()
-      return { dialogs: dialogsCopy }
+      return dialogsCopy
     }
     case 'CLOSE_ALL_DIALOGS':
       return initialState
@@ -53,25 +48,25 @@ function dialogReducer(state: State, action: Action) {
 }
 
 export function DialogProvider({ children }: { children: React.ReactNode }) {
-  const [state, dispatch] = React.useReducer(dialogReducer, initialState)
+  const [dialogs, dispatch] = useReducer(dialogReducer, initialState)
 
-  return <DialogContext.Provider value={[state, dispatch]}>{children}</DialogContext.Provider>
+  return <DialogContext.Provider value={{ dialogs, dispatch }}>{children}</DialogContext.Provider>
 }
 
 /**
  * Custom hook that returns functions for dialog management
  */
 export function useDialog() {
-  const context = React.useContext(DialogContext)
+  const context = useContext(DialogContext)
 
   if (!context) {
     throw new Error('useDialog must be used within a DialogProvider')
   }
-  const [{ dialogs }, dispatch] = context
+  const { dispatch, dialogs } = context
 
-  const closeAllDialogs = () => dispatch({ type: 'CLOSE_ALL_DIALOGS' })
-  const closeLastDialog = () => dispatch({ type: 'POP_DIALOG' })
-  const openDialog = (dialog: DialogWithProps) => dispatch({ type: 'PUSH_DIALOG', dialog })
+  const closeAllDialogs = useCallback(() => dispatch({ type: 'CLOSE_ALL_DIALOGS' }), [dispatch])
+  const closeLastDialog = useCallback(() => dispatch({ type: 'POP_DIALOG' }), [dispatch])
+  const openDialog = useCallback((dialog: DialogWithProps) => dispatch({ type: 'PUSH_DIALOG', dialog }), [dispatch])
 
   return {
     dialogs,
