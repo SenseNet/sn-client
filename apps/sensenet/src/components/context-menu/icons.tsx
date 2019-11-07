@@ -1,6 +1,7 @@
 import React from 'react'
 import Search from '@material-ui/icons/Search'
 import CheckCircle from '@material-ui/icons/CheckCircle'
+import InfoIcon from '@material-ui/icons/Info'
 import Lock from '@material-ui/icons/Lock'
 import LockOpen from '@material-ui/icons/LockOpen'
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined'
@@ -18,6 +19,8 @@ export const getIcon = (actionName: string) => {
   switch (actionName) {
     case 'approve':
       return <CheckCircle />
+    case 'browse':
+      return <InfoIcon />
     case 'checkin':
       return <Lock />
     case 'checkout':
