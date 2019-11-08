@@ -14,7 +14,7 @@ import Info from '@material-ui/icons/Info'
 import React, { useContext } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { ConstantContent } from '@sensenet/client-core'
-import { CurrentContentContext, useDownload, useLogger, useWopi } from '@sensenet/hooks-react'
+import { CurrentContentContext, useDownload, useLogger, useRepository, useWopi } from '@sensenet/hooks-react'
 import { ActionModel } from '@sensenet/default-content-types'
 import { ResponsiveContext } from '../../context'
 import { useContentRouting, useLocalization } from '../../hooks'
@@ -41,15 +41,9 @@ export const ContentContextMenuComponent: React.FunctionComponent<
   const routing = useContentRouting()
   const localization = useLocalization().contentContextMenu
   const { openDialog } = useDialog()
+  const repo = useRepository()
   const download = useDownload(content)
   const wopi = useWopi(content)
-
-  // const wopiOpen = useCallback(async () => {
-  //   props.onClose && props.onClose()
-  //   props.history.push(
-  //     `/${btoa(repo.configuration.repositoryUrl)}/wopi/${content.Id}/${wopi.isWriteAwailable ? 'edit' : 'view'}`,
-  //   )
-  // }, [content.Id, props, repo.configuration.repositoryUrl, wopi.isWriteAwailable])
 
   const runAction = (actionName: string) => {
     switch (actionName) {
@@ -71,6 +65,15 @@ export const ContentContextMenuComponent: React.FunctionComponent<
         })
         break
       }
+      case 'WopiOpenView':
+      case 'WopiOpenEdit':
+        {
+          props.onClose && props.onClose()
+          props.history.push(
+            `/${btoa(repo.configuration.repositoryUrl)}/wopi/${content.Id}/${wopi.isWriteAwailable ? 'edit' : 'view'}`,
+          )
+        }
+        break
       default:
         // TODO? proper warning message
         logger.warning({ message: `There is no action with name: ${actionName}` })
