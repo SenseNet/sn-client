@@ -4,11 +4,6 @@ import { TextField } from '@material-ui/core'
 import { LoginForm } from '../src/components/login-form'
 
 describe('Login Form', () => {
-  it('Matches snapshot', () => {
-    const l = shallow(<LoginForm onLogin={() => {}} />)
-    expect(l).toMatchSnapshot()
-  })
-
   it('Matches snapshot with error', () => {
     const l = shallow(<LoginForm onLogin={() => {}} error=":(" />)
     expect(l).toMatchSnapshot()
