@@ -1,8 +1,8 @@
 import React from 'react'
 import { Repository } from '@sensenet/client-core'
 import { GenericContent, VersioningMode } from '@sensenet/default-content-types'
-import { shallow } from 'enzyme'
-import Typography from '@material-ui/core/Typography'
+import { mount } from 'enzyme'
+import { act } from 'react-dom/test-utils'
 import { BrowseView } from '../src/viewcontrols/BrowseView'
 import {
   AllowedChildTypes,
@@ -26,12 +26,20 @@ import {
 } from '../src/fieldcontrols'
 import { schema } from './__mocks__/schema'
 
-export const testRepository = new Repository({
-  repositoryUrl: 'https://devservice.demo.sensenet.com',
-  requiredSelect: ['Id', 'Path', 'Name', 'Type', 'ParentId', 'DisplayName'],
-  schemas: schema,
-  sessionLifetime: 'expiration',
-})
+export const testRepository = new Repository(
+  {
+    repositoryUrl: 'https://devservice.demo.sensenet.com',
+    requiredSelect: ['Id', 'Path', 'Name', 'Type', 'ParentId', 'DisplayName'],
+    schemas: schema,
+    sessionLifetime: 'expiration',
+  },
+  jest.fn(() => {
+    return {
+      ok: true,
+      json: jest.fn(),
+    }
+  }) as any,
+)
 
 export const testFile: GenericContent = {
   Id: 1,
@@ -47,9 +55,17 @@ export const testFile: GenericContent = {
 }
 
 describe('Browse view component', () => {
-  it('should render all the controls for Generic content', () => {
-    const wrapper = shallow(<BrowseView content={testFile} repository={testRepository} />)
-    expect(wrapper.find(Typography).text()).toBe(testFile.DisplayName)
+  afterAll(() => {
+    // Restore console.errors
+    jest.restoreAllMocks()
+  })
+  it('should render all the controls for Generic content', async () => {
+    // Don't show console errors when tests runs
+    jest.spyOn(console, 'error').mockImplementation(() => jest.fn())
+    let wrapper: any
+    await act(async () => {
+      wrapper = mount(<BrowseView content={testFile} repository={testRepository} />)
+    })
     expect(wrapper.find(FileName)).toHaveLength(1)
     expect(wrapper.find(TagsInput)).toHaveLength(1)
     expect(wrapper.find(ReferenceGrid)).toHaveLength(1)
@@ -65,7 +81,7 @@ describe('Browse view component', () => {
     expect(wrapper.find(DatePicker)).toHaveLength(1)
     expect(wrapper.find(DropDownList)).toHaveLength(2)
     expect(wrapper.find(RadioButtonGroup)).toHaveLength(1)
-    expect(wrapper.find(Textarea)).toHaveLength(2)
+    expect(wrapper.find(Textarea)).toHaveLength(3)
     expect(wrapper.find(Avatar)).toHaveLength(1)
     expect(wrapper.find(ColorPicker)).toHaveLength(2)
   })
