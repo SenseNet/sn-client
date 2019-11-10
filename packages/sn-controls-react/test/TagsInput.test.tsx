@@ -6,6 +6,7 @@ import Select from '@material-ui/core/Select'
 import { sleepAsync } from '@sensenet/client-utils'
 import Chip from '@material-ui/core/Chip'
 import SvgIcon from '@material-ui/core/SvgIcon'
+import { act } from 'react-dom/test-utils'
 import { TagsInput } from '../src/fieldcontrols/TagsInput'
 
 const userContent = {
@@ -26,6 +27,13 @@ const userContent = {
   },
 }
 
+const fileContent = {
+  Name: 'SomeFile',
+  Path: 'Root/Sites/SomeFile',
+  DisplayName: 'Some File',
+  Id: 415,
+  Type: 'File',
+}
 const defaultSettings = {
   Type: 'ReferenceFieldSetting',
   AllowedTypes: ['User', 'Group'],
@@ -109,7 +117,16 @@ describe('Tags input field control', () => {
           settings={{ ...defaultSettings, AllowMultiple: true }}
           content={userContent}
           fieldOnChange={fieldOnChange}
-          repository={repository}
+          repository={
+            {
+              loadCollection: () => {
+                return { d: { results: [{ ...userContent, Avatar: {} }] } }
+              },
+              configuration: {
+                repositoryUrl: 'url',
+              },
+            } as any
+          }
         />,
       )
       await sleepAsync(0)
@@ -120,6 +137,39 @@ describe('Tags input field control', () => {
         .simulate('click')
       expect(updatedWrapper.find(Select).prop('value')).toHaveLength(0)
       expect(fieldOnChange).toBeCalled()
+    })
+
+    it('should remove a tag when X is clicked and it is not a user', async () => {
+      const fieldOnChange = jest.fn()
+      const repositoryForFileContent = {
+        loadCollection: jest.fn(() => {
+          return { d: { results: [fileContent, { ...fileContent, Id: 311 }] } }
+        }),
+        configuration: {
+          repositoryUrl: 'url',
+        },
+      }
+      let wrapper: any
+      await act(async () => {
+        wrapper = mount(
+          <TagsInput
+            actionName="edit"
+            settings={{ ...defaultSettings, AllowMultiple: true }}
+            content={fileContent}
+            fieldOnChange={fieldOnChange}
+            repository={repositoryForFileContent as any}
+          />,
+        )
+      })
+
+      wrapper
+        .update()
+        .find(Chip)
+        .find(SvgIcon)
+        .at(1)
+        .simulate('click')
+      expect(wrapper.find(Select).prop('value')).toHaveLength(1)
+      expect(fieldOnChange).toBeCalledWith(defaultSettings.Name, [fileContent.Id])
     })
 
     it('should handle selection change', async () => {
