@@ -330,9 +330,6 @@ class DashboardComponent extends React.Component<
     )
   }
 }
-const connectedComponent = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(DashboardComponent)
+const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(DashboardComponent)
 
 export default connectedComponent

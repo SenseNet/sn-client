@@ -83,7 +83,4 @@ class WorkspaceSelector extends React.Component<ReturnType<typeof mapStateToProp
   }
 }
 
-export default connect(
-  mapStateToProps,
-  {},
-)(WorkspaceSelector)
+export default connect(mapStateToProps, {})(WorkspaceSelector)

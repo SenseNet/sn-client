@@ -182,9 +182,4 @@ class Users extends Component<ReturnType<typeof mapStateToProps> & typeof mapDis
   }
 }
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(Users),
-)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Users))

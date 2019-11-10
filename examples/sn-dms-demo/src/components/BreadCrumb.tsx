@@ -182,9 +182,4 @@ class BreadCrumb extends React.Component<
   }
 }
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(BreadCrumb),
-)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(BreadCrumb))

@@ -188,9 +188,4 @@ class MembersList extends Component<
   }
 }
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(MembersList),
-)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MembersList))

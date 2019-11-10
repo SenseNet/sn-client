@@ -43,7 +43,10 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
                   }}
                   parentPath={props.rootPath || ConstantContent.PORTAL_ROOT.Path}
                   loadOptions={{
-                    orderby: [['DisplayName', 'asc'], ['Name', 'asc']],
+                    orderby: [
+                      ['DisplayName', 'asc'],
+                      ['Name', 'asc'],
+                    ],
                   }}
                   onItemClick={item => {
                     selectionService.activeContent.setValue(item)

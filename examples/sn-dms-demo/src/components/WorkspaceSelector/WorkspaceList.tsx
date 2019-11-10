@@ -142,7 +142,4 @@ class WorkspaceList extends React.Component<
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withStyles(styles as any)(WorkspaceList))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles as any)(WorkspaceList))

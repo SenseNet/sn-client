@@ -4,11 +4,9 @@ import React, { useContext } from 'react'
 import { RenderSuggestionsContainerParams } from 'react-autosuggest'
 import { ResponsiveContext } from '../../context'
 
-export const CommandPaletteHitsContainer: React.FunctionComponent<
-  RenderSuggestionsContainerParams & {
-    width: number
-  }
-> = options => {
+export const CommandPaletteHitsContainer: React.FunctionComponent<RenderSuggestionsContainerParams & {
+  width: number
+}> = options => {
   const device = useContext(ResponsiveContext)
   return (
     <Paper

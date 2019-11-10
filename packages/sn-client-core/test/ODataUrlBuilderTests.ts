@@ -96,7 +96,10 @@ describe('ODataUrlBuilder', () => {
 
     it('should parse an orderby array with ordered fields list expression', () => {
       const urlParamString = ODataUrlBuilder.buildUrlParamString<GenericContent>({ defaultMetadata: 'no' } as any, {
-        orderby: [['Name', 'asc'], ['DisplayName', 'desc']],
+        orderby: [
+          ['Name', 'asc'],
+          ['DisplayName', 'desc'],
+        ],
       })
       expect(urlParamString).toBe('$orderby=Name%20asc%2CDisplayName%20desc&metadata=no')
     })

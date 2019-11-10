@@ -18,11 +18,9 @@ import { IconButton, MuiThemeProvider } from '@material-ui/core'
 import MediaQuery from 'react-responsive'
 import { Icon, iconType } from '@sensenet/icons-react'
 
-const DocViewer: React.FunctionComponent<
-  RouteComponentProps<{ documentId: string }> & {
-    previousLocation?: string
-  }
-> = props => {
+const DocViewer: React.FunctionComponent<RouteComponentProps<{ documentId: string }> & {
+  previousLocation?: string
+}> = props => {
   const documentId = parseInt(
     props.match.params.documentId && atob(decodeURIComponent(props.match.params.documentId)),
     10,

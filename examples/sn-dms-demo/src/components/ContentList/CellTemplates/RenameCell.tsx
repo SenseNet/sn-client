@@ -96,9 +96,6 @@ class RenameCell extends React.Component<
   }
 }
 
-const connectedComponent = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(RenameCell)
+const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(RenameCell)
 
 export { connectedComponent as RenameCell }

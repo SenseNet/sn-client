@@ -66,7 +66,10 @@ export const defaultState: DocumentLibraryState = {
       'Workspace',
     ],
     expand: ['Actions', 'Owner', 'Workspace'],
-    orderby: [['IsFolder', 'desc'], ['DisplayName', 'asc']],
+    orderby: [
+      ['IsFolder', 'desc'],
+      ['DisplayName', 'asc'],
+    ],
     filter: "ContentType ne 'SystemFolder'",
     scenario: 'DMSListItem',
   },
@@ -90,7 +93,10 @@ export const defaultState: DocumentLibraryState = {
       'RelatedDocuments',
     ] as any,
     expand: ['Actions', 'Owner', 'CheckedOutTo'],
-    orderby: [['IsFolder', 'desc'], ['DisplayName', 'asc']],
+    orderby: [
+      ['IsFolder', 'desc'],
+      ['DisplayName', 'asc'],
+    ],
     filter: "ContentType ne 'SystemFolder'",
     scenario: 'DMSListItem',
     top: loadChunkSize,

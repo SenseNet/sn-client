@@ -245,7 +245,4 @@ class BatchActionlist extends React.Component<
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(BatchActionlist)
+export default connect(mapStateToProps, mapDispatchToProps)(BatchActionlist)

@@ -101,7 +101,4 @@ class MembersListToolbar extends Component<ReturnType<typeof mapStateToProps> & 
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(MembersListToolbar)
+export default connect(mapStateToProps, mapDispatchToProps)(MembersListToolbar)

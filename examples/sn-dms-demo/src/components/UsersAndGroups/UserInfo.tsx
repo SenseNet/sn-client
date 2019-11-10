@@ -112,7 +112,4 @@ class UserInfo extends React.Component<{} & ReturnType<typeof mapStateToProps> &
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(UserInfo)
+export default connect(mapStateToProps, mapDispatchToProps)(UserInfo)

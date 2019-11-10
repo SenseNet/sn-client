@@ -156,7 +156,4 @@ class DeleteDialog extends React.Component<
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withStyles(styles as any)(DeleteDialog))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles as any)(DeleteDialog))

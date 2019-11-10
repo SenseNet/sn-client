@@ -19,13 +19,11 @@ import { useDrawerItems, useLocalization, usePersonalSettings, useTheme } from '
 import { LogoutButton } from '../LogoutButton'
 import { UserAvatar } from '../UserAvatar'
 
-const TemporaryDrawer: React.FunctionComponent<
-  RouteComponentProps & {
-    isOpened: boolean
-    onClose: () => void
-    onOpen: () => void
-  }
-> = props => {
+const TemporaryDrawer: React.FunctionComponent<RouteComponentProps & {
+  isOpened: boolean
+  onClose: () => void
+  onOpen: () => void
+}> = props => {
   const settings = useContext(ResponsivePersonalSetttings)
   const device = useContext(ResponsiveContext)
   const personalSettings = usePersonalSettings()

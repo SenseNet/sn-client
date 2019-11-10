@@ -96,12 +96,14 @@ export const createDefaultApiSettings: (repo: Repository) => DocumentViewerApiSe
     })
   },
   getDocumentData: async settings => {
-    const documentData = (await repo.load<SnFile>({
-      idOrPath: settings.idOrPath,
-      oDataOptions: {
-        select: 'all',
-      },
-    })).d
+    const documentData = (
+      await repo.load<SnFile>({
+        idOrPath: settings.idOrPath,
+        oDataOptions: {
+          select: 'all',
+        },
+      })
+    ).d
 
     return {
       idOrPath: settings.idOrPath,
