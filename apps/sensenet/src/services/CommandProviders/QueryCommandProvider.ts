@@ -16,8 +16,8 @@ export class QueryCommandProvider implements CommandProvider {
     private readonly localization: LocalizationService,
   ) {}
 
-  public shouldExec(options: SearchOptions): boolean {
-    return options.term[0] === '+'
+  public shouldExec({ term }: SearchOptions): boolean {
+    return term != null && term[0] === '+'
   }
 
   public async getItems(options: SearchOptions): Promise<CommandPaletteItem[]> {
