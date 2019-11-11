@@ -12,30 +12,23 @@
     }
   },
   "devDependencies": {
-    "@types/enzyme": "^3.10.3",
-    "@types/jest": "^24.0.18",
     "@typescript-eslint/eslint-plugin": "^2.6.1",
     "@typescript-eslint/parser": "^2.6.1",
     "cz-conventional-changelog": "^3.0.2",
-    "enzyme": "^3.9.0",
-    "enzyme-adapter-react-16": "^1.13.2",
-    "enzyme-to-json": "^3.4.0",
     "eslint": "^6.6.0",
     "eslint-config-prettier": "^6.5.0",
     "eslint-plugin-cypress": "^2.7.0",
     "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jsdoc": "^17.1.0",
+    "eslint-plugin-jsdoc": "^17.1.1",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "^7.16.0",
     "eslint-plugin-react-hooks": "^2.2.0",
     "husky": "^3.0.4",
-    "jest": "^24.9.0",
     "lerna": "^3.16.4",
     "lint-staged": "^9.2.3",
     "prettier": "^1.19.1",
     "rimraf": "^3.0.0",
     "start-server-and-test": "^1.10.0",
-    "ts-jest": "^24.0.2",
     "typescript": "^3.7.2",
     "wait-on": "^3.3.0"
   },
@@ -70,66 +63,6 @@
     "*.{js,jsx}": [
       "prettier --write",
       "git add"
-    ]
-  },
-  "jest": {
-    "roots": [
-      "<rootDir>/examples/sn-dms-demo",
-      "<rootDir>/examples/sn-react-redux-todo-app",
-      "<rootDir>/packages/sn-authentication-jwt",
-      "<rootDir>/packages/sn-client-auth-google",
-      "<rootDir>/packages/sn-client-utils",
-      "<rootDir>/packages/sn-control-mapper",
-      "<rootDir>/packages/sn-client-core",
-      "<rootDir>/packages/sn-redux",
-      "<rootDir>/packages/sn-repository-events",
-      "<rootDir>/packages/sn-document-viewer-react",
-      "<rootDir>/packages/sn-hooks-react",
-      "<rootDir>/packages/sn-list-controls-react",
-      "<rootDir>/packages/sn-query",
-      "<rootDir>/packages/sn-search-react",
-      "<rootDir>/packages/sn-redux-promise-middleware",
-      "<rootDir>/packages/sn-pickers-react",
-      "<rootDir>/packages/sn-controls-react",
-      "<rootDir>/packages/sn-icons-react"
-    ],
-    "moduleNameMapper": {
-      "\\.css$": "<rootDir>/jest/cssTransform.js"
-    },
-    "transform": {
-      "^.+\\.(ts|tsx)$": "ts-jest",
-      "^.+\\.css$": "<rootDir>/jest/cssTransform.js",
-      "^.+\\.(png|jpg|gif)$": "<rootDir>/jest/fileTransform.js"
-    },
-    "globals": {
-      "ts-jest": {
-        "tsConfig": "tsconfig-base.json"
-      }
-    },
-    "testMatch": [
-      "**/__tests__/*.+(ts|tsx|js)",
-      "**/test/*.+(ts|tsx|js)"
-    ],
-    "setupFilesAfterEnv": [
-      "<rootDir>/jest/setup.js"
-    ],
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ],
-    "collectCoverageFrom": [
-      "**/packages/**/src/**/*.{ts,tsx}",
-      "!**/test/**/*.{ts,tsx}",
-      "!**/__tests__/**/*.{ts,tsx}",
-      "!**/*.d.{ts,tsx}",
-      "!**/node_modules/**",
-      "!**/index.ts",
-      "!**/example*.*",
-      "!**/Example*.*",
-      "!**/Example*/**/*.*"
-    ],
-    "coverageReporters": [
-      "json",
-      "html"
     ]
   }
 }
