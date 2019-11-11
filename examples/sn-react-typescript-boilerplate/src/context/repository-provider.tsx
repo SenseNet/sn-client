@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { FormsAuthenticationService, LoginState, Repository } from '@sensenet/client-core'
-//TODO: export everything from client core
 import { RepositoryConfiguration } from '@sensenet/client-core/dist/Repository/RepositoryConfiguration'
 import { RepositoryContext } from '@sensenet/hooks-react'
 import { LoginForm } from '../components/login-form'

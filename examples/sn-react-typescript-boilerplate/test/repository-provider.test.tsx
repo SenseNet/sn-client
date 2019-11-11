@@ -27,6 +27,7 @@ describe('Repository Provider', () => {
     expect(wrapper.find(FullScreenLoader).exists()).toBe(true)
     expect(wrapper.find('p').exists()).toBe(false)
   })
+
   it('should show the children when authenticated', () => {
     ;(Repository as any).mockImplementation(() => {
       return {
@@ -42,6 +43,7 @@ describe('Repository Provider', () => {
     )
     expect(wrapper.find('p').exists()).toBe(true)
   })
+
   describe('when not authenticated', () => {
     it('should show a login form', () => {
       ;(Repository as any).mockImplementation(() => {
@@ -59,6 +61,7 @@ describe('Repository Provider', () => {
       expect(wrapper.find(LoginForm).exists()).toBe(true)
     })
   })
+
   describe('onLogin', () => {
     it('should set localstorage with repourl', async () => {
       const login = jest.fn(() => true)
