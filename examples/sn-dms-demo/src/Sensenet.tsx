@@ -121,7 +121,4 @@ class Sensenet extends React.Component<SensenetProps & ReturnType<typeof mapStat
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Sensenet)
+export default connect(mapStateToProps, mapDispatchToProps)(Sensenet)

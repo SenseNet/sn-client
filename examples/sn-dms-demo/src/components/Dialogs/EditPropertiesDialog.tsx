@@ -127,7 +127,4 @@ class EditPropertiesDialog extends React.Component<
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(EditPropertiesDialog)
+export default connect(mapStateToProps, mapDispatchToProps)(EditPropertiesDialog)

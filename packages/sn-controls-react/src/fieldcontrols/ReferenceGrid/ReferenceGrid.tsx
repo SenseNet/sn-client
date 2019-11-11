@@ -108,7 +108,11 @@ export class ReferenceGrid extends Component<ReactClientFieldSetting<ReferenceFi
    */
   public removeItem = (id: number) => {
     const value = this.state.fieldValue.length > 1 ? this.state.fieldValue.filter(item => item.Id !== id) : []
-    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, value.map(item => item.Id))
+    this.props.fieldOnChange &&
+      this.props.fieldOnChange(
+        this.props.settings.Name,
+        value.map(item => item.Id),
+      )
     this.setState({
       fieldValue: value,
       selected: value,
@@ -139,7 +143,10 @@ export class ReferenceGrid extends Component<ReactClientFieldSetting<ReferenceFi
 
   public handleOkClick = () => {
     this.props.fieldOnChange &&
-      this.props.fieldOnChange(this.props.settings.Name, this.state.selected.map((item: GenericContent) => item.Id))
+      this.props.fieldOnChange(
+        this.props.settings.Name,
+        this.state.selected.map((item: GenericContent) => item.Id),
+      )
 
     this.setState({
       fieldValue: this.state.selected,

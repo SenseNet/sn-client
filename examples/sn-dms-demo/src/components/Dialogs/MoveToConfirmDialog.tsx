@@ -63,7 +63,10 @@ class MoveToConfirmDialog extends React.Component<ReturnType<typeof mapStateToPr
     this.props.closeDialog()
   }
   public submitCallback = () => {
-    this.props.moveContent(this.props.selected.map(item => item.Id), this.props.target[0].Path)
+    this.props.moveContent(
+      this.props.selected.map(item => item.Id),
+      this.props.target[0].Path,
+    )
     this.props.closeDialog()
     this.props.closeCallback()
   }
@@ -108,7 +111,4 @@ class MoveToConfirmDialog extends React.Component<ReturnType<typeof mapStateToPr
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(MoveToConfirmDialog)
+export default connect(mapStateToProps, mapDispatchToProps)(MoveToConfirmDialog)

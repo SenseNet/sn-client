@@ -1,13 +1,9 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FormsAuthenticationService, LoginState, Repository } from '@sensenet/client-core'
 import { RepositoryConfiguration } from '@sensenet/client-core/dist/Repository/RepositoryConfiguration'
+import { RepositoryContext } from '@sensenet/hooks-react'
 import { LoginForm } from '../components/login-form'
 import { FullScreenLoader } from '../components/full-screen-loader'
-
-/**
- * React context that stores a sensenet Repository object
- */
-export const RepositoryContext = createContext(new Repository())
 
 /**
  * The last repository will be stored in your local storage with this key
@@ -18,9 +14,10 @@ export const lastRepositoryKey = 'sn-boilerplate-last-repository'
  * Container component that will provide a Repository object through a Context
  * @param props The repository settings
  */
-export const RepositoryProvider: React.FunctionComponent<
-  Omit<Partial<RepositoryConfiguration>, 'repositoryUrl'>
-> = props => {
+export const RepositoryProvider: React.FunctionComponent<Omit<
+  Partial<RepositoryConfiguration>,
+  'repositoryUrl'
+>> = props => {
   const [currentRepoUrl, setCurrentRepoUrl] = useState(localStorage.getItem(lastRepositoryKey) || '')
   const [currentRepo, setCurrentRepo] = useState(new Repository({ ...props, repositoryUrl: currentRepoUrl }))
   const [loginError, setLoginError] = useState('')
@@ -51,7 +48,7 @@ export const RepositoryProvider: React.FunctionComponent<
                 setLoginError('Failed to log in.')
               }
             } catch (error) {
-              setLoginError(error.toString())
+              setLoginError(error.message)
             }
           }}
         />

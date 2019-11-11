@@ -113,7 +113,4 @@ class GroupInfo extends React.Component<
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(GroupInfo)
+export default connect(mapStateToProps, mapDispatchToProps)(GroupInfo)

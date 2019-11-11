@@ -54,7 +54,4 @@ class DeleteUserFromGroup extends React.Component<
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(DeleteUserFromGroup)
+export default connect(mapStateToProps, mapDispatchToProps)(DeleteUserFromGroup)

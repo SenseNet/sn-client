@@ -100,7 +100,4 @@ class LockedCell extends React.Component<LockedCellProps & ReturnType<typeof map
   }
 }
 
-export default connect(
-  mapStateToProps,
-  {},
-)(LockedCell)
+export default connect(mapStateToProps, {})(LockedCell)
