@@ -14,9 +14,10 @@ export const lastRepositoryKey = 'sn-boilerplate-last-repository'
  * Container component that will provide a Repository object through a Context
  * @param props The repository settings
  */
-export const RepositoryProvider: React.FunctionComponent<
-  Omit<Partial<RepositoryConfiguration>, 'repositoryUrl'>
-> = props => {
+export const RepositoryProvider: React.FunctionComponent<Omit<
+  Partial<RepositoryConfiguration>,
+  'repositoryUrl'
+>> = props => {
   const [currentRepoUrl, setCurrentRepoUrl] = useState(localStorage.getItem(lastRepositoryKey) || '')
   const [currentRepo, setCurrentRepo] = useState(new Repository({ ...props, repositoryUrl: currentRepoUrl }))
   const [loginError, setLoginError] = useState('')

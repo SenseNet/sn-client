@@ -161,10 +161,5 @@ class SavedQueries extends React.Component<
   }
 }
 
-const connectedComponent = withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(SavedQueries),
-)
+const connectedComponent = withRouter(connect(mapStateToProps, mapDispatchToProps)(SavedQueries))
 export { connectedComponent as SavedQueries }

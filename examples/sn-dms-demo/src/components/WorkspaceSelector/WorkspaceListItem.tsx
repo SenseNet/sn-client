@@ -137,9 +137,4 @@ class WorkspaceListItem extends React.Component<
   }
 }
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(withStyles(styles)(WorkspaceListItem)),
-)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(WorkspaceListItem)))

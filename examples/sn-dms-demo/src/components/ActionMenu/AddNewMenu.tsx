@@ -119,7 +119,4 @@ class AddNewMenu extends React.Component<
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(AddNewMenu)
+export default connect(mapStateToProps, mapDispatchToProps)(AddNewMenu)

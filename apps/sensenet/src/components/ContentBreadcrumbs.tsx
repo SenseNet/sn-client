@@ -5,9 +5,9 @@ import { GenericContent } from '@sensenet/default-content-types'
 import { useContentRouting } from '../hooks'
 import Breadcrumbs, { BreadcrumbItem } from './Breadcrumbs'
 
-export const ContentBreadcrumbsComponent: React.FunctionComponent<
-  RouteComponentProps & { onItemClick?: (item: BreadcrumbItem<GenericContent>) => void }
-> = props => {
+export const ContentBreadcrumbsComponent: React.FunctionComponent<RouteComponentProps & {
+  onItemClick?: (item: BreadcrumbItem<GenericContent>) => void
+}> = props => {
   const ancestors = useContext(CurrentAncestorsContext)
   const parent = useContext(CurrentContentContext)
   const contentRouter = useContentRouting()

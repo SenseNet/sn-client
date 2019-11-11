@@ -137,7 +137,4 @@ class UserList extends React.Component<
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withStyles(styles as any)(UserList))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles as any)(UserList))

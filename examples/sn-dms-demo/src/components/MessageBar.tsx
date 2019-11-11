@@ -79,7 +79,10 @@ class MessageBar extends React.Component<
     const getBulkMessageKey = (e: LogEntry) =>
       e.messageEntry && e.messageEntry.bulkMessage && e.messageEntry.bulkMessage
 
-    const grouped = groupBy(newProps.entries.filter(e => e.messageEntry), getBulkMessageKey)
+    const grouped = groupBy(
+      newProps.entries.filter(e => e.messageEntry),
+      getBulkMessageKey,
+    )
     const msgSegments = [...lastState.digestedMessageEntries]
     for (const type in grouped) {
       if (grouped[type]) {
@@ -176,7 +179,4 @@ class MessageBar extends React.Component<
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withStyles(styles)(MessageBar))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(MessageBar))

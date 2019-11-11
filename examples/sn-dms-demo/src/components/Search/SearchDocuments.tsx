@@ -429,9 +429,6 @@ class SearchDocuments extends React.Component<
   }
 }
 
-const connectedComponent = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(SearchDocuments)
+const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(SearchDocuments)
 
 export { connectedComponent as SearchDocuments }

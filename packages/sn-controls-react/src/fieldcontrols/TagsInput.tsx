@@ -84,7 +84,11 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
     this.setState({
       fieldValue: s,
     })
-    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, s.map(content => content.Id))
+    this.props.fieldOnChange &&
+      this.props.fieldOnChange(
+        this.props.settings.Name,
+        s.map(content => content.Id),
+      )
   }
 
   public async search() {
@@ -159,7 +163,11 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
       fieldValue: newValue,
     })
 
-    this.props.fieldOnChange && this.props.fieldOnChange(this.props.settings.Name, newValue.map(content => content.Id))
+    this.props.fieldOnChange &&
+      this.props.fieldOnChange(
+        this.props.settings.Name,
+        newValue.map(content => content.Id),
+      )
   }
 
   /**

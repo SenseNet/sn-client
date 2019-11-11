@@ -103,9 +103,4 @@ class EditorPage extends Component<
   }
 }
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(EditorPage),
-)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EditorPage))

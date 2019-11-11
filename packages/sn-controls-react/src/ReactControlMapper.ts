@@ -30,7 +30,11 @@ export const reactControlMapper = (repository: Repository) => {
   const controlMapper: ControlMapper<ComponentType, ComponentType<ReactClientFieldSetting>> = new ControlMapper<
     ComponentType,
     ComponentType<ReactClientFieldSetting>
-  >(repository, () => null, () => null)
+  >(
+    repository,
+    () => null,
+    () => null,
+  )
   controlMapper
     .setupFieldSettingDefault(NumberFieldSetting, () => {
       return FieldControls.NumberComponent

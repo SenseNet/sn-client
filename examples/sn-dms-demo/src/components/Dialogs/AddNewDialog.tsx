@@ -94,7 +94,4 @@ class AddNewDialog extends React.Component<
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(AddNewDialog)
+export default connect(mapStateToProps, mapDispatchToProps)(AddNewDialog)

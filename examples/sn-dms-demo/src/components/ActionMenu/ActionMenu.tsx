@@ -636,7 +636,4 @@ class ActionMenu extends React.Component<
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withRouter(ActionMenu))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ActionMenu))

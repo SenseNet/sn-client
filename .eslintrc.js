@@ -62,6 +62,7 @@ module.exports = {
     'dot-notation': 'error',
     'no-caller': 'error',
     'no-useless-concat': 'error',
+    'no-undef': 0, // This is checked by typescript noUnusedLocals option
     radix: 'error',
     yoda: 'error',
     'prefer-arrow-callback': 'error',

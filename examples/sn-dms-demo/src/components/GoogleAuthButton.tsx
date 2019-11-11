@@ -86,7 +86,4 @@ const mapStateToProps = () => {
   return {}
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(GoogleAuthButton)
+export default connect(mapStateToProps, mapDispatchToProps)(GoogleAuthButton)

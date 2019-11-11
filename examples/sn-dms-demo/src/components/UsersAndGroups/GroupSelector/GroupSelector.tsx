@@ -89,7 +89,4 @@ class GroupSelector extends React.Component<
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(GroupSelector)
+export default connect(mapStateToProps, mapDispatchToProps)(GroupSelector)

@@ -111,7 +111,4 @@ function PathPickerDialog(
   )
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(PathPickerDialog)
+export default connect(mapStateToProps, mapDispatchToProps)(PathPickerDialog)

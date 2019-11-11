@@ -103,7 +103,4 @@ class UserActionMenu extends React.Component<
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(UserActionMenu)
+export default connect(mapStateToProps, mapDispatchToProps)(UserActionMenu)

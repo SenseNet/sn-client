@@ -63,7 +63,7 @@ describe('Edit view component', () => {
     expect(wrapper.find(DatePicker)).toHaveLength(1)
     expect(wrapper.find(DropDownList)).toHaveLength(2)
     expect(wrapper.find(RadioButtonGroup)).toHaveLength(1)
-    expect(wrapper.find(Textarea)).toHaveLength(2)
+    expect(wrapper.find(Textarea)).toHaveLength(3)
     expect(wrapper.find(Avatar)).toHaveLength(1)
     expect(wrapper.find(ColorPicker)).toHaveLength(2)
   })

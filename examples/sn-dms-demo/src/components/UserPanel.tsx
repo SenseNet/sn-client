@@ -34,7 +34,4 @@ const userPanel = ({
   />
 )
 
-export default connect(
-  mapStateToProps,
-  {},
-)(userPanel as React.StatelessComponent)
+export default connect(mapStateToProps, {})(userPanel as React.StatelessComponent)

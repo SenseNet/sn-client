@@ -158,7 +158,4 @@ class RemoveUsersFromGroupDialog extends React.Component<
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withStyles(styles as any)(RemoveUsersFromGroupDialog))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles as any)(RemoveUsersFromGroupDialog))

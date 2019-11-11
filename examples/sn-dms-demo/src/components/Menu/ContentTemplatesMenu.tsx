@@ -150,9 +150,4 @@ class ContentTemplatesMenu extends React.Component<
   }
 }
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(withStyles(styles)(ContentTemplatesMenu)),
-)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(ContentTemplatesMenu)))

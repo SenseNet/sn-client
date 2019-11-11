@@ -90,7 +90,4 @@ class UserSelector extends React.Component<
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(UserSelector)
+export default connect(mapStateToProps, mapDispatchToProps)(UserSelector)

@@ -13,11 +13,17 @@ export const RotateDocumentWidget: React.FC = () => {
   const localization = useLocalization()
 
   const rotateDocumentLeft = useCallback(() => {
-    pages.rotateImages(pages.imageData.map(p => p.Index), -ROTATION_AMOUNT)
+    pages.rotateImages(
+      pages.imageData.map(p => p.Index),
+      -ROTATION_AMOUNT,
+    )
   }, [pages])
 
   const rotateDocumentRight = useCallback(() => {
-    pages.rotateImages(pages.imageData.map(p => p.Index), ROTATION_AMOUNT)
+    pages.rotateImages(
+      pages.imageData.map(p => p.Index),
+      ROTATION_AMOUNT,
+    )
   }, [pages])
 
   return (

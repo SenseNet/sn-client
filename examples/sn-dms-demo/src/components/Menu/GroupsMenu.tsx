@@ -149,9 +149,4 @@ class GroupsMenu extends Component<
     )
   }
 }
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(withStyles(styles)(GroupsMenu)),
-)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(GroupsMenu)))

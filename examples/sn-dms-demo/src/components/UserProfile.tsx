@@ -294,9 +294,4 @@ class UserProfile extends React.Component<
   }
 }
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(UserProfile),
-)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UserProfile))

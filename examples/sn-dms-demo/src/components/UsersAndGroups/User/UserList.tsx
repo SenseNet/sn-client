@@ -256,9 +256,4 @@ class UserList extends Component<ReturnType<typeof mapStateToProps> & typeof map
   }
 }
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(UserList),
-)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UserList))
