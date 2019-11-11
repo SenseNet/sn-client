@@ -8,12 +8,16 @@ import Typography from '@material-ui/core/Typography'
 import React, { useEffect, useState } from 'react'
 import MonacoEditor from 'react-monaco-editor'
 import { useInjector, useLogger, useRepository } from '@sensenet/hooks-react'
+import { PathHelper } from '@sensenet/client-utils'
 import { useLocalization, useTheme } from '../../hooks'
 import { CustomActionCommandProvider } from '../../services/CommandProviders/CustomActionCommandProvider'
 import { createCustomActionModel } from '../../services/MonacoModels/create-custom-action-model'
 import { getMonacoModelUri } from '../edit/TextEditor'
 
 const postBodyCache = new Map<string, string>()
+const EDITOR_INITIAL_VALUE = `{
+
+}`
 
 export const ExecuteActionDialog: React.FunctionComponent = () => {
   const theme = useTheme()
@@ -26,7 +30,7 @@ export const ExecuteActionDialog: React.FunctionComponent = () => {
   const [actionValue, setActionValue] = useState(customActionService.onExecuteAction.getValue())
 
   const [isVisible, setIsVisible] = useState(false)
-  const [postBody, setPostBody] = useState('{}')
+  const [postBody, setPostBody] = useState(EDITOR_INITIAL_VALUE)
   const [uri, setUri] = useState<import('monaco-editor').Uri>()
 
   const [isExecuting, setIsExecuting] = useState(false)
@@ -41,7 +45,7 @@ export const ExecuteActionDialog: React.FunctionComponent = () => {
     if (stored) {
       setPostBody(stored)
     } else {
-      setPostBody('{}')
+      setPostBody(EDITOR_INITIAL_VALUE)
     }
     setError('')
   }, [uri])
@@ -63,14 +67,89 @@ export const ExecuteActionDialog: React.FunctionComponent = () => {
     return () => observables.forEach(o => o.dispose())
   }, [customActionService.onExecuteAction, repo])
 
+  const getActionResult = async () => {
+    setIsExecuting(true)
+    setError('')
+    try {
+      switch (actionValue.action.Name) {
+        case 'Load':
+          return await repo.load({ idOrPath: actionValue.content.Id, oDataOptions: { select: 'all' } })
+        case 'LoadCollection':
+          return await repo.loadCollection({ path: actionValue.content.Path })
+        case 'Create': {
+          const parsedBody = JSON.parse(postBody) as { contentType: string; content: object }
+          return await repo.post({
+            contentType: parsedBody.contentType,
+            parentPath: actionValue.content.IsFolder
+              ? actionValue.content.Path
+              : PathHelper.getParentPath(actionValue.content.Path),
+            content: parsedBody.content,
+          })
+        }
+        case 'Remove': {
+          const { permanent } = JSON.parse(postBody)
+          return await repo.delete({
+            idOrPath: actionValue.content.Id,
+            permanent: permanent == null ? false : permanent,
+          })
+        }
+        case 'Update':
+          return await repo.patch({ idOrPath: actionValue.content.Id, content: JSON.parse(postBody).content })
+        default:
+          return await repo.executeAction({
+            idOrPath: actionValue.content.Id,
+            body: JSON.parse(postBody),
+            method: actionValue.method,
+            name: actionValue.action.Name,
+          })
+      }
+    } catch (e) {
+      setError(e.message)
+      logger.error({
+        message: `There was an error executing custom action '${actionValue.action.DisplayName ||
+          actionValue.action.Name}'`,
+        data: {
+          isDismissed: true,
+          relatedRepository: repo.configuration.repositoryUrl,
+          relatedContent: actionValue.content,
+          details: { actionValue, error },
+        },
+      })
+    } finally {
+      setIsExecuting(false)
+    }
+  }
+
+  const onClick = async () => {
+    const result = await getActionResult()
+
+    result &&
+      customActionService.onActionExecuted.setValue({
+        action: actionValue.action,
+        content: actionValue.content,
+        response: result,
+      })
+
+    result &&
+      logger.information({
+        message: `Action executed: '${actionValue.action.DisplayName || actionValue.action.Name}'`,
+        data: {
+          relatedContent: actionValue.content,
+          relatedRepository: repo.configuration.repositoryUrl,
+          details: { actionValue, result },
+        },
+      })
+    setPostBody(EDITOR_INITIAL_VALUE)
+    setIsVisible(!result)
+  }
+
+  const onClose = () => {
+    setPostBody(EDITOR_INITIAL_VALUE)
+    setIsVisible(false)
+  }
+
   return (
-    <Dialog
-      open={isVisible}
-      onClose={() => setIsVisible(false)}
-      fullWidth={true}
-      onKeyUp={ev => {
-        ev.key === 'Escape' && setIsVisible(false)
-      }}>
+    <Dialog open={isVisible} onClose={onClose} fullWidth={true}>
       <DialogTitle>
         {localization.title
           .replace('{0}', (actionValue && (actionValue.action.DisplayName || actionValue.action.Name)) || '')
@@ -121,7 +200,7 @@ export const ExecuteActionDialog: React.FunctionComponent = () => {
         <div style={{ flex: 1, marginLeft: '1.5em' }}>
           {error ? <Typography color="error">{error}</Typography> : null}
         </div>
-        <Button onClick={() => setIsVisible(false)}>{localization.cancelButton}</Button>
+        <Button onClick={onClose}>{localization.cancelButton}</Button>
         <Button
           autoFocus={
             !(
@@ -131,47 +210,7 @@ export const ExecuteActionDialog: React.FunctionComponent = () => {
               actionValue.metadata.parameters.length > 0
             )
           }
-          onClick={async () => {
-            setIsExecuting(true)
-            setError('')
-            try {
-              const result = await repo.executeAction({
-                idOrPath: actionValue.content.Id,
-                body: JSON.parse(postBody),
-                method: actionValue.method,
-                name: actionValue.action.Name,
-              })
-              customActionService.onActionExecuted.setValue({
-                action: actionValue.action,
-                content: actionValue.content,
-                response: result,
-              })
-
-              logger.information({
-                message: `Action executed: '${actionValue.action.DisplayName || actionValue.action.Name}'`,
-                data: {
-                  relatedContent: actionValue.content,
-                  relatedRepository: repo.configuration.repositoryUrl,
-                  details: { actionValue, result },
-                },
-              })
-              setIsVisible(false)
-            } catch (e) {
-              setError(e.message)
-              logger.error({
-                message: `There was an error executing custom action '${actionValue.action.DisplayName ||
-                  actionValue.action.Name}'`,
-                data: {
-                  isDismissed: true,
-                  relatedRepository: repo.configuration.repositoryUrl,
-                  relatedContent: actionValue.content,
-                  details: { actionValue, error },
-                },
-              })
-            } finally {
-              setIsExecuting(false)
-            }
-          }}>
+          onClick={onClick}>
           {localization.executeButton}
         </Button>
       </DialogActions>
