@@ -17,6 +17,9 @@ const getJsonType = (type: string) => {
   if (lowerType.includes('bool')) {
     return 'boolean'
   }
+  if (lowerType.includes('object')) {
+    return 'object'
+  }
   return 'string'
 }
 

@@ -25,17 +25,20 @@ export class PathHelper {
    * @returns {string[]} the segments for the path
    */
   public static getSegments(path: string): string[] {
-    return path
-      .split(/\/|[(][']|[(]/g)
-      .filter(segment => segment && segment.length)
-      .map(segment => {
-        if (segment.endsWith("')")) {
-          segment = `('${segment}`
-        } else if (segment.endsWith(')')) {
-          segment = `(${segment}`
-        }
-        return segment
-      })
+    // Split path at / and remove empty strings
+    const splitted = path.split('/').filter(Boolean)
+    const lastItem = splitted.pop()
+    if (!lastItem) {
+      throw `Couldn't get the segments for ${path}`
+    }
+    // Match if last item is Root/content(123) or Root/Example('content')
+    const matches = lastItem.match(/(\('\w+'\)|\(\d+\)$)/g)
+    if (!matches) {
+      return [...splitted, lastItem]
+    }
+    // Gets Example from Root/Example(123)
+    const lastSegmentBeforeColumn = lastItem.split(matches[0])[0]
+    return [...splitted, lastSegmentBeforeColumn, ...matches]
   }
 
   /**
@@ -43,7 +46,7 @@ export class PathHelper {
    * @param segment The segment to be examined
    */
   public static isItemSegment(segment: string): boolean {
-    return RegExp(/^\('+[\s\S]+'\)$/).test(segment) || RegExp(/^\(+\d+\)$/).test(segment)
+    return RegExp(/\('+[\s\S]+'\)$/).test(segment) || RegExp(/\(+\d+\)$/).test(segment)
   }
 
   /**
