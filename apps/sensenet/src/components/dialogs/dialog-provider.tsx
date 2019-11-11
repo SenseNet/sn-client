@@ -15,7 +15,8 @@ export type DialogWithProps = (
   | { name: 'error'; props: ErrorBoundaryState }
   | { name: 'edit'; props: EditPropertiesProps }
   | { name: 'info'; props: ContentInfoDialogProps }
-  | { name: 'copy-move'; props: CopyMoveDialogProps }) & { dialogProps?: DialogProps }
+  | { name: 'copy-move'; props: CopyMoveDialogProps }
+) & { dialogProps?: DialogProps }
 
 type Action = { type: 'PUSH_DIALOG'; dialog: DialogWithProps } | { type: 'POP_DIALOG' } | { type: 'CLOSE_ALL_DIALOGS' }
 

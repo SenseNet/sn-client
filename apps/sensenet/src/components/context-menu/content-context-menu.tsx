@@ -25,15 +25,13 @@ import { getIcon } from './icons'
 
 export const CONTEXT_MENU_SCENARIO = 'ContextMenu'
 
-export const ContentContextMenuComponent: React.FunctionComponent<
-  {
-    isOpened: boolean
-    onOpen?: () => void
-    onClose?: () => void
-    menuProps?: Partial<MenuProps>
-    drawerProps?: Partial<DrawerProps>
-  } & RouteComponentProps
-> = props => {
+export const ContentContextMenuComponent: React.FunctionComponent<{
+  isOpened: boolean
+  onOpen?: () => void
+  onClose?: () => void
+  menuProps?: Partial<MenuProps>
+  drawerProps?: Partial<DrawerProps>
+} & RouteComponentProps> = props => {
   const content = useContext(CurrentContentContext)
   const parent = useLoadContent({ idOrPath: content.ParentId || ConstantContent.PORTAL_ROOT.Path }).content
   const logger = useLogger('context-menu')
