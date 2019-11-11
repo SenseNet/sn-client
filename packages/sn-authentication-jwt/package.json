@@ -39,9 +39,13 @@
     "@sensenet/client-utils": "^1.6.6",
     "@sensenet/default-content-types": "^2.0.2",
     "semaphore-async-await": "^1.5.1",
-    "tslib": "^1.9.3"
+    "tslib": "^1.10.0"
   },
   "devDependencies": {
-    "@types/node": "^12.7.2"
+    "@types/jest": "^24.0.19",
+    "@types/node": "^12.11.7",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.1.0",
+    "typescript": "^3.6.4"
   }
 }
