@@ -51,7 +51,8 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/array-type': ['error', { default: 'array-simple', readonly: 'array-simple' }],
-    'no-unused-expressions': ['error', { allowShortCircuit: true, allowTernary: true }],
+    '@typescript-eslint/no-unused-expressions': ['error', { allowShortCircuit: true, allowTernary: true }],
+    'no-unused-expressions': 'off',
     'prettier/prettier': 'error',
     'require-jsdoc': 1,
     'react-hooks/rules-of-hooks': 'error', // Checks rules of Hooks

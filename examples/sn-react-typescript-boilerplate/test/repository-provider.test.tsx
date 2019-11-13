@@ -1,6 +1,6 @@
 import { mount } from 'enzyme'
 import React from 'react'
-import { ObservableValue, sleepAsync } from '@sensenet/client-utils'
+import { ObservableValue } from '@sensenet/client-utils'
 import { LoginState, Repository } from '@sensenet/client-core'
 import { act } from 'react-dom/test-utils'
 import Typography from '@material-ui/core/Typography'
