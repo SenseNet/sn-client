@@ -43,12 +43,12 @@
     "tslib": "^1.10.0"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.19",
-    "@types/node": "^12.11.7",
-    "@types/redux-logger": "^3.0.6",
+    "@types/jest": "^24.0.23",
+    "@types/node": "^12.12.7",
+    "@types/redux-logger": "^3.0.7",
     "jest": "^24.9.0",
     "redux-mock-store": "^1.5.3",
     "ts-jest": "^24.1.0",
-    "typescript": "^3.6.4"
+    "typescript": "^3.7.2"
   }
 }
