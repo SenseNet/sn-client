@@ -1,0 +1,7 @@
+{
+  "extends": "../../tsconfig-base.json",
+  "compilerOptions": {
+    "noEmitOnError": false
+  },
+  "include": ["test", "../../typings"]
+}
