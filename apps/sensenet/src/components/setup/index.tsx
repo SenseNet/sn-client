@@ -108,7 +108,7 @@ const Setup: React.StatelessComponent = () => {
             oDataOptions={{
               select: ['Actions'],
               metadata: 'full',
-              expand: 'Actions',
+              expand: ['Actions'],
               scenario: CONTEXT_MENU_SCENARIO,
             }}>
             <ContentContextMenu

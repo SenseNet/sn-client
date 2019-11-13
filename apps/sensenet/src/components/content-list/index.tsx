@@ -356,7 +356,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
               oDataOptions={{
                 select: ['Actions'],
                 metadata: 'full',
-                expand: 'Actions',
+                expand: ['Actions'],
                 scenario: CONTEXT_MENU_SCENARIO,
               }}>
               <ContentContextMenu

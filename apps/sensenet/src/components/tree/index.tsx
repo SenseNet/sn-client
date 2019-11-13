@@ -170,7 +170,12 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
       {contextMenuItem ? (
         <CurrentContentProvider
           idOrPath={contextMenuItem.Id}
-          oDataOptions={{ select: ['Actions'], metadata: 'full', expand: 'Actions', scenario: CONTEXT_MENU_SCENARIO }}>
+          oDataOptions={{
+            select: ['Actions'],
+            metadata: 'full',
+            expand: ['Actions'],
+            scenario: CONTEXT_MENU_SCENARIO,
+          }}>
           <ContentContextMenu
             isOpened={isContextMenuOpened}
             menuProps={{

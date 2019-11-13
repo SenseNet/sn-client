@@ -26,7 +26,7 @@ export const DisplayNameComponent: React.FunctionComponent<{
             oDataOptions={{
               select: ['Actions'],
               metadata: 'full',
-              expand: 'Actions',
+              expand: ['Actions'],
               scenario: CONTEXT_MENU_SCENARIO,
             }}>
             <SecondaryActionsMenu style={{ float: 'right' }} />

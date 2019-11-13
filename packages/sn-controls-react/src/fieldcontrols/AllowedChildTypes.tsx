@@ -141,8 +141,8 @@ export class AllowedChildTypes extends Component<ReactClientFieldSetting, Allowe
       const result = await this.props.repository.load<GenericContent>({
         idOrPath: this.props.content.Id,
         oDataOptions: {
-          select: 'EffectiveAllowedChildTypes',
-          expand: 'EffectiveAllowedChildTypes',
+          select: ['EffectiveAllowedChildTypes'],
+          expand: ['EffectiveAllowedChildTypes'],
         },
       })
       if (this.willUnmount) {
