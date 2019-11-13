@@ -1,4 +1,4 @@
-import { Injectable } from '@furystack/inject'
+import { Injectable } from '@sensenet/client-utils'
 import { CommandProvider, SearchOptions } from '../CommandProviderManager'
 import { LocalizationService } from '../LocalizationService'
 import { CommandPaletteItem } from '../../hooks'
@@ -62,9 +62,9 @@ export class NavigationCommandProvider implements CommandProvider {
   private localizationValues: ReturnType<LocalizationService['currentValues']['getValue']>['navigationCommandProvider']
 
   public shouldExec(options: SearchOptions) {
-    const termLowerCase = options.term.toLocaleLowerCase()
+    const termLowerCase = options.term && options.term.toLocaleLowerCase()
     return (
-      options.term.length > 0 &&
+      options.term != null &&
       this.getRoutes(options).find(
         r =>
           r.primaryText.toLocaleLowerCase().includes(termLowerCase) ||

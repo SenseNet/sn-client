@@ -26,15 +26,13 @@ import { useContentRouting, useLocalization } from '../hooks'
 import { ContentInfoDialog, CopyMoveDialog, DeleteContentDialog, EditPropertiesDialog } from './dialogs'
 import { Icon } from './Icon'
 
-export const ContentContextMenuComponent: React.FunctionComponent<
-  {
-    isOpened: boolean
-    onOpen?: () => void
-    onClose?: () => void
-    menuProps?: Partial<MenuProps>
-    drawerProps?: Partial<DrawerProps>
-  } & RouteComponentProps
-> = props => {
+export const ContentContextMenuComponent: React.FunctionComponent<{
+  isOpened: boolean
+  onOpen?: () => void
+  onClose?: () => void
+  menuProps?: Partial<MenuProps>
+  drawerProps?: Partial<DrawerProps>
+} & RouteComponentProps> = props => {
   const content = useContext(CurrentContentContext)
   const device = useContext(ResponsiveContext)
   const routing = useContentRouting()

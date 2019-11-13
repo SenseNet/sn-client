@@ -49,9 +49,11 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
-const UploadDialog: React.FunctionComponent<
-  RouteComponentProps<{ uploadPath: string }, {}, { files?: File[] }>
-> = props => {
+const UploadDialog: React.FunctionComponent<RouteComponentProps<
+  { uploadPath: string },
+  {},
+  { files?: File[] }
+>> = props => {
   const classes = useStyles()
   const repository = useRepository()
   const localization = useLocalization().uploadProgress

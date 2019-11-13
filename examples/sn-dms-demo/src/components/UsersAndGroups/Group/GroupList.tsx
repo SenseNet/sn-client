@@ -263,9 +263,4 @@ class GroupList extends Component<ReturnType<typeof mapStateToProps> & typeof ma
   }
 }
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(GroupList),
-)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(GroupList))

@@ -26,7 +26,4 @@ const mapStateToProps = (state: rootStateType) => {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  {},
-)(GoogleReCaptcha)
+export default connect(mapStateToProps, {})(GoogleReCaptcha)

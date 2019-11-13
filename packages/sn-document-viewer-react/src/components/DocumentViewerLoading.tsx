@@ -1,33 +1,15 @@
 import Typography from '@material-ui/core/Typography'
-import React = require('react')
-import { connect } from 'react-redux'
-import { componentType } from '../services/TypeHelpers'
-import { RootReducerType } from '../store'
+import React from 'react'
+import { useLocalization } from '../hooks'
 import { LayoutAppBar } from './LayoutAppBar'
 
 interface DocumentViewerLoadingProps {
   image: string
 }
 
-/**
- * maps state fields from the store to component props
- * @param state the redux state
- */
-const mapStateToProps = (state: RootReducerType) => {
-  return {
-    loadingDocument: state.sensenetDocumentViewer.localization.loadingDocument,
-  }
-}
+export const DocumentViewerLoading: React.FC<DocumentViewerLoadingProps> = props => {
+  const localization = useLocalization()
 
-/**
- * maps state actions from the store to component props
- * @param state the redux state
- */
-const mapDispatchToProps = {}
-
-export const DocumentViewerLoadingComponent: React.FC<
-  componentType<typeof mapStateToProps, typeof mapDispatchToProps, DocumentViewerLoadingProps>
-> = props => {
   return (
     <div
       style={{
@@ -51,16 +33,9 @@ export const DocumentViewerLoadingComponent: React.FC<
         }}>
         <img src={props.image} />
         <Typography variant="h5" color="textSecondary" align="center" style={{ fontWeight: 'bolder' }}>
-          {props.loadingDocument}
+          {localization.loadingDocument}
         </Typography>
       </div>
     </div>
   )
 }
-
-const connectedComponent = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(DocumentViewerLoadingComponent)
-
-export { connectedComponent as DocumentViewerLoading }

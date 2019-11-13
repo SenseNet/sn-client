@@ -247,9 +247,4 @@ class DocumentsMenu extends React.Component<
   }
 }
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(withStyles(styles)(DocumentsMenu)),
-)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DocumentsMenu)))

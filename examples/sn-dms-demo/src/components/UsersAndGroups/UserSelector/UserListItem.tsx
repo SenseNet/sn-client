@@ -114,9 +114,4 @@ class UserListItem extends React.Component<
   }
 }
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(withStyles(styles)(UserListItem)),
-)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UserListItem)))

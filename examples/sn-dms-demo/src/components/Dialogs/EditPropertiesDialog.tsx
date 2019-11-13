@@ -7,10 +7,10 @@ import React from 'react'
 import Loadable from 'react-loadable'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
+import { RepositoryContext } from '@sensenet/hooks-react'
 import * as DMSActions from '../../Actions'
 import { icons } from '../../assets/icons'
 import { resources } from '../../assets/resources'
-import { RepositoryContext } from '../../context/RepositoryContext'
 import { dmsInjector } from '../../DmsRepository'
 import { loadEditedContent } from '../../store/edited/actions'
 import { rootStateType } from '../../store/rootReducer'
@@ -127,7 +127,4 @@ class EditPropertiesDialog extends React.Component<
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(EditPropertiesDialog)
+export default connect(mapStateToProps, mapDispatchToProps)(EditPropertiesDialog)

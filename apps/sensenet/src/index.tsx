@@ -2,7 +2,6 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Provider } from 'react-redux'
 import { InjectorContext, LoggerContextProvider, SessionContextProvider } from '@sensenet/hooks-react'
 import { HashRouter, Route } from 'react-router-dom'
 import { DesktopLayout } from './components/layout/DesktopLayout'
@@ -24,7 +23,6 @@ import { HistoryCommandProvider } from './services/CommandProviders/HistoryComma
 import { InFolderSearchCommandProvider } from './services/CommandProviders/InFolderSearchCommandProvider'
 import { NavigationCommandProvider } from './services/CommandProviders/NavigationCommandProvider'
 import { QueryCommandProvider } from './services/CommandProviders/QueryCommandProvider'
-import { diMiddleware, store } from './store'
 import './style.css'
 import theme from './theme'
 import './utils/errorToJson'
@@ -38,8 +36,8 @@ Commit '${process.env.GIT_COMMITHASH}' `,
   'color: #16AAA6; border-bottom: 1px solid black',
 )
 
-diMiddleware
-  .getInjectable(CommandProviderManager)
+snInjector
+  .getInstance(CommandProviderManager)
   .RegisterProviders(
     CheatCommandProvider,
     CustomActionCommandProvider,
@@ -52,34 +50,32 @@ diMiddleware
 
 ReactDOM.render(
   <CssBaseline>
-    <Provider store={store}>
-      <InjectorContext.Provider value={snInjector}>
-        <LoggerContextProvider>
-          <PersonalSettingsContextProvider>
-            <LocalizationProvider>
-              <HashRouter>
-                <Route path="/:repo?">
-                  <RepositoryContextProvider>
-                    <ContentRoutingContextProvider>
-                      <SessionContextProvider>
-                        <ResponsiveContextProvider>
-                          <ThemeProvider theme={theme}>
-                            <DesktopLayout>
-                              <MainRouter />
-                              <NotificationComponent />
-                            </DesktopLayout>{' '}
-                          </ThemeProvider>
-                        </ResponsiveContextProvider>
-                      </SessionContextProvider>
-                    </ContentRoutingContextProvider>
-                  </RepositoryContextProvider>
-                </Route>
-              </HashRouter>
-            </LocalizationProvider>
-          </PersonalSettingsContextProvider>
-        </LoggerContextProvider>
-      </InjectorContext.Provider>
-    </Provider>
+    <InjectorContext.Provider value={snInjector}>
+      <LoggerContextProvider>
+        <PersonalSettingsContextProvider>
+          <LocalizationProvider>
+            <HashRouter>
+              <Route path="/:repo?">
+                <RepositoryContextProvider>
+                  <ContentRoutingContextProvider>
+                    <SessionContextProvider>
+                      <ResponsiveContextProvider>
+                        <ThemeProvider theme={theme}>
+                          <DesktopLayout>
+                            <MainRouter />
+                            <NotificationComponent />
+                          </DesktopLayout>{' '}
+                        </ThemeProvider>
+                      </ResponsiveContextProvider>
+                    </SessionContextProvider>
+                  </ContentRoutingContextProvider>
+                </RepositoryContextProvider>
+              </Route>
+            </HashRouter>
+          </LocalizationProvider>
+        </PersonalSettingsContextProvider>
+      </LoggerContextProvider>
+    </InjectorContext.Provider>
   </CssBaseline>,
   document.getElementById('root'),
 )

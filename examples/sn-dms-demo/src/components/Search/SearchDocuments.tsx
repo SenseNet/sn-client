@@ -10,8 +10,8 @@ import { AdvancedSearch, AdvancedSearchOptions, NestedTextField, PresetField, Te
 import React from 'react'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
+import { RepositoryContext } from '@sensenet/hooks-react'
 import { resources } from '../../assets/resources'
-import { RepositoryContext } from '../../context/RepositoryContext'
 import { loadParent, setChildrenOptions, updateSearchValues } from '../../store/documentlibrary/actions'
 import { DocumentLibraryState } from '../../store/documentlibrary/reducers'
 import { closePicker, openPicker, setPickerParent } from '../../store/picker/actions'
@@ -95,7 +95,7 @@ const SearchRow: React.StatelessComponent<{ title: string }> = props => (
 )
 
 class SearchDocuments extends React.Component<
-  ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & { style?: React.CSSProperties },
+  ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & { style?: React.CSSProperties } & React.Props<any>,
   SearchDocumentsState
 > {
   constructor(props: SearchDocuments['props']) {
@@ -429,9 +429,6 @@ class SearchDocuments extends React.Component<
   }
 }
 
-const connectedComponent = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(SearchDocuments)
+const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(SearchDocuments)
 
 export { connectedComponent as SearchDocuments }

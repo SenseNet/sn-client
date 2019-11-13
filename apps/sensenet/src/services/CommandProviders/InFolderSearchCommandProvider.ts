@@ -1,6 +1,5 @@
-import { Injectable } from '@furystack/inject'
 import { ConstantContent } from '@sensenet/client-core'
-import { PathHelper } from '@sensenet/client-utils'
+import { Injectable, PathHelper } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Query } from '@sensenet/query'
 import { CommandProvider, SearchOptions } from '../CommandProviderManager'
@@ -10,7 +9,7 @@ import { CommandPaletteItem } from '../../hooks'
 @Injectable({ lifetime: 'singleton' })
 export class InFolderSearchCommandProvider implements CommandProvider {
   public shouldExec({ term }: SearchOptions): boolean {
-    return term[0] === '/'
+    return term != null && term[0] === '/'
   }
 
   public async getItems(options: SearchOptions): Promise<CommandPaletteItem[]> {

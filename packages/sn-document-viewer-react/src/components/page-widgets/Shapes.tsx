@@ -1,16 +1,14 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Annotation, DraftCommentMarker, Highlight, PreviewImageData, Redaction, Shape, Shapes } from '../../models'
-import { componentType, Dimensions } from '../../services'
-import { RootReducerType, updateShapeData } from '../../store'
-import { setSelectedCommentId } from '../../store/Comments'
+import { Dimensions } from '../../services'
+import { useComments, useCommentState, useDocumentData, useDocumentPermissions, useViewerState } from '../../hooks'
 import { ShapeAnnotation, ShapeHighlight, ShapeRedaction } from './Shape'
-import { CommentMarker, ShapesContainer } from './style'
+import { CommentMarker } from './style'
 
 /**
  * Defined the component's own properties
  */
-export interface OwnProps {
+export interface ShapesWidgetProps {
   viewPort: Dimensions
   page: PreviewImageData
   zoomRatio: number
@@ -18,133 +16,152 @@ export interface OwnProps {
 }
 
 /**
- * maps state fields from the store to component props
- * @param state the redux state
- */
-export const mapStateToProps = (state: RootReducerType, ownProps: OwnProps) => {
-  const commentMarkers = state.comments.items
-    .filter(comment => comment.page === ownProps.page.Index)
-    .map(comment => {
-      return { x: comment.x, y: comment.y, id: comment.id }
-    })
-  ownProps.draftCommentMarker && commentMarkers.push(ownProps.draftCommentMarker)
-  return {
-    showShapes: state.sensenetDocumentViewer.viewer.showShapes,
-    showRedactions: state.sensenetDocumentViewer.viewer.showRedaction,
-    showComments: state.sensenetDocumentViewer.viewer.showComments,
-    canHideRedactions: state.sensenetDocumentViewer.documentState.canHideRedaction,
-    redactions: state.sensenetDocumentViewer.documentState.document.shapes.redactions.filter(
-      r => r.imageIndex === ownProps.page.Index,
-    ) as Redaction[],
-    highlights: state.sensenetDocumentViewer.documentState.document.shapes.highlights.filter(
-      r => r.imageIndex === ownProps.page.Index,
-    ) as Highlight[],
-    annotations: state.sensenetDocumentViewer.documentState.document.shapes.annotations.filter(
-      r => r.imageIndex === ownProps.page.Index,
-    ) as Annotation[],
-    commentMarkers,
-    selectedCommentId: state.comments.selectedCommentId,
-    canEdit: state.sensenetDocumentViewer.documentState.canEdit,
-  }
-}
-
-/**
- * maps state actions from the store to component props
- * @param state the redux state
- */
-export const mapDispatchToProps = {
-  updateShapeData,
-  setSelectedCommentId,
-}
-
-/**
  * Page widget component for displaying shapes on a page
  */
-export class ShapesComponent extends React.Component<
-  componentType<typeof mapStateToProps, typeof mapDispatchToProps, OwnProps>
-> {
-  private onDrop(ev: React.DragEvent<HTMLElement>, page: PreviewImageData) {
-    if (this.props.canEdit) {
-      ev.preventDefault()
-      const shapeData = JSON.parse(ev.dataTransfer.getData('shape')) as {
-        type: keyof Shapes
-        shape: Shape
-        offset: Dimensions
-      }
-      const boundingBox = ev.currentTarget.getBoundingClientRect()
-      this.props.updateShapeData(shapeData.type, shapeData.shape.guid, {
-        ...shapeData.shape,
-        imageIndex: page.Index,
-        x: (ev.clientX - boundingBox.left - shapeData.offset.width) * (1 / this.props.zoomRatio),
-        y: (ev.clientY - boundingBox.top - shapeData.offset.height) * (1 / this.props.zoomRatio),
+export const ShapesWidget: React.FC<ShapesWidgetProps> = props => {
+  const permissions = useDocumentPermissions()
+  const viewerState = useViewerState()
+  const { documentData, updateDocumentData } = useDocumentData()
+  const comments = useComments()
+  const commentState = useCommentState()
+
+  const [visibleShapes, setVisibleShapes] = useState({
+    redactions: documentData.shapes.redactions.filter(r => r.imageIndex === props.page.Index) as Redaction[],
+    highlights: documentData.shapes.highlights.filter(r => r.imageIndex === props.page.Index) as Highlight[],
+    annotations: documentData.shapes.annotations.filter(r => r.imageIndex === props.page.Index) as Annotation[],
+  })
+
+  useEffect(() => {
+    setVisibleShapes({
+      redactions: documentData.shapes.redactions.filter(r => r.imageIndex === props.page.Index) as Redaction[],
+      highlights: documentData.shapes.highlights.filter(r => r.imageIndex === props.page.Index) as Highlight[],
+      annotations: documentData.shapes.annotations.filter(r => r.imageIndex === props.page.Index) as Annotation[],
+    })
+  }, [
+    documentData.shapes.annotations,
+    documentData.shapes.highlights,
+    documentData.shapes.redactions,
+    props.page.Index,
+  ])
+
+  const removeShape = useCallback(
+    (shapeType: keyof Shapes, guid: string) => {
+      ;(documentData.shapes as any)[shapeType] = documentData.shapes[shapeType].filter(s => s.guid !== guid)
+      updateDocumentData(documentData)
+      viewerState.updateState({ hasChanges: true })
+    },
+    [documentData, updateDocumentData, viewerState],
+  )
+
+  const updateShapeData = useCallback(
+    (shapeType: keyof Shapes, guid: string, shapeChange: Shape | Annotation) => {
+      ;(documentData.shapes as any)[shapeType] = (documentData.shapes[shapeType] as Shape[]).map(s => {
+        if (s.guid === guid) {
+          return { ...s, ...shapeChange }
+        }
+        return s
       })
-    }
-  }
+      viewerState.updateState({ hasChanges: true })
+      updateDocumentData(documentData)
+    },
+    [documentData, updateDocumentData, viewerState],
+  )
 
-  /**
-   * renders the component
-   */
-  public render() {
-    return (
-      <ShapesContainer>
-        {this.props.showComments &&
-          this.props.commentMarkers.map(marker => (
-            <CommentMarker
-              onClick={() => this.props.setSelectedCommentId(marker.id)}
-              isSelected={marker.id === this.props.selectedCommentId}
-              zoomRatio={this.props.zoomRatio}
-              marker={marker}
-              key={marker.id}
-            />
-          ))}
-        <div onDrop={ev => this.onDrop(ev, this.props.page)} onDragOver={ev => ev.preventDefault()}>
-          {this.props.canHideRedactions &&
-            this.props.showRedactions &&
-            this.props.redactions.map((redaction, index) => {
-              return (
-                <ShapeRedaction
-                  shapeType="redactions"
-                  shape={redaction}
-                  canEdit={this.props.canEdit}
-                  zoomRatio={this.props.zoomRatio}
-                  key={index}
-                />
-              )
-            })}
+  const onDrop = useCallback(
+    (ev: React.DragEvent<HTMLElement>) => {
+      if (permissions.canEdit) {
+        ev.preventDefault()
+        const shapeData = JSON.parse(ev.dataTransfer.getData('shape')) as {
+          type: keyof Shapes
+          shape: Shape
+          offset: Dimensions
+        }
+        const boundingBox = ev.currentTarget.getBoundingClientRect()
+        updateShapeData(shapeData.type, shapeData.shape.guid, {
+          ...shapeData.shape,
+          imageIndex: props.page.Index,
+          x: (ev.clientX - boundingBox.left - shapeData.offset.width) * (1 / props.zoomRatio),
+          y: (ev.clientY - boundingBox.top - shapeData.offset.height) * (1 / props.zoomRatio),
+        })
+      }
+    },
+    [permissions.canEdit, props.page.Index, props.zoomRatio, updateShapeData],
+  )
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        zIndex: 1,
+      }}
+      onDrop={onDrop}
+      onDragOver={ev => ev.preventDefault()}>
+      {viewerState.showComments &&
+        [...comments.comments, ...(commentState.draft ? [commentState.draft] : [])].map(marker => (
+          <CommentMarker
+            onClick={() => commentState.setActiveComment(marker.id)}
+            isSelected={marker.id === commentState.activeCommentId}
+            zoomRatio={props.zoomRatio}
+            marker={marker}
+            key={marker.id}
+          />
+        ))}
+      <div>
+        {permissions.canHideRedaction &&
+          viewerState.showRedaction &&
+          visibleShapes.redactions.map((redaction, index) => {
+            return (
+              <ShapeRedaction
+                customZoomLevel={viewerState.customZoomLevel}
+                updateShapeData={updateShapeData}
+                removeShape={removeShape}
+                zoomMode={viewerState.zoomMode}
+                shapeType="redactions"
+                shape={redaction}
+                canEdit={permissions.canEdit}
+                zoomRatio={props.zoomRatio}
+                key={index}
+              />
+            )
+          })}
 
-          {this.props.showShapes &&
-            this.props.annotations.map((annotation, index) => {
-              return (
-                <ShapeAnnotation
-                  shapeType="annotations"
-                  shape={annotation}
-                  canEdit={this.props.canEdit}
-                  zoomRatio={this.props.zoomRatio}
-                  key={index}
-                />
-              )
-            })}
+        {viewerState.showShapes &&
+          visibleShapes.annotations.map((annotation, index) => {
+            return (
+              <ShapeAnnotation
+                customZoomLevel={viewerState.customZoomLevel}
+                updateShapeData={updateShapeData}
+                removeShape={removeShape}
+                zoomMode={viewerState.zoomMode}
+                shapeType="annotations"
+                shape={annotation}
+                canEdit={permissions.canEdit}
+                zoomRatio={props.zoomRatio}
+                key={index}
+              />
+            )
+          })}
 
-          {this.props.showShapes &&
-            this.props.highlights.map((highlight, index) => {
-              return (
-                <ShapeHighlight
-                  shapeType="highlights"
-                  shape={highlight}
-                  canEdit={this.props.canEdit}
-                  zoomRatio={this.props.zoomRatio}
-                  key={index}
-                />
-              )
-            })}
-        </div>
-      </ShapesContainer>
-    )
-  }
+        {viewerState.showShapes &&
+          visibleShapes.highlights.map((highlight, index) => {
+            return (
+              <ShapeHighlight
+                customZoomLevel={viewerState.customZoomLevel}
+                updateShapeData={updateShapeData}
+                removeShape={removeShape}
+                zoomMode={viewerState.zoomMode}
+                shapeType="highlights"
+                shape={highlight}
+                canEdit={permissions.canEdit}
+                zoomRatio={props.zoomRatio}
+                key={index}
+              />
+            )
+          })}
+      </div>
+    </div>
+  )
 }
-
-const connectedComponent = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ShapesComponent)
-export { connectedComponent as ShapesWidget }

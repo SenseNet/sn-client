@@ -1,4 +1,4 @@
-import { LogLevel } from '@furystack/logging'
+import { LogLevel } from '@sensenet/client-utils'
 import { Repository } from '@sensenet/client-core'
 import { editor, languages, Uri } from 'monaco-editor'
 import defaultLanguage from '../../localization/default'

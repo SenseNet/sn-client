@@ -1,4 +1,4 @@
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
+import { MuiThemeProvider } from '@material-ui/core/styles'
 import { OauthProvider } from '@sensenet/authentication-jwt'
 import { LoginState } from '@sensenet/client-core'
 import React from 'react'
@@ -121,7 +121,4 @@ class Sensenet extends React.Component<SensenetProps & ReturnType<typeof mapStat
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Sensenet)
+export default connect(mapStateToProps, mapDispatchToProps)(Sensenet)

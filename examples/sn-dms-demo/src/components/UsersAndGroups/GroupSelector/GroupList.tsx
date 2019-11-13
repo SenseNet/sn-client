@@ -143,7 +143,4 @@ class GroupList extends React.Component<
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withStyles(styles as any)(GroupList))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles as any)(GroupList))

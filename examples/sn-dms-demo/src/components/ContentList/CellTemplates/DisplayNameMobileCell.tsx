@@ -166,9 +166,6 @@ class DisplayNameMobileCell extends React.Component<
   }
 }
 
-const connectedComponent = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(DisplayNameMobileCell)
+const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(DisplayNameMobileCell)
 
 export { connectedComponent as DisplayNameMobileCell }

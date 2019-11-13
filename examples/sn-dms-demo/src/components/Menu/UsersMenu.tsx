@@ -151,9 +151,4 @@ class UsersMenu extends Component<UsersMenuProps & ReturnType<typeof mapStateToP
   }
 }
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(withStyles(styles)(UsersMenu)),
-)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UsersMenu)))

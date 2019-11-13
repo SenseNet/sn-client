@@ -120,7 +120,7 @@ import { PromiseMiddlewareAction } from '@sensenet/redux-promise-middleware'
 /**
  * Type alias for getting the result type from a Promise middleware
  */
-export type PromiseReturns<T> = T extends ((...args: any[]) => PromiseMiddlewareAction<any, infer U>) ? U : any
+export type PromiseReturns<T> = T extends (...args: any[]) => PromiseMiddlewareAction<any, infer U> ? U : any
 
 /**
  * Action creator for requesting a content from sensenet Content Repository to get its children content.

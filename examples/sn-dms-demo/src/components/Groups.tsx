@@ -192,9 +192,4 @@ class Groups extends Component<
   }
 }
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(Groups),
-)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Groups))

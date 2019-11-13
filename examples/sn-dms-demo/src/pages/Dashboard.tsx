@@ -301,7 +301,7 @@ class DashboardComponent extends React.Component<
                 component={() => {
                   const LoadableDmsViewer = Loadable({
                     loader: async () =>
-                      (await import(/* webpackChunkName: "viewer" */ '../components/DmsViewer')).DmsViewer,
+                      (await import(/* webpackChunkName: "viewer" */ '../components/DmsViewer')).default,
                     loading: () => <FullScreenLoader />,
                   })
                   return <LoadableDmsViewer />
@@ -330,9 +330,6 @@ class DashboardComponent extends React.Component<
     )
   }
 }
-const connectedComponent = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(DashboardComponent)
+const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(DashboardComponent)
 
 export default connectedComponent

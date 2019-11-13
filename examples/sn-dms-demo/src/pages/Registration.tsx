@@ -357,9 +357,4 @@ class Registration extends React.Component<
   }
 }
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(Registration),
-)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Registration))

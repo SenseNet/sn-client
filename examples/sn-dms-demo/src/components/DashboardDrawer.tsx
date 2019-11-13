@@ -342,7 +342,4 @@ class DashboardDrawer extends Component<
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withStyles(styles)(withRouter(DashboardDrawer)))
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(withRouter(DashboardDrawer)))

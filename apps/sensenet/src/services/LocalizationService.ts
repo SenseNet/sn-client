@@ -1,5 +1,4 @@
-import { Injectable } from '@furystack/inject'
-import { deepMerge, ObservableValue } from '@sensenet/client-utils'
+import { deepMerge, Injectable, ObservableValue } from '@sensenet/client-utils'
 import defaultValues from '../localization/default'
 
 /**

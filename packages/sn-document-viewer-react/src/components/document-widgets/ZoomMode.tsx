@@ -12,144 +12,105 @@ import ZoomIn from '@material-ui/icons/ZoomIn'
 import ZoomOut from '@material-ui/icons/ZoomOut'
 import ZoomOutMap from '@material-ui/icons/ZoomOutMap'
 
-import React from 'react'
-import { connect } from 'react-redux'
-import { componentType } from '../../services'
-import { RootReducerType, setCustomZoomLevel, setZoomMode, ZoomMode } from '../../store'
-
-/**
- * maps state fields from the store to component props
- * @param state the redux state
- */
-export const mapStateToProps = (state: RootReducerType) => {
-  return {
-    zoomMode: state.sensenetDocumentViewer.viewer.zoomMode,
-    customZoomLevel: state.sensenetDocumentViewer.viewer.customZoomLevel,
-    localization: {
-      zoomMode: state.sensenetDocumentViewer.localization.zoomMode,
-      zoomModeFit: state.sensenetDocumentViewer.localization.zoomModeFit,
-      zoomModeFitHeight: state.sensenetDocumentViewer.localization.zoomModeFitHeight,
-      zoomModeFitWidth: state.sensenetDocumentViewer.localization.zoomModeFitWidth,
-      zoomModeOriginalSize: state.sensenetDocumentViewer.localization.zoomModeOriginalSize,
-      zooomModeCustom: state.sensenetDocumentViewer.localization.zooomModeCustom,
-    },
-  }
-}
-
-/**
- * maps state actions from the store to component props
- * @param state the redux state
- */
-export const mapDispatchToProps = {
-  setZoomMode,
-  setZoomLevel: setCustomZoomLevel,
-}
+import React, { useCallback, useRef, useState } from 'react'
+import { useLocalization, useViewerState } from '../../hooks'
+import { ZoomMode } from '../../models/viewer-state'
 
 /**
  * Document widget component for modifying the zoom mode / level
  */
-export class ZoomWidgetComponent extends React.Component<
-  componentType<typeof mapStateToProps, typeof mapDispatchToProps>,
-  { zoomMenuAnchor?: HTMLElement }
-> {
-  /** the component state */
-  public state = { zoomMenuAnchor: undefined }
+export const ZoomModeWidget: React.FC = () => {
+  const localization = useLocalization()
+  const viewerState = useViewerState()
 
-  private openZoomMenu(event: React.MouseEvent<any>) {
-    this.setState({ zoomMenuAnchor: event.currentTarget })
-  }
+  const zoomMenuAnchor = useRef()
+  const [isZoomMenuOpened, setIsZoomMenuOpened] = useState(false)
 
-  private closeZoomMenu(newZoomMode?: ZoomMode) {
+  const openZoomMenu = useCallback(() => {
+    setIsZoomMenuOpened(true)
+  }, [])
+
+  const closeZoomMenu = (newZoomMode?: ZoomMode) => {
     if (newZoomMode) {
-      this.props.setZoomMode(newZoomMode)
+      viewerState.updateState({ zoomMode: newZoomMode })
     }
-    this.setState({ zoomMenuAnchor: undefined })
+    setIsZoomMenuOpened(false)
   }
 
-  private zoomIn(ev: React.MouseEvent<HTMLElement>) {
-    ev.preventDefault()
-    ev.stopPropagation()
-    this.props.setZoomLevel(this.props.customZoomLevel + 1 || 1)
-  }
+  const zoomIn = useCallback(
+    (ev: React.MouseEvent<HTMLElement>) => {
+      ev.preventDefault()
+      ev.stopPropagation()
+      viewerState.updateState({ customZoomLevel: viewerState.customZoomLevel + 1 || 1 })
+    },
+    [viewerState],
+  )
 
-  private zoomOut(ev: React.MouseEvent<HTMLElement>) {
-    ev.preventDefault()
-    ev.stopPropagation()
-    this.props.setZoomLevel(this.props.customZoomLevel - 1 || 0)
-  }
+  const zoomOut = useCallback(
+    (ev: React.MouseEvent<HTMLElement>) => {
+      ev.preventDefault()
+      ev.stopPropagation()
+      viewerState.updateState({ customZoomLevel: viewerState.customZoomLevel + 1 || 0 })
+    },
+    [viewerState],
+  )
 
-  /**
-   * renders the component
-   */
-  public render() {
-    const { localization } = this.props
-    return (
-      <div style={{ display: 'inline-block' }}>
-        <IconButton onClick={ev => this.openZoomMenu(ev)} title={localization.zoomMode}>
-          {(() => {
-            switch (this.props.zoomMode) {
-              case 'custom':
-                if (this.props.customZoomLevel > 0) {
-                  return <ZoomIn />
-                }
-                return <ZoomOut />
-              case 'fitHeight':
-                return <Code style={{ transform: 'rotate(90deg)' }} />
-              case 'fitWidth':
-                return <Code />
-              case 'originalSize':
-                return <AspectRatio />
-              case 'fit':
-                return <ZoomOutMap />
-              default:
-                return <Error />
-            }
-          })()}
-        </IconButton>
-        <Menu
-          id="zoom-menu"
-          anchorEl={this.state.zoomMenuAnchor}
-          open={Boolean(this.state.zoomMenuAnchor)}
-          onClose={() => this.closeZoomMenu()}>
-          <MenuItem onClick={() => this.closeZoomMenu('fit')}>
-            <ZoomOutMap /> &nbsp; {localization.zoomModeFit}{' '}
-          </MenuItem>
-          <MenuItem onClick={() => this.closeZoomMenu('originalSize')}>
-            <AspectRatio />
-            &nbsp; {localization.zoomModeOriginalSize}{' '}
-          </MenuItem>
-          <MenuItem onClick={() => this.closeZoomMenu('fitHeight')}>
-            <Code style={{ transform: 'rotate(90deg)' }} /> &nbsp; {localization.zoomModeFitHeight}{' '}
-          </MenuItem>
-          <MenuItem onClick={() => this.closeZoomMenu('fitWidth')}>
-            <Code /> &nbsp; {localization.zoomModeFitWidth}{' '}
-          </MenuItem>
-          <Divider light={true} />
-          &nbsp; {localization.zooomModeCustom} <br />
-          <MobileStepper
-            variant="progress"
-            steps={6}
-            position="static"
-            activeStep={this.props.customZoomLevel}
-            nextButton={
-              <IconButton disabled={this.props.customZoomLevel === 5} onClickCapture={ev => this.zoomIn(ev)}>
-                <ZoomIn />
-              </IconButton>
-            }
-            backButton={
-              <IconButton disabled={this.props.customZoomLevel === 0} onClickCapture={ev => this.zoomOut(ev)}>
-                <ZoomOut />
-              </IconButton>
-            }
-          />
-        </Menu>
-      </div>
-    )
-  }
+  return (
+    <div style={{ display: 'inline-block' }}>
+      <IconButton onClick={openZoomMenu} title={localization.zoomMode} innerRef={zoomMenuAnchor}>
+        {(() => {
+          switch (viewerState.zoomMode) {
+            case 'custom':
+              if (viewerState.customZoomLevel > 0) {
+                return <ZoomIn />
+              }
+              return <ZoomOut />
+            case 'fitHeight':
+              return <Code style={{ transform: 'rotate(90deg)' }} />
+            case 'fitWidth':
+              return <Code />
+            case 'originalSize':
+              return <AspectRatio />
+            case 'fit':
+              return <ZoomOutMap />
+            default:
+              return <Error />
+          }
+        })()}
+      </IconButton>
+      <Menu id="zoom-menu" anchorEl={zoomMenuAnchor.current} open={isZoomMenuOpened} onClose={() => closeZoomMenu()}>
+        <MenuItem onClick={() => closeZoomMenu('fit')}>
+          <ZoomOutMap /> &nbsp; {localization.zoomModeFit}{' '}
+        </MenuItem>
+        <MenuItem onClick={() => closeZoomMenu('originalSize')}>
+          <AspectRatio />
+          &nbsp; {localization.zoomModeOriginalSize}{' '}
+        </MenuItem>
+        <MenuItem onClick={() => closeZoomMenu('fitHeight')}>
+          <Code style={{ transform: 'rotate(90deg)' }} /> &nbsp; {localization.zoomModeFitHeight}{' '}
+        </MenuItem>
+        <MenuItem onClick={() => closeZoomMenu('fitWidth')}>
+          <Code /> &nbsp; {localization.zoomModeFitWidth}{' '}
+        </MenuItem>
+        <Divider light={true} />
+        &nbsp; {localization.zooomModeCustom} <br />
+        <MobileStepper
+          variant="progress"
+          steps={6}
+          position="static"
+          activeStep={viewerState.customZoomLevel}
+          nextButton={
+            <IconButton disabled={viewerState.customZoomLevel === 5} onClickCapture={zoomIn}>
+              <ZoomIn />
+            </IconButton>
+          }
+          backButton={
+            <IconButton disabled={viewerState.customZoomLevel === 0} onClickCapture={zoomOut}>
+              <ZoomOut />
+            </IconButton>
+          }
+        />
+      </Menu>
+    </div>
+  )
 }
-
-const connectedComponent = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ZoomWidgetComponent)
-export { connectedComponent as ZoomModeWidget }

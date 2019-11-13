@@ -1,4 +1,4 @@
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
+import { MuiThemeProvider } from '@material-ui/core/styles'
 import { ConstantContent, Content } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import { ActionModel, GenericContent } from '@sensenet/default-content-types'
@@ -135,13 +135,10 @@ class DocumentLibrary extends React.Component<
         .substring(1)
         .split('&')
         .map(segment => segment.split('='))
-        .reduce(
-          (acc, val) => {
-            acc[val[0]] = decodeURIComponent(val[1])
-            return acc
-          },
-          {} as any,
-        )
+        .reduce((acc, val) => {
+          acc[val[0]] = decodeURIComponent(val[1])
+          return acc
+        }, {} as any)
 
       if (queryObject.query && queryObject.query !== newProps.childrenOptions.query) {
         newProps.updateChildrenOptions({
@@ -389,9 +386,4 @@ class DocumentLibrary extends React.Component<
   }
 }
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(DocumentLibrary),
-)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DocumentLibrary))

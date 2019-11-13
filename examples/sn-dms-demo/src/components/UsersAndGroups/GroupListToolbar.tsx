@@ -92,7 +92,4 @@ class GroupListToolbar extends React.Component<ReturnType<typeof mapStateToProps
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(GroupListToolbar)
+export default connect(mapStateToProps, mapDispatchToProps)(GroupListToolbar)

@@ -36,4 +36,9 @@ export enum PreviewState {
    * There is no preview provider enabled
    */
   NoPreviewProviderEnabled = -5,
+
+  /**
+   *
+   */
+  ClientFailure = -665,
 }

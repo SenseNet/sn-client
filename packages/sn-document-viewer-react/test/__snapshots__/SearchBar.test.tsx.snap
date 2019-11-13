@@ -25,7 +25,7 @@ exports[`SearchBar component Should render without crashing 1`] = `
       onChange={[Function]}
       onKeyPress={[Function]}
       onSubmit={[Function]}
-      placeholder="placeholder"
+      placeholder="Search"
       type="text"
     />
   </WithStyles(ForwardRef(Grid))>

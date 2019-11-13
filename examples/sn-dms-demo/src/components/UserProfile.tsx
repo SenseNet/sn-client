@@ -1,5 +1,5 @@
 import Checkbox from '@material-ui/core/Checkbox'
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
+import { MuiThemeProvider } from '@material-ui/core/styles'
 import TableCell from '@material-ui/core/TableCell'
 import { ConstantContent } from '@sensenet/client-core'
 import { ActionModel, GenericContent, Group, SchemaStore, User } from '@sensenet/default-content-types'
@@ -294,9 +294,4 @@ class UserProfile extends React.Component<
   }
 }
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(UserProfile),
-)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UserProfile))

@@ -1,28 +1,50 @@
-import { mount, shallow } from 'enzyme'
+import { mount } from 'enzyme'
 import React from 'react'
-import { Repository } from '@sensenet/client-core'
 import { Button } from '@material-ui/core'
+import { RepositoryContext } from '@sensenet/hooks-react'
+import { ObservableValue } from '@sensenet/client-utils'
+import { act } from 'react-dom/test-utils'
 import { App } from '../src/app'
-import { RepositoryContext } from '../src/context/repository-provider'
 
-describe('Layout', () => {
-  it('Matches snapshot', () => {
-    const l = shallow(<App />)
-    expect(l).toMatchSnapshot()
-  })
-
+describe('The App component', () => {
   it('should trigger logout on logout button click', () => {
-    const repo = new Repository()
-    repo.authentication.logout = jest.fn()
-    const l = mount(
-      <RepositoryContext.Provider value={repo}>
+    const repo = {
+      authentication: {
+        logout: jest.fn(),
+        currentUser: new ObservableValue({ Name: '' }),
+      },
+    }
+
+    const wrapper = mount(
+      <RepositoryContext.Provider value={repo as any}>
         <App />
       </RepositoryContext.Provider>,
     )
 
-    const button = l.find(Button)
-    ;(button.prop('onClick') as any)()
+    wrapper.find(Button).simulate('click')
 
     expect(repo.authentication.logout).toBeCalled()
+  })
+
+  it('should show the userName when it is changed', () => {
+    const currentUser = new ObservableValue({ Name: '' })
+    const repo = {
+      authentication: {
+        logout: jest.fn(),
+        currentUser,
+      },
+    }
+
+    const wrapper = mount(
+      <RepositoryContext.Provider value={repo as any}>
+        <App />
+      </RepositoryContext.Provider>,
+    )
+
+    act(() => {
+      currentUser.setValue({ Name: 'John Doe' })
+    })
+    expect(wrapper.find('h3').text()).toBe('Hello, John Doe 😎')
+    wrapper.unmount()
   })
 })

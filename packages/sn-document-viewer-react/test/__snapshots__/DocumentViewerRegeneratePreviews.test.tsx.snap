@@ -1,61 +1,390 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Document Regenerate Previews component Should trigger regeneration on button click 1`] = `
-<div
-  style={
-    Object {
-      "alignContent": "center",
-      "alignItems": "center",
-      "display": "flex",
-      "height": "100%",
-      "justifyContent": "space-around",
-    }
-  }
->
-  <Component
-    style={
-      Object {
-        "position": "fixed",
-        "top": 0,
-      }
-    }
-  >
-    <span />
-  </Component>
+<Component>
   <div
     style={
       Object {
+        "alignContent": "center",
         "alignItems": "center",
         "display": "flex",
-        "flexDirection": "column",
-        "justifyContent": "space-between",
-        "margin": ".5em 0 .6em 0",
-        "maxWidth": 500,
+        "height": "100%",
+        "justifyContent": "space-around",
       }
     }
   >
-    <WithStyles(ForwardRef(Typography))
-      align="center"
-      color="textSecondary"
-      gutterBottom={true}
-      variant="subtitle1"
-    />
-    <WithStyles(ForwardRef(Button))
-      disabled={true}
-      onClick={[Function]}
-      variant="contained"
+    <Component
+      style={
+        Object {
+          "position": "fixed",
+          "top": 0,
+        }
+      }
     >
-      <WithStyles(ForwardRef(CircularProgress))
-        size={24}
+      <WithStyles(ForwardRef(AppBar))
+        position="sticky"
         style={
           Object {
-            "marginRight": "1em",
+            "position": "fixed",
+            "top": 0,
+            "zIndex": 1,
           }
         }
-      />
-    </WithStyles(ForwardRef(Button))>
+      >
+        <ForwardRef(AppBar)
+          classes={
+            Object {
+              "colorDefault": "MuiAppBar-colorDefault",
+              "colorPrimary": "MuiAppBar-colorPrimary",
+              "colorSecondary": "MuiAppBar-colorSecondary",
+              "positionAbsolute": "MuiAppBar-positionAbsolute",
+              "positionFixed": "MuiAppBar-positionFixed",
+              "positionRelative": "MuiAppBar-positionRelative",
+              "positionStatic": "MuiAppBar-positionStatic",
+              "positionSticky": "MuiAppBar-positionSticky",
+              "root": "MuiAppBar-root",
+            }
+          }
+          position="sticky"
+          style={
+            Object {
+              "position": "fixed",
+              "top": 0,
+              "zIndex": 1,
+            }
+          }
+        >
+          <WithStyles(ForwardRef(Paper))
+            className="MuiAppBar-root MuiAppBar-positionSticky MuiAppBar-colorPrimary"
+            component="header"
+            elevation={4}
+            square={true}
+            style={
+              Object {
+                "position": "fixed",
+                "top": 0,
+                "zIndex": 1,
+              }
+            }
+          >
+            <ForwardRef(Paper)
+              className="MuiAppBar-root MuiAppBar-positionSticky MuiAppBar-colorPrimary"
+              classes={
+                Object {
+                  "elevation0": "MuiPaper-elevation0",
+                  "elevation1": "MuiPaper-elevation1",
+                  "elevation10": "MuiPaper-elevation10",
+                  "elevation11": "MuiPaper-elevation11",
+                  "elevation12": "MuiPaper-elevation12",
+                  "elevation13": "MuiPaper-elevation13",
+                  "elevation14": "MuiPaper-elevation14",
+                  "elevation15": "MuiPaper-elevation15",
+                  "elevation16": "MuiPaper-elevation16",
+                  "elevation17": "MuiPaper-elevation17",
+                  "elevation18": "MuiPaper-elevation18",
+                  "elevation19": "MuiPaper-elevation19",
+                  "elevation2": "MuiPaper-elevation2",
+                  "elevation20": "MuiPaper-elevation20",
+                  "elevation21": "MuiPaper-elevation21",
+                  "elevation22": "MuiPaper-elevation22",
+                  "elevation23": "MuiPaper-elevation23",
+                  "elevation24": "MuiPaper-elevation24",
+                  "elevation3": "MuiPaper-elevation3",
+                  "elevation4": "MuiPaper-elevation4",
+                  "elevation5": "MuiPaper-elevation5",
+                  "elevation6": "MuiPaper-elevation6",
+                  "elevation7": "MuiPaper-elevation7",
+                  "elevation8": "MuiPaper-elevation8",
+                  "elevation9": "MuiPaper-elevation9",
+                  "root": "MuiPaper-root",
+                  "rounded": "MuiPaper-rounded",
+                }
+              }
+              component="header"
+              elevation={4}
+              square={true}
+              style={
+                Object {
+                  "position": "fixed",
+                  "top": 0,
+                  "zIndex": 1,
+                }
+              }
+            >
+              <header
+                className="MuiPaper-root MuiPaper-elevation4 MuiAppBar-root MuiAppBar-positionSticky MuiAppBar-colorPrimary"
+                style={
+                  Object {
+                    "position": "fixed",
+                    "top": 0,
+                    "zIndex": 1,
+                  }
+                }
+              >
+                <WithStyles(ForwardRef(Toolbar))
+                  style={
+                    Object {
+                      "display": "flex",
+                      "justifyContent": "space-between",
+                    }
+                  }
+                >
+                  <ForwardRef(Toolbar)
+                    classes={
+                      Object {
+                        "dense": "MuiToolbar-dense",
+                        "gutters": "MuiToolbar-gutters",
+                        "regular": "MuiToolbar-regular",
+                        "root": "MuiToolbar-root",
+                      }
+                    }
+                    style={
+                      Object {
+                        "display": "flex",
+                        "justifyContent": "space-between",
+                      }
+                    }
+                  >
+                    <div
+                      className="MuiToolbar-root MuiToolbar-regular MuiToolbar-gutters"
+                      style={
+                        Object {
+                          "display": "flex",
+                          "justifyContent": "space-between",
+                        }
+                      }
+                    >
+                      <span />
+                    </div>
+                  </ForwardRef(Toolbar)>
+                </WithStyles(ForwardRef(Toolbar))>
+              </header>
+            </ForwardRef(Paper)>
+          </WithStyles(ForwardRef(Paper))>
+        </ForwardRef(AppBar)>
+      </WithStyles(ForwardRef(AppBar))>
+    </Component>
+    <div
+      style={
+        Object {
+          "alignItems": "center",
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "space-between",
+          "margin": ".5em 0 .6em 0",
+          "maxWidth": 500,
+        }
+      }
+    >
+      <WithStyles(ForwardRef(Typography))
+        align="center"
+        color="textSecondary"
+        gutterBottom={true}
+        variant="subtitle1"
+      >
+        <ForwardRef(Typography)
+          align="center"
+          classes={
+            Object {
+              "alignCenter": "MuiTypography-alignCenter",
+              "alignJustify": "MuiTypography-alignJustify",
+              "alignLeft": "MuiTypography-alignLeft",
+              "alignRight": "MuiTypography-alignRight",
+              "body1": "MuiTypography-body1",
+              "body2": "MuiTypography-body2",
+              "button": "MuiTypography-button",
+              "caption": "MuiTypography-caption",
+              "colorError": "MuiTypography-colorError",
+              "colorInherit": "MuiTypography-colorInherit",
+              "colorPrimary": "MuiTypography-colorPrimary",
+              "colorSecondary": "MuiTypography-colorSecondary",
+              "colorTextPrimary": "MuiTypography-colorTextPrimary",
+              "colorTextSecondary": "MuiTypography-colorTextSecondary",
+              "displayBlock": "MuiTypography-displayBlock",
+              "displayInline": "MuiTypography-displayInline",
+              "gutterBottom": "MuiTypography-gutterBottom",
+              "h1": "MuiTypography-h1",
+              "h2": "MuiTypography-h2",
+              "h3": "MuiTypography-h3",
+              "h4": "MuiTypography-h4",
+              "h5": "MuiTypography-h5",
+              "h6": "MuiTypography-h6",
+              "noWrap": "MuiTypography-noWrap",
+              "overline": "MuiTypography-overline",
+              "paragraph": "MuiTypography-paragraph",
+              "root": "MuiTypography-root",
+              "srOnly": "MuiTypography-srOnly",
+              "subtitle1": "MuiTypography-subtitle1",
+              "subtitle2": "MuiTypography-subtitle2",
+            }
+          }
+          color="textSecondary"
+          gutterBottom={true}
+          variant="subtitle1"
+        >
+          <h6
+            className="MuiTypography-root MuiTypography-subtitle1 MuiTypography-colorTextSecondary MuiTypography-gutterBottom MuiTypography-alignCenter"
+          >
+            The preview images are not generated yet. Do you want to generate them?
+          </h6>
+        </ForwardRef(Typography)>
+      </WithStyles(ForwardRef(Typography))>
+      <WithStyles(ForwardRef(Button))
+        disabled={true}
+        onClick={[Function]}
+        variant="contained"
+      >
+        <ForwardRef(Button)
+          classes={
+            Object {
+              "colorInherit": "MuiButton-colorInherit",
+              "contained": "MuiButton-contained",
+              "containedPrimary": "MuiButton-containedPrimary",
+              "containedSecondary": "MuiButton-containedSecondary",
+              "containedSizeLarge": "MuiButton-containedSizeLarge",
+              "containedSizeSmall": "MuiButton-containedSizeSmall",
+              "disabled": "Mui-disabled",
+              "endIcon": "MuiButton-endIcon",
+              "focusVisible": "Mui-focusVisible",
+              "fullWidth": "MuiButton-fullWidth",
+              "iconSizeLarge": "MuiButton-iconSizeLarge",
+              "iconSizeMedium": "MuiButton-iconSizeMedium",
+              "iconSizeSmall": "MuiButton-iconSizeSmall",
+              "label": "MuiButton-label",
+              "outlined": "MuiButton-outlined",
+              "outlinedPrimary": "MuiButton-outlinedPrimary",
+              "outlinedSecondary": "MuiButton-outlinedSecondary",
+              "outlinedSizeLarge": "MuiButton-outlinedSizeLarge",
+              "outlinedSizeSmall": "MuiButton-outlinedSizeSmall",
+              "root": "MuiButton-root",
+              "sizeLarge": "MuiButton-sizeLarge",
+              "sizeSmall": "MuiButton-sizeSmall",
+              "startIcon": "MuiButton-startIcon",
+              "text": "MuiButton-text",
+              "textPrimary": "MuiButton-textPrimary",
+              "textSecondary": "MuiButton-textSecondary",
+              "textSizeLarge": "MuiButton-textSizeLarge",
+              "textSizeSmall": "MuiButton-textSizeSmall",
+            }
+          }
+          disabled={true}
+          onClick={[Function]}
+          variant="contained"
+        >
+          <WithStyles(ForwardRef(ButtonBase))
+            className="MuiButton-root MuiButton-contained Mui-disabled"
+            component="button"
+            disabled={true}
+            focusRipple={true}
+            focusVisibleClassName="Mui-focusVisible"
+            onClick={[Function]}
+            type="button"
+          >
+            <ForwardRef(ButtonBase)
+              className="MuiButton-root MuiButton-contained Mui-disabled"
+              classes={
+                Object {
+                  "disabled": "Mui-disabled",
+                  "focusVisible": "Mui-focusVisible",
+                  "root": "MuiButtonBase-root",
+                }
+              }
+              component="button"
+              disabled={true}
+              focusRipple={true}
+              focusVisibleClassName="Mui-focusVisible"
+              onClick={[Function]}
+              type="button"
+            >
+              <button
+                className="MuiButtonBase-root MuiButton-root MuiButton-contained Mui-disabled Mui-disabled"
+                disabled={true}
+                onBlur={[Function]}
+                onClick={[Function]}
+                onDragLeave={[Function]}
+                onFocus={[Function]}
+                onKeyDown={[Function]}
+                onKeyUp={[Function]}
+                onMouseDown={[Function]}
+                onMouseLeave={[Function]}
+                onMouseUp={[Function]}
+                onTouchEnd={[Function]}
+                onTouchMove={[Function]}
+                onTouchStart={[Function]}
+                tabIndex={-1}
+                type="button"
+              >
+                <span
+                  className="MuiButton-label"
+                >
+                  <WithStyles(ForwardRef(CircularProgress))
+                    size={24}
+                    style={
+                      Object {
+                        "marginRight": "1em",
+                      }
+                    }
+                  >
+                    <ForwardRef(CircularProgress)
+                      classes={
+                        Object {
+                          "circle": "MuiCircularProgress-circle",
+                          "circleDisableShrink": "MuiCircularProgress-circleDisableShrink",
+                          "circleIndeterminate": "MuiCircularProgress-circleIndeterminate",
+                          "circleStatic": "MuiCircularProgress-circleStatic",
+                          "colorPrimary": "MuiCircularProgress-colorPrimary",
+                          "colorSecondary": "MuiCircularProgress-colorSecondary",
+                          "indeterminate": "MuiCircularProgress-indeterminate",
+                          "root": "MuiCircularProgress-root",
+                          "static": "MuiCircularProgress-static",
+                          "svg": "MuiCircularProgress-svg",
+                        }
+                      }
+                      size={24}
+                      style={
+                        Object {
+                          "marginRight": "1em",
+                        }
+                      }
+                    >
+                      <div
+                        className="MuiCircularProgress-root MuiCircularProgress-colorPrimary MuiCircularProgress-indeterminate"
+                        role="progressbar"
+                        style={
+                          Object {
+                            "height": 24,
+                            "marginRight": "1em",
+                            "width": 24,
+                          }
+                        }
+                      >
+                        <svg
+                          className="MuiCircularProgress-svg"
+                          viewBox="22 22 44 44"
+                        >
+                          <circle
+                            className="MuiCircularProgress-circle MuiCircularProgress-circleIndeterminate"
+                            cx={44}
+                            cy={44}
+                            fill="none"
+                            r={20.2}
+                            strokeWidth={3.6}
+                            style={Object {}}
+                          />
+                        </svg>
+                      </div>
+                    </ForwardRef(CircularProgress)>
+                  </WithStyles(ForwardRef(CircularProgress))>
+                  Generate
+                </span>
+              </button>
+            </ForwardRef(ButtonBase)>
+          </WithStyles(ForwardRef(ButtonBase))>
+        </ForwardRef(Button)>
+      </WithStyles(ForwardRef(Button))>
+    </div>
   </div>
-</div>
+</Component>
 `;
 
 exports[`Document Regenerate Previews component should render without crashing 1`] = `
@@ -97,12 +426,16 @@ exports[`Document Regenerate Previews component should render without crashing 1
       color="textSecondary"
       gutterBottom={true}
       variant="subtitle1"
-    />
+    >
+      The preview images are not generated yet. Do you want to generate them?
+    </WithStyles(ForwardRef(Typography))>
     <WithStyles(ForwardRef(Button))
       disabled={false}
       onClick={[Function]}
       variant="contained"
-    />
+    >
+      Generate
+    </WithStyles(ForwardRef(Button))>
   </div>
 </div>
 `;

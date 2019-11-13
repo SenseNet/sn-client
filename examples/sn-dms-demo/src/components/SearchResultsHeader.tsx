@@ -97,9 +97,6 @@ class SearchResultsHeader extends React.Component<
   }
 }
 
-const connectedComponent = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(SearchResultsHeader)
+const connectedComponent = connect(mapStateToProps, mapDispatchToProps)(SearchResultsHeader)
 
 export { connectedComponent as SearchResultsHeader }

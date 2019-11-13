@@ -16,6 +16,7 @@
     { "path": "../../packages/sn-controls-react" },
     { "path": "../../packages/sn-default-content-types" },
     { "path": "../../packages/sn-document-viewer-react" },
+    { "path": "../../packages/sn-hooks-react" },
     { "path": "../../packages/sn-icons-react" },
     { "path": "../../packages/sn-list-controls-react" },
     { "path": "../../packages/sn-pickers-react" },

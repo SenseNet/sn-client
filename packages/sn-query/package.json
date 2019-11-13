@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/query",
-  "version": "1.1.10",
+  "version": "1.1.11",
   "description": "Client side content query builder package for sensenet",
   "main": "dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -18,7 +18,8 @@
   },
   "keywords": [
     "sensenet",
-    "ecm",
+    "cms",
+    "csp",
     "content management",
     "content query",
     "lucene"
@@ -33,6 +34,13 @@
   },
   "homepage": "https://sensenet.com",
   "dependencies": {
-    "tslib": "^1.9.3"
+    "tslib": "^1.10.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.19",
+    "@types/node": "^12.11.7",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.1.0",
+    "typescript": "^3.6.4"
   }
 }

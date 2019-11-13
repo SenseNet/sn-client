@@ -92,7 +92,4 @@ function PathPicker(props: PathPickerProps & ReturnType<typeof mapStateToProps> 
   )
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(PathPicker)
+export default connect(mapStateToProps, mapDispatchToProps)(PathPicker)

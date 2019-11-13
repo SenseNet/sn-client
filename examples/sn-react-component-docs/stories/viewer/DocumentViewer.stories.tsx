@@ -1,7 +1,5 @@
-import { CommentComponent } from '@sensenet/document-viewer-react/src/components'
+import { Comment } from '@sensenet/document-viewer-react/src/components'
 import { CreatedByUser } from '@sensenet/document-viewer-react/src/models'
-import { defaultLocalization } from '@sensenet/document-viewer-react/src/store/Localization'
-import { action } from '@storybook/addon-actions'
 import { object, text, withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
 import React from 'react'
@@ -27,25 +25,22 @@ storiesOf('DocumentViewer', module)
   .add(
     'a single comment with long text',
     () => (
-      <CommentComponent
-        createdBy={object('Created by', createdBy)}
-        page={1}
-        x={10}
-        y={10}
-        host={''}
-        selectedCommentId=""
-        setSelectedCommentId={action('setSelectedCommentId') as any}
-        deleteComment={action('delete') as any}
-        id={text('id', 'randomId')}
-        localization={defaultLocalization}
-        text={text(
-          'commentBody',
-          `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          Nulla dictum ut lacus et gravida.
-          Mauris elementum urna nec mi facilisis, non vulputate libero luctus.
-          Praesent est turpis, dictum sed auctor id, pulvinar id neque.
-        `,
-        )}
+      <Comment
+        comment={{
+          createdBy: object('Created by', createdBy),
+          page: 1,
+          x: 10,
+          y: 10,
+          id: text('id', 'randomId'),
+          text: text(
+            'commentBody',
+            `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Nulla dictum ut lacus et gravida.
+            Mauris elementum urna nec mi facilisis, non vulputate libero luctus.
+            Praesent est turpis, dictum sed auctor id, pulvinar id neque.
+          `,
+          ),
+        }}
       />
     ),
     { decorators: [centered] },
@@ -53,18 +48,15 @@ storiesOf('DocumentViewer', module)
   .add(
     'a single comment with short text',
     () => (
-      <CommentComponent
-        createdBy={createdBy}
-        page={1}
-        host={''}
-        x={10}
-        y={10}
-        selectedCommentId=""
-        setSelectedCommentId={action('setSelectedCommentId') as any}
-        deleteComment={action('delete') as any}
-        id={text('id', 'randomId')}
-        localization={defaultLocalization}
-        text={text('commentBody', 'Lorem Ipsum is simply dummy text')}
+      <Comment
+        comment={{
+          createdBy: object('Created by', createdBy),
+          page: 1,
+          x: 10,
+          y: 10,
+          id: text('id', 'randomId'),
+          text: text('commentBody', `Lorem ipsum dolor is single short text`),
+        }}
       />
     ),
     { decorators: [centered] },

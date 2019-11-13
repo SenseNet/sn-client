@@ -356,9 +356,4 @@ class ShareDialog extends React.Component<
   }
 }
 
-export default withRouter(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
-  )(withStyles(styles as any)(ShareDialog)),
-)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles as any)(ShareDialog)))

@@ -1,4 +1,4 @@
-import { Injectable, Injector } from '@furystack/inject'
+import { Injectable, Injector } from '@sensenet/client-utils'
 import { ConstantContent } from '@sensenet/client-core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { CommandProvider, SearchOptions } from '../CommandProviderManager'
@@ -16,8 +16,8 @@ export class QueryCommandProvider implements CommandProvider {
     private readonly localization: LocalizationService,
   ) {}
 
-  public shouldExec(options: SearchOptions): boolean {
-    return options.term[0] === '+'
+  public shouldExec({ term }: SearchOptions): boolean {
+    return term != null && term[0] === '+'
   }
 
   public async getItems(options: SearchOptions): Promise<CommandPaletteItem[]> {

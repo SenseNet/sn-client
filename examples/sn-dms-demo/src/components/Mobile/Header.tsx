@@ -178,7 +178,4 @@ class MobileHeader extends React.Component<
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(MobileHeader)
+export default connect(mapStateToProps, mapDispatchToProps)(MobileHeader)

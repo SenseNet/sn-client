@@ -4,8 +4,8 @@ import React from 'react'
 import Loadable from 'react-loadable'
 import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
+import { RepositoryContext } from '@sensenet/hooks-react'
 import * as DMSActions from '../../Actions'
-import { RepositoryContext } from '../../context/RepositoryContext'
 import { rootStateType } from '../../store/rootReducer'
 import { FullScreenLoader } from '../FullScreenLoader'
 
@@ -94,7 +94,4 @@ class AddNewDialog extends React.Component<
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(AddNewDialog)
+export default connect(mapStateToProps, mapDispatchToProps)(AddNewDialog)
