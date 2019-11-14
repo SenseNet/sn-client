@@ -21,13 +21,16 @@ export function LockedField({ content }: LockedFieldProps) {
     return checkedOutTo.Name === session.currentUser.Name ? 'Me' : checkedOutTo.FullName ?? 'Someone'
   }
 
+  if (!content.Locked) {
+    // We need to return an empty TableCell so the Table remains aligned.
+    return <TableCell />
+  }
+
   return (
     <TableCell>
-      {content.Locked ? (
-        <Tooltip title={`Checked out to ${lockedByName()}`}>
-          <Lock />
-        </Tooltip>
-      ) : null}
+      <Tooltip title={`Checked out to ${lockedByName()}`}>
+        <Lock />
+      </Tooltip>
     </TableCell>
   )
 }

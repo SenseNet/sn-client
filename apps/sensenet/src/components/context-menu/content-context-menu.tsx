@@ -67,6 +67,9 @@ export const ContentContextMenuComponent: React.FunctionComponent<{
       case 'CheckOut':
         repo.versioning.checkOut(content.Id)
         break
+      case 'CheckIn':
+        openDialog({ name: 'check-in', props: { content } })
+        break
       case 'Download':
         download.download()
         break

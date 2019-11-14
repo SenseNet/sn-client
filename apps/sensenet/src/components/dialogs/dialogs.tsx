@@ -2,6 +2,7 @@ import React from 'react'
 import uuid from 'uuid/v1'
 import { Dialog } from '@material-ui/core'
 import {
+  CheckIn,
   ContentInfoDialog,
   CopyMoveDialog,
   DeleteContentDialog,
@@ -26,6 +27,8 @@ function dialogRenderer(dialog: DialogWithProps) {
       return <ContentInfoDialog {...dialog.props} />
     case 'copy-move':
       return <CopyMoveDialog {...dialog.props} />
+    case 'check-in':
+      return <CheckIn {...dialog.props} />
     default:
       return null
   }
