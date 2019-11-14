@@ -2,24 +2,17 @@ import TextField from '@material-ui/core/TextField'
 import React from 'react'
 import { InputProps } from 'react-autosuggest'
 
+type ReferenceFieldInputProps = {
+  inputProps: InputProps<{}>
+  displayName?: string
+  helperText?: string
+  description?: string
+}
 /**
  * Default Input field for Reference picker
- * @param inputProps
  */
-export const ReferenceFieldInput: React.FunctionComponent<InputProps<{}>> = inputProps => {
-  const {
-    classes,
-    inputRef = () => {},
-    ref,
-    defaultValue,
-    onChange,
-    displayName,
-    name,
-    description,
-    helperText,
-    ...other
-  } = inputProps
-
+export const ReferenceFieldInput = (props: ReferenceFieldInputProps) => {
+  const { description, displayName, helperText, inputProps } = props
   return (
     <TextField
       type="text"
@@ -29,13 +22,10 @@ export const ReferenceFieldInput: React.FunctionComponent<InputProps<{}>> = inpu
       helperText={helperText}
       value={inputProps.value}
       InputProps={{
-        inputRef: node => {
-          ref(node)
-          inputRef(node)
-        },
+        ...(inputProps as any),
       }}
+      onBlur={ev => inputProps.onBlur?.(ev)}
       onChange={ev => inputProps.onChange(ev, { method: 'type', newValue: ev.currentTarget.value })}
-      {...other}
     />
   )
 }

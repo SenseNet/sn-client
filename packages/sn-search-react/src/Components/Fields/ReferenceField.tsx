@@ -3,11 +3,10 @@ import { GenericContent, ReferenceFieldSetting } from '@sensenet/default-content
 import { Query, QueryExpression, QueryOperators } from '@sensenet/query'
 import React from 'react'
 import Autosuggest, {
-  AutosuggestProps,
+  AutosuggestPropsSingleSection,
   GetSuggestionValue,
   InputProps,
   OnSuggestionSelected,
-  RenderInputComponent,
   RenderSuggestion,
 } from 'react-autosuggest'
 import { ReferenceFieldContainer } from './ReferenceFieldContainer'
@@ -28,7 +27,7 @@ export interface ReferenceFieldProps<T> {
   onQueryChange?: (key: string, query: Query<T>) => void
   onChange?: (item: T) => void
   renderSuggestion?: RenderSuggestion<T>
-  autoSuggestProps?: Partial<AutosuggestProps<T>>
+  autoSuggestProps?: Partial<AutosuggestPropsSingleSection<T>>
 }
 
 /**
@@ -162,16 +161,13 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
    * Renders the component
    */
   public render() {
-    const displayName = (this.props.fieldSetting && this.props.fieldSetting.DisplayName) || this.props.label
-    const description = (this.props.fieldSetting && this.props.fieldSetting.Description) || ''
-    const helperText = this.props.helperText || (this.props.fieldSetting && this.props.fieldSetting.Description) || ''
+    const displayName = this.props.fieldSetting?.DisplayName ?? this.props.label
+    const description = this.props.fieldSetting?.Description || ''
+    const helperText = this.props.helperText ?? this.props.fieldSetting?.Description ?? ''
     const inputProps: InputProps<T> = {
       value: this.state.inputValue,
       onChange: ev => this.onChange((ev.target as HTMLInputElement).value),
       id: 'CommandBoxInput',
-      displayName,
-      description,
-      helperText,
     }
 
     return (
@@ -196,7 +192,14 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
         getSuggestionValue={this.getSuggestionValue}
         renderSuggestion={this.state.renderSuggestion}
         inputProps={inputProps}
-        renderInputComponent={ReferenceFieldInput as RenderInputComponent<T>}
+        renderInputComponent={props => (
+          <ReferenceFieldInput
+            displayName={displayName}
+            description={description}
+            helperText={helperText}
+            inputProps={props}
+          />
+        )}
         renderSuggestionsContainer={ReferenceFieldContainer}
         onSuggestionSelected={this.onSuggestionSelected}
       />
