@@ -33,9 +33,11 @@ exports[`ReferenceField Component InputField Should be rendered without error 1`
 <WithStyles(ForwardRef(TextField))
   InputProps={
     Object {
-      "inputRef": [Function],
+      "onChange": [MockFunction],
+      "value": "",
     }
   }
+  onBlur={[Function]}
   onChange={[Function]}
   type="text"
   value=""
