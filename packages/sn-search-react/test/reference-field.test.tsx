@@ -165,13 +165,13 @@ describe('ReferenceField Component', () => {
 
   describe('InputField', () => {
     it('Should be rendered without error', () => {
-      expect(shallow(<ReferenceFieldInput onChange={jest.fn()} value="" />)).toMatchSnapshot()
+      expect(shallow(<ReferenceFieldInput inputProps={{ onChange: jest.fn(), value: '' }} />)).toMatchSnapshot()
     })
 
     it('Should exec onChange when the value is changed', () => {
       const onChange = jest.fn()
       const ev = { currentTarget: { value: 'a' } }
-      const component = shallow(<ReferenceFieldInput onChange={onChange} value="" />)
+      const component = shallow(<ReferenceFieldInput inputProps={{ onChange, value: '' }} />)
       component
         .find(TextField)
         .first()

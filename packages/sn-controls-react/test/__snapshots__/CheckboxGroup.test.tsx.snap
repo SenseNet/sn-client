@@ -71,6 +71,7 @@ exports[`Check box group field control in edit/new view should set all the props
             classes={
               Object {
                 "asterisk": "MuiFormLabel-asterisk",
+                "colorSecondary": "MuiFormLabel-colorSecondary",
                 "disabled": "Mui-disabled",
                 "error": "Mui-error",
                 "filled": "MuiFormLabel-filled",
@@ -183,10 +184,10 @@ exports[`Check box group field control in edit/new view should set all the props
                             checkedIcon={<Memo(CheckBoxIcon) />}
                             classes={
                               Object {
-                                "checked": "PrivateSwitchBase-checked-27 Mui-checked",
-                                "disabled": "PrivateSwitchBase-disabled-28 Mui-disabled",
-                                "input": "PrivateSwitchBase-input-29",
-                                "root": "PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary",
+                                "checked": "PrivateSwitchBase-checked-28 Mui-checked",
+                                "disabled": "PrivateSwitchBase-disabled-29 Mui-disabled",
+                                "input": "PrivateSwitchBase-input-30",
+                                "root": "PrivateSwitchBase-root-27 MuiCheckbox-root MuiCheckbox-colorSecondary",
                               }
                             }
                             color="secondary"
@@ -202,7 +203,7 @@ exports[`Check box group field control in edit/new view should set all the props
                             value="0"
                           >
                             <WithStyles(ForwardRef(IconButton))
-                              className="PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-checked-27 Mui-checked PrivateSwitchBase-disabled-28 Mui-disabled"
+                              className="PrivateSwitchBase-root-27 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-checked-28 Mui-checked PrivateSwitchBase-disabled-29 Mui-disabled"
                               color="secondary"
                               component="span"
                               disabled={true}
@@ -211,7 +212,7 @@ exports[`Check box group field control in edit/new view should set all the props
                               tabIndex={null}
                             >
                               <ForwardRef(IconButton)
-                                className="PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-checked-27 Mui-checked PrivateSwitchBase-disabled-28 Mui-disabled"
+                                className="PrivateSwitchBase-root-27 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-checked-28 Mui-checked PrivateSwitchBase-disabled-29 Mui-disabled"
                                 classes={
                                   Object {
                                     "colorInherit": "MuiIconButton-colorInherit",
@@ -234,7 +235,7 @@ exports[`Check box group field control in edit/new view should set all the props
                               >
                                 <WithStyles(ForwardRef(ButtonBase))
                                   centerRipple={true}
-                                  className="MuiIconButton-root PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-checked-27 Mui-checked PrivateSwitchBase-disabled-28 Mui-disabled MuiIconButton-colorSecondary Mui-disabled"
+                                  className="MuiIconButton-root PrivateSwitchBase-root-27 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-checked-28 Mui-checked PrivateSwitchBase-disabled-29 Mui-disabled MuiIconButton-colorSecondary Mui-disabled"
                                   component="span"
                                   disabled={true}
                                   focusRipple={true}
@@ -244,7 +245,7 @@ exports[`Check box group field control in edit/new view should set all the props
                                 >
                                   <ForwardRef(ButtonBase)
                                     centerRipple={true}
-                                    className="MuiIconButton-root PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-checked-27 Mui-checked PrivateSwitchBase-disabled-28 Mui-disabled MuiIconButton-colorSecondary Mui-disabled"
+                                    className="MuiIconButton-root PrivateSwitchBase-root-27 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-checked-28 Mui-checked PrivateSwitchBase-disabled-29 Mui-disabled MuiIconButton-colorSecondary Mui-disabled"
                                     classes={
                                       Object {
                                         "disabled": "Mui-disabled",
@@ -261,7 +262,7 @@ exports[`Check box group field control in edit/new view should set all the props
                                   >
                                     <span
                                       aria-disabled={true}
-                                      className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-checked-27 Mui-checked PrivateSwitchBase-disabled-28 Mui-disabled MuiIconButton-colorSecondary Mui-disabled Mui-disabled"
+                                      className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-27 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-checked-28 Mui-checked PrivateSwitchBase-disabled-29 Mui-disabled MuiIconButton-colorSecondary Mui-disabled Mui-disabled"
                                       onBlur={[Function]}
                                       onDragLeave={[Function]}
                                       onFocus={[Function]}
@@ -280,7 +281,7 @@ exports[`Check box group field control in edit/new view should set all the props
                                       >
                                         <input
                                           checked={true}
-                                          className="PrivateSwitchBase-input-29"
+                                          className="PrivateSwitchBase-input-30"
                                           data-indeterminate={false}
                                           disabled={true}
                                           onChange={[Function]}
@@ -463,10 +464,10 @@ exports[`Check box group field control in edit/new view should set all the props
                             checkedIcon={<Memo(CheckBoxIcon) />}
                             classes={
                               Object {
-                                "checked": "PrivateSwitchBase-checked-27 Mui-checked",
-                                "disabled": "PrivateSwitchBase-disabled-28 Mui-disabled",
-                                "input": "PrivateSwitchBase-input-29",
-                                "root": "PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary",
+                                "checked": "PrivateSwitchBase-checked-28 Mui-checked",
+                                "disabled": "PrivateSwitchBase-disabled-29 Mui-disabled",
+                                "input": "PrivateSwitchBase-input-30",
+                                "root": "PrivateSwitchBase-root-27 MuiCheckbox-root MuiCheckbox-colorSecondary",
                               }
                             }
                             color="secondary"
@@ -482,7 +483,7 @@ exports[`Check box group field control in edit/new view should set all the props
                             value="1"
                           >
                             <WithStyles(ForwardRef(IconButton))
-                              className="PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled"
+                              className="PrivateSwitchBase-root-27 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-29 Mui-disabled"
                               color="secondary"
                               component="span"
                               disabled={true}
@@ -491,7 +492,7 @@ exports[`Check box group field control in edit/new view should set all the props
                               tabIndex={null}
                             >
                               <ForwardRef(IconButton)
-                                className="PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled"
+                                className="PrivateSwitchBase-root-27 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-29 Mui-disabled"
                                 classes={
                                   Object {
                                     "colorInherit": "MuiIconButton-colorInherit",
@@ -514,7 +515,7 @@ exports[`Check box group field control in edit/new view should set all the props
                               >
                                 <WithStyles(ForwardRef(ButtonBase))
                                   centerRipple={true}
-                                  className="MuiIconButton-root PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled MuiIconButton-colorSecondary Mui-disabled"
+                                  className="MuiIconButton-root PrivateSwitchBase-root-27 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-29 Mui-disabled MuiIconButton-colorSecondary Mui-disabled"
                                   component="span"
                                   disabled={true}
                                   focusRipple={true}
@@ -524,7 +525,7 @@ exports[`Check box group field control in edit/new view should set all the props
                                 >
                                   <ForwardRef(ButtonBase)
                                     centerRipple={true}
-                                    className="MuiIconButton-root PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled MuiIconButton-colorSecondary Mui-disabled"
+                                    className="MuiIconButton-root PrivateSwitchBase-root-27 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-29 Mui-disabled MuiIconButton-colorSecondary Mui-disabled"
                                     classes={
                                       Object {
                                         "disabled": "Mui-disabled",
@@ -541,7 +542,7 @@ exports[`Check box group field control in edit/new view should set all the props
                                   >
                                     <span
                                       aria-disabled={true}
-                                      className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled MuiIconButton-colorSecondary Mui-disabled Mui-disabled"
+                                      className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-27 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-29 Mui-disabled MuiIconButton-colorSecondary Mui-disabled Mui-disabled"
                                       onBlur={[Function]}
                                       onDragLeave={[Function]}
                                       onFocus={[Function]}
@@ -560,7 +561,7 @@ exports[`Check box group field control in edit/new view should set all the props
                                       >
                                         <input
                                           checked={false}
-                                          className="PrivateSwitchBase-input-29"
+                                          className="PrivateSwitchBase-input-30"
                                           data-indeterminate={false}
                                           disabled={true}
                                           onChange={[Function]}
@@ -743,10 +744,10 @@ exports[`Check box group field control in edit/new view should set all the props
                             checkedIcon={<Memo(CheckBoxIcon) />}
                             classes={
                               Object {
-                                "checked": "PrivateSwitchBase-checked-27 Mui-checked",
-                                "disabled": "PrivateSwitchBase-disabled-28 Mui-disabled",
-                                "input": "PrivateSwitchBase-input-29",
-                                "root": "PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary",
+                                "checked": "PrivateSwitchBase-checked-28 Mui-checked",
+                                "disabled": "PrivateSwitchBase-disabled-29 Mui-disabled",
+                                "input": "PrivateSwitchBase-input-30",
+                                "root": "PrivateSwitchBase-root-27 MuiCheckbox-root MuiCheckbox-colorSecondary",
                               }
                             }
                             color="secondary"
@@ -762,7 +763,7 @@ exports[`Check box group field control in edit/new view should set all the props
                             value="2"
                           >
                             <WithStyles(ForwardRef(IconButton))
-                              className="PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled"
+                              className="PrivateSwitchBase-root-27 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-29 Mui-disabled"
                               color="secondary"
                               component="span"
                               disabled={true}
@@ -771,7 +772,7 @@ exports[`Check box group field control in edit/new view should set all the props
                               tabIndex={null}
                             >
                               <ForwardRef(IconButton)
-                                className="PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled"
+                                className="PrivateSwitchBase-root-27 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-29 Mui-disabled"
                                 classes={
                                   Object {
                                     "colorInherit": "MuiIconButton-colorInherit",
@@ -794,7 +795,7 @@ exports[`Check box group field control in edit/new view should set all the props
                               >
                                 <WithStyles(ForwardRef(ButtonBase))
                                   centerRipple={true}
-                                  className="MuiIconButton-root PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled MuiIconButton-colorSecondary Mui-disabled"
+                                  className="MuiIconButton-root PrivateSwitchBase-root-27 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-29 Mui-disabled MuiIconButton-colorSecondary Mui-disabled"
                                   component="span"
                                   disabled={true}
                                   focusRipple={true}
@@ -804,7 +805,7 @@ exports[`Check box group field control in edit/new view should set all the props
                                 >
                                   <ForwardRef(ButtonBase)
                                     centerRipple={true}
-                                    className="MuiIconButton-root PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled MuiIconButton-colorSecondary Mui-disabled"
+                                    className="MuiIconButton-root PrivateSwitchBase-root-27 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-29 Mui-disabled MuiIconButton-colorSecondary Mui-disabled"
                                     classes={
                                       Object {
                                         "disabled": "Mui-disabled",
@@ -821,7 +822,7 @@ exports[`Check box group field control in edit/new view should set all the props
                                   >
                                     <span
                                       aria-disabled={true}
-                                      className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled MuiIconButton-colorSecondary Mui-disabled Mui-disabled"
+                                      className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-27 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-29 Mui-disabled MuiIconButton-colorSecondary Mui-disabled Mui-disabled"
                                       onBlur={[Function]}
                                       onDragLeave={[Function]}
                                       onFocus={[Function]}
@@ -840,7 +841,7 @@ exports[`Check box group field control in edit/new view should set all the props
                                       >
                                         <input
                                           checked={false}
-                                          className="PrivateSwitchBase-input-29"
+                                          className="PrivateSwitchBase-input-30"
                                           data-indeterminate={false}
                                           disabled={true}
                                           onChange={[Function]}
@@ -1023,10 +1024,10 @@ exports[`Check box group field control in edit/new view should set all the props
                             checkedIcon={<Memo(CheckBoxIcon) />}
                             classes={
                               Object {
-                                "checked": "PrivateSwitchBase-checked-27 Mui-checked",
-                                "disabled": "PrivateSwitchBase-disabled-28 Mui-disabled",
-                                "input": "PrivateSwitchBase-input-29",
-                                "root": "PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary",
+                                "checked": "PrivateSwitchBase-checked-28 Mui-checked",
+                                "disabled": "PrivateSwitchBase-disabled-29 Mui-disabled",
+                                "input": "PrivateSwitchBase-input-30",
+                                "root": "PrivateSwitchBase-root-27 MuiCheckbox-root MuiCheckbox-colorSecondary",
                               }
                             }
                             color="secondary"
@@ -1042,7 +1043,7 @@ exports[`Check box group field control in edit/new view should set all the props
                             value="3"
                           >
                             <WithStyles(ForwardRef(IconButton))
-                              className="PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled"
+                              className="PrivateSwitchBase-root-27 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-29 Mui-disabled"
                               color="secondary"
                               component="span"
                               disabled={true}
@@ -1051,7 +1052,7 @@ exports[`Check box group field control in edit/new view should set all the props
                               tabIndex={null}
                             >
                               <ForwardRef(IconButton)
-                                className="PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled"
+                                className="PrivateSwitchBase-root-27 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-29 Mui-disabled"
                                 classes={
                                   Object {
                                     "colorInherit": "MuiIconButton-colorInherit",
@@ -1074,7 +1075,7 @@ exports[`Check box group field control in edit/new view should set all the props
                               >
                                 <WithStyles(ForwardRef(ButtonBase))
                                   centerRipple={true}
-                                  className="MuiIconButton-root PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled MuiIconButton-colorSecondary Mui-disabled"
+                                  className="MuiIconButton-root PrivateSwitchBase-root-27 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-29 Mui-disabled MuiIconButton-colorSecondary Mui-disabled"
                                   component="span"
                                   disabled={true}
                                   focusRipple={true}
@@ -1084,7 +1085,7 @@ exports[`Check box group field control in edit/new view should set all the props
                                 >
                                   <ForwardRef(ButtonBase)
                                     centerRipple={true}
-                                    className="MuiIconButton-root PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled MuiIconButton-colorSecondary Mui-disabled"
+                                    className="MuiIconButton-root PrivateSwitchBase-root-27 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-29 Mui-disabled MuiIconButton-colorSecondary Mui-disabled"
                                     classes={
                                       Object {
                                         "disabled": "Mui-disabled",
@@ -1101,7 +1102,7 @@ exports[`Check box group field control in edit/new view should set all the props
                                   >
                                     <span
                                       aria-disabled={true}
-                                      className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-26 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-28 Mui-disabled MuiIconButton-colorSecondary Mui-disabled Mui-disabled"
+                                      className="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-27 MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-disabled-29 Mui-disabled MuiIconButton-colorSecondary Mui-disabled Mui-disabled"
                                       onBlur={[Function]}
                                       onDragLeave={[Function]}
                                       onFocus={[Function]}
@@ -1120,7 +1121,7 @@ exports[`Check box group field control in edit/new view should set all the props
                                       >
                                         <input
                                           checked={false}
-                                          className="PrivateSwitchBase-input-29"
+                                          className="PrivateSwitchBase-input-30"
                                           data-indeterminate={false}
                                           disabled={true}
                                           onChange={[Function]}
