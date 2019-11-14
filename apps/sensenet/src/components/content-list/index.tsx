@@ -26,6 +26,7 @@ import { ReferenceField } from './reference-field'
 import { BooleanField } from './boolean-field'
 import { DateField } from './date-field'
 import { DescriptionField } from './description-field'
+import { LockedField } from './locked-field'
 
 export interface CollectionComponentProps {
   enableBreadcrumbs?: boolean
@@ -97,6 +98,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
   useEffect(() => {
     loadSettings.setLoadChildrenSettings({
       ...loadSettings.loadChildrenSettings,
+      expand: ['CheckedOutTo'],
       orderby: [[currentOrder as any, currentDirection as any]],
     })
     // loadSettings can NOT be added :(
@@ -287,6 +289,8 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
             fieldComponent={fieldOptions => {
               // eslint-disable-next-line default-case
               switch (fieldOptions.field) {
+                case 'Locked':
+                  return <LockedField content={fieldOptions.content} />
                 case 'Icon':
                   return <IconField content={fieldOptions.content} />
                 case 'Email' as any:
