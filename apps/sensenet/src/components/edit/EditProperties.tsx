@@ -35,11 +35,11 @@ const GenericContentEditor: React.FunctionComponent<RouteComponentProps<{ conten
                   <EditView
                     content={content}
                     repository={repo}
-                    onSubmit={(id, c) => {
+                    onSubmit={(c, s) => {
                       repo
                         .patch({
-                          idOrPath: id,
-                          content: c,
+                          idOrPath: c.Id,
+                          content: s,
                         })
                         .then(response => {
                           logger.information({
