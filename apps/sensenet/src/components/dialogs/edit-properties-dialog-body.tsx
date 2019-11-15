@@ -17,11 +17,11 @@ const EditPropertiesDialogBody: React.FunctionComponent<{
   const localization = useLocalization().editPropertiesDialog
   const logger = useLogger('EditPropertiesDialog')
 
-  const onSubmit = async (id: number, content: GenericContent) => {
+  const onSubmit = async (content: GenericContent, saveableFields: GenericContent) => {
     try {
       await repo.patch({
-        idOrPath: id,
-        content,
+        idOrPath: content.Id,
+        content: saveableFields,
       })
       props.dialogProps.onClose && props.dialogProps.onClose(null as any, 'backdropClick')
       logger.information({
