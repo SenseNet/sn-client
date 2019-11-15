@@ -56,27 +56,27 @@ ReactDOM.render(
       <LoggerContextProvider>
         <PersonalSettingsContextProvider>
           <LocalizationProvider>
-            <DialogProvider>
-              <HashRouter>
-                <Route path="/:repo?">
-                  <RepositoryContextProvider>
-                    <ContentRoutingContextProvider>
-                      <SessionContextProvider>
-                        <ResponsiveContextProvider>
-                          <ThemeProvider theme={theme}>
-                            <DesktopLayout>
+            <HashRouter>
+              <Route path="/:repo?">
+                <RepositoryContextProvider>
+                  <ContentRoutingContextProvider>
+                    <SessionContextProvider>
+                      <ResponsiveContextProvider>
+                        <ThemeProvider theme={theme}>
+                          <DesktopLayout>
+                            <DialogProvider>
                               <MainRouter />
                               <NotificationComponent />
                               <Dialogs />
-                            </DesktopLayout>{' '}
-                          </ThemeProvider>
-                        </ResponsiveContextProvider>
-                      </SessionContextProvider>
-                    </ContentRoutingContextProvider>
-                  </RepositoryContextProvider>
-                </Route>
-              </HashRouter>
-            </DialogProvider>
+                            </DialogProvider>
+                          </DesktopLayout>{' '}
+                        </ThemeProvider>
+                      </ResponsiveContextProvider>
+                    </SessionContextProvider>
+                  </ContentRoutingContextProvider>
+                </RepositoryContextProvider>
+              </Route>
+            </HashRouter>
           </LocalizationProvider>
         </PersonalSettingsContextProvider>
       </LoggerContextProvider>

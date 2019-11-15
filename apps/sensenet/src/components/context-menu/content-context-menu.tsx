@@ -82,6 +82,9 @@ export const ContentContextMenuComponent: React.FunctionComponent<{
           )
         }
         break
+      case 'Versions':
+        openDialog({ name: 'versions', props: { content }, dialogProps: { maxWidth: 'lg', open: true } })
+        break
       default:
         logger.warning({ message: `${actionName} is not implemented yet. Try to use it from command palette.` })
     }

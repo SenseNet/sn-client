@@ -38,7 +38,7 @@ export function CheckIn({ content }: CheckInProps) {
         />
       </DialogContent>
       <DialogActions>
-        <Button type="submit" onClick={onSubmit} color="primary">
+        <Button onClick={onSubmit} color="primary">
           Send
         </Button>
       </DialogActions>

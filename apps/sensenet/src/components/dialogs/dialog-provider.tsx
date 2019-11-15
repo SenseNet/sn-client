@@ -1,13 +1,15 @@
 import React, { createContext, useCallback, useContext, useReducer } from 'react'
 import { DialogProps } from '@material-ui/core/Dialog'
-import { ErrorBoundaryState } from '../error-boundary'
+import { ErrorBoundary, ErrorBoundaryState } from '../error-boundary'
 import {
+  AreYouSureProps,
   CheckInProps,
   ContentInfoDialogProps,
   CopyMoveDialogProps,
   DeleteContentDialogProps,
   EditPropertiesProps,
   ErrorReportProps,
+  VersionsProps,
 } from '.'
 
 export type DialogWithProps = (
@@ -18,6 +20,8 @@ export type DialogWithProps = (
   | { name: 'info'; props: ContentInfoDialogProps }
   | { name: 'copy-move'; props: CopyMoveDialogProps }
   | { name: 'check-in'; props: CheckInProps }
+  | { name: 'versions'; props: VersionsProps }
+  | { name: 'are-you-sure'; props: AreYouSureProps }
 ) & { dialogProps?: DialogProps }
 
 type Action = { type: 'PUSH_DIALOG'; dialog: DialogWithProps } | { type: 'POP_DIALOG' } | { type: 'CLOSE_ALL_DIALOGS' }
@@ -53,7 +57,11 @@ function dialogReducer(state: typeof initialState, action: Action) {
 export function DialogProvider({ children }: { children: React.ReactNode }) {
   const [dialogs, dispatch] = useReducer(dialogReducer, initialState)
 
-  return <DialogContext.Provider value={{ dialogs, dispatch }}>{children}</DialogContext.Provider>
+  return (
+    <ErrorBoundary>
+      <DialogContext.Provider value={{ dialogs, dispatch }}>{children}</DialogContext.Provider>
+    </ErrorBoundary>
+  )
 }
 
 /**
