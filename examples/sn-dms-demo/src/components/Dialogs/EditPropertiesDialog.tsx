@@ -122,5 +122,4 @@ class EditPropertiesDialog extends React.Component<
   }
 }
 
-// eslint-disable-next-line prettier/prettier
 export default connect(mapStateToProps, mapDispatchToProps)(EditPropertiesDialog)

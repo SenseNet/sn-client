@@ -161,6 +161,5 @@ class SavedQueries extends React.Component<
   }
 }
 
-// eslint-disable-next-line prettier/prettier
 const connectedComponent = withRouter(connect(mapStateToProps, mapDispatchToProps)(SavedQueries))
 export { connectedComponent as SavedQueries }
