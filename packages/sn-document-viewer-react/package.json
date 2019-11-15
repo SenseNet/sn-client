@@ -30,7 +30,7 @@
     "@material-ui/icons": "^4.5.1",
     "@sensenet/client-utils": "^1.7.1",
     "@sensenet/control-mapper": "^2.0.5",
-    "@sensenet/default-content-types": "^2.0.4",
+    "@sensenet/default-content-types": "^2.0.3",
     "@sensenet/hooks-react": "^1.0.3",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
