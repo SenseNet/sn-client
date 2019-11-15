@@ -37,7 +37,7 @@ export const EditView: React.FC<EditViewProps> = props => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    props.onSubmit && props.onSubmit(props.content, saveableFields as any)
+    props.onSubmit?.(props.content, saveableFields as any)
     props.submitCallback && props.submitCallback()
   }
 
