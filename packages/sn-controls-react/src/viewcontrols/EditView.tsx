@@ -4,33 +4,22 @@
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import { Repository } from '@sensenet/client-core'
-import { ControlSchema } from '@sensenet/control-mapper'
 import { ContentType, GenericContent } from '@sensenet/default-content-types'
-import React, { Component, ComponentType, createElement, ReactElement } from 'react'
+import React, { createElement, ReactElement, useState } from 'react'
 import MediaQuery from 'react-responsive'
 import { reactControlMapper } from '../ReactControlMapper'
-import { ReactClientFieldSetting } from '../fieldcontrols/ClientFieldSetting'
 
 /**
  * Interface for EditView properties
  */
 export interface EditViewProps {
   content: ContentType
-  onSubmit?: (id: number, content: GenericContent) => void
+  onSubmit?: (content: GenericContent, saveableFields: GenericContent) => void
   repository: Repository
   renderIcon?: (name: string) => ReactElement
   handleCancel?: () => void
   submitCallback?: () => void
   uploadFolderpath?: string
-}
-/**
- * Interface for EditView state
- */
-export interface EditViewState {
-  content: ContentType
-  schema: ControlSchema<ComponentType, ComponentType<ReactClientFieldSetting>>
-  saveableContent: ContentType
-  controlMapper: ReturnType<typeof reactControlMapper>
 }
 
 /**
@@ -41,89 +30,66 @@ export interface EditViewState {
  *  <EditView content={selectedContent} onSubmit={editSubmitClick} />
  * ```
  */
-export class EditView extends Component<EditViewProps, EditViewState> {
-  constructor(props: any) {
-    super(props)
-    const controlMapper = reactControlMapper(this.props.repository)
-    this.state = {
-      content: this.props.content,
-      schema: controlMapper.getFullSchemaForContentType(this.props.content.Type, 'edit'),
-      saveableContent: {} as ContentType,
-      controlMapper,
-    }
+export const EditView: React.FC<EditViewProps> = props => {
+  const controlMapper = reactControlMapper(props.repository)
+  const schema = controlMapper.getFullSchemaForContentType(props.content.Type, 'edit')
+  const [saveableFields, setSaveableFields] = useState({})
 
-    this.handleInputChange = this.handleInputChange.bind(this)
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    props.onSubmit && props.onSubmit(props.content, saveableFields as any)
+    props.submitCallback && props.submitCallback()
   }
 
-  /**
-   * handle change event on an input
-   */
-  public handleInputChange(field: string, value: any) {
-    this.setState({
-      content: { ...this.state.content, [field]: value },
-      saveableContent: { ...this.state.saveableContent, [field]: value },
-    })
+  const handleInputChange = (field: string, value: unknown) => {
+    setSaveableFields({ ...saveableFields, [field]: value })
   }
 
-  public render() {
-    return (
-      <form
-        style={{ margin: '0 auto' }}
-        onSubmit={e => {
-          e.preventDefault()
-          if (this.props.onSubmit) {
-            this.props.onSubmit(this.state.content.Id, this.state.saveableContent)
-          }
-          return this.props.submitCallback ? this.props.submitCallback() : null
-        }}>
-        <Grid container={true} spacing={2}>
-          {this.state.schema.fieldMappings.map(field => {
-            const fieldControl = createElement(
-              this.state.controlMapper.getControlForContentField(
-                this.props.content.Type,
-                field.fieldSettings.Name,
-                'edit',
-              ),
-              {
-                repository: this.props.repository,
-                settings: field.fieldSettings,
-                content: this.state.content,
-                fieldValue: (this.state.content as any)[field.fieldSettings.Name],
-                actionName: 'edit',
-                renderIcon: this.props.renderIcon,
-                fieldOnChange: this.handleInputChange,
-                uploadFolderPath: this.props.uploadFolderpath,
-              },
-            )
+  return (
+    <form style={{ margin: '0 auto' }} onSubmit={handleSubmit}>
+      <Grid container={true} spacing={2}>
+        {schema.fieldMappings.map(field => {
+          const fieldControl = createElement(
+            controlMapper.getControlForContentField(props.content.Type, field.fieldSettings.Name, 'edit'),
+            {
+              repository: props.repository,
+              settings: field.fieldSettings,
+              content: props.content,
+              fieldValue: (props.content as any)[field.fieldSettings.Name],
+              actionName: 'edit',
+              renderIcon: props.renderIcon,
+              fieldOnChange: handleInputChange,
+              uploadFolderPath: props.uploadFolderpath,
+            },
+          )
 
-            return (
-              <Grid
-                item={true}
-                xs={12}
-                sm={12}
-                md={field.fieldSettings.Name === 'LongTextFieldSetting' ? 12 : 6}
-                lg={field.fieldSettings.Name === 'LongTextFieldSetting' ? 12 : 6}
-                xl={field.fieldSettings.Name === 'LongTextFieldSetting' ? 12 : 6}
-                key={field.fieldSettings.Name}>
-                {fieldControl}
-              </Grid>
-            )
-          })}
-          <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12} style={{ textAlign: 'right' }}>
-            <MediaQuery minDeviceWidth={700}>
-              <Button
-                color="default"
-                style={{ marginRight: 20 }}
-                onClick={() => this.props.handleCancel && this.props.handleCancel()}>
-                Cancel
-              </Button>
-            </MediaQuery>
-            <Button type="submit" variant="contained" color="secondary">
-              Submit
+          return (
+            <Grid
+              item={true}
+              xs={12}
+              sm={12}
+              md={field.fieldSettings.Name === 'LongTextFieldSetting' ? 12 : 6}
+              lg={field.fieldSettings.Name === 'LongTextFieldSetting' ? 12 : 6}
+              xl={field.fieldSettings.Name === 'LongTextFieldSetting' ? 12 : 6}
+              key={field.fieldSettings.Name}>
+              {fieldControl}
+            </Grid>
+          )
+        })}
+        <Grid item={true} xs={12} sm={12} md={12} lg={12} xl={12} style={{ textAlign: 'right' }}>
+          <MediaQuery minDeviceWidth={700}>
+            <Button
+              color="default"
+              style={{ marginRight: 20 }}
+              onClick={() => props.handleCancel && props.handleCancel()}>
+              Cancel
             </Button>
-          </Grid>
+          </MediaQuery>
+          <Button type="submit" variant="contained" color="secondary">
+            Submit
+          </Button>
         </Grid>
-      </form>
-    )
-  }
+      </Grid>
+    </form>
+  )
 }
