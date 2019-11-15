@@ -17,7 +17,7 @@ const EditPropertiesDialogBody: React.FunctionComponent<{
   const localization = useLocalization().editPropertiesDialog
   const logger = useLogger('EditPropertiesDialog')
 
-  const onSubmit = async (content: GenericContent, saveableFields: GenericContent) => {
+  const onSubmit = async (content: GenericContent, saveableFields: Partial<GenericContent>) => {
     try {
       await repo.patch({
         idOrPath: content.Id,
