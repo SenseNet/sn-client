@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 import NoteAddSharpIcon from '@material-ui/icons/NoteAddSharp'
-import { useRepository } from '@sensenet/hooks-react'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { ObservableValue } from '@sensenet/client-utils'
 import { UploadProgressInfo } from '@sensenet/client-core'
 import { Prompt, RouteComponentProps, withRouter } from 'react-router'
@@ -55,6 +55,7 @@ const UploadDialog: React.FunctionComponent<RouteComponentProps<
   { files?: File[] }
 >> = props => {
   const classes = useStyles()
+  const logger = useLogger('upload')
   const repository = useRepository()
   const localization = useLocalization().uploadProgress
   const inputFile = useRef<HTMLInputElement>(null)
@@ -159,7 +160,7 @@ const UploadDialog: React.FunctionComponent<RouteComponentProps<
         requestInit: { signal: abortController.current.signal },
       })
     } catch (error) {
-      console.error(error)
+      logger.error({ message: 'Upload failed', data: error })
     } finally {
       setIsUploadInProgress(false)
     }

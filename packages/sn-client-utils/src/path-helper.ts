@@ -22,9 +22,11 @@ export class PathHelper {
    * Splits a full path into path segments,
    * e.g.: /Root/Example('Content1') will be ["Root", "Example", "('Content1')"]
    * @param path The path to be splitted
-   * @returns {string[]} the segments for the path
    */
-  public static getSegments(path: string): string[] {
+  public static getSegments(path: string) {
+    if (!path) {
+      return []
+    }
     // Split path at / and remove empty strings
     const splitted = path.split('/').filter(Boolean)
     const lastItem = splitted.pop()
