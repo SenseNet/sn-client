@@ -135,7 +135,7 @@ class SavedQueries extends React.Component<
                         icons={icons}
                         displayName={props.content.DisplayName || props.content.Name}
                         onFinish={newName => {
-                          this.props.updateContent<Query>(props.content.Id, { DisplayName: newName })
+                          this.props.updateContent<Query>(props.content, { DisplayName: newName })
                         }}
                       />
                     )
@@ -161,5 +161,6 @@ class SavedQueries extends React.Component<
   }
 }
 
+// eslint-disable-next-line prettier/prettier
 const connectedComponent = withRouter(connect(mapStateToProps, mapDispatchToProps)(SavedQueries))
 export { connectedComponent as SavedQueries }
