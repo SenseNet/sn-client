@@ -39,3 +39,5 @@ export const ContentInfoDialog: React.FunctionComponent<ContentInfoDialogProps> 
     </>
   )
 }
+
+export default ContentInfoDialog

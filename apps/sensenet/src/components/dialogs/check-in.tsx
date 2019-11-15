@@ -45,3 +45,5 @@ export function CheckIn({ content }: CheckInProps) {
     </>
   )
 }
+
+export default CheckIn

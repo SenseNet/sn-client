@@ -152,3 +152,5 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
     </>
   )
 }
+
+export default CopyMoveDialog
