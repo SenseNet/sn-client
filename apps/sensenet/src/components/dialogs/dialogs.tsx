@@ -43,7 +43,15 @@ export function Dialogs() {
     //TODO: Proper fall back component?
     <Suspense fallback="Loading">
       {dialogs.map((dialog, index) => (
-        <Dialog {...dialog.dialogProps} fullWidth onClose={closeLastDialog} key={index} open={true}>
+        <Dialog
+          {...dialog.dialogProps}
+          fullWidth
+          onClose={(event, reason) => {
+            dialog.dialogProps?.onClose?.(event, reason)
+            closeLastDialog()
+          }}
+          key={index}
+          open={true}>
           {dialogRenderer(dialog)}
         </Dialog>
       ))}

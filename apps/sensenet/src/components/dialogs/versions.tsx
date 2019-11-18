@@ -43,11 +43,12 @@ export function Versions({ content }: VersionsProps) {
         setVersions(result.d.results)
         logger.verbose({ message: 'getVersions returned with', data: result })
       } catch (error) {
-        logger.error({ message: `Couldn't get versions for content: ${content.Name}` })
+        closeAllDialogs()
+        logger.error({ message: `Couldn't get versions for content: ${content.Name}`, data: error })
       }
     }
     getVersions()
-  }, [content.Id, content.Name, logger, repo.versioning])
+  }, [closeAllDialogs, content.Id, content.Name, logger, repo.versioning])
 
   const restoreVersion = (selectedVersion: GenericContent) => {
     const name = selectedVersion.DisplayName ?? selectedVersion.Name
@@ -62,8 +63,10 @@ export function Versions({ content }: VersionsProps) {
             logger.information({ message: `${name} restored to version ${selectedVersion.Version}` })
             closeAllDialogs()
           } catch (error) {
+            closeAllDialogs()
             logger.error({
               message: `Couldn't restore version to  ${selectedVersion.Version} for content: ${selectedVersion.Name}`,
+              data: error,
             })
           }
         },

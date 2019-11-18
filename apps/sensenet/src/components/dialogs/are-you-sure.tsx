@@ -18,12 +18,8 @@ export function AreYouSure(props: AreYouSureProps) {
       <DialogTitle>Are you sure?</DialogTitle>
       <DialogContent dangerouslySetInnerHTML={{ __html: bodyText }} />
       <DialogActions>
-        <Button onClick={() => callBack()} color="primary">
-          {submitText}
-        </Button>
-        <Button onClick={() => closeLastDialog()} color="secondary">
-          {cancelText}
-        </Button>
+        <Button onClick={() => callBack()}>{submitText}</Button>
+        <Button onClick={() => closeLastDialog()}>{cancelText}</Button>
       </DialogActions>
     </>
   )
