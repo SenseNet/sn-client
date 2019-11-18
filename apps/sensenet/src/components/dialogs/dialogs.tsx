@@ -2,6 +2,7 @@ import React, { Suspense } from 'react'
 import { Dialog } from '@material-ui/core'
 import { DialogWithProps, EditProperties, useDialog } from '.'
 
+const Approve = React.lazy(() => import('./approve'))
 const AreYouSure = React.lazy(() => import('./are-you-sure'))
 const CheckIn = React.lazy(() => import('./check-in'))
 const ContentInfo = React.lazy(() => import('./content-info'))
@@ -31,6 +32,8 @@ function dialogRenderer(dialog: DialogWithProps) {
       return <Versions {...dialog.props} />
     case 'are-you-sure':
       return <AreYouSure {...dialog.props} />
+    case 'approve':
+      return <Approve {...dialog.props} />
     default:
       return null
   }

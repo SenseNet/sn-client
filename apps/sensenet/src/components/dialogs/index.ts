@@ -1,5 +1,6 @@
 export * from './upload'
 export * from './add'
+export * from './approve'
 export * from './are-you-sure'
 export * from './check-in'
 export * from './content-info'

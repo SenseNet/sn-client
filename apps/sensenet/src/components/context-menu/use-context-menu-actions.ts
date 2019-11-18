@@ -100,6 +100,16 @@ export function useContextMenuActions(
           logger.warning({ message: `Couldn't undo checkout for ${getContentName()}`, data: error })
         }
         break
+      case 'Approve':
+        openDialog({
+          name: 'approve',
+          props: {
+            content,
+            oDataOptions: contextMenuODataOptions,
+            onActionSuccess: approveResult => setActions(approveResult.Actions as ActionModel[]),
+          },
+        })
+        break
       default:
         logger.warning({ message: `${actionName} is not implemented yet. Try to use it from command palette.` })
     }
