@@ -1,94 +1,42 @@
-import Drawer, { DrawerProps } from '@material-ui/core/Drawer'
+import Drawer from '@material-ui/core/Drawer'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Menu, { MenuProps } from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import React, { useContext } from 'react'
-import { RouteComponentProps, withRouter } from 'react-router'
-import { ConstantContent } from '@sensenet/client-core'
-import { CurrentContentContext, useDownload, useLogger, useRepository, useWopi } from '@sensenet/hooks-react'
-import { ActionModel } from '@sensenet/default-content-types'
+import React, { useContext, useEffect, useState } from 'react'
+import { ActionModel, GenericContent } from '@sensenet/default-content-types'
 import { ResponsiveContext } from '../../context'
-import { useContentRouting, useLocalization } from '../../hooks'
-import { useDialog } from '../dialogs'
-import { useLoadContent } from '../../hooks/use-loadContent'
+import { useLoadContent } from '../../hooks'
 import { getIcon } from './icons'
+import { contextMenuODataOptions } from './context-menu-odata-options'
+import { useContextMenuActions } from './use-context-menu-actions'
 
-export const CONTEXT_MENU_SCENARIO = 'ContextMenu'
+const DISABLED_ACTIONS = ['SetPermissions']
 
-export const ContentContextMenuComponent: React.FunctionComponent<{
+type ContentContextMenuProps = {
   isOpened: boolean
   onOpen?: () => void
   onClose?: () => void
   menuProps?: Partial<MenuProps>
-  drawerProps?: Partial<DrawerProps>
-} & RouteComponentProps> = props => {
-  const content = useContext(CurrentContentContext)
-  const parent = useLoadContent({ idOrPath: content.ParentId || ConstantContent.PORTAL_ROOT.Path }).content
-  const logger = useLogger('context-menu')
+  content: GenericContent
+}
+
+export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps> = props => {
+  const [actions, setActions] = useState<ActionModel[]>()
+  const { content } = useLoadContent<GenericContent>({
+    idOrPath: props.content.Id,
+    oDataOptions: contextMenuODataOptions,
+  })
+  const { runAction } = useContextMenuActions(props.content, setActions)
   const device = useContext(ResponsiveContext)
-  const routing = useContentRouting()
-  const localization = useLocalization().contentContextMenu
-  const { openDialog } = useDialog()
-  const repo = useRepository()
-  const download = useDownload(content)
-  const wopi = useWopi(content)
-  const actions: ActionModel[] = content.Actions ? [...(content.Actions as ActionModel[])] : []
 
-  if (download.isFile) {
-    actions.push({ Name: 'Download', DisplayName: localization.download } as any)
-  }
-
-  const runAction = (actionName: string) => {
-    switch (actionName) {
-      case 'Delete':
-        openDialog({ name: 'delete', props: { content: [content] } })
-        break
-      case 'Edit':
-        openDialog({ name: 'edit', props: { contentId: content.Id } })
-        break
-      case 'Browse':
-        openDialog({ name: 'info', props: { content } })
-        break
-      case 'MoveTo':
-      case 'CopyTo': {
-        const operation = actionName === 'CopyTo' ? 'copy' : 'move'
-        openDialog({
-          name: 'copy-move',
-          props: { content: [content], currentParent: parent!, operation },
-        })
-        break
-      }
-      case 'Preview':
-        props.history.push(routing.getPrimaryActionUrl(content))
-        break
-      case 'CheckOut':
-        repo.versioning.checkOut(content.Id)
-        break
-      case 'CheckIn':
-        openDialog({ name: 'check-in', props: { content } })
-        break
-      case 'Download':
-        download.download()
-        break
-      case 'WopiOpenView':
-      case 'WopiOpenEdit':
-        {
-          props.onClose?.()
-          props.history.push(
-            `/${btoa(repo.configuration.repositoryUrl)}/wopi/${content.Id}/${wopi.isWriteAwailable ? 'edit' : 'view'}`,
-          )
-        }
-        break
-      case 'Versions':
-        openDialog({ name: 'versions', props: { content }, dialogProps: { maxWidth: 'lg', open: true } })
-        break
-      default:
-        logger.warning({ message: `${actionName} is not implemented yet. Try to use it from command palette.` })
+  useEffect(() => {
+    if (content) {
+      setActions(content.Actions as ActionModel[])
     }
-  }
+  }, [content])
 
   return (
     <div onKeyDown={ev => ev.stopPropagation()} onKeyPress={ev => ev.stopPropagation()}>
@@ -100,10 +48,11 @@ export const ContentContextMenuComponent: React.FunctionComponent<{
           open={props.isOpened}
           PaperProps={{ style: { paddingBottom: '2em' } }}>
           <List>
-            {actions.map(action => {
+            {actions?.map(action => {
               return (
                 <ListItem
                   key={action.Name}
+                  disabled={DISABLED_ACTIONS.includes(action.Name)}
                   onClick={() => {
                     props.onClose?.()
                     runAction(action.Name)
@@ -117,11 +66,12 @@ export const ContentContextMenuComponent: React.FunctionComponent<{
         </Drawer>
       ) : (
         <Menu open={props.isOpened} {...props.menuProps}>
-          {actions.map(action => {
+          {actions?.map(action => {
             return (
               <MenuItem
                 key={action.Name}
                 disableRipple={true}
+                disabled={DISABLED_ACTIONS.includes(action.Name)}
                 onClick={() => {
                   props.onClose?.()
                   runAction(action.Name)
@@ -136,7 +86,3 @@ export const ContentContextMenuComponent: React.FunctionComponent<{
     </div>
   )
 }
-
-const routed = withRouter(ContentContextMenuComponent)
-
-export { routed as ContentContextMenu }

@@ -11,9 +11,9 @@ import { Settings } from '@sensenet/default-content-types'
 import { Query } from '@sensenet/query'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { CurrentContentProvider, useRepository } from '@sensenet/hooks-react'
+import { useRepository } from '@sensenet/hooks-react'
 import { useContentRouting, useLocalization } from '../../hooks'
-import { ContentContextMenu, CONTEXT_MENU_SCENARIO } from '../context-menu/content-context-menu'
+import { ContentContextMenu } from '../context-menu/content-context-menu'
 
 const SETUP_DOCS_URL = 'https://community.sensenet.com/docs/admin-ui/setup/'
 
@@ -103,26 +103,18 @@ const Setup: React.StatelessComponent = () => {
             flexWrap: 'wrap',
             margin: '1em',
           }}>
-          <CurrentContentProvider
-            idOrPath={(contextMenuItem && contextMenuItem.Id) || wellKnownSettings[0].Id}
-            oDataOptions={{
-              select: ['Actions'],
-              metadata: 'full',
-              expand: ['Actions'],
-              scenario: CONTEXT_MENU_SCENARIO,
-            }}>
-            <ContentContextMenu
-              isOpened={isContextMenuOpened}
-              onClose={() => setIsContextMenuOpened(false)}
-              menuProps={{
-                anchorEl: contextMenuAnchor,
-                BackdropProps: {
-                  onClick: () => setIsContextMenuOpened(false),
-                  onContextMenu: ev => ev.preventDefault(),
-                },
-              }}
-            />
-          </CurrentContentProvider>
+          <ContentContextMenu
+            isOpened={isContextMenuOpened}
+            content={contextMenuItem ?? wellKnownSettings[0]}
+            onClose={() => setIsContextMenuOpened(false)}
+            menuProps={{
+              anchorEl: contextMenuAnchor,
+              BackdropProps: {
+                onClick: () => setIsContextMenuOpened(false),
+                onContextMenu: ev => ev.preventDefault(),
+              },
+            }}
+          />
           {wellKnownSettings.map(s => (
             <WellKnownContentCard
               settings={s}

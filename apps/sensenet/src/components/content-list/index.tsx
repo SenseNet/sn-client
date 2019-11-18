@@ -7,13 +7,12 @@ import {
   CurrentAncestorsContext,
   CurrentChildrenContext,
   CurrentContentContext,
-  CurrentContentProvider,
   LoadSettingsContext,
   useRepository,
 } from '@sensenet/hooks-react'
 import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
-import { ContentContextMenu, CONTEXT_MENU_SCENARIO } from '../context-menu/content-context-menu'
+import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { DropFileArea } from '../DropFileArea'
 import { SelectionControl } from '../SelectionControl'
 import { useDialog } from '../dialogs'
@@ -355,29 +354,21 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
             icons={{}}
           />
           {activeContent ? (
-            <CurrentContentProvider
-              idOrPath={activeContent.Id}
-              oDataOptions={{
-                select: ['Actions'],
-                metadata: 'full',
-                expand: ['Actions'],
-                scenario: CONTEXT_MENU_SCENARIO,
-              }}>
-              <ContentContextMenu
-                menuProps={{
-                  disablePortal: true,
-                  anchorReference: 'anchorPosition',
-                  anchorPosition: contextMenuAnchor,
-                  BackdropProps: {
-                    onClick: () => setIsContextMenuOpened(false),
-                    onContextMenu: ev => ev.preventDefault(),
-                  },
-                }}
-                isOpened={isContextMenuOpened}
-                onClose={() => setIsContextMenuOpened(false)}
-                onOpen={() => setIsContextMenuOpened(true)}
-              />
-            </CurrentContentProvider>
+            <ContentContextMenu
+              content={activeContent}
+              menuProps={{
+                disablePortal: true,
+                anchorReference: 'anchorPosition',
+                anchorPosition: contextMenuAnchor,
+                BackdropProps: {
+                  onClick: () => setIsContextMenuOpened(false),
+                  onContextMenu: ev => ev.preventDefault(),
+                },
+              }}
+              isOpened={isContextMenuOpened}
+              onClose={() => setIsContextMenuOpened(false)}
+              onOpen={() => setIsContextMenuOpened(true)}
+            />
           ) : null}
         </div>
       </DropFileArea>

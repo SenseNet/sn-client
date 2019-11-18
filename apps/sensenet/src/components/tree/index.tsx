@@ -8,13 +8,8 @@ import { PathHelper, sleepAsync } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Created } from '@sensenet/repository-events'
 import React, { useContext, useEffect, useState } from 'react'
-import {
-  CurrentAncestorsContext,
-  CurrentContentProvider,
-  useRepository,
-  useRepositoryEvents,
-} from '@sensenet/hooks-react'
-import { ContentContextMenu, CONTEXT_MENU_SCENARIO } from '../context-menu/content-context-menu'
+import { CurrentAncestorsContext, useRepository, useRepositoryEvents } from '@sensenet/hooks-react'
+import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { DropFileArea } from '../DropFileArea'
 import { Icon } from '../Icon'
 
@@ -168,26 +163,18 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
         })}
       </List>
       {contextMenuItem ? (
-        <CurrentContentProvider
-          idOrPath={contextMenuItem.Id}
-          oDataOptions={{
-            select: ['Actions'],
-            metadata: 'full',
-            expand: ['Actions'],
-            scenario: CONTEXT_MENU_SCENARIO,
-          }}>
-          <ContentContextMenu
-            isOpened={isContextMenuOpened}
-            menuProps={{
-              anchorEl: contextMenuAnchor,
-              BackdropProps: {
-                onClick: () => setIsContextMenuOpened(false),
-                onContextMenu: ev => ev.preventDefault(),
-              },
-            }}
-            onClose={() => setIsContextMenuOpened(false)}
-          />
-        </CurrentContentProvider>
+        <ContentContextMenu
+          isOpened={isContextMenuOpened}
+          content={contextMenuItem}
+          menuProps={{
+            anchorEl: contextMenuAnchor,
+            BackdropProps: {
+              onClick: () => setIsContextMenuOpened(false),
+              onContextMenu: ev => ev.preventDefault(),
+            },
+          }}
+          onClose={() => setIsContextMenuOpened(false)}
+        />
       ) : null}
     </div>
   )

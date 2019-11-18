@@ -4,8 +4,7 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { CurrentContentProvider } from '@sensenet/hooks-react'
-import { ContentContextMenu, CONTEXT_MENU_SCENARIO } from './context-menu/content-context-menu'
+import { ContentContextMenu } from './context-menu/content-context-menu'
 import { DropFileArea } from './DropFileArea'
 import { Icon } from './Icon'
 
@@ -51,26 +50,18 @@ function BreadcrumbsComponent<T extends GenericContent>(props: BreadcrumbProps<T
         ))}
       </Breadcrumbs>
       {contextMenuItem ? (
-        <CurrentContentProvider
-          idOrPath={contextMenuItem.Id}
-          oDataOptions={{
-            select: ['Actions'],
-            metadata: 'full',
-            expand: ['Actions'],
-            scenario: CONTEXT_MENU_SCENARIO,
-          }}>
-          <ContentContextMenu
-            isOpened={isContextMenuOpened}
-            menuProps={{
-              anchorEl: contextMenuAnchor,
-              BackdropProps: {
-                onClick: () => setIsContextMenuOpened(false),
-                onContextMenu: ev => ev.preventDefault(),
-              },
-            }}
-            onClose={() => setIsContextMenuOpened(false)}
-          />
-        </CurrentContentProvider>
+        <ContentContextMenu
+          isOpened={isContextMenuOpened}
+          content={contextMenuItem}
+          menuProps={{
+            anchorEl: contextMenuAnchor,
+            BackdropProps: {
+              onClick: () => setIsContextMenuOpened(false),
+              onContextMenu: ev => ev.preventDefault(),
+            },
+          }}
+          onClose={() => setIsContextMenuOpened(false)}
+        />
       ) : null}
     </>
   )
