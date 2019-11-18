@@ -135,7 +135,7 @@ class SavedQueries extends React.Component<
                         icons={icons}
                         displayName={props.content.DisplayName || props.content.Name}
                         onFinish={newName => {
-                          this.props.updateContent<Query>(props.content.Id, { DisplayName: newName })
+                          this.props.updateContent<Query>(props.content, { DisplayName: newName })
                         }}
                       />
                     )

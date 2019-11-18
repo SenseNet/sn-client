@@ -19,11 +19,11 @@ export const EditProperties: React.FunctionComponent<EditPropertiesProps> = prop
   const localization = useLocalization().editPropertiesDialog
   const logger = useLogger('EditPropertiesDialog')
 
-  const onSubmit = async (id: number, content: GenericContent) => {
+  const onSubmit = async (content: GenericContent, saveableFields: Partial<GenericContent>) => {
     try {
       await repo.patch({
-        idOrPath: id,
-        content,
+        idOrPath: content.Id,
+        content: saveableFields,
       })
       closeLastDialog()
       logger.information({

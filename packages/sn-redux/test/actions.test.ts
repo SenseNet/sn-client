@@ -226,7 +226,7 @@ describe('Actions', () => {
     const content = { DisplayName: 'My content', Id: 123 } as Task
 
     describe('Action types are types', () => {
-      expect(Actions.updateContent(path, content).type).toBe('UPDATE_CONTENT')
+      expect(Actions.updateContent(content, content).type).toBe('UPDATE_CONTENT')
     })
 
     describe('serviceChecks()', () => {
@@ -234,10 +234,10 @@ describe('Actions', () => {
         let data: ODataResponse<Content>
         const expectedResult = { d: { Name: 'DefaultSite' } }
         beforeEach(async () => {
-          data = await Actions.updateContent(path, content).payload(repo)
+          data = await Actions.updateContent(content, content).payload(repo)
         })
         it('should return a UPDATE_CONTENT action', () => {
-          expect(Actions.updateContent(path, content)).toHaveProperty('type', 'UPDATE_CONTENT')
+          expect(Actions.updateContent(content, content)).toHaveProperty('type', 'UPDATE_CONTENT')
         })
         it('should return mockdata', () => {
           expect(data).toEqual(expectedResult)

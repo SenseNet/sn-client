@@ -9,7 +9,6 @@ import { connect } from 'react-redux'
 import MediaQuery from 'react-responsive'
 import { RepositoryContext } from '@sensenet/hooks-react'
 import * as DMSActions from '../../Actions'
-import { icons } from '../../assets/icons'
 import { resources } from '../../assets/resources'
 import { dmsInjector } from '../../DmsRepository'
 import { loadEditedContent } from '../../store/edited/actions'
@@ -90,7 +89,7 @@ class EditPropertiesDialog extends React.Component<
     this.props.closeDialog()
   }
   public render() {
-    const { contentTypeName, editContent, content, repositoryUrl } = this.props
+    const { editContent, content, repositoryUrl } = this.props
     const { editedcontent } = this.state
 
     return (
@@ -105,15 +104,11 @@ class EditPropertiesDialog extends React.Component<
               <RepositoryContext.Consumer>
                 {repository => (
                   <LoadableEditView
-                    icons={icons}
                     content={editedcontent}
                     repository={repository}
-                    contentTypeName={contentTypeName}
                     onSubmit={editContent}
                     handleCancel={() => this.handleCancel()}
                     submitCallback={this.submitCallback}
-                    repositoryUrl={repositoryUrl}
-                    uploadFolderPath={`/Root/Profiles/Public/${this.props.currentUser}/Document_Library`}
                   />
                 )}
               </RepositoryContext.Consumer>

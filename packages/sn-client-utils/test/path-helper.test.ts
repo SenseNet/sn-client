@@ -158,8 +158,11 @@ export const pathHelperTests = describe('PathHelper', () => {
     it('Should split the path to segments', () => {
       expect(PathHelper.getSegments('/Root/Example/100pages(3).pdf')).toEqual(['Root', 'Example', '100pages(3).pdf'])
     })
-    it('should throw an error if the path is empty', () => {
-      expect(() => PathHelper.getSegments('')).toThrow()
+    it('should throw an error if the path is /', () => {
+      expect(() => PathHelper.getSegments('/')).toThrow()
+    })
+    it('should return empty array if the path is empty', () => {
+      expect(PathHelper.getSegments('')).toEqual([])
     })
   })
 

@@ -347,7 +347,7 @@ class DocumentLibrary extends React.Component<
                           icons={icons}
                           displayName={props.content.DisplayName || props.content.Name}
                           onFinish={newName =>
-                            this.props.updateContent<GenericContent>(props.content.Id, { DisplayName: newName })
+                            this.props.updateContent<GenericContent>(props.content, { DisplayName: newName })
                           }
                         />
                       )
