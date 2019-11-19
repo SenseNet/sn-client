@@ -1,6 +1,7 @@
 import React from 'react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import { TrashBin } from '@sensenet/default-content-types'
+import { ODataParams } from '@sensenet/client-core'
 import { useLoadContent } from '../../hooks/use-loadContent'
 import { useDialog } from '../dialogs'
 import { SimpleList } from '../content/Simple'
@@ -14,9 +15,11 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
+const oDataOptions: ODataParams<TrashBin> = { select: 'all' }
+
 const Trash = React.memo(() => {
   const { openDialog } = useDialog()
-  const { content } = useLoadContent<TrashBin>({ idOrPath: '/Root/Trash', oDataOptions: { select: 'all' } })
+  const { content } = useLoadContent<TrashBin>({ idOrPath: '/Root/Trash', oDataOptions })
   const classes = useStyles()
 
   return (
