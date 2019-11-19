@@ -11,6 +11,7 @@ import {
   DeleteContentDialogProps,
   EditPropertiesProps,
   ErrorReportProps,
+  UploadDialogProps,
   VersionsProps,
 } from '.'
 
@@ -26,6 +27,7 @@ export type DialogWithProps = (
   | { name: 'are-you-sure'; props: AreYouSureProps }
   | { name: 'approve'; props: ApproveProps }
   | { name: 'add'; props: AddDialogProps }
+  | { name: 'upload'; props: UploadDialogProps }
 ) & { dialogProps?: DialogProps }
 
 type Action = { type: 'PUSH_DIALOG'; dialog: DialogWithProps } | { type: 'POP_DIALOG' } | { type: 'CLOSE_ALL_DIALOGS' }

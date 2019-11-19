@@ -11,6 +11,7 @@ const CopyMove = React.lazy(() => import('./copy-move'))
 const Delete = React.lazy(() => import('./delete'))
 const ErrorReport = React.lazy(() => import('./error-report'))
 const Error = React.lazy(() => import('./error-dialog'))
+const Upload = React.lazy(() => import('./upload/upload-dialog'))
 const Versions = React.lazy(() => import('./versions'))
 
 function dialogRenderer(dialog: DialogWithProps) {
@@ -37,6 +38,8 @@ function dialogRenderer(dialog: DialogWithProps) {
       return <Approve {...dialog.props} />
     case 'add':
       return <Add {...dialog.props} />
+    case 'upload':
+      return <Upload {...dialog.props} />
     default:
       return null
   }

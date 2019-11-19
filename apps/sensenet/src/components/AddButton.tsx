@@ -8,7 +8,6 @@ import CloudUpload from '@material-ui/icons/CloudUpload'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
 import { CurrentContentContext, useLogger, useRepository } from '@sensenet/hooks-react'
-import { Redirect } from 'react-router'
 import { useLocalization } from '../hooks'
 import { Icon } from './Icon'
 import { useDialog } from './dialogs'
@@ -24,9 +23,6 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   const [parent, setParent] = useState(parentContext)
   const [showSelectType, setShowSelectType] = useState(false)
   const [allowedChildTypes, setAllowedChildTypes] = useState<Schema[]>([])
-
-  const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false)
-
   const localization = useLocalization().addButton
   const logger = useLogger('AddButton')
 
@@ -54,16 +50,6 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
     }
   }, [localization.errorGettingAllowedContentTypes, logger, parent.Id, repo, showSelectType])
 
-  if (isUploadDialogOpen) {
-    return (
-      <Redirect
-        to={{
-          pathname: `/${btoa(repo.configuration.repositoryUrl)}/upload/${encodeURIComponent(parent.Path)}`,
-        }}
-      />
-    )
-  }
-
   return (
     <div>
       <Tooltip title={localization.tooltip} placement="top-end">
@@ -90,7 +76,11 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
             key="Upload"
             onClick={() => {
               setShowSelectType(false)
-              setIsUploadDialogOpen(true)
+              openDialog({
+                name: 'upload',
+                props: { uploadPath: parent.Path },
+                dialogProps: { open: true, fullScreen: true },
+              })
             }}>
             <div
               style={{

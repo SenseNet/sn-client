@@ -24,9 +24,6 @@ const DocumentViewerComponent = lazy(async () => await import(/* webpackChunkNam
 
 const VersionInfoComponent = lazy(async () => await import(/* webpackChunkName: "Version Info" */ './version-info'))
 const TrashComponent = lazy(async () => await import(/* webpackChunkName: "Trash" */ './trash/Trash'))
-const UploadComponent = lazy(
-  async () => await import(/* webpackChunkName: "Upload" */ './dialogs/upload/upload-dialog'),
-)
 const EventListComponent = lazy(async () => await import(/* webpackChunkName: "EventList" */ './event-list'))
 
 const PersonalSettingsEditor = lazy(
@@ -141,12 +138,6 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
                       path="/:repo/trash"
                       render={() => {
                         return <TrashComponent />
-                      }}
-                    />
-                    <Route
-                      path="/:repo/upload/:uploadPath?"
-                      render={uploadProps => {
-                        return <UploadComponent {...uploadProps} />
                       }}
                     />
                     <Route
