@@ -95,9 +95,10 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
   }, [selected])
 
   useEffect(() => {
+    const fields = props.fieldsToDisplay || personalSettings.content.fields
     loadSettings.setLoadChildrenSettings({
       ...loadSettings.loadChildrenSettings,
-      expand: ['CheckedOutTo'],
+      expand: ['CheckedOutTo', ...fields.filter(fieldName => isReferenceField(fieldName, repo))],
       orderby: [[currentOrder as any, currentDirection as any]],
     })
     // loadSettings can NOT be added :(
