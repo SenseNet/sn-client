@@ -1,20 +1,16 @@
-import { useDownload, useLogger, useRepository, useWopi } from '@sensenet/hooks-react'
-import { ActionModel, GenericContent } from '@sensenet/default-content-types'
+import { useDownload, useLogger, useRepository } from '@sensenet/hooks-react'
+import { GenericContent } from '@sensenet/default-content-types'
 import { useHistory } from 'react-router'
 import { useContentRouting, useLoadContent } from '../../hooks'
 import { useDialog } from '../dialogs'
 import { contextMenuODataOptions } from './context-menu-odata-options'
 
-export function useContextMenuActions(
-  content: GenericContent,
-  setActions: React.Dispatch<React.SetStateAction<ActionModel[] | undefined>>,
-) {
+export function useContextMenuActions(content: GenericContent, setActions: (content: GenericContent) => void) {
   const logger = useLogger('context-menu')
   const history = useHistory()
   const repo = useRepository()
   const routing = useContentRouting()
   const download = useDownload(content)
-  const wopi = useWopi(content)
   const currentParent = useLoadContent({ idOrPath: content.ParentId! }).content
   const { openDialog } = useDialog()
 
@@ -49,7 +45,7 @@ export function useContextMenuActions(
           logger.information({
             message: `${getContentName()} checked out successfully.`,
           })
-          setActions(checkOutresult.d.Actions as ActionModel[])
+          setActions(checkOutresult.d)
         } catch (error) {
           logger.warning({
             message: `Couldn't check out ${getContentName()}`,
@@ -64,7 +60,7 @@ export function useContextMenuActions(
           props: {
             content,
             oDataOptions: contextMenuODataOptions,
-            onActionSuccess: checkInResult => setActions(checkInResult.Actions as ActionModel[]),
+            onActionSuccess: checkInResult => setActions(checkInResult),
           },
         })
         break
@@ -72,12 +68,10 @@ export function useContextMenuActions(
         download.download()
         break
       case 'WopiOpenView':
+        history.push(`/${btoa(repo.configuration.repositoryUrl)}/wopi/${content.Id}/view`)
+        break
       case 'WopiOpenEdit':
-        {
-          history.push(
-            `/${btoa(repo.configuration.repositoryUrl)}/wopi/${content.Id}/${wopi.isWriteAwailable ? 'edit' : 'view'}`,
-          )
-        }
+        history.push(`/${btoa(repo.configuration.repositoryUrl)}/wopi/${content.Id}/edit`)
         break
       case 'Versions':
         openDialog({ name: 'versions', props: { content }, dialogProps: { maxWidth: 'md', open: true } })
@@ -86,7 +80,7 @@ export function useContextMenuActions(
         try {
           const publishResult = await repo.versioning.publish(content.Id, contextMenuODataOptions)
           logger.information({ message: `${getContentName()} published successfully.` })
-          setActions(publishResult.d.Actions as ActionModel[])
+          setActions(publishResult.d)
         } catch (error) {
           logger.warning({ message: `Couldn't publish ${getContentName()}`, data: error })
         }
@@ -95,7 +89,7 @@ export function useContextMenuActions(
         try {
           const undoCheckOutResult = await repo.versioning.undoCheckOut(content.Id, contextMenuODataOptions)
           logger.information({ message: `${getContentName()} reverted successfully.` })
-          setActions(undoCheckOutResult.d.Actions as ActionModel[])
+          setActions(undoCheckOutResult.d)
         } catch (error) {
           logger.warning({ message: `Couldn't undo checkout for ${getContentName()}`, data: error })
         }
@@ -106,7 +100,7 @@ export function useContextMenuActions(
           props: {
             content,
             oDataOptions: contextMenuODataOptions,
-            onActionSuccess: approveResult => setActions(approveResult.Actions as ActionModel[]),
+            onActionSuccess: approveResult => setActions(approveResult),
           },
         })
         break

@@ -5,8 +5,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Menu, { MenuProps } from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import React, { useContext, useEffect, useState } from 'react'
-import { ActionModel, GenericContent } from '@sensenet/default-content-types'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
+import { ActionModel, GenericContent, isActionModel } from '@sensenet/default-content-types'
+import { useLogger, useWopi } from '@sensenet/hooks-react'
 import { ResponsiveContext } from '../../context'
 import { useLoadContent } from '../../hooks'
 import { getIcon } from './icons'
@@ -25,18 +26,39 @@ type ContentContextMenuProps = {
 
 export const ContentContextMenu: React.FunctionComponent<ContentContextMenuProps> = props => {
   const [actions, setActions] = useState<ActionModel[]>()
+  const logger = useLogger('context-menu')
   const { content } = useLoadContent<GenericContent>({
     idOrPath: props.content.Id,
     oDataOptions: contextMenuODataOptions,
   })
-  const { runAction } = useContextMenuActions(props.content, setActions)
+  const { isWriteAvailable } = useWopi()
+
+  const setActionsWopi = useCallback(
+    (contentFromCallback: GenericContent) => {
+      if (!isActionModel(contentFromCallback.Actions)) {
+        logger.verbose({ message: 'There are no actions in content', data: contentFromCallback })
+        return
+      }
+
+      if (isWriteAvailable(contentFromCallback)) {
+        // If write is available it means that we have two actions. We want to show only the open edit for the user.
+        const actionsWithoutWopiRead = contentFromCallback.Actions.filter(action => action.Name !== 'WopiOpenView')
+        setActions(actionsWithoutWopiRead)
+      } else {
+        setActions(contentFromCallback.Actions)
+      }
+    },
+    [isWriteAvailable, logger],
+  )
+
+  const { runAction } = useContextMenuActions(props.content, setActionsWopi)
   const device = useContext(ResponsiveContext)
 
   useEffect(() => {
     if (content) {
-      setActions(content.Actions as ActionModel[])
+      setActionsWopi(content)
     }
-  }, [content])
+  }, [content, setActionsWopi])
 
   return (
     <div onKeyDown={ev => ev.stopPropagation()} onKeyPress={ev => ev.stopPropagation()}>
