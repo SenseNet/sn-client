@@ -12,7 +12,7 @@ import {
 import { useSelectionService } from '../../hooks'
 import { AddButton } from '../AddButton'
 import { CollectionComponent } from '../content-list'
-import { AddDialog, useDialog } from '../dialogs'
+import { useDialog } from '../dialogs'
 
 export interface CommanderComponentProps {
   leftParent: number | string
@@ -45,8 +45,6 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
 
   const [rightSelection, setRightSelection] = useState<GenericContent[]>([])
 
-  const [isAddDialogOpened, setIsAddDialogOpened] = useState(false)
-
   useEffect(() => {
     activePanel === 'left' ? setActiveParent(leftParent) : setActiveParent(rightParent)
   }, [leftParent, rightParent, activePanel])
@@ -77,7 +75,7 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
         } else if (ev.key === 'F7') {
           ev.preventDefault()
           ev.stopPropagation()
-          setIsAddDialogOpened(true)
+          openDialog({ name: 'add', props: { parent: activeParent, schema: repo.schemas.getSchemaByName('Folder') } })
         }
       }}
       style={{ display: 'flex', width: '100%', height: '100%' }}>
@@ -144,19 +142,7 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
         </CurrentContentProvider>
       </LoadSettingsContextProvider>
 
-      {activeParent ? (
-        <>
-          <AddButton parent={activeParent} />
-          <AddDialog
-            parent={activeParent}
-            schema={repo.schemas.getSchemaByName('Folder')}
-            dialogProps={{
-              open: isAddDialogOpened,
-              onClose: () => setIsAddDialogOpened(false),
-            }}
-          />
-        </>
-      ) : null}
+      {activeParent ? <AddButton parent={activeParent} /> : null}
     </div>
   )
 }

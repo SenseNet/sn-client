@@ -2,6 +2,7 @@ import React, { createContext, useCallback, useContext, useReducer } from 'react
 import { DialogProps } from '@material-ui/core/Dialog'
 import { ErrorBoundary, ErrorBoundaryState } from '../error-boundary'
 import {
+  AddDialogProps,
   ApproveProps,
   AreYouSureProps,
   CheckInProps,
@@ -24,6 +25,7 @@ export type DialogWithProps = (
   | { name: 'versions'; props: VersionsProps }
   | { name: 'are-you-sure'; props: AreYouSureProps }
   | { name: 'approve'; props: ApproveProps }
+  | { name: 'add'; props: AddDialogProps }
 ) & { dialogProps?: DialogProps }
 
 type Action = { type: 'PUSH_DIALOG'; dialog: DialogWithProps } | { type: 'POP_DIALOG' } | { type: 'CLOSE_ALL_DIALOGS' }

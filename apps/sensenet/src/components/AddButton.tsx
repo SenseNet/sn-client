@@ -10,8 +10,8 @@ import React, { useContext, useEffect, useState } from 'react'
 import { CurrentContentContext, useLogger, useRepository } from '@sensenet/hooks-react'
 import { Redirect } from 'react-router'
 import { useLocalization } from '../hooks'
-import { AddDialog } from './dialogs/add'
 import { Icon } from './Icon'
+import { useDialog } from './dialogs'
 
 export interface AddButtonProps {
   parent?: GenericContent
@@ -19,14 +19,13 @@ export interface AddButtonProps {
 
 export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   const repo = useRepository()
+  const { openDialog } = useDialog()
   const parentContext = useContext(CurrentContentContext)
   const [parent, setParent] = useState(parentContext)
   const [showSelectType, setShowSelectType] = useState(false)
   const [allowedChildTypes, setAllowedChildTypes] = useState<Schema[]>([])
 
-  const [showAddNewDialog, setShowAddNewDialog] = useState(false)
   const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false)
-  const [selectedSchema, setSelectedSchema] = useState<Schema>(repo.schemas.getSchemaByName('GenericContent'))
 
   const localization = useLocalization().addButton
   const logger = useLogger('AddButton')
@@ -106,8 +105,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
               key={childType.ContentTypeName}
               onClick={() => {
                 setShowSelectType(false)
-                setShowAddNewDialog(true)
-                setSelectedSchema(childType)
+                openDialog({ name: 'add', props: { schema: childType, parent } })
               }}>
               <div
                 style={{
@@ -120,14 +118,6 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
           ))}
         </div>
       </SwipeableDrawer>
-      <AddDialog
-        schema={selectedSchema}
-        parent={parent}
-        dialogProps={{
-          open: showAddNewDialog,
-          onClose: () => setShowAddNewDialog(false),
-        }}
-      />
     </div>
   )
 }
