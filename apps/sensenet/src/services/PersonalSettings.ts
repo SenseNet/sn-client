@@ -255,7 +255,7 @@ export const defaultSettings: PersonalSettingsType = {
         widgetType: 'markdown',
         settings: {
           content:
-            '<div>To get started with sensenet</div><br /><a style="color: #26a69a; line-height: 2rem" href="https://community.sensenet.com/docs/concepts/overview">Overview</a><br /><a style="color: #26a69a; line-height: 2rem" href="https://community.sensenet.com/tags/#getting+started">Getting started</a><br /><a href="https://community.sensenet.com/tutorials" style="color: #26a69a; line-height: 2rem">Tutorials</a><br /><a style="color: #26a69a; line-height: 2rem" href="https://community.sensenet.com/docs/examples">Example apps</a>',
+            '<div>To get started with sensenet</div><br /><a style="color: #26a69a; line-height: 2rem" href="https://community.sensenet.com/docs/concepts/overview">Overview</a><br /><a style="color: #26a69a; line-height: 2rem" href="https://community.sensenet.com/docs/getting-started">Getting started</a><br /><a href="https://community.sensenet.com/tutorials" style="color: #26a69a; line-height: 2rem">Tutorials</a><br /><a style="color: #26a69a; line-height: 2rem" href="https://community.sensenet.com/docs/examples">Example apps</a>',
         },
         minWidth: {
           default: '45%',
