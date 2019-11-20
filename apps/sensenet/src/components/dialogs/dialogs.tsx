@@ -13,6 +13,7 @@ const Delete = React.lazy(() => import('./delete'))
 const ErrorReport = React.lazy(() => import('./error-report'))
 const Error = React.lazy(() => import('./error-dialog'))
 const ExecuteAction = React.lazy(() => import('./execute-action'))
+const Logout = React.lazy(() => import('./logout'))
 const Upload = React.lazy(() => import('./upload/upload-dialog'))
 const Versions = React.lazy(() => import('./versions'))
 
@@ -46,6 +47,8 @@ function dialogRenderer(dialog: DialogWithProps) {
       return <ExecuteAction {...dialog.props} />
     case 'custom-action-result':
       return <CustomActionResult {...dialog.props} />
+    case 'logout':
+      return <Logout {...dialog.props} />
     default:
       return null
   }

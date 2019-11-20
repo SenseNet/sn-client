@@ -162,9 +162,10 @@ const values = {
   logout: {
     logoutButtonTitle: 'Log out',
     logoutDialogTitle: 'Really log out?',
-    loggingOutFrom: 'Logging out from {0}...',
-    logoutConfirmText: 'You are logged in to {0} as {1}. Are you sure that you want to leave?',
-    logoutSuccessNotification: 'You have logged out from {0}',
+    loggingOutFrom: (repoUrl: string) => `Logging out from ${repoUrl}...`,
+    logoutConfirmText: (repoUrl: string, userName: string) =>
+      `You are logged in to ${repoUrl} as ${userName}. Are you sure that you want to leave?`,
+    logoutSuccessNotification: (repoUrl: string) => `You have logged out from ${repoUrl}`,
     logoutCancel: 'Cancel',
   },
   personalSettings: {
