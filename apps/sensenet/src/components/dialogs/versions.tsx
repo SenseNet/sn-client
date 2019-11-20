@@ -14,6 +14,7 @@ import { GenericContent, User } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import moment from 'moment'
 import HistoryIcon from '@material-ui/icons/History'
+import { useLocalization } from '../../hooks'
 import { useDialog } from './dialog-provider'
 
 export type VersionsProps = {
@@ -22,6 +23,7 @@ export type VersionsProps = {
 
 export function Versions({ content }: VersionsProps) {
   const repo = useRepository()
+  const localization = useLocalization().versionsDialog
   const { openDialog, closeAllDialogs } = useDialog()
   const logger = useLogger('VersionsDialog')
   const [versions, setVersions] = useState<GenericContent[]>()
@@ -44,28 +46,28 @@ export function Versions({ content }: VersionsProps) {
         logger.verbose({ message: 'getVersions returned with', data: result })
       } catch (error) {
         closeAllDialogs()
-        logger.error({ message: `Couldn't get versions for content: ${content.Name}`, data: error })
+        logger.error({ message: localization.getVersionsError(content.Name), data: error })
       }
     }
     getVersions()
-  }, [closeAllDialogs, content.Id, content.Name, logger, repo.versioning])
+  }, [closeAllDialogs, content.Id, content.Name, localization, logger, repo.versioning])
 
   const restoreVersion = (selectedVersion: GenericContent) => {
     const name = selectedVersion.DisplayName ?? selectedVersion.Name
     openDialog({
       name: 'are-you-sure',
       props: {
-        submitText: 'Restore',
-        bodyText: `Are you sure you want to restore version <strong>${selectedVersion.Version}</strong> of <strong>${name}</strong>`,
+        submitText: localization.restoreSubmitText,
+        bodyText: localization.restoreBodyText(name, selectedVersion.Version),
         callBack: async () => {
           try {
             await repo.versioning.restoreVersion(selectedVersion.Id, selectedVersion.Version)
-            logger.information({ message: `${name} restored to version ${selectedVersion.Version}` })
+            logger.information({ message: localization.restoreVersionSuccess(name, selectedVersion.Version) })
             closeAllDialogs()
           } catch (error) {
             closeAllDialogs()
             logger.error({
-              message: `Couldn't restore version to  ${selectedVersion.Version} for content: ${selectedVersion.Name}`,
+              message: localization.restoreVersionError(name, selectedVersion.Version),
               data: error,
             })
           }
@@ -76,16 +78,16 @@ export function Versions({ content }: VersionsProps) {
 
   return (
     <>
-      <DialogTitle>Versions</DialogTitle>
+      <DialogTitle>{localization.title}</DialogTitle>
       <DialogContent>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Version</TableCell>
-              <TableCell>Modified by</TableCell>
-              <TableCell>Comment</TableCell>
-              <TableCell>Reject reason</TableCell>
-              <TableCell>Restore to version</TableCell>
+              <TableCell>{localization.versionTableHead}</TableCell>
+              <TableCell>{localization.modifiedByTableHead}</TableCell>
+              <TableCell>{localization.commentTableHead}</TableCell>
+              <TableCell>{localization.rejectReasonTableHead}</TableCell>
+              <TableCell>{localization.restoreTableHead}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

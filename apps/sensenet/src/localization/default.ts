@@ -378,6 +378,21 @@ const values = {
     tryOpenRead: 'View',
     goBack: 'Go back',
   },
+  versionsDialog: {
+    getVersionsError: (name: string) => `Couldn't get versions for content: ${name}`,
+    title: 'Versions',
+    versionTableHead: 'Version',
+    modifiedByTableHead: 'Modified by',
+    commentTableHead: 'Comment',
+    rejectReasonTableHead: 'Reject reason',
+    restoreTableHead: 'Restore to version',
+    restoreBodyText: (name: string, version?: string) =>
+      `Are you sure you want to restore version <strong>${version}</strong> of <strong>${name}</strong>`,
+    restoreSubmitText: 'Restore',
+    restoreVersionSuccess: (name: string, version?: string) => `${name} restored to version ${version}`,
+    restoreVersionError: (name: string, version?: string) =>
+      `Couldn't restore version to  ${version} for content: ${name}`,
+  },
 }
 
 export default values
