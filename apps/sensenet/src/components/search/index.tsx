@@ -1,12 +1,8 @@
 import Button from '@material-ui/core/Button'
-import Dialog from '@material-ui/core/Dialog'
-import DialogActions from '@material-ui/core/DialogActions'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogTitle from '@material-ui/core/DialogTitle'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import Save from '@material-ui/icons/Save'
-import { ConstantContent, ODataResponse } from '@sensenet/client-core'
+import { ConstantContent } from '@sensenet/client-core'
 import { debounce } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useCallback, useContext, useEffect, useState } from 'react'
@@ -23,6 +19,7 @@ import {
 import { ResponsivePersonalSetttings } from '../../context'
 import { useContentRouting, useLocalization } from '../../hooks'
 import { CollectionComponent, isReferenceField } from '../content-list'
+import { useDialog } from '../dialogs'
 
 const loadCount = 20
 const searchDebounceTime = 400
@@ -40,7 +37,7 @@ export const decodeQueryData = (encoded?: string) =>
 const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }>> = props => {
   const repo = useRepository()
   const contentRouter = useContentRouting()
-
+  const { openDialog } = useDialog()
   const logger = useLogger('Search')
   const [queryData, setQueryData] = useState<QueryData>(decodeQueryData(props.match.params.queryData))
 
@@ -76,12 +73,9 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
 
   const [result, setResult] = useState<GenericContent[]>([])
   const [count, setCount] = useState(0)
+  const [error, setError] = useState('')
   const loadSettingsContext = useContext(LoadSettingsContext)
   const personalSettings = useContext(ResponsivePersonalSetttings)
-  const [isSaveOpened, setIsSaveOpened] = useState(false)
-  const [error, setError] = useState('')
-
-  const [saveName, setSaveName] = useState('')
 
   useEffect(() => {
     const ac = new AbortController()
@@ -176,52 +170,14 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
               style={{ flexShrink: 0 }}
               title={localization.saveQuery}
               onClick={() => {
-                setIsSaveOpened(true)
-                setSaveName(`Search results for '${queryData.term}'`)
+                openDialog({
+                  name: 'save-query',
+                  props: { queryData, saveName: `Search results for '${queryData.term}'` },
+                })
               }}>
               <Save style={{ marginRight: 8 }} />
               {localization.saveQuery}
             </Button>
-            <Dialog open={isSaveOpened} onClose={() => setIsSaveOpened(false)}>
-              <DialogTitle>{localization.saveQuery}</DialogTitle>
-              <DialogContent style={{ minWidth: 450 }}>
-                <TextField
-                  fullWidth={true}
-                  defaultValue={`Search results for '${queryData.term}'`}
-                  onChange={ev => setSaveName(ev.currentTarget.value)}
-                />
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={() => setIsSaveOpened(false)}>{localization.cancel}</Button>
-                <Button
-                  onClick={() => {
-                    repo
-                      .executeAction<any, ODataResponse<GenericContent>>({
-                        idOrPath: '/Root/Content', //INFO(Zoli): This is hard coded for now. Wont work with repositories that do not have Root/Content.
-                        name: 'SaveQuery',
-                        method: 'POST',
-                        oDataOptions: {
-                          select: ['DisplayName', 'Query'],
-                        },
-                        body: {
-                          query: queryData.term,
-                          displayName: saveName,
-                          queryType: 'Public',
-                        },
-                      })
-                      .then(c => {
-                        setIsSaveOpened(false)
-                        logger.information({
-                          message: `Query '${c.d.DisplayName || c.d.Name}' saved`,
-                          data: { relatedContent: c.d, details: c },
-                        })
-                      })
-                  }}
-                  color="primary">
-                  {localization.save}
-                </Button>
-              </DialogActions>
-            </Dialog>
           </div>
         )}
       </div>

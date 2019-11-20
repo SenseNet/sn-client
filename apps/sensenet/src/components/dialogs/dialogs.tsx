@@ -14,6 +14,7 @@ const ErrorReport = React.lazy(() => import('./error-report'))
 const Error = React.lazy(() => import('./error-dialog'))
 const ExecuteAction = React.lazy(() => import('./execute-action'))
 const Logout = React.lazy(() => import('./logout'))
+const SaveQuery = React.lazy(() => import('./save-query'))
 const Upload = React.lazy(() => import('./upload/upload-dialog'))
 const Versions = React.lazy(() => import('./versions'))
 
@@ -49,6 +50,8 @@ function dialogRenderer(dialog: DialogWithProps) {
       return <CustomActionResult {...dialog.props} />
     case 'logout':
       return <Logout {...dialog.props} />
+    case 'save-query':
+      return <SaveQuery {...dialog.props} />
     default:
       return null
   }

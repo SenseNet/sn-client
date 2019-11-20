@@ -14,6 +14,7 @@ import {
   ErrorReportProps,
   ExecuteActionDialogProps,
   LogoutDialogProps,
+  SaveQueryProps,
   UploadDialogProps,
   VersionsProps,
 } from '.'
@@ -34,6 +35,7 @@ export type DialogWithProps = (
   | { name: 'execute-action'; props: ExecuteActionDialogProps }
   | { name: 'custom-action-result'; props: CustomActionResultDialogProps }
   | { name: 'logout'; props: LogoutDialogProps }
+  | { name: 'save-query'; props: SaveQueryProps }
 ) & { dialogProps?: DialogProps }
 
 type Action = { type: 'PUSH_DIALOG'; dialog: DialogWithProps } | { type: 'POP_DIALOG' } | { type: 'CLOSE_ALL_DIALOGS' }
