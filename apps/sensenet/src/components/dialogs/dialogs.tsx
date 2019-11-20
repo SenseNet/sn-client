@@ -8,9 +8,11 @@ const AreYouSure = React.lazy(() => import('./are-you-sure'))
 const CheckIn = React.lazy(() => import('./check-in'))
 const ContentInfo = React.lazy(() => import('./content-info'))
 const CopyMove = React.lazy(() => import('./copy-move'))
+const CustomActionResult = React.lazy(() => import('./custom-action-result'))
 const Delete = React.lazy(() => import('./delete'))
 const ErrorReport = React.lazy(() => import('./error-report'))
 const Error = React.lazy(() => import('./error-dialog'))
+const ExecuteAction = React.lazy(() => import('./execute-action'))
 const Upload = React.lazy(() => import('./upload/upload-dialog'))
 const Versions = React.lazy(() => import('./versions'))
 
@@ -40,6 +42,10 @@ function dialogRenderer(dialog: DialogWithProps) {
       return <Add {...dialog.props} />
     case 'upload':
       return <Upload {...dialog.props} />
+    case 'execute-action':
+      return <ExecuteAction {...dialog.props} />
+    case 'custom-action-result':
+      return <CustomActionResult {...dialog.props} />
     default:
       return null
   }

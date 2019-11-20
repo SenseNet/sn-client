@@ -8,9 +8,11 @@ import {
   CheckInProps,
   ContentInfoDialogProps,
   CopyMoveDialogProps,
+  CustomActionResultDialogProps,
   DeleteContentDialogProps,
   EditPropertiesProps,
   ErrorReportProps,
+  ExecuteActionDialogProps,
   UploadDialogProps,
   VersionsProps,
 } from '.'
@@ -28,6 +30,8 @@ export type DialogWithProps = (
   | { name: 'approve'; props: ApproveProps }
   | { name: 'add'; props: AddDialogProps }
   | { name: 'upload'; props: UploadDialogProps }
+  | { name: 'execute-action'; props: ExecuteActionDialogProps }
+  | { name: 'custom-action-result'; props: CustomActionResultDialogProps }
 ) & { dialogProps?: DialogProps }
 
 type Action = { type: 'PUSH_DIALOG'; dialog: DialogWithProps } | { type: 'POP_DIALOG' } | { type: 'CLOSE_ALL_DIALOGS' }

@@ -63,13 +63,13 @@ ReactDOM.render(
                     <SessionContextProvider>
                       <ResponsiveContextProvider>
                         <ThemeProvider theme={theme}>
-                          <DesktopLayout>
-                            <DialogProvider>
+                          <DialogProvider>
+                            <DesktopLayout>
                               <MainRouter />
                               <NotificationComponent />
                               <Dialogs />
-                            </DialogProvider>
-                          </DesktopLayout>{' '}
+                            </DesktopLayout>
+                          </DialogProvider>
                         </ThemeProvider>
                       </ResponsiveContextProvider>
                     </SessionContextProvider>
