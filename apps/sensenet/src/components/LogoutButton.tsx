@@ -7,16 +7,19 @@ import { useSession } from '@sensenet/hooks-react'
 import { useLocalization, useTheme } from '../hooks'
 import { useDialog } from './dialogs'
 
-export const LogoutButton: React.FunctionComponent<{
+export type LogoutButtonProps = {
   buttonStyle?: React.CSSProperties
-}> = props => {
+  onLoggedOut?: () => void
+}
+
+export const LogoutButton: React.FunctionComponent<LogoutButtonProps> = props => {
   const session = useSession()
   const theme = useTheme()
   const localization = useLocalization().logout
   const { openDialog } = useDialog()
 
   const onClick = () => {
-    openDialog({ name: 'logout', props: { userToLogout: session.currentUser } })
+    openDialog({ name: 'logout', props: { userToLogout: session.currentUser, onLoggedOut: props.onLoggedOut } })
   }
 
   return (
