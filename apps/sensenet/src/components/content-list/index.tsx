@@ -51,7 +51,6 @@ export const isReferenceField = (fieldName: string, repo: Repository) => {
   return refWhiteList.indexOf(fieldName) !== -1 || (setting && setting.Type === 'ReferenceFieldSetting') || false
 }
 
-//TODO: Move this from index.ts to its own file and create a barrel
 export const CollectionComponent: React.FunctionComponent<CollectionComponentProps> = props => {
   const parentContent = useContext(CurrentContentContext)
   const children = useContext(CurrentChildrenContext)

@@ -61,7 +61,6 @@ export interface ReferenceGridState {
   selected: GenericContent[]
 }
 
-//TODO: Refactor this to function component
 export class ReferenceGrid extends Component<ReactClientFieldSetting<ReferenceFieldSetting>, ReferenceGridState> {
   constructor(props: ReferenceGrid['props']) {
     super(props)

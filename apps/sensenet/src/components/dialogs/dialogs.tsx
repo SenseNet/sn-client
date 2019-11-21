@@ -61,7 +61,6 @@ export function Dialogs() {
   const { dialogs, closeLastDialog } = useDialog()
 
   return (
-    //TODO: Proper fall back component?
     <Suspense fallback="Loading">
       {dialogs.map((dialog, index) => (
         <Dialog
