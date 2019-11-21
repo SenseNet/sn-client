@@ -173,7 +173,7 @@ const values = {
     showDefaults: 'Show defaults',
     restoreDefaults: 'Restore defaults',
     restoreDialogTitle: 'Really restore defaults?',
-    restoreDialogTText:
+    restoreDialogText:
       'Are you sure you want to restore the default settings? Your log will also be cleared and you will be signed out from all repositories.',
     cancel: 'Cancel',
     restore: 'Restore',

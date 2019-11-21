@@ -4,18 +4,25 @@ import { useDialog } from './dialog-provider'
 
 export type AreYouSureProps = {
   bodyText?: string
+  titleText?: string
   cancelText?: string
   submitText?: string
   callBack: () => void
 }
 
 export function AreYouSure(props: AreYouSureProps) {
-  const { callBack, bodyText = 'Are you absolutely sure?', submitText = 'Yes', cancelText = 'Cancel' } = props
+  const {
+    callBack,
+    bodyText = 'Are you absolutely sure?',
+    submitText = 'Yes',
+    cancelText = 'Cancel',
+    titleText = 'Are you sure?',
+  } = props
   const { closeLastDialog } = useDialog()
 
   return (
     <>
-      <DialogTitle>Are you sure?</DialogTitle>
+      <DialogTitle>{titleText}</DialogTitle>
       <DialogContent dangerouslySetInnerHTML={{ __html: bodyText }} />
       <DialogActions>
         <Button onClick={() => callBack()}>{submitText}</Button>
