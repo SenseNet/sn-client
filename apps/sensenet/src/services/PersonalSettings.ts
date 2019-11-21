@@ -289,7 +289,7 @@ export const defaultSettings: PersonalSettingsType = {
     theme: 'dark',
     content: {
       browseType: 'explorer',
-      fields: ['DisplayName', 'Locked', 'Actions'],
+      fields: ['DisplayName', 'Locked', 'CreatedBy', 'Actions'],
     },
     drawer: {
       enabled: true,
