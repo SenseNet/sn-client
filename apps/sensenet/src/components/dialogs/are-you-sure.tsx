@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button, DialogActions, DialogContent, DialogTitle } from '@material-ui/core'
+import { useLocalization } from '../../hooks'
 import { useDialog } from './dialog-provider'
 
 export type AreYouSureProps = {
@@ -11,12 +12,13 @@ export type AreYouSureProps = {
 }
 
 export function AreYouSure(props: AreYouSureProps) {
+  const localization = useLocalization().areYouSureDialog
   const {
     callBack,
-    bodyText = 'Are you absolutely sure?',
-    submitText = 'Yes',
-    cancelText = 'Cancel',
-    titleText = 'Are you sure?',
+    bodyText = localization.body,
+    submitText = localization.submitButton,
+    cancelText = localization.cancelButton,
+    titleText = localization.title,
   } = props
   const { closeLastDialog } = useDialog()
 

@@ -17,7 +17,6 @@ export const ContentInfoDialog: React.FunctionComponent<ContentInfoDialogProps> 
   const localization = useLocalization().contentInfoDialog
   const repo = useRepository()
 
-  //TODO: Check mobile view
   if (device === 'mobile') {
     return (
       <Drawer variant="temporary" anchor="bottom">

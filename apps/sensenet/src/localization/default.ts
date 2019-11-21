@@ -51,6 +51,29 @@ const values = {
     created: 'Created',
     unknownOwner: 'Unknown',
   },
+  checkInDialog: {
+    inputLabel: 'Check in comment (optional)',
+    successMessage: 'Check in succeded',
+    errorMessage: 'Check in failed',
+  },
+  areYouSureDialog: {
+    body: 'Are you absolutely sure?',
+    submitButton: 'Yes',
+    cancelButton: 'Cancel',
+    title: 'Are you sure?',
+  },
+  approveDialog: {
+    approveSuccess: (name: string) => `${name} approved successfully.`,
+    approveError: 'Approve action failed.',
+    rejectSuccess: (name: string) => `${name} rejected successfully.`,
+    rejectError: 'Reject action failed.',
+    body: (name: string) => `You are about to approve or reject ${name}`,
+    title: 'Approve or reject',
+    inputLabel: 'Please provide a reason for rejecting the content',
+    approveButton: 'Approve',
+    rejectButton: 'Reject',
+    cancelButton: 'Cancel',
+  },
   deleteContentDialog: {
     dialogTitle: 'Really delete content?',
     deletingContent: 'Deleting content...',
@@ -305,6 +328,7 @@ const values = {
   search: {
     title: 'Search',
     onlyPublic: 'Show public queries only',
+    saveInputPlaceholder: (term: string) => `Search results for '${term}'`,
     savedQueries: 'Saved queries',
     queryLabel: 'Content Query',
     queryHelperText: 'Enter a content query expression',

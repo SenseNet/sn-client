@@ -11,6 +11,7 @@ import {
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ODataParams } from '@sensenet/client-core'
+import { useLocalization } from '../../hooks'
 import { useDialog } from './dialog-provider'
 
 export type ApproveProps = {
@@ -21,11 +22,14 @@ export type ApproveProps = {
 
 export function Approve(props: ApproveProps) {
   const { content, oDataOptions, onActionSuccess } = props
+  const localization = useLocalization().approveDialog
   const repo = useRepository()
   const logger = useLogger('approve-reject')
   const { closeLastDialog } = useDialog()
   const [reason, setReason] = useState<string>()
   const [aboutToReject, setAboutToReject] = useState(false)
+
+  const name = content.DisplayName ?? content.Name
 
   const reject = async () => {
     if (!aboutToReject) {
@@ -36,9 +40,9 @@ export function Approve(props: ApproveProps) {
     try {
       const result = await repo.versioning.reject(content.Id, reason, oDataOptions)
       onActionSuccess?.(result.d)
-      logger.information({ message: `${content.DisplayName ?? content.Name} rejected successfully.`, data: result })
+      logger.information({ message: localization.rejectSuccess(name), data: result })
     } catch (error) {
-      logger.warning({ message: 'Reject action failed.', data: error })
+      logger.warning({ message: localization.rejectError, data: error })
     } finally {
       closeLastDialog()
     }
@@ -48,9 +52,9 @@ export function Approve(props: ApproveProps) {
     try {
       const result = await repo.versioning.approve(content.Id, oDataOptions)
       onActionSuccess?.(result.d)
-      logger.information({ message: `${content.DisplayName ?? content.Name} approved successfully.`, data: result })
+      logger.information({ message: localization.approveSuccess(name), data: result })
     } catch (error) {
-      logger.warning({ message: 'Approve action failed.', data: error })
+      logger.warning({ message: localization.approveError, data: error })
     } finally {
       closeLastDialog()
     }
@@ -58,13 +62,12 @@ export function Approve(props: ApproveProps) {
 
   return (
     <div>
-      <DialogTitle>Approve or reject</DialogTitle>
+      <DialogTitle>{localization.title}</DialogTitle>
       <DialogContent>
-        <DialogContentText>{`You are about to approve or reject ${content.DisplayName ??
-          content.Name}`}</DialogContentText>
+        <DialogContentText>{localization.body(name)}</DialogContentText>
         <Fade in={aboutToReject}>
           <TextField
-            label="Please provide a reason for rejecting the content"
+            label={localization.inputLabel}
             multiline={true}
             rowsMax="4"
             value={reason}
@@ -76,9 +79,9 @@ export function Approve(props: ApproveProps) {
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={() => closeLastDialog()}>Cancel</Button>
-        <Button onClick={approve}>Approve</Button>
-        <Button onClick={reject}>Reject</Button>
+        <Button onClick={closeLastDialog}>{localization.cancelButton}</Button>
+        <Button onClick={approve}>{localization.approveButton}</Button>
+        <Button onClick={reject}>{localization.rejectButton}</Button>
       </DialogActions>
     </div>
   )

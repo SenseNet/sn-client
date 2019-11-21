@@ -51,7 +51,7 @@ export function SaveQuery(props: SaveQueryProps) {
       <DialogContent style={{ minWidth: 450 }}>
         <TextField
           fullWidth={true}
-          defaultValue={`Search results for '${props.queryData.term}'`}
+          defaultValue={localization.saveInputPlaceholder(props.queryData.term)}
           onChange={ev => setSaveName(ev.currentTarget.value)}
         />
       </DialogContent>

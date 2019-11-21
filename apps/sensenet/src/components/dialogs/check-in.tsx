@@ -3,6 +3,7 @@ import { Button, DialogActions, DialogContent, DialogTitle, TextField } from '@m
 import { GenericContent } from '@sensenet/default-content-types'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { ODataParams } from '@sensenet/client-core'
+import { useLocalization } from '../../hooks'
 import { useDialog } from '.'
 
 export type CheckInProps = {
@@ -13,6 +14,7 @@ export type CheckInProps = {
 
 export function CheckIn({ content, onActionSuccess, oDataOptions }: CheckInProps) {
   const [comment, setComment] = useState<string>()
+  const localization = useLocalization().checkInDialog
   const logger = useLogger('CheckInDialog')
   const repo = useRepository()
   const { closeLastDialog } = useDialog()
@@ -21,9 +23,9 @@ export function CheckIn({ content, onActionSuccess, oDataOptions }: CheckInProps
     try {
       const result = await repo.versioning.checkIn(content.Id, comment, oDataOptions)
       onActionSuccess?.(result.d)
-      logger.information({ message: 'Check in succeded' })
+      logger.information({ message: localization.successMessage })
     } catch (error) {
-      logger.warning({ message: 'Check in failed', data: error })
+      logger.warning({ message: localization.errorMessage, data: error })
     } finally {
       closeLastDialog()
     }
@@ -34,7 +36,7 @@ export function CheckIn({ content, onActionSuccess, oDataOptions }: CheckInProps
       <DialogTitle>Add a check in comment</DialogTitle>
       <DialogContent>
         <TextField
-          label="Check in comment (optional)"
+          label={localization.inputLabel}
           multiline
           onChange={event => setComment(event.target.value)}
           value={comment}
