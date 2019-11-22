@@ -1,9 +1,11 @@
 import React from 'react'
 import Lock from '@material-ui/icons/Lock'
+import AssignmentIcon from '@material-ui/icons/Assignment'
 import { TableCell, Tooltip } from '@material-ui/core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useSession } from '@sensenet/hooks-react'
 import { isUser } from '../../utils/type-guards'
+import { useLocalization } from '../../hooks'
 
 type LockedFieldProps = {
   content: GenericContent
@@ -11,6 +13,7 @@ type LockedFieldProps = {
 
 export function LockedField({ content }: LockedFieldProps) {
   const session = useSession()
+  const localization = useLocalization().lockedCell
 
   const lockedByName = () => {
     const checkedOutTo = content?.CheckedOutTo
@@ -21,15 +24,15 @@ export function LockedField({ content }: LockedFieldProps) {
     return checkedOutTo.Name === session.currentUser.Name ? 'Me' : checkedOutTo.FullName ?? 'Someone'
   }
 
-  if (!content.Locked) {
+  if (!content.Locked && !content.Approvable) {
     // We need to return an empty TableCell so the Table remains aligned.
     return <TableCell />
   }
 
   return (
     <TableCell>
-      <Tooltip title={`Checked out to ${lockedByName()}`}>
-        <Lock />
+      <Tooltip title={content.Approvable ? localization.actionNeeded : localization.checkedOutTo(lockedByName())}>
+        {content.Approvable ? <AssignmentIcon /> : <Lock />}
       </Tooltip>
     </TableCell>
   )

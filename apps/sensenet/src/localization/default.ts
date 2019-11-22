@@ -33,15 +33,9 @@ const values = {
       executeSecondaryText: "Execute custom action '{1}' on content '{0}'",
     },
   },
-  contentContextMenu: {
-    editProperties: 'Edit properties',
-    copy: 'Copy',
-    move: 'Move',
-    delete: 'Delete',
-    open: 'Open',
-    download: 'Download',
-    wopiEdit: 'Open in online editor',
-    wopiRead: 'View in online editor',
+  lockedCell: {
+    checkedOutTo: (name: string) => `Checked out to ${name}`,
+    actionNeeded: 'Content should be approved',
   },
   contentInfoDialog: {
     dialogTitle: 'Info about {0}',
