@@ -114,11 +114,12 @@ const values = {
     personalSettingsTitle: 'Edit personal settings',
     personalSettingsSecondaryText: 'Customize the application behavior',
     contentRootDescription: 'The root path. Content will be displayed below this level.',
+    queryTerm: 'Content query see https://community.sensenet.com/docs/content-query/',
+    columns: 'Array of columns to display',
     dashboardTitle: 'Dashboard',
     dashboardSecondaryText: 'Repository overview',
     expand: 'Expand',
     collapse: 'Collapse',
-    queryTermDescription: 'The Query term',
   },
   trash: {
     title: 'Trash',

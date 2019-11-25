@@ -219,7 +219,7 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                               properties: {
                                 root: { type: 'string', description: language.drawer.contentRootDescription },
                                 title: { type: 'string', description: language.personalSettings.drawerItemTitle },
-                                columns: { $ref: '#/definitions/columns' },
+                                columns: { $ref: '#/definitions/columns', description: language.drawer.columns },
                                 description: {
                                   type: 'string',
                                   description: language.personalSettings.drawerItemDescription,
@@ -247,8 +247,8 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                             settings: {
                               type: 'object',
                               properties: {
-                                term: { type: 'string', description: language.drawer.contentRootDescription },
-                                columns: { $ref: '#/definitions/columns' },
+                                term: { type: 'string', description: language.drawer.queryTerm },
+                                columns: { $ref: '#/definitions/columns', description: language.drawer.columns },
                                 title: { type: 'string', description: language.personalSettings.drawerItemTitle },
                                 description: {
                                   type: 'string',
