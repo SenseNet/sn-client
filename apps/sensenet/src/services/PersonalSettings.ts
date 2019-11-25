@@ -56,7 +56,6 @@ export const DrawerItemType = tuple(
   'Content',
   'Query',
   'Content Types',
-  'Query',
   'Localization',
   'Search',
   'Setup',
