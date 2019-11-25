@@ -134,7 +134,7 @@ export interface DashboardDrawerItem
     description?: string
     icon: string
   }> {
-  itemType: 'Dashboard' | 'Users and groups'
+  itemType: 'Dashboard'
 }
 
 export interface BuiltinDrawerItem extends DrawerItem<undefined> {

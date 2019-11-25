@@ -273,13 +273,19 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                             settings: {
                               type: 'object',
                               properties: {
-                                title: { type: 'string' },
-                                description: { type: 'string' },
-                                dashboardName: { $data: '#/definitions/dashboards' },
+                                title: { type: 'string', description: language.personalSettings.drawerItemTitle },
+                                description: {
+                                  type: 'string',
+                                  description: language.personalSettings.drawerItemDescription,
+                                },
+                                dashboardName: {
+                                  $data: '#/definitions/dashboards',
+                                  description: language.personalSettings.drawerDashboardName,
+                                },
                                 icon: {
                                   type: 'string',
                                   enum: [...wellKnownIconNames],
-                                  description: language.personalSettings.drawerItemDescription,
+                                  description: language.personalSettings.drawerItemIcon,
                                 },
                               },
                               required: ['dashboardName', 'title', 'icon'],

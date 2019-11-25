@@ -182,6 +182,7 @@ const values = {
     drawerEnable: 'Enable or disable the drawer',
     drawerType: 'Drawer type',
     drawerItems: 'Items enabled on the drawer',
+    drawerDashboardName: 'A unique identifier for the dashboard',
     drawerItemTitle: 'Title of the item',
     drawerItemDescription: 'Description of the item',
     drawerItemIcon: 'The icon of the drawer item',
