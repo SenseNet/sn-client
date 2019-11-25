@@ -56,7 +56,6 @@ export const DrawerItemType = tuple(
   'Content',
   'Query',
   'Content Types',
-  'Query',
   'Localization',
   'Search',
   'Setup',
@@ -134,7 +133,7 @@ export interface DashboardDrawerItem
     description?: string
     icon: string
   }> {
-  itemType: 'Dashboard' | 'Users and groups'
+  itemType: 'Dashboard'
 }
 
 export interface BuiltinDrawerItem extends DrawerItem<undefined> {
