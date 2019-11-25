@@ -199,13 +199,13 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                           type: 'object',
                           properties: {
                             path: { type: 'string', description: language.personalSettings.drawerItemPermissionPath },
-                            role: {
+                            action: {
                               type: 'string',
-                              description: language.personalSettings.drawerItemPermissionPath,
+                              description: language.personalSettings.drawerItemPermissionName,
                               enum: [...ActionType],
                             },
                           },
-                          required: ['path', 'role'],
+                          required: ['path', 'action'],
                         },
                       },
                     },

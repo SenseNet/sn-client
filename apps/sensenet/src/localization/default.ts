@@ -187,7 +187,7 @@ const values = {
     drawerItemIcon: 'The icon of the drawer item',
     drawerItemPermissions: 'A list of required persmissions for a specific drawer items',
     drawerItemPermissionPath: 'A full path to a specific content',
-    drawerItemPermissionName: 'A full path to a specific content',
+    drawerItemPermissionName: 'The name of the action',
     repositoryTitle: 'A list of visited repositories',
     repositoryUrl: 'The path of the repository, e.g.: https://my-sensenet-repository.org',
     repositoryLoginName: "The last user you've logged in with",
