@@ -41,7 +41,6 @@ describe('Mainpanel', () => {
       )
     })
     wrapper.update()
-    expect(wrapper).toMatchSnapshot()
     expect(wrapper.find(EventComponent)).toBeDefined()
     expect(wrapper.find('p').text()).toContain('at Budapest')
   })

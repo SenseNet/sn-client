@@ -26,11 +26,6 @@ describe('Eventcomponent testing', () => {
     setOpennoti: jest.fn(),
   }
 
-  it('Component snapshot', () => {
-    const wrapper = shallow(<EventComponent {...(testprops as any)} />)
-    expect(wrapper).toMatchSnapshot()
-  })
-
   it('Onclick test', async () => {
     const repo = new Repository()
     let wrapper: any

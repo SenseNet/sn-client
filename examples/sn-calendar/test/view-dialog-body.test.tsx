@@ -47,11 +47,6 @@ describe('ViewDialogBody', () => {
     setOpennoti: jest.fn(),
   }
 
-  it('ViewDialogBody snapshot test', () => {
-    const wrapper = shallow(<ViewDialogBody {...(testprops as any)} />)
-    expect(wrapper).toMatchSnapshot()
-  })
-
   it('Open dialog and remove event test', async () => {
     const repo = new Repository()
     repo.load = function load() {
