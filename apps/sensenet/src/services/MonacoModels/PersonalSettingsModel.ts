@@ -25,13 +25,17 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
               title: language.personalSettings.dashboard.queryWidget.columns,
               uniqueItems: true,
               examples: [['DisplayName', 'CreatedBy']],
-              items: {
-                enum: [
-                  'Actions',
-                  'Type',
-                  ...repo.schemas.getSchemaByName('GenericContent').FieldSettings.map(f => f.Name),
-                ],
-              },
+              items: [
+                {
+                  type: 'string',
+                  enum: [
+                    'Actions',
+                    'Type',
+                    ...repo.schemas.getSchemaByName('GenericContent').FieldSettings.map(f => f.Name),
+                  ],
+                },
+              ],
+              additionalItems: { type: 'string' },
             },
             dashboardSection: {
               $id: '#/dashboardSection',
@@ -199,13 +203,13 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                           type: 'object',
                           properties: {
                             path: { type: 'string', description: language.personalSettings.drawerItemPermissionPath },
-                            role: {
+                            action: {
                               type: 'string',
-                              description: language.personalSettings.drawerItemPermissionPath,
+                              description: language.personalSettings.drawerItemPermissionName,
                               enum: [...ActionType],
                             },
                           },
-                          required: ['path', 'role'],
+                          required: ['path', 'action'],
                         },
                       },
                     },
@@ -247,7 +251,7 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                             settings: {
                               type: 'object',
                               properties: {
-                                term: { type: 'string', description: language.drawer.contentRootDescription },
+                                term: { type: 'string', description: language.drawer.queryTerm },
                                 columns: { $ref: '#/definitions/columns' },
                                 title: { type: 'string', description: language.personalSettings.drawerItemTitle },
                                 description: {
@@ -273,13 +277,19 @@ export const setupModel = (language = defaultLanguage, repo: Repository) => {
                             settings: {
                               type: 'object',
                               properties: {
-                                title: { type: 'string' },
-                                description: { type: 'string' },
-                                dashboardName: { $data: '#/definitions/dashboards' },
+                                title: { type: 'string', description: language.personalSettings.drawerItemTitle },
+                                description: {
+                                  type: 'string',
+                                  description: language.personalSettings.drawerItemDescription,
+                                },
+                                dashboardName: {
+                                  $data: '#/definitions/dashboards',
+                                  description: language.personalSettings.drawerDashboardName,
+                                },
                                 icon: {
                                   type: 'string',
                                   enum: [...wellKnownIconNames],
-                                  description: language.personalSettings.drawerItemDescription,
+                                  description: language.personalSettings.drawerItemIcon,
                                 },
                               },
                               required: ['dashboardName', 'title', 'icon'],
