@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Eventcomponent testing Component snapshot 1`] = `
+<WithStyles(ForwardRef(List))>
+  <div
+    key="214124124"
+  >
+    <WithStyles(ForwardRef(ListItem))
+      className="makeStyles-parentlistelement-1 makeStyles-simpleevent-3"
+      onClick={[Function]}
+    >
+      <WithStyles(ForwardRef(ListItemAvatar))>
+        <WithStyles(ForwardRef(Avatar))
+          alt="Avatar"
+          src="http://localhostundefined"
+        />
+      </WithStyles(ForwardRef(ListItemAvatar))>
+      <WithStyles(ForwardRef(ListItemText))
+        secondary=" 13:00-14:00 at Budapest"
+      />
+    </WithStyles(ForwardRef(ListItem))>
+  </div>
+  <div
+    key="1351321"
+  >
+    <WithStyles(ForwardRef(ListItem))
+      className="makeStyles-parentlistelement-1 makeStyles-simpleevent-3"
+      onClick={[Function]}
+    >
+      <WithStyles(ForwardRef(ListItemAvatar))>
+        <WithStyles(ForwardRef(Avatar))
+          alt="Avatar"
+          src="http://localhostundefined"
+        />
+      </WithStyles(ForwardRef(ListItemAvatar))>
+      <WithStyles(ForwardRef(ListItemText))
+        secondary=" 13:00-14:00 at Budapest"
+      />
+    </WithStyles(ForwardRef(ListItem))>
+  </div>
+</WithStyles(ForwardRef(List))>
+`;

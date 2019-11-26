@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditPropertiesDialogBody EditPropertiesDialogBody snapshot 1`] = `
+<Component
+  idOrPath={135121}
+  oDataOptions={
+    Object {
+      "select": "all",
+    }
+  }
+>
+  <ContextConsumer>
+    <Component />
+  </ContextConsumer>
+</Component>
+`;
