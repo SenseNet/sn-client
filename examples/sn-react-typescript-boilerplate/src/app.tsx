@@ -17,7 +17,7 @@ export const App: React.FunctionComponent = () => {
         alignItems: 'center',
         justifyContent: 'center',
         width: '100%',
-        height: '100%',
+        height: '100vh',
         flexDirection: 'column',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
@@ -26,11 +26,17 @@ export const App: React.FunctionComponent = () => {
       }}>
       <CssBaseline />
       <Typography variant="h3" gutterBottom>
-        Hello, {usr.Name} 😎
+        Hello, {usr.Name}{' '}
+        <span role="img" aria-label="Smiling Face With Sunglasses">
+          😎
+        </span>
       </Typography>
       <Tooltip title="Return to the Login screen and select another repository">
         <Button variant="outlined" color="primary" onClick={() => repo.authentication.logout()}>
-          Log out 🚪
+          Log out{' '}
+          <span role="img" aria-label="Door">
+            🚪
+          </span>
         </Button>
       </Tooltip>
     </div>
