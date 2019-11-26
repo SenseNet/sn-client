@@ -145,7 +145,7 @@ class ShareDialog extends React.Component<
     this.props.closeCallback && this.props.closeCallback()
     this.state.sharedWithValues
       .filter(v => !v.isSaved)
-      .map(v => {
+      .forEach(v => {
         this.props.currentContent && this.props.share(this.props.currentContent.Id, v.value, v.type, 'Private')
       })
     this.setState({

@@ -100,11 +100,11 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
       const allowedTypes = this.props.settings.AllowedTypes || ['GenericContent']
 
       let pathQuery = ''
-      selectionRoot.map((selectionPath, index) => {
+      selectionRoot.forEach((selectionPath, index) => {
         pathQuery += index === 0 ? `InTree:${selectionPath}` : `OR InTree:${selectionPath}`
       })
       let typeQuery = ''
-      allowedTypes.map(type => {
+      allowedTypes.forEach(type => {
         typeQuery += ` +TypeIs:${type}`
       })
 

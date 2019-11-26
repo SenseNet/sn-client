@@ -26,6 +26,7 @@ export class ControlMapper<TControlBaseType, TFieldControlBaseType> {
   private getTypeSchema(contentTypeName: string, actionName: ActionName): Schema {
     const schema = this.repository.schemas.getSchemaByName(contentTypeName)
 
+    // eslint-disable-next-line array-callback-return
     schema.FieldSettings = schema.FieldSettings.filter(s => {
       if (
         (contentTypeName === 'Folder' && s.Name === 'AllowedChildTypes') ||

@@ -23,6 +23,7 @@ export const FullScreenLoader: React.FunctionComponent<FullScreenLoaderProps> = 
           margin: 'auto',
           filter: 'drop-shadow(0px 0px 5px white) drop-shadow(0px 0px 3px white) drop-shadow(0px 0px 15px white)',
         }}
+        alt="Full screen loader"
         src={fullScreenLoader}
       />
     </div>

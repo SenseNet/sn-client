@@ -1,7 +1,7 @@
 import Quill from 'quill'
+import QuillOEmbedModule from '../src/fieldcontrols/RichTextEditor/QuillOEmbedModule'
 import MutationObserver = require('./polyfills/MutationObserver')
 import getSelection = require('./polyfills/getSelection')
-import QuillOEmbedModule from '../src/fieldcontrols/RichTextEditor/QuillOEmbedModule'
 
 const richHtml = '<a href="https://example.com">Example</a>'
 const imageUrl = 'https://example.com'

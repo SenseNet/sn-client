@@ -35,6 +35,7 @@ exports[`Document Viewer Loading component should render without crashing 1`] = 
     }
   >
     <img
+      alt="Loader"
       src=""
     />
     <WithStyles(ForwardRef(Typography))
