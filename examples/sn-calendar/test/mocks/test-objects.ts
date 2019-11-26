@@ -4,8 +4,8 @@ export const CalendarTestEvent = {
   Path: '/Root/Content',
   Type: 'event type',
   Location: 'Budapest',
-  StartDate: new Date('2019.01.01 13:00').toISOString(),
-  EndDate: new Date('2019.01.01 14:00').toISOString(),
+  StartDate: '2019-01-01T12:00:00.000Z',
+  EndDate: '2019-01-01T13:00:00.000Z',
   AllDay: false,
   Description: 'Event description',
   CreatedBy: {
@@ -20,8 +20,8 @@ export const CalendarTestEventAllDay = {
   Path: '/Root/Content',
   Type: 'event type',
   Location: 'Veszprém',
-  StartDate: new Date('2019.01.01 13:00').toISOString(),
-  EndDate: new Date('2019.01.01 14:00').toISOString(),
+  StartDate: '2019-01-01T12:00:00.000Z',
+  EndDate: '2019-01-01T13:00:00.000Z',
   AllDay: true,
   Description: 'All Event description',
   CreatedBy: {
