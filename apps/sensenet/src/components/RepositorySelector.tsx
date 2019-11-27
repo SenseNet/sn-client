@@ -58,7 +58,7 @@ export const RepositorySelectorComponent: React.FunctionComponent<RouteComponent
         }}
         variant="h5">
         <Link to="/">
-          <img src={logo} style={{ marginRight: '.5em', filter: 'drop-shadow(0px 0px 3px black)' }} />
+          <img src={logo} style={{ marginRight: '.5em', filter: 'drop-shadow(0px 0px 3px black)' }} alt="logo" />
         </Link>
         <Link
           to={`/${btoa(lastRepositoryUrl)}`}
@@ -91,6 +91,7 @@ export const RepositorySelectorComponent: React.FunctionComponent<RouteComponent
         }}>
         <img
           src={logo}
+          alt="logo"
           style={{
             filter: 'grayscale() brightness(1.4) drop-shadow(black 0px 0px 3px)',
             transform: 'scale(0.75)',

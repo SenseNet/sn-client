@@ -38,7 +38,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
     setLocalization(localizations[props.operation])
   }, [localizations, props.operation])
 
-  if (!parent || !props.content.length) {
+  if (!props.content.length) {
     return null
   }
 

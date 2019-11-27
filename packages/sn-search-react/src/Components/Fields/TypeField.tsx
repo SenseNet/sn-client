@@ -71,7 +71,7 @@ export class TypeField extends Component<TypeFieldProps, TypeFieldState> {
     const values = (ev.target.value as any) as string[]
     const selected = this.props.types.filter(typeName => values.indexOf(typeName.name) > -1)
     const query = new Query(q => {
-      selected.map((contentType, currentIndex) => {
+      selected.forEach((contentType, currentIndex) => {
         const { queryRef } = q
         new QueryExpression(queryRef).typeIs(contentType)
         if (currentIndex < selected.length - 1) {

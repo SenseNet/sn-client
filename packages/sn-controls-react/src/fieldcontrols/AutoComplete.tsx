@@ -20,7 +20,7 @@ export const AutoComplete: React.FC<ReactClientFieldSetting<ReferenceFieldSettin
 
       new QueryOperators(fetchQuery).and.query(q2 => {
         props.settings.AllowedTypes &&
-          props.settings.AllowedTypes.map((allowedType, index, array) => {
+          props.settings.AllowedTypes.forEach((allowedType, index, array) => {
             new QueryExpression(q2.queryRef).term(`TypeIs:${allowedType}`)
             if (index < array.length - 1) {
               return new QueryOperators(q2.queryRef).or

@@ -109,7 +109,7 @@ class BatchActionlist extends React.Component<
     }
     const optionList: ActionModel[] = []
     if (lastState.actions.length !== newProps.actions.length) {
-      newProps.actions.map((action, index) => {
+      newProps.actions.forEach((action, index) => {
         if (index > 1) {
           optionList.push(action)
         }
@@ -232,7 +232,7 @@ class BatchActionlist extends React.Component<
           ) : (
             <IconButton
               aria-label="Actions"
-              aria-owns={open ? 'batch-actions' : ''}
+              aria-owns={'batch-actions'}
               aria-haspopup="true"
               onClick={e => this.handleClickMobile(e)}
               style={{ height: 36 }}>

@@ -136,24 +136,22 @@ export class ShapeRedaction extends ShapeComponent {
 
   /** renders the Shape component */
   public renderShape() {
-    {
-      return (
-        <div
-          tabIndex={0}
-          draggable={this.props.canEdit}
-          onDragStart={this.state.onDragStart}
-          key={`r-${this.props.shape.h}-${this.props.shape.w}`}
-          onMouseUp={this.state.onResized}
-          style={{
-            ...this.getShapeDimensions(this.props.shape),
-            resize: this.props.canEdit ? 'both' : 'none',
-            position: 'absolute',
-            overflow: 'auto',
-            backgroundColor: 'black',
-          }}
-        />
-      )
-    }
+    return (
+      <div
+        tabIndex={0}
+        draggable={this.props.canEdit}
+        onDragStart={this.state.onDragStart}
+        key={`r-${this.props.shape.h}-${this.props.shape.w}`}
+        onMouseUp={this.state.onResized}
+        style={{
+          ...this.getShapeDimensions(this.props.shape),
+          resize: this.props.canEdit ? 'both' : 'none',
+          position: 'absolute',
+          overflow: 'auto',
+          backgroundColor: 'black',
+        }}
+      />
+    )
   }
 }
 
@@ -177,53 +175,51 @@ export class ShapeAnnotation extends ShapeComponent<Annotation> {
 
   /** renders the Shape component */
   public renderShape() {
-    {
-      return (
-        <div>
+    return (
+      <div>
+        <div
+          onKeyUp={ev => this.handleKeyPress(ev)}
+          tabIndex={0}
+          draggable={this.props.canEdit}
+          onDragStart={this.state.onDragStart}
+          onMouseUp={this.state.onResized}
+          style={{
+            ...this.getShapeDimensions(this.props.shape, 0, 0),
+            position: 'absolute',
+            resize: this.props.canEdit ? 'both' : 'none',
+            overflow: 'hidden',
+            backgroundColor: 'blanchedalmond',
+            lineHeight: `${this.props.shape.lineHeight * this.props.zoomRatio}pt`,
+            fontWeight: this.props.shape.fontBold as any,
+            color: this.props.shape.fontColor,
+            fontFamily: this.props.shape.fontFamily,
+            fontSize: parseFloat(this.props.shape.fontSize.replace('pt', '')) * this.props.zoomRatio,
+            fontStyle: this.props.shape.fontItalic as any,
+            boxShadow: `${5 * this.props.zoomRatio}px ${5 * this.props.zoomRatio}px ${15 *
+              this.props.zoomRatio}px rgba(0,0,0,.3)`,
+            padding: `${10 * this.props.zoomRatio}pt`,
+            boxSizing: 'border-box',
+          }}>
           <div
-            onKeyUp={ev => this.handleKeyPress(ev)}
-            tabIndex={0}
-            draggable={this.props.canEdit}
-            onDragStart={this.state.onDragStart}
-            onMouseUp={this.state.onResized}
-            style={{
-              ...this.getShapeDimensions(this.props.shape, 0, 0),
-              position: 'absolute',
-              resize: this.props.canEdit ? 'both' : 'none',
-              overflow: 'hidden',
-              backgroundColor: 'blanchedalmond',
-              lineHeight: `${this.props.shape.lineHeight * this.props.zoomRatio}pt`,
-              fontWeight: this.props.shape.fontBold as any,
-              color: this.props.shape.fontColor,
-              fontFamily: this.props.shape.fontFamily,
-              fontSize: parseFloat(this.props.shape.fontSize.replace('pt', '')) * this.props.zoomRatio,
-              fontStyle: this.props.shape.fontItalic as any,
-              boxShadow: `${5 * this.props.zoomRatio}px ${5 * this.props.zoomRatio}px ${15 *
-                this.props.zoomRatio}px rgba(0,0,0,.3)`,
-              padding: `${10 * this.props.zoomRatio}pt`,
-              boxSizing: 'border-box',
-            }}>
-            <div
-              style={{ width: '100%', height: '100%', overflow: 'auto' }}
-              contentEditable={this.props.canEdit ? ('plaintext-only' as any) : false}
-              suppressContentEditableWarning={true}>
-              {this.props.shape.text}
-            </div>
-            {this.state.focused ? (
-              <div style={{ position: 'relative', top: `-${64 * this.props.zoomRatio}px` }}>
-                <IconButton>
-                  <Delete
-                    style={{ color: 'black' }}
-                    scale={this.props.zoomRatio}
-                    onMouseUp={() => this.props.removeShape(this.shapeType, this.props.shape.guid)}
-                  />
-                </IconButton>
-              </div>
-            ) : null}
+            style={{ width: '100%', height: '100%', overflow: 'auto' }}
+            contentEditable={this.props.canEdit ? ('plaintext-only' as any) : false}
+            suppressContentEditableWarning={true}>
+            {this.props.shape.text}
           </div>
+          {this.state.focused ? (
+            <div style={{ position: 'relative', top: `-${64 * this.props.zoomRatio}px` }}>
+              <IconButton>
+                <Delete
+                  style={{ color: 'black' }}
+                  scale={this.props.zoomRatio}
+                  onMouseUp={() => this.props.removeShape(this.shapeType, this.props.shape.guid)}
+                />
+              </IconButton>
+            </div>
+          ) : null}
         </div>
-      )
-    }
+      </div>
+    )
   }
 }
 
@@ -233,24 +229,22 @@ export class ShapeHighlight extends ShapeComponent {
 
   /** renders the Highlight shape component */
   public renderShape() {
-    {
-      return (
-        <div
-          tabIndex={0}
-          draggable={this.props.canEdit}
-          onDragStart={this.state.onDragStart}
-          onMouseUp={this.state.onResized}
-          style={{
-            ...this.getShapeDimensions(this.props.shape),
-            position: 'absolute',
-            resize: this.props.canEdit ? 'both' : 'none',
-            overflow: 'auto',
-            backgroundColor: 'yellow',
-            opacity: 0.5,
-            // userFocus: 'all',
-          }}
-        />
-      )
-    }
+    return (
+      <div
+        tabIndex={0}
+        draggable={this.props.canEdit}
+        onDragStart={this.state.onDragStart}
+        onMouseUp={this.state.onResized}
+        style={{
+          ...this.getShapeDimensions(this.props.shape),
+          position: 'absolute',
+          resize: this.props.canEdit ? 'both' : 'none',
+          overflow: 'auto',
+          backgroundColor: 'yellow',
+          opacity: 0.5,
+          // userFocus: 'all',
+        }}
+      />
+    )
   }
 }

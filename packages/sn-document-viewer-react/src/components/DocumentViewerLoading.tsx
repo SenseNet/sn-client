@@ -31,7 +31,7 @@ export const DocumentViewerLoading: React.FC<DocumentViewerLoadingProps> = props
           maxWidth: 500,
           margin: '.5em 0 .6em 0',
         }}>
-        <img src={props.image} />
+        <img src={props.image} alt="Loader" />
         <Typography variant="h5" color="textSecondary" align="center" style={{ fontWeight: 'bolder' }}>
           {localization.loadingDocument}
         </Typography>

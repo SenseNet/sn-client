@@ -1,7 +1,6 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Paper from '@material-ui/core/Paper'
-import React = require('react')
-import { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { ImageUtil } from '../services'
 import { ZoomMode } from '../models/viewer-state'
 import { useCommentState, usePreviewImage, useViewerState } from '../hooks'
@@ -184,6 +183,7 @@ export const Page: React.FC<PageProps> = props => {
           {imgUrl ? (
             <img
               src={`${imgUrl}${viewerState.showWatermark ? '?watermark=true' : ''}`}
+              alt=""
               style={{
                 transition: 'transform .1s ease-in-out',
                 width: `${100 * boundingBox.zoomRatio}%`,

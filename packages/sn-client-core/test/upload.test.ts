@@ -91,7 +91,7 @@ describe('Upload', () => {
         async () =>
           ({
             json: async () => {
-              throw 'error'
+              throw new Error('error')
             },
           } as any),
       )
