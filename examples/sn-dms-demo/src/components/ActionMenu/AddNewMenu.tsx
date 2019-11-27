@@ -58,7 +58,7 @@ class AddNewMenu extends React.Component<
     const optionList: ActionModel[] = []
     const folderList: ActionModel[] = []
     if (lastState.addNewOptions.length !== newProps.actions.length) {
-      newProps.actions.map((action: CallableActionModel) => {
+      newProps.actions.forEach((action: CallableActionModel) => {
         const contentType = action.Url.includes('ContentType') ? getContentTypeFromUrl(action.Url) : null
         const extension = contentType && contentType.indexOf('File') > -1 ? getExtensionFromUrl(action.Url) : null
         const displayName =

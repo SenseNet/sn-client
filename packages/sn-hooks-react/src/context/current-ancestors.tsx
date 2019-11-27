@@ -67,7 +67,7 @@ export const CurrentAncestorsProvider: React.FunctionComponent<CurrentAncestorsP
     ;(async () => {
       try {
         await loadLock.acquire()
-        if ((props.root && currentContent.Id === props.root) || currentContent.Path == props.root) {
+        if ((props.root && currentContent.Id === props.root) || currentContent.Path === props.root) {
           setAncestors([])
         } else {
           const ancestorsResult = await repo.executeAction<undefined, ODataCollectionResponse<GenericContent>>({

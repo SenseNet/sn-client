@@ -11,6 +11,7 @@ declare global {
   }
 }
 
+// eslint-disable-next-line no-extend-native
 Error.prototype.toJSON = function() {
   return getErrorObject(this)
 }

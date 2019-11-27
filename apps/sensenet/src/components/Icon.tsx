@@ -92,6 +92,7 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
         <img
           width={(options.style && options.style.width) || 32}
           height={(options.style && options.style.width) || 32}
+          alt=""
           src={PathHelper.joinPaths(
             options.repo.configuration.repositoryUrl,
             item.Path,

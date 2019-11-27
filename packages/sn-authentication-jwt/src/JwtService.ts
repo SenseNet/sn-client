@@ -19,7 +19,7 @@ export class JwtService implements AuthenticationService {
     return s
   }
 
-  private readonly jwtTokenKeyTemplate: string = 'sn-${siteName}-${tokenName}'
+  private readonly jwtTokenKeyTemplate: string = 'sn-{siteName}-{tokenName}'
 
   /**
    * Disposes the service, the state and currentUser observables

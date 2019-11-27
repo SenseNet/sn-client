@@ -5,6 +5,7 @@ import Tab from '@material-ui/core/Tab'
 import Tabs from '@material-ui/core/Tabs'
 import React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router-dom'
+import { resources } from '../assets/resources'
 
 const styles = {
   tabLink: {
@@ -27,13 +28,11 @@ const style = () =>
     },
   })
 
-import { resources } from '../assets/resources'
-
 export class LoginTabs extends React.Component<RouteComponentProps<any> & { classes: any }, { value: number }> {
   constructor(props: LoginTabs['props']) {
     super(props)
     this.state = {
-      value: location.href.indexOf('login') !== -1 ? 0 : 1,
+      value: window.location.href.indexOf('login') !== -1 ? 0 : 1,
     }
     this.handleChange = this.handleChange.bind(this)
   }

@@ -13,7 +13,6 @@ const SearchComponent = lazy(async () => await import(/* webpackChunkName: "sear
 const SavedQueriesComponent = lazy(
   async () => await import(/* webpackChunkName: "saved-queries" */ './search/saved-queries'),
 )
-const IamComponent = lazy(async () => await import(/* webpackChunkName: "iam" */ './iam'))
 const SetupComponent = lazy(async () => await import(/* webpackChunkName: "setup" */ './setup'))
 
 const LoginComponent = lazy(async () => await import(/* webpackChunkName: "Login" */ './login/Login'))
@@ -116,12 +115,6 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
                             <SavedQueriesComponent />
                           </LoadSettingsContextProvider>
                         )
-                      }}
-                    />
-                    <Route
-                      path="/:repo/iam"
-                      render={() => {
-                        return <IamComponent />
                       }}
                     />
                     <Route

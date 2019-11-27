@@ -52,7 +52,7 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
 
   const logger = useLogger('CopyDialog')
 
-  if (!parent || !props.content.length) {
+  if (!props.content.length) {
     return null
   }
 
