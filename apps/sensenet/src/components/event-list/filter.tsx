@@ -79,7 +79,7 @@ export const Filter: React.FunctionComponent<{ style?: React.CSSProperties }> = 
         }}
         title={localization.clear}
         onClick={() => {
-          if (confirm(localization.confirmClear)) {
+          if (window.confirm(localization.confirmClear)) {
             service.clear()
           }
         }}>

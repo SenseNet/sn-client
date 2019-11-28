@@ -106,9 +106,9 @@ export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogPro
                         : localization.deleteSingleContentFailedNotification
                             .replace(
                               '{0}',
-                              (props.content.find(c => c.Id == result.d.errors[0].content.Id) as GenericContent)
+                              (props.content.find(c => c.Id === result.d.errors[0].content.Id) as GenericContent)
                                 .DisplayName ||
-                                (props.content.find(c => c.Id == result.d.errors[0].content.Id) as GenericContent)
+                                (props.content.find(c => c.Id === result.d.errors[0].content.Id) as GenericContent)
                                   .Name ||
                                 result.d.errors[0].content.Name,
                             )

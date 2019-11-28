@@ -120,7 +120,7 @@ export class ReferenceField<T extends GenericContent = GenericContent> extends R
 
     if (this.props.fieldSetting.AllowedTypes) {
       new QueryOperators(query).and.query(q2 => {
-        ;(this.props.fieldSetting.AllowedTypes as string[]).map((allowedType, index, array) => {
+        ;(this.props.fieldSetting.AllowedTypes as string[]).forEach((allowedType, index, array) => {
           new QueryExpression(q2.queryRef).term(`TypeIs:${allowedType}`)
           if (index < array.length - 1) {
             return new QueryOperators(q2.queryRef).or

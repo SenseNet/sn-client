@@ -59,8 +59,8 @@ export const PageList: React.FC<PageListProps> = props => {
   }, [onScroll, viewportElement])
 
   useEffect(() => {
-    addEventListener('resize', requestResize)
-    return () => removeEventListener('resize', requestResize)
+    window.addEventListener('resize', requestResize)
+    return () => window.removeEventListener('resize', requestResize)
   }, [requestResize])
 
   useEffect(() => {

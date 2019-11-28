@@ -29,7 +29,7 @@ interface ReferencePickerProps {
 
 const createTypeFilterString = (allowedTypes: string[]) => {
   let filterString = "(isOf('Folder') and not isOf('SystemFolder'))"
-  allowedTypes.map((typeName: string) => {
+  allowedTypes.forEach((typeName: string) => {
     if (typeName !== 'Folder') {
       filterString += ` or isOf('${typeName}')`
     }

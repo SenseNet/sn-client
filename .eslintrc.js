@@ -2,6 +2,7 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
+    'react-app',
     'plugin:react/recommended',
     'plugin:cypress/recommended',
     'plugin:import/recommended',
