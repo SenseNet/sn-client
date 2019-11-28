@@ -24,7 +24,13 @@ exports[`Layout Matches snapshot 1`] = `
   >
     Hello, 
     Visitor
-     😎
+     
+    <span
+      aria-label="sunglass"
+      role="img"
+    >
+      😎
+    </span>
   </WithStyles(ForwardRef(Typography))>
   <WithStyles(ForwardRef(Tooltip))
     title="Return to the Login screen and select another repository"
@@ -34,7 +40,13 @@ exports[`Layout Matches snapshot 1`] = `
       onClick={[Function]}
       variant="outlined"
     >
-      Log out 🚪
+      Log out
+      <span
+        aria-label="sunglass"
+        role="img"
+      >
+        🚪
+      </span>
     </WithStyles(ForwardRef(Button))>
   </WithStyles(ForwardRef(Tooltip))>
 </div>
