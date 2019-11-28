@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App Layout Matches snapshot 1`] = `
+<div
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundImage": "url(sensenet_logo_transparent.png)",
+      "backgroundPosition": "center",
+      "backgroundRepeat": "no-repeat",
+      "backgroundSize": "auto",
+      "display": "flex",
+      "flexDirection": "column",
+      "height": "auto",
+      "justifyContent": "center",
+      "width": "100%",
+    }
+  }
+>
+  <CssBaseline />
+  <Component
+    imgList={Array []}
+    openFunction={[Function]}
+  />
+  <Component
+    closeFunction={[Function]}
+    imgList={Array []}
+    isopen={false}
+    openedImg={
+      Object {
+        "imgAuthor": "",
+        "imgAuthorAvatar": "",
+        "imgCreationDate": "",
+        "imgDescription": "",
+        "imgDownloadUrl": "",
+        "imgIndex": 0,
+        "imgPath": "",
+        "imgSize": "",
+        "imgTitle": "",
+      }
+    }
+    steppingFunction={[Function]}
+  />
+</div>
+`;
+
+exports[`App Layout Transition snapshot 1`] = `
+<ForwardRef(Slide)
+  direction="up"
+/>
+`;
