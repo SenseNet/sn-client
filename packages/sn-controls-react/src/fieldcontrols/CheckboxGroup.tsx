@@ -41,12 +41,7 @@ export const CheckboxGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>
     setState(newState)
     props.fieldOnChange?.(
       props.settings.Name,
-      newState.map(item => {
-        if (item.Selected) {
-          return item.Value
-        }
-        return
-      }),
+      newState.filter(item => item.Selected),
     )
   }
 
