@@ -510,6 +510,10 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                           >
                             <WithStyles(ForwardRef(FormControl))
                               className="MuiTextField-root"
+                              color="primary"
+                              disabled={false}
+                              error={false}
+                              fullWidth={false}
                               required={true}
                               style={
                                 Object {
@@ -528,6 +532,10 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                     "root": "MuiFormControl-root",
                                   }
                                 }
+                                color="primary"
+                                disabled={false}
+                                error={false}
+                                fullWidth={false}
                                 required={true}
                                 style={
                                   Object {
@@ -588,6 +596,7 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                           classes={
                                             Object {
                                               "asterisk": "MuiFormLabel-asterisk MuiInputLabel-asterisk",
+                                              "colorSecondary": "MuiFormLabel-colorSecondary",
                                               "disabled": "Mui-disabled Mui-disabled",
                                               "error": "Mui-error Mui-error",
                                               "filled": "MuiFormLabel-filled",
@@ -619,6 +628,8 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                     </ForwardRef(InputLabel)>
                                   </WithStyles(ForwardRef(InputLabel))>
                                   <WithStyles(ForwardRef(Input))
+                                    autoFocus={false}
+                                    fullWidth={false}
                                     id="DisplayName"
                                     multiline={true}
                                     onChange={[Function]}
@@ -627,8 +638,10 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                     value=""
                                   >
                                     <ForwardRef(Input)
+                                      autoFocus={false}
                                       classes={
                                         Object {
+                                          "colorSecondary": "MuiInput-colorSecondary",
                                           "disabled": "Mui-disabled",
                                           "error": "Mui-error",
                                           "focused": "Mui-focused",
@@ -643,6 +656,7 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                           "underline": "MuiInput-underline",
                                         }
                                       }
+                                      fullWidth={false}
                                       id="DisplayName"
                                       multiline={true}
                                       onChange={[Function]}
@@ -651,8 +665,10 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                       value=""
                                     >
                                       <WithStyles(ForwardRef(InputBase))
+                                        autoFocus={false}
                                         classes={
                                           Object {
+                                            "colorSecondary": "MuiInput-colorSecondary",
                                             "disabled": "Mui-disabled",
                                             "error": "Mui-error",
                                             "focused": "Mui-focused",
@@ -678,10 +694,12 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                         value=""
                                       >
                                         <ForwardRef(InputBase)
+                                          autoFocus={false}
                                           classes={
                                             Object {
                                               "adornedEnd": "MuiInputBase-adornedEnd",
                                               "adornedStart": "MuiInputBase-adornedStart",
+                                              "colorSecondary": "MuiInputBase-colorSecondary MuiInput-colorSecondary",
                                               "disabled": "Mui-disabled Mui-disabled",
                                               "error": "Mui-error Mui-error",
                                               "focused": "Mui-focused Mui-focused",
@@ -716,6 +734,7 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                           >
                                             <ForwardRef(TextareaAutosize)
                                               aria-invalid={false}
+                                              autoFocus={false}
                                               className="MuiInputBase-input MuiInput-input MuiInputBase-inputMultiline MuiInput-inputMultiline"
                                               disabled={false}
                                               id="DisplayName"
@@ -730,6 +749,7 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                             >
                                               <textarea
                                                 aria-invalid={false}
+                                                autoFocus={false}
                                                 className="MuiInputBase-input MuiInput-input MuiInputBase-inputMultiline MuiInput-inputMultiline"
                                                 disabled={false}
                                                 id="DisplayName"
@@ -933,6 +953,10 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                           >
                             <WithStyles(ForwardRef(FormControl))
                               className="MuiTextField-root"
+                              color="primary"
+                              disabled={false}
+                              error={false}
+                              fullWidth={false}
                               required={true}
                               style={
                                 Object {
@@ -951,6 +975,10 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                     "root": "MuiFormControl-root",
                                   }
                                 }
+                                color="primary"
+                                disabled={false}
+                                error={false}
+                                fullWidth={false}
                                 required={true}
                                 style={
                                   Object {
@@ -1011,6 +1039,7 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                           classes={
                                             Object {
                                               "asterisk": "MuiFormLabel-asterisk MuiInputLabel-asterisk",
+                                              "colorSecondary": "MuiFormLabel-colorSecondary",
                                               "disabled": "Mui-disabled Mui-disabled",
                                               "error": "Mui-error Mui-error",
                                               "filled": "MuiFormLabel-filled",
@@ -1042,6 +1071,8 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                     </ForwardRef(InputLabel)>
                                   </WithStyles(ForwardRef(InputLabel))>
                                   <WithStyles(ForwardRef(Input))
+                                    autoFocus={false}
+                                    fullWidth={false}
                                     id="Description"
                                     multiline={true}
                                     onChange={[Function]}
@@ -1050,8 +1081,10 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                     value=""
                                   >
                                     <ForwardRef(Input)
+                                      autoFocus={false}
                                       classes={
                                         Object {
+                                          "colorSecondary": "MuiInput-colorSecondary",
                                           "disabled": "Mui-disabled",
                                           "error": "Mui-error",
                                           "focused": "Mui-focused",
@@ -1066,6 +1099,7 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                           "underline": "MuiInput-underline",
                                         }
                                       }
+                                      fullWidth={false}
                                       id="Description"
                                       multiline={true}
                                       onChange={[Function]}
@@ -1074,8 +1108,10 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                       value=""
                                     >
                                       <WithStyles(ForwardRef(InputBase))
+                                        autoFocus={false}
                                         classes={
                                           Object {
+                                            "colorSecondary": "MuiInput-colorSecondary",
                                             "disabled": "Mui-disabled",
                                             "error": "Mui-error",
                                             "focused": "Mui-focused",
@@ -1101,10 +1137,12 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                         value=""
                                       >
                                         <ForwardRef(InputBase)
+                                          autoFocus={false}
                                           classes={
                                             Object {
                                               "adornedEnd": "MuiInputBase-adornedEnd",
                                               "adornedStart": "MuiInputBase-adornedStart",
+                                              "colorSecondary": "MuiInputBase-colorSecondary MuiInput-colorSecondary",
                                               "disabled": "Mui-disabled Mui-disabled",
                                               "error": "Mui-error Mui-error",
                                               "focused": "Mui-focused Mui-focused",
@@ -1139,6 +1177,7 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                           >
                                             <ForwardRef(TextareaAutosize)
                                               aria-invalid={false}
+                                              autoFocus={false}
                                               className="MuiInputBase-input MuiInput-input MuiInputBase-inputMultiline MuiInput-inputMultiline"
                                               disabled={false}
                                               id="Description"
@@ -1153,6 +1192,7 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                             >
                                               <textarea
                                                 aria-invalid={false}
+                                                autoFocus={false}
                                                 className="MuiInputBase-input MuiInput-input MuiInputBase-inputMultiline MuiInput-inputMultiline"
                                                 disabled={false}
                                                 id="Description"
@@ -1710,12 +1750,9 @@ exports[`The main memo panel instance should renders correctly 1`] = `
             >
               <WithStyles(ForwardRef(ExpansionPanelSummary))
                 aria-controls="panel1bh-content"
-                disabled={false}
                 expandIcon={<Memo(ExpandMoreIcon) />}
-                expanded={false}
                 id="panel1bh-header"
                 key=".0"
-                onChange={[Function]}
               >
                 <ForwardRef(ExpansionPanelSummary)
                   aria-controls="panel1bh-content"
@@ -1729,11 +1766,8 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                       "root": "MuiExpansionPanelSummary-root",
                     }
                   }
-                  disabled={false}
                   expandIcon={<Memo(ExpandMoreIcon) />}
-                  expanded={false}
                   id="panel1bh-header"
-                  onChange={[Function]}
                 >
                   <WithStyles(ForwardRef(ButtonBase))
                     aria-controls="panel1bh-content"
@@ -2365,14 +2399,14 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                               >
                                                 <Root
                                                   className=""
-                                                  key="root-1-1"
+                                                  key="root-1-1-0"
                                                 >
                                                   <p
-                                                    key="paragraph-1-1"
+                                                    key="paragraph-1-1-0"
                                                   >
                                                     <TextRenderer
-                                                      key="text-1-1"
-                                                      nodeKey="text-1-1"
+                                                      key="text-1-1-0"
+                                                      nodeKey="text-1-1-0"
                                                       value="This is a test memo description"
                                                     >
                                                       This is a test memo description
@@ -2417,6 +2451,10 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                                 >
                                                   <WithStyles(ForwardRef(FormControl))
                                                     className="MuiTextField-root"
+                                                    color="primary"
+                                                    disabled={false}
+                                                    error={false}
+                                                    fullWidth={false}
                                                     required={false}
                                                     style={
                                                       Object {
@@ -2436,6 +2474,10 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                                           "root": "MuiFormControl-root",
                                                         }
                                                       }
+                                                      color="primary"
+                                                      disabled={false}
+                                                      error={false}
+                                                      fullWidth={false}
                                                       required={false}
                                                       style={
                                                         Object {
@@ -2455,6 +2497,8 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                                         }
                                                       >
                                                         <WithStyles(ForwardRef(Input))
+                                                          autoFocus={false}
+                                                          fullWidth={false}
                                                           id="321321"
                                                           multiline={true}
                                                           onChange={[Function]}
@@ -2464,8 +2508,10 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                                           value=""
                                                         >
                                                           <ForwardRef(Input)
+                                                            autoFocus={false}
                                                             classes={
                                                               Object {
+                                                                "colorSecondary": "MuiInput-colorSecondary",
                                                                 "disabled": "Mui-disabled",
                                                                 "error": "Mui-error",
                                                                 "focused": "Mui-focused",
@@ -2480,6 +2526,7 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                                                 "underline": "MuiInput-underline",
                                                               }
                                                             }
+                                                            fullWidth={false}
                                                             id="321321"
                                                             multiline={true}
                                                             onChange={[Function]}
@@ -2489,8 +2536,10 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                                             value=""
                                                           >
                                                             <WithStyles(ForwardRef(InputBase))
+                                                              autoFocus={false}
                                                               classes={
                                                                 Object {
+                                                                  "colorSecondary": "MuiInput-colorSecondary",
                                                                   "disabled": "Mui-disabled",
                                                                   "error": "Mui-error",
                                                                   "focused": "Mui-focused",
@@ -2517,10 +2566,12 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                                               value=""
                                                             >
                                                               <ForwardRef(InputBase)
+                                                                autoFocus={false}
                                                                 classes={
                                                                   Object {
                                                                     "adornedEnd": "MuiInputBase-adornedEnd",
                                                                     "adornedStart": "MuiInputBase-adornedStart",
+                                                                    "colorSecondary": "MuiInputBase-colorSecondary MuiInput-colorSecondary",
                                                                     "disabled": "Mui-disabled Mui-disabled",
                                                                     "error": "Mui-error Mui-error",
                                                                     "focused": "Mui-focused Mui-focused",
@@ -2556,6 +2607,7 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                                                 >
                                                                   <ForwardRef(TextareaAutosize)
                                                                     aria-invalid={false}
+                                                                    autoFocus={false}
                                                                     className="MuiInputBase-input MuiInput-input MuiInputBase-inputMultiline MuiInput-inputMultiline"
                                                                     disabled={false}
                                                                     id="321321"
@@ -2571,6 +2623,7 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                                                   >
                                                                     <textarea
                                                                       aria-invalid={false}
+                                                                      autoFocus={false}
                                                                       className="MuiInputBase-input MuiInput-input MuiInputBase-inputMultiline MuiInput-inputMultiline"
                                                                       disabled={false}
                                                                       id="321321"
@@ -3398,12 +3451,9 @@ exports[`The main memo panel instance should renders correctly 1`] = `
             >
               <WithStyles(ForwardRef(ExpansionPanelSummary))
                 aria-controls="panel1bh-content"
-                disabled={false}
                 expandIcon={<Memo(ExpandMoreIcon) />}
-                expanded={false}
                 id="panel1bh-header"
                 key=".0"
-                onChange={[Function]}
               >
                 <ForwardRef(ExpansionPanelSummary)
                   aria-controls="panel1bh-content"
@@ -3417,11 +3467,8 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                       "root": "MuiExpansionPanelSummary-root",
                     }
                   }
-                  disabled={false}
                   expandIcon={<Memo(ExpandMoreIcon) />}
-                  expanded={false}
                   id="panel1bh-header"
-                  onChange={[Function]}
                 >
                   <WithStyles(ForwardRef(ButtonBase))
                     aria-controls="panel1bh-content"
@@ -4053,14 +4100,14 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                               >
                                                 <Root
                                                   className=""
-                                                  key="root-1-1"
+                                                  key="root-1-1-0"
                                                 >
                                                   <p
-                                                    key="paragraph-1-1"
+                                                    key="paragraph-1-1-0"
                                                   >
                                                     <TextRenderer
-                                                      key="text-1-1"
-                                                      nodeKey="text-1-1"
+                                                      key="text-1-1-0"
+                                                      nodeKey="text-1-1-0"
                                                       value="This is a very beautiful test memo description"
                                                     >
                                                       This is a very beautiful test memo description
@@ -4105,6 +4152,10 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                                 >
                                                   <WithStyles(ForwardRef(FormControl))
                                                     className="MuiTextField-root"
+                                                    color="primary"
+                                                    disabled={false}
+                                                    error={false}
+                                                    fullWidth={false}
                                                     required={false}
                                                     style={
                                                       Object {
@@ -4124,6 +4175,10 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                                           "root": "MuiFormControl-root",
                                                         }
                                                       }
+                                                      color="primary"
+                                                      disabled={false}
+                                                      error={false}
+                                                      fullWidth={false}
                                                       required={false}
                                                       style={
                                                         Object {
@@ -4143,6 +4198,8 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                                         }
                                                       >
                                                         <WithStyles(ForwardRef(Input))
+                                                          autoFocus={false}
+                                                          fullWidth={false}
                                                           id="846542"
                                                           multiline={true}
                                                           onChange={[Function]}
@@ -4152,8 +4209,10 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                                           value=""
                                                         >
                                                           <ForwardRef(Input)
+                                                            autoFocus={false}
                                                             classes={
                                                               Object {
+                                                                "colorSecondary": "MuiInput-colorSecondary",
                                                                 "disabled": "Mui-disabled",
                                                                 "error": "Mui-error",
                                                                 "focused": "Mui-focused",
@@ -4168,6 +4227,7 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                                                 "underline": "MuiInput-underline",
                                                               }
                                                             }
+                                                            fullWidth={false}
                                                             id="846542"
                                                             multiline={true}
                                                             onChange={[Function]}
@@ -4177,8 +4237,10 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                                             value=""
                                                           >
                                                             <WithStyles(ForwardRef(InputBase))
+                                                              autoFocus={false}
                                                               classes={
                                                                 Object {
+                                                                  "colorSecondary": "MuiInput-colorSecondary",
                                                                   "disabled": "Mui-disabled",
                                                                   "error": "Mui-error",
                                                                   "focused": "Mui-focused",
@@ -4205,10 +4267,12 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                                               value=""
                                                             >
                                                               <ForwardRef(InputBase)
+                                                                autoFocus={false}
                                                                 classes={
                                                                   Object {
                                                                     "adornedEnd": "MuiInputBase-adornedEnd",
                                                                     "adornedStart": "MuiInputBase-adornedStart",
+                                                                    "colorSecondary": "MuiInputBase-colorSecondary MuiInput-colorSecondary",
                                                                     "disabled": "Mui-disabled Mui-disabled",
                                                                     "error": "Mui-error Mui-error",
                                                                     "focused": "Mui-focused Mui-focused",
@@ -4244,6 +4308,7 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                                                 >
                                                                   <ForwardRef(TextareaAutosize)
                                                                     aria-invalid={false}
+                                                                    autoFocus={false}
                                                                     className="MuiInputBase-input MuiInput-input MuiInputBase-inputMultiline MuiInput-inputMultiline"
                                                                     disabled={false}
                                                                     id="846542"
@@ -4259,6 +4324,7 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                                                   >
                                                                     <textarea
                                                                       aria-invalid={false}
+                                                                      autoFocus={false}
                                                                       className="MuiInputBase-input MuiInput-input MuiInputBase-inputMultiline MuiInput-inputMultiline"
                                                                       disabled={false}
                                                                       id="846542"
@@ -5223,6 +5289,7 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                   },
                   "render": [Function],
                 },
+                "defaultProps": undefined,
                 "displayName": "WithStyles(ForwardRef(Backdrop))",
                 "options": Object {
                   "defaultTheme": Object {

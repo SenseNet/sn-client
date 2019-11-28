@@ -97,7 +97,7 @@ export const MemoPanel: React.FunctionComponent = () => {
   const deleteMemoContent = async (receivebtn: boolean) => {
     if (receivebtn) {
       // User clicked "Yes"
-      const newdata = data.filter(x => x.Id != currentmemo.Id)
+      const newdata = data.filter(x => x.Id !== currentmemo.Id)
       await repo.delete({
         idOrPath: currentmemo.Path,
         permanent: true,

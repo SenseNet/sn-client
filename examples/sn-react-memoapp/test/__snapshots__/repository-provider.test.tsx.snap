@@ -178,6 +178,9 @@ exports[`The repository provider instance should renders correctly 1`] = `
                 >
                   <WithStyles(ForwardRef(FormControl))
                     className="MuiTextField-root"
+                    color="primary"
+                    disabled={false}
+                    error={false}
                     fullWidth={true}
                     margin="normal"
                     required={true}
@@ -193,6 +196,9 @@ exports[`The repository provider instance should renders correctly 1`] = `
                           "root": "MuiFormControl-root",
                         }
                       }
+                      color="primary"
+                      disabled={false}
+                      error={false}
                       fullWidth={true}
                       margin="normal"
                       required={true}
@@ -238,6 +244,7 @@ exports[`The repository provider instance should renders correctly 1`] = `
                                 classes={
                                   Object {
                                     "asterisk": "MuiFormLabel-asterisk MuiInputLabel-asterisk",
+                                    "colorSecondary": "MuiFormLabel-colorSecondary",
                                     "disabled": "Mui-disabled Mui-disabled",
                                     "error": "Mui-error Mui-error",
                                     "filled": "MuiFormLabel-filled",
@@ -266,14 +273,18 @@ exports[`The repository provider instance should renders correctly 1`] = `
                         </WithStyles(ForwardRef(InputLabel))>
                         <WithStyles(ForwardRef(Input))
                           autoComplete="on"
+                          autoFocus={false}
                           fullWidth={true}
+                          multiline={false}
                           onChange={[Function]}
                           value=""
                         >
                           <ForwardRef(Input)
                             autoComplete="on"
+                            autoFocus={false}
                             classes={
                               Object {
+                                "colorSecondary": "MuiInput-colorSecondary",
                                 "disabled": "Mui-disabled",
                                 "error": "Mui-error",
                                 "focused": "Mui-focused",
@@ -289,13 +300,16 @@ exports[`The repository provider instance should renders correctly 1`] = `
                               }
                             }
                             fullWidth={true}
+                            multiline={false}
                             onChange={[Function]}
                             value=""
                           >
                             <WithStyles(ForwardRef(InputBase))
                               autoComplete="on"
+                              autoFocus={false}
                               classes={
                                 Object {
+                                  "colorSecondary": "MuiInput-colorSecondary",
                                   "disabled": "Mui-disabled",
                                   "error": "Mui-error",
                                   "focused": "Mui-focused",
@@ -319,10 +333,12 @@ exports[`The repository provider instance should renders correctly 1`] = `
                             >
                               <ForwardRef(InputBase)
                                 autoComplete="on"
+                                autoFocus={false}
                                 classes={
                                   Object {
                                     "adornedEnd": "MuiInputBase-adornedEnd",
                                     "adornedStart": "MuiInputBase-adornedStart",
+                                    "colorSecondary": "MuiInputBase-colorSecondary MuiInput-colorSecondary",
                                     "disabled": "Mui-disabled Mui-disabled",
                                     "error": "Mui-error Mui-error",
                                     "focused": "Mui-focused Mui-focused",
@@ -355,6 +371,7 @@ exports[`The repository provider instance should renders correctly 1`] = `
                                   <input
                                     aria-invalid={false}
                                     autoComplete="on"
+                                    autoFocus={false}
                                     className="MuiInputBase-input MuiInput-input"
                                     disabled={false}
                                     onAnimationStart={[Function]}
@@ -422,6 +439,9 @@ exports[`The repository provider instance should renders correctly 1`] = `
                 >
                   <WithStyles(ForwardRef(FormControl))
                     className="MuiTextField-root"
+                    color="primary"
+                    disabled={false}
+                    error={false}
                     fullWidth={true}
                     margin="dense"
                     required={true}
@@ -437,6 +457,9 @@ exports[`The repository provider instance should renders correctly 1`] = `
                           "root": "MuiFormControl-root",
                         }
                       }
+                      color="primary"
+                      disabled={false}
+                      error={false}
                       fullWidth={true}
                       margin="dense"
                       required={true}
@@ -482,6 +505,7 @@ exports[`The repository provider instance should renders correctly 1`] = `
                                 classes={
                                   Object {
                                     "asterisk": "MuiFormLabel-asterisk MuiInputLabel-asterisk",
+                                    "colorSecondary": "MuiFormLabel-colorSecondary",
                                     "disabled": "Mui-disabled Mui-disabled",
                                     "error": "Mui-error Mui-error",
                                     "filled": "MuiFormLabel-filled",
@@ -509,13 +533,17 @@ exports[`The repository provider instance should renders correctly 1`] = `
                           </ForwardRef(InputLabel)>
                         </WithStyles(ForwardRef(InputLabel))>
                         <WithStyles(ForwardRef(Input))
+                          autoFocus={false}
                           fullWidth={true}
+                          multiline={false}
                           onChange={[Function]}
                           type="password"
                         >
                           <ForwardRef(Input)
+                            autoFocus={false}
                             classes={
                               Object {
+                                "colorSecondary": "MuiInput-colorSecondary",
                                 "disabled": "Mui-disabled",
                                 "error": "Mui-error",
                                 "focused": "Mui-focused",
@@ -531,12 +559,15 @@ exports[`The repository provider instance should renders correctly 1`] = `
                               }
                             }
                             fullWidth={true}
+                            multiline={false}
                             onChange={[Function]}
                             type="password"
                           >
                             <WithStyles(ForwardRef(InputBase))
+                              autoFocus={false}
                               classes={
                                 Object {
+                                  "colorSecondary": "MuiInput-colorSecondary",
                                   "disabled": "Mui-disabled",
                                   "error": "Mui-error",
                                   "focused": "Mui-focused",
@@ -558,10 +589,12 @@ exports[`The repository provider instance should renders correctly 1`] = `
                               type="password"
                             >
                               <ForwardRef(InputBase)
+                                autoFocus={false}
                                 classes={
                                   Object {
                                     "adornedEnd": "MuiInputBase-adornedEnd",
                                     "adornedStart": "MuiInputBase-adornedStart",
+                                    "colorSecondary": "MuiInputBase-colorSecondary MuiInput-colorSecondary",
                                     "disabled": "Mui-disabled Mui-disabled",
                                     "error": "Mui-error Mui-error",
                                     "focused": "Mui-focused Mui-focused",
@@ -592,6 +625,7 @@ exports[`The repository provider instance should renders correctly 1`] = `
                                 >
                                   <input
                                     aria-invalid={false}
+                                    autoFocus={false}
                                     className="MuiInputBase-input MuiInput-input MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
                                     disabled={false}
                                     onAnimationStart={[Function]}
@@ -662,6 +696,9 @@ exports[`The repository provider instance should renders correctly 1`] = `
                 >
                   <WithStyles(ForwardRef(FormControl))
                     className="MuiTextField-root"
+                    color="primary"
+                    disabled={false}
+                    error={false}
                     fullWidth={true}
                     margin="dense"
                     required={true}
@@ -677,6 +714,9 @@ exports[`The repository provider instance should renders correctly 1`] = `
                           "root": "MuiFormControl-root",
                         }
                       }
+                      color="primary"
+                      disabled={false}
+                      error={false}
                       fullWidth={true}
                       margin="dense"
                       required={true}
@@ -722,6 +762,7 @@ exports[`The repository provider instance should renders correctly 1`] = `
                                 classes={
                                   Object {
                                     "asterisk": "MuiFormLabel-asterisk MuiInputLabel-asterisk",
+                                    "colorSecondary": "MuiFormLabel-colorSecondary",
                                     "disabled": "Mui-disabled Mui-disabled",
                                     "error": "Mui-error Mui-error",
                                     "filled": "MuiFormLabel-filled",
@@ -750,15 +791,19 @@ exports[`The repository provider instance should renders correctly 1`] = `
                         </WithStyles(ForwardRef(InputLabel))>
                         <WithStyles(ForwardRef(Input))
                           autoComplete="on"
+                          autoFocus={false}
                           fullWidth={true}
+                          multiline={false}
                           onChange={[Function]}
                           type="url"
                           value=""
                         >
                           <ForwardRef(Input)
                             autoComplete="on"
+                            autoFocus={false}
                             classes={
                               Object {
+                                "colorSecondary": "MuiInput-colorSecondary",
                                 "disabled": "Mui-disabled",
                                 "error": "Mui-error",
                                 "focused": "Mui-focused",
@@ -774,14 +819,17 @@ exports[`The repository provider instance should renders correctly 1`] = `
                               }
                             }
                             fullWidth={true}
+                            multiline={false}
                             onChange={[Function]}
                             type="url"
                             value=""
                           >
                             <WithStyles(ForwardRef(InputBase))
                               autoComplete="on"
+                              autoFocus={false}
                               classes={
                                 Object {
+                                  "colorSecondary": "MuiInput-colorSecondary",
                                   "disabled": "Mui-disabled",
                                   "error": "Mui-error",
                                   "focused": "Mui-focused",
@@ -805,10 +853,12 @@ exports[`The repository provider instance should renders correctly 1`] = `
                             >
                               <ForwardRef(InputBase)
                                 autoComplete="on"
+                                autoFocus={false}
                                 classes={
                                   Object {
                                     "adornedEnd": "MuiInputBase-adornedEnd",
                                     "adornedStart": "MuiInputBase-adornedStart",
+                                    "colorSecondary": "MuiInputBase-colorSecondary MuiInput-colorSecondary",
                                     "disabled": "Mui-disabled Mui-disabled",
                                     "error": "Mui-error Mui-error",
                                     "focused": "Mui-focused Mui-focused",
@@ -841,6 +891,7 @@ exports[`The repository provider instance should renders correctly 1`] = `
                                   <input
                                     aria-invalid={false}
                                     autoComplete="on"
+                                    autoFocus={false}
                                     className="MuiInputBase-input MuiInput-input MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
                                     disabled={false}
                                     onAnimationStart={[Function]}

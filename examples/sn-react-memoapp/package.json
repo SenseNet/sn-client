@@ -1,15 +1,18 @@
 {
-  "name": "@sensenet/react-typescript-boilerplate",
+  "name": "@sensenet/react-memoapp",
   "version": "1.0.2",
   "private": true,
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
+  "contributors": [
+    "Dániel Blaskó <blaskoi@gmail.com>",
+    "Zoltán Bedi <zoltan.bedi@sensenet.com>"
+  ],
   "license": "GPL-2.0",
   "homepage": "https://sensenet.com",
   "keywords": [
     "sensenet",
     "cps",
     "single page application",
-    "boilerplate",
     "react",
     "typescript"
   ],
@@ -30,9 +33,14 @@
   },
   "dependencies": {
     "@material-ui/core": "^4.6.1",
+    "@material-ui/icons": "^4.5.1",
     "@sensenet/client-core": "^2.2.4",
     "@sensenet/default-content-types": "^2.0.3",
-    "@sensenet/hooks-react": "^1.0.3"
+    "@sensenet/hooks-react": "^1.0.3",
+    "moment": "^2.24.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-markdown": "^4.2.2"
   },
   "browserslist": {
     "production": [

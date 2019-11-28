@@ -77,7 +77,7 @@ describe('The main memo panel instance', () => {
     const memoListElement = wrapper
       .update()
       .find('div.MuiExpansionPanelSummary-content')
-      .at(2)
+      .at(0)
 
     expect(memoListElement.text()).toContain(TestNewMemo.DisplayName)
   })
