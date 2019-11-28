@@ -7,7 +7,7 @@ module.exports = {
   setupFilesAfterEnv: ['<rootDir>../../jest/setup.js'],
   moduleNameMapper: {
     '\\.css$': '<rootDir>../../jest/cssTransform.js',
-    '\\.png$': '<rootDir>../../jest/fileTransform.js',
+    '\\.(png|gif)$': '<rootDir>../../jest/fileTransform.js',
     '\\.gif$': '<rootDir>../../jest/fileTransform.js',
   },
   snapshotSerializers: ['enzyme-to-json/serializer'],
