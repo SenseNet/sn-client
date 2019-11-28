@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The app layout instance should renders correctly 1`] = `
+<Fragment>
+  <CssBaseline />
+  <Component />
+  <WithStyles(ForwardRef(Toolbar)) />
+  <WithStyles(ForwardRef(Container))
+    maxWidth="lg"
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundImage": "url(sensenet_logo_transparent.png)",
+        "backgroundPosition": "center",
+        "backgroundRepeat": "no-repeat",
+        "backgroundSize": "auto",
+        "display": "flex",
+        "flexDirection": "column",
+        "justifyContent": "center",
+        "marginTop": "10px",
+        "minHeight": "90vh",
+        "verticalAlign": "middle",
+        "width": "100%",
+      }
+    }
+  >
+    <WithStyles(ForwardRef(Grid))
+      container={true}
+    >
+      <WithStyles(ForwardRef(Grid))
+        item={true}
+        xs={12}
+      >
+        <Component />
+      </WithStyles(ForwardRef(Grid))>
+    </WithStyles(ForwardRef(Grid))>
+  </WithStyles(ForwardRef(Container))>
+</Fragment>
+`;

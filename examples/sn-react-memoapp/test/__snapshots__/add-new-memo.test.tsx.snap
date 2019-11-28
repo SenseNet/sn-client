@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The new memo panel instance should renders correctly 1`] = `
+<WithStyles(ForwardRef(Paper))
+  className="makeStyles-paper-3"
+  style={
+    Object {
+      "display": "block",
+    }
+  }
+>
+  <WithStyles(ForwardRef(Grid))
+    container={true}
+    spacing={2}
+  >
+    <WithStyles(ForwardRef(Grid))
+      item={true}
+      xs={12}
+    >
+      <WithStyles(ForwardRef(Typography))
+        component="h3"
+        variant="h5"
+      >
+        Add new memo to list
+      </WithStyles(ForwardRef(Typography))>
+    </WithStyles(ForwardRef(Grid))>
+    <WithStyles(ForwardRef(Grid))
+      item={true}
+      md={6}
+      xs={12}
+    >
+      <WithStyles(ForwardRef(TextField))
+        id="DisplayName"
+        label="Memo title"
+        multiline={true}
+        onChange={[Function]}
+        required={true}
+        rows={1}
+        rowsMax={10}
+        style={
+          Object {
+            "width": "100%",
+          }
+        }
+        value=""
+      />
+    </WithStyles(ForwardRef(Grid))>
+    <WithStyles(ForwardRef(Grid))
+      item={true}
+      xs={12}
+    >
+      <WithStyles(ForwardRef(TextField))
+        id="Description"
+        label="Memo content"
+        multiline={true}
+        onChange={[Function]}
+        required={true}
+        rows={1}
+        rowsMax={10}
+        style={
+          Object {
+            "width": "100%",
+          }
+        }
+        value=""
+      />
+    </WithStyles(ForwardRef(Grid))>
+    <WithStyles(ForwardRef(Grid))
+      item={true}
+      style={
+        Object {
+          "textAlign": "right",
+        }
+      }
+      xs={12}
+    >
+      <WithStyles(ForwardRef(Fab))
+        aria-label="Create"
+        className="makeStyles-fab-2"
+        onClick={[Function]}
+        size="small"
+        style={
+          Object {
+            "display": "none",
+          }
+        }
+      >
+        <SaveIcon />
+      </WithStyles(ForwardRef(Fab))>
+      <WithStyles(ForwardRef(Fab))
+        aria-label="Cancel"
+        className="makeStyles-fab-2"
+        onClick={[MockFunction]}
+        size="small"
+      >
+        <ClearIcon />
+      </WithStyles(ForwardRef(Fab))>
+    </WithStyles(ForwardRef(Grid))>
+  </WithStyles(ForwardRef(Grid))>
+</WithStyles(ForwardRef(Paper))>
+`;
