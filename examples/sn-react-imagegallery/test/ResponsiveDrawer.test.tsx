@@ -16,6 +16,7 @@ describe('ResponsiveDrawer', () => {
       imgCreationDate: '2019.05.05',
       imgSize: '1024',
       imgDownloadUrl: 'Download Path',
+      alt: 'Path',
     },
   }
   it('Matches snapshot', () => {

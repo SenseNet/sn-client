@@ -11,6 +11,7 @@ exports[`ResponsiveDrawer Matches snapshot 1`] = `
       className="makeStyles-selectedImgContent-4"
     >
       <img
+        alt="Path"
         className="makeStyles-imgTileFullSize-3"
         src="Path"
       />
@@ -47,6 +48,7 @@ exports[`ResponsiveDrawer Matches snapshot 1`] = `
       Author: 
       Test Elek
       <img
+        alt="Path"
         className="makeStyles-avatarImg-9"
         src="Avatar img Path"
       />
