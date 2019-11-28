@@ -8,7 +8,6 @@ module.exports = {
   moduleNameMapper: {
     '\\.css$': '<rootDir>../../jest/cssTransform.js',
     '\\.(png|gif)$': '<rootDir>../../jest/fileTransform.js',
-    '\\.gif$': '<rootDir>../../jest/fileTransform.js',
   },
   snapshotSerializers: ['enzyme-to-json/serializer'],
 }
