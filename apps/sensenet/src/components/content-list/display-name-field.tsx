@@ -5,11 +5,13 @@ import { MoreHoriz } from '@material-ui/icons'
 import { ResponsivePlatforms } from '../../context'
 import { ContentContextMenu } from '../context-menu/content-context-menu'
 
-export const DisplayNameComponent: React.FunctionComponent<{
+type DisplayNameProps = {
   content: GenericContent
   device: ResponsivePlatforms
   isActive: boolean
-}> = ({ content, device, isActive }) => {
+}
+
+export const DisplayNameComponent: React.FunctionComponent<DisplayNameProps> = ({ content, device, isActive }) => {
   const buttonRef = useRef<HTMLButtonElement>(null)
   const [isOpened, setIsOpened] = useState(false)
 
@@ -41,7 +43,7 @@ export const DisplayNameComponent: React.FunctionComponent<{
                 anchorEl: buttonRef.current,
                 disablePortal: true,
                 BackdropProps: {
-                  onClick: close,
+                  onClick: () => setIsOpened(false),
                   onContextMenu: ev => ev.preventDefault(),
                 },
               }}
