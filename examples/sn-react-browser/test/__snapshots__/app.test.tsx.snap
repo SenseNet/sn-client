@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The app layout instance should renders correctly 1`] = `
+<Fragment>
+  <CssBaseline />
+  <Component />
+  <WithStyles(ForwardRef(Container))
+    maxWidth="lg"
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundImage": "url([object Object])",
+        "backgroundPosition": "center",
+        "backgroundRepeat": "no-repeat",
+        "backgroundSize": "auto",
+        "display": "flex",
+        "flexDirection": "column",
+        "justifyContent": "flex-start",
+        "marginTop": "10px",
+        "minHeight": "80vh",
+        "verticalAlign": "middle",
+        "width": "100%",
+      }
+    }
+  >
+    <WithStyles(ForwardRef(Grid))
+      container={true}
+    >
+      <WithStyles(ForwardRef(Grid))
+        item={true}
+        xs={12}
+      >
+        <Switch>
+          <Route
+            component={[Function]}
+            exact={true}
+            path="/"
+          />
+          <Route
+            component={[Function]}
+            path="/preview/:documentId"
+          />
+          <Route
+            component={[Function]}
+            path="/edit/:documentId"
+          />
+        </Switch>
+      </WithStyles(ForwardRef(Grid))>
+    </WithStyles(ForwardRef(Grid))>
+  </WithStyles(ForwardRef(Container))>
+</Fragment>
+`;
