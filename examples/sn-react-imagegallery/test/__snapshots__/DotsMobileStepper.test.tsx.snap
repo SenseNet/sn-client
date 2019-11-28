@@ -14,7 +14,7 @@ exports[`handleNext Matches snapshot 1`] = `
         onClick={[Function]}
         size="small"
       >
-        <Memo />
+        <Memo(KeyboardArrowLeftIcon) />
         Back
       </ForwardRef(WithStyles)>
     }
@@ -26,7 +26,7 @@ exports[`handleNext Matches snapshot 1`] = `
         size="small"
       >
         Next
-        <Memo />
+        <Memo(KeyboardArrowRightIcon) />
       </ForwardRef(WithStyles)>
     }
     position="static"
@@ -41,7 +41,7 @@ exports[`handleNext Matches snapshot 1`] = `
           onClick={[Function]}
           size="small"
         >
-          <Memo />
+          <Memo(KeyboardArrowLeftIcon) />
           Back
         </ForwardRef(WithStyles)>
       }
@@ -65,7 +65,7 @@ exports[`handleNext Matches snapshot 1`] = `
           size="small"
         >
           Next
-          <Memo />
+          <Memo(KeyboardArrowRightIcon) />
         </ForwardRef(WithStyles)>
       }
       position="static"
@@ -128,19 +128,30 @@ exports[`handleNext Matches snapshot 1`] = `
                     "contained": "MuiButton-contained",
                     "containedPrimary": "MuiButton-containedPrimary",
                     "containedSecondary": "MuiButton-containedSecondary",
+                    "containedSizeLarge": "MuiButton-containedSizeLarge",
+                    "containedSizeSmall": "MuiButton-containedSizeSmall",
                     "disabled": "Mui-disabled",
+                    "endIcon": "MuiButton-endIcon",
                     "focusVisible": "Mui-focusVisible",
                     "fullWidth": "MuiButton-fullWidth",
+                    "iconSizeLarge": "MuiButton-iconSizeLarge",
+                    "iconSizeMedium": "MuiButton-iconSizeMedium",
+                    "iconSizeSmall": "MuiButton-iconSizeSmall",
                     "label": "MuiButton-label",
                     "outlined": "MuiButton-outlined",
                     "outlinedPrimary": "MuiButton-outlinedPrimary",
                     "outlinedSecondary": "MuiButton-outlinedSecondary",
+                    "outlinedSizeLarge": "MuiButton-outlinedSizeLarge",
+                    "outlinedSizeSmall": "MuiButton-outlinedSizeSmall",
                     "root": "MuiButton-root",
                     "sizeLarge": "MuiButton-sizeLarge",
                     "sizeSmall": "MuiButton-sizeSmall",
+                    "startIcon": "MuiButton-startIcon",
                     "text": "MuiButton-text",
                     "textPrimary": "MuiButton-textPrimary",
                     "textSecondary": "MuiButton-textSecondary",
+                    "textSizeLarge": "MuiButton-textSizeLarge",
+                    "textSizeSmall": "MuiButton-textSizeSmall",
                   }
                 }
                 disabled={false}
@@ -148,7 +159,7 @@ exports[`handleNext Matches snapshot 1`] = `
                 size="small"
               >
                 <WithStyles(ForwardRef(ButtonBase))
-                  className="MuiButton-root MuiButton-text MuiButton-sizeSmall"
+                  className="MuiButton-root MuiButton-text MuiButton-textSizeSmall MuiButton-sizeSmall"
                   component="button"
                   disabled={false}
                   focusRipple={true}
@@ -157,7 +168,7 @@ exports[`handleNext Matches snapshot 1`] = `
                   type="button"
                 >
                   <ForwardRef(ButtonBase)
-                    className="MuiButton-root MuiButton-text MuiButton-sizeSmall"
+                    className="MuiButton-root MuiButton-text MuiButton-textSizeSmall MuiButton-sizeSmall"
                     classes={
                       Object {
                         "disabled": "Mui-disabled",
@@ -173,7 +184,7 @@ exports[`handleNext Matches snapshot 1`] = `
                     type="button"
                   >
                     <button
-                      className="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeSmall"
+                      className="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textSizeSmall MuiButton-sizeSmall"
                       disabled={false}
                       onBlur={[Function]}
                       onClick={[Function]}
@@ -220,10 +231,6 @@ exports[`handleNext Matches snapshot 1`] = `
                                 <path
                                   d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"
                                 />
-                                <path
-                                  d="M0 0h24v24H0V0z"
-                                  fill="none"
-                                />
                               </svg>
                             </ForwardRef(SvgIcon)>
                           </WithStyles(ForwardRef(SvgIcon))>
@@ -231,10 +238,10 @@ exports[`handleNext Matches snapshot 1`] = `
                         Back
                       </span>
                       <NoSsr>
-                        <WithStyles(TouchRipple)
+                        <WithStyles(undefined)
                           center={false}
                         >
-                          <TouchRipple
+                          <ForwardRef(TouchRipple)
                             center={false}
                             classes={
                               Object {
@@ -254,12 +261,11 @@ exports[`handleNext Matches snapshot 1`] = `
                               <TransitionGroup
                                 childFactory={[Function]}
                                 component={null}
-                                enter={true}
                                 exit={true}
                               />
                             </span>
-                          </TouchRipple>
-                        </WithStyles(TouchRipple)>
+                          </ForwardRef(TouchRipple)>
+                        </WithStyles(undefined)>
                       </NoSsr>
                     </button>
                   </ForwardRef(ButtonBase)>
@@ -281,19 +287,30 @@ exports[`handleNext Matches snapshot 1`] = `
                     "contained": "MuiButton-contained",
                     "containedPrimary": "MuiButton-containedPrimary",
                     "containedSecondary": "MuiButton-containedSecondary",
+                    "containedSizeLarge": "MuiButton-containedSizeLarge",
+                    "containedSizeSmall": "MuiButton-containedSizeSmall",
                     "disabled": "Mui-disabled",
+                    "endIcon": "MuiButton-endIcon",
                     "focusVisible": "Mui-focusVisible",
                     "fullWidth": "MuiButton-fullWidth",
+                    "iconSizeLarge": "MuiButton-iconSizeLarge",
+                    "iconSizeMedium": "MuiButton-iconSizeMedium",
+                    "iconSizeSmall": "MuiButton-iconSizeSmall",
                     "label": "MuiButton-label",
                     "outlined": "MuiButton-outlined",
                     "outlinedPrimary": "MuiButton-outlinedPrimary",
                     "outlinedSecondary": "MuiButton-outlinedSecondary",
+                    "outlinedSizeLarge": "MuiButton-outlinedSizeLarge",
+                    "outlinedSizeSmall": "MuiButton-outlinedSizeSmall",
                     "root": "MuiButton-root",
                     "sizeLarge": "MuiButton-sizeLarge",
                     "sizeSmall": "MuiButton-sizeSmall",
+                    "startIcon": "MuiButton-startIcon",
                     "text": "MuiButton-text",
                     "textPrimary": "MuiButton-textPrimary",
                     "textSecondary": "MuiButton-textSecondary",
+                    "textSizeLarge": "MuiButton-textSizeLarge",
+                    "textSizeSmall": "MuiButton-textSizeSmall",
                   }
                 }
                 disabled={false}
@@ -301,7 +318,7 @@ exports[`handleNext Matches snapshot 1`] = `
                 size="small"
               >
                 <WithStyles(ForwardRef(ButtonBase))
-                  className="MuiButton-root MuiButton-text MuiButton-sizeSmall"
+                  className="MuiButton-root MuiButton-text MuiButton-textSizeSmall MuiButton-sizeSmall"
                   component="button"
                   disabled={false}
                   focusRipple={true}
@@ -310,7 +327,7 @@ exports[`handleNext Matches snapshot 1`] = `
                   type="button"
                 >
                   <ForwardRef(ButtonBase)
-                    className="MuiButton-root MuiButton-text MuiButton-sizeSmall"
+                    className="MuiButton-root MuiButton-text MuiButton-textSizeSmall MuiButton-sizeSmall"
                     classes={
                       Object {
                         "disabled": "Mui-disabled",
@@ -326,7 +343,7 @@ exports[`handleNext Matches snapshot 1`] = `
                     type="button"
                   >
                     <button
-                      className="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-sizeSmall"
+                      className="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textSizeSmall MuiButton-sizeSmall"
                       disabled={false}
                       onBlur={[Function]}
                       onClick={[Function]}
@@ -374,20 +391,16 @@ exports[`handleNext Matches snapshot 1`] = `
                                 <path
                                   d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"
                                 />
-                                <path
-                                  d="M0 0h24v24H0V0z"
-                                  fill="none"
-                                />
                               </svg>
                             </ForwardRef(SvgIcon)>
                           </WithStyles(ForwardRef(SvgIcon))>
                         </ForwardRef>
                       </span>
                       <NoSsr>
-                        <WithStyles(TouchRipple)
+                        <WithStyles(undefined)
                           center={false}
                         >
-                          <TouchRipple
+                          <ForwardRef(TouchRipple)
                             center={false}
                             classes={
                               Object {
@@ -407,12 +420,11 @@ exports[`handleNext Matches snapshot 1`] = `
                               <TransitionGroup
                                 childFactory={[Function]}
                                 component={null}
-                                enter={true}
                                 exit={true}
                               />
                             </span>
-                          </TouchRipple>
-                        </WithStyles(TouchRipple)>
+                          </ForwardRef(TouchRipple)>
+                        </WithStyles(undefined)>
                       </NoSsr>
                     </button>
                   </ForwardRef(ButtonBase)>

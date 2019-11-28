@@ -5,7 +5,7 @@ exports[`App Layout Matches snapshot 1`] = `
   style={
     Object {
       "alignItems": "center",
-      "backgroundImage": "url(sensenet_logo_transparent.png)",
+      "backgroundImage": "url([object Object])",
       "backgroundPosition": "center",
       "backgroundRepeat": "no-repeat",
       "backgroundSize": "auto",

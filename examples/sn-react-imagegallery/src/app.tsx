@@ -62,7 +62,7 @@ export const App: React.FunctionComponent = () => {
     let imageSize = ''
     let imageDownloadUrl = ''
 
-    if (selectedImage != undefined) {
+    if (selectedImage !== undefined) {
       imgageDisplayName = selectedImage.DisplayName as string
       imgageDescription = selectedImage.Description as string
       const avatarUser = selectedImage.CreatedBy as User
@@ -74,7 +74,7 @@ export const App: React.FunctionComponent = () => {
       )
       imageSize = `${(selectedImage.Size ? selectedImage.Size / 1024 / 1024 : 0).toFixed(2)} MB`
       imageDownloadUrl =
-        selectedImage.Binary != undefined
+        selectedImage.Binary !== undefined
           ? repo.configuration.repositoryUrl + selectedImage.Binary.__mediaresource.media_src
           : ''
     }

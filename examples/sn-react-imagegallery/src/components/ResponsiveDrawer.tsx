@@ -95,7 +95,7 @@ export const ResponsiveDrawer: React.FunctionComponent<ResponsiveProps> = props 
     <div className={classes.root}>
       <main className={classes.drawerMain}>
         <div className={classes.selectedImgContent}>
-          <img className={classes.imgTileFullSize} src={props.imageInfo.imgPath} />
+          <img className={classes.imgTileFullSize} src={props.imageInfo.imgPath} alt={props.imageInfo.imgPath} />
         </div>
         <DotsMobileStepper
           steppingFunction={props.steppingFunction}
@@ -116,8 +116,8 @@ export const ResponsiveDrawer: React.FunctionComponent<ResponsiveProps> = props 
         <Typography>Descripton: {props.imageInfo.imgDescription}</Typography>
         <Typography>
           Author: {props.imageInfo.imgAuthor}
-          {props.imageInfo.imgAuthorAvatar != '' ? (
-            <img className={classes.avatarImg} src={props.imageInfo.imgAuthorAvatar} />
+          {props.imageInfo.imgAuthorAvatar !== '' ? (
+            <img className={classes.avatarImg} src={props.imageInfo.imgAuthorAvatar} alt={props.imageInfo.imgPath} />
           ) : (
             <Person className={classes.defaultAvatarimg} />
           )}
