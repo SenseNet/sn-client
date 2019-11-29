@@ -23,12 +23,12 @@ describe('The user search component instance', () => {
     }
   })
 
-  it('should renders correctly', () => {
+  it('should be rendered correctly', () => {
     const l = shallow(<UserSearchPanel />)
     expect(l).toMatchSnapshot()
   })
 
-  it('should search and user listing by click event', async () => {
+  it('should search and list users on click event', async () => {
     await act(async () => {
       wrapper = mount(
         <RepositoryContext.Provider value={repo as any}>
@@ -49,7 +49,7 @@ describe('The user search component instance', () => {
     expect(TableRows.length).toEqual(TestUserList.length)
   })
 
-  it('should search and user listing on submit', async () => {
+  it('should search and list users on submit', async () => {
     await act(async () => {
       wrapper = mount(
         <RepositoryContext.Provider value={repo as any}>
@@ -98,7 +98,7 @@ describe('The user search component instance', () => {
         .prop('open'),
     ).toBe(true)
   })
-  it('should close modal window on close button', async () => {
+  it('should close modal window when close button is clicked', async () => {
     await act(async () => {
       wrapper = mount(
         <RepositoryContext.Provider value={repo as any}>
@@ -131,7 +131,7 @@ describe('The user search component instance', () => {
         .prop('open'),
     ).toBe(false)
   })
-  it('should close modal window on OK button', async () => {
+  it('should close modal window when OK button is clicked', async () => {
     await act(async () => {
       wrapper = mount(
         <RepositoryContext.Provider value={repo as any}>
@@ -166,7 +166,7 @@ describe('The user search component instance', () => {
     ).toBe(false)
   })
 
-  it('should change query if change any field', async () => {
+  it('should change query on field value change', async () => {
     await act(async () => {
       wrapper = mount(
         <RepositoryContext.Provider value={repo as any}>
@@ -187,7 +187,7 @@ describe('The user search component instance', () => {
     expect(querytextfield.at(1).props().value).toEqual("LoginName:'*businesscat*'")
   })
 
-  it('should change language dropdown and change the query', async () => {
+  it('should select an option in the language dropdown and change the query', async () => {
     await act(async () => {
       wrapper = mount(
         <RepositoryContext.Provider value={repo as any}>
@@ -209,7 +209,7 @@ describe('The user search component instance', () => {
     expect(querytextfield.at(1).props().value).toEqual('English')
   })
 
-  it('should change language dropdown and change the helpertext', async () => {
+  it('should change the selected option in the language dropdown and change the helpertext', async () => {
     await act(async () => {
       wrapper = mount(
         <RepositoryContext.Provider value={repo as any}>
@@ -234,7 +234,7 @@ describe('The user search component instance', () => {
     expect(helperText).toEqual('Language:English')
   })
 
-  it('should change Gender dropdown', async () => {
+  it('should change the selected value in the Gender dropdown', async () => {
     await act(async () => {
       wrapper = mount(
         <RepositoryContext.Provider value={repo as any}>
@@ -256,7 +256,7 @@ describe('The user search component instance', () => {
     expect(querytextfield.at(1).props().value).toEqual('Gender:Female')
   })
 
-  it('should change Gender dropdown and change the helpertext', async () => {
+  it('should change the value of the Gender dropdown and change the helpertext', async () => {
     await act(async () => {
       wrapper = mount(
         <RepositoryContext.Provider value={repo as any}>
@@ -281,7 +281,7 @@ describe('The user search component instance', () => {
     expect(helperText).toEqual('Gender:Female')
   })
 
-  it('should change MaritalStatus dropdown', async () => {
+  it('should change the value of the MaritalStatus dropdown', async () => {
     await act(async () => {
       wrapper = mount(
         <RepositoryContext.Provider value={repo as any}>
@@ -303,7 +303,7 @@ describe('The user search component instance', () => {
     expect(querytextfield.at(1).props().value).toEqual('MaritalStatus:Single')
   })
 
-  it('should maritalstatus is empty', async () => {
+  it('should clear MaritalStatus' value', async () => {
     repo.schemas = {
       getSchemaByName: function schemasfn() {
         return { FieldSettings: [] }
