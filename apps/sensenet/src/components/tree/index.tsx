@@ -8,13 +8,8 @@ import { PathHelper, sleepAsync } from '@sensenet/client-utils'
 import { GenericContent } from '@sensenet/default-content-types'
 import { Created } from '@sensenet/repository-events'
 import React, { useContext, useEffect, useState } from 'react'
-import {
-  CurrentAncestorsContext,
-  CurrentContentContext,
-  useRepository,
-  useRepositoryEvents,
-} from '@sensenet/hooks-react'
-import { ContentContextMenu } from '../ContentContextMenu'
+import { CurrentAncestorsContext, useRepository, useRepositoryEvents } from '@sensenet/hooks-react'
+import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { DropFileArea } from '../DropFileArea'
 import { Icon } from '../Icon'
 
@@ -168,19 +163,18 @@ export const Tree: React.FunctionComponent<TreeProps> = props => {
         })}
       </List>
       {contextMenuItem ? (
-        <CurrentContentContext.Provider value={contextMenuItem}>
-          <ContentContextMenu
-            isOpened={isContextMenuOpened}
-            menuProps={{
-              anchorEl: contextMenuAnchor,
-              BackdropProps: {
-                onClick: () => setIsContextMenuOpened(false),
-                onContextMenu: ev => ev.preventDefault(),
-              },
-            }}
-            onClose={() => setIsContextMenuOpened(false)}
-          />
-        </CurrentContentContext.Provider>
+        <ContentContextMenu
+          isOpened={isContextMenuOpened}
+          content={contextMenuItem}
+          menuProps={{
+            anchorEl: contextMenuAnchor,
+            BackdropProps: {
+              onClick: () => setIsContextMenuOpened(false),
+              onContextMenu: ev => ev.preventDefault(),
+            },
+          }}
+          onClose={() => setIsContextMenuOpened(false)}
+        />
       ) : null}
     </div>
   )

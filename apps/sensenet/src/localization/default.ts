@@ -33,15 +33,9 @@ const values = {
       executeSecondaryText: "Execute custom action '{1}' on content '{0}'",
     },
   },
-  contentContextMenu: {
-    editProperties: 'Edit properties',
-    copy: 'Copy',
-    move: 'Move',
-    delete: 'Delete',
-    open: 'Open',
-    download: 'Download',
-    wopiEdit: 'Open in online editor',
-    wopiRead: 'View in online editor',
+  lockedCell: {
+    checkedOutTo: (name: string) => `Checked out to ${name}`,
+    actionNeeded: 'Content should be approved',
   },
   contentInfoDialog: {
     dialogTitle: 'Info about {0}',
@@ -50,6 +44,31 @@ const values = {
     path: 'Path',
     created: 'Created',
     unknownOwner: 'Unknown',
+  },
+  checkInDialog: {
+    inputLabel: 'Check in comment (optional)',
+    successMessage: 'Check in succeded',
+    errorMessage: 'Check in failed',
+    send: 'Send',
+    checkinComment: 'Add a check in comment',
+  },
+  areYouSureDialog: {
+    body: 'Are you absolutely sure?',
+    submitButton: 'Yes',
+    cancelButton: 'Cancel',
+    title: 'Are you sure?',
+  },
+  approveDialog: {
+    approveSuccess: (name: string) => `${name} approved successfully.`,
+    approveError: 'Approve action failed.',
+    rejectSuccess: (name: string) => `${name} rejected successfully.`,
+    rejectError: 'Reject action failed.',
+    body: (name: string) => `You are about to approve or reject ${name}`,
+    title: 'Approve or reject',
+    inputLabel: 'Please provide a reason for rejecting the content',
+    approveButton: 'Approve',
+    rejectButton: 'Reject',
+    cancelButton: 'Cancel',
   },
   deleteContentDialog: {
     dialogTitle: 'Really delete content?',
@@ -163,9 +182,10 @@ const values = {
   logout: {
     logoutButtonTitle: 'Log out',
     logoutDialogTitle: 'Really log out?',
-    loggingOutFrom: 'Logging out from {0}...',
-    logoutConfirmText: 'You are logged in to {0} as {1}. Are you sure that you want to leave?',
-    logoutSuccessNotification: 'You have logged out from {0}',
+    loggingOutFrom: (repoUrl: string) => `Logging out from ${repoUrl}...`,
+    logoutConfirmText: (repoUrl: string, userName: string) =>
+      `You are logged in to ${repoUrl} as ${userName}. Are you sure that you want to leave?`,
+    logoutSuccessNotification: (repoUrl: string) => `You have logged out from ${repoUrl}`,
     logoutCancel: 'Cancel',
   },
   personalSettings: {
@@ -173,7 +193,7 @@ const values = {
     showDefaults: 'Show defaults',
     restoreDefaults: 'Restore defaults',
     restoreDialogTitle: 'Really restore defaults?',
-    restoreDialogTText:
+    restoreDialogText:
       'Are you sure you want to restore the default settings? Your log will also be cleared and you will be signed out from all repositories.',
     cancel: 'Cancel',
     restore: 'Restore',
@@ -306,6 +326,7 @@ const values = {
   search: {
     title: 'Search',
     onlyPublic: 'Show public queries only',
+    saveInputPlaceholder: (term: string) => `Search results for '${term}'`,
     savedQueries: 'Saved queries',
     queryLabel: 'Content Query',
     queryHelperText: 'Enter a content query expression',
@@ -379,6 +400,22 @@ const values = {
     errorOpeningFileText: 'There was an error during opening the file for online editing.',
     tryOpenRead: 'View',
     goBack: 'Go back',
+  },
+  versionsDialog: {
+    getVersionsError: (name: string) => `Couldn't get versions for content: ${name}`,
+    title: 'Versions',
+    versionTableHead: 'Version',
+    modifiedByTableHead: 'Modified by',
+    commentTableHead: 'Comment',
+    rejectReasonTableHead: 'Reject reason',
+    restoreTableHead: 'Restore to version',
+    restoreBodyText: (name: string, version?: string) =>
+      `Are you sure you want to restore version <strong>${version}</strong> of <strong>${name}</strong>`,
+    restoreSubmitText: 'Restore',
+    restoreVersionSuccess: (name: string, version?: string) => `${name} restored to version ${version}`,
+    restoreVersionError: (name: string, version?: string) =>
+      `Couldn't restore version to  ${version} for content: ${name}`,
+    restoreButtonTitle: 'Restore version',
   },
 }
 
