@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`The todo list component layout instance should renders correctly 1`] = `
+exports[`The todo list component layout instance should be rendered correctly 1`] = `
 <TodoListPanel>
   <WithStyles(ForwardRef(Grid))
     alignItems="center"
