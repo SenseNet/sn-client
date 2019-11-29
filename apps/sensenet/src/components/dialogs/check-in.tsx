@@ -33,7 +33,7 @@ export function CheckIn({ content, onActionSuccess, oDataOptions }: CheckInProps
 
   return (
     <>
-      <DialogTitle>{localization.checkinComent}</DialogTitle>
+      <DialogTitle>{localization.checkinComment}</DialogTitle>
       <DialogContent>
         <TextField
           label={localization.inputLabel}

@@ -50,7 +50,7 @@ const values = {
     successMessage: 'Check in succeded',
     errorMessage: 'Check in failed',
     send: 'Send',
-    checkinComment: 'Add a check in comment'
+    checkinComment: 'Add a check in comment',
   },
   areYouSureDialog: {
     body: 'Are you absolutely sure?',
@@ -415,7 +415,7 @@ const values = {
     restoreVersionSuccess: (name: string, version?: string) => `${name} restored to version ${version}`,
     restoreVersionError: (name: string, version?: string) =>
       `Couldn't restore version to  ${version} for content: ${name}`,
-restoreButtonTitle: 'Restore version'
+    restoreButtonTitle: 'Restore version',
   },
 }
 
