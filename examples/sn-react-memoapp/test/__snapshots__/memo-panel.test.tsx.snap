@@ -1916,10 +1916,10 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                               <p
                                 className="MuiTypography-root makeStyles-secondaryHeading-4 MuiTypography-body1"
                               >
-                                Created by: 
-                                 
+                                Created by:
+
                                 Tuesday on 08-10-2019
-                                 
+
                                 <span
                                   style={
                                     Object {
@@ -1928,8 +1928,8 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                   }
                                 >
                                   (Modified:
-                                   
-                                  08-10-2019 07:07:09
+
+                                  08-10-2019 05:07:09
                                   )
                                 </span>
                               </p>
@@ -3617,10 +3617,10 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                               <p
                                 className="MuiTypography-root makeStyles-secondaryHeading-4 MuiTypography-body1"
                               >
-                                Created by: 
-                                 
+                                Created by:
+
                                 Invalid date
-                                 
+
                                 <span
                                   style={
                                     Object {
@@ -3629,7 +3629,7 @@ exports[`The main memo panel instance should renders correctly 1`] = `
                                   }
                                 >
                                   (Modified:
-                                   
+
                                   Invalid date
                                   )
                                 </span>
