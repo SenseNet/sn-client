@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`The app layout instance should renders correctly 1`] = `
-<Fragment>
+<BrowserRouter>
   <CssBaseline />
   <Component />
   <WithStyles(ForwardRef(Container))
@@ -42,11 +42,11 @@ exports[`The app layout instance should renders correctly 1`] = `
           />
           <Route
             component={[Function]}
-            path="/edit/:documentId"
+            path="/edit/:documentId/:action?"
           />
         </Switch>
       </WithStyles(ForwardRef(Grid))>
     </WithStyles(ForwardRef(Grid))>
   </WithStyles(ForwardRef(Container))>
-</Fragment>
+</BrowserRouter>
 `;

@@ -1224,30 +1224,10 @@
     "@furystack/utils" "^1.0.1"
     reflect-metadata "^0.1.13"
 
-"@furystack/inject@^4.0.2", "@furystack/inject@^4.0.4":
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/@furystack/inject/-/inject-4.0.4.tgz#208debf85862dca800fa55668a40e0a1cfd2b45a"
-  integrity sha512-tWJpFUf6VKEh+RvpeNnHgLtlxltsxJXN+NGWngIdsglNXF/2kBpOtaaQkBD28BMfRRI/BmFsEoqvhJFlsKJdZA==
-  dependencies:
-    "@furystack/utils" "^1.1.0"
-    reflect-metadata "^0.1.13"
-
-"@furystack/logging@^2.0.9":
-  version "2.0.9"
-  resolved "https://registry.yarnpkg.com/@furystack/logging/-/logging-2.0.9.tgz#6a125ffdb127194d51cea4fc05d64fd9d73116a5"
-  integrity sha512-UYCB5RAei2FizyHMmsZ7V9Sxox2PLtGvzErsYEhLk0J4/y4tTwWZ0NKWk28BvjkQfH2G6vvmWpiPyPxJbhwcCA==
-  dependencies:
-    "@furystack/inject" "^4.0.4"
-
 "@furystack/utils@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@furystack/utils/-/utils-1.0.1.tgz#abdc656b46a4972b39403055384db83993eefa52"
   integrity sha512-ePHn7A+hfUo1aFPdkukSUKYq1kM/p0WCJiA7m3e0MiuG/nnvKaQhm1YEI23FY3DEHNSpYGKxr6yJalGVFba3HQ==
-
-"@furystack/utils@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@furystack/utils/-/utils-1.1.0.tgz#6352d0285a33f262c50049076d3db8e6cc8308e5"
-  integrity sha512-yuz7g94iR6TxW4OsROnRllJA6zvHOYq4EHAxXb6UOfcaGtdvnU37ByT089QbPhikuv94UL3i2jBqM9xiXa6LZQ==
 
 "@hapi/address@2.x.x":
   version "2.1.2"
@@ -2098,25 +2078,6 @@
     npmlog "^4.1.2"
     write-file-atomic "^2.3.0"
 
-"@material-ui/core@^4.3.3":
-  version "4.7.0"
-  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-4.7.0.tgz#84c02a6d1c99c7900e184538c5f9d87e30cf4c23"
-  integrity sha512-mwLehUo0Q9ZxjuWo7J1uy1/Grh3nRxlOAaWJ3EtKeJP2HwqlSy8bWrcvRQYlapaYIPXa5jN8zWbTwi8Pk30VQg==
-  dependencies:
-    "@babel/runtime" "^7.4.4"
-    "@material-ui/styles" "^4.6.0"
-    "@material-ui/system" "^4.5.2"
-    "@material-ui/types" "^4.1.1"
-    "@material-ui/utils" "^4.5.2"
-    "@types/react-transition-group" "^4.2.0"
-    clsx "^1.0.2"
-    convert-css-length "^2.0.1"
-    hoist-non-react-statics "^3.2.1"
-    normalize-scroll-left "^0.2.0"
-    popper.js "^1.14.1"
-    prop-types "^15.7.2"
-    react-transition-group "^4.3.0"
-
 "@material-ui/core@^4.6.1":
   version "4.6.1"
   resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-4.6.1.tgz#039f97443547a88c41d290deabfb4a044c6031ec"
@@ -2136,7 +2097,26 @@
     prop-types "^15.7.2"
     react-transition-group "^4.3.0"
 
-"@material-ui/icons@^4.0.1", "@material-ui/icons@^4.5.1":
+"@material-ui/core@^4.7.0":
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-4.7.0.tgz#84c02a6d1c99c7900e184538c5f9d87e30cf4c23"
+  integrity sha512-mwLehUo0Q9ZxjuWo7J1uy1/Grh3nRxlOAaWJ3EtKeJP2HwqlSy8bWrcvRQYlapaYIPXa5jN8zWbTwi8Pk30VQg==
+  dependencies:
+    "@babel/runtime" "^7.4.4"
+    "@material-ui/styles" "^4.6.0"
+    "@material-ui/system" "^4.5.2"
+    "@material-ui/types" "^4.1.1"
+    "@material-ui/utils" "^4.5.2"
+    "@types/react-transition-group" "^4.2.0"
+    clsx "^1.0.2"
+    convert-css-length "^2.0.1"
+    hoist-non-react-statics "^3.2.1"
+    normalize-scroll-left "^0.2.0"
+    popper.js "^1.14.1"
+    prop-types "^15.7.2"
+    react-transition-group "^4.3.0"
+
+"@material-ui/icons@^4.5.1":
   version "4.5.1"
   resolved "https://registry.yarnpkg.com/@material-ui/icons/-/icons-4.5.1.tgz#6963bad139e938702ece85ca43067688018f04f8"
   integrity sha512-YZ/BgJbXX4a0gOuKWb30mBaHaoXRqPanlePam83JQPZ/y4kl+3aW0Wv9tlR70hB5EGAkEJGW5m4ktJwMgxQAeA==
@@ -2314,25 +2294,6 @@
   integrity sha512-MI4Xx6LHs4Webyvi6EbspgyAb4D2Q2VtnCQ1blOJcoLS6mVa8lNN2rkIy1CVxfTUpoyIbCTkXES1rLXztFD1lg==
   dependencies:
     any-observable "^0.3.0"
-
-"@sensenet/document-viewer-react@^1.2.2":
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/@sensenet/document-viewer-react/-/document-viewer-react-1.2.2.tgz#897781314f6119e054394da61de06631b628b08a"
-  integrity sha512-ufQKSjI5nowCx6dIR54J7i7+EodcqZAkMHVQLPOhZkxMbhIm+Jez/uFnxnotT8ebEl1+N4gNi5DkIYBxmc5epQ==
-  dependencies:
-    "@furystack/inject" "^4.0.2"
-    "@material-ui/core" "^4.3.3"
-    "@material-ui/icons" "^4.0.1"
-    "@sensenet/client-utils" "^1.6.6"
-    "@sensenet/control-mapper" "^2.0.3"
-    "@sensenet/default-content-types" "^2.0.2"
-    react "^16.9.0"
-    react-dom "^16.9.0"
-    react-redux "^7.0.3"
-    redux "^4.0.4"
-    redux-di-middleware "^4.0.1"
-    styled-components "^4.1.3"
-    tslib "^1.9.3"
 
 "@storybook/addon-a11y@^5.2.6":
   version "5.2.6"
@@ -14394,7 +14355,7 @@ react-dom-factories@^1.0.0:
   resolved "https://registry.yarnpkg.com/react-dom-factories/-/react-dom-factories-1.0.2.tgz#eb7705c4db36fb501b3aa38ff759616aa0ff96e0"
   integrity sha1-63cFxNs2+1AbOqOP91lhaqD/luA=
 
-react-dom@^16.11.0, react-dom@^16.12.0, react-dom@^16.8.3, react-dom@^16.9.0:
+react-dom@^16.11.0, react-dom@^16.12.0, react-dom@^16.8.3:
   version "16.12.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.12.0.tgz#0da4b714b8d13c2038c9396b54a92baea633fe11"
   integrity sha512-LMxFfAGrcS3kETtQaCkTKjMiifahaMySFDn71fZUNpPHZQEzmk/GiAeIT8JSOrHB23fnuCOMruL2a8NYlw+8Gw==
@@ -14566,7 +14527,7 @@ react-quill@^1.3.3:
     quill "^1.2.6"
     react-dom-factories "^1.0.0"
 
-react-redux@^7.0.2, react-redux@^7.0.3, react-redux@^7.1.3:
+react-redux@^7.0.2, react-redux@^7.1.3:
   version "7.1.3"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-7.1.3.tgz#717a3d7bbe3a1b2d535c94885ce04cdc5a33fc79"
   integrity sha512-uI1wca+ECG9RoVkWQFF4jDMqmaw0/qnvaSvOoL/GA4dNxf6LoV8sUAcNDvE5NWKs4hFpn0t6wswNQnY3f7HT3w==
@@ -14766,7 +14727,7 @@ react@^0.14.0:
     envify "^3.0.0"
     fbjs "^0.6.1"
 
-react@^16.11.0, react@^16.12.0, react@^16.8.3, react@^16.9.0:
+react@^16.11.0, react@^16.12.0, react@^16.8.3:
   version "16.12.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.12.0.tgz#0c0a9c6a142429e3614834d5a778e18aa78a0b83"
   integrity sha512-fglqy3k5E+81pA8s+7K0/T3DBCF0ZDOher1elBFzF7O6arXJgzyu/FW+COxFvAWXJoJN9KIZbT2LXlukwphYTA==
@@ -14994,7 +14955,7 @@ redent@^2.0.0:
     indent-string "^3.0.0"
     strip-indent "^2.0.0"
 
-redux-di-middleware@^4.0.1, redux-di-middleware@^4.1.0:
+redux-di-middleware@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/redux-di-middleware/-/redux-di-middleware-4.1.0.tgz#5d7a3575e8af69cceb0d04fa409536a23955866e"
   integrity sha512-8i8bh3QFo5AcseOhAtcbFsCGWceH6PvKAWpSdVaGBkHtu9RZkxvcVNsKaIiV/xN2hIUaeNA21WKTIfppWDyWbg==
@@ -16542,7 +16503,7 @@ style-loader@^0.23.1:
     loader-utils "^1.1.0"
     schema-utils "^1.0.0"
 
-styled-components@^4.1.3, styled-components@^4.4.1:
+styled-components@^4.4.1:
   version "4.4.1"
   resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-4.4.1.tgz#e0631e889f01db67df4de576fedaca463f05c2f2"
   integrity sha512-RNqj14kYzw++6Sr38n7197xG33ipEOktGElty4I70IKzQF1jzaD1U4xQ+Ny/i03UUhHlC5NWEO+d8olRCDji6g==
@@ -17074,7 +17035,7 @@ ts-pnp@^1.1.2:
   resolved "https://registry.yarnpkg.com/ts-pnp/-/ts-pnp-1.1.5.tgz#840e0739c89fce5f3abd9037bb091dbff16d9dec"
   integrity sha512-ti7OGMOUOzo66wLF3liskw6YQIaSsBgc4GOAlWRnIEj8htCxJUxskanMUoJOD6MDCRAXo36goXJZch+nOS0VMA==
 
-tslib@^1.10.0, tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0, tslib@^1.9.3:
+tslib@^1.10.0, tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.10.0.tgz#c3c19f95973fb0a62973fb09d90d961ee43e5c8a"
   integrity sha512-qOebF53frne81cf0S9B41ByenJ3/IuH8yJKngAX35CmiZySA0khhkovshKK+jGCaMnVomla7gVlIcc3EvKPbTQ==

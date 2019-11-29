@@ -1,21 +1,18 @@
 import React from 'react'
 import { Container, CssBaseline, Grid } from '@material-ui/core'
-import { Route, Switch } from 'react-router-dom'
-import { useRepository } from '@sensenet/hooks-react'
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
 import snLogo from './assets/sensenet_logo_transparent.png'
 import { NavBarComponent } from './components/navbar'
 import MainPanel from './components/mainpanel'
 import DocviewerComponent from './components/document-viewer'
-import EditorPage, { EditorPageProps } from './components/document-editor'
+import { DocumentEditor } from './components/document-editor'
 
 /**
  * The main entry point of your app. You can start h@cking from here ;)
  */
 export const App: React.FunctionComponent = () => {
-  const repo = useRepository()
-
   return (
-    <>
+    <Router>
       <CssBaseline />
       <NavBarComponent />
       <Container
@@ -39,14 +36,11 @@ export const App: React.FunctionComponent = () => {
             <Switch>
               <Route path="/" exact component={MainPanel} />
               <Route path="/preview/:documentId" component={DocviewerComponent} />
-              <Route
-                path="/edit/:documentId"
-                component={(props: EditorPageProps) => <EditorPage repository={repo} {...props} />}
-              />
+              <Route path="/edit/:documentId/:action?" component={DocumentEditor} />
             </Switch>
           </Grid>
         </Grid>
       </Container>
-    </>
+    </Router>
   )
 }

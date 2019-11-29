@@ -8,7 +8,7 @@ import { FullScreenLoader } from '../components/full-screen-loader'
 /**
  * The last repository will be stored in your local storage with this key
  */
-export const lastRepositoryKey = 'sn-boilerplate-last-repository'
+export const lastRepositoryKey = 'sn-last-repository'
 
 /**
  * Container component that will provide a Repository object through a Context

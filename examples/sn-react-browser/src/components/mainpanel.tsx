@@ -10,7 +10,7 @@ import { File, GenericContent } from '@sensenet/default-content-types'
 import { ODataCollectionResponse } from '@sensenet/client-core'
 import { Breakpoint } from '@material-ui/core/styles/createBreakpoints'
 import { useRepository } from '@sensenet/hooks-react'
-import history from '../utils/browser-history'
+import { useHistory } from 'react-router'
 import { icons } from '../assets/icons'
 import { downloadFile } from '../helper'
 
@@ -47,6 +47,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const MainPanel: React.FunctionComponent<MainPanel> = props => {
   const classes = useStyles()
   const repo = useRepository()
+  const history = useHistory()
   const [data, setData] = useState<File[]>([])
   const [currentfolder, setCurrentfolder] = useState<string>('')
   const [activeContent, setActiveContent] = useState<File>()

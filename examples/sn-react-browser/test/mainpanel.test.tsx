@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography'
 import { CloudDownload, Edit } from '@material-ui/icons'
 import Button from '@material-ui/core/Button'
 import TableSortLabel from '@material-ui/core/TableSortLabel'
+import { MemoryRouter, Route } from 'react-router-dom'
 import { downloadFile } from '../src/helper'
 import MainPanel from '../src/components/mainpanel'
 import { TestContentCollection, TestContentCollectionForOrders } from './_mocks_/test_contents'
@@ -37,51 +38,46 @@ describe('The main browser panel instance', () => {
     }
   })
 
-  it('should renders correctly', async () => {
-    await act(async () => {
-      wrapper = mount(
-        <RepositoryContext.Provider value={repo}>
-          <MainPanel {...MainPanelProps} />
-        </RepositoryContext.Provider>,
-      )
-    })
-
-    expect(wrapper.update()).toMatchSnapshot()
-  })
-
   it('should show content list', async () => {
     await act(async () => {
       wrapper = mount(
         <RepositoryContext.Provider value={repo}>
-          <MainPanel {...MainPanelProps} />
+          <MemoryRouter>
+            <MainPanel {...MainPanelProps} />
+          </MemoryRouter>
         </RepositoryContext.Provider>,
       )
     })
 
-    const contentlist = wrapper.update().find(ContentList)
-    expect(contentlist).toBeDefined()
-
-    const tablerow = contentlist.find(TableBody).find(TableRow)
-    expect(tablerow.length).toEqual(TestContentCollection.length)
+    const tableRow = wrapper.update().find('tbody tr')
+    expect(tableRow.length).toEqual(TestContentCollection.length)
   })
 
   it('should forward to preview location and back again', async () => {
+    let locationFromProps: any
     await act(async () => {
       wrapper = mount(
         <RepositoryContext.Provider value={repo}>
-          <MainPanel {...MainPanelProps} />
+          <MemoryRouter>
+            <MainPanel {...MainPanelProps} />
+            <Route
+              path="*"
+              render={({ location }) => {
+                locationFromProps = location
+                return null
+              }}
+            />
+          </MemoryRouter>
         </RepositoryContext.Provider>,
       )
     })
-
-    const contentlist = wrapper.update().find(ContentList)
-    const tablerow = contentlist.find(TableBody).find(TableRow)
+    const tablerow = wrapper.update().find('tbody tr')
 
     act(() => {
       ;(tablerow.first().prop('onClick') as any)({ target: { innerHTML: TestContentCollection[0].DisplayName } })
     })
 
-    expect(window.location.pathname).toEqual(`/preview/${TestContentCollection[0].Id}`)
+    expect(locationFromProps.pathname).toEqual(`/preview/${TestContentCollection[0].Id}`)
 
     const backbtn = wrapper.find(Button)
     await act(async () => {
@@ -95,13 +91,13 @@ describe('The main browser panel instance', () => {
     await act(async () => {
       wrapper = mount(
         <RepositoryContext.Provider value={repo}>
-          <MainPanel {...MainPanelProps} />
+          <MemoryRouter>
+            <MainPanel {...MainPanelProps} />
+          </MemoryRouter>
         </RepositoryContext.Provider>,
       )
     })
-
-    const contentlist = wrapper.update().find(ContentList)
-    const tablerow = contentlist.find(TableBody).find(TableRow)
+    const tablerow = wrapper.update().find('tbody tr')
 
     await act(async () => {
       ;(tablerow.at(1).prop('onDoubleClick') as any)({
@@ -117,7 +113,9 @@ describe('The main browser panel instance', () => {
     await act(async () => {
       wrapper = mount(
         <RepositoryContext.Provider value={repo}>
-          <MainPanel {...MainPanelProps} />
+          <MemoryRouter>
+            <MainPanel {...MainPanelProps} />
+          </MemoryRouter>
         </RepositoryContext.Provider>,
       )
     })
@@ -131,10 +129,20 @@ describe('The main browser panel instance', () => {
   })
 
   it('should open edit mode', async () => {
+    let locationFromProps: any
     await act(async () => {
       wrapper = mount(
         <RepositoryContext.Provider value={repo}>
-          <MainPanel {...MainPanelProps} />
+          <MemoryRouter>
+            <MainPanel {...MainPanelProps} />
+            <Route
+              path="*"
+              render={({ location }) => {
+                locationFromProps = location
+                return null
+              }}
+            />
+          </MemoryRouter>
         </RepositoryContext.Provider>,
       )
     })
@@ -144,7 +152,7 @@ describe('The main browser panel instance', () => {
       ;(editbtn.first().prop('onClick') as any)({ content: { Id: TestContentCollection[0].Id } })
     })
 
-    expect(window.location.pathname).toEqual(`/edit/${TestContentCollection[0].Id}`)
+    expect(locationFromProps.pathname).toEqual(`/edit/${TestContentCollection[0].Id}`)
   })
 
   it('should order the list', async () => {
@@ -158,27 +166,23 @@ describe('The main browser panel instance', () => {
     await act(async () => {
       wrapper = mount(
         <RepositoryContext.Provider value={repo}>
-          <MainPanel {...MainPanelProps} />
+          <MemoryRouter>
+            <MainPanel {...MainPanelProps} />
+          </MemoryRouter>
         </RepositoryContext.Provider>,
       )
     })
-    const contents = wrapper
-      .update()
-      .find(ContentList)
-      .find('tr')
+    const contents = wrapper.update().find('tbody tr')
 
-    expect(contents.at(1).text()).toContain(TestContentCollectionForOrders[0].DisplayName)
+    expect(contents.at(0).text()).toContain(TestContentCollectionForOrders[0].DisplayName)
 
-    const orderbtn = wrapper.update().find(TableSortLabel)
+    const orderbtn = wrapper.update().find('th span')
     act(() => {
       ;(orderbtn.at(0).prop('onClick') as any)()
     })
-    const orderedcontents = wrapper
-      .update()
-      .find(ContentList)
-      .find('tr')
+    const orderedcontents = wrapper.update().find('tbody tr')
 
     const expectedstring = TestContentCollectionForOrders[0].DisplayName
-    expect(orderedcontents.at(1).text()).not.toEqual(expectedstring)
+    expect(orderedcontents.at(0).text()).not.toEqual(expectedstring)
   })
 })
