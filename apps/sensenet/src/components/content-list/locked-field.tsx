@@ -1,6 +1,6 @@
 import React from 'react'
 import Lock from '@material-ui/icons/Lock'
-import AssignmentIcon from '@material-ui/icons/Assignment'
+import AssignmentLateIcon from '@material-ui/icons/AssignmentLate'
 import { TableCell, Tooltip } from '@material-ui/core'
 import { GenericContent } from '@sensenet/default-content-types'
 import { useSession } from '@sensenet/hooks-react'
@@ -32,7 +32,7 @@ export function LockedField({ content }: LockedFieldProps) {
   return (
     <TableCell align="center">
       <Tooltip title={content.Approvable ? localization.actionNeeded : localization.checkedOutTo(lockedByName())}>
-        {content.Approvable ? <AssignmentIcon /> : <Lock />}
+        {content.Approvable ? <AssignmentLateIcon /> : <Lock />}
       </Tooltip>
     </TableCell>
   )
