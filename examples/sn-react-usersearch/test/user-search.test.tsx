@@ -303,7 +303,7 @@ describe('The user search component instance', () => {
     expect(querytextfield.at(1).props().value).toEqual('MaritalStatus:Single')
   })
 
-  it('should clear MaritalStatus' value', async () => {
+  it('should clear MaritalStatus value', async () => {
     repo.schemas = {
       getSchemaByName: function schemasfn() {
         return { FieldSettings: [] }
