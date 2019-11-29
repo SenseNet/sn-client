@@ -298,7 +298,7 @@ export const defaultSettings: PersonalSettingsType = {
         {
           itemType: 'Content',
           settings: { root: '/Root/Content' },
-          permissions: [{ path: '/Root/Content', action: 'Add' }],
+          permissions: [{ path: '/Root/Content', action: 'Browse' }],
         },
         {
           itemType: 'Users and groups',
