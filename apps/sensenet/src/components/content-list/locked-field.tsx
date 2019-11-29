@@ -30,7 +30,7 @@ export function LockedField({ content }: LockedFieldProps) {
   }
 
   return (
-    <TableCell>
+    <TableCell align="center">
       <Tooltip title={content.Approvable ? localization.actionNeeded : localization.checkedOutTo(lockedByName())}>
         {content.Approvable ? <AssignmentIcon /> : <Lock />}
       </Tooltip>

@@ -110,7 +110,7 @@ export function Versions({ content }: VersionsProps) {
                 </TableCell>
                 <TableCell padding="none" style={{ width: '5%' }}>
                   {index !== versions.length - 1 ? (
-                    <IconButton onClick={() => restoreVersion(version)} title="Restore version">
+                    <IconButton onClick={() => restoreVersion(version)} title="{localization.restoreButtonTitle}">
                       <HistoryIcon />
                     </IconButton>
                   ) : null}
