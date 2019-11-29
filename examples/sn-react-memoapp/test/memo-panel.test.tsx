@@ -24,17 +24,6 @@ describe('The main memo panel instance', () => {
     }
   })
 
-  it('should renders correctly', async () => {
-    await act(async () => {
-      wrapper = mount(
-        <RepositoryContext.Provider value={repo}>
-          <MemoPanel />
-        </RepositoryContext.Provider>,
-      )
-    })
-    expect(wrapper.update()).toMatchSnapshot()
-  })
-
   it('should render memo list when initialized', async () => {
     await act(async () => {
       wrapper = mount(
