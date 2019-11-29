@@ -37,7 +37,7 @@ describe('The list panel layout instance', () => {
     }
   })
 
-  it('should renders correctly', async () => {
+  it('should be rendered correctly', async () => {
     await act(async () => {
       wrapper = mount(
         <RepositoryContext.Provider value={repo}>

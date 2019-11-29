@@ -9,7 +9,7 @@ describe('The login instance', () => {
     error: 'test',
   }
 
-  it('should renders correctly', () => {
+  it('should be rendered correctly', () => {
     expect(shallow(<LoginForm {...testprop} />)).toMatchSnapshot()
   })
 

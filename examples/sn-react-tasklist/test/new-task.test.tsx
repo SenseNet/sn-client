@@ -20,7 +20,7 @@ describe('The app layout instance', () => {
       return Promise.resolve({ d: { results: TestContentCollection[0] } } as any)
     }
   })
-  it('should renders correctly', () => {
+  it('should be rendered correctly', () => {
     expect(shallow(<NewTaskPanel {...(TodoItems as any)} />)).toMatchSnapshot()
   })
   it('should create a new form', async () => {
