@@ -4,8 +4,7 @@
   "private": true,
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "contributors": [
-    "Dániel Blaskó <blaskoi@gmail.com>",
-    "Zoltán Bedi <zoltan.bedi@sensenet.com>"
+    "Dániel Blaskó <blaskoi@gmail.com>"
   ],
   "license": "GPL-2.0",
   "homepage": "https://sensenet.com",
@@ -26,8 +25,6 @@
     "@types/node": "^12.12.14",
     "@types/react": "^16.9.13",
     "@types/react-dom": "^16.9.4",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
     "react-scripts": "^3.2.0",
     "typescript": "^3.7.2"
   },
