@@ -12,7 +12,7 @@ describe('App Layout', () => {
     const l = shallow(<App />)
     expect(l).toMatchSnapshot()
   })
-  it('Transition snapshot', () => {
+  it('matches Transition snapshot', () => {
     const l = shallow(<Transition />)
     expect(l).toMatchSnapshot()
   })
