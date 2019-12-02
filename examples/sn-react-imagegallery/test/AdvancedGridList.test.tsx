@@ -14,7 +14,7 @@ describe('AdvancedGridList', () => {
   })
 
   describe('pickTile', () => {
-    it('should return 2', () => {
+    it('should return 2 when the given number is divisible by three', () => {
       const value = pickTile(456)
       expect(value).toBe(2)
     })
