@@ -13,7 +13,7 @@ describe('The login instance', () => {
     expect(shallow(<LoginForm {...testprop} />)).toMatchSnapshot()
   })
 
-  it('should change username state when user change it', async () => {
+  it('should change username state when user changes it', async () => {
     const wrapper = shallow(<LoginForm {...testprop} />)
     ;(wrapper
       .find(TextField)
