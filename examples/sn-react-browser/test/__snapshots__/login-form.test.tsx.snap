@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`The login instance should renders correctly 1`] = `
+exports[`The login instance should be rendered correctly 1`] = `
 <div
   style={
     Object {
