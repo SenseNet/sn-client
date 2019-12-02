@@ -51,7 +51,7 @@ describe('App Layout', () => {
     expect(obj.imgAuthor).toBe(images[0].CreatedBy.DisplayName)
     expect(obj.imgSize).toBe(`${(images[0].Size / 1024 / 1024).toFixed(2)} MB`)
   })
-  it('getselectedImage without result', async () => {
+  it('returns without a result when getSelectedImage is called', async () => {
     const repository = {
       loadCollection: () => {
         return { d: { results: [] } }
