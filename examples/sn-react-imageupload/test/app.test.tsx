@@ -81,7 +81,7 @@ describe('Get Images from repository', () => {
     expect(repository.loadCollection).toBeCalledTimes(2)
   })
 })
-describe('Notification Controll', () => {
+describe('Notification Control', () => {
   it('should show notification', async () => {
     const repository = {
       loadCollection: () => {
