@@ -28,6 +28,8 @@ import theme from './theme'
 import './utils/errorToJson'
 import './utils/InjectorExtensions'
 import { snInjector } from './sn-injector'
+import { DialogProvider } from './components/dialogs/dialog-provider'
+import { Dialogs } from './components/dialogs'
 
 console.log(
   `%c@sensenet app v${process.env.APP_VERSION}
@@ -61,10 +63,13 @@ ReactDOM.render(
                     <SessionContextProvider>
                       <ResponsiveContextProvider>
                         <ThemeProvider theme={theme}>
-                          <DesktopLayout>
-                            <MainRouter />
-                            <NotificationComponent />
-                          </DesktopLayout>{' '}
+                          <DialogProvider>
+                            <DesktopLayout>
+                              <MainRouter />
+                              <NotificationComponent />
+                              <Dialogs />
+                            </DesktopLayout>
+                          </DialogProvider>
                         </ThemeProvider>
                       </ResponsiveContextProvider>
                     </SessionContextProvider>

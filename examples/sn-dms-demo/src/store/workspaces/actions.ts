@@ -47,8 +47,8 @@ export const loadFavoriteWorkspaces = (userName: string) => ({
       const favorites = await repository.load<User>({
         idOrPath: `/Root/IMS/Public/${userName}`,
         oDataOptions: {
-          select: 'FollowedWorkspaces',
-          expand: 'FollowedWorkspaces',
+          select: ['FollowedWorkspaces'],
+          expand: ['FollowedWorkspaces'],
         },
       })
       options.dispatch(setFavoriteWorkspaces(favorites.d.FollowedWorkspaces as Workspace[]))
@@ -65,7 +65,7 @@ export const followWorkspace = (userName: string, contentId: number, followed: n
       content: {
         FollowedWorkspaces: [...followed, contentId],
       },
-      oDataOptions: { select: 'FollowedWorkspaces', expand: 'FollowedWorkspaces' },
+      oDataOptions: { select: ['FollowedWorkspaces'], expand: ['FollowedWorkspaces'] },
     }),
 })
 
@@ -80,7 +80,7 @@ export const unfollowWorkspace = (userName: string, contentId: number, followed:
           (followed.length > 0 && followed.includes(contentId) && [...followed.filter(item => item !== contentId)]) ||
           followed,
       },
-      oDataOptions: { select: 'FollowedWorkspaces', expand: 'FollowedWorkspaces' },
+      oDataOptions: { select: ['FollowedWorkspaces'], expand: ['FollowedWorkspaces'] },
     }),
 })
 

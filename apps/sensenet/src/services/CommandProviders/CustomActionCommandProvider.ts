@@ -5,14 +5,16 @@ import { CommandProvider, SearchOptions } from '../CommandProviderManager'
 import { LocalizationService } from '../LocalizationService'
 import { SelectionService } from '../SelectionService'
 
+export interface OnExecuteActionPayload {
+  content: GenericContent
+  action: ActionModel
+  metadata?: MetadataAction
+  method: 'GET' | 'POST'
+}
+
 @Injectable({ lifetime: 'singleton' })
 export class CustomActionCommandProvider implements CommandProvider {
-  public onExecuteAction = new ObservableValue<{
-    content: GenericContent
-    action: ActionModel
-    metadata?: MetadataAction
-    method: 'GET' | 'POST'
-  }>()
+  public onExecuteAction = new ObservableValue<OnExecuteActionPayload>()
 
   public onActionExecuted = new ObservableValue<{ content: GenericContent; action: ActionModel; response: any }>()
 
