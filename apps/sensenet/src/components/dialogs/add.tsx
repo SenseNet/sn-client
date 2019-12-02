@@ -1,4 +1,3 @@
-import Dialog, { DialogProps } from '@material-ui/core/Dialog/Dialog'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import { NewView } from '@sensenet/controls-react'
@@ -6,26 +5,25 @@ import { GenericContent, Schema } from '@sensenet/default-content-types'
 import React from 'react'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { useLocalization } from '../../hooks'
+import { useDialog } from './dialog-provider'
 
-export interface AddDialogProps {
-  dialogProps: DialogProps
+export type AddDialogProps = {
   schema: Schema
   parent: GenericContent
 }
 
-export const AddDialog: React.FunctionComponent<AddDialogProps> = ({ dialogProps, schema, parent }) => {
+export const AddDialog: React.FunctionComponent<AddDialogProps> = ({ schema, parent }) => {
   const localization = useLocalization().addButton
+  const { closeLastDialog } = useDialog()
   const repo = useRepository()
-
-  const handleClose = () => dialogProps.onClose && dialogProps.onClose(null as any, 'backdropClick')
   const logger = useLogger('AddDialog')
 
   return (
-    <Dialog {...dialogProps}>
+    <>
       <DialogTitle> {localization.dialogTitle.replace('{0}', schema.DisplayName)}</DialogTitle>
       <DialogContent>
         <NewView
-          handleCancel={handleClose}
+          handleCancel={closeLastDialog}
           repository={repo}
           contentTypeName={schema.ContentTypeName}
           path={parent.Path}
@@ -37,7 +35,7 @@ export const AddDialog: React.FunctionComponent<AddDialogProps> = ({ dialogProps
                 content,
                 contentTemplate: schema.ContentTypeName,
               })
-              handleClose()
+              closeLastDialog()
               logger.information({
                 message: localization.contentCreatedNotification.replace(
                   '{0}',
@@ -59,6 +57,8 @@ export const AddDialog: React.FunctionComponent<AddDialogProps> = ({ dialogProps
           }}
         />
       </DialogContent>
-    </Dialog>
+    </>
   )
 }
+
+export default AddDialog

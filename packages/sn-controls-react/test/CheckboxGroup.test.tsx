@@ -90,7 +90,9 @@ describe('Check box group field control', () => {
       act(() => {
         onChange && onChange({ target: { checked: true } } as any, true)
       })
-      expect(fieldOnChange).toBeCalled()
+      expect(fieldOnChange).toBeCalledWith('VersioningMode', [
+        { Enabled: true, Selected: true, Text: 'Inherited', Value: '0' },
+      ])
     })
   })
 })

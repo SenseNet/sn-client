@@ -1,4 +1,5 @@
 import { PathHelper } from '@sensenet/client-utils'
+import { GenericContent } from '@sensenet/default-content-types'
 import { Content } from '../index'
 import { ODataCollectionResponse } from '../Models/ODataCollectionResponse'
 import { ODataParams } from '../Models/ODataParams'
@@ -15,7 +16,7 @@ export class Versioning {
    * @param {ODataParams<T> | undefined} oDataOptions optional OData options
    * @returns {Promise<ODataCollectionResponse<T>>} A promise that will be resolved with the versions
    */
-  public getVersions<T extends Content = Content>(
+  public getVersions<T extends GenericContent = GenericContent>(
     idOrPath: number | string,
     oDataOptions?: ODataParams<T>,
   ): Promise<ODataCollectionResponse<T>> {

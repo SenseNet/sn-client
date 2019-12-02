@@ -257,18 +257,20 @@ export class ReferenceGrid extends Component<ReactClientFieldSetting<ReferenceFi
             </InputLabel>
             <FormGroup>
               <List dense={true} style={styles.listContainer}>
-                {(this.props.fieldValue as any).map((item: GenericContent) => (
-                  <DefaultItemTemplate
-                    content={item}
-                    remove={this.removeItem}
-                    add={this.addItem}
-                    key={item.Id}
-                    actionName="browse"
-                    repositoryUrl={this.props.repository ? this.props.repository.configuration.repositoryUrl : ''}
-                    multiple={this.props.settings.AllowMultiple ? this.props.settings.AllowMultiple : false}
-                    renderIcon={this.props.renderIcon}
-                  />
-                ))}
+                {Array.isArray(this.props.fieldValue)
+                  ? (this.props.fieldValue as any).map((item: GenericContent) => (
+                      <DefaultItemTemplate
+                        content={item}
+                        remove={this.removeItem}
+                        add={this.addItem}
+                        key={item.Id}
+                        actionName="browse"
+                        repositoryUrl={this.props.repository ? this.props.repository.configuration.repositoryUrl : ''}
+                        multiple={this.props.settings.AllowMultiple ? this.props.settings.AllowMultiple : false}
+                        renderIcon={this.props.renderIcon}
+                      />
+                    ))
+                  : null}
               </List>
             </FormGroup>
           </FormControl>
