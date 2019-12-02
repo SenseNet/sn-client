@@ -8,10 +8,9 @@ import CloudUpload from '@material-ui/icons/CloudUpload'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
 import { CurrentContentContext, useLogger, useRepository } from '@sensenet/hooks-react'
-import { Redirect } from 'react-router'
 import { useLocalization } from '../hooks'
-import { AddDialog } from './dialogs/add'
 import { Icon } from './Icon'
+import { useDialog } from './dialogs'
 
 export interface AddButtonProps {
   parent?: GenericContent
@@ -19,15 +18,11 @@ export interface AddButtonProps {
 
 export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   const repo = useRepository()
+  const { openDialog } = useDialog()
   const parentContext = useContext(CurrentContentContext)
   const [parent, setParent] = useState(parentContext)
   const [showSelectType, setShowSelectType] = useState(false)
   const [allowedChildTypes, setAllowedChildTypes] = useState<Schema[]>([])
-
-  const [showAddNewDialog, setShowAddNewDialog] = useState(false)
-  const [isUploadDialogOpen, setIsUploadDialogOpen] = useState(false)
-  const [selectedSchema, setSelectedSchema] = useState<Schema>(repo.schemas.getSchemaByName('GenericContent'))
-
   const localization = useLocalization().addButton
   const logger = useLogger('AddButton')
 
@@ -55,16 +50,6 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
     }
   }, [localization.errorGettingAllowedContentTypes, logger, parent.Id, repo, showSelectType])
 
-  if (isUploadDialogOpen) {
-    return (
-      <Redirect
-        to={{
-          pathname: `/${btoa(repo.configuration.repositoryUrl)}/upload/${encodeURIComponent(parent.Path)}`,
-        }}
-      />
-    )
-  }
-
   return (
     <div>
       <Tooltip title={localization.tooltip} placement="top-end">
@@ -91,7 +76,11 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
             key="Upload"
             onClick={() => {
               setShowSelectType(false)
-              setIsUploadDialogOpen(true)
+              openDialog({
+                name: 'upload',
+                props: { uploadPath: parent.Path },
+                dialogProps: { open: true, fullScreen: true },
+              })
             }}>
             <div
               style={{
@@ -106,8 +95,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
               key={childType.ContentTypeName}
               onClick={() => {
                 setShowSelectType(false)
-                setShowAddNewDialog(true)
-                setSelectedSchema(childType)
+                openDialog({ name: 'add', props: { schema: childType, parent } })
               }}>
               <div
                 style={{
@@ -120,14 +108,6 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
           ))}
         </div>
       </SwipeableDrawer>
-      <AddDialog
-        schema={selectedSchema}
-        parent={parent}
-        dialogProps={{
-          open: showAddNewDialog,
-          onClose: () => setShowAddNewDialog(false),
-        }}
-      />
     </div>
   )
 }

@@ -5,7 +5,7 @@
 /**
  * Defines an OData field parameter
  */
-export type ODataFieldParameter<T> = Array<keyof T> | keyof T
+export type ODataFieldParameter<T> = Array<keyof T>
 /**
  * Defines an OData Order parameter
  */

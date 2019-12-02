@@ -260,7 +260,7 @@ export const userIsAdmin = (userPath: string) => ({
       contentIdOrPath: userPath,
       directOnly: false,
       oDataOptions: {
-        select: 'Name',
+        select: ['Name'],
       },
     })
     const groups = payload.d.results as Group[]

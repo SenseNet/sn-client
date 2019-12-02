@@ -1,15 +1,26 @@
 import { GenericContent } from '@sensenet/default-content-types'
-import { TableCell } from '@material-ui/core'
-import React from 'react'
-import { CurrentContentContext } from '@sensenet/hooks-react'
+import { IconButton, TableCell } from '@material-ui/core'
+import React, { useRef, useState } from 'react'
+import { MoreHoriz } from '@material-ui/icons'
 import { ResponsivePlatforms } from '../../context'
-import { SecondaryActionsMenu } from '../SecondaryActionsMenu'
+import { ContentContextMenu } from '../context-menu/content-context-menu'
 
-export const DisplayNameComponent: React.FunctionComponent<{
+type DisplayNameProps = {
   content: GenericContent
   device: ResponsivePlatforms
   isActive: boolean
-}> = ({ content, device, isActive }) => {
+}
+
+export const DisplayNameComponent: React.FunctionComponent<DisplayNameProps> = ({ content, device, isActive }) => {
+  const buttonRef = useRef<HTMLButtonElement>(null)
+  const [isOpened, setIsOpened] = useState(false)
+
+  const onButtonClick = (ev: React.MouseEvent<HTMLElement>) => {
+    ev.preventDefault()
+    ev.stopPropagation()
+    setIsOpened(true)
+  }
+
   return (
     <TableCell padding={'none'}>
       <div
@@ -20,9 +31,24 @@ export const DisplayNameComponent: React.FunctionComponent<{
         }}>
         {content.DisplayName || content.Name}
         {device === 'mobile' && isActive ? (
-          <CurrentContentContext.Provider value={content}>
-            <SecondaryActionsMenu style={{ float: 'right' }} />
-          </CurrentContentContext.Provider>
+          <div style={{ float: 'right' }}>
+            <IconButton ref={buttonRef} onClick={onButtonClick}>
+              <MoreHoriz />
+            </IconButton>
+            <ContentContextMenu
+              isOpened={isOpened}
+              content={content}
+              onClose={() => setIsOpened(false)}
+              menuProps={{
+                anchorEl: buttonRef.current,
+                disablePortal: true,
+                BackdropProps: {
+                  onClick: () => setIsOpened(false),
+                  onContextMenu: ev => ev.preventDefault(),
+                },
+              }}
+            />
+          </div>
         ) : null}
       </div>
     </TableCell>
