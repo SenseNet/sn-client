@@ -28,7 +28,7 @@ describe('The login instance', () => {
     ).toEqual('testusername')
   })
 
-  it('should change repository url state when user change it', async () => {
+  it('should change repository url state when user changes it', async () => {
     const wrapper = shallow(<LoginForm {...testprop} />)
     ;(wrapper
       .find(TextField)
