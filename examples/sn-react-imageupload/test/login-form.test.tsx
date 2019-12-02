@@ -13,7 +13,7 @@ describe('LoginForm', () => {
     const wrapper = shallow(<LoginForm {...testprop} />)
     expect(wrapper).toMatchSnapshot()
   })
-  it('Username change test', async () => {
+  it('should change the username', async () => {
     const wrapper = mount(<LoginForm {...testprop} />)
     act(() => {
       ;(wrapper
