@@ -9,6 +9,7 @@ import Input from '@material-ui/core/Input'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import InputLabel from '@material-ui/core/InputLabel'
 import Typography from '@material-ui/core/Typography'
+import { changeJScriptValue } from '../helpers'
 import { renderIconDefault } from './icon'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
@@ -16,8 +17,13 @@ import { ReactClientFieldSetting } from './ClientFieldSetting'
  * Field control that represents a Password field. Available values will be populated from the FieldSettings.
  */
 export const Password: React.FC<ReactClientFieldSetting> = props => {
+  const [value, setValue] = useState(props.fieldValue || changeJScriptValue(props.settings.DefaultValue) || '')
   const [showPassword, setShowPassword] = useState(false)
 
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) => {
+    setValue(e.target.value)
+    props.fieldOnChange && props.fieldOnChange(props.settings.Name, e.target.value)
+  }
   switch (props.actionName) {
     case 'edit':
     case 'new':
@@ -31,6 +37,8 @@ export const Password: React.FC<ReactClientFieldSetting> = props => {
             placeholder={props.settings.DisplayName}
             required={props.settings.Compulsory}
             disabled={props.settings.ReadOnly}
+            onChange={handleChange}
+            value={value}
             fullWidth={true}
             endAdornment={
               <InputAdornment position="end">
