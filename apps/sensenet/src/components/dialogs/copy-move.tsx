@@ -1,5 +1,4 @@
 import Button from '@material-ui/core/Button'
-import Dialog, { DialogProps } from '@material-ui/core/Dialog/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
@@ -15,54 +14,36 @@ import { useLogger, useRepository } from '@sensenet/hooks-react'
 import ArrowUpward from '@material-ui/icons/ArrowUpward'
 import { useLocalization } from '../../hooks'
 import { Icon } from '../Icon'
+import { useDialog } from './dialog-provider'
 
 export interface CopyMoveDialogProps {
   currentParent: GenericContent
   content: GenericContent[]
-  dialogProps: DialogProps
   operation: 'copy' | 'move'
 }
 
 export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = props => {
-  const handleClose = (ev: React.SyntheticEvent<{}, Event>) => {
-    props.dialogProps.onClose && props.dialogProps.onClose(ev, 'backdropClick')
-  }
-
-  const [itemsODataOptions] = useState({ filter: '' })
-
   const repo = useRepository()
+  const { closeLastDialog } = useDialog()
   const list = useListPicker({
     repository: repo,
     currentPath: props.currentParent.Path,
-    itemsODataOptions,
+    itemsODataOptions: { filter: '' },
   })
-
   const localizations = useLocalization().copyMoveContentDialog
   const [localization, setLocalization] = useState(localizations[props.operation])
+  const logger = useLogger('CopyDialog')
 
   useEffect(() => {
     setLocalization(localizations[props.operation])
   }, [localizations, props.operation])
-
-  useEffect(() => {
-    props.dialogProps.open === true && list.navigateTo(props.currentParent)
-    list.setSelectedItem(props.currentParent)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.currentParent.Path, props.dialogProps.open])
-
-  const logger = useLogger('CopyDialog')
 
   if (!props.content.length) {
     return null
   }
 
   return (
-    <Dialog
-      fullWidth={true}
-      disablePortal
-      {...props.dialogProps}
-      onClick={ev => ev.stopPropagation()}
-      onDoubleClick={ev => ev.stopPropagation()}>
+    <>
       <DialogTitle>
         <div>
           <Icon item={props.content[0]} style={{ marginRight: '1em' }} />
@@ -93,15 +74,15 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
         </List>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>{localization.cancelButton}</Button>
+        <Button onClick={() => closeLastDialog()}>{localization.cancelButton}</Button>
         <Button
           autoFocus={true}
           disabled={
             (list.selectedItem && list.selectedItem.Path === props.content[0].Path) ||
             (list.selectedItem && list.selectedItem.Path === `/${PathHelper.getParentPath(props.content[0].Path)}`)
           }
-          onClick={async ev => {
-            handleClose(ev)
+          onClick={async () => {
+            closeLastDialog()
             try {
               if (list.selectedItem) {
                 const action = props.operation === 'copy' ? repo.copy : repo.move
@@ -168,6 +149,8 @@ export const CopyMoveDialog: React.FunctionComponent<CopyMoveDialogProps> = prop
           {localization.copyButton}
         </Button>
       </DialogActions>
-    </Dialog>
+    </>
   )
 }
+
+export default CopyMoveDialog

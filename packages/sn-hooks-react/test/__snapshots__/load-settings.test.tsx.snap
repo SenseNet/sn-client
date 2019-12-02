@@ -6,7 +6,9 @@ exports[`LoadSettings matches snapshot 1`] = `
     Object {
       "loadAncestorsSettings": Object {},
       "loadChildrenSettings": Object {
-        "expand": "CreatedBy",
+        "expand": Array [
+          "CreatedBy",
+        ],
         "orderby": Array [
           Array [
             "DisplayName",

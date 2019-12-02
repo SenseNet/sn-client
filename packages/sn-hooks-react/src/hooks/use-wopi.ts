@@ -1,34 +1,39 @@
-import { ActionModel, File, GenericContent } from '@sensenet/default-content-types'
+import { File, GenericContent, isActionModel } from '@sensenet/default-content-types'
+import { useCallback } from 'react'
 import { useRepository } from './use-repository'
 
 /**
- * Returns if the current content can be opened in WOPI for read or write.
- * @param content The content to check
+ * Returns two functions that can determine if the current content can be opened in WOPI for read or write.
+ * In order to work this correctly, you need to get Actions field in the content.
  */
-export const useWopi = (content: GenericContent) => {
+export const useWopi = () => {
   const repo = useRepository()
 
-  const isWriteAwailable =
-    repo.schemas.isContentFromType(content, File) &&
-    content.Actions &&
-    (content.Actions as ActionModel[]).length > 0 &&
-    (content.Actions as ActionModel[]).find(a => a.Name === 'WopiOpenEdit')
+  const isWriteAvailable = useCallback(
+    (content: GenericContent) =>
+      repo.schemas.isContentFromType(content, File) &&
+      isActionModel(content.Actions) &&
+      content.Actions.some(action => action.Name === 'WopiOpenEdit'),
+    [repo.schemas],
+  )
 
-  const isReadAwailable =
-    isWriteAwailable ||
-    (repo.schemas.isContentFromType(content, File) &&
-      content.Actions &&
-      (content.Actions as ActionModel[]).length > 0 &&
-      (content.Actions as ActionModel[]).find(a => a.Name === 'WopiOpenView'))
+  const isReadAvailable = useCallback(
+    (content: GenericContent) =>
+      isWriteAvailable(content) ||
+      (repo.schemas.isContentFromType(content, File) &&
+        isActionModel(content.Actions) &&
+        content.Actions.some(action => action.Name === 'WopiOpenView')),
+    [isWriteAvailable, repo.schemas],
+  )
 
   return {
     /**
      * The file can be opened for read with WOPI
      */
-    isReadAwailable,
+    isReadAvailable,
     /**
      * The file can be opened for write with WOPI
      */
-    isWriteAwailable,
+    isWriteAvailable,
   }
 }

@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The app layout instance should be rendered correctly 1`] = `
+<form
+  autoComplete="off"
+  className="makeStyles-container-2"
+  noValidate={true}
+  onSubmit={[Function]}
+>
+  <WithStyles(ForwardRef(TextField))
+    className="makeStyles-textField-3"
+    fullWidth={true}
+    id="newTaskInput"
+    label="New task"
+    margin="normal"
+    onChange={[Function]}
+    value=""
+    variant="outlined"
+  />
+</form>
+`;
