@@ -1,10 +1,9 @@
 import CloudUploadTwoTone from '@material-ui/icons/CloudUploadTwoTone'
 import { GenericContent } from '@sensenet/default-content-types'
 import React, { useState } from 'react'
-import { Redirect } from 'react-router'
-import { useRepository } from '@sensenet/hooks-react'
 import { useTheme } from '../hooks'
-import { FileWithFullPath, getFilesFromDragEvent } from './dialogs/upload/helper'
+import { getFilesFromDragEvent } from './dialogs/upload/helper'
+import { useDialog } from './dialogs'
 
 type Props = {
   parentContent?: GenericContent
@@ -14,27 +13,24 @@ type Props = {
 
 export const DropFileArea: React.FunctionComponent<Props> = props => {
   const [isDragOver, setDragOver] = useState(false)
-  const repo = useRepository()
-  const [files, setFiles] = useState<FileWithFullPath[]>()
+  const { openDialog } = useDialog()
   const theme = useTheme()
 
   const onDrop = async (event: React.DragEvent) => {
     event.stopPropagation()
     event.preventDefault()
     setDragOver(false)
-    !props.onDrop && setFiles(await getFilesFromDragEvent(event))
-    props.onDrop && props.onDrop(event)
-  }
-
-  if (files && props.parentContent) {
-    return (
-      <Redirect
-        to={{
-          state: { files },
-          pathname: `/${btoa(repo.configuration.repositoryUrl)}/upload/${encodeURIComponent(props.parentContent.Path)}`,
-        }}
-      />
-    )
+    // onDrop is used in the UploadDialog component
+    if (!props.onDrop && props.parentContent) {
+      const files = await getFilesFromDragEvent(event)
+      openDialog({
+        name: 'upload',
+        props: { uploadPath: props.parentContent.Path, files },
+        dialogProps: { open: true, fullScreen: true },
+      })
+    } else {
+      props.onDrop?.(event)
+    }
   }
 
   return (

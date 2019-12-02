@@ -1,5 +1,4 @@
 import Button from '@material-ui/core/Button'
-import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
@@ -10,29 +9,32 @@ import MonacoEditor from 'react-monaco-editor'
 import { useInjector, useLogger, useRepository } from '@sensenet/hooks-react'
 import { PathHelper } from '@sensenet/client-utils'
 import { useLocalization, useTheme } from '../../hooks'
-import { CustomActionCommandProvider } from '../../services/CommandProviders/CustomActionCommandProvider'
+import {
+  CustomActionCommandProvider,
+  OnExecuteActionPayload,
+} from '../../services/CommandProviders/CustomActionCommandProvider'
 import { createCustomActionModel } from '../../services/MonacoModels/create-custom-action-model'
-import { getMonacoModelUri } from '../edit/TextEditor'
+import { useDialog } from './dialog-provider'
 
 const postBodyCache = new Map<string, string>()
 const EDITOR_INITIAL_VALUE = `{
 
 }`
 
-export const ExecuteActionDialog: React.FunctionComponent = () => {
-  const theme = useTheme()
+export type ExecuteActionDialogProps = {
+  actionValue: OnExecuteActionPayload
+  uri: import('monaco-editor').Uri
+}
 
+export function ExecuteActionDialog({ actionValue, uri }: ExecuteActionDialogProps) {
+  const theme = useTheme()
+  const { closeLastDialog } = useDialog()
   const localization = useLocalization().customActions.executeCustomActionDialog
   const customActionService = useInjector().getInstance(CustomActionCommandProvider)
   const logger = useLogger('ExecuteAction')
   const repo = useRepository()
 
-  const [actionValue, setActionValue] = useState(customActionService.onExecuteAction.getValue())
-
-  const [isVisible, setIsVisible] = useState(false)
   const [postBody, setPostBody] = useState(EDITOR_INITIAL_VALUE)
-  const [uri, setUri] = useState<import('monaco-editor').Uri>()
-
   const [isExecuting, setIsExecuting] = useState(false)
   const [error, setError] = useState('')
 
@@ -55,17 +57,6 @@ export const ExecuteActionDialog: React.FunctionComponent = () => {
       createCustomActionModel(uri, actionValue.metadata)
     }
   }, [uri, actionValue])
-
-  useEffect(() => {
-    const observables = [
-      customActionService.onExecuteAction.subscribe(value => {
-        setIsVisible(true)
-        setActionValue(value)
-        setUri(getMonacoModelUri(value.content, repo, value.action))
-      }),
-    ]
-    return () => observables.forEach(o => o.dispose())
-  }, [customActionService.onExecuteAction, repo])
 
   const getActionResult = async () => {
     setIsExecuting(true)
@@ -123,33 +114,29 @@ export const ExecuteActionDialog: React.FunctionComponent = () => {
   const onClick = async () => {
     const result = await getActionResult()
 
-    result &&
-      customActionService.onActionExecuted.setValue({
-        action: actionValue.action,
-        content: actionValue.content,
-        response: result,
-      })
-
-    result &&
-      logger.information({
-        message: `Action executed: '${actionValue.action.DisplayName || actionValue.action.Name}'`,
-        data: {
-          relatedContent: actionValue.content,
-          relatedRepository: repo.configuration.repositoryUrl,
-          details: { actionValue, result },
-        },
-      })
+    if (!result) {
+      return
+    }
     setPostBody(EDITOR_INITIAL_VALUE)
-    setIsVisible(!result)
-  }
 
-  const onClose = () => {
-    setPostBody(EDITOR_INITIAL_VALUE)
-    setIsVisible(false)
+    customActionService.onActionExecuted.setValue({
+      action: actionValue.action,
+      content: actionValue.content,
+      response: result,
+    })
+
+    logger.information({
+      message: `Action executed: '${actionValue.action.DisplayName || actionValue.action.Name}'`,
+      data: {
+        relatedContent: actionValue.content,
+        relatedRepository: repo.configuration.repositoryUrl,
+        details: { actionValue, result },
+      },
+    })
   }
 
   return (
-    <Dialog open={isVisible} onClose={onClose} fullWidth={true}>
+    <>
       <DialogTitle>
         {localization.title
           .replace('{0}', (actionValue && (actionValue.action.DisplayName || actionValue.action.Name)) || '')
@@ -163,10 +150,7 @@ export const ExecuteActionDialog: React.FunctionComponent = () => {
           </div>
         ) : (
           <>
-            {actionValue &&
-            actionValue.metadata &&
-            actionValue.metadata.parameters &&
-            actionValue.metadata.parameters.length ? (
+            {actionValue?.metadata?.parameters?.length ? (
               <MonacoEditor
                 height={750}
                 theme={theme.palette.type === 'dark' ? 'vs-dark' : 'vs-light'}
@@ -200,20 +184,13 @@ export const ExecuteActionDialog: React.FunctionComponent = () => {
         <div style={{ flex: 1, marginLeft: '1.5em' }}>
           {error ? <Typography color="error">{error}</Typography> : null}
         </div>
-        <Button onClick={onClose}>{localization.cancelButton}</Button>
-        <Button
-          autoFocus={
-            !(
-              actionValue &&
-              actionValue.metadata &&
-              actionValue.metadata.parameters &&
-              actionValue.metadata.parameters.length > 0
-            )
-          }
-          onClick={onClick}>
+        <Button onClick={closeLastDialog}>{localization.cancelButton}</Button>
+        <Button autoFocus={!actionValue?.metadata?.parameters?.length} onClick={onClick}>
           {localization.executeButton}
         </Button>
       </DialogActions>
-    </Dialog>
+    </>
   )
 }
+
+export default ExecuteActionDialog
