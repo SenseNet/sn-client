@@ -34,8 +34,7 @@ export const useLoadContent = <T extends GenericContent>({ idOrPath, oDataOption
       })()
     }
     return () => ac.abort()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [repo, idOrPath, reloadToken])
+  }, [repo, idOrPath, reloadToken, oDataOptions])
 
   return { content, error, reload }
 }
