@@ -9,7 +9,7 @@ describe('LoginForm', () => {
     onLogin: jest.fn(),
     error: 'test',
   }
-  it('LoginForm snapshot', () => {
+  it('matches LoginForm snapshot', () => {
     const wrapper = shallow(<LoginForm {...testprop} />)
     expect(wrapper).toMatchSnapshot()
   })
