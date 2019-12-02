@@ -37,7 +37,7 @@ export const useStyles = makeStyles(theme => ({
 }))
 
 /**
- * Determines which image should be full width
+ * Determines which image should be full width sized
  * @param {number} anumber Seletected number's index.
  * @returns {int} 2 for full width, 1 for half size.
  */
