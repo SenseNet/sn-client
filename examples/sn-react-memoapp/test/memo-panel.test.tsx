@@ -106,7 +106,7 @@ describe('The main memo panel instance', () => {
     expect(wrapper.update().find('div.MuiPaper-root')).toHaveLength(3)
   })
 
-  it('should edit memo', async () => {
+  it('should modify memo', async () => {
     repo.patch = function patch() {
       return Promise.resolve({ d: { ...TestNewMemo, Description: 'Modified memo' }, ok: true } as any)
     }
