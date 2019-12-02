@@ -71,7 +71,7 @@ describe('The main memo panel instance', () => {
     expect(memoListElement.text()).toContain(TestNewMemo.DisplayName)
   })
 
-  it('should remove memo from list', async () => {
+  it('should remove memo from the list', async () => {
     repo.post = function post() {
       return Promise.resolve({ d: TestNewMemo, ok: true } as any)
     }
