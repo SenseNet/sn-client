@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FullScreenLoader Matches snapshot 1`] = `
+<div
+  style={
+    Object {
+      "alignItems": "center",
+      "display": "flex",
+      "height": "100%",
+      "justifyContent": "center",
+      "left": 0,
+      "position": "fixed",
+      "top": 0,
+      "width": "100%",
+    }
+  }
+>
+  <WithStyles(ForwardRef(CircularProgress)) />
+</div>
+`;

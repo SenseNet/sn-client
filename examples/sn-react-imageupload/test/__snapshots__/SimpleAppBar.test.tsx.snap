@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SimpleAppBar Matches snapshot 1`] = `
+<div
+  className="makeStyles-root-1"
+>
+  <WithStyles(ForwardRef(AppBar))
+    className="makeStyles-appBar-4"
+  >
+    <WithStyles(ForwardRef(Toolbar))>
+      <WithStyles(ForwardRef(Typography))
+        className="makeStyles-title-3"
+        variant="h6"
+      >
+        Photos
+      </WithStyles(ForwardRef(Typography))>
+      <Component
+        notificationControll={[MockFunction]}
+        uploadsetdata={[MockFunction]}
+      />
+    </WithStyles(ForwardRef(Toolbar))>
+  </WithStyles(ForwardRef(AppBar))>
+</div>
+`;
