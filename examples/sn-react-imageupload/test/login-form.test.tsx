@@ -29,7 +29,7 @@ describe('LoginForm', () => {
         .props().value,
     ).toEqual('testusername')
   })
-  it('Repository change test', async () => {
+  it('should change the repository', async () => {
     const wrapper = mount(<LoginForm {...testprop} />)
     act(() => {
       ;(wrapper
