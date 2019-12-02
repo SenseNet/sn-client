@@ -15,7 +15,7 @@ export interface LoginFormProps {
 }
 
 /**
- * Login component for Sensenet repositories
+ * Login component for sensenet repositories
  * @param props The Props object
  */
 export const LoginForm: React.FunctionComponent<LoginFormProps> = props => {
