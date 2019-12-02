@@ -44,7 +44,7 @@ exports[`App Layout Matches snapshot 1`] = `
 </div>
 `;
 
-exports[`App Layout Transition snapshot 1`] = `
+exports[`App Layout matches Transition snapshot 1`] = `
 <ForwardRef(Slide)
   direction="up"
 />
