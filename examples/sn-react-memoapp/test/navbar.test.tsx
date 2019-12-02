@@ -5,7 +5,7 @@ import { RepositoryContext } from '@sensenet/hooks-react'
 import { NavBarComponent } from '../src/components/navbar'
 
 describe('The navbar instance', () => {
-  it('should renders correctly', () => {
+  it('should be rendered correctly', () => {
     expect(shallow(<NavBarComponent />)).toMatchSnapshot()
   })
 
