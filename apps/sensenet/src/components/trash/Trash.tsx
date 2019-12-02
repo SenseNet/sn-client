@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import { TrashBin } from '@sensenet/default-content-types'
+import { ODataParams } from '@sensenet/client-core'
 import { useLoadContent } from '../../hooks/use-loadContent'
-import { EditPropertiesDialog } from '../dialogs'
+import { useDialog } from '../dialogs'
 import { SimpleList } from '../content/Simple'
 import TrashHeader from './TrashHeader'
 
@@ -14,17 +15,24 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
-const Trash: React.FC = () => {
-  const [isEditPropertiesOpened, setIsEditPropertiesOpened] = useState(false)
-  const loadResult = useLoadContent<TrashBin>({ idOrPath: '/Root/Trash', oDataOptions: { select: 'all' } })
+const oDataOptions: ODataParams<TrashBin> = { select: 'all' }
+
+const Trash = React.memo(() => {
+  const { openDialog } = useDialog()
+  const { content } = useLoadContent<TrashBin>({ idOrPath: '/Root/Trash', oDataOptions })
   const classes = useStyles()
 
   return (
     <div className={classes.root}>
-      {loadResult.content ? (
+      {content ? (
         <TrashHeader
-          iconClickHandler={() => setIsEditPropertiesOpened(!isEditPropertiesOpened)}
-          trash={loadResult.content}
+          iconClickHandler={() =>
+            openDialog({
+              name: 'edit',
+              props: { contentId: content.Id },
+            })
+          }
+          trash={content}
         />
       ) : null}
       <SimpleList
@@ -34,18 +42,8 @@ const Trash: React.FC = () => {
           fieldsToDisplay: ['DisplayName', 'ModificationDate', 'ModifiedBy'],
         }}
       />
-      {loadResult.content ? (
-        <EditPropertiesDialog
-          content={loadResult.content}
-          dialogProps={{
-            open: isEditPropertiesOpened,
-            onClose: () => setIsEditPropertiesOpened(false),
-            keepMounted: false,
-          }}
-        />
-      ) : null}
     </div>
   )
-}
+})
 
 export default Trash

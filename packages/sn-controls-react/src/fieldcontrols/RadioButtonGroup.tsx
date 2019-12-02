@@ -26,7 +26,7 @@ export const RadioButtonGroup: React.FC<ReactClientFieldSetting<ChoiceFieldSetti
 
   const handleChange = (_event: React.ChangeEvent<{}>, changedValue: string) => {
     setValue(changedValue)
-    props.fieldOnChange && props.fieldOnChange(props.settings.Name, changedValue)
+    props.fieldOnChange?.(props.settings.Name, Array.isArray(changedValue) ? changedValue : [changedValue])
   }
 
   switch (props.actionName) {

@@ -11,9 +11,9 @@ import { Settings } from '@sensenet/default-content-types'
 import { Query } from '@sensenet/query'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { CurrentContentContext, useRepository } from '@sensenet/hooks-react'
+import { useRepository } from '@sensenet/hooks-react'
 import { useContentRouting, useLocalization } from '../../hooks'
-import { ContentContextMenu } from '../ContentContextMenu'
+import { ContentContextMenu } from '../context-menu/content-context-menu'
 
 const SETUP_DOCS_URL = 'https://community.sensenet.com/docs/admin-ui/setup/'
 
@@ -103,19 +103,18 @@ const Setup: React.StatelessComponent = () => {
             flexWrap: 'wrap',
             margin: '1em',
           }}>
-          <CurrentContentContext.Provider value={contextMenuItem || wellKnownSettings[0]}>
-            <ContentContextMenu
-              isOpened={isContextMenuOpened}
-              onClose={() => setIsContextMenuOpened(false)}
-              menuProps={{
-                anchorEl: contextMenuAnchor,
-                BackdropProps: {
-                  onClick: () => setIsContextMenuOpened(false),
-                  onContextMenu: ev => ev.preventDefault(),
-                },
-              }}
-            />
-          </CurrentContentContext.Provider>
+          <ContentContextMenu
+            isOpened={isContextMenuOpened}
+            content={contextMenuItem ?? wellKnownSettings[0]}
+            onClose={() => setIsContextMenuOpened(false)}
+            menuProps={{
+              anchorEl: contextMenuAnchor,
+              BackdropProps: {
+                onClick: () => setIsContextMenuOpened(false),
+                onContextMenu: ev => ev.preventDefault(),
+              },
+            }}
+          />
           {wellKnownSettings.map(s => (
             <WellKnownContentCard
               settings={s}
