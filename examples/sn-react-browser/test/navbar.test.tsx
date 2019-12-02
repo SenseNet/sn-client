@@ -9,7 +9,7 @@ describe('The navbar instance', () => {
     expect(shallow(<NavBarComponent />)).toMatchSnapshot()
   })
 
-  it('should logout correctly', () => {
+  it('should logout the user correctly', () => {
     const logoutfn = jest.fn()
     const wrapper = mount(
       <RepositoryContext.Provider value={{ authentication: { logout: logoutfn } } as any}>
