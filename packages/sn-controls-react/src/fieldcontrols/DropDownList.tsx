@@ -31,7 +31,10 @@ export const DropDownList: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>>
 
   const handleChange = (event: React.ChangeEvent<{ name?: string | undefined; value: unknown }>) => {
     setValue(event.target.value as any)
-    props.fieldOnChange && props.fieldOnChange(props.settings.Name, value)
+    props.fieldOnChange?.(
+      props.settings.Name,
+      Array.isArray(event.target.value) ? event.target.value : [event.target.value],
+    )
   }
 
   switch (props.actionName) {
@@ -54,7 +57,7 @@ export const DropDownList: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>>
             autoWidth={true}
             defaultValue={changeJScriptValue(props.settings.DefaultValue)}
             fullWidth={true}>
-            {props.settings.Options!.map(option => {
+            {props.settings.Options?.map(option => {
               return (
                 <MenuItem key={option.Value} value={option.Value}>
                   {option.Text}
@@ -76,7 +79,7 @@ export const DropDownList: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>>
                 <FormControl component={'fieldset' as 'div'} key={index}>
                   <FormControlLabel
                     style={{ marginLeft: 0 }}
-                    label={props.settings.Options!.find(item => item.Value === val)!.Text}
+                    label={props.settings.Options?.find(item => item.Value === val)?.Text ?? ''}
                     control={<span />}
                     key={val}
                   />
@@ -86,7 +89,7 @@ export const DropDownList: React.FC<ReactClientFieldSetting<ChoiceFieldSetting>>
               <FormControl component={'fieldset' as 'div'}>
                 <FormControlLabel
                   style={{ marginLeft: 0 }}
-                  label={props.settings.Options!.find(item => item.Value === props.fieldValue)!.Text}
+                  label={props.settings.Options?.find(item => item.Value === props.fieldValue)?.Text ?? ''}
                   control={<span />}
                 />
               </FormControl>

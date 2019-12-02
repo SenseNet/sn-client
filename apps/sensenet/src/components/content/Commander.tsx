@@ -12,7 +12,7 @@ import {
 import { useSelectionService } from '../../hooks'
 import { AddButton } from '../AddButton'
 import { CollectionComponent } from '../content-list'
-import { AddDialog, CopyMoveDialog } from '../dialogs'
+import { useDialog } from '../dialogs'
 
 export interface CommanderComponentProps {
   leftParent: number | string
@@ -27,7 +27,7 @@ export interface CommanderComponentProps {
 
 export const CommanderComponent: React.FunctionComponent<CommanderComponentProps> = props => {
   const repo = useRepository()
-
+  const { openDialog } = useDialog()
   const selectionService = useSelectionService()
 
   const [_leftPanelRef, setLeftPanelRef] = useState<null | any>(null)
@@ -36,8 +36,6 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
   const [activePanel, setActivePanel] = useState<'left' | 'right'>('left')
   const [activeParent, setActiveParent] = useState<GenericContent>(null as any)
 
-  const [isCopyOpened, setIsCopyOpened] = useState(false)
-  const [copyMoveOperation, setCopyMoveOperation] = useState<'copy' | 'move'>('copy')
   const [copySelection, setCopySelection] = useState<GenericContent[]>([ConstantContent.PORTAL_ROOT])
   const [copyParent, setCopyParent] = useState<GenericContent>(ConstantContent.PORTAL_ROOT)
   const [leftParent, setLeftParent] = useState<GenericContent>(ConstantContent.PORTAL_ROOT)
@@ -46,8 +44,6 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
   const [leftSelection, setLeftSelection] = useState<GenericContent[]>([])
 
   const [rightSelection, setRightSelection] = useState<GenericContent[]>([])
-
-  const [isAddDialogOpened, setIsAddDialogOpened] = useState(false)
 
   useEffect(() => {
     activePanel === 'left' ? setActiveParent(leftParent) : setActiveParent(rightParent)
@@ -67,13 +63,19 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
             setCopyParent(leftParent)
           }
           if (copySelection && copySelection.length && copyParent) {
-            setCopyMoveOperation(ev.key === 'F5' ? 'copy' : 'move')
-            setIsCopyOpened(true)
+            openDialog({
+              name: 'copy-move',
+              props: {
+                content: copySelection,
+                currentParent: copyParent,
+                operation: ev.key === 'F5' ? 'copy' : 'move',
+              },
+            })
           }
         } else if (ev.key === 'F7') {
           ev.preventDefault()
           ev.stopPropagation()
-          setIsAddDialogOpened(true)
+          openDialog({ name: 'add', props: { parent: activeParent, schema: repo.schemas.getSchemaByName('Folder') } })
         }
       }}
       style={{ display: 'flex', width: '100%', height: '100%' }}>
@@ -139,31 +141,8 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
           </CurrentChildrenProvider>
         </CurrentContentProvider>
       </LoadSettingsContextProvider>
-      {isCopyOpened ? (
-        <CopyMoveDialog
-          dialogProps={{
-            open: isCopyOpened,
-            onClose: () => setIsCopyOpened(false),
-          }}
-          operation={copyMoveOperation}
-          content={copySelection}
-          currentParent={copyParent}
-        />
-      ) : null}
 
-      {activeParent ? (
-        <>
-          <AddButton parent={activeParent} />
-          <AddDialog
-            parent={activeParent}
-            schema={repo.schemas.getSchemaByName('Folder')}
-            dialogProps={{
-              open: isAddDialogOpened,
-              onClose: () => setIsAddDialogOpened(false),
-            }}
-          />
-        </>
-      ) : null}
+      {activeParent ? <AddButton parent={activeParent} /> : null}
     </div>
   )
 }

@@ -27,15 +27,27 @@ describe('ODataUrlBuilder', () => {
     it('should return a string with the given field and Id and Type as selected', () => {
       const urlParamString = ODataUrlBuilder.buildUrlParamString<GenericContent>(
         { requiredSelect: ['Id', 'Type'], defaultMetadata: 'no' } as any,
-        { select: 'DisplayName' },
+        { select: ['DisplayName'] },
       )
       expect(urlParamString).toBe('$select=Id%2CType%2CDisplayName&metadata=no')
     })
+
     it('should return a string without select if requiredSelect is all', () => {
       const urlParamString = ODataUrlBuilder.buildUrlParamString<GenericContent>(
         { requiredSelect: 'all', defaultMetadata: 'no' } as any,
-        { select: 'DisplayName' },
+        { select: ['DisplayName'] },
       )
+      expect(urlParamString).toBe('metadata=no')
+    })
+
+    it('should return a string without select if select is all and not mutate options object!', () => {
+      const oDataOptions = { select: 'all' }
+      const oDataOptionsCopy = { select: 'all' }
+      const urlParamString = ODataUrlBuilder.buildUrlParamString<GenericContent>(
+        { requiredSelect: 'DisplayName', defaultMetadata: 'no' } as any,
+        oDataOptions as any,
+      )
+      expect(oDataOptions).toEqual(oDataOptionsCopy)
       expect(urlParamString).toBe('metadata=no')
     })
     it('should return a string with the given fields and Id and Type as selected', () => {

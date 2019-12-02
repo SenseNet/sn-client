@@ -12,10 +12,10 @@ import {
 } from '@sensenet/hooks-react'
 import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
-import { ContentContextMenu } from '../ContentContextMenu'
-import { DeleteContentDialog } from '../dialogs'
+import { ContentContextMenu } from '../context-menu/content-context-menu'
 import { DropFileArea } from '../DropFileArea'
 import { SelectionControl } from '../SelectionControl'
+import { useDialog } from '../dialogs'
 import { IconField } from './icon-field'
 import { EmailField } from './email-field'
 import { PhoneField } from './phone-field'
@@ -25,6 +25,7 @@ import { ReferenceField } from './reference-field'
 import { BooleanField } from './boolean-field'
 import { DateField } from './date-field'
 import { DescriptionField } from './description-field'
+import { LockedField } from './locked-field'
 
 export interface CollectionComponentProps {
   enableBreadcrumbs?: boolean
@@ -65,7 +66,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
     left: 0,
   })
 
-  const [showDelete, setShowDelete] = useState(false)
+  const { openDialog } = useDialog()
   const repo = useRepository()
   const loadSettings = useContext(LoadSettingsContext)
 
@@ -93,8 +94,10 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
   }, [selected])
 
   useEffect(() => {
+    const fields = props.fieldsToDisplay || personalSettings.content.fields
     loadSettings.setLoadChildrenSettings({
       ...loadSettings.loadChildrenSettings,
+      expand: ['CheckedOutTo', ...fields.filter(fieldName => isReferenceField(fieldName, repo))],
       orderby: [[currentOrder as any, currentDirection as any]],
     })
     // loadSettings can NOT be added :(
@@ -220,7 +223,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
           break
         }
         case 'Delete': {
-          setShowDelete(true)
+          openDialog({ name: 'delete', props: { content: selected } })
           break
         }
         case 'Tab':
@@ -234,7 +237,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
           }
       }
     },
-    [activeContent, ancestors, children, handleActivateItem, props, runSearch, searchString, selected],
+    [activeContent, children, props, selected, handleActivateItem, ancestors, openDialog, searchString, runSearch],
   )
 
   return (
@@ -243,7 +246,6 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
       <DropFileArea parentContent={parentContent} style={{ height: '100%', overflow: 'hidden' }}>
         <div
           style={{
-            ...(isFocused ? {} : { opacity: 0.8 }),
             height: 'calc(100% - 36px)',
             overflow: 'auto',
             userSelect: 'none',
@@ -286,6 +288,8 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
             fieldComponent={fieldOptions => {
               // eslint-disable-next-line default-case
               switch (fieldOptions.field) {
+                case 'Locked':
+                  return <LockedField content={fieldOptions.content} />
                 case 'Icon':
                   return <IconField content={fieldOptions.content} />
                 case 'Email' as any:
@@ -350,26 +354,24 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
             icons={{}}
           />
           {activeContent ? (
-            <CurrentContentContext.Provider value={activeContent}>
-              <ContentContextMenu
-                menuProps={{
-                  disablePortal: true,
-                  anchorReference: 'anchorPosition',
-                  anchorPosition: contextMenuAnchor,
-                  BackdropProps: {
-                    onClick: () => setIsContextMenuOpened(false),
-                    onContextMenu: ev => ev.preventDefault(),
-                  },
-                }}
-                isOpened={isContextMenuOpened}
-                onClose={() => setIsContextMenuOpened(false)}
-                onOpen={() => setIsContextMenuOpened(true)}
-              />
-            </CurrentContentContext.Provider>
+            <ContentContextMenu
+              content={activeContent}
+              menuProps={{
+                disablePortal: true,
+                anchorReference: 'anchorPosition',
+                anchorPosition: contextMenuAnchor,
+                BackdropProps: {
+                  onClick: () => setIsContextMenuOpened(false),
+                  onContextMenu: ev => ev.preventDefault(),
+                },
+              }}
+              isOpened={isContextMenuOpened}
+              onClose={() => setIsContextMenuOpened(false)}
+              onOpen={() => setIsContextMenuOpened(true)}
+            />
           ) : null}
         </div>
       </DropFileArea>
-      <DeleteContentDialog content={selected} dialogProps={{ open: showDelete, onClose: () => setShowDelete(false) }} />
     </div>
   )
 }
