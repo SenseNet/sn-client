@@ -1,9 +1,9 @@
 import { mount, shallow } from 'enzyme'
 import React from 'react'
 import { act } from 'react-dom/test-utils'
+import { RepositoryContext } from '@sensenet/hooks-react'
 import { App, Transition } from '../src/app'
 import { FullScreenDialog } from '../src/components/FullScreenDialog'
-import { RepositoryContext } from '../src/context/repository-provider'
 import { emptyimages, images } from './mocks/images'
 import moment = require('moment')
 

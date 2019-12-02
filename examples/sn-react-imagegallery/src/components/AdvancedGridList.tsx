@@ -5,7 +5,7 @@ import GridList from '@material-ui/core/GridList'
 import { makeStyles } from '@material-ui/core/styles'
 import GridListTile from '@material-ui/core/GridListTile'
 import GridListTileBar from '@material-ui/core/GridListTileBar'
-import { useRepository } from '../hooks/use-repository'
+import { useRepository } from '@sensenet/hooks-react'
 
 interface AdvancedGridprops {
   openFunction: (imageIndex: number, openInfoTab: boolean) => void

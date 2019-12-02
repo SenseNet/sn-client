@@ -1,13 +1,9 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FormsAuthenticationService, LoginState, Repository } from '@sensenet/client-core'
 import { RepositoryConfiguration } from '@sensenet/client-core/dist/Repository/RepositoryConfiguration'
+import { RepositoryContext } from '@sensenet/hooks-react'
 import { LoginForm } from '../components/login-form'
 import { FullScreenLoader } from '../components/full-screen-loader'
-
-/**
- * React context that stores a sensenet Repository object
- */
-export const RepositoryContext = createContext(new Repository())
 
 /**
  * The last repository will be stored in your local storage with this key

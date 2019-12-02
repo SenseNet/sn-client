@@ -9,10 +9,6 @@ describe('handleNext', () => {
     steppingFunction: jest.fn(),
     imageListLenght: 1,
   }
-  it('Matches snapshot', () => {
-    const wrapper = mount(<DotsMobileStepper {...mock} />)
-    expect(wrapper).toMatchSnapshot()
-  })
   it('Handle Next Click', () => {
     const l = mount(<DotsMobileStepper {...mock} />)
     l.find(Button)
