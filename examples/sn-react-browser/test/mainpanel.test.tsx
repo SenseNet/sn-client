@@ -128,7 +128,7 @@ describe('The main browser panel instance', () => {
     expect(downloadFile).toBeCalled()
   })
 
-  it('should open edit mode', async () => {
+  it('should open content edit mode', async () => {
     let locationFromProps: any
     await act(async () => {
       wrapper = mount(
