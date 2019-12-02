@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`The full screen loader instance should renders correctly 1`] = `
+exports[`The full screen loader instance should be rendered correctly 1`] = `
 <div
   style={
     Object {

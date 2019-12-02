@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`The new memo panel instance should renders correctly 1`] = `
+exports[`The new memo panel instance should be rendered correctly 1`] = `
 <WithStyles(ForwardRef(Paper))
   className="makeStyles-paper-3"
   style={

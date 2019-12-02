@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`The navbar instance should renders correctly 1`] = `
+exports[`The navbar instance should be rendered correctly 1`] = `
 <WithStyles(ForwardRef(AppBar))
   position="fixed"
 >
