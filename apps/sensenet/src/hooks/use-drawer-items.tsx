@@ -119,6 +119,9 @@ export const useDrawerItems = () => {
             term: "+TypeIs:'ContentType'",
             hideSearchBar: true,
             fieldsToDisplay: ['DisplayName', 'Description', 'ParentTypeName' as any, 'ModificationDate', 'ModifiedBy'],
+            showAddButton: true,
+            parentPath: '/Root/System/Schema/ContentTypes/',
+            allowedTypes: ['ContentType'],
           })}`
         case 'Query':
           return `/search/${encodeQueryData({

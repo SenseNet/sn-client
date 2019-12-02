@@ -14,6 +14,7 @@ import { useDialog } from './dialogs'
 
 export interface AddButtonProps {
   parent?: GenericContent
+  allowedTypes?: string[]
 }
 
 export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
@@ -35,7 +36,9 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   }, [parentContext, props.parent])
 
   useEffect(() => {
-    if (showSelectType) {
+    if (props.allowedTypes && props.allowedTypes.length > 0) {
+      setAllowedChildTypes(props.allowedTypes.map(type => repo.schemas.getSchemaByName(type)))
+    } else if (showSelectType) {
       repo
         .getAllowedChildTypes({ idOrPath: parent.Id })
         .then(types => setAllowedChildTypes(types.d.results.map(t => repo.schemas.getSchemaByName(t.Name))))
@@ -48,7 +51,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
           })
         })
     }
-  }, [localization.errorGettingAllowedContentTypes, logger, parent.Id, repo, showSelectType])
+  }, [localization.errorGettingAllowedContentTypes, logger, parent.Id, props.allowedTypes, repo, showSelectType])
 
   return (
     <div>
@@ -72,6 +75,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
         </Typography>
         <div
           style={{ display: 'flex', alignItems: 'flex-start', flexWrap: 'wrap', maxHeight: '512px', overflow: 'auto' }}>
+          // todo: check if file is allowed to add here
           <Button
             key="Upload"
             onClick={() => {
