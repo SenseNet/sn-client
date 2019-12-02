@@ -4,7 +4,7 @@ import { lastRepositoryKey } from '../context/repository-provider'
 
 export interface LoginFormProps {
   /**
-   * Callback that will be called when the user clicks on the Login button
+   * Callback that will be called when the user clicks the Login button
    */
   onLogin: (username: string, passowrd: string, repository: string) => void
 
