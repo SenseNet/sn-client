@@ -10,7 +10,7 @@ describe('The new memo panel instance', () => {
     onClose: jest.fn(),
   }
 
-  it('should renders correctly', () => {
+  it('should be rendered correctly', () => {
     expect(shallow(<AddNew {...addnewprops} />)).toMatchSnapshot()
   })
 
