@@ -16,7 +16,7 @@ describe('App Layout', () => {
     const l = shallow(<Transition />)
     expect(l).toMatchSnapshot()
   })
-  it('getselectedImage with result', async () => {
+  it('returns the selected image', async () => {
     const repository = {
       loadCollection: () => {
         return { d: { results: images } }
