@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UploadControll Matches snapshot 1`] = `
+<div>
+  <input
+    accept="image/*"
+    className="makeStyles-input-2"
+    id="contained-button-file"
+    multiple={true}
+    onChange={[Function]}
+    type="file"
+  />
+  <label
+    htmlFor="contained-button-file"
+  >
+    <WithStyles(ForwardRef(Fab))
+      className="makeStyles-button-3"
+      component="span"
+      title="Upload"
+      variant="extended"
+    >
+      <CloudUploadIcon />
+    </WithStyles(ForwardRef(Fab))>
+  </label>
+</div>
+`;
