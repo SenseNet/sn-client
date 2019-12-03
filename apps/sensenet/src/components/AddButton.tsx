@@ -75,7 +75,6 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
         </Typography>
         <div
           style={{ display: 'flex', alignItems: 'flex-start', flexWrap: 'wrap', maxHeight: '512px', overflow: 'auto' }}>
-          // todo: check if file is allowed to add here
           <Button
             key="Upload"
             onClick={() => {
