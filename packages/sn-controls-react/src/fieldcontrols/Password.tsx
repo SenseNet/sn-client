@@ -22,7 +22,7 @@ export const Password: React.FC<ReactClientFieldSetting> = props => {
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) => {
     setValue(e.target.value)
-    props.fieldOnChange && props.fieldOnChange(props.settings.Name, e.target.value)
+    props.fieldOnChange?.(props.settings.Name, e.target.value)
   }
   switch (props.actionName) {
     case 'edit':

@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FullScreenDialog Matches snapshot 1`] = `
+<div>
+  <WithStyles(ForwardRef(Dialog))
+    TransitionComponent={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "render": [Function],
+      }
+    }
+    fullScreen={true}
+    onClose={[MockFunction]}
+    open={true}
+  >
+    <WithStyles(ForwardRef(AppBar))
+      className="makeStyles-appBar-3"
+    >
+      <WithStyles(ForwardRef(Toolbar))>
+        <WithStyles(ForwardRef(IconButton))
+          aria-label="Close"
+          color="inherit"
+          edge="start"
+          onClick={[MockFunction]}
+        >
+          <CloseIcon />
+        </WithStyles(ForwardRef(IconButton))>
+        <WithStyles(ForwardRef(Typography))
+          className="makeStyles-title-2"
+          variant="h6"
+        >
+          Image
+        </WithStyles(ForwardRef(Typography))>
+        <WithStyles(ForwardRef(IconButton))
+          aria-label="Close"
+          color="inherit"
+          edge="start"
+          href="Download Path"
+        >
+          <SaveAltIcon />
+        </WithStyles(ForwardRef(IconButton))>
+      </WithStyles(ForwardRef(Toolbar))>
+    </WithStyles(ForwardRef(AppBar))>
+    <Component
+      imageInfo={
+        Object {
+          "imgAuthor": "Test Elek",
+          "imgAuthorAvatar": "Avatar img Path",
+          "imgCreationDate": "2019.05.05",
+          "imgDescription": "Description",
+          "imgDownloadUrl": "Download Path",
+          "imgIndex": 1,
+          "imgPath": "Path",
+          "imgSize": "1024",
+          "imgTitle": "Title",
+        }
+      }
+      imageListLenght={0}
+      steppingFunction={[MockFunction]}
+    />
+  </WithStyles(ForwardRef(Dialog))>
+</div>
+`;

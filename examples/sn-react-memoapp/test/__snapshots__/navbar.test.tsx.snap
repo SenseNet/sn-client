@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The navbar instance should be rendered correctly 1`] = `
+<WithStyles(ForwardRef(AppBar))
+  position="fixed"
+>
+  <WithStyles(ForwardRef(Toolbar))>
+    <WithStyles(ForwardRef(Typography))
+      className="makeStyles-title-1"
+      variant="h6"
+    >
+      Memo application
+    </WithStyles(ForwardRef(Typography))>
+    <WithStyles(ForwardRef(Tooltip))
+      title="Return to the Login screen and select another repository"
+    >
+      <WithStyles(ForwardRef(Button))
+        color="inherit"
+        onClick={[Function]}
+      >
+        Log out
+      </WithStyles(ForwardRef(Button))>
+    </WithStyles(ForwardRef(Tooltip))>
+  </WithStyles(ForwardRef(Toolbar))>
+</WithStyles(ForwardRef(AppBar))>
+`;
