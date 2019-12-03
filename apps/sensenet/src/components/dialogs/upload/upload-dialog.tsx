@@ -211,7 +211,10 @@ export function UploadDialog(props: UploadDialogProps) {
         </Grid>
       </DialogContent>
       <input
-        onChange={ev => ev.target.files && addFiles([...ev.target.files])}
+        onChange={ev => {
+          ev.target.files && addFiles([...ev.target.files])
+          ev.target.value = ''
+        }}
         style={{ display: 'none' }}
         ref={inputFile}
         type="file"
