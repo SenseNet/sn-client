@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AdvancedGridList Matches snapshot 1`] = `
+<div
+  className="makeStyles-root-1"
+>
+  <WithStyles(ForwardRef(GridList))
+    cellHeight={200}
+    className="makeStyles-gridList-2"
+    spacing={1}
+  >
+    <WithStyles(ForwardRef(GridListTile))
+      cols={2}
+      key="1299"
+      rows={2}
+    >
+      <img
+        alt="Description"
+        className="makeStyles-imgTile-3"
+        onClick={[Function]}
+        src="http://localhost/Root/Content/IT/ImageLibrary/bagas-haryo-1415756-unsplash.jpg"
+      />
+      <WithStyles(ForwardRef(GridListTileBar))
+        actionIcon={
+          <ForwardRef(WithStyles)
+            aria-label="star bagas-haryo-1415756-unsplash.jpg"
+            className="makeStyles-icon-4"
+          />
+        }
+        actionPosition="left"
+        className="makeStyles-titleBar-5"
+        subtitle={
+          <span>
+            by: 
+            Admin
+          </span>
+        }
+        title="bagas-haryo-1415756-unsplash.jpg"
+        titlePosition="bottom"
+      />
+    </WithStyles(ForwardRef(GridListTile))>
+    <WithStyles(ForwardRef(GridListTile))
+      cols={1}
+      key="1300"
+      rows={1}
+    >
+      <img
+        alt="Description"
+        className="makeStyles-imgTile-3"
+        onClick={[Function]}
+        src="http://localhost/Root/Content/IT/ImageLibrary/brunetto-ziosi-1231102-unsplash.jpg"
+      />
+      <WithStyles(ForwardRef(GridListTileBar))
+        actionIcon={
+          <ForwardRef(WithStyles)
+            aria-label="star brunetto-ziosi-1231102-unsplash.jpg"
+            className="makeStyles-icon-4"
+          />
+        }
+        actionPosition="left"
+        className="makeStyles-titleBar-5"
+        subtitle={
+          <span>
+            by: 
+            Admin
+          </span>
+        }
+        title="brunetto-ziosi-1231102-unsplash.jpg"
+        titlePosition="bottom"
+      />
+    </WithStyles(ForwardRef(GridListTile))>
+  </WithStyles(ForwardRef(GridList))>
+</div>
+`;
