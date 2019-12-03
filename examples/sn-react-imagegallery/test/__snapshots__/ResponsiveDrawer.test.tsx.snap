@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ResponsiveDrawer Matches snapshot 1`] = `
+<div
+  className="makeStyles-root-1"
+>
+  <main
+    className="makeStyles-drawerMain-2"
+  >
+    <div
+      className="makeStyles-selectedImgContent-4"
+    >
+      <img
+        alt="Path"
+        className="makeStyles-imgTileFullSize-3"
+        src="Path"
+      />
+    </div>
+    <Component
+      imageIndex={1}
+      imageListLenght={10}
+      steppingFunction={[MockFunction]}
+    />
+  </main>
+  <WithStyles(ForwardRef(Drawer))
+    anchor="bottom"
+    className="makeStyles-drawer-5"
+    classes={
+      Object {
+        "paper": "makeStyles-drawerPaper-6",
+      }
+    }
+    variant="permanent"
+  >
+    <div
+      className="makeStyles-toolbar-7"
+    />
+    <WithStyles(ForwardRef(Divider)) />
+    <WithStyles(ForwardRef(Typography))>
+      Name: 
+      Title
+    </WithStyles(ForwardRef(Typography))>
+    <WithStyles(ForwardRef(Typography))>
+      Descripton: 
+      Description
+    </WithStyles(ForwardRef(Typography))>
+    <WithStyles(ForwardRef(Typography))>
+      Author: 
+      Test Elek
+      <img
+        alt="Path"
+        className="makeStyles-avatarImg-9"
+        src="Avatar img Path"
+      />
+    </WithStyles(ForwardRef(Typography))>
+    <WithStyles(ForwardRef(Typography))>
+      Created: 
+      2019.05.05
+    </WithStyles(ForwardRef(Typography))>
+    <WithStyles(ForwardRef(Typography))>
+      Size: 
+      1024
+    </WithStyles(ForwardRef(Typography))>
+    <WithStyles(ForwardRef(Divider)) />
+  </WithStyles(ForwardRef(Drawer))>
+</div>
+`;
