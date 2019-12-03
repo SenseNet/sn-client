@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DropFileArea Matches snapshot 1`] = `
+<div
+  className="dropfilearea"
+  onDragEnter={[Function]}
+  onDragLeave={[Function]}
+  onDragOver={[Function]}
+  onDrop={[Function]}
+  style={
+    Object {
+      "display": "inline-block",
+      "filter": undefined,
+      "flexWrap": "wrap",
+      "opacity": 1,
+      "transition": "opacity 300ms",
+    }
+  }
+>
+  <div
+    style={
+      Object {
+        "backgroundColor": "transparent",
+        "height": "auto",
+        "opacity": 0,
+        "position": "relative",
+        "transition": "opacity 300ms",
+        "width": "auto",
+      }
+    }
+  >
+    <CloudUploadTwoToneIcon
+      style={
+        Object {
+          "height": "250px",
+          "marginTop": "0px",
+          "position": "absolute",
+          "width": "100%",
+        }
+      }
+    />
+  </div>
+</div>
+`;
