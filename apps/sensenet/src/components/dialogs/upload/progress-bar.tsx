@@ -63,12 +63,12 @@ export const ProgressBar = (props: Props) => {
   }
 
   const getProgressText = () => {
-    if (props.progress.completed) {
-      return localization.uploadCompleted
-    }
-
     if (props.progress.error) {
       return localization.uploadFailed
+    }
+
+    if (props.progress.completed) {
+      return localization.uploadCompleted
     }
 
     return `${getProgress()}%`
