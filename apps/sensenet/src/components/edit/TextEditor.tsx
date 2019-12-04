@@ -33,6 +33,7 @@ export interface TextEditorProps {
   loadContent?: (content: SnFile) => Promise<string>
   saveContent?: (content: SnFile, value: string) => Promise<void>
   additionalButtons?: JSX.Element
+  reloadContent?: () => void
 }
 
 export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
@@ -49,7 +50,6 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
   const [uri, setUri] = useState<any>(getMonacoModelUri(props.content, repo))
   const [hasChanges, setHasChanges] = useState(false)
   const logger = useLogger('TextEditor')
-
   const [error, setError] = useState<Error | undefined>()
 
   const saveContent = async () => {
@@ -77,7 +77,9 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
           },
         },
       })
-      setSavedTextValue(textValue)
+      await repo.reloadSchema()
+
+      props.reloadContent?.()
     } catch (err) {
       logger.error({
         message: localization.saveFailedNotification.replace('{0}', props.content.DisplayName || props.content.Name),
@@ -122,10 +124,14 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
         setError(err)
       }
     })()
-  }, [contentRouter, props, props.content.Id, repo])
+  }, [contentRouter, props, repo])
 
   if (error) {
-    throw error
+    logger.information({
+      message: localization.saveFailedNotification,
+      data: error,
+    })
+    return null
   }
 
   return (
