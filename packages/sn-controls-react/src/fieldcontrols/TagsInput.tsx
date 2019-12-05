@@ -177,7 +177,7 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
     if (this.props.settings.AllowMultiple) {
       return this.state.fieldValue.length ? this.state.fieldValue.map(c => c.Id) : []
     }
-    return this.state.fieldValue.length ? this.state.fieldValue.map(c => c.Id)[0] : ''
+    return this.state.fieldValue.length ? [this.state.fieldValue[0].Id] : []
   }
 
   public render() {
