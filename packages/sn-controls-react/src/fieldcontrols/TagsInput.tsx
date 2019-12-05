@@ -71,10 +71,10 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
   }
 
   public handleChange = (event: React.ChangeEvent<{ name?: string; value: number[] }>) => {
-    let s = []
+    let s: GenericContent[] = []
     this.props.settings.AllowMultiple !== undefined && this.props.settings.AllowMultiple
-      ? (s = event.target.value.map((c: number) => this.getContentById(c)))
-      : (s = [this.getContentById(event.target.value[1])])
+      ? (s = event.target.value.map((c: number) => this.getContentById(c) as GenericContent))
+      : (s = [this.getContentById(event.target.value[1]) as GenericContent])
 
     this.setState({
       fieldValue: s as GenericContent[],
