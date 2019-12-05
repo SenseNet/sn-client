@@ -8,7 +8,7 @@ import { TextEditor } from './TextEditor'
 const Editor: React.FunctionComponent<RouteComponentProps<{ contentId?: string }>> = props => {
   const contentId = parseInt(props.match.params.contentId as string, 10)
   const selectionService = useSelectionService()
-  const { content, reload } = useLoadContent({ idOrPath: contentId })
+  const { content } = useLoadContent({ idOrPath: contentId })
 
   useEffect(() => {
     selectionService.activeContent.setValue(content)
@@ -27,7 +27,7 @@ const Editor: React.FunctionComponent<RouteComponentProps<{ contentId?: string }
       {content ? (
         <CurrentContentProvider idOrPath={contentId}>
           <CurrentAncestorsProvider>
-            <TextEditor content={content} reloadContent={reload} />
+            <TextEditor content={content} />
           </CurrentAncestorsProvider>
         </CurrentContentProvider>
       ) : (

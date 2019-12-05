@@ -33,7 +33,6 @@ export interface TextEditorProps {
   loadContent?: (content: SnFile) => Promise<string>
   saveContent?: (content: SnFile, value: string) => Promise<void>
   additionalButtons?: JSX.Element
-  reloadContent?: () => void
 }
 
 export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
@@ -78,8 +77,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
         },
       })
       await repo.reloadSchema()
-
-      props.reloadContent?.()
+      setSavedTextValue(textValue)
     } catch (err) {
       logger.error({
         message: localization.saveFailedNotification.replace('{0}', props.content.DisplayName || props.content.Name),
@@ -115,7 +113,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
           }
           const textFile = await repo.fetch(PathHelper.joinPaths(repo.configuration.repositoryUrl, binaryPath))
           if (textFile.ok) {
-            const text = await textFile.text()
+            const text = savedTextValue !== '' ? savedTextValue : await textFile.text()
             setTextValue(text)
             setSavedTextValue(text)
           }
@@ -124,7 +122,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
         setError(err)
       }
     })()
-  }, [contentRouter, props, repo])
+  }, [contentRouter, savedTextValue, props, repo])
 
   if (error) {
     logger.information({
