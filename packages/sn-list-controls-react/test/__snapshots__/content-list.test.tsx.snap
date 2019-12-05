@@ -55,7 +55,10 @@ exports[`ContentList component Selection and active item changes Event bindings 
         key="select"
         padding="checkbox"
       >
-        <div />
+        <WithStyles(ForwardRef(Checkbox))
+          checked={false}
+          onChange={[Function]}
+        />
       </WithStyles(ForwardRef(TableCell))>
       <Component
         content={
@@ -1117,7 +1120,10 @@ exports[`ContentList component Selection and active item changes Event bindings 
         key="select"
         padding="checkbox"
       >
-        <div />
+        <WithStyles(ForwardRef(Checkbox))
+          checked={true}
+          onChange={[Function]}
+        />
       </WithStyles(ForwardRef(TableCell))>
       <Component
         content={

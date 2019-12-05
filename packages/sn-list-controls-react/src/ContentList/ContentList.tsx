@@ -251,15 +251,11 @@ export const ContentList: React.FC<ContentListProps<GenericContent>> = props => 
               onContextMenu={e => props.onItemContextMenu && props.onItemContextMenu(e, item)}>
               {props.displayRowCheckbox !== false ? (
                 <TableCell padding="checkbox" key="select">
-                  {props.getSelectionControl ? (
-                    props.getSelectionControl(isSelected, item)
-                  ) : (
-                    <Checkbox
-                      checked={isSelected ? true : false}
-                      onChange={() => handleContentSelection(item)}
-                      {...props.checkboxProps}
-                    />
-                  )}
+                  <Checkbox
+                    checked={isSelected ? true : false}
+                    onChange={() => handleContentSelection(item)}
+                    {...props.checkboxProps}
+                  />
                 </TableCell>
               ) : null}
               {props.fieldsToDisplay
