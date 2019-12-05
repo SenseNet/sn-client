@@ -5,7 +5,6 @@ import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import IconButton from '@material-ui/core/IconButton'
-import TextField from '@material-ui/core/TextField'
 import { Password } from '../src/fieldcontrols/Password'
 
 describe('Password field control', () => {
@@ -52,7 +51,7 @@ describe('Password field control', () => {
   it('should call on change when input changes', () => {
     const fieldOnChange = jest.fn()
     const wrapper = shallow(<Password actionName="edit" fieldOnChange={fieldOnChange} settings={defaultSettings} />)
-    wrapper.find(TextField).simulate('change', { target: { value: 'Hello World' } })
+    wrapper.find(Input).simulate('change', { target: { value: 'Hello World' } })
     expect(fieldOnChange).toBeCalled()
   })
 })
