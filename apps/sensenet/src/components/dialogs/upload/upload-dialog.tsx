@@ -108,6 +108,11 @@ export function UploadDialog(props: UploadDialogProps) {
       return
     }
     setFiles(files.filter(f => f !== file))
+
+    // it can access to select the same file again after removal. Check: https://github.com/sensenet/sn-client/issues/491
+    if (inputFile.current) {
+      inputFile.current.value = ''
+    }
   }
 
   const addFiles = (fileList: FileWithFullPath[]) => {
@@ -211,7 +216,9 @@ export function UploadDialog(props: UploadDialogProps) {
         </Grid>
       </DialogContent>
       <input
-        onChange={ev => ev.target.files && addFiles([...ev.target.files])}
+        onChange={ev => {
+          ev.target.files && addFiles([...ev.target.files])
+        }}
         style={{ display: 'none' }}
         ref={inputFile}
         type="file"
