@@ -21,7 +21,6 @@ const EditBinary = lazy(async () => await import(/* webpackChunkName: "editBinar
 const EditProperties = lazy(async () => await import(/* webpackChunkName: "editProperties" */ './edit/EditProperties'))
 const DocumentViewerComponent = lazy(async () => await import(/* webpackChunkName: "DocViewer" */ './DocViewer'))
 
-const VersionInfoComponent = lazy(async () => await import(/* webpackChunkName: "Version Info" */ './version-info'))
 const TrashComponent = lazy(async () => await import(/* webpackChunkName: "Trash" */ './trash/Trash'))
 const EventListComponent = lazy(async () => await import(/* webpackChunkName: "EventList" */ './event-list'))
 
@@ -119,12 +118,6 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
                       path="/:repo/setup"
                       render={() => {
                         return <SetupComponent />
-                      }}
-                    />
-                    <Route
-                      path="/:repo/info"
-                      render={() => {
-                        return <VersionInfoComponent />
                       }}
                     />
                     <Route

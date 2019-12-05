@@ -1,6 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import BuildTwoTone from '@material-ui/icons/BuildTwoTone'
-import InfoTwoTone from '@material-ui/icons/InfoTwoTone'
 import LanguageTwoTone from '@material-ui/icons/LanguageTwoTone'
 import PeopleTwoTone from '@material-ui/icons/PeopleTwoTone'
 import PublicTwoTone from '@material-ui/icons/PublicTwoTone'
@@ -82,8 +81,6 @@ export const useDrawerItems = () => {
           return <DeleteTwoTone />
         case 'Setup':
           return <BuildTwoTone />
-        case 'Version info':
-          return <InfoTwoTone />
         case 'Dashboard':
           return <DashboardTwoTone />
         default:
@@ -135,8 +132,6 @@ export const useDrawerItems = () => {
           return '/trash'
         case 'Setup':
           return '/setup'
-        case 'Version info':
-          return '/info'
         case 'Dashboard':
           return `/dashboard/${encodeURIComponent(item.settings ? item.settings.dashboardName : '')}`
         default:
