@@ -133,7 +133,7 @@ export class Upload {
       } else {
         throw await this.repository.getErrorFromResponse(response)
       }
-      return response.json()
+      return response.clone().json()
     } catch (error) {
       options.progressObservable?.setValue({
         guid,
