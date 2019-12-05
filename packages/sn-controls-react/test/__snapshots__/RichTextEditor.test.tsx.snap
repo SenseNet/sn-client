@@ -135,6 +135,7 @@ exports[`Rich text editor field control in edit/new view should set all the prop
     style={
       Object {
         "background": "#fff",
+        "color": "#000",
         "marginTop": 10,
       }
     }
