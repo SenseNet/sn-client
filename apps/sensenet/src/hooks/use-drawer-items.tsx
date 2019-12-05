@@ -82,8 +82,6 @@ export const useDrawerItems = () => {
           return <DeleteTwoTone />
         case 'Setup':
           return <BuildTwoTone />
-        case 'Version info':
-          return <InfoTwoTone />
         case 'Dashboard':
           return <DashboardTwoTone />
         default:
