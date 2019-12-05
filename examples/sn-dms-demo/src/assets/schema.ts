@@ -2,7 +2,7 @@ export const customSchema = [
   {
     ContentTypeName: 'GenericContent',
     DisplayName: 'Content',
-    Description: 'This type is the base content type of the Sense/Net ECMS.',
+    Description: 'This type is the base content type of the sensenet.',
     Icon: 'Content',
     AllowIndexing: true,
     AllowIncrementalNaming: false,
@@ -4230,7 +4230,7 @@ export const customSchema = [
     ContentTypeName: 'Domain',
     DisplayName: 'Domain',
     Description:
-      'A centrally-managed group of users and/or computers. Sense/Net ECMS has a built-in domain (BuiltIn), but you can syncronyze external LDAP directories as well.',
+      'A centrally-managed group of users and/or computers. sensenet has a built-in domain (BuiltIn), but you can syncronyze external LDAP directories as well.',
     Icon: 'Domain',
     ParentTypeName: 'Folder',
     AllowIndexing: true,
