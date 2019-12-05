@@ -68,7 +68,7 @@ describe('The main memo panel instance', () => {
       .find('div.MuiExpansionPanelSummary-content')
       .at(0)
 
-    expect(memoListElement.text()).toContain(TestMemoCollection[0].DisplayName)
+    expect(memoListElement.text()).toContain(TestNewMemo.DisplayName)
   })
 
   it('should remove memo from the list', async () => {
