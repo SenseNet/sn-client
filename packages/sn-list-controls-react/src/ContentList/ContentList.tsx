@@ -104,7 +104,7 @@ export interface ContentListProps<T extends GenericContent = GenericContent> {
   /**
    * Optional custom selection component
    */
-  getSelectionControl?: (selected: boolean, content: T, callBack?: Function) => JSX.Element
+  getSelectionControl?: (selected: boolean, content: T, callBack: () => void) => JSX.Element
 
   /**
    * Setting to hide the table headers
