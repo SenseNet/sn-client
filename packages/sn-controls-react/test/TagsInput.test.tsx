@@ -180,7 +180,7 @@ describe('Tags input field control', () => {
       await sleepAsync(0)
       const updatedWrapper = wrapper.update()
       const onChange = updatedWrapper.find(Select).prop('onChange')
-      onChange && onChange({ target: { value: 4804 } } as any, {})
+      onChange && onChange({ target: { value: [1120, 4804] } } as any, {})
       expect(fieldOnChange).toBeCalled()
     })
   })
