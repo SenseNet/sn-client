@@ -36,6 +36,9 @@ module.exports = {
   },
   // Enable sourcemaps for debugging webpack's output.
   devtool: 'eval-source-map', // 'source-map',
+  devServer: {
+    historyApiFallback: true,
+  },
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
     extensions: ['.ts', '.tsx', '.js', '.json'],
