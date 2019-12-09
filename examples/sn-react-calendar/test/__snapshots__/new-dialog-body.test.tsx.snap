@@ -3543,8 +3543,8 @@ exports[`NewDialogBody NewDialogBody snapshot test 1`] = `
                     "ReenterTitle": "Re-enter password",
                     "Type": "PasswordFieldSetting",
                     "Visible": true,
-                    "VisibleBrowse": 1,
-                    "VisibleEdit": 1,
+                    "VisibleBrowse": 0,
+                    "VisibleEdit": 0,
                     "VisibleNew": 0,
                   },
                   Object {
@@ -7383,8 +7383,8 @@ exports[`NewDialogBody NewDialogBody snapshot test 1`] = `
                     "ReenterTitle": "Re-enter password",
                     "Type": "PasswordFieldSetting",
                     "Visible": true,
-                    "VisibleBrowse": 1,
-                    "VisibleEdit": 1,
+                    "VisibleBrowse": 0,
+                    "VisibleEdit": 0,
                     "VisibleNew": 0,
                   },
                   Object {

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { CurrentAncestorsProvider, CurrentContentProvider } from '@sensenet/hooks-react'
+import { CurrentContentProvider } from '@sensenet/hooks-react'
 import { useLoadContent, useSelectionService } from '../../hooks'
 import { FullScreenLoader } from '../FullScreenLoader'
 import { TextEditor } from './TextEditor'
@@ -26,9 +26,7 @@ const Editor: React.FunctionComponent<RouteComponentProps<{ contentId?: string }
       }}>
       {content ? (
         <CurrentContentProvider idOrPath={contentId}>
-          <CurrentAncestorsProvider>
-            <TextEditor content={content} />
-          </CurrentAncestorsProvider>
+          <TextEditor content={content} />
         </CurrentContentProvider>
       ) : (
         <FullScreenLoader />
