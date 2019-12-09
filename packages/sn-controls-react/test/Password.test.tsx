@@ -47,4 +47,11 @@ describe('Password field control', () => {
     wrapper.find(IconButton).simulate('click')
     expect(wrapper.find(Input).prop('type')).toBe('text')
   })
+
+  it('should call on change when input changes', () => {
+    const fieldOnChange = jest.fn()
+    const wrapper = shallow(<Password actionName="edit" fieldOnChange={fieldOnChange} settings={defaultSettings} />)
+    wrapper.find(Input).simulate('change', { target: { value: 'Hello World' } })
+    expect(fieldOnChange).toBeCalled()
+  })
 })

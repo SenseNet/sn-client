@@ -91,8 +91,14 @@ export const loadItems = async <T extends GenericContentWithIsParent>({
   const items = itemsResult.d.results.map(item => {
     return { ...item, isParent: false } as T & { isParent: boolean }
   })
-  const parentResult = await getParent<T>(items[0], repository, parentODataOptions, parentId)
-  if (!parentResult) {
+  let parentResult
+  try {
+    parentResult = await getParent<T>(items[0], repository, parentODataOptions, parentId)
+    if (!parentResult) {
+      return items
+    }
+  } catch {
+    // Return items without parent if parent fails with error
     return items
   }
   return [{ ...parentResult.d, isParent: true }, ...items]

@@ -65,7 +65,7 @@ export class ContentType {
   public Type!: string
 }
 /**
- * This type is the base content type of the Sense/Net ECMS.
+ * This type is the base content type of the sensenet.
  */
 export class GenericContent {
   /* Unique Id for the content. */
@@ -342,7 +342,7 @@ export class Device extends Folder {
   public UserAgentPattern?: string
 }
 /**
- * A centrally-managed group of users and/or computers. Sense/Net ECMS has a built-in domain (BuiltIn), but you can syncronyze external LDAP directories as well.
+ * A centrally-managed group of users and/or computers. sensenet has a built-in domain (BuiltIn), but you can syncronyze external LDAP directories as well.
  */
 export class Domain extends Folder {
   /* GUID of corresponding AD object. */
@@ -540,7 +540,7 @@ export class Query extends GenericContent {
   public QueryType?: Enums.QueryType[]
 }
 /**
- * The basic user type of the Sense/Net ECMS. Use it for intranet and extranet users.
+ * The basic user type of the sensenet. Use it for intranet and extranet users.
  */
 export class User extends GenericContent {
   /* The name that the user has to type in on login forms (in some cases along with the domain name). It has to be unique under a domain. */
