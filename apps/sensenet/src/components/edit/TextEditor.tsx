@@ -49,7 +49,6 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
   const [uri, setUri] = useState<any>(getMonacoModelUri(props.content, repo))
   const [hasChanges, setHasChanges] = useState(false)
   const logger = useLogger('TextEditor')
-
   const [error, setError] = useState<Error | undefined>()
 
   const saveContent = async () => {
@@ -77,6 +76,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
           },
         },
       })
+      await repo.reloadSchema()
       setSavedTextValue(textValue)
     } catch (err) {
       logger.error({
@@ -113,7 +113,7 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
           }
           const textFile = await repo.fetch(PathHelper.joinPaths(repo.configuration.repositoryUrl, binaryPath))
           if (textFile.ok) {
-            const text = await textFile.text()
+            const text = savedTextValue !== '' ? savedTextValue : await textFile.text()
             setTextValue(text)
             setSavedTextValue(text)
           }
@@ -122,10 +122,14 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
         setError(err)
       }
     })()
-  }, [contentRouter, props, props.content.Id, repo])
+  }, [contentRouter, savedTextValue, props, repo])
 
   if (error) {
-    throw error
+    logger.information({
+      message: localization.saveFailedNotification,
+      data: error,
+    })
+    return null
   }
 
   return (
