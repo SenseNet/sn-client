@@ -102,6 +102,7 @@ export class Upload {
 
   public async uploadNonChunked<T>(options: UploadFileOptions<T>): Promise<UploadResponse> {
     const guid = v1()
+    let responseContent: UploadResponse = {} as any
 
     options.progressObservable?.setValue({
       guid,
@@ -121,19 +122,19 @@ export class Upload {
       })
 
       if (response.ok) {
-        const uploadResponse: UploadResponse = await response.json()
+        responseContent = await response.json()
         options.progressObservable?.setValue({
           guid,
           file: options.file,
           chunkCount: 1,
           uploadedChunks: 1,
           completed: true,
-          createdContent: uploadResponse,
+          createdContent: responseContent,
         })
       } else {
         throw await this.repository.getErrorFromResponse(response)
       }
-      return response.json()
+      return responseContent
     } catch (error) {
       options.progressObservable?.setValue({
         guid,

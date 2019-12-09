@@ -20,6 +20,7 @@ import { ResponsivePersonalSetttings } from '../../context'
 import { useContentRouting, useLocalization } from '../../hooks'
 import { CollectionComponent, isReferenceField } from '../content-list'
 import { useDialog } from '../dialogs'
+import { AddButton } from '../AddButton'
 
 const loadCount = 20
 const searchDebounceTime = 400
@@ -28,6 +29,9 @@ export interface QueryData {
   title?: string
   hideSearchBar?: boolean
   fieldsToDisplay?: Array<keyof GenericContent>
+  showAddButton?: boolean
+  parentPath?: string
+  allowedTypes?: string[]
 }
 
 export const encodeQueryData = (data: QueryData) => encodeURIComponent(btoa(JSON.stringify(data)))
@@ -40,6 +44,13 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
   const { openDialog } = useDialog()
   const logger = useLogger('Search')
   const [queryData, setQueryData] = useState<QueryData>(decodeQueryData(props.match.params.queryData))
+  const [activeParent, setActiveParent] = useState<GenericContent>(null as any)
+
+  useEffect(() => {
+    if (queryData.parentPath && queryData.parentPath.length > 0) {
+      setActiveParent({ Path: queryData.parentPath } as GenericContent)
+    }
+  }, [queryData.parentPath])
 
   const localization = useLocalization().search
   const [scrollToken, setScrollToken] = useState(Math.random())
@@ -181,13 +192,11 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
           </div>
         )}
       </div>
-
       {error ? (
         <Typography color="error" variant="subtitle1" style={{ margin: '1em' }}>
           {error}
         </Typography>
       ) : null}
-
       <CurrentContentContext.Provider value={ConstantContent.PORTAL_ROOT}>
         <CurrentChildrenContext.Provider value={result}>
           <CurrentAncestorsContext.Provider value={[]}>
@@ -212,6 +221,9 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
                 /** */
               }}
             />
+            {queryData.showAddButton && queryData.parentPath && queryData.parentPath.length > 0 ? (
+              <AddButton parent={activeParent} allowedTypes={queryData.allowedTypes} />
+            ) : null}
           </CurrentAncestorsContext.Provider>
         </CurrentChildrenContext.Provider>
       </CurrentContentContext.Provider>

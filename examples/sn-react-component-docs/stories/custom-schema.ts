@@ -4,7 +4,7 @@ export const customSchema = [
   {
     ContentTypeName: 'GenericContent',
     DisplayName: 'Content',
-    Description: 'This type is the base content type of the Sense/Net ECMS.',
+    Description: 'This type is the base content type of the sensenet.',
     Icon: 'Content',
     AllowIndexing: true,
     AllowIncrementalNaming: false,

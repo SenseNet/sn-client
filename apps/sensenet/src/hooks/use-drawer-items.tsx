@@ -1,6 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
 import BuildTwoTone from '@material-ui/icons/BuildTwoTone'
-import InfoTwoTone from '@material-ui/icons/InfoTwoTone'
 import LanguageTwoTone from '@material-ui/icons/LanguageTwoTone'
 import PeopleTwoTone from '@material-ui/icons/PeopleTwoTone'
 import PublicTwoTone from '@material-ui/icons/PublicTwoTone'
@@ -21,7 +20,7 @@ import { ResponsivePersonalSetttings } from '../context'
 import { encodeBrowseData } from '../components/content'
 import { encodeQueryData } from '../components/search'
 import DefaultLocalization from '../localization/default'
-import { useLocalization } from './use-localization'
+import { useLocalization } from '.'
 
 export interface DrawerItem {
   name: string
@@ -82,8 +81,6 @@ export const useDrawerItems = () => {
           return <DeleteTwoTone />
         case 'Setup':
           return <BuildTwoTone />
-        case 'Version info':
-          return <InfoTwoTone />
         case 'Dashboard':
           return <DashboardTwoTone />
         default:
@@ -115,9 +112,13 @@ export const useDrawerItems = () => {
           })}`
         case 'Content Types':
           return `/search/${encodeQueryData({
+            title: localization.titles['Content Types'],
             term: "+TypeIs:'ContentType'",
             hideSearchBar: true,
             fieldsToDisplay: ['DisplayName', 'Description', 'ParentTypeName' as any, 'ModificationDate', 'ModifiedBy'],
+            showAddButton: true,
+            parentPath: '/Root/System/Schema/ContentTypes/',
+            allowedTypes: ['ContentType'],
           })}`
         case 'Query':
           return `/search/${encodeQueryData({
@@ -135,8 +136,6 @@ export const useDrawerItems = () => {
           return '/trash'
         case 'Setup':
           return '/setup'
-        case 'Version info':
-          return '/info'
         case 'Dashboard':
           return `/dashboard/${encodeURIComponent(item.settings ? item.settings.dashboardName : '')}`
         default:
@@ -146,7 +145,7 @@ export const useDrawerItems = () => {
 
       return '/'
     },
-    [settings.content.browseType, settings.content.fields],
+    [settings.content.browseType, settings.content.fields, localization],
   )
 
   const getItemFromSettings = useCallback(

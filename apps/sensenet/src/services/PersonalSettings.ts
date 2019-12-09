@@ -60,7 +60,6 @@ export const DrawerItemType = tuple(
   'Search',
   'Setup',
   'Trash',
-  'Version info',
   'Users and groups',
   'Dashboard',
 )
@@ -137,7 +136,7 @@ export interface DashboardDrawerItem
 }
 
 export interface BuiltinDrawerItem extends DrawerItem<undefined> {
-  itemType: 'Content Types' | 'Localization' | 'Search' | 'Setup' | 'Trash' | 'Version info' | 'Users and groups'
+  itemType: 'Content Types' | 'Localization' | 'Search' | 'Setup' | 'Trash' | 'Users and groups'
 }
 
 export type PersonalSettingsType = PlatformDependent<UiSettings> & {
@@ -298,7 +297,7 @@ export const defaultSettings: PersonalSettingsType = {
         {
           itemType: 'Content',
           settings: { root: '/Root/Content' },
-          permissions: [{ path: '/Root/Content', action: 'Add' }],
+          permissions: [{ path: '/Root/Content', action: 'Browse' }],
         },
         {
           itemType: 'Users and groups',
@@ -321,11 +320,6 @@ export const defaultSettings: PersonalSettingsType = {
           permissions: [{ path: '/Root/Localization', action: 'Add' }],
         },
         { itemType: 'Setup', settings: undefined, permissions: [{ path: '/Root/System/Settings', action: 'Browse' }] },
-        {
-          itemType: 'Version info',
-          settings: undefined,
-          permissions: [{ path: '/Root/(apps)/PortalRoot/GetVersionInfo', action: 'Browse' }],
-        },
       ],
     },
     commandPalette: { enabled: true, wrapQuery: '{0} .AUTOFILTERS:OFF' },
