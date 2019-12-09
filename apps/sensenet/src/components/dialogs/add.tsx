@@ -33,6 +33,7 @@ export const AddDialog: React.FunctionComponent<AddDialogProps> = ({ schema, par
                 contentType: schema.ContentTypeName,
                 parentPath,
                 content,
+                contentTemplate: schema.ContentTypeName,
               })
               closeLastDialog()
               logger.information({

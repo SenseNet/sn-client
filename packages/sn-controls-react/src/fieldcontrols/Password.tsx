@@ -16,8 +16,13 @@ import { ReactClientFieldSetting } from './ClientFieldSetting'
  * Field control that represents a Password field. Available values will be populated from the FieldSettings.
  */
 export const Password: React.FC<ReactClientFieldSetting> = props => {
+  const [value, setValue] = useState('')
   const [showPassword, setShowPassword] = useState(false)
 
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) => {
+    setValue(e.target.value)
+    props.fieldOnChange?.(props.settings.Name, e.target.value)
+  }
   switch (props.actionName) {
     case 'edit':
     case 'new':
@@ -31,6 +36,8 @@ export const Password: React.FC<ReactClientFieldSetting> = props => {
             placeholder={props.settings.DisplayName}
             required={props.settings.Compulsory}
             disabled={props.settings.ReadOnly}
+            onChange={handleChange}
+            value={value}
             fullWidth={true}
             endAdornment={
               <InputAdornment position="end">

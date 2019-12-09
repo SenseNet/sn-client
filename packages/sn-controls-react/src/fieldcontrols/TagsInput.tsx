@@ -70,24 +70,24 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
     }
   }
 
-  public handleChange = (event: React.ChangeEvent<{ name?: string; value: number }>) => {
-    const selected = this.state.fieldValue
-    let s = selected
-    const selectedContent = this.getContentById(event.target.value)
-
-    this.props.settings.AllowMultiple !== undefined && this.props.settings.AllowMultiple && selectedContent
-      ? this.state.fieldValue.includes(selectedContent)
-        ? (s = selected)
-        : s.push(selectedContent)
-      : (s = [selectedContent!])
+  public handleChange = (event: React.ChangeEvent<{ name?: string; value: number[] }>) => {
+    let s: GenericContent[] = []
+    this.props.settings.AllowMultiple !== undefined && this.props.settings.AllowMultiple
+      ? (s = event.target.value.map((c: number) => this.getContentById(c) as GenericContent))
+      : (s = [this.getContentById(event.target.value[1]) as GenericContent])
 
     this.setState({
-      fieldValue: s,
+      fieldValue: s as GenericContent[],
     })
     this.props.fieldOnChange &&
       this.props.fieldOnChange(
         this.props.settings.Name,
-        s.map(content => content.Id),
+        // eslint-disable-next-line array-callback-return
+        s.map(content => {
+          if (content) {
+            return content.Id
+          }
+        }),
       )
   }
 
@@ -101,17 +101,17 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
 
       let pathQuery = ''
       selectionRoot.forEach((selectionPath, index) => {
-        pathQuery += index === 0 ? `InTree:${selectionPath}` : `OR InTree:${selectionPath}`
+        pathQuery += index === 0 ? `InTree:${selectionPath}` : ` OR InTree:${selectionPath}`
       })
       let typeQuery = ''
-      allowedTypes.forEach(type => {
-        typeQuery += ` +TypeIs:${type}`
+      allowedTypes.forEach((type, index) => {
+        typeQuery += index === 0 ? `TypeIs:${type}` : ` OR TypeIs:${type}`
       })
 
       const req = await this.props.repository.loadCollection({
         path: '/Root',
         oDataOptions: {
-          query: `(${pathQuery}) AND${typeQuery}`,
+          query: `(${pathQuery}) AND ${typeQuery}`,
           select: 'all',
         },
       })
@@ -177,7 +177,7 @@ export class TagsInput extends Component<ReactClientFieldSetting<ReferenceFieldS
     if (this.props.settings.AllowMultiple) {
       return this.state.fieldValue.length ? this.state.fieldValue.map(c => c.Id) : []
     }
-    return this.state.fieldValue.length ? this.state.fieldValue.map(c => c.Id)[0] : ''
+    return this.state.fieldValue.length ? [this.state.fieldValue[0].Id] : []
   }
 
   public render() {
