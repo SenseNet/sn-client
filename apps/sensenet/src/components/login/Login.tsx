@@ -1,39 +1,25 @@
+import { Container, createStyles, Grid, makeStyles, Theme } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import { ConstantContent, FormsAuthenticationService } from '@sensenet/client-core'
 import { Retrier, sleepAsync } from '@sensenet/client-utils'
+import { useInjector, useRepository, useSession } from '@sensenet/hooks-react'
 import React, { useEffect, useState } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { Container, createStyles, Grid, Link, makeStyles, Theme } from '@material-ui/core'
-import { useInjector, useRepository, useSession } from '@sensenet/hooks-react'
+import snLogo from '../../assets/sensenet-icon-32.png'
 import { useLocalization, useTheme } from '../../hooks'
 import { PersonalSettings, PersonalSettingsType } from '../../services/PersonalSettings'
 import { UserAvatar } from '../UserAvatar'
-import { GoogleAuthButton } from './GoogleAuthButton'
-import { OAuthButton } from './OAuthButton'
+import { DemoUser, InfoBox } from './info-box'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {
-      marginTop: theme.spacing(10),
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-    },
-    marginTopBottom: {
-      margin: theme.spacing(2, 0, 2),
-    },
-    signUp: {
-      marginTop: theme.spacing(3),
-      paddingRight: theme.spacing(3),
-    },
-    title: {
-      margin: theme.spacing(2, 0, 3),
-    },
-    middleText: {
-      margin: theme.spacing(2, 0, 3),
     },
     link: {
       margin: theme.spacing(1),
@@ -157,21 +143,19 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
     setInputState({ ...inputState, [ev.target.name]: { isValid: true, errorMessage: '' } })
   }
 
+  const selectDemoUser = (demoUser: DemoUser) => {
+    setUserName(demoUser.userName)
+    setPassword(demoUser.userName)
+  }
+
   return (
     <>
-      <Grid container={true} direction="row-reverse" className={classes.signUp}>
-        <Grid item={true}>
-          {localization.newToSensenet}{' '}
-          <Link href="#" underline="always" className={classes.link}>
-            {localization.signUp}
-          </Link>
-        </Grid>
+      <Grid container={true} direction="row">
+        <img src={snLogo} alt="sensenet logo" />
       </Grid>
-      <Container maxWidth="xs">
+      <InfoBox onSelect={selectDemoUser} />
+      <Container maxWidth="sm">
         <div className={classes.paper}>
-          <Typography variant="h4" color="textSecondary" className={classes.title}>
-            {localization.loginTitle}
-          </Typography>
           {isInProgress ? (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 196 }}>
               <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
@@ -233,6 +217,7 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
                 helperText={!inputState.password.isValid ? inputState.password.errorMessage : ''}
                 placeholder={localization.passwordHelperText}
                 onInvalid={handleInvalid}
+                value={password}
                 onChange={ev => {
                   clearInputError(ev)
                   setPassword(ev.target.value)
@@ -256,52 +241,11 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
                 }}
               />
               {error ? <Typography style={{ color: theme.palette.error.main }}>{error}</Typography> : null}
-              <Button
-                fullWidth={true}
-                className={classes.marginTopBottom}
-                variant="contained"
-                color="primary"
-                type="submit">
+              <Button fullWidth={true} variant="contained" color="primary" type="submit">
                 <Typography variant="button">{localization.loginButtonTitle}</Typography>
               </Button>
             </form>
           )}
-          <Typography className={classes.middleText} variant="body2" color="textSecondary" gutterBottom={true}>
-            {localization.youCanLogInWith}
-          </Typography>
-          <Grid container={true} direction="row" justify="space-between" alignItems="center">
-            <Grid item={true}>
-              <OAuthButton iconName="github" buttonText="Github" buttonProps={{ disabled: true }} />
-            </Grid>
-            <Grid item={true}>
-              <GoogleAuthButton />
-            </Grid>
-            <Grid item={true}>
-              <OAuthButton iconName="facebook" buttonText="Facebook" buttonProps={{ disabled: true }} />
-            </Grid>
-          </Grid>
-          <Grid container={true} direction="row" className={classes.marginTopBottom} justify="space-around">
-            <Link href="#" title={localization.logInWithSso} underline="always" className={classes.link}>
-              <Typography variant="body2">{localization.logInWithSso}</Typography>
-            </Link>
-            <Link href="#" title={localization.resetPassword} underline="always" className={classes.link}>
-              <Typography variant="body2">{localization.resetPassword}</Typography>
-            </Link>
-            <Link
-              href="https://community.sensenet.com/tags/#admin+ui"
-              title={localization.help}
-              underline="always"
-              className={classes.link}>
-              <Typography variant="body2">{localization.help}</Typography>
-            </Link>
-            <Link
-              href="https://sensenet.com/contact"
-              title={localization.contactUs}
-              underline="always"
-              className={classes.link}>
-              <Typography variant="body2">{localization.contactUs}</Typography>
-            </Link>
-          </Grid>
         </div>
       </Container>
     </>
