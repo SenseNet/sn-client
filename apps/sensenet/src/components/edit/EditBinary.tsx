@@ -26,7 +26,7 @@ const Editor: React.FunctionComponent<RouteComponentProps<{ contentId?: string }
       }}>
       {content ? (
         <CurrentContentProvider idOrPath={contentId}>
-          <TextEditor content={content} />
+          <TextEditor content={content} showBreadCrumb={false} />
         </CurrentContentProvider>
       ) : (
         <FullScreenLoader />
