@@ -64,23 +64,27 @@ export const Login = () => {
     existingRepo && existingRepo.loginName && setUserName(existingRepo.loginName)
   }, [existingRepo, repo.configuration.repositoryUrl])
 
-  const handleSubmit = async (ev: React.FormEvent) => {
+  const handleSubmit = (ev: React.FormEvent) => {
     ev.preventDefault()
-    const repoToLogin = injector.getRepository(url)
-    personalSettings.lastRepository = url
+    login(userName, password, url)
+  }
+
+  const login = async (userNameParam: string, passwordParam: string, urlParam: string) => {
+    const repoToLogin = injector.getRepository(urlParam)
+    personalSettings.lastRepository = urlParam
     try {
       setIsInProgress(true)
-      const result = await repoToLogin.authentication.login(userName, password)
+      const result = await repoToLogin.authentication.login(userNameParam, passwordParam)
       setSuccess(result)
       if (result) {
         setError(undefined)
-        const existing = repositories.find(i => i.url === url)
+        const existing = repositories.find(i => i.url === urlParam)
         if (!existing) {
-          repositories.push({ url, loginName: userName })
+          repositories.push({ url: urlParam, loginName: userNameParam })
         } else {
           personalSettings.repositories = repositories.map(r => {
-            if (r.url === url) {
-              r.loginName = userName
+            if (r.url === urlParam) {
+              r.loginName = userNameParam
             }
             return r
           })
@@ -100,7 +104,7 @@ export const Login = () => {
           setProgressValue(index)
         }
         logger.information({
-          message: localization.loginSuccessNotification.replace('{0}', userName).replace('{1}', url),
+          message: localization.loginSuccessNotification.replace('{0}', userNameParam).replace('{1}', urlParam),
           data: {
             relatedContent: repoToLogin.authentication.currentUser.getValue(),
             relatedRepository: repoToLogin.configuration.repositoryUrl,
@@ -115,12 +119,12 @@ export const Login = () => {
         setIsInProgress(false)
         setError(localization.loginFailed)
         logger.warning({
-          message: localization.loginFailedNotification.replace('{0}', userName).replace('{1}', url),
+          message: localization.loginFailedNotification.replace('{0}', userNameParam).replace('{1}', urlParam),
         })
       }
     } catch (err) {
       logger.error({
-        message: localization.loginErrorNotification.replace('{0}', userName).replace('{1}', url),
+        message: localization.loginErrorNotification.replace('{0}', userNameParam).replace('{1}', urlParam),
         data: {
           details: { error: err },
         },
@@ -144,8 +148,7 @@ export const Login = () => {
   }
 
   const selectDemoUser = (demoUser: DemoUser) => {
-    setUserName(demoUser.userName)
-    setPassword(demoUser.userName)
+    login(demoUser.userName, demoUser.userName, 'https://dev.demo.sensenet.com')
   }
 
   return (
