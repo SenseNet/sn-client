@@ -1,4 +1,4 @@
-import { Container, createStyles, makeStyles } from '@material-ui/core'
+import { Container, createStyles, makeStyles, Theme } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import TextField from '@material-ui/core/TextField'
@@ -13,10 +13,11 @@ import { PersonalSettings, PersonalSettingsType } from '../../services/PersonalS
 import { UserAvatar } from '../UserAvatar'
 import { DemoUser, InfoBox } from './info-box'
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {
       display: 'flex',
+      marginBottom: theme.spacing(2),
       flexDirection: 'column',
       alignItems: 'center',
     },

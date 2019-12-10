@@ -5,7 +5,6 @@ import {
   Container,
   createStyles,
   Grid,
-  IconButton,
   List,
   ListItem,
   ListItemAvatar,
@@ -13,6 +12,7 @@ import {
   ListItemText,
   makeStyles,
   Theme,
+  Tooltip,
   Typography,
 } from '@material-ui/core'
 import { useLocalization } from '../../hooks'
@@ -49,19 +49,21 @@ const demoUsers: DemoUser[] = [
     userName: 'businesscat',
     avatarUrl: businessCatImg,
     role: 'Admin',
-    info: '',
+    info: 'Business Cat is an admin user with full access.',
   },
   {
     userName: 'devdog',
     avatarUrl: devDogImg,
     role: 'Developer',
-    info: '',
+    info:
+      'Developer Dog is developer user who has control only over the content types, the settings and can see the version info.',
   },
   {
     userName: 'editormanatee',
     avatarUrl: editorManateeImg,
     role: 'Editor',
-    info: '',
+    info:
+      'Editor Manatee is a content editor who can manage the non-system content items, build or save custom search queries.',
   },
 ]
 
@@ -105,9 +107,9 @@ export function InfoBox({ onSelect }: InfoBoxProps) {
               <ListItemText className={classes.listItemText} primary={demoUser.userName} />
               <ListItemText className={classes.listItemText} primary={demoUser.role} />
               <ListItemSecondaryAction>
-                <IconButton edge="end" aria-label="info">
+                <Tooltip title={demoUser.info}>
                   <InfoIcon />
-                </IconButton>
+                </Tooltip>
               </ListItemSecondaryAction>
             </ListItem>
           ))}
