@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     listItemText: {
       flex: '1 1',
-      textAlign: 'center',
+      textAlign: 'left',
     },
     title: {
       margin: theme.spacing(2, 0, 3),
