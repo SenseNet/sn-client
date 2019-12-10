@@ -249,12 +249,13 @@ class GroupList extends Component<ReturnType<typeof mapStateToProps> & typeof ma
               return null
           }
         }}
-        getSelectionControl={(_selected, content) => {
+        getSelectionControl={(_selected, content, onChangeCallback) => {
           return (
             <Checkbox
               checked={selected.find((i: GenericContent) => i.Id === content.Id) ? true : false}
               disabled={this.isGroupAdmin(content.Actions as ActionModel[]) && content.Type === 'Group' ? false : true}
               style={this.isGroupAdmin(content.Actions as ActionModel[]) ? { cursor: 'normal' } : {}}
+              onChange={onChangeCallback}
             />
           )
         }}
