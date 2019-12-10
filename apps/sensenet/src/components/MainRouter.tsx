@@ -150,6 +150,7 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
                   />
                   <Route
                     path="/:repo/"
+                    exact
                     render={routeParams => {
                       return (
                         <RepositoryContext.Consumer>
@@ -160,6 +161,7 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
                   />
                   <Route
                     path="/"
+                    exact
                     render={routeParams => {
                       return <DashboardComponent {...routeParams} />
                     }}

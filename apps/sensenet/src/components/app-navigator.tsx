@@ -4,14 +4,14 @@ import { DesktopLayout } from './layout/DesktopLayout'
 import { MainRouter } from './MainRouter'
 import { FullScreenLoader } from './FullScreenLoader'
 
-const LoginComponent = lazy(() => import(/* webpackChunkName: "Login" */ './login/Login'))
+const LoginPage = lazy(() => import(/* webpackChunkName: "Login" */ './login/login-page'))
 
 export function AppNavigator() {
   return (
     <Switch>
       <Route path="/login">
         <Suspense fallback={<FullScreenLoader />}>
-          <LoginComponent />
+          <LoginPage />
         </Suspense>
       </Route>
       <DesktopLayout>

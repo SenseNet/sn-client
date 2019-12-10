@@ -1,4 +1,4 @@
-import { Container, createStyles, Grid, makeStyles, Theme } from '@material-ui/core'
+import { Container, createStyles, makeStyles } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import TextField from '@material-ui/core/TextField'
@@ -7,29 +7,28 @@ import { ConstantContent, FormsAuthenticationService } from '@sensenet/client-co
 import { Retrier, sleepAsync } from '@sensenet/client-utils'
 import { useInjector, useRepository, useSession } from '@sensenet/hooks-react'
 import React, { useEffect, useState } from 'react'
-import { RouteComponentProps, withRouter } from 'react-router'
-import snLogo from '../../assets/sensenet-icon-32.png'
+
+import { useHistory, useLocation, useRouteMatch } from 'react-router'
 import { useLocalization, useTheme } from '../../hooks'
 import { PersonalSettings, PersonalSettingsType } from '../../services/PersonalSettings'
 import { UserAvatar } from '../UserAvatar'
 import { DemoUser, InfoBox } from './info-box'
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     paper: {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
     },
-    link: {
-      margin: theme.spacing(1),
-      color: '#26a69a !important',
-    },
   }),
 )
 
-export const Login: React.FunctionComponent<RouteComponentProps> = props => {
+export const Login = () => {
   const injector = useInjector()
+  const history = useHistory()
+  const match = useRouteMatch()
+  const location = useLocation()
   const repo = useRepository()
   const theme = useTheme()
   const classes = useStyles()
@@ -107,9 +106,10 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
             relatedRepository: repoToLogin.configuration.repositoryUrl,
           },
         })
-        if (props.match.path === '/login') {
+        if (match.path === '/login') {
           await sleepAsync(1800)
-          props.history.push(`/${btoa(repoToLogin.configuration.repositoryUrl)}`)
+          const { from } = location.state || { from: { pathname: '/' } }
+          history.replace(from)
         }
       } else {
         setIsInProgress(false)
@@ -150,9 +150,6 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
 
   return (
     <>
-      <Grid container={true} direction="row">
-        <img src={snLogo} alt="sensenet logo" />
-      </Grid>
       <InfoBox onSelect={selectDemoUser} />
       <Container maxWidth="sm">
         <div className={classes.paper}>
@@ -252,4 +249,4 @@ export const Login: React.FunctionComponent<RouteComponentProps> = props => {
   )
 }
 
-export default withRouter(Login)
+export default Login

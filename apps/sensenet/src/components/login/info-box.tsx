@@ -23,7 +23,6 @@ import editorManateeImg from './editormanatee.jpg'
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     infoBox: {
-      margin: theme.spacing(2, 0, 2),
       backgroundColor: theme.palette.primary.main,
     },
     marginBottom: {
