@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
 const TsConfigWebpackPlugin = require('ts-config-webpack-plugin')
 const GitRevisionPlugin = require('git-revision-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
 
 const gitRevisionPlugin = new GitRevisionPlugin()
 
@@ -45,6 +46,7 @@ module.exports = {
   },
   plugins: [
     // new BundleAnalyzerPlugin({ analyzerPort: 8745 }),
+    new CopyPlugin([{ from: path.resolve(__dirname + '/_redirects'), to: path.resolve(__dirname + '/bundle/assets') }]),
     new TsConfigWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './index.html',
