@@ -178,8 +178,8 @@ exports[`The user search component instance should be rendered correctly 1`] = `
                 "ReenterTitle": "Re-enter password",
                 "Type": "PasswordFieldSetting",
                 "Visible": true,
-                "VisibleBrowse": 0,
-                "VisibleEdit": 0,
+                "VisibleBrowse": 1,
+                "VisibleEdit": 1,
                 "VisibleNew": 0,
               },
               Object {

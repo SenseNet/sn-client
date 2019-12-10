@@ -32,7 +32,7 @@ export const TestNewMemo = {
   Id: 453234,
   Path: '/Root/Test',
   Name: 'New Memo name',
-  DisplayName: 'New memo test',
+  DisplayName: 'Test memo',
   Description: 'New memo description',
   CreationDate: '2019-14-08T01:07:09.42Z',
   ModificationDate: '2019-15-08T05:07:09.42Z',
