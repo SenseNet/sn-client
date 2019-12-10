@@ -6,6 +6,7 @@ import { sleepAsync } from '@sensenet/client-utils'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import { act } from 'react-dom/test-utils'
+import { Avatar } from '@material-ui/core'
 import { ReferenceGrid } from '../src/fieldcontrols/ReferenceGrid/ReferenceGrid'
 import { DefaultItemTemplate } from '../src/fieldcontrols/ReferenceGrid/DefaultItemTemplate'
 import { ReferencePicker } from '../src/fieldcontrols/ReferenceGrid/ReferencePicker'
@@ -172,6 +173,25 @@ describe('Reference grid field control', () => {
         .simulate('click')
       // Jane Doe + add reference
       expect(wrapper.update().find(DefaultItemTemplate)).toHaveLength(2)
+    })
+
+    it('should render the monogram of Displayname when no Avatar.Url is provided', async () => {
+      const repo = {
+        loadCollection: jest.fn(() => {
+          return { d: { results: [{ ...userContent, Avatar: { Url: '' } }] } }
+        }),
+      } as any
+      let wrapper: any
+      await act(async () => {
+        wrapper = mount(<ReferencePicker repository={repo} select={jest.fn} path="" selected={[]} />)
+      })
+
+      expect(
+        wrapper
+          .update()
+          .find(Avatar)
+          .text(),
+      ).toBe('A.M')
     })
   })
 })
