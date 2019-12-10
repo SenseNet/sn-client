@@ -33,6 +33,7 @@ export interface TextEditorProps {
   loadContent?: (content: SnFile) => Promise<string>
   saveContent?: (content: SnFile, value: string) => Promise<void>
   additionalButtons?: JSX.Element
+  showBreadCrumb: boolean
 }
 
 export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
@@ -145,8 +146,8 @@ export const TextEditor: React.FunctionComponent<TextEditorProps> = props => {
           }
         }
       }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <ContentBreadcrumbs />
+      <div style={{ display: 'flex', justifyContent: props.showBreadCrumb ? 'space-between' : 'flex-end' }}>
+        {props.showBreadCrumb && <ContentBreadcrumbs />}
         <div
           style={{
             display: 'flex',

@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/react-imageupload",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "contributors": [
@@ -31,9 +31,9 @@
   "dependencies": {
     "@material-ui/core": "^4.6.1",
     "@material-ui/icons": "^4.5.1",
-    "@sensenet/client-core": "^2.2.4",
-    "@sensenet/default-content-types": "^2.0.3",
-    "@sensenet/hooks-react": "^1.0.3",
+    "@sensenet/client-core": "^2.2.5",
+    "@sensenet/default-content-types": "^2.0.4",
+    "@sensenet/hooks-react": "^1.0.4",
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
   },

@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/react-calendar",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "author": "Sense/Net <snteam@sensenet.com> (http://sensenet.com/)",
   "contributors": [
@@ -35,10 +35,10 @@
   "dependencies": {
     "@material-ui/core": "^4.6.1",
     "@material-ui/icons": "^4.5.1",
-    "@sensenet/client-core": "^2.2.4",
-    "@sensenet/controls-react": "^3.3.1",
-    "@sensenet/default-content-types": "^2.0.3",
-    "@sensenet/hooks-react": "^1.0.3",
+    "@sensenet/client-core": "^2.2.5",
+    "@sensenet/controls-react": "^3.3.2",
+    "@sensenet/default-content-types": "^2.0.4",
+    "@sensenet/hooks-react": "^1.0.4",
     "clsx": "^1.0.4",
     "lodash.orderby": "^4.6.0",
     "moment": "^2.24.0",

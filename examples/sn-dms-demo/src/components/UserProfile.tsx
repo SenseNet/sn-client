@@ -265,7 +265,7 @@ class UserProfile extends React.Component<
                           return null
                       }
                     }}
-                    getSelectionControl={(_selected, content) => {
+                    getSelectionControl={(_selected, content, onChangeCallback) => {
                       return (
                         <Checkbox
                           checked={this.props.selected.find(i => i.Id === content.Id) ? true : false}
@@ -279,6 +279,7 @@ class UserProfile extends React.Component<
                               ? { cursor: 'normal' }
                               : {}
                           }
+                          onChange={onChangeCallback}
                         />
                       )
                     }}
