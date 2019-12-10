@@ -81,9 +81,12 @@ export function InfoBox({ onSelect }: InfoBoxProps) {
         </Typography>
         <Typography className={classes.marginBottom}>
           It possible to log in to the admin UI also if you don’t have your own repository yet, so you can explore its
-          functionalities (upload, create etc.) managing content of a public demo repository. Below you can see the
-          credentials for different built-in role types that has different permission settings. To learn more about the
-          settings see the info bubble.
+          functionalities (upload, create etc.) managing content of a{' '}
+          <a href="https://www.sensenet.com/try-it/1000-content-demo" target="blank">
+            public demo repository
+          </a>
+          . Below you can see the credentials for different built-in role types that has different permission settings.
+          To learn more about the settings see the info bubble.
         </Typography>
         <Typography className={classes.marginBottom}>
           Please notice that the demo repository is rebuilt every day, and do not use it with sensitive documents. Our

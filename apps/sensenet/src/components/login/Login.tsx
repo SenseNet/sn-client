@@ -7,7 +7,6 @@ import { ConstantContent, FormsAuthenticationService } from '@sensenet/client-co
 import { Retrier, sleepAsync } from '@sensenet/client-utils'
 import { useInjector, useRepository, useSession } from '@sensenet/hooks-react'
 import React, { useEffect, useState } from 'react'
-
 import { useHistory, useLocation, useRouteMatch } from 'react-router'
 import { useLocalization, useTheme } from '../../hooks'
 import { PersonalSettings, PersonalSettingsType } from '../../services/PersonalSettings'
@@ -108,7 +107,7 @@ export const Login = () => {
         })
         if (match.path === '/login') {
           await sleepAsync(1800)
-          const { from } = location.state || { from: { pathname: '/' } }
+          const { from } = location.state || { from: { pathname: `/${btoa(repoToLogin.configuration.repositoryUrl)}` } }
           history.replace(from)
         }
       } else {
