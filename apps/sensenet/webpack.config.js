@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
 const TsConfigWebpackPlugin = require('ts-config-webpack-plugin')
 const GitRevisionPlugin = require('git-revision-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
 
 const gitRevisionPlugin = new GitRevisionPlugin()
 
@@ -36,12 +37,16 @@ module.exports = {
   },
   // Enable sourcemaps for debugging webpack's output.
   devtool: 'eval-source-map', // 'source-map',
+  devServer: {
+    historyApiFallback: true,
+  },
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
     extensions: ['.ts', '.tsx', '.js', '.json'],
   },
   plugins: [
     // new BundleAnalyzerPlugin({ analyzerPort: 8745 }),
+    new CopyPlugin([{ from: path.resolve(__dirname + '/_redirects'), to: path.resolve(__dirname + '/bundle/assets') }]),
     new TsConfigWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './index.html',
