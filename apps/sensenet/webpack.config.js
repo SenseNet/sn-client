@@ -46,7 +46,10 @@ module.exports = {
   },
   plugins: [
     // new BundleAnalyzerPlugin({ analyzerPort: 8745 }),
-    new CopyPlugin([{ from: path.resolve(__dirname + '/_redirects'), to: path.resolve(__dirname + '/bundle/assets') }]),
+    new CopyPlugin([
+      { from: path.resolve(__dirname + '/_redirects'), to: path.resolve(__dirname + '/bundle/assets') },
+      { from: path.resolve(__dirname + '/web.config'), to: path.resolve(__dirname + '/bundle/assets') },
+    ]),
     new TsConfigWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './index.html',
