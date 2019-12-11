@@ -18,11 +18,14 @@ class DocgenPlugin {
             modulesToProcess.push(module)
           }
         })
-        const tsProgram = ts.createProgram(modulesToProcess.map(v => v.userRequest), {
-          jsx: ts.JsxEmit.React,
-          module: ts.ModuleKind.CommonJS,
-          target: ts.ScriptTarget.Latest,
-        })
+        const tsProgram = ts.createProgram(
+          modulesToProcess.map(v => v.userRequest),
+          {
+            jsx: ts.JsxEmit.React,
+            module: ts.ModuleKind.CommonJS,
+            target: ts.ScriptTarget.Latest,
+          },
+        )
         modulesToProcess.forEach(m => processModule(m, tsProgram))
       })
     })
@@ -43,6 +46,7 @@ function processModule(module, tsProgram) {
         filename: module.userRequest,
         source: module.userRequest,
         componentDocs,
+        typePropName: 'type',
         docgenCollectionName: 'STORYBOOK_REACT_CLASSES',
         setDisplayName: true,
       })
