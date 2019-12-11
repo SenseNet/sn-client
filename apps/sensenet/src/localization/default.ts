@@ -153,7 +153,7 @@ const values = {
     saveFailedNotification: `There was an error during updating content '{0}'`,
   },
   login: {
-    loginTitle: "It's good to see you!",
+    loginTitle: 'Welcome!',
     loginButtonTitle: 'Login',
     userNameLabel: 'UserName',
     userNameHelperText: "Enter the user name you've registered with",

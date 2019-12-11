@@ -1,12 +1,12 @@
-import { mount, shallow } from 'enzyme'
-import React from 'react'
-import IconButton from '@material-ui/core/IconButton'
-import { act } from 'react-dom/test-utils'
-import { Repository } from '@sensenet/client-core'
 import { Button } from '@material-ui/core'
+import IconButton from '@material-ui/core/IconButton'
+import { Repository } from '@sensenet/client-core'
 import { RepositoryContext } from '@sensenet/hooks-react'
-import { SharedContext } from '../src/context/shared-context'
+import { mount } from 'enzyme'
+import React from 'react'
+import { act } from 'react-dom/test-utils'
 import { ViewDialogBody } from '../src/components/view-dialog-body'
+import { SharedContext } from '../src/context/shared-context'
 import { CalendarTestEvent, CalendarTestEventAllDay } from './mocks/test-objects'
 
 describe('ViewDialogBody', () => {

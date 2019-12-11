@@ -16,7 +16,7 @@ const EditPropertiesDialogBody: React.FunctionComponent<{
   const repo = useRepository()
   const sharedcontext = useContext(SharedContext)
 
-  const onSubmit = async (content: GenericContent, saveableFields: Partial<GenericContent>) => {
+  const onSubmit = async (content: GenericContent) => {
     try {
       const response = await repo.patch({
         idOrPath: content.Id,

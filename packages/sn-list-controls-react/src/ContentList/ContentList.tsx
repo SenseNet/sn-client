@@ -104,7 +104,7 @@ export interface ContentListProps<T extends GenericContent = GenericContent> {
   /**
    * Optional custom selection component
    */
-  getSelectionControl?: (selected: boolean, content: T) => JSX.Element
+  getSelectionControl?: (selected: boolean, content: T, callBack: () => void) => JSX.Element
 
   /**
    * Setting to hide the table headers
@@ -252,7 +252,7 @@ export const ContentList: React.FC<ContentListProps<GenericContent>> = props => 
               {props.displayRowCheckbox !== false ? (
                 <TableCell padding="checkbox" key="select">
                   {props.getSelectionControl ? (
-                    props.getSelectionControl(isSelected, item)
+                    props.getSelectionControl(isSelected, item, () => handleContentSelection(item))
                   ) : (
                     <Checkbox
                       checked={isSelected ? true : false}

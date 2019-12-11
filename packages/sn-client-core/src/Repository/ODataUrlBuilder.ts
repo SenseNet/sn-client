@@ -1,4 +1,4 @@
-import { GenericContent } from '@sensenet/default-content-types/src'
+import { GenericContent } from '@sensenet/default-content-types'
 import { ODataFieldParameter, ODataParams } from '../Models/ODataParams'
 import { RepositoryConfiguration } from './RepositoryConfiguration'
 

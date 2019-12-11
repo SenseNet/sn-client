@@ -112,6 +112,7 @@ export function SettingsEditor() {
             saveContent={async (_c, v) => {
               service.setPersonalSettingsValue(deepMerge(JSON.parse(v)))
             }}
+            showBreadCrumb={true}
           />
         </div>
       </div>
