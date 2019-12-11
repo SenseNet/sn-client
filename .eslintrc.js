@@ -2,6 +2,7 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
+    'react-app',
     'plugin:react/recommended',
     'plugin:cypress/recommended',
     'plugin:import/recommended',
@@ -95,7 +96,7 @@ module.exports = {
       },
     },
     {
-      files: ['examples/sn-react-component-docs/**/*.{ts,tsx}'],
+      files: ['examples/**/*.{ts,tsx}', 'apps/**/*.{ts,tsx}'],
       rules: {
         'require-jsdoc': 'off',
       },

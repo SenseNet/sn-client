@@ -56,7 +56,7 @@ export const RichTextEditor: React.FC<ReactClientFieldSetting> = props => {
         <FormControl component={'fieldset' as 'div'} fullWidth={true} required={props.settings.Compulsory}>
           <FormLabel component={'legend' as 'label'}>{props.settings.DisplayName}</FormLabel>
           <ReactQuill
-            style={{ background: '#fff', marginTop: 10 }}
+            style={{ background: '#fff', marginTop: 10, color: '#000' }}
             defaultValue={changeJScriptValue(props.settings.DefaultValue)}
             placeholder={props.settings.DisplayName}
             readOnly={props.settings.ReadOnly}

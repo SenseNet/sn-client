@@ -56,12 +56,10 @@ export const DrawerItemType = tuple(
   'Content',
   'Query',
   'Content Types',
-  'Query',
   'Localization',
   'Search',
   'Setup',
   'Trash',
-  'Version info',
   'Users and groups',
   'Dashboard',
 )
@@ -134,11 +132,11 @@ export interface DashboardDrawerItem
     description?: string
     icon: string
   }> {
-  itemType: 'Dashboard' | 'Users and groups'
+  itemType: 'Dashboard'
 }
 
 export interface BuiltinDrawerItem extends DrawerItem<undefined> {
-  itemType: 'Content Types' | 'Localization' | 'Search' | 'Setup' | 'Trash' | 'Version info' | 'Users and groups'
+  itemType: 'Content Types' | 'Localization' | 'Search' | 'Setup' | 'Trash' | 'Users and groups'
 }
 
 export type PersonalSettingsType = PlatformDependent<UiSettings> & {
@@ -255,7 +253,7 @@ export const defaultSettings: PersonalSettingsType = {
         widgetType: 'markdown',
         settings: {
           content:
-            '<div>To get started with sensenet</div><br /><a style="color: #26a69a; line-height: 2rem" href="https://community.sensenet.com/docs/concepts/overview">Overview</a><br /><a style="color: #26a69a; line-height: 2rem" href="https://community.sensenet.com/docs/tutorials/getting-started">Getting started</a><br /><a href="https://community.sensenet.com/tutorials" style="color: #26a69a; line-height: 2rem">Tutorials</a><br /><a style="color: #26a69a; line-height: 2rem" href="https://community.sensenet.com/docs/examples">Example apps</a>',
+            '<div>To get started with sensenet</div><br /><a style="color: #26a69a; line-height: 2rem" target="_blank" href="https://www.sensenet.com/try-it/snaas-overview">Overview</a><br /><a style="color: #26a69a; line-height: 2rem" target="_blank" href="https://community.sensenet.com/docs/getting-started">Getting started</a><br /><a target="_blank" href="https://community.sensenet.com/tutorials" style="color: #26a69a; line-height: 2rem">Tutorials</a><br /><a style="color: #26a69a; line-height: 2rem" target="_blank" href="/">Example apps</a>',
         },
         minWidth: {
           default: '45%',
@@ -266,7 +264,7 @@ export const defaultSettings: PersonalSettingsType = {
         widgetType: 'markdown',
         settings: {
           content:
-            '<div>Discover capabilites of the API</div><br /><a style="color: #26a69a; line-height: 2rem" href="https://community.sensenet.com/docs/odata-rest-api/">REST API</a><br /><a style="color: #26a69a; line-height: 2rem" href="https://community.sensenet.com/docs/odata-rest-api/">Content Management API</a><br /><a href="https://community.sensenet.com/docs/built-in-odata-actions-and-functions/" style="color: #26a69a; line-height: 2rem">Document Preview API</a><br /><a style="color: #26a69a; line-height: 2rem" href="https://community.sensenet.com/docs/odata-rest-api/">User Management API</a>',
+            '<div>Discover capabilites of the API</div><br /><a style="color: #26a69a; line-height: 2rem" target="_blank" target="_blank" href="https://community.sensenet.com/docs/odata-rest-api/">REST API</a><br /><a style="color: #26a69a; line-height: 2rem" target="_blank" href="https://community.sensenet.com/docs/odata-rest-api/">Content Management API</a><br /><a target="_blank" href="https://community.sensenet.com/docs/built-in-odata-actions-and-functions/" style="color: #26a69a; line-height: 2rem">Document Preview API</a><br /><a style="color: #26a69a; line-height: 2rem" target="_blank" href="https://community.sensenet.com/docs/odata-rest-api/">User Management API</a>',
         },
         minWidth: {
           default: '45%',
@@ -289,7 +287,7 @@ export const defaultSettings: PersonalSettingsType = {
     theme: 'dark',
     content: {
       browseType: 'explorer',
-      fields: ['DisplayName', 'CreatedBy', 'Actions'],
+      fields: ['DisplayName', 'Locked', 'CreatedBy', 'Actions'],
     },
     drawer: {
       enabled: true,
@@ -299,7 +297,7 @@ export const defaultSettings: PersonalSettingsType = {
         {
           itemType: 'Content',
           settings: { root: '/Root/Content' },
-          permissions: [{ path: '/Root/Content', action: 'Add' }],
+          permissions: [{ path: '/Root/Content', action: 'Browse' }],
         },
         {
           itemType: 'Users and groups',
@@ -322,11 +320,6 @@ export const defaultSettings: PersonalSettingsType = {
           permissions: [{ path: '/Root/Localization', action: 'Add' }],
         },
         { itemType: 'Setup', settings: undefined, permissions: [{ path: '/Root/System/Settings', action: 'Browse' }] },
-        {
-          itemType: 'Version info',
-          settings: undefined,
-          permissions: [{ path: '/Root/(apps)/PortalRoot/GetVersionInfo', action: 'Browse' }],
-        },
       ],
     },
     commandPalette: { enabled: true, wrapQuery: '{0} .AUTOFILTERS:OFF' },

@@ -1,17 +1,49 @@
 import CssBaseline from '@material-ui/core/CssBaseline'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
+import { useInjector, useRepository } from '@sensenet/hooks-react'
 import snLogo from '../../assets/sensenet_logo_transparent.png'
 import { ResponsivePersonalSetttings } from '../../context'
 import { DesktopAppBar } from '../appbar/DesktopAppBar'
-import { CustomActionResultDialog } from '../dialogs/custom-action-result'
-import { ExecuteActionDialog } from '../dialogs/execute-action'
 import { PermanentDrawer } from '../drawer/PermanentDrawer'
 import { TemporaryDrawer } from '../drawer/TemporaryDrawer'
+import { CustomActionCommandProvider } from '../../services/CommandProviders/CustomActionCommandProvider'
+import { useDialog } from '../dialogs'
+import { getMonacoModelUri } from '../edit/TextEditor'
 
 export const DesktopLayout: React.FunctionComponent = props => {
   const settings = useContext(ResponsivePersonalSetttings)
+  const repo = useRepository()
+  const { openDialog, closeLastDialog } = useDialog()
+  const customActionService = useInjector().getInstance(CustomActionCommandProvider)
   const [tempDrawerOpened, setTempDrawerOpened] = useState(false)
+
+  useEffect(() => {
+    const observables = [
+      customActionService.onExecuteAction.subscribe(value => {
+        const uri = getMonacoModelUri(value.content, repo, value.action)
+        openDialog({ name: 'execute-action', props: { actionValue: value, uri } })
+      }),
+      customActionService.onActionExecuted.subscribe(value => {
+        closeLastDialog()
+        const response = JSON.stringify(
+          {
+            content: {
+              Id: value.content.Id,
+              Path: value.content.Path,
+              Name: value.content.Name,
+            },
+            action: value.action.Name,
+            response: value.response,
+          },
+          undefined,
+          3,
+        )
+        openDialog({ name: 'custom-action-result', props: { response } })
+      }),
+    ]
+    return () => observables.forEach(o => o.dispose())
+  }, [closeLastDialog, customActionService.onActionExecuted, customActionService.onExecuteAction, openDialog, repo])
 
   return (
     <div
@@ -25,8 +57,6 @@ export const DesktopLayout: React.FunctionComponent = props => {
         height: '100%',
       }}>
       <CssBaseline />
-      <ExecuteActionDialog />
-      <CustomActionResultDialog />
       <DesktopAppBar openDrawer={() => setTempDrawerOpened(!tempDrawerOpened)} />
       <div
         style={{

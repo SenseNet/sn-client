@@ -10,13 +10,6 @@ const values: DeepPartial<typeof import('./default').default> = {
   commandPalette: {
     title: 'Command palette megnyitása',
   },
-  contentContextMenu: {
-    copy: 'Másolás',
-    delete: 'Törlés',
-    editProperties: 'Tulajdonságok szerkesztése',
-    move: 'Áthelyezés',
-    open: 'Megnyitás',
-  },
   contentInfoDialog: {
     dialogTitle: '{0} tulajdonságai',
     type: 'Típus',
@@ -40,7 +33,6 @@ const values: DeepPartial<typeof import('./default').default> = {
       Search: 'Keresés',
       Setup: 'Beállítás',
       'Users and groups': 'Felhasználók és csoportok',
-      'Version info': 'Verzió névjegye',
       'Content Types': 'Tartalom típusok',
       Localization: 'Nyelvi fájlok',
       Trash: 'Kuka',
@@ -50,7 +42,6 @@ const values: DeepPartial<typeof import('./default').default> = {
       Search: 'Testreszabott keresések futtatása és mentése későbbi használatra',
       Setup: 'A rendszer beállításai',
       'Users and groups': 'Felhasználó és csoport kezelése, szerkesztése',
-      'Version info': 'Információk a telepített csomagokról és a verzióikról',
       'Content Types': 'Tartalom típusok kezelése',
       Localization: 'Nyelvi fájlok kezelése',
       Trash: 'Törölt elemek kezelése',
@@ -82,8 +73,9 @@ const values: DeepPartial<typeof import('./default').default> = {
     logoutCancel: 'Mégsem',
     logoutButtonTitle: 'Kijelentkezés',
     logoutDialogTitle: 'Biztosan kijelentkezel?',
-    loggingOutFrom: "Kijelentkezés a '{0}' repository-ból... ",
-    logoutConfirmText: 'Jelenleg a {0} repository-t használod {1} felhasználóval. Biztosan kijelentkezel?',
+    loggingOutFrom: (repoUrl: string) => `Kijelentkezés a ${repoUrl} repository-ból...`,
+    logoutConfirmText: (repoUrl: string, userName: string) =>
+      `Jelenleg a ${repoUrl} repository-t használod ${userName} felhasználóval. Biztosan kijelentkezel?`,
   },
   personalSettings: {
     languageTitle: 'A választott nyelv megnevezése',

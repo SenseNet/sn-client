@@ -71,6 +71,7 @@ class GoogleAuthButton extends React.Component<
     return (
       <img
         src={buttonImage as any}
+        alt="Google auth button"
         style={styles.googleAuthButton}
         onClick={() => this.handleButtonClick()}
         onMouseOver={() => this.handleButtonMouseOver()}

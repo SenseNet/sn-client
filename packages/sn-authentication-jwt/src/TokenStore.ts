@@ -13,7 +13,7 @@ export type TokenType = 'access' | 'refresh'
 export class TokenStore {
   /**
    * @param {strnig} baseUrl The Base URL to the related site
-   * @param {string} keyTemplate The template to use when generating keys in the local/session storage or for a cookie. ${siteName} and ${tokenName} will be replaced. Example: 'sn-${siteName}-${tokenName}'
+   * @param {string} keyTemplate The template to use when generating keys in the local/session storage or for a cookie. {siteName} and {tokenName} will be replaced. Example: 'sn-${siteName}-${tokenName}'
    * @param {TokenPersist} tokenPersist Setting that indicates if the token should be persisted per session (browser close) or per Token expiration (based on the token `exp` property)
    * @param {Partial<Document>} documentRef The Document reference (used by unit tests)
    * @param {Storage} localStorageRef The localStorage reference (used by unit tests)
@@ -54,7 +54,7 @@ export class TokenStore {
   public readonly tokenStoreType: TokenStoreType
 
   private getStoreKey(key: TokenType) {
-    return this.keyTemplate.replace('${siteName}', this.baseUrl).replace('${tokenName}', key)
+    return this.keyTemplate.replace('{siteName}', this.baseUrl).replace('{tokenName}', key)
   }
 
   private getTokenFromCookie(key: string, document: Document): Token {

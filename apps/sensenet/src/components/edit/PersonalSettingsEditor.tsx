@@ -1,18 +1,6 @@
-import { deepMerge, sleepAsync } from '@sensenet/client-utils'
+import { deepMerge } from '@sensenet/client-utils'
 import React, { useContext, useEffect, useState } from 'react'
-import {
-  Button,
-  CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  FormControlLabel,
-  Switch,
-  Typography,
-  useTheme,
-} from '@material-ui/core'
+import { Button, FormControlLabel, Switch, Typography, useTheme } from '@material-ui/core'
 import MonacoEditor from 'react-monaco-editor'
 import {
   CurrentContentContext,
@@ -25,9 +13,17 @@ import { LocalizationContext, ResponsiveContext } from '../../context'
 import { setupModel } from '../../services/MonacoModels/PersonalSettingsModel'
 import { defaultSettings, PersonalSettings } from '../../services/PersonalSettings'
 import { RepositoryManager } from '../../services/RepositoryManager'
+import { useDialog } from '../dialogs'
 import { TextEditor } from './TextEditor'
 
-const SettingsEditor: React.FunctionComponent = () => {
+const editorContent: any = {
+  Type: 'PersonalSettings',
+  Name: `PersonalSettings`,
+}
+
+export function SettingsEditor() {
+  const [showDefaults, setShowDefaults] = useState(false)
+  const { openDialog, closeLastDialog } = useDialog()
   const injector = useInjector()
   const service = injector.getInstance(PersonalSettings)
   const settings = service.userValue.getValue()
@@ -36,64 +32,40 @@ const SettingsEditor: React.FunctionComponent = () => {
   const theme = useTheme()
   const platform = useContext(ResponsiveContext)
   const eventService = useRepositoryEvents()
-  const [editorContent] = useState({
-    Type: 'PersonalSettings',
-    Name: `PersonalSettings`,
-  })
+  const logger = useLogger('PersonalSettingsEditor')
 
   useEffect(() => {
     setupModel(localization.values, repo)
   }, [localization.values, repo])
 
-  const [showDefaults, setShowDefaults] = useState(false)
-  const [showRestoreDialog, setShowRestoreDialog] = useState(false)
-  const [isResetting, setIsResetting] = useState(false)
+  const callBack = async () => {
+    const rm = injector.getInstance(RepositoryManager)
+    const logoutPromises = service.effectiveValue
+      .getValue()
+      .repositories.map(repoEntry => rm.getRepository(repoEntry.url).authentication.logout())
 
-  const logger = useLogger('PersonalSettingsEditor')
+    await Promise.all(logoutPromises)
+    eventService.dispose() // ???
+    service.setPersonalSettingsValue({})
+    closeLastDialog()
+    logger.information({ message: 'The Personal Settings has been restored to defaults.' })
+  }
+
+  const openAreYouSureDialog = () => {
+    openDialog({
+      name: 'are-you-sure',
+      props: {
+        bodyText: localization.values.personalSettings.restoreDialogText,
+        submitText: localization.values.personalSettings.restore,
+        titleText: localization.values.personalSettings.restoreDialogTitle,
+        callBack,
+      },
+    })
+  }
 
   return (
     <CurrentContentContext.Provider
       value={{ Id: 0, Type: 'PersonalSettings', Path: '', Name: localization.values.personalSettings.title }}>
-      <Dialog
-        fullWidth
-        disablePortal
-        open={showRestoreDialog}
-        onClose={() => !isResetting && setShowRestoreDialog(false)}>
-        <DialogTitle>{localization.values.personalSettings.restoreDialogTitle}</DialogTitle>
-        <>
-          <DialogContent>
-            {!isResetting ? (
-              <DialogContentText>{localization.values.personalSettings.restoreDialogTText}</DialogContentText>
-            ) : (
-              <CircularProgress />
-            )}
-          </DialogContent>
-          <DialogActions>
-            <Button disabled={isResetting} onClick={() => setShowRestoreDialog(false)}>
-              {localization.values.personalSettings.cancel}
-            </Button>
-            <Button
-              disabled={isResetting}
-              onClick={async () => {
-                setIsResetting(true)
-                const rm = injector.getInstance(RepositoryManager)
-                const logoutPromises = service.effectiveValue
-                  .getValue()
-                  .repositories.map(repoEntry => rm.getRepository(repoEntry.url).authentication.logout())
-
-                await Promise.all(logoutPromises)
-                eventService.dispose() // ???
-                service.setPersonalSettingsValue({})
-                await sleepAsync(1000)
-                setIsResetting(false)
-                setShowRestoreDialog(false)
-                logger.information({ message: 'The Personal Settings has been restored to defaults.' })
-              }}>
-              {localization.values.personalSettings.restore}
-            </Button>
-          </DialogActions>
-        </>
-      </Dialog>
       <div style={{ display: 'flex', width: '100%', height: '100%', overflow: 'hidden', flexDirection: 'row' }}>
         <div
           style={{
@@ -126,7 +98,7 @@ const SettingsEditor: React.FunctionComponent = () => {
             transition: 'width 200ms cubic-bezier(0.215, 0.610, 0.355, 1.000)',
           }}>
           <TextEditor
-            content={editorContent as any}
+            content={editorContent}
             loadContent={async () => JSON.stringify(settings, undefined, 3)}
             additionalButtons={
               <>
@@ -134,14 +106,13 @@ const SettingsEditor: React.FunctionComponent = () => {
                   control={<Switch onClick={() => setShowDefaults(!showDefaults)} />}
                   label={localization.values.personalSettings.showDefaults}
                 />
-                <Button onClick={() => setShowRestoreDialog(true)}>
-                  {localization.values.personalSettings.restoreDefaults}
-                </Button>
+                <Button onClick={openAreYouSureDialog}>{localization.values.personalSettings.restoreDefaults}</Button>
               </>
             }
             saveContent={async (_c, v) => {
-              await service.setPersonalSettingsValue(deepMerge(JSON.parse(v)))
+              service.setPersonalSettingsValue(deepMerge(JSON.parse(v)))
             }}
+            showBreadCrumb={true}
           />
         </div>
       </div>
@@ -149,6 +120,4 @@ const SettingsEditor: React.FunctionComponent = () => {
   )
 }
 
-const extendedComponent = SettingsEditor
-
-export default extendedComponent
+export default SettingsEditor

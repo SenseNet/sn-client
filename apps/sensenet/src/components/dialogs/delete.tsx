@@ -1,6 +1,5 @@
 import Button from '@material-ui/core/Button'
 import Checkbox from '@material-ui/core/Checkbox'
-import Dialog, { DialogProps } from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
@@ -18,12 +17,15 @@ import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { ResponsiveContext } from '../../context'
 import { useLocalization } from '../../hooks'
 import { Icon } from '../Icon'
+import { useDialog } from '.'
 
-export const DeleteContentDialog: React.FunctionComponent<{
+export type DeleteContentDialogProps = {
   content: GenericContent[]
-  dialogProps: DialogProps
-}> = props => {
+}
+
+export const DeleteContentDialog: React.FunctionComponent<DeleteContentDialogProps> = props => {
   const device = useContext(ResponsiveContext)
+  const { closeLastDialog } = useDialog()
   const [isDeleteInProgress, setIsDeleteInProgress] = useState(false)
   const [permanent, setPermanent] = useState(false)
   const repo = useRepository()
@@ -32,7 +34,7 @@ export const DeleteContentDialog: React.FunctionComponent<{
   const isTrashBag = !!props.content.length && repo.schemas.isContentFromType(props.content[0], TrashBag)
 
   return (
-    <Dialog {...props.dialogProps} onClick={ev => ev.stopPropagation()} onDoubleClick={ev => ev.stopPropagation()}>
+    <>
       {isDeleteInProgress ? (
         <DialogTitle>{localization.deletingContent}</DialogTitle>
       ) : (
@@ -65,15 +67,13 @@ export const DeleteContentDialog: React.FunctionComponent<{
           </div>
         ) : null}
         <div>
-          <Button
-            disabled={isDeleteInProgress}
-            onClick={ev => props.dialogProps.onClose && props.dialogProps.onClose(ev, 'backdropClick')}>
+          <Button disabled={isDeleteInProgress} onClick={() => closeLastDialog()}>
             {localization.cancelButton}
           </Button>
           <Button
             autoFocus={true}
             disabled={isDeleteInProgress}
-            onClick={async ev => {
+            onClick={async () => {
               try {
                 setIsDeleteInProgress(true)
                 const result = await repo.delete({
@@ -106,9 +106,9 @@ export const DeleteContentDialog: React.FunctionComponent<{
                         : localization.deleteSingleContentFailedNotification
                             .replace(
                               '{0}',
-                              (props.content.find(c => c.Id == result.d.errors[0].content.Id) as GenericContent)
+                              (props.content.find(c => c.Id === result.d.errors[0].content.Id) as GenericContent)
                                 .DisplayName ||
-                                (props.content.find(c => c.Id == result.d.errors[0].content.Id) as GenericContent)
+                                (props.content.find(c => c.Id === result.d.errors[0].content.Id) as GenericContent)
                                   .Name ||
                                 result.d.errors[0].content.Name,
                             )
@@ -129,13 +129,15 @@ export const DeleteContentDialog: React.FunctionComponent<{
                 })
               } finally {
                 setIsDeleteInProgress(false)
-                props.dialogProps.onClose && props.dialogProps.onClose(ev, 'backdropClick')
+                closeLastDialog()
               }
             }}>
             {isTrashBag ? localization.deletePermanently : localization.deleteButton}
           </Button>
         </div>
       </DialogActions>
-    </Dialog>
+    </>
   )
 }
+
+export default DeleteContentDialog

@@ -11,7 +11,6 @@ import Fade from '@material-ui/core/Fade'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { renderIconDefault } from '../icon'
 
-const DEFAULT_AVATAR_PATH = '/Root/Sites/Default_Site/demoavatars/Admin.png'
 const styles: { [index: string]: React.CSSProperties } = {
   uploadContainer: { minHeight: 50, position: 'relative' },
   loaderContainer: { display: 'flex', alignItems: 'center', justifyContent: 'center' },
@@ -29,7 +28,7 @@ interface ReferencePickerProps {
 
 const createTypeFilterString = (allowedTypes: string[]) => {
   let filterString = "(isOf('Folder') and not isOf('SystemFolder'))"
-  allowedTypes.map((typeName: string) => {
+  allowedTypes.forEach((typeName: string) => {
     if (typeName !== 'Folder') {
       filterString += ` or isOf('${typeName}')`
     }
@@ -113,14 +112,18 @@ export const ReferencePicker: React.FC<ReferencePickerProps> = props => {
             selected={props.selected.some(c => c.Id === node.Id)}>
             <ListItemIcon style={{ margin: 0 }}>
               {node.Type === 'User' ? (
-                <Avatar
-                  alt={node.DisplayName}
-                  src={
-                    (node as User).Avatar
-                      ? `${props.repository.configuration.repositoryUrl}${(node as User).Avatar!.Url}`
-                      : DEFAULT_AVATAR_PATH
-                  }
-                />
+                (node as User).Avatar?.Url !== '' ? (
+                  <Avatar
+                    alt={node.DisplayName}
+                    src={`${props.repository.configuration.repositoryUrl}${(node as User).Avatar!.Url}`}
+                  />
+                ) : (
+                  <Avatar alt={node.DisplayName}>
+                    {node.DisplayName?.split(' ')
+                      .map(namePart => namePart[0])
+                      .join('.')}
+                  </Avatar>
+                )
               ) : props.renderIcon ? (
                 props.renderIcon(iconName(node.IsFolder))
               ) : (

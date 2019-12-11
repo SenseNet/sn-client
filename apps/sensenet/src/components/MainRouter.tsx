@@ -1,11 +1,12 @@
 import { LoginState } from '@sensenet/client-core'
 import React, { lazy, Suspense, useEffect, useRef } from 'react'
-import { Route, RouteComponentProps, Switch, withRouter } from 'react-router'
+import { Redirect, Route, RouteComponentProps, Switch, withRouter } from 'react-router'
 import { LoadSettingsContextProvider, RepositoryContext, useSession } from '@sensenet/hooks-react'
 import { usePersonalSettings } from '../hooks'
-import { ErrorBoundary } from './ErrorBoundary'
 import { FullScreenLoader } from './FullScreenLoader'
 import { WopiPage } from './wopi-page'
+import { ErrorBoundaryWithDialogs } from './error-boundary-with-dialogs'
+import { ErrorBoundary } from './error-boundary'
 
 const ExploreComponent = lazy(async () => await import(/* webpackChunkName: "content" */ './content'))
 const DashboardComponent = lazy(async () => await import(/* webpackChunkName: "dashboard" */ './dashboard'))
@@ -13,7 +14,6 @@ const SearchComponent = lazy(async () => await import(/* webpackChunkName: "sear
 const SavedQueriesComponent = lazy(
   async () => await import(/* webpackChunkName: "saved-queries" */ './search/saved-queries'),
 )
-const IamComponent = lazy(async () => await import(/* webpackChunkName: "iam" */ './iam'))
 const SetupComponent = lazy(async () => await import(/* webpackChunkName: "setup" */ './setup'))
 
 const LoginComponent = lazy(async () => await import(/* webpackChunkName: "Login" */ './login/Login'))
@@ -21,11 +21,7 @@ const EditBinary = lazy(async () => await import(/* webpackChunkName: "editBinar
 const EditProperties = lazy(async () => await import(/* webpackChunkName: "editProperties" */ './edit/EditProperties'))
 const DocumentViewerComponent = lazy(async () => await import(/* webpackChunkName: "DocViewer" */ './DocViewer'))
 
-const VersionInfoComponent = lazy(async () => await import(/* webpackChunkName: "Version Info" */ './version-info'))
 const TrashComponent = lazy(async () => await import(/* webpackChunkName: "Trash" */ './trash/Trash'))
-const UploadComponent = lazy(
-  async () => await import(/* webpackChunkName: "Upload" */ './dialogs/upload/upload-dialog'),
-)
 const EventListComponent = lazy(async () => await import(/* webpackChunkName: "EventList" */ './event-list'))
 
 const PersonalSettingsEditor = lazy(
@@ -55,22 +51,18 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
   }, [props.history])
 
   return (
-    <ErrorBoundary>
+    <ErrorBoundary FallbackComponent={ErrorBoundaryWithDialogs}>
       <Route
-        render={() => (
-          <div style={{ width: '100%', height: '100%' }}>
-            <Suspense fallback={<FullScreenLoader />}>
-              <Switch>
+        render={({ location }) =>
+          sessionContext.state === LoginState.Unauthenticated || !personalSettings.lastRepository ? (
+            <Redirect to={{ pathname: '/login', state: { from: location } }} />
+          ) : (
+            <div style={{ width: '100%', height: '100%' }}>
+              <Suspense fallback={<FullScreenLoader />}>
                 <Route
                   path="/personalSettings"
                   render={() => {
                     return <PersonalSettingsEditor />
-                  }}
-                />
-                <Route
-                  path="/login"
-                  render={() => {
-                    return <LoginComponent />
                   }}
                 />
                 <Route
@@ -85,124 +77,100 @@ const MainRouter: React.StatelessComponent<RouteComponentProps> = props => {
                     return <EventListComponent />
                   }}
                 />
+                <Switch>
+                  <Route
+                    path="/:repo/browse/:browseData?"
+                    render={routeProps => {
+                      return <ExploreComponent {...routeProps} />
+                    }}
+                  />
+                  <Route
+                    path="/:repo/search/:queryData?"
+                    render={routeProps => {
+                      return (
+                        <LoadSettingsContextProvider>
+                          <SearchComponent {...routeProps} />
+                        </LoadSettingsContextProvider>
+                      )
+                    }}
+                  />
 
-                {/** Requires login */}
-                {sessionContext.state === LoginState.Unauthenticated || !personalSettings.lastRepository ? (
-                  <LoginComponent />
-                ) : sessionContext.state === LoginState.Authenticated ? (
-                  <Switch>
-                    <Route
-                      path="/:repo/browse/:browseData?"
-                      render={routeProps => {
-                        return <ExploreComponent {...routeProps} />
-                      }}
-                    />
-                    <Route
-                      path="/:repo/search/:queryData?"
-                      render={routeProps => {
-                        return (
-                          <LoadSettingsContextProvider>
-                            <SearchComponent {...routeProps} />
-                          </LoadSettingsContextProvider>
-                        )
-                      }}
-                    />
-
-                    <Route
-                      path="/:repo/saved-queries"
-                      render={() => {
-                        return (
-                          <LoadSettingsContextProvider>
-                            <SavedQueriesComponent />
-                          </LoadSettingsContextProvider>
-                        )
-                      }}
-                    />
-                    <Route
-                      path="/:repo/iam"
-                      render={() => {
-                        return <IamComponent />
-                      }}
-                    />
-                    <Route
-                      path="/:repo/setup"
-                      render={() => {
-                        return <SetupComponent />
-                      }}
-                    />
-                    <Route
-                      path="/:repo/info"
-                      render={() => {
-                        return <VersionInfoComponent />
-                      }}
-                    />
-                    <Route
-                      path="/:repo/trash"
-                      render={() => {
-                        return <TrashComponent />
-                      }}
-                    />
-                    <Route
-                      path="/:repo/upload/:uploadPath?"
-                      render={uploadProps => {
-                        return <UploadComponent {...uploadProps} />
-                      }}
-                    />
-                    <Route
-                      path="/:repo/editBinary/:contentId?"
-                      render={() => {
-                        return <EditBinary />
-                      }}
-                    />
-                    <Route
-                      path="/:repo/editProperties/:contentId?"
-                      render={() => {
-                        return <EditProperties />
-                      }}
-                    />
-                    <Route
-                      path="/:repo/preview/:documentId?"
-                      render={() => {
-                        return <DocumentViewerComponent previousLocation={previousLocation.current} />
-                      }}
-                    />
-                    <Route path="/:repo/wopi/:documentId/:action?">
-                      <WopiPage />
-                    </Route>
-                    <Route
-                      path="/:repo/dashboard/:dashboardName?"
-                      render={routeParams => {
-                        return (
-                          <RepositoryContext.Consumer>
-                            {repo => <DashboardComponent repository={repo} {...routeParams} />}
-                          </RepositoryContext.Consumer>
-                        )
-                      }}
-                    />
-                    <Route
-                      path="/:repo/"
-                      render={routeParams => {
-                        return (
-                          <RepositoryContext.Consumer>
-                            {repo => <DashboardComponent repository={repo} {...routeParams} />}
-                          </RepositoryContext.Consumer>
-                        )
-                      }}
-                    />
-                    <Route
-                      path="/"
-                      render={routeParams => {
-                        return <DashboardComponent {...routeParams} />
-                      }}
-                    />
-                  </Switch>
-                ) : (
-                  <FullScreenLoader />
-                )}
-              </Switch>
-            </Suspense>
-          </div>
-        )}
+                  <Route
+                    path="/:repo/saved-queries"
+                    render={() => {
+                      return (
+                        <LoadSettingsContextProvider>
+                          <SavedQueriesComponent />
+                        </LoadSettingsContextProvider>
+                      )
+                    }}
+                  />
+                  <Route
+                    path="/:repo/setup"
+                    render={() => {
+                      return <SetupComponent />
+                    }}
+                  />
+                  <Route
+                    path="/:repo/trash"
+                    render={() => {
+                      return <TrashComponent />
+                    }}
+                  />
+                  <Route
+                    path="/:repo/editBinary/:contentId?"
+                    render={() => {
+                      return <EditBinary />
+                    }}
+                  />
+                  <Route
+                    path="/:repo/editProperties/:contentId?"
+                    render={() => {
+                      return <EditProperties />
+                    }}
+                  />
+                  <Route
+                    path="/:repo/preview/:documentId?"
+                    render={() => {
+                      return <DocumentViewerComponent previousLocation={previousLocation.current} />
+                    }}
+                  />
+                  <Route path="/:repo/wopi/:documentId/:action?">
+                    <WopiPage />
+                  </Route>
+                  <Route
+                    path="/:repo/dashboard/:dashboardName?"
+                    render={routeParams => {
+                      return (
+                        <RepositoryContext.Consumer>
+                          {repo => <DashboardComponent repository={repo} {...routeParams} />}
+                        </RepositoryContext.Consumer>
+                      )
+                    }}
+                  />
+                  <Route
+                    path="/:repo/"
+                    exact
+                    render={routeParams => {
+                      return (
+                        <RepositoryContext.Consumer>
+                          {repo => <DashboardComponent repository={repo} {...routeParams} />}
+                        </RepositoryContext.Consumer>
+                      )
+                    }}
+                  />
+                  <Route
+                    path="/"
+                    exact
+                    render={routeParams => {
+                      return <DashboardComponent {...routeParams} />
+                    }}
+                  />
+                </Switch>
+              </Suspense>
+            </div>
+          )
+        }
       />
     </ErrorBoundary>
   )

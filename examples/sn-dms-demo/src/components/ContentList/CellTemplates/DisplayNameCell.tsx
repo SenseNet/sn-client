@@ -48,7 +48,11 @@ export class DisplayNameCell<T extends GenericContent> extends Component<Display
       <TableCell className="display-name">
         <div style={{ display: 'flex', alignItems: 'center' }}>
           {isImage ? (
-            <img src={`${hostName}${content.Path}`} style={{ marginRight: '.5em', maxWidth: 24, maxHeight: 24 }} />
+            <img
+              src={`${hostName}${content.Path}`}
+              alt=""
+              style={{ marginRight: '.5em', maxWidth: 24, maxHeight: 24 }}
+            />
           ) : content.Type === 'User' && (content as User).Avatar ? (
             <Avatar
               src={`${hostName}${

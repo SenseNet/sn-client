@@ -102,13 +102,13 @@ export class Upload {
 
   public async uploadNonChunked<T>(options: UploadFileOptions<T>): Promise<UploadResponse> {
     const guid = v1()
+    let responseContent: UploadResponse = {} as any
 
-    options.progressObservable &&
-      options.progressObservable.setValue({
-        guid,
-        file: options.file,
-        completed: false,
-      })
+    options.progressObservable?.setValue({
+      guid,
+      file: options.file,
+      completed: false,
+    })
 
     const formData = this.getFormDataFromOptions(options)
     formData.append(options.file.name, options.file)
@@ -120,26 +120,28 @@ export class Upload {
         method: 'POST',
         body: formData,
       })
-      const uploadResponse: UploadResponse = await response.json()
 
-      options.progressObservable &&
-        options.progressObservable.setValue({
+      if (response.ok) {
+        responseContent = await response.json()
+        options.progressObservable?.setValue({
           guid,
           file: options.file,
           chunkCount: 1,
           uploadedChunks: 1,
           completed: true,
-          createdContent: uploadResponse,
+          createdContent: responseContent,
         })
-      return uploadResponse
+      } else {
+        throw await this.repository.getErrorFromResponse(response)
+      }
+      return responseContent
     } catch (error) {
-      options.progressObservable &&
-        options.progressObservable.setValue({
-          guid,
-          file: options.file,
-          completed: false,
-          error,
-        })
+      options.progressObservable?.setValue({
+        guid,
+        file: options.file,
+        completed: false,
+        error,
+      })
       throw error
     }
   }
@@ -149,14 +151,13 @@ export class Upload {
 
     const guid = v1()
 
-    options.progressObservable &&
-      options.progressObservable.setValue({
-        guid,
-        file: options.file,
-        completed: false,
-        chunkCount,
-        uploadedChunks: 0,
-      })
+    options.progressObservable?.setValue({
+      guid,
+      file: options.file,
+      completed: false,
+      chunkCount,
+      uploadedChunks: 0,
+    })
 
     const uploadPath = this.getUploadUrl(options)
 
@@ -204,42 +205,29 @@ export class Upload {
         })
         if (lastResponse.ok) {
           lastResponseContent = await lastResponse.json()
-          options.progressObservable &&
-            options.progressObservable.setValue({
-              guid,
-              file: options.file,
-              chunkCount,
-              uploadedChunks: i,
-              completed: i === chunkCount,
-              createdContent: lastResponseContent,
-            })
+          options.progressObservable?.setValue({
+            guid,
+            file: options.file,
+            chunkCount,
+            uploadedChunks: i,
+            completed: i === chunkCount,
+            createdContent: lastResponseContent,
+          })
         } else {
-          const error = await lastResponse.json()
-          options.progressObservable &&
-            options.progressObservable.setValue({
-              guid,
-              file: options.file,
-              chunkCount,
-              uploadedChunks: i,
-              completed: i === chunkCount,
-              createdContent: lastResponseContent,
-              error,
-            })
           throw await this.repository.getErrorFromResponse(lastResponse)
         }
       }
 
       return lastResponseContent
     } catch (error) {
-      options.progressObservable &&
-        options.progressObservable.setValue({
-          guid,
-          file: options.file,
-          chunkCount,
-          uploadedChunks: 0,
-          completed: false,
-          error,
-        })
+      options.progressObservable?.setValue({
+        guid,
+        file: options.file,
+        chunkCount,
+        uploadedChunks: 0,
+        completed: false,
+        error,
+      })
       throw error
     }
   }
@@ -321,8 +309,7 @@ export class Upload {
       await this.webkitItemListHandler<T>(entries, options.parentPath, options.createFolders, options)
     } else {
       // Fallback for non-webkit browsers.
-      options.event.dataTransfer &&
-        options.event.dataTransfer.files &&
+      options.event.dataTransfer?.files &&
         [].forEach.call(options.event.dataTransfer.files, async (f: File) => {
           if (f.type === 'file') {
             return await this.file({

@@ -1,4 +1,5 @@
 import React from 'react'
+import { resources } from '../assets/resources'
 
 const style = {
   welcome: {
@@ -8,8 +9,6 @@ const style = {
     margin: '20px 10px',
   },
 }
-
-import { resources } from '../assets/resources'
 
 export const WelcomeMessage = () => (
   <p style={style.welcome} dangerouslySetInnerHTML={{ __html: resources.WELCOME_MESSAGE }} />

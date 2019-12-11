@@ -79,7 +79,7 @@ describe('Edit view component', () => {
       .prop('fieldOnChange')
     onChange && onChange('VersioningMode', VersioningMode.Option1)
     wrapper.find('form').simulate('submit', { preventDefault: jest.fn() })
-    expect(onSubmit).toBeCalledWith(testFile.Id, { VersioningMode: '1' })
+    expect(onSubmit).toBeCalledWith(testFile, { VersioningMode: '1' })
     expect(submitCallback).toBeCalled()
   })
 })

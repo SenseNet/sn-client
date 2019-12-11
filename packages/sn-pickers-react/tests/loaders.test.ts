@@ -72,4 +72,29 @@ describe('loadItems function', () => {
     const items = await loadItems({ repository, path: '', abortController: new AbortController() })
     expect(items).toHaveLength(1)
   })
+
+  it('should return with items if parent request fails', async () => {
+    repository.load = jest.fn(() => {
+      throw new Error('Access denied')
+    })
+    repository.loadCollection = jest.fn(() => {
+      return {
+        d: {
+          results: [
+            {
+              ParentId: 123,
+            },
+            {
+              ParentId: 124,
+            },
+            {
+              ParentId: 125,
+            },
+          ],
+        },
+      }
+    })
+    const items = await loadItems({ repository, path: '', abortController: new AbortController() })
+    expect(items).toHaveLength(3)
+  })
 })

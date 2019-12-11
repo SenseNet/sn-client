@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { GenericContent } from '@sensenet/default-content-types'
 import { ODataParams } from '@sensenet/client-core'
 import { useRepository } from '@sensenet/hooks-react'
@@ -12,7 +12,9 @@ export const useLoadContent = <T extends GenericContent>({ idOrPath, oDataOption
   const [content, setContent] = useState<T>()
   const [error, setError] = useState<Error | undefined>()
   const [reloadToken, setReloadToken] = useState(1)
-  const reload = () => setReloadToken(Math.random())
+  const reload = useCallback(() => {
+    setReloadToken(Math.random())
+  }, [])
   const repo = useRepository()
 
   useEffect(() => {
@@ -34,8 +36,7 @@ export const useLoadContent = <T extends GenericContent>({ idOrPath, oDataOption
       })()
     }
     return () => ac.abort()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [repo, idOrPath, reloadToken])
+  }, [repo, idOrPath, reloadToken, oDataOptions])
 
   return { content, error, reload }
 }

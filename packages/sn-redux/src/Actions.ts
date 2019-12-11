@@ -152,11 +152,11 @@ export const loadContent = <T extends GenericContent = GenericContent>(
     const o: ODataParams<T> = {}
     switch (typeof options.expand) {
       case 'undefined':
-        o.expand = 'Workspace'
+        o.expand = ['Workspace']
         break
       case 'string':
         if (options.expand === 'Workspace') {
-          o.expand = 'Workspace'
+          o.expand = ['Workspace']
         } else {
           o.expand = [options.expand, 'Workspace'] as ODataFieldParameter<T>
         }
@@ -200,9 +200,9 @@ export const createContent = <T extends Content = Content>(parentPath: string, c
  * @param content {Content} Content with the patchable Fields.
  * @returns Returns the modified Content and dispatches the next action based on the response.
  */
-export const updateContent = <T extends Content = Content>(idOrPath: number | string, content: Partial<T>) => ({
+export const updateContent = <T extends Content = Content>(content: GenericContent, saveableFields: Partial<T>) => ({
   type: 'UPDATE_CONTENT',
-  payload: (repository: Repository) => repository.patch<T>({ idOrPath, content }),
+  payload: (repository: Repository) => repository.patch<T>({ idOrPath: content.Id, content: saveableFields }),
 })
 /**
  * Action creator for deleting a Content from the Content Repository.

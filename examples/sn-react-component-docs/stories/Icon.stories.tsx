@@ -5,15 +5,15 @@ import { select, text, withKnobs } from '@storybook/addon-knobs'
 import { storiesOf } from '@storybook/react'
 import React from 'react'
 
-const stories = storiesOf('Icon', module)
-  .addDecorator(withKnobs)
-  .addDecorator(withA11y)
-
 import defaultNotes from '../notes/icon/Default.md'
 import materialuiNotes from '../notes/icon/Materialui.md'
 import fontawesomeNotes from '../notes/icon/FontAwesome.md'
 import flaticonNotes from '../notes/icon/Flaticon.md'
 import imageNotes from '../notes/icon/Image.md'
+
+const stories = storiesOf('Icon', module)
+  .addDecorator(withKnobs)
+  .addDecorator(withA11y)
 
 stories
   .add(
