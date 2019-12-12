@@ -26,7 +26,6 @@ describe('Radio button group field control', () => {
       const wrapper = shallow(<RadioButtonGroup actionName="browse" fieldValue="2" settings={defaultSettings} />)
       expect(wrapper.find(FormLabel).text()).toBe(defaultSettings.DisplayName)
       expect(wrapper.find(FormControlLabel).prop('label')).toBe(defaultSettings.Options[2].Text)
-      expect(wrapper).toMatchSnapshot()
     })
     it('should show the fieldValue when fieldValue is provided and no options found', () => {
       const wrapper = shallow(
@@ -62,7 +61,6 @@ describe('Radio button group field control', () => {
       expect(wrapper.find(FormLabel).text()).toBe(defaultSettings.DisplayName)
       expect(wrapper.find(FormHelperText).text()).toBe(defaultSettings.Description)
       expect(wrapper.find(FormControlLabel).length).toBe(4)
-      expect(wrapper).toMatchSnapshot()
     })
     it('should call on change when radio button is selected', () => {
       const fieldOnChange = jest.fn()

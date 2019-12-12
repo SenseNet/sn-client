@@ -228,7 +228,7 @@ export const MemoPanel: React.FunctionComponent = () => {
                   aria-label="Edit"
                   size={'small'}
                   className={editmode === memo.Id.toString() ? classes.hidden : classes.fab}>
-                  <EditIcon onClick={handleEditmode(memo)} />
+                  <EditIcon data-icon="edit" onClick={handleEditmode(memo)} />
                 </Fab>
                 <Fab
                   aria-label="Delete"

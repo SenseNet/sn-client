@@ -1,7 +1,6 @@
-import RotateLeft from '@material-ui/icons/RotateLeft'
-import RotateRight from '@material-ui/icons/RotateRight'
 import { mount, shallow } from 'enzyme'
 import React from 'react'
+import { IconButton } from '@material-ui/core'
 import { RotatePageWidget, ROTATION_AMOUNT } from '../src/components/page-widgets/RotatePage'
 import { PreviewImageDataContext } from '../src/context/preview-image-data'
 import { examplePreviewImageData } from './__Mocks__/viewercontext'
@@ -27,7 +26,10 @@ describe('RotatePage component', () => {
       </PreviewImageDataContext.Provider>,
     )
 
-    wrapper.find(RotateLeft).simulate('click')
+    wrapper
+      .find(IconButton)
+      .at(0)
+      .simulate('click')
     expect(rotateImages).toBeCalledWith([examplePreviewImageData.Index], -ROTATION_AMOUNT)
   })
 
@@ -43,7 +45,10 @@ describe('RotatePage component', () => {
       </PreviewImageDataContext.Provider>,
     )
 
-    wrapper.find(RotateRight).simulate('click')
+    wrapper
+      .find(IconButton)
+      .at(1)
+      .simulate('click')
     expect(rotateImages).toBeCalledWith([examplePreviewImageData.Index], ROTATION_AMOUNT)
   })
 })

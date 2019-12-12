@@ -1,6 +1,5 @@
 import { mount } from 'enzyme'
 import React from 'react'
-import EditIcon from '@material-ui/icons/Edit'
 import { Repository } from '@sensenet/client-core'
 import { act } from 'react-dom/test-utils'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
@@ -130,7 +129,7 @@ describe('The main memo panel instance', () => {
 
     act(() => {
       wrapper
-        .find(EditIcon)
+        .find(`svg[data-icon="edit"]`)
         .at(0)
         .simulate('click')
     })
