@@ -15,18 +15,20 @@ import { withRouter } from 'react-router'
 import { Link, matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
 import { useRepository, useSession } from '@sensenet/hooks-react'
 import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
-import { useDrawerItems, useLocalization, usePersonalSettings, useTheme } from '../../hooks'
+import { useDrawerItems, useLocalization, usePersonalSettings, useSelectionService, useTheme } from '../../hooks'
 import { LogoutButton } from '../LogoutButton'
 import { UserAvatar } from '../UserAvatar'
+import { AddButton } from '../AddButton'
 
 const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
   const settings = useContext(ResponsivePersonalSetttings)
+  const selectionService = useSelectionService()
   const personalSettings = usePersonalSettings()
   const theme = useTheme()
   const session = useSession()
   const repo = useRepository()
   const device = useContext(ResponsiveContext)
-
+  const [currentComponent, setcurrentComponent] = useState(selectionService.activeContent.getValue())
   const [opened, setOpened] = useState(settings.drawer.type === 'permanent')
   const items = useDrawerItems()
   const localization = useLocalization().drawer
@@ -35,13 +37,21 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
     personalSettings.repositories.find(r => r.url === PathHelper.trimSlashes(repo.configuration.repositoryUrl)),
   )
 
-  useEffect(
-    () =>
-      setCurrentRepoEntry(
-        personalSettings.repositories.find(r => r.url === PathHelper.trimSlashes(repo.configuration.repositoryUrl)),
-      ),
-    [personalSettings, repo],
-  )
+  useEffect(() => {
+    const activeComponentObserve = selectionService.activeContent.subscribe(newActiveComponent =>
+      setcurrentComponent(newActiveComponent),
+    )
+
+    return function cleanup() {
+      activeComponentObserve.dispose()
+    }
+  }, [selectionService.activeContent])
+
+  useEffect(() => {
+    setCurrentRepoEntry(
+      personalSettings.repositories.find(r => r.url === PathHelper.trimSlashes(repo.configuration.repositoryUrl)),
+    )
+  }, [personalSettings, repo])
 
   if (!settings.drawer.enabled) {
     return null
@@ -63,6 +73,7 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
           transition: 'width 100ms ease-in-out',
         }}>
         <div style={{ paddingTop: '1em', overflowY: 'auto', overflowX: 'hidden' }}>
+          <AddButton isOpened={opened} parent={currentComponent} />
           {items.map((item, index) => {
             const isActive = matchPath(props.location.pathname, `/:repositoryId${item.url}`)
             return isActive ? (

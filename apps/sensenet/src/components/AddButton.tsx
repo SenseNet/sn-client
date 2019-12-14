@@ -1,13 +1,9 @@
-import Button from '@material-ui/core/Button'
-import Fab from '@material-ui/core/Fab'
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
-import Tooltip from '@material-ui/core/Tooltip'
-import Typography from '@material-ui/core/Typography'
 import Add from '@material-ui/icons/Add'
 import CloudUpload from '@material-ui/icons/CloudUpload'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
 import { CurrentContentContext, useLogger, useRepository } from '@sensenet/hooks-react'
+import { Button, Fab, SwipeableDrawer, Tooltip, Typography } from '@material-ui/core'
 import { useLocalization } from '../hooks'
 import { Icon } from './Icon'
 import { useDialog } from './dialogs'
@@ -15,6 +11,7 @@ import { useDialog } from './dialogs'
 export interface AddButtonProps {
   parent?: GenericContent
   allowedTypes?: string[]
+  isOpened?: boolean
 }
 
 export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
@@ -26,6 +23,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   const [allowedChildTypes, setAllowedChildTypes] = useState<Schema[]>([])
   const localization = useLocalization().addButton
   const logger = useLogger('AddButton')
+  const [isAvailable, setAvailable] = useState(false)
 
   useEffect(() => {
     props.parent && setParent(props.parent)
@@ -34,6 +32,26 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   useEffect(() => {
     !props.parent && setParent(parentContext)
   }, [parentContext, props.parent])
+
+  useEffect(() => {
+    props.parent
+      ? repo
+          .getActions({ idOrPath: parent.Id })
+          .then(actions =>
+            actions.d.Actions.findIndex((action: { Name: string }) => action.Name === 'Add') === -1
+              ? setAvailable(false)
+              : setAvailable(true),
+          )
+          .catch(error => {
+            logger.error({
+              message: localization.errorGettingActions,
+              data: {
+                details: { error },
+              },
+            })
+          })
+      : setAvailable(false)
+  }, [isAvailable, localization.errorGettingActions, logger, parent, props.parent, repo])
 
   useEffect(() => {
     if (props.allowedTypes && props.allowedTypes.length > 0) {
@@ -51,18 +69,53 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
           })
         })
     }
-  }, [localization.errorGettingAllowedContentTypes, logger, parent.Id, props.allowedTypes, repo, showSelectType])
+  }, [
+    isAvailable,
+    localization.errorGettingAllowedContentTypes,
+    logger,
+    parent.Id,
+    parentContext.Path,
+    props.allowedTypes,
+    repo,
+    showSelectType,
+  ])
 
   return (
-    <div>
-      <Tooltip title={localization.tooltip} placement="top-end">
-        <Fab
-          color="primary"
-          style={{ position: 'fixed', bottom: '1em', right: '1em' }}
-          onClick={() => setShowSelectType(true)}>
-          <Add />
-        </Fab>
-      </Tooltip>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        padding: '0.5rem 0.5rem',
+        position: 'relative',
+      }}>
+      {!props.isOpened ? (
+        <Tooltip title={localization.tooltip} placement="right">
+          <Fab
+            style={{ width: '32px', height: '32px', minHeight: 0 }}
+            color="primary"
+            onClick={() => setShowSelectType(true)}
+            disabled={!isAvailable}>
+            <Add />
+          </Fab>
+        </Tooltip>
+      ) : (
+        <div
+          style={{
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-evenly',
+          }}>
+          <Fab
+            style={{ width: '32px', height: '32px', minHeight: 0 }}
+            color="primary"
+            onClick={() => setShowSelectType(true)}
+            disabled={!isAvailable}>
+            <Add />
+          </Fab>
+          <Typography>Add new</Typography>
+        </div>
+      )}
       <SwipeableDrawer
         anchor="bottom"
         onClose={() => setShowSelectType(false)}

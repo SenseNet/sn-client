@@ -17,6 +17,7 @@ const values = {
     errorGettingAllowedContentTypes: 'There was an error while fetching the allowed content types.',
     contentCreatedNotification: `The content '{0}' has been created succesfully.`,
     errorPostingContentNotification: 'There was an error during content creation',
+    errorGettingActions: 'There was an error while fetching the actions.',
   },
   commandPalette: {
     title: 'Show Command Palette',
