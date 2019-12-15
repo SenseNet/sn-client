@@ -7,6 +7,7 @@ import SearchTwoTone from '@material-ui/icons/SearchTwoTone'
 import WidgetsTwoTone from '@material-ui/icons/WidgetsTwoTone'
 import { DashboardTwoTone, DeleteTwoTone } from '@material-ui/icons'
 import { useRepository, useSession } from '@sensenet/hooks-react'
+import { LoginState } from '@sensenet/client-core'
 import { Icon } from '../components/Icon'
 import {
   BuiltinDrawerItem,
@@ -28,6 +29,7 @@ export interface DrawerItem {
   url: string
   icon: JSX.Element
   requiredGroupPath: string
+  root?: string
 }
 
 export const useDrawerItems = () => {
@@ -57,6 +59,32 @@ export const useDrawerItems = () => {
       )
     },
     [localization],
+  )
+
+  const getRootFromSetting = useCallback(
+    (item: ContentDrawerItem | QueryDrawerItem | BuiltinDrawerItem | DashboardDrawerItem) => {
+      switch (item.itemType) {
+        case 'Search':
+          return undefined
+        case 'Content':
+          return '/Root/Content'
+        case 'Users and groups':
+          return '/Root/IMS/Public'
+        case 'Trash':
+          return '/Root/Trash'
+        case 'Content Types':
+          return '/Root/System/Schema/ContentTypes/GenericContent/ListItem'
+        case 'Localization':
+          return '/Root/Localization'
+        case 'Setup':
+          return '/Root/System/Settings'
+        case 'Dashboard':
+          return undefined
+        default:
+          return undefined
+      }
+    },
+    [],
   )
 
   const getIconFromSetting = useCallback(
@@ -156,14 +184,22 @@ export const useDrawerItems = () => {
         name: setting.itemType,
         requiredGroupPath: '',
         url: getUrlFromSetting(setting),
+        root: getRootFromSetting(setting),
       }
       return drawerItem
     },
-    [getIconFromSetting, getItemDescriptionFromSettings, getItemNameFromSettings, getUrlFromSetting],
+    [
+      getIconFromSetting,
+      getItemDescriptionFromSettings,
+      getItemNameFromSettings,
+      getRootFromSetting,
+      getUrlFromSetting,
+    ],
   )
 
   useEffect(() => {
     settings.drawer.items
+      .filter(() => session.state === LoginState.Authenticated)
       .filterAsync(async item => {
         if (!item.permissions || !item.permissions.length) {
           return true

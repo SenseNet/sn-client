@@ -12,6 +12,7 @@ export interface AddButtonProps {
   parent?: GenericContent
   allowedTypes?: string[]
   isOpened?: boolean
+  path: string
 }
 
 export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
@@ -50,8 +51,24 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
               },
             })
           })
+      : props.path !== ''
+      ? repo
+          .getActions({ idOrPath: props.path })
+          .then(actions =>
+            actions.d.Actions.findIndex((action: { Name: string }) => action.Name === 'Add') === -1
+              ? setAvailable(false)
+              : setAvailable(true),
+          )
+          .catch(error => {
+            logger.error({
+              message: localization.errorGettingActions,
+              data: {
+                details: { error },
+              },
+            })
+          })
       : setAvailable(false)
-  }, [isAvailable, localization.errorGettingActions, logger, parent, props.parent, repo])
+  }, [isAvailable, localization.errorGettingActions, logger, parent, props.parent, props.path, repo])
 
   useEffect(() => {
     if (props.allowedTypes && props.allowedTypes.length > 0) {
@@ -90,13 +107,15 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
       }}>
       {!props.isOpened ? (
         <Tooltip title={localization.tooltip} placement="right">
-          <Fab
-            style={{ width: '32px', height: '32px', minHeight: 0 }}
-            color="primary"
-            onClick={() => setShowSelectType(true)}
-            disabled={!isAvailable}>
-            <Add />
-          </Fab>
+          <span>
+            <Fab
+              style={{ width: '32px', height: '32px', minHeight: 0 }}
+              color="primary"
+              onClick={() => setShowSelectType(true)}
+              disabled={!isAvailable}>
+              <Add />
+            </Fab>
+          </span>
         </Tooltip>
       ) : (
         <div
