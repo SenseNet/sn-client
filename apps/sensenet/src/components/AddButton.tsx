@@ -10,7 +10,6 @@ import { useDialog } from './dialogs'
 
 export interface AddButtonProps {
   parent?: GenericContent
-  allowedTypes?: string[]
   isOpened?: boolean
   path: string
 }
@@ -71,31 +70,34 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   }, [isAvailable, localization.errorGettingActions, logger, parent, props.parent, props.path, repo])
 
   useEffect(() => {
-    if (props.allowedTypes && props.allowedTypes.length > 0) {
-      setAllowedChildTypes(props.allowedTypes.map(type => repo.schemas.getSchemaByName(type)))
-    } else if (showSelectType) {
-      repo
-        .getAllowedChildTypes({ idOrPath: parent.Id })
-        .then(types => setAllowedChildTypes(types.d.results.map(t => repo.schemas.getSchemaByName(t.Name))))
-        .catch(error => {
-          logger.error({
-            message: localization.errorGettingAllowedContentTypes,
-            data: {
-              details: { error },
-            },
-          })
-        })
+    if (showSelectType) {
+      props.parent
+        ? repo
+            .getAllowedChildTypes({ idOrPath: parent.Id })
+            .then(types => setAllowedChildTypes(types.d.results.map(t => repo.schemas.getSchemaByName(t.Name))))
+            .catch(error => {
+              logger.error({
+                message: localization.errorGettingAllowedContentTypes,
+                data: {
+                  details: { error },
+                },
+              })
+            })
+        : props.path !== ''
+        ? repo
+            .getAllowedChildTypes({ idOrPath: props.path })
+            .then(types => setAllowedChildTypes(types.d.results.map(t => repo.schemas.getSchemaByName(t.Name))))
+            .catch(error => {
+              logger.error({
+                message: localization.errorGettingAllowedContentTypes,
+                data: {
+                  details: { error },
+                },
+              })
+            })
+        : setAllowedChildTypes([])
     }
-  }, [
-    isAvailable,
-    localization.errorGettingAllowedContentTypes,
-    logger,
-    parent.Id,
-    parentContext.Path,
-    props.allowedTypes,
-    repo,
-    showSelectType,
-  ])
+  }, [localization.errorGettingAllowedContentTypes, logger, parent.Id, props.parent, props.path, repo, showSelectType])
 
   return (
     <div

@@ -12,7 +12,7 @@ import Settings from '@material-ui/icons/Settings'
 import { PathHelper } from '@sensenet/client-utils'
 import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
-import { Link, matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
+import { matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
 import { useRepository, useSession } from '@sensenet/hooks-react'
 import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
 import { useDrawerItems, useLocalization, usePersonalSettings, useSelectionService, useTheme } from '../../hooks'
@@ -129,11 +129,20 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
                 />
                 <ListItemSecondaryAction>
                   {device === 'mobile' ? null : (
-                    <Link to={`/personalSettings`} style={{ textDecoration: 'none' }}>
+                    <NavLink
+                      to={`/personalSettings`}
+                      style={{ textDecoration: 'none' }}
+                      isActive={match => {
+                        if (!match) {
+                          return false
+                        }
+                        setCurrentPath('')
+                        return true
+                      }}>
                       <IconButton title={localization.personalSettingsTitle}>
                         <Settings />
                       </IconButton>
-                    </Link>
+                    </NavLink>
                   )}
                   <LogoutButton />
                 </ListItemSecondaryAction>
@@ -145,7 +154,14 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
                 to={'/personalSettings'}
                 activeStyle={{ opacity: 1 }}
                 style={{ textDecoration: 'none', opacity: 0.54 }}
-                key={'personalSettings'}>
+                key={'personalSettings'}
+                isActive={match => {
+                  if (!match) {
+                    return false
+                  }
+                  setCurrentPath('')
+                  return true
+                }}>
                 <ListItem button={true}>
                   <Tooltip
                     title={
