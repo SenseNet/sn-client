@@ -185,6 +185,7 @@ const MainPanel: React.FunctionComponent<MainPanel> = props => {
                       <TableCell className="actioncell">
                         <Tooltip title="Download">
                           <CloudDownload
+                            data-icon="download"
                             className={classes.actionicon}
                             onClick={() => handleDownload(fieldOptions.content.Path)}
                           />
@@ -196,7 +197,7 @@ const MainPanel: React.FunctionComponent<MainPanel> = props => {
                           />
                         </Tooltip>
                         <Tooltip title="Online edit">
-                          <Edit onClick={() => editMode(fieldOptions.content.Id)} />
+                          <Edit data-icon="edit" onClick={() => editMode(fieldOptions.content.Id)} />
                         </Tooltip>
                       </TableCell>
                     )

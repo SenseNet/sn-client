@@ -1,9 +1,7 @@
+import { MenuItem } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton'
 import Menu from '@material-ui/core/Menu'
 import SvgIcon from '@material-ui/core/SvgIcon'
-import AspectRatio from '@material-ui/icons/AspectRatio'
-import Code from '@material-ui/icons/Code'
-import ZoomOutMap from '@material-ui/icons/ZoomOutMap'
 import { mount } from 'enzyme'
 import React from 'react'
 import { ZoomModeWidget } from '../src/components/document-widgets/ZoomMode'
@@ -56,8 +54,8 @@ describe('ZoomMode component', () => {
     const wrapper = getComponentWithProps({ updateState: setZoomMode })
     wrapper.find(IconButton).simulate('click')
     wrapper
-      .find(ZoomOutMap)
-      .at(1)
+      .find(MenuItem)
+      .at(0)
       .simulate('click')
     expect(setZoomMode).toBeCalledWith({ zoomMode: 'fit' })
     expect(wrapper.find(Menu).prop('open')).toBeFalsy()
@@ -68,7 +66,7 @@ describe('ZoomMode component', () => {
     const wrapper = getComponentWithProps({ updateState: setZoomMode, zoomMode: 'originalSize' })
     wrapper.find(IconButton).simulate('click')
     wrapper
-      .find(AspectRatio)
+      .find(MenuItem)
       .at(1)
       .simulate('click')
     expect(setZoomMode).toBeCalledWith({ zoomMode: 'originalSize' })
@@ -80,8 +78,8 @@ describe('ZoomMode component', () => {
     const wrapper = getComponentWithProps({ updateState: setZoomMode, zoomMode: 'fitHeight' })
     wrapper.find(IconButton).simulate('click')
     wrapper
-      .find(Code)
-      .at(1)
+      .find(MenuItem)
+      .at(2)
       .simulate('click')
     expect(setZoomMode).toBeCalledWith({ zoomMode: 'fitHeight' })
     expect(wrapper.find(Menu).prop('open')).toBeFalsy()
@@ -92,8 +90,8 @@ describe('ZoomMode component', () => {
     const wrapper = getComponentWithProps({ updateState: setZoomMode, zoomMode: 'fitWidth' })
     wrapper.find(IconButton).simulate('click')
     wrapper
-      .find(Code)
-      .at(2)
+      .find(MenuItem)
+      .at(3)
       .simulate('click')
     expect(setZoomMode).toBeCalledWith({ zoomMode: 'fitWidth' })
     expect(wrapper.find(Menu).prop('open')).toBeFalsy()
