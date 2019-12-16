@@ -37,18 +37,6 @@ describe('The list panel layout instance', () => {
     }
   })
 
-  it('should be rendered correctly', async () => {
-    await act(async () => {
-      wrapper = mount(
-        <RepositoryContext.Provider value={repo}>
-          <ListPanel {...(TodoItems as any)} />
-        </RepositoryContext.Provider>,
-      )
-    })
-
-    expect(wrapper.update()).toMatchSnapshot()
-  })
-
   it('should toggle todo', async () => {
     await act(async () => {
       wrapper = mount(

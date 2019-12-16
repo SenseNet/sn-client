@@ -1,7 +1,6 @@
 import Button from '@material-ui/core/Button'
 import { Breakpoint } from '@material-ui/core/styles/createBreakpoints'
 import Typography from '@material-ui/core/Typography'
-import { CloudDownload, Edit } from '@material-ui/icons'
 import { Repository } from '@sensenet/client-core'
 import { RepositoryContext } from '@sensenet/hooks-react'
 import { mount } from 'enzyme'
@@ -116,7 +115,7 @@ describe('The main browser panel instance', () => {
       )
     })
 
-    const downloadicon = wrapper.update().find(CloudDownload)
+    const downloadicon = wrapper.update().find(`svg[data-icon="download"]`)
     act(() => {
       ;(downloadicon.prop('onClick') as any)()
     })
@@ -143,7 +142,7 @@ describe('The main browser panel instance', () => {
       )
     })
 
-    const editbtn = wrapper.update().find(Edit)
+    const editbtn = wrapper.update().find(`svg[data-icon="edit"]`)
     act(() => {
       ;(editbtn.first().prop('onClick') as any)({ content: { Id: TestContentCollection[0].Id } })
     })

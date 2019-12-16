@@ -75,7 +75,6 @@ describe('Check box group field control', () => {
       expect(wrapper.find(FormLabel).text()).toBe(defaultSettings.DisplayName)
       expect(wrapper.find(FormHelperText).text()).toBe(defaultSettings.Description)
       expect(wrapper.find(Checkbox)).toHaveLength(4)
-      expect(wrapper).toMatchSnapshot()
     })
 
     it('should call on change when a checkbox is selected', () => {

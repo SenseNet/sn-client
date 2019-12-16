@@ -2,11 +2,12 @@
  * @module FieldControls
  */
 import MomentUtils from '@date-io/moment'
-import { MaterialUiPickersDate, MuiPickersUtilsProvider, TimePicker as MUITimePicker } from '@material-ui/pickers'
+import { MuiPickersUtilsProvider, TimePicker as MUITimePicker } from '@material-ui/pickers'
 import moment from 'moment'
 import React, { useState } from 'react'
 import { DateTimeFieldSetting } from '@sensenet/default-content-types'
 import Typography from '@material-ui/core/Typography'
+import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date'
 import { changeJScriptValue } from '../helpers'
 import { ReactClientFieldSetting } from './ClientFieldSetting'
 
