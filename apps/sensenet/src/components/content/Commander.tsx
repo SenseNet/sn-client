@@ -9,7 +9,7 @@ import {
   LoadSettingsContextProvider,
   useRepository,
 } from '@sensenet/hooks-react'
-import { useSelectionService } from '../../hooks'
+import { useQueryDataService, useSelectionService } from '../../hooks'
 import { CollectionComponent } from '../content-list'
 import { useDialog } from '../dialogs'
 
@@ -28,7 +28,7 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
   const repo = useRepository()
   const { openDialog } = useDialog()
   const selectionService = useSelectionService()
-
+  const queryDataService = useQueryDataService()
   const [_leftPanelRef, setLeftPanelRef] = useState<null | any>(null)
   const [_rightPanelRef, setRightPanelRef] = useState<null | any>(null)
 
@@ -43,6 +43,11 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
   const [leftSelection, setLeftSelection] = useState<GenericContent[]>([])
 
   const [rightSelection, setRightSelection] = useState<GenericContent[]>([])
+
+  useEffect(() => {
+    queryDataService.queryData.setValue(undefined)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     activePanel === 'left' ? setActiveParent(leftParent) : setActiveParent(rightParent)

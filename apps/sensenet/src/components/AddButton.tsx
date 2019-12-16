@@ -12,6 +12,7 @@ export interface AddButtonProps {
   parent?: GenericContent
   isOpened?: boolean
   path: string
+  allowedTypes?: string[]
 }
 
 export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
@@ -38,7 +39,9 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
       ? repo
           .getActions({ idOrPath: parent.Id })
           .then(actions =>
-            actions.d.Actions.findIndex((action: { Name: string }) => action.Name === 'Add') === -1
+            actions.d.Actions.findIndex(
+              (action: { Name: string }) => action.Name === 'Add' || action.Name === 'Upload',
+            ) === -1
               ? setAvailable(false)
               : setAvailable(true),
           )
@@ -54,7 +57,9 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
       ? repo
           .getActions({ idOrPath: props.path })
           .then(actions =>
-            actions.d.Actions.findIndex((action: { Name: string }) => action.Name === 'Add') === -1
+            actions.d.Actions.findIndex(
+              (action: { Name: string }) => action.Name === 'Add' || action.Name === 'Upload',
+            ) === -1
               ? setAvailable(false)
               : setAvailable(true),
           )
@@ -71,33 +76,46 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
 
   useEffect(() => {
     if (showSelectType) {
-      props.parent
-        ? repo
-            .getAllowedChildTypes({ idOrPath: parent.Id })
-            .then(types => setAllowedChildTypes(types.d.results.map(t => repo.schemas.getSchemaByName(t.Name))))
-            .catch(error => {
-              logger.error({
-                message: localization.errorGettingAllowedContentTypes,
-                data: {
-                  details: { error },
-                },
+      if (props.allowedTypes && props.allowedTypes.length > 0) {
+        setAllowedChildTypes(props.allowedTypes.map(type => repo.schemas.getSchemaByName(type)))
+      } else {
+        props.parent
+          ? repo
+              .getAllowedChildTypes({ idOrPath: parent.Id })
+              .then(types => setAllowedChildTypes(types.d.results.map(t => repo.schemas.getSchemaByName(t.Name))))
+              .catch(error => {
+                logger.error({
+                  message: localization.errorGettingAllowedContentTypes,
+                  data: {
+                    details: { error },
+                  },
+                })
               })
-            })
-        : props.path !== ''
-        ? repo
-            .getAllowedChildTypes({ idOrPath: props.path })
-            .then(types => setAllowedChildTypes(types.d.results.map(t => repo.schemas.getSchemaByName(t.Name))))
-            .catch(error => {
-              logger.error({
-                message: localization.errorGettingAllowedContentTypes,
-                data: {
-                  details: { error },
-                },
+          : props.path !== ''
+          ? repo
+              .getAllowedChildTypes({ idOrPath: props.path })
+              .then(types => setAllowedChildTypes(types.d.results.map(t => repo.schemas.getSchemaByName(t.Name))))
+              .catch(error => {
+                logger.error({
+                  message: localization.errorGettingAllowedContentTypes,
+                  data: {
+                    details: { error },
+                  },
+                })
               })
-            })
-        : setAllowedChildTypes([])
+          : setAllowedChildTypes([])
+      }
     }
-  }, [localization.errorGettingAllowedContentTypes, logger, parent.Id, props.parent, props.path, repo, showSelectType])
+  }, [
+    localization.errorGettingAllowedContentTypes,
+    logger,
+    parent.Id,
+    props.allowedTypes,
+    props.parent,
+    props.path,
+    repo,
+    showSelectType,
+  ])
 
   return (
     <div

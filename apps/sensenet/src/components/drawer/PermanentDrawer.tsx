@@ -15,7 +15,14 @@ import { withRouter } from 'react-router'
 import { matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
 import { useRepository, useSession } from '@sensenet/hooks-react'
 import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
-import { useDrawerItems, useLocalization, usePersonalSettings, useSelectionService, useTheme } from '../../hooks'
+import {
+  useDrawerItems,
+  useLocalization,
+  usePersonalSettings,
+  useQueryDataService,
+  useSelectionService,
+  useTheme,
+} from '../../hooks'
 import { LogoutButton } from '../LogoutButton'
 import { UserAvatar } from '../UserAvatar'
 import { AddButton } from '../AddButton'
@@ -23,12 +30,14 @@ import { AddButton } from '../AddButton'
 const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
   const settings = useContext(ResponsivePersonalSetttings)
   const selectionService = useSelectionService()
+  const queryDataService = useQueryDataService()
   const personalSettings = usePersonalSettings()
   const theme = useTheme()
   const session = useSession()
   const repo = useRepository()
   const device = useContext(ResponsiveContext)
-  const [currentComponent, setcurrentComponent] = useState(selectionService.activeContent.getValue())
+  const [currentComponent, setCurrentComponent] = useState(selectionService.activeContent.getValue())
+  const [queryData, setQueryData] = useState(queryDataService.queryData.getValue())
   const [currentPath, setCurrentPath] = useState('')
   const [opened, setOpened] = useState(settings.drawer.type === 'permanent')
   const items = useDrawerItems()
@@ -40,13 +49,17 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
 
   useEffect(() => {
     const activeComponentObserve = selectionService.activeContent.subscribe(newActiveComponent =>
-      setcurrentComponent(newActiveComponent),
+      setCurrentComponent(newActiveComponent),
     )
+
+    const queryDataObserve = queryDataService.queryData.subscribe(newQueryData => setQueryData(newQueryData))
 
     return function cleanup() {
       activeComponentObserve.dispose()
+      queryDataObserve.dispose()
     }
-  }, [selectionService.activeContent])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     setCurrentRepoEntry(
@@ -74,7 +87,12 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
           transition: 'width 100ms ease-in-out',
         }}>
         <div style={{ paddingTop: '1em', overflowY: 'auto', overflowX: 'hidden' }}>
-          <AddButton isOpened={opened} parent={currentComponent} path={currentPath} />
+          <AddButton
+            isOpened={opened}
+            parent={currentComponent}
+            path={currentPath}
+            allowedTypes={queryData?.allowedTypes}
+          />
           {items.map((item, index) => {
             return (
               <NavLink

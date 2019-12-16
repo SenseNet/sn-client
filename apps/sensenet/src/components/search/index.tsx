@@ -17,7 +17,7 @@ import {
   useRepository,
 } from '@sensenet/hooks-react'
 import { ResponsivePersonalSetttings } from '../../context'
-import { useContentRouting, useLocalization, useSelectionService } from '../../hooks'
+import { useContentRouting, useLocalization, useQueryDataService, useSelectionService } from '../../hooks'
 import { CollectionComponent, isReferenceField } from '../content-list'
 import { useDialog } from '../dialogs'
 
@@ -44,6 +44,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
   const logger = useLogger('Search')
   const [queryData, setQueryData] = useState<QueryData>(decodeQueryData(props.match.params.queryData))
   const selectionService = useSelectionService()
+  const queryDataService = useQueryDataService()
   const localization = useLocalization().search
   const [scrollToken, setScrollToken] = useState(Math.random())
   const [scrollLock] = useState(new Semaphore(1))
@@ -54,6 +55,11 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
     }, searchDebounceTime),
     [],
   )
+
+  useEffect(() => {
+    queryDataService.queryData.setValue(queryData)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [queryData])
 
   useEffect(() => {
     try {

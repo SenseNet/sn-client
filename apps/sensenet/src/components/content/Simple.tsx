@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   CurrentAncestorsProvider,
   CurrentChildrenProvider,
   CurrentContentProvider,
   LoadSettingsContextProvider,
 } from '@sensenet/hooks-react'
-import { useSelectionService } from '../../hooks'
+import { useQueryDataService, useSelectionService } from '../../hooks'
 import { CollectionComponent, CollectionComponentProps } from '../content-list'
 
 export interface SimpleListComponentProps {
@@ -16,6 +16,12 @@ export interface SimpleListComponentProps {
 
 export const SimpleList: React.FunctionComponent<SimpleListComponentProps> = props => {
   const selectionService = useSelectionService()
+  const queryDataService = useQueryDataService()
+
+  useEffect(() => {
+    queryDataService.queryData.setValue(undefined)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div style={{ display: 'flex', width: '100%', height: '100%' }}>
