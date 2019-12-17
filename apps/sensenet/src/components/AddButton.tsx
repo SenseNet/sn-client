@@ -3,19 +3,50 @@ import CloudUpload from '@material-ui/icons/CloudUpload'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
 import { CurrentContentContext, useLogger, useRepository } from '@sensenet/hooks-react'
-import { Button, Fab, SwipeableDrawer, Tooltip, Typography } from '@material-ui/core'
+import {
+  Button,
+  createStyles,
+  IconButton,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  makeStyles,
+  SwipeableDrawer,
+  Theme,
+  Tooltip,
+  Typography,
+} from '@material-ui/core'
 import { useLocalization } from '../hooks'
 import { Icon } from './Icon'
 import { useDialog } from './dialogs'
+
+const useStyles = makeStyles((theme: Theme) => {
+  const buttonBackground = theme.palette.primary.main
+  const buttonBackgroundHover = theme.palette.primary.dark
+
+  return createStyles({
+    addButton: {
+      width: '32px',
+      height: '32px',
+      minHeight: 0,
+      padding: 0,
+      margin: '0.5rem 0.5rem',
+      backgroundColor: buttonBackground,
+      '&:hover': {
+        backgroundColor: buttonBackgroundHover,
+      },
+    },
+  })
+})
 
 export interface AddButtonProps {
   parent?: GenericContent
   isOpened?: boolean
   path: string
-  allowedTypes?: string[]
 }
 
 export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
+  const classes = useStyles()
   const repo = useRepository()
   const { openDialog } = useDialog()
   const parentContext = useContext(CurrentContentContext)
@@ -35,125 +66,82 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   }, [parentContext, props.parent])
 
   useEffect(() => {
-    props.parent
-      ? repo
-          .getActions({ idOrPath: parent.Id })
-          .then(actions =>
-            actions.d.Actions.findIndex(
-              (action: { Name: string }) => action.Name === 'Add' || action.Name === 'Upload',
-            ) === -1
-              ? setAvailable(false)
-              : setAvailable(true),
-          )
-          .catch(error => {
-            logger.error({
-              message: localization.errorGettingActions,
-              data: {
-                details: { error },
-              },
-            })
-          })
-      : props.path !== ''
-      ? repo
-          .getActions({ idOrPath: props.path })
-          .then(actions =>
-            actions.d.Actions.findIndex(
-              (action: { Name: string }) => action.Name === 'Add' || action.Name === 'Upload',
-            ) === -1
-              ? setAvailable(false)
-              : setAvailable(true),
-          )
-          .catch(error => {
-            logger.error({
-              message: localization.errorGettingActions,
-              data: {
-                details: { error },
-              },
-            })
-          })
-      : setAvailable(false)
-  }, [isAvailable, localization.errorGettingActions, logger, parent, props.parent, props.path, repo])
-
-  useEffect(() => {
-    if (showSelectType) {
-      if (props.allowedTypes && props.allowedTypes.length > 0) {
-        setAllowedChildTypes(props.allowedTypes.map(type => repo.schemas.getSchemaByName(type)))
-      } else {
-        props.parent
-          ? repo
-              .getAllowedChildTypes({ idOrPath: parent.Id })
-              .then(types => setAllowedChildTypes(types.d.results.map(t => repo.schemas.getSchemaByName(t.Name))))
-              .catch(error => {
-                logger.error({
-                  message: localization.errorGettingAllowedContentTypes,
-                  data: {
-                    details: { error },
-                  },
-                })
-              })
-          : props.path !== ''
-          ? repo
-              .getAllowedChildTypes({ idOrPath: props.path })
-              .then(types => setAllowedChildTypes(types.d.results.map(t => repo.schemas.getSchemaByName(t.Name))))
-              .catch(error => {
-                logger.error({
-                  message: localization.errorGettingAllowedContentTypes,
-                  data: {
-                    details: { error },
-                  },
-                })
-              })
-          : setAllowedChildTypes([])
+    const getActions = async () => {
+      try {
+        const actions = await repo.getActions({ idOrPath: props.parent ? parent.Id : props.path })
+        const isActionFound = actions.d.Actions.some(action => action.Name === 'Add' || action.Name === 'Upload')
+        setAvailable(isActionFound)
+      } catch (error) {
+        logger.error({
+          message: localization.errorGettingActions,
+          data: {
+            details: { error },
+          },
+        })
       }
     }
-  }, [
-    localization.errorGettingAllowedContentTypes,
-    logger,
-    parent.Id,
-    props.allowedTypes,
-    props.parent,
-    props.path,
-    repo,
-    showSelectType,
-  ])
+
+    if (props.parent || props.path !== '') {
+      getActions()
+    } else {
+      setAvailable(false)
+    }
+  }, [localization.errorGettingActions, logger, parent, props.parent, props.path, repo])
+
+  useEffect(() => {
+    const getAllowedChildTypes = async () => {
+      try {
+        const allowedChildTypesFromRepo = await repo.getAllowedChildTypes({
+          idOrPath: props.parent ? parent.Id : props.path,
+        })
+        const allowedChildTypeList = allowedChildTypesFromRepo.d.results.map(t => repo.schemas.getSchemaByName(t.Name))
+        setAllowedChildTypes(allowedChildTypeList)
+      } catch (error) {
+        logger.error({
+          message: localization.errorGettingAllowedContentTypes,
+          data: {
+            details: { error },
+          },
+        })
+      }
+    }
+
+    if (showSelectType) {
+      props.parent || props.path !== '' ? getAllowedChildTypes() : setAllowedChildTypes([])
+    }
+  }, [localization.errorGettingAllowedContentTypes, logger, parent.Id, props.parent, props.path, repo, showSelectType])
 
   return (
     <div
       style={{
         display: 'flex',
         justifyContent: 'center',
-        padding: '0.5rem 0.5rem',
         position: 'relative',
       }}>
       {!props.isOpened ? (
         <Tooltip title={localization.tooltip} placement="right">
           <span>
-            <Fab
-              style={{ width: '32px', height: '32px', minHeight: 0 }}
-              color="primary"
-              onClick={() => setShowSelectType(true)}
-              disabled={!isAvailable}>
+            <IconButton className={classes.addButton} onClick={() => setShowSelectType(true)} disabled={!isAvailable}>
               <Add />
-            </Fab>
+            </IconButton>
           </span>
         </Tooltip>
       ) : (
-        <div
+        <ListItem
           style={{
             width: '100%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-evenly',
-          }}>
-          <Fab
-            style={{ width: '32px', height: '32px', minHeight: 0 }}
-            color="primary"
-            onClick={() => setShowSelectType(true)}
-            disabled={!isAvailable}>
+          }}
+          button={true}
+          onClick={() => setShowSelectType(true)}
+          disabled={!isAvailable}>
+          <ListItemIcon>
             <Add />
-          </Fab>
-          <Typography>Add new</Typography>
-        </div>
+          </ListItemIcon>
+          <ListItemText primary={localization.addNew} />
+        </ListItem>
       )}
       <SwipeableDrawer
         anchor="bottom"

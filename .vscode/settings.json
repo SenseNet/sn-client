@@ -1,5 +1,4 @@
 {
   "typescript.tsdk": "node_modules/typescript/lib",
-  "editor.formatOnSave": true,
-  "eslint.validate": [{ "language": "typescript", "autoFix": true }, { "language": "typescriptreact", "autoFix": true }]
+  "editor.formatOnSave": true
 }

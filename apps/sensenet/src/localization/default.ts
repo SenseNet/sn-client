@@ -12,6 +12,7 @@ const values = {
   addButton: {
     tooltip: 'Create or upload content',
     new: 'New...',
+    addNew: 'Add new',
     dialogTitle: 'Create new {0}',
     upload: 'Upload',
     errorGettingAllowedContentTypes: 'There was an error while fetching the allowed content types.',

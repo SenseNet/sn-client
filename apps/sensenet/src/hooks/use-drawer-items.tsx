@@ -73,7 +73,7 @@ export const useDrawerItems = () => {
         case 'Trash':
           return '/Root/Trash'
         case 'Content Types':
-          return '/Root/System/Schema/ContentTypes/GenericContent/ListItem'
+          return '/Root/System/Schema/ContentTypes'
         case 'Localization':
           return '/Root/Localization'
         case 'Setup':
