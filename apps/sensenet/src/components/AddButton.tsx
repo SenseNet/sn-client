@@ -94,20 +94,24 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
             </div>
           </Button>
           {allowedChildTypes.map(childType => (
-            <Button
-              key={childType.ContentTypeName}
-              onClick={() => {
-                setShowSelectType(false)
-                openDialog({ name: 'add', props: { schema: childType, parent } })
-              }}>
-              <div
-                style={{
-                  width: 90,
+            <Tooltip title={childType.DisplayName} key={childType.DisplayName}>
+              <Button
+                key={childType.ContentTypeName}
+                onClick={() => {
+                  setShowSelectType(false)
+                  openDialog({ name: 'add', props: { schema: childType, parent } })
                 }}>
-                <Icon style={{ height: 38, width: 38 }} item={childType} />
-                <Typography variant="body1">{childType.DisplayName}</Typography>
-              </div>
-            </Button>
+                <div
+                  style={{
+                    width: 90,
+                  }}>
+                  <Icon style={{ height: 38, width: 38 }} item={childType} />
+                  <Typography variant="body1" style={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>
+                    {childType.DisplayName}
+                  </Typography>
+                </div>
+              </Button>
+            </Tooltip>
           ))}
         </div>
       </SwipeableDrawer>

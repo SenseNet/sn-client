@@ -57,7 +57,9 @@ export class SchemaStore {
     }
     let schema = this.schemas.find(s => s.ContentTypeName === contentTypeName) as Schema
     if (!schema) {
-      return this.getSchema(GenericContent)
+      const genericContent = this.getSchema(GenericContent)
+      genericContent.DisplayName = contentTypeName
+      return genericContent
     }
     schema = Object.assign({}, schema)
     const parentSchema = schema.ParentTypeName && this.getSchemaByName(schema.ParentTypeName)
