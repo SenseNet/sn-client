@@ -1,6 +1,8 @@
 export { BypassAuthentication } from './Authentication/BypassAuthentication'
 export { FormsAuthenticationService } from './Authentication/FormsAuthenticationService'
 export { Repository, isExtendedError, ExtendedError } from './Repository/Repository'
+export { RepositoryConfiguration } from './Repository/RepositoryConfiguration'
+export { SchemaStore } from './Schemas/SchemaStore'
 export * from './Repository/Upload'
 export * from './Repository/WebkitTypes'
 export { AuthenticationService } from './Authentication/AuthenticationService'
