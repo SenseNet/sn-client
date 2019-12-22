@@ -6,7 +6,6 @@ import { BrowseType } from '../components/content'
 const settingsKey = `SN-APP-USER-SETTINGS`
 
 export interface UiSettings {
-  theme: 'dark' | 'light'
   content: {
     browseType: typeof BrowseType[number]
     fields: Array<keyof GenericContent>
@@ -150,6 +149,7 @@ export type PersonalSettingsType = PlatformDependent<UiSettings> & {
   sendLogWithCrashReports: boolean
   logLevel: Array<keyof typeof LogLevel>
   language: 'default' | 'hungarian'
+  theme: 'light' | 'dark'
 }
 
 export const defaultSettings: PersonalSettingsType = {
@@ -284,7 +284,6 @@ export const defaultSettings: PersonalSettingsType = {
     ],
   },
   default: {
-    theme: 'dark',
     content: {
       browseType: 'explorer',
       fields: ['DisplayName', 'Locked', 'CreatedBy', 'Actions'],
@@ -339,6 +338,7 @@ export const defaultSettings: PersonalSettingsType = {
   eventLogSize: 500,
   sendLogWithCrashReports: true,
   logLevel: ['Information', 'Warning', 'Error', 'Fatal'],
+  theme: 'light',
 }
 
 @Injectable({ lifetime: 'singleton' })
@@ -405,5 +405,14 @@ export class PersonalSettings {
     this.userValue.setValue(settings)
     this.effectiveValue.setValue(deepMerge(defaultSettings, settings))
     localStorage.setItem(`${settingsKey}`, JSON.stringify(settings))
+  }
+
+  public setPersonalSettingsTheme(theme: 'dark' | 'light' | undefined) {
+    const currentValuesCopy: Partial<PersonalSettingsType> = this.userValue.getValue()
+    currentValuesCopy.theme = theme ? theme : 'light'
+
+    this.userValue.setValue(currentValuesCopy)
+    this.effectiveValue.setValue(deepMerge(defaultSettings, currentValuesCopy))
+    localStorage.setItem(`${settingsKey}`, JSON.stringify(currentValuesCopy))
   }
 }

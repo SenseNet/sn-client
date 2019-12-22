@@ -1,10 +1,12 @@
-import createMuiTheme, { ThemeOptions } from '@material-ui/core/styles/createMuiTheme'
+import createMuiTheme, { Theme, ThemeOptions } from '@material-ui/core/styles/createMuiTheme'
 import { MuiThemeProvider } from '@material-ui/core/styles'
-import React, { useContext } from 'react'
-import { ResponsivePersonalSetttings } from './ResponsiveContextProvider'
+import React, { useEffect, useState } from 'react'
+import { useInjector } from '@sensenet/hooks-react/src'
+import { PersonalSettings } from '../services'
+import { useThemeService } from '../hooks/use-theme-service'
 import { ThemeContext } from './ThemeContext'
 
-const mergeThemes = (options: ThemeOptions, type: 'light' | 'dark') =>
+const mergeThemes = (options: ThemeOptions, type: 'light' | 'dark' | undefined) =>
   createMuiTheme({
     ...options,
     palette: {
@@ -14,11 +16,20 @@ const mergeThemes = (options: ThemeOptions, type: 'light' | 'dark') =>
   })
 
 export const ThemeProvider: React.FunctionComponent<{ theme: ThemeOptions }> = props => {
-  const ps = useContext(ResponsivePersonalSetttings)
-  const theme = mergeThemes(props.theme, ps.theme)
+  const injector = useInjector()
+  const service = injector.getInstance(PersonalSettings)
+  const settings = service.userValue.getValue()
+  const [pageTheme, setPageTheme] = useState<Theme>(mergeThemes(props.theme, settings.theme))
+  const themeService = useThemeService()
+
+  useEffect(() => {
+    themeService.currentTheme.subscribe(currentTheme => setPageTheme(mergeThemes(props.theme, currentTheme)))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
-    <MuiThemeProvider theme={theme}>
-      <ThemeContext.Provider value={theme}>{props.children}</ThemeContext.Provider>
+    <MuiThemeProvider theme={pageTheme}>
+      <ThemeContext.Provider value={pageTheme}>{props.children}</ThemeContext.Provider>
     </MuiThemeProvider>
   )
 }

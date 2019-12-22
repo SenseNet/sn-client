@@ -17,8 +17,10 @@ export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }>
   const commandPalette = useCommandPalette()
 
   return (
-    <AppBar position="sticky" style={{ backgroundColor: theme.palette.background.paper, position: 'relative' }}>
-      <Toolbar>
+    <AppBar
+      position="sticky"
+      style={{ backgroundColor: theme.palette.background.paper, position: 'relative', height: '64px' }}>
+      <Toolbar style={{ position: 'static' }}>
         <div
           style={{
             display: 'flex',

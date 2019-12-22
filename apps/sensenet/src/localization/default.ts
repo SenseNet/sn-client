@@ -264,7 +264,7 @@ const values = {
   topMenu: {
     changeRepo: 'Change repository',
     personalSettings: 'Personal settings',
-    logout: 'Logout',
+    logout: 'Log out',
   },
   navigationCommandProvider: {
     personalSettingsPrimary: 'Personal Settings',
