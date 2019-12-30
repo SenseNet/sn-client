@@ -1,16 +1,14 @@
-import Button from '@material-ui/core/Button'
 import Fab from '@material-ui/core/Fab'
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer'
 import Tooltip from '@material-ui/core/Tooltip'
-import Typography from '@material-ui/core/Typography'
 import Add from '@material-ui/icons/Add'
-import CloudUpload from '@material-ui/icons/CloudUpload'
 import { GenericContent, Schema } from '@sensenet/default-content-types'
 import React, { useContext, useEffect, useState } from 'react'
 import { CurrentContentContext, useLogger, useRepository } from '@sensenet/hooks-react'
+import { List, ListItem, ListItemIcon, ListItemText, Popover } from '@material-ui/core'
+import { CloudUpload } from '@material-ui/icons'
 import { useLocalization } from '../hooks'
-import { Icon } from './Icon'
 import { useDialog } from './dialogs'
+import { Icon } from './Icon'
 
 export interface AddButtonProps {
   parent?: GenericContent
@@ -26,6 +24,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   const [allowedChildTypes, setAllowedChildTypes] = useState<Schema[]>([])
   const localization = useLocalization().addButton
   const logger = useLogger('AddButton')
+  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null)
 
   useEffect(() => {
     props.parent && setParent(props.parent)
@@ -59,24 +58,33 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
         <Fab
           color="primary"
           style={{ position: 'fixed', bottom: '1em', right: '1em' }}
-          onClick={() => setShowSelectType(true)}>
+          onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+            setAnchorEl(event.currentTarget)
+            setShowSelectType(true)
+          }}>
           <Add />
         </Fab>
       </Tooltip>
-      <SwipeableDrawer
-        anchor="bottom"
-        onClose={() => setShowSelectType(false)}
-        onOpen={() => {
-          /** */
+      <Popover
+        style={{ maxHeight: '85%' }}
+        open={showSelectType}
+        anchorEl={anchorEl}
+        onClose={() => {
+          setAnchorEl(null)
+          setShowSelectType(false)
         }}
-        open={showSelectType}>
-        <Typography variant="subtitle1" style={{ margin: '0.8em' }}>
-          {localization.new}
-        </Typography>
-        <div
-          style={{ display: 'flex', alignItems: 'flex-start', flexWrap: 'wrap', maxHeight: '512px', overflow: 'auto' }}>
-          <Button
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}>
+        <List>
+          <ListItem
             key="Upload"
+            button={true}
             onClick={() => {
               setShowSelectType(false)
               openDialog({
@@ -85,32 +93,28 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
                 dialogProps: { open: true, fullScreen: true },
               })
             }}>
-            <div
-              style={{
-                width: 90,
-              }}>
-              <CloudUpload style={{ height: 38, width: 38 }} />
-              <Typography variant="body1">{localization.upload}</Typography>
-            </div>
-          </Button>
+            <ListItemIcon>
+              <CloudUpload />
+            </ListItemIcon>
+            <ListItemText primary={localization.upload} />
+          </ListItem>
+
           {allowedChildTypes.map(childType => (
-            <Button
+            <ListItem
               key={childType.ContentTypeName}
+              button={true}
               onClick={() => {
                 setShowSelectType(false)
                 openDialog({ name: 'add', props: { schema: childType, parent } })
               }}>
-              <div
-                style={{
-                  width: 90,
-                }}>
-                <Icon style={{ height: 38, width: 38 }} item={childType} />
-                <Typography variant="body1">{childType.DisplayName}</Typography>
-              </div>
-            </Button>
+              <ListItemIcon>
+                <Icon item={childType} />
+              </ListItemIcon>
+              <ListItemText primary={childType.DisplayName} />
+            </ListItem>
           ))}
-        </div>
-      </SwipeableDrawer>
+        </List>
+      </Popover>
     </div>
   )
 }
