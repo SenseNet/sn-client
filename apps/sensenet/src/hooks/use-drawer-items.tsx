@@ -184,7 +184,8 @@ export const useDrawerItems = () => {
         return true
       })
       .then(items => setDrawerItems(items.map(item => getItemFromSettings(item))))
-  }, [getItemFromSettings, repo, repo.security, session, settings])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return drawerItems
 }
