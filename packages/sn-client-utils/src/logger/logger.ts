@@ -17,7 +17,7 @@ export interface ScopedLogger {
   /**
    * Adds a custom log entry
    */
-  addEntry: <T>(entry: LeveledLogEntryWithoutScope<T>) => Promise<void>
+  addEntry: <T>(entry: LeveledLogEntryWithoutScope<T>, isVerbose?: boolean) => Promise<void>
 
   /**
    * Adds a Verbose log entry. Verbose is the noisiest level, rarely (if ever) enabled for a production app.
@@ -57,7 +57,7 @@ export interface Logger {
   /**
    * Adds a custom log entry
    */
-  addEntry: <T>(entry: LeveledLogEntry<T>) => Promise<void>
+  addEntry: <T>(entry: LeveledLogEntry<T>, isVerbose?: boolean) => Promise<void>
 
   /**
    * Adds a Verbose log entry. Verbose is the noisiest level, rarely (if ever) enabled for a production app.

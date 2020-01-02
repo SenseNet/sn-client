@@ -1,4 +1,4 @@
-import { AbstractLogger, LeveledLogEntry, LogLevel } from '.'
+import { AbstractLogger, colors, LeveledLogEntry, LogLevel } from '.'
 import { Injectable } from '..'
 
 /**
@@ -50,26 +50,26 @@ export const FgWhite = '\x1b[37m'
 /**
  * Returns an associated color to a specific log level
  */
-export const getLevelColor = (level: LogLevel) => {
+export const getLevelColor = (level: LogLevel, isBrowser = false) => {
   let color: string
   switch (level) {
     case LogLevel.Verbose:
-      color = FgBlue
+      color = isBrowser ? colors.darkblue : FgBlue
       break
     case LogLevel.Debug:
-      color = FgBlue
+      color = isBrowser ? colors.darkblue : FgBlue
       break
     case LogLevel.Information:
-      color = FgGreen
+      color = isBrowser ? colors.darkgreen : FgGreen
       break
     case LogLevel.Warning:
-      color = FgYellow
+      color = isBrowser ? colors.darkorange : FgYellow
       break
     case LogLevel.Error:
-      color = FgRed
+      color = isBrowser ? colors.darkred : FgRed
       break
     default:
-      color = FgRed
+      color = isBrowser ? colors.darkred : FgRed
       break
   }
 
@@ -80,21 +80,23 @@ export const getLevelColor = (level: LogLevel) => {
  * The default formatter for the Console logger
  * @param entry the log entry to be formatted
  */
-export const defaultFormatter = <T>(entry: LeveledLogEntry<T>) => {
+export const defaultFormatter = <T>(entry: LeveledLogEntry<T>, isVerbose: boolean) => {
   const fontColor = getLevelColor(entry.level)
-  return [`${fontColor}%s${Reset}`, entry.scope, entry.message]
+  const formattedEntry = [`${fontColor}%s${Reset}`, entry.scope, entry.message]
+  return entry.data && isVerbose ? [...formattedEntry, entry.data] : formattedEntry
 }
 
 /**
- * Formatter for a verbose message
- * @param entry the log entry
+ * The formatter for browsers like Firefox, Chrome
+ * @param entry the log entry to be formatted
  */
-export const verboseFormatter = <T>(entry: LeveledLogEntry<T>) => {
-  const fontColor = getLevelColor(entry.level)
-
-  return entry.data
-    ? [`${fontColor}%s${Reset}`, entry.scope, entry.message, entry.data]
-    : [`${fontColor}%s${Reset}`, entry.scope, entry.message]
+export const browserFormatter = <T>({ level, message, data, scope }: LeveledLogEntry<T>) => {
+  if (!scope) {
+    return data ? [message, data] : [message]
+  }
+  const fontColor = getLevelColor(level, true)
+  const formattedEntry = [`%c[${scope}]:`, `color: ${fontColor}`, message]
+  return data ? [...formattedEntry, data] : formattedEntry
 }
 
 /**
@@ -102,17 +104,17 @@ export const verboseFormatter = <T>(entry: LeveledLogEntry<T>) => {
  */
 @Injectable({ lifetime: 'scoped' })
 export class ConsoleLogger extends AbstractLogger {
-  public async addEntry<T>(entry: LeveledLogEntry<T>) {
-    const data = defaultFormatter(entry)
+  public async addEntry<T>(entry: LeveledLogEntry<T>, isVerbose = false) {
+    const data = defaultFormatter(entry, isVerbose)
 
     console.log(...data)
   }
 }
 
 @Injectable({ lifetime: 'scoped' })
-export class VerboseConsoleLogger extends AbstractLogger {
+export class BrowserConsoleLogger extends AbstractLogger {
   public async addEntry<T>(entry: LeveledLogEntry<T>) {
-    const data = verboseFormatter(entry)
+    const data = browserFormatter(entry)
 
     console.log(...data)
   }

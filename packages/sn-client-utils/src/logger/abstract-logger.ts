@@ -13,11 +13,11 @@ export abstract class AbstractLogger implements Logger {
    * Adds a new log entry to the logger
    * @param entry The Log entry object
    */
-  public abstract addEntry<T>(entry: LeveledLogEntry<T>): Promise<void>
+  public abstract addEntry<T>(entry: LeveledLogEntry<T>, isVerbose?: boolean): Promise<void>
 
-  private async addEntryInternal<T>(entry: LeveledLogEntry<T>) {
+  private async addEntryInternal<T>(entry: LeveledLogEntry<T>, isVerbose?: boolean) {
     try {
-      await this.addEntry(entry)
+      await this.addEntry(entry, isVerbose)
     } catch (error) {
       this.error({
         scope: AbstractLoggerScope,
@@ -35,10 +35,13 @@ export abstract class AbstractLogger implements Logger {
    * @param entry The Log entry
    */
   public async verbose<T>(entry: LogEntry<T>) {
-    await this.addEntryInternal({
-      ...entry,
-      level: LogLevel.Verbose,
-    })
+    await this.addEntryInternal(
+      {
+        ...entry,
+        level: LogLevel.Verbose,
+      },
+      true,
+    )
   }
 
   /**
