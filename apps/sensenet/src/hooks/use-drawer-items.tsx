@@ -61,13 +61,6 @@ export const useDrawerItems = () => {
     [localization],
   )
 
-  const getRootFromSetting = useCallback(
-    (item: ContentDrawerItem | QueryDrawerItem | BuiltinDrawerItem | DashboardDrawerItem) => {
-      return item.permissions ? item.permissions[0].path : undefined
-    },
-    [],
-  )
-
   const getIconFromSetting = useCallback(
     (item: ContentDrawerItem | QueryDrawerItem | BuiltinDrawerItem | DashboardDrawerItem) => {
       switch (item.itemType) {
@@ -165,17 +158,11 @@ export const useDrawerItems = () => {
         name: setting.itemType,
         requiredGroupPath: '',
         url: getUrlFromSetting(setting),
-        root: getRootFromSetting(setting),
+        root: setting.settings?.root,
       }
       return drawerItem
     },
-    [
-      getIconFromSetting,
-      getItemDescriptionFromSettings,
-      getItemNameFromSettings,
-      getRootFromSetting,
-      getUrlFromSetting,
-    ],
+    [getIconFromSetting, getItemDescriptionFromSettings, getItemNameFromSettings, getUrlFromSetting],
   )
 
   useEffect(() => {
