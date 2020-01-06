@@ -82,7 +82,7 @@ export function InfoBox({ onSelect }: InfoBoxProps) {
           {localization.loginTitle}
         </Typography>
         <Typography className={classes.marginBottom}>
-          If you are not registered your can log in to our{' '}
+          If you are not registered you can log in to our{' '}
           <a href="https://www.sensenet.com/try-it/1000-content-demo" target="blank">
             public demo repository
           </a>{' '}
