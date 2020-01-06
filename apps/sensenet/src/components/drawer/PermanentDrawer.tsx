@@ -46,8 +46,7 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
     return function cleanup() {
       activeComponentObserve.dispose()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [selectionService.activeContent])
 
   useEffect(() => {
     setCurrentRepoEntry(
@@ -87,9 +86,9 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
                   if (!match) {
                     return false
                   }
-                  setCurrentPath(item.root ? item.root : '')
                   return true
-                }}>
+                }}
+                onClick={() => setCurrentPath(item.root ? item.root : '')}>
                 <ListItem
                   button={true}
                   key={index}

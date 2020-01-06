@@ -21,9 +21,6 @@ import { Icon } from './Icon'
 import { useDialog } from './dialogs'
 
 const useStyles = makeStyles((theme: Theme) => {
-  const buttonBackground = theme.palette.primary.main
-  const buttonBackgroundHover = theme.palette.primary.dark
-
   return createStyles({
     addButton: {
       width: '32px',
@@ -31,9 +28,9 @@ const useStyles = makeStyles((theme: Theme) => {
       minHeight: 0,
       padding: 0,
       margin: '0.5rem 0.5rem',
-      backgroundColor: buttonBackground,
+      backgroundColor: theme.palette.primary.main,
       '&:hover': {
-        backgroundColor: buttonBackgroundHover,
+        backgroundColor: theme.palette.primary.dark,
       },
     },
   })

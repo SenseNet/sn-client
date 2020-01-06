@@ -63,26 +63,7 @@ export const useDrawerItems = () => {
 
   const getRootFromSetting = useCallback(
     (item: ContentDrawerItem | QueryDrawerItem | BuiltinDrawerItem | DashboardDrawerItem) => {
-      switch (item.itemType) {
-        case 'Search':
-          return undefined
-        case 'Content':
-          return '/Root/Content'
-        case 'Users and groups':
-          return '/Root/IMS/Public'
-        case 'Trash':
-          return '/Root/Trash'
-        case 'Content Types':
-          return '/Root/System/Schema/ContentTypes'
-        case 'Localization':
-          return '/Root/Localization'
-        case 'Setup':
-          return '/Root/System/Settings'
-        case 'Dashboard':
-          return undefined
-        default:
-          return undefined
-      }
+      return item.permissions ? item.permissions[0].path : undefined
     },
     [],
   )
