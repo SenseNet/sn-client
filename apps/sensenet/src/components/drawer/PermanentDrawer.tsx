@@ -131,7 +131,7 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
                 <ListItemSecondaryAction>
                   {device === 'mobile' ? null : (
                     <NavLink
-                      to={`/personalSettings`}
+                      to="/personalSettings"
                       style={{ textDecoration: 'none' }}
                       isActive={match => {
                         if (!match) {
