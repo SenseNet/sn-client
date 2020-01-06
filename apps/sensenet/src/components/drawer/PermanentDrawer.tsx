@@ -152,7 +152,7 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
           ) : (
             <>
               <NavLink
-                to={'/personalSettings'}
+                to="/personalSettings"
                 activeStyle={{ opacity: 1 }}
                 style={{ textDecoration: 'none', opacity: 0.54 }}
                 key="personalSettings"
