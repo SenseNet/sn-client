@@ -82,21 +82,18 @@ export function InfoBox({ onSelect }: InfoBoxProps) {
           {localization.loginTitle}
         </Typography>
         <Typography className={classes.marginBottom}>
-          It possible to log in to the admin UI also if you don’t have your own repository yet, so you can explore its
-          functionalities (upload, create etc.) managing content of a{' '}
+          If you are not registered your can log in to our{' '}
           <a href="https://www.sensenet.com/try-it/1000-content-demo" target="blank">
             public demo repository
-          </a>
-          . Below you can see the credentials for different built-in role types that has different permission settings.
-          To learn more about the settings see the info bubble.
+          </a>{' '}
+          with one of our built-in users with different roles.
         </Typography>
         <Typography className={classes.marginBottom}>
-          Please notice that the demo repository is rebuilt every day, and do not use it with sensitive documents. Our
-          team is actively working on the system, so we might be under maintenance, and some bugs are normal at this
-          point.
+          Because this is a demo repository, it will be rebuilt every day, so don&apos;t use it with sensitive
+          documents. Some bugs are also normal at this point.
         </Typography>
         <Typography className={classes.marginBottom}>
-          To log in and start exploring the repository click one of the following users below.
+          To log in just click one of the users and start exploring!
         </Typography>
         <List>
           {demoUsers.map((demoUser, index) => (
