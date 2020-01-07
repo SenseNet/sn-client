@@ -73,7 +73,10 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
         } else if (ev.key === 'F7') {
           ev.preventDefault()
           ev.stopPropagation()
-          openDialog({ name: 'add', props: { parent: activeParent, schema: repo.schemas.getSchemaByName('Folder') } })
+          openDialog({
+            name: 'add',
+            props: { parent: activeParent.Path, schema: repo.schemas.getSchemaByName('Folder') },
+          })
         }
       }}
       style={{ display: 'flex', width: '100%', height: '100%' }}>
