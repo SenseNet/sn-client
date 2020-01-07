@@ -1,8 +1,6 @@
 const path = require('path')
-const GitRevisionPlugin = require('git-revision-webpack-plugin')
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
 const webpack = require('webpack')
-const gitRevisionPlugin = new GitRevisionPlugin()
 
 module.exports = {
   entry: ['./src/index.tsx'],
@@ -32,10 +30,7 @@ module.exports = {
   },
   plugins: [
     new webpack.EnvironmentPlugin({
-      GIT_VERSION: gitRevisionPlugin.version(),
       APP_VERSION: require('./package.json').version,
-      GIT_COMMITHASH: gitRevisionPlugin.commithash(),
-      GIT_BRANCH: gitRevisionPlugin.branch(),
     }),
     new MonacoWebpackPlugin({
       languages: ['javascript', 'json'],
