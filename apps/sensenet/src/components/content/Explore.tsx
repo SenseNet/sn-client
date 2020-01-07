@@ -8,7 +8,6 @@ import {
   LoadSettingsContextProvider,
 } from '@sensenet/hooks-react'
 import { useSelectionService } from '../../hooks'
-import { AddButton } from '../AddButton'
 import { ContentBreadcrumbs } from '../ContentBreadcrumbs'
 import { CollectionComponent } from '../content-list'
 import { Tree } from '../tree/index'
@@ -70,8 +69,6 @@ export const Explore: React.FunctionComponent<ExploreComponentProps> = props => 
                   fieldsToDisplay={props.fieldsToDisplay}
                   onActiveItemChange={item => selectionService.activeContent.setValue(item)}
                 />
-
-                <AddButton />
               </div>
             </CurrentAncestorsProvider>
           </CurrentChildrenProvider>

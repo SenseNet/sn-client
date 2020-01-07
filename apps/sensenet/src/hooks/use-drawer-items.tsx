@@ -29,6 +29,7 @@ export interface DrawerItem {
   url: string
   icon: JSX.Element
   requiredGroupPath: string
+  root?: string
 }
 
 export const useDrawerItems = () => {
@@ -157,6 +158,7 @@ export const useDrawerItems = () => {
         name: setting.itemType,
         requiredGroupPath: '',
         url: getUrlFromSetting(setting),
+        root: setting.settings?.root,
       }
       return drawerItem
     },
