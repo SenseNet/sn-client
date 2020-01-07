@@ -37,11 +37,27 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
 
   useEffect(() => {
     if (props.allowedTypes && props.allowedTypes.length > 0) {
-      setAllowedChildTypes(props.allowedTypes.map(type => repo.schemas.getSchemaByName(type)))
+      const tempAllowedChildTypes: Schema[] = []
+
+      props.allowedTypes.forEach(type => {
+        if (repo.schemas.getSchemaByName(type).ContentTypeName === type) {
+          tempAllowedChildTypes.push(repo.schemas.getSchemaByName(type))
+        }
+      })
+      setAllowedChildTypes(tempAllowedChildTypes)
     } else if (showSelectType) {
       repo
         .getAllowedChildTypes({ idOrPath: parent.Id })
-        .then(types => setAllowedChildTypes(types.d.results.map(t => repo.schemas.getSchemaByName(t.Name))))
+        .then(types => {
+          const tempAllowedChildTypes: Schema[] = []
+
+          types.d.results.forEach(type => {
+            if (repo.schemas.getSchemaByName(type.Name).ContentTypeName === type.Name) {
+              tempAllowedChildTypes.push(repo.schemas.getSchemaByName(type.Name))
+            }
+          })
+          setAllowedChildTypes(tempAllowedChildTypes)
+        })
         .catch(error => {
           logger.error({
             message: localization.errorGettingAllowedContentTypes,
