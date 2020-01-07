@@ -175,7 +175,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
               key={childType.ContentTypeName}
               onClick={() => {
                 setShowSelectType(false)
-                openDialog({ name: 'add', props: { schema: childType, parent } })
+                openDialog({ name: 'add', props: { schema: childType, parent: props.path } })
               }}>
               <div
                 style={{
