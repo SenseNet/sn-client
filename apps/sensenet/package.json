@@ -16,6 +16,7 @@
   "scripts": {
     "fix:prettier": "prettier \"{,!(dist|temp|bundle)/**/}*.{ts,tsx}\" --write",
     "build": "webpack --config webpack.prod.js",
+    "build:stats": "webpack --config webpack.prod.js --profile --json > stats.json",
     "start": "webpack-dev-server --open --progress --config webpack.dev.js"
   },
   "private": true,

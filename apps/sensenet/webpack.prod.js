@@ -33,6 +33,7 @@ module.exports = merge(common, {
       async: false,
       useTypescriptIncrementalApi: true,
       memoryLimit: 4096,
+      silent: process.argv.includes('--json'),
     }),
     new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin({
