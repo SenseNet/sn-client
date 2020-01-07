@@ -165,11 +165,6 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
                       primary={`${session.currentUser.DisplayName || session.currentUser.Name} user`}
                     />
                   </MenuItem>
-                  <NavLink to="/login">
-                    <MenuItem style={{ textDecoration: 'underline', color: theme.palette.primary.main }}>
-                      {localization.topMenu.changeRepo}{' '}
-                    </MenuItem>
-                  </NavLink>
                   <NavLink to="/personalSettings" onClick={handleClose}>
                     <MenuItem style={{ textDecoration: 'underline', color: theme.palette.primary.main }}>
                       {localization.topMenu.personalSettings}

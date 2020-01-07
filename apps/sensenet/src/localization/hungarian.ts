@@ -105,7 +105,6 @@ const values: DeepPartial<typeof import('./default').default> = {
     typeToFilter: 'Kezdj írni a szűréshez...',
   },
   topMenu: {
-    changeRepo: 'Másik repository',
     personalSettings: 'Személyes beállítások',
     logout: 'Kijelentkezés',
   },

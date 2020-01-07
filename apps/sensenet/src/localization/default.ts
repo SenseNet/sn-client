@@ -262,7 +262,6 @@ const values = {
     saveFailedNotification: `Failed to save changes of content '{0}'`,
   },
   topMenu: {
-    changeRepo: 'Change repository',
     personalSettings: 'Personal settings',
     logout: 'Log out',
   },
