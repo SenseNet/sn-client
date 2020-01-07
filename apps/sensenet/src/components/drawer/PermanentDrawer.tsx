@@ -79,15 +79,8 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
             return (
               <NavLink
                 to={`/${btoa(repo.configuration.repositoryUrl)}${item.url}`}
-                activeStyle={{ opacity: 1 }}
                 style={{ textDecoration: 'none', opacity: 0.54 }}
                 key={index}
-                isActive={match => {
-                  if (!match) {
-                    return false
-                  }
-                  return true
-                }}
                 onClick={() => setCurrentPath(item.root ? item.root : '')}>
                 <ListItem
                   button={true}
@@ -129,16 +122,7 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
                 />
                 <ListItemSecondaryAction>
                   {device === 'mobile' ? null : (
-                    <NavLink
-                      to="/personalSettings"
-                      style={{ textDecoration: 'none' }}
-                      isActive={match => {
-                        if (!match) {
-                          return false
-                        }
-                        setCurrentPath('')
-                        return true
-                      }}>
+                    <NavLink to="/personalSettings" style={{ textDecoration: 'none' }}>
                       <IconButton title={localization.personalSettingsTitle}>
                         <Settings />
                       </IconButton>
@@ -152,16 +136,9 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
             <>
               <NavLink
                 to="/personalSettings"
-                activeStyle={{ opacity: 1 }}
                 style={{ textDecoration: 'none', opacity: 0.54 }}
                 key="personalSettings"
-                isActive={match => {
-                  if (!match) {
-                    return false
-                  }
-                  setCurrentPath('')
-                  return true
-                }}>
+                onClick={() => setCurrentPath('')}>
                 <ListItem button={true}>
                   <Tooltip
                     title={
