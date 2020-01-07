@@ -63,8 +63,9 @@ export const DesktopLayout: React.FunctionComponent = props => {
           flexGrow: 1,
           display: 'flex',
           flexDirection: 'row',
-          height: '100%',
+          height: 'calc(100% - 64px)',
           width: '100%',
+          position: 'relative',
         }}>
         {settings.drawer.enabled ? (
           <>

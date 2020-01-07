@@ -160,7 +160,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
   }, [scrollLock, scrollToken])
 
   return (
-    <div style={{ padding: '1em', margin: '1em', height: '100%', width: '100%' }}>
+    <div style={{ padding: '1em 0 0 1em', height: '100%', width: '100%' }}>
       <Typography variant="h5">{queryData.title || localization.title}</Typography>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         {queryData.hideSearchBar ? null : (
@@ -202,7 +202,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
           <CurrentAncestorsContext.Provider value={[]}>
             <CollectionComponent
               style={{
-                height: 'calc(100% - 75px)',
+                height: 'calc(100% - 33px)',
                 overflow: 'auto',
               }}
               containerProps={{
