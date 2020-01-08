@@ -1,5 +1,4 @@
-import { ConstantContent, LoginState } from '@sensenet/client-core'
-import { RepositoryConfiguration } from '@sensenet/client-core/dist/Repository/RepositoryConfiguration'
+import { ConstantContent, LoginState, RepositoryConfiguration } from '@sensenet/client-core'
 import { User } from '@sensenet/default-content-types'
 import { combineReducers, Reducer } from 'redux'
 import { loadRepository, userChanged } from '../Actions'
