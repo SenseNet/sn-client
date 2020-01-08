@@ -410,13 +410,4 @@ export class PersonalSettings {
     this.effectiveValue.setValue(deepMerge(defaultSettings, settings))
     localStorage.setItem(`${settingsKey}`, JSON.stringify(settings))
   }
-
-  public setPersonalSettingsTheme(theme: 'dark' | 'light' | undefined) {
-    const currentValuesCopy: Partial<PersonalSettingsType> = this.userValue.getValue()
-    currentValuesCopy.theme = theme ? theme : 'light'
-
-    this.userValue.setValue(currentValuesCopy)
-    this.effectiveValue.setValue(deepMerge(defaultSettings, currentValuesCopy))
-    localStorage.setItem(`${settingsKey}`, JSON.stringify(currentValuesCopy))
-  }
 }

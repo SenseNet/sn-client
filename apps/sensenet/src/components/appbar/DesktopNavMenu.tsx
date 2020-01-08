@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import {
   Grid,
@@ -18,10 +18,9 @@ import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
 import { useInjector, useRepository, useSession } from '@sensenet/hooks-react'
 import { NavLink } from 'react-router-dom'
 import { UserAvatar } from '../UserAvatar'
-import { useLocalization } from '../../hooks'
+import { useLocalization, usePersonalSettings } from '../../hooks'
 import { useDialog } from '../dialogs'
 import { PersonalSettings } from '../../services'
-import { useThemeService } from '../../hooks/use-theme-service'
 
 const AntSwitch = withStyles((theme: Theme) =>
   createStyles({
@@ -72,7 +71,7 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 export const DesktopNavMenu: React.FunctionComponent = () => {
-  const themeService = useThemeService()
+  const personalSettings = usePersonalSettings()
   const injector = useInjector()
   const classes = useStyles()
   const theme = useTheme()
@@ -83,12 +82,6 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
   const session = useSession()
   const repo = useRepository()
   const localization = useLocalization()
-  const [pageTheme, setPageTheme] = useState<'dark' | 'light' | undefined>(themeService.currentTheme.getValue())
-
-  useEffect(() => {
-    service.setPersonalSettingsTheme(pageTheme)
-    themeService.currentTheme.setValue(pageTheme)
-  }, [pageTheme, service, themeService.currentTheme])
 
   const handleToggle = () => {
     setOpen(prevOpen => !prevOpen)
@@ -124,7 +117,8 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
   }
 
   const switchTheme = () => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPageTheme(event.target.checked ? 'dark' : 'light')
+    const settings = service.userValue.getValue()
+    service.setPersonalSettingsValue({ ...settings, theme: event.target.checked ? 'dark' : 'light' })
   }
 
   return (
@@ -177,10 +171,10 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
                     <Typography component="div" style={{ color: theme.palette.primary.main }}>
                       <Grid component="label" container alignItems="center" spacing={1}>
                         <Grid item style={{ textTransform: 'uppercase', paddingRight: '32px' }}>
-                          {pageTheme === 'dark' ? 'Light theme' : 'Dark theme'}
+                          {personalSettings.theme === 'dark' ? 'Light theme' : 'Dark theme'}
                         </Grid>
                         <Grid item>
-                          <AntSwitch checked={pageTheme === 'dark'} onChange={switchTheme()} />
+                          <AntSwitch checked={personalSettings.theme === 'dark'} onChange={switchTheme()} />
                         </Grid>
                       </Grid>
                     </Typography>

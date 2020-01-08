@@ -11,7 +11,6 @@ import { useHistory, useLocation, useRouteMatch } from 'react-router'
 import { useLocalization, useTheme } from '../../hooks'
 import { PersonalSettings, PersonalSettingsType } from '../../services/PersonalSettings'
 import { UserAvatar } from '../UserAvatar'
-import { useThemeService } from '../../hooks/use-theme-service'
 import { DemoUser, InfoBox } from './info-box'
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -26,7 +25,6 @@ const useStyles = makeStyles((theme: Theme) =>
 )
 
 export const Login = () => {
-  const themeService = useThemeService()
   const injector = useInjector()
   const history = useHistory()
   const match = useRouteMatch()
@@ -43,7 +41,6 @@ export const Login = () => {
   const repositories: PersonalSettingsType['repositories'] = personalSettings.repositories || []
 
   const existingRepo = repositories.find(r => r.url === repo.configuration.repositoryUrl)
-  themeService.currentTheme.setValue(personalSettings.theme)
 
   const [userName, setUserName] = useState((existingRepo && existingRepo.loginName) || '')
   const [password, setPassword] = useState('')
