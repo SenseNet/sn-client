@@ -12,11 +12,13 @@ const values = {
   addButton: {
     tooltip: 'Create or upload content',
     new: 'New...',
+    addNew: 'Add new',
     dialogTitle: 'Create new {0}',
     upload: 'Upload',
     errorGettingAllowedContentTypes: 'There was an error while fetching the allowed content types.',
     contentCreatedNotification: `The content '{0}' has been created succesfully.`,
     errorPostingContentNotification: 'There was an error during content creation',
+    errorGettingActions: 'There was an error while fetching the actions.',
   },
   commandPalette: {
     title: 'Show Command Palette',

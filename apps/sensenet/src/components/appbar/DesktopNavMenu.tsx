@@ -173,7 +173,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
                   <MenuItem onClick={logout} style={{ textDecoration: 'underline', color: theme.palette.primary.main }}>
                     {localization.topMenu.logout}
                   </MenuItem>
-                  <MenuItem onClick={handleClose}>
+                  <MenuItem>
                     <Typography component="div" style={{ color: theme.palette.primary.main }}>
                       <Grid component="label" container alignItems="center" spacing={1}>
                         <Grid item style={{ textTransform: 'uppercase', paddingRight: '32px' }}>

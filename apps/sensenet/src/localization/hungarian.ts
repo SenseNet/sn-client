@@ -3,6 +3,7 @@ import { DeepPartial } from '@sensenet/client-utils'
 const values: DeepPartial<typeof import('./default').default> = {
   addButton: {
     new: 'Új...',
+    addNew: 'Új hozzáadása',
     tooltip: 'Tartalom létrehozása vagy feltöltése',
     upload: 'Feltöltés',
     dialogTitle: 'Új {0} létrehozása',

@@ -243,10 +243,12 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
   return (
     <div style={{ ...props.style }} {...props.containerProps}>
       {props.enableBreadcrumbs ? <ContentBreadcrumbs onItemClick={i => props.onParentChange(i.content)} /> : null}
-      <DropFileArea parentContent={parentContent} style={{ height: '100%', overflow: 'hidden' }}>
+      <DropFileArea
+        parentContent={parentContent}
+        style={{ height: props.parentIdOrPath !== 0 ? 'calc(100% - 36px)' : '100%', overflow: 'hidden' }}>
         <div
           style={{
-            height: 'calc(100% - 36px)',
+            height: '100%',
             overflow: 'auto',
             userSelect: 'none',
             outline: 'none',
