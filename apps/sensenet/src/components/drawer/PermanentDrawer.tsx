@@ -99,16 +99,16 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
                   }
                   return true
                 }}>
-                <ListItem
-                  style={{ backgroundColor: 'inherit' }}
-                  button={true}
-                  key={index}
-                  selected={matchPath(props.location.pathname, `/:repositoryId${item.url}`) === null ? false : true}>
-                  <Tooltip title={item.primaryText} placement="right">
+                <Tooltip title={item.secondaryText} placement="right">
+                  <ListItem
+                    style={{ backgroundColor: 'inherit' }}
+                    button={true}
+                    key={index}
+                    selected={matchPath(props.location.pathname, `/:repositoryId${item.url}`) === null ? false : true}>
                     <ListItemIcon>{item.icon}</ListItemIcon>
-                  </Tooltip>
-                  {opened ? <ListItemText primary={item.primaryText} /> : null}
-                </ListItem>
+                    {opened ? <ListItemText primary={item.primaryText} /> : null}
+                  </ListItem>
+                </Tooltip>
               </NavLink>
             )
           })}
