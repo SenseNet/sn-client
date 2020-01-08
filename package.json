@@ -45,7 +45,7 @@
     "dms": "yarn workspace sn-dms-demo",
     "build": "tsc -b packages",
     "build:dms": "yarn && yarn build && yarn workspace sn-dms-demo run build:webpack",
-    "build:sn-app": "yarn && yarn build && yarn workspace @sensenet/sn-app run build:webpack",
+    "build:sn-app": "yarn && yarn build && yarn workspace @sensenet/sn-app run build",
     "build:docs": "yarn && yarn build && yarn workspace sn-react-component-docs run build-storybook",
     "clean:packages": "rimraf ./packages/**/dist ./packages/**/tsconfig.tsbuildinfo ./packages/tsconfig.tsbuildinfo",
     "test": "jest",
