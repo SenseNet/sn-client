@@ -1,11 +1,11 @@
 /**
  *
- * You can implement *IDisposable* resources and use them with a *using()* or *usingAsync()* syntax.
+ * You can implement *Disposable* resources and use them with a *using()* or *usingAsync()* syntax.
  *
  * Usage example:
  *
  * ```ts
- * class Resource implements IDisposable{
+ * class Resource implements Disposable{
  *       dispose(){
  *           // cleanup logics
  *      }
@@ -29,13 +29,13 @@
  */
 export interface Disposable {
   /**
-   * Method called when the IDisposable is disposed.
+   * Method called when the Disposable is disposed.
    */
   dispose: () => void | Promise<void>
 }
 
 /**
- * Method that accepts an IDisposable resource that will be disposed after the callback
+ * Method that accepts an Disposable resource that will be disposed after the callback
  * @param {Disposable} resource The resource that is used in the callback and will be disposed afterwards
  * @param {function} callback The callback that will be executed synchrounously before the resource will be disposed
  */
@@ -48,7 +48,7 @@ export const using = <T extends Disposable, TReturns>(resource: T, callback: (re
 }
 
 /**
- * Method that accepts an IDisposable resource that will be disposed after the callback
+ * Method that accepts an Disposable resource that will be disposed after the callback
  * @param {Disposable} resource The resource that is used in the callback and will be disposed afterwards
  * @param {function} callback The callback that will be executed asynchrounously before the resource will be disposed
  */

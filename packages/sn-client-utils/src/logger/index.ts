@@ -1,4 +1,5 @@
 export * from './abstract-logger'
+export * from './colors'
 export * from './console-logger'
 export * from './log-entries'
 export * from './logger'
