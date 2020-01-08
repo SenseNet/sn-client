@@ -17,10 +17,9 @@ import {
   useRepository,
 } from '@sensenet/hooks-react'
 import { ResponsivePersonalSetttings } from '../../context'
-import { useContentRouting, useLocalization } from '../../hooks'
+import { useContentRouting, useLocalization, useSelectionService } from '../../hooks'
 import { CollectionComponent, isReferenceField } from '../content-list'
 import { useDialog } from '../dialogs'
-import { AddButton } from '../AddButton'
 
 const loadCount = 20
 const searchDebounceTime = 400
@@ -44,14 +43,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
   const { openDialog } = useDialog()
   const logger = useLogger('Search')
   const [queryData, setQueryData] = useState<QueryData>(decodeQueryData(props.match.params.queryData))
-  const [activeParent, setActiveParent] = useState<GenericContent>(null as any)
-
-  useEffect(() => {
-    if (queryData.parentPath && queryData.parentPath.length > 0) {
-      setActiveParent({ Path: queryData.parentPath } as GenericContent)
-    }
-  }, [queryData.parentPath])
-
+  const selectionService = useSelectionService()
   const localization = useLocalization().search
   const [scrollToken, setScrollToken] = useState(Math.random())
   const [scrollLock] = useState(new Semaphore(1))
@@ -160,7 +152,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
   }, [scrollLock, scrollToken])
 
   return (
-    <div style={{ padding: '1em', margin: '1em', height: '100%', width: '100%' }}>
+    <div style={{ padding: '1em 0 0 1em', height: '100%', width: '100%' }}>
       <Typography variant="h5">{queryData.title || localization.title}</Typography>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         {queryData.hideSearchBar ? null : (
@@ -202,7 +194,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
           <CurrentAncestorsContext.Provider value={[]}>
             <CollectionComponent
               style={{
-                height: 'calc(100% - 75px)',
+                height: 'calc(100% - 33px)',
                 overflow: 'auto',
               }}
               containerProps={{
@@ -220,10 +212,11 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
               onTabRequest={() => {
                 /** */
               }}
+              onSelectionChange={sel => {
+                selectionService.selection.setValue(sel)
+              }}
+              onActiveItemChange={item => selectionService.activeContent.setValue(item)}
             />
-            {queryData.showAddButton && queryData.parentPath && queryData.parentPath.length > 0 ? (
-              <AddButton parent={activeParent} allowedTypes={queryData.allowedTypes} />
-            ) : null}
           </CurrentAncestorsContext.Provider>
         </CurrentChildrenContext.Provider>
       </CurrentContentContext.Provider>

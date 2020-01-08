@@ -6,7 +6,6 @@ import {
   LoadSettingsContextProvider,
 } from '@sensenet/hooks-react'
 import { useSelectionService } from '../../hooks'
-import { AddButton } from '../AddButton'
 import { CollectionComponent, CollectionComponentProps } from '../content-list'
 
 export interface SimpleListComponentProps {
@@ -36,7 +35,6 @@ export const SimpleList: React.FunctionComponent<SimpleListComponentProps> = pro
                 onActiveItemChange={item => selectionService.activeContent.setValue(item)}
                 {...props.collectionComponentProps}
               />
-              <AddButton />
             </CurrentAncestorsProvider>
           </CurrentChildrenProvider>
         </CurrentContentProvider>
