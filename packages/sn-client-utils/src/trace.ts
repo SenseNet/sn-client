@@ -95,7 +95,7 @@ export interface ObjectTrace {
  *
  * Usage example:
  * ```ts
- * const methodTracer: IDisposable = Trace.method({
+ * const methodTracer: Disposable = Trace.method({
  *     object: myObjectInstance,           // You can define an object constructor for static methods as well
  *     method: myObjectInstance.method,    // The method to be tracked
  *     isAsync: true,                      // if you set to async, method finished will be *await*-ed

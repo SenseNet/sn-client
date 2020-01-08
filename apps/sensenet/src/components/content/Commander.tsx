@@ -10,7 +10,6 @@ import {
   useRepository,
 } from '@sensenet/hooks-react'
 import { useSelectionService } from '../../hooks'
-import { AddButton } from '../AddButton'
 import { CollectionComponent } from '../content-list'
 import { useDialog } from '../dialogs'
 
@@ -29,7 +28,6 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
   const repo = useRepository()
   const { openDialog } = useDialog()
   const selectionService = useSelectionService()
-
   const [_leftPanelRef, setLeftPanelRef] = useState<null | any>(null)
   const [_rightPanelRef, setRightPanelRef] = useState<null | any>(null)
 
@@ -141,8 +139,6 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
           </CurrentChildrenProvider>
         </CurrentContentProvider>
       </LoadSettingsContextProvider>
-
-      {activeParent ? <AddButton parent={activeParent} /> : null}
     </div>
   )
 }

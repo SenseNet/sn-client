@@ -1,5 +1,5 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
-import { isExtendedError } from '@sensenet/client-core/dist/Repository/Repository'
+import { isExtendedError } from '@sensenet/client-core'
 import { EditView } from '@sensenet/controls-react'
 import React from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'

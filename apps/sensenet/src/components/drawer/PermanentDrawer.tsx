@@ -5,14 +5,15 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Paper from '@material-ui/core/Paper'
 import Tooltip from '@material-ui/core/Tooltip'
 import { Close, Menu } from '@material-ui/icons'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import { matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
 import { useRepository } from '@sensenet/hooks-react'
-import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import clsx from 'clsx'
+import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import { ResponsivePersonalSetttings } from '../../context'
-import { useDrawerItems, useLocalization } from '../../hooks'
+import { useDrawerItems, useLocalization, useSelectionService } from '../../hooks'
+import { AddButton } from '../AddButton'
 
 const useStyles = makeStyles((theme: Theme) => {
   const primary = theme.palette.primary.main
@@ -63,11 +64,23 @@ const useStyles = makeStyles((theme: Theme) => {
 const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
   const classes = useStyles()
   const settings = useContext(ResponsivePersonalSetttings)
+  const selectionService = useSelectionService()
   const repo = useRepository()
-
+  const [currentComponent, setCurrentComponent] = useState(selectionService.activeContent.getValue())
+  const [currentPath, setCurrentPath] = useState('')
   const [opened, setOpened] = useState(settings.drawer.type === 'permanent')
   const items = useDrawerItems()
   const localization = useLocalization().drawer
+
+  useEffect(() => {
+    const activeComponentObserve = selectionService.activeContent.subscribe(newActiveComponent =>
+      setCurrentComponent(newActiveComponent),
+    )
+
+    return function cleanup() {
+      activeComponentObserve.dispose()
+    }
+  }, [selectionService.activeContent])
 
   if (!settings.drawer.enabled) {
     return null
@@ -86,19 +99,15 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
               </ListItem>
             ) : null}
           </div>
+
+          <AddButton isOpened={opened} parent={currentComponent} path={currentPath} />
           {items.map((item, index) => {
             return (
               <NavLink
                 to={`/${btoa(repo.configuration.repositoryUrl)}${item.url}`}
-                activeClassName={classes.navLinkActiveStyle}
                 className={classes.navLinkStyle}
                 key={index}
-                isActive={match => {
-                  if (!match) {
-                    return false
-                  }
-                  return true
-                }}>
+                onClick={() => setCurrentPath(item.root ? item.root : '')}>
                 <Tooltip title={item.secondaryText} placement="right">
                   <ListItem
                     style={{ backgroundColor: 'inherit' }}

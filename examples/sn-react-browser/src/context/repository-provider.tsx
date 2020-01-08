@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { FormsAuthenticationService, LoginState, Repository } from '@sensenet/client-core'
-import { RepositoryConfiguration } from '@sensenet/client-core/dist/Repository/RepositoryConfiguration'
+import { FormsAuthenticationService, LoginState, Repository, RepositoryConfiguration } from '@sensenet/client-core/'
 import { RepositoryContext } from '@sensenet/hooks-react'
 import { LoginForm } from '../components/login-form'
 import { FullScreenLoader } from '../components/full-screen-loader'

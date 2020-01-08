@@ -1,4 +1,11 @@
-import { ConsoleLogger, defaultFormatter, LoggerCollection, LogLevel, verboseFormatter } from '../src'
+import {
+  BrowserConsoleLogger,
+  browserFormatter,
+  ConsoleLogger,
+  defaultFormatter,
+  LoggerCollection,
+  LogLevel,
+} from '../src'
 import { TestLogger } from './__Mocks__/test-logger'
 
 describe('Loggers', () => {
@@ -207,88 +214,147 @@ describe('Loggers', () => {
   })
 
   describe('ConsoleLogger', () => {
+    beforeEach(() => {
+      console.log = jest.fn()
+    })
+    afterEach(() => {
+      ;(console.log as any).mockRestore()
+    })
     const consoleLogger = new ConsoleLogger()
     it('Should print Verbose', () => {
-      jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
       consoleLogger.verbose({ scope: 'scope', message: 'Example Verbose Message' })
-      jest.restoreAllMocks()
+      expect(console.log).toBeCalledWith('\u001b[34m%s\u001b[0m', 'scope', 'Example Verbose Message')
     })
 
     it('Should print Debug', () => {
-      jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
       consoleLogger.debug({ scope: 'scope', message: 'Example Debug Message' })
-      jest.restoreAllMocks()
+      expect(console.log).toBeCalledWith('\u001b[34m%s\u001b[0m', 'scope', 'Example Debug Message')
     })
 
     it('Should print Information', () => {
-      jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
       consoleLogger.information({ scope: 'scope', message: 'Example Information Message' })
-      jest.restoreAllMocks()
+      expect(console.log).toBeCalledWith('\u001b[32m%s\u001b[0m', 'scope', 'Example Information Message')
     })
 
     it('Should print Warning', () => {
-      jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
       consoleLogger.warning({ scope: 'scope', message: 'Example Warning Message' })
-      jest.restoreAllMocks()
+      expect(console.log).toBeCalledWith('\u001b[33m%s\u001b[0m', 'scope', 'Example Warning Message')
     })
 
     it('Should print Error', () => {
-      jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
       consoleLogger.error({ scope: 'scope', message: 'Example Error Message' })
-      jest.restoreAllMocks()
+      expect(console.log).toBeCalledWith('\u001b[31m%s\u001b[0m', 'scope', 'Example Error Message')
     })
 
     it('Should print Fatal', () => {
-      jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
       consoleLogger.fatal({ scope: 'scope', message: 'Example Fatal Message' })
-      jest.restoreAllMocks()
+      expect(console.log).toBeCalledWith('\u001b[31m%s\u001b[0m', 'scope', 'Example Fatal Message')
     })
 
-    it('Should print additional data', () => {
-      jest.spyOn(console, 'log').mockImplementation(() => jest.fn())
-      consoleLogger.fatal({ scope: 'scope', message: 'Example Fatal Message', data: { a: 1 } })
-      jest.restoreAllMocks()
+    it('Should print additional data in verbose', () => {
+      consoleLogger.verbose({ scope: 'scope', message: 'Example Verbose Message', data: { a: 1 } })
+      expect(console.log).toBeCalledWith('\u001b[34m%s\u001b[0m', 'scope', 'Example Verbose Message', { a: 1 })
     })
   })
 
   describe('defaultFormatter', () => {
     it('Should print compact messages', () =>
       expect(
-        defaultFormatter({
-          level: LogLevel.Debug,
-
-          scope: 'scope',
-
-          message: 'message',
-
-          data: {},
-        }),
+        defaultFormatter(
+          {
+            level: LogLevel.Debug,
+            scope: 'scope',
+            message: 'message',
+            data: {},
+          },
+          false,
+        ),
       ).toEqual(['\u001b[34m%s\u001b[0m', 'scope', 'message']))
   })
 
-  describe('verboseFormatter', () => {
-    it('Should print compact messages', () =>
+  describe('BrowserConsoleLogger', () => {
+    const browserLogger = new BrowserConsoleLogger().withScope('scope')
+    beforeEach(() => {
+      console.log = jest.fn()
+    })
+    afterEach(() => {
+      ;(console.log as any).mockRestore()
+    })
+    const tests = [
+      {
+        method: browserLogger.debug,
+        methodName: 'Debug',
+        expectation: ['%c[scope]:', 'color: darkblue', 'Example Message'],
+      },
+      {
+        method: browserLogger.error,
+        methodName: 'Error',
+        expectation: ['%c[scope]:', 'color: darkred', 'Example Message'],
+      },
+      {
+        method: browserLogger.fatal,
+        methodName: 'Fatal',
+        expectation: ['%c[scope]:', 'color: darkred', 'Example Message'],
+      },
+      {
+        method: browserLogger.information,
+        methodName: 'Information',
+        expectation: ['%c[scope]:', 'color: darkgreen', 'Example Message'],
+      },
+      {
+        method: browserLogger.verbose,
+        methodName: 'Information',
+        expectation: ['%c[scope]:', 'color: darkblue', 'Example Message'],
+      },
+      {
+        method: browserLogger.warning,
+        methodName: 'Information',
+        expectation: ['%c[scope]:', 'color: darkorange', 'Example Message'],
+      },
+    ]
+    tests.forEach(test => {
+      it(`should print colored log for ${test.methodName}`, () => {
+        test.method({ message: 'Example Message' })
+        expect(console.log).toBeCalledWith(...test.expectation)
+      })
+    })
+
+    it('should print colored log when addEntry called', () => {
+      browserLogger.addEntry({
+        level: LogLevel.Information,
+        message: 'message',
+        data: { someProp: 'someProp' },
+      })
+      expect(console.log).toBeCalledWith('%c[scope]:', 'color: darkgreen', 'message', { someProp: 'someProp' })
+    })
+  })
+
+  describe('browserFormatter', () => {
+    it('should print logentry with data if it is provided', () => {
       expect(
-        verboseFormatter({
-          level: LogLevel.Debug,
-
+        browserFormatter<{ someProp: string }>({
+          level: LogLevel.Information,
+          message: 'message',
           scope: 'scope',
+          data: { someProp: 'someProp' },
+        }),
+      ).toEqual(['%c[scope]:', 'color: darkgreen', 'message', { someProp: 'someProp' }])
+    })
 
+    it('should not color anything if there is no scope', () => {
+      expect(
+        browserFormatter<{ someProp: string }>({
+          level: LogLevel.Information,
+          message: 'message',
+          data: { someProp: 'someProp' },
+        }),
+      ).toEqual(['message', { someProp: 'someProp' }])
+      expect(
+        browserFormatter<{ someProp: string }>({
+          level: LogLevel.Information,
           message: 'message',
         }),
-      ).toEqual(['\u001b[34m%s\u001b[0m', 'scope', 'message']))
-
-    it('Should print verbose messages with data', () =>
-      expect(
-        verboseFormatter({
-          level: LogLevel.Debug,
-
-          scope: 'scope',
-
-          message: 'message',
-
-          data: {},
-        }),
-      ).toEqual(['\u001b[34m%s\u001b[0m', 'scope', 'message', {}]))
+      ).toEqual(['message'])
+    })
   })
 })
