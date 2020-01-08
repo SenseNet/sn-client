@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useHistory, useParams } from 'react-router'
 import { useRepository } from '@sensenet/hooks-react'
-import { ODataWopiResponse } from '@sensenet/client-core'
-import { isExtendedError } from '@sensenet/client-core/dist/Repository/Repository'
+import { isExtendedError, ODataWopiResponse } from '@sensenet/client-core'
 import { Button, Typography } from '@material-ui/core'
 import { FullScreenLoader } from './full-screen-loader'
 
