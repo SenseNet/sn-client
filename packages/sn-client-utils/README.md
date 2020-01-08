@@ -22,7 +22,7 @@ You can implement _disposable_ resources and use them with a _using()_ or _using
 Example:
 
 ```ts
-class Resource implements IDisposable {
+class Resource implements Disposable {
   dispose() {
     // cleanup logics
   }
@@ -87,7 +87,7 @@ const retrierSuccess = await Retrier.create(funcToRetry)
 Trace is an utility that can be used to track method calls, method returns and errors
 
 ```ts
-const methodTracer: IDisposable = Trace.method({
+const methodTracer: Disposable = Trace.method({
   object: myObjectInstance, // You can define an object constructor for static methods as well
   method: myObjectInstance.method, // The method to be tracked
   isAsync: true, // if you set to async, method finished will be *await*-ed
@@ -113,7 +113,7 @@ methodTracer.dispose()
 You can start using the Logging service with an injector in the following way
 
 ```ts
-import { ConsoleLogger } from 'logger'
+import { ConsoleLogger, Injector } from '@sensenet/client-utils'
 
 const myInjector = new Injector().useLogging(ConsoleLogger, Logger1, Logger2 /** ...your Logger implementations */)
 ```
@@ -169,17 +169,17 @@ scopedLogger.verbose({ message: 'FooBarBaz' })
 You can implement your own logging logic in the similar way as this custom log collector
 
 ```ts
-import { AbstractLogger, ILeveledLogEntry } from 'logger'
+import { AbstractLogger, Injectable, LeveledLogEntry } from '@sensenet/client-utils'
 
 @Injectable({ lifetime: 'singleton' })
 export class MyCustomLogCollector extends AbstractLogger {
-  private readonly entries: Array<ILeveledLogEntry<any>> = []
+  private readonly entries: Array<LeveledLogEntry<any>> = []
 
   public getEntries() {
     return [...this.entries]
   }
 
-  public async addEntry<T>(entry: ILeveledLogEntry<T>): Promise<void> {
+  public async addEntry<T>(entry: LeveledLogEntry<T>): Promise<void> {
     this.entries.push(entry)
   }
 

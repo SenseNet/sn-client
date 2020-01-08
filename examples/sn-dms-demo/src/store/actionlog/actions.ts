@@ -1,5 +1,4 @@
-import { Repository } from '@sensenet/client-core'
-import { isExtendedError } from '@sensenet/client-core/dist/Repository/Repository'
+import { isExtendedError, Repository } from '@sensenet/client-core'
 import { createAction } from '@sensenet/redux'
 import { EventHub } from '@sensenet/repository-events'
 import { IInjectableActionCallbackParams } from 'redux-di-middleware'
