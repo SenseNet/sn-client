@@ -10,10 +10,9 @@ import {
   MenuList,
   Paper,
   Popper,
-  Switch,
   Typography,
 } from '@material-ui/core'
-import { createStyles, makeStyles, Theme, useTheme, withStyles } from '@material-ui/core/styles'
+import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles'
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown'
 import { useInjector, useRepository, useSession } from '@sensenet/hooks-react'
 import { NavLink } from 'react-router-dom'
@@ -21,39 +20,7 @@ import { UserAvatar } from '../UserAvatar'
 import { useLocalization, usePersonalSettings } from '../../hooks'
 import { useDialog } from '../dialogs'
 import { PersonalSettings } from '../../services'
-
-const AntSwitch = withStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      width: 28,
-      height: 16,
-      padding: 0,
-      display: 'flex',
-    },
-    switchBase: {
-      padding: 2,
-      color: theme.palette.common.white,
-      opacity: '1',
-      '&$checked': {
-        transform: 'translateX(12px)',
-        color: theme.palette.common.black,
-        '& + $track': {
-          opacity: 1,
-          backgroundColor: theme.palette.common.white,
-        },
-      },
-    },
-    thumb: {
-      width: 12,
-      height: 12,
-      boxShadow: 'none',
-    },
-    track: {
-      opacity: 1,
-    },
-    checked: {},
-  }),
-)(Switch)
+import { AntSwitch } from '../../components/ant-switch'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
