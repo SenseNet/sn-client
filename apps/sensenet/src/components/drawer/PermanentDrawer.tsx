@@ -12,21 +12,24 @@ import Settings from '@material-ui/icons/Settings'
 import { PathHelper } from '@sensenet/client-utils'
 import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
-import { Link, matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
+import { matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
 import { useRepository, useSession } from '@sensenet/hooks-react'
 import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
-import { useDrawerItems, useLocalization, usePersonalSettings, useTheme } from '../../hooks'
+import { useDrawerItems, useLocalization, usePersonalSettings, useSelectionService, useTheme } from '../../hooks'
 import { LogoutButton } from '../LogoutButton'
 import { UserAvatar } from '../UserAvatar'
+import { AddButton } from '../AddButton'
 
 const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
   const settings = useContext(ResponsivePersonalSetttings)
+  const selectionService = useSelectionService()
   const personalSettings = usePersonalSettings()
   const theme = useTheme()
   const session = useSession()
   const repo = useRepository()
   const device = useContext(ResponsiveContext)
-
+  const [currentComponent, setCurrentComponent] = useState(selectionService.activeContent.getValue())
+  const [currentPath, setCurrentPath] = useState('')
   const [opened, setOpened] = useState(settings.drawer.type === 'permanent')
   const items = useDrawerItems()
   const localization = useLocalization().drawer
@@ -35,13 +38,21 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
     personalSettings.repositories.find(r => r.url === PathHelper.trimSlashes(repo.configuration.repositoryUrl)),
   )
 
-  useEffect(
-    () =>
-      setCurrentRepoEntry(
-        personalSettings.repositories.find(r => r.url === PathHelper.trimSlashes(repo.configuration.repositoryUrl)),
-      ),
-    [personalSettings, repo],
-  )
+  useEffect(() => {
+    const activeComponentObserve = selectionService.activeContent.subscribe(newActiveComponent =>
+      setCurrentComponent(newActiveComponent),
+    )
+
+    return function cleanup() {
+      activeComponentObserve.dispose()
+    }
+  }, [selectionService.activeContent])
+
+  useEffect(() => {
+    setCurrentRepoEntry(
+      personalSettings.repositories.find(r => r.url === PathHelper.trimSlashes(repo.configuration.repositoryUrl)),
+    )
+  }, [personalSettings, repo])
 
   if (!settings.drawer.enabled) {
     return null
@@ -63,28 +74,18 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
           transition: 'width 100ms ease-in-out',
         }}>
         <div style={{ paddingTop: '1em', overflowY: 'auto', overflowX: 'hidden' }}>
+          <AddButton isOpened={opened} parent={currentComponent} path={currentPath} />
           {items.map((item, index) => {
-            const isActive = matchPath(props.location.pathname, `/:repositoryId${item.url}`)
-            return isActive ? (
-              <ListItem button={true} key={index} selected>
-                <Tooltip
-                  title={
-                    <React.Fragment>
-                      {item.primaryText} <br /> {item.secondaryText}
-                    </React.Fragment>
-                  }
-                  placement="right">
-                  <ListItemIcon>{item.icon}</ListItemIcon>
-                </Tooltip>
-                {opened ? <ListItemText primary={item.primaryText} secondary={item.secondaryText} /> : null}
-              </ListItem>
-            ) : (
+            return (
               <NavLink
                 to={`/${btoa(repo.configuration.repositoryUrl)}${item.url}`}
-                activeStyle={{ opacity: 1 }}
                 style={{ textDecoration: 'none', opacity: 0.54 }}
-                key={index}>
-                <ListItem button={true}>
+                key={index}
+                onClick={() => setCurrentPath(item.root ? item.root : '')}>
+                <ListItem
+                  button={true}
+                  key={index}
+                  selected={matchPath(props.location.pathname, `/:repositoryId${item.url}`) === null ? false : true}>
                   <Tooltip
                     title={
                       <React.Fragment>
@@ -121,11 +122,11 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
                 />
                 <ListItemSecondaryAction>
                   {device === 'mobile' ? null : (
-                    <Link to={`/personalSettings`} style={{ textDecoration: 'none' }}>
+                    <NavLink to="/personalSettings" style={{ textDecoration: 'none' }}>
                       <IconButton title={localization.personalSettingsTitle}>
                         <Settings />
                       </IconButton>
-                    </Link>
+                    </NavLink>
                   )}
                   <LogoutButton />
                 </ListItemSecondaryAction>
@@ -134,10 +135,10 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
           ) : (
             <>
               <NavLink
-                to={'/personalSettings'}
-                activeStyle={{ opacity: 1 }}
+                to="/personalSettings"
                 style={{ textDecoration: 'none', opacity: 0.54 }}
-                key={'personalSettings'}>
+                key="personalSettings"
+                onClick={() => setCurrentPath('')}>
                 <ListItem button={true}>
                   <Tooltip
                     title={
