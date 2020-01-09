@@ -178,7 +178,6 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
             </div>
           </Button>
           {allowedChildTypes.map(childType => (
-    width: 90,
             <Tooltip title={childType.DisplayName} key={childType.DisplayName}>
               <Button
                 key={childType.ContentTypeName}
