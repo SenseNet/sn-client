@@ -3,7 +3,9 @@
   "include": ["src"],
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "src"
+    "rootDir": "src",
+    "module": "esnext",
+    "moduleResolution": "node"
   },
   "references": [
     { "path": "../sn-client-core" },

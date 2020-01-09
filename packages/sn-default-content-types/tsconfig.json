@@ -3,7 +3,9 @@
   "compilerOptions": {
     "importHelpers": false,
     "outDir": "dist",
-    "rootDir": "src"
+    "rootDir": "src",
+    "module": "esnext",
+    "moduleResolution": "node"
   },
   "include": ["src"]
 }

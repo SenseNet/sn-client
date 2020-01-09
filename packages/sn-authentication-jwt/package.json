@@ -1,5 +1,6 @@
 {
   "name": "@sensenet/authentication-jwt",
+  "sideEffects": false,
   "version": "1.0.20",
   "description": "JWT Authentication service for sensenet",
   "main": "dist/index.js",

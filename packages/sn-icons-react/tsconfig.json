@@ -5,7 +5,9 @@
     "rootDir": "src",
     "noImplicitAny": false,
     "strictPropertyInitialization": false,
-    "strictNullChecks": false
+    "strictNullChecks": false,
+    "module": "esnext",
+    "moduleResolution": "node"
   },
   "include": ["src"]
 }

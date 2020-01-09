@@ -1,5 +1,6 @@
 {
   "name": "@sensenet/document-viewer-react",
+  "sideEffects": false,
   "version": "2.0.2",
   "main": "dist/index.js",
   "typings": "./dist/index.d.ts",

@@ -1,5 +1,6 @@
 {
   "name": "@sensenet/client-core",
+  "sideEffects": false,
   "version": "2.2.5",
   "description": "Core Client package for sensenet",
   "main": "./dist/index.js",

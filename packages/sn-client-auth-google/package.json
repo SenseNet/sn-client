@@ -1,5 +1,6 @@
 {
   "name": "@sensenet/authentication-google",
+  "sideEffects": false,
   "version": "2.0.16",
   "description": "Client-side Google authentication provider for sensenet",
   "main": "dist/index.js",

@@ -1,5 +1,6 @@
 {
   "name": "@sensenet/search-react",
+  "sideEffects": false,
   "version": "1.2.13",
   "description": "Search component in react with sensenet",
   "main": "dist/index.js",

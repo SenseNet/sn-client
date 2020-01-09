@@ -2,7 +2,9 @@
   "extends": "../../tsconfig-base.json",
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "src/ContentList"
+    "rootDir": "src/ContentList",
+    "module": "esnext",
+    "moduleResolution": "node"
   },
   "include": ["src/ContentList"],
   "references": [

@@ -1,5 +1,6 @@
 {
   "name": "@sensenet/controls-react",
+  "sideEffects": false,
   "version": "3.3.2",
   "description": "React controls for sensenet",
   "main": "dist/index.js",
