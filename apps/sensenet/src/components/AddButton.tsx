@@ -91,8 +91,15 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
         const allowedChildTypesFromRepo = await repo.getAllowedChildTypes({
           idOrPath: props.parent ? parent.Id : props.path,
         })
-        const allowedChildTypeList = allowedChildTypesFromRepo.d.results.map(t => repo.schemas.getSchemaByName(t.Name))
-        setAllowedChildTypes(allowedChildTypeList)
+
+        const tempAllowedChildTypes: Schema[] = []
+
+        allowedChildTypesFromRepo.d.results.forEach(type => {
+          if (repo.schemas.getSchemaByName(type.Name).ContentTypeName === type.Name) {
+            tempAllowedChildTypes.push(repo.schemas.getSchemaByName(type.Name))
+          }
+        })
+        setAllowedChildTypes(tempAllowedChildTypes)
       } catch (error) {
         logger.error({
           message: localization.errorGettingAllowedContentTypes,
@@ -171,20 +178,25 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
             </div>
           </Button>
           {allowedChildTypes.map(childType => (
-            <Button
-              key={childType.ContentTypeName}
-              onClick={() => {
-                setShowSelectType(false)
-                openDialog({ name: 'add', props: { schema: childType, parent: props.path } })
-              }}>
-              <div
-                style={{
-                  width: 90,
+    width: 90,
+            <Tooltip title={childType.DisplayName} key={childType.DisplayName}>
+              <Button
+                key={childType.ContentTypeName}
+                onClick={() => {
+                  setShowSelectType(false)
+                  openDialog({ name: 'add', props: { schema: childType, parent: props.path } })
                 }}>
-                <Icon style={{ height: 38, width: 38 }} item={childType} />
-                <Typography variant="body1">{childType.DisplayName}</Typography>
-              </div>
-            </Button>
+                <div
+                  style={{
+                    width: 90,
+                  }}>
+                  <Icon style={{ height: 38, width: 38 }} item={childType} />
+                  <Typography variant="body1" style={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>
+                    {childType.DisplayName}
+                  </Typography>
+                </div>
+              </Button>
+            </Tooltip>
           ))}
         </div>
       </SwipeableDrawer>

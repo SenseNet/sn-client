@@ -1,5 +1,4 @@
-import { IDisposable } from 'monaco-editor'
-import { Injectable, Injector, ScopedLogger } from '@sensenet/client-utils'
+import { Disposable, Injectable, Injector, ScopedLogger } from '@sensenet/client-utils'
 
 interface RequestCounterRecord {
   all: number
@@ -15,7 +14,7 @@ interface RequestCounterRecord {
 }
 
 @Injectable({ lifetime: 'singleton' })
-export class RequestCounterService implements IDisposable {
+export class RequestCounterService implements Disposable {
   private readonly logger: ScopedLogger
   private readonly writeInterval: ReturnType<typeof setInterval>
   public dispose() {

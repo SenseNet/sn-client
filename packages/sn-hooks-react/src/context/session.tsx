@@ -1,5 +1,4 @@
-import { ConstantContent, LoginState } from '@sensenet/client-core'
-import { isExtendedError } from '@sensenet/client-core/dist/Repository/Repository'
+import { ConstantContent, isExtendedError, LoginState } from '@sensenet/client-core'
 import { Group, User } from '@sensenet/default-content-types'
 import React, { useEffect, useState } from 'react'
 import Semaphore from 'semaphore-async-await'

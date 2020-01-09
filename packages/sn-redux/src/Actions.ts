@@ -112,8 +112,14 @@
 /**
  */
 import { GoogleOauthProvider } from '@sensenet/authentication-google'
-import { Content, LoginState, ODataFieldParameter, ODataParams, Repository } from '@sensenet/client-core'
-import { RepositoryConfiguration } from '@sensenet/client-core/dist/Repository/RepositoryConfiguration'
+import {
+  Content,
+  LoginState,
+  ODataFieldParameter,
+  ODataParams,
+  Repository,
+  RepositoryConfiguration,
+} from '@sensenet/client-core'
 import { GenericContent, User } from '@sensenet/default-content-types'
 import { PromiseMiddlewareAction } from '@sensenet/redux-promise-middleware'
 
