@@ -182,7 +182,7 @@ export const useDrawerItems = () => {
             }
           }
         } catch (error) {
-          logger.error({
+          logger.debug({
             message: error.message,
             data: {
               details: { error },
