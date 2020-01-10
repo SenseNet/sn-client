@@ -75,7 +75,7 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
           ev.stopPropagation()
           openDialog({
             name: 'add',
-            props: { parent: activeParent.Path, schema: repo.schemas.getSchemaByName('Folder') },
+            props: { parentPath: activeParent.Path, schema: repo.schemas.getSchemaByName('Folder') },
           })
         }
       }}
