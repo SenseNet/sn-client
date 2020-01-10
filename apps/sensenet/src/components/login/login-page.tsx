@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Container, createStyles, Grid, makeStyles, Theme } from '@material-ui/core'
-import snLogo from '../../assets/sensenet-icon-32_hat.png'
+import snLogo from '../../assets/sensenet-icon-32.png'
 import { Login } from './Login'
 
 const useStyles = makeStyles((theme: Theme) =>
