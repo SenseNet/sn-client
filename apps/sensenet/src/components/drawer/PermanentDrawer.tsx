@@ -97,11 +97,13 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
         <div className={classes.listWrapper}>
           <div>
             {settings.drawer.type === 'mini-variant' ? (
-              <Tooltip title={opened ? localization.collapse : localization.expand} placement="top-start">
-                <ListItem button={true} onClick={() => setOpened(!opened)} key="expandcollapse">
-                  <ListItemIcon>{opened ? <Close /> : <Menu />}</ListItemIcon>
-                </ListItem>
-              </Tooltip>
+              <ListItem button={true} onClick={() => setOpened(!opened)} key="expandcollapse">
+                <ListItemIcon>
+                  <Tooltip title={opened ? localization.collapse : localization.expand} placement="right">
+                    {opened ? <Close /> : <Menu />}
+                  </Tooltip>
+                </ListItemIcon>
+              </ListItem>
             ) : null}
           </div>
 
@@ -114,21 +116,20 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
                 key={index}
                 onClick={() => setCurrentPath(item.root ? item.root : '')}
                 activeClassName={classes.navLinkActiveStyle}>
-                <Tooltip title={item.secondaryText} placement="top-start">
-                  <ListItem
-                    style={{ backgroundColor: 'inherit' }}
-                    button={true}
-                    key={index}
-                    selected={matchPath(props.location.pathname, `/:repositoryId${item.url}`) === null ? false : true}>
-                    <ListItemIcon
-                      className={clsx(classes.listItemIconDark, {
-                        [classes.listItemIconLight]: settings.theme === 'light',
-                      })}>
+                <ListItem
+                  button={true}
+                  key={index}
+                  selected={matchPath(props.location.pathname, `/:repositoryId${item.url}`) === null ? false : true}>
+                  <ListItemIcon
+                    className={clsx(classes.listItemIconDark, {
+                      [classes.listItemIconLight]: settings.theme === 'light',
+                    })}>
+                    <Tooltip title={item.secondaryText} placement="right">
                       {item.icon}
-                    </ListItemIcon>
-                    {opened ? <ListItemText primary={item.primaryText} /> : null}
-                  </ListItem>
-                </Tooltip>
+                    </Tooltip>
+                  </ListItemIcon>
+                  {opened ? <ListItemText primary={item.primaryText} /> : null}
+                </ListItem>
               </NavLink>
             )
           })}

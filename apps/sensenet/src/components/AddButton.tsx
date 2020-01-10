@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) => {
       margin: '0.5rem 0.5rem',
       backgroundColor: theme.palette.primary.main,
       '&:hover': {
-        backgroundColor: theme.palette.primary.dark,
+        backgroundColor: theme.palette.primary.main,
       },
     },
     addButtonDisabled: {
@@ -48,9 +48,17 @@ const useStyles = makeStyles((theme: Theme) => {
       padding: 0,
       backgroundColor: theme.palette.primary.main,
     },
+    iconButtonWrapper: {
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'center',
+      position: 'relative',
+      '&:hover': {
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+      },
+    },
   })
 })
-
 export interface AddButtonProps {
   parent?: GenericContent
   isOpened?: boolean
@@ -131,25 +139,22 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   }, [localization.errorGettingAllowedContentTypes, logger, parent.Id, props.parent, props.path, repo, showSelectType])
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        position: 'relative',
-      }}>
+    <div>
       {!props.isOpened ? (
-        <Tooltip title={localization.tooltip} placement="top-start">
-          <span>
-            <IconButton
-              className={clsx(classes.addButton, {
-                [classes.addButtonDisabled]: !isAvailable,
-              })}
-              onClick={() => setShowSelectType(true)}
-              disabled={!isAvailable}>
-              <Add className={classes.addButtonIcon} />
-            </IconButton>
-          </span>
-        </Tooltip>
+        <div className={classes.iconButtonWrapper}>
+          <Tooltip title={localization.addNew} placement="right">
+            <span>
+              <IconButton
+                className={clsx(classes.addButton, {
+                  [classes.addButtonDisabled]: !isAvailable,
+                })}
+                onClick={() => setShowSelectType(true)}
+                disabled={!isAvailable}>
+                <Add className={classes.addButtonIcon} />
+              </IconButton>
+            </span>
+          </Tooltip>
+        </div>
       ) : (
         <ListItem
           style={{
@@ -162,13 +167,15 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
           onClick={() => setShowSelectType(true)}
           disabled={!isAvailable}>
           <ListItemIcon>
-            <IconButton
-              className={clsx(classes.addButtonExpanded, {
-                [classes.addButtonDisabled]: !isAvailable,
-              })}
-              disabled={!isAvailable}>
-              <Add className={classes.addButtonIcon} />
-            </IconButton>
+            <Tooltip title={localization.addNew} placement="right">
+              <IconButton
+                className={clsx(classes.addButtonExpanded, {
+                  [classes.addButtonDisabled]: !isAvailable,
+                })}
+                disabled={!isAvailable}>
+                <Add className={classes.addButtonIcon} />
+              </IconButton>
+            </Tooltip>
           </ListItemIcon>
           <ListItemText primary={localization.addNew} />
         </ListItem>
