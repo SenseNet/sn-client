@@ -21,6 +21,11 @@ import { Icon } from './Icon'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
+    mainDiv: {
+      display: 'flex',
+      justifyContent: 'center',
+      position: 'relative',
+    },
     addButton: {
       width: '32px',
       height: '32px',
@@ -31,6 +36,24 @@ const useStyles = makeStyles((theme: Theme) => {
       '&:hover': {
         backgroundColor: theme.palette.primary.dark,
       },
+    },
+    listItem: {
+      width: '100%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-evenly',
+    },
+    listDropdown: {
+      padding: '10px 0 10px 10px',
+      width: '245px',
+      maxHeight: '548px',
+    },
+    listItemTextDropdown: {
+      margin: 0,
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
+      maxWidth: '139px',
     },
   })
 })
@@ -116,12 +139,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   }, [localization.errorGettingAllowedContentTypes, logger, parent.Id, props.parent, props.path, repo, showSelectType])
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        position: 'relative',
-      }}>
+    <div className={classes.mainDiv}>
       {!props.isOpened ? (
         <Tooltip title={localization.tooltip} placement="right">
           <span>
@@ -138,12 +156,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
         </Tooltip>
       ) : (
         <ListItem
-          style={{
-            width: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-evenly',
-          }}
+          className={classes.listItem}
           button={true}
           onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => {
             setAnchorEl(event.currentTarget)
@@ -157,7 +170,6 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
         </ListItem>
       )}
       <Popover
-        style={{ maxHeight: '85%' }}
         open={showSelectType}
         anchorEl={anchorEl}
         onClose={() => {
@@ -172,37 +184,42 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
           vertical: 'top',
           horizontal: 'left',
         }}>
-        <List>
-          <ListItem
-            key="Upload"
-            button={true}
-            onClick={() => {
-              setShowSelectType(false)
-              openDialog({
-                name: 'upload',
-                props: { uploadPath: parent.Path },
-                dialogProps: { open: true, fullScreen: true },
-              })
-            }}>
-            <ListItemIcon>
-              <CloudUpload />
-            </ListItemIcon>
-            <ListItemText primary={localization.upload} />
-          </ListItem>
-
-          {allowedChildTypes.map(childType => (
+        <List className={classes.listDropdown}>
+          <Tooltip title={localization.upload} placement="right">
             <ListItem
-              key={childType.ContentTypeName}
+              key="Upload"
               button={true}
+              style={{ padding: '10px 0 10px 10px' }}
               onClick={() => {
                 setShowSelectType(false)
-                openDialog({ name: 'add', props: { schema: childType, parent } })
+                openDialog({
+                  name: 'upload',
+                  props: { uploadPath: parent.Path },
+                  dialogProps: { open: true, fullScreen: true },
+                })
               }}>
-              <ListItemIcon>
-                <Icon item={childType} />
+              <ListItemIcon style={{ minWidth: '36px' }}>
+                <CloudUpload />
               </ListItemIcon>
-              <ListItemText primary={childType.DisplayName} />
+              <ListItemText primary={localization.upload} className={classes.listItemTextDropdown} />
             </ListItem>
+          </Tooltip>
+
+          {allowedChildTypes.map(childType => (
+            <Tooltip key={childType.ContentTypeName} title={childType.DisplayName} placement="right">
+              <ListItem
+                button={true}
+                style={{ padding: '10px 0 10px 10px' }}
+                onClick={() => {
+                  setShowSelectType(false)
+                  openDialog({ name: 'add', props: { schema: childType, parent } })
+                }}>
+                <ListItemIcon style={{ minWidth: '36px' }}>
+                  <Icon item={childType} />
+                </ListItemIcon>
+                <ListItemText primary={childType.DisplayName} className={classes.listItemTextDropdown} />
+              </ListItem>
+            </Tooltip>
           ))}
         </List>
       </Popover>
