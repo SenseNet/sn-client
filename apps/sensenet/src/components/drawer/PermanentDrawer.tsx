@@ -16,8 +16,6 @@ import { useDrawerItems, useLocalization, useSelectionService } from '../../hook
 import { AddButton } from '../AddButton'
 
 const useStyles = makeStyles((theme: Theme) => {
-  const primary = theme.palette.primary.main
-
   return createStyles({
     paperStyle: {
       flexGrow: 0,
@@ -50,13 +48,20 @@ const useStyles = makeStyles((theme: Theme) => {
     },
     navLinkActiveStyle: {
       opacity: 1,
-      backgroundColor: primary,
+      backgroundColor: theme.palette.primary.main,
+      '& svg': {
+        fill: theme.palette.common.white,
+      },
     },
     listItemIconDark: {
       color: theme.palette.common.white,
     },
     listItemIconLight: {
       color: theme.palette.common.black,
+      opacity: 0.87,
+    },
+    listItemIconActiveStyle: {
+      color: theme.palette.common.white,
     },
   })
 })
@@ -92,11 +97,11 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
         <div className={classes.listWrapper}>
           <div>
             {settings.drawer.type === 'mini-variant' ? (
-              <ListItem button={true} onClick={() => setOpened(!opened)} key="expandcollapse">
-                <Tooltip title={opened ? localization.collapse : localization.expand} placement="right">
+              <Tooltip title={opened ? localization.collapse : localization.expand} placement="top-start">
+                <ListItem button={true} onClick={() => setOpened(!opened)} key="expandcollapse">
                   <ListItemIcon>{opened ? <Close /> : <Menu />}</ListItemIcon>
-                </Tooltip>
-              </ListItem>
+                </ListItem>
+              </Tooltip>
             ) : null}
           </div>
 
@@ -107,14 +112,20 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
                 to={`/${btoa(repo.configuration.repositoryUrl)}${item.url}`}
                 className={classes.navLinkStyle}
                 key={index}
-                onClick={() => setCurrentPath(item.root ? item.root : '')}>
-                <Tooltip title={item.secondaryText} placement="right">
+                onClick={() => setCurrentPath(item.root ? item.root : '')}
+                activeClassName={classes.navLinkActiveStyle}>
+                <Tooltip title={item.secondaryText} placement="top-start">
                   <ListItem
                     style={{ backgroundColor: 'inherit' }}
                     button={true}
                     key={index}
                     selected={matchPath(props.location.pathname, `/:repositoryId${item.url}`) === null ? false : true}>
-                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    <ListItemIcon
+                      className={clsx(classes.listItemIconDark, {
+                        [classes.listItemIconLight]: settings.theme === 'light',
+                      })}>
+                      {item.icon}
+                    </ListItemIcon>
                     {opened ? <ListItemText primary={item.primaryText} /> : null}
                   </ListItem>
                 </Tooltip>

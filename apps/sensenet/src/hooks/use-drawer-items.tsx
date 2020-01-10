@@ -1,11 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react'
-import BuildTwoTone from '@material-ui/icons/BuildTwoTone'
-import LanguageTwoTone from '@material-ui/icons/LanguageTwoTone'
-import PeopleTwoTone from '@material-ui/icons/PeopleTwoTone'
-import PublicTwoTone from '@material-ui/icons/PublicTwoTone'
-import SearchTwoTone from '@material-ui/icons/SearchTwoTone'
-import WidgetsTwoTone from '@material-ui/icons/WidgetsTwoTone'
-import { DashboardTwoTone, DeleteTwoTone } from '@material-ui/icons'
+import { Build, Dashboard, Delete, Language, People, Public, Search, Widgets } from '@material-ui/icons'
 import { useRepository, useSession } from '@sensenet/hooks-react'
 import { LoginState } from '@sensenet/client-core'
 import { Icon } from '../components/Icon'
@@ -65,25 +59,25 @@ export const useDrawerItems = () => {
     (item: ContentDrawerItem | QueryDrawerItem | BuiltinDrawerItem | DashboardDrawerItem) => {
       switch (item.itemType) {
         case 'Search':
-          return <SearchTwoTone />
+          return <Search />
         case 'Content':
           return item.settings && item.settings.icon ? (
             <Icon item={{ ContentTypeName: item.settings.icon }} />
           ) : (
-            <PublicTwoTone />
+            <Public />
           )
         case 'Users and groups':
-          return <PeopleTwoTone />
+          return <People />
         case 'Content Types':
-          return <WidgetsTwoTone />
+          return <Widgets />
         case 'Localization':
-          return <LanguageTwoTone />
+          return <Language />
         case 'Trash':
-          return <DeleteTwoTone />
+          return <Delete />
         case 'Setup':
-          return <BuildTwoTone />
+          return <Build />
         case 'Dashboard':
-          return <DashboardTwoTone />
+          return <Dashboard />
         default:
           return (
             <Icon item={item.settings && item.settings.icon ? { ContentTypeName: item.settings.icon } : { item }} />

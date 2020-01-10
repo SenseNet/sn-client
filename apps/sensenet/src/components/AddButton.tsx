@@ -16,6 +16,7 @@ import {
   Tooltip,
   Typography,
 } from '@material-ui/core'
+import clsx from 'clsx'
 import { useLocalization } from '../hooks'
 import { Icon } from './Icon'
 import { useDialog } from './dialogs'
@@ -32,6 +33,20 @@ const useStyles = makeStyles((theme: Theme) => {
       '&:hover': {
         backgroundColor: theme.palette.primary.dark,
       },
+    },
+    addButtonDisabled: {
+      backgroundColor: '#bdbdbd !important',
+      opacity: 0.2,
+    },
+    addButtonIcon: {
+      color: theme.palette.common.white,
+    },
+    addButtonExpanded: {
+      width: '28px',
+      height: '28px',
+      minHeight: 0,
+      padding: 0,
+      backgroundColor: theme.palette.primary.main,
     },
   })
 })
@@ -123,10 +138,15 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
         position: 'relative',
       }}>
       {!props.isOpened ? (
-        <Tooltip title={localization.tooltip} placement="right">
+        <Tooltip title={localization.tooltip} placement="top-start">
           <span>
-            <IconButton className={classes.addButton} onClick={() => setShowSelectType(true)} disabled={!isAvailable}>
-              <Add />
+            <IconButton
+              className={clsx(classes.addButton, {
+                [classes.addButtonDisabled]: !isAvailable,
+              })}
+              onClick={() => setShowSelectType(true)}
+              disabled={!isAvailable}>
+              <Add className={classes.addButtonIcon} />
             </IconButton>
           </span>
         </Tooltip>
@@ -142,7 +162,13 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
           onClick={() => setShowSelectType(true)}
           disabled={!isAvailable}>
           <ListItemIcon>
-            <Add />
+            <IconButton
+              className={clsx(classes.addButtonExpanded, {
+                [classes.addButtonDisabled]: !isAvailable,
+              })}
+              disabled={!isAvailable}>
+              <Add className={classes.addButtonIcon} />
+            </IconButton>
           </ListItemIcon>
           <ListItemText primary={localization.addNew} />
         </ListItem>
@@ -178,7 +204,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
             </div>
           </Button>
           {allowedChildTypes.map(childType => (
-            <Tooltip title={childType.DisplayName} key={childType.DisplayName}>
+            <Tooltip title={childType.DisplayName} key={childType.DisplayName} placement="top-start">
               <Button
                 key={childType.ContentTypeName}
                 onClick={() => {
