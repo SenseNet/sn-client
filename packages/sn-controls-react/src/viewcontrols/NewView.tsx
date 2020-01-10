@@ -14,7 +14,7 @@ import { reactControlMapper } from '../ReactControlMapper'
  * Interface for NewView properties
  */
 export interface NewViewProps {
-  onSubmit?: (path: string, content: ContentType, contentTypeName: string) => void
+  onSubmit?: (content: ContentType, contentTypeName?: string) => void
   repository: Repository
   renderIcon?: (name: string) => ReactElement
   path: string
@@ -41,7 +41,7 @@ export const NewView: React.FC<NewViewProps> = props => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    props.onSubmit && props.onSubmit(props.path, content as any, schema.schema.ContentTypeName)
+    props.onSubmit && props.onSubmit(content as any, schema.schema.ContentTypeName)
     props.submitCallback && props.submitCallback()
   }
 

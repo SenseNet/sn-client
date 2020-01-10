@@ -9,10 +9,10 @@ import { useDialog } from './dialog-provider'
 
 export type AddDialogProps = {
   schema: Schema
-  parent: string
+  parentPath: string
 }
 
-export const AddDialog: React.FunctionComponent<AddDialogProps> = ({ schema, parent }) => {
+export const AddDialog: React.FunctionComponent<AddDialogProps> = ({ schema, parentPath }) => {
   const localization = useLocalization().addButton
   const { closeLastDialog } = useDialog()
   const repo = useRepository()
@@ -26,8 +26,8 @@ export const AddDialog: React.FunctionComponent<AddDialogProps> = ({ schema, par
           handleCancel={closeLastDialog}
           repository={repo}
           contentTypeName={schema.ContentTypeName}
-          path={parent}
-          onSubmit={async (parentPath, content) => {
+          path={parentPath}
+          onSubmit={async content => {
             try {
               const created = await repo.post({
                 contentType: schema.ContentTypeName,
