@@ -6,7 +6,7 @@ import PublicTwoTone from '@material-ui/icons/PublicTwoTone'
 import SearchTwoTone from '@material-ui/icons/SearchTwoTone'
 import WidgetsTwoTone from '@material-ui/icons/WidgetsTwoTone'
 import { DashboardTwoTone, DeleteTwoTone } from '@material-ui/icons'
-import { useRepository, useSession } from '@sensenet/hooks-react'
+import { useLogger, useRepository, useSession } from '@sensenet/hooks-react'
 import { LoginState } from '@sensenet/client-core'
 import { Icon } from '../components/Icon'
 import {
@@ -37,6 +37,7 @@ export const useDrawerItems = () => {
   const settings = useContext(ResponsivePersonalSetttings)
   const localization = useLocalization().drawer
   const repo = useRepository()
+  const logger = useLogger('use-drawer-items')
 
   const [drawerItems, setDrawerItems] = useState<DrawerItem[]>([])
 
@@ -181,13 +182,18 @@ export const useDrawerItems = () => {
             }
           }
         } catch (error) {
+          logger.error({
+            message: error.message,
+            data: {
+              details: { error },
+            },
+          })
           return false
         }
         return true
       })
       .then(items => setDrawerItems(items.map(item => getItemFromSettings(item))))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [getItemFromSettings, logger, repo, repo.security, session, settings])
 
   return drawerItems
 }
