@@ -1,29 +1,43 @@
-import createMuiTheme, { Theme, ThemeOptions } from '@material-ui/core/styles/createMuiTheme'
+import createMuiTheme, { ThemeOptions } from '@material-ui/core/styles/createMuiTheme'
 import { MuiThemeProvider } from '@material-ui/core/styles'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
+import { useInjector } from '@sensenet/hooks-react'
 import { usePersonalSettings } from '../hooks'
+import { PersonalSettings } from '../services'
 import { ThemeContext } from './ThemeContext'
 
-const mergeThemes = (options: ThemeOptions, type: 'light' | 'dark' | undefined) =>
-  createMuiTheme({
-    ...options,
-    palette: {
-      ...options.palette,
-      type: type === 'light' ? 'light' : 'dark',
-    },
-  })
-
 export const ThemeProvider: React.FunctionComponent<{ theme: ThemeOptions }> = props => {
+  const preferredType = useMediaQuery('(prefers-color-scheme: dark)') ? 'dark' : 'light'
   const personalSettings = usePersonalSettings()
-  const [pageTheme, setPageTheme] = useState<Theme>(mergeThemes(props.theme, personalSettings.theme))
+  const di = useInjector()
+  const settingsService = di.getInstance(PersonalSettings)
+  const [pageTheme, setPageTheme] = useState<'light' | 'dark'>(preferredType)
 
   useEffect(() => {
-    setPageTheme(mergeThemes(props.theme, personalSettings.theme))
-  }, [personalSettings.theme, props.theme])
+    setPageTheme(preferredType)
+    const userValue = settingsService.userValue.getValue()
+    settingsService.setPersonalSettingsValue({ ...userValue, theme: preferredType })
+  }, [preferredType, settingsService])
+
+  const theme = useMemo(() => {
+    const nextTheme = createMuiTheme({
+      palette: {
+        ...props.theme.palette,
+        type: pageTheme,
+      },
+    })
+
+    return nextTheme
+  }, [pageTheme, props.theme.palette])
+
+  useEffect(() => {
+    setPageTheme(personalSettings.theme)
+  }, [personalSettings.theme])
 
   return (
-    <MuiThemeProvider theme={pageTheme}>
-      <ThemeContext.Provider value={pageTheme}>{props.children}</ThemeContext.Provider>
+    <MuiThemeProvider theme={theme}>
+      <ThemeContext.Provider value={theme}>{props.children}</ThemeContext.Provider>
     </MuiThemeProvider>
   )
 }
