@@ -1,5 +1,6 @@
 const path = require('path')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const { RelativeCiAgentWebpackPlugin } = require('@relative-ci/agent')
 const CopyPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
@@ -56,6 +57,7 @@ module.exports = merge(common, {
       { from: path.resolve(`${__dirname}/_redirects`), to: path.resolve(`${__dirname}/build`) },
       { from: path.resolve(`${__dirname}/web.config`), to: path.resolve(`${__dirname}/build`) },
     ]),
+    new RelativeCiAgentWebpackPlugin(),
   ],
   module: {
     rules: [
