@@ -105,6 +105,10 @@ const values: DeepPartial<typeof import('./default').default> = {
     notLoggedIn: 'Nincs bejelentkezve',
     typeToFilter: 'Kezdj írni a szűréshez...',
   },
+  topMenu: {
+    personalSettings: 'Személyes beállítások',
+    logout: 'Kijelentkezés',
+  },
 }
 
 export default values

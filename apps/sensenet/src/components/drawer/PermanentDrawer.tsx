@@ -1,42 +1,28 @@
-import IconButton from '@material-ui/core/IconButton'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Paper from '@material-ui/core/Paper'
 import Tooltip from '@material-ui/core/Tooltip'
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
-import Settings from '@material-ui/icons/Settings'
-import { PathHelper } from '@sensenet/client-utils'
+import { Close, Menu } from '@material-ui/icons'
 import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import { matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
-import { useRepository, useSession } from '@sensenet/hooks-react'
-import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
-import { useDrawerItems, useLocalization, usePersonalSettings, useSelectionService, useTheme } from '../../hooks'
-import { LogoutButton } from '../LogoutButton'
-import { UserAvatar } from '../UserAvatar'
+import { useRepository } from '@sensenet/hooks-react'
+import { useDrawerItems, useLocalization, useSelectionService, useTheme } from '../../hooks'
+import { ResponsivePersonalSetttings } from '../../context'
 import { AddButton } from '../AddButton'
 
 const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
   const settings = useContext(ResponsivePersonalSetttings)
   const selectionService = useSelectionService()
-  const personalSettings = usePersonalSettings()
   const theme = useTheme()
-  const session = useSession()
   const repo = useRepository()
-  const device = useContext(ResponsiveContext)
   const [currentComponent, setCurrentComponent] = useState(selectionService.activeContent.getValue())
   const [currentPath, setCurrentPath] = useState('')
   const [opened, setOpened] = useState(settings.drawer.type === 'permanent')
   const items = useDrawerItems()
   const localization = useLocalization().drawer
-
-  const [currentRepoEntry, setCurrentRepoEntry] = useState(
-    personalSettings.repositories.find(r => r.url === PathHelper.trimSlashes(repo.configuration.repositoryUrl)),
-  )
 
   useEffect(() => {
     const activeComponentObserve = selectionService.activeContent.subscribe(newActiveComponent =>
@@ -47,12 +33,6 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
       activeComponentObserve.dispose()
     }
   }, [selectionService.activeContent])
-
-  useEffect(() => {
-    setCurrentRepoEntry(
-      personalSettings.repositories.find(r => r.url === PathHelper.trimSlashes(repo.configuration.repositoryUrl)),
-    )
-  }, [personalSettings, repo])
 
   if (!settings.drawer.enabled) {
     return null
@@ -74,6 +54,15 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
           transition: 'width 100ms ease-in-out',
         }}>
         <div style={{ paddingTop: '1em', overflowY: 'auto', overflowX: 'hidden' }}>
+          <div>
+            {settings.drawer.type === 'mini-variant' ? (
+              <ListItem button={true} onClick={() => setOpened(!opened)} key="expandcollapse">
+                <Tooltip title={opened ? localization.collapse : localization.expand} placement="right">
+                  <ListItemIcon>{opened ? <Close /> : <Menu />}</ListItemIcon>
+                </Tooltip>
+              </ListItem>
+            ) : null}
+          </div>
           <AddButton isOpened={opened} parent={currentComponent} path={currentPath} />
           {items.map((item, index) => {
             return (
@@ -100,71 +89,6 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
               </NavLink>
             )
           })}
-        </div>
-        <div>
-          {opened ? (
-            <Paper style={{ padding: '1em' }}>
-              <ListItem>
-                <ListItemIcon>
-                  <UserAvatar user={session.currentUser} repositoryUrl={repo.configuration.repositoryUrl} />
-                </ListItemIcon>
-                <ListItemText
-                  primaryTypographyProps={{
-                    style: { overflow: 'hidden', textOverflow: 'ellipsis' },
-                    title: session.currentUser.DisplayName || session.currentUser.Name,
-                  }}
-                  secondaryTypographyProps={{
-                    style: { overflow: 'hidden', textOverflow: 'ellipsis' },
-                    title: (currentRepoEntry && currentRepoEntry.displayName) || repo.configuration.repositoryUrl,
-                  }}
-                  primary={session.currentUser.DisplayName || session.currentUser.Name}
-                  secondary={(currentRepoEntry && currentRepoEntry.displayName) || repo.configuration.repositoryUrl}
-                />
-                <ListItemSecondaryAction>
-                  {device === 'mobile' ? null : (
-                    <NavLink to="/personalSettings" style={{ textDecoration: 'none' }}>
-                      <IconButton title={localization.personalSettingsTitle}>
-                        <Settings />
-                      </IconButton>
-                    </NavLink>
-                  )}
-                  <LogoutButton />
-                </ListItemSecondaryAction>
-              </ListItem>
-            </Paper>
-          ) : (
-            <>
-              <NavLink
-                to="/personalSettings"
-                style={{ textDecoration: 'none', opacity: 0.54 }}
-                key="personalSettings"
-                onClick={() => setCurrentPath('')}>
-                <ListItem button={true}>
-                  <Tooltip
-                    title={
-                      <React.Fragment>
-                        {localization.personalSettingsTitle} <br /> {localization.personalSettingsSecondaryText}
-                      </React.Fragment>
-                    }
-                    placement="right">
-                    <ListItemIcon>
-                      <Settings />
-                    </ListItemIcon>
-                  </Tooltip>
-                </ListItem>
-              </NavLink>
-              <LogoutButton buttonStyle={{ width: '100%' }} />
-            </>
-          )}
-
-          {settings.drawer.type === 'mini-variant' ? (
-            <ListItem button={true} onClick={() => setOpened(!opened)} key="expandcollapse">
-              <Tooltip title={opened ? localization.collapse : localization.expand} placement="right">
-                <ListItemIcon>{opened ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}</ListItemIcon>
-              </Tooltip>
-              {opened ? <ListItemText primary={localization.collapse} /> : null}
-            </ListItem>
-          ) : null}
         </div>
       </List>
     </Paper>
