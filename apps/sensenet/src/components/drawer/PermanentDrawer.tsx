@@ -9,10 +9,10 @@ import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import { matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
 import { useRepository } from '@sensenet/hooks-react'
-import clsx from 'clsx'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import clsx from 'clsx'
+import { useDrawerItems, useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
 import { ResponsivePersonalSetttings } from '../../context'
-import { useDrawerItems, useLocalization, useSelectionService } from '../../hooks'
 import { AddButton } from '../AddButton'
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -67,6 +67,7 @@ const useStyles = makeStyles((theme: Theme) => {
 })
 
 const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
+  const personalSettings = usePersonalSettings()
   const classes = useStyles()
   const settings = useContext(ResponsivePersonalSetttings)
   const selectionService = useSelectionService()
@@ -122,7 +123,7 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
                   selected={matchPath(props.location.pathname, `/:repositoryId${item.url}`) === null ? false : true}>
                   <ListItemIcon
                     className={clsx(classes.listItemIconDark, {
-                      [classes.listItemIconLight]: settings.theme === 'light',
+                      [classes.listItemIconLight]: personalSettings.theme === 'light',
                     })}>
                     <Tooltip title={item.secondaryText} placement="right">
                       {item.icon}

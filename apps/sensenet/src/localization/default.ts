@@ -263,6 +263,10 @@ const values = {
     saveSuccessNotification: `The changes of '{0}' has been saved`,
     saveFailedNotification: `Failed to save changes of content '{0}'`,
   },
+  topMenu: {
+    personalSettings: 'Personal settings',
+    logout: 'Log out',
+  },
   navigationCommandProvider: {
     personalSettingsPrimary: 'Personal Settings',
     personalSettingsSecondary: 'Edit your personal settings',

@@ -7,6 +7,7 @@ import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
 import { useCommandPalette, useTheme } from '../../hooks'
 import { CommandPalette } from '../command-palette/CommandPalette'
 import { RepositorySelector } from '../RepositorySelector'
+import { DesktopNavMenu } from './DesktopNavMenu'
 
 export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }> = props => {
   const device = useContext(ResponsiveContext)
@@ -16,8 +17,10 @@ export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }>
   const commandPalette = useCommandPalette()
 
   return (
-    <AppBar position="sticky" style={{ backgroundColor: theme.palette.background.paper }}>
-      <Toolbar>
+    <AppBar
+      position="sticky"
+      style={{ backgroundColor: theme.palette.background.paper, position: 'relative', height: '64px' }}>
+      <Toolbar style={{ position: 'static' }}>
         <div
           style={{
             display: 'flex',
@@ -39,6 +42,7 @@ export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }>
         </div>
 
         {personalSettings.commandPalette.enabled ? <CommandPalette {...commandPalette} /> : <div style={{ flex: 1 }} />}
+        <DesktopNavMenu />
       </Toolbar>
     </AppBar>
   )
