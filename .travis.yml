@@ -19,21 +19,26 @@ jobs:
       script: yarn test:dms:e2e
       after_failure: bash ./scripts/sendscreenshots.sh
 
-    - stage: 'Deploy to netlify'
-      if: type = pull_request
-      name: 'DMS'
+    - name: 'DMS'
       install: yarn && npm install netlify-cli -g
       script: yarn build && yarn dms build:webpack
-      after_success: wait-on $SN_BOT_URL -l -t 60000 && netlify deploy --site d04020b1-db2a-4479-889c-d1cb990c41b5 --auth $NETLIFY_ACCESS_TOKEN --dir ./examples/sn-dms-demo/build --message $TRAVIS_PULL_REQUEST
+      after_success:
+        - test $TRAVIS_EVENT_TYPE = pull_request &&
+          wait-on $SN_BOT_URL -l -t 60000 &&
+          netlify deploy --site d04020b1-db2a-4479-889c-d1cb990c41b5 --auth $NETLIFY_ACCESS_TOKEN --dir ./examples/sn-dms-demo/build --message $TRAVIS_PULL_REQUEST
 
-    - if: type = pull_request
-      name: 'Component docs'
+    - name: 'Component docs'
       install: yarn && npm install netlify-cli -g
       script: yarn build && yarn storybook build-storybook
-      after_success: wait-on $SN_BOT_URL -l -t 60000 && netlify deploy --site 1747b330-27d8-4ddd-bf74-39469c257010 --auth $NETLIFY_ACCESS_TOKEN --dir ./examples/sn-react-component-docs/storybook-static --message $TRAVIS_PULL_REQUEST
+      after_success:
+        - test $TRAVIS_EVENT_TYPE = pull_request &&
+          wait-on $SN_BOT_URL -l -t 60000 &&
+          netlify deploy --site 1747b330-27d8-4ddd-bf74-39469c257010 --auth $NETLIFY_ACCESS_TOKEN --dir ./examples/sn-react-component-docs/storybook-static --message $TRAVIS_PULL_REQUEST
 
-    - if: type = pull_request
-      name: 'Sn app'
+    - name: 'Sn app'
       install: yarn && npm install netlify-cli -g
       script: yarn build && yarn snapp build
-      after_success: wait-on $SN_BOT_URL -l -t 60000 && netlify deploy --site 94fb346c-b540-40f7-aaaf-21eee2a9c891 --auth $NETLIFY_ACCESS_TOKEN --dir ./apps/sensenet/build --message $TRAVIS_PULL_REQUEST
+      after_success:
+        - test $TRAVIS_EVENT_TYPE = pull_request &&
+          wait-on $SN_BOT_URL -l -t 60000 &&
+          netlify deploy --site 94fb346c-b540-40f7-aaaf-21eee2a9c891 --auth $NETLIFY_ACCESS_TOKEN --dir ./apps/sensenet/build --message $TRAVIS_PULL_REQUEST
