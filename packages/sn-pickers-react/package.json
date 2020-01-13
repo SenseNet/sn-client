@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/pickers-react",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "description": "Content picker components in react with sensenet.",
   "keywords": [
     "sensenet",
@@ -33,8 +33,8 @@
   },
   "dependencies": {
     "@material-ui/core": "^4.6.1",
-    "@sensenet/client-core": "^2.2.5",
-    "@sensenet/client-utils": "^1.7.2",
+    "@sensenet/client-core": "^2.2.6",
+    "@sensenet/client-utils": "^1.7.3",
     "@sensenet/default-content-types": "^2.0.4",
     "@sensenet/icons-react": "^1.2.16",
     "react": "^16.11.0",
