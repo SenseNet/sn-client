@@ -9,14 +9,68 @@ import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import { matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
 import { useRepository } from '@sensenet/hooks-react'
-import { useDrawerItems, useLocalization, useSelectionService, useTheme } from '../../hooks'
+import { createStyles, makeStyles, Theme } from '@material-ui/core'
+import clsx from 'clsx'
+import { useDrawerItems, useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
 import { ResponsivePersonalSetttings } from '../../context'
 import { AddButton } from '../AddButton'
 
+const useStyles = makeStyles((theme: Theme) => {
+  return createStyles({
+    paperStyle: {
+      flexGrow: 0,
+      flexShrink: 0,
+    },
+    listStyle: {
+      width: 55,
+      height: '100%',
+      flexGrow: 1,
+      flexShrink: 0,
+      display: 'flex',
+      overflow: 'hidden',
+      justifyContent: 'space-between',
+      flexDirection: 'column',
+      backgroundColor: theme.palette.background.default, // '#222',
+      transition: 'width 100ms ease-in-out',
+      '&$opened': {
+        width: 330,
+      },
+    },
+    opened: {},
+    listWrapper: {
+      paddingTop: '1em',
+      overflowY: 'auto',
+      overflowX: 'hidden',
+    },
+    navLinkStyle: {
+      textDecoration: 'none',
+      opacity: 0.54,
+    },
+    navLinkActiveStyle: {
+      opacity: 1,
+      '& .MuiListItem-root': { backgroundColor: theme.palette.primary.main },
+      '& svg': {
+        fill: theme.palette.common.white,
+      },
+    },
+    listItemIconDark: {
+      color: theme.palette.common.white,
+    },
+    listItemIconLight: {
+      color: theme.palette.common.black,
+      opacity: 0.87,
+    },
+    listItemIconActiveStyle: {
+      color: theme.palette.common.white,
+    },
+  })
+})
+
 const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
+  const personalSettings = usePersonalSettings()
+  const classes = useStyles()
   const settings = useContext(ResponsivePersonalSetttings)
   const selectionService = useSelectionService()
-  const theme = useTheme()
   const repo = useRepository()
   const [currentComponent, setCurrentComponent] = useState(selectionService.activeContent.getValue())
   const [currentPath, setCurrentPath] = useState('')
@@ -39,52 +93,43 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
   }
 
   return (
-    <Paper style={{ flexGrow: 0, flexShrink: 0 }}>
-      <List
-        style={{
-          width: opened ? 330 : 55,
-          height: '100%',
-          flexGrow: 1,
-          flexShrink: 0,
-          display: 'flex',
-          overflow: 'hidden',
-          justifyContent: 'space-between',
-          flexDirection: 'column',
-          backgroundColor: theme.palette.background.default, // '#222',
-          transition: 'width 100ms ease-in-out',
-        }}>
-        <div style={{ paddingTop: '1em', overflowY: 'auto', overflowX: 'hidden' }}>
+    <Paper className={classes.paperStyle}>
+      <List className={clsx(classes.listStyle, { [classes.opened]: opened })}>
+        <div className={classes.listWrapper}>
           <div>
             {settings.drawer.type === 'mini-variant' ? (
               <ListItem button={true} onClick={() => setOpened(!opened)} key="expandcollapse">
-                <Tooltip title={opened ? localization.collapse : localization.expand} placement="right">
-                  <ListItemIcon>{opened ? <Close /> : <Menu />}</ListItemIcon>
-                </Tooltip>
+                <ListItemIcon>
+                  <Tooltip title={opened ? localization.collapse : localization.expand} placement="right">
+                    {opened ? <Close /> : <Menu />}
+                  </Tooltip>
+                </ListItemIcon>
               </ListItem>
             ) : null}
           </div>
+
           <AddButton isOpened={opened} parent={currentComponent} path={currentPath} />
           {items.map((item, index) => {
             return (
               <NavLink
                 to={`/${btoa(repo.configuration.repositoryUrl)}${item.url}`}
-                style={{ textDecoration: 'none', opacity: 0.54 }}
+                className={classes.navLinkStyle}
                 key={index}
-                onClick={() => setCurrentPath(item.root ? item.root : '')}>
+                onClick={() => setCurrentPath(item.root ? item.root : '')}
+                activeClassName={classes.navLinkActiveStyle}>
                 <ListItem
                   button={true}
                   key={index}
                   selected={matchPath(props.location.pathname, `/:repositoryId${item.url}`) === null ? false : true}>
-                  <Tooltip
-                    title={
-                      <React.Fragment>
-                        {item.primaryText} <br /> {item.secondaryText}
-                      </React.Fragment>
-                    }
-                    placement="right">
-                    <ListItemIcon>{item.icon}</ListItemIcon>
-                  </Tooltip>
-                  {opened ? <ListItemText primary={item.primaryText} secondary={item.secondaryText} /> : null}
+                  <ListItemIcon
+                    className={clsx(classes.listItemIconDark, {
+                      [classes.listItemIconLight]: personalSettings.theme === 'light',
+                    })}>
+                    <Tooltip title={item.secondaryText} placement="right">
+                      {item.icon}
+                    </Tooltip>
+                  </ListItemIcon>
+                  {opened ? <ListItemText primary={item.primaryText} /> : null}
                 </ListItem>
               </NavLink>
             )
