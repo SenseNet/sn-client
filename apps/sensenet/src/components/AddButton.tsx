@@ -39,8 +39,10 @@ const useStyles = makeStyles((theme: Theme) => {
       },
     },
     addButtonDisabled: {
-      backgroundColor: '#bdbdbd !important',
-      opacity: 0.2,
+      backgroundColor: '#CCCCCC !important',
+      '& svg': {
+        color: '#8C8C8C',
+      },
     },
     addButtonIcon: {
       color: theme.palette.common.white,
