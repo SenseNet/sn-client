@@ -249,7 +249,10 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
                 style={{ padding: '10px 0 10px 10px' }}
                 onClick={() => {
                   setShowSelectType(false)
-                  openDialog({ name: 'add', props: { schema: childType, parent } })
+                  openDialog({
+                    name: 'add',
+                    props: { schema: childType, parentPath: props.parent ? props.parent.Path : props.path },
+                  })
                 }}>
                 <ListItemIcon style={{ minWidth: '36px' }}>
                   <Icon item={childType} />
