@@ -14,6 +14,7 @@ import clsx from 'clsx'
 import { useDrawerItems, useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
 import { ResponsivePersonalSetttings } from '../../context'
 import { AddButton } from '../AddButton'
+import { SearchButton } from '../search-button'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -101,14 +102,19 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
               <ListItem button={true} onClick={() => setOpened(!opened)} key="expandcollapse">
                 <ListItemIcon>
                   <Tooltip title={opened ? localization.collapse : localization.expand} placement="right">
-                    {opened ? <Close /> : <Menu />}
+                    <div>{opened ? <Close /> : <Menu />}</div>
                   </Tooltip>
                 </ListItemIcon>
               </ListItem>
             ) : null}
           </div>
 
-          <AddButton isOpened={opened} parent={currentComponent} path={currentPath} />
+          {matchPath(props.location.pathname, `/:repositoryId/saved-queries`) === null ? (
+            <AddButton isOpened={opened} parent={currentComponent} path={currentPath} />
+          ) : (
+            <SearchButton isOpened={opened} />
+          )}
+
           {items.map((item, index) => {
             return (
               <NavLink
