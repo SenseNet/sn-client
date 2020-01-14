@@ -191,9 +191,9 @@ export const Login = () => {
           ) : (
             <form onSubmit={handleSubmit}>
               <TextField
+                id="username"
                 required={true}
                 margin="normal"
-                label={localization.userNameLabel}
                 name="userName"
                 helperText={!inputState.userName.isValid ? inputState.userName.errorMessage : ''}
                 placeholder={localization.userNameHelperText}
@@ -241,7 +241,12 @@ export const Login = () => {
                 }}
               />
               {error ? <Typography style={{ color: theme.palette.error.main }}>{error}</Typography> : null}
-              <Button fullWidth={true} variant="contained" color="primary" type="submit">
+              <Button
+                aria-label="{localization.loginButtonTitle}"
+                fullWidth={true}
+                variant="contained"
+                color="primary"
+                type="submit">
                 <Typography variant="button">{localization.loginButtonTitle}</Typography>
               </Button>
             </form>
