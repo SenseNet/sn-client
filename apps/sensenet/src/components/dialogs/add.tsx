@@ -1,7 +1,7 @@
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import { NewView } from '@sensenet/controls-react'
-import { GenericContent, Schema } from '@sensenet/default-content-types'
+import { Schema } from '@sensenet/default-content-types'
 import React from 'react'
 import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { useLocalization } from '../../hooks'
@@ -9,10 +9,10 @@ import { useDialog } from './dialog-provider'
 
 export type AddDialogProps = {
   schema: Schema
-  parent: GenericContent
+  parentPath: string
 }
 
-export const AddDialog: React.FunctionComponent<AddDialogProps> = ({ schema, parent }) => {
+export const AddDialog: React.FunctionComponent<AddDialogProps> = ({ schema, parentPath }) => {
   const localization = useLocalization().addButton
   const { closeLastDialog } = useDialog()
   const repo = useRepository()
@@ -26,8 +26,8 @@ export const AddDialog: React.FunctionComponent<AddDialogProps> = ({ schema, par
           handleCancel={closeLastDialog}
           repository={repo}
           contentTypeName={schema.ContentTypeName}
-          path={parent.Path}
-          onSubmit={async (parentPath, content) => {
+          path={parentPath}
+          onSubmit={async content => {
             try {
               const created = await repo.post({
                 contentType: schema.ContentTypeName,
@@ -48,7 +48,7 @@ export const AddDialog: React.FunctionComponent<AddDialogProps> = ({ schema, par
               })
             } catch (error) {
               logger.error({
-                message: localization.errorGettingAllowedContentTypes,
+                message: localization.errorPostingContentNotification,
                 data: {
                   details: { error },
                 },

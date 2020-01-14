@@ -14,6 +14,7 @@ import {
   Theme,
   Tooltip,
 } from '@material-ui/core'
+import clsx from 'clsx'
 import { CloudUpload } from '@material-ui/icons'
 import { useLocalization } from '../hooks'
 import { useDialog } from './dialogs'
@@ -34,7 +35,32 @@ const useStyles = makeStyles((theme: Theme) => {
       margin: '0.5rem 0.5rem',
       backgroundColor: theme.palette.primary.main,
       '&:hover': {
-        backgroundColor: theme.palette.primary.dark,
+        backgroundColor: theme.palette.primary.main,
+      },
+    },
+    addButtonDisabled: {
+      backgroundColor: '#CCCCCC !important',
+      '& svg': {
+        color: '#8C8C8C',
+      },
+    },
+    addButtonIcon: {
+      color: theme.palette.common.white,
+    },
+    addButtonExpanded: {
+      width: '28px',
+      height: '28px',
+      minHeight: 0,
+      padding: 0,
+      backgroundColor: theme.palette.primary.main,
+    },
+    iconButtonWrapper: {
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'center',
+      position: 'relative',
+      '&:hover': {
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
       },
     },
     listItem: {
@@ -57,7 +83,6 @@ const useStyles = makeStyles((theme: Theme) => {
     },
   })
 })
-
 export interface AddButtonProps {
   parent?: GenericContent
   isOpened?: boolean
@@ -141,19 +166,23 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   return (
     <div className={classes.mainDiv}>
       {!props.isOpened ? (
-        <Tooltip title={localization.tooltip} placement="right">
-          <span>
-            <IconButton
-              className={classes.addButton}
-              onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-                setAnchorEl(event.currentTarget)
-                setShowSelectType(true)
-              }}
-              disabled={!isAvailable}>
-              <Add />
-            </IconButton>
-          </span>
-        </Tooltip>
+        <div className={classes.iconButtonWrapper}>
+          <Tooltip title={localization.addNew} placement="right">
+            <span>
+              <IconButton
+                className={clsx(classes.addButton, {
+                  [classes.addButtonDisabled]: !isAvailable,
+                })}
+                onClick={(event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+                  setAnchorEl(event.currentTarget)
+                  setShowSelectType(true)
+                }}
+                disabled={!isAvailable}>
+                <Add className={classes.addButtonIcon} />
+              </IconButton>
+            </span>
+          </Tooltip>
+        </div>
       ) : (
         <ListItem
           className={classes.listItem}
@@ -164,7 +193,17 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
           }}
           disabled={!isAvailable}>
           <ListItemIcon>
-            <Add />
+            <Tooltip title={localization.addNew} placement="right">
+              <span>
+                <IconButton
+                  className={clsx(classes.addButtonExpanded, {
+                    [classes.addButtonDisabled]: !isAvailable,
+                  })}
+                  disabled={!isAvailable}>
+                  <Add className={classes.addButtonIcon} />
+                </IconButton>
+              </span>
+            </Tooltip>
           </ListItemIcon>
           <ListItemText primary={localization.addNew} />
         </ListItem>
@@ -212,7 +251,10 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
                 style={{ padding: '10px 0 10px 10px' }}
                 onClick={() => {
                   setShowSelectType(false)
-                  openDialog({ name: 'add', props: { schema: childType, parent } })
+                  openDialog({
+                    name: 'add',
+                    props: { schema: childType, parentPath: props.parent ? props.parent.Path : props.path },
+                  })
                 }}>
                 <ListItemIcon style={{ minWidth: '36px' }}>
                   <Icon item={childType} />
