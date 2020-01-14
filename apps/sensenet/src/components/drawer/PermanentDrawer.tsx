@@ -109,10 +109,10 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
             ) : null}
           </div>
 
-          {!currentComponent && !currentPath ? (
-            <SearchButton isOpened={opened} />
-          ) : (
+          {matchPath(props.location.pathname, `/:repositoryId/saved-queries`) === null ? (
             <AddButton isOpened={opened} parent={currentComponent} path={currentPath} />
+          ) : (
+            <SearchButton isOpened={opened} />
           )}
 
           {items.map((item, index) => {
