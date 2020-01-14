@@ -53,6 +53,7 @@ const values: DeepPartial<typeof import('./default').default> = {
     dashboardTitle: 'Irányítópult',
     dashboardSecondaryText:
       'Olyan egyoldalas vizuális felület, amelynek segítségével a felhasználó első ránézésre monitorozhatja legfontosabb céljainak vagy elvárásainak megvalósulását',
+    newSearch: 'Új keresés indítása',
   },
   editPropertiesDialog: {
     dialogTitle: '{0} tulajdonságainak szerkesztése',

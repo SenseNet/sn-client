@@ -14,6 +14,7 @@ import clsx from 'clsx'
 import { useDrawerItems, useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
 import { ResponsivePersonalSetttings } from '../../context'
 import { AddButton } from '../AddButton'
+import { SearchButton } from '../SearchButton'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
@@ -108,7 +109,12 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
             ) : null}
           </div>
 
-          <AddButton isOpened={opened} parent={currentComponent} path={currentPath} />
+          {!currentComponent && !currentPath ? (
+            <SearchButton isOpened={opened} />
+          ) : (
+            <AddButton isOpened={opened} parent={currentComponent} path={currentPath} />
+          )}
+
           {items.map((item, index) => {
             return (
               <NavLink
