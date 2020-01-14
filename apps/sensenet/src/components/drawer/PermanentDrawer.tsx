@@ -102,7 +102,7 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
               <ListItem button={true} onClick={() => setOpened(!opened)} key="expandcollapse">
                 <ListItemIcon>
                   <Tooltip title={opened ? localization.collapse : localization.expand} placement="right">
-                    {opened ? <Close /> : <Menu />}
+                    <div>{opened ? <Close /> : <Menu />}</div>
                   </Tooltip>
                 </ListItemIcon>
               </ListItem>
