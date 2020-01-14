@@ -339,7 +339,6 @@ const values = {
     openInSearchTitle: 'Open in Search',
     openInSearchDescription: 'Opens the query expression in the Search view',
     saveQuery: 'Save Query',
-
     noSavedQuery: 'There is no query saved yet.',
     save: 'Save',
     cancel: 'Cancel',

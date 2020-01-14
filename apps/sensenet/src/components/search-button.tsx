@@ -59,18 +59,6 @@ const useStyles = makeStyles((theme: Theme) => {
       justifyContent: 'space-evenly',
       textDecoration: 'none',
     },
-    listDropdown: {
-      padding: '10px 0 10px 10px',
-      width: '245px',
-      maxHeight: '548px',
-    },
-    listItemTextDropdown: {
-      margin: 0,
-      textOverflow: 'ellipsis',
-      overflow: 'hidden',
-      whiteSpace: 'nowrap',
-      maxWidth: '139px',
-    },
   })
 })
 

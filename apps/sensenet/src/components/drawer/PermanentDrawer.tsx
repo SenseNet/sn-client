@@ -14,7 +14,7 @@ import clsx from 'clsx'
 import { useDrawerItems, useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
 import { ResponsivePersonalSetttings } from '../../context'
 import { AddButton } from '../AddButton'
-import { SearchButton } from '../SearchButton'
+import { SearchButton } from '../search-button'
 
 const useStyles = makeStyles((theme: Theme) => {
   return createStyles({
