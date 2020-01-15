@@ -1,6 +1,6 @@
 {
   "name": "@sensenet/search-react",
-  "version": "1.2.13",
+  "version": "1.2.14",
   "description": "Search component in react with sensenet",
   "main": "dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -29,9 +29,9 @@
   "homepage": "https://sensenet.com",
   "dependencies": {
     "@material-ui/core": "^4.6.1",
-    "@sensenet/client-core": "^2.2.5",
-    "@sensenet/client-utils": "^1.7.2",
-    "@sensenet/control-mapper": "^2.0.6",
+    "@sensenet/client-core": "^2.2.6",
+    "@sensenet/client-utils": "^1.7.3",
+    "@sensenet/control-mapper": "^2.0.7",
     "@sensenet/default-content-types": "^2.0.4",
     "@sensenet/icons-react": "^1.2.16",
     "@sensenet/query": "^1.1.12",
