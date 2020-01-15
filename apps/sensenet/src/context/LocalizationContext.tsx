@@ -25,7 +25,7 @@ export const LocalizationProvider: React.FunctionComponent = props => {
   useEffect(() => {
     const observable = localizationService.currentValues.subscribe(v => {
       /**
-       * This is a temporal solution until we refactor l18n
+       * This is a temporary solution until we refactor l18n
        * We don't want to set the state if the values are the same.
        */
       if (JSON.stringify(currentValues) === JSON.stringify(v)) {
