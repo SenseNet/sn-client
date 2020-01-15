@@ -139,6 +139,7 @@ const values = {
     dashboardSecondaryText: 'Repository overview',
     expand: 'Expand',
     collapse: 'Collapse',
+    newSearch: 'New search',
   },
   trash: {
     title: 'Trash',
@@ -338,7 +339,6 @@ const values = {
     openInSearchTitle: 'Open in Search',
     openInSearchDescription: 'Opens the query expression in the Search view',
     saveQuery: 'Save Query',
-    newSearch: 'New search',
     noSavedQuery: 'There is no query saved yet.',
     save: 'Save',
     cancel: 'Cancel',
