@@ -1,7 +1,6 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Build, Dashboard, Delete, Language, People, Public, Search, Widgets } from '@material-ui/icons'
-import { useLogger, useRepository, useSession } from '@sensenet/hooks-react'
-import { LoginState } from '@sensenet/client-core'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { Icon } from '../components/Icon'
 import {
   BuiltinDrawerItem,
@@ -26,8 +25,9 @@ export interface DrawerItem {
   root?: string
 }
 
+type EveryDrawerType = ContentDrawerItem | QueryDrawerItem | BuiltinDrawerItem | DashboardDrawerItem
+
 export const useDrawerItems = () => {
-  const session = useSession()
   const settings = useContext(ResponsivePersonalSetttings)
   const localization = useLocalization().drawer
   const repo = useRepository()
@@ -35,29 +35,23 @@ export const useDrawerItems = () => {
 
   const [drawerItems, setDrawerItems] = useState<DrawerItem[]>([])
 
-  const getItemNameFromSettings = useCallback(
-    (item: DrawerItemSetting<any>) => {
-      return (
-        (item.settings && item.settings.title) ||
-        localization.titles[item.itemType as keyof typeof localization.titles] ||
-        '!NO TITLE!'
-      )
-    },
-    [localization],
-  )
+  useEffect(() => {
+    /**
+     * This can be removed once the routing is fixed.
+     * Right now when you visit '/' it will show the admin page and will try to put drawer items in it.
+     */
+    if (!repo.configuration.repositoryUrl) {
+      return
+    }
+    const getItemNameFromSettings = (item: DrawerItemSetting<any>) => {
+      return item.settings?.title || localization.titles[item.itemType] || '!NO TITLE!'
+    }
 
-  const getItemDescriptionFromSettings = useCallback(
-    (item: DrawerItemSetting<any>) => {
-      return (
-        (item.settings && item.settings.description) ||
-        localization.descriptions[item.itemType as keyof typeof localization.titles]
-      )
-    },
-    [localization],
-  )
+    const getItemDescriptionFromSettings = (item: DrawerItemSetting<any>) => {
+      return item.settings?.description || localization.descriptions[item.itemType]
+    }
 
-  const getIconFromSetting = useCallback(
-    (item: ContentDrawerItem | QueryDrawerItem | BuiltinDrawerItem | DashboardDrawerItem) => {
+    const getIconFromSetting = (item: EveryDrawerType) => {
       switch (item.itemType) {
         case 'Search':
           return <Search />
@@ -84,12 +78,9 @@ export const useDrawerItems = () => {
             <Icon item={item.settings && item.settings.icon ? { ContentTypeName: item.settings.icon } : { item }} />
           )
       }
-    },
-    [],
-  )
+    }
 
-  const getUrlFromSetting = useCallback(
-    (item: ContentDrawerItem | QueryDrawerItem | BuiltinDrawerItem | DashboardDrawerItem) => {
+    const getUrlFromSetting = (item: EveryDrawerType) => {
       switch (item.itemType) {
         case 'Search':
           return '/saved-queries'
@@ -140,12 +131,8 @@ export const useDrawerItems = () => {
       }
 
       return '/'
-    },
-    [settings.content.browseType, settings.content.fields, localization],
-  )
-
-  const getItemFromSettings = useCallback(
-    (setting: DrawerItemSetting<any>) => {
+    }
+    const getItemFromSettings = (setting: DrawerItemSetting<any>) => {
       const drawerItem: DrawerItem = {
         icon: getIconFromSetting(setting),
         primaryText: getItemNameFromSettings(setting),
@@ -156,13 +143,8 @@ export const useDrawerItems = () => {
         root: setting.settings?.root,
       }
       return drawerItem
-    },
-    [getIconFromSetting, getItemDescriptionFromSettings, getItemNameFromSettings, getUrlFromSetting],
-  )
-
-  useEffect(() => {
+    }
     settings.drawer.items
-      .filter(() => session.state === LoginState.Authenticated)
       .filterAsync(async item => {
         if (!item.permissions || !item.permissions.length) {
           return true
@@ -187,7 +169,15 @@ export const useDrawerItems = () => {
         return true
       })
       .then(items => setDrawerItems(items.map(item => getItemFromSettings(item))))
-  }, [getItemFromSettings, logger, repo, repo.security, session, settings])
+  }, [
+    localization.descriptions,
+    localization.titles,
+    logger,
+    repo,
+    settings.content.browseType,
+    settings.content.fields,
+    settings.drawer.items,
+  ])
 
   return drawerItems
 }

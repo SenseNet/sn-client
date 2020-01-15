@@ -31,28 +31,30 @@ const values: DeepPartial<typeof import('./default').default> = {
   drawer: {
     titles: {
       Content: 'Tartalom',
+      Dashboard: 'Irányítópult',
       Search: 'Keresés',
       Setup: 'Beállítás',
       'Users and groups': 'Felhasználók és csoportok',
       'Content Types': 'Tartalom típusok',
       Localization: 'Nyelvi fájlok',
+      Query: 'Saját lekérdezésem',
       Trash: 'Kuka',
     },
     descriptions: {
       Content: 'Tartalom böngészése',
+      Dashboard:
+        'Olyan egyoldalas vizuális felület, amelynek segítségével a felhasználó első ránézésre monitorozhatja legfontosabb céljainak vagy elvárásainak megvalósulását',
       Search: 'Testreszabott keresések futtatása és mentése későbbi használatra',
       Setup: 'A rendszer beállításai',
       'Users and groups': 'Felhasználó és csoport kezelése, szerkesztése',
       'Content Types': 'Tartalom típusok kezelése',
       Localization: 'Nyelvi fájlok kezelése',
+      Query: 'Saját lekérdezésem megjelenítése',
       Trash: 'Törölt elemek kezelése',
     },
 
     personalSettingsTitle: 'Személyes beállítások',
     personalSettingsSecondaryText: 'Az alkalmazás testreszabása',
-    dashboardTitle: 'Irányítópult',
-    dashboardSecondaryText:
-      'Olyan egyoldalas vizuális felület, amelynek segítségével a felhasználó első ránézésre monitorozhatja legfontosabb céljainak vagy elvárásainak megvalósulását',
   },
   editPropertiesDialog: {
     dialogTitle: '{0} tulajdonságainak szerkesztése',
