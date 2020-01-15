@@ -1,6 +1,5 @@
 import { Injector } from '@sensenet/client-utils/dist/inject/injector'
-import { Repository } from '@sensenet/client-core'
-import { RepositoryConfiguration } from '@sensenet/client-core/dist/Repository/RepositoryConfiguration'
+import { Repository, RepositoryConfiguration } from '@sensenet/client-core'
 import { RepositoryManager } from '../services/RepositoryManager'
 
 declare module '@sensenet/client-utils/dist/inject/injector' {

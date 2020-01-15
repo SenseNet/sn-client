@@ -6,7 +6,6 @@ import { BrowseType } from '../components/content'
 const settingsKey = `SN-APP-USER-SETTINGS`
 
 export interface UiSettings {
-  theme: 'dark' | 'light'
   content: {
     browseType: typeof BrowseType[number]
     fields: Array<keyof GenericContent>
@@ -150,6 +149,7 @@ export type PersonalSettingsType = PlatformDependent<UiSettings> & {
   sendLogWithCrashReports: boolean
   logLevel: Array<keyof typeof LogLevel>
   language: 'default' | 'hungarian'
+  theme: 'light' | 'dark'
 }
 
 export const defaultSettings: PersonalSettingsType = {
@@ -284,7 +284,6 @@ export const defaultSettings: PersonalSettingsType = {
     ],
   },
   default: {
-    theme: 'dark',
     content: {
       browseType: 'explorer',
       fields: ['DisplayName', 'Locked', 'CreatedBy', 'Actions'],
@@ -301,25 +300,29 @@ export const defaultSettings: PersonalSettingsType = {
         },
         {
           itemType: 'Users and groups',
-          settings: undefined,
+          settings: { root: '/Root/IMS/Public' },
           permissions: [{ path: '/Root/IMS/Public', action: 'Add' }],
         },
         {
           itemType: 'Trash',
-          settings: undefined,
+          settings: { root: '/Root/Trash' },
           permissions: [{ path: '/Root/Trash', action: 'Edit' }],
         },
         {
           itemType: 'Content Types',
-          settings: undefined,
+          settings: { root: '/Root/System/Schema/ContentTypes' },
           permissions: [{ path: '/Root/System/Schema/ContentTypes', action: 'Add' }],
         },
         {
           itemType: 'Localization',
-          settings: undefined,
+          settings: { root: '/Root/Localization' },
           permissions: [{ path: '/Root/Localization', action: 'Add' }],
         },
-        { itemType: 'Setup', settings: undefined, permissions: [{ path: '/Root/System/Settings', action: 'Browse' }] },
+        {
+          itemType: 'Setup',
+          settings: { root: '/Root/System/Settings' },
+          permissions: [{ path: '/Root/System/Settings', action: 'Browse' }],
+        },
       ],
     },
     commandPalette: { enabled: true, wrapQuery: '{0} .AUTOFILTERS:OFF' },
@@ -339,6 +342,7 @@ export const defaultSettings: PersonalSettingsType = {
   eventLogSize: 500,
   sendLogWithCrashReports: true,
   logLevel: ['Information', 'Warning', 'Error', 'Fatal'],
+  theme: 'light',
 }
 
 @Injectable({ lifetime: 'singleton' })

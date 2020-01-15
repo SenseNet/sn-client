@@ -3,6 +3,7 @@ import { DeepPartial } from '@sensenet/client-utils'
 const values: DeepPartial<typeof import('./default').default> = {
   addButton: {
     new: 'Új...',
+    addNew: 'Új hozzáadása',
     tooltip: 'Tartalom létrehozása vagy feltöltése',
     upload: 'Feltöltés',
     dialogTitle: 'Új {0} létrehozása',
@@ -52,6 +53,7 @@ const values: DeepPartial<typeof import('./default').default> = {
     dashboardTitle: 'Irányítópult',
     dashboardSecondaryText:
       'Olyan egyoldalas vizuális felület, amelynek segítségével a felhasználó első ránézésre monitorozhatja legfontosabb céljainak vagy elvárásainak megvalósulását',
+    newSearch: 'Új keresés indítása',
   },
   editPropertiesDialog: {
     dialogTitle: '{0} tulajdonságainak szerkesztése',
@@ -103,6 +105,10 @@ const values: DeepPartial<typeof import('./default').default> = {
     loggedInAs: 'Bejelentkezve mint {0}',
     notLoggedIn: 'Nincs bejelentkezve',
     typeToFilter: 'Kezdj írni a szűréshez...',
+  },
+  topMenu: {
+    personalSettings: 'Személyes beállítások',
+    logout: 'Kijelentkezés',
   },
 }
 

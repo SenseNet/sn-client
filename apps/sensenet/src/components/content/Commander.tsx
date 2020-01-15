@@ -10,7 +10,6 @@ import {
   useRepository,
 } from '@sensenet/hooks-react'
 import { useSelectionService } from '../../hooks'
-import { AddButton } from '../AddButton'
 import { CollectionComponent } from '../content-list'
 import { useDialog } from '../dialogs'
 
@@ -29,7 +28,6 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
   const repo = useRepository()
   const { openDialog } = useDialog()
   const selectionService = useSelectionService()
-
   const [_leftPanelRef, setLeftPanelRef] = useState<null | any>(null)
   const [_rightPanelRef, setRightPanelRef] = useState<null | any>(null)
 
@@ -75,7 +73,10 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
         } else if (ev.key === 'F7') {
           ev.preventDefault()
           ev.stopPropagation()
-          openDialog({ name: 'add', props: { parent: activeParent, schema: repo.schemas.getSchemaByName('Folder') } })
+          openDialog({
+            name: 'add',
+            props: { parentPath: activeParent.Path, schema: repo.schemas.getSchemaByName('Folder') },
+          })
         }
       }}
       style={{ display: 'flex', width: '100%', height: '100%' }}>
@@ -141,8 +142,6 @@ export const CommanderComponent: React.FunctionComponent<CommanderComponentProps
           </CurrentChildrenProvider>
         </CurrentContentProvider>
       </LoadSettingsContextProvider>
-
-      {activeParent ? <AddButton parent={activeParent} /> : null}
     </div>
   )
 }

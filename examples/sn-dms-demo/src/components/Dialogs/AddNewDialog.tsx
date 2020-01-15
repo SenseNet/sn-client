@@ -77,7 +77,7 @@ class AddNewDialog extends React.Component<
                     repository={repository}
                     contentTypeName={contentTypeName}
                     handleCancel={() => this.handleCancel()}
-                    onSubmit={createContent}
+                    onSubmit={content => createContent(parentPath, content, contentTypeName)}
                     showTitle={!!title}
                     extension={extension}
                     submitCallback={this.submitCallback}

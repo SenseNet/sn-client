@@ -34,6 +34,7 @@ module.exports = {
     'no-console': 'off',
     'react/prop-types': 0,
     '@typescript-eslint/no-unused-vars': 'off', // Use Typescript own check for this
+    '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-member-accessibility': [
       'error',
@@ -88,7 +89,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['packages/**/test/**/*.{ts,tsx}'],
+      files: ['**/test/**/*.{ts,tsx}'],
       rules: {
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/no-non-null-assertion': 'off',

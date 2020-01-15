@@ -12,11 +12,13 @@ const values = {
   addButton: {
     tooltip: 'Create or upload content',
     new: 'New...',
+    addNew: 'Add new',
     dialogTitle: 'Create new {0}',
     upload: 'Upload',
     errorGettingAllowedContentTypes: 'There was an error while fetching the allowed content types.',
     contentCreatedNotification: `The content '{0}' has been created succesfully.`,
     errorPostingContentNotification: 'There was an error during content creation',
+    errorGettingActions: 'There was an error while fetching the actions.',
   },
   commandPalette: {
     title: 'Show Command Palette',
@@ -137,6 +139,7 @@ const values = {
     dashboardSecondaryText: 'Repository overview',
     expand: 'Expand',
     collapse: 'Collapse',
+    newSearch: 'New search',
   },
   trash: {
     title: 'Trash',
@@ -261,6 +264,10 @@ const values = {
     saveSuccessNotification: `The changes of '{0}' has been saved`,
     saveFailedNotification: `Failed to save changes of content '{0}'`,
   },
+  topMenu: {
+    personalSettings: 'Personal settings',
+    logout: 'Log out',
+  },
   navigationCommandProvider: {
     personalSettingsPrimary: 'Personal Settings',
     personalSettingsSecondary: 'Edit your personal settings',
@@ -332,7 +339,6 @@ const values = {
     openInSearchTitle: 'Open in Search',
     openInSearchDescription: 'Opens the query expression in the Search view',
     saveQuery: 'Save Query',
-    newSearch: 'New search',
     noSavedQuery: 'There is no query saved yet.',
     save: 'Save',
     cancel: 'Cancel',
