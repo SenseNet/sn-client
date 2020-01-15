@@ -96,6 +96,7 @@ exports[`Document Viewer Error component matches snapshot wihtout provided conte
                   "elevation7": "MuiPaper-elevation7",
                   "elevation8": "MuiPaper-elevation8",
                   "elevation9": "MuiPaper-elevation9",
+                  "outlined": "MuiPaper-outlined",
                   "root": "MuiPaper-root",
                   "rounded": "MuiPaper-rounded",
                 }
@@ -112,7 +113,7 @@ exports[`Document Viewer Error component matches snapshot wihtout provided conte
               }
             >
               <header
-                className="MuiPaper-root MuiPaper-elevation4 MuiAppBar-root MuiAppBar-positionSticky MuiAppBar-colorPrimary"
+                className="MuiPaper-root MuiAppBar-root MuiAppBar-positionSticky MuiAppBar-colorPrimary MuiPaper-elevation4"
                 style={
                   Object {
                     "position": "fixed",
@@ -477,6 +478,7 @@ exports[`Document Viewer Error component matches snapshot with provided context 
                   "elevation7": "MuiPaper-elevation7",
                   "elevation8": "MuiPaper-elevation8",
                   "elevation9": "MuiPaper-elevation9",
+                  "outlined": "MuiPaper-outlined",
                   "root": "MuiPaper-root",
                   "rounded": "MuiPaper-rounded",
                 }
@@ -493,7 +495,7 @@ exports[`Document Viewer Error component matches snapshot with provided context 
               }
             >
               <header
-                className="MuiPaper-root MuiPaper-elevation4 MuiAppBar-root MuiAppBar-positionSticky MuiAppBar-colorPrimary"
+                className="MuiPaper-root MuiAppBar-root MuiAppBar-positionSticky MuiAppBar-colorPrimary MuiPaper-elevation4"
                 style={
                   Object {
                     "position": "fixed",
