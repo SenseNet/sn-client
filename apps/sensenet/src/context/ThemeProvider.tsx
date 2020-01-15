@@ -22,6 +22,7 @@ export const ThemeProvider: React.FunctionComponent<{ theme: ThemeOptions }> = p
 
   const theme = useMemo(() => {
     const nextTheme = createMuiTheme({
+      ...props.theme,
       palette: {
         ...props.theme.palette,
         type: pageTheme,
@@ -29,7 +30,7 @@ export const ThemeProvider: React.FunctionComponent<{ theme: ThemeOptions }> = p
     })
 
     return nextTheme
-  }, [pageTheme, props.theme.palette])
+  }, [pageTheme, props.theme])
 
   useEffect(() => {
     setPageTheme(personalSettings.theme)
