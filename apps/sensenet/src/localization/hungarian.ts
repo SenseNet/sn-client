@@ -55,6 +55,7 @@ const values: DeepPartial<typeof import('./default').default> = {
 
     personalSettingsTitle: 'Személyes beállítások',
     personalSettingsSecondaryText: 'Az alkalmazás testreszabása',
+    newSearch: 'Új keresés indítása',
   },
   editPropertiesDialog: {
     dialogTitle: '{0} tulajdonságainak szerkesztése',
