@@ -28,7 +28,7 @@ export const Login = () => {
   const injector = useInjector()
   const history = useHistory()
   const match = useRouteMatch()
-  const location = useLocation()
+  const location = useLocation<{ from: string }>()
   const repo = useRepository()
   const theme = useTheme()
   const classes = useStyles()
