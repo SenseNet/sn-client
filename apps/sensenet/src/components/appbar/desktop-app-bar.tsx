@@ -7,7 +7,7 @@ import { ResponsiveContext, ResponsivePersonalSetttings } from '../../context'
 import { useCommandPalette, useTheme } from '../../hooks'
 import { CommandPalette } from '../command-palette/CommandPalette'
 import { RepositorySelector } from '../RepositorySelector'
-import { DesktopNavMenu } from './DesktopNavMenu'
+import { DesktopNavMenu } from './desktop-nav-menu'
 
 export const DesktopAppBar: React.FunctionComponent<{ openDrawer?: () => void }> = props => {
   const device = useContext(ResponsiveContext)
