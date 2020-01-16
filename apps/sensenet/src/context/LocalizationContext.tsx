@@ -38,6 +38,7 @@ export const LocalizationProvider: React.FunctionComponent = props => {
 
   useEffect(() => {
     localizationService.load(personalSettings.language)
+    document.documentElement.lang = personalSettings.language === 'hungarian' ? 'hu' : 'en'
   }, [localizationService, personalSettings.language])
 
   return (
