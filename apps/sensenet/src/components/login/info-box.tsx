@@ -99,7 +99,7 @@ export function InfoBox({ onSelect }: InfoBoxProps) {
           {demoUsers.map((demoUser, index) => (
             <ListItem button key={index} onClick={() => onSelect(demoUser)}>
               <ListItemAvatar>
-                <Avatar src={demoUser.avatarUrl} />
+                <Avatar alt="avatar" src={demoUser.avatarUrl} />
               </ListItemAvatar>
               <ListItemText className={classes.listItemText} primary={demoUser.userName} />
               <ListItemText className={classes.listItemText} primary={demoUser.role} />

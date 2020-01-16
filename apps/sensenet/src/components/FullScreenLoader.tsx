@@ -1,5 +1,17 @@
 import React, { useEffect } from 'react'
-import fullScreenLoader from '../assets/loader-fullscreen.gif'
+import { createStyles, makeStyles } from '@material-ui/core/styles'
+import LinearProgress from '@material-ui/core/LinearProgress'
+
+const useStyles = makeStyles(() =>
+  createStyles({
+    root: {
+      width: '100%',
+    },
+    progressbar: {
+      backgroundImage: 'linear-gradient(to right, #42B871, #009FB5)',
+    },
+  }),
+)
 
 export interface FullScreenLoaderProps {
   onStartLoading?: () => void
@@ -10,22 +22,16 @@ export const FullScreenLoader: React.FunctionComponent<FullScreenLoaderProps> = 
   onStartLoading,
   onFinishLoading,
 }) => {
+  const classes = useStyles()
+
   useEffect(() => {
     onStartLoading && onStartLoading()
     return () => onFinishLoading && onFinishLoading()
   }, [onFinishLoading, onStartLoading])
 
   return (
-    <div style={{ width: '100%', height: '100%', display: 'flex' }}>
-      <img
-        style={{
-          maxWidth: '100%',
-          margin: 'auto',
-          filter: 'drop-shadow(0px 0px 5px white) drop-shadow(0px 0px 3px white) drop-shadow(0px 0px 15px white)',
-        }}
-        alt="Full screen loader"
-        src={fullScreenLoader}
-      />
+    <div className={classes.root}>
+      <LinearProgress className={classes.progressbar} />
     </div>
   )
 }
