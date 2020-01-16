@@ -20,7 +20,7 @@ import { UserAvatar } from '../UserAvatar'
 import { useLocalization, usePersonalSettings } from '../../hooks'
 import { useDialog } from '../dialogs'
 import { PersonalSettings } from '../../services'
-import { AntSwitch } from '../../components/ant-switch'
+import { AntSwitch } from '../ant-switch'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -102,6 +102,7 @@ export const DesktopNavMenu: React.FunctionComponent = () => {
       <Popper
         style={{ top: '65px', left: 'unset', right: '1px', width: 'fit-content' }}
         open={open}
+        anchorEl={anchorRef.current}
         role={undefined}
         transition
         disablePortal>
