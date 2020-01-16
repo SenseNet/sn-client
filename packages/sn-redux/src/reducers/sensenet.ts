@@ -1,4 +1,3 @@
-import { LoginState } from '@sensenet/client-core'
 import { Workspace } from '@sensenet/default-content-types'
 import { combineReducers, Reducer } from 'redux'
 import { loadContent, PromiseReturns } from '../Actions'
@@ -31,7 +30,7 @@ export const currentworkspace: Reducer<Workspace | null> = (state = null, action
  * Reducer combining session, currentitems, currentcontent and selected into a single object, ```sensenet``` which will be the top-level one.
  */
 export const sensenet = combineReducers<{
-  session: ReturnType<typeof session> & { loginState: LoginState }
+  session: ReturnType<typeof session>
   currentworkspace: ReturnType<typeof currentworkspace>
   currentcontent: ReturnType<typeof currentcontent>
   currentitems: ReturnType<typeof currentitems>
