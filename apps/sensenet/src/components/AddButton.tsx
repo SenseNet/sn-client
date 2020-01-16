@@ -99,7 +99,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   const [allowedChildTypes, setAllowedChildTypes] = useState<Schema[]>([])
   const localization = useLocalization().addButton
   const logger = useLogger('AddButton')
-  const [isAvailable, setAvailable] = useState(false)
+  const [isAvailable, setAvailable] = useState(true)
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null)
 
   useEffect(() => {
