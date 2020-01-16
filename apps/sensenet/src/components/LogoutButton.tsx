@@ -26,7 +26,10 @@ export const LogoutButton: React.FunctionComponent<LogoutButtonProps> = props =>
     <div>
       {session.state !== LoginState.Authenticated ? null : (
         <Tooltip placement="bottom-end" title={localization.logoutButtonTitle}>
-          <Button onClick={onClick} style={{ minWidth: 20, paddingTop: 4, paddingBottom: 4, borderRadius: 0 }}>
+          <Button
+            aria-label="{localization.logoutButtonTitle}"
+            onClick={onClick}
+            style={{ minWidth: 20, paddingTop: 4, paddingBottom: 4, borderRadius: 0 }}>
             <PowerSettingsNew style={{ ...props.buttonStyle, color: theme.palette.text.primary }} />
           </Button>
         </Tooltip>
