@@ -1,6 +1,5 @@
 {
   "name": "@sensenet/repository-events",
-  "sideEffects": false,
   "version": "1.4.9",
   "description": "Client side repository event observables for sensenet",
   "main": "dist/index.js",

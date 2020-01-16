@@ -1,6 +1,5 @@
 {
   "name": "@sensenet/client-utils",
-  "sideEffects": false,
   "version": "1.7.2",
   "description": "General sensenet independent client side utilities",
   "main": "dist/index.js",

@@ -2,9 +2,7 @@
   "extends": "../../tsconfig-base.json",
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "src",
-    "module": "esnext",
-    "moduleResolution": "node"
+    "rootDir": "src"
   },
   "include": ["src"],
   "references": [{ "path": "../sn-client-core" }, { "path": "../sn-default-content-types" }]

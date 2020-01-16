@@ -37,4 +37,15 @@ module.exports = {
     }),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
   ],
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        monacoCommon: {
+          test: /[\\/]node_modules[\\/]monaco\-editor/,
+          name: 'monaco-editor-common',
+          chunks: 'async',
+        },
+      },
+    },
+  },
 }

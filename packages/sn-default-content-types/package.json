@@ -1,6 +1,5 @@
 {
   "name": "@sensenet/default-content-types",
-  "sideEffects": false,
   "version": "2.0.4",
   "description": "Default content type definitions for sensenet",
   "main": "dist/index.js",
