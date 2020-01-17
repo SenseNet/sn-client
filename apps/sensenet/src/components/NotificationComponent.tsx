@@ -116,7 +116,8 @@ export const NotificationComponent: React.FunctionComponent = () => {
                   setDismisses([...dismisses, item.data.guid])
                   await sleepAsync(500)
                   eventService.dismiss(item)
-                }}>
+                }}
+                aria-label="Close button">
                 <Close />
               </IconButton>
             }

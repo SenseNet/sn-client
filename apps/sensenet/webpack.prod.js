@@ -57,7 +57,9 @@ module.exports = merge(common, {
       { from: path.resolve(`${__dirname}/_redirects`), to: path.resolve(`${__dirname}/build`) },
       { from: path.resolve(`${__dirname}/web.config`), to: path.resolve(`${__dirname}/build`) },
     ]),
-    new RelativeCiAgentWebpackPlugin(),
+    new RelativeCiAgentWebpackPlugin({
+      enabled: process.env.TRAVIS, // Run this only under Travis CI
+    }),
   ],
   module: {
     rules: [

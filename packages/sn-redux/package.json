@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@types/jest": "^24.0.23",
-    "@types/node": "^12.12.7",
+    "@types/node": "^13.1.7",
     "@types/redux-logger": "^3.0.7",
     "jest": "^24.9.0",
     "redux-mock-store": "^1.5.3",
