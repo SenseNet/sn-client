@@ -8,7 +8,7 @@ import { Close, Menu } from '@material-ui/icons'
 import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import { matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
-import { useRepository } from '@sensenet/hooks-react'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import clsx from 'clsx'
 import { useDrawerItems, useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
@@ -78,6 +78,8 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
   const [opened, setOpened] = useState(settings.drawer.type === 'permanent')
   const items = useDrawerItems()
   const localization = useLocalization().drawer
+  const [activeDrawer, setActiveDrawer] = useState('')
+  const logger = useLogger('PermanentDrawer')
 
   useEffect(() => {
     const activeComponentObserve = selectionService.activeContent.subscribe(newActiveComponent =>
@@ -88,6 +90,63 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
       activeComponentObserve.dispose()
     }
   }, [selectionService.activeContent])
+
+  useEffect(() => {
+    const urlParts = decodeURIComponent(props.location.pathname).split('/')
+    if (urlParts.length === 3) {
+      switch (urlParts[urlParts.length - 1]) {
+        case 'saved-queries':
+          setActiveDrawer('Search')
+          break
+        case 'trash':
+          setActiveDrawer('Trash')
+          break
+        case 'setup':
+          setActiveDrawer('Setup')
+          break
+        default:
+          setActiveDrawer('')
+      }
+    } else if (urlParts.length === 4 && urlParts[urlParts.length - 2] === 'browse') {
+      try {
+        const parsedUrlObject = JSON.parse(window.atob(urlParts[urlParts.length - 1]))
+        switch (parsedUrlObject.root) {
+          case '/Root/Content':
+            setActiveDrawer('Content')
+            break
+          case '/Root/IMS/Public':
+            setActiveDrawer('Users and groups')
+            break
+          case '/Root/Localization':
+            setActiveDrawer('Localization')
+            break
+          default:
+            setActiveDrawer('')
+        }
+      } catch (err) {
+        logger.debug({
+          message: `Could not parse ${urlParts[urlParts.length - 1]} to JSON`,
+          data: {
+            digestMessage: 'Drawer item active style set has failed ',
+          },
+        })
+      }
+    } else if (urlParts.length === 4 && urlParts[urlParts.length - 2] === 'search') {
+      try {
+        const parsedUrlObject = JSON.parse(window.atob(urlParts[urlParts.length - 1]))
+        parsedUrlObject.title === 'Content Types' ? setActiveDrawer('Content Types') : setActiveDrawer('Search')
+      } catch (err) {
+        logger.debug({
+          message: `Could not parse ${urlParts[urlParts.length - 1]} to JSON`,
+          data: {
+            digestMessage: 'Drawer item active style set has failed ',
+          },
+        })
+      }
+    } else {
+      setActiveDrawer('')
+    }
+  }, [logger, props.location.pathname])
 
   if (!settings.drawer.enabled) {
     return null
@@ -119,10 +178,13 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
             return (
               <NavLink
                 to={`/${btoa(repo.configuration.repositoryUrl)}${item.url}`}
-                className={classes.navLinkStyle}
                 key={index}
-                onClick={() => setCurrentPath(item.root ? item.root : '')}
-                activeClassName={classes.navLinkActiveStyle}>
+                onClick={() => {
+                  setCurrentPath(item.root ? item.root : '')
+                }}
+                className={clsx(classes.navLinkStyle, {
+                  [classes.navLinkActiveStyle]: activeDrawer === item.name,
+                })}>
                 <ListItem
                   button={true}
                   key={index}
