@@ -30,6 +30,7 @@
     "@sensenet/client-utils": "^1.7.3",
     "@sensenet/default-content-types": "^2.0.4",
     "@sensenet/query": "^1.1.12",
+    "oidc-client": "^1.10.1",
     "semaphore-async-await": "^1.5.1",
     "tslib": "^1.10.0",
     "uuid": "^3.3.3"

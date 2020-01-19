@@ -36,19 +36,6 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'off', // Use Typescript own check for this
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
-    '@typescript-eslint/explicit-member-accessibility': [
-      'error',
-      {
-        accessibility: 'explicit',
-        overrides: {
-          accessors: 'explicit',
-          constructors: 'no-public',
-          methods: 'explicit',
-          properties: 'off',
-          parameterProperties: 'explicit',
-        },
-      },
-    ],
     '@typescript-eslint/no-parameter-properties': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
