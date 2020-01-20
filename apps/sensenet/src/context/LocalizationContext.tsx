@@ -19,18 +19,26 @@ export const LocalizationContext = React.createContext({
 export const LocalizationProvider: React.FunctionComponent = props => {
   const injector = useInjector()
   const [localizationService] = useState(injector.getInstance(LocalizationService))
-  const [currentValues, setCurrentValues] = useState({ ...DefaultLocalization })
+  const [currentValues, setCurrentValues] = useState(DefaultLocalization)
   const personalSettings = usePersonalSettings()
 
   useEffect(() => {
     const observable = localizationService.currentValues.subscribe(v => {
+      /**
+       * This is a temporary solution until we refactor l18n
+       * We don't want to set the state if the values are the same.
+       */
+      if (JSON.stringify(currentValues) === JSON.stringify(v)) {
+        return
+      }
       setCurrentValues(v)
     })
     return () => observable.dispose()
-  }, [localizationService.currentValues])
+  }, [currentValues, localizationService.currentValues])
 
   useEffect(() => {
     localizationService.load(personalSettings.language)
+    document.documentElement.lang = personalSettings.language === 'hungarian' ? 'hu' : 'en'
   }, [localizationService, personalSettings.language])
 
   return (

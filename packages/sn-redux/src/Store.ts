@@ -28,7 +28,7 @@
  */
 import { Repository } from '@sensenet/client-core'
 import { promiseMiddleware } from '@sensenet/redux-promise-middleware'
-import { applyMiddleware, compose, createStore, DeepPartial, Middleware, Reducer, StoreEnhancer } from 'redux'
+import { applyMiddleware, compose, createStore, Middleware, PreloadedState, Reducer, StoreEnhancer } from 'redux'
 import { createLogger } from 'redux-logger'
 import * as Actions from './Actions'
 
@@ -84,7 +84,7 @@ export interface CreateStoreOptions<T> {
   /**
    * Initial state of the store
    */
-  persistedState?: DeepPartial<T>
+  persistedState?: PreloadedState<T>
   /**
    * Array of additional enhancers
    */
@@ -130,7 +130,7 @@ export const createSensenetStore = <T>(options: CreateStoreOptions<T>) => {
 
   const store = createStore(
     options.rootReducer,
-    options.persistedState || {},
+    options.persistedState,
     composeEnhancers(applyMiddleware(...middlewareArray), ...enhancerArray),
   )
 

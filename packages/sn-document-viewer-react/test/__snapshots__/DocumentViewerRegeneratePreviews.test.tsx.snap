@@ -96,6 +96,7 @@ exports[`Document Regenerate Previews component Should trigger regeneration on b
                   "elevation7": "MuiPaper-elevation7",
                   "elevation8": "MuiPaper-elevation8",
                   "elevation9": "MuiPaper-elevation9",
+                  "outlined": "MuiPaper-outlined",
                   "root": "MuiPaper-root",
                   "rounded": "MuiPaper-rounded",
                 }
@@ -112,7 +113,7 @@ exports[`Document Regenerate Previews component Should trigger regeneration on b
               }
             >
               <header
-                className="MuiPaper-root MuiPaper-elevation4 MuiAppBar-root MuiAppBar-positionSticky MuiAppBar-colorPrimary"
+                className="MuiPaper-root MuiAppBar-root MuiAppBar-positionSticky MuiAppBar-colorPrimary MuiPaper-elevation4"
                 style={
                   Object {
                     "position": "fixed",
@@ -243,6 +244,7 @@ exports[`Document Regenerate Previews component Should trigger regeneration on b
               "containedSecondary": "MuiButton-containedSecondary",
               "containedSizeLarge": "MuiButton-containedSizeLarge",
               "containedSizeSmall": "MuiButton-containedSizeSmall",
+              "disableElevation": "MuiButton-disableElevation",
               "disabled": "Mui-disabled",
               "endIcon": "MuiButton-endIcon",
               "focusVisible": "Mui-focusVisible",
