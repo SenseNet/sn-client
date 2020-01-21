@@ -124,7 +124,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   useEffect(() => {
     const getActions = async () => {
       try {
-        const actions = await repo.getActions({ idOrPath: currentComponent ? parent.Id : props.path })
+        const actions = await repo.getActions({ idOrPath: parent ? parent.Id : props.path })
         const isActionFound = actions.d.Actions.some(action => action.Name === 'Add' || action.Name === 'Upload')
         setAvailable(isActionFound)
       } catch (error) {
@@ -137,12 +137,12 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
       }
     }
 
-    if (currentComponent || props.path !== '') {
+    if (parent || props.path !== '') {
       getActions()
     } else {
       setAvailable(false)
     }
-  }, [localization.errorGettingActions, logger, parent, currentComponent, props.path, repo])
+  }, [localization.errorGettingActions, logger, parent, props.path, repo])
 
   useEffect(() => {
     const getAllowedChildTypes = async () => {
