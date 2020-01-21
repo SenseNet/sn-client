@@ -1,6 +1,6 @@
 import Add from '@material-ui/icons/Add'
-import { GenericContent, Schema } from '@sensenet/default-content-types'
-import React, { useContext, useEffect, useState } from 'react'
+import { Schema } from '@sensenet/default-content-types'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { CurrentContentContext, useLogger, useRepository } from '@sensenet/hooks-react'
 import {
   createStyles,
@@ -16,7 +16,7 @@ import {
 } from '@material-ui/core'
 import clsx from 'clsx'
 import { CloudUpload } from '@material-ui/icons'
-import { useLocalization } from '../hooks'
+import { useLocalization, useSelectionService } from '../hooks'
 import { useDialog } from './dialogs'
 import { Icon } from './Icon'
 
@@ -84,12 +84,12 @@ const useStyles = makeStyles((theme: Theme) => {
   })
 })
 export interface AddButtonProps {
-  parent?: GenericContent
   isOpened?: boolean
   path: string
 }
 
 export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
+  const selectionService = useSelectionService()
   const classes = useStyles()
   const repo = useRepository()
   const { openDialog } = useDialog()
@@ -101,19 +101,30 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
   const logger = useLogger('AddButton')
   const [isAvailable, setAvailable] = useState(true)
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null)
+  const [currentComponent, setCurrentComponent] = useState(selectionService.activeContent.getValue())
+
+  useMemo(() => {
+    const activeComponentObserve = selectionService.activeContent.subscribe(newActiveComponent =>
+      setCurrentComponent(newActiveComponent),
+    )
+
+    return function cleanup() {
+      activeComponentObserve.dispose()
+    }
+  }, [selectionService.activeContent])
 
   useEffect(() => {
-    props.parent && setParent(props.parent)
-  }, [props.parent])
+    currentComponent && setParent(currentComponent)
+  }, [currentComponent])
 
   useEffect(() => {
-    !props.parent && setParent(parentContext)
-  }, [parentContext, props.parent])
+    !currentComponent && setParent(parentContext)
+  }, [parentContext, currentComponent])
 
   useEffect(() => {
     const getActions = async () => {
       try {
-        const actions = await repo.getActions({ idOrPath: props.parent ? parent.Id : props.path })
+        const actions = await repo.getActions({ idOrPath: currentComponent ? parent.Id : props.path })
         const isActionFound = actions.d.Actions.some(action => action.Name === 'Add' || action.Name === 'Upload')
         setAvailable(isActionFound)
       } catch (error) {
@@ -126,18 +137,18 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
       }
     }
 
-    if (props.parent || props.path !== '') {
+    if (currentComponent || props.path !== '') {
       getActions()
     } else {
       setAvailable(false)
     }
-  }, [localization.errorGettingActions, logger, parent, props.parent, props.path, repo])
+  }, [localization.errorGettingActions, logger, parent, currentComponent, props.path, repo])
 
   useEffect(() => {
     const getAllowedChildTypes = async () => {
       try {
         const allowedChildTypesFromRepo = await repo.getAllowedChildTypes({
-          idOrPath: props.parent ? parent.Id : props.path,
+          idOrPath: currentComponent ? parent.Id : props.path,
         })
 
         const tempAllowedChildTypes: Schema[] = []
@@ -159,9 +170,17 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
     }
 
     if (showSelectType) {
-      props.parent || props.path !== '' ? getAllowedChildTypes() : setAllowedChildTypes([])
+      currentComponent || props.path !== '' ? getAllowedChildTypes() : setAllowedChildTypes([])
     }
-  }, [localization.errorGettingAllowedContentTypes, logger, parent.Id, props.parent, props.path, repo, showSelectType])
+  }, [
+    localization.errorGettingAllowedContentTypes,
+    logger,
+    parent.Id,
+    currentComponent,
+    props.path,
+    repo,
+    showSelectType,
+  ])
 
   return (
     <div className={classes.mainDiv}>
@@ -253,7 +272,7 @@ export const AddButton: React.FunctionComponent<AddButtonProps> = props => {
                   setShowSelectType(false)
                   openDialog({
                     name: 'add',
-                    props: { schema: childType, parentPath: props.parent ? props.parent.Path : props.path },
+                    props: { schema: childType, parentPath: currentComponent ? currentComponent.Path : props.path },
                   })
                 }}>
                 <ListItemIcon style={{ minWidth: '36px' }}>
