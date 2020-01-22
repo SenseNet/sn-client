@@ -76,6 +76,7 @@
     "filesize": "^6.0.1",
     "moment": "^2.24.0",
     "monaco-editor": "^0.19.0",
+    "oidc-client": "^1.10.1",
     "react": "^16.11.0",
     "react-autosuggest": "^9.4.3",
     "react-dom": "^16.11.0",

@@ -1,49 +1,52 @@
-import { User, UserManager, WebStorageStateStore } from 'oidc-client'
+/* eslint-disable @typescript-eslint/camelcase */
+import oidc, { User, UserManager, UserManagerSettings } from 'oidc-client'
 
-export const ApplicationName = 'SenseNet.Tests.SPA'
+oidc.Log.logger = console
+oidc.Log.level = oidc.Log.DEBUG
 
-export const QueryParameterNames = {
-  ReturnUrl: 'returnUrl',
-  Message: 'message',
+export const ApplicationName = 'spa'
+
+export const queryParameterNames = {
+  returnUrl: 'returnUrl',
+  message: 'message',
 }
 
-export const LogoutActions = {
-  LogoutCallback: 'logout-callback',
-  Logout: 'logout',
-  LoggedOut: 'logged-out',
-}
+export const logoutActions = {
+  logoutCallback: 'logoutCallback',
+  logout: 'logout',
+  loggedOut: 'loggedOut',
+} as const
 
-export const LoginActions = {
-  Login: 'login',
-  LoginCallback: 'login-callback',
-  LoginFailed: 'login-failed',
-  Profile: 'profile',
-  Register: 'register',
-}
+export const loginActions = {
+  login: 'login',
+  loginCallback: 'loginCallback',
+  loginFailed: 'loginFailed',
+  profile: 'profile',
+  register: 'register',
+} as const
 
 const prefix = '/authentication'
 
-export const ApplicationPaths = {
-  DefaultLoginRedirectPath: '/',
-  ApiAuthorizationClientConfigurationUrl: `/_configuration/${ApplicationName}`,
-  ApiAuthorizationPrefix: prefix,
-  Login: `${prefix}/${LoginActions.Login}`,
-  LoginFailed: `${prefix}/${LoginActions.LoginFailed}`,
-  LoginCallback: `${prefix}/${LoginActions.LoginCallback}`,
-  Register: `${prefix}/${LoginActions.Register}`,
-  Profile: `${prefix}/${LoginActions.Profile}`,
-  LogOut: `${prefix}/${LogoutActions.Logout}`,
-  LoggedOut: `${prefix}/${LogoutActions.LoggedOut}`,
-  LogOutCallback: `${prefix}/${LogoutActions.LogoutCallback}`,
-  IdentityRegisterPath: '/Identity/Account/Register',
-  IdentityManagePath: '/Identity/Account/Manage',
+export const applicationPaths = {
+  defaultLoginRedirectPath: '/',
+  apiAuthorizationPrefix: prefix,
+  login: `${prefix}/${loginActions.login}`,
+  loginFailed: `${prefix}/${loginActions.loginFailed}`,
+  loginCallback: `${prefix}/${loginActions.loginCallback}`,
+  register: `${prefix}/${loginActions.register}`,
+  profile: `${prefix}/${loginActions.profile}`,
+  logOut: `${prefix}/${logoutActions.logout}`,
+  loggedOut: `${prefix}/${logoutActions.loggedOut}`,
+  logOutCallback: `${prefix}/${logoutActions.logoutCallback}`,
+  identityRegisterPath: '/Identity/Account/Register',
+  identityManagePath: '/Identity/Account/Manage',
 }
 
-export const AuthenticationResultStatus = {
-  Redirect: 'redirect',
-  Success: 'success',
-  Fail: 'fail',
-}
+export const authenticationResultStatus = {
+  redirect: 'redirect',
+  success: 'success',
+  fail: 'fail',
+} as const
 
 export class OAuthAuthenticationService {
   private callbacks: Array<{ callback: () => void; subscription: number }> = []
@@ -51,23 +54,27 @@ export class OAuthAuthenticationService {
   private user?: User
   private userManager?: UserManager
 
-  async isAuthenticated() {
-    const user = await this.getUser()
+  async isAuthenticated(authorityUrl?: string) {
+    const user = await this.getUser(authorityUrl)
     return !!user
   }
 
-  async getUser() {
+  async getUser(authorityUrl?: string) {
     if (this.user?.profile) {
       return this.user.profile
     }
 
-    await this.ensureUserManagerInitialized()
+    if (!authorityUrl) {
+      return
+    }
+
+    await this.ensureUserManagerInitialized(authorityUrl)
     const user = await this.userManager?.getUser()
     return user?.profile
   }
 
-  async getAccessToken() {
-    await this.ensureUserManagerInitialized()
+  async getAccessToken(authorityUrl: string) {
+    await this.ensureUserManagerInitialized(authorityUrl)
     const user = await this.userManager?.getUser()
     return user?.access_token
   }
@@ -80,8 +87,8 @@ export class OAuthAuthenticationService {
   //    Pop-Up blocker or the user has disabled PopUps.
   // 3) If the two methods above fail, we redirect the browser to the IdP to perform a traditional
   //    redirect flow.
-  async signIn(state: { returnUrl: string }) {
-    await this.ensureUserManagerInitialized()
+  async signIn(state: { returnUrl: string }, authorityUrl: string) {
+    await this.ensureUserManagerInitialized(authorityUrl)
     try {
       const silentUser = await this.userManager?.signinSilent(this.createArguments())
       this.updateState(silentUser)
@@ -90,31 +97,30 @@ export class OAuthAuthenticationService {
       // User might not be authenticated, fallback to popup authentication
       console.log('Silent authentication error: ', silentError)
 
-      try {
-        const popUpUser = await this.userManager?.signinPopup(this.createArguments())
-        this.updateState(popUpUser)
-        return this.success(state)
-      } catch (popUpError) {
-        if (popUpError.message === 'Popup window closed') {
-          // The user explicitly cancelled the login action by closing an opened popup.
-          return this.error('The user closed the window.')
-        }
+      // try {
+      //   const popUpUser = await this.userManager?.signinPopup(this.createArguments())
+      //   this.updateState(popUpUser)
+      //   return this.success(state)
+      // } catch (popUpError) {
+      //   if (popUpError.message === 'Popup window closed') {
+      //     // The user explicitly cancelled the login action by closing an opened popup.
+      //     return this.error('The user closed the window.')
+      //   }
 
-        // PopUps might be blocked by the user, fallback to redirect
-        try {
-          await this.userManager?.signinRedirect(this.createArguments(state))
-          return this.redirect()
-        } catch (redirectError) {
-          console.log('Redirect authentication error: ', redirectError)
-          return this.error(redirectError)
-        }
+      // PopUps might be blocked by the user, fallback to redirect
+      try {
+        await this.userManager?.signinRedirect(this.createArguments(state))
+        return this.redirect()
+      } catch (redirectError) {
+        console.log('Redirect authentication error: ', redirectError)
+        return this.error(redirectError)
       }
     }
   }
 
-  async completeSignIn(url: string) {
+  async completeSignIn(authorityUrl: string, url?: string) {
     try {
-      await this.ensureUserManagerInitialized()
+      await this.ensureUserManagerInitialized(authorityUrl)
       const user = await this.userManager?.signinCallback(url)
       this.updateState(user)
       return this.success(user?.state)
@@ -129,8 +135,8 @@ export class OAuthAuthenticationService {
   //    Pop-Up blocker or the user has disabled PopUps.
   // 2) If the method above fails, we redirect the browser to the IdP to perform a traditional
   //    post logout redirect flow.
-  async signOut(state: { returnUrl: string }) {
-    await this.ensureUserManagerInitialized()
+  async signOut(state: { returnUrl: string }, authorityUrl: string) {
+    await this.ensureUserManagerInitialized(authorityUrl)
     try {
       await this.userManager?.signoutPopup(this.createArguments())
       this.updateState(undefined)
@@ -147,8 +153,8 @@ export class OAuthAuthenticationService {
     }
   }
 
-  async completeSignOut(url: string) {
-    await this.ensureUserManagerInitialized()
+  async completeSignOut(url: string, authorityUrl: string) {
+    await this.ensureUserManagerInitialized(authorityUrl)
     try {
       const response = await this.userManager?.signoutCallback(url)
       this.updateState(undefined)
@@ -190,33 +196,32 @@ export class OAuthAuthenticationService {
   }
 
   error(message: string) {
-    return { status: AuthenticationResultStatus.Fail, message }
+    return { status: authenticationResultStatus.fail, message }
   }
 
   success(state: { returnUrl: string }) {
-    return { status: AuthenticationResultStatus.Success, state }
+    return { status: authenticationResultStatus.success, state }
   }
 
   redirect() {
-    return { status: AuthenticationResultStatus.Redirect }
+    return { status: authenticationResultStatus.redirect }
   }
 
-  async ensureUserManagerInitialized() {
+  async ensureUserManagerInitialized(authorityUrl: string) {
     if (this.userManager !== undefined) {
       return
     }
 
-    const response = await fetch(ApplicationPaths.ApiAuthorizationClientConfigurationUrl)
-    if (!response.ok) {
-      throw new Error(`Could not load settings for '${ApplicationName}'`)
+    const settings: UserManagerSettings = {
+      client_id: 'spa',
+      redirect_uri: `http://localhost:8080${applicationPaths.loginCallback}`,
+      response_type: 'code',
+      scope: 'openid profile',
+      authority: authorityUrl,
+      automaticSilentRenew: true,
+      loadUserInfo: true,
+      includeIdTokenInSilentRenew: true,
     }
-
-    const settings = await response.json()
-    settings.automaticSilentRenew = true
-    settings.includeIdTokenInSilentRenew = true
-    settings.userStore = new WebStorageStateStore({
-      prefix: ApplicationName,
-    })
 
     this.userManager = new UserManager(settings)
 
@@ -226,3 +231,7 @@ export class OAuthAuthenticationService {
     })
   }
 }
+
+const authService = new OAuthAuthenticationService()
+
+export default authService

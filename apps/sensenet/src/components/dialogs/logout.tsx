@@ -1,16 +1,10 @@
-import React, { useState } from 'react'
-import {
-  Button,
-  CircularProgress,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Typography,
-} from '@material-ui/core'
-import { useLogger, useRepository } from '@sensenet/hooks-react'
+import { Button, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core'
 import { User } from '@sensenet/default-content-types'
+import { useLogger, useRepository } from '@sensenet/hooks-react'
+import React from 'react'
+import { useHistory } from 'react-router'
 import { useLocalization } from '../../hooks'
+import { applicationPaths } from '../../services/auth-service'
 import { Icon } from '../Icon'
 import { useDialog } from './dialog-provider'
 
@@ -19,10 +13,10 @@ export type LogoutDialogProps = {
   onLoggedOut?: () => void
 }
 
-export function LogoutDialog({ userToLogout, onLoggedOut }: LogoutDialogProps) {
-  const [isLoggingOut, setIsLoggingOut] = useState(false)
+export function LogoutDialog({ userToLogout }: LogoutDialogProps) {
   const { closeLastDialog } = useDialog()
   const logger = useLogger('LogoutComponent')
+  const history = useHistory<{ local: boolean }>()
   const repo = useRepository()
   const localization = useLocalization().logout
 
@@ -33,8 +27,6 @@ export function LogoutDialog({ userToLogout, onLoggedOut }: LogoutDialogProps) {
           <Icon
             style={{
               margin: '0 1em 0 0',
-              filter: isLoggingOut ? 'contrast(0)' : undefined,
-              opacity: isLoggingOut ? 0 : 1,
               transition: 'filter linear 1s, opacity linear 1.5s',
             }}
             item={userToLogout}
@@ -43,45 +35,27 @@ export function LogoutDialog({ userToLogout, onLoggedOut }: LogoutDialogProps) {
         </div>
       </DialogTitle>
       <DialogContent>
-        {isLoggingOut ? (
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
-            <CircularProgress size={64} />
-            <Typography style={{ marginTop: '2em', wordBreak: 'break-word' }}>
-              {localization.loggingOutFrom(repo.configuration.repositoryUrl)}
-            </Typography>
-          </div>
-        ) : (
-          <DialogContentText style={{ wordBreak: 'break-word' }}>
-            {localization.logoutConfirmText(
-              repo.configuration.repositoryUrl,
-              userToLogout.DisplayName ?? userToLogout.Name,
-            )}
-          </DialogContentText>
-        )}
+        <DialogContentText style={{ wordBreak: 'break-word' }}>
+          {localization.logoutConfirmText(
+            repo.configuration.repositoryUrl,
+            userToLogout.DisplayName ?? userToLogout.Name,
+          )}
+        </DialogContentText>
       </DialogContent>
-      {isLoggingOut ? null : (
-        <DialogActions>
-          <Button onClick={closeLastDialog}>{localization.logoutCancel}</Button>
-          <Button
-            onClick={async () => {
-              try {
-                setIsLoggingOut(true)
-                await repo.authentication.logout().then(() => {
-                  onLoggedOut?.()
-                })
-              } catch {
-                /** ignore logout response parsing error */
-              }
-              closeLastDialog()
-              logger.information({
-                message: localization.logoutSuccessNotification(repo.configuration.repositoryUrl),
-              })
-            }}
-            autoFocus={true}>
-            {localization.logoutButtonTitle}
-          </Button>
-        </DialogActions>
-      )}
+      <DialogActions>
+        <Button onClick={closeLastDialog}>{localization.logoutCancel}</Button>
+        <Button
+          onClick={() => {
+            closeLastDialog()
+            history.push(applicationPaths.logOut, { local: true })
+            logger.information({
+              message: localization.logoutSuccessNotification(repo.configuration.repositoryUrl),
+            })
+          }}
+          autoFocus={true}>
+          {localization.logoutButtonTitle}
+        </Button>
+      </DialogActions>
     </>
   )
 }
