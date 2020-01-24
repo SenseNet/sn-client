@@ -59,14 +59,14 @@ const Search: React.FunctionComponent<RouteComponentProps> = props => {
         name: 'GetQueries',
         method: 'GET',
         oDataOptions: {
-          ...loadSettingsContext.loadChildrenSettings,
+          ...loadSettingsContext?.loadChildrenSettings,
           select: ['Query', 'Icon'],
           onlyPublic,
         } as any,
         body: undefined,
       })
       .then(result => setQueries(result.d.results))
-  }, [reloadToken, loadSettingsContext.loadChildrenSettings, repo, onlyPublic])
+  }, [reloadToken, loadSettingsContext, repo, onlyPublic])
   return (
     <div style={{ padding: '1em', margin: '1em', overflow: 'hidden' }}>
       <div>

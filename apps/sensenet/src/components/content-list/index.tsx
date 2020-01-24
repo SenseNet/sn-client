@@ -51,14 +51,22 @@ export const isReferenceField = (fieldName: string, repo: Repository) => {
   return refWhiteList.indexOf(fieldName) !== -1 || (setting && setting.Type === 'ReferenceFieldSetting') || false
 }
 
-export const CollectionComponent: React.FunctionComponent<CollectionComponentProps> = props => {
+const setSelectedReducer = (state: GenericContent[], value: GenericContent[]) => {
+  if (JSON.stringify(value) === JSON.stringify(state)) {
+    return state
+  }
+  return value
+}
+
+const CollectionComponent: React.FunctionComponent<CollectionComponentProps> = props => {
   const parentContent = useContext(CurrentContentContext)
   const children = useContext(CurrentChildrenContext)
   const ancestors = useContext(CurrentAncestorsContext)
   const device = useContext(ResponsiveContext)
   const personalSettings = useContext(ResponsivePersonalSetttings)
   const [activeContent, setActiveContent] = useState<GenericContent>(children[0])
-  const [selected, setSelected] = useState<GenericContent[]>([])
+  const initialSelected: GenericContent[] = []
+  const [selected, setSelected] = React.useReducer(setSelectedReducer, initialSelected)
   const [isFocused, setIsFocused] = useState(true)
   const [isContextMenuOpened, setIsContextMenuOpened] = useState(false)
   const [contextMenuAnchor, setContextMenuAnchor] = useState<{ top: number; left: number }>({
@@ -69,13 +77,13 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
   const { openDialog } = useDialog()
   const repo = useRepository()
   const loadSettings = useContext(LoadSettingsContext)
+  const loadChildrenSettingsOrderBy = loadSettings?.loadChildrenSettings.orderby
 
   const [currentOrder, setCurrentOrder] = useState<keyof GenericContent>(
-    ((loadSettings.loadChildrenSettings.orderby &&
-      loadSettings.loadChildrenSettings.orderby[0][0]) as keyof GenericContent) || 'DisplayName',
+    ((loadChildrenSettingsOrderBy && loadChildrenSettingsOrderBy[0][0]) as keyof GenericContent) || 'DisplayName',
   )
   const [currentDirection, setCurrentDirection] = useState<'asc' | 'desc'>(
-    (loadSettings.loadChildrenSettings.orderby && (loadSettings.loadChildrenSettings.orderby[0][1] as any)) || 'asc',
+    (loadChildrenSettingsOrderBy && (loadChildrenSettingsOrderBy[0][1] as any)) || 'asc',
   )
 
   useEffect(() => {
@@ -95,8 +103,8 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
 
   useEffect(() => {
     const fields = props.fieldsToDisplay || personalSettings.content.fields
-    loadSettings.setLoadChildrenSettings({
-      ...loadSettings.loadChildrenSettings,
+    loadSettings?.setLoadChildrenSettings({
+      ...loadSettings?.loadChildrenSettings,
       expand: ['CheckedOutTo', ...fields.filter(fieldName => isReferenceField(fieldName, repo))],
       orderby: [[currentOrder as any, currentDirection as any]],
     })
@@ -240,6 +248,101 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
     [activeContent, children, props, selected, handleActivateItem, ancestors, openDialog, searchString, runSearch],
   )
 
+  const onRequestOrderChangeFunc = (field: any, dir: any) => {
+    setCurrentOrder(field)
+    setCurrentDirection(dir)
+  }
+
+  const onItemDoubleClickFunc = (_ev: any, item: any) => handleActivateItem(item)
+
+  const getSelectionControl = (isSelected: any, content: any, onChangeCallback: any) => (
+    <SelectionControl {...{ isSelected, content, onChangeCallback }} />
+  )
+
+  const onItemContextMenu = (ev: any, item: any) => {
+    ev.preventDefault()
+    setActiveContent(item)
+    setContextMenuAnchor({ top: ev.clientY, left: ev.clientX })
+    setIsContextMenuOpened(true)
+  }
+
+  const fieldComponentFunc = (fieldOptions: any) => {
+    // eslint-disable-next-line default-case
+    switch (fieldOptions.field) {
+      case 'Locked':
+        return <LockedField content={fieldOptions.content} />
+      case 'Icon':
+        return <IconField content={fieldOptions.content} />
+      case 'Email' as any:
+        return <EmailField mail={fieldOptions.content[fieldOptions.field] as string} />
+      case 'Phone' as any:
+        return <PhoneField phoneNo={fieldOptions.content[fieldOptions.field] as string} />
+      case 'DisplayName':
+        return (
+          <DisplayNameComponent
+            content={fieldOptions.content}
+            device={device}
+            isActive={activeContent && fieldOptions.content.Id === activeContent.Id}
+          />
+        )
+      case 'Description':
+        return <DescriptionField text={fieldOptions.content[fieldOptions.field] as string} />
+      case 'Actions':
+        return (
+          <ActionsField
+            onOpen={async ev => {
+              ev.preventDefault()
+              ev.stopPropagation()
+              ev.persist()
+              await setActiveContent(fieldOptions.content)
+              await setContextMenuAnchor({ top: ev.clientY, left: ev.clientX })
+              await setIsContextMenuOpened(true)
+            }}
+          />
+        )
+      // no default
+    }
+    if (
+      fieldOptions.fieldSetting &&
+      fieldOptions.fieldSetting.FieldClassName === 'SenseNet.ContentRepository.Fields.DateTimeField'
+    ) {
+      return <DateField date={fieldOptions.content[fieldOptions.field] as string} />
+    }
+
+    if (typeof fieldOptions.content[fieldOptions.field] === 'object' && isReferenceField(fieldOptions.field, repo)) {
+      const expectedContent = fieldOptions.content[fieldOptions.field] as GenericContent
+      if (
+        expectedContent &&
+        expectedContent.Id &&
+        expectedContent.Type &&
+        expectedContent.Name &&
+        expectedContent.Path
+      ) {
+        return <ReferenceField content={expectedContent} />
+      }
+      return null
+    }
+    if (typeof fieldOptions.content[fieldOptions.field] === 'boolean') {
+      return <BooleanField value={fieldOptions.content[fieldOptions.field] as boolean | undefined} />
+    }
+    return <DefaultCell {...fieldOptions} />
+  }
+
+  const displayNameInArray = ['DisplayName']
+
+  const menuPropsObj = {
+    disablePortal: true,
+    anchorReference: 'anchorPosition' as 'anchorPosition',
+    anchorPosition: contextMenuAnchor,
+    BackdropProps: {
+      onClick: () => setIsContextMenuOpened(false),
+      onContextMenu: (ev: { preventDefault: () => any }) => ev.preventDefault(),
+    },
+  }
+
+  const onCloseFunc = () => setIsContextMenuOpened(false)
+  const onOpenFunc = () => setIsContextMenuOpened(true)
+
   return (
     <div style={{ ...props.style }} {...props.containerProps}>
       {props.enableBreadcrumbs ? <ContentBreadcrumbs onItemClick={i => props.onParentChange(i.content)} /> : null}
@@ -273,109 +376,31 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
             active={activeContent}
             orderBy={currentOrder}
             orderDirection={currentDirection}
-            onRequestOrderChange={(field, dir) => {
-              setCurrentOrder(field)
-              setCurrentDirection(dir)
-            }}
+            onRequestOrderChange={onRequestOrderChangeFunc}
             onItemClick={handleItemClick}
-            onItemDoubleClick={(_ev, item) => handleActivateItem(item)}
+            onItemDoubleClick={onItemDoubleClickFunc}
             displayRowCheckbox={!props.disableSelection}
-            getSelectionControl={(isSelected, content, onChangeCallback) => (
-              <SelectionControl {...{ isSelected, content, onChangeCallback }} />
-            )}
-            onItemContextMenu={(ev, item) => {
-              ev.preventDefault()
-              setActiveContent(item)
-              setContextMenuAnchor({ top: ev.clientY, left: ev.clientX })
-              setIsContextMenuOpened(true)
-            }}
-            fieldComponent={fieldOptions => {
-              // eslint-disable-next-line default-case
-              switch (fieldOptions.field) {
-                case 'Locked':
-                  return <LockedField content={fieldOptions.content} />
-                case 'Icon':
-                  return <IconField content={fieldOptions.content} />
-                case 'Email' as any:
-                  return <EmailField mail={fieldOptions.content[fieldOptions.field] as string} />
-                case 'Phone' as any:
-                  return <PhoneField phoneNo={fieldOptions.content[fieldOptions.field] as string} />
-                case 'DisplayName':
-                  return (
-                    <DisplayNameComponent
-                      content={fieldOptions.content}
-                      device={device}
-                      isActive={activeContent && fieldOptions.content.Id === activeContent.Id}
-                    />
-                  )
-                case 'Description':
-                  return <DescriptionField text={fieldOptions.content[fieldOptions.field] as string} />
-                case 'Actions':
-                  return (
-                    <ActionsField
-                      onOpen={ev => {
-                        ev.preventDefault()
-                        ev.stopPropagation()
-                        setActiveContent(fieldOptions.content)
-                        setContextMenuAnchor({ top: ev.clientY, left: ev.clientX })
-                        setIsContextMenuOpened(true)
-                      }}
-                    />
-                  )
-                // no default
-              }
-              if (
-                fieldOptions.fieldSetting &&
-                fieldOptions.fieldSetting.FieldClassName === 'SenseNet.ContentRepository.Fields.DateTimeField'
-              ) {
-                return <DateField date={fieldOptions.content[fieldOptions.field] as string} />
-              }
-
-              if (
-                typeof fieldOptions.content[fieldOptions.field] === 'object' &&
-                isReferenceField(fieldOptions.field, repo)
-              ) {
-                const expectedContent = fieldOptions.content[fieldOptions.field] as GenericContent
-                if (
-                  expectedContent &&
-                  expectedContent.Id &&
-                  expectedContent.Type &&
-                  expectedContent.Name &&
-                  expectedContent.Path
-                ) {
-                  return <ReferenceField content={expectedContent} />
-                }
-                return null
-              }
-              if (typeof fieldOptions.content[fieldOptions.field] === 'boolean') {
-                return <BooleanField value={fieldOptions.content[fieldOptions.field] as boolean | undefined} />
-              }
-              return <DefaultCell {...fieldOptions} />
-            }}
-            fieldsToDisplay={props.fieldsToDisplay || personalSettings.content.fields || ['DisplayName']}
+            getSelectionControl={getSelectionControl}
+            onItemContextMenu={onItemContextMenu}
+            fieldComponent={fieldComponentFunc}
+            fieldsToDisplay={props.fieldsToDisplay || personalSettings.content.fields || displayNameInArray}
             selected={selected}
             onRequestSelectionChange={setSelected}
-            icons={{}}
           />
-          {activeContent ? (
-            <ContentContextMenu
-              content={activeContent}
-              menuProps={{
-                disablePortal: true,
-                anchorReference: 'anchorPosition',
-                anchorPosition: contextMenuAnchor,
-                BackdropProps: {
-                  onClick: () => setIsContextMenuOpened(false),
-                  onContextMenu: ev => ev.preventDefault(),
-                },
-              }}
-              isOpened={isContextMenuOpened}
-              onClose={() => setIsContextMenuOpened(false)}
-              onOpen={() => setIsContextMenuOpened(true)}
-            />
-          ) : null}
         </div>
       </DropFileArea>
+      {activeContent ? (
+        <ContentContextMenu
+          content={activeContent}
+          menuProps={menuPropsObj}
+          isOpened={isContextMenuOpened}
+          onClose={onCloseFunc}
+          onOpen={onOpenFunc}
+        />
+      ) : null}
     </div>
   )
 }
+
+const CollectionComponentPure = React.memo(CollectionComponent)
+export { CollectionComponentPure as CollectionComponent }

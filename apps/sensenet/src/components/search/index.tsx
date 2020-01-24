@@ -93,7 +93,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
         const r = await repo.loadCollection({
           path: ConstantContent.PORTAL_ROOT.Path,
           oDataOptions: {
-            ...loadSettingsContext.loadChildrenSettings,
+            ...loadSettingsContext?.loadChildrenSettings,
             select: ['Actions', ...(queryData.fieldsToDisplay || [])],
             expand: ['Actions', ...(queryData.fieldsToDisplay || []).filter(f => isReferenceField(f, repo))],
             query: personalSettings.commandPalette.wrapQuery.replace('{0}', queryData.term),
@@ -116,15 +116,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
     })()
     // loadSettings should be excluded :(
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    queryData.term,
-    repo,
-    personalSettings.commandPalette.wrapQuery,
-    logger,
-    loadSettingsContext.loadChildrenSettings.orderby,
-    loadSettingsContext.loadChildrenSettings.select,
-    loadSettingsContext.loadChildrenSettings.expand,
-  ])
+  }, [queryData.term, repo, personalSettings.commandPalette.wrapQuery, logger, loadSettingsContext])
 
   useEffect(() => {
     ;(async () => {
@@ -133,7 +125,7 @@ const Search: React.FunctionComponent<RouteComponentProps<{ queryData?: string }
         const response = await repo.loadCollection({
           path: ConstantContent.PORTAL_ROOT.Path,
           oDataOptions: {
-            ...loadSettingsContext.loadChildrenSettings,
+            ...loadSettingsContext?.loadChildrenSettings,
             select: ['Actions', ...(queryData.fieldsToDisplay || [])],
             expand: ['Actions', ...(queryData.fieldsToDisplay || []).filter(f => isReferenceField(f, repo))],
             query: personalSettings.commandPalette.wrapQuery.replace('{0}', queryData.term),
