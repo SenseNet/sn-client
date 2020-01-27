@@ -73,15 +73,15 @@ export class ControlMapper<TControlBaseType, TFieldControlBaseType> {
 
   /**
    * Sets up default field settings object
-   * @param fieldSetting The FieldSetting to get the control for.
+   * @param fieldSettingName The FieldSettings' name to get the control for.
    * @param setupControl Callback method that returns a Control Type based on the provided FieldSetting
    * @returns the Mapper instance (can be used fluently)
    */
   public setupFieldSettingDefault<TFieldSettingType extends FieldSetting>(
-    fieldSetting: new (...args: any[]) => TFieldSettingType,
+    fieldSettingName: string,
     setupControl: (fieldSetting: TFieldSettingType) => TFieldControlBaseType,
   ) {
-    this.fieldSettingDefaults.set(fieldSetting.name, setupControl)
+    this.fieldSettingDefaults.set(fieldSettingName, setupControl)
     return this
   }
 

@@ -3,7 +3,6 @@ import { DialogContent, DialogTitle } from '@material-ui/core'
 import { NewView } from '@sensenet/controls-react'
 import { DialogProps } from '@material-ui/core/Dialog'
 import { useRepository } from '@sensenet/hooks-react'
-import CalendarEvent from '../CalendarEvent-type'
 import { SharedContext } from '../context/shared-context'
 
 const NewDialogBody: React.FunctionComponent<{
@@ -21,13 +20,13 @@ const NewDialogBody: React.FunctionComponent<{
         <NewView
           handleCancel={handleClose}
           repository={repo}
-          contentTypeName={CalendarEvent.name}
+          contentTypeName="CalendarEvent"
           path={props.parentpath}
-          onSubmit={async (parentPath, content) => {
+          onSubmit={async content => {
             try {
               await repo.post({
-                contentType: CalendarEvent.name,
-                parentPath,
+                contentType: 'CalendarEvent',
+                parentPath: props.parentpath,
                 content,
               })
               sharedcontext.setRefreshcalendar(!sharedcontext.refreshcalendar)

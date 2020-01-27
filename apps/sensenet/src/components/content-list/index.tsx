@@ -268,7 +268,7 @@ export const CollectionComponent: React.FunctionComponent<CollectionComponentPro
           <ContentList
             hideHeader={props.hideHeader}
             items={children}
-            schema={repo.schemas.getSchema(GenericContent)}
+            schema={repo.schemas.getSchemaByName('GenericContent')}
             onRequestActiveItemChange={setActiveContent}
             active={activeContent}
             orderBy={currentOrder}

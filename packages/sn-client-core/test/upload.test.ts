@@ -185,6 +185,7 @@ describe('Upload', () => {
       const uploadTrace = Trace.method({
         object: repo.upload,
         method: repo.upload.file,
+        methodName: 'file',
         onCalled: () => {
           uploadTrace.dispose()
           done()
@@ -212,6 +213,7 @@ describe('Upload', () => {
       const uploadTrace = Trace.method({
         object: repo.upload,
         method: repo.upload.file,
+        methodName: 'file',
         onCalled: () => {
           uploadTrace.dispose()
           done()
@@ -285,6 +287,7 @@ describe('Upload', () => {
       const uploadTrace = Trace.method({
         object: repo,
         method: repo.post,
+        methodName: 'post',
         onCalled: () => {
           uploadTrace.dispose()
           postHasCalled = true
@@ -409,6 +412,7 @@ describe('Upload', () => {
       const uploadTrace = Trace.method({
         object: repo.upload,
         method: repo.upload.file,
+        methodName: 'file',
         onCalled: () => {
           uploadTrace.dispose()
           done()
@@ -434,6 +438,7 @@ describe('Upload', () => {
       const uploadTrace = Trace.method({
         object: repo.upload,
         method: repo.upload.file,
+        methodName: 'file',
         onCalled: () => {
           uploadTrace.dispose()
           done()
