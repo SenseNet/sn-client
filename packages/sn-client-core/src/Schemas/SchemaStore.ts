@@ -1,4 +1,4 @@
-import { FieldSetting, GenericContent, Schema } from '@sensenet/default-content-types'
+import { FieldSetting, Schema } from '@sensenet/default-content-types'
 
 /**
  * Class that stores schema information
@@ -58,26 +58,23 @@ export class SchemaStore {
   }
 
   /**
-   * Returns a boolean value that indicates if the specified content is an instance or descendant of a given content constructor
+   * Returns a boolean value that indicates if the specified content is an instance or descendant of a given content type
    * @param content The given content to check
-   * @param contentType The content type constructor
+   * @param contentTypeName The name of content type
    */
-  public isContentFromType<T extends typeof GenericContent>(
-    content: GenericContent,
-    contentType: T,
-  ): content is InstanceType<T> {
-    if (content.Type === contentType.name) {
+  public isContentFromType<T>(content: any, contentTypeName: string): content is T {
+    if (content.Type === contentTypeName) {
       return true
     }
 
     let currentSchema = this.getSchemaByName(content.Type)
     do {
-      if (currentSchema.ContentTypeName === contentType.name) {
+      if (currentSchema.ContentTypeName === contentTypeName) {
         return true
       }
       currentSchema = this.getSchemaByName(currentSchema.ParentTypeName || '')
-    } while (currentSchema.ContentTypeName && currentSchema.ContentTypeName !== GenericContent.name)
-    return contentType.name === GenericContent.name
+    } while (currentSchema.ContentTypeName && currentSchema.ContentTypeName !== 'GenericContent')
+    return contentTypeName === 'GenericContent'
   }
 
   /**
@@ -92,8 +89,8 @@ export class SchemaStore {
         return true
       }
       currentSchema = this.getSchemaByName(currentSchema.ParentTypeName || '')
-    } while (currentSchema.ContentTypeName && currentSchema.ContentTypeName !== GenericContent.name)
+    } while (currentSchema.ContentTypeName && currentSchema.ContentTypeName !== 'GenericContent')
 
-    return parent === GenericContent.name
+    return parent === 'GenericContent'
   }
 }

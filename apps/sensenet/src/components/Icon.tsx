@@ -1,3 +1,4 @@
+import { Avatar } from '@material-ui/core'
 import {
   AllInboxTwoTone,
   AssignmentTwoTone,
@@ -35,12 +36,11 @@ import {
   WebAssetTwoTone,
   WidgetsTwoTone,
 } from '@material-ui/icons'
-import { Injector, LogLevel, PathHelper, tuple } from '@sensenet/client-utils'
-import { GenericContent, File as SnFile, User } from '@sensenet/default-content-types'
-import React from 'react'
 import { Repository } from '@sensenet/client-core'
-import { Avatar } from '@material-ui/core'
+import { Injector, LogLevel, PathHelper, tuple } from '@sensenet/client-utils'
+import { File, GenericContent, User } from '@sensenet/default-content-types'
 import { useInjector, useRepository } from '@sensenet/hooks-react'
+import React from 'react'
 import { EventLogEntry } from '../services/EventService'
 import { UserAvatar } from './UserAvatar'
 
@@ -86,9 +86,7 @@ export const defaultContentResolvers: Array<IconResolver<GenericContent>> = [
   },
   {
     get: (item, options) =>
-      options.repo.schemas.isContentFromType(item, SnFile) &&
-      (item as SnFile).PageCount &&
-      (item as any).PageCount > 0 ? (
+      options.repo.schemas.isContentFromType<File>(item, 'File') && item.PageCount ? (
         <img
           width={(options.style && options.style.width) || 32}
           height={(options.style && options.style.width) || 32}

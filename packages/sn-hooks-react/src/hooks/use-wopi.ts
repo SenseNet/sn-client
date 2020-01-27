@@ -1,4 +1,4 @@
-import { File, GenericContent, isActionModel } from '@sensenet/default-content-types'
+import { GenericContent, isActionModel } from '@sensenet/default-content-types'
 import { useCallback } from 'react'
 import { useRepository } from './use-repository'
 
@@ -11,7 +11,7 @@ export const useWopi = () => {
 
   const isWriteAvailable = useCallback(
     (content: GenericContent) =>
-      repo.schemas.isContentFromType(content, File) &&
+      repo.schemas.isContentFromType(content, 'File') &&
       isActionModel(content.Actions) &&
       content.Actions.some(action => action.Name === 'WopiOpenEdit'),
     [repo.schemas],
@@ -20,7 +20,7 @@ export const useWopi = () => {
   const isReadAvailable = useCallback(
     (content: GenericContent) =>
       isWriteAvailable(content) ||
-      (repo.schemas.isContentFromType(content, File) &&
+      (repo.schemas.isContentFromType(content, 'File') &&
         isActionModel(content.Actions) &&
         content.Actions.some(action => action.Name === 'WopiOpenView')),
     [isWriteAvailable, repo.schemas],
