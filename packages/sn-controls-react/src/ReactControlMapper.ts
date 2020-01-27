@@ -4,21 +4,7 @@
 
 import { Repository } from '@sensenet/client-core'
 import { ControlMapper } from '@sensenet/control-mapper'
-import {
-  BinaryFieldSetting,
-  BooleanFieldSetting,
-  ChoiceFieldSetting,
-  ColorFieldSetting,
-  CurrencyFieldSetting,
-  DateTimeFieldSetting,
-  IntegerFieldSetting,
-  LongTextFieldSetting,
-  NullFieldSetting,
-  NumberFieldSetting,
-  PasswordFieldSetting,
-  ReferenceFieldSetting,
-  ShortTextFieldSetting,
-} from '@sensenet/default-content-types'
+import { ChoiceFieldSetting, LongTextFieldSetting, ReferenceFieldSetting } from '@sensenet/default-content-types'
 import { ComponentType } from 'react'
 import * as FieldControls from './fieldcontrols'
 import { ReactClientFieldSetting } from './fieldcontrols/ClientFieldSetting'
@@ -36,22 +22,22 @@ export const reactControlMapper = (repository: Repository) => {
     () => null,
   )
   controlMapper
-    .setupFieldSettingDefault(NumberFieldSetting, () => {
+    .setupFieldSettingDefault('NumberFieldSetting', () => {
       return FieldControls.NumberComponent
     })
-    .setupFieldSettingDefault(CurrencyFieldSetting, () => {
+    .setupFieldSettingDefault('CurrencyFieldSetting', () => {
       return FieldControls.NumberComponent
     })
-    .setupFieldSettingDefault(IntegerFieldSetting, () => {
+    .setupFieldSettingDefault('IntegerFieldSetting', () => {
       return FieldControls.NumberComponent
     })
-    .setupFieldSettingDefault(ColorFieldSetting, () => {
+    .setupFieldSettingDefault('ColorFieldSetting', () => {
       return FieldControls.ColorPicker
     })
-    .setupFieldSettingDefault(BinaryFieldSetting, () => {
+    .setupFieldSettingDefault('BinaryFieldSetting', () => {
       return FieldControls.FileUpload
     })
-    .setupFieldSettingDefault(ShortTextFieldSetting, setting => {
+    .setupFieldSettingDefault('ShortTextFieldSetting', setting => {
       switch (setting.ControlHint) {
         case 'sn:Name':
           return FieldControls.Name
@@ -63,13 +49,13 @@ export const reactControlMapper = (repository: Repository) => {
           return FieldControls.ShortText
       }
     })
-    .setupFieldSettingDefault(PasswordFieldSetting, () => {
+    .setupFieldSettingDefault('PasswordFieldSetting', () => {
       return FieldControls.Password
     })
-    .setupFieldSettingDefault(DateTimeFieldSetting, () => {
+    .setupFieldSettingDefault('DateTimeFieldSetting', () => {
       return FieldControls.DatePicker
     })
-    .setupFieldSettingDefault(ChoiceFieldSetting, setting => {
+    .setupFieldSettingDefault<ChoiceFieldSetting>('ChoiceFieldSetting', setting => {
       switch (setting.DisplayChoice) {
         case 2:
           return FieldControls.CheckboxGroup
@@ -85,14 +71,14 @@ export const reactControlMapper = (repository: Repository) => {
           }
       }
     })
-    .setupFieldSettingDefault(ReferenceFieldSetting, setting => {
+    .setupFieldSettingDefault<ReferenceFieldSetting>('ReferenceFieldSetting', setting => {
       if (setting.AllowedTypes && setting.AllowedTypes.indexOf('User') !== -1 && setting.AllowMultiple) {
         return FieldControls.TagsInput
       } else {
         return FieldControls.ReferenceGrid
       }
     })
-    .setupFieldSettingDefault(LongTextFieldSetting, setting => {
+    .setupFieldSettingDefault<LongTextFieldSetting>('LongTextFieldSetting', setting => {
       switch (setting.TextType) {
         case 'LongText':
           return FieldControls.Textarea
@@ -107,7 +93,7 @@ export const reactControlMapper = (repository: Repository) => {
           }
       }
     })
-    .setupFieldSettingDefault(NullFieldSetting, setting => {
+    .setupFieldSettingDefault('NullFieldSetting', setting => {
       if (setting.Name === 'Avatar') {
         return FieldControls.Avatar
       } else if (
@@ -126,7 +112,7 @@ export const reactControlMapper = (repository: Repository) => {
         return FieldControls.ShortText
       }
     })
-    .setupFieldSettingDefault(BooleanFieldSetting, () => {
+    .setupFieldSettingDefault('BooleanFieldSetting', () => {
       return FieldControls.BooleanComponent
     })
 
