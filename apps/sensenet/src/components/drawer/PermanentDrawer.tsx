@@ -8,11 +8,10 @@ import { Close, Menu } from '@material-ui/icons'
 import React, { useContext, useEffect, useState } from 'react'
 import { withRouter } from 'react-router'
 import { matchPath, NavLink, RouteComponentProps } from 'react-router-dom'
-import { useRepository } from '@sensenet/hooks-react'
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import clsx from 'clsx'
 import { useDrawerItems, useLocalization, usePersonalSettings, useSelectionService } from '../../hooks'
-import { ResponsivePersonalSetttings } from '../../context'
+import { ResponsivePersonalSetttings, useRepository } from '../../context'
 import { AddButton } from '../AddButton'
 import { SearchButton } from '../search-button'
 
@@ -72,7 +71,7 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
   const classes = useStyles()
   const settings = useContext(ResponsivePersonalSetttings)
   const selectionService = useSelectionService()
-  const repo = useRepository()
+  const { repository } = useRepository()
   const [currentComponent, setCurrentComponent] = useState(selectionService.activeContent.getValue())
   const [currentPath, setCurrentPath] = useState('')
   const [opened, setOpened] = useState(settings.drawer.type === 'permanent')
@@ -89,7 +88,7 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
     }
   }, [selectionService.activeContent])
 
-  if (!settings.drawer.enabled) {
+  if (!settings.drawer.enabled || !repository) {
     return null
   }
 
@@ -118,7 +117,7 @@ const PermanentDrawer: React.FunctionComponent<RouteComponentProps> = props => {
           {items.map((item, index) => {
             return (
               <NavLink
-                to={`/${btoa(repo.configuration.repositoryUrl)}${item.url}`}
+                to={`/${btoa(repository.configuration.repositoryUrl)}${item.url}`}
                 className={classes.navLinkStyle}
                 key={index}
                 onClick={() => setCurrentPath(item.root ? item.root : '')}

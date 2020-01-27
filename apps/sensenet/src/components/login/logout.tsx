@@ -20,7 +20,7 @@ export function Logout({ action }: LogoutProps) {
   useEffect(() => {
     const logout = async (returnUrl: string) => {
       const state = { returnUrl }
-      const isauthenticated = await authService.isAuthenticated()
+      const isauthenticated = await authService.isAuthenticated(repo.configuration.repositoryUrl)
       if (isauthenticated) {
         const result = await authService.signOut(state, repo.configuration.repositoryUrl)
         switch (result.status) {

@@ -140,7 +140,7 @@ export interface BuiltinDrawerItem extends DrawerItem<undefined> {
 
 export type PersonalSettingsType = PlatformDependent<UiSettings> & {
   repositories: Array<{ url: string; loginName?: string; displayName?: string; dashboard?: WidgetSection }>
-  lastRepository: string
+  lastRepository?: string
   dashboards: {
     globalDefault: WidgetSection
     repositoryDefault: WidgetSection
@@ -337,7 +337,6 @@ export const defaultSettings: PersonalSettingsType = {
     },
   },
   repositories: [],
-  lastRepository: '',
   language: 'default',
   eventLogSize: 500,
   sendLogWithCrashReports: true,

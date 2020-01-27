@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import oidc, { User, UserManager, UserManagerSettings } from 'oidc-client'
-
-oidc.Log.logger = console
-oidc.Log.level = oidc.Log.DEBUG
+import { User, UserManager, UserManagerSettings } from 'oidc-client'
+import { ObservableValue } from '@sensenet/client-utils'
 
 export const ApplicationName = 'spa'
 
@@ -49,9 +47,7 @@ export const authenticationResultStatus = {
 } as const
 
 export class OAuthAuthenticationService {
-  private callbacks: Array<{ callback: () => void; subscription: number }> = []
-  private nextSubscriptionId = 0
-  private user?: User
+  public user: ObservableValue<User | undefined> = new ObservableValue(undefined)
   private userManager?: UserManager
 
   async isAuthenticated(authorityUrl?: string) {
@@ -60,8 +56,8 @@ export class OAuthAuthenticationService {
   }
 
   async getUser(authorityUrl?: string) {
-    if (this.user?.profile) {
-      return this.user.profile
+    if (this.user.getValue()?.profile) {
+      return this.user.getValue()?.profile
     }
 
     if (!authorityUrl) {
@@ -166,29 +162,7 @@ export class OAuthAuthenticationService {
   }
 
   updateState(user?: User) {
-    this.user = user
-    this.notifySubscribers()
-  }
-
-  subscribe(callback: () => void) {
-    this.callbacks.push({ callback, subscription: this.nextSubscriptionId++ })
-    return this.nextSubscriptionId - 1
-  }
-
-  unsubscribe(subscriptionId: number) {
-    const subscriptionIndex = this.callbacks.findIndex(element => element.subscription === subscriptionId)
-    if (subscriptionIndex === -1) {
-      throw new Error(`Found an invalid number of subscriptions ${subscriptionIndex}.`)
-    }
-
-    this.callbacks = this.callbacks.splice(subscriptionIndex, 1)
-  }
-
-  notifySubscribers() {
-    for (let i = 0; i < this.callbacks.length; i++) {
-      const { callback } = this.callbacks[i]
-      callback()
-    }
+    this.user?.setValue(user)
   }
 
   createArguments(state?: { returnUrl: string }) {
@@ -221,6 +195,7 @@ export class OAuthAuthenticationService {
       automaticSilentRenew: true,
       loadUserInfo: true,
       includeIdTokenInSilentRenew: true,
+      post_logout_redirect_uri: 'http://localhost:8080',
     }
 
     this.userManager = new UserManager(settings)

@@ -121,7 +121,7 @@ export const RepositorySelectorComponent: React.FunctionComponent<RouteComponent
           alwaysRenderSuggestions={isActive}
           inputProps={{
             onChange: ev => setInputValue(ev.currentTarget.value.toString()),
-            value: inputValue,
+            value: inputValue ?? '',
             autoFocus: true,
             placeholder: localization.typeToFilter,
           }}

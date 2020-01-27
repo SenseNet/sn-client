@@ -1,59 +1,57 @@
-import { useRepository } from '@sensenet/hooks-react'
-import React, { useEffect, useState } from 'react'
-import { useHistory } from 'react-router'
+import { useLogger } from '@sensenet/hooks-react'
+import React, { useEffect } from 'react'
 import authService, {
   applicationPaths,
   authenticationResultStatus,
   loginActions,
   queryParameterNames,
 } from '../../services/auth-service'
+import { FullScreenLoader } from '../FullScreenLoader'
+import { usePersonalSettings } from '../../hooks'
 
 type Login2Props = { action: keyof typeof loginActions }
 
 export function Login2({ action }: Login2Props) {
-  const [message, setMessage] = useState<string>()
-  const history = useHistory()
-  const repository = useRepository()
+  const logger = useLogger('login')
+  const settings = usePersonalSettings()
 
   useEffect(() => {
     const login = async (returnUrl: string) => {
+      if (!settings.lastRepository) {
+        logger.debug({ message: 'no repository found' })
+        return
+      }
       const state = { returnUrl }
-      const result = await authService.signIn(state, repository.configuration.repositoryUrl)
+      const result = await authService.signIn(state, settings.lastRepository)
       switch (result.status) {
         case authenticationResultStatus.redirect:
           break
         case authenticationResultStatus.success:
-          history.push(returnUrl)
+          window.location.replace(returnUrl)
           break
         case authenticationResultStatus.fail:
-          setMessage(result.message)
+          logger.warning({ message: result.message })
           break
         default:
-          throw new Error(`Invalid status result ${result}.`)
+          logger.debug({ message: `Invalid status result ${result}.` })
       }
-    }
-
-    const getReturnUrl = (state?: { returnUrl: string }) => {
-      const params = new URLSearchParams(window.location.search)
-      const fromQuery = params.get(queryParameterNames.returnUrl)
-      if (fromQuery && !fromQuery.startsWith(`${window.location.origin}/`)) {
-        // This is an extra check to prevent open redirects.
-        throw new Error('Invalid return url. The return url needs to have the same origin as the current page.')
-      }
-      return state?.returnUrl || fromQuery || `${window.location.origin}/`
     }
 
     const processLoginCallback = async () => {
-      const result = await authService.completeSignIn(repository.configuration.repositoryUrl, window.location.href)
+      if (settings.lastRepository === undefined) {
+        logger.debug({ message: 'no repository found' })
+        return
+      }
+      const result = await authService.completeSignIn(settings.lastRepository)
       switch (result.status) {
         case authenticationResultStatus.success:
-          history.push(getReturnUrl(result.state))
+          window.location.replace(`${window.location.origin}/${btoa(settings.lastRepository)}`)
           break
         case authenticationResultStatus.fail:
-          setMessage(result.message)
+          logger.warning({ message: result.message })
           break
         default:
-          throw new Error(`Invalid authentication result status '${result}'.`)
+          logger.debug({ message: `Invalid authentication result status '${result}'.` })
       }
     }
     const redirectToApiAuthorizationPath = (apiAuthorizationPath: string) => {
@@ -76,9 +74,14 @@ export function Login2({ action }: Login2Props) {
       redirectToApiAuthorizationPath(applicationPaths.identityManagePath)
     }
 
+    if (settings.lastRepository === undefined) {
+      logger.debug({ message: 'no repository found' })
+      return
+    }
+
     switch (action) {
       case loginActions.login:
-        login(getReturnUrl())
+        login(`${window.location.origin}/${btoa(settings.lastRepository)}`)
         break
       case loginActions.loginCallback:
         processLoginCallback()
@@ -87,7 +90,7 @@ export function Login2({ action }: Login2Props) {
         {
           const params = new URLSearchParams(window.location.search)
           const error = params.get(queryParameterNames.message)
-          error && setMessage(error)
+          error && logger.warning({ message: error })
         }
         break
       case loginActions.profile:
@@ -97,23 +100,9 @@ export function Login2({ action }: Login2Props) {
         redirectToRegister()
         break
       default:
-        throw new Error(`Invalid action '${action}'`)
+        logger.debug({ message: `Invalid action '${action}'` })
     }
-  }, [action, history, repository.configuration.repositoryUrl])
+  }, [action, logger, settings.lastRepository])
 
-  if (!message) {
-    return <div>{message}</div>
-  } else {
-    switch (action) {
-      case loginActions.login:
-        return <div>Processing login</div>
-      case loginActions.loginCallback:
-        return <div>Processing login callback</div>
-      case loginActions.profile:
-      case loginActions.register:
-        return <div />
-      default:
-        throw new Error(`Invalid action '${action}'`)
-    }
-  }
+  return <FullScreenLoader />
 }

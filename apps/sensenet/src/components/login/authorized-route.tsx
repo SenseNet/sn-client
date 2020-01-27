@@ -7,14 +7,12 @@ export default function AuthorizedRoute({ path, children }: PropsWithChildren<{ 
   const { isReady, isAuthenticated, setIsReady, setIsAuthenticated, populateAuthenticationState } = useAuthenticated()
 
   useEffect(() => {
-    const subscription = authService.subscribe(async () => {
+    const subscription = authService.user.subscribe(async () => {
       setIsReady(false)
       setIsAuthenticated(false)
       await populateAuthenticationState()
     })
-    return () => {
-      authService.unsubscribe(subscription)
-    }
+    return () => subscription.dispose()
   }, [populateAuthenticationState, setIsAuthenticated, setIsReady])
 
   if (!isReady) {

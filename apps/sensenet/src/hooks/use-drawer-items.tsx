@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Build, Dashboard, Delete, Language, People, Public, Search, Widgets } from '@material-ui/icons'
-import { useLogger, useRepository } from '@sensenet/hooks-react'
+import { useLogger } from '@sensenet/hooks-react'
 import { Icon } from '../components/Icon'
 import {
   BuiltinDrawerItem,
@@ -9,7 +9,7 @@ import {
   DrawerItem as DrawerItemSetting,
   QueryDrawerItem,
 } from '../services/PersonalSettings'
-import { ResponsivePersonalSetttings } from '../context'
+import { ResponsivePersonalSetttings, useRepository } from '../context'
 import { encodeBrowseData } from '../components/content'
 import { encodeQueryData } from '../components/search'
 import DefaultLocalization from '../localization/default'
@@ -30,17 +30,13 @@ type EveryDrawerType = ContentDrawerItem | QueryDrawerItem | BuiltinDrawerItem |
 export const useDrawerItems = () => {
   const settings = useContext(ResponsivePersonalSetttings)
   const localization = useLocalization().drawer
-  const repo = useRepository()
+  const { repository } = useRepository()
   const logger = useLogger('use-drawer-items')
 
   const [drawerItems, setDrawerItems] = useState<DrawerItem[]>([])
 
   useEffect(() => {
-    /**
-     * This can be removed once the routing is fixed.
-     * Right now when you visit '/' it will show the admin page and will try to put drawer items in it.
-     */
-    if (!repo.configuration.repositoryUrl) {
+    if (!repository) {
       return
     }
     const getItemNameFromSettings = (item: DrawerItemSetting<any>) => {
@@ -151,7 +147,7 @@ export const useDrawerItems = () => {
         }
         try {
           for (const permission of item.permissions) {
-            const actions = await repo.getActions({ idOrPath: permission.path })
+            const actions = await repository.getActions({ idOrPath: permission.path })
             const actionIndex = actions.d.Actions.findIndex(action => action.Name === permission.action)
             if (actionIndex === -1 || actions.d.Actions[actionIndex].Forbidden) {
               return false
@@ -173,7 +169,7 @@ export const useDrawerItems = () => {
     localization.descriptions,
     localization.titles,
     logger,
-    repo,
+    repository,
     settings.content.browseType,
     settings.content.fields,
     settings.drawer.items,

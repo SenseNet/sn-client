@@ -1,47 +1,95 @@
-import React, { useEffect, useState } from 'react'
-import { RouteComponentProps, withRouter } from 'react-router'
-import { RepositoryContext, useInjector, useLogger } from '@sensenet/hooks-react'
+import { Repository } from '@sensenet/client-core'
+import { useInjector, useLogger } from '@sensenet/hooks-react'
+import React, {
+  createContext,
+  Dispatch,
+  PropsWithChildren,
+  SetStateAction,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
+import { useRouteMatch } from 'react-router'
 import { usePersonalSettings } from '../hooks'
+import authService from '../services/auth-service'
+
+type RepositoryContextType =
+  | { repository: Repository | undefined; setRepository: Dispatch<SetStateAction<Repository | undefined>> }
+  | undefined
+const RepositoryContext = createContext<RepositoryContextType>(undefined)
 
 export const lastRepositoryKey = 'sensenet-last-repository'
 
-export const RepositoryContextProviderComponent: React.FunctionComponent<RouteComponentProps<{
-  repo?: string
-}>> = props => {
-  const injector = useInjector()
-  const settings = usePersonalSettings()
-  const [repo, setRepo] = useState(injector.getRepository(settings.lastRepository))
-  const logger = useLogger('RepositoryContext')
+export const RepositoryContextProvider = (props: PropsWithChildren<{}>) => {
+  const [repository, setRepository] = useState<Repository>()
 
-  useEffect(() => {
-    let repoFromUrl = ''
-    try {
-      repoFromUrl = (props.match.params.repo && atob(props.match.params.repo)) || ''
-    } catch (error) {
-      /** */
-    }
-
-    const repoUrl =
-      (repoFromUrl && repoFromUrl.startsWith('http://')) || repoFromUrl.startsWith('https://')
-        ? repoFromUrl
-        : settings.lastRepository
-
-    const newRepo =
-      repoUrl && repoUrl.length && repoUrl !== repo.configuration.repositoryUrl && injector.getRepository(repoUrl)
-    if (newRepo) {
-      logger.debug({
-        message: `Swithed from repository ${repo.configuration.repositoryUrl} to ${newRepo.configuration.repositoryUrl}`,
-        data: {
-          digestMessage: 'Repository switched {count} times',
-          multiple: true,
-        },
-      })
-      setRepo(newRepo)
-    }
-  }, [settings.lastRepository, props.match.params.repo, repo.configuration.repositoryUrl, injector, logger])
-
-  return <RepositoryContext.Provider value={repo}>{props.children}</RepositoryContext.Provider>
+  return <RepositoryContext.Provider value={{ repository, setRepository }}>{props.children}</RepositoryContext.Provider>
 }
 
-const routed = withRouter(RepositoryContextProviderComponent)
-export { routed as RepositoryContextProvider }
+export function useRepository() {
+  const injector = useInjector()
+  const match = useRouteMatch<{ repo?: string }>()
+  const settings = usePersonalSettings()
+  const logger = useLogger('useRepository')
+  const context = useContext(RepositoryContext)
+
+  if (!context) {
+    throw new Error('useRepository must be used within a DialogProvider')
+  }
+
+  const { repository, setRepository } = context
+
+  const getRepoWithToken = useCallback(
+    (url: string) => {
+      const getToken = async () => {
+        const token = await authService.getAccessToken(url)
+        if (!token) {
+          return
+        }
+        const repoWithToken = injector.getRepository(url, undefined, (input, init) => {
+          const request = new Request(input, init)
+          request.headers.append('Authorization', `Bearer ${token}`)
+          return fetch(request)
+        })
+        setRepository(repoWithToken)
+      }
+      getToken()
+    },
+    [injector, setRepository],
+  )
+
+  useEffect(() => {
+    const subscription = authService.user.subscribe(user => {
+      if (!user || !settings.lastRepository) {
+        return
+      }
+      getRepoWithToken(settings.lastRepository)
+    })
+    return () => subscription.dispose()
+  }, [getRepoWithToken, injector, setRepository, settings.lastRepository])
+
+  // useEffect(() => {
+  //   if (!settings.lastRepository) {
+  //     return
+  //   }
+  //   const lastRepo = injector.getRepository(settings.lastRepository)
+  //   setRepository(lastRepo)
+  // }, [injector, setRepository, settings.lastRepository])
+
+  useEffect(() => {
+    const repoFromUrl = (match.params.repo && atob(match.params.repo)) || ''
+
+    const repoUrl = new RegExp('^https?://').test(repoFromUrl) ? repoFromUrl : settings.lastRepository
+
+    const newRepoUrl = repoUrl ?? repository?.configuration.repositoryUrl
+    if (newRepoUrl) {
+      logger.debug({
+        message: `Swithed from repository ${repository?.configuration.repositoryUrl} to ${newRepoUrl}`,
+      })
+      getRepoWithToken(newRepoUrl)
+    }
+  }, [getRepoWithToken, logger, match.params.repo, repository, settings.lastRepository])
+
+  return { repository, setRepository }
+}

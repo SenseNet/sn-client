@@ -1,40 +1,41 @@
 import { Injectable } from '@sensenet/client-utils'
-import { LoginState, Repository, RepositoryConfiguration } from '@sensenet/client-core'
+import { Repository, RepositoryConfiguration } from '@sensenet/client-core'
+import authService from './auth-service'
 
 @Injectable({ lifetime: 'singleton' })
 export class RepositoryManager {
   private repos: Map<string, Repository> = new Map()
-  public getRepository(repositoryUrl: string, config?: RepositoryConfiguration) {
+  public getRepository(repositoryUrl: string, config?: RepositoryConfiguration, fetchMethod?: typeof fetch) {
     const existing = this.repos.get(repositoryUrl)
     if (existing) {
       return existing
     }
-    const instance = new Repository({
-      ...{
-        sessionLifetime: 'expiration',
+    const instance = new Repository(
+      {
+        requiredSelect: [
+          'Id',
+          'Path',
+          'Name',
+          'Type',
+          'DisplayName',
+          'Icon',
+          'IsFolder',
+          'ParentId',
+          'Version',
+          'PageCount' as any,
+          'Binary',
+          'CreationDate',
+          'Avatar',
+        ],
+        ...config,
+        repositoryUrl,
       },
-      requiredSelect: [
-        'Id',
-        'Path',
-        'Name',
-        'Type',
-        'DisplayName',
-        'Icon',
-        'IsFolder',
-        'ParentId',
-        'Version',
-        'PageCount' as any,
-        'Binary',
-        'CreationDate',
-        'Avatar',
-      ],
-      ...config,
-      repositoryUrl,
-    })
+      fetchMethod,
+    )
 
     this.repos.set(repositoryUrl, instance)
-    instance.authentication.state.subscribe(s => {
-      if (s === LoginState.Authenticated) {
+    authService.user.subscribe(user => {
+      if (user) {
         instance.reloadSchema()
       }
     })
